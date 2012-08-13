@@ -1,0 +1,640 @@
+<h3>MATLAB<em>SBML</em>STRUCTURE_FUNCTIONS\KINETICLAW</h3>
+
+<p>The functions allow users to create and work with the SBML KineticLaw structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>SBMLKineticLaw = KineticLaw_addLocalParameter(SBMLKineticLaw, SBMLLocalParameter)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML KineticLaw structure with the SBML LocalParameter structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLKineticLaw = KineticLaw_addParameter(SBMLKineticLaw, SBMLParameter)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+<li>SBMLParameter, an SBML Parameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML KineticLaw structure with the SBML Parameter structure added</li>
+</ol>
+
+<hr>
+
+<h4>KineticLaw = KineticLaw_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML KineticLaw structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>SBMLKineticLaw = KineticLaw_createLocalParameter(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML KineticLaw structure with a new SBML LocalParameter structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLKineticLaw = KineticLaw_createParameter(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML KineticLaw structure with a new SBML Parameter structure added</li>
+</ol>
+
+<hr>
+
+<h4>formula = KineticLaw_getFormula(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the formula attribute</li>
+</ol>
+
+<hr>
+
+<h4>localParameter = KineticLaw_getListOfLocalParameters(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the localParameter structures</li>
+</ol>
+
+<hr>
+
+<h4>parameter = KineticLaw_getListOfParameters(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the parameter structures</li>
+</ol>
+
+<hr>
+
+<h4>localParameter = KineticLaw_getLocalParameter(SBMLKineticLaw, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+<li>index, an integer representing the index of SBML LocalParameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML LocalParameter structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>math = KineticLaw_getMath(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the math attribute</li>
+</ol>
+
+<hr>
+
+<h4>metaid = KineticLaw_getMetaid(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>num = KineticLaw_getNumLocalParameters(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML LocalParameter structures present in the KineticLaw</li>
+</ol>
+
+<hr>
+
+<h4>num = KineticLaw_getNumParameters(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML Parameter structures present in the KineticLaw</li>
+</ol>
+
+<hr>
+
+<h4>parameter = KineticLaw_getParameter(SBMLKineticLaw, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+<li>index, an integer representing the index of SBML Parameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Parameter structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = KineticLaw_getSBOTerm(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>substanceUnits = KineticLaw_getSubstanceUnits(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the substanceUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>timeUnits = KineticLaw_getTimeUnits(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the timeUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>value = KineticLaw_isSetFormula(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the formula attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = KineticLaw_isSetMath(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the math attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = KineticLaw_isSetMetaid(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the metaid attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = KineticLaw_isSetSBOTerm(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = KineticLaw_isSetSubstanceUnits(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the substanceUnits attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = KineticLaw_isSetTimeUnits(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the timeUnits attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLKineticLaw = KineticLaw_setFormula(SBMLKineticLaw, formula)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+<li>formula; a string representing the formula to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML KineticLaw structure with the new value for the formula attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLKineticLaw = KineticLaw_setFormulaFromMath(SBMLKineticLaw, formulaFromMath)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+<li>formulaFromMath; a string representing the formulaFromMath to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML KineticLaw structure with the new value for the formulaFromMath attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLKineticLaw = KineticLaw_setMath(SBMLKineticLaw, math)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+<li>math; string representing the math expression math to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML KineticLaw structure with the new value for the math attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLKineticLaw = KineticLaw_setMathFromFormula(SBMLKineticLaw, mathFromFormula)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+<li>mathFromFormula; string representing the math expression mathFromFormula to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML KineticLaw structure with the new value for the mathFromFormula attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLKineticLaw = KineticLaw_setMetaid(SBMLKineticLaw, metaid)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+<li>metaid; a string representing the metaid to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML KineticLaw structure with the new value for the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLKineticLaw = KineticLaw_setSBOTerm(SBMLKineticLaw, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+<li>sboTerm, an integer representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML KineticLaw structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLKineticLaw = KineticLaw_setSubstanceUnits(SBMLKineticLaw, substanceUnits)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+<li>substanceUnits; a string representing the substanceUnits to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML KineticLaw structure with the new value for the substanceUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLKineticLaw = KineticLaw_setTimeUnits(SBMLKineticLaw, timeUnits)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+<li>timeUnits; a string representing the timeUnits to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML KineticLaw structure with the new value for the timeUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLKineticLaw = KineticLaw_unsetFormula(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML KineticLaw structure with the formula attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLKineticLaw = KineticLaw_unsetMath(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML KineticLaw structure with the math attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLKineticLaw = KineticLaw_unsetMetaid(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML KineticLaw structure with the metaid attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLKineticLaw = KineticLaw_unsetSBOTerm(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML KineticLaw structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLKineticLaw = KineticLaw_unsetSubstanceUnits(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML KineticLaw structure with the substanceUnits attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLKineticLaw = KineticLaw_unsetTimeUnits(SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML KineticLaw structure with the timeUnits attribute unset</li>
+</ol>
+
+<hr>

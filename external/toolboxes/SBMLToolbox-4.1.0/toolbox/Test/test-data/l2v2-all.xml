@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+  <model id="l2v2_all">
+    <listOfFunctionDefinitions>
+      <functionDefinition id="fd">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar>
+              <ci> x </ci>
+            </bvar>
+            <apply>
+              <power/>
+              <ci> x </ci>
+              <cn type="integer"> 3 </cn>
+            </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+    </listOfFunctionDefinitions>
+    <listOfUnitDefinitions>
+      <unitDefinition id="ud1">
+        <listOfUnits>
+          <unit kind="mole"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartmentTypes>
+      <compartmentType id="hh"/>
+    </listOfCompartmentTypes>
+    <listOfSpeciesTypes>
+      <speciesType id="gg"/>
+    </listOfSpeciesTypes>
+    <listOfCompartments>
+      <compartment id="a" size="1" constant="false"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="a" initialAmount="0"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="p" value="2" units="litre" constant="false"/>
+      <parameter id="c" units="litre" constant="false"/>
+      <parameter id="c1" units="litre" constant="false"/>
+      <parameter id="x" units="litre" constant="false"/>
+      <parameter id="x1" value="3" units="dimensionless" constant="false"/>
+      <parameter id="t" units="second" constant="false"/>
+      <parameter id="k_s" units="mole" constant="false"/>
+    </listOfParameters>
+    <listOfInitialAssignments>
+      <initialAssignment symbol="c">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> x </ci>
+            <ci> x1 </ci>
+          </apply>
+        </math>
+      </initialAssignment>
+    </listOfInitialAssignments>
+    <listOfRules>
+      <algebraicRule>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <power/>
+            <ci> x </ci>
+            <cn type="integer"> 3 </cn>
+          </apply>
+        </math>
+      </algebraicRule>
+      <assignmentRule variable="c1">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> x </ci>
+            <ci> x1 </ci>
+          </apply>
+        </math>
+      </assignmentRule>
+      <rateRule variable="p">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <ci> x </ci>
+            <ci> t </ci>
+          </apply>
+        </math>
+      </rateRule>
+    </listOfRules>
+    <listOfConstraints>
+      <constraint>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <lt/>
+            <ci> x </ci>
+            <cn type="integer"> 3 </cn>
+          </apply>
+        </math>
+      </constraint>
+    </listOfConstraints>
+    <listOfReactions>
+      <reaction id="r">
+        <listOfReactants>
+          <speciesReference species="s"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> s </ci>
+                <ci> k </ci>
+              </apply>
+              <ci> t </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k" value="9" units="litre"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+    <listOfEvents>
+      <event>
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <lt/>
+              <ci> x </ci>
+              <cn type="integer"> 3 </cn>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+          <eventAssignment variable="s">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <divide/>
+                <ci> k_s </ci>
+                <ci> x </ci>
+              </apply>
+            </math>
+          </eventAssignment>
+        </listOfEventAssignments>
+      </event>
+    </listOfEvents>
+  </model>
+</sbml>

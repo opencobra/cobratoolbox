@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of defineLinearConstraints</title>
+  <meta name="keywords" content="defineLinearConstraints">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html fluxomics -->
+<h1>defineLinearConstraints
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [A, b_L, b_U, model] = defineLinearConstraints(model, method) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/solvers/solveCobraLP.html" class="code" title="function solution = solveCobraLP(LPproblem, varargin)">solveCobraLP</a>	solveCobraLP Solve constraint-based LP problems</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="C13ConfidenceInterval.html" class="code" title="function [vs, output, v0] = C13ConfidenceInterval(v0, expdata, model, max_score, directions, majorIterationLimit)">C13ConfidenceInterval</a>	v0 - set of flux vectors to be used as initial guesses.  They may be</li><li><a href="fitC13Data.html" class="code" title="function [vout, rout] = fitC13Data(v0,expdata,model, majorIterationLimit)">fitC13Data</a>	v0 is input v.  It will automatically be converted to alpha by solving N*alpha = v;</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [A, b_L, b_U, model] = defineLinearConstraints(model, method)</a>
+0002 
+0003 fOffset = 1e-4;
+0004 
+0005 <span class="keyword">if</span> nargin &lt; 2
+0006     method = 1;
+0007 <span class="keyword">end</span>
+0008 
+0009 b_L = model.lb;
+0010 b_U = model.ub;
+0011 A = model.N;
+0012 
+0013 <span class="comment">%marked = zeros(length(model.lb), 1);</span>
+0014 <span class="comment">% for i = 1:size(A, 1)</span>
+0015 <span class="comment">%     if all(abs(A(i,:)) &lt; 1e-5)</span>
+0016 <span class="comment">%         marked(i) = 2;</span>
+0017 <span class="comment">%         if b_L(i) &gt; 1e-5 || b_U(i) &lt; -1e-5</span>
+0018 <span class="comment">%             display('upperbound/lowerbound error');</span>
+0019 <span class="comment">%             pause;</span>
+0020 <span class="comment">%         end</span>
+0021 <span class="comment">%     end</span>
+0022 <span class="comment">% end</span>
+0023 <span class="comment">% marked</span>
+0024 <span class="comment">% pause;</span>
+0025 
+0026 <span class="comment">%marked = zeros(size(A,1), 1);</span>
+0027 <span class="comment">% for  i = 1:length(model.lb)</span>
+0028 <span class="comment">%     if mod(i,40) == 0, i, end</span>
+0029 <span class="comment">%</span>
+0030 <span class="comment">%     tmarked = marked;</span>
+0031 <span class="comment">%     tmarked(i) = 1;</span>
+0032 <span class="comment">%</span>
+0033 <span class="comment">%     LPproblem.A = model.S;</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">%     LPproblem.b = zeros(length(model.mets),1);</span>
+0036 <span class="comment">%     LPproblem.csense = ['E' * ones(length(model.mets), 1)];</span>
+0037 <span class="comment">%     LPproblem.ub = model.ub;</span>
+0038 <span class="comment">%     LPproblem.ub(tmarked ~= 0) = 1e6;</span>
+0039 <span class="comment">%     LPproblem.lb = model.lb;</span>
+0040 <span class="comment">%     LPproblem.lb(tmarked ~= 0) = -1e6;</span>
+0041 <span class="comment">%</span>
+0042 <span class="comment">%     LPproblem.osense = 1;</span>
+0043 <span class="comment">%</span>
+0044 <span class="comment">%     %minimize</span>
+0045 <span class="comment">%     LPproblem.c = zeros(length(model.lb),1);</span>
+0046 <span class="comment">%     LPproblem.c(i) = 1;</span>
+0047 <span class="comment">%     soln = solveCobraLP(LPproblem);</span>
+0048 <span class="comment">%     vmin = soln.obj;</span>
+0049 <span class="comment">%</span>
+0050 <span class="comment">%     %maximize</span>
+0051 <span class="comment">%     LPproblem.c = -LPproblem.c;</span>
+0052 <span class="comment">%     soln = solveCobraLP(LPproblem);</span>
+0053 <span class="comment">%     vmax = -soln.obj;</span>
+0054 <span class="comment">%</span>
+0055 <span class="comment">%     %[i b_L(i) vmin vmax b_U(i)]</span>
+0056 <span class="comment">%     if (vmin &gt; b_L(i) + 1e-2 &amp;&amp; vmax &lt; b_U(i) - 1e-2)</span>
+0057 <span class="comment">%         %[i b_L(i) vmin vmax b_U(i)]</span>
+0058 <span class="comment">%         marked(i) = 1;</span>
+0059 <span class="comment">%     end</span>
+0060 <span class="comment">%</span>
+0061 <span class="comment">% end</span>
+0062 <span class="comment">% display ('done1');</span>
+0063 
+0064 marked = zeros(size(model.lb));
+0065 n = length(model.lb);
+0066 dirs = zeros(size(model.lb));
+0067 <span class="keyword">for</span> i = 1:n
+0068     <span class="keyword">if</span> model.lb(i) == 0 &amp;&amp; model.ub(i) &gt; fOffset
+0069         dirs(i)  = 1;
+0070     <span class="keyword">elseif</span> model.lb(i) &lt; -fOffset &amp;&amp; model.ub(i) == 0
+0071         dirs(i) = -1;
+0072     <span class="keyword">end</span>
+0073 <span class="keyword">end</span>
+0074 
+0075 
+0076 
+0077 <span class="keyword">for</span> i = 1:n
+0078     <span class="keyword">if</span> mod(i,10) == 0
+0079         i;
+0080     <span class="keyword">end</span>
+0081     
+0082     LPproblem.A = model.S;
+0083 
+0084     LPproblem.b = zeros(length(model.mets),1);
+0085     LPproblem.csense = [<span class="string">'E'</span>*ones(length(model.mets), 1)];
+0086     LPproblem.csense = char(LPproblem.csense);
+0087     LPproblem.ub = model.ub;
+0088     LPproblem.lb = model.lb;
+0089     LPproblem.lb(marked &gt; 0) = fOffset;
+0090     LPproblem.ub(marked &lt; 0) = -fOffset;
+0091     
+0092     LPproblem.osense = 1;
+0093 
+0094     <span class="comment">%maximize</span>
+0095     LPproblem.c = -dirs;
+0096     LPproblem.c(marked == 0 ) = 0;
+0097     soln = <a href="../../cobra/solvers/solveCobraLP.html" class="code" title="function solution = solveCobraLP(LPproblem, varargin)">solveCobraLP</a>(LPproblem);
+0098     vm = soln.full;
+0099     
+0100     <span class="keyword">if</span> soln.stat ~= 1
+0101         soln
+0102         i
+0103         pause;
+0104     <span class="keyword">end</span>
+0105     
+0106     [model.lb model.ub dirs vm];
+0107 
+0108     indexes = (vm.*dirs &gt; fOffset) &amp; marked == 0 &amp; dirs ~= 0;
+0109     markednew = marked;
+0110     markednew(indexes) = dirs(indexes);
+0111     
+0112     [model.lb model.ub dirs vm markednew];
+0113 
+0114     <span class="keyword">if</span> markednew == marked
+0115         <span class="keyword">break</span>;
+0116     <span class="keyword">else</span>
+0117         marked = markednew;
+0118     <span class="keyword">end</span>
+0119 <span class="comment">%     if( vmin &lt; b_L(i) - 1e-7 || vmax &gt; b_U(i) + 1e-7)</span>
+0120 <span class="comment">%         [i b_L(i) vmin vmax b_U(i)]</span>
+0121 <span class="comment">%         pause;</span>
+0122 <span class="comment">%     end</span>
+0123 <span class="comment">%     if (abs(vmin) &lt; 1e-6 &amp;&amp; abs(vmax) &lt; 1e-6)</span>
+0124 <span class="comment">%         marked(i) = 2;</span>
+0125 <span class="comment">%     end</span>
+0126 <span class="keyword">end</span>
+0127 <span class="comment">%model.redundant_constraints = marked;</span>
+0128 <span class="keyword">if</span> method == 1
+0129     <span class="keyword">if</span> isfield(model, <span class="string">'N'</span>)
+0130         A = model.N;
+0131     <span class="keyword">else</span>
+0132         A = null(model.S);
+0133     <span class="keyword">end</span>
+0134 <span class="keyword">elseif</span> method ==2 
+0135     A = model.S;
+0136 <span class="keyword">end</span>
+0137 b_L(marked &gt; 0) = fOffset;
+0138 b_U(marked &lt; 0) = -fOffset;
+0139 [b_L b_U];
+0140 x = sum(abs(A),2) &lt; 1e-9;
+0141 b_L = b_L(~x);
+0142 b_U = b_U(~x);
+0143 A = A(~x, :);
+0144 <span class="keyword">return</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

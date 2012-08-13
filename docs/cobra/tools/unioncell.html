@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of unioncell</title>
+  <meta name="keywords" content="unioncell">
+  <meta name="description" content="return a cell which is the union of cell B to cell A given by a comparing">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html tools -->
+<h1>unioncell
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>return a cell which is the union of cell B to cell A given by a comparing</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function AB=unioncell(A,colA,B,colB) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">return a cell which is the union of cell B to cell A given by a comparing
+***the first n characters in the string of B, column B****
+
+INPUT
+A          cell array A
+colA       column of A for comparison
+B          cell array B
+colB       column of B for comparison</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function AB=unioncell(A,colA,B,colB)</a>
+0002 <span class="comment">%return a cell which is the union of cell B to cell A given by a comparing</span>
+0003 <span class="comment">%***the first n characters in the string of B, column B****</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">%INPUT</span>
+0006 <span class="comment">%A          cell array A</span>
+0007 <span class="comment">%colA       column of A for comparison</span>
+0008 <span class="comment">%B          cell array B</span>
+0009 <span class="comment">%colB       column of B for comparison</span>
+0010 
+0011 <span class="comment">%OUTPUT</span>
+0012 <span class="comment">%AB         cell which is the union of cell B to cell A</span>
+0013 
+0014 <span class="comment">%Ronan Fleming</span>
+0015 
+0016 [rlt,clt]=size(A);
+0017 [rlt2,clt2]=size(B);
+0018 
+0019 <span class="comment">%preallocate cell</span>
+0020 AB=cell(rlt,clt+clt2);
+0021 
+0022 <span class="keyword">for</span> r=1:rlt
+0023     match=0;
+0024     <span class="keyword">for</span> r2=1:rlt2
+0025         <span class="keyword">if</span> strncmp(A{r,colA},B{r2,colB},length(B{r2,colB}))
+0026             <span class="keyword">for</span> c=1:clt
+0027                 AB{r,c}=A{r,c};
+0028             <span class="keyword">end</span>
+0029             <span class="keyword">for</span> c2=1:clt2
+0030                 AB{r,c+c2}=B{r2,c2};
+0031             <span class="keyword">end</span>
+0032             match=1;
+0033         <span class="keyword">else</span>
+0034             <span class="keyword">for</span> c=1:clt
+0035                 AB{r,c}=A{r,c};
+0036             <span class="keyword">end</span>
+0037         <span class="keyword">end</span>
+0038     <span class="keyword">end</span>
+0039     <span class="keyword">if</span> match==0
+0040        fprintf(<span class="string">'%s\n'</span>,[<span class="string">'No match:  '</span> int2str(r) <span class="string">' '</span> A{r,colA}]); 
+0041     <span class="keyword">end</span>
+0042 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

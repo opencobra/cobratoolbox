@@ -1,0 +1,394 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pHbalanceProtons</title>
+  <meta name="keywords" content="pHbalanceProtons">
+  <meta name="description" content="Mass balance protons for each reaction by adjusting the hydrogen ion stoichiometric coefficient.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../../menu.html cobra --><!-- ../menu.html reconstruction --><!-- menu.html mass_balance -->
+<h1>pHbalanceProtons
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>Mass balance protons for each reaction by adjusting the hydrogen ion stoichiometric coefficient.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function model=pHbalanceProtons(model,massImbalance) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Mass balance protons for each reaction by adjusting the hydrogen ion stoichiometric coefficient.
+
+ For each non transport reaction the proton stoichiometric coefficient for each
+ reaction is given by the difference between the sum of the average number
+ of protons bound by substrate reactants and the average number of protons
+ bound by product reactants
+
+ i.e. proton S_ij = sum(substrates(S_ij*aveHbound)) -
+                           sum(products(S_ij*aveHbound))
+
+ For each transport reaction, model  transport across the membrane as three
+ reactions, one where non-proton reactants convert into non-proton metabolites
+ involved in one compartment,then in the other compartment, non-proton
+ metabolites convert into non-proton reactants. In between is a reconstruction
+ transport reaction which must be elementally balanced for H to begin
+ with. We assume that the transporter involved has affinity only for a particular
+ species of metabolite defined by the reconstrution.
+
+ INPUT
+ model.S
+ model.mets
+ model.SIntRxnBool             Boolean of internal reactions
+ model.met(m).aveHbound        average number of bound hydrogen ions
+ model.met(m).formula          average number of bound hydrogen ions
+ model.met(m).charge           charge of metabolite species from
+                               reconstruction
+
+ OPTIONAL INPUT
+ massImbalance     nRxn x nElement matrix where massImbalance(i,j) is imbalance of        
+                   reaction i for element j. massImbalance(i,j)==0 if
+                   balanced for that element. The first column is assumed
+                   to correspond to H balancing.
+
+ OUTPUT
+ model.S                   Stoichiometric matrix balanced for protons where each row.
+                           corresponds to a reactant at specific pH.
+
+ Ronan M. T. Fleming</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="numAtomsOfElementInFormula.html" class="code" title="function N=numAtomsOfElementInFormula(formula,element)">numAtomsOfElementInFormula</a>	returns the number of atoms of a single element in a formula</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function model=pHbalanceProtons(model,massImbalance)</a>
+0002 <span class="comment">% Mass balance protons for each reaction by adjusting the hydrogen ion stoichiometric coefficient.</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% For each non transport reaction the proton stoichiometric coefficient for each</span>
+0005 <span class="comment">% reaction is given by the difference between the sum of the average number</span>
+0006 <span class="comment">% of protons bound by substrate reactants and the average number of protons</span>
+0007 <span class="comment">% bound by product reactants</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% i.e. proton S_ij = sum(substrates(S_ij*aveHbound)) -</span>
+0010 <span class="comment">%                           sum(products(S_ij*aveHbound))</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% For each transport reaction, model  transport across the membrane as three</span>
+0013 <span class="comment">% reactions, one where non-proton reactants convert into non-proton metabolites</span>
+0014 <span class="comment">% involved in one compartment,then in the other compartment, non-proton</span>
+0015 <span class="comment">% metabolites convert into non-proton reactants. In between is a reconstruction</span>
+0016 <span class="comment">% transport reaction which must be elementally balanced for H to begin</span>
+0017 <span class="comment">% with. We assume that the transporter involved has affinity only for a particular</span>
+0018 <span class="comment">% species of metabolite defined by the reconstrution.</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% INPUT</span>
+0021 <span class="comment">% model.S</span>
+0022 <span class="comment">% model.mets</span>
+0023 <span class="comment">% model.SIntRxnBool             Boolean of internal reactions</span>
+0024 <span class="comment">% model.met(m).aveHbound        average number of bound hydrogen ions</span>
+0025 <span class="comment">% model.met(m).formula          average number of bound hydrogen ions</span>
+0026 <span class="comment">% model.met(m).charge           charge of metabolite species from</span>
+0027 <span class="comment">%                               reconstruction</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">% OPTIONAL INPUT</span>
+0030 <span class="comment">% massImbalance     nRxn x nElement matrix where massImbalance(i,j) is imbalance of</span>
+0031 <span class="comment">%                   reaction i for element j. massImbalance(i,j)==0 if</span>
+0032 <span class="comment">%                   balanced for that element. The first column is assumed</span>
+0033 <span class="comment">%                   to correspond to H balancing.</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">% OUTPUT</span>
+0036 <span class="comment">% model.S                   Stoichiometric matrix balanced for protons where each row.</span>
+0037 <span class="comment">%                           corresponds to a reactant at specific pH.</span>
+0038 <span class="comment">%</span>
+0039 <span class="comment">% Ronan M. T. Fleming</span>
+0040 
+0041 <span class="keyword">if</span> any(any(isnan(model.S)))
+0042     error(<span class="string">'NaN in S matrix before proton balancing.'</span>)
+0043 <span class="keyword">end</span>
+0044 
+0045 [nMet,nRxn]=size(model.S);
+0046 
+0047 <span class="comment">%first save the reconstructions stoichiometric matrix</span>
+0048 model.Srecon = model.S;
+0049 
+0050 <span class="keyword">if</span> ~exist(<span class="string">'massImbalance'</span>,<span class="string">'var'</span>)
+0051     massImBalancedBool=false(nRxn,1);
+0052 <span class="keyword">else</span>
+0053     massImBalancedBool=(sum(massImbalance(:,2:end)')')~=0;
+0054 <span class="keyword">end</span>
+0055 
+0056 <span class="comment">%get the compartments of the model</span>
+0057 numChar=1;
+0058 [allMetCompartments,uniqueMetCompartments]=getCompartment(model.mets,numChar);
+0059 nUniqueCompartments=length(uniqueMetCompartments);
+0060 
+0061 A=sparse(nMet,nUniqueCompartments);
+0062 <span class="keyword">for</span> m=1:nMet
+0063     A(m,strcmp(allMetCompartments{m},uniqueMetCompartments))=1;
+0064 <span class="keyword">end</span>
+0065 
+0066 compartmentHindex=zeros(length(uniqueMetCompartments),1);
+0067 boolH=false(nMet,1);
+0068 <span class="comment">%indices of protons in different uniqueMetCompartments</span>
+0069 <span class="keyword">for</span> p=1:length(uniqueMetCompartments)
+0070     ind=find(strcmp([<span class="string">'h['</span> uniqueMetCompartments{p} <span class="string">']'</span>],model.mets)~=0);
+0071     <span class="keyword">if</span> ~isempty(ind)
+0072         compartmentHindex(p)=ind;
+0073         boolH(ind)=1;
+0074     <span class="keyword">end</span>
+0075 <span class="keyword">end</span>
+0076 
+0077 <span class="comment">%get the data on number of hydrogens bound by each reactant</span>
+0078 aveHbound=zeros(1,nMet);
+0079 reconstructionH=zeros(1,nMet);
+0080 metCharge=zeros(1,nMet);
+0081 firstMissing=1;
+0082 <span class="keyword">for</span> m=1:nMet
+0083     metCharge(m)    = model.met(m).charge;
+0084     aveHbound(1,m)  = model.met(m).aveHbound;
+0085     <span class="keyword">if</span> strcmp(model.met(m).formula,<span class="string">''</span>)
+0086         <span class="keyword">if</span> firstMissing
+0087             warning(<span class="string">'propper pH based balancing of protons requires a chemical formula for all metabolites'</span>)
+0088             firstMissing=0;
+0089         <span class="keyword">end</span>
+0090         reconstructionH(1,m)=NaN;
+0091     <span class="keyword">else</span>
+0092         reconstructionH(1,m) = <a href="numAtomsOfElementInFormula.html" class="code" title="function N=numAtomsOfElementInFormula(formula,element)">numAtomsOfElementInFormula</a>(model.met(m).formula,<span class="string">'H'</span>);
+0093     <span class="keyword">end</span>
+0094 <span class="keyword">end</span>
+0095 
+0096 <span class="comment">%check that canonical model is mass balanced</span>
+0097 dH = (reconstructionH*model.S)';
+0098 unbalancedInternalBool = dH~=0 &amp; model.SIntRxnBool;
+0099 
+0100 <span class="keyword">if</span> any(unbalancedInternalBool)
+0101     <span class="keyword">if</span> 0
+0102         fprintf(<span class="string">'%s\n'</span>,<span class="string">'Unbalanced reconstruction reactions:'</span>)
+0103         unbalancedInd=find(unbalancedInternalBool);
+0104         <span class="keyword">for</span> p=1:length(unbalancedInd)
+0105             fprintf(<span class="string">'\n%20s\t%s\n'</span>,model.rxns{unbalancedInd(p)},model.rxn(unbalancedInd(p)).equation);
+0106         <span class="keyword">end</span>
+0107         error(<span class="string">'Hydrogen unbalanced reconstruction reactions exist.'</span>)
+0108     <span class="keyword">else</span>
+0109         warning(<span class="string">'Hydrogen unbalanced reconstruction reactions exist!'</span>)
+0110     <span class="keyword">end</span>
+0111 <span class="keyword">end</span>
+0112 
+0113 <span class="comment">%calculate the number of hydrogen atoms involved in each reaction</span>
+0114 Spos=model.S;
+0115 Spos(model.S&lt;0)=0;
+0116 
+0117 <span class="comment">%change in binding of Hydrogen ions which accompanies the conversion of</span>
+0118 <span class="comment">%reactant into reconstruction metabolite species</span>
+0119 deltaHBound = aveHbound - reconstructionH;
+0120 
+0121 fprintf(<span class="string">'%s\n%s\n'</span>,<span class="string">'Proton balancing of reactants.'</span> ,<span class="string">'Assuming that transport reactions are specific to the metabolite species given in the reconstruction.'</span>)
+0122 <span class="comment">%assign new proton stoichiometric coefficients depending on compartment</span>
+0123 <span class="keyword">for</span> n=1:nRxn
+0124     <span class="keyword">if</span> massImbalance(n,1)~=0
+0125         warning(<span class="string">'vonBertalanffy:pHbalanceProtons:OriginallyUnbalancedRxn'</span>, [model.rxns{n} <span class="string">' reconstruction reaction not balanced for H to begin with'</span>]); <span class="comment">% Changed from error to warning and added a message ID - Hulda</span>
+0126     <span class="keyword">end</span>
+0127     <span class="keyword">if</span> strcmp(<span class="string">'ACITL'</span>,model.rxns{n})
+0128         pause(eps)
+0129     <span class="keyword">end</span>
+0130 
+0131     <span class="comment">%no change for biomass reaction or exchange reactions or imbalanced</span>
+0132     <span class="comment">%reactions</span>
+0133     <span class="keyword">if</span> model.SIntRxnBool(n) &amp;&amp; ~massImBalancedBool(n)
+0134         <span class="comment">%dont change reaction if any one of the metabolites has a NaN for</span>
+0135         <span class="comment">%standard Gibbs energy of formation and therefore NaN for the</span>
+0136         <span class="comment">%average number of H bound</span>
+0137         <span class="keyword">if</span> ~any(isnan(aveHbound(model.S(:,n)~=0)))
+0138             <span class="keyword">if</span> 0 <span class="comment">%debugging</span>
+0139                 disp(model.rxns{n})
+0140                 disp(model.rxn(n).equation)
+0141             <span class="keyword">end</span>
+0142             <span class="comment">%no change if only protons involved in a reaction</span>
+0143             <span class="keyword">if</span> any(model.S(:,n)~=0 &amp; ~boolH)
+0144                 
+0145                 <span class="comment">%uniqueMetCompartments of all metabolites involved in reactions</span>
+0146                 metCompartments = allMetCompartments(model.S(:,n)~=0);
+0147                 rxnUniqueMetCompartments=unique(metCompartments);
+0148                 
+0149                 <span class="comment">%uniqueMetCompartments of non-proton metabolites involved in reactions</span>
+0150                 metCompartmentsNotH = allMetCompartments(model.S(:,n)~=0 &amp; ~boolH);
+0151                 uniqueCompartmentsNotH=unique(metCompartmentsNotH);
+0152                 
+0153                 <span class="keyword">if</span> length(rxnUniqueMetCompartments)&gt;length(uniqueCompartmentsNotH)
+0154                     <span class="comment">%proton transport across a membrane driving a reaction</span>
+0155                     <span class="comment">%make any necessary change to the proton stoichiometric</span>
+0156                     <span class="comment">%coefficient on the side with the rest of the</span>
+0157                     <span class="comment">%metabolites</span>
+0158                     <span class="comment">% e.g. abbreviation: 'ATPS4r'</span>
+0159                     <span class="comment">%      officialName: 'ATP synthase (four protons for one ATP)'</span>
+0160                     <span class="comment">%      equation: 'adp[c] + 4 h[e] + pi[c]  &lt;=&gt; atp[c] + h2o[c] + 3 h[c] '</span>
+0161                     
+0162                     <span class="comment">%assumes the reconstruction transport reaction is elementally balanced for H</span>
+0163                     compartBool = strcmp(uniqueCompartmentsNotH{1},allMetCompartments);
+0164                     metRxnCompartBool = model.S(:,n)~=0 &amp; compartBool &amp; ~boolH;
+0165 <span class="comment">%                     if 0</span>
+0166 <span class="comment">%                         model.mets(model.S(:,n)~=0)</span>
+0167 <span class="comment">%                         model.mets(metRxnCompartBool)</span>
+0168 <span class="comment">%                     end</span>
+0169 <span class="comment">%                     %index for H involved in compartment with reaction</span>
+0170 <span class="comment">%                     indexHRxn  = compartmentHindex(strcmp(uniqueCompartmentsNotH{1},uniqueMetCompartments));</span>
+0171                     
+0172                     <span class="comment">%find out if first index is substrate or product</span>
+0173                     <span class="comment">%compartment</span>
+0174                     
+0175 <span class="comment">%                     if sum(model.S(compartBool,n))&lt;0</span>
+0176 <span class="comment">%                         spIndexCol=1;</span>
+0177 <span class="comment">%                         %if the hydrogen ion is a substrate, then store the number of</span>
+0178 <span class="comment">%                         %hydrogen ions transported for the species reaction</span>
+0179 <span class="comment">%                         %before mass balancing for the reactant reaction</span>
+0180 <span class="comment">%                         netTransportZi(n,1)=-S(n,indexHRxn);</span>
+0181 <span class="comment">%                     else</span>
+0182 <span class="comment">%                         spIndexCol=2;</span>
+0183 <span class="comment">%                     end</span>
+0184 <span class="comment">%                     %save index of hydrogen ions for first compartment</span>
+0185 <span class="comment">%                     substrateProductIndexH(n,spIndexCol)=indexHRxn;</span>
+0186                     
+0187                     <span class="comment">%adjust the proton stoichiometric coefficient</span>
+0188                     model.S(indexHRxn,n) = model.S(indexHRxn,n)  - deltaHBound(metRxnCompartBool)*model.S(metRxnCompartBool,n);
+0189 
+0190 <span class="comment">%                     %index for H involved in compartment with reaction</span>
+0191 <span class="comment">%                     indexHRxn  = compartmentHindex(strcmp(uniqueCompartmentsNotH{1},uniqueMetCompartments));</span>
+0192 <span class="comment">%</span>
+0193 <span class="comment">%                     %second index must be for opposite column of first</span>
+0194 <span class="comment">%                     if spIndexCol==1</span>
+0195 <span class="comment">%                         spIndexCol=2;</span>
+0196 <span class="comment">%                     else</span>
+0197 <span class="comment">%                         spIndexCol=1;</span>
+0198 <span class="comment">% %                         %if the hydrogen ion is a substrate, then store the number of</span>
+0199 <span class="comment">% %                         %hydrogen ions transported for the species reaction</span>
+0200 <span class="comment">% %                         %before mass balancing for the reactant reaction</span>
+0201 <span class="comment">% %                         netTransportZi(n,1)=-model.S(n,indexHRxn);</span>
+0202 <span class="comment">%                     end</span>
+0203 <span class="comment">%                     %save index of hydrogen ions for second compartment</span>
+0204 <span class="comment">%                     substrateProductIndexH(n,spIndexCol)=indexHRxn;</span>
+0205                 <span class="keyword">else</span>
+0206                     <span class="comment">%check the number of unique uniqueMetCompartments involving non</span>
+0207                     <span class="comment">%proton metabolites</span>
+0208                     <span class="keyword">if</span> length(uniqueCompartmentsNotH)==1
+0209                         <span class="comment">%reaction involves metabolites in one compartment only</span>
+0210                         indexHRxn  = compartmentHindex(strcmp(uniqueCompartmentsNotH{1},uniqueMetCompartments));
+0211                         <span class="comment">%proton stoichiometric coefficient set to balance</span>
+0212                         <span class="comment">%protons with respect to average H bound by all other</span>
+0213                         <span class="comment">%substrates and products</span>
+0214                         model.S(indexHRxn,n)= model.S(indexHRxn,n) - deltaHBound(~boolH)*model.S(~boolH,n);
+0215                     <span class="keyword">else</span>
+0216                         <span class="comment">%non-proton metabolites in two uniqueMetCompartments or more</span>
+0217                         <span class="keyword">if</span> length(uniqueCompartmentsNotH)&gt;2
+0218                             error(<span class="string">'More than two uniqueMetCompartments for a single reaction?!'</span>)
+0219                         <span class="keyword">end</span>
+0220                         <span class="comment">%model the transport across the membrane as three</span>
+0221                         <span class="comment">%reactions, one where non-proton reactants convert</span>
+0222                         <span class="comment">%into non-proton metabolites involved in one compartment,</span>
+0223                         <span class="comment">%then in the other compartment, non-proton</span>
+0224                         <span class="comment">%metabolites convert into non-proton reactants. In</span>
+0225                         <span class="comment">%between is a reconstruction transport reaction which must be</span>
+0226                         <span class="comment">%elementally balanced for H to begin with</span>
+0227                         <span class="comment">%this assumes that the transporter involved has</span>
+0228                         <span class="comment">%affinity only for a particular species of</span>
+0229                         <span class="comment">%metabolite defined by the reconstrution.</span>
+0230                         
+0231                         <span class="comment">%first compartment</span>
+0232                         compartBool1 = strcmp(uniqueCompartmentsNotH{1},allMetCompartments);
+0233                         <span class="comment">%boolean for non-proton metabolites in first compartment</span>
+0234                         metCompartBool1 = model.S(:,n)~=0 &amp; compartBool1 &amp; ~boolH;
+0235                         <span class="comment">%index for stoichiometric coefficient of first compartment</span>
+0236                         indexHRxn1  = compartmentHindex(strcmp(uniqueCompartmentsNotH{1},uniqueMetCompartments));
+0237                         
+0238 <span class="comment">%                         %find out if first index is substrate or product</span>
+0239 <span class="comment">%                         %compartment</span>
+0240 <span class="comment">%                         if sum(model.S(compartBool1,n))&lt;0</span>
+0241 <span class="comment">%                             spIndexCol=1;</span>
+0242 <span class="comment">%                         else</span>
+0243 <span class="comment">%                             spIndexCol=2;</span>
+0244 <span class="comment">%                         end</span>
+0245 <span class="comment">%                         %save index of hydrogen ion for first compartment</span>
+0246 <span class="comment">%                         substrateProductIndexH(n,spIndexCol)=indexHRxn1;</span>
+0247 <span class="comment">%</span>
+0248 <span class="comment">%                         %net charge transported from first to second compartment</span>
+0249 <span class="comment">%                         netTransportZi(n,1)=metCharge(compartBool1)*model.S(compartBool1,n);</span>
+0250 <span class="comment">%</span>
+0251 <span class="comment">%                         %TODO - need proper way to tell the order of uniqueMetCompartments</span>
+0252 <span class="comment">%                         if model.S(indexHRxn1,n)~=0</span>
+0253 <span class="comment">%                             if model.S(indexHRxn1,n)&gt;0</span>
+0254 <span class="comment">%                                 warning('assuming it is a symport transport reaction - FIX')</span>
+0255 <span class="comment">%                                 netTransportZi(n,1)=-netTransportZi(n,1);</span>
+0256 <span class="comment">%                             end</span>
+0257 <span class="comment">%                         end</span>
+0258                         
+0259                         <span class="comment">%second compartment</span>
+0260                         compartBool2 = strcmp(uniqueCompartmentsNotH{2},allMetCompartments);
+0261                         <span class="comment">%boolean for non-proton metabolites in first compartment</span>
+0262                         metCompartBool2 = model.S(:,n)~=0 &amp; compartBool2 &amp; ~boolH;
+0263                         <span class="comment">%index for stoichiometric coefficient of first compartment</span>
+0264                         indexHRxn2  = compartmentHindex(strcmp(uniqueCompartmentsNotH{2},uniqueMetCompartments));
+0265                         
+0266 <span class="comment">%                         %second index must be for opposite column of first</span>
+0267 <span class="comment">%                         if spIndexCol==1</span>
+0268 <span class="comment">%                             spIndexCol=2;</span>
+0269 <span class="comment">%                         else</span>
+0270 <span class="comment">%                             spIndexCol=1;</span>
+0271 <span class="comment">%                         end</span>
+0272 <span class="comment">%                         %save index of hydrogen ion for second compartment</span>
+0273 <span class="comment">%                         substrateProductIndexH(n,spIndexCol)=indexHRxn2;</span>
+0274 <span class="comment">%</span>
+0275 <span class="comment">%                         if 1</span>
+0276 <span class="comment">%                             %net charge transported from second to first compartment</span>
+0277 <span class="comment">%                             netTransportZiReverse=metCharge(compartBool2)*model.S(compartBool2,n);</span>
+0278 <span class="comment">%                             if netTransportZiReverse~=netTransportZi(n,1)</span>
+0279 <span class="comment">%                                 error('Reconstruction reaction not charge balanced?');</span>
+0280 <span class="comment">%                             end</span>
+0281 <span class="comment">%                         end</span>
+0282                         
+0283                         <span class="comment">%mass balance reactant reactions</span>
+0284                         model.S(indexHRxn1,n)=model.S(indexHRxn1,n) - deltaHBound(metCompartBool1)*model.S(metCompartBool1,n);
+0285                         model.S(indexHRxn2,n)=model.S(indexHRxn2,n) - deltaHBound(metCompartBool2)*model.S(metCompartBool2,n);
+0286 
+0287                         pause(eps)
+0288                     <span class="keyword">end</span>
+0289                 <span class="keyword">end</span>
+0290             <span class="keyword">end</span>
+0291         <span class="keyword">end</span>
+0292         <span class="keyword">if</span> aveHbound*model.S(:,n)&gt;(eps*1e4)
+0293             disp(model.rxns{n})
+0294             disp(model.rxn(n).equation)
+0295             disp(aveHbound*model.S(:,n))
+0296             model.mets(model.S(:,n)~=0)'
+0297             aveHbound(model.S(:,n)~=0)
+0298             error([<span class="string">'Failure to proton balance. Reaction '</span> model.rxns{n} <span class="string">', #'</span> int2str(n)])
+0299         <span class="keyword">end</span>
+0300         <span class="keyword">if</span> any(isnan(model.S(:,n)))
+0301             pause(eps);
+0302         <span class="keyword">end</span>
+0303     <span class="keyword">end</span>
+0304     <span class="keyword">if</span> aveHbound*model.S(:,n)&gt;(eps*1e4)
+0305         <span class="keyword">if</span> 1 <span class="comment">%debugging</span>
+0306             disp(n)
+0307             disp(model.rxns{n})
+0308             disp(model.rxn(n).equation)
+0309         <span class="keyword">end</span>
+0310         error([<span class="string">'Reaction '</span> model.rxns{n} <span class="string">', #'</span> int2str(n) <span class="string">' not proton balanced. No thermodynamic data available to balance reaction.'</span>])
+0311     <span class="keyword">end</span>
+0312 <span class="keyword">end</span>
+0313 <span class="keyword">if</span> any(any(isnan(model.S)))
+0314     error(<span class="string">'NaN in S matrix after proton balancing.'</span>)
+0315 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

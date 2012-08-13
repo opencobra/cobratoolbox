@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of calcSampleStats</title>
+  <meta name="keywords" content="calcSampleStats">
+  <meta name="description" content="calcSampleStats Calculate sample modes, means, standard devs, and medians">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html sampling -->
+<h1>calcSampleStats
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>calcSampleStats Calculate sample modes, means, standard devs, and medians</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function sampleStats = calcSampleStats(samples) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">calcSampleStats Calculate sample modes, means, standard devs, and medians
+
+ sampleStats = calcSampleStats(samples)
+
+INPUT
+ samples       Samples to analyze
+
+OUTPUT
+ sampleStats           Structure with the following fields
+   mean
+   std
+   mode
+   median
+   skew
+   kurt
+
+ Markus Herrgard 8/22/06</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="printSampleStats.html" class="code" title="function printSampleStats(samples,commonModel,sampleNames,fileName)">printSampleStats</a>	printSampleStats Print out sample statistics for multiple samples</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function sampleStats = calcSampleStats(samples)</a>
+0002 <span class="comment">%calcSampleStats Calculate sample modes, means, standard devs, and medians</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% sampleStats = calcSampleStats(samples)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%INPUT</span>
+0007 <span class="comment">% samples       Samples to analyze</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%OUTPUT</span>
+0010 <span class="comment">% sampleStats           Structure with the following fields</span>
+0011 <span class="comment">%   mean</span>
+0012 <span class="comment">%   std</span>
+0013 <span class="comment">%   mode</span>
+0014 <span class="comment">%   median</span>
+0015 <span class="comment">%   skew</span>
+0016 <span class="comment">%   kurt</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% Markus Herrgard 8/22/06</span>
+0019 
+0020 <span class="keyword">if</span> (~iscell(samples))
+0021     samplesTmp = samples;
+0022     clear samples;
+0023     samples{1} = samplesTmp;
+0024 <span class="keyword">end</span>
+0025 
+0026 <span class="keyword">for</span> i = 1:length(samples)
+0027     fprintf(<span class="string">'Processing sample %d\n'</span>,i);
+0028     sampleStats.mean(:,i) = mean(samples{i}')';
+0029     sampleStats.std(:,i) = std(samples{i}')';
+0030     sampleStats.mode(:,i) = mode(samples{i}')';
+0031     sampleStats.median(:,i) = median(samples{i}')';
+0032     sampleStats.skew(:,i) = skewness(samples{i}')';
+0033     sampleStats.kurt(:,i) = kurtosis(samples{i}')';
+0034 <span class="keyword">end</span>
+0035</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

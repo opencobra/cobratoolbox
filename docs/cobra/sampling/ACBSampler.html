@@ -1,0 +1,294 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ACBSampler</title>
+  <meta name="keywords" content="ACBSampler">
+  <meta name="description" content="ACBSampler Artificial centering boundary sampler">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html sampling -->
+<h1>ACBSampler
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>ACBSampler Artificial centering boundary sampler</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function ACBSampler(model,warmupPoints,fileName,nFiles,pointsPerFile,nMixPts,nWarmupNeeded,saveMatFlag,biasOpt) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> ACBSampler Artificial centering boundary sampler
+
+ ACBSampler(model,warmupPoints,fileName,nFiles,pointsPerFile,nMixPts,nWarmupNeeded,saveMatFlag,biasOpt)
+
+INPUTS
+ model         Model structure
+ warmupPoints  Warmup points
+ fileName      Base fileName for saving results
+ nFiles        Number of sample point files created
+ pointsPerFile Number of points per file saved
+ nMixPts       Number of steps initially used for mixing (not saved)
+
+OPTIONAL INPUTS
+ nWarmupNeeded Number of warmup points needed (Default = 20000)
+ saveMatFlag   Save points in mat format vs txt format (Default = true)
+ biasOpt       Options for biasing sampler (Default = no bias)
+   rxns
+   values
+   stds
+   percThr
+
+ Christian Barrett and Markus Herrgard 8/24/06</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function ACBSampler(model,warmupPoints,fileName,nFiles,pointsPerFile,nMixPts,nWarmupNeeded,saveMatFlag,biasOpt)</a>
+0002 <span class="comment">% ACBSampler Artificial centering boundary sampler</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% ACBSampler(model,warmupPoints,fileName,nFiles,pointsPerFile,nMixPts,nWarmupNeeded,saveMatFlag,biasOpt)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%INPUTS</span>
+0007 <span class="comment">% model         Model structure</span>
+0008 <span class="comment">% warmupPoints  Warmup points</span>
+0009 <span class="comment">% fileName      Base fileName for saving results</span>
+0010 <span class="comment">% nFiles        Number of sample point files created</span>
+0011 <span class="comment">% pointsPerFile Number of points per file saved</span>
+0012 <span class="comment">% nMixPts       Number of steps initially used for mixing (not saved)</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">%OPTIONAL INPUTS</span>
+0015 <span class="comment">% nWarmupNeeded Number of warmup points needed (Default = 20000)</span>
+0016 <span class="comment">% saveMatFlag   Save points in mat format vs txt format (Default = true)</span>
+0017 <span class="comment">% biasOpt       Options for biasing sampler (Default = no bias)</span>
+0018 <span class="comment">%   rxns</span>
+0019 <span class="comment">%   values</span>
+0020 <span class="comment">%   stds</span>
+0021 <span class="comment">%   percThr</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">% Christian Barrett and Markus Herrgard 8/24/06</span>
+0024 
+0025 <span class="keyword">if</span> (nargin &lt; 7)
+0026     <span class="comment">% Expands the number of warmup points if the initially provided set is too</span>
+0027     <span class="comment">% small</span>
+0028     nWarmupNeeded = 20000;
+0029 <span class="keyword">end</span>
+0030 <span class="keyword">if</span> (nargin &lt; 8)
+0031     saveMatFlag = true;
+0032 <span class="keyword">end</span>
+0033 <span class="keyword">if</span> (nargin &lt; 9)
+0034     biasFlag = false;
+0035 <span class="keyword">else</span>
+0036     biasFlag = true;
+0037 <span class="keyword">end</span>
+0038 
+0039 warning off MATLAB:divideByZero;
+0040 
+0041 <span class="comment">% Minimum allowed distance to the closest constraint</span>
+0042 maxMinTol = 1e-9;
+0043 <span class="comment">% Ignore directions where u is really small</span>
+0044 uTol = 1e-9;
+0045 <span class="comment">% Project out of directions that are too close to the boundary</span>
+0046 dTol = 1e-10;
+0047 
+0048 <span class="comment">% Number of initial warmup points</span>
+0049 [nRxns,nWarmup] = size(warmupPoints);
+0050 
+0051 <span class="comment">% Find indices for fluxes to be biased</span>
+0052 <span class="keyword">if</span> (biasFlag)
+0053     [tmp,biasInd] = ismember(biasOpt.rxns,model.rxns);
+0054     <span class="keyword">if</span> (length(biasInd) &gt; 1)
+0055         biasDist = sum((warmupPoints(biasInd,:)-repmat(biasOpt.values,1,nWarmup)).^2./repmat(biasOpt.stds.^2,1,nWarmup));
+0056     <span class="keyword">else</span>
+0057         biasDist = (warmupPoints(biasInd,:)-repmat(biasOpt.values,1,nWarmup)).^2./repmat(biasOpt.stds.^2,1,nWarmup);
+0058     <span class="keyword">end</span>
+0059 <span class="keyword">end</span>
+0060 
+0061 totalPointCount = 0;
+0062 
+0063 fidErr = fopen([fileName <span class="string">'.err'</span>],<span class="string">'w'</span>);
+0064 
+0065 <span class="keyword">for</span> fileNo = 1:nFiles
+0066 
+0067     <span class="keyword">if</span> (~saveMatFlag)
+0068         fid = fopen([fileName <span class="string">'_'</span> num2str(fileNo) <span class="string">'.fls'</span>],<span class="string">'w'</span>);
+0069     <span class="keyword">else</span>
+0070         <span class="comment">% Allocate memory for all points</span>
+0071         points = zeros(nRxns,pointsPerFile);
+0072     <span class="keyword">end</span>
+0073 
+0074     pointCount = 1;
+0075     <span class="keyword">while</span> (pointCount &lt;= pointsPerFile)
+0076 
+0077         <span class="keyword">if</span> (mod(totalPointCount,500) == 0)
+0078             fprintf(<span class="string">'%d %d %d\n'</span>,fileNo,pointCount,totalPointCount);
+0079         <span class="keyword">end</span>
+0080 
+0081         <span class="comment">% Pick two random points</span>
+0082         <span class="keyword">if</span> (biasFlag)
+0083            [tmp,sortInd] = sort(biasDist);
+0084             randPoint1 = warmupPoints(:,sortInd(ceil(biasOpt.percThr*nWarmup*rand)));
+0085             randPoint2 = warmupPoints(:,sortInd(ceil(biasOpt.percThr*nWarmup*rand)));
+0086         <span class="keyword">else</span>
+0087             randPoint1 = warmupPoints(:,ceil(nWarmup*rand));
+0088             randPoint2 = warmupPoints(:,ceil(nWarmup*rand));
+0089         <span class="keyword">end</span>
+0090 
+0091         <span class="comment">% Get a line formed by the two</span>
+0092         u = (randPoint2-randPoint1);
+0093         u = u/norm(u);
+0094 
+0095         <span class="comment">% This gets randPoint1 away from the boundary, which causes problems</span>
+0096         <span class="comment">% when trying to move from randPoint1</span>
+0097         <span class="comment">% randPoint1 = randPoint1 + tol*u;</span>
+0098 
+0099         <span class="comment">% Figure out the distances to upper and lower bounds</span>
+0100         distUb = (model.ub - randPoint1);
+0101         distLb = (randPoint1 - model.lb);
+0102 
+0103         <span class="comment">% Figure out if we are too close to a boundary</span>
+0104         validDir = ((distUb &gt; dTol) &amp; (distLb &gt; dTol));
+0105 
+0106         <span class="comment">% Figure out positive and negative directions</span>
+0107         posDirn = find(u(validDir) &gt; uTol);
+0108         negDirn = find(u(validDir) &lt; -uTol);
+0109 
+0110         <span class="keyword">if</span> (isempty(posDirn) &amp; isempty(negDirn))
+0111             <span class="keyword">continue</span>
+0112         <span class="keyword">end</span>
+0113 
+0114         <span class="comment">% Figure out all the possible maximum and minimum step sizes</span>
+0115         maxStepTemp = distUb(validDir)./u(validDir);
+0116         minStepTemp = -distLb(validDir)./u(validDir);
+0117         maxStepVec = [maxStepTemp(posDirn);minStepTemp(negDirn)];
+0118         minStepVec = [minStepTemp(posDirn);maxStepTemp(negDirn)];
+0119 
+0120         <span class="comment">% Figure out the true max &amp; min step sizes</span>
+0121         maxStep = min(maxStepVec);
+0122         minStep = max(minStepVec);
+0123 
+0124         <span class="comment">% Compute the boundary points along this line</span>
+0125         boundaryPoint1 = randPoint1 + minStep*u;
+0126         boundaryPoint2 = randPoint1 + maxStep*u;
+0127 
+0128         <span class="comment">% Move on if the points left the null space for some reason</span>
+0129         error1 = full(max(max(abs(model.S*boundaryPoint1))));
+0130         error2 = full(max(max(abs(model.S*boundaryPoint2))));
+0131         <span class="keyword">if</span> (error1 &gt; 1e-7 | error2 &gt; 1e-7)
+0132           fprintf(<span class="string">'Point out of N-space: %g %g\n'</span>,error1,error2);
+0133           <span class="keyword">continue</span>;
+0134         <span class="keyword">end</span>
+0135 
+0136         <span class="comment">% Get the center point</span>
+0137         centerPoint = (boundaryPoint1 + boundaryPoint2)/2.0;
+0138 
+0139         <span class="comment">% Check if we want to add this point to warmup points or replace a</span>
+0140         <span class="comment">% previous point</span>
+0141 
+0142         <span class="keyword">if</span> (biasFlag)
+0143             <span class="comment">% Calculate distance to bias flux values</span>
+0144             [maxBiasDist,maxInd] = max(biasDist);
+0145 
+0146             <span class="keyword">if</span> (length(biasInd) &gt; 1)
+0147                 biasDistThisStep = sum((centerPoint(biasInd)-biasOpt.values).^2./biasOpt.stds.^2);
+0148             <span class="keyword">else</span>
+0149                 biasDistThisStep = (centerPoint(biasInd)-biasOpt.values).^2./biasOpt.stds.^2;
+0150             <span class="keyword">end</span>
+0151 
+0152             <span class="keyword">if</span> (mod(totalPointCount,100) == 0)
+0153               minBiasDist = min(biasDist);
+0154               fprintf(<span class="string">'%d\t%f\t%f\t%f\t%f\t%d\n'</span>,totalPointCount, <span class="keyword">...</span>
+0155                       biasDistThisStep,minBiasDist,maxBiasDist,mean(biasDist),nWarmup);
+0156               fprintf(fidErr,<span class="string">'%d\t%f\t%f\t%f\t%f\t%d\n'</span>,totalPointCount, <span class="keyword">...</span>
+0157                       biasDistThisStep,minBiasDist,maxBiasDist,mean(biasDist),nWarmup);
+0158               
+0159             <span class="keyword">end</span>
+0160 
+0161             <span class="keyword">if</span> (biasDistThisStep &lt; maxBiasDist)
+0162                 replaceWarmup = true;
+0163             <span class="keyword">else</span>
+0164                 replaceWarmup = false;
+0165             <span class="keyword">end</span>
+0166         <span class="keyword">else</span>
+0167             replaceWarmup = true;
+0168         <span class="keyword">end</span>
+0169         
+0170         nWarmup = size(warmupPoints,2);
+0171         <span class="keyword">if</span> (replaceWarmup)
+0172             <span class="keyword">if</span> (biasFlag)
+0173                 <span class="comment">% Add warmup point</span>
+0174                 replaceInd = max(find(biasDistThisStep &gt; <span class="keyword">...</span>
+0175                                       biasDist));
+0176                 <span class="keyword">if</span> (nWarmup &lt; nWarmupNeeded)
+0177                     biasDist(end+1) = biasDistThisStep;
+0178                     warmupPoints(:,end+1) = centerPoint;
+0179                     nWarmup = nWarmup+1;
+0180                 <span class="keyword">else</span>
+0181                     <span class="comment">% Replace warmup point</span>
+0182                     biasDist(maxInd) = biasDistThisStep;
+0183                     warmupPoints(:,maxInd) = centerPoint;
+0184                 <span class="keyword">end</span>
+0185             <span class="keyword">else</span>
+0186                 <span class="keyword">if</span> (nWarmup &lt; nWarmupNeeded)
+0187                     warmupPoints(:,end+1) = centerPoint;
+0188                     nWarmup = nWarmup+1;
+0189                 <span class="keyword">end</span>
+0190             <span class="keyword">end</span>
+0191         <span class="keyword">end</span>
+0192         
+0193         <span class="comment">% Count the total number of points generated</span>
+0194         totalPointCount = totalPointCount + 1;
+0195 
+0196         <span class="comment">% Check if it is time to start saving points</span>
+0197         <span class="keyword">if</span> (totalPointCount &gt; nMixPts)
+0198             <span class="keyword">if</span> (rand &lt; 0.5)
+0199                 pointToSave = boundaryPoint2;
+0200             <span class="keyword">else</span>
+0201                 pointToSave = boundaryPoint1;
+0202             <span class="keyword">end</span>
+0203 
+0204             <span class="keyword">if</span> (saveMatFlag)
+0205                 points(:,pointCount) = pointToSave;
+0206             <span class="keyword">else</span>
+0207                 <span class="comment">% Print out point</span>
+0208                 <span class="keyword">for</span> i = 1:length(pointToSave)
+0209                     fprintf(fid,<span class="string">'%g '</span>,pointToSave(i));
+0210                 <span class="keyword">end</span>
+0211                 fprintf(fid,<span class="string">'\n'</span>);
+0212             <span class="keyword">end</span>
+0213 
+0214             pointCount = pointCount + 1;
+0215         <span class="keyword">end</span>
+0216     <span class="keyword">end</span>
+0217 
+0218     <span class="comment">% Save current points within the cycle to a file</span>
+0219     <span class="keyword">if</span> (saveMatFlag)
+0220         file = [fileName <span class="string">'_'</span> num2str(fileNo) <span class="string">'.mat'</span>];
+0221         save (file,<span class="string">'points'</span>);
+0222     <span class="keyword">else</span>
+0223         fclose(fid);
+0224     <span class="keyword">end</span>
+0225 
+0226 <span class="keyword">end</span> <span class="comment">% Files</span>
+0227 
+0228 fclose(fidErr);
+0229 
+0230 
+0231</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

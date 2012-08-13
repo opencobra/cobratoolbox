@@ -1,0 +1,164 @@
+<h3>FBC_PACKAGE\MATLAB_SBML_STRUCTURES\FBCSPECIES</h3>
+
+<p>The functions allow users to create and work with the FBC elements
+and attributes of an SBML FBC Species structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>FBCSpecies = FBCSpecies_create(level, version, pkgVersion)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level</li>
+<li>version, an integer representing an SBML version</li>
+<li>pkgVersion, an integer representing an SBML package version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML FBC FBCSpecies structure of the appropriate level, version and pkgVersion</li>
+</ol>
+
+<hr>
+
+<h4>charge = FBCSpecies_getCharge(SBMLFBCSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFBCSpecies, an SBML FBCSpecies structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the fbc_charge attribute</li>
+</ol>
+
+<hr>
+
+<h4>chemicalFormula = FBCSpecies_getChemicalFormula(SBMLFBCSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFBCSpecies, an SBML FBCSpecies structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the fbc_chemicalFormula attribute</li>
+</ol>
+
+<hr>
+
+<h4>charge = FBCSpecies_isSetCharge(SBMLFBCSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFBCSpecies, an SBML FBCSpecies structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the fbc_charge attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>chemicalFormula = FBCSpecies_isSetChemicalFormula(SBMLFBCSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFBCSpecies, an SBML FBCSpecies structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the fbc_chemicalFormula attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLFBCSpecies = FBCSpecies_setCharge(SBMLFBCSpecies, charge)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFBCSpecies, an SBML FBCSpecies structure</li>
+<li>charge, a number representing the fbc_charge to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FBC FBCSpecies structure with the new value for the fbc_charge attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLFBCSpecies = FBCSpecies_setChemicalFormula(SBMLFBCSpecies, chemicalFormula)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFBCSpecies, an SBML FBCSpecies structure</li>
+<li>chemicalFormula, a string representing the fbc_chemicalFormula to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FBC FBCSpecies structure with the new value for the fbc_chemicalFormula attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLFBCSpecies = FBCSpecies_unsetCharge(SBMLFBCSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFBCSpecies, an SBML FBCSpecies structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FBC FBCSpecies structure with the fbc_charge attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLFBCSpecies = FBCSpecies_unsetChemicalFormula(SBMLFBCSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFBCSpecies, an SBML FBCSpecies structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FBC FBCSpecies structure with the fbc_chemicalFormula attribute unset</li>
+</ol>
+
+<hr>

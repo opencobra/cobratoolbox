@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of drawLine</title>
+  <meta name="keywords" content="drawLine">
+  <meta name="description" content="drawLine">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../../menu.html cobra --><!-- ../menu.html maps --><!-- menu.html tools -->
+<h1>drawLine
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>drawLine</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function drawLine(node1,node2,map,edgeColor,edgeArrowColor,edgeWeight,nodeWeight,rxnDir,rxnDirMultiplier) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">drawLine
+
+ drawLine(node1,node2,map,edgeColor,edgeArrowColor,edgeWeight,nodeWeight)
+
+INPUTS
+ node1             start node
+ node2             end node
+ map               COBRA map structure
+ edgeColor         Line color
+ edgeArrowColor    Arrowhead color
+ edgeWeight        Line width
+
+OPTIONAL INPUT
+ nodeWeight        Node size</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="drawArrowhead.html" class="code" title="function drawArrowhead(point,dir,rad,color)">drawArrowhead</a>	drawArrowhead Adds arrowhead to curve</li><li><a href="drawBezier.html" class="code" title="function drawBezier(p,color,weight)">drawBezier</a>	drawBezier Draw a bezier curve in a figure</li><li><a href="drawVector.html" class="code" title="function drawVector(begPt,endPt, color, weight)">drawVector</a>	drawVector</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../cobra/maps/drawCbMap.html" class="code" title="function options = drawCbMap(map,options,varargin)">drawCbMap</a>	Draws a map with the specified optional parameters</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function [type, position] = getType(node, map)</a></li><li><a href="#_sub2" class="code">function [point,dir] = c2p(p1,p2,rad)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function drawLine(node1,node2,map,edgeColor,edgeArrowColor,edgeWeight,nodeWeight,rxnDir,rxnDirMultiplier)</a>
+0002 <span class="comment">%drawLine</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% drawLine(node1,node2,map,edgeColor,edgeArrowColor,edgeWeight,nodeWeight)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%INPUTS</span>
+0007 <span class="comment">% node1             start node</span>
+0008 <span class="comment">% node2             end node</span>
+0009 <span class="comment">% map               COBRA map structure</span>
+0010 <span class="comment">% edgeColor         Line color</span>
+0011 <span class="comment">% edgeArrowColor    Arrowhead color</span>
+0012 <span class="comment">% edgeWeight        Line width</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">%OPTIONAL INPUT</span>
+0015 <span class="comment">% nodeWeight        Node size</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">%</span>
+0018 
+0019 <span class="keyword">if</span> nargin &lt; 9
+0020     rxnDirMultipler = 2;
+0021 <span class="keyword">end</span>
+0022 
+0023 <span class="keyword">if</span> nargin &lt; 8
+0024     rxnDir = 0;
+0025 <span class="keyword">end</span>
+0026 
+0027 <span class="keyword">if</span> (nargin &lt; 7)
+0028     rad = 20;
+0029 <span class="keyword">else</span>
+0030     index1 = find(map.molIndex(:) == node1);
+0031     index2 = find(map.molIndex(:) == node2);
+0032     <span class="keyword">if</span> length(index1) == 1
+0033         rad = nodeWeight(index1);
+0034     <span class="keyword">elseif</span> length(index2) == 1
+0035         rad = nodeWeight(index2);
+0036     <span class="keyword">else</span>
+0037         rad = 20;
+0038     <span class="keyword">end</span>
+0039 <span class="keyword">end</span>
+0040 
+0041 <span class="keyword">if</span> isnan(node1) || isnan(node2)
+0042     <span class="keyword">return</span>;
+0043 <span class="keyword">end</span>
+0044 
+0045 [type1, nodePos(:,1)] = <a href="#_sub1" class="code" title="subfunction [type, position] = getType(node, map) ">getType</a>(node1, map);
+0046 [type2, nodePos(:,2)] = <a href="#_sub1" class="code" title="subfunction [type, position] = getType(node, map) ">getType</a>(node2, map);
+0047 p1 = nodePos(:,1);
+0048 p2 = nodePos(:,2);
+0049 
+0050 <span class="keyword">if</span> type1 == 1 &amp;&amp; type2 == 1
+0051     <a href="drawVector.html" class="code" title="function drawVector(begPt,endPt, color, weight)">drawVector</a>(nodePos(:,1),nodePos(:,2),edgeColor,edgeWeight);
+0052     
+0053 <span class="keyword">elseif</span> type1 == 1 &amp;&amp; type2 == 2
+0054     <span class="comment">%drawCircle(p2, 3, 'r');</span>
+0055     index1 = find(map.connection(:,1) == node2);
+0056     index2 = find(map.connection(:,2) == node2);
+0057     isend = 0;
+0058     <span class="keyword">if</span> map.connectionReversible(index1) == 1
+0059         isend = 1;
+0060     <span class="keyword">end</span>
+0061     <span class="keyword">if</span> length(index1) == 1 &amp;&amp; length(index2) == 1 <span class="comment">% case metabolite to center reaction.</span>
+0062         [point1,dir] = <a href="#_sub2" class="code" title="subfunction [point,dir] = c2p(p1,p2,rad)">c2p</a>(nodePos(:,1),nodePos(:,2),rad);
+0063         <a href="drawVector.html" class="code" title="function drawVector(begPt,endPt, color, weight)">drawVector</a>(point1, nodePos(:,2),edgeColor,edgeWeight);
+0064         <span class="keyword">if</span> isend
+0065             <span class="keyword">if</span> rxnDir &lt; 0, rad = rad*rxnDirMultiplier; <span class="keyword">end</span>
+0066             <a href="drawArrowhead.html" class="code" title="function drawArrowhead(point,dir,rad,color)">drawArrowhead</a>(point1,dir,rad,edgeArrowColor);
+0067         <span class="keyword">end</span>
+0068     <span class="keyword">elseif</span> length(index1) &gt; 1 &amp;&amp; length(index2) == 1
+0069         display(<span class="string">'blah'</span>); <span class="comment">% for some reason this doesn't happen. (metabolite node cannot have more than one point)</span>
+0070     <span class="keyword">elseif</span> length(index1) == 1 &amp;&amp; length(index2) &gt; 1
+0071         othernode = map.connection(index1,2);
+0072         [t3,p3] = <a href="#_sub1" class="code" title="subfunction [type, position] = getType(node, map) ">getType</a>(othernode, map);
+0073         <span class="comment">%%%p3 = p3';</span>
+0074         direction = p2-p3;
+0075         <span class="comment">%direction = p3-p2;</span>
+0076         <span class="keyword">if</span> any(direction~=0)
+0077             dirnorm = direction/(norm(direction));
+0078         <span class="keyword">else</span>
+0079             dirnorm = zeros(size(direction));
+0080         <span class="keyword">end</span>
+0081         multiplier = dirnorm' * (p1-p2);
+0082         multiplier = max([.3*norm(p2-p1), multiplier]);
+0083         ptemp = p2 + multiplier*dirnorm;
+0084         distance = norm(ptemp-p1);
+0085         <span class="keyword">if</span> distance &lt; multiplier
+0086             multiplier = mean([multiplier, distance]);
+0087         <span class="keyword">end</span>
+0088         ptemp = p2 + multiplier*dirnorm;
+0089         <span class="comment">%drawCircle(ptemp,5,'m');</span>
+0090         <span class="comment">%drawCircle(p3,5,'g');</span>
+0091         [p1,dir] = <a href="#_sub2" class="code" title="subfunction [point,dir] = c2p(p1,p2,rad)">c2p</a>(p1,ptemp,rad);
+0092         <a href="drawBezier.html" class="code" title="function drawBezier(p,color,weight)">drawBezier</a>([p2,ptemp,p1],edgeColor,edgeWeight);
+0093         <span class="keyword">if</span> isend
+0094             <span class="keyword">if</span> rxnDir &lt; 0, rad = rad*rxnDirMultiplier; <span class="keyword">end</span>
+0095             <a href="drawArrowhead.html" class="code" title="function drawArrowhead(point,dir,rad,color)">drawArrowhead</a>(p1,dir,rad,edgeArrowColor)
+0096         <span class="keyword">end</span>
+0097     <span class="keyword">else</span>
+0098         display(<span class="string">'oops'</span>);
+0099     <span class="keyword">end</span>
+0100     
+0101 <span class="keyword">elseif</span> type1 == 2 &amp;&amp; type2 == 1
+0102     <span class="comment">%drawCircle(p1, 3, 'y');</span>
+0103     index1 = find(map.connection(:,1) == node1);
+0104     index2 = find(map.connection(:,2) == node1);
+0105     <span class="comment">%         if length(index1) == 1 &amp;&amp; length(index2) == 1 % case metabolite to center reaction.</span>
+0106     <span class="comment">%             [point2,dir] = c2p(nodePos(:,2),nodePos(:,1),rad);</span>
+0107     <span class="comment">%             drawVector(nodePos(:,1), point2,edgeColor,edgeWeight);</span>
+0108     <span class="comment">%             drawArrowhead(point2,dir,rad,edgeArrowColor);</span>
+0109     <span class="comment">%         elseif length(index1) &gt; 1 &amp;&amp; length(index2) == 1</span>
+0110     othernode = map.connection(index2,1);
+0111     [t3,p3] = <a href="#_sub1" class="code" title="subfunction [type, position] = getType(node, map) ">getType</a>(othernode, map);
+0112     <span class="comment">%%%p3 = p3';</span>
+0113     direction = p1-p3;
+0114     <span class="keyword">if</span> any(direction~=0)
+0115         dirnorm = direction/(norm(direction));
+0116     <span class="keyword">else</span>
+0117         dirnorm = zeros(size(direction));
+0118     <span class="keyword">end</span>
+0119     multiplier = dirnorm' * (p2-p1);
+0120     multiplier = max([ .3*norm(p2-p1), multiplier]);
+0121     ptemp = p1 + multiplier*dirnorm;
+0122     distance = norm(ptemp-p2);
+0123     <span class="keyword">if</span> distance &lt; multiplier
+0124         multiplier = mean([multiplier, distance]);
+0125     <span class="keyword">end</span>
+0126     ptemp = p1 + multiplier*dirnorm;
+0127     <span class="comment">%drawCircle(ptemp,5,'m');</span>
+0128     <span class="comment">%drawCircle(p3,5,'g');</span>
+0129     [p2,dir] = <a href="#_sub2" class="code" title="subfunction [point,dir] = c2p(p1,p2,rad)">c2p</a>(p2,ptemp,rad);
+0130     <a href="drawBezier.html" class="code" title="function drawBezier(p,color,weight)">drawBezier</a>([p1,ptemp,p2],edgeColor,edgeWeight);
+0131     <span class="keyword">if</span> rxnDir &gt; 0, rad = rad*rxnDirMultiplier; <span class="keyword">end</span>
+0132     <a href="drawArrowhead.html" class="code" title="function drawArrowhead(point,dir,rad,color)">drawArrowhead</a>(p2,dir,rad,edgeArrowColor);
+0133     <span class="comment">%         elseif length(index1) == 1 &amp;&amp; length(index2) &gt; 1</span>
+0134     <span class="comment">%             display('blah2');% for some reason this doesn't happen.</span>
+0135     <span class="comment">%         else</span>
+0136     <span class="comment">%             display('oops');</span>
+0137     <span class="comment">%         end</span>
+0138     
+0139 <span class="keyword">elseif</span> type1 ==2 &amp;&amp; type2 == 2
+0140     <a href="drawVector.html" class="code" title="function drawVector(begPt,endPt, color, weight)">drawVector</a>(nodePos(:,1),nodePos(:,2),edgeColor,edgeWeight);
+0141 <span class="keyword">else</span>
+0142     display(<span class="string">'oops'</span>);
+0143     pause;
+0144 <span class="keyword">end</span>
+0145 <span class="comment">%         % display the reaction label in case of a midpoint</span>
+0146 <span class="comment">%     if rxnTextWeight ~= 0</span>
+0147 <span class="comment">%         if type1 == 2</span>
+0148 <span class="comment">%             index1 = find(map.rxnIndex == node1);</span>
+0149 <span class="comment">%             if map.rxnLabelPosition(1,index1)~= 0</span>
+0150 <span class="comment">%                 index2 = find(map.connection(:,1) == node1);</span>
+0151 <span class="comment">%                 drawText(map.rxnLabelPosition(1,index1),map.rxnLabelPosition(2,index1),map.connectionAbb(index2),rxnTextWeight,'italic;');</span>
+0152 <span class="comment">%             end</span>
+0153 <span class="comment">%         end</span>
+0154 <span class="comment">%         if type2 == 2</span>
+0155 <span class="comment">%             index1 = find(map.rxnIndex == node1);</span>
+0156 <span class="comment">%             if map.rxnLabelPosition(1,index1)~= 0</span>
+0157 <span class="comment">%                 index2 = find(map.connection(:,2) == node2);</span>
+0158 <span class="comment">%                 drawText(map.rxnLabelPosition(1,index1),map.rxnLabelPosition(2,index1),map.connectionAbb(index2),rxnTextWeight,'italic');</span>
+0159 <span class="comment">%             end</span>
+0160 <span class="comment">%         end</span>
+0161 <span class="comment">%     end</span>
+0162 
+0163 <span class="keyword">end</span>
+0164 
+0165 
+0166 <a name="_sub1" href="#_subfunctions" class="code">function [type, position] = getType(node, map) </a><span class="comment">% you could also have it output a third value which could be the index of the preceding node.</span>
+0167 molIndex = find(map.molIndex == node);
+0168 rxnIndex = find(map.rxnIndex == node);
+0169 <span class="keyword">if</span> ~isempty(molIndex)
+0170     type = 1; <span class="comment">%molecule</span>
+0171     position = map.molPosition(:,molIndex);
+0172 <span class="keyword">elseif</span> ~isempty(rxnIndex)
+0173     type = 2; <span class="comment">% reaction.</span>
+0174     position = map.rxnPosition(:,rxnIndex);
+0175     <span class="comment">%Add more code here to figure out subtype of reaction node.</span>
+0176 <span class="keyword">else</span> <span class="comment">% should never get here, but go ahead and scan for errors.</span>
+0177     display(<span class="string">'errorXYZ in drawLine.m'</span>);
+0178     <span class="comment">%         pause;</span>
+0179 <span class="keyword">end</span>
+0180 <span class="keyword">if</span> numel(molIndex) &gt; 1 || numel(rxnIndex) &gt; 1 <span class="comment">% this means that it is not unique.</span>
+0181     display(<span class="string">'error2'</span>);
+0182     <span class="comment">%         pause;</span>
+0183 <span class="keyword">end</span>
+0184 <span class="keyword">end</span>
+0185 <span class="comment">% move p1 from the center of the circle to the pyrimid of the circle in the</span>
+0186 <span class="comment">% direction of p2</span>
+0187 <a name="_sub2" href="#_subfunctions" class="code">function [point,dir] = c2p(p1,p2,rad)</a>
+0188 dir = p2-p1;
+0189 point = p1+rad*(dir/sqrt(dir(1)^2+dir(2)^2));
+0190 
+0191 <span class="keyword">end</span>
+0192</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

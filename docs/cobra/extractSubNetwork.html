@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of extractSubNetwork</title>
+  <meta name="keywords" content="extractSubNetwork">
+  <meta name="description" content="extractSubNetwork Extract subnetwork model">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html cobra -->
+<h1>extractSubNetwork
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>extractSubNetwork Extract subnetwork model</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function subModel = extractSubNetwork(model,rxnNames,metNames) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">extractSubNetwork Extract subnetwork model
+
+ subModel = extractSubNetwork(model,rxnNames,metNames)
+
+INPUTS
+ model     COBRA model structure
+ rxnNames  Reaction list for the subnetwork to be extracted
+
+OPTIONAL INPUTS
+ metNames  Metabolite list for the subnetwork to be extracted
+
+OUTPUT
+ subModel  COBRA model of subnetwork
+
+ Markus Herrgard 12/11/06</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="extractCompModel.html" class="code" title="function compModel = extractCompModel(model,compSymbol,intOnlyFlag)">extractCompModel</a>	extractCompModel Create model for a cellular compartment</li><li><a href="extractMetModel.html" class="code" title="function metabModel = extractMetModel(model,metabNames,nLayers,allCompFlag,nRxnsMetThr)">extractMetModel</a>	extractMetModel Create a subnetwork model around one or more metabolites</li><li><a href="extractSubSysModel.html" class="code" title="function subSysModel = extractSubSysModel(model,subSysNames)">extractSubSysModel</a>	extractSubSysModel Create model for one of more model subsystems</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function subModel = extractSubNetwork(model,rxnNames,metNames)</a>
+0002 <span class="comment">%extractSubNetwork Extract subnetwork model</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% subModel = extractSubNetwork(model,rxnNames,metNames)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%INPUTS</span>
+0007 <span class="comment">% model     COBRA model structure</span>
+0008 <span class="comment">% rxnNames  Reaction list for the subnetwork to be extracted</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">%OPTIONAL INPUTS</span>
+0011 <span class="comment">% metNames  Metabolite list for the subnetwork to be extracted</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%OUTPUT</span>
+0014 <span class="comment">% subModel  COBRA model of subnetwork</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% Markus Herrgard 12/11/06</span>
+0017 
+0018 selRxns = ismember(model.rxns,rxnNames);
+0019 subS = model.S(:,selRxns);
+0020 <span class="keyword">if</span> (nargin &lt; 3)
+0021     selMets = ~all(subS == 0,2);
+0022 <span class="keyword">else</span>
+0023     selMets = ismember(model.mets,metNames);
+0024 <span class="keyword">end</span>
+0025 
+0026 subS = subS(selMets,:);
+0027 
+0028 subModel.S = subS;
+0029 subModel.rxns = model.rxns(selRxns);
+0030 subModel.mets = model.mets(selMets);
+0031 <span class="keyword">if</span> (isfield(model,<span class="string">'b'</span>))
+0032     subModel.b = model.b(selMets);
+0033 <span class="keyword">end</span>
+0034 <span class="keyword">if</span> (isfield(model,<span class="string">'metNames'</span>))
+0035     subModel.metNames = model.metNames(selMets);
+0036 <span class="keyword">end</span>
+0037 <span class="keyword">if</span> (isfield(model,<span class="string">'metFormulas'</span>))
+0038     subModel.metFormulas = model.metFormulas(selMets);
+0039 <span class="keyword">end</span>
+0040 <span class="keyword">if</span> (isfield(model,<span class="string">'description'</span>))
+0041     subModel.description = model.description;
+0042 <span class="keyword">end</span>
+0043 <span class="keyword">if</span> (isfield(model,<span class="string">'rev'</span>))
+0044     subModel.rev = model.rev(selRxns);
+0045 <span class="keyword">end</span>
+0046 <span class="keyword">if</span> (isfield(model,<span class="string">'lb'</span>))
+0047     subModel.lb = model.lb(selRxns);
+0048 <span class="keyword">end</span> 
+0049 <span class="keyword">if</span> (isfield(model,<span class="string">'ub'</span>))
+0050     subModel.ub = model.ub(selRxns);
+0051 <span class="keyword">end</span>
+0052 <span class="keyword">if</span> (isfield(model,<span class="string">'c'</span>))
+0053     subModel.c = model.c(selRxns);
+0054 <span class="keyword">end</span>
+0055 <span class="keyword">if</span> (isfield(model,<span class="string">'genes'</span>))
+0056    newRxnGeneMat = model.rxnGeneMat(selRxns,:); 
+0057    selGenes = sum(newRxnGeneMat)' &gt; 0;
+0058    subModel.rxnGeneMat = newRxnGeneMat(:,selGenes);
+0059    subModel.genes = model.genes(selGenes);
+0060    subModel.grRules = model.grRules(selRxns);
+0061 <span class="keyword">end</span>
+0062 <span class="keyword">if</span> (isfield(model,<span class="string">'geneNames'</span>))
+0063     subModel.geneNameRules = model.geneNameRules(selRxns);
+0064     subModel.geneNames = model.geneNames(selGenes);
+0065 <span class="keyword">end</span>
+0066 <span class="keyword">if</span> (isfield(model,<span class="string">'subSystems'</span>))
+0067     subModel.subSystems = model.subSystems(selRxns);
+0068 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

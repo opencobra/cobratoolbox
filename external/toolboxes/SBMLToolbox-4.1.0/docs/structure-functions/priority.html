@@ -1,0 +1,241 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "../style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>MATLAB_SBML_STRUCTURE_FUNCTIONS\PRIORITY</h3>
+
+<p>The functions allow users to create and work with the SBML Priority structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>Priority = Priority_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML Priority structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>math = Priority_getMath(SBMLPriority)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLPriority, an SBML Priority structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the math attribute</li>
+</ol>
+
+<hr>
+
+<h4>metaid = Priority_getMetaid(SBMLPriority)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLPriority, an SBML Priority structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = Priority_getSBOTerm(SBMLPriority)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLPriority, an SBML Priority structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>value = Priority_isSetMath(SBMLPriority)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLPriority, an SBML Priority structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the math attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Priority_isSetMetaid(SBMLPriority)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLPriority, an SBML Priority structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the metaid attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Priority_isSetSBOTerm(SBMLPriority)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLPriority, an SBML Priority structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLPriority = Priority_setMath(SBMLPriority, math)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLPriority, an SBML Priority structure</li>
+<li>math; string representing the math expression math to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Priority structure with the new value for the math attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLPriority = Priority_setMetaid(SBMLPriority, metaid)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLPriority, an SBML Priority structure</li>
+<li>metaid; a string representing the metaid to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Priority structure with the new value for the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLPriority = Priority_setSBOTerm(SBMLPriority, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLPriority, an SBML Priority structure</li>
+<li>sboTerm, an integer representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Priority structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLPriority = Priority_unsetMath(SBMLPriority)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLPriority, an SBML Priority structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Priority structure with the math attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLPriority = Priority_unsetMetaid(SBMLPriority)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLPriority, an SBML Priority structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Priority structure with the metaid attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLPriority = Priority_unsetSBOTerm(SBMLPriority)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLPriority, an SBML Priority structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Priority structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>

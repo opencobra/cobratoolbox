@@ -1,0 +1,346 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of writeCbModel</title>
+  <meta name="keywords" content="writeCbModel">
+  <meta name="description" content="writeCbModel Write out COBRA models in various formats">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html io -->
+<h1>writeCbModel
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>writeCbModel Write out COBRA models in various formats</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLevel,sbmlVersion) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">writeCbModel Write out COBRA models in various formats
+
+ writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLevel,sbmlVersion)
+
+INPUTS
+ model             Standard COBRA model structure
+ format            File format to be used ('text','xls' or 'sbml')
+
+OPTIONAL INPUTS
+ fileName          File name for output file (optional, default opens
+                   dialog box)
+ compSymbolList    List of compartment symbols
+ compNameList      List of compartment names corresponding to compSymbolList
+ sbmlLevel         SBML Level (default = 2)
+ sbmlVersion       SBML Version (default = 1)
+
+ Markus Herrgard 2/5/07
+ Ines Thiele 01/10 - Added more options for field to write in xls format
+ Richard Que (3/17/10) Added ability to specify compartment names and
+                       symbols</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="convertCobraToSBML.html" class="code" title="function sbmlModel = convertCobraToSBML(model,sbmlLevel,sbmlVersion,compSymbolList,compNameList,debug_function)">convertCobraToSBML</a>	convertCobraToSBML converts a cobra structure to an sbml</li><li><a href="../../cobra/printRxnFormula.html" class="code" title="function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)">printRxnFormula</a>	printRxnFormula Print the reaction formulas for a list of reactions</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function strOut = chopForExcel(str)</a></li><li><a href="#_sub2" class="code">function geneStr = constructGeneStr(geneNames)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLevel,sbmlVersion)</a>
+0002 <span class="comment">%writeCbModel Write out COBRA models in various formats</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLevel,sbmlVersion)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%INPUTS</span>
+0007 <span class="comment">% model             Standard COBRA model structure</span>
+0008 <span class="comment">% format            File format to be used ('text','xls' or 'sbml')</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">%OPTIONAL INPUTS</span>
+0011 <span class="comment">% fileName          File name for output file (optional, default opens</span>
+0012 <span class="comment">%                   dialog box)</span>
+0013 <span class="comment">% compSymbolList    List of compartment symbols</span>
+0014 <span class="comment">% compNameList      List of compartment names corresponding to compSymbolList</span>
+0015 <span class="comment">% sbmlLevel         SBML Level (default = 2)</span>
+0016 <span class="comment">% sbmlVersion       SBML Version (default = 1)</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% Markus Herrgard 2/5/07</span>
+0019 <span class="comment">% Ines Thiele 01/10 - Added more options for field to write in xls format</span>
+0020 <span class="comment">% Richard Que (3/17/10) Added ability to specify compartment names and</span>
+0021 <span class="comment">%                       symbols</span>
+0022 
+0023 <span class="keyword">if</span> nargin &lt; 4
+0024     compSymbolList = {};
+0025     compNameList = {};
+0026 <span class="keyword">end</span>
+0027 <span class="keyword">if</span> nargin &lt; 6
+0028     sbmlLevel = 2;
+0029     sbmlVersion = 1;
+0030 <span class="keyword">end</span>
+0031 
+0032 [nMets,nRxns] = size(model.S);
+0033 
+0034 formulas = <a href="../../cobra/printRxnFormula.html" class="code" title="function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)">printRxnFormula</a>(model,model.rxns,false,false,false,1,false);
+0035 
+0036 <span class="comment">%% Open a dialog to select file name</span>
+0037 <span class="keyword">if</span> (nargin &lt; 3 &amp; ~strcmp(format,<span class="string">'sbml'</span>))
+0038     <span class="keyword">switch</span> format
+0039         <span class="keyword">case</span> <span class="string">'xls'</span>
+0040             [fileNameFull,filePath] = uiputfile({<span class="string">'*.xls'</span>});
+0041         <span class="keyword">case</span> {<span class="string">'text'</span>,<span class="string">'txt'</span>}
+0042             [fileNameFull,filePath] = uiputfile({<span class="string">'*.txt'</span>});
+0043         <span class="keyword">case</span> <span class="string">'xml'</span>
+0044             [fileNameFull,filePath] = uiputfile({<span class="string">'*.xml'</span>});
+0045         <span class="keyword">otherwise</span>
+0046             [fileNameFull,filePath] = uiputfile({<span class="string">'*'</span>});
+0047     <span class="keyword">end</span>
+0048     <span class="keyword">if</span> (fileNameFull)
+0049         [t1,t2,t3,t4,tokens] = regexp(fileNameFull,<span class="string">'(\w*)\.(\w*)'</span>);
+0050         fileName = [filePath tokens{1}{1}];
+0051         <span class="keyword">switch</span> tokens{1}{2}
+0052             <span class="keyword">case</span> <span class="string">'xls'</span>
+0053                 format = <span class="string">'xls'</span>;
+0054             <span class="keyword">case</span> <span class="string">'txt'</span>
+0055                 format = <span class="string">'text'</span>;
+0056                 fileName = [fileName <span class="string">'.txt'</span>];
+0057             <span class="keyword">case</span> <span class="string">'xml'</span>
+0058                 format = <span class="string">'sbml'</span>;
+0059 <span class="comment">%                 fprintf('Note that you will be asked to supply the file name again (this is a feature, not a bug)');</span>
+0060             <span class="keyword">otherwise</span>
+0061                 format = <span class="string">'unknown'</span>;
+0062         <span class="keyword">end</span>
+0063     <span class="keyword">else</span>
+0064         <span class="keyword">return</span>;
+0065     <span class="keyword">end</span>
+0066 <span class="keyword">end</span>
+0067 <span class="keyword">switch</span> format
+0068     <span class="comment">%% Text file</span>
+0069     <span class="keyword">case</span> {<span class="string">'text'</span>,<span class="string">'txt'</span>}
+0070         fid = fopen(fileName,<span class="string">'w'</span>);
+0071         fprintf(fid,<span class="string">'Rxn name\t'</span>);
+0072         <span class="keyword">if</span> (isfield(model,<span class="string">'rxnNames'</span>))
+0073             fprintf(fid,<span class="string">'Rxn description\t'</span>);
+0074         <span class="keyword">end</span>
+0075         fprintf(fid,<span class="string">'Formula\t'</span>);
+0076         <span class="keyword">if</span> (isfield(model,<span class="string">'grRules'</span>))
+0077             fprintf(fid,<span class="string">'Gene-reaction association\t'</span>);
+0078         <span class="keyword">end</span>
+0079         fprintf(fid,<span class="string">'Reversible\tLB\tUB\tObjective\n'</span>);
+0080         <span class="keyword">for</span> i = 1:nRxns
+0081             fprintf(fid,<span class="string">'%s\t'</span>,model.rxns{i});
+0082             <span class="keyword">if</span> (isfield(model,<span class="string">'rxnNames'</span>))
+0083                 fprintf(fid,<span class="string">'%s\t'</span>,model.rxnNames{i});
+0084             <span class="keyword">end</span>
+0085             fprintf(fid,<span class="string">'%s\t'</span>,formulas{i});
+0086             <span class="keyword">if</span> (isfield(model,<span class="string">'grRules'</span>))
+0087                 fprintf(fid,<span class="string">'%s\t'</span>,model.grRules{i});
+0088             <span class="keyword">end</span>
+0089             fprintf(fid,<span class="string">'%d\t%6.2f\t%6.2f\t%6.2f\n'</span>,model.rev(i),model.lb(i),model.ub(i),model.c(i));
+0090         <span class="keyword">end</span>
+0091         fprintf(fid,<span class="string">'Metabolite name\tMetabolite description\tMetabolite formula\n'</span>);
+0092         <span class="keyword">for</span> i = 1:nMets
+0093             fprintf(fid,<span class="string">'%s'</span>,model.mets{i});
+0094             <span class="keyword">if</span> isfield(model,<span class="string">'metNames'</span>)
+0095                 fprintf(fid,<span class="string">'\t%s'</span>,model.metNames{i});
+0096             <span class="keyword">end</span>
+0097             <span class="keyword">if</span> isfield(model,<span class="string">'metFormulas'</span>)
+0098                 fprintf(fid,<span class="string">'\t%s'</span>,model.metFormulas{i});
+0099             <span class="keyword">end</span>
+0100             fprintf(fid,<span class="string">'\n'</span>);
+0101         <span class="keyword">end</span>
+0102         fclose(fid);
+0103         <span class="comment">%% Excel file</span>
+0104     <span class="keyword">case</span> <span class="string">'xls'</span>
+0105         tmpData{1,1} = <span class="string">'Rxn name'</span>;
+0106         tmpData{1,2} = <span class="string">'Rxn description'</span>;
+0107         baseInd = 3;
+0108         tmpData{1,baseInd} = <span class="string">'Formula'</span>;
+0109         tmpData{1,baseInd+1} = <span class="string">'Gene-reaction association'</span>;
+0110         tmpData{1,baseInd+2} = <span class="string">'Genes'</span>;
+0111         tmpData{1,baseInd+3} = <span class="string">'Proteins'</span>;
+0112         tmpData{1,baseInd+4} = <span class="string">'Subsystem'</span>;
+0113         tmpData{1,baseInd+5} = <span class="string">'Reversible'</span>;
+0114         tmpData{1,baseInd+6} = <span class="string">'LB'</span>;
+0115         tmpData{1,baseInd+7} = <span class="string">'UB'</span>;
+0116         tmpData{1,baseInd+8} = <span class="string">'Objective'</span>;
+0117         tmpData{1,baseInd+9} = <span class="string">'Confidence Score'</span>;
+0118         tmpData{1,baseInd+10} = <span class="string">'EC Number'</span>;
+0119         tmpData{1,baseInd+11} = <span class="string">'Notes'</span>;
+0120         tmpData{1,baseInd+12} = <span class="string">'References'</span>;
+0121         <span class="keyword">for</span> i = 1:nRxns
+0122             tmpData{i+1,1} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(model.rxns{i});
+0123             <span class="keyword">if</span> (isfield(model,<span class="string">'rxnNames'</span>))
+0124                 tmpData{i+1,2} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(model.rxnNames{i});
+0125             <span class="keyword">else</span>
+0126                 tmpData{i+1,2} =  <span class="string">''</span>;
+0127             <span class="keyword">end</span>
+0128             
+0129             tmpData{i+1,baseInd} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(formulas{i});
+0130             <span class="keyword">if</span> (isfield(model,<span class="string">'geneNameRules'</span>))
+0131                 tmpData{i+1,baseInd+1} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(model.geneNameRules{i});
+0132             <span class="keyword">elseif</span> (isfield(model,<span class="string">'grRules'</span>))
+0133                 tmpData{i+1,baseInd+1} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(model.grRules{i});
+0134             <span class="keyword">else</span>
+0135                 tmpData{i+1,baseInd+1} = <span class="string">''</span>;
+0136             <span class="keyword">end</span>
+0137             <span class="keyword">if</span> (isfield(model,<span class="string">'geneNames'</span>))
+0138                 geneNames = model.geneNames(model.rxnGeneMat(i,:) == 1);
+0139                 tmpData{i+1,baseInd+2} = <a href="#_sub2" class="code" title="subfunction geneStr = constructGeneStr(geneNames)">constructGeneStr</a>(geneNames);
+0140             <span class="keyword">elseif</span> (isfield(model,<span class="string">'genes'</span>))
+0141                 geneNames = model.genes(model.rxnGeneMat(i,:) == 1);
+0142                 tmpData{i+1,baseInd+2} = <a href="#_sub2" class="code" title="subfunction geneStr = constructGeneStr(geneNames)">constructGeneStr</a>(geneNames);
+0143             <span class="keyword">else</span>
+0144                 tmpData{i+1,baseInd+2} = <span class="string">''</span>;
+0145             <span class="keyword">end</span>
+0146             <span class="keyword">if</span> (isfield(model,<span class="string">'proteins'</span>))
+0147                 tmpData{i+1,baseInd+3} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(model.proteins{i});
+0148             <span class="keyword">else</span>
+0149                 tmpData{i+1,baseInd+3} = <span class="string">''</span>;
+0150             <span class="keyword">end</span>
+0151             <span class="keyword">if</span> (isfield(model,<span class="string">'subSystems'</span>))
+0152                 tmpData{i+1,baseInd+4} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(char(model.subSystems{i}));
+0153             <span class="keyword">else</span>
+0154                 tmpData{i+1,baseInd+4} = <span class="string">''</span>;
+0155             <span class="keyword">end</span>
+0156             tmpData{i+1,baseInd+5} = model.rev(i)*1.0;
+0157             tmpData{i+1,baseInd+6} = model.lb(i);
+0158             tmpData{i+1,baseInd+7} = model.ub(i);
+0159             tmpData{i+1,baseInd+8} = model.c(i);
+0160             <span class="keyword">if</span> (isfield(model,<span class="string">'confidenceScores'</span>))                
+0161                 tmpData{i+1,baseInd+9} =  <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(num2str(model.confidenceScores{i}));           
+0162             <span class="keyword">else</span>
+0163                 tmpData{i+1,baseInd+9} = <span class="string">''</span>;
+0164             <span class="keyword">end</span>
+0165             <span class="keyword">if</span> (isfield(model,<span class="string">'rxnECNumbers'</span>))
+0166                 tmpData{i+1,baseInd+10} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(model.rxnECNumbers{i});
+0167             <span class="keyword">else</span>
+0168                 tmpData{i+1,baseInd+10} = <span class="string">''</span>;
+0169             <span class="keyword">end</span>
+0170             <span class="keyword">if</span> (isfield(model,<span class="string">'rxnNotes'</span>))
+0171                 tmpData{i+1,baseInd+11} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(char(model.rxnNotes{i}));
+0172             <span class="keyword">else</span>
+0173                 tmpData{i+1,baseInd+11} = <span class="string">''</span>;
+0174             <span class="keyword">end</span>
+0175             <span class="keyword">if</span> (isfield(model,<span class="string">'rxnReferences'</span>))
+0176                 tmpData{i+1,baseInd+12} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(char(model.rxnReferences{i}));
+0177             <span class="keyword">else</span>
+0178                 tmpData{i+1,baseInd+12} = <span class="string">''</span>;
+0179             <span class="keyword">end</span>
+0180         <span class="keyword">end</span>
+0181         <span class="comment">%keyboard</span>
+0182         xlswrite(fileName,tmpData,<span class="string">'reactions'</span>);
+0183         <span class="keyword">if</span> isfield(model,<span class="string">'metNames'</span>)
+0184             tmpMetData{1,1} = <span class="string">'Metabolite name'</span>;
+0185             tmpMetData{1,2} = <span class="string">'Metabolite description'</span>;
+0186             tmpMetData{1,3} = <span class="string">'Metabolite neutral formula'</span>;
+0187             tmpMetData{1,4} = <span class="string">'Metabolite charged formula'</span>;
+0188             tmpMetData{1,5} = <span class="string">'Metabolite charge'</span>;
+0189             tmpMetData{1,6} = <span class="string">'Metabolite Compartment'</span>;
+0190             tmpMetData{1,7} = <span class="string">'Metabolite KEGGID'</span>;
+0191             tmpMetData{1,8} = <span class="string">'Metabolite PubChemID'</span>;
+0192             tmpMetData{1,9} = <span class="string">'Metabolite CheBI ID'</span>;
+0193             tmpMetData{1,10} = <span class="string">'Metabolite Inchi String'</span>;
+0194             tmpMetData{1,11} = <span class="string">'Metabolite Smile'</span>;
+0195             <span class="keyword">for</span> i = 1:nMets
+0196                 tmpMetData{i+1,1} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(model.mets{i});
+0197                 tmpMetData{i+1,2} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(model.metNames{i});
+0198                 <span class="keyword">if</span> isfield(model,<span class="string">'metFormulasNeutral'</span>)
+0199                     tmpMetData{i+1,3} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(model.metFormulasNeutral{i});
+0200                 <span class="keyword">else</span>
+0201                     tmpMetData{i+1,3} = <span class="string">''</span>;
+0202                 <span class="keyword">end</span>
+0203                 <span class="keyword">if</span> isfield(model,<span class="string">'metFormulas'</span>)
+0204                     tmpMetData{i+1,4} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(model.metFormulas{i});
+0205                 <span class="keyword">else</span>
+0206                     tmpMetData{i+1,4} = <span class="string">''</span>;
+0207                 <span class="keyword">end</span>
+0208                 <span class="keyword">if</span> isfield(model,<span class="string">'metCharge'</span>)
+0209                     tmpMetData{i+1,5} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(model.metCharge(i));
+0210                 <span class="keyword">else</span>
+0211                     tmpMetData{i+1,5} = <span class="string">''</span>;
+0212                 <span class="keyword">end</span>
+0213                 <span class="keyword">if</span> isfield(model,<span class="string">'metCompartment'</span>)
+0214                     tmpMetData{i+1,6} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(model.metCompartment{i});
+0215                 <span class="keyword">else</span>
+0216                     tmpMetData{i+1,6} = <span class="string">''</span>;
+0217                 <span class="keyword">end</span>
+0218                 <span class="keyword">if</span> isfield(model,<span class="string">'metKEGGID'</span>)
+0219                     tmpMetData{i+1,7} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(model.metKEGGID{i});
+0220                 <span class="keyword">else</span>
+0221                     tmpMetData{i+1,7} = <span class="string">''</span>;
+0222                 <span class="keyword">end</span>
+0223                 <span class="keyword">if</span> isfield(model,<span class="string">'metPubChemID'</span>)
+0224                     <span class="keyword">if</span> iscell(model.metPubChemID(i))                        
+0225                     tmpMetData{i+1,8} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(model.metPubChemID{i});
+0226                     <span class="keyword">else</span>
+0227                     tmpMetData{i+1,8} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(model.metPubChemID(i));
+0228                     <span class="keyword">end</span>
+0229                 <span class="keyword">else</span>
+0230                     tmpMetData{i+1,8} = <span class="string">''</span>;
+0231                 <span class="keyword">end</span>
+0232                 <span class="keyword">if</span> isfield(model,<span class="string">'metChEBIID'</span>)
+0233                  
+0234                     tmpMetData{i+1,9} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(model.metChEBIID(i));
+0235                 <span class="keyword">else</span>
+0236                     tmpMetData{i+1,9} = <span class="string">''</span>;
+0237                 <span class="keyword">end</span>
+0238                 <span class="keyword">if</span> isfield(model,<span class="string">'metInchiString'</span>)
+0239                     tmpMetData{i+1,10} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(model.metInchiString{i});
+0240                 <span class="keyword">else</span>
+0241                     tmpMetData{i+1,10} = <span class="string">''</span>;
+0242                 <span class="keyword">end</span>
+0243                 <span class="keyword">if</span> isfield(model,<span class="string">'metSmiles'</span>)
+0244                     tmpMetData{i+1,11} = <a href="#_sub1" class="code" title="subfunction strOut = chopForExcel(str)">chopForExcel</a>(model.metSmiles{i});
+0245                 <span class="keyword">else</span>
+0246                     tmpMetData{i+1,11} = <span class="string">''</span>;
+0247                 <span class="keyword">end</span>
+0248             <span class="keyword">end</span>
+0249             xlswrite(fileName,tmpMetData,<span class="string">'metabolites'</span>);
+0250         <span class="keyword">else</span>
+0251             xlswrite(fileName,model.mets,<span class="string">'metabolites'</span>);
+0252         <span class="keyword">end</span>
+0253         <span class="comment">%% SBML</span>
+0254     <span class="keyword">case</span> <span class="string">'sbml'</span>
+0255         sbmlModel = <a href="convertCobraToSBML.html" class="code" title="function sbmlModel = convertCobraToSBML(model,sbmlLevel,sbmlVersion,compSymbolList,compNameList,debug_function)">convertCobraToSBML</a>(model,sbmlLevel,sbmlVersion,compSymbolList,compNameList);
+0256         <span class="keyword">if</span> exist(<span class="string">'fileName'</span>,<span class="string">'var'</span>)&amp;&amp;~isempty(fileName)
+0257             OutputSBML(sbmlModel,fileName);
+0258         <span class="keyword">else</span>
+0259             OutputSBML(sbmlModel);
+0260         <span class="keyword">end</span>
+0261         <span class="comment">%% Unknown</span>
+0262     <span class="keyword">otherwise</span>
+0263         error(<span class="string">'Unknown file format'</span>);
+0264 <span class="keyword">end</span>
+0265 
+0266 <span class="comment">%% Chop strings for excel output</span>
+0267 <a name="_sub1" href="#_subfunctions" class="code">function strOut = chopForExcel(str)</a>
+0268 
+0269 <span class="keyword">if</span> (length(str) &gt; 5000)
+0270     strOut = str(1:5000);
+0271     fprintf(<span class="string">'String longer than 5000 characters - truncated for Excel output\n%s\n'</span>,str);
+0272 <span class="keyword">else</span>
+0273     strOut = str;
+0274 <span class="keyword">end</span>
+0275 
+0276 <span class="comment">%% Construct gene name string</span>
+0277 <a name="_sub2" href="#_subfunctions" class="code">function geneStr = constructGeneStr(geneNames)</a>
+0278 
+0279 geneStr = <span class="string">''</span>;
+0280 <span class="keyword">for</span> i = 1:length(geneNames)
+0281     geneStr = [geneStr <span class="string">' '</span> geneNames{i}];
+0282 <span class="keyword">end</span>
+0283 geneStr = strtrim(geneStr);</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

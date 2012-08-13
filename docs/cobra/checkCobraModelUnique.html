@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of checkCobraModelUnique</title>
+  <meta name="keywords" content="checkCobraModelUnique">
+  <meta name="description" content="checkCobraModelUnique Check uniqueness of reaction and metabolite names">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html cobra -->
+<h1>checkCobraModelUnique
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>checkCobraModelUnique Check uniqueness of reaction and metabolite names</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function model = checkCobraModelUnique(model,renameFlag) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">checkCobraModelUnique Check uniqueness of reaction and metabolite names
+
+ model = checkCobraModelUnique(model,renameFlag)
+
+INPUT
+ model         COBRA model structure
+
+OPTIONAL INPUT
+ renameFlag    Renames non-unique reaction names and metabolites
+               (Default = false)
+
+OUTPUT
+ model         COBRA model structure
+
+ Markus Herrgard 10/17/07</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>	findRxnIDs Find reaction numbers in a model</li><li><a href="../cobra/tools/countUnique.html" class="code" title="function [sortedList,sortedCount] = countUnique(list)">countUnique</a>	countUnique Count unique elements in a vector (cell array or numerical)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../cobra/io/readCbModel.html" class="code" title="function model = readCbModel(fileName,defaultBound,fileType,modelDescription,compSymbolList,compNameList)">readCbModel</a>	readCbModel Read in a constraint-based model</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function model = checkCobraModelUnique(model,renameFlag)</a>
+0002 <span class="comment">%checkCobraModelUnique Check uniqueness of reaction and metabolite names</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% model = checkCobraModelUnique(model,renameFlag)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%INPUT</span>
+0007 <span class="comment">% model         COBRA model structure</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%OPTIONAL INPUT</span>
+0010 <span class="comment">% renameFlag    Renames non-unique reaction names and metabolites</span>
+0011 <span class="comment">%               (Default = false)</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%OUTPUT</span>
+0014 <span class="comment">% model         COBRA model structure</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% Markus Herrgard 10/17/07</span>
+0017 
+0018 <span class="keyword">if</span> (nargin &lt; 2)
+0019     renameFlag = false;
+0020 <span class="keyword">end</span>
+0021 
+0022 [rxnName,rxnCnt] = <a href="../cobra/tools/countUnique.html" class="code" title="function [sortedList,sortedCount] = countUnique(list)">countUnique</a>(model.rxns);
+0023 rxnInd = find(rxnCnt &gt; 1);
+0024 <span class="keyword">if</span> ~isempty(rxnInd)
+0025     fprintf(<span class="string">'Model contains non-unique reaction names - consider renaming reactions using checkCobraModelUnique\n'</span>);
+0026     <span class="keyword">for</span> i = 1:length(rxnInd)
+0027         thisRxnName = rxnName{rxnInd(i)};
+0028         fprintf(<span class="string">'%s\t%d\n'</span>,thisRxnName,rxnCnt(rxnInd(i)));
+0029         <span class="keyword">if</span> (renameFlag)
+0030             fprintf(<span class="string">'Renaming non-unique reactions\n'</span>);
+0031             rxnIDs = <a href="findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(model,thisRxnName);
+0032             <span class="keyword">for</span> j = 1:length(rxnIDs)
+0033                 model.rxns{rxnIDs(j)} = [thisRxnName <span class="string">'_'</span> num2str(j)];
+0034                 fprintf(<span class="string">'%s\n'</span>,model.rxns{rxnIDs(j)});
+0035             <span class="keyword">end</span>
+0036         <span class="keyword">end</span>
+0037     <span class="keyword">end</span>
+0038 <span class="keyword">end</span>
+0039 
+0040 [metName,metCnt] = <a href="../cobra/tools/countUnique.html" class="code" title="function [sortedList,sortedCount] = countUnique(list)">countUnique</a>(model.mets);
+0041 metInd = find(metCnt &gt; 1);
+0042 <span class="keyword">if</span> ~isempty(metInd)
+0043     fprintf(<span class="string">'Model contains non-unique metabolite names - consider renaming metabolites using checkCobraModelUnique\n'</span>);
+0044     <span class="keyword">for</span> i = 1:length(metInd)
+0045         thisMetName = metName{metInd(i)};
+0046         fprintf(<span class="string">'%s\n'</span>,thisMetName);
+0047         <span class="keyword">if</span> (renameFlag)
+0048             fprintf(<span class="string">'Renaming non-unique metabolites\n'</span>);
+0049             rxnIDs = <a href="findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(model,thisMetName);
+0050             <span class="keyword">for</span> j = 1:length(rxnIDs)
+0051                 model.rxns{rxnIDs(j)} = [thisMetName <span class="string">'_'</span> num2str(j)];
+0052                 fprintf(<span class="string">'%s\n'</span>,model.mets{rxnIDs(j)});
+0053             <span class="keyword">end</span>
+0054         <span class="keyword">end</span>
+0055     <span class="keyword">end</span>
+0056 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of parseBoolean</title>
+  <meta name="keywords" content="parseBoolean">
+  <meta name="description" content="parseBoolean Parses a Boolean logic statement">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html tools -->
+<h1>parseBoolean
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>parseBoolean Parses a Boolean logic statement</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [elements,newRule] = parseBoolean(str,tokens,allowedElementChars) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">parseBoolean Parses a Boolean logic statement
+
+ [elements,newRule] = parseBoolean(str,tokens,allowedElementChars)
+
+ str                   Input string
+ tokens                Allowed operators in boolean statements (optional, default '()&amp;|~')
+ allowedElementChars   Allowed characters in elements of teh statement
+
+ elements              Non-operator elements
+ newRule               New rule translated to element numbers
+
+ Markus Herrgard 5/11/04</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/changeGeneAssociation.html" class="code" title="function model = changeGeneAssociation(model,rxnName,grRule,geneNameList,systNameList)">changeGeneAssociation</a>	changeGeneAssociation Change gene associations in a model</li><li><a href="../../cobra/design/alphabetizeModel.html" class="code" title="function abcModel = alphabetizeModel(model)">alphabetizeModel</a>	alphabetizeModel Sort the rxns, metabolites, and genes in a model into alphabetical</li><li><a href="../../cobra/io/convertSBMLToCobra.html" class="code" title="function model = convertSBMLToCobra(modelSBML,defaultBound,compSymbolList,compNameList)">convertSBMLToCobra</a>	convertSBMLToCobra Convert SBML format model (created using SBML Toolbox)</li><li><a href="../../cobra/io/readBooleanRegModel.html" class="code" title="function regModel = readBooleanRegModel(metModel,fileName)">readBooleanRegModel</a>	readBooleanRegModel Read Boolean regulatory network model</li><li><a href="../../cobra/io/readSimPhenyGPR.html" class="code" title="function [rxnInfo,rxns,allGenes] = readSimPhenyGPR(fileName)">readSimPhenyGPR</a>	readSimPhenyGPR Read SimPheny gene-protein-reaction association file obtained from admin console</li><li><a href="../../cobra/io/readSimPhenyGprText.html" class="code" title="function gpraModel = readSimPhenyGprText(file,model)">readSimPhenyGprText</a>	readSimPhenyGprText Parses SimPheny GPRA's in text format into a rxn x gene association</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [elements,newRule] = parseBoolean(str,tokens,allowedElementChars)</a>
+0002 <span class="comment">%parseBoolean Parses a Boolean logic statement</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% [elements,newRule] = parseBoolean(str,tokens,allowedElementChars)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% str                   Input string</span>
+0007 <span class="comment">% tokens                Allowed operators in boolean statements (optional, default '()&amp;|~')</span>
+0008 <span class="comment">% allowedElementChars   Allowed characters in elements of teh statement</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% elements              Non-operator elements</span>
+0011 <span class="comment">% newRule               New rule translated to element numbers</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% Markus Herrgard 5/11/04</span>
+0014 
+0015 <span class="keyword">if</span> (nargin &lt; 2)
+0016     <span class="comment">% Allowed separators for tokenizer</span>
+0017     tokens = <span class="string">'()&amp;|~'</span>;
+0018 <span class="keyword">end</span>
+0019 <span class="keyword">if</span> (nargin &lt; 3)
+0020     <span class="comment">% Allowed characters in elements</span>
+0021     allowedElementChars = <span class="string">'[A-Za-z0-9_\.\-]'</span>; 
+0022 <span class="keyword">end</span>
+0023 <span class="comment">% changes (and, not, or) for (&amp;, ~, |) within the string</span>
+0024 str1=str;
+0025 <span class="comment">%str1 = regexprep(str1, '+',' &amp; ');</span>
+0026 <span class="comment">%str1 = regexprep(str1, ',',' | ');</span>
+0027 str1 = regexprep(str1, <span class="string">'and '</span>, <span class="string">'&amp; '</span>,<span class="string">'ignorecase'</span>);
+0028 str1 = regexprep(str1, <span class="string">'or '</span>, <span class="string">'| '</span>,<span class="string">'ignorecase'</span>);
+0029 str1 = regexprep(str1, <span class="string">'not '</span>, <span class="string">'~ '</span>,<span class="string">'ignorecase'</span>);
+0030 str1 = regexprep(str1,<span class="string">'\['</span>,<span class="string">''</span>);
+0031 str1 = regexprep(str1,<span class="string">'\]'</span>,<span class="string">''</span>);
+0032 newRule = str1;
+0033 
+0034 elements = {};
+0035 endStr = str1;
+0036 cnt = 0;
+0037 tmpRule = [];
+0038 <span class="keyword">while</span> (~isempty(endStr))
+0039     <span class="comment">% Tokenize the input string (one token at a time)</span>
+0040     [tok,endStr] = strtok(endStr,tokens);
+0041     <span class="comment">% Empty token?</span>
+0042     <span class="keyword">if</span> (~isempty(tok))
+0043         <span class="comment">% Non-whitespace characters?</span>
+0044         <span class="keyword">if</span> (regexp(tok,<span class="string">'\S'</span>) &gt; 0)
+0045             <span class="comment">% Remove white space</span>
+0046             tok = tok(~isspace(tok));
+0047             <span class="comment">% Have we already got this token?</span>
+0048             <span class="keyword">if</span> (sum(strcmp(elements,tok)) == 0)
+0049                 <span class="comment">% If not add this</span>
+0050                 cnt = cnt + 1;
+0051                 elements{end+1} = tok;
+0052             <span class="keyword">end</span>
+0053             <span class="comment">% The replacement token</span>
+0054             newTok = [<span class="string">'x('</span> num2str(cnt) <span class="string">')'</span>];
+0055             <span class="comment">% Remove troublesome characters ([])</span>
+0056             tok = regexprep(tok,<span class="string">'\['</span>,<span class="string">''</span>);
+0057             tok = regexprep(tok,<span class="string">'\]'</span>,<span class="string">''</span>);
+0058             <span class="comment">% Find all the instances of the original token</span>
+0059             [s,f] = regexp(newRule,tok);
+0060             <span class="comment">% Get the length of the rule (for replacing below)</span>
+0061             ruleLength = length(newRule);
+0062             <span class="comment">% Loop through all the instances</span>
+0063             replaceThisVector = false(length(s),1);
+0064             <span class="comment">% Find out which instances to replace (do not want to replace</span>
+0065             <span class="comment">% instances that are parts of other tokens)</span>
+0066             <span class="keyword">for</span> i = 1:length(s)
+0067                 <span class="comment">% It's the only token so go ahead and replace</span>
+0068                 <span class="keyword">if</span> ((s(i) == 1) &amp; (f(i) == ruleLength))
+0069                    replaceThisFlag = true;
+0070                 <span class="keyword">elseif</span> (s(i) == 1) <span class="comment">% Token at the beginning of string</span>
+0071                     <span class="keyword">if</span> (isempty(regexp(newRule(f(i)+1),allowedElementChars)))
+0072                         <span class="comment">% It's not a part of another token - replace</span>
+0073                         replaceThisFlag = true;    
+0074                     <span class="keyword">else</span>
+0075                         <span class="comment">% Part of another token - do not replace</span>
+0076                         replaceThisFlag = false;
+0077                     <span class="keyword">end</span>
+0078                 <span class="keyword">elseif</span> (f(i) == ruleLength) <span class="comment">% Token at the end of string</span>
+0079                     <span class="keyword">if</span> (isempty(regexp(newRule(s(i)-1),allowedElementChars)))
+0080                         <span class="comment">% It's not a part of another token - replace</span>
+0081                         replaceThisFlag = true;    
+0082                     <span class="keyword">else</span>
+0083                         <span class="comment">% Part of another token - do not replace</span>
+0084                         replaceThisFlag = false;
+0085                     <span class="keyword">end</span>
+0086                 <span class="keyword">else</span> <span class="comment">% Token in the middle of the string</span>
+0087                     <span class="keyword">if</span> (isempty(regexp(newRule(f(i)+1),allowedElementChars)) &amp; isempty(regexp(newRule(s(i)-1),allowedElementChars)))
+0088                         <span class="comment">% It's not a part of another token - replace</span>
+0089                         replaceThisFlag = true;
+0090                     <span class="keyword">else</span>
+0091                         <span class="comment">% Part of another token - do not replace</span>
+0092                         replaceThisFlag = false;
+0093                     <span class="keyword">end</span>
+0094                 <span class="keyword">end</span>
+0095                 replaceThisVector(i) = replaceThisFlag;
+0096             <span class="keyword">end</span>
+0097             <span class="comment">% Only replace the correct tokens</span>
+0098             s = s(replaceThisVector);
+0099             f = f(replaceThisVector);
+0100             nRep = length(s);
+0101             <span class="keyword">for</span> i = 1:nRep
+0102                 <span class="comment">% Add the beginning of the string for the first token</span>
+0103                 <span class="keyword">if</span> (i == 1)
+0104                     <span class="keyword">if</span> (s(i) &gt; 1)
+0105                         tmpRule = newRule(1:(s(i)-1));
+0106                     <span class="keyword">else</span>
+0107                         tmpRule = [];
+0108                     <span class="keyword">end</span>
+0109                 <span class="keyword">end</span>
+0110                 <span class="comment">% Add the new token</span>
+0111                 tmpRule = [tmpRule newTok];
+0112                 <span class="comment">% Add the remainder of the string until the next token (if</span>
+0113                 <span class="comment">% there is one)</span>
+0114                 <span class="keyword">if</span> (i &lt; nRep)
+0115                     tmpRule = [tmpRule newRule((f(i)+1):(s(i+1)-1))];    
+0116                 <span class="keyword">end</span>
+0117                 <span class="comment">% Add the end of the string for the last token</span>
+0118                 <span class="keyword">if</span> (i == nRep)
+0119                     <span class="keyword">if</span> (f(i) &lt; ruleLength)
+0120                         tmpRule = [tmpRule newRule(f(i)+1:end)];       
+0121                     <span class="keyword">end</span>
+0122                 <span class="keyword">end</span>
+0123             <span class="keyword">end</span>
+0124             newRule = tmpRule;
+0125         <span class="keyword">end</span>
+0126     <span class="keyword">end</span>
+0127 <span class="keyword">end</span>
+0128</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

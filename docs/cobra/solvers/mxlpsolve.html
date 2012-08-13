@@ -1,0 +1,1072 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mxlpsolve</title>
+  <meta name="keywords" content="mxlpsolve">
+  <meta name="description" content="mxlpsolve  Mex file interface to the lp_solve 5.5 toolkit. Please see">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html solvers -->
+<h1>mxlpsolve
+&nbsp;&nbsp;<img src="../../{MEXTYPE}.png" alt="Windows" border="0" title="Windows"></h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>mxlpsolve  Mex file interface to the lp_solve 5.5 toolkit. Please see</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> mxlpsolve  Mex file interface to the lp_solve 5.5 toolkit. Please see
+ reference guide for more information.
+
+ mxlpsolve is a low-level interface to the lp_solve toolkit. It may be called
+ directly, or may be used to build higher level functions for solving
+ various kinds of linear and mixed-integer linear programs. It uses an
+ integer handle to point to a linear program.
+
+     return = mxlpsolve('add_column', lp, [column])
+
+     return = mxlpsolve('add_columnex', lp, [column])
+
+     return = mxlpsolve('add_constraint', lp, [row], constr_type, rh)
+
+     return = mxlpsolve('add_constraintex', lp, [row], constr_type, rh)
+
+     return = mxlpsolve('add_SOS', lp, name, sostype, priority, [sosvars], [weights])
+
+     return = mxlpsolve('column_in_lp', lp, [column])
+
+     mxlpsolve('default_basis', lp)
+
+     return = mxlpsolve('del_column', lp, column)
+
+     return = mxlpsolve('del_constraint', lp, del_row)
+
+     lp_handle = mxlpsolve('copy_lp', lp)
+
+     mxlpsolve('delete_lp', lp)
+
+     mxlpsolve('dualize_lp', lp)
+
+     mxlpsolve('free_lp', lp)
+
+     return = mxlpsolve('get_anti_degen', lp)
+
+     [bascolumn] = mxlpsolve('get_basis', lp {, nonbasic})
+
+     return = mxlpsolve('get_basiscrash', lp)
+
+     return = mxlpsolve('get_bb_depthlimit', lp)
+
+     return = mxlpsolve('get_bb_floorfirst', lp)
+
+     return = mxlpsolve('get_bb_rule', lp)
+
+     return = mxlpsolve('get_bounds_tighter', lp)
+
+     return = mxlpsolve('get_break_at_value', lp)
+
+     name = mxlpsolve('get_col_name', lp, column)
+
+     [names] = mxlpsolve('get_col_name', lp)
+
+     [column, return] = mxlpsolve('get_column', lp, col_nr)
+
+     [column, return] = mxlpsolve('get_columnex', lp, col_nr)
+
+     return = mxlpsolve('get_constr_type', lp, row)
+
+     return = mxlpsolve('get_constr_value', lp, row {, primsolution})
+
+     [constr_type] = mxlpsolve('get_constr_type', lp)
+
+     [constr, return] = mxlpsolve('get_constraints', lp)
+
+     [duals, return] = mxlpsolve('get_dual_solution', lp)
+
+     return = mxlpsolve('get_epsb', lp)
+
+     return = mxlpsolve('get_epsd', lp)
+
+     return = mxlpsolve('get_epsel', lp)
+
+     return = mxlpsolve('get_epsint', lp)
+
+     return = mxlpsolve('get_epsperturb', lp)
+
+     return = mxlpsolve('get_epspivot', lp)
+
+     lp_handle = mxlpsolve('get_handle', lp_name)
+
+     return = mxlpsolve('get_improve', lp)
+
+     return = mxlpsolve('get_infinite', lp)
+
+     return = mxlpsolve('get_lowbo', lp, column)
+
+     [return] = mxlpsolve('get_lowbo', lp)
+
+     return = mxlpsolve('get_lp_index', lp, orig_index)
+
+     name = mxlpsolve('get_lp_name', lp)
+
+     value = mxlpsolve('get_mat', lp, row, col)
+
+     [matrix, return] = mxlpsolve('get_mat', lp {, sparse})
+
+     return = mxlpsolve('get_max_level', lp)
+
+     return = mxlpsolve('get_maxpivot', lp)
+
+     return = mxlpsolve('get_mip_gap', lp, absolute)
+
+     return = mxlpsolve('get_nameindex', lp, name, isrow)
+
+     return = mxlpsolve('get_Ncolumns', lp)
+
+     return = mxlpsolve('get_negrange', lp)
+
+     return = mxlpsolve('get_nonzeros', lp)
+
+     return = mxlpsolve('get_Norig_columns', lp)
+
+     return = mxlpsolve('get_Norig_rows', lp)
+
+     return = mxlpsolve('get_Nrows', lp)
+
+     return = mxlpsolve('get_obj_bound', lp)
+
+     [row_vec, return] = mxlpsolve('get_obj_fn', lp)
+
+     [row_vec, return] = mxlpsolve('get_obj_fun', lp)
+
+     return = mxlpsolve('get_objective', lp)
+
+     name = mxlpsolve('get_objective_name', lp)
+
+     return = mxlpsolve('get_orig_index', lp, lp_index)
+
+     name = mxlpsolve('get_origcol_name', lp, column)
+
+     [names] = mxlpsolve('get_origcol_name', lp)
+
+     name = mxlpsolve('get_origrow_name', lp, row)
+
+     [names] = mxlpsolve('get_origrow_name', lp)
+
+     return = mxlpsolve('get_pivoting', lp)
+
+     return = mxlpsolve('get_presolve', lp)
+
+     return = mxlpsolve('get_presolveloops', lp)
+
+     [pv, return] = mxlpsolve('get_primal_solution', lp)
+
+     return = mxlpsolve('get_print_sol', lp)
+
+     return = mxlpsolve('get_rh', lp, row)
+
+     [rh] = mxlpsolve('get_rh', lp)
+
+     return = mxlpsolve('get_rh_range', lp, row)
+
+     [rh_ranges] = mxlpsolve('get_rh_range', lp)
+
+     [row, return] = mxlpsolve('get_row', lp, row_nr)
+
+     [row, return] = mxlpsolve('get_rowex', lp, row_nr)
+
+     name = mxlpsolve('get_row_name', lp, row)
+
+     [names] = mxlpsolve('get_row_name', lp)
+
+     return = mxlpsolve('get_scalelimit', lp)
+
+     return = mxlpsolve('get_scaling', lp)
+
+     [objfrom, objtill, objfromvalue, objtillvalue, return] = mxlpsolve('get_sensitivity_obj', lp)
+
+     [objfrom, objtill, objfromvalue, objtillvalue, return] = mxlpsolve('get_sensitivity_objex', lp)
+
+     [duals, dualsfrom, dualstill, return] = mxlpsolve('get_sensitivity_rhs', lp)
+
+     [duals, dualsfrom, dualstill, return] = mxlpsolve('get_sensitivity_rhsex', lp)
+
+     return = mxlpsolve('get_simplextype', lp)
+
+     [obj, x, duals, return] = mxlpsolve('get_solution', lp)
+
+     return = mxlpsolve('get_solutioncount', lp)
+
+     return = mxlpsolve('get_solutionlimit', lp)
+
+     return = mxlpsolve('get_status', lp)
+
+     return = mxlpsolve('get_statustext', lp, statuscode)
+
+     return = mxlpsolve('get_timeout', lp)
+
+     return = mxlpsolve('get_total_iter', lp)
+
+     return = mxlpsolve('get_total_nodes', lp)
+
+     return = mxlpsolve('get_upbo', lp, column)
+
+     [upbo] = mxlpsolve('get_upbo', lp)
+
+     return = mxlpsolve('get_var_branch', lp, column)
+
+     [var_branch] = mxlpsolve('get_var_branch', lp)
+
+     return = mxlpsolve('get_var_dualresult', lp, index)
+
+     return = mxlpsolve('get_var_primalresult', lp, index)
+
+     return = mxlpsolve('get_var_priority', lp, column)
+
+     [var_priority] = mxlpsolve('get_var_priority', lp)
+
+     [var, return] = mxlpsolve('get_variables', lp)
+
+     return = mxlpsolve('get_verbose', lp)
+
+     return = mxlpsolve('get_working_objective', lp)
+
+     return = mxlpsolve('has_BFP', lp)
+
+     return = mxlpsolve('has_XLI', lp)
+
+     return = mxlpsolve('is_add_rowmode', lp)
+
+     return = mxlpsolve('is_anti_degen', lp, testmask)
+
+     return = mxlpsolve('is_binary', lp, column)
+
+     [binary] = mxlpsolve('is_binary', lp)
+
+     return = mxlpsolve('is_break_at_first', lp)
+
+     return = mxlpsolve('is_constr_type', lp, row, mask)
+
+     return = mxlpsolve('is_debug', lp)
+
+     return = mxlpsolve('is_feasible', lp, [values] {, threshold})
+
+     return = mxlpsolve('is_free', lp, column)
+
+     return = mxlpsolve('is_unbounded', lp, column)
+
+     [free] = mxlpsolve('is_free', lp)
+
+     [free] = mxlpsolve('is_unbounded', lp)
+
+     return = mxlpsolve('is_infinite', lp, value)
+
+     return = mxlpsolve('is_int', lp, column)
+
+     [int] = mxlpsolve('is_int', lp)
+
+     return = mxlpsolve('is_integerscaling', lp)
+
+     return = mxlpsolve('is_maxim', lp)
+
+     return = mxlpsolve('is_nativeBFP', lp)
+
+     return = mxlpsolve('is_nativeXLI', lp)
+
+     return = mxlpsolve('is_negative', lp, column)
+
+     [negative] = mxlpsolve('is_negative', lp)
+
+     return = mxlpsolve('is_piv_mode', lp, testmask)
+
+     return = mxlpsolve('is_piv_rule', lp, rule)
+
+     return = mxlpsolve('is_presolve', lp, testmask)
+
+     return = mxlpsolve('is_scalemode', lp, testmask)
+
+     return = mxlpsolve('is_scaletype', lp, scaletype)
+
+     return = mxlpsolve('is_semicont', lp, column)
+
+     [semicont] = mxlpsolve('is_semicont', lp)
+
+     return = mxlpsolve('is_SOS_var', lp, column)
+
+     [SOS_var] = mxlpsolve('is_SOS_var', lp)
+
+     return = mxlpsolve('is_trace', lp)
+
+     return = mxlpsolve('is_use_names', lp, isrow)
+
+     versionstring = mxlpsolve('lp_solve_version')
+
+     lp_handle = mxlpsolve('make_lp', rows, columns)
+
+     mxlpsolve('print_constraints', lp {, columns})
+
+     return = mxlpsolve('print_debugdump', lp, filename)
+
+     mxlpsolve('print_duals', lp)
+
+     mxlpsolve('print_lp', lp)
+
+     mxlpsolve('print_objective', lp)
+
+     mxlpsolve('print_scales', lp)
+
+     mxlpsolve('print_solution', lp {, columns})
+
+     mxlpsolve('print_str', lp, str)
+
+     mxlpsolve('print_tableau', lp)
+
+     [handle_vec] = mxlpsolve('print_handle')
+
+     lp_handle = mxlpsolve('read_freeMPS', filename {, verbose})
+
+     lp_handle = mxlpsolve('read_lp_file', filename {, verbose {, lp_name}})
+
+     lp_handle = mxlpsolve('read_lp', filename {, verbose {, lp_name}})
+
+     lp_handle = mxlpsolve('read_LP', filename {, verbose {, lp_name}})
+
+     lp_handle = mxlpsolve('read_mps', filename {, verbose})
+
+     lp_handle = mxlpsolve('read_MPS', filename {, verbose})
+
+     return = mxlpsolve('read_params', lp, filename {, options})
+
+     return = mxlpsolve('reset_params', lp)
+
+     lp_handle = mxlpsolve('read_XLI', xliname, modelname {, dataname {, options {, verbose}}})
+
+     return = mxlpsolve('set_add_rowmode', lp, turnon)
+
+     mxlpsolve('set_anti_degen', lp, anti_degen)
+
+     return = mxlpsolve('set_basis', lp, [bascolumn], nonbasic)
+
+     mxlpsolve('set_basiscrash', lp, mode)
+
+     mxlpsolve('set_basisvar', lp, basisPos, enteringCol)
+
+     mxlpsolve('set_bb_depthlimit', lp, bb_maxlevel)
+
+     mxlpsolve('set_bb_floorfirst', lp, bb_floorfirst)
+
+     mxlpsolve('set_bb_rule', lp, bb_rule)
+
+     return = mxlpsolve('set_BFP', lp, filename)
+
+     return = mxlpsolve('set_binary', lp, column, must_be_bin)
+
+     return = mxlpsolve('set_binary', lp, [must_be_bin])
+
+     return = mxlpsolve('set_bounds', lp, column, lower, upper)
+
+     return = mxlpsolve('set_bounds', lp, [lower], [upper])
+
+     mxlpsolve('set_bounds_tighter', lp, tighten)
+
+     mxlpsolve('set_break_at_first', lp, break_at_first)
+
+     mxlpsolve('set_break_at_value', lp, break_at_value)
+
+     return = mxlpsolve('set_col_name', lp, column, name)
+
+     return = mxlpsolve('set_col_name', lp, [names])
+
+     return = mxlpsolve('set_column', lp, col_no, [column])
+
+     return = mxlpsolve('set_columnex', lp, col_no, [column])
+
+     return = mxlpsolve('set_constr_type', lp, row, con_type)
+
+     return = mxlpsolve('set_constr_type', lp, [con_type])
+
+     mxlpsolve('set_debug', lp, debug)
+
+     mxlpsolve('set_epsb', lp, epsb)
+
+     mxlpsolve('set_epsd', lp, epsd)
+
+     mxlpsolve('set_epsel', lp, epsel)
+
+     mxlpsolve('set_epsint', lp, epsint)
+
+     mxlpsolve('set_epslevel', lp, epslevel)
+
+     mxlpsolve('set_epsperturb', lp, epsperturb)
+
+     mxlpsolve('set_epspivot', lp, epspivot)
+
+     return = mxlpsolve('set_free', lp, column)
+
+     return = mxlpsolve('set_unbounded', lp, column)
+
+     mxlpsolve('set_improve', lp, improve)
+
+     mxlpsolve('set_infinite', lp, infinite)
+
+     return = mxlpsolve('set_int', lp, column, must_be_int)
+
+     return = mxlpsolve('set_int', lp, [must_be_int])
+
+     return = mxlpsolve('set_lowbo', lp, column, value)
+
+     return = mxlpsolve('set_lowbo', lp, [values])
+
+     return = mxlpsolve('set_lp_name', lp, name)
+
+     return = mxlpsolve('set_mat', lp, [matrix])
+
+     return = mxlpsolve('set_mat', lp, row, column, value)
+
+     mxlpsolve('set_maxim', lp)
+
+     mxlpsolve('set_maxpivot', max_num_inv)
+
+     mxlpsolve('set_minim', lp)
+
+     mxlpsolve('set_mip_gap', lp, absolute, mip_gap)
+
+     mxlpsolve('set_negrange', negrange)
+
+     return = mxlpsolve('set_obj', lp, column, value)
+
+     return = mxlpsolve('set_obj', lp, [values])
+
+     mxlpsolve('set_obj_bound', lp, obj_bound)
+
+     return = mxlpsolve('set_obj_fn', lp, [row])
+
+     return = mxlpsolve('set_obj_fnex', lp, [row])
+
+     return = mxlpsolve('set_outputfile', lp, filename)
+
+     mxlpsolve('set_pivoting', lp, pivoting)
+
+     mxlpsolve('set_preferdual', lp, dodual)
+
+     mxlpsolve('set_presolve', lp, do_presolve {, maxloops})
+
+     mxlpsolve('set_print_sol', lp, print_sol)
+
+     return = mxlpsolve('set_rh', lp, row, value)
+
+     return = mxlpsolve('set_rh', lp, [values])
+
+     return = mxlpsolve('set_rh_range', lp, row, deltavalue)
+
+     return = mxlpsolve('set_rh_range', lp, [deltavalues])
+
+     mxlpsolve('set_rh_vec', lp, [rh])
+
+     return = mxlpsolve('set_row', lp, row_no, [row])
+
+     return = mxlpsolve('set_rowex', lp, row_no, [row])
+
+     return = mxlpsolve('set_row_name', lp, row, name)
+
+     return = mxlpsolve('set_row_name', lp, [names])
+
+     mxlpsolve('set_scalelimit', lp, scalelimit)
+
+     mxlpsolve('set_scaling', lp, scalemode)
+
+     return = mxlpsolve('set_semicont', lp, column, must_be_sc)
+
+     return = mxlpsolve('set_semicont', lp, [must_be_sc])
+
+     mxlpsolve('set_sense', lp, maximize)
+
+     mxlpsolve('set_simplextype', lp, simplextype)
+
+     mxlpsolve('set_solutionlimit', lp, simplextype)
+
+     mxlpsolve('set_timeout', lp, sectimeout)
+
+     mxlpsolve('set_trace', lp, trace)
+
+     return = mxlpsolve('set_upbo', lp, column, value)
+
+     return = mxlpsolve('set_upbo', lp, [values])
+
+     mxlpsolve('set_use_names', lp, isrow, use_names)
+
+     return = mxlpsolve('set_var_branch', lp, column, branch_mode)
+
+     return = mxlpsolve('set_var_branch', lp, [branch_mode])
+
+     return = mxlpsolve('set_var_weights', lp, [weights])
+
+     mxlpsolve('set_verbose', lp, verbose)
+
+     return = mxlpsolve('set_XLI', lp, filename)
+
+     result = mxlpsolve('solve', lp)
+
+     return = mxlpsolve('time_elapsed', lp)
+
+     mxlpsolve('unscale', lp)
+
+     return = mxlpsolve('write_freemps', lp, filename)
+
+     return = mxlpsolve('write_freeMPS', lp, filename)
+
+     return = mxlpsolve('write_lp', lp, filename)
+
+     return = mxlpsolve('write_LP', lp, filename)
+
+     return = mxlpsolve('write_mps', lp, filename)
+
+     return = mxlpsolve('write_MPS', lp, filename)
+
+     return = mxlpsolve('write_params', lp, filename {, options})
+
+     return = mxlpsolve('write_XLI', lp, filename {, options {, results}})</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="lp_solve.html" class="code" title="function [obj, x, duals, stat] = lp_solve(f, a, b, e, vlb, vub, xint, scalemode, keep)">lp_solve</a>	LP_SOLVE  Solves mixed integer linear programming problems.</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% mxlpsolve  Mex file interface to the lp_solve 5.5 toolkit. Please see</span>
+0002 <span class="comment">% reference guide for more information.</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% mxlpsolve is a low-level interface to the lp_solve toolkit. It may be called</span>
+0005 <span class="comment">% directly, or may be used to build higher level functions for solving</span>
+0006 <span class="comment">% various kinds of linear and mixed-integer linear programs. It uses an</span>
+0007 <span class="comment">% integer handle to point to a linear program.</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%     return = mxlpsolve('add_column', lp, [column])</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">%     return = mxlpsolve('add_columnex', lp, [column])</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%     return = mxlpsolve('add_constraint', lp, [row], constr_type, rh)</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">%     return = mxlpsolve('add_constraintex', lp, [row], constr_type, rh)</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">%     return = mxlpsolve('add_SOS', lp, name, sostype, priority, [sosvars], [weights])</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">%     return = mxlpsolve('column_in_lp', lp, [column])</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">%     mxlpsolve('default_basis', lp)</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">%     return = mxlpsolve('del_column', lp, column)</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">%     return = mxlpsolve('del_constraint', lp, del_row)</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">%     lp_handle = mxlpsolve('copy_lp', lp)</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">%     mxlpsolve('delete_lp', lp)</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">%     mxlpsolve('dualize_lp', lp)</span>
+0032 <span class="comment">%</span>
+0033 <span class="comment">%     mxlpsolve('free_lp', lp)</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">%     return = mxlpsolve('get_anti_degen', lp)</span>
+0036 <span class="comment">%</span>
+0037 <span class="comment">%     [bascolumn] = mxlpsolve('get_basis', lp {, nonbasic})</span>
+0038 <span class="comment">%</span>
+0039 <span class="comment">%     return = mxlpsolve('get_basiscrash', lp)</span>
+0040 <span class="comment">%</span>
+0041 <span class="comment">%     return = mxlpsolve('get_bb_depthlimit', lp)</span>
+0042 <span class="comment">%</span>
+0043 <span class="comment">%     return = mxlpsolve('get_bb_floorfirst', lp)</span>
+0044 <span class="comment">%</span>
+0045 <span class="comment">%     return = mxlpsolve('get_bb_rule', lp)</span>
+0046 <span class="comment">%</span>
+0047 <span class="comment">%     return = mxlpsolve('get_bounds_tighter', lp)</span>
+0048 <span class="comment">%</span>
+0049 <span class="comment">%     return = mxlpsolve('get_break_at_value', lp)</span>
+0050 <span class="comment">%</span>
+0051 <span class="comment">%     name = mxlpsolve('get_col_name', lp, column)</span>
+0052 <span class="comment">%</span>
+0053 <span class="comment">%     [names] = mxlpsolve('get_col_name', lp)</span>
+0054 <span class="comment">%</span>
+0055 <span class="comment">%     [column, return] = mxlpsolve('get_column', lp, col_nr)</span>
+0056 <span class="comment">%</span>
+0057 <span class="comment">%     [column, return] = mxlpsolve('get_columnex', lp, col_nr)</span>
+0058 <span class="comment">%</span>
+0059 <span class="comment">%     return = mxlpsolve('get_constr_type', lp, row)</span>
+0060 <span class="comment">%</span>
+0061 <span class="comment">%     return = mxlpsolve('get_constr_value', lp, row {, primsolution})</span>
+0062 <span class="comment">%</span>
+0063 <span class="comment">%     [constr_type] = mxlpsolve('get_constr_type', lp)</span>
+0064 <span class="comment">%</span>
+0065 <span class="comment">%     [constr, return] = mxlpsolve('get_constraints', lp)</span>
+0066 <span class="comment">%</span>
+0067 <span class="comment">%     [duals, return] = mxlpsolve('get_dual_solution', lp)</span>
+0068 <span class="comment">%</span>
+0069 <span class="comment">%     return = mxlpsolve('get_epsb', lp)</span>
+0070 <span class="comment">%</span>
+0071 <span class="comment">%     return = mxlpsolve('get_epsd', lp)</span>
+0072 <span class="comment">%</span>
+0073 <span class="comment">%     return = mxlpsolve('get_epsel', lp)</span>
+0074 <span class="comment">%</span>
+0075 <span class="comment">%     return = mxlpsolve('get_epsint', lp)</span>
+0076 <span class="comment">%</span>
+0077 <span class="comment">%     return = mxlpsolve('get_epsperturb', lp)</span>
+0078 <span class="comment">%</span>
+0079 <span class="comment">%     return = mxlpsolve('get_epspivot', lp)</span>
+0080 <span class="comment">%</span>
+0081 <span class="comment">%     lp_handle = mxlpsolve('get_handle', lp_name)</span>
+0082 <span class="comment">%</span>
+0083 <span class="comment">%     return = mxlpsolve('get_improve', lp)</span>
+0084 <span class="comment">%</span>
+0085 <span class="comment">%     return = mxlpsolve('get_infinite', lp)</span>
+0086 <span class="comment">%</span>
+0087 <span class="comment">%     return = mxlpsolve('get_lowbo', lp, column)</span>
+0088 <span class="comment">%</span>
+0089 <span class="comment">%     [return] = mxlpsolve('get_lowbo', lp)</span>
+0090 <span class="comment">%</span>
+0091 <span class="comment">%     return = mxlpsolve('get_lp_index', lp, orig_index)</span>
+0092 <span class="comment">%</span>
+0093 <span class="comment">%     name = mxlpsolve('get_lp_name', lp)</span>
+0094 <span class="comment">%</span>
+0095 <span class="comment">%     value = mxlpsolve('get_mat', lp, row, col)</span>
+0096 <span class="comment">%</span>
+0097 <span class="comment">%     [matrix, return] = mxlpsolve('get_mat', lp {, sparse})</span>
+0098 <span class="comment">%</span>
+0099 <span class="comment">%     return = mxlpsolve('get_max_level', lp)</span>
+0100 <span class="comment">%</span>
+0101 <span class="comment">%     return = mxlpsolve('get_maxpivot', lp)</span>
+0102 <span class="comment">%</span>
+0103 <span class="comment">%     return = mxlpsolve('get_mip_gap', lp, absolute)</span>
+0104 <span class="comment">%</span>
+0105 <span class="comment">%     return = mxlpsolve('get_nameindex', lp, name, isrow)</span>
+0106 <span class="comment">%</span>
+0107 <span class="comment">%     return = mxlpsolve('get_Ncolumns', lp)</span>
+0108 <span class="comment">%</span>
+0109 <span class="comment">%     return = mxlpsolve('get_negrange', lp)</span>
+0110 <span class="comment">%</span>
+0111 <span class="comment">%     return = mxlpsolve('get_nonzeros', lp)</span>
+0112 <span class="comment">%</span>
+0113 <span class="comment">%     return = mxlpsolve('get_Norig_columns', lp)</span>
+0114 <span class="comment">%</span>
+0115 <span class="comment">%     return = mxlpsolve('get_Norig_rows', lp)</span>
+0116 <span class="comment">%</span>
+0117 <span class="comment">%     return = mxlpsolve('get_Nrows', lp)</span>
+0118 <span class="comment">%</span>
+0119 <span class="comment">%     return = mxlpsolve('get_obj_bound', lp)</span>
+0120 <span class="comment">%</span>
+0121 <span class="comment">%     [row_vec, return] = mxlpsolve('get_obj_fn', lp)</span>
+0122 <span class="comment">%</span>
+0123 <span class="comment">%     [row_vec, return] = mxlpsolve('get_obj_fun', lp)</span>
+0124 <span class="comment">%</span>
+0125 <span class="comment">%     return = mxlpsolve('get_objective', lp)</span>
+0126 <span class="comment">%</span>
+0127 <span class="comment">%     name = mxlpsolve('get_objective_name', lp)</span>
+0128 <span class="comment">%</span>
+0129 <span class="comment">%     return = mxlpsolve('get_orig_index', lp, lp_index)</span>
+0130 <span class="comment">%</span>
+0131 <span class="comment">%     name = mxlpsolve('get_origcol_name', lp, column)</span>
+0132 <span class="comment">%</span>
+0133 <span class="comment">%     [names] = mxlpsolve('get_origcol_name', lp)</span>
+0134 <span class="comment">%</span>
+0135 <span class="comment">%     name = mxlpsolve('get_origrow_name', lp, row)</span>
+0136 <span class="comment">%</span>
+0137 <span class="comment">%     [names] = mxlpsolve('get_origrow_name', lp)</span>
+0138 <span class="comment">%</span>
+0139 <span class="comment">%     return = mxlpsolve('get_pivoting', lp)</span>
+0140 <span class="comment">%</span>
+0141 <span class="comment">%     return = mxlpsolve('get_presolve', lp)</span>
+0142 <span class="comment">%</span>
+0143 <span class="comment">%     return = mxlpsolve('get_presolveloops', lp)</span>
+0144 <span class="comment">%</span>
+0145 <span class="comment">%     [pv, return] = mxlpsolve('get_primal_solution', lp)</span>
+0146 <span class="comment">%</span>
+0147 <span class="comment">%     return = mxlpsolve('get_print_sol', lp)</span>
+0148 <span class="comment">%</span>
+0149 <span class="comment">%     return = mxlpsolve('get_rh', lp, row)</span>
+0150 <span class="comment">%</span>
+0151 <span class="comment">%     [rh] = mxlpsolve('get_rh', lp)</span>
+0152 <span class="comment">%</span>
+0153 <span class="comment">%     return = mxlpsolve('get_rh_range', lp, row)</span>
+0154 <span class="comment">%</span>
+0155 <span class="comment">%     [rh_ranges] = mxlpsolve('get_rh_range', lp)</span>
+0156 <span class="comment">%</span>
+0157 <span class="comment">%     [row, return] = mxlpsolve('get_row', lp, row_nr)</span>
+0158 <span class="comment">%</span>
+0159 <span class="comment">%     [row, return] = mxlpsolve('get_rowex', lp, row_nr)</span>
+0160 <span class="comment">%</span>
+0161 <span class="comment">%     name = mxlpsolve('get_row_name', lp, row)</span>
+0162 <span class="comment">%</span>
+0163 <span class="comment">%     [names] = mxlpsolve('get_row_name', lp)</span>
+0164 <span class="comment">%</span>
+0165 <span class="comment">%     return = mxlpsolve('get_scalelimit', lp)</span>
+0166 <span class="comment">%</span>
+0167 <span class="comment">%     return = mxlpsolve('get_scaling', lp)</span>
+0168 <span class="comment">%</span>
+0169 <span class="comment">%     [objfrom, objtill, objfromvalue, objtillvalue, return] = mxlpsolve('get_sensitivity_obj', lp)</span>
+0170 <span class="comment">%</span>
+0171 <span class="comment">%     [objfrom, objtill, objfromvalue, objtillvalue, return] = mxlpsolve('get_sensitivity_objex', lp)</span>
+0172 <span class="comment">%</span>
+0173 <span class="comment">%     [duals, dualsfrom, dualstill, return] = mxlpsolve('get_sensitivity_rhs', lp)</span>
+0174 <span class="comment">%</span>
+0175 <span class="comment">%     [duals, dualsfrom, dualstill, return] = mxlpsolve('get_sensitivity_rhsex', lp)</span>
+0176 <span class="comment">%</span>
+0177 <span class="comment">%     return = mxlpsolve('get_simplextype', lp)</span>
+0178 <span class="comment">%</span>
+0179 <span class="comment">%     [obj, x, duals, return] = mxlpsolve('get_solution', lp)</span>
+0180 <span class="comment">%</span>
+0181 <span class="comment">%     return = mxlpsolve('get_solutioncount', lp)</span>
+0182 <span class="comment">%</span>
+0183 <span class="comment">%     return = mxlpsolve('get_solutionlimit', lp)</span>
+0184 <span class="comment">%</span>
+0185 <span class="comment">%     return = mxlpsolve('get_status', lp)</span>
+0186 <span class="comment">%</span>
+0187 <span class="comment">%     return = mxlpsolve('get_statustext', lp, statuscode)</span>
+0188 <span class="comment">%</span>
+0189 <span class="comment">%     return = mxlpsolve('get_timeout', lp)</span>
+0190 <span class="comment">%</span>
+0191 <span class="comment">%     return = mxlpsolve('get_total_iter', lp)</span>
+0192 <span class="comment">%</span>
+0193 <span class="comment">%     return = mxlpsolve('get_total_nodes', lp)</span>
+0194 <span class="comment">%</span>
+0195 <span class="comment">%     return = mxlpsolve('get_upbo', lp, column)</span>
+0196 <span class="comment">%</span>
+0197 <span class="comment">%     [upbo] = mxlpsolve('get_upbo', lp)</span>
+0198 <span class="comment">%</span>
+0199 <span class="comment">%     return = mxlpsolve('get_var_branch', lp, column)</span>
+0200 <span class="comment">%</span>
+0201 <span class="comment">%     [var_branch] = mxlpsolve('get_var_branch', lp)</span>
+0202 <span class="comment">%</span>
+0203 <span class="comment">%     return = mxlpsolve('get_var_dualresult', lp, index)</span>
+0204 <span class="comment">%</span>
+0205 <span class="comment">%     return = mxlpsolve('get_var_primalresult', lp, index)</span>
+0206 <span class="comment">%</span>
+0207 <span class="comment">%     return = mxlpsolve('get_var_priority', lp, column)</span>
+0208 <span class="comment">%</span>
+0209 <span class="comment">%     [var_priority] = mxlpsolve('get_var_priority', lp)</span>
+0210 <span class="comment">%</span>
+0211 <span class="comment">%     [var, return] = mxlpsolve('get_variables', lp)</span>
+0212 <span class="comment">%</span>
+0213 <span class="comment">%     return = mxlpsolve('get_verbose', lp)</span>
+0214 <span class="comment">%</span>
+0215 <span class="comment">%     return = mxlpsolve('get_working_objective', lp)</span>
+0216 <span class="comment">%</span>
+0217 <span class="comment">%     return = mxlpsolve('has_BFP', lp)</span>
+0218 <span class="comment">%</span>
+0219 <span class="comment">%     return = mxlpsolve('has_XLI', lp)</span>
+0220 <span class="comment">%</span>
+0221 <span class="comment">%     return = mxlpsolve('is_add_rowmode', lp)</span>
+0222 <span class="comment">%</span>
+0223 <span class="comment">%     return = mxlpsolve('is_anti_degen', lp, testmask)</span>
+0224 <span class="comment">%</span>
+0225 <span class="comment">%     return = mxlpsolve('is_binary', lp, column)</span>
+0226 <span class="comment">%</span>
+0227 <span class="comment">%     [binary] = mxlpsolve('is_binary', lp)</span>
+0228 <span class="comment">%</span>
+0229 <span class="comment">%     return = mxlpsolve('is_break_at_first', lp)</span>
+0230 <span class="comment">%</span>
+0231 <span class="comment">%     return = mxlpsolve('is_constr_type', lp, row, mask)</span>
+0232 <span class="comment">%</span>
+0233 <span class="comment">%     return = mxlpsolve('is_debug', lp)</span>
+0234 <span class="comment">%</span>
+0235 <span class="comment">%     return = mxlpsolve('is_feasible', lp, [values] {, threshold})</span>
+0236 <span class="comment">%</span>
+0237 <span class="comment">%     return = mxlpsolve('is_free', lp, column)</span>
+0238 <span class="comment">%</span>
+0239 <span class="comment">%     return = mxlpsolve('is_unbounded', lp, column)</span>
+0240 <span class="comment">%</span>
+0241 <span class="comment">%     [free] = mxlpsolve('is_free', lp)</span>
+0242 <span class="comment">%</span>
+0243 <span class="comment">%     [free] = mxlpsolve('is_unbounded', lp)</span>
+0244 <span class="comment">%</span>
+0245 <span class="comment">%     return = mxlpsolve('is_infinite', lp, value)</span>
+0246 <span class="comment">%</span>
+0247 <span class="comment">%     return = mxlpsolve('is_int', lp, column)</span>
+0248 <span class="comment">%</span>
+0249 <span class="comment">%     [int] = mxlpsolve('is_int', lp)</span>
+0250 <span class="comment">%</span>
+0251 <span class="comment">%     return = mxlpsolve('is_integerscaling', lp)</span>
+0252 <span class="comment">%</span>
+0253 <span class="comment">%     return = mxlpsolve('is_maxim', lp)</span>
+0254 <span class="comment">%</span>
+0255 <span class="comment">%     return = mxlpsolve('is_nativeBFP', lp)</span>
+0256 <span class="comment">%</span>
+0257 <span class="comment">%     return = mxlpsolve('is_nativeXLI', lp)</span>
+0258 <span class="comment">%</span>
+0259 <span class="comment">%     return = mxlpsolve('is_negative', lp, column)</span>
+0260 <span class="comment">%</span>
+0261 <span class="comment">%     [negative] = mxlpsolve('is_negative', lp)</span>
+0262 <span class="comment">%</span>
+0263 <span class="comment">%     return = mxlpsolve('is_piv_mode', lp, testmask)</span>
+0264 <span class="comment">%</span>
+0265 <span class="comment">%     return = mxlpsolve('is_piv_rule', lp, rule)</span>
+0266 <span class="comment">%</span>
+0267 <span class="comment">%     return = mxlpsolve('is_presolve', lp, testmask)</span>
+0268 <span class="comment">%</span>
+0269 <span class="comment">%     return = mxlpsolve('is_scalemode', lp, testmask)</span>
+0270 <span class="comment">%</span>
+0271 <span class="comment">%     return = mxlpsolve('is_scaletype', lp, scaletype)</span>
+0272 <span class="comment">%</span>
+0273 <span class="comment">%     return = mxlpsolve('is_semicont', lp, column)</span>
+0274 <span class="comment">%</span>
+0275 <span class="comment">%     [semicont] = mxlpsolve('is_semicont', lp)</span>
+0276 <span class="comment">%</span>
+0277 <span class="comment">%     return = mxlpsolve('is_SOS_var', lp, column)</span>
+0278 <span class="comment">%</span>
+0279 <span class="comment">%     [SOS_var] = mxlpsolve('is_SOS_var', lp)</span>
+0280 <span class="comment">%</span>
+0281 <span class="comment">%     return = mxlpsolve('is_trace', lp)</span>
+0282 <span class="comment">%</span>
+0283 <span class="comment">%     return = mxlpsolve('is_use_names', lp, isrow)</span>
+0284 <span class="comment">%</span>
+0285 <span class="comment">%     versionstring = mxlpsolve('lp_solve_version')</span>
+0286 <span class="comment">%</span>
+0287 <span class="comment">%     lp_handle = mxlpsolve('make_lp', rows, columns)</span>
+0288 <span class="comment">%</span>
+0289 <span class="comment">%     mxlpsolve('print_constraints', lp {, columns})</span>
+0290 <span class="comment">%</span>
+0291 <span class="comment">%     return = mxlpsolve('print_debugdump', lp, filename)</span>
+0292 <span class="comment">%</span>
+0293 <span class="comment">%     mxlpsolve('print_duals', lp)</span>
+0294 <span class="comment">%</span>
+0295 <span class="comment">%     mxlpsolve('print_lp', lp)</span>
+0296 <span class="comment">%</span>
+0297 <span class="comment">%     mxlpsolve('print_objective', lp)</span>
+0298 <span class="comment">%</span>
+0299 <span class="comment">%     mxlpsolve('print_scales', lp)</span>
+0300 <span class="comment">%</span>
+0301 <span class="comment">%     mxlpsolve('print_solution', lp {, columns})</span>
+0302 <span class="comment">%</span>
+0303 <span class="comment">%     mxlpsolve('print_str', lp, str)</span>
+0304 <span class="comment">%</span>
+0305 <span class="comment">%     mxlpsolve('print_tableau', lp)</span>
+0306 <span class="comment">%</span>
+0307 <span class="comment">%     [handle_vec] = mxlpsolve('print_handle')</span>
+0308 <span class="comment">%</span>
+0309 <span class="comment">%     lp_handle = mxlpsolve('read_freeMPS', filename {, verbose})</span>
+0310 <span class="comment">%</span>
+0311 <span class="comment">%     lp_handle = mxlpsolve('read_lp_file', filename {, verbose {, lp_name}})</span>
+0312 <span class="comment">%</span>
+0313 <span class="comment">%     lp_handle = mxlpsolve('read_lp', filename {, verbose {, lp_name}})</span>
+0314 <span class="comment">%</span>
+0315 <span class="comment">%     lp_handle = mxlpsolve('read_LP', filename {, verbose {, lp_name}})</span>
+0316 <span class="comment">%</span>
+0317 <span class="comment">%     lp_handle = mxlpsolve('read_mps', filename {, verbose})</span>
+0318 <span class="comment">%</span>
+0319 <span class="comment">%     lp_handle = mxlpsolve('read_MPS', filename {, verbose})</span>
+0320 <span class="comment">%</span>
+0321 <span class="comment">%     return = mxlpsolve('read_params', lp, filename {, options})</span>
+0322 <span class="comment">%</span>
+0323 <span class="comment">%     return = mxlpsolve('reset_params', lp)</span>
+0324 <span class="comment">%</span>
+0325 <span class="comment">%     lp_handle = mxlpsolve('read_XLI', xliname, modelname {, dataname {, options {, verbose}}})</span>
+0326 <span class="comment">%</span>
+0327 <span class="comment">%     return = mxlpsolve('set_add_rowmode', lp, turnon)</span>
+0328 <span class="comment">%</span>
+0329 <span class="comment">%     mxlpsolve('set_anti_degen', lp, anti_degen)</span>
+0330 <span class="comment">%</span>
+0331 <span class="comment">%     return = mxlpsolve('set_basis', lp, [bascolumn], nonbasic)</span>
+0332 <span class="comment">%</span>
+0333 <span class="comment">%     mxlpsolve('set_basiscrash', lp, mode)</span>
+0334 <span class="comment">%</span>
+0335 <span class="comment">%     mxlpsolve('set_basisvar', lp, basisPos, enteringCol)</span>
+0336 <span class="comment">%</span>
+0337 <span class="comment">%     mxlpsolve('set_bb_depthlimit', lp, bb_maxlevel)</span>
+0338 <span class="comment">%</span>
+0339 <span class="comment">%     mxlpsolve('set_bb_floorfirst', lp, bb_floorfirst)</span>
+0340 <span class="comment">%</span>
+0341 <span class="comment">%     mxlpsolve('set_bb_rule', lp, bb_rule)</span>
+0342 <span class="comment">%</span>
+0343 <span class="comment">%     return = mxlpsolve('set_BFP', lp, filename)</span>
+0344 <span class="comment">%</span>
+0345 <span class="comment">%     return = mxlpsolve('set_binary', lp, column, must_be_bin)</span>
+0346 <span class="comment">%</span>
+0347 <span class="comment">%     return = mxlpsolve('set_binary', lp, [must_be_bin])</span>
+0348 <span class="comment">%</span>
+0349 <span class="comment">%     return = mxlpsolve('set_bounds', lp, column, lower, upper)</span>
+0350 <span class="comment">%</span>
+0351 <span class="comment">%     return = mxlpsolve('set_bounds', lp, [lower], [upper])</span>
+0352 <span class="comment">%</span>
+0353 <span class="comment">%     mxlpsolve('set_bounds_tighter', lp, tighten)</span>
+0354 <span class="comment">%</span>
+0355 <span class="comment">%     mxlpsolve('set_break_at_first', lp, break_at_first)</span>
+0356 <span class="comment">%</span>
+0357 <span class="comment">%     mxlpsolve('set_break_at_value', lp, break_at_value)</span>
+0358 <span class="comment">%</span>
+0359 <span class="comment">%     return = mxlpsolve('set_col_name', lp, column, name)</span>
+0360 <span class="comment">%</span>
+0361 <span class="comment">%     return = mxlpsolve('set_col_name', lp, [names])</span>
+0362 <span class="comment">%</span>
+0363 <span class="comment">%     return = mxlpsolve('set_column', lp, col_no, [column])</span>
+0364 <span class="comment">%</span>
+0365 <span class="comment">%     return = mxlpsolve('set_columnex', lp, col_no, [column])</span>
+0366 <span class="comment">%</span>
+0367 <span class="comment">%     return = mxlpsolve('set_constr_type', lp, row, con_type)</span>
+0368 <span class="comment">%</span>
+0369 <span class="comment">%     return = mxlpsolve('set_constr_type', lp, [con_type])</span>
+0370 <span class="comment">%</span>
+0371 <span class="comment">%     mxlpsolve('set_debug', lp, debug)</span>
+0372 <span class="comment">%</span>
+0373 <span class="comment">%     mxlpsolve('set_epsb', lp, epsb)</span>
+0374 <span class="comment">%</span>
+0375 <span class="comment">%     mxlpsolve('set_epsd', lp, epsd)</span>
+0376 <span class="comment">%</span>
+0377 <span class="comment">%     mxlpsolve('set_epsel', lp, epsel)</span>
+0378 <span class="comment">%</span>
+0379 <span class="comment">%     mxlpsolve('set_epsint', lp, epsint)</span>
+0380 <span class="comment">%</span>
+0381 <span class="comment">%     mxlpsolve('set_epslevel', lp, epslevel)</span>
+0382 <span class="comment">%</span>
+0383 <span class="comment">%     mxlpsolve('set_epsperturb', lp, epsperturb)</span>
+0384 <span class="comment">%</span>
+0385 <span class="comment">%     mxlpsolve('set_epspivot', lp, epspivot)</span>
+0386 <span class="comment">%</span>
+0387 <span class="comment">%     return = mxlpsolve('set_free', lp, column)</span>
+0388 <span class="comment">%</span>
+0389 <span class="comment">%     return = mxlpsolve('set_unbounded', lp, column)</span>
+0390 <span class="comment">%</span>
+0391 <span class="comment">%     mxlpsolve('set_improve', lp, improve)</span>
+0392 <span class="comment">%</span>
+0393 <span class="comment">%     mxlpsolve('set_infinite', lp, infinite)</span>
+0394 <span class="comment">%</span>
+0395 <span class="comment">%     return = mxlpsolve('set_int', lp, column, must_be_int)</span>
+0396 <span class="comment">%</span>
+0397 <span class="comment">%     return = mxlpsolve('set_int', lp, [must_be_int])</span>
+0398 <span class="comment">%</span>
+0399 <span class="comment">%     return = mxlpsolve('set_lowbo', lp, column, value)</span>
+0400 <span class="comment">%</span>
+0401 <span class="comment">%     return = mxlpsolve('set_lowbo', lp, [values])</span>
+0402 <span class="comment">%</span>
+0403 <span class="comment">%     return = mxlpsolve('set_lp_name', lp, name)</span>
+0404 <span class="comment">%</span>
+0405 <span class="comment">%     return = mxlpsolve('set_mat', lp, [matrix])</span>
+0406 <span class="comment">%</span>
+0407 <span class="comment">%     return = mxlpsolve('set_mat', lp, row, column, value)</span>
+0408 <span class="comment">%</span>
+0409 <span class="comment">%     mxlpsolve('set_maxim', lp)</span>
+0410 <span class="comment">%</span>
+0411 <span class="comment">%     mxlpsolve('set_maxpivot', max_num_inv)</span>
+0412 <span class="comment">%</span>
+0413 <span class="comment">%     mxlpsolve('set_minim', lp)</span>
+0414 <span class="comment">%</span>
+0415 <span class="comment">%     mxlpsolve('set_mip_gap', lp, absolute, mip_gap)</span>
+0416 <span class="comment">%</span>
+0417 <span class="comment">%     mxlpsolve('set_negrange', negrange)</span>
+0418 <span class="comment">%</span>
+0419 <span class="comment">%     return = mxlpsolve('set_obj', lp, column, value)</span>
+0420 <span class="comment">%</span>
+0421 <span class="comment">%     return = mxlpsolve('set_obj', lp, [values])</span>
+0422 <span class="comment">%</span>
+0423 <span class="comment">%     mxlpsolve('set_obj_bound', lp, obj_bound)</span>
+0424 <span class="comment">%</span>
+0425 <span class="comment">%     return = mxlpsolve('set_obj_fn', lp, [row])</span>
+0426 <span class="comment">%</span>
+0427 <span class="comment">%     return = mxlpsolve('set_obj_fnex', lp, [row])</span>
+0428 <span class="comment">%</span>
+0429 <span class="comment">%     return = mxlpsolve('set_outputfile', lp, filename)</span>
+0430 <span class="comment">%</span>
+0431 <span class="comment">%     mxlpsolve('set_pivoting', lp, pivoting)</span>
+0432 <span class="comment">%</span>
+0433 <span class="comment">%     mxlpsolve('set_preferdual', lp, dodual)</span>
+0434 <span class="comment">%</span>
+0435 <span class="comment">%     mxlpsolve('set_presolve', lp, do_presolve {, maxloops})</span>
+0436 <span class="comment">%</span>
+0437 <span class="comment">%     mxlpsolve('set_print_sol', lp, print_sol)</span>
+0438 <span class="comment">%</span>
+0439 <span class="comment">%     return = mxlpsolve('set_rh', lp, row, value)</span>
+0440 <span class="comment">%</span>
+0441 <span class="comment">%     return = mxlpsolve('set_rh', lp, [values])</span>
+0442 <span class="comment">%</span>
+0443 <span class="comment">%     return = mxlpsolve('set_rh_range', lp, row, deltavalue)</span>
+0444 <span class="comment">%</span>
+0445 <span class="comment">%     return = mxlpsolve('set_rh_range', lp, [deltavalues])</span>
+0446 <span class="comment">%</span>
+0447 <span class="comment">%     mxlpsolve('set_rh_vec', lp, [rh])</span>
+0448 <span class="comment">%</span>
+0449 <span class="comment">%     return = mxlpsolve('set_row', lp, row_no, [row])</span>
+0450 <span class="comment">%</span>
+0451 <span class="comment">%     return = mxlpsolve('set_rowex', lp, row_no, [row])</span>
+0452 <span class="comment">%</span>
+0453 <span class="comment">%     return = mxlpsolve('set_row_name', lp, row, name)</span>
+0454 <span class="comment">%</span>
+0455 <span class="comment">%     return = mxlpsolve('set_row_name', lp, [names])</span>
+0456 <span class="comment">%</span>
+0457 <span class="comment">%     mxlpsolve('set_scalelimit', lp, scalelimit)</span>
+0458 <span class="comment">%</span>
+0459 <span class="comment">%     mxlpsolve('set_scaling', lp, scalemode)</span>
+0460 <span class="comment">%</span>
+0461 <span class="comment">%     return = mxlpsolve('set_semicont', lp, column, must_be_sc)</span>
+0462 <span class="comment">%</span>
+0463 <span class="comment">%     return = mxlpsolve('set_semicont', lp, [must_be_sc])</span>
+0464 <span class="comment">%</span>
+0465 <span class="comment">%     mxlpsolve('set_sense', lp, maximize)</span>
+0466 <span class="comment">%</span>
+0467 <span class="comment">%     mxlpsolve('set_simplextype', lp, simplextype)</span>
+0468 <span class="comment">%</span>
+0469 <span class="comment">%     mxlpsolve('set_solutionlimit', lp, simplextype)</span>
+0470 <span class="comment">%</span>
+0471 <span class="comment">%     mxlpsolve('set_timeout', lp, sectimeout)</span>
+0472 <span class="comment">%</span>
+0473 <span class="comment">%     mxlpsolve('set_trace', lp, trace)</span>
+0474 <span class="comment">%</span>
+0475 <span class="comment">%     return = mxlpsolve('set_upbo', lp, column, value)</span>
+0476 <span class="comment">%</span>
+0477 <span class="comment">%     return = mxlpsolve('set_upbo', lp, [values])</span>
+0478 <span class="comment">%</span>
+0479 <span class="comment">%     mxlpsolve('set_use_names', lp, isrow, use_names)</span>
+0480 <span class="comment">%</span>
+0481 <span class="comment">%     return = mxlpsolve('set_var_branch', lp, column, branch_mode)</span>
+0482 <span class="comment">%</span>
+0483 <span class="comment">%     return = mxlpsolve('set_var_branch', lp, [branch_mode])</span>
+0484 <span class="comment">%</span>
+0485 <span class="comment">%     return = mxlpsolve('set_var_weights', lp, [weights])</span>
+0486 <span class="comment">%</span>
+0487 <span class="comment">%     mxlpsolve('set_verbose', lp, verbose)</span>
+0488 <span class="comment">%</span>
+0489 <span class="comment">%     return = mxlpsolve('set_XLI', lp, filename)</span>
+0490 <span class="comment">%</span>
+0491 <span class="comment">%     result = mxlpsolve('solve', lp)</span>
+0492 <span class="comment">%</span>
+0493 <span class="comment">%     return = mxlpsolve('time_elapsed', lp)</span>
+0494 <span class="comment">%</span>
+0495 <span class="comment">%     mxlpsolve('unscale', lp)</span>
+0496 <span class="comment">%</span>
+0497 <span class="comment">%     return = mxlpsolve('write_freemps', lp, filename)</span>
+0498 <span class="comment">%</span>
+0499 <span class="comment">%     return = mxlpsolve('write_freeMPS', lp, filename)</span>
+0500 <span class="comment">%</span>
+0501 <span class="comment">%     return = mxlpsolve('write_lp', lp, filename)</span>
+0502 <span class="comment">%</span>
+0503 <span class="comment">%     return = mxlpsolve('write_LP', lp, filename)</span>
+0504 <span class="comment">%</span>
+0505 <span class="comment">%     return = mxlpsolve('write_mps', lp, filename)</span>
+0506 <span class="comment">%</span>
+0507 <span class="comment">%     return = mxlpsolve('write_MPS', lp, filename)</span>
+0508 <span class="comment">%</span>
+0509 <span class="comment">%     return = mxlpsolve('write_params', lp, filename {, options})</span>
+0510 <span class="comment">%</span>
+0511 <span class="comment">%     return = mxlpsolve('write_XLI', lp, filename {, options {, results}})</span>
+0512 <span class="comment">%</span>
+0513 
+0514 disp(<span class="string">'mxlpsolve driver not found !!!'</span>);
+0515 disp(<span class="string">'Check if mxlpsolve.dll is on your system and in a directory known to MATLAB.'</span>);
+0516 disp(<span class="string">'Press enter to see the paths where MATLAB looks for the driver.'</span>);
+0517 pause
+0518 path
+0519 disp(<span class="string">'A path can be added via the menu: File, Set Path'</span>);
+0520 error(<span class="string">'mxlpsolve.dll not found'</span>);</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

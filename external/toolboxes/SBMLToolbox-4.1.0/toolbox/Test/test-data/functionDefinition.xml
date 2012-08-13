@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+  <model id="functionDefinition">
+    <listOfFunctionDefinitions>
+      <functionDefinition id="fd">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar>
+              <ci> x </ci>
+            </bvar>
+            <bvar>
+              <ci> y </ci>
+            </bvar>
+            <apply>
+              <plus/>
+              <ci> x </ci>
+              <ci> y </ci>
+            </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+    </listOfFunctionDefinitions>
+    <listOfUnitDefinitions>
+      <unitDefinition id="ud1">
+        <listOfUnits>
+          <unit kind="mole"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment id="a" size="1" constant="false"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="a" initialAmount="0"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="p" value="2" units="litre" constant="false"/>
+      <parameter id="c" value="3" units="litre" constant="false"/>
+      <parameter id="c1" value="3" units="litre" constant="false"/>
+      <parameter id="x" value="3" units="litre" constant="false"/>
+      <parameter id="x1" value="3" units="dimensionless" constant="false"/>
+      <parameter id="t" value="3" units="second" constant="false"/>
+      <parameter id="k_s" value="3" units="mole" constant="false"/>
+    </listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="c1">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <apply>
+              <ci> fd </ci>
+              <ci> c </ci>
+              <ci> x </ci>
+            </apply>
+            <ci> x1 </ci>
+          </apply>
+        </math>
+      </assignmentRule>
+    </listOfRules>
+    <listOfReactions>
+      <reaction id="r">
+        <listOfReactants>
+          <speciesReference species="s"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> s </ci>
+                <apply>
+                  <ci> fd </ci>
+                  <ci> k </ci>
+                  <ci> x </ci>
+                </apply>
+              </apply>
+              <ci> t </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k" value="9" units="litre"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

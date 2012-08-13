@@ -1,0 +1,310 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "../style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>MATLAB_SBML_STRUCTURE_FUNCTIONS\COMPARTMENTTYPE</h3>
+
+<p>The functions allow users to create and work with the SBML CompartmentType structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>CompartmentType = CompartmentType_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML CompartmentType structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>id = CompartmentType_getId(SBMLCompartmentType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLCompartmentType, an SBML CompartmentType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the id attribute</li>
+</ol>
+
+<hr>
+
+<h4>metaid = CompartmentType_getMetaid(SBMLCompartmentType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLCompartmentType, an SBML CompartmentType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>name = CompartmentType_getName(SBMLCompartmentType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLCompartmentType, an SBML CompartmentType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the name attribute</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = CompartmentType_getSBOTerm(SBMLCompartmentType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLCompartmentType, an SBML CompartmentType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>value = CompartmentType_isSetId(SBMLCompartmentType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLCompartmentType, an SBML CompartmentType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the id attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = CompartmentType_isSetMetaid(SBMLCompartmentType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLCompartmentType, an SBML CompartmentType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the metaid attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = CompartmentType_isSetName(SBMLCompartmentType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLCompartmentType, an SBML CompartmentType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the name attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = CompartmentType_isSetSBOTerm(SBMLCompartmentType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLCompartmentType, an SBML CompartmentType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLCompartmentType = CompartmentType_setId(SBMLCompartmentType, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLCompartmentType, an SBML CompartmentType structure</li>
+<li>id; a string representing the id to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML CompartmentType structure with the new value for the id attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLCompartmentType = CompartmentType_setMetaid(SBMLCompartmentType, metaid)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLCompartmentType, an SBML CompartmentType structure</li>
+<li>metaid; a string representing the metaid to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML CompartmentType structure with the new value for the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLCompartmentType = CompartmentType_setName(SBMLCompartmentType, name)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLCompartmentType, an SBML CompartmentType structure</li>
+<li>name; a string representing the name to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML CompartmentType structure with the new value for the name attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLCompartmentType = CompartmentType_setSBOTerm(SBMLCompartmentType, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLCompartmentType, an SBML CompartmentType structure</li>
+<li>sboTerm, an integer representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML CompartmentType structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLCompartmentType = CompartmentType_unsetId(SBMLCompartmentType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLCompartmentType, an SBML CompartmentType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML CompartmentType structure with the id attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLCompartmentType = CompartmentType_unsetMetaid(SBMLCompartmentType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLCompartmentType, an SBML CompartmentType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML CompartmentType structure with the metaid attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLCompartmentType = CompartmentType_unsetName(SBMLCompartmentType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLCompartmentType, an SBML CompartmentType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML CompartmentType structure with the name attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLCompartmentType = CompartmentType_unsetSBOTerm(SBMLCompartmentType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLCompartmentType, an SBML CompartmentType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML CompartmentType structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>

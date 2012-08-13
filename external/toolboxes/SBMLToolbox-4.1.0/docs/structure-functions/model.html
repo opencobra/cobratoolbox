@@ -1,0 +1,2208 @@
+<h3>MATLAB_SBML_STRUCTURE_FUNCTIONS\MODEL</h3>
+
+<p>The functions allow users to create and work with the SBML Model structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>SBMLModel = Model_addCompartment(SBMLModel, SBMLCompartment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>SBMLCompartment, an SBML Compartment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML Compartment structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_addCompartmentType(SBMLModel, SBMLCompartmentType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>SBMLCompartmentType, an SBML CompartmentType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML CompartmentType structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_addConstraint(SBMLModel, SBMLConstraint)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>SBMLConstraint, an SBML Constraint structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML Constraint structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_addEvent(SBMLModel, SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML Event structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_addFunctionDefinition(SBMLModel, SBMLFunctionDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML FunctionDefinition structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_addInitialAssignment(SBMLModel, SBMLInitialAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>SBMLInitialAssignment, an SBML InitialAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML InitialAssignment structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_addParameter(SBMLModel, SBMLParameter)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>SBMLParameter, an SBML Parameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML Parameter structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_addReaction(SBMLModel, SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML Reaction structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_addRule(SBMLModel, SBMLRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>SBMLRule, an SBML Rule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML Rule structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_addSpecies(SBMLModel, SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML Species structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_addSpeciesType(SBMLModel, SBMLSpeciesType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>SBMLSpeciesType, an SBML SpeciesType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML SpeciesType structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_addUnitDefinition(SBMLModel, SBMLUnitDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML UnitDefinition structure added</li>
+</ol>
+
+<hr>
+
+<h4>Model = Model_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML Model structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>SBMLModel = Model_createCompartment(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML Compartment structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_createCompartmentType(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML CompartmentType structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_createConstraint(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML Constraint structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_createEvent(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML Event structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_createFunctionDefinition(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML FunctionDefinition structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_createInitialAssignment(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML InitialAssignment structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_createParameter(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML Parameter structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_createReaction(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML Reaction structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_createRule(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML Rule structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_createSpecies(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML Species structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_createSpeciesType(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML SpeciesType structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_createUnitDefinition(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the SBML UnitDefinition structure added</li>
+</ol>
+
+<hr>
+
+<h4>areaUnits = Model_getAreaUnits(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the areaUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>assignmentRule = Model_getAssignmentRuleByVariable(SBMLModel, variable)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>variable; a string representing the variable of SBML AssignmentRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML AssignmentRule structure that has this variable</li>
+</ol>
+
+<hr>
+
+<h4>compartment = Model_getCompartment(SBMLModel, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>index, an integer representing the index of SBML Compartment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Compartment structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>compartment = Model_getCompartmentById(SBMLModel, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>id; a string representing the id of SBML Compartment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Compartment structure that has this id</li>
+</ol>
+
+<hr>
+
+<h4>compartmentType = Model_getCompartmentType(SBMLModel, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>index, an integer representing the index of SBML CompartmentType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML CompartmentType structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>compartmentType = Model_getCompartmentTypeById(SBMLModel, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>id; a string representing the id of SBML CompartmentType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML CompartmentType structure that has this id</li>
+</ol>
+
+<hr>
+
+<h4>constraint = Model_getConstraint(SBMLModel, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>index, an integer representing the index of SBML Constraint structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Constraint structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>conversionFactor = Model_getConversionFactor(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the conversionFactor attribute</li>
+</ol>
+
+<hr>
+
+<h4>event = Model_getEvent(SBMLModel, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>index, an integer representing the index of SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>event = Model_getEventById(SBMLModel, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>id; a string representing the id of SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure that has this id</li>
+</ol>
+
+<hr>
+
+<h4>extentUnits = Model_getExtentUnits(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the extentUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>functionDefinition = Model_getFunctionDefinition(SBMLModel, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>index, an integer representing the index of SBML FunctionDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FunctionDefinition structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>functionDefinition = Model_getFunctionDefinitionById(SBMLModel, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>id; a string representing the id of SBML FunctionDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FunctionDefinition structure that has this id</li>
+</ol>
+
+<hr>
+
+<h4>functionIds = Model_getFunctionIds(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the functionIds attribute</li>
+</ol>
+
+<hr>
+
+<h4>id = Model_getId(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the id attribute</li>
+</ol>
+
+<hr>
+
+<h4>initialAssignment = Model_getInitialAssignment(SBMLModel, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>index, an integer representing the index of SBML InitialAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML InitialAssignment structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>initialAssignment = Model_getInitialAssignmentBySymbol(SBMLModel, symbol)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>symbol; a string representing the symbol of SBML InitialAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML InitialAssignment structure that has this symbol</li>
+</ol>
+
+<hr>
+
+<h4>lengthUnits = Model_getLengthUnits(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the lengthUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>algebraicRule = Model_getListOfAlgebraicRules(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the algebraicRule structures</li>
+</ol>
+
+<hr>
+
+<h4>assignmentRule = Model_getListOfAssignmentRules(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the assignmentRule structures</li>
+</ol>
+
+<hr>
+
+<h4>listOf = Model_getListOfByTypecode(SBMLModel, typecode)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>typecode; a string representing the typecode of SBML ListOf structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML ListOf structure that has this typecode</li>
+</ol>
+
+<hr>
+
+<h4>compartmentType = Model_getListOfCompartmentTypes(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the compartmentType structures</li>
+</ol>
+
+<hr>
+
+<h4>compartment = Model_getListOfCompartments(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the compartment structures</li>
+</ol>
+
+<hr>
+
+<h4>constraint = Model_getListOfConstraints(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the constraint structures</li>
+</ol>
+
+<hr>
+
+<h4>event = Model_getListOfEvents(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the event structures</li>
+</ol>
+
+<hr>
+
+<h4>functionDefinition = Model_getListOfFunctionDefinitions(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the functionDefinition structures</li>
+</ol>
+
+<hr>
+
+<h4>initialAssignment = Model_getListOfInitialAssignments(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the initialAssignment structures</li>
+</ol>
+
+<hr>
+
+<h4>parameter = Model_getListOfParameters(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the parameter structures</li>
+</ol>
+
+<hr>
+
+<h4>rateRule = Model_getListOfRateRules(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the rateRule structures</li>
+</ol>
+
+<hr>
+
+<h4>reaction = Model_getListOfReactions(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the reaction structures</li>
+</ol>
+
+<hr>
+
+<h4>rule = Model_getListOfRules(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the rule structures</li>
+</ol>
+
+<hr>
+
+<h4>species = Model_getListOfSpecies(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the species structures</li>
+</ol>
+
+<hr>
+
+<h4>speciesType = Model_getListOfSpeciesTypes(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the speciesType structures</li>
+</ol>
+
+<hr>
+
+<h4>species = Model_getListOfSpeciess(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the species structures</li>
+</ol>
+
+<hr>
+
+<h4>unitDefinition = Model_getListOfUnitDefinitions(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the unitDefinition structures</li>
+</ol>
+
+<hr>
+
+<h4>metaid = Model_getMetaid(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>name = Model_getName(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the name attribute</li>
+</ol>
+
+<hr>
+
+<h4>num = Model_getNumAlgebraicRules(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML AlgebraicRule structures present in the Model</li>
+</ol>
+
+<hr>
+
+<h4>num = Model_getNumAssignmentRules(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML AssignmentRule structures present in the Model</li>
+</ol>
+
+<hr>
+
+<h4>num = Model_getNumCompartmentTypes(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML CompartmentType structures present in the Model</li>
+</ol>
+
+<hr>
+
+<h4>num = Model_getNumCompartments(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML Compartment structures present in the Model</li>
+</ol>
+
+<hr>
+
+<h4>num = Model_getNumConstraints(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML Constraint structures present in the Model</li>
+</ol>
+
+<hr>
+
+<h4>num = Model_getNumEvents(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML Event structures present in the Model</li>
+</ol>
+
+<hr>
+
+<h4>num = Model_getNumFunctionDefinitions(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML FunctionDefinition structures present in the Model</li>
+</ol>
+
+<hr>
+
+<h4>num = Model_getNumInitialAssignments(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML InitialAssignment structures present in the Model</li>
+</ol>
+
+<hr>
+
+<h4>num = Model_getNumParameters(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML Parameter structures present in the Model</li>
+</ol>
+
+<hr>
+
+<h4>num = Model_getNumRateRules(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML RateRule structures present in the Model</li>
+</ol>
+
+<hr>
+
+<h4>num = Model_getNumReactions(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML Reaction structures present in the Model</li>
+</ol>
+
+<hr>
+
+<h4>num = Model_getNumRules(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML Rule structures present in the Model</li>
+</ol>
+
+<hr>
+
+<h4>num = Model_getNumSpecies(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML Species structures present in the Model</li>
+</ol>
+
+<hr>
+
+<h4>num = Model_getNumSpeciesTypes(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML SpeciesType structures present in the Model</li>
+</ol>
+
+<hr>
+
+<h4>num = Model_getNumSpeciess(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML Species structures present in the Model</li>
+</ol>
+
+<hr>
+
+<h4>num = Model_getNumUnitDefinitions(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML UnitDefinition structures present in the Model</li>
+</ol>
+
+<hr>
+
+<h4>parameter = Model_getParameter(SBMLModel, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>index, an integer representing the index of SBML Parameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Parameter structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>parameter = Model_getParameterById(SBMLModel, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>id; a string representing the id of SBML Parameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Parameter structure that has this id</li>
+</ol>
+
+<hr>
+
+<h4>rateRule = Model_getRateRuleByVariable(SBMLModel, variable)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>variable; a string representing the variable of SBML RateRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML RateRule structure that has this variable</li>
+</ol>
+
+<hr>
+
+<h4>reaction = Model_getReaction(SBMLModel, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>index, an integer representing the index of SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>reaction = Model_getReactionById(SBMLModel, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>id; a string representing the id of SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure that has this id</li>
+</ol>
+
+<hr>
+
+<h4>rule = Model_getRule(SBMLModel, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>index, an integer representing the index of SBML Rule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Rule structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>sBML<em>level = Model</em>getSBML_level(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sBML_level attribute</li>
+</ol>
+
+<hr>
+
+<h4>sBML<em>version = Model</em>getSBML_version(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sBML_version attribute</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = Model_getSBOTerm(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>species = Model_getSpecies(SBMLModel, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>index, an integer representing the index of SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>species = Model_getSpeciesById(SBMLModel, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>id; a string representing the id of SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure that has this id</li>
+</ol>
+
+<hr>
+
+<h4>speciesType = Model_getSpeciesType(SBMLModel, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>index, an integer representing the index of SBML SpeciesType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML SpeciesType structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>speciesType = Model_getSpeciesTypeById(SBMLModel, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>id; a string representing the id of SBML SpeciesType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML SpeciesType structure that has this id</li>
+</ol>
+
+<hr>
+
+<h4>substanceUnits = Model_getSubstanceUnits(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the substanceUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>timeUnits = Model_getTimeUnits(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the timeUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>unitDefinition = Model_getUnitDefinition(SBMLModel, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>index, an integer representing the index of SBML UnitDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML UnitDefinition structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>unitDefinition = Model_getUnitDefinitionById(SBMLModel, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>id; a string representing the id of SBML UnitDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML UnitDefinition structure that has this id</li>
+</ol>
+
+<hr>
+
+<h4>volumeUnits = Model_getVolumeUnits(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the volumeUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>value = Model_isSetAreaUnits(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the areaUnits attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Model_isSetConversionFactor(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the conversionFactor attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Model_isSetExtentUnits(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the extentUnits attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Model_isSetId(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the id attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Model_isSetLengthUnits(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the lengthUnits attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Model_isSetMetaid(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the metaid attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Model_isSetName(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the name attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Model<em>isSetSBML</em>level(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sBML_level attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Model<em>isSetSBML</em>version(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sBML_version attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Model_isSetSBOTerm(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Model_isSetSubstanceUnits(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the substanceUnits attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Model_isSetTimeUnits(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the timeUnits attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Model_isSetVolumeUnits(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the volumeUnits attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_setAreaUnits(SBMLModel, areaUnits)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>areaUnits; a string representing the areaUnits to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the new value for the areaUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_setConversionFactor(SBMLModel, conversionFactor)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>conversionFactor; a string representing the conversionFactor to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the new value for the conversionFactor attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_setExtentUnits(SBMLModel, extentUnits)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>extentUnits; a string representing the extentUnits to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the new value for the extentUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_setId(SBMLModel, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>id; a string representing the id to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the new value for the id attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_setLengthUnits(SBMLModel, lengthUnits)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>lengthUnits; a string representing the lengthUnits to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the new value for the lengthUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_setMetaid(SBMLModel, metaid)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>metaid; a string representing the metaid to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the new value for the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_setName(SBMLModel, name)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>name; a string representing the name to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the new value for the name attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_setSBOTerm(SBMLModel, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>sboTerm, an integer representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_setSubstanceUnits(SBMLModel, substanceUnits)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>substanceUnits; a string representing the substanceUnits to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the new value for the substanceUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_setTimeUnits(SBMLModel, timeUnits)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>timeUnits; a string representing the timeUnits to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the new value for the timeUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_setVolumeUnits(SBMLModel, volumeUnits)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>volumeUnits; a string representing the volumeUnits to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the new value for the volumeUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_unsetAreaUnits(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the areaUnits attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_unsetConversionFactor(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the conversionFactor attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_unsetExtentUnits(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the extentUnits attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_unsetId(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the id attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_unsetLengthUnits(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the lengthUnits attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_unsetMetaid(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the metaid attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_unsetName(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the name attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_unsetSBOTerm(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_unsetSubstanceUnits(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the substanceUnits attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_unsetTimeUnits(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the timeUnits attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModel = Model_unsetVolumeUnits(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Model structure with the volumeUnits attribute unset</li>
+</ol>
+
+<hr>

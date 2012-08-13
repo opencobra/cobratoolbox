@@ -1,0 +1,37 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>Known issues</h3>
+
+
+<hr>
+         
+<h4>Simulating the SBML Test Suite</h4>
+         
+         <p>SBMLToolbox correctly simulates about 50% of the models in the <a href="http://sbml.org/Facilities/Online_SBML_Test_Suite">SBML Test-suite</a>.
+         </p>
+         
+         <p>
+            There are 7 cases where comparison of the output reports that the test failed. 
+         </p>
+         <ul>
+                 <li>00676</li>
+                  <li>00677</li>
+                  <li>00678</li>
+                  <li>00712</li>
+                  <li>00713</li>
+                  <li>00714</li>
+                  <li>00954</li>
+         </ul>
+         
+            These are cases where the number of variables with data 
+            output by SBMLToolbox does not match the number of variables used in the comparison.  The data output by SBMLToolbox is however correct. 
+         </p>
+         
+         
+         
+<hr>
+    

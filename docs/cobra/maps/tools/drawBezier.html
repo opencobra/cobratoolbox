@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of drawBezier</title>
+  <meta name="keywords" content="drawBezier">
+  <meta name="description" content="drawBezier Draw a bezier curve in a figure">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../../menu.html cobra --><!-- ../menu.html maps --><!-- menu.html tools -->
+<h1>drawBezier
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>drawBezier Draw a bezier curve in a figure</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function drawBezier(p,color,weight) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">drawBezier Draw a bezier curve in a figure
+
+ drawBezier(p,color,weight)
+
+INPUT
+ p         Coordinates
+ color     Color of bezier curve
+ weight    Weight of bezier curve</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="drawLine.html" class="code" title="function drawLine(node1,node2,map,edgeColor,edgeArrowColor,edgeWeight,nodeWeight,rxnDir,rxnDirMultiplier)">drawLine</a>	drawLine</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function drawBezier(p,color,weight)</a>
+0002 <span class="comment">%drawBezier Draw a bezier curve in a figure</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% drawBezier(p,color,weight)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%INPUT</span>
+0007 <span class="comment">% p         Coordinates</span>
+0008 <span class="comment">% color     Color of bezier curve</span>
+0009 <span class="comment">% weight    Weight of bezier curve</span>
+0010 <span class="comment">%</span>
+0011 <span class="keyword">global</span> CB_MAP_OUTPUT
+0012 <span class="keyword">global</span> mapHandle
+0013 <span class="keyword">if</span> nargin &lt; 2
+0014     color = [0 0 255];
+0015     display(<span class="string">'No color specified'</span>);
+0016 <span class="keyword">end</span>
+0017 numpoints = 50;
+0018 <span class="comment">%a = zeros(2,numpoints);</span>
+0019 <span class="comment">%b = zeros(2,numpoints);</span>
+0020 <span class="comment">%c = zeros(2,numpoints);</span>
+0021 i = 0:numpoints;
+0022 a = (p(:,1)* i + p(:,2)*(numpoints-i))/numpoints;
+0023 b = (p(:,2)* i + p(:,3)*(numpoints-i))/numpoints;
+0024 c = (a .* (ones(2,1)* i) + b .*(ones(2,1)  *(numpoints-i)))  /numpoints;
+0025 <span class="keyword">if</span> strcmp(CB_MAP_OUTPUT, <span class="string">'matlab'</span>)
+0026     <span class="keyword">if</span> find(color&gt;1)
+0027         color = color/255;
+0028     <span class="keyword">end</span>
+0029     line(c(1,:), -c(2,:),<span class="string">'Color'</span>,color,<span class="string">'LineWidth'</span>,weight);
+0030 <span class="keyword">elseif</span> strcmp(CB_MAP_OUTPUT, <span class="string">'java'</span>)
+0031     <span class="comment">%line(c(1,:), c(2,:),'Color',color,'LineWidth',weight);</span>
+0032     <span class="comment">% fill in code</span>
+0033      setDataBezier(mapHandle,c(1,:),c(2,:));
+0034 <span class="keyword">elseif</span> strcmp(CB_MAP_OUTPUT, <span class="string">'svg'</span>)    
+0035     <span class="comment">%determine type of color input</span>
+0036     <span class="keyword">if</span> ischar(color)
+0037         colorStroke = color;
+0038     <span class="keyword">else</span> <span class="keyword">if</span> isvector(color)
+0039             colorStroke = strcat(<span class="string">'rgb('</span>,num2str(color(1)),<span class="string">','</span>,num2str(color(2)),<span class="string">','</span>,num2str(color(3)),<span class="string">')'</span>);
+0040         <span class="keyword">end</span>
+0041     <span class="keyword">end</span>
+0042     fprintf(mapHandle,<span class="string">'&lt;g id=&quot;&quot; stroke=&quot;%s&quot; stroke-width=&quot;%d&quot; stroke-linecap=&quot;round&quot;&gt;\n'</span>,colorStroke,ceil(weight));
+0043 <span class="comment">%     fprintf(mapHandle,'&lt;g id=&quot;&quot; stroke=&quot;deepskyblue&quot; stroke-width=&quot;6&quot; stroke-linecap=&quot;round&quot;&gt;\n');</span>
+0044     <span class="comment">%fprintf(mapHandle,'&lt;path style=&quot;fill: none;&quot; d=&quot;M%8.2f %8.2f C%8.2f %8.2f %8.2f %8.2f %8.2f %8.2f&quot;/&gt;\n',p2(1),-p2(2),p2(1),-p2(2),ptemp(1),-ptemp(2),p1(1),-p1(2));</span>
+0045     fprintf(mapHandle,<span class="string">'&lt;path style=&quot;fill: none;&quot; d=&quot;M%8.2f %8.2f C%8.2f %8.2f %8.2f %8.2f %8.2f %8.2f&quot;/&gt;\n'</span>,p(1,3),p(2,3) ,p(1,3),p(2,3),p(1,2),p(2,2),p(1,1),p(2,1));
+0046     fprintf(mapHandle,<span class="string">'&lt;/g&gt;\n'</span>);
+0047 <span class="keyword">else</span>
+0048     display(<span class="string">'error CB_MAP_OUTPUT in bezier'</span>);
+0049 <span class="keyword">end</span>
+0050</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

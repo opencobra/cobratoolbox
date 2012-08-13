@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of theoretMaxProd</title>
+  <meta name="keywords" content="theoretMaxProd">
+  <meta name="description" content="determines the max theoretical output for each exchange reaction">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html design -->
+<h1>theoretMaxProd
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>determines the max theoretical output for each exchange reaction</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [ExRxns,MaxTheoOut]= theoretMaxProd(model, criterion, inputrxn, normalize, rxns) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> determines the max theoretical output for each exchange reaction
+ 
+ [ExRxns,MaxTheoOut]= theoreticalMaxProduction(model,criterion,inputrxn,normalize,rxns)
+ 
+INPUT
+ ExRxns        The Exchagne reactions in the model
+
+OPTIONAL INPUT
+ criterion   
+               'pr_mol' (default) 
+               'pr_mw'  (same thing in molecular weight)
+               'pr_other_mol' (other carbon compounds secretion rate) 
+               'pr_other_mw'  (same thing in molecular weight)
+               weight yield)
+ inputrxn      the input reaction ('EX_glu(e)', etc.)
+ normalize     normalize by input flux.  Either the flux rate in mol or 
+               in molecular weight (Default = false)
+ rxns          Selection Vector (1 for selected, 0 otherwise)
+
+OUTPUTS
+ ExRxns        Vector of exchange reactions
+ MaxThroOut    The max theoretical output for each exchange reaction
+ 
+ Jan Schellenberger 11/7/08</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/computeMW.html" class="code" title="function [MW, Ematrix] = computeMW(model, metList, warnings)">computeMW</a>	computeMW Compute molecular weight and elemental matrix of compounds</li><li><a href="../../cobra/findExcRxns.html" class="code" title="function [selExc,selUpt] = findExcRxns(model,inclObjFlag,irrevFlag)">findExcRxns</a>	findExcRxns Find exchange and uptake rxns</li><li><a href="../../cobra/findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>	findRxnIDs Find reaction numbers in a model</li><li><a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>	optimizeCbModel Solve a flux balance analysis problem</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [ExRxns,MaxTheoOut]= theoretMaxProd(model, criterion, inputrxn, normalize, rxns)</a>
+0002 <span class="comment">% determines the max theoretical output for each exchange reaction</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% [ExRxns,MaxTheoOut]= theoreticalMaxProduction(model,criterion,inputrxn,normalize,rxns)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%INPUT</span>
+0007 <span class="comment">% ExRxns        The Exchagne reactions in the model</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%OPTIONAL INPUT</span>
+0010 <span class="comment">% criterion</span>
+0011 <span class="comment">%               'pr_mol' (default)</span>
+0012 <span class="comment">%               'pr_mw'  (same thing in molecular weight)</span>
+0013 <span class="comment">%               'pr_other_mol' (other carbon compounds secretion rate)</span>
+0014 <span class="comment">%               'pr_other_mw'  (same thing in molecular weight)</span>
+0015 <span class="comment">%               weight yield)</span>
+0016 <span class="comment">% inputrxn      the input reaction ('EX_glu(e)', etc.)</span>
+0017 <span class="comment">% normalize     normalize by input flux.  Either the flux rate in mol or</span>
+0018 <span class="comment">%               in molecular weight (Default = false)</span>
+0019 <span class="comment">% rxns          Selection Vector (1 for selected, 0 otherwise)</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">%OUTPUTS</span>
+0022 <span class="comment">% ExRxns        Vector of exchange reactions</span>
+0023 <span class="comment">% MaxThroOut    The max theoretical output for each exchange reaction</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% Jan Schellenberger 11/7/08</span>
+0026 
+0027 <span class="comment">% find the exchange reactions</span>
+0028 <span class="keyword">if</span> nargin &lt; 2 
+0029     criterion = <span class="string">'pr_mol'</span>;
+0030 <span class="keyword">end</span>
+0031 <span class="keyword">if</span> isempty(criterion)
+0032     criterion = <span class="string">'pr_mol'</span>;
+0033 <span class="keyword">end</span>
+0034 <span class="keyword">if</span> nargin &lt; 4
+0035     normalize = false;
+0036 <span class="keyword">end</span>
+0037 
+0038 <span class="keyword">if</span> nargin &lt; 5
+0039     [selExc,selUpt] = <a href="../../cobra/findExcRxns.html" class="code" title="function [selExc,selUpt] = findExcRxns(model,inclObjFlag,irrevFlag)">findExcRxns</a>(model,0,0);
+0040 <span class="keyword">else</span>
+0041     selExc = rxns;
+0042 <span class="keyword">end</span>
+0043 
+0044 ExRxns = model.rxns(selExc);
+0045 
+0046 [mw Ematrix] = <a href="../../cobra/computeMW.html" class="code" title="function [MW, Ematrix] = computeMW(model, metList, warnings)">computeMW</a>(model, [], false);
+0047 MaxTheoOut = zeros(size(ExRxns));
+0048 <span class="keyword">if</span>(strcmp(criterion, <span class="string">'pr_mol'</span>) || strcmp(criterion, <span class="string">'pr_mw'</span>) )
+0049     inputRxnID = <a href="../../cobra/findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(model, inputrxn);
+0050     inputMetID = find(model.S(:,inputRxnID));
+0051     <span class="keyword">for</span> i=1:length(ExRxns)
+0052         <span class="comment">% make the new objective vector</span>
+0053         newC = zeros(length(model.c),1);
+0054                 rxn =  ExRxns(i);
+0055         rxnID = find(strcmp(model.rxns,rxn));
+0056         metID = find(model.S(:,rxnID));
+0057         newC(rxnID,1) = 1;
+0058         model.c = newC;
+0059         <span class="comment">% run the LP optimization</span>
+0060         FBAsolution = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(model);
+0061         <span class="comment">% store the result</span>
+0062         <span class="keyword">if</span>(strcmp(criterion, <span class="string">'pr_mol'</span>) )
+0063             MaxTheoOut(i,1) = FBAsolution.f;
+0064             <span class="keyword">if</span> normalize
+0065                 MaxTheoOut(i,1) = MaxTheoOut(i,1)/abs(FBAsolution.x(inputRxnID));
+0066             <span class="keyword">end</span>
+0067         <span class="keyword">else</span>
+0068             MaxTheoOut(i,1) = FBAsolution.f * mw(metID);
+0069             <span class="keyword">if</span> normalize
+0070                 MaxTheoOut(i,1) = MaxTheoOut(i,1)/(abs(FBAsolution.x(inputRxnID))*mw(inputMetID));
+0071             <span class="keyword">end</span>
+0072         <span class="keyword">end</span>
+0073     <span class="keyword">end</span>
+0074 
+0075 <span class="keyword">elseif</span>( strcmp(criterion, <span class="string">'pr_other_mol'</span>) || strcmp(criterion, <span class="string">'pr_other_mw'</span>))
+0076     inputRxnID = <a href="../../cobra/findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(model, inputrxn);
+0077     inputMetID = find(model.S(:,inputRxnID));
+0078     cmets = zeros(length(model.mets),1);
+0079     cmets(Ematrix(:,1)~=0) = 1;
+0080     coefficients = zeros(size(model.c));
+0081     inputRxnID = <a href="../../cobra/findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(model, inputrxn);
+0082     selExcF = find(selExc);
+0083 
+0084     <span class="keyword">for</span> i=1:length(ExRxns)
+0085         rxnID = selExcF(i);
+0086         metID = find(model.S(:,rxnID));
+0087         <span class="keyword">if</span> cmets(metID)&gt;0
+0088             coefficients(rxnID) = mw(metID);
+0089 <span class="comment">%             if strcmp(ExRxns(i), 'EX_co2(e)') % get rid of CO2 if required</span>
+0090 <span class="comment">%                 coefficients(rxnID) = 0;</span>
+0091 <span class="comment">%             end</span>
+0092         <span class="keyword">end</span>
+0093     <span class="keyword">end</span>
+0094 
+0095     <span class="keyword">for</span> i=1:length(ExRxns)
+0096         <span class="comment">% make the new objective vector</span>
+0097         newC = zeros(length(model.c),1);
+0098         rxnID = find(strcmp(model.rxns,ExRxns(i)));
+0099         newC(rxnID,1) = 1;
+0100         model.c = newC;
+0101         <span class="comment">% run the LP optimization</span>
+0102         FBAsolution = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(model);
+0103 <span class="comment">%            optimalFlux = FBAsolution.f;</span>
+0104         cf2 = coefficients;
+0105         cf2(inputRxnID) = 0;
+0106         cf2(rxnID) = 0;
+0107         <span class="keyword">if</span>( strcmp(criterion, <span class="string">'pr_other_mol'</span>) )
+0108             MaxTheoOut(i,1) = sum(FBAsolution.x .* (cf2&gt;0) .* (FBAsolution.x &gt; 0));
+0109             <span class="keyword">if</span> normalize
+0110                 MaxTheoOut(i,1) = MaxTheoOut(i,1)/abs(FBAsolution.x(inputRxnID));
+0111             <span class="keyword">end</span>
+0112         <span class="keyword">else</span>
+0113             MaxTheoOut(i,1) = sum(FBAsolution.x .* (cf2) .* (FBAsolution.x &gt; 0));
+0114             <span class="keyword">if</span> normalize
+0115                 MaxTheoOut(i,1) = MaxTheoOut(i,1)/(abs(FBAsolution.x(inputRxnID))*mw(inputMetID));
+0116             <span class="keyword">end</span>
+0117         <span class="keyword">end</span>
+0118     <span class="keyword">end</span>
+0119 <span class="keyword">else</span>
+0120     display(<span class="string">'unknown criterion'</span>);
+0121     criterion
+0122 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

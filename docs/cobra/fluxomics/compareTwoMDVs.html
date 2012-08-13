@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of compareTwoMDVs</title>
+  <meta name="keywords" content="compareTwoMDVs">
+  <meta name="description" content="Compare the 2 sets of mdvs">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html fluxomics -->
+<h1>compareTwoMDVs
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Compare the 2 sets of mdvs</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [totalz,zscore] = compareTwoMDVs(mdv1,mdv2) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Compare the 2 sets of mdvs
+
+ totalz is the sum of all zscores
+ zscore is the calculated difference for each mdv element distributed
+       across all the points
+ mdv1,mdv2 each containing fields:
+        - mdv - the calculated mdv distribution converted from the idv
+        solved from each point contained in their respective samples sampX
+        - names - the names of the metabolites 
+        - ave - the average of each mdv element across all of the points
+        - stdev - the standard dev for each mdv element across all points
+ Wing Choi 2/11/08</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="compareTwoSamp.html" class="code" title="function [totalz,zscore,mdv1,mdv2] = compareTwoSamp(xglc,model,samp1,samp2,measuredMetabolites)">compareTwoSamp</a>	Compare the 2 sets of samples</li><li><a href="runHiLoExp.html" class="code" title="function [experiment] = runHiLoExp(experiment)">runHiLoExp</a>	runHiLoExp</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [totalz,zscore] = compareTwoMDVs(mdv1,mdv2)</a>
+0002    
+0003 <span class="comment">% Compare the 2 sets of mdvs</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% totalz is the sum of all zscores</span>
+0006 <span class="comment">% zscore is the calculated difference for each mdv element distributed</span>
+0007 <span class="comment">%       across all the points</span>
+0008 <span class="comment">% mdv1,mdv2 each containing fields:</span>
+0009 <span class="comment">%        - mdv - the calculated mdv distribution converted from the idv</span>
+0010 <span class="comment">%        solved from each point contained in their respective samples sampX</span>
+0011 <span class="comment">%        - names - the names of the metabolites</span>
+0012 <span class="comment">%        - ave - the average of each mdv element across all of the points</span>
+0013 <span class="comment">%        - stdev - the standard dev for each mdv element across all points</span>
+0014 <span class="comment">% Wing Choi 2/11/08</span>
+0015 
+0016 
+0017 
+0018 <span class="keyword">if</span> (nargin &lt; 2)
+0019     disp <span class="string">'[totalz,zscore] = compareTwoMDVs(mdv1,mdv2)'</span>;
+0020     <span class="keyword">return</span>;
+0021 <span class="keyword">end</span>
+0022 
+0023 <span class="comment">%Compute the mean and standard deviation of each mdv and then get a z-score</span>
+0024 <span class="comment">% between them (=(mean1-mean2)/(sqrt(sd1^2+sd2^2))).</span>
+0025 <span class="comment">%Add up all the z-scores (their absolute value) and have this function return</span>
+0026 <span class="comment">% that value.</span>
+0027 
+0028 names = mdv1.names;
+0029 ave1 = mdv1.ave;
+0030 std1 = mdv1.stdev;
+0031 ave2 = mdv2.ave;
+0032 std2 = mdv2.stdev;
+0033 zscore = [];
+0034 
+0035 <span class="comment">%zscore = (ave1-ave2)./(sqrt(std1.^2+std2.^2));</span>
+0036 a1 = zeros(length(ave1),1);
+0037 a1 = (a1+.02).^2;
+0038 zscore = (ave1-ave2)./(sqrt(std1.^2+std2.^2+a1));
+0039 
+0040 <span class="comment">% for l = 1:length(names)</span>
+0041 <span class="comment">%     % sometimes we end up with zeroes for stdev if the mdvs are all exactly the same: i.e. zeroes.</span>
+0042 <span class="comment">%     if (isnan(zscore(l,1)))</span>
+0043 <span class="comment">%         disp(sprintf('nan found at %d th name',l));</span>
+0044 <span class="comment">%         disp('replacing it with a -1');</span>
+0045 <span class="comment">%         zscore(l,1) = -1;</span>
+0046 <span class="comment">%         mdv1</span>
+0047 <span class="comment">%         mdv1.names</span>
+0048 <span class="comment">%         mdv2</span>
+0049 <span class="comment">%         pause;</span>
+0050 <span class="comment">%     end</span>
+0051 <span class="comment">% end</span>
+0052 totalz = sum(abs(zscore));
+0053 <span class="keyword">if</span> isnan(totalz)
+0054     totalz = -1;
+0055 <span class="keyword">end</span>
+0056 <span class="comment">%disp(sprintf('total Z-score is: %d',totalz));</span>
+0057 
+0058 <span class="keyword">return</span>
+0059 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

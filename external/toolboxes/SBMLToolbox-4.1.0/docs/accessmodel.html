@@ -1,0 +1,561 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>ACCESSMODEL</h3>
+
+<p>The AccessModel folder contains a number of functions that derive information from the MATLAB_SBML structures.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>array = DetermineSpeciesRoleInReaction(SBMLSpecies, SBMLReaction)</h4>
+
+<p>Takes </p>
+
+<ol>
+<li>SBMLSpecies, an SBML species structure</li>
+<li>SBMLReaction, an SBML reaction structure</li>
+</ol>
+
+<p>Returns   </p>
+
+<ol>
+<li>an array with five elements <code>[isProduct, isReactant, isModifier, 
+positionInProductList, positionInReactantList]</code> indicating 
+whether the species is a product, reactant or modifier and recording 
+the position in the list of products/reactants</li>
+</ol>
+
+<p>or </p>
+
+<ol>
+<li>array = 0   if the species is NOT part of the reaction</li>
+</ol>
+
+<p><em>EXAMPLE:</em>    </p>
+
+<pre><code>         y   =   DetermineSpeciesRoleInReaction(s, r)
+             =   0                 if s is not in r
+             =   [1, 0, 0, 2, 0]   if s is product number 2 in rb 
+             =   [0, 1, 0, 0, 1]   if s is reactant number 1 in r
+             =   [0, 0, 1, 0, 0]   if s is a modifier in r
+             =   [1, 1, 0, 1, 2]   if s is product number 1 and reactant number 2 in r
+</code></pre>
+
+<hr>
+
+<h4>[names, values] = GetAllParameters(SBMLModel)</h4>
+
+<p>Takes </p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns </p>
+
+<ol>
+<li>an array of strings representing the identifiers of all parameters 
+         (both global and embedded) within the model </li>
+<li>an array of the values of each parameter</li>
+</ol>
+
+<p><em>NOTE:</em> the value returned will be (in order)</p>
+
+<ul>
+<li>determined from assignmentRules/initialAssignments where appropriate</li>
+<li>the attribute 'value' for the given parameter</li>
+<li>NaN, if the value is not specified in any way within the model</li>
+</ul>
+
+<hr>
+
+<h4>[names, values] = GetAllParametersUnique(SBMLModel)</h4>
+
+<p>Takes </p>
+
+<ol>
+<li>SBMLModel, an SBML model structure</li>
+</ol>
+
+<p>Returns </p>
+
+<ol>
+<li>an array of strings representing the identifiers of all parameters 
+          (both global and embedded) within the model.
+          <em>Note:</em> reaction names are appended to the names of parameters
+          declared within a reaction</li>
+<li>an array of the values of each parameter</li>
+</ol>
+
+<p><em>NOTE:</em> the value returned will be (in order)</p>
+
+<ul>
+<li>determined from assignmentRules/initialAssignments where appropriate</li>
+<li>the attribute 'value' for the given parameter</li>
+<li>NaN, if the value is not specified in any way within the model</li>
+</ul>
+
+<p><em>EXAMPLE:</em></p>
+
+<pre><code> model has 1 parameter k1 
+       and reaction R1 that lists a local parameter k1
+
+      [names, values] = GetAllParametersUnique(model)
+
+                names = [k1, k1_R1]
+               values = [2, 1.5]
+</code></pre>
+
+<hr>
+
+<h4>names = GetCompartmentTypes(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of strings representing the identifiers of all compartmentTypes within the model </li>
+</ol>
+
+<hr>
+
+<h4>[names, values] = GetCompartments(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure </li>
+</ol>
+
+<p>Returns </p>
+
+<ol>
+<li>an array of strings representing the identifiers of all compartments within the model </li>
+<li>an array of the size/volume values of each compartment</li>
+</ol>
+
+<p><em>NOTE:</em> the value returned will be (in order)</p>
+
+<ul>
+<li>determined from assignmentRules/initialAssignments where appropriate</li>
+<li>the attribute 'size' ('volume' in L1) for the given compartment</li>
+<li>NaN, if the value is not specified in any way within the model</li>
+</ul>
+
+<hr>
+
+<h4>[names, values] = GetGlobalParameters(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns </p>
+
+<ol>
+<li>an array of strings representing the identifiers of 
+           all global parameters within the model </li>
+<li>an array of the values of each parameter</li>
+</ol>
+
+<p><em>NOTE:</em> the value returned will be (in order)</p>
+
+<ul>
+<li>determined from assignmentRules/initialAssignments where appropriate</li>
+<li>the attribute 'value' for the given parameter</li>
+<li>NaN, if the value is not specified in any way within the model</li>
+</ul>
+
+<hr>
+
+<h4>[parameters, algebraicRules] = GetParameterAlgebraicRules(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns </p>
+
+<ol>
+<li>an array of strings representing the identifiers of all parameters</li>
+<li><p>an array of </p>
+
+<ul>
+<li>the character representation of each algebraic
+rule the parameter appears in </li>
+<li>'0' if the particular parameter is not in an algebraic rule</li>
+</ul></li>
+</ol>
+
+<p><em>EXAMPLE:</em></p>
+
+<pre><code> model has 3 parameters (k1, k2, k3) 
+       and 2 algebraic rules with formula 'k2+7' and 'k2-k3'
+
+      [parameters, algebraicRules] = GetParameterAlgebraicRules(model)
+
+               parameters     = ['k1', 'k2', 'k3']
+               algebraicRules = {'0', ['k2+7', 'k2-k3'], ['k2-k3']}
+</code></pre>
+
+<hr>
+
+<h4>[parameters, assignmentRules] = GetParameterAssignmentRules(SBMLModel)</h4>
+
+<p>Takes </p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure </li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of strings representing the identifiers of all parameters</li>
+<li><p>an array of </p>
+
+<ul>
+<li>the character representation of the assignment rule used to 
+assign value to a given parameter </li>
+<li>'0' if the parameter is not assigned by a rule</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>[names, values] = GetParameterFromReaction(SBMLReaction)</h4>
+
+<p>Takes </p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns </p>
+
+<ol>
+<li>an array of strings representing the identifiers of all parameters defined 
+           within the kinetic law of the reaction </li>
+<li>an array of the values of each parameter</li>
+</ol>
+
+<hr>
+
+<h4>[names, values] = GetParameterFromReactionUnique(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure </li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of strings representing the identifiers of all parameters defined 
+           within the kinetic law of the reaction, with the reaction
+           name appended</li>
+<li>an array of the values of each parameter</li>
+</ol>
+
+<p><em>EXAMPLE:</em></p>
+
+<pre><code> reaction with id R1 has 2 parameters k1 and k2 
+
+      [names, values] = GetParameterFromReactionUnique(reaction)
+
+                names = [k1_R1, k2_R1]
+               values = [2, 1.5]
+</code></pre>
+
+<hr>
+
+<h4>[parameters, raterules] = GetParameterRateRules((SBMLModel)</h4>
+
+<p>Takes </p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure </li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of strings representing the identifiers of all parameters</li>
+<li><p>an array of </p>
+
+<ul>
+<li>the character representation of the rate rule used to 
+assign value to a given parameter </li>
+<li>'0' if the parameter is not assigned by a rule</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>[species, rateLaws] = GetRateLawsFromReactions(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel; an SBML Model structure </li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of strings representing the identifiers of all species</li>
+<li><p>an array of </p>
+
+<ul>
+<li>the character representation of the rate law established from any reactions
+that determines the particular species</li>
+<li>'0' if the particular species is not a reactant/product in any reaction</li>
+</ul></li>
+</ol>
+
+<p><em>EXAMPLE:</em></p>
+
+<pre><code> model has 4 species (s1, s2, s3, s4) 
+       and 2 reactions; s1 -&gt; s2 with kineticLaw 'k1*s1'
+                        s2 -&gt; s3 with kineticLaw 'k2*s2'
+
+      [species, rateLaws] = GetRateLawsFromReactions(model)
+
+               species     = ['s1', 's2', 's3', 's4']
+               rateLaws = {'-k1*s1', 'k1*s1-k2*s2', 'k2*s2', '0'}
+</code></pre>
+
+<hr>
+
+<h4>[species, rateLaws] = GetRateLawsFromRules(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure </li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of strings representing the identifiers of all species</li>
+<li><p>an array of </p>
+
+<ul>
+<li>the character representation of the rateRule that determines
+the particular species</li>
+<li>'0' if the particular species is not assigned by a rateRule</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>[names, values] = GetSpecies(SBMLModel)</h4>
+
+<p>Takes </p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure </li>
+</ol>
+
+<p>Returns </p>
+
+<ol>
+<li>an array of strings representing the identifiers of all species within the model </li>
+<li>an array of the initial concentration/amount values of each species</li>
+</ol>
+
+<p><em>NOTE:</em> the value returned will be (in order)</p>
+
+<ul>
+<li>determined from assignmentRules/initialAssignments where appropriate</li>
+<li>the attribute 'initialAmount' or 'initialConcentration' for the given parameter</li>
+<li>NaN, if the value is not specified in any way within the model</li>
+</ul>
+
+<hr>
+
+<h4>[names, values] = GetSpeciesAlgebraicRules(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of strings representing the identifiers of all species</li>
+<li><p>an array of </p>
+
+<ul>
+<li>the character representation of each algebraic
+rule the species appears in </li>
+<li>'0' if the particular species is not in an algebraic rule</li>
+</ul></li>
+</ol>
+
+<p><em>EXAMPLE:</em></p>
+
+<pre><code> model has 3 species (s1, s2, s3) 
+       and 2 algebraic rules with formula 's2+7' and 's2-s3'
+
+      [species, algebraicRules] = GetSpeciesAlgebraicRules(model)
+
+               species     = ['s1', 's2', 's3']
+               algebraicRules = {'0', ['s2+7', 's2-s3'], ['k2-k3']}
+</code></pre>
+
+<hr>
+
+<h4>[species, assignmentRules] = GetSpeciesAssignmentRules(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure </li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of strings representing the identifiers of all species</li>
+<li><p>an array of </p>
+
+<ul>
+<li>the character representation of the assignment rule used to 
+assign value to a given species </li>
+<li>'0' if the species is not assigned by a rule</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>names = GetSpeciesTypes(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure </li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of strings representing the identifiers of all SpeciesTypes within the model </li>
+</ol>
+
+<hr>
+
+<h4>[matrix, species] = GetStoichiometryMatrix(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the stoichiometry matrix produced from the reactions/species</li>
+<li>an array of strings representing the identifiers of all species within the model 
+      (in the order in which the matrix deals with them)</li>
+</ol>
+
+<p><em>EXAMPLE:</em></p>
+
+<pre><code> model has 5 species (s1, s2, s3, s4, s5) 
+       and 3 reactions: s1 -&gt; s2
+                        s3 -&gt; s5
+                        2s1 -&gt; s5
+
+      [matrix, species] = GetRateLawsFromReactions(model)
+
+               matrix = -1   0  -2
+                         1   0   0
+                         0  -1   0
+                         0   1   1
+               species     = ['s1', 's2', 's3', 's5']
+
+        (species s4 does not play a role in any reaction)
+</code></pre>
+
+<hr>
+
+<h4>S = GetStoichiometrySparse(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a sparse stoichiometry matrix produced from the reactions/species</li>
+</ol>
+
+<p><em>NOTE:</em> This function was contributed by: Arsen Batagov (2006)</p>
+
+<hr>
+
+<h4>[names, values] = GetVaryingParameters(SBMLModel)</h4>
+
+<p>Takes </p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns </p>
+
+<ol>
+<li>an array of strings representing the identifiers of any non-constant parameters 
+         within the model </li>
+<li>an array of the values of each of these parameter</li>
+</ol>
+
+<p><em>NOTE:</em> the value returned will be (in order)</p>
+
+<ul>
+<li>determined from assignmentRules/initialAssignments where appropriate</li>
+<li>the attribute 'value' for the given parameter</li>
+<li>NaN; if the value is not specified in any way within the model</li>
+</ul>
+
+<hr>
+
+<h4>num = IsSpeciesInReaction(SBMLSpecies, SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of times the species occurs within the reaction</li>
+</ol>
+
+<hr>

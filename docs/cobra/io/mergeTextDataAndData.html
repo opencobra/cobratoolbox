@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mergeTextDataAndData</title>
+  <meta name="keywords" content="mergeTextDataAndData">
+  <meta name="description" content="merge textdata and data imported from .xls file assuming that the first">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html io -->
+<h1>mergeTextDataAndData
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>merge textdata and data imported from .xls file assuming that the first</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function mergedData=mergeTextDataAndData(textdata,data,headings) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">merge textdata and data imported from .xls file assuming that the first
+row of textdata is column headings
+
+ mergedData=mergeTextDataAndData(textdata,data)
+
+INPUT
+ textdata      cell array from .xls import
+ data          matrix with numeric data from .xls import
+
+OPTIONAL INPUT
+ headings      {(1),0}, zero if no column headings
+
+OUTPUT
+ mergedData    merged cell array with all data from .xls import
+
+ Ronan Fleming 29/10/2008</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function mergedData=mergeTextDataAndData(textdata,data,headings)</a>
+0002 <span class="comment">%merge textdata and data imported from .xls file assuming that the first</span>
+0003 <span class="comment">%row of textdata is column headings</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% mergedData=mergeTextDataAndData(textdata,data)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%INPUT</span>
+0008 <span class="comment">% textdata      cell array from .xls import</span>
+0009 <span class="comment">% data          matrix with numeric data from .xls import</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">%OPTIONAL INPUT</span>
+0012 <span class="comment">% headings      {(1),0}, zero if no column headings</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">%OUTPUT</span>
+0015 <span class="comment">% mergedData    merged cell array with all data from .xls import</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% Ronan Fleming 29/10/2008</span>
+0018 
+0019 <span class="comment">%check for headings</span>
+0020 <span class="keyword">if</span> ~exist(<span class="string">'headings'</span>,<span class="string">'var'</span>);
+0021     headings=1;
+0022     fprintf(<span class="string">'%s\n'</span>,<span class="string">'Assuming there were headings in the original xls file'</span>);
+0023 <span class="keyword">end</span>
+0024 <span class="keyword">if</span> headings==1
+0025     start=2;
+0026 <span class="keyword">else</span>
+0027     start=1;
+0028 <span class="keyword">end</span>
+0029 
+0030 <span class="comment">%checking for exceptions in otherwise data columns</span>
+0031 fprintf(<span class="string">'%s\n'</span>,<span class="string">'Checking for exceptions in otherwise numeric columns, e.g. NaN'</span>);
+0032 fprintf(<span class="string">'%s\n'</span>,<span class="string">'Checking for exceptions in otherwise numeric columns, e.g. -'</span>);
+0033 fprintf(<span class="string">'%s\n'</span>,<span class="string">'Checking for exceptions in otherwise numeric columns, e.g. Not calculated'</span>);
+0034 fprintf(<span class="string">'%s\n'</span>,<span class="string">'Checking for exceptions in otherwise numeric columns, e.g. #N/A'</span>);
+0035 fprintf(<span class="string">'%s\n'</span>,<span class="string">'Checking for empty cells in otherwise numeric columns, e.g. []'</span>);
+0036 [ylt,xlt]=size(textdata);
+0037 <span class="keyword">for</span> y=1:ylt
+0038     <span class="keyword">for</span> x=1:xlt
+0039         <span class="keyword">if</span> strcmp(textdata{y,x},<span class="string">'NaN'</span>)
+0040             textdata{y,x}=<span class="string">''</span>;
+0041         <span class="keyword">end</span>
+0042     <span class="keyword">end</span>
+0043 <span class="keyword">end</span>
+0044 <span class="keyword">for</span> y=1:ylt
+0045     <span class="keyword">for</span> x=1:xlt
+0046         <span class="keyword">if</span> strcmp(textdata{y,x},<span class="string">'-'</span>)
+0047             textdata{y,x}=<span class="string">''</span>;
+0048         <span class="keyword">end</span>
+0049     <span class="keyword">end</span>
+0050 <span class="keyword">end</span>
+0051 <span class="keyword">for</span> y=1:ylt
+0052     <span class="keyword">for</span> x=1:xlt
+0053         <span class="keyword">if</span> strcmp(textdata{y,x},<span class="string">'Not calculated'</span>)
+0054             textdata{y,x}=<span class="string">''</span>;
+0055         <span class="keyword">end</span>
+0056     <span class="keyword">end</span>
+0057 <span class="keyword">end</span>
+0058 <span class="keyword">for</span> y=1:ylt
+0059     <span class="keyword">for</span> x=1:xlt
+0060         <span class="keyword">if</span> strcmp(textdata{y,x},<span class="string">'#N/A'</span>)
+0061             textdata{y,x}=<span class="string">''</span>;
+0062         <span class="keyword">end</span>
+0063     <span class="keyword">end</span>
+0064 <span class="keyword">end</span>
+0065 <span class="comment">%replace empty cells with blank string</span>
+0066 <span class="keyword">for</span> y=1:ylt
+0067     <span class="keyword">for</span> x=1:xlt
+0068         <span class="keyword">if</span> isempty(textdata{y,x})
+0069             textdata{y,x}=<span class="string">''</span>;
+0070         <span class="keyword">end</span>
+0071     <span class="keyword">end</span>
+0072 <span class="keyword">end</span>
+0073 <span class="comment">%preallocate</span>
+0074 mergedData=textdata;
+0075 dataCol=1; 
+0076 beginData=0;
+0077 <span class="keyword">for</span> x=1:xlt 
+0078     <span class="comment">%check for blank column</span>
+0079     <span class="keyword">if</span> min(strcmp(textdata(start:ylt,x),<span class="string">''</span>))==1
+0080         beginData=1;
+0081         fprintf(<span class="string">'%s\n'</span>,[<span class="string">'Merging numerical data into column '</span> int2str(x)]);
+0082         <span class="keyword">for</span> y=start:ylt
+0083             <span class="keyword">if</span> (y-start+1)&gt;size(data,1)
+0084                 <span class="comment">%if the last rows are NaN then this is needed as data will</span>
+0085                 <span class="comment">%be too short</span>
+0086                 mergedData{y,x}=NaN;
+0087             <span class="keyword">else</span>
+0088                 mergedData{y,x}=data(y-start+1,dataCol); 
+0089             <span class="keyword">end</span>
+0090         <span class="keyword">end</span>
+0091         dataCol=dataCol+1;
+0092         <span class="keyword">if</span> dataCol&gt;size(data,2)
+0093             <span class="keyword">break</span>
+0094         <span class="keyword">end</span>
+0095     <span class="keyword">else</span>
+0096         <span class="comment">%data can have empty columns corresponding to textdata columns</span>
+0097         <span class="keyword">if</span> beginData==1
+0098             dataCol=dataCol+1;
+0099         <span class="keyword">end</span>
+0100     <span class="keyword">end</span> 
+0101 <span class="keyword">end</span>
+0102 <span class="comment">%data column might be the last column of original xls file</span>
+0103 <span class="keyword">if</span> dataCol&lt;size(data,2)+1
+0104     p=1;
+0105     <span class="keyword">while</span> dataCol&lt;size(data,2)+1
+0106         <span class="keyword">for</span> y=start:ylt
+0107             mergedData{y,x+p}=data(y-start+1,dataCol);
+0108         <span class="keyword">end</span>
+0109         p=p+1;
+0110         dataCol=dataCol+1;
+0111     <span class="keyword">end</span>
+0112 <span class="keyword">end</span>
+0113     
+0114     
+0115 <span class="comment">% for x=1:137 gMW{x,1}=iCore.genes{x}; for y=1:5300 if</span>
+0116 <span class="comment">% strncmp(iCore.genes{x},mergedData{y,1},length(iCore.genes{x})) gMW{x,2}=d(y); end; end; end;</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

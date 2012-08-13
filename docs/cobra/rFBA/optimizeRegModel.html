@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of optimizeRegModel</title>
+  <meta name="keywords" content="optimizeRegModel">
+  <meta name="description" content="optimizeRegModel - finds the steady state solution of a model with">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html rFBA -->
+<h1>optimizeRegModel
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>optimizeRegModel - finds the steady state solution of a model with</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [FBAsols,DRgenes,constrainedRxns,cycleStart,states] = optimizeRegModel(model,initialRegState) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> optimizeRegModel - finds the steady state solution of a model with
+ Boolean regulatory constraints
+
+ [FBAsols,DRgenes,constrainedRxns,cycleStart,states] = optimizeRegModel(model,initialRegState)
+
+ model             a regulatory COBRA model
+ initialRegState   the initial state of the regulatory network as a 
+                   Boolean vector (opt, default = all false)
+
+ FBAsols           all of the FBA solutions at the steady state (or stable
+                   cycle) of the regulatory network 
+ DRgenes           the genes that are OFF for every FBA solution
+ constrainedRxns   the reactions that are OFF for every FBA solution
+ cycleStart        the number of iterations before the regulatory network
+                   reaches the steady state or cycle
+ states            the state of the regulatory network at every iteration
+                   calculated
+
+ Jeff Orth 8/19/08</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/deleteModelGenes.html" class="code" title="function [model,hasEffect,constrRxnNames,deletedGenes] = deleteModelGenes(model,geneList,downRegFraction)">deleteModelGenes</a>	deleteModelGenes Delete one or more genes and constrain the reactions</li><li><a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>	optimizeCbModel Solve a flux balance analysis problem</li><li><a href="solveBooleanRegModel.html" class="code" title="function [finalState,finalInputs1States,finalInputs2States] = solveBooleanRegModel(model,initialState,inputs1States,inputs2States)">solveBooleanRegModel</a>	solveBooleanRegModel - determines the next state of the regulatory</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="dynamicRFBA.html" class="code" title="function [concentrationMatrix,excRxnNames,timeVec,biomassVec,drGenes,constrainedRxns,states] =dynamicRFBA(model,substrateRxns,initConcentrations,initBiomass,timeStep,nSteps,plotRxns,exclUptakeRxns)">dynamicRFBA</a>	dynamicRFBA - perform dynamic rFBA simulation using the static optimization</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [FBAsols,DRgenes,constrainedRxns,cycleStart,states] = optimizeRegModel(model,initialRegState)</a>
+0002 <span class="comment">% optimizeRegModel - finds the steady state solution of a model with</span>
+0003 <span class="comment">% Boolean regulatory constraints</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% [FBAsols,DRgenes,constrainedRxns,cycleStart,states] = optimizeRegModel(model,initialRegState)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% model             a regulatory COBRA model</span>
+0008 <span class="comment">% initialRegState   the initial state of the regulatory network as a</span>
+0009 <span class="comment">%                   Boolean vector (opt, default = all false)</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% FBAsols           all of the FBA solutions at the steady state (or stable</span>
+0012 <span class="comment">%                   cycle) of the regulatory network</span>
+0013 <span class="comment">% DRgenes           the genes that are OFF for every FBA solution</span>
+0014 <span class="comment">% constrainedRxns   the reactions that are OFF for every FBA solution</span>
+0015 <span class="comment">% cycleStart        the number of iterations before the regulatory network</span>
+0016 <span class="comment">%                   reaches the steady state or cycle</span>
+0017 <span class="comment">% states            the state of the regulatory network at every iteration</span>
+0018 <span class="comment">%                   calculated</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% Jeff Orth 8/19/08</span>
+0021 
+0022 <span class="keyword">if</span> nargin &lt; 2
+0023     rFBAsol1 = false.*ones(length(model.regulatoryGenes),1); <span class="comment">% initial state</span>
+0024     inputs1state = false.*ones(length(model.regulatoryInputs1),1);
+0025     inputs2state = false.*ones(length(model.regulatoryInputs2),1);
+0026     state1 = false.*ones(length(model.regulatoryGenes)+length(model.regulatoryInputs1)+length(model.regulatoryInputs2),1); <span class="comment">%vector for entire state</span>
+0027 <span class="keyword">else</span>
+0028     <span class="keyword">if</span> length(initialRegState) ~= (length(model.regulatoryGenes)+length(model.regulatoryInputs1)+length(model.regulatoryInputs2))
+0029         error(<span class="string">'initialRegState is invalid length'</span>);
+0030     <span class="keyword">end</span>
+0031     state1 = initialRegState;
+0032     rFBAsol1 = state1(1:length(model.regulatoryGenes));
+0033     inputs1state = state1((length(model.regulatoryGenes)+1):(length(model.regulatoryGenes)+length(model.regulatoryInputs1)));
+0034     inputs2state = state1((length(model.regulatoryGenes)+length(model.regulatoryInputs1)+1):(length(model.regulatoryGenes)+length(model.regulatoryInputs1)+length(model.regulatoryInputs2)));
+0035 <span class="keyword">end</span>
+0036     
+0037 rFBAsols = {rFBAsol1}; <span class="comment">% matrices of all solutions</span>
+0038 inputs1states = {inputs1state};
+0039 inputs2states = {inputs2state};
+0040 states = {state1};
+0041 
+0042 [rFBAsol2,finalInputs1States,finalInputs2States] = <a href="solveBooleanRegModel.html" class="code" title="function [finalState,finalInputs1States,finalInputs2States] = solveBooleanRegModel(model,initialState,inputs1States,inputs2States)">solveBooleanRegModel</a>(model,rFBAsol1,inputs1state,inputs2state); <span class="comment">%get first solution</span>
+0043 rFBAsols{2} = rFBAsol2; <span class="comment">% add solution to array of solutions</span>
+0044 inputs1states{2} = finalInputs1States;
+0045 inputs2states{2} = finalInputs2States;
+0046 states{2} = [rFBAsol2;finalInputs1States;finalInputs2States];
+0047 
+0048 <span class="comment">% continue solving until steady state</span>
+0049 cycleReached = false;
+0050 <span class="keyword">while</span> ~cycleReached <span class="comment">% while current solution ~= any previous solutions</span>
+0051     rFBAsol1 = rFBAsols{length(rFBAsols)};
+0052     inputs1state = inputs1states{length(inputs1states)};
+0053     inputs2state = inputs2states{length(inputs2states)};
+0054     [rFBAsol2,finalInputs1States,finalInputs2States] = <a href="solveBooleanRegModel.html" class="code" title="function [finalState,finalInputs1States,finalInputs2States] = solveBooleanRegModel(model,initialState,inputs1States,inputs2States)">solveBooleanRegModel</a>(model,rFBAsol1,inputs1state,inputs2state);
+0055     rFBAsols{length(rFBAsols)+1} = rFBAsol2; <span class="comment">% add solution to array of solutions</span>
+0056     inputs1states{length(inputs1states)+1} = finalInputs1States;
+0057     inputs2states{length(inputs2states)+1} = finalInputs2States;
+0058     states{length(states)+1} = [rFBAsol2;finalInputs1States;finalInputs2States];
+0059     <span class="comment">%check if this state has been reached before</span>
+0060     cycleStart = [];
+0061     <span class="keyword">for</span> i = 1:(length(states)-1)
+0062         <span class="keyword">if</span> all(states{length(states)} == states{i})
+0063             cycleStart = i;
+0064         <span class="keyword">end</span>
+0065     <span class="keyword">end</span>
+0066     <span class="keyword">if</span> any(cycleStart)
+0067         cycleReached = true;
+0068     <span class="keyword">end</span>
+0069 <span class="keyword">end</span>
+0070 
+0071 <span class="comment">% remove downregulated genes and compute growth by FBA</span>
+0072 FBAsols = {};
+0073 DRgenes = {};
+0074 constrainedRxns = {};
+0075 k = 0;
+0076 <span class="keyword">for</span> i = cycleStart:(length(states)-1)
+0077     k = k+1;
+0078     genes = {};
+0079         <span class="keyword">for</span> j = 1:length(model.regulatoryGenes)
+0080             <span class="keyword">if</span> rFBAsols{i}(j) == false 
+0081                 genes{length(genes)+1,1} = model.regulatoryGenes{j};
+0082             <span class="keyword">end</span>
+0083         <span class="keyword">end</span>
+0084     genes = intersect(model.genes,genes); <span class="comment">% remove genes not associated with rxns</span>
+0085     [modelDR,he,rxns] = <a href="../../cobra/deleteModelGenes.html" class="code" title="function [model,hasEffect,constrRxnNames,deletedGenes] = deleteModelGenes(model,geneList,downRegFraction)">deleteModelGenes</a>(model,genes); <span class="comment">% set rxns to 0</span>
+0086     fbasol = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelDR,<span class="string">'max'</span>,true);
+0087     FBAsols{k} = fbasol;
+0088     DRgenes{k} = genes;
+0089     constrainedRxns{k} = rxns;
+0090 <span class="keyword">end</span>
+0091 
+0092 
+0093 
+0094</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

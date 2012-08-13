@@ -1,0 +1,315 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of convertCobraToSBML</title>
+  <meta name="keywords" content="convertCobraToSBML">
+  <meta name="description" content="convertCobraToSBML converts a cobra structure to an sbml">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html io -->
+<h1>convertCobraToSBML
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>convertCobraToSBML converts a cobra structure to an sbml</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function sbmlModel = convertCobraToSBML(model,sbmlLevel,sbmlVersion,compSymbolList,compNameList,debug_function) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">convertCobraToSBML converts a cobra structure to an sbml
+structure using the structures provided in the SBML toolbox 3.1.0
+
+ sbmlModel = convertCobraToSBML(model,sbmlLevel,sbmlVersion,compSymbolList,compNameList)
+
+INPUTS
+ model             COBRA model structure
+
+OPTIONAL INPUTS
+ sbmlLevel         SBML Level (default = 2)
+ sbmlVersion       SBML Version (default = 1)
+ compSymbolList    List of compartment symbols
+ compNameList      List of copmartment names correspoding to compSymbolList
+
+OUTPUT
+ sbmlModel         SBML MATLAB structure</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="writeCbModel.html" class="code" title="function writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLevel,sbmlVersion)">writeCbModel</a>	writeCbModel Write out COBRA models in various formats</li><li><a href="writeCbToSBML.html" class="code" title="function writeCbToSBML(model,fileName)">writeCbToSBML</a>	writeCbToSBML write a COBRA model to SBML</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function str = formatForSBMLID(str)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function sbmlModel = convertCobraToSBML(model,sbmlLevel,sbmlVersion,compSymbolList,compNameList,debug_function)</a>
+0002 <span class="comment">%convertCobraToSBML converts a cobra structure to an sbml</span>
+0003 <span class="comment">%structure using the structures provided in the SBML toolbox 3.1.0</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% sbmlModel = convertCobraToSBML(model,sbmlLevel,sbmlVersion,compSymbolList,compNameList)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%INPUTS</span>
+0008 <span class="comment">% model             COBRA model structure</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">%OPTIONAL INPUTS</span>
+0011 <span class="comment">% sbmlLevel         SBML Level (default = 2)</span>
+0012 <span class="comment">% sbmlVersion       SBML Version (default = 1)</span>
+0013 <span class="comment">% compSymbolList    List of compartment symbols</span>
+0014 <span class="comment">% compNameList      List of copmartment names correspoding to compSymbolList</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">%OUTPUT</span>
+0017 <span class="comment">% sbmlModel         SBML MATLAB structure</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">%</span>
+0020 
+0021 <span class="comment">%NOTE: The name mangling of reaction and metabolite ids is necessary</span>
+0022 <span class="comment">%for compliance with the SBML sID standard.</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">%NOTE: Sometimes the Model_create function doesn't listen to the</span>
+0025 <span class="comment">%sbmlVersion parameter, so it is essential that the items that</span>
+0026 <span class="comment">%are added to the sbmlModel are defined with the sbmlModel's level</span>
+0027 <span class="comment">%and version:  sbmlModel.SBML_level,sbmlModel.SBML_version</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">%NOTE:  Some of the structures are recycled to reduce to overhead for</span>
+0030 <span class="comment">%their creation.  There's a chance this can cause bugs in the future.</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">%NOTE: Currently, I don't add in the boundary metabolites.</span>
+0033 <span class="comment">%</span>
+0034 <span class="comment">%NOTE: Speed could probably be improved by directly adding structures to</span>
+0035 <span class="comment">%lists in a struct instead of using the SBML _addItem function, but this</span>
+0036 <span class="comment">%could break in future versions of the SBML toolbox.</span>
+0037 <span class="comment">%</span>
+0038 <span class="comment">%POTENTIAL FUTURE BUG: To speed things up, sbml structs have been</span>
+0039 <span class="comment">%recycled and are directly appended into lists instead of using _addItem</span>
+0040 <span class="keyword">if</span> (~exist(<span class="string">'sbmlLevel'</span>,<span class="string">'var'</span>) || isempty(sbmlLevel))
+0041     sbmlLevel = 2;
+0042 <span class="keyword">end</span>
+0043 <span class="keyword">if</span> (~exist(<span class="string">'sbmlVersion'</span>,<span class="string">'var'</span>) || isempty(sbmlVersion))
+0044     sbmlVersion = 1;
+0045 <span class="keyword">end</span>
+0046 <span class="keyword">if</span> (~exist(<span class="string">'debug_function'</span>,<span class="string">'var'</span>) || isempty(debug_function))
+0047   debug_function = 0;
+0048 <span class="keyword">end</span>
+0049 reaction_units = <span class="string">'mmol_per_gDW_per_hr'</span>;
+0050 sbmlModel = Model_create(sbmlLevel, sbmlVersion);
+0051 
+0052 sbmlModel.namespaces = struct();
+0053 sbmlModel.namespaces.prefix = <span class="string">''</span>;
+0054 sbmlModel.namespaces.uri = <span class="string">'http://www.sbml.org/sbml/level2'</span>;
+0055 <span class="keyword">if</span> isfield(model,<span class="string">'description'</span>)
+0056     sbmlModel.id = strrep(strrep(strrep(model.description,<span class="string">'.'</span>,<span class="string">'_'</span>), filesep, <span class="string">'_'</span>), <span class="string">':'</span>,<span class="string">'_'</span>);
+0057 <span class="keyword">else</span>
+0058     sbmlModel.id = <span class="string">''</span>;
+0059 <span class="keyword">end</span>
+0060 <span class="comment">%POTENTIAL FUTURE BUG: Create temporary structs to speed things up.</span>
+0061 tmp_unit = Unit_create(sbmlModel.SBML_level, sbmlModel.SBML_version);
+0062 tmp_species = Species_create(sbmlModel.SBML_level, sbmlModel.SBML_version);
+0063 sbml_tmp_compartment = Compartment_create(sbmlModel.SBML_level, sbmlModel.SBML_version);
+0064 sbml_tmp_parameter = Parameter_create(sbmlModel.SBML_level, sbmlModel.SBML_version);
+0065 sbml_tmp_species_ref = SpeciesReference_create(sbmlModel.SBML_level, sbmlModel.SBML_version);
+0066 sbml_tmp_reaction = Reaction_create(sbmlModel.SBML_level, sbmlModel.SBML_version);
+0067 sbml_tmp_law = KineticLaw_create(sbmlModel.SBML_level, sbmlModel.SBML_version);
+0068 tmp_unit_definition = UnitDefinition_create(sbmlModel.SBML_level, sbmlModel.SBML_version);
+0069 
+0070 <span class="comment">%% Compartments</span>
+0071 <span class="keyword">if</span> ~exist(<span class="string">'compSymbolList'</span>,<span class="string">'var'</span>) || isempty(compSymbolList)
+0072     compSymbolList = {<span class="string">'c'</span>,<span class="string">'m'</span>,<span class="string">'v'</span>,<span class="string">'x'</span>,<span class="string">'e'</span>,<span class="string">'t'</span>,<span class="string">'g'</span>,<span class="string">'r'</span>,<span class="string">'n'</span>,<span class="string">'p'</span>,<span class="string">'l'</span>};
+0073     compNameList = {<span class="string">'Cytoplasm'</span>,<span class="string">'Mitochondrion'</span>,<span class="string">'Vacuole'</span>,<span class="string">'Peroxisome'</span>,<span class="string">'Extracellular'</span>,<span class="string">'Pool'</span>,<span class="string">'Golgi'</span>,<span class="string">'Endoplasmic_reticulum'</span>,<span class="string">'Nucleus'</span>,<span class="string">'Periplasm'</span>,<span class="string">'Lysosome'</span>};
+0074 <span class="keyword">end</span>
+0075 
+0076 <span class="comment">%Create and add the unit definition to the sbml model struct.</span>
+0077 tmp_unit_definition.id =  reaction_units;
+0078 <span class="comment">%The 4 following lists are in matched order for each unit.</span>
+0079 unit_kinds = {<span class="string">'mole'</span>,<span class="string">'gram'</span>,<span class="string">'second'</span>};
+0080 unit_exponents = [1 -1 -1];
+0081 unit_scales = [-3 0 0];
+0082 unit_multipliers = [1 1 1.0/60/60];
+0083 <span class="comment">%Add the units to the unit definition</span>
+0084 <span class="keyword">for</span> i = 1:size(unit_kinds, 2)
+0085     tmp_unit.kind = unit_kinds{ i };
+0086     tmp_unit.exponent = unit_exponents(i);
+0087     tmp_unit.scale = unit_scales(i);
+0088     tmp_unit.multiplier = unit_multipliers(i);
+0089     tmp_unit_definition = UnitDefinition_addUnit(tmp_unit_definition, tmp_unit);
+0090 <span class="keyword">end</span>
+0091 <span class="keyword">if</span> debug_function
+0092   <span class="keyword">if</span> ~isSBML_Unit(tmp_unit_definition)
+0093     error(<span class="string">'unit definition failed'</span>)
+0094   <span class="keyword">end</span>
+0095 <span class="keyword">end</span>
+0096 sbmlModel = Model_addUnitDefinition(sbmlModel, tmp_unit_definition);
+0097 
+0098 
+0099 <span class="comment">%List to hold the compartment ids.</span>
+0100 the_compartments = {};
+0101 <span class="comment">%separate metabolite and compartment</span>
+0102 [tokens tmp_met_struct] = regexp(model.mets,<span class="string">'(?&lt;met&gt;.+)\[(?&lt;comp&gt;.+)\]|(?&lt;met&gt;.+)\((?&lt;comp&gt;.+)\)'</span>,<span class="string">'tokens'</span>,<span class="string">'names'</span>);
+0103 <span class="keyword">for</span> (i=1:size(model.mets, 1))
+0104     tmp_notes=<span class="string">''</span>;
+0105     tmp_met = tmp_met_struct{i}.met;
+0106     <span class="comment">%Change id to correspond to SBML id specifications</span>
+0107     tmp_met = strcat(<span class="string">'M_'</span>, (tmp_met), <span class="string">'_'</span>, tmp_met_struct{i}.comp);
+0108     model.mets{ i } = <a href="#_sub1" class="code" title="subfunction str = formatForSBMLID(str)">formatForSBMLID</a>(tmp_met);
+0109     tmp_species.id = <a href="#_sub1" class="code" title="subfunction str = formatForSBMLID(str)">formatForSBMLID</a>(tmp_met);
+0110     tmp_species.compartment = <a href="#_sub1" class="code" title="subfunction str = formatForSBMLID(str)">formatForSBMLID</a>(tmp_met_struct{i}.comp);
+0111     <span class="keyword">if</span> isfield(model, <span class="string">'metNames'</span>)
+0112         tmp_species.name = (model.metNames{i});
+0113     <span class="keyword">end</span>
+0114     <span class="keyword">if</span> isfield(model, <span class="string">'metFormulas'</span>)
+0115         tmp_notes = [tmp_notes <span class="string">'&lt;p&gt;FORMULA: '</span> model.metFormulas{i} <span class="string">'&lt;/p&gt;'</span>];
+0116     <span class="keyword">end</span>
+0117     <span class="keyword">if</span> isfield(model, <span class="string">'metCharge'</span>)
+0118         <span class="comment">%NOTE: charge is being removed in SBML level 3</span>
+0119 <span class="comment">%         tmp_species.charge = model.metCharge(i);</span>
+0120 <span class="comment">%         tmp_species.isSetCharge = 1;</span>
+0121         tmp_notes = [tmp_notes <span class="string">'&lt;p&gt;CHARGE: '</span> num2str(model.metCharge(i)) <span class="string">'&lt;/p&gt;'</span>];
+0122     <span class="keyword">end</span>
+0123 
+0124 
+0125     <span class="keyword">if</span> ~isempty(tmp_notes)
+0126         tmp_species.notes = [<span class="string">'&lt;body xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;'</span> tmp_notes <span class="string">'&lt;/body&gt;'</span>];
+0127     <span class="keyword">end</span>
+0128     sbmlModel.species = [ sbmlModel.species tmp_species ];
+0129     <span class="comment">%This is where the compartment symbols are aggregated.</span>
+0130     the_compartments{ i } = tmp_species.compartment ;
+0131 <span class="keyword">end</span>
+0132 <span class="keyword">if</span> debug_function
+0133   <span class="keyword">for</span> (i = 1:size(sbmlModel.species, 2))
+0134     <span class="keyword">if</span> ~isSBML_Species(sbmlModel.species(i), sbmlLevel, sbmlVersion)
+0135       error(<span class="string">'SBML species failed to pass test'</span>)
+0136     <span class="keyword">end</span>
+0137   <span class="keyword">end</span>
+0138 <span class="keyword">end</span>
+0139 <span class="comment">%Add the unique compartments to the model struct.</span>
+0140 the_compartments = unique(the_compartments);
+0141 <span class="keyword">for</span> (i=1:size(the_compartments,2))
+0142     tmp_id = the_compartments{1,i};
+0143     tmp_symbol_index = find(strcmp(<a href="#_sub1" class="code" title="subfunction str = formatForSBMLID(str)">formatForSBMLID</a>(compSymbolList),tmp_id));
+0144     <span class="comment">%Check that symbol is in compSymbolList</span>
+0145     <span class="keyword">if</span> ~isempty(tmp_symbol_index)
+0146         tmp_name = compNameList{tmp_symbol_index};
+0147     <span class="keyword">else</span>
+0148         error([<span class="string">'Unknown compartment: '</span> tmp_id <span class="string">'. Be sure that '</span> tmp_id <span class="string">' is specified in compSymbolList and compNameList.'</span>])
+0149     <span class="keyword">end</span>
+0150     tmp_id = <a href="#_sub1" class="code" title="subfunction str = formatForSBMLID(str)">formatForSBMLID</a>(tmp_id);
+0151     sbml_tmp_compartment.id = tmp_id;
+0152     sbml_tmp_compartment.name = tmp_name;
+0153     sbmlModel = Model_addCompartment(sbmlModel, sbml_tmp_compartment);
+0154 <span class="keyword">end</span>
+0155 <span class="keyword">if</span> debug_function
+0156   <span class="keyword">for</span> (i = 1:size(sbmlModel.compartment, 2))
+0157     <span class="keyword">if</span> ~isSBML_Compartment(sbmlModel.compartment(i), sbmlLevel, sbmlVersion)
+0158       error(<span class="string">'SBML compartment failed to pass test'</span>)
+0159     <span class="keyword">end</span>
+0160   <span class="keyword">end</span>
+0161 <span class="keyword">end</span>
+0162 <span class="comment">%Add the reactions to the model struct.  Use the species references.</span>
+0163 sbml_tmp_parameter.units = reaction_units;
+0164 sbml_tmp_parameter.isSetValue = 1;
+0165 <span class="keyword">for</span> (i=1:size(model.rxns, 1))
+0166     tmp_id =  strcat(<span class="string">'R_'</span>, <a href="#_sub1" class="code" title="subfunction str = formatForSBMLID(str)">formatForSBMLID</a>(model.rxns{i}));
+0167     model.rxns{i} = tmp_id;
+0168     met_idx = find(model.S(:, i));
+0169     sbml_tmp_reaction.notes = <span class="string">''</span>;
+0170     <span class="comment">%Reset the fields that have been filled.</span>
+0171     sbml_tmp_reaction.reactant = [];
+0172     sbml_tmp_reaction.product = [];
+0173     sbml_tmp_reaction.kineticLaw = [];
+0174     sbml_tmp_reaction.id = tmp_id;
+0175     <span class="keyword">if</span> isfield(model, <span class="string">'rxnNames'</span>)
+0176         sbml_tmp_reaction.name = model.rxnNames{i};
+0177     <span class="keyword">end</span>
+0178     <span class="keyword">if</span> isfield(model, <span class="string">'rev'</span>)
+0179         sbml_tmp_reaction.reversible = model.rev(i);
+0180     <span class="keyword">end</span>
+0181     sbml_tmp_law.parameter = [];
+0182     sbml_tmp_law.formula = <span class="string">'FLUX_VALUE'</span>;
+0183     sbml_tmp_parameter.id = <span class="string">'LOWER_BOUND'</span>;
+0184     sbml_tmp_parameter.value = model.lb(i);
+0185     sbml_tmp_law.parameter = [ sbml_tmp_law.parameter sbml_tmp_parameter ];
+0186     sbml_tmp_parameter.id = <span class="string">'UPPER_BOUND'</span>;
+0187     sbml_tmp_parameter.value = model.ub(i);
+0188     sbml_tmp_law.parameter = [ sbml_tmp_law.parameter sbml_tmp_parameter ];
+0189     sbml_tmp_parameter.id = <span class="string">'FLUX_VALUE'</span>;
+0190     sbml_tmp_parameter.value = 0;
+0191     sbml_tmp_law.parameter = [ sbml_tmp_law.parameter sbml_tmp_parameter ];
+0192     sbml_tmp_parameter.id = <span class="string">'OBJECTIVE_COEFFICIENT'</span>;
+0193     sbml_tmp_parameter.value = model.c(i);
+0194     sbml_tmp_law.parameter = [ sbml_tmp_law.parameter sbml_tmp_parameter ];
+0195     sbml_tmp_reaction.kineticLaw = sbml_tmp_law;
+0196     <span class="comment">%Add in other notes</span>
+0197     tmp_note = <span class="string">''</span>;
+0198     <span class="keyword">if</span> isfield(model, <span class="string">'grRules'</span>)
+0199         tmp_note = [tmp_note <span class="string">'&lt;p&gt;GENE_ASSOCIATION: '</span> model.grRules{i} <span class="string">'&lt;/p&gt;'</span> ];
+0200     <span class="keyword">end</span>
+0201     <span class="keyword">if</span> isfield(model, <span class="string">'subSystems'</span>)
+0202         tmp_note = [ tmp_note <span class="string">' &lt;p&gt;SUBSYSTEM: '</span> model.subSystems{i} <span class="string">'&lt;/p&gt;'</span>];
+0203     <span class="keyword">end</span>
+0204     <span class="keyword">if</span> isfield(model, <span class="string">'rxnECNumbers'</span>)
+0205         tmp_note = [ tmp_note <span class="string">' &lt;p&gt;EC Number: '</span> model.rxnECNumbers{i} <span class="string">'&lt;/p&gt;'</span>];
+0206     <span class="keyword">end</span>
+0207     <span class="keyword">if</span> isfield(model, <span class="string">'confidenceScores'</span>)
+0208         tmp_note = [ tmp_note <span class="string">' &lt;p&gt;Confidence Level: '</span> model.confidenceScores{i} <span class="string">'&lt;/p&gt;'</span>];
+0209     <span class="keyword">end</span>
+0210     <span class="keyword">if</span> isfield(model, <span class="string">'rxnReferences'</span>)
+0211         tmp_note = [ tmp_note <span class="string">' &lt;p&gt;AUTHORS: '</span> model.rxnReferences{i} <span class="string">'&lt;/p&gt;'</span>];
+0212     <span class="keyword">end</span>
+0213     <span class="keyword">if</span> isfield(model, <span class="string">'rxnNotes'</span>)
+0214         tmp_note = [ tmp_note <span class="string">' &lt;p&gt;'</span> model.rxnNotes{i} <span class="string">'&lt;/p&gt;'</span>];
+0215     <span class="keyword">end</span>
+0216     <span class="keyword">if</span> ~isempty(tmp_note)
+0217         sbml_tmp_reaction.notes = [<span class="string">'&lt;body xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;'</span> tmp_note <span class="string">'&lt;/body&gt;'</span>];
+0218     <span class="keyword">end</span>
+0219     <span class="comment">%Add in the reactants and products</span>
+0220     <span class="keyword">for</span> (j_met=1:size(met_idx,1))
+0221         tmp_idx = met_idx(j_met,1);
+0222         sbml_tmp_species_ref.species = model.mets{tmp_idx};
+0223         met_stoich = model.S(tmp_idx, i);
+0224         sbml_tmp_species_ref.stoichiometry = abs(met_stoich);
+0225         <span class="keyword">if</span> (met_stoich &gt; 0)
+0226             sbml_tmp_reaction.product = [ sbml_tmp_reaction.product sbml_tmp_species_ref ];
+0227         <span class="keyword">else</span>
+0228             sbml_tmp_reaction.reactant = [ sbml_tmp_reaction.reactant sbml_tmp_species_ref];
+0229         <span class="keyword">end</span>
+0230     <span class="keyword">end</span>
+0231     sbmlModel.reaction = [ sbmlModel.reaction sbml_tmp_reaction ];
+0232 <span class="keyword">end</span>
+0233 <span class="keyword">if</span> debug_function
+0234   <span class="keyword">for</span> (i = 1:size(sbmlModel.reaction, 2))
+0235     <span class="keyword">if</span> ~isSBML_Reaction(sbmlModel.reaction(i), sbmlLevel, sbmlVersion)
+0236       error(<span class="string">'SBML reaction failed to pass test'</span>)
+0237     <span class="keyword">end</span>
+0238   <span class="keyword">end</span>
+0239 <span class="keyword">end</span>
+0240 <span class="comment">%% Format For SBML</span>
+0241 <a name="_sub1" href="#_subfunctions" class="code">function str = formatForSBMLID(str)</a>
+0242 str = strrep(str,<span class="string">'-'</span>,<span class="string">'_DASH_'</span>);
+0243 str = strrep(str,<span class="string">'/'</span>,<span class="string">'_FSLASH_'</span>);
+0244 str = strrep(str,<span class="string">'\'</span>,<span class="string">'_BSLASH_'</span>);
+0245 str = strrep(str,<span class="string">'('</span>,<span class="string">'_LPAREN_'</span>);
+0246 str = strrep(str,<span class="string">')'</span>,<span class="string">'_RPAREN_'</span>);
+0247 str = strrep(str,<span class="string">'['</span>,<span class="string">'_LSQBKT_'</span>);
+0248 str = strrep(str,<span class="string">']'</span>,<span class="string">'_RSQBKT_'</span>);
+0249 str = strrep(str,<span class="string">','</span>,<span class="string">'_COMMA_'</span>);
+0250 str = strrep(str,<span class="string">'.'</span>,<span class="string">'_PERIOD_'</span>);
+0251 str = strrep(str,<span class="string">''''</span>,<span class="string">'_APOS_'</span>);
+0252 str = regexprep(str,<span class="string">'\(e\)$'</span>,<span class="string">'_e'</span>);
+0253 str = strrep(str,<span class="string">'&amp;'</span>,<span class="string">'&amp;amp;'</span>);
+0254 str = strrep(str,<span class="string">'&lt;'</span>,<span class="string">'&amp;lt;'</span>);
+0255 str = strrep(str,<span class="string">'&gt;'</span>,<span class="string">'&amp;gt;'</span>);
+0256 str = strrep(str,<span class="string">'&quot;'</span>,<span class="string">'&amp;quot;'</span>);</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

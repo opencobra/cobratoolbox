@@ -1,0 +1,148 @@
+<style type='text/css'>  
+/*/*/ /*<![CDATA[*/ 
+@import "style.css"; 
+/*]]>*/ /* */ 
+</style>  
+
+<h2 style="margin-top: 1em"><a name="TOC"></a>SBMLToolbox 4.1 API </h2>
+
+<p> This manual describes the application programming interface (API) of
+SBMLToolbox, an open-source (LGPL) MATLAB/Octave toolbox for writing and
+manipulating content in the Systems Biology Markup Language (SBML). This
+version of SBMLToolbox supports all releases of SBML up through <a
+href="http://sbml.org/Documents/Specifications">Level&nbsp;3 Version&nbsp;1
+Core Release&nbsp;1</a>. For more information about SBML, please visit <a
+target="_blank" href="http://sbml.org">http://sbml.org</a> on the Internet.
+</p>
+
+<p> All functions can be used in both the MATLAB and Octave environments.</p>
+
+<h3> Installation</h3>
+<ul>
+    <li><a href="installation.html">Installation</a></li>
+</ul>
+
+<h3> Functions</h3>
+
+        
+<ul>
+<li><a href="known_issues.html">Known issues</a></li>
+
+<li><a href="general.html#General">General functions</a></li>
+<li><a href="accessmodel.html#Access">Accessing the model</a></li>
+<li><a href="convenience.html#Conv">Convenience functions</a></li>
+<li><a href="simulation.html#Simulation">Simulation functions</a></li>
+<li><a href="validation.html#Valid">Validation functions</a></li>
+</ul>
+
+
+<h3> MATLAB_SBML Structure Functions</h3>
+<ul>
+<li><a href="structure.html#General">General functions</a></li>
+<li><a href="structureFields.html">Fieldname functions</a></li>
+<li><a href="structure-functions/algebraicRule.html"> AlgebraicRule </a></li>
+<li><a href="structure-functions/assignmentRule.html"> AssignmentRule </a></li>
+<li><a href="structure-functions/compartment.html"> Compartment </a></li>
+<li><a href="structure-functions/compartmentType.html"> CompartmentType </a></li>
+<li><a href="structure-functions/compartmentVolumeRule.html"> CompartmentVolumeRule </a></li>
+<li><a href="structure-functions/constraint.html"> Constraint </a></li>
+<li><a href="structure-functions/delay.html"> Delay </a></li>
+<li><a href="structure-functions/event.html"> Event </a></li>
+<li><a href="structure-functions/eventAssignment.html"> EventAssignment </a></li>
+<li><a href="structure-functions/functionDefinition.html"> FunctionDefinition </a></li>
+<li><a href="structure-functions/initialAssignment.html"> InitialAssignment </a></li>
+<li><a href="structure-functions/kineticLaw.html"> KineticLaw </a></li>
+<li><a href="structure-functions/localParameter.html"> LocalParameter </a></li>
+<li><a href="structure-functions/model.html"> Model </a></li>
+<li><a href="structure-functions/modifierSpeciesReference.html"> ModifierSpeciesReference </a></li>
+<li><a href="structure-functions/parameter.html"> Parameter </a></li>
+<li><a href="structure-functions/parameterRule.html"> ParameterRule </a></li>
+<li><a href="structure-functions/priority.html"> Priority </a></li>
+<li><a href="structure-functions/rateRule.html"> RateRule </a></li>
+<li><a href="structure-functions/reaction.html"> Reaction </a></li>
+<li><a href="structure-functions/rule.html"> Rule </a></li>
+<li><a href="structure-functions/species.html"> Species </a></li>
+<li><a href="structure-functions/speciesConcentrationRule.html"> SpeciesConcentrationRule </a></li>
+<li><a href="structure-functions/speciesReference.html"> SpeciesReference </a></li>
+<li><a href="structure-functions/speciesType.html"> SpeciesType </a></li>
+<li><a href="structure-functions/stoichiometryMath.html"> StoichiometryMath </a></li>
+<li><a href="structure-functions/trigger.html"> Trigger </a></li>
+<li><a href="structure-functions/unit.html"> Unit </a></li>
+<li><a href="structure-functions/unitDefinition.html"> UnitDefinition </a></li>
+</ul>
+
+
+<h3> MATLAB_SBML Structures</h3>
+<p> The following sections detail the structures of individual component types.</p>
+<ul>
+<li><a href="structure/algebraicrule.html"> AlgebraicRule </a></li>
+<li><a href="structure/assignmentrule.html"> AssignmentRule </a></li>
+<li><a href="structure/compartment.html"> Compartment </a></li>
+<li><a href="structure/compartmenttype.html"> CompartmentType </a></li>
+<li><a href="structure/compartmentvolumerule.html"> CompartmentVolumeRule </a></li>
+<li><a href="structure/constraint.html"> Constraint </a></li>
+<li><a href="structure/delay.html"> Delay </a></li>
+<li><a href="structure/event.html"> Event </a></li>
+<li><a href="structure/eventassignment.html"> EventAssignment </a></li>
+<li><a href="structure/functiondefinition.html"> FunctionDefinition </a></li>
+<li><a href="structure/initialassignment.html"> InitialAssignment </a></li>
+<li><a href="structure/kineticlaw.html"> KineticLaw </a></li>
+<li><a href="structure/localparameter.html"> LocalParameter </a></li>
+<li><a href="structure/model.html"> Model </a></li>
+<li><a href="structure/modifierspeciesreference.html"> ModifierSpeciesReference </a></li>
+<li><a href="structure/parameter.html"> Parameter </a></li>
+<li><a href="structure/parameterrule.html"> ParameterRule </a></li>
+<li><a href="structure/priority.html"> Priority </a></li>
+<li><a href="structure/raterule.html"> RateRule </a></li>
+<li><a href="structure/reaction.html"> Reaction </a></li>
+<li><a href="structure/species.html"> Species </a></li>
+<li><a href="structure/speciesconcentrationrule.html"> SpeciesConcentrationRule </a></li>
+<li><a href="structure/speciesreference.html"> SpeciesReference </a></li>
+<li><a href="structure/speciestype.html"> SpeciesType </a></li>
+<li><a href="structure/stoichiometrymath.html"> StoichiometryMath </a></li>
+<li><a href="structure/trigger.html"> Trigger </a></li>
+<li><a href="structure/unit.html"> Unit </a></li>
+<li><a href="structure/unitdefinition.html"> UnitDefinition </a></li>
+</ul>
+
+<h3> Level 3 FBC package</h3>
+<p> This version of SBMLToolbox (4.1.0) includes support for creating and manipulating structures representing the SBML L3 Flux Boubd Constraints (fbc) package.</p>
+<ul>
+    <li><a href="fbc_package/fbcpackage.html"> General Functions </a></li>
+    <li><a href="fbc_package/fbcValidation.html"> Validation </a></li>
+    <li> MATLAB_SBML_FBC Structure Functions </li>
+    <ul>
+        <li><a href="fbc_package/fbcStructureFields.html"> Fieldname functions </a></li>
+        <li><a href="fbc_package/structure-functions/fbcmodel.html"> FBC_Model </a></li>
+        <li><a href="fbc_package/structure-functions/fbcspecies.html"> FBC_Species </a></li>
+        <li><a href="fbc_package/structure-functions/fluxBound.html"> FluxBound </a></li>
+        <li><a href="fbc_package/structure-functions/fluxObjective.html"> FluxObjective </a></li>
+        <li><a href="fbc_package/structure-functions/objective.html"> Objective </a></li>
+    </ul>
+    <li> MATLAB_SBML_FBC Structures </li>
+    <ul>
+        <li><a href="fbc_package/structure/fbcmodel.html"> FBC_Model </a></li>
+        <li><a href="fbc_package/structure/fbcspecies.html"> FBC_Species </a></li>
+        <li><a href="fbc_package/structure/fluxBound.html"> FluxBound </a></li>
+        <li><a href="fbc_package/structure/fluxObjective.html"> FluxObjective </a></li>
+        <li><a href="fbc_package/structure/objective.html"> Objective </a></li>
+    </ul>
+</ul>
+
+
+<h3 style="margin-top: 2em"> Acknowledgements</h3>
+
+<p>
+This and other projects of the SBML Team have been supported by the
+following organizations: the National Institutes of Health (USA) under
+grants R01 GM070923 and R01 GM077671; the International Joint Research
+Program of NEDO (Japan); the JST ERATO-SORST Program (Japan); the Japanese
+Ministry of Agriculture; the Japanese Ministry of Education, Culture,
+Sports, Science and Technology; the BBSRC e-Science Initiative (UK); the
+DARPA IPTO Bio-Computation Program (USA); the Army Research Office's
+Institute for Collaborative Biotechnologies (USA); the Air Force Office of
+Scientific Research (USA); the California Institute of Technology (USA);
+the University of Hertfordshire (UK); the Molecular Sciences Institute
+(USA); the Systems Biology Institute (Japan); and Keio University (Japan).
+</p>
+

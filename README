@@ -1,0 +1,13 @@
+For convenience, we provide the SBMLToolbox 4.1.0, and glpk_mex in external/toolboxes for Mac OS X 10.6 or later (64-bit), GNU/Linux Ubuntu 10.0 (64-bit), and Microsoft Windows 7 (64-bit).  If you do not wish to use these items please delete the directories.  If you require these external libraries for other architectures please ask google or visit their respective websites.
+
+To read / write SBML files you must install libSBML 5.5.0 from here: http://sourceforge.net/projects/sbml/files/libsbml/
+
+From MATLAB, run
+  initCobraToolbox
+
+
+NOTE: If you do not have gurobi_mex and tomlab installed on your machine, you will get some warnings and some errors.  The COBRA Toolbox will try to use glpk if it cannot find gurobi for LP / MILP.  To solve any NLP problems you need tomlab_snopt.
+
+After running initCobraToolbox, run
+  testAll
+to see what functions will work with your current configuration.  Note, it is likely that one or more functions will not work unless you have  tomlab with snopt installed.

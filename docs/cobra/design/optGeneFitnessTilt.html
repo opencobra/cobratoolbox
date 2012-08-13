@@ -1,0 +1,202 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of optGeneFitnessTilt</title>
+  <meta name="keywords" content="optGeneFitnessTilt">
+  <meta name="description" content="optGeneFitnessTilt GeneOptFitness the fitness function">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html design -->
+<h1>optGeneFitnessTilt
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>optGeneFitnessTilt GeneOptFitness the fitness function</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [val] = optGeneFitnessTilt(rxn_vector_matrix, model, targetRxn, rxnListInput, isGeneList) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">optGeneFitnessTilt GeneOptFitness the fitness function
+
+ [val] = optGeneFitnessTilt(rxn_vector_matrix, model, targetRxn, rxnListInput, isGeneList)
+
+INPUTS
+ rxn_vector_matrix     
+ model                 
+ targetRxn             
+ rxnListInput          
+ isGeneList            
+
+OUTPUT
+ val                   fitness value</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/deleteModelGenes.html" class="code" title="function [model,hasEffect,constrRxnNames,deletedGenes] = deleteModelGenes(model,geneList,downRegFraction)">deleteModelGenes</a>	deleteModelGenes Delete one or more genes and constrain the reactions</li><li><a href="augmentBOF.html" class="code" title="function [model, rxn_name] = augmentBOF(model,targetRxn,epsilon)">augmentBOF</a>	augmentObjectiveFunction adjusts the objective function to eliminate</li><li><a href="../../cobra/solvers/solveCobraLPCPLEX.html" class="code" title="function [solution,LPProblem]=solveCobraLPCPLEX(LPProblem,printLevel,basisReuse,conflictResolve,contFunctName,minNorm)">solveCobraLPCPLEX</a>	[solution,LPProblem]=solveCobraLPCPLEX(LPProblem,printLevel,basisReuse,conflictResolve,contFunctName,minNorm)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="optGene.html" class="code" title="function [x, population, scores, optGeneSol] = optGene(model, targetRxn, substrateRxn, generxnList, MaxKOs, population)">optGene</a>	OPTGENE implements the optgene algorithm.</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function [value] =  memoize(gene_vector, value)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [val] = optGeneFitnessTilt(rxn_vector_matrix, model, targetRxn, rxnListInput, isGeneList)</a>
+0002 <span class="comment">%optGeneFitnessTilt GeneOptFitness the fitness function</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% [val] = optGeneFitnessTilt(rxn_vector_matrix, model, targetRxn, rxnListInput, isGeneList)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%INPUTS</span>
+0007 <span class="comment">% rxn_vector_matrix</span>
+0008 <span class="comment">% model</span>
+0009 <span class="comment">% targetRxn</span>
+0010 <span class="comment">% rxnListInput</span>
+0011 <span class="comment">% isGeneList</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%OUTPUT</span>
+0014 <span class="comment">% val                   fitness value</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">%</span>
+0017 <span class="keyword">global</span> MaxKnockOuts
+0018 <span class="comment">%size(rxn_vector_matrix)</span>
+0019 
+0020 popsize = size(rxn_vector_matrix,1);
+0021 val = zeros(1,popsize);
+0022 
+0023 <span class="keyword">for</span> i = 1:popsize
+0024     rxn_vector = rxn_vector_matrix(i,:);
+0025     rxnList = rxnListInput(logical(rxn_vector));
+0026 
+0027     
+0028     <span class="comment">%see if we've done this before</span>
+0029     val_temp = <a href="#_sub1" class="code" title="subfunction [value] =  memoize(gene_vector, value)">memoize</a>(rxn_vector);
+0030     <span class="keyword">if</span> ~ isempty(val_temp)
+0031         val(i) = val_temp;
+0032         <span class="keyword">continue</span>;
+0033     <span class="keyword">end</span>
+0034    
+0035     <span class="comment">% check to see if mutations is above the max number allowed</span>
+0036     nummutations = sum(rxn_vector);
+0037     <span class="keyword">if</span> nummutations &gt; MaxKnockOuts
+0038         <span class="keyword">continue</span>;
+0039     <span class="keyword">end</span>
+0040     
+0041     <span class="comment">% generate knockout.</span>
+0042     <span class="keyword">if</span> isGeneList
+0043         modelKO = <a href="../../cobra/deleteModelGenes.html" class="code" title="function [model,hasEffect,constrRxnNames,deletedGenes] = deleteModelGenes(model,geneList,downRegFraction)">deleteModelGenes</a>(model, rxnList);
+0044     <span class="keyword">else</span> <span class="comment">% is reaction list</span>
+0045         [isValidRxn,removeInd] = ismember(rxnList,model.rxns);
+0046         removeInd = removeInd(isValidRxn);
+0047         modelKO = model;
+0048         modelKO.ub(removeInd) = 0;
+0049         modelKO.lb(removeInd) = 0;
+0050     <span class="keyword">end</span>
+0051  <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0052  <span class="comment">% augment BOF (tilt)</span>
+0053  [modelKO] = <a href="augmentBOF.html" class="code" title="function [model, rxn_name] = augmentBOF(model,targetRxn,epsilon)">augmentBOF</a>(modelKO, targetRxn, .001);
+0054  
+0055  <span class="comment">% find growthrate</span>
+0056     <span class="keyword">if</span> exist(<span class="string">'LPBasis'</span>, <span class="string">'var'</span>)
+0057         modelKO.LPBasis = LPBasis;
+0058     <span class="keyword">end</span>
+0059     
+0060     [slnKO, LPOUT] = <a href="../../cobra/solvers/solveCobraLPCPLEX.html" class="code" title="function [solution,LPProblem]=solveCobraLPCPLEX(LPProblem,printLevel,basisReuse,conflictResolve,contFunctName,minNorm)">solveCobraLPCPLEX</a>(modelKO, 0,1);
+0061     LPBasis = LPOUT.LPBasis;
+0062     growthrate = slnKO.obj;
+0063     [tmp,tar_loc] = ismember(targetRxn,modelKO.rxns);
+0064     minProdAtSetGR = slnKO.full(tar_loc);
+0065     
+0066     <span class="comment">% check to ensure that GR is above a certain value</span>
+0067     <span class="keyword">if</span> growthrate &lt; .10
+0068         <span class="keyword">continue</span>;
+0069     <span class="keyword">end</span>
+0070     
+0071 <span class="comment">% %    display('second optimization');</span>
+0072 <span class="comment">%     % find the lowesest possible production rate (a hopefully high number)</span>
+0073 <span class="comment">%     % at the max growth rate minus some set factor gamma (a growth rate slightly</span>
+0074 <span class="comment">%     % smaller than the max). A positive value will eliminate solutions where the</span>
+0075 <span class="comment">%     % production envelope has a vertical line at the max GR, a &quot;non-unique&quot;</span>
+0076 <span class="comment">%     % solution. Set value to zero if &quot;non-unique&quot; solutions are not an issue.</span>
+0077 <span class="comment">%     gamma = 0.01; % proportional to Grwoth Rate (hr-1), a value around 0.5 max.</span>
+0078 <span class="comment">%</span>
+0079 <span class="comment">%     %find indicies of important vectors</span>
+0080 <span class="comment">%     indBOF = find(modelKO.c);</span>
+0081 <span class="comment">%     indTar = findRxnIDs(modelKO, targetRxn);</span>
+0082 <span class="comment">%     % generate a model with a fixed max KO growth rate</span>
+0083 <span class="comment">%     modelKOsetGR = modelKO;</span>
+0084 <span class="comment">%     modelKOsetGR.lb(indBOF) = growthrate - gamma; % this growth rate is required as lb.</span>
+0085 <span class="comment">%     modelKOsetGR.c = zeros(size(modelKO.c));</span>
+0086 <span class="comment">%     modelKOsetGR.c(indTar) = -1; % minimize for this variable b/c we want to look at the very minimum production.</span>
+0087 <span class="comment">%</span>
+0088 <span class="comment">%     % find the minimum production rate for the targeted reaction.</span>
+0089 <span class="comment">%</span>
+0090 <span class="comment">% %     slnKOsetGR = optimizeCbModel(modelKOsetGR);</span>
+0091 <span class="comment">% %     minProdAtSetGR1 = -slnKOsetGR.f;  % This should be a negative value b/c of the minimization setup, so -1 is necessary.</span>
+0092 <span class="comment">%</span>
+0093 <span class="comment">%     if exist('LPBasis2', 'var')</span>
+0094 <span class="comment">%         modelKOsetGR.LPBasis = LPBasis2;</span>
+0095 <span class="comment">%     end</span>
+0096 <span class="comment">%</span>
+0097 <span class="comment">%     [slnKOsetGR, LPOUT2] = solveCobraLPCPLEX(modelKOsetGR, 0,1);</span>
+0098 <span class="comment">%     LPBasis2 = LPOUT2.LPBasis;</span>
+0099 <span class="comment">%     minProdAtSetGR = -slnKOsetGR.obj;</span>
+0100 
+0101     
+0102     <span class="comment">% objective function for optGene algorithm = val (needs to be a negative value, since it is</span>
+0103     <span class="comment">% a minimization)</span>
+0104     val(i) = -minProdAtSetGR; 
+0105     <span class="comment">% penalty for a greater number of mutations</span>
+0106     
+0107     <span class="comment">%val(i) = -minProdAtSetGR * (.98^nummutations);</span>
+0108     
+0109     <span class="comment">% select best substrate-specific productivity</span>
+0110     <span class="comment">% val(i) = -minProdAtSetGR * (.98^nummutations) * growthrate;</span>
+0111 
+0112     <span class="comment">% check to prevent very small values from being considerered improvments</span>
+0113     <span class="keyword">if</span> val(i) &gt; -1e-3
+0114         val(i) = 0;
+0115     <span class="keyword">end</span>
+0116 
+0117     <a href="#_sub1" class="code" title="subfunction [value] =  memoize(gene_vector, value)">memoize</a>(rxn_vector, val(i));
+0118 <span class="keyword">end</span>
+0119 
+0120 <span class="keyword">return</span>;
+0121 
+0122 
+0123 
+0124 <span class="comment">%% Memoize</span>
+0125 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0126 <span class="comment">%%%%% MEMOIZE %%%%%%%%%%%%%%%%%%%%%</span>
+0127 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0128 <span class="comment">% internal function to speed things up.</span>
+0129 
+0130 <a name="_sub1" href="#_subfunctions" class="code">function [value] =  memoize(gene_vector, value)</a>
+0131 <span class="keyword">global</span> HTABLE
+0132 hashkey = num2str(gene_vector);
+0133 hashkey = strrep(hashkey,<span class="string">' '</span>,<span class="string">''</span>); <span class="comment">% cut out white space from string (more space efficient).</span>
+0134 
+0135 <span class="keyword">if</span> nargin == 1
+0136     value = HTABLE.get(hashkey);
+0137     <span class="keyword">return</span>;
+0138 <span class="keyword">else</span>
+0139     <span class="keyword">if</span> HTABLE.size() &gt; 50000
+0140         HTABLE = java.util.Hashtable;  <span class="comment">%reset the hashtable if more than 50,000 entries.</span>
+0141     <span class="keyword">end</span>
+0142     HTABLE.put(hashkey, value);
+0143     value = [];
+0144     <span class="keyword">return</span>;
+0145 <span class="keyword">end</span>
+0146 <span class="keyword">return</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

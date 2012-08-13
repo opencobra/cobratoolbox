@@ -1,0 +1,382 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of createBilevelMILPproblem</title>
+  <meta name="keywords" content="createBilevelMILPproblem">
+  <meta name="description" content="createBilevelMILPProblem Creates the necessary matrices and vectors to solve a bilevel MILP with designated inner">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html design -->
+<h1>createBilevelMILPproblem
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>createBilevelMILPProblem Creates the necessary matrices and vectors to solve a bilevel MILP with designated inner</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function bilevelMILPproblem = createBilevelMILPproblem(model,cLinear,cInteger,selRxns,selRxnMatch,constrOpt,measOpt,options,selPrevSol) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">createBilevelMILPProblem Creates the necessary matrices and vectors to solve a bilevel MILP with designated inner
+and outer problem objective functions
+
+ bilevelMILPproblem = createBilevelMILPProblem(model,cLinear,cInteger,selRxns,...
+                                               selRxnMatch,constrOpt,measOpt,options,selPrevSol);
+
+INPUTS
+ model        Model in irreversible format
+ cLinear       Objective for linear part of the MILP problem (i.e. for fluxes)
+ cInteger      Objective for integer part of the MILP problem
+ selRxns       Reactions that participate in the integer part (e.g. ones
+               that can be deleted) (in the form [0 0 1 0 0 1 0 1 1 0 1])
+ selRxnMatch  Matching of the forward and reverse parts
+ constrOpt    Constraint options (optional)
+  rxnInd
+  values
+  sense
+ measOpt      Measured flux options (optional)
+  rxnSel
+  values
+  weights
+ options      General options
+  vMax         Maximal/minimal value for cont variables
+  numDel       Number of deletions
+  numDelSense  # of ko &lt;=/=/&gt;= K (L/E/G)
+ selPrevSol   Previous solutions (optional)
+
+OUTPUT
+ bilevelMILPproblem
+   A             LHS matrix 
+   b             RHS
+   c             Objective
+   csense        Constraint types
+   lb            Lower bounds
+   ub            Upper bounds
+   vartype       Variable types
+   contSolInd    Allows selecting the continuous solution (i.e. fluxes)
+   intsSolInd    Allows selecting the integer solution (i.e. what
+                 reactions are used)
+
+ Outputs suitable for feeding to feeding into a MILP solver
+
+ Variables are in order: v(n), y(n_int), u_eq(m), u_u(n), u_z(n_int) u_b(n_ic) s_mm(n_m) s_mp(n_m)
+
+ 1/22/07 Add new interface to allow inclusion in the COBRA Toolbox
+ 
+ 5/24/05 Fixed problem with reversible measured fluxes - requires changing
+ the interpretation of the sel_m input vector (can now have both positive
+ &amp; negative entries) MH
+
+ 5/27/05 Added ability to rule out particular integer solutions (i.e.
+ existing solutions) MH
+
+ 6/10/05 Added ability to delimit fluxes to a certain range
+
+ Markus Herrgard 5/27/05</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/tools/selMatrix.html" class="code" title="function selMat = selMatrix(selVec)">selMatrix</a>	selMatrix Create selection matrix from a selection vector</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/OMNI.html" class="code" title="function [OMNISol,bilevelMILPProblem] = OMNI(model, selectedRxnList, options, constrOpt, measOpt, prevSolutions, verbFlag)">OMNI</a>	</li><li><a href="OptKnock.html" class="code" title="function [optKnockSol,bilevelMILPproblem] = OptKnock(model,selectedRxnList,options,constrOpt,prevSolutions,verbFlag,solutionFileNameTmp)">OptKnock</a>	OptKnock Run OptKnock in the most general form</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function bilevelMILPproblem = createBilevelMILPproblem(model,cLinear,cInteger,selRxns,</a><span class="keyword">...</span>
+0002     selRxnMatch,constrOpt,measOpt,options,selPrevSol)
+0003 <span class="comment">%createBilevelMILPProblem Creates the necessary matrices and vectors to solve a bilevel MILP with designated inner</span>
+0004 <span class="comment">%and outer problem objective functions</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% bilevelMILPproblem = createBilevelMILPProblem(model,cLinear,cInteger,selRxns,...</span>
+0007 <span class="comment">%                                               selRxnMatch,constrOpt,measOpt,options,selPrevSol);</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%INPUTS</span>
+0010 <span class="comment">% model        Model in irreversible format</span>
+0011 <span class="comment">% cLinear       Objective for linear part of the MILP problem (i.e. for fluxes)</span>
+0012 <span class="comment">% cInteger      Objective for integer part of the MILP problem</span>
+0013 <span class="comment">% selRxns       Reactions that participate in the integer part (e.g. ones</span>
+0014 <span class="comment">%               that can be deleted) (in the form [0 0 1 0 0 1 0 1 1 0 1])</span>
+0015 <span class="comment">% selRxnMatch  Matching of the forward and reverse parts</span>
+0016 <span class="comment">% constrOpt    Constraint options (optional)</span>
+0017 <span class="comment">%  rxnInd</span>
+0018 <span class="comment">%  values</span>
+0019 <span class="comment">%  sense</span>
+0020 <span class="comment">% measOpt      Measured flux options (optional)</span>
+0021 <span class="comment">%  rxnSel</span>
+0022 <span class="comment">%  values</span>
+0023 <span class="comment">%  weights</span>
+0024 <span class="comment">% options      General options</span>
+0025 <span class="comment">%  vMax         Maximal/minimal value for cont variables</span>
+0026 <span class="comment">%  numDel       Number of deletions</span>
+0027 <span class="comment">%  numDelSense  # of ko &lt;=/=/&gt;= K (L/E/G)</span>
+0028 <span class="comment">% selPrevSol   Previous solutions (optional)</span>
+0029 <span class="comment">%</span>
+0030 <span class="comment">%OUTPUT</span>
+0031 <span class="comment">% bilevelMILPproblem</span>
+0032 <span class="comment">%   A             LHS matrix</span>
+0033 <span class="comment">%   b             RHS</span>
+0034 <span class="comment">%   c             Objective</span>
+0035 <span class="comment">%   csense        Constraint types</span>
+0036 <span class="comment">%   lb            Lower bounds</span>
+0037 <span class="comment">%   ub            Upper bounds</span>
+0038 <span class="comment">%   vartype       Variable types</span>
+0039 <span class="comment">%   contSolInd    Allows selecting the continuous solution (i.e. fluxes)</span>
+0040 <span class="comment">%   intsSolInd    Allows selecting the integer solution (i.e. what</span>
+0041 <span class="comment">%                 reactions are used)</span>
+0042 <span class="comment">%</span>
+0043 <span class="comment">% Outputs suitable for feeding to feeding into a MILP solver</span>
+0044 <span class="comment">%</span>
+0045 <span class="comment">% Variables are in order: v(n), y(n_int), u_eq(m), u_u(n), u_z(n_int) u_b(n_ic) s_mm(n_m) s_mp(n_m)</span>
+0046 <span class="comment">%</span>
+0047 <span class="comment">% 1/22/07 Add new interface to allow inclusion in the COBRA Toolbox</span>
+0048 <span class="comment">%</span>
+0049 <span class="comment">% 5/24/05 Fixed problem with reversible measured fluxes - requires changing</span>
+0050 <span class="comment">% the interpretation of the sel_m input vector (can now have both positive</span>
+0051 <span class="comment">% &amp; negative entries) MH</span>
+0052 <span class="comment">%</span>
+0053 <span class="comment">% 5/27/05 Added ability to rule out particular integer solutions (i.e.</span>
+0054 <span class="comment">% existing solutions) MH</span>
+0055 <span class="comment">%</span>
+0056 <span class="comment">% 6/10/05 Added ability to delimit fluxes to a certain range</span>
+0057 <span class="comment">%</span>
+0058 <span class="comment">% Markus Herrgard 5/27/05</span>
+0059 
+0060 <span class="comment">% Convert inputs</span>
+0061 
+0062 <span class="comment">% clp           Objective for continuous variables in the outer problem</span>
+0063 <span class="comment">% cip           Objective for integer variables in the outer problem</span>
+0064 <span class="comment">% S             Stoichiometric matrix (or equality constraint matrix)</span>
+0065 <span class="comment">% ub            Upper bounds for inner problem</span>
+0066 <span class="comment">% c             Objective for inner problem</span>
+0067 <span class="comment">% sel_int       Varibles (inner) corresponding to the integers (in the form [0 0 1 0 0 1 0 0 0 1 1 0 1 1])</span>
+0068 <span class="comment">% rev_int       Matchings for reversible varibles corresponding to integers (in the form [1 2;4 5])</span>
+0069 <span class="comment">% ind_ic        Varibles for which there are additional constraints (in the</span>
+0070 <span class="comment">% form [1 4 4 5 9]);</span>
+0071 <span class="comment">% b_ic          Additional constraints (in the form [1.5 2.3 3.2 3.3 1.1])</span>
+0072 <span class="comment">% csense_ic     Directions of additional constraints (in the form 'EGLLG')</span>
+0073 <span class="comment">% sel_m         Select measured fluxes (in the form [1 0 0 1 -1 0 0 0 0 0 0 0 0])</span>
+0074 <span class="comment">% b_m           Values for measured fluxes (in the form [2.9 3.0])</span>
+0075 <span class="comment">% wt_m          Weights for measured fluxes (in the form [0.1 0.9])</span>
+0076 <span class="comment">% H             Maximal/minimal value for cont variables</span>
+0077 <span class="comment">% K             Desired number of reaction knockouts</span>
+0078 <span class="comment">% ksense        # of ko &lt;=/=/&gt;= K (L/E/G)</span>
+0079 <span class="comment">% sel_int_prev  Varibles corresponding to the previously selected integers</span>
+0080 <span class="comment">%               (optional). Same form/dimension as sel_int;</span>
+0081 
+0082 S = model.S;
+0083 ub = model.ub;
+0084 c = model.c;
+0085 clp = cLinear;
+0086 cip = cInteger;
+0087 sel_int = selRxns;
+0088 rev_int = selRxnMatch;
+0089 <span class="keyword">if</span> (~isempty(constrOpt))
+0090     ind_ic = constrOpt.rxnInd;
+0091     b_ic = constrOpt.values;
+0092     csense_ic = constrOpt.sense;
+0093 <span class="keyword">else</span>
+0094     ind_ic = [];
+0095     b_ic = [];
+0096     csense_ic = [];
+0097 <span class="keyword">end</span>
+0098 <span class="keyword">if</span> (~isempty(measOpt))
+0099     sel_m = measOpt.rxnSel;
+0100     b_m = measOpt.values;
+0101     wt_m= measOpt.weights;
+0102 <span class="keyword">else</span>
+0103     sel_m = [];
+0104     b_m = [];
+0105     wt_m = [];
+0106 <span class="keyword">end</span>
+0107 H = options.vMax;
+0108 K = options.numDel;
+0109 ksense = options.numDelSense;
+0110 <span class="keyword">if</span> (nargin &lt; 9)
+0111     sel_int_prev = [];
+0112 <span class="keyword">else</span>
+0113     sel_int_prev = selPrevSol;
+0114 <span class="keyword">end</span>
+0115 
+0116 <span class="comment">% Dimensions of the primal problem</span>
+0117 [m,n] = size(S);
+0118 <span class="comment">% Number of integer variables</span>
+0119 n_int = sum(sel_int);
+0120 <span class="comment">% Number of inner problem &quot;special&quot; constraints</span>
+0121 n_ic = length(ind_ic);
+0122 sel_ic = zeros(length(sel_int),1);
+0123 sel_ic(ind_ic) = 1;
+0124 <span class="comment">% Number of inner problem primal varibles with no integers associated with</span>
+0125 <span class="comment">% them &amp; not part of the special constraint set</span>
+0126 n_nint = n - n_int - sum(sel_ic);
+0127 <span class="comment">% Number of reversible rxns with integer</span>
+0128 [n_intr,tmp] = size(rev_int);
+0129 <span class="comment">% Number of measured fluxes (count only positive directions)</span>
+0130 n_m = sum(sel_m == 1);
+0131 
+0132 <span class="comment">% Helper arrays for extracting solutions</span>
+0133 sel_cont_sol = [1:n];
+0134 sel_int_sol = [n+1:n+n_int];
+0135 
+0136 <span class="comment">% Set variable types</span>
+0137 vartype_bl(1:2*n+2*n_int+m+n_ic+2*n_m) = <span class="string">'C'</span>;
+0138 vartype_bl(n+1:n+n_int) = <span class="string">'B'</span>;
+0139 
+0140 <span class="comment">% Set upper/lower bounds</span>
+0141 lb_bl = [zeros(n+n_int,1); -H*ones(m,1); zeros(n,1); -H*ones(n_int,1)];
+0142 ub_bl = [H*ones(2*n+2*n_int+m,1)];
+0143 <span class="comment">% Handle inner problem constraints</span>
+0144 <span class="keyword">for</span> i = 1:n_ic
+0145     <span class="comment">% Don't constraint equality constrained ones or</span>
+0146     <span class="keyword">if</span>  (strcmp(csense_ic(i),<span class="string">'E'</span>))
+0147         lb_bl = [lb_bl; -H];
+0148         ub_bl = [ub_bl; H];
+0149     <span class="comment">% Lower bound constraints</span>
+0150     <span class="keyword">elseif</span> (strcmp(csense_ic(i),<span class="string">'L'</span>))
+0151         lb_bl = [lb_bl; 0];
+0152         ub_bl = [ub_bl; H];
+0153     <span class="comment">% Upper bound constraints</span>
+0154     <span class="keyword">elseif</span> (strcmp(csense_ic(i),<span class="string">'G'</span>))
+0155         lb_bl = [lb_bl; -H];
+0156         ub_bl = [ub_bl; 0];
+0157     <span class="keyword">else</span>
+0158         lb_bl = [lb_bl; -H];
+0159         ub_bl = [ub_bl; H];
+0160     <span class="keyword">end</span>
+0161 <span class="keyword">end</span>
+0162 <span class="comment">% Slacks for measured fluxes</span>
+0163 lb_bl = [lb_bl; zeros(2*n_m,1)];
+0164 ub_bl = [ub_bl; H*ones(2*n_m,1)];
+0165 ub_bl(vartype_bl == <span class="string">'B'</span>) = 1;
+0166 
+0167 <span class="comment">% Set bilevel objective</span>
+0168 c_bl = zeros(2*n+2*n_int+m+n_ic+2*n_m,1);
+0169 c_bl(1:n) = clp;
+0170 c_bl(n+1:n+n_int) = cip;
+0171 <span class="comment">%c_bl(2*n+2*n_int+m+n_ic+1:2*n+2*n_int+m+n_ic+2*n_m) = 1;</span>
+0172 c_bl(2*n+2*n_int+m+n_ic+1:2*n+2*n_int+m+n_ic+n_m) = wt_m;
+0173 c_bl(2*n+2*n_int+m+n_ic+n_m+1:2*n+2*n_int+m+n_ic+2*n_m) = wt_m;
+0174 
+0175 <span class="comment">%********************************</span>
+0176 <span class="comment">% Generate the constraint matrix</span>
+0177 <span class="comment">%********************************</span>
+0178 
+0179 <span class="comment">% Create necessary integer matrices (for SF/n_int sets)</span>
+0180 Iint = <a href="../../cobra/tools/selMatrix.html" class="code" title="function selMat = selMatrix(selVec)">selMatrix</a>(sel_int);
+0181 Inint = <a href="../../cobra/tools/selMatrix.html" class="code" title="function selMat = selMatrix(selVec)">selMatrix</a>(~sel_int &amp; ~sel_ic);
+0182 Iic = sparse(n_ic,n);
+0183 <span class="keyword">for</span> i = 1:length(ind_ic)
+0184     idx_ic = ind_ic(i);
+0185     Iic(i,idx_ic) = 1;
+0186 <span class="keyword">end</span>
+0187 Im = <a href="../../cobra/tools/selMatrix.html" class="code" title="function selMat = selMatrix(selVec)">selMatrix</a>(sel_m);
+0188 
+0189 <span class="comment">% S*v = 0</span>
+0190 A_bl = [S sparse(m,2*n_int+n+m+n_ic+2*n_m)];
+0191 b_bl = zeros(m,1);
+0192 csense_bl(1:m) = <span class="string">'E'</span>;
+0193 
+0194 <span class="comment">% v_ic &gt;= b_ic</span>
+0195 A_bl = [A_bl; Iic sparse(n_ic,2*n_int+m+n+n_ic+2*n_m)];
+0196 b_bl = [b_bl; b_ic];
+0197 csense_bl(end+1:end+n_ic) = csense_ic;
+0198 
+0199 <span class="comment">% vobj = v_ic*b_ic + Sj ub(j)*uu(j)</span>
+0200 A_bl = [A_bl; c' sparse(1,n_int+m) -ub' sparse(1,n_int) -b_ic' sparse(1,2*n_m)];
+0201 b_bl = [b_bl; 0];
+0202 csense_bl(end+1) = <span class="string">'E'</span>;
+0203 
+0204 <span class="comment">% v(j) &lt;= ub(j)*y(j) j in selected</span>
+0205 A_bl = [A_bl; Iint sparse(diag(-ub(sel_int == 1))) sparse(n_int,m+n+n_int+n_ic+2*n_m)];
+0206 b_bl = [b_bl; zeros(n_int,1)];
+0207 csense_bl(end+1:end+n_int) = <span class="string">'L'</span>;
+0208 
+0209 <span class="comment">% v(j) &lt;= ub(j) j not in selected or inner constraints</span>
+0210 A_bl = [A_bl; Inint sparse(n_nint,m+n+2*n_int+n_ic+2*n_m)];
+0211 b_bl = [b_bl; ub(~sel_int &amp; ~sel_ic)];
+0212 csense_bl(end+1:end+n_nint) = <span class="string">'L'</span>;
+0213 
+0214 <span class="comment">% Dual for inner constraints</span>
+0215 A_bl = [A_bl; sparse(n_ic,n+n_int) S(:,ind_ic)' Iic sparse(n_ic,n_int) speye(n_ic) sparse(n_ic,2*n_m)];
+0216 b_bl = [b_bl; c(ind_ic)];
+0217 csense_bl(end+1:end+n_ic) = <span class="string">'G'</span>;
+0218 
+0219 <span class="comment">% Dual bound for n_int ub's</span>
+0220 A_bl = [A_bl; sparse(n_nint,n+n_int) S(:,sel_int == 0 &amp; sel_ic == 0)' Inint sparse(n_nint,n_int+n_ic+2*n_m)];
+0221 b_bl = [b_bl; zeros(n_nint,1)];
+0222 csense_bl(end+1:end+n_nint) = <span class="string">'G'</span>;
+0223 
+0224 <span class="comment">% Dual bound for selected ub's</span>
+0225 A_bl = [A_bl; sparse(n_int,n) -H*speye(n_int) S(:,sel_int == 1)' Iint sparse(n_int,n_int+n_ic+2*n_m)];
+0226 b_bl = [b_bl; -H*ones(n_int,1)];
+0227 csense_bl(end+1:end+n_int) = <span class="string">'G'</span>;
+0228 
+0229 <span class="comment">% Dual bound for selected &lt;= 0's</span>
+0230 A_bl = [A_bl; sparse(n_int,n) H*speye(n_int) S(:,sel_int == 1)' sparse(n_int,n) speye(n_int) sparse(n_int,n_ic+2*n_m)];
+0231 b_bl = [b_bl; zeros(n_int,1)];
+0232 csense_bl(end+1:end+n_int) = <span class="string">'G'</span>;
+0233 
+0234 <span class="comment">% Dual bound for selected &gt;= 0's</span>
+0235 A_bl = [A_bl; sparse(n_int,n) -H*speye(n_int) S(:,sel_int == 1)' sparse(n_int,n) speye(n_int) sparse(n_int,n_ic+2*n_m)];
+0236 b_bl = [b_bl; zeros(n_int,1)];
+0237 csense_bl(end+1:end+n_int) = <span class="string">'L'</span>;
+0238 
+0239 <span class="comment">% Create matchings for reversible rxns</span>
+0240 rev_match = sparse(n_intr,n_int);
+0241 sel_fw_rxn = ones(1,n_int);
+0242 <span class="keyword">for</span> i = 1:n_intr
+0243     rev_match(i,rev_int(i,1)) = 1;
+0244     rev_match(i,rev_int(i,2)) = -1;
+0245     sel_fw_rxn(rev_int(i,1)) = 0;
+0246 <span class="keyword">end</span>
+0247 A_bl = [A_bl; sparse(n_intr,n) rev_match sparse(n_intr,m+n+n_int+n_ic+2*n_m)];
+0248 b_bl = [b_bl; zeros(n_intr,1)];
+0249 csense_bl(end+1:end+n_intr) = <span class="string">'E'</span>;
+0250 
+0251 <span class="comment">% Limit maximum number of deletions</span>
+0252 A_bl = [A_bl; sparse(1,n) -sel_fw_rxn sparse(1,m+n+n_int+n_ic+2*n_m)];
+0253 b_bl = [b_bl; -sum(sel_fw_rxn) + K];
+0254 csense_bl(end+1) = ksense;
+0255 
+0256 <span class="comment">% Slack constraint for measured values</span>
+0257 <span class="keyword">if</span> (n_m &gt; 0)
+0258     tmp1 = [Im; Im];
+0259     tmp2 = [speye(n_m) sparse(n_m,n_m); sparse(n_m,n_m) -speye(n_m)];
+0260     A_bl = [A_bl; tmp1 sparse(2*n_m,m+n+2*n_int+n_ic) tmp2];
+0261     b_bl = [b_bl; b_m; b_m];
+0262     csense_bl(end+1:end+n_m) = <span class="string">'G'</span>;
+0263     csense_bl(end+1:end+n_m) = <span class="string">'L'</span>;
+0264 <span class="keyword">end</span>
+0265 
+0266 <span class="comment">% Add constraint to select a new deletion set (with at least one new deletion)</span>
+0267 <span class="keyword">if</span> (~isempty(sel_int_prev))
+0268     [tmp,n_exko] = size(sel_int_prev);
+0269     <span class="keyword">for</span> i = 1:n_exko
+0270         A_bl = [A_bl; sparse(1,n) sparse(sel_int_prev(sel_int==1,i)') sparse(1,n+n_int+m+n_ic+2*n_m)];
+0271         b_bl(end+1) = 1;
+0272         csense_bl(end+1) = <span class="string">'G'</span>;
+0273     <span class="keyword">end</span>
+0274 <span class="keyword">end</span>
+0275 
+0276 <span class="comment">% Construct problem structure</span>
+0277 bilevelMILPproblem.A = A_bl;
+0278 bilevelMILPproblem.b = b_bl;
+0279 bilevelMILPproblem.c = c_bl;
+0280 bilevelMILPproblem.csense = csense_bl;
+0281 bilevelMILPproblem.lb = lb_bl;
+0282 bilevelMILPproblem.ub = ub_bl;
+0283 bilevelMILPproblem.vartype = vartype_bl;
+0284 bilevelMILPproblem.contSolInd = sel_cont_sol;
+0285 bilevelMILPproblem.intSolInd = sel_int_sol;</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

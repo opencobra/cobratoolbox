@@ -1,0 +1,453 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of solveCobraCPLEX</title>
+  <meta name="keywords" content="solveCobraCPLEX">
+  <meta name="description" content="[solution,LPProblem]=solveCobraCPLEX(model,printLevel,basisReuse,conflictResolve,contFunctName,minNorm)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html solvers -->
+<h1>solveCobraCPLEX
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[solution,LPProblem]=solveCobraCPLEX(model,printLevel,basisReuse,conflictResolve,contFunctName,minNorm)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [solution,model]=solveCobraCPLEX(model,printLevel,basisReuse,conflictResolve,contFunctName,minNorm) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [solution,LPProblem]=solveCobraCPLEX(model,printLevel,basisReuse,conflictResolve,contFunctName,minNorm)
+ call CPLEX to solve an LP or QP problem using the matlab API to cplex written by ILOG
+
+INPUT
+ Model Structure containing the following fields describing the LP
+ problem to be solved
+  A or S       m x n LHS matrix
+  b            m x 1 RHS vector
+  c            n x 1 Objective coeff vector
+  lb           n x 1 Lower bound vector
+  ub           n x 1 Upper bound vector
+  osense       scalar Objective sense (-1 max, +1 min)
+
+OPTIONAL INPUT
+ model.rxns    cell array of reaction abbreviations (necessary for
+                   making a readable confilict resolution file).
+ model.csense  Constraint senses, a string containting the constraint sense for
+                   each row in A ('E', equality, 'G' greater than, 'L' less than).
+
+ model.LPBasis Basis from previous solution of similar LP problem.
+                   See basisReuse
+
+ PrintLevel    Printing level in the CPLEX m-file and CPLEX C-interface.
+               = 0    Silent
+               = 1    Warnings and Errors
+               = 2    Summary information (Default)
+               = 3    More detailed information
+               &gt; 10   Pause statements, and maximal printing (debug mode)
+
+ basisReuse = 0   Use this for one of soluion of an LP (Default)
+            = 1   Returns a basis for reuse in the next LP
+                  i.e. outputs model.LPBasis
+
+ conflictResolve  = 0   (Default)
+                  = 1   If LP problem is proven to be infeasible by CPLEX,
+                        it will print out a 'conflict resolution file',
+                        which indicates the irreducible infeasible set of
+                        equaltiy &amp; inequality constraints that together,
+                        combine to make the problem infeasible. This is
+                        useful for debugging an LP problem if you want to
+                        try to resolve a constraint conflict
+
+ contFunctName        = [] Use all default CLPEX control parameters, (Default)
+                      = someString e.g. 'someFunctionName'
+                        uses the user specified control parameters defined
+                        in someFunctionName.m
+                       (see template function CPLEXParamSet for details).
+                      = cpxControl structure (output from a file like CPLEXParamSet.m)
+
+ minNorm       {(0), 1 , n x 1 vector} If not zero then, minimise the Euclidean length
+               of the solution to the LP problem. Gives the same objective,
+               but minimises the square of flux. minNorm ~1e-6 should be
+               high enough for regularisation yet keep the same objective</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [solution,model]=solveCobraCPLEX(model,printLevel,basisReuse,conflictResolve,contFunctName,minNorm)</a>
+0002 <span class="comment">% [solution,LPProblem]=solveCobraCPLEX(model,printLevel,basisReuse,conflictResolve,contFunctName,minNorm)</span>
+0003 <span class="comment">% call CPLEX to solve an LP or QP problem using the matlab API to cplex written by ILOG</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">%INPUT</span>
+0006 <span class="comment">% Model Structure containing the following fields describing the LP</span>
+0007 <span class="comment">% problem to be solved</span>
+0008 <span class="comment">%  A or S       m x n LHS matrix</span>
+0009 <span class="comment">%  b            m x 1 RHS vector</span>
+0010 <span class="comment">%  c            n x 1 Objective coeff vector</span>
+0011 <span class="comment">%  lb           n x 1 Lower bound vector</span>
+0012 <span class="comment">%  ub           n x 1 Upper bound vector</span>
+0013 <span class="comment">%  osense       scalar Objective sense (-1 max, +1 min)</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">%OPTIONAL INPUT</span>
+0016 <span class="comment">% model.rxns    cell array of reaction abbreviations (necessary for</span>
+0017 <span class="comment">%                   making a readable confilict resolution file).</span>
+0018 <span class="comment">% model.csense  Constraint senses, a string containting the constraint sense for</span>
+0019 <span class="comment">%                   each row in A ('E', equality, 'G' greater than, 'L' less than).</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% model.LPBasis Basis from previous solution of similar LP problem.</span>
+0022 <span class="comment">%                   See basisReuse</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">% PrintLevel    Printing level in the CPLEX m-file and CPLEX C-interface.</span>
+0025 <span class="comment">%               = 0    Silent</span>
+0026 <span class="comment">%               = 1    Warnings and Errors</span>
+0027 <span class="comment">%               = 2    Summary information (Default)</span>
+0028 <span class="comment">%               = 3    More detailed information</span>
+0029 <span class="comment">%               &gt; 10   Pause statements, and maximal printing (debug mode)</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">% basisReuse = 0   Use this for one of soluion of an LP (Default)</span>
+0032 <span class="comment">%            = 1   Returns a basis for reuse in the next LP</span>
+0033 <span class="comment">%                  i.e. outputs model.LPBasis</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">% conflictResolve  = 0   (Default)</span>
+0036 <span class="comment">%                  = 1   If LP problem is proven to be infeasible by CPLEX,</span>
+0037 <span class="comment">%                        it will print out a 'conflict resolution file',</span>
+0038 <span class="comment">%                        which indicates the irreducible infeasible set of</span>
+0039 <span class="comment">%                        equaltiy &amp; inequality constraints that together,</span>
+0040 <span class="comment">%                        combine to make the problem infeasible. This is</span>
+0041 <span class="comment">%                        useful for debugging an LP problem if you want to</span>
+0042 <span class="comment">%                        try to resolve a constraint conflict</span>
+0043 <span class="comment">%</span>
+0044 <span class="comment">% contFunctName        = [] Use all default CLPEX control parameters, (Default)</span>
+0045 <span class="comment">%                      = someString e.g. 'someFunctionName'</span>
+0046 <span class="comment">%                        uses the user specified control parameters defined</span>
+0047 <span class="comment">%                        in someFunctionName.m</span>
+0048 <span class="comment">%                       (see template function CPLEXParamSet for details).</span>
+0049 <span class="comment">%                      = cpxControl structure (output from a file like CPLEXParamSet.m)</span>
+0050 <span class="comment">%</span>
+0051 <span class="comment">% minNorm       {(0), 1 , n x 1 vector} If not zero then, minimise the Euclidean length</span>
+0052 <span class="comment">%               of the solution to the LP problem. Gives the same objective,</span>
+0053 <span class="comment">%               but minimises the square of flux. minNorm ~1e-6 should be</span>
+0054 <span class="comment">%               high enough for regularisation yet keep the same objective</span>
+0055 
+0056 <span class="comment">%OUTPUT</span>
+0057 <span class="comment">% solution Structure containing the following fields describing a LP</span>
+0058 <span class="comment">% solution</span>
+0059 <span class="comment">%  full         Full LP solution vector</span>
+0060 <span class="comment">%  obj          Objective value</span>
+0061 <span class="comment">%  rcost        Lagrangian multipliers to the simple inequalties (Reduced costs)</span>
+0062 <span class="comment">%  dual         Lagrangian multipliers to the equalities</span>
+0063 <span class="comment">%  nInfeas      Number of infeasible constraints</span>
+0064 <span class="comment">%  sumInfeas    Sum of constraint violation</span>
+0065 <span class="comment">%  stat         COBRA Standardized solver status code:</span>
+0066 <span class="comment">%               1   Optimal solution</span>
+0067 <span class="comment">%               2   Unbounded solution</span>
+0068 <span class="comment">%               0   Infeasible</span>
+0069 <span class="comment">%               -1  No solution reported (timelimit, numerical problem etc)</span>
+0070 <span class="comment">%  origStat     CPLEX status code. Use cplexStatus(solution.origStat) for</span>
+0071 <span class="comment">%               more information from the CPLEX solver</span>
+0072 <span class="comment">%  solver       solver used by cplex</span>
+0073 <span class="comment">%  time         time taken to solve the optimization problem</span>
+0074 <span class="comment">%</span>
+0075 <span class="comment">%OPTIONAL OUTPUT</span>
+0076 <span class="comment">% model.LPBasis When input basisReuse=1, we return a basis for reuse in</span>
+0077 <span class="comment">%                   the next LP</span>
+0078 <span class="comment">%</span>
+0079 <span class="comment">% CPLEX consists of 4 different LP solvers which can be used to solve sysbio optimization problems</span>
+0080 <span class="comment">% you can control which of the solvers, e.g. simplex vs interior point solver using the</span>
+0081 <span class="comment">% CPLEX control parameter cpxControl.LPMETHOD. At the moment, the solver is</span>
+0082 <span class="comment">% automatically chosen for you</span>
+0083 <span class="comment">%</span>
+0084 <span class="comment">% Ronan Fleming 23 Oct  09  ILOG-CPLEX 12.1 via  matlab API</span>
+0085 
+0086 <span class="keyword">if</span> ~exist(<span class="string">'printLevel'</span>,<span class="string">'var'</span>)
+0087     printLevel=0;
+0088 <span class="keyword">end</span>
+0089 <span class="keyword">if</span> ~exist(<span class="string">'basisReuse'</span>,<span class="string">'var'</span>)
+0090     basisReuse=0;
+0091 <span class="keyword">end</span>
+0092 <span class="keyword">if</span> ~exist(<span class="string">'conflictResolve'</span>,<span class="string">'var'</span>)
+0093     conflictResolve=0;
+0094 <span class="keyword">end</span>
+0095 
+0096 <span class="keyword">if</span> ~exist(<span class="string">'minNorm'</span>,<span class="string">'var'</span>)
+0097     minNorm=0;
+0098 <span class="keyword">end</span>
+0099 
+0100 <span class="keyword">if</span> basisReuse
+0101     <span class="keyword">if</span> isfield(model,<span class="string">'LPBasis'</span>)
+0102         basis=model.LPBasis;
+0103         <span class="comment">%use advanced starting information when optimization is initiated.</span>
+0104         <span class="comment">%cpxControl.ADVIND=1;</span>
+0105     <span class="keyword">else</span>
+0106         basis=[];
+0107     <span class="keyword">end</span>
+0108 <span class="keyword">else</span>
+0109     basis=[];
+0110     <span class="comment">%do not use advanced starting information when optimization is initiated.</span>
+0111     cplex.Param.ADVIND=0;
+0112 <span class="keyword">end</span>
+0113 
+0114 <span class="keyword">if</span> ~isfield(model,<span class="string">'A'</span>)
+0115     <span class="keyword">if</span> ~isfield(model,<span class="string">'S'</span>)
+0116         error(<span class="string">'Equality constraint matrix must either be a field denoted A or S.'</span>)
+0117     <span class="keyword">end</span>
+0118     model.A=model.S;
+0119 <span class="keyword">end</span>
+0120 
+0121 <span class="keyword">if</span> ~isfield(model,<span class="string">'csense'</span>)
+0122     nMet=size(model.A);
+0123     <span class="keyword">if</span> printLevel&gt;0
+0124         fprintf(<span class="string">'%s\n'</span>,<span class="string">'Assuming equality constraints, i.e. S*v=b'</span>);
+0125     <span class="keyword">end</span>
+0126     <span class="comment">%assuming equality constraints</span>
+0127     model.csense(1:nMet,1)=<span class="string">'E'</span>;
+0128 <span class="keyword">end</span>
+0129 
+0130 <span class="keyword">if</span> ~isfield(model,<span class="string">'osense'</span>)
+0131     <span class="comment">%assuming maximisation</span>
+0132     model.osense=-1;
+0133     <span class="keyword">if</span> printLevel&gt;0
+0134         fprintf(<span class="string">'%s\n'</span>,<span class="string">'Assuming maximisation of objective'</span>);
+0135     <span class="keyword">end</span>
+0136 <span class="keyword">end</span>
+0137 
+0138 <span class="keyword">if</span> size(model.A,2)~=length(model.c)
+0139     error(<span class="string">'dimensions of A &amp; c are inconsistent'</span>);
+0140 <span class="keyword">end</span>
+0141 
+0142 <span class="keyword">if</span> size(model.A,2)~=length(model.lb) || size(model.A,2)~=length(model.ub)
+0143     error(<span class="string">'dimensions of A &amp; bounds are inconsistent'</span>);
+0144 <span class="keyword">end</span>
+0145 
+0146 <span class="comment">%Conflict groups descriptor (cpxBuildConflict can be used to generate the input). Set this if</span>
+0147 <span class="comment">%conflict refinement is desired in the case that infeasibility is detected</span>
+0148 <span class="comment">%by CPLEX.</span>
+0149 <span class="keyword">if</span> conflictResolve
+0150     [m_lin,n]=size(model.A);
+0151     m_quad=0;
+0152     m_sos=0;
+0153     m_log=0;
+0154     <span class="comment">%determines how elaborate the output is</span>
+0155     mode=<span class="string">'full'</span>;<span class="comment">%'minimal';</span>
+0156     fprintf(<span class="string">'%s\n%s\n'</span>,<span class="string">'Building Structure for Conflict Resolution...'</span>,<span class="string">'...this slows CPLEX down so should not be used for repeated LP'</span>);
+0157     confgrps = cpxBuildConflict(n,m_lin,m_quad,m_sos,m_log,mode);
+0158     prefix=pwd;
+0159     suffix=<span class="string">'CPLEX_conflict_file.txt'</span>;
+0160     conflictFile=[prefix <span class="string">'\'</span> suffix];
+0161 <span class="keyword">else</span>
+0162     confgrps=[]; conflictFile=[];
+0163 <span class="keyword">end</span>
+0164 
+0165 <span class="comment">% Initialize the CPLEX object</span>
+0166 <span class="keyword">try</span>
+0167     cplex = Cplex(<span class="string">'fba'</span>);
+0168 <span class="keyword">catch</span> ME
+0169     error(<span class="string">'CPLEX not installed or licence server not up'</span>)
+0170 <span class="keyword">end</span>
+0171 
+0172 <span class="comment">% Now populate the problem with the data</span>
+0173 cplex.Model.sense = <span class="string">'minimize'</span>;
+0174 <span class="keyword">if</span> model.osense==1
+0175     <span class="comment">%minimise linear objective</span>
+0176     cplex.Model.obj   = model.c;
+0177 <span class="keyword">else</span>
+0178     <span class="comment">%maximise linear objective by reversing sign</span>
+0179     cplex.Model.obj   = - model.c;
+0180 <span class="keyword">end</span>
+0181 
+0182 cplex.Model.lb    = model.lb;
+0183 cplex.Model.ub    = model.ub;
+0184 cplex.Model.A     = model.A;
+0185 
+0186 <span class="comment">%cplex interface</span>
+0187 <span class="keyword">if</span> isfield(model,<span class="string">'csense'</span>)
+0188     <span class="comment">%set up constant vectors for CPLEX</span>
+0189     b_L(model.csense == <span class="string">'E'</span>,1) = model.b(model.csense == <span class="string">'E'</span>);
+0190     b_U(model.csense == <span class="string">'E'</span>,1) = model.b(model.csense == <span class="string">'E'</span>);
+0191     b_L(model.csense == <span class="string">'G'</span>,1) = model.b(model.csense == <span class="string">'G'</span>);
+0192     b_U(model.csense == <span class="string">'G'</span>,1) =  Inf;
+0193     b_L(model.csense == <span class="string">'L'</span>,1) = -Inf;
+0194     b_U(model.csense == <span class="string">'L'</span>,1) = model.b(model.csense == <span class="string">'L'</span>);
+0195     cplex.Model.lhs   = b_L;
+0196     cplex.Model.rhs   = b_U;
+0197 <span class="keyword">else</span>
+0198     cplex.Model.lhs   = model.b;
+0199     cplex.Model.rhs   = model.b;
+0200 <span class="keyword">end</span>
+0201 
+0202 <span class="comment">%quadratic constraint matrix, size n x n</span>
+0203 <span class="keyword">if</span> sum(minNorm)~=0
+0204     <span class="keyword">if</span> length(minNorm)==1
+0205         <span class="comment">% same weighting of min norm for all variables</span>
+0206         cplex.Model.Q=model.osense*speye(length(model.c))*minNorm;
+0207     <span class="keyword">else</span>
+0208         <span class="keyword">if</span> length(minNorm)~=length(model.c)
+0209             error(<span class="string">'Either minNorm is a scalar, or is an n x 1 vector'</span>)
+0210         <span class="keyword">else</span>
+0211             <span class="comment">% individual weighting of min norm for all variables</span>
+0212             cplex.Model.Q=model.osense*spdiags(minNorm,0,length(model.c),length(model.c));
+0213         <span class="keyword">end</span>
+0214     <span class="keyword">end</span>
+0215 <span class="keyword">end</span>
+0216 
+0217 <span class="comment">%set the solver parameters</span>
+0218 <span class="keyword">if</span> exist(<span class="string">'contFunctName'</span>,<span class="string">'var'</span>)
+0219     <span class="keyword">if</span> isstruct(contFunctName)
+0220         cplex.Param=contFunctName;
+0221     <span class="keyword">else</span>
+0222         <span class="keyword">if</span> ~isempty(contFunctName)
+0223             <span class="comment">%calls a user specified function to create a CPLEX control structure</span>
+0224             <span class="comment">%specific to the users problem. A TEMPLATE for one such function is</span>
+0225             <span class="comment">%CPLEXParamSet</span>
+0226             <span class="comment">%e.g. Param.lpmethod.Cur=0;</span>
+0227             cplex.Param=Param;
+0228         <span class="keyword">end</span>
+0229     <span class="keyword">end</span>
+0230 <span class="keyword">end</span>
+0231 
+0232 <span class="keyword">if</span> printLevel==0
+0233     cplex.DisplayFunc=[];
+0234 <span class="keyword">else</span>
+0235     <span class="comment">%print level</span>
+0236     cplex.Param.barrier.display.Cur = printLevel;
+0237     cplex.Param.simplex.display.Cur = printLevel;
+0238     cplex.Param.sifting.display.Cur = printLevel;
+0239 <span class="keyword">end</span>
+0240 
+0241 <span class="comment">%limit the processing to 3 threads</span>
+0242 cplex.Param.threads.Cur = 3;
+0243 
+0244 <span class="comment">% Optimize the problem</span>
+0245 cplex.solve();
+0246 solution.origStat   = cplex.Solution.status;
+0247 
+0248 <span class="keyword">if</span> printLevel&gt;0 &amp;&amp; solution.origStat~=1
+0249     <span class="comment">%use tomlab code to print out exit meassage</span>
+0250     [ExitText,ExitFlag] = cplexStatus(solution.origStat);
+0251     solution.ExitText=ExitText;
+0252     solution.ExitFlag=ExitFlag;
+0253     <span class="keyword">if</span> any(model.c~=0)
+0254         fprintf(<span class="string">'\n%s%g\n'</span>,[ExitText <span class="string">', Objective '</span>],  model.c'*cplex.Solution.x);
+0255     <span class="keyword">end</span>
+0256 <span class="keyword">end</span>
+0257 
+0258 <span class="keyword">if</span> solution.origStat==1
+0259     <span class="comment">%extract the solution</span>
+0260     solution.obj        = model.osense*cplex.Solution.objval;
+0261     solution.full       = cplex.Solution.x;
+0262     solution.rcost      = cplex.Solution.reducedcost;
+0263     solution.dual       = cplex.Solution.dual;
+0264     solution.nInfeas    = NaN;
+0265     solution.sumInfeas  = NaN;
+0266     solution.solver     = cplex.Solution.method;
+0267     solution.time       = cplex.Solution.time;
+0268 <span class="keyword">else</span>
+0269     solution.time=NaN;
+0270     <span class="comment">%conflict resolution</span>
+0271     <span class="keyword">if</span> conflictResolve ==1
+0272         Cplex.refineConflict
+0273         Cplex.writeConflict(suffix)
+0274         <span class="keyword">if</span> isfield(model,<span class="string">'mets'</span>) &amp;&amp; isfield(model,<span class="string">'rxns'</span>)
+0275             <span class="comment">%this code reads the conflict resolution file and replaces the</span>
+0276             <span class="comment">%arbitrary names with the abbreviations of metabolites and reactions</span>
+0277             [nMet,nRxn]=size(model.A);
+0278             totAbbr=nMet+nRxn;
+0279             conStrFind=cell(nMet+nRxn,1);
+0280             conStrReplace=cell(nMet+nRxn,1);
+0281             <span class="comment">%only equality constraint rows</span>
+0282             <span class="keyword">for</span> m=1:nMet
+0283                 conStrFind{m,1}=[<span class="string">'c'</span> int2str(m) <span class="string">':'</span>];
+0284                 conStrReplace{m,1}=[model.mets{m} <span class="string">':  '</span>];
+0285             <span class="keyword">end</span>
+0286             <span class="comment">%reactions</span>
+0287             <span class="keyword">for</span> n=1:nRxn
+0288                 conStrFind{nMet+n,1}=[<span class="string">'x'</span> int2str(n) <span class="string">' '</span>];
+0289                 conStrReplace{nMet+n,1}=[model.rxns{n} <span class="string">' '</span>];
+0290             <span class="keyword">end</span>
+0291             fid1 = fopen(suffix);
+0292             fid2 = fopen([<span class="string">'COBRA_'</span> suffix], <span class="string">'w'</span>);
+0293             <span class="keyword">while</span> ~feof(fid1)
+0294                 tline{1}=fgetl(fid1);
+0295                 <span class="comment">%replaces all occurrences of the string str2 within string str1</span>
+0296                 <span class="comment">%with the string str3.</span>
+0297                 <span class="comment">%str= strrep(str1, str2, str3)</span>
+0298                 <span class="keyword">for</span> t=1:totAbbr
+0299                     tline= strrep(tline, conStrFind{t}, conStrReplace{t});
+0300                 <span class="keyword">end</span>
+0301                 fprintf(fid2,<span class="string">'%s\n'</span>, tline{1});
+0302             <span class="keyword">end</span>
+0303             fclose(fid1);
+0304             fclose(fid2);
+0305             <span class="comment">%delete other file without replacements</span>
+0306             <span class="comment">%         delete(suffix)</span>
+0307         <span class="keyword">else</span>
+0308             warning(<span class="string">'Need reaction and metabolite abbreviations in order to make a readable conflict resolution file'</span>);
+0309         <span class="keyword">end</span>
+0310         fprintf(<span class="string">'%s\n'</span>,[<span class="string">'Conflict resolution file written to: '</span> prefix <span class="string">'\COBRA_'</span> suffix]);
+0311         fprintf(<span class="string">'%s\n%s\n'</span>,<span class="string">'The Conflict resolution file gives an irreducible infeasible subset '</span>,<span class="string">'of constraints which are making this LP Problem infeasible'</span>);
+0312     <span class="keyword">else</span>
+0313         <span class="keyword">if</span> printLevel&gt;0
+0314             fprintf(<span class="string">'%s\n'</span>,<span class="string">'No conflict resolution file. Perhaps set conflictResolve = 1 next time.'</span>);
+0315         <span class="keyword">end</span>
+0316     <span class="keyword">end</span>
+0317 <span class="keyword">end</span>
+0318 
+0319 <span class="comment">% Try to give back COBRA Standardized solver status:</span>
+0320 <span class="comment">%           1   Optimal solution</span>
+0321 <span class="comment">%           2   Unbounded solution</span>
+0322 <span class="comment">%           0   Infeasible</span>
+0323 <span class="comment">%           -1  No solution reported (timelimit, numerical problem etc)</span>
+0324 <span class="keyword">if</span> solution.origStat==1
+0325     solution.stat = 1;
+0326 <span class="keyword">else</span>
+0327     <span class="comment">%use tomlab code to print out exit meassage</span>
+0328     [ExitText,ExitFlag] = cplexStatus(solution.origStat);
+0329     solution.ExitText=ExitText;
+0330     solution.ExitFlag=ExitFlag;
+0331     <span class="keyword">if</span> any(model.c~=0) &amp;&amp; isfield(cplex.Solution,<span class="string">'x'</span>)
+0332         fprintf(<span class="string">'\n%s%g\n'</span>,[ExitText <span class="string">', Objective '</span>],  model.c'*cplex.Solution.x);
+0333     <span class="keyword">end</span>
+0334     <span class="keyword">if</span> solution.origStat==2
+0335         solution.stat = 2;
+0336     <span class="keyword">else</span>
+0337         <span class="keyword">if</span> solution.origStat==3
+0338             solution.stat = 0;
+0339         <span class="keyword">else</span>
+0340             <span class="comment">%this is a conservative view</span>
+0341             solution.stat = -1;
+0342         <span class="keyword">end</span>
+0343     <span class="keyword">end</span>
+0344 <span class="keyword">end</span>
+0345 
+0346 <span class="comment">%return basis</span>
+0347 <span class="keyword">if</span> basisReuse
+0348     model.LPBasis=basis;
+0349 <span class="keyword">end</span>
+0350 
+0351 <span class="keyword">if</span> sum(minNorm)~=0 &amp;&amp; printLevel&gt;0
+0352     fprintf(<span class="string">'%s\n'</span>,<span class="string">'This objective corresponds to a flux with minimum Euclidean norm.'</span>);
+0353     <span class="keyword">if</span> length(minNorm)==1
+0354         fprintf(<span class="string">'%s%d%s\n'</span>,<span class="string">'The weighting for minimising the norm was '</span>,minNorm,<span class="string">'.'</span>);
+0355     <span class="keyword">else</span>
+0356         fprintf(<span class="string">'%s%d%s\n'</span>,<span class="string">'The sum of the weighting for minimising the norm was '</span>,sum(minNorm),<span class="string">'.'</span>);
+0357     <span class="keyword">end</span>
+0358     fprintf(<span class="string">'%s\n'</span>,<span class="string">'Check that the objective is the same without minimising the norm.'</span>);
+0359 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

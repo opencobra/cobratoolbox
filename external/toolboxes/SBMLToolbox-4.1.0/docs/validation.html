@@ -1,0 +1,940 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>VALIDATE_MATLAB_SBML_STRUCTURES</h3>
+
+<p>This folder contains tests that checks that the structure supplied as argument 
+is of the appropriate form to represent the intended element of an SBML model.
+Each check tests that the fields supplied within the structure match the fields
+expected for an element of that type and SBML Level and Version.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_AlgebraicRule(SBMLAlgebraicRule, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAlgebraicRule, an SBML AlgebraicRule structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML AlgebraicRule structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML AlgebraicRule structure of the appropriate
+level and version can be found using getAlgebraicRuleFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_AssignmentRule(SBMLAssignmentRule, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAssignmentRule, an SBML AssignmentRule structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML AssignmentRule structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML AssignmentRule structure of the appropriate
+level and version can be found using getAssignmentRuleFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_Compartment(SBMLCompartment, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLCompartment, an SBML Compartment structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML Compartment structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML Compartment structure of the appropriate
+level and version can be found using getCompartmentFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_CompartmentType(SBMLCompartmentType, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLCompartmentType, an SBML CompartmentType structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML CompartmentType structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML CompartmentType structure of the appropriate
+level and version can be found using getCompartmentTypeFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_CompartmentVolumeRule(SBMLCompartmentVolumeRule, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLCompartmentVolumeRule, an SBML CompartmentVolumeRule structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML CompartmentVolumeRule structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML CompartmentVolumeRule structure of the appropriate
+level and version can be found using getCompartmentVolumeRuleFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_Constraint(SBMLConstraint, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLConstraint, an SBML Constraint structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML Constraint structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML Constraint structure of the appropriate
+level and version can be found using getConstraintFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_Delay(SBMLDelay, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLDelay, an SBML Delay structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML Delay structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML Delay structure of the appropriate
+level and version can be found using getDelayFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_Event(SBMLEvent, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML Event structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML Event structure of the appropriate
+level and version can be found using getEventFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_EventAssignment(SBMLEventAssignment, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEventAssignment, an SBML EventAssignment structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML EventAssignment structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML EventAssignment structure of the appropriate
+level and version can be found using getEventAssignmentFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_FunctionDefinition(SBMLFunctionDefinition, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML FunctionDefinition structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML FunctionDefinition structure of the appropriate
+level and version can be found using getFunctionDefinitionFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_InitialAssignment(SBMLInitialAssignment, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLInitialAssignment, an SBML InitialAssignment structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML InitialAssignment structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML InitialAssignment structure of the appropriate
+level and version can be found using getInitialAssignmentFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_KineticLaw(SBMLKineticLaw, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML KineticLaw structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML KineticLaw structure of the appropriate
+level and version can be found using getKineticLawFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_LocalParameter(SBMLLocalParameter, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML LocalParameter structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML LocalParameter structure of the appropriate
+level and version can be found using getLocalParameterFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_Model(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML Model structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML Model structure of the appropriate
+level and version can be found using getModelFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_ModifierSpeciesReference(SBMLModifierSpeciesReference, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModifierSpeciesReference, an SBML ModifierSpeciesReference structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML ModifierSpeciesReference structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML ModifierSpeciesReference structure of the appropriate
+level and version can be found using getModifierSpeciesReferenceFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_Parameter(SBMLParameter, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLParameter, an SBML Parameter structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML Parameter structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML Parameter structure of the appropriate
+level and version can be found using getParameterFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_ParameterRule(SBMLParameterRule, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLParameterRule, an SBML ParameterRule structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML ParameterRule structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML ParameterRule structure of the appropriate
+level and version can be found using getParameterRuleFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_Priority(SBMLPriority, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLPriority, an SBML Priority structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML Priority structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML Priority structure of the appropriate
+level and version can be found using getPriorityFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_RateRule(SBMLRateRule, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRateRule, an SBML RateRule structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML RateRule structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML RateRule structure of the appropriate
+level and version can be found using getRateRuleFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_Reaction(SBMLReaction, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML Reaction structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML Reaction structure of the appropriate
+level and version can be found using getReactionFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_Rule(SBMLRule, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRule, an SBML Rule structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML Rule structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML Rule structure of the appropriate
+level and version can be found using getRuleFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_Species(SBMLSpecies, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML Species structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML Species structure of the appropriate
+level and version can be found using getSpeciesFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_SpeciesConcentrationRule(SBMLSpeciesConcentrationRule, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesConcentrationRule, an SBML SpeciesConcentrationRule structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML SpeciesConcentrationRule structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML SpeciesConcentrationRule structure of the appropriate
+level and version can be found using getSpeciesConcentrationRuleFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_SpeciesReference(SBMLSpeciesReference, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesReference, an SBML SpeciesReference structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML SpeciesReference structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML SpeciesReference structure of the appropriate
+level and version can be found using getSpeciesReferenceFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_SpeciesType(SBMLSpeciesType, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesType, an SBML SpeciesType structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML SpeciesType structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML SpeciesType structure of the appropriate
+level and version can be found using getSpeciesTypeFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_StoichiometryMath(SBMLStoichiometryMath, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLStoichiometryMath, an SBML StoichiometryMath structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML StoichiometryMath structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML StoichiometryMath structure of the appropriate
+level and version can be found using getStoichiometryMathFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_Trigger(SBMLTrigger, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLTrigger, an SBML Trigger structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML Trigger structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML Trigger structure of the appropriate
+level and version can be found using getTriggerFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_Unit(SBMLUnit, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML Unit structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML Unit structure of the appropriate
+level and version can be found using getUnitFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_UnitDefinition(SBMLUnitDefinition, level, version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML UnitDefinition structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML UnitDefinition structure of the appropriate
+level and version can be found using getUnitDefinitionFieldnames(level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isValid(SBMLStruct, level(optional), version(optional))</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLStruct, an SBML  structure</li>
+<li>level (optional), an integer representing an SBML level</li>
+<li>version (optional), an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level defaults to a value of 3</p>
+
+<p><em>NOTE:</em> the optional version defaults to a value of 1</p>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML  structure of the appropriate
+level and version can be found using getFieldnames(typecode, level, version)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_Model(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML Model structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML Model structure of the appropriate
+level and version can be found using getModelFieldnames(level, version)</p>
+
+<hr>

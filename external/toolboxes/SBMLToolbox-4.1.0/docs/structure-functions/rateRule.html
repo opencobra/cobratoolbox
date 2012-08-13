@@ -1,0 +1,310 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "../style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>MATLAB_SBML_STRUCTURE_FUNCTIONS\RATERULE</h3>
+
+<p>The functions allow users to create and work with the SBML RateRule structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>RateRule = RateRule_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML RateRule structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>formula = RateRule_getFormula(SBMLRateRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRateRule, an SBML RateRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the formula attribute</li>
+</ol>
+
+<hr>
+
+<h4>metaid = RateRule_getMetaid(SBMLRateRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRateRule, an SBML RateRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = RateRule_getSBOTerm(SBMLRateRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRateRule, an SBML RateRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>variable = RateRule_getVariable(SBMLRateRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRateRule, an SBML RateRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the variable attribute</li>
+</ol>
+
+<hr>
+
+<h4>value = RateRule_isSetFormula(SBMLRateRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRateRule, an SBML RateRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the formula attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = RateRule_isSetMetaid(SBMLRateRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRateRule, an SBML RateRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the metaid attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = RateRule_isSetSBOTerm(SBMLRateRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRateRule, an SBML RateRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = RateRule_isSetVariable(SBMLRateRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRateRule, an SBML RateRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the variable attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLRateRule = RateRule_setFormula(SBMLRateRule, formula)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRateRule, an SBML RateRule structure</li>
+<li>formula; a string representing the formula to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML RateRule structure with the new value for the formula attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLRateRule = RateRule_setMetaid(SBMLRateRule, metaid)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRateRule, an SBML RateRule structure</li>
+<li>metaid; a string representing the metaid to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML RateRule structure with the new value for the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLRateRule = RateRule_setSBOTerm(SBMLRateRule, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRateRule, an SBML RateRule structure</li>
+<li>sboTerm, an integer representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML RateRule structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLRateRule = RateRule_setVariable(SBMLRateRule, variable)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRateRule, an SBML RateRule structure</li>
+<li>variable; a string representing the variable to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML RateRule structure with the new value for the variable attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLRateRule = RateRule_unsetFormula(SBMLRateRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRateRule, an SBML RateRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML RateRule structure with the formula attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLRateRule = RateRule_unsetMetaid(SBMLRateRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRateRule, an SBML RateRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML RateRule structure with the metaid attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLRateRule = RateRule_unsetSBOTerm(SBMLRateRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRateRule, an SBML RateRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML RateRule structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLRateRule = RateRule_unsetVariable(SBMLRateRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRateRule, an SBML RateRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML RateRule structure with the variable attribute unset</li>
+</ol>
+
+<hr>

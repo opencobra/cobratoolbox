@@ -1,0 +1,259 @@
+<h3>FBC_PACKAGE\MATLAB_SBML_STRUCTURES\FBCMODEL</h3>
+
+<p>The functions allow users to create and work with the FBC elements
+and attributes of an SBML FBC Model structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>SBMLFBCModel = FBCModel_addFluxBound(SBMLFBCModel, SBMLFluxBound)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFBCModel, an SBML FBCModel structure</li>
+<li>SBMLFluxBound, an SBML FluxBound structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FBCModel structure with the SBML FluxBound structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLFBCModel = FBCModel_addObjective(SBMLFBCModel, SBMLObjective)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFBCModel, an SBML FBCModel structure</li>
+<li>SBMLObjective, an SBML Objective structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FBCModel structure with the SBML Objective structure added</li>
+</ol>
+
+<hr>
+
+<h4>FBCModel = FBCModel_create(level, version, pkgVersion)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level</li>
+<li>version, an integer representing an SBML version</li>
+<li>pkgVersion, an integer representing an SBML package version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML FBC FBCModel structure of the appropriate level, version and pkgVersion</li>
+</ol>
+
+<hr>
+
+<h4>SBMLFBCModel = FBCModel_createFluxBound(SBMLFBCModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>FBCModel, an SBML FBCModel structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FBCModel structure with a new SBML FluxBound structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLFBCModel = FBCModel_createObjective(SBMLFBCModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>FBCModel, an SBML FBCModel structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FBCModel structure with a new SBML Objective structure added</li>
+</ol>
+
+<hr>
+
+<h4>activeObjective = FBCModel_getActiveObjective(SBMLFBCModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFBCModel, an SBML FBCModel structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the fbc_activeObjective attribute</li>
+</ol>
+
+<hr>
+
+<h4>fluxBound = FBCModel_getFluxBound(SBMLFBCModel, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFBCModel, an SBML FBCModel structure</li>
+<li>index, an integer representing the index of SBML FluxBound structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FluxBound structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>fluxBound = FBCModel_getListOfFluxBounds(SBMLFBCModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFBCModel, an SBML FBCModel structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the fluxBound structures</li>
+</ol>
+
+<hr>
+
+<h4>objective = FBCModel_getListOfObjectives(SBMLFBCModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFBCModel, an SBML FBCModel structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the objective structures</li>
+</ol>
+
+<hr>
+
+<h4>num = FBCModel_getNumFluxBounds(SBMLFBCModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFBCModel, an SBML FBCModel structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML FluxBound structures present in the FBCModel</li>
+</ol>
+
+<hr>
+
+<h4>num = FBCModel_getNumObjectives(SBMLFBCModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFBCModel, an SBML FBCModel structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML Objective structures present in the FBCModel</li>
+</ol>
+
+<hr>
+
+<h4>objective = FBCModel_getObjective(SBMLFBCModel, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFBCModel, an SBML FBCModel structure</li>
+<li>index, an integer representing the index of SBML Objective structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Objective structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>activeObjective = FBCModel_isSetActiveObjective(SBMLFBCModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFBCModel, an SBML FBCModel structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the fbc_activeObjective attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLFBCModel = FBCModel_setActiveObjective(SBMLFBCModel, activeObjective)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFBCModel, an SBML FBCModel structure</li>
+<li>activeObjective, a string representing the fbc_activeObjective to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FBC FBCModel structure with the new value for the fbc_activeObjective attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLFBCModel = FBCModel_unsetActiveObjective(SBMLFBCModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFBCModel, an SBML FBCModel structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FBC FBCModel structure with the fbc_activeObjective attribute unset</li>
+</ol>
+
+<hr>

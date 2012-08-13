@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of removeRxns</title>
+  <meta name="keywords" content="removeRxns">
+  <meta name="description" content="removeRxns Remove reactions from a model">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html reconstruction -->
+<h1>removeRxns
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>removeRxns Remove reactions from a model</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function modelOut = removeRxns(model,rxnRemoveList,irrevFlag,metFlag) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">removeRxns Remove reactions from a model
+
+ model = removeRxns(model,rxnRemoveList,irrevFlag,metFlag)
+
+INPUTS
+ model             COBRA model structure
+ rxnRemoveList     Cell array of reaction names to be removed
+
+OPTIONAL INPUTS
+ irrevFlag         Irreverseble (true) or reversible (false) reaction
+                   format (Default = false)
+ metFlag           Remove unused metabolites (Default = true)
+
+OUTPUT
+ model             COBRA model w/o selected reactions
+
+ Markus Herrgard 7/22/05</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/reassignFwBwMatch.html" class="code" title="function matchNew = reassignFwBwMatch(match,selVec)">reassignFwBwMatch</a>	reassingFwBwMatch Reassing forward-backward matches when modifying an</li><li><a href="removeMetabolites.html" class="code" title="function model = removeMetabolites(model,metaboliteList,removeRxnFlag)">removeMetabolites</a>	removeMetabolites Remove metabolites from a model</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/checkDuplicateRxn.html" class="code" title="function [model,removed] = checkDuplicateRxn(model,method)">checkDuplicateRxn</a>	checkDuplicateRxn Checks model for duplicate reactions and removes them</li><li><a href="../../cobra/keepCompartment.html" class="code" title="function model = keepCompartment(model, compartments)">keepCompartment</a>	This function removes reactions in all compartments except those</li><li><a href="../../cobra/pFBA.html" class="code" title="function [GeneClasses RxnClasses modelIrrevFM] = pFBA(model, varargin)">pFBA</a>	Parsimoneous enzyme usage Flux Balance Analysis - method that optimizes</li><li><a href="createTissueSpecificModel.html" class="code" title="function [tissueModel,Rxns] = createTissueSpecificModel(model,expressionData,proceedExp,orphan,exRxnRemove,solver,options,funcModel)">createTissueSpecificModel</a>	createTissueSpecificModel Create draft tissue specific model from mRNA expression data</li><li><a href="removeMetabolites.html" class="code" title="function model = removeMetabolites(model,metaboliteList,removeRxnFlag)">removeMetabolites</a>	removeMetabolites Remove metabolites from a model</li><li><a href="../../cobra/reduceModel.html" class="code" title="function [modelRed,hasFlux,maxes,mins] = reduceModel(model,tol,irrevFlag,verbFlag,negFluxAllowedFlag,checkConsistencyFlag,changeBoundsFlag)">reduceModel</a>	reduceModel Removes from the model all of the reactions that are never used (max and</li><li><a href="../../cobra/removeDeadEnds.html" class="code" title="function [model,removedMets,removedRxns] = removeDeadEnds(model)">removeDeadEnds</a>	removeDeadEnds Remove all dead end metabolites and reactions from the</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function modelOut = removeRxns(model,rxnRemoveList,irrevFlag,metFlag)</a>
+0002 <span class="comment">%removeRxns Remove reactions from a model</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% model = removeRxns(model,rxnRemoveList,irrevFlag,metFlag)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%INPUTS</span>
+0007 <span class="comment">% model             COBRA model structure</span>
+0008 <span class="comment">% rxnRemoveList     Cell array of reaction names to be removed</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">%OPTIONAL INPUTS</span>
+0011 <span class="comment">% irrevFlag         Irreverseble (true) or reversible (false) reaction</span>
+0012 <span class="comment">%                   format (Default = false)</span>
+0013 <span class="comment">% metFlag           Remove unused metabolites (Default = true)</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">%OUTPUT</span>
+0016 <span class="comment">% model             COBRA model w/o selected reactions</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% Markus Herrgard 7/22/05</span>
+0019 
+0020 <span class="keyword">if</span> (nargin &lt; 3)
+0021   irrevFlag = false;
+0022 <span class="keyword">end</span>
+0023 <span class="keyword">if</span> (nargin &lt; 4)
+0024   metFlag = true;
+0025 <span class="keyword">end</span>
+0026 
+0027 [nMets,nRxns] = size(model.S);
+0028 modelOut = model;
+0029 <span class="comment">% Find indices to rxns in the model</span>
+0030 [isValidRxn,removeInd] = ismember(rxnRemoveList,model.rxns);
+0031 removeInd = removeInd(isValidRxn);
+0032 
+0033 <span class="comment">% Remove reversible tag from the reverse reaction if the reaction to be</span>
+0034 <span class="comment">% deleted is reversible</span>
+0035 <span class="keyword">if</span> (irrevFlag)
+0036   <span class="keyword">for</span> i = 1:length(removeInd)
+0037     remRxnID = removeInd(i);
+0038     <span class="keyword">if</span> (model.match(remRxnID) &gt; 0)
+0039       revRxnID = model.match(remRxnID);
+0040       model.rev(revRxnID) = 0;
+0041       model.rxns{revRxnID} = model.rxns{revRxnID}(1:end-2);
+0042     <span class="keyword">end</span>
+0043   <span class="keyword">end</span>
+0044 <span class="keyword">end</span>
+0045 
+0046 <span class="comment">% Construct vector to select rxns to be included in the model rapidly</span>
+0047 selectRxns = (ones(nRxns,1) == 1);
+0048 selectRxns(removeInd) = false;
+0049 
+0050 <span class="comment">% Construct new model</span>
+0051 <span class="keyword">if</span> isfield(model,<span class="string">'description'</span>)
+0052     modelOut.description = model.description;
+0053 <span class="keyword">end</span>
+0054 
+0055 modelOut.S = model.S(:,selectRxns);
+0056 modelOut.rxns = model.rxns(selectRxns);
+0057 modelOut.lb = model.lb(selectRxns);
+0058 modelOut.ub = model.ub(selectRxns);
+0059 modelOut.rev = model.rev(selectRxns);
+0060 <span class="keyword">if</span> (isfield(model,<span class="string">'c'</span>))
+0061     modelOut.c = model.c(selectRxns);
+0062 <span class="keyword">end</span>
+0063 <span class="keyword">if</span> (isfield(model,<span class="string">'genes'</span>))
+0064     modelOut.rxnGeneMat = model.rxnGeneMat(selectRxns,:);
+0065     modelOut.rules = model.rules(selectRxns);
+0066     modelOut.genes = model.genes;
+0067     modelOut.grRules = model.grRules(selectRxns);
+0068 <span class="keyword">end</span>
+0069 <span class="keyword">if</span> (isfield(model,<span class="string">'subSystems'</span>))
+0070     modelOut.subSystems = model.subSystems(selectRxns);
+0071 <span class="keyword">end</span>
+0072 <span class="keyword">if</span> (isfield(model,<span class="string">'rxnNames'</span>))
+0073     modelOut.rxnNames = model.rxnNames(selectRxns);
+0074 <span class="keyword">end</span>
+0075 <span class="keyword">if</span> (isfield(model, <span class="string">'rxnReferences'</span>))
+0076   modelOut.rxnReferences = model.rxnReferences(selectRxns);
+0077 <span class="keyword">end</span>
+0078 <span class="keyword">if</span> (isfield(model, <span class="string">'rxnECNumbers'</span>))
+0079   modelOut.rxnECNumbers = model.rxnECNumbers(selectRxns);
+0080 <span class="keyword">end</span>
+0081 <span class="keyword">if</span> (isfield(model, <span class="string">'rxnNotes'</span>))
+0082   modelOut.rxnNotes = model.rxnNotes(selectRxns);
+0083 <span class="keyword">end</span>
+0084 
+0085 
+0086 <span class="comment">% Reconstruct the match list</span>
+0087 <span class="keyword">if</span> (irrevFlag)
+0088   modelOut.match = <a href="../../cobra/reassignFwBwMatch.html" class="code" title="function matchNew = reassignFwBwMatch(match,selVec)">reassignFwBwMatch</a>(model.match,selectRxns);
+0089   modelOut.rev(modelOut.match == 0) = false;
+0090 <span class="keyword">end</span>
+0091 
+0092 <span class="comment">% Remove metabolites that are not used anymore</span>
+0093 <span class="keyword">if</span> (metFlag)
+0094   selMets = modelOut.mets(any(sum(abs(modelOut.S),2) == 0,2));
+0095   <span class="keyword">if</span> (~isempty(selMets))
+0096     modelOut = <a href="removeMetabolites.html" class="code" title="function model = removeMetabolites(model,metaboliteList,removeRxnFlag)">removeMetabolites</a>(modelOut, selMets, false);
+0097   <span class="keyword">end</span>
+0098 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>
