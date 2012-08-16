@@ -246,7 +246,7 @@ switch solver
         removed = find(x==0);
         % option to leave orphan reactions
         if orphan == 1
-            orphans = findorphanRxns(model);
+            orphans = findOrphanRxns(model);
             removed(find(ismember(model.rxns(removed),orphans)))=[]; 
         end
         rxnRemList = model.rxns(removed);

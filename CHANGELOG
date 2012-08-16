@@ -1,3 +1,6 @@
+pre2.0.6
+ -Fixed bug 3556986.
+
 2.0.5
  -Added in support for gurobi5 (Thanks Tim)
  -Added in Turner's drawCbMap patch
