@@ -1,6 +1,6 @@
 function modelRev = convertToReversible(model)
-%convertToReversible convert a model structure from reversible format to
-%irreversible format
+%convertToReversible convert a model structure from irreversible format to
+%reversible format
 %
 % modelRev = convertToReversible(model)
 %

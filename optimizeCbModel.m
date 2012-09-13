@@ -40,7 +40,7 @@ function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)
 %                                   c'*v = f
 %                                   lb <= v <= ub
 %
-% allowLoops    {0,(1)} If true, then instead of a conventional FBA,
+% allowLoops    {0,(1)} If false,  then instead of a conventional FBA,
 %               the solver will run an MILP version which does not allow
 %               loops in the final solution.  Default is true.
 %               Runs much slower when set to false.
