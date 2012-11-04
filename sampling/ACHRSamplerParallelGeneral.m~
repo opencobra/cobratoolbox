@@ -116,7 +116,7 @@ if proc == 0 % if master thread
         save('xxMasterfile', 'ub', 'lb', 'A', 'C', 'D', 'fixed', 'N', 'movable', 'Nsmall', 'numproc', 'nPoints' ); 
         display('finished saving master file.  spawning processes');
         for i = 1:(numproc - 1) % goes from 1 to 7 if proc == 8
-            command = strcat('matlab -singleCompThread -automation -nojvm -r "ACHRSamplerParallelGeneral([],',num2str(nLoops),',',num2str(stepsPerPoint),',0,', num2str(-i) ,',''' ,pwd, ''');exit;" &' );
+            command = strcat('matlab -singleCompThread -automation -nojvm -r "ACHRSamplerParallelGeneral([],',num2str(nLoops),',',num2str(stepsPerPoint),',0,', num2str(-i) ,',''' ,pwd, ''');exit;"' );
             display(command)
             system(command);
         end
@@ -139,7 +139,7 @@ for i = 1:nLoops
             save(strcat('xxRoundDonePrint', num2str(i)), 'blah');
             display(strcat('finished distributing points round ', num2str(i)));
         else  % if slave threads do this.
-            display(which('pathdef'));
+            display
             display(strcat('reading in points round ', num2str(i)));
             while exist(strcat('xxRoundDonePrint', num2str(i), '.mat'), 'file') ~= 2; % wait for other thread to finish.
                 %display(strcat('waiting for round ', num2str(i)));
