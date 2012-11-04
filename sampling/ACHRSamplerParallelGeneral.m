@@ -139,7 +139,6 @@ for i = 1:nLoops
             save(strcat('xxRoundDonePrint', num2str(i)), 'blah');
             display(strcat('finished distributing points round ', num2str(i)));
         else  % if slave threads do this.
-            display(which('pathdef'));
             display(strcat('reading in points round ', num2str(i)));
             while exist(strcat('xxRoundDonePrint', num2str(i), '.mat'), 'file') ~= 2; % wait for other thread to finish.
                 %display(strcat('waiting for round ', num2str(i)));
