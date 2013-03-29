@@ -63,7 +63,8 @@ global CBT_QP_SOLVER;
 if (~isempty(CBT_QP_SOLVER))
     solver = CBT_QP_SOLVER;
 else
-    error('No solver found');
+    solver = 'gurobi5';
+    %error('No solver found');
 end
 
 optParamNames = {'printLevel','saveInput'};

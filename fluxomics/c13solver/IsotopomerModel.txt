@@ -1,0 +1,718 @@
+xglcDe
+BiomassEcoliGALUi v1 0.05 x5mthf 0.00005 xaccoa 0.488 xalaL 0.281 xargL 0.229 xasnL 0.229 xaspL 0.087 xcysL 0.003 xg1p 0.25 xglnL 0.25 xgluL 0.582 xgly 0.154 xglycogen 0.09 xhisL 0.276 xileL 0.428 xleuL 0.326 xlysL 0.146 xmetL 0.176 xpheL 0.21 xproL 0.035 xptrc 0.205 xserL 0.007 xspmd 3e-006 xsuccoa 0.241 xthrL 0.054 xtrpL 0.131 xtyrL 0.402 xvalL >
+#a #bc #def #ghijkl #mnop #qrst #uvw #xyzABC #DEFGH #IJKLM #NO #PQRSTU #VWXYZ1 #234567 #89abcd #efghij #klmno #pqrstuvwx #yzABC #DEFG #HIJ #KLMNOPQ #RSTU #VWXY #Z123456789a #bcdefghij #klmno >
+EX_ac v2 1 xace >
+#ab >
+EX_co2 v3 1 xco2e >
+#a >
+EX_etoh v4 1 xetohe >
+#ab >
+EX_for v5 1 xfore >
+#a >
+EX_fum v6 1 xfume >
+#dcba >
+#abcd >
+EX_glc v7 1 xglcDe >
+#abcdef >
+EX_glyc v8 1 xglyce >
+#cba >
+#abc >
+EX_lacD v11 1 xlacDe >
+#abc >
+EX_pyr v18 1 xpyre >
+#abc >
+EX_succ v20 1 xsucce >
+#dcba >
+#abcd >
+ABTA v21 1 x4abut 1 xakg > 1 xgluL 1 xsucsal
+#abcd #efghi > #efghi #abcd
+COMBO2 v22 1 xakg 1 xptrc > 1 x4abut 1 xgluL
+#abcde #ihgf > #fghi #abcde
+#abcde #fghi > #fghi #abcde
+ACALDi v23 1 xacald > 1 xaccoa
+#ab > #ab
+COMBO3 v24 1 xaccoa 1 xgluL > 1 xacg5p
+#ab #cdefg > #cdefgab
+COMBO4 v25 1 x2obut 1 xpyr > 1 x3mop 1 xco2
+#abcd #efg > #abfcdg #e
+ACKr v26 1 xac > 1 xactp
+#ab > #ab
+COMBO5 v27 1 xpyr 1 xpyr > 1 x23dhmb 1 xco2
+#abc #def > #debcf #a
+ACODA v28 1 xacorn > 1 xac 1 xorn
+#abcdefg > #fg #abcde
+rACONT v29 1 xcit > 1 xicit
+#abcdef > #abcdef
+ACOTA v30 1 xacorn 1 xakg > 1 xacg5sa 1 xgluL
+#abcdefg #hijkl > #abcdefg #hijkl
+ACS v31 1 xac > 1 xaccoa
+#ab > #ab
+ACt2r v32 1 xace > 1 xac
+#ab > #ab
+ADHEr v33 1 xaccoa > 1 xetoh
+#ab > #ab
+COMBOSPMD v36 1 xmetL 1 xprpp 1 xptrc > 1 xco2 1 xdkmpp 1 xspmd
+#abcde #fghij #nmlk > #a #fghije #klmndcb
+#abcde #fghij #klmn > #a #fghije #klmndcb
+COMBO10 v38 1 xaspL > 1 xfum
+#abcd > #dcba
+#abcd > #abcd
+AGPR v39 1 xacg5sa > 1 xacg5p
+#abcdefg > #abcdefg
+ALAR v40 1 xalaL > 1 xalaD
+#abc > #abc
+ALATAL v41 1 xakg 1 xalaL > 1 xgluL 1 xpyr
+#abcde #fgh > #abcde #fgh
+ALDD2x v42 1 xacald > 1 xac
+#ab > #ab
+COMBO15 v43 1 xchor 1 xglnL 1 xprpp > 1 x3ig3p 1 xco2 1 xgluL 1 xpyr
+#abcdefghij #klmno #pqrst > #tsrqbgfedcp #a #klmno #ihj
+ARGSL v44 1 xargsuc > 1 xargL 1 xfum
+#abcdefghij > #abcdef #ihgj
+#abcdefghij > #abcdef #jghi
+ARGSS v45 1 xaspL 1 xcitrL > 1 xargsuc
+#abcd #efghij > #efghijbcda
+ASAD v46 1 xaspsa > 1 x4pasp
+#abcd > #abcd
+ASNN v47 1 xasnL > 1 xaspL
+#abcd > #abcd
+ASNS1 v48 1 xaspL 1 xglnL > 1 xasnL 1 xgluL
+#abcd #efghi > #abcd #efghi
+ASPK v50 1 xaspL > 1 x4pasp
+#abcd > #abcd
+ASPTA v51 1 xakg 1 xaspL > 1 xgluL 1 xoaa
+#abcde #fghi > #abcde #fghi
+CBPS v54 1 xglnL 1 xhco3 > 1 xcbp 1 xgluL
+#abcde #f > #f #abcde
+CHORM v55 1 xchor > 1 xpphn
+#abcdefghij > #ihjbcdefga
+CHORS v56 1 x3psme > 1 xchor
+#abcdefghij > #abgfedchij
+CO2t v57 1 xco2e > 1 xco2
+#a > #a
+CS v58 1 xaccoa 1 xoaa > 1 xcit
+#ab #cdef > #fedbac
+CYSDS v59 1 xcysL > 1 xpyr
+#abc > #abc
+CYSS v60 1 xacser > 1 xac 1 xcysL
+#abcde > #de #abc
+COMBO22 v61 1 x5mthf 1 xcysL 1 xhomL 1 xsuccoa > 1 xmetL 1 xpyr 1 xsucc
+#a #bcd #efgh #ijkl > #efgha #bcd #lkji
+#a #bcd #efgh #ijkl > #efgha #bcd #ijkl
+DLACt2 v65 1 xlacDe > 1 xlacD
+#abc > #abc
+DAPDC v66 1 x26dapM > 1 xco2 1 xlysL
+#gfedcba > #g #abcdef
+#abcdefg > #g #abcdef
+DAPE v67 1 x26dapLL > 1 x26dapM
+#gfedcba > #abcdefg
+#gfedcba > #gfedcba
+#abcdefg > #abcdefg
+#abcdefg > #gfedcba
+COMBO25 v68 1 xe4p 1 xpep > 1 x3dhq
+#abcd #efg > #efdcbag
+DHAD1 v69 1 x23dhmb > 1 x3mob
+#abcde > #abcde
+DHAPT v70 1 xdha 1 xpep > 1 xdhap 1 xpyr
+#cba #def > #abc #def
+#abc #def > #abc #def
+COMBO26 v71 1 xaspsa 1 xpyr 1 xsuccoa > 1 xsl2a6o
+#abcd #efg #hijk > #abcdgfehijk
+DHQD v72 1 x3dhq > 1 x3dhsk
+#abcdefg > #abcdefg
+DKMPPD v73 1 xdkmpp > 1 x2kmb 1 xformate
+#abcdef > #bcdef #a
+DKMPPD2 v74 1 xdkmpp > 1 x2kmb 1 xformate
+#abcdef > #bcdef #a
+EDA v75 1 x2ddg6p > 1 xg3p 1 xpyr
+#abcdef > #def #abc
+EDD v76 1 x6pgc > 1 x2ddg6p
+#abcdef > #abcdef
+ENO v77 1 x2pg > 1 xpep
+#abc > #abc
+ETOHt2r v78 1 xetohe > 1 xetoh
+#ab > #ab
+F6PA v79 1 xf6p > 1 xdha 1 xg3p
+#abcdef > #cba #def
+#abcdef > #abc #def
+FBA v80 1 xfdp > 1 xdhap 1 xg3p
+#abcdef > #abc #def
+FBP v81 1 xfdp > 1 xf6p
+#abcdef > #abcdef
+FDH2 v82 1 xformate > 1 xco2
+#a > #a
+FDH3 v83 1 xformate > 1 xco2
+#a > #a
+FHL v84 1 xformate > 1 xco2
+#a > #a
+FORt v85 1 xfore > 1 xformate
+#a > #a
+FRD2 v86 1 xfum > 1 xsucc
+#dcba > #dcba
+#dcba > #abcd
+#abcd > #dcba
+#abcd > #abcd
+FRD3 v87 1 xfum > 1 xsucc
+#dcba > #dcba
+#dcba > #abcd
+#abcd > #dcba
+#abcd > #abcd
+FTHFD v88 1 x10fthf > 1 xformate
+#a > #a
+rFUM v89 1 xfum > 1 xmalL
+#dcba > #abcd
+#abcd > #abcd
+FUMt22 v90 1 xfume > 1 xfum
+#dcba > #abcd
+#dcba > #dcba
+#abcd > #abcd
+#abcd > #dcba
+FUMt23 v91 1 xfume > 1 xfum
+#dcba > #abcd
+#dcba > #dcba
+#abcd > #abcd
+#abcd > #dcba
+G1PP v92 1 xg1p > 1 xglcD
+#abcdef > #abcdef
+G3PD2 v93 1 xglyc3p > 1 xdhap
+#abc > #abc
+G3PD5 v94 1 xglyc3p > 1 xdhap
+#abc > #abc
+G3PD6 v95 1 xglyc3p > 1 xdhap
+#abc > #abc
+G3PD7 v96 1 xglyc3p > 1 xdhap
+#abc > #abc
+G5SADs v97 1 xglu5sa > 1 x1pyr5c
+#abcde > #abcde
+COMBO34 v98 1 xgluL > 1 xglu5sa
+#abcde > #abcde
+G6PDH2r v99 1 xg6p > 1 x6pgl
+#abcdef > #abcdef
+GAPD v100 1 xg3p > 1 x13dpg
+#abc > #abc
+GHMT2 v101 1 xserL > 1 xgly 1 xmlthf
+#abc > #ab #c
+GLCP v103 1 xglycogen > 1 xg1p
+#abcdef > #abcdef
+COMBO36 v104 1 xg1p > 1 xglycogen
+#abcdef > #abcdef
+GLCpts v105 1 xglcDe 1 xpep > 1 xg6p 1 xpyr
+#abcdef #ghi > #abcdef #ghi
+GLNS v106 1 xgluL > 1 xglnL
+#abcde > #abcde
+GLUDC v107 1 xgluL > 1 x4abut 1 xco2
+#abcde > #edcb #a
+GLUDy v108 1 xgluL > 1 xakg
+#abcde > #abcde
+GLUN v109 1 xglnL > 1 xgluL
+#abcde > #abcde
+GLUSy v110 1 xakg 1 xglnL > 2 xgluL
+#abcde #fghij > #abcde
+#abcde #fghij > #fghij
+GLXCL v111 1 xglx 1 xglx > 1 x2h3oppan 1 xco2
+#ab #cd > #abd #c
+COMBO37 v112 1 xthrL > 1 xaccoa 1 xgly
+#abcd > #cd #ab
+GLYCDx v113 1 xglyc > 1 xdha
+#abc > #cba
+#cba > #cba
+#abc > #abc
+#cba > #abc
+GLYCK v114 1 xglycR > 1 x3pg
+#abc > #abc
+GLYCL v115 1 xgly > 1 xco2 1 xmlthf
+#ab > #a #b
+GLYCLTDx v116 1 xglx > 1 xglyclt
+#ab > #ab
+GLYCLTDy v117 1 xglx > 1 xglyclt
+#ab > #ab
+GLYCTO2 v118 1 xglyclt > 1 xglx
+#ab > #ab
+GLYCTO3 v119 1 xglyclt > 1 xglx
+#ab > #ab
+GLYCTO4 v120 1 xglyclt > 1 xglx
+#ab > #ab
+GLYCt v121 1 xglyc > 1 xglyce
+#abc > #cba
+#cba > #cba
+#abc > #abc
+#cba > #abc
+GLYK v122 1 xglyc > 1 xglyc3p
+#cba > #abc
+#abc > #abc
+COMBO38 v123 1 xdhap > 1 xlacD
+#abc > #cba
+GMPS2 v124 1 xglnL > 1 xgluL
+#abcde > #abcde
+GND v125 1 x6pgc > 1 xco2 1 xru5pD
+#abcdef > #a #bcdef
+HCO3E v127 1 xco2 > 1 xhco3
+#a > #a
+HEX1 v128 1 xglcD > 1 xg6p
+#abcdef > #abcdef
+HSDy v129 1 xhomL > 1 xaspsa
+#abcd > #abcd
+COMBO41 v130 1 xhomL > 1 xthrL
+#abcd > #abcd
+ICDHyr v134 1 xicit > 1 xakg 1 xco2
+#abcdef > #abcde #f
+ICL v135 1 xicit > 1 xglx 1 xsucc
+#abcdef > #ab #edcf
+#abcdef > #ab #fcde
+ILETA v136 1 xakg 1 xileL > 1 x3mop 1 xgluL
+#abcde #fghijk > #fghijk #abcde
+IPMD v138 1 x3c2hmp > 1 x3c4mop
+#abcdefg > #abcdefg
+IPPMIa v139 1 x3c2hmp > 1 x2ippm
+#abcdefg > #abcdefg
+IPPMIb v140 1 x2ippm > 1 x3c3hmp
+#abcdefg > #abcdefg
+IPPS v141 1 x3mob 1 xaccoa > 1 x3c3hmp
+#abcde #fg > #fgbcdae
+LLACt2r v144 1 xlacLe > 1 xlacL
+#abc > #abc
+LDHD v145 1 xlacD > 1 xpyr
+#abc > #abc
+LDHD2 v146 1 xlacD > 1 xpyr
+#abc > #abc
+LEUTAi v147 1 x4mop 1 xgluL > 1 xakg 1 xleuL
+#abcdef #ghijk > #ghijk #abcdef
+MALS v148 1 xaccoa 1 xglx > 1 xmalL
+#ab #cd > #cdba
+MDH v149 1 xmalL > 1 xoaa
+#abcd > #abcd
+MDH2 v150 1 xmalL > 1 xoaa
+#abcd > #abcd
+MDH3 v151 1 xmalL > 1 xoaa
+#abcd > #abcd
+ME1 v152 1 xmalL > 1 xco2 1 xpyr
+#abcd > #d #abc
+ME2 v153 1 xmalL > 1 xco2 1 xpyr
+#abcd > #d #abc
+MTHFC v154 1 xmethf > 1 x10fthf
+#a > #a
+MTHFD v155 1 xmlthf > 1 xmethf
+#a > #a
+MTHFR2 v156 1 xmlthf > 1 x5mthf
+#a > #a
+NACODA v157 1 xacg5sa > 1 xac 1 xglu5sa
+#abcdefg > #fg #abcde
+OCBT v179 1 xcbp 1 xorn > 1 xcitrL
+#a #bcdef > #bcdefa
+OMCDC v180 1 x3c4mop > 1 x4mop 1 xco2
+#abcdefg > #abcdeg #f
+ORNDC v181 1 xorn > 1 xco2 1 xptrc
+#abcde > #a #edcb
+#abcde > #a #bcde
+P5CD v182 1 x1pyr5c > 1 xgluL
+#abcde > #abcde
+P5CR v183 1 x1pyr5c > 1 xproL
+#abcde > #abcde
+PDH v184 1 xpyr > 1 xaccoa 1 xco2
+#abc > #bc #a
+PFK v185 1 xf6p > 1 xfdp
+#abcdef > #abcdef
+PFL v186 1 xpyr > 1 xaccoa 1 xformate
+#abc > #bc #a
+COMBO47 v187 1 x3pg 1 xgluL > 1 xakg 1 xserL
+#abc #defgh > #defgh #abc
+PGI v188 1 xg6p > 1 xf6p
+#abcdef > #abcdef
+PGK v189 1 x3pg > 1 x13dpg
+#abc > #abc
+PGL v190 1 x6pgl > 1 x6pgc
+#abcdef > #abcdef
+PGM v191 1 x2pg > 1 x3pg
+#abc > #abc
+PGMT v192 1 xg1p > 1 xg6p
+#abcdef > #abcdef
+PHETA1 v193 1 xakg 1 xpheL > 1 xgluL 1 xphpyr
+#abcde #fghinmlkj > #abcde #fghijklmn
+#abcde #fghinmlkj > #abcde #fghinmlkj
+#abcde #fghijklmn > #abcde #fghijklmn
+#abcde #fghijklmn > #abcde #fghinmlkj
+POX v196 1 xpyr > 1 xac 1 xco2
+#abc > #bc #a
+PPC v198 1 xco2 1 xpep > 1 xoaa
+#a #bcd > #bcda
+PPCK v199 1 xoaa > 1 xco2 1 xpep
+#abcd > #d #abc
+PPND v200 1 xpphn > 1 x34hpp 1 xco2
+#abcdefghij > #abcdihgfe #j
+#abcdefghij > #abcdefghi #j
+PPNDH v201 1 xpphn > 1 xco2 1 xphpyr
+#abcdefghij > #j #abcdihgfe
+#abcdefghij > #j #abcdefghi
+PPS v202 1 xpyr > 1 xpep
+#abc > #abc
+PROD2 v203 1 xproL > 1 x1pyr5c
+#abcde > #abcde
+PRPPS v204 1 xr5p > 1 xprpp
+#abcde > #abcde
+PSCVT v205 1 xpep 1 xskm5p > 1 x3psme
+#abc #defghij > #defghijbac
+PTAr v206 1 xaccoa > 1 xactp
+#ab > #ab
+PYK v207 1 xpep > 1 xpyr
+#abc > #abc
+PYRt2r v208 1 xpyre > 1 xpyr
+#abc > #abc
+RPE v212 1 xru5pD > 1 xxu5pD
+#abcde > #abcde
+RPI v213 1 xr5p > 1 xru5pD
+#abcde > #abcde
+SDPDS v214 1 xsl26da > 1 x26dapLL 1 xsucc
+#abcdefghijk > #gfedcba #hijk
+#abcdefghijk > #gfedcba #kjih
+#abcdefghijk > #abcdefg #hijk
+#abcdefghijk > #abcdefg #kjih
+SDPTA v215 1 xakg 1 xsl26da > 1 xgluL 1 xsl2a6o
+#abcde #fghijklmnop > #abcde #fghijklmnop
+SERAT v216 1 xaccoa 1 xserL > 1 xacser
+#ab #cde > #cdeab
+SERDL v217 1 xserL > 1 xpyr
+#abc > #abc
+SHK3Dr v218 1 x3dhsk > 1 xskm
+#abcdefg > #abcdefg
+SHKK v219 1 xskm > 1 xskm5p
+#abcdefg > #abcdefg
+SSALx v220 1 xsucsal > 1 xsucc
+#abcd > #dcba
+#abcd > #abcd
+SSALy v221 1 xsucsal > 1 xsucc
+#abcd > #dcba
+#abcd > #abcd
+SUCCabc v222 1 xsucce > 1 xsucc
+#dcba > #abcd
+#dcba > #dcba
+#abcd > #abcd
+#abcd > #dcba
+SUCCt22 v223 1 xsucce > 1 xsucc
+#dcba > #abcd
+#dcba > #dcba
+#abcd > #abcd
+#abcd > #dcba
+SUCCt23 v224 1 xsucce > 1 xsucc
+#dcba > #abcd
+#dcba > #dcba
+#abcd > #abcd
+#abcd > #dcba
+SUCCt2b v225 1 xsucc > 1 xsucce
+#abcd > #dcba
+#dcba > #dcba
+#abcd > #abcd
+#dcba > #abcd
+SUCD1i v226 1 xsucc > 1 xfum
+#abcd > #abcd
+#dcba > #abcd
+#abcd > #dcba
+#dcba > #dcba
+SUCFUMt v228 1 xfume 1 xsucc > 1 xfum 1 xsucce
+#dcba #efgh > #abcd #efgh
+#dcba #efgh > #dcba #efgh
+#dcba #efgh > #abcd #hgfe
+#dcba #efgh > #dcba #hgfe
+#dcba #hgfe > #abcd #efgh
+#dcba #hgfe > #dcba #efgh
+#dcba #hgfe > #abcd #hgfe
+#dcba #hgfe > #dcba #hgfe
+#abcd #efgh > #abcd #efgh
+#abcd #efgh > #dcba #efgh
+#abcd #efgh > #abcd #hgfe
+#abcd #efgh > #dcba #hgfe
+#abcd #hgfe > #abcd #efgh
+#abcd #hgfe > #dcba #efgh
+#abcd #hgfe > #abcd #hgfe
+#abcd #hgfe > #dcba #hgfe
+SUCOAS v229 1 xsucc > 1 xsuccoa
+#dcba > #abcd
+#abcd > #abcd
+TALA v232 1 xg3p 1 xs7p > 1 xe4p 1 xf6p
+#abc #defghij > #ghij #defabc
+TESTAKGDH v233 1 xakg > 1 xco2 1 xsuccoa
+#abcde > #a #bcde
+THRAr v236 1 xthrL > 1 xacald 1 xgly
+#abcd > #cd #ab
+THRDL v237 1 xthrL > 1 x2obut
+#abcd > #abcd
+TKT1 v238 1 xr5p 1 xxu5pD > 1 xg3p 1 xs7p
+#abcde #fghij > #hij #fgabcde
+TKT2 v239 1 xe4p 1 xxu5pD > 1 xf6p 1 xg3p
+#abcd #efghi > #efabcd #ghi
+TPI v240 1 xdhap > 1 xg3p
+#abc > #cba
+TRPAS2 v242 1 xtrpL > 1 xindole 1 xpyr
+#abcdefghijk > #kdefghij #abc
+TRPS1 v243 1 x3ig3p 1 xserL > 1 xg3p 1 xtrpL
+#abcdefghijk #lmn > #cba #lmndefghijk
+TRPS2 v244 1 xindole 1 xserL > 1 xtrpL
+#abcdefgh #ijk > #ijkbcdefgha
+TRPS3 v245 1 x3ig3p > 1 xg3p 1 xindole
+#abcdefghijk > #cba #kdefghij
+TRSAR v246 1 x2h3oppan > 1 xglycR
+#abc > #abc
+TYRTA v247 1 xakg 1 xtyrL > 1 x34hpp 1 xgluL
+#abcde #fghijklmn > #fghinmlkj #abcde
+#abcde #fghinmlkj > #fghinmlkj #abcde
+#abcde #fghijklmn > #fghijklmn #abcde
+#abcde #fghinmlkj > #fghijklmn #abcde
+UNK3 v249 1 x2kmb 1 xgluL > 1 xakg 1 xmetL
+#abcde #fghij > #fghij #abcde
+VALTA v250 1 xakg 1 xvalL > 1 x3mob 1 xgluL
+#abcde #fghij > #fghij #abcde
+HISSYN v251 1 x10fthf 1 xglnL 1 xprpp > 1 xakg 1 xhisL
+#a #bcdef #ghijk > #bcdef #kjihga
+UMPSYN1 v252 1 xcbp 1 xprpp 1 xaspL > 1 xco2
+#a #bcdef #ghij > #g
+UMPSYN2 v253 1 xcbp 1 xprpp 1 xaspL > 1 xco2
+#a #bcdef #ghij > #g
+CTPSYN v254 1 xglnL > 1 xgluL
+#abcde > #abcde
+IMPSYN1 v255 2 x10fthf 1 xgly 1 xhco3 1 xprpp 1 xaspL 2 xglnL > 1 xfum 2 xgluL
+#a #bc #d #efghi #jklm #vutsw > #jklm #stuvw
+#a #bc #d #efghi #jklm #stuvw > #jklm #stuvw
+IMPSYN2 v256 1 x10fthf 1 xformate 1 xgly 1 xhco3 1 xprpp 1 xaspL 2 xglnL > 1 xfum 2 xgluL
+#a #b #cd #e #fghij #klmn #opqrs > #klmn #opqrs
+#a #b #cd #e #fghij #klmn #opqrs > #klmn #opqrs
+dTTPSYN v257 1 xmlthf >
+#a >
+COASYN v258 1 x3mob 1 xmlthf 1 xaspL 1 xcysL > 2 xco2
+#abcde #f #ghij #klm > #k
+#abcde #f #ghij #klm > #g
+FADSYN v259 .0000000000001 x10fthf 1 xru5pD 1 xru5pD > 3 xformate
+#a #bcdef #ghijk > #j
+#a #bcdef #ghijk > #e
+#a #bcdef #ghijk > #a
+CDPDAGSYN v260 16.86 xaccoa 1 xglyc3p 14.86 xhco3 > 14.86 xco2
+#ab #cde #f > #f
+PSSYN v261 1 xserL >
+#abc >
+PESYN v262 1 xserL > 1 xco2
+#abc > #a
+PGSYN v263 1 xglyc3p >
+#abc >
+CLPNSYN v264 2 xglyc3p > 1 xglyc
+#abc > #cba
+#abc > #abc
+LPSSYN v265 2 xf6p 2 xg1p 5 xpep 5 xru5pD 3 xs7p 43 xaccoa 2 xglnL 35 xhco3 > 2 xac 35 xco2 2 xgluL
+#abcdef #ghijkl #mno #pqrst #uvwxyzA #BC #FGHIJ #P > #BC #P #FGHIJ
+PEPTIDOSYN v266 1 x26dapM 2 xaccoa 2 xalaD 1 xalaL 2 xf6p 1 xpep 2 xglnL > 1 xgluL
+#gfedcba #hi #jkl #mno #pqrstu #vwx #yzABC > #yzABC
+#abcdefg #hi #jkl #mno #pqrstu #vwx #yzABC > #yzABC
+NADSYN1 v267 1 xdhap 1 xprpp 1 xaspL > 1 xco2
+#abc #defgh #ijkl > #i
+NADSYN2 v268 1 xdhap 1 xprpp 1 xaspL > 1 xco2
+#abc #defgh #ijkl > #i
+THFSYN v269 1 xglnL .0000000000001 x10fthf 1 xchor .0000000000001 xprpp > 1 xformate 1 xglyclt 1 xpyr
+#abcde #f #ghijklmnop #qrstu > #f #tu #onp
+G3PP v270 1 xglyc3p > 1 xglyc
+#fed > #def
+#def > #def
+ACKr_r v272 1 xactp > 1 xac
+#ab > #ab
+rACONT_r v273 1 xicit > 1 xcit
+#abcdef > #abcdef
+ACOTA_r v274 1 xacg5sa 1 xgluL > 1 xacorn 1 xakg
+#abcdefg #hijkl > #abcdefg #hijkl
+ACt2r_r v275 1 xac > 1 xace
+#ab > #ab
+ADHEr_r v276 1 xetoh > 1 xaccoa
+#ab > #ab
+AGPR_r v277 1 xacg5p > 1 xacg5sa
+#abcdefg > #abcdefg
+ALAR_r v278 1 xalaD > 1 xalaL
+#abc > #abc
+ALATAL_r v279 1 xgluL 1 xpyr > 1 xakg 1 xalaL
+#abcde #fgh > #abcde #fgh
+ARGSL_r v280 1 xargL 1 xfum > 1 xargsuc
+#abcdef #ihgj > #abcdefghij
+#abcdef #jghi > #abcdefghij
+ASAD_r v281 1 x4pasp > 1 xaspsa
+#abcd > #abcd
+ASPK_r v282 1 x4pasp > 1 xaspL
+#abcd > #abcd
+ASPTA_r v283 1 xgluL 1 xoaa > 1 xakg 1 xaspL
+#abcde #fghi > #abcde #fghi
+CO2t_r v284 1 xco2 > 1 xco2e
+#a > #a
+DLACt2_r v285 1 xlacD > 1 xlacDe
+#abc > #abc
+DAPE_r v286 1 x26dapM > 1 x26dapLL
+#abcdefg > #gfedcba
+#gfedcba > #gfedcba
+#abcdefg > #abcdefg
+#gfedcba > #abcdefg
+DHQD_r v287 1 x3dhsk > 1 x3dhq
+#abcdefg > #abcdefg
+ENO_r v288 1 xpep > 1 x2pg
+#abc > #abc
+ETOHt2r_r v289 1 xetoh > 1 xetohe
+#ab > #ab
+F6PA_r v290 1 xdha 1 xg3p > 1 xf6p
+#cba #def > #abcdef
+#abc #def > #abcdef
+FBA_r v291 1 xdhap 1 xg3p > 1 xfdp
+#abc #def > #abcdef
+FORt_r v292 1 xformate > 1 xfore
+#a > #a
+rFUM_r v293 1 xmalL > 1 xfum
+#abcd > #dcba
+#abcd > #abcd
+G3PD2_r v294 1 xdhap > 1 xglyc3p
+#abc > #abc
+G6PDH2r_r v295 1 x6pgl > 1 xg6p
+#abcdef > #abcdef
+GAPD_r v296 1 x13dpg > 1 xg3p
+#abc > #abc
+GLUDy_r v297 1 xakg > 1 xgluL
+#abcde > #abcde
+GLYCt_r v298 1 xglyce > 1 xglyc
+#cba > #abc
+#cba > #cba
+#abc > #abc
+#abc > #cba
+HCO3E_r v299 1 xhco3 > 1 xco2
+#a > #a
+HSDy_r v300 1 xaspsa > 1 xhomL
+#abcd > #abcd
+ICDHyr_r v301 1 xakg 1 xco2 > 1 xicit
+#abcde #f > #abcdef
+ILETA_r v302 1 x3mop 1 xgluL > 1 xakg 1 xileL
+#fghijk #abcde > #abcde #fghijk
+IPPMIa_r v303 1 x2ippm > 1 x3c2hmp
+#abcdefg > #abcdefg
+IPPMIb_r v304 1 x3c3hmp > 1 x2ippm
+#abcdefg > #abcdefg
+LLACt2r_r v305 1 xlacL > 1 xlacLe
+#abc > #abc
+LDHD_r v306 1 xpyr > 1 xlacD
+#abc > #abc
+MDH_r v307 1 xoaa > 1 xmalL
+#abcd > #abcd
+MTHFC_r v308 1 x10fthf > 1 xmethf
+#a > #a
+MTHFD_r v309 1 xmethf > 1 xmlthf
+#a > #a
+OCBT_r v310 1 xcitrL > 1 xcbp 1 xorn
+#bcdefa > #a #bcdef
+PGI_r v311 1 xf6p > 1 xg6p
+#abcdef > #abcdef
+PGK_r v312 1 x13dpg > 1 x3pg
+#abc > #abc
+PGM_r v313 1 x3pg > 1 x2pg
+#abc > #abc
+PGMT_r v314 1 xg6p > 1 xg1p
+#abcdef > #abcdef
+PHETA1_r v315 1 xgluL 1 xphpyr > 1 xakg 1 xpheL
+#abcde #fghijklmn > #abcde #fghinmlkj
+#abcde #fghinmlkj > #abcde #fghinmlkj
+#abcde #fghijklmn > #abcde #fghijklmn
+#abcde #fghinmlkj > #abcde #fghijklmn
+PRPPS_r v316 1 xprpp > 1 xr5p
+#abcde > #abcde
+PSCVT_r v317 1 x3psme > 1 xpep 1 xskm5p
+#defghijbac > #abc #defghij
+PTAr_r v318 1 xactp > 1 xaccoa
+#ab > #ab
+PYRt2r_r v319 1 xpyr > 1 xpyre
+#abc > #abc
+RPE_r v320 1 xxu5pD > 1 xru5pD
+#abcde > #abcde
+RPI_r v321 1 xru5pD > 1 xr5p
+#abcde > #abcde
+SDPTA_r v322 1 xgluL 1 xsl2a6o > 1 xakg 1 xsl26da
+#abcde #fghijklmnop > #abcde #fghijklmnop
+SERAT_r v323 1 xacser > 1 xaccoa 1 xserL
+#cdeab > #ab #cde
+SHK3Dr_r v324 1 xskm > 1 x3dhsk
+#abcdefg > #abcdefg
+SUCFUMt_r v325 1 xfum 1 xsucce > 1 xfume 1 xsucc
+#abcd #efgh > #dcba #efgh
+#dcba #efgh > #dcba #efgh
+#abcd #hgfe > #dcba #efgh
+#dcba #hgfe > #dcba #efgh
+#abcd #efgh > #dcba #hgfe
+#dcba #efgh > #dcba #hgfe
+#abcd #hgfe > #dcba #hgfe
+#dcba #hgfe > #dcba #hgfe
+#abcd #efgh > #abcd #efgh
+#dcba #efgh > #abcd #efgh
+#abcd #hgfe > #abcd #efgh
+#dcba #hgfe > #abcd #efgh
+#abcd #efgh > #abcd #hgfe
+#dcba #efgh > #abcd #hgfe
+#abcd #hgfe > #abcd #hgfe
+#dcba #hgfe > #abcd #hgfe
+SUCOAS_r v326 1 xsuccoa > 1 xsucc
+#abcd > #dcba
+#abcd > #abcd
+TALA_r v327 1 xe4p 1 xf6p > 1 xg3p 1 xs7p
+#ghij #defabc > #abc #defghij
+THRAr_r v328 1 xacald 1 xgly > 1 xthrL
+#cd #ab > #abcd
+TKT1_r v329 1 xg3p 1 xs7p > 1 xr5p 1 xxu5pD
+#hij #fgabcde > #abcde #fghij
+TKT2_r v330 1 xf6p 1 xg3p > 1 xe4p 1 xxu5pD
+#efabcd #ghi > #abcd #efghi
+TPI_r v331 1 xg3p > 1 xdhap
+#cba > #abc
+TRPAS2_r v332 1 xindole 1 xpyr > 1 xtrpL
+#kdefghij #abc > #abcdefghijk
+TYRTA_r v333 1 x34hpp 1 xgluL > 1 xakg 1 xtyrL
+#fghinmlkj #abcde > #abcde #fghijklmn
+#fghinmlkj #abcde > #abcde #fghinmlkj
+#fghijklmn #abcde > #abcde #fghijklmn
+#fghijklmn #abcde > #abcde #fghinmlkj
+VALTA_r v334 1 x3mob 1 xgluL > 1 xakg 1 xvalL
+#fghij #abcde > #abcde #fghij
+GHMT2_r v335 1 xgly 1 xmlthf > 1 xserL
+#ab #c > #abc
+!!Measured Metabolites!!
+xalaL->[1;1;1]
+xalaL->[0;1;1]
+xasnL->[0;1;1;1]
+xasnL->[1;1;0;0]
+xasnL->[1;1;1;1]
+xasnL->[0;1;1;1]
+xaspL->[0;1;1;1]
+xaspL->[1;1;0;0]
+xaspL->[1;1;1;1]
+xaspL->[0;1;1;1]
+xglnL->[0;1;1;1;1]
+xglnL->[1;1;1;1;1]
+xglnL->[0;1;1;1;1]
+xgluL->[0;1;1;1;1]
+xgluL->[1;1;1;1;1]
+xgluL->[0;1;1;1;1]
+xgly->[1;1]
+xgly->[0;1]
+xhisL->[0;1;1;1;1;1]
+xhisL->[1;1;1;1;1;1]
+xileL->[0;1;1;1;1;1]
+xileL->[0;1;1;1;1;1]
+xleuL->[0;1;1;1;1;1]
+xleuL->[0;1;1;1;1;1]
+xlysL->[0;1;1;1;1;1]
+xlysL->[1;1;1;1;1;1]
+xmetL->[0;1;1;1;1]
+xmetL->[1;1;1;1;1]
+xmetL->[0;1;1;1;1]
+xpheL->[0;1;1;1;1;1;1;1;1]
+xpheL->[1;1;0;0;0;0;0;0;0]
+xpheL->[1;1;1;1;1;1;1;1;1]
+xpheL->[0;1;1;1;1;1;1;1;1]
+xproL->[0;1;1;1;1]
+xproL->[0;1;1;1;1]
+xserL->[0;1;1]
+xserL->[1;1;0]
+xserL->[1;1;1]
+xserL->[0;1;1]
+xthrL->[1;1;1;1]
+xthrL->[0;1;1;1]
+xtyrL->[0;1;1;1;1;1;1;1;1]
+xtyrL->[1;1;0;0;0;0;0;0;0]
+xtyrL->[1;1;1;1;1;1;1;1;1]
+xtyrL->[0;1;1;1;1;1;1;1;1]
+xvalL->[0;1;1;1;1]
+xvalL->[1;1;1;1;1]
+xvalL->[0;1;1;1;1]

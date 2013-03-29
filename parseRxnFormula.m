@@ -48,6 +48,11 @@ newMetFlag = true;
 % Designates products vs reactants
 productFlag = false;
 compartment = '';
+
+if iscell(tokens)
+    tokens = tokens{1};
+end
+
 for i = 1:length(tokens)
     t = tokens{i};
     if strcmp(t(1),'[')

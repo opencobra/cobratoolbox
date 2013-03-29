@@ -1,0 +1,5 @@
+Iteration:	1
+Objective Value:	1
+
+159	R00658_f	5.522100e-01
+

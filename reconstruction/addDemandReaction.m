@@ -1,4 +1,4 @@
-function [model,rxnNames] = addDemandReaction(model,metaboliteNameList)
+function [model,rxnNames] = addDemandReaction(model,metaboliteNameList, rev, bound)
 % addDemandReaction adds demand reactions for a set of metabolites
 % The reaction names for the demand reactions will be DM_[metaboliteName]
 %
@@ -21,9 +21,21 @@ if (~iscell(metaboliteNameList))
     metaboliteNameList{1} = tmp;
 end
 
+if ~exist('rev', 'var')
+    rev = 0;
+end
+
+if ~exist('bound', 'var')
+    bound = 1000;
+end
+
 for i = 1:length(metaboliteNameList)
     rxnName = ['DM_' metaboliteNameList{i}];
-    rxnNames{i}=rxnName;
+    rxnNames{i, 1}=rxnName;
     metaboliteList = {metaboliteNameList{i}};
-    model = addReaction(model,rxnName,metaboliteList,-1,false,0,1000,0,'Demand');
+    if rev == 0
+        model = addReaction(model,rxnName,metaboliteList,-1,false,0,bound,0,'Demand');
+    else
+        model = addReaction(model,rxnName,metaboliteList,-1,true,-bound,bound,0,'Demand');
+    end
 end

@@ -86,7 +86,8 @@ global CBTLPSOLVER
 if (~isempty(CBTLPSOLVER))
     solver = CBTLPSOLVER;
 else
-    error('No solver found.  call changeCobraSolver(solverName)');
+    solver = 'gurobi5';
+    %error('No solver found.  call changeCobraSolver(solverName)');
 end
 optParamNames = {'minNorm','printLevel','primalOnly','saveInput', ...
     'feasTol','optTol','EleNames','EqtNames','VarNames','EleNameFun', ...
@@ -319,9 +320,12 @@ switch solver
            params.OutputFlag = 1;
            params.DisplayInterval = 5;
         end
+        
+        params.FeasibilityTol = 1e-6;
+        params.OptimalityTol = 1e-6;
 
-        params.FeasibilityTol = feasTol;
-        params.OptimalityTol = optTol;
+        %params.FeasibilityTol = feasTol;
+        %params.OptimalityTol = optTol;
         
         if (isempty(LPproblem.csense))
             clear LPproblem.csense
