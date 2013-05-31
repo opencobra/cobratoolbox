@@ -118,9 +118,9 @@ for i = 1:nRxns
             S(speciesID,i) = stoichCoeff;
         end
     end
-    if isfield(modelSBML.reaction(i).kineticLaw,'parameter')
+    try
         parameters = modelSBML.reaction(i).kineticLaw.parameter;
-    else
+    catch
         parameters =[];
     end
     if (~isempty(parameters))
