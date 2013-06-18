@@ -10,28 +10,28 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
 
 % Markus Herrgard 8/7/06
 % Ines Thiele 1/27/10 - Added new fields
-% Ben Heavner 10 June 2013 - add cell array functionality
+% Ben Heavner 18 June 2013 - add cell array functionality
 %
 
+
+if isempty(regexp(notesField,'html:p', 'once'))
+    tag = 'p';
+else
+    tag = 'html:p';
+end
+
+subSystem = '';
+grRule = '';
+genes = {};
+rule = '';
+formula = '';
+confidenceScore = '';
+citation = '';
+ecNumber = '';
+comment = '';
+charge = [];
+    
 if ischar(notesField) %if a string, use MH's code
-    if isempty(regexp(notesField,'html:p', 'once'))
-        tag = 'p';
-    else
-        tag = 'html:p';
-    end
-
-    subSystem = '';
-    grRule = '';
-    genes = {};
-    rule = '';
-    formula = '';
-    confidenceScore = '';
-    citation = '';
-    ecNumber = '';
-    comment = '';
-    charge = [];
-    Comment = 0;
-
     [~,fieldList] = regexp(notesField,['<' tag '>.*?</' tag '>'], ...
         'tokens', 'match');
 
@@ -87,24 +87,6 @@ if ischar(notesField) %if a string, use MH's code
     end
     
 elseif iscell(notesField) % if a cell array, use BH code
-    'A cell!' %sanity check - BH
-    if isempty(regexp(notesField,'html:p', 'once'))
-        tag = 'p';
-    else
-        tag = 'html:p';
-    end
-
-    subSystem = '';
-    grRule = '';
-    genes = {};
-    rule = '';
-    formula = '';
-    confidenceScore = '';
-    citation = '';
-    ecNumber = '';
-    comment = '';
-    charge = [];
-    Comment = 0;
 
     [~,fieldList] = regexp(notesField,['<' tag '>.*?</' tag '>'], ...
         'tokens', 'match');
