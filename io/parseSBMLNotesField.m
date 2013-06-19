@@ -1,7 +1,10 @@
-function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
-        citation, comment, ecNumber, charge, rxnGeneMat] = ...
-        parseSBMLNotesField(notesField)
+function [varargout] = parseSBMLNotesField(notesField)
 
+    %%TODO: figure out varargout - call was 
+    %[genes, rule, subSystem, grRule, formula, confidenceScore, ...
+% citation, comment, ecNumber, charge, rxnGeneMat] = ...
+% parseSBMLNotesField(notesField)
+    
     % parseSBMLNotesField Parse the notes field of an SBML file to extract
     % gene-rxn associations and other annotation
     %
@@ -22,19 +25,19 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
         tag = 'html:p';
     end
 
-    subSystem = '';
-    grRule = '';
-    genes = {};
-    rule = '';
-    formula = '';
-    confidenceScore = '';
-    citation = '';
-    ecNumber = '';
-    comment = '';
-    charge = [];
-    rxnGeneMat = []; % added BH
-
     if ischar(notesField) %if a string, use MH's code
+        
+        subSystem = '';
+        grRule = '';
+        genes = {};
+        rule = '';
+        formula = '';
+        confidenceScore = '';
+        citation = '';
+        ecNumber = '';
+        comment = '';
+        charge = [];
+    
         [~,fieldList] = regexp(notesField,['<' tag '>.*?</' tag '>'], ...
             'tokens', 'match');
 
