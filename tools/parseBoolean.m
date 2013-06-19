@@ -1,4 +1,4 @@
-function [elements,newRule,rxnGeneMat] = ...
+function [elements, newRule, rxnGeneMat] = ...
         parseBoolean(str, tokens, allowedElementChars)
 %parseBoolean Parses a Boolean logic statement
 %
@@ -29,7 +29,7 @@ if (nargin < 3)
     allowedElementChars = '[A-Za-z0-9_\.\-]'; 
 end
 
-if isstr(str) %if it's a string, use MH's code
+if ischar(str) %if it's a string, use MH's code
     
     % changes (and, not, or) for (&, ~, |) within the string
     str1=str;
@@ -76,7 +76,7 @@ if isstr(str) %if it's a string, use MH's code
                 % replace instances that are parts of other tokens)
                 for i = 1:length(s)
                     % It's the only token so go ahead and replace
-                    if ((s(i) == 1) & (f(i) == ruleLength))
+                    if ((s(i) == 1) && (f(i) == ruleLength))
                        replaceThisFlag = true;
                     elseif (s(i) == 1) % Token at the beginning
                         if (isempty(regexp(newRule(f(i)+1), ...
@@ -98,7 +98,7 @@ if isstr(str) %if it's a string, use MH's code
                         end
                     else % Token in the middle of the string
                         if (isempty(regexp(newRule(f(i)+1), ...
-                                allowedElementChars)) & ...
+                                allowedElementChars)) && ...
                                 isempty(regexp(newRule(s(i)-1), ...
                                 allowedElementChars)))
                             % It's not a part of another token - replace
@@ -146,8 +146,8 @@ if isstr(str) %if it's a string, use MH's code
         rxnGeneMat = [];
         string = ['rxnGeneMat is not meaningful when parseBoolean ' ...
             'is called with a string. Did you mean to use a cell '...
-            'array? Empty matrix returned.']
-        warning(string)
+            'array? Empty matrix returned for rxnGeneMat.'];
+        warning('parseBoolean:bad call', string);
     end
     
 elseif iscell(str) % if it's a cell array, use BH code
@@ -158,10 +158,9 @@ elseif iscell(str) % if it's a cell array, use BH code
     newRule = regexprep(newRule, 'not ', '~ ','ignorecase');
     newRule = regexprep(newRule,'\[','');
     newRule = regexprep(newRule,'\]','');
-    newRule = regexprep(newRule,'\s',''); % get rid of whitespace
 
-    % make a cell array of all genes in each rule. This regexp assumes genes
-    % are named with word characters, dashes, and/or hyphens.
+    % make a cell array of all genes in each rule. This regexp assumes
+    % genes are named with word characters, dashes, and/or hyphens.
     elements = regexp(newRule,'[\w-\.]*','match'); 
     elements = unique([elements{:}])';
 
@@ -171,10 +170,10 @@ elseif iscell(str) % if it's a cell array, use BH code
 
     % pad gene names in grRules with a space to facilitate later regexp -
     % thanks to James Eddy for this bit of cleverness
-    grRules_tmp = regexprep(strcat(str,{' '}),'\)',' )');
+    grRules_tmp = regexprep(strcat(newRule,{' '}),'\)',' )');
 
-    % loop over genes, replace grRules gene names with index from gene list and
-    % build rxnGeneMat
+    % loop over genes, replace grRules gene names with index from gene list
+    % and build rxnGeneMat
     for gene_index = 1:length(elements)
         %build rxnGeneMat
         rxnGeneMat(:,gene_index) = ~cellfun('isempty', ...
@@ -182,20 +181,23 @@ elseif iscell(str) % if it's a cell array, use BH code
 
         % build newRule
         number = int2str(gene_index);
-        string =  ['x(' number ')'];
-        newRule = regexprep(newRule,elements(gene_index),string);
-%        newRule = regexprep(grRules_tmp, ...
-%            strcat(elements(gene_index), {' '}), string);
+        string =  ['x(' number ') '];
+        grRules_tmp = regexprep(grRules_tmp, ...
+            strcat(elements(gene_index), {' '}), string);
     end
     
-    % string-based approach has & and | padded by whitespace. Add that back
-    % in to ensure backwards compatibility
+    newRule = grRules_tmp;
     
-    newRule = regexprep(newRule, '&', ' & ');
-    newRule = regexprep(newRule, '\|', ' | ');
+    % string-based approach has & and | padded by whitespace, but rules
+    % aren't. So manage the whitespace to ensure backwards compatibility
+    newRule = regexprep(newRule,'\s',''); % remove whitespace
+    newRule = regexprep(newRule, '&', ' & '); % pad &
+    newRule = regexprep(newRule, '\|', ' | ');% pad |
     
 else
-    error('Wrong type', 'The str variable passed to parseBoolean must be a string or cell array.')
+    string = ['The str variable passed to parseBoolean must be a '...
+        'string or cell array.'];
+    error('Wrong type', string)
 end
 
 end
