@@ -147,7 +147,7 @@ if ischar(str) %if it's a string, use MH's code
         string = ['rxnGeneMat is not meaningful when parseBoolean ' ...
             'is called with a string. Did you mean to use a cell '...
             'array? Empty matrix returned for rxnGeneMat.'];
-        warning('parseBoolean:bad call', string);
+        warning(string);
     end
     
 elseif iscell(str) % if it's a cell array, use BH code
@@ -165,17 +165,16 @@ elseif iscell(str) % if it's a cell array, use BH code
     elements = unique([elements{:}])';
 
     % initialize rxnGeneMat
-
-    rxnGeneMat = sparse(length(str),length(elements));
+    rxnGeneMat = zeros(length(str),length(elements));
 
     % pad gene names in grRules with a space to facilitate later regexp -
     % thanks to James Eddy for this bit of cleverness
     grRules_tmp = regexprep(strcat(newRule,{' '}),'\)',' )');
 
     % loop over genes, replace grRules gene names with index from gene list
-    % and build rxnGeneMat
+    % and build rxnGeneMat    
     for gene_index = 1:length(elements)
-        %build rxnGeneMat
+        %populate rxnGeneMat
         rxnGeneMat(:,gene_index) = ~cellfun('isempty', ...
             regexp(grRules_tmp,[elements{gene_index},'\s']));
 
@@ -185,6 +184,7 @@ elseif iscell(str) % if it's a cell array, use BH code
         grRules_tmp = regexprep(grRules_tmp, ...
             strcat(elements(gene_index), {' '}), string);
     end
+    rxnGeneMat = sparse(rxnGeneMat);
     
     newRule = grRules_tmp;
     
@@ -197,7 +197,7 @@ elseif iscell(str) % if it's a cell array, use BH code
 else
     string = ['The str variable passed to parseBoolean must be a '...
         'string or cell array.'];
-    error('Wrong type', string)
+    error(string)
 end
 
 end
