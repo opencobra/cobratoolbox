@@ -175,12 +175,6 @@ elseif iscell(str) % if it's a cell array, use BH code
         newRule = regexprep(newRule,elements(gene_index),string);
     end
     
-    % string-based approach has & and | padded by whitespace. Add that back
-    % in to ensure backwards compatibility
-    
-    newRule = regexprep(newRule, '&', ' & ');
-    newRule = regexprep(newRule, '\|', ' | ');
-    
 else
     error('Wrong type', 'The str variable passed to parseBoolean must be a string or cell array.')
 end
