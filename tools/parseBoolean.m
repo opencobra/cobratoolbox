@@ -1,10 +1,12 @@
-function [elements,newRule,rxnGeneMat] = parseBoolean(str,tokens,allowedElementChars)
+function [elements,newRule,rxnGeneMat] = ...
+        parseBoolean(str, tokens, allowedElementChars)
 %parseBoolean Parses a Boolean logic statement
 %
 % [elements,newRule] = parseBoolean(str,tokens,allowedElementChars)
 %
 % str                   Input string or cell array of boolean statements
-% tokens                Allowed operators in boolean statements (optional, default '()&|~')
+% tokens                Allowed operators in boolean statements (optional, 
+%                         default '()&|~')
 % allowedElementChars   Allowed characters in elements of the statement
 %
 % elements              Non-operator elements
@@ -26,10 +28,10 @@ if (nargin < 3)
     % Allowed characters in elements
     allowedElementChars = '[A-Za-z0-9_\.\-]'; 
 end
-% changes (and, not, or) for (&, ~, |) within the string
 
 if isstr(str) %if it's a string, use MH's code
     
+    % changes (and, not, or) for (&, ~, |) within the string
     str1=str;
     %str1 = regexprep(str1, '+',' & ');
     %str1 = regexprep(str1, ',',' | ');
@@ -70,22 +72,24 @@ if isstr(str) %if it's a string, use MH's code
                 ruleLength = length(newRule);
                 % Loop through all the instances
                 replaceThisVector = false(length(s),1);
-                % Find out which instances to replace (do not want to replace
-                % instances that are parts of other tokens)
+                % Find out which instances to replace (do not want to
+                % replace instances that are parts of other tokens)
                 for i = 1:length(s)
                     % It's the only token so go ahead and replace
                     if ((s(i) == 1) & (f(i) == ruleLength))
                        replaceThisFlag = true;
-                    elseif (s(i) == 1) % Token at the beginning of string
-                        if (isempty(regexp(newRule(f(i)+1),allowedElementChars)))
+                    elseif (s(i) == 1) % Token at the beginning
+                        if (isempty(regexp(newRule(f(i)+1), ...
+                                allowedElementChars)))
                             % It's not a part of another token - replace
                             replaceThisFlag = true;    
                         else
                             % Part of another token - do not replace
                             replaceThisFlag = false;
                         end
-                    elseif (f(i) == ruleLength) % Token at the end of string
-                        if (isempty(regexp(newRule(s(i)-1),allowedElementChars)))
+                    elseif (f(i) == ruleLength) % Token at the end
+                        if (isempty(regexp(newRule(s(i)-1), ...
+                                allowedElementChars)))
                             % It's not a part of another token - replace
                             replaceThisFlag = true;    
                         else
@@ -93,7 +97,10 @@ if isstr(str) %if it's a string, use MH's code
                             replaceThisFlag = false;
                         end
                     else % Token in the middle of the string
-                        if (isempty(regexp(newRule(f(i)+1),allowedElementChars)) & isempty(regexp(newRule(s(i)-1),allowedElementChars)))
+                        if (isempty(regexp(newRule(f(i)+1), ...
+                                allowedElementChars)) & ...
+                                isempty(regexp(newRule(s(i)-1), ...
+                                allowedElementChars)))
                             % It's not a part of another token - replace
                             replaceThisFlag = true;
                         else
@@ -118,8 +125,8 @@ if isstr(str) %if it's a string, use MH's code
                     end
                     % Add the new token
                     tmpRule = [tmpRule newTok];
-                    % Add the remainder of the string until the next token (if
-                    % there is one)
+                    % Add the remainder of the string until the next token
+                    % (if there is one)
                     if (i < nRep)
                         tmpRule = [tmpRule newRule((f(i)+1):(s(i+1)-1))];    
                     end
@@ -134,9 +141,13 @@ if isstr(str) %if it's a string, use MH's code
             end
         end
     end
+    
     if nargout == 3 % deal with a bad function call
         rxnGeneMat = [];
-        warning('rxnGeneMat is not meaningful when parseBoolean is called with a string. Did you mean to use a cell array? Empty matrix returned.')
+        string = ['rxnGeneMat is not meaningful when parseBoolean ' ...
+            'is called with a string. Did you mean to use a cell '...
+            'array? Empty matrix returned.']
+        warning(string)
     end
     
 elseif iscell(str) % if it's a cell array, use BH code
@@ -173,6 +184,8 @@ elseif iscell(str) % if it's a cell array, use BH code
         number = int2str(gene_index);
         string =  ['x(' number ')'];
         newRule = regexprep(newRule,elements(gene_index),string);
+%        newRule = regexprep(grRules_tmp, ...
+%            strcat(elements(gene_index), {' '}), string);
     end
     
     % string-based approach has & and | padded by whitespace. Add that back
