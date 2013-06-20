@@ -81,7 +81,9 @@ end
 if (isfield(model, 'rxnNotes'))
   modelOut.rxnNotes = model.rxnNotes(selectRxns);
 end
-
+if (isfield(model, 'confidenceScores'))
+  modelOut.confidenceScores = model.confidenceScores(selectRxns);
+end
 
 % Reconstruct the match list
 if (irrevFlag)
