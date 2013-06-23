@@ -78,6 +78,7 @@ for i = 1:nRxns
         modelIrrev.S(:,cnt) = model.S(:,i);
         modelIrrev.c(cnt) = model.c(i);
         modelIrrev.rxns{cnt} = model.rxns{i};
+        modelIrrev.rxnNames{cnt} = model.rxnNames{i};
 
     end
 
@@ -89,8 +90,10 @@ for i = 1:nRxns
         matchRev(cnt) = cnt - 1;
         matchRev(cnt-1) = cnt;
         modelIrrev.rxns{cnt-1} = [model.rxns{i} '_f'];
+        modelIrrev.rxnNames{cnt-1} = [model.rxnNames{i} ' forward'];
         modelIrrev.S(:,cnt) = -model.S(:,i);
         modelIrrev.rxns{cnt} = [model.rxns{i} '_b'];
+        modelIrrev.rxnNames{cnt} = [model.rxnNames{i} ' backward'];
         modelIrrev.rev(cnt) = true;
         modelIrrev.lb(cnt) = 0;
         modelIrrev.ub(cnt) = -model.lb(i);
@@ -115,6 +118,7 @@ modelIrrev.c = columnVector(modelIrrev.c(1:cnt));
 modelIrrev.rev = modelIrrev.rev(1:cnt);
 modelIrrev.rev = columnVector(modelIrrev.rev == 1);
 modelIrrev.rxns = columnVector(modelIrrev.rxns); 
+modelIrrev.rxnNames = columnVector(modelIrrev.rxnNames); 
 modelIrrev.mets = model.mets;
 matchRev = columnVector(matchRev(1:cnt));
 modelIrrev.match = matchRev;
@@ -127,11 +131,46 @@ end
 if isfield(model,'subSystems')
     modelIrrev.subSystems = model.subSystems(irrev2rev);
 end
+if isfield(model,'metCharge')
+    modelIrrev.metCharge = model.metCharge;
+end
+if isfield(model,'metNames')
+    modelIrrev.metNames = model.metNames;
+end
+if isfield(model,'metFormulas')
+    modelIrrev.metFormulas = model.metFormulas;
+end
+if isfield(model,'metChEBIID')
+    modelIrrev.metChEBIID = model.metChEBIID;
+end
+if isfield(model,'metKEGGID')
+    modelIrrev.metKEGGID = model.metKEGGID;
+end
+if isfield(model,'metPubChemID')
+    modelIrrev.metPubChemID = model.metPubChemID;
+end
+if isfield(model,'metInChIString')
+    modelIrrev.metInChIString = model.metInChIString;
+end
+if isfield(model,'confidenceScores')
+    modelIrrev.confidenceScores = model.confidenceScores(irrev2rev);
+end
+if isfield(model,'rxnReferences')
+    modelIrrev.rxnReferences = model.rxnReferences(irrev2rev);
+end
+if isfield(model,'rxnECNumbers')
+    modelIrrev.rxnECNumbers = model.rxnECNumbers(irrev2rev);
+end
+if isfield(model,'rxnNotes')
+    modelIrrev.rxnNotes = model.rxnNotes(irrev2rev);
+end
+
 if isfield(model,'genes')
     modelIrrev.genes = model.genes;
     genemtxtranspose = model.rxnGeneMat';
     modelIrrev.rxnGeneMat = genemtxtranspose(:,irrev2rev)';
     modelIrrev.rules = model.rules(irrev2rev);
+    modelIrrev.grRules = model.grRules(irrev2rev);
 end
 modelIrrev.reversibleModel = false;
 
