@@ -559,7 +559,7 @@ end
 
 i =1 ;
 sizeP = size(parsedGPR,1);
-while i < sizeP
+while i <= sizeP
     if strcmp(parsedGPR{i,1},{''}) == 1
         parsedGPR = [parsedGPR(1:i-1,:);parsedGPR(i+1:end,:)];
         corrRxn = [corrRxn(1:i-1,:);corrRxn(i+1:end,:)];
