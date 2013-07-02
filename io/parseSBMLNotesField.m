@@ -36,7 +36,9 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
     % and DOI: 10.1038/nprot.2011.308 ).
 
     % Markus Herrgard 8/7/06
+    %
     % Ines Thiele 1/27/10 - Added new fields
+    %
     % Ben Heavner 1 July 2013 - add cell array functionality, rxnGeneMat,
     %   and bossy note
 
