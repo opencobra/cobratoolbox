@@ -1,51 +1,44 @@
-function [varargout] = parseSBMLNotesField(notesField)
+function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
+        citation, comment, ecNumber, charge, rxnGeneMat] = ...
+        parseSBMLNotesField(notesField)
    
     % parseSBMLNotesField Parse the notes field of an SBML file to extract
     % information about reactions and metabolites
     %
     % notesField    Input string or cell array of SBML notes fields
     % 
-    % varargout     1 x N cell array optionally containing the following
-    %                fields:
-    %               genes     cell array of all genes in the model
-    %               rule      cell array of boolean rules defining
-    %                    gene-reaction relationships
-    %               subSystem subSystem assignment for each reaction
-    %               grRule    cell array of gene-protein-reaction strings
-    %               formula   elemental formula for each metabolite
-    %               confidenceScore     Confidence score for each reaction
-    %                    0 = not evaluated
-    %                    1 = modeling data
-    %                    2 = sequence or physiological data
-    %                    3 = genetic data
-    %                    4 = biochemical data
-    %               citation  cell array of reference information
-    %               comment   cell array of comments
-    %               ecNumber  cell array of E.C. numbers for each reaction
-    %               charge    cell array of metabolite charge values
-    %               rxnGeneMat sparse binary matrix with rows corresponding
-    %                    to reactions, and columns corresponding to genes
-    %
+    % subSystem     subSystem assignment for each reaction
+    % formula       elemental formula for each metabolite
+    % confidenceScore     Confidence score for each reaction
+    %               0 = not evaluated
+    %               1 = modeling data
+    %               2 = sequence or physiological data
+    %               3 = genetic data
+    %               4 = biochemical data
+    % citation      cell array of reference information
+    % comment       cell array of comments
+    % ecNumber      cell array of E.C. numbers for each reaction
+    % charge        cell array of metabolite charge values
+    % grRule        cell array of gene-protein-reaction strings
+    % genes         cell array of all genes in the model
+    % rule          cell array of boolean rules defining gene-reaction 
+    %                relationships
+    % rxnGeneMat    sparse binary matrix with rows corresponding to 
+    %                reactions, and columns corresponding to genes
+    
     % NOTE:    
     % This function is maintained to support reading of legacy models. It
-    % is hoped that it will be depreciated soon, as the SBML <annotation>
-    % field is a more standards-appropriate place for this information.
-    % Please do not add new information to the SBML notes field or modify
-    % this function to do things that aren't described in the COBRA or
-    % reconstruction protocol papers! (DOI: 10.1038/nprot.2009.203 and DOI:
-    % 10.1038/nprot.2007.99 and DOI: 10.1038/nprot.2011.308 ).
+    % will be depreciated soon, as the SBML <annotation> field is a more
+    % standards-appropriate place for this information. Please do not add
+    % new information to the SBML notes field or modify this function to do
+    % things that aren't described in the COBRA or reconstruction protocol
+    % papers! (DOI: 10.1038/nprot.2009.203 and DOI: 10.1038/nprot.2007.99
+    % and DOI: 10.1038/nprot.2011.308 ).
 
     % Markus Herrgard 8/7/06
     % Ines Thiele 1/27/10 - Added new fields
-    % Ben Heavner 1 July 2013 - change to varargout, add cell array 
-    % functionality and rxnGeneMat as optional output
-    %
-    
-    %%TODO: call was 
-    % function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
-    % citation, comment, ecNumber, charge, rxnGeneMat] = ...
-    % parseSBMLNotesField(notesField)
-    
+    % Ben Heavner 1 July 2013 - add cell array functionality, rxnGeneMat,
+    %   and bossy note
 
     if isempty(regexp(notesField,'html:p', 'once'))
         tag = 'p';
@@ -54,16 +47,16 @@ function [varargout] = parseSBMLNotesField(notesField)
     end
 
     subSystem = '';
-        grRule = '';
-        genes = {};
-        rule = '';
-        formula = '';
-        confidenceScore = '';
-        citation = '';
-        ecNumber = '';
-        comment = '';
-        charge = [];
-        rxnGeneMat = [];
+    formula = '';
+    confidenceScore = '';
+    citation = '';
+    comment = '';
+    ecNumber = '';
+    charge = [];
+    grRule = '';
+    genes = {};
+    rule = '';
+    rxnGeneMat = [];
         
     if ischar(notesField) %if a string, use MH's code
     
@@ -134,7 +127,7 @@ function [varargout] = parseSBMLNotesField(notesField)
             'Confidence Level' ...
             'FORMULA' ...
             'CHARGE' ...
-            };
+            }; % todo: citation, comment
 
         grRule = regexp(notesField, ...
             ['<' tag '>' NotesKeys{1} ':.*?</' tag '>'], 'match');
