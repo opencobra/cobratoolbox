@@ -221,11 +221,7 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
         confidenceScore = cellfun(@(x) regexprep(x, ...
             ['</\' tag '>'], ''), confidenceScore, 'UniformOutput', 0); 
         confidenceScore = [confidenceScore{:}]'; % unnest cell
-        
-%      I don't want to do boundary mets, so I need something like
-%		boundaryMetIndexes = [modelSBML.species.boundaryCondition]';
-%       mets = {modelSBML.species(~boundaryMetIndexes).id}';
-        
+                
         formula = regexp(notesField, ...
             ['<' tag '>' NotesKeys{7} ':.*?</' tag '>'] , 'match');
         
