@@ -59,6 +59,7 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
     genes = {};
     rule = '';
     rxnGeneMat = [];
+    Comment = 0;
         
     if ischar(notesField) %if a string, use MH's code
     
@@ -129,8 +130,8 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
             'Confidence Level' ...
             'FORMULA' ...
             'CHARGE' ...
-            }; % todo: citation, comment
-
+            }; 
+        
         grRule = regexp(notesField, ...
             ['<' tag '>' NotesKeys{1} ':.*?</' tag '>'], 'match');
         key = NotesKeys{1};
@@ -170,7 +171,16 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
              'UniformOutput', 0);
          subSystem = cellfun(@(x) regexprep(x,'_+',' '), subSystem, ...
              'UniformOutput', 0);
-         subSystem(cellfun('isempty',subSystem)) = {{'Exchange'}};
+         
+         % I think the intent of the string-based code was to default to
+         % 'exchange' if there wasn't an entry for Subsystem. However, it
+         % didn't do that, and instead returned an empty cell if there
+         % wasn't a subsystem defined. I've kept the behavior, and
+         % commented out what I understand to be the intent:
+         
+ %        subSystem(cellfun('isempty',subSystem)) = {{'Exchange'}};
+
+         subSystem(cellfun('isempty',subSystem)) = {{''}};
          subSystem = [subSystem{:}]'; % unnest cell
       
         ecNumber = regexp(notesField, ...
@@ -212,6 +222,13 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
             ['</\' tag '>'], ''), confidenceScore, 'UniformOutput', 0); 
         confidenceScore = [confidenceScore{:}]'; % unnest cell
         
+%         elseif (regexp(fieldStr,'FORMULA'))
+%                 formula = regexprep(strrep(fieldStr,'FORMULA:',''), ...
+%                     '^(\s)+','');
+%         elseif (regexp(fieldStr,'CHARGE'))
+%             charge = str2num(regexprep(strrep(fieldStr, ...
+%                 'CHARGE:',''), '^(\s)+',''));
+        
         formula = regexp(notesField, ...
             ['<' tag '>' NotesKeys{7} ':.*?</' tag '>'] , 'match');
         
@@ -239,8 +256,8 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
         charge = [charge{:}]'; % unnest cell
     else
         errorstr = [...
-            'The str variable passed to parseBoolean must be a string or ' ...
-            'cell array.'];
+            'The str variable passed to parseBoolean must be a string ' ...
+            'or cell array.'];
         error(errorstr)
     end
 

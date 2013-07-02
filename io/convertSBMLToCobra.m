@@ -89,6 +89,9 @@ for i = 1:nRxns
     end
     % Read the gpra from the notes field
     notesField = modelSBML.reaction(i).notes;
+    if i == 385
+        pause(1)
+    end
     if (~isempty(notesField))
         [geneList, rule, subSystem, grRule, formula, confidenceScore, ...
         citation, comment, ecNumber, ~, ~] = ...
