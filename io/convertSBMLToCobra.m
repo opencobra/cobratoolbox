@@ -1,4 +1,5 @@
-function model = convertSBMLToCobra(modelSBML,defaultBound,compSymbolList,compNameList)
+function model = convertSBMLToCobra(modelSBML, defaultBound, ...
+        compSymbolList, compNameList)
 %convertSBMLToCobra Convert SBML format model (created using SBML Toolbox)
 %to Cobra format
 %
@@ -10,10 +11,12 @@ function model = convertSBMLToCobra(modelSBML,defaultBound,compSymbolList,compNa
 %OPTIONAL INPUTS
 % defaultBound      Maximum bound for model (Default = 1000)
 % compSymbolList    List of compartment symbols
-% compNameList      List of compartment names corresponding to compSymbolList
+% compNameList      List of compartment names corresponding to 
+%                   compSymbolList
 %
 %OUTPUT
 % model             COBRA model structure
+
 % Markus Herrgard 1/25/08
 %
 % Ines Thiele 01/27/2010 - I added new field to be read-in from SBML file
@@ -21,6 +24,8 @@ function model = convertSBMLToCobra(modelSBML,defaultBound,compSymbolList,compNa
 %
 % Richard Que 02/08/10 - Properly format reaction and metabolite fields
 %                        from SBML.
+%
+% Ben Heavner 2 July 2013 - modify parseSBMLNotesField call
 %
 
 if (nargin < 2)
@@ -52,7 +57,8 @@ for i = 1:nMetsTmp
         notesField = modelSBML.species(i).notes;
         % Get formula if in notes field
         if (~isempty(notesField))
-          [tmp,tmp,tmp,tmp,formula,tmp,tmp,tmp,tmp,charge] = parseSBMLNotesField(notesField);
+          [~, ~, ~, ~, formula, ~, ~, ~, ~, charge, ~] = ...
+              parseSBMLNotesField(notesField);
           tmpCharge = charge;
           metFormulas {end+1} = formula;
           formulaCount = formulaCount + 1;
@@ -84,7 +90,9 @@ for i = 1:nRxns
     % Read the gpra from the notes field
     notesField = modelSBML.reaction(i).notes;
     if (~isempty(notesField))
-        [geneList,rule,subSystem,grRule,formula,confidenceScore, citation, comment, ecNumber] = parseSBMLNotesField(notesField);
+        [geneList, rule, subSystem, grRule, formula, confidenceScore, ...
+        citation, comment, ecNumber, ~, ~] = ...
+        parseSBMLNotesField(notesField);
         subSystems{i} = subSystem;
         genes{i} = geneList;
         allGenes = [allGenes geneList];
@@ -173,7 +181,8 @@ if (hasNotesField)
         
         rxnGeneMat(i,geneInd) = 1;
         for j = 1:length(geneInd)
-            rules{i} = strrep(rules{i},['x(' num2str(j) ')'],['x(' num2str(geneInd(j)) '_TMP_)']);
+            rules{i} = strrep(rules{i},['x(' num2str(j) ')'], ...
+                ['x(' num2str(geneInd(j)) '_TMP_)']);
         end
         rules{i} = strrep(rules{i},'_TMP_','');
     end
@@ -187,7 +196,12 @@ end
 %% Construct metabolite list
 mets = cell(nMets,1);
 compartmentList = cell(length(modelSBML.compartment),1);
-if isempty(compSymbolList), useCompList = true; else useCompList = false; end
+if isempty(compSymbolList), 
+    useCompList = true; 
+else
+    useCompList = false;
+end
+
 for i=1:length(modelSBML.compartment)
     compartmentList{i} = modelSBML.compartment(i).id;
 end
@@ -206,20 +220,23 @@ for i = 1:nMets
     tmpCell = {};
     if useCompList
         for j=1:length(compartmentList)
-            tmpCell = regexp(metID,['_(' compartmentList{j} ')$'],'tokens');
+            tmpCell = regexp(metID,['_(' compartmentList{j} ')$'], ...
+                'tokens');
             if ~isempty(tmpCell), break; end
         end
         if isempty(tmpCell), useCompList = false; end
     elseif ~isempty(compSymbolList)
         for j = 1: length(compSymbolList)
-            tmpCell = regexp(metID,['_(' compSymbolList{j} ')$'],'tokens');
+            tmpCell = regexp(metID,['_(' compSymbolList{j} ')$'], ...
+                'tokens');
             if ~isempty(tmpCell), break; end
         end
     end
     if isempty(tmpCell), tmpCell = regexp(metID,'_(.)$','tokens'); end
     if ~isempty(tmpCell)
         compID = tmpCell{1};
-        metTmp = [regexprep(metID,['_' compID{1} '$'],'') '[' compID{1} ']'];
+        metTmp = [regexprep(metID,['_' compID{1} '$'], ...
+            '') '[' compID{1} ']'];
     else
         metTmp = metID;
     end
@@ -237,7 +254,8 @@ for i = 1:nMets
     % Separate formulas from names
     %[tmp,tmp,tmp,tmp,tokens] = regexp(metNamesTmp,'(.*)-((([A(Ag)(As)C(Ca)(Cd)(Cl)(Co)(Cu)F(Fe)H(Hg)IKLM(Mg)(Mn)N(Na)(Ni)OPRS(Se)UWXY(Zn)]?)(\d*)))*$');
     if (~haveFormulasFlag)
-        [tmp,tmp,tmp,tmp,tokens] = regexp(metNamesTmp,'(.*)_((((A|Ag|As|C|Ca|Cd|Cl|Co|Cu|F|Fe|H|Hg|I|K|L|M|Mg|Mn|Mo|N|Na|Ni|O|P|R|S|Se|U|W|X|Y|Zn)?)(\d*)))*$');
+        [~, ~, ~, ~,tokens] = regexp(metNamesTmp, ...
+            '(.*)_((((A|Ag|As|C|Ca|Cd|Cl|Co|Cu|F|Fe|H|Hg|I|K|L|M|Mg|Mn|Mo|N|Na|Ni|O|P|R|S|Se|U|W|X|Y|Zn)?)(\d*)))*$');
         if (isempty(tokens))
             if length(metFormulas)<i||(metFormulas{i}=='')
                 metFormulas{i} = '';
@@ -253,7 +271,8 @@ for i = 1:nMets
     end
     if isfield(modelSBML.species(i),'annotation')
         hasAnnotationField = 1;
-        [metCHEBI,metKEGG,metPubChem,metInChI] = parseSBMLAnnotationField(modelSBML.species(i).annotation);
+        [metCHEBI,metKEGG,metPubChem,metInChI] = ...
+            parseSBMLAnnotationField(modelSBML.species(i).annotation);
         metCHEBIID{i} = metCHEBI;
         metKEGGID{i} = metKEGG;
         metPubChemID{i} = metPubChem;
