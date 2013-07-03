@@ -116,7 +116,7 @@ if proc == 0 % if master thread
         save('xxMasterfile', 'ub', 'lb', 'A', 'C', 'D', 'fixed', 'N', 'movable', 'Nsmall', 'numproc', 'nPoints' ); 
         display('finished saving master file.  spawning processes');
         for i = 1:(numproc - 1) % goes from 1 to 7 if proc == 8
-            command = strcat('matlab -singleCompThread -automation -nojvm -r ACHRSamplerParallelGeneral([],',num2str(nLoops),',',num2str(stepsPerPoint),',0,', num2str(-i) ,',''' ,pwd, ''');exit; &' );
+            command = strcat('matlab -automation -singleCompThread -nojvm -r "ACHRSamplerParallelGeneral([],',num2str(nLoops),',',num2str(stepsPerPoint),',0,', num2str(-i) ,',''' ,pwd, ''');exit;" &' );
             display(command)
             system(command);
         end

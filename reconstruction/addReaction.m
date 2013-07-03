@@ -294,5 +294,5 @@ else
     else
         model.S = [Stmp Scolumn];
     end
-    printRxnFormula(model,rxnName);
+    %printRxnFormula(model,rxnName);
 end
