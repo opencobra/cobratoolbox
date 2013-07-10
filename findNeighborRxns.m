@@ -11,14 +11,14 @@ function [neighborRxns,neighborGenes,mets] = findNeighborRxns(model,rxns, asSing
 % rxns          the target reaction as a string or multiple reactions as cell array
 % asSingleArray If false, then return cell array of cell arrays with neighbor reactions
 %               for one particular connecting metabolite and input reaction combination.
-%				Else just return all neighbors in one cell array. (Default = false)
-% order         order of neighbors to be returned (default = 1)
-%               orders >=2 only work if asSingleArray = true
-%               Neighborhoods of order >=2 will also include the input reactions.
+%               Else just return all neighbors in one cell array. (Default = false)
+% order         maximal order of neighbors to be returned (default = 1)
+%               order >=2 only works with asSingleArray = true
+%               Neighborhoods of order >=2 will usually also return the input reactions.
 % commonMets    Cell array of common metabolites, that should not count as edges between reactions.
-%				Use {''} if no such metabolite should be included.
+%               Use {''} if no such metabolite should be included.
 %               (default = {'atp', 'adp', 'h', 'h2o', 'pi', 'ppi'})
-% withComp      true, if commonMets already have a compartment identifier, e.g. 'atp[m]' (default=false)
+% withComp      if commonMets already have a compartment identifier, e.g. 'atp[m]', then true (default=false)
 %OUTPUTS
 % neighborRxns  the neighboring rxns in the network, (having common
 %               metabolites)
@@ -70,6 +70,7 @@ else
 end
 commonMetsIndex = findMetIDs(model, commonCompartmentalizedMets);
 
+% start to find neighbors
 for i = 1:numel(rxns)
 	% count cells already filled, so new values can be added below
 	runningRxnIndex  = numel(neighborRxns);
@@ -103,7 +104,8 @@ for i = 1:numel(rxns)
 
 	mets = unique([mets; model.mets(metIndex)]);
 end
-	
+
+
 if asSingleArray
 	neighborRxnsTmp  = neighborRxns;
 	neighborGenesTmp = neighborGenes;
@@ -119,6 +121,7 @@ if asSingleArray
 	neighborGenes= neighborGenes(~cellfun(@isempty, neighborGenes));
 end
 
+% recursively find higher order neighbors
 if order >=2 & asSingleArray
 	[recursiveNeighborRxns, recursiveNeighborGenes, recursiveMets] = ...
 		findNeighborRxns(model, neighborRxns', asSingleArray, order -1 ,  commonMets);
