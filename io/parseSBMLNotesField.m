@@ -194,7 +194,10 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
         % strip tag close tags
         ecNumber = cellfun(@(x) regexprep(x, ['</\' tag '>'], ''), ...
             ecNumber, 'UniformOutput', 0); 
-        ecNumber = [ecNumber{:}]'; % unnest cell
+        
+        ecNumber = [ecNumber{:}]'; % unnest cell - this removes blanks!
+        %I need to pad blanks with ecNumber(cellfun('isempty',ecNumber)) =
+        %{{''}}; or using code like in parseSBMLAnnotation.
 
         citation = regexp(notesField, ...
             ['<' tag '>' NotesKeys{5} ':.*?</' tag '>'] , 'match');
