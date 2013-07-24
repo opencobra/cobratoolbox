@@ -1,5 +1,5 @@
 function model = convertSBMLToCobra(modelSBML, defaultBound, ...
-        compSymbolList, compNameList)
+        compSymbolList, compNameList, legacyFlag)
     % convertSBMLToCobra Convert SBML format model (created using SBML
     % Toolbox) to Cobra format
     %
@@ -12,7 +12,11 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
     %  defaultBound      Maximum bound for model (Default = 1000)
     %  compSymbolList    List of compartment symbols
     %  compNameList      List of compartment names corresponding to 
-    %                    compSymbolList
+    %                     compSymbolList
+    %  legacyFlag        true to use old convertSBMLToCobra code that
+    %                     parses SBML metabolite names for formulas,
+    %                     compartments, and other information, instead of
+    %                     using modern SBML approaches (Default false)
     %
     % OUTPUT
     %  model             COBRA model structure
@@ -58,8 +62,8 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
     % 2011): 1290–1307. doi:10.1038/nprot.2011.308.
     
     %% TODO 
-    % add case switches for SBML level/version/package support? Test on
-    % lots of models
+    % add case switches for SBML level/version/package support? 
+    % Test on lots of models
 
     if (nargin < 2)
         defaultBound = 1000;
@@ -69,162 +73,465 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
         compSymbolList = {};
         compNameList = {};
     end
-
-    rxns = {modelSBML.reaction.id}';
-    rxnNames = {modelSBML.reaction.name}';
-    rev = logical([modelSBML.reaction.reversible]');
     
-    % need to ignore boundary mets 
-    %
-    % first, check for the Palsson lab _b$ boundary condition indicator for
-    % legacy SBML support set (is this still needed?)
-    
-    boundaryMetIndexes = [modelSBML.species.boundaryCondition]';
-    
-    % build a logical for mets not annotated as boundary mets that end with
-    % _b
-    b_boundaryMets = ~cellfun('isempty', ...
-        (regexp(...
-        {modelSBML.species(~boundaryMetIndexes).id}, ...
-        '_b$')));
-    
-    % if the logical has any, set the boundaryCondition to 1
-    if sum(b_boundaryMets)
-        modelSBML.species(b_boundaryMets).boundaryCondition = 1;
-    end 
-    
-    % then ignore those mets for which modelSBML.species.boundaryCondition
-    % == 1
-    boundaryMetIndexes = [modelSBML.species.boundaryCondition]';
-    mets = {modelSBML.species(~boundaryMetIndexes).id}';
-    metNames = {modelSBML.species(~boundaryMetIndexes).name}';
-    compartments = {modelSBML.species(~boundaryMetIndexes).compartment}';
-    
-    % get the metabolite notes, and parse to get formula and charge (legacy
-    % support - should move to annotation in the future)
-    
-    unparsedMetNotes = {modelSBML.species(~boundaryMetIndexes).notes};
-    
-    [~, ~, ~, ~, metFormulas, ~, ~, ~, ~, chargeList, ~] = ...
-                  parseSBMLNotesField(unparsedMetNotes);
-              
-    % get the metabolite annotation, and parse to get CHEBI, KEGG, PubChem,
-    % and InChI info (expect to modify in the future as SBML evolves)
-    
-    unparsedMetAnnotation = ...
-        {modelSBML.species(~boundaryMetIndexes).annotation};
-    
-    [metCHEBI,metKEGG,metPubChem,metInChI] = ...
-        parseSBMLAnnotationField(unparsedMetAnnotation);
-
-    %% Construct stoichiometric matrix and reaction list
-    rxns = {modelSBML.reaction.id}';
-    rxnNames = {modelSBML.reaction.name}';
-    rev = logical([modelSBML.reaction.reversible]');
-
-    S = zeros(length(mets),length(rxns));
-    
-    reactants = {modelSBML.reaction.reactant}';
-    products = {modelSBML.reaction.product}';
-    
-    for reactants_index=1:length(reactants) % This is a bottleneck. Is there a Non-loopy way to do this?
-        [~,~,IB] = intersect({reactants{reactants_index}.species}', ...
-            mets, 'stable');
-
-        % stoichiometric coefficient is negative for reactants
-        S(IB,reactants_index) = ...
-            -sum([reactants{reactants_index}.stoichiometry]); 
-        
+    if nargin < 5
+        legacyFlag = 0;
     end
-    
-    for products_index=1:length(products) % This is a bottleneck. Is there a Non-loopy way to do this?
-        [~,~,IB] = intersect({products{products_index}.species}', mets, ...
-            'stable');
-        
-        % stoichiometric coefficient is positive for products
-        S(IB,products_index) = ...
-            sum([products{products_index}.stoichiometry]); 
+
+    if legacyFlag % run legacy code (not the default)
+        nMetsTmp = length(modelSBML.species);
+        nRxns = length(modelSBML.reaction);
+
+        %% Construct initial metabolite list
+        formulaCount = 0;
+        speciesList = {};
+        chargeList = [];
+        metFormulas = {};
+        haveFormulasFlag = false;
+        tmpSpecies = [];
+        for i = 1:nMetsTmp
+            % Ignore boundary metabolites
+            if (~modelSBML.species(i).boundaryCondition)
+              %Check for the Palsson lab _b$ boundary condition indicator
+              if (isempty(regexp(modelSBML.species(i).id,'_b$')));
+                tmpSpecies = [ tmpSpecies modelSBML.species(i)];
+                speciesList{end+1} = modelSBML.species(i).id;
+                notesField = modelSBML.species(i).notes;
+                % Get formula if in notes field
+                if (~isempty(notesField))
+                  [~, ~, ~, ~, formula, ~, ~, ~, ~, charge] = ...
+                      parseSBMLNotesField(notesField);
+                  tmpCharge = charge;
+                  metFormulas {end+1} = formula;
+                  formulaCount = formulaCount + 1;
+                  haveFormulasFlag = true;
+                end
+                chargeList= [chargeList modelSBML.species(i).charge];
+              end
+            end
+        end
+
+        nMets = length(speciesList);
+
+        %% Construct stoichiometric matrix and reaction list
+        S = sparse(nMets,nRxns);
+        rev = zeros(nRxns,1);
+        lb = zeros(nRxns,1);
+        ub = zeros(nRxns,1);
+        c = zeros(nRxns,1);
+        rxns = cell(nRxns,1);
+        rules = cell(nRxns,1);
+        genes = cell(nRxns,1);
+        allGenes = {};
+        h = waitbar(0,'Reading SBML file ...');
+        hasNotesField = false;
+        for i = 1:nRxns
+            if mod(i,10) == 0
+                waitbar(i/nRxns,h);
+            end
+            % Read the gpra from the notes field
+            notesField = modelSBML.reaction(i).notes;
+            if (~isempty(notesField))
+                [geneList, rule, subSystem, grRule, formula, ...
+                    confidenceScore, citation, comment, ecNumber] = ...
+                    parseSBMLNotesField(notesField);
+                subSystems{i} = subSystem;
+                genes{i} = geneList;
+                allGenes = [allGenes geneList];
+                rules{i} = rule;
+                grRules{i} = grRule;
+                hasNotesField = true;
+                confidenceScores{i}= confidenceScore;
+                citations{i} = citation;
+                comments{i} = comment;
+                ecNumbers{i} = ecNumber;
+            end
+            rev(i) = modelSBML.reaction(i).reversible;
+            rxnNameTmp = regexprep(modelSBML.reaction(i).name, '^R_','');
+            rxnNames{i} = regexprep(rxnNameTmp, '_+', ' ');
+            rxnsTmp = regexprep(modelSBML.reaction(i).id, '^R_', '');
+            rxns{i} = cleanUpFormatting(rxnsTmp);
+            % Construct S-matrix
+            reactantStruct = modelSBML.reaction(i).reactant;
+            for j = 1:length(reactantStruct)
+                speciesID = find(strcmp ...
+                    (reactantStruct(j).species,speciesList));
+                if (~isempty(speciesID))
+                    stoichCoeff = reactantStruct(j).stoichiometry;
+                    S(speciesID,i) = -stoichCoeff;
+                end
+            end
+            productStruct = modelSBML.reaction(i).product;
+            for j = 1:length(productStruct)
+                speciesID = find(strcmp ...
+                    (productStruct(j).species,speciesList));
+                if (~isempty(speciesID))
+                    stoichCoeff = productStruct(j).stoichiometry;
+                    S(speciesID,i) = stoichCoeff;
+                end
+            end
+            try
+                parameters = modelSBML.reaction(i).kineticLaw.parameter;
+            catch
+                parameters =[];
+            end
+            if (~isempty(parameters))
+                for j = 1:length(parameters)
+                    paramStruct = parameters(j);
+                    switch paramStruct.id
+                        case 'LOWER_BOUND'
+                            lb(i) = paramStruct.value;
+                            if (lb(i) < -defaultBound)
+                                lb(i) = -defaultBound;
+                            end
+                        case 'UPPER_BOUND'
+                            ub(i) = paramStruct.value;
+                            if (ub(i) > defaultBound)
+                                ub(i) = defaultBound;
+                            end
+                        case 'OBJECTIVE_COEFFICIENT'
+                            c(i) = paramStruct.value;
+                    end
+                end
+            else
+                ub(i) = defaultBound;
+                if (rev(i) == 1)
+                    lb(i) = -defaultBound;
+                else
+                    lb(i) = 0;
+                end
+            end
+        end
+        %close the waitbar if this is matlab
+        if (regexp(version, 'R20'))
+            close(h);
+        end
+        allGenes = unique(allGenes);
+
+        %% Construct gene to rxn mapping
+        if (hasNotesField)
+
+            rxnGeneMat = sparse(nRxns,length(allGenes));
+            h = waitbar(0,'Constructing GPR mapping ...');
+            for i = 1:nRxns
+                if mod(i,10) == 0
+                    waitbar(i/nRxns,h);
+                end
+                if iscell(genes{i})
+                    [~,geneInd] = ismember(genes{i}, allGenes);
+                else
+                    [~,geneInd] = ismember(num2cell(genes{i}), allGenes);
+                end
+
+                rxnGeneMat(i,geneInd) = 1;
+                for j = 1:length(geneInd)
+                    rules{i} = strrep(rules{i}, ...
+                        ['x(' num2str(j) ')'], ...
+                        ['x(' num2str(geneInd(j)) '_TMP_)']);
+                end
+                rules{i} = strrep(rules{i},'_TMP_','');
+            end
+            %close the waitbar if this is matlab
+            if (regexp(version, 'R20'))
+                close(h);
+            end
+
+        end
+
+        %% Construct metabolite list
+        mets = cell(nMets, 1);
+        compartmentList = cell(length(modelSBML.compartment), 1);
+        if isempty(compSymbolList), useCompList = true; 
+        else useCompList = false; 
+        end
+        for i=1:length(modelSBML.compartment)
+            compartmentList{i} = modelSBML.compartment(i).id;
+        end
+
+        h = waitbar(0,'Constructing metabolite lists ...');
+        hasAnnotationField = 0;
+        for i = 1:nMets
+            if mod(i,10) == 0
+                waitbar(i/nMets,h);
+            end
+            % Parse metabolite id's
+            % Get rid of the M_ in the beginning of metabolite id's
+            metID = regexprep(speciesList{i},'^M_','');
+            metID = regexprep(metID,'^_','');
+            % Find compartment id
+            tmpCell = {};
+            if useCompList
+                for j=1:length(compartmentList)
+                    tmpCell = regexp(metID, ...
+                        ['_(' compartmentList{j} ')$'], 'tokens');
+                    if ~isempty(tmpCell), break; end
+                end
+                if isempty(tmpCell), useCompList = false; end
+            elseif ~isempty(compSymbolList)
+                for j = 1: length(compSymbolList)
+                    tmpCell = regexp(metID, ...
+                        ['_(' compSymbolList{j} ')$'], 'tokens');
+                    if ~isempty(tmpCell), break; end
+                end
+            end
+            
+            if isempty(tmpCell), tmpCell = regexp(metID, '_(.)$','tokens'); 
+            end
+            
+            if ~isempty(tmpCell)
+                compID = tmpCell{1};
+                metTmp = [regexprep(metID, ...
+                    ['_' compID{1} '$'], '') '[' compID{1} ']'];
+            else
+                metTmp = metID;
+            end
+            
+            %Clean up met ID
+            mets{i} = cleanUpFormatting(metTmp);
+            % Parse metabolite names
+            % Clean up some of the weird stuff in the sbml files
+            metNamesTmp = regexprep(tmpSpecies(i).name,'^M_','');
+            metNamesTmp = cleanUpFormatting(metNamesTmp);
+            metNamesTmp = regexprep(metNamesTmp,'^_','');
+            % metNamesTmp = strrep(metNamesTmp,'_','-');
+            metNamesTmp = regexprep(metNamesTmp,'-+','-');
+            metNamesTmp = regexprep(metNamesTmp,'-$','');
+            metNamesAlt{i} = metNamesTmp;
+            % Separate formulas from names
+            %[tmp,tmp,tmp,tmp,tokens] = regexp(metNamesTmp,'(.*)-((([A(Ag)(As)C(Ca)(Cd)(Cl)(Co)(Cu)F(Fe)H(Hg)IKLM(Mg)(Mn)N(Na)(Ni)OPRS(Se)UWXY(Zn)]?)(\d*)))*$');
+            if (~haveFormulasFlag)
+                [~,~,~,~,tokens] = regexp(metNamesTmp, ...
+                    '(.*)_((((A|Ag|As|C|Ca|Cd|Cl|Co|Cu|F|Fe|H|Hg|I|K|L|M|Mg|Mn|Mo|N|Na|Ni|O|P|R|S|Se|U|W|X|Y|Zn)?)(\d*)))*$');
+                if (isempty(tokens))
+                    if length(metFormulas)<i||(metFormulas{i}=='')
+                        metFormulas{i} = '';
+                    end
+                    metNames{i} = metNamesTmp;
+                else
+                    formulaCount = formulaCount + 1;
+                    metFormulas{i} = tokens{1}{2};
+                    metNames{i} = tokens{1}{1};
+                end
+            else
+                metNames{i} = metNamesTmp;
+            end
+            if isfield(modelSBML.species(i),'annotation')
+                hasAnnotationField = 1;
+                [metCHEBI,metKEGG,metPubChem,metInChI] = ...
+                    parseSBMLAnnotationField(modelSBML.species(i).annotation);
+                metCHEBIID{i} = metCHEBI;
+                metKEGGID{i} = metKEGG;
+                metPubChemID{i} = metPubChem;
+                metInChIString{i} = metInChI;
+            end
+        end
+        if ( regexp( version, 'R20') )
+            close(h);
+        end
+
+        %% Collect everything into a structure
+        model.rxns = rxns;
+        model.mets = mets;
+        model.S = S;
+        model.rev = rev;
+        model.lb = lb;
+        model.ub = ub;
+        model.c = c;
+        model.metCharge = transpose(chargeList);
+        if (hasNotesField)
+            model.rules = rules;
+            model.genes = columnVector(allGenes);
+            model.rxnGeneMat = rxnGeneMat;
+            model.grRules = columnVector(grRules);
+            model.subSystems = columnVector(subSystems);
+            model.confidenceScores = columnVector(confidenceScores);
+            model.rxnReferences = columnVector(citations);
+            model.rxnECNumbers = columnVector(ecNumbers);
+            model.rxnNotes = columnVector(comments);
+        end
+        model.rxnNames = columnVector(rxnNames);
+        % Only include formulas if at least 90% of metabolites have them
+        % (otherwise the "formulas" are probably just parts of metabolite
+        % names)
+        if (formulaCount < 0.9*nMets)
+            model.metNames = columnVector(metNamesAlt);
+        else
+            model.metNames = columnVector(metNames);
+            model.metFormulas = columnVector(metFormulas);
+        end
+        if (hasAnnotationField)
+            model.metChEBIID = columnVector(metCHEBIID);
+            model.metKEGGID = columnVector(metKEGGID);
+            model.metPubChemID = columnVector(metPubChemID);
+            model.metInChIString = columnVector(metInChIString);
+        end
+
+
+    else % if legacyFlag is false (the default), use new code
+
+        rxns = {modelSBML.reaction.id}';
+        rxnNames = {modelSBML.reaction.name}';
+        rev = logical([modelSBML.reaction.reversible]');
+
+        % need to ignore boundary mets 
+        %
+        % first, check for the Palsson lab _b$ boundary condition indicator
+        % for legacy SBML support set (is this still needed?)
+
+        boundaryMetIndexes = [modelSBML.species.boundaryCondition]';
+
+        % build a logical for mets not annotated as boundary mets that end
+        % with _b
+        b_boundaryMets = ~cellfun('isempty', ...
+            (regexp(...
+            {modelSBML.species(~boundaryMetIndexes).id}, ...
+            '_b$')));
+
+        % if the logical has any, set the boundaryCondition to 1
+        if sum(b_boundaryMets)
+            modelSBML.species(b_boundaryMets).boundaryCondition = 1;
+        end 
+
+        % then ignore those mets for which
+        % modelSBML.species.boundaryCondition == 1
+        boundaryMetIndexes = [modelSBML.species.boundaryCondition]';
+        mets = {modelSBML.species(~boundaryMetIndexes).id}';
+        metNames = {modelSBML.species(~boundaryMetIndexes).name}';
+        compartments = {modelSBML.species(~boundaryMetIndexes).compartment}';
+
+        % get the metabolite notes, and parse to get formula and charge
+        % (legacy support - should move to annotation in the future)
+
+        unparsedMetNotes = {modelSBML.species(~boundaryMetIndexes).notes};
+
+        [~, ~, ~, ~, metFormulas, ~, ~, ~, ~, chargeList, ~] = ...
+                      parseSBMLNotesField(unparsedMetNotes);
+
+        % get the metabolite annotation, and parse to get CHEBI, KEGG,
+        % PubChem, and InChI info (expect to modify in the future as SBML
+        % evolves)
+
+        unparsedMetAnnotation = ...
+            {modelSBML.species(~boundaryMetIndexes).annotation};
+
+        [metCHEBI,metKEGG,metPubChem,metInChI] = ...
+            parseSBMLAnnotationField(unparsedMetAnnotation);
+
+        %% Construct stoichiometric matrix and reaction list
+        rxns = {modelSBML.reaction.id}';
+        rxnNames = {modelSBML.reaction.name}';
+        rev = logical([modelSBML.reaction.reversible]');
+
+        S = zeros(length(mets),length(rxns));
+
+        reactants = {modelSBML.reaction.reactant}';
+        products = {modelSBML.reaction.product}';
+
+        for reactants_index=1:length(reactants) % This is a bottleneck. Is there a Non-loopy way to do this? like line 172?
+            [~,~,IB] = intersect({reactants{reactants_index}.species}', ...
+                mets, 'stable');
+
+            % stoichiometric coefficient is negative for reactants
+            S(IB,reactants_index) = ...
+                -sum([reactants{reactants_index}.stoichiometry]); 
+
+        end
+
+        for products_index=1:length(products) % This is a bottleneck. Is there a Non-loopy way to do this?
+            [~,~,IB] = intersect({products{products_index}.species}', mets, ...
+                'stable');
+
+            % stoichiometric coefficient is positive for products
+            S(IB,products_index) = ...
+                sum([products{products_index}.stoichiometry]); 
+        end
+
+        S = sparse(S);
+
+        % get reaction notes fields, parse to get info and build genes,
+        % rules, and grRules (legacy support - should move to annotation in
+        % the future)
+
+        unparsedRxnNotes = {modelSBML.reaction.notes}';
+
+        [genes, rule, subSystem, grRule, ~, confidenceScore, ...
+            citation, comment, ecNumber, ~, rxnGeneMat] = ...
+            parseSBMLNotesField(unparsedRxnNotes);
+
+        % get parameters for reactions to set lb, ub, and c
+
+        % if the parameter.ids are LOWER_BOUND, UPPER_BOUND,
+        % OBJECTIVE_COEFFICIENT, and FLUX_VALUE, this works as I'd like
+
+        % note that iFF708 and iIN800 use paramaeter.name instead of
+        % parameter.id. This code doesn't support this noncompliant SBML at
+        % the moment.
+
+        parameter_values = cell2mat(arrayfun(@(x) ...
+            [x.kineticLaw.parameter.value], modelSBML.reaction, 'uni', ...
+            0)');
+
+        lb_column = strcmpi(...
+            {modelSBML.reaction(1).kineticLaw.parameter.id}, ...
+            'LOWER_BOUND');
+
+        ub_column = strcmpi(...
+            {modelSBML.reaction(1).kineticLaw.parameter.id}, ...
+            'UPPER_BOUND');
+
+        objective_column = strcmpi(...
+            {modelSBML.reaction(1).kineticLaw.parameter.id}, ...
+            'OBJECTIVE_COEFFICIENT');
+
+        lb = parameter_values(:, lb_column);
+        ub = parameter_values(:, ub_column);
+        c = parameter_values(:, objective_column);
+
+        lb(lb < -defaultBound) = -defaultBound;
+        ub(ub > defaultBound) = defaultBound;
+
+        % I AM HERE!!!
+
+        % TODO: clean up strings for compartments, mets and rxn ids. Should
+        % I parse reaction names and met names for formulas, etc? Or
+        % depreciate that?
+
+
+        %% Collect everything into a structure
+        model.rxns = rxns;
+        model.mets = mets;
+        model.S = S;
+        model.rev = rev;
+        model.lb = lb;
+        model.ub = ub;
+        model.c = c;
+        model.metCharge = chargeList;
+        model.rules = rule;
+        model.genes = genes;
+        model.rxnGeneMat = rxnGeneMat;
+        model.grRules = grRule;
+        model.subSystems = subSystem;
+        model.confidenceScores = confidenceScore;
+        model.rxnReferences = citation;
+        model.rxnECNumbers = ecNumber;
+        model.rxnNotes = comment;
+        model.rxnNames = rxnNames;
+        model.metNames = metNames;
+        model.metFormulas = metFormulas;
+        model.metChEBIID = metCHEBI;
+        model.metKEGGID = metKEGG;
+        model.metPubChemID = metPubChem;
+        model.metInChIString = metInChI;
+        model.unparsedMetNotes = unparsedMetNotes';
+        model.unparsedMetAnnotations = unparsedMetAnnotation';
+        model.unparsedRxnNotes = unparsedRxnNotes;
+        % model.unparedRxnAnnotations = unparsedRxnAnnotation; % to come
     end
-    
-    S = sparse(S);
-
-    % get reaction notes fields, parse to get info and build genes, rules,
-    % and grRules (legacy support - should move to annotation in the
-    % future)
-    
-    unparsedRxnNotes = {modelSBML.reaction.notes}';
-    
-    [genes, rule, subSystem, grRule, ~, confidenceScore, ...
-        citation, comment, ecNumber, ~, rxnGeneMat] = ...
-        parseSBMLNotesField(unparsedRxnNotes);
-        
-    % get parameters for reactions to set lb, ub, and c
-    
-    % if the parameter.ids are LOWER_BOUND, UPPER_BOUND,
-    % OBJECTIVE_COEFFICIENT, and FLUX_VALUE, this works as I'd like
-    
-    % note that iFF708 and iIN800 use paramaeter.name instead of
-    % parameter.id. This code doesn't support this noncompliant SBML at the
-    % moment.
-    
-    parameter_values = cell2mat(arrayfun(@(x) ...
-        [x.kineticLaw.parameter.value],modelSBML.reaction,'uni',0)');
-    
-    lb_column = strcmpi(...
-        {modelSBML.reaction(1).kineticLaw.parameter.id}, 'LOWER_BOUND');
-    
-    ub_column = strcmpi(...
-        {modelSBML.reaction(1).kineticLaw.parameter.id}, 'UPPER_BOUND');
-    
-    objective_column = strcmpi(...
-        {modelSBML.reaction(1).kineticLaw.parameter.id}, ...
-        'OBJECTIVE_COEFFICIENT');
-    
-    lb = parameter_values(:,lb_column);
-    ub = parameter_values(:,ub_column);
-    c = parameter_values(:,objective_column);
-
-    lb(lb < -defaultBound) = -defaultBound;
-    ub(ub > defaultBound) = defaultBound;
-    
-    % I AM HERE!!!
-    
-    %TODO: clean up strings for compartments, mets and rxn ids. Should I
-    %parse reaction names and met names for formulas, etc? Or depreciate
-    %that?
-    
-    
-    %% Collect everything into a structure
-    model.rxns = rxns;
-    model.mets = mets;
-    model.S = S;
-    model.rev = rev;
-    model.lb = lb;
-    model.ub = ub;
-    model.c = c;
-    model.metCharge = transpose(chargeList);
-    model.rules = rule;
-    model.genes = genes;
-    model.rxnGeneMat = rxnGeneMat;
-    model.grRules = grRule;
-    model.subSystems = subSystem;
-    model.confidenceScores = confidenceScore;
-    model.rxnReferences = citation;
-    model.rxnECNumbers = ecNumber; % currently a problem, this is 714 long, not 1266
-    model.rxnNotes = comment;
-    model.rxnNames = rxnNames;
-    model.metNames = metNames;
-    model.metFormulas = metFormulas;
-    model.metChEBIID = metCHEBI;
-    model.metKEGGID = metKEGG;
-    model.metPubChemID = metPubChem;
-    model.metInChIString = metInChI;
-    model.unparsedMetNotes = unparsedMetNotes;
-    model.unparsedMetAnnotations = unparsedMetAnnotation;
-    model.unparsedRxnNotes = unparsedRxnNotes;
-    % model.unparedRxnAnnotations = unparsedRxnAnnotation; % to come
 end
-    
+
+
+
+
     %To consider: clean up reaction names
         rxnNameTmp = regexprep(modelSBML.reaction(i).name,'^R_','');
         rxnNames{i} = regexprep(rxnNameTmp,'_+',' ');
