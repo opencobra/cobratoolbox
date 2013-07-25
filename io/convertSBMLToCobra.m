@@ -30,7 +30,8 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
     % Richard Que 02/08/10 - Properly format reaction and metabolite fields
     %                        from SBML.
     %
-    % Ben Heavner 2 July 2013 - modify parseSBMLNotesField call
+    % Ben Heavner July 2013 - rewritten to facilitate support of changing
+    %                         SBML standard
     %
 
     %% References 
@@ -64,6 +65,12 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
     %% TODO 
     % add case switches for SBML level/version/package support? 
     % Test on lots of models
+    % consider changing model structure to put metabolite and reaction
+    % annotations and references in sub-structures
+    %
+    % using iND, unlike old code, new code doesn't get metCharge, change
+    % met IDs to have [c] instead of _c at the end; doesn't return rxnNotes
+    % (which apparently are in iND, but confusingly parsed...)
 
     if (nargin < 2)
         defaultBound = 1000;
@@ -297,11 +304,14 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
             metNamesTmp = regexprep(metNamesTmp,'-+','-');
             metNamesTmp = regexprep(metNamesTmp,'-$','');
             metNamesAlt{i} = metNamesTmp;
-            % Separate formulas from names
-            %[tmp,tmp,tmp,tmp,tokens] = regexp(metNamesTmp,'(.*)-((([A(Ag)(As)C(Ca)(Cd)(Cl)(Co)(Cu)F(Fe)H(Hg)IKLM(Mg)(Mn)N(Na)(Ni)OPRS(Se)UWXY(Zn)]?)(\d*)))*$');
+            % Separate formulas from names [tmp,tmp,tmp,tmp,tokens] =
+            % regexp(metNamesTmp,
+            % '(.*)-((([A(Ag)(As)C(Ca)(Cd)(Cl)(Co)(Cu)F(Fe)H(Hg)IKLM(Mg)(Mn)N(Na)(Ni)OPRS(Se)UWXY(Zn)]?)(\d*)))*$');
             if (~haveFormulasFlag)
-                [~,~,~,~,tokens] = regexp(metNamesTmp, ...
-                    '(.*)_((((A|Ag|As|C|Ca|Cd|Cl|Co|Cu|F|Fe|H|Hg|I|K|L|M|Mg|Mn|Mo|N|Na|Ni|O|P|R|S|Se|U|W|X|Y|Zn)?)(\d*)))*$');
+                regExString = ['(.*)_((((A|Ag|As|C|Ca|Cd|Cl|Co|Cu|F|' ...
+                    'Fe|H|Hg|I|K|L|M|Mg|Mn|Mo|N|Na|Ni|O|P|R|S|Se|U|W' ...
+                    '|X|Y|Zn)?)(\d*)))*$'];
+                [~,~,~,~,tokens] = regexp(metNamesTmp, regExString);
                 if (isempty(tokens))
                     if length(metFormulas)<i||(metFormulas{i}=='')
                         metFormulas{i} = '';
@@ -371,23 +381,18 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
 
         rxns = {modelSBML.reaction.id}';
         rxnNames = {modelSBML.reaction.name}';
+        
         rev = logical([modelSBML.reaction.reversible]');
 
-        % need to ignore boundary mets 
-        %
-        % first, check for the Palsson lab _b$ boundary condition indicator
-        % for legacy SBML support set (is this still needed?)
-
+        % need to ignore boundary mets when building met ids and names.
         boundaryMetIndexes = [modelSBML.species.boundaryCondition]';
 
         % build a logical for mets not annotated as boundary mets that end
-        % with _b
+        % with _b (a legacy way to indicate boundary mets)
         b_boundaryMets = ~cellfun('isempty', ...
-            (regexp(...
-            {modelSBML.species(~boundaryMetIndexes).id}, ...
-            '_b$')));
+            (regexp({modelSBML.species(~boundaryMetIndexes).id}, '_b$')));
 
-        % if the logical has any, set the boundaryCondition to 1
+        % if there are _b mets, set the corresponding boundaryCondition
         if sum(b_boundaryMets)
             modelSBML.species(b_boundaryMets).boundaryCondition = 1;
         end 
@@ -397,11 +402,12 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
         boundaryMetIndexes = [modelSBML.species.boundaryCondition]';
         mets = {modelSBML.species(~boundaryMetIndexes).id}';
         metNames = {modelSBML.species(~boundaryMetIndexes).name}';
-        compartments = {modelSBML.species(~boundaryMetIndexes).compartment}';
-
+                
+        compartments = ...
+            {modelSBML.species(~boundaryMetIndexes).compartment}';
+       
         % get the metabolite notes, and parse to get formula and charge
         % (legacy support - should move to annotation in the future)
-
         unparsedMetNotes = {modelSBML.species(~boundaryMetIndexes).notes};
 
         [~, ~, ~, ~, metFormulas, ~, ~, ~, ~, chargeList, ~] = ...
@@ -410,7 +416,6 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
         % get the metabolite annotation, and parse to get CHEBI, KEGG,
         % PubChem, and InChI info (expect to modify in the future as SBML
         % evolves)
-
         unparsedMetAnnotation = ...
             {modelSBML.species(~boundaryMetIndexes).annotation};
 
@@ -423,34 +428,34 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
         rev = logical([modelSBML.reaction.reversible]');
 
         S = zeros(length(mets),length(rxns));
-
+        
         reactants = {modelSBML.reaction.reactant}';
         products = {modelSBML.reaction.product}';
 
-        for reactants_index=1:length(reactants) % This is a bottleneck. Is there a Non-loopy way to do this? like line 172?
-            [~,~,IB] = intersect({reactants{reactants_index}.species}', ...
-                mets, 'stable');
+        % This is a bottleneck. Is there a better way to do this?
+        for reactants_index = 1:length(reactants)
+            [~,~,IB] = intersect( ...
+                {reactants{reactants_index}.species}', mets, 'stable');
 
             % stoichiometric coefficient is negative for reactants
-            S(IB,reactants_index) = ...
-                -sum([reactants{reactants_index}.stoichiometry]); 
-
+            S(IB,reactants_index) = S(IB,reactants_index)' - ...
+                ([reactants{reactants_index}.stoichiometry]);
         end
 
-        for products_index=1:length(products) % This is a bottleneck. Is there a Non-loopy way to do this?
-            [~,~,IB] = intersect({products{products_index}.species}', mets, ...
-                'stable');
+        % This is a bottleneck. Is there a better way to do this?
+        for products_index = 1:length(products) 
+            [~,~,IB] = intersect({products{products_index}.species}', ...
+                mets, 'stable');
 
             % stoichiometric coefficient is positive for products
-            S(IB,products_index) = ...
-                sum([products{products_index}.stoichiometry]); 
+            S(IB,products_index) = S(IB,products_index)' + ...
+                ([products{products_index}.stoichiometry]); 
         end
 
         S = sparse(S);
 
         % get reaction notes fields, parse to get info and build genes,
-        % rules, and grRules (legacy support - should move to annotation in
-        % the future)
+        % rules, and grRules
 
         unparsedRxnNotes = {modelSBML.reaction.notes}';
 
@@ -490,13 +495,26 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
         lb(lb < -defaultBound) = -defaultBound;
         ub(ub > defaultBound) = defaultBound;
 
-        % I AM HERE!!!
+        % Clean up met names and ids if they contain legacy strings or
+        % SBML-required character substitutions
+        metNames = regexprep(metNames, '^M_', '');
+        metNames = regexprep(metNames, '_+', ' ');
+                
+        mets = regexprep(mets, '^M_', '');
+        mets = regexprep(mets, '^_', '');
 
-        % TODO: clean up strings for compartments, mets and rxn ids. Should
-        % I parse reaction names and met names for formulas, etc? Or
-        % depreciate that?
-
-
+        % Clean up reaction names and ids if they contain legacy strings or
+        % SBML-required character substitutions
+        rxnNames = regexprep(rxnNames, '^R_', '');
+        rxnNames = regexprep(rxnNames, '_+', ' ');
+        
+        rxns = regexprep(rxns, '^R_', '');
+        rxns = cleanUpFormatting(rxns);
+        
+        % Clean up compartment names, replace abbreviation with long names
+        % if supplied in function call.
+        compartments = regexprep(compartments, '^C_', '');
+        
         %% Collect everything into a structure
         model.rxns = rxns;
         model.mets = mets;
@@ -529,204 +547,23 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
     end
 end
 
-
-
-
-    %To consider: clean up reaction names
-        rxnNameTmp = regexprep(modelSBML.reaction(i).name,'^R_','');
-        rxnNames{i} = regexprep(rxnNameTmp,'_+',' ');
-        rxnsTmp = regexprep(modelSBML.reaction(i).id,'^R_','');
-        rxns{i} = cleanUpFormatting(rxnsTmp);
-
-    %to consider: clean up met names
-            % Parse metabolite id's
-        % Get rid of the M_ in the beginning of metabolite id's
-        metID = regexprep(speciesList{i},'^M_','');
-        metID = regexprep(metID,'^_','');
-    
-        
-        try
-            parameters = modelSBML.reaction(i).kineticLaw.parameter;
-        catch
-            parameters =[];
-        end
-        if (~isempty(parameters))
-            for j = 1:length(parameters)
-                paramStruct = parameters(j);
-                switch paramStruct.id
-                    case 'LOWER_BOUND'
-                        lb(i) = paramStruct.value;
-                        if (lb(i) < -defaultBound)
-                            lb(i) = -defaultBound;
-                        end
-                    case 'UPPER_BOUND'
-                        ub(i) = paramStruct.value;
-                        if (ub(i) > defaultBound)
-                            ub(i) = defaultBound;
-                        end
-                    case 'OBJECTIVE_COEFFICIENT'
-                        c(i) = paramStruct.value;
-                end
-            end
-        else
-            ub(i) = defaultBound;
-            if (rev(i) == 1)
-                lb(i) = -defaultBound;
-            else
-                lb(i) = 0;
-            end
-        end
-    end
-    %close the waitbar if this is matlab
-    if (regexp(version, 'R20'))
-        close(h);
-    end
-
-    
-    
-    
-    %% Construct metabolite list
-    mets = cell(nMets,1);
-    compartmentList = cell(length(modelSBML.compartment),1);
-    if isempty(compSymbolList), 
-        useCompList = true; 
-    else
-        useCompList = false;
-    end
-
-    for i=1:length(modelSBML.compartment)
-        compartmentList{i} = modelSBML.compartment(i).id;
-    end
-
-    h = waitbar(0,'Constructing metabolite lists ...');
-    hasAnnotationField = 0;
-    for i = 1:nMets
-        if mod(i,10) == 0
-            waitbar(i/nMets,h);
-        end
-        % Parse metabolite id's
-        % Get rid of the M_ in the beginning of metabolite id's
-        metID = regexprep(speciesList{i},'^M_','');
-        metID = regexprep(metID,'^_','');
-        % Find compartment id
-        tmpCell = {};
-        if useCompList
-            for j=1:length(compartmentList)
-                tmpCell = regexp(metID,['_(' compartmentList{j} ')$'], ...
-                    'tokens');
-                if ~isempty(tmpCell), break; end
-            end
-            if isempty(tmpCell), useCompList = false; end
-        elseif ~isempty(compSymbolList)
-            for j = 1: length(compSymbolList)
-                tmpCell = regexp(metID,['_(' compSymbolList{j} ')$'], ...
-                    'tokens');
-                if ~isempty(tmpCell), break; end
-            end
-        end
-        if isempty(tmpCell), tmpCell = regexp(metID,'_(.)$','tokens'); end
-        if ~isempty(tmpCell)
-            compID = tmpCell{1};
-            metTmp = [regexprep(metID,['_' compID{1} '$'], ...
-                '') '[' compID{1} ']'];
-        else
-            metTmp = metID;
-        end
-        %Clean up met ID
-        mets{i} = cleanUpFormatting(metTmp);
-        % Parse metabolite names
-        % Clean up some of the weird stuff in the sbml files
-        metNamesTmp = regexprep(tmpSpecies(i).name,'^M_','');
-        metNamesTmp = cleanUpFormatting(metNamesTmp);
-        metNamesTmp = regexprep(metNamesTmp,'^_','');
-    %     metNamesTmp = strrep(metNamesTmp,'_','-');
-        metNamesTmp = regexprep(metNamesTmp,'-+','-');
-        metNamesTmp = regexprep(metNamesTmp,'-$','');
-        metNamesAlt{i} = metNamesTmp;
-        % Separate formulas from names
-        %[tmp,tmp,tmp,tmp,tokens] = regexp(metNamesTmp,'(.*)-((([A(Ag)(As)C(Ca)(Cd)(Cl)(Co)(Cu)F(Fe)H(Hg)IKLM(Mg)(Mn)N(Na)(Ni)OPRS(Se)UWXY(Zn)]?)(\d*)))*$');
-        if (~haveFormulasFlag)
-            [~, ~, ~, ~,tokens] = regexp(metNamesTmp, ...
-                '(.*)_((((A|Ag|As|C|Ca|Cd|Cl|Co|Cu|F|Fe|H|Hg|I|K|L|M|Mg|Mn|Mo|N|Na|Ni|O|P|R|S|Se|U|W|X|Y|Zn)?)(\d*)))*$');
-            if (isempty(tokens))
-                if length(metFormulas)<i||(metFormulas{i}=='')
-                    metFormulas{i} = '';
-                end
-                metNames{i} = metNamesTmp;
-            else
-                formulaCount = formulaCount + 1;
-                metFormulas{i} = tokens{1}{2};
-                metNames{i} = tokens{1}{1};
-            end
-        else
-            metNames{i} = metNamesTmp;
-        end
-        if isfield(modelSBML.species(i),'annotation')
-            hasAnnotationField = 1;
-            [metCHEBI,metKEGG,metPubChem,metInChI] = ...
-                parseSBMLAnnotationField(modelSBML.species(i).annotation);
-            metCHEBIID{i} = metCHEBI;
-            metKEGGID{i} = metKEGG;
-            metPubChemID{i} = metPubChem;
-            metInChIString{i} = metInChI;
-        end
-    end
-    if ( regexp( version, 'R20') )
-        close(h);
-    end
-
-    %% Collect everything into a structure
-    model.rxns = rxns;
-    model.mets = mets;
-    model.S = S;
-    model.rev = rev;
-    model.lb = lb;
-    model.ub = ub;
-    model.c = c;
-    model.metCharge = transpose(chargeList);
-    if (hasNotesField)
-        model.rules = rules;
-        model.genes = columnVector(allGenes);
-        model.rxnGeneMat = rxnGeneMat;
-        model.grRules = columnVector(grRules);
-        model.subSystems = columnVector(subSystems);
-        model.confidenceScores = columnVector(confidenceScores);
-        model.rxnReferences = columnVector(citations);
-        model.rxnECNumbers = columnVector(ecNumbers);
-        model.rxnNotes = columnVector(comments);
-    end
-    model.rxnNames = columnVector(rxnNames);
-    % Only include formulas if at least 90% of metabolites have them (otherwise
-    % the "formulas" are probably just parts of metabolite names)
-    if (formulaCount < 0.9*nMets)
-        model.metNames = columnVector(metNamesAlt);
-    else
-        model.metNames = columnVector(metNames);
-        model.metFormulas = columnVector(metFormulas);
-    end
-    if (hasAnnotationField)
-        model.metChEBIID = columnVector(metCHEBIID);
-        model.metKEGGID = columnVector(metKEGGID);
-        model.metPubChemID = columnVector(metPubChemID);
-        model.metInChIString = columnVector(metInChIString);
-end
-
 %% Cleanup Formatting
 function str = cleanUpFormatting(str)
-str = strrep(str,'-DASH-','-');
-str = strrep(str,'_DASH_','-');
-str = strrep(str,'_FSLASH_','/');
-str = strrep(str,'_BSLASH_','\');
-str = strrep(str,'_LPAREN_','(');
-str = strrep(str,'_LSQBKT_','[');
-str = strrep(str,'_RSQBKT_',']');
-str = strrep(str,'_RPAREN_',')');
-str = strrep(str,'_COMMA_',',');
-str = strrep(str,'_PERIOD_','.');
-str = strrep(str,'_APOS_','''');
-str = regexprep(str,'_e_$','(e)');
-str = regexprep(str,'_e$','(e)');
-str = strrep(str,'&amp;','&');
-str = strrep(str,'&lt;','<');
-str = strrep(str,'&gt;','>');
-str = strrep(str,'&quot;','"');
+    str = strrep(str,'-DASH-','-');
+    str = strrep(str,'_DASH_','-');
+    str = strrep(str,'_FSLASH_','/');
+    str = strrep(str,'_BSLASH_','\');
+    str = strrep(str,'_LPAREN_','(');
+    str = strrep(str,'_LSQBKT_','[');
+    str = strrep(str,'_RSQBKT_',']');
+    str = strrep(str,'_RPAREN_',')');
+    str = strrep(str,'_COMMA_',',');
+    str = strrep(str,'_PERIOD_','.');
+    str = strrep(str,'_APOS_','''');
+    str = regexprep(str,'_e_$','(e)');
+    str = regexprep(str,'_e$','(e)');
+    str = strrep(str,'&amp;','&');
+    str = strrep(str,'&lt;','<');
+    str = strrep(str,'&gt;','>');
+    str = strrep(str,'&quot;','"');
+end
