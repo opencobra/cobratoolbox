@@ -86,6 +86,13 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
     end
 
     if legacyFlag % run legacy code (not the default)
+        
+        warnString = ['Using legacy convertSBMLToCobra code. This ' ...
+            'code parses legacy metabolite and reaction naming ' ...
+            'conventions and may not import all information from ' ...
+            'notes or annotation fields.'];
+        warning(warnString);
+    
         nMetsTmp = length(modelSBML.species);
         nRxns = length(modelSBML.reaction);
 
@@ -516,34 +523,50 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
         compartments = regexprep(compartments, '^C_', '');
         
         %% Collect everything into a structure
-        model.rxns = rxns;
-        model.mets = mets;
-        model.S = S;
+        
+        % mathematical requirements
+        model.S = S;      
+        model.c = c;
         model.rev = rev;
         model.lb = lb;
         model.ub = ub;
-        model.c = c;
-        model.metCharge = chargeList;
-        model.rules = rule;
-        model.genes = genes;
         model.rxnGeneMat = rxnGeneMat;
-        model.grRules = grRule;
-        model.subSystems = subSystem;
-        model.confidenceScores = confidenceScore;
-        model.rxnReferences = citation;
-        model.rxnECNumbers = ecNumber;
-        model.rxnNotes = comment;
-        model.rxnNames = rxnNames;
+        
+        % met info
+        model.mets = mets;
         model.metNames = metNames;
+        %model.metConfidenceScores = ; % future?
+        model.metCharge = chargeList;
+        model.metCompartment = compartments;
         model.metFormulas = metFormulas;
         model.metChEBIID = metCHEBI;
         model.metKEGGID = metKEGG;
         model.metPubChemID = metPubChem;
         model.metInChIString = metInChI;
-        model.unparsedMetNotes = unparsedMetNotes';
+        % the following metNotes is a bit different from the old version,
+        % which parsed the notes field to return comments
+        model.metNotes = unparsedMetNotes'; 
         model.unparsedMetAnnotations = unparsedMetAnnotation';
-        model.unparsedRxnNotes = unparsedRxnNotes;
-        % model.unparedRxnAnnotations = unparsedRxnAnnotation; % to come
+
+        % rxn info
+        model.rxns = rxns;
+        model.rxnNames = rxnNames;
+        model.rxnSubSystems = subSystem;
+        model.rules = rule;
+        model.rxnConfidenceScores = confidenceScore;
+        model.rxnReferences = citation;
+        model.rxnECNumbers = ecNumber;
+        model.rxnNotes = unparsedRxnNotes;
+        % model.unparedRxnAnnotations = unparsedRxnAnnotation; % future?
+        model.grRules = grRule;
+
+        % gene info
+        model.genes = genes;
+        %model.geneConfidenceScores = ; % future?
+       
+        % protein info - future?
+        % constraint info - future?
+
     end
 end
 
