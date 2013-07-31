@@ -1,0 +1,535 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ploterr</title>
+  <meta name="keywords" content="ploterr">
+  <meta name="description" content="PLOTERR General error bar plot.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html external -->
+<h1>ploterr
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>PLOTERR General error bar plot.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function hh = ploterr(x, y, xerr, yerr, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">PLOTERR General error bar plot.
+
+
+ Usage for the impatient
+ =======================
+
+  X, Y: x and y axis values
+  xerr, yerr: if matrix relative error
+              if cell array lower and upper bound
+  LineSpec as in plot. Must be passed after yerr, before properties
+  Properties: 'logx', 'logy', 'logxy':
+                 toggles for logarithmic scaling, no value needed
+              'hhx', 'hhy', 'hhxy':
+                 relative handle sizes (Handle Height)
+
+  X, Y, xerr and yerr must be of the same size as long as dimensions are
+  not equal to 1, otherwise singletons are expanded. You can pass every-
+  thing you like, e.g. xerr={0, 20:29} and x=[(1:10)' (2:11)'] to
+  indicate a lower bound of 0 for all values and an upper bound of 20:29
+  for both columns (which result in two separate lines).
+
+
+ USAGE
+ =====
+
+   PLOTERR(X,Y,{LX,UX},{LY,UY}) plots the graph of vector X vs. vector Y 
+   with error bars specified by LX and UX in horizontal direction and
+   with error bars specified by LY and UY in vertical direction.
+   L and U contain the lower and upper error ranges for each point
+   in X resp. Y (L = lower, U = upper).  Each error bar ranges from L(i)
+   to U(i). X, LX and UX sizes may vary in singleton dimensions only, the
+   same accounts for Y, LY and UY. If any of X,Y,LX,UX,LY,UY is a matrix 
+   then each column produces a separate line.
+
+   PLOTERR(X,Y,EX,EY) plots X vs. Y with x error bars [X-XE X+XE] and y
+   error bars [Y-YE Y+YE].
+
+   PLOTERR(X,Y,[],EY) plots no x error bars
+   PLOTERR(X,Y,EX,[]) plots no y error bars
+   PLOTERR(X,Y,EX,{LY,UY}) plots x error bars [X-XE X+XE] and y error bars
+   [LY UY]
+   ... etc ...
+
+   PLOTERR(X,Y,EX,EY,LineSpec) uses the color and linestyle specified by
+   the string 'LineSpec'. See PLOT for possibilities. Pass '' for default,
+   which is a solid line connecting the points (X,Y).
+
+   PLOTERR(X,Y,EX,EY,LineSpec,'Property1',Value1,'Property2',Value2,...)
+   Property Value pairs can be passed after LineSpec, however, LineSpec
+   does not need to be passed.
+   The Following properties are available:
+      'logx', 'logy', 'logxy': Logarithmic scaling of x axis, y axis or both
+   a value is not required. If you still specify a value, 0 turns logscale
+   off, 1 turns it on. E.g. PLOTERR(X,Y,EX,EY,'logx') plots on a logarithmi-
+   cally scaled x axis.
+      'hhx', 'hhy', 'hhxy': relative size of bar handles compared to the aver-
+   age distance of the datapoints. The default for hhx and hhy is 2/3,
+   indicating a total width of the handles of the bars of 2/3 of the mean
+   distance of datapoints in y. For logarithmic plots that is the mean
+   distance on a logarithmic scale. E.g. PLOTERR(X,Y,EX,EY,'logy','hhy',0.1)
+   plots normal x error bars and tiny y errorbars on a logarithmic y scale and
+   a linear x scale.
+
+   H = PLOTERR(...) returns a vector of line handles in this order:
+      H(1) = handle to datapoints
+      H(2) = handle to errorbar y OR errorbar x if error y not specified
+      H(3) = handle to errorbar x if error y specified
+   If more than one line is plotted, the ordering is the following:
+      H(1:n) = handle to lines with datapoints
+      H(n+1:2*n) = handle to y error bars
+      H(2*n+1:3*n) = handle to x erro bars
+
+
+ Examples
+ ========
+
+   Basic example:
+   -------------
+      x = 2:11;
+      y = sin(x);
+      e = std(y)*ones(size(x));
+      ploterr(x,y,e)
+
+   Draws symmetric error bars of unit standard deviation along a sine wave.
+   
+   Extended example:
+   -----------------
+      x = 0:15;
+      y=exp(-x).*(rand(1,16)*0.9+0.1);
+      h=ploterr(x,y,0.3,{exp(-x)*0.1 exp(-x)},'r.','logy','hhxy',0.5)
+      set(h(2),'Color','b'), set(h(3),'Color','b')
+      legend(h,{'data' 'error x' 'error y'})
+   Draws samples of a noisy exponential function on a logarithmic y scale
+   with constant relative errors in x and variable absolute errors in y with
+   slim error bar handles. The lineseries objects are used to set the color
+   of the error bars and to display a legend.
+
+
+ Acknowledgements
+ ================
+
+  technique for plotting error bars
+  ---------------------------------
+   L. Shure 5-17-88, 10-1-91 B.A. Jones 4-5-93
+   Copyright 1984-2002 The MathWorks, Inc. 
+   $Revision: 5.19 $  $Date: 2002/06/05 20:05:14 $
+
+  modified for plotting horizontal error bars
+  -------------------------------------------
+   Goetz Huesken
+   e-mail: goetz.huesken(at)gmx.de
+   Date: 10/23/2006
+
+
+ Version History
+ ===============
+  
+  v1.0, October 2008: modification of errorbar_x by Goetz Huesken for
+          plotting horizontal and/or vertical errorbars and to support
+          logarithmic scaling.
+  v1.1, December 2008: changed the user interface. Handle sizes and
+          logarithmic scaling can now be set via properties. LineSpec is
+          not compulsory anymore when setting logscale or handle sizes.
+  v1.1.1, December 2008: bugfix of v1.1
+
+   Felix Zörgiebel
+   email: felix_z -&gt; web.de
+   Date: 12/03/2008</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../setupThermoModel/directionalityReport/forwardProbablyReverseFigures.html" class="code" title="function forwardProbablyReverseFigures(model,directions,miliMolarStandard)">forwardProbablyReverseFigures</a>	figure of qualitatively forward reactions that are probably quantiatively reverse</li><li><a href="../../setupThermoModel/directionalityReport/forwardReversibleFiguresKeq.html" class="code" title="function forwardReversibleFiguresKeq(model,directions,thorStandard)">forwardReversibleFiguresKeq</a>	Figure of qualitatively forward -> quantitatively reversible (keq)</li><li><a href="../../setupThermoModel/directionalityReport/forwardTransportQuantReverseFigures.html" class="code" title="function forwardTransportQuantReverseFigures(model,directions,thorStandard)">forwardTransportQuantReverseFigures</a>	figure of the qualitatively forward transport reactions that are quantitatively reversible</li><li><a href="../../setupThermoModel/directionalityReport/singleMetaboliteThermoFigure.html" class="code" title="function singleMetaboliteThermoFigure(model,miliMolarStandard,metAbbr)">singleMetaboliteThermoFigure</a>	create a vertical errorbar figure of the reactions involving the</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function [perp,para] = barline(v,l,h,uselog,handleheight_rel)</a></li><li><a href="#_sub2" class="code">function [A,B,tA,tB] = expandarrays(A,B)</a></li><li><a href="#_sub3" class="code">function [sym,lx,ly,hx,hy] = getproperties(A)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function hh = ploterr(x, y, xerr, yerr, varargin)</a>
+0002 <span class="comment">%PLOTERR General error bar plot.</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Usage for the impatient</span>
+0006 <span class="comment">% =======================</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">%  X, Y: x and y axis values</span>
+0009 <span class="comment">%  xerr, yerr: if matrix relative error</span>
+0010 <span class="comment">%              if cell array lower and upper bound</span>
+0011 <span class="comment">%  LineSpec as in plot. Must be passed after yerr, before properties</span>
+0012 <span class="comment">%  Properties: 'logx', 'logy', 'logxy':</span>
+0013 <span class="comment">%                 toggles for logarithmic scaling, no value needed</span>
+0014 <span class="comment">%              'hhx', 'hhy', 'hhxy':</span>
+0015 <span class="comment">%                 relative handle sizes (Handle Height)</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">%  X, Y, xerr and yerr must be of the same size as long as dimensions are</span>
+0018 <span class="comment">%  not equal to 1, otherwise singletons are expanded. You can pass every-</span>
+0019 <span class="comment">%  thing you like, e.g. xerr={0, 20:29} and x=[(1:10)' (2:11)'] to</span>
+0020 <span class="comment">%  indicate a lower bound of 0 for all values and an upper bound of 20:29</span>
+0021 <span class="comment">%  for both columns (which result in two separate lines).</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">% USAGE</span>
+0025 <span class="comment">% =====</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">%   PLOTERR(X,Y,{LX,UX},{LY,UY}) plots the graph of vector X vs. vector Y</span>
+0028 <span class="comment">%   with error bars specified by LX and UX in horizontal direction and</span>
+0029 <span class="comment">%   with error bars specified by LY and UY in vertical direction.</span>
+0030 <span class="comment">%   L and U contain the lower and upper error ranges for each point</span>
+0031 <span class="comment">%   in X resp. Y (L = lower, U = upper).  Each error bar ranges from L(i)</span>
+0032 <span class="comment">%   to U(i). X, LX and UX sizes may vary in singleton dimensions only, the</span>
+0033 <span class="comment">%   same accounts for Y, LY and UY. If any of X,Y,LX,UX,LY,UY is a matrix</span>
+0034 <span class="comment">%   then each column produces a separate line.</span>
+0035 <span class="comment">%</span>
+0036 <span class="comment">%   PLOTERR(X,Y,EX,EY) plots X vs. Y with x error bars [X-XE X+XE] and y</span>
+0037 <span class="comment">%   error bars [Y-YE Y+YE].</span>
+0038 <span class="comment">%</span>
+0039 <span class="comment">%   PLOTERR(X,Y,[],EY) plots no x error bars</span>
+0040 <span class="comment">%   PLOTERR(X,Y,EX,[]) plots no y error bars</span>
+0041 <span class="comment">%   PLOTERR(X,Y,EX,{LY,UY}) plots x error bars [X-XE X+XE] and y error bars</span>
+0042 <span class="comment">%   [LY UY]</span>
+0043 <span class="comment">%   ... etc ...</span>
+0044 <span class="comment">%</span>
+0045 <span class="comment">%   PLOTERR(X,Y,EX,EY,LineSpec) uses the color and linestyle specified by</span>
+0046 <span class="comment">%   the string 'LineSpec'. See PLOT for possibilities. Pass '' for default,</span>
+0047 <span class="comment">%   which is a solid line connecting the points (X,Y).</span>
+0048 <span class="comment">%</span>
+0049 <span class="comment">%   PLOTERR(X,Y,EX,EY,LineSpec,'Property1',Value1,'Property2',Value2,...)</span>
+0050 <span class="comment">%   Property Value pairs can be passed after LineSpec, however, LineSpec</span>
+0051 <span class="comment">%   does not need to be passed.</span>
+0052 <span class="comment">%   The Following properties are available:</span>
+0053 <span class="comment">%      'logx', 'logy', 'logxy': Logarithmic scaling of x axis, y axis or both</span>
+0054 <span class="comment">%   a value is not required. If you still specify a value, 0 turns logscale</span>
+0055 <span class="comment">%   off, 1 turns it on. E.g. PLOTERR(X,Y,EX,EY,'logx') plots on a logarithmi-</span>
+0056 <span class="comment">%   cally scaled x axis.</span>
+0057 <span class="comment">%      'hhx', 'hhy', 'hhxy': relative size of bar handles compared to the aver-</span>
+0058 <span class="comment">%   age distance of the datapoints. The default for hhx and hhy is 2/3,</span>
+0059 <span class="comment">%   indicating a total width of the handles of the bars of 2/3 of the mean</span>
+0060 <span class="comment">%   distance of datapoints in y. For logarithmic plots that is the mean</span>
+0061 <span class="comment">%   distance on a logarithmic scale. E.g. PLOTERR(X,Y,EX,EY,'logy','hhy',0.1)</span>
+0062 <span class="comment">%   plots normal x error bars and tiny y errorbars on a logarithmic y scale and</span>
+0063 <span class="comment">%   a linear x scale.</span>
+0064 <span class="comment">%</span>
+0065 <span class="comment">%   H = PLOTERR(...) returns a vector of line handles in this order:</span>
+0066 <span class="comment">%      H(1) = handle to datapoints</span>
+0067 <span class="comment">%      H(2) = handle to errorbar y OR errorbar x if error y not specified</span>
+0068 <span class="comment">%      H(3) = handle to errorbar x if error y specified</span>
+0069 <span class="comment">%   If more than one line is plotted, the ordering is the following:</span>
+0070 <span class="comment">%      H(1:n) = handle to lines with datapoints</span>
+0071 <span class="comment">%      H(n+1:2*n) = handle to y error bars</span>
+0072 <span class="comment">%      H(2*n+1:3*n) = handle to x erro bars</span>
+0073 <span class="comment">%</span>
+0074 <span class="comment">%</span>
+0075 <span class="comment">% Examples</span>
+0076 <span class="comment">% ========</span>
+0077 <span class="comment">%</span>
+0078 <span class="comment">%   Basic example:</span>
+0079 <span class="comment">%   -------------</span>
+0080 <span class="comment">%      x = 2:11;</span>
+0081 <span class="comment">%      y = sin(x);</span>
+0082 <span class="comment">%      e = std(y)*ones(size(x));</span>
+0083 <span class="comment">%      ploterr(x,y,e)</span>
+0084 <span class="comment">%</span>
+0085 <span class="comment">%   Draws symmetric error bars of unit standard deviation along a sine wave.</span>
+0086 <span class="comment">%</span>
+0087 <span class="comment">%   Extended example:</span>
+0088 <span class="comment">%   -----------------</span>
+0089 <span class="comment">%      x = 0:15;</span>
+0090 <span class="comment">%      y=exp(-x).*(rand(1,16)*0.9+0.1);</span>
+0091 <span class="comment">%      h=ploterr(x,y,0.3,{exp(-x)*0.1 exp(-x)},'r.','logy','hhxy',0.5)</span>
+0092 <span class="comment">%      set(h(2),'Color','b'), set(h(3),'Color','b')</span>
+0093 <span class="comment">%      legend(h,{'data' 'error x' 'error y'})</span>
+0094 <span class="comment">%   Draws samples of a noisy exponential function on a logarithmic y scale</span>
+0095 <span class="comment">%   with constant relative errors in x and variable absolute errors in y with</span>
+0096 <span class="comment">%   slim error bar handles. The lineseries objects are used to set the color</span>
+0097 <span class="comment">%   of the error bars and to display a legend.</span>
+0098 <span class="comment">%</span>
+0099 <span class="comment">%</span>
+0100 <span class="comment">% Acknowledgements</span>
+0101 <span class="comment">% ================</span>
+0102 <span class="comment">%</span>
+0103 <span class="comment">%  technique for plotting error bars</span>
+0104 <span class="comment">%  ---------------------------------</span>
+0105 <span class="comment">%   L. Shure 5-17-88, 10-1-91 B.A. Jones 4-5-93</span>
+0106 <span class="comment">%   Copyright 1984-2002 The MathWorks, Inc.</span>
+0107 <span class="comment">%   $Revision: 5.19 $  $Date: 2002/06/05 20:05:14 $</span>
+0108 <span class="comment">%</span>
+0109 <span class="comment">%  modified for plotting horizontal error bars</span>
+0110 <span class="comment">%  -------------------------------------------</span>
+0111 <span class="comment">%   Goetz Huesken</span>
+0112 <span class="comment">%   e-mail: goetz.huesken(at)gmx.de</span>
+0113 <span class="comment">%   Date: 10/23/2006</span>
+0114 <span class="comment">%</span>
+0115 <span class="comment">%</span>
+0116 <span class="comment">% Version History</span>
+0117 <span class="comment">% ===============</span>
+0118 <span class="comment">%</span>
+0119 <span class="comment">%  v1.0, October 2008: modification of errorbar_x by Goetz Huesken for</span>
+0120 <span class="comment">%          plotting horizontal and/or vertical errorbars and to support</span>
+0121 <span class="comment">%          logarithmic scaling.</span>
+0122 <span class="comment">%  v1.1, December 2008: changed the user interface. Handle sizes and</span>
+0123 <span class="comment">%          logarithmic scaling can now be set via properties. LineSpec is</span>
+0124 <span class="comment">%          not compulsory anymore when setting logscale or handle sizes.</span>
+0125 <span class="comment">%  v1.1.1, December 2008: bugfix of v1.1</span>
+0126 <span class="comment">%</span>
+0127 <span class="comment">%   Felix Zörgiebel</span>
+0128 <span class="comment">%   email: felix_z -&gt; web.de</span>
+0129 <span class="comment">%   Date: 12/03/2008</span>
+0130 
+0131 <span class="comment">%% read inputs, set default values</span>
+0132 <span class="keyword">if</span> nargin&lt;1, error(<span class="string">'Not enough input arguments.'</span>), <span class="keyword">end</span>
+0133 <span class="keyword">if</span> nargin&lt;2, y=x; x=[]; <span class="keyword">end</span>
+0134 <span class="keyword">if</span> nargin&lt;3, xerr=[]; <span class="keyword">end</span>
+0135 <span class="keyword">if</span> nargin&lt;4, yerr=[]; <span class="keyword">end</span>
+0136 
+0137 [symbol,logx,logy,hhx,hhy]=<a href="#_sub3" class="code" title="subfunction [sym,lx,ly,hx,hy] = getproperties(A)">getproperties</a>(varargin);
+0138 
+0139 <span class="comment">%% analyse and prepare inputs (this section is a little ugly, you are invited to improve it!)</span>
+0140 <span class="keyword">if</span> ndims(x)~=2 || ndims(y)~=2
+0141     error(<span class="string">'x and y must not have more than two dimensions!'</span>)
+0142 <span class="keyword">end</span>
+0143 
+0144 <span class="keyword">if</span> isempty(x), x = (1:size(y,1))'; <span class="keyword">end</span>
+0145 
+0146 <span class="keyword">try</span> [x,y]=<a href="#_sub2" class="code" title="subfunction [A,B,tA,tB] = expandarrays(A,B)">expandarrays</a>(x,y); <span class="keyword">catch</span> error(<span class="string">'x and y are not consistent in size.'</span>), <span class="keyword">end</span>
+0147 
+0148 <span class="comment">% check if xerror is relative or absolute</span>
+0149 relxerr=false;
+0150 <span class="keyword">if</span> ~iscell(xerr)
+0151     <span class="keyword">if</span> ~isempty(xerr)
+0152         relxerr=true;
+0153         xerr={-xerr, +xerr};
+0154     <span class="keyword">else</span>
+0155         xerr={[],[]};
+0156     <span class="keyword">end</span>
+0157 <span class="keyword">elseif</span> length(xerr)~=2
+0158     error(<span class="string">'xerr must have two entries (low and upper bounds) if it is a cell array,'</span>)
+0159 <span class="keyword">end</span>
+0160 
+0161 <span class="comment">% make xerr and x and y values same size</span>
+0162 <span class="keyword">try</span> [xl,xh]=<a href="#_sub2" class="code" title="subfunction [A,B,tA,tB] = expandarrays(A,B)">expandarrays</a>(xerr{1},xerr{2}); <span class="keyword">catch</span> error(<span class="string">'xl and xh are not consistent in size.'</span>), <span class="keyword">end</span>
+0163 <span class="keyword">try</span> [y,xl,ty,txl]=<a href="#_sub2" class="code" title="subfunction [A,B,tA,tB] = expandarrays(A,B)">expandarrays</a>(y,xl); <span class="keyword">catch</span> error(<span class="string">'xl and y are not consistent in size.'</span>), <span class="keyword">end</span>
+0164 <span class="keyword">if</span> ty, y=y'; xl=xl'; txl=~txl; <span class="keyword">end</span> <span class="comment">% make sure x and y still match</span>
+0165 <span class="keyword">if</span> txl, xh=xh'; <span class="keyword">end</span> <span class="comment">% make sure xl and xh still match</span>
+0166 <span class="keyword">try</span> [y,xh]=<a href="#_sub2" class="code" title="subfunction [A,B,tA,tB] = expandarrays(A,B)">expandarrays</a>(y,xh); <span class="keyword">catch</span> error(<span class="string">'xh and y are not consistent in size.'</span>), <span class="keyword">end</span>
+0167 <span class="keyword">if</span> relxerr
+0168     <span class="keyword">try</span> [xl,x,txl]=<a href="#_sub2" class="code" title="subfunction [A,B,tA,tB] = expandarrays(A,B)">expandarrays</a>(xl,x); <span class="keyword">catch</span> error(<span class="string">'xl and x are not consistent in size.'</span>), <span class="keyword">end</span>
+0169     <span class="keyword">if</span> txl, xh=xh'; <span class="keyword">end</span>
+0170     <span class="keyword">try</span> [x,xh]=<a href="#_sub2" class="code" title="subfunction [A,B,tA,tB] = expandarrays(A,B)">expandarrays</a>(x,xh); <span class="keyword">catch</span> error(<span class="string">'xh and x are not consistent in size.'</span>), <span class="keyword">end</span>
+0171     xl=x+xl; xh=x+xh;
+0172 <span class="keyword">end</span>
+0173 
+0174 <span class="comment">% check if yerror is relative or absolute</span>
+0175 relyerr=false;
+0176 <span class="keyword">if</span> ~iscell(yerr)
+0177     <span class="keyword">if</span> ~isempty(yerr)
+0178         relyerr=true;
+0179         yerr={-yerr, +yerr};
+0180     <span class="keyword">else</span>
+0181         yerr={[],[]};
+0182     <span class="keyword">end</span>
+0183 <span class="keyword">elseif</span> length(yerr)~=2
+0184     error(<span class="string">'yerr must have two entries (low and upper bounds) if it is a cell array,'</span>)
+0185 <span class="keyword">end</span>
+0186 
+0187 <span class="comment">% make yerr and x and y values same size</span>
+0188 <span class="keyword">try</span> [yl,yh]=<a href="#_sub2" class="code" title="subfunction [A,B,tA,tB] = expandarrays(A,B)">expandarrays</a>(yerr{1},yerr{2}); <span class="keyword">catch</span> error(<span class="string">'yl and yh are not consistent in size.'</span>), <span class="keyword">end</span>
+0189 <span class="keyword">try</span> [x,yl,tx,tyl]=<a href="#_sub2" class="code" title="subfunction [A,B,tA,tB] = expandarrays(A,B)">expandarrays</a>(x,yl); <span class="keyword">catch</span> error(<span class="string">'yl and x are not consistent in size.'</span>), <span class="keyword">end</span>
+0190 <span class="keyword">if</span> tx, x=x'; yl=yl'; tyl=~tyl; <span class="keyword">end</span> <span class="comment">% make sure x and y still match</span>
+0191 <span class="keyword">if</span> tyl, yh=yh'; <span class="keyword">end</span> <span class="comment">% make sure yl and yh still match</span>
+0192 <span class="keyword">try</span> [x,yh]=<a href="#_sub2" class="code" title="subfunction [A,B,tA,tB] = expandarrays(A,B)">expandarrays</a>(x,yh); <span class="keyword">catch</span> error(<span class="string">'yh and x are not consistent in size.'</span>), <span class="keyword">end</span>
+0193 <span class="keyword">if</span> relyerr
+0194     <span class="keyword">try</span> [y,yl]=<a href="#_sub2" class="code" title="subfunction [A,B,tA,tB] = expandarrays(A,B)">expandarrays</a>(y,yl); <span class="keyword">catch</span> error(<span class="string">'yl and y are not consistent in size.'</span>), <span class="keyword">end</span>
+0195     <span class="keyword">try</span> [y,yh]=<a href="#_sub2" class="code" title="subfunction [A,B,tA,tB] = expandarrays(A,B)">expandarrays</a>(y,yh); <span class="keyword">catch</span> error(<span class="string">'yh and y are not consistent in size.'</span>), <span class="keyword">end</span>
+0196     yl=y+yl; yh=y+yh;
+0197 <span class="keyword">end</span>
+0198 
+0199 <span class="comment">% choose the appropriate function for the plot</span>
+0200 <span class="keyword">if</span>      logx &amp;&amp;  logy, plotfct=@loglog;
+0201 <span class="keyword">elseif</span>  logx &amp;&amp; ~logy, plotfct=@semilogx;
+0202 <span class="keyword">elseif</span> ~logx &amp;&amp;  logy, plotfct=@semilogy;
+0203 <span class="keyword">else</span>                   plotfct=@plot;
+0204 <span class="keyword">end</span>
+0205 
+0206 <span class="comment">% LineSpec setup</span>
+0207 [ls,col,mark,msg] = colstyle(symbol); <span class="keyword">if</span> ~isempty(msg), error(msg); <span class="keyword">end</span>
+0208 symbol = [ls mark col]; <span class="comment">% Use marker only on data part</span>
+0209 esymbol = [<span class="string">'-'</span> col]; <span class="comment">% Make sure bars are solid</span>
+0210 
+0211 <span class="comment">%% do the plotting</span>
+0212 hold_state = ishold;
+0213 h=[];
+0214 
+0215 <span class="comment">% plot specified data</span>
+0216 <span class="keyword">if</span> ~isempty(xl) <span class="comment">% x errorbars</span>
+0217     [bary,barx]=<a href="#_sub1" class="code" title="subfunction [perp,para] = barline(v,l,h,uselog,handleheight_rel)">barline</a>(y,xl,xh,logy,hhx);
+0218     h = plotfct(barx,bary,esymbol); hold on
+0219 <span class="keyword">end</span>
+0220 <span class="keyword">if</span> ~isempty(yl) <span class="comment">% y errorbars</span>
+0221     [barx,bary]=<a href="#_sub1" class="code" title="subfunction [perp,para] = barline(v,l,h,uselog,handleheight_rel)">barline</a>(x,yl,yh,logx,hhy);
+0222     h = [plotfct(barx,bary,esymbol);h]; hold on
+0223 <span class="keyword">end</span>
+0224 <span class="keyword">if</span> ~isempty(y) <span class="comment">% function values</span>
+0225     h = [plotfct(x,y,symbol);h];
+0226 <span class="keyword">end</span>
+0227 
+0228 <span class="keyword">if</span> ~hold_state, hold off; <span class="keyword">end</span>
+0229 
+0230 <span class="keyword">if</span> nargout&gt;0, hh = h; <span class="keyword">end</span>
+0231 
+0232 <span class="keyword">end</span>
+0233 
+0234 <span class="comment">%% helper functions</span>
+0235 <a name="_sub1" href="#_subfunctions" class="code">function [perp,para] = barline(v,l,h,uselog,handleheight_rel)</a>
+0236 <span class="comment">% v: value &quot;perpendicular&quot;</span>
+0237 <span class="comment">% l: lower bound &quot;parallel&quot;</span>
+0238 <span class="comment">% h: upper bound &quot;parallel&quot;</span>
+0239     
+0240     [npt,n]=size(l);
+0241     
+0242     <span class="comment">% calculate height of errorbar delimiters</span>
+0243     
+0244     <span class="comment">% set basic operations for linear spacing</span>
+0245     diff=@minus;
+0246     invdiff=@plus;
+0247     scale=@times;
+0248     
+0249     <span class="keyword">if</span> uselog
+0250         <span class="comment">% overwrite basic operations for logarithmic spacing</span>
+0251         diff=@rdivide;
+0252         invdiff=@times;
+0253         scale=@power;
+0254     <span class="keyword">end</span>
+0255     
+0256     <span class="comment">% set width of ends of bars to 2/3 of the mean distance of the bars,</span>
+0257     <span class="comment">% only if number of points is under 15, space as if 15 points were there.</span>
+0258     <span class="keyword">if</span> diff(max(v(:)),min(v(:)))==0
+0259       dv = scale(abs(v),1/40) + (abs(v)==0);
+0260     <span class="keyword">else</span>
+0261       dv = scale(diff(max(v(:)),min(v(:))),1/max(15,npt-1)*handleheight_rel/2);
+0262     <span class="keyword">end</span>
+0263     vh = invdiff(v,dv);
+0264     vl = diff(v,dv);
+0265 
+0266     <span class="comment">% build up nan-separated vector for bars</span>
+0267     para = zeros(npt*9,n);
+0268     para(1:9:<span class="keyword">end</span>,:) = h;
+0269     para(2:9:<span class="keyword">end</span>,:) = l;
+0270     para(3:9:<span class="keyword">end</span>,:) = NaN;
+0271     para(4:9:<span class="keyword">end</span>,:) = h;
+0272     para(5:9:<span class="keyword">end</span>,:) = h;
+0273     para(6:9:<span class="keyword">end</span>,:) = NaN;
+0274     para(7:9:<span class="keyword">end</span>,:) = l;
+0275     para(8:9:<span class="keyword">end</span>,:) = l;
+0276     para(9:9:<span class="keyword">end</span>,:) = NaN;
+0277 
+0278     perp = zeros(npt*9,n);
+0279     perp(1:9:<span class="keyword">end</span>,:) = v;
+0280     perp(2:9:<span class="keyword">end</span>,:) = v;
+0281     perp(3:9:<span class="keyword">end</span>,:) = NaN;
+0282     perp(4:9:<span class="keyword">end</span>,:) = vh;
+0283     perp(5:9:<span class="keyword">end</span>,:) = vl;
+0284     perp(6:9:<span class="keyword">end</span>,:) = NaN;
+0285     perp(7:9:<span class="keyword">end</span>,:) = vh;
+0286     perp(8:9:<span class="keyword">end</span>,:) = vl;
+0287     perp(9:9:<span class="keyword">end</span>,:) = NaN;
+0288 <span class="keyword">end</span>
+0289 
+0290 <a name="_sub2" href="#_subfunctions" class="code">function [A,B,tA,tB] = expandarrays(A,B)</a>
+0291 <span class="comment">% A, B: Matrices to be expanded by repmat to have same size after being processed</span>
+0292 <span class="comment">% tA, tB: indicate wether A or B have been transposed</span>
+0293     sizA=size(A); tA=false;
+0294     sizB=size(B); tB=false;
+0295     <span class="comment">% do not process empty arrays</span>
+0296     <span class="keyword">if</span> isempty(A) || isempty(B), <span class="keyword">return</span>, <span class="keyword">end</span>
+0297     <span class="comment">% make vectors column vectors</span>
+0298     <span class="keyword">if</span> sizA(1)==1, A=A(:); tA=~tA; sizA=sizA([2 1]); <span class="keyword">end</span>
+0299     <span class="keyword">if</span> sizB(1)==1, B=B(:); tB=~tB; sizB=sizB([2 1]); <span class="keyword">end</span>
+0300     <span class="comment">% transpose to fit column, if necessary</span>
+0301     <span class="keyword">if</span> sizA(2)==1 &amp;&amp; sizB(2)~=1 &amp;&amp; sizB(2)==sizA(1) &amp;&amp; sizB(1)~=sizA(1), B=B'; tB=~tB; sizB=sizB([2 1]); <span class="keyword">end</span>
+0302     <span class="keyword">if</span> sizB(2)==1 &amp;&amp; sizA(2)~=1 &amp;&amp; sizA(2)==sizB(1) &amp;&amp; sizB(1)~=sizB(1), A=A'; tA=~tA; sizA=sizA([2 1]); <span class="keyword">end</span>
+0303     <span class="comment">% if only singletons need to be expanded, do it</span>
+0304     <span class="keyword">if</span> all(sizA==sizB | sizA==1 | sizB==1)
+0305         singletonsA=find(sizA==1 &amp; sizB~=1);
+0306         repA=ones(1,2);
+0307         repA(singletonsA)=sizB(singletonsA);
+0308         A=repmat(A,repA);
+0309         singletonsB=find(sizB==1 &amp; sizA~=1);
+0310         repB=ones(1,2);
+0311         repB(singletonsB)=sizA(singletonsB);
+0312         B=repmat(B,repB);
+0313     <span class="keyword">else</span> <span class="comment">% otherwise return error</span>
+0314         error(<span class="string">'Arrays A and B must have equal size for all dimensions that are not singleton!'</span>)
+0315     <span class="keyword">end</span>
+0316 <span class="keyword">end</span>
+0317 
+0318 <a name="_sub3" href="#_subfunctions" class="code">function [sym,lx,ly,hx,hy] = getproperties(A)</a>
+0319 lx=0; ly=0; hx=2/3; hy=2/3; sym=<span class="string">'-'</span>; <span class="comment">% presets</span>
+0320 <span class="keyword">if</span> isempty(A), <span class="keyword">return</span>, <span class="keyword">end</span>
+0321 [k,k,k,errmsg]=colstyle(A{1});
+0322 <span class="keyword">if</span> isempty(errmsg)
+0323     sym = A{1}; <span class="comment">% get symbol from first entry if it is a style</span>
+0324     A=A(2:end); <span class="comment">% skip symbol for properties</span>
+0325 <span class="keyword">end</span>
+0326 n=length(A);
+0327 A=[A <span class="string">'!&quot;§$%&amp;()=?'</span>]; <span class="comment">% append some stupid string for the case that the last property comes without a value</span>
+0328 idx=1;
+0329 <span class="keyword">while</span> idx &lt;= n
+0330     prop=A{idx};
+0331     val=A{idx+1};
+0332     <span class="keyword">switch</span> prop
+0333      <span class="keyword">case</span> <span class="string">'logx'</span>
+0334         <span class="keyword">if</span> isnumeric(val), lx=val;
+0335         <span class="keyword">else</span> lx=1; idx=idx-1;
+0336         <span class="keyword">end</span>
+0337      <span class="keyword">case</span> <span class="string">'logy'</span>
+0338         <span class="keyword">if</span> isnumeric(val), ly=val;
+0339         <span class="keyword">else</span> ly=1; idx=idx-1;
+0340         <span class="keyword">end</span>
+0341      <span class="keyword">case</span> <span class="string">'logxy'</span>
+0342         <span class="keyword">if</span> isnumeric(val), ly=val; lx=val;
+0343         <span class="keyword">else</span> ly=1; lx=1; idx=idx-1;
+0344         <span class="keyword">end</span>
+0345      <span class="keyword">case</span> <span class="string">'hhx'</span>
+0346         <span class="keyword">if</span> isnumeric(val), hx=val;
+0347         <span class="keyword">else</span> error(<span class="string">'Property hhx must be followed by a numerical value.'</span>);
+0348         <span class="keyword">end</span>
+0349      <span class="keyword">case</span> <span class="string">'hhy'</span>
+0350         <span class="keyword">if</span> isnumeric(val), hy=val;
+0351         <span class="keyword">else</span> error(<span class="string">'Property hhy must be followed by a numerical value.'</span>);
+0352         <span class="keyword">end</span>
+0353      <span class="keyword">case</span> <span class="string">'hhxy'</span>
+0354         <span class="keyword">if</span> isnumeric(val), hy=val; hx=val;
+0355         <span class="keyword">else</span> error(<span class="string">'Property hhxy must be followed by a numerical value.'</span>);
+0356         <span class="keyword">end</span>
+0357      <span class="keyword">otherwise</span>
+0358         <span class="keyword">if</span> ischar(prop), error([<span class="string">'Unknown property: '</span> prop])
+0359         <span class="keyword">else</span> error(<span class="string">'Parsed a property that is not a string.'</span>)
+0360         <span class="keyword">end</span>
+0361     <span class="keyword">end</span>
+0362     idx=idx+2;
+0363 <span class="keyword">end</span>
+0364 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,860 @@
+No Alberty abbreviation for metabolite	1	L2aadp[c]	L-2-Aminoadipate
+No Alberty abbreviation for metabolite	3	2oxoadp[c]	2-Oxoadipate
+No Alberty abbreviation for metabolite	5	Lkynr[c]	L-kynurenine
+No Alberty abbreviation for metabolite	6	4aphdob[c]	4-(2-Aminophenyl)-2,4-dioxobutanoate
+No Alberty abbreviation for metabolite	12	galgluside_hs[c]	galactosyl glucosyl ceramide
+No Alberty abbreviation for metabolite	13	udpgal[c]	UDPgalactose
+No Alberty abbreviation for metabolite	14	h[c]	proton
+No Alberty abbreviation for metabolite	15	thcrm_hs[c]	trihexosyl ceramide
+No Alberty abbreviation for metabolite	16	udp[c]	UDP
+No Alberty abbreviation for metabolite	34	srtn[c]	Serotonin
+No Alberty abbreviation for metabolite	35	Nacsertn[c]	N-acetylserotonin
+No Alberty abbreviation for metabolite	49	chsterol[c]	cholesterol
+No Alberty abbreviation for metabolite	55	gchola[c]	glycocholic acid
+No Alberty abbreviation for metabolite	57	pchol_hs[c]	Phosphatidylcholine
+No Alberty abbreviation for metabolite	59	5adtststeroneglc[c]	5alpha-Dihydrotestosterone glucuronide
+No Alberty abbreviation for metabolite	61	ahandrostanglc[c]	3alpha-hydroxy-5beta-androstan-17-one 3-glucosiduronic acid
+No Alberty abbreviation for metabolite	63	andrstrnglc[c]	androsterone 3-glucosiduronic acid
+No Alberty abbreviation for metabolite	65	bildglcur[c]	Bilirubin beta-diglucuronide
+No Alberty abbreviation for metabolite	67	bilglcur[c]	mono(glucosyluronic acid)bilirubin
+No Alberty abbreviation for metabolite	69	estriolglc[c]	16-Glucuronide-estriol
+No Alberty abbreviation for metabolite	71	tststeroneglc[c]	testosterone 3-glucosiduronic acid
+No Alberty abbreviation for metabolite	73	cholate[c]	cholate
+No Alberty abbreviation for metabolite	75	estroneglc[c]	estrone 3-glucosiduronic acid
+No Alberty abbreviation for metabolite	77	tchola[c]	taurocholic acid
+No Alberty abbreviation for metabolite	79	estradiolglc[c]	17beta-estradiol 3-glucosiduronic acid
+No Alberty abbreviation for metabolite	81	prostge1[c]	Prostaglandin E1
+No Alberty abbreviation for metabolite	83	prostge2[c]	Prostaglandin E2
+No Alberty abbreviation for metabolite	87	35cgmp[c]	3',5'-Cyclic GMP
+No Alberty abbreviation for metabolite	105	mma[c]	Methylamine
+No Alberty abbreviation for metabolite	107	fald[c]	formaldehyde
+No Alberty abbreviation for metabolite	124	hco3[c]	hydrogencarbonate
+No Alberty abbreviation for metabolite	173	ppa[c]	propionate
+No Alberty abbreviation for metabolite	190	cmusa[c]	2-Amino-3-carboxymuconate semialdehyde
+No Alberty abbreviation for metabolite	191	am6sa[c]	2-aminomuconic 6-semialdehyde
+No Alberty abbreviation for metabolite	206	ribflv[c]	riboflavin
+No Alberty abbreviation for metabolite	228	hdcea[c]	palmitoleate
+No Alberty abbreviation for metabolite	229	hdcoa[c]	Hexadecenoyl-CoA (n-C16:1CoA)
+No Alberty abbreviation for metabolite	230	vacc[c]	trans-vaccenate
+No Alberty abbreviation for metabolite	231	vacccoa[c]	vaccenyl coenzyme A
+No Alberty abbreviation for metabolite	232	elaid[c]	elaidate
+No Alberty abbreviation for metabolite	233	od2coa[c]	trans-Octadec-2-enoyl-CoA
+No Alberty abbreviation for metabolite	234	lnlc[c]	linoleate
+No Alberty abbreviation for metabolite	235	lnlccoa[c]	linoleic coenzyme A
+No Alberty abbreviation for metabolite	236	lneldc[c]	linoelaidic acid (all trans C18:2)
+No Alberty abbreviation for metabolite	237	lneldccoa[c]	linoelaidyl coenzyme A
+No Alberty abbreviation for metabolite	238	lnlncg[c]	gamma-linolenate
+No Alberty abbreviation for metabolite	239	lnlncgcoa[c]	gamma-linolenoyl-CoA
+No Alberty abbreviation for metabolite	240	lnlnca[c]	alpha-linolenate
+No Alberty abbreviation for metabolite	241	lnlncacoa[c]	alpha-Linolenoyl-CoA
+No Alberty abbreviation for metabolite	242	strdnc[c]	stearidonic acid C18:4, n-3
+No Alberty abbreviation for metabolite	243	strdnccoa[c]	stearidonyl coenzyme A
+No Alberty abbreviation for metabolite	244	arach[c]	arachidate
+No Alberty abbreviation for metabolite	245	arachcoa[c]	arachidyl coenzyme A
+No Alberty abbreviation for metabolite	246	dlnlcg[c]	dihomo-gamma-linolenic acid (n-6)
+No Alberty abbreviation for metabolite	247	dlnlcgcoa[c]	dihomo-gamma-linolenyl coenzyme A
+No Alberty abbreviation for metabolite	248	arachd[c]	arachidonate
+No Alberty abbreviation for metabolite	249	arachdcoa[c]	C20:4-CoA
+No Alberty abbreviation for metabolite	250	eicostet[c]	eicosatetranoic acid
+No Alberty abbreviation for metabolite	251	eicostetcoa[c]	eicosatetranoyl coenzyme A
+No Alberty abbreviation for metabolite	252	tmndnc[c]	timnodonic acid C20:5, n-3
+No Alberty abbreviation for metabolite	253	tmndnccoa[c]	timnodonyl coenzyme A
+No Alberty abbreviation for metabolite	254	adrn[c]	adrenic acid
+No Alberty abbreviation for metabolite	255	adrncoa[c]	adrenyl coenzyme A
+No Alberty abbreviation for metabolite	256	dcsptn1[c]	docosa-4,7,10,13,16-pentaenoic acid
+No Alberty abbreviation for metabolite	257	dcsptn1coa[c]	docosa-4,7,10,13,16-pentaenoyl coenzyme A
+No Alberty abbreviation for metabolite	258	clpnd[c]	clupanodonic acid
+No Alberty abbreviation for metabolite	259	clpndcoa[c]	clupanodonyl CoA
+No Alberty abbreviation for metabolite	260	crvnc[c]	cervonic acid, C22:6 n-3
+No Alberty abbreviation for metabolite	261	c226coa[c]	cervonyl coenzyme A
+No Alberty abbreviation for metabolite	262	lgnc[c]	lignocerate
+No Alberty abbreviation for metabolite	263	lgnccoa[c]	lignocericyl coenzyme A
+No Alberty abbreviation for metabolite	264	nrvnc[c]	nervonate
+No Alberty abbreviation for metabolite	265	nrvnccoa[c]	nervonyl coenzyme A
+No Alberty abbreviation for metabolite	266	tettet6[c]	tetracosatetraenoic acid n-6
+No Alberty abbreviation for metabolite	267	tettet6coa[c]	tetracosatetraenoyl coenzyme A
+No Alberty abbreviation for metabolite	268	tetpent6[c]	tetracosapentaenoic acid, n-6
+No Alberty abbreviation for metabolite	269	tetpent6coa[c]	tetracosapentaenoyl coenzyme A, n-6
+No Alberty abbreviation for metabolite	270	tetpent3[c]	tetracosapentaenoic acid, n-3
+No Alberty abbreviation for metabolite	271	tetpent3coa[c]	tetracosapentaenoyl coenzyme A, n-3
+No Alberty abbreviation for metabolite	272	tethex3[c]	tetracosahexaenoic acid, n-3
+No Alberty abbreviation for metabolite	273	tethex3coa[c]	tetracosahexaenoyl coenzyme A
+No Alberty abbreviation for metabolite	274	hexc[c]	cerotate
+No Alberty abbreviation for metabolite	275	hexccoa[c]	Hexacosanoyl-CoA (n-C26:0CoA)
+No Alberty abbreviation for metabolite	276	ocdcea[c]	oleate
+No Alberty abbreviation for metabolite	277	odecoa[c]	Octadecenoyl-CoA (n-C18:1CoA)
+No Alberty abbreviation for metabolite	279	pmtcoa[c]	Palmitoyl-CoA (n-C16:0CoA)
+No Alberty abbreviation for metabolite	280	ttdca[c]	myristate
+No Alberty abbreviation for metabolite	281	tdcoa[c]	Tetradecanoyl-CoA (n-C14:0CoA)
+No Alberty abbreviation for metabolite	282	octa[c]	octanoate
+No Alberty abbreviation for metabolite	283	occoa[c]	Octanoyl-CoA (n-C8:0CoA)
+No Alberty abbreviation for metabolite	284	ocdca[c]	stearate
+No Alberty abbreviation for metabolite	285	stcoa[c]	Stearoyl-CoA (n-C18:0CoA)
+No Alberty abbreviation for metabolite	286	ptdca[c]	pentadecanoate
+No Alberty abbreviation for metabolite	287	ptdcacoa[c]	pentadecanoyl Coenzyme A
+No Alberty abbreviation for metabolite	288	hpdca[c]	margarate
+No Alberty abbreviation for metabolite	289	hpdcacoa[c]	heptadecanoyl coa
+No Alberty abbreviation for metabolite	290	acorn[c]	N(2)-acetyl-L-ornithine
+No Alberty abbreviation for metabolite	291	orn[c]	ornithinium(1+)
+No Alberty abbreviation for metabolite	300	din[c]	2'-deoxyinosine
+No Alberty abbreviation for metabolite	303	34dhmald[c]	3,4-Dihydroxymandelaldehyde
+No Alberty abbreviation for metabolite	305	34dhoxpeg[c]	3,4-Dihydroxyphenylethyleneglycol
+No Alberty abbreviation for metabolite	309	Sfglutth[c]	S-Formylglutathione
+No Alberty abbreviation for metabolite	310	lald-D[c]	(R)-lactaldehyde
+No Alberty abbreviation for metabolite	311	lgt-S[c]	(R)-S-Lactoylglutathione
+No Alberty abbreviation for metabolite	312	12ppd-R[c]	(R)-propane-1,2-diol
+No Alberty abbreviation for metabolite	313	12ppd-S[c]	(S)-propane-1,2-diol
+No Alberty abbreviation for metabolite	314	lald-L[c]	(S)-lactaldehyde
+No Alberty abbreviation for metabolite	317	mthgxl[c]	methylglyoxal
+No Alberty abbreviation for metabolite	318	dcamp[c]	N6-(1,2-Dicarboxyethyl)-AMP
+No Alberty abbreviation for metabolite	320	25aics[c]	(S)-2-[5-Amino-1-(5-phospho-D-ribosyl)imidazole-4-carboxamido]succinate
+No Alberty abbreviation for metabolite	321	aicar[c]	5-Amino-1-(5-Phospho-D-ribosyl)imidazole-4-carboxamide
+No Alberty abbreviation for metabolite	323	gtp[c]	GTP(4-)
+No Alberty abbreviation for metabolite	325	gdp[c]	GDP
+No Alberty abbreviation for metabolite	333	dxtrn[c]	phosphorylase-limit dextrin (glycogenin-1,6{4[1,4-Glc], 4[1,4-Glc]})
+No Alberty abbreviation for metabolite	335	glygn3[c]	glycogen, structure 3 (glycogenin-7[1,4-Glc])
+No Alberty abbreviation for metabolite	339	Rtotal2coa[c]	R total 2 coenzyme A
+No Alberty abbreviation for metabolite	340	alpa_hs[c]	lysophosphatidic acid
+No Alberty abbreviation for metabolite	341	pa_hs[c]	phosphatidic acid
+No Alberty abbreviation for metabolite	357	seahcys[c]	Se-Adenosylselenohomocysteine
+No Alberty abbreviation for metabolite	358	selhcys[c]	Selenohomocysteine
+No Alberty abbreviation for metabolite	359	ahcys[c]	S-adenosyl-L-homocysteine
+No Alberty abbreviation for metabolite	360	hcys-L[c]	L-homocysteine
+No Alberty abbreviation for metabolite	361	dcyt[c]	2'-deoxycytidine
+No Alberty abbreviation for metabolite	362	duri[c]	2'-deoxyuridine
+No Alberty abbreviation for metabolite	375	dcmp[c]	dCMP
+No Alberty abbreviation for metabolite	376	dcdp[c]	dCDP
+No Alberty abbreviation for metabolite	377	cmp[c]	CMP
+No Alberty abbreviation for metabolite	378	cdp[c]	CDP
+No Alberty abbreviation for metabolite	381	acetol[c]	hydroxyacetone
+No Alberty abbreviation for metabolite	384	galt[c]	galactitol
+No Alberty abbreviation for metabolite	386	abt[c]	L-arabinitol
+No Alberty abbreviation for metabolite	388	prgstrn[c]	progesterone
+No Alberty abbreviation for metabolite	389	aprgstrn[c]	(20S)-20-hydroxypregn-4-en-3-one
+No Alberty abbreviation for metabolite	390	xol7ah[c]	7alpha-hydroxy-5beta-cholestan-3-one
+No Alberty abbreviation for metabolite	391	xol7ah2[c]	5beta-cholestane-3alpha,7alpha-diol
+No Alberty abbreviation for metabolite	392	xoldioloneh[c]	7alpha,12alpha-dihydroxy-5beta-cholestan-3-one
+No Alberty abbreviation for metabolite	393	xoltriol[c]	5beta-cholestane-3alpha,7alpha,12alpha-triol
+No Alberty abbreviation for metabolite	400	xol7aone[c]	7alpha-hydroxycholest-4-en-3-one
+No Alberty abbreviation for metabolite	401	xoldiolone[c]	7alpha,12alpha-Dihydroxycholest-4-en-3-one
+No Alberty abbreviation for metabolite	402	5aop[c]	5-aminolevulinic acid
+No Alberty abbreviation for metabolite	403	ppbng[c]	Porphobilinogen
+No Alberty abbreviation for metabolite	413	lac-L[c]	(S)-lactate
+No Alberty abbreviation for metabolite	414	5hoxindact[c]	(5-hydroxyindol-3-yl)acetaldehyde
+No Alberty abbreviation for metabolite	415	5hoxindoa[c]	5-Hydroxyindoleacetate
+No Alberty abbreviation for metabolite	416	n4abutn[c]	4-acetamidobutanal
+No Alberty abbreviation for metabolite	417	4aabutn[c]	4-Acetamidobutanoate
+No Alberty abbreviation for metabolite	418	id3acald[c]	indol-3-ylacetaldehyde
+No Alberty abbreviation for metabolite	419	ind3ac[c]	indole-3-acetate
+No Alberty abbreviation for metabolite	420	bamppald[c]	beta-Aminopropion aldehyde
+No Alberty abbreviation for metabolite	421	ala-B[c]	beta-alanine
+No Alberty abbreviation for metabolite	422	pylald[c]	perillyl aldehyde
+No Alberty abbreviation for metabolite	423	peracd[c]	Perillic acid
+No Alberty abbreviation for metabolite	424	3mox4hpac[c]	(4-hydroxy-3-methoxyphenyl)acetaldehyde
+No Alberty abbreviation for metabolite	425	homoval[c]	Homovanillate
+No Alberty abbreviation for metabolite	426	4hoxpacd[c]	(4-hydroxyphenyl)acetaldehyde
+No Alberty abbreviation for metabolite	427	4hphac[c]	4-Hydroxyphenylacetate
+No Alberty abbreviation for metabolite	437	3mldz[c]	1-methylimidazole-4-acetaldehyde
+No Alberty abbreviation for metabolite	438	3mlda[c]	3-Methylimidazoleacetic acid
+No Alberty abbreviation for metabolite	439	pacald[c]	phenylacetaldehyde
+No Alberty abbreviation for metabolite	440	pac[c]	phenylacetate
+No Alberty abbreviation for metabolite	441	3m4hpga[c]	3-Methoxy-4-hydroxyphenylglycolaldehyde
+No Alberty abbreviation for metabolite	442	3mox4hoxm[c]	3-Methoxy-4-hydroxymandelate
+No Alberty abbreviation for metabolite	443	34dhpac[c]	3,4-Dihydroxyphenylacetaldehyde
+No Alberty abbreviation for metabolite	444	34dhpha[c]	(3,4-dihydroxyphenyl)acetate
+No Alberty abbreviation for metabolite	445	glac[c]	D-glucurono-6,3-lactone
+No Alberty abbreviation for metabolite	446	glcr[c]	D-glucarate(2-)
+No Alberty abbreviation for metabolite	447	pristanal[c]	pristanal
+No Alberty abbreviation for metabolite	448	prist[c]	pristanic acid
+No Alberty abbreviation for metabolite	449	gcald[c]	glycolaldehyde
+No Alberty abbreviation for metabolite	451	34dhoxmand[c]	3,4-Dihydroxymandelate
+No Alberty abbreviation for metabolite	469	im4act[c]	imidazole-4-acetaldehyde
+No Alberty abbreviation for metabolite	470	im4ac[c]	Imidazole-4-acetate
+No Alberty abbreviation for metabolite	471	4abutn[c]	4-Aminobutanal
+No Alberty abbreviation for metabolite	472	4abut[c]	gamma-aminobutyric acid
+No Alberty abbreviation for metabolite	473	betald[c]	betaine aldehyde
+No Alberty abbreviation for metabolite	474	glyb[c]	glycine betaine
+No Alberty abbreviation for metabolite	475	4tmeabut[c]	4-trimethylammoniobutanal
+No Alberty abbreviation for metabolite	476	4tmeabutn[c]	4-(trimethylammonio)butanoate
+No Alberty abbreviation for metabolite	477	tag1p-D[c]	D-Tagatose 1-phosphate
+No Alberty abbreviation for metabolite	482	f1p[c]	D-Fructose 1-phosphate
+No Alberty abbreviation for metabolite	483	xu1p-D[c]	D-Xylulose 1-phosphate
+No Alberty abbreviation for metabolite	484	inost[c]	myo-inositol
+No Alberty abbreviation for metabolite	485	glcur[c]	D-glucuronate
+No Alberty abbreviation for metabolite	486	chito2pdol_L[c]	N,N'-Diacetylchitobiosyldiphosphodolichol, human liver homolog
+No Alberty abbreviation for metabolite	487	gdpmann[c]	GDP-D-mannose
+No Alberty abbreviation for metabolite	488	mpdol_L[c]	beta-D-Mannosyldiacetylchitobiosyldiphosphodolichol, human liver homolog
+No Alberty abbreviation for metabolite	489	chito2pdol_U[c]	N,N'-Diacetylchitobiosyldiphosphodolichol, human uterine homolog
+No Alberty abbreviation for metabolite	490	mpdol_U[c]	beta-D-Mannosyldiacetylchitobiosyldiphosphodolichol, human uterine homolog
+No Alberty abbreviation for metabolite	505	m1mpdol_L[c]	alpha-D-mannosyl-beta-D-mannosyl-diacylchitobiosyldiphosphodolichol, human liver homolog
+No Alberty abbreviation for metabolite	506	m1mpdol_U[c]	alpha-D-mannosyl-beta-D-mannosyl-diacylchitobiosyldiphosphodolichol, human uterine homolog
+No Alberty abbreviation for metabolite	511	dolp_L[c]	Dolichol phosphate, human liver homolog
+No Alberty abbreviation for metabolite	512	udpg[c]	UDPglucose
+No Alberty abbreviation for metabolite	513	dolglcp_L[c]	Dolichyl beta-D-glucosyl phosphate, human liver homolog
+No Alberty abbreviation for metabolite	514	dolp_U[c]	Dolichol phosphate, human uterine homolog
+No Alberty abbreviation for metabolite	515	dolglcp_U[c]	Dolichyl beta-D-glucosyl phosphate, human uterine homolog
+No Alberty abbreviation for metabolite	520	12HPET[c]	12-Hydroperoxyeicosa-5,8,10,14-tetraenoate
+No Alberty abbreviation for metabolite	521	12RHPET[c]	12R-Hydroperoxyeicosatetraenoate
+No Alberty abbreviation for metabolite	522	15HPET[c]	15-Hydroperoxyeicosatetraenoic acid
+No Alberty abbreviation for metabolite	523	5HPET[c]	5-Hydroperoxy-6-trans-8,11,14-cis-eicosatetraenoate
+No Alberty abbreviation for metabolite	524	leuktrA4[c]	Leukotriene A4
+No Alberty abbreviation for metabolite	533	amet[c]	S-adenosyl-L-methionine
+No Alberty abbreviation for metabolite	534	ametam[c]	S-Adenosylmethioninamine
+No Alberty abbreviation for metabolite	538	cgly[c]	L-cysteinylglycine
+No Alberty abbreviation for metabolite	544	ptrc[c]	Putrescine
+No Alberty abbreviation for metabolite	545	13dampp[c]	1,3-Diaminopropane
+No Alberty abbreviation for metabolite	546	nmptrc[c]	N-Methylputrescine
+No Alberty abbreviation for metabolite	547	1mpyr[c]	1-methylpyrrolinium
+No Alberty abbreviation for metabolite	548	hista[c]	Histamine
+No Alberty abbreviation for metabolite	549	aact[c]	Aminoacetone
+No Alberty abbreviation for metabolite	550	mhista[c]	N-Methylhistamine
+No Alberty abbreviation for metabolite	551	dopa[c]	Dopamine
+No Alberty abbreviation for metabolite	552	pydx[c]	pyridoxal
+No Alberty abbreviation for metabolite	553	4pyrdx[c]	4-pyridoxic acid
+No Alberty abbreviation for metabolite	557	arg-L[c]	L-argininium(1+)
+No Alberty abbreviation for metabolite	577	argsuc[c]	N(omega)-(L-Arginino)succinate
+No Alberty abbreviation for metabolite	578	5moxact[c]	5-Methoxyindoleacetate
+No Alberty abbreviation for metabolite	579	melatn[c]	melatonin
+No Alberty abbreviation for metabolite	582	Nacasp[c]	N-acetyl-L-aspartate(2-)
+No Alberty abbreviation for metabolite	586	citr-L[c]	L-citrulline
+No Alberty abbreviation for metabolite	587	10fthf[c]	10-Formyltetrahydrofolate
+No Alberty abbreviation for metabolite	588	fprica[c]	5-Formamido-1-(5-phospho-D-ribosyl)imidazole-4-carboxamide
+No Alberty abbreviation for metabolite	589	thf[c]	5,6,7,8-Tetrahydrofolate
+No Alberty abbreviation for metabolite	591	pe_hs[c]	phosphatidylethanolamine
+No Alberty abbreviation for metabolite	594	ps_hs[c]	phosphatidylserine
+No Alberty abbreviation for metabolite	596	na1[c]	sodium(1+)
+No Alberty abbreviation for metabolite	597	k[c]	potassium(1+)
+No Alberty abbreviation for metabolite	599	ca2[c]	calcium(2+)
+No Alberty abbreviation for metabolite	713	crn[c]	(R)-carnitine
+No Alberty abbreviation for metabolite	718	4mop[c]	4-methyl-2-oxopentanoate
+No Alberty abbreviation for metabolite	720	3mob[c]	3-methyl-2-oxobutanoate
+No Alberty abbreviation for metabolite	727	caro[c]	beta-carotene
+No Alberty abbreviation for metabolite	731	dmgly[c]	N,N-dimethylglycine
+No Alberty abbreviation for metabolite	733	biliverd[c]	Biliverdin
+No Alberty abbreviation for metabolite	734	bilirub[c]	Bilirubin
+No Alberty abbreviation for metabolite	735	23dpg[c]	2,3-Disphospho-D-glycerate
+No Alberty abbreviation for metabolite	737	pap[c]	Adenosine 3',5'-bisphosphate
+No Alberty abbreviation for metabolite	738	paps[c]	3'-Phosphoadenylyl sulfate
+No Alberty abbreviation for metabolite	743	biocyt[c]	Biocytin
+No Alberty abbreviation for metabolite	744	btn[c]	Biotin
+No Alberty abbreviation for metabolite	745	lys-L[c]	L-Lysine
+No Alberty abbreviation for metabolite	753	cdpdag_hs[c]	CDP diacylglycerol
+No Alberty abbreviation for metabolite	754	pglyc_hs[c]	phosphatidylglycerol
+No Alberty abbreviation for metabolite	755	clpn_hs[c]	cardiolipin
+No Alberty abbreviation for metabolite	758	cbp[c]	Carbamoyl phosphate
+No Alberty abbreviation for metabolite	759	cbasp[c]	N-carbamoyl-L-aspartate
+No Alberty abbreviation for metabolite	760	dhor-S[c]	(S)-dihydroorotate
+No Alberty abbreviation for metabolite	762	adprib[c]	ADPribose
+No Alberty abbreviation for metabolite	778	prostg1[c]	(13E)-11alpha-Hydroxy-9,15-dioxoprost-13-enoate
+No Alberty abbreviation for metabolite	779	prostgf2[c]	Prostaglandin F2alpha
+No Alberty abbreviation for metabolite	781	cyst-L[c]	L-cystathionine
+No Alberty abbreviation for metabolite	782	selcyst[c]	Selenocystathionine
+No Alberty abbreviation for metabolite	783	hLkynr[c]	3-hydroxy-L-kynurenine
+No Alberty abbreviation for metabolite	784	42A3HP24DB[c]	4-(2-Amino-3-hydroxyphenyl)-2,4-dioxobutanoate
+No Alberty abbreviation for metabolite	785	cytd[c]	cytidine
+No Alberty abbreviation for metabolite	786	uri[c]	uridine
+No Alberty abbreviation for metabolite	787	pail_hs[c]	phosphatidylinositol
+No Alberty abbreviation for metabolite	788	3sala[c]	3-Sulfino-L-alanine
+No Alberty abbreviation for metabolite	789	ctp[c]	CTP(4-)
+No Alberty abbreviation for metabolite	793	cdpea[c]	CDPethanolamine
+No Alberty abbreviation for metabolite	794	dag_hs[c]	diglyceride
+No Alberty abbreviation for metabolite	795	cdpchol[c]	CDPcholine
+No Alberty abbreviation for metabolite	796	crm_hs[c]	N-acylsphingosine
+No Alberty abbreviation for metabolite	797	crmp_hs[c]	Ceramide 1-phosphate
+No Alberty abbreviation for metabolite	800	acgam6p[c]	N-Acetyl-D-glucosamine 6-phosphate
+No Alberty abbreviation for metabolite	801	gam6p[c]	D-Glucosamine 6-phosphate
+No Alberty abbreviation for metabolite	808	chol[c]	choline
+No Alberty abbreviation for metabolite	809	ach[c]	acetylcholine
+No Alberty abbreviation for metabolite	817	etha[c]	Ethanolamine
+No Alberty abbreviation for metabolite	818	ethamp[c]	Ethanolamine phosphate
+No Alberty abbreviation for metabolite	819	cholp[c]	Choline phosphate
+No Alberty abbreviation for metabolite	841	pcreat[c]	Phosphocreatine
+No Alberty abbreviation for metabolite	844	lpchol_hs[c]	lysophosphatidylcholine
+No Alberty abbreviation for metabolite	845	Rtotal[c]	R total
+No Alberty abbreviation for metabolite	846	g3pc[c]	sn-Glycero-3-phosphocholine
+No Alberty abbreviation for metabolite	847	acnam[c]	N-acetylneuraminate
+No Alberty abbreviation for metabolite	848	cmpacna[c]	CMP-N-acetylneuraminate
+No Alberty abbreviation for metabolite	853	carn[c]	carnosine
+No Alberty abbreviation for metabolite	854	his-L[c]	L-histidine
+No Alberty abbreviation for metabolite	855	dpcoa[c]	Dephospho-CoA
+No Alberty abbreviation for metabolite	858	gluside_hs[c]	D-glucosyl-N-acylsphingosine
+No Alberty abbreviation for metabolite	860	3moxtyr[c]	3-Methoxytyramine
+No Alberty abbreviation for metabolite	861	adrnl[c]	Adrenaline
+No Alberty abbreviation for metabolite	862	mepi[c]	Metanephrine
+No Alberty abbreviation for metabolite	863	nrpphr[c]	Norepinephrine
+No Alberty abbreviation for metabolite	864	normete-L[c]	L-Normetanephrine
+No Alberty abbreviation for metabolite	880	cpppg3[c]	Coproporphyrinogen III
+No Alberty abbreviation for metabolite	881	pppg9[c]	Protoporphyrinogen IX
+No Alberty abbreviation for metabolite	883	arachdcrn[c]	C20:4 carnitine
+No Alberty abbreviation for metabolite	884	stcrn[c]	stearoylcarnitine
+No Alberty abbreviation for metabolite	885	tetpent3crn[c]	tetracosapentaenoyl carnitine
+No Alberty abbreviation for metabolite	886	vacccrn[c]	Vaccenyl carnitine
+No Alberty abbreviation for metabolite	887	hdcecrn[c]	Hexadecenoyl carnitine
+No Alberty abbreviation for metabolite	888	hexccrn[c]	hexacosanoyl carnitine
+No Alberty abbreviation for metabolite	889	lnlncgcrn[c]	gamma-linolenyl carnitine
+No Alberty abbreviation for metabolite	890	c226crn[c]	cervonyl carnitine
+No Alberty abbreviation for metabolite	891	lnlncacrn[c]	alpha-linolenyl carnitine
+No Alberty abbreviation for metabolite	892	tettet6crn[c]	Tetracosatetraenoyl carnitine
+No Alberty abbreviation for metabolite	893	odecrn[c]	octadecenoyl carnitine
+No Alberty abbreviation for metabolite	894	adrncrn[c]	Adrenyl carnitine
+No Alberty abbreviation for metabolite	895	lneldccrn[c]	Linoelaidyl carnitine
+No Alberty abbreviation for metabolite	896	pmtcrn[c]	L-palmitoylcarnitine
+No Alberty abbreviation for metabolite	897	Rtotal3coa[c]	R total 3 Coenzyme A
+No Alberty abbreviation for metabolite	898	Rtotal3crn[c]	R total 3 carnitine
+No Alberty abbreviation for metabolite	899	hdd2coa[c]	trans-Hexadec-2-enoyl-CoA
+No Alberty abbreviation for metabolite	900	hdd2crn[c]	trans-Hexadec-2-enoyl carnitine
+No Alberty abbreviation for metabolite	901	Rtotalcoa[c]	R total Coenzyme A
+No Alberty abbreviation for metabolite	902	Rtotalcrn[c]	R total carnitine
+No Alberty abbreviation for metabolite	903	lnlccrn[c]	Linoleyl carnitine
+No Alberty abbreviation for metabolite	904	tetpent6crn[c]	tetracosapentaenoyl carnitine
+No Alberty abbreviation for metabolite	905	tmndnccrn[c]	Timnodonyl carnitine
+No Alberty abbreviation for metabolite	906	ptdcacrn[c]	pendtadenoyl carnitine
+No Alberty abbreviation for metabolite	907	elaidcrn[c]	Elaidic carnitine
+No Alberty abbreviation for metabolite	908	nrvnccrn[c]	Nervonyl carnitine
+No Alberty abbreviation for metabolite	909	ttdcrn[c]	tetradecanoyl carnitine
+No Alberty abbreviation for metabolite	910	dcsptn1crn[c]	docosa-4,7,10,13,16-pentaenoyl carnitine
+No Alberty abbreviation for metabolite	911	strdnccrn[c]	stearidonyl carnitine
+No Alberty abbreviation for metabolite	912	hpdcacrn[c]	heptadecanoyl carnitine
+No Alberty abbreviation for metabolite	913	dlnlcgcrn[c]	dihomo-gamma-linolenyl carnitine
+No Alberty abbreviation for metabolite	914	lgnccrn[c]	lignoceryl carnitine
+No Alberty abbreviation for metabolite	915	arachcrn[c]	arachidyl carnitine
+No Alberty abbreviation for metabolite	916	eicostetcrn[c]	Eicosatetranoyl carnitine
+No Alberty abbreviation for metabolite	917	Rtotal2crn[c]	R total 2 carnitine
+No Alberty abbreviation for metabolite	918	clpndcrn[c]	clupanodonyl carnitine
+No Alberty abbreviation for metabolite	976	hyptaur[c]	Hypotaurine
+No Alberty abbreviation for metabolite	978	2obut[c]	2-oxobutanoate
+No Alberty abbreviation for metabolite	979	selcys[c]	selenocysteine
+No Alberty abbreviation for metabolite	980	utp[c]	UTP(4-)
+No Alberty abbreviation for metabolite	1004	6hoxmelatn[c]	6-Hydroxymelatonin
+No Alberty abbreviation for metabolite	1025	coumarin[c]	coumarin
+No Alberty abbreviation for metabolite	1026	hcoumarin[c]	umbelliferone
+No Alberty abbreviation for metabolite	1027	antipyrene[c]	antipyrine
+No Alberty abbreviation for metabolite	1028	dmantipyrine[c]	demethylated antipyrine
+No Alberty abbreviation for metabolite	1029	omeprazole[c]	omeprazole
+No Alberty abbreviation for metabolite	1030	5homeprazole[c]	5 hydroxy omeprazole
+No Alberty abbreviation for metabolite	1031	limnen[c]	limonene
+No Alberty abbreviation for metabolite	1032	carveol[c]	(-)-trans-carveol
+No Alberty abbreviation for metabolite	1033	taxol[c]	paclitaxel
+No Alberty abbreviation for metabolite	1034	htaxol[c]	6 alpha hydroxy taxol/ 6 alpha hydroxy paclitaxel
+No Alberty abbreviation for metabolite	1035	tolbutamide[c]	tolbutamide
+No Alberty abbreviation for metabolite	1036	4mtolbutamide[c]	4 hydroxy tolbutamide
+No Alberty abbreviation for metabolite	1037	perillyl[c]	perillyl alcohol
+No Alberty abbreviation for metabolite	1038	appnn[c]	(+)-alpha-pinene
+No Alberty abbreviation for metabolite	1039	apnnox[c]	alpha-pinene oxide
+No Alberty abbreviation for metabolite	1040	debrisoquine[c]	debrisoquine
+No Alberty abbreviation for metabolite	1041	4hdebrisoquine[c]	4 hydroxy debrisoquine
+No Alberty abbreviation for metabolite	1043	4nph[c]	4-nitrophenol
+No Alberty abbreviation for metabolite	1044	24nph[c]	4-nitrocatechol
+No Alberty abbreviation for metabolite	1045	npthl[c]	naphthalene
+No Alberty abbreviation for metabolite	1046	onpthl[c]	naphthalene epoxide
+No Alberty abbreviation for metabolite	1051	nifedipine[c]	nifedipine
+No Alberty abbreviation for metabolite	1052	hnifedipine[c]	hydroxy nifedipine
+No Alberty abbreviation for metabolite	1054	aflatoxin[c]	aflatoxin B1
+No Alberty abbreviation for metabolite	1055	eaflatoxin[c]	aflatoxin B1 exo-8,9-epoxide
+No Alberty abbreviation for metabolite	1057	ddca[c]	laurate
+No Alberty abbreviation for metabolite	1058	whddca[c]	omega hydroxy dodecanoate (n-C12:0)
+No Alberty abbreviation for metabolite	1059	whttdca[c]	omega hydroxy tetradecanoate (n-C14:0)
+No Alberty abbreviation for metabolite	1060	whhdca[c]	omega hydroxy hexadecanoate (n-C16:0)
+No Alberty abbreviation for metabolite	1066	lanost[c]	lanosterol
+No Alberty abbreviation for metabolite	1067	44mctr[c]	4,4-dimethyl-5alpha-cholesta-8,14,24-trien-3beta-ol
+No Alberty abbreviation for metabolite	1096	L-dpchrm[c]	L-Dopachrome
+No Alberty abbreviation for metabolite	1097	56dihindlcrbxlt[c]	5,6-dihydroxyindole-2-carboxylate
+No Alberty abbreviation for metabolite	1098	dump[c]	dUMP
+No Alberty abbreviation for metabolite	1099	xylu-L[c]	L-xylulose
+No Alberty abbreviation for metabolite	1101	34dhphe[c]	L-dopa
+No Alberty abbreviation for metabolite	1102	3hxkynam[c]	3-Hydroxykynurenamine
+No Alberty abbreviation for metabolite	1103	5htrp[c]	5-hydroxy-L-tryptophan
+No Alberty abbreviation for metabolite	1104	5hxkyn[c]	5-hydroxykynurenine
+No Alberty abbreviation for metabolite	1105	5hxkynam[c]	5-Hydroxykynurenamine
+No Alberty abbreviation for metabolite	1107	trypta[c]	Tryptamine
+No Alberty abbreviation for metabolite	1109	peamn[c]	Phenethylamine
+No Alberty abbreviation for metabolite	1111	tym[c]	Tyramine
+No Alberty abbreviation for metabolite	1114	dhcrm_hs[c]	dihydroceramide
+No Alberty abbreviation for metabolite	1117	4ppcys[c]	N-((R)-4-Phosphopantothenoyl)-L-cysteine
+No Alberty abbreviation for metabolite	1118	pan4p[c]	pantetheine 4'-phosphate(2-)
+No Alberty abbreviation for metabolite	1119	4ppan[c]	(R)-4'-phosphopantothenate(3-)
+No Alberty abbreviation for metabolite	1120	tag_hs[c]	triglyceride
+No Alberty abbreviation for metabolite	1134	dhf[c]	7,8-Dihydrofolate
+No Alberty abbreviation for metabolite	1135	fol[c]	Folate
+No Alberty abbreviation for metabolite	1136	orot[c]	orotate
+No Alberty abbreviation for metabolite	1150	uacgam[c]	UDP-N-acetyl-D-glucosamine
+No Alberty abbreviation for metabolite	1151	naglc2p_L[c]	N-Acetyl-D-glucosaminyldiphosphodolichol, human liver homolog
+No Alberty abbreviation for metabolite	1152	ump[c]	UMP
+No Alberty abbreviation for metabolite	1153	naglc2p_U[c]	N-Acetyl-D-glucosaminyldiphosphodolichol, human uterine homolog
+No Alberty abbreviation for metabolite	1154	dolmanp_L[c]	Dolichyl phosphate D-mannose, human liver homolog
+No Alberty abbreviation for metabolite	1155	dolmanp_U[c]	Dolichyl phosphate D-mannose, human uterine homolog
+No Alberty abbreviation for metabolite	1156	56dura[c]	5,6-dihydrouracil
+No Alberty abbreviation for metabolite	1157	ura[c]	uracil
+No Alberty abbreviation for metabolite	1158	56dthm[c]	5,6-dihydrothymine
+No Alberty abbreviation for metabolite	1159	thym[c]	thymine
+No Alberty abbreviation for metabolite	1160	cala[c]	N-carbamoyl-beta-alaninate
+No Alberty abbreviation for metabolite	1161	acgpail_hs[c]	N-Acetyl-D-glucosaminylphosphatidylinositol
+No Alberty abbreviation for metabolite	1162	dtmp[c]	dTMP(2-)
+No Alberty abbreviation for metabolite	1163	dtdp[c]	dTDP
+No Alberty abbreviation for metabolite	1164	dudp[c]	dUDP
+No Alberty abbreviation for metabolite	1169	thymd[c]	thymidine
+No Alberty abbreviation for metabolite	1186	dnad[c]	Deamino-NAD+
+No Alberty abbreviation for metabolite	1187	nicrnt[c]	Nicotinate D-ribonucleotide
+No Alberty abbreviation for metabolite	1205	4fumacac[c]	4-fumarylacetoacetate(2-)
+No Alberty abbreviation for metabolite	1206	ACP[c]	acyl carrier protein
+No Alberty abbreviation for metabolite	1207	acACP[c]	Acetyl-ACP
+No Alberty abbreviation for metabolite	1208	dcacoa[c]	Decanoyl-CoA (n-C10:0CoA)
+No Alberty abbreviation for metabolite	1209	ddcacoa[c]	Dodecanoyl-CoA (n-C12:0CoA)
+No Alberty abbreviation for metabolite	1210	malACP[c]	Malonyl-[acyl-carrier protein]
+No Alberty abbreviation for metabolite	1226	s2l2n2m2m[c]	de-Fuc form of PA6 (w/o peptide linkage)
+No Alberty abbreviation for metabolite	1227	acgam[c]	N-acetyl-D-glucosamine
+No Alberty abbreviation for metabolite	1228	s2l2n2m2mn[c]	de-Fuc, reducing GlcNAc removed form of PA6 (w/o peptide linkage)
+No Alberty abbreviation for metabolite	1229	n2m2nm[c]	n2m2nmasn (w/o peptide linkage)
+No Alberty abbreviation for metabolite	1230	n2m2nmn[c]	reducing GlcNAc removed form of n2m2nmasn (w/o peptide)
+No Alberty abbreviation for metabolite	1235	urcan[c]	trans-urocanate
+No Alberty abbreviation for metabolite	1236	4izp[c]	4-Imidazolone-5-propanoate
+No Alberty abbreviation for metabolite	1238	5mthf[c]	5-Methyltetrahydrofolate
+No Alberty abbreviation for metabolite	1239	5thf[c]	pentaglutamyl folate (THF)
+No Alberty abbreviation for metabolite	1240	6thf[c]	hexaglutamyl folate  (THF)
+No Alberty abbreviation for metabolite	1241	7thf[c]	heptaglutamyl folate (THF)
+No Alberty abbreviation for metabolite	1242	5dhf[c]	pentaglutamyl folate (DHF)
+No Alberty abbreviation for metabolite	1243	6dhf[c]	hexaglutamyl folate (DHF)
+No Alberty abbreviation for metabolite	1244	7dhf[c]	heptaglutamyl folate (DHF)
+No Alberty abbreviation for metabolite	1245	10fthf5glu[c]	10-formyltetrahydrofolate-[Glu](5)
+No Alberty abbreviation for metabolite	1246	10fthf6glu[c]	10-formyltetrahydrofolate-[Glu](6)
+No Alberty abbreviation for metabolite	1247	10fthf7glu[c]	10-formyltetrahydrofolate-[Glu](7)
+No Alberty abbreviation for metabolite	1260	fuc1p-L[c]	L-Fucose 1-phosphate
+No Alberty abbreviation for metabolite	1261	gdpfuc[c]	GDP-L-fucose
+No Alberty abbreviation for metabolite	1262	forglu[c]	N-formimidoyl-L-glutamate(2-)
+No Alberty abbreviation for metabolite	1263	5forthf[c]	5-Formiminotetrahydrofolate
+No Alberty abbreviation for metabolite	1264	methf[c]	5,10-Methenyltetrahydrofolate
+No Alberty abbreviation for metabolite	1273	fuc-L[c]	L-fucose
+No Alberty abbreviation for metabolite	1297	3dsphgn[c]	3-Dehydrosphinganine
+No Alberty abbreviation for metabolite	1298	sphgn[c]	Sphinganine
+No Alberty abbreviation for metabolite	1309	Lcyst[c]	L-Cysteate
+No Alberty abbreviation for metabolite	1310	taur[c]	taurine
+No Alberty abbreviation for metabolite	1314	udpacgal[c]	UDP-N-acetyl-D-galactosamine
+No Alberty abbreviation for metabolite	1320	gudac[c]	guanidinoacetic acid
+No Alberty abbreviation for metabolite	1322	malttr[c]	maltotriose
+No Alberty abbreviation for metabolite	1323	gar[c]	N1-(5-Phospho-D-ribosyl)glycinamide
+No Alberty abbreviation for metabolite	1324	fgam[c]	N2-Formyl-N1-(5-phospho-D-ribosyl)glycinamide
+No Alberty abbreviation for metabolite	1325	pram[c]	5-Phospho-beta-D-ribosylamine
+No Alberty abbreviation for metabolite	1326	fpram[c]	2-(Formamido)-N1-(5-phospho-D-ribosyl)acetamidine
+No Alberty abbreviation for metabolite	1327	air[c]	5-amino-1-(5-phospho-D-ribosyl)imidazole
+No Alberty abbreviation for metabolite	1329	bdg2hc[c]	cis-beta-D-Glucosyl-2-hydroxycinnamate
+No Alberty abbreviation for metabolite	1330	2coum[c]	cis-2-coumarate
+No Alberty abbreviation for metabolite	1331	glygn1[c]	glycogen, structure 1 (glycogenin-11[1,4-Glc])
+No Alberty abbreviation for metabolite	1332	glygn2[c]	glycogen, structure 2 (glycogenin-1,6-{7[1,4-Glc], 4[1,4-Glc]})
+No Alberty abbreviation for metabolite	1336	ahdt[c]	2-Amino-4-hydroxy-6-(erythro-1,2,3-trihydroxypropyl)dihydropteridine triphosphate
+No Alberty abbreviation for metabolite	1340	glucys[c]	gamma-L-Glutamyl-L-cysteine
+No Alberty abbreviation for metabolite	1347	ala-L[c]	L-alanine
+No Alberty abbreviation for metabolite	1348	gua[c]	guanine
+No Alberty abbreviation for metabolite	1349	xan[c]	9H-xanthine
+No Alberty abbreviation for metabolite	1376	dmpp[c]	Dimethylallyl diphosphate
+No Alberty abbreviation for metabolite	1377	ipdp[c]	Isopentenyl diphosphate
+No Alberty abbreviation for metabolite	1378	grdp[c]	Geranyl diphosphate
+No Alberty abbreviation for metabolite	1379	frdp[c]	Farnesyl diphosphate
+No Alberty abbreviation for metabolite	1380	ggdp[c]	Geranylgeranyl diphosphate
+No Alberty abbreviation for metabolite	1385	glyc3p[c]	Glycerol 3-phosphate
+No Alberty abbreviation for metabolite	1417	gdpddman[c]	GDP-4-dehydro-6-deoxy-D-mannose
+No Alberty abbreviation for metabolite	1419	gmp[c]	GMP
+No Alberty abbreviation for metabolite	1420	xmp[c]	Xanthosine 5'-phosphate
+No Alberty abbreviation for metabolite	1421	acmana[c]	N-acetyl-D-mannosamine
+No Alberty abbreviation for metabolite	1422	sarcs[c]	sarcosine
+No Alberty abbreviation for metabolite	1423	adhap_hs[c]	acyl-dihydroxyacetone phosphate
+No Alberty abbreviation for metabolite	1454	3snpyr[c]	3-Sulfinopyruvate
+No Alberty abbreviation for metabolite	1455	mercppyr[c]	Mercaptopyruvate
+No Alberty abbreviation for metabolite	1456	e4hglu[c]	erythro-4-hydroxy-L-glutamate(1-)
+No Alberty abbreviation for metabolite	1458	3spyr[c]	3-Sulfopyruvate
+No Alberty abbreviation for metabolite	1459	phpyr[c]	keto-phenylpyruvate
+No Alberty abbreviation for metabolite	1460	34hpp[c]	3-(4-hydroxyphenyl)pyruvate
+No Alberty abbreviation for metabolite	1487	dhdascb[c]	dehydroascorbic acid
+No Alberty abbreviation for metabolite	1488	ascb-L[c]	L-ascorbic acid
+No Alberty abbreviation for metabolite	1490	retn[c]	all-trans-retinoate
+No Alberty abbreviation for metabolite	1491	13-cis-retn[c]	13-cis-retinoate
+No Alberty abbreviation for metabolite	1492	4mlacac[c]	4-maleylacetoacetate
+No Alberty abbreviation for metabolite	1493	dgmp[c]	dGMP
+No Alberty abbreviation for metabolite	1494	dgdp[c]	dGDP
+No Alberty abbreviation for metabolite	1508	Tyr-ggn[c]	Tyr-194 of apo-glycogenin protein (primer for glycogen synthesis)
+No Alberty abbreviation for metabolite	1509	ggn[c]	primed glycogenin (glycogenin-8[1,4-Glc])
+No Alberty abbreviation for metabolite	1512	3hanthrn[c]	3-hydroxyanthranilic acid
+No Alberty abbreviation for metabolite	1523	udpglcur[c]	UDP-D-glucuronate
+No Alberty abbreviation for metabolite	1525	btamp[c]	Biotinyl-5'-AMP
+No Alberty abbreviation for metabolite	1526	apoC-Lys[c]	Apocarboxylase (Lys residue)
+No Alberty abbreviation for metabolite	1527	apoC-Lys_btn[c]	Holocarboxylase (biotin covalent bound to Lys residue of apoC)
+No Alberty abbreviation for metabolite	1558	hgentis[c]	homogentisate
+No Alberty abbreviation for metabolite	1560	3hpcoa[c]	3-Hydroxypropionyl-CoA
+No Alberty abbreviation for metabolite	1562	gam[c]	D-Glucosamine
+No Alberty abbreviation for metabolite	1564	hmbil[c]	Hydroxymethylbilane
+No Alberty abbreviation for metabolite	1572	hmgcoa[c]	Hydroxymethylglutaryl-CoA
+No Alberty abbreviation for metabolite	1573	pheme[c]	Protoheme
+No Alberty abbreviation for metabolite	1579	2hyoxplac[c]	2-Hydroxyphenylacetate
+No Alberty abbreviation for metabolite	1592	estrone[c]	estrone
+No Alberty abbreviation for metabolite	1593	estradiol[c]	estradiol
+No Alberty abbreviation for metabolite	1594	prgnlone[c]	pregnenolone
+No Alberty abbreviation for metabolite	1595	17ahprgnlone[c]	17alpha-hydroxypregnenolone
+No Alberty abbreviation for metabolite	1596	17ahprgstrn[c]	17alpha-hydroxyprogesterone
+No Alberty abbreviation for metabolite	1610	ppmi12346p[c]	5-Diphosphoinositol pentakisphosphate
+No Alberty abbreviation for metabolite	1611	minohp[c]	myo-Inositol hexakisphosphate
+No Alberty abbreviation for metabolite	1615	ppmi1346p[c]	Diphosphoinositol tetrakisphosphate
+No Alberty abbreviation for metabolite	1616	mi13456p[c]	1D-myo-Inositol 1,3,4,5,6-pentakisphosphate
+No Alberty abbreviation for metabolite	1619	mi1p-D[c]	1D-myo-Inositol 1-phosphate
+No Alberty abbreviation for metabolite	1620	mi3p-D[c]	1D-myo-Inositol 3-phosphate
+No Alberty abbreviation for metabolite	1621	mi4p-D[c]	1D-myo-Inositol 4-phosphate
+No Alberty abbreviation for metabolite	1622	5hoxnfkyn[c]	5-hydroxy-N-formylkynurenine
+No Alberty abbreviation for metabolite	1623	fna5moxam[c]	Formyl-N-acetyl-5-methoxykynurenamine
+No Alberty abbreviation for metabolite	1624	f5hoxkyn[c]	Formyl-5-hydroxykynurenamine
+No Alberty abbreviation for metabolite	1625	nmthsrtn[c]	N-Methylserotonin
+No Alberty abbreviation for metabolite	1626	mi134p[c]	1D-myo-Inositol 1,3,4-trisphosphate
+No Alberty abbreviation for metabolite	1627	mi34p[c]	1D-myo-Inositol 3,4-bisphosphate
+No Alberty abbreviation for metabolite	1628	mi14p[c]	1D-myo-Inositol 1,4-bisphosphate
+No Alberty abbreviation for metabolite	1629	mi145p[c]	1D-myo-Inositol 1,4,5-trisphosphate
+No Alberty abbreviation for metabolite	1634	xtp[c]	XTP
+No Alberty abbreviation for metabolite	1635	ditp[c]	dITP
+No Alberty abbreviation for metabolite	1636	dimp[c]	dIMP
+No Alberty abbreviation for metabolite	1638	mi1345p[c]	1D-myo-Inositol 1,3,4,5-tetrakisphosphate
+No Alberty abbreviation for metabolite	1641	tagat-D[c]	D-tagatose
+No Alberty abbreviation for metabolite	1642	anth[c]	anthranilate
+No Alberty abbreviation for metabolite	1643	Lfmkynr[c]	N-formyl-L-kynurenine
+No Alberty abbreviation for metabolite	1644	nformanth[c]	N-formylanthranilate
+No Alberty abbreviation for metabolite	1649	glyc-S[c]	(S)-Glycerate
+No Alberty abbreviation for metabolite	1650	mercplac[c]	3-Mercaptolactate
+No Alberty abbreviation for metabolite	1651	2hb[c]	2-Hydroxybutyrate
+No Alberty abbreviation for metabolite	1660	mlthf[c]	(6R)-5,10-methylenetetrahydrofolate(2-)
+No Alberty abbreviation for metabolite	1661	Rtotal3[c]	R total 3 position
+No Alberty abbreviation for metabolite	1662	mag_hs[c]	monoacylglycerol 2
+No Alberty abbreviation for metabolite	1664	retfa[c]	fatty acid retinol
+No Alberty abbreviation for metabolite	1666	leuktrB4[c]	Leukotriene B4
+No Alberty abbreviation for metabolite	1693	m2mn[c]	(alpha-D-mannosyl)2-beta-D-mannosyl-N-acetylglucosamine
+No Alberty abbreviation for metabolite	1694	mn[c]	beta-1,4-mannose-N-acetylglucosamine
+No Alberty abbreviation for metabolite	1695	chtn[c]	chitin
+No Alberty abbreviation for metabolite	1696	48dhoxquin[c]	quinoline-4,8-diol
+No Alberty abbreviation for metabolite	1697	46dhoxquin[c]	4,6-Dihydroxyquinoline
+No Alberty abbreviation for metabolite	1698	aprut[c]	N-Acetylputrescine
+No Alberty abbreviation for metabolite	1699	selmeth[c]	selenomethionine
+No Alberty abbreviation for metabolite	1700	seasmet[c]	Se-Adenosylselenomethionine
+No Alberty abbreviation for metabolite	1703	sl-L[c]	L-sulfolactate
+No Alberty abbreviation for metabolite	1715	Rtotal2[c]	R total 2 position
+No Alberty abbreviation for metabolite	1716	mmcoa-S[c]	(S)-Methylmalonyl-CoA
+No Alberty abbreviation for metabolite	1719	cbl2[c]	Cob(II)alamin
+No Alberty abbreviation for metabolite	1727	cyan[c]	hydrogen cyanide
+No Alberty abbreviation for metabolite	1728	tcynt[c]	thiocyanate
+No Alberty abbreviation for metabolite	1731	5mta[c]	5'-S-methyl-5'-thioadenosine
+No Alberty abbreviation for metabolite	1732	5mdr1p[c]	5-Methylthio-5-deoxy-D-ribose 1-phosphate
+No Alberty abbreviation for metabolite	1735	5fthf[c]	5-Formyltetrahydrofolate
+No Alberty abbreviation for metabolite	1736	pail35p_hs[c]	phosphatidylinositol-3,5-bisphosphate
+No Alberty abbreviation for metabolite	1737	pail5p_hs[c]	1-Phosphatidyl-1D-myo-inositol 5-phosphate
+No Alberty abbreviation for metabolite	1738	pail3p_hs[c]	1-Phosphatidyl-1D-myo-inositol 3-phosphate
+No Alberty abbreviation for metabolite	1750	acmanap[c]	N-Acetyl-D-mannosamine 6-phosphate
+No Alberty abbreviation for metabolite	1758	acnamp[c]	N-Acetylneuraminate 9-phosphate
+No Alberty abbreviation for metabolite	1759	kdnp[c]	2-keto-3-deoxy-D-glycero-D-galactononic acid 9-phosphate
+No Alberty abbreviation for metabolite	1761	l2n2m2mn[c]	de-Fuc, reducing GlcNAc removed, de-Sia form of PA6 (w/o peptide linkage)
+No Alberty abbreviation for metabolite	1762	dgtp[c]	dGTP
+No Alberty abbreviation for metabolite	1763	dutp[c]	dUTP
+No Alberty abbreviation for metabolite	1779	didp[c]	dIDP
+No Alberty abbreviation for metabolite	1796	dttp[c]	dTTP(4-)
+No Alberty abbreviation for metabolite	1797	dctp[c]	dCTP
+No Alberty abbreviation for metabolite	1807	ncam[c]	nicotinamide
+No Alberty abbreviation for metabolite	1808	1mncam[c]	1-methylnicotinamide
+No Alberty abbreviation for metabolite	1809	nwharg[c]	N-(omega)-Hydroxyarginine
+No Alberty abbreviation for metabolite	1811	nac[c]	nicotinate
+No Alberty abbreviation for metabolite	1813	nicrns[c]	Nicotinate D-ribonucleoside
+No Alberty abbreviation for metabolite	1814	rnam[c]	N-Ribosylnicotinamide
+No Alberty abbreviation for metabolite	1815	gsn[c]	guanosine
+No Alberty abbreviation for metabolite	1816	dgsn[c]	2'-deoxyguanosine
+No Alberty abbreviation for metabolite	1817	xtsn[c]	xanthosine
+No Alberty abbreviation for metabolite	1829	ap4a[c]	P1,P4-Bis(5'-adenosyl) tetraphosphate
+No Alberty abbreviation for metabolite	1830	adpglc[c]	ADPglucose
+No Alberty abbreviation for metabolite	1831	adpman[c]	ADPmannose
+No Alberty abbreviation for metabolite	1835	pail45p_hs[c]	phosphatidylinositol 4,5-bisphosphate
+No Alberty abbreviation for metabolite	1836	pail4p_hs[c]	1-Phosphatidyl-1D-myo-inositol 4-phosphate
+No Alberty abbreviation for metabolite	1844	paf_hs[c]	1-alkyl 2-acteylglycerol 3-phosphocholine
+No Alberty abbreviation for metabolite	1845	ak2lgchol_hs[c]	1-alkyl 2-lysoglycerol 3-phosphocholine
+No Alberty abbreviation for metabolite	1846	thbpt[c]	5,6,7,8-tetrahydrobiopterin
+No Alberty abbreviation for metabolite	1847	thbpt4acam[c]	4a-hydroxytetrahydrobiopterin
+No Alberty abbreviation for metabolite	1848	5aizc[c]	5-amino-1-(5-phospho-D-ribosyl)imidazole-4-carboxylate
+No Alberty abbreviation for metabolite	1849	pnto-R[c]	(R)-Pantothenate
+No Alberty abbreviation for metabolite	1852	adsel[c]	Adenylylselenate
+No Alberty abbreviation for metabolite	1853	3padsel[c]	3'-Phosphoadenylylselenate
+No Alberty abbreviation for metabolite	1854	sel[c]	selenate
+No Alberty abbreviation for metabolite	1856	dhbpt[c]	6,7-dihydrobiopterin
+No Alberty abbreviation for metabolite	1858	ntm2amep[c]	N-Trimethyl-2-aminoethylphosphonate
+No Alberty abbreviation for metabolite	1859	cmpntm2amep[c]	CMP-N-trimethyl-2-aminoethylphosphonate
+No Alberty abbreviation for metabolite	1860	2ameph[c]	(2-Aminoethyl)phosphonate
+No Alberty abbreviation for metabolite	1861	cmp2amep[c]	CMP-2-aminoethylphosphonate
+No Alberty abbreviation for metabolite	1868	pydam[c]	Pyridoxamine
+No Alberty abbreviation for metabolite	1869	pyam5p[c]	Pyridoxamine 5'-phosphate
+No Alberty abbreviation for metabolite	1870	pydx5p[c]	Pyridoxal 5'-phosphate
+No Alberty abbreviation for metabolite	1871	pydxn[c]	pyridoxine
+No Alberty abbreviation for metabolite	1872	pdx5p[c]	Pyridoxine 5'-phosphate
+No Alberty abbreviation for metabolite	1895	f26bp[c]	D-Fructose 2,6-bisphosphate
+No Alberty abbreviation for metabolite	1901	6pgc[c]	6-Phospho-D-gluconate
+No Alberty abbreviation for metabolite	1903	acgam1p[c]	N-Acetyl-D-glucosamine 1-phosphate
+No Alberty abbreviation for metabolite	1904	2pglyc[c]	2-Phosphoglycolate
+No Alberty abbreviation for metabolite	1905	pgp_hs[c]	phosphatidyl glycerol phosphate
+No Alberty abbreviation for metabolite	1909	pail345p_hs[c]	phosphatidylinositol-3,4,5-trisphosphate
+No Alberty abbreviation for metabolite	1910	pail34p_hs[c]	phosphatidylinositol-3,4-bisphosphate
+No Alberty abbreviation for metabolite	1918	gpail_hs[c]	6-(alpha-D-glucosaminyl)-1-phosphatidyl-1D-myo-inositol
+No Alberty abbreviation for metabolite	1926	gacpail_hs[c]	glucosaminyl-acylphosphatidylinositol
+No Alberty abbreviation for metabolite	1953	pcollglys[c]	Procollagen L-lysine
+No Alberty abbreviation for metabolite	1954	pcollg5hlys[c]	erythro-5-hydroxy-L-lysine
+No Alberty abbreviation for metabolite	1968	pro-L[c]	L-proline
+No Alberty abbreviation for metabolite	1969	1pyr5c[c]	1-pyrroline-5-carboxylate
+No Alberty abbreviation for metabolite	1974	prostgh2[c]	Prostaglandin H2
+No Alberty abbreviation for metabolite	1975	prostgd2[c]	Prostaglandin D2
+No Alberty abbreviation for metabolite	1980	6pthp[c]	6-pyruvoyl-5,6,7,8-tetrahydropterin
+No Alberty abbreviation for metabolite	1981	pppi[c]	triphosphate(4-)
+No Alberty abbreviation for metabolite	1984	quln[c]	quinolinate(2-)
+No Alberty abbreviation for metabolite	1988	retinol-cis-11[c]	11-cis-retinol
+No Alberty abbreviation for metabolite	1989	retinal-11-cis[c]	11-cis-retinal
+No Alberty abbreviation for metabolite	1990	retinol-9-cis[c]	9-cis-retinol
+No Alberty abbreviation for metabolite	1991	retinal-cis-9[c]	all-trans-retinal
+No Alberty abbreviation for metabolite	1992	retinol-cis-13[c]	13-cis-retinol
+No Alberty abbreviation for metabolite	1993	retinal-cis-13[c]	13-cis-retinal
+No Alberty abbreviation for metabolite	1994	xu5p-D[c]	D-Xylulose 5-phosphate
+No Alberty abbreviation for metabolite	1998	dtt[c]	1,4-dithiothreitol
+No Alberty abbreviation for metabolite	1999	dttOX[c]	trans-1,2-dithiane-4,5-diol
+No Alberty abbreviation for metabolite	2000	seln[c]	Selenide
+No Alberty abbreviation for metabolite	2001	phytcoa[c]	phytanyl coa
+No Alberty abbreviation for metabolite	2002	dmnoncoa[c]	4,8 dimethylnonanoyl-CoA
+No Alberty abbreviation for metabolite	2003	2amac[c]	2-aminoacrylic acid
+No Alberty abbreviation for metabolite	2005	selnp[c]	Selenophosphate
+No Alberty abbreviation for metabolite	2018	3htmelys[c]	3-Hydroxy-N6,N6,N6-trimethyl-L-lysine
+No Alberty abbreviation for metabolite	2035	estrones[c]	Estrone 3-sulfate
+No Alberty abbreviation for metabolite	2037	cl[c]	chloride
+No Alberty abbreviation for metabolite	2041	tsul[c]	thiosulfate(2-)
+No Alberty abbreviation for metabolite	2056	thyox-L[c]	L-thyroxine
+No Alberty abbreviation for metabolite	2058	triodthy[c]	3,3',5-triiodo-L-thyronine
+No Alberty abbreviation for metabolite	2063	idour[c]	L-iduronate
+No Alberty abbreviation for metabolite	2070	oh1[c]	hydroxide
+No Alberty abbreviation for metabolite	2073	thmmp[c]	thiamine(1+) monophosphate(2-)
+No Alberty abbreviation for metabolite	2074	thmtp[c]	Thiamin triphosphate
+No Alberty abbreviation for metabolite	2078	thm[c]	thiamine(1+)
+No Alberty abbreviation for metabolite	2080	asp-D[c]	D-aspartate(1-)
+No Alberty abbreviation for metabolite	2095	acrn[c]	O-Acetylcarnitine
+No Alberty abbreviation for metabolite	2110	pristcoa[c]	pristanoyl coa
+No Alberty abbreviation for metabolite	2111	phyt[c]	phytanate
+No Alberty abbreviation for metabolite	2126	csn[c]	cytosine
+No Alberty abbreviation for metabolite	2142	gd3_hs[c]	GD3
+No Alberty abbreviation for metabolite	2143	oagd3_hs[c]	9-O-Acetylated GD3
+No Alberty abbreviation for metabolite	2146	gt3_hs[c]	GT3
+No Alberty abbreviation for metabolite	2147	oagt3_hs[c]	9-O-Acetylated GT3
+No Alberty abbreviation for metabolite	2149	udpxyl[c]	UDP-D-xylose
+No Alberty abbreviation for metabolite	2161	pro-D[c]	D-proline
+No Alberty abbreviation for metabolite	2179	ser-D[c]	D-serine
+No Alberty abbreviation for metabolite	2182	hom-L[c]	L-homoserine
+No Alberty abbreviation for metabolite	2187	leuktrC4[c]	Leukotriene C4
+No Alberty abbreviation for metabolite	2190	dheas[c]	Dehydroepiandrosterone sulfate
+No Alberty abbreviation for metabolite	2195	spmd[c]	Spermidine
+No Alberty abbreviation for metabolite	2196	sprm[c]	Spermine
+No Alberty abbreviation for metabolite	2198	lipoate[c]	lipoic acid
+No Alberty abbreviation for metabolite	2200	R1coa_hs[c]	R group 1 Coenzyme A
+No Alberty abbreviation for metabolite	2201	xolest_hs[c]	cholesterol ester
+No Alberty abbreviation for metabolite	2204	R2coa_hs[c]	R group 2 Coenzyme A
+No Alberty abbreviation for metabolite	2206	o2s[c]	superoxide
+No Alberty abbreviation for metabolite	2216	sph1p[c]	Sphinganine 1-phosphate
+No Alberty abbreviation for metabolite	2217	sphings[c]	Sphingosine
+No Alberty abbreviation for metabolite	2218	sphs1p[c]	Sphingosine 1-phosphate
+No Alberty abbreviation for metabolite	2238	dhea[c]	3beta-hydroxyandrost-5-en-17-one
+No Alberty abbreviation for metabolite	2242	chsterols[c]	cholesterol sulfate
+No Alberty abbreviation for metabolite	2244	prgnlones[c]	pregnenolone sulfate
+No Alberty abbreviation for metabolite	2250	tymsf[c]	Tyramine O-sulfate
+No Alberty abbreviation for metabolite	2251	triodthysuf[c]	Triiodothyronine sulfate
+No Alberty abbreviation for metabolite	2252	4nphsf[c]	4-Nitrophenyl sulfate
+No Alberty abbreviation for metabolite	2253	nrpphrsf[c]	Sulfate derivative of norepinephrine
+No Alberty abbreviation for metabolite	2254	dopasf[c]	dopamine 3-O-sulfate
+No Alberty abbreviation for metabolite	2255	5adtststerone[c]	17beta-hydroxy-5alpha-androstan-3-one
+No Alberty abbreviation for metabolite	2256	5adtststerones[c]	5alpha-Dihydrotestosterone sulfate
+No Alberty abbreviation for metabolite	2257	tststerone[c]	testosterone
+No Alberty abbreviation for metabolite	2258	tststerones[c]	testosterone sulfate
+No Alberty abbreviation for metabolite	2259	s7p[c]	Sedoheptulose 7-phosphate
+No Alberty abbreviation for metabolite	2260	e4p[c]	D-erythrose 4-phosphate(2-)
+No Alberty abbreviation for metabolite	2262	dtdpglu[c]	dTDPglucose
+No Alberty abbreviation for metabolite	2263	dtdp4d6dg[c]	dTDP-4-dehydro-6-deoxy-D-glucose
+No Alberty abbreviation for metabolite	2264	ddcaACP[c]	Dodecanoyl-ACP (n-C12:0ACP)
+No Alberty abbreviation for metabolite	2265	myrsACP[c]	Myristoyl-ACP (n-C14:0ACP)
+No Alberty abbreviation for metabolite	2266	tdeACP[c]	cis-tetradec-7-enoyl-[acyl-carrier protein] (n-C14:1)
+No Alberty abbreviation for metabolite	2267	ttdcea[c]	tetradecenoate (n-C14:1)
+No Alberty abbreviation for metabolite	2268	palmACP[c]	Palmitoyl-ACP (n-C16:0ACP)
+No Alberty abbreviation for metabolite	2269	hdeACP[c]	cis-hexadec-9-enoyl-[acyl-carrier protein] (n-C16:1)
+No Alberty abbreviation for metabolite	2270	ocdcaACP[c]	Octadecanoyl-ACP (n-C18:0ACP)
+No Alberty abbreviation for metabolite	2271	octeACP[c]	cis-octadec-11-enoyl-[acyl-carrier protein] (n-C18:1)
+No Alberty abbreviation for metabolite	2272	ocdcyaACP[c]	Octadecynoyl-ACP (n-C18:2ACP)
+No Alberty abbreviation for metabolite	2273	ocdcya[c]	octadecadienoate (n-C18:2)
+No Alberty abbreviation for metabolite	2274	thmpp[c]	Thiamine diphosphate
+No Alberty abbreviation for metabolite	2275	phom[c]	O-Phospho-L-homoserine
+No Alberty abbreviation for metabolite	2276	sphmyln_hs[c]	sphingomyelin
+No Alberty abbreviation for metabolite	2277	tmlys[c]	N6,N6,N6-Trimethyl-L-lysine
+No Alberty abbreviation for metabolite	2278	3ityr-L[c]	3-iodo-L-tyrosine
+No Alberty abbreviation for metabolite	2280	35diotyr[c]	3,5-diiodo-L-tyrosine
+No Alberty abbreviation for metabolite	2288	2c23dh56dhoxin[c]	2-Carboxy-2,3-dihydro-5,6-dihydroxyindole
+No Alberty abbreviation for metabolite	2289	T4hcinnm[c]	trans-4-coumarate
+No Alberty abbreviation for metabolite	2290	34dhcinm[c]	3,4-Dihydroxy-trans-cinnamate
+No Alberty abbreviation for metabolite	2291	dopaqn[c]	L-dopaquinone
+No Alberty abbreviation for metabolite	2292	melanin[c]	Melanin
+No Alberty abbreviation for metabolite	2313	orot5p[c]	Orotidine 5'-phosphate
+No Alberty abbreviation for metabolite	2314	3uib[c]	3-Ureidoisobutyrate
+No Alberty abbreviation for metabolite	2315	3aib-D[c]	D-3-Amino-isobutanoate
+No Alberty abbreviation for metabolite	2316	uppg3[c]	Uroporphyrinogen III
+No Alberty abbreviation for metabolite	2320	ptth[c]	pantetheine
+No Alberty abbreviation for metabolite	2321	cysam[c]	Cysteamine
+No Alberty abbreviation for metabolite	2332	3aib[c]	(S)-3-aminoisobutyric acid
+No Alberty abbreviation for metabolite	2333	rbl-D[c]	D-ribulose
+No Alberty abbreviation for metabolite	2334	11docrtsl[c]	11-deoxycortisol
+No Alberty abbreviation for metabolite	2335	11docrtstrn[c]	11-deoxycorticosterone
+No Alberty abbreviation for metabolite	2340	2425dhvitd2[c]	24R,25-Dihyoxyvitamin D2
+No Alberty abbreviation for metabolite	2342	2425dhvitd3[c]	(24R)-24,25-dihydroxycalciol
+No Alberty abbreviation for metabolite	2345	25hvitd2[c]	25-Hydroxyvitamin D2
+No Alberty abbreviation for metabolite	2347	25hvitd3[c]	calcidiol
+No Alberty abbreviation for metabolite	2349	2mcit[c]	2-methylcitrate(3-)
+No Alberty abbreviation for metabolite	2354	msa[c]	3-oxopropanoate
+No Alberty abbreviation for metabolite	2359	4mptnl[c]	4-methylpentanal
+No Alberty abbreviation for metabolite	2369	6htststerone[c]	6 beta hydroxy testosterone
+No Alberty abbreviation for metabolite	2371	7dhchsterol[c]	cholesta-5,7-dien-3beta-ol
+No Alberty abbreviation for metabolite	2373	thp2c[c]	1-piperideine-6-carboxylate
+No Alberty abbreviation for metabolite	2374	L2aadp6sa[c]	L-allysine
+No Alberty abbreviation for metabolite	2377	acgagbside_hs[c]	alpha GalNAc globoside
+No Alberty abbreviation for metabolite	2379	acgalfucgalacgalfuc12gal14acglcgalgluside_hs[c]	Type IIIA glycolipid
+No Alberty abbreviation for metabolite	2381	acgalfucgalacgalfucgalacglcgal14acglcgalgluside_hs[c]	Type IIIAb
+No Alberty abbreviation for metabolite	2382	acgal[c]	N-acetyl-D-galactosamine
+No Alberty abbreviation for metabolite	2383	acgal1p[c]	N-Acetyl-D-galactosamine 1-phosphate
+No Alberty abbreviation for metabolite	2384	acgbgbside_hs[c]	beta GalNAc globoside
+No Alberty abbreviation for metabolite	2386	acn13acngalgbside_hs[c]	sialyl (1,3) sialyl (2,6) galactosylgloboside
+No Alberty abbreviation for metabolite	2388	acn23acngalgbside_hs[c]	sialyl (2,3) sialyl (2,6) galactosylgloboside
+No Alberty abbreviation for metabolite	2391	acnacngal14acglcgalgluside_hs[c]	3',8'-LD1
+No Alberty abbreviation for metabolite	2392	acnacngalgbside_hs[c]	disialyl galactosylgloboside
+No Alberty abbreviation for metabolite	2395	acngalacglcgal14acglcgalgluside_hs[c]	VI3NeuAc-nLc6Cer
+No Alberty abbreviation for metabolite	2397	ak2g_hs[c]	1-alkyl 2-acylglycerol
+No Alberty abbreviation for metabolite	2398	ak2gchol_hs[c]	1-alkyl 2-acylglycerol 3-phosphocholine
+No Alberty abbreviation for metabolite	2399	ak2gpe_hs[c]	1-alkyl 2-acylglycerol 3-phosphoethanolamine
+No Alberty abbreviation for metabolite	2400	dak2gpe_hs[c]	1-alkenyl 2-acylglycerol 3-phosphoethanolamine plasmalogen
+No Alberty abbreviation for metabolite	2401	ak2gp_hs[c]	1-alkyl 2-acylglycerol 3-phosphate
+No Alberty abbreviation for metabolite	2402	akdhap_hs[c]	1-alkyldihydroxyacetone phosphate
+No Alberty abbreviation for metabolite	2403	akgp_hs[c]	1-alkylglycerol 3-phosphate
+No Alberty abbreviation for metabolite	2404	aldstrn[c]	aldosterone
+No Alberty abbreviation for metabolite	2406	amuco[c]	2-Aminomuconate
+No Alberty abbreviation for metabolite	2408	andrstrn[c]	androsterone
+No Alberty abbreviation for metabolite	2411	apoC[c]	Apocarboxlase (no lys residue)
+No Alberty abbreviation for metabolite	2416	aqcobal[c]	Aquacob(III)alamin
+No Alberty abbreviation for metabolite	2418	R3coa_hs[c]	R group 3 Coenzyme A
+No Alberty abbreviation for metabolite	2419	R4coa_hs[c]	R group 4 Coenzyme A
+No Alberty abbreviation for metabolite	2420	R5coa_hs[c]	R group 5 Coenzyme A
+No Alberty abbreviation for metabolite	2421	R6coa_hs[c]	R group 6 Coenzyme A
+No Alberty abbreviation for metabolite	2424	avite1[c]	(+)-alpha-tocopherol
+No Alberty abbreviation for metabolite	2426	avite2[c]	alpha-tocotrienol
+No Alberty abbreviation for metabolite	2429	bhb[c]	(R)-3-hydroxybutyrate
+No Alberty abbreviation for metabolite	2431	bvite[c]	beta-tocopherol
+No Alberty abbreviation for metabolite	2433	bz[c]	benzoate
+No Alberty abbreviation for metabolite	2437	cca_d3[c]	Calcitroic acid (D3)
+No Alberty abbreviation for metabolite	2451	pcrn[c]	propionyl-carnitine
+No Alberty abbreviation for metabolite	2454	crtsl[c]	cortisol
+No Alberty abbreviation for metabolite	2456	crtstrn[c]	corticosterone
+No Alberty abbreviation for metabolite	2470	thcys[c]	3-disulfanyl-L-alanine
+No Alberty abbreviation for metabolite	2474	23doguln[c]	2,3-Dioxo-L-gulonate
+No Alberty abbreviation for metabolite	2479	decdp[c]	all trans Decaprenyl diphosphate
+No Alberty abbreviation for metabolite	2480	dedoldp_L[c]	Dehydrodolichol diphosphate, human liver homolog
+No Alberty abbreviation for metabolite	2481	dedolp_L[c]	Dehydrodolichol phosphate, human liver homolog
+No Alberty abbreviation for metabolite	2482	dedoldp_U[c]	Dehydrodolichol diphosphate, human uterine homolog
+No Alberty abbreviation for metabolite	2483	dedolp_U[c]	Dehydrodolichol phosphate, human uterine homolog
+No Alberty abbreviation for metabolite	2484	dedol_L[c]	Dehydrodolichol, human liver homolog
+No Alberty abbreviation for metabolite	2485	dedol_U[c]	Dehydrodolichol, human uterine homolog
+No Alberty abbreviation for metabolite	2486	dolichol_L[c]	Dolichol, human liver homolog
+No Alberty abbreviation for metabolite	2487	dolichol_U[c]	Dolichol, human uterine homolog
+No Alberty abbreviation for metabolite	2489	dgchol[c]	glycochenodeoxycholic acid
+No Alberty abbreviation for metabolite	2491	3dhguln[c]	3-Dehydro-L-gulonate
+No Alberty abbreviation for metabolite	2492	digalsgalside_hs[c]	Digalactosylceramidesulfate
+No Alberty abbreviation for metabolite	2494	digalside_hs[c]	Digalactosylceramide
+No Alberty abbreviation for metabolite	2495	dkmpp[c]	2,3-diketo-5-methylthio-1-phosphopentane
+No Alberty abbreviation for metabolite	2496	2kmb[c]	2-keto-4-methylthiobutyrate
+No Alberty abbreviation for metabolite	2499	dmhptcoa[c]	2,6 dimethylheptanoyl-CoA
+No Alberty abbreviation for metabolite	2500	dmhptcrn[c]	2,6 dimethylheptanoyl carnitine
+No Alberty abbreviation for metabolite	2503	dmnoncrn[c]	4,8 dimethylnonanoyl carnitine
+No Alberty abbreviation for metabolite	2504	lyxnt[c]	L-lyxonate
+No Alberty abbreviation for metabolite	2505	xylnt[c]	L-xylonate
+No Alberty abbreviation for metabolite	2506	thrnt[c]	L-Threonate
+No Alberty abbreviation for metabolite	2507	eryth[c]	L-erythrulose
+No Alberty abbreviation for metabolite	2515	ebastineoh[c]	hydroxylated ebastine
+No Alberty abbreviation for metabolite	2517	ebastine[c]	ebastine
+No Alberty abbreviation for metabolite	2531	estriol[c]	estriol
+No Alberty abbreviation for metabolite	2534	lnlcACP[c]	linoleic acid ACP (all cis)
+No Alberty abbreviation for metabolite	2535	lneldcACP[c]	linoelaidic acid ACP (all trans)
+No Alberty abbreviation for metabolite	2536	formcoa[c]	formyl-CoA
+No Alberty abbreviation for metabolite	2537	ttc-ggdp[c]	trans,trans,cis-Geranylgeranyl diphosphate
+No Alberty abbreviation for metabolite	2539	fuc13galacglcgal14acglcgalgluside_hs[c]	III3Fuc-nLc6Cer
+No Alberty abbreviation for metabolite	2541	fuc14galacglcgalgluside_hs[c]	Lea glycolipid
+No Alberty abbreviation for metabolite	2543	fucacgalfucgalacglcgalgluside_hs[c]	(Gal)2 (GalNAc)1 (Glc)1 (GlcNAc)1 (LFuc)2 (Cer)1
+No Alberty abbreviation for metabolite	2545	fucacngal14acglcgalgluside_hs[c]	IV3-a-NeuAc,III3-a-Fuc-nLc4Cer
+No Alberty abbreviation for metabolite	2547	fucacngalacglcgalgluside_hs[c]	IV3-a-Neu5Ac,III4-a-Fuc-Lc4Cer
+No Alberty abbreviation for metabolite	2549	fucfuc12gal14acglcgalgluside_hs[c]	Ley glycolipid
+No Alberty abbreviation for metabolite	2551	fucfuc132galacglcgal14acglcgalgluside_hs[c]	V3Fuc,III3Fuc-nLc6Cer
+No Alberty abbreviation for metabolite	2553	fucfucfucgalacglc13galacglcgal14acglcgalgluside_hs[c]	(Gal)4 (Glc)1 (GlcNAc)3 (LFuc)3 (Cer)1
+No Alberty abbreviation for metabolite	2555	fucfucfucgalacglcgal14acglcgalgluside_hs[c]	(Gal)3 (Glc)1 (GlcNAc)2 (LFuc)3 (Cer)1
+No Alberty abbreviation for metabolite	2557	fucfucgalacglcgalgluside_hs[c]	Leb glycolipid
+No Alberty abbreviation for metabolite	2559	fucgal14acglcgalgluside_hs[c]	Lacto-N-fucopentaosyl III ceramide
+No Alberty abbreviation for metabolite	2561	fucgalfucgalacglcgalgluside_hs[c]	(Gal)3 (Glc)1 (GlcNAc)1 (LFuc)2 (Cer)1
+No Alberty abbreviation for metabolite	2562	fucgalgbside_hs[c]	fucosyl galactosylgloboside
+No Alberty abbreviation for metabolite	2564	m2mpdol_L[c]	(alpha-D-mannosyl)2-beta-D-mannosyl-diacetylchitobiosyldiphosphodolichol, human liver homolog
+No Alberty abbreviation for metabolite	2565	m3mpdol_L[c]	(alpha-D-mannosyl)3-beta-D-mannosyl-diacetylchitodiphosphodolichol, human liver homolog
+No Alberty abbreviation for metabolite	2566	m2mpdol_U[c]	(alpha-D-mannosyl)2-beta-D-mannosyl-diacetylchitobiosyldiphosphodolichol, human uterine homolog
+No Alberty abbreviation for metabolite	2567	m3mpdol_U[c]	(alpha-D-mannosyl)3-beta-D-mannosyl-diacetylchitodiphosphodolichol, human uterine homolog
+No Alberty abbreviation for metabolite	2568	m4mpdol_L[c]	(alpha-D-Mannosyl)4-beta-D-mannosyl-diacetylchitobiosyldiphosphodolichol, human liver homolog
+No Alberty abbreviation for metabolite	2569	m4mpdol_U[c]	(alpha-D-Mannosyl)4-beta-D-mannosyl-diacetylchitobiosyldiphosphodolichol, human uterine homolog
+No Alberty abbreviation for metabolite	2570	glu5sa[c]	L-glutamic 5-semialdehyde
+No Alberty abbreviation for metabolite	2571	galacglcgalgbside_hs[c]	Gal-GlcNAc-Gal globoside
+No Alberty abbreviation for metabolite	2574	galfuc12gal14acglcgalgluside_hs[c]	(Gal)3 (Glc)1 (GlcNAc)1 (LFuc)1 (Cer)1
+No Alberty abbreviation for metabolite	2576	galfucgalacglcgal14acglcgalgluside_hs[c]	(Gal)4 (Glc)1 (GlcNAc)2 (LFuc)1 (Cer)1
+No Alberty abbreviation for metabolite	2578	galgalfucfucgalacglcgalacglcgal14acglcgalgluside_hs[c]	(Gal)6 (Glc)1 (GlcNAc)3 (LFuc)2 (Cer)1
+No Alberty abbreviation for metabolite	2579	galgalgalthcrm_hs[c]	Gal-Gal-Gal-Gal-Gal-Glc-Cer
+No Alberty abbreviation for metabolite	2581	galside_hs[c]	D-galactosyl-N-acylsphingosine
+No Alberty abbreviation for metabolite	2582	gbside_hs[c]	globoside
+No Alberty abbreviation for metabolite	2584	gd1b2_hs[c]	GD1beta
+No Alberty abbreviation for metabolite	2586	gd1c_hs[c]	GD1c
+No Alberty abbreviation for metabolite	2589	gdchola[c]	glycochenodeoxycholic acid
+No Alberty abbreviation for metabolite	2590	leuktrE4[c]	leukotriene E4
+No Alberty abbreviation for metabolite	2591	leuktrF4[c]	leukotriene F4
+No Alberty abbreviation for metabolite	2597	gullac[c]	L-gulono-1,4-lactone
+No Alberty abbreviation for metabolite	2600	gp1calpha_hs[c]	GP1c alpha 
+No Alberty abbreviation for metabolite	2602	gp1c_hs[c]	GP1c
+No Alberty abbreviation for metabolite	2604	gq1balpha_hs[c]	GQ1balpha
+No Alberty abbreviation for metabolite	2606	gq1b_hs[c]	GQ1b
+No Alberty abbreviation for metabolite	2608	gt1a_hs[c]	GT1a
+No Alberty abbreviation for metabolite	2610	guln[c]	L-gulonate
+No Alberty abbreviation for metabolite	2611	glcur1p[c]	D-Glucuronate 1-phosphate
+No Alberty abbreviation for metabolite	2614	hestratriol[c]	4,17 dihydroxy estradiol
+No Alberty abbreviation for metabolite	2620	hretn[c]	4 hydroxy retinoic acid
+No Alberty abbreviation for metabolite	2627	kdn[c]	2-keto-3-deoxy-D-glycero-D-galactononic acid
+No Alberty abbreviation for metabolite	2630	kynate[c]	4-Hydroxy-2-quinolinecarboxylic acid
+No Alberty abbreviation for metabolite	2635	leuktrD4[c]	Leukotriene D4
+No Alberty abbreviation for metabolite	2644	11-cis-retfa[c]	fatty acid 11-cis-retinol
+No Alberty abbreviation for metabolite	2645	9-cis-retfa[c]	fatty acid 9-cis-retinol
+No Alberty abbreviation for metabolite	2646	pd3[c]	Previtamin D3
+No Alberty abbreviation for metabolite	2647	lum3[c]	Lumisterol 3
+No Alberty abbreviation for metabolite	2651	mercplaccys[c]	3-mercaptolactate-cysteine disulfide
+No Alberty abbreviation for metabolite	2652	5mdru1p[c]	5-Methylthio-5-deoxy-D-ribulose 1-phosphate
+No Alberty abbreviation for metabolite	2656	mi1346p[c]	1D-myo-Inositol 1,3,4,6-tetrakisphosphate
+No Alberty abbreviation for metabolite	2657	mi13p[c]	1D-myo-Inositol 1,3-bisphosphate
+No Alberty abbreviation for metabolite	2658	mi3456p[c]	1D-myo-Inositol 3,4,5,6-tetrakisphosphate
+No Alberty abbreviation for metabolite	2659	2mcacn[c]	cis-2-Methylaconitate
+No Alberty abbreviation for metabolite	2660	micit[c]	methylisocitrate
+No Alberty abbreviation for metabolite	2664	adprbp[c]	ADPribose 2'-phosphate
+No Alberty abbreviation for metabolite	2674	oretn[c]	4-oxo-retinoic acid
+No Alberty abbreviation for metabolite	2675	13-cis-oretn[c]	13-cis-oxo-retinoic acid
+No Alberty abbreviation for metabolite	2680	phaccoa[c]	Phenylacetyl-CoA
+No Alberty abbreviation for metabolite	2685	pheacgln[c]	N(2)-phenylacetyl-L-glutamine
+No Alberty abbreviation for metabolite	2688	phyQ[c]	phylloquinone
+No Alberty abbreviation for metabolite	2697	prostgi2[c]	Prostaglandin I2
+No Alberty abbreviation for metabolite	2716	retncoa[c]	retinoyl CoA
+No Alberty abbreviation for metabolite	2717	retnglc[c]	retinoyl glucuronide
+No Alberty abbreviation for metabolite	2719	13-cis-retnglc[c]	13-cis-retinoyl glucuronide
+No Alberty abbreviation for metabolite	2725	sgalside_hs[c]	sulfatide galactocerebroside
+No Alberty abbreviation for metabolite	2727	spc_hs[c]	sphingosylphosphorylcholine
+No Alberty abbreviation for metabolite	2736	tdchola[c]	taurochenodeoxycholic acid
+No Alberty abbreviation for metabolite	2737	dtdp4d6dm[c]	dTDP-4-dehydro-6-deoxy-L-mannose
+No Alberty abbreviation for metabolite	2738	dtdprmn[c]	dTDP-L-rhamnose
+No Alberty abbreviation for metabolite	2750	ts3[c]	Tachysterol 3
+No Alberty abbreviation for metabolite	2755	txa2[c]	Thromboxane A2
+No Alberty abbreviation for metabolite	2760	vitd3[c]	calciol
+No Alberty abbreviation for metabolite	2761	vitd2[c]	vitamin D2
+No Alberty abbreviation for metabolite	2766	whtststerone[c]	w hydroxy testosterone
+No Alberty abbreviation for metabolite	2771	xolest2_hs[c]	cholesterol ester
+No Alberty abbreviation for metabolite	2773	xoltri24[c]	(24S)-7alpha,24-dihydroxycholesterol
+No Alberty abbreviation for metabolite	2775	xoltri25[c]	7alpha,25-dihydroxycholesterol
+No Alberty abbreviation for metabolite	2777	xoltri27[c]	7alpha,26-dihydroxycholesterol
+No Alberty abbreviation for metabolite	2782	yvite[c]	gamma-tocopherol
+No Alberty abbreviation for metabolite	2785	fad_enz_SDH[c]	Flavin adenine dinucleotide oxidized (bound to Succinate Dehydrogenase)
+No Alberty abbreviation for metabolite	2786	fadh2_enz_SDH[c]	Flavin adenine dinucleotide reduced (bound to Succinate Dehydrogenase)

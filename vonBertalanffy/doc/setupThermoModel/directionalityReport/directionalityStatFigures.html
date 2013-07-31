@@ -1,0 +1,224 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of directionalityStatFigures</title>
+  <meta name="keywords" content="directionalityStatFigures">
+  <meta name="description" content="creates pie charts of directionality stats">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html directionalityReport -->
+<h1>directionalityStatFigures
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>creates pie charts of directionality stats</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function directionalityStatFigures(directions,figures) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">creates pie charts of directionality stats
+
+INPUT
+ directions    a structue of boolean vectors with different directionality 
+               assignments where some vectors contain subsets of others
+
+ qualitatively assigned directions 
+   directions.fwdReconBool
+   directions.revReconBool
+   directions.reversibleReconBool
+
+ qualitatively assigned directions using thermo in preference to
+ qualitative assignments but using qualitative assignments where
+ thermodynamic data is lacking
+   directions.fwdReconThermoBool
+   directions.revReconThermoBool
+   directions.reversibleReconThermoBool
+
+ reactions that are qualitatively assigned by thermodynamics
+ directions.fwdThermoOnlyBool
+ directions.revThermoOnlyBool
+ directions.reversibleThermoOnlyBool
+
+ qualtiative -&gt; quantiative changed reaction directions 
+ directions.ChangeReversibleFwd
+ directions.ChangeReversibleRev
+ directions.ChangeForwardReverse
+ directions.ChangeForwardReversible
+
+ subsets of forward qualtiative -&gt; reversible quantiative change
+   directions.ChangeForwardReversibleBool_dGfGC
+   directions.ChangeForwardReversibleBool_dGfGC_byConcLHS
+   directions.ChangeForwardReversibleBool_dGfGC_byConcRHS
+   directions.ChangeForwardReversibleBool_dGfGC_bydGt0
+   directions.ChangeForwardReversibleBool_dGfGC_bydGt0LHS
+   directions.ChangeForwardReversibleBool_dGfGC_bydGt0Mid
+   directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS
+   directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorLHS
+   directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS
+
+   directions.cumNormProbCutoff
+   directions.ChangeForwardForwardBool_dGfGC
+
+ Ronan M.T. Fleming</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="directionalityCheckAll.html" class="code" title="function directions=directionalityCheckAll(model,cumNormProbCutoff,thorStandard,printToFile,printToTable,figures)">directionalityCheckAll</a>	Analysis of differences between qualitative and quantiative directionality assignments.</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function directionalityStatFigures(directions,figures)</a>
+0002 <span class="comment">%creates pie charts of directionality stats</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">%INPUT</span>
+0005 <span class="comment">% directions    a structue of boolean vectors with different directionality</span>
+0006 <span class="comment">%               assignments where some vectors contain subsets of others</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% qualitatively assigned directions</span>
+0009 <span class="comment">%   directions.fwdReconBool</span>
+0010 <span class="comment">%   directions.revReconBool</span>
+0011 <span class="comment">%   directions.reversibleReconBool</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% qualitatively assigned directions using thermo in preference to</span>
+0014 <span class="comment">% qualitative assignments but using qualitative assignments where</span>
+0015 <span class="comment">% thermodynamic data is lacking</span>
+0016 <span class="comment">%   directions.fwdReconThermoBool</span>
+0017 <span class="comment">%   directions.revReconThermoBool</span>
+0018 <span class="comment">%   directions.reversibleReconThermoBool</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% reactions that are qualitatively assigned by thermodynamics</span>
+0021 <span class="comment">% directions.fwdThermoOnlyBool</span>
+0022 <span class="comment">% directions.revThermoOnlyBool</span>
+0023 <span class="comment">% directions.reversibleThermoOnlyBool</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% qualtiative -&gt; quantiative changed reaction directions</span>
+0026 <span class="comment">% directions.ChangeReversibleFwd</span>
+0027 <span class="comment">% directions.ChangeReversibleRev</span>
+0028 <span class="comment">% directions.ChangeForwardReverse</span>
+0029 <span class="comment">% directions.ChangeForwardReversible</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">% subsets of forward qualtiative -&gt; reversible quantiative change</span>
+0032 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC</span>
+0033 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_byConcLHS</span>
+0034 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_byConcRHS</span>
+0035 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0</span>
+0036 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0LHS</span>
+0037 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0Mid</span>
+0038 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS</span>
+0039 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorLHS</span>
+0040 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS</span>
+0041 <span class="comment">%</span>
+0042 <span class="comment">%   directions.cumNormProbCutoff</span>
+0043 <span class="comment">%   directions.ChangeForwardForwardBool_dGfGC</span>
+0044 <span class="comment">%</span>
+0045 <span class="comment">% Ronan M.T. Fleming</span>
+0046 
+0047 <span class="keyword">if</span> figures
+0048     <span class="comment">%     qualitatively assigned directions</span>
+0049     <span class="comment">%   directions.fwdReconBool</span>
+0050     <span class="comment">%   directions.revReconBool</span>
+0051     <span class="comment">%   directions.reversibleReconBool</span>
+0052     figure;
+0053     data=[nnz(directions.fwdReconBool) nnz(directions.revReconBool) nnz(directions.reversibleReconBool)];
+0054     data(data==0)=eps;
+0055     h=pie(data,{{<span class="string">'Forward'</span>,int2str(data(1))},{<span class="string">'Reverse'</span>,int2str(data(2))},{<span class="string">'Reversible'</span>,int2str(data(3))}});
+0056     textObjs = findobj(h,<span class="string">'Type'</span>,<span class="string">'text'</span>);
+0057     set(textObjs,<span class="string">'FontSize'</span>,16);
+0058     title(<span class="string">'Qualitatively assigned directionality'</span>,<span class="string">'FontSize'</span>,16);
+0059     
+0060     <span class="comment">% qualitatively assigned directions using thermo in preference to</span>
+0061     <span class="comment">% qualitative assignments but using qualitative assignments where</span>
+0062     <span class="comment">% thermodynamic data is lacking</span>
+0063     <span class="comment">%   directions.fwdReconThermoBool</span>
+0064     <span class="comment">%   directions.revReconThermoBool</span>
+0065     <span class="comment">%   directions.reversibleReconThermoBool</span>
+0066     figure;
+0067     data=[nnz(directions.fwdReconThermoBool) nnz(directions.revReconThermoBool) nnz(directions.reversibleReconThermoBool)];
+0068     data(data==0)=eps;
+0069     h=pie(data,{{<span class="string">'Forward'</span>,int2str(data(1))},{<span class="string">'Reverse'</span>,int2str(data(2))},{<span class="string">'Reversible'</span>,int2str(data(3))}});
+0070     textObjs = findobj(h,<span class="string">'Type'</span>,<span class="string">'text'</span>);
+0071     set(textObjs,<span class="string">'FontSize'</span>,16);
+0072     title({<span class="string">'Quantitatively assigned in preference to'</span>;<span class="string">'qualitatively assigned directionality'</span>},<span class="string">'FontSize'</span>,16);
+0073     
+0074     <span class="comment">% reactions that are qualitatively assigned by thermodynamics</span>
+0075     <span class="comment">% directions.fwdThermoOnlyBool</span>
+0076     <span class="comment">% directions.revThermoOnlyBool</span>
+0077     <span class="comment">% directions.reversibleThermoOnlyBool</span>
+0078     figure;
+0079     data=[nnz(directions.fwdThermoOnlyBool) nnz(directions.revThermoOnlyBool) nnz(directions.reversibleThermoOnlyBool)];
+0080     data(data==0)=eps;
+0081     h=pie(data,{{<span class="string">'Forward'</span>,int2str(data(1))},{<span class="string">'Reverse'</span>,int2str(data(2))},{<span class="string">'Reversible'</span>,int2str(data(3))}});
+0082     textObjs = findobj(h,<span class="string">'Type'</span>,<span class="string">'text'</span>);
+0083     set(textObjs,<span class="string">'FontSize'</span>,16);
+0084     title({<span class="string">'Exclusively quantitatively assigned directionality'</span>;[<span class="string">'('</span> int2str((sum(data)/length(directions.fwdThermoOnlyBool)*100)) <span class="string">' % of all reactions)'</span>]},<span class="string">'FontSize'</span>,16);
+0085     
+0086     <span class="comment">% qualtiative -&gt; quantiative changed reaction directions</span>
+0087     <span class="comment">% directions.ChangeReversibleFwd</span>
+0088     <span class="comment">% directions.ChangeReversibleRev</span>
+0089     <span class="comment">% directions.ChangeForwardReverse</span>
+0090     <span class="comment">% directions.ChangeForwardReversible</span>
+0091     figure;
+0092     data=[nnz(directions.ChangeReversibleFwd) nnz(directions.ChangeReversibleRev) nnz(directions.ChangeForwardReverse) nnz(directions.ChangeForwardReversible)];
+0093     data(data==0)=eps;
+0094     h=pie(data,{{<span class="string">'Reversible -&gt; Forward'</span>,int2str(data(1))},<span class="keyword">...</span>
+0095         {<span class="string">'Reversible -&gt; Reverse'</span>,int2str(data(2))},<span class="keyword">...</span>
+0096         {<span class="string">'Forward -&gt; Reverse'</span>,int2str(data(3))},<span class="keyword">...</span>
+0097         {<span class="string">'Forward -&gt; Reversible'</span>,int2str(data(4))}});
+0098     textObjs = findobj(h,<span class="string">'Type'</span>,<span class="string">'text'</span>);
+0099     set(textObjs,<span class="string">'FontSize'</span>,16);
+0100     title({<span class="string">'Qualtiative -&gt; quantiative changed reaction directions'</span>;[<span class="string">'('</span> int2str((sum(data)/length(directions.fwdThermoOnlyBool)*100)) <span class="string">' % of all reactions)'</span>]},<span class="string">'FontSize'</span>,16);
+0101     
+0102     
+0103     <span class="comment">% subsets of forward qualtiative -&gt; reversible quantiative change</span>
+0104     <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC</span>
+0105     <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_byConcLHS</span>
+0106     <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_byConcRHS</span>
+0107     <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0</span>
+0108     <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0LHS</span>
+0109     <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0Mid</span>
+0110     <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS</span>
+0111     <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorLHS</span>
+0112     <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS</span>
+0113     figure1=figure;
+0114     data=[nnz(directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorLHS)<span class="keyword">...</span>
+0115     nnz(directions.ChangeForwardReversibleBool_dGfGC_byConcLHS)<span class="keyword">...</span>
+0116     nnz(directions.ChangeForwardReversibleBool_dGfGC_bydGt0LHS)<span class="keyword">...</span>
+0117     nnz(directions.ChangeForwardReversibleBool_dGfGC_bydGt0Mid)<span class="keyword">...</span>
+0118     nnz(directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS)<span class="keyword">...</span>
+0119     nnz(directions.ChangeForwardReversibleBool_dGfGC_byConcRHS)<span class="keyword">...</span>
+0120     nnz(directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS)];
+0121     data(data==0)=eps;
+0122     ph=pie(gca,data,{{<span class="string">'\Delta_{r}G^{\primem} &lt; 0'</span>,int2str(data(1))},<span class="keyword">...</span>
+0123     {<span class="string">'\Delta_{r}G^{\primem}_{est} &lt; 0'</span>,int2str(data(2))},<span class="keyword">...</span>
+0124     {<span class="string">'0 &lt;&lt; \Delta_{r}G^{\primem}_{est} &gt; 0'</span>,int2str(data(3))},<span class="keyword">...</span>
+0125     {<span class="string">'0 &lt;&lt; \Delta_{r}G^{\primem}_{est} &gt;&gt; 0'</span>,int2str(data(4))},<span class="keyword">...</span>
+0126     {<span class="string">'0 &lt; \Delta_{r}G^{\primem}_{est} &gt;&gt; 0'</span>,int2str(data(5))},<span class="keyword">...</span>
+0127     {<span class="string">'\Delta_{r}G^{\primem}_{est} &gt; 0'</span>,int2str(data(6))},<span class="keyword">...</span>
+0128     {<span class="string">'\Delta_{r}G^{\primem} &gt; 0'</span>,int2str(data(7))}});
+0129     textObjs = findobj(ph,<span class="string">'Type'</span>,<span class="string">'text'</span>);
+0130     set(textObjs,<span class="string">'FontSize'</span>,16);
+0131     title({<span class="string">'Forward -&gt; Reversible (\Delta_{f}G^{\primem} from K_{eq} and Group contribution)'</span>;<span class="keyword">...</span>
+0132         [<span class="string">'('</span> int2str((sum(data)/length(directions.fwdThermoOnlyBool)*100)) <span class="string">' % of all reactions)'</span>]},<span class="string">'FontSize'</span>,16);
+0133     saveas(figure1,<span class="string">'iAF1260_GCKeq_fwdReversible_pieChart'</span>,<span class="string">'fig'</span>);
+0134     
+0135     <span class="comment">%   directions.cumNormProbCutoff</span>
+0136     <span class="comment">%   directions.ChangeForwardForwardBool_dGfGC</span>
+0137  
+0138     
+0139 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

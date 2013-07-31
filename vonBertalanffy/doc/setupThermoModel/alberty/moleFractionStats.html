@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of moleFractionStats</title>
+  <meta name="keywords" content="moleFractionStats">
+  <meta name="description" content="Plots of mole fraction statistics.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html alberty -->
+<h1>moleFractionStats
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Plots of mole fraction statistics.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function moleFractionStats(modelT) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">Plots of mole fraction statistics.
+
+plot a histogram of the number of metabolite species relevant between pH 5
+and 9, and a stacked bar chart of the mole fractions of reactants with
+significant (&lt;0.99) distributions over more than one metabolite species.
+
+INPUT
+ modelT.S
+ modelT.met(m).officialName
+ modelT.met(m).mf
+
+ Ronan M.T. Fleming
+ Hulda SH Jul 7 2011 Enabled inclusion of up to 10 microspecies in bar
+                     graph</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../setupThermoModel/setupThermoModel.html" class="code" title="function [modelT,directions,solutionThermoRecon]=setupThermoModel(model,metAbbrAlbertyAbbr,metGroupCont,Alberty2006,computedSpeciesData,temp,PHA,IS,CHI,biomassRxnAbbr,rxnAbbrDatabaseID,defaultMetBounds,metBoundsFile,rxnBoundsFile,Legendre,useKeqData,nStdDevGroupCont,cumNormProbCutoff,figures,printToFile,secondPassAssignment)">setupThermoModel</a>	Thermodynamically constrains a COBRA model.</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function moleFractionStats(modelT)</a>
+0002 <span class="comment">%Plots of mole fraction statistics.</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">%plot a histogram of the number of metabolite species relevant between pH 5</span>
+0005 <span class="comment">%and 9, and a stacked bar chart of the mole fractions of reactants with</span>
+0006 <span class="comment">%significant (&lt;0.99) distributions over more than one metabolite species.</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">%INPUT</span>
+0009 <span class="comment">% modelT.S</span>
+0010 <span class="comment">% modelT.met(m).officialName</span>
+0011 <span class="comment">% modelT.met(m).mf</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% Ronan M.T. Fleming</span>
+0014 <span class="comment">% Hulda SH Jul 7 2011 Enabled inclusion of up to 10 microspecies in bar</span>
+0015 <span class="comment">%                     graph</span>
+0016 
+0017 [nMets,nRxn]=size(modelT.S);
+0018 
+0019 <span class="keyword">for</span> m=1:nMets
+0020     nSpecies(m)=length(find(modelT.met(m).mf)&gt;=0.001); <span class="comment">% Imposed a 0.1% threshold on the abundance of species - Hulda</span>
+0021     <span class="keyword">if</span> (sum(modelT.met(m).mf)-1)&gt;1e-8
+0022         modelT.met(m)
+0023         modelT.met(m).mf
+0024         error(<span class="string">'Sum of mole fractions should be one'</span>)
+0025     <span class="keyword">end</span>
+0026     <span class="keyword">if</span> nnz(find(modelT.met(m).mf&lt;0))&gt;1
+0027         modelT.met(m)
+0028         modelT.met(m).mf
+0029         error(<span class="string">'Mole fractions should be positive'</span>)
+0030     <span class="keyword">end</span>
+0031 <span class="keyword">end</span>
+0032 [n, xout]=hist(nSpecies, [1.5 2.5 3.5 4.5 5.5 6.5 7.5 8.5 9.5 10.5]); <span class="comment">% Uses as many bins as are needed, not just 3 - Hulda</span>
+0033 n = n(1:find(n,1,<span class="string">'last'</span>));
+0034 figure;
+0035 bar(0.5:1:(length(n) - 0.5),n);
+0036 title(<span class="string">'Number of metabolite species for each reactant.'</span>)
+0037 ylabel(<span class="string">'# Reactants'</span>,<span class="string">'FontSize'</span>,14);
+0038 set(gca,<span class="string">'XTick'</span>,0.5:1:(length(n) - 0.5));
+0039 xTickLabels = {<span class="string">'One'</span>, <span class="string">'Two'</span>, <span class="string">'Three'</span>, <span class="string">'Four'</span>, <span class="string">'Five'</span>, <span class="string">'Six'</span>, <span class="string">'Seven'</span>, <span class="string">'Eight'</span>, <span class="string">'Nine'</span>, <span class="string">'Ten'</span>};
+0040 set(gca,<span class="string">'XTickLabel'</span>,xTickLabels(1:length(n)),<span class="string">'FontSize'</span>,14);
+0041 
+0042 
+0043 maxNSpecies=max(nSpecies);
+0044 <span class="comment">%Y=zeros(nSpecies,maxNSpecies);</span>
+0045 Y=zeros(1,maxNSpecies);
+0046 
+0047 ns=1;
+0048 p=1;
+0049 <span class="comment">%sorted 1,2,3</span>
+0050 <span class="keyword">while</span> ns&lt;=maxNSpecies
+0051     <span class="keyword">for</span> m=1:nMets
+0052         <span class="keyword">if</span> ns==nSpecies(m)
+0053             Y(p,1:nSpecies(m))=sort(modelT.met(m).mf',<span class="string">'descend'</span>);
+0054             p=p+1;
+0055         <span class="keyword">end</span>
+0056     <span class="comment">%     Y(m,1:nSpecies(m))=modelT.met(m).mf';</span>
+0057     <span class="keyword">end</span>
+0058     ns=ns+1;
+0059 <span class="keyword">end</span>
+0060 <span class="comment">% figure</span>
+0061 <span class="comment">% barh(Y,'stack')</span>
+0062 
+0063 Y=[];
+0064 <span class="comment">%sorted by connectivity</span>
+0065 significantMF=false(nMets,1);
+0066 Shat=sign(abs(modelT.S));
+0067 A=Shat*Shat';
+0068 metConnect=diag(A,0)';
+0069 size(metConnect);
+0070 [metConnectSorted,ix]=sort(metConnect);
+0071 p=1;
+0072 <span class="keyword">for</span> m=1:nMets
+0073     <span class="comment">%only take cytoplasmic metabolites</span>
+0074     metAbbr=modelT.mets{ix(m)};
+0075     <span class="keyword">if</span> max(modelT.met(ix(m)).mf)&lt;0.95 &amp;&amp; strcmp(<span class="string">'[c]'</span>,metAbbr(end-2:end))
+0076 <span class="comment">%         Y(p,1:nSpecies(ix(m)))=sort(modelT.met(ix(m)).mf','descend');</span>
+0077         Y(p,1:nSpecies(ix(m)))=modelT.met(ix(m)).mf';
+0078         metInd(p)=ix(m);
+0079 <span class="comment">%         metNames{p,1}=[modelT.met(ix(m)).officialName metAbbr(end-2:end)];</span>
+0080         metNames{p,1}=modelT.met(ix(m)).officialName;
+0081         p=p+1;
+0082     <span class="keyword">end</span>
+0083     
+0084 <span class="keyword">end</span>
+0085 
+0086 left=0.1;
+0087 bottom=0.1;
+0088 width=2;
+0089 height=0.8;
+0090 <span class="comment">% subplot(1,2,1,'Position',[left bottom width height])</span>
+0091 figure;
+0092 barh(Y,<span class="string">'stack'</span>);
+0093 set(gca,<span class="string">'XTick'</span>,[0:0.2:1]);
+0094 set(gca,<span class="string">'YTick'</span>,1:length(metInd));
+0095 set(gca,<span class="string">'YTickLabel'</span>,metNames);
+0096 ylim([0.5 length(metInd)-0.5]) ;
+0097 xlabel(<span class="string">'Mole Fraction'</span>,<span class="string">'FontSize'</span>,14);
+0098 set(gca,<span class="string">'FontSize'</span>,14)
+0099 title(<span class="string">'Mole fraction statistics'</span>)
+0100 saveas(gcf,<span class="string">'moleFraction95'</span>,<span class="string">'fig'</span>);
+0101 
+0102 left=0.8;
+0103 <span class="comment">% subplot(1,2,2,'Position',[left bottom width height])</span>
+0104 figure;
+0105 barh(metConnect(metInd));
+0106 set(gca,<span class="string">'YTick'</span>,[]);
+0107 set(gca,<span class="string">'YTickLabel'</span>,[]);
+0108 ylim([0.5 length(metInd)-0.5]) ;
+0109 xlabel(<span class="string">'Metabolite (ordered as mole fraction stat figure)'</span>,<span class="string">'FontSize'</span>,14);
+0110 xlabel(<span class="string">'Connectivity'</span>,<span class="string">'FontSize'</span>,14);
+0111 set(gca,<span class="string">'FontSize'</span>,14);
+0112 title(<span class="string">'Mole fraction statistics: connectivity'</span>)
+0113 saveas(gcf,<span class="string">'moleFraction95connectivity'</span>,<span class="string">'fig'</span>);
+0114 
+0115 
+0116 
+0117 
+0118 
+0119</pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

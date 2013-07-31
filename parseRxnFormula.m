@@ -36,6 +36,7 @@ function [metaboliteList,stoichCoeffList,revFlag] = parseRxnFormula(formula)
 %
 % Richard Que 1/25/10 Modified to handle '-->' and '<==>' as arrows 
 % as well as reactionsformatted as '[compartment] : A --> C'. 
+% IT May 2012 Modified to handle '=>'
 
 tokens = splitString(formula);
 
@@ -58,7 +59,7 @@ for i = 1:length(tokens)
     elseif strcmp(t,'+')
         % Do nothing
         newMetFlag = true;
-    elseif strcmp(t,'->') || strcmp(t,'-->')
+    elseif strcmp(t,'->') || strcmp(t,'-->') || strcmp(t,'=>')
         % Irreversible
         revFlag = false;
         productFlag = true;

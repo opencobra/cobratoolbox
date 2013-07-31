@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of metaboliteMassBalancePlot</title>
+  <meta name="keywords" content="metaboliteMassBalancePlot">
+  <meta name="description" content="plots the top N reactions producing and consuming a metabolite in a flux">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html secondPass -->
+<h1>metaboliteMassBalancePlot
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>plots the top N reactions producing and consuming a metabolite in a flux</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function metaboliteMassBalancePlot(model,metAbbr,solution,N) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">plots the top N reactions producing and consuming a metabolite in a flux
+solution
+
+INPUT
+ model
+ metAbbr       metabolite abbreviation
+ solution      solveCobraLP output of a solution to FBA problem
+ N             Number of reactions to include for production/consumption
+
+Ronan M.T. Fleming</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function metaboliteMassBalancePlot(model,metAbbr,solution,N)</a>
+0002 <span class="comment">%plots the top N reactions producing and consuming a metabolite in a flux</span>
+0003 <span class="comment">%solution</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">%INPUT</span>
+0006 <span class="comment">% model</span>
+0007 <span class="comment">% metAbbr       metabolite abbreviation</span>
+0008 <span class="comment">% solution      solveCobraLP output of a solution to FBA problem</span>
+0009 <span class="comment">% N             Number of reactions to include for production/consumption</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">%Ronan M.T. Fleming</span>
+0012 
+0013 
+0014 [nMet,nRxn]=size(model.S);
+0015 
+0016 metInd=find(strcmp(metAbbr,model.mets));
+0017 <span class="keyword">if</span> isempty(metInd)
+0018     error(<span class="string">'metabolite abbreviation not found'</span>)
+0019 <span class="keyword">end</span>
+0020 
+0021 tol = 1e-6;
+0022 
+0023 negS=(model.S(metInd,:)&lt;0)';
+0024 posS=(model.S(metInd,:)&gt;0)';
+0025 
+0026 v=solution.full;
+0027 
+0028 consumeBool=( negS &amp; v&gt;tol ) | ( posS &amp; v&lt;-tol );
+0029 produceBool=( posS &amp; v&gt;tol ) | ( negS &amp; v&lt;-tol );
+0030 
+0031 vConsume=zeros(nRxn,1);
+0032 vProduce=zeros(nRxn,1);
+0033 
+0034 vConsume(consumeBool)=v(consumeBool);
+0035 vProduce(produceBool)=v(produceBool);
+0036 
+0037 [sortedConsume,XIMax]=sort(abs(vConsume),<span class="string">'descend'</span>);
+0038 NConsume=nnz(sortedConsume~=0);
+0039 
+0040 [sortedProduce,XIMin]=sort(abs(vProduce),<span class="string">'descend'</span>);
+0041 NProduce=nnz(sortedProduce~=0);
+0042 
+0043 figure
+0044 h1=subplot(2,1,1);
+0045 NConsume=min([NConsume,N]);
+0046 YI=(1:NConsume)';
+0047 barh(YI,v(XIMax(1:NConsume)));
+0048 <span class="comment">% title(['Consumers (top) and Producers of ' metAbbr],'FontSize',16)</span>
+0049 
+0050 <span class="keyword">if</span> NConsume==0
+0051     set(h1,<span class="string">'YTickLabel'</span>,<span class="string">'NONE'</span>,<span class="string">'FontSize'</span>,8);
+0052 <span class="keyword">else</span>
+0053     <span class="keyword">for</span> n=1:NConsume
+0054         <span class="keyword">if</span> strcmp(model.rxn(XIMax(n)).directionality,<span class="string">'forward'</span>)
+0055             YTickLabelMax{n}=[<span class="string">'*'</span> model.rxns{XIMax(n)}];
+0056         <span class="keyword">else</span>
+0057             YTickLabelMax{n}=model.rxns{XIMax(n)};
+0058         <span class="keyword">end</span>
+0059     <span class="keyword">end</span>
+0060     set(h1,<span class="string">'Ytick'</span>, 1:NConsume)
+0061     set(h1,<span class="string">'YTickLabel'</span>,YTickLabelMax,<span class="string">'FontSize'</span>,8);
+0062     ylim([0.5 NConsume+0.5])
+0063 <span class="keyword">end</span>
+0064 xlabel([<span class="string">'Consumer of '</span> metAbbr],<span class="string">'FontSize'</span>,12)
+0065 
+0066 h2=subplot(2,1,2);
+0067 NProduce=min([NProduce,N]);
+0068 YI=(1:NProduce)';
+0069 barh(YI,v(XIMin(1:NProduce)));
+0070 <span class="keyword">if</span> NProduce==0
+0071     set(h1,<span class="string">'YTickLabel'</span>,<span class="string">'NONE'</span>,<span class="string">'FontSize'</span>,8);
+0072 <span class="keyword">else</span>
+0073     <span class="keyword">for</span> n=1:NProduce
+0074         <span class="keyword">if</span> strcmp(model.rxn(XIMin(n)).directionality,<span class="string">'forward'</span>)
+0075             YTickLabelMin{n}=[<span class="string">'*'</span> model.rxns{XIMin(n)}];
+0076         <span class="keyword">else</span>
+0077             YTickLabelMin{n}=model.rxns{XIMin(n)};
+0078         <span class="keyword">end</span>
+0079     <span class="keyword">end</span>
+0080     set(h2,<span class="string">'Ytick'</span>, 1:NProduce)
+0081     set(h2,<span class="string">'YTickLabel'</span>,YTickLabelMin,<span class="string">'FontSize'</span>,8);
+0082     ylim([0.5 NProduce+0.5])
+0083 <span class="keyword">end</span>
+0084 xlabel([<span class="string">'Producer of '</span> metAbbr],<span class="string">'FontSize'</span>,12)</pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

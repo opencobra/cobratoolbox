@@ -1,0 +1,33 @@
+********************************************************************************************************
+********************************************************************************************************
+*This is an example of a gene index file. It is an text file with gene information in columns, 1 gene  *
+*per line with 7 columns of information. The column order is stated under the broken line.  If you     *
+*create your gene index in a program like Excel and copy/paste the gene information to notepad the     *
+*taps are automatically generated.								       *
+*												       *
+*You may notice that not all columns are aligned, for example line 2. This happens because specific    *
+*columns have more characters then the next. It is normal and will not have any affect on the column   *
+*order.												       *
+*												       *	
+*All lines that start with a star are regarded as comments. Please avoid from having empty lines,      *
+*unnecessary information and etc in your gene indexes.       					       * *												       *
+*This information is strictly explanatory and not necessary accurate.				       * 
+*------------------------------------------------------------------------------------------------------*
+*Locus name | Gene Symbol | Chromosome | 5'coordinates | 3' coordinates | Gene Type | Putative function*
+********************************************************************************************************
+********************************************************************************************************
+7498.1	XDH	2p23.1	1	2	3	xanthine dehydrogenase	   
+9380.1	GRHPR	9q12-321	1	2	3	glyoxylate reductase/hydroxypyruvate reductase	   
+3156.1	HMGCR	5q1-q14	1	2	3	3-hydroxy-3-methylglutaryl-Coenzyme A reductase	   
+10975.1	UQCR	19p13.3	1	2	3	ubiquinol-cytochrome c reductase (6.4kD) subunit	   
+29796.2	HSPC051	22q12.2	1	2	3	ubiquinol-cytochrome c reductase complex	   
+53630.1	BCDO1	16q23.2	1	2	3	beta-carotene 15, 15'-dioxygenase	   
+3620.1	INDO	8p12-21.3	1	2	3	indoleamine-pyrrole 2,3 dioxygenase	   
+1594.1	CYP27B1	12q13.	1	2	3	cytochrome P450, family 27, subfamily B, polypeptide 1	   
+1557.1	CYP2C19	10q24	1	2	3	cytochrome P450, family 2, subfamily C, polypeptide 19	   
+1583.1	CYP11A1	15q-q24	1	2	3	cytochrome P450, family 11, subfamily A, polypeptide 1	   
+26330.1	GAPDS	19q13.1	1	2	3	glyceraldehyde-3-phosphate dehydrogenase, testis-specific	   
+6391.1	SDHC	1q21	1	2	3	succinate dehydrogenase complex,  
+6392.1	SDHD	11q23	1	2	3	succinate dehydrogenase complex, 
+84129.1	FLJ125	3q22.1	1	2	3	hypothetical protein FLJ12592	   
+	 

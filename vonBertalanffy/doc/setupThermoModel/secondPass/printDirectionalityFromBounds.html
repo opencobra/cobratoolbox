@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of printDirectionalityFromBounds</title>
+  <meta name="keywords" content="printDirectionalityFromBounds">
+  <meta name="description" content="prints the directionality for each reaction depending on the bounds for">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html secondPass -->
+<h1>printDirectionalityFromBounds
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>prints the directionality for each reaction depending on the bounds for</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function directionality=printDirectionalityFromBounds(model,lb,ub) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">prints the directionality for each reaction depending on the bounds for
+each reaction. Defaults to using model.lb &amp;  model.ub if none provided
+
+ INPUT
+ model
+
+ OPTIONAL INPUT
+ lb        flux lower bounds
+ ub        flux upper bounds
+
+ OUTPUT
+ directionality    n x 1 cell array of strings with directionality for
+                   each reaction
+
+Ronan M. T. Fleming</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function directionality=printDirectionalityFromBounds(model,lb,ub)</a>
+0002 <span class="comment">%prints the directionality for each reaction depending on the bounds for</span>
+0003 <span class="comment">%each reaction. Defaults to using model.lb &amp;  model.ub if none provided</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% INPUT</span>
+0006 <span class="comment">% model</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% OPTIONAL INPUT</span>
+0009 <span class="comment">% lb        flux lower bounds</span>
+0010 <span class="comment">% ub        flux upper bounds</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% OUTPUT</span>
+0013 <span class="comment">% directionality    n x 1 cell array of strings with directionality for</span>
+0014 <span class="comment">%                   each reaction</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">%Ronan M. T. Fleming</span>
+0017 
+0018 [nMet,nRxn]=size(model.S);
+0019 
+0020 <span class="keyword">if</span> ~exist(<span class="string">'lb'</span>,<span class="string">'var'</span>)
+0021     lb=model.lb;
+0022 <span class="keyword">end</span>
+0023 <span class="keyword">if</span> ~exist(<span class="string">'ub'</span>,<span class="string">'var'</span>)
+0024     ub=model.ub;
+0025 <span class="keyword">end</span>
+0026 
+0027 directionality=cell(nRxn,1);
+0028 
+0029 <span class="keyword">for</span> n=1:nRxn
+0030     <span class="keyword">if</span> lb(n)&lt;0
+0031         <span class="keyword">if</span> ub(n)&gt;0
+0032             directionality{n,1}=<span class="string">'reversible'</span>;
+0033         <span class="keyword">else</span>
+0034             directionality{n,1}=<span class="string">'reverse'</span>;
+0035         <span class="keyword">end</span>
+0036     <span class="keyword">else</span>
+0037         <span class="keyword">if</span> ub(n)&gt;0
+0038             directionality{n,1}=<span class="string">'forward only'</span>;
+0039         <span class="keyword">else</span>
+0040             directionality{n,1}=<span class="string">'closed'</span>;
+0041         <span class="keyword">end</span>
+0042     <span class="keyword">end</span>
+0043 <span class="keyword">end</span>
+0044             
+0045</pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

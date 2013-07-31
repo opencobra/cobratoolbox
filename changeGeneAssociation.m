@@ -17,6 +17,7 @@ function model = changeGeneAssociation(model,rxnName,grRule,geneNameList,systNam
 % model             COBRA Toolbox model structure with new gene reaction
 %                   associations
 %
+
 % Markus Herrgard 1/12/07
 
 if (nargin < 4)
@@ -28,7 +29,7 @@ end
 [isInModel,rxnID] = ismember(rxnName,model.rxns);
 
 if (~isInModel)
-    error(['Reaction ' rxnName ' not in the model']); 
+    error(['Reaction ' rxnName ' not in the model']);
 end
 
 if ~isfield(model,'genes')
@@ -37,14 +38,18 @@ end
 nGenes = length(model.genes);
 model.rules{rxnID} = '';
 % IT 01/2010 - this line caused problems for xls2model.m
-    model.rxnGeneMat(rxnID,:) = zeros(1,nGenes);
-% Remove extra white space
-grRule = regexprep(grRule,'\s{2,}',' ');
-grRule = regexprep(grRule,'( ','(');
-grRule = regexprep(grRule,' )',')');
+model.rxnGeneMat(rxnID,:) = zeros(1,nGenes);
+model.rxnGeneMat(rxnID,find(model.rxnGeneMat(rxnID,:))) = 0;
+
 
 if (~isempty(grRule))
+    % Ronan & Stefan 13/9/2011 - moved this inside check if empty
+    % Remove extra white space
+    grRule = regexprep(grRule,'\s{2,}',' ');
+    grRule = regexprep(grRule,'( ','(');
+    grRule = regexprep(grRule,' )',')');
     [genes,rule] = parseBoolean(grRule);
+    
     for i = 1:length(genes)
         if (translateNamesFlag)
             % Translate gene names to systematic names

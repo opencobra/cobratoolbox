@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of readMetRxnBoundsFiles</title>
+  <meta name="keywords" content="readMetRxnBoundsFiles">
+  <meta name="description" content="Set default concentration and flux bounds, and/or optionally read in upper and lower bounds from files.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html experimentalData -->
+<h1>readMetRxnBoundsFiles
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Set default concentration and flux bounds, and/or optionally read in upper and lower bounds from files.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function model=readMetRxnBoundsFiles(model,setDefaultConc,setDefaultFlux,defaultMetBounds,metBoundsFile,rxnBoundsFile) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">Set default concentration and flux bounds, and/or optionally read in upper and lower bounds from files.
+
+Upper and lower bounds on metabolite concentrations and reaction fluxes may be read in and
+mapped to the model. Bounds read from files overwrite reconstruction bounds, or default bounds.
+
+INPUT
+ model.mets
+ model.rxns
+ setDefaultConc            1 = sets default bounds on conc    
+ setDefaultFlux            1 = sets all reactions reversible [-1000,1000]
+ defaultMetBounds.ub       Default upper bound on metabolite
+                           concentrations in M
+ defaultMetBounds.lb       Default lower bound on metabolite
+                           concentrations in M
+ 
+OPTIONAL INPUT
+ metBoundsFile   name of tab delimited file with metabolite bounds
+                 format: '%s %f %f' 
+                         i.e. abbreviation lowerBound upperBound       
+ rxnBoundsFile   name of tab delimited file with reaction bounds
+                 format: '%s %f %f' 
+                         i.e. abbreviation lowerBound upperBound  
+
+OUTPUT
+ model.met(j).concMin
+ model.met(j).concMax
+ model.lb
+ model.ub
+
+ Ronan M.T. Fleming</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../setupThermoModel/directionalityReport/readableCobraModel.html" class="code" title="function model=readableCobraModel(model)">readableCobraModel</a>	Make a spreadsheet view of the model content for ease of viewing.</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../setupThermoModel/setupThermoModel.html" class="code" title="function [modelT,directions,solutionThermoRecon]=setupThermoModel(model,metAbbrAlbertyAbbr,metGroupCont,Alberty2006,computedSpeciesData,temp,PHA,IS,CHI,biomassRxnAbbr,rxnAbbrDatabaseID,defaultMetBounds,metBoundsFile,rxnBoundsFile,Legendre,useKeqData,nStdDevGroupCont,cumNormProbCutoff,figures,printToFile,secondPassAssignment)">setupThermoModel</a>	Thermodynamically constrains a COBRA model.</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function model=readMetRxnBoundsFiles(model,setDefaultConc,setDefaultFlux,defaultMetBounds,metBoundsFile,rxnBoundsFile)</a>
+0002 <span class="comment">%Set default concentration and flux bounds, and/or optionally read in upper and lower bounds from files.</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">%Upper and lower bounds on metabolite concentrations and reaction fluxes may be read in and</span>
+0005 <span class="comment">%mapped to the model. Bounds read from files overwrite reconstruction bounds, or default bounds.</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%INPUT</span>
+0008 <span class="comment">% model.mets</span>
+0009 <span class="comment">% model.rxns</span>
+0010 <span class="comment">% setDefaultConc            1 = sets default bounds on conc</span>
+0011 <span class="comment">% setDefaultFlux            1 = sets all reactions reversible [-1000,1000]</span>
+0012 <span class="comment">% defaultMetBounds.ub       Default upper bound on metabolite</span>
+0013 <span class="comment">%                           concentrations in M</span>
+0014 <span class="comment">% defaultMetBounds.lb       Default lower bound on metabolite</span>
+0015 <span class="comment">%                           concentrations in M</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">%OPTIONAL INPUT</span>
+0018 <span class="comment">% metBoundsFile   name of tab delimited file with metabolite bounds</span>
+0019 <span class="comment">%                 format: '%s %f %f'</span>
+0020 <span class="comment">%                         i.e. abbreviation lowerBound upperBound</span>
+0021 <span class="comment">% rxnBoundsFile   name of tab delimited file with reaction bounds</span>
+0022 <span class="comment">%                 format: '%s %f %f'</span>
+0023 <span class="comment">%                         i.e. abbreviation lowerBound upperBound</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">%OUTPUT</span>
+0026 <span class="comment">% model.met(j).concMin</span>
+0027 <span class="comment">% model.met(j).concMax</span>
+0028 <span class="comment">% model.lb</span>
+0029 <span class="comment">% model.ub</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">% Ronan M.T. Fleming</span>
+0032 
+0033 <span class="keyword">if</span> ~exist(<span class="string">'metBoundsFile'</span>,<span class="string">'var'</span>)
+0034     metBoundsFile=[];
+0035 <span class="keyword">end</span>
+0036 <span class="keyword">if</span> ~exist(<span class="string">'rxnBoundsFile'</span>,<span class="string">'var'</span>)
+0037     rxnBoundsFile=[];
+0038 <span class="keyword">end</span>
+0039 
+0040 [nMet,nRxn]=size(model.S);
+0041 <span class="keyword">if</span> setDefaultConc
+0042 <span class="comment">%     Passed in user defined default bounds instead of min = 1e-5 M and max 0.02 M. -Hulda</span>
+0043     <span class="comment">%default Molar concentrations</span>
+0044     concMin = defaultMetBounds.lb; <span class="comment">% M</span>
+0045     concMax = defaultMetBounds.ub; <span class="comment">% M</span>
+0046         <span class="comment">%set loose bounds on concentrations</span>
+0047     <span class="keyword">for</span> m=1:nMet
+0048         model.met(m).concMin=concMin;
+0049         model.met(m).concMax=concMax;
+0050     <span class="keyword">end</span>
+0051 <span class="keyword">end</span>
+0052 <span class="keyword">if</span> setDefaultFlux    
+0053     <span class="comment">%default flux</span>
+0054     vMax=1000;
+0055     <span class="comment">%first set all reactions reversible</span>
+0056     <span class="keyword">for</span> n=1:nRxn
+0057         model.lb(n)=-vMax;
+0058         model.ub(n)=vMax;
+0059     <span class="keyword">end</span>
+0060 <span class="keyword">end</span>
+0061         
+0062 <span class="keyword">if</span> ~isempty(metBoundsFile)
+0063     fid=fopen(metBoundsFile,<span class="string">'r'</span>);
+0064     <span class="keyword">if</span> fid==-1
+0065         error([<span class="string">'Cannot open '</span> metBoundsFile]);
+0066     <span class="keyword">else</span>
+0067         fprintf(<span class="string">'%s\n'</span>,[<span class="string">'Reading metabolite conc bounds from: '</span> metBoundsFile]);
+0068     <span class="keyword">end</span>
+0069     C = textscan(fid,<span class="string">'%s %f %f'</span>);
+0070     C1=C{1};
+0071     C2=C{2};
+0072     C3=C{3};
+0073 
+0074     <span class="keyword">for</span> m=1:length(C1)
+0075         ind=strcmp(C1{m,1},model.mets);
+0076         <span class="keyword">if</span> nnz(ind)==0
+0077             warning(<span class="string">'%s\n'</span>,[<span class="string">'No metabolite abbreviation '</span> C1{m,1} <span class="string">' in model'</span>])
+0078         <span class="keyword">else</span>
+0079             model.met(ind).concMin=C2(m,1);
+0080             model.met(ind).concMax=C3(m,1);
+0081         <span class="keyword">end</span>
+0082     <span class="keyword">end</span>
+0083     fclose(fid);
+0084 <span class="keyword">end</span>
+0085 
+0086 <span class="keyword">if</span> ~isempty(rxnBoundsFile)
+0087     fid=fopen(rxnBoundsFile,<span class="string">'r'</span>);
+0088     <span class="keyword">if</span> fid==-1
+0089         error([<span class="string">'Cannot open '</span> rxnBoundsFile]);
+0090     <span class="keyword">else</span>
+0091         fprintf(<span class="string">'%s\n'</span>,[<span class="string">'Reading reaction flux bounds from: '</span> rxnBoundsFile]);
+0092     <span class="keyword">end</span>
+0093     C = textscan(fid,<span class="string">'%s %.20f %.20f'</span>); <span class="comment">% Changed format from %f to %.20f - Hulda</span>
+0094     C1=C{1};
+0095     C2=C{2};
+0096     C3=C{3};
+0097     <span class="keyword">for</span> n=1:length(C1)
+0098         <span class="comment">%then specify particular reactions</span>
+0099         ind=strcmp(C1{n,1},model.rxns);
+0100         <span class="keyword">if</span> nnz(ind)==0
+0101             error(<span class="string">'%s\n'</span>,[<span class="string">'No reaction abbreviation '</span> C1{n,1} <span class="string">' in model'</span>])
+0102         <span class="keyword">else</span>
+0103             model.lb(ind)=C2(n,1);
+0104             model.ub(ind)=C3(n,1);
+0105         <span class="keyword">end</span>
+0106     <span class="keyword">end</span>
+0107     fclose(fid);
+0108 <span class="keyword">end</span>
+0109 
+0110 <span class="comment">%the necessary fields might not be present when this script is used to</span>
+0111 <span class="comment">%initialise a thermodynamic model, but if it is, then update the readable</span>
+0112 <span class="comment">%tables of information on metabolites and reactions</span>
+0113 <span class="keyword">if</span> isfield(model.met(1),<span class="string">'mu0Min'</span>)
+0114     <span class="comment">%make cobra model readable</span>
+0115     model=<a href="../../setupThermoModel/directionalityReport/readableCobraModel.html" class="code" title="function model=readableCobraModel(model)">readableCobraModel</a>(model);
+0116 <span class="keyword">end</span>
+0117 
+0118 <span class="comment">%double check that all bounds are finite</span>
+0119 <span class="keyword">for</span> m=1:nMet
+0120     <span class="keyword">if</span> ~isfinite(model.met(m).concMin)
+0121         error([model.mets{m} <span class="string">' :Minimum concentration bound is not finite'</span>])
+0122     <span class="keyword">end</span>
+0123     <span class="keyword">if</span> ~isfinite(model.met(m).concMax)
+0124         error([model.mets{m} <span class="string">' :Minimum concentration bound is not finite'</span>])
+0125     <span class="keyword">end</span>
+0126 <span class="keyword">end</span>
+0127 <span class="keyword">for</span> n=1:nRxn
+0128     <span class="keyword">if</span> ~isfinite(model.lb(n))
+0129         error([model.rxns{n} <span class="string">' :Minimum flux bound is not finite'</span>])
+0130     <span class="keyword">end</span>
+0131     <span class="keyword">if</span> ~isfinite(model.ub(n))
+0132         error([model.rxns{n} <span class="string">' :Maximum flux bound is not finite'</span>])
+0133     <span class="keyword">end</span>
+0134 <span class="keyword">end</span>
+0135</pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

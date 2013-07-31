@@ -1,0 +1,1121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of setThermoReactionDirectionalityiAF1260</title>
+  <meta name="keywords" content="setThermoReactionDirectionalityiAF1260">
+  <meta name="description" content="Second pass assignment of reaction directionality (E. coli specific)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html secondPass -->
+<h1>setThermoReactionDirectionalityiAF1260
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Second pass assignment of reaction directionality (E. coli specific)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [modelD,solutionThermoRecon,solutionRecon,model0]=setThermoReactionDirectionalityiAF1260(model,directions,maxFlux,hardCoupleOxPhos) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">Second pass assignment of reaction directionality (E. coli specific)
+
+Set the upper and lower bounds for each internal flux based on
+thermodynamic data where available. The remainder of the reactions without
+thermodynamic data stay as they were in the reconstruction
+To apply this script to a particular stoichiometric model, one would have
+to modify it manually. At the moment, it is specfic to E. coli. The same
+manual adjustment of reaction directionality made here to get the model to
+grow, and grow at the rate seen in vivo, may not work for other organisms.
+Nevertheless, this script outlines the steps needed to identify what needs
+to be changed to get a model to grow and then to get it to grow at the
+correct rate. There is currently no automatic substitution for manual
+curation.
+
+INPUT
+ model.NaNdG0RxnBool               reactions with NaN Gibbs Energy
+ model.transportRxnBool            transport reactions
+
+ directions    a structue of boolean vectors with different directionality 
+               assignments where some vectors contain subsets of others
+
+ qualitatively assigned directions 
+       directions.fwdReconBool
+       directions.revReconBool
+       directions.reversibleReconBool
+
+ qualitatively assigned directions using thermo in preference to
+ qualitative assignments but using qualitative assignments where
+ thermodynamic data is lacking
+       directions.fwdReconThermoBool
+       directions.revReconThermoBool
+       directions.reversibleReconThermoBool
+
+ reactions that are qualitatively assigned by thermodynamics
+       directions.fwdThermoOnlyBool
+       directions.revThermoOnlyBool
+       directions.reversibleThermoOnlyBool
+
+ qualtiative -&gt; quantiative changed reaction directions 
+       directions.ChangeReversibleFwd
+       directions.ChangeReversibleRev
+       directions.ChangeForwardReverse
+       directions.ChangeForwardReversible
+
+ subsets of forward qualtiative -&gt; reversible quantiative change
+   directions.ChangeForwardReversible_dGfKeq
+   directions.ChangeForwardReversibleBool_dGfGC
+   directions.ChangeForwardReversibleBool_dGfGC_byConcLHS
+   directions.ChangeForwardReversibleBool_dGfGC_byConcRHS
+   directions.ChangeForwardReversibleBool_dGfGC_bydGt0
+   directions.ChangeForwardReversibleBool_dGfGC_bydGt0LHS
+   directions.ChangeForwardReversibleBool_dGfGC_bydGt0Mid
+   directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS
+   directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorLHS
+   directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS
+
+OUTPUT
+ amalgamation of reconstruction and thermodynamic assignment directions
+ model.lb_reconThermo      lower bound
+ model.ub_reconThermo      upper bound
+ solutionThermoRecon       FBA with thermodynamic in preference to
+                           reconstruction directions, with exceptions
+                           specific to E. coli given below
+ solutionRecon             FBA with reconstruction direction
+
+ Ronan M. T. Fleming</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="secondPassDirectionalityAssignment.html" class="code" title="function  [model,solutionThermoRecon,solutionRecon,model1]=secondPassDirectionalityAssignment(model)">secondPassDirectionalityAssignment</a>	Driver to call model specific code to manually generate a physiological model (if first pass does not result in a physiological model).</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [modelD,solutionThermoRecon,solutionRecon,model0]=setThermoReactionDirectionalityiAF1260(model,directions,maxFlux,hardCoupleOxPhos)</a>
+0002 <span class="comment">%Second pass assignment of reaction directionality (E. coli specific)</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">%Set the upper and lower bounds for each internal flux based on</span>
+0005 <span class="comment">%thermodynamic data where available. The remainder of the reactions without</span>
+0006 <span class="comment">%thermodynamic data stay as they were in the reconstruction</span>
+0007 <span class="comment">%To apply this script to a particular stoichiometric model, one would have</span>
+0008 <span class="comment">%to modify it manually. At the moment, it is specfic to E. coli. The same</span>
+0009 <span class="comment">%manual adjustment of reaction directionality made here to get the model to</span>
+0010 <span class="comment">%grow, and grow at the rate seen in vivo, may not work for other organisms.</span>
+0011 <span class="comment">%Nevertheless, this script outlines the steps needed to identify what needs</span>
+0012 <span class="comment">%to be changed to get a model to grow and then to get it to grow at the</span>
+0013 <span class="comment">%correct rate. There is currently no automatic substitution for manual</span>
+0014 <span class="comment">%curation.</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">%INPUT</span>
+0017 <span class="comment">% model.NaNdG0RxnBool               reactions with NaN Gibbs Energy</span>
+0018 <span class="comment">% model.transportRxnBool            transport reactions</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% directions    a structue of boolean vectors with different directionality</span>
+0021 <span class="comment">%               assignments where some vectors contain subsets of others</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">% qualitatively assigned directions</span>
+0024 <span class="comment">%       directions.fwdReconBool</span>
+0025 <span class="comment">%       directions.revReconBool</span>
+0026 <span class="comment">%       directions.reversibleReconBool</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">% qualitatively assigned directions using thermo in preference to</span>
+0029 <span class="comment">% qualitative assignments but using qualitative assignments where</span>
+0030 <span class="comment">% thermodynamic data is lacking</span>
+0031 <span class="comment">%       directions.fwdReconThermoBool</span>
+0032 <span class="comment">%       directions.revReconThermoBool</span>
+0033 <span class="comment">%       directions.reversibleReconThermoBool</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">% reactions that are qualitatively assigned by thermodynamics</span>
+0036 <span class="comment">%       directions.fwdThermoOnlyBool</span>
+0037 <span class="comment">%       directions.revThermoOnlyBool</span>
+0038 <span class="comment">%       directions.reversibleThermoOnlyBool</span>
+0039 <span class="comment">%</span>
+0040 <span class="comment">% qualtiative -&gt; quantiative changed reaction directions</span>
+0041 <span class="comment">%       directions.ChangeReversibleFwd</span>
+0042 <span class="comment">%       directions.ChangeReversibleRev</span>
+0043 <span class="comment">%       directions.ChangeForwardReverse</span>
+0044 <span class="comment">%       directions.ChangeForwardReversible</span>
+0045 <span class="comment">%</span>
+0046 <span class="comment">% subsets of forward qualtiative -&gt; reversible quantiative change</span>
+0047 <span class="comment">%   directions.ChangeForwardReversible_dGfKeq</span>
+0048 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC</span>
+0049 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_byConcLHS</span>
+0050 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_byConcRHS</span>
+0051 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0</span>
+0052 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0LHS</span>
+0053 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0Mid</span>
+0054 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS</span>
+0055 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorLHS</span>
+0056 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS</span>
+0057 <span class="comment">%</span>
+0058 <span class="comment">%OUTPUT</span>
+0059 <span class="comment">% amalgamation of reconstruction and thermodynamic assignment directions</span>
+0060 <span class="comment">% model.lb_reconThermo      lower bound</span>
+0061 <span class="comment">% model.ub_reconThermo      upper bound</span>
+0062 <span class="comment">% solutionThermoRecon       FBA with thermodynamic in preference to</span>
+0063 <span class="comment">%                           reconstruction directions, with exceptions</span>
+0064 <span class="comment">%                           specific to E. coli given below</span>
+0065 <span class="comment">% solutionRecon             FBA with reconstruction direction</span>
+0066 <span class="comment">%</span>
+0067 <span class="comment">% Ronan M. T. Fleming</span>
+0068 
+0069 <span class="keyword">if</span> ~exist(<span class="string">'maxFlux'</span>,<span class="string">'var'</span>)
+0070     maxFlux=1000;
+0071 <span class="keyword">end</span>
+0072 <span class="keyword">if</span> ~exist(<span class="string">'hardCoupleOxPhos'</span>,<span class="string">'var'</span>)
+0073     hardCoupleOxPhos=0;
+0074 <span class="keyword">end</span>
+0075 
+0076 <span class="keyword">if</span> nnz(directions.fwdThermoOnlyBool &amp; directions.revThermoOnlyBool &amp; directions.reversibleThermoOnlyBool)~=0
+0077     error(<span class="string">'Thermodynamically forward, reverse and reversible must be mutually exclusive'</span>)
+0078 <span class="keyword">end</span>
+0079 
+0080 changeOK = changeCobraSolverParams(<span class="string">'LP'</span>,<span class="string">'printLevel'</span>,0);
+0081 
+0082 osenseStr=<span class="string">'max'</span>;
+0083 <span class="keyword">if</span> 1
+0084     minNorm=1e-6;
+0085 <span class="keyword">else</span>
+0086     minNorm = 0;
+0087 <span class="keyword">end</span>
+0088 
+0089 <span class="comment">%bypass changes to the model when used in setupThermoModel, such that</span>
+0090 <span class="comment">%setThermoReactionDirectionality can be debugged.</span>
+0091 model0=model;
+0092 
+0093 <span class="comment">%test if model0 can grow with reconstruction directions</span>
+0094 solutionRecon = optimizeCbModel(model0,osenseStr, minNorm);
+0095 fprintf(<span class="string">'\n%s\t%g\n'</span>,<span class="string">'Growth with reconstruction directions: '</span>,solutionRecon.f);
+0096 
+0097 <span class="comment">%manipulate reaction directionality of a duplicate: modelD</span>
+0098 modelD=model;
+0099 
+0100 <span class="comment">%reaction directionality</span>
+0101 <span class="comment">%keep exchange bounds the same as for the reconstruction</span>
+0102 modelD.lb_reconThermo=modelD.lb;
+0103 modelD.ub_reconThermo=modelD.ub;
+0104 
+0105 <span class="comment">%this makes this extra condition ineffective, the idea was to assign</span>
+0106 <span class="comment">%direction also based on where mean dG0 was, but its tricky and cant easily</span>
+0107 <span class="comment">%be justified so for now, it is left out.</span>
+0108 dGt0MeanCutoff=Inf;
+0109 
+0110 [nMet,nRxn]=size(modelD.S);
+0111 <span class="comment">%now set internal reaction directions</span>
+0112 <span class="keyword">for</span> n=1:nRxn
+0113 <span class="comment">%     if strcmp('SUCOAS',modelD.rxns{n})</span>
+0114 <span class="comment">%         pause(0.01)</span>
+0115 <span class="comment">%     end</span>
+0116     <span class="keyword">if</span> modelD.SIntRxnBool(n)
+0117         free=1;
+0118         <span class="keyword">if</span> modelD.NaNdG0RxnBool(n)
+0119             <span class="comment">%for the reactions that involve a NaN metabolite standard Gibbs energy of</span>
+0120             <span class="comment">%formation, use the directions given by the reconstruction</span>
+0121             <span class="keyword">if</span> modelD.lb(n)&lt;0 &amp;&amp; modelD.ub(n)&gt;0 &amp;&amp; free
+0122                 modelD.lb_reconThermo(n)=-maxFlux;
+0123                 modelD.ub_reconThermo(n)=maxFlux;
+0124                 free=0;
+0125             <span class="keyword">end</span>
+0126             <span class="keyword">if</span> modelD.lb(n)&gt;=0 &amp;&amp; modelD.ub(n)&gt;0 &amp;&amp; free
+0127                 modelD.lb_reconThermo(n)=0;
+0128                 modelD.ub_reconThermo(n)=maxFlux;
+0129                 free=0;
+0130             <span class="keyword">end</span>
+0131             <span class="keyword">if</span> modelD.lb(n)&lt;0 &amp;&amp; modelD.ub(n)&lt;=0 &amp;&amp; free
+0132                 modelD.lb_reconThermo(n)=-maxFlux;
+0133                 modelD.ub_reconThermo(n)=0;
+0134                 <span class="comment">%                 free=0;</span>
+0135             <span class="keyword">end</span>
+0136             <span class="keyword">if</span> modelD.lb(n)==0 &amp;&amp; modelD.ub(n)==0
+0137                 error([<span class="string">'Reaction '</span> modelD.rxns{n} <span class="string">' set to zero. Why?'</span>])
+0138             <span class="keyword">end</span>
+0139             <span class="comment">%note that there is no thermodynamic directionality assignment</span>
+0140             <span class="comment">%for this reaction</span>
+0141             modelD.rxn(n).directionalityThermo=NaN;
+0142         <span class="keyword">else</span>
+0143             <span class="comment">%first set them all to be reversible</span>
+0144             modelD.rxn(n).directionalityThermo=<span class="string">'reversible'</span>;
+0145             modelD.lb_reconThermo(n)=-maxFlux;
+0146             modelD.ub_reconThermo(n)=maxFlux;
+0147             yyyy=1;
+0148             <span class="comment">% reactions that are qualitatively assigned by thermodynamics</span>
+0149             <span class="keyword">if</span> directions.fwdThermoOnlyBool(n) &amp;&amp; free &amp;&amp; yyyy
+0150                 modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0151                 modelD.lb_reconThermo(n)=0;
+0152                 modelD.ub_reconThermo(n)=maxFlux;
+0153                 free=0;
+0154             <span class="keyword">end</span>
+0155             <span class="keyword">if</span> directions.revThermoOnlyBool(n) &amp;&amp; free &amp;&amp; yyyy
+0156                 modelD.rxn(n).directionalityThermo=<span class="string">'reverse'</span>;
+0157                 modelD.lb_reconThermo(n)=-maxFlux;
+0158                 modelD.ub_reconThermo(n)=0;
+0159                 free=0;
+0160             <span class="keyword">end</span>
+0161             yyyy=1;
+0162             <span class="keyword">if</span> yyyy
+0163                 <span class="keyword">if</span> directions.reversibleThermoOnlyBool(n) &amp;&amp; free
+0164                     <span class="comment">%thermodynamic assignments from Albertys data</span>
+0165                     <span class="keyword">if</span> directions.ChangeForwardReversible_dGfKeq(n) &amp;&amp; free
+0166                         <span class="keyword">if</span> ((modelD.rxn(n).dGt0Min+modelD.rxn(n).dGt0Max)/2)&lt;=-dGt0MeanCutoff &amp;&amp; free
+0167                             modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0168                             modelD.lb_reconThermo(n)=0;
+0169                             modelD.ub_reconThermo(n)=maxFlux;
+0170                             free=0;
+0171                         <span class="keyword">end</span>
+0172                         <span class="keyword">if</span> ((modelD.rxn(n).dGt0Min+modelD.rxn(n).dGt0Max)/2)&gt;=dGt0MeanCutoff &amp;&amp; free
+0173                             modelD.rxn(n).directionalityThermo=<span class="string">'reverse'</span>;
+0174                             modelD.lb_reconThermo(n)=-maxFlux;
+0175                             modelD.ub_reconThermo(n)=0;
+0176                             free=0;
+0177                         <span class="keyword">end</span>
+0178                         <span class="keyword">if</span> ((modelD.rxn(n).dGt0Min+modelD.rxn(n).dGt0Max)/2)&gt;-dGt0MeanCutoff &amp;&amp; ((modelD.rxn(n).dGt0Min+modelD.rxn(n).dGt0Max)/2)&lt;dGt0MeanCutoff &amp;&amp; free
+0179                             modelD.rxn(n).directionalityThermo=<span class="string">'reversible'</span>;
+0180                             modelD.lb_reconThermo(n)=-maxFlux;
+0181                             modelD.ub_reconThermo(n)=maxFlux;
+0182                             free=0;
+0183                         <span class="keyword">end</span>
+0184                     <span class="keyword">end</span>
+0185                     <span class="comment">%thermodynamic assignments from reactions with at least</span>
+0186                     <span class="comment">%one metabolite with dGft0 from group contribution data</span>
+0187                     <span class="keyword">if</span> directions.ChangeForwardReversibleBool_dGfGC(n) &amp;&amp; free
+0188                         <span class="keyword">if</span> directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorLHS(n) &amp;&amp; free
+0189                             modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0190                             modelD.lb_reconThermo(n)=0;
+0191                             modelD.ub_reconThermo(n)=maxFlux;
+0192                             free=0;
+0193                             <span class="comment">%                             if ((modelD.rxn(n).dGt0Min+modelD.rxn(n).dGt0Max)/2)&lt;=-dGt0MeanCutoff &amp;&amp; free</span>
+0194                             <span class="comment">%                                 modelD.rxn(n).directionalityThermo='forward';</span>
+0195                             <span class="comment">%                                 modelD.lb_reconThermo(n)=0;</span>
+0196                             <span class="comment">%                                 modelD.ub_reconThermo(n)=maxFlux;</span>
+0197                             <span class="comment">%                                 free=0;</span>
+0198                             <span class="comment">%                             else</span>
+0199                             <span class="comment">%                                 modelD.rxn(n).directionalityThermo='reversible';</span>
+0200                             <span class="comment">%                                 modelD.lb_reconThermo(n)=-maxFlux;</span>
+0201                             <span class="comment">%                                 modelD.ub_reconThermo(n)=maxFlux;</span>
+0202                             <span class="comment">%                                 free=0;</span>
+0203                             <span class="comment">%                             end</span>
+0204                         <span class="keyword">end</span>
+0205                         <span class="keyword">if</span> directions.ChangeForwardReversibleBool_dGfGC_byConcLHS(n) || directions.ChangeForwardReversibleBool_dGfGC_bydGt0LHS(n) &amp;&amp; free
+0206                             modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0207                             modelD.lb_reconThermo(n)=0;
+0208                             modelD.ub_reconThermo(n)=maxFlux;
+0209                             free=0;
+0210                         <span class="keyword">end</span>
+0211                         <span class="comment">%</span>
+0212                         <span class="keyword">if</span> directions.ChangeForwardReversibleBool_dGfGC_bydGt0Mid(n)
+0213                             <span class="comment">%too much error in estimates, or too evenly</span>
+0214                             <span class="comment">%spread about zero to make an assignment either</span>
+0215                             <span class="comment">%way</span>
+0216                             modelD.rxn(n).directionalityThermo=<span class="string">'reversible'</span>;
+0217                             modelD.lb_reconThermo(n)=-maxFlux;
+0218                             modelD.ub_reconThermo(n)=maxFlux;
+0219                             free=0;
+0220                         <span class="keyword">end</span>
+0221                         <span class="keyword">if</span> directions.ChangeForwardReversibleBool_dGfGC_byConcRHS(n)&amp;&amp; free
+0222                             <span class="keyword">if</span> ((modelD.rxn(n).dGt0Min+modelD.rxn(n).dGt0Max)/2)&gt;=dGt0MeanCutoff &amp;&amp; free
+0223                                 modelD.rxn(n).directionalityThermo=<span class="string">'reverse'</span>;
+0224                                 modelD.lb_reconThermo(n)=-maxFlux;
+0225                                 modelD.ub_reconThermo(n)=0;
+0226                                 free=0;
+0227                             <span class="keyword">else</span>
+0228                                 modelD.rxn(n).directionalityThermo=<span class="string">'reversible'</span>;
+0229                                 modelD.lb_reconThermo(n)=-maxFlux;
+0230                                 modelD.ub_reconThermo(n)=maxFlux;
+0231                                 free=0;
+0232                             <span class="keyword">end</span>
+0233                         <span class="keyword">end</span>
+0234                         <span class="keyword">if</span> directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS(n) &amp;&amp; free
+0235                             <span class="keyword">if</span> ((modelD.rxn(n).dGt0Min+modelD.rxn(n).dGt0Max)/2)&gt;=dGt0MeanCutoff &amp;&amp; free
+0236                                 modelD.rxn(n).directionalityThermo=<span class="string">'reverse'</span>;
+0237                                 modelD.lb_reconThermo(n)=-maxFlux;
+0238                                 modelD.ub_reconThermo(n)=0;
+0239                                 free=0;
+0240                             <span class="keyword">else</span>
+0241                                 modelD.rxn(n).directionalityThermo=<span class="string">'reversible'</span>;
+0242                                 modelD.lb_reconThermo(n)=-maxFlux;
+0243                                 modelD.ub_reconThermo(n)=maxFlux;
+0244                                 free=0;
+0245                             <span class="keyword">end</span>
+0246                         <span class="keyword">end</span>
+0247                         <span class="keyword">if</span> directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS(n) &amp;&amp; free
+0248                             <span class="keyword">if</span> ((modelD.rxn(n).dGt0Min+modelD.rxn(n).dGt0Max)/2)&gt;=dGt0MeanCutoff &amp;&amp; free
+0249                                 modelD.rxn(n).directionalityThermo=<span class="string">'reverse'</span>;
+0250                                 modelD.lb_reconThermo(n)=-maxFlux;
+0251                                 modelD.ub_reconThermo(n)=0;
+0252                                 <span class="comment">%                             free=0;</span>
+0253                             <span class="keyword">else</span>
+0254                                 modelD.rxn(n).directionalityThermo=<span class="string">'reversible'</span>;
+0255                                 modelD.lb_reconThermo(n)=-maxFlux;
+0256                                 modelD.ub_reconThermo(n)=maxFlux;
+0257                                 <span class="comment">%                             free=0;</span>
+0258                             <span class="keyword">end</span>
+0259                         <span class="keyword">end</span>
+0260                     <span class="keyword">end</span>
+0261                 <span class="keyword">end</span>
+0262             <span class="keyword">end</span>
+0263 
+0264             <span class="keyword">if</span> modelD.lb_reconThermo(n)==0 &amp;&amp; modelD.ub_reconThermo(n)==0
+0265                 error([<span class="string">'Reaction '</span> modelD.rxns{n} <span class="string">' set to zero. Why?'</span>])
+0266             <span class="keyword">end</span>
+0267         <span class="keyword">end</span>
+0268     <span class="keyword">end</span>
+0269 <span class="keyword">end</span>
+0270 
+0271 
+0272 <span class="comment">%test if modelD can grow with thermodynamically assigned directions</span>
+0273 modelD.lb=modelD.lb_reconThermo;
+0274 modelD.ub=modelD.ub_reconThermo;
+0275 
+0276 solutionThermoRecon = optimizeCbModel(modelD,osenseStr, minNorm);
+0277 fprintf(<span class="string">'\n%s\t%g\n'</span>,<span class="string">'Growth with thermo &amp; recon directions: '</span>,solutionThermoRecon.f);
+0278 
+0279 <span class="comment">%%%%%%%%%%%%%%  reset the reconstruction directions  %%%%%%%%%%%%%%%%%%%%</span>
+0280 modelD.lb=model.lb;
+0281 modelD.ub=model.ub;
+0282 
+0283 <span class="keyword">if</span> abs(solutionThermoRecon.f)&lt;abs(solutionRecon.f/10) || solutionThermoRecon.stat~=1
+0284 
+0285     thermoForwardNeededReverseBool=false(nRxn,1);
+0286     thermoReverseNeededForwardBool=false(nRxn,1);
+0287 
+0288     fprintf(<span class="string">'\n%s\n%s\n'</span>, <span class="string">'Checking for reaction directions in the optimal reconstruction FBA'</span>,<span class="keyword">...</span>
+0289         <span class="string">'that might possibly conflict with the directions set by thermodynamics...'</span>);
+0290 
+0291     rt=modelD.gasConstant*modelD.temp;
+0292     <span class="comment">%find the directions of the optimal solution that might possibly conflict</span>
+0293     <span class="comment">%with the directions set by thermodynamics in preference to the</span>
+0294     <span class="comment">%reconstruction directions</span>
+0295     v=solutionRecon.x;
+0296     minV=0.001;
+0297     fprintf(<span class="string">'%s\n'</span>, [<span class="string">'Assuming any flux with magnitude less than '</span> num2str(minV) <span class="string">' is zero'</span>]);
+0298     v(abs(v)&lt;minV)=0;
+0299     <span class="keyword">for</span> n=1:nRxn
+0300         <span class="keyword">if</span> sign(v(n))==1 &amp;&amp; strcmp(modelD.rxn(n).directionalityThermo,<span class="string">'reverse'</span>)
+0301             thermoReverseNeededForwardBool(n)=1;
+0302             fprintf(<span class="string">'%s\n'</span>,<span class="string">'Thermodynamically reverse reaction that may be needed in a forward direction'</span>)
+0303             fprintf(<span class="string">'%i\t%s\t%s\t%6.2f\t%6.2f\n%s\n'</span>,n,modelD.rxn(n).officialName,modelD.rxn(n).abbreviation,modelD.rxn(n).dGtMin,modelD.rxn(n).dGtMax,<span class="string">'substrates:'</span>);
+0304             sInd=find(modelD.S(:,n)&lt;0);
+0305             <span class="keyword">for</span> p=1:length(sInd)
+0306                 fprintf(<span class="string">'%i\t%8g\t%8.2f\t%6.2f\t%6.2f\t%20s\t%s\n'</span>,sInd(p),modelD.S(sInd(p),n),modelD.met(sInd(p)).dGft0,rt*log(modelD.met(sInd(p)).concMin),rt*log(modelD.met(sInd(p)).concMax),modelD.met(sInd(p)).abbreviation,modelD.met(sInd(p)).officialName);
+0307             <span class="keyword">end</span>
+0308             fprintf(<span class="string">'%s\n'</span>,<span class="string">'products:'</span>);
+0309             pInd=find(modelD.S(:,n)&gt;0);
+0310             <span class="keyword">for</span> p=1:length(pInd)
+0311                 fprintf(<span class="string">'%i\t%8g\t%8.2f\t%6.2f\t%6.2f\t%20s\t%s\n'</span>,pInd(p),modelD.S(pInd(p),n),modelD.met(pInd(p)).dGft0,rt*log(modelD.met(pInd(p)).concMin),rt*log(modelD.met(pInd(p)).concMax),modelD.met(pInd(p)).abbreviation,modelD.met(pInd(p)).officialName);
+0312             <span class="keyword">end</span>
+0313             fprintf(<span class="string">'\n'</span>);
+0314         <span class="keyword">end</span>
+0315         <span class="keyword">if</span> sign(v(n))==-1 &amp;&amp; strcmp(modelD.rxn(n).directionalityThermo,<span class="string">'forward'</span>)
+0316             thermoForwardNeededReverseBool(n)=1;
+0317             fprintf(<span class="string">'%s\n'</span>,<span class="string">'Thermodynamically forward reaction that may be needed in a reverse direction:'</span>)
+0318             fprintf(<span class="string">'%i\t%s\t%s\t%6.2f\t%6.2f\n%s\n'</span>,n,modelD.rxn(n).officialName,modelD.rxn(n).abbreviation,modelD.rxn(n).dGtMin,modelD.rxn(n).dGtMax,<span class="string">'substrates:'</span>);
+0319             sInd=find(modelD.S(:,n)&lt;0);
+0320             <span class="keyword">for</span> p=1:length(sInd)
+0321                 fprintf(<span class="string">'%i\t%8g\t%8.2f\t%6.2f\t%6.2f\t%20s\t%s\n'</span>,sInd(p),modelD.S(sInd(p),n),modelD.met(sInd(p)).dGft0,rt*log(modelD.met(sInd(p)).concMin),rt*log(modelD.met(sInd(p)).concMax),modelD.met(sInd(p)).abbreviation,modelD.met(sInd(p)).officialName);
+0322             <span class="keyword">end</span>
+0323             fprintf(<span class="string">'%s\n'</span>,<span class="string">'products:'</span>);
+0324             pInd=find(modelD.S(:,n)&gt;0);
+0325             <span class="keyword">for</span> p=1:length(pInd)
+0326                 fprintf(<span class="string">'%i\t%8g\t%8.2f\t%6.2f\t%6.2f\t%20s\t%s\n'</span>,pInd(p),modelD.S(pInd(p),n),modelD.met(pInd(p)).dGft0,rt*log(modelD.met(pInd(p)).concMin),rt*log(modelD.met(pInd(p)).concMax),modelD.met(pInd(p)).abbreviation,modelD.met(pInd(p)).officialName);
+0327             <span class="keyword">end</span>
+0328             fprintf(<span class="string">'\n'</span>);
+0329         <span class="keyword">end</span>
+0330     <span class="keyword">end</span>
+0331 
+0332     <span class="comment">%run through each of the possible changes one by one to see which one</span>
+0333     <span class="comment">%is stoping the modelD from growing</span>
+0334     <span class="keyword">if</span> 0
+0335         <span class="keyword">for</span> n=1:nRxn
+0336             <span class="keyword">if</span> thermoReverseNeededForwardBool(n) || thermoForwardNeededReverseBool(n)
+0337                 modelD.lb=modelD.lb_reconThermo;
+0338                 modelD.ub=modelD.ub_reconThermo;
+0339                 <span class="keyword">if</span> thermoForwardNeededReverseBool(n)
+0340                     modelD.lb(n)=-maxFlux;
+0341                     modelD.ub(n)=0;
+0342                 <span class="keyword">else</span>
+0343                     modelD.lb(n)=0;
+0344                     modelD.ub(n)=maxFlux;
+0345                 <span class="keyword">end</span>
+0346 
+0347                 <span class="comment">%test if modelD can grow</span>
+0348                 solution = optimizeCbModel(modelD,osenseStr, minNorm);
+0349                 fprintf(<span class="string">'%s%70s%s%g\n'</span>,<span class="string">'Changed '</span> , modelD.rxn(n).officialName,<span class="string">'. Growth: '</span>,solution.f);
+0350             <span class="keyword">end</span>
+0351         <span class="keyword">end</span>
+0352         fprintf(<span class="string">'\n'</span>);
+0353         fprintf(<span class="string">'\n'</span>);
+0354     <span class="keyword">end</span>
+0355     
+0356     
+0357     <span class="comment">%relax all</span>
+0358     modelD.lb=modelD.lb_reconThermo;
+0359     modelD.ub=modelD.ub_reconThermo;
+0360     <span class="comment">%     modelD.lb(thermoReverseNeededForwardBool)=-maxFlux;</span>
+0361     <span class="comment">%     modelD.ub(thermoReverseNeededForwardBool)=maxFlux;</span>
+0362     <span class="comment">%     modelD.lb(thermoForwardNeededReverseBool)=-maxFlux;</span>
+0363     <span class="comment">%     modelD.ub(thermoForwardNeededReverseBool)=maxFlux;</span>
+0364     
+0365     <span class="comment">%qualitatively forward -&gt; quantiatively reverse</span>
+0366     <span class="keyword">if</span> dGt0MeanCutoff~=Inf;
+0367         <span class="comment">%officialName: 'histidinol phosphatase'</span>
+0368         <span class="comment">%equation: 'h2o[c] + hisp[c]  -&gt; histd[c] + pi[c] '</span>
+0369         modelD.lb(strcmp(modelD.rxns,<span class="string">'HISTP'</span>))=0;
+0370         modelD.ub(strcmp(modelD.rxns,<span class="string">'HISTP'</span>))=maxFlux;
+0371         modelD.rxn(strcmp(modelD.rxns,<span class="string">'HISTP'</span>)).directionalityThermo=<span class="string">'forward'</span>;
+0372         
+0373         <span class="comment">%officialName: 'tetrahydrodipicolinate succinylase'</span>
+0374         <span class="comment">%equation: 'h2o[c] + succoa[c] + thdp[c]  -&gt; coa[c] + sl2a6o[c] '</span>
+0375         modelD.lb(strcmp(modelD.rxns,<span class="string">'THDPS'</span>))=0;
+0376         modelD.ub(strcmp(modelD.rxns,<span class="string">'THDPS'</span>))=maxFlux;
+0377         modelD.rxn(strcmp(modelD.rxns,<span class="string">'THDPS'</span>)).directionalityThermo=<span class="string">'forward'</span>;
+0378         
+0379         <span class="comment">%   officialName: 'glycogen phosphorylase'</span>
+0380         <span class="comment">%   equation: 'glycogen[c] + pi[c]  -&gt; g1p[c] '</span>
+0381         modelD.lb(strcmp(modelD.rxns,<span class="string">'GLCP'</span>))=0;
+0382         modelD.ub(strcmp(modelD.rxns,<span class="string">'GLCP'</span>))=maxFlux;
+0383         modelD.rxn(strcmp(modelD.rxns,<span class="string">'GLCP'</span>)).directionalityThermo=<span class="string">'forward'</span>;
+0384         
+0385         <span class="comment">%   officialName: 'glycogen phosphorylase'</span>
+0386         <span class="comment">%   equation: 'bglycogen[c] + pi[c]  -&gt; g1p[c] '</span>
+0387         modelD.lb(strcmp(modelD.rxns,<span class="string">'GLCP2'</span>))=0;
+0388         modelD.ub(strcmp(modelD.rxns,<span class="string">'GLCP2'</span>))=maxFlux;
+0389         modelD.rxn(strcmp(modelD.rxns,<span class="string">'GLCP2'</span>)).directionalityThermo=<span class="string">'forward'</span>;
+0390     <span class="keyword">end</span>
+0391     
+0392     
+0393     <span class="comment">%THESE APPEAR TO BE ESSENTIAL MANUALLY CURATED DIRECTIONS</span>
+0394     <span class="comment">%   officialName: 'methionine adenosyltransferase'</span>
+0395     <span class="comment">%    equation: 'atp[c] + h2o[c] + met-L[c]  -&gt; amet[c] + pi[c] + ppi[c] '</span>
+0396     modelD.lb(strcmp(modelD.rxns,<span class="string">'METAT'</span>))=0;
+0397     modelD.ub(strcmp(modelD.rxns,<span class="string">'METAT'</span>))=maxFlux;
+0398     modelD.rxn(strcmp(modelD.rxns,<span class="string">'METAT'</span>)).directionalityThermo=<span class="string">'forward'</span>;
+0399     
+0400     <span class="comment">%   officialName: '2 C methyl D erythritol 2 4 cyclodiphosphate synthase'</span>
+0401     <span class="comment">%   equation: '2p4c2me[c]  -&gt; 2mecdp[c] + cmp[c] '</span>
+0402     modelD.lb(strcmp(modelD.rxns,<span class="string">'MECDPS'</span>))=0;
+0403     modelD.ub(strcmp(modelD.rxns,<span class="string">'MECDPS'</span>))=maxFlux;
+0404     modelD.rxn(strcmp(modelD.rxns,<span class="string">'MECDPS'</span>)).directionalityThermo=<span class="string">'forward'</span>;
+0405     
+0406     <span class="comment">%     officialName: 'phosphoribosylaminoimidazole synthase'</span>
+0407     <span class="comment">%     equation: 'atp[c] + fpram[c]  -&gt; adp[c] + air[c] + 2 h[c] + pi[c] '</span>
+0408     modelD.lb(strcmp(modelD.rxns,<span class="string">'PRAIS'</span>))=0;
+0409     modelD.ub(strcmp(modelD.rxns,<span class="string">'PRAIS'</span>))=maxFlux;
+0410     modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0411     
+0412     <span class="comment">%   officialName: 'IMP cyclohydrolase'</span>
+0413     <span class="comment">%   equation: 'h2o[c] + imp[c]  &lt;=&gt; fprica[c] '</span>
+0414     modelD.lb(strcmp(modelD.rxns,<span class="string">'IMPC'</span>))=-maxFlux;
+0415     modelD.ub(strcmp(modelD.rxns,<span class="string">'IMPC'</span>))=0;
+0416     modelD.rxn(strcmp(modelD.rxns,<span class="string">'IMPC'</span>)).directionalityThermo=<span class="string">'forward'</span>;
+0417     
+0418     <span class="comment">%ATP MAINTENANCE</span>
+0419     <span class="comment">%     officialName: 'ATP maintenance requirement'</span>
+0420     <span class="comment">%     equation: 'atp[c] + h2o[c]  -&gt; adp[c] + h[c] + pi[c] '</span>
+0421     modelD.lb(strcmp(modelD.rxns,<span class="string">'ATPM'</span>))=8.39;<span class="comment">%-0.000001;</span>
+0422     modelD.ub(strcmp(modelD.rxns,<span class="string">'ATPM'</span>))=8.39;<span class="comment">%+0.000001;</span>
+0423     modelD.rxn(strcmp(modelD.rxns,<span class="string">'ATPM'</span>)).directionalityThermo=<span class="string">'forward'</span>;
+0424     
+0425     <span class="comment">% phosphate reversible transport via symport periplasm     PIt2rpp</span>
+0426     modelD.lb(strcmp(modelD.rxns,<span class="string">'PIt2rpp'</span>))=0;
+0427     modelD.ub(strcmp(modelD.rxns,<span class="string">'PIt2rpp'</span>))=maxFlux;
+0428     
+0429 <span class="comment">%     % anhMurNAc tripeptide transport in via proton symport periplasm</span>
+0430 <span class="comment">%     modelD.lb(strcmp(modelD.rxns,'AGM3Pt2ppGlcNAc'))=0;</span>
+0431 <span class="comment">%     modelD.ub(strcmp(modelD.rxns,'AGM3Pt2ppGlcNAc'))=maxFlux;</span>
+0432     
+0433 <span class="keyword">if</span> 0 <span class="comment">%needed May 20th 2011</span>
+0434     <span class="comment">%   officialName: 'NAD synthase nh3'</span>
+0435     modelD.lb(strcmp(modelD.rxns,<span class="string">'NADS1'</span>))=0;
+0436     modelD.ub(strcmp(modelD.rxns,<span class="string">'NADS1'</span>))=maxFlux;
+0437     modelD.rxn(strcmp(modelD.rxns,<span class="string">'NADS1'</span>)).directionalityThermo=<span class="string">'forward'</span>;
+0438     
+0439     <span class="comment">%   officialName: 'riboflavin kinase'</span>
+0440     modelD.lb(strcmp(modelD.rxns,<span class="string">'RBFK'</span>))=0;
+0441     modelD.ub(strcmp(modelD.rxns,<span class="string">'RBFK'</span>))=maxFlux;
+0442     modelD.rxn(strcmp(modelD.rxns,<span class="string">'RBFK'</span>)).directionalityThermo=<span class="string">'forward'</span>;
+0443     
+0444     <span class="comment">%   officialName: 'FMN adenylyltransferase'</span>
+0445     modelD.lb(strcmp(modelD.rxns,<span class="string">'FMNAT'</span>))=0;
+0446     modelD.ub(strcmp(modelD.rxns,<span class="string">'FMNAT'</span>))=maxFlux;
+0447     modelD.rxn(strcmp(modelD.rxns,<span class="string">'FMNAT'</span>)).directionalityThermo=<span class="string">'forward'</span>;
+0448     
+0449     <span class="comment">%   officialName: 'dephospho CoA kinase'</span>
+0450     modelD.lb(strcmp(modelD.rxns,<span class="string">'DPCOAK'</span>))=0;
+0451     modelD.ub(strcmp(modelD.rxns,<span class="string">'DPCOAK'</span>))=maxFlux;
+0452     modelD.rxn(strcmp(modelD.rxns,<span class="string">'DPCOAK'</span>)).directionalityThermo=<span class="string">'forward'</span>;
+0453     
+0454 <span class="keyword">end</span>
+0455     <span class="comment">%     for n=1:nRxn</span>
+0456     <span class="comment">%         if strcmp(modelD.rxn(n).regulationStatus,'Off')</span>
+0457     <span class="comment">%             modelD.lb(n)=0;</span>
+0458     <span class="comment">%             modelD.ub(n)=0;</span>
+0459     <span class="comment">%         end</span>
+0460     <span class="comment">%     end</span>
+0461     
+0462     <span class="comment">%     modelD.lb(strcmp(modelD.rxns,'DUTPDP'))=0;</span>
+0463     <span class="comment">%     modelD.lb(strcmp(modelD.rxns,'NTPP8'))=0;</span>
+0464     <span class="comment">%     modelD.lb(strcmp(modelD.rxns,'RBK'))=0;</span>
+0465     <span class="comment">%     modelD.lb(strcmp(modelD.rxns,'GLYCL'))=0;</span>
+0466     <span class="comment">%     modelD.lb(strcmp(modelD.rxns,'XPPT'))=0;</span>
+0467     <span class="comment">%     modelD.lb(strcmp(modelD.rxns,'CYTDK2'))=0;</span>
+0468     <span class="comment">%     modelD.lb(strcmp(modelD.rxns,'CMPN'))=0;</span>
+0469     <span class="comment">%     modelD.lb(strcmp(modelD.rxns,'FMNRx2'))=0;</span>
+0470     <span class="comment">%     modelD.lb(strcmp(modelD.rxns,'HACD1i'))=0;</span>
+0471     <span class="comment">%     %Transhydrogenase reactions which together with the transport reactions</span>
+0472     <span class="comment">%     %were allowing too fast growth</span>
+0473     <span class="comment">%     modelD.lb(strcmp(modelD.rxns,'THD2pp'))=0;</span>
+0474     <span class="comment">%     modelD.lb(strcmp(modelD.rxns,'NADTRHD'))=0;</span>
+0475     
+0476     <span class="comment">%test if modelD can grow</span>
+0477     solution = optimizeCbModel(modelD,osenseStr, minNorm);
+0478     fprintf(<span class="string">'%s%g\n'</span>,<span class="string">'Reconstruction directions for essential reactions. Growth: '</span>,solution.f);
+0479     
+0480 <span class="keyword">end</span>
+0481 
+0482 <span class="comment">%Reinstate qualitatively forward reactions that were quantitatively</span>
+0483 <span class="comment">%assigned to reverse if still not growing</span>
+0484 <span class="keyword">if</span> abs (solution.f)&lt;1e-4 &amp;&amp; 1
+0485     <span class="keyword">if</span> 1
+0486         <span class="comment">%run through each of the possible changes adding one by one to see which one</span>
+0487         <span class="comment">%is stoping the modelD from growing</span>
+0488         <span class="keyword">for</span> n=1:nRxn
+0489             <span class="keyword">if</span> directions.ChangeForwardReverse(n)
+0490                 tmplb=modelD.lb(n);
+0491                 tmpub=modelD.ub(n);
+0492                 modelD.lb(n)=0;
+0493                 modelD.ub(n)=maxFlux;
+0494                 
+0495                 <span class="comment">%test if modelD can grow</span>
+0496                 solution = optimizeCbModel(modelD,osenseStr, minNorm);
+0497                 fprintf(<span class="string">'%s%s%70s%s%g\n'</span>,<span class="string">'Changed also '</span> , modelD.rxns{n}, modelD.rxn(n).officialName,<span class="string">'. Growth: '</span>,solution.f);
+0498             
+0499                 <span class="comment">%</span>
+0500                 modelD.lb(n)=tmplb;
+0501                 modelD.ub(n)=tmpub;
+0502             <span class="keyword">end</span>
+0503         <span class="keyword">end</span>
+0504     <span class="keyword">end</span>
+0505     <span class="keyword">if</span> 1
+0506         <span class="comment">%recapitulate all originally forward reactions that were set to reverse</span>
+0507         <span class="keyword">if</span> abs (solution.f)&lt;1e-4
+0508             modelD.lb(directions.ChangeForwardReverse)=model.lb(directions.ChangeForwardReverse);
+0509             modelD.ub(directions.ChangeForwardReverse)=model.ub(directions.ChangeForwardReverse);
+0510             <span class="comment">%test if modelD can grow</span>
+0511             solution = optimizeCbModel(modelD,osenseStr, minNorm);
+0512             fprintf(<span class="string">'%s%g\n'</span>,[<span class="string">'Reconstruction directions for '</span> num2str(nnz(directions.ChangeForwardReverse)) <span class="string">'  forward reversed reactions. Growth: '</span>],solution.f);
+0513         <span class="keyword">end</span>
+0514     <span class="keyword">else</span>
+0515         <span class="comment">%recapitulate all originally forward transport reactions that were set to reverse</span>
+0516         <span class="keyword">if</span> abs (solution.f)&lt;1e-4
+0517             modelD.lb(directions.ChangeForwardReverse &amp; modelT.transportRxnBool)=model.lb(directions.ChangeForwardReverse &amp; modelT.transportRxnBool);
+0518             modelD.ub(directions.ChangeForwardReverse &amp; modelT.transportRxnBool)=model.ub(directions.ChangeForwardReverse &amp; modelT.transportRxnBool);
+0519             <span class="comment">%test if modelD can grow</span>
+0520             solution = optimizeCbModel(modelD,osenseStr, minNorm);
+0521             fprintf(<span class="string">'%s%g\n'</span>,[<span class="string">'Reconstruction directions for '</span> num2str(nnz(directions.ChangeForwardReverse)) <span class="string">'  forward reversed reactions. Growth: '</span>],solution.f);
+0522         <span class="keyword">end</span>
+0523     <span class="keyword">end</span>
+0524 <span class="keyword">end</span>
+0525 
+0526 <span class="comment">%Reinstate qualitatively reversible reactions that were quantitatively</span>
+0527 <span class="comment">%assigned to reverse if still not growing</span>
+0528 <span class="keyword">if</span> abs (solution.f)&lt;1e-4 &amp;&amp; 0
+0529     modelD.lb(directions.ChangeReversibleRev)=model.lb(directions.ChangeReversibleRev);
+0530     modelD.ub(directions.ChangeReversibleRev)=model.ub(directions.ChangeReversibleRev);
+0531     <span class="comment">%test if modelD can grow</span>
+0532     solution = optimizeCbModel(modelD,osenseStr, minNorm);
+0533     fprintf(<span class="string">'%s%g\n'</span>,<span class="string">'Reconstruction directions for reversible reversed reactions. Growth: '</span>,solution.f);
+0534 <span class="keyword">end</span>
+0535 
+0536 <span class="comment">%%%%% Model should be growing by now %%%%%%%%%%%%%%%%%%%</span>
+0537 
+0538 <span class="comment">%set thermodynamically reversible reactions to forward if high potential</span>
+0539 <span class="comment">%cofactors are is consumed (only for internal reactions)</span>
+0540 <span class="keyword">for</span> n=1:nRxn
+0541 <span class="keyword">if</span> modelD.SIntRxnBool(n)
+0542     <span class="keyword">if</span>  strcmp(modelD.rxn(n).directionalityThermo,<span class="string">'reversible'</span>) &amp;&amp; strcmp(modelD.rxn(n).directionality,<span class="string">'forward'</span>)
+0543         <span class="comment">% %             cofactor substrates</span>
+0544         <span class="keyword">if</span> modelD.S(strcmp(<span class="string">'atp[c]'</span>,modelD.mets),n)&lt;0
+0545             modelD.lb(n)=0;
+0546             modelD.ub(n)=maxFlux;
+0547             modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0548         <span class="keyword">end</span>
+0549         <span class="keyword">if</span> modelD.S(strcmp(<span class="string">'atp[p]'</span>,modelD.mets),n)&lt;0
+0550             modelD.lb(n)=0;
+0551             modelD.ub(n)=maxFlux;
+0552             modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0553         <span class="keyword">end</span>
+0554         <span class="keyword">if</span> modelD.S(strcmp(<span class="string">'atp[e]'</span>,modelD.mets),n)&lt;0
+0555             modelD.lb(n)=0;
+0556             modelD.ub(n)=maxFlux;
+0557             modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0558         <span class="keyword">end</span>
+0559         <span class="keyword">if</span> modelD.S(strcmp(<span class="string">'gtp[c]'</span>,modelD.mets),n)&lt;0
+0560             modelD.lb(n)=0;
+0561             modelD.ub(n)=maxFlux;
+0562             modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0563         <span class="keyword">end</span>
+0564         <span class="keyword">if</span> modelD.S(strcmp(<span class="string">'ctp[c]'</span>,modelD.mets),n)&lt;0
+0565             modelD.lb(n)=0;
+0566             modelD.ub(n)=maxFlux;
+0567             modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0568         <span class="keyword">end</span>
+0569         <span class="keyword">if</span> modelD.S(strcmp(<span class="string">'utp[c]'</span>,modelD.mets),n)&lt;0
+0570             modelD.lb(n)=0;
+0571             modelD.ub(n)=maxFlux;
+0572             modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0573         <span class="keyword">end</span>
+0574         <span class="comment">%cofactor breakdown products</span>
+0575         <span class="keyword">if</span> modelD.S(strcmp(<span class="string">'ppi[c]'</span>,modelD.mets),n)&gt;0
+0576             modelD.lb(n)=0;
+0577             modelD.ub(n)=maxFlux;
+0578             modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0579         <span class="keyword">end</span>
+0580         <span class="keyword">if</span> modelD.S(strcmp(<span class="string">'pi[c]'</span>,modelD.mets),n)&gt;0
+0581             modelD.lb(n)=0;
+0582             modelD.ub(n)=maxFlux;
+0583             modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0584         <span class="keyword">end</span>
+0585         <span class="keyword">if</span> modelD.S(strcmp(<span class="string">'pi[e]'</span>,modelD.mets),n)&gt;0
+0586             modelD.lb(n)=0;
+0587             modelD.ub(n)=maxFlux;
+0588             modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0589         <span class="keyword">end</span>
+0590         
+0591         <span class="comment">%quinones</span>
+0592         <span class="keyword">if</span> modelD.S(strcmp(<span class="string">'q8[c]'</span>,modelD.mets),n)&lt;0
+0593             modelD.lb(n)=0;
+0594             modelD.ub(n)=maxFlux;
+0595             modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0596         <span class="keyword">end</span>
+0597         <span class="keyword">if</span> modelD.S(strcmp(<span class="string">'q8h2[c]'</span>,modelD.mets),n)&lt;0
+0598             modelD.lb(n)=0;
+0599             modelD.ub(n)=maxFlux;
+0600             modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0601         <span class="keyword">end</span>
+0602         <span class="keyword">if</span> modelD.S(strcmp(<span class="string">'mqn8[c]'</span>,modelD.mets),n)&lt;0
+0603             modelD.lb(n)=0;
+0604             modelD.ub(n)=maxFlux;
+0605             modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0606         <span class="keyword">end</span>
+0607         <span class="keyword">if</span> modelD.S(strcmp(<span class="string">'mql8[c]'</span>,modelD.mets),n)&lt;0
+0608             modelD.lb(n)=0;
+0609             modelD.ub(n)=maxFlux;
+0610             modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0611         <span class="keyword">end</span>
+0612         <span class="keyword">if</span> modelD.S(strcmp(<span class="string">'2dmmql8[c]'</span>,modelD.mets),n)&lt;0
+0613             modelD.lb(n)=0;
+0614             modelD.ub(n)=maxFlux;
+0615             modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0616         <span class="keyword">end</span>
+0617         <span class="keyword">if</span> modelD.S(strcmp(<span class="string">'2dmmq8[c]'</span>,modelD.mets),n)&lt;0
+0618             modelD.lb(n)=0;
+0619             modelD.ub(n)=maxFlux;
+0620             modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0621         <span class="keyword">end</span>
+0622     <span class="keyword">end</span>
+0623 <span class="keyword">end</span>
+0624 <span class="keyword">end</span>
+0625 
+0626 <span class="comment">%test if modelD can grow</span>
+0627 solution = optimizeCbModel(modelD,osenseStr, minNorm);
+0628 fprintf(<span class="string">'\n%s%g\n'</span>,<span class="string">'Reactions driven by cofactors set to irreversible. Growth: '</span>,solution.f);
+0629 
+0630 <span class="keyword">if</span> 0
+0631     fprintf(<span class="string">'\n%s\n'</span>,<span class="string">'**************************************************************'</span>)
+0632     fprintf(<span class="string">'\n%s\n'</span>,<span class="string">'************All transport reactions to recon directions*******'</span>)
+0633     fprintf(<span class="string">'\n%s\n'</span>,<span class="string">'**************************************************************'</span>)
+0634     <span class="comment">%set all transport reaction directions to reconstruction directions</span>
+0635     modelTransportRecon=modelD;
+0636     <span class="keyword">for</span> n=1:nRxn
+0637         <span class="keyword">if</span> model.transportRxnBool(n)
+0638             <span class="keyword">if</span> strcmp(modelD.rxn(n).directionality,<span class="string">'forward'</span>)
+0639                 modelTransportRecon.lb(n)=0;
+0640                 modelTransportRecon.ub(n)=maxFlux;
+0641                 modelTransportRecon.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0642             <span class="keyword">end</span>
+0643         <span class="keyword">end</span>
+0644     <span class="keyword">end</span>
+0645     <span class="comment">%test growth rate with reconstruction directions for transport</span>
+0646     <span class="comment">%reactions</span>
+0647     solutionTransportRecon = optimizeCbModel(modelTransportRecon,osenseStr, minNorm);
+0648     <span class="comment">%     clear modelTransportRecon</span>
+0649     fprintf(<span class="string">'\n%s%g\n'</span>,<span class="string">'All transport reactions set to reconstruction directions. Growth: '</span>,solutionTransportRecon.f);
+0650     
+0651     <span class="comment">%print out reactions going against reconstruction directions</span>
+0652     fprintf(<span class="string">'\n%s\n'</span>,<span class="string">'Reactions still going against qualitative directions'</span>)
+0653     fprintf(<span class="string">'%15s\t%6s%6s\t%65s\t%s\n'</span>,<span class="string">'Abbr'</span>,<span class="string">'iAF  '</span>,<span class="string">'AllTransportRecon'</span>,<span class="string">'Equation'</span>,<span class="string">'Reaction'</span>);
+0654     <span class="keyword">for</span> n=1:nRxn
+0655         <span class="keyword">if</span> strcmp(modelD.rxn(n).directionality,<span class="string">'forward'</span>) &amp;&amp; solutionTransportRecon.x(n)&lt;-0.1
+0656             fprintf(<span class="string">'%15s\t%4.2f\t%4.2f\t%65s\t%s\n'</span>,modelD.rxns{n},solutionRecon.x(n),solutionTransportRecon.x(n),modelD.rxn(n).equation,modelD.rxn(n).officialName);
+0657         <span class="keyword">end</span>
+0658     <span class="keyword">end</span>
+0659     modelTransportReconHardC=modelTransportRecon;
+0660 <span class="keyword">else</span>
+0661     modelTransportReconHardC=modelD;    
+0662 <span class="keyword">end</span>
+0663 
+0664 <span class="comment">%test if hard couplong ox phos with all recon transport directions can</span>
+0665 <span class="comment">%reduce growth rate</span>
+0666 
+0667 <span class="keyword">if</span> hardCoupleOxPhos
+0668     fprintf(<span class="string">'%s\n%s\n'</span>,<span class="string">'Hard coupling pairs of oxidative phosphorylation reactions,'</span>,<span class="string">'(this appends extra rows to the end of S).'</span>)
+0669     <span class="comment">% NDH-1:NDH-2 is 1:1 in iAF1260 flux2 (3 pairs of reactions - different quinone usage)</span>
+0670     <span class="comment">%Hard couple pairs of oxidative phosphorylation  reactions</span>
+0671     <span class="comment">%see supplementary material on iAF1260 Feist et al</span>
+0672     pair={<span class="string">'NADH10'</span>,<span class="string">'NADH17pp'</span>;<span class="string">'NADH5'</span>,<span class="string">'NADH16pp'</span>;<span class="string">'NADH9'</span>,<span class="string">'NADH18pp'</span>};
+0673     [nMet,nRxn]=size(modelTransportReconHardC.S);
+0674     <span class="keyword">for</span> p=1:length(pair)
+0675         modelTransportReconHardC.S(nMet+p,strcmp(modelTransportReconHardC.rxns,pair{p,1}))=1;
+0676         modelTransportReconHardC.S(nMet+p,strcmp(modelTransportReconHardC.rxns,pair{p,2}))=-1;
+0677         <span class="comment">%pad out abbreviations and names</span>
+0678         modelTransportReconHardC.mets{nMet+p}=[<span class="string">'coupleOxPhos'</span> int2str(p)];
+0679         modelTransportReconHardC.met(nMet+p).abbreviation=modelTransportReconHardC.mets{nMet+p};
+0680         modelTransportReconHardC.met(nMet+p).officialName=[<span class="string">'coupleOxPhos_'</span> pair{p,1} <span class="string">'_'</span> pair{p,2}];
+0681     <span class="keyword">end</span>
+0682     <span class="keyword">if</span> isfield(modelTransportReconHardC,<span class="string">'A'</span>)
+0683         modelTransportReconHardC.A=modelTransportReconHardC.S;
+0684     <span class="keyword">end</span>
+0685     <span class="comment">%pad out the right hand side vector</span>
+0686     <span class="comment">%S.v=b</span>
+0687     modelTransportReconHardC.b=[modelTransportReconHardC.b;sparse(length(pair),1)];
+0688     modelTransportReconHardC.csense(nMet+1:nMet+length(pair))=<span class="string">'E'</span>;
+0689 <span class="keyword">end</span>
+0690 <span class="comment">%test growth rate with reconstruction directions for transport reactions</span>
+0691 <span class="comment">%and hard coupling of oxidative phosphorylation</span>
+0692 solutionTransportReconHardC = optimizeCbModel(modelTransportReconHardC,osenseStr, minNorm);
+0693 clear modelTransportReconHardC
+0694 <span class="keyword">if</span> hardCoupleOxPhos
+0695     <span class="comment">%print out the flux through the coupled pairs of oxidative</span>
+0696     <span class="comment">%phosphorylation reactions</span>
+0697     <span class="keyword">for</span> p=1:size(pair,1)
+0698         fprintf(<span class="string">'%s\t%6.4g\t\t%s\t%6.4g\n'</span>,pair{p,1},solutionTransportReconHardC.x(strcmp(pair{p,1},modelD.rxns)),pair{p,2},solutionTransportReconHardC.x(strcmp(pair{p,2},modelD.rxns)));
+0699     <span class="keyword">end</span>
+0700 <span class="keyword">end</span>
+0701 fprintf(<span class="string">'\n%s%g\n'</span>,<span class="string">'All transport with reconstruction directions, plus hard coupling ox phos. Growth: '</span>,solutionTransportReconHardC.f);
+0702 
+0703 <span class="keyword">if</span> 0 
+0704 fprintf(<span class="string">'\n%s\n'</span>,<span class="string">'**************************************************************'</span>)
+0705 fprintf(<span class="string">'\n%s\n'</span>,<span class="string">'***Now only certain transport reactions to recon directions***'</span>)
+0706 fprintf(<span class="string">'\n%s\n'</span>,<span class="string">'**************************************************************'</span>)
+0707 <span class="comment">%set thermodynamically reversible reactions to forward for certain</span>
+0708 <span class="comment">%transport reactions, only if they are qualitatively set to forward</span>
+0709 <span class="keyword">for</span> n=1:nRxn
+0710     <span class="comment">%     if strcmp('CO2tpp',modelD.rxns{n})</span>
+0711     <span class="comment">%         pause(eps)</span>
+0712     <span class="comment">%     end</span>
+0713     <span class="comment">%model.transportRxnBool is a boolean vector which is an output</span>
+0714     <span class="comment">%from deltaG0concFluxConstraintBounds</span>
+0715     <span class="keyword">if</span> model.transportRxnBool(n) 
+0716         <span class="comment">%         if strcmp(modelD.rxn(n).directionality,'forward')</span>
+0717         <span class="comment">%             %recon direction applied to all</span>
+0718         <span class="comment">%             %remaining transport reactions</span>
+0719         <span class="comment">%             modelD.lb(n)=0;</span>
+0720         <span class="comment">%             modelD.ub(n)=maxFlux;</span>
+0721         <span class="comment">%             modelD.rxn(n).directionalityThermo='forward';</span>
+0722         <span class="comment">%         end</span>
+0723         <span class="comment">%abc transporter</span>
+0724         <span class="keyword">if</span> ~isempty(strfind(modelD.rxns{n},<span class="string">'abc'</span>))
+0725             modelD.lb(n)=0;
+0726             modelD.ub(n)=maxFlux;
+0727             modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0728             <span class="comment">%                     fprintf('\n%s\t%s\t%6.2f\t%6.2f\t%s\t%s\n',modelD.rxn(n).officialName,modelD.rxn(n).abbreviation,modelD.rxn(n).dGtMin,modelD.rxn(n).dGtMax, modelD.rxn(n).equation,' set to forward');</span>
+0729         <span class="keyword">else</span>
+0730             <span class="comment">%find the other reactions which can generate atp if running</span>
+0731             <span class="comment">%in reverse besides abc transportes</span>
+0732             <span class="keyword">if</span> nnz(strcmp(<span class="string">'atp[c]'</span>,modelD.mets(modelD.S(:,n)~=0)))~=0
+0733                 modelD.lb(n)=0;
+0734                 modelD.ub(n)=maxFlux;
+0735                 modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0736                 <span class="comment">%                         fprintf('\n%s\t%s\t%6.2f\t%6.2f\t%s\t%s\n',modelD.rxn(n).officialName,modelD.rxn(n).abbreviation,modelD.rxn(n).dGtMin,modelD.rxn(n).dGtMax, modelD.rxn(n).equation,' set to forward');</span>
+0737             <span class="keyword">else</span>
+0738 <span class="comment">%                 fprintf('\n%s\t%s\t%6.2f\t%6.2f\t%s\t%s\n',modelD.rxn(n).officialName,modelD.rxn(n).abbreviation,modelD.rxn(n).dGtMin,modelD.rxn(n).dGtMax, modelD.rxn(n).equation,'  skipped');</span>
+0739                 <span class="comment">%reactions involving protons</span>
+0740                 <span class="keyword">if</span>  strcmp(modelD.rxn(n).directionality,<span class="string">'forward'</span>)
+0741                     <span class="keyword">if</span> nnz(strcmp(<span class="string">'h[c]'</span>,modelD.mets(modelD.S(:,n)~=0)))~=0 || nnz(strcmp(<span class="string">'h[e]'</span>,modelD.mets(modelD.S(:,n)~=0)))~=0
+0742                         modelD.lb(n)=0;
+0743                         modelD.ub(n)=maxFlux;
+0744                         modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0745                         <span class="comment">%                             fprintf('\n%s\t%s\t%6.2f\t%6.2f\t%s\t%s\n',modelD.rxn(n).officialName,modelD.rxn(n).abbreviation,modelD.rxn(n).dGtMin,modelD.rxn(n).dGtMax, modelD.rxn(n).equation,' set to forward');</span>
+0746                     <span class="keyword">else</span>
+0747                         <span class="comment">%reactions not involving protons and with more</span>
+0748                         <span class="comment">%than two metabolites involved</span>
+0749                         <span class="keyword">if</span> nnz(modelD.S(:,n))&gt;2
+0750                             modelD.lb(n)=-maxFlux;
+0751                             <span class="comment">%                         modelD.lb(n)=0;</span>
+0752                             modelD.ub(n)=maxFlux;
+0753                             modelD.rxn(n).directionalityThermo=<span class="string">'reversible'</span>;
+0754                             <span class="comment">%                                 fprintf('\n%s\t%s\t%6.2f\t%6.2f\t%s\t%s\n',modelD.rxn(n).officialName,modelD.rxn(n).abbreviation,modelD.rxn(n).dGtMin,modelD.rxn(n).dGtMax, modelD.rxn(n).equation,'  set to forward');</span>
+0755                         <span class="keyword">else</span>
+0756                             <span class="comment">%set the remainder to forward also</span>
+0757                             remainderForward=0;
+0758                             <span class="keyword">if</span> remainderForward==1
+0759                                 <span class="keyword">if</span> strcmp(modelD.rxn(n).directionality,<span class="string">'forward'</span>)
+0760                                     <span class="comment">%recon direction applied to all</span>
+0761                                     <span class="comment">%remaining transport reactions</span>
+0762                                     modelD.lb(n)=0;
+0763                                     modelD.ub(n)=maxFlux;
+0764                                     modelD.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0765                                 <span class="keyword">end</span>
+0766                             <span class="keyword">end</span>
+0767                         <span class="keyword">end</span>
+0768                     <span class="keyword">end</span>
+0769                 <span class="keyword">end</span>
+0770             <span class="keyword">end</span>
+0771         <span class="keyword">end</span>
+0772         <span class="comment">%                 %doesnt seem to be any need to set these reactions forward</span>
+0773         <span class="comment">%                 %other transport reactions</span>
+0774         <span class="comment">%                 if modelD.rxn(n).dGt0Min~=modelD.rxn(n).dGt0Max</span>
+0775         <span class="comment">%                     modelD.lb(n)=-maxFlux;</span>
+0776         <span class="comment">%                     modelD.ub(n)=maxFlux;</span>
+0777         <span class="comment">% %                     fprintf('\n%s\t%s\t%6.2f\t%6.2f\t%s\t%s\n',modelD.rxn(n).officialName,modelD.rxn(n).abbreviation,modelD.rxn(n).dGtMin,modelD.rxn(n).dGtMax, modelD.rxn(n).equation,' set to forward');</span>
+0778         <span class="comment">%                 end</span>
+0779 <span class="comment">%     else</span>
+0780         <span class="comment">%doesnt seem to be any need to set these forward either</span>
+0781         <span class="comment">%                 if ~isempty(strfind(model.rxns{n},'pp')) &amp;&amp; ~isempty(strfind(model.subSystems{n},'Transport'))</span>
+0782         <span class="comment">% %                     error('There should be no other transport reactions than model.transportRxnBool')</span>
+0783         <span class="comment">%                     fprintf('\n%s\t%s\t%6.2f\t%6.2f\t%s\t%s\n',modelD.rxn(n).officialName,modelD.rxn(n).abbreviation,modelD.rxn(n).dGtMin,modelD.rxn(n).dGtMax, modelD.rxn(n).equation,' set to forward');</span>
+0784         <span class="comment">%                     modelD.lb(n)=-maxFlux;</span>
+0785         <span class="comment">%                     modelD.ub(n)=maxFlux;</span>
+0786         <span class="comment">%                     forwardTransportQuantReverseBool(n,1)=1;</span>
+0787         <span class="comment">%                 end</span>
+0788     <span class="keyword">end</span>
+0789 <span class="keyword">end</span>
+0790 <span class="comment">%test if modelD can grow</span>
+0791 solution = optimizeCbModel(modelD,osenseStr, minNorm);
+0792 <span class="keyword">end</span>
+0793 
+0794 <span class="comment">%print out difference between transport reactions</span>
+0795 fprintf(<span class="string">'\n%s\n'</span>,<span class="string">'Difference between transport reactions'</span>)
+0796 fprintf(<span class="string">'%15s\t%6s%6s\t%65s\t%s\n'</span>,<span class="string">'Abbr'</span>,<span class="string">'iAF  '</span>,<span class="string">'TranspRecon'</span>,<span class="string">'Equation'</span>,<span class="string">'Reaction'</span>);
+0797 <span class="keyword">for</span> n=1:nRxn
+0798     <span class="keyword">if</span> strcmp(modelD.rxn(n).directionality,<span class="string">'forward'</span>) &amp;&amp; solution.x(n)&lt;-0.1
+0799         fprintf(<span class="string">'%15s\t%4.2f\t%4.2f\t%65s\t%s\n'</span>,modelD.rxns{n},solutionRecon.x(n),solution.x(n),modelD.rxn(n).equation,modelD.rxn(n).officialName);
+0800     <span class="keyword">end</span>
+0801 <span class="keyword">end</span>
+0802 fprintf(<span class="string">'\n%s%g\n'</span>,<span class="string">'Certain transport reactions set to irreversible. Growth: '</span>,solution.f);
+0803 fprintf(<span class="string">'\n'</span>)
+0804 
+0805 <span class="keyword">if</span> hardCoupleOxPhos
+0806     fprintf(<span class="string">'%s\n%s\n'</span>,<span class="string">'Hard coupling pairs of oxidative phosphorylation reactions,'</span>,<span class="string">'(this appends extra rows to the end of S).'</span>)
+0807     <span class="comment">% NDH-1:NDH-2 is 1:1 in iAF1260 flux2 (3 pairs of reactions - different quinone usage)</span>
+0808     <span class="comment">%Hard couple pairs of oxidative phosphorylation  reactions</span>
+0809     <span class="comment">%see supplementary material on iAF1260 Feist et al</span>
+0810     pair={<span class="string">'NADH10'</span>,<span class="string">'NADH17pp'</span>;<span class="string">'NADH5'</span>,<span class="string">'NADH16pp'</span>;<span class="string">'NADH9'</span>,<span class="string">'NADH18pp'</span>};
+0811     [nMet,nRxn]=size(modelD.S);
+0812     <span class="keyword">for</span> p=1:length(pair)
+0813         modelD.S(nMet+p,strcmp(modelD.rxns,pair{p,1}))=1;
+0814         modelD.S(nMet+p,strcmp(modelD.rxns,pair{p,2}))=-1;
+0815         <span class="comment">%pad out abbreviations and names</span>
+0816         modelD.mets{nMet+p}=[<span class="string">'coupleOxPhos'</span> int2str(p)];
+0817         modelD.met(nMet+p).abbreviation=modelD.mets{nMet+p};
+0818         modelD.met(nMet+p).officialName=[<span class="string">'coupleOxPhos_'</span> pair{p,1} <span class="string">'_'</span> pair{p,2}];
+0819     <span class="keyword">end</span>
+0820     <span class="keyword">if</span> isfield(modelD,<span class="string">'A'</span>)
+0821         modelD.A=modelD.S;
+0822     <span class="keyword">end</span>
+0823     <span class="comment">%pad out the right hand side vector</span>
+0824     <span class="comment">%S.v=b</span>
+0825     modelD.b=[modelD.b;sparse(length(pair),1)];
+0826     modelD.csense(nMet+1:nMet+length(pair))=<span class="string">'E'</span>;
+0827     
+0828     <span class="comment">%test if modelD can grow</span>
+0829     solution = optimizeCbModel(modelD,osenseStr, minNorm);
+0830     fprintf(<span class="string">'\n%s%g\n'</span>,<span class="string">'Certain transport reactions set to irreversible * hard coupling ox phos. Growth: '</span>,solution.f);
+0831     fprintf(<span class="string">'\n'</span>)
+0832     
+0833     <span class="comment">%print out reactions going against reconstruction directions</span>
+0834     fprintf(<span class="string">'\n%s\n'</span>,<span class="string">'Reactions still going against qualitative directions'</span>)
+0835     fprintf(<span class="string">'%15s\t%6s%6s\t%65s\t%s\n'</span>,<span class="string">'Abbr'</span>,<span class="string">'iAF  '</span>,<span class="string">'AllTransportRecon'</span>,<span class="string">'Equation'</span>,<span class="string">'Reaction'</span>);
+0836     <span class="keyword">for</span> n=1:nRxn
+0837         <span class="keyword">if</span> strcmp(modelD.rxn(n).directionality,<span class="string">'forward'</span>) &amp;&amp; solution.x(n)&lt;-0.1
+0838             fprintf(<span class="string">'%15s\t%4.2f\t%4.2f\t%65s\t%s\n'</span>,modelD.rxns{n},solutionRecon.x(n),solution.x(n),modelD.rxn(n).equation,modelD.rxn(n).officialName);
+0839         <span class="keyword">end</span>
+0840     <span class="keyword">end</span>
+0841 <span class="keyword">end</span>
+0842 
+0843 
+0844 <span class="keyword">if</span> 0
+0845 fprintf(<span class="string">'\n%s\n'</span>,<span class="string">'**************************************************************'</span>)
+0846 fprintf(<span class="string">'\n%s\n'</span>,<span class="string">'***Now certain transport and other misc to recon directions***'</span>)
+0847 fprintf(<span class="string">'\n%s\n'</span>,<span class="string">'**************************************************************'</span>)
+0848 <span class="comment">%other misc. reactions set to forward</span>
+0849 <span class="comment">%%%Set to off in iAF1260_flux1%%</span>
+0850 <span class="comment">%CAT catalase 'CAT'</span>
+0851 <span class="comment">%FHL Formate hydrogen lyase 'FHL'</span>
+0852 <span class="comment">%SPODM superoxide dismutase 'SPODM'</span>
+0853 <span class="comment">%SPODMpp superoxide dismutase 'SPODMpp'</span>
+0854 
+0855 <span class="comment">% otherRxn={'NADTRHD','ATPS4rpp'};</span>
+0856 <span class="comment">% otherRxn={[]};</span>
+0857 <span class="comment">% % otherRxn={'FEROpp','SUCOAS','NDPK1','PPKr','ALAALAr'};</span>
+0858 <span class="comment">% otherRxn={'PPKr','NDPK1','FEROpp','ALAALAr','SUCOAS','ALDD2y'};</span>
+0859 <span class="comment">% otherRxn={'NADTRHD','2DGULRy','HPYRRy','2DGLCNRy','FMNRx2','FLVR','DKGLCNR2y','IDOND2'...</span>
+0860 <span class="comment">%     'GLUSy'};</span>
+0861 
+0862 
+0863 otherRxn={[]};
+0864 <span class="comment">%transhydrogenase</span>
+0865 <span class="comment">% otherRxn{end+1}='NADTRHD'; %nad[c] + nadph[c]  -&gt; nadh[c] + nadp[c]  NAD transhydrogenase</span>
+0866 <span class="comment">% otherRxn{end+1}='THD2pp'; % '2 h[p] + nadh[c] + nadp[c]  -&gt; 2 h[c] + nad[c] + nadph[c] ''NAD P transhydrogenase periplasm '</span>
+0867 
+0868 <span class="comment">%creating nad by going in reverse</span>
+0869 <span class="comment">% otherRxn{end+1}='GLYCL'; %gly[c] + nad[c] + thf[c]  -&gt; co2[c] + mlthf[c] + nadh[c] + nh4[c]  Glycine Cleavage System</span>
+0870 <span class="comment">% otherRxn{end+1}='ME1'; %mal-L[c] + nad[c]  -&gt; co2[c] + nadh[c] + pyr[c]  malic enzyme NAD</span>
+0871 <span class="comment">% otherRxn{end+1}='THRD'; %nad[c] + thr-L[c]  -&gt; 2aobut[c] + h[c] + nadh[c]  L threonine dehydrogenase</span>
+0872 <span class="comment">% otherRxn{end+1}='GLYCDx'; %glyc[c] + nad[c]  -&gt; dha[c] + h[c] + nadh[c]     Glycerol dehydrogenase</span>
+0873 <span class="comment">% %</span>
+0874 <span class="comment">%creating nadh by going in reverse</span>
+0875 
+0876 <span class="comment">%creating nadp by going in reverse</span>
+0877 <span class="comment">% otherRxn{end+1}='ALDD2y'; %acald[c] + h2o[c] + nadp[c]  -&gt; ac[c] + 2 h[c] + nadph[c]  aldehyde dehydrogenase acetaldehyde NADP</span>
+0878 <span class="comment">% otherRxn{end+1}='GND'; %6pgc[c] + nadp[c]  -&gt; co2[c] + nadph[c] + ru5p-D[c]  phosphogluconate dehydrogenase</span>
+0879 <span class="comment">% otherRxn{end+1}='ME2'; %mal-L[c] + nadp[c]  -&gt; co2[c] + nadph[c] + pyr[c]  malic enzyme NADP</span>
+0880 
+0881 <span class="comment">%seems to want to go in reverse</span>
+0882 <span class="comment">%otherRxn{end+1}='ACALD'; %acald[c] + coa[c] + nad[c]  &lt;=&gt; accoa[c] + h[c] + nadh[c]  acetaldehyde dehydrogenase acetylating</span>
+0883  
+0884 <span class="comment">%creating nadph by going in reverse</span>
+0885 <span class="comment">% otherRxn{end+1}='HPYRRy'; %h[c] + hpyr[c] + nadph[c]  -&gt; glyc-R[c] + nadp[c]  Hydroxypyruvate reductase NADPH</span>
+0886 <span class="comment">% otherRxn{end+1}='2DGLCNRy'; %2dhglcn[c] + h[c] + nadph[c]  -&gt; glcn[c] + nadp[c]  2 dehydro D gluconate reductase NADPH</span>
+0887 <span class="comment">% otherRxn{end+1}='FMNRx2'; %fmn[c] + h[c] + nadph[c]  -&gt; fmnh2[c] + nadp[c]  FMN reductase</span>
+0888 <span class="comment">% otherRxn{end+1}='FLVR'; %h[c] + nadph[c] + ribflv[c]  -&gt; nadp[c] + rbflvrd[c]  flavin reductase</span>
+0889 <span class="comment">% otherRxn{end+1}='DKGLCNR2y'; %25dkglcn[c] + h[c] + nadph[c]  -&gt; 5dglcn[c] + nadp[c]  2 5 diketo D gluconate reductase NADPH</span>
+0890 <span class="comment">% otherRxn{end+1}='IDOND2'; %5dglcn[c] + h[c] + nadph[c]  -&gt; idon-L[c] + nadp[c]  L indonate 5 dehydrogenase NADP</span>
+0891 <span class="comment">% otherRxn{end+1}='GLUSy'; %akg[c] + gln-L[c] + h[c] + nadph[c]  -&gt; 2 glu-L[c] + nadp[c]  glutamate synthase NADPH</span>
+0892 <span class="comment">% otherRxn{end+1}='GMPR'; %gmp[c] + 2 h[c] + nadph[c]  -&gt; imp[c] + nadp[c] + nh4[c]  GMP reductase</span>
+0893 <span class="comment">% otherRxn{end+1}='2DGULRy'; %2dhguln[c] + h[c] + nadph[c]  -&gt; idon-L[c] + nadp[c]  2 dehydro L gulonate reductase NADPH</span>
+0894 
+0895 <span class="comment">%ines debuggin --&gt; fix</span>
+0896 <span class="comment">% otherRxn{end+1}='ACKr';</span>
+0897 <span class="comment">%otherRxn{end+1}='PTAr';</span>
+0898 
+0899 <span class="comment">%otherRxn{end+1}='ALAALAD';</span>
+0900 <span class="comment">% otherRxn{end+1}='ALAALAr';</span>
+0901 otherRxn{end+1}=<span class="string">'GLYCL'</span>;
+0902 
+0903 <span class="comment">%otherRxn{end+1}='CITL';</span>
+0904 <span class="comment">% otherRxn{end+1}='SUCOAS';</span>
+0905 
+0906 <span class="comment">%ronan changes</span>
+0907 <span class="comment">% otherRxn{end+1}='THD2pp';</span>
+0908 
+0909 <span class="keyword">for</span> x=1:length(otherRxn)
+0910     bool=strcmp(otherRxn{x},modelD.rxns);
+0911     <span class="keyword">if</span> any(bool) 
+0912 <span class="comment">%         if strcmp(modelD.rxn(bool).directionality,'forward')</span>
+0913             modelD.lb(bool)=0;
+0914             modelD.ub(bool)=maxFlux;
+0915             modelD.rxn(bool).directionalityThermo=<span class="string">'forward'</span>;
+0916             fprintf(<span class="string">'\n%s%g\n'</span>,[otherRxn{x} <span class="string">' set to irreversible.'</span>]);
+0917 <span class="comment">%         else</span>
+0918          <span class="comment">%    error([otherRxn{x} ' is qualitatively reversible.']);</span>
+0919 <span class="comment">%         end</span>
+0920     <span class="keyword">else</span>
+0921        <span class="keyword">if</span> ~isempty(otherRxn{1})
+0922             error([otherRxn{x} <span class="string">' could not be found.'</span>]);
+0923        <span class="keyword">end</span>
+0924     <span class="keyword">end</span>
+0925 <span class="keyword">end</span>
+0926 
+0927 <span class="comment">%relaxed reactions</span>
+0928 otherRelaxedRxn{1}=[];
+0929 otherRelaxedRxn{end+1}=<span class="string">'PPKr'</span>;
+0930 <span class="keyword">for</span> x=1:length(otherRelaxedRxn)
+0931      bool=strcmp(otherRelaxedRxn{x},modelD.rxns);
+0932     <span class="keyword">if</span> any(bool) 
+0933            modelD.lb(bool)=-maxFlux;
+0934             modelD.ub(bool)=maxFlux;
+0935             modelD.rxn(bool).directionalityThermo=<span class="string">'reversible'</span>;
+0936     <span class="keyword">end</span>
+0937 <span class="keyword">end</span>
+0938 
+0939 <span class="keyword">end</span>
+0940 
+0941 <span class="comment">%test if modelD can grow</span>
+0942 solution = optimizeCbModel(modelD,osenseStr, minNorm);
+0943 <span class="keyword">if</span> hardCoupleOxPhos
+0944     fprintf(<span class="string">'\n%s%g\n'</span>,<span class="string">'Certain transport &amp; Hard Coupling &amp; other reactions irreversible. Growth: '</span>,solution.f);
+0945 <span class="keyword">else</span>
+0946     fprintf(<span class="string">'\n%s%g\n'</span>,<span class="string">'Certain transport &amp; other reactions irreversible. Growth: '</span>,solution.f);
+0947 <span class="keyword">end</span>
+0948 
+0949 <span class="comment">%print out reactions going against reconstruction directions</span>
+0950 fprintf(<span class="string">'\n%s\n'</span>,<span class="string">'Reactions still going against qualitative directions'</span>)
+0951 fprintf(<span class="string">'%15s\t%6s%6s\t%65s\t%s\n'</span>,<span class="string">'Abbr'</span>,<span class="string">'iAF  '</span>,<span class="string">'AllTransportRecon'</span>,<span class="string">'Equation'</span>,<span class="string">'Reaction'</span>);
+0952 <span class="keyword">for</span> n=1:nRxn
+0953     <span class="keyword">if</span> strcmp(modelD.rxn(n).directionality,<span class="string">'forward'</span>) &amp;&amp; solution.x(n)&lt;-0.1
+0954         fprintf(<span class="string">'%15s\t%4.2f\t%4.2f\t%65s\t%s\n'</span>,modelD.rxns{n},solutionRecon.x(n),solution.x(n),modelD.rxn(n).equation,modelD.rxn(n).officialName);
+0955     <span class="keyword">end</span>
+0956 <span class="keyword">end</span>
+0957 
+0958 <span class="comment">%print out quantitatively tightened reactions i.e tighter than reconstruction directions</span>
+0959 fprintf(<span class="string">'\n%s\n'</span>,<span class="string">'Quantitatively tightened reactions'</span>)
+0960 fprintf(<span class="string">'%15s\t%6s%6s\t%65s\t%s\n'</span>,<span class="string">'Abbr'</span>,<span class="string">'iAF  '</span>,<span class="string">'AllTransportRecon'</span>,<span class="string">'Equation'</span>,<span class="string">'Reaction'</span>);
+0961 <span class="keyword">for</span> n=1:nRxn
+0962     <span class="keyword">if</span> strcmp(modelD.rxn(n).directionality,<span class="string">'reversible'</span>) &amp;&amp; strcmp(modelD.rxn(n).directionalityThermo,<span class="string">'forward'</span>)
+0963         fprintf(<span class="string">'%15s\t%4.2f\t%4.2f\t%65s\t%s\n'</span>,modelD.rxns{n},solutionRecon.x(n),solution.x(n),modelD.rxn(n).equation,modelD.rxn(n).officialName);
+0964     <span class="keyword">end</span>
+0965 <span class="keyword">end</span>
+0966 
+0967 solution = optimizeCbModel(modelD,osenseStr, minNorm);
+0968 
+0969 <span class="keyword">if</span> hardCoupleOxPhos
+0970     <span class="comment">%print out the flux through the coupled pairs of oxidative</span>
+0971     <span class="comment">%phosphorylation reactions</span>
+0972     <span class="keyword">for</span> p=1:size(pair,1)
+0973         fprintf(<span class="string">'%s\t%6.4g\t\t%s\t%6.4g\n'</span>,pair{p,1},solutionThermoRecon.x(strcmp(pair{p,1},modelD.rxns)),pair{p,2},solutionThermoRecon.x(strcmp(pair{p,2},modelD.rxns)));
+0974     <span class="keyword">end</span>
+0975 <span class="keyword">end</span>
+0976 
+0977 fprintf(<span class="string">'\n%s%g\n'</span>,<span class="string">'Final ThermoRecon growth: '</span>,solution.f);
+0978 fprintf(<span class="string">'%s\t%g\n'</span>,<span class="string">'c.f. growth with reconstruction directions: '</span>,solutionRecon.f);
+0979 
+0980 
+0981 hardCoupleOxPhos=1;
+0982 <span class="keyword">if</span> hardCoupleOxPhos
+0983     <span class="comment">%oxidative phosphorylation reactions</span>
+0984     oxPhos={<span class="string">'EX_o2(e)'</span>;<span class="string">'ATPS4rpp'</span>;<span class="string">'CRNBTCT'</span>;<span class="string">'CRNCAL2'</span>;<span class="string">'CRNCAR'</span>;<span class="string">'CRNCBCT'</span>;<span class="string">'CRNCDH'</span>;<span class="string">'CRNDCAL2'</span>;<span class="keyword">...</span>
+0985         <span class="string">'CTBTCAL2'</span>;<span class="string">'CYTBD2pp'</span>;<span class="string">'CYTBDpp'</span>;<span class="string">'CYTBO3_4pp'</span>;<span class="string">'DMSOR1'</span>;<span class="string">'DMSOR1pp'</span>;<span class="string">'DMSOR2'</span>;<span class="keyword">...</span>
+0986         <span class="string">'DMSOR2pp'</span>;<span class="string">'FDH4pp'</span>;<span class="string">'FDH5pp'</span>;<span class="string">'G3PD5'</span>;<span class="string">'G3PD6'</span>;<span class="string">'G3PD7'</span>;<span class="string">'GLCDpp'</span>;<span class="string">'HYD1pp'</span>;<span class="keyword">...</span>
+0987         <span class="string">'HYD2pp'</span>;<span class="string">'HYD3pp'</span>;<span class="string">'LDH_D2'</span>;<span class="string">'L_LACD2'</span>;<span class="string">'L_LACD3'</span>;<span class="string">'NADH10'</span>;<span class="string">'NADH16pp'</span>;<span class="keyword">...</span>
+0988         <span class="string">'NADH17pp'</span>;<span class="string">'NADH18pp'</span>;<span class="string">'NADH5'</span>;<span class="string">'NADH9'</span>;<span class="string">'NADPHQR2'</span>;<span class="string">'NADPHQR3'</span>;<span class="string">'NADPHQR4'</span>;<span class="keyword">...</span>
+0989         <span class="string">'NADTRHD'</span>;<span class="string">'NO3R1pp'</span>;<span class="string">'NO3R2pp'</span>;<span class="string">'NTRIR2x'</span>;<span class="string">'POX'</span>;<span class="string">'PPK2r'</span>;<span class="string">'PPKr'</span>;<span class="string">'QMO2'</span>;<span class="keyword">...</span>
+0990         <span class="string">'QMO3'</span>;<span class="string">'SUCDi'</span>;<span class="string">'FRD2'</span>;<span class="string">'FRD3'</span>;<span class="string">'THD2pp'</span>;<span class="string">'TMAOR1'</span>;<span class="string">'TMAOR1pp'</span>;<span class="string">'TMAOR2'</span>;<span class="string">'TMAOR2pp'</span>;<span class="string">'TRDR'</span>};
+0991     fprintf(<span class="string">'\n'</span>);
+0992 
+0993     <span class="comment">%print out oxidative phosphorylation reactions</span>
+0994     fprintf(<span class="string">'%15s\t%6s%6s\t%65s\t%s\n'</span>,<span class="string">'Abbr'</span>,<span class="string">'iAF  '</span>,<span class="string">'Thermo'</span>,<span class="string">'Equation'</span>,<span class="string">'Reaction'</span>);
+0995     <span class="keyword">for</span> p=1:length(oxPhos)
+0996         fprintf(<span class="string">'%15s\t%4.2f\t%4.2f\t%65s\t%s\n'</span>,oxPhos{p},solutionRecon.x(strcmp(oxPhos{p,1},modelD.rxns)),solutionThermoRecon.x(strcmp(oxPhos{p,1},modelD.rxns)),modelD.rxn(strcmp(oxPhos{p,1},modelD.rxns)).equation,modelD.rxn(strcmp(oxPhos{p,1},modelD.rxns)).officialName);
+0997     <span class="keyword">end</span>
+0998 <span class="keyword">end</span>
+0999 
+1000 <span class="comment">% model.lb_reconThermo      lower bound</span>
+1001 <span class="comment">% model.ub_reconThermo      upper bound</span>
+1002 modelD.lb_reconThermo=modelD.lb;
+1003 modelD.ub_reconThermo=modelD.ub;
+1004 
+1005 <span class="comment">%restore reconstruction reaction directionality</span>
+1006 modelD.lb=model.lb;
+1007 modelD.ub=model.ub;
+1008 
+1009 
+1010 
+1011 
+1012 
+1013 
+1014</pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,44 @@
+Qualitative internal reaction directionality:
+      3365	 internal reconstruction reactions assigned direction.
+      2170	 forward reconstruction assignment.
+         0	 reverse reconstruction assignment.
+      1195	 reversible reconstruction assignment.
+
+Quantitative in preference to qualitative, plus  remainder of qualitative, internal reaction directionality:
+      3365	 internal reactions thermodynamic over reconstruction assignment.
+      2170	 forward thermodynamic over reconstruction assignment.
+         0	 reverse thermodynamic over reconstruction assignment.
+      1195	 reversible thermodynamic over reconstruction assignment.
+
+Quantitative in preference to qualitative internal reaction directionality:
+         4	 internal thermodynamic assignment.
+         0	 forward thermodynamic only assignment.
+         0	 reverse thermodynamic only assignment.
+         4	 reversible thermodynamic only assignment.
+
+Changes in internal reaction directionality, Qualitiative vs Quantitative:
+         0	 Reversible -> Forward
+         0	 Reversible -> Reverse
+         0	 Forward -> Reverse
+         0	 Forward -> Reversible
+
+Breakdown of relaxation of internal reaction directionality, Qualitiative vs Quantitative:
+         0	 Forward -> Reversible (Total)
+         0	 Forward -> Reversible (Based on dGft0 from Group Contribution)
+         0	 Forward -> Reversible (Based on dGft0 from Group Contribution and Keq)
+         0	 Forward -> Reversible (Based on dGft0 from Keq)
+
+         0	 Forward -> Forward (Total)
+         0	 Forward -> Forward (Based on dGft0 from Group Contribution)
+         0	 Forward -> Forward (Based on dGft0 from Group Contribution and Keq)
+         0	 Forward -> Forward (Based on dGft0 from Keq)
+
+Breakdown of Group Contribution, and mixed GC-Keq, derived relaxation of reaction directionality, Qualitiative vs Quantitative:
+         0	 qualitatively forward reactions that are GC quantitatively reversible (total).
+         0	 qualitatively forward reactions that are GC quantitatively forward by dGr0t, but reversible by concentration alone (No error in GC dGr0t).
+         0	 qualitatively forward reactions that are GC quantitatively forward by dGr0t, but reversible by concentration alone (With error in GC dGr0t).
+         0	 qualitatively forward reactions that are GC quantitatively reversible by range of dGt0. P(\Delta_{r}G^{\primeo}<0) > 0.7
+         0	 qualitatively forward reactions that are GC quantitatively reversible by range of dGt0. 0.3< P(\Delta_{r}G^{\primeo}<0) < 0.7
+         0	 qualitatively forward reactions that are GC quantitatively reversible by range of dGt0. P(\Delta_{r}G^{\primeo}<0) < 0.3
+         0	 qualitatively forward reactions that are GC quantitatively reverse by dGr0t, but reversible by concentration (With error in GC dGr0t).
+         0	 qualitatively forward reactions that are GC quantitatively reverse by dGr0t, but reversible by concentration.(No error in GC dGr0t).

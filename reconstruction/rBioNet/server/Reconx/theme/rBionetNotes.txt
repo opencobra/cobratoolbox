@@ -1,0 +1,12 @@
+Stefan Gretar Thorleifsson
+Started Nov. 2012
+
+This system is writen for the viewing of the ReconX model.
+
+
+Notes
+
+17.11.2012
+Wordpress permalinks are a problem.
+Browsing from abbreviation to reaction or metabolite is not pretty.
+Have to specify permalink id, this will differ if a new site is setup. 

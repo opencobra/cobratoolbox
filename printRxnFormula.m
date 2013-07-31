@@ -1,6 +1,6 @@
 function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)
+%formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)
 %printRxnFormula Print the reaction formulas for a list of reactions
-%
 %
 %INPUTS
 % model             COBRA model structure
@@ -22,6 +22,7 @@ function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,m
 % NOTE: Reactions that have an upperbound <= 0 and lowerbound < 0 will have
 % its directionality reversed unless directionFlag = false.
 %
+
 % Markus Herrgard 11/17/05
 %
 % 04/30/08 Ronan Fleming
@@ -59,6 +60,16 @@ if (~iscell(rxnAbbrList))
         rxnAbbrTmp = rxnAbbrList;
         clear rxnAbbrList;
         rxnAbbrList{1} = rxnAbbrTmp;
+    end
+end
+
+%not all models have rev field
+if ~isfield(model,'rev')
+    model.rev=ones(size(model.S,2),1);
+    for n=1:size(model.S,2)
+        if model.lb(n)>=0
+            model.rev(n)=0;
+        end
     end
 end
 
@@ -122,9 +133,9 @@ for i = 1:length(rxnAbbrList);
             formulaStr = [formulaStr ' <=> '];
         else
             if (printFlag)
-                fprintf(fid,'\t->\t');
+                fprintf(fid,'\t=>\t');
             end
-            formulaStr = [formulaStr ' -> '];
+            formulaStr = [formulaStr ' => '];
         end
         
         if 0

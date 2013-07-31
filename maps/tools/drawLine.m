@@ -13,11 +13,13 @@ function drawLine(node1,node2,map,edgeColor,edgeArrowColor,edgeWeight,nodeWeight
 %
 %OPTIONAL INPUT
 % nodeWeight        Node size
+% rxnDir
+% rxnDirMultiplier
 %
 %
 
 if nargin < 9
-    rxnDirMultipler = 2;
+    rxnDirMultiplier = 2;
 end
 
 if nargin < 8
@@ -62,7 +64,7 @@ elseif type1 == 1 && type2 == 2
         [point1,dir] = c2p(nodePos(:,1),nodePos(:,2),rad);
         drawVector(point1, nodePos(:,2),edgeColor,edgeWeight);
         if isend
-            if rxnDir < 0, rad = rad*rxnDirMultiplier; end
+            if rxnDir > 0, rad = rad*rxnDirMultiplier; end
             drawArrowhead(point1,dir,rad,edgeArrowColor);
         end
     elseif length(index1) > 1 && length(index2) == 1
@@ -91,7 +93,7 @@ elseif type1 == 1 && type2 == 2
         [p1,dir] = c2p(p1,ptemp,rad);
         drawBezier([p2,ptemp,p1],edgeColor,edgeWeight);
         if isend
-            if rxnDir < 0, rad = rad*rxnDirMultiplier; end
+            if rxnDir > 0, rad = rad*rxnDirMultiplier; end
             drawArrowhead(p1,dir,rad,edgeArrowColor)
         end
     else
@@ -128,7 +130,7 @@ elseif type1 == 2 && type2 == 1
     %drawCircle(p3,5,'g');
     [p2,dir] = c2p(p2,ptemp,rad);
     drawBezier([p1,ptemp,p2],edgeColor,edgeWeight);
-    if rxnDir > 0, rad = rad*rxnDirMultiplier; end
+    if rxnDir < 0, rad = rad*rxnDirMultiplier; end
     drawArrowhead(p2,dir,rad,edgeArrowColor);
     %         elseif length(index1) == 1 && length(index2) > 1
     %             display('blah2');% for some reason this doesn't happen.

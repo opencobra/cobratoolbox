@@ -1,0 +1,243 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of webCGMtoTabDelimitedFile</title>
+  <meta name="keywords" content="webCGMtoTabDelimitedFile">
+  <meta name="description" content="parse a webCGM output file and prepare a tab delimited file with group">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html groupContribution -->
+<h1>webCGMtoTabDelimitedFile
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>parse a webCGM output file and prepare a tab delimited file with group</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function webCGMtoTabDelimitedFile(model,webCGMoutputFile,molBool) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">parse a webCGM output file and prepare a tab delimited file with group
+contribution data mapped to the metabolite abbreviations in the given
+model. 
+
+ NOTE: By default, any group contribution data for metabolites with
+ underdefined formulae ( e.g. R group), are ignored, even if there is group
+ contribution data available for this metabolite
+
+parses webCGM output file and creates an input file for
+createGroupContributionStruct.m
+
+INPUT
+ model.S               m x n, stoichiometric matrix
+ model.mets            m x 1, cell array of metabolite abbreviations
+ model.metFormulas     m x 1, cell array of metabolite formulae
+ webCGMoutputFile      filename of output from webCG server
+ molBool               m x 1, boolean vector indicating which metabolites
+                       in the model had mol files uploaded to webCGM
+                       server, where 1 means yes there was a mol file, and
+                       0 means no there was no mol file. It is important
+                       that when the input cdf file for the mol file was
+                       created that the metabolites appear in the same
+                       order as the rows are ordered in the stoichiometric
+                       matrix. This is how this parser file can map the
+                       webCG output to the model.
+
+OUTPUT
+ gc_data_webCGM.txt     tab delimited text file with group contribution data for
+                        createGroupContributionStruct.m
+
+OUTPUT FILE FORMAT
+ the first two text columns in both files should correspond to:
+ abbreviation
+ formulaMarvin
+
+ the next three columns in both files should correspond to:
+ delta_G_formation
+ delta_G_formation_Uncertainty
+ chargeMarvin
+
+ Ronan M. T. Fleming 8 July 2009
+ Ronan M. T. Fleming 10 July 2009 - fixed bug for reactants with no GC data</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function webCGMtoTabDelimitedFile(model,webCGMoutputFile,molBool)</a>
+0002 <span class="comment">%parse a webCGM output file and prepare a tab delimited file with group</span>
+0003 <span class="comment">%contribution data mapped to the metabolite abbreviations in the given</span>
+0004 <span class="comment">%model.</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% NOTE: By default, any group contribution data for metabolites with</span>
+0007 <span class="comment">% underdefined formulae ( e.g. R group), are ignored, even if there is group</span>
+0008 <span class="comment">% contribution data available for this metabolite</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">%parses webCGM output file and creates an input file for</span>
+0011 <span class="comment">%createGroupContributionStruct.m</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%INPUT</span>
+0014 <span class="comment">% model.S               m x n, stoichiometric matrix</span>
+0015 <span class="comment">% model.mets            m x 1, cell array of metabolite abbreviations</span>
+0016 <span class="comment">% model.metFormulas     m x 1, cell array of metabolite formulae</span>
+0017 <span class="comment">% webCGMoutputFile      filename of output from webCG server</span>
+0018 <span class="comment">% molBool               m x 1, boolean vector indicating which metabolites</span>
+0019 <span class="comment">%                       in the model had mol files uploaded to webCGM</span>
+0020 <span class="comment">%                       server, where 1 means yes there was a mol file, and</span>
+0021 <span class="comment">%                       0 means no there was no mol file. It is important</span>
+0022 <span class="comment">%                       that when the input cdf file for the mol file was</span>
+0023 <span class="comment">%                       created that the metabolites appear in the same</span>
+0024 <span class="comment">%                       order as the rows are ordered in the stoichiometric</span>
+0025 <span class="comment">%                       matrix. This is how this parser file can map the</span>
+0026 <span class="comment">%                       webCG output to the model.</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">%OUTPUT</span>
+0029 <span class="comment">% gc_data_webCGM.txt     tab delimited text file with group contribution data for</span>
+0030 <span class="comment">%                        createGroupContributionStruct.m</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">%OUTPUT FILE FORMAT</span>
+0033 <span class="comment">% the first two text columns in both files should correspond to:</span>
+0034 <span class="comment">% abbreviation</span>
+0035 <span class="comment">% formulaMarvin</span>
+0036 <span class="comment">%</span>
+0037 <span class="comment">% the next three columns in both files should correspond to:</span>
+0038 <span class="comment">% delta_G_formation</span>
+0039 <span class="comment">% delta_G_formation_Uncertainty</span>
+0040 <span class="comment">% chargeMarvin</span>
+0041 <span class="comment">%</span>
+0042 <span class="comment">% Ronan M. T. Fleming 8 July 2009</span>
+0043 <span class="comment">% Ronan M. T. Fleming 10 July 2009 - fixed bug for reactants with no GC data</span>
+0044 
+0045 [nMet,nRxn]=size(model.S);
+0046 
+0047 fid=fopen(webCGMoutputFile,<span class="string">'r'</span>);
+0048 <span class="comment">%header</span>
+0049 tline = fgetl(fid);
+0050 fidout=fopen(<span class="string">'gc_data_webGCM.txt'</span>,<span class="string">'w'</span>);
+0051 
+0052 <span class="comment">%exclude underdefined molecular structures</span>
+0053 <span class="comment">%excluded metabolite abbreviation token</span>
+0054 excludedAbbreviationToken={<span class="string">'trna'</span>};
+0055 <span class="comment">%exclude underdefined molecular formulae</span>
+0056 excludedElementToken={<span class="string">'X'</span>,<span class="string">'R'</span>};
+0057 
+0058 
+0059 <span class="comment">%counter which corresponds to the line number in webCGMoutputFile</span>
+0060 <span class="comment">%start at 1 to account for the header line in webCGMoutputFile</span>
+0061 hasMolCount=1;
+0062 <span class="keyword">for</span> m=1:nMet
+0063     <span class="comment">%initialise</span>
+0064     underDefinedMetBool=0;
+0065     
+0066     <span class="comment">%       metAbbr=model.mets{m};</span>
+0067     <span class="comment">%       metAbbr=metAbbr(1:end-3);</span>
+0068     <span class="comment">%       if strcmp(metAbbr,'protrna')</span>
+0069     <span class="comment">%             pause(eps)</span>
+0070     <span class="comment">%       end</span>
+0071 
+0072     <span class="comment">% It is very, very, very important</span>
+0073     <span class="comment">% that when the input cdf file for the mol file was</span>
+0074     <span class="comment">% created that the metabolites appear in the same</span>
+0075     <span class="comment">% order as the rows are ordered in the stoichiometric</span>
+0076     <span class="comment">% matrix. This is how this parser file can map the</span>
+0077     <span class="comment">% webCG output to the model.</span>
+0078     <span class="keyword">if</span> molBool(m)
+0079         hasMolCount=hasMolCount+1;
+0080         <span class="keyword">if</span> hasMolCount==590
+0081             pause(eps)
+0082         <span class="keyword">end</span>
+0083         tline = fgetl(fid);
+0084         <span class="keyword">if</span> ~ischar(tline)
+0085             <span class="keyword">break</span>;
+0086         <span class="keyword">end</span>
+0087 
+0088         <span class="comment">%parse each line of the webCGMoutputFile</span>
+0089         [delta_G_formation,remain]= strtok(tline, <span class="string">';'</span>);
+0090         
+0091         <span class="comment">%if first token is NONE then theres no GC data for this reactant</span>
+0092         noGCDataForReactant=strcmp(delta_G_formation,<span class="string">'NONE'</span>);
+0093         firstRemain=remain;
+0094         
+0095         delta_G_formation=str2num(delta_G_formation);
+0096         [delta_G_formation_Uncertainty,remain]= strtok(remain, <span class="string">';'</span>);
+0097         delta_G_formation_Uncertainty=str2num(delta_G_formation_Uncertainty);
+0098         [groups,remain]= strtok(remain, <span class="string">';'</span>);
+0099         rem=groups;
+0100         <span class="comment">%parse the groups till get to charge</span>
+0101         <span class="keyword">while</span> 1
+0102             [tok,rem]=strtok(rem, <span class="string">'|'</span>);
+0103             <span class="keyword">if</span> isempty(rem)
+0104                 chargeMarvin=str2num(tok);
+0105                 <span class="keyword">break</span>;
+0106             <span class="keyword">end</span>;
+0107         <span class="keyword">end</span>
+0108         [chargeMolFile,remain]= strtok(remain, <span class="string">';'</span>);
+0109         [formulaMarvin,remain]= strtok(remain, <span class="string">';'</span>);
+0110 
+0111         <span class="comment">%dont map certain group contribution data to model where metabolite</span>
+0112         <span class="comment">%is underdefined structurally</span>
+0113         <span class="comment">%trna in a metabolite abbreviaton indicates a macromolecule</span>
+0114         <span class="keyword">for</span> eab=1:length(excludedAbbreviationToken)
+0115             <span class="keyword">if</span> ~isempty(strfind(model.mets{m},excludedAbbreviationToken{eab}))
+0116                 underDefinedMetBool=1;
+0117                 <span class="keyword">break</span>;
+0118             <span class="keyword">end</span>
+0119         <span class="keyword">end</span>
+0120 
+0121         <span class="comment">%an X or R in a metabolite formula usually means that a macromolecule</span>
+0122         <span class="comment">%is involved or that it is a polymerised molecule with undefined size</span>
+0123         <span class="comment">%the group contribution method is not designed for such metabolites.</span>
+0124         <span class="keyword">for</span> eab=1:length(excludedElementToken)
+0125             <span class="keyword">if</span> ~isempty(strfind(model.metFormulas{m},excludedElementToken{eab}))
+0126                 underDefinedMetBool=1;
+0127                 <span class="keyword">break</span>;
+0128             <span class="keyword">end</span>
+0129         <span class="keyword">end</span>
+0130     
+0131         <span class="keyword">if</span> ~underDefinedMetBool
+0132             model.metFormulas{m}
+0133             formulaMarvin
+0134             <span class="comment">%double check that reconstruction formula and formula provided by</span>
+0135             <span class="comment">%group contribution output are the same upto changes in the number of protons.</span>
+0136 <span class="comment">%             bool=checkFormulae(model.metFormulas{m},formulaMarvin,{'H'});</span>
+0137 <span class="comment">%             if bool</span>
+0138                 <span class="comment">%dont print to file unless everything is ok</span>
+0139                 <span class="keyword">if</span> noGCDataForReactant
+0140                     <span class="comment">%print out the metabolites without formation energies and the</span>
+0141                     <span class="comment">%reason</span>
+0142                     fprintf(<span class="string">'%s\t%s\n'</span>,metAbbr,firstRemain)
+0143                 <span class="keyword">else</span>
+0144                     metAbbr=model.mets{m};
+0145 <span class="comment">%                     metAbbr=metAbbr(1:end-3);</span>
+0146                     <span class="comment">%dont print out those that</span>
+0147                     fprintf(fidout,<span class="string">'%s\t%s\t%f\t%f\t%f\n'</span>,metAbbr,formulaMarvin,delta_G_formation,delta_G_formation_Uncertainty,chargeMarvin);
+0148                 <span class="keyword">end</span>
+0149 <span class="comment">%             else</span>
+0150 <span class="comment">%                 fclose(fid);</span>
+0151 <span class="comment">%                 fclose(fidout);</span>
+0152 <span class="comment">%                 error(['Failure to map group contribution data to model: '...</span>
+0153 <span class="comment">%                     model.mets{m} ', ' model.metNames{m} ', model Formula: ' model.metFormulas{m}...</span>
+0154 <span class="comment">%                     ', other Formula: ' formulaMarvin]);</span>
+0155 <span class="comment">%             end</span>
+0156         <span class="keyword">end</span>
+0157     <span class="keyword">end</span>
+0158 <span class="keyword">end</span>
+0159 fclose(fid);
+0160 fclose(fidout);</pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

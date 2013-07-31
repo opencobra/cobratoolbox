@@ -1,0 +1,642 @@
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1	L2aadp[c]	L-2-Aminoadipate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	3	2oxoadp[c]	2-Oxoadipate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	5	Lkynr[c]	L-kynurenine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	6	4aphdob[c]	4-(2-Aminophenyl)-2,4-dioxobutanoate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	13	udpgal[c]	UDPgalactose
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	14	h[c]	proton
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	16	udp[c]	UDP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite (exceptional)	27	acac[c]	acetoacetate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	34	srtn[c]	Serotonin
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	35	Nacsertn[c]	N-acetylserotonin
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	49	chsterol[c]	cholesterol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	55	gchola[c]	glycocholic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	59	5adtststeroneglc[c]	5alpha-Dihydrotestosterone glucuronide
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	61	ahandrostanglc[c]	3alpha-hydroxy-5beta-androstan-17-one 3-glucosiduronic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	63	andrstrnglc[c]	androsterone 3-glucosiduronic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	67	bilglcur[c]	mono(glucosyluronic acid)bilirubin
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	69	estriolglc[c]	16-Glucuronide-estriol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	71	tststeroneglc[c]	testosterone 3-glucosiduronic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	73	cholate[c]	cholate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	75	estroneglc[c]	estrone 3-glucosiduronic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	77	tchola[c]	taurocholic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	79	estradiolglc[c]	17beta-estradiol 3-glucosiduronic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	81	prostge1[c]	Prostaglandin E1
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	83	prostge2[c]	Prostaglandin E2
+Transformed g.c. estimate (298.15K, pH 7) for metabolite (exceptional)	85	camp[c]	cAMP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	87	35cgmp[c]	3',5'-Cyclic GMP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	105	mma[c]	Methylamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	107	fald[c]	formaldehyde
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	124	hco3[c]	hydrogencarbonate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite (exceptional)	125	malcoa[c]	Malonyl-CoA
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	173	ppa[c]	propionate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	190	cmusa[c]	2-Amino-3-carboxymuconate semialdehyde
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	191	am6sa[c]	2-aminomuconic 6-semialdehyde
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	206	ribflv[c]	riboflavin
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	228	hdcea[c]	palmitoleate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	229	hdcoa[c]	Hexadecenoyl-CoA (n-C16:1CoA)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	230	vacc[c]	trans-vaccenate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	231	vacccoa[c]	vaccenyl coenzyme A
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	232	elaid[c]	elaidate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	233	od2coa[c]	trans-Octadec-2-enoyl-CoA
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	234	lnlc[c]	linoleate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	235	lnlccoa[c]	linoleic coenzyme A
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	236	lneldc[c]	linoelaidic acid (all trans C18:2)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	237	lneldccoa[c]	linoelaidyl coenzyme A
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	238	lnlncg[c]	gamma-linolenate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	239	lnlncgcoa[c]	gamma-linolenoyl-CoA
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	240	lnlnca[c]	alpha-linolenate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	241	lnlncacoa[c]	alpha-Linolenoyl-CoA
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	242	strdnc[c]	stearidonic acid C18:4, n-3
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	243	strdnccoa[c]	stearidonyl coenzyme A
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	244	arach[c]	arachidate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	245	arachcoa[c]	arachidyl coenzyme A
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	246	dlnlcg[c]	dihomo-gamma-linolenic acid (n-6)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	247	dlnlcgcoa[c]	dihomo-gamma-linolenyl coenzyme A
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	248	arachd[c]	arachidonate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	249	arachdcoa[c]	C20:4-CoA
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	250	eicostet[c]	eicosatetranoic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	251	eicostetcoa[c]	eicosatetranoyl coenzyme A
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	252	tmndnc[c]	timnodonic acid C20:5, n-3
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	253	tmndnccoa[c]	timnodonyl coenzyme A
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	254	adrn[c]	adrenic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	255	adrncoa[c]	adrenyl coenzyme A
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	256	dcsptn1[c]	docosa-4,7,10,13,16-pentaenoic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	257	dcsptn1coa[c]	docosa-4,7,10,13,16-pentaenoyl coenzyme A
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	258	clpnd[c]	clupanodonic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	259	clpndcoa[c]	clupanodonyl CoA
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	260	crvnc[c]	cervonic acid, C22:6 n-3
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	261	c226coa[c]	cervonyl coenzyme A
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	262	lgnc[c]	lignocerate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	263	lgnccoa[c]	lignocericyl coenzyme A
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	264	nrvnc[c]	nervonate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	265	nrvnccoa[c]	nervonyl coenzyme A
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	266	tettet6[c]	tetracosatetraenoic acid n-6
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	267	tettet6coa[c]	tetracosatetraenoyl coenzyme A
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	268	tetpent6[c]	tetracosapentaenoic acid, n-6
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	269	tetpent6coa[c]	tetracosapentaenoyl coenzyme A, n-6
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	270	tetpent3[c]	tetracosapentaenoic acid, n-3
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	271	tetpent3coa[c]	tetracosapentaenoyl coenzyme A, n-3
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	272	tethex3[c]	tetracosahexaenoic acid, n-3
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	273	tethex3coa[c]	tetracosahexaenoyl coenzyme A
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	274	hexc[c]	cerotate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	275	hexccoa[c]	Hexacosanoyl-CoA (n-C26:0CoA)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	276	ocdcea[c]	oleate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	277	odecoa[c]	Octadecenoyl-CoA (n-C18:1CoA)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	279	pmtcoa[c]	Palmitoyl-CoA (n-C16:0CoA)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	280	ttdca[c]	myristate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	281	tdcoa[c]	Tetradecanoyl-CoA (n-C14:0CoA)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	282	octa[c]	octanoate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	283	occoa[c]	Octanoyl-CoA (n-C8:0CoA)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	284	ocdca[c]	stearate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	285	stcoa[c]	Stearoyl-CoA (n-C18:0CoA)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	286	ptdca[c]	pentadecanoate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	287	ptdcacoa[c]	pentadecanoyl Coenzyme A
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	288	hpdca[c]	margarate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	289	hpdcacoa[c]	heptadecanoyl coa
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	290	acorn[c]	N(2)-acetyl-L-ornithine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	291	orn[c]	ornithinium(1+)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	300	din[c]	2'-deoxyinosine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	303	34dhmald[c]	3,4-Dihydroxymandelaldehyde
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	305	34dhoxpeg[c]	3,4-Dihydroxyphenylethyleneglycol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	309	Sfglutth[c]	S-Formylglutathione
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	310	lald-D[c]	(R)-lactaldehyde
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	311	lgt-S[c]	(R)-S-Lactoylglutathione
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	312	12ppd-R[c]	(R)-propane-1,2-diol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	313	12ppd-S[c]	(S)-propane-1,2-diol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	314	lald-L[c]	(S)-lactaldehyde
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	317	mthgxl[c]	methylglyoxal
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	318	dcamp[c]	N6-(1,2-Dicarboxyethyl)-AMP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	320	25aics[c]	(S)-2-[5-Amino-1-(5-phospho-D-ribosyl)imidazole-4-carboxamido]succinate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	321	aicar[c]	5-Amino-1-(5-Phospho-D-ribosyl)imidazole-4-carboxamide
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	323	gtp[c]	GTP(4-)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	325	gdp[c]	GDP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	359	ahcys[c]	S-adenosyl-L-homocysteine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	360	hcys-L[c]	L-homocysteine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	361	dcyt[c]	2'-deoxycytidine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	362	duri[c]	2'-deoxyuridine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	375	dcmp[c]	dCMP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	376	dcdp[c]	dCDP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	377	cmp[c]	CMP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	378	cdp[c]	CDP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	381	acetol[c]	hydroxyacetone
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	384	galt[c]	galactitol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	386	abt[c]	L-arabinitol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	388	prgstrn[c]	progesterone
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	389	aprgstrn[c]	(20S)-20-hydroxypregn-4-en-3-one
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	390	xol7ah[c]	7alpha-hydroxy-5beta-cholestan-3-one
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	391	xol7ah2[c]	5beta-cholestane-3alpha,7alpha-diol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	392	xoldioloneh[c]	7alpha,12alpha-dihydroxy-5beta-cholestan-3-one
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	393	xoltriol[c]	5beta-cholestane-3alpha,7alpha,12alpha-triol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	400	xol7aone[c]	7alpha-hydroxycholest-4-en-3-one
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	401	xoldiolone[c]	7alpha,12alpha-Dihydroxycholest-4-en-3-one
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	402	5aop[c]	5-aminolevulinic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	403	ppbng[c]	Porphobilinogen
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	413	lac-L[c]	(S)-lactate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	414	5hoxindact[c]	(5-hydroxyindol-3-yl)acetaldehyde
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	415	5hoxindoa[c]	5-Hydroxyindoleacetate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	416	n4abutn[c]	4-acetamidobutanal
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	417	4aabutn[c]	4-Acetamidobutanoate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	418	id3acald[c]	indol-3-ylacetaldehyde
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	419	ind3ac[c]	indole-3-acetate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	420	bamppald[c]	beta-Aminopropion aldehyde
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	421	ala-B[c]	beta-alanine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	422	pylald[c]	perillyl aldehyde
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	423	peracd[c]	Perillic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	424	3mox4hpac[c]	(4-hydroxy-3-methoxyphenyl)acetaldehyde
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	425	homoval[c]	Homovanillate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	426	4hoxpacd[c]	(4-hydroxyphenyl)acetaldehyde
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	427	4hphac[c]	4-Hydroxyphenylacetate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	437	3mldz[c]	1-methylimidazole-4-acetaldehyde
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	438	3mlda[c]	3-Methylimidazoleacetic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	439	pacald[c]	phenylacetaldehyde
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	440	pac[c]	phenylacetate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	441	3m4hpga[c]	3-Methoxy-4-hydroxyphenylglycolaldehyde
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	442	3mox4hoxm[c]	3-Methoxy-4-hydroxymandelate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	443	34dhpac[c]	3,4-Dihydroxyphenylacetaldehyde
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	444	34dhpha[c]	(3,4-dihydroxyphenyl)acetate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	445	glac[c]	D-glucurono-6,3-lactone
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	446	glcr[c]	D-glucarate(2-)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	447	pristanal[c]	pristanal
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	448	prist[c]	pristanic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	449	gcald[c]	glycolaldehyde
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	451	34dhoxmand[c]	3,4-Dihydroxymandelate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	469	im4act[c]	imidazole-4-acetaldehyde
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	470	im4ac[c]	Imidazole-4-acetate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	471	4abutn[c]	4-Aminobutanal
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	472	4abut[c]	gamma-aminobutyric acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	473	betald[c]	betaine aldehyde
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	474	glyb[c]	glycine betaine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	475	4tmeabut[c]	4-trimethylammoniobutanal
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	476	4tmeabutn[c]	4-(trimethylammonio)butanoate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	477	tag1p-D[c]	D-Tagatose 1-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	482	f1p[c]	D-Fructose 1-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	483	xu1p-D[c]	D-Xylulose 1-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	484	inost[c]	myo-inositol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	485	glcur[c]	D-glucuronate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	487	gdpmann[c]	GDP-D-mannose
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	512	udpg[c]	UDPglucose
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	520	12HPET[c]	12-Hydroperoxyeicosa-5,8,10,14-tetraenoate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	521	12RHPET[c]	12R-Hydroperoxyeicosatetraenoate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	522	15HPET[c]	15-Hydroperoxyeicosatetraenoic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	523	5HPET[c]	5-Hydroperoxy-6-trans-8,11,14-cis-eicosatetraenoate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	524	leuktrA4[c]	Leukotriene A4
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	533	amet[c]	S-adenosyl-L-methionine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	534	ametam[c]	S-Adenosylmethioninamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	538	cgly[c]	L-cysteinylglycine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	544	ptrc[c]	Putrescine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	545	13dampp[c]	1,3-Diaminopropane
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	546	nmptrc[c]	N-Methylputrescine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	547	1mpyr[c]	1-methylpyrrolinium
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	548	hista[c]	Histamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	549	aact[c]	Aminoacetone
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	550	mhista[c]	N-Methylhistamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	551	dopa[c]	Dopamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	552	pydx[c]	pyridoxal
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	553	4pyrdx[c]	4-pyridoxic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	557	arg-L[c]	L-argininium(1+)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	577	argsuc[c]	N(omega)-(L-Arginino)succinate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	578	5moxact[c]	5-Methoxyindoleacetate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	579	melatn[c]	melatonin
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	582	Nacasp[c]	N-acetyl-L-aspartate(2-)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	586	citr-L[c]	L-citrulline
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	587	10fthf[c]	10-Formyltetrahydrofolate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	588	fprica[c]	5-Formamido-1-(5-phospho-D-ribosyl)imidazole-4-carboxamide
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	589	thf[c]	5,6,7,8-Tetrahydrofolate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	713	crn[c]	(R)-carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	718	4mop[c]	4-methyl-2-oxopentanoate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	720	3mob[c]	3-methyl-2-oxobutanoate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	727	caro[c]	beta-carotene
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	731	dmgly[c]	N,N-dimethylglycine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite (exceptional)	732	met-L[c]	L-methionine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	735	23dpg[c]	2,3-Disphospho-D-glycerate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	737	pap[c]	Adenosine 3',5'-bisphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	738	paps[c]	3'-Phosphoadenylyl sulfate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite (exceptional)	739	aps[c]	Adenosine 5'-phosphosulfate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	743	biocyt[c]	Biocytin
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	744	btn[c]	Biotin
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	745	lys-L[c]	L-Lysine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	758	cbp[c]	Carbamoyl phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	759	cbasp[c]	N-carbamoyl-L-aspartate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	760	dhor-S[c]	(S)-dihydroorotate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	762	adprib[c]	ADPribose
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	778	prostg1[c]	(13E)-11alpha-Hydroxy-9,15-dioxoprost-13-enoate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	779	prostgf2[c]	Prostaglandin F2alpha
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	781	cyst-L[c]	L-cystathionine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	783	hLkynr[c]	3-hydroxy-L-kynurenine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	784	42A3HP24DB[c]	4-(2-Amino-3-hydroxyphenyl)-2,4-dioxobutanoate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	785	cytd[c]	cytidine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	786	uri[c]	uridine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	789	ctp[c]	CTP(4-)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	793	cdpea[c]	CDPethanolamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	795	cdpchol[c]	CDPcholine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	800	acgam6p[c]	N-Acetyl-D-glucosamine 6-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	801	gam6p[c]	D-Glucosamine 6-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	808	chol[c]	choline
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	809	ach[c]	acetylcholine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	817	etha[c]	Ethanolamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	818	ethamp[c]	Ethanolamine phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	819	cholp[c]	Choline phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	841	pcreat[c]	Phosphocreatine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	846	g3pc[c]	sn-Glycero-3-phosphocholine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	847	acnam[c]	N-acetylneuraminate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	848	cmpacna[c]	CMP-N-acetylneuraminate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	853	carn[c]	carnosine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	854	his-L[c]	L-histidine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	855	dpcoa[c]	Dephospho-CoA
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	860	3moxtyr[c]	3-Methoxytyramine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	861	adrnl[c]	Adrenaline
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	862	mepi[c]	Metanephrine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	863	nrpphr[c]	Norepinephrine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	864	normete-L[c]	L-Normetanephrine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	884	stcrn[c]	stearoylcarnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	885	tetpent3crn[c]	tetracosapentaenoyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	886	vacccrn[c]	Vaccenyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	887	hdcecrn[c]	Hexadecenoyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	888	hexccrn[c]	hexacosanoyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	889	lnlncgcrn[c]	gamma-linolenyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	890	c226crn[c]	cervonyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	891	lnlncacrn[c]	alpha-linolenyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	892	tettet6crn[c]	Tetracosatetraenoyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	893	odecrn[c]	octadecenoyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	894	adrncrn[c]	Adrenyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	895	lneldccrn[c]	Linoelaidyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	896	pmtcrn[c]	L-palmitoylcarnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	899	hdd2coa[c]	trans-Hexadec-2-enoyl-CoA
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	900	hdd2crn[c]	trans-Hexadec-2-enoyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	903	lnlccrn[c]	Linoleyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	904	tetpent6crn[c]	tetracosapentaenoyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	905	tmndnccrn[c]	Timnodonyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	906	ptdcacrn[c]	pendtadenoyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	907	elaidcrn[c]	Elaidic carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	908	nrvnccrn[c]	Nervonyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	909	ttdcrn[c]	tetradecanoyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	910	dcsptn1crn[c]	docosa-4,7,10,13,16-pentaenoyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	911	strdnccrn[c]	stearidonyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	912	hpdcacrn[c]	heptadecanoyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	913	dlnlcgcrn[c]	dihomo-gamma-linolenyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	914	lgnccrn[c]	lignoceryl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	915	arachcrn[c]	arachidyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	916	eicostetcrn[c]	Eicosatetranoyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	918	clpndcrn[c]	clupanodonyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	978	2obut[c]	2-oxobutanoate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	980	utp[c]	UTP(4-)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1004	6hoxmelatn[c]	6-Hydroxymelatonin
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1025	coumarin[c]	coumarin
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1026	hcoumarin[c]	umbelliferone
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1027	antipyrene[c]	antipyrine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1028	dmantipyrine[c]	demethylated antipyrine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1031	limnen[c]	limonene
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1032	carveol[c]	(-)-trans-carveol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1033	taxol[c]	paclitaxel
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1034	htaxol[c]	6 alpha hydroxy taxol/ 6 alpha hydroxy paclitaxel
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1037	perillyl[c]	perillyl alcohol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1040	debrisoquine[c]	debrisoquine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1041	4hdebrisoquine[c]	4 hydroxy debrisoquine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1045	npthl[c]	naphthalene
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1046	onpthl[c]	naphthalene epoxide
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1054	aflatoxin[c]	aflatoxin B1
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1055	eaflatoxin[c]	aflatoxin B1 exo-8,9-epoxide
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1057	ddca[c]	laurate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1058	whddca[c]	omega hydroxy dodecanoate (n-C12:0)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1059	whttdca[c]	omega hydroxy tetradecanoate (n-C14:0)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1060	whhdca[c]	omega hydroxy hexadecanoate (n-C16:0)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1066	lanost[c]	lanosterol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1067	44mctr[c]	4,4-dimethyl-5alpha-cholesta-8,14,24-trien-3beta-ol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1096	L-dpchrm[c]	L-Dopachrome
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1097	56dihindlcrbxlt[c]	5,6-dihydroxyindole-2-carboxylate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1098	dump[c]	dUMP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1099	xylu-L[c]	L-xylulose
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1101	34dhphe[c]	L-dopa
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1102	3hxkynam[c]	3-Hydroxykynurenamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1103	5htrp[c]	5-hydroxy-L-tryptophan
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1104	5hxkyn[c]	5-hydroxykynurenine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1105	5hxkynam[c]	5-Hydroxykynurenamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1107	trypta[c]	Tryptamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1109	peamn[c]	Phenethylamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1111	tym[c]	Tyramine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1117	4ppcys[c]	N-((R)-4-Phosphopantothenoyl)-L-cysteine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1118	pan4p[c]	pantetheine 4'-phosphate(2-)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1119	4ppan[c]	(R)-4'-phosphopantothenate(3-)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1134	dhf[c]	7,8-Dihydrofolate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1135	fol[c]	Folate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1136	orot[c]	orotate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1150	uacgam[c]	UDP-N-acetyl-D-glucosamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1152	ump[c]	UMP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1156	56dura[c]	5,6-dihydrouracil
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1157	ura[c]	uracil
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1158	56dthm[c]	5,6-dihydrothymine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1159	thym[c]	thymine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1160	cala[c]	N-carbamoyl-beta-alaninate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1162	dtmp[c]	dTMP(2-)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1163	dtdp[c]	dTDP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1164	dudp[c]	dUDP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1169	thymd[c]	thymidine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1186	dnad[c]	Deamino-NAD+
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1187	nicrnt[c]	Nicotinate D-ribonucleotide
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1205	4fumacac[c]	4-fumarylacetoacetate(2-)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1208	dcacoa[c]	Decanoyl-CoA (n-C10:0CoA)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1209	ddcacoa[c]	Dodecanoyl-CoA (n-C12:0CoA)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1227	acgam[c]	N-acetyl-D-glucosamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1235	urcan[c]	trans-urocanate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1236	4izp[c]	4-Imidazolone-5-propanoate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1238	5mthf[c]	5-Methyltetrahydrofolate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1239	5thf[c]	pentaglutamyl folate (THF)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1240	6thf[c]	hexaglutamyl folate  (THF)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1241	7thf[c]	heptaglutamyl folate (THF)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1242	5dhf[c]	pentaglutamyl folate (DHF)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1243	6dhf[c]	hexaglutamyl folate (DHF)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1244	7dhf[c]	heptaglutamyl folate (DHF)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1260	fuc1p-L[c]	L-Fucose 1-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1261	gdpfuc[c]	GDP-L-fucose
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1262	forglu[c]	N-formimidoyl-L-glutamate(2-)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1263	5forthf[c]	5-Formiminotetrahydrofolate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1264	methf[c]	5,10-Methenyltetrahydrofolate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1273	fuc-L[c]	L-fucose
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1297	3dsphgn[c]	3-Dehydrosphinganine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1298	sphgn[c]	Sphinganine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1309	Lcyst[c]	L-Cysteate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1310	taur[c]	taurine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1314	udpacgal[c]	UDP-N-acetyl-D-galactosamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1320	gudac[c]	guanidinoacetic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1322	malttr[c]	maltotriose
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1323	gar[c]	N1-(5-Phospho-D-ribosyl)glycinamide
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1324	fgam[c]	N2-Formyl-N1-(5-phospho-D-ribosyl)glycinamide
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1325	pram[c]	5-Phospho-beta-D-ribosylamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1326	fpram[c]	2-(Formamido)-N1-(5-phospho-D-ribosyl)acetamidine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1327	air[c]	5-amino-1-(5-phospho-D-ribosyl)imidazole
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1329	bdg2hc[c]	cis-beta-D-Glucosyl-2-hydroxycinnamate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1330	2coum[c]	cis-2-coumarate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1336	ahdt[c]	2-Amino-4-hydroxy-6-(erythro-1,2,3-trihydroxypropyl)dihydropteridine triphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1340	glucys[c]	gamma-L-Glutamyl-L-cysteine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1347	ala-L[c]	L-alanine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1348	gua[c]	guanine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1349	xan[c]	9H-xanthine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1376	dmpp[c]	Dimethylallyl diphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1377	ipdp[c]	Isopentenyl diphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1378	grdp[c]	Geranyl diphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1379	frdp[c]	Farnesyl diphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1380	ggdp[c]	Geranylgeranyl diphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1385	glyc3p[c]	Glycerol 3-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1417	gdpddman[c]	GDP-4-dehydro-6-deoxy-D-mannose
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1419	gmp[c]	GMP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1420	xmp[c]	Xanthosine 5'-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1421	acmana[c]	N-acetyl-D-mannosamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1422	sarcs[c]	sarcosine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1455	mercppyr[c]	Mercaptopyruvate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1456	e4hglu[c]	erythro-4-hydroxy-L-glutamate(1-)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1458	3spyr[c]	3-Sulfopyruvate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1459	phpyr[c]	keto-phenylpyruvate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1460	34hpp[c]	3-(4-hydroxyphenyl)pyruvate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1487	dhdascb[c]	dehydroascorbic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1488	ascb-L[c]	L-ascorbic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1490	retn[c]	all-trans-retinoate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1491	13-cis-retn[c]	13-cis-retinoate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1492	4mlacac[c]	4-maleylacetoacetate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1493	dgmp[c]	dGMP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1494	dgdp[c]	dGDP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1512	3hanthrn[c]	3-hydroxyanthranilic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1523	udpglcur[c]	UDP-D-glucuronate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1525	btamp[c]	Biotinyl-5'-AMP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1558	hgentis[c]	homogentisate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1560	3hpcoa[c]	3-Hydroxypropionyl-CoA
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1561	3hpp[c]	3-hydroxypropionate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1562	gam[c]	D-Glucosamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1564	hmbil[c]	Hydroxymethylbilane
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1572	hmgcoa[c]	Hydroxymethylglutaryl-CoA
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1579	2hyoxplac[c]	2-Hydroxyphenylacetate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1592	estrone[c]	estrone
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1593	estradiol[c]	estradiol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1594	prgnlone[c]	pregnenolone
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1595	17ahprgnlone[c]	17alpha-hydroxypregnenolone
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1596	17ahprgstrn[c]	17alpha-hydroxyprogesterone
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1610	ppmi12346p[c]	5-Diphosphoinositol pentakisphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1611	minohp[c]	myo-Inositol hexakisphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1615	ppmi1346p[c]	Diphosphoinositol tetrakisphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1616	mi13456p[c]	1D-myo-Inositol 1,3,4,5,6-pentakisphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1619	mi1p-D[c]	1D-myo-Inositol 1-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1620	mi3p-D[c]	1D-myo-Inositol 3-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1621	mi4p-D[c]	1D-myo-Inositol 4-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1622	5hoxnfkyn[c]	5-hydroxy-N-formylkynurenine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1623	fna5moxam[c]	Formyl-N-acetyl-5-methoxykynurenamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1624	f5hoxkyn[c]	Formyl-5-hydroxykynurenamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1625	nmthsrtn[c]	N-Methylserotonin
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1626	mi134p[c]	1D-myo-Inositol 1,3,4-trisphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1627	mi34p[c]	1D-myo-Inositol 3,4-bisphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1628	mi14p[c]	1D-myo-Inositol 1,4-bisphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1629	mi145p[c]	1D-myo-Inositol 1,4,5-trisphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1634	xtp[c]	XTP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1635	ditp[c]	dITP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1636	dimp[c]	dIMP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1638	mi1345p[c]	1D-myo-Inositol 1,3,4,5-tetrakisphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1641	tagat-D[c]	D-tagatose
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1642	anth[c]	anthranilate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1643	Lfmkynr[c]	N-formyl-L-kynurenine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1644	nformanth[c]	N-formylanthranilate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1649	glyc-S[c]	(S)-Glycerate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1650	mercplac[c]	3-Mercaptolactate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1651	2hb[c]	2-Hydroxybutyrate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1660	mlthf[c]	(6R)-5,10-methylenetetrahydrofolate(2-)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1666	leuktrB4[c]	Leukotriene B4
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1693	m2mn[c]	(alpha-D-mannosyl)2-beta-D-mannosyl-N-acetylglucosamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1694	mn[c]	beta-1,4-mannose-N-acetylglucosamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1695	chtn[c]	chitin
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1696	48dhoxquin[c]	quinoline-4,8-diol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1697	46dhoxquin[c]	4,6-Dihydroxyquinoline
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1698	aprut[c]	N-Acetylputrescine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1703	sl-L[c]	L-sulfolactate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1716	mmcoa-S[c]	(S)-Methylmalonyl-CoA
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1731	5mta[c]	5'-S-methyl-5'-thioadenosine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1732	5mdr1p[c]	5-Methylthio-5-deoxy-D-ribose 1-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1735	5fthf[c]	5-Formyltetrahydrofolate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1750	acmanap[c]	N-Acetyl-D-mannosamine 6-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1758	acnamp[c]	N-Acetylneuraminate 9-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1759	kdnp[c]	2-keto-3-deoxy-D-glycero-D-galactononic acid 9-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1762	dgtp[c]	dGTP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1763	dutp[c]	dUTP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1779	didp[c]	dIDP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1796	dttp[c]	dTTP(4-)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1797	dctp[c]	dCTP
+Transformed g.c. estimate (298.15K, pH 7) for metabolite (exceptional)	1803	nmn[c]	NMN(-)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1807	ncam[c]	nicotinamide
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1808	1mncam[c]	1-methylnicotinamide
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1811	nac[c]	nicotinate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1813	nicrns[c]	Nicotinate D-ribonucleoside
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1814	rnam[c]	N-Ribosylnicotinamide
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1815	gsn[c]	guanosine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1816	dgsn[c]	2'-deoxyguanosine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1817	xtsn[c]	xanthosine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1829	ap4a[c]	P1,P4-Bis(5'-adenosyl) tetraphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1830	adpglc[c]	ADPglucose
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1831	adpman[c]	ADPmannose
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1846	thbpt[c]	5,6,7,8-tetrahydrobiopterin
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1847	thbpt4acam[c]	4a-hydroxytetrahydrobiopterin
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1848	5aizc[c]	5-amino-1-(5-phospho-D-ribosyl)imidazole-4-carboxylate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1849	pnto-R[c]	(R)-Pantothenate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1856	dhbpt[c]	6,7-dihydrobiopterin
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1858	ntm2amep[c]	N-Trimethyl-2-aminoethylphosphonate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1860	2ameph[c]	(2-Aminoethyl)phosphonate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1868	pydam[c]	Pyridoxamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1869	pyam5p[c]	Pyridoxamine 5'-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1870	pydx5p[c]	Pyridoxal 5'-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1871	pydxn[c]	pyridoxine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1872	pdx5p[c]	Pyridoxine 5'-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1895	f26bp[c]	D-Fructose 2,6-bisphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1901	6pgc[c]	6-Phospho-D-gluconate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1903	acgam1p[c]	N-Acetyl-D-glucosamine 1-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1904	2pglyc[c]	2-Phosphoglycolate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1954	pcollg5hlys[c]	erythro-5-hydroxy-L-lysine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1968	pro-L[c]	L-proline
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1969	1pyr5c[c]	1-pyrroline-5-carboxylate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1975	prostgd2[c]	Prostaglandin D2
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1980	6pthp[c]	6-pyruvoyl-5,6,7,8-tetrahydropterin
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1984	quln[c]	quinolinate(2-)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1988	retinol-cis-11[c]	11-cis-retinol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1989	retinal-11-cis[c]	11-cis-retinal
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1990	retinol-9-cis[c]	9-cis-retinol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1991	retinal-cis-9[c]	all-trans-retinal
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1992	retinol-cis-13[c]	13-cis-retinol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1993	retinal-cis-13[c]	13-cis-retinal
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1994	xu5p-D[c]	D-Xylulose 5-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1998	dtt[c]	1,4-dithiothreitol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	1999	dttOX[c]	trans-1,2-dithiane-4,5-diol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2001	phytcoa[c]	phytanyl coa
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2002	dmnoncoa[c]	4,8 dimethylnonanoyl-CoA
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2003	2amac[c]	2-aminoacrylic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2018	3htmelys[c]	3-Hydroxy-N6,N6,N6-trimethyl-L-lysine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2035	estrones[c]	Estrone 3-sulfate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2056	thyox-L[c]	L-thyroxine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2058	triodthy[c]	3,3',5-triiodo-L-thyronine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2063	idour[c]	L-iduronate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2070	oh1[c]	hydroxide
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2073	thmmp[c]	thiamine(1+) monophosphate(2-)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2078	thm[c]	thiamine(1+)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2080	asp-D[c]	D-aspartate(1-)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2095	acrn[c]	O-Acetylcarnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2110	pristcoa[c]	pristanoyl coa
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2111	phyt[c]	phytanate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2126	csn[c]	cytosine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2149	udpxyl[c]	UDP-D-xylose
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2161	pro-D[c]	D-proline
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2179	ser-D[c]	D-serine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2182	hom-L[c]	L-homoserine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2187	leuktrC4[c]	Leukotriene C4
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2190	dheas[c]	Dehydroepiandrosterone sulfate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2195	spmd[c]	Spermidine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2196	sprm[c]	Spermine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2198	lipoate[c]	lipoic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2206	o2s[c]	superoxide
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2216	sph1p[c]	Sphinganine 1-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2217	sphings[c]	Sphingosine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2218	sphs1p[c]	Sphingosine 1-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2238	dhea[c]	3beta-hydroxyandrost-5-en-17-one
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2242	chsterols[c]	cholesterol sulfate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2244	prgnlones[c]	pregnenolone sulfate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2250	tymsf[c]	Tyramine O-sulfate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2251	triodthysuf[c]	Triiodothyronine sulfate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2253	nrpphrsf[c]	Sulfate derivative of norepinephrine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2254	dopasf[c]	dopamine 3-O-sulfate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2255	5adtststerone[c]	17beta-hydroxy-5alpha-androstan-3-one
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2256	5adtststerones[c]	5alpha-Dihydrotestosterone sulfate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2257	tststerone[c]	testosterone
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2258	tststerones[c]	testosterone sulfate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2259	s7p[c]	Sedoheptulose 7-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2260	e4p[c]	D-erythrose 4-phosphate(2-)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2262	dtdpglu[c]	dTDPglucose
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2263	dtdp4d6dg[c]	dTDP-4-dehydro-6-deoxy-D-glucose
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2267	ttdcea[c]	tetradecenoate (n-C14:1)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2275	phom[c]	O-Phospho-L-homoserine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2277	tmlys[c]	N6,N6,N6-Trimethyl-L-lysine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2278	3ityr-L[c]	3-iodo-L-tyrosine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2280	35diotyr[c]	3,5-diiodo-L-tyrosine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2288	2c23dh56dhoxin[c]	2-Carboxy-2,3-dihydro-5,6-dihydroxyindole
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2289	T4hcinnm[c]	trans-4-coumarate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2290	34dhcinm[c]	3,4-Dihydroxy-trans-cinnamate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2291	dopaqn[c]	L-dopaquinone
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2313	orot5p[c]	Orotidine 5'-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2314	3uib[c]	3-Ureidoisobutyrate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2315	3aib-D[c]	D-3-Amino-isobutanoate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2320	ptth[c]	pantetheine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2321	cysam[c]	Cysteamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2332	3aib[c]	(S)-3-aminoisobutyric acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2333	rbl-D[c]	D-ribulose
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2334	11docrtsl[c]	11-deoxycortisol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2335	11docrtstrn[c]	11-deoxycorticosterone
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2342	2425dhvitd3[c]	(24R)-24,25-dihydroxycalciol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2345	25hvitd2[c]	25-Hydroxyvitamin D2
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2347	25hvitd3[c]	calcidiol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2349	2mcit[c]	2-methylcitrate(3-)
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2354	msa[c]	3-oxopropanoate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2359	4mptnl[c]	4-methylpentanal
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2369	6htststerone[c]	6 beta hydroxy testosterone
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2371	7dhchsterol[c]	cholesta-5,7-dien-3beta-ol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2373	thp2c[c]	1-piperideine-6-carboxylate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2374	L2aadp6sa[c]	L-allysine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2382	acgal[c]	N-acetyl-D-galactosamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2383	acgal1p[c]	N-Acetyl-D-galactosamine 1-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2404	aldstrn[c]	aldosterone
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2406	amuco[c]	2-Aminomuconate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2408	andrstrn[c]	androsterone
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2424	avite1[c]	(+)-alpha-tocopherol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2426	avite2[c]	alpha-tocotrienol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2429	bhb[c]	(R)-3-hydroxybutyrate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2431	bvite[c]	beta-tocopherol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2433	bz[c]	benzoate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2451	pcrn[c]	propionyl-carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2454	crtsl[c]	cortisol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2456	crtstrn[c]	corticosterone
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2474	23doguln[c]	2,3-Dioxo-L-gulonate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2489	dgchol[c]	glycochenodeoxycholic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2491	3dhguln[c]	3-Dehydro-L-gulonate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2495	dkmpp[c]	2,3-diketo-5-methylthio-1-phosphopentane
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2496	2kmb[c]	2-keto-4-methylthiobutyrate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2499	dmhptcoa[c]	2,6 dimethylheptanoyl-CoA
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2500	dmhptcrn[c]	2,6 dimethylheptanoyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2503	dmnoncrn[c]	4,8 dimethylnonanoyl carnitine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2504	lyxnt[c]	L-lyxonate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2505	xylnt[c]	L-xylonate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2506	thrnt[c]	L-Threonate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2507	eryth[c]	L-erythrulose
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2515	ebastineoh[c]	hydroxylated ebastine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2517	ebastine[c]	ebastine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2531	estriol[c]	estriol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2536	formcoa[c]	formyl-CoA
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2537	ttc-ggdp[c]	trans,trans,cis-Geranylgeranyl diphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2570	glu5sa[c]	L-glutamic 5-semialdehyde
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2589	gdchola[c]	glycochenodeoxycholic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2590	leuktrE4[c]	leukotriene E4
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2591	leuktrF4[c]	leukotriene F4
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2597	gullac[c]	L-gulono-1,4-lactone
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2610	guln[c]	L-gulonate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2611	glcur1p[c]	D-Glucuronate 1-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2614	hestratriol[c]	4,17 dihydroxy estradiol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2627	kdn[c]	2-keto-3-deoxy-D-glycero-D-galactononic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2630	kynate[c]	4-Hydroxy-2-quinolinecarboxylic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2635	leuktrD4[c]	Leukotriene D4
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2646	pd3[c]	Previtamin D3
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2647	lum3[c]	Lumisterol 3
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2651	mercplaccys[c]	3-mercaptolactate-cysteine disulfide
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2652	5mdru1p[c]	5-Methylthio-5-deoxy-D-ribulose 1-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2656	mi1346p[c]	1D-myo-Inositol 1,3,4,6-tetrakisphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2657	mi13p[c]	1D-myo-Inositol 1,3-bisphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2658	mi3456p[c]	1D-myo-Inositol 3,4,5,6-tetrakisphosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2659	2mcacn[c]	cis-2-Methylaconitate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2660	micit[c]	methylisocitrate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2664	adprbp[c]	ADPribose 2'-phosphate
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2680	phaccoa[c]	Phenylacetyl-CoA
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2685	pheacgln[c]	N(2)-phenylacetyl-L-glutamine
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2688	phyQ[c]	phylloquinone
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2697	prostgi2[c]	Prostaglandin I2
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2716	retncoa[c]	retinoyl CoA
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2717	retnglc[c]	retinoyl glucuronide
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2719	13-cis-retnglc[c]	13-cis-retinoyl glucuronide
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2736	tdchola[c]	taurochenodeoxycholic acid
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2737	dtdp4d6dm[c]	dTDP-4-dehydro-6-deoxy-L-mannose
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2738	dtdprmn[c]	dTDP-L-rhamnose
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2750	ts3[c]	Tachysterol 3
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2760	vitd3[c]	calciol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2761	vitd2[c]	vitamin D2
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2766	whtststerone[c]	w hydroxy testosterone
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2773	xoltri24[c]	(24S)-7alpha,24-dihydroxycholesterol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2775	xoltri25[c]	7alpha,25-dihydroxycholesterol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2777	xoltri27[c]	7alpha,26-dihydroxycholesterol
+Transformed g.c. estimate (298.15K, pH 7) for metabolite	2782	yvite[c]	gamma-tocopherol

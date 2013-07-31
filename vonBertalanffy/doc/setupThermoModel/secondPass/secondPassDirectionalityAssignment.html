@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of secondPassDirectionalityAssignment</title>
+  <meta name="keywords" content="secondPassDirectionalityAssignment">
+  <meta name="description" content="Driver to call model specific code to manually generate a physiological model (if first pass does not result in a physiological model).">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html secondPass -->
+<h1>secondPassDirectionalityAssignment
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Driver to call model specific code to manually generate a physiological model (if first pass does not result in a physiological model).</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function  [model,solutionThermoRecon,solutionRecon,model1]=secondPassDirectionalityAssignment(model) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">Driver to call model specific code to manually generate a physiological model (if first pass does not result in a physiological model). 
+
+ The second pass directionality assignment needs careful manual curation
+ since the adjustments necessary to get one organism to grow will not 
+ necessarily be the same as the ones which will get another
+ organism to grow. There's no avioding manual debugging at this stage. 
+
+
+ Below is the code I used for a number of organisms in order to point out
+ the kind of issues that arise. This is NOT supposed to work in the 
+ general case.
+
+ Ronan M. T. Fleming</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="setThermoReactionDirectionalityiAF1260.html" class="code" title="function [modelD,solutionThermoRecon,solutionRecon,model0]=setThermoReactionDirectionalityiAF1260(model,directions,maxFlux,hardCoupleOxPhos)">setThermoReactionDirectionalityiAF1260</a>	Second pass assignment of reaction directionality (E. coli specific)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../setupThermoModel/setupThermoModel.html" class="code" title="function [modelT,directions,solutionThermoRecon]=setupThermoModel(model,metAbbrAlbertyAbbr,metGroupCont,Alberty2006,computedSpeciesData,temp,PHA,IS,CHI,biomassRxnAbbr,rxnAbbrDatabaseID,defaultMetBounds,metBoundsFile,rxnBoundsFile,Legendre,useKeqData,nStdDevGroupCont,cumNormProbCutoff,figures,printToFile,secondPassAssignment)">setupThermoModel</a>	Thermodynamically constrains a COBRA model.</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function  [model,solutionThermoRecon,solutionRecon,model1]=secondPassDirectionalityAssignment(model)</a>
+0002 <span class="comment">%Driver to call model specific code to manually generate a physiological model (if first pass does not result in a physiological model).</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% The second pass directionality assignment needs careful manual curation</span>
+0005 <span class="comment">% since the adjustments necessary to get one organism to grow will not</span>
+0006 <span class="comment">% necessarily be the same as the ones which will get another</span>
+0007 <span class="comment">% organism to grow. There's no avioding manual debugging at this stage.</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% Below is the code I used for a number of organisms in order to point out</span>
+0011 <span class="comment">% the kind of issues that arise. This is NOT supposed to work in the</span>
+0012 <span class="comment">% general case.</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% Ronan M. T. Fleming</span>
+0015 
+0016 <span class="keyword">global</span> CBTLPSOLVER
+0017 <span class="keyword">switch</span> model.description
+0018     <span class="keyword">case</span> <span class="string">'iAF1260'</span>
+0019         <span class="comment">% now assign reaction directions based on the P(\Delta_{r}G^{\primeo}&lt;0)</span>
+0020         <span class="comment">% doing so may prevent the model from growing, therefore at this stage it</span>
+0021         <span class="comment">% is necessary to manually adjust some of the reaction directionalities</span>
+0022         <span class="comment">% such that the model can grow, and grow at a similar rate as observed in</span>
+0023         <span class="comment">% vivo. Therefore this script cannot be made model invariant as there is an</span>
+0024         <span class="comment">% essential manual debugging stage. The script below is for E. coli iAF1260</span>
+0025         fprintf(<span class="string">'%s\n%s\n%s\n'</span>,<span class="string">'The second pass assignment of reaction directionality should'</span>,<span class="keyword">...</span>
+0026             <span class="string">'be a compromise between quantitative and qualitative assignment'</span>,<span class="keyword">...</span>
+0027             <span class="string">'this step requires manual imput as it is specific to each organism.'</span>);
+0028 
+0029         fprintf(<span class="string">'%s\n'</span>,[<span class="string">'The second pass assignment of reaction directionality is using the '</span> CBTLPSOLVER <span class="string">' LP solver.'</span>]);
+0030         fprintf(<span class="string">'\n%s\n'</span>,<span class="string">'...setThermoReactionDirectionality (based on the P(\Delta_{r}G^{\primeo}&lt;0))'</span>);
+0031         <span class="comment">% this will update the model.lb_reconThermo &amp; model.ub_reconThermo</span>
+0032         [model,solutionThermoRecon,solutionRecon,model1]=<a href="setThermoReactionDirectionalityiAF1260.html" class="code" title="function [modelD,solutionThermoRecon,solutionRecon,model0]=setThermoReactionDirectionalityiAF1260(model,directions,maxFlux,hardCoupleOxPhos)">setThermoReactionDirectionalityiAF1260</a>(model,model.directions);
+0033     <span class="keyword">otherwise</span>
+0034         fprintf(<span class="string">'No manually generated .m file second pass directionality assignment is available for this model.'</span>)
+0035 <span class="keyword">end</span>
+0036     
+0037     
+0038</pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of plotMoleFraction</title>
+  <meta name="keywords" content="plotMoleFraction">
+  <meta name="description" content="Plot the mole fractions of metabolite species of a reactant as a function of pH, ionic strength, charge and temperature.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html alberty -->
+<h1>plotMoleFraction
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Plot the mole fractions of metabolite species of a reactant as a function of pH, ionic strength, charge and temperature.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function plotMoleFraction(metAbbr,Alberty2006,metAbbrAlbertyAbbr,PHmin,PHmax,ISmin,ISmax,CHImin,CHImax,TEMPmin,TEMPmax,N) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">Plot the mole fractions of metabolite species of a reactant as a function of pH, ionic strength, charge and temperature.
+
+ INPUT
+ metAbbr               reconstruction reactant abbreviation
+ Alberty2006           Basic data on the metabolite species that make
+                       up a reactant, compiled by Robert A. Alberty,
+                       Massachusetts Institute of Technology.
+                       In Print: Robert A. Alberty, Biochemical Thermodynamics: 
+                       Applications of Mathematica. John Wiley &amp; Sons, 2006. p391-395
+                       Online: BasicBioChemData3.nb
+                       http://library.wolfram.com/infocenter/MathSource/5704/ 
+ metAbbrAlbertyAbbr    mapping from model metabolite primary key to
+                       primary key of reactants in Alberty2006
+
+ PHmin     Minimum glass electrode pH
+ PHmax     Maximum glass electrode pH
+ ISmin     Ionic strength minimum
+ ISmax     Ionic strength maximum
+ CHImin    Electrical potential minimum
+ CHImax    Electrical potential maximum
+ TEMPmin   temperature minimum
+ TEMPmax   temperature maximum
+
+ Ronan M. T. Fleming</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="moleFraction.html" class="code" title="function mf=moleFraction(metAbbr,Alberty2006,metAbbrAlbertyAbbr,temp,pHa,is,chi)">moleFraction</a>	mole fraction of different metabolite species that make up a reactant</li><li><a href="realpH.html" class="code" title="function [pHr,pHAdjustment]=realpH(pHa,temp,is)">realpH</a>	Apparent glass electrode pH is not the same as real pH for thermodynamic calculations.</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function plotMoleFraction(metAbbr,Alberty2006,metAbbrAlbertyAbbr,PHmin,PHmax,ISmin,ISmax,CHImin,CHImax,TEMPmin,TEMPmax,N)</a>
+0002 <span class="comment">%Plot the mole fractions of metabolite species of a reactant as a function of pH, ionic strength, charge and temperature.</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% INPUT</span>
+0005 <span class="comment">% metAbbr               reconstruction reactant abbreviation</span>
+0006 <span class="comment">% Alberty2006           Basic data on the metabolite species that make</span>
+0007 <span class="comment">%                       up a reactant, compiled by Robert A. Alberty,</span>
+0008 <span class="comment">%                       Massachusetts Institute of Technology.</span>
+0009 <span class="comment">%                       In Print: Robert A. Alberty, Biochemical Thermodynamics:</span>
+0010 <span class="comment">%                       Applications of Mathematica. John Wiley &amp; Sons, 2006. p391-395</span>
+0011 <span class="comment">%                       Online: BasicBioChemData3.nb</span>
+0012 <span class="comment">%                       http://library.wolfram.com/infocenter/MathSource/5704/</span>
+0013 <span class="comment">% metAbbrAlbertyAbbr    mapping from model metabolite primary key to</span>
+0014 <span class="comment">%                       primary key of reactants in Alberty2006</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% PHmin     Minimum glass electrode pH</span>
+0017 <span class="comment">% PHmax     Maximum glass electrode pH</span>
+0018 <span class="comment">% ISmin     Ionic strength minimum</span>
+0019 <span class="comment">% ISmax     Ionic strength maximum</span>
+0020 <span class="comment">% CHImin    Electrical potential minimum</span>
+0021 <span class="comment">% CHImax    Electrical potential maximum</span>
+0022 <span class="comment">% TEMPmin   temperature minimum</span>
+0023 <span class="comment">% TEMPmax   temperature maximum</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% Ronan M. T. Fleming</span>
+0026 
+0027 <span class="comment">%find the alberty abbreviation for this metabolite Abbreviation</span>
+0028 albertyAbbr=metAbbrAlbertyAbbr(strcmp(metAbbr,metAbbrAlbertyAbbr(:,2)),3);
+0029 
+0030 <span class="comment">%make a list of alberty abbreviations</span>
+0031 klt=size(Alberty2006,2);
+0032 allAlbertyAbbr=cell(klt,1);
+0033 <span class="keyword">for</span> k=1:klt
+0034     allAlbertyAbbr{k}=Alberty2006(k).abbreviation;
+0035 <span class="keyword">end</span>
+0036 <span class="comment">%find the number of species within pseudoisomer group</span>
+0037 nSpecies=nnz(~isnan(Alberty2006(strcmp(albertyAbbr,allAlbertyAbbr)).basicData(:,1)));
+0038 
+0039 <span class="keyword">if</span> 1
+0040     Ni=N;
+0041     Nj=1;
+0042     Nk=1;
+0043     Np=1;
+0044 <span class="keyword">else</span>
+0045     <span class="keyword">if</span> 1
+0046         Ni=N;
+0047         Nj=2;
+0048         Nk=1;
+0049         Np=1;
+0050     <span class="keyword">else</span>
+0051         Ni=N;
+0052         Nj=N;
+0053         Nk=N;
+0054         Np=N;
+0055     <span class="keyword">end</span>
+0056 <span class="keyword">end</span>
+0057 
+0058 <span class="comment">%create vectors of changing pH, ionic strength and electrical potential</span>
+0059 pHVec  = linspace(PHmin,PHmax,Ni);
+0060 isVec  = linspace(ISmin,ISmax,Nj);
+0061 chiVec = linspace(CHImin,CHImax,Nk);
+0062 tempVec = linspace(TEMPmin,TEMPmax,Np);
+0063     
+0064 MF=zeros(nSpecies,Ni,Nj,Nk,Np);
+0065 
+0066 <span class="comment">%initialise temp and is</span>
+0067 temp=tempVec(1);
+0068 is=isVec(1);
+0069 
+0070 <span class="keyword">for</span> i=1:Ni
+0071     pHa=pHVec(i);
+0072     <span class="keyword">if</span> 0
+0073         <span class="comment">%convert to real pH</span>
+0074         [pHr,pHAdjustment]=<a href="realpH.html" class="code" title="function [pHr,pHAdjustment]=realpH(pHa,temp,is)">realpH</a>(pHa,temp,is);
+0075     <span class="keyword">else</span>
+0076         pHr=pHa;
+0077     <span class="keyword">end</span>
+0078     
+0079     <span class="keyword">for</span> j=1:Nj
+0080         is=isVec(j);
+0081         <span class="keyword">for</span> k=1:Nk
+0082             chi=chiVec(k);
+0083             <span class="keyword">for</span> p=1:Np
+0084                 temp=tempVec(p);
+0085                 
+0086                 MF(:,i,j,j,p)=<a href="moleFraction.html" class="code" title="function mf=moleFraction(metAbbr,Alberty2006,metAbbrAlbertyAbbr,temp,pHa,is,chi)">moleFraction</a>(metAbbr,Alberty2006,metAbbrAlbertyAbbr,temp,pHa,is,chi);
+0087             <span class="keyword">end</span>
+0088         <span class="keyword">end</span>
+0089     <span class="keyword">end</span>
+0090 <span class="keyword">end</span>
+0091 
+0092 <span class="keyword">for</span> n=1:nSpecies
+0093     legendCellArray{n}=[metAbbr int2str(Alberty2006(strcmp(albertyAbbr,allAlbertyAbbr)).basicData(n,3))];
+0094 <span class="keyword">end</span>
+0095 
+0096 <span class="keyword">if</span> 1
+0097     figure;
+0098     hold on
+0099     plot(pHVec,MF(:,:,1,1,1));
+0100     legend(legendCellArray)
+0101     xlabel(<span class="string">'pH'</span>)
+0102     ylabel(<span class="string">'mole fraction'</span>)
+0103 <span class="keyword">end</span>
+0104         
+0105                 
+0106</pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>
