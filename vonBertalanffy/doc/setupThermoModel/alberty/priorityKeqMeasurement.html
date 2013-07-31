@@ -1,0 +1,291 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of priorityKeqMeasurement</title>
+  <meta name="keywords" content="priorityKeqMeasurement">
+  <meta name="description" content="optimal order of Keq measurement">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html alberty -->
+<h1>priorityKeqMeasurement
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>optimal order of Keq measurement</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [priorityKeq,numNonKeqMet]=priorityKeqMeasurement(modelT) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">optimal order of Keq measurement
+
+find the optimal order of Keq measurement to completely define all 
+standard Gibbs energies of formation for all metabolites. If the end of
+the loop is all reactions with two metabolites each then the loop is
+terminated
+
+INPUT
+ modelT.S
+ modelT.met(m).dGft0Source
+
+OUTPUT
+ priorityKeq           structure indicating which reactions to measure Keq
+ priorityKeq{p,1}      rxn abbr
+ priorityKeq{p,2}      rxn name
+ priorityKeq{p,3}      met abbr
+ priorityKeq{p,4}      rxn name
+ priorityKeq{p,5}      met name
+ priorityKeq{p,5}      number of reactions the same metabolite appears in
+                       this give options for which reaction to measure
+ numNonKeqMet        number of metabolites without data at each iteration
+
+Ronan M.T. Fleming</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [priorityKeq,numNonKeqMet]=priorityKeqMeasurement(modelT)</a>
+0002 <span class="comment">%optimal order of Keq measurement</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">%find the optimal order of Keq measurement to completely define all</span>
+0005 <span class="comment">%standard Gibbs energies of formation for all metabolites. If the end of</span>
+0006 <span class="comment">%the loop is all reactions with two metabolites each then the loop is</span>
+0007 <span class="comment">%terminated</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%INPUT</span>
+0010 <span class="comment">% modelT.S</span>
+0011 <span class="comment">% modelT.met(m).dGft0Source</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%OUTPUT</span>
+0014 <span class="comment">% priorityKeq           structure indicating which reactions to measure Keq</span>
+0015 <span class="comment">% priorityKeq{p,1}      rxn abbr</span>
+0016 <span class="comment">% priorityKeq{p,2}      rxn name</span>
+0017 <span class="comment">% priorityKeq{p,3}      met abbr</span>
+0018 <span class="comment">% priorityKeq{p,4}      rxn name</span>
+0019 <span class="comment">% priorityKeq{p,5}      met name</span>
+0020 <span class="comment">% priorityKeq{p,5}      number of reactions the same metabolite appears in</span>
+0021 <span class="comment">%                       this give options for which reaction to measure</span>
+0022 <span class="comment">% numNonKeqMet        number of metabolites without data at each iteration</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">%Ronan M.T. Fleming</span>
+0025 
+0026 [nMet,nRxn]=size(modelT.S);
+0027 KeqMetBool=false(nMet,1);
+0028 <span class="keyword">for</span> m=1:nMet
+0029     <span class="keyword">if</span> strcmp(modelT.met(m).dGft0Source,<span class="string">'Keq'</span>)
+0030         KeqMetBool(m)=1;
+0031     <span class="keyword">end</span>
+0032     <span class="comment">%ignore protons</span>
+0033     abbr=modelT.mets{m};
+0034     abbr=abbr(1:end-3);
+0035     <span class="keyword">if</span> strcmp(abbr,<span class="string">'h'</span>)
+0036         KeqMetBool(m)=1;
+0037     <span class="keyword">end</span>
+0038 <span class="keyword">end</span>
+0039 
+0040 <span class="keyword">if</span> nnz(KeqMetBool)==0
+0041     error(<span class="string">'No metabolite data measured with Keq'</span>)
+0042 <span class="keyword">end</span>
+0043 
+0044 intRxnBool=false(1,nRxn);
+0045 intRxnBool(modelT.SIntRxnInd)=1;
+0046 
+0047 KeqMet=find(KeqMetBool==1);
+0048 nonKeqMet=find(KeqMetBool==0);
+0049 
+0050 measuredMet=[];
+0051 p=1;
+0052 nNon=1;
+0053 <span class="comment">%find the metabolites that have not been measured</span>
+0054 nonKeqMet=setdiff(nonKeqMet,measuredMet);
+0055 numNonKeqMet(nNon)=length(nonKeqMet);
+0056 <span class="comment">%keep measuring until no metabolite data is unknown</span>
+0057 <span class="keyword">while</span> ~isempty(nonKeqMet)
+0058     measuredMet=[];
+0059     q=1;
+0060     q2=1;
+0061     qpriorityKeq=[];
+0062     <span class="comment">%find reactions with only one metabolite data missing</span>
+0063     <span class="keyword">for</span> n=1:nRxn
+0064         <span class="comment">%only internal reactions</span>
+0065         <span class="keyword">if</span> intRxnBool(n)
+0066             nonZeroMet=find(modelT.S(:,n)~=0);
+0067             <span class="comment">%find the metabolites in this reaction that have no Keq</span>
+0068             missingMet=intersect(nonZeroMet,nonKeqMet);
+0069             <span class="keyword">if</span> length(missingMet)==1
+0070                 <span class="comment">%store the metabolites to be measured in this round</span>
+0071                 measuredMet(q)=missingMet;
+0072                 <span class="comment">%abbreviation of measured metabolite</span>
+0073                 abbr=modelT.mets{missingMet};
+0074                 abbr=abbr(1:end-3);
+0075                 officialName=modelT.met(missingMet).officialName;
+0076                 <span class="keyword">if</span> isempty(qpriorityKeq)
+0077                     bool=0;
+0078                 <span class="keyword">else</span>
+0079                     bool=strcmp(abbr,qpriorityKeq(:,3));
+0080                 <span class="keyword">end</span>
+0081                 <span class="comment">%store the reaction Keq to be measured</span>
+0082                 <span class="keyword">if</span> strcmp(modelT.rxns{n},<span class="string">'RMI'</span>)
+0083                     pause(0.1);
+0084                 <span class="keyword">end</span>
+0085                 <span class="keyword">if</span> ~any(bool)
+0086                     qpriorityKeq{q,1}=modelT.rxns{n};
+0087                     qpriorityKeq{q,2}=modelT.rxn(n).officialName;
+0088                     qpriorityKeq{q,3}=abbr;
+0089                     qpriorityKeq{q,4}=modelT.rxn(n).equation;
+0090                     qpriorityKeq{q,5}=officialName;
+0091                     qpriorityKeq{q,6}=1;
+0092                 <span class="keyword">else</span>
+0093                     qpriorityKeq{q,1}=modelT.rxns{n};
+0094                     qpriorityKeq{q,2}=modelT.rxn(n).officialName;
+0095                     qpriorityKeq{q,3}=abbr;
+0096                     qpriorityKeq{q,4}=modelT.rxn(n).equation;
+0097                     qpriorityKeq{q,5}=officialName;
+0098                     ind=find(bool==1);
+0099                     qpriorityKeq{q,6}=length(ind)+1;
+0100                     <span class="keyword">for</span> s=1:length(ind)
+0101                         <span class="comment">%increment the other reactions to be measured to</span>
+0102                         <span class="comment">%indicate that measuring this reaction also provides</span>
+0103                         <span class="comment">%knowledge on other reactions since the same metabolite</span>
+0104                         <span class="comment">%is involved</span>
+0105                         qpriorityKeq{ind(s),6}=length(ind)+1;
+0106                     <span class="keyword">end</span>
+0107                 <span class="keyword">end</span>
+0108                 q=q+1;
+0109 <span class="comment">%             else</span>
+0110 <span class="comment">%                 if length(missingMet)==2</span>
+0111 <span class="comment">%                     %store the important metabolites to be measured in this round</span>
+0112 <span class="comment">%                     measuredMet(q2)=missingMet(1);</span>
+0113 <span class="comment">%                     q2=q2+1;</span>
+0114 <span class="comment">%                     measuredMet(q2)=missingMet(2);</span>
+0115 <span class="comment">%                     q2=q2+1;</span>
+0116 <span class="comment">%                 end</span>
+0117             <span class="keyword">end</span>
+0118                     
+0119         <span class="keyword">end</span>
+0120     <span class="keyword">end</span>
+0121     nNon=nNon+1;
+0122     nRxn1=length(nonKeqMet);
+0123     <span class="comment">%find the metabolites that have not been measured</span>
+0124     nonKeqMet=setdiff(nonKeqMet,measuredMet);
+0125     nRxn2=length(nonKeqMet);
+0126     numNonKeqMet(nNon)=length(nonKeqMet);
+0127     measuredMetRxnRatio(nNon)=length(measuredMet)/(nRxn1-nRxn2);
+0128     <span class="comment">%if the same number of reactions still remain after another</span>
+0129     <span class="comment">%iteration then there are metabolites which cannot be measured</span>
+0130     <span class="comment">%using Keq.</span>
+0131     <span class="keyword">if</span> numNonKeqMet(nNon)==numNonKeqMet(nNon-1)
+0132         <span class="keyword">break</span>;
+0133     <span class="keyword">else</span>
+0134         fprintf(<span class="string">'%s\n'</span>,[<span class="string">'# metabolites without standard Gibbs energies of formation: '</span> int2str(numNonKeqMet(nNon))]);
+0135 
+0136         qpriorityKeqNum=zeros(size(qpriorityKeq,1),1);
+0137         <span class="keyword">for</span> x=1:size(qpriorityKeq,1)
+0138             qpriorityKeqNum(x)=qpriorityKeq{x,6};
+0139         <span class="keyword">end</span>
+0140         [x, xi] = sort(qpriorityKeqNum,<span class="string">'descend'</span>);
+0141         <span class="comment">%sorted version by important reactions</span>
+0142 <span class="comment">%         firstMetAbbr=qpriorityKeq{xi(x),3};</span>
+0143         <span class="keyword">for</span> x=1:size(qpriorityKeq,1)
+0144 <span class="comment">%             %only measure the reaction that gives the</span>
+0145 <span class="comment">%             if isempty(qpriorityKeq{xi(x),3},firstMetAbbr)</span>
+0146 <span class="comment">%                 break;</span>
+0147 <span class="comment">%             else</span>
+0148                 priorityKeq{p,1}=qpriorityKeq{xi(x),1};
+0149                 priorityKeq{p,2}=qpriorityKeq{xi(x),2};
+0150                 priorityKeq{p,3}=qpriorityKeq{xi(x),3};
+0151                 priorityKeq{p,4}=qpriorityKeq{xi(x),4};
+0152                 priorityKeq{p,5}=qpriorityKeq{xi(x),5};
+0153                 priorityKeq{p,6}=qpriorityKeq{xi(x),6};
+0154                 p=p+1;
+0155 <span class="comment">%             end</span>
+0156         <span class="keyword">end</span>
+0157     <span class="keyword">end</span>
+0158 <span class="keyword">end</span>
+0159 
+0160 figure;
+0161 hold on;
+0162 xx=1:length(numNonKeqMet);
+0163 [AX,H1,H2] = plotyy(xx,numNonKeqMet,xx,measuredMetRxnRatio);
+0164 set(H1,<span class="string">'LineStyle'</span>,<span class="string">'.'</span>)
+0165 set(H2,<span class="string">'LineStyle'</span>,<span class="string">'*'</span>)
+0166 set(get(AX(1),<span class="string">'Ylabel'</span>),<span class="string">'String'</span>,<span class="string">'# metabolites without Standard Gibbs energies of formation'</span>) 
+0167 set(get(AX(2),<span class="string">'Ylabel'</span>),<span class="string">'String'</span>,<span class="string">'Reaction:Metabolite ratio'</span>) 
+0168 title(<span class="string">'Standard Gibbs energies of formation from experimental Equilibrium constants'</span>)
+0169 xlabel(<span class="string">'# iterations'</span>)
+0170 
+0171 <span class="comment">% function createfigure(X1, Y1, Y2)</span>
+0172 <span class="comment">% %CREATEFIGURE(X1,Y1,Y2)</span>
+0173 <span class="comment">% %  X1:  vector of x data</span>
+0174 <span class="comment">% %  Y1:  vector of y data</span>
+0175 <span class="comment">% %  Y2:  vector of y data</span>
+0176 <span class="comment">%</span>
+0177 <span class="comment">% %  Auto-generated by MATLAB on 07-Jan-2009 18:42:35</span>
+0178 <span class="comment">%</span>
+0179 <span class="comment">% % Create figure</span>
+0180 <span class="comment">% figure1 = figure;</span>
+0181 <span class="comment">%</span>
+0182 <span class="comment">% % Create axes</span>
+0183 <span class="comment">% axes1 = axes('Parent',figure1,...</span>
+0184 <span class="comment">%     'YTick',[0 100 200 300 400 500 600 700 800 900 1000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000],...</span>
+0185 <span class="comment">%     'YColor',[0 0 1],...</span>
+0186 <span class="comment">%     'FontSize',16);</span>
+0187 <span class="comment">% % Uncomment the following line to preserve the X-limits of the axes</span>
+0188 <span class="comment">% % xlim([0 26]);</span>
+0189 <span class="comment">% % Uncomment the following line to preserve the Y-limits of the axes</span>
+0190 <span class="comment">% % ylim([400 1400]);</span>
+0191 <span class="comment">% hold('all');</span>
+0192 <span class="comment">%</span>
+0193 <span class="comment">% % Create plot</span>
+0194 <span class="comment">% plot(X1,Y1,'Parent',axes1,'MarkerSize',15,'Marker','.','LineStyle','none');</span>
+0195 <span class="comment">%</span>
+0196 <span class="comment">% % Create ylabel</span>
+0197 <span class="comment">% ylabel('# metabolites without Standard Gibbs energies of formation',...</span>
+0198 <span class="comment">%     'FontSize',16,...</span>
+0199 <span class="comment">%     'Color',[0 0 1]);</span>
+0200 <span class="comment">%</span>
+0201 <span class="comment">% % Create title</span>
+0202 <span class="comment">% title('Standard Gibbs energies of formation from experimental Equilibrium constants',...</span>
+0203 <span class="comment">%     'FontSize',14);</span>
+0204 <span class="comment">%</span>
+0205 <span class="comment">% % Create xlabel</span>
+0206 <span class="comment">% xlabel('# iterations','FontSize',16);</span>
+0207 <span class="comment">%</span>
+0208 <span class="comment">% % Create axes</span>
+0209 <span class="comment">% axes2 = axes('Parent',figure1,'YTick',[0 0.25 0.5 0.75 1 1.25 1.5 1.75 2],...</span>
+0210 <span class="comment">%     'YAxisLocation','right',...</span>
+0211 <span class="comment">%     'YColor',[0 0.5 0],...</span>
+0212 <span class="comment">%     'FontSize',16,...</span>
+0213 <span class="comment">%     'ColorOrder',[0 0.5 0;1 0 0;0 0.75 0.75;0.75 0 0.75;0.75 0.75 0;0.25 0.25 0.25;0 0 1],...</span>
+0214 <span class="comment">%     'Color','none');</span>
+0215 <span class="comment">% % Uncomment the following line to preserve the X-limits of the axes</span>
+0216 <span class="comment">% % xlim([0 26]);</span>
+0217 <span class="comment">% % Uncomment the following line to preserve the Y-limits of the axes</span>
+0218 <span class="comment">% % ylim([0.75 1.75]);</span>
+0219 <span class="comment">% hold('all');</span>
+0220 <span class="comment">%</span>
+0221 <span class="comment">% % Create plot</span>
+0222 <span class="comment">% plot(X1,Y2,'Parent',axes2,'MarkerSize',10,'Marker','*','LineStyle','none');</span>
+0223 <span class="comment">%</span>
+0224 <span class="comment">% % Create ylabel</span>
+0225 <span class="comment">% ylabel('Reaction:Metabolite ratio','VerticalAlignment','cap','FontSize',14,...</span>
+0226 <span class="comment">%     'Color',[0 0.5 0]);</span>
+0227</pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

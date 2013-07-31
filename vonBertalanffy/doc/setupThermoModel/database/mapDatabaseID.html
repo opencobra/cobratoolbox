@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mapDatabaseID</title>
+  <meta name="keywords" content="mapDatabaseID">
+  <meta name="description" content="Map a set of reaction Database ID's to the model">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html database -->
+<h1>mapDatabaseID
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Map a set of reaction Database ID's to the model</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function model=mapDatabaseID(model,rxnAbbrDatabaseID) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">Map a set of reaction Database ID's to the model
+
+INPUT
+ model.S             m x n Stoichiometric matrix
+ model.rxns          n x 1 reaction abbreviation
+ rxnAbbrDatabaseID   n x 2 cell array of reaction abbreviation and database ID
+
+OUTPUT
+ model.rxnDatabaseID
+
+ Ronan M.T. Fleming</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../setupThermoModel/setupThermoModel.html" class="code" title="function [modelT,directions,solutionThermoRecon]=setupThermoModel(model,metAbbrAlbertyAbbr,metGroupCont,Alberty2006,computedSpeciesData,temp,PHA,IS,CHI,biomassRxnAbbr,rxnAbbrDatabaseID,defaultMetBounds,metBoundsFile,rxnBoundsFile,Legendre,useKeqData,nStdDevGroupCont,cumNormProbCutoff,figures,printToFile,secondPassAssignment)">setupThermoModel</a>	Thermodynamically constrains a COBRA model.</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function model=mapDatabaseID(model,rxnAbbrDatabaseID)</a>
+0002 <span class="comment">%Map a set of reaction Database ID's to the model</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">%INPUT</span>
+0005 <span class="comment">% model.S             m x n Stoichiometric matrix</span>
+0006 <span class="comment">% model.rxns          n x 1 reaction abbreviation</span>
+0007 <span class="comment">% rxnAbbrDatabaseID   n x 2 cell array of reaction abbreviation and database ID</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%OUTPUT</span>
+0010 <span class="comment">% model.rxnDatabaseID</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% Ronan M.T. Fleming</span>
+0013 
+0014 [nMet,nRxn]=size(model.S);
+0015 
+0016 nRxnID=size(rxnAbbrDatabaseID,1);
+0017 
+0018 <span class="keyword">if</span> 1
+0019     <span class="comment">%replace any dashes in Database metabolite names with underscores</span>
+0020     <span class="keyword">for</span> q=1:nRxnID
+0021         rxnAbbr=rxnAbbrDatabaseID{q,1};
+0022         x = strfind(rxnAbbr,<span class="string">'-'</span>);
+0023         <span class="keyword">if</span> x~=0
+0024             rxnAbbr(x)=<span class="string">'_'</span>;
+0025         <span class="keyword">end</span>
+0026         rxnAbbrDatabaseID{q,1}=rxnAbbr;
+0027     <span class="keyword">end</span>
+0028 <span class="keyword">end</span>
+0029 
+0030 <span class="comment">%add Database ID to each reaction</span>
+0031 rxnDatabaseID=zeros(nRxn,1);
+0032 <span class="keyword">for</span> n=1:nRxn
+0033     got=0;
+0034     <span class="keyword">if</span> strncmpi(<span class="string">'Biomass'</span>,model.rxns{n},7)
+0035         <span class="keyword">for</span> q=1:nRxnID
+0036             <span class="keyword">if</span> strcmp(model.rxns{n},rxnAbbrDatabaseID{q,1})
+0037                 a=rxnAbbrDatabaseID{q,2};
+0038                 rxnDatabaseID(n,1)=a;
+0039                 got=1;
+0040                 <span class="keyword">break</span>;
+0041             <span class="keyword">end</span>
+0042         <span class="keyword">end</span>
+0043     <span class="keyword">else</span>
+0044         <span class="keyword">for</span> q=1:nRxnID
+0045             <span class="keyword">if</span> strcmp(model.rxns{n},rxnAbbrDatabaseID{q,1})
+0046                 a=rxnAbbrDatabaseID{q,2};
+0047                 rxnDatabaseID(n,1)=a;
+0048                 got=1;
+0049                 <span class="keyword">break</span>;
+0050             <span class="keyword">end</span>
+0051         <span class="keyword">end</span>
+0052     <span class="keyword">end</span>
+0053 <span class="comment">%     %print out reactions that don't match a Database ID</span>
+0054 <span class="comment">%     if got==0</span>
+0055 <span class="comment">%         fprintf('%s\n',['No DatabaseID for ' model.rxns{n}])</span>
+0056 <span class="comment">%     end</span>
+0057 <span class="keyword">end</span>
+0058 
+0059 <span class="comment">% %double check that all ID's are unique</span>
+0060 <span class="comment">% if length(rxnDatabaseID)~=length(unique(rxnDatabaseID))</span>
+0061 <span class="comment">%     error('Database reaction ID must be unique')</span>
+0062 <span class="comment">% end</span>
+0063 
+0064 model.rxnDatabaseID=rxnDatabaseID;</pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

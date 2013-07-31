@@ -2,8 +2,8 @@ function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)
 %optimizeCbModel Solve a flux balance analysis problem
 %
 % Solves LP problems of the form: max/min c'*v
-%                                 subject to S*v = b
-%                                            lb <= v <= ub
+%                                 subject to S*v = b         : y
+%                                            lb <= v <= ub   : w
 % FBAsolution = optimizeCbModel(model,osenseStr,minNormFlag)
 %
 %INPUT
@@ -73,7 +73,10 @@ function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)
 %                                when minNorm was set.
 % Nathan Lewis          12/2/10  Modified code to allow for inequality
 %                                constraints.
-% Ronan Fleming         12/03/10 Minor changes to the internal handling of global parameters.
+% Ronan Fleming         12/03/10 Minor changes to the internal handling of 
+%                                global parameters.
+% Ronan Fleming         14/09/11 Fixed bug in minNorm with negative
+%                                coefficient in objective
 %% Process arguments and set up problem
 
 if exist('osenseStr', 'var')
@@ -83,17 +86,21 @@ if exist('osenseStr', 'var')
 else
     osenseStr = 'max';
 end
+% Figure out objective sense
+if strcmpi(osenseStr,'max')
+    LPproblem.osense = -1;
+else
+    LPproblem.osense = +1;
+end
 
 if exist('minNorm', 'var')
     if isempty(minNorm)
-        minNorm = false;
-        changeOK = changeCobraSolverParams('LP','minNorm',minNorm);
-    else
-        changeOK = changeCobraSolverParams('LP','minNorm',minNorm);
+        %use global solver parameter for minNorm
+        minNorm = getCobraSolverParams('LP','minNorm');
     end
 else
-    minNorm = false;
-    changeOK = changeCobraSolverParams('LP','minNorm',minNorm);
+    %use global solver parameter for minNorm
+    minNorm = getCobraSolverParams('LP','minNorm');
 end
 if exist('allowLoops', 'var')
     if isempty(allowLoops)
@@ -103,61 +110,9 @@ else
     allowLoops = true;
 end
 
-[minNorm, printLevel, primalOnlyFlag, saveInput] = getCobraSolverParams('LP',{'minNorm','printLevel','primalOnly','saveInput'});
-
-
-% if exist('minNorm', 'var')
-%     if isempty(minNorm)
-%         minNorm = false;
-%     end
-% else
-%     minNorm = false;
-% end
-% if exist('allowLoops', 'var')
-%     if isempty(allowLoops)
-%         allowLoops = true;
-%     end
-% else
-%     allowLoops = true;
-% end
-% 
-% 
-% global CBT_LP_PARAMS
-% if (exist('CBT_LP_PARAMS', 'var'))
-%     if isfield(CBT_LP_PARAMS, 'objTol')
-%         tol = CBT_LP_PARAMS.objTol;
-%     else
-%         tol = 1e-6;
-%     end
-%     if isfield(CBT_LP_PARAMS, 'primalOnly')
-%         primalOnlyFlag = CBT_LP_PARAMS.primalOnly;
-%     else
-%         primalOnlyFlag = false;
-%     end
-%     if isfield(CBT_LP_PARAMS, 'printLevel')
-%         printLevel = CBT_LP_PARAMS.printLevel;
-%     else
-%         printLevel = 0;
-%     end
-% else
-%     tol = 1e-6;
-%     primalOnlyFlag = false;
-%     printLevel = 0;
-% end
-
-% Figure out objective sense
-if strcmpi(osenseStr,'max')
-    LPproblem.osense = -1;
-else
-    LPproblem.osense = +1;
-end
-
-% this is dangerous... if model does not have S, it should not be called in
-% this function.
-% if ~isfield(model,'S')
-%     model.S=model.A;
-% end
-
+%use global solver parameter for printLevel
+[printLevel,primalOnlyFlag] = getCobraSolverParams('LP',{'printLevel','primalOnly'});
+primalOnlyFlag = 0;
 [nMets,nRxns] = size(model.S);
 
 % add csense
@@ -237,10 +192,10 @@ if strcmp(minNorm, 'one')
         speye(nRxns,nRxns) speye(nRxns,nRxns) sparse(nRxns,nRxns);
         -speye(nRxns,nRxns) sparse(nRxns,nRxns) speye(nRxns,nRxns);
         model.c' sparse(1,2*nRxns)];
-    LPproblem2.c = [zeros(nRxns,1);ones(2*nRxns,1)];
+    LPproblem2.c  = [zeros(nRxns,1);ones(2*nRxns,1)];
     LPproblem2.lb = [model.lb;zeros(2*nRxns,1)];
     LPproblem2.ub = [model.ub;10000*ones(2*nRxns,1)];
-    LPproblem2.b = [LPproblem.b;zeros(2*nRxns,1);solution.obj];
+    LPproblem2.b  = [LPproblem.b;zeros(2*nRxns,1);solution.obj];
     if ~isfield(model,'csense')
         % If csense is not declared in the model, assume that all
         % constraints are equalities.
@@ -259,7 +214,7 @@ if strcmp(minNorm, 'one')
     LPproblem2.osense = 1;
     % Re-solve the problem
     if allowLoops
-        solution = solveCobraLP(LPproblem2); %,printLevel,minNorm);
+        solution = solveCobraLP(LPproblem2);
         solution.dual = []; % slacks and duals will not be valid for this computation.
         solution.rcost = [];
     else
@@ -267,14 +222,15 @@ if strcmp(minNorm, 'one')
         solution = solveCobraMILP(MILPproblem2);
     end
 elseif length(minNorm)> 1 || minNorm > 0
-    % quadratic minimization of the norm.
-    % set previous optimum as constraint.
-    LPproblem.A = [LPproblem.A;
-        LPproblem.c'];
-    LPproblem.csense(end+1) = 'E';
     if nnz(LPproblem.c)>1
         error('Code assumes only one non-negative coefficient in linear part of objective');
     end
+    % quadratic minimization of the norm.
+    % set previous optimum as constraint.
+    LPproblem.A = [LPproblem.A;
+        (LPproblem.c'~=0 + 0)];%new constraint must be a row with a single unit entry
+    LPproblem.csense(end+1) = 'E';
+    
     LPproblem.b = [LPproblem.b;solution.full(LPproblem.c~=0)];
     LPproblem.c = zeros(size(LPproblem.c)); % no need for c anymore.
     %Minimise Euclidean norm using quadratic programming
@@ -282,19 +238,25 @@ elseif length(minNorm)> 1 || minNorm > 0
         minNorm=ones(nRxns,1)*minNorm;
     end
     LPproblem.F = spdiags(minNorm,0,nRxns,nRxns);
-    %quadratic optimization
+    
     if allowLoops
+        %quadratic optimization will get rid of the loops unless you are maximizing a flux which is
+        %part of a loop. By definition, exchange reactions are not part of these loops, more
+        %properly called stoichiometrically balanced cycles.
         solution = solveCobraQP(LPproblem);
+        
+        if isfield(solution,'dual')
+            if ~isempty(solution.dual)
+                %dont include dual variable to constraint enforcing LP optimum
+                solution.dual=solution.dual(1:end-1,1);
+            end
+        end
     else
+        %this is slow, but more useful than minimizing the Euclidean norm if one is trying to
+        %maximize the flux through a reaction in a loop. e.g. in flux variablity analysis
         MIQPproblem = addLoopLawConstraints(LPproblem, model, 1:nRxns);
         solution = solveCobraMIQP(MIQPproblem);
     end
-    %     if isempty(solution.full)
-    %         % QP problem did not work.  This will return empty structure later.
-    %     else
-    %         %dont include dual variable to additional constraint
-    %         %solution.dual=solution.dual(1:end-1,1);
-    %     end
 end
 
 % Store results
@@ -302,13 +264,27 @@ if (solution.stat == 1)
     %solution found.
     FBAsolution.x = solution.full(1:nRxns);
     
+    if isfield(solution,'dual')
+        if ~isempty(solution.dual)
+            %dont include dual variable to additional constraint
+            solution.dual=solution.dual(1:end-1,1);
+        end
+    end
+    
     %this line IS necessary.
     FBAsolution.f = model.c'*solution.full(1:nRxns); %objective from original optimization problem.
     if abs(FBAsolution.f - objective) > .01
-        display('warning:  objective appears to have changed while performing secondary optimization (minNorm)');
+        if strcmp(minNorm,'one')
+            display('optimizeCbModel.m warning:  objective appears to have changed while minimizing taxicab norm');
+        else
+            error('optimizeCbModel.m: minimizing Euclidean norm did not work')
+        end
     end
     
-    if (~primalOnlyFlag && allowLoops && any(~minNorm)) % rcost/dual only correct if not doing minNorm
+    %if (~primalOnlyFlag && allowLoops && any(~minNorm)) % LP rcost/dual only correct if not doing minNorm
+    % LP rcost/dual are still meaninful if doing, one simply has to be aware that there is a
+    % perturbation to them the magnitude of which depends on norm(minNorm) - Ronan   
+    if (~primalOnlyFlag && allowLoops)
         FBAsolution.y = solution.dual;
         FBAsolution.w = solution.rcost;
     end

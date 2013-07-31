@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of singleMetaboliteSpeciesReaction</title>
+  <meta name="keywords" content="singleMetaboliteSpeciesReaction">
+  <meta name="description" content="Identify reactions involving reactants with only one metabolite species.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html alberty -->
+<h1>singleMetaboliteSpeciesReaction
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Identify reactions involving reactants with only one metabolite species.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [rxnBool,nSpecies]=singleMetaboliteSpeciesReaction(model) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">Identify reactions involving reactants with only one metabolite species.
+
+identify the reactions involving one substrate metabolite species reactant,
+one product metabolite species reactant and where each reactant is composed 
+of only one metabolite species.
+
+INPUT
+model.S
+model.met(m).mf    mole fraction of each species
+
+ Ronan M.T. Fleming</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [rxnBool,nSpecies]=singleMetaboliteSpeciesReaction(model)</a>
+0002 <span class="comment">%Identify reactions involving reactants with only one metabolite species.</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">%identify the reactions involving one substrate metabolite species reactant,</span>
+0005 <span class="comment">%one product metabolite species reactant and where each reactant is composed</span>
+0006 <span class="comment">%of only one metabolite species.</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">%INPUT</span>
+0009 <span class="comment">%model.S</span>
+0010 <span class="comment">%model.met(m).mf    mole fraction of each species</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% Ronan M.T. Fleming</span>
+0013 
+0014 [nMet,nRxn]=size(model.S);
+0015 
+0016 <span class="comment">%logical indexing</span>
+0017 Shat=logical(sign(abs(model.S)));
+0018 
+0019 nSpecies=zeros(nMet,1);
+0020 <span class="keyword">for</span> m=1:nMet
+0021     nSpecies(m)=length(model.met(m).mf);
+0022 <span class="keyword">end</span>
+0023 
+0024 rxnBool=false(nRxn,1);
+0025 p=1;
+0026 <span class="keyword">for</span> n=1:nRxn
+0027     <span class="keyword">if</span> isempty(find(model.SExRxnInd==n))
+0028         <span class="comment">%     if n==77</span>
+0029         <span class="comment">%         pause(0.1)</span>
+0030         <span class="comment">%     end</span>
+0031         <span class="comment">%reactions involving reactants with only one species</span>
+0032         <span class="keyword">if</span> length(find(nSpecies(Shat(:,n))==1))==nnz(Shat(:,n))
+0033             rxnBool(n)=1;
+0034 <span class="comment">%             fprintf('%s\t%s\t%s\t%s\n',['#' int2str(p)],int2str(n),model.rxns{n},model.rxn(n).equation);</span>
+0035 <span class="comment">%             fprintf('%s\n',model.rxns{n});</span>
+0036 <span class="comment">%             fprintf('%s\n',model.rxnNames{n});</span>
+0037             fprintf(<span class="string">'%s\t\t\t%s\n'</span>,model.rxns{n},model.rxn(n).equation);
+0038             p=p+1;
+0039         <span class="keyword">end</span>
+0040         
+0041         <span class="comment">%     %reactions also involving only one reactant on either side</span>
+0042         <span class="comment">%     if nnz(Shat(:,n))==2 %&amp;&amp; sum(nonzeros(model.S(:,n)))==0</span>
+0043         <span class="comment">%         fprintf('%s\t%s\t%s\n',int2str(n),model.rxns{n},model.rxn(n).equation);</span>
+0044         <span class="comment">%     else</span>
+0045         <span class="comment">%         rxnBool(n)=0;</span>
+0046         <span class="comment">%     end</span>
+0047     <span class="keyword">end</span>
+0048 <span class="keyword">end</span>
+0049     
+0050</pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

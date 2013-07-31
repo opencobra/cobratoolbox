@@ -1,0 +1,28 @@
+pha.c = 7.2
+pha.e = 7.4
+        pha.g = 6.3
+        pha.l = 5.5
+        pha.m = 8
+        pha.n = 7.2
+        pha.r = 7.2
+        pha.x = 7
+
+
+is.c = 0.15
+is.e = 0.15
+is.g = 0.15
+is.l = 0.15
+is.m = 0.15
+is.n = 0.15
+is.r = 0.15
+is.x = 0.15
+
+
+chi.c = 0
+        chi.e = 30
+        chi.g = 0
+        chi.l = 19
+        chi.m = -155
+        chi.n = 0
+        chi.r = 0
+        chi.x = 2

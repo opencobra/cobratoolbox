@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of readableCobraModel</title>
+  <meta name="keywords" content="readableCobraModel">
+  <meta name="description" content="Make a spreadsheet view of the model content for ease of viewing.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html directionalityReport -->
+<h1>readableCobraModel
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Make a spreadsheet view of the model content for ease of viewing.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function model=readableCobraModel(model) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">Make a spreadsheet view of the model content for ease of viewing.
+
+this creates two cell arrays for reactions and metabolites so that they 
+can be read simultaneously in matlab. 
+NO DATA SHOULD BE CHANGED IN THESE CELL ARRAYS since they are 
+only there to be viewed.
+
+INPUT
+ model.met(m)
+ model.rxn(n)
+
+OUTPUT
+ model.metabolites     cell array of metabolite data
+ model.reactions       cell array of reaction data
+
+ Ronan M.T. Fleming</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../setupThermoModel/massBalance/findSExRxnInd.html" class="code" title="function model=findSExRxnInd(model,nRealMet)">findSExRxnInd</a>	Returns a model with boolean vectors indicating internal vs exchange/demand/sink reactions.</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../setupThermoModel/experimentalData/readMetRxnBoundsFiles.html" class="code" title="function model=readMetRxnBoundsFiles(model,setDefaultConc,setDefaultFlux,defaultMetBounds,metBoundsFile,rxnBoundsFile)">readMetRxnBoundsFiles</a>	Set default concentration and flux bounds, and/or optionally read in upper and lower bounds from files.</li><li><a href="../../setupThermoModel/setupThermoModel.html" class="code" title="function [modelT,directions,solutionThermoRecon]=setupThermoModel(model,metAbbrAlbertyAbbr,metGroupCont,Alberty2006,computedSpeciesData,temp,PHA,IS,CHI,biomassRxnAbbr,rxnAbbrDatabaseID,defaultMetBounds,metBoundsFile,rxnBoundsFile,Legendre,useKeqData,nStdDevGroupCont,cumNormProbCutoff,figures,printToFile,secondPassAssignment)">setupThermoModel</a>	Thermodynamically constrains a COBRA model.</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function model=readableCobraModel(model)</a>
+0002 <span class="comment">%Make a spreadsheet view of the model content for ease of viewing.</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">%this creates two cell arrays for reactions and metabolites so that they</span>
+0005 <span class="comment">%can be read simultaneously in matlab.</span>
+0006 <span class="comment">%NO DATA SHOULD BE CHANGED IN THESE CELL ARRAYS since they are</span>
+0007 <span class="comment">%only there to be viewed.</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%INPUT</span>
+0010 <span class="comment">% model.met(m)</span>
+0011 <span class="comment">% model.rxn(n)</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%OUTPUT</span>
+0014 <span class="comment">% model.metabolites     cell array of metabolite data</span>
+0015 <span class="comment">% model.reactions       cell array of reaction data</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% Ronan M.T. Fleming</span>
+0018 
+0019 [nMet,nRxn]=size(model.S);
+0020 
+0021 model.metabolites=cell(nMet,2);
+0022 model.metabolites{1,1}=<span class="string">'abbreviation'</span>;
+0023 model.metabolites{1,2}=<span class="string">'officialName'</span>;
+0024 model.metabolites{1,3}=<span class="string">'dGft0Min'</span>;
+0025 model.metabolites{1,4}=<span class="string">'dGft0Max'</span>;
+0026 model.metabolites{1,5}=<span class="string">'dGftMin'</span>;
+0027 model.metabolites{1,6}=<span class="string">'dGftMax'</span>;
+0028 model.metabolites{1,7}=<span class="string">'albertyAbbreviation'</span>;
+0029 model.metabolites{1,8}=<span class="string">'aveHbound'</span>;
+0030 model.metabolites{1,9}=<span class="string">'aveZi'</span>;
+0031 model.metabolites{1,10}=<span class="string">'nSpecies'</span>;
+0032 <span class="comment">% model.metabolites{1,8}='albertyName';</span>
+0033 <span class="keyword">for</span> m=2:nMet+1
+0034     model.metabolites{m,1}=model.met(m-1).abbreviation;
+0035     model.metabolites{m,2}=model.met(m-1).officialName;
+0036     model.metabolites{m,3}=model.met(m-1).dGft0Min;
+0037     model.metabolites{m,4}=model.met(m-1).dGft0Max;
+0038     model.metabolites{m,5}=model.met(m-1).dGftMin;
+0039     model.metabolites{m,6}=model.met(m-1).dGftMax;
+0040     model.metabolites{m,7}=model.met(m-1).albertyAbbreviation;
+0041     model.metabolites{m,8}=model.met(m-1).aveHbound;
+0042     model.metabolites{m,9}=model.met(m-1).aveZi;
+0043     model.metabolites{m,10}=length(model.met(m-1).mf);
+0044 <span class="comment">%     model.metabolites{m,8}=model.met(m-1).albertyName;</span>
+0045 <span class="keyword">end</span>
+0046 
+0047 <span class="comment">%thermodynamic constraints overly tighten</span>
+0048 tightened=false(nRxn,1);
+0049 <span class="comment">%reversible now forward</span>
+0050 reversibleFwd=false(nRxn,1);
+0051 <span class="comment">%reversible now reverse</span>
+0052 reversibleRev=false(nRxn,1);
+0053 <span class="comment">%forward now reverse</span>
+0054 forwardReverse=false(nRxn,1);
+0055 <span class="comment">%forward now reversible</span>
+0056 forwardReversible=false(nRxn,1);
+0057 
+0058 <span class="keyword">for</span> n=1:nRxn
+0059     <span class="keyword">if</span> ~strcmp(model.rxn(n).directionality,model.rxn(n).directionalityThermo)
+0060         <span class="keyword">if</span> strcmp(model.rxn(n).directionality,<span class="string">'reversible'</span>)
+0061             tightened(n)=1;
+0062             <span class="keyword">if</span> strcmp(model.rxn(n).directionalityThermo,<span class="string">'forward'</span>)
+0063                 reversibleFwd(n)=1;
+0064             <span class="keyword">else</span>
+0065                 reversibleRev(n)=1;
+0066             <span class="keyword">end</span>
+0067         <span class="keyword">end</span>
+0068         <span class="keyword">if</span> strcmp(model.rxn(n).directionality,<span class="string">'forward'</span>)
+0069             <span class="keyword">if</span> strcmp(model.rxn(n).directionalityThermo,<span class="string">'reverse'</span>)
+0070                 forwardReverse(n)=1;
+0071             <span class="keyword">else</span>
+0072                 forwardReversible(n)=1;
+0073             <span class="keyword">end</span>
+0074         <span class="keyword">end</span>
+0075     <span class="keyword">end</span>
+0076 <span class="keyword">end</span>
+0077 
+0078 <span class="keyword">if</span> ~isfield(model,<span class="string">'SExRxnInd'</span>);
+0079     model=<a href="../../setupThermoModel/massBalance/findSExRxnInd.html" class="code" title="function model=findSExRxnInd(model,nRealMet)">findSExRxnInd</a>(model);
+0080 <span class="keyword">end</span>
+0081 <span class="comment">%ignore exchange reactions</span>
+0082 reversibleFwd(~model.SIntRxnBool)=0;
+0083 reversibleRev(~model.SIntRxnBool)=0;
+0084 forwardReverse(~model.SIntRxnBool)=0;
+0085 forwardReversible(~model.SIntRxnBool)=0;
+0086 
+0087 changedDir=reversibleFwd+reversibleRev+forwardReverse+forwardReversible;
+0088 <span class="keyword">if</span> max(changedDir)&gt;1
+0089     error(<span class="string">'directionality check bug'</span>)
+0090 <span class="keyword">end</span>
+0091 
+0092 <span class="comment">%last condition necessary in case some reactions have been set already</span>
+0093 model.reactions=cell(nRxn,9);
+0094 model.reactions{1,1}=<span class="string">'abbreviation'</span>;
+0095 model.reactions{1,2}=<span class="string">'officialName'</span>;
+0096 model.reactions{1,3}=<span class="string">'equation'</span>;
+0097 model.reactions{1,4}=<span class="string">'lb'</span>;
+0098 model.reactions{1,5}=<span class="string">'ub'</span>;
+0099 model.reactions{1,6}=<span class="string">'directionality'</span>;
+0100 model.reactions{1,7}=<span class="string">'directionalityThermo'</span>;
+0101 model.reactions{1,8}=<span class="string">'dGtMin'</span>;
+0102 model.reactions{1,9}=<span class="string">'dGtMax'</span>;
+0103 model.reactions{1,10}=<span class="string">'dGt0Min'</span>;
+0104 model.reactions{1,11}=<span class="string">'dGt0Max'</span>;
+0105 <span class="keyword">for</span> n=2:nRxn+1
+0106     model.reactions{n,1}=model.rxns{n-1};
+0107     model.reactions{n,2}=model.rxnNames{n-1};
+0108     model.reactions{n,3}=model.rxn(n-1).equation;
+0109     model.reactions{n,4}=model.lb(n-1);
+0110     model.reactions{n,5}=model.ub(n-1);
+0111     model.reactions{n,6}=model.rxn(n-1).directionality;
+0112     <span class="comment">%thermo directions only if different</span>
+0113     model.reactions{n,7}=[];
+0114     <span class="keyword">if</span> ~strcmp(model.rxn(n-1).directionality,model.rxn(n-1).directionalityThermo)
+0115         <span class="comment">%only add entry if changed</span>
+0116         <span class="keyword">if</span> changedDir(n-1)==1
+0117             <span class="keyword">if</span> reversibleFwd(n-1)
+0118                 model.reactions{n,7}=<span class="string">'reversibleFwd'</span>;
+0119             <span class="keyword">end</span>
+0120             <span class="keyword">if</span> reversibleRev(n-1)
+0121                 model.reactions{n,7}=<span class="string">'reversibleRev'</span>;
+0122             <span class="keyword">end</span>
+0123             <span class="keyword">if</span> forwardReverse(n-1)
+0124                 model.reactions{n-1,7}=<span class="string">'forwardReverse'</span>;
+0125             <span class="keyword">end</span>
+0126             <span class="keyword">if</span> forwardReversible(n-1)
+0127                 model.reactions{n,7}=<span class="string">'forwardReversible'</span>;
+0128             <span class="keyword">end</span>
+0129         <span class="keyword">end</span>
+0130     <span class="keyword">end</span>
+0131     model.reactions{n,8}=model.rxn(n-1).dGtMin;
+0132     model.reactions{n,9}=model.rxn(n-1).dGtMax;
+0133     model.reactions{n,10}=model.rxn(n-1).dGt0Min;
+0134     model.reactions{n,11}=model.rxn(n-1).dGt0Max;
+0135 <span class="keyword">end</span>
+0136</pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

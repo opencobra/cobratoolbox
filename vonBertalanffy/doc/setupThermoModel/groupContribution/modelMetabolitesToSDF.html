@@ -1,0 +1,343 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of modelMetabolitesToSDF</title>
+  <meta name="keywords" content="modelMetabolitesToSDF">
+  <meta name="description" content="write out an SDF which is effectively a set of mol files concatenated">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html groupContribution -->
+<h1>modelMetabolitesToSDF
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>write out an SDF which is effectively a set of mol files concatenated</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function model=modelMetabolitesToSDF(model,InChI) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> write out an SDF which is effectively a set of mol files concatenated 
+ in a flat file with extra data headers
+
+ SDF format spec http://www.symyx.com/downloads/public/ctfile/ctfile.jsp
+
+ INPUT
+ model     model structure
+
+ OPTIONAL INPUT
+ InChI     m x 2 cell array of InChI strings for each metabolite 
+           InChI{i,1} is a metabolite abbreviation (no compartment)
+           InChi{i,2} is a metabolite InChI string
+
+ OPTIONAL OUTPUT
+ model.mets(m).InChI           InChI mapped to model if provided as imput
+ model.met(m).formulaInChI     Chemical formula as given in InChI
+ Ronan M.T. Fleming</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../setupThermoModel/directionalityReport/convertToCobraV2.html" class="code" title="function model=convertToCobraV2(model)">convertToCobraV2</a>	Generate a model structure with metabolite and reaction subfields instead of vectors.</li><li><a href="../../setupThermoModel/massBalance/basicPhysicochemicalData/getMolecularMass.html" class="code" title="function M=getMolecularMass(formulae,isotopeAbundance)">getMolecularMass</a>	get mono-isotopic exact molecular mass for a single formula or a cell array of</li><li><a href="../../setupThermoModel/massBalance/checkFormulaValidty.html" class="code" title="function [dbBool, noDocMets]=checkFormulaValidty(model)">checkFormulaValidty</a>	Assesses whether metabolites in model are likely to be documented in</li><li><a href="../../setupThermoModel/massBalance/getChargeFromInChI.html" class="code" title="function charge=getChargeFromInChI(InChI)">getChargeFromInChI</a>	return the charge from a given InChI string</li><li><a href="../../setupThermoModel/massBalance/getFormulaFromInChI.html" class="code" title="function formula=getFormulaFromInChI(InChI)">getFormulaFromInChI</a>	extract formula from InChI</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function model=modelMetabolitesToSDF(model,InChI)</a>
+0002 <span class="comment">% write out an SDF which is effectively a set of mol files concatenated</span>
+0003 <span class="comment">% in a flat file with extra data headers</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% SDF format spec http://www.symyx.com/downloads/public/ctfile/ctfile.jsp</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% INPUT</span>
+0008 <span class="comment">% model     model structure</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% OPTIONAL INPUT</span>
+0011 <span class="comment">% InChI     m x 2 cell array of InChI strings for each metabolite</span>
+0012 <span class="comment">%           InChI{i,1} is a metabolite abbreviation (no compartment)</span>
+0013 <span class="comment">%           InChi{i,2} is a metabolite InChI string</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% OPTIONAL OUTPUT</span>
+0016 <span class="comment">% model.mets(m).InChI           InChI mapped to model if provided as imput</span>
+0017 <span class="comment">% model.met(m).formulaInChI     Chemical formula as given in InChI</span>
+0018 <span class="comment">% Ronan M.T. Fleming</span>
+0019 
+0020 compartments=[];
+0021 biomassRxnAbbr=[];
+0022 thermoAdjustmentToS=0;
+0023 model=<a href="../../setupThermoModel/directionalityReport/convertToCobraV2.html" class="code" title="function model=convertToCobraV2(model)">convertToCobraV2</a>(model,compartments,biomassRxnAbbr,thermoAdjustmentToS);
+0024 
+0025 <span class="keyword">if</span> exist(<span class="string">'InChI'</span>)
+0026     [nInChI,nlt]=size(InChI);
+0027     
+0028     <span class="comment">%may have to parse InChI if it is not a proper cell array.</span>
+0029     <span class="keyword">if</span> nlt==1
+0030         <span class="comment">%This is a temporary workaround to deal with data from spreadsheet</span>
+0031         InChICell=cell(nInChI,3);
+0032         <span class="keyword">for</span> x=1:nInChI
+0033             tmp=textscan(InChI{x,1},<span class="string">'%s%s%s%s\n'</span>,1,<span class="string">'Delimiter'</span>,<span class="string">'&quot;'</span>);
+0034             <span class="comment">%convert metabolite abbreviation from SBML to COBRA format</span>
+0035             <span class="comment">% convert string like M_1mpyr_c to 1mpyr[c]</span>
+0036             metAbbr=tmp{2};
+0037             <span class="comment">%need to replace _DASH_ with -</span>
+0038             metAbbr = strrep(metAbbr{1}, <span class="string">'_DASH_'</span>, <span class="string">'-'</span>);
+0039             <span class="comment">%remove extras around sides</span>
+0040             <span class="comment">%compart=metAbbr(end);</span>
+0041             <span class="comment">%metAbbr=[metAbbr(3:end-2) '[' compart ']'];</span>
+0042             metAbbr=metAbbr(3:end-2);
+0043             InChICell{x,1} = metAbbr;
+0044             
+0045             <span class="comment">% InChI</span>
+0046             metInChI=tmp{4};
+0047             metInChI=metInChI{1};
+0048             InChICell{x,2} = metInChI;
+0049             
+0050             <span class="comment">% extract formula from InChI</span>
+0051             InChICell{x,3}=<a href="../../setupThermoModel/massBalance/getFormulaFromInChI.html" class="code" title="function formula=getFormulaFromInChI(InChI)">getFormulaFromInChI</a>(InChICell{x,2});
+0052         <span class="keyword">end</span>
+0053     <span class="keyword">else</span>
+0054         InChICell=cell(nInChI,3);
+0055         <span class="keyword">for</span> x=1:nInChI
+0056             InChICell{x,1}=InChI{x,1};
+0057             InChICell{x,1}=InChI{x,2};
+0058             InChICell{x,3}=<a href="../../setupThermoModel/massBalance/getFormulaFromInChI.html" class="code" title="function formula=getFormulaFromInChI(InChI)">getFormulaFromInChI</a>(InChICell{x,2});
+0059         <span class="keyword">end</span>     
+0060     <span class="keyword">end</span>
+0061     <span class="comment">%map the InChI to the model</span>
+0062     [nMet,nRxn]=size(model.S);
+0063     numNoInChI=0;
+0064     <span class="keyword">for</span> m=1:nMet
+0065         metAbbr=model.mets{m};
+0066         metAbbr=metAbbr(1:end-3);
+0067         ind=find(strcmp(metAbbr,InChICell(:,1)));
+0068         <span class="keyword">if</span> isempty(ind)
+0069             fprintf(<span class="string">'%s\n'</span>,[<span class="string">'No InChI for: '</span> metAbbr]);
+0070             numNoInChI = numNoInChI+1;
+0071             model.met(m).InChI = NaN;
+0072             model.met(m).formulaInChI = NaN;
+0073         <span class="keyword">else</span>
+0074             model.met(m).InChI = InChICell{ind(1),2};
+0075             model.met(m).formulaInChI = InChICell{ind(1),3};
+0076         <span class="keyword">end</span>
+0077     <span class="keyword">end</span>
+0078     fprintf(<span class="string">'%s\n'</span>,[num2str(((nMet-numNoInChI)/nMet)*100) <span class="string">'% of metabolites with InChI'</span>]);
+0079 <span class="keyword">else</span>
+0080     <span class="keyword">if</span> ~isfield(model.met,<span class="string">'InChI'</span>)
+0081         error(<span class="string">'No InChI found'</span>);
+0082     <span class="keyword">end</span>
+0083 <span class="keyword">end</span>
+0084 
+0085 <span class="comment">%check that babel is installed and working on the current unix machine</span>
+0086 [status, result] = system(<span class="string">'babel -V'</span>);
+0087 <span class="keyword">if</span> status~=0 || ~isunix
+0088     error(<span class="string">'Babel must be installed and it is assumed this is a *nix machine'</span>);
+0089 <span class="keyword">end</span>
+0090 <span class="comment">%todo - add support for babel on windows</span>
+0091 
+0092 <span class="comment">%preallocate cell array of already printed metabolites</span>
+0093 printedMetAbbr=cell(nMet,1);
+0094 <span class="comment">% allMetAbbr=cell(nMet,1);</span>
+0095 <span class="comment">% for m=1:nMet</span>
+0096 <span class="comment">%     metAbbr=model.met(m);</span>
+0097 <span class="comment">%     allMetAbbr{m,1}=metAbbr(1:end-2);</span>
+0098 <span class="comment">% end</span>
+0099 
+0100 <span class="comment">%create the water mol file from the inchi string</span>
+0101 fid2=fopen(<span class="string">'water.inchi'</span>,<span class="string">'w'</span>);
+0102 fprintf(fid2,<span class="string">'%s\n'</span>,<span class="string">'InChI=1/H2O/h1H2'</span>);
+0103 fclose(fid2);
+0104 [status, result] = system(<span class="string">'babel --title  water -iinchi water.inchi -omol mater.mol'</span>);
+0105 
+0106 <span class="comment">%exact mass for H</span>
+0107 HexactMass=1.0078250321;
+0108 
+0109 <span class="comment">%create the sdf file</span>
+0110 sdfFilename=[model.description <span class="string">'.sdf'</span>];
+0111 fid=fopen(sdfFilename,<span class="string">'w'</span>);
+0112 fclose(fid);
+0113 
+0114 <span class="comment">%create a file with problematic InChI for babel</span>
+0115 fidBabel=fopen(<span class="string">'InChI_Babel_NoMol.txt'</span>,<span class="string">'w'</span>);
+0116 fclose(fidBabel);
+0117 
+0118 <span class="keyword">for</span> m=1:nMet
+0119     <span class="comment">%only print out each metabolite once, ignoring compartments</span>
+0120     metAbbr=model.mets{m};
+0121     metAbbr=metAbbr(1:end-3);
+0122     <span class="keyword">if</span> isnan(model.met(m).InChI)
+0123         <span class="comment">%use formula and charge given by model</span>
+0124         <span class="keyword">if</span> ~any(strcmp(metAbbr,printedMetAbbr))
+0125             <span class="keyword">if</span> <a href="../../setupThermoModel/massBalance/checkFormulaValidty.html" class="code" title="function [dbBool, noDocMets]=checkFormulaValidty(model)">checkFormulaValidty</a>(model.met(m).formula)
+0126                 <span class="comment">%store this metbolite abbreivation so its not printed twice</span>
+0127                 printedMetAbbr{m,1}=metAbbr;
+0128                 
+0129                 <span class="comment">%use water as the mol file</span>
+0130                 <span class="comment">%append mol to existing sdf</span>
+0131                 sysCall2=[<span class="string">'cat water.mol &gt;&gt; '</span> sdfFilename];
+0132                 [status, result] = system(sysCall2);
+0133                 <span class="comment">%add annotation appended to sdf</span>
+0134                 fid=fopen(sdfFilename,<span class="string">'a'</span>);
+0135                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;PUBCHEM_SUBSTANCE_URL&gt;'</span>);
+0136                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?sid=7849722'</span>);
+0137                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;LIPID_MAPS_CMPD_URL&gt;'</span>);
+0138                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'http://www.lipidmaps.org/data/get_lm_lipids_dbgif.php?LM_ID=LMFA01020030'</span>);
+0139                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;LM_ID&gt;'</span>);
+0140                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'LMFA0123456'</span>);
+0141                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;COMMON_NAME&gt;'</span>);
+0142                 fprintf(fid,<span class="string">'%s\n\n'</span>,model.metNames{m});
+0143                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;SYSTEMATIC_NAME&gt;'</span>);
+0144                 fprintf(fid,<span class="string">'%s\n\n'</span>,metAbbr);
+0145                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;SYNONYMS&gt;'</span>);
+0146                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'dummy'</span>);
+0147                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;CATEGORY&gt;'</span>);
+0148                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'dummy'</span>);
+0149                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;MAIN_CLASS&gt;'</span>);
+0150                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'dummy'</span>);
+0151                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;SUB_CLASS&gt;'</span>);
+0152                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'dummy'</span>);
+0153                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;EXACT_MASS&gt;'</span>);
+0154                 <span class="comment">%uses reconstruction formula</span>
+0155                 M = <a href="../../setupThermoModel/massBalance/basicPhysicochemicalData/getMolecularMass.html" class="code" title="function M=getMolecularMass(formulae,isotopeAbundance)">getMolecularMass</a>(model.met(m).formula,1);
+0156                 charge = model.met(m).charge;
+0157                 <span class="comment">%use mass for neutral metabolite</span>
+0158                 M = M - charge*HexactMass;
+0159                 
+0160                 fprintf(fid,<span class="string">'%10.7f\n\n'</span>,M);
+0161                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;FORMULA&gt;'</span>);
+0162                 fprintf(fid,<span class="string">'%s\n\n'</span>,model.met(m).formula);
+0163                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;LIPIDBANK_ID&gt;'</span>);
+0164                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'NaN'</span>);
+0165                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;PUBCHEM_SID&gt;'</span>);
+0166                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'NaN'</span>);
+0167                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'$$$$'</span>);
+0168                 fclose(fid);
+0169             <span class="keyword">end</span>
+0170         <span class="keyword">end</span>
+0171     <span class="keyword">else</span>
+0172         <span class="keyword">if</span> ~any(strcmp(metAbbr,printedMetAbbr))
+0173             <span class="comment">%store this metbolite abbreivation so its not printed twice</span>
+0174             printedMetAbbr{m,1}=metAbbr;
+0175             
+0176             <span class="comment">%create the mol file from the inchi string</span>
+0177             fid2=fopen(<span class="string">'tmp.inchi'</span>,<span class="string">'w'</span>);
+0178             fprintf(fid2,<span class="string">'%s\n'</span>,model.met(m).InChI);
+0179             fclose(fid2);
+0180             <span class="comment">%better to use mol output since no $$$$ at the end</span>
+0181             sysCall1=[<span class="string">'babel --title '</span> metAbbr <span class="string">' -iinchi tmp.inchi -omol '</span> metAbbr <span class="string">'.mol'</span>];
+0182             [status, result] = system(sysCall1);
+0183             
+0184             <span class="comment">%check size of mol file, leave it out if zero bytes</span>
+0185             data=dir([metAbbr <span class="string">'.mol'</span>]);
+0186             <span class="keyword">if</span> data.bytes &gt;= 1
+0187                 <span class="comment">%append mol to existing sdf</span>
+0188                 sysCall2=[<span class="string">'cat '</span> metAbbr <span class="string">'.mol &gt;&gt; '</span> sdfFilename];
+0189                 [status, result] = system(sysCall2);
+0190 
+0191                 <span class="comment">%add annotation appended to sdf</span>
+0192                 fid=fopen(sdfFilename,<span class="string">'a'</span>);
+0193                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;PUBCHEM_SUBSTANCE_URL&gt;'</span>);
+0194                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?sid=7849722'</span>);
+0195                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;LIPID_MAPS_CMPD_URL&gt;'</span>);
+0196                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'http://www.lipidmaps.org/data/get_lm_lipids_dbgif.php?LM_ID=LMFA01020030'</span>);
+0197                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;LM_ID&gt;'</span>);
+0198                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'LMFA0123456'</span>);
+0199                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;COMMON_NAME&gt;'</span>);
+0200                 fprintf(fid,<span class="string">'%s\n\n'</span>,model.metNames{m});
+0201                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;SYSTEMATIC_NAME&gt;'</span>);
+0202                 fprintf(fid,<span class="string">'%s\n\n'</span>,metAbbr);
+0203                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;SYNONYMS&gt;'</span>);
+0204                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'dummy'</span>);
+0205                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;CATEGORY&gt;'</span>);
+0206                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'dummy'</span>);
+0207                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;MAIN_CLASS&gt;'</span>);
+0208                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'dummy'</span>);
+0209                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;SUB_CLASS&gt;'</span>);
+0210                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'dummy'</span>);
+0211                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;EXACT_MASS&gt;'</span>);
+0212                 
+0213                 M = <a href="../../setupThermoModel/massBalance/basicPhysicochemicalData/getMolecularMass.html" class="code" title="function M=getMolecularMass(formulae,isotopeAbundance)">getMolecularMass</a>(model.met(m).formulaInChI,1);
+0214                 charge = <a href="../../setupThermoModel/massBalance/getChargeFromInChI.html" class="code" title="function charge=getChargeFromInChI(InChI)">getChargeFromInChI</a>(model.met(m).InChI);
+0215                 <span class="comment">%use mass for neutral metabolite</span>
+0216                 M = M - charge*HexactMass;
+0217                 
+0218                 fprintf(fid,<span class="string">'%10.7f\n\n'</span>,M);
+0219                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;FORMULA&gt;'</span>);
+0220                 fprintf(fid,<span class="string">'%s\n\n'</span>,model.met(m).formulaInChI);
+0221                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;LIPIDBANK_ID&gt;'</span>);
+0222                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'NaN'</span>);
+0223                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;PUBCHEM_SID&gt;'</span>);
+0224                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'NaN'</span>);
+0225                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'$$$$'</span>);
+0226                 fclose(fid);
+0227             <span class="keyword">else</span>
+0228                 fprintf(<span class="string">'%s\n'</span>,[model.metNames{m} <span class="string">'  :InChI to mol conversion by Babel produced no output.'</span>]);
+0229                 
+0230                 fidBabel=fopen(<span class="string">'InChI_Babel_NoMol.txt'</span>,<span class="string">'a'</span>);
+0231                 fprintf(fidBabel,<span class="string">'%s\n'</span>,model.met(m).InChI);
+0232                 fclose(fidBabel);
+0233                 
+0234                 <span class="comment">%use water as the mol file</span>
+0235                 <span class="comment">%append mol to existing sdf</span>
+0236                 sysCall2=[<span class="string">'cat water.mol &gt;&gt; '</span> sdfFilename];
+0237                 [status, result] = system(sysCall2);
+0238                 <span class="comment">%add annotation appended to sdf</span>
+0239                 fid=fopen(sdfFilename,<span class="string">'a'</span>);
+0240                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;PUBCHEM_SUBSTANCE_URL&gt;'</span>);
+0241                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?sid=7849722'</span>);
+0242                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;LIPID_MAPS_CMPD_URL&gt;'</span>);
+0243                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'http://www.lipidmaps.org/data/get_lm_lipids_dbgif.php?LM_ID=LMFA01020030'</span>);
+0244                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;LM_ID&gt;'</span>);
+0245                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'LMFA0123456'</span>);
+0246                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;COMMON_NAME&gt;'</span>);
+0247                 fprintf(fid,<span class="string">'%s\n\n'</span>,model.metNames{m});
+0248                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;SYSTEMATIC_NAME&gt;'</span>);
+0249                 fprintf(fid,<span class="string">'%s\n\n'</span>,metAbbr);
+0250                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;SYNONYMS&gt;'</span>);
+0251                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'dummy'</span>);
+0252                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;CATEGORY&gt;'</span>);
+0253                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'dummy'</span>);
+0254                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;MAIN_CLASS&gt;'</span>);
+0255                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'dummy'</span>);
+0256                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;SUB_CLASS&gt;'</span>);
+0257                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'dummy'</span>);
+0258                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;EXACT_MASS&gt;'</span>);
+0259                 
+0260                 M = <a href="../../setupThermoModel/massBalance/basicPhysicochemicalData/getMolecularMass.html" class="code" title="function M=getMolecularMass(formulae,isotopeAbundance)">getMolecularMass</a>(model.met(m).formulaInChI,1);
+0261                 charge = <a href="../../setupThermoModel/massBalance/getChargeFromInChI.html" class="code" title="function charge=getChargeFromInChI(InChI)">getChargeFromInChI</a>(model.met(m).InChI);
+0262                 <span class="comment">%use mass for neutral metabolite</span>
+0263                 M = M - charge*HexactMass;
+0264                 
+0265                 fprintf(fid,<span class="string">'%10.7f\n\n'</span>,M);
+0266                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;FORMULA&gt;'</span>);
+0267                 fprintf(fid,<span class="string">'%s\n\n'</span>,model.met(m).formulaInChI);
+0268                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;LIPIDBANK_ID&gt;'</span>);
+0269                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'NaN'</span>);
+0270                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'&gt; &lt;PUBCHEM_SID&gt;'</span>);
+0271                 fprintf(fid,<span class="string">'%s\n\n'</span>,<span class="string">'NaN'</span>);
+0272                 fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'$$$$'</span>);
+0273                 fclose(fid);
+0274             <span class="keyword">end</span>
+0275         <span class="keyword">end</span>
+0276     <span class="keyword">end</span>
+0277     <span class="keyword">if</span> mod(m,100)==0
+0278         disp(m);
+0279     <span class="keyword">end</span>
+0280 <span class="keyword">end</span>
+0281 
+0282         
+0283         
+0284         
+0285</pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

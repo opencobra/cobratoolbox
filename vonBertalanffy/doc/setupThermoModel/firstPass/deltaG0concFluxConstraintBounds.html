@@ -1,0 +1,697 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of deltaG0concFluxConstraintBounds</title>
+  <meta name="keywords" content="deltaG0concFluxConstraintBounds">
+  <meta name="description" content="set reaction directionality bounds from thermodynamic data">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html firstPass -->
+<h1>deltaG0concFluxConstraintBounds
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>set reaction directionality bounds from thermodynamic data</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function model=deltaG0concFluxConstraintBounds(model,Legendre,LegendreCHI,figures,nStdDevGroupCont) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">set reaction directionality bounds from thermodynamic data
+
+first pass assignment of reaction directionality based on standard
+transformed Gibbs energy and concentration bounds
+
+INPUT
+ model.S
+ model.SintRxnBool             Boolean indicating internal reactions
+ model.gasConstant             gas constant
+ model.temp                    temperature
+ model.boundryConc             bounds on concentration of boundary metabolites
+ model.met(m).dGft0            standard transformed Gibbs energy of formation(kJ/mol)
+ model.met(m).dGf0GroupContUncertainty  group. cont. uncertainty in estimate of standard Gibbs energy of formation (kJ/mol)
+ model.met(m).concMin          lower bound on metabolite concentration
+ model.met(m).concMax          upper bound on metabolite concentration
+ model.met(m).charge           reconstruction metabolite charge
+ model.lb                      reconstruction reaction lower bounds
+ model.ub                      reconstruction reaction upper bounds
+ model.CHI.*                   electrical potential (mV) in compartment defined by letter *
+ Legendre                      {(1),0} Legendre Transformation for specifc pHr?
+ LegendreCHI                   {(1),0} Legendre Transformation for specifc electrical potential?
+
+OPTIONAL INPUT
+ figures           {1,(0)} 1=create figures
+ nStdDevGroupCont  {real,(1)} number of standard deviations of group contribution
+                   uncertainty, 1 means uncertainty given by group contribution
+                   method (one standard deviation)
+
+OUTPUT
+ nStdDevGroupCont  {real,(1)} number of standard deviations of group contribution
+                   uncertainty, 1 means uncertainty given by group contribution
+                   method (one standard deviation)
+
+ For each metabolite:
+ model.concMin
+ model.concMax
+ model.dGft0Min
+ model.dGft0Max
+ model.dGftMin
+ model.dGftMax
+ model.NaNdGf0MetBool              metabolites without Gibbs Energy
+
+ For each reaction:
+ model.rxn(n).dGt0Max              molar standard
+ model.rxn(n).dGt0Min              molar standard
+ model.rxn(n).dGtMax
+ model.rxn(n).dGtMin
+ model.rxn(n).dGtmMMin             mili molar standard
+ model.rxn(n).dGtmMMax             mili molar standard
+ model.rxn(n).directionalityThermo
+ model.lb_reconThermo              lower bounds from dGtMin/dGtMax and recon
+                                   directions if thermo data missing
+ model.ub_reconThermo              upper bounds from dGtMin/dGtMax and recon
+                                   directions if thermo data missing
+ model.NaNdG0RxnBool               reactions with NaN Gibbs Energy
+ model.transportRxnBool            transport reactions
+
+ Ronan M. T. Fleming</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../setupThermoModel/massBalance/numAtomsOfElementInFormula.html" class="code" title="function N=numAtomsOfElementInFormula(formula,element)">numAtomsOfElementInFormula</a>	returns the number of atoms of a single element in a formula</li><li><a href="../../setupThermoModel/transport/getCompartment.html" class="code" title="function [compartments,uniqueCompartments]=getCompartment(mets,numChar)">getCompartment</a>	Get the compartment for each metabolite, and the unique compartments</li><li><a href="../../setupThermoModel/transport/transportReactionBool.html" class="code" title="function [transportRxnBool]=transportReactionBool(model,numChar)">transportReactionBool</a>	Return a boolean vector indicating which reactions transport between compartments.</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../setupThermoModel/setupThermoModel.html" class="code" title="function [modelT,directions,solutionThermoRecon]=setupThermoModel(model,metAbbrAlbertyAbbr,metGroupCont,Alberty2006,computedSpeciesData,temp,PHA,IS,CHI,biomassRxnAbbr,rxnAbbrDatabaseID,defaultMetBounds,metBoundsFile,rxnBoundsFile,Legendre,useKeqData,nStdDevGroupCont,cumNormProbCutoff,figures,printToFile,secondPassAssignment)">setupThermoModel</a>	Thermodynamically constrains a COBRA model.</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function model=deltaG0concFluxConstraintBounds(model,Legendre,LegendreCHI,figures,nStdDevGroupCont)</a>
+0002 <span class="comment">%set reaction directionality bounds from thermodynamic data</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">%first pass assignment of reaction directionality based on standard</span>
+0005 <span class="comment">%transformed Gibbs energy and concentration bounds</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%INPUT</span>
+0008 <span class="comment">% model.S</span>
+0009 <span class="comment">% model.SintRxnBool             Boolean indicating internal reactions</span>
+0010 <span class="comment">% model.gasConstant             gas constant</span>
+0011 <span class="comment">% model.temp                    temperature</span>
+0012 <span class="comment">% model.boundryConc             bounds on concentration of boundary metabolites</span>
+0013 <span class="comment">% model.met(m).dGft0            standard transformed Gibbs energy of formation(kJ/mol)</span>
+0014 <span class="comment">% model.met(m).dGf0GroupContUncertainty  group. cont. uncertainty in estimate of standard Gibbs energy of formation (kJ/mol)</span>
+0015 <span class="comment">% model.met(m).concMin          lower bound on metabolite concentration</span>
+0016 <span class="comment">% model.met(m).concMax          upper bound on metabolite concentration</span>
+0017 <span class="comment">% model.met(m).charge           reconstruction metabolite charge</span>
+0018 <span class="comment">% model.lb                      reconstruction reaction lower bounds</span>
+0019 <span class="comment">% model.ub                      reconstruction reaction upper bounds</span>
+0020 <span class="comment">% model.CHI.*                   electrical potential (mV) in compartment defined by letter *</span>
+0021 <span class="comment">% Legendre                      {(1),0} Legendre Transformation for specifc pHr?</span>
+0022 <span class="comment">% LegendreCHI                   {(1),0} Legendre Transformation for specifc electrical potential?</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">%OPTIONAL INPUT</span>
+0025 <span class="comment">% figures           {1,(0)} 1=create figures</span>
+0026 <span class="comment">% nStdDevGroupCont  {real,(1)} number of standard deviations of group contribution</span>
+0027 <span class="comment">%                   uncertainty, 1 means uncertainty given by group contribution</span>
+0028 <span class="comment">%                   method (one standard deviation)</span>
+0029 <span class="comment">%</span>
+0030 <span class="comment">%OUTPUT</span>
+0031 <span class="comment">% nStdDevGroupCont  {real,(1)} number of standard deviations of group contribution</span>
+0032 <span class="comment">%                   uncertainty, 1 means uncertainty given by group contribution</span>
+0033 <span class="comment">%                   method (one standard deviation)</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">% For each metabolite:</span>
+0036 <span class="comment">% model.concMin</span>
+0037 <span class="comment">% model.concMax</span>
+0038 <span class="comment">% model.dGft0Min</span>
+0039 <span class="comment">% model.dGft0Max</span>
+0040 <span class="comment">% model.dGftMin</span>
+0041 <span class="comment">% model.dGftMax</span>
+0042 <span class="comment">% model.NaNdGf0MetBool              metabolites without Gibbs Energy</span>
+0043 <span class="comment">%</span>
+0044 <span class="comment">% For each reaction:</span>
+0045 <span class="comment">% model.rxn(n).dGt0Max              molar standard</span>
+0046 <span class="comment">% model.rxn(n).dGt0Min              molar standard</span>
+0047 <span class="comment">% model.rxn(n).dGtMax</span>
+0048 <span class="comment">% model.rxn(n).dGtMin</span>
+0049 <span class="comment">% model.rxn(n).dGtmMMin             mili molar standard</span>
+0050 <span class="comment">% model.rxn(n).dGtmMMax             mili molar standard</span>
+0051 <span class="comment">% model.rxn(n).directionalityThermo</span>
+0052 <span class="comment">% model.lb_reconThermo              lower bounds from dGtMin/dGtMax and recon</span>
+0053 <span class="comment">%                                   directions if thermo data missing</span>
+0054 <span class="comment">% model.ub_reconThermo              upper bounds from dGtMin/dGtMax and recon</span>
+0055 <span class="comment">%                                   directions if thermo data missing</span>
+0056 <span class="comment">% model.NaNdG0RxnBool               reactions with NaN Gibbs Energy</span>
+0057 <span class="comment">% model.transportRxnBool            transport reactions</span>
+0058 <span class="comment">%</span>
+0059 <span class="comment">% Ronan M. T. Fleming</span>
+0060 
+0061 [nMet,nRxn]=size(model.S);
+0062 <span class="comment">%OPTIONS</span>
+0063 <span class="keyword">if</span> ~exist(<span class="string">'figures'</span>,<span class="string">'var'</span>)
+0064     figures=0;
+0065 <span class="keyword">end</span>
+0066 
+0067 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METABOLITE PROPERTIES%%%%%%%%%%%%%%%%%%%%</span>
+0068 <span class="comment">%set the errors that accompany the standard chemical potentials</span>
+0069 errorKeq=0.5*(8.314472/1.987); <span class="comment">% kJ/mol. Upper limit on uncertainty due to lack of measurement precision according to Jankowski et al. 2008. - Hulda %0.000001;</span>
+0070 <span class="keyword">if</span> ~exist(<span class="string">'nStdDevGroupCont'</span>,<span class="string">'var'</span>)
+0071     nStdDevGroupCont=1;
+0072 <span class="keyword">end</span>
+0073 model.nStdDevGroupCont=nStdDevGroupCont;
+0074 
+0075 <span class="comment">%Metabolite chemical potential</span>
+0076 <span class="comment">%scale chemical potential by temperature and gas constant</span>
+0077 gasConstant=model.gasConstant; <span class="comment">%kJ K-1 mol-1</span>
+0078 temp=model.temp; <span class="comment">%Kelvin</span>
+0079 rt=gasConstant*temp;
+0080 
+0081 <span class="comment">%standard chemical potential</span>
+0082 dGft0Min=zeros(1,nMet);
+0083 dGft0Max=zeros(1,nMet);
+0084 nan_dGformationBool=false(nMet,1);
+0085 GroupCont_dGformationBool=false(nMet,1);
+0086 
+0087 concMin=zeros(1,nMet);
+0088 concMax=zeros(1,nMet);
+0089 <span class="keyword">for</span> m=1:nMet
+0090     <span class="comment">%     model.met(m).concMin</span>
+0091     concMin(1,m)=model.met(m).concMin;
+0092     concMax(1,m)=model.met(m).concMax;
+0093     <span class="comment">%add the errors to the min and max standard transformed chemical</span>
+0094     <span class="comment">%potentials</span>
+0095     <span class="keyword">if</span> ~isnan(model.met(m).dGft0)
+0096         <span class="comment">%check the provinence of the data and add errors accordingly</span>
+0097         <span class="keyword">if</span>  ~strcmp(model.met(m).dGft0Source,<span class="string">'Keq'</span>)
+0098             <span class="comment">%             metAbbr=model.met(m).abbreviation;</span>
+0099             <span class="comment">%             if strcmp(metAbbr(end-2:end),'[c]')</span>
+0100             <span class="comment">%                 fprintf('%s\n',['Transformed g.c. estimate (298.15K, pH 7) for metabolite ' int2str(m) ' : ' model.met(m).officialName]);</span>
+0101             <span class="comment">%             end</span>
+0102             <span class="comment">%standard transformed chemical potential values are in kJ per M</span>
+0103             <span class="comment">%weightGroupCont is the weighting on the uncertainty given by</span>
+0104             <span class="comment">%Group Contribution method</span>
+0105             dGft0Max(1,m)=model.met(m).dGft0+nStdDevGroupCont*model.met(m).dGft0GroupContUncertainty;
+0106             dGft0Min(1,m)=model.met(m).dGft0-nStdDevGroupCont*model.met(m).dGft0GroupContUncertainty;
+0107             GroupCont_dGformationBool(m)=1;
+0108         <span class="keyword">else</span>
+0109             <span class="comment">%add a slight error margin</span>
+0110             dGft0Max(1,m)=model.met(m).dGft0+errorKeq; <span class="comment">%*abs(model.met(m).dGft0); Commented out. Used absolute error instead of relative error. - Hulda</span>
+0111             dGft0Min(1,m)=model.met(m).dGft0-errorKeq; <span class="comment">%*abs(model.met(m).dGft0);</span>
+0112         <span class="keyword">end</span>
+0113     <span class="keyword">else</span>
+0114         nan_dGformationBool(m)=1;
+0115     <span class="keyword">end</span>
+0116 <span class="keyword">end</span>
+0117 <span class="keyword">if</span> max(dGft0Min&gt;dGft0Max)==1
+0118     error(<span class="string">'dGft0Min greater than dGft0Max'</span>);
+0119 <span class="keyword">end</span>
+0120 
+0121 <span class="comment">%standard chemical potential in kJ per Mole</span>
+0122 <span class="keyword">if</span> sum(dGft0Min&gt;dGft0Max)~=0
+0123     fprintf(<span class="string">'%s\n'</span>,<span class="string">'Some of the lower bounds on standard Gibbs energy are greater than upper bounds'</span>);
+0124     <span class="comment">%     dGft0Min&gt;dGft0Max % Commented out. - Hulda</span>
+0125 <span class="keyword">else</span>
+0126     <span class="keyword">for</span> m=1:nMet
+0127         model.met(m).dGft0Min=dGft0Min(m);
+0128         model.met(m).dGft0Max=dGft0Max(m);
+0129     <span class="keyword">end</span>
+0130     model.dGft0Min=dGft0Min';
+0131     model.dGft0Max=dGft0Max';
+0132 <span class="keyword">end</span>
+0133 <span class="comment">%milimolar standard chemical potential</span>
+0134 dGftmMMin=dGft0Min+rt*((log(concMin)+log(concMax))/2);
+0135 dGftmMMax=dGft0Max+rt*((log(concMin)+log(concMax))/2);
+0136 
+0137 <span class="comment">%min and max transformed chemical potential</span>
+0138 dGftMin=dGft0Min+rt*log(concMin);
+0139 dGftMax=dGft0Max+rt*log(concMax);
+0140 
+0141 <span class="comment">%check to make sure not overlapping</span>
+0142 <span class="keyword">if</span> dGftMin&gt;dGftMax
+0143     error(<span class="string">'dGtMin greater than dGtMax'</span>);
+0144 <span class="keyword">else</span>
+0145     <span class="keyword">for</span> m=1:nMet
+0146         model.met(m).dGftMin=dGftMin(m);
+0147         model.met(m).dGftMax=dGftMax(m);
+0148     <span class="keyword">end</span>
+0149     model.dGftMin=dGftMin';
+0150     model.dGftMax=dGftMax';
+0151 <span class="keyword">end</span>
+0152 <span class="comment">%metabolites without thermodynamic information</span>
+0153 model.NaNdGf0MetBool=nan_dGformationBool;
+0154 
+0155 <span class="keyword">if</span> figures==1
+0156     figure; hold on;
+0157     plot(concMax,<span class="string">'.'</span>);
+0158     plot(concMin,<span class="string">'.r'</span>);
+0159     legend(<span class="string">'max'</span>,<span class="string">'min'</span>);
+0160     title(<span class="string">'Maximum and minimum concentration (Molar)'</span>,<span class="string">'FontSize'</span>,16);
+0161     xlabel(<span class="string">'Metabolites'</span>,<span class="string">'FontSize'</span>,16);
+0162     ylabel(<span class="string">'Concentration (Molar)'</span>,<span class="string">'FontSize'</span>,16);
+0163 <span class="keyword">end</span>
+0164 <span class="keyword">if</span> figures==1
+0165     muMean=(dGftMin+dGftMax)/2;
+0166     [s,sInd]=sort(muMean);
+0167     figure; hold on;
+0168     xx=1:nnz(~model.NaNdGf0MetBool);
+0169     dGftMaxSorted=dGftMax(sInd);
+0170     dGftMinSorted=dGftMin(sInd);
+0171     plot(xx,dGftMaxSorted(~model.NaNdGf0MetBool),<span class="string">'.'</span>);
+0172     plot(xx,dGftMinSorted(~model.NaNdGf0MetBool),<span class="string">'.r'</span>);
+0173     legend(<span class="string">'max'</span>,<span class="string">'min'</span>);
+0174     <span class="comment">%     if max(GroupCont_dGformationBool)==1</span>
+0175     <span class="comment">%         %sort boolean</span>
+0176     <span class="comment">%         GroupCont_dGformationBool=GroupCont_dGformationBool(sInd);</span>
+0177     <span class="comment">%         %plot sorted GroupCont data.</span>
+0178     <span class="comment">%         plot(xx(GroupCont_dGformationBool),dGtMin(GroupCont_dGformationBool),'*r');</span>
+0179     <span class="comment">%         plot(xx(GroupCont_dGformationBool),dGtMax(GroupCont_dGformationBool),'*');</span>
+0180     <span class="comment">%     end</span>
+0181     title(<span class="string">'Maximum and minimum \Delta_{f}G^{\prime} (kJ)'</span>,<span class="string">'FontSize'</span>,16);
+0182     xlabel(<span class="string">'Metabolites, sorted by \Delta_{f}G^{\prime}'</span>,<span class="string">'FontSize'</span>,16);
+0183     ylabel(<span class="string">'\Delta_{f}G^{\prime} kJ)'</span>,<span class="string">'FontSize'</span>,16);
+0184 <span class="keyword">end</span>
+0185 
+0186 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%REACTION PROPERTIES%%%%%%%%%%%%%%%%%%%%</span>
+0187 <span class="comment">%identify reactions that are affected by NaN dGf</span>
+0188 nanRxn=(sum(abs(model.S(nan_dGformationBool,:)),1)~=0) | (sum(model.S ~= 0, 1) == 1); <span class="comment">% Added &quot;| (sum(model.S ~= 0, 1) == 1)&quot; so nanRxn is true for demand reactions - Hulda</span>
+0189 <span class="comment">%reactions with NaN dG0</span>
+0190 model.NaNdG0RxnBool=nanRxn';
+0191 
+0192 boolH=false(nMet,1);
+0193 <span class="comment">%indices of protons</span>
+0194 <span class="keyword">for</span> m=1:nMet
+0195     <span class="keyword">if</span> strcmp(model.mets{m}(1:2),<span class="string">'h['</span>)
+0196         boolH(m)=1;
+0197     <span class="keyword">end</span>
+0198 <span class="keyword">end</span>
+0199 
+0200 <span class="comment">%min and max change in chemical potential</span>
+0201 Spos=model.S;
+0202 Spos(model.S&lt;0)=0;
+0203 Spos(boolH,:)=0; <span class="comment">%hydrogen ion chemical potential only used for transport reaction</span>
+0204 Sneg=model.S;
+0205 Sneg(model.S&gt;0)=0;
+0206 Sneg(boolH,:)=0; <span class="comment">%hydrogen ion chemical potential only used for transport reaction</span>
+0207 
+0208 metAbbrReconShort=cell(nMet,1);
+0209 <span class="keyword">for</span> m=1:nMet
+0210     metAbbr=model.mets{m};
+0211     metAbbrReconShort{m,1}=metAbbr(1:end-3);
+0212 <span class="keyword">end</span>
+0213 <span class="comment">% Commented out following if statement. - Hulda</span>
+0214 <span class="comment">% if errorKeq~=0</span>
+0215 <span class="comment">%     error('This next section of code assumes that there is no error in the  delta Go from Keq')</span>
+0216 <span class="comment">% end</span>
+0217 <span class="comment">% - Hulda</span>
+0218 
+0219 <span class="comment">% %identify reactions which transport between different compartments</span>
+0220 <span class="comment">% %then generate a matrix, which:</span>
+0221 <span class="comment">% %1. when multiplied by hydrogen ion chemical potential, gives the change</span>
+0222 <span class="comment">% % in proton chemical potential. (initial minus final)</span>
+0223 <span class="comment">% %1. when multiplied by electrical potential, gives the change</span>
+0224 <span class="comment">% % in electrical potential.  (initial minus final)</span>
+0225 <span class="comment">% model.transportRxnBool=false(nRxn,1);</span>
+0226 <span class="comment">% model.transportRxnBool2 = substrateProductIndexH(:,1)~=0 &amp; substrateProductIndexH(:,2)~=0 &amp; substrateProductIndexH(:,1)~=substrateProductIndexH(:,2);</span>
+0227 <span class="comment">% substrateProductIndexH(substrateProductIndexH(:,1)==substrateProductIndexH(:,2),:)=0;</span>
+0228 <span class="comment">%</span>
+0229 <span class="comment">% %designed to give initial minus final compartment property</span>
+0230 <span class="comment">% deltaMatrix=zeros(nRxn,nMet);</span>
+0231 <span class="comment">% for n=1:nRxn</span>
+0232 <span class="comment">%     deltaMatrix(n,substrateProductIndexH(n,1)) =  1;</span>
+0233 <span class="comment">%     deltaMatrix(n,substrateProductIndexH(n,2)) = -1;</span>
+0234 <span class="comment">% end</span>
+0235 
+0236 <span class="comment">% for n=1:nRxn</span>
+0237 <span class="comment">%     %only for internal reactions</span>
+0238 <span class="comment">%     if model.SIntRxnBool(n)</span>
+0239 <span class="comment">%         metAbbrAll=model.mets(model.S(:,n)~=0);</span>
+0240 <span class="comment">%         metAbbrAllShort=cell(length(metAbbrAll),1);</span>
+0241 <span class="comment">%         for q=1:length(metAbbrAll)</span>
+0242 <span class="comment">%             metAbbr=metAbbrAll{q};</span>
+0243 <span class="comment">%             %omit compartment</span>
+0244 <span class="comment">%             metAbbrAllShort{q}=metAbbr(1:end-3);</span>
+0245 <span class="comment">%         end</span>
+0246 <span class="comment">%         %check for duplication of a metabolite</span>
+0247 <span class="comment">%         [bu, mu, nu] = unique(metAbbrAllShort);</span>
+0248 <span class="comment">%         if length(bu)~=length(metAbbrAllShort)</span>
+0249 <span class="comment">%             %save the transport reactions</span>
+0250 <span class="comment">%             model.transportRxnBool(n)=1;</span>
+0251 <span class="comment">%         end</span>
+0252 <span class="comment">%     end</span>
+0253 <span class="comment">% end</span>
+0254 numChar=1;
+0255 [transportRxnBool]=<a href="../../setupThermoModel/transport/transportReactionBool.html" class="code" title="function [transportRxnBool]=transportReactionBool(model,numChar)">transportReactionBool</a>(model,numChar);
+0256 model.transportRxnBool=transportRxnBool;
+0257 
+0258 <span class="comment">% Divided by largest non-proton stochiometric coefficient in each reaction to get</span>
+0259 <span class="comment">% kJ per mol reactant that reacts in the greatest molar amount - Hulda</span>
+0260 normalizationS = model.S;
+0261 normalizationS((abs(model.S) &lt;= 2) &amp; (abs(model.S) &gt; 0)) = 1;
+0262 normalizationS(boolH,:) = 1;
+0263 
+0264 
+0265 <span class="comment">%min and max standard change in chemical potential</span>
+0266 dGt0Max=(dGft0Min*Sneg+dGft0Max*Spos)./max(abs(normalizationS), [], 1);
+0267 dGt0Min=(dGft0Max*Sneg+dGft0Min*Spos)./max(abs(normalizationS), [], 1);
+0268 <span class="comment">%min and max milimolar standard change in chemical potential</span>
+0269 dGtmMMax=(dGftmMMin*Sneg+dGftmMMax*Spos)./max(abs(normalizationS), [], 1);
+0270 dGtmMMin=(dGftmMMax*Sneg+dGftmMMin*Spos)./max(abs(normalizationS), [], 1);
+0271 <span class="comment">%min and max change in chemical potential</span>
+0272 dGtMax=(dGftMin*Sneg+dGftMax*Spos)./max(abs(normalizationS), [], 1);
+0273 dGtMin=(dGftMax*Sneg+dGftMin*Spos)./max(abs(normalizationS), [], 1);
+0274 
+0275 <span class="comment">% % Temporary quick-fix implementation of uncertainty cancellation - Hulda</span>
+0276 <span class="comment">% currentUncertainty = (dGt0Max - dGt0Min)/2;</span>
+0277 <span class="comment">%</span>
+0278 <span class="comment">% nMetGroups = zeros(length(model.mets),size(groupData.metGroupCount,2));</span>
+0279 <span class="comment">% for n = 1:length(model.mets)</span>
+0280 <span class="comment">%     if any(strcmp(model.mets{n},groupData.mets))</span>
+0281 <span class="comment">%         nMetGroups(n,:) = groupData.metGroupCount(strcmp(model.mets{n},groupData.mets),:);</span>
+0282 <span class="comment">%     end</span>
+0283 <span class="comment">% end</span>
+0284 <span class="comment">%</span>
+0285 <span class="comment">% gcmbool = GroupCont_dGformationBool;</span>
+0286 <span class="comment">% keqbool = ~(gcmbool | nan_dGformationBool);</span>
+0287 <span class="comment">% gcmS = model.S;</span>
+0288 <span class="comment">% gcmS((keqbool | nan_dGformationBool),:) = 0;</span>
+0289 <span class="comment">% keqS = model.S;</span>
+0290 <span class="comment">% keqS((gcmbool | nan_dGformationBool),:) = 0;</span>
+0291 <span class="comment">%</span>
+0292 <span class="comment">% correctedUncertainty = (nStdDevGroupCont*(abs(gcmS'*nMetGroups) - 0.5*((abs(gcmS'*nMetGroups) + abs(keqS'*nMetGroups)) - abs((gcmS + keqS)'*nMetGroups)))*groupData.SEgr + abs(keqS)'*(errorKeq*ones(size(model.mets))))./max(abs(normalizationS), [], 1)';</span>
+0293 <span class="comment">% correctedUncertainty(correctedUncertainty'&gt;currentUncertainty) = currentUncertainty(correctedUncertainty'&gt;currentUncertainty);</span>
+0294 <span class="comment">%</span>
+0295 <span class="comment">% dGt0Max = dGt0Max - (currentUncertainty - correctedUncertainty');</span>
+0296 <span class="comment">% dGt0Min = dGt0Min + (currentUncertainty - correctedUncertainty');</span>
+0297 <span class="comment">% dGtMax = dGtMax - (currentUncertainty - correctedUncertainty');</span>
+0298 <span class="comment">% dGtMin = dGtMin + (currentUncertainty - correctedUncertainty');</span>
+0299 <span class="comment">% % - Hulda</span>
+0300 
+0301 <span class="comment">% Commented out after implementing uncertainty cancellations for all</span>
+0302 <span class="comment">% reactions based on identical structural groups in metabolites</span>
+0303 <span class="comment">%</span>
+0304 fprintf(<span class="string">'%s\n'</span>,<span class="string">'Ensuring that uncertainty is not factored into the dGt0 or dGt for transport reactions.'</span>)
+0305 <span class="keyword">for</span> n=1:nRxn
+0306     <span class="keyword">if</span> model.transportRxnBool(n)
+0307         <span class="comment">%be careful of transport reactions since group contribution uncertainty</span>
+0308         <span class="comment">%should not come into it for certain metabolites, if the same metabolite</span>
+0309         <span class="comment">%appears on both sides of the reaction</span>
+0310 
+0311         fix=0;
+0312         dGft0MinTemp=dGft0Min;
+0313         dGft0MaxTemp=dGft0Max;
+0314         dGftmMMinTemp=dGftmMMin;
+0315         dGftmMMaxTemp=dGftmMMax;
+0316         dGftMinTemp=dGftMin;
+0317         dGftMaxTemp=dGftMax;
+0318 
+0319         metAbbrAll=model.mets(model.S(:,n)~=0);
+0320         metAbbrAllShort=cell(length(metAbbrAll),1);
+0321         <span class="keyword">for</span> p=1:length(metAbbrAllShort) <span class="comment">% Added this for loop - Hulda</span>
+0322             metAbbrAllShort{p}=metAbbrAll{p}(1:(end-2));
+0323         <span class="keyword">end</span> <span class="comment">% - Hulda</span>
+0324 
+0325         <span class="keyword">for</span> p=1:length(metAbbrAllShort)
+0326             metBool=strcmp(metAbbrAll{p},model.mets);
+0327             <span class="comment">%find the duplicated metabolite</span>
+0328             <span class="keyword">if</span> nnz(strcmp(metAbbrAllShort{p},metAbbrAllShort))&gt;1;<span class="comment">% &amp;&amp;  strcmp(model.met(metBool).dGft0Source,'GC') % Do not assume no uncertainty in data from Alberty - Hulda</span>
+0329                 <span class="comment">%this metabolite is on both sides of the reaction</span>
+0330                 <span class="comment">%we assume here that there is no uncertainty in the</span>
+0331                 <span class="comment">%data from Alberty.</span>
+0332                 fix=1;
+0333 
+0334                 <span class="comment">%if isnan then approximate with zero, this will ignore</span>
+0335                 <span class="comment">%ionic strength effects between compartments</span>
+0336                 <span class="keyword">if</span> isnan(model.met(metBool).dGft0)
+0337                     dGft0MinTemp(metBool)=0;
+0338                     dGft0MaxTemp(metBool)=0;
+0339                     dGftmMMinTemp(metBool)=0;
+0340                     dGftmMMaxTemp(metBool)=0;
+0341                     dGftMinTemp(metBool)=0;
+0342                     dGftMaxTemp(metBool)=0;
+0343                 <span class="keyword">else</span>
+0344                     dGft0MinTemp(metBool)=model.met(metBool).dGft0;
+0345                     dGft0MaxTemp(metBool)=model.met(metBool).dGft0;
+0346                     dGftmMMinTemp(metBool)=model.met(metBool).dGft0;
+0347                     dGftmMMaxTemp(metBool)=model.met(metBool).dGft0;
+0348                     dGftMinTemp(metBool)=model.met(metBool).dGft0 + rt*log(concMin(metBool));
+0349                     dGftMaxTemp(metBool)=model.met(metBool).dGft0 + rt*log(concMax(metBool));
+0350                 <span class="keyword">end</span>
+0351             <span class="keyword">end</span>
+0352         <span class="keyword">end</span>
+0353         <span class="comment">%Use temp values to ensure that uncertainty is not factored into the drGt0 for transport reactions</span>
+0354         <span class="keyword">if</span> fix
+0355             <span class="comment">%min and max standard change in chemical potential</span>
+0356             <span class="comment">%note that these values may still be nonzero if the pH, or</span>
+0357             <span class="comment">%ionic strength is different in the different compartments.</span>
+0358             dGt0Max(n)=(dGft0MinTemp*Sneg(:,n)+dGft0MaxTemp*Spos(:,n))./max(abs(normalizationS(:,n)), [], 1);
+0359             dGt0Min(n)=(dGft0MaxTemp*Sneg(:,n)+dGft0MinTemp*Spos(:,n))./max(abs(normalizationS(:,n)), [], 1);
+0360             <span class="comment">%thor standard</span>
+0361             dGtmMMax(n)=(dGftmMMinTemp*Sneg(:,n)+dGftmMMaxTemp*Spos(:,n))./max(abs(normalizationS(:,n)), [], 1);
+0362             dGtmMMin(n)=(dGftmMMaxTemp*Sneg(:,n)+dGftmMMinTemp*Spos(:,n))./max(abs(normalizationS(:,n)), [], 1);
+0363             <span class="comment">%</span>
+0364             dGtMax(n)=(dGftMinTemp*Sneg(:,n)+dGftMaxTemp*Spos(:,n))./max(abs(normalizationS(:,n)), [], 1);
+0365             dGtMin(n)=(dGftMaxTemp*Sneg(:,n)+dGftMinTemp*Spos(:,n))./max(abs(normalizationS(:,n)), [], 1);
+0366         <span class="keyword">end</span>
+0367    <span class="keyword">end</span>
+0368 <span class="keyword">end</span>
+0369 
+0370 <span class="comment">% - Hulda</span>
+0371 
+0372 <span class="comment">%number of hydrogen in each metabolite species as per reconstruction</span>
+0373 reconstructionH=sparse(nMet,1);
+0374 <span class="comment">%charge of each metabolite species as per reconstruction</span>
+0375 reconstructionQ=sparse(nMet,1);
+0376 <span class="keyword">for</span> m=1:nMet
+0377     <span class="keyword">if</span> strcmp(model.met(m).formula,<span class="string">''</span>)
+0378         reconstructionH(m)=NaN;
+0379     <span class="keyword">else</span>
+0380         reconstructionH(m) = <a href="../../setupThermoModel/massBalance/numAtomsOfElementInFormula.html" class="code" title="function N=numAtomsOfElementInFormula(formula,element)">numAtomsOfElementInFormula</a>(model.met(m).formula,<span class="string">'H'</span>);
+0381     <span class="keyword">end</span>
+0382     reconstructionQ(m) = model.met(m).charge;
+0383 <span class="keyword">end</span>
+0384 
+0385 [allMetCompartments,uniqueMetCompartments]=<a href="../../setupThermoModel/transport/getCompartment.html" class="code" title="function [compartments,uniqueCompartments]=getCompartment(mets,numChar)">getCompartment</a>(model.mets);
+0386 nUniqueMetCompartments=length(uniqueMetCompartments);
+0387 
+0388 A=sparse(nMet,nUniqueMetCompartments);
+0389 <span class="keyword">for</span> m=1:nMet
+0390     A(m,strcmp(allMetCompartments{m},uniqueMetCompartments))=1;
+0391 <span class="keyword">end</span>
+0392 
+0393 dGfHcompartment=zeros(nUniqueMetCompartments,1);
+0394 CHIcompartment=zeros(nUniqueMetCompartments,1);
+0395 <span class="keyword">for</span> p=1:nUniqueMetCompartments
+0396     dGfHcompartment(p)=model.met(strcmp(model.mets,[<span class="string">'h['</span> uniqueMetCompartments{p} <span class="string">']'</span>])).dGf;
+0397     
+0398     chi=model.CHI.(uniqueMetCompartments{p});
+0399     <span class="comment">%Electrical Potential conversion from mV to kJ with Faraday constant</span>
+0400     <span class="comment">%eq 8.5-1 p148 Alberty 2003</span>
+0401     CHIcompartment(p)=model.faradayConstant*(chi/1000);
+0402 <span class="keyword">end</span>
+0403 
+0404 <span class="comment">% Hulda</span>
+0405 <span class="keyword">if</span> Legendre
+0406     fprintf(<span class="string">'%s\n'</span>,<span class="string">'Additional effect due to possible change in chemical potential of Hydrogen ions for transport reactions.'</span>)
+0407     
+0408     <span class="keyword">if</span> isfield(model,<span class="string">'Srecon'</span>)
+0409         <span class="comment">%use the reconstruction stoichiometry without adjustment to proton</span>
+0410         <span class="comment">%stoichiometric coefficient</span>
+0411         delta  = -model.Srecon'*diag(reconstructionH)*A*dGfHcompartment;
+0412     <span class="keyword">else</span>
+0413         delta  = -model.S'*diag(reconstructionH)*A*dGfHcompartment;
+0414     <span class="keyword">end</span>
+0415     <span class="comment">%ignore exchange reactions</span>
+0416     delta(~model.SIntRxnBool)=0;
+0417     
+0418     <span class="comment">%adjust the change in chemical potential due to difference in hydrogen ion</span>
+0419     <span class="comment">%chemical potential between compartments</span>
+0420     dGt0Min  = dGt0Min  - delta';
+0421     dGt0Max  = dGt0Max  - delta';
+0422     dGtmMMin = dGtmMMin - delta';
+0423     dGtmMMax = dGtmMMax - delta';
+0424     dGtMin   = dGtMin   - delta';
+0425     dGtMax   = dGtMax   - delta';
+0426 <span class="keyword">end</span>
+0427 <span class="comment">% Hulda</span>
+0428 
+0429 <span class="comment">%TODO - compartment matrix to streamline code</span>
+0430 <span class="keyword">if</span> LegendreCHI
+0431     fprintf(<span class="string">'%s\n'</span>,<span class="string">'Additional effect due to possible change in electrical potential for transport reactions.'</span>)
+0432     
+0433     <span class="keyword">if</span> isfield(model,<span class="string">'Srecon'</span>)
+0434         <span class="comment">%use the reconstruction stoichiometry without adjustment to proton</span>
+0435         <span class="comment">%stoichiometric coefficient</span>
+0436         deltaCHI  = -model.Srecon'*diag(reconstructionQ)*A*CHIcompartment;
+0437     <span class="keyword">else</span>
+0438         deltaCHI  = -model.S'*diag(reconstructionQ)*A*CHIcompartment;
+0439     <span class="keyword">end</span>
+0440     <span class="comment">%ignore exchange reactions</span>
+0441     deltaCHI(~model.SIntRxnBool)=0;
+0442     
+0443     <span class="comment">%adjust the change in chemical potential due to difference in hydrogen ion</span>
+0444     <span class="comment">%chemical potential between compartments</span>
+0445     dGt0Min  = dGt0Min  - deltaCHI';
+0446     dGt0Max  = dGt0Max  - deltaCHI';
+0447     dGtmMMin = dGtmMMin - deltaCHI';
+0448     dGtmMMax = dGtmMMax - deltaCHI';
+0449     dGtMin   = dGtMin   - deltaCHI';
+0450     dGtMax   = dGtMax   - deltaCHI';
+0451 <span class="keyword">end</span>
+0452 <span class="comment">%ok, now it is safe to assign these values since the error for transport not</span>
+0453 <span class="comment">%taken into account, and the additional change due to difference in</span>
+0454 <span class="comment">%hydrogen ion chemical potential between compartments is.</span>
+0455 <span class="keyword">if</span> any(dGt0Min&gt;dGt0Max)
+0456     error(<span class="string">'dGt0Min greater than dGt0Max'</span>);
+0457 <span class="keyword">else</span>
+0458     <span class="keyword">for</span> n=1:nRxn
+0459         model.rxn(n).dGt0Min=dGt0Min(n);
+0460         model.rxn(n).dGt0Max=dGt0Max(n);
+0461     <span class="keyword">end</span>
+0462     model.dGt0Max=dGt0Max';
+0463     model.dGt0Min=dGt0Min';
+0464 <span class="keyword">end</span>
+0465 
+0466 <span class="keyword">if</span> any(dGtmMMin&gt;dGtmMMax)
+0467     error(<span class="string">'dGtmMMin greater than dGtmMMax'</span>);
+0468 <span class="keyword">else</span>
+0469     <span class="keyword">for</span> n=1:nRxn
+0470         model.rxn(n).dGtmMMin=dGtmMMin(n);
+0471         model.rxn(n).dGtmMMax=dGtmMMax(n);
+0472     <span class="keyword">end</span>
+0473 <span class="keyword">end</span>
+0474 
+0475 <span class="keyword">if</span> any(dGtMin&gt;dGtMax)
+0476     error(<span class="string">'dGtMin greater than dGtMax'</span>);
+0477 <span class="keyword">else</span>
+0478     <span class="keyword">for</span> n=1:nRxn
+0479         model.rxn(n).dGtMin=dGtMin(n);
+0480         model.rxn(n).dGtMax=dGtMax(n);
+0481     <span class="keyword">end</span>
+0482     model.dGtMax=dGtMax';
+0483     model.dGtMin=dGtMin';
+0484 <span class="keyword">end</span>
+0485 
+0486 <span class="keyword">if</span> figures==1
+0487     dmu0Mean=(dGt0Min+dGt0Max)/2;
+0488     [s,sInd]=sort(dmu0Mean);
+0489     figure; hold on;
+0490     dGt0MaxSorted=dGt0Max(sInd);
+0491     dGt0MinSorted=dGt0Min(sInd);
+0492     plot(dGt0MaxSorted(~model.NaNdG0RxnBool),<span class="string">'.'</span>);
+0493     plot(dGt0MinSorted(~model.NaNdG0RxnBool),<span class="string">'.r'</span>);
+0494     legend(<span class="string">'max'</span>,<span class="string">'min'</span>);
+0495     title(<span class="string">'Maximum and minimum \Delta_{r}G^{\primeo} (kJ)'</span>,<span class="string">'FontSize'</span>,16);
+0496     xlabel(<span class="string">'Reactions, sorted by \Delta_{r}G^{\primeo}'</span>,<span class="string">'FontSize'</span>,16);
+0497     ylabel(<span class="string">'\Delta_{r}G^{\primeo} (kJ)'</span>,<span class="string">'FontSize'</span>,16);
+0498     hold off;
+0499     
+0500     dGt0Mean=(dGt0Min+dGt0Max)/2;
+0501     [s,sInd]=sort(dGt0Mean);
+0502     figure; hold on;
+0503     dGt0MaxSorted=dGt0Max(sInd)/rt;
+0504     dGt0MinSorted=dGt0Min(sInd)/rt;
+0505     plot(dGt0MaxSorted(~model.NaNdG0RxnBool),<span class="string">'.'</span>);
+0506     plot(dGt0MinSorted(~model.NaNdG0RxnBool),<span class="string">'.r'</span>);
+0507     legend(<span class="string">'max'</span>,<span class="string">'min'</span>);
+0508     title(<span class="string">'Maximum and minimum \Delta_{r}G^{\primeo} (kJ/RT)'</span>,<span class="string">'FontSize'</span>,16);
+0509     xlabel(<span class="string">'All reactions, sorted by \Delta_{r}G^{\primeo}'</span>,<span class="string">'FontSize'</span>,16);
+0510     ylabel(<span class="string">'\Delta_{r}G^{\primeo} (kJ/RT)'</span>,<span class="string">'FontSize'</span>,16);
+0511     hold off;
+0512 <span class="keyword">end</span>
+0513 
+0514 <span class="keyword">if</span> figures==1
+0515     dGtMean=(dGtMin+dGtMax)/2;
+0516     [s,sInd]=sort(dGtMean);
+0517     figure; hold on;
+0518     dGtMaxSorted=dGtMax(sInd);
+0519     dGtMinSorted=dGtMin(sInd);
+0520     plot(dGtMaxSorted(~model.NaNdG0RxnBool),<span class="string">'.'</span>);
+0521     plot(dGtMinSorted(~model.NaNdG0RxnBool),<span class="string">'.r'</span>);
+0522     legend(<span class="string">'max'</span>,<span class="string">'min'</span>);
+0523     title(<span class="string">'Maximum and minimum \Delta_{r}G^{\prime} (kJ)'</span>,<span class="string">'FontSize'</span>,16);
+0524     xlabel(<span class="string">'All reactions, sorted by \Delta_{r}G^{\prime}'</span>,<span class="string">'FontSize'</span>,16);
+0525     ylabel(<span class="string">'\Delta_{r}G^{\prime} (kJ/RT)'</span>,<span class="string">'FontSize'</span>,16);
+0526     hold off;
+0527     
+0528     dmuMean=(dGtMin+dGtMax)/2;
+0529     [s,sInd]=sort(dmuMean);
+0530     figure; hold on;
+0531     dGtMaxSorted=dGtMax(sInd)/rt;
+0532     dGtMinSorted=dGtMin(sInd)/rt;
+0533     plot(dGtMaxSorted(~model.NaNdG0RxnBool),<span class="string">'.'</span>);
+0534     plot(dGtMinSorted(~model.NaNdG0RxnBool),<span class="string">'.r'</span>);
+0535     legend(<span class="string">'max'</span>,<span class="string">'min'</span>);
+0536     title(<span class="string">'Maximum and minimum \Delta_{r}G^{\prime} (kJ/RT)'</span>,<span class="string">'FontSize'</span>,16);
+0537     xlabel(<span class="string">'All reactions, sorted by \Delta_{r}G^{\prime}'</span>,<span class="string">'FontSize'</span>,16);
+0538     ylabel(<span class="string">'\Delta_{r}G^{\prime} (kJ/RT)'</span>,<span class="string">'FontSize'</span>,16);
+0539     hold off;
+0540 <span class="keyword">end</span>
+0541 
+0542 <span class="comment">%reaction directionality</span>
+0543 <span class="comment">%keep exchange bounds the same as for the recostruction</span>
+0544 model.lb_reconThermo=model.lb;
+0545 model.ub_reconThermo=model.ub;
+0546 <span class="comment">%now set internal reaction directions</span>
+0547 <span class="keyword">for</span> n=1:nRxn
+0548     <span class="keyword">if</span> model.SIntRxnBool(n)
+0549         <span class="keyword">if</span> nanRxn(n)
+0550             <span class="comment">%for the reactions that involve a NaN metabolite standard Gibbs energy of</span>
+0551             <span class="comment">%formation, use the directions given by the reconstruction</span>
+0552             <span class="keyword">if</span> model.lb(n)&lt;0 &amp;&amp; model.ub(n)&gt;0
+0553                 model.lb_reconThermo(n)=-Inf;
+0554                 model.ub_reconThermo(n)=Inf;
+0555             <span class="keyword">end</span>
+0556             <span class="comment">%forward</span>
+0557             <span class="keyword">if</span> model.lb(n)&gt;=0 &amp;&amp; model.ub(n)&gt;0
+0558                 model.lb_reconThermo(n)=0;
+0559                 model.ub_reconThermo(n)=Inf;
+0560             <span class="keyword">end</span>
+0561             <span class="comment">%reverse</span>
+0562             <span class="keyword">if</span> model.lb(n)&lt;0 &amp;&amp; model.ub(n)&lt;=0
+0563                 model.lb_reconThermo(n)=-Inf;
+0564                 model.ub_reconThermo(n)=0;
+0565             <span class="keyword">end</span>
+0566             <span class="keyword">if</span> model.lb(n)==0 &amp;&amp; model.ub(n)==0
+0567                 error([<span class="string">'Reaction '</span> model.rxns{n} <span class="string">' set to zero'</span>])
+0568             <span class="keyword">end</span>
+0569             <span class="comment">%note that there is no thermodynamic directionality assignment</span>
+0570             <span class="comment">%for this reaction</span>
+0571             model.rxn(n).directionalityThermo=NaN;
+0572         <span class="keyword">else</span>
+0573             <span class="keyword">if</span> dGtMax(n)&lt;0
+0574                 model.rxn(n).directionalityThermo=<span class="string">'forward'</span>;
+0575                 model.lb_reconThermo(n)=0;
+0576                 model.ub_reconThermo(n)=Inf;
+0577             <span class="keyword">end</span>
+0578             <span class="keyword">if</span> dGtMin(n)&gt;0
+0579                 model.rxn(n).directionalityThermo=<span class="string">'reverse'</span>;
+0580                 model.lb_reconThermo(n)=-Inf;
+0581                 model.ub_reconThermo(n)=0;
+0582             <span class="keyword">end</span>
+0583             <span class="keyword">if</span> dGtMin(n)&lt;0 &amp;&amp; dGtMax(n)&gt;0;
+0584                 model.rxn(n).directionalityThermo=<span class="string">'reversible'</span>;
+0585                 model.lb_reconThermo(n)=-Inf;
+0586                 model.ub_reconThermo(n)=Inf;
+0587             <span class="keyword">end</span>
+0588             <span class="keyword">if</span> dGtMin(n)==dGtMax(n)
+0589                 model.rxn(n).directionalityThermo=<span class="string">'equilibrium'</span>;
+0590             <span class="keyword">end</span>
+0591             <span class="keyword">if</span> 0 <span class="comment">%from Jan 30th 2011 Ignore reactions where lb=ub=0</span>
+0592                 <span class="keyword">if</span> model.lb(n)==0 &amp;&amp; model.ub(n)==0
+0593                     error([<span class="string">'Reaction '</span> model.rxns{n} <span class="string">' set to zero'</span>])
+0594                 <span class="keyword">end</span>
+0595             <span class="keyword">end</span>
+0596         <span class="keyword">end</span>
+0597     <span class="keyword">end</span>
+0598 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

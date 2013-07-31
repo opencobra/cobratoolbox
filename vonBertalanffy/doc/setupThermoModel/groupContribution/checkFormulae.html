@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of checkFormulae</title>
+  <meta name="keywords" content="checkFormulae">
+  <meta name="description" content="compare two formulae for the number of elements for all optionally except the">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html groupContribution -->
+<h1>checkFormulae
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>compare two formulae for the number of elements for all optionally except the</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function bool=checkFormulae(formulaA,formulaB,exceptions) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">compare two formulae for the number of elements for all optionally except the
+elements listed in exceptions
+
+INPUT
+ formulaA
+ formulaB
+
+OPTIONAL INPUT
+ exceptions     String array of metabolite abbreviation exceptions e.g. {'H'}
+
+OUTPUT
+ bool           Boolean where 1 means the formulae match and 0 otherwise
+
+Ronan M. T. Fleming 20 July 2009</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../setupThermoModel/massBalance/numAtomsOfElementInFormula.html" class="code" title="function N=numAtomsOfElementInFormula(formula,element)">numAtomsOfElementInFormula</a>	returns the number of atoms of a single element in a formula</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function bool=checkFormulae(formulaA,formulaB,exceptions)</a>
+0002 <span class="comment">%compare two formulae for the number of elements for all optionally except the</span>
+0003 <span class="comment">%elements listed in exceptions</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">%INPUT</span>
+0006 <span class="comment">% formulaA</span>
+0007 <span class="comment">% formulaB</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%OPTIONAL INPUT</span>
+0010 <span class="comment">% exceptions     String array of metabolite abbreviation exceptions e.g. {'H'}</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">%OUTPUT</span>
+0013 <span class="comment">% bool           Boolean where 1 means the formulae match and 0 otherwise</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">%Ronan M. T. Fleming 20 July 2009</span>
+0016 
+0017 <span class="keyword">if</span> ~exist(<span class="string">'exceptions'</span>,<span class="string">'var'</span>)
+0018     exceptions={};
+0019 <span class="keyword">end</span>
+0020 
+0021 <span class="keyword">if</span> ischar(exceptions)
+0022     ex=exceptions;
+0023     clear exceptions
+0024     exceptions{1}=ex;
+0025 <span class="keyword">end</span>
+0026 
+0027 elements = {<span class="string">'C'</span>,<span class="string">'H'</span>,<span class="string">'O'</span>,<span class="string">'P'</span>,<span class="string">'S'</span>,<span class="string">'K'</span>,<span class="string">'Na'</span>,<span class="string">'N'</span>};
+0028 
+0029 bool=1;
+0030 <span class="keyword">for</span> n=1:length(elements)
+0031     <span class="keyword">if</span> ~any(strcmp(elements{n},exceptions))
+0032         numA=<a href="../../setupThermoModel/massBalance/numAtomsOfElementInFormula.html" class="code" title="function N=numAtomsOfElementInFormula(formula,element)">numAtomsOfElementInFormula</a>(formulaA,elements{n});
+0033         numB=<a href="../../setupThermoModel/massBalance/numAtomsOfElementInFormula.html" class="code" title="function N=numAtomsOfElementInFormula(formula,element)">numAtomsOfElementInFormula</a>(formulaB,elements{n});
+0034         <span class="comment">%check to see if number of elements is not the same for each</span>
+0035         <span class="comment">%metabolite</span>
+0036         <span class="keyword">if</span> numA~=numB
+0037             bool=0;
+0038             <span class="keyword">break</span>;
+0039         <span class="keyword">end</span>
+0040     <span class="keyword">end</span>
+0041 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

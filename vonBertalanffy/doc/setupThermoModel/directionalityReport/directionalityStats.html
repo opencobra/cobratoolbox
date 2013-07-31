@@ -1,0 +1,695 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of directionalityStats</title>
+  <meta name="keywords" content="directionalityStats">
+  <meta name="description" content="Build Boolean vectors with reaction directionality statistics">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html directionalityReport -->
+<h1>directionalityStats
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Build Boolean vectors with reaction directionality statistics</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function directions=directionalityStats(model,cumNormProbCutoff,thorStandard,printToFile) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Build Boolean vectors with reaction directionality statistics
+
+INPUT
+ model.rxn(n).directionalityThermo
+ cumNormProbCutoff     {0.2} cutoff for probablity that reaction is
+                       reversible within this cutoff of 0.5
+ model.NaNdGf0MetBool      metabolites without Gibbs Energy
+ model.NaNdG0RxnBool       reactions with NaN Gibbs Energy
+ cumNormProbCutoff     {0.1} positive real number between 0 and 0.5 that
+                       specifies to tolerance when there is uncertainty in group
+                       contribution estimates.
+ thorStandard          {0,(1)} use new standard reactant concentration
+                       at geometric mean between upper and lower concentration
+                       bounds
+ printToFile           {(0),1}  print out reactions with changed
+                       directions to files
+
+OUTPUT
+ directions    a structue of boolean vectors with different directionality 
+               assignments where some vectors contain subsets of others
+
+ qualitatively assigned directions 
+   directions.fwdReconBool
+   directions.revReconBool
+   directions.reversibleReconBool
+
+ qualitatively assigned directions using thermo in preference to
+ qualitative assignments but using qualitative assignments where
+ thermodynamic data is lacking
+   directions.fwdReconThermoBool
+   directions.revReconThermoBool
+   directions.reversibleReconThermoBool
+
+ reactions that are qualitatively assigned by thermodynamics
+   directions.fwdThermoOnlyBool
+   directions.revThermoOnlyBool
+   directions.reversibleThermoOnlyBool
+
+ qualtiative -&gt; quantiative changed reaction directions 
+   directions.ChangeReversibleFwd
+   directions.ChangeReversibleRev
+   directions.ChangeForwardReverse
+   directions.ChangeForwardReversible
+
+ subsets of forward qualtiative -&gt; reversible quantiative change
+   directions.ChangeForwardReversible_dGfKeq
+   directions.ChangeForwardReversibleBool_dGfGC
+   directions.ChangeForwardReversibleBool_dGfGC_byConcLHS
+   directions.ChangeForwardReversibleBool_dGfGC_byConcRHS
+   directions.ChangeForwardReversibleBool_dGfGC_bydGt0
+   directions.ChangeForwardReversibleBool_dGfGC_bydGt0LHS
+   directions.ChangeForwardReversibleBool_dGfGC_bydGt0Mid
+   directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS
+   directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorLHS
+   directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS
+
+   directions.cumNormProbCutoff
+   directions.ChangeForwardForwardBool_dGfGC
+
+ Ronan M.T. Fleming</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="directionalityCheckAll.html" class="code" title="function directions=directionalityCheckAll(model,cumNormProbCutoff,thorStandard,printToFile,printToTable,figures)">directionalityCheckAll</a>	Analysis of differences between qualitative and quantiative directionality assignments.</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function directions=directionalityStats(model,cumNormProbCutoff,thorStandard,printToFile)</a>
+0002 <span class="comment">% Build Boolean vectors with reaction directionality statistics</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">%INPUT</span>
+0005 <span class="comment">% model.rxn(n).directionalityThermo</span>
+0006 <span class="comment">% cumNormProbCutoff     {0.2} cutoff for probablity that reaction is</span>
+0007 <span class="comment">%                       reversible within this cutoff of 0.5</span>
+0008 <span class="comment">% model.NaNdGf0MetBool      metabolites without Gibbs Energy</span>
+0009 <span class="comment">% model.NaNdG0RxnBool       reactions with NaN Gibbs Energy</span>
+0010 <span class="comment">% cumNormProbCutoff     {0.1} positive real number between 0 and 0.5 that</span>
+0011 <span class="comment">%                       specifies to tolerance when there is uncertainty in group</span>
+0012 <span class="comment">%                       contribution estimates.</span>
+0013 <span class="comment">% thorStandard          {0,(1)} use new standard reactant concentration</span>
+0014 <span class="comment">%                       at geometric mean between upper and lower concentration</span>
+0015 <span class="comment">%                       bounds</span>
+0016 <span class="comment">% printToFile           {(0),1}  print out reactions with changed</span>
+0017 <span class="comment">%                       directions to files</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">%OUTPUT</span>
+0020 <span class="comment">% directions    a structue of boolean vectors with different directionality</span>
+0021 <span class="comment">%               assignments where some vectors contain subsets of others</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">% qualitatively assigned directions</span>
+0024 <span class="comment">%   directions.fwdReconBool</span>
+0025 <span class="comment">%   directions.revReconBool</span>
+0026 <span class="comment">%   directions.reversibleReconBool</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">% qualitatively assigned directions using thermo in preference to</span>
+0029 <span class="comment">% qualitative assignments but using qualitative assignments where</span>
+0030 <span class="comment">% thermodynamic data is lacking</span>
+0031 <span class="comment">%   directions.fwdReconThermoBool</span>
+0032 <span class="comment">%   directions.revReconThermoBool</span>
+0033 <span class="comment">%   directions.reversibleReconThermoBool</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">% reactions that are qualitatively assigned by thermodynamics</span>
+0036 <span class="comment">%   directions.fwdThermoOnlyBool</span>
+0037 <span class="comment">%   directions.revThermoOnlyBool</span>
+0038 <span class="comment">%   directions.reversibleThermoOnlyBool</span>
+0039 <span class="comment">%</span>
+0040 <span class="comment">% qualtiative -&gt; quantiative changed reaction directions</span>
+0041 <span class="comment">%   directions.ChangeReversibleFwd</span>
+0042 <span class="comment">%   directions.ChangeReversibleRev</span>
+0043 <span class="comment">%   directions.ChangeForwardReverse</span>
+0044 <span class="comment">%   directions.ChangeForwardReversible</span>
+0045 <span class="comment">%</span>
+0046 <span class="comment">% subsets of forward qualtiative -&gt; reversible quantiative change</span>
+0047 <span class="comment">%   directions.ChangeForwardReversible_dGfKeq</span>
+0048 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC</span>
+0049 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_byConcLHS</span>
+0050 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_byConcRHS</span>
+0051 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0</span>
+0052 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0LHS</span>
+0053 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0Mid</span>
+0054 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS</span>
+0055 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorLHS</span>
+0056 <span class="comment">%   directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS</span>
+0057 <span class="comment">%</span>
+0058 <span class="comment">%   directions.cumNormProbCutoff</span>
+0059 <span class="comment">%   directions.ChangeForwardForwardBool_dGfGC</span>
+0060 <span class="comment">%</span>
+0061 <span class="comment">% Ronan M.T. Fleming</span>
+0062 
+0063 <span class="keyword">if</span> ~exist(<span class="string">'cumNormProbCutoff'</span>,<span class="string">'var'</span>)
+0064     directions.cumNormProbCutoff=0.2;
+0065 <span class="keyword">else</span>
+0066     directions.cumNormProbCutoff=cumNormProbCutoff;
+0067 <span class="keyword">end</span>
+0068 <span class="comment">%must be symmetric about 50:50 to be logically consistent</span>
+0069 cumNormProbFwdUpper=0.5+directions.cumNormProbCutoff;
+0070 cumNormProbFwdLower=0.5-directions.cumNormProbCutoff;
+0071 
+0072 <span class="keyword">if</span> ~exist(<span class="string">'thorStandard'</span>,<span class="string">'var'</span>)
+0073     thorStandard=1;
+0074 <span class="keyword">end</span>
+0075 
+0076 [nMet,nRxn]=size(model.S);
+0077 
+0078 <span class="comment">%%%%%%REACTION DIRECTIONS%%%%%%%%%%%</span>
+0079 <span class="comment">%Reconstruction directions</span>
+0080 <span class="comment">%only consider internal reactions</span>
+0081 fwdReconBool=model.lb&gt;=0 &amp; model.ub&gt;0 &amp; model.SIntRxnBool;
+0082 revReconBool=model.lb&lt;0 &amp; model.ub&lt;=0 &amp; model.SIntRxnBool;
+0083 reversibleReconBool=model.lb&lt;0 &amp; model.ub&gt;0 &amp; model.SIntRxnBool;
+0084 <span class="keyword">if</span> 0 <span class="comment">%from Jan 30th 2011 ignore fixed reactios</span>
+0085 <span class="keyword">if</span> any(model.lb==0 &amp; model.ub==0)
+0086     error(<span class="string">'This analysis assumes no reactions are fixed'</span>);
+0087 <span class="keyword">end</span>
+0088 <span class="keyword">end</span>
+0089 <span class="comment">%sanity check</span>
+0090 <span class="keyword">if</span> nnz(model.SIntRxnBool)~=(nnz(fwdReconBool)+nnz(revReconBool)+nnz(reversibleReconBool))+nnz(model.lb==0 &amp; model.ub==0)
+0091     error(<span class="string">'Some reactions not set directions??'</span>);
+0092 <span class="keyword">end</span>
+0093 
+0094 <span class="comment">%Thermo and recon where thermo not available</span>
+0095 <span class="comment">%only consider internal reactions</span>
+0096 fwdReconThermoBool=model.lb_reconThermo&gt;=0 &amp; model.ub_reconThermo&gt;0 &amp; model.SIntRxnBool;
+0097 revReconThermoBool=model.lb_reconThermo&lt;0 &amp; model.ub_reconThermo&lt;=0 &amp; model.SIntRxnBool;
+0098 reversibleReconThermoBool=model.lb_reconThermo&lt;0 &amp; model.ub_reconThermo&gt;0 &amp; model.SIntRxnBool;
+0099 <span class="keyword">if</span> 0 <span class="comment">%from Jan 30th 2011 ignore fixed reactions</span>
+0100 <span class="keyword">if</span> any(model.lb_reconThermo==0 &amp; model.ub_reconThermo==0)
+0101     error(<span class="string">'This analysis assumes no reactions are fixed'</span>);
+0102 <span class="keyword">end</span>
+0103 <span class="keyword">end</span>
+0104 
+0105 <span class="comment">%thermo only</span>
+0106 [nMet,nRxn]=size(model.S);
+0107 fwdThermoOnlyBool=false(nRxn,1);
+0108 revThermoOnlyBool=false(nRxn,1);
+0109 reversibleThermoOnlyBool=false(nRxn,1);
+0110 <span class="keyword">for</span> n=1:nRxn
+0111     <span class="comment">%only consider internal reactions</span>
+0112     <span class="keyword">if</span> model.SIntRxnBool(n)
+0113         <span class="keyword">if</span> strcmp(model.rxn(n).directionalityThermo,<span class="string">'forward'</span>)
+0114             fwdThermoOnlyBool(n)=1;
+0115         <span class="keyword">end</span>
+0116         <span class="keyword">if</span> strcmp(model.rxn(n).directionalityThermo,<span class="string">'reverse'</span>)
+0117             revThermoOnlyBool(n)=1;
+0118         <span class="keyword">end</span>
+0119         <span class="keyword">if</span> strcmp(model.rxn(n).directionalityThermo,<span class="string">'reversible'</span>)
+0120             reversibleThermoOnlyBool(n)=1;
+0121         <span class="keyword">end</span>
+0122     <span class="keyword">end</span>
+0123 <span class="keyword">end</span>
+0124 
+0125 
+0126 <span class="comment">%%%%%%CHANGES IN REACTION DIRECTIONS%%%%%%%%%%%</span>
+0127 <span class="comment">%thermodynamic constraints overly tightened</span>
+0128 tightened=false(nRxn,1);
+0129 <span class="comment">%reversible now forward</span>
+0130 reversibleFwd=false(nRxn,1);
+0131 <span class="comment">%reversible now reverse</span>
+0132 reversibleRev=false(nRxn,1);
+0133 <span class="comment">%forward now reverse</span>
+0134 forwardReverse=false(nRxn,1);
+0135 <span class="comment">%forward now reversible</span>
+0136 forwardReversible=false(nRxn,1);
+0137 <span class="comment">%forward now forward</span>
+0138 forwardForward=false(nRxn,1);
+0139 <span class="keyword">for</span> n=1:nRxn
+0140     <span class="comment">%ignore exchange reactions</span>
+0141     <span class="keyword">if</span> model.SIntRxnBool(n)
+0142         <span class="comment">%dont include reactions that cannot be assigned reaction directionality</span>
+0143         <span class="comment">%due to missing data for certain metabolites involved in that reaction</span>
+0144         <span class="keyword">if</span> ~isnan(model.rxn(n).directionalityThermo)
+0145             <span class="keyword">if</span> ~strcmp(model.rxn(n).directionality,model.rxn(n).directionalityThermo)
+0146                 <span class="keyword">if</span> strcmp(model.rxn(n).directionality,<span class="string">'reversible'</span>)
+0147                     tightened(n)=1;
+0148                     <span class="keyword">if</span> strcmp(model.rxn(n).directionalityThermo,<span class="string">'forward'</span>)
+0149                         reversibleFwd(n)=1;
+0150                     <span class="keyword">end</span>
+0151                     <span class="keyword">if</span> strcmp(model.rxn(n).directionalityThermo,<span class="string">'reverse'</span>)
+0152                         reversibleRev(n)=1;
+0153                     <span class="keyword">end</span>
+0154                 <span class="keyword">end</span>
+0155                 <span class="keyword">if</span> strcmp(model.rxn(n).directionality,<span class="string">'forward'</span>)
+0156                     <span class="keyword">if</span> strcmp(model.rxn(n).directionalityThermo,<span class="string">'reverse'</span>)
+0157                         forwardReverse(n)=1;
+0158                     <span class="keyword">end</span>
+0159                     <span class="keyword">if</span> strcmp(model.rxn(n).directionalityThermo,<span class="string">'reversible'</span>)
+0160                         forwardReversible(n)=1;
+0161                     <span class="keyword">end</span>
+0162                 <span class="keyword">end</span>
+0163             <span class="keyword">end</span>
+0164             <span class="keyword">if</span> strcmp(model.rxn(n).directionality,<span class="string">'forward'</span>) &amp;&amp; strcmp(model.rxn(n).directionalityThermo,<span class="string">'forward'</span>)
+0165                 forwardForward(n)=1;
+0166             <span class="keyword">end</span>
+0167         <span class="keyword">end</span>
+0168     <span class="keyword">end</span>
+0169 <span class="keyword">end</span>
+0170 
+0171 <span class="keyword">if</span> printToFile
+0172     fid=fopen(<span class="string">'directionalityStats.txt'</span>,<span class="string">'w'</span>);
+0173     fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'Qualitative internal reaction directionality:'</span>);
+0174     fprintf(fid,<span class="string">'%10s\t%s\n'</span>,int2str(nnz(fwdReconBool)+nnz(revReconBool)+nnz(reversibleReconBool)),<span class="string">' internal reconstruction reactions assigned direction.'</span>);
+0175     fprintf(fid,<span class="string">'%10s\t%s\n'</span>,int2str(nnz(fwdReconBool)), <span class="string">' forward reconstruction assignment.'</span>);
+0176     fprintf(fid,<span class="string">'%10s\t%s\n'</span>,int2str(nnz(revReconBool)), <span class="string">' reverse reconstruction assignment.'</span>);
+0177     fprintf(fid,<span class="string">'%10s\t%s\n'</span>,int2str(nnz(reversibleReconBool)), <span class="string">' reversible reconstruction assignment.'</span>);
+0178     fprintf(fid,<span class="string">'\n'</span>);
+0179     
+0180     fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'Quantitative in preference to qualitative, plus  remainder of qualitative, internal reaction directionality:'</span>);
+0181     fprintf(fid,<span class="string">'%10s\t%s\n'</span>,int2str(nnz(fwdReconThermoBool)+nnz(revReconThermoBool)+nnz(reversibleReconThermoBool)), <span class="string">' internal reactions thermodynamic over reconstruction assignment.'</span>);
+0182     fprintf(fid,<span class="string">'%10s\t%s\n'</span>,int2str(nnz(fwdReconThermoBool)), <span class="string">' forward thermodynamic over reconstruction assignment.'</span>);
+0183     fprintf(fid,<span class="string">'%10s\t%s\n'</span>,int2str(nnz(revReconThermoBool)), <span class="string">' reverse thermodynamic over reconstruction assignment.'</span>);
+0184     fprintf(fid,<span class="string">'%10s\t%s\n'</span>,int2str(nnz(reversibleReconThermoBool)), <span class="string">' reversible thermodynamic over reconstruction assignment.'</span>);
+0185     fprintf(fid,<span class="string">'\n'</span>);
+0186     
+0187     fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'Quantitative in preference to qualitative internal reaction directionality:'</span>);
+0188     fprintf(fid,<span class="string">'%10s\t%s\n'</span>,int2str(nnz(fwdThermoOnlyBool)+nnz(revThermoOnlyBool)+nnz(reversibleThermoOnlyBool)),  <span class="string">' internal thermodynamic assignment.'</span>);
+0189     fprintf(fid,<span class="string">'%10s\t%s\n'</span>,int2str(nnz(fwdThermoOnlyBool)), <span class="string">' forward thermodynamic only assignment.'</span>);
+0190     fprintf(fid,<span class="string">'%10s\t%s\n'</span>,int2str(nnz(revThermoOnlyBool)), <span class="string">' reverse thermodynamic only assignment.'</span>);
+0191     fprintf(fid,<span class="string">'%10s\t%s\n'</span>,int2str(nnz(reversibleThermoOnlyBool)), <span class="string">' reversible thermodynamic only assignment.'</span>);
+0192     fprintf(fid,<span class="string">'\n'</span>);
+0193     
+0194     fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'Changes in internal reaction directionality, Qualitiative vs Quantitative:'</span>);
+0195     fprintf(fid,<span class="string">'%10i\t%s\n'</span>,nnz(reversibleFwd),<span class="string">' Reversible -&gt; Forward'</span>);
+0196     fprintf(fid,<span class="string">'%10i\t%s\n'</span>,nnz(reversibleRev),<span class="string">' Reversible -&gt; Reverse'</span>);
+0197     fprintf(fid,<span class="string">'%10i\t%s\n'</span>,nnz(forwardReverse),<span class="string">' Forward -&gt; Reverse'</span>);
+0198     fprintf(fid,<span class="string">'%10i\t%s\n'</span>,nnz(forwardReversible),<span class="string">' Forward -&gt; Reversible'</span>);
+0199     fprintf(fid,<span class="string">'\n'</span>);
+0200 <span class="keyword">else</span>
+0201     fprintf(<span class="string">'%s\n'</span>,<span class="string">'Qualitative internal reaction directionality:'</span>);
+0202     fprintf(<span class="string">'%10s\t%s\n'</span>,int2str(nnz(fwdReconBool)+nnz(revReconBool)+nnz(reversibleReconBool)),<span class="string">' internal reconstruction reactions assigned direction.'</span>);
+0203     fprintf(<span class="string">'%10s\t%s\n'</span>,int2str(nnz(fwdReconBool)), <span class="string">' forward reconstruction assignment.'</span>);
+0204     fprintf(<span class="string">'%10s\t%s\n'</span>,int2str(nnz(revReconBool)), <span class="string">' reverse reconstruction assignment.'</span>);
+0205     fprintf(<span class="string">'%10s\t%s\n'</span>,int2str(nnz(reversibleReconBool)), <span class="string">' reversible reconstruction assignment.'</span>);
+0206     fprintf(<span class="string">'\n'</span>);
+0207     
+0208     fprintf(<span class="string">'%s\n'</span>,<span class="string">'Quantitative in preference to qualitative, plus  remainder of qualitative, internal reaction directionality:'</span>);
+0209     fprintf(<span class="string">'%10s\t%s\n'</span>,int2str(nnz(fwdReconThermoBool)+nnz(revReconThermoBool)+nnz(reversibleReconThermoBool)), <span class="string">' internal reactions thermodynamic over reconstruction assignment.'</span>);
+0210     fprintf(<span class="string">'%10s\t%s\n'</span>,int2str(nnz(fwdReconThermoBool)), <span class="string">' forward thermodynamic over reconstruction assignment.'</span>);
+0211     fprintf(<span class="string">'%10s\t%s\n'</span>,int2str(nnz(revReconThermoBool)), <span class="string">' reverse thermodynamic over reconstruction assignment.'</span>);
+0212     fprintf(<span class="string">'%10s\t%s\n'</span>,int2str(nnz(reversibleReconThermoBool)), <span class="string">' reversible thermodynamic over reconstruction assignment.'</span>);
+0213     fprintf(<span class="string">'\n'</span>);
+0214     
+0215     fprintf(<span class="string">'%s\n'</span>,<span class="string">'Quantitative in preference to qualitative internal reaction directionality:'</span>);
+0216     fprintf(<span class="string">'%10s\t%s\n'</span>,int2str(nnz(fwdThermoOnlyBool)+nnz(revThermoOnlyBool)+nnz(reversibleThermoOnlyBool)),  <span class="string">' internal thermodynamic assignment.'</span>);
+0217     fprintf(<span class="string">'%10s\t%s\n'</span>,int2str(nnz(fwdThermoOnlyBool)), <span class="string">' forward thermodynamic only assignment.'</span>);
+0218     fprintf(<span class="string">'%10s\t%s\n'</span>,int2str(nnz(revThermoOnlyBool)), <span class="string">' reverse thermodynamic only assignment.'</span>);
+0219     fprintf(<span class="string">'%10s\t%s\n'</span>,int2str(nnz(reversibleThermoOnlyBool)), <span class="string">' reversible thermodynamic only assignment.'</span>);
+0220     fprintf(<span class="string">'\n'</span>);
+0221     
+0222     fprintf(<span class="string">'%s\n'</span>,<span class="string">'Changes in internal reaction directionality, Qualitiative vs Quantitative:'</span>);
+0223     fprintf(<span class="string">'%10i\t%s\n'</span>,nnz(reversibleFwd),<span class="string">' Reversible -&gt; Forward'</span>);
+0224     fprintf(<span class="string">'%10i\t%s\n'</span>,nnz(reversibleRev),<span class="string">' Reversible -&gt; Reverse'</span>);
+0225     fprintf(<span class="string">'%10i\t%s\n'</span>,nnz(forwardReverse),<span class="string">' Forward -&gt; Reverse'</span>);
+0226     fprintf(<span class="string">'%10i\t%s\n'</span>,nnz(forwardReversible),<span class="string">' Forward -&gt; Reversible'</span>);
+0227     fprintf(<span class="string">'\n'</span>);
+0228 <span class="keyword">end</span>
+0229 
+0230 <span class="keyword">if</span> printToFile
+0231     fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'Breakdown of relaxation of internal reaction directionality, Qualitiative vs Quantitative:'</span>);
+0232 <span class="keyword">else</span>
+0233     fprintf(<span class="string">'%s\n'</span>,<span class="string">'Breakdown of relaxation of internal reaction directionality, Qualitiative vs Quantitative:'</span>);
+0234 <span class="keyword">end</span>
+0235 <span class="comment">%finds the qualitatively forward reactions that are now reversible</span>
+0236 <span class="comment">%where the reaction exclusively involves metabolites with</span>
+0237 <span class="comment">%dGf0 back calculated from keq</span>
+0238 dGft0SourceKeqBool=false(nMet,1);
+0239 dGft0SourceGCBool=false(nMet,1);
+0240 <span class="keyword">for</span> m=1:nMet
+0241     <span class="keyword">if</span> strcmp(model.met(m).dGft0Source,<span class="string">'Keq'</span>)
+0242         dGft0SourceKeqBool(m,1)=1;
+0243     <span class="keyword">end</span>
+0244     <span class="comment">%metabolites with prediction from group contribution data</span>
+0245     <span class="keyword">if</span> strcmp(model.met(m).dGft0Source,<span class="string">'GC'</span>) 
+0246         dGft0SourceGCBool(m,1)=1;
+0247     <span class="keyword">end</span>
+0248 <span class="keyword">end</span>
+0249 <span class="comment">%fwd reversible</span>
+0250 forwardReversibleKeq=false(nRxn,1);
+0251 forwardReversibleKeqGC=false(nRxn,1);
+0252 forwardReversibleGC=false(nRxn,1);
+0253 <span class="comment">%fwd fwd</span>
+0254 forwardForwardKeq=false(nRxn,1);
+0255 forwardForwardKeqGC=false(nRxn,1);
+0256 forwardForwardGC=false(nRxn,1);
+0257 <span class="keyword">for</span> n=1:nRxn
+0258     <span class="keyword">if</span> forwardReversible(n)
+0259         ind=find(model.S(:,n));
+0260         <span class="comment">%finds the reactions with changed direction, exclusively involving</span>
+0261         <span class="comment">%metabolites with dGf0 back calculated from keq</span>
+0262         <span class="keyword">if</span> sum(dGft0SourceKeqBool(ind))==length(ind)
+0263             forwardReversibleKeq(n)=1;
+0264         <span class="keyword">end</span>
+0265         <span class="comment">%finds the reactions with changed direction, involving bothe</span>
+0266         <span class="comment">%metabolites with dGf0 back calculated from keq and estimated using</span>
+0267         <span class="comment">%the group contribution method</span>
+0268         <span class="keyword">if</span> any(dGft0SourceKeqBool(ind)) &amp;&amp; any(dGft0SourceGCBool(ind))
+0269             forwardReversibleKeqGC(n)=1;
+0270         <span class="keyword">end</span>
+0271         <span class="comment">%%qualitatively forward but GC quantitatively reversible &amp; GC estimates for all reactants</span>
+0272         <span class="keyword">if</span> sum(dGft0SourceGCBool(ind))==length(ind)
+0273             forwardReversibleGC(n)=1;
+0274         <span class="keyword">end</span>
+0275     <span class="keyword">end</span>
+0276     
+0277     <span class="comment">%todo - find the distribution of uncertainty associated with reactions that are</span>
+0278     <span class="comment">%correctly predicted by group contribution, versus not both forward</span>
+0279     <span class="keyword">if</span> forwardForward(n)
+0280         <span class="comment">%change here - doublecheck 18th feb</span>
+0281         ind=find(model.S(:,n));
+0282         <span class="comment">%finds the reactions with changed direction, exclusively involving</span>
+0283         <span class="comment">%metabolites with dGf0 back calculated from keq</span>
+0284         <span class="keyword">if</span> sum(dGft0SourceKeqBool(ind))==length(ind)
+0285             forwardForwardKeq(n)=1;
+0286         <span class="keyword">end</span>
+0287         <span class="comment">%finds the qualitatively forward and quantitatively forward reactions, involving both</span>
+0288         <span class="comment">%metabolites with dGf0 back calculated from keq and estimated using</span>
+0289         <span class="comment">%the group contribution method</span>
+0290         <span class="keyword">if</span> any(dGft0SourceKeqBool(ind)) &amp;&amp; any(dGft0SourceGCBool(ind))
+0291             forwardForwardKeqGC(n)=1;
+0292         <span class="keyword">end</span>
+0293         <span class="comment">%%qualitatively forward but GC quantitatively reversible &amp; GC estimates for all reactants</span>
+0294         <span class="keyword">if</span> sum(dGft0SourceGCBool(ind))==length(ind)
+0295             forwardForwardGC(n)=1;
+0296         <span class="keyword">end</span>
+0297     <span class="keyword">end</span>
+0298 <span class="keyword">end</span>
+0299 <span class="comment">%Breakdown of Group Contribution relaxation of reaction directionality,</span>
+0300 <span class="comment">%Qualitiative vs Quantitative:</span>
+0301 
+0302 <span class="keyword">if</span> printToFile
+0303     fprintf(fid,<span class="string">'%10i\t%s\n'</span>,nnz(forwardReversible),<span class="string">' Forward -&gt; Reversible (Total)'</span>);
+0304     fprintf(fid,<span class="string">'%10i\t%s\n'</span>,nnz(forwardReversibleGC),<span class="string">' Forward -&gt; Reversible (Based on dGft0 from Group Contribution)'</span>);
+0305     fprintf(fid,<span class="string">'%10i\t%s\n'</span>,nnz(forwardReversibleKeqGC),<span class="string">' Forward -&gt; Reversible (Based on dGft0 from Group Contribution and Keq)'</span>);
+0306     fprintf(fid,<span class="string">'%10i\t%s\n'</span>,nnz(forwardReversibleKeq),<span class="string">' Forward -&gt; Reversible (Based on dGft0 from Keq)'</span>);
+0307     fprintf(fid,<span class="string">'\n'</span>);
+0308 <span class="keyword">else</span>
+0309     fprintf(<span class="string">'%10i\t%s\n'</span>,nnz(forwardReversible),<span class="string">' Forward -&gt; Reversible (Total)'</span>);
+0310     fprintf(<span class="string">'%10i\t%s\n'</span>,nnz(forwardReversibleGC),<span class="string">' Forward -&gt; Reversible (Based on dGft0 from Group Contribution)'</span>);
+0311     fprintf(<span class="string">'%10i\t%s\n'</span>,nnz(forwardReversibleKeqGC),<span class="string">' Forward -&gt; Reversible (Based on dGft0 from Group Contribution and Keq)'</span>);
+0312     fprintf(<span class="string">'%10i\t%s\n'</span>,nnz(forwardReversibleKeq),<span class="string">' Forward -&gt; Reversible (Based on dGft0 from Keq)'</span>);
+0313     fprintf(<span class="string">'\n'</span>);
+0314 <span class="keyword">end</span>
+0315 
+0316 <span class="comment">%for comparison</span>
+0317 <span class="keyword">if</span> printToFile
+0318     fprintf(fid,<span class="string">'%10i\t%s\n'</span>,nnz(forwardForward),<span class="string">' Forward -&gt; Forward (Total)'</span>);
+0319     fprintf(fid,<span class="string">'%10i\t%s\n'</span>,nnz(forwardForwardGC),<span class="string">' Forward -&gt; Forward (Based on dGft0 from Group Contribution)'</span>);
+0320     fprintf(fid,<span class="string">'%10i\t%s\n'</span>,nnz(forwardForwardKeqGC),<span class="string">' Forward -&gt; Forward (Based on dGft0 from Group Contribution and Keq)'</span>);
+0321     fprintf(fid,<span class="string">'%10i\t%s\n'</span>,nnz(forwardForwardKeq),<span class="string">' Forward -&gt; Forward (Based on dGft0 from Keq)'</span>);
+0322     fprintf(fid,<span class="string">'\n'</span>);
+0323 <span class="keyword">else</span>
+0324     fprintf(<span class="string">'%10i\t%s\n'</span>,nnz(forwardForward),<span class="string">' Forward -&gt; Forward (Total)'</span>);
+0325     fprintf(<span class="string">'%10i\t%s\n'</span>,nnz(forwardForwardGC),<span class="string">' Forward -&gt; Forward (Based on dGft0 from Group Contribution)'</span>);
+0326     fprintf(<span class="string">'%10i\t%s\n'</span>,nnz(forwardForwardKeqGC),<span class="string">' Forward -&gt; Forward (Based on dGft0 from Group Contribution and Keq)'</span>);
+0327     fprintf(<span class="string">'%10i\t%s\n'</span>,nnz(forwardForwardKeq),<span class="string">' Forward -&gt; Forward (Based on dGft0 from Keq)'</span>);
+0328     fprintf(<span class="string">'\n'</span>);
+0329 <span class="keyword">end</span>
+0330 
+0331 <span class="comment">%Boolean index of reactions with at least one metabolite with dGft0 from</span>
+0332 <span class="comment">%group contribution data</span>
+0333 dGfGCforwardReversibleBool=forwardReversibleGC | forwardReversibleKeqGC;
+0334 dGfGCforwardForwardBool=forwardForwardGC | forwardForwardKeqGC;
+0335 
+0336 dGfGCforwardReversibleBool_byConcLHS=false(nRxn,1);
+0337 dGfGCforwardReversibleBool_byConcRHS=false(nRxn,1);
+0338 dGfGCforwardReversibleBool_bydGt0=false(nRxn,1);
+0339 dGfGCforwardReversibleBool_bydGt0LHS=false(nRxn,1);
+0340 dGfGCforwardReversibleBool_bydGt0Mid=false(nRxn,1);
+0341 dGfGCforwardReversibleBool_bydGt0RHS=false(nRxn,1);
+0342 dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS=false(nRxn,1);
+0343 dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS=false(nRxn,1);
+0344 <span class="keyword">for</span> n=1:nRxn
+0345     <span class="keyword">if</span> dGfGCforwardReversibleBool(n)
+0346         <span class="comment">%find the qualitatively forward reactions that are quantitatively</span>
+0347         <span class="comment">%reversible by concentration alone, and have always a negative</span>
+0348         <span class="comment">%dGr0t, with no error in dGr0t</span>
+0349         t=0;
+0350         <span class="keyword">if</span> thorStandard==0
+0351             <span class="keyword">if</span> n==1
+0352                 <span class="keyword">if</span> printToFile
+0353                     fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'Using 1 molar standard Gibbs energy of formation'</span>);
+0354                 <span class="keyword">else</span>
+0355                     fprintf(<span class="string">'%s\n'</span>,<span class="string">'Using 1 molar standard Gibbs energy of formation'</span>);
+0356                 <span class="keyword">end</span>
+0357             <span class="keyword">end</span>
+0358             <span class="keyword">if</span> model.rxn(n).dGt0Max==model.rxn(n).dGt0Min
+0359                 <span class="keyword">if</span>  model.rxn(n).dGt0Max&lt;=0
+0360                     dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS(n)=1;
+0361                     t=1;
+0362                 <span class="keyword">end</span>
+0363                 <span class="keyword">if</span> model.rxn(n).dGt0Min&gt;0
+0364                     dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS(n)=1;
+0365                     t=1;
+0366                 <span class="keyword">end</span>
+0367             <span class="keyword">else</span>
+0368                 <span class="comment">%find the qualitatively forward reactions that are quantitatively</span>
+0369                 <span class="comment">%reversible by the range of dGr0t</span>
+0370                 <span class="keyword">if</span> model.rxn(n).dGt0Min&lt;0 &amp;&amp; model.rxn(n).dGt0Max&gt;0
+0371                     dGfGCforwardReversibleBool_bydGt0(n)=1;
+0372                     t=1;
+0373                     <span class="comment">%breakdown the reactions by probability of being forward</span>
+0374                     <span class="comment">%dGrt0</span>
+0375                     Y0=(model.rxn(n).dGt0Min+model.rxn(n).dGt0Max)/2;
+0376                     L0=Y0-model.rxn(n).dGt0Min;
+0377                     U0=model.rxn(n).dGt0Max-Y0;
+0378                     <span class="comment">%dGrt</span>
+0379                     Y=(model.rxn(n).dGtMin+model.rxn(n).dGtMax)/2;
+0380                     L=Y-model.rxn(n).dGtMin;
+0381                     U=model.rxn(n).dGtMax-Y;
+0382                     <span class="comment">%cumulative of dGt0&lt;0 assuming normal distribution, with</span>
+0383                     <span class="comment">%mean dGt0, and stdev dGt0 from uncertainty</span>
+0384                     P = normcdf(0,Y0,L0);
+0385                     <span class="keyword">if</span> P&lt;=cumNormProbFwdUpper &amp;&amp; P&gt;=cumNormProbFwdLower
+0386                         dGfGCforwardReversibleBool_bydGt0Mid(n)=1;
+0387                     <span class="keyword">end</span>
+0388                     <span class="keyword">if</span> P&gt;cumNormProbFwdUpper
+0389                         dGfGCforwardReversibleBool_bydGt0LHS(n)=1;
+0390                     <span class="keyword">end</span>
+0391                     <span class="keyword">if</span> P&lt;cumNormProbFwdLower
+0392                         dGfGCforwardReversibleBool_bydGt0RHS(n)=1;
+0393                     <span class="keyword">end</span>
+0394                 <span class="keyword">end</span>
+0395                 <span class="comment">%find the qualitatively forward reactions that are quantitatively</span>
+0396                 <span class="comment">%reversible by concentration alone, and have always a</span>
+0397                 <span class="comment">%negative dGr0t</span>
+0398                 <span class="keyword">if</span>  model.rxn(n).dGt0Max&lt;0
+0399                     dGfGCforwardReversibleBool_byConcLHS(n)=1;
+0400                     t=1;
+0401                 <span class="keyword">end</span>
+0402                 <span class="comment">%find the qualitatively forward reactions that are quantitatively</span>
+0403                 <span class="comment">%reversible by concentration alone, and have always a positive</span>
+0404                 <span class="comment">%dGr0t</span>
+0405                 <span class="keyword">if</span> model.rxn(n).dGt0Min&gt;0
+0406                     dGfGCforwardReversibleBool_byConcRHS(n)=1;
+0407                     t=1;
+0408                 <span class="keyword">end</span>
+0409             <span class="keyword">end</span>
+0410         <span class="keyword">else</span>
+0411             <span class="comment">%using milimolar standard</span>
+0412             <span class="keyword">if</span> n==1
+0413                 <span class="keyword">if</span> printToFile
+0414                     fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'Using thor standard Gibbs energy of formation'</span>);
+0415                 <span class="keyword">else</span>
+0416                     fprintf(<span class="string">'%s\n'</span>,<span class="string">'Using thor standard Gibbs energy of formation'</span>);
+0417                 <span class="keyword">end</span>
+0418             <span class="keyword">end</span>
+0419             <span class="keyword">if</span> model.rxn(n).dGtmMMax==model.rxn(n).dGtmMMin
+0420                 <span class="keyword">if</span>  model.rxn(n).dGtmMMax&lt;=0
+0421                     dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS(n)=1;
+0422                     t=1;
+0423                 <span class="keyword">end</span>
+0424                 <span class="keyword">if</span> model.rxn(n).dGtmMMin&gt;0
+0425                     dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS(n)=1;
+0426                     t=1;
+0427                 <span class="keyword">end</span>
+0428             <span class="keyword">else</span>
+0429                 <span class="comment">%find the qualitatively forward reactions that are quantitatively</span>
+0430                 <span class="comment">%reversible by the range of dGrtmM</span>
+0431                 <span class="keyword">if</span> model.rxn(n).dGtmMMin&lt;0 &amp;&amp; model.rxn(n).dGtmMMax&gt;0
+0432                     dGfGCforwardReversibleBool_bydGt0(n)=1;
+0433                     t=1;
+0434                     
+0435                     <span class="comment">%breakdown the reactions by probability of being forward</span>
+0436                     <span class="comment">%dGrt0</span>
+0437                     Y0=(model.rxn(n).dGtmMMin+model.rxn(n).dGtmMMax)/2;
+0438                     L0=Y0-model.rxn(n).dGtmMMin;
+0439                     U0=model.rxn(n).dGtmMMax-Y0;
+0440                     <span class="comment">%dGrt</span>
+0441                     Y=(model.rxn(n).dGtMin+model.rxn(n).dGtMax)/2;
+0442                     L=Y-model.rxn(n).dGtMin;
+0443                     U=model.rxn(n).dGtMax-Y;
+0444                   
+0445                     <span class="comment">%cumulative of dGt0&lt;0 assuming normal distribution, with</span>
+0446                     <span class="comment">%mean dGt0, and stdev dGt0 from uncertainty</span>
+0447                     P = normcdf(0,Y0,L0);
+0448 
+0449                     <span class="keyword">if</span> P&lt;=cumNormProbFwdUpper &amp;&amp; P&gt;=cumNormProbFwdLower
+0450                         dGfGCforwardReversibleBool_bydGt0Mid(n)=1;
+0451                     <span class="keyword">end</span>
+0452                     <span class="keyword">if</span> P&gt;cumNormProbFwdUpper
+0453                         dGfGCforwardReversibleBool_bydGt0LHS(n)=1;
+0454                     <span class="keyword">end</span>
+0455                     <span class="keyword">if</span> P&lt;cumNormProbFwdLower
+0456                         dGfGCforwardReversibleBool_bydGt0RHS(n)=1;
+0457                     <span class="keyword">end</span>
+0458                 <span class="keyword">end</span>
+0459                 <span class="comment">%find the qualitatively forward reactions that are quantitatively</span>
+0460                 <span class="comment">%reversible by concentration alone, and have always a</span>
+0461                 <span class="comment">%negative dGr0t</span>
+0462                 <span class="keyword">if</span>  model.rxn(n).dGtmMMax&lt;=0
+0463                     dGfGCforwardReversibleBool_byConcLHS(n)=1;
+0464                     t=1;
+0465                 <span class="keyword">end</span>
+0466                 <span class="comment">%find the qualitatively forward reactions that are quantitatively</span>
+0467                 <span class="comment">%reversible by concentration alone, and have always a positive</span>
+0468                 <span class="comment">%dGr0t</span>
+0469                 <span class="keyword">if</span> model.rxn(n).dGtmMMin&gt;0
+0470                     dGfGCforwardReversibleBool_byConcRHS(n)=1;
+0471                     t=1;
+0472                 <span class="keyword">end</span>
+0473             <span class="keyword">end</span>
+0474         <span class="keyword">end</span>
+0475         <span class="keyword">if</span> t==0
+0476             model.rxn(n)
+0477             error(<span class="string">'directionalityStats.m : Extra category of reaction directionality not accounted for'</span>)
+0478         <span class="keyword">end</span>
+0479     <span class="keyword">end</span>
+0480 <span class="keyword">end</span>
+0481 <span class="keyword">if</span> printToFile
+0482     fprintf(fid,<span class="string">'%s\n'</span>,<span class="string">'Breakdown of Group Contribution, and mixed GC-Keq, derived relaxation of reaction directionality, Qualitiative vs Quantitative:'</span>);
+0483     <span class="comment">%total number of qualitatively forward reactions that are</span>
+0484     <span class="comment">%quantitatively reversible</span>
+0485     fprintf(fid,<span class="string">'%10i\t%s\n'</span>,nnz(dGfGCforwardReversibleBool),<span class="string">' qualitatively forward reactions that are GC quantitatively reversible (total).'</span>);
+0486     <span class="comment">%qualitatively forward reactions that are quantitatively</span>
+0487     <span class="comment">%reversible by concentration alone (no dGt0 error)</span>
+0488     fprintf(fid,<span class="string">'%10i\t%s\n'</span>,nnz(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS),<span class="string">' qualitatively forward reactions that are GC quantitatively forward by dGr0t, but reversible by concentration alone (No error in GC dGr0t).'</span>);
+0489     <span class="comment">%qualitatively forward reactions that are quantitatively</span>
+0490     <span class="comment">%reversible by concentration alone (with dGt0 error)</span>
+0491     fprintf(fid,<span class="string">'%10i\t%s\n'</span>,nnz(dGfGCforwardReversibleBool_byConcLHS),<span class="string">' qualitatively forward reactions that are GC quantitatively forward by dGr0t, but reversible by concentration alone (With error in GC dGr0t).'</span>);
+0492     <span class="comment">%qualitatively forward reactions that are quantitatively reversible by</span>
+0493     <span class="comment">%the range of dGt0</span>
+0494     fprintf(fid,<span class="string">'%10i\t%s%s\n'</span>,nnz(dGfGCforwardReversibleBool_bydGt0LHS),<span class="string">' qualitatively forward reactions that are GC quantitatively reversible by range of dGt0. '</span>,[<span class="string">'P(\Delta_{r}G^{\primeo}&lt;0) &gt; '</span> num2str(cumNormProbFwdUpper)]);
+0495     <span class="comment">%qualitatively reverse reactions that are quantitatively</span>
+0496     <span class="comment">%reversible by concentration alone (with dGt0 error)</span>
+0497     fprintf(fid,<span class="string">'%10i\t%s%s\n'</span>,nnz(dGfGCforwardReversibleBool_bydGt0Mid),<span class="string">' qualitatively forward reactions that are GC quantitatively reversible by range of dGt0. '</span>,[num2str(cumNormProbFwdLower) <span class="string">'&lt; P(\Delta_{r}G^{\primeo}&lt;0) &lt; '</span> num2str(cumNormProbFwdUpper)]);
+0498     <span class="comment">%qualitatively reverse reactions that are quantitatively</span>
+0499     <span class="comment">%reversible by concentration alone (with dGt0 error)</span>
+0500     fprintf(fid,<span class="string">'%10i\t%s%s\n'</span>,nnz(dGfGCforwardReversibleBool_bydGt0RHS),<span class="string">' qualitatively forward reactions that are GC quantitatively reversible by range of dGt0. '</span>,[<span class="string">'P(\Delta_{r}G^{\primeo}&lt;0) &lt; '</span> num2str(cumNormProbFwdLower)]);
+0501     <span class="comment">%qualitatively reverse reactions that are quantitatively</span>
+0502     <span class="comment">%reversible by concentration alone (with dGt0 error)</span>
+0503     fprintf(fid,<span class="string">'%10i\t%s\n'</span>,nnz(dGfGCforwardReversibleBool_byConcRHS),<span class="string">' qualitatively forward reactions that are GC quantitatively reverse by dGr0t, but reversible by concentration (With error in GC dGr0t).'</span>);
+0504     <span class="comment">%qualitatively reverse reactions that are quantitatively</span>
+0505     <span class="comment">%reversible by concentration alone (no dGt0 error)</span>
+0506     fprintf(fid,<span class="string">'%10i\t%s\n'</span>,nnz(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS),<span class="string">' qualitatively forward reactions that are GC quantitatively reverse by dGr0t, but reversible by concentration.(No error in GC dGr0t).'</span>);
+0507     fclose(fid);
+0508 <span class="keyword">else</span>
+0509     fprintf(<span class="string">'%s\n'</span>,<span class="string">'Breakdown of Group Contribution relaxation of reaction directionality, Qualitiative vs Quantitative:'</span>);
+0510     <span class="comment">%total number of qualitatively forward reactions that are</span>
+0511     <span class="comment">%quantitatively reversible</span>
+0512     fprintf(<span class="string">'%10i\t%s\n'</span>,nnz(dGfGCforwardReversibleBool),<span class="string">' qualitatively forward reactions that are GC quantitatively reversible (total).'</span>);
+0513     <span class="comment">%qualitatively forward reactions that are quantitatively</span>
+0514     <span class="comment">%reversible by concentration alone (no dGt0 error)</span>
+0515     fprintf(<span class="string">'%10i\t%s\n'</span>,nnz(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS),<span class="string">' qualitatively forward reactions that are GC quantitatively forward by dGr0t, but reversible by concentration alone (No error in GC dGr0t).'</span>);
+0516     <span class="comment">%qualitatively forward reactions that are quantitatively</span>
+0517     <span class="comment">%reversible by concentration alone (with dGt0 error)</span>
+0518     fprintf(<span class="string">'%10i\t%s\n'</span>,nnz(dGfGCforwardReversibleBool_byConcLHS),<span class="string">' qualitatively forward reactions that are GC quantitatively forward by dGr0t, but reversible by concentration alone (With error in GC dGr0t).'</span>);
+0519     <span class="comment">%qualitatively forward reactions that are quantitatively reversible by</span>
+0520     <span class="comment">%the range of dGt0</span>
+0521     fprintf(<span class="string">'%10i\t%s%s\n'</span>,nnz(dGfGCforwardReversibleBool_bydGt0LHS),<span class="string">' qualitatively forward reactions that are GC quantitatively reversible by range of dGt0. '</span>,[<span class="string">'P(\Delta_{r}G^{\primeo}&lt;0) &gt; '</span> num2str(cumNormProbFwdUpper)]);
+0522     <span class="comment">%qualitatively reverse reactions that are quantitatively</span>
+0523     <span class="comment">%reversible by concentration alone (with dGt0 error)</span>
+0524     fprintf(<span class="string">'%10i\t%s%s\n'</span>,nnz(dGfGCforwardReversibleBool_bydGt0Mid),<span class="string">' qualitatively forward reactions that are GC quantitatively reversible by range of dGt0. '</span>,[num2str(cumNormProbFwdLower) <span class="string">'&lt; P(\Delta_{r}G^{\primeo}&lt;0) &lt; '</span> num2str(cumNormProbFwdUpper)]);
+0525     <span class="comment">%qualitatively reverse reactions that are quantitatively</span>
+0526     <span class="comment">%reversible by concentration alone (with dGt0 error)</span>
+0527     fprintf(<span class="string">'%10i\t%s%s\n'</span>,nnz(dGfGCforwardReversibleBool_bydGt0RHS),<span class="string">' qualitatively forward reactions that are GC quantitatively reversible by range of dGt0. '</span>,[<span class="string">'P(\Delta_{r}G^{\primeo}&lt;0) &lt; '</span> num2str(cumNormProbFwdLower)]);
+0528     <span class="comment">%qualitatively reverse reactions that are quantitatively</span>
+0529     <span class="comment">%reversible by concentration alone (with dGt0 error)</span>
+0530     fprintf(<span class="string">'%10i\t%s\n'</span>,nnz(dGfGCforwardReversibleBool_byConcRHS),<span class="string">' qualitatively forward reactions that are GC quantitatively reverse by dGr0t, but reversible by concentration (With error in GC dGr0t).'</span>);
+0531     <span class="comment">%qualitatively reverse reactions that are quantitatively</span>
+0532     <span class="comment">%reversible by concentration alone (no dGt0 error)</span>
+0533     fprintf(<span class="string">'%10i\t%s\n'</span>,nnz(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS),<span class="string">' qualitatively forward reactions that are GC quantitatively reverse by dGr0t, but reversible by concentration.(No error in GC dGr0t).'</span>);
+0534 <span class="keyword">end</span>
+0535 <span class="comment">%make structue out of directions</span>
+0536 directions.fwdReconBool=fwdReconBool;
+0537 directions.revReconBool=revReconBool;
+0538 directions.reversibleReconBool=reversibleReconBool;
+0539 directions.fwdReconThermoBool=fwdReconThermoBool;
+0540 directions.revReconThermoBool=revReconThermoBool;
+0541 directions.reversibleReconThermoBool=reversibleReconThermoBool;
+0542 directions.fwdThermoOnlyBool=fwdThermoOnlyBool;
+0543 directions.revThermoOnlyBool=revThermoOnlyBool;
+0544 directions.reversibleThermoOnlyBool=reversibleThermoOnlyBool;
+0545 <span class="comment">%add the changed directions</span>
+0546 directions.ChangeForwardForwardBool_dGfGC=dGfGCforwardForwardBool;
+0547 <span class="comment">%changed directions</span>
+0548 directions.ChangeReversibleFwd=reversibleFwd;
+0549 directions.ChangeReversibleRev=reversibleRev;
+0550 directions.ChangeForwardReverse=forwardReverse;
+0551 <span class="comment">%all forward reversible classes</span>
+0552 directions.ChangeForwardReversible=forwardReversible;
+0553 directions.ChangeForwardReversible_dGfKeq=forwardReversibleKeq;
+0554 directions.ChangeForwardReversibleBool_dGfGC=dGfGCforwardReversibleBool;
+0555 directions.ChangeForwardReversibleBool_dGfGC_byConcLHS=dGfGCforwardReversibleBool_byConcLHS;
+0556 directions.ChangeForwardReversibleBool_dGfGC_byConcRHS=dGfGCforwardReversibleBool_byConcRHS;
+0557 directions.ChangeForwardReversibleBool_dGfGC_bydGt0=dGfGCforwardReversibleBool_bydGt0;
+0558 directions.ChangeForwardReversibleBool_dGfGC_bydGt0LHS=dGfGCforwardReversibleBool_bydGt0LHS;
+0559 directions.ChangeForwardReversibleBool_dGfGC_bydGt0Mid=dGfGCforwardReversibleBool_bydGt0Mid;
+0560 directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS=dGfGCforwardReversibleBool_bydGt0RHS;
+0561 directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorLHS=dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS;
+0562 directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS=dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS;
+0563 
+0564 
+0565 
+0566 
+0567 
+0568 
+0569 
+0570 
+0571 
+0572 
+0573 
+0574 
+0575 
+0576 
+0577 
+0578 
+0579 
+0580 
+0581 
+0582 
+0583 
+0584 
+0585 
+0586 
+0587 
+0588 
+0589 
+0590 
+0591 
+0592 
+0593 
+0594</pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

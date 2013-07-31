@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of consistentPotentials</title>
+  <meta name="keywords" content="consistentPotentials">
+  <meta name="description" content="find a consistent set of potentials for each metabolite in a biochemical">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html firstPass -->
+<h1>consistentPotentials
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>find a consistent set of potentials for each metabolite in a biochemical</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function y0=consistentPotentials(model,printLevel) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">find a consistent set of potentials for each metabolite in a biochemical
+network, given the directions specified by the bounds on each reaction
+
+ i.e. find y0, such that S'*y0&lt;0 for a forward reaction and the opposite
+ for reverse
+ 
+INPUT
+model.S
+model.lb
+model.ub
+
+OUTPUT
+ y0    consistent set of chemical potentials</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../setupThermoModel/massBalance/findSExRxnInd.html" class="code" title="function model=findSExRxnInd(model,nRealMet)">findSExRxnInd</a>	Returns a model with boolean vectors indicating internal vs exchange/demand/sink reactions.</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function y0=consistentPotentials(model,printLevel)</a>
+0002 <span class="comment">%find a consistent set of potentials for each metabolite in a biochemical</span>
+0003 <span class="comment">%network, given the directions specified by the bounds on each reaction</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% i.e. find y0, such that S'*y0&lt;0 for a forward reaction and the opposite</span>
+0006 <span class="comment">% for reverse</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">%INPUT</span>
+0009 <span class="comment">%model.S</span>
+0010 <span class="comment">%model.lb</span>
+0011 <span class="comment">%model.ub</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%OUTPUT</span>
+0014 <span class="comment">% y0    consistent set of chemical potentials</span>
+0015 
+0016 <span class="keyword">if</span> ~isfield(model,<span class="string">'SIntRxnBool'</span>)
+0017     <span class="comment">%finds the reactions in the model which export/import from the model</span>
+0018     <span class="comment">%boundary i.e. mass unbalanced reactions</span>
+0019     <span class="comment">%e.g. Exchange reactions</span>
+0020     <span class="comment">%     Demand reactions</span>
+0021     <span class="comment">%     Sink reactions</span>
+0022     model = <a href="../../setupThermoModel/massBalance/findSExRxnInd.html" class="code" title="function model=findSExRxnInd(model,nRealMet)">findSExRxnInd</a>(model);
+0023 <span class="keyword">end</span>
+0024 model.SIntRxnBool(strcmp(<span class="string">'Biomass_Ecoli_core_w/GAM'</span>,model.rxns))=0;
+0025 model.SIntRxnBool(strcmp(<span class="string">'ATPM'</span>,model.rxns))=0;
+0026 
+0027 <span class="keyword">if</span> ~exist(<span class="string">'printLevel'</span>)
+0028     printLevel=0;
+0029 <span class="keyword">end</span>
+0030 
+0031 
+0032 [nMet,nRxn]=size(model.S);
+0033 
+0034 QPproblem.csense(1:nRxn,1)=<span class="string">'E'</span>;
+0035 QPproblem.csense(model.lb&gt;=0)=<span class="string">'G'</span>;
+0036 QPproblem.csense(model.ub&lt;=0)=<span class="string">'L'</span>;
+0037 bool=false(nRxn,1);
+0038 bool(strfind(QPproblem.csense',<span class="string">'E'</span>))=1;
+0039 bool2=~bool &amp; model.SIntRxnBool;
+0040 QPproblem.csense=QPproblem.csense(bool2);
+0041 
+0042 <span class="comment">%matrices</span>
+0043 QPproblem.A=-model.S(:,bool2)';
+0044 QPproblem.b=zeros(nRxn,1);
+0045 QPproblem.b=QPproblem.b(bool2,:);
+0046 
+0047 <span class="comment">%objective</span>
+0048 QPproblem.F=diag(sparse(ones(nMet,1)));
+0049 QPproblem.c=zeros(nMet,1);
+0050 QPproblem.osense=1;
+0051 
+0052 <span class="comment">%simple bounds</span>
+0053 QPproblem.lb=-inf*ones(nMet,1);
+0054 QPproblem.ub=inf*ones(nMet,1);
+0055 
+0056 <span class="keyword">if</span> 1
+0057 <span class="comment">%normalisation</span>
+0058 QPproblem.A=[QPproblem.A;ones(1,nMet)];
+0059 QPproblem.b=[QPproblem.b;1];<span class="comment">%add all potentials to one</span>
+0060 QPproblem.csense=[QPproblem.csense ;<span class="string">'E'</span>];
+0061 <span class="keyword">end</span>
+0062 
+0063 <span class="comment">%INPUT</span>
+0064 <span class="comment">% QPproblem Structure containing the following fields describing the QP</span>
+0065 <span class="comment">% problem to be solved</span>
+0066 <span class="comment">%  A      LHS matrix</span>
+0067 <span class="comment">%  b      RHS vector</span>
+0068 <span class="comment">%  F      F matrix for quadratic objective (must be positive definite)</span>
+0069 <span class="comment">%  c      Objective coeff vector</span>
+0070 <span class="comment">%  lb     Lower bound vector</span>
+0071 <span class="comment">%  ub     Upper bound vector</span>
+0072 <span class="comment">%  osense Objective sense (-1 max, +1 min)</span>
+0073 <span class="comment">%  csense Constraint senses, a string containting the constraint sense for</span>
+0074 <span class="comment">%         each row in A ('E', equality, 'G' greater than, 'L' less than).</span>
+0075 
+0076 <span class="comment">%solveCobraQP Solve constraint-based QP problems</span>
+0077 <span class="comment">%</span>
+0078 <span class="comment">% solution = solveCobraQP(QPproblem,parameters)</span>
+0079 <span class="comment">%</span>
+0080 <span class="comment">% % Solves problems of the type</span>
+0081 <span class="comment">%</span>
+0082 <span class="comment">%      min   0.5 x' * F * x + osense * c' * x</span>
+0083 <span class="comment">%      s/t   lb &lt;= x &lt;= ub</span>
+0084 <span class="comment">%            A * x  &lt;=/=/&gt;= b</span>
+0085 solution = solveCobraQP(QPproblem,<span class="string">'printLevel'</span>,printLevel);
+0086 
+0087 <span class="comment">%OUTPUT</span>
+0088 <span class="comment">% solution  Structure containing the following fields describing a QP</span>
+0089 <span class="comment">%           solution</span>
+0090 <span class="comment">%  full     Full QP solution vector</span>
+0091 <span class="comment">%  obj      Objective value</span>
+0092 <span class="comment">%  solver   Solver used to solve QP problem</span>
+0093 <span class="comment">%  stat     Solver status in standardized form (see below)</span>
+0094 <span class="comment">%  origStat Original status returned by the specific solver</span>
+0095 <span class="comment">%  time     Solve time in seconds</span>
+0096 <span class="comment">%</span>
+0097 <span class="comment">%  stat     Solver status in standardized form</span>
+0098 <span class="comment">%           1   Optimal solution</span>
+0099 <span class="comment">%           2   Unbounded solution</span>
+0100 <span class="comment">%           0   Infeasible</span>
+0101 <span class="comment">%           -1  No solution reported (timelimit, numerical problem etc)</span>
+0102 
+0103 y0=solution.full;</pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -16,13 +16,26 @@ test_path = (mFilePath(1:end-length(mfilename)));
 test_directory = dir(test_path);
 f = filesep;
 
+%make sure the solvers are the predefined ones for each test as if a test
+%fails it can fail to switch back the solver
+global CBTLPSOLVER;
+CBTLPSOLVERx=CBTLPSOLVER;
+global CBT_MILP_SOLVER;
+CBT_MILP_SOLVERx=CBT_MILP_SOLVER;
+global CBT_QP_SOLVER;
+CBT_QP_SOLVERx=CBT_QP_SOLVER;
+global CBT_MIQP_SOLVER;
+CBT_MIQP_SOLVERx=CBT_MIQP_SOLVER;
+%global CBT_NLP_SOLVER;
+%CBT_NLP_SOLVERx=CBT_NLP_SOLVER;
+
 listPassed = {};
 listNotPassed = {};
 passedCnt = 0;
 notPassedCnt = 0;
 %search through the test folders in testing and run the test inside
 for i=1:size(dir(test_path))
-    test_folder = strcat(test_path, test_directory(i).name, f)
+    test_folder = strcat(test_path, test_directory(i).name, f);
     if(isdir(test_folder) && (strcmp(test_directory(i).name,'.')==0) && (strcmp(test_directory(i).name,'..')==0))
         test_folder_directory = what(test_folder);
         
@@ -46,11 +59,11 @@ for i=1:size(dir(test_path))
               
               if(pass == 0)
                     fprintf('%s did not pass\n',p);
-                    notPassedCnt = notPassedCnt +1
+                    notPassedCnt = notPassedCnt +1;
                     listNotPassed{notPassedCnt} = p;
               else
                   
-                    passedCnt = passedCnt +1
+                    passedCnt = passedCnt +1;
                     listPassed{passedCnt} = p;
               end
               
@@ -59,6 +72,12 @@ for i=1:size(dir(test_path))
              tests_passed = tests_passed + pass;
              tests_completed = tests_completed + 1;
              
+             %change back the solvers after each test
+             changeCobraSolver(CBTLPSOLVERx,'LP');
+             changeCobraSolver(CBT_MILP_SOLVERx,'MILP');
+             changeCobraSolver(CBT_QP_SOLVERx,'QP');
+             changeCobraSolver(CBT_MIQP_SOLVERx,'MIQP');
+             %changeCobraSolver(CBT_NLP_SOLVERx,'NLP');
         end
     end
 end

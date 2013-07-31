@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of convertToCobraV2</title>
+  <meta name="keywords" content="convertToCobraV2">
+  <meta name="description" content="Generate a model structure with metabolite and reaction subfields instead of vectors.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html directionalityReport -->
+<h1>convertToCobraV2
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Generate a model structure with metabolite and reaction subfields instead of vectors.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function model=convertToCobraV2(model) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Generate a model structure with metabolite and reaction subfields instead of vectors.
+
+ create a COBRA v2 model structure with model.met(m) for metabolites and
+ model.rxn(n) for reactions. This keeps all the information about a
+ metabolite or reaction in one place. The primary keys model.mets and
+ model.rxns are kept as is, and these can be used to access groups of
+ model.met or model.rxn quickly.
+
+ Replaces (*) with [*] to denote compartment in metabolite abbreviations
+
+
+INPUT
+ model.S                   Stoichiometric matrix 
+ model.rxns                Abbreviation for each reaction (primary key)
+ model.rxnNames            Full name for each reaction
+ model.mets                Abbreviation for each metabolite (primary key)
+ model.metNames            Full name for each metabolite
+ model.biomassRxnAbbr      abbreviation of biomass reaction
+
+OPTIONAL INPUT
+ model.metFormulas         m x 1 cell array of strings with chemical 
+                           formula for metabolite
+ model.metCharges          m x 1 numeric charge for each metabolite
+                           species
+ 
+OUTPUT
+ model.S                       Sparse Stoichiometric matrix +/- with 
+                               adjustment of reactions involving C02 
+ model.SIntRxnBool             Boolean of internal reactions, i.e.
+                               non-mass balanced reactions
+ model.met(m).abbreviation     metabolite abbreviation (primary key)
+ model.met(m).officialName     metabolite name    
+ model.rxn(n).abbreviation     reaction abbreviation (primary key)
+ model.rxn(n).officialName     reaction name
+ model.rxn(n).equation         reaction equation
+ model.rxn(n).directionality   qualitative directionality    
+ model.rxn(n).regulationStatus {('On'),'Off'} Off if lb=ub=0 
+
+OPTIONAL OUTPUT
+ model.met(m).formula          metabolite elemental formula
+
+ Ronan M. T. Fleming</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../setupThermoModel/massBalance/findSExRxnInd.html" class="code" title="function model=findSExRxnInd(model,nRealMet)">findSExRxnInd</a>	Returns a model with boolean vectors indicating internal vs exchange/demand/sink reactions.</li><li><a href="../../setupThermoModel/transport/getCompartment.html" class="code" title="function [compartments,uniqueCompartments]=getCompartment(mets,numChar)">getCompartment</a>	Get the compartment for each metabolite, and the unique compartments</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../setupThermoModel/groupContribution/modelMetabolitesToSDF.html" class="code" title="function model=modelMetabolitesToSDF(model,InChI)">modelMetabolitesToSDF</a>	write out an SDF which is effectively a set of mol files concatenated</li><li><a href="../../setupThermoModel/setupThermoModel.html" class="code" title="function [modelT,directions,solutionThermoRecon]=setupThermoModel(model,metAbbrAlbertyAbbr,metGroupCont,Alberty2006,computedSpeciesData,temp,PHA,IS,CHI,biomassRxnAbbr,rxnAbbrDatabaseID,defaultMetBounds,metBoundsFile,rxnBoundsFile,Legendre,useKeqData,nStdDevGroupCont,cumNormProbCutoff,figures,printToFile,secondPassAssignment)">setupThermoModel</a>	Thermodynamically constrains a COBRA model.</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function model=convertToCobraV2(model)</a>
+0002 <span class="comment">% Generate a model structure with metabolite and reaction subfields instead of vectors.</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% create a COBRA v2 model structure with model.met(m) for metabolites and</span>
+0005 <span class="comment">% model.rxn(n) for reactions. This keeps all the information about a</span>
+0006 <span class="comment">% metabolite or reaction in one place. The primary keys model.mets and</span>
+0007 <span class="comment">% model.rxns are kept as is, and these can be used to access groups of</span>
+0008 <span class="comment">% model.met or model.rxn quickly.</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% Replaces (*) with [*] to denote compartment in metabolite abbreviations</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%INPUT</span>
+0014 <span class="comment">% model.S                   Stoichiometric matrix</span>
+0015 <span class="comment">% model.rxns                Abbreviation for each reaction (primary key)</span>
+0016 <span class="comment">% model.rxnNames            Full name for each reaction</span>
+0017 <span class="comment">% model.mets                Abbreviation for each metabolite (primary key)</span>
+0018 <span class="comment">% model.metNames            Full name for each metabolite</span>
+0019 <span class="comment">% model.biomassRxnAbbr      abbreviation of biomass reaction</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">%OPTIONAL INPUT</span>
+0022 <span class="comment">% model.metFormulas         m x 1 cell array of strings with chemical</span>
+0023 <span class="comment">%                           formula for metabolite</span>
+0024 <span class="comment">% model.metCharges          m x 1 numeric charge for each metabolite</span>
+0025 <span class="comment">%                           species</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">%OUTPUT</span>
+0028 <span class="comment">% model.S                       Sparse Stoichiometric matrix +/- with</span>
+0029 <span class="comment">%                               adjustment of reactions involving C02</span>
+0030 <span class="comment">% model.SIntRxnBool             Boolean of internal reactions, i.e.</span>
+0031 <span class="comment">%                               non-mass balanced reactions</span>
+0032 <span class="comment">% model.met(m).abbreviation     metabolite abbreviation (primary key)</span>
+0033 <span class="comment">% model.met(m).officialName     metabolite name</span>
+0034 <span class="comment">% model.rxn(n).abbreviation     reaction abbreviation (primary key)</span>
+0035 <span class="comment">% model.rxn(n).officialName     reaction name</span>
+0036 <span class="comment">% model.rxn(n).equation         reaction equation</span>
+0037 <span class="comment">% model.rxn(n).directionality   qualitative directionality</span>
+0038 <span class="comment">% model.rxn(n).regulationStatus {('On'),'Off'} Off if lb=ub=0</span>
+0039 <span class="comment">%</span>
+0040 <span class="comment">%OPTIONAL OUTPUT</span>
+0041 <span class="comment">% model.met(m).formula          metabolite elemental formula</span>
+0042 <span class="comment">%</span>
+0043 <span class="comment">% Ronan M. T. Fleming</span>
+0044 
+0045 [nMet,nRxn]=size(model.S);
+0046 
+0047 <span class="comment">%make it sparse</span>
+0048 model.S=sparse(model.S);
+0049 
+0050 numChar=1;
+0051 [allMetCompartments,uniqueCompartments]=<a href="../../setupThermoModel/transport/getCompartment.html" class="code" title="function [compartments,uniqueCompartments]=getCompartment(mets,numChar)">getCompartment</a>(model.mets,numChar);
+0052 
+0053 <span class="keyword">if</span> ~exist(<span class="string">'thermoAdjustmentToS'</span>,<span class="string">'var'</span>)
+0054     thermoAdjustmentToS=1;
+0055 <span class="keyword">end</span>
+0056 
+0057 <span class="keyword">for</span> m=1:nMet
+0058     <span class="comment">%find the rows with columns that are all zeros</span>
+0059     <span class="keyword">if</span> nnz(model.S(m,:))==0
+0060         fprintf(<span class="string">'%s\n'</span>,[<span class="string">'metabolite '</span> model.mets{m} <span class="string">' without a reaction???'</span>]);
+0061 <span class="comment">%         error(['metabolite ' model.mets{m} ' without a reaction.']);</span>
+0062     <span class="keyword">end</span>
+0063     
+0064     <span class="comment">%replace (*) with [*] to denote compartment</span>
+0065     model.mets{m}(end-2)=<span class="string">'['</span>;
+0066     model.mets{m}(end)=<span class="string">']'</span>;
+0067 <span class="keyword">end</span>
+0068 
+0069 <span class="comment">% start the conversion to a cobra v2 style model</span>
+0070 fprintf(<span class="string">'%s\n'</span>,<span class="string">'Converting to cobra toolbox v2 style model.'</span>)
+0071 [nMet,nRxn]=size(model.S);
+0072 
+0073 <span class="keyword">for</span> n=1:nRxn
+0074     model.rxn(n).abbreviation=model.rxns{n};
+0075     model.rxn(n).officialName=model.rxnNames{n};
+0076     <span class="comment">%equation</span>
+0077     equation=printRxnFormula(model,model.rxns(n),0);
+0078     model.rxn(n).equation=equation{1};
+0079     <span class="comment">%directionality</span>
+0080     <span class="keyword">if</span> model.lb(n)&lt;0 &amp;&amp; model.ub(n)&gt;0
+0081         model.rxn(n).directionality=<span class="string">'reversible'</span>;
+0082     <span class="keyword">end</span>
+0083     <span class="keyword">if</span> model.lb(n)&lt;0 &amp;&amp; model.ub(n)&lt;=0
+0084         model.rxn(n).directionality=<span class="string">'reverse'</span>;
+0085     <span class="keyword">end</span>
+0086     <span class="keyword">if</span> model.lb(n)&gt;=0 &amp;&amp; model.ub(n)&gt;0
+0087         model.rxn(n).directionality=<span class="string">'forward'</span>;
+0088     <span class="keyword">end</span>
+0089     <span class="keyword">if</span> model.lb(n)==0 &amp;&amp; model.ub(n)==0
+0090         model.rxn(n).directionality=<span class="string">'off'</span>;
+0091     <span class="keyword">end</span>
+0092 <span class="keyword">end</span>
+0093 
+0094 <span class="comment">%new metabolite structure</span>
+0095 <span class="keyword">for</span> m=1:nMet
+0096     model.met(m).abbreviation=model.mets{m};
+0097     model.met(m).officialName=model.metNames{m};
+0098 <span class="comment">%    model=rmfield(model,'metNames');</span>
+0099 <span class="keyword">end</span>
+0100 
+0101 <span class="keyword">if</span> isfield(model,<span class="string">'metFormulas'</span>)
+0102     <span class="keyword">for</span> m=1:nMet
+0103          model.met(m).formula=model.metFormulas{m};
+0104     <span class="keyword">end</span>
+0105     model=rmfield(model,<span class="string">'metFormulas'</span>);
+0106 <span class="keyword">end</span>
+0107 
+0108 <span class="keyword">if</span> isfield(model,<span class="string">'metCharges'</span>)
+0109     <span class="keyword">for</span> m=1:nMet
+0110          model.met(m).charge=model.metCharges(m);
+0111     <span class="keyword">end</span>
+0112     model=rmfield(model,<span class="string">'metCharges'</span>);
+0113 <span class="keyword">end</span>
+0114 
+0115 <span class="comment">% %replace any dashes in metabolite names with underscores</span>
+0116 <span class="comment">% for m=1:nMet</span>
+0117 <span class="comment">%     x = strfind(model.met(m).abbreviation,'-');</span>
+0118 <span class="comment">%     if x~=0</span>
+0119 <span class="comment">%         %cobra v2 mets have underscores</span>
+0120 <span class="comment">%         model.met(m).abbreviation(x)='_';</span>
+0121 <span class="comment">%         %make cobra v1 mets have all underscores also</span>
+0122 <span class="comment">%         abbr=model.mets{m};</span>
+0123 <span class="comment">%         abbr(x)='_';</span>
+0124 <span class="comment">%         model.mets{m}=abbr;</span>
+0125 <span class="comment">%     end</span>
+0126 <span class="comment">% end</span>
+0127 
+0128 <span class="comment">%finds the reactions in the model which export/import from the model</span>
+0129 <span class="comment">%boundary i.e. mass unbalanced reactions</span>
+0130 <span class="comment">%e.g. Exchange reactions</span>
+0131 <span class="comment">%     Demand reactions</span>
+0132 <span class="comment">%     Sink reactions</span>
+0133 model=<a href="../../setupThermoModel/massBalance/findSExRxnInd.html" class="code" title="function model=findSExRxnInd(model,nRealMet)">findSExRxnInd</a>(model);
+0134 
+0135 fprintf(<span class="string">'%s\n\n'</span>,<span class="string">'...finished converting.'</span>)</pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

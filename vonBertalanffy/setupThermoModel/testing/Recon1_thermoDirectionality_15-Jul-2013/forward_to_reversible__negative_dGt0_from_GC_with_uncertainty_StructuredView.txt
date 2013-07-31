@@ -1,0 +1,27 @@
+15-Jul-2013 12:06:54
+310.15	:temperature 273.15 K to 313.15 K
+7.2	:[c] c glass electrode pH.
+7.4	:[e] e glass electrode pH.
+8	:[m] m glass electrode pH.
+7.2	:[n] n glass electrode pH.
+7.2	:[r] r glass electrode pH.
+5.5	:[l] l glass electrode pH.
+7	:[x] x glass electrode pH.
+0.15	:[c] c ionic strength.
+0.15	:[e] e ionic strength.
+0.15	:[m] m ionic strength.
+0.15	:[n] n ionic strength.
+0.15	:[r] r ionic strength.
+0.15	:[l] l ionic strength.
+0.15	:[x] x ionic strength.
+0	:[c] c electrical potential (mV).
+30	:[e] e electrical potential (mV).
+-155	:[m] m electrical potential (mV).
+0	:[n] n electrical potential (mV).
+0	:[r] r electrical potential (mV).
+19	:[l] l electrical potential (mV).
+12.3103	:[x] x electrical potential (mV).
+0.7	: Upper cutoff for probability of a reaction to be forward.
+0.3	: Lower cutoff for probability of a reaction to be forward
+2	: # std. dev. of group contribution uncertainty
+

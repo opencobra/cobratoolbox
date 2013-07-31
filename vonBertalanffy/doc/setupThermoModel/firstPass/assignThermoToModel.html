@@ -1,0 +1,583 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of assignThermoToModel</title>
+  <meta name="keywords" content="assignThermoToModel">
+  <meta name="description" content="Assigns thermodynamic data to model at given temperature, pH, ionic strength and electrical potential.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html firstPass -->
+<h1>assignThermoToModel
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Assigns thermodynamic data to model at given temperature, pH, ionic strength and electrical potential.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function model=assignThermoToModel(model,Alberty2006,computedSpeciesData,temp,PHR,IS,CHI,compartments,NaNdGf0GCMetBool,Legendre,LegendreCHI,useKeqData,printToFile) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Assigns thermodynamic data to model at given temperature, pH, ionic strength and electrical potential.
+
+ Physicochemically, this is the most important function for setting up a 
+ thermodynamic model. It takes the standard Gibbs energies of the
+ metabolite species and uses this data to create a standard transformed
+ Gibbs energy for each reactant. It uses the metabolite species standard 
+ Gibbs energies of formation backcalculated from equilibrium constants, in
+ preference to the group contribution estimates
+
+INPUT
+ model
+ Alberty2006       Alberty's data
+ computedSpeciesData   Computed data on metabolite species. - Hulda
+ temp              temperature 298.15 K to 313.15 K
+ PHR.*             real pH in compartment defined by letter *
+ IS.*              ionic strength (0 - 0.35M) in compartment defined by letter *
+ CHI.*             electrical potential (mV) in compartment defined by letter *
+ compartments      2 x # cell array of distinct compartment letters and
+                   compartment names
+ NaNdGf0GCMetBool  m x 1 boolean vector with 1 when no group contribution
+                   data is available for a metabolite
+
+OPTIONAL INPUT
+ Legendre          {(1),0} Legendre Transformation for specifc real pH?
+ LegendreCHI       {(1),0} Legendre Transformation for specifc electrical potential?
+ useKeqData        {(1),0} Use dGf0 back calculated from Keq?
+ printToFile       {(0),1} 1 = print out repetitive material to log file
+
+OUTPUT
+ model.met(m).dGf0            standard Gibbs energy of formation
+ model.met(m).dGf             Gibbs energy of formation
+ model.met(m).dGft0           standard transformed Gibbs energy of formation
+ model.met(m).dHzerot         standard transformed enthalpy of formation
+ model.met(m).dGft0Source     origin of data, Keq or groupContFileName.txt 
+ model.met(m).dGft0Keq         
+ model.met(m).dGft0GroupCont   
+ model.met(m).dHft0Keq
+ model.met(m).mf               mole fraction of each species within a pseudoisomer group
+ model.met(m).aveZi            average charge
+ model.met(m).chi              electrical potential
+ model.met(m).aveHbound        average number of protons bound to a reactant
+ modelT.gasConstant            Gas Constant
+ modelT.faradayConstant        Faraday Constant
+ modelT.temp                   Temperature
+ model.PHR.*                   real pH in compartment defined by letter *
+ model.IS.*                    ionic strength (0 - 0.35M) in compartment defined by letter *
+ model.CHI.*                   electrical potential (mV) in compartment defined by letter *
+ 
+ Ronan M. T. Fleming
+ Hulda SH, Dec 2010    Added computedSpeciesData as input. Coded the
+                       transformation of species standard Gibbs energies of formation in
+                       computedSpeciesData to reactant standard Gibbs energies of formation at
+                       in vivo conditions.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../setupThermoModel/alberty/calcdGHT.html" class="code" title="function [dGf0,dHf0,mf,aveHbound,aveZi,lambda,gpfnsp]=calcdGHT(dGzero,dHzero,zi,nH,pHr,is,temp,chi,Legendre,LegendreCHI)">calcdGHT</a>	calculates the standard transformed Gibbs energy of a reactant</li><li><a href="../../setupThermoModel/alberty/dGfzeroGroupContToBiochemical.html" class="code" title="function model=dGfzeroGroupContToBiochemical(model,temp,PHR,IS,CHI,compartments,NaNdGf0GCMetBool,Legendre)">dGfzeroGroupContToBiochemical</a>	transform group contribution estimate of metabolite standard transformed Gibbs energy</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../setupThermoModel/setupThermoModel.html" class="code" title="function [modelT,directions,solutionThermoRecon]=setupThermoModel(model,metAbbrAlbertyAbbr,metGroupCont,Alberty2006,computedSpeciesData,temp,PHA,IS,CHI,biomassRxnAbbr,rxnAbbrDatabaseID,defaultMetBounds,metBoundsFile,rxnBoundsFile,Legendre,useKeqData,nStdDevGroupCont,cumNormProbCutoff,figures,printToFile,secondPassAssignment)">setupThermoModel</a>	Thermodynamically constrains a COBRA model.</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function model=assignThermoToModel(model,Alberty2006,computedSpeciesData,temp,PHR,IS,CHI,compartments,NaNdGf0GCMetBool,Legendre,LegendreCHI,useKeqData,printToFile)</a>
+0002 <span class="comment">% Assigns thermodynamic data to model at given temperature, pH, ionic strength and electrical potential.</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% Physicochemically, this is the most important function for setting up a</span>
+0005 <span class="comment">% thermodynamic model. It takes the standard Gibbs energies of the</span>
+0006 <span class="comment">% metabolite species and uses this data to create a standard transformed</span>
+0007 <span class="comment">% Gibbs energy for each reactant. It uses the metabolite species standard</span>
+0008 <span class="comment">% Gibbs energies of formation backcalculated from equilibrium constants, in</span>
+0009 <span class="comment">% preference to the group contribution estimates</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">%INPUT</span>
+0012 <span class="comment">% model</span>
+0013 <span class="comment">% Alberty2006       Alberty's data</span>
+0014 <span class="comment">% computedSpeciesData   Computed data on metabolite species. - Hulda</span>
+0015 <span class="comment">% temp              temperature 298.15 K to 313.15 K</span>
+0016 <span class="comment">% PHR.*             real pH in compartment defined by letter *</span>
+0017 <span class="comment">% IS.*              ionic strength (0 - 0.35M) in compartment defined by letter *</span>
+0018 <span class="comment">% CHI.*             electrical potential (mV) in compartment defined by letter *</span>
+0019 <span class="comment">% compartments      2 x # cell array of distinct compartment letters and</span>
+0020 <span class="comment">%                   compartment names</span>
+0021 <span class="comment">% NaNdGf0GCMetBool  m x 1 boolean vector with 1 when no group contribution</span>
+0022 <span class="comment">%                   data is available for a metabolite</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">%OPTIONAL INPUT</span>
+0025 <span class="comment">% Legendre          {(1),0} Legendre Transformation for specifc real pH?</span>
+0026 <span class="comment">% LegendreCHI       {(1),0} Legendre Transformation for specifc electrical potential?</span>
+0027 <span class="comment">% useKeqData        {(1),0} Use dGf0 back calculated from Keq?</span>
+0028 <span class="comment">% printToFile       {(0),1} 1 = print out repetitive material to log file</span>
+0029 <span class="comment">%</span>
+0030 <span class="comment">%OUTPUT</span>
+0031 <span class="comment">% model.met(m).dGf0            standard Gibbs energy of formation</span>
+0032 <span class="comment">% model.met(m).dGf             Gibbs energy of formation</span>
+0033 <span class="comment">% model.met(m).dGft0           standard transformed Gibbs energy of formation</span>
+0034 <span class="comment">% model.met(m).dHzerot         standard transformed enthalpy of formation</span>
+0035 <span class="comment">% model.met(m).dGft0Source     origin of data, Keq or groupContFileName.txt</span>
+0036 <span class="comment">% model.met(m).dGft0Keq</span>
+0037 <span class="comment">% model.met(m).dGft0GroupCont</span>
+0038 <span class="comment">% model.met(m).dHft0Keq</span>
+0039 <span class="comment">% model.met(m).mf               mole fraction of each species within a pseudoisomer group</span>
+0040 <span class="comment">% model.met(m).aveZi            average charge</span>
+0041 <span class="comment">% model.met(m).chi              electrical potential</span>
+0042 <span class="comment">% model.met(m).aveHbound        average number of protons bound to a reactant</span>
+0043 <span class="comment">% modelT.gasConstant            Gas Constant</span>
+0044 <span class="comment">% modelT.faradayConstant        Faraday Constant</span>
+0045 <span class="comment">% modelT.temp                   Temperature</span>
+0046 <span class="comment">% model.PHR.*                   real pH in compartment defined by letter *</span>
+0047 <span class="comment">% model.IS.*                    ionic strength (0 - 0.35M) in compartment defined by letter *</span>
+0048 <span class="comment">% model.CHI.*                   electrical potential (mV) in compartment defined by letter *</span>
+0049 <span class="comment">%</span>
+0050 <span class="comment">% Ronan M. T. Fleming</span>
+0051 <span class="comment">% Hulda SH, Dec 2010    Added computedSpeciesData as input. Coded the</span>
+0052 <span class="comment">%                       transformation of species standard Gibbs energies of formation in</span>
+0053 <span class="comment">%                       computedSpeciesData to reactant standard Gibbs energies of formation at</span>
+0054 <span class="comment">%                       in vivo conditions.</span>
+0055 
+0056 <span class="keyword">for</span> p=1:length(compartments)
+0057     <span class="keyword">if</span> isfield(PHR,compartments{p,1})
+0058         <span class="comment">%test to ensure that pHc is in the applicable range</span>
+0059         <span class="comment">%if PHR.(compartments{p,1})&lt;5 || PHR.(compartments{p,1})&gt;9</span>
+0060         <span class="keyword">if</span> PHR.(compartments{p,1})&lt;4.7 || PHR.(compartments{p,1})&gt;9.3  
+0061             error([compartments{p,2} <span class="string">' pHr = '</span> num2str(PHR.(compartments{p,1})) <span class="string">' out of applicable range'</span>]);
+0062         <span class="keyword">end</span>
+0063         <span class="comment">%test to ensure that ionic strength is in the applicable range</span>
+0064         <span class="keyword">if</span> IS.(compartments{p,1})&lt;0 || IS.(compartments{p,1})&gt;0.35
+0065             error([compartments{p,2} <span class="string">' ionic strength = '</span> num2str(IS.(compartments{p,1})) <span class="string">' out of applicable range, (0 to 0.35 M).'</span>]);
+0066         <span class="keyword">end</span>
+0067     <span class="keyword">end</span>
+0068 <span class="keyword">end</span>
+0069 
+0070 <span class="keyword">if</span> ~exist(<span class="string">'Legendre'</span>,<span class="string">'var'</span>)
+0071     Legendre=1;
+0072 <span class="keyword">end</span>
+0073 <span class="keyword">if</span> Legendre==0
+0074     fprintf(<span class="string">'%s\n'</span>,<span class="string">'Not making a Legendre transformation for pH'</span>);
+0075 <span class="keyword">end</span>
+0076 <span class="keyword">if</span> ~exist(<span class="string">'printToFile'</span>,<span class="string">'var'</span>)
+0077     printToFile=0;
+0078 <span class="keyword">end</span>
+0079 <span class="keyword">if</span> printToFile==1
+0080     fid1=fopen(<span class="string">'reactants_using_group_contribution_estimates.txt'</span>,<span class="string">'w'</span>);
+0081     fid2=fopen(<span class="string">'reactants_with_no_standard_Gibbs_energy.txt'</span>,<span class="string">'w'</span>);
+0082 <span class="keyword">end</span>
+0083 <span class="comment">%stamp model</span>
+0084 model.Legendre=Legendre;
+0085 model.LegendreCHI=LegendreCHI;
+0086 
+0087 <span class="comment">%Physico-Chemical Constants (Energies are expressed in kJ/mol)</span>
+0088 gasConstant=8.314472/1000; <span class="comment">%kJ/mol</span>
+0089 faradayConstant=96.48; <span class="comment">%kJ/mol</span>
+0090 model.gasConstant=gasConstant;
+0091 model.faradayConstant=faradayConstant;
+0092 <span class="comment">%stamp model with intensive thermodynamic constants</span>
+0093 model.PHR=PHR;
+0094 model.IS=IS;
+0095 model.CHI=CHI;
+0096 model.temp=temp;
+0097 
+0098 nMet=size(model.S,1);
+0099 <span class="comment">%transform Group Contribution's estimates</span>
+0100 model=<a href="../../setupThermoModel/alberty/dGfzeroGroupContToBiochemical.html" class="code" title="function model=dGfzeroGroupContToBiochemical(model,temp,PHR,IS,CHI,compartments,NaNdGf0GCMetBool,Legendre)">dGfzeroGroupContToBiochemical</a>(model,temp,PHR,IS,CHI,compartments,NaNdGf0GCMetBool,Legendre);
+0101 
+0102 <span class="comment">% Overwrite transformed group contribution estimates with data from</span>
+0103 <span class="comment">% computedSpeciesData where available. - Hulda</span>
+0104 <span class="keyword">if</span> ~isempty(computedSpeciesData)
+0105     <span class="keyword">for</span> m=1:nMet
+0106         <span class="keyword">if</span> strcmp(<span class="string">'succ[e]'</span>,model.mets{m})
+0107             pause(eps)
+0108         <span class="keyword">end</span>
+0109         <span class="keyword">if</span> strcmp(<span class="string">'h[e]'</span>,model.mets{m})
+0110             pause(eps)
+0111         <span class="keyword">end</span>
+0112         <span class="comment">% set the pH, ionic strength &amp; electrical potential for the metabolite depending on the compartment</span>
+0113         <span class="keyword">if</span> ~isfield(PHR,model.met(m).abbreviation(end-1))
+0114             error([<span class="string">'Missing pHr for compartment '</span> model.met(m).abbreviation(end-1)]);
+0115         <span class="keyword">end</span>
+0116         <span class="keyword">if</span> ~isfield(IS,model.met(m).abbreviation(end-1))
+0117             error([<span class="string">'Missing ionic strength for compartment '</span> model.met(m).abbreviation(end-1)]);
+0118         <span class="keyword">end</span>
+0119         <span class="keyword">if</span> ~isfield(CHI,model.met(m).abbreviation(end-1))
+0120             error([<span class="string">'Missing chi for compartment '</span> model.met(m).abbreviation(end-1)]);
+0121         <span class="keyword">end</span>
+0122         pHr=PHR.(model.met(m).abbreviation(end-1));
+0123         is=IS.(model.met(m).abbreviation(end-1));
+0124         chi=CHI.(model.met(m).abbreviation(end-1));
+0125         
+0126 <span class="comment">%         if strcmp(model.met(m).abbreviation(end-1),'c')</span>
+0127 <span class="comment">%             if chi~=0</span>
+0128 <span class="comment">%                 error('We assume that the electrical potential of the cytoplasm is zero');</span>
+0129 <span class="comment">%             end</span>
+0130 <span class="comment">%         end</span>
+0131         
+0132         nCSD=size(computedSpeciesData,2);
+0133         
+0134         <span class="keyword">for</span> n=1:nCSD
+0135             <span class="keyword">if</span> strcmp(model.met(m).abbreviation(1:(end-2)),[computedSpeciesData(n).abbreviation, <span class="string">'['</span>])
+0136                 <span class="comment">% find the number of species within pseudoisomer group</span>
+0137                 p=length(computedSpeciesData(n).basicData(:,1));
+0138                 <span class="comment">% transform to pH and ionic strength</span>
+0139                 <span class="comment">% [dGfnp,dHfnp,chi]=calcdGHT(dGzero,dHzero,zi,nH,pHa,is,temp,Legendre)</span>
+0140                 [dGf0,~,mf,aveHbound,aveZi,lambda,gpfnsp]=<a href="../../setupThermoModel/alberty/calcdGHT.html" class="code" title="function [dGf0,dHf0,mf,aveHbound,aveZi,lambda,gpfnsp]=calcdGHT(dGzero,dHzero,zi,nH,pHr,is,temp,chi,Legendre,LegendreCHI)">calcdGHT</a>(computedSpeciesData(n).basicData(1:p,1),[],computedSpeciesData(n).basicData(1:p,3),computedSpeciesData(n).basicData(1:p,4),pHr,is,temp,chi,Legendre,LegendreCHI);
+0141                 model.met(m).dGft0GroupCont=dGf0;
+0142                 speciesUncertainty = model.met(m).dGf0GroupContUncertainty*ones(length(mf),1);
+0143                 speciesUncertainty(~computedSpeciesData(n).gcmSpecies) = speciesUncertainty(~computedSpeciesData(n).gcmSpecies) + 4.5; <span class="comment">% Add uncertainty due to pKa estimates. - Hulda</span>
+0144                 model.met(m).dGft0GroupContUncertainty = mf'*speciesUncertainty;
+0145                 model.met(m).mf=mf;
+0146                 model.met(m).aveHbound=aveHbound;
+0147                 model.met(m).aveZi=aveZi;
+0148                 model.met(m).lambda=lambda; <span class="comment">%activity coefficients</span>
+0149                 model.met(m).dGft0Source=<span class="string">'GC'</span>;
+0150                 <span class="keyword">break</span>;
+0151             <span class="keyword">end</span>
+0152         <span class="keyword">end</span>
+0153     <span class="keyword">end</span>
+0154 <span class="keyword">end</span>
+0155 
+0156 <span class="comment">% End addition. - Hulda</span>
+0157 
+0158 
+0159 <span class="comment">%RTalpha p 49 Alberty 2003</span>
+0160 <span class="comment">%where alpha is the Debye-Huckel Constant</span>
+0161 gibbscoeff = (9.20483*temp)/10^3 - (1.284668*temp^2)/10^5 + (4.95199*temp^3)/10^8;
+0162 
+0163 <span class="comment">%Overwrite Group Contribution estimates with values derived from</span>
+0164 <span class="comment">%equilibrium constants (Alberty's tables)</span>
+0165 <span class="comment">%e.g. CoA &amp; Acetyl CoA defined with own baseline by Alberty 2007 p137:</span>
+0166 <span class="comment">%this may cause problems when such cofactors are synthesized elsewhere</span>
+0167 <span class="comment">%in the network</span>
+0168 <span class="comment">%fixed in setCommonZeroStandardGibbsEnergyOfFormation.m</span>
+0169 <span class="comment">%NO EXCEPTIONS AT THE MOMENT BUT ENTER THE MODEL ABBR's OF EXCEPTIONS HERE</span>
+0170 <span class="comment">%IF NECESSARY</span>
+0171 exceptions={<span class="string">'coA'</span>, <span class="string">'acetoacetylcoA'</span>, <span class="string">'acetylcoA'</span>, <span class="string">'coAglutathione'</span>, <span class="string">'malylcoA'</span>, <span class="string">'methylmalonylcoA'</span>, <span class="string">'oxalylcoA'</span>, <span class="string">'propanoylcoA'</span>, <span class="string">'succinylcoA'</span>}; <span class="comment">% Because charges and nHs are incorrect for CoAs in Alberty</span>
+0172 
+0173 <span class="keyword">for</span> m=1:nMet
+0174     <span class="keyword">if</span> strcmp(<span class="string">'succ[e]'</span>,model.mets{m})
+0175         pause(eps)
+0176     <span class="keyword">end</span>
+0177     <span class="keyword">if</span> strcmp(<span class="string">'h[e]'</span>,model.mets{m})
+0178         pause(eps)
+0179     <span class="keyword">end</span>
+0180     <span class="comment">%set the pH, ionic strength &amp; electrical potential for the metabolite depending on the compartment</span>
+0181     <span class="keyword">if</span> ~isfield(PHR,model.met(m).abbreviation(end-1))
+0182         error([<span class="string">'Missing pHr for compartment '</span> model.met(m).abbreviation(end-1)]);
+0183     <span class="keyword">end</span>
+0184     <span class="keyword">if</span> ~isfield(IS,model.met(m).abbreviation(end-1))
+0185         error([<span class="string">'Missing ionic strength for compartment '</span> model.met(m).abbreviation(end-1)]);
+0186     <span class="keyword">end</span>
+0187     <span class="keyword">if</span> ~isfield(CHI,model.met(m).abbreviation(end-1))
+0188         error([<span class="string">'Missing chi for compartment '</span> model.met(m).abbreviation(end-1)]);
+0189     <span class="keyword">end</span>
+0190     pHr=PHR.(model.met(m).abbreviation(end-1));
+0191     is=IS.(model.met(m).abbreviation(end-1));
+0192     chi=CHI.(model.met(m).abbreviation(end-1));
+0193     
+0194 <span class="comment">%     if strcmp(model.met(m).abbreviation(end-1),'c')</span>
+0195 <span class="comment">%         if chi~=0</span>
+0196 <span class="comment">%             error('We assume that the electrical potential of the cytoplasm is zero');</span>
+0197 <span class="comment">%         end</span>
+0198 <span class="comment">%     end</span>
+0199     
+0200     nAlb=size(Alberty2006,2);
+0201     albertyMatch=0;
+0202     
+0203     <span class="keyword">for</span> n=1:nAlb
+0204         <span class="keyword">if</span> strcmp(model.met(m).albertyAbbreviation,Alberty2006(n).abbreviation)
+0205             albertyMatch=1;
+0206             <span class="comment">%find the number of species within pseudoisomer group</span>
+0207             p=max(find(~isnan(Alberty2006(n).basicData(:,1))));
+0208             <span class="keyword">if</span> isnan(Alberty2006(n).basicData(1,2))
+0209                 <span class="comment">%transform to pH and ionic strength</span>
+0210                 <span class="comment">%[dGfnp,dHfnp,chi]=calcdGHT(dGzero,dHzero,zi,nH,pHa,is,temp,Legendre)</span>
+0211                 [dGf0,dHf0,mf,aveHbound,aveZi,lambda]=<a href="../../setupThermoModel/alberty/calcdGHT.html" class="code" title="function [dGf0,dHf0,mf,aveHbound,aveZi,lambda,gpfnsp]=calcdGHT(dGzero,dHzero,zi,nH,pHr,is,temp,chi,Legendre,LegendreCHI)">calcdGHT</a>(Alberty2006(n).basicData(1:p,1),[],Alberty2006(n).basicData(1:p,3),Alberty2006(n).basicData(1:p,4),pHr,is,temp,chi,Legendre,LegendreCHI);
+0212                 model.met(m).dGft0Keq=dGf0;
+0213                 model.met(m).dHft0Keq=NaN;
+0214                 model.met(m).dHft0=NaN;
+0215                 model.met(m).mf=mf;
+0216                 model.met(m).aveHbound=aveHbound;
+0217                 model.met(m).aveZi=aveZi;
+0218                 model.met(m).lambda=lambda; <span class="comment">%activity coefficients</span>
+0219                 model.met(m).dGft0Source=<span class="string">'Keq'</span>;
+0220             <span class="keyword">else</span>
+0221                 <span class="comment">%transform to new temperature, pH and ionic strength</span>
+0222                 <span class="comment">%[dGfnp,dHfnp,chi]=calcdGHT(dGzero,dHzero,zi,nH,pHa,is,temp</span>
+0223                 <span class="comment">%,Legendre)</span>
+0224                 [dGf0,dHf0,mf,aveHbound,aveZi,lambda]=<a href="../../setupThermoModel/alberty/calcdGHT.html" class="code" title="function [dGf0,dHf0,mf,aveHbound,aveZi,lambda,gpfnsp]=calcdGHT(dGzero,dHzero,zi,nH,pHr,is,temp,chi,Legendre,LegendreCHI)">calcdGHT</a>(Alberty2006(n).basicData(1:p,1),Alberty2006(n).basicData(1:p,2),Alberty2006(n).basicData(1:p,3),Alberty2006(n).basicData(1:p,4),pHr,is,temp,chi,Legendre,LegendreCHI);
+0225                 model.met(m).dGft0Keq=dGf0;
+0226                 model.met(m).dHft0Keq=dHf0;
+0227                 model.met(m).dHft0=NaN;
+0228                 model.met(m).mf=mf;
+0229                 model.met(m).aveHbound=aveHbound;
+0230                 model.met(m).aveZi=aveZi;
+0231                 model.met(m).lambda=lambda; <span class="comment">%activity coefficients</span>
+0232                 model.met(m).dGft0Source=<span class="string">'Keq'</span>;
+0233                 <span class="keyword">if</span> strcmp(model.met(m).albertyAbbreviation,<span class="string">'h2o'</span>);
+0234                     <span class="keyword">if</span> lambda~=1
+0235                         error(<span class="string">'assignThermoToModel: Activity of water should always be one.'</span>)
+0236                     <span class="keyword">end</span>
+0237                 <span class="keyword">end</span>
+0238             <span class="keyword">end</span>            
+0239             <span class="keyword">break</span>;
+0240         <span class="keyword">end</span>
+0241     <span class="keyword">end</span>
+0242      
+0243     <span class="comment">%setting albertyMatch to zero bypasses all use of Albertys Data</span>
+0244     <span class="keyword">if</span> useKeqData==0
+0245         albertyMatch=0;
+0246     <span class="keyword">end</span>
+0247     
+0248     <span class="comment">%if no data from equilibrium constants, use group contribution</span>
+0249     <span class="comment">%estimates if available</span>
+0250     <span class="keyword">if</span> albertyMatch
+0251         model.met(m).dGft0=model.met(m).dGft0Keq;
+0252         model.met(m).dHft0=model.met(m).dHft0Keq;
+0253     <span class="keyword">else</span>
+0254         <span class="comment">%put NaN in place of missing Keq data</span>
+0255         model.met(m).albertyAbbreviation=NaN;
+0256         model.met(m).dGft0Keq=NaN;
+0257         model.met(m).dHft0=NaN;
+0258         model.met(m).dHft0Keq=NaN;
+0259             
+0260         <span class="keyword">if</span> NaNdGf0GCMetBool(m)
+0261             <span class="comment">%dummy values if no group contribution data</span>
+0262             model.met(m).dGft0=NaN;
+0263             model.met(m).dHft0=NaN;
+0264             model.met(m).mf=NaN;
+0265             model.met(m).aveHbound=NaN;
+0266             model.met(m).aveZi=NaN;
+0267             model.met(m).lambda=NaN;
+0268             model.met(m).dGft0Source=NaN;
+0269             <span class="comment">%print out that there are no data fof this metabolite</span>
+0270             <span class="keyword">if</span> strcmp(model.met(m).abbreviation(end-2:end),<span class="string">'[c]'</span>)
+0271                 <span class="keyword">if</span> printToFile==0
+0272                     fprintf(<span class="string">'%s\t%s\t%20s\t%s\n'</span>,<span class="string">'No standard Gibbs energy from any source for metabolite'</span>, int2str(m),model.mets{m},model.met(m).officialName);
+0273                 <span class="keyword">else</span>
+0274                     fprintf(fid2,<span class="string">'%s\t%s\t%s\t%s\n'</span>,<span class="string">'No standard Gibbs energy from any source for metabolite'</span>, int2str(m),model.mets{m},model.met(m).officialName);
+0275                 <span class="keyword">end</span>
+0276             <span class="keyword">end</span>
+0277         <span class="keyword">else</span>
+0278             <span class="comment">%use group contribution data</span>
+0279             model.met(m).dGft0=model.met(m).dGft0GroupCont;
+0280             <span class="comment">% model.met(m).mf=1; Commented out. - Hulda</span>
+0281             model.met(m).dGft0Source=<span class="string">'GC'</span>;
+0282                         
+0283             <span class="comment">%print out the reason for doing so</span>
+0284             metAbbr=model.met(m).abbreviation;
+0285             <span class="keyword">if</span> any(strcmp(model.met(m).abbreviation(1:end-3),exceptions))
+0286                 <span class="comment">%in exceptional cases, use group contribution estimates over estimates</span>
+0287                 <span class="comment">%from Equilibrium constants. see line 80 for list of exceptions</span>
+0288                 <span class="keyword">if</span> strcmp(metAbbr(end-2:end),<span class="string">'[c]'</span>)
+0289                     <span class="keyword">if</span> printToFile==0
+0290                         fprintf(<span class="string">'%s\t%s\t%20s\t%s\n'</span>,<span class="string">'Transformed g.c. estimate (298.15K, pH 7) for metabolite (exceptional)'</span>, int2str(m),model.mets{m},model.met(m).officialName);
+0291                     <span class="keyword">else</span>
+0292                         fprintf(fid1,<span class="string">'%s\t%s\t%s\t%s\n'</span>,<span class="string">'Transformed g.c. estimate (298.15K, pH 7) for metabolite (exceptional)'</span>, int2str(m),model.mets{m},model.met(m).officialName);
+0293                     <span class="keyword">end</span>
+0294                 <span class="keyword">end</span>
+0295             <span class="keyword">else</span>
+0296                 <span class="keyword">if</span> strcmp(metAbbr(end-2:end),<span class="string">'[c]'</span>)
+0297                     <span class="keyword">if</span> printToFile==0
+0298                         fprintf(<span class="string">'%s\t%s\t%20s\t%s\n'</span>,<span class="string">'Transformed g.c. estimate (298.15K, pH 7) for metabolite'</span>, int2str(m),model.mets{m},model.met(m).officialName);
+0299                     <span class="keyword">else</span>
+0300                         fprintf(fid1,<span class="string">'%s\t%s\t%s\t%s\n'</span>,<span class="string">'Transformed g.c. estimate (298.15K, pH 7) for metabolite'</span>, int2str(m),model.mets{m},model.met(m).officialName);
+0301                     <span class="keyword">end</span>
+0302                 <span class="keyword">end</span>
+0303             <span class="keyword">end</span>
+0304         <span class="keyword">end</span>
+0305     <span class="keyword">end</span>
+0306     
+0307     
+0308     <span class="keyword">if</span> length(model.met(m).abbreviation)==4 &amp;&amp; strcmp(model.met(m).abbreviation(1),<span class="string">'h'</span>)
+0309         <span class="keyword">if</span> Legendre
+0310             zi=1;
+0311             <span class="comment">%Ionic strength</span>
+0312             <span class="comment">%Eq 4.4-10 p67 Alberty 2003 with temp dependent gibbscoeff</span>
+0313             isTerm = (gibbscoeff*zi.^2*is^0.5)/(1 + 1.6*is^0.5);
+0314             <span class="comment">%Electrical Potential</span>
+0315             <span class="comment">%eq 8.5-1 p148 Alberty 2003</span>
+0316             electricalTerm=(faradayConstant*(chi/1000))*zi;
+0317             <span class="comment">%pH</span>
+0318             <span class="comment">%Eq 4.4-9 p67 Alberty 2003</span>
+0319             pHterm = gasConstant*temp*log(10^-PHR.(model.met(m).abbreviation(end-1)));
+0320 
+0321             <span class="comment">%transformed thermodynamic properties</span>
+0322             <span class="keyword">if</span> LegendreCHI
+0323                 <span class="comment">%Legendre transformation for hydrogen ion chemical</span>
+0324                 <span class="comment">%potential and charge</span>
+0325                 model.met(m).dGft0 = - pHterm;
+0326             <span class="keyword">else</span>
+0327                 <span class="comment">%Legendre transformation for hydrogen ion chemical</span>
+0328                 <span class="comment">%potential</span>
+0329                  model.met(m).dGft0 = - pHterm + electricalTerm;
+0330             <span class="keyword">end</span>
+0331             model.met(m).dGft  = 0;
+0332             model.met(m).dGft0Source=<span class="string">'Keq'</span>;
+0333             
+0334             <span class="keyword">if</span> LegendreCHI
+0335                 <span class="comment">%untransformed chemical potential</span>
+0336                 model.met(m).dGf0 = - isTerm;
+0337                 model.met(m).dGf  = - isTerm + pHterm;
+0338             <span class="keyword">else</span>
+0339                 <span class="comment">%untransformed electrochemical potential</span>
+0340                 model.met(m).dGf0 = - isTerm + electricalTerm;
+0341                 model.met(m).dGf  = - isTerm + electricalTerm + pHterm;
+0342             <span class="keyword">end</span>
+0343         <span class="keyword">else</span>
+0344             <span class="comment">%Henry et al method of adjusting the proton potential to</span>
+0345             <span class="comment">%specific pH</span>
+0346             pHTerm=log(10)*gasConstant*temp*(PHR.(model.met(m).abbreviation(end-1)));
+0347             <span class="comment">%ionic strength adjustment eqn 4.4-10 p67 Alberty 2003</span>
+0348             isTerm=-gibbscoeff*(is^.5)/(1 + 1.6*is^.5);
+0349             <span class="comment">%potential difference due to difference in charge across</span>
+0350             <span class="comment">%the cytoplasmic membrane</span>
+0351             zi=1;
+0352             electricalTerm=(faradayConstant*(chi/1000))*zi;
+0353             model.met(m).dGft0=pHTerm + isTerm + electricalTerm;
+0354             model.met(m).dGft0Source=<span class="string">'GC'</span>;
+0355         <span class="keyword">end</span>
+0356 
+0357     <span class="keyword">end</span>
+0358 <span class="keyword">end</span>
+0359 
+0360 <span class="keyword">if</span> printToFile
+0361     fclose(fid1);
+0362     fclose(fid2);
+0363 <span class="keyword">end</span>
+0364 
+0365 
+0366 <span class="comment">%     if 0</span>
+0367 <span class="comment">%     %DOUBLE CHECK - this is a bit of very tricky code, its not clear in</span>
+0368 <span class="comment">%     %Albertys work what to do if there are two compartments with fixed pH</span>
+0369 <span class="comment">%     %which are different from eachother.</span>
+0370 <span class="comment">%     if length(model.met(m).abbreviation)==4 &amp;&amp; strcmp(model.met(m).abbreviation(1),'h')</span>
+0371 <span class="comment">%         %By convention</span>
+0372 <span class="comment">%         %(1) standard transformed chemical potential of H+ is zero</span>
+0373 <span class="comment">%         model.met(m).dGft0=0;</span>
+0374 <span class="comment">%         %(2) electrical potential of the cytoplasm is zero</span>
+0375 <span class="comment">%         if Legendre</span>
+0376 <span class="comment">%             %Legendre Transformation for Electrical Potential, relative to</span>
+0377 <span class="comment">%             %cytoplasmic electrical potential of zero</span>
+0378 <span class="comment">%             zi=1;</span>
+0379 <span class="comment">%             electricalTerm=(faradayConstant*(chi/1000))*zi;</span>
+0380 <span class="comment">%</span>
+0381 <span class="comment">%</span>
+0382 <span class="comment">%             %Eq 4.4-9 p67 Alberty 2003</span>
+0383 <span class="comment">%             %pH term</span>
+0384 <span class="comment">%             pHterm = gasConstant*temp*log(10^-PHR.(model.met(m).abbreviation(end-1)));</span>
+0385 <span class="comment">%</span>
+0386 <span class="comment">%             %Eq 4.4-10 p67 Alberty 2003 with temp dependent gibbscoeff</span>
+0387 <span class="comment">%             %isTerm = (gibbscoeff*(zi.^2 - nH)*is^0.5)/(1 + 1.6*is^0.5);</span>
+0388 <span class="comment">%             isTerm = 0; %i.e. zi.^2 - nH ==0</span>
+0389 <span class="comment">%</span>
+0390 <span class="comment">%             %standard transformed Gibbs energy of a hydrogen ion</span>
+0391 <span class="comment">%             model.met(m).dGft0 = - pHterm - isTerm + electricalTerm;</span>
+0392 <span class="comment">%</span>
+0393 <span class="comment">%             model.met(m).dGft0Source='Keq';</span>
+0394 <span class="comment">%         else</span>
+0395 <span class="comment">%             %Henry et al method of adjusting the proton potential to</span>
+0396 <span class="comment">%             %specific pH</span>
+0397 <span class="comment">%             pHTerm=log(10)*gasConstant*temp*(PHR.(model.met(m).abbreviation(end-1)));</span>
+0398 <span class="comment">%             %ionic strength adjustment eqn 4.4-10 p67 Alberty 2003</span>
+0399 <span class="comment">%             isTerm=-gibbscoeff*(is^.5)/(1 + 1.6*is^.5);</span>
+0400 <span class="comment">%             %potential difference due to difference in charge across</span>
+0401 <span class="comment">%             %the cytoplasmic membrane</span>
+0402 <span class="comment">%             zi=1;</span>
+0403 <span class="comment">%             electricalTerm=(faradayConstant*(chi/1000))*zi;</span>
+0404 <span class="comment">%             model.met(m).dGft0=pHTerm + isTerm + electricalTerm;</span>
+0405 <span class="comment">%             model.met(m).dGft0Source='GC';</span>
+0406 <span class="comment">%         end</span>
+0407 <span class="comment">%     end</span>
+0408 <span class="comment">%     end</span>
+0409 
+0410 <span class="comment">%DOUBLE CHECK - this is a bit of very tricky code, its not clear in</span>
+0411     <span class="comment">%Albertys work what to do if there are two compartments with fixed pH</span>
+0412     <span class="comment">%which are different from eachother.</span>
+0413 <span class="comment">%%%%%% Compartment specific code for H+ ions used for iAF1260 in:</span>
+0414 <span class="comment">%   Quantitative assignment of reaction directionality in constraint-based</span>
+0415 <span class="comment">%   models of metabolism: Application to Escherichia coli.    %%%%%%%%%%%%%</span>
+0416 <span class="comment">%</span>
+0417 <span class="comment">%     %if using a Legendre Transform set the standard chemical potential</span>
+0418 <span class="comment">%     %of internal H+ ion to zero</span>
+0419 <span class="comment">%     if strcmp(model.met(m).abbreviation,'h[c]');</span>
+0420 <span class="comment">%         if Legendre</span>
+0421 <span class="comment">%             %By convention electrical potential in cytoplasm is zero</span>
+0422 <span class="comment">%             model.met(m).dGft0=0;</span>
+0423 <span class="comment">%             %necessary for later when doing stats of reaction directions</span>
+0424 <span class="comment">%             model.met(m).dGft0Source='Keq';</span>
+0425 <span class="comment">%         else</span>
+0426 <span class="comment">%             %Henry et al method of adjusting the proton potential to</span>
+0427 <span class="comment">%             %specific pH</span>
+0428 <span class="comment">%             pHTerm=gasConstant*temp*log(10^-cpHc);</span>
+0429 <span class="comment">%             %ionic strength adjustment eqn 4.4-10 p67 Alberty 2003</span>
+0430 <span class="comment">%             isTerm=-gibbscoeff*(is^.5)/(1 + 1.6*is^.5);</span>
+0431 <span class="comment">%             model.met(m).dGft0=pHTerm + isTerm;</span>
+0432 <span class="comment">%             model.met(m).dGft0Source='GC';</span>
+0433 <span class="comment">%         end</span>
+0434 <span class="comment">%     end</span>
+0435 <span class="comment">%     %adjust standard chemical potential of external H+ ion to account</span>
+0436 <span class="comment">%     %for difference in pH across boundary</span>
+0437 <span class="comment">%     if strcmp(model.met(m).abbreviation,'h[e]');</span>
+0438 <span class="comment">%         if Legendre</span>
+0439 <span class="comment">%             %DOUBLE CHECK Legendre Transformation for Electrical Potential</span>
+0440 <span class="comment">%             %potential difference due to difference in charge across</span>
+0441 <span class="comment">%             %the cytoplasmic membrane</span>
+0442 <span class="comment">%             zi=1;</span>
+0443 <span class="comment">%             electricalTerm=(faradayConstant*(chi/1000))*zi;</span>
+0444 <span class="comment">%             %potential difference due to difference in concentration across</span>
+0445 <span class="comment">%             %the cytoplasmic membrane</span>
+0446 <span class="comment">%             pHDiffTerm=log(10)*gasConstant*temp*(cpHc-epHc);</span>
+0447 <span class="comment">%             model.met(m).dGft0= electricalTerm + pHDiffTerm;</span>
+0448 <span class="comment">%             model.met(m).dGft0Source='Keq';</span>
+0449 <span class="comment">%         else</span>
+0450 <span class="comment">%             %Henry et al method of adjusting the proton potential to</span>
+0451 <span class="comment">%             %specific pH</span>
+0452 <span class="comment">%             pHTerm=gasConstant*temp*log(10^-epHc);</span>
+0453 <span class="comment">%             %ionic strength adjustment eqn 4.4-10 p67 Alberty 2003</span>
+0454 <span class="comment">%             isTerm=-gibbscoeff*(is^.5)/(1 + 1.6*is^.5);</span>
+0455 <span class="comment">%             %potential difference due to difference in charge across</span>
+0456 <span class="comment">%             %the cytoplasmic membrane</span>
+0457 <span class="comment">%             zi=1;</span>
+0458 <span class="comment">%             electricalTerm=(faradayConstant*(chi/1000))*zi;</span>
+0459 <span class="comment">%             model.met(m).dGft0=pHTerm + isTerm + electricalTerm;</span>
+0460 <span class="comment">%             model.met(m).dGft0Source='GC';</span>
+0461 <span class="comment">%         end</span>
+0462 <span class="comment">%     end</span>
+0463 <span class="comment">%     %adjust standard chemical potential of external H+ ion to account</span>
+0464 <span class="comment">%     %for difference in pH across boundary</span>
+0465 <span class="comment">%     if strcmp(model.met(m).abbreviation,'h[p]');</span>
+0466 <span class="comment">%         if Legendre</span>
+0467 <span class="comment">%             %DOUBLE CHECK Legendre Transformation for Electrical Potential</span>
+0468 <span class="comment">%             %potential difference due to difference in charge across</span>
+0469 <span class="comment">%             %the cytoplasmic membrane</span>
+0470 <span class="comment">%             zi=1;</span>
+0471 <span class="comment">%             electricalTerm=(faradayConstant*(chi/1000))*zi;</span>
+0472 <span class="comment">%             %potential difference due to difference in concentration across</span>
+0473 <span class="comment">%             %the cytoplasmic membrane</span>
+0474 <span class="comment">%             pHDiffTerm=log(10)*gasConstant*temp*(cpHc-ppHc);</span>
+0475 <span class="comment">%             model.met(m).dGft0=electricalTerm + pHDiffTerm;</span>
+0476 <span class="comment">%             model.met(m).dGft0Source='Keq';</span>
+0477 <span class="comment">%         else</span>
+0478 <span class="comment">%             %Henry et al method of adjusting the proton potential to</span>
+0479 <span class="comment">%             %specific pH</span>
+0480 <span class="comment">%             pHTerm=gasConstant*temp*log(10^-ppHc);</span>
+0481 <span class="comment">%             %ionic strength adjustment eqn 4.4-10 p67 Alberty 2003</span>
+0482 <span class="comment">%             isTerm=-gibbscoeff*(is^.5)/(1 + 1.6*is^.5);</span>
+0483 <span class="comment">%             %potential difference due to difference in charge across</span>
+0484 <span class="comment">%             %the cytoplasmic membrane</span>
+0485 <span class="comment">%             electricalTerm=(faradayConstant*(chi/1000))*zi;</span>
+0486 <span class="comment">%             model.met(m).dGft0=pHTerm + isTerm + electricalTerm;</span>
+0487 <span class="comment">%             model.met(m).dGft0Source='GC';</span>
+0488 <span class="comment">%         end</span>
+0489 <span class="comment">%     end</span></pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

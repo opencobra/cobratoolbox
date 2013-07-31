@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of forwardReversibleFiguresKeq</title>
+  <meta name="keywords" content="forwardReversibleFiguresKeq">
+  <meta name="description" content="Figure of qualitatively forward -> quantitatively reversible (keq)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html directionalityReport -->
+<h1>forwardReversibleFiguresKeq
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Figure of qualitatively forward -> quantitatively reversible (keq)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function forwardReversibleFiguresKeq(model,directions,thorStandard) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Figure of qualitatively forward -&gt; quantitatively reversible (keq)
+
+make figure of  reactions that have changed from qualitatively forward
+to quantitatively reversible, where all metabolites dGt0 were back
+calculated from Keq. Omit those reactions that are transport reactions
+
+INPUT
+ model
+
+ directions must have the fields below:
+   directions.ChangeForwardReversible_dGfKeq
+
+ thorStandard          {(0),1} use new standard reactant concentration
+                       half way between upper and lower concentration
+                       bounds
+
+ Ronan M.T. Fleming</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../setupThermoModel/external/ploterr.html" class="code" title="function hh = ploterr(x, y, xerr, yerr, varargin)">ploterr</a>	PLOTERR General error bar plot.</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="directionalityCheckAll.html" class="code" title="function directions=directionalityCheckAll(model,cumNormProbCutoff,thorStandard,printToFile,printToTable,figures)">directionalityCheckAll</a>	Analysis of differences between qualitative and quantiative directionality assignments.</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function forwardReversibleFiguresKeq(model,directions,thorStandard)</a>
+0002 <span class="comment">% Figure of qualitatively forward -&gt; quantitatively reversible (keq)</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">%make figure of  reactions that have changed from qualitatively forward</span>
+0005 <span class="comment">%to quantitatively reversible, where all metabolites dGt0 were back</span>
+0006 <span class="comment">%calculated from Keq. Omit those reactions that are transport reactions</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">%INPUT</span>
+0009 <span class="comment">% model</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% directions must have the fields below:</span>
+0012 <span class="comment">%   directions.ChangeForwardReversible_dGfKeq</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% thorStandard          {(0),1} use new standard reactant concentration</span>
+0015 <span class="comment">%                       half way between upper and lower concentration</span>
+0016 <span class="comment">%                       bounds</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% Ronan M.T. Fleming</span>
+0019 
+0020 [nMet,nRxn]=size(model.S);
+0021 <span class="comment">%ignore thor standard for keq</span>
+0022 thorStandard=0;
+0023 <span class="keyword">if</span> thorStandard
+0024     dGt0Min=model.dGt0Min;
+0025     dGt0Max=model.dGt0Max;
+0026     <span class="keyword">for</span> n=1:nRxn
+0027         model.dGt0Min(n)=model.rxn(n).dGtmMMin;
+0028         model.dGt0Max(n)=model.rxn(n).dGtmMMax;
+0029     <span class="keyword">end</span>
+0030 <span class="keyword">end</span>
+0031 
+0032  <span class="comment">%%%%%%%%%vertical%%%%%%%%%%%%%</span>
+0033 <span class="comment">%forward possibly reversible</span>
+0034 fwdPossiblyReverseKeq=directions.ChangeForwardReversible_dGfKeq;
+0035 
+0036 <span class="comment">%only plot the non transport reactions</span>
+0037 <span class="keyword">for</span> n=1:nRxn
+0038     <span class="keyword">if</span> fwdPossiblyReverseKeq(n)
+0039         metAbbrRxn=model.mets(model.S(:,n)~=0);
+0040         <span class="keyword">for</span> m=1:length(metAbbrRxn)
+0041             metAbbr=metAbbrRxn{m};
+0042             compartment{m}=metAbbr(end-2:end);
+0043         <span class="keyword">end</span>
+0044         <span class="keyword">if</span> length(unique(compartment))~=1
+0045             fwdPossiblyReverseKeq(n)=0;
+0046         <span class="keyword">end</span>
+0047     <span class="keyword">end</span>
+0048 <span class="keyword">end</span>
+0049 <span class="comment">%dGrt</span>
+0050 Y=(model.dGtMin+model.dGtMax)/2;
+0051 L=Y-model.dGtMin;
+0052 U=model.dGtMax-Y;
+0053 <span class="comment">%sort by mean dGt0</span>
+0054 Y0=(model.dGtMin+model.dGtMax)/2;
+0055 [tmp,xip]=sort(model.dGtMax,<span class="string">'descend'</span>);
+0056 <span class="comment">%     only take the indices of the problematic reactions, but be sure to</span>
+0057 <span class="comment">%     take them in order of descending (model.dGtMin+model.dGtMax)/2</span>
+0058 xip2=zeros(nnz(fwdPossiblyReverseKeq),1);
+0059 p=1;
+0060 <span class="keyword">for</span> n=1:nRxn
+0061     <span class="keyword">if</span> fwdPossiblyReverseKeq(xip(n))
+0062         xip2(p)=xip(n);
+0063         p=p+1;
+0064     <span class="keyword">end</span>
+0065 <span class="keyword">end</span>
+0066 xip=xip2;
+0067 X1=1:length(xip);
+0068 
+0069 <span class="comment">% close all</span>
+0070 figure1 = figure;
+0071 <span class="comment">% Create axes</span>
+0072 axes1 = axes(<span class="string">'Parent'</span>,figure1,<span class="string">'Color'</span>,[0.702 0.7804 1]);
+0073 hold on;
+0074 <span class="comment">%upper and lower X</span>
+0075 minX=min(model.dGtMin(fwdPossiblyReverseKeq));
+0076 maxX=max(model.dGtMax(fwdPossiblyReverseKeq));
+0077 <span class="comment">% %baselines</span>
+0078 <span class="comment">% PreversibleBar_byConcRHS=ones(1,nRxn)*minX;</span>
+0079 <span class="comment">% %bar for 6</span>
+0080 <span class="comment">% PreversibleBar_byConcRHS(directions.ChangeForwardReversibleBool_dGfGC_byConcRHS)=maxX;</span>
+0081 <span class="comment">% bar_handle6=barh(X1,PreversibleBar_byConcRHS(xip),1,'BaseValue',minX,'FaceColor',[0.86 0.86 0.86],'EdgeColor','none');</span>
+0082 
+0083 <span class="comment">%dGrt errorbar</span>
+0084 <span class="comment">%   PLOTERR(X,Y,{LX,UX},{LY,UY}) plots the graph of vector X vs. vector Y</span>
+0085 <span class="comment">%   with error bars specified by LX and UX in horizontal direction and</span>
+0086 <span class="comment">%   with error bars specified by LY and UY in vertical direction.</span>
+0087 <span class="comment">%   H = PLOTERR(...) returns a vector of line handles in this order:</span>
+0088 <span class="comment">%      H(1) = handle to datapoints</span>
+0089 <span class="comment">%      H(2) = handle to errorbar y OR errorbar x if error y not specified</span>
+0090 <span class="comment">%      H(3) = handle to errorbar x if error y specified</span>
+0091 <span class="comment">% LineSpec=[''LineStyle','none','LineWidth',2,'DisplayName','forwardReversible','Color','r'']</span>
+0092 LineSpec=<span class="string">'r.'</span>; 
+0093 hE = <a href="../../setupThermoModel/external/ploterr.html" class="code" title="function hh = ploterr(x, y, xerr, yerr, varargin)">ploterr</a>(Y(xip),X1,{model.dGtMin(xip) model.dGtMax(xip)},[],LineSpec,<span class="string">'hhxy'</span>,0);
+0094 set(gca,<span class="string">'XTick'</span>,[]);
+0095 set(hE(2),<span class="string">'LineWidth'</span>,10);
+0096 
+0097 <span class="comment">%mean dGrt0</span>
+0098 [AX,H1,H2] =plotyy(zeros(1,length(X1)),X1,Y0(xip),X1);
+0099 <span class="comment">%position</span>
+0100 set(AX(1),<span class="string">'Position'</span>,[0.05 0.1 0.4 0.8]);
+0101 set(AX(2),<span class="string">'Position'</span>,[0.05 0.1 0.4 0.8]);
+0102 <span class="comment">%lines</span>
+0103 set(H1,<span class="string">'Color'</span>,<span class="string">'w'</span>,<span class="string">'LineWidth'</span>,2,<span class="string">'LineStyle'</span>,<span class="string">'--'</span>);
+0104 set(H2,<span class="string">'Marker'</span>,<span class="string">'.'</span>,<span class="string">'LineStyle'</span>,<span class="string">'none'</span>,<span class="string">'MarkerSize'</span>,18)
+0105 <span class="comment">%mean dGt0</span>
+0106 set(AX(1),<span class="string">'YTick'</span>,[],<span class="string">'YTickLabelMode'</span>,<span class="string">'manual'</span>);
+0107 set(AX(2),<span class="string">'XTickMode'</span>,<span class="string">'manual'</span>,<span class="string">'XTick'</span>,floor(minX/100)*200:20:maxX,<span class="string">'YColor'</span>,<span class="string">'k'</span>);
+0108 set(AX(2),<span class="string">'YTickMode'</span>,<span class="string">'manual'</span>,<span class="string">'YTick'</span>,1:length(xip));
+0109 <span class="comment">%axis limits</span>
+0110 axis(AX(1),[minX maxX 0 length(X1)+0.5 ])
+0111 axis(AX(2),[minX maxX 0 length(X1)+0.5 ])
+0112 title({<span class="string">'Qualitatively forward -&gt; quantitatively reversible. (\Delta_{r}G^{\primeo} from K_{eq}).'</span>},<span class="string">'FontSize'</span>,16)
+0113 set(get(AX(2),<span class="string">'Xlabel'</span>),<span class="string">'String'</span>,<span class="string">'\Delta_{r}G^{\prime} (kJ/mol)'</span>,<span class="string">'FontSize'</span>,16)
+0114 
+0115 <span class="comment">% ylabel('Reactions, sorted by maximum \Delta_{r}G^{\prime}');</span>
+0116 
+0117 <span class="keyword">for</span> n=1:length(xip)
+0118 <span class="comment">%     textLen(n)=length(model.rxn(xip(n)).officialName)+length(model.rxn(xip(n)).equation);</span>
+0119 <span class="comment">%     textLen(n)=length(model.rxn(xip(n)).equation);</span>
+0120    textLen(n)=length(model.rxn(xip(n)).officialName);
+0121 <span class="keyword">end</span>
+0122 textLenMax=max(textLen);
+0123 <span class="keyword">for</span> n=1:length(xip)
+0124     YTickLabel{n}=[model.rxn(xip(n)).officialName blanks(textLenMax-textLen(n)+5) model.rxn(xip(n)).equation];
+0125     <span class="comment">%get rid of the cytoplasmic compartment abbreviations</span>
+0126     YTickLabel{n} = strrep(YTickLabel{n}, <span class="string">'[c]'</span>, <span class="string">''</span>);
+0127     
+0128    <span class="comment">% no idea why this does not work</span>
+0129    <span class="comment">%     fprintf('%s\n',[model.rxn(xip(n)).officialName blanks(textLenMax-textLen(n)+5) model.rxn(xip(n)).equation]);</span>
+0130 <span class="keyword">end</span>
+0131 set(AX(2),<span class="string">'YTickLabel'</span>,YTickLabel,<span class="string">'FontSize'</span>,10);
+0132 saveas(figure1 ,<span class="string">'fwdReversibleKeq_nonTransport'</span>,<span class="string">'fig'</span>);
+0133 
+0134 <span class="comment">%change back</span>
+0135 <span class="keyword">if</span> thorStandard
+0136     model.dGt0Min=dGt0Min;
+0137     model.dGt0Max=dGt0Max;
+0138 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

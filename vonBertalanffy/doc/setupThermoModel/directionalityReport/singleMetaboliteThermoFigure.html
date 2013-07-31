@@ -1,0 +1,333 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of singleMetaboliteThermoFigure</title>
+  <meta name="keywords" content="singleMetaboliteThermoFigure">
+  <meta name="description" content="create a vertical errorbar figure of the reactions involving the">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html directionalityReport -->
+<h1>singleMetaboliteThermoFigure
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>create a vertical errorbar figure of the reactions involving the</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function singleMetaboliteThermoFigure(model,miliMolarStandard,metAbbr) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">create a vertical errorbar figure of the reactions involving the
+metabolite given by the abbreviation
+ todo = fix this up
+INPUT
+ model
+ miliMolarStandard
+ metAbbr
+
+ Ronan M.T. Fleming</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../setupThermoModel/external/ploterr.html" class="code" title="function hh = ploterr(x, y, xerr, yerr, varargin)">ploterr</a>	PLOTERR General error bar plot.</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function singleMetaboliteThermoFigure(model,miliMolarStandard,metAbbr)</a>
+0002 <span class="comment">%create a vertical errorbar figure of the reactions involving the</span>
+0003 <span class="comment">%metabolite given by the abbreviation</span>
+0004 <span class="comment">% todo = fix this up</span>
+0005 <span class="comment">%INPUT</span>
+0006 <span class="comment">% model</span>
+0007 <span class="comment">% miliMolarStandard</span>
+0008 <span class="comment">% metAbbr</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% Ronan M.T. Fleming</span>
+0011 
+0012 <span class="comment">%%%%%%%%%vertical%%%%%%%%%%%%%</span>
+0013 [nMet,nRxn]=size(model.S);
+0014 <span class="keyword">if</span> miliMolarStandard
+0015     dGt0Min=model.dGt0Min;
+0016     dGt0Max=model.dGt0Max;
+0017     <span class="keyword">for</span> n=1:nRxn
+0018         model.dGt0Min(n)=model.rxn(n).dGtmMMin;
+0019         model.dGt0Max(n)=model.rxn(n).dGtmMMax;
+0020     <span class="keyword">end</span>
+0021 <span class="keyword">end</span>
+0022 <span class="comment">%forward possibly reversible</span>
+0023 dGfGCforwardReversibleBool=directions.ChangeForwardReversibleBool_dGfGC;
+0024 <span class="comment">%forward, probably reverse</span>
+0025 fwdProbReverse=directions.ChangeForwardReversibleBool_dGfGC_byConcRHS | <span class="keyword">...</span>
+0026     directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS | <span class="keyword">...</span>
+0027     directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS;
+0028 
+0029 <span class="comment">%plot regions 5,6,7, with region 6 shaded</span>
+0030 X1=1:nRxn;
+0031 <span class="comment">%dGrt0</span>
+0032 Y0=(model.dGt0Min+model.dGt0Max)/2;
+0033 L0=Y0-model.dGt0Min;
+0034 U0=model.dGt0Max-Y0;
+0035 <span class="comment">%dGrt</span>
+0036 Y=(model.dGtMin+model.dGtMax)/2;
+0037 L=Y-model.dGtMin;
+0038 U=model.dGtMax-Y;
+0039 <span class="comment">%find the amount of reactions with normal cumulative distribution over</span>
+0040 <span class="comment">%range of dGt0</span>
+0041 P = normcdf(0,Y0,L0);
+0042 <span class="comment">%sort by probability that a reaction is forward (puts any NaN first)</span>
+0043 [tmp,xip]=sort(P,<span class="string">'descend'</span>);
+0044 <span class="comment">%     only take the indices of the problematic reactions, but be sure to</span>
+0045 <span class="comment">%     take them in order of descending P</span>
+0046 xip2=zeros(nnz(fwdProbReverse),1);
+0047 p=1;
+0048 <span class="keyword">for</span> n=1:nRxn
+0049     <span class="keyword">if</span> fwdProbReverse(xip(n))
+0050         xip2(p)=xip(n);
+0051         p=p+1;
+0052     <span class="keyword">end</span>
+0053 <span class="keyword">end</span>
+0054 xip=xip2;
+0055 X1=1:length(xip);
+0056 
+0057 <span class="comment">%replace the NaN due to zero st dev</span>
+0058 nNaNpRHS=nnz(directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS);
+0059 <span class="keyword">if</span> nNaNpRHS~=nnz(isnan((P(fwdProbReverse))))
+0060     warning(<span class="string">'ExtraCategory'</span>);
+0061 <span class="keyword">end</span>
+0062 <span class="comment">%nans are first in the ordering of indexes</span>
+0063 NaNPInd=xip(1:nNaNpRHS);
+0064 <span class="comment">%sorts indices of the zero std dev met by their mean dG0t</span>
+0065 [tmp,xipNaNPInd]=sort(Y0(NaNPInd));
+0066 <span class="comment">%new ordering with NaNs sorted to right</span>
+0067 xip=[xip(nNaNpRHS+1:end); NaNPInd(xipNaNPInd(1:nNaNpRHS))];
+0068 
+0069 <span class="comment">% close all</span>
+0070 figure1 = figure;
+0071 <span class="comment">% Create axes</span>
+0072 axes1 = axes(<span class="string">'Parent'</span>,figure1,<span class="string">'Color'</span>,[0.702 0.7804 1]);
+0073 hold on;
+0074 
+0075 <span class="comment">%upper and lower X</span>
+0076 minX=min(model.dGtMin(fwdProbReverse));
+0077 maxX=max(model.dGtMax(fwdProbReverse));
+0078 <span class="comment">%baselines</span>
+0079 PreversibleBar_byConcRHS=ones(1,nRxn)*minX;
+0080 <span class="comment">%bar for 6</span>
+0081 PreversibleBar_byConcRHS(directions.ChangeForwardReversibleBool_dGfGC_byConcRHS)=maxX;
+0082 bar_handle6=barh(X1,PreversibleBar_byConcRHS(xip),1,<span class="string">'BaseValue'</span>,minX,<span class="string">'FaceColor'</span>,[0.86 0.86 0.86],<span class="string">'EdgeColor'</span>,<span class="string">'none'</span>);
+0083 
+0084 <span class="comment">%dGrt errorbar</span>
+0085 <span class="comment">%   PLOTERR(X,Y,{LX,UX},{LY,UY}) plots the graph of vector X vs. vector Y</span>
+0086 <span class="comment">%   with error bars specified by LX and UX in horizontal direction and</span>
+0087 <span class="comment">%   with error bars specified by LY and UY in vertical direction.</span>
+0088 <span class="comment">%   H = PLOTERR(...) returns a vector of line handles in this order:</span>
+0089 <span class="comment">%      H(1) = handle to datapoints</span>
+0090 <span class="comment">%      H(2) = handle to errorbar y OR errorbar x if error y not specified</span>
+0091 <span class="comment">%      H(3) = handle to errorbar x if error y specified</span>
+0092 <span class="comment">% LineSpec=[''LineStyle','none','LineWidth',2,'DisplayName','forwardReversible','Color','r'']</span>
+0093 LineSpec=<span class="string">'r.'</span>;
+0094 hE = <a href="../../setupThermoModel/external/ploterr.html" class="code" title="function hh = ploterr(x, y, xerr, yerr, varargin)">ploterr</a>(Y(xip),X1,{model.dGtMin(xip) model.dGtMax(xip)},[],LineSpec,<span class="string">'hhxy'</span>,0);
+0095 set(hE(2),<span class="string">'LineWidth'</span>,10);
+0096 <span class="comment">% hE=errorbar(X1,Y(xip),L(xip),U(xip),'LineStyle','none','LineWidth',2,'DisplayName','forwardReversible','Color','r');</span>
+0097 <span class="comment">%dGrt0 errorbar on top and inside dGrt</span>
+0098 LineSpec=<span class="string">'b.'</span>;
+0099 hE = <a href="../../setupThermoModel/external/ploterr.html" class="code" title="function hh = ploterr(x, y, xerr, yerr, varargin)">ploterr</a>(Y0(xip),X1,{model.dGt0Min(xip) model.dGt0Max(xip)},[],LineSpec,<span class="string">'hhxy'</span>,0);
+0100 set(hE(2),<span class="string">'LineWidth'</span>,10);
+0101 <span class="comment">% hE2=errorbar(X1,Y0(xip),L0(xip),U0(xip),'LineStyle','none','LineWidth',2,'DisplayName','forwardReversible','Color','b');</span>
+0102 
+0103 <span class="comment">%mean dGrt0</span>
+0104 plot(Y0(xip),X1,<span class="string">'.'</span>,<span class="string">'LineStyle'</span>,<span class="string">'none'</span>,<span class="string">'Color'</span>,[0.3412 0.7961 0.1922]);
+0105 <span class="comment">%zero line</span>
+0106 <span class="comment">%cumulative probability that reaction is really forward, assuming a</span>
+0107 <span class="comment">%normal distribution about the mean dGt0</span>
+0108 [AX,H1,H2]=plotyy(zeros(1,length(X1)),X1,P(xip),X1);
+0109 set(gca,<span class="string">'XTick'</span>,[]);
+0110 set(AX(1),<span class="string">'XTickMode'</span>,<span class="string">'manual'</span>,<span class="string">'YTick'</span>,floor(minX/100)*200:50:maxX);<span class="comment">%,'TickDirMode','manual','TickDir','out');</span>
+0111 set(AX(2),<span class="string">'YTick'</span>,1:length(xip));
+0112 set(H1,<span class="string">'LineStyle'</span>,<span class="string">'none'</span>)
+0113 set(H2,<span class="string">'LineStyle'</span>,<span class="string">'-'</span>,<span class="string">'LineWidth'</span>,2,<span class="string">'Color'</span>,<span class="string">'k'</span>)
+0114 plot(zeros(1,length(X1)),X1,<span class="string">'w'</span>,<span class="string">'LineWidth'</span>,2,<span class="string">'LineStyle'</span>,<span class="string">'--'</span>);
+0115 <span class="comment">%axis limits</span>
+0116 set(AX(1),<span class="string">'FontSize'</span>,16,<span class="string">'YColor'</span>,<span class="string">'k'</span>)
+0117 set(AX(1),<span class="string">'YTick'</span>,[],<span class="string">'YTickLabelMode'</span>,<span class="string">'manual'</span>);
+0118 set(AX(1),<span class="string">'XTickMode'</span>,<span class="string">'manual'</span>,<span class="string">'XTick'</span>,floor(minX/100)*200:50:maxX);
+0119 set(get(AX(1),<span class="string">'Xlabel'</span>),<span class="string">'String'</span>,<span class="string">'\Delta_{r}G^{\primem}  (blue)    or     \Delta_{r}G^{\prime} (red) (kJ/mol)'</span>)
+0120 set(get(AX(1),<span class="string">'Xlabel'</span>),<span class="string">'FontSize'</span>,16)
+0121 set(AX(1),<span class="string">'Position'</span>,[0.05 0.1 0.4 0.8]);
+0122 axis(AX(1),[minX maxX 0.5 length(X1)+0.5 ]);
+0123 <span class="comment">% axis(AX(1),[-250 250 0 length(X1)+0.5 ]);</span>
+0124 
+0125 set(AX(2),<span class="string">'FontSize'</span>,16,<span class="string">'YColor'</span>,<span class="string">'k'</span>)
+0126 set(AX(2),<span class="string">'YTick'</span>,1:length(X1),<span class="string">'YTickLabelMode'</span>,<span class="string">'manual'</span>);
+0127 set(AX(2),<span class="string">'XAxisLocation'</span>,<span class="string">'top'</span>);
+0128 set(get(AX(2),<span class="string">'Xlabel'</span>),<span class="string">'String'</span>,<span class="string">'P(\Delta_{r}G^{\primem}&lt;0)'</span>);
+0129 set(get(AX(2),<span class="string">'Xlabel'</span>),<span class="string">'FontSize'</span>,16);
+0130 axis(AX(2),[0 1 0.5 length(X1)+0.5 ]);
+0131 set(AX(2),<span class="string">'Position'</span>,[0.05 0.1 0.4 0.8]);
+0132 
+0133 <span class="comment">% ylabel('Reactions, sorted by P(\Delta_{r}G^{\primem}&lt;0) (blue)');</span>
+0134 title(<span class="string">'Qualitatively forward, but probably quantitatively reverse, using group contribution estimates of \Delta_{r}G^{\primem}.'</span>,<span class="string">'FontSize'</span>,16)
+0135 
+0136 <span class="keyword">for</span> n=1:length(xip)
+0137 <span class="comment">%     textLen(n)=length(model.rxn(xip(n)).officialName)+length(model.rxn(xip(n)).equation);</span>
+0138 <span class="comment">%     textLen(n)=length(model.rxn(xip(n)).equation);</span>
+0139    textLen(n)=length(model.rxn(xip(n)).officialName);
+0140 <span class="keyword">end</span>
+0141 textLenMax=max(textLen);
+0142 <span class="keyword">for</span> n=1:length(xip)
+0143 <span class="comment">%     YTickLabel{n}=[model.rxn(xip(n)).officialName blanks(textLenMax-textLen(n)+5) model.rxn(xip(n)).equation];</span>
+0144     YTickLabel{n}=[model.rxn(xip(n)).officialName <span class="string">' '</span> model.rxn(xip(n)).equation];
+0145     <span class="comment">%get rid of the cytoplasmic compartment abbreviations</span>
+0146     YTickLabel{n} = strrep(YTickLabel{n}, <span class="string">'[c]'</span>, <span class="string">''</span>);
+0147     
+0148    <span class="comment">% no idea why this does not work</span>
+0149    <span class="comment">%     fprintf('%s\n',[model.rxn(xip(n)).officialName blanks(textLenMax-textLen(n)+5) model.rxn(xip(n)).equation]);</span>
+0150 <span class="keyword">end</span>
+0151 set(AX(2),<span class="string">'YTickLabel'</span>,YTickLabel,<span class="string">'FontSize'</span>,16);
+0152 saveas(figure1 ,<span class="string">'fwdProbReverseGC'</span>,<span class="string">'fig'</span>);
+0153 
+0154 <span class="comment">%change back</span>
+0155 <span class="keyword">if</span> miliMolarStandard
+0156     model.dGt0Min=dGt0Min;
+0157     model.dGt0Max=dGt0Max;
+0158 <span class="keyword">end</span>
+0159 
+0160 
+0161 <span class="comment">%horizontal bar</span>
+0162 horizontal=0;
+0163 <span class="keyword">if</span> horizontal
+0164     [nMet,nRxn]=size(model.S);
+0165     <span class="keyword">if</span> miliMolarStandard
+0166         dGt0Min=model.dGt0Min;
+0167         dGt0Max=model.dGt0Max;
+0168         <span class="keyword">for</span> n=1:nRxn
+0169             model.dGt0Min(n)=model.rxn(n).dGtmMMin;
+0170             model.dGt0Max(n)=model.rxn(n).dGtmMMax;
+0171         <span class="keyword">end</span>
+0172     <span class="keyword">end</span>
+0173     <span class="comment">%forward possibly reversible</span>
+0174     dGfGCforwardReversibleBool=directions.ChangeForwardReversibleBool_dGfGC;
+0175     <span class="comment">%forward, probably reverse</span>
+0176     fwdProbReverse=directions.ChangeForwardReversibleBool_dGfGC_byConcRHS | <span class="keyword">...</span>
+0177         directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS | <span class="keyword">...</span>
+0178         directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS;
+0179     
+0180     <span class="comment">%plot regions 5,6,7, with region 6 shaded</span>
+0181     X1=1:nRxn;
+0182     <span class="comment">%dGrt0</span>
+0183     Y0=(model.dGt0Min+model.dGt0Max)/2;
+0184     L0=Y0-model.dGt0Min;
+0185     U0=model.dGt0Max-Y0;
+0186     <span class="comment">%dGrt</span>
+0187     Y=(model.dGtMin+model.dGtMax)/2;
+0188     L=Y-model.dGtMin;
+0189     U=model.dGtMax-Y;
+0190     <span class="comment">%find the amount of reactions with normal cumulative distribution over</span>
+0191     <span class="comment">%range of dGt0</span>
+0192     P = normcdf(0,Y0,L0);
+0193     <span class="comment">%sort by probability that a reaction is forward (puts any NaN first)</span>
+0194     [tmp,xip]=sort(P,<span class="string">'descend'</span>);
+0195     <span class="comment">%     only take the indices of the problematic reactions, but be sure to</span>
+0196     <span class="comment">%     take them in order of descending P</span>
+0197     xip2=zeros(nnz(fwdProbReverse),1);
+0198     p=1;
+0199     <span class="keyword">for</span> n=1:nRxn
+0200         <span class="keyword">if</span> fwdProbReverse(xip(n))
+0201             xip2(p)=xip(n);
+0202             p=p+1;
+0203         <span class="keyword">end</span>
+0204     <span class="keyword">end</span>
+0205     xip=xip2;
+0206     X1=1:length(xip);
+0207     
+0208     <span class="comment">%replace the NaN due to zero st dev</span>
+0209     nNaNpRHS=nnz(directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS);
+0210     <span class="keyword">if</span> nNaNpRHS~=nnz(isnan((P(fwdProbReverse))))
+0211         warning(<span class="string">'ExtraCategory'</span>);
+0212     <span class="keyword">end</span>
+0213     <span class="comment">%nans are first in the ordering of indexes</span>
+0214     NaNPInd=xip(1:nNaNpRHS);
+0215     <span class="comment">%sorts indices of the zero std dev met by their mean dG0t</span>
+0216     [tmp,xipNaNPInd]=sort(Y0(NaNPInd));
+0217     <span class="comment">%new ordering with NaNs sorted to right</span>
+0218     xip=[xip(nNaNpRHS+1:end); NaNPInd(xipNaNPInd(1:nNaNpRHS))];
+0219     
+0220     figure1 = figure(<span class="string">'PaperSize'</span>,[11 8.5],<span class="string">'PaperOrientation'</span>,<span class="string">'landscape'</span>);
+0221     <span class="comment">% Create axes</span>
+0222     axes1 = axes(<span class="string">'Parent'</span>,figure1,<span class="string">'Color'</span>,[0.702 0.7804 1]);
+0223     hold on;
+0224     <span class="comment">%upper and lower Y</span>
+0225     minY=min(model.dGtMin(fwdProbReverse));
+0226     maxY=max(model.dGtMax(fwdProbReverse));
+0227     <span class="comment">%baselines</span>
+0228     PreversibleBar_byConcRHS=ones(1,nRxn)*minY;
+0229     <span class="comment">%bar for 6</span>
+0230     PreversibleBar_byConcRHS(directions.ChangeForwardReversibleBool_dGfGC_byConcRHS &amp; directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS)=maxY;
+0231     bar_handle6=bar(X1,PreversibleBar_byConcRHS(xip),1,<span class="string">'BaseValue'</span>,minY,<span class="string">'FaceColor'</span>,[0.86 0.86 0.86],<span class="string">'EdgeColor'</span>,<span class="string">'none'</span>);
+0232     
+0233     <span class="comment">%dGrt errorbar</span>
+0234     hE=errorbar(X1,Y(xip),L(xip),U(xip),<span class="string">'LineStyle'</span>,<span class="string">'none'</span>,<span class="string">'LineWidth'</span>,2,<span class="string">'DisplayName'</span>,<span class="string">'forwardReversible'</span>,<span class="string">'Color'</span>,<span class="string">'r'</span>);
+0235     <span class="comment">% adjust error bar width</span>
+0236     hE_c=get(hE, <span class="string">'Children'</span>);
+0237     errorbarXData= get(hE_c(2), <span class="string">'XData'</span>);
+0238     errorbarXData(4:9:end) = errorbarXData(1:9:end) - 0;
+0239     errorbarXData(7:9:end) = errorbarXData(1:9:end) - 0;
+0240     errorbarXData(5:9:end) = errorbarXData(1:9:end) + 0;
+0241     errorbarXData(8:9:end) = errorbarXData(1:9:end) + 0;
+0242     set(hE_c(2), <span class="string">'XData'</span>, errorbarXData);
+0243     <span class="comment">%dGrt0 errorbar on top and inside dGrt</span>
+0244     hE2=errorbar(X1,Y0(xip),L0(xip),U0(xip),<span class="string">'LineStyle'</span>,<span class="string">'none'</span>,<span class="string">'LineWidth'</span>,2,<span class="string">'DisplayName'</span>,<span class="string">'forwardReversible'</span>,<span class="string">'Color'</span>,<span class="string">'b'</span>);
+0245     <span class="comment">% adjust error bar width</span>
+0246     hE_c=get(hE2, <span class="string">'Children'</span>);
+0247     errorbarXData= get(hE_c(2), <span class="string">'XData'</span>);
+0248     errorbarXData(4:9:end) = errorbarXData(1:9:end) - 0;
+0249     errorbarXData(7:9:end) = errorbarXData(1:9:end) - 0;
+0250     errorbarXData(5:9:end) = errorbarXData(1:9:end) + 0;
+0251     errorbarXData(8:9:end) = errorbarXData(1:9:end) + 0;
+0252     set(hE_c(2), <span class="string">'XData'</span>, errorbarXData);
+0253     
+0254     <span class="comment">%mean dGrt0</span>
+0255     plot(X1,Y0(xip),<span class="string">'.'</span>,<span class="string">'LineStyle'</span>,<span class="string">'none'</span>,<span class="string">'Color'</span>,[0.3412 0.7961 0.1922]);
+0256     <span class="comment">%zero line</span>
+0257     <span class="comment">%cumulative probability that reaction is really forward, assuming a</span>
+0258     <span class="comment">%normal distribution about the mean dGt0</span>
+0259     [AX,H1,H2]=plotyy(X1,zeros(1,length(X1)),X1,P(xip));
+0260     set(AX(1),<span class="string">'YTickMode'</span>,<span class="string">'manual'</span>,<span class="string">'YTick'</span>,floor(minY/100)*200:50:maxY);<span class="comment">%,'TickDirMode','manual','TickDir','out');</span>
+0261     set(AX(2),<span class="string">'YTick'</span>,[0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1]);
+0262     set(H1,<span class="string">'LineStyle'</span>,<span class="string">'none'</span>)
+0263     set(H2,<span class="string">'LineStyle'</span>,<span class="string">'-'</span>,<span class="string">'LineWidth'</span>,2,<span class="string">'Color'</span>,<span class="string">'k'</span>)
+0264     plot(X1,zeros(1,length(X1)),<span class="string">'w'</span>,<span class="string">'LineWidth'</span>,2,<span class="string">'LineStyle'</span>,<span class="string">'--'</span>);
+0265     <span class="comment">%axis limits</span>
+0266     axis(AX(1),[0 length(X1) minY maxY])
+0267     set(AX(1),<span class="string">'FontSize'</span>,16)
+0268     set(AX(2),<span class="string">'FontSize'</span>,16,<span class="string">'YColor'</span>,<span class="string">'k'</span>)
+0269     axis(AX(2),[0 length(X1) 0 1])
+0270     title({<span class="string">'Qualitatively forward, but quantitatively reversible'</span> ; <span class="string">'using group contribution estimates of \Delta_{r}G^{\primem}.'</span>},<span class="string">'FontSize'</span>,16)
+0271     set(get(AX(1),<span class="string">'Ylabel'</span>),<span class="string">'String'</span>,<span class="string">'\Delta_{r}G^{\primem}  (blue)    or     \Delta_{r}G^{\prime} (red) (kJ/mol)'</span>)
+0272     set(get(AX(2),<span class="string">'Ylabel'</span>),<span class="string">'String'</span>,<span class="string">'P(\Delta_{r}G^{\primem}&lt;0)'</span>)
+0273     set(get(AX(1),<span class="string">'Ylabel'</span>),<span class="string">'FontSize'</span>,16)
+0274     set(get(AX(2),<span class="string">'Ylabel'</span>),<span class="string">'FontSize'</span>,16)
+0275     xlabel(<span class="string">'Reactions, sorted by P(\Delta_{r}G^{\primem}&lt;0) (blue)'</span>);
+0276     saveas(figure1 ,<span class="string">'GCfwdProbFwd'</span>,<span class="string">'fig'</span>);
+0277     
+0278     <span class="comment">%change back</span>
+0279     <span class="keyword">if</span> miliMolarStandard
+0280         model.dGt0Min=dGt0Min;
+0281         model.dGt0Max=dGt0Max;
+0282     <span class="keyword">end</span>
+0283 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,833 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of calcdGHT</title>
+  <meta name="keywords" content="calcdGHT">
+  <meta name="description" content="calculates the standard transformed Gibbs energy of a reactant">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html setupThermoModel --><!-- menu.html alberty -->
+<h1>calcdGHT
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>calculates the standard transformed Gibbs energy of a reactant</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [dGf0,dHf0,mf,aveHbound,aveZi,lambda,gpfnsp]=calcdGHT(dGzero,dHzero,zi,nH,pHr,is,temp,chi,Legendre,LegendreCHI) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> calculates the standard transformed Gibbs energy of a reactant
+
+ reproduces the function of T (in Kelvin), pHa (electrode pH), and ionic strength (is) that
+ gives the standard transformed Gibbs energy of formation of a reactant
+ (sum of species) and the standard transformed enthalpy of a reactant.
+
+INPUT
+ One row for each species of the reactant
+  dGzero      standard Gibbs energy of formation at 298.15 K
+  zi          electric charge
+  nH          number of hydrogen atoms in each species
+  pHr         real pH of 5 to 9 (see realpH.m)
+  is          ionic strength 0 to 0.35 M
+  temp        temperature 273.15 K to 313.15 K
+
+OPTIONAL INPUT
+ dHzero      standard enthalpy of formation at 298.15 K
+ chi         electrical potential
+ Legendre    {(1),0} Legendre Transformation for specifc pHr?
+ LegendreCHI {(1),0} Legendre Transformation for specifc electrical potential?
+
+OUTPUT
+ dGf0        reactant standard transformed Gibbs energy of formation
+ dHf0        reactant standard transformed enthalpy of formation
+ mf          mole fraction of each species within a pseudoisomer group
+ aveHbound   average number of protons bound to a reactant
+ aveZi       average charge of a reactant
+ lambda      activity coefficient for each metabolite species
+ gpfnsp      metabolite species standard transformed Gibbs energy of formation
+
+OPTIONAL OUTPUT (dependency on multiple precision toolbox)
+ dHf0        standard transformed enthalpy of formation
+
+The values of the standard transformed Gibbs energy of formation
+and the standard transformed enthalpy of formation can be calculated
+temperature in the range 273.15 K to 313.15 K, using the van't Hoff equation.
+pHr in the range 5 to 9 (these correspond to the pH range of the species in Alberty's tables)
+ionic strength in the range 0 to 0.35 M
+See Mathematica program calcdGHT p289 Alberty 2003
+
+The changes in the values of standard transformed Gibbs energy of formation
+and the standard transformed enthalpy of formation might be improved if
+knowlegde of standard molar heat capacity was available for each species
+See p41 Alberty 2003
+
+ Multiple Precision Toolbox for MATLAB by Ben Barrowes (mptoolbox_1.1)
+ http://www.mathworks.com/matlabcentral/fileexchange/6446
+
+ Ronan M.T. Fleming</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../setupThermoModel/external/maxstar.html" class="code" title="function y = maxstar(x, w, dim)">maxstar</a>	maxstar   Log of a sum of exponentials.</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="acidDissociationConstant.html" class="code" title="function [Ka,pKa]=acidDissociationConstant(metAbbr,Alberty2006,metAbbrAlbertyAbbr,temp,is,chi)">acidDissociationConstant</a>	acid dissociation constant for the different metabolite species that make up a reactant</li><li><a href="moleFraction.html" class="code" title="function mf=moleFraction(metAbbr,Alberty2006,metAbbrAlbertyAbbr,temp,pHa,is,chi)">moleFraction</a>	mole fraction of different metabolite species that make up a reactant</li><li><a href="../../setupThermoModel/firstPass/assignThermoToModel.html" class="code" title="function model=assignThermoToModel(model,Alberty2006,computedSpeciesData,temp,PHR,IS,CHI,compartments,NaNdGf0GCMetBool,Legendre,LegendreCHI,useKeqData,printToFile)">assignThermoToModel</a>	Assigns thermodynamic data to model at given temperature, pH, ionic strength and electrical potential.</li><li><a href="../../setupThermoModel/testing/testInterCompartmentRxn.html" class="code" title="function [dGt,dGt0,dGft,dGft0,SpH,aveHbound,aveZi,pHVec,isVec,chiVec]=testInterCompartmentRxn(model,rxnAbbr,PHmin,PHmax,ISmin,ISmax,CHImin,CHImax,N)">testInterCompartmentRxn</a>	Calculates the transformed Gibbs energy for a reaction and</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function y = maxstar(x, w, dim)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [dGf0,dHf0,mf,aveHbound,aveZi,lambda,gpfnsp]=calcdGHT(dGzero,dHzero,zi,nH,pHr,is,temp,chi,Legendre,LegendreCHI)</a>
+0002 <span class="comment">% calculates the standard transformed Gibbs energy of a reactant</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% reproduces the function of T (in Kelvin), pHa (electrode pH), and ionic strength (is) that</span>
+0005 <span class="comment">% gives the standard transformed Gibbs energy of formation of a reactant</span>
+0006 <span class="comment">% (sum of species) and the standard transformed enthalpy of a reactant.</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">%INPUT</span>
+0009 <span class="comment">% One row for each species of the reactant</span>
+0010 <span class="comment">%  dGzero      standard Gibbs energy of formation at 298.15 K</span>
+0011 <span class="comment">%  zi          electric charge</span>
+0012 <span class="comment">%  nH          number of hydrogen atoms in each species</span>
+0013 <span class="comment">%  pHr         real pH of 5 to 9 (see realpH.m)</span>
+0014 <span class="comment">%  is          ionic strength 0 to 0.35 M</span>
+0015 <span class="comment">%  temp        temperature 273.15 K to 313.15 K</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">%OPTIONAL INPUT</span>
+0018 <span class="comment">% dHzero      standard enthalpy of formation at 298.15 K</span>
+0019 <span class="comment">% chi         electrical potential</span>
+0020 <span class="comment">% Legendre    {(1),0} Legendre Transformation for specifc pHr?</span>
+0021 <span class="comment">% LegendreCHI {(1),0} Legendre Transformation for specifc electrical potential?</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">%OUTPUT</span>
+0024 <span class="comment">% dGf0        reactant standard transformed Gibbs energy of formation</span>
+0025 <span class="comment">% dHf0        reactant standard transformed enthalpy of formation</span>
+0026 <span class="comment">% mf          mole fraction of each species within a pseudoisomer group</span>
+0027 <span class="comment">% aveHbound   average number of protons bound to a reactant</span>
+0028 <span class="comment">% aveZi       average charge of a reactant</span>
+0029 <span class="comment">% lambda      activity coefficient for each metabolite species</span>
+0030 <span class="comment">% gpfnsp      metabolite species standard transformed Gibbs energy of formation</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">%OPTIONAL OUTPUT (dependency on multiple precision toolbox)</span>
+0033 <span class="comment">% dHf0        standard transformed enthalpy of formation</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">%The values of the standard transformed Gibbs energy of formation</span>
+0036 <span class="comment">%and the standard transformed enthalpy of formation can be calculated</span>
+0037 <span class="comment">%temperature in the range 273.15 K to 313.15 K, using the van't Hoff equation.</span>
+0038 <span class="comment">%pHr in the range 5 to 9 (these correspond to the pH range of the species in Alberty's tables)</span>
+0039 <span class="comment">%ionic strength in the range 0 to 0.35 M</span>
+0040 <span class="comment">%See Mathematica program calcdGHT p289 Alberty 2003</span>
+0041 <span class="comment">%</span>
+0042 <span class="comment">%The changes in the values of standard transformed Gibbs energy of formation</span>
+0043 <span class="comment">%and the standard transformed enthalpy of formation might be improved if</span>
+0044 <span class="comment">%knowlegde of standard molar heat capacity was available for each species</span>
+0045 <span class="comment">%See p41 Alberty 2003</span>
+0046 <span class="comment">%</span>
+0047 <span class="comment">% Multiple Precision Toolbox for MATLAB by Ben Barrowes (mptoolbox_1.1)</span>
+0048 <span class="comment">% http://www.mathworks.com/matlabcentral/fileexchange/6446</span>
+0049 <span class="comment">%</span>
+0050 <span class="comment">% Ronan M.T. Fleming</span>
+0051 
+0052 <span class="keyword">if</span> pHr&lt;5 || pHr&gt;9
+0053     <span class="keyword">if</span> 0
+0054         error(<span class="string">'pHr out of applicable range, 5 - 9.'</span>);
+0055     <span class="keyword">else</span>
+0056         warning(<span class="string">'pHr out of applicable range, 5 - 9.'</span>);
+0057     <span class="keyword">end</span>
+0058 <span class="keyword">end</span>
+0059 <span class="keyword">if</span> temp&lt;273.15 || temp&gt;313.15
+0060     error(<span class="string">'temperature out of applicable range, 273.15 - 313.15'</span>);
+0061 <span class="keyword">end</span>
+0062 <span class="keyword">if</span> is&lt;0 || is&gt;0.35
+0063     error(<span class="string">'ionic strength out of applicable range, 0 - 0.35'</span>);
+0064 <span class="keyword">end</span>
+0065 
+0066 <span class="keyword">if</span> ~exist(<span class="string">'Legendre'</span>,<span class="string">'var'</span>)
+0067     Legendre=1;
+0068 <span class="keyword">end</span>
+0069 <span class="keyword">if</span> ~exist(<span class="string">'LegendreCHI'</span>,<span class="string">'var'</span>)
+0070     LegendreCHI=1;
+0071 <span class="keyword">end</span>
+0072 
+0073 <span class="comment">%check if multiple precision toolbox is properly installed</span>
+0074 <span class="keyword">if</span> strcmp(which(<span class="string">'mp'</span>),<span class="string">''</span>)
+0075     fprintf(<span class="string">'%s\n'</span>,<span class="string">'No multiple precision toolbox: NaN returned if exp(x) gets too large'</span>);
+0076     R=8.31451;
+0077     <span class="comment">%Energies are expressed in kJ mol^-1.*)</span>
+0078     R=R/1000;
+0079     <span class="comment">%standard temperature with a capital T</span>
+0080     T=298.15;
+0081 
+0082     <span class="comment">%Faraday Constant (kJ/mol)</span>
+0083     F=96.48; <span class="comment">%kJ/mol</span>
+0084     
+0085     p=9.20483;
+0086     q=10^3;
+0087     r=1.284668;
+0088     s=10^5;
+0089     u=4.95199;
+0090     v=10^8;
+0091     <span class="comment">% Eq. 3.7-3 p48 Alberty 2003</span>
+0092     <span class="comment">% Around 298.15K</span>
+0093     <span class="comment">% alpha = 1.10708 - 1.54508*temp/(10^3) +5.95584*temp^2/(10^6)</span>
+0094     <span class="comment">% Eq. 3.7-4 p49 Alberty 2003</span>
+0095     <span class="comment">% R*T*alpha, where alpha is the temperature dependent coeffficient, sometimes A,</span>
+0096     <span class="comment">% in the extended Debye-Huckel equation</span>
+0097     gibbscoeff = (9.20483*temp)/10^3 - (1.284668*temp^2)/10^5 + (4.95199*temp^3)/10^8;
+0098 
+0099     
+0100     <span class="comment">%If standard enthalpy of formation is known, and independent of</span>
+0101     <span class="comment">%temperature an adjustment for temperature can be made.</span>
+0102     <span class="comment">%(calcdGHT p289 Alberty 2003)</span>
+0103     <span class="keyword">if</span> isempty(dHzero) 
+0104         <span class="comment">%dGzeroT = (dGzero*temp)/T + dHzero*(1 - temp/T);</span>
+0105         dGzeroT = dGzero;<span class="comment">%(dGzero*temp)/T + dHzero*(1 - temp/T);</span>
+0106     <span class="keyword">else</span>
+0107         <span class="comment">% van't Hoff equation</span>
+0108         dGzeroT = (dGzero*temp)/T + dHzero*(1 - temp/T);
+0109     <span class="keyword">end</span>
+0110 
+0111     <span class="comment">%pHr</span>
+0112     <span class="keyword">if</span> Legendre
+0113         <span class="comment">%Eq. 4.4-9/10 p67 Alberty 2003</span>
+0114         <span class="comment">%note the use of culture temperature</span>
+0115         pHterm = nH*R*temp*log(10^-pHr);
+0116         <span class="comment">%Eq 4.4-10 Alberty 2003 with temp dependent gibbscoeff</span>
+0117         istermG = (gibbscoeff*(zi.^2 - nH)*is^0.5)/(1 + 1.6*is^0.5);
+0118     <span class="keyword">else</span>
+0119         <span class="comment">%no Legendre transformation for pHr</span>
+0120         pHterm = 0;
+0121         <span class="comment">%Eq 3.6-3 Alberty 2003 with temp dependent gibbscoeff</span>
+0122         istermG = (gibbscoeff*(zi.^2)*is^0.5)/(1 + 1.6*is^0.5); <span class="comment">%omit the -nH if  no Legendre</span>
+0123     <span class="keyword">end</span>
+0124     
+0125     <span class="keyword">if</span> LegendreCHI
+0126         <span class="keyword">if</span> 0
+0127         <span class="comment">%By convention, we assume the chemical potential of a metabolite</span>
+0128         <span class="comment">%includes an electrical potential term</span>
+0129         <span class="comment">% u = u0 + RT*log(activity) + F*zi*chi;</span>
+0130         <span class="comment">%The Legendre transformation for electrical potential is</span>
+0131         <span class="comment">% u' = u -  F*zi*chi = u0 + RT*log(activity);</span>
+0132         <span class="comment">%So this negates the effect of an electrical term.</span>
+0133         
+0134         <span class="comment">%Legendre Transformation for Electrical Potential</span>
+0135         electricalTerm=0;
+0136         <span class="comment">%eq 8.5-1 p148 Alberty 2003</span>
+0137         
+0138         <span class="comment">%The charge and change in chemical potential for multiphase</span>
+0139         <span class="comment">%reactions is taken into account in</span>
+0140         <span class="comment">%deltaG0concFluxConstraintBounds.m</span>
+0141         <span class="keyword">else</span>
+0142            electricalTerm=-(F*(chi/1000))*zi;
+0143         <span class="keyword">end</span>
+0144     <span class="keyword">else</span>
+0145         <span class="comment">%No Legendre Transformation for Electrical Potential</span>
+0146         electricalTerm=-(F*(chi/1000))*zi;
+0147     <span class="keyword">end</span>
+0148 
+0149     <span class="comment">%standard transformed Gibbs energy of each species</span>
+0150     gpfnsp = dGzeroT - pHterm - istermG - electricalTerm;
+0151 
+0152     <span class="comment">%isomer group thermodynamic standard transformed Gibbs energy of</span>
+0153     <span class="comment">%formation for a reactant with more than one metabolite species</span>
+0154     <span class="keyword">if</span> length(dGzero)==1
+0155         dGf0=gpfnsp;
+0156     <span class="keyword">else</span>
+0157         <span class="comment">%need to approximate log(sum(exp(-gpfnsp/(R*temp))));</span>
+0158         dGf0 = -R*temp*<a href="../../setupThermoModel/external/maxstar.html" class="code" title="function y = maxstar(x, w, dim)">maxstar</a>(-gpfnsp/(R*temp));
+0159     <span class="keyword">end</span>
+0160     
+0161     <span class="comment">%Mole fraction</span>
+0162     <span class="comment">%see 3.5-12 p45 Alberty 2003</span>
+0163     mf=exp((dGf0-gpfnsp)/(R*temp));
+0164 <span class="comment">%     fprintf('%s\n','Cannot calculate mole fractions without multiple</span>
+0165 <span class="comment">%     precision toolbox');</span>
+0166 
+0167     <span class="comment">%activity coefficient</span>
+0168     lambda=double(exp(-(gibbscoeff*(zi.^2)*is^0.5)/(1 + 1.6*is^0.5)/(R*temp)));
+0169     
+0170     <span class="comment">%average number of H+ ions bound by a reactant</span>
+0171     aveHbound=mf'*nH;
+0172    
+0173     <span class="comment">%average charge of a reactant</span>
+0174     aveZi=mf'*zi;
+0175 <span class="comment">%     fprintf('%s\n',int2str(length(dGzero)));</span>
+0176 
+0177     <span class="comment">%isomer group thermodynamic standard transformed Enthalpy of</span>
+0178     <span class="comment">%formation for a reactant</span>
+0179     <span class="comment">%%%%%%% makes script faster to leave this out for now.</span>
+0180     dHzero=[];
+0181     <span class="keyword">if</span> ~isempty(dHzero)
+0182         <span class="comment">%make temperature a smaller variable</span>
+0183         t=temp;
+0184         <span class="keyword">switch</span> length(dGzero)
+0185             <span class="keyword">case</span> 1
+0186                 <span class="comment">%corresponds to Simplify[-(t^2*D[dGf0/t, t])] in Albertys code for</span>
+0187                 <span class="comment">%one species reactant</span>
+0188                 <span class="comment">%see Mathematica file dHfn.nb</span>
+0189                 A=dGzero(1);
+0190                 B=dHzero(1);
+0191                 C=zi(1);
+0192                 D=nH(1);
+0193                 dHf0 =(B*(1+1.6*is^0.5)*s*v + (C^2)*(is^0.5)*(t^2)*(2*s*t*u-r*v)+D*(is^0.5)*(t^2)*(-2*s*t*u+r*v)) / ((1+1.6*is^0.5)*s*v);
+0194                 
+0195                 <span class="keyword">if</span> isnan(dHf0)
+0196                     error(<span class="string">'No multiple precision toolbox: NaN returned if exp(x) gets too large'</span>)
+0197                 <span class="keyword">end</span>
+0198             <span class="keyword">case</span> 2
+0199                 <span class="comment">%see Mathematica file dHfn.nb</span>
+0200                 A=dGzero(1);
+0201                 B=dHzero(1);
+0202                 C=zi(1);
+0203                 D=nH(1);
+0204                 a=dGzero(2);
+0205                 b=dHzero(2);
+0206                 c=zi(2);
+0207                 d=nH(2);
+0208                 <span class="comment">%translated to matlab from mathematica by hand</span>
+0209                 dHf0 =((10^-pHr)^d*exp(-(b*((1/t)-(1/T))+a/T-(((c^2-d)*is^0.5*(p*s*v+q*t*(s*t*u-r*v)))/((1+1.6*is^0.5)*q*s*v)))/R)*(b*(1+1.6*is^0.5)*s*v+<span class="keyword">...</span>
+0210                     c^2*is^0.5*t^2*(2*s*t*u-r*v)+d*is^0.5*t^2*(-2*s*t*u+r*v))+<span class="keyword">...</span>
+0211                     (10^-pHr)^D*exp(-(B*((1/t)-(1/T))+A/T-(((C^2-D)*is^0.5*(p*s*v+q*t*(s*t*u-r*v)))/((1+1.6*is^0.5)*q*s*v)))/R)*(B*(1+1.6*is^0.5)*s*v+<span class="keyword">...</span>
+0212                     C^2*is^0.5*t^2*(2*s*t*u-r*v)+D*is^0.5*t^2*(-2*s*t*u+r*v)))/<span class="keyword">...</span>
+0213                     (((10^-pHr)^d*exp((b*((-1/t)+(1/T))-a/T+(((c^2-d)*is^0.5*(p*s*v+q*t*(s*t*u-r*v)))/((1+1.6*is^0.5)*q*s*v)))/R)+<span class="keyword">...</span>
+0214                     (10^-pHr)^D*exp((B*((-1/t)+(1/T))-A/T+(((C^2-D)*is^0.5*(p*s*v+q*t*(s*t*u-r*v)))/((1+1.6*is^0.5)*q*s*v)))/R))*(1+1.6*is^0.5)*s*v);
+0215                 <span class="comment">%         Mathematica Expression to Matlab m-file Converter by Harri Ojanen, Rutgers University</span>
+0216                 <span class="comment">%         dHfn2=((10.^((-1).*pHr)).^d.*exp(R.^(-1).*(b.*((-1).*t.^(-1)+T.^(-1))+(-1).*a.* ...</span>
+0217                 <span class="comment">%             T.^(-1)+0.1E1.*(c.^2+(-0.1E1).*d).*(0.1E1+0.16E1.*is.^0.5E0).^(-1).* ...</span>
+0218                 <span class="comment">%             is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*(s.*t.*u+(-0.1E1).* ...</span>
+0219                 <span class="comment">%             r.*v))))+(10.^((-1).*pHr)).^D.*exp(R.^(-1).*(B.*((-1).*t.^(-1)+T.^(-1))+( ...</span>
+0220                 <span class="comment">%             -1).*A.*T.^(-1)+0.1E1.*(C.^2+(-0.1E1).*D).*(0.1E1+0.16E1.*is.^0.5E0).^( ...</span>
+0221                 <span class="comment">%             -1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*(s.*t.*u+( ...</span>
+0222                 <span class="comment">%             -0.1E1).*r.*v))))).^(-1).*(0.1E1+0.16E1.*is.^0.5E0).^(-1).*s.^(-1).*v.^( ...</span>
+0223                 <span class="comment">%             -1).*((10.^((-1).*pHr)).^d.*exp((-1).*R.^(-1).*(b.*(t.^(-1)+(-1).*T.^(-1) ...</span>
+0224                 <span class="comment">%             )+a.*T.^(-1)+(-0.1E1).*(c.^2+(-0.1E1).*d).*(0.1E1+0.16E1.*is.^0.5E0).^( ...</span>
+0225                 <span class="comment">%             -1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*(s.*t.*u+( ...</span>
+0226                 <span class="comment">%             -0.1E1).*r.*v)))).*(b.*(1+0.16E1.*is.^0.5E0).*s.*v+c.^2.*is.^0.5E0.* ...</span>
+0227                 <span class="comment">%             t.^2.*(0.2E1.*s.*t.*u+(-0.1E1).*r.*v)+d.*is.^0.5E0.*t.^2.*((-0.2E1).*s.* ...</span>
+0228                 <span class="comment">%             t.*u+r.*v))+(10.^((-1).*pHr)).^D.*exp((-1).*R.^(-1).*(B.*(t.^(-1)+(-1).* ...</span>
+0229                 <span class="comment">%             T.^(-1))+A.*T.^(-1)+(-0.1E1).*(C.^2+(-0.1E1).*D).*(0.1E1+0.16E1.* ...</span>
+0230                 <span class="comment">%             is.^0.5E0).^(-1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*( ...</span>
+0231                 <span class="comment">%             s.*t.*u+(-0.1E1).*r.*v)))).*(B.*(1+0.16E1.*is.^0.5E0).*s.*v+C.^2.* ...</span>
+0232                 <span class="comment">%             is.^0.5E0.*t.^2.*(0.2E1.*s.*t.*u+(-0.1E1).*r.*v)+D.*is.^0.5E0.*t.^2.*(( ...</span>
+0233                 <span class="comment">%             -0.2E1).*s.*t.*u+r.*v)));</span>
+0234                 
+0235                 <span class="keyword">if</span> isnan(dHf0)
+0236                     <span class="comment">%see Mathematica file dHfn.nb</span>
+0237                     error(<span class="string">'No multiple precision toolbox: NaN returned if exp(x) gets too large'</span>)
+0238                 <span class="keyword">end</span>
+0239             <span class="keyword">case</span> 3
+0240 
+0241                 A=dGzero(1);
+0242                 B=dHzero(1);
+0243                 C=zi(1);
+0244                 D=nH(1);
+0245                 a=dGzero(2);
+0246                 b=dHzero(2);
+0247                 c=zi(2);
+0248                 d=nH(2);
+0249                 e=dGzero(3);
+0250                 f=dHzero(3);
+0251                 g=zi(3);
+0252                 h=nH(3);
+0253                 <span class="comment">%see Mathematica file dHfn.nb</span>
+0254                 <span class="comment">%Mathematica Expression to Matlab m-file Converter by Harri Ojanen, Rutgers University</span>
+0255                 dHf0 = ((10.^((-1).*pHr)).^d.*exp(R.^(-1).*(b.*((-1).*t.^(-1)+T.^(-1))+(-1).*a.* <span class="keyword">...</span>
+0256                     T.^(-1)+0.1E1.*(c.^2+(-0.1E1).*d).*(0.1E1+0.16E1.*is.^0.5E0).^(-1).* <span class="keyword">...</span>
+0257                     is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*(s.*t.*u+(-0.1E1).* <span class="keyword">...</span>
+0258                     r.*v))))+(10.^((-1).*pHr)).^D.*exp(R.^(-1).*(B.*((-1).*t.^(-1)+T.^(-1))+( <span class="keyword">...</span>
+0259                     -1).*A.*T.^(-1)+0.1E1.*(C.^2+(-0.1E1).*D).*(0.1E1+0.16E1.*is.^0.5E0).^( <span class="keyword">...</span>
+0260                     -1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*(s.*t.*u+( <span class="keyword">...</span>
+0261                     -0.1E1).*r.*v))))+(10.^((-1).*pHr)).^h.*exp(R.^(-1).*(f.*((-1).*t.^(-1)+ <span class="keyword">...</span>
+0262                     T.^(-1))+(-1).*e.*T.^(-1)+0.1E1.*(g.^2+(-0.1E1).*h).*(0.1E1+0.16E1.* <span class="keyword">...</span>
+0263                     is.^0.5E0).^(-1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*( <span class="keyword">...</span>
+0264                     s.*t.*u+(-0.1E1).*r.*v))))).^(-1).*(0.1E1+0.16E1.*is.^0.5E0).^(-1).*s.^( <span class="keyword">...</span>
+0265                     -1).*v.^(-1).*((10.^((-1).*pHr)).^d.*exp((-1).*R.^(-1).*(b.*(t.^(-1)+(-1) <span class="keyword">...</span>
+0266                     .*T.^(-1))+a.*T.^(-1)+(-0.1E1).*(c.^2+(-0.1E1).*d).*(0.1E1+0.16E1.* <span class="keyword">...</span>
+0267                     is.^0.5E0).^(-1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*( <span class="keyword">...</span>
+0268                     s.*t.*u+(-0.1E1).*r.*v)))).*(b.*(1+0.16E1.*is.^0.5E0).*s.*v+c.^2.* <span class="keyword">...</span>
+0269                     is.^0.5E0.*t.^2.*(0.2E1.*s.*t.*u+(-0.1E1).*r.*v)+d.*is.^0.5E0.*t.^2.*(( <span class="keyword">...</span>
+0270                     -0.2E1).*s.*t.*u+r.*v))+(10.^((-1).*pHr)).^D.*exp((-1).*R.^(-1).*(B.*( <span class="keyword">...</span>
+0271                     t.^(-1)+(-1).*T.^(-1))+A.*T.^(-1)+(-0.1E1).*(C.^2+(-0.1E1).*D).*(0.1E1+ <span class="keyword">...</span>
+0272                     0.16E1.*is.^0.5E0).^(-1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.* <span class="keyword">...</span>
+0273                     v+q.*t.*(s.*t.*u+(-0.1E1).*r.*v)))).*(B.*(1+0.16E1.*is.^0.5E0).*s.*v+ <span class="keyword">...</span>
+0274                     C.^2.*is.^0.5E0.*t.^2.*(0.2E1.*s.*t.*u+(-0.1E1).*r.*v)+D.*is.^0.5E0.* <span class="keyword">...</span>
+0275                     t.^2.*((-0.2E1).*s.*t.*u+r.*v))+(10.^((-1).*pHr)).^h.*exp((-1).*R.^(-1).* <span class="keyword">...</span>
+0276                     (f.*(t.^(-1)+(-1).*T.^(-1))+e.*T.^(-1)+(-0.1E1).*(g.^2+(-0.1E1).*h).*( <span class="keyword">...</span>
+0277                     0.1E1+0.16E1.*is.^0.5E0).^(-1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*( <span class="keyword">...</span>
+0278                     p.*s.*v+q.*t.*(s.*t.*u+(-0.1E1).*r.*v)))).*(f.*(1+0.16E1.*is.^0.5E0).* <span class="keyword">...</span>
+0279                     s.*v+g.^2.*is.^0.5E0.*t.^2.*(0.2E1.*s.*t.*u+(-0.1E1).*r.*v)+h.* <span class="keyword">...</span>
+0280                     is.^0.5E0.*t.^2.*((-0.2E1).*s.*t.*u+r.*v)));
+0281 
+0282                 <span class="comment">%       dHf0 = ((10.^((-1).*pHr)).^d.*...</span>
+0283                 <span class="comment">%             exp(R.^(-1).*(b.*((-1).*t.^(-1)+T.^(-1))+(-1).*a.* ...</span>
+0284                 <span class="comment">%             T.^(-1)+0.1E1.*(c.^2+(-0.1E1).*d).*(1+1.6*is.^0.5).^(-1).* ...</span>
+0285                 <span class="comment">%             is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*(s.*t.*u+(-0.1E1).* ...</span>
+0286                 <span class="comment">%             r.*v))))...</span>
+0287                 <span class="comment">%             +(10.^((-1).*pHr)).^D.*...</span>
+0288                 <span class="comment">%             exp(R.^(-1).*(B.*((-1).*t.^(-1)+T.^(-1))+( ...</span>
+0289                 <span class="comment">%             -1).*A.*T.^(-1)+0.1E1.*(C.^2+(-0.1E1).*D).*(1+1.6*is.^0.5).^( ...</span>
+0290                 <span class="comment">%             -1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*(s.*t.*u+( ...</span>
+0291                 <span class="comment">%             -0.1E1).*r.*v))))...</span>
+0292                 <span class="comment">%             +(10.^((-1).*pHr)).^h.*...</span>
+0293                 <span class="comment">%             exp(R.^(-1).*(f.*((-1).*t.^(-1)+ ...</span>
+0294                 <span class="comment">%             T.^(-1))+(-1).*e.*T.^(-1)+0.1E1.*(g.^2+(-0.1E1).*h).*(0.1E1+0.16E1.* ...</span>
+0295                 <span class="comment">%             is.^0.5E0).^(-1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*( ...</span>
+0296                 <span class="comment">%             s.*t.*u+(-0.1E1).*r.*v))))...</span>
+0297                 <span class="comment">%             ).^(-1).*(1+1.6*is.^0.5).^(-1).*s.^(-1).*v.^(-1).*...%%% end of denominator</span>
+0298                 <span class="comment">%             ((10.^((-1).*pHr)).^d.*...</span>
+0299                 <span class="comment">%             exp((-1).*R.^(-1).*(b.*(t.^(-1)+(-1) ...</span>
+0300                 <span class="comment">%             .*T.^(-1))+a.*T.^(-1)+(-0.1E1).*(c.^2+(-0.1E1).*d).*(0.1E1+0.16E1.* ...</span>
+0301                 <span class="comment">%             is.^0.5E0).^(-1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*( ...</span>
+0302                 <span class="comment">%             s.*t.*u+(-0.1E1).*r.*v))))...</span>
+0303                 <span class="comment">%             .*(b*(1+1.6*is^0.5)*s*v...</span>
+0304                 <span class="comment">%             +c^2*is.^0.5*t^2*(2.*s.*t.*u-r*v)+d.*is.^0.5*t^2*(-2*s*t*u+r*v))...</span>
+0305                 <span class="comment">%             +(10.^((-1).*pHr)).^D.*...</span>
+0306                 <span class="comment">%             exp((-1).*R.^(-1).*(B.*( ...</span>
+0307                 <span class="comment">%             t.^(-1)+(-1).*T.^(-1))+A.*T.^(-1)+(-0.1E1).*(C.^2+(-0.1E1).*D).*(0.1E1+ ...</span>
+0308                 <span class="comment">%             0.16E1.*is.^0.5E0).^(-1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.* ...</span>
+0309                 <span class="comment">%             v+q.*t.*(s.*t.*u+(-0.1E1).*r.*v))))...</span>
+0310                 <span class="comment">%             .*(B.*(1+1.6*is.^0.5).*s.*v+ ...</span>
+0311                 <span class="comment">%             C.^2*is^0.5*t^2*(2*s*t*u-r*v)+D*is.^0.5*t^2*(-2*s*t*u+r*v))...</span>
+0312                 <span class="comment">%             +(10.^(-pHr)).^h.*...</span>
+0313                 <span class="comment">%             exp((-1).*R.^(-1).* ...</span>
+0314                 <span class="comment">%             (f.*(t.^(-1)+(-1).*T.^(-1))+e.*T.^(-1)+(-0.1E1).*(g.^2+(-0.1E1).*h).*( ...</span>
+0315                 <span class="comment">%             1+1.6*is.^0.5).^(-1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*( ...</span>
+0316                 <span class="comment">%             p.*s.*v+q.*t.*(s.*t.*u+(-0.1E1).*r.*v))))...</span>
+0317                 <span class="comment">%             *(f*(1+1.6*is.^0.5)*s*v+g^2*is^0.5*t.^2*(2*s*t*u-r*v)+h*is^0.5*t^2*(-2*s*t*u+r*v)));</span>
+0318                 <span class="comment">%</span>
+0319                 <span class="comment">%             denominatorInv = ((10.^((-1).*pHr)).^d.*...</span>
+0320                 <span class="comment">%             exp(R.^(-1).*(b.*((-1).*t.^(-1)+T.^(-1))+(-1).*a.* ...</span>
+0321                 <span class="comment">%             T.^(-1)+0.1E1.*(c.^2+(-0.1E1).*d).*(1+1.6*is.^0.5).^(-1).* ...</span>
+0322                 <span class="comment">%             is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*(s.*t.*u+(-0.1E1).* ...</span>
+0323                 <span class="comment">%             r.*v))))...</span>
+0324                 <span class="comment">%             +(10.^((-1).*pHr)).^D.*...</span>
+0325                 <span class="comment">%             exp(R.^(-1).*(B.*((-1).*t.^(-1)+T.^(-1))+( ...</span>
+0326                 <span class="comment">%             -1).*A.*T.^(-1)+0.1E1.*(C.^2+(-0.1E1).*D).*(1+1.6*is.^0.5).^( ...</span>
+0327                 <span class="comment">%             -1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*(s.*t.*u+( ...</span>
+0328                 <span class="comment">%             -0.1E1).*r.*v))))...</span>
+0329                 <span class="comment">%             +(10.^((-1).*pHr)).^h.*...</span>
+0330                 <span class="comment">%             exp(R.^(-1).*(f.*((-1).*t.^(-1)+ ...</span>
+0331                 <span class="comment">%             T.^(-1))+(-1).*e.*T.^(-1)+0.1E1.*(g.^2+(-0.1E1).*h).*(0.1E1+0.16E1.* ...</span>
+0332                 <span class="comment">%             is.^0.5E0).^(-1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*( ...</span>
+0333                 <span class="comment">%             s.*t.*u+(-0.1E1).*r.*v))))...</span>
+0334                 <span class="comment">%             ).^(-1).*(1+1.6*is.^0.5).^(-1).*s.^(-1).*v.^(-1);%%% end of denominator</span>
+0335                 <span class="comment">%</span>
+0336                 <span class="comment">%             dInv1=(10.^((-1).*pHr)).^d.*...</span>
+0337                 <span class="comment">%             exp(R.^(-1).*(b.*((-1).*t.^(-1)+T.^(-1))+(-1).*a.* ...</span>
+0338                 <span class="comment">%             T.^(-1)+0.1E1.*(c.^2+(-0.1E1).*d).*(1+1.6*is.^0.5).^(-1).* ...</span>
+0339                 <span class="comment">%             is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*(s.*t.*u+(-0.1E1).* ...</span>
+0340                 <span class="comment">%             r.*v))));</span>
+0341                 <span class="comment">%</span>
+0342                 <span class="comment">%         dInv2=(10.^((-1).*pHr)).^D.*...</span>
+0343                 <span class="comment">%             exp(R.^(-1).*(B.*((-1).*t.^(-1)+T.^(-1))+( ...</span>
+0344                 <span class="comment">%             -1).*A.*T.^(-1)+0.1E1.*(C.^2+(-0.1E1).*D).*(1+1.6*is.^0.5).^( ...</span>
+0345                 <span class="comment">%             -1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*(s.*t.*u+( ...</span>
+0346                 <span class="comment">%             -0.1E1).*r.*v))));</span>
+0347                 <span class="comment">%</span>
+0348                 <span class="comment">%         dInv3=(10.^((-1).*pHr)).^h.*...</span>
+0349                 <span class="comment">%             exp(R.^(-1).*(f.*((-1).*t.^(-1)+ ...</span>
+0350                 <span class="comment">%             T.^(-1))+(-1).*e.*T.^(-1)+0.1E1.*(g.^2+(-0.1E1).*h).*(0.1E1+0.16E1.* ...</span>
+0351                 <span class="comment">%             is.^0.5E0).^(-1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*( ...</span>
+0352                 <span class="comment">%             s.*t.*u+(-0.1E1).*r.*v))));</span>
+0353                 <span class="comment">%</span>
+0354                 <span class="comment">%         dinvEnd=(1+1.6*is.^0.5).^(-1).*s.^(-1).*v.^(-1);</span>
+0355                 <span class="comment">%</span>
+0356                 <span class="comment">%         denominatorInv=(dInv1+dInv2+dInv3)^-1*dinvEnd;</span>
+0357                 <span class="comment">%</span>
+0358                 <span class="comment">%</span>
+0359                 <span class="comment">%</span>
+0360                 <span class="comment">%</span>
+0361                 <span class="comment">%             numerator=((10.^((-1).*pHr)).^d.*...</span>
+0362                 <span class="comment">%             exp((-1).*R.^(-1).*(b.*(t.^(-1)+(-1) ...</span>
+0363                 <span class="comment">%             .*T.^(-1))+a.*T.^(-1)+(-0.1E1).*(c.^2+(-0.1E1).*d).*(0.1E1+0.16E1.* ...</span>
+0364                 <span class="comment">%             is.^0.5E0).^(-1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*( ...</span>
+0365                 <span class="comment">%             s.*t.*u+(-0.1E1).*r.*v))))...</span>
+0366                 <span class="comment">%             .*(b*(1+1.6*is^0.5)*s*v...</span>
+0367                 <span class="comment">%             +c^2*is.^0.5*t^2*(2.*s.*t.*u-r*v)+d.*is.^0.5*t^2*(-2*s*t*u+r*v))...</span>
+0368                 <span class="comment">%             +(10.^((-1).*pHr)).^D.*...</span>
+0369                 <span class="comment">%             exp((-1).*R.^(-1).*(B.*( ...</span>
+0370                 <span class="comment">%             t.^(-1)+(-1).*T.^(-1))+A.*T.^(-1)+(-0.1E1).*(C.^2+(-0.1E1).*D).*(0.1E1+ ...</span>
+0371                 <span class="comment">%             0.16E1.*is.^0.5E0).^(-1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.* ...</span>
+0372                 <span class="comment">%             v+q.*t.*(s.*t.*u+(-0.1E1).*r.*v))))...</span>
+0373                 <span class="comment">%             .*(B.*(1+1.6*is.^0.5).*s.*v+ ...</span>
+0374                 <span class="comment">%             C.^2*is^0.5*t^2*(2*s*t*u-r*v)+D*is.^0.5*t^2*(-2*s*t*u+r*v))...</span>
+0375                 <span class="comment">%             +(10.^(-pHr)).^h.*...</span>
+0376                 <span class="comment">%             exp((-1).*R.^(-1).* ...</span>
+0377                 <span class="comment">%             (f.*(t.^(-1)+(-1).*T.^(-1))+e.*T.^(-1)+(-0.1E1).*(g.^2+(-0.1E1).*h).*( ...</span>
+0378                 <span class="comment">%             1+1.6*is.^0.5).^(-1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*( ...</span>
+0379                 <span class="comment">%             p.*s.*v+q.*t.*(s.*t.*u+(-0.1E1).*r.*v))))...</span>
+0380                 <span class="comment">%             *(f*(1+1.6*is.^0.5)*s*v+g^2*is^0.5*t.^2*(2*s*t*u-r*v)+h*is^0.5*t^2*(-2*s*t*u+r*v)));</span>
+0381                 <span class="comment">%             dHf0=denominatorInv*numerator;</span>
+0382                 
+0383                 <span class="keyword">if</span> isnan(dHf0)
+0384                     <span class="comment">%see Mathematica file dHfn.nb</span>
+0385                     error(<span class="string">'No multiple precision toolbox: NaN returned if exp(x) gets too large'</span>)
+0386                 <span class="keyword">end</span>
+0387             <span class="keyword">otherwise</span>
+0388                 dHf0 = NaN;
+0389         <span class="keyword">end</span>
+0390         <span class="keyword">if</span> isnan(dHf0)
+0391             <span class="comment">%see Mathematica file dHfn.nb</span>
+0392             error(<span class="string">'Too many species in reactant so standard transformed enthalpy is NaN'</span>)
+0393         <span class="keyword">end</span>
+0394     <span class="keyword">else</span>
+0395         <span class="comment">%changed to NaN 20 July 2009</span>
+0396         dHf0=NaN;
+0397     <span class="keyword">end</span>
+0398 <span class="keyword">else</span>
+0399     <span class="comment">%     fprintf('%s\n','Using multiple precision toolbox');</span>
+0400     dGzero=mp(dGzero);
+0401     dHzero=mp(dHzero);
+0402     zi=mp(zi);
+0403     nH=mp(nH);
+0404     pHr=mp(pHr);
+0405     is=mp(is);
+0406     chi=mp(chi);
+0407     <span class="comment">%culture temp</span>
+0408     temp=mp(temp);
+0409 
+0410     R=mp(8.31451);
+0411     <span class="comment">%Energies are expressed in kJ mol^-1.*)</span>
+0412     R=R/1000;
+0413     <span class="comment">%standard temperature with a capital T</span>
+0414     T=mp(298.15);
+0415     <span class="comment">%Faraday Constant (kJ/mol)</span>
+0416     F=96.48; <span class="comment">%kJ/mol</span>
+0417     F=mp(F);
+0418     
+0419     p=mp(9.20483);
+0420     q=mp(10^3);
+0421     r=mp(1.284668);
+0422     s=mp(10^5);
+0423     u=mp(4.95199);
+0424     v=mp(10^8);
+0425 
+0426     <span class="comment">%RTalpha p 49 Alberty 2003</span>
+0427     <span class="comment">%where alpha is the Debye-Huckel Constant</span>
+0428     gibbscoeff = (9.20483*temp)/10^3 - (1.284668*temp^2)/10^5 + (4.95199*temp^3)/10^8;
+0429 
+0430     <span class="comment">%If standard enthalpy of formation is known, and independent of</span>
+0431     <span class="comment">%temperature an adjustment for temperature can be made.</span>
+0432     <span class="comment">%(calcdGHT p289 Alberty 2003)</span>
+0433     <span class="keyword">if</span> isempty(dHzero) || double(temp)==T;
+0434         <span class="comment">%dGzeroT = (dGzero*temp)/T + dHzero*(1 - temp/T);</span>
+0435         dGzeroT = dGzero;<span class="comment">%(dGzero*temp)/T + dHzero*(1 - temp/T);</span>
+0436     <span class="keyword">else</span>
+0437         dGzeroT = (dGzero*temp)/T + dHzero*(1 - temp/T);
+0438     <span class="keyword">end</span>
+0439 
+0440     <span class="comment">%pHr</span>
+0441     <span class="keyword">if</span> Legendre
+0442         <span class="comment">%Eq. 4.4-9/10 p67 Alberty 2003</span>
+0443         <span class="comment">%note the use of culture temperature</span>
+0444         pHterm = nH*R*temp*log(10^-pHr);
+0445         <span class="comment">%Eq 4.4-10 Alberty 2003 with temp dependent gibbscoeff</span>
+0446         istermG = (gibbscoeff*(zi.^2 - nH)*is^0.5)/(1 + 1.6*is^0.5);
+0447     <span class="keyword">else</span>
+0448         <span class="comment">%no Legendre transformation for pHr</span>
+0449         pHterm = 0;
+0450         <span class="comment">%Eq 3.6-3 Alberty 2003 with temp dependent gibbscoeff</span>
+0451         istermG = (gibbscoeff*(zi.^2)*is^0.5)/(1 + 1.6*is^0.5); <span class="comment">%omit the -nH if  no Legendre</span>
+0452     <span class="keyword">end</span>
+0453     
+0454     <span class="keyword">if</span> LegendreCHI
+0455         <span class="keyword">if</span> 1
+0456             <span class="comment">%By convention, we assume the chemical potential of a metabolite</span>
+0457             <span class="comment">%includes an electrical potential term</span>
+0458             <span class="comment">% u = u0 + RT*log(activity) + F*zi*chi;</span>
+0459             <span class="comment">%The Legendre transformation for electrical potential is</span>
+0460             <span class="comment">% u' = u -  F*zi*chi = u0 + RT*log(activity);</span>
+0461             <span class="comment">%So this negates the effect of an electrical term.</span>
+0462             
+0463             <span class="comment">%Legendre Transformation for Electrical Potential</span>
+0464             electricalTerm=0;
+0465             <span class="comment">%eq 8.5-1 p148 Alberty 2003</span>
+0466             
+0467             <span class="comment">%The charge and change in chemical potential for multiphase</span>
+0468             <span class="comment">%reactions is taken into account in</span>
+0469             <span class="comment">%deltaG0concFluxConstraintBounds.m</span>
+0470         <span class="keyword">else</span>
+0471             <span class="comment">%By convention, we assume the chemical potential of a metabolite</span>
+0472             <span class="comment">%includes an electrical potential term</span>
+0473             <span class="comment">% u = u0 + RT*log(activity) + F*zi*chi;</span>
+0474             electricalTerm=-(F*(chi/1000))*zi;
+0475         <span class="keyword">end</span>
+0476     <span class="keyword">else</span>
+0477         <span class="comment">%No Legendre Transformation for Electrical Potential</span>
+0478         electricalTerm=-(F*(chi/1000))*zi;
+0479     <span class="keyword">end</span>
+0480 
+0481     <span class="comment">%standard transformed Gibbs energy of each species</span>
+0482     gpfnsp = dGzeroT - pHterm - istermG - electricalTerm;
+0483 
+0484     <span class="comment">%partition function</span>
+0485     pf=sum(exp(-gpfnsp/(R*temp)));
+0486 
+0487     <span class="comment">%mole fraction</span>
+0488     <span class="keyword">if</span> length(dGzero)==1
+0489         mf=1;
+0490     <span class="keyword">else</span>
+0491         <span class="comment">%mole fraction of each species if there is more than one</span>
+0492         lin_gpfnsp=exp(-gpfnsp/(R*temp));
+0493         <span class="comment">%cast back into a double</span>
+0494         mf=double(lin_gpfnsp/pf);
+0495     <span class="keyword">end</span>
+0496     
+0497     <span class="comment">%activity coefficient</span>
+0498     lambda=double(exp(-(gibbscoeff*(zi.^2)*is^0.5)/(1 + 1.6*is^0.5)/(R*temp)));
+0499 
+0500     <span class="comment">%average number of H+ ions bound by a reactant</span>
+0501     aveHbound=mf'*double(nH);
+0502     
+0503     <span class="comment">%average number of H+ ions bound by a reactant</span>
+0504     aveZi=mf'*double(zi);
+0505 
+0506     <span class="comment">%isomer group thermodynamic standard transformed Gibbs energy of</span>
+0507     <span class="comment">%formation for a reactant with more than one metabolite species</span>
+0508     <span class="keyword">if</span> length(dGzero)==1
+0509         dGf0=gpfnsp;
+0510     <span class="keyword">else</span>
+0511         dGf0 = -R*temp*log(pf);
+0512     <span class="comment">%     dGf0 = -R*temp*maxstar(-gpfnsp/(R*temp));</span>
+0513     <span class="keyword">end</span>
+0514 
+0515     <span class="comment">%isomer group thermodynamic standard transformed Enthalpy of</span>
+0516     <span class="comment">%formation for a reactant</span>
+0517     <span class="comment">%%%%%%% makes script faster to leave this out for now.</span>
+0518     dHzero=[];
+0519     <span class="comment">%%%%%%%</span>
+0520     <span class="keyword">if</span> ~isempty(dHzero)
+0521         <span class="comment">%make temperature a smaller variable</span>
+0522         t=temp;
+0523         <span class="keyword">switch</span> length(dGzero)
+0524             <span class="keyword">case</span> 1
+0525                 <span class="comment">%corresponds to Simplify[-(t^2*D[dGf0/t, t])] in Albertys code for</span>
+0526                 <span class="comment">%one species reactant</span>
+0527                 <span class="comment">%see Mathematica file dHfn.nb</span>
+0528                 A=dGzero(1);
+0529                 B=dHzero(1);
+0530                 C=zi(1);
+0531                 D=nH(1);
+0532                 dHf0 =(B*(1+1.6*is^0.5)*s*v + (C^2)*(is^0.5)*(t^2)*(2*s*t*u-r*v)+D*(is^0.5)*(t^2)*(-2*s*t*u+r*v)) / ((1+1.6*is^0.5)*s*v);
+0533             <span class="keyword">case</span> 2
+0534                 <span class="comment">%see Mathematica file dHfn.nb</span>
+0535                 A=dGzero(1);
+0536                 B=dHzero(1);
+0537                 C=zi(1);
+0538                 D=nH(1);
+0539                 a=dGzero(2);
+0540                 b=dHzero(2);
+0541                 c=zi(2);
+0542                 d=nH(2);
+0543                 <span class="comment">%translated to matlab from mathematica by hand</span>
+0544                 dHf0 =((10^-pHr)^d*exp(-(b*((1/t)-(1/T))+a/T-(((c^2-d)*is^0.5*(p*s*v+q*t*(s*t*u-r*v)))/((1+1.6*is^0.5)*q*s*v)))/R)*(b*(1+1.6*is^0.5)*s*v+<span class="keyword">...</span>
+0545                     c^2*is^0.5*t^2*(2*s*t*u-r*v)+d*is^0.5*t^2*(-2*s*t*u+r*v))+<span class="keyword">...</span>
+0546                     (10^-pHr)^D*exp(-(B*((1/t)-(1/T))+A/T-(((C^2-D)*is^0.5*(p*s*v+q*t*(s*t*u-r*v)))/((1+1.6*is^0.5)*q*s*v)))/R)*(B*(1+1.6*is^0.5)*s*v+<span class="keyword">...</span>
+0547                     C^2*is^0.5*t^2*(2*s*t*u-r*v)+D*is^0.5*t^2*(-2*s*t*u+r*v)))/<span class="keyword">...</span>
+0548                     (((10^-pHr)^d*exp((b*((-1/t)+(1/T))-a/T+(((c^2-d)*is^0.5*(p*s*v+q*t*(s*t*u-r*v)))/((1+1.6*is^0.5)*q*s*v)))/R)+<span class="keyword">...</span>
+0549                     (10^-pHr)^D*exp((B*((-1/t)+(1/T))-A/T+(((C^2-D)*is^0.5*(p*s*v+q*t*(s*t*u-r*v)))/((1+1.6*is^0.5)*q*s*v)))/R))*(1+1.6*is^0.5)*s*v);
+0550                 <span class="comment">%         Mathematica Expression to Matlab m-file Converter by Harri Ojanen, Rutgers University</span>
+0551                 <span class="comment">%         dHfn2=((10.^((-1).*pHr)).^d.*exp(R.^(-1).*(b.*((-1).*t.^(-1)+T.^(-1))+(-1).*a.* ...</span>
+0552                 <span class="comment">%             T.^(-1)+0.1E1.*(c.^2+(-0.1E1).*d).*(0.1E1+0.16E1.*is.^0.5E0).^(-1).* ...</span>
+0553                 <span class="comment">%             is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*(s.*t.*u+(-0.1E1).* ...</span>
+0554                 <span class="comment">%             r.*v))))+(10.^((-1).*pHr)).^D.*exp(R.^(-1).*(B.*((-1).*t.^(-1)+T.^(-1))+( ...</span>
+0555                 <span class="comment">%             -1).*A.*T.^(-1)+0.1E1.*(C.^2+(-0.1E1).*D).*(0.1E1+0.16E1.*is.^0.5E0).^( ...</span>
+0556                 <span class="comment">%             -1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*(s.*t.*u+( ...</span>
+0557                 <span class="comment">%             -0.1E1).*r.*v))))).^(-1).*(0.1E1+0.16E1.*is.^0.5E0).^(-1).*s.^(-1).*v.^( ...</span>
+0558                 <span class="comment">%             -1).*((10.^((-1).*pHr)).^d.*exp((-1).*R.^(-1).*(b.*(t.^(-1)+(-1).*T.^(-1) ...</span>
+0559                 <span class="comment">%             )+a.*T.^(-1)+(-0.1E1).*(c.^2+(-0.1E1).*d).*(0.1E1+0.16E1.*is.^0.5E0).^( ...</span>
+0560                 <span class="comment">%             -1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*(s.*t.*u+( ...</span>
+0561                 <span class="comment">%             -0.1E1).*r.*v)))).*(b.*(1+0.16E1.*is.^0.5E0).*s.*v+c.^2.*is.^0.5E0.* ...</span>
+0562                 <span class="comment">%             t.^2.*(0.2E1.*s.*t.*u+(-0.1E1).*r.*v)+d.*is.^0.5E0.*t.^2.*((-0.2E1).*s.* ...</span>
+0563                 <span class="comment">%             t.*u+r.*v))+(10.^((-1).*pHr)).^D.*exp((-1).*R.^(-1).*(B.*(t.^(-1)+(-1).* ...</span>
+0564                 <span class="comment">%             T.^(-1))+A.*T.^(-1)+(-0.1E1).*(C.^2+(-0.1E1).*D).*(0.1E1+0.16E1.* ...</span>
+0565                 <span class="comment">%             is.^0.5E0).^(-1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*( ...</span>
+0566                 <span class="comment">%             s.*t.*u+(-0.1E1).*r.*v)))).*(B.*(1+0.16E1.*is.^0.5E0).*s.*v+C.^2.* ...</span>
+0567                 <span class="comment">%             is.^0.5E0.*t.^2.*(0.2E1.*s.*t.*u+(-0.1E1).*r.*v)+D.*is.^0.5E0.*t.^2.*(( ...</span>
+0568                 <span class="comment">%             -0.2E1).*s.*t.*u+r.*v)));</span>
+0569             <span class="keyword">case</span> 3
+0570                 A=dGzero(1);
+0571                 B=dHzero(1);
+0572                 C=zi(1);
+0573                 D=nH(1);
+0574                 a=dGzero(2);
+0575                 b=dHzero(2);
+0576                 c=zi(2);
+0577                 d=nH(2);
+0578                 e=dGzero(3);
+0579                 f=dHzero(3);
+0580                 g=zi(3);
+0581                 h=nH(3);
+0582                 <span class="comment">%see Mathematica file dHfn.nb</span>
+0583                 <span class="comment">%Mathematica Expression to Matlab m-file Converter by Harri Ojanen, Rutgers University</span>
+0584                 dHf0 = ((10.^((-1).*pHr)).^d.*exp(R.^(-1).*(b.*((-1).*t.^(-1)+T.^(-1))+(-1).*a.* <span class="keyword">...</span>
+0585                     T.^(-1)+0.1E1.*(c.^2+(-0.1E1).*d).*(0.1E1+0.16E1.*is.^0.5E0).^(-1).* <span class="keyword">...</span>
+0586                     is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*(s.*t.*u+(-0.1E1).* <span class="keyword">...</span>
+0587                     r.*v))))+(10.^((-1).*pHr)).^D.*exp(R.^(-1).*(B.*((-1).*t.^(-1)+T.^(-1))+( <span class="keyword">...</span>
+0588                     -1).*A.*T.^(-1)+0.1E1.*(C.^2+(-0.1E1).*D).*(0.1E1+0.16E1.*is.^0.5E0).^( <span class="keyword">...</span>
+0589                     -1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*(s.*t.*u+( <span class="keyword">...</span>
+0590                     -0.1E1).*r.*v))))+(10.^((-1).*pHr)).^h.*exp(R.^(-1).*(f.*((-1).*t.^(-1)+ <span class="keyword">...</span>
+0591                     T.^(-1))+(-1).*e.*T.^(-1)+0.1E1.*(g.^2+(-0.1E1).*h).*(0.1E1+0.16E1.* <span class="keyword">...</span>
+0592                     is.^0.5E0).^(-1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*( <span class="keyword">...</span>
+0593                     s.*t.*u+(-0.1E1).*r.*v))))).^(-1).*(0.1E1+0.16E1.*is.^0.5E0).^(-1).*s.^( <span class="keyword">...</span>
+0594                     -1).*v.^(-1).*((10.^((-1).*pHr)).^d.*exp((-1).*R.^(-1).*(b.*(t.^(-1)+(-1) <span class="keyword">...</span>
+0595                     .*T.^(-1))+a.*T.^(-1)+(-0.1E1).*(c.^2+(-0.1E1).*d).*(0.1E1+0.16E1.* <span class="keyword">...</span>
+0596                     is.^0.5E0).^(-1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.*v+q.*t.*( <span class="keyword">...</span>
+0597                     s.*t.*u+(-0.1E1).*r.*v)))).*(b.*(1+0.16E1.*is.^0.5E0).*s.*v+c.^2.* <span class="keyword">...</span>
+0598                     is.^0.5E0.*t.^2.*(0.2E1.*s.*t.*u+(-0.1E1).*r.*v)+d.*is.^0.5E0.*t.^2.*(( <span class="keyword">...</span>
+0599                     -0.2E1).*s.*t.*u+r.*v))+(10.^((-1).*pHr)).^D.*exp((-1).*R.^(-1).*(B.*( <span class="keyword">...</span>
+0600                     t.^(-1)+(-1).*T.^(-1))+A.*T.^(-1)+(-0.1E1).*(C.^2+(-0.1E1).*D).*(0.1E1+ <span class="keyword">...</span>
+0601                     0.16E1.*is.^0.5E0).^(-1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*(p.*s.* <span class="keyword">...</span>
+0602                     v+q.*t.*(s.*t.*u+(-0.1E1).*r.*v)))).*(B.*(1+0.16E1.*is.^0.5E0).*s.*v+ <span class="keyword">...</span>
+0603                     C.^2.*is.^0.5E0.*t.^2.*(0.2E1.*s.*t.*u+(-0.1E1).*r.*v)+D.*is.^0.5E0.* <span class="keyword">...</span>
+0604                     t.^2.*((-0.2E1).*s.*t.*u+r.*v))+(10.^((-1).*pHr)).^h.*exp((-1).*R.^(-1).* <span class="keyword">...</span>
+0605                     (f.*(t.^(-1)+(-1).*T.^(-1))+e.*T.^(-1)+(-0.1E1).*(g.^2+(-0.1E1).*h).*( <span class="keyword">...</span>
+0606                     0.1E1+0.16E1.*is.^0.5E0).^(-1).*is.^0.5E0.*q.^(-1).*s.^(-1).*v.^(-1).*( <span class="keyword">...</span>
+0607                     p.*s.*v+q.*t.*(s.*t.*u+(-0.1E1).*r.*v)))).*(f.*(1+0.16E1.*is.^0.5E0).* <span class="keyword">...</span>
+0608                     s.*v+g.^2.*is.^0.5E0.*t.^2.*(0.2E1.*s.*t.*u+(-0.1E1).*r.*v)+h.* <span class="keyword">...</span>
+0609                     is.^0.5E0.*t.^2.*((-0.2E1).*s.*t.*u+r.*v)));
+0610             <span class="keyword">otherwise</span>
+0611                 dHf0 = NaN;
+0612         <span class="keyword">end</span>
+0613         <span class="keyword">if</span> isnan(dHf0)
+0614             <span class="comment">%see Mathematica file dHfn.nb</span>
+0615 <span class="comment">%             error('Too many species in reactant so standard transformed enthalpy is NaN')</span>
+0616             fprintf(<span class="string">'%s\n'</span>,<span class="string">'Too many species in reactant so standard transformed enthalpy is NaN'</span>)
+0617         <span class="keyword">end</span>
+0618         <span class="comment">%cast back into normal matlab double</span>
+0619         dHf0=double(dHf0);
+0620     <span class="keyword">else</span>
+0621         <span class="comment">%changed to NaN 20 July 2009</span>
+0622         dHf0=NaN;
+0623     <span class="keyword">end</span>
+0624     <span class="comment">%cast back into normal matlab double</span>
+0625     dGf0=double(dGf0);
+0626     gpfnsp=double(gpfnsp);
+0627 <span class="keyword">end</span>
+0628 
+0629 <span class="comment">%</span>
+0630 <span class="comment">%This is a helper function to compute the log(sum(exp(v))) of a vector v</span>
+0631 <a name="_sub1" href="#_subfunctions" class="code">function y = maxstar(x, w, dim)</a>
+0632 <span class="comment">% maxstar   Log of a sum of exponentials.</span>
+0633 <span class="comment">%   For vectors, maxstar(x) is equivalent to log(sum(exp(x))).</span>
+0634 <span class="comment">%   For matrices, maxstar(x) is a row vector and maxstar operates on</span>
+0635 <span class="comment">%   each column of x. For N-D arrays, maxstar(x) operates along the</span>
+0636 <span class="comment">%   first non-singleton dimension.</span>
+0637 <span class="comment">%</span>
+0638 <span class="comment">%   maxstar(x,w) is the log of a weighted sum of exponentials,</span>
+0639 <span class="comment">%   equivalent to log(sum(w.*exp(x))). Vectors w and x must be</span>
+0640 <span class="comment">%   the same length. For matrix x, the weights w can be input as</span>
+0641 <span class="comment">%   a matrix the same size as x, or as a vector of the same length</span>
+0642 <span class="comment">%   as columns of x. Weights may be zero or negative, but the result</span>
+0643 <span class="comment">%   sum(w.*exp(x)) must be greater than zero.</span>
+0644 <span class="comment">%</span>
+0645 <span class="comment">%   maxstar(x, [], dim) operates along the dimension dim, and has</span>
+0646 <span class="comment">%   the same dimensions as the MATLAB function max(x, [], dim).</span>
+0647 <span class="comment">%</span>
+0648 <span class="comment">%   Note:</span>
+0649 <span class="comment">%   The max* function is described in Lin &amp; Costello, Error Control</span>
+0650 <span class="comment">%   Coding, 2nd Edition, equation 12.127, in the two-argument form</span>
+0651 <span class="comment">%     max*(x1,x2) = max(x1,x2) + log(1 + exp(-abs(x1-x2))).</span>
+0652 <span class="comment">%   The function max* can be applied iteratively:</span>
+0653 <span class="comment">%     max*(x1,x2,x3) = max*(max*(x1,x2),x3).</span>
+0654 <span class="comment">%   Functions max(x) ~ max*(x), and min(x) ~ -max*(-x).</span>
+0655 <span class="comment">%</span>
+0656 <span class="comment">%   Algorithm:</span>
+0657 <span class="comment">%   The double precision MATLAB expresson log(sum(exp(x))) fails</span>
+0658 <span class="comment">%   if all(x &lt; -745), or if any(x &gt; 706). This is avoided using</span>
+0659 <span class="comment">%   m = max(x) in  max*(x) = m + log(sum(exp(x - m))).</span>
+0660 <span class="comment">%</span>
+0661 <span class="comment">%   Example: If x = [2 8 4</span>
+0662 <span class="comment">%                    7 3 9]</span>
+0663 <span class="comment">%</span>
+0664 <span class="comment">%   then maxstar(x,[],1) is [7.0067 8.0067 9.0067],</span>
+0665 <span class="comment">%</span>
+0666 <span class="comment">%   and  maxstar(x,[],2) is [8.0206</span>
+0667 <span class="comment">%                            9.1291].</span>
+0668 
+0669 <span class="comment">% 2006-02-10   R. Dickson</span>
+0670 <span class="comment">% 2006-03-25   Implemented N-D array features following a suggestion</span>
+0671 <span class="comment">%              from John D'Errico.</span>
+0672 <span class="comment">%</span>
+0673 <span class="comment">%   Uses: max, log, exp, sum, shiftdim, repmat, size, zeros, ones,</span>
+0674 <span class="comment">%         length, isempty, error, nargin, find, reshape</span>
+0675 
+0676 <span class="keyword">if</span> nargin &lt; 1 || nargin &gt; 3
+0677     error(<span class="string">'Wrong number of input arguments.'</span>);
+0678 <span class="keyword">end</span>
+0679 
+0680 [x, n] = shiftdim(x);
+0681 szx = size(x); 
+0682 
+0683 <span class="keyword">switch</span> nargin
+0684     <span class="keyword">case</span> 1
+0685         w = [];
+0686         dim = 1;
+0687     <span class="keyword">case</span> 2 
+0688         dim = 1;
+0689     <span class="keyword">case</span> 3
+0690         dim = dim - n;
+0691 <span class="keyword">end</span>
+0692 
+0693 <span class="keyword">if</span> isempty(w)
+0694     <span class="comment">% replicate m = max(x) to get mm, with size(mm) == size(x)</span>
+0695     m = max(x,[],dim);
+0696     szm = ones(size(szx));
+0697     szm(dim) = szx(dim);
+0698     mm = repmat(m,szm);
+0699     y = m + log(sum(exp(x - mm), dim));
+0700 <span class="keyword">else</span>
+0701     w = shiftdim(w);
+0702     szw = size(w);
+0703     <span class="comment">% protect the second condition with a short-circuit or</span>
+0704     <span class="keyword">if</span> ~(length(szw) == length(szx)) || ~all(szw == szx)
+0705         <span class="keyword">if</span> size(w,1) == size(x,dim)
+0706             <span class="comment">% replicate w with repmat so size(w) == size(x)</span>
+0707             szw = ones(size(szx)); 
+0708             szw(dim) = size(w,1);
+0709             w = reshape(w, szw);
+0710             szr = szx;
+0711             szr(dim) = 1;
+0712             w = repmat(w, szr);
+0713         <span class="keyword">else</span>
+0714             error(<span class="string">'Length of w must match size(x,dim).'</span>);
+0715         <span class="keyword">end</span>
+0716     <span class="keyword">end</span>
+0717     
+0718     <span class="comment">% Move the weight into the exponent xw and find</span>
+0719     <span class="comment">% m = max(xw) over terms with positive weights</span>
+0720     ipos = find(w&gt;0);
+0721     xw = -Inf*zeros(szx);
+0722     xw(ipos) = x(ipos) + log(w(ipos));
+0723     m = max(xw,[],dim);
+0724     <span class="comment">% replicate m with repmat so size(mm) == size(x)</span>
+0725     szm = ones(size(szx));
+0726     szm(dim) = szx(dim);
+0727     mm = repmat(m,szm); 
+0728     exwp = zeros(szx);
+0729     exwp(ipos) = exp(xw(ipos)-mm(ipos));
+0730     <span class="comment">% check for terms with negative weights</span>
+0731     ineg = find(w&lt;0);
+0732     <span class="keyword">if</span> ~isempty(ineg)
+0733         exwn = zeros(szx);
+0734         exwn(ineg) = exp(x(ineg) + log(-w(ineg)) - mm(ineg));
+0735         y = m + log(sum(exwp, dim) - sum(exwn, dim));
+0736     <span class="keyword">else</span>
+0737         y = m + log(sum(exwp, dim));
+0738     <span class="keyword">end</span>
+0739 <span class="keyword">end</span>
+0740 <span class="comment">%</span>
+0741</pre></div>
+<hr><address>Generated on Fri 20-May-2011 17:06:05 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

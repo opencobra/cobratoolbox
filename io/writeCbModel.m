@@ -20,10 +20,11 @@ function writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLeve
 % Richard Que (3/17/10) Added ability to specify compartment names and
 %                       symbols
 
-if nargin < 4
-    compSymbolList = {};
-    compNameList = {};
+if ~exist('compSymbolList','var') || isempty(compSymbolList)
+    compSymbolList = {'c','m','v','x','e','t','g','r','n','p','l','y'};
+    compNameList = {'Cytoplasm','Mitochondrion','Vacuole','Peroxisome','Extracellular','Pool','Golgi','Endoplasmic_reticulum','Nucleus','Periplasm','Lysosome','Glycosome'};
 end
+
 if nargin < 6
     sbmlLevel = 2;
     sbmlVersion = 1;
