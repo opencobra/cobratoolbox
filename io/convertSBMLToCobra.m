@@ -69,8 +69,7 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
     % annotations and references in sub-structures
     % parse compartment abbreviations
     %
-    % using iND, unlike old code, new code doesn't change met IDs to have
-    % [c] instead of _c at the end
+    % iND appears to work; Y6 doesn't get gene info
     
 
     if (nargin < 2)
@@ -423,10 +422,13 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
                   
         chargeList = cell2mat(chargeList);
         
-        % if the charge isn't in the notes field, try to get it from the
-        % sbml species field.
-        if isempty(chargeList) 
-            chargeList = [modelSBML.species(~boundaryMetIndexes).charge]';
+        % if the charge isn't in the notes field, see if it's in the sbml
+        % species field, and if so, get it from there.
+        if isempty(chargeList)
+            if isfield('charge', modelSBML.species)
+                chargeList = ...
+                    [modelSBML.species(~boundaryMetIndexes).charge]';
+            end
         end
 
         % get the metabolite annotation, and parse to get CHEBI, KEGG,

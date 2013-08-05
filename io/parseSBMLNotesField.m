@@ -42,7 +42,7 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
     % Ben Heavner 1 July 2013 - add cell array functionality, rxnGeneMat,
     %   and bossy note
 
-    if isempty(regexp(notesField,'html:p', 'once'))
+    if sum(cellfun('isempty', regexp(notesField,'html:p', 'once')))
         tag = 'p';
     else
         tag = 'html:p';
