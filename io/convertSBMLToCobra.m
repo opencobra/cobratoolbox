@@ -30,7 +30,7 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
     % Richard Que 02/08/10 - Properly format reaction and metabolite fields
     %                        from SBML.
     %
-    % Ben Heavner July 2013 - rewritten to facilitate support of changing
+    % Ben Heavner August 2013 - rewritten to facilitate support of changing
     %                         SBML standard
     %
 
@@ -67,10 +67,11 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
     % Test on lots of models
     % consider changing model structure to put metabolite and reaction
     % annotations and references in sub-structures
+    % parse compartment abbreviations
     %
-    % using iND, unlike old code, new code doesn't get metCharge, change
-    % met IDs to have [c] instead of _c at the end; doesn't return rxnNotes
-    % (which apparently are in iND, but confusingly parsed...)
+    % using iND, unlike old code, new code doesn't change met IDs to have
+    % [c] instead of _c at the end
+    
 
     if (nargin < 2)
         defaultBound = 1000;
@@ -419,6 +420,14 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
 
         [~, ~, ~, ~, metFormulas, ~, ~, ~, ~, chargeList, ~] = ...
                       parseSBMLNotesField(unparsedMetNotes);
+                  
+        chargeList = cell2mat(chargeList);
+        
+        % if the charge isn't in the notes field, try to get it from the
+        % sbml species field.
+        if isempty(chargeList) 
+            chargeList = [modelSBML.species(~boundaryMetIndexes).charge]';
+        end
 
         % get the metabolite annotation, and parse to get CHEBI, KEGG,
         % PubChem, and InChI info (expect to modify in the future as SBML
@@ -430,6 +439,7 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
             parseSBMLAnnotationField(unparsedMetAnnotation);
 
         %% Construct stoichiometric matrix and reaction list
+        
         rxns = {modelSBML.reaction.id}';
         rxnNames = {modelSBML.reaction.name}';
         rev = logical([modelSBML.reaction.reversible]');
@@ -440,6 +450,8 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
         products = {modelSBML.reaction.product}';
 
         % This is a bottleneck. Is there a better way to do this?
+        h = waitbar(0,'Constructing S matrix: reactants ...');
+        
         for reactants_index = 1:length(reactants)
             [~,~,IB] = intersect( ...
                 {reactants{reactants_index}.species}', mets, 'stable');
@@ -447,17 +459,32 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
             % stoichiometric coefficient is negative for reactants
             S(IB,reactants_index) = S(IB,reactants_index)' - ...
                 ([reactants{reactants_index}.stoichiometry]);
+            
+            if mod(reactants_index,10) == 0
+                    waitbar(reactants_index/length(reactants),h);
+            end
         end
+        
+        % close the waitbar
+        close(h);
 
         % This is a bottleneck. Is there a better way to do this?
+        h = waitbar(0,'Constructing S matrix: products ...');
         for products_index = 1:length(products) 
             [~,~,IB] = intersect({products{products_index}.species}', ...
                 mets, 'stable');
 
             % stoichiometric coefficient is positive for products
             S(IB,products_index) = S(IB,products_index)' + ...
-                ([products{products_index}.stoichiometry]); 
+                ([products{products_index}.stoichiometry]);
+            
+            if mod(products_index,10) == 0
+                    waitbar(products_index/length(products),h);
+            end
         end
+        
+        % close the waitbar
+        close(h);
 
         S = sparse(S);
 
@@ -509,6 +536,8 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
                 
         mets = regexprep(mets, '^M_', '');
         mets = regexprep(mets, '^_', '');
+        mets = regexprep(mets, '_(\w)\>', '[$1]'); % replace old _c compartments with [c]
+        mets = cleanUpFormatting(mets);
 
         % Clean up reaction names and ids if they contain legacy strings or
         % SBML-required character substitutions
@@ -518,8 +547,9 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
         rxns = regexprep(rxns, '^R_', '');
         rxns = cleanUpFormatting(rxns);
         
+        %TODO
         % Clean up compartment names, replace abbreviation with long names
-        % if supplied in function call.
+        % if supplied in function call. 
         compartments = regexprep(compartments, '^C_', '');
         
         %% Collect everything into a structure
