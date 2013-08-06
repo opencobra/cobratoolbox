@@ -1,4 +1,5 @@
-function model = readCbModel(fileName,defaultBound,fileType,modelDescription,compSymbolList,compNameList)
+function model = readCbModel(fileName, defaultBound, fileType, ...
+        modelDescription, compSymbolList, compNameList, legacyFlag)
 %readCbModel Read in a constraint-based model
 %
 % model = readCbModel(fileName,defaultBound,fileType,modelDescription)
@@ -25,6 +26,10 @@ function model = readCbModel(fileName,defaultBound,fileType,modelDescription,com
 % compSymbolList    Compartment Symbol List
 % compNameList      Name of compartments corresponding to compartment
 %                   symbol list 
+% legacyFlag        true to use old convertSBMLToCobra code that
+%                   parses SBML metabolite names for formulas,
+%                   compartments, and other information, instead of
+%                   using modern SBML approaches (Default false)
 %
 %OUTPUT
 % Returns a model in the COBRA format:
@@ -124,6 +129,7 @@ end
 if (nargin < 5)
     compSymbolList = {};
     compNameList = {};
+    legacyFlag = 'false';
 end
 
 switch fileType
@@ -179,7 +185,8 @@ end
 modelSBML = TranslateSBML(fileName);
 
 % Convert
-model = convertSBMLToCobra(modelSBML,defaultBound,compSymbolList,compNameList);
+model = convertSBMLToCobra(modelSBML, defaultBound, compSymbolList, ...
+    compNameList, legacyFlag);
 
 %%
 function model = readSimPhenyCbModel(baseName,defaultBound,compSymbolList,compNameList)
