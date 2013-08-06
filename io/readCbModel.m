@@ -129,15 +129,17 @@ end
 if (nargin < 5)
     compSymbolList = {};
     compNameList = {};
-    legacyFlag = 'false';
+    legacyFlag = 0;
 end
 
 switch fileType
     case 'SBML',
         if isempty(regexp(fileName,'\.xml$', 'once'))
-            model = readSBMLCbModel([fileName '.xml'],defaultBound,compSymbolList,compNameList);
+            model = readSBMLCbModel([fileName '.xml'], defaultBound, ...
+                compSymbolList, compNameList, legacyFlag);
         else
-            model = readSBMLCbModel(fileName,defaultBound,compSymbolList,compNameList);
+            model = readSBMLCbModel(fileName, defaultBound, ...
+                compSymbolList, compNameList, legacyFlag);
         end
     case 'SimPheny',
         model = readSimPhenyCbModel(fileName,defaultBound,compSymbolList,compNameList);
@@ -170,7 +172,8 @@ selRev = (model.lb < 0 & model.ub > 0);
 model.rev(selRev) = 1;
 
 %% readSBMLCbModel Read SBML format constraint-based model
-function model =  readSBMLCbModel(fileName,defaultBound,compSymbolList,compNameList)
+function model =  readSBMLCbModel(fileName, defaultBound, ...
+        compSymbolList, compNameList, legacyFlag)
 
 if ~(exist(fileName,'file'))
     error(['Input file ' fileName ' not found']);
