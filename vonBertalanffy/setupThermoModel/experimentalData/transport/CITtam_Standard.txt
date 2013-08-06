@@ -1,4 +1,0 @@
-cit[c]	1   1
-cit[m]	1   1
-mal-L[c]	1   1
-mal-L[m]    1   1

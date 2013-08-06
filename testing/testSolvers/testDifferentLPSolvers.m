@@ -2,7 +2,7 @@ function out=test()
 %tests the output from different LP solvers to see if they are consistent
 clear
 
-if exist('121114_Recon2betaModel.mat','file') && 0
+if exist('121114_Recon2betaModel.mat','file')
     load 121114_Recon2betaModel.mat
     model=modelRecon2beta121114;
     model.A=model.S;
@@ -218,7 +218,7 @@ ilt=i-1;
 fprintf('%3s%15s%15s%15s%15s%20s\t%30s\n','   ','time','obj','y(rand)','w(rand)','solver','algorithm')
 
 %pick a large entry in each dual vector, to check the signs
-if 0
+if 1
     randrcost=find(max(solution{1}.rcost)==solution{1}.rcost);
     randrcost=randrcost(1);
     randdual=find(max(solution{1}.dual)==solution{1}.dual);
@@ -239,7 +239,7 @@ for i=1:ilt
     all_obj(i)=solution{i}.obj;    
 end
 
-if min(all_obj)==max(all_obj)
+if abs(min(all_obj)-max(all_obj))<1e-8
     out=1;
 else
     out=0;

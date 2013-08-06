@@ -1783,3 +1783,1677 @@ Total time on 3 threads = 0.07 sec. (52.46 ticks)
 
 Dual simplex solved model.
 
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:17:27 2013
+
+Using devex.
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:17:27 2013
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:18:03 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:18:03 2013
+
+
+Primal crossover.
+  Primal:  Fixing 2388 variables.
+     2387 PMoves:  Infeasibility  1.20996215e-07  Objective -3.19805558e+00
+     2155 PMoves:  Infeasibility  3.30960926e-09  Objective -3.19805558e+00
+     1887 PMoves:  Infeasibility  2.71362003e-09  Objective -3.19805558e+00
+     1587 PMoves:  Infeasibility  2.69731130e-09  Objective -3.19805558e+00
+     1370 PMoves:  Infeasibility  2.67536837e-09  Objective -3.19805558e+00
+     1092 PMoves:  Infeasibility  2.56935594e-09  Objective -3.19805558e+00
+      822 PMoves:  Infeasibility  2.17822820e-09  Objective -3.19805558e+00
+      434 PMoves:  Infeasibility  1.69525588e-10  Objective -3.19805558e+00
+      143 PMoves:  Infeasibility  9.94759830e-13  Objective -3.19805558e+00
+        0 PMoves:  Infeasibility  1.15829568e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1322, exchanged 1066.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  5.94315048e-13  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  5.96757539e-13  Objective -3.19805558e+00
+  Dual:  Pushed 13, exchanged 0.
+Using devex.
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:18:04 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:18:04 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:18:36 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.08 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:18:36 2013
+
+
+Primal crossover.
+  Primal:  Fixing 2388 variables.
+     2387 PMoves:  Infeasibility  1.20996215e-07  Objective -3.19805558e+00
+     2155 PMoves:  Infeasibility  3.30960926e-09  Objective -3.19805558e+00
+     1887 PMoves:  Infeasibility  2.71362003e-09  Objective -3.19805558e+00
+     1587 PMoves:  Infeasibility  2.69731130e-09  Objective -3.19805558e+00
+     1370 PMoves:  Infeasibility  2.67536837e-09  Objective -3.19805558e+00
+     1092 PMoves:  Infeasibility  2.56935594e-09  Objective -3.19805558e+00
+      822 PMoves:  Infeasibility  2.17822820e-09  Objective -3.19805558e+00
+      434 PMoves:  Infeasibility  1.69525588e-10  Objective -3.19805558e+00
+      143 PMoves:  Infeasibility  9.94759830e-13  Objective -3.19805558e+00
+        0 PMoves:  Infeasibility  1.15829568e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1322, exchanged 1066.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  5.94315048e-13  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  5.96757539e-13  Objective -3.19805558e+00
+  Dual:  Pushed 13, exchanged 0.
+Using devex.
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:18:36 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.06 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.08 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:18:36 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:18:42 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:18:42 2013
+
+
+Primal crossover.
+  Primal:  Fixing 2388 variables.
+     2387 PMoves:  Infeasibility  1.20996215e-07  Objective -3.19805558e+00
+     2155 PMoves:  Infeasibility  3.30960926e-09  Objective -3.19805558e+00
+     1887 PMoves:  Infeasibility  2.71362003e-09  Objective -3.19805558e+00
+     1587 PMoves:  Infeasibility  2.69731130e-09  Objective -3.19805558e+00
+     1370 PMoves:  Infeasibility  2.67536837e-09  Objective -3.19805558e+00
+     1092 PMoves:  Infeasibility  2.56935594e-09  Objective -3.19805558e+00
+      822 PMoves:  Infeasibility  2.17822820e-09  Objective -3.19805558e+00
+      434 PMoves:  Infeasibility  1.69525588e-10  Objective -3.19805558e+00
+      143 PMoves:  Infeasibility  9.94759830e-13  Objective -3.19805558e+00
+        0 PMoves:  Infeasibility  1.15829568e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1322, exchanged 1066.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  5.94315048e-13  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  5.96757539e-13  Objective -3.19805558e+00
+  Dual:  Pushed 13, exchanged 0.
+Using devex.
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:18:43 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:18:43 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:19:05 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:19:05 2013
+
+
+Primal crossover.
+  Primal:  Fixing 2388 variables.
+     2387 PMoves:  Infeasibility  1.20996215e-07  Objective -3.19805558e+00
+     2155 PMoves:  Infeasibility  3.30960926e-09  Objective -3.19805558e+00
+     1887 PMoves:  Infeasibility  2.71362003e-09  Objective -3.19805558e+00
+     1587 PMoves:  Infeasibility  2.69731130e-09  Objective -3.19805558e+00
+     1370 PMoves:  Infeasibility  2.67536837e-09  Objective -3.19805558e+00
+     1092 PMoves:  Infeasibility  2.56935594e-09  Objective -3.19805558e+00
+      822 PMoves:  Infeasibility  2.17822820e-09  Objective -3.19805558e+00
+      434 PMoves:  Infeasibility  1.69525588e-10  Objective -3.19805558e+00
+      143 PMoves:  Infeasibility  9.94759830e-13  Objective -3.19805558e+00
+        0 PMoves:  Infeasibility  1.15829568e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1322, exchanged 1066.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  5.94315048e-13  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  5.96757539e-13  Objective -3.19805558e+00
+  Dual:  Pushed 13, exchanged 0.
+Using devex.
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:19:05 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:19:05 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:19:32 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:19:32 2013
+
+
+Primal crossover.
+  Primal:  Fixing 2388 variables.
+     2387 PMoves:  Infeasibility  1.20996215e-07  Objective -3.19805558e+00
+     2155 PMoves:  Infeasibility  3.30960926e-09  Objective -3.19805558e+00
+     1887 PMoves:  Infeasibility  2.71362003e-09  Objective -3.19805558e+00
+     1587 PMoves:  Infeasibility  2.69731130e-09  Objective -3.19805558e+00
+     1370 PMoves:  Infeasibility  2.67536837e-09  Objective -3.19805558e+00
+     1092 PMoves:  Infeasibility  2.56935594e-09  Objective -3.19805558e+00
+      822 PMoves:  Infeasibility  2.17822820e-09  Objective -3.19805558e+00
+      434 PMoves:  Infeasibility  1.69525588e-10  Objective -3.19805558e+00
+      143 PMoves:  Infeasibility  9.94759830e-13  Objective -3.19805558e+00
+        0 PMoves:  Infeasibility  1.15829568e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1322, exchanged 1066.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  5.94315048e-13  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  5.96757539e-13  Objective -3.19805558e+00
+  Dual:  Pushed 13, exchanged 0.
+Using devex.
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:19:32 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:19:32 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:20:18 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:20:18 2013
+
+
+Primal crossover.
+  Primal:  Fixing 2388 variables.
+     2387 PMoves:  Infeasibility  1.20996215e-07  Objective -3.19805558e+00
+     2155 PMoves:  Infeasibility  3.30960926e-09  Objective -3.19805558e+00
+     1887 PMoves:  Infeasibility  2.71362003e-09  Objective -3.19805558e+00
+     1587 PMoves:  Infeasibility  2.69731130e-09  Objective -3.19805558e+00
+     1370 PMoves:  Infeasibility  2.67536837e-09  Objective -3.19805558e+00
+     1092 PMoves:  Infeasibility  2.56935594e-09  Objective -3.19805558e+00
+      822 PMoves:  Infeasibility  2.17822820e-09  Objective -3.19805558e+00
+      434 PMoves:  Infeasibility  1.69525588e-10  Objective -3.19805558e+00
+      143 PMoves:  Infeasibility  9.94759830e-13  Objective -3.19805558e+00
+        0 PMoves:  Infeasibility  1.15829568e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1322, exchanged 1066.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  5.94315048e-13  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  5.96757539e-13  Objective -3.19805558e+00
+  Dual:  Pushed 13, exchanged 0.
+Using devex.
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:20:19 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:20:19 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:20:26 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:20:26 2013
+
+
+Primal crossover.
+  Primal:  Fixing 2388 variables.
+     2387 PMoves:  Infeasibility  1.20996215e-07  Objective -3.19805558e+00
+     2155 PMoves:  Infeasibility  3.30960926e-09  Objective -3.19805558e+00
+     1887 PMoves:  Infeasibility  2.71362003e-09  Objective -3.19805558e+00
+     1587 PMoves:  Infeasibility  2.69731130e-09  Objective -3.19805558e+00
+     1370 PMoves:  Infeasibility  2.67536837e-09  Objective -3.19805558e+00
+     1092 PMoves:  Infeasibility  2.56935594e-09  Objective -3.19805558e+00
+      822 PMoves:  Infeasibility  2.17822820e-09  Objective -3.19805558e+00
+      434 PMoves:  Infeasibility  1.69525588e-10  Objective -3.19805558e+00
+      143 PMoves:  Infeasibility  9.94759830e-13  Objective -3.19805558e+00
+        0 PMoves:  Infeasibility  1.15829568e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1322, exchanged 1066.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  5.94315048e-13  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  5.96757539e-13  Objective -3.19805558e+00
+  Dual:  Pushed 13, exchanged 0.
+Using devex.
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:20:26 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:20:26 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:20:37 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:20:38 2013
+
+
+Primal crossover.
+  Primal:  Fixing 2388 variables.
+     2387 PMoves:  Infeasibility  1.20996215e-07  Objective -3.19805558e+00
+     2155 PMoves:  Infeasibility  3.30960926e-09  Objective -3.19805558e+00
+     1887 PMoves:  Infeasibility  2.71362003e-09  Objective -3.19805558e+00
+     1587 PMoves:  Infeasibility  2.69731130e-09  Objective -3.19805558e+00
+     1370 PMoves:  Infeasibility  2.67536837e-09  Objective -3.19805558e+00
+     1092 PMoves:  Infeasibility  2.56935594e-09  Objective -3.19805558e+00
+      822 PMoves:  Infeasibility  2.17822820e-09  Objective -3.19805558e+00
+      434 PMoves:  Infeasibility  1.69525588e-10  Objective -3.19805558e+00
+      143 PMoves:  Infeasibility  9.94759830e-13  Objective -3.19805558e+00
+        0 PMoves:  Infeasibility  1.15829568e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1322, exchanged 1066.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  5.94315048e-13  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  5.96757539e-13  Objective -3.19805558e+00
+  Dual:  Pushed 13, exchanged 0.
+Using devex.
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:20:38 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
+
+Log for 'fba' Clone_1 (V12.5.1.0) Wed Jul 31 11:20:38 2013
+
+Tried aggregator 0 times.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (1.07 ticks)
+Parallel mode: using up to 3 threads for barrier.
+Number of nonzeros in lower triangle of A*A' = 13510
+Using Approximate Minimum Degree ordering
+Total time for automatic ordering = 0.00 sec. (3.16 ticks)
+Summary statistics for Cholesky factor:
+  Threads                   = 3
+  Rows in Factor            = 1237
+  Integer space required    = 7462
+  Total non-zeros in factor = 44362
+  Total FP ops to factor    = 3233944
+ Itn      Primal Obj        Dual Obj  Prim Inf Upper Inf  Dual Inf          
+   0  -1.1593036e+03  -8.6707912e+06  3.47e+06  3.53e+06  1.92e+02
+   1  -1.0403117e+02  -2.7804246e+06  2.09e+06  2.13e+06  2.07e+01
+   2  -1.8822762e+02  -1.3315919e+06  9.90e+05  1.01e+06  4.95e+00
+   3  -5.8781957e+01  -4.3450782e+05  3.36e+05  3.42e+05  9.80e-01
+   4  -2.4086621e+01  -3.8389473e+05  1.59e+05  1.62e+05  7.15e-01
+   5  -1.9241800e+01  -2.4670353e+05  1.26e+05  1.28e+05  3.55e-01
+   6  -8.3124678e+00  -1.1919453e+05  5.67e+04  5.78e+04  6.24e-02
+   7  -3.5527666e+00  -5.4264084e+04  1.95e+04  1.98e+04  2.33e-03
+   8  -1.7084680e+00  -3.2660454e+04  6.91e+03  7.04e+03  4.29e-04
+   9  -9.9948070e-01  -2.1900610e+04  8.11e+02  8.25e+02  2.65e-04
+  10  -9.2276647e-01  -1.0742793e+03  6.95e-01  7.07e-01  7.70e-06
+  11  -3.1859649e+00  -3.0003160e+02  1.33e-01  1.36e-01  2.13e-06
+  12  -3.1241275e+00  -1.1322577e+02  7.27e-04  7.39e-04  7.90e-07
+  13  -3.1280453e+00  -6.1267295e+01  6.87e-04  6.98e-04  4.17e-07
+  14  -3.1980511e+00  -3.3683720e+00  4.02e-06  1.73e-06  1.44e-09
+  15  -3.1980589e+00  -3.1980954e+00  3.76e-06  1.08e-10  4.69e-13
+  16  -3.1980555e+00  -3.1980556e+00  1.88e-06  1.04e-10  3.22e-13
+  17  -3.1980530e+00  -3.1980556e+00  3.06e-06  1.07e-10  2.44e-09
+Barrier time = 0.05 sec. (29.18 ticks)
+
+Primal crossover.
+  Primal:  Fixing 2392 variables.
+     2391 PMoves:  Infeasibility  1.12346261e-07  Objective -3.19805301e+00
+     2153 PMoves:  Infeasibility  2.91647918e-09  Objective -3.19805301e+00
+     1876 PMoves:  Infeasibility  2.22361941e-09  Objective -3.19805301e+00
+     1590 PMoves:  Infeasibility  2.21736841e-09  Objective -3.19805301e+00
+     1292 PMoves:  Infeasibility  1.69792405e-09  Objective -3.19805301e+00
+     1023 PMoves:  Infeasibility  1.69693022e-09  Objective -3.19805301e+00
+      652 PMoves:  Infeasibility  1.28979506e-09  Objective -3.19805301e+00
+      400 PMoves:  Infeasibility  1.96955174e-10  Objective -3.19805301e+00
+       58 PMoves:  Infeasibility  7.83817455e-14  Objective -3.19805301e+00
+        0 PMoves:  Infeasibility  2.81132062e-12  Objective -3.19805558e+00
+  Primal:  Pushed 1351, exchanged 1041.
+  Dual:  Fixing 13 variables.
+       12 DMoves:  Infeasibility  3.80676727e-12  Objective -3.19805558e+00
+        0 DMoves:  Infeasibility  3.90180236e-12  Objective -3.19805558e+00
+  Dual:  Pushed 12, exchanged 1.
+Using devex.
+Total crossover time = 0.02 sec. (22.08 ticks)
+
+Total time on 3 threads = 0.07 sec. (52.46 ticks)
+
+Dual simplex solved model.
+
