@@ -63,13 +63,10 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
     % 2011): 1290–1307. doi:10.1038/nprot.2011.308.
     
     %% TODO 
-    % add case switches for SBML level/version/package support? 
-    % Test on lots of models
-    % consider changing model structure to put metabolite and reaction
-    % annotations and references in sub-structures
-    % parse compartment abbreviations
-    %
-    % iND appears to work; Y6 doesn't get gene info
+    % add case switch for SBML fbc package support
+    % Test on lots of models:
+    % ok: Yeast 6 COBRA, iND750, recon 2, iAF
+    % to test: Yeast 6 FBC, Nielsen group models, neurospora, 
     
 
     if (nargin < 2)
@@ -335,7 +332,8 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
             if isfield(modelSBML.species(i),'annotation')
                 hasAnnotationField = 1;
                 [metCHEBI,metKEGG,metPubChem,metInChI] = ...
-                    parseSBMLAnnotationField(modelSBML.species(i).annotation);
+                    parseSBMLAnnotationField(...
+                    modelSBML.species(i).annotation);
                 metCHEBIID{i} = metCHEBI;
                 metKEGGID{i} = metKEGG;
                 metPubChemID{i} = metPubChem;
@@ -422,18 +420,21 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
 
         [~, ~, ~, ~, metFormulas, ~, ~, ~, ~, chargeList, ~] = ...
                       parseSBMLNotesField(unparsedMetNotes);
-                  
-        chargeList = cell2mat(chargeList);
-        
+
         % if the charge isn't in the notes field, see if it's in the sbml
         % species field, and if so, get it from there.
-        if isempty(chargeList)
+        if sum(cellfun('isempty', chargeList))
             if isfield(modelSBML.species, 'charge')
                 chargeList = ...
                     [modelSBML.species(~boundaryMetIndexes).charge]';
             end
         end
-
+        
+        if ~isnumeric(chargeList)
+            chargeList = cellfun(@str2num, chargeList, ...
+                'UniformOutput', false);
+        end
+        
         % get the metabolite annotation, and parse to get CHEBI, KEGG,
         % PubChem, and InChI info (expect to modify in the future as SBML
         % evolves)
@@ -461,9 +462,12 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
             [~,~,IB] = intersect( ...
                 {reactants{reactants_index}.species}', mets, 'stable');
 
-            % stoichiometric coefficient is negative for reactants
-            S(IB,reactants_index) = S(IB,reactants_index)' - ...
-                ([reactants{reactants_index}.stoichiometry]);
+            % exchange reactions may return a 1x0 struct array
+            if length(reactants{reactants_index}) 
+                % stoichiometric coefficient is negative for reactants
+                S(IB,reactants_index) = S(IB,reactants_index)' - ...
+                    ([reactants{reactants_index}.stoichiometry]);
+            end
             
             if mod(reactants_index,10) == 0
                     waitbar(reactants_index/length(reactants),h);
@@ -479,9 +483,12 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
             [~,~,IB] = intersect({products{products_index}.species}', ...
                 mets, 'stable');
 
-            % stoichiometric coefficient is positive for products
-            S(IB,products_index) = S(IB,products_index)' + ...
-                ([products{products_index}.stoichiometry]);
+            % exchange reactions may return a 1x0 struct array
+            if length(products{products_index}) 
+                % stoichiometric coefficient is positive for products
+                S(IB,products_index) = S(IB,products_index)' + ...
+                    ([products{products_index}.stoichiometry]);
+            end
             
             if mod(products_index,10) == 0
                     waitbar(products_index/length(products),h);
@@ -541,7 +548,8 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
                 
         mets = regexprep(mets, '^M_', '');
         mets = regexprep(mets, '^_', '');
-        mets = regexprep(mets, '_(\w)\>', '[$1]'); % replace old _c compartments with [c]
+        % next, replace old _c compartments with [c]
+        mets = regexprep(mets, '_(\w)\>', '[$1]'); 
         mets = cleanUpFormatting(mets);
 
         % Clean up reaction names and ids if they contain legacy strings or
