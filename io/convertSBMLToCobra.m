@@ -412,6 +412,9 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
                 
         compartments = ...
             {modelSBML.species(~boundaryMetIndexes).compartment}';
+        
+        % strip the leading C_
+        compartments = regexprep(compartments, '^C_', '', 'ignorecase');
        
         % get the metabolite notes, and parse to get formula and charge
         % (legacy support - should move to annotation in the future)
@@ -425,7 +428,7 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
         % if the charge isn't in the notes field, see if it's in the sbml
         % species field, and if so, get it from there.
         if isempty(chargeList)
-            if isfield('charge', modelSBML.species)
+            if isfield(modelSBML.species, 'charge')
                 chargeList = ...
                     [modelSBML.species(~boundaryMetIndexes).charge]';
             end
@@ -595,6 +598,13 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
         % gene info
         model.genes = genes;
         %model.geneConfidenceScores = ; % future?
+        
+        %model info
+        model.compartments = {modelSBML.compartment.id}';
+        % strip the leading C_
+        model.compartments = regexprep(model.compartments, '^C_', '', ...
+            'ignorecase'); 
+        model.compartmentNames = {modelSBML.compartment.name}';
        
         % protein info - future?
         % constraint info - future?
