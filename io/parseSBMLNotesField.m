@@ -42,12 +42,6 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
     % Ben Heavner 1 July 2013 - add cell array functionality, rxnGeneMat,
     %   and bossy note
 
-    if sum(cellfun('isempty', regexp(notesField,'html:p', 'once')))
-        tag = 'p';
-    else
-        tag = 'html:p';
-    end
-
     subSystem = '';
     formula = '';
     confidenceScore = '';
@@ -62,6 +56,12 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
     Comment = 0;
         
     if ischar(notesField) %if a string, use MH's code
+        
+        if isempty(regexp(notesField,'html:p', 'once'))
+            tag = 'p';
+        else
+            tag = 'html:p';
+        end
     
         [~,fieldList] = regexp(notesField,['<' tag '>.*?</' tag '>'], ...
             'tokens', 'match');
@@ -120,6 +120,12 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
         end
 
     elseif iscell(notesField) % if a cell array, use BH code
+        
+        if sum(cellfun('isempty', regexp(notesField,'html:p', 'once')))
+            tag = 'p';
+        else
+            tag = 'html:p';
+        end
         
         NotesKeys = { ...
             'GENE_ASSOCIATION' ...  % for rxns
