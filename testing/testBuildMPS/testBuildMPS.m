@@ -35,7 +35,12 @@ changeCobraSolver('mps','LP');
 changeCobraSolver('mps','MILP');
 
 %Call solveCobraLP; Name output file 'testMPSLP.mps'
-mpsFileLP = solveCobraLP(LPproblem,'MPSfilename','testMPSLP.mps','EqtNames',EqtNames,'VarNameFun',VarNameFun);
+paramStruct.MPSfilename='testMPSLP.mps';
+paramStruct.EqtNames=EqtNames;
+paramStruct.VarNameFun=VarNameFun;
+
+%call with parameter structure - Ronan
+mpsFileLP = solveCobraLP(LPproblem,paramStruct);
 
 %Verify mpsFile
 load('mpsFileStd.mat');
@@ -60,11 +65,17 @@ MILPproblem.x0 = [];
 MILPproblem.csense = ['L'; 'L'; 'E'];               %Constraint sense
 MILPproblem.vartype = ['I'; 'C'; 'C'];              %Variable type
 MILPproblem.osense = 1;                             %Minimize
+
+%parameters
 VarNameFun = @(m) (char('x'+(m-1)));    %Function used to name variables
 EqtNames = {'Equality'};
+paramStruct.MPSfilename='testMPSMILP.mps';
+paramStruct.EqtNames=EqtNames;
+paramStruct.VarNameFun=VarNameFun;
 
 %Call solveCobraMILP; name output file 'testMPSMILP.mps'
-mpsFileMILP = solveCobraMILP(MILPproblem,'MPSfilename','testMPSMILP.mps','EqtNames',EqtNames,'VarNameFun',VarNameFun);
+%mpsFileMILP = solveCobraMILP(MILPproblem,'MPSfilename','testMPSMILP.mps','EqtNames',EqtNames,'VarNameFun',VarNameFun);
+mpsFileMILP = solveCobraMILP(MILPproblem,paramStruct);
 
 %Verify mpsFile
 if any(~strcmp(mpsFileMILP,mpsFileMILPStd))
@@ -91,6 +102,10 @@ end
 %    display('iJR904 MPS matrix does not match');
 %    statusOK = 0;
 %end
+
+%cleanup;
+delete('testMPSMILP.mps');
+delete('testMPSLP.mps');
 
 %switch solvers back to original
 changeCobraSolver(origSolverLP,'LP');
