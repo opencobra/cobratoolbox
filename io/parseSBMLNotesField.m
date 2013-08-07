@@ -42,12 +42,6 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
     % Ben Heavner 1 July 2013 - add cell array functionality, rxnGeneMat,
     %   and bossy note
 
-    if isempty(regexp(notesField,'html:p', 'once'))
-        tag = 'p';
-    else
-        tag = 'html:p';
-    end
-
     subSystem = '';
     formula = '';
     confidenceScore = '';
@@ -62,6 +56,12 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
     Comment = 0;
         
     if ischar(notesField) %if a string, use MH's code
+        
+        if isempty(regexp(notesField,'html:p', 'once'))
+            tag = 'p';
+        else
+            tag = 'html:p';
+        end
     
         [~,fieldList] = regexp(notesField,['<' tag '>.*?</' tag '>'], ...
             'tokens', 'match');
@@ -120,7 +120,13 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
         end
 
     elseif iscell(notesField) % if a cell array, use BH code
-
+        
+        if sum(cellfun('isempty', regexp(notesField,'html:p', 'once')))
+            tag = 'p';
+        else
+            tag = 'html:p';
+        end
+        
         NotesKeys = { ...
             'GENE_ASSOCIATION' ...  % for rxns
             'GENE ASSOCIATION' ...  % for rxns
@@ -142,9 +148,13 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
             key = NotesKeys{2};
         end
 
-        % strip HTML open tag and key text
-        grRule = cellfun(@(x) regexprep(x, ['<' tag '>' key ': '], ...
-            ''), grRule, 'UniformOutput', 0); 
+        % strip HTML open tag and key text        
+        grRule = cellfun(@(x) regexprep(x, ['<' tag '>' key ':'], ...
+            ''), grRule, 'UniformOutput', 0);
+        
+        % strip leading space if it exists
+        grRule = cellfun(@(x) regexprep(x, '^\s', ''), grRule, ...
+            'UniformOutput', 0);
         
         % strip tag close tags
         grRule = cellfun(@(x) regexprep(x, ['</\' tag '>'], ''), ...
@@ -159,18 +169,22 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
         
         % strip HTML open tag and key text
         subSystem = cellfun(@(x) ...
-            regexprep(x, ['<' tag '>' NotesKeys{3} ': '], ''), ...
+            regexprep(x, ['<' tag '>' NotesKeys{3} ':'], ''), ...
             subSystem, 'UniformOutput', 0);
+
+        % strip leading space if it exists
+        subSystem = cellfun(@(x) regexprep(x, '^\s', ''), subSystem, ...
+            'UniformOutput', 0);
         
         % strip tag close tags
         subSystem = cellfun(@(x) regexprep(x, ['</\' tag '>'],''), ...
-            subSystem, 'UniformOutput', 0);
+           subSystem, 'UniformOutput', 0);
         
         % added to support some legacy subsystem encoding?
-         subSystem = cellfun(@(x) strrep(x,'S_',''), subSystem, ...
-             'UniformOutput', 0);
-         subSystem = cellfun(@(x) regexprep(x,'_+',' '), subSystem, ...
-             'UniformOutput', 0);
+        subSystem = cellfun(@(x) strrep(x,'S_',''), subSystem, ...
+            'UniformOutput', 0);
+        subSystem = cellfun(@(x) regexprep(x,'_+',' '), subSystem, ...
+            'UniformOutput', 0);
          
          % I think the intent of the string-based code was to default to
          % 'exchange' if there wasn't an entry for Subsystem. However, it
@@ -180,15 +194,19 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
          
  %        subSystem(cellfun('isempty',subSystem)) = {{'Exchange'}};
 
-         subSystem(cellfun('isempty',subSystem)) = {{''}};
-         subSystem = [subSystem{:}]'; % unnest cell
-      
+        subSystem(cellfun('isempty',subSystem)) = {{''}};
+        subSystem = [subSystem{:}]'; % unnest cell
+         
         ecNumber = regexp(notesField, ...
             ['<' tag '>' NotesKeys{4} ':.*?</' tag '>'] , 'match');
-        
+         
         % strip HTML open tag and key text
         ecNumber = cellfun(@(x) regexprep(x, ...
-            ['<' tag '>' NotesKeys{4} ': '], ''), ecNumber, ...
+            ['<' tag '>' NotesKeys{4} ':'], ''), ecNumber, ...
+            'UniformOutput', 0);
+         
+        % strip leading space if it exists
+        ecNumber = cellfun(@(x) regexprep(x, '^\s', ''), ecNumber, ...
             'UniformOutput', 0);
         
         % strip tag close tags
@@ -202,7 +220,11 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
         
         % strip HTML open tag and key text
         citation = cellfun(@(x) regexprep(x, ...
-            ['<' tag '>' NotesKeys{5} ': '], ''), citation, ...
+            ['<' tag '>' NotesKeys{5} ':'], ''), citation, ...
+            'UniformOutput', 0);
+        
+        % strip leading space if it exists
+        citation = cellfun(@(x) regexprep(x, '^\s', ''), citation, ...
             'UniformOutput', 0);
         
         % strip tag close tags
@@ -216,13 +238,18 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
         
         % strip HTML open tag and key text
         confidenceScore = cellfun(@(x) regexprep(x, ...
-            ['<' tag '>' NotesKeys{6} ': '], ''), confidenceScore, ...
+            ['<' tag '>' NotesKeys{6} ':'], ''), confidenceScore, ...
             'UniformOutput', 0);
+        
+        % strip leading space if it exists
+        confidenceScore = cellfun(@(x) regexprep(x, '^\s', ''), ...
+            confidenceScore, 'UniformOutput', 0);
         
         % strip tag close tags
         confidenceScore = cellfun(@(x) regexprep(x, ...
             ['</\' tag '>'], ''), confidenceScore, 'UniformOutput', 0); 
-        confidenceScore(cellfun('isempty',confidenceScore)) = {{''}}; % pad blanks
+        confidenceScore(cellfun('isempty',confidenceScore)) = ...
+            {{''}}; % pad blanks
         confidenceScore = [confidenceScore{:}]'; % unnest cell
                 
         formula = regexp(notesField, ...
@@ -230,7 +257,11 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
         
         % strip HTML open tag and key text
         formula = cellfun(@(x) regexprep(x, ...
-            ['<' tag '>' NotesKeys{7} ': '], ''), formula, ...
+            ['<' tag '>' NotesKeys{7} ':'], ''), formula, ...
+            'UniformOutput', 0);
+        
+        % strip leading space if it exists
+        formula = cellfun(@(x) regexprep(x, '^\s', ''), formula, ...
             'UniformOutput', 0);
         
         % strip tag close tags
@@ -244,7 +275,11 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
         
         % strip HTML open tag and key text
         charge = cellfun(@(x) regexprep(x, ...
-            ['<' tag '>' NotesKeys{8} ': '], ''), charge, ...
+            ['<' tag '>' NotesKeys{8} ':'], ''), charge, ...
+            'UniformOutput', 0);
+        
+        % strip leading space if it exists
+        charge = cellfun(@(x) regexprep(x, '^\s', ''), charge, ...
             'UniformOutput', 0);
         
         % strip tag close tags
@@ -252,6 +287,8 @@ function [genes, rule, subSystem, grRule, formula, confidenceScore, ...
             charge, 'UniformOutput', 0);
         charge(cellfun('isempty',charge)) = {{''}}; % pad blanks
         charge = [charge{:}]'; % unnest cell
+        
+        comment = notesField;
     else
         errorstr = [...
             'The str variable passed to parseBoolean must be a string ' ...
