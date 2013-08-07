@@ -108,6 +108,11 @@ if (strcmp(solverType,'LP'))
                 warning('LP solver Mosek not usable: mosekopt.m not in Matlab path');
                 solverOK = false;
             end
+        case 'mosek_linprog'
+            if (~exist('mosekopt'))
+                warning('LP solver Mosek not usable: mosekopt.m not in Matlab path');
+                solverOK = false;
+            end
         case 'tomlab_cplex'
             if (~exist('tomRun'))
                 warning('LP solver CPLEX through Tomlab not usable: tomRun.m not in Matlab path');
@@ -117,6 +122,13 @@ if (strcmp(solverType,'LP'))
             if (~exist('solveCobraLPCPLEX'))
                 warning('LP solver CPLEX through Tomlab not usable: tomRun.m not in Matlab path');
                 solverOK = false;
+            end
+        case 'ibm_cplex'
+            try
+                ILOGcplex = Cplex('fba');% Initialize the CPLEX object
+            catch ME
+                solverOK = false;
+                warning('LP solver CPLEX from IBM not usable: IBM CPLEX not installed or licence server not up');
             end
         case 'lp_solve'
             if (~exist('lp_solve'))

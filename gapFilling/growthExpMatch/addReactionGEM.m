@@ -132,7 +132,7 @@ for i = 1:length(rev)
                 c = HTABLE.get(parsing{j});
             else
                 c = strmatch(parsing{j},newmodel.mets,'exact');
-                display('slow method')
+                %display('slow method')
             end
 %             c2 = strmatch(parsing{j},newmodel.mets,'exact');
 %             

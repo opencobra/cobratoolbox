@@ -1,4 +1,5 @@
-function model = readCbModel(fileName,defaultBound,fileType,modelDescription,compSymbolList,compNameList)
+function model = readCbModel(fileName, defaultBound, fileType, ...
+        modelDescription, compSymbolList, compNameList, legacyFlag)
 %readCbModel Read in a constraint-based model
 %
 % model = readCbModel(fileName,defaultBound,fileType,modelDescription)
@@ -25,6 +26,10 @@ function model = readCbModel(fileName,defaultBound,fileType,modelDescription,com
 % compSymbolList    Compartment Symbol List
 % compNameList      Name of compartments corresponding to compartment
 %                   symbol list 
+% legacyFlag        true to use old convertSBMLToCobra code that
+%                   parses SBML metabolite names for formulas,
+%                   compartments, and other information, instead of
+%                   using modern SBML approaches (Default false)
 %
 %OUTPUT
 % Returns a model in the COBRA format:
@@ -124,14 +129,17 @@ end
 if (nargin < 5)
     compSymbolList = {};
     compNameList = {};
+    legacyFlag = 0;
 end
 
 switch fileType
     case 'SBML',
         if isempty(regexp(fileName,'\.xml$', 'once'))
-            model = readSBMLCbModel([fileName '.xml'],defaultBound,compSymbolList,compNameList);
+            model = readSBMLCbModel([fileName '.xml'], defaultBound, ...
+                compSymbolList, compNameList, legacyFlag);
         else
-            model = readSBMLCbModel(fileName,defaultBound,compSymbolList,compNameList);
+            model = readSBMLCbModel(fileName, defaultBound, ...
+                compSymbolList, compNameList, legacyFlag);
         end
     case 'SimPheny',
         model = readSimPhenyCbModel(fileName,defaultBound,compSymbolList,compNameList);
@@ -164,7 +172,8 @@ selRev = (model.lb < 0 & model.ub > 0);
 model.rev(selRev) = 1;
 
 %% readSBMLCbModel Read SBML format constraint-based model
-function model =  readSBMLCbModel(fileName,defaultBound,compSymbolList,compNameList)
+function model =  readSBMLCbModel(fileName, defaultBound, ...
+        compSymbolList, compNameList, legacyFlag)
 
 if ~(exist(fileName,'file'))
     error(['Input file ' fileName ' not found']);
@@ -179,7 +188,8 @@ end
 modelSBML = TranslateSBML(fileName);
 
 % Convert
-model = convertSBMLToCobra(modelSBML,defaultBound,compSymbolList,compNameList);
+model = convertSBMLToCobra(modelSBML, defaultBound, compSymbolList, ...
+    compNameList, legacyFlag);
 
 %%
 function model = readSimPhenyCbModel(baseName,defaultBound,compSymbolList,compNameList)

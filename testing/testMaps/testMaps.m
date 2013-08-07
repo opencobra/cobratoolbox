@@ -12,10 +12,15 @@ oriFolder = pwd;
 mFilePath = mfilename('fullpath');
 cd(mFilePath(1:end-length(mfilename)));
 
-map = readCbMap('ecoli_core_map.txt');
+mapCoordinateFilename='ecoli_core_map.txt';
+
+map = readCbMap(mapCoordinateFilename);
 load('ecoli_core_model.mat');
 sol = optimizeCbModel(model);
-f = figure;
+global CB_MAP_OUTPUT
+if ~strcmp(CB_MAP_OUTPUT,'svg')
+    f = figure;
+end
 drawCbMap(map);
 
 %tests drawConc with zero concentrations of metabolites
@@ -56,7 +61,9 @@ display(' ');
 
 
 x=1;
-close(f);
+if ~strcmp(CB_MAP_OUTPUT,'svg')
+    close(f);
+end
 cd(oriFolder);
 
 end

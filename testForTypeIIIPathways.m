@@ -42,7 +42,7 @@ for i = 1:size(model.lb,1)
 end
 
 % write expa file
-convertModelToEX(model,strcat(filename, '.expa'),ListExch,rxnzero);
+convertModelToEX(model,strcat(filename, '.expa'),rxnzero,model.rxns(ListExch));
 
 % run expa analysis
 [status,result] = dos(['X3 -p ' strcat(filename, '.expa')]);
