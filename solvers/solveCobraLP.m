@@ -864,16 +864,17 @@ switch solver
             end
         else
             %simple ibm ilog cplex interface
-            options = parameters;
+            if parametersStructureFlag
+            	options = cplexoptimset(parameters,'param',default);
+            else
+                options = cplexoptimset('cplex');
+            end
             switch printLevel
                 case 0
-                    options = cplexoptimset(options,'Display','off');
+                    options.output.clonelog=0;
+                    options = cplexoptimset(options,'diagnostics','off');
                 case 1
-                    options = cplexoptimset(options,'Display','off');
-                case 1
-                    options = cplexoptimset(options,'Display','off');
-                case 1
-                    options = cplexoptimset(options,'Display','off');
+                    options = cplexoptimset(options,'diagnostics','on');
             end
             if isfield(ILOGcplex.Param,'printLevel')
                 options=rmfield(options,'printLevel');
