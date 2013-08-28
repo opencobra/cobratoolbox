@@ -22,7 +22,7 @@ function map = readCbMap(fileName)
 %   connectionAbb           the reaction abbreviations assigned to each
 %                           segment
 %   connectionName          the name of reactions
-%   connectionRiversibile   1 if reaction is reversible and 0 otherwise
+%   connectionReversibile   1 if reaction is reversible and 0 otherwise
 %
 
 

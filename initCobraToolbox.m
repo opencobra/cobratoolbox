@@ -92,7 +92,7 @@ CbMapOutput = 'svg';
 CbMapOutputOK = changeCbMapOutput(CbMapOutput);
 if CbMapOutputOK
     fprintf('CB map output set to %s successful\n',CbMapOutput);
-else	
+else
     fprintf('Cb map output set failed\n');
 end
 

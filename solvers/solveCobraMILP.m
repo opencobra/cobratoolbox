@@ -56,9 +56,10 @@ function solution = solveCobraMILP(MILPproblem,varargin)
 %  origStat Original status returned by the specific solver 
 %  time     Solve time in seconds
 %
-%
+
 % Markus Herrgard 1/23/07
 % Tim Harrington  05/18/12 Added support for the Gurobi 5.0 solver
+% Ronan (16/07/2013) default MPS parameters are no longer global variables
 
 %% Process options
 
@@ -72,29 +73,82 @@ end
 
 optParamNames = {'intTol', 'relMipGapTol', 'timeLimit', ...
     'logFile', 'printLevel', 'saveInput', 'DATACHECK', 'DEPIND', ...
-    'feasTol', 'optTol', 'absMipGapTol', 'NUMERICALEMPHASIS', 'EleNames', ... 
-    'EqtNames', 'VarNames', 'EleNameFun', 'EqtNameFun', 'VarNameFun', ...
-    'PbName', 'MPSfilename'};
-parameters = '';
+    'feasTol', 'optTol', 'absMipGapTol', 'NUMERICALEMPHASIS'};
+
+%, 'EleNames', ... 
+%    'EqtNames', 'VarNames', 'EleNameFun', 'EqtNameFun', 'VarNameFun', ...
+%    'PbName', 'MPSfilename'};
+
+% parameters = '';
+% if nargin ~=1
+%     if mod(length(varargin),2)==0
+%         for i=1:2:length(varargin)-1
+%             if ismember(varargin{i},optParamNames)
+%                 parameters.(varargin{i}) = varargin{i+1};
+%             else
+%                 error([varargin{i} ' is not a valid optional parameter']);
+%             end
+%         end
+%     elseif strcmp(varargin{1},'default')
+%         parameters = 'default';
+%     elseif isstruct(varargin{1})
+%         parameters = varargin{1};
+%     else
+%         display('Warning: Invalid number of parameters/values')
+%         solution=[];
+%         return;
+%     end
+% end
+
 if nargin ~=1
     if mod(length(varargin),2)==0
+        %expecting pairs of parameter names and parameter values
         for i=1:2:length(varargin)-1
+            if ismember(varargin{i},optParamNames)
+                if isstruct(varargin{i+1})
+                    error('solveCobraLP: Invalid number of parameters/values')
+                else
+                    parameters.(varargin{i}) = varargin{i+1};
+                end
+            else
+                error([varargin{i} ' is not a valid optional parameter']);
+            end
+        end
+        parametersStructureFlag=0;
+        parameters = '';
+    elseif strcmp(varargin{1},'default')
+        %default cobra parameters 
+        parameters = 'default';
+    elseif isstruct(varargin{1})
+        %uses the structure for setting parameters in preference to those
+        %of the optParamNames, where appropriate
+        parametersStructureFlag=1;
+        directParamStruct = varargin{1};
+        parameters='';
+    elseif isstruct(varargin{length(varargin)})
+        %expecting pairs of parameter names and parameter values, then a
+        %parameter structure at the end
+        parametersStructureFlag=1;
+        directParamStruct=varargin{length(varargin)};
+        for i=1:2:length(varargin)-2
             if ismember(varargin{i},optParamNames)
                 parameters.(varargin{i}) = varargin{i+1};
             else
                 error([varargin{i} ' is not a valid optional parameter']);
             end
         end
-    elseif strcmp(varargin{1},'default')
-        parameters = 'default';
-    elseif isstruct(varargin{1})
-        parameters = varargin{1};
+        pause(eps)
     else
-        display('Warning: Invalid number of parameters/values')
-        solution=[];
-        return;
+        error('solveCobraLP: Invalid number of parameters/values')
     end
+    [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
+    getCobraSolverParams('LP',optParamNames(1:6),parameters);
+else
+    parametersStructureFlag=0;
+    [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
+    getCobraSolverParams('LP',optParamNames(1:6));
 end
+
 
 %optional parameters
 [solverParams.intTol, solverParams.relMipGapTol, solverParams.timeLimit, ...
@@ -374,9 +428,59 @@ switch solver
         % Build MPS Author: Bruno Luong
         % Interfaced with CobraToolbox by Richard Que (12/18/09)
         display('Solver set to MPS. This function will output an MPS matrix string for the MILP problem');
+        
         %Get optional parameters
-        [EleNames,EqtNames,VarNames,EleNameFun,EqtNameFun,VarNameFun,PbName,MPSfilename] = ...
-            getCobraSolverParams('LP',{'EleNames','EqtNames','VarNames','EleNameFun','EqtNameFun','VarNameFun','PbName','MPSfilename'},parameters);
+        %[EleNames,EqtNames,VarNames,EleNameFun,EqtNameFun,VarNameFun,PbName,MPSfilename] = ...
+        %    getCobraSolverParams('LP',{'EleNames','EqtNames','VarNames','EleNameFun','EqtNameFun','VarNameFun','PbName','MPSfilename'},parameters);
+        
+        %default MPS parameters are no longer global variables, but set
+        %here inside this function
+        if parametersStructureFlag
+            param=directParamStruct;
+        else
+            param=struct();
+        end
+        if isfield(param,'EleNames')
+            EleNames=param.EleNames;
+        else
+            EleNames='';
+        end
+        if isfield(param,'EqtNames')
+            EqtNames=param.EqtNames;
+        else
+            EqtNames='';
+        end
+        if isfield(param,'VarNames')
+            VarNames=param.VarNames;
+        else
+            VarNames='';
+        end
+        if isfield(param,'EleNameFun')
+            EleNameFun=directParamStruct.EleNameFun;
+        else
+            EleNameFun = @(m)(['LE' num2str(m)]);
+        end
+        if isfield(param,'EqtNameFun')
+            EqtNameFun=param.EqtNameFun;
+        else
+            EqtNameFun = @(m)(['EQ' num2str(m)]);
+        end
+        if isfield(param,'VarNameFun')
+            VarNameFun=param.VarNameFun;
+        else
+            VarNameFun = @(m)(['X' num2str(m)]);
+        end
+        if isfield(param,'PbName')
+            PbName=param.PbName;
+        else
+            PbName='LPproble';
+        end
+        if isfield(param,'MPSfilename')
+            MPSfilename=param.MPSfilename;
+        else
+            MPSfilename='test.mps';
+        end
+
         %split A matrix for L and E csense
         Ale = A(csense=='L',:);
         ble = b(csense=='L');
@@ -388,20 +492,22 @@ switch solver
         
         %%%%Adapted from BuildMPS%%%%%
         [neq nvar]=size(Aeq);
-        nle=size(Ale,1);
-        if isempty(EleNames)
-            EleNames=arrayfun(EleNameFun,(1:nle),'UniformOutput', false);
-        end
-        if isempty(EqtNames)
+%         nle=size(Ale,1);
+%         if strcmp(EleNames,'')
+%             EleNames=arrayfun(EleNameFun,(1:nle),'UniformOutput', false);
+%         end
+        if strcmp(EqtNames,'')
             EqtNames=arrayfun(EqtNameFun,(1:neq),'UniformOutput', false);
         end
-        if isempty(VarNames)
-            VarNames=arrayfun(VarNameFun,(1:nvar),'UniformOutput', false);
-        end
+%         if strcmp(VarNames,'')
+%             VarNames=arrayfun(VarNameFun,(1:nvar),'UniformOutput', false);
+%         end
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+        %TODO - does not seem to write out file
         [solution] = BuildMPS(Ale, ble, Aeq, beq, c, lb, ub, PbName,'MPSfilename',MPSfilename,'EqtNames',EqtNames,'VarNameFun',VarNameFun,'Integer',intIndex,'Binary',binaryIndex);
-  
+        %[solution] = BuildMPS(Ale, ble, Aeq, beq, c, lb, ub, PbName,'MPSfilename',MPSfilename,'EleNames',EleNames,'EqtNames',EqtNames,'VarNames',VarNames);
+
         return
     otherwise
         error(['Unknown solver: ' solver]);
