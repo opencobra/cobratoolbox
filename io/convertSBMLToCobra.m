@@ -594,9 +594,9 @@ function model = convertSBMLToCobra(modelSBML, defaultBound, ...
         % rxn info
         model.rxns = rxns;
         model.rxnNames = rxnNames;
-        model.subSystems = subSystem;
+        model.rxnSubSystems = subSystem;
         model.rules = rule;
-        model.confidenceScores = confidenceScore;
+        model.rxnConfidenceScores = confidenceScore;
         model.rxnReferences = citation;
         model.rxnECNumbers = ecNumber;
         model.rxnNotes = unparsedRxnNotes;
