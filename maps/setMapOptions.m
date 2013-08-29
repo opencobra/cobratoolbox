@@ -44,6 +44,7 @@ function options = setMapOptions(options, map, varargin)
 %   edgeWeight          A nx1 matrix corresponds to the width of the edges.
 %                       it is representative of the confidance of the
 %                       fluxes.
+%   maxEdgeWeight       Scalar giving max width of any edge, default = 5.
 %   textColor           A nx3 matrix corresponds to the color of the
 %                       metabolites labels on the map.
 %   textSize            A nx1 matrix corresponds to the size of the
@@ -219,15 +220,19 @@ if ~isstr(varargin{1}) && isstr(varargin{2})
                 end
                 %Clear variables
                 clear('nodeWeight','mapMol','modelMol','known','index');
+            case 'maxedgeweight'
+                %this allows more flexibilty over thickest width
+                options.maxEdgeWeight=cell2mat(varargin(i+1));
             case 'edgeweight'
                 edgeWeight = cell2mat(varargin(i+1));
                 if size(edgeWeight,1) == 1
                     %set edgeWeight for all reactions
                     options.edgeWeight = repmat(edgeWeight,nEdges,1);
                 elseif size(edgeWeight,1) == length(model.rxns)
-                    %Assume flux confidence
-                    %scale
-                    if max(edgeWeight)~=0, edgeWeight = round(4*edgeWeight/max(edgeWeight))+1; end
+                    %Assume flux confidence scale
+                    if max(edgeWeight)~=0
+                        edgeWeight = round(4*edgeWeight/max(edgeWeight))+1;
+                    end
                     %default edge weight
                     options.edgeWeight = ones(nEdges,1)*4;
                     %map known connections
@@ -304,7 +309,10 @@ if ~isstr(varargin{1}) && isstr(varargin{2})
         end
     end
     
-    % if model is not passed.
+    if isfield(options,'maxEdgeWeight')
+        options.edgeWeight = round((options.maxEdgeWeight-1)*options.edgeWeight/max(options.edgeWeight))+1;
+    end
+    % if map and model are not passed.
 else
     for i = 1:2:size(varargin,2)
         switch lower(varargin{i})

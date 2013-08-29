@@ -107,9 +107,11 @@ end
 
 %rxnDirectionality
 if rxnDirFlag
-    options.rxnDir = zeros(length(map.rxnIndex),1);
-    options.rxnDir(ismember(map.connectionAbb,model.rxns(flux>0))) = 1;
-    options.rxnDir(ismember(map.connectionAbb,model.rxns(flux<0))) = -1;
+    options.rxnDir = zeros(length(map.connectionAbb),1);
+    for i = 1:length(map.connectionAbb)
+        options.rxnDir(ismember(map.connectionAbb,model.rxns(flux>0))) = 1;
+        options.rxnDir(ismember(map.connectionAbb,model.rxns(flux<0))) = -1;
+    end
 end
 
 
