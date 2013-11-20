@@ -1,4 +1,4 @@
-function vRev = convertIrrevFluxDistribution(model,vIrrev,matchRev)
+function vRev = convertIrrevFluxDistribution(vIrrev, matchRev)
 %convertInrrevFluxDistribution  Convert irreversible flux distribution to
 %reversible
 %
@@ -16,7 +16,7 @@ function vRev = convertIrrevFluxDistribution(model,vIrrev,matchRev)
 % Markus Herrgard 1/30/07
 %
 % Brandon Barker, Yiping Wang 6/23/2013
-% Updated to correctly negate strictly backward reactions
+%     - correctly negate strictly backward reactions
 % 
 processedFlux = false*ones(length(vIrrev),1);
 
@@ -24,16 +24,19 @@ vRev = [];
 
 for i = 1:length(vIrrev)
     if (~processedFlux(i))
-        if (matchRev(i) > 0)
+        vRevlen = length(vRev);
+        if matchRev(i) > 0
             vRev(end+1) = vIrrev(i)-vIrrev(matchRev(i));
             processedFlux(matchRev(i)) = true;
-        else
-	    vRevlen = length(vRev);
-	    if model.ub(vRevlen+1) <= 0
+        elseif matchRev(i) < 0
+            if mod(matchRev(vRevlen+1), 1) > 0                
                 vRev(vRevlen+1) = -vIrrev(i);
             else
                 vRev(vRevlen+1) = vIrrev(i);
 	    end
+        else
+            disp(['Warning: rev_rxn ' num2str(vRevlen+1) ', irrev rxn ' ...
+                  num2str(i) ' missed in matchRev.']);
         end
         processedFlux(i) = true;
     end
