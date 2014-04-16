@@ -1,4 +1,5 @@
-function [massImbalance,imBalancedMass,imBalancedCharge,imBalancedBool,Elements,missingFormulaeBool] = checkMassChargeBalance(model,rxnBool,printLevel)
+function [massImbalance,imBalancedMass,imBalancedCharge,imBalancedBool,Elements,missingFormulaeBool,balancedMetBool]...
+    = checkMassChargeBalance(model,rxnBool,printLevel)
 %[massImbalance,imBalancedMass,imBalancedCharge,imBalancedBool,Elements] = checkMassChargeBalance(model,rxnBool,printLevel)
 %checkMassChargeBalance tests for a list of reactions if these reactions are
 %mass-balanced by adding all elements on left hand side and comparing them
@@ -12,11 +13,12 @@ function [massImbalance,imBalancedMass,imBalancedCharge,imBalancedBool,Elements,
 % rxnBool       Boolean vector corresponding to reactions in model to be
 %               tested. If empty, then all tested.
 %               Alternatively, can be the indices of reactions to test:
-%               i.e. rxnBool(indixes)=1;
+%               i.e. rxnBool(indexes)=1;
 % printLevel    {-1,(0),1} 
 %               -1 = print out diagnostics on problem reactions to a file 
 %                0 = silent
-%                1 = print out diagnostics on problem reactions to screen
+%                1 = print elements as they are checked (display progress)
+%                2 = also print out diagnostics on problem reactions to screen
 %
 %OUTPUTS
 % massImbalance                 nRxn x nElement matrix with mass imblance
@@ -27,10 +29,16 @@ function [massImbalance,imBalancedMass,imBalancedCharge,imBalancedBool,Elements,
 % imBalancedCharge              nRxn x 1 vector with charge imbalance,
 %                               empty if no imbalanced reactions
 %
-% imBalancedBool                boolean vector indicating imbalanced reactions
+% imBalancedRxnBool             boolean vector indicating imbalanced non-exchange reactions
 %       
 % Elements                      nElement x 1 cell array of element
-%                               abbreviations checked 
+%                               abbreviations checked
+%
+% missingFormulaeBool           nMet x 1 boolean vector indicating
+%                               metabolites without formulae
+%
+% balancedMetBool               boolean vector indicating metabolites involved in balanced reactions
+%
 % Ines Thiele 12/09
 % IT, 06/10, Corrected some bugs and improved speed.
 % RF, 09/09/10, Support for very large models and printing to file.
@@ -71,12 +79,16 @@ for j = 1 : length(Elements)
         [dE,E_el,missingFormulaeBool]=checkBalance(model,Elements{j},printLevel);
         massImbalance(:,j)=dE;
         E(:,j)=E_el;
-        fprintf('%s\n',['Checked element ' Elements{j}]);  
+        if printLevel>0
+            fprintf('%s\n',['Checked element ' Elements{j}]);
+        end
     else
         %no need to print out for each element which metabolites have no
         %formula
         [massImbalance(:,j),E(:,j)]=checkBalance(model,Elements{j},0);
-        fprintf('%s\n',['Checking element ' Elements{j}]);
+        if printLevel>0
+            fprintf('%s\n',['Checking element ' Elements{j}]);
+        end
     end
 end
 massImbalance(~rxnBool,:)=0;
@@ -134,7 +146,7 @@ if printLevel==-1
         fclose(fid);
     end
 end
-if printLevel==1
+if printLevel==2
     for p=1:nRxn
         if ~strcmp(imBalancedMass{p,1},'')
             %at the moment, ignore reactions with a metabolite that have
@@ -165,7 +177,7 @@ firstMissing=0;
 if isfield(model, 'metCharges')
     for m=1:nMet
         if isnan(model.metCharges(m)) && ~isempty(model.metFormulas{m})
-            if printLevel==1
+            if printLevel==2
                 fprintf('%s\t%s\n',int2str(m),[model.mets{m} ' has no charge but has formula.'])
                 if ~firstMissing
                     warning('model structure must contain model.metCharges field for each metabolite');
@@ -218,7 +230,7 @@ if printLevel==-1
     end
 end
 
-if printLevel==1
+if printLevel==2
     if ~isempty(imBalancedCharge)
         fprintf('%s\n','Mass balanced, but charged imbalanced reactions:')
         for q=1:nRxn
@@ -240,6 +252,10 @@ end
 if ~isempty(imBalancedCharge)
     imBalancedBool = imBalancedBool |  imBalancedCharge~=0;
 end
+
+%nonzero rows corresponding to completely mass balanced reactions
+balancedMetBool = (sum(abs(model.S(:,model.SIntRxnBool & ~imBalancedBool)),2)~=0);
+
 
 
 

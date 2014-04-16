@@ -3,7 +3,9 @@ function [inform,m,model]=checkStoichiometricConsistency(model,printLevel,method
 % strictly positive basis in the left nullspace of S. 
 % If S is not stoichiometrically consistent detect conserved and unconserved
 % metabolites, by returning a maximal conservation vector, which is 
-% a non-negative basis with as many strictly positive entries as possible. 
+% a non-negative basis with as many strictly positive entries as possible.
+% This omits rows of S that are entirely zero, when any exchange reactions
+% are removed.
 % The strictly positive and zero entries in m correspond to the conserved 
 % and unconserved metabolites respectively.
 %
@@ -31,7 +33,8 @@ function [inform,m,model]=checkStoichiometricConsistency(model,printLevel,method
 %                    then we will attempt to identify such reactions,
 %                    model.mets exists, otherwise, we will assume all
 %                    reactions are supposed to be mass balanced.
-% printLevel         {(0),1} 
+%
+% printLevel         {(0),1}
 % method.interface   {('solveCobraLP'),'cvx'} interface called to do the consistency check
 % method.solver      {(default solver),'gurobi','mosek'} 
 % method.param       solver specific parameter structure
@@ -46,13 +49,18 @@ function [inform,m,model]=checkStoichiometricConsistency(model,printLevel,method
 % m                     m x 1 strictly positive vector in left nullspace 
 %                       (empty if it does not exist)
 % 
-% model.SConsistentBool m x 1 boolean vector indicating metabolites involved
-%                       in the maximal consistent vector
+% model.SConsistentMetBool      m x 1 boolean vector indicating metabolites involved
+%                               in the maximal consistent vector
+%
+% model.SConsistentRxnBool n x 1 boolean vector non-exchange reaction involving
+%                               a stoichiometrically consistent metabolite
 %
 %
 % Ronan Fleming   2012 initial coding
 %                 2013 update with detection of conserved metabolites based
 %                 on algorithm by Nikos Vlassis.
+%                 2014 update to omit trivial rows corresponding to S row
+%                 that is all zero
 
 if ~exist('printLevel','var')
     printLevel=0;
@@ -80,6 +88,7 @@ else
         model.SIntRxnBool(strcmp('ATPM',model.rxns),1)=0;
     end
 end
+
 SInt=model.S(:,model.SIntRxnBool);
 LPproblem.A=SInt';
 LPproblem.b=zeros(size(LPproblem.A,1),1);
@@ -141,7 +150,7 @@ if inform~=1
                 error('NaN in maximal conservation vector')
             end
             %boolean indicating metabolites involved in the maximal consistent vector
-            model.SConsistentBool=m>zeroCutoff;
+            model.SConsistentMetBool=m>zeroCutoff & model.SIntMetBool;
         case 'solveCobraLP'
             %set the solver and solver parameters
             global CBTLPSOLVER
@@ -182,7 +191,7 @@ if inform~=1
                 m=solution.full(1:nMet,1);
                 z=solution.full(nMet+1:end,1);
                 %boolean indicating metabolites involved in the maximal consistent vector
-                model.SConsistentBool=m>zeroCutoff;
+                model.SConsistentMetBool=m>zeroCutoff & model.SIntMetBool;
             else
                 solution
                 error('solve for maximal conservation vector failed')
@@ -198,7 +207,7 @@ if inform~=1
             m=maxEntConsVector(SInt,printLevel);
             timetaken=toc;
             %boolean indicating metabolites involved in the maximal consistent vector
-            model.SConsistentBool=m>zeroCutoff;
+            model.SConsistentMetBool=m>zeroCutoff & model.SIntMetBool;
             z=zeros(nMet,1);
     end
     m(m<0)=0;
@@ -209,13 +218,19 @@ if inform~=1
             fprintf('%s%s%s%s%s%g%s\n','Maximal conservation vector, using ', method.interface, ' ', method.solver,', in time ',timetaken,' sec.')
         end
         fprintf('%10f\t%s\n',ones(1,nMet) * z,'= Optimal objective (i.e. 1''*z)')
-        fprintf('%10d\t%s\n', nnz(model.SConsistentBool),'= Number of stoichiometrically consistent rows')
+        fprintf('%10d\t%s\n', nnz(model.SConsistentMetBool),'= Number of stoichiometrically consistent rows')
         fprintf('%10g\t%s\n',norm(m'*SInt),'= || m''*S ||_inf for non-exchange reactions of S')
     end
 else
     m=solution.full;
-    model.SConsistentBool=true(nMet,1);
+    %The only consistent rows are those corresponding to non-exchange
+    %reactions
+    model.SConsistentMetBool=model.SIntMetBool;
     if printLevel>0
-        fprintf('%s\n',['Stoichiometrically consistent ' intR 'stoichiometry.']);
+        fprintf('%s\n',['Stoichiometrically consistent ' intR 'with respect to non-exchange reactions.']);
     end
 end
+
+%find every non-exchange reaction involving a stoichiometrically consistent metabolite
+model.SConsistentRxnBool=(sum(model.S(model.SConsistentMetBool,:)~=0,1)~=0)';
+model.SConsistentRxnBool(~model.SIntRxnBool)=0;

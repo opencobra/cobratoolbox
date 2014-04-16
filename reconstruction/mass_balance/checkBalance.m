@@ -1,4 +1,5 @@
-function [dE,E]=checkBalance(model,element,printLevel)
+function [dE,E,missingFormulaeBool]=checkBalance(model,element,printLevel)
+% [dE,E]=checkBalance(model,element,printLevel)
 % Checks whether a set of reactions is elementally balanced.
 %
 % note that exchange reactions are not elementally balanced
@@ -34,11 +35,13 @@ end
 
 [nMet,nRxn]=size(model.S);
 
-    
+missingFormulaeBool=false(nMet,1);
+
 E=zeros(nMet,1);
 firstMissing=0;
 for m=1:nMet
     if isempty(model.metFormulas{m})
+        missingFormulaeBool(m,1)=1;
         if printLevel==1
             fprintf('%s\t%s\n',int2str(m),[model.mets{m} ' has no formula'])
         end
