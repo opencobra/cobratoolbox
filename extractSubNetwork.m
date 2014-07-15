@@ -1,11 +1,11 @@
-function subModel = extractSubNetwork(model,rxnNames,metNames)
+function subModel = extractSubNetwork(model,rxnList,metList)
 %extractSubNetwork Extract subnetwork model
 %
-% subModel = extractSubNetwork(model,rxnNames,metNames)
+% subModel = extractSubNetwork(model,rxnList,metList)
 %
 %INPUTS
 % model     COBRA model structure
-% rxnNames  Reaction list for the subnetwork to be extracted
+% rxnList  Reaction list for the subnetwork to be extracted
 %
 %OPTIONAL INPUTS
 % metNames  Metabolite list for the subnetwork to be extracted
@@ -14,13 +14,18 @@ function subModel = extractSubNetwork(model,rxnNames,metNames)
 % subModel  COBRA model of subnetwork
 %
 % Markus Herrgard 12/11/06
+%
+% Srikiran C 7/15/14 
+% - Replaced rxnNames with rxnList as model.rxnNames is different from
+% model.rxns, and model.rxns is used to select the subnetwork.
+% - Replaced metNames with metList, to avoid similar confusion.
 
-selRxns = ismember(model.rxns,rxnNames);
+selRxns = ismember(model.rxns,rxnList);
 subS = model.S(:,selRxns);
 if (nargin < 3)
     selMets = ~all(subS == 0,2);
 else
-    selMets = ismember(model.mets,metNames);
+    selMets = ismember(model.mets,metList);
 end
 
 subS = subS(selMets,:);
@@ -49,7 +54,7 @@ end
 if (isfield(model,'ub'))
     subModel.ub = model.ub(selRxns);
 end
-if (isfield(model,'c'))
+if (isfield(model,'r'))
     subModel.c = model.c(selRxns);
 end
 if (isfield(model,'genes'))
