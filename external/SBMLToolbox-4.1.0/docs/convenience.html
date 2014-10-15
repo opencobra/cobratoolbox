@@ -1,0 +1,414 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>CONVENIENCE</h3>
+
+<p>The Convenience folder contains a number of convenience functions for checking information or manipulating math expressions.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>y = CheckValidUnitKind(kind)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>kind, a string representing a unit kind </li>
+</ol>
+
+<p>Returns </p>
+
+<ol>
+<li>y =
+<ul>
+<li>1 if the string represents a valid unit kind </li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<p><em>NOTE:</em> This is identical to the function isValidUnitKind</p>
+
+<hr>
+
+<h4>newArray = LoseWhiteSpace(charArray)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>charArray, an array of characters </li>
+</ol>
+
+<p>Returns </p>
+
+<ol>
+<li>the array with any white space removed</li>
+</ol>
+
+<p><em>EXAMPLE:</em></p>
+
+<pre><code>     newArray = LoseWhiteSpace('     exa  mp le')
+
+     newArray = 'example'
+</code></pre>
+
+<hr>
+
+<h4>pairs = PairBrackets(expression)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>expression, a string representation of a math expression</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the indices of each pair of brackets ordered from
+the opening bracket index</li>
+</ol>
+
+<p><em>EXAMPLE:</em></p>
+
+<pre><code>     pairs = PairBrackets('(a+((b*c)/(a+b)))')
+
+     pairs = 
+                 1   17
+                 4   16
+                 5    9
+                 11  15
+</code></pre>
+
+<hr>
+
+<h4>output = Rearrange(expression, name)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>expression, a string representation of a math expression</li>
+<li>name, a string representing the name of a variable</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the expression rearranged in terms of the variable</li>
+</ol>
+
+<p><em>EXAMPLE:</em></p>
+
+<pre><code>     output   =   Rearrange('X + Y - Z', 'X')
+
+     output   =   '-Y+Z'
+</code></pre>
+
+<hr>
+
+<h4>newArray = RemoveDuplicates(array)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>array, any array</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the array with any duplicate entries removed  </li>
+</ol>
+
+<p><em>EXAMPLE:</em></p>
+
+<pre><code>          newArray = RemoveDuplicates([2, 3, 4, 3, 2, 5])
+          newArray = [2, 3, 4, 5]
+</code></pre>
+
+<hr>
+
+<h4>value = Substitute(expression, SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>expression, a string representation of a math expression</li>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the expression when all variables within the model have
+been substituted</li>
+</ol>
+
+<p><em>EXAMPLE:</em></p>
+
+<pre><code>     Consider m to be an SBMLModel containing a species with 
+                id = 'g' and initialConcentration = '3' 
+
+     value = Substitute('g*2', m)
+
+     value = 6
+</code></pre>
+
+<hr>
+
+<h4>newExpression = SubstituteConstants(expression, SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>expression, a string representation of a math expression</li>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the string representation of the expression when all constants within the 
+model have been substituted</li>
+</ol>
+
+<p><em>EXAMPLE:</em></p>
+
+<pre><code>     Consider m to be an SBMLModel containing a parameter
+          with id = 'g', constant = '1' and value = 3' 
+
+     newExpression = SubstituteConstants('2 * g * S1', SBMLModel)
+
+     newExpression = '2 * 3 * S1'
+</code></pre>
+
+<hr>
+
+<h4>newExpression = SubstituteFunction(expression, SBMLFunctionDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>expression, a string representation of a math expression</li>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>newExpression
+<ul>
+<li>the string representation of the expression when any instances of the 
+functionDefinition have been substituted</li>
+<li>an empty string if the functiondefinition is not in the original
+expression</li>
+</ul></li>
+</ol>
+
+<p><em>EXAMPLE:</em></p>
+
+<pre><code>     Consider fD to be an SBMLFunctionDefinition 
+          with id = 'g' and math = 'lambda(x,x+0.5)' 
+
+     formula = SubstituteFormula('g(y)', fD)
+
+     formula = 'y+0.5'
+
+
+     formula = SubstituteFormula('h(y)', fD)
+
+     formula = ''
+</code></pre>
+
+<hr>
+
+<h4>y = isIntegralNumber(number)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>number, any number</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>y = </li>
+<li>1 if the number represents an integer </li>
+<li>0 otherwise </li>
+</ol>
+
+<p><em>EXAMPLE:</em></p>
+
+<pre><code>          y = isIntegralNumber(int32(3))
+          y = 1
+
+          y = isIntegralNumber(double(3.2))
+          y = 0
+
+          y = isIntegralNumber(double(3))
+          y = 1
+</code></pre>
+
+<p><em>NOTE:</em> The inbuilt 'isinteger' function only returns true if the number 
+ has been declared as having an integer type, whereas the default type for numbers 
+ in MATLAB is double. This function will return '1' if the number
+ represents an integer.</p>
+
+<hr>
+
+<h4>y = isValidUnitKind(kind)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>kind, a string representing a unit kind </li>
+</ol>
+
+<p>returns </p>
+
+<ol>
+<li>y =
+<ul>
+<li>1 if the string represents a valid unit kind </li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<p><em>NOTE:</em> This is identical to the function CheckValidUnitKind</p>
+
+<hr>
+
+<h4>index = matchFunctionName(expression, name)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>expression, a string representation of a math expression</li>
+<li>name, a string representing the name of a function</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the index of the starting point of 'name' in the 'expression'</li>
+</ol>
+
+<p><em>EXAMPLE:</em></p>
+
+<pre><code>     index = matchFunctionName('f*g', 'g')
+
+     index = []
+
+
+     index = matchFunctionName('add(d,g_1)', 'add')
+
+     index = 0
+
+
+     index = matchFunctionName('add(add(a,b), c)', 'add')
+
+     index = [1, 5]
+</code></pre>
+
+<p><em>NOTE:</em> This differs from the 'strfind' function in that it checks
+      that the name is used as a function call.</p>
+
+<hr>
+
+<h4>index = matchName(expression, name)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>expression, a string representation of a math expression</li>
+<li>name, a string representing the name of a variable</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the index of the starting point of 'name' in the 'expression'</li>
+</ol>
+
+<p><em>EXAMPLE:</em></p>
+
+<pre><code>     index = matchName('f*g', 'g')
+
+     index = 3
+
+
+     index = matchName('f*g_1', 'g')
+
+     index = []
+
+
+     index = matchName('f*g(a,g)', 'g')
+
+     index = 7
+</code></pre>
+
+<p><em>NOTE:</em> This differs from the 'strfind' function in that it checks
+      that the name is used as a variable.</p>
+
+<hr>
+
+<h4>value = piecewise(value1, test, value2)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>value1, the value to return if the test is true</li>
+<li>test, a boolean test that will return true or false</li>
+<li>value2, the value to return if the test is false</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>value1, if test returns true</li>
+<li>value2, if test returns false</li>
+</ul></li>
+</ol>
+
+<p><em>EXAMPLE:</em></p>
+
+<pre><code>          value = piecewise(3, 1&lt;2, 4)
+          value = 3
+
+          value = piecewise(3, 1&gt;2, 4)
+          value = 4
+</code></pre>
+
+<p><em>NOTE:</em> This function provides the functionality of the MathML 'piecewise' function.</p>
+
+<hr>
+
+<h4>y = testmember(value, array)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>value, any number/string</li>
+<li>array, an array of objects </li>
+</ol>
+
+<p>Returns </p>
+
+<ol>
+<li>y = 
+<ul>
+<li>1 if value is a member of the array </li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<p><em>NOTE:</em> this function is necessary for octave to emulate the MATLAB
+      functionality of the 'ismember' function</p>
+
+<hr>

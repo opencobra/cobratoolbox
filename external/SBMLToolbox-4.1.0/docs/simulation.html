@@ -1,0 +1,273 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>SIMULATION</h3>
+
+<p>The functions allow users to simulate SBML Models.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>[analysis] = AnalyseSpecies(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a structure detailing the species and how they are manipulated 
+          within the model</li>
+</ol>
+
+<p><em>EXAMPLE:</em></p>
+
+<pre><code>     Using the model from toolbox/Test/test-data/algebraicRules.xml
+
+        analysis = AnalyseSpecies(m)
+
+        analysis = 
+
+        1x5 struct array with fields:
+            Name
+            constant
+            boundaryCondition
+            initialValue
+            hasAmountOnly
+            isConcentration
+            compartment
+            ChangedByReaction
+            KineticLaw
+            ChangedByRateRule
+            RateRule
+            ChangedByAssignmentRule
+            AssignmentRule
+            InAlgebraicRule
+            AlgebraicRule
+            ConvertedToAssignRule
+            ConvertedRule
+
+        analysis(1) = 
+
+
+                               Name: {'S1'}
+                           constant: 0
+                  boundaryCondition: 0
+                       initialValue: 0.0300
+                      hasAmountOnly: 0
+                    isConcentration: 0
+                        compartment: 'compartment'
+                  ChangedByReaction: 1
+                         KineticLaw: {' - (k*S1)'}
+                  ChangedByRateRule: 0
+                           RateRule: ''
+            ChangedByAssignmentRule: 0
+                     AssignmentRule: ''
+                    InAlgebraicRule: 1
+                      AlgebraicRule: {{1x1 cell}}
+              ConvertedToAssignRule: 0
+                      ConvertedRule: ''
+</code></pre>
+
+<hr>
+
+<h4>[analysis] = AnalyseVaryingParameters(SBMLModel)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a structure detailing any parameters that are not constant and how they are manipulated 
+          within the model</li>
+</ol>
+
+<p><em>EXAMPLE:</em></p>
+
+<pre><code>     Using the model from toolbox/Test/test-data/algebraicRules.xml
+
+       analysis = AnalyseVaryingParameters(m)
+
+       analysis = 
+                   Name: {'s2'}
+           initialValue: 4
+      ChangedByRateRule: 0
+               RateRule: ''
+ChangedByAssignmentRule: 0
+         AssignmentRule: ''
+        InAlgebraicRule: 1
+          AlgebraicRule: {{1x1 cell}}
+  ConvertedToAssignRule: 1
+          ConvertedRule: '-(-S2-S3)'
+</code></pre>
+
+<hr>
+
+<h4>elements = DealWithPiecewise(formula)</h4>
+
+<p>Takes </p>
+
+<ol>
+<li>formula, a string representation of a math expression that contains the MathML piecewise function </li>
+</ol>
+
+<p>Returns </p>
+
+<ol>
+<li>an array of the three components of the piecewise function</li>
+</ol>
+
+<p><em>EXAMPLE:</em></p>
+
+<pre><code>      elements = DealWithPiecewise('piecewise(le(s2,4),1.5,0.05)')
+
+               =  'le(s2,4)'  '1.5'   '0.05'
+</code></pre>
+
+<p><em>NOTE:</em> The function cannot deal with a piecewise statement with more
+than three elements.</p>
+
+<hr>
+
+<h4>elements = GetArgumentsFromLambdaFunction(formula)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>formula, a string representation of a math expression that contains the MathML lambda function </li>
+</ol>
+
+<p>Returns </p>
+
+<ol>
+<li>an array of the components of the lambda function</li>
+</ol>
+
+<p><em>EXAMPLE:</em></p>
+
+<pre><code>      elements = GetArgumentsFromLambdaFunction('lambda(x, x+0.5)')
+
+               =  'x'  'x+0.5'   
+
+      elements = GetArgumentsFromLambdaFunction('lambda(x, y, x + y)')
+
+               =  'x'  'y'    'x+y'
+</code></pre>
+
+<hr>
+
+<h4>OutputODEFunction</h4>
+
+<p><em>NOTE:</em> This function is deprecated. Use SolveODEFunction instead. </p>
+
+<hr>
+
+<h4>SolveODEFunction(varargin)</h4>
+
+<p>Takes </p>
+
+<ol>
+<li>a MATLAB_SBML model structure (required argument)</li>
+<li>time limit (default = 10)</li>
+<li>number of time steps (default lets the solver decide)</li>
+<li>a flag to indicate whether to output species values in amount/concentration
+      1 amount, 0 concentration (default)</li>
+<li>a flag to indicate whether to output the simulation data as 
+      a comma separated variable (csv) file 
+      1 output 0 no output (default)</li>
+<li>a filename (this is needed if WriteODEFunction was used with a
+           filename)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of time values</li>
+<li>an array of the values of variables at each time point; species will
+be in concentration or amount as specified by input arguments</li>
+</ol>
+
+<p>Outputs </p>
+
+<ol>
+<li>a file 'name.csv' with the data results (if the flag to output such a
+file is set to 1.</li>
+</ol>
+
+<p><em>NOTE:</em> the results are generated using ode45 solver (MATLAB) or lsode
+(Octave)</p>
+
+<hr>
+
+<h4>WriteEventAssignmentFunction(SBMLModel, name)</h4>
+
+<p>Takes </p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>name, a string representing the name of the ode function being used</li>
+</ol>
+
+<p>Outputs </p>
+
+<ol>
+<li>a file 'name_eventAssign.m' defining a function that assigns values following an event 
+    (for use with the event option of MATLABs ode solvers)</li>
+</ol>
+
+<p><em>NOTE:</em> This function is called from WriteODEFunction when a model with
+ events is encountered.</p>
+
+<hr>
+
+<h4>WriteEventHandlerFunction(SBMLModel, name)</h4>
+
+<p>Takes </p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>name, a string representing the name of the ode function being used</li>
+</ol>
+
+<p>Outputs </p>
+
+<ol>
+<li>a file 'name_events.m' defining a function that tests whether events
+have been triggered
+    (for use with the event option of MATLABs ode solvers)</li>
+</ol>
+
+<p><em>NOTE:</em> This function is called from WriteODEFunction when a model with
+ events is encountered.</p>
+
+<hr>
+
+<h4>WriteODEFunction(SBMLModel, name(optional))</h4>
+
+<p>Takes </p>
+
+<ol>
+<li>SBMLModel, an SBML Model structure</li>
+<li>name, an optional string representing the name of the ode function to be used</li>
+</ol>
+
+<p>Outputs </p>
+
+<ol>
+<li>a file 'name.m' defining a function that defines the ode equations of
+the model for use with the ode solvers
+(if no name supplied the model id will be used)</li>
+</ol>
+
+<hr>

@@ -1,0 +1,386 @@
+<h3>MATLAB<em>SBML</em>STRUCTURE_FUNCTIONS\UNITDEFINITION</h3>
+
+<p>The functions allow users to create and work with the SBML UnitDefinition structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>SBMLUnitDefinition = UnitDefinition_addUnit(SBMLUnitDefinition, SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML UnitDefinition structure with the SBML Unit structure added</li>
+</ol>
+
+<hr>
+
+<h4>UnitDefinition = UnitDefinition_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML UnitDefinition structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>SBMLUnitDefinition = UnitDefinition_createUnit(SBMLUnitDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML UnitDefinition structure with a new SBML Unit structure added</li>
+</ol>
+
+<hr>
+
+<h4>id = UnitDefinition_getId(SBMLUnitDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the id attribute</li>
+</ol>
+
+<hr>
+
+<h4>unit = UnitDefinition_getListOfUnits(SBMLUnitDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the unit structures</li>
+</ol>
+
+<hr>
+
+<h4>metaid = UnitDefinition_getMetaid(SBMLUnitDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>name = UnitDefinition_getName(SBMLUnitDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the name attribute</li>
+</ol>
+
+<hr>
+
+<h4>numUnits = UnitDefinition_getNumUnits(SBMLUnitDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the numUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = UnitDefinition_getSBOTerm(SBMLUnitDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>unit = UnitDefinition_getUnit(SBMLUnitDefinition, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+<li>index, an integer representing the index of SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Unit structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>value = UnitDefinition_isSetId(SBMLUnitDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the id attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = UnitDefinition_isSetMetaid(SBMLUnitDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the metaid attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = UnitDefinition_isSetName(SBMLUnitDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the name attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = UnitDefinition_isSetSBOTerm(SBMLUnitDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnitDefinition = UnitDefinition_setId(SBMLUnitDefinition, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+<li>id; a string representing the id to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML UnitDefinition structure with the new value for the id attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnitDefinition = UnitDefinition_setMetaid(SBMLUnitDefinition, metaid)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+<li>metaid; a string representing the metaid to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML UnitDefinition structure with the new value for the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnitDefinition = UnitDefinition_setName(SBMLUnitDefinition, name)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+<li>name; a string representing the name to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML UnitDefinition structure with the new value for the name attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnitDefinition = UnitDefinition_setSBOTerm(SBMLUnitDefinition, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+<li>sboTerm, an integer representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML UnitDefinition structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnitDefinition = UnitDefinition_unsetId(SBMLUnitDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML UnitDefinition structure with the id attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnitDefinition = UnitDefinition_unsetMetaid(SBMLUnitDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML UnitDefinition structure with the metaid attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnitDefinition = UnitDefinition_unsetName(SBMLUnitDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML UnitDefinition structure with the name attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnitDefinition = UnitDefinition_unsetSBOTerm(SBMLUnitDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnitDefinition, an SBML UnitDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML UnitDefinition structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>

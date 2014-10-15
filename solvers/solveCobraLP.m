@@ -185,8 +185,10 @@ algorithm='default';
 
 t_start = clock;
 switch solver
-    %% GLPK
+    case 'quadMINOS'
+        
     case 'glpk'
+        %% GLPK
         param.msglev = printLevel; % level of verbosity
         param.tolbnd = feasTol; %tolerance
         param.toldj = optTol; %tolerance
@@ -759,7 +761,9 @@ switch solver
         solution.basis = LPprob.LPBasis;
         solution.solver = solver;
         solution.algorithm = algorithm; %dummy
-        
+        if exist('clone1.log','file')
+            delete('clone1.log')
+        end
     case 'ibm_cplex'
         %%
         %By default use the complex ILOG-CPLEX interface as it seems to be faster
@@ -929,7 +933,9 @@ switch solver
         end
         %1 = (Simplex or Barrier) Optimal solution is available.
         stat=origStat;
-       
+       if exist('clone1.log','file')
+           delete('clone1.log')
+       end
     case 'lindo'
         %%
         error('Solver type lindo is obsolete - use lindo_new or lindo_old instead');

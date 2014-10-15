@@ -1,0 +1,379 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "../style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>MATLAB_SBML_STRUCTURE_FUNCTIONS\MODIFIERSPECIESREFERENCE</h3>
+
+<p>The functions allow users to create and work with the SBML ModifierSpeciesReference structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>ModifierSpeciesReference = ModifierSpeciesReference_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML ModifierSpeciesReference structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>id = ModifierSpeciesReference_getId(SBMLModifierSpeciesReference)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModifierSpeciesReference, an SBML ModifierSpeciesReference structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the id attribute</li>
+</ol>
+
+<hr>
+
+<h4>metaid = ModifierSpeciesReference_getMetaid(SBMLModifierSpeciesReference)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModifierSpeciesReference, an SBML ModifierSpeciesReference structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>name = ModifierSpeciesReference_getName(SBMLModifierSpeciesReference)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModifierSpeciesReference, an SBML ModifierSpeciesReference structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the name attribute</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = ModifierSpeciesReference_getSBOTerm(SBMLModifierSpeciesReference)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModifierSpeciesReference, an SBML ModifierSpeciesReference structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>species = ModifierSpeciesReference_getSpecies(SBMLModifierSpeciesReference)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModifierSpeciesReference, an SBML ModifierSpeciesReference structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the species attribute</li>
+</ol>
+
+<hr>
+
+<h4>value = ModifierSpeciesReference_isSetId(SBMLModifierSpeciesReference)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModifierSpeciesReference, an SBML ModifierSpeciesReference structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the id attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = ModifierSpeciesReference_isSetMetaid(SBMLModifierSpeciesReference)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModifierSpeciesReference, an SBML ModifierSpeciesReference structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the metaid attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = ModifierSpeciesReference_isSetName(SBMLModifierSpeciesReference)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModifierSpeciesReference, an SBML ModifierSpeciesReference structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the name attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = ModifierSpeciesReference_isSetSBOTerm(SBMLModifierSpeciesReference)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModifierSpeciesReference, an SBML ModifierSpeciesReference structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = ModifierSpeciesReference_isSetSpecies(SBMLModifierSpeciesReference)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModifierSpeciesReference, an SBML ModifierSpeciesReference structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the species attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLModifierSpeciesReference = ModifierSpeciesReference_setId(SBMLModifierSpeciesReference, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModifierSpeciesReference, an SBML ModifierSpeciesReference structure</li>
+<li>id; a string representing the id to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML ModifierSpeciesReference structure with the new value for the id attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModifierSpeciesReference = ModifierSpeciesReference_setMetaid(SBMLModifierSpeciesReference, metaid)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModifierSpeciesReference, an SBML ModifierSpeciesReference structure</li>
+<li>metaid; a string representing the metaid to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML ModifierSpeciesReference structure with the new value for the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModifierSpeciesReference = ModifierSpeciesReference_setName(SBMLModifierSpeciesReference, name)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModifierSpeciesReference, an SBML ModifierSpeciesReference structure</li>
+<li>name; a string representing the name to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML ModifierSpeciesReference structure with the new value for the name attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModifierSpeciesReference = ModifierSpeciesReference_setSBOTerm(SBMLModifierSpeciesReference, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModifierSpeciesReference, an SBML ModifierSpeciesReference structure</li>
+<li>sboTerm, an integer representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML ModifierSpeciesReference structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModifierSpeciesReference = ModifierSpeciesReference_setSpecies(SBMLModifierSpeciesReference, species)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModifierSpeciesReference, an SBML ModifierSpeciesReference structure</li>
+<li>species; a string representing the species to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML ModifierSpeciesReference structure with the new value for the species attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModifierSpeciesReference = ModifierSpeciesReference_unsetId(SBMLModifierSpeciesReference)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModifierSpeciesReference, an SBML ModifierSpeciesReference structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML ModifierSpeciesReference structure with the id attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModifierSpeciesReference = ModifierSpeciesReference_unsetMetaid(SBMLModifierSpeciesReference)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModifierSpeciesReference, an SBML ModifierSpeciesReference structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML ModifierSpeciesReference structure with the metaid attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModifierSpeciesReference = ModifierSpeciesReference_unsetName(SBMLModifierSpeciesReference)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModifierSpeciesReference, an SBML ModifierSpeciesReference structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML ModifierSpeciesReference structure with the name attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModifierSpeciesReference = ModifierSpeciesReference_unsetSBOTerm(SBMLModifierSpeciesReference)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModifierSpeciesReference, an SBML ModifierSpeciesReference structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML ModifierSpeciesReference structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLModifierSpeciesReference = ModifierSpeciesReference_unsetSpecies(SBMLModifierSpeciesReference)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLModifierSpeciesReference, an SBML ModifierSpeciesReference structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML ModifierSpeciesReference structure with the species attribute unset</li>
+</ol>
+
+<hr>

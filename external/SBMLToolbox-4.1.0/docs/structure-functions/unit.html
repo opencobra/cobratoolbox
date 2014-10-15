@@ -1,0 +1,517 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "../style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>MATLAB_SBML_STRUCTURE_FUNCTIONS\UNIT</h3>
+
+<p>The functions allow users to create and work with the SBML Unit structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>Unit = Unit_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML Unit structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>exponent = Unit_getExponent(SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the exponent attribute</li>
+</ol>
+
+<hr>
+
+<h4>kind = Unit_getKind(SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the kind attribute</li>
+</ol>
+
+<hr>
+
+<h4>metaid = Unit_getMetaid(SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>multiplier = Unit_getMultiplier(SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the multiplier attribute</li>
+</ol>
+
+<hr>
+
+<h4>offset = Unit_getOffset(SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the offset attribute</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = Unit_getSBOTerm(SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>scale = Unit_getScale(SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the scale attribute</li>
+</ol>
+
+<hr>
+
+<h4>value = Unit_isSetExponent(SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the exponent attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Unit_isSetKind(SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the kind attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Unit_isSetMetaid(SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the metaid attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Unit_isSetMultiplier(SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the multiplier attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Unit_isSetOffset(SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the offset attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Unit_isSetSBOTerm(SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Unit_isSetScale(SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the scale attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnit = Unit_setExponent(SBMLUnit, exponent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+<li>exponent; number representing the value of exponent to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Unit structure with the new value for the exponent attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnit = Unit_setKind(SBMLUnit, kind)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+<li>kind; a string representing the kind to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Unit structure with the new value for the kind attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnit = Unit_setMetaid(SBMLUnit, metaid)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+<li>metaid; a string representing the metaid to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Unit structure with the new value for the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnit = Unit_setMultiplier(SBMLUnit, multiplier)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+<li>multiplier; number representing the value of multiplier to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Unit structure with the new value for the multiplier attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnit = Unit_setOffset(SBMLUnit, offset)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+<li>offset, an integer representing the offset to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Unit structure with the new value for the offset attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnit = Unit_setSBOTerm(SBMLUnit, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+<li>sboTerm, an integer representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Unit structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnit = Unit_setScale(SBMLUnit, scale)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+<li>scale; number representing the value of scale to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Unit structure with the new value for the scale attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnit = Unit_unsetExponent(SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Unit structure with the exponent attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnit = Unit_unsetKind(SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Unit structure with the kind attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnit = Unit_unsetMetaid(SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Unit structure with the metaid attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnit = Unit_unsetMultiplier(SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Unit structure with the multiplier attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnit = Unit_unsetOffset(SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Unit structure with the offset attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnit = Unit_unsetSBOTerm(SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Unit structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLUnit = Unit_unsetScale(SBMLUnit)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLUnit, an SBML Unit structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Unit structure with the scale attribute unset</li>
+</ol>
+
+<hr>

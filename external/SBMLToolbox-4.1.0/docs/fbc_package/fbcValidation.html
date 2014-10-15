@@ -1,0 +1,183 @@
+<h3>FBC_PACKAGE\VALIDATE_MATLAB_SBML_STRUCTURES</h3>
+
+<p>This folder contains tests that checks that the structure supplied as argument 
+is of the appropriate form to represent the intended element of an SBML model
+that includes the fbc package.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_FBC_FluxBound(SBMLFBCFluxBound, level, version, pkgVersion)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLStructure, an SBML FBC FluxBound structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version, an integer representing an SBML version</li>
+<li>pkgVersion, an integer representing an FBC package version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML FBC FluxBound structure of the appropriate
+level, version and FBC version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML FBC FluxBound structure of the appropriate
+level and version can be found using getFluxBoundFieldnames(level, version, pkgVersion)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_FBC_FluxObjective(SBMLFBCFluxObjective, level, version, pkgVersion)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLStructure, an SBML FBC FluxObjective structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version, an integer representing an SBML version</li>
+<li>pkgVersion, an integer representing an FBC package version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML FBC FluxObjective structure of the appropriate
+level, version and FBC version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML FBC FluxObjective structure of the appropriate
+level and version can be found using getFluxObjectiveFieldnames(level, version, pkgVersion)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_FBC_Model(SBMLFBCModel, level, version, pkgVersion)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLStructure, an SBML FBC Model structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version, an integer representing an SBML version</li>
+<li>pkgVersion, an integer representing an FBC package version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML FBC Model structure of the appropriate
+level, version and FBC version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML FBC Model structure of the appropriate
+level and version can be found using getModelFieldnames(level, version, pkgVersion)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_FBC_Objective(SBMLFBCObjective, level, version, pkgVersion)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLStructure, an SBML FBC Objective structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version, an integer representing an SBML version</li>
+<li>pkgVersion, an integer representing an FBC package version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML FBC Objective structure of the appropriate
+level, version and FBC version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML FBC Objective structure of the appropriate
+level and version can be found using getObjectiveFieldnames(level, version, pkgVersion)</p>
+
+<hr>
+
+<h4>[valid, message] = isSBML_FBC_Species(SBMLFBCSpecies, level, version, pkgVersion)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLStructure, an SBML FBC Species structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version, an integer representing an SBML version</li>
+<li>pkgVersion, an integer representing an FBC package version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML FBC Species structure of the appropriate
+level, version and FBC version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML FBC Species structure of the appropriate
+level and version can be found using getSpeciesFieldnames(level, version, pkgVersion)</p>
+
+<hr>
+
+<h4>[valid, message] = isValidFBC(SBMLStruct, level, version, pkgVersion)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLStruct, an SBML  structure</li>
+<li>level, an integer representing an SBML level</li>
+<li>version, an integer representing an SBML version</li>
+<li>pkgVersion, an integer representing the FBC package version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>valid = 
+<ul>
+<li>1, if the structure represents
+a MATLAB_SBML FBC structure of the appropriate
+level and version</li>
+<li>0, otherwise</li>
+</ul></li>
+<li>a message explaining any failure</li>
+</ol>
+
+<p><em>NOTE:</em> The fields present in a MATLAB_SBML  structure of the appropriate
+level and version can be found using getFieldnames(typecode, level, version)</p>
+
+<hr>

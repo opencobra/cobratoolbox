@@ -1,0 +1,1170 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "../style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>MATLAB_SBML_STRUCTURE_FUNCTIONS\SPECIES</h3>
+
+<p>The functions allow users to create and work with the SBML Species structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>Species = Species_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML Species structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>boundaryCondition = Species_getBoundaryCondition(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the boundaryCondition attribute</li>
+</ol>
+
+<hr>
+
+<h4>charge = Species_getCharge(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the charge attribute</li>
+</ol>
+
+<hr>
+
+<h4>compartment = Species_getCompartment(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the compartment attribute</li>
+</ol>
+
+<hr>
+
+<h4>constant = Species_getConstant(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the constant attribute</li>
+</ol>
+
+<hr>
+
+<h4>conversionFactor = Species_getConversionFactor(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the conversionFactor attribute</li>
+</ol>
+
+<hr>
+
+<h4>hasOnlySubstanceUnits = Species_getHasOnlySubstanceUnits(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the hasOnlySubstanceUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>id = Species_getId(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the id attribute</li>
+</ol>
+
+<hr>
+
+<h4>initialAmount = Species_getInitialAmount(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the initialAmount attribute</li>
+</ol>
+
+<hr>
+
+<h4>initialConcentration = Species_getInitialConcentration(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the initialConcentration attribute</li>
+</ol>
+
+<hr>
+
+<h4>metaid = Species_getMetaid(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>name = Species_getName(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the name attribute</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = Species_getSBOTerm(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>spatialSizeUnits = Species_getSpatialSizeUnits(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the spatialSizeUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>speciesType = Species_getSpeciesType(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the speciesType attribute</li>
+</ol>
+
+<hr>
+
+<h4>substanceUnits = Species_getSubstanceUnits(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the substanceUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>units = Species_getUnits(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the units attribute</li>
+</ol>
+
+<hr>
+
+<h4>y = Species_isAssignedByRateRule(SBMLSpecies, SBMLRules)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+<li>SBMLRules; the array of rules from an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<p>y = 
+  - the index of the rateRule used to assigned value to the Species
+  - 0 if the Species is not assigned by rateRule </p>
+
+<p>!---------------------------------------------------------------------------
+This file is part of SBMLToolbox.  Please visit http://sbml.org for more
+information about SBML, and the latest version of SBMLToolbox.</p>
+
+<p>Copyright (C) 2009-2012 jointly by the following organizations: 
+    1. California Institute of Technology, Pasadena, CA, USA
+    2. EMBL European Bioinformatics Institute (EBML-EBI), Hinxton, UK</p>
+
+<p>Copyright (C) 2006-2008 jointly by the following organizations: 
+    1. California Institute of Technology, Pasadena, CA, USA
+    2. University of Hertfordshire, Hatfield, UK</p>
+
+<p>Copyright (C) 2003-2005 jointly by the following organizations: 
+    1. California Institute of Technology, Pasadena, CA, USA 
+    2. Japan Science and Technology Agency, Japan
+    3. University of Hertfordshire, Hatfield, UK</p>
+
+<p>SBMLToolbox is free software; you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation.  A copy of the license agreement is provided
+in the file named "LICENSE.txt" included with this software distribution.
+---------------------------------------------------------------------- --></p>
+
+<hr>
+
+<h4>y = Species_isAssignedByRule(SBMLSpecies, SBMLRules)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+<li>SBMLRules; the array of rules from an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<p>y = 
+  - the index of the assignmentRule used to assigned value to the Species
+  - 0 if the Species is not assigned by assignmentRule </p>
+
+<p>!---------------------------------------------------------------------------
+This file is part of SBMLToolbox.  Please visit http://sbml.org for more
+information about SBML, and the latest version of SBMLToolbox.</p>
+
+<p>Copyright (C) 2009-2012 jointly by the following organizations: 
+    1. California Institute of Technology, Pasadena, CA, USA
+    2. EMBL European Bioinformatics Institute (EBML-EBI), Hinxton, UK</p>
+
+<p>Copyright (C) 2006-2008 jointly by the following organizations: 
+    1. California Institute of Technology, Pasadena, CA, USA
+    2. University of Hertfordshire, Hatfield, UK</p>
+
+<p>Copyright (C) 2003-2005 jointly by the following organizations: 
+    1. California Institute of Technology, Pasadena, CA, USA 
+    2. Japan Science and Technology Agency, Japan
+    3. University of Hertfordshire, Hatfield, UK</p>
+
+<p>SBMLToolbox is free software; you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation.  A copy of the license agreement is provided
+in the file named "LICENSE.txt" included with this software distribution.
+---------------------------------------------------------------------- --></p>
+
+<hr>
+
+<h4>y = Species_isInAlgebraicRule(SBMLSpecies, SBMLRules)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+<li>SBMLRules; the array of rules from an SBML Model structure</li>
+</ol>
+
+<p>Returns</p>
+
+<p>y = 
+  - an array of the indices of any algebraicRules the id of the Species appears in 
+  - 0 if the Species appears in no algebraicRules </p>
+
+<p>!---------------------------------------------------------------------------
+This file is part of SBMLToolbox.  Please visit http://sbml.org for more
+information about SBML, and the latest version of SBMLToolbox.</p>
+
+<p>Copyright (C) 2009-2012 jointly by the following organizations: 
+    1. California Institute of Technology, Pasadena, CA, USA
+    2. EMBL European Bioinformatics Institute (EBML-EBI), Hinxton, UK</p>
+
+<p>Copyright (C) 2006-2008 jointly by the following organizations: 
+    1. California Institute of Technology, Pasadena, CA, USA
+    2. University of Hertfordshire, Hatfield, UK</p>
+
+<p>Copyright (C) 2003-2005 jointly by the following organizations: 
+    1. California Institute of Technology, Pasadena, CA, USA 
+    2. Japan Science and Technology Agency, Japan
+    3. University of Hertfordshire, Hatfield, UK</p>
+
+<p>SBMLToolbox is free software; you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation.  A copy of the license agreement is provided
+in the file named "LICENSE.txt" included with this software distribution.
+---------------------------------------------------------------------- --></p>
+
+<hr>
+
+<h4>value = Species_isSetCharge(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the charge attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Species_isSetCompartment(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the compartment attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Species_isSetConversionFactor(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the conversionFactor attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Species_isSetHasOnlySubstanceUnits(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the hasOnlySubstanceUnits attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Species_isSetId(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the id attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Species_isSetInitialAmount(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the initialAmount attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Species_isSetInitialConcentration(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the initialConcentration attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Species_isSetMetaid(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the metaid attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Species_isSetName(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the name attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Species_isSetSBOTerm(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Species_isSetSpatialSizeUnits(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the spatialSizeUnits attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Species_isSetSpeciesType(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the speciesType attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Species_isSetSubstanceUnits(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the substanceUnits attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Species_isSetUnits(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the units attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_setBoundaryCondition(SBMLSpecies, boundaryCondition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+<li>boundaryCondition, an integer (0/1) representing the value of boundaryCondition to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the new value for the boundaryCondition attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_setCharge(SBMLSpecies, charge)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+<li>charge, an integer representing the charge to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the new value for the charge attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_setCompartment(SBMLSpecies, compartment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+<li>compartment; a string representing the compartment to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the new value for the compartment attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_setConstant(SBMLSpecies, constant)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+<li>constant, an integer (0/1) representing the value of constant to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the new value for the constant attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_setConversionFactor(SBMLSpecies, conversionFactor)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+<li>conversionFactor; a string representing the conversionFactor to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the new value for the conversionFactor attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_setHasOnlySubstanceUnits(SBMLSpecies, hasOnlySubstanceUnits)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+<li>hasOnlySubstanceUnits, an integer (0/1) representing the value of hasOnlySubstanceUnits to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the new value for the hasOnlySubstanceUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_setId(SBMLSpecies, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+<li>id; a string representing the id to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the new value for the id attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_setInitialAmount(SBMLSpecies, initialAmount)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+<li>initialAmount; number representing the value of initialAmount to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the new value for the initialAmount attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_setInitialConcentration(SBMLSpecies, initialConcentration)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+<li>initialConcentration; number representing the value of initialConcentration to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the new value for the initialConcentration attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_setMetaid(SBMLSpecies, metaid)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+<li>metaid; a string representing the metaid to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the new value for the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_setName(SBMLSpecies, name)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+<li>name; a string representing the name to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the new value for the name attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_setSBOTerm(SBMLSpecies, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+<li>sboTerm, an integer representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_setSpatialSizeUnits(SBMLSpecies, spatialSizeUnits)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+<li>spatialSizeUnits; a string representing the spatialSizeUnits to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the new value for the spatialSizeUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_setSpeciesType(SBMLSpecies, speciesType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+<li>speciesType; a string representing the speciesType to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the new value for the speciesType attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_setSubstanceUnits(SBMLSpecies, substanceUnits)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+<li>substanceUnits; a string representing the substanceUnits to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the new value for the substanceUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_setUnits(SBMLSpecies, units)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+<li>units; a string representing the units to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the new value for the units attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_unsetCharge(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the charge attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_unsetCompartment(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the compartment attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_unsetConversionFactor(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the conversionFactor attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_unsetId(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the id attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_unsetInitialAmount(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the initialAmount attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_unsetInitialConcentration(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the initialConcentration attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_unsetMetaid(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the metaid attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_unsetName(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the name attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_unsetSBOTerm(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_unsetSpatialSizeUnits(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the spatialSizeUnits attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_unsetSpeciesType(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the speciesType attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_unsetSubstanceUnits(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the substanceUnits attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpecies = Species_unsetUnits(SBMLSpecies)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpecies, an SBML Species structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Species structure with the units attribute unset</li>
+</ol>
+
+<hr>

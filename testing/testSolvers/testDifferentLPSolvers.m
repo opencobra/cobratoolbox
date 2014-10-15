@@ -1,27 +1,38 @@
-function out=test()
+function out=testDifferentLPSolvers(model)
 %tests the output from different LP solvers to see if they are consistent
-clear
+%
+%INPUT
+% model     COBRA model to test
+%
+%OUTPUT
+% out       1 = test sucessful, 0 = test unsucessful
 
-if exist('121114_Recon2betaModel.mat','file')
-    load 121114_Recon2betaModel.mat
-    model=modelRecon2beta121114;
+if exist('model','var')
     model.A=model.S;
     model.osense=-1;
     model.csense(1:size(model.S,1),1)='E';
 else
-    model.c = [200; 400];
-    model.A = [1/40, 1/60; 1/50, 1/50];
-    model.b = [1; 1];
-    model.lb = [0; 0];
-    model.ub = [1; 1];
-    model.osense = -1;
-    model.csense = ['L'; 'L'];
+    %solve a default model
+    if exist('121114_Recon2betaModel.mat','file')
+        load 121114_Recon2betaModel.mat
+        model=modelRecon2beta121114;
+        model.A=model.S;
+        model.osense=-1;
+        model.csense(1:size(model.S,1),1)='E';
+    else
+        model.c = [200; 400];
+        model.A = [1/40, 1/60; 1/50, 1/50];
+        model.b = [1; 1];
+        model.lb = [0; 0];
+        model.ub = [1; 1];
+        model.osense = -1;
+        model.csense = ['L'; 'L'];
+    end
 end
 
 %set the solver and solver parameters
 global CBTLPSOLVER
 oldSolver=CBTLPSOLVER;
-
 
 i=1;
 if 1
@@ -66,7 +77,7 @@ if 1
     clear param
 end
 
-if 1
+if 0
     %by default, the check for stoichiometric consistency omits the columns
     %of S corresponding to exchange reactions
     solver='mosek_linprog';

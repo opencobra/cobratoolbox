@@ -190,8 +190,13 @@ if inform~=1
             if solution.stat==1
                 m=solution.full(1:nMet,1);
                 z=solution.full(nMet+1:end,1);
-                %boolean indicating metabolites involved in the maximal consistent vector
-                model.SConsistentMetBool=m>zeroCutoff & model.SIntMetBool;
+                if isfield(model,'SIntMetBool')
+                    %boolean indicating metabolites involved in the maximal consistent vector
+                    model.SConsistentMetBool=m>zeroCutoff & model.SIntMetBool;
+                else
+                    %boolean indicating metabolites involved in the maximal consistent vector
+                    model.SConsistentMetBool=m>zeroCutoff;
+                end
             else
                 solution
                 error('solve for maximal conservation vector failed')
@@ -206,8 +211,13 @@ if inform~=1
             tic
             m=maxEntConsVector(SInt,printLevel);
             timetaken=toc;
-            %boolean indicating metabolites involved in the maximal consistent vector
-            model.SConsistentMetBool=m>zeroCutoff & model.SIntMetBool;
+            if isfield(model,'SIntMetBool')
+                %boolean indicating metabolites involved in the maximal consistent vector
+                model.SConsistentMetBool=m>zeroCutoff & model.SIntMetBool;
+            else
+                %boolean indicating metabolites involved in the maximal consistent vector
+                model.SConsistentMetBool=m>zeroCutoff;
+            end
             z=zeros(nMet,1);
     end
     m(m<0)=0;

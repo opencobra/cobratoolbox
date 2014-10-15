@@ -1,0 +1,310 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "../style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>MATLAB_SBML_STRUCTURE_FUNCTIONS\ASSIGNMENTRULE</h3>
+
+<p>The functions allow users to create and work with the SBML AssignmentRule structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>AssignmentRule = AssignmentRule_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML AssignmentRule structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>formula = AssignmentRule_getFormula(SBMLAssignmentRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAssignmentRule, an SBML AssignmentRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the formula attribute</li>
+</ol>
+
+<hr>
+
+<h4>metaid = AssignmentRule_getMetaid(SBMLAssignmentRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAssignmentRule, an SBML AssignmentRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = AssignmentRule_getSBOTerm(SBMLAssignmentRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAssignmentRule, an SBML AssignmentRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>variable = AssignmentRule_getVariable(SBMLAssignmentRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAssignmentRule, an SBML AssignmentRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the variable attribute</li>
+</ol>
+
+<hr>
+
+<h4>value = AssignmentRule_isSetFormula(SBMLAssignmentRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAssignmentRule, an SBML AssignmentRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the formula attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = AssignmentRule_isSetMetaid(SBMLAssignmentRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAssignmentRule, an SBML AssignmentRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the metaid attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = AssignmentRule_isSetSBOTerm(SBMLAssignmentRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAssignmentRule, an SBML AssignmentRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = AssignmentRule_isSetVariable(SBMLAssignmentRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAssignmentRule, an SBML AssignmentRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the variable attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLAssignmentRule = AssignmentRule_setFormula(SBMLAssignmentRule, formula)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAssignmentRule, an SBML AssignmentRule structure</li>
+<li>formula; a string representing the formula to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML AssignmentRule structure with the new value for the formula attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLAssignmentRule = AssignmentRule_setMetaid(SBMLAssignmentRule, metaid)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAssignmentRule, an SBML AssignmentRule structure</li>
+<li>metaid; a string representing the metaid to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML AssignmentRule structure with the new value for the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLAssignmentRule = AssignmentRule_setSBOTerm(SBMLAssignmentRule, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAssignmentRule, an SBML AssignmentRule structure</li>
+<li>sboTerm, an integer representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML AssignmentRule structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLAssignmentRule = AssignmentRule_setVariable(SBMLAssignmentRule, variable)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAssignmentRule, an SBML AssignmentRule structure</li>
+<li>variable; a string representing the variable to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML AssignmentRule structure with the new value for the variable attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLAssignmentRule = AssignmentRule_unsetFormula(SBMLAssignmentRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAssignmentRule, an SBML AssignmentRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML AssignmentRule structure with the formula attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLAssignmentRule = AssignmentRule_unsetMetaid(SBMLAssignmentRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAssignmentRule, an SBML AssignmentRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML AssignmentRule structure with the metaid attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLAssignmentRule = AssignmentRule_unsetSBOTerm(SBMLAssignmentRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAssignmentRule, an SBML AssignmentRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML AssignmentRule structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLAssignmentRule = AssignmentRule_unsetVariable(SBMLAssignmentRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAssignmentRule, an SBML AssignmentRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML AssignmentRule structure with the variable attribute unset</li>
+</ol>
+
+<hr>

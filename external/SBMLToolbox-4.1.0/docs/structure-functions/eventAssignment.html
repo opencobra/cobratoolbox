@@ -1,0 +1,310 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "../style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>MATLAB_SBML_STRUCTURE_FUNCTIONS\EVENTASSIGNMENT</h3>
+
+<p>The functions allow users to create and work with the SBML EventAssignment structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>EventAssignment = EventAssignment_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML EventAssignment structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>math = EventAssignment_getMath(SBMLEventAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEventAssignment, an SBML EventAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the math attribute</li>
+</ol>
+
+<hr>
+
+<h4>metaid = EventAssignment_getMetaid(SBMLEventAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEventAssignment, an SBML EventAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = EventAssignment_getSBOTerm(SBMLEventAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEventAssignment, an SBML EventAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>variable = EventAssignment_getVariable(SBMLEventAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEventAssignment, an SBML EventAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the variable attribute</li>
+</ol>
+
+<hr>
+
+<h4>value = EventAssignment_isSetMath(SBMLEventAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEventAssignment, an SBML EventAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the math attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = EventAssignment_isSetMetaid(SBMLEventAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEventAssignment, an SBML EventAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the metaid attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = EventAssignment_isSetSBOTerm(SBMLEventAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEventAssignment, an SBML EventAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = EventAssignment_isSetVariable(SBMLEventAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEventAssignment, an SBML EventAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the variable attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLEventAssignment = EventAssignment_setMath(SBMLEventAssignment, math)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEventAssignment, an SBML EventAssignment structure</li>
+<li>math; string representing the math expression math to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML EventAssignment structure with the new value for the math attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEventAssignment = EventAssignment_setMetaid(SBMLEventAssignment, metaid)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEventAssignment, an SBML EventAssignment structure</li>
+<li>metaid; a string representing the metaid to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML EventAssignment structure with the new value for the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEventAssignment = EventAssignment_setSBOTerm(SBMLEventAssignment, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEventAssignment, an SBML EventAssignment structure</li>
+<li>sboTerm, an integer representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML EventAssignment structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEventAssignment = EventAssignment_setVariable(SBMLEventAssignment, variable)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEventAssignment, an SBML EventAssignment structure</li>
+<li>variable; a string representing the variable to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML EventAssignment structure with the new value for the variable attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEventAssignment = EventAssignment_unsetMath(SBMLEventAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEventAssignment, an SBML EventAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML EventAssignment structure with the math attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEventAssignment = EventAssignment_unsetMetaid(SBMLEventAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEventAssignment, an SBML EventAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML EventAssignment structure with the metaid attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEventAssignment = EventAssignment_unsetSBOTerm(SBMLEventAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEventAssignment, an SBML EventAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML EventAssignment structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEventAssignment = EventAssignment_unsetVariable(SBMLEventAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEventAssignment, an SBML EventAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML EventAssignment structure with the variable attribute unset</li>
+</ol>
+
+<hr>

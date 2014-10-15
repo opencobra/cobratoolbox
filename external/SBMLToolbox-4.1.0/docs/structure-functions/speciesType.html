@@ -1,0 +1,310 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "../style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>MATLAB_SBML_STRUCTURE_FUNCTIONS\SPECIESTYPE</h3>
+
+<p>The functions allow users to create and work with the SBML SpeciesType structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>SpeciesType = SpeciesType_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML SpeciesType structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>id = SpeciesType_getId(SBMLSpeciesType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesType, an SBML SpeciesType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the id attribute</li>
+</ol>
+
+<hr>
+
+<h4>metaid = SpeciesType_getMetaid(SBMLSpeciesType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesType, an SBML SpeciesType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>name = SpeciesType_getName(SBMLSpeciesType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesType, an SBML SpeciesType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the name attribute</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = SpeciesType_getSBOTerm(SBMLSpeciesType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesType, an SBML SpeciesType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>value = SpeciesType_isSetId(SBMLSpeciesType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesType, an SBML SpeciesType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the id attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = SpeciesType_isSetMetaid(SBMLSpeciesType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesType, an SBML SpeciesType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the metaid attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = SpeciesType_isSetName(SBMLSpeciesType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesType, an SBML SpeciesType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the name attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = SpeciesType_isSetSBOTerm(SBMLSpeciesType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesType, an SBML SpeciesType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpeciesType = SpeciesType_setId(SBMLSpeciesType, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesType, an SBML SpeciesType structure</li>
+<li>id; a string representing the id to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML SpeciesType structure with the new value for the id attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpeciesType = SpeciesType_setMetaid(SBMLSpeciesType, metaid)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesType, an SBML SpeciesType structure</li>
+<li>metaid; a string representing the metaid to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML SpeciesType structure with the new value for the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpeciesType = SpeciesType_setName(SBMLSpeciesType, name)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesType, an SBML SpeciesType structure</li>
+<li>name; a string representing the name to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML SpeciesType structure with the new value for the name attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpeciesType = SpeciesType_setSBOTerm(SBMLSpeciesType, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesType, an SBML SpeciesType structure</li>
+<li>sboTerm, an integer representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML SpeciesType structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpeciesType = SpeciesType_unsetId(SBMLSpeciesType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesType, an SBML SpeciesType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML SpeciesType structure with the id attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpeciesType = SpeciesType_unsetMetaid(SBMLSpeciesType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesType, an SBML SpeciesType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML SpeciesType structure with the metaid attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpeciesType = SpeciesType_unsetName(SBMLSpeciesType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesType, an SBML SpeciesType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML SpeciesType structure with the name attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpeciesType = SpeciesType_unsetSBOTerm(SBMLSpeciesType)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesType, an SBML SpeciesType structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML SpeciesType structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>

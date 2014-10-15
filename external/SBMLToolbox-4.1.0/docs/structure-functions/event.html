@@ -1,0 +1,743 @@
+<h3>MATLAB<em>SBML</em>STRUCTURE_FUNCTIONS\EVENT</h3>
+
+<p>The functions allow users to create and work with the SBML Event structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>SBMLEvent = Event_addEventAssignment(SBMLEvent, SBMLEventAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+<li>SBMLEventAssignment, an SBML EventAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with the SBML EventAssignment structure added</li>
+</ol>
+
+<hr>
+
+<h4>Event = Event_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML Event structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>SBMLEvent = Event_createDelay(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with a new SBML Delay structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEvent = Event_acreateEventAssignment(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with a new SBML EventAssignment structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEvent = Event_createPriority(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with a new SBML Priority structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEvent = Event_createTrigger(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with a new SBML Trigger structure added</li>
+</ol>
+
+<hr>
+
+<h4>delay = Event_getDelay(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Delay structure</li>
+</ol>
+
+<hr>
+
+<h4>eventAssignment = Event_getEventAssignment(SBMLEvent, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+<li>index, an integer representing the index of SBML EventAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML EventAssignment structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>id = Event_getId(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the id attribute</li>
+</ol>
+
+<hr>
+
+<h4>eventAssignment = Event_getListOfEventAssignments(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the eventAssignment structures</li>
+</ol>
+
+<hr>
+
+<h4>metaid = Event_getMetaid(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>name = Event_getName(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the name attribute</li>
+</ol>
+
+<hr>
+
+<h4>num = Event_getNumEventAssignments(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML EventAssignment structures present in the Event</li>
+</ol>
+
+<hr>
+
+<h4>priority = Event_getPriority(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Priority structure</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = Event_getSBOTerm(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>timeUnits = Event_getTimeUnits(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the timeUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>trigger = Event_getTrigger(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Trigger structure</li>
+</ol>
+
+<hr>
+
+<h4>useValuesFromTriggerTime = Event_getUseValuesFromTriggerTime(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the useValuesFromTriggerTime attribute</li>
+</ol>
+
+<hr>
+
+<h4>value = Event_isSetDelay(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the delay structure is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Event_isSetId(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the id attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Event_isSetMetaid(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the metaid attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Event_isSetName(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the name attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Event_isSetPriority(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the priority structure is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Event_isSetSBOTerm(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Event_isSetTimeUnits(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the timeUnits attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Event_isSetTrigger(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the trigger structure is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLEvent = Event_setDelay(SBMLEvent, SBMLDelay)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+<li>SBMLDelay, an SBML Delay structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with the new value for the delay field</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEvent = Event_setId(SBMLEvent, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+<li>id; a string representing the id to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with the new value for the id attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEvent = Event_setMetaid(SBMLEvent, metaid)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+<li>metaid; a string representing the metaid to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with the new value for the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEvent = Event_setName(SBMLEvent, name)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+<li>name; a string representing the name to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with the new value for the name attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEvent = Event_setPriority(SBMLEvent, SBMLPriority)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+<li>SBMLPriority, an SBML Priority structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with the new value for the priority field</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEvent = Event_setSBOTerm(SBMLEvent, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+<li>sboTerm, an integer representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEvent = Event_setTimeUnits(SBMLEvent, timeUnits)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+<li>timeUnits; a string representing the timeUnits to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with the new value for the timeUnits attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEvent = Event_setTrigger(SBMLEvent, SBMLTrigger)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+<li>SBMLTrigger, an SBML Trigger structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with the new value for the trigger field</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEvent = Event_setUseValuesFromTriggerTime(SBMLEvent, useValuesFromTriggerTime)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+<li>useValuesFromTriggerTime, an integer (0/1) representing the value of useValuesFromTriggerTime to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with the new value for the useValuesFromTriggerTime attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEvent = Event_unsetDelay(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with the delay field unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEvent = Event_unsetId(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with the id attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEvent = Event_unsetMetaid(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with the metaid attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEvent = Event_unsetName(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with the name attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEvent = Event_unsetPriority(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with the priority field unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEvent = Event_unsetSBOTerm(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEvent = Event_unsetTimeUnits(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with the timeUnits attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLEvent = Event_unsetTrigger(SBMLEvent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLEvent, an SBML Event structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Event structure with the trigger field unset</li>
+</ol>
+
+<hr>
