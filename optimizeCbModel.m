@@ -58,7 +58,7 @@ function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)
 %              2   Unbounded solution
 %              0   Infeasible
 %             -1  No solution reported (timelimit, numerical problem etc)
-%
+%   origStat  Original status returned by the specific solver
 
 % Markus Herrgard       9/16/03
 % Ronan Fleming         4/25/09  Option to minimises the Euclidean Norm of internal
