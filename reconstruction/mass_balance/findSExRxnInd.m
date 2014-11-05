@@ -1,4 +1,5 @@
 function model=findSExRxnInd(model,nRealMet,printLevel)
+% model=findSExRxnInd(model,nRealMet,printLevel)
 %Returns a model with boolean vectors indicating internal vs exchange/demand/sink reactions.
 %
 %finds the reactions in the model which export/import from the model
