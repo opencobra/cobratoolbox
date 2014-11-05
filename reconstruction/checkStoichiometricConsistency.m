@@ -77,7 +77,7 @@ if ~isfield(model,'mets')
     model.SIntRxnBool=true(nRxn,1);
     intR='';
 else
-    if ~isfield(model,'SIntRxnBool')
+    if ~isfield(model,'SIntRxnBool') || ~isfield(model,'SIntMetBool')
         %Requires the openCOBRA toolbox
         model=findSExRxnInd(model);
         intR='internal reaction ';
@@ -244,3 +244,6 @@ end
 %find every non-exchange reaction involving a stoichiometrically consistent metabolite
 model.SConsistentRxnBool=(sum(model.S(model.SConsistentMetBool,:)~=0,1)~=0)';
 model.SConsistentRxnBool(~model.SIntRxnBool)=0;
+
+
+

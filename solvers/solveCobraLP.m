@@ -875,6 +875,7 @@ switch solver
             end
             switch printLevel
                 case 0
+                    %tries to stop print out of file
                     options.output.clonelog=0;
                     options = cplexoptimset(options,'diagnostics','off');
                 case 1
