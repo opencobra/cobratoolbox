@@ -21,7 +21,8 @@ function model=findSExRxnInd(model,nRealMet,printLevel)
 % model.DMRxnBool           Boolean of demand reactions. Prefix 'DM_'
 % model.SinkRxnBool         Boolean of sink reactions. Prefix 'sink_'
 %
-% Ronan M.T. Fleming
+
+% Ronan Fleming	11/05/2014  commit to git	              
 
 
 [nMet,nRxn]=size(model.S);
