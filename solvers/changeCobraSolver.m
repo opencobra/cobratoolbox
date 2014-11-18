@@ -155,6 +155,17 @@ if (strcmp(solverType,'LP'))
                 warning('MPS not usable: BuildMPS.m not in Matlab path');
                 solverOK = false;
             end
+        case 'quadMinos'
+            if ~isunix
+                error('Minos interface not implemented for non unix OS')
+            end
+            [status,cmdout]=system('which minos');
+            if isempty(cmdout)
+                [status,cmdout]=system('echo $PATH');
+                disp(cmdout);
+                warning('Minos not installed or not on system path.');
+                solverOK = false;
+            end
         otherwise
             warning(['LP solver ' solverName ' not supported by COBRA Toolbox']);
             solverOK = false;

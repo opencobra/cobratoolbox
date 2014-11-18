@@ -1,61 +1,44 @@
 %test a set of models
+clear
 
-testDifferentLPSolvers
+printLevel=0;
 
-
-%batch of mat files models in a directory
+%batch of mat files models the testModels directory
 directory=which('testModels');
-directory=[directory(1:end-12) 'models/'];
+directory=[directory(1:end-12) 'mat/'];
+cd(directory)
+
+if exist('clone1.log','file')
+    rm('clone1.log');
+end
+
 matFiles=dir(directory);
-matFiles.name
 
 %name
 resultsFileName=['modelTestResults_' date '.mat'];
 
-
-cd(directory)
-results=struct();
-%save(['~/Dropbox/graphStoich/results/FRresults/' resultsFileName],'results');
+nModels=length(matFiles)-2;
+results=cell(nModels,4);
 for k=3:length(matFiles)
-    disp(k)
-    disp(matFiles(k).name)
-    whosFile=whos('-file',matFiles(k).name);
-    if ~strcmp(matFiles(k).name,'clone1.log')
-        load(matFiles(k).name);
-        model=eval(whosFile.name);
-        printLevel=1;
+    
+    if printLevel>0
         disp(k)
-        
-        testDifferentLPSolvers(model)
-        
-        
-%         model=findSExRxnInd(model);
-%         if isfield(model,'metFormulas')
-%             [massImbalance,imBalancedMass,imBalancedCharge,imBalancedRxnBool,Elements,missingFormulaeBool,balancedMetBool]...
-%                 = checkMassChargeBalance(model,model.SIntRxnBool,printLevel);
-%             model.balancedRxnBool=~imBalancedRxnBool;
-%             model.balancedMetBool=balancedMetBool;
-%             model.Elements=Elements;
-%             model.missingFormulaeBool=missingFormulaeBool;
-%             
-%             %assumes that all mass imbalanced reations are exchange reactions
-%             model.SIntRxnBool = model.SIntRxnBool & model.balancedRxnBool;
-%             model.SIntMetBool = model.SIntMetBool & model.balancedMetBool;
-%         end
-%         [inform,m,model]=checkStoichiometricConsistency(model,printLevel);
-%         [rankFR,rankFRV,rankFRvanilla,rankFRVvanilla,model] = checkRankFR(model,printLevel);
-%         [rankS,p,q]= getRankLUSOL(model.S);
-%         
-%         load(['~/Dropbox/graphStoich/results/FRresults/' resultsFileName])
-%         results(k-2).modelFilename=matFiles(k).name;
-%         results(k-2).rankFR=rankFR;
-%         results(k-2).rankFRV=rankFRV;
-%         results(k-2).rankS=rankS;
-%         results(k-2).model=model;
-%         results(k-2).rankFRvanilla=rankFRvanilla;
-%         results(k-2).rankFRVvanilla=rankFRVvanilla;
-%         save(['~/Dropbox/graphStoich/results/FRresults/' resultsFileName],'results');
-%         clear results model;
-        
+        disp(matFiles(k).name)
     end
+    
+    %name of the model from the filename
+    whosFile=whos('-file',matFiles(k).name);
+    results{k-2,1}=matFiles(k).name(1:end-4);
+    
+    load(matFiles(k).name);
+    model=eval(whosFile.name);
+   
+    %
+    solvers={'gurobi5','quadMinos'};
+    [out,solutions{k-2}]=testDifferentLPSolvers(model,solvers,printLevel);
+    
+    results{k-2,2}=solutions{k-2}{1}.obj;
+    results{k-2,3}=solutions{k-2}{2}.obj;
+    results{k-2,4}=results{k-2,2}-results{k-2,3};
 end
+

@@ -19,6 +19,7 @@ function initCobraToolbox
 
 %% add cobra toolbox paths
 pth=which('initCobraToolbox.m');
+global CBTDIR
 CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1));
 path(path,[CBTDIR, filesep, 'external']);
 addpath_recurse(CBTDIR,{'.svn','obsolete','m2html','docs','src','stow'});
