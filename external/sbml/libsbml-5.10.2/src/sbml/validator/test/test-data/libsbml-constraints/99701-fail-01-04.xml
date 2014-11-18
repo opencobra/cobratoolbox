@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2"
+      xmlns:math="http://www.w3.org/1998/Math/MathML">
+    <model>
+        <listOfCompartments>
+			<compartment id="c"/>
+        </listOfCompartments>
+        <listOfParameters>
+          <parameter id="p"/>
+        </listOfParameters>
+        <listOfInitialAssignments>
+			<initialAssignment symbol="c" sboTerm="SBO:0005225">
+				<math xmlns="http://www.w3.org/1998/Math/MathML">
+					<apply>
+					<power/> <ci> p </ci> <cn> 3 </cn>
+					</apply>
+				</math>
+			</initialAssignment>
+        </listOfInitialAssignments>
+    </model>
+</sbml>

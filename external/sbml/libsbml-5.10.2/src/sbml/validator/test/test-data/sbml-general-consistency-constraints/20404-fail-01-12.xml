@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+  <model>
+    <listOfUnitDefinitions>
+      <unitDefinition id="area">
+        <listOfUnits>
+          <unit kind="metre" exponent="2"/>
+          <unit kind="second" exponent="2"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+  </model>
+</sbml>

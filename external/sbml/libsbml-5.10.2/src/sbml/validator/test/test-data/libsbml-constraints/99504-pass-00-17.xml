@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="1">
+    <model>
+  	<listOfUnitDefinitions>
+  		<unitDefinition name="v">
+  			<listOfUnits>
+  				<unit kind="metre" exponent="3"/>
+  			</listOfUnits>
+  		</unitDefinition>
+  	</listOfUnitDefinitions>
+        <listOfCompartments>
+      <compartment name="c" units="v"/>
+        </listOfCompartments>
+        <listOfSpecies>
+        		<specie name="s" compartment="c" initialAmount="0"/>
+        </listOfSpecies>
+        <listOfParameters>
+          <parameter name="p" value="2"/>
+        </listOfParameters>
+        <listOfRules>
+      <algebraicRule formula="root(c,3)"/>
+        </listOfRules>
+        <listOfReactions>
+        		<reaction name="r">
+        			<listOfProducts>
+        				<specieReference specie="s"/>
+        			</listOfProducts>
+        		</reaction>
+        </listOfReactions>
+    </model>
+</sbml>

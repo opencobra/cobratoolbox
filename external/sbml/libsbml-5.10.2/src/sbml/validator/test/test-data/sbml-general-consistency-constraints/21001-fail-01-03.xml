@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" xmlns:math="http://www.w3.org/1998/Math/MathML" level="2" version="4">
+  <model>
+    <listOfCompartments>
+      <compartment id="cell" size="0.013"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="X0" compartment="cell"/>
+    </listOfSpecies>
+    <listOfConstraints>
+      <constraint>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <cn type="integer"> 1 </cn>
+            <ci> cell </ci>
+          </apply>
+        </math>
+      </constraint>
+    </listOfConstraints>
+  </model>
+</sbml>

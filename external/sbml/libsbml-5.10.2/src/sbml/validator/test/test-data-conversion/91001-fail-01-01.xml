@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Fail: (91001)A Model with Events cannot be represented in Level 1.
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model>
+  <listOfCompartments>
+  	<compartment id="c" constant="false"/>
+  </listOfCompartments>
+    <listOfEvents>
+      <event timeUnits="time">
+      	<trigger>
+      		<math xmlns="http://www.w3.org/1998/Math/MathML">
+      			<apply>
+      				<lt/>
+      				<cn> 1 </cn>
+      				<cn> 2 </cn>
+      			</apply>
+      		</math>
+      	</trigger>
+      	<listOfEventAssignments>
+      		<eventAssignment variable="c">
+      			<math xmlns="http://www.w3.org/1998/Math/MathML">
+      				<apply>
+      					<times/>
+      					<cn> 3 </cn>
+      					<cn> 2 </cn>
+      				</apply>
+      			</math>
+      		</eventAssignment>
+      	</listOfEventAssignments>
+      </event>
+    </listOfEvents>
+    
+  </model>
+</sbml>

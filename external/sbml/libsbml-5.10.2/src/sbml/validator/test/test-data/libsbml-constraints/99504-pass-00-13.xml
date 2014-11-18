@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (3300) Inconsistent math
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+  <model>
+  	<listOfUnitDefinitions>
+  		<unitDefinition name="v">
+  			<listOfUnits>
+  				<unit kind="metre" exponent="3"/>
+  			</listOfUnits>
+  		</unitDefinition>
+  	</listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment name="c" units="v"/>
+    </listOfCompartments>
+    <listOfParameters>
+      <parameter name="p" value="1" units="dimensionless"/>
+    </listOfParameters>
+    <listOfRules>
+      <algebraicRule formula="root(c,3)"/>
+    </listOfRules>
+  </model>
+</sbml>

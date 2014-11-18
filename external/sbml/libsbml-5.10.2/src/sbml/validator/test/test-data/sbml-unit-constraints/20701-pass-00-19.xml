@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+    <listOfUnitDefinitions>
+      <unitDefinition id="time">
+        <listOfUnits>
+          <unit kind="second" exponent="1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfParameters>
+      <parameter id="p01" units="ampere" constant="true"/>
+      <parameter id="p02" units="becquerel" constant="true"/>
+      <parameter id="p03" units="candela" constant="true"/>
+      <parameter id="p05" units="coulomb" constant="true"/>
+      <parameter id="p06" units="dimensionless" constant="true"/>
+      <parameter id="p07" units="farad" constant="true"/>
+      <parameter id="p08" units="gram" constant="true"/>
+      <parameter id="p09" units="gray" constant="true"/>
+      <parameter id="p10" units="henry" constant="true"/>
+      <parameter id="p11" units="hertz" constant="true"/>
+      <parameter id="p12" units="item" constant="true"/>
+      <parameter id="p13" units="joule" constant="true"/>
+      <parameter id="p14" units="katal" constant="true"/>
+      <parameter id="p15" units="kelvin" constant="true"/>
+      <parameter id="p16" units="kilogram" constant="true"/>
+      <parameter id="p18" units="litre" constant="true"/>
+      <parameter id="p19" units="lumen" constant="true"/>
+      <parameter id="p20" units="lux" constant="true"/>
+      <parameter id="p22" units="metre" constant="true"/>
+      <parameter id="p23" units="mole" constant="true"/>
+      <parameter id="p24" units="newton" constant="true"/>
+      <parameter id="p25" units="ohm" constant="true"/>
+      <parameter id="p26" units="pascal" constant="true"/>
+      <parameter id="p27" units="radian" constant="true"/>
+      <parameter id="p28" units="second" constant="true"/>
+      <parameter id="p29" units="siemens" constant="true"/>
+      <parameter id="p30" units="sievert" constant="true"/>
+      <parameter id="p31" units="steradian" constant="true"/>
+      <parameter id="p32" units="tesla" constant="true"/>
+      <parameter id="p33" units="volt" constant="true"/>
+      <parameter id="p34" units="watt" constant="true"/>
+      <parameter id="p35" units="weber" constant="true"/>
+    </listOfParameters>
+  </model>
+</sbml>

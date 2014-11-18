@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+    <listOfUnitDefinitions>
+       <unitDefinition id="mol5" name="mol5">
+        <listOfUnits>
+          <unit kind="mole" exponent="5" scale="0" multiplier="0.0630957"/>
+        </listOfUnits>
+        </unitDefinition>
+      <unitDefinition id="mol4" name="mol4">
+        <listOfUnits>
+          <unit kind="mole" exponent="4" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>  
+    </listOfUnitDefinitions>
+    <listOfParameters>
+      <parameter id="m5" value="3.51" units="mol5" constant="false"/>
+      <parameter id="m4" value="3.51" units="mol4" constant="false"/>
+     <parameter id="m" value="3.51" units="mol5" constant="false"/>
+    </listOfParameters>
+    <listOfInitialAssignments>
+      <initialAssignment symbol="m">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <plus/>
+            <ci> m5</ci>
+            <cn> 1 </cn>
+            <ci> m4</ci>
+          </apply>             
+        </math>
+        
+      </initialAssignment>
+      
+    </listOfInitialAssignments>
+    
+  </model>
+</sbml>

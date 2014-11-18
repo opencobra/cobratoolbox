@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model timeUnits="time">
+    <listOfUnitDefinitions>
+      <unitDefinition id="m_per_sec_x_min" name="m/sec*min">
+        <listOfUnits>
+          <unit kind="metre" exponent="1" scale="0" multiplier="60"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="m_per_sec" name="m/sec">
+        <listOfUnits>
+          <unit kind="metre" exponent="1" scale="0" multiplier="1"/>
+          <unit kind="second" exponent="-1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="min" name="min">
+        <listOfUnits>
+          <unit kind="second" exponent="1" scale="0" multiplier="60"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="_1_per_sec" name="1/sec">
+        <listOfUnits>
+          <unit kind="second" exponent="-1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="m2_per_sec" name="m^2/sec">
+        <listOfUnits>
+          <unit kind="metre" exponent="2" scale="0" multiplier="1"/>
+          <unit kind="second" exponent="-1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="m4" name="m^4">
+        <listOfUnits>
+          <unit kind="metre" exponent="4" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="m2" name="m^2">
+        <listOfUnits>
+          <unit kind="metre" exponent="2" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="time">
+        <listOfUnits>
+          <unit kind="second" exponent="1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfParameters>
+      <parameter id="b7" units="m_per_sec" constant="false"/>
+      <parameter id="b6" units="_1_per_sec" constant="false"/>
+      <parameter id="b5" units="_1_per_sec" constant="false"/>
+      <parameter id="b4" value="10" units="m_per_sec" constant="true"/>
+      <parameter id="b3" value="2" units="m2" constant="true"/>
+      <parameter id="h4" value="1" units="m2" constant="false"/>
+      <parameter id="b1" units="m2" constant="false"/>
+      <parameter id="b0" value="3" units="dimensionless" constant="true"/>
+      <parameter id="c7" units="m_per_sec_x_min" constant="false"/>
+      <parameter id="c5" units="dimensionless" constant="false"/>
+      <parameter id="c4" units="m2_per_sec" constant="false"/>
+      <parameter id="c3" units="m2" constant="false"/>
+      <parameter id="c0" units="second" constant="false"/>
+      <parameter id="a6" value="1" units="dimensionless" constant="true"/>
+      <parameter id="a5" value="1" units="dimensionless" constant="true"/>
+      <parameter id="a4" value="4" units="metre" constant="true"/>
+      <parameter id="a3" value="1" units="m2" constant="true"/>
+      <parameter id="a1" value="16" units="m4" constant="true"/>
+      <parameter id="s6" value="1" units="second" constant="true"/>
+      <parameter id="a0" value="2" units="second" constant="true"/>
+    </listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="b6">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <ci> a6 </ci>
+            <ci> s6 </ci>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="b7">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <apply>
+            <divide/>
+            <cn sbml:units="m"> 10 </cn>
+            <cn sbml:units="sec"> 2 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="c7">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <apply>
+            <times/>
+            <ci> b7 </ci>
+            <cn sbml:units="min"> 3 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="c3">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <plus/>
+            <ci> a3 </ci>
+            <apply>
+              <abs/>
+              <ci> b3 </ci>
+            </apply>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="c4">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> a4 </ci>
+            <ci> b4 </ci>
+          </apply>
+        </math>
+      </assignmentRule>
+      <rateRule variable="h4">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> c4 </ci>
+            <cn> -1 </cn>
+          </apply>
+        </math>
+      </rateRule>
+      <assignmentRule variable="b5">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <apply>
+            <divide/>
+            <cn> 1 </cn>
+            <cn sbml:units="sec"> 1 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="c5">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <apply>
+            <times/>
+            <ci> b5 </ci>
+            <cn sbml:units="min"> 1 </cn>
+            <cn> 60 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="c0">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> a0 </ci>
+            <ci> b0 </ci>
+          </apply>
+        </math>
+      </assignmentRule>
+      <algebraicRule>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <minus/>
+            <apply>
+              <power/>
+              <ci> b1 </ci>
+              <cn> 2 </cn>
+            </apply>
+            <ci> a1 </ci>
+          </apply>
+        </math>
+      </algebraicRule>
+    </listOfRules>
+  </model>
+</sbml>
+

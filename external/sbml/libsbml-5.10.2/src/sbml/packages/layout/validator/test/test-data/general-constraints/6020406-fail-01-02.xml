@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" 
+  xmlns:layout="http://www.sbml.org/sbml/level3/version1/layout/version1" 
+  level = "3"
+  version = "1"
+  layout:required="false">
+  <model id="baz" name="baz">
+    <listOfParameters>
+      <parameter id="y" value="3" constant="true">
+      </parameter>
+    </listOfParameters>
+    <layout:listOfLayouts 
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xmlns:layout="http://www.sbml.org/sbml/level3/version1/layout/version1">
+      <layout:layout layout:id="example">
+        <layout:dimensions layout:width="239.037328720093" layout:height="76.5"/>
+        
+        
+        
+        <layout:listOfAdditionalGraphicalObjects>
+          <layout:graphicalObject layout:id="go" layout:metaidRef="_Node01">
+            <layout:boundingBox layout:id="bb1">
+              <layout:position layout:x="5" layout:y="5"/>
+              <layout:dimensions layout:width="390" layout:height="220"/>
+            </layout:boundingBox>	
+          </layout:graphicalObject>
+          
+        </layout:listOfAdditionalGraphicalObjects>
+        
+        
+      </layout:layout>
+    </layout:listOfLayouts>
+  </model>
+</sbml>

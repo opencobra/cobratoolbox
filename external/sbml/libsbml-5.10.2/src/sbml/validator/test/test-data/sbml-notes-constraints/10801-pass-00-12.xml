@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" xmlns:xhtml="http://www.w3.org/1999/xhtml" level="2" version="4">
+  <model>
+    <listOfUnitDefinitions>
+      <unitDefinition id="minutes">
+        <listOfUnits>
+          <unit kind="second" multiplier="60"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfParameters>
+      <parameter id="p" value="1" units="second" constant="false"/>
+      <parameter id="p1" value="1" units="minutes" constant="false"/>
+      <parameter id="p2" constant="false" units="mole"/>
+    </listOfParameters>
+  </model>
+</sbml>

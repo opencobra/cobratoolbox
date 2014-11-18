@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+    <listOfUnitDefinitions>
+      <unitDefinition id="ml">
+        <listOfUnits>
+          <unit kind="gram" exponent="1" scale="0" multiplier="2"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="ml1">
+        <listOfUnits>
+          <unit kind="mole" exponent="2" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="ml5">
+        <listOfUnits>
+          <unit kind="mole" exponent="3" scale="0" multiplier=".1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="ml2">
+        <listOfUnits>
+          <unit kind="kilogram" exponent="1" scale="0" multiplier="2"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="ml3">
+        <listOfUnits>
+          <unit kind="avogadro" exponent="2" scale="0" multiplier="2"/>
+        </listOfUnits>
+      </unitDefinition> 
+    </listOfUnitDefinitions>
+    <listOfParameters>
+      <parameter id="p" value="4" units="ml" constant="false"/>
+      <parameter id="p2" value="2" units="volt" constant="false"/>
+      <parameter id="p3" value="2" units="volt" constant="false"/>
+      <parameter id="p4" value="2" units="avogadro" constant="false"/>
+      <parameter id="p5" value="2" units="ml1" constant="false"/>
+      <parameter id="p6" value="2" units="ml3" constant="false"/> 
+      <parameter id="p7" value="2" units="ml5" constant="false"/>
+      <parameter id="p8" value="2" units="ml2" constant="false"/>
+    </listOfParameters>
+  </model>
+</sbml>

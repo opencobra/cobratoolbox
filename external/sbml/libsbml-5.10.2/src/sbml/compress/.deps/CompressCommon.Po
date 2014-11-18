@@ -1,0 +1,45 @@
+CompressCommon.lo: CompressCommon.cpp \
+ /home/rfleming/work/sbg-code/cobratoolbox/external/sbml/libsbml-5.10.2/src/sbml/compress/CompressCommon.h \
+ /usr/include/c++/4.7/exception \
+ /usr/include/x86_64-linux-gnu/c++/4.7/./bits/c++config.h \
+ /usr/include/x86_64-linux-gnu/c++/4.7/./bits/os_defines.h \
+ /usr/include/features.h /usr/include/stdc-predef.h \
+ /usr/include/x86_64-linux-gnu/bits/predefs.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/c++/4.7/./bits/cpu_defines.h \
+ /usr/include/c++/4.7/bits/atomic_lockfree_defines.h \
+ /home/rfleming/work/sbg-code/cobratoolbox/external/sbml/libsbml-5.10.2/src/sbml/common/extern.h \
+ /home/rfleming/work/sbg-code/cobratoolbox/external/sbml/libsbml-5.10.2/src/sbml/common/libsbml-namespace.h
+
+/home/rfleming/work/sbg-code/cobratoolbox/external/sbml/libsbml-5.10.2/src/sbml/compress/CompressCommon.h:
+
+/usr/include/c++/4.7/exception:
+
+/usr/include/x86_64-linux-gnu/c++/4.7/./bits/c++config.h:
+
+/usr/include/x86_64-linux-gnu/c++/4.7/./bits/os_defines.h:
+
+/usr/include/features.h:
+
+/usr/include/stdc-predef.h:
+
+/usr/include/x86_64-linux-gnu/bits/predefs.h:
+
+/usr/include/x86_64-linux-gnu/sys/cdefs.h:
+
+/usr/include/x86_64-linux-gnu/bits/wordsize.h:
+
+/usr/include/x86_64-linux-gnu/gnu/stubs.h:
+
+/usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
+
+/usr/include/x86_64-linux-gnu/c++/4.7/./bits/cpu_defines.h:
+
+/usr/include/c++/4.7/bits/atomic_lockfree_defines.h:
+
+/home/rfleming/work/sbg-code/cobratoolbox/external/sbml/libsbml-5.10.2/src/sbml/common/extern.h:
+
+/home/rfleming/work/sbg-code/cobratoolbox/external/sbml/libsbml-5.10.2/src/sbml/common/libsbml-namespace.h:

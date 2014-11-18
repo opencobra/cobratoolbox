@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment id="a" spatialDimensions="3" units="volume" constant="true"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="a" substanceUnits="mole" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"
+         conversionFactor="p"/>
+    </listOfSpecies>
+  </model>
+</sbml>

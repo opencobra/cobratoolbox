@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Pass: (1412) A compartment can only have one species of a speciestype.
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+  <model>
+    <listOfSpeciesTypes>
+      <speciesType id ="gg"/>
+      <speciesType id ="gg1"/>
+    </listOfSpeciesTypes>
+    <listOfCompartments>
+      <compartment id="c"/>
+      <compartment id="c1"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="c" speciesType="gg"/>
+      <species id="s1" compartment="c1" speciesType="gg" initialAmount="4.5"/>
+    </listOfSpecies>
+  </model>
+</sbml>

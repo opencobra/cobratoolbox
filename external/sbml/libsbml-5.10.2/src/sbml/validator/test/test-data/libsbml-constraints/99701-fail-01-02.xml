@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2"
+      xmlns:math="http://www.w3.org/1998/Math/MathML">
+    <model>
+      <listOfFunctionDefinitions>
+		<functionDefinition id="f" sboTerm="SBO:0003167">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar><ci> x </ci></bvar>
+            <apply>
+              <power/> <ci> x </ci> <cn> 3 </cn>
+            </apply>
+          </lambda>
+          </math>
+		</functionDefinition>
+      </listOfFunctionDefinitions>
+    </model>
+</sbml>

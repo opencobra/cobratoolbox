@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fail: (21002) The order of subelements within Constraint must be the
+following: math, message. The message element is optional, but if
+present, must follow the math element. (References: L2V2 Section 4.12.)
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+	<model>
+		<listOfCompartments>
+			<compartment id="C1"/>
+		</listOfCompartments>
+		<listOfConstraints>
+			<constraint>
+				<message>
+					<p xmlns="http://www.w3.org/1999/xhtml">C1 out of range.</p>
+				</message>
+				<math xmlns="http://www.w3.org/1998/Math/MathML">
+					<apply>
+						<lt/>
+						<ci> C1 </ci>
+						<ci> C1 </ci>
+					</apply>
+				</math>
+			</constraint>
+		</listOfConstraints>
+	</model>
+</sbml>

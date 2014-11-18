@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fail: (3000) The units returned by the assignment rule that assigns value
+    to a compartment must be consistent with either the units
+    declared for that compartment or the default units for the
+    compartment.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" constant="false"/>
+    </listOfCompartments>
+    <listOfParameters>
+      <parameter id="p" value="1" units="ampere" constant="false"/>
+      <parameter id="p1" value="1" units="dimensionless"/>
+    </listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="c">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> p </ci>
+            <ci> p1 </ci>
+          </apply>
+        </math>
+      </assignmentRule>
+    </listOfRules>
+  </model>
+</sbml>

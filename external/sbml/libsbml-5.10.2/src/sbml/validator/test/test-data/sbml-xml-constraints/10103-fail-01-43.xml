@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="1"
+      xmlns:math="http://www.w3.org/1998/Math/MathML">
+    <model>
+        <listOfCompartments>
+			<compartment name="c"/>
+        </listOfCompartments>
+        <listOfSpecies>
+			<specie name="s" compartment="c" initialAmount="0"/>
+        </listOfSpecies>
+        <listOfParameters>
+			<parameter name="p" sboTerm="SBO:0000010" value="1"/>
+        </listOfParameters>
+        <listOfReactions>
+        		<reaction name="r">
+        			<listOfReactants>
+        				<specieReference specie="s"/>
+        			</listOfReactants>
+        		</reaction>
+        </listOfReactions>
+    </model>
+</sbml>

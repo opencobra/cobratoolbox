@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1305) A Compartment with spatialDimensions='1' must have units
+of 'length', 'metre', or the id of a UnitDefinition that defines a
+variant of 'metre' with exponent='1' (L2v1 Section 4.5.4).
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+	<model>
+		<listOfUnitDefinitions>
+			<unitDefinition name="ml">
+				<listOfUnits>
+					<unit kind="litre" exponent="1" scale="-3"/>
+				</listOfUnits>
+			</unitDefinition>
+		</listOfUnitDefinitions>
+		<listOfCompartments>
+			<compartment name="c" units="ml"/>
+		</listOfCompartments>
+	</model>
+</sbml>

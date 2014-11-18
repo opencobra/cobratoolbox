@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="1">
+    <model>
+        <listOfUnitDefinitions>
+            <unitDefinition name="substance">
+                <listOfUnits>
+                    <unit kind="mole" scale="-3"/>
+                </listOfUnits>
+            </unitDefinition>
+            <unitDefinition name="mls">
+                <listOfUnits>
+                    <unit kind="mole"   scale="-3"/>
+                    <unit kind="liter"  exponent="-1"/>
+                    <unit kind="second" exponent="-1"/>
+                </listOfUnits>
+            </unitDefinition>
+        </listOfUnitDefinitions>
+        <listOfCompartments>
+            <compartment name="cell"/>
+        </listOfCompartments>
+        <listOfSpecies>
+            <specie name="x0" compartment="cell" initialAmount="1"/>
+            <specie name="x1" compartment="cell" initialAmount="1"/>
+            <specie name="s1" compartment="cell" initialAmount="1"/>
+            <specie name="s2" compartment="cell" initialAmount="1"/>
+        </listOfSpecies>
+        <listOfParameters>
+            <parameter name="vm" value="2" units="mls"/>
+            <parameter name="km" value="2"/>
+        </listOfParameters>
+        <listOfReactions>
+            <reaction name="v1">
+                <listOfReactants>
+                    <specieReference specie="x0"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <specieReference specie="s1"/>
+                </listOfProducts>
+                <kineticLaw formula="cell * (vm * s1)/(km + s1)"/>
+            </reaction>
+            <reaction name="v2">
+                <listOfReactants>
+                    <specieReference specie="s1"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <specieReference specie="s2"/>
+                </listOfProducts>
+                <kineticLaw formula="cell * (vm * s2)/(km + s2)"/>
+            </reaction>
+            <reaction name="v3">
+                <listOfReactants>
+                    <specieReference specie="s2"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <specieReference specie="x1"/>
+                </listOfProducts>
+                <kineticLaw formula="cell * (vm * s1)/(km + s1)"/>
+            </reaction>
+        </listOfReactions>
+    </model>
+</sbml>

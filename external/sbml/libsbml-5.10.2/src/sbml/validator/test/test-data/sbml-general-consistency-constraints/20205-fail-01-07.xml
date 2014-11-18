@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+		<listOfParameters>
+			<parameter id="p" constant="false" units="mole"/>
+			<parameter id="p1" constant="false" units="mole"/>
+		</listOfParameters>
+		<listOfRules>
+			<assignmentRule variable="p">
+				<math xmlns="http://www.w3.org/1998/Math/MathML">
+					<apply>
+						<times/>
+						<ci> c </ci>
+						<cn> 3 </cn>
+					</apply>
+				</math>
+			</assignmentRule>
+		</listOfRules>
+		<listOfRules>
+			<assignmentRule variable="p1">
+				<math xmlns="http://www.w3.org/1998/Math/MathML">
+					<apply>
+						<times/>
+						<ci> c </ci>
+						<cn> 3 </cn>
+					</apply>
+				</math>
+			</assignmentRule>
+		</listOfRules>
+
+
+  </model>
+</sbml>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+	<notes>
+			<html xmlns="http://www.w3.org/1999/xhtml">
+				<center>
+					<h2>A Simple Mitotic Oscillator</h2>
+				</center>
+				<p>A minimal cascade model for the mitotic oscillator involving cyclin and cdc2 kinase</p>
+			</html>
+	</notes>
+	<model>
+</model>
+</sbml>
