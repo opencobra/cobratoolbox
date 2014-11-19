@@ -1,4 +1,4 @@
-function initCobraToolbox
+function initCobraToolbox(CobraLPSolver)
 %initCobraToolbox Initialize COnstraint-Based Reconstruction and Analysis Toolbox
 %
 % Define default solvers and paths
@@ -30,10 +30,12 @@ addpath_recurse(CBTDIR,{'.svn','obsolete','m2html','docs','src','stow'});
 % 'cplex_direct','gurobi'
 % Note that you must install the solver separately and make sure Matlab can
 % access the solver
-CobraLPSolver = 'tomlab_cplex';
-% CobraLPSolver = 'glpk';
- %CobraLPSolver = 'mosek';
-% CobraLPSolver = 'cplx';
+if ~exist('CobraLPSolver','var')
+    CobraLPSolver = 'tomlab_cplex';
+    % CobraLPSolver = 'glpk';
+    %CobraLPSolver = 'mosek';
+    % CobraLPSolver = 'cplx';
+end
 if isunix
   addpath('/usr/local/lib/');
 end
