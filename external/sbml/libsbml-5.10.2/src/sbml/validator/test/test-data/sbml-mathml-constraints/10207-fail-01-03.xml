@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (3300) Inconsistent math
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+	<model>
+		<listOfParameters>
+			<parameter id="p" value="1" constant="false"/>
+		</listOfParameters>
+		<listOfEvents>
+			<event>
+				<trigger>
+					<math xmlns="http://www.w3.org/1998/Math/MathML">
+						<apply>
+							<gt/>
+							<cn type="complex-cartesian"> 12.3 <sep/> 5 </cn>
+							<cn> 5 </cn>
+						</apply>
+					</math>
+				</trigger>
+				<listOfEventAssignments>
+					<eventAssignment variable="p">
+						<math xmlns="http://www.w3.org/1998/Math/MathML">
+							<apply>
+								<times/>
+								<cn> 6 </cn>
+								<cn> 5 </cn>
+							</apply>
+						</math>
+					</eventAssignment>
+				</listOfEventAssignments>
+			</event>
+		</listOfEvents>
+	</model>
+</sbml>

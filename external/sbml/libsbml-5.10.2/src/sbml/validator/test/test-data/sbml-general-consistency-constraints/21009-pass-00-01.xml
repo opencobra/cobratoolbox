@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+    <listOfUnitDefinitions>
+      <unitDefinition id="volume">
+        <listOfUnits>
+          <unit kind="litre" exponent="1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="time">
+        <listOfUnits>
+          <unit kind="second" exponent="1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment id="C1" spatialDimensions="3" units="volume" constant="true"/>
+    </listOfCompartments>
+    <listOfConstraints>
+      <constraint metaid="hhh" sboTerm="SBO:0000064">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <lt/>
+            <cn type="integer"> 1 </cn>
+            <cn type="integer"> 2 </cn>
+          </apply>
+        </math>
+        <message>
+          <body xmlns="http://www.w3.org/1999/xhtml">
+            <center>
+              <h2>A Simple Mitotic Oscillator</h2>
+            </center>
+            <p>A minimal cascade model for the mitotic oscillator involving cyclin and cdc2 kinase</p>
+          </body>
+        </message>
+      </constraint>
+    </listOfConstraints>
+  </model>
+</sbml>

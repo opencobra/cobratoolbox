@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1208) A 'time' UnitDefinition may only have a single Unit of
+kind 'second' and the Unit's exponent must be '1'.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+	<model>
+		<listOfUnitDefinitions>
+			<unitDefinition id="time">
+				<listOfUnits>
+				    <unit kind="dimensionless"/>
+					<unit kind="second" exponent="1"/>
+				</listOfUnits>
+			</unitDefinition>
+		</listOfUnitDefinitions>
+	</model>
+</sbml>

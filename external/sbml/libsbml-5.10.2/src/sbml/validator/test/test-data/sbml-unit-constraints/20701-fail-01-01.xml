@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Fail: (1500) A Parameter's 'units' must be a UnitKind, a built-in
+unit, or the id of a UnitDefinition.
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model>
+    <listOfParameters>
+      <parameter id="p" units="bogomips"/>
+    </listOfParameters>
+  </model>
+</sbml>

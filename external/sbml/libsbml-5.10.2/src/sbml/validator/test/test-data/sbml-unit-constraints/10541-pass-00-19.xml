@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (3200) The units returned by the formula of a kinetic law
+    must be 'substance per time' unless the formula contains a
+    parameter for which units have not been declared.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment name="c" units="litre"/>
+    </listOfCompartments>
+     <listOfSpecies>
+      <specie name="s1" compartment="c" initialAmount="0"/>
+      <specie name="s2" compartment="c" initialAmount="0"/>
+    </listOfSpecies>
+   <listOfReactions>
+      <reaction name="R" reversible="false">
+        <listOfReactants>
+          <specieReference specie="s1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <specieReference specie="s2"/>
+        </listOfProducts>
+        <kineticLaw formula="c*s1/k_1">
+          <listOfParameters>
+            <parameter name="k_1" value="1" units="second"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

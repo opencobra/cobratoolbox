@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1104) The value type returned by a FunctionDefinition's lambda 
+    must be either boolean or numeric (L2V2 Section 3.5.6).
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model>
+    <listOfFunctionDefinitions>
+      <functionDefinition id="pow">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar> <ci> x </ci> </bvar>
+            <bvar> <ci> y </ci></bvar>
+            <apply>
+              <power/> <ci> x </ci> <ci> y </ci>
+            </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+    </listOfFunctionDefinitions>
+  </model>
+</sbml>

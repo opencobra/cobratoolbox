@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Fail: (3101) The units returned by the rate rule that assigns a rate
+    to a species must be consistent with either the units
+    declared for that species or the default units for the
+    species per unit time.
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" units="litre" constant="false"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s1" compartment="c" initialConcentration="0" spatialSizeUnits="litre"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="p" value="1" units="litre" constant="false"/>
+      <parameter id="p1" value="1" units="ampere" constant="false"/>
+    </listOfParameters>
+    <listOfRules>
+      <rateRule variable="s1">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <ci> p1 </ci>
+            <ci> p </ci>
+          </apply>
+        </math>
+      </rateRule>
+    </listOfRules>
+  </model>
+</sbml>

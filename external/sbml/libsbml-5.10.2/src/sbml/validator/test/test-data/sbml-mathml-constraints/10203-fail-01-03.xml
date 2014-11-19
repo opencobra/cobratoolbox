@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (3300) Inconsistent math
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+	<model>
+		<listOfCompartments>
+			<compartment id="c" constant="false"/>
+		</listOfCompartments>
+		<listOfParameters>
+			<parameter id="p" value="1" constant="false"/>
+			<parameter id="p1" units="metre" value="1" constant="false"/>
+			<parameter id="delta_t" units="second" value="1" constant="false"/>
+		</listOfParameters>
+		<listOfRules>
+			<algebraicRule>
+				<math xmlns="http://www.w3.org/1998/Math/MathML">
+					<apply>
+						<times/>
+						<ci encoding="text"> p </ci>
+						<apply>
+							<csymbol encoding="text" definitionURL="http://www.sbml.org/sbml/symbols/delay">
+              delay
+              </csymbol>
+							<ci> p1 </ci>
+							<ci> delta_t </ci>
+						</apply>
+					</apply>
+				</math>
+			</algebraicRule>
+		</listOfRules>
+	</model>
+</sbml>

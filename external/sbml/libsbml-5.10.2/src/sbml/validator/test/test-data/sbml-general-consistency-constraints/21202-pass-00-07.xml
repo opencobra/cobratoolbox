@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1801) An Event trigger must return a boolean value
+(L2v1 Section 4.10.2)
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+  <model>
+    <listOfCompartments>
+      <compartment id="compartment" size="1" constant="false"/>
+    </listOfCompartments>
+   
+    <listOfEvents>
+      <event id="e1">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply> <eq/> <cn> 1 </cn> <cn> 2 </cn> </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+     </event>
+      <event id="e2">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply> <neq/> <cn> 1 </cn> <cn> 2 </cn> </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+      <event id="e3">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply> <gt/> <cn> 1 </cn> <cn> 2 </cn> </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+      <event id="e4">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply> <lt/> <cn> 1 </cn> <cn> 2 </cn> </apply>
+          </math>
+        </trigger>
+         <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+     </event>
+      <event id="e5">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply> <geq/> <cn> 1 </cn> <cn> 2 </cn> </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+      <event id="e6">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply> <leq/> <cn> 1 </cn> <cn> 2 </cn> </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+      <event id="e7">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply> <and/> <true/> <false/> </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+      <event id="e8">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply> <or/> <true/> <false/> </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+      <event id="e9">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply> <xor/> <true/> <false/> </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+      <event id="e10">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply> <not/> <true/> </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+      <event id="e11">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <true/>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+      <event id="e12">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <false/> 
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+    </listOfEvents>
+  </model>
+</sbml>

@@ -185,8 +185,111 @@ algorithm='default';
 
 t_start = clock;
 switch solver
-    case 'quadMINOS'
+    case 'quadMinos'
+%         It is a prerequisite to have installed and compiled minos, qminos 
+%         and the testFBA interface to minos and qminos, then don't alter
+%         the directory structure.
+%         cd quadLP  # top directory
+%         0. Check Makefile.defs (in top directory) and edit if necessary
+%         to select your Fortran compiler.
+%         The same file exists in the top directory of minos56 and qminos56.
+%         If necessary:
+%         cp Makefile.defs  minos56
+%         cp Makefile.defs qminos56
+%         cd minos56
+%         make       # makes lib/libminos.a and lib/minosdbg.a
+%         cd ../qminos56
+%         make       # makes lib/libquadminos.a and lib/libquadminosdbg.a
+%         cd ../testFBA
+%         make       # makes ../bin/solveLP and ../bin/qsolveLP
+%         Test the installation:
+%         ./runfba   solveLP TMA_ME lp1   # runs  solveLP with TMA_ME.txt, lp1.spc
+%         ./qrunfba qsolveLP TMA_ME lp2   # runs qsolveLP with TMA_ME.txt, lp2.spc
+   
+        if ~isunix 
+            error('Minos interface not yet implemented for non unix OS.')
+        end
+        % input precision     ('double') or 'single' precision
+        precision='double';
+        % modelName     name is the problem name (a character string)
+        %modelName=['minosFBAprob-' date];
+        modelName='qFBA';
+        % directory     the directory where optimization problem file is saved
+        [status,cmdout]=system('which minos');
+        if isempty(cmdout)
+            [status,cmdout]=system('echo $PATH');
+            disp(cmdout);
+            error('Minos not installed or not on system path.')
+        else
+            quadLPPath=cmdout(1:end-length('/bin/minos')-1);
+        end
+        dataDirectory=[quadLPPath '/data/FBA'];
+        %write out flat file to current folder
+        %printLevel=2;
+        [dataDirectory,fname]=writeMinosProblem(LPproblem,precision,modelName,dataDirectory,printLevel);
+        %change system to testFBA directory
+        originalDirectory=pwd;
+        cd([quadLPPath '/testFBA'])
+        %[status,cmdout]=system(['cd ' quadLPPath '/testFBA']); 
+        %call minos
+        [status,cmdout]=system([quadLPPath '/testFBA/runfba solveLP ' fname ' lp1']);
+        if status~=0
+           disp(cmdout)
+           error('Call to minos failed');
+        end
+        %call qminos
+        [status,cmdout]=system([quadLPPath '/testFBA/qrunfba qsolveLP ' fname ' lp2']);
+        %why is status returned 1 here?
+%         if status~=0
+%             disp(cmdout)
+%             error('Call to qminos failed');
+%         end
+        %read the solution
+        sol = readMinosSolution([quadLPPath '/testFBA/' fname '.sol']);
+        %disp(sol)
+        % The optimization problem solved by MINOS is assumed to be
+        %        min   osense*s(iobj)
+        %        st    Ax - s = 0    + bounds on x and s,
+        % where A has m rows and n columns.  The output structure "sol"
+        % contains the following data:
+        %
+        %        sol.inform          MINOS exit condition
+        %        sol.m               Number of rows in A
+        %        sol.n               Number of columns in A
+        %        sol.osense          osense
+        %        sol.objrow          Row of A containing a linear objective
+        %        sol.obj             Value of MINOS objective (linear + nonlinear)
+        %        sol.numinf          Number of infeasibilities in x and s.
+        %        sol.suminf          Sum    of infeasibilities in x and s.
+        %        sol.xstate          n vector: state of each variable in x.
+        %        sol.sstate          m vector: state of each slack in s.
+        %        sol.x               n vector: value of each variable in x.
+        %        sol.s               m vector: value of each slack in s.
+        %        sol.rc              n vector: reduced gradients for x.
+        %        sol.y               m vector: dual variables for Ax - s = 0.
+        x=sol.x;
+        f=c'*x;
+        y=sol.y;
+        w=sol.rc;
+        origStat=sol.inform;
         
+        k=sol.s;
+        
+        % Note that status handling may change (see lp_lib.h)
+        if (origStat == 0)
+            stat = 1; % Optimal solution found
+%         elseif (origStat == 3)
+%             stat = 2; % Unbounded
+%         elseif (origStat == 2)
+%             stat = 0; % Infeasible
+        else
+            stat = -1; % Solution not optimal or solver problem
+        end
+        %cleanup
+        delete([dataDirectory '/' fname '.txt'])
+        delete([quadLPPath '/testFBA/' fname '.sol'])
+        %return to original directory
+        cd(originalDirectory);
     case 'glpk'
         %% GLPK
         param.msglev = printLevel; % level of verbosity

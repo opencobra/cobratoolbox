@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" metaid="metaid_0000001" version="3">
+	<model id="model_0000001" metaid="metaid_0000002" name="model">
+		<listOfCompartments>
+			<compartment id="compartment_0000001" metaid="metaid_0000003" size="1">
+				<annotation>
+					<rdf:RDF  xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#">
+						<rdf:Description rdf:about="#metaid_0000003">
+							<bqbiol:is>
+								<rdf:Bag>
+									<rdf:li rdf:resource="http://www.geneontology.org/#GO:0000567"/>
+								</rdf:Bag>
+							</bqbiol:is>
+						</rdf:Description>
+					</rdf:RDF>
+				</annotation>
+			</compartment>
+		</listOfCompartments>
+	</model>
+</sbml>

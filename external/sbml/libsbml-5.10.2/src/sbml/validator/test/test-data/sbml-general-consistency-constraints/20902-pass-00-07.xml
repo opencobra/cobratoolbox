@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1701) A RateRule's variable must be the id of a Compartment,
+Species, or Parameter.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+	<model>
+		<listOfCompartments>
+			<compartment id="c" constant="false"/>
+		</listOfCompartments>
+		<listOfRules>
+			<rateRule variable="c"/>
+		</listOfRules>
+	</model>
+</sbml>

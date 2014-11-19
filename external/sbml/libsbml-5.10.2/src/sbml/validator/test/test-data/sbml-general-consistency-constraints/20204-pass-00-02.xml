@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1001) A Model that has a Species must also have at least one
+Compartment (L2v1 Section 4.5).
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+	<model>
+		<listOfCompartments>
+			<compartment id="c"/>
+		</listOfCompartments>
+		<listOfSpecies>
+			<species id="s" compartment="c"/>
+		</listOfSpecies>
+	</model>
+</sbml>

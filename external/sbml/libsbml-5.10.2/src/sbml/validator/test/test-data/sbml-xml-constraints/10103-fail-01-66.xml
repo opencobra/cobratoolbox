@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Pass: (1200) Compartment 'a' is undefined. -->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="1">
+	<model>
+		<listOfCompartments>
+			<compartment name="a"/>
+			<compartment name="c"/>
+		</listOfCompartments>
+		<listOfSpecies>
+			<specie name="s" compartment="a" initialAmount="0" sboTerm="SBO:0000064"/>
+		</listOfSpecies>
+        <listOfReactions>
+        		<reaction name="r">
+        			<listOfProducts>
+        				<specieReference specie="s"/>
+        			</listOfProducts>
+        		</reaction>
+        </listOfReactions>
+	</model>
+</sbml>

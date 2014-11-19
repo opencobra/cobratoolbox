@@ -59,7 +59,12 @@ function solution = solveCobraMILP(MILPproblem,varargin)
 
 % Markus Herrgard 1/23/07
 % Tim Harrington  05/18/12 Added support for the Gurobi 5.0 solver
+<<<<<<< HEAD
 % Ronan (16/07/2013) default MPS parameters are no longer global variables
+=======
+% Meiyappan Lakshmanan  11/14/14 Added support for the cplex_direct solver
+% cplex_direct solver accesible through CPLEX m-file and CPLEX C-interface
+>>>>>>> 987a38606db2c6c47ed5421155258bb27fd34cbe
 
 %% Process options
 
@@ -228,6 +233,59 @@ switch solver
             solStat = 3; % Other problem, but integer solution exists
         else
             solStat = -1; % No integer solution exists
+        end
+        
+         case 'cplex_direct'
+%% cplex_direct
+
+        % Set up problem
+        b=full(b);
+        [m_lin,n]=size(MILPproblem.A);    
+        if ~isempty(csense)
+            Aineq = [MILPproblem.A(csense == 'L',:); - MILPproblem.A(csense == 'G',:)];
+            bineq = [b(csense == 'L',:); - b(csense == 'G',:)];
+            %        min      c*x
+            %        st.      Aineq*x <= bineq
+            %                 Aeq*x    = beq
+            %                 lb <= x <= ub
+            A=MILPproblem.A(csense == 'E',:);
+            b=b(csense == 'E',1);
+            [x,f,exitflag,output] = cplexmilp(c,Aineq,bineq,A,b,[ ], [ ], [ ], lb, ub, vartype');
+            
+            %primal
+            solution.obj=osense*f;
+            solution.full=x;
+            %this is the dual to the equality constraints but it's not the chemical potential
+%             solution.dual=lambda.eqlin;
+        else
+            Aineq=[];
+            bineq=[];
+            [x,f,exitflag,output] = cplexmilp(c,Aineq,bineq,MILPproblem.A,b,lb,ub,vartype);
+            solution.obj=osense*f;
+            solution.full=x;
+            %this is the dual to the equality constraints but it's not the chemical potential
+            solution.dual=sparse(size(MILPproblem.A,1),1);
+%             solution.dual(csense == 'E')=lambda.eqlin;
+            %this is the dual to the inequality constraints but it's not the chemical potential
+%             solution.dual(csense == 'L')=lambda.ineqlin(1:nnz(csense == 'L'),1);
+%             solution.dual(csense == 'G')=lambda.ineqlin(nnz(csense == 'L')+1:end,1);
+        end
+        solution.nInfeas = [];
+        solution.sumInfeas = [];
+        solution.origStat = output.cplexstatus;
+        
+        Inform = solution.origStat;
+        stat = Inform;
+        if (stat == 101 || stat == 102)
+            solStat = 1; % Opt integer within tolerance
+        elseif (stat == 103)
+            solStat = 0; % Integer infeas
+        elseif (stat == 118 || stat == 119)
+            solStat = 2; % Unbounded
+        elseif (stat == 106 || stat == 106 || stat == 108 || stat == 110 || stat == 112 || stat == 114 || stat == 117)
+            solStat = -1; % No integer solution exists
+        else
+            solStat = 3; % Other problem, but integer solution exists
         end
 
    case 'gurobi'

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fail: (20412) The predefined unit "Celsius", previously available in
+SBML Level 1 and Level 2 Version 1, has been removed as of SBML Level
+2 Version 2 (References: L2V2 Section 4.4.)
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+	<model>
+		<listOfUnitDefinitions>
+			<unitDefinition id="u">
+				<listOfUnits>
+					<unit kind="celsius" scale="-1"/>
+				</listOfUnits>
+			</unitDefinition>
+		</listOfUnitDefinitions>
+		<listOfParameters>
+			<parameter id="p" units="kelvin"/>
+		</listOfParameters>
+	</model>
+</sbml>

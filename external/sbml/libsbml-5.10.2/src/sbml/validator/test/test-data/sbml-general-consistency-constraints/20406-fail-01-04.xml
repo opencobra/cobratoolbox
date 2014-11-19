@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Pass: (1205) A 'volume' UnitDefinition may have only a single Unit of
+kind 'litre' or 'metre'.
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+  <model>
+    <listOfUnitDefinitions>
+      <unitDefinition id="volume">
+        <listOfUnits>
+          <unit kind="litre" exponent="1"/>
+          <unit kind="kilogram"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+  </model>
+</sbml>

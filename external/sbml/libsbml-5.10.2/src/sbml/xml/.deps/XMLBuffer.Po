@@ -1,0 +1,10 @@
+XMLBuffer.lo: XMLBuffer.cpp \
+ /home/rfleming/work/sbg-code/cobratoolbox/external/sbml/libsbml-5.10.2/src/sbml/xml/XMLBuffer.h \
+ /home/rfleming/work/sbg-code/cobratoolbox/external/sbml/libsbml-5.10.2/src/sbml/xml/XMLExtern.h \
+ /home/rfleming/work/sbg-code/cobratoolbox/external/sbml/libsbml-5.10.2/src/sbml/common/libsbml-namespace.h
+
+/home/rfleming/work/sbg-code/cobratoolbox/external/sbml/libsbml-5.10.2/src/sbml/xml/XMLBuffer.h:
+
+/home/rfleming/work/sbg-code/cobratoolbox/external/sbml/libsbml-5.10.2/src/sbml/xml/XMLExtern.h:
+
+/home/rfleming/work/sbg-code/cobratoolbox/external/sbml/libsbml-5.10.2/src/sbml/common/libsbml-namespace.h:

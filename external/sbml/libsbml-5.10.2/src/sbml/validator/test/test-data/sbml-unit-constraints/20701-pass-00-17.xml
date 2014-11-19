@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+  <model>
+    <listOfParameters>
+      <parameter id="p1" units="area"/>
+      <parameter id="p2" units="length"/>
+      <parameter id="p3" units="substance"/>
+      <parameter id="p4" units="time"/>
+      <parameter id="p5" units="volume"/>
+    </listOfParameters>
+  </model>
+</sbml>

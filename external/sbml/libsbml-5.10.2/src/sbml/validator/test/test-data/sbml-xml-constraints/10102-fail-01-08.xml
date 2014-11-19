@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fail: (1100) <lambda> must be the top-level element of a
+FunctionDefinition (L2v1 Section 4.3.2).
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+	<model>
+		<listOfFunctionDefinitions>
+			<functionDefinition id="pow3">
+				<math xmlns="http://www.w3.org/1998/Math/MathML">
+					<semantics>
+						<apply>
+							<power/>
+							<ci> x </ci>
+							<cn> 3 </cn>
+						</apply>
+					</semantics>
+				</math>
+			</functionDefinition>
+		</listOfFunctionDefinitions>
+		<listOfCompartments>
+			<compartment name="c"/>
+		</listOfCompartments>
+	</model>
+</sbml>

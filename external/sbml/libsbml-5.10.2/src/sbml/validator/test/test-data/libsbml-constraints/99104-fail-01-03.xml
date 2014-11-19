@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="1">
+	<notes>
+		<html xmlns="http://www.w3.org/1999/xhtml">
+			<center>
+				<h2>A Simple Mitotic Oscillator</h2>
+			</center>
+			<p>A minimal cascade model for the mitotic oscillator involving cyclin and cdc2 kinase</p>
+		</html>
+	</notes>
+	<model>
+		<listOfCompartments>
+			<compartment name="c"/>
+		</listOfCompartments>
+		<listOfSpecies>
+			<specie name="s" compartment="c" initialAmount="0"/>
+		</listOfSpecies>
+		<listOfReactions>
+			<reaction name="r">
+				<listOfReactants>
+					<specieReference specie="s"/>
+				</listOfReactants>
+			</reaction>
+		</listOfReactions>
+</model>
+</sbml>

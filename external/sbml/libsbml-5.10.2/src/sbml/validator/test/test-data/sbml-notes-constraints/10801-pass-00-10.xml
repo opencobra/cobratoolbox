@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (3400) When a delay is specified within an event the units
+    of the delay formula must correspond to the timeUnits
+    specified within the event or, if no timeUnits are
+    specified, be a variation of 'time'.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="1"
+ 		xmlns:xhtml="http://www.w3.org/1999/xhtml">
+	<model>
+		<notes>
+			<xhtml:body>
+				<xhtml:center><xhtml:h2>A Simple Mitotic Oscillator</xhtml:h2></xhtml:center>
+					<xhtml:p>A minimal cascade model for the mitotic oscillator involving cyclin and cdc2 kinase						</xhtml:p>
+			</xhtml:body>
+		</notes>
+        <listOfCompartments>
+			<compartment name="c"/>
+        </listOfCompartments>
+        <listOfSpecies>
+        		<specie name="s" compartment="c" initialAmount="0"/>
+        </listOfSpecies>
+        <listOfReactions>
+        		<reaction name="r">
+        			<listOfProducts>
+        				<specieReference specie="s"/>
+        			</listOfProducts>
+        		</reaction>
+        </listOfReactions>
+	</model>
+</sbml>

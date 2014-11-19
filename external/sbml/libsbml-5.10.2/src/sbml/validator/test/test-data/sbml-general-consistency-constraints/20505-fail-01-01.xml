@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+Pass: (1304) A Compartment may not enclose itself via its 'outside'
+attribute (L2v1 erratum).  Compartment 'a' encloses itself.
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment id="a" outside="a"/>
+    </listOfCompartments>
+  </model>
+</sbml>

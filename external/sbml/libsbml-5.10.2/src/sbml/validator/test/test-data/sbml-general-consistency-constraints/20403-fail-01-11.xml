@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- A 'length' unitDefinition may only have units of kind 'metre'. -->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+	<model>
+		<listOfUnitDefinitions>
+			<unitDefinition id="length">
+				<listOfUnits>
+					<unit kind="litre" scale="-3" exponent="1"/>
+				</listOfUnits>
+			</unitDefinition>
+		</listOfUnitDefinitions>
+	</model>
+</sbml>

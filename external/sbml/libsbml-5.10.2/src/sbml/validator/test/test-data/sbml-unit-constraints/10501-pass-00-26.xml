@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (3300) Inconsistent math
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+	<model>
+		<listOfCompartments>
+			<compartment id="c" constant="false"/>
+		</listOfCompartments>
+		<listOfParameters>
+			<parameter id="p" value="1" constant="false"/>
+			<parameter id="p1" units="metre" value="1" constant="false"/>
+			<parameter id="p2" units="litre" value="4"/>
+		</listOfParameters>
+		<listOfRules>
+			<algebraicRule>
+				<math xmlns="http://www.w3.org/1998/Math/MathML">
+					<piecewise>
+						<piece>
+							<apply>
+								<times/>
+								<ci> p1 </ci>
+								<cn> 6 </cn>
+							</apply>
+							<apply>
+								<gt/>
+								<ci> c </ci>
+								<ci> p2 </ci>
+							</apply>
+						</piece>
+						<otherwise>
+							<ci>p1</ci>
+						</otherwise>
+					</piecewise>
+				</math>
+			</algebraicRule>
+		</listOfRules>
+	</model>
+</sbml>

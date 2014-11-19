@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+  <model id="Model_1" name="New Model">
+    <listOfParameters>
+      <parameter id="parameter_1" name="K1" value="1.1" constant="false"/>
+    </listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="parameter_1">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <cn> 4.5 </cn>
+        </math>
+      </assignmentRule>
+    </listOfRules>
+  </model>
+</sbml>

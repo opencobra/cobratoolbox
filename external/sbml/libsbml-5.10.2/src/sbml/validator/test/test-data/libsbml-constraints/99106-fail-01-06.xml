@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment name="c"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <specie name="s" compartment="c" initialAmount="1"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter name="y" value="1"/>
+      <parameter name="q" value="1"/>
+      <parameter name="z" value="1"/>
+      <parameter name="p" value="1"/>
+    </listOfParameters>
+    <listOfRules>
+      <parameterRule name="p" formula="z"/>
+      <parameterRule name="z" formula="y"/>
+    </listOfRules>
+    <listOfReactions>
+      <reaction name="r">
+        <listOfReactants>
+          <speciesReference specie="s"/>
+        </listOfReactants>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

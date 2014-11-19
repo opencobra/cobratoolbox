@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Pass: (1303) A Compartment's 'outside' must be the id of another
+Compartment (L2v1 Section 4.5.6).
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment id="a" spatialDimensions="2"/>
+      <compartment id="c" outside="a" spatialDimensions="3"/>
+    </listOfCompartments>
+  </model>
+</sbml>

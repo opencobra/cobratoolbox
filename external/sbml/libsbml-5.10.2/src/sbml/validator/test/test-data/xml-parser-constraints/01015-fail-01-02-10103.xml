@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fail: (1404) A Species whose compartment has spatialDimensions='0'
+must not have an initialConcentration.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+	<model>
+		<listOfCompartments>
+			<compartment name="c"/>
+		</listOfCompartments>
+		<listOfSpecies>
+			<species name="s" compartment="c" initialConcentration="2.4"/>
+		</listOfSpecies>
+	</model>
+</sbml>

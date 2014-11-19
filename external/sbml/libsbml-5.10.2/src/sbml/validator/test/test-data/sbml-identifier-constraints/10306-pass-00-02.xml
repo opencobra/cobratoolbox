@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (905) An identifier used as the value of the variable in an EventAssignment
+  cannot also appear as the value of a variable in an assignment rule
+  (L2V1 Section 4.10.5; L2V2 Section 4.1.4).
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" constant="false"/>
+      <compartment id="d" constant="false"/>
+    </listOfCompartments>
+    <listOfRules>
+      <assignmentRule variable="d"/>
+    </listOfRules>
+    <listOfEvents>
+      <event id="e">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply> <neq/> <cn> 1 </cn> <cn> 2 </cn> </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+          <eventAssignment variable="c"/>
+        </listOfEventAssignments>
+      </event>
+    </listOfEvents>
+  </model>
+</sbml>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fail: (1207) A 'volume' UnitDefinition with a single Unit of kind
+'metre' must have an exponent of '3'.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+	<model>
+		<listOfUnitDefinitions>
+			<unitDefinition id="volume">
+				<listOfUnits>
+					<unit kind="metre" exponent="2"/>
+				</listOfUnits>
+			</unitDefinition>
+		</listOfUnitDefinitions>
+	</model>
+</sbml>

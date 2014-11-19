@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Author:         Andrew Finney
+  Organisation:   SBMLTeam (http://sbml.org)
+  (C) 2004 - 2005 California Institute of Technology and University of Hertfordshire
+  This is free software;
+  see the file "LICENSE.txt" or the URL http://sbml.org/software/LICENSE.html
+  for licensing and distribution terms.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="1">
+<model name="algebraicRules_basic">
+  <listOfCompartments>
+    <compartment name="cell" volume="1"/>
+  </listOfCompartments>
+  <listOfSpecies>
+    <specie name="x" compartment="cell" initialAmount="0.5"/>
+  </listOfSpecies>
+    <listOfReactions>
+      <reaction name="R1" reversible="false">
+        <listOfReactants>
+          <specieReference specie="x"/>
+        </listOfReactants>
+        <kineticLaw formula="K_1*x">
+          <listOfParameters>
+			<parameter name="K_1" value="2"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+   </listOfReactions>
+</model>
+</sbml>

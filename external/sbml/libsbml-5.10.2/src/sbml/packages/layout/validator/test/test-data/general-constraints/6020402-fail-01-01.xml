@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" 
+      xmlns:layout="http://www.sbml.org/sbml/level3/version1/layout/version1" 
+	  level="3" version="1" layout:required="false" >
+  <model id="GeneralGlyphExample" >
+    
+	<listOfCompartments>
+      <compartment id="compartment" 
+	  spatialDimensions="3" size="1" constant="true"/>
+    </listOfCompartments>
+    
+	<listOfSpecies>
+      <species sboTerm="SBO:0000395" id="Node0" 
+	    compartment="compartment" initialConcentration="0" 
+	    hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species  sboTerm="SBO:0000395" id="Node1" 
+	    compartment="compartment" initialConcentration="0" 
+	    hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+    </listOfSpecies>
+	
+    <layout:listOfLayouts 
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	   xmlns:layout="http://www.sbml.org/sbml/level3/version1/layout/version1">
+      <layout:layout layout:id="example">
+        <layout:dimensions layout:width="239.037328720093" layout:height="76.5"/>
+        
+		
+        
+		<layout:listOfAdditionalGraphicalObjects>
+		  <layout:graphicalObject layout:id="go"  metaid="_go" sboTerm="SBO:0000001" species="s">
+		    <layout:boundingBox layout:id="bb1">
+		      <layout:position layout:x="5" layout:y="5"/>
+		      <layout:dimensions layout:width="390" layout:height="220"/>
+		    </layout:boundingBox>		    
+		  </layout:graphicalObject>
+          
+        </layout:listOfAdditionalGraphicalObjects>
+        
+		
+      </layout:layout>
+    </layout:listOfLayouts>
+  </model>
+</sbml>

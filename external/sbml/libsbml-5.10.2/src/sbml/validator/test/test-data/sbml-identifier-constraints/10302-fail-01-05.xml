@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (901) The ids of all UnitDefinitions must be unique
+(L2v1 Section 4.4.1).
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="1">
+  <model>
+    <listOfUnitDefinitions>
+      <unitDefinition name="mmls"/>
+      <unitDefinition name="mmls"/>
+    </listOfUnitDefinitions>
+        <listOfCompartments>
+			<compartment name="c"/>
+        </listOfCompartments>
+        <listOfSpecies>
+        		<specie name="s" compartment="c" initialAmount="0"/>
+        </listOfSpecies>
+        <listOfParameters>
+          <parameter name="p" value="2"/>
+        </listOfParameters>
+        <listOfRules>
+			<parameterRule name="p" formula="c*5"/>
+        </listOfRules>
+        <listOfReactions>
+        		<reaction name="r">
+        			<listOfProducts>
+        				<specieReference specie="s"/>
+        			</listOfProducts>
+        		</reaction>
+        </listOfReactions>
+  </model>
+</sbml>

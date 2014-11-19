@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" xmlns:extra="http://www.sbml.org/sbml/level3/version1/extra/version1" level="3" version="1" extra:required="false">
+  <model extra:info1="extra!" extra:info2="READ_ALL_ABOUT_IT">
+    <extra:listOfThings>
+      <extra:thing extra:id="y"/>
+    </extra:listOfThings>
+    <extra:thing2 extra:xattr="amusing"/>
+  </model>
+</sbml>

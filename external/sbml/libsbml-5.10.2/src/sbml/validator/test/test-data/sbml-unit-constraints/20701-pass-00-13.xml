@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1500) A Parameter's 'units' must be a UnitKind, a built-in
+unit, or the id of a UnitDefinition.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+	<model>
+		<listOfCompartments>
+			<compartment name="c"/>
+		</listOfCompartments>
+		<listOfParameters>
+			<parameter name="p01" units="ampere" value="1"/>
+			<parameter name="p02" units="becquerel" value="1"/>
+			<parameter name="p03" units="candela" value="1"/>
+			<parameter name="p04" units="celsius" value="1"/>
+			<parameter name="p05" units="coulomb" value="1"/>
+			<parameter name="p06" units="dimensionless" value="1"/>
+			<parameter name="p07" units="farad" value="1"/>
+			<parameter name="p08" units="gram" value="1"/>
+			<parameter name="p09" units="gray" value="1"/>
+			<parameter name="p10" units="henry" value="1"/>
+			<parameter name="p11" units="hertz" value="1"/>
+			<parameter name="p12" units="item" value="1"/>
+			<parameter name="p13" units="joule" value="1"/>
+			<parameter name="p14" units="katal" value="1"/>
+			<parameter name="p15" units="kelvin" value="1"/>
+			<parameter name="p16" units="kilogram" value="1"/>
+			<parameter name="p18" units="litre" value="1"/>
+			<parameter name="p36" units="liter" value="1"/>
+			<parameter name="p19" units="lumen" value="1"/>
+			<parameter name="p20" units="lux" value="1"/>
+			<parameter name="p22" units="metre" value="1"/>
+			<parameter name="p37" units="meter" value="1"/>
+			<parameter name="p23" units="mole" value="1"/>
+			<parameter name="p24" units="newton" value="1"/>
+			<parameter name="p25" units="ohm" value="1"/>
+			<parameter name="p26" units="pascal" value="1"/>
+			<parameter name="p27" units="radian" value="1"/>
+			<parameter name="p28" units="second" value="1"/>
+			<parameter name="p29" units="siemens" value="1"/>
+			<parameter name="p30" units="sievert" value="1"/>
+			<parameter name="p31" units="steradian" value="1"/>
+			<parameter name="p32" units="tesla" value="1"/>
+			<parameter name="p33" units="volt" value="1"/>
+			<parameter name="p34" units="watt" value="1"/>
+			<parameter name="p35" units="weber" value="1"/>
+		</listOfParameters>
+	</model>
+</sbml>

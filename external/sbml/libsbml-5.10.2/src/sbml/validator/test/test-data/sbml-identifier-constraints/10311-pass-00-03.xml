@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1201) The id of a UnitDefinition must not be a predefined kind
+of unit.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+  <model>
+    <listOfUnitDefinitions>
+      <unitDefinition id="mmls"/>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+    		<compartment id="c"/>
+    </listOfCompartments>
+    <listOfSpecies>
+    		<species id="s" compartment="c" spatialSizeUnits="mmls" substanceUnits="substance"/>
+    </listOfSpecies>
+  </model>
+</sbml>

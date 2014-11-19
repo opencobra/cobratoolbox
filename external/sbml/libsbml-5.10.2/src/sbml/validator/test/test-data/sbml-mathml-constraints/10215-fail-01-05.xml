@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+  <listOfUnitDefinitions>
+    <unitDefinition id="gg">
+      <listOfUnits>
+        <unit kind="mole" multiplier="1" scale="0" exponent="1"/>
+      </listOfUnits>
+    </unitDefinition>
+  </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment id="c" units="litre" constant="false"/>
+    </listOfCompartments>
+    <listOfConstraints>
+      <constraint>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <neq/>
+            <apply>
+              <gt/>
+              <ci> gg </ci>
+              <cn type="integer"> 6 </cn>
+            </apply>
+            <true/>
+          </apply>
+        </math>
+      </constraint>
+    </listOfConstraints>
+  </model>
+</sbml>

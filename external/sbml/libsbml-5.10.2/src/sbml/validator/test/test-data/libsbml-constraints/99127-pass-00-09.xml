@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1604) A KineticLaw's substanceUnits must be 'substance',
+'item', 'mole', or the id of a UnitDefinition that defines a variant
+of 'item' or 'mole'.
+ -->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+  <model>
+    <listOfUnitDefinitions>
+      <unitDefinition name="mi">
+        <listOfUnits>
+          <unit kind="item" exponent="1" scale="-3"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment name="c"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species name="s" compartment="c" initialAmount="0"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction name="r">
+        <listOfReactants>
+          <speciesReference species="s"/>
+        </listOfReactants>
+        <kineticLaw substanceUnits="mi" formula="1"/>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

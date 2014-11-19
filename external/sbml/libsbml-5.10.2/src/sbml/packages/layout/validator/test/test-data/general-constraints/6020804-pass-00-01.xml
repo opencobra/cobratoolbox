@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" 
+      xmlns:layout="http://www.sbml.org/sbml/level3/version1/layout/version1" 
+	  level="3" version="1" layout:required="false" >
+  <model id="GeneralGlyphExample" >
+    
+	<listOfCompartments>
+      <compartment id="compartment" 
+	  spatialDimensions="3" size="1" constant="true"/>
+    </listOfCompartments>
+    
+	<listOfSpecies>
+      <species sboTerm="SBO:0000395" id="Node0" 
+	    compartment="compartment" initialConcentration="0" 
+	    hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species  sboTerm="SBO:0000395" id="Node1" 
+	    compartment="compartment" initialConcentration="0" 
+	    hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+    </listOfSpecies>
+	
+    <layout:listOfLayouts 
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	   xmlns:layout="http://www.sbml.org/sbml/level3/version1/layout/version1">
+      <layout:layout layout:id="example">
+        <layout:dimensions layout:width="239.037328720093" layout:height="76.5"/>
+        
+		<layout:listOfSpeciesGlyphs>
+          <layout:speciesGlyph layout:id="sGlyph_0" layout:species="Node0" metaid="_sG0">
+            <layout:boundingBox>
+              <layout:position layout:x="16" layout:y="18"/>
+              <layout:dimensions layout:width="62" layout:height="40"/>
+            </layout:boundingBox>
+          </layout:speciesGlyph>
+          <layout:speciesGlyph layout:id="sGlyph_1" layout:species="Node1" >
+            <layout:boundingBox>
+              <layout:position layout:x="161" layout:y="18"/>
+              <layout:dimensions layout:width="62" layout:height="40"/>
+            </layout:boundingBox>
+          </layout:speciesGlyph>
+        </layout:listOfSpeciesGlyphs>
+        
+		<layout:listOfAdditionalGraphicalObjects>
+		  <layout:generalGlyph layout:id="rGlyph_0" layout:reference="sGlyph_0" layout:metaidRef="_sG0">
+		    <!-- unused bounding box -->
+            <layout:boundingBox>
+              <layout:position layout:x="0" layout:y="0"/>
+              <layout:dimensions layout:width="0" layout:height="0"/>
+            </layout:boundingBox>
+            <layout:listOfSubGlyphs>
+              <layout:compartmentGlyph layout:id="cg3">
+                <layout:boundingBox>
+                  <layout:position layout:x="0" layout:y="0"/>
+                  <layout:dimensions layout:width="0" layout:height="0"/>
+                </layout:boundingBox>
+              </layout:compartmentGlyph>
+            </layout:listOfSubGlyphs>
+            <layout:listOfReferenceGlyphs>
+			  <!-- reference glyph representing the inhibited species -->
+              <layout:referenceGlyph 
+			      layout:id="SpeciesReference_J0_0" 
+				  layout:reference="Node1" 
+				  layout:glyph="sGlyph_1" 
+				  layout:role="inhibitor">
+				  
+                <layout:curve>
+                  <layout:listOfCurveSegments>
+                    <layout:curveSegment 
+					  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+					  xsi:type="LineSegment">
+                      <layout:start layout:x="86" layout:y="38"/>
+                      <layout:end layout:x="153" layout:y="38"/>
+                    </layout:curveSegment>
+                  </layout:listOfCurveSegments>
+                </layout:curve>
+				
+              </layout:referenceGlyph>              
+            </layout:listOfReferenceGlyphs>
+          </layout:generalGlyph>
+        </layout:listOfAdditionalGraphicalObjects>
+        
+		<layout:listOfTextGlyphs>
+		
+          <layout:textGlyph layout:id="tGlyph_0" layout:text="Node0" 
+		       layout:graphicalObject="sGlyph_0">
+            <layout:boundingBox>
+              <layout:position layout:x="16" layout:y="18"/>
+              <layout:dimensions layout:width="62" layout:height="40"/>
+            </layout:boundingBox>
+          </layout:textGlyph>
+		  
+          <layout:textGlyph layout:id="tGlyph_1" layout:text="Node1" 
+		                    layout:graphicalObject="sGlyph_1">
+            <layout:boundingBox>
+              <layout:position layout:x="161" layout:y="18"/>
+              <layout:dimensions layout:width="62" layout:height="40"/>
+            </layout:boundingBox>
+          </layout:textGlyph>
+		  
+        </layout:listOfTextGlyphs>
+      </layout:layout>
+    </layout:listOfLayouts>
+  </model>
+</sbml>

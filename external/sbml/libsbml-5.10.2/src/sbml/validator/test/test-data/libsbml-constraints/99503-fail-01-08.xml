@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (3300) Inconsistent math
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" constant="true" spatialDimensions="3"/>
+    </listOfCompartments>
+    <listOfParameters>
+      <parameter id="p" value="1" units="metre" constant="false"/>
+    </listOfParameters>
+    <listOfRules>
+      <algebraicRule>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <power/> 
+            <ci> p </ci>
+            <cn type="rational"> 2 <sep/> 3 </cn>
+          </apply>
+        </math>
+      </algebraicRule>
+    </listOfRules>
+  </model>
+</sbml>

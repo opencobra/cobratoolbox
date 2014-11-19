@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1407) A Species whose Compartment has spatialDimensions=3 must
+have spatialSizeUnits of 'volume' or 'litre' or the id of a
+UnitDefinition that defines a variant of 'metre' with exponent='3' or
+a variant of 'litre'.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+	<model>
+		<listOfCompartments>
+			<compartment id="c" spatialDimensions="3"/>
+		</listOfCompartments>
+		<listOfSpecies>
+			<species id="s" compartment="c"/>
+		</listOfSpecies>
+	</model>
+</sbml>

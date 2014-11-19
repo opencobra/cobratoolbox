@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+    <listOfUnitDefinitions>
+      <unitDefinition id="volume">
+        <listOfUnits>
+          <unit kind="litre" exponent="1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="time">
+        <listOfUnits>
+          <unit kind="second" exponent="1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment id="compartment" spatialDimensions="3" size="1" units="volume" constant="false"/>
+    </listOfCompartments>
+    <listOfEvents>
+      <event id="e1" useValuesFromTriggerTime="true">
+        <trigger persistent="true" initialValue="true">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <eq/>
+              <cn type="integer"> 1 </cn>
+              <cn type="integer"> 2 </cn>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+          <eventAssignment variable="compartment">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <plus/>
+              <cn type="integer"> 1 </cn>
+              <cn type="integer"> 2 </cn>
+            </apply>
+          </math>
+         </eventAssignment>
+        </listOfEventAssignments>
+      </event>
+      <event id="e2" useValuesFromTriggerTime="true">
+        <trigger persistent="true" initialValue="true">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <neq/>
+              <cn type="integer"> 1 </cn>
+              <cn type="integer"> 2 </cn>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+          <eventAssignment variable="compartment">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <plus/>
+              <cn type="integer"> 1 </cn>
+              <cn type="integer"> 2 </cn>
+            </apply>
+          </math>
+         </eventAssignment>
+        </listOfEventAssignments>
+      </event>
+      <event id="e3" useValuesFromTriggerTime="true">
+        <trigger persistent="true" initialValue="true">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <gt/>
+              <cn type="integer"> 1 </cn>
+              <cn type="integer"> 2 </cn>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+          <eventAssignment variable="compartment">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <plus/>
+              <cn type="integer"> 1 </cn>
+              <cn type="integer"> 2 </cn>
+            </apply>
+          </math>
+         </eventAssignment>
+        </listOfEventAssignments>
+      </event>
+      <event id="e4" useValuesFromTriggerTime="true">
+        <trigger persistent="true" initialValue="true">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <lt/>
+              <cn type="integer"> 1 </cn>
+              <cn type="integer"> 2 </cn>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+          <eventAssignment variable="compartment">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <plus/>
+              <cn type="integer"> 1 </cn>
+              <cn type="integer"> 2 </cn>
+            </apply>
+          </math>
+         </eventAssignment>
+        </listOfEventAssignments>
+      </event>
+      <event id="e5" useValuesFromTriggerTime="true">
+        <trigger persistent="true" initialValue="true">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <geq/>
+              <cn type="integer"> 1 </cn>
+              <cn type="integer"> 2 </cn>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+          <eventAssignment variable="compartment">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <plus/>
+              <cn type="integer"> 1 </cn>
+              <cn type="integer"> 2 </cn>
+            </apply>
+          </math>
+         </eventAssignment>
+        </listOfEventAssignments>
+      </event>
+      <event id="e6" useValuesFromTriggerTime="true">
+        <trigger persistent="true" initialValue="true">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <leq/>
+              <cn type="integer"> 1 </cn>
+              <cn type="integer"> 2 </cn>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+          <eventAssignment variable="compartment">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <plus/>
+              <cn type="integer"> 1 </cn>
+              <cn type="integer"> 2 </cn>
+            </apply>
+          </math>
+         </eventAssignment>
+        </listOfEventAssignments>
+      </event>
+      <event id="e7" useValuesFromTriggerTime="true">
+        <trigger persistent="true" initialValue="true">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <and/>
+              <true/>
+              <false/>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+          <eventAssignment variable="compartment">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <plus/>
+              <cn type="integer"> 1 </cn>
+              <cn type="integer"> 2 </cn>
+            </apply>
+          </math>
+         </eventAssignment>
+        </listOfEventAssignments>
+      </event>
+      <event id="e8" useValuesFromTriggerTime="true">
+        <trigger persistent="true" initialValue="true">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <or/>
+              <true/>
+              <false/>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+          <eventAssignment variable="compartment">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <plus/>
+              <cn type="integer"> 1 </cn>
+              <cn type="integer"> 2 </cn>
+            </apply>
+          </math>
+         </eventAssignment>
+        </listOfEventAssignments>
+      </event>
+      <event id="e9" useValuesFromTriggerTime="true">
+        <trigger persistent="true" initialValue="true">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <xor/>
+              <true/>
+              <false/>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+          <eventAssignment variable="compartment">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <plus/>
+              <cn type="integer"> 1 </cn>
+              <cn type="integer"> 2 </cn>
+            </apply>
+          </math>
+         </eventAssignment>
+        </listOfEventAssignments>
+      </event>
+      <event id="e10" useValuesFromTriggerTime="true">
+        <trigger persistent="true" initialValue="true">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <not/>
+              <true/>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+          <eventAssignment variable="compartment">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <plus/>
+              <cn type="integer"> 1 </cn>
+              <cn type="integer"> 2 </cn>
+            </apply>
+          </math>
+         </eventAssignment>
+        </listOfEventAssignments>
+      </event>
+      <event id="e11" useValuesFromTriggerTime="true">
+        <trigger persistent="true" initialValue="true">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <true/>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+          <eventAssignment variable="compartment">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <plus/>
+              <cn type="integer"> 1 </cn>
+              <cn type="integer"> 2 </cn>
+            </apply>
+          </math>
+         </eventAssignment>
+        </listOfEventAssignments>
+      </event>
+      <event id="e12" useValuesFromTriggerTime="true">
+        <trigger persistent="true" initialValue="true">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <false/>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+          <eventAssignment variable="compartment">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <plus/>
+              <cn type="integer"> 1 </cn>
+              <cn type="integer"> 2 </cn>
+            </apply>
+          </math>
+         </eventAssignment>
+        </listOfEventAssignments>
+      </event>
+    </listOfEvents>
+  </model>
+</sbml>
