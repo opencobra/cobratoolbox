@@ -13,8 +13,16 @@ function [out,solution]=testDifferentLPSolvers(model,solvers,printLevel)
 if exist('model','var')
     if ~isempty(model)
         model.A=model.S;
+        model.lb=double(full(model.lb));
+        model.ub=double(full(model.ub));
+	model.c=double(full(model.c));
         model.osense=-1;
-        model.csense(1:size(model.S,1),1)='E';
+        [m,n]=size(model.S);
+        if isfield(model,'csense')
+model.csense=model.csense(:);
+else
+        model.csense(1:m,1)='E';
+end
         solveDefaultModel=0;
     else
         solveDefaultModel=1;

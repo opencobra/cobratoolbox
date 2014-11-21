@@ -207,7 +207,7 @@ end
 model.SIntRxnBool=~SExRxnBool;
 
 %rows corresponding to internal reactions
-model.SIntMetBool = sum(abs(model.S(:,model.SIntRxnBool)),2)~=0;
+model.SIntMetBool = sum(model.S(:,model.SIntRxnBool)~=0,2)~=0;
 
 
 

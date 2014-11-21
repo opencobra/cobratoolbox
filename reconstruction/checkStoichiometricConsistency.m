@@ -92,8 +92,9 @@ end
 SInt=model.S(:,model.SIntRxnBool);
 LPproblem.A=SInt';
 LPproblem.b=zeros(size(LPproblem.A,1),1);
+%changing the 
 LPproblem.lb=ones(size(LPproblem.A,2),1);
-LPproblem.ub=1000*ones(size(LPproblem.A,2),1);
+LPproblem.ub=inf*ones(size(LPproblem.A,2),1);
 LPproblem.c=1*ones(size(LPproblem.A,2),1);
 LPproblem.osense=1;
 LPproblem.csense(1:size(LPproblem.A,1),1)='E';
@@ -197,8 +198,9 @@ if inform~=1
                     %boolean indicating metabolites involved in the maximal consistent vector
                     model.SConsistentMetBool=m>zeroCutoff;
                 end
+                inform=1;
             else
-                solution
+                disp(solution)
                 error('solve for maximal conservation vector failed')
             end
             
@@ -242,7 +244,7 @@ else
 end
 
 %find every non-exchange reaction involving a stoichiometrically consistent metabolite
-model.SConsistentRxnBool=(sum(model.S(model.SConsistentMetBool,:)~=0,1)~=0)';
+model.SConsistentRxnBool =(sum(model.S(model.SConsistentMetBool,:)~=0,1)~=0)';
 model.SConsistentRxnBool(~model.SIntRxnBool)=0;
 
 

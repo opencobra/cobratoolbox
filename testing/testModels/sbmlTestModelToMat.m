@@ -1,9 +1,15 @@
 global CBTDIR
-d=[CBTDIR '/testing/testModels/sbml'];
+if isempty(CBTDIR)
+    tmp=which('initCobraToolbox');
+    CBTDIR=tmp(1:end-length('/initCobraToolbox.m'));
+end
+%d=[CBTDIR '/testing/testModels/sbml'];
+d=[CBTDIR '/testing/testModels/aProblemSBML'];
+
 matFiles=dir(d);
 
 for k=3:length(matFiles)
-    %disp(k)
+    disp(k)
     disp(matFiles(k).name)
     fileName=matFiles(k).name;
     filePathName=[d '/' fileName];
