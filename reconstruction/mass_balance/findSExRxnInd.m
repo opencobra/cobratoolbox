@@ -18,7 +18,8 @@ function model=findSExRxnInd(model,nRealMet,printLevel)
 %OUTPUT
 % model.SIntRxnBool         Boolean of reactions though to be mass balanced.
 % model.SIntMetBool         Boolean of metabolites though only to be involved in mass balanced reactions.
-%
+% model.biomassBool         Boolean of biomass reaction
+% 
 % OPTIONAL OUTPUT
 % model.DMRxnBool           Boolean of demand reactions. Prefix 'DM_'
 % model.SinkRxnBool         Boolean of sink reactions. Prefix 'sink_'
@@ -206,6 +207,7 @@ else
 end
 model.SIntRxnBool=~SExRxnBool;
 
+model.biomassBool=biomassBool;
 %rows corresponding to internal reactions
 model.SIntMetBool = sum(model.S(:,model.SIntRxnBool)~=0,2)~=0;
 

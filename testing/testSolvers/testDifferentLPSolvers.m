@@ -261,7 +261,9 @@ if printLevel>0
     fprintf('%3s%15s%15s%15s%15s%20s\t%30s\n','   ','time','obj','y(rand)','w(rand)','solver','algorithm')
 end
 
-testIndex='max';
+
+
+testIndex='rand';
 switch testIndex
     case 'max'
         %pick a large entry in each dual vector, to check the signs
@@ -287,11 +289,15 @@ for i=1:ilt
         disp(i)
         solution{i}
     end
-    if printLevel>0
-        fprintf('%3d%15f%15f%15f%15f%20s\t%30s\n',i,solution{i}.time,solution{i}.obj,solution{i}.dual(randdual),solution{i}.rcost(randrcost),solution{i}.solver,solution{i}.algorithm)
+    if solution{1}.stat==1
+        if printLevel>0
+            fprintf('%3d%15f%15f%15f%15f%20s\t%30s\n',i,solution{i}.time,solution{i}.obj,solution{i}.dual(randdual),solution{i}.rcost(randrcost),solution{i}.solver,solution{i}.algorithm)
+        end
+            all_obj(i)=solution{i}.obj;
+    else
+        fprintf('%3d%15f%15f%15f%15f%20s\t%30s\n',i,solution{i}.time,solution{i}.obj,NaN,NaN,solution{i}.solver,solution{i}.algorithm)  
+        all_obj(i)=NaN;
     end
-    
-    all_obj(i)=solution{i}.obj;
 end
 
 if abs(min(all_obj)-max(all_obj))<1e-8
