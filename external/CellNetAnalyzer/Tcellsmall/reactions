@@ -1,0 +1,49 @@
+grb2sos=ras                      	1 grb2sos = 1 ras 	| 	# 	0             1             0            72           503             1             1          0.01 
+rasgrp=ras                       	1 rasgrp = 1 ras 	| 	# 	0             1             0           122      476.1514             1             1          0.01 
+zap70=ccbl                       	1 zap70 = 1 ccbl 	| 	# 	0             2             0           242      247.0743             1             1             1 
+plcgbind+slp76+itk+zap70=plcgact 	1 zap70 + 1 slp76 + 1 plcgbind + 1 itk = 1 plcgact 	| 	# 	0             1             0           224      401.1579             1             1          0.01 
+plcgbind+slp76+rlk+zap70=plcgact 	1 zap70 + 1 slp76 + 1 rlk + 1 plcgbind = 1 plcgact 	| 	# 	0             1             0           179      435.1014             1             1          0.01 
+lck=rlk                          	1 lck = 1 rlk 	| 	# 	0             1             0           198      216.0671             1             1          0.01 
+gads=slp76                       	1 gads = 1 slp76 	| 	# 	0             1             0           129        391.12             1             1          0.01 
+fos+jun=ap1                      	1 jun + 1 fos = 1 ap1 	| 	# 	0             1             0           124           644             1             1          0.01 
+cd45+lck=fyn                     	1 lck + 1 cd45 = 1 fyn 	| 	# 	0             1             0           116      148.0479             1             1          0.01 
+plcgact=dag                      	1 plcgact = 1 dag 	| 	# 	0             1             0           248      435.1329             1             1          0.01 
+slp76+zap70=itk                  	1 zap70 + 1 slp76 = 1 itk 	| 	# 	0             1             0           179      361.1107             1             1          0.01 
+lat=gads                         	1 lat = 1 gads 	| 	# 	0             1             0            96      363.1164             1             1          0.01 
+lck+tcr=tcrphosp                 	1 tcr + 1 lck = 1 tcrphosp 	| 	# 	0             1             0            98      226.0686             1             1          0.01 
+lck+tcrphosp+!ccbl=zap70         	1 tcrphosp + 1 lck + 1 !ccbl = 1 zap70 	| 	# 	0             1             0            66      310.0914             1             1          0.01 
+cd45+cd4+!pagcsk=lck             	1 !pagcsk + 1 cd4 + 1 cd45 = 1 lck 	| 	# 	0             1             0            74      111.0336             1             1          0.01 
+nfat=                            	1 nfat =  	| 	# 	0             1             0           451           693             1             1          0.01 
+nfkb=                            	1 nfkb =  	| 	# 	0             1             0           397           695             1             1          0.01 
+calcen=nfat                      	1 calcen = 1 nfat 	| 	# 	0             1             0           464           472             1             1          0.01 
+ca=calcen                        	1 ca = 1 calcen 	| 	# 	0             1             0           417           380             1             1          0.01 
+ip3=ca                           	1 ip3 = 1 ca 	| 	# 	0             1             0           310      361.1107             1             1          0.01 
+zap70=lat                        	1 zap70 = 1 lat 	| 	# 	0             1             0            40      376.1164             1             1          0.01 
+!ikb=nfkb                        	1 !ikb = 1 nfkb 	| 	# 	0             1             0           394           652             1             1          0.01 
+!ikkbeta=ikb                     	1 !ikkbeta = 1 ikb 	| 	# 	0             1             0           391           581             1             1          0.01 
+fyn=pagcsk                       	1 fyn = 1 pagcsk 	| 	# 	0             2             0           157      123.0393             1             1             1 
+tcr+cd45=fyn                     	1 tcr + 1 cd45 = 1 fyn 	| 	# 	0             1             0           174      148.0471             1             1          0.01 
+plcgact=ip3                      	1 plcgact = 1 ip3 	| 	# 	0             1             0           269      393.1221             1             1          0.01 
+!tcr=pagcsk                      	1 !tcr = 1 pagcsk 	| 	# 	0             1             0           143      104.0329             1             1          0.01 
+=cd45                            	 = 1 cd45 	| 	# 	0            1            0           27           21            1            1         0.01 
+=cd4                             	 = 1 cd4 	| 	# 	0            1            0           74           21            1            1         0.01 
+=tcrlig                          	 = 1 TCRlig 	| 	# 	0             1             0           137            20             1             1          0.01 
+lig_tcr+!ccbl=tcr                	1 TCRlig + 1 !ccbl = 1 tcr 	| 	# 	0             1             0           140        58.015             1             1          0.01 
+fyn=tcrphosp                     	1 fyn = 1 tcrphosp 	| 	# 	0             1             0           111      249.0764             1             1          0.01 
+dag+pkcth=rasgrp                 	1 pkcth + 1 dag = 1 rasgrp 	| 	# 	0             1             0           233      472.1436             1             1          0.01 
+lat=grb2sos                      	1 lat = 1 grb2sos 	| 	# 	0             1             0            76      448.1393             1             1          0.01 
+lat=plcgbind                     	1 lat = 1 plcgbind 	| 	# 	0             1             0            98      450.1386             1             1          0.01 
+ap1=                             	1 ap1 =  	| 	# 	0             1             0           143           690             1             1          0.01 
+dag=pkcth                        	1 dag = 1 pkcth 	| 	# 	0             1             0           396           439             1             1          0.01 
+pkcth=ikkbeta                    	1 pkcth = 1 ikkbeta 	| 	# 	0             1             0           394           524             1             1          0.01 
+pkcth=sek                        	1 pkcth = 1 sek 	| 	# 	0             1             0           197           520             1             1          0.01 
+sek=jnk                          	1 sek = 1 jnk 	| 	# 	0             1             0           198           557             1             1          0.01 
+jnk=jun                          	1 jnk = 1 jun 	| 	# 	0             1             0           196           590             1             1          0.01 
+erk=fos                          	1 erk = 1 fos 	| 	# 	0             1             0           116           617             1             1          0.01 
+erk=rsk                          	1 erk = 1 rsk 	| 	# 	0             1             0            71           599             1             1          0.01 
+rsk=creb                         	1 rsk = 1 creb 	| 	# 	0             1             0            53           623             1             1          0.01 
+creb=cre                         	1 creb = 1 cre 	| 	# 	0             1             0            51           653             1             1          0.01 
+cre=                             	1 cre =  	| 	# 	0             1             0            53           691             1             1          0.01 
+ras=raf                          	1 ras = 1 raf 	| 	# 	0             1             0           109           521             1             1          0.01 
+raf=mek                          	1 raf = 1 mek 	| 	# 	0             1             0           109           559             1             1          0.01 
+mek=erk                          	1 mek = 1 erk 	| 	# 	0             1             0           108           591             1             1          0.01 

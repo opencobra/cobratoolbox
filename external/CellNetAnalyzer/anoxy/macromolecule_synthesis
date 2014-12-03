@@ -1,0 +1,10 @@
+Prot     = 39.9455 ATP + 0.88727 Ala + 0.15818 Cys + 0.41636 Asp + 0.45455 Glu + 0.32 Phe + 1.0582 Gly + 0.16364 His + 0.50182 Ile + 0.59273 Lys + 0.77818 Leu + 0.26546 Met + 0.41636 Asn + 0.38182 Pro + 0.45455 Gln + 0.51091 Arg + 0.37273 Ser + 0.43818 Thr + 0.73091 Val + 0.09818 Trp + 0.23818 Tyr 
+RNA      = 1.2488 ATP + 0.80488 rATP + 0.99024 rGTP + 0.61436 rCTP + 0.66341 rUTP 
+DNA      = 4.4129 ATP + 0.59677 dATP + 1.0161 dGTP + 1.0161 dCTP + 0.59677 dTTP 
+Lip      = 2.8352 ATP + 1.4176 Ser + 1.4176 Glyc3P + 2.8352 mit_FS 
+LPS      = 0.46176 UDPGlc + 0.69118 CDPEth + 0.69118 OH_myr_ac + 0.69118 C14_0_FS + 0.69118 CMP_KDO + 0.69118 NDPHep + 0.46176 TDPGlcs 
+PepGly   = 5.52 ATP + 2.208 Ala + 1.104 Glu + 1.104 UDP_NAG + 1.104 UDP_NAM + 1.104 di_am_pim 
+Glyc     = 6.16 ADPGlc 
+PHB      = 11.62 hydr_buty 
+PolyPhos = 12.66 ATP 
+Bchl     = 1.145 bchla 

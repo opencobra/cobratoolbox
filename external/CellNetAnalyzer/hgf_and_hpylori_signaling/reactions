@@ -1,0 +1,77 @@
+!H.pylori=CSK                    	1 !H.pylori = 1 CSK 	| 	# 	0  1  0 	1006.5          153.5              1              1 	1 
+!CSK=FYN                         	1 !CSK = 1 FYN 	| 	# 	0  1  0 	957.5         257.5             1             1 	1 
+!CSK=c-SRC                       	1 !CSK = 1 c-SRC 	| 	# 	0  1  0 	963  204    1    1 	1 
+c-SRC+FYN+H.pylori=CagA          	1 H.pylori + 1 c-SRC + 1 FYN = 1 CagA 	| 	# 	0  1  0 	891   60    1    1 	1 
+CagA=CSK                         	1 CagA = 1 CSK 	| 	0 	0  2  0 	957.5         162.5             1             1 	1 
+GAB1=PLCg                        	1 Gab1 = 1 PLCgamma1 	| 	# 	0  1  0 	524.5         177.5             1             1 	1 
+c-Met/HGF=GAB1                   	1 c-Met/HGF = 1 Gab1 	| 	# 	0  1  0 	493  138    1    1 	1 
+c-Met+HGF=c-Met/HGF              	1 HGF + 1 c-Met = 1 c-Met/HGF 	| 	# 	0  1  0 	415   50    1    1 	1 
+c-Met/HGF=SHP2                   	1 c-Met/HGF = 1 SHP2 	| 	# 	0  1  0 	426.5         238.5             1             1 	1 
+c-Met/HGF=GRB2                   	1 c-Met/HGF = 1 Grb2 	| 	# 	0  1  0 	291  244    1    1 	1 
+c-Met/HGF=CBL                    	1 c-Met/HGF = 1 c-Cbl 	| 	# 	0  1  0 	114  229    1    1 	1 
+CBL=PI3K                         	1 c-Cbl = 1 PI3K 	| 	# 	0  1  0 	162.5         245.5             1             1 	1 
+CBL=CRK/CRKL                     	1 c-Cbl = 1 Crk/CrkL 	| 	# 	0  1  0 	115.5         326.5             1             1 	1 
+CRK/CRKL=DOCK180                 	1 Crk/CrkL = 1 DOCK180 	| 	# 	0  1  0 	113.5         424.5             1             1 	1 
+CagA=CRK/CRKL                    	1 CagA = 1 Crk/CrkL 	| 	# 	0  1  0 	161.5         344.5             1             1 	1 
+CagA=SHP2                        	1 CagA = 1 SHP2 	| 	# 	0  1  0 	544  249    1    1 	1 
+PLCg+PIP2=IP3                    	1 PLCgamma1 + 1 PIP2 = 1 IP3 	| 	# 	0  1  0 	586.5         402.5             1             1 	1 
+STAT3=                           	1 STAT3 =  	| 	# 	0  1  0 	279  891    1    1 	1 
+c-Met/HGF=STAT3                  	1 c-Met/HGF = 1 STAT3 	| 	# 	0  1  0 	245  828    1    1 	1 
+DOCK180=RAC1                     	1 DOCK180 = 1 Rac1 	| 	# 	0  1  0 	86  476    1    1 	1 
+Ca+DAG=PKCalpha                  	1 Ca2+ + 1 DAG = 1 PKCalpha 	| 	# 	0  1  0 	850  515    1    1 	1 
+IP3=Ca                           	1 IP3 = 1 Ca2+ 	| 	# 	0  1  0 	706.5         489.5             1             1 	1 
+PLCg+PIP2=DAG                    	1 PLCgamma1 + 1 PIP2 = 1 DAG 	| 	# 	0  1  0 	690  292    1    1 	1 
+PI3K=ILK                         	1 PI3K = 1 ILK 	| 	# 	0  1  0 	367  447    1    1 	1 
+c-Met/HGF=SHC1                   	1 c-Met/HGF = 1 Shc1 	| 	# 	0  1  0 	339  189    1    1 	1 
+ILK+PDK1=AKT1                    	1 ILK + 1 PDK1 = 1 AKT1 	| 	# 	0  1  0 	405.5         518.5             1             1 	1 
+AKT1=RAC1                        	1 AKT1 = 1 Rac1 	| 	# 	0  1  0 	146  502    1    1 	1 
+c-JUN=                           	1 c-JUN =  	| 	# 	0  1  0 	579.5         897.5             1             1 	1 
+MKK4=JNK                         	1 MKK4 = 1 JNK 	| 	# 	0  1  0 	580.5         776.5             1             1 	1 
+JNK=c-JUN                        	1 JNK = 1 c-JUN 	| 	# 	0  1  0 	577.5         846.5             1             1 	1 
+ELK1=                            	1 Elk1 =  	| 	# 	0  1  0 	496.5         897.5             1             1 	1 
+ATF2=                            	1 ATF2 =  	| 	# 	0  1  0 	422.5         899.5             1             1 	1 
+JNK=ATF2                         	1 JNK = 1 ATF2 	| 	# 	0  1  0 	434.5         847.5             1             1 	1 
+JNK=ELK1                         	1 JNK = 1 Elk1 	| 	# 	0  1  0 	461.5         842.5             1             1 	1 
+RAC1=PAK1                        	1 Rac1 = 1 PAK1 	| 	# 	0  1  0 	523.5         574.5             1             1 	1 
+GAB1=CRK/CRKL                    	1 Gab1 = 1 Crk/CrkL 	| 	# 	0  1  0 	144.5         319.5             1             1 	1 
+AKT1=PAK1                        	1 AKT1 = 1 PAK1 	| 	# 	0  1  0 	579.5         567.5             1             1 	1 
+NFkappaB=                        	1 NFkappaB =  	| 	# 	0  1  0 	901.5         883.5             1             1 	1 
+!IkappaB=NFkappaB                	1 !IkappaBalpha = 1 NFkappaB 	| 	# 	0  1  0 	900.5         837.5             1             1 	1 
+!IKK=IkappaB                     	1 !IKK = 1 IkappaBalpha 	| 	# 	0  1  0 	900.5         761.5             1             1 	1 
+PAK1=IKK                         	1 PAK1 = 1 IKK 	| 	# 	0  1  0 	904.5         626.5             1             1 	1 
+ERK1=ETS                         	1 ERK1/2 = 1 ETS1 	| 	# 	0  1  0 	725.5         845.5             1             1 	1 
+ERK1=c-MYC                       	1 ERK1/2 = 1 c-Myc 	| 	# 	0  1  0 	639.5         845.5             1             1 	1 
+ERK1=ELK1                        	1 ERK1/2 = 1 Elk1 	| 	# 	0  1  0 	515.5         848.5             1             1 	1 
+MEK=ERK1                         	1 MEK = 1 ERK1/2 	| 	# 	0  1  0 	663.5         785.5             1             1 	1 
+RAF1=MEK                         	1 Raf1 = 1 MEK 	| 	# 	0  1  0 	696.5         635.5             1             1 	1 
+RAS=RAF1                         	1 Ras = 1 Raf1 	| 	# 	0  1  0 	699.5         520.5             1             1 	1 
+GAB1=SHP2                        	1 Gab1 = 1 SHP2 	| 	# 	0  1  0 	500  210    1    1 	1 
+PKCalpha=RAF1                    	1 PKCalpha = 1 Raf1 	| 	# 	0  1  0 	723.5         529.5             1             1 	1 
+GRB2=SOS1                        	1 Grb2 = 1 SOS1 	| 	# 	0  1  0 	467  298    1    1 	1 
+PIP3=PDK1                        	1 PIP3 = 1 PDK1 	| 	# 	0  1  0 	498.5         514.5             1             1 	1 
+!SHP2+GAB1=RASGAP                	1 Gab1 + 1 !SHP2 = 1 RasGAP 	| 	# 	0  1  0 	409  271    1    1 	1 
+!RasGAP+SOS1=RAS                 	1 SOS1 + 1 !RasGAP = 1 Ras 	| 	# 	0  1  0 	492  414    1    1 	1 
+!PTEN+PI3K+PIP2=PIP3             	1 PI3K + 1 PIP2 + 1 !PTEN = 1 PIP3 	| 	# 	0  1  0 	338  293    1    1 	1 
+Ca=Calmodulin                    	1 Ca2+ = 1 Calmodulin 	| 	# 	0  1  0 	767.5         722.5             1             1 	1 
+RAC1=STAT3                       	1 Rac1 = 1 STAT3 	| 	# 	0  1  0 	307  850    1    1 	1 
+FAK=PIPKIg661                    	1 FAK = 1 PIPKIgamma661 	| 	# 	0  1  0 	846.5         316.5             1             1 	1 
+PIPKIg661=Talin                  	1 PIPKIgamma661 = 1 Talin 	| 	# 	0  1  0 	1022.5          762.5              1              1 	1 
+Talin=                           	1 Talin =  	| 	# 	0  1  0 	1023.5          820.5              1              1 	1 
+FAK+ERK1=Calpain2                	1 ERK1/2 + 1 FAK = 1 Calpain2 	| 	# 	0  1  0 	1056   717     1     1 	1 
+Calpain2=                        	1 Calpain2 =  	| 	# 	0  1  0 	1130.5          819.5              1              1 	1 
+c-Met/CagA=PLCg                  	1 c-Met/CagA = 1 PLCgamma1 	| 	# 	0  1  0 	600.5         170.5             1             1 	1 
+ETS=                             	1 ETS1 =  	| 	# 	0  1  0 	715.5         886.5             1             1 	1 
+c-MYC=                           	1 c-Myc =  	| 	# 	0  1  0 	672.5         889.5             1             1 	1 
+c-Met+CagA=c/Met/CagA            	1 c-Met + 1 CagA = 1 c-Met/CagA 	| 	# 	0  1  0 	605   72    1    1 	1 
+!RAC1+Calmodulin=IQGAP-1         	1 !Rac1 + 1 Calmodulin = 1 IQGAP-1 	| 	# 	0  1  0 	411  596    1    1 	1 
+PAK1=MKK4                        	1 PAK1 = 1 MKK4 	| 	# 	0  1  0 	581  667    1    1 	1 
+!SHP2=FAK                        	1 !SHP2 = 1 FAK 	| 	# 	0  1  0 	741  279    1    1 	1 
+!IQGAP-1=beta-catenin/E-cadherin 	1 !IQGAP-1 = 1 b-catenin/E-cad 	| 	# 	0  1  0 	421  680    1    1 	1 
+=HGF                             	 = 1 HGF 	| 	# 	0  0  0 	57  19   1   1 	1 
+=H.pylori                        	 = 1 H.pylori 	| 	# 	0  1  0 	803   20    1    1 	1 
+Gab1=PI3K                        	1 Gab1 = 1 PI3K 	| 	# 	0  1  0 	209  218    1    1 	1 
+=c-Met                           	 = 1 c-Met 	| 	1 	0  1  0 	488   28    1    1 	1 
+Shc1=Grb2                        	1 Shc1 = 1 Grb2 	| 	# 	0  1  0 	321  243    1    1 	1 
+=PTEN                            	 = 1 PTEN 	| 	0 	0  2  0 	212  370    1    1 	1 
+=PIP2                            	 = 1 PIP2 	| 	1 	0  1  0 	737  414    1    1 	1 
+b-catenin/e-cad=                 	1 b-catenin/E-cad =  	| 	# 	0  1  0 	422  740    1    1 	1 
