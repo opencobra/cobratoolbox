@@ -1,0 +1,84 @@
+GLPKMEX INSTALLATION INSTRUCTIONS
+**********************************
+
+GLPKMEX is a Matlab MEX Interface for the GLPK library developed by 
+Andrew Makhorin. GLPKMEX is developed by Nicolo' Giorgetti, email 
+giorgetti __ at __ ieee.org.  
+GLPK is currently being mantained by Niels Klitgord, email
+niels __ at __ bu.edu. 
+
+--> Standard installation procedure (suitable for most users):
+
+1) Download and install GLPK vers 4.36 or higher; 
+  ** glpk v4.38 has a bug and glpkmex will not work properly with it, this was corrected in glpk v4.39 **
+
+2) Start Matlab and run makeglpkmex.m. Specify correct path to both GLPK 
+   directory and eventually to the GLPK include and library directories.
+
+3) Test the interface on the examples included (glpktest1.m, glpktest2.m, 
+   glpksparse.m). Everything should works fine.
+
+--> Specific installation procedure for those who use CYGWIN under Win*
+
+Niels's Install Notes (Linux 64bit machine)
+
+1) a)  if you plan on compling glpk with gmp, recomplie gmp with 'CFLAGS+=-fPIC'
+   b)  recomplied glpk-4.36 (or newer) with 'CFLAGS+=-fPIC'
+    This is do deal with a weird issue with ld in 64bit format
+
+2) Directly compiled glpkmex with:
+(default):
+mex -I<path to>/include glpkcc.cpp <path to>/libglpk.a
+
+(with gmp compiled into glpk and large arrays (64bit stuff...)):
+mex -largeArrayDims -I<path to>/include glpkcc.cpp <path to>/libglpk.a <path to>/libgmp.a
+
+**note -largArrayDims is optional, but allows matlab to use large arrays with glpk on 64bit machines**
+
+## this particular pipeline has worked for me on a number of different 64bit linux boxes:
+1) in the linux comandline cd to glpk dir (4.36 or above)
+2) run:
+make clean
+./configure
+make CFLAGS+=-fPIC
+make check
+make  prefix=/usr/local install
+
+###note: update the dir install dir if you want, but be sure to do the same below ###
+
+3) cd glpkmex dir
+4) run ( note for windows change libglpk.a to glpk.lib ):
+mex -largeArrayDims -I/usr/local/include glpkcc.cpp /usr/local/lib/libglpk.a
+
+4) start matlab, add glpkmex dir to path and run glpktest1 and glpktest2 in matlab environment.  if these work you should be good to go.
+
+
+(Mac, worked for Leapard )
+add GLPK lib install directory to your DYLD_LIBRARY_PATH variable
+example: 'export DYLD_LIBRARY_PATH=/usr/local/lib:$DYLD_LIBRARY_PATH' in .bashrc
+continue as above...
+
+Requirements:
+
+A) The last version of cygwin, downloadable from http://www.cygwin.com
+   (or download mingw)
+B) Gnumex: http://gnumex.sourceforge.net/
+
+1) Download GLPK and install it by specifying CFLAGS="-O3 -mno-cygwin" as 
+   argument of make, i.e.: 
+      a) ./configure;
+      b) make CFLAGS="-O3 -mno-cygwin"
+      c) make install
+   This avoid to build a glpk library which needs of cygwin1.dll to run.  
+   
+2) Start Matlab and run gnumex. Make a mexopts.bat with option 'cygwin-mingw' if 
+   you are using cygwin or 'mingw' if you are using mingw.
+
+3) run makeglpkmex.m. Specify correct path to GLPK directory and eventually to 
+   the GLPK include and library directories. Moreover, you have to specify the 
+   location of mexopts.bat file generated at step 2).
+
+4) Test the interface on the examples included (glpktest1.m, glpktest2.m, 
+   glpksparse.m). Everything should works fine.
+  
+

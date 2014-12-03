@@ -1,0 +1,307 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "../style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>MATLAB_SBML_STRUCTURE_FUNCTIONS\TRIGGER</h3>
+
+<p>The functions allow users to create and work with the SBML Trigger structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>Trigger = Trigger_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML Trigger structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>initialValue = Trigger_getInitialValue(SBMLTrigger)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLTrigger, an SBML Trigger structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the initialValue attribute</li>
+</ol>
+
+<hr>
+
+<h4>math = Trigger_getMath(SBMLTrigger)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLTrigger, an SBML Trigger structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the math attribute</li>
+</ol>
+
+<hr>
+
+<h4>metaid = Trigger_getMetaid(SBMLTrigger)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLTrigger, an SBML Trigger structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>persistent = Trigger_getPersistent(SBMLTrigger)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLTrigger, an SBML Trigger structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the persistent attribute</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = Trigger_getSBOTerm(SBMLTrigger)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLTrigger, an SBML Trigger structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>value = Trigger_isSetMath(SBMLTrigger)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLTrigger, an SBML Trigger structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the math attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Trigger_isSetMetaid(SBMLTrigger)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLTrigger, an SBML Trigger structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the metaid attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Trigger_isSetSBOTerm(SBMLTrigger)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLTrigger, an SBML Trigger structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLTrigger = Trigger_setInitialValue(SBMLTrigger, initialValue)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLTrigger, an SBML Trigger structure</li>
+<li>initialValue, an integer (0/1) representing the value of initialValue to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Trigger structure with the new value for the initialValue attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLTrigger = Trigger_setMath(SBMLTrigger, math)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLTrigger, an SBML Trigger structure</li>
+<li>math; string representing the math expression math to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Trigger structure with the new value for the math attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLTrigger = Trigger_setMetaid(SBMLTrigger, metaid)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLTrigger, an SBML Trigger structure</li>
+<li>metaid; a string representing the metaid to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Trigger structure with the new value for the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLTrigger = Trigger_setPersistent(SBMLTrigger, persistent)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLTrigger, an SBML Trigger structure</li>
+<li>persistent, an integer (0/1) representing the value of persistent to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Trigger structure with the new value for the persistent attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLTrigger = Trigger_setSBOTerm(SBMLTrigger, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLTrigger, an SBML Trigger structure</li>
+<li>sboTerm, an integer representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Trigger structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLTrigger = Trigger_unsetMath(SBMLTrigger)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLTrigger, an SBML Trigger structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Trigger structure with the math attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLTrigger = Trigger_unsetMetaid(SBMLTrigger)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLTrigger, an SBML Trigger structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Trigger structure with the metaid attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLTrigger = Trigger_unsetSBOTerm(SBMLTrigger)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLTrigger, an SBML Trigger structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Trigger structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>

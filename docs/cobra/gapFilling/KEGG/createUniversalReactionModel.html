@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of createUniversalReactionModel</title>
+  <meta name="keywords" content="createUniversalReactionModel">
+  <meta name="description" content="createUMatrix creates the U matrix using the universal data from the KEGG">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../../menu.html cobra --><!-- ../menu.html gapFilling --><!-- menu.html KEGG -->
+<h1>createUniversalReactionModel
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>createUMatrix creates the U matrix using the universal data from the KEGG</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function KEGG = createUniversalReactionModel(KEGGFilename, KEGGBlackList) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">createUMatrix creates the U matrix using the universal data from the KEGG
+ database
+ 
+ KEGG = createUMatrix(KEGGFilename)
+ 
+ KEGG              U Matrix
+ KEGGFilename      downloaded from KEGG database (ie. 'reaction.lst')
+
+ 11-10-07 IT</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../cobra/gapFilling/growthExpMatch/addReactionGEM.html" class="code" title="function [newmodel, HTABLE] = addReactionGEM(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,nRxn,subSystems,grRules,rules,genes, HTABLE)">addReactionGEM</a>	addReactionGEM manually adds reactions to a specified model, may add one or more reactions at a time</li><li><a href="../../../cobra/reconstruction/createModel.html" class="code" title="function model = createModel(rxnAbrList,rxnNameList,rxnList,revFlagList,lowerBoundList,upperBoundList,subSystemList,grRuleList,geneNameList,systNameList)">createModel</a>	createModel Create a COBRA model from inputs or an empty model</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../cobra/gapFilling/growthExpMatch/generateSUXMatrix.html" class="code" title="function MatricesSUX =generateSUXMatrix(model,dictionary, KEGGFilename, KEGGBlackList, compartment, addModel)">generateSUXMatrix</a>	generateSUXMatrix creates the matrices for matlab smiley -- > combines S, U</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function KEGG = createUniversalReactionModel(KEGGFilename, KEGGBlackList)</a>
+0002 <span class="comment">%createUMatrix creates the U matrix using the universal data from the KEGG</span>
+0003 <span class="comment">% database</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% KEGG = createUMatrix(KEGGFilename)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% KEGG              U Matrix</span>
+0008 <span class="comment">% KEGGFilename      downloaded from KEGG database (ie. 'reaction.lst')</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% 11-10-07 IT</span>
+0011 <span class="comment">%</span>
+0012 <span class="keyword">if</span> nargin &lt; 2
+0013     KEGGBlackList= {};
+0014 <span class="keyword">end</span>
+0015 <span class="keyword">if</span> nargin &lt; 1
+0016     KEGGFilename=<span class="string">'11-20-08-KEGG-reaction.lst'</span>;
+0017 <span class="keyword">end</span>
+0018 
+0019 KEGGReactionList = importdata(KEGGFilename);
+0020 KEGG = <a href="../../../cobra/reconstruction/createModel.html" class="code" title="function model = createModel(rxnAbrList,rxnNameList,rxnList,revFlagList,lowerBoundList,upperBoundList,subSystemList,grRuleList,geneNameList,systNameList)">createModel</a>;
+0021 cnt=1;
+0022 cnti=1;
+0023 h=waitbar(0,<span class="string">'KEGG reaction list ...'</span>);
+0024 HTABLE = java.util.Hashtable; <span class="comment">% hashes Kegg.mets</span>
+0025 
+0026 <span class="keyword">for</span> i = 1: length(KEGGReactionList)
+0027     clear Rxn rxnFormulas;
+0028     [Rxn, rxnFormulas] = strtok(KEGGReactionList(i),<span class="string">':'</span>);
+0029      <span class="comment">%continue if reaction is not in KEGGBlacklist</span>
+0030      
+0031      <span class="keyword">if</span> isempty(strmatch(Rxn, KEGGBlackList, <span class="string">'exact'</span>))<span class="comment">%length(strmatch(Rxn,KEGGBlackList,'exact'))==0</span>
+0032          
+0033     KEGG.rxns(cnti,1)=Rxn;
+0034 
+0035     <span class="comment">%reformats syntax of reaction</span>
+0036     rxnFormulas= regexprep(rxnFormulas,<span class="string">': '</span>,<span class="string">''</span>);
+0037     rxnFormulas= regexprep(rxnFormulas,<span class="string">'\+ C'</span>,<span class="string">'\+ 1 C'</span>);
+0038     rxnFormulas= regexprep(rxnFormulas,<span class="string">' \+'</span>,<span class="string">'[c] \+'</span>);
+0039     rxnFormulas= regexprep(rxnFormulas,<span class="string">'=&gt; C'</span>,<span class="string">'=&gt; 1 C'</span>);
+0040     rxnFormulas= regexprep(rxnFormulas,<span class="string">' &lt;'</span>,<span class="string">'[c] &lt;'</span>);
+0041     rxnFormulas= regexprep(rxnFormulas,<span class="string">'^(C)'</span>,<span class="string">'1 C'</span>);
+0042     rxnFormulas= regexprep(rxnFormulas,<span class="string">' \[c]'</span>,<span class="string">'[c]'</span>);
+0043 
+0044     rxnFormulas= regexprep(rxnFormulas,<span class="string">'\+ G'</span>,<span class="string">'\+ 1 G'</span>);
+0045     rxnFormulas= regexprep(rxnFormulas,<span class="string">'=&gt; G'</span>,<span class="string">'=&gt; 1 G'</span>);
+0046     rxnFormulas= regexprep(rxnFormulas,<span class="string">'^(G)'</span>,<span class="string">'1 G'</span>);
+0047     rxnFormulas= regexprep(rxnFormulas,<span class="string">'^(n) '</span>,<span class="string">'2 '</span>);
+0048     rxnFormulas= regexprep(rxnFormulas,<span class="string">'\+ n '</span>,<span class="string">'\+ 2 '</span>);
+0049     rxnFormulas= regexprep(rxnFormulas,<span class="string">'\&gt; n '</span>,<span class="string">'\&gt; 2 '</span>);
+0050     rxnFormulas= regexprep(rxnFormulas,<span class="string">'\ n-1 '</span>,<span class="string">'\ 1 '</span>);
+0051     rxnFormulas= regexprep(rxnFormulas,<span class="string">'^(n-1) '</span>,<span class="string">'1 '</span>);
+0052     rxnFormulas= regexprep(rxnFormulas,<span class="string">'\+ 2n '</span>,<span class="string">'\+ 2 '</span>);
+0053     rxnFormulas= regexprep(rxnFormulas,<span class="string">'\+ 4n '</span>,<span class="string">'\+ 4 '</span>);
+0054     rxnFormulas= regexprep(rxnFormulas,<span class="string">'\+ (n+1) '</span>,<span class="string">'\+ 3 '</span>);
+0055     rxnFormulas= regexprep(rxnFormulas,<span class="string">'\=&gt; (n+1) '</span>,<span class="string">'\=&gt; 3 '</span>);
+0056     rxnFormulas= regexprep(rxnFormulas,<span class="string">' 3C'</span>,<span class="string">' 3 C'</span>);
+0057     rxnFormulas= regexprep(rxnFormulas,<span class="string">' 2C'</span>,<span class="string">' 2 C'</span>);
+0058     rxnFormulas= regexprep(rxnFormulas,<span class="string">' 4C'</span>,<span class="string">' 4 C'</span>);
+0059 
+0060     rxnFormulas = strcat(rxnFormulas,<span class="string">'[c]'</span>);
+0061     rxnFormulas= regexprep(rxnFormulas,<span class="string">'&lt;=&gt;'</span>,<span class="string">'&lt;==&gt;'</span>);
+0062     rxnFormulas= regexprep(rxnFormulas,<span class="string">'\=&gt;&gt;'</span>,<span class="string">'=&gt;'</span>);
+0063     
+0064     KEGG.rxnFormulas(cnti,1)=rxnFormulas;
+0065     cnti=cnti+1;
+0066     <span class="comment">%compounds is a list of each of metabolites involved in the</span>
+0067     <span class="comment">%reaction that has a KEGGID starting with 'C'. b1 and c1 are just</span>
+0068     <span class="comment">%so that the output has the correct number of variable</span>
+0069     [compounds, b1, c1] = regexp(char(rxnFormulas),<span class="string">'C\w+\[c]'</span>,<span class="string">'match'</span>,<span class="string">'start'</span>,<span class="string">'end'</span>);
+0070     <span class="keyword">for</span> j=1:length(compounds)
+0071         <span class="keyword">if</span> (~isempty(compounds(j)))
+0072             <span class="comment">%condition1 = length(strmatch(compounds(j),KEGG.mets))==0</span>
+0073             condition2 = isempty(HTABLE.get(compounds{j}));
+0074             <span class="comment">%if condition1 ~= condition2, pause; end</span>
+0075             <span class="keyword">if</span> (condition2)
+0076                 HTABLE.put(compounds{j}, cnt);
+0077                 KEGG.mets(cnt,1)=compounds(j);
+0078                 cnt=cnt+1;
+0079             <span class="keyword">end</span>
+0080         <span class="keyword">end</span>
+0081     <span class="keyword">end</span>
+0082     clear  compounds
+0083 
+0084     <span class="comment">%compounds is a list of each of metabolites involved in the</span>
+0085     <span class="comment">%reaction that has a KEGGID starting with 'G'</span>
+0086     [compounds, b1, c1] = regexp(char(rxnFormulas),<span class="string">'G\w+\[c]'</span>,<span class="string">'match'</span>,<span class="string">'start'</span>,<span class="string">'end'</span>);
+0087     <span class="keyword">for</span> j=1:length(compounds)
+0088         <span class="keyword">if</span> (~isempty(compounds(j)))
+0089             <span class="comment">%condition1 = length(strmatch(compounds(j),KEGG.mets))==0</span>
+0090             condition2 = isempty(HTABLE.get(compounds{j}));
+0091             <span class="comment">%if condition1 ~= condition2, pause; end</span>
+0092             <span class="keyword">if</span> (condition2)
+0093                 HTABLE.put(compounds{j}, cnt);
+0094                 KEGG.mets(cnt,1)=compounds(j);
+0095                 cnt=cnt+1;
+0096             <span class="keyword">end</span>
+0097         <span class="keyword">end</span>
+0098     <span class="keyword">end</span>
+0099         
+0100      <span class="keyword">end</span>
+0101     <span class="keyword">if</span> (mod(i,40) ==0), waitbar(i/length(KEGGReactionList),h), <span class="keyword">end</span>
+0102 <span class="keyword">end</span>
+0103 close(h);
+0104 KEGG.S=spalloc(length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets) );
+0105 
+0106 [KEGG] = <a href="../../../cobra/gapFilling/growthExpMatch/addReactionGEM.html" class="code" title="function [newmodel, HTABLE] = addReactionGEM(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,nRxn,subSystems,grRules,rules,genes, HTABLE)">addReactionGEM</a>(KEGG,KEGG.rxns,KEGG.rxns,KEGG.rxnFormulas,ones(length(KEGG.rxns),1),-10000*ones(length(KEGG.rxns),1),10000*ones(length(KEGG.rxns),1),1);
+0107 a=length(KEGG.mets);
+0108 KEGG.S(a+1:<span class="keyword">end</span>,:)=[];</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

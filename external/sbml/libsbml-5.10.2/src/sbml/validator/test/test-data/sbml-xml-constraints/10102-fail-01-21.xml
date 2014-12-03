@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fail: (1603) A SpecieReference may not contain both a 'stoichiometry'
+attribute and a 'stoichiometryMath' subelement.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="1">
+	<model>
+		<listOfCompartments>
+			<compartment name="c"/>
+		</listOfCompartments>
+		<listOfSpecies>
+			<specie name="s" compartment="c" initialAmount="0"/>
+		</listOfSpecies>
+		<listOfReactions>
+			<reaction name="r">
+				<listOfReactants>
+					<specieReference specie="s" stoichiometry="2">
+						<stoichiometryMath>
+							<math xmlns="http://www.w3.org/1998/Math/MathML">
+								<ci> c </ci>
+							</math>
+						</stoichiometryMath>
+					</specieReference>
+				</listOfReactants>
+			</reaction>
+		</listOfReactions>
+	</model>
+</sbml>

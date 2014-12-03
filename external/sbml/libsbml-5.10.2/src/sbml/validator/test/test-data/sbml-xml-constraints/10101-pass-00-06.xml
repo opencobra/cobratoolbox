@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Test for use of "utf-8" in lower case -->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+    <model/>
+</sbml>

@@ -1,0 +1,310 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of geometricFBA</title>
+  <meta name="keywords" content="geometricFBA">
+  <meta name="description" content="geometricFBA finds a unique optimal FBA solution that is (in some sense)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html cobra -->
+<h1>geometricFBA
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>geometricFBA finds a unique optimal FBA solution that is (in some sense)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function flux = geometricFBA(model,varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">geometricFBA finds a unique optimal FBA solution that is (in some sense)
+central to the range of possible fluxes; as described in
+   K Smallbone, E Simeonidis (2009). Flux balance analysis: 
+   A geometric perspective. J Theor Biol 258: 311-315
+   http://dx.doi.org/10.1016/j.jtbi.2009.01.027
+
+ flux = geometricFBA(model)
+
+INPUT
+ model         COBRA model structure
+
+OPTIONAL INPUTS
+ Optional parameters can be entered as parameter name followed by
+ parameter value: i.e. ...,'epsilon',1e-9)
+ printLevel    [default: 1]  printing level
+               = 0     silent
+               = 1     show algorithm progress and times
+ epsilon       [default: 1e-6]    convergence tolerance of algorithm, 
+               defined in more detail in paper above
+ flexRel       [default: 0] flexibility to flux bounds
+               try e.g. 1e-3 if the algorithm has convergence problems
+
+OUTPUT
+ flux          unique centered flux
+
+kieran smallbone, 5 May 2010
+
+ This script is made available under the Creative Commons
+ Attribution-Share Alike 3.0 Unported Licence (see
+ www.creativecommons.org).</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>	optimizeCbModel Solve a flux balance analysis problem</li><li><a href="../cobra/solvers/solveCobraLP.html" class="code" title="function solution = solveCobraLP(LPproblem, varargin)">solveCobraLP</a>	solveCobraLP Solve constraint-based LP problems</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function [v,fOpt,conv] = easyLP(c,A,b,lb,ub)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function flux = geometricFBA(model,varargin)</a>
+0002 <span class="comment">%geometricFBA finds a unique optimal FBA solution that is (in some sense)</span>
+0003 <span class="comment">%central to the range of possible fluxes; as described in</span>
+0004 <span class="comment">%   K Smallbone, E Simeonidis (2009). Flux balance analysis:</span>
+0005 <span class="comment">%   A geometric perspective. J Theor Biol 258: 311-315</span>
+0006 <span class="comment">%   http://dx.doi.org/10.1016/j.jtbi.2009.01.027</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% flux = geometricFBA(model)</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">%INPUT</span>
+0011 <span class="comment">% model         COBRA model structure</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%OPTIONAL INPUTS</span>
+0014 <span class="comment">% Optional parameters can be entered as parameter name followed by</span>
+0015 <span class="comment">% parameter value: i.e. ...,'epsilon',1e-9)</span>
+0016 <span class="comment">% printLevel    [default: 1]  printing level</span>
+0017 <span class="comment">%               = 0     silent</span>
+0018 <span class="comment">%               = 1     show algorithm progress and times</span>
+0019 <span class="comment">% epsilon       [default: 1e-6]    convergence tolerance of algorithm,</span>
+0020 <span class="comment">%               defined in more detail in paper above</span>
+0021 <span class="comment">% flexRel       [default: 0] flexibility to flux bounds</span>
+0022 <span class="comment">%               try e.g. 1e-3 if the algorithm has convergence problems</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">%OUTPUT</span>
+0025 <span class="comment">% flux          unique centered flux</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">%kieran smallbone, 5 May 2010</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">% This script is made available under the Creative Commons</span>
+0030 <span class="comment">% Attribution-Share Alike 3.0 Unported Licence (see</span>
+0031 <span class="comment">% www.creativecommons.org).</span>
+0032 
+0033 param = struct(<span class="string">'epsilon'</span>,1e-6,<span class="string">'flexRel'</span>,0,<span class="string">'printLevel'</span>,1);
+0034 field = fieldnames(param);
+0035 <span class="keyword">if</span> mod(nargin,2) ~= 1 <span class="comment">% require odd number of inputs</span>
+0036     error(<span class="string">'incorrect number of input parameters'</span>)
+0037 <span class="keyword">else</span>
+0038     <span class="keyword">for</span> k = 1:2:(nargin-1)
+0039         param.(field{strcmp(varargin{k},field)}) = varargin{k+1};
+0040     <span class="keyword">end</span>
+0041 <span class="keyword">end</span>
+0042 param.flexTol = param.flexRel * param.epsilon; <span class="comment">% absolute flexibility</span>
+0043 
+0044 <span class="comment">% determine optimum</span>
+0045 FBAsolution = <a href="optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(model);
+0046 ind = find(model.c);
+0047 <span class="keyword">if</span> length(ind) == 1
+0048     model.lb(ind) = FBAsolution.f;
+0049 <span class="keyword">end</span>
+0050 
+0051 A = model.S;
+0052 b = model.b;
+0053 L = model.lb;
+0054 U = model.ub;
+0055 
+0056 <span class="comment">% ensure column vectors</span>
+0057 b = b(:); L = L(:); U = U(:);
+0058 
+0059 <span class="comment">% Remove negligible elements</span>
+0060 J = any(A,2); A = A(J,:); b = b(J);
+0061 
+0062 <span class="comment">% presolve</span>
+0063 v = nan(size(L));
+0064 J = (U-L &lt; param.epsilon);
+0065 v(J) = (L(J)+U(J))/2;
+0066 J = find(isnan(v));
+0067 
+0068 <span class="keyword">if</span> param.printLevel
+0069     fprintf(<span class="string">'%s\t%g\n\n%s\t@%s\n'</span>,<span class="string">'# reactions:'</span>,length(v),<span class="string">'iteration #0'</span>,datestr(now,16)); 
+0070 <span class="keyword">end</span>
+0071 
+0072 L0 = L; U0 = U;
+0073 <span class="keyword">for</span> k = J(:)'
+0074     f = zeros(length(v),1); f(k) = -1;
+0075     [dummy,opt,conv] = <a href="#_sub1" class="code" title="subfunction [v,fOpt,conv] = easyLP(c,A,b,lb,ub)">easyLP</a>(f,A,b,L0,U0);
+0076     <span class="keyword">if</span> conv
+0077         vL = max(-opt,L(k));
+0078     <span class="keyword">else</span>
+0079         vL = L(k);
+0080     <span class="keyword">end</span>
+0081     [dummy,opt,conv] = <a href="#_sub1" class="code" title="subfunction [v,fOpt,conv] = easyLP(c,A,b,lb,ub)">easyLP</a>(-f,A,b,L0,U0);
+0082     <span class="keyword">if</span> conv
+0083         vU = min(opt,U(k));
+0084     <span class="keyword">else</span> vU = U(k);
+0085     <span class="keyword">end</span>
+0086     <span class="keyword">if</span> abs(vL) &lt; param.epsilon
+0087         vL = 0;
+0088     <span class="keyword">end</span>
+0089     <span class="keyword">if</span> abs(vU) &lt; param.epsilon
+0090         vU = 0;
+0091     <span class="keyword">end</span>
+0092     vM = (vL + vU)/2;
+0093     <span class="keyword">if</span> abs(vM) &lt; param.epsilon
+0094         vM = 0;
+0095     <span class="keyword">end</span>
+0096     <span class="keyword">if</span> abs(vU - vL) &lt; param.epsilon
+0097         vL = (1-sign(vM)* param.flexTol)*vM; 
+0098         vU = (1+sign(vM)* param.flexTol)*vM; 
+0099     <span class="keyword">end</span>
+0100     L(k) = vL; U(k) = vU;
+0101 <span class="keyword">end</span>
+0102 
+0103 v = nan(size(L)); 
+0104 J = (U-L &lt; param.epsilon);
+0105 v(J) = (L(J)+U(J))/2; v = v.*(abs(v) &gt; param.epsilon);
+0106 
+0107 <span class="keyword">if</span> param.printLevel
+0108     fprintf(<span class="string">'%s\t\t%g\n%s\t\t%g\n\n'</span>,<span class="string">'fixed:'</span>,sum(J),<span class="string">'@ zero:'</span>,sum(v==0));
+0109 <span class="keyword">end</span>
+0110 
+0111 <span class="comment">% iterate</span>
+0112 J  = find(U-L &gt;= param.epsilon); 
+0113 n   = 1;
+0114 mu  = [];
+0115 Z   = [];
+0116 
+0117 <span class="keyword">while</span> ~isempty(J)
+0118     
+0119     <span class="keyword">if</span> param.printLevel
+0120         fprintf(<span class="string">'%s #%g\t@%s\n'</span>,<span class="string">'iteration'</span>,n,datestr(now,16)); 
+0121     <span class="keyword">end</span>
+0122     
+0123     <span class="keyword">if</span> n == 1
+0124         M = zeros(size(L));
+0125     <span class="keyword">else</span>
+0126         M = (L+U)/2;
+0127     <span class="keyword">end</span>
+0128     
+0129     mu(:,n) = M;                                                <span class="comment">%#ok&lt;AGROW&gt;</span>
+0130     allL = L; allU = U; allA = A; allB = b;    
+0131     [a1,a2] = size(A);
+0132     
+0133     <span class="comment">% build new matrices</span>
+0134     <span class="keyword">for</span> k = 1:(n-1)
+0135         [b1,b2] = size(allA);
+0136         f = sparse(b2+2*a2,1); f((b2+1):end) = -1;
+0137         opt = -Z(k);
+0138         allA = [allA,sparse(b1,2*a2);
+0139             speye(a2,a2),sparse(a2,b2-a2),-speye(a2),speye(a2);
+0140             f(:)'];                                             <span class="comment">%#ok&lt;AGROW&gt;</span>
+0141         allB = [allB;mu(:,k);opt];                              <span class="comment">%#ok&lt;AGROW&gt;</span>
+0142         allL = [allL;zeros(2*a2,1)];                            <span class="comment">%#ok&lt;AGROW&gt;</span>
+0143         allU = [allU;inf*ones(2*a2,1)];                         <span class="comment">%#ok&lt;AGROW&gt;</span>
+0144     <span class="keyword">end</span>
+0145     
+0146     [b1,b2] = size(allA);
+0147     f = zeros(b2+2*a2,1); f((b2+1):end) = -1;
+0148     allA = [allA,sparse(b1,2*a2);
+0149         speye(a2,a2),sparse(a2,b2-a2),-speye(a2),speye(a2)];    <span class="comment">%#ok&lt;AGROW&gt;</span>
+0150     allB = [allB;M];                                            <span class="comment">%#ok&lt;AGROW&gt;</span>
+0151     allL = [allL;zeros(2*a2,1)];                                <span class="comment">%#ok&lt;AGROW&gt;</span>
+0152     allU = [allU;inf*ones(2*a2,1)];                             <span class="comment">%#ok&lt;AGROW&gt;</span>
+0153     
+0154     [v,opt,conv] = <a href="#_sub1" class="code" title="subfunction [v,fOpt,conv] = easyLP(c,A,b,lb,ub)">easyLP</a>(f,allA,allB,allL,allU);
+0155     <span class="keyword">if</span> ~conv, disp(<span class="string">'error: no convergence'</span>); flux = (L+U)/2; <span class="keyword">return</span>; <span class="keyword">end</span>    
+0156     
+0157     opt = ceil(-opt/eps)*eps;
+0158     Z(n) = opt;                                                 <span class="comment">%#ok&lt;AGROW&gt;</span>
+0159     allA = [allA; sparse(f(:)')];                               <span class="comment">%#ok&lt;AGROW&gt;</span>
+0160     allB = [allB; -opt];                                        <span class="comment">%#ok&lt;AGROW&gt;</span>
+0161     
+0162     <span class="keyword">for</span> k = J(:)'        
+0163         f = zeros(length(allL),1); f(k) = -1;
+0164         [dummy,opt,conv] = <a href="#_sub1" class="code" title="subfunction [v,fOpt,conv] = easyLP(c,A,b,lb,ub)">easyLP</a>(f,allA,allB,allL,allU);
+0165         <span class="keyword">if</span> conv
+0166             vL = max(-opt,L(k));
+0167         <span class="keyword">else</span>
+0168             vL = L(k); 
+0169         <span class="keyword">end</span>
+0170         [dummy,opt,conv] = <a href="#_sub1" class="code" title="subfunction [v,fOpt,conv] = easyLP(c,A,b,lb,ub)">easyLP</a>(-f,allA,allB,allL,allU);
+0171         <span class="keyword">if</span> conv
+0172             vU = min(opt,U(k));
+0173         <span class="keyword">else</span>
+0174             vU = U(k);
+0175         <span class="keyword">end</span>
+0176         <span class="keyword">if</span> abs(vL) &lt; param.epsilon
+0177             vL = 0;
+0178         <span class="keyword">end</span>
+0179         <span class="keyword">if</span> abs(vU) &lt; param.epsilon
+0180             vU = 0;
+0181         <span class="keyword">end</span>
+0182         vM = (vL + vU)/2;
+0183         <span class="keyword">if</span> abs(vM) &lt; param.epsilon
+0184             vM = 0;
+0185         <span class="keyword">end</span>
+0186         <span class="keyword">if</span> abs(vU - vL) &lt; param.epsilon
+0187             vL = (1-sign(vM)* param.flexTol)*vM; 
+0188             vU = (1+sign(vM)* param.flexTol)*vM; 
+0189         <span class="keyword">end</span>
+0190         L(k) = vL; 
+0191         U(k) = vU;
+0192     <span class="keyword">end</span>
+0193     
+0194     v = nan(size(L)); 
+0195     J = (U-L &lt; param.epsilon);
+0196     v(J) = (L(J)+U(J))/2; v = v.*(abs(v) &gt; param.epsilon);
+0197 
+0198     <span class="keyword">if</span> param.printLevel
+0199         fprintf(<span class="string">'%s\t\t%g\n%s\t\t%g\n\n'</span>,<span class="string">'fixed:'</span>,sum(J),<span class="string">'@ zero:'</span>,sum(v==0));
+0200     <span class="keyword">end</span>
+0201     
+0202     n = n+1;
+0203     J = find(U-L &gt;= param.epsilon);   
+0204     
+0205     flux = v;
+0206 <span class="keyword">end</span>
+0207 
+0208 <a name="_sub1" href="#_subfunctions" class="code">function [v,fOpt,conv] = easyLP(c,A,b,lb,ub)</a>
+0209 <span class="comment">%easyLP</span>
+0210 <span class="comment">%</span>
+0211 <span class="comment">% solves the linear programming problem:</span>
+0212 <span class="comment">%   max c'x subject to</span>
+0213 <span class="comment">%   A x = b</span>
+0214 <span class="comment">%   lb &lt;= x &lt;= ub.</span>
+0215 <span class="comment">%</span>
+0216 <span class="comment">% Usage: [v,fOpt,conv] = easyLP(c,A,b,lb,ub)</span>
+0217 <span class="comment">%</span>
+0218 <span class="comment">%   c           objective coefficient vector</span>
+0219 <span class="comment">%   A           LHS matrix</span>
+0220 <span class="comment">%   b           RHS vector</span>
+0221 <span class="comment">%   lb         lower bound</span>
+0222 <span class="comment">%   ub         upper bound</span>
+0223 <span class="comment">%</span>
+0224 <span class="comment">%   v           solution vector</span>
+0225 <span class="comment">%   fOpt        objective value</span>
+0226 <span class="comment">%   conv        convergence of algorithm [0/1]</span>
+0227 <span class="comment">%</span>
+0228 <span class="comment">% the function is a wrapper for the &quot;solveCobraLP&quot; script.</span>
+0229 <span class="comment">%</span>
+0230 <span class="comment">%kieran smallbone, 5 may 2010</span>
+0231 
+0232 csense(1:length(b)) = <span class="string">'E'</span>;
+0233 model = struct(<span class="string">'A'</span>,A,<span class="string">'b'</span>,b,<span class="string">'c'</span>,full(c),<span class="string">'lb'</span>,lb,<span class="string">'ub'</span>,ub,<span class="string">'osense'</span>,-1,<span class="string">'csense'</span>,csense);
+0234 solution = <a href="../cobra/solvers/solveCobraLP.html" class="code" title="function solution = solveCobraLP(LPproblem, varargin)">solveCobraLP</a>(model);
+0235 v = solution.full;
+0236 fOpt = solution.obj;
+0237 conv = solution.stat == 1;</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

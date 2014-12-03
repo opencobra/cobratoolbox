@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+    <model id="ODEExampleModel">
+        <listOfCompartments>
+            <compartment id="V0" size="10"/>
+            <compartment id="V1" size="1" constant="false"/>
+        </listOfCompartments>
+        <listOfSpecies>
+            <species id="X0" initialConcentration="0" compartment="V0"
+                boundaryCondition="true" />
+            <species id="S1" initialConcentration="0" compartment="V0"/>
+            <species id="S2" initialConcentration="0" compartment="V0"/>
+            <species id="S3" initialConcentration="0" compartment="V1"/>
+            <species id="X4" initialConcentration="0" compartment="V1"
+                boundaryCondition="true" constant="true"/>
+        </listOfSpecies>
+        <listOfParameters>
+            <parameter id="K0" value="0.1"/>
+            <parameter id="K1" value="0.5"/>
+            <parameter id="K2" value="0.1"/>
+            <parameter id="K3" value="0.5"/>
+            <parameter id="Kv" value="0.5"/>
+            <parameter id="Kin" value="0.1"/>
+        </listOfParameters>
+        <listOfRules>
+            <rateRule variable="X0">
+                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                  <ci> Kin </ci>
+                </math>
+            </rateRule>
+            <rateRule variable="V1">
+                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                  <ci> Kv </ci>
+                </math>
+            </rateRule>
+        </listOfRules>
+        <listOfReactions>
+            <reaction id="reaction_1" reversible="false">
+                <listOfReactants>
+                    <speciesReference species="X0"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="S1"/>
+                </listOfProducts>
+                <kineticLaw>
+                    <math xmlns="http://www.w3.org/1998/Math/MathML">
+                        <apply>
+                            <times/>
+                            <ci> K0 </ci>
+                            <ci> X0 </ci>
+                         </apply>
+                    </math>
+                </kineticLaw>
+            </reaction>
+            <reaction id="reaction_2" reversible="false">
+                <listOfReactants>
+                    <speciesReference species="S1"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="S2"/>
+                </listOfProducts>
+                <kineticLaw>
+                    <math xmlns="http://www.w3.org/1998/Math/MathML">
+                        <apply>
+                            <times/>
+                            <ci> K1 </ci>
+                            <ci> S1 </ci>
+                         </apply>
+                    </math>
+                </kineticLaw>
+            </reaction>
+            <reaction id="reaction_3" reversible="false">
+                <listOfReactants>
+                    <speciesReference species="S2"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="S3"/>
+                </listOfProducts>
+                <kineticLaw>
+                    <math xmlns="http://www.w3.org/1998/Math/MathML">
+                        <apply>
+                            <times/>
+                            <ci> K2 </ci>
+                            <ci> S2 </ci>
+                         </apply>
+                    </math>
+                </kineticLaw>
+            </reaction>
+            <reaction id="reaction_4" reversible="false">
+                <listOfReactants>
+                    <speciesReference species="S3"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="X4"/>
+                </listOfProducts>
+                <kineticLaw>
+                    <math xmlns="http://www.w3.org/1998/Math/MathML">
+                        <apply>
+                            <times/>
+                            <ci> K3 </ci>
+                            <ci> S3 </ci>
+                         </apply>
+                    </math>
+                </kineticLaw>
+            </reaction>
+        </listOfReactions>
+    </model>
+</sbml>

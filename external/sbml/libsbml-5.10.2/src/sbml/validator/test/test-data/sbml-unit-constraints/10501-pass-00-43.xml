@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+    <listOfUnitDefinitions>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <unitDefinition id="mol5" name="mol">
+        <listOfUnits>
+          <unit kind="mole" exponent="5" scale="0" multiplier="0.0630957"/>
+        </listOfUnits>
+        </unitDefinition>
+      <unitDefinition id="mol4" name="mol">
+        <listOfUnits>
+          <unit kind="mole" exponent="4" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="l_2" name="L">
+        <listOfUnits>
+          <unit kind="litre" exponent="-2" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="l_2m" name="L">
+        <listOfUnits>
+          <unit kind="litre" exponent="-2" scale="0" multiplier="0.001"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    
+    
+    <listOfParameters>
+       <parameter id="m5" value="3.51" units="mol5" constant="false"/>
+      <parameter id="m4" value="3.51" units="mol4" constant="false"/>
+      <parameter id="l2" value="3.51" units="l_2" constant="false"/>
+      <parameter id="l2m" value="3.51" units="l_2m" constant="false"/>
+      <parameter id="m" value="3.51" units="mole" constant="false"/>
+      <parameter id="m2" value="3.51" units="mole" constant="false"/>
+    </listOfParameters>
+    <listOfInitialAssignments>
+      <initialAssignment symbol="m">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <plus/>
+<!--            <ci> m2 </ci>
+-->            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> m5 </ci>
+                <ci> l2m </ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci> m4 </ci>
+                <ci> l2</ci>
+              </apply>
+            </apply>    
+            <ci> m2 </ci>
+          </apply>             
+        </math>
+        
+      </initialAssignment>
+      
+    </listOfInitialAssignments>
+    
+  </model>
+</sbml>

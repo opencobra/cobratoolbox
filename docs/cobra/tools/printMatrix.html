@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of printMatrix</title>
+  <meta name="keywords" content="printMatrix">
+  <meta name="description" content="printMatrix Prints matrix into a file or screen">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html tools -->
+<h1>printMatrix
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>printMatrix Prints matrix into a file or screen</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function printMatrix(A,format,file) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">printMatrix Prints matrix into a file or screen
+
+ printMatrix(A,format,file)
+
+ A         Matrix
+ format    Format string (opt,default '%6.4f\t')
+ file      File name (opt)
+
+ Markus Herrgard</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function printMatrix(A,format,file)</a>
+0002 <span class="comment">%printMatrix Prints matrix into a file or screen</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% printMatrix(A,format,file)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% A         Matrix</span>
+0007 <span class="comment">% format    Format string (opt,default '%6.4f\t')</span>
+0008 <span class="comment">% file      File name (opt)</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% Markus Herrgard</span>
+0011 
+0012 <span class="keyword">if</span> (nargin &lt; 2)
+0013     format = <span class="string">'%6.4f\t'</span>;
+0014 <span class="keyword">end</span>
+0015 <span class="keyword">if</span> (nargin &lt; 3)
+0016     fid = 1;
+0017 <span class="keyword">else</span>
+0018     fid = fopen(file,<span class="string">'w'</span>);
+0019 <span class="keyword">end</span>
+0020 
+0021 [n,m] = size(A);
+0022 
+0023 <span class="keyword">for</span> i = 1:n
+0024     <span class="keyword">for</span> j = 1:m
+0025         <span class="keyword">if</span> (~iscell(A))
+0026             fprintf(fid,format,A(i,j));
+0027         <span class="keyword">else</span>
+0028             fprintf(fid,format,A{i,j});
+0029         <span class="keyword">end</span>
+0030     <span class="keyword">end</span>
+0031     fprintf(fid,<span class="string">'\n'</span>);
+0032 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

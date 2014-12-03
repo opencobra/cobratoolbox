@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model extentUnits="item" lengthUnits="metre" volumeUnits="litre" timeUnits="second"
+         substanceUnits="mole" areaUnits="area" id="s" name="hh" metaid="gg" sboTerm="SBO:0000001"
+         conversionFactor="p"
+         species="s">
+    <listOfUnitDefinitions>
+      <unitDefinition id="area">
+        <listOfUnits>
+          <unit kind="metre" exponent="2" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfParameters>
+      <parameter id="p" constant="true" units="mole"/>
+    </listOfParameters>
+  </model>
+</sbml>

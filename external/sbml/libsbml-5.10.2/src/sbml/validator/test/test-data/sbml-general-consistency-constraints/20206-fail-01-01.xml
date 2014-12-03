@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+		<listOfFunctionDefinitions>
+			<functionDefinition id="pow3">
+				<math xmlns="http://www.w3.org/1998/Math/MathML">
+					<lambda>
+						<bvar><ci> x </ci></bvar>
+						<bvar><ci> y</ci></bvar>
+						<apply>
+							<power/>
+							<ci> x </ci>
+							<ci> y </ci>
+						</apply>
+					</lambda>
+				</math>
+			</functionDefinition>
+                  <assignmentRule/>
+		</listOfFunctionDefinitions>
+    <listOfCompartments>
+      <compartment id="c" spatialDimensions="1" units="dimensionless" constant="true"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="c" substanceUnits="substance" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+    </listOfSpecies>
+
+  </model>
+</sbml>

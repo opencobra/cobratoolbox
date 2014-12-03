@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core"  level="3" version="1" >
+  <model id="m1"  >
+    <listOfFunctionDefinitions>      
+      <functionDefinition metaid="COPASI221" id="FUN" name="Function for FlowPVNULL_gal">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar>
+              <ci> a </ci>
+            </bvar>
+            <bvar>
+              <ci> b </ci>
+            </bvar>
+            <bvar>
+              <ci> c </ci>
+            </bvar>
+            <bvar>
+              <ci> d </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> d </ci>
+                <ci> c </ci>
+                <ci> a </ci>
+              </apply>
+              <ci> b </ci>
+            </apply>
+          </lambda>
+        </math>
+      </functionDefinition>      
+      <functionDefinition id="PW">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar>
+              <ci> a </ci>
+            </bvar>
+            <bvar>
+              <ci> b </ci>
+            </bvar>
+            <bvar>
+              <ci> c </ci>
+            </bvar>
+            <bvar>
+              <ci> d </ci>
+            </bvar>
+            <piecewise>
+              <piece>
+                <ci> c </ci>
+                <apply>
+                  <gt/>
+                  <ci> a </ci>
+                  <ci> b </ci>
+                </apply>
+              </piece>
+              <otherwise>
+                <ci> d </ci>
+              </otherwise>
+            </piecewise>
+           </lambda>
+        </math>
+      </functionDefinition>    
+    </listOfFunctionDefinitions>
+    <listOfCompartments>
+      <compartment id="C" name="C" spatialDimensions="3" size="3.04106168867492e-14" units="litre" constant="true"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species  id="A" compartment="C" initialAmount="3.6492740264099e-18" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>      
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="pA" value="0.0005" constant="true"/>
+      <parameter id="pB" value="0.0005" constant="true"/>
+      <parameter id="pC" value="0.0005" constant="true"/>
+      <parameter id="pD" value="0.0005" constant="true"/>      
+      <parameter id="p1" value="0.0005" constant="false"/>      
+    </listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="p1">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <ci> PW </ci>
+            <cn> 1 </cn>
+            <cn> 2 </cn>
+            <cn> 3 </cn>
+            <cn> 4 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+    </listOfRules>
+    <listOfReactions>
+      
+      <reaction id="R1" name="R1" reversible="true" fast="false">
+        <listOfReactants>
+          <speciesReference species="A" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> pA </ci>
+              <apply>
+                <ci> FUN </ci>
+                <ci> pB </ci>
+                <ci> pA </ci>
+                <apply>
+                  <divide/>
+                  <ci> pC </ci>
+                  <ci> pA </ci>
+                </apply>
+                <ci> pD </ci>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      
+    </listOfReactions>
+  </model>
+</sbml>

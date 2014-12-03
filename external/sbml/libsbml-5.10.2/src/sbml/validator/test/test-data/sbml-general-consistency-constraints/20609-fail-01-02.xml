@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Pass: (1409) initialConcentration and initialAmount are mutually exclusive. -->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+	<model>
+		<listOfCompartments>
+			<compartment id="c"/>
+		</listOfCompartments>
+		<listOfSpecies>
+			<species id="s" compartment="c" initialAmount="32" initialConcentration="24"/>
+		</listOfSpecies>
+	</model>
+</sbml>

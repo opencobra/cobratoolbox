@@ -1,0 +1,166 @@
+<h3>MATLAB<em>SBML</em>STRUCTURE_FUNCTIONS\RULE</h3>
+
+<p>The functions allow users to create and work with the SBML Rule structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>Rule = Rule_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML Rule structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>formula = Rule_getFormula(SBMLRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRule, an SBML Rule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the formula attribute</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = Rule_getSBOTerm(SBMLRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRule, an SBML Rule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>value = Rule_isSetFormula(SBMLRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRule, an SBML Rule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the formula attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Rule_isSetSBOTerm(SBMLRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRule, an SBML Rule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLRule = Rule_setFormula(SBMLRule, formula)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRule, an SBML Rule structure</li>
+<li>formula; a string representing the formula to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Rule structure with the new value for the formula attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLRule = Rule_setSBOTerm(SBMLRule, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRule, an SBML Rule structure</li>
+<li>sboTerm, an integer representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Rule structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLRule = Rule_unsetFormula(SBMLRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRule, an SBML Rule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Rule structure with the formula attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLRule = Rule_unsetSBOTerm(SBMLRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLRule, an SBML Rule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Rule structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>

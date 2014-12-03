@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of setConstraintsIrrevModel</title>
+  <meta name="keywords" content="setConstraintsIrrevModel">
+  <meta name="description" content="setConstraintsIrrevModel Set constraints for a subset of rxns while">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html design -->
+<h1>setConstraintsIrrevModel
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>setConstraintsIrrevModel Set constraints for a subset of rxns while</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function constrOptIrrev = setConstraintsIrrevModel(constrOpt,model,modelIrrev,rev2irrev) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">setConstraintsIrrevModel Set constraints for a subset of rxns while
+converting reversible to irreversible reaction names and handling the
+constraint directions correctly
+
+ [constrIndIrrev,constrValIrrev,constrSenseIrrev] = ...
+           setConstraintsIrrevModel(rxnNameList,constrValue,constrSense,model,modelIrrev)
+ 
+INPUTS
+ constrOpt    Constraint options
+   rxnList     Reaction selection cell array (for reversible
+               representation)
+   values      Constraint values
+   sense       Constraint senses ordered as rxnNameList
+
+ model         Model in reversible format
+ modelIrrev    Model in irreversible format
+ rev2irrev     Reversible to irreversible reaction index conversion
+               obtained from convertToIrreversible
+
+OUTPUT
+ constrOptIrrev   Constraint options in irrev model
+   rxnList         Reaction selection cell array
+     rxnInd          Selection index for constraints in irreversible model (e.g. [2 4 5 9 10])
+   values          Correctly ordered constraint values
+     sense           Correctly ordered constraint senses
+
+ 6/9/05 Changed this so that it allows multiple occurences of the same
+ rxn
+
+ Markus Herrgard 10/14/03
+
+ Completely rewritten 1/22/07</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>	columnVector Converts a vector to a column vector</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/OMNI.html" class="code" title="function [OMNISol,bilevelMILPProblem] = OMNI(model, selectedRxnList, options, constrOpt, measOpt, prevSolutions, verbFlag)">OMNI</a>	</li><li><a href="OptKnock.html" class="code" title="function [optKnockSol,bilevelMILPproblem] = OptKnock(model,selectedRxnList,options,constrOpt,prevSolutions,verbFlag,solutionFileNameTmp)">OptKnock</a>	OptKnock Run OptKnock in the most general form</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function constrOptIrrev = setConstraintsIrrevModel(constrOpt,model,modelIrrev,rev2irrev)</a>
+0002 <span class="comment">%setConstraintsIrrevModel Set constraints for a subset of rxns while</span>
+0003 <span class="comment">%converting reversible to irreversible reaction names and handling the</span>
+0004 <span class="comment">%constraint directions correctly</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% [constrIndIrrev,constrValIrrev,constrSenseIrrev] = ...</span>
+0007 <span class="comment">%           setConstraintsIrrevModel(rxnNameList,constrValue,constrSense,model,modelIrrev)</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%INPUTS</span>
+0010 <span class="comment">% constrOpt    Constraint options</span>
+0011 <span class="comment">%   rxnList     Reaction selection cell array (for reversible</span>
+0012 <span class="comment">%               representation)</span>
+0013 <span class="comment">%   values      Constraint values</span>
+0014 <span class="comment">%   sense       Constraint senses ordered as rxnNameList</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% model         Model in reversible format</span>
+0017 <span class="comment">% modelIrrev    Model in irreversible format</span>
+0018 <span class="comment">% rev2irrev     Reversible to irreversible reaction index conversion</span>
+0019 <span class="comment">%               obtained from convertToIrreversible</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">%OUTPUT</span>
+0022 <span class="comment">% constrOptIrrev   Constraint options in irrev model</span>
+0023 <span class="comment">%   rxnList         Reaction selection cell array</span>
+0024 <span class="comment">%     rxnInd          Selection index for constraints in irreversible model (e.g. [2 4 5 9 10])</span>
+0025 <span class="comment">%   values          Correctly ordered constraint values</span>
+0026 <span class="comment">%     sense           Correctly ordered constraint senses</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">% 6/9/05 Changed this so that it allows multiple occurences of the same</span>
+0029 <span class="comment">% rxn</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">% Markus Herrgard 10/14/03</span>
+0032 <span class="comment">%</span>
+0033 <span class="comment">% Completely rewritten 1/22/07</span>
+0034 
+0035 constrIndIrrev = [];
+0036 constrValIrrev = [];
+0037 constrSenseIrrev = <span class="string">''</span>;
+0038 
+0039 <span class="comment">% Bit vector describing the processing status of this constraint</span>
+0040 constrProcessed = false*ones(length(constrOpt.rxnList),1);
+0041 
+0042 <span class="keyword">for</span> i = 1:length(constrOpt.rxnList)
+0043     
+0044     <span class="comment">% Has this rxn already been processed?</span>
+0045     <span class="keyword">if</span> (~constrProcessed(i))
+0046         
+0047         <span class="comment">% Get reaction name</span>
+0048         rxnName = constrOpt.rxnList{i};
+0049         <span class="comment">% Find reaction index in reversible reaction set</span>
+0050         rxnID = find(ismember(model.rxns,rxnName));
+0051         
+0052         <span class="comment">% Find out if there are more than one constraint for this rxn</span>
+0053         thisConstrInd = find(strcmp(constrOpt.rxnList,rxnName));
+0054         <span class="comment">% How many matching rxns</span>
+0055         nThisConstr = length(thisConstrInd);
+0056         <span class="comment">% Mark as processed</span>
+0057         constrProcessed(thisConstrInd) = true;
+0058         
+0059         <span class="comment">% Get constraint values</span>
+0060         thisConstrValue = constrOpt.values(thisConstrInd);
+0061         <span class="comment">% Get constraint directions</span>
+0062         thisConstrSense = constrOpt.sense(thisConstrInd);
+0063         
+0064         <span class="keyword">if</span> (~isempty(rxnID))
+0065             <span class="comment">% Find reaction index in irreversible reaction set</span>
+0066             irrevRxnID = rev2irrev{rxnID};
+0067             
+0068             <span class="comment">% Add reaction indices and constraint values into the list</span>
+0069             <span class="keyword">if</span> (length(irrevRxnID) == 1) <span class="comment">% Irreversible</span>
+0070                 irrevRxnName = modelIrrev.rxns{irrevRxnID};
+0071                 <span class="keyword">if</span> length(rxnName)&gt;2 &amp;&amp; ~strcmp(irrevRxnName(end-1:end),<span class="string">'_r'</span>)
+0072                     <span class="comment">% Value of map is directly the index of the reaction</span>
+0073                     <span class="keyword">for</span> j = 1:nThisConstr
+0074                         constrIndIrrev(end+1) = irrevRxnID;
+0075                         constrValIrrev(end+1) = thisConstrValue(j);
+0076                         constrSenseIrrev(end+1) = thisConstrSense(j);
+0077                     <span class="keyword">end</span>
+0078                 <span class="keyword">else</span> <span class="comment">%Reaction is reversed in model. Flip sign of value</span>
+0079                     <span class="keyword">for</span> j = 1:nThisConstr
+0080                         constrIndIrrev(end+1) = irrevRxnID;
+0081                         constrValIrrev(end+1) = -thisConstrValue(j);
+0082                         constrSenseIrrev(end+1) = thisConstrSense(j);
+0083                     <span class="keyword">end</span>
+0084                 <span class="keyword">end</span>
+0085             <span class="keyword">else</span> <span class="comment">% Reversible</span>
+0086                 <span class="comment">% Only one constraint or an equality constraint represented</span>
+0087                 <span class="comment">% through two inequality constraints</span>
+0088                 <span class="keyword">if</span> (nThisConstr == 1 | (thisConstrValue(1) == thisConstrValue(2)))
+0089                     <span class="comment">% This would be an equality constraint</span>
+0090                     <span class="keyword">if</span> (nThisConstr == 2)
+0091                         thisConstrSense = <span class="string">'E'</span>;
+0092                     <span class="keyword">end</span>
+0093                     <span class="comment">% Map contains both forward and reverse reaction indices</span>
+0094                     constrIndIrrev(end+1) = irrevRxnID(1);
+0095                     constrIndIrrev(end+1) = irrevRxnID(2);
+0096                     <span class="keyword">if</span> (thisConstrValue(1) &gt;= 0)
+0097                         constrValIrrev(end+1) = thisConstrValue(1);
+0098                         constrValIrrev(end+1) = 0;
+0099                         <span class="comment">% Deal with different directions of constraints</span>
+0100                         <span class="keyword">switch</span> thisConstrSense
+0101                             <span class="keyword">case</span> <span class="string">'E'</span>
+0102                                 constrSenseIrrev(end+1) = <span class="string">'E'</span>;
+0103                                 constrSenseIrrev(end+1) = <span class="string">'E'</span>;
+0104                             <span class="keyword">case</span> <span class="string">'G'</span>
+0105                                 constrSenseIrrev(end+1) = <span class="string">'G'</span>;
+0106                                 constrSenseIrrev(end+1) = <span class="string">'E'</span>;
+0107                             <span class="keyword">case</span> <span class="string">'L'</span>
+0108                                 constrSenseIrrev(end+1) = <span class="string">'L'</span>;
+0109                                 constrSenseIrrev(end+1) = <span class="string">'G'</span>;
+0110                         <span class="keyword">end</span>
+0111                     <span class="keyword">else</span>
+0112                         constrValIrrev(end+1) = 0;
+0113                         constrValIrrev(end+1) = -thisConstrValue(1);
+0114                         <span class="keyword">switch</span> thisConstrSense
+0115                             <span class="keyword">case</span> <span class="string">'E'</span>
+0116                                 constrSenseIrrev(end+1) = <span class="string">'E'</span>;
+0117                                 constrSenseIrrev(end+1) = <span class="string">'E'</span>;
+0118                             <span class="keyword">case</span> <span class="string">'G'</span>
+0119                                 constrSenseIrrev(end+1) = <span class="string">'G'</span>;
+0120                                 constrSenseIrrev(end+1) = <span class="string">'L'</span>;
+0121                             <span class="keyword">case</span> <span class="string">'L'</span>
+0122                                 constrSenseIrrev(end+1) = <span class="string">'E'</span>;
+0123                                 constrSenseIrrev(end+1) = <span class="string">'G'</span>;
+0124                         <span class="keyword">end</span>
+0125                     <span class="keyword">end</span>
+0126                 <span class="keyword">else</span> <span class="comment">% More than one constraint (the only case that makes sense is a &lt;= v &lt;= b)</span>
+0127                     lowestConstrVal = min(thisConstrValue);        
+0128                     highestConstrVal = max(thisConstrValue);
+0129                     
+0130                     <span class="keyword">if</span> ((lowestConstrVal &gt; 0) &amp; (highestConstrVal &gt; 0))  <span class="comment">% Both positive</span>
+0131                         constrIndIrrev(end+1:end+3) = irrevRxnID([1 1 2]);
+0132                         constrValIrrev(end+1:end+3) = [lowestConstrVal highestConstrVal 0];
+0133                         constrSenseIrrev(end+1:end+3) = <span class="string">'GLE'</span>;
+0134                     <span class="keyword">elseif</span> ((lowestConstrVal &lt; 0) &amp; (highestConstrVal &lt; 0)) <span class="comment">% Both negative</span>
+0135                         constrIndIrrev(end+1:end+3) = irrevRxnID([1 2 2]);
+0136                         constrValIrrev(end+1:end+3) = [0 -highestConstrVal -lowestConstrVal];
+0137                         constrSenseIrrev(end+1:end+3) = <span class="string">'EGL'</span>;
+0138                     <span class="keyword">else</span> <span class="comment">% Low positive, hi negative</span>
+0139                         constrIndIrrev(end+1:end+2) = irrevRxnID([1 2]);
+0140                         constrValIrrev(end+1:end+2) = [highestConstrVal -lowestConstrVal];
+0141                         constrSenseIrrev(end+1:end+2) = <span class="string">'LL'</span>;
+0142                     <span class="keyword">end</span>
+0143                 <span class="keyword">end</span>
+0144             <span class="keyword">end</span>
+0145         <span class="keyword">end</span>
+0146     <span class="keyword">end</span>
+0147 <span class="keyword">end</span>
+0148 
+0149 constrOptIrrev.rxnList = <a href="../../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>(modelIrrev.rxns(constrIndIrrev));
+0150 constrOptIrrev.rxnInd = <a href="../../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>(constrIndIrrev);
+0151 constrOptIrrev.values = <a href="../../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>(constrValIrrev);
+0152 constrOptIrrev.sense = <a href="../../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>(constrSenseIrrev);</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

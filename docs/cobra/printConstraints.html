@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of printConstraints</title>
+  <meta name="keywords" content="printConstraints">
+  <meta name="description" content="printConstraints Print all network constraints that are not -Inf (minInf)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html cobra -->
+<h1>printConstraints
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>printConstraints Print all network constraints that are not -Inf (minInf)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function printConstraints(model,minInf, maxInf) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">printConstraints Print all network constraints that are not -Inf (minInf)
+or +Inf (maxInf)
+
+ printConstraints(model,minInf, maxInf)
+
+INPUTS
+ model     COBRA model structure
+ minInf    value that is considered as -Inf (or desired minimum cutoff value)
+ maxInf    value that is considered as +Inf (or desired maximum cutoff value)
+
+ Ines Thiele 02/09</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function printConstraints(model,minInf, maxInf)</a>
+0002 <span class="comment">%printConstraints Print all network constraints that are not -Inf (minInf)</span>
+0003 <span class="comment">%or +Inf (maxInf)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% printConstraints(model,minInf, maxInf)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%INPUTS</span>
+0008 <span class="comment">% model     COBRA model structure</span>
+0009 <span class="comment">% minInf    value that is considered as -Inf (or desired minimum cutoff value)</span>
+0010 <span class="comment">% maxInf    value that is considered as +Inf (or desired maximum cutoff value)</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% Ines Thiele 02/09</span>
+0013 
+0014 minConstraints = intersect(find(model.lb&gt;minInf),find(model.lb));
+0015     fprintf(<span class="string">'MinConstraitns:'</span>);
+0016     fprintf(<span class="string">'\n'</span>);
+0017 <span class="keyword">for</span> i = 1:length(minConstraints)
+0018     fprintf(<span class="string">'%s'</span>,model.rxns{minConstraints(i)});
+0019     fprintf(<span class="string">'\t'</span>);
+0020     fprintf(<span class="string">'%e'</span>,model.lb(minConstraints(i)));
+0021     fprintf(<span class="string">'\n'</span>);
+0022 <span class="keyword">end</span>
+0023 
+0024 
+0025 maxConstraints =intersect(find(model.ub&lt;maxInf),find(model.ub));
+0026     fprintf(<span class="string">'maxConstraints:'</span>);
+0027     fprintf(<span class="string">'\n'</span>);
+0028 <span class="keyword">for</span> i = 1:length(maxConstraints)
+0029     fprintf(<span class="string">'%s'</span>,model.rxns{maxConstraints(i)});
+0030     fprintf(<span class="string">'\t'</span>);
+0031     fprintf(<span class="string">'%e'</span>,model.ub(maxConstraints(i)));
+0032     fprintf(<span class="string">'\n'</span>);
+0033 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Fail: (3100) The units returned by the rate rule that assigns a rate
+    to a compartment must be consistent with either the units
+    declared for that compartment or the default units for the
+    compartment per unit time.
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" units="litre" constant="false"/>
+    </listOfCompartments>
+    <listOfParameters>
+      <parameter id="p" value="1" units="ampere" constant="false"/>
+      <parameter id="p1" value="1" units="dimensionless"/>
+    </listOfParameters>
+    <listOfRules>
+      <rateRule variable="c">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> p </ci>
+		  <ci> p1 </ci>
+          </apply>
+        </math>
+      </rateRule>
+    </listOfRules>
+  </model>
+</sbml>

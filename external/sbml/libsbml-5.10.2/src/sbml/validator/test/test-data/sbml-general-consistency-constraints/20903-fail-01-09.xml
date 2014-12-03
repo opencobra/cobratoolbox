@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fail: (1702) A Compartment, Species, or Parameter referenced by an
+AssignmentRule must have constant='false'.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+	<model>
+		<listOfParameters>
+			<parameter id="p" constant="true"/>
+		</listOfParameters>
+		<listOfRules>
+			<assignmentRule variable="p"/>
+		</listOfRules>
+	</model>
+</sbml>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fail: (1303) A Compartment's 'outside' must be the id of another
+Compartment (L2v1 Section 4.5.6).
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+	<model>
+		<listOfCompartments>
+			<compartment id="c" outside="a"/>
+		</listOfCompartments>
+	</model>
+</sbml>

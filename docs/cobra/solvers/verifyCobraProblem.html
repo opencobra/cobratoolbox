@@ -1,0 +1,422 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of verifyCobraProblem</title>
+  <meta name="keywords" content="verifyCobraProblem">
+  <meta name="description" content="[statusOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(XPproblem, x, tol)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html solvers -->
+<h1>verifyCobraProblem
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[statusOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(XPproblem, x, tol)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [statusOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(XPproblem, x, tol, verbose) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">[statusOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(XPproblem, x, tol)
+
+ Verifies dimensions of fields in XPproblem and determines if they are
+ valid LP, QP, MILP, MIQP problems. Also checks inputs for NaN.
+ If x is provided, it will see if x is a valid solution to tolerance
+ (tol).
+
+INPUT
+ XPproblem - struct containing:
+   .A - Constraints matrix
+   .b - rhs
+   .csense - vector of 'E', 'L', 'G' for equality, Less than and Greater than
+       constriant
+   .lb, .ub - lower and upper bound on variables
+   .c - objective coefficients
+   .F - quadratic objective (optional, only used for QP, MIQP problems)
+   .vartype - vector of 'C', 'I', 'B' for 'continuous', 'integer', 'binary'
+       variables (optional, only used for MILP, MIQP problems).
+
+OPTIONAL INPUT
+ x         a vector.  Function will determine if x satisfies XPproblem
+ tol       numerical tolerance to which all constraints should be verified to.
+           (default = 1e-8)
+ verbose   Controls whether results are printed to screen.(Default = true)
+
+OUTPUT
+ statusOK  Returns -1 if any field in XPproblem has an error
+           returns 0 if the x vector is not valid for XPproblem and
+           returns 1 if at least one problem type is satisfied
+ invalidConstraints    Vector which lists a 1 for any constaint that is
+                       invalid
+ invalidVars           Vector which lists a 1 for any variable that is
+                       invalid
+ objective             Objective of XPproblem
+
+ Jan Shellenberger (11/23/09) Richard Que (11/24/09)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>	optimizeCbModel Solve a flux balance analysis problem</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [statusOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(XPproblem, x, tol, verbose)</a>
+0002 <span class="comment">%[statusOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(XPproblem, x, tol)</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% Verifies dimensions of fields in XPproblem and determines if they are</span>
+0005 <span class="comment">% valid LP, QP, MILP, MIQP problems. Also checks inputs for NaN.</span>
+0006 <span class="comment">% If x is provided, it will see if x is a valid solution to tolerance</span>
+0007 <span class="comment">% (tol).</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%INPUT</span>
+0010 <span class="comment">% XPproblem - struct containing:</span>
+0011 <span class="comment">%   .A - Constraints matrix</span>
+0012 <span class="comment">%   .b - rhs</span>
+0013 <span class="comment">%   .csense - vector of 'E', 'L', 'G' for equality, Less than and Greater than</span>
+0014 <span class="comment">%       constriant</span>
+0015 <span class="comment">%   .lb, .ub - lower and upper bound on variables</span>
+0016 <span class="comment">%   .c - objective coefficients</span>
+0017 <span class="comment">%   .F - quadratic objective (optional, only used for QP, MIQP problems)</span>
+0018 <span class="comment">%   .vartype - vector of 'C', 'I', 'B' for 'continuous', 'integer', 'binary'</span>
+0019 <span class="comment">%       variables (optional, only used for MILP, MIQP problems).</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">%OPTIONAL INPUT</span>
+0022 <span class="comment">% x         a vector.  Function will determine if x satisfies XPproblem</span>
+0023 <span class="comment">% tol       numerical tolerance to which all constraints should be verified to.</span>
+0024 <span class="comment">%           (default = 1e-8)</span>
+0025 <span class="comment">% verbose   Controls whether results are printed to screen.(Default = true)</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">%OUTPUT</span>
+0028 <span class="comment">% statusOK  Returns -1 if any field in XPproblem has an error</span>
+0029 <span class="comment">%           returns 0 if the x vector is not valid for XPproblem and</span>
+0030 <span class="comment">%           returns 1 if at least one problem type is satisfied</span>
+0031 <span class="comment">% invalidConstraints    Vector which lists a 1 for any constaint that is</span>
+0032 <span class="comment">%                       invalid</span>
+0033 <span class="comment">% invalidVars           Vector which lists a 1 for any variable that is</span>
+0034 <span class="comment">%                       invalid</span>
+0035 <span class="comment">% objective             Objective of XPproblem</span>
+0036 <span class="comment">%</span>
+0037 <span class="comment">% Jan Shellenberger (11/23/09) Richard Que (11/24/09)</span>
+0038 <span class="keyword">if</span> nargin &lt; 3
+0039     tol = 1e-8;
+0040 <span class="keyword">end</span>
+0041 <span class="keyword">if</span> nargin &lt; 4
+0042     verbose = true;
+0043 <span class="keyword">end</span>
+0044 
+0045 
+0046 validQP = false;
+0047 validMI = false;
+0048 objective = [];
+0049 statusOK = 1;
+0050 
+0051 <span class="comment">%Check A</span>
+0052 <span class="keyword">if</span> ~isfield(XPproblem, <span class="string">'A'</span>)
+0053     display(<span class="string">'Required field A not found'</span>);
+0054     statusOK = -1;
+0055     <span class="keyword">return</span>;
+0056 <span class="keyword">elseif</span> any(isnan(XPproblem.A))
+0057     [r c] = find(isnan(XPproblem.A));
+0058     strCoords = <span class="string">''</span>;
+0059     <span class="keyword">for</span> i=1:length(r)
+0060         strCoords = [strCoords <span class="string">' '</span> num2str(r(i)) <span class="string">','</span> num2str(c(i))];
+0061     <span class="keyword">end</span>
+0062     display([<span class="string">'NaN present in A matrix at'</span> strCoords <span class="string">'.'</span>]);
+0063     statusOK = -1;
+0064     <span class="keyword">return</span>;
+0065 <span class="keyword">end</span>
+0066 [nconstraints, nvars] = size(XPproblem.A);
+0067 
+0068 
+0069 <span class="comment">%Check b</span>
+0070 <span class="keyword">if</span> ~isfield(XPproblem, <span class="string">'b'</span>)
+0071     display(<span class="string">'Required field b not found'</span>);
+0072     statusOK = -1;
+0073     <span class="keyword">return</span>;
+0074 <span class="keyword">elseif</span> any(isnan(XPproblem.b))
+0075     r= find(isnan(XPproblem.b));
+0076     strCoords = <span class="string">''</span>;
+0077     <span class="keyword">for</span> i=1:length(r)
+0078         strCoords = [strCoords <span class="string">' '</span> num2str(r(i)) <span class="string">','</span>];
+0079     <span class="keyword">end</span>
+0080     display([<span class="string">'NaN present in b vector at'</span> strCoords <span class="string">'.'</span>]);
+0081     statusOK = -1;
+0082     <span class="keyword">return</span>;
+0083 <span class="keyword">end</span>
+0084 <span class="keyword">if</span> any(size(XPproblem.b) ~= [nconstraints, 1])
+0085     display(<span class="string">'Wrong size b vector'</span>);
+0086     statusOK = -1;
+0087     <span class="keyword">return</span>;
+0088 <span class="keyword">end</span>
+0089 
+0090 <span class="comment">%Check csense</span>
+0091 <span class="keyword">if</span> ~isfield(XPproblem, <span class="string">'csense'</span>)
+0092     display(<span class="string">'Required field csense not found'</span>);
+0093     statusOK = -1;
+0094     <span class="keyword">return</span>;
+0095 <span class="keyword">end</span>
+0096 <span class="keyword">if</span> length(XPproblem.csense) ~= nconstraints
+0097     display(<span class="string">'Wrong size csense vector'</span>);
+0098     statusOK = -1;
+0099     <span class="keyword">return</span>;
+0100 <span class="keyword">end</span>
+0101 <span class="keyword">if</span> size(XPproblem.csense,2) ~= 1
+0102     display(<span class="string">'Csense should be a column vector'</span>)
+0103     statusOK = -1;
+0104     <span class="keyword">return</span>;
+0105 <span class="keyword">end</span>
+0106 invalidCsense = find(~ismember(XPproblem.csense,[<span class="string">'E'</span>,<span class="string">'L'</span>,<span class="string">'G'</span>]));
+0107 <span class="keyword">if</span> invalidCsense
+0108     fprintf(<span class="string">'Invalid csense entry(s) at %s\n'</span>, num2str(invalidCsense));
+0109     statusOK = -1;
+0110     <span class="keyword">return</span>;
+0111 <span class="keyword">end</span>
+0112 
+0113 <span class="comment">%check lb</span>
+0114 <span class="keyword">if</span> ~isfield(XPproblem,<span class="string">'lb'</span>)
+0115     diplay(<span class="string">'Required field lb not found'</span>);
+0116     statusOK = -1;
+0117     <span class="keyword">return</span>;
+0118 <span class="keyword">elseif</span> any(isnan(XPproblem.lb))
+0119     r= find(isnan(XPproblem.lb));
+0120     strCoords = <span class="string">''</span>;
+0121     <span class="keyword">for</span> i=1:length(r)
+0122         strCoords = [strCoords <span class="string">' '</span> num2str(r(i)) <span class="string">','</span>];
+0123     <span class="keyword">end</span>
+0124     display([<span class="string">'NaN present in lb vector at'</span> strCoords <span class="string">'.'</span>]);
+0125     statusOK = -1;
+0126     <span class="keyword">return</span>;
+0127 <span class="keyword">end</span>
+0128 <span class="keyword">if</span> any(size(XPproblem.lb) ~= [nvars, 1])
+0129     display(<span class="string">'Wrong size lb vector'</span>);
+0130     statusOK = -1;
+0131     <span class="keyword">return</span>;
+0132 <span class="keyword">end</span>
+0133 
+0134 <span class="comment">%check ub</span>
+0135 <span class="keyword">if</span> ~isfield(XPproblem,<span class="string">'ub'</span>)
+0136     diplay(<span class="string">'Required field ub not found'</span>);
+0137     statusOK = -1;
+0138     <span class="keyword">return</span>;
+0139 <span class="keyword">elseif</span> any(isnan(XPproblem.ub))
+0140     r= find(isnan(XPproblem.ub));
+0141     strCoords = <span class="string">''</span>;
+0142     <span class="keyword">for</span> i=1:length(r)
+0143         strCoords = [strCoords <span class="string">' '</span> num2str(r(i)) <span class="string">','</span>];
+0144     <span class="keyword">end</span>
+0145     display([<span class="string">'NaN present in ub vector at'</span> strCoords <span class="string">'.'</span>]);
+0146     statusOK = -1;
+0147     <span class="keyword">return</span>;
+0148 <span class="keyword">end</span>
+0149 <span class="keyword">if</span> any(size(XPproblem.ub) ~= [nvars, 1])
+0150     display(<span class="string">'Wrong size ub vector'</span>);
+0151     statusOK = -1;
+0152     <span class="keyword">return</span>;
+0153 <span class="keyword">end</span>
+0154 
+0155 <span class="keyword">if</span> any(XPproblem.ub&lt;XPproblem.lb)
+0156     fprintf(<span class="string">'Invalid lb/ub at %s\n'</span>, num2str(find(XPproblem.ub&lt;XPproblem.lb)));
+0157     statusOK = -1;
+0158     <span class="keyword">return</span>;
+0159 <span class="keyword">end</span>
+0160 
+0161 <span class="comment">%check c</span>
+0162 <span class="keyword">if</span> ~isfield(XPproblem,<span class="string">'c'</span>)
+0163     diplay(<span class="string">'Required field c not found'</span>);
+0164     statusOK = -1;
+0165     <span class="keyword">return</span>;
+0166 <span class="keyword">elseif</span> any(isnan(XPproblem.c))
+0167     r= find(isnan(XPproblem.c));
+0168     strCoords = <span class="string">''</span>;
+0169     <span class="keyword">for</span> i=1:length(r)
+0170         strCoords = [strCoords <span class="string">' '</span> num2str(r(i)) <span class="string">','</span>];
+0171     <span class="keyword">end</span>
+0172     display([<span class="string">'NaN present in c vector at'</span> strCoords <span class="string">'.'</span>]);
+0173     statusOK = -1;
+0174     <span class="keyword">return</span>;
+0175 <span class="keyword">end</span>
+0176 <span class="keyword">if</span> any(size(XPproblem.c) ~= [nvars, 1])
+0177     display(<span class="string">'Wrong size c vector'</span>);
+0178     statusOK = -1;
+0179     <span class="keyword">return</span>;
+0180 <span class="keyword">end</span>
+0181 
+0182 validLP = true;
+0183 
+0184 <span class="keyword">if</span> isfield(XPproblem,<span class="string">'F'</span>)
+0185     [nRows nCols] = size(XPproblem.F);
+0186     <span class="keyword">if</span> any(isnan(XPproblem.F))
+0187         [r c]= find(isnan(XPproblem.F));
+0188         strCoords = <span class="string">''</span>;
+0189         <span class="keyword">for</span> i=1:length(r)
+0190             strCoords = [strCoords <span class="string">' '</span> num2str(r(i)) <span class="string">','</span> num2str(c(i))];
+0191         <span class="keyword">end</span>
+0192         display([<span class="string">'NaN present in F matrix at'</span> strCoords <span class="string">'.'</span>]);
+0193         statusOK = -1;
+0194         <span class="keyword">return</span>;
+0195     <span class="keyword">end</span>
+0196     <span class="keyword">if</span> nRows ~= nCols
+0197         display(<span class="string">'F matrix not square'</span>);
+0198         statusOK = -1;
+0199     <span class="keyword">elseif</span> nRows ~= nvars
+0200         display(<span class="string">'Wrong size F matrix'</span>);
+0201         statusOK = -1;
+0202     <span class="keyword">else</span>
+0203         validQP = true;
+0204     <span class="keyword">end</span>
+0205 <span class="keyword">end</span>
+0206 
+0207 <span class="keyword">if</span> isfield(XPproblem,<span class="string">'vartype'</span>)
+0208     <span class="keyword">if</span> all(size(XPproblem.vartype) == [nvars,1])
+0209         invalidVartype = find(~ismember(XPproblem.vartype,[<span class="string">'C'</span>,<span class="string">'I'</span>,<span class="string">'B'</span>]));
+0210         <span class="keyword">if</span> isempty(invalidVartype)
+0211             validMI = true;
+0212         <span class="keyword">else</span>
+0213             fprintf(<span class="string">'Invalid vartype entry(s) at %s\n'</span>, num2str(invalidVartype));
+0214             statusOK = -1;
+0215         <span class="keyword">end</span>
+0216     <span class="keyword">else</span>
+0217         display(<span class="string">'Wrong size vartype vector'</span>);
+0218         statusOK = -1;
+0219     <span class="keyword">end</span>
+0220     vartype = XPproblem.vartype;
+0221     <span class="keyword">if</span> any(floor(XPproblem.ub(vartype == <span class="string">'I'</span> | vartype == <span class="string">'B'</span>) + tol) &lt; ceil(XPproblem.lb(vartype ==<span class="string">'I'</span> | vartype == <span class="string">'B'</span>) - tol))
+0222         display(<span class="string">'Integer or binary variables lb to ub range does not contain an integer'</span>);
+0223         validMI = false;
+0224         statusOK = -1;
+0225     <span class="keyword">end</span>
+0226     <span class="keyword">if</span> any(XPproblem.lb(vartype == <span class="string">'B'</span>) ~= 0)
+0227         display(<span class="string">'Binary variables have lower bound not equal to zero.  This is inconsistent'</span>);
+0228         validMI = false;
+0229         statusOK = -1;
+0230     <span class="keyword">end</span>
+0231     <span class="keyword">if</span> any(XPproblem.ub(vartype == <span class="string">'B'</span>) ~= 1)
+0232         display(<span class="string">'Binary variables have upper bound not equal to one.  This is inconsistent'</span>);
+0233         validMI=false;
+0234         statusOK = -1;
+0235     <span class="keyword">end</span>
+0236 <span class="keyword">end</span>
+0237 
+0238 <span class="keyword">if</span> verbose
+0239     <span class="keyword">if</span> validLP
+0240         display(<span class="string">'Valid LP problem'</span>);
+0241     <span class="keyword">else</span>
+0242         display(<span class="string">'Invalid LP problem'</span>);
+0243     <span class="keyword">end</span>
+0244     <span class="keyword">if</span> validMI &amp;&amp; validLP
+0245         display(<span class="string">'Valid MILP problem'</span>);
+0246     <span class="keyword">else</span>
+0247         display(<span class="string">'Invalid MILP problem'</span>);
+0248     <span class="keyword">end</span>
+0249     <span class="keyword">if</span> validQP
+0250         display(<span class="string">'Valid QP problem'</span>);
+0251     <span class="keyword">else</span>
+0252         display(<span class="string">'Invalid QP problem'</span>);
+0253     <span class="keyword">end</span>
+0254     <span class="keyword">if</span> validMI &amp;&amp; validQP
+0255         display(<span class="string">'Valid MIQP problem'</span>);
+0256     <span class="keyword">else</span>
+0257         display(<span class="string">'Invalid MIQP problem'</span>);
+0258     <span class="keyword">end</span>
+0259     <span class="keyword">if</span> ~validLP&amp;&amp;~validQP
+0260         <span class="keyword">return</span>;
+0261     <span class="keyword">end</span>
+0262 <span class="keyword">end</span>
+0263 
+0264 <span class="comment">%check x vector if present</span>
+0265 <span class="keyword">if</span> nargin &gt;= 2 &amp;&amp; ~isempty(x)
+0266     validX = true;
+0267     validXMI = false;
+0268     <span class="keyword">if</span> any(size(x)~=[nvars,1])
+0269         display(<span class="string">'Wrong size x vector'</span>);
+0270         statusOK = 0;
+0271         <span class="keyword">return</span>;
+0272     <span class="keyword">end</span>
+0273     <span class="keyword">if</span> any(isnan(x))
+0274     r= find(isnan(x));
+0275     strCoords = <span class="string">''</span>;
+0276     <span class="keyword">for</span> i=1:length(r)
+0277         strCoords = [strCoords <span class="string">' '</span> num2str(r(i)) <span class="string">','</span>];
+0278     <span class="keyword">end</span>
+0279     display([<span class="string">'NaN present in x vector at'</span> strCoords <span class="string">'.'</span>]);
+0280     statusOK = -1;
+0281     <span class="keyword">return</span>;
+0282     <span class="keyword">end</span>
+0283     invalidConstraints = zeros(nconstraints,1);
+0284     invalidVars = zeros(nvars,1);
+0285     <span class="keyword">if</span> any(x &gt; XPproblem.ub + tol)
+0286         invalidVars(x &gt; XPproblem.ub + tol) = 1;
+0287         display(<span class="string">'Upper bound violation'</span>)
+0288         statusOK = 0;
+0289     <span class="keyword">end</span>
+0290     <span class="keyword">if</span> any(x &lt; XPproblem.lb - tol)
+0291         invalidVars(x &lt; XPproblem.lb - tol) = 1;
+0292         display(<span class="string">'Lower bound violation'</span>)
+0293         statusOK = 0;
+0294     <span class="keyword">end</span>
+0295     product = XPproblem.A*x;
+0296     
+0297     <span class="keyword">if</span> any(abs(product(XPproblem.csense == <span class="string">'E'</span>) - XPproblem.b(XPproblem.csense == <span class="string">'E'</span>)) &gt; tol)
+0298         invalidConstraints(abs(product(XPproblem.csense == <span class="string">'E'</span>) - XPproblem.b(XPproblem.csense == <span class="string">'E'</span>)) &gt; tol) = 1;
+0299         display(<span class="string">'Equality constraint off'</span>);
+0300         validX = false;
+0301         statusOK = 0;
+0302     <span class="keyword">end</span>
+0303     <span class="keyword">if</span> any(product(XPproblem.csense == <span class="string">'L'</span>) &gt; XPproblem.b(XPproblem.csense == <span class="string">'L'</span>) + tol)
+0304         invalidConstraints(product(XPproblem.csense == <span class="string">'L'</span>) &gt; XPproblem.b(XPproblem.csense == <span class="string">'L'</span>) + tol) = 1;
+0305         display(<span class="string">'L constraint off'</span>);
+0306         validX = false;
+0307         statusOK = 0;
+0308     <span class="keyword">end</span>
+0309     <span class="keyword">if</span> any(product(XPproblem.csense == <span class="string">'G'</span>) &lt; XPproblem.b(XPproblem.csense == <span class="string">'G'</span>) - tol)
+0310         invalidConstraints(product(XPproblem.csense == <span class="string">'G'</span>) &lt; XPproblem.b(XPproblem.csense == <span class="string">'G'</span>) - tol) = 1;
+0311         display(<span class="string">'G constraint off'</span>);
+0312         validX = false;
+0313         statusOK = 0;
+0314     <span class="keyword">end</span>
+0315     
+0316     <span class="comment">% MI constraints</span>
+0317     <span class="keyword">if</span> isfield(XPproblem, <span class="string">'vartype'</span>)
+0318         validXMI = true;
+0319         <span class="keyword">if</span>(abs( x(vartype == <span class="string">'I'</span> | vartype == <span class="string">'B'</span>) - round(x(vartype == <span class="string">'I'</span> | vartype == <span class="string">'B'</span>))) &gt; tol)
+0320             display(<span class="string">'Integer constraint off'</span>)
+0321             validXMI = false;
+0322             statusOK = 0;
+0323         <span class="keyword">end</span>
+0324     <span class="keyword">end</span>
+0325     <span class="keyword">if</span> validX
+0326         <span class="keyword">if</span> validXMI
+0327             display(<span class="string">'Valid x vector for MIXP problem'</span>);
+0328         <span class="keyword">else</span>
+0329             display(<span class="string">'Valid x vector for XP problem'</span>);
+0330         <span class="keyword">end</span>
+0331     <span class="keyword">end</span>
+0332     <span class="comment">%objective</span>
+0333     <span class="keyword">if</span> validQP
+0334         objective = (1/2)*x'*XPproblem.F*x + XPproblem.c'*x;
+0335     <span class="keyword">elseif</span> validLP
+0336         objective = XPproblem.c'*x;
+0337     <span class="keyword">end</span>
+0338     invalidConstraints = find(invalidConstraints);
+0339     invalidVars = find(invalidVars);
+0340 <span class="keyword">end</span>
+0341 
+0342 
+0343 
+0344 
+0345</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

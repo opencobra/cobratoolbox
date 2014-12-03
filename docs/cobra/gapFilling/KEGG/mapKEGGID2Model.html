@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mapKEGGID2Model</title>
+  <meta name="keywords" content="mapKEGGID2Model">
+  <meta name="description" content="this function matches the compound abreviation in model and from CompAbr">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../../menu.html cobra --><!-- ../menu.html gapFilling --><!-- menu.html KEGG -->
+<h1>mapKEGGID2Model
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>this function matches the compound abreviation in model and from CompAbr</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function model = mapKEGGID2Model(model,Dictionary) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> this function matches the compound abreviation in model and from CompAbr
+ and connects with the model metabolite the corresponding KEGGID
+
+ model      model structure
+ CompAbr    List of compounds abreviation (non-compartelized)
+ KEGGID     List of KEGGIDs for compounds in CompAbr
+
+ 11-09-07 IT</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="transformModel2KEGG.html" class="code" title="function modelKEGG = transformModel2KEGG(model,Dictionary)">transformModel2KEGG</a>	transformModel2KEGG replaces model.mets with model.KEGGID; if no KEGGID</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function model = mapKEGGID2Model(model,Dictionary)</a>
+0002 
+0003 <span class="comment">% this function matches the compound abreviation in model and from CompAbr</span>
+0004 <span class="comment">% and connects with the model metabolite the corresponding KEGGID</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% model      model structure</span>
+0007 <span class="comment">% CompAbr    List of compounds abreviation (non-compartelized)</span>
+0008 <span class="comment">% KEGGID     List of KEGGIDs for compounds in CompAbr</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% 11-09-07 IT</span>
+0011 CompAbr = Dictionary(:, 1);
+0012 KEGGID = Dictionary(:, 2);
+0013 <span class="keyword">for</span> i = 1 : length(model.mets)
+0014     <span class="comment">% finds compartment of model metabolite</span>
+0015     MetTmp=regexprep(model.mets(i),<span class="string">'['</span>,<span class="string">'-'</span>);
+0016     MetTmp=regexprep( MetTmp,<span class="string">']'</span>,<span class="string">'-'</span>);
+0017     <span class="keyword">if</span> (length(strfind(char(MetTmp),<span class="string">'-c-'</span>))&gt;0)
+0018         MetTmp=regexprep(MetTmp,<span class="string">'-c-'</span>,<span class="string">''</span>);
+0019         KEGGComp=<span class="string">'[c]'</span>;
+0020     <span class="keyword">elseif</span> (length(strfind(char(MetTmp),<span class="string">'-p-'</span>))&gt;0)
+0021         MetTmp=regexprep(MetTmp,<span class="string">'-p-'</span>,<span class="string">''</span>);
+0022         KEGGComp=<span class="string">'[p]'</span>;
+0023     <span class="keyword">elseif</span>(length(strfind(char(MetTmp),<span class="string">'-e-'</span>))&gt;0)
+0024         MetTmp=regexprep(MetTmp,<span class="string">'-e-'</span>,<span class="string">''</span>);
+0025         KEGGComp=<span class="string">'[e]'</span>;
+0026     <span class="keyword">else</span>
+0027         MetTmp = model.mets(i); <span class="comment">% assuming that no compartment is associated with compound</span>
+0028     <span class="keyword">end</span>
+0029     
+0030     Match=strmatch(MetTmp, CompAbr,<span class="string">'exact'</span>);
+0031     <span class="keyword">if</span> (length(Match)==1 &amp;&amp; length(KEGGID{Match})&gt;0)
+0032         <span class="comment">% associates KEGGID with model metabolte - KEGGID is compartment</span>
+0033         <span class="comment">% dependent!</span>
+0034         KEGGTmp=[char(KEGGID(Match)) char(KEGGComp)];
+0035         model.KEGGID{i,1}=KEGGTmp;
+0036     <span class="keyword">elseif</span> (length(Match)&gt;1 &amp;&amp; length(KEGGID{Match})&gt;0)
+0037         model.KEGGID{i,1}=[];
+0038         warning([<span class="string">'multiple matchings for'</span> char(model.mets(i))]);
+0039     <span class="keyword">else</span>
+0040    
+0041         model.KEGGID{i,1}=[];
+0042     <span class="keyword">end</span>
+0043     clear MetTmp KEGGTmp
+0044 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

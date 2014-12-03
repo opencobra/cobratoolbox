@@ -1,0 +1,314 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of OptKnock</title>
+  <meta name="keywords" content="OptKnock">
+  <meta name="description" content="OptKnock Run OptKnock in the most general form">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html design -->
+<h1>OptKnock
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>OptKnock Run OptKnock in the most general form</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [optKnockSol,bilevelMILPproblem] = OptKnock(model,selectedRxnList,options,constrOpt,prevSolutions,verbFlag,solutionFileNameTmp) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">OptKnock Run OptKnock in the most general form
+
+ OptKnock(model,selectedRxnList,options,constrOpt,prevSolutions,verbFlag,solutionFileNameTmp)
+
+INPUTS
+ model            Structure containing all necessary variables to described a
+                  stoichiometric model
+   rxns            Rxns in the model
+   mets            Metabolites in the model
+   S               Stoichiometric matrix (sparse)
+   b               RHS of Sv = b (usually zeros)
+   c               Objective coefficients
+   lb              Lower bounds for fluxes
+   ub              Upper bounds for fluxes
+   rev             Reversibility of fluxes
+
+ selectedRxnList  List of reactions that can be knocked-out in OptKnock
+
+ options          OptKnock options
+   targetRxn       Target flux to be maximized
+
+OPTIONAL INPUTS
+ options             OptKnock options
+   numDel             # of deletions allowed (Default: 5)
+   numDelSense        Direction of # of deletions constraint (G/E/L)
+                      (Default: L)
+   vMax               Max flux (Default: 1000)
+   solveOptKnock      Solve problem within Matlab (Default: true)
+   createGams         Create GAMS input file
+   gamsFile           GAMS input file name
+
+ constrOpt           Explicitly constrained reaction options
+   rxnList            Reaction list
+   values             Values for constrained reactions
+   sense              Constraint senses for constrained reactions (G/E/L)
+
+ prevSolutions       Previous solutions
+
+ verbFlag            Verbose flag
+
+ solutionFileNameTmp File name for storing temporary solutions
+
+OUTPUTS
+ optKnockSol           OptKnock solution structure
+   rxnList              Reaction KO list
+   fluxes               Flux distribution
+ bilevelMILPproblem    optKnock problem structure
+
+NOTES
+ OptKnock uses bounds of -vMax to vMax or 0 to vMax for reversible and
+ irreversible reactions. If you wish to constrain a reaction, use
+ constrOpt.
+
+ Markus Herrgard 3/28/05
+ Richard Que (04/27/10) - Added some default parameters.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/convertIrrevFluxDistribution.html" class="code" title="function vRev = convertIrrevFluxDistribution(vIrrev,matchRev)">convertIrrevFluxDistribution</a>	convertInrrevFluxDistribution  Convert irreversible flux distribution to</li><li><a href="../../cobra/convertToIrreversible.html" class="code" title="function [modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model)">convertToIrreversible</a>	convertToIrreversible Convert model to irreversible format</li><li><a href="createBilevelMILPproblem.html" class="code" title="function bilevelMILPproblem = createBilevelMILPproblem(model,cLinear,cInteger,selRxns,selRxnMatch,constrOpt,measOpt,options,selPrevSol)">createBilevelMILPproblem</a>	createBilevelMILPProblem Creates the necessary matrices and vectors to solve a bilevel MILP with designated inner</li><li><a href="setConstraintsIrrevModel.html" class="code" title="function constrOptIrrev = setConstraintsIrrevModel(constrOpt,model,modelIrrev,rev2irrev)">setConstraintsIrrevModel</a>	setConstraintsIrrevModel Set constraints for a subset of rxns while</li><li><a href="../../cobra/solvers/solveCobraMILP.html" class="code" title="function solution = solveCobraMILP(MILPproblem,varargin)">solveCobraMILP</a>	solveCobraMILP Solve constraint-based MILP problems</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [optKnockSol,bilevelMILPproblem] = OptKnock(model,selectedRxnList,options,constrOpt,prevSolutions,verbFlag,solutionFileNameTmp)</a>
+0002 <span class="comment">%OptKnock Run OptKnock in the most general form</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% OptKnock(model,selectedRxnList,options,constrOpt,prevSolutions,verbFlag,solutionFileNameTmp)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%INPUTS</span>
+0007 <span class="comment">% model            Structure containing all necessary variables to described a</span>
+0008 <span class="comment">%                  stoichiometric model</span>
+0009 <span class="comment">%   rxns            Rxns in the model</span>
+0010 <span class="comment">%   mets            Metabolites in the model</span>
+0011 <span class="comment">%   S               Stoichiometric matrix (sparse)</span>
+0012 <span class="comment">%   b               RHS of Sv = b (usually zeros)</span>
+0013 <span class="comment">%   c               Objective coefficients</span>
+0014 <span class="comment">%   lb              Lower bounds for fluxes</span>
+0015 <span class="comment">%   ub              Upper bounds for fluxes</span>
+0016 <span class="comment">%   rev             Reversibility of fluxes</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% selectedRxnList  List of reactions that can be knocked-out in OptKnock</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% options          OptKnock options</span>
+0021 <span class="comment">%   targetRxn       Target flux to be maximized</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">%OPTIONAL INPUTS</span>
+0024 <span class="comment">% options             OptKnock options</span>
+0025 <span class="comment">%   numDel             # of deletions allowed (Default: 5)</span>
+0026 <span class="comment">%   numDelSense        Direction of # of deletions constraint (G/E/L)</span>
+0027 <span class="comment">%                      (Default: L)</span>
+0028 <span class="comment">%   vMax               Max flux (Default: 1000)</span>
+0029 <span class="comment">%   solveOptKnock      Solve problem within Matlab (Default: true)</span>
+0030 <span class="comment">%   createGams         Create GAMS input file</span>
+0031 <span class="comment">%   gamsFile           GAMS input file name</span>
+0032 <span class="comment">%</span>
+0033 <span class="comment">% constrOpt           Explicitly constrained reaction options</span>
+0034 <span class="comment">%   rxnList            Reaction list</span>
+0035 <span class="comment">%   values             Values for constrained reactions</span>
+0036 <span class="comment">%   sense              Constraint senses for constrained reactions (G/E/L)</span>
+0037 <span class="comment">%</span>
+0038 <span class="comment">% prevSolutions       Previous solutions</span>
+0039 <span class="comment">%</span>
+0040 <span class="comment">% verbFlag            Verbose flag</span>
+0041 <span class="comment">%</span>
+0042 <span class="comment">% solutionFileNameTmp File name for storing temporary solutions</span>
+0043 <span class="comment">%</span>
+0044 <span class="comment">%OUTPUTS</span>
+0045 <span class="comment">% optKnockSol           OptKnock solution structure</span>
+0046 <span class="comment">%   rxnList              Reaction KO list</span>
+0047 <span class="comment">%   fluxes               Flux distribution</span>
+0048 <span class="comment">% bilevelMILPproblem    optKnock problem structure</span>
+0049 <span class="comment">%</span>
+0050 <span class="comment">%NOTES</span>
+0051 <span class="comment">% OptKnock uses bounds of -vMax to vMax or 0 to vMax for reversible and</span>
+0052 <span class="comment">% irreversible reactions. If you wish to constrain a reaction, use</span>
+0053 <span class="comment">% constrOpt.</span>
+0054 <span class="comment">%</span>
+0055 <span class="comment">% Markus Herrgard 3/28/05</span>
+0056 <span class="comment">% Richard Que (04/27/10) - Added some default parameters.</span>
+0057 
+0058 <span class="comment">% Set these for MILP callbacks</span>
+0059 <span class="keyword">global</span> MILPproblemType;
+0060 <span class="keyword">global</span> selectedRxnIndIrrev;
+0061 <span class="keyword">global</span> rxnList;
+0062 <span class="keyword">global</span> irrev2rev;
+0063 <span class="keyword">global</span> solutionFileName;
+0064 <span class="keyword">global</span> biomassRxnID;
+0065 <span class="keyword">global</span> OptKnockKOrxnList;
+0066 <span class="keyword">global</span> OptKnockObjective;
+0067 <span class="keyword">global</span> OptKnockGrowth;
+0068 <span class="keyword">global</span> solID;
+0069 
+0070 <span class="comment">%idefault &lt;= 5 deletions; solve OptKnock</span>
+0071 <span class="keyword">if</span> (~exist(<span class="string">'options'</span>,<span class="string">'var'</span>) || isempty(options) ) 
+0072     error(<span class="string">'OptKnock: No target reaction specified'</span>)
+0073 <span class="keyword">else</span>
+0074     <span class="keyword">if</span> ~isfield(options,<span class="string">'vMax'</span>), options.vMax = 1000; <span class="keyword">end</span>
+0075     <span class="keyword">if</span> ~isfield(options,<span class="string">'numDel'</span>), options.numDel = 5; <span class="keyword">end</span>
+0076     <span class="keyword">if</span> ~isfield(options,<span class="string">'numDelSense'</span>), options.numDelSense = <span class="string">'L'</span>; <span class="keyword">end</span>
+0077     <span class="keyword">if</span> ~isfield(options,<span class="string">'solveOptKnock'</span>), options.solveOptKnock = true; <span class="keyword">end</span>
+0078 <span class="keyword">end</span>
+0079 
+0080 <span class="keyword">if</span> ~exist(<span class="string">'constrOpt'</span>,<span class="string">'var'</span>)
+0081     constrOpt.rxnInd = [];
+0082     constrOpt.values = [];
+0083     constrOpt.sense = [];
+0084 <span class="keyword">end</span>
+0085 
+0086 <span class="keyword">if</span> (nargin &lt; 5)
+0087     prevSolutions = [];
+0088 <span class="keyword">end</span>
+0089 <span class="keyword">if</span> (nargin &lt; 6)
+0090     verbFlag = false;
+0091 <span class="keyword">end</span>
+0092 <span class="keyword">if</span> (nargin &lt; 7)
+0093     solutionFileName = <span class="string">'optKnockSolutions.mat'</span>;
+0094 <span class="keyword">else</span>
+0095     solutionFileName = solutionFileNameTmp;
+0096 <span class="keyword">end</span>
+0097 
+0098 <span class="comment">% Convert to irreversible rxns</span>
+0099 [modelIrrev,matchRev,rev2irrev,irrev2rev] = <a href="../../cobra/convertToIrreversible.html" class="code" title="function [modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model)">convertToIrreversible</a>(model);
+0100 
+0101 <span class="comment">% Create the index of the previous KO's suggested by OptKnock to avoid obtaining the same</span>
+0102 <span class="comment">% solution again</span>
+0103 selPrevSolIrrev = [];
+0104 <span class="keyword">for</span> i = 1:length(prevSolutions)
+0105     prevSolRxnList = prevSolutions{i};
+0106     selPrevSol = ismember(model.rxns,prevSolRxnList);
+0107     selPrevSolIrrev(:,i) = selPrevSol(irrev2rev);
+0108 <span class="keyword">end</span>
+0109 
+0110 [nMets,nRxns] = size(modelIrrev.S);
+0111 
+0112 <span class="comment">% Create matchings for reversible reactions in the set selected for KOs</span>
+0113 <span class="comment">% This is to ensure that both directions of the reaction are knocked out</span>
+0114 selSelectedRxn = ismember(model.rxns,selectedRxnList);
+0115 selSelectedRxnIrrev = selSelectedRxn(irrev2rev);
+0116 selectedRxnIndIrrev = find(selSelectedRxnIrrev);
+0117 cnt = 0;
+0118 prevRxnID = -10;
+0119 nSelected = length(selectedRxnIndIrrev);
+0120 selRxnCnt = 1;
+0121 <span class="keyword">while</span> selRxnCnt &lt;= nSelected
+0122     rxnID = selectedRxnIndIrrev(selRxnCnt);
+0123     <span class="keyword">if</span> (matchRev(rxnID)&gt;0)
+0124         cnt = cnt + 1;
+0125         selectedRxnMatch(cnt,1) = selRxnCnt;
+0126         selectedRxnMatch(cnt,2) = selRxnCnt+1;
+0127         selRxnCnt = selRxnCnt + 1;
+0128     <span class="keyword">end</span>
+0129     selRxnCnt = selRxnCnt + 1;
+0130 <span class="keyword">end</span>
+0131 
+0132 <span class="comment">% Set inner constraints for the LP</span>
+0133 constrOptIrrev = <a href="setConstraintsIrrevModel.html" class="code" title="function constrOptIrrev = setConstraintsIrrevModel(constrOpt,model,modelIrrev,rev2irrev)">setConstraintsIrrevModel</a>(constrOpt,model,modelIrrev,rev2irrev);
+0134     
+0135 <span class="comment">% Set objectives for linear and integer parts</span>
+0136 cLinear = zeros(nRxns,1);
+0137 cInteger = zeros(sum(selSelectedRxnIrrev),1);
+0138 
+0139 <span class="comment">% Set the correct objective coefficient</span>
+0140 targetRxnID = find(ismember(model.rxns,options.targetRxn));
+0141 targetRxnIDirrev = rev2irrev{targetRxnID}(1);
+0142 cLinear(targetRxnIDirrev) = 1;
+0143 
+0144 <span class="comment">% Create the constraint matrices for the bilevel MILP</span>
+0145 bilevelMILPproblem = <a href="createBilevelMILPproblem.html" class="code" title="function bilevelMILPproblem = createBilevelMILPproblem(model,cLinear,cInteger,selRxns,selRxnMatch,constrOpt,measOpt,options,selPrevSol)">createBilevelMILPproblem</a>(modelIrrev,cLinear,cInteger,selSelectedRxnIrrev,<span class="keyword">...</span>
+0146     selectedRxnMatch,constrOptIrrev,[],options,selPrevSolIrrev);
+0147 
+0148 <span class="comment">% Initial guess (random)</span>
+0149 <span class="comment">%bilevelMILPproblem.x0 = round(rand(length(bilevelMILPproblem.c),1));</span>
+0150 <span class="keyword">if</span> isfield(options,<span class="string">'initSolution'</span>)
+0151     <span class="keyword">if</span> (length(options.initSolution) &gt; options.numDel | ~all(ismember(options.initSolution,selectedRxnList)))
+0152         warning(<span class="string">'Initial solution not valid - starting from a random initial solution'</span>)
+0153         bilevelMILPproblem.x0 = [];
+0154     <span class="keyword">else</span>
+0155         <span class="comment">% Set initial integer solution</span>
+0156         selInitRxn = ismember(model.rxns,options.initSolution);
+0157         selInitRxnIrrev = selInitRxn(irrev2rev);
+0158         initRxnIndIrrev = find(selInitRxnIrrev);
+0159         initIntegerSol = ~ismember(selectedRxnIndIrrev,initRxnIndIrrev);
+0160         selInteger = bilevelMILPproblem.vartype == <span class="string">'B'</span>;
+0161         [nConstr,nVar] = size(bilevelMILPproblem.A);
+0162         bilevelMILPproblem.x0 = nan(nVar,1);
+0163         bilevelMILPproblem.x0(selInteger) = initIntegerSol;    
+0164         
+0165 <span class="comment">%         LPproblem.b = bilevelMILPproblem.b - bilevelMILPproblem.A(:,selInteger)*initIntegerSol;</span>
+0166 <span class="comment">%         LPproblem.A = bilevelMILPproblem.A(:,bilevelMILPproblem.vartype == 'C');</span>
+0167 <span class="comment">%         LPproblem.c = bilevelMILPproblem.c(bilevelMILPproblem.vartype == 'C');</span>
+0168 <span class="comment">%         LPproblem.lb = bilevelMILPproblem.lb(bilevelMILPproblem.vartype == 'C');</span>
+0169 <span class="comment">%         LPproblem.ub = bilevelMILPproblem.ub(bilevelMILPproblem.vartype == 'C');</span>
+0170 <span class="comment">%         LPproblem.osense = -1;</span>
+0171 <span class="comment">%         LPproblem.csense = bilevelMILPproblem.csense;</span>
+0172 <span class="comment">%         LPsol = solveCobraLP(LPproblem);</span>
+0173 <span class="comment">%</span>
+0174 <span class="comment">%         bilevelMILPproblem.x0(~selInteger) = LPsol.full;</span>
+0175     <span class="keyword">end</span>
+0176 <span class="keyword">else</span>
+0177     bilevelMILPproblem.x0 = [];
+0178 <span class="keyword">end</span>
+0179 
+0180 <span class="comment">% Maximize</span>
+0181 bilevelMILPproblem.osense = -1;
+0182 
+0183 <span class="keyword">if</span> (verbFlag) 
+0184     [nConstr,nVar] = size(bilevelMILPproblem.A);
+0185     nInt = length(bilevelMILPproblem.intSolInd);
+0186     fprintf(<span class="string">'MILP problem with %d constraints %d integer variables and %d continuous variables\n'</span>,<span class="keyword">...</span>
+0187         nConstr,nInt,nVar);
+0188 <span class="keyword">end</span>
+0189 
+0190 bilevelMILPproblem.model = modelIrrev;
+0191 
+0192 <span class="comment">% Set these for CPLEX callbacks</span>
+0193 MILPproblemType = <span class="string">'OptKnock'</span>;
+0194 rxnList = model.rxns;
+0195 biomassRxnID = find(modelIrrev.c==1);
+0196 solID = 0;
+0197 OptKnockObjective = [];
+0198 OptKnockGrowth = [];
+0199 OptKnockKOrxnList = {};
+0200 
+0201 <span class="comment">% Solve problem</span>
+0202 <span class="keyword">if</span> (options.solveOptKnock)
+0203     optKnockSol = <a href="../../cobra/solvers/solveCobraMILP.html" class="code" title="function solution = solveCobraMILP(MILPproblem,varargin)">solveCobraMILP</a>(bilevelMILPproblem,<span class="string">'printLevel'</span>,verbFlag);
+0204     <span class="keyword">if</span> (~isempty(optKnockSol.cont))
+0205         optKnockSol.fluxes = <a href="../../cobra/convertIrrevFluxDistribution.html" class="code" title="function vRev = convertIrrevFluxDistribution(vIrrev,matchRev)">convertIrrevFluxDistribution</a>(optKnockSol.cont(1:length(matchRev)),matchRev);
+0206     <span class="keyword">end</span>
+0207     <span class="keyword">if</span> (~isempty(optKnockSol.int))
+0208         <span class="comment">% Figure out the KO reactions</span>
+0209         optKnockRxnInd = selectedRxnIndIrrev(optKnockSol.int &lt; 1e-4);
+0210         optKnockSol.rxnList = model.rxns(unique(irrev2rev(optKnockRxnInd)));
+0211     <span class="keyword">end</span>
+0212 <span class="keyword">else</span> 
+0213     optKnockSol.rxnList = {};
+0214     optKnockSol.fluxes = [];
+0215 <span class="keyword">end</span>
+0216 
+0217 
+0218</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

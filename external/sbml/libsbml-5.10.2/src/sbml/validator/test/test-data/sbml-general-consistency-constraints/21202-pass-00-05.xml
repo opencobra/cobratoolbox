@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1801) An Event trigger must return a boolean value
+(L2v1 Section 4.10.2)
+      Additional case where the event trigger is a function definition
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+  <model>
+    <listOfFunctionDefinitions>
+      <functionDefinition id="f1">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar><ci> x </ci></bvar>
+              <apply>
+                <eq/>
+                <ci> x </ci>
+                <cn> 1 </cn>
+              </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+      <functionDefinition id="f2">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar><ci> x </ci></bvar>
+              <apply>
+                <neq/>
+                <ci> x </ci>
+                <cn> 0 </cn>
+              </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+      <functionDefinition id="f3">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar><ci> x </ci></bvar>
+              <apply>
+                <gt/>
+                <ci> x </ci>
+                <cn> 1 </cn>
+              </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+      <functionDefinition id="f4">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar><ci> x </ci></bvar>
+              <apply>
+                <lt/>
+                <ci> x </ci>
+                <cn> 1 </cn>
+              </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+      <functionDefinition id="f5">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+           <lambda>
+            <bvar><ci> x </ci></bvar>
+              <apply>
+                <geq/>
+                <ci> x </ci>
+                <cn> 1 </cn>
+              </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+      <functionDefinition id="f6">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar><ci> x </ci></bvar>
+              <apply>
+                <leq/>
+                <ci> x </ci>
+                <cn> 1 </cn>
+              </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+      <functionDefinition id="f7">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+           <lambda>
+            <bvar><ci> x </ci></bvar>
+              <apply>
+                <and/>
+                <ci> x </ci>
+                <true/>
+              </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+      <functionDefinition id="f8">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar><ci> x </ci></bvar>
+              <apply>
+                <or/>
+                <ci> x </ci>
+                <true/>
+               </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+      <functionDefinition id="f9">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar><ci> x </ci></bvar>
+              <apply>
+                <xor/>
+                <ci> x </ci>
+                <true/>
+              </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+      <functionDefinition id="f10">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar><ci> x </ci></bvar>
+              <apply>
+                <not/>
+                <ci> x </ci>
+              </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+      <functionDefinition id="f11">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar><ci> x </ci></bvar>
+                <true/>
+          </lambda>
+        </math>
+      </functionDefinition>
+      <functionDefinition id="f12">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar><ci> x </ci></bvar>
+                  <false/>
+          </lambda>
+        </math>
+      </functionDefinition>
+    </listOfFunctionDefinitions>
+ 
+    <listOfCompartments>
+      <compartment id="compartment" size="1" constant="false"/>
+    </listOfCompartments>
+ 
+    <listOfSpecies>
+      <species id="S1" compartment="compartment" initialAmount="1"/>
+    </listOfSpecies>
+    <listOfEvents>
+      <event id="e1">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> f1 </ci>
+              <ci> S1 </ci>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+      <event id="e2">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> f2 </ci>
+              <ci> S1 </ci>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+ 
+      <event id="e3">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> f3 </ci>
+              <ci> S1 </ci>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+      <event id="e4">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> f4 </ci>
+              <ci> S1 </ci>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+      <event id="e5">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> f5 </ci>
+              <ci> S1 </ci>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+      <event id="e6">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> f6 </ci>
+              <ci> S1 </ci>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+      <event id="e7">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> f7 </ci>
+              <true/>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+      <event id="e8">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> f8 </ci>
+              <true/>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+      <event id="e9">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> f9 </ci>
+              <true/>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+      <event id="e10">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> f10 </ci>
+              <true/>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+      <event id="e11">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> f11 </ci>
+              <true/>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+      <event id="e12">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> f12 </ci>
+              <true/>
+            </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+		  <eventAssignment variable="compartment"/>
+		</listOfEventAssignments>
+      </event>
+    </listOfEvents>
+  </model>
+</sbml>

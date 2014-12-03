@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fail: (1900) An InitialAssignment's symbol must be the id of a Compartment,
+Species, or Parameter.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+	<model>
+		<listOfParameters>
+			<parameter id="p" constant="false"/>
+		</listOfParameters>
+		<listOfInitialAssignments>
+			<initialAssignment symbol="p"/>
+		</listOfInitialAssignments>
+	</model>
+</sbml>

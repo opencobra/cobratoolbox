@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" units="litre" constant="false"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="c" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="e" compartment="c" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="p" compartment="c" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="p1" constant="false"/>
+    </listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="p1">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <ci> p </ci>
+            <ci> k </ci>
+          </apply>
+        </math>
+      </assignmentRule>
+    </listOfRules>
+    <listOfReactions>
+      <reaction id="r" reversible="true" fast="false">
+        <listOfReactants>
+          <speciesReference species="s" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="p" constant="true"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="e"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <divide/>
+              <ci> s </ci>
+              <ci> k </ci>
+            </apply>
+          </math>
+          <listOfLocalParameters>
+            <localParameter id="k" value="1" units="second"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

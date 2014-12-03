@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mergeTwoModels</title>
+  <meta name="keywords" content="mergeTwoModels">
+  <meta name="description" content="function [modelNew] = MergeTwoModels(model1,model2,objrxnmodel)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../../menu.html cobra --><!-- ../menu.html gapFilling --><!-- menu.html KEGG -->
+<h1>mergeTwoModels
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [modelNew] = MergeTwoModels(model1,model2,objrxnmodel)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> function [modelNew] = MergeTwoModels(model1,model2,objrxnmodel)
+
+ Inputs
+   model1          model 1
+   model2          model 2
+   objrxnmodel     Set as 1 or 2 to set objective reaction from
+                   desired model
+
+ based on[model_metE] = CreateMetE(model_E,model_M)) (Aarash Bordbar,
+ 07/06/07);
+ 11/10/2007 IT</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../cobra/gapFilling/growthExpMatch/generateSUXMatrix.html" class="code" title="function MatricesSUX =generateSUXMatrix(model,dictionary, KEGGFilename, KEGGBlackList, compartment, addModel)">generateSUXMatrix</a>	generateSUXMatrix creates the matrices for matlab smiley -- > combines S, U</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel)</a>
+0002 <span class="comment">% function [modelNew] = MergeTwoModels(model1,model2,objrxnmodel)</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% Inputs</span>
+0005 <span class="comment">%   model1          model 1</span>
+0006 <span class="comment">%   model2          model 2</span>
+0007 <span class="comment">%   objrxnmodel     Set as 1 or 2 to set objective reaction from</span>
+0008 <span class="comment">%                   desired model</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% based on[model_metE] = CreateMetE(model_E,model_M)) (Aarash Bordbar,</span>
+0011 <span class="comment">% 07/06/07);</span>
+0012 <span class="comment">% 11/10/2007 IT</span>
+0013 
+0014 
+0015  
+0016 <span class="keyword">if</span> nargin &lt; 3
+0017     objrxnmodel =1;
+0018 <span class="keyword">end</span>
+0019 
+0020 <span class="comment">% Creating Universal Metabolite Names</span>
+0021 
+0022 <span class="comment">% Only needed if metabolite names vary, in the specific instance of iAF1260</span>
+0023 <span class="comment">% the metabolites vary by a [c] at the end, which is removed by the script</span>
+0024 <span class="comment">% fprintf('Fixing metabolite names: ');</span>
+0025 <span class="comment">% for i = 1:size(model2.mets,1)</span>
+0026 <span class="comment">%     model2.mets(i,1) = strrep(model2.mets(i,1), '[c]' ,'');</span>
+0027 <span class="comment">% end</span>
+0028 <span class="comment">% fprintf('Finished\n');</span>
+0029 
+0030 <span class="comment">% Combining Reaction List</span>
+0031 fprintf(<span class="string">'Combining reaction lists: '</span>);
+0032 modelNew.rxns = model1.rxns;
+0033 modelNew.rxns(size(model1.rxns,1)+1:size(model1.rxns,1)+size(model2.rxns,1),1) = model2.rxns;
+0034 lengthreaction = size(modelNew.rxns,1);
+0035 fprintf(<span class="string">'Finished, %i Distinct Reactions\n'</span>,lengthreaction);
+0036 
+0037 <span class="comment">% Combining Metabolite List</span>
+0038 fprintf(<span class="string">'Combining metabolite lists: '</span>);
+0039 h = waitbar(0, <span class="string">'Combining Metabolites in Progress ...'</span>);
+0040 modelNew.mets = model1.mets;
+0041 
+0042 sizemets = size(modelNew.mets,1)+1;
+0043 HTABLE = java.util.Hashtable;
+0044 <span class="keyword">for</span> i = 1:length(model1.mets)
+0045     HTABLE.put(model1.mets{i}, i);
+0046 <span class="keyword">end</span>
+0047 <span class="keyword">for</span> i = 1:size(model2.mets,1)
+0048     <span class="comment">%tmp2 = strmatch(model2.mets(i,1),model1.mets,'exact')</span>
+0049     tmp = HTABLE.get(model2.mets{i,1});
+0050 <span class="comment">%     if ~isempty(tmp) || ~isempty(tmp2)</span>
+0051 <span class="comment">%         if any(tmp2 ~= tmp)</span>
+0052 <span class="comment">%             pause;</span>
+0053 <span class="comment">%         end</span>
+0054 <span class="comment">%     end</span>
+0055     <span class="keyword">if</span> isempty(tmp) == 1
+0056         modelNew.mets(sizemets,1) = model2.mets(i,1);
+0057         sizemets = sizemets+1;
+0058     <span class="keyword">end</span>
+0059     <span class="keyword">if</span>(mod(i,40) == 0),waitbar(i/size(model2.mets,1),h);<span class="keyword">end</span>
+0060 <span class="keyword">end</span>
+0061 
+0062 lengthmet = size(modelNew.mets,1);
+0063 close(h);
+0064 fprintf(<span class="string">'Finished, %i Distinct Metabolites\n'</span>,lengthmet);
+0065 
+0066 
+0067 <span class="comment">% Combining lb List</span>
+0068 fprintf(<span class="string">'Combining LB list: '</span>);
+0069 modelNew.lb = model1.lb;
+0070 floatingmodel = model2.lb;
+0071 modelNew.lb(size(model1.lb,1)+1:size(model1.lb,1)+size(model2.lb,1),1) = floatingmodel;
+0072 fprintf(<span class="string">'Finished\n'</span>);
+0073 
+0074 <span class="comment">% Combining ub List</span>
+0075 fprintf(<span class="string">'Combining UB list: '</span>);
+0076 modelNew.ub = model1.ub;
+0077 modelNew2.ub = model2.ub;
+0078 modelNew.ub(size(model1.ub,1)+1:size(model1.ub,1)+size(model2.ub,1),1) = modelNew2.ub;
+0079 fprintf(<span class="string">'Finished\n'</span>);
+0080 
+0081 <span class="comment">% Combining subsystem List</span>
+0082 <span class="comment">% fprintf('Combining Subsystem List: ');</span>
+0083 <span class="comment">% modelNew.subSystems = model1.RxnSubsystem;</span>
+0084 <span class="comment">% modelNew.subSystems(size(model1.RxnSubsystem,1)+1:size(model1.RxnSubsystem,1)+size(model2.subSystems)) = model2.subSystems;</span>
+0085 <span class="comment">% modelNew.rxnNames = model1.rxnNames;</span>
+0086 <span class="comment">% modelNew.rxnNames(size(model1.rxnNames,1)+1:size(model1.rxnNames,1)+size(model2.rxnNames)) = model2.rxnNames;</span>
+0087 <span class="comment">% fprintf('Finished\n');</span>
+0088 
+0089 <span class="comment">% Combining S Matrices (using sparse allocation)</span>
+0090 fprintf(<span class="string">'Combining S matrices: '</span>);
+0091 [a1,b1] = find(model1.S);
+0092 [a2,b2] = find(model2.S);
+0093 model1_num = length(a1);
+0094 model2_num = length(a2);
+0095 modelNew.S = spalloc(size(modelNew.mets,1),size(modelNew.rxns,1),model1_num+model2_num);
+0096 
+0097 h = waitbar(0, <span class="string">'Adding Matrix 1 in Progress ...'</span>);
+0098 <span class="keyword">for</span> i = 1:size(a1,1)
+0099     modelNew.S(a1(i),b1(i)) = model1.S(a1(i),b1(i));
+0100     <span class="keyword">if</span> mod(i,40) == 0,waitbar(i/size(a1,1),h);<span class="keyword">end</span>
+0101 <span class="keyword">end</span>
+0102 close(h);
+0103 
+0104 
+0105 
+0106 HTABLE = java.util.Hashtable;
+0107 <span class="keyword">for</span> i = 1:length(modelNew.mets)
+0108     HTABLE.put(modelNew.mets{i}, i);
+0109 <span class="keyword">end</span>
+0110 h = waitbar(0, <span class="string">'Adding Matrix 2 in Progress ...'</span>);
+0111 <span class="keyword">for</span> i = 1:size(model2.S,2)
+0112     compounds = find(model2.S(:,i));
+0113     <span class="keyword">for</span> j = 1:size(compounds,1)
+0114         metnames(j,1) = model2.mets(compounds(j));
+0115         
+0116         <span class="comment">%tmp2 = strmatch(metnames(j,1),modelNew.mets,'exact');</span>
+0117         <span class="comment">%metnames(j,1)</span>
+0118         tmp = HTABLE.get(metnames{j,1});
+0119         <span class="comment">%if any(tmp2 ~= tmp)</span>
+0120         <span class="comment">%    pause;</span>
+0121         <span class="comment">%end</span>
+0122         modelNew.S(tmp,i+size(model1.S,2)) = model2.S(compounds(j),i);
+0123     <span class="keyword">end</span>
+0124     <span class="keyword">if</span> mod(i,40) == 0,waitbar(i/size(model2.S,2),h);<span class="keyword">end</span>
+0125 <span class="keyword">end</span>
+0126 close(h);
+0127 fprintf(<span class="string">'Finished\n'</span>);
+0128 
+0129 <span class="comment">% Creating b</span>
+0130 fprintf(<span class="string">'Combining b lists: '</span>);
+0131 modelNew.b = zeros(size(modelNew.mets,1),1);
+0132 fprintf(<span class="string">'Finished\n'</span>);
+0133 
+0134 <span class="comment">% Creating c (no objective function optimization)</span>
+0135 fprintf(<span class="string">'Combining c lists: '</span>);
+0136 modelNew.c = zeros(size(modelNew.rxns,1),1);
+0137 fprintf(<span class="string">'Finished\n'</span>);
+0138 
+0139 <span class="comment">% Optimization Parameters in modelNew.c</span>
+0140 fprintf(<span class="string">'Setting up optimization parameters: '</span>);
+0141 <span class="keyword">switch</span> objrxnmodel
+0142     <span class="keyword">case</span> 1
+0143         modelNew.c(find(model1.c),1) = 1;
+0144     <span class="keyword">case</span> 2
+0145         modelNew.c(find(model2.c)+size(model1.c,1),1) = 1;
+0146 <span class="keyword">end</span>
+0147 fprintf(<span class="string">'Finished\n'</span>);
+0148 
+0149 <span class="comment">% Creating rev</span>
+0150 fprintf(<span class="string">'Combining rev lists: '</span>);
+0151 modelNew.rev = model1.rev;
+0152 modelNew.rev(size(model1.rev,1)+1:size(model1.rev,1)+size(model2.rev,1),1) = model2.rev;
+0153 fprintf(<span class="string">'Finished\n'</span>);
+0154 
+0155 <span class="comment">% % Creating GPR Rules</span>
+0156 fprintf(<span class="string">'Combining Genes: '</span>);
+0157 modelNew.genes = model1.genes;
+0158 <span class="keyword">for</span> i = 1:length(model2.genes)
+0159     <span class="keyword">if</span> isempty(strmatch(model2.genes{i},modelNew.genes,<span class="string">'exact'</span>)) == 1
+0160         modelNew.genes(size(model.genes,1)+i) = model2.genes{i};
+0161     <span class="keyword">end</span>
+0162 <span class="keyword">end</span>
+0163 fprintf(<span class="string">'Finished\n'</span>);
+0164 
+0165 fprintf(<span class="string">'Combining Remaining Genetic Information: '</span>);
+0166 h = waitbar(0, <span class="string">'Combining Genetic Info ...'</span>);
+0167 modelNew.rxnGeneMat = model1.rxnGeneMat;
+0168 <span class="keyword">for</span> i = 1:size(model2.rxnGeneMat,1)
+0169     <span class="keyword">for</span> j = 1:size(model2.rxnGeneMat,2)
+0170         <span class="keyword">if</span> model2.rxnGeneMat(i,j) ~= 0
+0171             geneLoc = strmatch(model2.genes{j},modelNew.genes,<span class="string">'exact'</span>);
+0172             modelNew.rxnGeneMat(length(model1.lb)+i,j) = 1;
+0173         <span class="keyword">end</span>
+0174     <span class="keyword">end</span>
+0175     <span class="keyword">if</span>(mod(i, 40) == 0),waitbar(i/size(model2.rxnGeneMat,1),h);<span class="keyword">end</span>
+0176 <span class="keyword">end</span>
+0177 close(h);
+0178 
+0179 modelNew.grRules = model1.grRules;
+0180 modelNew.grRules(size(model1.grRules,1)+1:size(model1.grRules,1)+size(model2.grRules,1)) = model2.grRules;
+0181 modelNew.rules = model1.rules;
+0182 modelNew.rules(size(model1.rules,1)+1:size(model1.rules,1)+size(model2.rules,1)) = model2.rules;
+0183 fprintf(<span class="string">'Finished\n'</span>);</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

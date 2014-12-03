@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+  <model id="l2v3_all">
+    <listOfCompartments>
+      <compartment id="a" size="2.3" constant="false"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="a" initialAmount="0"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="p" value="2" units="second" constant="false"/>
+      <parameter id="p1" value="2" units="mole" constant="false"/>
+      <parameter id="p3" value="2" units="litre" constant="false"/>
+    </listOfParameters>
+    <listOfInitialAssignments>
+      <initialAssignment symbol="p1">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> r </ci>
+            <ci> p </ci>
+          </apply>
+        </math>
+      </initialAssignment>
+    </listOfInitialAssignments>
+    <listOfReactions>
+      <reaction id="r" fast="true" reversible="false">
+        <listOfReactants>
+          <speciesReference species="s" sboTerm="SBO:0000011">
+            <stoichiometryMath>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <apply>
+                  <times/>
+                  <ci> s </ci>
+                  <ci> p </ci>
+                </apply>
+              </math>
+            </stoichiometryMath>
+          </speciesReference>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> s </ci>
+                <ci> k </ci>
+              </apply>
+              <ci> p </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k" value="9" units="litre"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

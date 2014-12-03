@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of idv2cdv</title>
+  <meta name="keywords" content="idv2cdv">
+  <meta name="description" content="returns transformation to go from idv to cumomers.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../../menu.html cobra --><!-- ../menu.html fluxomics --><!-- menu.html c13solver -->
+<h1>idv2cdv
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>returns transformation to go from idv to cumomers.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [out] = idv2cdv(n) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> returns transformation to go from idv to cumomers.
+ cdv = idv2cdv(log2(length(idv)))*idv;</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="idv2cdv.html" class="code" title="function [out] = idv2cdv(n)">idv2cdv</a>	returns transformation to go from idv to cumomers.</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="idv2cdv.html" class="code" title="function [out] = idv2cdv(n)">idv2cdv</a>	returns transformation to go from idv to cumomers.</li><li><a href="../../../cobra/fluxomics/compareBinsOfFluxes.html" class="code" title="function [output] = compareBinsOfFluxes(xglc,model,sammin,sammax,metabolites)">compareBinsOfFluxes</a>	takes the overall sammin and sammax samples, bins them into</li><li><a href="../../../cobra/fluxomics/compareMultSamp.html" class="code" title="function [totalz,zscore,mdvs] = compareMultSamp(xglc,model,samps,measuredMetabolites)">compareMultSamp</a>	Compare the multiple sets of samples</li><li><a href="../../../cobra/fluxomics/compareTwoSamp.html" class="code" title="function [totalz,zscore,mdv1,mdv2] = compareTwoSamp(xglc,model,samp1,samp2,measuredMetabolites)">compareTwoSamp</a>	Compare the 2 sets of samples</li><li><a href="../../../cobra/fluxomics/getBinsOfFluxes.html" class="code" title="function [output] = getBinsOfFluxes(samp,numfluxes,numbins)">getBinsOfFluxes</a>	take a samp.points fluxes and bin them by numfluxes (remainder not used)</li><li><a href="../../../cobra/fluxomics/getCompareBinsOfFluxes.html" class="code" title="function [output] = getCompareBinsOfFluxes(xglc,model,samplo,samphi,metabolites)">getCompareBinsOfFluxes</a>	compares the bins of fluxes between samplo and samphi</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [out] = idv2cdv(n)</a>
+0002 <span class="comment">% returns transformation to go from idv to cumomers.</span>
+0003 <span class="comment">% cdv = idv2cdv(log2(length(idv)))*idv;</span>
+0004 
+0005 <span class="keyword">if</span> n &lt;= 0
+0006     out = [1];
+0007     <span class="keyword">return</span>;
+0008 <span class="keyword">end</span>
+0009 
+0010 T = <a href="idv2cdv.html" class="code" title="function [out] = idv2cdv(n)">idv2cdv</a>(n-1);
+0011 out = [T,T;zeros(size(T)),T];</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

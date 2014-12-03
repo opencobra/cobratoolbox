@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of errorComputation2</title>
+  <meta name="keywords" content="errorComputation2">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../../menu.html cobra --><!-- ../menu.html fluxomics --><!-- menu.html c13solver -->
+<h1>errorComputation2
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [out] = errorComputation2(x,Prob) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="scoreC13Fit.html" class="code" title="function [output] = scoreC13Fit(flux,expdata,model, namesset, method)">scoreC13Fit</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../cobra/fluxomics/C13ConfidenceInterval.html" class="code" title="function [vs, output, v0] = C13ConfidenceInterval(v0, expdata, model, max_score, directions, majorIterationLimit)">C13ConfidenceInterval</a>	v0 - set of flux vectors to be used as initial guesses.  They may be</li><li><a href="errorComputation2_grad.html" class="code" title="function [out] = errorComputation2_grad(x,Prob)">errorComputation2_grad</a>	</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [out] = errorComputation2(x,Prob)</a>
+0002 expdata = Prob.user.expdata;
+0003 model = Prob.user.model;
+0004 out = 0;
+0005 <span class="keyword">if</span> iscell(expdata)
+0006     <span class="keyword">for</span> i = 1:length(expdata)
+0007         t = <a href="scoreC13Fit.html" class="code" title="function [output] = scoreC13Fit(flux,expdata,model, namesset, method)">scoreC13Fit</a>(x,expdata{i},model);
+0008         out = out + t.error;
+0009     <span class="keyword">end</span>
+0010 <span class="keyword">else</span>
+0011     t = <a href="scoreC13Fit.html" class="code" title="function [output] = scoreC13Fit(flux,expdata,model, namesset, method)">scoreC13Fit</a>(x,expdata,model);
+0012     out = t.error;
+0013 <span class="keyword">end</span>
+0014 
+0015 <span class="comment">% if isfield(Prob.user, 'scaled')</span>
+0016 <span class="comment">%     out = out*Prob.user.scaled;</span>
+0017 <span class="comment">% end</span>
+0018 
+0019 <span class="keyword">if</span> isfield(Prob.user, <span class="string">'objective'</span>)
+0020     error = out;
+0021     out = Prob.user.objective'*x;
+0022     <span class="keyword">if</span> error &gt; Prob.user.max_error
+0023         out = out + Prob.user.multiplier*(Prob.user.max_error-error)^2;
+0024     <span class="keyword">end</span>
+0025 <span class="keyword">end</span>
+0026 
+0027 <span class="keyword">if</span> isnan(out)
+0028     save errorFile x Prob
+0029 <span class="keyword">end</span>
+0030 <span class="keyword">return</span>;</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

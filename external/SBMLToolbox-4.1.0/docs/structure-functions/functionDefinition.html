@@ -1,0 +1,379 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "../style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>MATLAB_SBML_STRUCTURE_FUNCTIONS\FUNCTIONDEFINITION</h3>
+
+<p>The functions allow users to create and work with the SBML FunctionDefinition structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>FunctionDefinition = FunctionDefinition_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML FunctionDefinition structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>id = FunctionDefinition_getId(SBMLFunctionDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the id attribute</li>
+</ol>
+
+<hr>
+
+<h4>math = FunctionDefinition_getMath(SBMLFunctionDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the math attribute</li>
+</ol>
+
+<hr>
+
+<h4>metaid = FunctionDefinition_getMetaid(SBMLFunctionDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>name = FunctionDefinition_getName(SBMLFunctionDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the name attribute</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = FunctionDefinition_getSBOTerm(SBMLFunctionDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>value = FunctionDefinition_isSetId(SBMLFunctionDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the id attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = FunctionDefinition_isSetMath(SBMLFunctionDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the math attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = FunctionDefinition_isSetMetaid(SBMLFunctionDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the metaid attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = FunctionDefinition_isSetName(SBMLFunctionDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the name attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = FunctionDefinition_isSetSBOTerm(SBMLFunctionDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLFunctionDefinition = FunctionDefinition_setId(SBMLFunctionDefinition, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+<li>id; a string representing the id to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FunctionDefinition structure with the new value for the id attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLFunctionDefinition = FunctionDefinition_setMath(SBMLFunctionDefinition, math)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+<li>math; string representing the math expression math to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FunctionDefinition structure with the new value for the math attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLFunctionDefinition = FunctionDefinition_setMetaid(SBMLFunctionDefinition, metaid)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+<li>metaid; a string representing the metaid to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FunctionDefinition structure with the new value for the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLFunctionDefinition = FunctionDefinition_setName(SBMLFunctionDefinition, name)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+<li>name; a string representing the name to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FunctionDefinition structure with the new value for the name attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLFunctionDefinition = FunctionDefinition_setSBOTerm(SBMLFunctionDefinition, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+<li>sboTerm, an integer representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FunctionDefinition structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLFunctionDefinition = FunctionDefinition_unsetId(SBMLFunctionDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FunctionDefinition structure with the id attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLFunctionDefinition = FunctionDefinition_unsetMath(SBMLFunctionDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FunctionDefinition structure with the math attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLFunctionDefinition = FunctionDefinition_unsetMetaid(SBMLFunctionDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FunctionDefinition structure with the metaid attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLFunctionDefinition = FunctionDefinition_unsetName(SBMLFunctionDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FunctionDefinition structure with the name attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLFunctionDefinition = FunctionDefinition_unsetSBOTerm(SBMLFunctionDefinition)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLFunctionDefinition, an SBML FunctionDefinition structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FunctionDefinition structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>

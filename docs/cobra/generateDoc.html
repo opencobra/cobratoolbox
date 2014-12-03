@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of generateDoc</title>
+  <meta name="keywords" content="generateDoc">
+  <meta name="description" content="generateDoc uses m2html to create a set of html docs">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html cobra -->
+<h1>generateDoc
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>generateDoc uses m2html to create a set of html docs</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function generateDoc(pathname, graph) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">generateDoc uses m2html to create a set of html docs 
+in the cba toolbox and place them in a directory called 'docs'.
+
+ generateDoc(pathname, graph)
+
+OPTIONAL INPUTS
+ pathname  Path to folder to generate documents for
+ graph     Generate function dependcy graph (Default = off) Set to 'on' 
+
+If the directory 'docs' exists, the user will be prompted 
+for notice that the contents of the directory will be 
+replaced with a new set of generated docs.
+
+This routine will exit if the user does not agree with this.
+If the directory 'docs' does not exist, then it will be created.
+ 
+generateDoc uses m2html, therefore m2html must be in the path.
+m2html will be located in the cba toolbox and added to the path 
+if not found on the path.
+
+ Wing Choi 1/17/08
+ Richard Que (8/06/2010)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../cobra/external/m2html/m2html.html" class="code" title="function m2html(varargin)">m2html</a>	M2HTML - Documentation System for Matlab M-files in HTML</li><li><a href="../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>	columnVector Converts a vector to a column vector</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function directories = getDir(directory,ignore)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function generateDoc(pathname, graph)</a>
+0002 <span class="comment">%generateDoc uses m2html to create a set of html docs</span>
+0003 <span class="comment">%in the cba toolbox and place them in a directory called 'docs'.</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% generateDoc(pathname, graph)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%OPTIONAL INPUTS</span>
+0008 <span class="comment">% pathname  Path to folder to generate documents for</span>
+0009 <span class="comment">% graph     Generate function dependcy graph (Default = off) Set to 'on'</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">%If the directory 'docs' exists, the user will be prompted</span>
+0012 <span class="comment">%for notice that the contents of the directory will be</span>
+0013 <span class="comment">%replaced with a new set of generated docs.</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">%This routine will exit if the user does not agree with this.</span>
+0016 <span class="comment">%If the directory 'docs' does not exist, then it will be created.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%generateDoc uses m2html, therefore m2html must be in the path.</span>
+0019 <span class="comment">%m2html will be located in the cba toolbox and added to the path</span>
+0020 <span class="comment">%if not found on the path.</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">% Wing Choi 1/17/08</span>
+0023 <span class="comment">% Richard Que (8/06/2010)</span>
+0024 
+0025 saveDir = pwd;
+0026 <span class="comment">%BUGFIX: Updated to work on Unix systems in addition to MS Windows</span>
+0027 <span class="comment">%Do not remove this unless you've validated that your changes function</span>
+0028 <span class="comment">%on Mac OS X and GNU/Linux</span>
+0029 <span class="keyword">if</span> filesep == <span class="string">'/'</span>
+0030   cbaDir = filesep;
+0031 <span class="keyword">else</span>
+0032   cbaDir = <span class="string">''</span>;
+0033 <span class="keyword">end</span>
+0034 dN = <span class="string">''</span>;
+0035 
+0036 <span class="comment">%locate the cbaToolbox from where matlab finds generateDoc</span>
+0037 mFilePath = mfilename(<span class="string">'fullpath'</span>);
+0038 cbaDir = mFilePath(1:end-length(mfilename)-1);
+0039 cd(cbaDir);
+0040 
+0041 <span class="comment">%if pathname was not an input argument</span>
+0042 currentDir = pwd;
+0043 <span class="keyword">if</span>(nargin&lt;1)||isempty(pathname)
+0044     <span class="comment">% parse out the current dir name, not the entire path</span>
+0045     display (<span class="string">' '</span>);
+0046     display(strcat(<span class="string">'Creating html docs for --&gt; '</span> , <span class="string">' '</span> , currentDir));
+0047     reply = input(<span class="string">'is this ok? y/n [n]: '</span>, <span class="string">'s'</span>);
+0048     <span class="keyword">if</span> ((isempty(reply)) || (reply ~= <span class="string">'y'</span>))
+0049         cd(saveDir);
+0050         <span class="keyword">return</span>;
+0051     <span class="keyword">end</span>
+0052 <span class="keyword">else</span>
+0053     cbaDir = pathname;
+0054 <span class="keyword">end</span>
+0055 
+0056 <span class="comment">%Get Directory Name</span>
+0057 remain = currentDir;
+0058 <span class="keyword">while</span> true
+0059     [str, remain] = strtok(remain,filesep);
+0060     <span class="keyword">if</span> isempty(str), <span class="keyword">break</span>; <span class="keyword">end</span>
+0061     dirName = str;
+0062 <span class="keyword">end</span>
+0063 
+0064 <span class="keyword">if</span> (exist(<span class="string">'m2html'</span>,<span class="string">'file'</span>) ~= 2)
+0065     disp(<span class="string">'m2html not found, adding it to path'</span>);
+0066     addpath(strcat(cbaDir,filesep,<span class="string">'external'</span>,filesep,<span class="string">'m2html'</span>)); <span class="comment">%changed to reflect new folder structure</span>
+0067 <span class="keyword">end</span>
+0068 
+0069 <span class="keyword">if</span> (isdir(<span class="string">'docs'</span>))
+0070     display (<span class="string">'The docs directory already exists'</span>)
+0071     display (<span class="string">'I will remove the existing docs directory'</span>)
+0072     display (<span class="string">'and replace its entire contents with newly'</span>)
+0073     display (<span class="string">'generated html docs.'</span>)
+0074     display (<span class="string">' '</span>);
+0075     reply = input(<span class="string">'Do you want to replace the contents of the directory? y/n [n]: '</span>, <span class="string">'s'</span>);
+0076     <span class="keyword">if</span> ((isempty(reply)) || (reply ~= <span class="string">'y'</span>))
+0077         cd(saveDir);
+0078         <span class="keyword">return</span>;
+0079     <span class="keyword">end</span>
+0080 <span class="keyword">end</span>
+0081 
+0082 preDirName = cbaDir(1:end-length(dirName));
+0083 <span class="keyword">if</span>(nargin&lt;2)||~strcmp(graph, <span class="string">'on'</span>)
+0084     dirNames = <a href="#_sub1" class="code" title="subfunction directories = getDir(directory,ignore)">getDir</a>(cbaDir,{<span class="string">'.svn'</span>,<span class="string">'obsolete'</span>,<span class="string">'docs'</span>,<span class="string">'private'</span>,<span class="string">'@template'</span>,<span class="string">'toolboxes'</span>,<span class="string">'internal'</span>,<span class="string">'testing'</span>});  
+0085     <span class="keyword">for</span> i=1:length(dirNames), dirNames{i} = strrep(dirNames{i},preDirName,<span class="string">''</span>); <span class="keyword">end</span>
+0086     cd ..;
+0087     <a href="../cobra/external/m2html/m2html.html" class="code" title="function m2html(varargin)">m2html</a>(<span class="string">'mfiles'</span>,dirNames,<span class="string">'htmldir'</span>,strcat(dirName,filesep,<span class="string">'docs'</span>),<span class="string">'recursive'</span>,<span class="string">'off'</span>, <span class="string">'global'</span>,<span class="string">'on'</span>,<span class="string">'template'</span>,<span class="string">'frame'</span>, <span class="string">'index'</span>,<span class="string">'menu'</span>, <span class="string">'globalHypertextLinks'</span>, <span class="string">'on'</span>);
+0088 <span class="keyword">else</span>
+0089     dirNames = <a href="#_sub1" class="code" title="subfunction directories = getDir(directory,ignore)">getDir</a>(cbaDir,{<span class="string">'.svn'</span>,<span class="string">'obsolete'</span>,<span class="string">'docs'</span>,<span class="string">'private'</span>,<span class="string">'@template'</span>,<span class="string">'internal'</span>,<span class="string">'toolboxes'</span>,<span class="string">'testing'</span>});
+0090     <span class="keyword">for</span> i=1:length(dirNames), dirNames{i} = strrep(dirNames{i},preDirName,<span class="string">''</span>); <span class="keyword">end</span>
+0091 <span class="comment">% go up one dir</span>
+0092     cd ..;
+0093 <span class="comment">% call m2html</span>
+0094     <a href="../cobra/external/m2html/m2html.html" class="code" title="function m2html(varargin)">m2html</a>(<span class="string">'mfiles'</span>, dirNames, <span class="string">'htmldir'</span>,strcat(dirName,filesep,<span class="string">'docs'</span>),<span class="string">'recursive'</span>,<span class="string">'off'</span>, <span class="string">'global'</span>,<span class="string">'on'</span>,<span class="string">'template'</span>,<span class="string">'frame'</span>, <span class="string">'index'</span>,<span class="string">'menu'</span>, <span class="string">'globalHypertextLinks'</span>, <span class="string">'on'</span>, <span class="string">'graph'</span>, <span class="string">'on'</span>);
+0095 <span class="keyword">end</span>
+0096 <span class="comment">% cd back to saveDir again</span>
+0097 cd(saveDir);
+0098 
+0099 <a name="_sub1" href="#_subfunctions" class="code">function directories = getDir(directory,ignore)</a>
+0100 <span class="comment">%Get list of directories beneath the specified directory</span>
+0101 directories = {directory};
+0102 currDir = dir([directory,filesep,<span class="string">'*'</span>]);
+0103 currDir = {currDir([currDir.isdir]).name};
+0104 currDir =  currDir(~ismember(currDir,{<span class="string">'.'</span>,<span class="string">'..'</span>,ignore{:}}));
+0105 
+0106 <span class="comment">%Loop through the directory list and recursively call this function</span>
+0107 <span class="keyword">for</span> i = 1:length(currDir)
+0108     tmp = <a href="#_sub1" class="code" title="subfunction directories = getDir(directory,ignore)">getDir</a>([directory,filesep,currDir{i}],ignore);
+0109     tmp = <a href="../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>(tmp);
+0110     directories = [directories; tmp(:)];
+0111 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

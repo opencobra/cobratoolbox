@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+  <model metaid="_case00036" id="case00036" name="case00036">
+    <listOfCompartments>
+      <compartment id="compartment" name="compartment" size="0.5" units="volume"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="S1" name="S1" compartment="compartment" initialAmount="2" substanceUnits="substance"/>
+      <species id="S2" name="S2" compartment="compartment" initialConcentration="1" substanceUnits="substance"/>
+      <species id="S3" compartment="compartment" initialAmount="2" substanceUnits="substance"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="k1" name="k1" value="0.75"/>
+      <parameter id="k2" name="k1" value="0.75"/>
+      <parameter id="k3"/>
+    </listOfParameters>
+    <listOfInitialAssignments>
+      <initialAssignment symbol="k2">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> k1 </ci>
+            <ci> S1 </ci>
+          </apply>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="k3">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> k1 </ci>
+            <ci> S2 </ci>
+          </apply>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="S3">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <cn> 1 </cn>
+            <cn> 2 </cn>
+          </apply>
+        </math>
+      </initialAssignment>
+    </listOfInitialAssignments>
+    <listOfReactions>
+      <reaction id="reaction1" name="reaction1" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference id="sr1" species="S1" stoichiometry="2"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference id="sr2" species="S2"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> compartment </ci>
+              <ci> k1 </ci>
+              <ci> S1 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

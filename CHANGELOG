@@ -1,0 +1,52 @@
+pre2.0.6
+ -Fixed bug 3556986.
+
+2.0.5
+ -Added in support for gurobi5 (Thanks Tim)
+ -Added in Turner's drawCbMap patch
+ -Changed default solver to gurobi5 (no longer requires gurobi_mex).
+ -Updated the SBMLToolbox to 4.1.0 (works with libSBML 5.5.0 - Thanks SBML.org).
+
+2.0.4
+ -Applied patch to allow for non-integer ids in createTissueSpecificModel
+ -Added support for solving QP's with gurobi / gurobi_mex
+
+
+2.0.5 TestAll Results
+passedCnt =
+
+    17
+
+Tests passed: 
+testBuildMPS
+testDeletionStudy
+testElementalBalance
+testFBA
+testFVA
+testGDLS
+testGrowthExpMatch
+testMOMA
+testMaps
+testModelManipulation
+testOptKnock
+testRobustnessAnalysis
+testSBML
+testSampleCbModel
+testgpSampler
+testTissueModel
+testpFBA
+
+
+Tests not passed: 
+testC13Fitting
+testSolvers
+IT IS NOT NECESSARY FOR THE COBRA TOOLBOX TO PASS ALL TESTS TO FUNCTION; HOWEVER, IT MUST PASS THE TESTS THAT ARE RELEVANT TO YOUR PARTICULAR PROBLEM!!!
+Tests may not pass for several reasons.  Some of the most common issues:
+1.  The correct solver is not installed.  Certain tests require LP, MILP, QP or NLP solvers.  See changeCobraSolvers.m for a complete list of supported solvers.
+These tests will fail when running testAll unless one has the tomlab suite installed.  If all of the functions that you require for your use function then do not worry about them: testC13Fitting, testGDLS, testMOMA, testOptKnock, testSolvers
+If a particular test fails, you can run that test individually for more information
+
+ans =
+
+17 of 19 tests completed successfully.
+

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+		<listOfParameters  metaid="ff" sboTerm="SBO:0000001" id="l">
+			<parameter id="p" constant="false" units="mole"/>
+		</listOfParameters>
+  </model>
+</sbml>

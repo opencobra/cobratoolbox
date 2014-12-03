@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Fail: (907) MetaIds must be unique among all.
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model id="m" metaid="mg">
+    <listOfCompartments>
+      <compartment id="c" metaid = "cg"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" metaid="sg" compartment="c"/>
+    </listOfSpecies>
+  </model>
+</sbml>

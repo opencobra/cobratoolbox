@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Pass: (1307) A Compartment with spatialDimensions='3' must have units
+of 'volume', 'litre', or the id of a UnitDefinition that defines a
+variant of 'metre' with exponent='3' or a variant of 'litre'
+(L2v1 Section 4.5.4).
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model>
+    <listOfUnitDefinitions>
+      <unitDefinition id="ml">
+        <listOfUnits>
+          <unit kind="litre" exponent="1" scale="-3"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment id="c" spatialDimensions="3" units="ml"/>
+    </listOfCompartments>
+  </model>
+</sbml>

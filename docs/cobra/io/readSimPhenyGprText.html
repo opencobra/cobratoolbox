@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of readSimPhenyGprText</title>
+  <meta name="keywords" content="readSimPhenyGprText">
+  <meta name="description" content="readSimPhenyGprText Parses SimPheny GPRA's in text format into a rxn x gene association">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html io -->
+<h1>readSimPhenyGprText
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>readSimPhenyGprText Parses SimPheny GPRA's in text format into a rxn x gene association</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function gpraModel = readSimPhenyGprText(file,model) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">readSimPhenyGprText Parses SimPheny GPRA's in text format into a rxn x gene association
+matrix
+
+ gpraModel = readSimPhenyGPRText(file,model)
+
+INPUTS
+ file      GPR text file
+ model     COBRA model structure
+
+OUTPUT
+ gpraModel COBRA model structure with reaction-gene association matrix
+ Markus Herrgard 2/23/06</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>	columnVector Converts a vector to a column vector</li><li><a href="../../cobra/tools/parseBoolean.html" class="code" title="function [elements,newRule] = parseBoolean(str,tokens,allowedElementChars)">parseBoolean</a>	parseBoolean Parses a Boolean logic statement</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="readCbModel.html" class="code" title="function model = readCbModel(fileName,defaultBound,fileType,modelDescription,compSymbolList,compNameList)">readCbModel</a>	readCbModel Read in a constraint-based model</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function gpraModel = readSimPhenyGprText(file,model)</a>
+0002 <span class="comment">%readSimPhenyGprText Parses SimPheny GPRA's in text format into a rxn x gene association</span>
+0003 <span class="comment">%matrix</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% gpraModel = readSimPhenyGPRText(file,model)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%INPUTS</span>
+0008 <span class="comment">% file      GPR text file</span>
+0009 <span class="comment">% model     COBRA model structure</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">%OUTPUT</span>
+0012 <span class="comment">% gpraModel COBRA model structure with reaction-gene association matrix</span>
+0013 <span class="comment">% Markus Herrgard 2/23/06</span>
+0014 
+0015 <span class="comment">% Read GPRA file</span>
+0016 [tmp,tmp,rxnNames,rxnDesrs,rxnEqns,Confs,subSystems,Regions,gpraStrings,proteinStrings,ECs] = <span class="keyword">...</span>
+0017     textread(file,<span class="string">'%s %s %s %s %s %s %s %s %s %s %s'</span>,<span class="string">'delimiter'</span>,<span class="string">'\t'</span>,<span class="string">'headerlines'</span>,1,<span class="string">'bufsize'</span>,200000);
+0018 
+0019 sel = ~strcmp(rxnNames,<span class="string">''</span>);
+0020 gpraStrings = gpraStrings(sel);
+0021 rxnNames = rxnNames(sel);
+0022 subSystems = subSystems(sel);
+0023 
+0024 nRxns = length(rxnNames);
+0025 allGenes = {};
+0026 <span class="comment">% Parse GPRA's</span>
+0027 h = waitbar(0,<span class="string">'Reading GPRA text file ...'</span>);
+0028 <span class="keyword">for</span> i = 1:nRxns
+0029     <span class="keyword">if</span> mod(i,10) == 0
+0030         waitbar(i/nRxns,h);
+0031     <span class="keyword">end</span>
+0032     thisGpra = gpraStrings{i};
+0033     thisGpra = regexprep(thisGpra,<span class="string">'+'</span>,<span class="string">' and '</span>);
+0034     thisGpra = regexprep(thisGpra,<span class="string">','</span>,<span class="string">' or '</span>);
+0035     [thisGenes,rule] = <a href="../../cobra/tools/parseBoolean.html" class="code" title="function [elements,newRule] = parseBoolean(str,tokens,allowedElementChars)">parseBoolean</a>(thisGpra);
+0036     genes{i} = thisGenes;
+0037     allGenes = [allGenes thisGenes];
+0038     rules{i} = rule;
+0039     grRules{i} = thisGpra;
+0040 <span class="keyword">end</span>
+0041 <span class="keyword">if</span> ( regexp( version, <span class="string">'R20'</span>) )
+0042         close(h);
+0043 <span class="keyword">end</span>
+0044 
+0045 allGenes = unique(allGenes);
+0046 
+0047 <span class="comment">% Construct gene to rxn mapping</span>
+0048 rxnGeneMat = sparse(nRxns,length(allGenes));
+0049 h = waitbar(0,<span class="string">'Constructing GPR mapping ...'</span>);
+0050 <span class="keyword">for</span> i = 1:nRxns
+0051     <span class="keyword">if</span> mod(i,10) == 0
+0052         waitbar(i/nRxns,h);
+0053     <span class="keyword">end</span>
+0054     [tmp,geneInd] = ismember(genes{i},allGenes);
+0055     rxnGeneMat(i,geneInd) = 1;
+0056     <span class="keyword">for</span> j = 1:length(geneInd)
+0057         rules{i} = strrep(rules{i},[<span class="string">'x('</span> num2str(j) <span class="string">')'</span>],[<span class="string">'x('</span> num2str(geneInd(j)) <span class="string">')'</span>]);
+0058     <span class="keyword">end</span>
+0059 <span class="keyword">end</span>
+0060 <span class="keyword">if</span> ( regexp( version, <span class="string">'R20'</span>) )
+0061         close(h);
+0062 <span class="keyword">end</span>
+0063 
+0064 gpraModel.rxns = rxnNames;
+0065 gpraModel.genes = <a href="../../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>(allGenes);
+0066 gpraModel.rules = <a href="../../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>(rules);
+0067 gpraModel.grRules = grRules;
+0068 gpraModel.subSystems = subSystems;
+0069 gpraModel.rxnGeneMat = rxnGeneMat;
+0070     
+0071 <span class="keyword">if</span> (nargin &gt; 1)
+0072     [hasGpra,gpraMap] = ismember(model.rxns,gpraModel.rxns);
+0073     model.genes = <a href="../../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>(gpraModel.genes);
+0074     nRxns = length(model.rxns);
+0075     nGenes = length(gpraModel.genes);
+0076     model.rxnGeneMat = sparse(nRxns,nGenes);
+0077     <span class="keyword">for</span> i = 1:length(model.rxns)
+0078        <span class="keyword">if</span> (hasGpra(i))
+0079           gpraID = gpraMap(i);
+0080           model.rules{i} = gpraModel.rules{gpraID};
+0081           model.rxnGeneMat(i,:) = gpraModel.rxnGeneMat(gpraID,:);
+0082           model.subSystems{i} = gpraModel.subSystems{gpraID};
+0083           model.grRules{i} = gpraModel.grRules{gpraID}; 
+0084        <span class="keyword">else</span>
+0085           model.rules{i} = <span class="string">''</span>;
+0086           model.subSystems{i} = <span class="string">''</span>;
+0087           model.grRules{i} = <span class="string">''</span>;
+0088        <span class="keyword">end</span>
+0089     <span class="keyword">end</span>
+0090     model.rules = <a href="../../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>(model.rules);
+0091     model.subSystems = <a href="../../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>(model.subSystems);
+0092     model.grRules = <a href="../../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>(model.grRules);
+0093     gpraModel = model;
+0094 <span class="keyword">end</span>
+0095 
+0096 <span class="comment">%     geneString = geneStrings{i};</span>
+0097 <span class="comment">%     geneList = {};</span>
+0098 <span class="comment">%     if (~strcmp(geneString,''))</span>
+0099 <span class="comment">%         if (~isempty(regexp(geneString,',')))</span>
+0100 <span class="comment">%             if (~isempty(regexp(geneString,'+')))</span>
+0101 <span class="comment">%                 % Both complexes and isozymes</span>
+0102 <span class="comment">%                 geneStrTmp = splitString(geneString,',');</span>
+0103 <span class="comment">%                 for j = 1:length(geneStrTmp)</span>
+0104 <span class="comment">%                     if (~isempty(regexp(geneStrTmp{j},'+')))</span>
+0105 <span class="comment">%                         geneListTmp = splitString(geneStrTmp{j},'+');</span>
+0106 <span class="comment">%                         for k = 1:length(geneListTmp)</span>
+0107 <span class="comment">%                             geneList{end+1} = geneListTmp{k};</span>
+0108 <span class="comment">%                         end</span>
+0109 <span class="comment">%                     else</span>
+0110 <span class="comment">%                         geneList{end+1} = geneStrTmp{j};</span>
+0111 <span class="comment">%                     end</span>
+0112 <span class="comment">%                 end</span>
+0113 <span class="comment">%             else</span>
+0114 <span class="comment">%                 % Only isozymes</span>
+0115 <span class="comment">%                 geneList = splitString(geneString,',');</span>
+0116 <span class="comment">%             end</span>
+0117 <span class="comment">%         elseif (~isempty(regexp(geneString,'+')))</span>
+0118 <span class="comment">%             % Only complexes</span>
+0119 <span class="comment">%             geneList = splitString(geneString,'+');</span>
+0120 <span class="comment">%         else</span>
+0121 <span class="comment">%             % Just a single gene</span>
+0122 <span class="comment">%             geneList{1} = geneString;</span>
+0123 <span class="comment">%         end</span>
+0124 <span class="comment">%     end</span>
+0125 <span class="comment">%     for j = 1:length(geneList)</span>
+0126 <span class="comment">%         geneList{j} = regexprep(geneList{j},' ','');</span>
+0127 <span class="comment">%     end</span>
+0128 <span class="comment">%     geneLists{i} = unique(geneList);</span>
+0129 <span class="comment">%     allGenes = union(allGenes,geneList);</span>
+0130 <span class="comment">% end</span>
+0131 <span class="comment">%</span>
+0132 <span class="comment">% % Create rxn to gene association matrix</span>
+0133 <span class="comment">% rxnGeneMat = sparse(length(rxnNames),length(allGenes));</span>
+0134 <span class="comment">% for i = 1:length(rxnNames)</span>
+0135 <span class="comment">%     [tmp,geneInd] = ismember(geneLists{i},allGenes);</span>
+0136 <span class="comment">%     rxnGeneMat(i,geneInd) = 1;</span>
+0137 <span class="comment">% end</span>
+0138 <span class="comment">%</span>
+0139 <span class="comment">% genes = allGenes';</span>
+0140</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,893 @@
+<h3>MATLAB<em>SBML</em>STRUCTURE_FUNCTIONS\REACTION</h3>
+
+<p>The functions allow users to create and work with the SBML Reaction structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_addModifier(SBMLReaction, SBMLModifier)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+<li>SBMLModifier, an SBML Modifier structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with the SBML Modifier structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_addProduct(SBMLReaction, SBMLProduct)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+<li>SBMLProduct, an SBML Product structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with the SBML Product structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_addReactant(SBMLReaction, SBMLReactant)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+<li>SBMLReactant, an SBML Reactant structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with the SBML Reactant structure added</li>
+</ol>
+
+<hr>
+
+<h4>Reaction = Reaction_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML Reaction structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_createKineticLaw(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with a new SBML KineticLaw structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_createModifier(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with a new SBML ModifierSpeciesReference structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_createProduct(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with a new SBML SpeciesReference structure added</li>
+</ol>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_createReactant(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with a new SBML SpeciesReference structure added</li>
+</ol>
+
+<hr>
+
+<h4>compartment = Reaction_getCompartment(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the compartment attribute</li>
+</ol>
+
+<hr>
+
+<h4>fast = Reaction_getFast(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the fast attribute</li>
+</ol>
+
+<hr>
+
+<h4>id = Reaction_getId(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the id attribute</li>
+</ol>
+
+<hr>
+
+<h4>kineticLaw = Reaction_getKineticLaw(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML KineticLaw structure</li>
+</ol>
+
+<hr>
+
+<h4>modifier = Reaction_getListOfModifiers(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the modifier structures</li>
+</ol>
+
+<hr>
+
+<h4>product = Reaction_getListOfProducts(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the product structures</li>
+</ol>
+
+<hr>
+
+<h4>reactant = Reaction_getListOfReactants(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the reactant structures</li>
+</ol>
+
+<hr>
+
+<h4>metaid = Reaction_getMetaid(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>modifier = Reaction_getModifier(SBMLReaction, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+<li>index, an integer representing the index of SBML Modifier structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Modifier structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>modifier = Reaction_getModifierById(SBMLReaction, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+<li>id; a string representing the id of SBML Modifier structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Modifier structure that has this id</li>
+</ol>
+
+<hr>
+
+<h4>name = Reaction_getName(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the name attribute</li>
+</ol>
+
+<hr>
+
+<h4>num = Reaction_getNumModifiers(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML Modifier structures present in the Reaction</li>
+</ol>
+
+<hr>
+
+<h4>num = Reaction_getNumProducts(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML Product structures present in the Reaction</li>
+</ol>
+
+<hr>
+
+<h4>num = Reaction_getNumReactants(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML Reactant structures present in the Reaction</li>
+</ol>
+
+<hr>
+
+<h4>product = Reaction_getProduct(SBMLReaction, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+<li>index, an integer representing the index of SBML Product structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Product structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>product = Reaction_getProductById(SBMLReaction, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+<li>id; a string representing the id of SBML Product structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Product structure that has this id</li>
+</ol>
+
+<hr>
+
+<h4>reactant = Reaction_getReactant(SBMLReaction, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+<li>index, an integer representing the index of SBML Reactant structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reactant structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>reactant = Reaction_getReactantById(SBMLReaction, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+<li>id; a string representing the id of SBML Reactant structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reactant structure that has this id</li>
+</ol>
+
+<hr>
+
+<h4>reversible = Reaction_getReversible(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the reversible attribute</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = Reaction_getSBOTerm(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>value = Reaction_isSetCompartment(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the compartment attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Reaction_isSetFast(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the fast attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Reaction_isSetId(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the id attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Reaction_isSetKineticLaw(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the kineticLaw structure is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Reaction_isSetMetaid(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the metaid attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Reaction_isSetName(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the name attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Reaction_isSetReversible(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the reversible attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Reaction_isSetSBOTerm(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_setCompartment(SBMLReaction, compartment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+<li>compartment; a string representing the compartment to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with the new value for the compartment attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_setFast(SBMLReaction, fast)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+<li>fast, an integer (0/1) representing the value of fast to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with the new value for the fast attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_setId(SBMLReaction, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+<li>id; a string representing the id to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with the new value for the id attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_setKineticLaw(SBMLReaction, SBMLKineticLaw)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+<li>SBMLKineticLaw, an SBML KineticLaw structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with the new value for the kineticLaw field</li>
+</ol>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_setMetaid(SBMLReaction, metaid)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+<li>metaid; a string representing the metaid to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with the new value for the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_setName(SBMLReaction, name)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+<li>name; a string representing the name to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with the new value for the name attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_setReversible(SBMLReaction, reversible)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+<li>reversible, an integer (0/1) representing the value of reversible to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with the new value for the reversible attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_setSBOTerm(SBMLReaction, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+<li>sboTerm, an integer representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_unsetCompartment(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with the compartment attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_unsetFast(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with the fast attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_unsetId(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with the id attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_unsetKineticLaw(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with the kineticLaw field unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_unsetMetaid(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with the metaid attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_unsetName(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with the name attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_unsetReversible(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with the reversible attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLReaction = Reaction_unsetSBOTerm(SBMLReaction)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLReaction, an SBML Reaction structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Reaction structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>

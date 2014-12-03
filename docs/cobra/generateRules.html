@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of generateRules</title>
+  <meta name="keywords" content="generateRules">
+  <meta name="description" content="If a model does not have a model.rules field but has a model.grRules">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html cobra -->
+<h1>generateRules
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>If a model does not have a model.rules field but has a model.grRules</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [model2] = generateRules(model) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> If a model does not have a model.rules field but has a model.grRules
+ field, can be regenerated using this script</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../cobra/tools/splitString.html" class="code" title="function fields = splitString(string,delimiter)">splitString</a>	splitString Splits a string Perl style</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [model2] = generateRules(model)</a>
+0002 <span class="comment">% If a model does not have a model.rules field but has a model.grRules</span>
+0003 <span class="comment">% field, can be regenerated using this script</span>
+0004 
+0005 <span class="comment">% Input:</span>
+0006 <span class="comment">%       model               with model.grRules***</span>
+0007 <span class="comment">% Output:</span>
+0008 <span class="comment">%       model2              same model but with model.rules added</span>
+0009 
+0010 <span class="comment">% Aarash Bordar 11/17/2010</span>
+0011 
+0012 grRules = model.grRules;
+0013 genes = model.genes;
+0014 
+0015 [m,n] = size(model.S);
+0016 
+0017 rules(1:n,1) = {<span class="string">''</span>};
+0018 
+0019 <span class="keyword">for</span> i = 1:n
+0020     <span class="keyword">if</span> length(grRules{i}) &gt; 0
+0021         tmp = grRules{i};
+0022         
+0023         tmp = <a href="../cobra/tools/splitString.html" class="code" title="function fields = splitString(string,delimiter)">splitString</a>(tmp,<span class="string">' '</span>);
+0024         tmp = strrep(tmp,<span class="string">' '</span>,<span class="string">''</span>);
+0025         
+0026         tmp2 = [];
+0027         <span class="keyword">for</span> j = 1:length(tmp)
+0028             <span class="keyword">if</span> strcmp(tmp{j},<span class="string">'or'</span>)
+0029                 tmp2 = [tmp2,<span class="string">'| '</span>];
+0030             <span class="keyword">elseif</span> strcmp(tmp{j},<span class="string">'and'</span>)
+0031                 tmp2 = [tmp2,<span class="string">'&amp; '</span>];
+0032             <span class="keyword">elseif</span> strcmp(tmp{j}(1),<span class="string">'('</span>) &amp; strcmp(tmp{j}(end),<span class="string">')'</span>)
+0033                 tmp{j} = strrep(tmp{j},<span class="string">'('</span>,<span class="string">''</span>);
+0034                 tmp{j} = strrep(tmp{j},<span class="string">')'</span>,<span class="string">''</span>);
+0035                 loc = strmatch(tmp{j},genes,<span class="string">'exact'</span>);
+0036                 tmp2 = [tmp2,<span class="string">'(x('</span>,num2str(loc),<span class="string">')) '</span>];
+0037             <span class="keyword">elseif</span> strcmp(tmp{j}(1),<span class="string">'('</span>)
+0038                 tmp{j} = strrep(tmp{j},<span class="string">'('</span>,<span class="string">''</span>);
+0039                 tmp{j} = strrep(tmp{j},<span class="string">')'</span>,<span class="string">''</span>);
+0040                 loc = strmatch(tmp{j},genes,<span class="string">'exact'</span>);
+0041                 tmp2 = [tmp2,<span class="string">'(x('</span>,num2str(loc),<span class="string">') '</span>]; 
+0042             <span class="keyword">elseif</span> strcmp(tmp{j}(end),<span class="string">')'</span>)
+0043                 tmp{j} = strrep(tmp{j},<span class="string">'('</span>,<span class="string">''</span>);
+0044                 tmp{j} = strrep(tmp{j},<span class="string">')'</span>,<span class="string">''</span>);
+0045                 loc = strmatch(tmp{j},genes,<span class="string">'exact'</span>);
+0046                 tmp2 = [tmp2,<span class="string">'x('</span>,num2str(loc),<span class="string">')) '</span>]; 
+0047             <span class="keyword">else</span>
+0048                 loc = strmatch(tmp{j},genes,<span class="string">'exact'</span>);
+0049                 tmp2 = [tmp2,<span class="string">'x('</span>,num2str(loc),<span class="string">') '</span>];
+0050             <span class="keyword">end</span>
+0051         <span class="keyword">end</span>
+0052         
+0053         tmp2 = tmp2(1:end-1);
+0054         rules{i} = tmp2;
+0055    
+0056     <span class="keyword">end</span>
+0057 <span class="keyword">end</span>
+0058 
+0059 
+0060 model2 = model;
+0061 model2.rules = rules;</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

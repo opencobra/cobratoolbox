@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (21102): The order of subelements within Reaction must be the
+following: listOfReactants (optional), listOfProducts (optional),
+listOfModifiers (optional), kineticLaw. (References: L2V2 Section 4.13.)
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+	<model>
+		<listOfCompartments>
+			<compartment name="c"/>
+		</listOfCompartments>
+		<listOfSpecies>
+			<species name="s" compartment="c" initialAmount="0" units="substance"/>
+			<species name="e" compartment="c" initialAmount="0"/>
+			<species name="p" compartment="c" initialAmount="0"/>
+		</listOfSpecies>
+		<listOfParameters>
+			<parameter name="k" value="1" units="second"/>
+		</listOfParameters>
+		<listOfReactions>
+			<reaction name="r">
+				<listOfReactants>
+ 					<speciesReference species="p"/>
+                  </listOfReactants>
+                  <kineticLaw>
+                  </kineticLaw>
+			</reaction>
+		</listOfReactions>
+	</model>
+</sbml>

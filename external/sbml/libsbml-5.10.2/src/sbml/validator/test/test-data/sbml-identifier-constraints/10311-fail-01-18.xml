@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1201) The id of a UnitDefinition must not be a predefined kind
+of unit.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+  <model>
+    <listOfUnitDefinitions>
+      <unitDefinition id="mmls"/>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+    		<compartment id="c"/>
+    </listOfCompartments>
+    <listOfSpecies>
+    		<species id="s" compartment="c"/>
+    </listOfSpecies>
+    <listOfReactions>
+        <reaction id="r">
+          <listOfReactants>
+            <speciesReference species="s"/>
+          </listOfReactants>
+          <kineticLaw>
+				<math xmlns="http://www.w3.org/1998/Math/MathML">
+					<apply>
+						<times/>
+						<cn> 5 </cn>
+						<cn> 5 </cn>
+					</apply>
+				</math>
+				<listOfParameters>
+				  <parameter id="p" units="3f"/>
+				</listOfParameters>
+          </kineticLaw>
+        </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

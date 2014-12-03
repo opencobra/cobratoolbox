@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model timeUnits="second">
+    <listOfCompartments>
+      <compartment id="c" constant="false" units="metre"/>
+    </listOfCompartments>
+    <listOfParameters>
+      <parameter id="p" value="1" units="metre" constant="false"/>
+      <parameter id="p1" value="1" units="dimensionless" constant="false"/> 
+    </listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="c">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> p </ci>
+            <ci> p1 </ci>
+          </apply>
+        </math>
+      </assignmentRule>
+    </listOfRules>
+  </model>
+</sbml>

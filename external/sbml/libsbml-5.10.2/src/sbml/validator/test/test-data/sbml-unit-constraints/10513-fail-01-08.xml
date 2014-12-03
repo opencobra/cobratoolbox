@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+<model id="test_root_units">
+<listOfUnitDefinitions>
+  <unitDefinition id="area">
+    <listOfUnits>
+      <unit kind="metre" exponent="2"/>
+    </listOfUnits>
+  </unitDefinition>
+</listOfUnitDefinitions>
+<listOfParameters>
+  <parameter id="result2" value="0" constant="false" units="dimensionless"/>
+  <parameter id="area" value="9" constant="true" units="area"/>
+  <parameter id="three" value="3" constant="true" units="dimensionless"/>
+</listOfParameters>
+<listOfRules>
+  <assignmentRule variable="result2">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+      <apply><root/>
+        <degree><ci>three</ci></degree>
+        <ci>area</ci>
+      </apply>
+    </math>
+  </assignmentRule>
+</listOfRules>
+</model>
+</sbml>

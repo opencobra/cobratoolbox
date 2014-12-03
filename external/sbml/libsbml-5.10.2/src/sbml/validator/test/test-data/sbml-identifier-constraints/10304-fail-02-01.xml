@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Fail: (903) The variables (LHS) for Rules must be unique
+(L2v1 Section 4.8.4)
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" constant="false"/>
+      <compartment id="d" constant="false"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="c" constant="false"/>
+      <species id="t" compartment="c" constant="false"/>
+    </listOfSpecies>
+    <listOfRules>
+      <assignmentRule variable="c"/>
+      <assignmentRule variable="s"/>
+      <assignmentRule variable="s"/>
+      <rateRule       variable="c"/>
+    </listOfRules>
+  </model>
+</sbml>

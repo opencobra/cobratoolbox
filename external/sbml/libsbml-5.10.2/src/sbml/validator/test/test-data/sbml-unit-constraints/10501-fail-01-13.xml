@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fail: (3300) Inconsistent math
+      all arguments to the mnius function should have same units
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+	<model>
+		<listOfCompartments>
+			<compartment name="c"/>
+		</listOfCompartments>
+		<listOfParameters>
+			<parameter name="p" value="1"/>
+			<parameter name="p1" units="metre" value="1"/>
+		</listOfParameters>
+		<listOfRules>
+			<algebraicRule formula="(p1-c)-(p-p1)"/>
+		</listOfRules>
+	</model>
+</sbml>

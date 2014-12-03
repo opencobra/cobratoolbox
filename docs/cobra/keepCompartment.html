@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of keepCompartment</title>
+  <meta name="keywords" content="keepCompartment">
+  <meta name="description" content="This function removes reactions in all compartments except those">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html cobra -->
+<h1>keepCompartment
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>This function removes reactions in all compartments except those</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function model = keepCompartment(model, compartments) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> This function removes reactions in all compartments except those
+ specified by the cell array &quot;compartments&quot;
+ 
+INPUTS
+ model                     COBRA model structure
+ compartments              cell array of strings (e.g., to discard all
+                           reactions except those in the mitochondria and 
+                           cytosol, compartments = {'[m]','[c]'};
+
+OUTPUT
+ model                     COBRA model with reactions in the specified
+                           compartmetns
+ 
+ Nathan Lewis
+ June 8, 2008</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>	findRxnIDs Find reaction numbers in a model</li><li><a href="printRxnFormula.html" class="code" title="function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)">printRxnFormula</a>	printRxnFormula Print the reaction formulas for a list of reactions</li><li><a href="../cobra/reconstruction/removeRxns.html" class="code" title="function modelOut = removeRxns(model,rxnRemoveList,irrevFlag,metFlag)">removeRxns</a>	removeRxns Remove reactions from a model</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function model = keepCompartment(model, compartments)</a>
+0002 <span class="comment">% This function removes reactions in all compartments except those</span>
+0003 <span class="comment">% specified by the cell array &quot;compartments&quot;</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">%INPUTS</span>
+0006 <span class="comment">% model                     COBRA model structure</span>
+0007 <span class="comment">% compartments              cell array of strings (e.g., to discard all</span>
+0008 <span class="comment">%                           reactions except those in the mitochondria and</span>
+0009 <span class="comment">%                           cytosol, compartments = {'[m]','[c]'};</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">%OUTPUT</span>
+0012 <span class="comment">% model                     COBRA model with reactions in the specified</span>
+0013 <span class="comment">%                           compartmetns</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% Nathan Lewis</span>
+0016 <span class="comment">% June 8, 2008</span>
+0017 
+0018 <span class="comment">% compartments is a cell array list of compartments to keep (e.g. {'[e]','[c]','[m]'})</span>
+0019 compartments = regexprep(compartments, <span class="string">'\['</span>,<span class="string">'\\\['</span>);
+0020 compartments = regexprep(compartments, <span class="string">'\]'</span>,<span class="string">'\\\]'</span>);
+0021 <span class="comment">% make a list of metabolites which are in the desired compartment</span>
+0022 mets2keep = zeros(size(model.mets));
+0023 <span class="keyword">for</span> i=1:max(size(compartments))
+0024     a(:,i)=regexpi(model.mets,compartments{i});
+0025     <span class="keyword">for</span> j=1:max(size(a(:,i)))
+0026         <span class="keyword">if</span> not(isempty(a{j,i}))
+0027             mets2keep(j,1)=1;
+0028         <span class="keyword">end</span>
+0029     <span class="keyword">end</span>
+0030 <span class="keyword">end</span>
+0031 <span class="comment">% make a list of rxns to remove</span>
+0032 k=1;rxns2remove={};
+0033 <span class="keyword">for</span> j=max(size(model.rxns)):-1:1
+0034     <span class="keyword">for</span> i=max(size(mets2keep)):-1:1
+0035         <span class="keyword">if</span> model.S(i,j) ~= 0 &amp;&amp; mets2keep(i) == 0
+0036             rxns2remove{k}=model.rxns{j};k=k+1;
+0037             ID = <a href="findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(model,model.rxns{j});
+0038             <a href="printRxnFormula.html" class="code" title="function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)">printRxnFormula</a>(model,model.rxns{j});
+0039             hi=1;
+0040         <span class="keyword">end</span>
+0041     <span class="keyword">end</span>
+0042 <span class="keyword">end</span>
+0043 <span class="comment">% remove rxns</span>
+0044 hi = 1;
+0045 <span class="keyword">if</span> ~isempty(rxns2remove)
+0046     <span class="keyword">for</span> i=1:max(size(rxns2remove))
+0047         model = <a href="../cobra/reconstruction/removeRxns.html" class="code" title="function modelOut = removeRxns(model,rxnRemoveList,irrevFlag,metFlag)">removeRxns</a>(model,rxns2remove{i});
+0048     <span class="keyword">end</span>
+0049 <span class="keyword">else</span> display(<span class="string">'No Compartments Removed'</span>)
+0050 <span class="keyword">end</span>
+0051 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

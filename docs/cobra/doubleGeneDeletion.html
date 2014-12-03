@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of doubleGeneDeletion</title>
+  <meta name="keywords" content="doubleGeneDeletion">
+  <meta name="description" content="doubleGeneDeletion Performs double gene deletion analysis using FBA, MOMA,">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html cobra -->
+<h1>doubleGeneDeletion
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>doubleGeneDeletion Performs double gene deletion analysis using FBA, MOMA,</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [grRatioDble,grRateKO,grRateWT] = doubleGeneDeletion(model,method,geneList1,geneList2,verbFlag) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">doubleGeneDeletion Performs double gene deletion analysis using FBA, MOMA,
+or linear MOMA
+
+ [grRatioDble,grRateKO,grRateWT] =
+     doubleGeneDeletion(model,method,geneList1,geneList2,verbFlag)
+
+INPUT
+ model         COBRA model structure
+
+OPTIONAL INPUTS
+ method        Either 'FBA' (default) 'MOMA', or 'lMOMA'
+ geneList1     List of query genes to be deleted (default = all genes)
+ geneList2     List of target genes to be deleted (default = geneList1)
+ verbFlag      Verbose output (default = false)
+
+OUTPUTS
+ grRatioDble   Computed growth rate ratio between double deletion strain 
+               and wild type
+ grRateKO      Double deletion strain growth rates (1/h)
+ grRateWT      Wild type growth rate (1/h)
+
+ Markus Herrgard 8/8/06</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="MOMA.html" class="code" title="function [solutionDel,solutionWT,totalFluxDiff,solStatus] =MOMA(modelWT,modelDel,osenseStr,verbFlag,minNormFlag)">MOMA</a>	MOMA Performs a quadratic version of the MOMA (minimization of</li><li><a href="linearMOMA.html" class="code" title="function [solutionDel,solutionWT,totalFluxDiff,solStatus] =linearMOMA(modelWT,modelDel,osenseStr,minFluxFlag,verbFlag)">linearMOMA</a>	linearMOMA Performs a linear version of the MOMA (minimization of</li><li><a href="optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>	optimizeCbModel Solve a flux balance analysis problem</li><li><a href="singleGeneDeletion.html" class="code" title="function [grRatio,grRateKO,grRateWT,hasEffect,delRxns,fluxSolution] = singleGeneDeletion(model,method,geneList,verbFlag)">singleGeneDeletion</a>	singleGeneDeletion Performs single gene deletion analysis using FBA, MOMA or</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [grRatioDble,grRateKO,grRateWT] = doubleGeneDeletion(model,method,geneList1,geneList2,verbFlag)</a>
+0002 <span class="comment">%doubleGeneDeletion Performs double gene deletion analysis using FBA, MOMA,</span>
+0003 <span class="comment">%or linear MOMA</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% [grRatioDble,grRateKO,grRateWT] =</span>
+0006 <span class="comment">%     doubleGeneDeletion(model,method,geneList1,geneList2,verbFlag)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">%INPUT</span>
+0009 <span class="comment">% model         COBRA model structure</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">%OPTIONAL INPUTS</span>
+0012 <span class="comment">% method        Either 'FBA' (default) 'MOMA', or 'lMOMA'</span>
+0013 <span class="comment">% geneList1     List of query genes to be deleted (default = all genes)</span>
+0014 <span class="comment">% geneList2     List of target genes to be deleted (default = geneList1)</span>
+0015 <span class="comment">% verbFlag      Verbose output (default = false)</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">%OUTPUTS</span>
+0018 <span class="comment">% grRatioDble   Computed growth rate ratio between double deletion strain</span>
+0019 <span class="comment">%               and wild type</span>
+0020 <span class="comment">% grRateKO      Double deletion strain growth rates (1/h)</span>
+0021 <span class="comment">% grRateWT      Wild type growth rate (1/h)</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">% Markus Herrgard 8/8/06</span>
+0024 
+0025 <span class="keyword">if</span> (nargin &lt; 2)
+0026     method = <span class="string">'FBA'</span>;
+0027 <span class="keyword">end</span>
+0028 <span class="keyword">if</span> (nargin &lt; 3)
+0029     geneList1 = model.genes;
+0030     differentSetsFlag = false;
+0031 <span class="keyword">else</span>
+0032     <span class="keyword">if</span> (isempty(geneList1))
+0033         geneList1 = model.genes;
+0034     <span class="keyword">end</span>
+0035 <span class="keyword">end</span>
+0036 
+0037 <span class="keyword">if</span> (nargin &lt; 4)
+0038     geneList2 = geneList1;
+0039     differentSetsFlag = false;
+0040 <span class="keyword">else</span>
+0041     <span class="keyword">if</span> (isempty(geneList2))
+0042         geneList2 = geneList1;
+0043         differentSetsFlag = false;
+0044     <span class="keyword">else</span>
+0045         differentSetsFlag = true;
+0046     <span class="keyword">end</span>
+0047 <span class="keyword">end</span>
+0048 <span class="keyword">if</span> (nargin &lt; 5)
+0049     verbFlag = false;
+0050 <span class="keyword">end</span>
+0051 
+0052 nGenes = length(model.genes);
+0053 
+0054 <span class="comment">% Run single gene deletions first to figure out lethal genes</span>
+0055 fprintf(<span class="string">'Single deletion analysis to remove lethal genes\n'</span>);
+0056 [singleRatio1,singleRate1,grRateWT] = <a href="singleGeneDeletion.html" class="code" title="function [grRatio,grRateKO,grRateWT,hasEffect,delRxns,fluxSolution] = singleGeneDeletion(model,method,geneList,verbFlag)">singleGeneDeletion</a>(model,method,geneList1,verbFlag);
+0057 singleLethal1 = (singleRatio1 &lt; 1e-9);
+0058 geneListOrig1 = geneList1;
+0059 geneListOrig2 = geneList1;
+0060 geneList1 = geneList1(~singleLethal1);
+0061 singleRate = singleRate1(~singleLethal1);
+0062 [tmp,listMap1] = ismember(geneListOrig1,geneList1);
+0063 fprintf(<span class="string">'%d non-lethal genes\n'</span>,length(geneList1));
+0064 
+0065 <span class="comment">% Repeat the analysis for the second set of genes</span>
+0066 <span class="keyword">if</span> (differentSetsFlag)
+0067     fprintf(<span class="string">'Single deletion analysis to remove lethal genes from gene set 2\n'</span>);
+0068     [singleRatio2,singleRate2,grRateWT] = <a href="singleGeneDeletion.html" class="code" title="function [grRatio,grRateKO,grRateWT,hasEffect,delRxns,fluxSolution] = singleGeneDeletion(model,method,geneList,verbFlag)">singleGeneDeletion</a>(model,method,geneList2,verbFlag);
+0069     singleLethal2 = (singleRatio2 &lt; 1e-9);
+0070     geneListOrig2 = geneList2;
+0071     geneList2 = geneList2(~singleLethal2);
+0072     [tmp,listMap2] = ismember(geneListOrig2,geneList2);
+0073     fprintf(<span class="string">'%d non-lethal genes\n'</span>,length(geneList2));
+0074 <span class="keyword">else</span>
+0075     geneList2 = geneList1;
+0076     listMap2 = listMap1;
+0077 <span class="keyword">end</span>
+0078 
+0079 nDelGenes1 = length(geneList1);
+0080 nDelGenes2 = length(geneList2);
+0081 
+0082 grRateKO = ones(nDelGenes1,nDelGenes2)*grRateWT;
+0083 grRatioDble = ones(nDelGenes1,nDelGenes2);
+0084 
+0085 <span class="keyword">if</span> (differentSetsFlag)
+0086     nTotalPairs = nDelGenes1*nDelGenes2;
+0087 <span class="keyword">else</span>
+0088     nTotalPairs = nDelGenes1*(nDelGenes1-1)/2;
+0089 <span class="keyword">end</span>
+0090 
+0091 <span class="comment">% Run double deletion analysis</span>
+0092 delCounter = 0;
+0093 fprintf(<span class="string">'Double gene deletion analysis\n'</span>);
+0094 fprintf(<span class="string">'Total of %d pairs to analyze\n'</span>,nTotalPairs);
+0095 h = waitbar(0,<span class="string">'Double gene deletion analysis in progress ...'</span>);
+0096 t = cputime;
+0097 fprintf(<span class="string">'Perc complete\tCPU time\n'</span>);
+0098 <span class="keyword">for</span> geneNo1 = 1:nDelGenes1
+0099    
+0100     <span class="comment">% Find gene index</span>
+0101     [isInModel,geneID1] = ismember(geneList1{geneNo1},model.genes);
+0102     <span class="keyword">if</span> (~differentSetsFlag)
+0103         grRateKO(geneNo1,geneNo1) = singleRate(geneNo1);
+0104         initID = geneNo1+1;
+0105     <span class="keyword">else</span>
+0106         initID = 1;
+0107     <span class="keyword">end</span>
+0108     <span class="keyword">for</span> geneNo2 = initID:nDelGenes2
+0109         delCounter = delCounter + 1;
+0110         <span class="keyword">if</span> (mod(delCounter,10) == 0)
+0111             waitbar(delCounter/nTotalPairs,h);
+0112         <span class="keyword">end</span>
+0113         <span class="keyword">if</span> (mod(delCounter,100) == 0)
+0114             fprintf(<span class="string">'%5.2f\t%8.1f\n'</span>,100*delCounter/nTotalPairs,cputime-t);
+0115         <span class="keyword">end</span>
+0116         <span class="comment">% Save results every 1000 steps</span>
+0117         <span class="keyword">if</span> (mod(delCounter,1000) == 0)
+0118             save doubleGeneDeletionTmp.mat grRateKO
+0119         <span class="keyword">end</span>
+0120         [isInModel,geneID2] = ismember(geneList2{geneNo2},model.genes);
+0121         <span class="comment">% Find rxns associated with this gene</span>
+0122         rxnInd = find(any(model.rxnGeneMat(:,[geneID1 geneID2]),2));
+0123         <span class="keyword">if</span> (~isempty(rxnInd))
+0124             <span class="comment">% Initialize the state of all genes</span>
+0125             x = true(nGenes,1);
+0126             x(geneID1) = false;
+0127             x(geneID2) = false;
+0128             constrainRxn = false(length(rxnInd),1);
+0129             <span class="comment">% Figure out if any of the reaction states is changed</span>
+0130             <span class="keyword">for</span> rxnNo = 1:length(rxnInd)
+0131                 <span class="keyword">if</span> (~eval(model.rules{rxnInd(rxnNo)}))
+0132                     constrainRxn(rxnNo) = true;
+0133                 <span class="keyword">end</span>
+0134             <span class="keyword">end</span>
+0135             <span class="comment">% Use FBA/MOMA/lMOMA to calculate deletion strain growth rate</span>
+0136             <span class="keyword">if</span> (any(constrainRxn))
+0137                 constrRxnInd = rxnInd(constrainRxn);
+0138                 modelTmp = model;
+0139                 modelTmp.lb(constrRxnInd) = 0;
+0140                 modelTmp.ub(constrRxnInd) = 0;
+0141                 <span class="comment">% Get double deletion growth rate</span>
+0142                 <span class="keyword">switch</span> method
+0143                     <span class="keyword">case</span> <span class="string">'lMOMA'</span>
+0144                         solKO = <a href="linearMOMA.html" class="code" title="function [solutionDel,solutionWT,totalFluxDiff,solStatus] =linearMOMA(modelWT,modelDel,osenseStr,minFluxFlag,verbFlag)">linearMOMA</a>(model,modelTmp,<span class="string">'max'</span>);
+0145                     <span class="keyword">case</span> <span class="string">'MOMA'</span>
+0146                         solKO = <a href="MOMA.html" class="code" title="function [solutionDel,solutionWT,totalFluxDiff,solStatus] =MOMA(modelWT,modelDel,osenseStr,verbFlag,minNormFlag)">MOMA</a>(model,modelTmp,<span class="string">'max'</span>,false,true);
+0147                     <span class="keyword">otherwise</span>
+0148                         solKO = <a href="optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelTmp,<span class="string">'max'</span>);
+0149                 <span class="keyword">end</span>
+0150                 <span class="comment">%solKO = optimizeCbModel(modelTmp,'max');</span>
+0151                 <span class="keyword">if</span> (solKO.stat &gt; 0)
+0152                     grRateKO(geneNo1,geneNo2) = solKO.f;
+0153                     grRateKO(geneNo2,geneNo1) = solKO.f; 
+0154                 <span class="keyword">else</span>
+0155                     grRateKO(geneNo1,geneNo2) = 0;
+0156                     grRateKO(geneNo2,geneNo1) = 0;
+0157                 <span class="keyword">end</span>
+0158             <span class="keyword">end</span>
+0159         <span class="keyword">end</span>
+0160         <span class="keyword">if</span> (verbFlag)
+0161             fprintf(<span class="string">'%4d\t%4.1f\t%10s\t%10s\t%9.3f\t%9.3f\n'</span>,delCounter,100*delCounter/nTotalPairs,geneList1{geneNo1},<span class="keyword">...</span>
+0162                 geneList2{geneNo2},grRateKO(geneNo1,geneNo2),grRateKO(geneNo1,geneNo2)/grRateWT*100);
+0163         <span class="keyword">end</span>
+0164         <span class="keyword">if</span> (differentSetsFlag)
+0165             grRateKO(geneNo2,geneNo1) = grRateKO(geneNo1,geneNo2);
+0166         <span class="keyword">end</span>
+0167     <span class="keyword">end</span>
+0168 <span class="keyword">end</span>
+0169 <span class="keyword">if</span> ( regexp( version, <span class="string">'R20'</span>) )
+0170         close(h);
+0171 <span class="keyword">end</span>
+0172 
+0173 <span class="comment">% Reconstruct the entire matrix</span>
+0174 <span class="keyword">for</span> i = 1:length(geneListOrig1)
+0175     <span class="keyword">for</span> j = 1:length(geneListOrig2)
+0176         <span class="keyword">if</span> (listMap1(i) &gt; 0 &amp; listMap2(j) &gt; 0)
+0177             allGrRateKO(i,j) = grRateKO(listMap1(i),listMap2(j));
+0178         <span class="keyword">else</span>
+0179             allGrRateKO(i,j) = 0;
+0180         <span class="keyword">end</span>
+0181     <span class="keyword">end</span>
+0182 <span class="keyword">end</span>
+0183 
+0184 grRatioDble = allGrRateKO/grRateWT;
+0185 
+0186 grRateKO = allGrRateKO;</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

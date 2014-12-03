@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+    <model>
+        <listOfCompartments>
+			<compartment name="c"/>
+        </listOfCompartments>
+        <listOfSpecies>
+			<species name="*s" compartment="c" initialAmount="2"/>
+        </listOfSpecies>
+        <listOfParameters>
+			<parameter name="p"/>
+        </listOfParameters>
+    </model>
+</sbml>

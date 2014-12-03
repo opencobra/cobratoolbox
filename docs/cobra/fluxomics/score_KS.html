@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of score_KS</title>
+  <meta name="keywords" content="score_KS">
+  <meta name="description" content="input:  mdv  structure as usual">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html fluxomics -->
+<h1>score_KS
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>input:  mdv  structure as usual</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [out] = score_KS(mdv, hilo, lambda) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">input:  mdv  structure as usual
+        hilo  (0's and 1's)  Ideally there will be a similar # of each.
+        lambda = weighting.  If the mean is less than lambda, the scores get weighted less.  (default = .02)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="runHiLoExp.html" class="code" title="function [experiment] = runHiLoExp(experiment)">runHiLoExp</a>	runHiLoExp</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [out] = score_KS(mdv, hilo, lambda)</a>
+0002 <span class="comment">%input:  mdv  structure as usual</span>
+0003 <span class="comment">%        hilo  (0's and 1's)  Ideally there will be a similar # of each.</span>
+0004 <span class="comment">%        lambda = weighting.  If the mean is less than lambda, the scores get weighted less.  (default = .02)</span>
+0005 
+0006 <span class="keyword">if</span> nargin &lt; 3
+0007     lambda = .02;
+0008 <span class="keyword">end</span>
+0009 
+0010 [nvars, npoints] = size(mdv);
+0011 loset = mdv(:,hilo==0);
+0012 hiset = mdv(:,hilo==1);
+0013 
+0014 weights = std(mdv,0,2);
+0015 
+0016 scores = zeros(nvars, 1);
+0017 parfor i = 1:nvars
+0018     
+0019     [h, p] = kstest2(loset(i,:), hiset(i,:));
+0020     scores(i) = max(log(p), -708); <span class="comment">% log(realmin) to avoid scores of inf.</span>
+0021     
+0022 <span class="keyword">end</span>
+0023 
+0024 scores2 = scores .*(1-exp(-weights/lambda));
+0025 out = -sum(scores2);</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

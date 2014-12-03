@@ -1,0 +1,91 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>MATLAB_SBML_STRUCTURE_FUNCTIONS</h3>
+
+<p>These are general functions for working with MATLAB_SBML structures.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>level = GetLevel(SBMLStructure)</h4>
+
+<p>Takes </p>
+
+<ol>
+<li>SBMLStructure, any SBML structure</li>
+</ol>
+
+<p>Returns </p>
+
+<ol>
+<li>the SBML level corresponding to this structure</li>
+</ol>
+
+<p><em>NOTE:</em> it is not always possible to uniquely determine the level from a
+structure. The most recent SBML level that matches will be reported.</p>
+
+<hr>
+
+<h4>[level, version] = GetLevelVersion(SBMLStructure)</h4>
+
+<p>Takes </p>
+
+<ol>
+<li>SBMLStructure, any SBML structure</li>
+</ol>
+
+<p>Returns </p>
+
+<ol>
+<li>the SBML level corresponding to this structure</li>
+<li>the SBML version corresponding to this structure</li>
+</ol>
+
+<p><em>NOTE:</em> it is not always possible to uniquely determine the level/version from a
+structure. The most recent SBML level/version that matches will be reported.</p>
+
+<hr>
+
+<h4>SBMLStructure = Object_create(typecode, level, version)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>typecode; a string representing the type of object being queried</li>
+<li>level; an integer representing an SBML level</li>
+<li>version; an integer representing an SBML version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an SBML structure representing the given typecode, level and version</li>
+</ol>
+
+<hr>
+
+<h4>identical = areIdentical(SBMLStruct1, SBMLStruct2)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLStruct1, any SBML structure</li>
+<li>SBMLStruct2, any SBML structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>identical = 
+<ul>
+<li>1 if the structures are identical i.e. contain same fields and the same values</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>

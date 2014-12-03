@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (3101) The units returned by the rate rule that assigns a rate
+    to a species must be consistent with either the units
+    declared for that species or the default units for the
+    species per unit time.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+  <model>
+    <listOfUnitDefinitions>
+      <unitDefinition id="time">
+        <listOfUnits>
+          <unit kind="second" multiplier="60"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment id="c" units="litre" constant="false"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s1" compartment="c" initialConcentration="0"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="p" value="1" units="litre" constant="false"/>
+      <parameter id="p1" value="1" units="time" constant="false"/>
+      <parameter id="p2" value="1" units="mole" constant="false"/>
+      <parameter id="p3" value="1" units="dimensionless" constant="false"/>
+    </listOfParameters>
+    <listOfRules>
+      <rateRule variable="s1">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+              <divide/>
+              <ci> p2 </ci>
+              <apply>
+                <times/>
+                <ci> p </ci>
+                <ci> p1 </ci>
+            </apply>
+          </apply>
+        </math>
+      </rateRule>
+    </listOfRules>
+  </model>
+</sbml>

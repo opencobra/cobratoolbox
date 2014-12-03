@@ -1,0 +1,65 @@
+function SBMLEvent = Event_addEventAssignment(SBMLEvent, SBMLEventAssignment)
+% SBMLEvent = Event_addEventAssignment(SBMLEvent, SBMLEventAssignment)
+%
+% Takes
+%
+% 1. SBMLEvent, an SBML Event structure
+% 2. SBMLEventAssignment, an SBML EventAssignment structure
+%
+% Returns
+%
+% 1. the SBML Event structure with the SBML EventAssignment structure added
+%
+
+%<!---------------------------------------------------------------------------
+% This file is part of SBMLToolbox.  Please visit http://sbml.org for more
+% information about SBML, and the latest version of SBMLToolbox.
+%
+% Copyright (C) 2009-2012 jointly by the following organizations: 
+%     1. California Institute of Technology, Pasadena, CA, USA
+%     2. EMBL European Bioinformatics Institute (EBML-EBI), Hinxton, UK
+%
+% Copyright (C) 2006-2008 jointly by the following organizations: 
+%     1. California Institute of Technology, Pasadena, CA, USA
+%     2. University of Hertfordshire, Hatfield, UK
+%
+% Copyright (C) 2003-2005 jointly by the following organizations: 
+%     1. California Institute of Technology, Pasadena, CA, USA 
+%     2. Japan Science and Technology Agency, Japan
+%     3. University of Hertfordshire, Hatfield, UK
+%
+% SBMLToolbox is free software; you can redistribute it and/or modify it
+% under the terms of the GNU Lesser General Public License as published by
+% the Free Software Foundation.  A copy of the license agreement is provided
+% in the file named "LICENSE.txt" included with this software distribution.
+%----------------------------------------------------------------------- -->
+
+
+
+
+
+
+
+
+%get level and version and check the input arguments are appropriate
+
+[level, version] = GetLevelVersion(SBMLEvent);
+[eventAssignment_level, eventAssignment_version] = GetLevelVersion(SBMLEventAssignment);
+
+if level ~= eventAssignment_level
+	error('mismatch in levels');
+elseif version ~= eventAssignment_version
+	error('mismatch in versions');
+end;
+
+if isfield(SBMLEvent, 'eventAssignment')
+	index = length(SBMLEvent.eventAssignment);
+	if index == 0
+		SBMLEvent.eventAssignment = SBMLEventAssignment;
+	else
+		SBMLEvent.eventAssignment(index+1) = SBMLEventAssignment;
+	end;
+else
+	error('eventAssignment not an element on SBML L%dV%d Event', level, version);
+end;
+

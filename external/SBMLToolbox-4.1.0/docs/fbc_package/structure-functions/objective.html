@@ -1,0 +1,383 @@
+<h3>FBC_PACKAGE\MATLAB_SBML_STRUCTURES\OBJECTIVE</h3>
+
+<p>The functions allow users to create and work with the SBML FBC Objective structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>SBMLObjective = Objective_addFluxObjective(SBMLObjective, SBMLFluxObjective)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLObjective, an SBML Objective structure</li>
+<li>SBMLFluxObjective, an SBML FluxObjective structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Objective structure with the SBML FluxObjective structure added</li>
+</ol>
+
+<hr>
+
+<h4>Objective = Objective_create(level, version, pkgVersion)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level</li>
+<li>version, an integer representing an SBML version</li>
+<li>pkgVersion, an integer representing an SBML package version</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML FBC Objective structure of the appropriate level, version and pkgVersion</li>
+</ol>
+
+<hr>
+
+<h4>SBMLObjective = Objective_createFluxObjective(SBMLObjective)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLObjective, an SBML Objective structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Objective structure with a new SBML FluxObjective structure added</li>
+</ol>
+
+<hr>
+
+<h4>fluxObjective = Objective_getFluxObjective(SBMLObjective, index)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLObjective, an SBML Objective structure</li>
+<li>index, an integer representing the index of SBML FluxObjective structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FluxObjective structure at the indexed position</li>
+</ol>
+
+<hr>
+
+<h4>id = Objective_getId(SBMLObjective)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLObjective, an SBML Objective structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the fbc_id attribute</li>
+</ol>
+
+<hr>
+
+<h4>fluxObjective = Objective_getListOfFluxObjectives(SBMLObjective)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLObjective, an SBML Objective structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>an array of the fluxObjective structures</li>
+</ol>
+
+<hr>
+
+<h4>metaid = Objective_getMetaid(SBMLObjective)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLObjective, an SBML Objective structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>num = Objective_getNumFluxObjectives(SBMLObjective)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLObjective, an SBML Objective structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the number of SBML FluxObjective structures present in the Objective</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = Objective_getSBOTerm(SBMLObjective)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLObjective, an SBML Objective structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>type = Objective_getType(SBMLObjective)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLObjective, an SBML Objective structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the fbc_type attribute</li>
+</ol>
+
+<hr>
+
+<h4>id = Objective_isSetId(SBMLObjective)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLObjective, an SBML Objective structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the fbc_id attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>metaid = Objective_isSetMetaid(SBMLObjective)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLObjective, an SBML Objective structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the metaid attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = Objective_isSetSBOTerm(SBMLObjective)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLObjective, an SBML Objective structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>type = Objective_isSetType(SBMLObjective)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLObjective, an SBML Objective structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the fbc_type attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLObjective = Objective_setId(SBMLObjective, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLObjective, an SBML Objective structure</li>
+<li>id, a string representing the fbc_id to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FBC Objective structure with the new value for the fbc_id attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLObjective = Objective_setMetaid(SBMLObjective, metaid)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLObjective, an SBML Objective structure</li>
+<li>metaid, a string representing the metaid to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FBC Objective structure with the new value for the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLObjective = Objective_setSBOTerm(SBMLObjective, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLObjective, an SBML Objective structure</li>
+<li>sboTerm, a number representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FBC Objective structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLObjective = Objective_setType(SBMLObjective, type)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLObjective, an SBML Objective structure</li>
+<li>type, a string representing the fbc_type to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FBC Objective structure with the new value for the fbc_type attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLObjective = Objective_unsetId(SBMLObjective)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLObjective, an SBML Objective structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FBC Objective structure with the fbc_id attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLObjective = Objective_unsetMetaid(SBMLObjective)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLObjective, an SBML Objective structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FBC Objective structure with the metaid attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLObjective = Objective_unsetSBOTerm(SBMLObjective)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLObjective, an SBML Objective structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FBC Objective structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLObjective = Objective_unsetType(SBMLObjective)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLObjective, an SBML Objective structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML FBC Objective structure with the fbc_type attribute unset</li>
+</ol>
+
+<hr>

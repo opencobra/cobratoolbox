@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (900) names must be unique among FunctionDefinitions,
+Compartments, Species, global Parameters, Reactions, and Events
+(L2v1 Section 3.5).
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="1">
+  <model name="m">
+        <listOfCompartments>
+			<compartment name="c"/>
+        </listOfCompartments>
+        <listOfSpecies>
+        		<specie name="s" compartment="c" initialAmount="0"/>
+        </listOfSpecies>
+        <listOfParameters>
+          <parameter name="p" value="2"/>
+        </listOfParameters>
+        <listOfRules>
+			<parameterRule name="p" formula="c*5"/>
+        </listOfRules>
+        <listOfReactions>
+        		<reaction name="r">
+        			<listOfProducts>
+        				<specieReference specie="s"/>
+        			</listOfProducts>
+        		</reaction>
+        </listOfReactions>
+  </model>
+</sbml>

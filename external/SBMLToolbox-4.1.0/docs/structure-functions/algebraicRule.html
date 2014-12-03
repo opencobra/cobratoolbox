@@ -1,0 +1,241 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "../style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>MATLAB_SBML_STRUCTURE_FUNCTIONS\ALGEBRAICRULE</h3>
+
+<p>The functions allow users to create and work with the SBML AlgebraicRule structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>AlgebraicRule = AlgebraicRule_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML AlgebraicRule structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>formula = AlgebraicRule_getFormula(SBMLAlgebraicRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAlgebraicRule, an SBML AlgebraicRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the formula attribute</li>
+</ol>
+
+<hr>
+
+<h4>metaid = AlgebraicRule_getMetaid(SBMLAlgebraicRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAlgebraicRule, an SBML AlgebraicRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = AlgebraicRule_getSBOTerm(SBMLAlgebraicRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAlgebraicRule, an SBML AlgebraicRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>value = AlgebraicRule_isSetFormula(SBMLAlgebraicRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAlgebraicRule, an SBML AlgebraicRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the formula attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = AlgebraicRule_isSetMetaid(SBMLAlgebraicRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAlgebraicRule, an SBML AlgebraicRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the metaid attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = AlgebraicRule_isSetSBOTerm(SBMLAlgebraicRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAlgebraicRule, an SBML AlgebraicRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLAlgebraicRule = AlgebraicRule_setFormula(SBMLAlgebraicRule, formula)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAlgebraicRule, an SBML AlgebraicRule structure</li>
+<li>formula; a string representing the formula to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML AlgebraicRule structure with the new value for the formula attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLAlgebraicRule = AlgebraicRule_setMetaid(SBMLAlgebraicRule, metaid)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAlgebraicRule, an SBML AlgebraicRule structure</li>
+<li>metaid; a string representing the metaid to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML AlgebraicRule structure with the new value for the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLAlgebraicRule = AlgebraicRule_setSBOTerm(SBMLAlgebraicRule, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAlgebraicRule, an SBML AlgebraicRule structure</li>
+<li>sboTerm, an integer representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML AlgebraicRule structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLAlgebraicRule = AlgebraicRule_unsetFormula(SBMLAlgebraicRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAlgebraicRule, an SBML AlgebraicRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML AlgebraicRule structure with the formula attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLAlgebraicRule = AlgebraicRule_unsetMetaid(SBMLAlgebraicRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAlgebraicRule, an SBML AlgebraicRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML AlgebraicRule structure with the metaid attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLAlgebraicRule = AlgebraicRule_unsetSBOTerm(SBMLAlgebraicRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLAlgebraicRule, an SBML AlgebraicRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML AlgebraicRule structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>

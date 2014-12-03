@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of scoreC13Fit</title>
+  <meta name="keywords" content="scoreC13Fit">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../../menu.html cobra --><!-- ../menu.html fluxomics --><!-- menu.html c13solver -->
+<h1>scoreC13Fit
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [output] = scoreC13Fit(flux,expdata,model, namesset, method) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="idv2mdv.html" class="code" title="function [out] = idv2mdv(n, fragment)">idv2mdv</a>	returns transofmation matrix from idv's (either Jennie's or Jan's order).</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="errorComputation2.html" class="code" title="function [out] = errorComputation2(x,Prob)">errorComputation2</a>	</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [output] = scoreC13Fit(flux,expdata,model, namesset, method)</a>
+0002 
+0003 std = expdata.std2;
+0004 
+0005 <span class="comment">%this function (1) computes the theoretical mdv distribution vector for</span>
+0006 <span class="comment">%a given flux vector, v, (2) and then computes an error score by taking a</span>
+0007 <span class="comment">%running sum of the squared difference between the theortical and</span>
+0008 <span class="comment">%experimental mdv vectors.</span>
+0009 
+0010 <span class="comment">%v - flux vector array</span>
+0011 <span class="comment">%expdata - experimental data structure</span>
+0012 <span class="comment">%     e.g.</span>
+0013 <span class="comment">%       ala57</span>
+0014 <span class="comment">%          - met = xalaL</span>
+0015 <span class="comment">%          - fragment = [1,1,1]'</span>
+0016 <span class="comment">%          - data = [0.238,0.098,0.017]'</span>
+0017 <span class="comment">% glc_cdv is a sugar distribution in cuomer format (see idv2cdv).</span>
+0018 
+0019 <span class="comment">% output contains fields:</span>
+0020 <span class="comment">%        - error - the calculated error sum value</span>
+0021 <span class="comment">%        - theory - theoretical mdv vector</span>
+0022 <span class="comment">%        - experimental - experimental mdv vector</span>
+0023 
+0024 
+0025 max_attempt = 2; <span class="comment">% keep this at two to try both methods</span>
+0026 
+0027 isV = length(flux) == length(model.lb);
+0028 <span class="keyword">if</span> nargin &lt; 6
+0029     method = 2; <span class="comment">% method 1 = cumomer.  method 2 = CMU</span>
+0030 <span class="keyword">end</span>
+0031 
+0032 <span class="comment">%check if flux is alpha factor or v</span>
+0033 <span class="comment">%if flux is v then make appropriate assignments</span>
+0034 <span class="keyword">if</span>(isV)
+0035     v = flux; 
+0036 <span class="keyword">else</span>
+0037     v = (model.N)*flux;
+0038 <span class="keyword">end</span>
+0039 
+0040 <span class="keyword">if</span> nargin &lt; 5 || isempty(namesset)
+0041     namesset = false;
+0042 <span class="keyword">end</span>
+0043           
+0044 
+0045 
+0046 attempt = 1;
+0047 names = fields(expdata.fragments);
+0048 expdata2 = expdata.fragments;  
+0049 
+0050 <span class="keyword">while</span> attempt &lt;= max_attempt
+0051     tmdv = zeros(0,1);
+0052     emdv = zeros(0,1);
+0053     <span class="keyword">if</span> method == 1 <span class="comment">%cumomer</span>
+0054         glc_input = expdata.input;
+0055         o = slvrCumomer_fast(v, glc_input);
+0056         <span class="keyword">for</span> l = 1:length(names)
+0057             name = names{l};
+0058             tname = expdata2.(name).met;
+0059             tfragment = expdata2.(name).fragment;
+0060             tresult = <a href="idv2mdv.html" class="code" title="function [out] = idv2mdv(n, fragment)">idv2mdv</a>(length(tfragment), tfragment)*o.(tname);
+0061             eresult = expdata2.(name).data;
+0062             tmdv = [tmdv; tresult];
+0063             emdv = [emdv; eresult];
+0064         <span class="keyword">end</span>
+0065     <span class="keyword">elseif</span> method == 2 <span class="comment">%newer/faster</span>
+0066         glc_input = expdata.inputfrag;
+0067         o = slvrEMU_fast(v, glc_input);
+0068         <span class="keyword">for</span> l = 1:length(names)
+0069             name = names{l};
+0070             tname = expdata2.(name).metfrag;
+0071             tresult = o.(tname);
+0072             eresult = expdata2.(name).data;
+0073             tmdv = [tmdv; tresult];
+0074             emdv = [emdv; eresult];
+0075         <span class="keyword">end</span>
+0076     <span class="keyword">end</span>
+0077     
+0078     <span class="keyword">if</span> any(isnan(tmdv)) &amp;&amp; attempt &lt; max_attempt
+0079         attempt = attempt + 1;
+0080         <span class="keyword">if</span> method == 1
+0081             method = 2;
+0082         <span class="keyword">else</span>
+0083             method = 1;
+0084         <span class="keyword">end</span>
+0085     <span class="keyword">else</span>
+0086 <span class="comment">%         if attempt == 2 % aka it worked the second time</span>
+0087 <span class="comment">%             fprintf('s');</span>
+0088 <span class="comment">%             pause;</span>
+0089 <span class="comment">%         end</span>
+0090         <span class="keyword">break</span>;
+0091     <span class="keyword">end</span>
+0092 <span class="keyword">end</span>
+0093 <span class="keyword">if</span> any(isnan(tmdv))
+0094     save errorFile flux
+0095 <span class="keyword">end</span>
+0096 <span class="comment">%iterate through both the theoretical and experimental vectors and compute</span>
+0097 <span class="comment">%a running error value</span>
+0098 
+0099 variation = (tmdv - emdv).^2; 
+0100 
+0101 output = struct;
+0102 output.error = sum(variation)/(std^2); 
+0103 output.theory = tmdv;
+0104 output.experimental = emdv;
+0105 <span class="keyword">if</span>(namesset)
+0106     k = 1;
+0107     <span class="keyword">for</span> l = 1:length(names)
+0108         name = names{l};
+0109         <span class="keyword">if</span> method == 1
+0110             tname = expdata2.(name).met; 
+0111         <span class="keyword">else</span>
+0112             tname = expdata2.(name).metfrag;
+0113         <span class="keyword">end</span>
+0114         <span class="comment">%tresult = o.(tname);</span>
+0115         <span class="keyword">for</span> i = 1:length(expdata2.(name).fragment)
+0116             newname = strcat(name, num2str(i-1));
+0117             mdvnames{k,1} = newname;
+0118             k = k+1;
+0119         <span class="keyword">end</span>
+0120     <span class="keyword">end</span>
+0121     output.mdvnames = mdvnames;
+0122 <span class="keyword">end</span>
+0123 <span class="keyword">return</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

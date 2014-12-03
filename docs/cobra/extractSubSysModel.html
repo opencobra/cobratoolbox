@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of extractSubSysModel</title>
+  <meta name="keywords" content="extractSubSysModel">
+  <meta name="description" content="extractSubSysModel Create model for one of more model subsystems">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html cobra -->
+<h1>extractSubSysModel
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>extractSubSysModel Create model for one of more model subsystems</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function subSysModel = extractSubSysModel(model,subSysNames) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">extractSubSysModel Create model for one of more model subsystems
+
+ subSysModel = extractSubSysModel(model,subSysNames)
+
+INPUTS
+ model         COBRA model structure
+ subSysNames   List of subsystems to extract
+
+OPUTPUT
+ subSysModel   COBRA model of selected subsystems
+
+ Markus Herrgard 3/1/06</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="extractSubNetwork.html" class="code" title="function subModel = extractSubNetwork(model,rxnNames,metNames)">extractSubNetwork</a>	extractSubNetwork Extract subnetwork model</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function subSysModel = extractSubSysModel(model,subSysNames)</a>
+0002 <span class="comment">%extractSubSysModel Create model for one of more model subsystems</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% subSysModel = extractSubSysModel(model,subSysNames)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%INPUTS</span>
+0007 <span class="comment">% model         COBRA model structure</span>
+0008 <span class="comment">% subSysNames   List of subsystems to extract</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">%OPUTPUT</span>
+0011 <span class="comment">% subSysModel   COBRA model of selected subsystems</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% Markus Herrgard 3/1/06</span>
+0014 
+0015 rxnList = model.rxns(ismember(model.subSystems,subSysNames));
+0016 
+0017 subSysModel = <a href="extractSubNetwork.html" class="code" title="function subModel = extractSubNetwork(model,rxnNames,metNames)">extractSubNetwork</a>(model,rxnList)</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

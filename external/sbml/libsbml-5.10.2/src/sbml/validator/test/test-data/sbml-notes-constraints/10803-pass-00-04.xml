@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+    <notes>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+        <center>
+          <h2>A Simple Mitotic Oscillator</h2>
+        </center>
+        <p>A minimal cascade model for the mitotic oscillator involving cyclin and cdc2 kinase</p>
+      </body>
+    </notes>
+    <listOfUnitDefinitions>
+      <unitDefinition id="minutes">
+        <listOfUnits>
+          <unit kind="second" exponent="1" scale="0" multiplier="60"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="time">
+        <listOfUnits>
+          <unit kind="second" exponent="1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfParameters>
+      <parameter id="p" value="1" units="second" constant="false"/>
+      <parameter id="p1" value="1" units="minutes" constant="false"/>
+      <parameter id="p2" constant="false" units="mole"/>
+    </listOfParameters>
+  </model>
+</sbml>

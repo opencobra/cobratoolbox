@@ -1,0 +1,24 @@
+ M2HTML - Documentation System for Matlab .m files in HTML
+ =========================================================
+
+ 0/ Requirements:
+      - Matlab 5.3 or above
+	  - Operating system: any.
+
+ 1/ Download the latest m2html.zip on Madic website:
+       <http://www.artefact.tk/software/matlab/m2html/>.
+ 
+ 2/ Extract files in your Matlab Repository /home/foo/matlab/ :
+       unzip m2html.zip
+
+ 3/ Add the m2html directory in your Matlab path:
+       addpath /home/foo/matlab/m2html/
+   
+ 5/ Ready to use !
+   
+ A documentation is available in the README file.
+   
+ -------------------------------------------------------------------------------
+ Matlab is a Registered Trademark of The Mathworks, Inc.
+
+ Copyright (C) 2003 Guillaume Flandin <Guillaume@artefact.tk>

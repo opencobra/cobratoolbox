@@ -1,0 +1,52 @@
+XMLMemoryBuffer.lo: XMLMemoryBuffer.cpp /usr/include/c++/4.7/cstring \
+ /usr/include/x86_64-linux-gnu/c++/4.7/./bits/c++config.h \
+ /usr/include/x86_64-linux-gnu/c++/4.7/./bits/os_defines.h \
+ /usr/include/features.h /usr/include/stdc-predef.h \
+ /usr/include/x86_64-linux-gnu/bits/predefs.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/c++/4.7/./bits/cpu_defines.h \
+ /usr/include/string.h /usr/lib/gcc/x86_64-linux-gnu/4.7/include/stddef.h \
+ /usr/include/xlocale.h \
+ /home/rfleming/work/sbg-code/cobratoolbox/external/sbml/libsbml-5.10.2/src/sbml/xml/XMLMemoryBuffer.h \
+ /home/rfleming/work/sbg-code/cobratoolbox/external/sbml/libsbml-5.10.2/src/sbml/xml/XMLBuffer.h \
+ /home/rfleming/work/sbg-code/cobratoolbox/external/sbml/libsbml-5.10.2/src/sbml/xml/XMLExtern.h \
+ /home/rfleming/work/sbg-code/cobratoolbox/external/sbml/libsbml-5.10.2/src/sbml/common/libsbml-namespace.h
+
+/usr/include/c++/4.7/cstring:
+
+/usr/include/x86_64-linux-gnu/c++/4.7/./bits/c++config.h:
+
+/usr/include/x86_64-linux-gnu/c++/4.7/./bits/os_defines.h:
+
+/usr/include/features.h:
+
+/usr/include/stdc-predef.h:
+
+/usr/include/x86_64-linux-gnu/bits/predefs.h:
+
+/usr/include/x86_64-linux-gnu/sys/cdefs.h:
+
+/usr/include/x86_64-linux-gnu/bits/wordsize.h:
+
+/usr/include/x86_64-linux-gnu/gnu/stubs.h:
+
+/usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
+
+/usr/include/x86_64-linux-gnu/c++/4.7/./bits/cpu_defines.h:
+
+/usr/include/string.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/4.7/include/stddef.h:
+
+/usr/include/xlocale.h:
+
+/home/rfleming/work/sbg-code/cobratoolbox/external/sbml/libsbml-5.10.2/src/sbml/xml/XMLMemoryBuffer.h:
+
+/home/rfleming/work/sbg-code/cobratoolbox/external/sbml/libsbml-5.10.2/src/sbml/xml/XMLBuffer.h:
+
+/home/rfleming/work/sbg-code/cobratoolbox/external/sbml/libsbml-5.10.2/src/sbml/xml/XMLExtern.h:
+
+/home/rfleming/work/sbg-code/cobratoolbox/external/sbml/libsbml-5.10.2/src/sbml/common/libsbml-namespace.h:

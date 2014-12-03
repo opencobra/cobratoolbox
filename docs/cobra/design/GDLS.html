@@ -1,0 +1,436 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of GDLS</title>
+  <meta name="keywords" content="GDLS">
+  <meta name="description" content="GDLS (Genetic Design through Local Search) attempts to find genetic">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html design -->
+<h1>GDLS
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>GDLS (Genetic Design through Local Search) attempts to find genetic</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [gdlsSolution, bilevelMILPProblem, gdlsSolutionStructs] = GDLS(model, targetRxns, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">GDLS (Genetic Design through Local Search) attempts to find genetic
+ designs with greater in silico production of desired metabolites.
+
+ [gdlsSolution, bilevelMILPProblem, gdlsSolutionStructs] = GDLS(model, varargin)
+
+INPUTS
+ model             Cobra model structure
+ targetRxn         Reaction(s) to be maximized (Cell array of strings)
+
+OPTIONAL INPUTS
+ varargin          parameters entered using either a structure or list of
+                   parameter, parameter value
+   List of optional parameters
+   'nbhdsz'            Neighborhood size (default: 1)
+   'M'                 Number of search paths (default: 1)
+   'maxKO'             Maximum number of knockouts (default: 50)
+   'koCost'            Cost for knocking out a reaction, gene set, or gene
+                       A different cost can be set for each knockout.
+                       (default: 1 for each knockout)
+   'selectedRxns'      List of reactions/geneSets that can be knocked out
+   'koType'            What to knockout: reactions, gene sets, or genes
+                       {('rxns'), 'geneSets', 'genes'}
+   'iterationLimit'    Maximum number of iterations (default: 70)
+   'timeLimit'         Maximum run time in seconds (default: 252000)
+   'minGrowth'         Minimum growth rate
+
+OUTPUTS
+ gdlsSolution          GDLS solution structure (similar to OptKnock sol struct)
+ bilevelMILPProblem    Problem structure used in computation
+
+ Adapted from Desmond S Lun's gdls scripts.
+ Richard Que (1/28/2010)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/findExcRxns.html" class="code" title="function [selExc,selUpt] = findExcRxns(model,inclObjFlag,irrevFlag)">findExcRxns</a>	findExcRxns Find exchange and uptake rxns</li><li><a href="../../cobra/solvers/solveCobraMILP.html" class="code" title="function solution = solveCobraMILP(MILPproblem,varargin)">solveCobraMILP</a>	solveCobraMILP Solve constraint-based MILP problems</li><li><a href="../../cobra/tools/printLabeledData.html" class="code" title="function printLabeledData(labels,data,nonzeroFlag,sortCol,fileName,headerRow,sortMode)">printLabeledData</a>	printLabeledData Print a matrix of data with labels</li><li><a href="../../cobra/tools/selMatrix.html" class="code" title="function selMat = selMatrix(selVec)">selMatrix</a>	selMatrix Create selection matrix from a selection vector</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function y = shrinkKnockouts(y, model, selTargetRxns)</a></li><li><a href="#_sub2" class="code">function [solSynMax solSynMin solBiomass]  = fluxBalance(model,selTargetRxns,verbFlag)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [gdlsSolution, bilevelMILPProblem, gdlsSolutionStructs] = GDLS(model, targetRxns, varargin)</a>
+0002 <span class="comment">%GDLS (Genetic Design through Local Search) attempts to find genetic</span>
+0003 <span class="comment">% designs with greater in silico production of desired metabolites.</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% [gdlsSolution, bilevelMILPProblem, gdlsSolutionStructs] = GDLS(model, varargin)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%INPUTS</span>
+0008 <span class="comment">% model             Cobra model structure</span>
+0009 <span class="comment">% targetRxn         Reaction(s) to be maximized (Cell array of strings)</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">%OPTIONAL INPUTS</span>
+0012 <span class="comment">% varargin          parameters entered using either a structure or list of</span>
+0013 <span class="comment">%                   parameter, parameter value</span>
+0014 <span class="comment">%   List of optional parameters</span>
+0015 <span class="comment">%   'nbhdsz'            Neighborhood size (default: 1)</span>
+0016 <span class="comment">%   'M'                 Number of search paths (default: 1)</span>
+0017 <span class="comment">%   'maxKO'             Maximum number of knockouts (default: 50)</span>
+0018 <span class="comment">%   'koCost'            Cost for knocking out a reaction, gene set, or gene</span>
+0019 <span class="comment">%                       A different cost can be set for each knockout.</span>
+0020 <span class="comment">%                       (default: 1 for each knockout)</span>
+0021 <span class="comment">%   'selectedRxns'      List of reactions/geneSets that can be knocked out</span>
+0022 <span class="comment">%   'koType'            What to knockout: reactions, gene sets, or genes</span>
+0023 <span class="comment">%                       {('rxns'), 'geneSets', 'genes'}</span>
+0024 <span class="comment">%   'iterationLimit'    Maximum number of iterations (default: 70)</span>
+0025 <span class="comment">%   'timeLimit'         Maximum run time in seconds (default: 252000)</span>
+0026 <span class="comment">%   'minGrowth'         Minimum growth rate</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">%OUTPUTS</span>
+0029 <span class="comment">% gdlsSolution          GDLS solution structure (similar to OptKnock sol struct)</span>
+0030 <span class="comment">% bilevelMILPProblem    Problem structure used in computation</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">% Adapted from Desmond S Lun's gdls scripts.</span>
+0033 <span class="comment">% Richard Que (1/28/2010)</span>
+0034 
+0035 MAXFLUX = 1000;
+0036 MAXDUAL = 1000;
+0037 EPS = 1e-4;
+0038 gdlsSolutionStructs = [];
+0039 
+0040 <span class="keyword">if</span> nargin &lt; 2
+0041     error(<span class="string">'Model and target reaction(s) must be specified'</span>)
+0042 <span class="keyword">elseif</span> mod((nargin-2),2)==0 <span class="comment">%manual entry</span>
+0043     options.targetRxns = targetRxns;
+0044     <span class="keyword">for</span> i=1:2:(nargin-2)
+0045         <span class="keyword">if</span> ismember(varargin{i},{<span class="string">'nbhdsz'</span>,<span class="string">'M'</span>,<span class="string">'maxKO'</span>,<span class="string">'selectedRxns'</span>,<span class="string">'koType'</span>,<span class="string">'koCost'</span>,<span class="string">'minGrowth'</span>, <span class="keyword">...</span>
+0046                                  <span class="string">'timeLimit'</span>,<span class="string">'iterationLimit'</span>})
+0047             options.(varargin{i}) = varargin{i+1};
+0048         <span class="keyword">else</span>
+0049             display([<span class="string">'Unknown option '</span> varargin{i}]);
+0050         <span class="keyword">end</span>
+0051     <span class="keyword">end</span>
+0052 <span class="keyword">elseif</span> isstruct(targetRxns) <span class="comment">%options structure</span>
+0053     options = varargin{1};
+0054 <span class="keyword">else</span>
+0055     error(<span class="string">'Invalid number of entries'</span>)
+0056 <span class="keyword">end</span>
+0057 
+0058 <span class="comment">%Default Values</span>
+0059 <span class="keyword">if</span> ~isfield(options,<span class="string">'koType'</span>), options.koType = <span class="string">'rxns'</span>; <span class="keyword">end</span>
+0060 <span class="keyword">if</span> ~isfield(options,<span class="string">'nbhdsz'</span>), options.nbhdsz=1; <span class="keyword">end</span>
+0061 <span class="keyword">if</span> ~isfield(options,<span class="string">'M'</span>), options.M=1; <span class="keyword">end</span>
+0062 <span class="keyword">if</span> ~isfield(options,<span class="string">'maxKO'</span>), options.maxKO=50; <span class="keyword">end</span>
+0063 <span class="keyword">if</span> ~isfield(options,<span class="string">'iterationLimit'</span>), options.iterationLimit=70; <span class="keyword">end</span>
+0064 <span class="keyword">if</span> ~isfield(options,<span class="string">'timeLimit'</span>), options.timeLimit=252000 ; <span class="keyword">end</span>
+0065 <span class="keyword">if</span> isfield(options,<span class="string">'targetRxns'</span>)
+0066     selTargetRxns = logical(ismember(model.rxns,options.targetRxns));
+0067     <span class="keyword">if</span> ~any(selTargetRxns)
+0068         error([options.targetRxns <span class="string">' not found. Double check spelling.'</span>]);
+0069     <span class="keyword">end</span>
+0070 <span class="keyword">else</span>
+0071     error(<span class="string">'No target reaction specified'</span>)
+0072 <span class="keyword">end</span>
+0073 <span class="keyword">if</span> isfield(options,<span class="string">'selectedRxns'</span>)
+0074     selSelectedRxns = logical(ismember(model.rxns,options.selectedRxns));
+0075 <span class="keyword">else</span>
+0076     selSelectedRxns = true(length(model.rxns),1);
+0077 <span class="keyword">end</span>
+0078 
+0079 
+0080 <span class="keyword">switch</span> lower(options.koType)
+0081     <span class="keyword">case</span> <span class="string">'rxns'</span>
+0082         <span class="comment">%% Generate selection reaction matrix</span>
+0083         model.selRxnMatrix = <a href="../../cobra/tools/selMatrix.html" class="code" title="function selMat = selMatrix(selVec)">selMatrix</a>(selSelectedRxns)';
+0084         possibleKOList = model.rxns(selSelectedRxns);
+0085         
+0086     <span class="keyword">case</span> <span class="string">'genesets'</span>
+0087         <span class="comment">%% Generate reaction gene set mapping matrix</span>
+0088         <span class="comment">%remove biomass reaction from grRules and generate unique gene set list</span>
+0089         possibleKOList = unique(model.grRules(selSelectedRxns));
+0090         <span class="keyword">if</span> isempty(possibleKOList{1}), possibleKOList = possibleKOList(2:end); <span class="keyword">end</span>
+0091         <span class="keyword">for</span> i = 1:length(possibleKOList)
+0092             model.selRxnMatrix(:,i) =  double(strcmp(possibleKOList{i},model.grRules));
+0093         <span class="keyword">end</span>
+0094         
+0095     <span class="keyword">case</span> <span class="string">'genes'</span>
+0096         <span class="comment">%% Use rxnGeneMat as selRxnMatrix</span>
+0097         model.selRxnMatrix = model.rxnGeneMat;
+0098         possibleKOList = model.genes;
+0099     <span class="keyword">otherwise</span>
+0100         error(<span class="string">'Unrecognized KO type'</span>)
+0101 <span class="keyword">end</span>
+0102 
+0103 <span class="comment">%% Generate koCost if not present</span>
+0104 <span class="keyword">if</span> ~isfield(options,<span class="string">'koCost'</span>)
+0105     <span class="keyword">if</span> isfield(model,<span class="string">'koCost'</span>)
+0106         <span class="keyword">if</span> length(model.koCost) == 1
+0107             options.koCost = ones(length(possibleKOList,1)) * model.koCost;
+0108         <span class="keyword">else</span>
+0109             options.koCost = model.koCost;
+0110         <span class="keyword">end</span>
+0111     <span class="keyword">else</span>
+0112         options.koCost = ones(length(possibleKOList),1);
+0113     <span class="keyword">end</span>
+0114 <span class="keyword">elseif</span> length(model.koCost) == 1
+0115     options.koCost = ones(length(possibleKOList,1)) * model.koCost;
+0116 <span class="keyword">else</span>
+0117     options.koCost = model.koCost;
+0118 <span class="keyword">end</span>
+0119 
+0120 <span class="comment">%index exchange reactions</span>
+0121 [selExc] = <a href="../../cobra/findExcRxns.html" class="code" title="function [selExc,selUpt] = findExcRxns(model,inclObjFlag,irrevFlag)">findExcRxns</a>(model,true,true);
+0122 
+0123 <span class="comment">%% Setup model</span>
+0124 model.ub(isinf(model.ub)) = MAXFLUX;
+0125 model.ub(model.ub&gt;MAXFLUX) = MAXFLUX;
+0126 model.lb(isinf(model.lb)) = -MAXFLUX;
+0127 model.lb(model.lb&lt;-MAXFLUX) = -MAXFLUX;
+0128 model.rxnsPresent = ones(length(model.rxns),1);
+0129 
+0130 <span class="comment">%% Create Baseline</span>
+0131 solution0 = <a href="#_sub2" class="code" title="subfunction [solSynMax solSynMin solBiomass]  = fluxBalance(model,selTargetRxns,verbFlag)">fluxBalance</a>(model,selTargetRxns);
+0132 
+0133 <span class="comment">%% Create bi-level MILP problem</span>
+0134 
+0135 [nMets nRxns] = size(model.S);
+0136 nInt = size(model.selRxnMatrix,2);
+0137 
+0138 jMu = find(~isinf(model.lb));
+0139 nMu = length(jMu);
+0140 jNu = find(~isinf(model.ub));
+0141 nNu = length(jNu);
+0142 
+0143 y0 = (model.selRxnMatrix' * ~model.rxnsPresent) ~= 0;
+0144 y0 = repmat(y0,1,options.M);
+0145 y0p = y0;
+0146 iiter = 1;
+0147 change = true;
+0148 t1 = clock;
+0149 <span class="keyword">while</span> change
+0150     change = false;
+0151     
+0152     y = false(nInt, 0);
+0153     fmax = zeros(1, 0);
+0154     <span class="keyword">for</span> istart = 1:size(y0, 2)
+0155         <span class="keyword">for</span> irun = 1:options.M
+0156             
+0157             c = [selTargetRxns;
+0158                 zeros(nMets, 1);
+0159                 zeros(nMu, 1);
+0160                 zeros(nNu, 1);
+0161                 zeros(nRxns, 1);
+0162                 zeros(nInt, 1)];
+0163             <span class="comment">%x= [ v                             lambda                      mu                                              nu                                              xi                              y                                           ]</span>
+0164             A = [ model.S                       sparse(nMets, nMets)        sparse(nMets, nMu)                              sparse(nMets, nNu)                              sparse(nMets, nRxns)            sparse(nMets, nInt);
+0165                 sparse(nRxns, nRxns)            model.S'                    -sparse(jMu, 1:nMu, ones(nMu, 1), nRxns, nMu)   sparse(jNu, 1:nNu, ones(nNu, 1), nRxns, nNu)    speye(nRxns)                    sparse(nRxns, nInt);
+0166                 speye(nRxns)                    sparse(nRxns, nMets)        sparse(nRxns, nMu)                              sparse(nRxns, nNu)                              sparse(nRxns, nRxns)            model.selRxnMatrix .* repmat(model.lb, 1, nInt);
+0167                 speye(nRxns)                    sparse(nRxns, nMets)        sparse(nRxns, nMu)                              sparse(nRxns, nNu)                              sparse(nRxns, nRxns)            model.selRxnMatrix .* repmat(model.ub, 1, nInt);
+0168                 sparse(nRxns, nRxns)            sparse(nRxns, nMets)        sparse(nRxns, nMu)                              sparse(nRxns, nNu)                              speye(nRxns)                    model.selRxnMatrix * MAXDUAL;
+0169                 sparse(nRxns, nRxns)            sparse(nRxns, nMets)        sparse(nRxns, nMu)                              sparse(nRxns, nNu)                              speye(nRxns)                    -model.selRxnMatrix * MAXDUAL;
+0170                 model.c'                        sparse(1, nMets)            model.lb(jMu)'                                  -model.ub(jNu)'                                 sparse(1, nRxns)                sparse(1, nInt);
+0171                 sparse(1, nRxns)                sparse(1, nMets)            sparse(1, nMu)                                  sparse(1, nNu)                                  sparse(1, nRxns)                ((y0(:, istart) == 0) - (y0(:, istart) == 1))';
+0172                 sparse(size(y, 2), nRxns)       sparse(size(y, 2), nMets)   sparse(size(y, 2), nMu)                         sparse(size(y, 2), nNu)                         sparse(size(y, 2), nRxns)       ((y == 0) - (y == 1))';
+0173                 sparse(1, nRxns)                sparse(1, nMets)            sparse(1, nMu)                                  sparse(1, nNu)                                  sparse(1, nRxns)                options.koCost'; ];
+0174             b = [ zeros(nMets, 1);
+0175                 model.c;
+0176                 model.lb;
+0177                 model.ub;
+0178                 zeros(nRxns, 1);
+0179                 zeros(nRxns, 1);
+0180                 0;
+0181                 options.nbhdsz - nnz(y0(:, istart));
+0182                 ones(size(y, 2), 1) - sum((y ~= 0), 1)';
+0183                 options.maxKO; ];
+0184        csense = char([<span class="string">'E'</span> * ones(nMets, 1);
+0185                 <span class="string">'E'</span> * ones(nRxns, 1);
+0186                 <span class="string">'G'</span> * ones(nRxns, 1);
+0187                 <span class="string">'L'</span> * ones(nRxns, 1);
+0188                 <span class="string">'G'</span> * ones(nRxns, 1);
+0189                 <span class="string">'L'</span> * ones(nRxns, 1);
+0190                 <span class="string">'E'</span>;
+0191                 <span class="string">'L'</span>;
+0192                 <span class="string">'G'</span> * ones(size(y, 2), 1);
+0193                 <span class="string">'L'</span>; ]);
+0194            lb = [ model.lb;
+0195                 -Inf * ones(nMets, 1);
+0196                 zeros(nMu, 1);
+0197                 zeros(nNu, 1);
+0198                 -Inf * ones(nRxns, 1);
+0199                 zeros(nInt, 1) ];
+0200            ub = [ model.ub;
+0201                 Inf * ones(nMets, 1);
+0202                 Inf * ones(nMu, 1);
+0203                 Inf * ones(nNu, 1);
+0204                 Inf * ones(nRxns, 1);
+0205                 ones(nInt, 1) ];
+0206       vartype = char([<span class="string">'C'</span> * ones(nRxns, 1);
+0207                 <span class="string">'C'</span> * ones(nMets, 1);
+0208                 <span class="string">'C'</span> * ones(nMu, 1);
+0209                 <span class="string">'C'</span> * ones(nNu, 1);
+0210                 <span class="string">'C'</span> * ones(nRxns, 1);
+0211                 <span class="string">'B'</span> * ones(nInt, 1); ]);
+0212        osense = -1; <span class="comment">%maximize</span>
+0213             
+0214             <span class="keyword">if</span> isfield(options,<span class="string">'minGrowth'</span>)
+0215                 A = [A; model.c' sparse(1, nMets + nMu + nNu + nRxns + nInt)];
+0216                 b = [b; options.minGrowth];
+0217                 csense = [csense; <span class="string">'G'</span>];
+0218             <span class="keyword">end</span>     
+0219        
+0220             [bilevelMILPProblem.c, bilevelMILPProblem.A,<span class="keyword">...</span>
+0221                 bilevelMILPProblem.b, bilevelMILPProblem.lb,<span class="keyword">...</span>
+0222                 bilevelMILPProblem.ub, bilevelMILPProblem.csense,<span class="keyword">...</span>
+0223                 bilevelMILPProblem.vartype, bilevelMILPProblem.osense,<span class="keyword">...</span>
+0224                 bilevelMILPProblem.x0] = <span class="keyword">...</span>
+0225                 deal(c, A, b, lb, ub, csense, vartype, osense, []);
+0226             
+0227             <span class="comment">%solve</span>
+0228             solution1 = <a href="../../cobra/solvers/solveCobraMILP.html" class="code" title="function solution = solveCobraMILP(MILPproblem,varargin)">solveCobraMILP</a>(bilevelMILPProblem);
+0229 
+0230             <span class="comment">%check solver status</span>
+0231             <span class="keyword">if</span> solution1.stat~=1
+0232                 <span class="keyword">continue</span>; <span class="comment">%non optimal solution</span>
+0233             <span class="keyword">end</span>
+0234             yt = solution1.full((end - nInt + 1):end) &gt; EPS;
+0235             
+0236             model.rxnsPresent = ~(model.selRxnMatrix * yt);
+0237             solution2 = <a href="#_sub2" class="code" title="subfunction [solSynMax solSynMin solBiomass]  = fluxBalance(model,selTargetRxns,verbFlag)">fluxBalance</a>(model,selTargetRxns,false);
+0238             <span class="keyword">if</span> abs(solution2.obj - solution1.obj) &gt; EPS
+0239                 <span class="keyword">continue</span>; <span class="comment">%inconsistent</span>
+0240             <span class="keyword">end</span>
+0241             
+0242             fmax(:, end + 1) = solution1.obj;
+0243             y(:, end + 1) = yt;
+0244         <span class="keyword">end</span>
+0245     <span class="keyword">end</span>
+0246     
+0247     <span class="keyword">if</span> size(y, 2) == 0
+0248         <span class="keyword">continue</span>;
+0249     <span class="keyword">end</span>
+0250     
+0251     [fmaxsort, ifmaxsort] = sort(fmax);
+0252     y = y(:, ifmaxsort);
+0253     y = y(:, max([1 size(y, 2) - options.M + 1]):end);
+0254     y = <a href="#_sub1" class="code" title="subfunction y = shrinkKnockouts(y, model, selTargetRxns)">shrinkKnockouts</a>(y, model, selTargetRxns);
+0255     <span class="keyword">if</span> size(y, 2) ~= size(y0, 2) || any(any(y~=y0))&amp;&amp;any(any(y~=y0p))
+0256         y0p=y0;
+0257         y0 = y;
+0258         change = true;
+0259     <span class="keyword">end</span>
+0260     
+0261     fprintf(<span class="string">'Iteration %d\n'</span>, iiter);
+0262     fprintf(<span class="string">'----------%s\n'</span>, char(<span class="string">'-'</span> * ones(1, floor(log10(iiter)) + 1)));
+0263     <span class="keyword">for</span> iend = 1:size(y0, 2)
+0264         model.rxnsPresent = ~(model.selRxnMatrix * y0(:, iend));
+0265         [solSynMax solSynMin solBiomass] = <a href="#_sub2" class="code" title="subfunction [solSynMax solSynMin solBiomass]  = fluxBalance(model,selTargetRxns,verbFlag)">fluxBalance</a>(model,selTargetRxns);
+0266         fprintf(<span class="string">'Knockout cost:   %d\n'</span>, options.koCost' * y0(:, iend));
+0267         <span class="keyword">if</span> nnz(y0) &gt; 0
+0268             fprintf(<span class="string">'Knockouts:\n%s'</span>, sprintf(<span class="string">'\t%s\n'</span>, possibleKOList{y0(:, iend)}));
+0269         <span class="keyword">end</span>
+0270         <a href="../../cobra/tools/printLabeledData.html" class="code" title="function printLabeledData(labels,data,nonzeroFlag,sortCol,fileName,headerRow,sortMode)">printLabeledData</a>(model.rxns(selExc),solSynMax.full(selExc),true);
+0271         fprintf(<span class="string">'\n'</span>);
+0272         
+0273         <span class="comment">%Save Solutions</span>
+0274         gdlsSolutionStructs.(sprintf(<span class="string">'Iteration_%d'</span>,iiter)).(sprintf(<span class="string">'solution_%2'</span>,i)).solBiomass = solBiomass;
+0275         gdlsSolutionStructs.(sprintf(<span class="string">'Iteration_%d'</span>,iiter)).(sprintf(<span class="string">'solution_%2'</span>,i)).solSynMin = solSynMin;
+0276         gdlsSolutionStructs.(sprintf(<span class="string">'Iteration_%d'</span>,iiter)).(sprintf(<span class="string">'solution_%2'</span>,i)).solSynMax = solSynMax;
+0277     <span class="keyword">end</span>
+0278     elapsed_time = etime(clock,t1)
+0279     iiter = iiter + 1;
+0280     <span class="keyword">if</span> (elapsed_time &gt;= options.timeLimit) || (iiter &gt;= options.iterationLimit)
+0281         <span class="keyword">break</span>;
+0282     <span class="keyword">end</span>
+0283 <span class="keyword">end</span>
+0284 
+0285 <span class="comment">%Generate Solution Structure</span>
+0286 fprintf(<span class="string">'\nGenerating Output\n'</span>);
+0287 gdlsSolution.int = y0;
+0288 gdlsSolutions.KOs = cell(max(sum(y0,2)),size(y0,2));
+0289 <span class="keyword">for</span> i = 1:size(y0,2)
+0290 gdlsSolution.KOs(1:nnz(y0(:,i)),i) = possibleKOList(y0(:,i));
+0291 [solSynMax solSynMin solBiomass] = <a href="#_sub2" class="code" title="subfunction [solSynMax solSynMin solBiomass]  = fluxBalance(model,selTargetRxns,verbFlag)">fluxBalance</a>(model,selTargetRxns,false);
+0292 gdlsSolution.biomass(1,i) = solBiomass.obj;
+0293 gdlsSolution.minTargetProd(1,i) = solSynMin.obj;
+0294 gdlsSolution.maxTargetProd(1,i) = solSynMax.obj;
+0295 <span class="keyword">end</span>
+0296 
+0297 <span class="keyword">end</span>
+0298 <a name="_sub1" href="#_subfunctions" class="code">function y = shrinkKnockouts(y, model, selTargetRxns)</a>
+0299 
+0300 <span class="keyword">for</span> iycol = 1:size(y, 2)
+0301     model.rxnsPresent = ~(model.selRxnMatrix * y(:, iycol));
+0302     solution1 = <a href="#_sub2" class="code" title="subfunction [solSynMax solSynMin solBiomass]  = fluxBalance(model,selTargetRxns,verbFlag)">fluxBalance</a>(model, selTargetRxns, false);              
+0303     <span class="keyword">for</span> i = find(y(:, iycol))'
+0304         yt = y(:, iycol);
+0305         yt(i) = 0;
+0306         
+0307         model.rxnsPresent = ~(model.selRxnMatrix * yt);
+0308         solution2 = <a href="#_sub2" class="code" title="subfunction [solSynMax solSynMin solBiomass]  = fluxBalance(model,selTargetRxns,verbFlag)">fluxBalance</a>(model, selTargetRxns, false);   
+0309         
+0310         <span class="keyword">if</span> solution2.obj &gt;= solution1.obj
+0311             y(:, iycol) = yt;
+0312             
+0313             y(:, iycol) = <a href="#_sub1" class="code" title="subfunction y = shrinkKnockouts(y, model, selTargetRxns)">shrinkKnockouts</a>(y(:, iycol), model, selTargetRxns);
+0314         <span class="keyword">end</span>
+0315     <span class="keyword">end</span>
+0316 <span class="keyword">end</span>
+0317 
+0318 y = unique(y', <span class="string">'rows'</span>)';
+0319 <span class="keyword">end</span>
+0320 
+0321 <a name="_sub2" href="#_subfunctions" class="code">function [solSynMax solSynMin solBiomass]  = fluxBalance(model,selTargetRxns,verbFlag)</a>
+0322 <span class="keyword">if</span> nargin &lt; 3
+0323     verbFlag = true;
+0324 <span class="keyword">end</span>
+0325 model.x0 = [];
+0326 modelb = model;
+0327 model_syn = model;
+0328 
+0329 [nMets nRxns] = size(model.S);
+0330 
+0331 yt = model.rxnsPresent;
+0332 
+0333 modelb.A = [ model.S; 
+0334       sparse(1:nnz(~yt), find(~yt), ones(nnz(~yt), 1), nnz(~yt), nRxns) ];
+0335 modelb.b = [ zeros(nMets, 1);
+0336       zeros(nnz(~yt), 1) ];
+0337 modelb.csense = char(<span class="string">'E'</span> * ones(1, nMets + nnz(~yt)));
+0338 modelb.vartype = char(<span class="string">'C'</span> * ones(1, nRxns));
+0339 modelb.osense = -1;
+0340 solBiomass = <a href="../../cobra/solvers/solveCobraMILP.html" class="code" title="function solution = solveCobraMILP(MILPproblem,varargin)">solveCobraMILP</a>(modelb);
+0341 
+0342 
+0343 model_syn.A = [ model.S;
+0344       sparse(1:nnz(~yt), find(~yt), ones(nnz(~yt), 1), nnz(~yt), nRxns);
+0345       model.c' ];
+0346 model_syn.b = [ zeros(nMets, 1);
+0347       zeros(nnz(~yt), 1);
+0348       solBiomass.obj ];
+0349 model_syn.c = selTargetRxns;
+0350 model_syn.csense = char(<span class="string">'E'</span> * ones(1, nMets + nnz(~yt) + 1));
+0351 model_syn.vartype = char(<span class="string">'C'</span> * ones(1, nRxns));
+0352 model_syn.osense = -1;
+0353 solSynMax = <a href="../../cobra/solvers/solveCobraMILP.html" class="code" title="function solution = solveCobraMILP(MILPproblem,varargin)">solveCobraMILP</a>(model_syn);
+0354 model_syn.osense = 1;
+0355 solSynMin = <a href="../../cobra/solvers/solveCobraMILP.html" class="code" title="function solution = solveCobraMILP(MILPproblem,varargin)">solveCobraMILP</a>(model_syn);
+0356 
+0357 <span class="keyword">if</span> verbFlag
+0358 fprintf(<span class="string">'Biomass flux:    %f\n'</span>, solBiomass.obj);
+0359 fprintf(<span class="string">'Synthetic flux:  [%f, %f]\n'</span>, solSynMin.obj, solSynMax.obj);
+0360 <span class="keyword">end</span>
+0361 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

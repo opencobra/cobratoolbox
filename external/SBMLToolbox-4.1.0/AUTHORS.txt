@@ -1,0 +1,15 @@
+	      SBMLToolbox has been primarily developed by
+
+			     Sarah Keating
+
+	    with contributions from (in alphabetical order)
+	Arsen Batagov, Ben Bornstein, Will Bryant, Bill Denney,
+     Andrew Finney, Thomas Grotkjær, Mike Hucka, Pieter Pareit, 
+                  Kieran Smallbone, Sumant Turlapati,
+		   and others in the SBML community.
+
+	For more information about SBML or SBMLToolbox, contact:
+
+			     The SBML Team
+			  http://www.sbml.org/
+		      mailto:sbml-team@caltech.edu

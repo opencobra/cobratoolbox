@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of createXMatrix</title>
+  <meta name="keywords" content="createXMatrix">
+  <meta name="description" content="createXMatrix creates a matrix full of exchange reactions based">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../../menu.html cobra --><!-- ../menu.html gapFilling --><!-- menu.html growthExpMatch -->
+<h1>createXMatrix
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>createXMatrix creates a matrix full of exchange reactions based</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function ExchangeRxnMatrix = createXMatrix(compoundsIn, transport, compartment) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">createXMatrix creates a matrix full of exchange reactions based
+ on the input list (creates an exchange reaction for each of the
+ metabolites present in the model)
+
+ ExchangeRxnMatrix = createXMatrix(compoundsIn, transport, compartment)
+
+ compoundsIn - SU matrix 
+
+ transport     if 1, transport reactions will be defined as well for every
+ compounds (default: 0, which corresponds to only exchange reactions)
+ compartment   [c] --&gt; transport from cytoplasm [c] to extracellulat space
+ [e] (default), [p] creates transport from [c] to [p] and from [p] to [c]
+
+ 11-10-07 IT</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="addReactionGEM.html" class="code" title="function [newmodel, HTABLE] = addReactionGEM(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,nRxn,subSystems,grRules,rules,genes, HTABLE)">addReactionGEM</a>	addReactionGEM manually adds reactions to a specified model, may add one or more reactions at a time</li><li><a href="../../../cobra/reconstruction/createModel.html" class="code" title="function model = createModel(rxnAbrList,rxnNameList,rxnList,revFlagList,lowerBoundList,upperBoundList,subSystemList,grRuleList,geneNameList,systNameList)">createModel</a>	createModel Create a COBRA model from inputs or an empty model</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="generateSUXMatrix.html" class="code" title="function MatricesSUX =generateSUXMatrix(model,dictionary, KEGGFilename, KEGGBlackList, compartment, addModel)">generateSUXMatrix</a>	generateSUXMatrix creates the matrices for matlab smiley -- > combines S, U</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function ExchangeRxnMatrix = createXMatrix(compoundsIn, transport, compartment)</a>
+0002 <span class="comment">%createXMatrix creates a matrix full of exchange reactions based</span>
+0003 <span class="comment">% on the input list (creates an exchange reaction for each of the</span>
+0004 <span class="comment">% metabolites present in the model)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% ExchangeRxnMatrix = createXMatrix(compoundsIn, transport, compartment)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% compoundsIn - SU matrix</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% transport     if 1, transport reactions will be defined as well for every</span>
+0011 <span class="comment">% compounds (default: 0, which corresponds to only exchange reactions)</span>
+0012 <span class="comment">% compartment   [c] --&gt; transport from cytoplasm [c] to extracellulat space</span>
+0013 <span class="comment">% [e] (default), [p] creates transport from [c] to [p] and from [p] to [c]</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% 11-10-07 IT</span>
+0016 <span class="comment">%</span>
+0017 
+0018 <span class="keyword">if</span> nargin &lt; 3
+0019     compartment = <span class="string">'[c]'</span>;
+0020 <span class="keyword">end</span>
+0021 <span class="keyword">if</span> nargin &lt; 2
+0022     transport = 0;
+0023 <span class="keyword">end</span>
+0024 h=waitbar(0,<span class="string">'Exchange reaction list ...'</span>);
+0025 ExchangeRxnMatrix = <a href="../../../cobra/reconstruction/createModel.html" class="code" title="function model = createModel(rxnAbrList,rxnNameList,rxnList,revFlagList,lowerBoundList,upperBoundList,subSystemList,grRuleList,geneNameList,systNameList)">createModel</a>;
+0026 
+0027 
+0028 cnt=1;
+0029 HTABLE = java.util.Hashtable;
+0030 
+0031 <span class="comment">%removes the compartment from compound name</span>
+0032 compoundsIn=regexprep(compoundsIn,<span class="string">'(\w*)]'</span>,<span class="string">''</span>);
+0033 compoundsIn=regexprep(compoundsIn,<span class="string">'['</span>,<span class="string">''</span>);
+0034 compoundsIn=regexprep(compoundsIn,<span class="string">']'</span>,<span class="string">''</span>);
+0035 compoundsIn=regexprep(compoundsIn,<span class="string">' '</span>,<span class="string">''</span>);
+0036 
+0037 compounds=unique(compoundsIn);
+0038 
+0039 <span class="comment">%creates sparse matrix with corresponding dimensions</span>
+0040 <span class="keyword">if</span>  transport==0
+0041     ExchangeRxnMatrix.S=spalloc(length(compounds),length(compounds),length(compounds));
+0042 <span class="keyword">elseif</span> transport == 1
+0043     <span class="keyword">if</span> (strcmp(compartment,<span class="string">'[c]'</span>)==1)
+0044         ExchangeRxnMatrix.S=spalloc(length(compounds),2*length(compounds),3*length(compounds));
+0045     <span class="keyword">elseif</span> (strcmp(compartment,<span class="string">'[p]'</span>)==1)
+0046         ExchangeRxnMatrix.S=spalloc(length(compounds),3*length(compounds),5*length(compounds));
+0047     <span class="keyword">end</span>
+0048 <span class="keyword">end</span>
+0049 
+0050 ExchangeRxnMatrix.mets=compounds;
+0051 <span class="keyword">for</span> i=1:length(compounds)
+0052     HTABLE.put(compounds{i}, i);
+0053 <span class="keyword">end</span>
+0054 <span class="keyword">for</span> i=1:length(compounds)
+0055     <span class="keyword">if</span> ~isempty(compounds(i))
+0056         <span class="keyword">if</span> transport == 0
+0057             tmp = [<span class="string">'sink_'</span> compounds(i) <span class="string">'[c]'</span>];
+0058             ExchangeRxnMatrix.rxns(cnt,1) = strcat(tmp(1),tmp(2),tmp(3));
+0059             tmp = [<span class="string">'sink for '</span> compounds(i)];
+0060             ExchangeRxnMatrix.rxnsNames(cnt,1) =   strcat(tmp(1),tmp(2));
+0061             tmp = [<span class="string">'1 '</span> compounds(i) <span class="string">'[c] &lt;==&gt;'</span>];
+0062             ExchangeRxnMatrix.rxnFormulas(cnt,1) =  strcat(tmp(1),tmp(2),tmp(3));
+0063             tmp = [compounds(i) <span class="string">'[c]'</span>];
+0064             ExchangeRxnMatrix.mets(i) = strcat(tmp(1),tmp(2));
+0065             <span class="comment">%   ExchangeRxnMatrix.grRules{cnt}='';</span>
+0066             [ExchangeRxnMatrix] = <a href="addReactionGEM.html" class="code" title="function [newmodel, HTABLE] = addReactionGEM(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,nRxn,subSystems,grRules,rules,genes, HTABLE)">addReactionGEM</a>(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000);
+0067             cnt = cnt + 1;
+0068             
+0069         <span class="keyword">elseif</span> transport == 1 <span class="comment">%currently only this branch is taken.</span>
+0070             tmp = [<span class="string">'Ex_'</span> compounds(i) <span class="string">'[e]'</span>];
+0071             ExchangeRxnMatrix.rxns(cnt,1) = strcat(tmp(1),tmp(2),tmp(3));
+0072             tmp = [<span class="string">'Exchange of '</span> compounds(i)];
+0073             ExchangeRxnMatrix.rxnsNames(cnt,1) =   strcat(tmp(1),tmp(2));
+0074             tmp = [<span class="string">'1 '</span> compounds(i) <span class="string">'[e] &lt;==&gt;'</span>];
+0075             ExchangeRxnMatrix.rxnFormulas(cnt,1) =  strcat(tmp(1),tmp(2),tmp(3));
+0076             tmp = [compounds(i) <span class="string">'[e]'</span>];
+0077             ExchangeRxnMatrix.mets(i) = strcat(tmp(1),tmp(2));
+0078             HTABLE.put(ExchangeRxnMatrix.mets{i}, i);
+0079             <span class="comment">%   ExchangeRxnMatrix.grRules{cnt}='';</span>
+0080             [ExchangeRxnMatrix, HTABLE] = <a href="addReactionGEM.html" class="code" title="function [newmodel, HTABLE] = addReactionGEM(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,nRxn,subSystems,grRules,rules,genes, HTABLE)">addReactionGEM</a>(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000,[],[],[],[],[], HTABLE);
+0081             cnt = cnt + 1;
+0082             
+0083             <span class="keyword">if</span> (strcmp(compartment,<span class="string">'[c]'</span>)==1)
+0084                 <span class="comment">% creates transport reaction from [c] to [e]</span>
+0085                 tmp = [compounds(i) <span class="string">'tr'</span>];
+0086                 ExchangeRxnMatrix.rxns(cnt,1) = strcat(tmp(1),tmp(2));
+0087                 tmp = [<span class="string">'Transport of '</span> compounds(i)];
+0088                 ExchangeRxnMatrix.rxnsNames(cnt,1) =   strcat(tmp(1),tmp(2));
+0089                 tmp = [<span class="string">'1 '</span> compounds(i) <span class="string">'[e] &lt;==&gt; 1 '</span> compounds(i) <span class="string">'[c]'</span>];
+0090                 ExchangeRxnMatrix.rxnFormulas(cnt,1) =  strcat(tmp(1),tmp(2),tmp(3),tmp(4),tmp(5));
+0091                 tmp = [compounds(i) <span class="string">'[c]'</span>];
+0092                 ExchangeRxnMatrix.mets(length(ExchangeRxnMatrix.mets)+1,1) = strcat(tmp(1),tmp(2));
+0093                 HTABLE.put(ExchangeRxnMatrix.mets{end}, length(ExchangeRxnMatrix.mets));
+0094                 <span class="comment">%  ExchangeRxnMatrix.grRules{cnt}='';</span>
+0095                 [ExchangeRxnMatrix, HTABLE] = <a href="addReactionGEM.html" class="code" title="function [newmodel, HTABLE] = addReactionGEM(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,nRxn,subSystems,grRules,rules,genes, HTABLE)">addReactionGEM</a>(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000,[],[],[],[],[], HTABLE);
+0096                 cnt = cnt + 1;
+0097                 
+0098             <span class="keyword">elseif</span> (strcmp(compartment,<span class="string">'[p]'</span>)==1) <span class="comment">% keep this branch the same for now.</span>
+0099                 <span class="comment">% creates transport reaction from [c] to [p]</span>
+0100                 tmp = [compounds(i) <span class="string">'tpr'</span>];
+0101                 ExchangeRxnMatrix.rxns(cnt,1) = strcat(tmp(1),tmp(2));
+0102                 tmp = [<span class="string">'[c] to [p] Transport of '</span> compounds(i)];
+0103                 ExchangeRxnMatrix.rxnsNames(cnt,1) =   strcat(tmp(1),tmp(2));
+0104                 tmp = [<span class="string">'1 '</span> compounds(i) <span class="string">'[p] &lt;==&gt; 1 '</span> compounds(i) <span class="string">'[c]'</span>];
+0105                 ExchangeRxnMatrix.rxnFormulas(cnt,1) =  strcat(tmp(1),tmp(2),tmp(3),tmp(4),tmp(5));
+0106                 tmp = [compounds(i) <span class="string">'[c]'</span>];
+0107                 ExchangeRxnMatrix.mets(length(ExchangeRxnMatrix.mets)+1,1) = strcat(tmp(1),tmp(2));
+0108                 tmp = [compounds(i) <span class="string">'[p]'</span>];
+0109                 ExchangeRxnMatrix.mets(length(ExchangeRxnMatrix.mets)+1,1) = strcat(tmp(1),tmp(2));
+0110                 <span class="comment">%  ExchangeRxnMatrix.grRules{cnt}='';</span>
+0111                 [ExchangeRxnMatrix] = <a href="addReactionGEM.html" class="code" title="function [newmodel, HTABLE] = addReactionGEM(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,nRxn,subSystems,grRules,rules,genes, HTABLE)">addReactionGEM</a>(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000);
+0112                 cnt = cnt + 1;
+0113 
+0114                 <span class="comment">% creates transport reaction from [p] to [e]</span>
+0115                 tmp = [compounds(i) <span class="string">'tr'</span>];
+0116                 ExchangeRxnMatrix.rxns(cnt,1) = strcat(tmp(1),tmp(2));
+0117                 tmp = [<span class="string">'[p] to [e] Transport of '</span> compounds(i)];
+0118                 ExchangeRxnMatrix.rxnsNames(cnt,1) =   strcat(tmp(1),tmp(2));
+0119                 tmp = [<span class="string">'1 '</span> compounds(i) <span class="string">'[e] &lt;==&gt; 1 '</span> compounds(i) <span class="string">'[p]'</span>];
+0120                 ExchangeRxnMatrix.rxnFormulas(cnt,1) =  strcat(tmp(1),tmp(2),tmp(3),tmp(4),tmp(5));
+0121                 <span class="comment">%    ExchangeRxnMatrix.grRules{cnt}='';</span>
+0122                 [ExchangeRxnMatrix] = <a href="addReactionGEM.html" class="code" title="function [newmodel, HTABLE] = addReactionGEM(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,nRxn,subSystems,grRules,rules,genes, HTABLE)">addReactionGEM</a>(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000);
+0123                 cnt = cnt + 1;
+0124             <span class="keyword">end</span>
+0125         <span class="keyword">end</span>
+0126     <span class="keyword">end</span>
+0127     <span class="keyword">if</span>(mod(i, 40) ==0),waitbar(i/length(compounds),h);<span class="keyword">end</span>
+0128 <span class="keyword">end</span>
+0129 close(h);</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

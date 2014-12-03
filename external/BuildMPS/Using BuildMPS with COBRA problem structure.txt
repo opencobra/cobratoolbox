@@ -1,0 +1,22 @@
+How to create a MPS matrix structure from a COBRA toolbox structure:
+
+1) Set cobraLP or cobraMILP solver to 'mps'
+2) Call solveCobraLP(cobraProblemStructure, varargin) or solveCobraMILP(cobraProblemStructure, varargin) 
+   Where varargin is (optional parameter name, optional parameter value)
+
+ Optional Parameters: (from BuildMPS)
+   - PbName is a string of problem name, default value is 'GENERIC'.
+   - 'EleNames', 'EqtNames', or 'VarNames'
+     Cells contain string of respectively
+        (LE) equations, (EQ) equations, or variable names
+   - 'EleNameFun', 'EqtNameFun', or 'VarNameFun'
+     Corresponding Value are function handles that return
+     Equation/Variable name from equation/Variable number
+       Example: > VarNameFun=@(m) char('x'+(m-1));
+     These functions will NOT be used if names of equations/variables
+     are defined.
+   - 'MPSfilename': output MPS file to be saved
+     No saving if MPSfilename is undefined.
+
+
+For an example see testBuildMPS.m in the testing folder. 

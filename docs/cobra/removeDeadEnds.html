@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of removeDeadEnds</title>
+  <meta name="keywords" content="removeDeadEnds">
+  <meta name="description" content="removeDeadEnds Remove all dead end metabolites and reactions from the">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html cobra -->
+<h1>removeDeadEnds
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>removeDeadEnds Remove all dead end metabolites and reactions from the</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [model,removedMets,removedRxns] = removeDeadEnds(model) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">removeDeadEnds Remove all dead end metabolites and reactions from the
+model
+
+ [model,removedMets,removedRxns] = removeDeadEnds(model)
+
+INPUT
+ model         COBRA model structure
+
+OUTPUTS
+ model         COBRA model structure w/o dead end metabolites and
+               reactions
+ removedMets   List of removed metabolites
+ removedRxns   List of removed reactions
+
+ Markus Herrgard 8/29/06</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="detectDeadEnds.html" class="code" title="function outputMets = detectDeadEnds(model, removeExternalMets)">detectDeadEnds</a>	findGaps returns a list(indices) of metabolites which either participate in only</li><li><a href="../cobra/reconstruction/removeRxns.html" class="code" title="function modelOut = removeRxns(model,rxnRemoveList,irrevFlag,metFlag)">removeRxns</a>	removeRxns Remove reactions from a model</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [model,removedMets,removedRxns] = removeDeadEnds(model)</a>
+0002 <span class="comment">%removeDeadEnds Remove all dead end metabolites and reactions from the</span>
+0003 <span class="comment">%model</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% [model,removedMets,removedRxns] = removeDeadEnds(model)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%INPUT</span>
+0008 <span class="comment">% model         COBRA model structure</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">%OUTPUTS</span>
+0011 <span class="comment">% model         COBRA model structure w/o dead end metabolites and</span>
+0012 <span class="comment">%               reactions</span>
+0013 <span class="comment">% removedMets   List of removed metabolites</span>
+0014 <span class="comment">% removedRxns   List of removed reactions</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% Markus Herrgard 8/29/06</span>
+0017 
+0018 removedMets = {};
+0019 removedRxns = {};
+0020 
+0021 <span class="keyword">while</span> (1)
+0022     
+0023     deadEnd = <a href="detectDeadEnds.html" class="code" title="function outputMets = detectDeadEnds(model, removeExternalMets)">detectDeadEnds</a>(model);
+0024     
+0025     <span class="keyword">if</span> (length(deadEnd) == 0)
+0026         <span class="keyword">break</span>;
+0027     <span class="keyword">end</span>
+0028     
+0029     removedMets = union(removedMets,model.mets(deadEnd));
+0030     <span class="keyword">if</span> (length(deadEnd) &gt; 1)
+0031         deadRxns = model.rxns(find(sum(model.S(deadEnd,:) ~= 0) &gt; 0));
+0032     <span class="keyword">else</span>
+0033         deadRxns = model.rxns(find(model.S(deadEnd,:) ~= 0));
+0034     <span class="keyword">end</span>
+0035     
+0036     model = <a href="../cobra/reconstruction/removeRxns.html" class="code" title="function modelOut = removeRxns(model,rxnRemoveList,irrevFlag,metFlag)">removeRxns</a>(model,deadRxns);
+0037     
+0038     
+0039     removedRxns = union(removedRxns,deadRxns);
+0040     
+0041 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

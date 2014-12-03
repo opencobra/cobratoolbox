@@ -1,0 +1,257 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of printRxnFormula</title>
+  <meta name="keywords" content="printRxnFormula">
+  <meta name="description" content="printRxnFormula Print the reaction formulas for a list of reactions">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html cobra -->
+<h1>printRxnFormula
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>printRxnFormula Print the reaction formulas for a list of reactions</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">printRxnFormula Print the reaction formulas for a list of reactions
+
+
+INPUTS
+ model             COBRA model structure
+
+OPTIONAL INPUTS
+ rxnAbbrList       Abbrs of reactions whose formulas are to be printed
+ printFlag         Print formulas or just return them (Default = true)
+ lineChangeFlag    Append a line change at the end of each line
+                   (Default = true)
+ metNameFlag       print full met names instead of abbreviations 
+                   (Default = false)
+ fid               Optional file identifier for printing in files
+ directionFlag     Checks directionality of reaction. See Note.
+                   (Default = true)
+
+OUTPUT
+ formulas          Cell array containing formulas of specified reactions
+
+ NOTE: Reactions that have an upperbound &lt;= 0 and lowerbound &lt; 0 will have
+ its directionality reversed unless directionFlag = false.
+
+ Markus Herrgard 11/17/05
+
+ 04/30/08 Ronan Fleming
+ altered code since findRxnIDs used abbreviations not names of reactions
+
+ 10/11/09 Jeff Orth
+ added metNameFlag option
+
+ 03/10/10 Richard Que
+ added lb &lt; 0 requirement for reversing directionality</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>	findRxnIDs Find reaction numbers in a model</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="findRxnsFromGenes.html" class="code" title="function [results ListResults] = findRxnsFromGenes(model, genes, humanFlag,ListResultsFlag)">findRxnsFromGenes</a>	findRxnsFromGenes print every reaction associated with a gene of interest</li><li><a href="findRxnsFromMets.html" class="code" title="function [rxnList, rxnFormulaList] = findRxnsFromMets(model, metList, verbFlag)">findRxnsFromMets</a>	findRxnsFromMets returns a list of reactions in which at least one</li><li><a href="../cobra/io/writeCbModel.html" class="code" title="function writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLevel,sbmlVersion)">writeCbModel</a>	writeCbModel Write out COBRA models in various formats</li><li><a href="keepCompartment.html" class="code" title="function model = keepCompartment(model, compartments)">keepCompartment</a>	This function removes reactions in all compartments except those</li><li><a href="printFluxVector.html" class="code" title="function printFluxVector(model,fluxData,nonZeroFlag,excFlag,sortCol,fileName,headerRow,formulaFlag)">printFluxVector</a>	printFluxVector Print a flux vector with reaction labels</li><li><a href="../cobra/reconstruction/addReaction.html" class="code" title="function [model,rxnIDexists] = addReaction(model,rxnName,metaboliteList,stoichCoeffList,revFlag,lowerBound,upperBound,objCoeff,subSystem,grRule,geneNameList,systNameList,checkDuplicate)">addReaction</a>	addReaction Add a reaction to the model or modify an existing reaction</li><li><a href="../cobra/reconstruction/mass_balance/checkMassChargeBalance.html" class="code" title="function [massImbalance,imBalancedMass,imBalancedCharge,imBalancedBool,Elements] = checkMassChargeBalance(model,rxnBool,printLevel)">checkMassChargeBalance</a>	checkMassChargeBalance tests for a list of reactions if these reactions are</li><li><a href="../cobra/reconstruction/mass_balance/findSExRxnInd.html" class="code" title="function model=findSExRxnInd(model,nRealMet)">findSExRxnInd</a>	Returns a model with boolean vectors indicating internal vs exchange/demand/sink reactions.</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)</a>
+0002 <span class="comment">%printRxnFormula Print the reaction formulas for a list of reactions</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">%INPUTS</span>
+0006 <span class="comment">% model             COBRA model structure</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">%OPTIONAL INPUTS</span>
+0009 <span class="comment">% rxnAbbrList       Abbrs of reactions whose formulas are to be printed</span>
+0010 <span class="comment">% printFlag         Print formulas or just return them (Default = true)</span>
+0011 <span class="comment">% lineChangeFlag    Append a line change at the end of each line</span>
+0012 <span class="comment">%                   (Default = true)</span>
+0013 <span class="comment">% metNameFlag       print full met names instead of abbreviations</span>
+0014 <span class="comment">%                   (Default = false)</span>
+0015 <span class="comment">% fid               Optional file identifier for printing in files</span>
+0016 <span class="comment">% directionFlag     Checks directionality of reaction. See Note.</span>
+0017 <span class="comment">%                   (Default = true)</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">%OUTPUT</span>
+0020 <span class="comment">% formulas          Cell array containing formulas of specified reactions</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">% NOTE: Reactions that have an upperbound &lt;= 0 and lowerbound &lt; 0 will have</span>
+0023 <span class="comment">% its directionality reversed unless directionFlag = false.</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% Markus Herrgard 11/17/05</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">% 04/30/08 Ronan Fleming</span>
+0028 <span class="comment">% altered code since findRxnIDs used abbreviations not names of reactions</span>
+0029 <span class="comment">%</span>
+0030 <span class="comment">% 10/11/09 Jeff Orth</span>
+0031 <span class="comment">% added metNameFlag option</span>
+0032 <span class="comment">%</span>
+0033 <span class="comment">% 03/10/10 Richard Que</span>
+0034 <span class="comment">% added lb &lt; 0 requirement for reversing directionality</span>
+0035 
+0036 <span class="keyword">if</span> (nargin &lt; 2)
+0037     rxnAbbrList = model.rxns;
+0038 <span class="keyword">end</span>
+0039 <span class="keyword">if</span> (nargin &lt; 3)
+0040     printFlag = true;
+0041 <span class="keyword">end</span>
+0042 <span class="keyword">if</span> (nargin &lt; 4)
+0043     lineChangeFlag = true;
+0044 <span class="keyword">end</span>
+0045 <span class="keyword">if</span> (nargin &lt;5)
+0046     metNameFlag = false;
+0047 <span class="keyword">end</span>
+0048 <span class="keyword">if</span> (nargin &lt; 6)
+0049     fid = 1;
+0050 <span class="keyword">end</span>
+0051 <span class="keyword">if</span> (nargin &lt; 7)
+0052     directionFlag = true;
+0053 <span class="keyword">end</span>
+0054 
+0055 <span class="keyword">if</span> (~iscell(rxnAbbrList))
+0056     <span class="keyword">if</span> (strcmp(rxnAbbrList,<span class="string">'all'</span>))
+0057         rxnAbbrList = model.rxns;
+0058     <span class="keyword">else</span>
+0059         rxnAbbrTmp = rxnAbbrList;
+0060         clear rxnAbbrList;
+0061         rxnAbbrList{1} = rxnAbbrTmp;
+0062     <span class="keyword">end</span>
+0063 <span class="keyword">end</span>
+0064 
+0065 <span class="keyword">for</span> i = 1:length(rxnAbbrList);
+0066 
+0067     rxnAbbr = rxnAbbrList{i};
+0068 
+0069     rxnID = <a href="findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(model,rxnAbbr);
+0070 
+0071     <span class="keyword">if</span> (printFlag)
+0072         fprintf(fid,<span class="string">'%s\t'</span>,rxnAbbr);
+0073     <span class="keyword">end</span>
+0074     
+0075     <span class="keyword">if</span> (rxnID &gt; 0)
+0076 
+0077         Srxn = full(model.S(:,rxnID));
+0078 
+0079         <span class="keyword">if</span> directionFlag &amp;&amp; (isfield(model,<span class="string">'ub'</span>) &amp;&amp; model.ub(rxnID) &lt;= 0) &amp;&amp; (isfield(model,<span class="string">'lb'</span>) &amp;&amp; model.lb(rxnID) &lt; 0)
+0080             Srxn = -Srxn;
+0081         <span class="keyword">end</span>
+0082 
+0083         Sprod = (Srxn(Srxn &gt; 0));
+0084         <span class="keyword">if</span> metNameFlag
+0085             prodMets = model.metNames(Srxn &gt; 0);
+0086         <span class="keyword">else</span>
+0087             prodMets = model.mets(Srxn &gt; 0);
+0088         <span class="keyword">end</span>
+0089         
+0090         Sreact = (Srxn(Srxn &lt; 0));
+0091         <span class="keyword">if</span> metNameFlag
+0092             reactMets = model.metNames(Srxn &lt; 0);
+0093         <span class="keyword">else</span>
+0094             reactMets = model.mets(Srxn &lt; 0);
+0095         <span class="keyword">end</span>
+0096         
+0097         formulaStr = <span class="string">''</span>;
+0098         <span class="keyword">for</span> j = 1:length(reactMets)
+0099             <span class="keyword">if</span> (j &gt; 1)
+0100                 <span class="keyword">if</span> (printFlag)
+0101                     fprintf(fid,<span class="string">'+ '</span>);
+0102                 <span class="keyword">end</span>
+0103                 formulaStr = [formulaStr <span class="string">'+ '</span>];
+0104             <span class="keyword">end</span>
+0105             <span class="keyword">if</span> (abs(Sreact(j)) ~= 1)
+0106                 <span class="keyword">if</span> (printFlag)
+0107                     fprintf(fid,<span class="string">'%f %s '</span>,abs(Sreact(j)),reactMets{j});
+0108                 <span class="keyword">end</span>
+0109                 formulaStr = [formulaStr num2str(abs(Sreact(j))) <span class="string">' '</span> reactMets{j} <span class="string">' '</span>];
+0110             <span class="keyword">else</span>
+0111                 <span class="keyword">if</span> (printFlag)
+0112                     fprintf(fid,<span class="string">'%s '</span>,reactMets{j});
+0113                 <span class="keyword">end</span>
+0114                 formulaStr = [formulaStr reactMets{j} <span class="string">' '</span>];
+0115             <span class="keyword">end</span>
+0116         <span class="keyword">end</span>
+0117 
+0118         <span class="keyword">if</span> (model.rev(rxnID))
+0119             <span class="keyword">if</span> (printFlag)
+0120                 fprintf(fid,<span class="string">'\t&lt;=&gt;\t'</span>);
+0121             <span class="keyword">end</span>
+0122             formulaStr = [formulaStr <span class="string">' &lt;=&gt; '</span>];
+0123         <span class="keyword">else</span>
+0124             <span class="keyword">if</span> (printFlag)
+0125                 fprintf(fid,<span class="string">'\t-&gt;\t'</span>);
+0126             <span class="keyword">end</span>
+0127             formulaStr = [formulaStr <span class="string">' -&gt; '</span>];
+0128         <span class="keyword">end</span>
+0129         
+0130         <span class="keyword">if</span> 0
+0131             <span class="keyword">if</span> length(formulaStr)&gt;200
+0132                 <span class="comment">%most probably this is the biomass reaction</span>
+0133                 <span class="keyword">if</span> (printFlag)
+0134                     fprintf(fid,<span class="string">'\n'</span>);
+0135                 <span class="keyword">end</span>
+0136             <span class="keyword">end</span>
+0137         <span class="keyword">end</span>
+0138         
+0139         <span class="keyword">for</span> j = 1:length(prodMets)
+0140             <span class="keyword">if</span> (j &gt; 1)
+0141                 <span class="keyword">if</span> (printFlag)
+0142                     fprintf(fid,<span class="string">'+ '</span>);
+0143                 <span class="keyword">end</span>
+0144                 formulaStr = [formulaStr <span class="string">'+ '</span>];
+0145             <span class="keyword">end</span>
+0146             <span class="keyword">if</span> (Sprod(j) ~= 1)
+0147                 <span class="keyword">if</span> (printFlag)
+0148                     fprintf(fid,<span class="string">'%f %s '</span>,Sprod(j),prodMets{j});
+0149                 <span class="keyword">end</span>
+0150                 formulaStr = [formulaStr num2str(Sprod(j)) <span class="string">' '</span> prodMets{j} <span class="string">' '</span>];
+0151             <span class="keyword">else</span>
+0152                 <span class="keyword">if</span> (printFlag)
+0153                     fprintf(fid,<span class="string">'%s '</span>,prodMets{j});
+0154                 <span class="keyword">end</span>
+0155                 formulaStr = [formulaStr prodMets{j} <span class="string">' '</span>];
+0156             <span class="keyword">end</span>
+0157         <span class="keyword">end</span>
+0158         <span class="keyword">if</span> (printFlag) &amp; 0
+0159             fprintf(<span class="string">'\t.'</span>);
+0160         <span class="keyword">end</span>
+0161         
+0162     <span class="keyword">else</span>
+0163         <span class="keyword">if</span> (printFlag)
+0164             fprintf(fid,<span class="string">'not in model'</span>);
+0165         <span class="keyword">end</span>
+0166         formulaStr = <span class="string">'NA'</span>;
+0167     <span class="keyword">end</span>
+0168     <span class="keyword">if</span> (printFlag)
+0169         <span class="keyword">if</span> (rxnID &gt; 0) &amp;&amp; (isfield(model,<span class="string">'grRules'</span>))
+0170             <span class="keyword">if</span> (isempty(model.grRules{rxnID}))
+0171                 fprintf(<span class="string">'\t'</span>);
+0172             <span class="keyword">else</span>
+0173                 fprintf(<span class="string">'\t%s'</span>,model.grRules{rxnID});
+0174             <span class="keyword">end</span>
+0175         <span class="keyword">end</span>
+0176         <span class="keyword">if</span> (lineChangeFlag)
+0177             fprintf(fid,<span class="string">'\n'</span>);
+0178         <span class="keyword">end</span>
+0179     <span class="keyword">end</span>
+0180     formulas{i} = formulaStr;
+0181 
+0182 <span class="keyword">end</span>
+0183 formulas = formulas';</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

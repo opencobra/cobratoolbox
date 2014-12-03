@@ -1,0 +1,448 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "../style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>MATLAB_SBML_STRUCTURE_FUNCTIONS\LOCALPARAMETER</h3>
+
+<p>The functions allow users to create and work with the SBML LocalParameter structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>LocalParameter = LocalParameter_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML LocalParameter structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>id = LocalParameter_getId(SBMLLocalParameter)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the id attribute</li>
+</ol>
+
+<hr>
+
+<h4>metaid = LocalParameter_getMetaid(SBMLLocalParameter)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>name = LocalParameter_getName(SBMLLocalParameter)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the name attribute</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = LocalParameter_getSBOTerm(SBMLLocalParameter)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>units = LocalParameter_getUnits(SBMLLocalParameter)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the units attribute</li>
+</ol>
+
+<hr>
+
+<h4>value = LocalParameter_getValue(SBMLLocalParameter)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the value attribute</li>
+</ol>
+
+<hr>
+
+<h4>value = LocalParameter_isSetId(SBMLLocalParameter)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the id attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = LocalParameter_isSetMetaid(SBMLLocalParameter)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the metaid attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = LocalParameter_isSetName(SBMLLocalParameter)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the name attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = LocalParameter_isSetSBOTerm(SBMLLocalParameter)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = LocalParameter_isSetUnits(SBMLLocalParameter)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the units attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = LocalParameter_isSetValue(SBMLLocalParameter)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the value attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLLocalParameter = LocalParameter_setId(SBMLLocalParameter, id)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+<li>id; a string representing the id to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML LocalParameter structure with the new value for the id attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLLocalParameter = LocalParameter_setMetaid(SBMLLocalParameter, metaid)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+<li>metaid; a string representing the metaid to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML LocalParameter structure with the new value for the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLLocalParameter = LocalParameter_setName(SBMLLocalParameter, name)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+<li>name; a string representing the name to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML LocalParameter structure with the new value for the name attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLLocalParameter = LocalParameter_setSBOTerm(SBMLLocalParameter, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+<li>sboTerm, an integer representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML LocalParameter structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLLocalParameter = LocalParameter_setUnits(SBMLLocalParameter, units)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+<li>units; a string representing the units to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML LocalParameter structure with the new value for the units attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLLocalParameter = LocalParameter_setValue(SBMLLocalParameter, value)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+<li>value; number representing the value of value to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML LocalParameter structure with the new value for the value attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLLocalParameter = LocalParameter_unsetId(SBMLLocalParameter)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML LocalParameter structure with the id attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLLocalParameter = LocalParameter_unsetMetaid(SBMLLocalParameter)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML LocalParameter structure with the metaid attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLLocalParameter = LocalParameter_unsetName(SBMLLocalParameter)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML LocalParameter structure with the name attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLLocalParameter = LocalParameter_unsetSBOTerm(SBMLLocalParameter)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML LocalParameter structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLLocalParameter = LocalParameter_unsetUnits(SBMLLocalParameter)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML LocalParameter structure with the units attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLLocalParameter = LocalParameter_unsetValue(SBMLLocalParameter)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLLocalParameter, an SBML LocalParameter structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML LocalParameter structure with the value attribute unset</li>
+</ol>
+
+<hr>

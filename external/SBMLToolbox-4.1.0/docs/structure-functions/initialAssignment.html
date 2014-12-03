@@ -1,0 +1,310 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "../style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>MATLAB_SBML_STRUCTURE_FUNCTIONS\INITIALASSIGNMENT</h3>
+
+<p>The functions allow users to create and work with the SBML InitialAssignment structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>InitialAssignment = InitialAssignment_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML InitialAssignment structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>math = InitialAssignment_getMath(SBMLInitialAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLInitialAssignment, an SBML InitialAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the math attribute</li>
+</ol>
+
+<hr>
+
+<h4>metaid = InitialAssignment_getMetaid(SBMLInitialAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLInitialAssignment, an SBML InitialAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = InitialAssignment_getSBOTerm(SBMLInitialAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLInitialAssignment, an SBML InitialAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>symbol = InitialAssignment_getSymbol(SBMLInitialAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLInitialAssignment, an SBML InitialAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the symbol attribute</li>
+</ol>
+
+<hr>
+
+<h4>value = InitialAssignment_isSetMath(SBMLInitialAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLInitialAssignment, an SBML InitialAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the math attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = InitialAssignment_isSetMetaid(SBMLInitialAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLInitialAssignment, an SBML InitialAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the metaid attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = InitialAssignment_isSetSBOTerm(SBMLInitialAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLInitialAssignment, an SBML InitialAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = InitialAssignment_isSetSymbol(SBMLInitialAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLInitialAssignment, an SBML InitialAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the symbol attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLInitialAssignment = InitialAssignment_setMath(SBMLInitialAssignment, math)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLInitialAssignment, an SBML InitialAssignment structure</li>
+<li>math; string representing the math expression math to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML InitialAssignment structure with the new value for the math attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLInitialAssignment = InitialAssignment_setMetaid(SBMLInitialAssignment, metaid)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLInitialAssignment, an SBML InitialAssignment structure</li>
+<li>metaid; a string representing the metaid to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML InitialAssignment structure with the new value for the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLInitialAssignment = InitialAssignment_setSBOTerm(SBMLInitialAssignment, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLInitialAssignment, an SBML InitialAssignment structure</li>
+<li>sboTerm, an integer representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML InitialAssignment structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLInitialAssignment = InitialAssignment_setSymbol(SBMLInitialAssignment, symbol)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLInitialAssignment, an SBML InitialAssignment structure</li>
+<li>symbol; a string representing the symbol to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML InitialAssignment structure with the new value for the symbol attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLInitialAssignment = InitialAssignment_unsetMath(SBMLInitialAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLInitialAssignment, an SBML InitialAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML InitialAssignment structure with the math attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLInitialAssignment = InitialAssignment_unsetMetaid(SBMLInitialAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLInitialAssignment, an SBML InitialAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML InitialAssignment structure with the metaid attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLInitialAssignment = InitialAssignment_unsetSBOTerm(SBMLInitialAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLInitialAssignment, an SBML InitialAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML InitialAssignment structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLInitialAssignment = InitialAssignment_unsetSymbol(SBMLInitialAssignment)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLInitialAssignment, an SBML InitialAssignment structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML InitialAssignment structure with the symbol attribute unset</li>
+</ol>
+
+<hr>

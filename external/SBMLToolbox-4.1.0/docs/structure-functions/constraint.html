@@ -1,0 +1,310 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "../style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>MATLAB_SBML_STRUCTURE_FUNCTIONS\CONSTRAINT</h3>
+
+<p>The functions allow users to create and work with the SBML Constraint structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>Constraint = Constraint_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML Constraint structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>math = Constraint_getMath(SBMLConstraint)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLConstraint, an SBML Constraint structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the math attribute</li>
+</ol>
+
+<hr>
+
+<h4>message = Constraint_getMessage(SBMLConstraint)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLConstraint, an SBML Constraint structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the message attribute</li>
+</ol>
+
+<hr>
+
+<h4>metaid = Constraint_getMetaid(SBMLConstraint)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLConstraint, an SBML Constraint structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>sboTerm = Constraint_getSBOTerm(SBMLConstraint)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLConstraint, an SBML Constraint structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>value = Constraint_isSetMath(SBMLConstraint)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLConstraint, an SBML Constraint structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the math attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Constraint_isSetMessage(SBMLConstraint)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLConstraint, an SBML Constraint structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the message attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Constraint_isSetMetaid(SBMLConstraint)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLConstraint, an SBML Constraint structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the metaid attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = Constraint_isSetSBOTerm(SBMLConstraint)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLConstraint, an SBML Constraint structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the sboTerm attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLConstraint = Constraint_setMath(SBMLConstraint, math)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLConstraint, an SBML Constraint structure</li>
+<li>math; string representing the math expression math to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Constraint structure with the new value for the math attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLConstraint = Constraint_setMessage(SBMLConstraint, message)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLConstraint, an SBML Constraint structure</li>
+<li>message; a string representing the message to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Constraint structure with the new value for the message attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLConstraint = Constraint_setMetaid(SBMLConstraint, metaid)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLConstraint, an SBML Constraint structure</li>
+<li>metaid; a string representing the metaid to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Constraint structure with the new value for the metaid attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLConstraint = Constraint_setSBOTerm(SBMLConstraint, sboTerm)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLConstraint, an SBML Constraint structure</li>
+<li>sboTerm, an integer representing the sboTerm to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Constraint structure with the new value for the sboTerm attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLConstraint = Constraint_unsetMath(SBMLConstraint)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLConstraint, an SBML Constraint structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Constraint structure with the math attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLConstraint = Constraint_unsetMessage(SBMLConstraint)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLConstraint, an SBML Constraint structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Constraint structure with the message attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLConstraint = Constraint_unsetMetaid(SBMLConstraint)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLConstraint, an SBML Constraint structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Constraint structure with the metaid attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLConstraint = Constraint_unsetSBOTerm(SBMLConstraint)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLConstraint, an SBML Constraint structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML Constraint structure with the sboTerm attribute unset</li>
+</ol>
+
+<hr>

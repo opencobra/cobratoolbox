@@ -1,0 +1,257 @@
+<style type='text/css'>
+/*/*/ /*<![CDATA[*/
+@import "../style.css";
+/*]]>*/ /* */ 
+</style>
+
+<h3>MATLAB_SBML_STRUCTURE_FUNCTIONS\SPECIESCONCENTRATIONRULE</h3>
+
+<p>The functions allow users to create and work with the SBML SpeciesConcentrationRule structure.</p>
+
+<p>Function are:</p>
+
+<hr>
+
+<h4>SpeciesConcentrationRule = SpeciesConcentrationRule_create(level(optional), version(optional) )</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>level, an integer representing an SBML level (optional)</li>
+<li>version, an integer representing an SBML version (optional)</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>a MATLAB_SBML SpeciesConcentrationRule structure of the appropriate level and version</li>
+</ol>
+
+<p><em>NOTE:</em> the optional level and version preserve backwards compatibility
+  a missing version argument will default to L1V2; L2V4 or L3V1
+  missing both arguments will default to L3V1</p>
+
+<hr>
+
+<h4>formula = SpeciesConcentrationRule_getFormula(SBMLSpeciesConcentrationRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesConcentrationRule, an SBML SpeciesConcentrationRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the formula attribute</li>
+</ol>
+
+<hr>
+
+<h4>species = SpeciesConcentrationRule_getSpecies(SBMLSpeciesConcentrationRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesConcentrationRule, an SBML SpeciesConcentrationRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the species attribute</li>
+</ol>
+
+<hr>
+
+<h4>type = SpeciesConcentrationRule_getType(SBMLSpeciesConcentrationRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesConcentrationRule, an SBML SpeciesConcentrationRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the value of the type attribute</li>
+</ol>
+
+<hr>
+
+<h4>value = SpeciesConcentrationRule_isSetFormula(SBMLSpeciesConcentrationRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesConcentrationRule, an SBML SpeciesConcentrationRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the formula attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = SpeciesConcentrationRule_isSetSpecies(SBMLSpeciesConcentrationRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesConcentrationRule, an SBML SpeciesConcentrationRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the species attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>value = SpeciesConcentrationRule_isSetType(SBMLSpeciesConcentrationRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesConcentrationRule, an SBML SpeciesConcentrationRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>value = 
+<ul>
+<li>1 if the type attribute is set</li>
+<li>0 otherwise</li>
+</ul></li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpeciesConcentrationRule = SpeciesConcentrationRule_setFormula(SBMLSpeciesConcentrationRule, formula)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesConcentrationRule, an SBML SpeciesConcentrationRule structure</li>
+<li>formula; a string representing the formula to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML SpeciesConcentrationRule structure with the new value for the formula attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpeciesConcentrationRule = SpeciesConcentrationRule_setSpecies(SBMLSpeciesConcentrationRule, species)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesConcentrationRule, an SBML SpeciesConcentrationRule structure</li>
+<li>species; a string representing the species to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML SpeciesConcentrationRule structure with the new value for the species attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpeciesConcentrationRule = SpeciesConcentrationRule_setType(SBMLSpeciesConcentrationRule, type)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesConcentrationRule, an SBML SpeciesConcentrationRule structure</li>
+<li>type; a string representing the type to be set</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML SpeciesConcentrationRule structure with the new value for the type attribute</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpeciesConcentrationRule = SpeciesConcentrationRule_unsetFormula(SBMLSpeciesConcentrationRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesConcentrationRule, an SBML SpeciesConcentrationRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML SpeciesConcentrationRule structure with the formula attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpeciesConcentrationRule = SpeciesConcentrationRule_unsetSpecies(SBMLSpeciesConcentrationRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesConcentrationRule, an SBML SpeciesConcentrationRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML SpeciesConcentrationRule structure with the species attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpeciesConcentrationRule = SpeciesConcentrationRule_unsetType(SBMLSpeciesConcentrationRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesConcentrationRule, an SBML SpeciesConcentrationRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML SpeciesConcentrationRule structure with the type attribute unset</li>
+</ol>
+
+<hr>
+
+<h4>SBMLSpeciesConcentrationRule = SpeciesConcentrationRule_unsetVariable(SBMLSpeciesConcentrationRule)</h4>
+
+<p>Takes</p>
+
+<ol>
+<li>SBMLSpeciesConcentrationRule, an SBML SpeciesConcentrationRule structure</li>
+</ol>
+
+<p>Returns</p>
+
+<ol>
+<li>the SBML SpeciesConcentrationRule structure with the variable attribute unset</li>
+</ol>
+
+<hr>

@@ -1,0 +1,1158 @@
+Molecules								
+atp	1	N	1165	2805	1145	2805	1576485	ATP
+3pg	1	Y	1085	2875	1055	2875	1576486	3-Phospho-D-glycerate
+13dpg	1	Y	1085	2565	1055	2565	1576487	3-Phospho-D-glyceroyl phosphate
+adp	1	N	1165	2635	1145	2635	1576488	ADP
+nadp	1	N	1907	1145	1907	1165	1576489	Nicotinamide adenine dinucleotide phosphate
+6pgc	1	Y	1827	1235	1827	1265	1576490	6-Phospho-D-gluconate
+co2	1	N	2007	1145	2007	1165	1576491	CO2
+nadph	1	N	2080	1140	2057	1165	1576492	Nicotinamide adenine dinucleotide phosphate - reduced
+ru5p-D	1	Y	2155	1235	2155	1265	1576493	D-Ribulose 5-phosphate
+o2	3	Y	4850	1690	4850	1660	1576494	O2
+o2	1	Y	4330	1700	4330	1660	1576495	O2
+nadp	1	Y	3330	1310	3330	1270	1576496	Nicotinamide adenine dinucleotide phosphate
+nadh	1	Y	3450	1150	3420	1120	1576497	Nicotinamide adenine dinucleotide - reduced
+h	3	N	3510	630	3510	650	1576498	H+
+h	1	N	3510	1070	3510	1040	1576499	H+
+nadph	1	Y	3740	1310	3740	1270	1576500	Nicotinamide adenine dinucleotide phosphate - reduced
+nad	1	Y	3610	1150	3600	1120	1576501	Nicotinamide adenine dinucleotide
+h2o	1	N	2695	2911	2715	2921	1576502	H2O
+fum	1	Y	2818	2892	2843	2920	1576503	Fumarate
+mal-L	1	Y	2583	3178	2621	3192	1576504	L-Malate
+icit	1	Y	3383	3946	3413	3976	1576505	Isocitrate
+nadp	1	N	3495	4098	3495	4065	1576506	Nicotinamide adenine dinucleotide phosphate
+nadph	1	N	3635	3657	3659	3660	1576507	Nicotinamide adenine dinucleotide phosphate - reduced
+co2	1	N	3593	3710	3620	3710	1576508	CO2
+akg	1	Y	3710	3620	3746	3627	1576509	2-Oxoglutarate
+nad	1	N	1345	3855	1365	3855	1576510	Nicotinamide adenine dinucleotide
+pyr	1	Y	1025	3965	1055	3945	1576511	Pyruvate
+coa	1	N	1295	3905	1315	3905	1576512	Coenzyme A
+co2	1	N	1595	3835	1605	3855	1576513	CO2
+accoa	1	Y	1695	3965	1715	3945	1576514	Acetyl-CoA
+nadh	1	N	1665	3865	1655	3885	1576515	Nicotinamide adenine dinucleotide - reduced
+h2o	1	N	1315	3375	1295	3375	1576516	H2O
+pep	1	Y	1085	3355	1055	3375	1576517	Phosphoenolpyruvate
+co2	1	N	1215	3325	1205	3345	1576518	CO2
+h	1	N	1635	3475	1615	3475	1576519	H+
+pi	1	N	1685	3515	1665	3515	1576520	Phosphate
+oaa	1	Y	2692	3724	2659	3724	1576521	Oxaloacetate
+2pg	1	Y	1093	3125	1055	3125	1576522	D-Glycerate 2-phosphate
+h2o	1	N	945	3327	965	3325	1576523	H2O
+g6p	1	Y	1075	1245	1055	1265	1576524	D-Glucose 6-phosphate
+f6p	1	Y	1075	1525	1055	1545	1576525	D-Fructose 6-phosphate
+nh4	3	Y	4019	4757	3989	4757	1576526	Ammonium
+nh4	1	Y	4019	4441	3989	4441	1576527	Ammonium
+h2o	1	N	738	1855	765	1855	1576528	H2O
+fdp	1	Y	1025	1925	1055	1925	1576529	D-Fructose 1,6-bisphosphate
+pi	1	N	728	1565	755	1565	1576530	Phosphate
+succ	3	Y	4944	2904	4932	2880	1576531	Succinate
+glx	1	Y	3150	3570	3180	3570	1576532	Glyoxylate
+succ	1	Y	3393	2888	3420	2867	1576533	Succinate
+atp	1	Y	4215	1010	4215	1040	1576534	ATP
+amp	1	Y	4035	1050	4065	1070	1576535	AMP
+adp	1	Y	4195	1540	4215	1510	1576536	ADP
+gln-L	3	Y	4882	4188	4882	4158	1576537	L-Glutamine
+q8	1	Y	4685	2070	4720	2070	1576539	Ubiquinone-8
+q8h2	1	Y	4635	2190	4610	2220	1576542	Ubiquinol-8
+co2	3	Y	3651	4754	3621	4754	1576544	CO2
+g3p	1	Y	2410	1900	2405	1865	1576545	Glyceraldehyde 3-phosphate
+s7p	1	Y	1940	1900	1945	1865	1576546	Sedoheptulose 7-phosphate
+e4p	1	Y	1945	2220	1945	2190	1576547	D-Erythrose 4-phosphate
+f6p	1	Y	2420	2220	2415	2190	1576548	D-Fructose 6-phosphate
+h	1	N	945	3625	965	3625	1576549	H+
+adp	1	N	945	3555	965	3555	1576550	ADP
+atp	1	N	945	3815	965	3815	1576551	ATP
+glu-L	3	Y	4883	3604	4883	3634	1576552	L-Glutamate
+h	3	N	4825	3723	4825	3703	1576553	H+
+glu-L	1	Y	4247	3601	4248	3632	1576554	L-Glutamate
+h	1	N	4450	3692	4478	3688	1576555	H+
+lac-D	3	Y	1025	4835	1055	4835	1576556	D-Lactate
+pyr	3	Y	275	3975	275	3945	1576557	Pyruvate
+xu5p-D	1	Y	1940	1590	1945	1555	1576558	D-Xylulose 5-phosphate
+h	3	Y	4850	2259	4850	2229	1576559	H+
+coa	1	N	3460	2980	3460	2960	1576567	Coenzyme A
+atp	1	N	3500	3050	3500	3030	1576568	ATP
+pi	1	N	3814	3051	3794	3051	1576569	Phosphate
+succoa	1	Y	3704	3203	3739	3193	1576570	Succinyl-CoA
+adp	1	N	3788	3126	3768	3116	1576571	ADP
+atp	1	N	1165	1645	1145	1645	1576572	ATP
+adp	1	N	1165	1805	1145	1805	1576573	ADP
+h	1	N	1165	1855	1145	1855	1576574	H+
+g3p	1	Y	1085	2195	1055	2195	1576575	Glyceraldehyde 3-phosphate
+atp	1	N	4474	3753	4440	3755	1576576	ATP
+nh4	1	N	4477	3811	4440	3805	1576577	Ammonium
+gln-L	1	Y	4245	4130	4246	4094	1576578	L-Glutamine
+adp	1	N	4454	3954	4434	3954	1576579	ADP
+h	1	N	4454	4004	4434	4004	1576580	H+
+pi	1	N	4454	4054	4434	4054	1576581	Phosphate
+h	3	N	930	4765	955	4765	1576582	H+
+h	1	N	930	4415	955	4415	1576583	H+
+lac-D	1	Y	1089	4349	1055	4345	1576584	D-Lactate
+coa	1	N	3658	3504	3684	3506	1576585	Coenzyme A
+nad	1	N	3661	3556	3684	3558	1576586	Nicotinamide adenine dinucleotide
+co2	1	N	3898	3285	3872	3285	1576587	CO2
+nadh	1	N	3846	3233	3820	3233	1576588	Nicotinamide adenine dinucleotide - reduced
+coa	1	N	1165	4065	1165	4045	1576589	Coenzyme A
+for	1	Y	1427	4103	1460	4095	1576590	Formate
+atp	1	N	1525	3625	1505	3625	1576591	ATP
+adp	1	N	1285	3575	1285	3545	1576592	ADP
+co2	1	N	1215	3535	1215	3515	1576593	CO2
+pi	3	Y	2910	4839	2880	4839	1576594	Phosphate
+h	3	N	2810	4794	2793	4778	1576595	H+
+h	1	N	2770	4452	2793	4452	1576596	H+
+pi	1	Y	2921	4428	2880	4430	1576597	Phosphate
+akg	3	Y	4922	3268	4922	3228	1576598	2-Oxoglutarate
+h	3	N	4834	3341	4834	3321	1576599	H+
+h	1	N	4471	3352	4472	3328	1576600	H+
+dhap	1	Y	825	2195	855	2195	1576601	Dihydroxyacetone phosphate
+h	1	N	4400	1920	4400	1900	1576602	H+
+h	3	N	4860	1920	4860	1900	1576603	H+
+h2o	1	N	4485	1740	4510	1740	1576604	H2O
+r5p	1	Y	2420	1590	2419	1555	1576605	alpha-D-Ribose 5-phosphate
+accoa	1	N	3125	3402	3105	3402	1576606	Acetyl-CoA
+h2o	1	N	3190	3480	3170	3480	1576607	H2O
+h	1	N	2891	3220	2871	3220	1576608	H+
+coa	1	N	2800	3168	2780	3168	1576609	Coenzyme A
+pi	1	N	1835	4035	1815	4035	1576612	Phosphate
+actp	1	Y	1745	4175	1715	4175	1576613	Acetyl phosphate
+coa	1	N	1835	4135	1815	4135	1576614	Coenzyme A
+atp	1	N	4535	4278	4535	4258	1576615	ATP
+h2o	1	N	4485	4278	4485	4258	1576616	H2O
+pi	1	N	4285	4278	4285	4258	1576617	Phosphate
+adp	1	N	4385	4278	4385	4258	1576618	ADP
+h	1	N	4335	4278	4335	4258	1576619	H+
+nad	1	N	2380	3220	2360	3220	1576620	Nicotinamide adenine dinucleotide
+co2	1	N	2040	3420	2060	3420	1576621	CO2
+nadh	1	N	2060	3370	2080	3370	1576622	Nicotinamide adenine dinucleotide - reduced
+nadp	1	N	1257	1140	1257	1160	1576623	Nicotinamide adenine dinucleotide phosphate
+nadph	1	N	1430	1140	1407	1160	1576624	Nicotinamide adenine dinucleotide phosphate - reduced
+h	1	N	1357	1140	1357	1160	1576625	H+
+6pgl	1	Y	1507	1235	1507	1265	1576626	6-phospho-D-glucono-1,5-lactone
+ac	3	Y	1675	4845	1715	4845	1576627	Acetate
+h2o	1	N	4200	3960	4201	3940	1576628	H2O
+nh4	1	N	4190	3790	4193	3762	1576629	Ammonium
+h2o	1	N	4295	1140	4275	1140	1576630	H2O
+pi	1	N	4305	1450	4285	1450	1576631	Phosphate
+h	1	N	4305	1380	4285	1380	1576632	H+
+nad	1	N	935	4255	955	4255	1576633	Nicotinamide adenine dinucleotide
+nadh	1	N	935	4045	955	4045	1576634	Nicotinamide adenine dinucleotide - reduced
+h	1	N	935	4095	955	4095	1576635	H+
+nad	1	N	2690	3320	2670	3310	1576636	Nicotinamide adenine dinucleotide
+nadh	1	N	2710	3590	2680	3585	1576637	Nicotinamide adenine dinucleotide - reduced
+h	1	N	2692	3510	2660	3510	1576638	H+
+h2o	3	Y	3287	4754	3257	4754	1576639	H2O
+h2o	1	Y	3287	4434	3257	4434	1576640	H2O
+co2	1	Y	3651	4434	3621	4434	1576641	CO2
+atp	1	N	715	3855	735	3855	1576642	ATP
+h2o	1	N	715	3805	735	3805	1576643	H2O
+h	1	N	715	3475	735	3475	1576644	H+
+amp	1	N	715	3525	735	3525	1576645	AMP
+pi	1	N	715	3425	735	3425	1576646	Phosphate
+glc-D	3	Y	1093	705	1063	705	1576647	D-Glucose
+h	3	N	2620	4760	2600	4760	1576648	H+
+etoh	3	Y	2530	4830	2500	4830	1576649	Ethanol
+h	1	N	2620	4400	2600	4400	1576650	H+
+atp	1	N	1835	4335	1815	4335	1576651	ATP
+ac	1	Y	1745	4385	1715	4385	1576652	Acetate
+adp	1	N	1835	4225	1815	4225	1576653	ADP
+nadph	1	N	4002	3930	4029	3932	1576654	Nicotinamide adenine dinucleotide phosphate - reduced
+h	1	N	4002	3986	4029	3982	1576655	H+
+nadp	1	N	4016	3762	4043	3759	1576656	Nicotinamide adenine dinucleotide phosphate
+fum	3	Y	2810	670	2840	650	1576657	Fumarate
+h	3	N	2940	720	2940	700	1576658	H+
+h	1	N	2940	1040	2940	1010	1576659	H+
+h	3	N	1835	4775	1815	4775	1576660	H+
+h	1	N	1835	4435	1815	4435	1576661	H+
+pep	1	N	935	1115	945	1095	1576662	Phosphoenolpyruvate
+pyr	1	N	1155	1115	1155	1095	1576663	Pyruvate
+h	3	N	4830	2930	4803	2930	1576664	H+
+h	1	N	4470	2772	4492	2770	1576665	H+
+for	3	Y	1500	4810	1460	4810	1576666	Formate
+h2o	1	N	1587	1140	1587	1160	1576667	H2O
+h	1	N	1687	1140	1687	1160	1576668	H+
+nad	1	N	1165	2265	1145	2265	1576669	Nicotinamide adenine dinucleotide
+pi	1	N	1165	2315	1145	2315	1576670	Phosphate
+nadh	1	N	1165	2515	1145	2515	1576671	Nicotinamide adenine dinucleotide - reduced
+h	1	N	1169	2465	1145	2465	1576672	H+
+h	3	N	4836	3115	4836	3087	1576673	H+
+h	1	N	4456	3109	4456	3087	1576674	H+
+h2o	1	N	4210	3530	4192	3558	1576675	H2O
+nadp	1	N	4142	3528	4142	3558	1576676	Nicotinamide adenine dinucleotide phosphate
+nadph	1	N	3987	3529	3992	3558	1576677	Nicotinamide adenine dinucleotide phosphate - reduced
+nh4	1	N	3910	3570	3942	3558	1576678	Ammonium
+h	1	N	4050	3530	4042	3558	1576679	H+
+h	3	N	4865	1180	4865	1150	1576680	H+
+pi	1	N	4495	1350	4495	1330	1576681	Phosphate
+h	1	N	4415	1170	4415	1150	1576682	H+
+h2o	1	N	4465	1010	4465	1030	1576683	H2O
+h2o	1	N	2590	3860	2610	3860	1576684	H2O
+cit	1	Y	2979	4013	2971	3986	1576685	Citrate
+coa	1	N	2790	4110	2806	4091	1576686	Coenzyme A
+h	1	N	2880	4140	2897	4117	1576687	H+
+h	3	N	345	4065	345	4045	1576688	H+
+h	1	N	675	4065	675	4045	1576689	H+
+nadp	1	N	2450	3370	2430	3370	1576690	Nicotinamide adenine dinucleotide phosphate
+co2	1	N	2280	3510	2260	3510	1576691	CO2
+nadph	1	N	2220	3550	2200	3540	1576692	Nicotinamide adenine dinucleotide phosphate - reduced
+h	3	N	4850	2590	4850	2570	1576808	H+
+nad	1	N	4400	2650	4420	2650	1576809	Nicotinamide adenine dinucleotide
+h	1	N	2510	1040	2510	1010	1576810	H+
+h	1	N	1250	4440	1270	4440	1576811	H+
+nadh	1	N	1880	3890	1890	3860	1576812	Nicotinamide adenine dinucleotide - reduced
+h	1	N	2406	3965	2392	3980	1576813	H+
+q8	1	N	3190	2730	3210	2730	1576814	Ubiquinone-8
+acald	3	Y	2240	4844	2210	4844	1576815	Acetaldehyde
+mal-L	3	Y	2640	630	2610	650	1576816	L-Malate
+acald	1	Y	2210	3905	2210	3945	1576817	Acetaldehyde
+acon-C	1	Y	3180	3940	3180	3970	1576818	cis-Aconitate
+pep	1	N	710	1470	710	1450	1576819	Phosphoenolpyruvate
+h	1	N	4309	2595	4310	2570	1576820	H+
+pyr	1	N	710	1230	710	1260	1576821	Pyruvate
+nad	1	N	2496	4051	2482	4065	1576822	Nicotinamide adenine dinucleotide
+h2o	1	N	3180	4120	3180	4100	1576823	H2O
+nadh	1	N	2347	3921	2333	3935	1576824	Nicotinamide adenine dinucleotide - reduced
+coa	1	N	2140	3840	2130	3860	1576825	Coenzyme A
+fru	3	Y	300	1390	300	1360	1576826	D-Fructose
+nadh	1	N	4400	2480	4420	2480	1576827	Nicotinamide adenine dinucleotide - reduced
+nad	1	N	2070	3840	2070	3860	1576828	Nicotinamide adenine dinucleotide
+etoh	1	Y	2522	4206	2501	4228	1576829	Ethanol
+q8h2	1	N	3040	2740	3020	2740	1576830	Ubiquinol-8
+h	3	N	2530	740	2510	700	1576831	H+
+h	1	N	1950	3840	1950	3860	1576832	H+
+h	3	N	1240	4770	1270	4770	1576833	H+
+Reactions Nodes							
+					1145	2805	1576485	
+					1055	2875	1576486	
+					1055	2565	1576487	
+					1145	2635	1576488	
+					1907	1165	1576489	
+					1827	1265	1576490	
+					2007	1165	1576491	
+					2057	1165	1576492	
+					2155	1265	1576493	
+					4850	1660	1576494	
+					4330	1660	1576495	
+					3330	1270	1576496	
+					3420	1120	1576497	
+					3510	650	1576498	
+					3510	1040	1576499	
+					3740	1270	1576500	
+					3600	1120	1576501	
+					2715	2921	1576502	
+					2843	2920	1576503	
+					2621	3192	1576504	
+					3413	3976	1576505	
+					3495	4065	1576506	
+					3659	3660	1576507	
+					3620	3710	1576508	
+					3746	3627	1576509	
+					1365	3855	1576510	
+					1055	3945	1576511	
+					1315	3905	1576512	
+					1605	3855	1576513	
+					1715	3945	1576514	
+					1655	3885	1576515	
+					1295	3375	1576516	
+					1055	3375	1576517	
+					1205	3345	1576518	
+					1615	3475	1576519	
+					1665	3515	1576520	
+					2659	3724	1576521	
+					1055	3125	1576522	
+					965	3325	1576523	
+					1055	1265	1576524	
+					1055	1545	1576525	
+					3989	4757	1576526	
+					3989	4441	1576527	
+					765	1855	1576528	
+					1055	1925	1576529	
+					755	1565	1576530	
+					4932	2880	1576531	
+					3180	3570	1576532	
+					3420	2867	1576533	
+					4215	1040	1576534	
+					4065	1070	1576535	
+					4215	1510	1576536	
+					4882	4158	1576537	
+					4720	2070	1576539	
+					4610	2220	1576542	
+					3621	4754	1576544	
+					2405	1865	1576545	
+					1945	1865	1576546	
+					1945	2190	1576547	
+					2415	2190	1576548	
+					965	3625	1576549	
+					965	3555	1576550	
+					965	3815	1576551	
+					4883	3634	1576552	
+					4825	3703	1576553	
+					4248	3632	1576554	
+					4478	3688	1576555	
+					1055	4835	1576556	
+					275	3945	1576557	
+					1945	1555	1576558	
+					4850	2229	1576559	
+					3460	2960	1576567	
+					3500	3030	1576568	
+					3794	3051	1576569	
+					3739	3193	1576570	
+					3768	3116	1576571	
+					1145	1645	1576572	
+					1145	1805	1576573	
+					1145	1855	1576574	
+					1055	2195	1576575	
+					4440	3755	1576576	
+					4440	3805	1576577	
+					4246	4094	1576578	
+					4434	3954	1576579	
+					4434	4004	1576580	
+					4434	4054	1576581	
+					955	4765	1576582	
+					955	4415	1576583	
+					1055	4345	1576584	
+					3684	3506	1576585	
+					3684	3558	1576586	
+					3872	3285	1576587	
+					3820	3233	1576588	
+					1165	4045	1576589	
+					1460	4095	1576590	
+					1505	3625	1576591	
+					1285	3545	1576592	
+					1215	3515	1576593	
+					2880	4839	1576594	
+					2793	4778	1576595	
+					2793	4452	1576596	
+					2880	4430	1576597	
+					4922	3228	1576598	
+					4834	3321	1576599	
+					4472	3328	1576600	
+					855	2195	1576601	
+					4400	1900	1576602	
+					4860	1900	1576603	
+					4510	1740	1576604	
+					2419	1555	1576605	
+					3105	3402	1576606	
+					3170	3480	1576607	
+					2871	3220	1576608	
+					2780	3168	1576609	
+					1815	4035	1576612	
+					1715	4175	1576613	
+					1815	4135	1576614	
+					4535	4258	1576615	
+					4485	4258	1576616	
+					4285	4258	1576617	
+					4385	4258	1576618	
+					4335	4258	1576619	
+					2360	3220	1576620	
+					2060	3420	1576621	
+					2080	3370	1576622	
+					1257	1160	1576623	
+					1407	1160	1576624	
+					1357	1160	1576625	
+					1507	1265	1576626	
+					1715	4845	1576627	
+					4201	3940	1576628	
+					4193	3762	1576629	
+					4275	1140	1576630	
+					4285	1450	1576631	
+					4285	1380	1576632	
+					955	4255	1576633	
+					955	4045	1576634	
+					955	4095	1576635	
+					2670	3310	1576636	
+					2680	3585	1576637	
+					2660	3510	1576638	
+					3257	4754	1576639	
+					3257	4434	1576640	
+					3621	4434	1576641	
+					735	3855	1576642	
+					735	3805	1576643	
+					735	3475	1576644	
+					735	3525	1576645	
+					735	3425	1576646	
+					1063	705	1576647	
+					2600	4760	1576648	
+					2500	4830	1576649	
+					2600	4400	1576650	
+					1815	4335	1576651	
+					1715	4385	1576652	
+					1815	4225	1576653	
+					4029	3932	1576654	
+					4029	3982	1576655	
+					4043	3759	1576656	
+					2840	650	1576657	
+					2940	700	1576658	
+					2940	1010	1576659	
+					1815	4775	1576660	
+					1815	4435	1576661	
+					945	1095	1576662	
+					1155	1095	1576663	
+					4803	2930	1576664	
+					4492	2770	1576665	
+					1460	4810	1576666	
+					1587	1160	1576667	
+					1687	1160	1576668	
+					1145	2265	1576669	
+					1145	2315	1576670	
+					1145	2515	1576671	
+					1145	2465	1576672	
+					4836	3087	1576673	
+					4456	3087	1576674	
+					4192	3558	1576675	
+					4142	3558	1576676	
+					3992	3558	1576677	
+					3942	3558	1576678	
+					4042	3558	1576679	
+					4865	1150	1576680	
+					4495	1330	1576681	
+					4415	1150	1576682	
+					4465	1030	1576683	
+					2610	3860	1576684	
+					2971	3986	1576685	
+					2806	4091	1576686	
+					2897	4117	1576687	
+					345	4045	1576688	
+					675	4045	1576689	
+					2430	3370	1576690	
+					2260	3510	1576691	
+					2200	3540	1576692	
+					4850	2570	1576808	
+					4420	2650	1576809	
+					2510	1010	1576810	
+					1270	4440	1576811	
+					1890	3860	1576812	
+					2392	3980	1576813	
+					3210	2730	1576814	
+					2210	4844	1576815	
+					2610	650	1576816	
+					2210	3945	1576817	
+					3180	3970	1576818	
+					710	1450	1576819	
+					4310	2570	1576820	
+					710	1260	1576821	
+					2482	4065	1576822	
+					3180	4100	1576823	
+					2333	3935	1576824	
+					2130	3860	1576825	
+					300	1360	1576826	
+					4420	2480	1576827	
+					2070	3860	1576828	
+					2501	4228	1576829	
+					3020	2740	1576830	
+					2510	700	1576831	
+					1950	3860	1576832	
+					1270	4770	1576833	
+					1055	2665	1576834	
+					1055	2775	1576835	
+			1045	2725	1055	2725	1576836	
+			1957	1275	1957	1265	1576837	
+					1937	1265	1576838	
+					1977	1265	1576839	
+			4790	1640	4660	1660	1576840	
+			3550	750	3510	820	1576841	
+					3510	800	1576842	
+					3510	870	1576843	
+					2727	3022	1576844	
+			2730	3060	2684	3076	1576845	
+			3616	3866	3606	3846	1576846	
+					3512	3923	1576847	
+					3663	3781	1576848	
+					1430	3945	1576849	
+			1490	3935	1495	3945	1576850	
+					1555	3945	1576851	
+			1424	3456	1414	3486	1576852	
+					1493	3519	1576853	
+					1348	3458	1576854	
+					1055	3265	1576855	
+			1034	3225	1055	3225	1576856	
+			1028	1395	1055	1395	1576857	
+			3958	4718	3989	4598	1576858	
+			815	1715	835	1715	1576859	
+					835	1665	1576860	
+					835	1765	1576861	
+					5115	2880	1576862	
+			5010	2850	5025	2880	1576863	
+					3417	3766	1576864	
+			3437	3857	3417	3857	1576865	
+			4115	1260	4145	1260	1576866	
+					4145	1200	1576867	
+			5010	4130	5020	4158	1576868	
+					5107	4158	1576869	
+					3621	5054	1576870	
+			3597	4914	3621	4914	1576871	
+			2201	1990	2178	1995	1576872	
+					2175	1955	1576873	
+					2178	2035	1576874	
+					1055	3655	1576875	
+			1075	3715	1055	3705	1576876	
+					1055	3745	1576877	
+			4650	3660	4645	3635	1576878	
+					4541	3635	1576879	
+					4779	3635	1576880	
+			1025	4925	1055	4925	1576881	
+					1055	5055	1576882	
+					35	3945	1576883	
+			170	3910	155	3945	1576884	
+			2065	1425	2045	1415	1576885	
+					5116	2230	1576886	
+			4986	2220	4986	2230	1576887	
+			3655	2997	3631	3020	1576888	
+					3588	2976	1576889	
+					3666	3063	1576890	
+			1023	1730	1055	1735	1576891	
+					1055	1775	1576892	
+					1055	1690	1576893	
+					5106	3636	1576894	
+			5000	3580	5015	3636	1576895	
+			1525	1755	1525	1735	1576896	
+					1695	1735	1576897	
+					1405	1735	1576898	
+					4364	3889	1576899	
+			4390	3871	4364	3869	1576900	
+					4364	3849	1576901	
+					1055	4735	1576902	
+			1020	4610	1055	4595	1576903	
+					1055	4445	1576904	
+					3470	1270	1576905	
+					3570	1270	1576906	
+			3520	1290	3520	1270	1576907	
+					3780	3480	1576908	
+			3803	3402	3783	3402	1576909	
+					3776	3330	1576910	
+			1335	4005	1335	3995	1576911	
+					1255	3995	1576912	
+					1415	3995	1576913	
+			4970	1690	4970	1660	1576914	
+					5110	1660	1576915	
+			1404	3556	1404	3526	1576916	
+					1485	3554	1576917	
+					1335	3503	1576918	
+					2880	4520	1576919	
+			2894	4743	2880	4580	1576920	
+					2880	4725	1576921	
+					4502	3228	1576922	
+					4792	3228	1576923	
+			4661	3218	4662	3228	1576924	
+					1055	2045	1576925	
+			1065	1995	1055	1995	1576926	
+			955	2225	955	2195	1576927	
+			4780	1870	4660	1900	1576928	
+					4690	1900	1576929	
+					4630	1900	1576930	
+			2325	1415	2305	1425	1576931	
+					2843	3341	1576932	
+					2994	3445	1576933	
+			2921	3378	2911	3388	1576934	
+					1715	4065	1576935	
+					1715	4105	1576936	
+			1695	4085	1715	4085	1576937	
+					4415	4158	1576938	
+			4433	4131	4435	4158	1576939	
+					4455	4158	1576940	
+					2310	3330	1576941	
+			2250	3320	2250	3360	1576942	
+					2190	3390	1576943	
+					1327	1265	1576944	
+			1307	1275	1307	1265	1576945	
+					1287	1265	1576946	
+			1745	4935	1715	4935	1576947	
+					1715	5055	1576948	
+					4247	3815	1576949	
+					4247	3877	1576950	
+			4223	3856	4247	3857	1576951	
+					4215	1200	1576952	
+			4235	1260	4215	1260	1576953	
+					4215	1350	1576954	
+					1055	4125	1576955	
+					1055	4225	1576956	
+			1035	4175	1055	4175	1576957	
+					2578	3456	1576958	
+			2608	3400	2577	3404	1576959	
+					2582	3341	1576960	
+			3227	4713	3257	4614	1576961	
+			3242	4924	3257	4924	1576962	
+					3257	5064	1576963	
+					2175	1645	1576964	
+			2198	1690	2175	1695	1576965	
+					2175	1735	1576966	
+			3591	4709	3621	4604	1576967	
+					5112	3228	1576968	
+			5020	3200	5032	3228	1576969	
+					835	3805	1576970	
+					835	3525	1576971	
+			815	3645	835	3645	1576972	
+					1063	405	1576973	
+			1073	545	1063	545	1576974	
+					2500	4430	1576975	
+			2474	4718	2500	4550	1576976	
+					2500	4730	1576977	
+			1045	2995	1055	2995	1576978	
+					2500	5040	1576979	
+			2520	4910	2500	4930	1576980	
+					1715	4305	1576981	
+			1695	4275	1715	4275	1576982	
+					1715	4255	1576983	
+					3991	5056	1576984	
+			3973	4918	3991	4918	1576985	
+					4116	3888	1576986	
+					4116	3848	1576987	
+			3978	4123	4116	3868	1576988	
+			2870	4940	2880	4914	1576989	
+					2880	5054	1576990	
+					2840	730	1576991	
+					2840	980	1576992	
+			2890	670	2840	840	1576993	
+					1715	4745	1576994	
+			1705	4495	1715	4585	1576995	
+					1715	4465	1576996	
+			1015	733	1055	993	1576997	
+					1057	973	1576998	
+					1055	983	1576999	
+			4670	2860	4667	2846	1577000	
+					4770	2846	1577001	
+					4560	2846	1577002	
+			1637	1275	1637	1265	1577003	
+					1657	1265	1577004	
+					1617	1265	1577005	
+					1055	2345	1577006	
+					1055	2435	1577007	
+			1032	2395	1055	2395	1577008	
+			2850	510	2840	470	1577009	
+					2840	400	1577010	
+			4666	3047	4666	3027	1577011	
+					4536	3027	1577012	
+					4796	3027	1577013	
+					4078	3632	1577014	
+			4089	3658	4098	3632	1577015	
+					4118	3632	1577016	
+					4705	1150	1577017	
+					4625	1150	1577018	
+			4805	1130	4665	1150	1577019	
+					2744	3837	1577020	
+					2840	3918	1577021	
+			2768	3896	2798	3886	1577022	
+					375	3945	1577023	
+					645	3945	1577024	
+			510	3970	505	3945	1577025	
+			2280	3400	2260	3390	1577026	
+					2220	3410	1577027	
+					2310	3360	1577028	
+					1460	5055	1577029	
+			1450	4925	1460	4925	1577030	
+					2040	3945	1577031	
+			2010	3965	2010	3945	1577032	
+					1980	3945	1577033	
+			2194	4728	2210	4570	1577034	
+			2230	4940	2211	4944	1577035	
+					2210	5050	1577036	
+			3070	4080	3071	4013	1577037	
+					3091	4016	1577038	
+					3279	4015	1577039	
+			3300	4080	3298	4011	1577040	
+					2371	4100	1577041	
+			2360	4170	2356	4086	1577042	
+					2342	4071	1577043	
+					1360	4730	1577044	
+			1330	4620	1360	4600	1577045	
+					1360	4470	1577046	
+			1470	4620	1460	4432	1577047	
+					3080	2600	1577048	
+			3110	2580	3110	2600	1577049	
+					3140	2600	1577050	
+					630	1360	1577051	
+			390	1320	640	1360	1577052	
+					630	1360	1577053	
+			180	1420	182	1360	1577054	
+					44	1360	1577055	
+					2610	736	1577056	
+			2560	670	2610	756	1577057	
+					2610	980	1577058	
+			2600	510	2610	470	1577059	
+					2610	400	1577060	
+					4630	2570	1577061	
+			4790	2550	4670	2570	1577062	
+					4710	2570	1577063	
+					3180	2817	1577064	
+			3129	2839	3129	2819	1577065	
+					3078	2826	1577066	
+Reactions								
+ACALD		Reversible	1577033	1576514				acetaldehyde dehydrogenase (acetylating)
+ACALD		Reversible	1576817	1577031				acetaldehyde dehydrogenase (acetylating)
+ACALDt		Reversible	1577034	1576817				acetaldehyde reversible transport
+EX_acald(e)		Reversible	1576815	1577035				Acetaldehyde exchange
+ACONTa		Reversible	1576685	1577037				aconitase (half-reaction A, Citrate hydro-lyase)
+ACONTb		Reversible	1576818	1577039				aconitase (half-reaction B, Isocitrate hydro-lyase)
+ACONTb		Reversible	1577040	1576505				aconitase (half-reaction B, Isocitrate hydro-lyase)
+ACONTb		Reversible	1576823	1577039				aconitase (half-reaction B, Isocitrate hydro-lyase)
+ALCD2x		Reversible	1577043	1576817				alcohol dehydrogenase (ethanol)
+ETOHt2r		Reversible	1576975	1576829				ethanol reversible transport via proton symport
+FORti		Irreversible	1576590	1577047				formate transport via diffusion
+FORti		Irreversible	1577047	1576666				formate transport via diffusion
+FORt2		Irreversible	1577046	1576590				formate transport in via proton symport
+FORt2		Irreversible	1576666	1577044				formate transport in via proton symport
+FRD7		Irreversible	1577050	1576533				fumarate reductase
+FRD7		Irreversible	1576503	1577048				fumarate reductase
+FRUpts2		Irreversible	1577053	1576525				Fructose transport via PEP:Pyr PTS (f6p generating)
+EX_fru(e)		Reversible	1576826	1577054				D-Fructose exchange
+MALt2_2		Irreversible	1577058	1576504				Malate transport via proton symport (2 H)
+EX_mal-L(e)		Reversible	1576816	1577059				L-Malate exchange
+NADH16		Irreversible	1577063	1576542				NADH dehydrogenase (ubiquinone-8 & 3 protons)
+NADH16		Irreversible	1576539	1577061				NADH dehydrogenase (ubiquinone-8 & 3 protons)
+NADH16		Irreversible	1576827	1577061				NADH dehydrogenase (ubiquinone-8 & 3 protons)
+NADH16		Irreversible	1577063	1576809				NADH dehydrogenase (ubiquinone-8 & 3 protons)
+SUCDi		Irreversible	1577066	1576503				succinate dehydrogenase (irreversible)
+SUCDi		Irreversible	1576533	1577064				succinate dehydrogenase (irreversible)
+SUCDi		Irreversible	1577066	1576830				succinate dehydrogenase (irreversible)
+FRD7		Irreversible	1577050	1576814				fumarate reductase
+PGK		Reversible	1576835	1576836				phosphoglycerate kinase
+PGK		Reversible	1576836	1576834				phosphoglycerate kinase
+PGK		Reversible	1576485	1576835				phosphoglycerate kinase
+PGK		Reversible	1576486	1576835				phosphoglycerate kinase
+PGK		Reversible	1576834	1576487				phosphoglycerate kinase
+PGK		Reversible	1576834	1576488				phosphoglycerate kinase
+GND		Irreversible	1576838	1576837				phosphogluconate dehydrogenase
+GND		Irreversible	1576837	1576839				phosphogluconate dehydrogenase
+GND		Irreversible	1576489	1576838				phosphogluconate dehydrogenase
+GND		Irreversible	1576490	1576838				phosphogluconate dehydrogenase
+GND		Irreversible	1576839	1576491				phosphogluconate dehydrogenase
+GND		Irreversible	1576839	1576492				phosphogluconate dehydrogenase
+GND		Irreversible	1576839	1576493				phosphogluconate dehydrogenase
+O2t		Reversible	1576494	1576840				o2 transport (diffusion)
+O2t		Reversible	1576840	1576495				o2 transport (diffusion)
+THD2		Irreversible	1576842	1576841				NAD(P) transhydrogenase
+THD2		Irreversible	1576841	1576843				NAD(P) transhydrogenase
+THD2		Irreversible	1576496	1576842				NAD(P) transhydrogenase
+THD2		Irreversible	1576497	1576842				NAD(P) transhydrogenase
+THD2		Irreversible	1576498	1576842				NAD(P) transhydrogenase
+THD2		Irreversible	1576843	1576499				NAD(P) transhydrogenase
+THD2		Irreversible	1576843	1576500				NAD(P) transhydrogenase
+THD2		Irreversible	1576843	1576501				NAD(P) transhydrogenase
+FUM		Reversible	1576844	1576845				fumarase
+FUM		Reversible	1576845	1576504				fumarase
+FUM		Reversible	1576502	1576844				fumarase
+FUM		Reversible	1576503	1576844				fumarase
+ICDHyr		Reversible	1576847	1576846				isocitrate dehydrogenase (NADP)
+ICDHyr		Reversible	1576846	1576848				isocitrate dehydrogenase (NADP)
+ICDHyr		Reversible	1576505	1576847				isocitrate dehydrogenase (NADP)
+ICDHyr		Reversible	1576506	1576847				isocitrate dehydrogenase (NADP)
+ICDHyr		Reversible	1576848	1576507				isocitrate dehydrogenase (NADP)
+ICDHyr		Reversible	1576848	1576508				isocitrate dehydrogenase (NADP)
+ICDHyr		Reversible	1576848	1576509				isocitrate dehydrogenase (NADP)
+PDH		Irreversible	1576849	1576850				pyruvate dehydrogenase
+PDH		Irreversible	1576850	1576851				pyruvate dehydrogenase
+PDH		Irreversible	1576510	1576849				pyruvate dehydrogenase
+PDH		Irreversible	1576511	1576849				pyruvate dehydrogenase
+PDH		Irreversible	1576512	1576849				pyruvate dehydrogenase
+PDH		Irreversible	1576851	1576513				pyruvate dehydrogenase
+PDH		Irreversible	1576851	1576514				pyruvate dehydrogenase
+PDH		Irreversible	1576851	1576515				pyruvate dehydrogenase
+PPC		Irreversible	1576854	1576852				phosphoenolpyruvate carboxylase
+PPC		Irreversible	1576852	1576853				phosphoenolpyruvate carboxylase
+PPC		Irreversible	1576516	1576854				phosphoenolpyruvate carboxylase
+PPC		Irreversible	1576517	1576854				phosphoenolpyruvate carboxylase
+PPC		Irreversible	1576518	1576854				phosphoenolpyruvate carboxylase
+PPC		Irreversible	1576853	1576519				phosphoenolpyruvate carboxylase
+PPC		Irreversible	1576853	1576520				phosphoenolpyruvate carboxylase
+PPC		Irreversible	1576853	1576521				phosphoenolpyruvate carboxylase
+ENO		Reversible	1576522	1576856				enolase
+ENO		Reversible	1576856	1576855				enolase
+ENO		Reversible	1576855	1576517				enolase
+ENO		Reversible	1576855	1576523				enolase
+PGI		Reversible	1576524	1576857				glucose-6-phosphate isomerase
+PGI		Reversible	1576857	1576525				glucose-6-phosphate isomerase
+NH4t		Reversible	1576526	1576858				ammonia reversible transport
+NH4t		Reversible	1576858	1576527				ammonia reversible transport
+FBP		Irreversible	1576861	1576859				fructose-bisphosphatase
+FBP		Irreversible	1576859	1576860				fructose-bisphosphatase
+FBP		Irreversible	1576528	1576861				fructose-bisphosphatase
+FBP		Irreversible	1576529	1576861				fructose-bisphosphatase
+FBP		Irreversible	1576860	1576525				fructose-bisphosphatase
+FBP		Irreversible	1576860	1576530				fructose-bisphosphatase
+EX_succ(e)		Reversible	1576531	1576863				Succinate exchange
+EX_succ(e)		Reversible	1576863	1576862				Succinate exchange
+ICL		Irreversible	1576505	1576865				Isocitrate lyase
+ICL		Irreversible	1576865	1576864				Isocitrate lyase
+ICL		Irreversible	1576864	1576532				Isocitrate lyase
+ICL		Irreversible	1576864	1576533				Isocitrate lyase
+ADK1		Reversible	1576867	1576866				adenylate kinase
+ADK1		Reversible	1576866	1576536				adenylate kinase
+ADK1		Reversible	1576534	1576867				adenylate kinase
+ADK1		Reversible	1576535	1576867				adenylate kinase
+EX_gln-L(e)		Reversible	1576537	1576868				L-Glutamine exchange
+EX_gln-L(e)		Reversible	1576868	1576869				L-Glutamine exchange
+EX_co2(e)		Reversible	1576544	1576871				CO2 exchange
+EX_co2(e)		Reversible	1576871	1576870				CO2 exchange
+TALA		Reversible	1576873	1576872				transaldolase
+TALA		Reversible	1576872	1576874				transaldolase
+TALA		Reversible	1576545	1576873				transaldolase
+TALA		Reversible	1576546	1576873				transaldolase
+TALA		Reversible	1576874	1576547				transaldolase
+TALA		Reversible	1576874	1576548				transaldolase
+PYK		Irreversible	1576875	1576876				pyruvate kinase
+PYK		Irreversible	1576876	1576877				pyruvate kinase
+PYK		Irreversible	1576549	1576875				pyruvate kinase
+PYK		Irreversible	1576550	1576875				pyruvate kinase
+PYK		Irreversible	1576517	1576875				pyruvate kinase
+PYK		Irreversible	1576877	1576511				pyruvate kinase
+PYK		Irreversible	1576877	1576551				pyruvate kinase
+GLUt2r		Reversible	1576880	1576878				L-glutamate transport via proton symport, reversible
+GLUt2r		Reversible	1576878	1576879				L-glutamate transport via proton symport, reversible
+GLUt2r		Reversible	1576552	1576880				L-glutamate transport via proton symport, reversible
+GLUt2r		Reversible	1576553	1576880				L-glutamate transport via proton symport, reversible
+GLUt2r		Reversible	1576879	1576554				L-glutamate transport via proton symport, reversible
+GLUt2r		Reversible	1576879	1576555				L-glutamate transport via proton symport, reversible
+EX_lac-D(e)		Reversible	1576556	1576881				D-lactate exchange
+EX_lac-D(e)		Reversible	1576881	1576882				D-lactate exchange
+EX_pyr(e)		Reversible	1576557	1576884				Pyruvate exchange
+EX_pyr(e)		Reversible	1576884	1576883				Pyruvate exchange
+RPE		Reversible	1576493	1576885				ribulose 5-phosphate 3-epimerase
+RPE		Reversible	1576885	1576558				ribulose 5-phosphate 3-epimerase
+EX_h(e)		Reversible	1576559	1576887				H+ exchange
+EX_h(e)		Reversible	1576887	1576886				H+ exchange
+SUCOAS		Reversible	1576889	1576888				succinyl-CoA synthetase (ADP-forming)
+SUCOAS		Reversible	1576888	1576890				succinyl-CoA synthetase (ADP-forming)
+SUCOAS		Reversible	1576567	1576889				succinyl-CoA synthetase (ADP-forming)
+SUCOAS		Reversible	1576568	1576889				succinyl-CoA synthetase (ADP-forming)
+SUCOAS		Reversible	1576533	1576889				succinyl-CoA synthetase (ADP-forming)
+SUCOAS		Reversible	1576890	1576569				succinyl-CoA synthetase (ADP-forming)
+SUCOAS		Reversible	1576890	1576570				succinyl-CoA synthetase (ADP-forming)
+SUCOAS		Reversible	1576890	1576571				succinyl-CoA synthetase (ADP-forming)
+PFK		Irreversible	1576893	1576891				phosphofructokinase
+PFK		Irreversible	1576891	1576892				phosphofructokinase
+PFK		Irreversible	1576525	1576893				phosphofructokinase
+PFK		Irreversible	1576572	1576893				phosphofructokinase
+PFK		Irreversible	1576892	1576573				phosphofructokinase
+PFK		Irreversible	1576892	1576529				phosphofructokinase
+PFK		Irreversible	1576892	1576574				phosphofructokinase
+EX_glu-L(e)		Reversible	1576552	1576895				L-Glutamate exchange
+EX_glu-L(e)		Reversible	1576895	1576894				L-Glutamate exchange
+TKT2		Reversible	1576897	1576896				transketolase
+TKT2		Reversible	1576896	1576898				transketolase
+TKT2		Reversible	1576547	1576897				transketolase
+TKT2		Reversible	1576558	1576897				transketolase
+TKT2		Reversible	1576898	1576525				transketolase
+TKT2		Reversible	1576898	1576575				transketolase
+GLNS		Irreversible	1576901	1576900				glutamine synthetase
+GLNS		Irreversible	1576900	1576899				glutamine synthetase
+GLNS		Irreversible	1576554	1576901				glutamine synthetase
+GLNS		Irreversible	1576576	1576901				glutamine synthetase
+GLNS		Irreversible	1576577	1576901				glutamine synthetase
+GLNS		Irreversible	1576899	1576578				glutamine synthetase
+GLNS		Irreversible	1576899	1576579				glutamine synthetase
+GLNS		Irreversible	1576899	1576580				glutamine synthetase
+GLNS		Irreversible	1576899	1576581				glutamine synthetase
+D-LACt2		Reversible	1576902	1576903				D-lactate transport via proton symport
+D-LACt2		Reversible	1576903	1576904				D-lactate transport via proton symport
+D-LACt2		Reversible	1576556	1576902				D-lactate transport via proton symport
+D-LACt2		Reversible	1576582	1576902				D-lactate transport via proton symport
+D-LACt2		Reversible	1576904	1576583				D-lactate transport via proton symport
+D-LACt2		Reversible	1576904	1576584				D-lactate transport via proton symport
+NADTRHD		Irreversible	1576906	1576907				NAD transhydrogenase
+NADTRHD		Irreversible	1576907	1576905				NAD transhydrogenase
+NADTRHD		Irreversible	1576501	1576906				NAD transhydrogenase
+NADTRHD		Irreversible	1576500	1576906				NAD transhydrogenase
+NADTRHD		Irreversible	1576905	1576496				NAD transhydrogenase
+NADTRHD		Irreversible	1576905	1576497				NAD transhydrogenase
+AKGDH		Irreversible	1576908	1576909				2-Oxogluterate dehydrogenase
+AKGDH		Irreversible	1576909	1576910				2-Oxogluterate dehydrogenase
+AKGDH		Irreversible	1576509	1576908				2-Oxogluterate dehydrogenase
+AKGDH		Irreversible	1576585	1576908				2-Oxogluterate dehydrogenase
+AKGDH		Irreversible	1576586	1576908				2-Oxogluterate dehydrogenase
+AKGDH		Irreversible	1576910	1576570				2-Oxogluterate dehydrogenase
+AKGDH		Irreversible	1576910	1576587				2-Oxogluterate dehydrogenase
+AKGDH		Irreversible	1576910	1576588				2-Oxogluterate dehydrogenase
+PFL		Irreversible	1576912	1576911				pyruvate formate lyase
+PFL		Irreversible	1576911	1576913				pyruvate formate lyase
+PFL		Irreversible	1576589	1576912				pyruvate formate lyase
+PFL		Irreversible	1576511	1576912				pyruvate formate lyase
+PFL		Irreversible	1576913	1576514				pyruvate formate lyase
+PFL		Irreversible	1576913	1576590				pyruvate formate lyase
+EX_o2(e)		Reversible	1576494	1576914				O2 exchange
+EX_o2(e)		Reversible	1576914	1576915				O2 exchange
+PPCK		Irreversible	1576917	1576916				phosphoenolpyruvate carboxykinase
+PPCK		Irreversible	1576916	1576918				phosphoenolpyruvate carboxykinase
+PPCK		Irreversible	1576591	1576917				phosphoenolpyruvate carboxykinase
+PPCK		Irreversible	1576521	1576917				phosphoenolpyruvate carboxykinase
+PPCK		Irreversible	1576918	1576592				phosphoenolpyruvate carboxykinase
+PPCK		Irreversible	1576918	1576593				phosphoenolpyruvate carboxykinase
+PPCK		Irreversible	1576918	1576517				phosphoenolpyruvate carboxykinase
+PIt2r		Reversible	1576921	1576920				phosphate reversible transport via symport
+PIt2r		Reversible	1576920	1576919				phosphate reversible transport via symport
+PIt2r		Reversible	1576594	1576921				phosphate reversible transport via symport
+PIt2r		Reversible	1576595	1576921				phosphate reversible transport via symport
+PIt2r		Reversible	1576919	1576596				phosphate reversible transport via symport
+PIt2r		Reversible	1576919	1576597				phosphate reversible transport via symport
+AKGt2r		Reversible	1576923	1576924				2-oxoglutarate reversible transport via symport
+AKGt2r		Reversible	1576924	1576922				2-oxoglutarate reversible transport via symport
+AKGt2r		Reversible	1576598	1576923				2-oxoglutarate reversible transport via symport
+AKGt2r		Reversible	1576599	1576923				2-oxoglutarate reversible transport via symport
+AKGt2r		Reversible	1576922	1576509				2-oxoglutarate reversible transport via symport
+AKGt2r		Reversible	1576922	1576600				2-oxoglutarate reversible transport via symport
+FBA		Reversible	1576529	1576926				fructose-bisphosphate aldolase
+FBA		Reversible	1576926	1576925				fructose-bisphosphate aldolase
+FBA		Reversible	1576925	1576575				fructose-bisphosphate aldolase
+FBA		Reversible	1576925	1576601				fructose-bisphosphate aldolase
+TPI		Reversible	1576601	1576927				triose-phosphate isomerase
+TPI		Reversible	1576927	1576575				triose-phosphate isomerase
+CYTBD		Irreversible	1576930	1576928				cytochrome oxidase bd (ubiquinol-8: 2 protons)
+CYTBD		Irreversible	1576928	1576929				cytochrome oxidase bd (ubiquinol-8: 2 protons)
+CYTBD		Irreversible	1576602	1576930				cytochrome oxidase bd (ubiquinol-8: 2 protons)
+CYTBD		Irreversible	1576495	1576930				cytochrome oxidase bd (ubiquinol-8: 2 protons)
+CYTBD		Irreversible	1576542	1576930				cytochrome oxidase bd (ubiquinol-8: 2 protons)
+CYTBD		Irreversible	1576929	1576539				cytochrome oxidase bd (ubiquinol-8: 2 protons)
+CYTBD		Irreversible	1576929	1576603				cytochrome oxidase bd (ubiquinol-8: 2 protons)
+CYTBD		Irreversible	1576929	1576604				cytochrome oxidase bd (ubiquinol-8: 2 protons)
+RPI		Reversible	1576605	1576931				ribose-5-phosphate isomerase
+RPI		Reversible	1576931	1576493				ribose-5-phosphate isomerase
+MALS		Irreversible	1576933	1576934				malate synthase
+MALS		Irreversible	1576934	1576932				malate synthase
+MALS		Irreversible	1576532	1576933				malate synthase
+MALS		Irreversible	1576606	1576933				malate synthase
+MALS		Irreversible	1576607	1576933				malate synthase
+MALS		Irreversible	1576932	1576608				malate synthase
+MALS		Irreversible	1576932	1576609				malate synthase
+MALS		Irreversible	1576932	1576504				malate synthase
+PTAr		Reversible	1576935	1576937				phosphotransacetylase
+PTAr		Reversible	1576937	1576936				phosphotransacetylase
+PTAr		Reversible	1576514	1576935				phosphotransacetylase
+PTAr		Reversible	1576612	1576935				phosphotransacetylase
+PTAr		Reversible	1576936	1576613				phosphotransacetylase
+PTAr		Reversible	1576936	1576614				phosphotransacetylase
+GLNabc		Irreversible	1576940	1576939				L-glutamine transport via ABC system
+GLNabc		Irreversible	1576939	1576938				L-glutamine transport via ABC system
+GLNabc		Irreversible	1576537	1576940				L-glutamine transport via ABC system
+GLNabc		Irreversible	1576615	1576940				L-glutamine transport via ABC system
+GLNabc		Irreversible	1576616	1576940				L-glutamine transport via ABC system
+GLNabc		Irreversible	1576938	1576578				L-glutamine transport via ABC system
+GLNabc		Irreversible	1576938	1576617				L-glutamine transport via ABC system
+GLNabc		Irreversible	1576938	1576618				L-glutamine transport via ABC system
+GLNabc		Irreversible	1576938	1576619				L-glutamine transport via ABC system
+ME1		Irreversible	1576941	1576942				malic enzyme (NAD)
+ME1		Irreversible	1576942	1576943				malic enzyme (NAD)
+ME1		Irreversible	1576504	1576941				malic enzyme (NAD)
+ME1		Irreversible	1576620	1576941				malic enzyme (NAD)
+ME1		Irreversible	1576943	1576511				malic enzyme (NAD)
+ME1		Irreversible	1576943	1576621				malic enzyme (NAD)
+ME1		Irreversible	1576943	1576622				malic enzyme (NAD)
+G6PDH2r		Reversible	1576946	1576945				glucose 6-phosphate dehydrogenase
+G6PDH2r		Reversible	1576945	1576944				glucose 6-phosphate dehydrogenase
+G6PDH2r		Reversible	1576623	1576946				glucose 6-phosphate dehydrogenase
+G6PDH2r		Reversible	1576524	1576946				glucose 6-phosphate dehydrogenase
+G6PDH2r		Reversible	1576944	1576624				glucose 6-phosphate dehydrogenase
+G6PDH2r		Reversible	1576944	1576625				glucose 6-phosphate dehydrogenase
+G6PDH2r		Reversible	1576944	1576626				glucose 6-phosphate dehydrogenase
+EX_ac(e)		Reversible	1576627	1576947				Acetate exchange
+EX_ac(e)		Reversible	1576947	1576948				Acetate exchange
+GLUN		Irreversible	1576950	1576951				glutaminase
+GLUN		Irreversible	1576951	1576949				glutaminase
+GLUN		Irreversible	1576628	1576950				glutaminase
+GLUN		Irreversible	1576578	1576950				glutaminase
+GLUN		Irreversible	1576949	1576629				glutaminase
+GLUN		Irreversible	1576949	1576554				glutaminase
+ATPM		Irreversible	1576952	1576953				ATP maintenance requirement
+ATPM		Irreversible	1576953	1576954				ATP maintenance requirement
+ATPM		Irreversible	1576534	1576952				ATP maintenance requirement
+ATPM		Irreversible	1576630	1576952				ATP maintenance requirement
+ATPM		Irreversible	1576954	1576631				ATP maintenance requirement
+ATPM		Irreversible	1576954	1576632				ATP maintenance requirement
+ATPM		Irreversible	1576954	1576536				ATP maintenance requirement
+LDH_D		Reversible	1576956	1576957				D-lactate dehydrogenase
+LDH_D		Reversible	1576957	1576955				D-lactate dehydrogenase
+LDH_D		Reversible	1576633	1576956				D-lactate dehydrogenase
+LDH_D		Reversible	1576584	1576956				D-lactate dehydrogenase
+LDH_D		Reversible	1576955	1576634				D-lactate dehydrogenase
+LDH_D		Reversible	1576955	1576511				D-lactate dehydrogenase
+LDH_D		Reversible	1576955	1576635				D-lactate dehydrogenase
+MDH		Reversible	1576960	1576959				malate dehydrogenase
+MDH		Reversible	1576959	1576958				malate dehydrogenase
+MDH		Reversible	1576504	1576960				malate dehydrogenase
+MDH		Reversible	1576636	1576960				malate dehydrogenase
+MDH		Reversible	1576958	1576637				malate dehydrogenase
+MDH		Reversible	1576958	1576638				malate dehydrogenase
+MDH		Reversible	1576958	1576521				malate dehydrogenase
+H2Ot		Reversible	1576639	1576961				H2O transport via diffusion
+H2Ot		Reversible	1576961	1576640				H2O transport via diffusion
+EX_h2o(e)		Reversible	1576639	1576962				H2O exchange
+EX_h2o(e)		Reversible	1576962	1576963				H2O exchange
+TKT1		Reversible	1576964	1576965				transketolase
+TKT1		Reversible	1576965	1576966				transketolase
+TKT1		Reversible	1576605	1576964				transketolase
+TKT1		Reversible	1576558	1576964				transketolase
+TKT1		Reversible	1576966	1576546				transketolase
+TKT1		Reversible	1576966	1576545				transketolase
+CO2t		Reversible	1576544	1576967				CO2 transporter via diffusion
+CO2t		Reversible	1576967	1576641				CO2 transporter via diffusion
+EX_akg(e)		Reversible	1576598	1576969				2-Oxoglutarate exchange
+EX_akg(e)		Reversible	1576969	1576968				2-Oxoglutarate exchange
+PPS		Irreversible	1576970	1576972				phosphoenolpyruvate synthase
+PPS		Irreversible	1576972	1576971				phosphoenolpyruvate synthase
+PPS		Irreversible	1576642	1576970				phosphoenolpyruvate synthase
+PPS		Irreversible	1576511	1576970				phosphoenolpyruvate synthase
+PPS		Irreversible	1576643	1576970				phosphoenolpyruvate synthase
+PPS		Irreversible	1576971	1576517				phosphoenolpyruvate synthase
+PPS		Irreversible	1576971	1576644				phosphoenolpyruvate synthase
+PPS		Irreversible	1576971	1576645				phosphoenolpyruvate synthase
+PPS		Irreversible	1576971	1576646				phosphoenolpyruvate synthase
+EX_glc(e)		Reversible	1576647	1576974				D-Glucose exchange
+EX_glc(e)		Reversible	1576974	1576973				D-Glucose exchange
+ETOHt2r		Reversible	1576977	1576976				ethanol reversible transport via proton symport
+ETOHt2r		Reversible	1576976	1576975				ethanol reversible transport via proton symport
+ETOHt2r		Reversible	1576648	1576977				ethanol reversible transport via proton symport
+ETOHt2r		Reversible	1576649	1576977				ethanol reversible transport via proton symport
+ETOHt2r		Reversible	1576975	1576650				ethanol reversible transport via proton symport
+PGM		Reversible	1576522	1576978				phosphoglycerate mutase
+PGM		Reversible	1576978	1576486				phosphoglycerate mutase
+EX_etoh(e)		Reversible	1576649	1576980				Ethanol exchange
+EX_etoh(e)		Reversible	1576980	1576979				Ethanol exchange
+ACKr		Reversible	1576981	1576982				acetate kinase
+ACKr		Reversible	1576982	1576983				acetate kinase
+ACKr		Reversible	1576651	1576981				acetate kinase
+ACKr		Reversible	1576652	1576981				acetate kinase
+ACKr		Reversible	1576983	1576653				acetate kinase
+ACKr		Reversible	1576983	1576613				acetate kinase
+EX_nh4(e)		Reversible	1576526	1576985				Ammonia exchange
+EX_nh4(e)		Reversible	1576985	1576984				Ammonia exchange
+GLUSy		Irreversible	1576986	1576988				glutamate synthase (NADPH)
+GLUSy		Irreversible	1576988	1576987				glutamate synthase (NADPH)
+GLUSy		Irreversible	1576509	1576986				glutamate synthase (NADPH)
+GLUSy		Irreversible	1576654	1576986				glutamate synthase (NADPH)
+GLUSy		Irreversible	1576578	1576986				glutamate synthase (NADPH)
+GLUSy		Irreversible	1576655	1576986				glutamate synthase (NADPH)
+GLUSy		Irreversible	1576987	1576656				glutamate synthase (NADPH)
+GLUSy		Irreversible	1576987	1576554				glutamate synthase (NADPH)
+EX_pi(e)		Reversible	1576594	1576989				Phosphate exchange
+EX_pi(e)		Reversible	1576989	1576990				Phosphate exchange
+FUMt2_2		Irreversible	1576991	1576993				Fumarate transport via proton symport (2 H)
+FUMt2_2		Irreversible	1576993	1576992				Fumarate transport via proton symport (2 H)
+FUMt2_2		Irreversible	1576657	1576991				Fumarate transport via proton symport (2 H)
+FUMt2_2		Irreversible	1576658	1576991				Fumarate transport via proton symport (2 H)
+FUMt2_2		Irreversible	1576992	1576659				Fumarate transport via proton symport (2 H)
+FUMt2_2		Irreversible	1576992	1576503				Fumarate transport via proton symport (2 H)
+ACt2r		Reversible	1576994	1576995				acetate reversible transport via proton symport
+ACt2r		Reversible	1576995	1576996				acetate reversible transport via proton symport
+ACt2r		Reversible	1576627	1576994				acetate reversible transport via proton symport
+ACt2r		Reversible	1576660	1576994				acetate reversible transport via proton symport
+ACt2r		Reversible	1576996	1576652				acetate reversible transport via proton symport
+ACt2r		Reversible	1576996	1576661				acetate reversible transport via proton symport
+GLCpts		Irreversible	1576998	1576997				D-glucose transport via PEP:Pyr PTS
+GLCpts		Irreversible	1576997	1576999				D-glucose transport via PEP:Pyr PTS
+GLCpts		Irreversible	1576662	1576998				D-glucose transport via PEP:Pyr PTS
+GLCpts		Irreversible	1576647	1576998				D-glucose transport via PEP:Pyr PTS
+GLCpts		Irreversible	1576999	1576663				D-glucose transport via PEP:Pyr PTS
+GLCpts		Irreversible	1576999	1576524				D-glucose transport via PEP:Pyr PTS
+SUCCt3		Irreversible	1577002	1577000				succinate transport out via proton antiport
+SUCCt3		Irreversible	1577000	1577001				succinate transport out via proton antiport
+SUCCt3		Irreversible	1576664	1577002				succinate transport out via proton antiport
+SUCCt3		Irreversible	1576533	1577002				succinate transport out via proton antiport
+SUCCt3		Irreversible	1577001	1576531				succinate transport out via proton antiport
+SUCCt3		Irreversible	1577001	1576665				succinate transport out via proton antiport
+PGL		Irreversible	1577005	1577003				6-phosphogluconolactonase
+PGL		Irreversible	1577003	1577004				6-phosphogluconolactonase
+PGL		Irreversible	1576626	1577005				6-phosphogluconolactonase
+PGL		Irreversible	1576667	1577005				6-phosphogluconolactonase
+PGL		Irreversible	1577004	1576668				6-phosphogluconolactonase
+PGL		Irreversible	1577004	1576490				6-phosphogluconolactonase
+GAPD		Reversible	1577006	1577008				glyceraldehyde-3-phosphate dehydrogenase
+GAPD		Reversible	1577008	1577007				glyceraldehyde-3-phosphate dehydrogenase
+GAPD		Reversible	1576575	1577006				glyceraldehyde-3-phosphate dehydrogenase
+GAPD		Reversible	1576669	1577006				glyceraldehyde-3-phosphate dehydrogenase
+GAPD		Reversible	1576670	1577006				glyceraldehyde-3-phosphate dehydrogenase
+GAPD		Reversible	1577007	1576487				glyceraldehyde-3-phosphate dehydrogenase
+GAPD		Reversible	1577007	1576671				glyceraldehyde-3-phosphate dehydrogenase
+GAPD		Reversible	1577007	1576672				glyceraldehyde-3-phosphate dehydrogenase
+EX_fum(e)		Reversible	1576657	1577009				Fumarate exchange
+EX_fum(e)		Reversible	1577009	1577010				Fumarate exchange
+SUCCt2_2		Irreversible	1577013	1577011				succinate transport via proton symport (2 H)
+SUCCt2_2		Irreversible	1577011	1577012				succinate transport via proton symport (2 H)
+SUCCt2_2		Irreversible	1576673	1577013				succinate transport via proton symport (2 H)
+SUCCt2_2		Irreversible	1576531	1577013				succinate transport via proton symport (2 H)
+SUCCt2_2		Irreversible	1577012	1576533				succinate transport via proton symport (2 H)
+SUCCt2_2		Irreversible	1577012	1576674				succinate transport via proton symport (2 H)
+GLUDy		Reversible	1577016	1577015				glutamate dehydrogenase (NADP)
+GLUDy		Reversible	1577015	1577014				glutamate dehydrogenase (NADP)
+GLUDy		Reversible	1576675	1577016				glutamate dehydrogenase (NADP)
+GLUDy		Reversible	1576554	1577016				glutamate dehydrogenase (NADP)
+GLUDy		Reversible	1576676	1577016				glutamate dehydrogenase (NADP)
+GLUDy		Reversible	1577014	1576677				glutamate dehydrogenase (NADP)
+GLUDy		Reversible	1577014	1576678				glutamate dehydrogenase (NADP)
+GLUDy		Reversible	1577014	1576509				glutamate dehydrogenase (NADP)
+GLUDy		Reversible	1577014	1576679				glutamate dehydrogenase (NADP)
+ATPS4r		Reversible	1577017	1577019				ATP synthase (four protons for one ATP)
+ATPS4r		Reversible	1577019	1577018				ATP synthase (four protons for one ATP)
+ATPS4r		Reversible	1576680	1577017				ATP synthase (four protons for one ATP)
+ATPS4r		Reversible	1576681	1577017				ATP synthase (four protons for one ATP)
+ATPS4r		Reversible	1576536	1577017				ATP synthase (four protons for one ATP)
+ATPS4r		Reversible	1577018	1576682				ATP synthase (four protons for one ATP)
+ATPS4r		Reversible	1577018	1576683				ATP synthase (four protons for one ATP)
+ATPS4r		Reversible	1577018	1576534				ATP synthase (four protons for one ATP)
+CS		Irreversible	1577020	1577022				citrate synthase
+CS		Irreversible	1577022	1577021				citrate synthase
+CS		Irreversible	1576514	1577020				citrate synthase
+CS		Irreversible	1576684	1577020				citrate synthase
+CS		Irreversible	1576521	1577020				citrate synthase
+CS		Irreversible	1577021	1576685				citrate synthase
+CS		Irreversible	1577021	1576686				citrate synthase
+CS		Irreversible	1577021	1576687				citrate synthase
+PYRt2r		Reversible	1577023	1577025				pyruvate reversible transport via proton symport
+PYRt2r		Reversible	1577025	1577024				pyruvate reversible transport via proton symport
+PYRt2r		Reversible	1576688	1577023				pyruvate reversible transport via proton symport
+PYRt2r		Reversible	1576557	1577023				pyruvate reversible transport via proton symport
+PYRt2r		Reversible	1577024	1576511				pyruvate reversible transport via proton symport
+PYRt2r		Reversible	1577024	1576689				pyruvate reversible transport via proton symport
+ME2		Irreversible	1577028	1577026				malic enzyme (NADP)
+ME2		Irreversible	1577026	1577027				malic enzyme (NADP)
+ME2		Irreversible	1576690	1577028				malic enzyme (NADP)
+ME2		Irreversible	1576504	1577028				malic enzyme (NADP)
+ME2		Irreversible	1577027	1576691				malic enzyme (NADP)
+ME2		Irreversible	1577027	1576511				malic enzyme (NADP)
+ME2		Irreversible	1577027	1576692				malic enzyme (NADP)
+EX_for(e)		Reversible	1576666	1577030				Formate exchange
+EX_for(e)		Reversible	1577030	1577029				Formate exchange
+ACALD		Reversible	1577031	1577032				acetaldehyde dehydrogenase (acetylating)
+ACALD		Reversible	1577032	1577033				acetaldehyde dehydrogenase (acetylating)
+ACALD		Reversible	1576825	1577031				acetaldehyde dehydrogenase (acetylating)
+ACALD		Reversible	1576828	1577031				acetaldehyde dehydrogenase (acetylating)
+ACALD		Reversible	1577033	1576832				acetaldehyde dehydrogenase (acetylating)
+ACALD		Reversible	1577033	1576812				acetaldehyde dehydrogenase (acetylating)
+ACALDt		Reversible	1576815	1577034				acetaldehyde reversible transport
+EX_acald(e)		Reversible	1577035	1577036				Acetaldehyde exchange
+ACONTa		Reversible	1577037	1577038				aconitase (half-reaction A, Citrate hydro-lyase)
+ACONTa		Reversible	1577038	1576818				aconitase (half-reaction A, Citrate hydro-lyase)
+ACONTa		Reversible	1577038	1576823				aconitase (half-reaction A, Citrate hydro-lyase)
+ACONTb		Reversible	1577039	1577040				aconitase (half-reaction B, Isocitrate hydro-lyase)
+ALCD2x		Reversible	1577041	1577042				alcohol dehydrogenase (ethanol)
+ALCD2x		Reversible	1577042	1577043				alcohol dehydrogenase (ethanol)
+ALCD2x		Reversible	1576829	1577041				alcohol dehydrogenase (ethanol)
+ALCD2x		Reversible	1576822	1577041				alcohol dehydrogenase (ethanol)
+ALCD2x		Reversible	1577043	1576813				alcohol dehydrogenase (ethanol)
+ALCD2x		Reversible	1577043	1576824				alcohol dehydrogenase (ethanol)
+FORt2		Irreversible	1577044	1577045				formate transport in via proton symport
+FORt2		Irreversible	1577045	1577046				formate transport in via proton symport
+FORt2		Irreversible	1576833	1577044				formate transport in via proton symport
+FORt2		Irreversible	1577046	1576811				formate transport in via proton symport
+FRD7		Irreversible	1577048	1577049				fumarate reductase
+FRD7		Irreversible	1577049	1577050				fumarate reductase
+FRD7		Irreversible	1576830	1577048				fumarate reductase
+FRUpts2		Irreversible	1577051	1577052				Fructose transport via PEP:Pyr PTS (f6p generating)
+FRUpts2		Irreversible	1577052	1577053				Fructose transport via PEP:Pyr PTS (f6p generating)
+FRUpts2		Irreversible	1576826	1577051				Fructose transport via PEP:Pyr PTS (f6p generating)
+FRUpts2		Irreversible	1576819	1577051				Fructose transport via PEP:Pyr PTS (f6p generating)
+FRUpts2		Irreversible	1577053	1576821				Fructose transport via PEP:Pyr PTS (f6p generating)
+EX_fru(e)		Reversible	1577054	1577055				D-Fructose exchange
+MALt2_2		Irreversible	1577056	1577057				Malate transport via proton symport (2 H)
+MALt2_2		Irreversible	1577057	1577058				Malate transport via proton symport (2 H)
+MALt2_2		Irreversible	1576831	1577056				Malate transport via proton symport (2 H)
+MALt2_2		Irreversible	1576816	1577056				Malate transport via proton symport (2 H)
+MALt2_2		Irreversible	1577058	1576810				Malate transport via proton symport (2 H)
+EX_mal-L(e)		Reversible	1577059	1577060				L-Malate exchange
+NADH16		Irreversible	1577061	1577062				NADH dehydrogenase (ubiquinone-8 & 3 protons)
+NADH16		Irreversible	1577062	1577063				NADH dehydrogenase (ubiquinone-8 & 3 protons)
+NADH16		Irreversible	1576820	1577061				NADH dehydrogenase (ubiquinone-8 & 3 protons)
+NADH16		Irreversible	1577063	1576808				NADH dehydrogenase (ubiquinone-8 & 3 protons)
+SUCDi		Irreversible	1577064	1577065				succinate dehydrogenase (irreversible)
+SUCDi		Irreversible	1577065	1577066				succinate dehydrogenase (irreversible)
+SUCDi		Irreversible	1576814	1577064				succinate dehydrogenase (irreversible)
+Texts								
+Rectangle			608	955	3550	3962		102/102/255:10@PLAIN
+Rectangle			408	755	3950	4362		102/102/255:10@PLAIN
+Rectangle			87	455	4550	4983		153/153/153:10@DASHS

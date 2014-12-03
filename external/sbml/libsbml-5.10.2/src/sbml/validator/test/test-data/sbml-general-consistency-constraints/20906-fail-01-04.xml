@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Fail: (1900) An InitialAssignment's symbol must be the id of a Compartment,
+Species, or Parameter.
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" constant="false"/>
+    </listOfCompartments>
+    <listOfParameters>
+      <parameter id="y"/>
+      <parameter id="q"/>
+      <parameter id="z" constant="false"/>
+      <parameter id="p"/>
+    </listOfParameters>
+    <listOfInitialAssignments>
+      <initialAssignment symbol="y">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> z </ci>
+        </math>
+      </initialAssignment>
+    </listOfInitialAssignments>
+    <listOfRules>
+      <assignmentRule variable="z">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci> y </ci>
+        </math>
+      </assignmentRule>
+    </listOfRules>
+  </model>
+</sbml>

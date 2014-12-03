@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1605) A KineticLaw's timeUnits must be 'time', 'second', or the
+id of a UnitDefnition that defines a variant of 'second' with
+exponent='1'.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment id="c"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="c"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="r">
+        <listOfReactants>
+          <speciesReference species="s"/>
+        </listOfReactants>
+        <kineticLaw timeUnits="time"/>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

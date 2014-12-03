@@ -1,0 +1,194 @@
+2010/      -2.8
+    * corrected possible overflow bug in ubuntu systems( char save_filetype[4]; => char save_filetype[5]; ) bug found by Cenk and Maik
+    * correct bug in double bound row constraints; bug found by Thomas Sauter
+
+2009/12/08 - 2.7
+    * fixed makeglpkmex include bug.  Thanks to Giuliano!
+    * returning last feasible solution when timelimit or iteration limit is reached
+    * removing glpkcc from memory each time glpk is called to fix param persistance bug 
+
+2009/10/22  - 2.6
+    * fixed ratio test bug. Thanks to Bill Riehl
+    * updated user makeglpkmex interface
+    * updated INSTALL file
+
+2009/05/04 - 2.5
+    * Updated interface to work for GLPK 4.36
+    * Added 64bit support.
+    * fixed fixed constraint bug.
+
+2007/08/22 - 2.4
+   * Several bugs on the parameters sent to the simplex method have been fixed. Thanks to Kristian Edlund.
+   * glpk.m help updated with the correct returned code.
+
+2007/07/27 - 2.3
+   * Replaced some variables in order to use the new functionalities of GLPK 4.20
+
+2007/07/23 - 2.2
+   * Changed ulong_t with glp_ulong as required by GLPK 4.18 (or higher).
+   * A statement on compatibility version is printed by makeglpkmex.
+   * A compatibility check is now done by glpkcc.dll.
+
+2007/06/11 - 2.1
+   * Interface updated for GLPK 4.17.
+   * A few bugs in makeglpkmex.m have been fixed.
+
+2007/05/08 - 2.0
+   * MEX interface is now compliant with the GLPK Version 4.16 syntax changes.
+   * A Matlab-coded QP solver is now provided with GLPKMEX. This solver is still
+     in beta version but a few examples are provided. 
+   * Provided more functionality to the SAVE option. Now, you are able to define 
+     both the file name and the file type. See glpk.m help for more details and 
+     glpktest1.m for an example.
+   * It is now possible to define MPSINFO, MPSOBJ, MPSORIG, MPSWIDE and MPSFREE 
+     options as all the other options.
+   * Added the possibility to define binary variables.
+   * A new makeglpkmex.m file has been written in order to help user to compile 
+     MEX interface.
+
+2006/01/18 - 1.0
+   * The MEX interface has been completely re-written in C++
+   * Added a new interface, glpk.
+   * Mantained the glpkmex for backward compatibility
+   * Updated the interface to the GLPK version 4.9
+
+2005/03/14 - 0.7.1
+   * Removed the warning message on vartype when less than 5 input parameters 
+     are passed.
+   * Moved some definitions of variables at the beginning of the function. 
+     Thanks to Michal Kvasnica.
+
+2005/02/19 - 0.7
+   * Fixed some memory leaks. Some pointers were not deallocated before leaving 
+     the mex interface. This implied a blow up of memory used from Matlab if the 
+     mex was called many times. 
+
+2005/01/12 - 0.6.6
+   * Replaced old functions on the interior point method and integer 
+     optimization with the new ones.
+   * Updated the GUI interface.
+
+2004/11/29 - 0.6.5
+   * Added makeglpk a gui editor to help to compile GLPKMEX more easily.
+   
+   * Old makeglpk has been renamed as makeglpcmd
+
+2004/7/24 - 0.6.4
+   * [2004/9/22] Fixed a bug on glpkfun.h
+   
+   * Fixed a bug on not-null elements of matrix A. Thanks to Alberto Bemporad.
+   
+   * Fixed a bug on Infty elements on the RHS of the constraint matrix.
+
+2004/7/21 - 0.6.3   
+   * Fixed a bug on scaling. Due to a wrong condition scaling was not called 
+     when the presol option was set to 0. This fact implied numerical 
+     instability. Thanks to Alberto Bemporad and Alessandro Alessio.
+     
+   * Added a new file, makeglpk.m, to help the user to compile the MEX 
+     interface.
+
+2004/5/10 - 0.6.2
+   * [2004/7/17] Updated the INSTALL file with more details. 
+     Thanks to Prof. Patrick Cousot.
+
+   * Merged 'lambda' and 'extra' output fields into 'extra' argument with 
+     the following fields: lambda, redcosts, time, mem. 
+   
+   * Added information on reduced costs.
+
+
+2003/12/29 - 0.6.1
+   * All calls to the calloc function have been replaced with mxCalloc() and the 
+     same for the function free() with mxFree() due to a problem with the 
+     Matlab memory manager.
+
+   * Updated lower and upper bounds definition of the structural variables. If 
+     some structural variables are not lower (upper) bounded you can define 
+     an lb (ub) array with -Inf (Inf) value in the position of that variable. 
+     If the i-th structural variable is unbounded (free) define lb[i]=-Inf 
+     and ub[i]=Inf.
+     If all structural variables are free LB=-Inf UB=Inf and LB=[], UB=[] are 
+     equivalent definitions.
+   
+   * Free bounds bug fixed. If lower and upper bounds are empty ('[]') the mex 
+     interface sets the bounds to LPX_FR. Thanks to Johan Löfberg.
+
+
+2003/11/28 - 0.6
+   * The mxGetNzmax function to get the number of non-zero elements 
+     has been replaced with the last element of the jc array. 
+     Actually the mxGetNzmax returns nzmax, an integer value      
+     indicating the number of elements in the ir, pr. 
+     Its value is always greater than (or equal to) the number of
+     nonzero elements in a sparse mxArray. 
+     Thanks to Johan Löfberg. 
+
+   * Added the fault hook function. When in GLPK something goes wrong 
+     the 'fault' function is called and the program execution is 
+     terminated crashing Matlab. The hook redirects the output error
+     directly to the Matlab shell and avoids Matlab from crashing.
+     
+   * Added the print hook function. Now all output sent by GLPK to the 
+     standard output has been redirected to the shell of Matlab. To 
+     avoid too much information on standard output the 'msglev' option 
+     has been set at 1 (error messages only) as default.
+     
+   * The mex interface has been splitted in three separated files: 
+     glpsets.h contains some useful definitions
+     glpkfun.h contains the routine glpk for solving the problems,
+     glpkmex.c contains the mexfunction
+     
+   * glpktest1.m, glpktest2.m, glpksparse.m updated.
+
+
+2003/11/14 - 0.5.9
+   * the default value of the scale parameter has been set to 1 
+     (instead of 3). Until 4.2 the default value was 3. In 4.2 the 
+     default value is 1. It was changed because equilibration 
+     scaling seems to be much more appropriate for badly scaled 
+     problems.
+
+   * In the precompiled version the PDF parameters' guide has been 
+     replaced with a .m file.
+
+   * (under Windows) The libglpk.a of GLPK 4.2 used to produce the 
+     glpkmex.dll has been compiled with mingw. The code is smaller 
+     than cygwin code with the -mno-cygwin option.
+     In both Windows and Linux, the -g -O2 options of the compiler 
+     have been replaced with -O3 (maximum optimization, no debug infos).   
+
+   * Added a matlab help file, glpkparams.m, for the set of params that
+     can be passed to the mex interface.
+
+2003/09/30 - 0.5.8
+
+   * Added a list of parameters that the user can pass to the mex 
+     interface.
+   
+   * Removed the warning section in the mexFunction in case the output 
+     code is between 204 and 214.
+
+2003/09/29 - 0.5.7
+
+   * Added some informations when you type glpkmex with no argument, 
+     i.e., '>>glpkmex'.
+   
+   * If the problem is not feasible you get now more output details
+     This is very useful when you run Matlab with JVM.
+   
+   * The problem is saved before it is solved so if matlab 
+     crashes you can study the output with glpsol (or CPLEX).
+
+2003/09/16 - 0.5.6
+
+   * Option SAVE changed. Instead of printing the solution of the 
+     problem now you can print the problem itself. In detail, 
+     lpx_write_lpt() has replaced lpx_print_sol(). The output file 
+     (in CPLEX LP format) can be used with both glpksol and cplex.
+   
+
+2003/08/26 - 0.5.5 
+
+   * Old Version.
+

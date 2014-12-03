@@ -1,0 +1,456 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of setMapOptions</title>
+  <meta name="keywords" content="setMapOptions">
+  <meta name="description" content="setMapOptions set the values of the options fields">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html maps -->
+<h1>setMapOptions
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>setMapOptions set the values of the options fields</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function options = setMapOptions(options, map, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">setMapOptions set the values of the options fields
+
+ options = setMapOptions(options, map, model,'property name',value,...)
+ options = setMapOptions(options, map, 'property name',value,...)
+
+INPUT
+ options           The options whose properties are to be set.
+
+ map               The map corresponding to the options.  
+ 
+
+
+OPTIONAL INPUT
+
+ model             The model which the values of the properties are
+                   corresponding to.
+ property          Name of any field of the options to be set.
+ value             The corresponding value of the property.
+
+ The function returns an options with it fields set to the values passed
+ to it.
+ The input arguments can be passed in two manner:
+       If passed with no map and model it is assumed that the values are
+       already processed and corresponds to the map structure so they are
+       simply assigned to the fields of options.
+
+       If there is map and model passed the values will be checked to see
+       if they are ready to be assigned or they need more prosseccing by
+       matching up the map struct with model's.
+
+ options
+   nodeColor           A nx3 matrix corresponds to the color of the metabolite
+                       nodes on the map. This color scale represent the
+                       concentration of the metabolites.
+   edgeColor           A nx3 matrix corresponds to the color of the rxn edges
+                       on the map. This color scale represent the
+                       fluxes of the reactions.
+   edgeArrowColor      A nx3 matrix corresponding to the color of the rxn
+                       edges arrowheads on the map.
+   nodeWeight          A nx1 matrix corresponds to the diameter of the nodes.
+                       it is representative of the confidance of the
+                       concentrations.
+   edgeWeight          A nx1 matrix corresponds to the width of the edges.
+                       it is representative of the confidance of the
+                       fluxes.
+   textColor           A nx3 matrix corresponds to the color of the
+                       metabolites labels on the map.
+   textSize            A nx1 matrix corresponds to the size of the
+                       metabolites labels on the map.
+   fileName            Name of output file
+   lb                  Lower limit to round smaller values up to.
+   ub                  Upper limit to round larger values down to.
+   colorScale          Colormap (Default = cool(100))
+
+                       drawFlux options
+   zeroFluxWidth       Width of arrows of reactions which carry zero flux.
+                       (Default = edgeWeight)
+   zeroFluxColor       Color of arrows of reactions which carry zero flux.
+                       (Default = edgeColor set by drawFlux)
+   rxnDirFlag          Scale arrowheads based on flux directionality.
+                       (Default = false)
+   rxnDirMultiplier    Scaling value of arrows denoting flux direction.
+                       (Default = 2.5) (only used if rxnDirFlag = true)
+
+                       drawFluxVariability options
+   bidircolor          Bi-directional flux color (Default = [0 255 0])
+   unidirirrcolor      Irreversible reaction color 
+                       (Default = [0 0 255])
+   unidirfwdcolor      Only forward direction flux color
+                       (Default = [255 0 255])
+   unidirrevcolor      Only reverse direction flux color
+                       (Default = [0 255 255])
+
+OUTPUT
+ options       Options structure</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/maps/tools/getColorFromColorScale.html" class="code" title="function color = getColorFromColorScale(value, colorScale)">getColorFromColorScale</a>	getColorFromColorScale Obtains color from color scale</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="drawConc.html" class="code" title="function options = drawConc(map,model,conc,options,varargin)">drawConc</a>	drawConc overlays a flux distribution onto a reaction map</li><li><a href="drawFlux.html" class="code" title="function options = drawFlux(map,model,flux,options,varargin)">drawFlux</a>	drawFlux overlays a flux distribution onto a reaction map</li><li><a href="drawFluxVariability.html" class="code" title="function options = drawFluxVariability(map,model,minFlux,maxFlux,options,varargin)">drawFluxVariability</a>	drawFluxVariablity Overlay flux variability data on a metabolic map</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function options = setMapOptions(options, map, varargin)</a>
+0002 <span class="comment">%setMapOptions set the values of the options fields</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% options = setMapOptions(options, map, model,'property name',value,...)</span>
+0005 <span class="comment">% options = setMapOptions(options, map, 'property name',value,...)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%INPUT</span>
+0008 <span class="comment">% options           The options whose properties are to be set.</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% map               The map corresponding to the options.</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">%OPTIONAL INPUT</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% model             The model which the values of the properties are</span>
+0017 <span class="comment">%                   corresponding to.</span>
+0018 <span class="comment">% property          Name of any field of the options to be set.</span>
+0019 <span class="comment">% value             The corresponding value of the property.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% The function returns an options with it fields set to the values passed</span>
+0022 <span class="comment">% to it.</span>
+0023 <span class="comment">% The input arguments can be passed in two manner:</span>
+0024 <span class="comment">%       If passed with no map and model it is assumed that the values are</span>
+0025 <span class="comment">%       already processed and corresponds to the map structure so they are</span>
+0026 <span class="comment">%       simply assigned to the fields of options.</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">%       If there is map and model passed the values will be checked to see</span>
+0029 <span class="comment">%       if they are ready to be assigned or they need more prosseccing by</span>
+0030 <span class="comment">%       matching up the map struct with model's.</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">% options</span>
+0033 <span class="comment">%   nodeColor           A nx3 matrix corresponds to the color of the metabolite</span>
+0034 <span class="comment">%                       nodes on the map. This color scale represent the</span>
+0035 <span class="comment">%                       concentration of the metabolites.</span>
+0036 <span class="comment">%   edgeColor           A nx3 matrix corresponds to the color of the rxn edges</span>
+0037 <span class="comment">%                       on the map. This color scale represent the</span>
+0038 <span class="comment">%                       fluxes of the reactions.</span>
+0039 <span class="comment">%   edgeArrowColor      A nx3 matrix corresponding to the color of the rxn</span>
+0040 <span class="comment">%                       edges arrowheads on the map.</span>
+0041 <span class="comment">%   nodeWeight          A nx1 matrix corresponds to the diameter of the nodes.</span>
+0042 <span class="comment">%                       it is representative of the confidance of the</span>
+0043 <span class="comment">%                       concentrations.</span>
+0044 <span class="comment">%   edgeWeight          A nx1 matrix corresponds to the width of the edges.</span>
+0045 <span class="comment">%                       it is representative of the confidance of the</span>
+0046 <span class="comment">%                       fluxes.</span>
+0047 <span class="comment">%   textColor           A nx3 matrix corresponds to the color of the</span>
+0048 <span class="comment">%                       metabolites labels on the map.</span>
+0049 <span class="comment">%   textSize            A nx1 matrix corresponds to the size of the</span>
+0050 <span class="comment">%                       metabolites labels on the map.</span>
+0051 <span class="comment">%   fileName            Name of output file</span>
+0052 <span class="comment">%   lb                  Lower limit to round smaller values up to.</span>
+0053 <span class="comment">%   ub                  Upper limit to round larger values down to.</span>
+0054 <span class="comment">%   colorScale          Colormap (Default = cool(100))</span>
+0055 <span class="comment">%</span>
+0056 <span class="comment">%                       drawFlux options</span>
+0057 <span class="comment">%   zeroFluxWidth       Width of arrows of reactions which carry zero flux.</span>
+0058 <span class="comment">%                       (Default = edgeWeight)</span>
+0059 <span class="comment">%   zeroFluxColor       Color of arrows of reactions which carry zero flux.</span>
+0060 <span class="comment">%                       (Default = edgeColor set by drawFlux)</span>
+0061 <span class="comment">%   rxnDirFlag          Scale arrowheads based on flux directionality.</span>
+0062 <span class="comment">%                       (Default = false)</span>
+0063 <span class="comment">%   rxnDirMultiplier    Scaling value of arrows denoting flux direction.</span>
+0064 <span class="comment">%                       (Default = 2.5) (only used if rxnDirFlag = true)</span>
+0065 <span class="comment">%</span>
+0066 <span class="comment">%                       drawFluxVariability options</span>
+0067 <span class="comment">%   bidircolor          Bi-directional flux color (Default = [0 255 0])</span>
+0068 <span class="comment">%   unidirirrcolor      Irreversible reaction color</span>
+0069 <span class="comment">%                       (Default = [0 0 255])</span>
+0070 <span class="comment">%   unidirfwdcolor      Only forward direction flux color</span>
+0071 <span class="comment">%                       (Default = [255 0 255])</span>
+0072 <span class="comment">%   unidirrevcolor      Only reverse direction flux color</span>
+0073 <span class="comment">%                       (Default = [0 255 255])</span>
+0074 <span class="comment">%</span>
+0075 <span class="comment">%OUTPUT</span>
+0076 <span class="comment">% options       Options structure</span>
+0077 
+0078 nNodes = size(map.molName,1);
+0079 nEdges = size(map.connectionName,1);
+0080 <span class="comment">% if map and model are passed the data will be processed before assignment</span>
+0081 <span class="keyword">if</span> ~isstr(varargin{1}) &amp;&amp; isstr(varargin{2})
+0082     model = varargin{1};
+0083     <span class="keyword">for</span> i = 2:2:size(varargin,2)
+0084         <span class="keyword">switch</span> lower(varargin{i})
+0085             <span class="keyword">case</span> <span class="string">'nodecolor'</span>
+0086                 conc = cell2mat(varargin(i+1));
+0087                 <span class="keyword">if</span> size(conc,1)==1
+0088                     conc = repmat(conc,nNodes,1);
+0089                 <span class="keyword">elseif</span> all(size(conc) == [nNodes 3])
+0090                     <span class="comment">%directly assign to options struct</span>
+0091                     options.nodeColor = conc;
+0092                     <span class="keyword">continue</span>;
+0093                 <span class="keyword">end</span>
+0094                 <span class="keyword">if</span>(size(conc,2)==1)
+0095                     color = <a href="../../cobra/maps/tools/getColorFromColorScale.html" class="code" title="function color = getColorFromColorScale(value, colorScale)">getColorFromColorScale</a>(conc);
+0096                  <span class="keyword">elseif</span>(size(conc,2)== 3)   <span class="comment">%colors maped</span>
+0097                      color = conc;
+0098                 <span class="keyword">else</span> <span class="comment">%wrong size</span>
+0099                     warning(<span class="string">'Invalid size for nodeColor entry'</span>);
+0100                     <span class="keyword">continue</span>;
+0101                 <span class="keyword">end</span>
+0102                 <span class="comment">%   match map with model and find out the missing parts</span>
+0103                 <span class="keyword">if</span> isfield(model,<span class="string">'metNames'</span>)
+0104                     mapMol = <span class="string">'molName'</span>;
+0105                     modelMol = <span class="string">'metNames'</span>;
+0106                 <span class="keyword">else</span>
+0107                     mapMol = <span class="string">'molAbbreviation'</span>;
+0108                     modelMol = <span class="string">'mets'</span>;
+0109                 <span class="keyword">end</span>
+0110                 <span class="comment">%generate default color vector</span>
+0111                 options.nodeColor = ones(nNodes,3)*191;
+0112                 <span class="comment">%map known concentrations</span>
+0113                 [known index] = ismember(map.(mapMol),model.(modelMol));
+0114                 index = index(index~=0);
+0115                 options.nodeColor(known,:) = color(index,:);
+0116                 <span class="comment">%Clear variables</span>
+0117                 clear(<span class="string">'conc'</span>,<span class="string">'mapMol'</span>,<span class="string">'modelMol'</span>,<span class="string">'color'</span>,<span class="string">'known'</span>,<span class="string">'index'</span>);
+0118             <span class="keyword">case</span> <span class="string">'edgecolor'</span>
+0119                 flux = cell2mat(varargin(i+1));
+0120                 <span class="keyword">if</span> size(flux,1)==1
+0121                     flux = repmat(flux,nEdges,1);
+0122                 <span class="keyword">elseif</span> all(size(flux) == [nEdges 3])
+0123                     <span class="comment">%directly assign to options struct</span>
+0124                     options.edgeColor = flux;
+0125                     <span class="keyword">continue</span>
+0126                 <span class="keyword">elseif</span> size(flux) ~= length(model.rxns)
+0127                     warning(<span class="string">'Invalid size for edgeColor entry'</span>);
+0128                     <span class="keyword">continue</span>;
+0129                 <span class="keyword">end</span>
+0130                 <span class="comment">% Map to color if flux vector</span>
+0131                 <span class="keyword">if</span>(size(flux,2)==1)
+0132                     color = <a href="../../cobra/maps/tools/getColorFromColorScale.html" class="code" title="function color = getColorFromColorScale(value, colorScale)">getColorFromColorScale</a>(flux);
+0133                  <span class="keyword">elseif</span>(size(flux,2)== 3)   <span class="comment">%colors maped</span>
+0134                      color = flux;
+0135                 <span class="keyword">else</span> <span class="comment">%wrong size</span>
+0136                     warning(<span class="string">'Invalid size for edgeColor entry'</span>);
+0137                     <span class="keyword">continue</span>;
+0138                 <span class="keyword">end</span>
+0139                 <span class="comment">% Generate default color vector</span>
+0140                 options.edgeColor = ones(nEdges,3)*191;
+0141                 <span class="comment">%map known connections</span>
+0142                 [known index] = ismember(map.connectionAbb,model.rxns);
+0143                 index = index(index~=0);
+0144                 options.edgeColor(known,:) = color(index,:);
+0145                 <span class="comment">%Clear variables</span>
+0146                 clear(<span class="string">'flux'</span>,<span class="string">'color'</span>,<span class="string">'known'</span>,<span class="string">'index'</span>);
+0147             <span class="keyword">case</span> <span class="string">'edgearrowcolor'</span>
+0148                 arrowColor = cell2mat(varargin(i+1));
+0149                 <span class="keyword">if</span> size(arrowColor,1)==1
+0150                     arrowColor = repmat(arrowColor,nEdges,1);
+0151                 <span class="keyword">end</span>
+0152                 <span class="keyword">if</span> size(arrowColor,2)~=3
+0153                     warning(<span class="string">'Invalid size for arrowColor entry'</span>);
+0154                     <span class="keyword">continue</span>
+0155                 <span class="keyword">end</span>
+0156                 options.edgeArrowColor = arrowColor;
+0157                 <span class="comment">%Clear variables</span>
+0158                 clear(<span class="string">'arrowColor'</span>);
+0159             <span class="keyword">case</span> <span class="string">'nodeweight'</span>
+0160                 nodeWeight = cell2mat(varargin(i+1));
+0161                 <span class="keyword">if</span> size(nodeWeight,1)==1
+0162                     nodeWeight = repmat(nodeWeight,nNodes,1);
+0163                     options.nodeWeight = nodeWeight;
+0164                 <span class="keyword">elseif</span> size(nodeWeight,1)==length(model.mets) <span class="comment">%assumes concentration confidence</span>
+0165                     <span class="comment">%Match map with model and find out the missing parts</span>
+0166                     <span class="keyword">if</span> isfield(model,<span class="string">'metNames'</span>)
+0167                         mapMol = <span class="string">'molName'</span>;
+0168                         modelMol = <span class="string">'metNames'</span>;
+0169                     <span class="keyword">else</span>
+0170                         mapMol = <span class="string">'molAbbreviation'</span>;
+0171                         modelMol = <span class="string">'mets'</span>;
+0172                     <span class="keyword">end</span>
+0173                     <span class="comment">%scale</span>
+0174                     <span class="keyword">if</span> max(nodeWeight)~=0, nodeWeight = round(24*nodeWeight/max(nodeWeight))+1; <span class="keyword">end</span>
+0175                     <span class="comment">%default node weight</span>
+0176                     options.nodeWeight = ones(nNodes,1)*25;
+0177                     <span class="comment">%Map to nodes</span>
+0178                     [known index] = ismember(map.(mapMol),model.(modelMol));
+0179                     index = index(index~=0);
+0180                     options.nodeWeight(known) = nodeWeight(index);
+0181                 <span class="keyword">elseif</span> size(nodeWeight,1)==nNodes
+0182                     <span class="comment">%directly assign to options struct</span>
+0183                     options.nodeWeight=nodeWeight;
+0184                 <span class="keyword">else</span> <span class="comment">%wrong size</span>
+0185                     warning(<span class="string">'Invalid size for nodeWeight entry'</span>);
+0186                 <span class="keyword">end</span>
+0187                 <span class="keyword">if</span> ~isfield(options,<span class="string">'nodeWeightSecondary'</span>)
+0188                     options.nodeWeightSecondary = options.nodeWeight*15/25;
+0189                 <span class="keyword">end</span>
+0190                 <span class="comment">%Clear variables</span>
+0191                 clear(<span class="string">'nodeWeight'</span>,<span class="string">'mapMol'</span>,<span class="string">'modelMol'</span>,<span class="string">'known'</span>,<span class="string">'index'</span>);
+0192             <span class="keyword">case</span> <span class="string">'nodeweightsecondary'</span>
+0193                  nodeWeight = cell2mat(varargin(i+1));
+0194                 <span class="keyword">if</span> size(nodeWeight,1)==1
+0195                     nodeWeight = repmat(nodeWeight,nNodes,1);
+0196                     options.nodeWeightSecondary = nodeWeight;
+0197                 <span class="keyword">elseif</span> size(nodeWeight,1)==length(model.mets) <span class="comment">%assumes concentration confidence</span>
+0198                     <span class="comment">%Match map with model and find out the missing parts</span>
+0199                     <span class="keyword">if</span> isfield(model,<span class="string">'metNames'</span>)
+0200                         mapMol = <span class="string">'molName'</span>;
+0201                         modelMol = <span class="string">'metNames'</span>;
+0202                     <span class="keyword">else</span>
+0203                         mapMol = <span class="string">'molAbbreviation'</span>;
+0204                         modelMol = <span class="string">'mets'</span>;
+0205                     <span class="keyword">end</span>
+0206                     <span class="comment">%scale</span>
+0207                     <span class="keyword">if</span> max(nodeWeight)~=0, nodeWeight = round(24*nodeWeight/max(nodeWeight))+1; <span class="keyword">end</span>
+0208                     <span class="comment">%default node weight</span>
+0209                     options.nodeWeightSecondary = ones(nNodes,1)*25;
+0210                     <span class="comment">%Map to nodes</span>
+0211                     [known index] = ismember(map.(mapMol),model.(modelMol));
+0212                     index = index(index~=0);
+0213                     options.nodeWeightSecondary(known) = nodeWeight(index);
+0214                 <span class="keyword">elseif</span> size(nodeWeight,1)==nNodes
+0215                     <span class="comment">%directly assign to options struct</span>
+0216                     options.nodeWeightSecondary=nodeWeight;
+0217                 <span class="keyword">else</span> <span class="comment">%wrong size</span>
+0218                     warning(<span class="string">'Invalid size for nodeWeight entry'</span>);
+0219                 <span class="keyword">end</span>
+0220                 <span class="comment">%Clear variables</span>
+0221                 clear(<span class="string">'nodeWeight'</span>,<span class="string">'mapMol'</span>,<span class="string">'modelMol'</span>,<span class="string">'known'</span>,<span class="string">'index'</span>);
+0222             <span class="keyword">case</span> <span class="string">'edgeweight'</span>
+0223                 edgeWeight = cell2mat(varargin(i+1));
+0224                 <span class="keyword">if</span> size(edgeWeight,1) == 1
+0225                     <span class="comment">%set edgeWeight for all reactions</span>
+0226                     options.edgeWeight = repmat(edgeWeight,nEdges,1);
+0227                 <span class="keyword">elseif</span> size(edgeWeight,1) == length(model.rxns)
+0228                     <span class="comment">%Assume flux confidence</span>
+0229                     <span class="comment">%scale</span>
+0230                     <span class="keyword">if</span> max(edgeWeight)~=0, edgeWeight = round(4*edgeWeight/max(edgeWeight))+1; <span class="keyword">end</span>
+0231                     <span class="comment">%default edge weight</span>
+0232                     options.edgeWeight = ones(nEdges,1)*4;
+0233                     <span class="comment">%map known connections</span>
+0234                     [known index] = ismember(map.connectionAbb,model.rxns);
+0235                     index = index(index~=0);
+0236                     options.edgeWeight(known) = edgeWeight(index);
+0237                 <span class="keyword">elseif</span> size(edgeWeight,1) == nEdges
+0238                     <span class="comment">%Directly assign to options struct</span>
+0239                     options.edgeWeight = edgeWeight;
+0240                 <span class="keyword">else</span>
+0241                     warning(<span class="string">'invalid size for nodeWeight entry'</span>);
+0242                 <span class="keyword">end</span>
+0243                 <span class="comment">%Clear variables</span>
+0244                 clear(<span class="string">'edgeWeight'</span>,<span class="string">'known'</span>,<span class="string">'index'</span>);
+0245             <span class="keyword">case</span> <span class="string">'textsize'</span>
+0246                 textSize = cell2mat(varargin(i+1));
+0247                 nNodes = size(map.molName,1);
+0248                 <span class="keyword">if</span> length(textSize)==1
+0249                     textSize = ones(nNodes,1)*textSize;
+0250                 <span class="keyword">end</span>
+0251                 <span class="keyword">for</span> j = 1:nNodes
+0252                     str = map.molName(j);
+0253                     index = find(strcmp(model.metNames(:),str));
+0254                     <span class="keyword">if</span> isempty(index)
+0255                         options.textSize(j,1) = 8;
+0256                     <span class="keyword">elseif</span> length(index) == 1
+0257                         options.textSize(j,1) = textSize(index);
+0258                     <span class="keyword">else</span>
+0259                         options.textSize(j,1) = textSize(index(1));
+0260                     <span class="keyword">end</span>
+0261                 <span class="keyword">end</span>
+0262             <span class="keyword">case</span> <span class="string">'textcolor'</span>
+0263                 tColor = cell2mat(varargin(i+1));
+0264                 nNodes = size(map.molName,1);
+0265                 <span class="keyword">if</span> size(tColor,1)==1
+0266                     tColor = repmat(tColor,nNodes,1);
+0267                 <span class="keyword">end</span>
+0268                 <span class="keyword">for</span> j = 1:nNodes
+0269                     str = map.molName(j);
+0270                     index = find(strcmp(model.metNames(:),str));
+0271                     <span class="keyword">if</span> isempty(index)
+0272                         options.textColor(j,:) = [0 0 0];
+0273                     <span class="keyword">elseif</span> length(index) == 1
+0274                         options.textColor(j,:)= tColor(index,:);
+0275                     <span class="keyword">else</span>
+0276                         options.textColor(j,:)= tColor(index(1),:);
+0277                     <span class="keyword">end</span>
+0278                 <span class="keyword">end</span>
+0279             <span class="keyword">case</span> <span class="string">'othertextcolor'</span>
+0280                 otColor = cell2mat(varargin(i+1));
+0281                 nNodes = size(map.molName,1);
+0282                 <span class="keyword">if</span> size(ltColor,1)==1
+0283                     otColor = repmat(otColor,nNodes,1);
+0284                 <span class="keyword">end</span>
+0285                 options.otherTextColor = otColor;
+0286             <span class="keyword">case</span> <span class="string">'lb'</span>, options.lb = varargin{i+1};
+0287             <span class="keyword">case</span> <span class="string">'ub'</span>, options.ub = varargin{i+1};
+0288             <span class="keyword">case</span> <span class="string">'scaletype'</span>, options.scaleType = varargin{i+1};
+0289             <span class="keyword">case</span> <span class="string">'colorscale'</span>, options.colorScale = varargin{i+1};
+0290             <span class="keyword">case</span> <span class="string">'zerofluxwidth'</span>, options.zeroFluxWidth = varargin{i+1};
+0291             <span class="keyword">case</span> <span class="string">'zerofluxcolor'</span>, options.zeroFluxColor = varargin{i+1};
+0292             <span class="keyword">case</span> <span class="string">'zeroconccolor'</span>, options.zeroConcColor = varargin{i+1};
+0293             <span class="keyword">case</span> <span class="string">'filename'</span>, options.fileName = varargin{i+1};
+0294             <span class="keyword">case</span> <span class="string">'rxndirflag'</span>, options.rxnDir = varargin{i+1};
+0295             <span class="keyword">case</span> <span class="string">'rxndirmultiplier'</span>, options.rxnDirMultiplier = varargin{i+1};
+0296             <span class="keyword">case</span> <span class="string">'bidircolor'</span>, options.fluxVarColor.biDirColor = varargin{i+1};
+0297             <span class="keyword">case</span> <span class="string">'unidirirrcolor'</span>, options.fluxVarColor.uniDirIrrColor = varargin{i+1};
+0298             <span class="keyword">case</span> <span class="string">'unidirfwdcolor'</span>, options.fluxVarColor.uniDirFwdColor = varargin{i+1};
+0299             <span class="keyword">case</span> <span class="string">'unidirrevcolor'</span>, options.fluxVarColor.uniDirRevColor = varargin{i+1};
+0300             <span class="keyword">otherwise</span>
+0301                 <span class="keyword">if</span> isstr(varargin{i})       <span class="comment">% The property doesn't match any of the feilds</span>
+0302                     warning(<span class="string">'Unknown Property: &quot;%s&quot;'</span>,varargin{i});
+0303                 <span class="keyword">end</span>
+0304         <span class="keyword">end</span>
+0305     <span class="keyword">end</span>
+0306     
+0307     <span class="comment">% if model is not passed.</span>
+0308 <span class="keyword">else</span>
+0309     <span class="keyword">for</span> i = 1:2:size(varargin,2)
+0310         <span class="keyword">switch</span> lower(varargin{i})
+0311             <span class="keyword">case</span> <span class="string">'nodeweight'</span>, options.nodeWeight = cell2mat(varargin(i+1));
+0312             <span class="keyword">case</span> <span class="string">'nodecolor'</span>, options.nodeColor = cell2mat(varargin(i+1));
+0313             <span class="keyword">case</span> <span class="string">'edgeweight'</span>, options.edgeWeight = cell2mat(varargin(i+1));
+0314             <span class="keyword">case</span> <span class="string">'edgecolor'</span>, options.edgeColor = cell2mat(varargin(i+1));
+0315             <span class="keyword">case</span> <span class="string">'edgearrowcolor'</span>, options.edgeArrowColor = cell2mat(varargin(i+1));
+0316             <span class="keyword">case</span> <span class="string">'textsize'</span>, options.textSize = cell2mat(varargin(i+1));
+0317             <span class="keyword">case</span> <span class="string">'textcolor'</span>, options.textColor = cell2mat(varargin(i+1));
+0318             <span class="keyword">case</span> <span class="string">'othertextsize'</span>, options.otherTextSize = cell2mat(varargin(i+1));
+0319             <span class="keyword">case</span> <span class="string">'othertextcolor'</span>, options.otherTextColor = cell2mat(varargin(i+1));
+0320             <span class="keyword">case</span> <span class="string">'lb'</span>, options.lb = varargin{i+1};
+0321             <span class="keyword">case</span> <span class="string">'ub'</span>, options.ub = varargin{i+1};
+0322             <span class="keyword">case</span> <span class="string">'scaletype'</span>, options.scaleType = varargin{i+1};
+0323             <span class="keyword">case</span> <span class="string">'colorscale'</span>, options.colorScale = varargin{i+1};
+0324             <span class="keyword">case</span> <span class="string">'zerofluxwidth'</span>, options.zeroFluxWidth = varargin{i+1};
+0325             <span class="keyword">case</span> <span class="string">'zerofluxcolor'</span>, options.zeroFluxColor = varargin{i+1};
+0326             <span class="keyword">case</span> <span class="string">'zeroconccolor'</span>, options.zeroConcColor = varargin{i+1};
+0327             <span class="keyword">case</span> <span class="string">'filename'</span>, options.fileName = varargin{i+1};
+0328             <span class="keyword">case</span> <span class="string">'rxndirflag'</span>, options.rxnDirFlag = varargin{i+1};
+0329             <span class="keyword">case</span> <span class="string">'rxndirmultiplier'</span>, options.rxnDirMultipler = varargin{i+1};
+0330             <span class="keyword">case</span> <span class="string">'bidircolor'</span>, options.fluxVarColor.biDirColor = varargin{i+1};
+0331             <span class="keyword">case</span> <span class="string">'unidirirrcolor'</span>, options.fluxVarColor.uniDirIrrColor = varargin{i+1};
+0332             <span class="keyword">case</span> <span class="string">'unidirfwdcolor'</span>, options.fluxVarColor.uniDirFwdColor = varargin{i+1};
+0333             <span class="keyword">case</span> <span class="string">'unidirrevcolor'</span>, options.fluxVarColor.uniDirRevColor = varargin{i+1};
+0334             <span class="keyword">otherwise</span>
+0335                 <span class="keyword">if</span> isstr(varargin{i})        <span class="comment">% The property doesn't match any of the feilds</span>
+0336                     warning(<span class="string">'Unknown Property: &quot;%s&quot;'</span>,varargin{i});
+0337                 <span class="keyword">end</span>
+0338         <span class="keyword">end</span>
+0339     <span class="keyword">end</span>
+0340 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>
