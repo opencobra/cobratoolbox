@@ -334,7 +334,7 @@ if any(~model.FRnonZeroColBool & rxnBool3)
     fprintf('%u%s\n',nnz(~model.FRnonZeroColBool & rxnBool3),' zero cols of consistent [F;R]')
     for i=1:nRxn
         if ~model.FRnonZeroColBool(i) && rxnBool3(i)
-            fprintf('%s%s\n',model.mets{i},': is a zero cols of consistent [F;R]')
+            fprintf('%s%s\n',model.rxns{i},': is a zero cols of consistent [F;R]')
         end
     end
     fprintf('\n')
@@ -622,13 +622,17 @@ if printLevel>0 && rowRankDeficiency>0
         for i=1:size(model.FRW,1)
             fprintf('%s%s',model.mets{dR(i)},' is dependent on: ')
             ind=find(model.FRW(i,:)>0);
-            for j=1:length(ind)
-                fprintf('%s',model.mets{ind(j)})
-                if j==length(ind)
-                    fprintf('%s\n','.');
-                else
-                    fprintf('%s',' and ');
+            if length(ind)<9
+                for j=1:length(ind)
+                    fprintf('%s',model.mets{ind(j)})
+                    if j==length(ind)
+                        fprintf('%s\n','.');
+                    else
+                        fprintf('%s',' and ');
+                    end
                 end
+            else
+                fprintf('%s\n',' 10 or more metabolites, will not be displayed')
             end
             %print out reactions involving dependent rows
             F0=F;

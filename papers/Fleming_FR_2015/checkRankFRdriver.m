@@ -1,13 +1,14 @@
 clear
 beep on
+
 if 1
     %single model
     if 0
         load ecoli_core_xls2model.mat
         model=findSExRxnInd(model);
     end
-    if 0
-        load 121114_Recon2betaModel.mat
+    if 1
+        load Recon2betaModel_121114.mat
         model=modelRecon2beta121114;
     end
     if 0
@@ -36,22 +37,23 @@ if 1
         load iexGF_MM_BT.mat
         model=modelJointLU;
     end
-%     
+    
 %     [F,R] does not have full row rank for:
 %     Model           Rows([F,R]) Rank([F,R])
-%     iMM904.mat	904	901
-%     iND750.mat	760	757
-%     iRS1563.mat	238	236
-
-if 1
-    load iMM904.mat
-end
-if 0
-    load iRS1563.mat
-end
-if 0
-    load iND750.mat
-end
+%     Recon2betaModel_121114.mat	3157	3154
+%     iMM904.mat	888	886
+%     iND750.mat	740	738
+%     iRS1563.mat	213	212
+    
+    if 0
+        load iMM904.mat
+    end
+    if 0
+        load iRS1563.mat
+    end
+    if 0
+        load iND750.mat
+    end
     
     %%%%%%%%%%%
     printLevel=2;
@@ -393,11 +395,12 @@ else
         
         %flag models that are row rank deficient
         fprintf('%s\n','[F,R] does not have full row rank for:')
+        fprintf('%s%s%s\n','Model           ','Rows([F,R]) ', 'Rank([F,R])')
         for j=2:size(FRtable,2)
             bool1=strcmp('# Rows of proper [F,R]',FRtable(:,1));
             bool2=strcmp('# Rank of proper [F,R]',FRtable(:,1));
             if FRtable{bool1,j}~=FRtable{bool2,j}
-                fprintf('%s\n',FRtable{1,j})
+                fprintf('%10s\t%u\t%u\n',FRtable{1,j},FRtable{bool1,j},FRtable{bool2,j})
             end
         end
         
