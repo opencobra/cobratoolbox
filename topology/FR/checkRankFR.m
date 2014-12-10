@@ -105,34 +105,6 @@ metBool1=(model.SConsistentMetBool | ~model.SIntMetBool);
 rxnBool1=(model.SConsistentRxnBool | ~model.SIntRxnBool);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% %detect the rows of FR that are identical upto a positive scalar multiplication
-% %divide each row by the sum of each row.
-% A=[F R];
-% sumFR           = sum(A,2);
-% sumFR(sumFR==0) = 1;
-% FRnorm          = diag(1./sumFR)*A;
-%     
-% if 1
-%     %get unique rows, but do not change the order
-%     % [C,IA,IC] = unique(A,'rows') also returns index vectors IA and IC such
-%     % that C = A(IA,:) and A = C(IC,:).
-%     [uniqueFRrows,IA,IC] = unique(FRnorm,'rows','stable');
-%     model.FRuniqueBool=zeros(nMet,1);
-%     model.FRuniqueBool(IA)=1;
-% else
-%     %get unique stoichiometrically consistent rows, but do not change the order
-%     % [C,IA,IC] = unique(A,'rows') also returns index vectors IA and IC such
-%     % that C = A(IA,:) and A = C(IC,:).
-%     [uniqueFRrows,IA,IC] = unique(FRnorm(model.SConsistentMetBool,:),'rows','stable');
-%     SConsistentInd=find(model.SConsistentMetBool);
-%     model.FRuniqueBool=zeros(nMet,1);
-%     model.FRuniqueBool(SConsistentInd(IA))=1;
-% end
-% 
-% %zero out non-unique rows
-% model.S(~model.FRuniqueBool,:)=0;
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 A=F+R;%invariant to direction of reaction
 
 %detect the rows of A that are identical upto scalar multiplication
@@ -209,8 +181,15 @@ if 1
     %check for reactions that are also flux consistent, with all reactions
     %reversible
     modelRev.S = model.S(metBool2,rxnBool2);
-    modelRev.lb=-1000*ones(size(modelRev.S,2),1);
-    modelRev.ub= 1000*ones(size(modelRev.S,2),1);
+    if 1
+        %use all reactions reversible
+        modelRev.lb=-1000*ones(size(modelRev.S,2),1);
+        modelRev.ub= 1000*ones(size(modelRev.S,2),1);
+    else
+        %use reconstruction reactions
+        modelRev.lb=model.lb(rxnBool2);
+        modelRev.ub=model.ub(rxnBool2);
+    end
     modelRev.mets=model.mets(metBool2);
     modelRev.rxns=model.rxns(rxnBool2);
 

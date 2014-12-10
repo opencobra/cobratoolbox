@@ -1,13 +1,13 @@
 clear
 beep on
 
-if 1
+if 0
     %single model
     if 0
         load ecoli_core_xls2model.mat
         model=findSExRxnInd(model);
     end
-    if 1
+    if 0
         load Recon2betaModel_121114.mat
         model=modelRecon2beta121114;
     end
@@ -53,6 +53,9 @@ if 1
     end
     if 0
         load iND750.mat
+    end
+    if 1
+        load iJN746.mat
     end
     
     %%%%%%%%%%%

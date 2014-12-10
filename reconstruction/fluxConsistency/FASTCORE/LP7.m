@@ -42,8 +42,8 @@ bineq = zeros(nj,1);
 lb = [model.lb; zeros(nj,1)];
 ub = [model.ub; ones(nj,1)*epsilon];
 
-%quiet
 if 0
+    %quiet
     options = cplexoptimset('cplex');
     options = cplexoptimset(options,'diagnostics','off');
     options.output.clonelog=0;
@@ -65,6 +65,10 @@ else
     x=solution.full;
 end
 
-V = x(1:n);
+if ~isempty(x)
+    V = x(1:n);
+else
+    V=nan(n,1);
+end
 
 
