@@ -4,7 +4,10 @@ function [rankA,p,q] = getRankLUSOL(A)
 % uses lusolFactor computes the sparse factorization A = L*U
 % for a square or rectangular matrix A.  The vectors p, q
 % are row and column permutations giving the pivot order.
-
+%
+% Requires a 64 bit implementation of lusol, available from
+% https://github.com/nwh/lusol_mex
+%
 %INPUT
 % A     m x n rectangular matrix
 %

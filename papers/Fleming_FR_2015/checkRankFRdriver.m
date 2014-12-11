@@ -1,6 +1,10 @@
 clear
 beep on
 
+%parameters
+modelCollectionDirectory='/usr/local/bin/cobratoolbox/testing/testModels/SystemsPhysiologyGroup/modelCollection/';
+resultsDirectory='/usr/local/bin/cobratoolbox/papers/Fleming_FR_2015/results/';
+
 if 0
     %single model
     if 0
@@ -204,8 +208,6 @@ if 0
     end
 else
     %batch of models in a directory
-    modelCollectionDirectory='~/Dropbox/graphStoich/data/modelCollection';
-    %
     matFiles=dir(modelCollectionDirectory);
     matFiles.name;
     resultsFileName=['modelCollectionResults_flux_' datestr(now,30) '.mat'];
@@ -229,7 +231,7 @@ else
     if 1
         cd(modelCollectionDirectory)
         results=struct();
-        save(['~/Dropbox/graphStoich/results/FRresults/' resultsFileName],'results');
+        save([resultsDirectory resultsFileName],'results');
         for k=3:length(matFiles)
             fprintf('%u\t%s\n',k,matFiles(k).name)
             whosFile=whos('-file',matFiles(k).name);
@@ -242,7 +244,7 @@ else
                 %%%%
                 [rankS,p,q]= getRankLUSOL(model.S);
 
-                load(['~/Dropbox/graphStoich/results/FRresults/' resultsFileName])
+                load([resultsDirectory resultsFileName])
                 results(k-2).modelFilename=matFiles(k).name;
                 results(k-2).rankFR=rankFR;
                 results(k-2).rankFRV=rankFRV;
@@ -250,14 +252,14 @@ else
                 results(k-2).model=model;
                 results(k-2).rankFRvanilla=rankFRvanilla;
                 results(k-2).rankFRVvanilla=rankFRVvanilla;
-                save(['~/Dropbox/graphStoich/results/FRresults/' resultsFileName],'results');
+                save([resultsDirectory resultsFileName],'results');
                 clear results model;
             end
         end
     end
     
     if 1
-        load(['~/Dropbox/graphStoich/results/FRresults/' resultsFileName])
+        load([resultsDirectory resultsFileName])
         %table with summary of results
         matFiles=dir(modelCollectionDirectory);
         cd (modelCollectionDirectory)
@@ -394,7 +396,7 @@ else
             FRtable{i,k+1}=results(k).rankFRVvanilla;
             i=i+1;
         end
-        save(['~/Dropbox/graphStoich/results/FRresults/' resultsFileName],'results','resultsFileName','FRtable');
+        save([resultsDirectory resultsFileName],'results','resultsFileName','FRtable');
         
         %flag models that are row rank deficient
         fprintf('%s\n','[F,R] does not have full row rank for:')

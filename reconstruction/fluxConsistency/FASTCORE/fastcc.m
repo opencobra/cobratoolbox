@@ -178,7 +178,7 @@ end
 modelFlipped=model;
 
 %sanity check
-if norm(origModel.S*V,inf)>1e-7
+if norm(origModel.S*V,inf)>1e-6
     norm(origModel.S*V,inf)
     error('Flux consistency check failed')
 else
