@@ -321,41 +321,6 @@ end
 
 pause(eps)
 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%     %get unique stoichiometrically consistent rows, but do not change the order
-%     % [C,IA,IC] = unique(A,'rows') also returns index vectors IA and IC such
-%     % that C = A(IA,:) and A = C(IC,:).
-%     [uniqueFRrows,IA,IC] = unique(FRnorm(metBool1,:),'rows','stable');
-%     SConsistentInd=find(model.SConsistentMetBool);
-%     model.FRuniqueBool=zeros(nMet,1);
-%     model.FRuniqueBool(SConsistentInd(IA))=1;
-
-% %find columns that are not all zero
-% B=[F(metBool1,:);R(metBool1,:)];
-% model.FRVnonZeroBool = any(B,1)';
-% 
-% %detect the cols of [F;R] that are identical upto a scalar multiplication
-% %divide each column by the sum of each column
-% sumFRV               = sum(B,1);
-% sumFRV(sumFRV==0)    = 1;
-% FRVNorm              = B*diag(1./sumFRV);
-% 
-% if 1
-%     %get unique cols, but do not change the order
-%     [uniqueFRVNormCols,IAvert,ICvert] = unique(FRVNorm','rows','stable');
-%     model.FRVuniqueBool=zeros(nRxn,1);
-%     model.FRVuniqueBool(IAvert)=1;
-% else
-%     %get unique cols, but do not change the order
-% %     bool= model.SConsistentRxnBool & model.fluxConsistentRxnBool & model.SIntRxnBool;
-% %     model.FRVnonZeroBool(~bool)=0;
-%     [uniqueFRVNormCols,IAvert,ICvert] = unique(FRVNorm(:,rxnBool1)','rows','stable');
-%     ind=find(bool);
-%     model.FRVuniqueBool=zeros(nRxn,1);
-%     model.FRVuniqueBool(ind(IAvert))=1;
-% end
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %The largest connected component
 if 0
