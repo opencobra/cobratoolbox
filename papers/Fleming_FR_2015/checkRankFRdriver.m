@@ -1,15 +1,11 @@
 clear
 beep on
 
-if 0
+if 1
     %single model
     if 0
         load ecoli_core_xls2model.mat
         model=findSExRxnInd(model);
-    end
-    if 0
-        load Recon2betaModel_121114.mat
-        model=modelRecon2beta121114;
     end
     if 0
         load TLR_Maike_20110616Recon.mat
@@ -37,24 +33,26 @@ if 0
         load iexGF_MM_BT.mat
         model=modelJointLU;
     end
-    
-%     [F,R] does not have full row rank for:
-%     Model           Rows([F,R]) Rank([F,R])
-%     Recon2betaModel_121114.mat	3157	3154
-%     iMM904.mat	888	886
-%     iND750.mat	740	738
-%     iRS1563.mat	213	212
-    
+    if 0
+        load iRS1563.mat
+    end
+% [F,R] does not have full row rank for:
+% Model           Rows([F,R]) Rank([F,R])
+% Recon2betaModel_121114.mat	3157	3154
+% iMM904.mat	888	886
+% iND750.mat	740	738
+% iRS1563.mat	213	212
+    if 1
+        load Recon2betaModel_121114.mat
+        model=modelRecon2beta121114;
+    end
     if 0
         load iMM904.mat
     end
     if 0
-        load iRS1563.mat
-    end
-    if 0
         load iND750.mat
     end
-    if 1
+    if 0
         load iJN746.mat
     end
     
@@ -231,27 +229,29 @@ else
         results=struct();
         save(['~/Dropbox/graphStoich/results/FRresults/' resultsFileName],'results');
         for k=3:length(matFiles)
-            fprintf('%u\t%s\n',k,matFiles(k).name)
-            whosFile=whos('-file',matFiles(k).name);
-            if ~strcmp(matFiles(k).name,'clone1.log')
-                load(matFiles(k).name);
-                model=eval(whosFile.name);
-                printLevel=1;
-                %%%%
-                [rankFR,rankFRV,rankFRvanilla,rankFRVvanilla,model] = checkRankFR(model,printLevel);
-                %%%%
-                [rankS,p,q]= getRankLUSOL(model.S);
-
-                load(['~/Dropbox/graphStoich/results/FRresults/' resultsFileName])
-                results(k-2).modelFilename=matFiles(k).name;
-                results(k-2).rankFR=rankFR;
-                results(k-2).rankFRV=rankFRV;
-                results(k-2).rankS=rankS;
-                results(k-2).model=model;
-                results(k-2).rankFRvanilla=rankFRvanilla;
-                results(k-2).rankFRVvanilla=rankFRVvanilla;
-                save(['~/Dropbox/graphStoich/results/FRresults/' resultsFileName],'results');
-                clear results model;
+            if strcmp(matFiles(k).name(end-2:end),'mat')
+                fprintf('%u\t%s\n',k,matFiles(k).name)
+                whosFile=whos('-file',matFiles(k).name);
+                if ~strcmp(matFiles(k).name,'clone1.log')
+                    load(matFiles(k).name);
+                    model=eval(whosFile.name);
+                    printLevel=1;
+                    %%%%
+                    [rankFR,rankFRV,rankFRvanilla,rankFRVvanilla,model] = checkRankFR(model,printLevel);
+                    %%%%
+                    [rankS,p,q]= getRankLUSOL(model.S);
+                    
+                    load(['~/Dropbox/graphStoich/results/FRresults/' resultsFileName])
+                    results(k-2).modelFilename=matFiles(k).name;
+                    results(k-2).rankFR=rankFR;
+                    results(k-2).rankFRV=rankFRV;
+                    results(k-2).rankS=rankS;
+                    results(k-2).model=model;
+                    results(k-2).rankFRvanilla=rankFRvanilla;
+                    results(k-2).rankFRVvanilla=rankFRVvanilla;
+                    save(['~/Dropbox/graphStoich/results/FRresults/' resultsFileName],'results');
+                    clear results model;
+                end
             end
         end
     end
