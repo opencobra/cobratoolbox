@@ -1,15 +1,12 @@
 clear
 beep on
 
-<<<<<<< HEAD
 %parameters
-modelCollectionDirectory='/usr/local/bin/cobratoolbox/testing/testModels/SystemsPhysiologyGroup/modelCollection/';
+%modelCollectionDirectory='/usr/local/bin/cobratoolbox/testing/testModels/SystemsPhysiologyGroup/modelCollection/';
+modelCollectionDirectory='/usr/local/bin/cobratoolbox/testing/testModels/AliEbrahim/';
 resultsDirectory='/usr/local/bin/cobratoolbox/papers/Fleming_FR_2015/results/';
 
 if 0
-=======
-if 1
->>>>>>> c9cabbdfc043fef4204ffca0d0de22dd72cdc791
     %single model
     if 0
         load ecoli_core_xls2model.mat
@@ -27,7 +24,7 @@ if 1
         load K_pneumonieae_rBioNet.mat
         model=K_pneumonieae_rBioNet;
     end
-
+    
     if 0
         load cardiac_mit_glcuptake_atpmax.mat
         model=modelCardioMito;
@@ -44,17 +41,17 @@ if 1
     if 0
         load iRS1563.mat
     end
-% [F,R] does not have full row rank for:
-% Model           Rows([F,R]) Rank([F,R])
-% Recon2betaModel_121114.mat	3157	3154
-% iMM904.mat	888	886
-% iND750.mat	740	738
-% iRS1563.mat	213	212
-    if 1
+    % [F,R] does not have full row rank for:
+    % Model           Rows([F,R]) Rank([F,R])
+    % Recon2betaModel_121114.mat	3157	3154
+    % iMM904.mat	888	886
+    % iND750.mat	740	738
+    % iRS1563.mat	213	212
+    if 0
         load Recon2betaModel_121114.mat
         model=modelRecon2beta121114;
     end
-    if 0
+    if 1
         load iMM904.mat
     end
     if 0
@@ -71,7 +68,7 @@ if 1
     
     %rank of S
     [rankS,p,q]= getRankLUSOL(model.S);
-   
+    
     k=1;
     results(k).rankS=rankS;
     results(k).rankFR=rankFR;
@@ -209,15 +206,28 @@ if 1
         i=i+1;
     end
 else
-    %batch of models in a directory
+    %batch of models in .mat format in a directory
+    %assumes that each .mat file is a model
     matFiles=dir(modelCollectionDirectory);
     matFiles.name;
-    resultsFileName=['modelCollectionResults_flux_' datestr(now,30) '.mat'];
+    
+    %get rid of entries that do not have a .mat suffix
+    bool=false(length(matFiles),1);
+    for k=3:length(matFiles)
+        if strcmp(matFiles(k).name(end-3:end),'.mat')
+            bool(k)=1;
+        end
+    end
+    matFiles=matFiles(bool);
+    %     matFiles.name
+    
+    %results filename timestamped
+    resultsFileName=['FRresults_' datestr(now,30) '.mat'];
     
     if 0
         %checks if the models can be loaded and if the exchange reactions
         %can be identified
-        for k=3:length(matFiles)
+        for k=1:length(matFiles)
             disp(k)
             disp(matFiles(k).name)
             whosFile=whos('-file',matFiles(k).name);
@@ -234,8 +244,7 @@ else
         cd(modelCollectionDirectory)
         results=struct();
         save([resultsDirectory resultsFileName],'results');
-        for k=3:length(matFiles)
-<<<<<<< HEAD
+        for k=1:length(matFiles)
             fprintf('%u\t%s\n',k,matFiles(k).name)
             whosFile=whos('-file',matFiles(k).name);
             if ~strcmp(matFiles(k).name,'clone1.log')
@@ -246,7 +255,7 @@ else
                 [rankFR,rankFRV,rankFRvanilla,rankFRVvanilla,model] = checkRankFR(model,printLevel);
                 %%%%
                 [rankS,p,q]= getRankLUSOL(model.S);
-
+                
                 load([resultsDirectory resultsFileName])
                 results(k-2).modelFilename=matFiles(k).name;
                 results(k-2).rankFR=rankFR;
@@ -257,31 +266,30 @@ else
                 results(k-2).rankFRVvanilla=rankFRVvanilla;
                 save([resultsDirectory resultsFileName],'results');
                 clear results model;
-=======
-            if strcmp(matFiles(k).name(end-2:end),'mat')
-                fprintf('%u\t%s\n',k,matFiles(k).name)
-                whosFile=whos('-file',matFiles(k).name);
-                if ~strcmp(matFiles(k).name,'clone1.log')
-                    load(matFiles(k).name);
-                    model=eval(whosFile.name);
-                    printLevel=1;
-                    %%%%
-                    [rankFR,rankFRV,rankFRvanilla,rankFRVvanilla,model] = checkRankFR(model,printLevel);
-                    %%%%
-                    [rankS,p,q]= getRankLUSOL(model.S);
-                    
-                    load(['~/Dropbox/graphStoich/results/FRresults/' resultsFileName])
-                    results(k-2).modelFilename=matFiles(k).name;
-                    results(k-2).rankFR=rankFR;
-                    results(k-2).rankFRV=rankFRV;
-                    results(k-2).rankS=rankS;
-                    results(k-2).model=model;
-                    results(k-2).rankFRvanilla=rankFRvanilla;
-                    results(k-2).rankFRVvanilla=rankFRVvanilla;
-                    save(['~/Dropbox/graphStoich/results/FRresults/' resultsFileName],'results');
-                    clear results model;
+                if strcmp(matFiles(k).name(end-2:end),'mat')
+                    fprintf('%u\t%s\n',k,matFiles(k).name)
+                    whosFile=whos('-file',matFiles(k).name);
+                    if ~strcmp(matFiles(k).name,'clone1.log')
+                        load(matFiles(k).name);
+                        model=eval(whosFile.name);
+                        printLevel=1;
+                        %%%%
+                        [rankFR,rankFRV,rankFRvanilla,rankFRVvanilla,model] = checkRankFR(model,printLevel);
+                        %%%%
+                        [rankS,p,q]= getRankLUSOL(model.S);
+                        
+                        load(['~/Dropbox/graphStoich/results/FRresults/' resultsFileName])
+                        results(k-2).modelFilename=matFiles(k).name;
+                        results(k-2).rankFR=rankFR;
+                        results(k-2).rankFRV=rankFRV;
+                        results(k-2).rankS=rankS;
+                        results(k-2).model=model;
+                        results(k-2).rankFRvanilla=rankFRvanilla;
+                        results(k-2).rankFRVvanilla=rankFRVvanilla;
+                        save(['~/Dropbox/graphStoich/results/FRresults/' resultsFileName],'results');
+                        clear results model;
+                    end
                 end
->>>>>>> c9cabbdfc043fef4204ffca0d0de22dd72cdc791
             end
         end
     end
@@ -293,7 +301,7 @@ else
         cd (modelCollectionDirectory)
         
         %headings
-        FRtable=cell(13,length(matFiles)-1);
+        FRtable=cell(13,length(matFiles));
         
         i=1;
         %model
