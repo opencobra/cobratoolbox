@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" spatialDimensions="3" units="volume" constant="true"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="c" substanceUnits="substance" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="e" compartment="c" substanceUnits="substance" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="p" compartment="c" substanceUnits="substance" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="r" reversible="true" fast="false">
+        <listOfReactants>
+          <speciesReference species="s" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="p" stoichiometry="1"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="e"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <listOfParameters>
+            <parameter id="k" value="1" units="second"/>
+          </listOfParameters>
+       </kineticLaw>
+      </reaction>
+      <reaction id="r1" reversible="true" fast="false">
+        <listOfReactants>
+          <speciesReference species="s" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="p" stoichiometry="1"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="e"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <listOfParameters>
+            <parameter id="k" value="1" units="second"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>   </listOfReactions>
+  </model>
+</sbml>

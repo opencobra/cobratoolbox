@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment id="cell" size="0.013" constant="true"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="X0" compartment="cell" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+    </listOfSpecies>
+    <listOfConstraints>
+      <constraint>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <not/>
+            <cn type="integer"> 1 </cn>
+          </apply>
+        </math>
+      </constraint>
+    </listOfConstraints>
+  </model>
+</sbml>

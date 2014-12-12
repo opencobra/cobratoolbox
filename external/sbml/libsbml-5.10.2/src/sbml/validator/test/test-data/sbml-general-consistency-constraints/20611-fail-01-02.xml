@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Fail: (1602) A SpeciesReference may not refer to a Species with
+constant='true' and boundaryCondition='false'.
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment id="c"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="c" constant="true"
+               boundaryCondition="false"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="r">
+        <listOfProducts>
+          <speciesReference species="s"/>
+        </listOfProducts>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

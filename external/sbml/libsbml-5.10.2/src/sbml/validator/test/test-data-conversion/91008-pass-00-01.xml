@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Fail: (2003) A SpeciesReference containing a non-integer or non-rational
+    'stoichiometryMath' subelement cannot be represented in Level 1.
+
+
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment id="c"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="c"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="r">
+        <listOfReactants>
+          <speciesReference species="s">
+            <stoichiometryMath>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <cn type="integer"> 2 </cn>
+              </math>
+            </stoichiometryMath>
+          </speciesReference>
+        </listOfReactants>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

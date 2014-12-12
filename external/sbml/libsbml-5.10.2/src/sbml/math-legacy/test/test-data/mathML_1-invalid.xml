@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+  <model id="l2v3_all">
+    <listOfFunctionDefinitions>
+      <functionDefinition id="fd">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar>
+              <ci> x </ci>
+            </bvar>
+            <apply/>
+          </lambda>
+        </math>
+      </functionDefinition>
+      <functionDefinition id="fd1">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar>
+              <ci> x </ci>
+            </bvar>
+             <true/>
+          </lambda>
+        </math>
+      </functionDefinition>
+    </listOfFunctionDefinitions>
+    <listOfCompartments>
+      <compartment id="a" size="1" constant="false"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="a" initialAmount="0"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="p" value="2" units="second" constant="false"/>
+      <parameter id="p1" value="2" units="litre" constant="false"/>
+      <parameter id="p2" value="2" units="litre" constant="false"/>
+      <parameter id="p3" value="2" units="litre" constant="false"/>
+      <parameter id="x" value="2" units="dimensionless" constant="false"/>
+    </listOfParameters>
+    <listOfInitialAssignments>
+      <initialAssignment symbol="p1">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply/>
+        </math>
+      </initialAssignment>
+    </listOfInitialAssignments>
+    <listOfRules>
+      <algebraicRule>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <true/>
+        </math>
+      </algebraicRule>
+      <assignmentRule variable="p2">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <infinity/>
+        </math>
+      </assignmentRule>
+    </listOfRules>
+    <listOfReactions>
+      <reaction id="r">
+        <listOfReactants>
+          <speciesReference species="s"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <cn> 4.5 </cn>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k" value="9" units="litre"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

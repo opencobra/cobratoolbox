@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (21205) The order of subelements within Event must be the
+following: trigger, delay, listOfEventAssignments. The delay element
+is optional, but if present, must follow trigger. (References: L2V2
+Section 4.14.)
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+	<model>
+		<listOfCompartments>
+			<compartment id="c" constant="false"/>
+		</listOfCompartments>
+		<listOfParameters>
+			<parameter id="p"/>
+			<parameter id="p2" constant="false"/>
+		</listOfParameters>
+		<listOfEvents>
+			<event id="e" sboTerm="SBO:0001262">
+				<trigger>
+					<math xmlns="http://www.w3.org/1998/Math/MathML">
+						<apply>
+							<neq/>
+							<cn> 0 </cn>
+							<cn> 1 </cn>
+						</apply>
+					</math>
+				</trigger>
+				<delay>
+					<math xmlns="http://www.w3.org/1998/Math/MathML">
+						<ci> p2 </ci>
+					</math>
+				</delay>
+				<listOfEventAssignments>
+					<eventAssignment variable="c">
+						<math xmlns="http://www.w3.org/1998/Math/MathML">
+							<ci> p </ci>
+						</math>
+					</eventAssignment>
+				</listOfEventAssignments>
+			</event>
+		</listOfEvents>
+	</model>
+</sbml>

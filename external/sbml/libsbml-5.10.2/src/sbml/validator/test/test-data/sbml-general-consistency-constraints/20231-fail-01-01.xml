@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" spatialDimensions="1" units="dimensionless" constant="true"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="c" substanceUnits="substance" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+    </listOfSpecies>
+    <listOfReactions metaid="ff" sboTerm="SBO:0000001" id="l">
+      <reaction id="r" fast="false" reversible="true">
+        <listOfReactants>
+          <speciesReference species="s" constant="true"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k1 </ci>
+              <ci> k2 </ci>
+              <ci> s </ci>
+            </apply>
+          </math>
+          <listOfLocalParameters>
+            <localParameter id="k1" value="0"/>
+            <localParameter id="k2" value="0"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

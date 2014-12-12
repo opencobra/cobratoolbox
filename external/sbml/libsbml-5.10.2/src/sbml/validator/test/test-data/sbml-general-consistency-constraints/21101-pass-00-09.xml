@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1600) A Reaction must contain at least one SpeciesReference in
+its list of reactants or products.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+	<model>
+		<listOfCompartments>
+			<compartment id="c"/>
+		</listOfCompartments>
+		<listOfSpecies>
+			<species id="s" compartment="c"/>
+		</listOfSpecies>
+		<listOfReactions>
+			<reaction id="r">
+				<listOfReactants>
+					<speciesReference species="s"/>
+				</listOfReactants>
+			</reaction>
+		</listOfReactions>
+	</model>
+</sbml>

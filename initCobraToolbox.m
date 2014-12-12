@@ -1,4 +1,4 @@
-function initCobraToolbox
+function initCobraToolbox(CobraLPSolver)
 %initCobraToolbox Initialize COnstraint-Based Reconstruction and Analysis Toolbox
 %
 % Define default solvers and paths
@@ -19,6 +19,7 @@ function initCobraToolbox
 
 %% add cobra toolbox paths
 pth=which('initCobraToolbox.m');
+global CBTDIR
 CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1));
 path(path,[CBTDIR, filesep, 'external']);
 addpath_recurse(CBTDIR,{'.svn','obsolete','m2html','docs','src','stow'});
@@ -30,10 +31,12 @@ addpath_recurse(CBTDIR,{'.svn','obsolete','m2html','docs','src','stow'});
 % 'cplex_direct','gurobi'
 % Note that you must install the solver separately and make sure Matlab can
 % access the solver
-CobraLPSolver = 'tomlab_cplex';
-% CobraLPSolver = 'glpk';
- %CobraLPSolver = 'mosek';
-% CobraLPSolver = 'cplx';
+if ~exist('CobraLPSolver','var')
+    CobraLPSolver = 'tomlab_cplex';
+    % CobraLPSolver = 'glpk';
+    %CobraLPSolver = 'mosek';
+    % CobraLPSolver = 'cplx';
+end
 if isunix
   addpath('/usr/local/lib/');
 end
@@ -92,7 +95,7 @@ CbMapOutput = 'svg';
 CbMapOutputOK = changeCbMapOutput(CbMapOutput);
 if CbMapOutputOK
     fprintf('CB map output set to %s successful\n',CbMapOutput);
-else	
+else
     fprintf('Cb map output set failed\n');
 end
 

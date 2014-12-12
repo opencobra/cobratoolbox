@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1408): A Specie' substanceUnits must be 'substance', 'item',
+'mole', or the id of a UnitDefinition that defines a variant of 'item'
+or 'mole'.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="1">
+	<model>
+		<listOfUnitDefinitions>
+			<unitDefinition name="mi">
+				<listOfUnits>
+					<unit kind="item" exponent="1" scale="-3"/>
+				</listOfUnits>
+			</unitDefinition>
+		</listOfUnitDefinitions>
+		<listOfCompartments>
+			<compartment name="c"/>
+		</listOfCompartments>
+		<listOfSpecies>
+			<specie name="s" compartment="c" initialAmount="0" units="mi"/>
+		</listOfSpecies>
+		<listOfReactions>
+			<reaction name="r">
+				<listOfReactants>
+					<specieReference specie="s"/>
+				</listOfReactants>
+			</reaction>
+		</listOfReactions>
+	</model>
+</sbml>

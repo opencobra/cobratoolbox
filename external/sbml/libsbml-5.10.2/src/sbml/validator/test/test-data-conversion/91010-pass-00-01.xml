@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Pass: (2004) A Unit containing multipliers or offsets
+	cannot be represented in Level 1.
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model>
+    <listOfUnitDefinitions>
+      <unitDefinition id="minutes">
+        <listOfUnits>
+          <unit kind="second" exponent="2"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+  </model>
+</sbml>

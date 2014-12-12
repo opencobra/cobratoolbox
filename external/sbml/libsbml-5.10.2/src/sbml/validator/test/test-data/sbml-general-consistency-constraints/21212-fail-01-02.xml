@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Fail: (1803) A Compartment, Species, or Parameter referenced by an
+EventAssignment must have constant='false'.
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment id="c"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="c" constant="true"/>
+    </listOfSpecies>
+    <listOfEvents>
+      <event id="e">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply> <neq/> <cn> 1 </cn> <cn> 2 </cn> </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+          <eventAssignment variable="s"/>
+        </listOfEventAssignments>
+      </event>
+    </listOfEvents>
+  </model>
+</sbml>

@@ -29,7 +29,9 @@ function varargout = getCobraSolverParams(solverType, paramNames, parameters)
 %Example using default values
 % [printLevel, saveInput] = getCobraSolverParams('LP',{'printLevel','saveInput'},'default');
 %
+
 % Richard Que (12/01/2009)
+% Ronan (16/07/2013) default MPS parameters are no longer global variables
 
 if nargin < 2
     error('getCobraSolverParams: No parameters specified')
@@ -48,16 +50,6 @@ valDef.iterationLimit = 1000;
 valDef.logFile = ['Cobra' solverType 'Solver.log'];
 valDef.saveInput = [];
 valDef.PbName = [solverType 'problem'];
-
-
-%MPS parameters
-valDef.MPSfilename = '';
-valDef.EleNames = '';
-valDef.EqtNames = '';
-valDef.VarNames = '';
-valDef.EleNameFun = @(m)(['LE' num2str(m)]);
-valDef.EqtNameFun = @(m)(['EQ' num2str(m)]);
-valDef.VarNameFun = @(m)(['X' num2str(m)]);
 
 %CPLEX parameters
 valDef.DATACHECK = 1;

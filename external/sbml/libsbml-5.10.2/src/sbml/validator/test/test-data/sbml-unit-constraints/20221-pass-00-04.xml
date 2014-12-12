@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model extentUnits="time">
+    <listOfUnitDefinitions>
+      <unitDefinition id="time">
+        <listOfUnits>
+          <unit kind="mole" exponent="1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+  </model>
+</sbml>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+	<model>
+		<listOfConstraints>
+			<constraint>
+				<math xmlns="http://www.w3.org/1998/Math/MathML">
+					<apply>
+						<gt/>
+						<cn type="complex-cartesian"> 12.3 <sep/> 5 </cn>
+						<cn> 5 </cn>
+					</apply>
+				</math>
+			</constraint>
+		</listOfConstraints>
+	</model>
+</sbml>

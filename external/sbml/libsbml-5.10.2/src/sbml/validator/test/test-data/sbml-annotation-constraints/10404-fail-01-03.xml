@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" constant="true"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="c" substanceUnits="mole" hasOnlySubstanceUnits="false"
+      boundaryCondition="false" constant="false"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="r" fast="false" reversible="true">
+        <listOfReactants>
+          <speciesReference species="s" constant="true">
+          </speciesReference>
+        </listOfReactants>
+        <listOfModifiers>
+          <modifierSpeciesReference metaid="metaid_0000003" species="s">
+            <annotation>
+					    <rdf:RDF  xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#">
+						    <rdf:Description rdf:about="#metaid_0000003">
+							    <bqbiol:is>
+								    <rdf:Bag>
+									    <rdf:li rdf:resource="http://www.geneontology.org/#GO:0000567"/>
+								    </rdf:Bag>
+							    </bqbiol:is>
+						    </rdf:Description>
+					    </rdf:RDF>
+            </annotation>
+            <annotation>
+					    <rdf:RDF  xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#">
+						    <rdf:Description rdf:about="#metaid_0000003">
+							    <bqbiol:is>
+								    <rdf:Bag>
+									    <rdf:li rdf:resource="http://www.geneontology.org/#GO:0000567"/>
+								    </rdf:Bag>
+							    </bqbiol:is>
+						    </rdf:Description>
+					    </rdf:RDF>
+            </annotation>
+          </modifierSpeciesReference>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k1 </ci>
+              <ci> k2 </ci>
+              <ci> s </ci>
+            </apply>
+          </math>
+          <listOfLocalParameters>
+            <localParameter id="k1" value="0"/>
+            <localParameter id="k2" value="0"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r2" fast="false" reversible="true">
+        <listOfReactants>
+          <speciesReference species="s" constant="true"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k1 </ci>
+              <ci> k2 </ci>
+              <ci> s </ci>
+            </apply>
+          </math>
+          <listOfLocalParameters>
+            <localParameter id="k1" value="0"/>
+            <localParameter id="k2" value="0"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

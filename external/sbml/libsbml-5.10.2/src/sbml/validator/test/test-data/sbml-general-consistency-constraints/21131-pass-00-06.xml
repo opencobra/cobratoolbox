@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Fail: (1401) Species 't' is not defined. -->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+  <model>
+    <listOfCompartments>
+      <compartment id="c"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="c"/>
+      <species id="t" compartment="c"/>
+      <species id="h" compartment="c"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="r">
+        <listOfReactants>
+          <speciesReference species="s">
+            <stoichiometryMath>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <apply>
+                  <plus/>
+                  <ci> s </ci>
+                  <ci> t </ci>
+                </apply>
+              </math>
+            </stoichiometryMath>
+          </speciesReference>
+        </listOfReactants>
+        <listOfModifiers>
+          <modifierSpeciesReference species="t"/>
+        </listOfModifiers>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

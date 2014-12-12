@@ -1,7 +1,7 @@
-function [solution]=growthExpMatch(model, KEGGFilename, compartment, iterations, dictionary, logFile, threshold)
-%growExpMatch run the growthExpMatch algorythm
+function [solution]=growthExpMatch(model, KEGGFilename, compartment, iterations, dictionary, logFile, threshold,KEGGBlackList)
+%growExpMatch run the growthExpMatch algorithm
 %
-%   [solution]=growthExpMatch(model, KEGGFilename, compartment, iterations, dictionary, logFile, threshold)
+%   [solution]=growthExpMatch(model, KEGGFilename, compartment, iterations, dictionary, logFile, threshold, KEGGBlackList)
 %
 %INPUTS
 % model         COBRA model structure
@@ -53,13 +53,16 @@ function [solution]=growthExpMatch(model, KEGGFilename, compartment, iterations,
 %  x0      Initial solution
 
 % Based on IT 11/2008
-% Edited by xx
+% Edited by JDO on 4/19/11
 
+if nargin <8
+    KEGGBlackList = {};
+end
 if nargin<2
     MatricesSUX= model;
     iterations=2;
 else
-    MatricesSUX = generateSUXMatrix(model,dictionary, KEGGFilename,compartment);
+    MatricesSUX = generateSUXMatrix(model,dictionary, KEGGFilename,KEGGBlackList,compartment);
 end
 if nargin <6
     logFile='GEMLog';
@@ -67,6 +70,7 @@ end
 if nargin <7
     threshold= 0.05;
 end
+
 
 MatricesSUXori = MatricesSUX;
 

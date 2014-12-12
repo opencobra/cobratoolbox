@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Pass: (1410)  Species with boundary condition false 
+                   cannot be in reaction and rule-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+	<model>
+		<listOfCompartments>
+			<compartment name="c"/>
+		</listOfCompartments>
+		<listOfSpecies>
+			<species name="s" compartment="c" boundaryCondition="true" initialAmount="0"/>
+			<species name="x" compartment="c" initialAmount="0"/>
+		</listOfSpecies>
+		<listOfRules>
+			<speciesConcentrationRule species="s" formula="2"/>
+		</listOfRules>
+		<listOfReactions>
+			<reaction name="r">
+				<listOfReactants>
+					<speciesReference species="x"/>
+				</listOfReactants>
+				<listOfProducts>
+					<speciesReference species="s"/>
+				</listOfProducts>
+			</reaction>
+		</listOfReactions>
+	</model>
+</sbml>

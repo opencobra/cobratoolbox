@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Author:         Andrew Finney
+  Organisation:   SBMLTeam (http://sbml.org)
+  (C) 2004 - 2005 California Institute of Technology and University of Hertfordshire
+  This is free software;
+  see the file "LICENSE.txt" or the URL http://sbml.org/software/LICENSE.html
+  for licensing and distribution terms.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model id="mathml_abs">
+    <listOfUnitDefinitions>
+      <unitDefinition id="mole_per_litre">
+        <listOfUnits>
+          <unit kind="mole"/>
+          <unit kind="litre" exponent="-1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="litre_per_sec">
+        <listOfUnits>
+          <unit kind="litre"/>
+          <unit kind="second" exponent="-1"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment id="compartment" size="1"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="S1" compartment="compartment" initialAmount="1"/>
+      <species id="S2" compartment="compartment" initialAmount="0"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="R" reversible="false">
+        <listOfReactants>
+          <speciesReference species="S1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="S2"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k_1 </ci>
+              <apply>
+                <abs/>
+                <apply>
+                  <minus/>
+                  <ci> k </ci>
+                  <ci> S1 </ci>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k_1" value="1" units="litre_per_sec"/>
+            <parameter id="k" value = "0.1" units="mole_per_litre"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

@@ -99,13 +99,13 @@ while rxnID <= nRxns
     end
 
     %solve for the minimum and maximum for the current reaction
-    sol = optimizeCbModel(tempModel,'max',[]);
+    sol = optimizeCbModel(tempModel,'max');
     if (sol.stat > 0)
         maxBound = sol.f;
     else
         maxBound = model.ub(rxnID);
     end
-    sol = optimizeCbModel(tempModel,'min',[]);
+    sol = optimizeCbModel(tempModel,'min');
     if (sol.stat > 0)
         minBound = sol.f;
     else
@@ -249,21 +249,21 @@ function modelOK = checkConsistency(model,modelRed,tol)
 if (sum(model.c ~= 0) > 0)
 
     % Original model
-    solOrigMax = optimizeCbModel(model,'max',[]);
-    solOrigMin = optimizeCbModel(model,'min',[]);
+    solOrigMax = optimizeCbModel(model,'max');
+    solOrigMin = optimizeCbModel(model,'min');
 
     % Reduced model
-    solRedMax = optimizeCbModel(modelRed,'max',[]);
-    solRedMin = optimizeCbModel(modelRed,'min',[]);
+    solRedMax = optimizeCbModel(modelRed,'max');
+    solRedMin = optimizeCbModel(modelRed,'min');
 
     diffMax = abs(solRedMax.f - solOrigMax.f);
     diffMin = abs(solRedMin.f - solOrigMin.f);
 
     if (diffMax > tol || diffMin > tol)
-        fprintf('Inconsistent objective values %g %g %g %g\n',solOrigMax.f,solRedMax.f,solOrigMin.f,solRedMin.f);
+        fprintf('reduceModel.m: Inconsistent objective values %g %g %g %g\n',solOrigMax.f,solRedMax.f,solOrigMin.f,solRedMin.f);
         modelOK = false;
     else
-        fprintf('Model is consistent\n');
+        fprintf('reduceModel.m: Model is consistent\n');
         modelOK = true;
     end
 

@@ -107,7 +107,7 @@ pass = 1;
 % 2. Solve QP problem.
 try
     %Solve QP problem printing errors and warnings
-    QPsolution = solveCobraQP(QPproblem, 'printLevel', 1);
+    QPsolution = solveCobraQP(QPproblem, 'printLevel', 0);
     %[solverOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(QPproblem, QPsolution.full);
 catch
     disp('Error in QP test');

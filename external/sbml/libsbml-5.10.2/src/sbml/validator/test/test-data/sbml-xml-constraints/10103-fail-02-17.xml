@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3"
+version="1">
+  <sbml:model id="NewModel" name="NewModel"
+xmlns:sbml="http://www.sbml.org/sbml/level2/version3">
+    <ff:listOfUnitDefinitions xmlns:ff="hhh">
+      <unitDefinition id="a"/>
+    </ff:listOfUnitDefinitions>
+  </sbml:model>
+</sbml>
+

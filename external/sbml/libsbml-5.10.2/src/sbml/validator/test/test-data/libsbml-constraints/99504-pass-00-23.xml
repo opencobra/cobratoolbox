@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" spatialDimensions="2" units="area" constant="false"/>
+    </listOfCompartments>
+    <listOfParameters>
+      <parameter id="p" value="1" constant="false"/>
+    </listOfParameters>
+    <listOfRules>
+      <algebraicRule>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <ci> nthroot </ci>
+            <cn> 2.12 </cn>
+            <ci> p </ci>
+          </apply>
+        </math>
+      </algebraicRule>
+    </listOfRules>
+  </model>
+</sbml>

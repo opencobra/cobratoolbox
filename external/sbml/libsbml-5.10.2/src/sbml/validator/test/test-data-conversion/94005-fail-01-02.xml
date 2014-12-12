@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1800) An Event's timeUnits must be 'time', 'second', or the id
+of a UnitDefinition that defines a variant of 'second' with
+exponent='1'.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" constant="false"/>
+    </listOfCompartments>
+    <listOfEvents>
+      <event timeUnits="time">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply> <neq/> <cn> 1 </cn> <cn> 2 </cn> </apply>
+          </math>
+        </trigger>
+        <listOfEventAssignments>
+          <eventAssignment variable="c"/>
+        </listOfEventAssignments>
+      </event>
+    </listOfEvents>
+  </model>
+</sbml>

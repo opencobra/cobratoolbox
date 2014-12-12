@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1"
+      xmlns:math="http://www.w3.org/1998/Math/MathML">
+    <model>
+        <listOfCompartments>
+            <compartment id="cell"/>
+        </listOfCompartments>
+        <listOfSpecies>
+            <species id="P1" compartment="cell" initialConcentration="0"/>
+            <species id="P2" compartment="cell" initialConcentration="0"/>
+        </listOfSpecies>
+        <listOfParameters>
+            <parameter id="k1" value="1" constant="false"/>
+            <parameter id="k2" value="0" constant="false"/>
+            <parameter id="tau" value="0.25"/>
+        </listOfParameters>
+        <listOfRules>
+            <rateRule variable="P1">
+                <math:math>
+                    <math:apply>
+                        <math:divide/>
+                        <math:ci> P1 </math:ci>
+                        <math:ci> k1 </math:ci>
+                    </math:apply>
+                </math:math>
+            </rateRule>
+            <rateRule variable="P2">
+                <math:math>
+                    <math:apply>
+                        <math:divide/>
+                        <math:ci> P2 </math:ci>
+                        <math:ci> k2 </math:ci>
+                    </math:apply>
+                </math:math>
+            </rateRule>
+        </listOfRules>
+        <listOfEvents>
+            <event>
+                <trigger>
+                    <math:math>
+                        <math:apply>
+                            <math:gt/>
+                            <math:ci> P1 </math:ci>
+                            <math:ci> tau </math:ci>
+                        </math:apply>
+                    </math:math>
+                </trigger>
+                <listOfEventAssignments>
+                    <eventAssignment variable="k2">
+                        <math:math>
+                            <math:cn> 1 </math:cn>
+                        </math:math>
+                    </eventAssignment>
+                </listOfEventAssignments>
+            </event>
+            <event>
+                <trigger>
+                    <math:math>
+                        <math:apply>
+                            <math:leq/>
+                            <math:ci> P1 </math:ci>
+                            <math:ci> tau </math:ci>
+                        </math:apply>
+                    </math:math>
+                </trigger>
+                <listOfEventAssignments>
+                    <eventAssignment variable="k2">
+                        <math:math>
+                            <math:cn> 0 </math:cn>
+                        </math:math>
+                    </eventAssignment>
+                </listOfEventAssignments>
+            </event>
+        </listOfEvents>
+    </model>
+</sbml>

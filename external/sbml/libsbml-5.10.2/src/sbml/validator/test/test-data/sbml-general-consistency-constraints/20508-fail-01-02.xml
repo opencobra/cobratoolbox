@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Fail: (1306) A Compartment with spatialDimensions='2' must have units
+of 'area' or the id of a UnitDefinition that defines a variant of
+'metre' with exponent='2' (L2v1 Section 4.5.4).
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model>
+    <listOfUnitDefinitions>
+      <unitDefinition id="mm">
+        <listOfUnits>
+          <unit kind="metre" exponent="1" scale="-3"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment id="c" spatialDimensions="2" units="mm"/>
+    </listOfCompartments>
+  </model>
+</sbml>

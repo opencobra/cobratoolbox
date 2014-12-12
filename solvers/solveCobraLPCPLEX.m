@@ -54,7 +54,7 @@ function [solution,LPProblem]=solveCobraLPCPLEX(LPProblem,printLevel,basisReuse,
 %               of the solution to the LP problem. Gives the same objective,
 %               but minimises the square of flux. minNorm ~1e-6 should be
 %               high enough for regularisation yet keep the same objective
-
+%
 %OUTPUT
 % solution Structure containing the following fields describing a LP
 % solution
@@ -83,6 +83,7 @@ function [solution,LPProblem]=solveCobraLPCPLEX(LPProblem,printLevel,basisReuse,
 % CPLEX control parameter cpxControl.LPMETHOD. At the moment, the solver is
 % automatically chosen for you
 %
+
 % Ronan Fleming 10 June 08
 %               20 Mar  09  min norm can be specific to each variable
 %               12 Jul  09  more description of basis reuse
@@ -91,7 +92,7 @@ function [solution,LPProblem]=solveCobraLPCPLEX(LPProblem,printLevel,basisReuse,
 %                           12.1 via API
 
 if ~exist('printLevel','var')
-    printLevel=2;
+    printLevel=0;
 end
 if ~exist('basisReuse','var')
     basisReuse=0;
@@ -155,6 +156,14 @@ if ~isfield(LPProblem,'osense')
     if printLevel>0
         fprintf('%s\n','Assuming maximisation of objective');
     end
+end
+
+if size(LPProblem.A,2)~=length(LPProblem.c)
+    error('dimensions of A & c are inconsistent');
+end
+
+if size(LPProblem.A,2)~=length(LPProblem.lb) || size(LPProblem.A,2)~=length(LPProblem.ub)
+    error('dimensions of A & bounds are inconsistent');
 end
 
 %get data
@@ -237,10 +246,12 @@ logcon=[];
    
 %call cplex
 tic;
-%tic;
-%by default use the complex ILOG-CPLEX interface
+%by default use the complex ILOG-CPLEX interface as it seems to be faster
+%IBM(R) ILOG(R) CPLEX(R) Interactive Optimizer 12.5.1.0
 ILOGcomplex=1;
-tomlab_cplex=1; %by default use the tomlab_cplex interface
+
+tomlab_cplex=0; %by default use the complex ilog interface instead of the tomlab_cplex interface
+
 if ~isempty(which('cplexlp')) && tomlab_cplex==0
     if ILOGcomplex
         %complex ibm ilog cplex interface
@@ -403,9 +414,9 @@ else
 
     solution.full=x;
     %this is the dual to the equality constraints but it's not the chemical potential
-    solution.dual=v;
+    solution.dual=v*osense;%negative sign Jan 25th
     %this is the dual to the simple ineequality constraints : reduced costs
-    solution.rcost=rc;
+    solution.rcost=rc*osense;%negative sign Jan 25th
     if Inform~=1
         solution.obj = NaN;
     else
@@ -421,8 +432,7 @@ else
     solution.sumInfeas = sinf;
     solution.origStat = Inform;
 end
-%timeTaken=toc;
-timeTaken=NaN;
+solution.time=toc;
 
 if Inform~=1 && ~isempty(which('cplex'))
     if conflictResolve ==1
@@ -472,6 +482,7 @@ if Inform~=1 && ~isempty(which('cplex'))
     solution.solver = 'cplex_direct';
 end
 
+
 % Try to give back COBRA Standardized solver status:
 %           1   Optimal solution
 %           2   Unbounded solution
@@ -508,7 +519,6 @@ else
         end
     end
 end
-solution.time = timeTaken;
 
 %return basis
 if basisReuse

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1405) A Specie whose Compartment has spatialDimensions='1'
+must have spatialSizeUnits of 'length', 'metre', or the id of a
+UnitDefinition that defines a variant of 'metre' with exponent='1'.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="1">
+	<model>
+		<listOfCompartments>
+			<compartment name="c" />
+		</listOfCompartments>
+		<listOfSpecies>
+			<specie name="s" compartment="c" initialAmount="0" spatialSizeUnits="length"/>
+		</listOfSpecies>
+		<listOfReactions>
+			<reaction name="r">
+				<listOfReactants>
+					<specieReference specie="s"/>
+				</listOfReactants>
+			</reaction>
+		</listOfReactions>
+	</model>
+</sbml>

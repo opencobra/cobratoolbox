@@ -93,8 +93,23 @@ end
 
 % Remove metabolites that are not used anymore
 if (metFlag)
-  selMets = modelOut.mets(any(sum(abs(modelOut.S),2) == 0,2));
-  if (~isempty(selMets))
-    modelOut = removeMetabolites(modelOut, selMets, false);
+  selMets = any(modelOut.S ~= 0,2);
+  modelOut.S = modelOut.S(selMets,:);
+  modelOut.mets = model.mets(selMets);
+  if (isfield(model,'b'))
+      modelOut.b = model.b(selMets);
+  else
+      modelOut.b = zeros(length(modelOut.mets),1);
   end
+  if (isfield(model,'metNames'))
+      modelOut.metNames = model.metNames(selMets);
+  end
+  if (isfield(model,'metFormulas'))
+      modelOut.metFormulas = model.metFormulas(selMets);
+  end
+else
+  modelOut.mets = model.mets;
+  modelOut.metNames = model.metNames;
+  modelOut.metFormulas = model.metFormulas;
+  modelOut.b = model.b;
 end

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment name="cell" volume="1"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <specie name="s1" compartment="cell" initialAmount="4"/>
+      <specie name="s2" compartment="cell" initialAmount="2"/>
+      <specie name="x0" compartment="cell" initialAmount="1"/>
+      <specie name="x1" compartment="cell" initialAmount="0"/>
+      <specie name="x2" compartment="cell" initialAmount="1"/>
+      <specie name="x3" compartment="cell" initialAmount="0"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter name="k1" value="1.2"/>
+      <parameter name="k2" value="1000"/>
+      <parameter name="k3" value="3000"/>
+      <parameter name="k4" value="4.5"/>
+      <parameter name="k"  value="1.5"/>
+      <parameter name="t"  value="1.5"/>
+      <parameter name="p" value="1"/>
+   </listOfParameters>
+    <listOfRules>
+      <parameterRule name="t" formula="s1 + s2"/>
+      <parameterRule name="k" formula="k3/k2"/>
+      <specieConcentrationRule specie="x2" formula="k * (s1+s2)/(1 + k)"/>
+      <specieConcentrationRule specie="x3" formula="p*(t - s2)"/>
+    </listOfRules>
+    <listOfReactions>
+      <reaction name="j1">
+        <listOfReactants>
+          <specieReference specie="x0"/>
+        </listOfReactants>
+        <listOfProducts>
+          <specieReference specie="s1"/>
+        </listOfProducts>
+        <kineticLaw formula="k1 * x0"/>
+      </reaction>
+      <reaction name="j3">
+        <listOfReactants>
+          <specieReference specie="s2"/>
+        </listOfReactants>
+        <listOfProducts>
+          <specieReference specie="x1"/>
+        </listOfProducts>
+        <kineticLaw formula="k4 * s2"/>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

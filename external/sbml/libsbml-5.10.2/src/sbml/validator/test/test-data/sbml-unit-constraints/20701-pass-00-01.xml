@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1500) A Parameter's 'units' must be a UnitKind, a built-in
+unit, or the id of a UnitDefinition.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+	<model>
+		<listOfParameters>
+			<parameter id="p01" units="ampere"/>
+			<parameter id="p02" units="becquerel"/>
+			<parameter id="p03" units="candela"/>
+			<parameter id="p04" units="celsius"/>
+			<parameter id="p05" units="coulomb"/>
+			<parameter id="p06" units="dimensionless"/>
+			<parameter id="p07" units="farad"/>
+			<parameter id="p08" units="gram"/>
+			<parameter id="p09" units="gray"/>
+			<parameter id="p10" units="henry"/>
+			<parameter id="p11" units="hertz"/>
+			<parameter id="p12" units="item"/>
+			<parameter id="p13" units="joule"/>
+			<parameter id="p14" units="katal"/>
+			<parameter id="p15" units="kelvin"/>
+			<parameter id="p16" units="kilogram"/>
+			<parameter id="p18" units="litre"/>
+			<parameter id="p19" units="lumen"/>
+			<parameter id="p20" units="lux"/>
+			<parameter id="p22" units="metre"/>
+			<parameter id="p23" units="mole"/>
+			<parameter id="p24" units="newton"/>
+			<parameter id="p25" units="ohm"/>
+			<parameter id="p26" units="pascal"/>
+			<parameter id="p27" units="radian"/>
+			<parameter id="p28" units="second"/>
+			<parameter id="p29" units="siemens"/>
+			<parameter id="p30" units="sievert"/>
+			<parameter id="p31" units="steradian"/>
+			<parameter id="p32" units="tesla"/>
+			<parameter id="p33" units="volt"/>
+			<parameter id="p34" units="watt"/>
+			<parameter id="p35" units="weber"/>
+		</listOfParameters>
+	</model>
+</sbml>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+    <listOfParameters>
+      <parameter id="p" value="1" constant="false"/>
+    </listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="p">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <root/>
+            <degree>
+              <cn type="integer"> 2 </cn>
+            </degree>
+            <cn> 5.5 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+    </listOfRules>
+  </model>
+</sbml>

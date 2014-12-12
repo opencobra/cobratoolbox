@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (20202) The order of subelements within Model must be the
+following (where any one may be optional, but the ordering must be
+maintained): listOfFunctionDefinitions, listOfUnitDefinitions,
+listOfCompartmentTypes, listOfSpeciesTypes, listOfCompartments,
+listOfSpecies, listOfParameters, listOfInitialAssignments,
+listOfRules, listOfConstraints, listOfReactions and
+listOfEvents. (References: L2V2 Section 4.2.)
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+	<model>
+		<listOfSpecies>
+			<species name="s" compartment="c" initialAmount="2"/>
+		</listOfSpecies>
+		<listOfCompartments>
+			<compartment name="c"/>
+		</listOfCompartments>
+		<listOfParameters>
+			<parameter name="p"/>
+		</listOfParameters>
+	</model>
+</sbml>

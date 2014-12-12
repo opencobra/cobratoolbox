@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fail: (3300) Inconsistent math
+      piecewise where alternatives have different units
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+	<model>
+		<listOfCompartments>
+			<compartment id="c" constant="false"/>
+		</listOfCompartments>
+		<listOfParameters>
+			<parameter id="p" value="1" constant="false"/>
+			<parameter id="p1" units="metre" value="1" constant="false"/>
+			<parameter id="p2" units="litre" value="4"/>
+			<parameter id="six" units="dimensionless" value="6"/>
+		</listOfParameters>
+		<listOfRules>
+			<algebraicRule>
+				<math xmlns="http://www.w3.org/1998/Math/MathML">
+					<piecewise>
+						<piece>
+							<apply>
+								<times/>
+								<ci> c </ci>
+								<ci> six </ci>
+							</apply>
+							<apply>
+								<gt/>
+								<ci> c </ci>
+								<ci> p2 </ci>
+							</apply>
+						</piece>
+						<otherwise>
+							<ci>p1</ci>
+						</otherwise>
+					</piecewise>
+				</math>
+			</algebraicRule>
+		</listOfRules>
+	</model>
+</sbml>

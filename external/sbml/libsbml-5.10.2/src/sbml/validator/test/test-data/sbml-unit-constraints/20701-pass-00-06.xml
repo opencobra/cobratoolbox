@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1500) A Parameter's 'units' must be a UnitKind, a built-in
+unit, or the id of a UnitDefinition.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+	<model>
+		<listOfUnitDefinitions>
+			<unitDefinition id="mmls">
+				<listOfUnits>
+					<unit kind="mole" scale="-3"/>
+					<unit kind="litre" exponent="-1"/>
+					<unit kind="second" exponent="-1"/>
+				</listOfUnits>
+			</unitDefinition>
+		</listOfUnitDefinitions>
+		<listOfParameters>
+			<parameter id="p" units="mmls"/>
+		</listOfParameters>
+	</model>
+</sbml>
