@@ -9,7 +9,9 @@ function [modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model
 %OUTPUTS
 % modelIrrev    Model in irreversible format
 % matchRev      Matching of forward and backward reactions of a reversible
-%               reaction
+%               reaction. Negative non-integer values are strictly backward
+%               reaction indices in the reversible model; negative 
+%               integer values are stricly forward.
 % rev2irrev     Matching from reversible to irreversible reactions
 % irrev2rev     Matching from irreversible to reversible reactions
 %
@@ -24,6 +26,7 @@ function [modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model
 %
 % Modified by Markus Herrgard 7/25/05
 % Modified by Jan Schellenberger 9/9/09 for speed.
+% Modified by Brandon Barker 11/20/2013 to add more fields, fix rev bug.
 
 %declare variables
 modelIrrev.S = spalloc(size(model.S,1),0,2*nnz(model.S));
@@ -54,7 +57,6 @@ for i = 1:nRxns
         warning(cat(2,'Reaction: ',model.rxns{i},' is classified as irreversible, but bounds are positive and negative!'))
 
     end
-   
     % Reaction entirely in the negative direction
     if (model.ub(i) <= 0 && model.lb(i) < 0)
         % Retain original bounds but reversed
@@ -65,8 +67,13 @@ for i = 1:nRxns
         modelIrrev.c(cnt) = -model.c(i);
         modelIrrev.rxns{cnt} = [model.rxns{i} '_r'];
         model.rev(i) = false;
-        modelIrrev.rev(cnt) = false;
+        matchRev(cnt) = -i - 0.5;
     else
+        if (model.lb(i) >= 0 && model.ub(i) > 0)
+            model.rev(i) = false;
+            modelIrrev.rev(cnt) = false;
+            matchRev(cnt) = -i;
+        end
         % Keep positive upper bound
         modelIrrev.ub(cnt) = model.ub(i);
         %if the lb is less than zero, set the forward rxn lb to zero 
@@ -78,9 +85,10 @@ for i = 1:nRxns
         modelIrrev.S(:,cnt) = model.S(:,i);
         modelIrrev.c(cnt) = model.c(i);
         modelIrrev.rxns{cnt} = model.rxns{i};
-
+        if isfield(model, 'rxnNames')
+            modelIrrev.rxnNames{cnt} = model.rxnNames{i};
+        end
     end
-
    
     %if the reaction is reversible, add a new rxn to the irrev model and
     %update the names of the reactions with '_f' and '_b'
@@ -91,6 +99,10 @@ for i = 1:nRxns
         modelIrrev.rxns{cnt-1} = [model.rxns{i} '_f'];
         modelIrrev.S(:,cnt) = -model.S(:,i);
         modelIrrev.rxns{cnt} = [model.rxns{i} '_b'];
+        if isfield(model, 'rxnNames')
+            modelIrrev.rxnNames{cnt-1} = [model.rxnNames{i} ' forward'];
+            modelIrrev.rxnNames{cnt} = [model.rxnNames{i} ' backward'];
+        end
         modelIrrev.rev(cnt) = true;
         modelIrrev.lb(cnt) = 0;
         modelIrrev.ub(cnt) = -model.lb(i);
@@ -98,7 +110,6 @@ for i = 1:nRxns
         rev2irrev{i} = [cnt-1 cnt];
         irrev2rev(cnt) = i;
     else
-        matchRev(cnt) = 0;
         rev2irrev{i} = cnt;
     end
 end
@@ -118,6 +129,9 @@ modelIrrev.rxns = columnVector(modelIrrev.rxns);
 modelIrrev.mets = model.mets;
 matchRev = columnVector(matchRev(1:cnt));
 modelIrrev.match = matchRev;
+if isfield(model, 'rxnNames')
+    modelIrrev.rxnNames = columnVector(modelIrrev.rxnNames); 
+end
 if (isfield(model,'b'))
     modelIrrev.b = model.b;
 end
@@ -127,11 +141,46 @@ end
 if isfield(model,'subSystems')
     modelIrrev.subSystems = model.subSystems(irrev2rev);
 end
+if isfield(model,'metCharge')
+    modelIrrev.metCharge = model.metCharge;
+end
+if isfield(model,'metNames')
+    modelIrrev.metNames = model.metNames;
+end
+if isfield(model,'metFormulas')
+    modelIrrev.metFormulas = model.metFormulas;
+end
+if isfield(model,'metChEBIID')
+    modelIrrev.metChEBIID = model.metChEBIID;
+end
+if isfield(model,'metKEGGID')
+    modelIrrev.metKEGGID = model.metKEGGID;
+end
+if isfield(model,'metPubChemID')
+    modelIrrev.metPubChemID = model.metPubChemID;
+end
+if isfield(model,'metInChIString')
+    modelIrrev.metInChIString = model.metInChIString;
+end
+if isfield(model,'confidenceScores')
+    modelIrrev.confidenceScores = model.confidenceScores(irrev2rev);
+end
+if isfield(model,'rxnReferences')
+    modelIrrev.rxnReferences = model.rxnReferences(irrev2rev);
+end
+if isfield(model,'rxnECNumbers')
+    modelIrrev.rxnECNumbers = model.rxnECNumbers(irrev2rev);
+end
+if isfield(model,'rxnNotes')
+    modelIrrev.rxnNotes = model.rxnNotes(irrev2rev);
+end
+
 if isfield(model,'genes')
     modelIrrev.genes = model.genes;
     genemtxtranspose = model.rxnGeneMat';
     modelIrrev.rxnGeneMat = genemtxtranspose(:,irrev2rev)';
     modelIrrev.rules = model.rules(irrev2rev);
+    modelIrrev.grRules = model.grRules(irrev2rev);
 end
 modelIrrev.reversibleModel = false;
 
