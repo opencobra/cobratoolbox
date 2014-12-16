@@ -195,7 +195,8 @@ if 1
 
     epsilon = 1e-4;
     %fast consistency check code from Nikos Vlassis et al
-    [indFluxConsist,~,V0]=fastcc(modelRev,epsilon,printLevel-1);
+    modeFlag=1;
+    [indFluxConsist,~,V0]=fastcc(modelRev,epsilon,printLevel-1,modeFlag);
     modelRev.fluxConsistentRxnBool=false(size(modelRev.S,2),1);
     modelRev.fluxConsistentRxnBool(indFluxConsist)=1;
     

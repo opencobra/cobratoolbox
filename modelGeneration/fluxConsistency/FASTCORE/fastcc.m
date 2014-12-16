@@ -1,4 +1,4 @@
-function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel)
+function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel,modeFlag)
 % [A,V] = fastcc(model,epsilon,printLevel)
 %
 % The FASTCC algorithm for testing the consistency of a stoichiometric model
@@ -14,6 +14,9 @@ function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel)
 % epsilon       
 % printLevel    0 = silent, 1 = summary, 2 = debug
 %
+% OPTIONAL INPUT
+% modeFlag      {(0),1}; 1=return matrix of modes V
+%
 % OUTPUT
 % A             n x 1 boolean vector indicating the flux consistent
 %               reactions
@@ -26,6 +29,8 @@ function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel)
 
 if ~exist('printLevel','var')
     printLevel = 2;
+if ~exist('modeFlag','var')
+    modeFlag=0;
 end
 
 tic
@@ -60,7 +65,7 @@ if printLevel>1
     fprintf('|A|=%d\n', numel(A));
 end
 
-if length(A)>0
+if length(A)>0 && modeFlag
     %save the first v
     V=[V,v];
 end
@@ -101,7 +106,7 @@ while ~isempty( J )
     nA2=length(A);
     
     %save v if new flux consistent reaction found
-    if nA2>nA1
+    if nA2>nA1 && modeFlag
         if ~isempty(JiRev)
             %make sure the sign of the flux is consistent with the sign of
             %the original S matrix if any reactions have been flipped
@@ -110,12 +115,12 @@ while ~isempty( J )
             V=[V,vf];
             
             %sanity check
-            if norm(origModel.S*vf)>1e-7
+            if norm(origModel.S*vf)>1e-6
                 pause(eps)
                 fprintf('%s\t%g\n','should be zero :',norm(model.S*v)) % should be zero
                 fprintf('%s\t%g\n','should be zero :',norm(origModel.S*vf)) % should be zero
                 fprintf('%s\t%g\n','may not be zero:',norm(model.S*vf)) % may not be zero
-                fprintf('%s\t%g\n','may not be zero:',norm(origModel.S*v)) % may not be zero 
+                fprintf('%s\t%g\n','may not be zero:',norm(origModel.S*v)) % may not be zero
                 error('Flipped flux consistency step failed.')
             end
         else
@@ -181,16 +186,17 @@ end
 
 modelFlipped=model;
 
-%sanity check
-if norm(origModel.S*V,inf)>1e-6
-    norm(origModel.S*V,inf)
-    error('Flux consistency check failed')
-else
-    fprintf('%s\n','Flux consistency check finished...')
-    fprintf('%10u%s\n',sum(any(V,2)),' = Number of flux consistent columns.')
-    fprintf('%10f%s\n\n',norm(origModel.S*V,inf),' = ||S*V||.')
+if modeFlag
+    %sanity check
+    if norm(origModel.S*V,inf)>1e-6
+        norm(origModel.S*V,inf)
+        error('Flux consistency check failed')
+    else
+        fprintf('%s\n','Flux consistency check finished...')
+        fprintf('%10u%s\n',sum(any(V,2)),' = Number of flux consistent columns.')
+        fprintf('%10f%s\n\n',norm(origModel.S*V,inf),' = ||S*V||.')
+    end
 end
-
 
 if numel(A) == numel(N)
     if printLevel>0
