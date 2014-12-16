@@ -113,7 +113,7 @@ while ~isempty( J )
             V=[V,vf];
             
             %sanity check
-            if norm(origModel.S*vf)>1e-7
+            if norm(origModel.S*vf)>1e-6
                 pause(eps)
                 fprintf('%s\t%g\n','should be zero :',norm(model.S*v)) % should be zero
                 fprintf('%s\t%g\n','should be zero :',norm(origModel.S*vf)) % should be zero
@@ -186,7 +186,7 @@ modelFlipped=model;
 
 if modeFlag
     %sanity check
-    if norm(origModel.S*V,inf)>1e-7
+    if norm(origModel.S*V,inf)>1e-6
         norm(origModel.S*V,inf)
         error('Flux consistency check failed')
     else

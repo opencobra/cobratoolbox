@@ -2,11 +2,18 @@ clear
 beep on
 
 %parameters
-%modelCollectionDirectory='/usr/local/bin/cobratoolbox/testing/testModels/SystemsPhysiologyGroup/modelCollection/';
-modelCollectionDirectory='/usr/local/bin/cobratoolbox/testing/testModels/AliEbrahim/';
-resultsDirectory='/usr/local/bin/cobratoolbox/papers/Fleming_FR_2015/results/';
+cbPath=which('initCobraToolbox');
+cbPath=cbPath(1:end-length('initCobraToolbox.m'));
 
-if 1
+%model directory
+%modelCollectionDirectory=[cbPath 'SystemsPhysiologyGroup/modelCollection/'];
+modelCollectionDirectory=[cbPath 'testing/testModels/AliEbrahim/'];
+
+%results directory
+resultsDirectory='/home/rfleming/Dropbox/graphStoich/results/FRresults/';
+%resultsDirectory=[cbPath 'papers/Fleming_FR_2015/results/'];
+
+if 0
     %single model
     if 1
         load ecoli_core_xls2model.mat
@@ -257,13 +264,13 @@ else
                 [rankS,p,q]= getRankLUSOL(model.S);
                 
                 load([resultsDirectory resultsFileName])
-                results(k-2).modelFilename=matFiles(k).name;
-                results(k-2).rankFR=rankFR;
-                results(k-2).rankFRV=rankFRV;
-                results(k-2).rankS=rankS;
-                results(k-2).model=model;
-                results(k-2).rankFRvanilla=rankFRvanilla;
-                results(k-2).rankFRVvanilla=rankFRVvanilla;
+                results(k).modelFilename=matFiles(k).name;
+                results(k).rankFR=rankFR;
+                results(k).rankFRV=rankFRV;
+                results(k).rankS=rankS;
+                results(k).model=model;
+                results(k).rankFRvanilla=rankFRvanilla;
+                results(k).rankFRVvanilla=rankFRVvanilla;
                 save([resultsDirectory resultsFileName],'results');
                 clear results model;
                 if strcmp(matFiles(k).name(end-2:end),'mat')
@@ -279,13 +286,13 @@ else
                         [rankS,p,q]= getRankLUSOL(model.S);
                         
                         load(['~/Dropbox/graphStoich/results/FRresults/' resultsFileName])
-                        results(k-2).modelFilename=matFiles(k).name;
-                        results(k-2).rankFR=rankFR;
-                        results(k-2).rankFRV=rankFRV;
-                        results(k-2).rankS=rankS;
-                        results(k-2).model=model;
-                        results(k-2).rankFRvanilla=rankFRvanilla;
-                        results(k-2).rankFRVvanilla=rankFRVvanilla;
+                        results(k).modelFilename=matFiles(k).name;
+                        results(k).rankFR=rankFR;
+                        results(k).rankFRV=rankFRV;
+                        results(k).rankS=rankS;
+                        results(k).model=model;
+                        results(k).rankFRvanilla=rankFRvanilla;
+                        results(k).rankFRVvanilla=rankFRVvanilla;
                         save(['~/Dropbox/graphStoich/results/FRresults/' resultsFileName],'results');
                         clear results model;
                     end
