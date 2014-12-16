@@ -29,6 +29,7 @@ function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel,modeFlag)
 
 if ~exist('printLevel','var')
     printLevel = 2;
+end
 if ~exist('modeFlag','var')
     modeFlag=0;
 end
