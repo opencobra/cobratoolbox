@@ -24,6 +24,10 @@ function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel)
 %
 % Ronan Fleming      17/10/14 Commenting of inputs/outputs/code
 
+if ~exist('printLevel','var')
+    printLevel = 2;
+end
+
 tic
 
 origModel=model;
