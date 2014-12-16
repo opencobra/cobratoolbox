@@ -6,9 +6,9 @@ beep on
 modelCollectionDirectory='/usr/local/bin/cobratoolbox/testing/testModels/AliEbrahim/';
 resultsDirectory='/usr/local/bin/cobratoolbox/papers/Fleming_FR_2015/results/';
 
-if 0
+if 1
     %single model
-    if 0
+    if 1
         load ecoli_core_xls2model.mat
         model=findSExRxnInd(model);
     end
@@ -51,7 +51,7 @@ if 0
         load Recon2betaModel_121114.mat
         model=modelRecon2beta121114;
     end
-    if 1
+    if 0
         load iMM904.mat
     end
     if 0
