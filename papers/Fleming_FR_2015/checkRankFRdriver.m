@@ -7,7 +7,8 @@ cbPath=cbPath(1:end-length('initCobraToolbox.m'));
 
 %model directory
 %modelCollectionDirectory=[cbPath 'SystemsPhysiologyGroup/modelCollection/'];
-modelCollectionDirectory=[cbPath 'testing/testModels/AliEbrahim/'];
+%modelCollectionDirectory=[cbPath 'testing/testModels/AliEbrahim/'];
+modelCollectionDirectory='/home/rfleming/Dropbox/graphStoich/data/modelCollectionAll';
 
 %results directory
 resultsDirectory='/home/rfleming/Dropbox/graphStoich/results/FRresults/';
