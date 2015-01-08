@@ -45,10 +45,6 @@ aRxns = aRxns(~cellfun('isempty',regexp(aRxns,'(\.rxn)$')));
 aRxns = regexprep(aRxns,'(\.rxn)$',''); % Identifiers for atom mapped reactions
 assert(~isempty(aRxns), 'Rxnfile directory is empty or nonexistent.');
 
-if any(strcmp(aRxns,'3AIBtm (Case Conflict)'))
-    aRxns{strcmp(aRxns,'3AIBtm (Case Conflict)')} = '3AIBTm'; % Debug: Ubuntu file manager "Files" renames file due to existence of the reaction 3AIBtm
-end
-
 % Extract the part of S involving atom mapped reactions
 intRxnBool(ismember(rxns,aRxns)) = true;
 abool = (ismember(rxns,aRxns) & intRxnBool); % Internal reactions in S that have atom mappings
@@ -100,6 +96,9 @@ refPairMat = sparse([]);
 for i = 1:length(aRxns)
     %disp(i)
     rxn = aRxns{i};
+    if strcmp(rxn,'3AIBtm (Case Conflict)')
+        rxn = '3AIBTm'; % Debug: Ubuntu file manager "Files" renames file due to existence of the reaction 3AIBtm
+    end
     
     % Read atom mapping from rxnfile
     [atomMets,metEls,metNrs,rxnNrs,reactantBool,instances] = readAtomMappingFromRxnFile(rxn,rxnFileDir);
@@ -208,37 +207,42 @@ for i = 1:length(aRxns)
                 end
                 
                 if any(refPairBool & refSumBool & refElBool)
-                    refBool = refPairBool & refSumBool & refElBool;
-                    refPair = refPairs(:,refBool);
                     
-                    if ~(all(rPair == refPair) || all(altPair == refPair))
+                    if i ~= 15 % && i ~= 60 
                         
-                        iterate = true;
+                        refBool = refPairBool & refSumBool & refElBool;
+                        refPair = refPairs(:,refBool);
                         
-                        newRefPair = spalloc(length(atomMets),1,sum(refPair ~= 0));
-                        newRefPair(ismember(atomMets,rid) & instances == rcount) = refPair(ismember(uMets,urid));
-                        newRefPair(ismember(atomMets,pid) & instances == pcount) = refPair(ismember(uMets,upid));
-                        refPair = newRefPair;
-                        rPair = rxnPairs(:,j);
-                        
-                        for k = find(refPair ~= 0 & reactantBool)'
-                            ridx2 = k;
-                            pidx2 = find(refPair == refPair(ridx2) & ~reactantBool);
+                        if ~(all(rPair == refPair) || all(altPair == refPair))
                             
-                            ridx1 = rxnNrs == rxnNrs(pidx2) & reactantBool;
-                            pidx1 = rxnNrs == rxnNrs(ridx2) & ~reactantBool;
+%                             if i ~= 15 %~any([15 32 44 60 69] == i)
+%                                 iterate = true;
+%                             end
                             
-                            newRxnNrs = rxnNrs;
-                            newRxnNrs(pidx2) = rxnNrs(ridx2);
-                            newRxnNrs(pidx1) = rxnNrs(ridx1);
-                            rxnNrs = newRxnNrs;
+                            newRefPair = spalloc(length(atomMets),1,sum(refPair ~= 0));
+                            newRefPair(ismember(atomMets,rid) & instances == rcount) = refPair(ismember(uMets,urid));
+                            newRefPair(ismember(atomMets,pid) & instances == pcount) = refPair(ismember(uMets,upid));
+                            refPair = newRefPair;
+                            rPair = rxnPairs(:,j);
+                            
+                            for k = find(refPair ~= 0 & reactantBool)'
+                                ridx2 = k;
+                                pidx2 = find(refPair == refPair(ridx2) & ~reactantBool);
+                                
+                                ridx1 = rxnNrs == rxnNrs(pidx2) & reactantBool;
+                                pidx1 = rxnNrs == rxnNrs(ridx2) & ~reactantBool;
+                                
+                                newRxnNrs = rxnNrs;
+                                newRxnNrs(pidx2) = rxnNrs(ridx2);
+                                newRxnNrs(pidx1) = rxnNrs(ridx1);
+                                rxnNrs = newRxnNrs;
+                            end
+                            
+                            iterations = [iterations rxnNrs];
+                            
                         end
                         
-                        iterations = [iterations rxnNrs];
-                        break;
-                        
                     end
-                    
                     
                 else
                     refPairs(:,find(~any(refPairs,1),1,'first')) = rPair;
@@ -246,14 +250,14 @@ for i = 1:length(aRxns)
             end
         end
         
-        if iterate
-            if size(iterations,2) > size(rxnPairs,2)
-                if size(unique(iterations','rows'),1) < size(iterations,2)
-                    rxnNrs = iterations(:,1);
-                    break;
-                end
-            end
-        end
+        %         if iterate
+        %             if size(iterations,2) > size(rxnPairs,2)
+        %                 if size(unique(iterations','rows'),1) < size(iterations,2)
+        %                     rxnNrs = iterations(:,2);
+        %                     break;
+        %                 end
+        %             end
+        %         end
         
         rxnPairs = findRxnPairs(atomMets,metNrs,rxnNrs,reactantBool,instances);
         
