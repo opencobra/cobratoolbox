@@ -2,7 +2,7 @@ function ATN = buildAtomTransitionNetwork(S,rxnFileDir,mets,rxns,lb,ub,intRxnBoo
 % Builds an atom transition network corresponding to a metabolic
 % network from reaction stoichiometry and atom mappings
 %
-% ATN = generateAtomTransitionNetwork(S,AMMs,lb,ub,mets,rxns);
+% ATN = buildAtomTransitionNetwork(S,rxnFileDir,mets,rxns,lb,ub,intRxnBool)
 %
 % INPUTS
 % S          .... The m x n stoichiometric matrix for the metabolic network
@@ -17,12 +17,31 @@ function ATN = buildAtomTransitionNetwork(S,rxnFileDir,mets,rxns,lb,ub,intRxnBoo
 % ub         .... An n x 1 vector of upper bounds on fluxes.
 %
 % OPTIONAL INPUTS
-% intRxnBool ... An n x 1 logical vector indicating which reactions in S
-%                are internal. If omitted, all reactions including more
+% intRxnBool ... An n x 1 logical array indicating which reactions in S
+%                are internal. If omitted, all reactions involving more
 %                than one metabolite will be considered internal.
 %
 % OUTPUTS
 % ATN  .... Structure with following fields:
+% .A           ... A p x q sparse incidence matrix for the atom transition
+%                  network, where p is the number of atoms and q is
+%                  the number of atom transitions.
+% .mets        ... A p x 1 cell array of metabolite identifiers to link
+%                  atoms to their metabolites. The order of atoms is the
+%                  same in A as in the molfile for each metabolite.
+% .rxns        ... A q x 1 cell array of reaction identifiers to link atom
+%                  transitions to their reactions. The order of atom
+%                  transitions is the same in A as in the rxnfile (with
+%                  atom mappings) for each reaction.
+% .elements    ... A p x 1 cell array of element symbols for atoms in A.
+% .inputBool   ... A p x 1 logical array. True for input atoms, i.e., atoms
+%                  in metabolites with uptake reactions.
+% .outputBool  ... A p x 1 logical array. True for output atoms, i.e.,
+%                  atoms in secreted metabolites.
+% .reverseBool ... A q x 1 logical array. True for atom transitions that
+%                  are the reverse of other transitions. Reverse
+%                  transitions arise when reversible reactions are split
+%                  in two.
 
 % Format inputs
 rxnFileDir = [regexprep(rxnFileDir,'(/|\\)$',''), filesep]; % Make sure input path ends with directory separator
@@ -50,7 +69,7 @@ if any(strcmp(aRxns,'3AIBtm (Case Conflict)'))
 end
 
 % Extract the part of S involving atom mapped reactions
-intRxnBool(ismember(rxns,aRxns)) = true;
+intRxnBool(ismember(rxns,aRxns)) = true; % A reaction cannot be atom mapped unless it is balanced, in which case it should be considered internal.
 abool = (ismember(rxns,aRxns) & intRxnBool); % Internal reactions in S that have atom mappings
 sbool = ismember(aRxns,rxns); % Reactions with atom mappings that are included in S
 
@@ -90,12 +109,6 @@ tMetNrs = [];
 tRxns = {};
 elements = {};
 
-% Initialize variables for keeping track of reaction pairs
-uMets = {};
-uElements = {};
-refPairs = sparse([]);
-refPairMat = sparse([]);
-
 % Build atom transition network
 for i = 1:length(aRxns)
     %disp(i)
@@ -103,10 +116,9 @@ for i = 1:length(aRxns)
     
     % Read atom mapping from rxnfile
     [atomMets,metEls,metNrs,rxnNrs,reactantBool,instances] = readAtomMappingFromRxnFile(rxn,rxnFileDir);
-    rxnPairs = findRxnPairs(atomMets,metNrs,rxnNrs,reactantBool,instances);
     
     % Check that stoichiometry in rxnfile matches the one in S
-    [rxnMets,~,xj] = unique(atomMets);
+    rxnMets = unique(atomMets);
     ss = S(:,strcmp(rxns,rxn));
     as = zeros(size(ss));
     for j = 1:length(rxnMets)
@@ -147,119 +159,6 @@ for i = 1:length(aRxns)
     newA = spalloc(m2,n2,2*n2);
     newA(1:m1,1:n1) = A;
     A = newA;
-    
-    [uRxnMets,xi] = unique(regexprep(rxnMets,'(\[\w\])$',''));
-    uAtomMets = regexprep(atomMets,'(\[\w\])$','');
-    uAtomMets = uAtomMets(ismember(xj,xi));
-    uMetEls = metEls(ismember(xj,xi));
-    uInstances = instances(ismember(xj,xi));
-    
-    newMets = uRxnMets(~ismember(uRxnMets,uMets));
-    if ~isempty(newMets)
-        pBool = ismember(uAtomMets,newMets) & uInstances == 1;
-        pMets = uAtomMets(pBool);
-        pElements = uMetEls(pBool);
-        
-        uMets = [uMets; pMets];
-        uElements = [uElements; pElements];
-    end
-    
-    [p1,q1] = size(refPairs);
-    p2 = length(uMets);
-    q2 = q1 + 2*sum(reactantBool)^2;
-    
-    newRefs = spalloc(p2,q2,nnz(refPairs) + nnz(rxnPairs));
-    newRefs(1:p1,1:q1) = refPairs;
-    refPairs = newRefs;
-    
-    % Check for reocurring reaction pairs
-    iterate = true;
-    iterations = rxnNrs;
-    while iterate
-        iterate = false;
-        
-        for j = 1:size(rxnPairs,2)
-            
-            rid = unique(atomMets(rxnPairs(:,j) ~= 0 & reactantBool));
-            rcount = unique(instances(rxnPairs(:,j) ~= 0 & reactantBool));
-            urid = regexprep(rid,'(\[\w\])$','');
-            pid = unique(atomMets(rxnPairs(:,j) ~= 0 & ~reactantBool));
-            pcount = unique(instances(rxnPairs(:,j) ~= 0 & ~reactantBool));
-            upid = regexprep(pid,'(\[\w\])$','');
-            
-            if ~strcmp(urid,upid)
-                rPair = spalloc(length(uMets),1,sum(rxnPairs(:,j) ~= 0));
-                rPair(ismember(uMets,urid)) = rxnPairs(ismember(atomMets,rid) & instances == rcount,j);
-                rPair(ismember(uMets,upid)) = rxnPairs(ismember(atomMets,pid)  & instances == pcount,j);
-                
-                altPair = spalloc(length(uMets),1,sum(rxnPairs(:,j) ~= 0));
-                altPair(ismember(uMets,upid) & rPair ~= 0) = metNrs((ismember(atomMets,pid)  & instances == pcount) & rxnPairs(:,j) ~= 0);
-                for k = find(ismember(uMets,urid) & rPair ~= 0)'
-                    altPair(k) = altPair(ismember(uMets,upid) & rPair == rPair(k));
-                end
-                
-                refPairBool = any(refPairs(ismember(uMets,urid),:),1) & any(refPairs(ismember(uMets,upid),:),1);
-                refSumBool = sum(refPairs ~= 0) == sum(rPair ~= 0);
-                refElBool = false(1,size(refPairs,2));
-                for k = 1:size(refPairs,2)
-                    if refSumBool(k)
-                        refElBool(k) = all(strcmp(sort(uElements(refPairs(:,k) ~= 0)),sort(uElements(rPair ~= 0))));
-                    end
-                end
-                
-                if any(refPairBool & refSumBool & refElBool)
-                    refBool = refPairBool & refSumBool & refElBool;
-                    refPair = refPairs(:,refBool);
-                    
-                    if ~(all(rPair == refPair) || all(altPair == refPair))
-                        
-                        iterate = true;
-                        
-                        newRefPair = spalloc(length(atomMets),1,sum(refPair ~= 0));
-                        newRefPair(ismember(atomMets,rid) & instances == rcount) = refPair(ismember(uMets,urid));
-                        newRefPair(ismember(atomMets,pid) & instances == pcount) = refPair(ismember(uMets,upid));
-                        refPair = newRefPair;
-                        rPair = rxnPairs(:,j);
-                        
-                        for k = find(refPair ~= 0 & reactantBool)'
-                            ridx2 = k;
-                            pidx2 = find(refPair == refPair(ridx2) & ~reactantBool);
-                            
-                            ridx1 = rxnNrs == rxnNrs(pidx2) & reactantBool;
-                            pidx1 = rxnNrs == rxnNrs(ridx2) & ~reactantBool;
-                            
-                            newRxnNrs = rxnNrs;
-                            newRxnNrs(pidx2) = rxnNrs(ridx2);
-                            newRxnNrs(pidx1) = rxnNrs(ridx1);
-                            rxnNrs = newRxnNrs;
-                        end
-                        
-                        iterations = [iterations rxnNrs];
-                        break;
-                        
-                    end
-                    
-                    
-                else
-                    refPairs(:,find(~any(refPairs,1),1,'first')) = rPair;
-                end
-            end
-        end
-        
-        if iterate
-            if size(iterations,2) > size(rxnPairs,2)
-                if size(unique(iterations','rows'),1) < size(iterations,2)
-                    rxnNrs = iterations(:,1);
-                    break;
-                end
-            end
-        end
-        
-        rxnPairs = findRxnPairs(atomMets,metNrs,rxnNrs,reactantBool,instances);
-        
-    end
-    
-    refPairs = refPairs(:,any(refPairs));
     
     % Add atom transitions to A
     tIdxs = n1+1:n2;
