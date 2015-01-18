@@ -14,6 +14,7 @@ function model = removeMetabolites(model,metaboliteList,removeRxnFlag)
 % model             COBRA model with removed metabolites
 %
 % Markus Herrgard 6/5/07
+% Uri David Akavia 1/18/14
 
 if (nargin < 3)
     removeRxnFlag = true;
@@ -22,32 +23,18 @@ end
 selMets = ~ismember(model.mets,metaboliteList);
 
 model.S = model.S(selMets,:);
-model.mets = model.mets(selMets);
+% Identify metabolite fields (that start with 'met')
+foo = strncmp('met', fields(model), 3);
+metabolicFields = fieldnames(model);
+metabolicFields = metabolicFields(foo);
+clear foo;
+for i = 1:length(metabolicFields)
+	modelOut.(metabolicFields{i}) = model.(metabolicFields{i})(selMets);
+end
 if (isfield(model,'b'))
     model.b = model.b(selMets);
 else
     model.b = zeros(length(model.mets),1);
-end
-if (isfield(model,'metNames'))
-    model.metNames = model.metNames(selMets);
-end
-if (isfield(model,'metFormulas'))
-    model.metFormulas = model.metFormulas(selMets);
-end
-if (isfield(model,'metCharge'))
-    model.metCharge = model.metCharge(selMets);
-end
-if (isfield(model,'metChEBIID'))
-    model.metChEBIID = model.metChEBIID(selMets);
-end
-if (isfield(model,'metKEGGID'))
-    model.metKEGGID = model.metKEGGID(selMets);
-end
-if (isfield(model,'metPubChemID'))
-    model.metPubChemID = model.metPubChemID(selMets);
-end
-if (isfield(model,'metInChIString'))
-    model.metInChIString = model.metInChIString(selMets);
 end
 
 if removeRxnFlag

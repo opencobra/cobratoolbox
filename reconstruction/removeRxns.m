@@ -16,6 +16,7 @@ function modelOut = removeRxns(model,rxnRemoveList,irrevFlag,metFlag)
 % model             COBRA model w/o selected reactions
 %
 % Markus Herrgard 7/22/05
+% Uri David Akavia 1/18/14
 
 if (nargin < 3)
   irrevFlag = false;
@@ -84,6 +85,25 @@ end
 if (isfield(model, 'confidenceScores'))
   modelOut.confidenceScores = model.confidenceScores(selectRxns);
 end
+if (isfield(model, 'comments'))
+	modelOut.confidenceScores = model.comments(selectRxns);
+end
+if (isfield(model, 'citations'))
+	modelOut.confidenceScores = model.citations(selectRxns);
+end
+if (isfield(model, 'ecNumbers'))
+	modelOut.ecNumbers = model.ecNumbers(selectRxns);
+end
+if (isfield(model, 'rxnKeggID'))
+	modelOut.rxnKeggID = model.rxnKeggID(selectRxns);
+end
+if (isfield(model, 'comments'))
+	modelOut.comments = model.comments(selectRxns);
+end
+if (isfield(model, 'citations'))
+	modelOut.comments = model.comments(selectRxns);
+end
+
 
 % Reconstruct the match list
 if (irrevFlag)
@@ -92,24 +112,27 @@ if (irrevFlag)
 end
 
 % Remove metabolites that are not used anymore
+% Identify metabolite fields (that start with 'met')
+foo = strncmp('met', fields(model), 3);
+metabolicFields = fieldnames(model);
+metabolicFields = metabolicFields(foo);
+clear foo;
+
 if (metFlag)
   selMets = any(modelOut.S ~= 0,2);
   modelOut.S = modelOut.S(selMets,:);
-  modelOut.mets = model.mets(selMets);
+  for i = 1:length(metabolicFields) 
+	  modelOut.(metabolicFields{i}) = model.(metabolicFields{i})(selMets);
+  end
   if (isfield(model,'b'))
       modelOut.b = model.b(selMets);
   else
       modelOut.b = zeros(length(modelOut.mets),1);
   end
-  if (isfield(model,'metNames'))
-      modelOut.metNames = model.metNames(selMets);
-  end
-  if (isfield(model,'metFormulas'))
-      modelOut.metFormulas = model.metFormulas(selMets);
-  end
+% This seems unnecessary (because of line 28, but modified it to be consistent  
 else
-  modelOut.mets = model.mets;
-  modelOut.metNames = model.metNames;
-  modelOut.metFormulas = model.metFormulas;
   modelOut.b = model.b;
+  for i = 1:length(metabolicFields)
+	  modelOut.(metabolicFields{i}) = model.(metabolicFields{i});
+  end
 end
