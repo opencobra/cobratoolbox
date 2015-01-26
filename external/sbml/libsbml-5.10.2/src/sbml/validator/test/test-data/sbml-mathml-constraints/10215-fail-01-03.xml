@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1803) A Compartment, Species, or Parameter referenced by an
+EventAssignment must have constant='false'.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+	<model>
+		<listOfCompartments>
+			<compartment id="c" constant="false"/>
+		</listOfCompartments>
+		<listOfReactions>
+			<reaction id="R" reversible="false">
+				<listOfReactants>
+					<speciesReference species="s1"/>
+				</listOfReactants>
+				<listOfProducts>
+					<speciesReference species="s2"/>
+				</listOfProducts>
+				<kineticLaw>
+					<math xmlns="http://www.w3.org/1998/Math/MathML">
+						<apply>
+							<divide/>
+							<ci> e </ci>
+							<ci> k_1 </ci>
+						</apply>
+					</math>
+					<listOfParameters>
+						<parameter id="k_1" value="1" units="second"/>
+					</listOfParameters>
+				</kineticLaw>
+			</reaction>
+		</listOfReactions>
+		<listOfEvents>
+			<event id="e">
+				<trigger>
+					<math xmlns="http://www.w3.org/1998/Math/MathML">
+						<apply>
+							<neq/>
+							<cn> 1 </cn>
+							<cn> 2 </cn>
+						</apply>
+					</math>
+				</trigger>
+				<listOfEventAssignments>
+					<eventAssignment variable="c"/>
+				</listOfEventAssignments>
+			</event>
+		</listOfEvents>
+	</model>
+</sbml>

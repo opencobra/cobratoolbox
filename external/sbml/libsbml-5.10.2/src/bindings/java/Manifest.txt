@@ -1,0 +1,4 @@
+Name: org.sbml.libsbml
+Implementation-Title: "libSBML Java API"
+Implementation-Version: "5.10.2"
+Implementation-Vendor: "The SBML Team"

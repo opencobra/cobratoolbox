@@ -1,6 +1,6 @@
-function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)
+function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag,gprFlag)
+%formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)
 %printRxnFormula Print the reaction formulas for a list of reactions
-%
 %
 %INPUTS
 % model             COBRA model structure
@@ -15,6 +15,8 @@ function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,m
 % fid               Optional file identifier for printing in files
 % directionFlag     Checks directionality of reaction. See Note.
 %                   (Default = true)
+% gprFlag           print gene protein reaction association
+%                   (Default = false)
 %
 %OUTPUT
 % formulas          Cell array containing formulas of specified reactions
@@ -22,16 +24,12 @@ function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,m
 % NOTE: Reactions that have an upperbound <= 0 and lowerbound < 0 will have
 % its directionality reversed unless directionFlag = false.
 %
-% Markus Herrgard 11/17/05
-%
-% 04/30/08 Ronan Fleming
-% altered code since findRxnIDs used abbreviations not names of reactions
-%
-% 10/11/09 Jeff Orth
-% added metNameFlag option
-%
-% 03/10/10 Richard Que
-% added lb < 0 requirement for reversing directionality
+
+% 11/17/05 Markus Herrgard 
+% 04/30/08 Ronan Fleming  altered code since findRxnIDs used abbreviations not names of reactions
+% 10/11/09 Jeff Ortn      added metNameFlag option
+% 03/10/10 Richard Que    added lb < 0 requirement for reversing directionality
+% 21/11/14 Ronan Fleming  printing gpr optional
 
 if (nargin < 2)
     rxnAbbrList = model.rxns;
@@ -51,6 +49,9 @@ end
 if (nargin < 7)
     directionFlag = true;
 end
+if (nargin < 8)
+    gprFlag = false;
+end
 
 if (~iscell(rxnAbbrList))
     if (strcmp(rxnAbbrList,'all'))
@@ -59,6 +60,16 @@ if (~iscell(rxnAbbrList))
         rxnAbbrTmp = rxnAbbrList;
         clear rxnAbbrList;
         rxnAbbrList{1} = rxnAbbrTmp;
+    end
+end
+
+%not all models have rev field
+if ~isfield(model,'rev')
+    model.rev=ones(size(model.S,2),1);
+    for n=1:size(model.S,2)
+        if model.lb(n)>=0
+            model.rev(n)=0;
+        end
     end
 end
 
@@ -122,9 +133,9 @@ for i = 1:length(rxnAbbrList);
             formulaStr = [formulaStr ' <=> '];
         else
             if (printFlag)
-                fprintf(fid,'\t->\t');
+                fprintf(fid,'\t=>\t');
             end
-            formulaStr = [formulaStr ' -> '];
+            formulaStr = [formulaStr ' => '];
         end
         
         if 0
@@ -165,7 +176,7 @@ for i = 1:length(rxnAbbrList);
         end
         formulaStr = 'NA';
     end
-    if (printFlag)
+    if printFlag && gprFlag
         if (rxnID > 0) && (isfield(model,'grRules'))
             if (isempty(model.grRules{rxnID}))
                 fprintf('\t');

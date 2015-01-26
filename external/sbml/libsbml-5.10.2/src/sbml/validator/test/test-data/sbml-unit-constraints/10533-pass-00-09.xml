@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (3102) The units returned by the rate rule that assigns a rate
+    to a parameter must be consistent with the units declared for
+    that parameter per unit time provided units have been declared.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" units="litre" constant="false"/>
+    </listOfCompartments>
+    <listOfParameters>
+      <parameter id="p" value="1" units="litre" constant="false"/>
+      <parameter id="p1" value="1" units="second" constant="false"/>
+    </listOfParameters>
+    <listOfRules>
+      <rateRule variable="p">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <ci> c </ci>
+            <ci> p1 </ci>
+          </apply>
+        </math>
+      </rateRule>
+    </listOfRules>
+  </model>
+</sbml>

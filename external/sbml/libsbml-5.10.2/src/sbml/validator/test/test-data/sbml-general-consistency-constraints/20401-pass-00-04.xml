@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1201) The id of a UnitDefinition must not be a predefined kind
+of unit.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+	<model>
+		<listOfUnitDefinitions>
+			<unitDefinition name="mmls"/>
+		</listOfUnitDefinitions>
+		<listOfCompartments>
+			<compartment name="c"/>
+		</listOfCompartments>
+	</model>
+</sbml>

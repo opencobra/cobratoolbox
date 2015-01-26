@@ -46,9 +46,9 @@ if ~isempty(metInd)
         fprintf('%s\n',thisMetName);
         if (renameFlag)
             fprintf('Renaming non-unique metabolites\n');
-            rxnIDs = findRxnIDs(model,thisMetName);
-            for j = 1:length(rxnIDs)
-                model.rxns{rxnIDs(j)} = [thisMetName '_' num2str(j)];
+            metIDs = findMetIDs(model,thisMetName);
+            for j = 1:length(metIDs)
+                model.mets{metIDs(j)} = [thisMetName '_' num2str(j)];
                 fprintf('%s\n',model.mets{rxnIDs(j)});
             end
         end

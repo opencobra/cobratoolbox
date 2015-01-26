@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model id="ValidateBug">
+	<listOfCompartments>
+	 <compartment id="comp" name="comp" size="1"/>
+	</listOfCompartments>
+    <listOfSpecies>
+      <species id="S1" compartment="comp" initialAmount="0"/>
+      <species id="S2" compartment="comp" initialAmount="0"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="reaction1" reversible="false">
+        <listOfReactants>
+          <speciesReference species="S1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="S2"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <power/>
+              <ci> S1 </ci>
+              <ci> p1 </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+              <parameter id="p1" value="0"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

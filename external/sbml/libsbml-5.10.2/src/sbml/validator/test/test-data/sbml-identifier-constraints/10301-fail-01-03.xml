@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Fail: (900) Ids must be unique among FunctionDefinitions,
+Compartments, Species, global Parameters, Reactions, and Events
+(L2v1 Section 3.5).
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+  <model>
+    <listOfCompartments>
+      <compartment id="c"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="c"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="r">
+        <listOfReactants>
+          <speciesReference id ="c" species="s"/>
+        </listOfReactants>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

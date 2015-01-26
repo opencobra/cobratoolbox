@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+	<model>
+		<listOfCompartments>
+			<compartment name="c"/>
+		</listOfCompartments>
+</model>
+</sbml>

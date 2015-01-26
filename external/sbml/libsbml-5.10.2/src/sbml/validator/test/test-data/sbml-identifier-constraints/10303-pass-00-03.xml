@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (902) The ids of all Parameters within a KineticLaw must be
+unique (L2v1 Sections 3.5 and 4.9.7).
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+  <model>
+    <listOfCompartments>
+      <compartment id="c"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="c"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="r1">
+        <listOfReactants>
+          <speciesReference species="s"/>
+        </listOfReactants>
+      <kineticLaw>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> k1 </ci>
+            <ci> k2 </ci>
+            <ci> s </ci>
+          </apply>
+        </math>
+        <listOfParameters>
+          <parameter id="k1" value="0"/>
+          <parameter id="k2" value="0"/>
+        </listOfParameters>
+      </kineticLaw>
+      </reaction>
+      <reaction id="r2">
+        <listOfReactants>
+          <speciesReference species="s"/>
+        </listOfReactants>
+      <kineticLaw>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> k1 </ci>
+            <ci> k2 </ci>
+            <ci> s </ci>
+          </apply>
+        </math>
+        <listOfParameters>
+          <parameter id="k1" value="0"/>
+          <parameter id="k2" value="0"/>
+        </listOfParameters>
+      </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" xmlns:jd2="http://www.sys-bio.org/sbml" metaid="_000000" level="2" version="1">
+  <model metaid="_000001" id="EPSP_Edelstein" name="Edelstein1996_EPSP_AChEvent">
+    <listOfReactions>
+      <reaction id="s">
+        <listOfReactants>
+			<annotation>
+				<jd2:JDesignerLayout version="2.0" MajorVersion="2" MinorVersion="0" BuildVersion="41">
+				<jd2:header>
+					<jd2:VersionHeader JDesignerVersion="2.0"/>
+					<jd2:ModelHeader Author="Mr Untitled" ModelVersion="0.0" ModelTitle="untitled"/>
+					<jd2:TimeCourseDetails timeStart="0" timeEnd="10" numberOfPoints="1000"/>
+				</jd2:header>
+				</jd2:JDesignerLayout>
+				<jd2:JDesignerLayout version="2.0" MajorVersion="2" MinorVersion="0" BuildVersion="41">
+				<jd2:header>
+					<jd2:VersionHeader JDesignerVersion="2.0"/>
+					<jd2:ModelHeader Author="Mr Untitled" ModelVersion="0.0" ModelTitle="untitled"/>
+					<jd2:TimeCourseDetails timeStart="0" timeEnd="10" numberOfPoints="1000"/>
+				</jd2:header>
+				</jd2:JDesignerLayout>
+			</annotation>
+			<speciesReference species="s"/>    
+        </listOfReactants>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

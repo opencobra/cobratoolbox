@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+    <model id="facilitated_ca_diffusion">
+        <listOfUnitDefinitions>
+            <unitDefinition id="substance">
+                <listOfUnits>
+                    <unit kind="mole" scale="-6"/>
+                </listOfUnits>
+            </unitDefinition>
+            <unitDefinition id="area">
+                <listOfUnits>
+                    <unit kind="metre" scale="-6" exponent="2" />
+                </listOfUnits>
+            </unitDefinition>
+        </listOfUnitDefinitions>
+        <listOfCompartments>
+            <compartment id="Extracellular" spatialDimensions="3"/>
+            <compartment id="PlasmaMembrane" outside="Extracellular" spatialDimensions="2"/>
+            <compartment id="Cytosol" outside="PlasmaMembrane" spatialDimensions="3"/>
+        </listOfCompartments>
+        <listOfSpecies>
+            <species
+              id="CaBPB_C"
+              compartment="Cytosol"
+              initialConcentration="47.17"/>
+            <species
+              id="B_C"
+              compartment="Cytosol"
+              initialConcentration="396.04"/>
+            <species
+              id="CaB_C"
+              compartment="Cytosol"
+              initialConcentration="3.96"/>
+            <species
+              id="Ca_EC"
+              compartment="Extracellular"
+              initialConcentration="1000"/>
+            <species
+              id="Ca_C"
+              compartment="Cytosol"
+              initialConcentration="0.1"/>
+            <species
+              id="CaCh_PM"
+              compartment="PlasmaMembrane"
+              initialConcentration="1"/>
+            <species
+              id="CaPump_PM"
+              compartment="PlasmaMembrane"
+              initialConcentration="1"/>
+            <species
+              id="CaBP_C"
+              compartment="Cytosol"
+              initialConcentration="202.83"/>
+        </listOfSpecies>
+        <listOfReactions>
+            <reaction id="CalciumCalbindin_gt_BoundCytosol" fast="true">
+                <listOfReactants>
+                    <speciesReference species="CaBP_C"/>
+                    <speciesReference species="Ca_C"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="CaBPB_C"/>
+                </listOfProducts>
+                <kineticLaw>
+                           <notes>
+                           <p xmlns="http://www.w3.org/1999/xhtml">
+                               (((Kf_CalciumCalbindin_BoundCytosol * CaBP_C) * Ca_C) -
+                                  (Kr_CalciumCalbindin_BoundCytosol * CaBPB_C))
+                           </p>
+                           </notes>
+                    <math xmlns="http://www.w3.org/1998/Math/MathML">
+                        <apply>
+                            <minus/>
+                            <apply>
+                                <times/>
+                                <ci> Kf_CalciumCalbindin_BoundCytosol </ci>
+                                <ci> CaBP_C </ci>
+                                <ci> Ca_C </ci>
+                            </apply>
+                            <apply>
+                                <times/>
+                                <ci> Kr_CalciumCalbindin_BoundCytosol </ci>
+                                <ci> CaBPB_C </ci>
+                            </apply>
+                        </apply>
+                    </math>
+                         <listOfParameters>
+                            <parameter id="Kf_CalciumCalbindin_BoundCytosol" value="20.0"/>
+                            <parameter id="Kr_CalciumCalbindin_BoundCytosol" value="8.6"/>
+                         </listOfParameters>
+                </kineticLaw>
+            </reaction>
+            <reaction id="CalciumBuffer_gt_BoundCytosol" fast="true">
+                <listOfReactants>
+                    <speciesReference species="Ca_C"/>
+                    <speciesReference species="B_C"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="CaB_C"/>
+                </listOfProducts>
+                <kineticLaw>
+                    <notes>
+                      <p xmlns="http://www.w3.org/1999/xhtml">
+                        (((Kf_CalciumBuffer_BoundCytosol * Ca_C) * B_C) -
+                            (Kr_CalciumBuffer_BoundCytosol * CaB_C))
+                      </p>
+                    </notes>
+                    <math xmlns="http://www.w3.org/1998/Math/MathML">
+                        <apply>
+                            <minus/>
+                            <apply>
+                                <times/>
+                                <ci> Kf_CalciumBuffer_BoundCytosol </ci>
+                                <ci> Ca_C </ci>
+                                <ci> B_C </ci>
+                            </apply>
+                            <apply>
+                                <times/>
+                                <ci> Kr_CalciumBuffer_BoundCytosol </ci>
+                                <ci> CaB_C </ci>
+                            </apply>
+                        </apply>
+                    </math>
+                    <listOfParameters>
+                        <parameter id="Kf_CalciumBuffer_BoundCytosol" value="0.1"/>
+                        <parameter id="Kr_CalciumBuffer_BoundCytosol" value="1.0"/>
+                    </listOfParameters>
+                </kineticLaw>
+            </reaction>
+            <reaction id="Ca_Pump">
+                <listOfReactants>
+                    <speciesReference species="Ca_C"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="Ca_EC"/>
+                </listOfProducts>
+                <listOfModifiers>
+                    <modifierSpeciesReference species="CaPump_PM"/>
+                </listOfModifiers>
+                <kineticLaw>
+                    <notes>
+                      <p xmlns="http://www.w3.org/1999/xhtml">
+                        ((Vmax * kP * ((Ca_C - Ca_Rest) / (Ca_C + kP)) / (Ca_Rest + kP)) *
+                            CaPump_PM)
+                      </p>
+                    </notes>
+                    <math xmlns="http://www.w3.org/1998/Math/MathML">
+                        <apply>
+                            <divide/>
+                            <apply>
+                                <times/>
+                                <ci> Vmax </ci>
+                                <ci> kP </ci>
+                                <ci> CaPump_PM </ci>
+                                <apply>
+                                    <minus/>
+                                    <ci> Ca_C </ci>
+                                    <ci> Ca_Rest </ci>
+                                </apply>
+                            </apply>
+                            <apply>
+                                <times/>
+                                <apply>
+                                    <plus/>
+                                    <ci> Ca_C </ci>
+                                    <ci> kP </ci>
+                                </apply>
+                                <apply>
+                                    <plus/>
+                                    <ci> Ca_Rest </ci>
+                                    <ci> kP </ci>
+                                </apply>
+                            </apply>
+                        </apply>
+                    </math>
+                    <listOfParameters>
+                        <parameter id="Vmax" value="-4000"/>
+                        <parameter id="kP" value="0.25"/>
+                        <parameter id="Ca_Rest" value="0.1"/>
+                    </listOfParameters>
+                </kineticLaw>
+            </reaction>
+            <reaction id="Ca_channel">
+                <listOfReactants>
+                    <speciesReference species="Ca_EC"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="Ca_C"/>
+                </listOfProducts>
+                <listOfModifiers>
+                    <modifierSpeciesReference species="CaCh_PM"/>
+                </listOfModifiers>
+                <kineticLaw>
+                    <notes>
+                      <p xmlns="http://www.w3.org/1999/xhtml">
+                        (J0 * Kc * (Ca_EC - Ca_C) / (Kc + Ca_C) * CaCh_PM)
+                      </p>
+                    </notes>
+                    <math xmlns="http://www.w3.org/1998/Math/MathML">
+                        <apply>
+                            <divide/>
+                            <apply>
+                                <times/>
+                                <ci> CaCh_PM </ci>
+                                <ci> J0 </ci>
+                                <ci> Kc </ci>
+                                <apply>
+                                    <minus/>
+                                    <ci> Ca_EC </ci>
+                                    <ci> Ca_C </ci>
+                                </apply>
+                            </apply>
+                            <apply>
+                                <plus/>
+                                <ci> Kc </ci>
+                                <ci> Ca_C </ci>
+                            </apply>
+                        </apply>
+                    </math>
+                    <listOfParameters>
+                        <parameter id="J0" value="0.014"/>
+                        <parameter id="Kc" value="0.5"/>
+                    </listOfParameters>
+                </kineticLaw>
+            </reaction>
+        </listOfReactions>
+    </model>
+</sbml>

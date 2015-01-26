@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Fail: (1902) Unique symbols in InitialAssignments and Rules.
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" constant="false"/>
+      <compartment id="c1" constant="false"/>
+    </listOfCompartments>
+    <listOfInitialAssignments>
+      <initialAssignment symbol="c"/>
+    </listOfInitialAssignments>
+    <listOfRules>
+      <assignmentRule variable="c1"/>
+    </listOfRules>
+  </model>
+</sbml>

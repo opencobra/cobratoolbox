@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1" >
+  <model>
+    <listOfCompartments>
+      <compartment id="c" size="1"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="c" hasOnlySubstanceUnits="true"/>
+      <species id="e" compartment="c" initialAmount="0"/>
+      <species id="p" compartment="c" initialAmount="0"/>
+    </listOfSpecies>
+    <listOfRules>
+      <assignmentRule variable="s">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <cn> 1 </cn>
+            <cn> 2 </cn>
+          </apply>
+        </math>
+      </assignmentRule>
+    </listOfRules>
+    <listOfReactions>
+      <reaction id="r" reversible="false">
+        <listOfReactants>
+          <speciesReference species="s"/> 
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> s </ci>
+              <ci> k </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k" value="1" units="dimensionless"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

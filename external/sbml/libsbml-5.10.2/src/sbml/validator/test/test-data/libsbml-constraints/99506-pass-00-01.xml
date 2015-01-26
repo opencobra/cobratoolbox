@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+    <listOfParameters>
+      <parameter id="p1" constant="false" value="2" units="dimensionless"></parameter>
+      <parameter id="p5" constant="false" value="4" units="second"></parameter>
+    </listOfParameters>
+  </model>
+</sbml>

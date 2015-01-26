@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fail: (1900) An InitialAssignment's symbol must be the id of a Compartment,
+Species, or Parameter.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+	<model>
+		<listOfCompartments>
+			<compartment id="c" constant="false"/>
+		</listOfCompartments>
+		<listOfSpecies>
+			<species id="s" compartment="c"/>
+		</listOfSpecies>
+		<listOfParameters>
+			<parameter id="y"/>
+			<parameter id="q"/>
+			<parameter id="z" constant="false"/>
+			<parameter id="p"/>
+		</listOfParameters>
+		<listOfInitialAssignments>
+			<initialAssignment symbol="z">
+				<math xmlns="http://www.w3.org/1998/Math/MathML">
+					<ci> r </ci>
+				</math>
+			</initialAssignment>
+		</listOfInitialAssignments>
+		<listOfReactions>
+			<reaction id="r">
+				<listOfReactants>
+					<speciesReference species="s"/>
+				</listOfReactants>
+				<kineticLaw>
+					<math xmlns="http://www.w3.org/1998/Math/MathML">
+						<apply>
+							<divide/>
+							<ci> s </ci>
+							<ci> z </ci>
+						</apply>
+					</math>
+				</kineticLaw>
+			</reaction>
+		</listOfReactions>
+	</model>
+</sbml>

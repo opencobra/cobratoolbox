@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1101) A FunctionDefinition may only reference variables
+declared in its list of bound variables (function parameters) (L2v1
+Section 3.6.3).  The variable 'y' is not listed as a <bvar> of
+FunctionDefinition 'pow'.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+	<model>
+		<listOfFunctionDefinitions>
+			<functionDefinition id="add">
+				<math xmlns="http://www.w3.org/1998/Math/MathML">
+					<lambda>
+						<bvar>
+							<ci> x </ci>
+						</bvar>
+						<apply>
+							<plus/>
+							<ci> x </ci>
+							<apply>
+								<ci> add </ci>
+								<ci> x </ci>
+							</apply>
+						</apply>
+					</lambda>
+				</math>
+			</functionDefinition>
+		</listOfFunctionDefinitions>
+	</model>
+</sbml>

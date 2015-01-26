@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fail: (1201) The id of a UnitDefinition must not be a predefined kind
+of unit.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="1">
+	<model>
+		<listOfUnitDefinitions>
+			<unitDefinition name="litre"/>
+		</listOfUnitDefinitions>
+		<listOfCompartments>
+			<compartment name="c"/>
+		</listOfCompartments>
+		<listOfSpecies>
+			<specie name="s" compartment="c" initialAmount="0"/>
+		</listOfSpecies>
+		<listOfReactions>
+			<reaction name="r">
+				<listOfReactants>
+					<specieReference specie="s"/>
+				</listOfReactants>
+			</reaction>
+		</listOfReactions>
+	</model>
+</sbml>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" units="litre" constant="false"/>
+    </listOfCompartments>
+    <listOfParameters>
+      <parameter id="p" value="1" units="litre" constant="false"/>
+      <parameter id="p2" value="1" units="dimensionless"/>
+    </listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="p">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> c </ci>
+            <ci> p2 </ci>
+          </apply>
+        </math>
+      </assignmentRule>
+    </listOfRules>
+  </model>
+</sbml>

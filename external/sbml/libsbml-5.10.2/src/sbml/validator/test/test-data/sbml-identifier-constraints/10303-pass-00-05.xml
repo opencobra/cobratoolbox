@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Pass: (902) The names of all Parameters within a KineticLaw must be
+unique (L2v1 Sections 3.5 and 4.9.7).
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment name="c"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <specie name="s" compartment="c" initialAmount="2"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction name="r1">
+        <listOfReactants>
+          <specieReference specie="s"/>
+        </listOfReactants>
+      <kineticLaw formula="k1*k2*s">
+        <listOfParameters>
+          <parameter name="k1" value="0"/>
+          <parameter name="k2" value="0"/>
+        </listOfParameters>
+      </kineticLaw>
+      </reaction>
+      <reaction name="r2">
+        <listOfReactants>
+          <specieReference specie="s"/>
+        </listOfReactants>
+      <kineticLaw formula="k1*k2*s">
+        <listOfParameters>
+          <parameter name="k1" value="0"/>
+          <parameter name="k2" value="0"/>
+        </listOfParameters>
+      </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1"
+      xmlns:html="http://www.w3.org/1999/xhtml">
+    <model>
+        <listOfUnitDefinitions>
+            <unitDefinition id="substance">
+                <listOfUnits>
+                    <unit kind="mole" scale="-3"/>
+                </listOfUnits>
+            </unitDefinition>
+            <unitDefinition id="mmls">
+                <listOfUnits>
+                    <unit kind="mole" scale="-3"/>
+                    <unit kind="litre" exponent="-1"/>
+                    <unit kind="second" exponent="-1"/>
+                </listOfUnits>
+            </unitDefinition>
+            <unitDefinition id="mm">
+                <listOfUnits>
+                    <unit kind="litre" exponent="-1"/>
+                    <unit kind="mole" scale="-3"/>
+                </listOfUnits>
+            </unitDefinition>
+        </listOfUnitDefinitions>
+        <listOfCompartments>
+            <compartment id="cell"/>
+        </listOfCompartments>
+        <listOfSpecies>
+            <species id="x0" compartment="cell" initialConcentration="1"/>
+            <species id="x1" compartment="cell" initialConcentration="1"/>
+            <species id="s1" compartment="cell" initialConcentration="1"/>
+            <species id="s2" compartment="cell" initialConcentration="1"/>
+        </listOfSpecies>
+        <listOfParameters>
+            <parameter id="vm" value="2" units="mmls"/>
+            <parameter id="km" value="2" units="mm"/>
+        </listOfParameters>
+        <listOfReactions>
+            <reaction id="v1">
+                <listOfReactants>
+                    <speciesReference species="x0"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="s1"/>
+                </listOfProducts>
+                <kineticLaw>
+                    <notes>
+                        <html:p>((vm * s1)/(km + s1))*cell</html:p>
+                    </notes>
+                    <math xmlns="http://www.w3.org/1998/Math/MathML">
+                        <apply>
+                            <times/>
+                            <apply>
+                                <divide/>
+                                <apply>
+                                    <times/>
+                                    <ci> vm </ci>
+                                    <ci> s1 </ci>
+                                </apply>
+                                <apply>
+                                    <plus/>
+                                    <ci> km </ci>
+                                    <ci> s1 </ci>
+                                </apply>
+                            </apply>
+                            <ci> cell </ci>
+                        </apply>
+                    </math>
+                </kineticLaw>
+            </reaction>
+            <reaction id="v2">
+                <listOfReactants>
+                    <speciesReference species="s1"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="s2"/>
+                </listOfProducts>
+                <kineticLaw>
+                    <notes>
+                        <html:p>((vm * s2)/(km + s2))*cell</html:p>
+                    </notes>
+                    <math xmlns="http://www.w3.org/1998/Math/MathML">
+                        <apply>
+                            <times/>
+                            <apply>
+                                <divide/>
+                                <apply>
+                                    <times/>
+                                    <ci> vm </ci>
+                                    <ci> s2 </ci>
+                                </apply>
+                                <apply>
+                                    <plus/>
+                                    <ci> km </ci>
+                                    <ci> s2 </ci>
+                                </apply>
+                            </apply>
+                            <ci> cell </ci>
+                        </apply>
+                    </math>
+                </kineticLaw>
+            </reaction>
+            <reaction id="v3">
+                <listOfReactants>
+                    <speciesReference species="s2"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="x1"/>
+                </listOfProducts>
+                <kineticLaw>
+                    <notes>
+                        <html:p>((vm * x1)/(km + x1))*cell</html:p>
+                    </notes>
+                    <math xmlns="http://www.w3.org/1998/Math/MathML">
+                        <apply>
+                            <times/>
+                            <apply>
+                                <divide/>
+                                <apply>
+                                    <times/>
+                                    <ci> vm </ci>
+                                    <ci> x1 </ci>
+                                </apply>
+                                <apply>
+                                    <plus/>
+                                    <ci> km </ci>
+                                    <ci> x1 </ci>
+                                </apply>
+                            </apply>
+                            <ci> cell </ci>
+                        </apply>
+                    </math>
+                </kineticLaw>
+            </reaction>
+        </listOfReactions>
+    </model>
+</sbml>

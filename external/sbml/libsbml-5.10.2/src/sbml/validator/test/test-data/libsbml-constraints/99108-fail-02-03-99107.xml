@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core"  level="3" version="1" 
+xmlns:appear="http://www.sbml.org/sbml/level3/version1/appear/version1"
+      appear:required="false"
+xmlns:appear1="http://www.sbml.org/sbml/level3/version1/appear1/version1"
+      appear1:required="false"
+xmlns:appear2="http://www.sbml.org/sbml/level3/version1/appear2/version1"
+      appear2:required="true">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" constant="true" appear:shape="circle"/>
+    </listOfCompartments>
+    <appear:listOfShapes>
+      <appear:shape appear:id="circle"/>
+    </appear:listOfShapes>
+  </model>
+</sbml>

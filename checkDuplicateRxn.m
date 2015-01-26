@@ -15,6 +15,7 @@ function [model,removed] = checkDuplicateRxn(model,method)
 % Aarash Bordbar 02/11/08
 
 [nMets,nRxns] = size(model.S);
+ removed = '';
 cnt = 1;
 switch method
     case 1
@@ -44,12 +45,16 @@ switch method
                 for k = 1:length(possibleMatches)
                     if model.S(:,possibleMatches(j)) == model.S(:,possibleMatches(k)) & strcmp(model.rxns(possibleMatches(j)),model.rxns(possibleMatches(k))) == 0
                         model = removeRxns(model,model.rxns(possibleMatches(k)));
+                        removed{cnt,1} = model.rxns(possibleMatches(k));
+                        cnt = cnt+1;
                     elseif model.S(:,possibleMatches(j)) == model.S(:,possibleMatches(k)) & strcmp(model.rxns(possibleMatches(j)),model.rxns(possibleMatches(k))) == 1
                         model2 = model;
                         model2.rxns{possibleMatches(j)} = '';
                         model2 = removeRxns(model2,model.rxns(possibleMatches(j)));
                         model2.rxns{possibleMatches(j)} = model.rxns{possibleMatches(j)};
                         model = model2;
+                        removed{cnt,1} = model.rxns{possibleMatches(j)};
+                        cnt = cnt+1;
                     end
                 end
             end

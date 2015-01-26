@@ -1,0 +1,6 @@
+/** @page libsbml-core-versus-packages Differences between core libSBML and extensions
+
+@htmlinclude libsbml-core-versus-packages.html
+
+*/
+

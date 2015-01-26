@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+    <model>
+        <listOfCompartments>
+            <compartment id="cell" size="1"/>
+        </listOfCompartments>
+        <listOfSpecies>
+            <species id="P" compartment="cell" initialConcentration="0"/>
+        </listOfSpecies>
+        <listOfParameters>
+            <parameter id="tau" value="1"/>
+            <parameter id="m" value="0.5"/>
+            <parameter id="q" value="1"/>
+            <parameter id="delta_t" value="1"/>
+        </listOfParameters>
+        <listOfRules>
+            <rateRule variable="P">
+                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                 <apply>
+                  <divide/>
+                  <apply>
+                   <minus/>
+                   <apply>
+                    <divide/>
+                    <cn> 1 </cn>
+                    <apply>
+                     <plus/>
+                     <cn> 1 </cn>
+                     <apply>
+                      <times/>
+                      <ci> m </ci>
+                      <apply>
+                       <power/>
+                       <apply>
+                        <csymbol encoding="text"
+                                 definitionURL="http://www.sbml.org/sbml/symbols/delay">
+                            delay
+                        </csymbol>
+                        <ci> P </ci>
+                        <ci> delta_t </ci>
+                       </apply>
+                       <ci> q </ci>
+                      </apply>
+                     </apply>
+                    </apply>
+                   </apply>
+                   <ci> P </ci>
+                  </apply>
+                  <ci> tau </ci>
+                 </apply>
+                </math>
+            </rateRule>
+        </listOfRules>
+    </model>
+</sbml>

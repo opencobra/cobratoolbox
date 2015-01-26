@@ -71,10 +71,10 @@ function sbml_model = cobra_struct_to_sbml_struct( model, sbml_level,sbml_versio
     sbml_tmp_law = KineticLaw_create( sbml_model.SBML_level);
     tmp_unit_definition = UnitDefinition_create( sbml_model.SBML_level);
   end
-  %% Compartments
-  compartment_symbols = {'c','m','v','x','e','t','g','r','n','p'};
-  compartment_names = {'Cytoplasm','Mitochondrion','Vacuole','Peroxisome','Extracellular','Pool','Golgi','Endoplasmic_reticulum','Nucleus','Periplasm'};
-
+  
+  compartment_symbols = {'c','m','v','x','e','t','g','r','n','p','l','y'};
+  compartment_names = {'Cytoplasm','Mitochondrion','Vacuole','Peroxisome','Extracellular','Pool','Golgi','Endoplasmic_reticulum','Nucleus','Periplasm','Lysosome','Glycosome'};
+  
   %Create and add the unit definition to the sbml model struct.
   tmp_unit_definition.id =  reaction_units;
   %The 4 following lists are in matched order for each unit.

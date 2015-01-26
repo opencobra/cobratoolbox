@@ -5,7 +5,7 @@
 %     filename    Filename of Output File (make sure to include '.txt' or
 %     '.xpa')
 %     rxnzero     Matrix containing all no flux var rxns (to skip, set=0)
-% 
+%
 % Limitations:
 %     -Works properly with only integer value reaction coeff. (except for .5
 %     or -.5)
@@ -13,18 +13,20 @@
 %     -Exchange reactions have to be clumped together in model
 %     -If using rxnzero, make sure that EX reactions contain no compounds
 %     that are not used in the uncommented reactions
-% 
+%
 % Aarash Bordbar, 07/06/07
 % Updated Aarash Bordbar 02/22/10
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function convertModelToEX(model,filename,rxnzero)
+function convertModelToEX(model,filename,rxnzero,EXrxns)
 
 fid = fopen(filename,'w');
 fprintf(fid,'(Internal Fluxes)\n');
 
-EXrxns = [strmatch('EX_',model.rxns);strmatch('DM_',model.rxns)];
-EXrxns = model.rxns(EXrxns);
+if nargin < 4
+    EXrxns = [strmatch('EX_',model.rxns);strmatch('DM_',model.rxns)];
+    EXrxns = model.rxns(EXrxns);
+end
 checkEX = ismember(model.rxns,EXrxns);
 
 % Reactions prior to exchange reactions

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" metaid="metaid_0000001" version="3">
+  <model id="model_0000001" metaid="metaid_0000002" name="model" xmlns:sbml="http://www.sbml.org/sbml/level2/version3">
+ <listOfUnitDefinitions>
+      <unitDefinition id="joule_per_mole_kelvin" name="joule_per_kilomole_kelvin">
+        <listOfUnits>
+          <unit kind="joule"/>
+          <unit kind="kelvin" exponent="-1"/>
+          <unit kind="mole" exponent="-1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="temperature" name="kelvin">
+        <listOfUnits>
+          <unit kind="kelvin"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="coulomb_per_mole" name="coulomb_per_mole">
+        <listOfUnits>
+          <unit kind="coulomb"/>
+          <unit kind="mole" exponent="-1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="voltage" name="voltage">
+        <listOfUnits>
+          <unit kind="volt"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="mili_voltage" name="voltage">
+        <listOfUnits>
+          <unit kind="volt" scale="-3"/>
+        </listOfUnits>
+      </unitDefinition>
+
+</listOfUnitDefinitions>
+<listOfCompartments>
+<compartment id="default" metaid="metaid_0000003" size="1"/>
+</listOfCompartments>
+<listOfParameters>
+<parameter id="Ve"  units="voltage" constant="false"/>
+<parameter id="V"  units="voltage" constant="false"/>
+<parameter id="T"  units="temperature" value="1"/>
+<parameter id="F"  units="coulomb_per_mole" value="1"/>
+<parameter id="R" units="joule_per_mole_kelvin" value="1"/>
+</listOfParameters>
+<listOfRules>
+  <assignmentRule metaid="metaid_0000017" variable="Ve">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+      <apply>
+	<minus/>
+	<ci> V </ci>
+	<apply>
+	  <divide/>
+	  <apply>
+	    <times/>
+	    <ci> T </ci>
+	    <ci> R </ci>
+	  </apply>
+	  <ci> F </ci>
+	</apply>
+      </apply>
+    </math>
+  </assignmentRule>
+</listOfRules>
+  </model>
+</sbml>
+
+ 	  	 

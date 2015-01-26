@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+  <model id="parameterNamespace_speciesAndLocal">
+    <listOfCompartments>
+      <compartment id="compartment" size="1"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="S1" compartment="compartment" initialAmount="3e-015"/>
+      <species id="S2" compartment="compartment" initialAmount="0"/>
+      <species id="S3" compartment="compartment" initialAmount="0"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="k" value="1" units="dimensionless"/>
+    </listOfParameters>
+    <listOfReactions>
+      <reaction id="R2" reversible="false">
+        <listOfReactants>
+          <speciesReference species="S2"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="S3"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="S1"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> S1 </ci>
+              <ci> S2 </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="S1" value="0.1" units="dimensionless"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

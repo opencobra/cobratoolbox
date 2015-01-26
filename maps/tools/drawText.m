@@ -38,7 +38,9 @@ if nargin < 9
     flagCenter = false;
 end
 
-
+if length(fontSize)>1
+    error('Fontsize should be a scalar')
+end
 
 if iscell(drawString)
     display ('whoops - this shouldnt happen.  drawText.m')
@@ -76,9 +78,27 @@ elseif strcmp(CB_MAP_OUTPUT, 'svg')
     drawString = regexprep(drawString,'&','&amp;');
     fprintf(mapHandle, '<g style="font-family: %s; font-style: %s; font-weight: %s; stroke: none;">\n',font,fontStyle, fontWeight);
     if flagCenter
-        fprintf(mapHandle,'<text style="fill: %s; text-rendering: optimizeLegibility;" x="%.2f" y="%.2f" font-size="%dpx">%s</text>\n</g>\n',colorStroke,x-(length(drawString)*fontSize*1.25),y+(5*fontSize),5*fontSize,drawString); 
+        %fprintf('<text style="fill: %s; text-rendering: optimizeLegibility;" x="%.2f" y="%.2f" font-size="%dpx">%s</text>\n</g>\n',colorStroke,x-(length(drawString)*fontSize*1.25),y+(5*fontSize),5*fontSize,drawString);
+        fprintf(mapHandle,'<text style="fill: %s; text-rendering: optimizeLegibility;" x="%.2f" y="%.2f" font-size="%dpx">%s</text>\n</g>\n',colorStroke,x-(length(drawString)*fontSize*1.25),y+(5*fontSize),5*fontSize,drawString);
     else
-        fprintf(mapHandle,'<text style="fill: %s; text-rendering: optimizeLegibility;" x="%.2f" y="%.2f" font-size="%dpx">%s</text>\n</g>\n',colorStroke,x,y,5*fontSize,drawString); 
+        %code for debugging
+%         fprintf('<text style="fill: %s; text-rendering: optimizeLegibility;" x="%.2f" y="%.2f" font-size="%dpx">%s</text>\n</g>\n',colorStroke,x,y,5*fontSize,drawString);
+%         fprintf('\n%s\n','----')
+%         disp(colorStroke)
+%         class(colorStroke)
+%         fprintf('%s\n','----')
+%         disp(x)
+%         class(x)
+%         fprintf('%s\n','----')
+%         disp(y)
+%         class(y)
+%         fprintf('%s\n','----')
+%         disp(5*fontSize)
+%         class(5*fontSize)
+%         fprintf('%s\n','----')
+%         disp(drawString)
+%         class(drawString)
+        fprintf(mapHandle,'<text style="fill: %s; text-rendering: optimizeLegibility;" x="%.2f" y="%.2f" font-size="%dpx">%s</text>\n</g>\n',colorStroke,x,y,5*fontSize,drawString);
     end
 %     fprintf(mapHandle,'<text style="stroke: none;" x="%8.2f" y="%8.2f">%s</text>\n',x,-y,drawString); 
 else

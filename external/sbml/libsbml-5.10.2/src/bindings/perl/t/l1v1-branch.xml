@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="1">
+  <model name="Branch">
+    <notes>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+        <p>Simple branch system.</p>
+        <p>The reaction looks like this:</p>
+        <p>reaction-1:   X0 -> S1; k1*X0;</p>
+        <p>reaction-2:   S1 -> X1; k2*S1;</p>
+        <p>reaction-3:   S1 -> X2; k3*S1;</p>
+      </body>
+    </notes>
+    <listOfCompartments>
+      <compartment name="compartmentOne" volume="1"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <specie name="S1" initialAmount="0" compartment="compartmentOne"
+              boundaryCondition="false"/>
+      <specie name="X0" initialAmount="0" compartment="compartmentOne"
+              boundaryCondition="true"/>
+      <specie name="X1" initialAmount="0" compartment="compartmentOne"
+              boundaryCondition="true"/>
+      <specie name="X2" initialAmount="0" compartment="compartmentOne"
+              boundaryCondition="true"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction name="reaction_1" reversible="false">
+        <listOfReactants>
+          <specieReference specie="X0" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <specieReference specie="S1" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw formula="k1 * X0">
+          <listOfParameters>
+            <parameter name="k1" value="0"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction name="reaction_2" reversible="false">
+        <listOfReactants>
+          <specieReference specie="S1" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <specieReference specie="X1" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw formula="k2 * S1">
+          <listOfParameters>
+            <parameter name="k2" value="0"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction name="reaction_3" reversible="false">
+        <listOfReactants>
+          <specieReference specie="S1" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <specieReference specie="X2" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw formula="k3 * S1">
+          <listOfParameters>
+            <parameter name="k3" value="0"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fail: (1210) The kind of unit can only be predefined.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+	<model>
+		<listOfUnitDefinitions>
+			<unitDefinition id="gg">
+				<listOfUnits>
+					<unit kind="gg"/>
+				</listOfUnits>
+			</unitDefinition>
+		</listOfUnitDefinitions>
+	</model>
+</sbml>

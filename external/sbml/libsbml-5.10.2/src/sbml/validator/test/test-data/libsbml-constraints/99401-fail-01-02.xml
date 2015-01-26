@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" metaid="_000000" level="2" version="4">
+  <model metaid="_000001" id="EPSP_Edelstein" name="Edelstein1996_EPSP_AChEvent">
+  <listOfCompartments>
+    <compartment metaid="_000002" id="comp1" name="compartment1" size="1e-16">
+      <annotation>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+          <rdf:Description>
+            <bqbiol:is>
+              <rdf:Bag>
+                <rdf:li rdf:resource="urn:miriam:obo.go:GO%3A0031594"/>
+              </rdf:Bag>
+            </bqbiol:is>
+          </rdf:Description>
+        </rdf:RDF>
+      </annotation>
+    </compartment>
+  </listOfCompartments>
+</model>
+</sbml>

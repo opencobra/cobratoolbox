@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns:foo="http://www.sbml.org/sbml/level2/version2" xmlns:comp="http:/ss" level="2" version="2">
+  <model/>
+</sbml>

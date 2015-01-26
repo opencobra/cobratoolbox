@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Fail: (1801) An Event trigger must return a boolean value
+(L2v1 Section 4.10.2)
+
+Additional case where the event trigger is a function definition
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model>
+    <listOfFunctionDefinitions>
+      <functionDefinition id="f">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar><ci> x </ci></bvar>
+            <apply>
+              <power/> <ci> x </ci> <cn> 3 </cn>
+            </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+    </listOfFunctionDefinitions>
+
+    <listOfCompartments>
+      <compartment id="compartment" size="1" constant="false"/>
+    </listOfCompartments>
+ 
+    <listOfSpecies>
+      <species id="S1" compartment="compartment" initialAmount="1"/>
+    </listOfSpecies>
+
+    <listOfEvents>
+      <event id="e">
+        <trigger>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> f </ci>
+              <ci> S1 </ci>
+            </apply>
+          </math>
+        </trigger>
+          <listOfEventAssignments>
+          <eventAssignment variable="compartment"/>
+        </listOfEventAssignments>
+     </event>
+    </listOfEvents>
+  </model>
+</sbml>

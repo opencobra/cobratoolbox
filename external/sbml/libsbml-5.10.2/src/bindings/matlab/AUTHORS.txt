@@ -1,0 +1,20 @@
+      The original code contained here was initially developed by:
+
+			     Sarah Keating
+		 Science and Technology Research Centre
+		      University of Hertfordshire
+			   Hatfield, AL10 9AB
+			     United Kingdom
+
+			with contributions from
+
+		    Ben Bornstein and Michael Hucka
+		Control and Dynamical Systems, MC 107-81
+		   California Institute of Technology
+			Pasadena, CA, 91125, USA
+ 
+	  For more information about SBML or libSBML, contact:
+
+			     The SBML Team
+			    http://sbml.org
+		      mailto:sbml-team@caltech.edu

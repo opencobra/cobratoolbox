@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fail: (3001) The units returned by the assignment rule that assigns value
+    to a species must be consistent with either the units
+    declared for that species or the default units for the
+    species.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+  <model>
+    <listOfCompartments>
+      <compartment name="c" units="litre"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species name="s1" compartment="c" initialAmount="0" units = "mole"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter name="p" value="1" units="litre"/>
+      <parameter name="p1" value="1" units="ampere"/>
+    </listOfParameters>
+    <listOfRules>
+      <speciesConcentrationRule species="s1" formula="p1/p"/>
+    </listOfRules>
+  </model>
+</sbml>

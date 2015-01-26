@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model substanceUnits="fmol" timeUnits="min" volumeUnits="fL" extentUnits="fmol">
+    <listOfUnitDefinitions>
+      
+      
+      
+      
+      
+      
+      
+      <unitDefinition metaid="metaid_7" id="min" name="min">
+        <listOfUnits>
+          <unit kind="second" exponent="1" scale="0" multiplier="60"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition metaid="metaid_8" id="M" name="M">
+        <listOfUnits>
+          <unit kind="mole" exponent="1" scale="0" multiplier="1"/>
+          <unit kind="litre" exponent="-1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      
+      <unitDefinition metaid="metaid_10" id="fmol" name="fmol">
+        <listOfUnits>
+          <unit kind="mole" exponent="1" scale="-15" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition metaid="metaid_11" id="fL" name="fL">
+        <listOfUnits>
+          <unit kind="litre" exponent="1" scale="-15" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      
+      
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      
+      <compartment metaid="metaid_15" id="Vpf" name="Vpf" spatialDimensions="3" size="28" constant="false"/>
+      
+    </listOfCompartments>
+    
+    <listOfSpecies>
+      <species metaid="metaid_85" id="pyrPF" name="pyrPF" compartment="Vpf" hasOnlySubstanceUnits="true" initialAmount="0" boundaryCondition="false" constant="false"/>      
+    </listOfSpecies>
+    
+    <listOfParameters>
+      <parameter metaid="metaid_434" id="KipyrPFvPK" value="0.0686" units="M" constant="false"/>
+      <parameter id="p1" value="13000000" constant="false" units="dimensionless"/>
+      
+    </listOfParameters>
+    <listOfInitialAssignments>
+      <initialAssignment symbol="p1">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <apply>
+            <plus/>
+            <cn type="integer" sbml:units="dimensionless"> 1 </cn>
+            <apply>
+              <power/>
+              <apply>
+                <divide/>
+                <ci> pyrPF </ci>
+                <apply>
+                  <times/>
+                  <ci> Vpf </ci>
+                  <ci> KipyrPFvPK </ci>
+                </apply>
+              </apply>
+              <cn type="integer" sbml:units="dimensionless"> 4 </cn>
+            </apply>
+          </apply>
+          
+        </math>
+      </initialAssignment>
+    </listOfInitialAssignments>
+    
+    
+    
+    
+  </model>
+</sbml>

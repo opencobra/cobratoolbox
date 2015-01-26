@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (2001) Compartment with spatialDimensions other than three 
+	cannot be represented in Level 1
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" spatialDimensions="3" size="1.2"/>
+    </listOfCompartments>
+  </model>
+</sbml>

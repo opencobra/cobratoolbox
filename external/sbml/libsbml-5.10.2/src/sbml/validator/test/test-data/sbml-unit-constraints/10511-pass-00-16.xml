@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (3000) The units returned by the assignment rule that assigns value
+    to a compartment must be consistent with either the units
+    declared for that compartment or the default units for the
+    compartment.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+  <model>
+    <listOfCompartments>
+      <compartment name="c" units="litre"/>
+    </listOfCompartments>
+    <listOfParameters>
+      <parameter name="p" value="1" units="litre"/>
+       <parameter name="p2" value="1" units="dimensionless"/>
+   </listOfParameters>
+    <listOfRules>
+      <compartmentVolumeRule compartment="c" formula="p*p2"/>
+    </listOfRules>
+  </model>
+</sbml>
