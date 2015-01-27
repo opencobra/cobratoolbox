@@ -1,0 +1,61 @@
+16 May 2008: This is the output from Z = nullspaceLUSOLtest(A)
+             using Ines's 20877 x 24494 stoichiometric matrix A.
+
+>> load LPSystemsBiology.mat
+>> tic; Z = nullspaceLUSOLtest(A); toc
+
+size(S) =      20877 x      24494
+ nnz(S) =     301142
+
+
+gmscal: Geometric-Mean scaling of matrix
+------
+                 Max col ratio
+  After  0           691650.00
+  After  1           182395.00
+  After  2            47458.77
+  After  3            27144.52
+  After  4            21588.24
+  After  5            20386.89
+
+  Min scale               Max scale
+  Row  10756   1.4e-02    Row  10194   1.2e+04
+  Col  24472   8.0e-05    Col  10457   2.4e+03
+
+Elapsed time is 2.271185 seconds.
+ m       24494 >n       20877  Elems   301142  Amax   1.0E+00  Density   0.06
+ Singular(m>n)  rank    20377  n-rank     500  nsing      500
+ MerRP    24.1  lenL   352534  L+U     464110  Cmpressns    0  Incres   54.12
+ Utri       91  lenU   111576  Ltol  1.50E+00  Umax   1.6E+00  Ugrwth 1.6E+00
+ Ltri     1582  dense1      0  Lmax  1.50E+00  Akmax  0.0E+00  Agrwth 0.0E+00
+ bump    22821  dense2      0  DUmax  1.6E+00  DUmin  1.9E-04  condU  8.3E+03
+Note: lu1fac returned Inform = 1
+Elapsed time is 28.918398 seconds.
+
+rank(S) =      20377
+nnz(L)  =     377028
+nnz(U)  =     111576
+null(S) is represented by L, permutation p, and column scaling Cinv
+
+  Name          Size                  Bytes  Class     Attributes
+
+  S         20877x24494             3711768  double    sparse
+  SZ        20877x4117             34334396  double    sparse
+  Z         24494x4117             17173292  double    sparse
+
+norm(S*Z,inf) =  9.5e-11
+Elapsed time is 126.487754 seconds.
+>> nnz(Z)
+ans =
+     1270876
+
+NOTE:
+Scaling is essential make the sparse LU efficient.
+
+The operator form of null(S) needs (L, p, Cinv).
+nnz(L) ~= 377000, and the time to compute (L, p, Cinv) is  ~29 seconds.
+
+As a test, the above computes Z as an explicit sparse matrix such that S*Z = 0.
+nnz(Z) ~= 1271000 and the time to compute     Z        is ~126 seconds.
+
+We conclude that the operator form of L is significantly more efficient.

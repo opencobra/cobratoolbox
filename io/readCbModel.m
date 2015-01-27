@@ -176,7 +176,9 @@ if isempty(compSymbolList)
 end
 
 % Read SBML
-modelSBML = TranslateSBML(fileName);
+validate=0;
+verbose=0;% Ronan Nov 24th 2014
+modelSBML = TranslateSBML(fileName,validate,verbose);
 
 % Convert
 model = convertSBMLToCobra(modelSBML,defaultBound,compSymbolList,compNameList);

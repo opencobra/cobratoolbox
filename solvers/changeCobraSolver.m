@@ -27,6 +27,7 @@ function solverOK = changeCobraSolver(solverName,solverType)
 %                   package)
 %   gurobi          Gurobi accessed through Matlab mex interface (Gurobi mex)
 %   gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
+%   gurobi6         Gurobi 6  accessed through built-in Matlab mex interface
 %   matlab          Matlab's own linprog.m (currently unsupported, may not
 %                   work on COBRA-type LP problems)
 %   mps             Outputs a MPS matrix string. Does not solve LP problem
@@ -36,6 +37,7 @@ function solverOK = changeCobraSolver(solverName,solverType)
 %   glpk            glpk MILP solver with Matlab mex interface (glpkmex)
 %   gurobi          Gurobi accessed through Matlab mex interface (Gurobi mex)
 %   gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
+%   gurobi6         Gurobi 6.0 accessed through built-in Matlab mex interface
 %   mps             Outputs a MPS matrix string. Does not solve MILP
 %                   problem
 %
@@ -44,10 +46,12 @@ function solverOK = changeCobraSolver(solverName,solverType)
 %   qpng            qpng QP solver with Matlab mex interface (in glpkmex
 %                   package, only limited support for small problems)
 %   gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
+%   gurobi6         Gurobi 6.0 accessed through built-in Matlab mex interface
 %
 % Currently allowed MIQP solvers:
 %   tomlab_cplex    CPLEX MIQP solver accessed through Tomlab environment
 %   gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
+%   gurobi6         Gurobi 6.0 accessed through built-in Matlab mex interface
 %
 % Currently allowed NLP solvers
 %   matlab          MATLAB's fmincon.m
@@ -150,6 +154,11 @@ if (strcmp(solverType,'LP'))
                 warning('LP solver Gurobi not useable: gurobi.m not in Matlab path');
                 solverOK=false;
             end
+        case 'gurobi6'
+            if (~exist('gurobi'))
+                warning('LP solver Gurobi not useable: gurobi.m not in Matlab path');
+                solverOK=false;
+            end
         case 'mps'
             if (~exist('BuildMPS'))
                 warning('MPS not usable: BuildMPS.m not in Matlab path');
@@ -194,6 +203,11 @@ elseif (strcmp(solverType,'MILP'))
                 solverOK=false;
             end
         case 'gurobi5'
+            if (~exist('gurobi'))
+                warning('MILP solver Gurobi not useable: gurobi.m not in Matlab path');
+                solverOK=false;
+            end
+        case 'gurobi6'
             if (~exist('gurobi'))
                 warning('MILP solver Gurobi not useable: gurobi.m not in Matlab path');
                 solverOK=false;
@@ -256,6 +270,13 @@ elseif (strcmp(solverType,'QP'))
             else
                 solverOK=true;
             end
+        case 'gurobi6'
+            if (~exist('gurobi'))
+                warning('QP solver Gurobi not useable: gurobi.m not in Matlab path');
+                solverOK=false;
+            else
+                solverOK=true;
+            end
         otherwise
             warning(['QP solver ' solverName ' not supported by COBRA Toolbox']);
             solverOK = false;
@@ -281,6 +302,13 @@ elseif (strcmp(solverType, 'MIQP'))
                 solverOK = true;
             end
         case 'gurobi5'
+            if(~exist('gurobi'))
+                warning('MIQP solver gurobi not usable: gurobi.m not in Matlab path');
+                solverOK = false;
+            else
+                solverOK = true;
+            end
+        case 'gurobi6'
             if(~exist('gurobi'))
                 warning('MIQP solver gurobi not usable: gurobi.m not in Matlab path');
                 solverOK = false;

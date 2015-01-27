@@ -1,0 +1,57 @@
+<html>
+  <head>
+<title>Odefy documentation - Model exporting</title>
+    <meta content="">
+    <style></style>
+      <LINK href="styles.css" rel="stylesheet" type="text/css">
+
+  </head>
+  <body>
+  
+<a target="_blank" href="http://cmb.helmholtz-muenchen.de/odefy"><span style="font-weight: bold;"><img alt="Odefy" style="border: 0px solid ; width: 174px; height: 61px;" alt="Odefy" src="odefy.png"></span></a><br>
+
+<h3>Model exporting</h3>
+
+<font size="-1"><a href="index.html">&lt;&lt; Back to main page</a></font><br/><br/>
+
+Odefy can convert Boolean models to a variety of foreign formats, including both discrete and continuous modeling frameworks. The following table gives an overview of the different export formats and the respective Odefy functions.<p></p>
+
+<div align="center">
+<table cellpadding="4" cellspacing="0" border="1">
+<tr><td><b>Export format</b></td><td><b>Export type</b></td><td><b>Odefy function</b></td></tr>
+<tr><td><a href="http://ibis.inrialpes.fr/article122.html" target="_blank">GNA</a></td><td>discrete</td><td><code>SaveGNAModel</code></td></tr>
+<tr><td><a href="http://www.enfin.org/squad" target="_blank">SQUAD</a></td><td>discrete</td><td><code>SaveSQUADModel</code></td></tr>
+<tr><td><a href="http://personal.systemsbiology.net/ilya/PBN/PBN.htm" target="_blank">PBN toolbox</a></td><td>discrete</td><td><code>CreateBNPBNModel</code></td></tr>
+<tr><td>MATLAB .m file</td><td>continuous</td><td><code>SaveMatlabODE</code></td></tr>
+<tr><td><a href="http://sbtoolbox2.org/" target="_blank">SB toolbox</a></td><td>continuous</td><td><code>CreateSBToolboxModel</code></td></tr>
+<tr><td><a href="http://sbml.org/" target="_blank">SBML</a></td><td>continuous</td><td><code>SaveSBML</code></td></tr>
+<tr><td><a href="http://www.r-project.org/" target="_blank">R</a></td><td>continuous</td><td><code>SaveRModel</code></td></tr>
+</table> 
+</div>
+<p></p>
+Check out <code>help [function]</code> for detailed usage information on each of these functions.
+
+<p></p>
+<br/><b>Graphical user interface</b><p></p>
+A graphical user interface to the export feature of Odefy is also available:
+<p></p>
+<div align="center"><img src="expdialog.png"></div>
+<p></p>
+
+You can either call the dialog with the model you want to export
+<pre>Export(model)</pre>
+or without any arguments to select a model from a file:
+<pre>Export</pre>
+(see also: <a href="guide_create.html#load">Model creation: Loading models</a>)
+</body>
+
+
+<br/><br/>
+<hr size="1">
+<div align="right">
+<font size="-1">
+Odefy by CMB, <a target="_blank" href="http://cmb.helmholtz-muenchen.de/odefy">http://cmb.helmholtz-muenchen.de/odefy</a>
+</font>
+</div>
+
+</html>
