@@ -89,7 +89,7 @@ if (isfield(model, 'comments'))
 	modelOut.confidenceScores = model.comments(selectRxns);
 end
 if (isfield(model, 'citations'))
-	modelOut.confidenceScores = model.citations(selectRxns);
+	modelOut.citations = model.citations(selectRxns);
 end
 if (isfield(model, 'ecNumbers'))
 	modelOut.ecNumbers = model.ecNumbers(selectRxns);
@@ -100,10 +100,6 @@ end
 if (isfield(model, 'comments'))
 	modelOut.comments = model.comments(selectRxns);
 end
-if (isfield(model, 'citations'))
-	modelOut.comments = model.comments(selectRxns);
-end
-
 
 % Reconstruct the match list
 if (irrevFlag)

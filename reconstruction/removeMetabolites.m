@@ -29,7 +29,7 @@ metabolicFields = fieldnames(model);
 metabolicFields = metabolicFields(foo);
 clear foo;
 for i = 1:length(metabolicFields)
-	modelOut.(metabolicFields{i}) = model.(metabolicFields{i})(selMets);
+	model.(metabolicFields{i}) = model.(metabolicFields{i})(selMets);
 end
 if (isfield(model,'b'))
     model.b = model.b(selMets);
