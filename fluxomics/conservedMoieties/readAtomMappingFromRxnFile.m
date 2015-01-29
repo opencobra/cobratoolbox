@@ -1,4 +1,4 @@
-function [atomMets,elements,metNrs,rxnNrs,reactantBool,instances,rxnPairs] = readAtomMappingFromRxnFile(rxn,rxnFileDir)
+function [atomMets,elements,metNrs,rxnNrs,reactantBool,instances] = readAtomMappingFromRxnFile(rxn,rxnFileDir)
 
 % Format inputs
 rxn = regexprep(rxn,'(\.rxn)$',''); % Remove rxnfile ending from reaction identifier
@@ -10,15 +10,16 @@ else
 end
 
 % Read reaction file
-rxnFilePath = [rxnFileDir rxn '.rxn'];
+if strcmp(rxn,'3AIBTm')
+    rxnFilePath = [rxnFileDir '3AIBtm (Case Conflict).rxn'];
+else
+    rxnFilePath = [rxnFileDir rxn '.rxn'];
+end
+
 fileStr = fileread(rxnFilePath); % Read file contents into a string
 fileCell = regexp(fileStr,'\$MOL\r?\n','split'); % Split file into text blocks
 
 % Get reaction data
-if strcmp(rxn,'3AIBtm (Case Conflict)')
-    rxn = '3AIBTm';
-end
-
 headerStr = fileCell{1}; % First block contains reaction data
 headerCell = regexp(headerStr,'\r?\n','split');
 
@@ -109,46 +110,4 @@ reactantBool = logical(reactantBool);
 assert(all(sort(rxnNrs(reactantBool)) == (1:sum(reactantBool))'),'Reaction file %s.rxn could not be parsed for atom mappings.\n',rxn)
 assert(all(sort(rxnNrs(~reactantBool)) == (1:sum(~reactantBool))'),'Reaction file %s.rxn could not be parsed for atom mappings.\n',rxn)
 assert(all(sort(rxnNrs(reactantBool)) == sort(rxnNrs(~reactantBool))),'Reaction file %s.rxn could not be parsed for atom mappings.\n',rxn)
-
-rxnPairs = sparse(sum(nAtoms),sum(reactantBool)^2);
-rPairCount = 1;
-
-for i = find(s < 0)'
-    rid = mets{i};
-    
-    for j = 1:abs(s(i))
-        rRxnNrs = rxnNrs(strcmp(atomMets,rid) & instances == j);
-        
-        for k = find(s > 0)'
-            pid = mets{k};
-            
-            for l = 1:s(k)
-                pRxnNrs = rxnNrs(strcmp(atomMets,pid) & instances == l);
-                
-                pairRxnNrs = intersect(rRxnNrs,pRxnNrs);
-                
-                if ~isempty(pairRxnNrs)
-                    rMetNrs = metNrs(ismember(rxnNrs,pairRxnNrs) & reactantBool);
-                    [~,xi] = sort(rxnNrs(ismember(rxnNrs,pairRxnNrs) & ~reactantBool));
-                    pMetNrs = rMetNrs(xi);
-                    
-                    if strcmp(regexprep(rid,'(\[\w\])$',''),regexprep(pid,'(\[\w\])$',''))
-                        if ~all(pMetNrs == rMetNrs)
-                            pMetNrs = rMetNrs;
-                            rxnNrs(ismember(rxnNrs,pairRxnNrs) & ~reactantBool) = rxnNrs(ismember(rxnNrs,pairRxnNrs) & reactantBool);
-                        end
-                    end
-                    
-                    rxnPairs(ismember(rxnNrs,pairRxnNrs) & reactantBool,rPairCount) = rMetNrs;
-                    rxnPairs(ismember(rxnNrs,pairRxnNrs) & ~reactantBool,rPairCount) = pMetNrs;
-                    
-                    rPairCount = rPairCount + 1;
-                    
-                end
-            end
-        end
-    end
-end
-
-rxnPairs = rxnPairs(:,any(rxnPairs));
 
