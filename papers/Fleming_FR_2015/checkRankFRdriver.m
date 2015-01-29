@@ -8,16 +8,21 @@ cbPath=cbPath(1:end-length('initCobraToolbox.m'));
 %model directory
 %modelCollectionDirectory=[cbPath 'SystemsPhysiologyGroup/modelCollection/'];
 %modelCollectionDirectory=[cbPath 'testing/testModels/AliEbrahim/'];
-modelCollectionDirectory='/home/rfleming/Dropbox/graphStoich/data/modelCollectionAll';
+modelCollectionDirectory='/home/rfleming/Dropbox/graphStoich/data/modelCollectionFR';
 
 %results directory
 resultsDirectory='/home/rfleming/Dropbox/graphStoich/results/FRresults/';
+cd(resultsDirectory)
 %resultsDirectory=[cbPath 'papers/Fleming_FR_2015/results/'];
 
 if 0
     %single model
-    if 1
+    if 0
         load ecoli_core_xls2model.mat
+        model=findSExRxnInd(model);
+    end
+    if 0
+        load Ecoli_core.mat
         model=findSExRxnInd(model);
     end
     if 0
@@ -32,7 +37,6 @@ if 0
         load K_pneumonieae_rBioNet.mat
         model=K_pneumonieae_rBioNet;
     end
-    
     if 0
         load cardiac_mit_glcuptake_atpmax.mat
         model=modelCardioMito;
@@ -49,17 +53,15 @@ if 0
     if 0
         load iRS1563.mat
     end
-    % [F,R] does not have full row rank for:
-    % Model           Rows([F,R]) Rank([F,R])
-    % Recon2betaModel_121114.mat	3157	3154
-    % iMM904.mat	888	886
-    % iND750.mat	740	738
-    % iRS1563.mat	213	212
     if 0
         load Recon2betaModel_121114.mat
         model=modelRecon2beta121114;
     end
     if 0
+        load Recon2.v03.mat
+        model=modelRecon2beta121114_fixed_updatedID;
+    end
+    if 1
         load iMM904.mat
     end
     if 0
@@ -68,10 +70,34 @@ if 0
     if 0
         load iJN746.mat
     end
+    if 0
+        load L_lactis_MG1363.mat
+        model=L_lactis_MG1363;
+    end
     
+%     [F,R] does not have full row rank for:
+%     Model           Rows([F,R]) Rank([F,R])
+%     PpaMBEL1254.mat	77	76
+%     Recon2betaModel_121114.mat	3157	3154
+%     iCac802.mat	521	520
+%     iLC915.mat	720	719
+%     iMM904.mat	888	886
+%     iND750.mat	740	738
+%     iRS1563.mat	213	212
+%     iSS884.mat	679	678
+%     mus_musculus.mat	186	184
+
     %%%%%%%%%%%
     printLevel=2;
     [rankFR,rankFRV,rankFRvanilla,rankFRVvanilla,model] = checkRankFR(model,printLevel);
+    if printLevel>0 && model.FRrowRankDeficiency>0
+        if 0
+            filePathName=[resultsDirectory filesep 'FRrowDependencies.txt'];
+            printFRdependencies(model,filePathName);
+        else
+            printFRdependencies(model);
+        end
+    end
     %%%%%%%%%%%%%
     
     %rank of S
@@ -98,17 +124,17 @@ if 0
         %rows
         FRtable{i,1}='# Reactants';
         i=i+1;
-        FRtable{i,1}='# Non exchange rows';
+        FRtable{i,1}='# Exchange rows';
         i=i+1;
         FRtable{i,1}='# Elementally balanced rows';
         i=i+1;
         FRtable{i,1}='# Stoichiometrially consistent rows';
         i=i+1;
-        FRtable{i,1}='# Stoich. and flux consistent rows';
+        FRtable{i,1}='# Unique and stoichiometrially consistent rows';
         i=i+1;
-        FRtable{i,1}='# Nonzero stoich. and flux consistent rows of [F,R]';
+        FRtable{i,1}='# Unique stoich. and flux consistent rows of [F,R]';
         i=i+1;
-        FRtable{i,1}='# Unique  stoich. and flux consistent rows of [F,R]';
+        FRtable{i,1}='# Unique stoich. and flux consistent nonzero rows of [F,R]';
         i=i+1;
         FRtable{i,1}='# Largest connected rows of [F,R]';
         i=i+1;
@@ -126,17 +152,17 @@ if 0
         %cols
         FRtable{i,1}='# Reactions';
         i=i+1;
-        FRtable{i,1}='# Non exchange cols';
+        FRtable{i,1}='# Exchange cols';
         i=i+1;
         FRtable{i,1}='# Elementally balanced cols';
         i=i+1;
-        FRtable{i,1}='# Stoichiometrically consistent cols';
+        FRtable{i,1}='# Stoichiometrially consistent cols';
         i=i+1;
-        FRtable{i,1}='# Stoichiometrically and flux consistent cols';
+        FRtable{i,1}='# Unique and stoichiometrially consistent cols';
         i=i+1;
-        FRtable{i,1}='# Nonzero consistent cols of [F;R]';
+        FRtable{i,1}='# Unique stoich. and flux consistent cols of [F;R]';
         i=i+1;
-        FRtable{i,1}='# Unique  consistent cols of [F;R]';
+        FRtable{i,1}='# Unique stoich. and flux consistent nonzero rows of [F;R]';
         i=i+1;
         FRtable{i,1}='# Largest connected cols of [F;R]';
         i=i+1;
@@ -157,7 +183,7 @@ if 0
         %rows
         FRtable{i,k+1}=size(results(k).model.S,1);
         i=i+1;
-        FRtable{i,k+1}=nnz(results(k).model.SIntMetBool);
+        FRtable{i,k+1}=nnz(~results(k).model.SIntMetBool);
         i=i+1;
         if isfield(results(k).model,'balancedMetBool')
             FRtable{i,k+1}=nnz(results(k).model.balancedMetBool);
@@ -167,11 +193,11 @@ if 0
         i=i+1;
         FRtable{i,k+1}=nnz(results(k).model.SConsistentMetBool);
         i=i+1;
-        FRtable{i,k+1}=nnz(results(k).model.fluxConsistentMetBool);
+        FRtable{i,k+1}=nnz((results(k).model.SConsistentMetBool | ~results(k).model.SIntMetBool) & results(k).model.FRuniqueRowBool);
         i=i+1;
-        FRtable{i,k+1}=nnz(results(k).model.FRnonZeroRowBool);
+        FRtable{i,k+1}=nnz((results(k).model.SConsistentMetBool | ~results(k).model.SIntMetBool) & results(k).model.FRuniqueRowBool & results(k).model.fluxConsistentMetBool);
         i=i+1;
-        FRtable{i,k+1}=nnz(results(k).model.FRuniqueRowBool);
+        FRtable{i,k+1}=nnz((results(k).model.SConsistentMetBool | ~results(k).model.SIntMetBool) & results(k).model.FRuniqueRowBool & results(k).model.fluxConsistentMetBool & results(k).model.FRnonZeroRowBool);
         i=i+1;
         FRtable{i,k+1}=nnz(results(k).model.largestConnectedRowsFRBool);
         i=i+1;
@@ -185,10 +211,11 @@ if 0
         i=i+1;
         FRtable{i,k+1}=results(k).model.rankBilinearFrRr;
         i=i+1;
+        
         %columns
         FRtable{i,k+1}=size(results(k).model.S,2);
         i=i+1;
-        FRtable{i,k+1}=nnz(results(k).model.SIntRxnBool);
+        FRtable{i,k+1}=nnz(~results(k).model.SIntRxnBool);
         i=i+1;
         if isfield(results(k).model,'balancedRxnBool')
             FRtable{i,k+1}=nnz(results(k).model.balancedRxnBool);
@@ -198,11 +225,11 @@ if 0
         i=i+1;
         FRtable{i,k+1}=nnz(results(k).model.SConsistentRxnBool);
         i=i+1;
-        FRtable{i,k+1}=nnz(results(k).model.fluxConsistentRxnBool);
+        FRtable{i,k+1}=nnz((results(k).model.SConsistentRxnBool | ~results(k).model.SIntRxnBool) & results(k).model.FRuniqueColBool);
         i=i+1;
-        FRtable{i,k+1}=nnz(results(k).model.FRnonZeroColBool);
+        FRtable{i,k+1}=nnz((results(k).model.SConsistentRxnBool | ~results(k).model.SIntRxnBool) & results(k).model.FRuniqueColBool & results(k).model.fluxConsistentRxnBool);
         i=i+1;
-        FRtable{i,k+1}=nnz(results(k).model.FRuniqueColBool);
+        FRtable{i,k+1}=nnz((results(k).model.SConsistentRxnBool | ~results(k).model.SIntRxnBool) & results(k).model.FRuniqueColBool & results(k).model.fluxConsistentRxnBool & results(k).model.FRnonZeroColBool);
         i=i+1;
         FRtable{i,k+1}=nnz(results(k).model.largestConnectedColsFRVBool);
         i=i+1;
@@ -233,7 +260,7 @@ else
     resultsFileName=['FRresults_' datestr(now,30) '.mat'];
     
     if 0
-        %checks if the models can be loaded and if the exchange reactions
+        %checks if the models can be loaded and if some exchange reactions
         %can be identified
         for k=1:length(matFiles)
             disp(k)
@@ -245,7 +272,7 @@ else
                 model=findSExRxnInd(model);
                 printLevel=1;
             end
-        end
+        end    
     end
     
     if 1
@@ -261,6 +288,16 @@ else
                 printLevel=1;
                 %%%%
                 [rankFR,rankFRV,rankFRvanilla,rankFRVvanilla,model] = checkRankFR(model,printLevel);
+                if printLevel>0 && model.FRrowRankDeficiency>0
+                    filePathName=[resultsDirectory filesep resultsFileName(1:end-4) '_rowDependencies.txt'];
+                    fileID = fopen(filePathName,'a');
+                    fprintf(fileID,'%s\n',matFiles(k).name)
+                    fclose(fileID);
+                    printFRdependencies(model,filePathName);
+                    fileID = fopen(filePathName,'a');
+                    fprintf(fileID,'%s\n','-------------------------------')
+                    fclose(fileID);
+                end
                 %%%%
                 [rankS,p,q]= getRankLUSOL(model.S);
                 
@@ -308,30 +345,30 @@ else
         matFiles=dir(modelCollectionDirectory);
         cd (modelCollectionDirectory)
         
-        %headings
-        FRtable=cell(13,length(matFiles));
+        %extra column and extra row for headings
+        FRtable=cell(13,length(results)+1);
         
         i=1;
         %model
-        FRtable{i,1}='';
+        FRtable{i,1}='ModelID';
         i=i+1;
-        FRtable{i,1}='# Rank S';
+        FRtable{i,1}='# Rank [S S_e]';
         i=i+1;
         
         %rows
-        FRtable{i,1}='# Reactants';
+        FRtable{i,1}='# Reactants = # Rows of [S S_e]';
         i=i+1;
-        FRtable{i,1}='# Non exchange rows';
+        FRtable{i,1}='# Exchange reactions = # Rows exclusive to S_e';
         i=i+1;
-        FRtable{i,1}='# Elementally balanced rows';
+        FRtable{i,1}='# Elementally balanced rows (given formulae)';
         i=i+1;
-        FRtable{i,1}='# Stoichiometrially consistent rows';
+        FRtable{i,1}='# Stoich. consistent rows';
         i=i+1;
-        FRtable{i,1}='# Stoich. and flux consistent rows';
+        FRtable{i,1}='# Unique, stoich. consistent or exchange rows';
         i=i+1;
-        FRtable{i,1}='# Nonzero stoich. and flux consistent rows of [F,R]';
+        FRtable{i,1}='# Unique stoich. and flux consistent rows of [F,R]';
         i=i+1;
-        FRtable{i,1}='# Unique  stoich. and flux consistent rows of [F,R]';
+        FRtable{i,1}='# Unique stoich. and flux consistent nonzero rows of [F,R]';
         i=i+1;
         FRtable{i,1}='# Largest connected rows of [F,R]';
         i=i+1;
@@ -346,19 +383,19 @@ else
         FRtable{i,1}='# Rank of [Fb,Rb]';
         i=i+1;
         %cols
-        FRtable{i,1}='# Reactions';
+        FRtable{i,1}='# Reactions = # Cols of [S S_e]';
         i=i+1;
-        FRtable{i,1}='# Non exchange cols';
+        FRtable{i,1}='# Exchange cols = # Cols of S_e';
         i=i+1;
         FRtable{i,1}='# Elementally balanced cols';
         i=i+1;
-        FRtable{i,1}='# Stoichiometrically consistent cols';
+        FRtable{i,1}='# Stoichiometrially consistent cols';
         i=i+1;
-        FRtable{i,1}='# Stoich. and flux consistent cols';
+        FRtable{i,1}='# Unique and stoichiometrially consistent cols';
         i=i+1;
-        FRtable{i,1}='# Nonzero consistent cols of [F;R]';
+        FRtable{i,1}='# Unique stoich. and flux consistent cols of [F;R]';
         i=i+1;
-        FRtable{i,1}='# Unique  consistent cols of [F;R]';
+        FRtable{i,1}='# Unique stoich. and flux consistent nonzero rows of [F;R]';
         i=i+1;
         FRtable{i,1}='# Largest connected cols of [F;R]';
         i=i+1;
@@ -384,7 +421,7 @@ else
             %rows
             FRtable{i,k+1}=size(results(k).model.S,1);
             i=i+1;
-            FRtable{i,k+1}=nnz(results(k).model.SIntMetBool);
+            FRtable{i,k+1}=nnz(~results(k).model.SIntMetBool);
             i=i+1;
             if isfield(results(k).model,'balancedMetBool')
                 FRtable{i,k+1}=nnz(results(k).model.balancedMetBool);
@@ -394,11 +431,11 @@ else
             i=i+1;
             FRtable{i,k+1}=nnz(results(k).model.SConsistentMetBool);
             i=i+1;
-            FRtable{i,k+1}=nnz(results(k).model.fluxConsistentMetBool);
+            FRtable{i,k+1}=nnz((results(k).model.SConsistentMetBool | ~results(k).model.SIntMetBool) & results(k).model.FRuniqueRowBool);
             i=i+1;
-            FRtable{i,k+1}=nnz(results(k).model.FRnonZeroRowBool);
+            FRtable{i,k+1}=nnz((results(k).model.SConsistentMetBool | ~results(k).model.SIntMetBool) & results(k).model.FRuniqueRowBool & results(k).model.fluxConsistentMetBool);
             i=i+1;
-            FRtable{i,k+1}=nnz(results(k).model.FRuniqueRowBool);
+            FRtable{i,k+1}=nnz((results(k).model.SConsistentMetBool | ~results(k).model.SIntMetBool) & results(k).model.FRuniqueRowBool & results(k).model.fluxConsistentMetBool & results(k).model.FRnonZeroRowBool);
             i=i+1;
             FRtable{i,k+1}=nnz(results(k).model.largestConnectedRowsFRBool);
             i=i+1;
@@ -415,7 +452,7 @@ else
             %columns
             FRtable{i,k+1}=size(results(k).model.S,2);
             i=i+1;
-            FRtable{i,k+1}=nnz(results(k).model.SIntRxnBool);
+            FRtable{i,k+1}=nnz(~results(k).model.SIntRxnBool);
             i=i+1;
             if isfield(results(k).model,'balancedRxnBool')
                 FRtable{i,k+1}=nnz(results(k).model.balancedRxnBool);
@@ -441,17 +478,8 @@ else
             i=i+1;
         end
         save([resultsDirectory resultsFileName],'results','resultsFileName','FRtable');
-        
-        %flag models that are row rank deficient
-        fprintf('%s\n','[F,R] does not have full row rank for:')
-        fprintf('%s%s%s\n','Model           ','Rows([F,R]) ', 'Rank([F,R])')
-        for j=2:size(FRtable,2)
-            bool1=strcmp('# Rows of proper [F,R]',FRtable(:,1));
-            bool2=strcmp('# Rank of proper [F,R]',FRtable(:,1));
-            if FRtable{bool1,j}~=FRtable{bool2,j}
-                fprintf('%10s\t%u\t%u\n',FRtable{1,j},FRtable{bool1,j},FRtable{bool2,j})
-            end
-        end
-        
     end
+    fprintf(['%s\n','checkRankFRdriver complete. Results saved to ' resultsDirectory resultsFileName])
 end
+
+
