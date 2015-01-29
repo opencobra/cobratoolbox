@@ -96,5 +96,5 @@ for i = 1 : nRxns
     end
     model = addReaction(model,{rxnAbrList{i},rxnNameList{i}},metaboliteList,stoichCoeffList,...
         revFlagList(i),lowerBoundList(i),upperBoundList(i),0,...
-        subSystemList{i},grRuleList{i},geneNameList{i},systNameList{i},false);
+        subSystemList{i},grRuleList{i},geneNameList,systNameList,false);
 end
