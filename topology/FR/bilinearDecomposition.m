@@ -42,8 +42,6 @@ nExtraReactants(sameSignBool)=nExtraReactants(sameSignBool)+1;
 cumSumExtraReactants=cumsum(nExtraReactants);
 nExtra=cumSumExtraReactants(end);
 
-
-
 A = [eye(nMet), sparse(nMet,nExtra)];
     
 B = sparse(nMet+nExtra,nRxn+nExtra);

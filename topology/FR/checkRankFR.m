@@ -38,8 +38,7 @@ function  [rankFR,rankFRV,rankFRvanilla,rankFRVvanilla,model] = checkRankFR(mode
 %                           with stoichiometry unique upto scalar multiplication
 % model.connectedRowsFRBool     m x 1 boolean vector indicating metabolites in connected rows of [F,R]
 % model.connectedRowsFRVBool    n x 1 boolean vector indicating complexes in connected columns of [F;R]
-% model.V                   S*V=0, 1'*V>1 for all stoichiometrically
-%                           consistent reactions
+% model.V                   S*V=0, 1'*|V|>1 for all flux consistent reactions
 
 if ~exist('printLevel','var')
     printLevel=1;
@@ -71,13 +70,13 @@ end
 %mass and charge balance
 if isfield(model,'metFormulas')
     [massImbalance,imBalancedMass,imBalancedCharge,imBalancedRxnBool,Elements,missingFormulaeBool,balancedMetBool]...
-        = checkMassChargeBalance(model,model.SIntRxnBool,printLevel);
+        = checkMassChargeBalance(model,printLevel);
     model.balancedRxnBool=~imBalancedRxnBool;
     model.balancedMetBool=balancedMetBool;
     model.Elements=Elements;
     model.missingFormulaeBool=missingFormulaeBool;
     
-    if nnz(missingFormulaeBool)<size(model.S,1)
+    if nnz(model.missingFormulaeBool)<size(model.S,1)
         %assumes that all mass imbalanced reations are exchange reactions
         model.SIntRxnBool = model.SIntRxnBool & model.balancedRxnBool;
         model.SIntMetBool = model.SIntMetBool & model.balancedMetBool;
@@ -98,14 +97,20 @@ if ~isfield(model,'SConsistentMetBool') || ~isfield(model,'SConsistentRxnBool')
         method.param.Method=1;
     end
     [inform,m,model]=checkStoichiometricConsistency(model,printLevel-1,method);
+    
+    %assumes that all stoichiometrically inconsistent reactions are exchange reactions
+    model.SIntRxnBool = model.SIntRxnBool & model.SConsistentRxnBool;
+    model.SIntMetBool = model.SIntMetBool & model.SConsistentMetBool;
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-metBool1=(model.SConsistentMetBool | ~model.SIntMetBool);
+%metBool1=(model.SConsistentMetBool | ~model.SIntMetBool); %incorrect to
+%include mets that are only exchanged
+metBool1=model.SConsistentMetBool;
 rxnBool1=(model.SConsistentRxnBool | ~model.SIntRxnBool);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-A=F+R;%invariant to direction of reaction
+A=[F,R];
 
 %detect the rows of A that are identical upto scalar multiplication
 %divide each row by the sum of each row.
@@ -130,13 +135,16 @@ if any(~model.FRuniqueRowBool & metBool1)
     fprintf('\n')
 end
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+A=F+R;%invariant to direction of reaction
+
 %detect the cols of A that are identical upto scalar multiplication
 %divide each col by the sum of each row.
 sumA1          = sum(A,1);
 sumA1(sumA1==0)  = 1;
 normalA1          = A*diag(1./sumA1);
 
-%get unique rows, but do not change the order
+%get unique cols, but do not change the order
 % [C,IA,IC] = unique(A,'rows') also returns index vectors IA and IC such
 % that C = A(IA,:) and A = C(IC,:).
 [uniqueColsA,IA,IC] = unique(normalA1','rows','stable');
@@ -157,10 +165,12 @@ if 1
     fprintf('\n%s\n','Diagnostics on size of boolean vectors for rows:')
     fprintf('%s%u\n','SIntMetBool:                 ',nnz(model.SIntMetBool))
     fprintf('%s%u\n','SConsistentMetBool:          ',nnz(model.SConsistentMetBool))
-
+    fprintf('%s%u\n','FRuniqueRowBool:               ',nnz(model.FRuniqueRowBool))
+    
     fprintf('\n%s\n','Diagnostics on size of boolean vectors for cols:')
     fprintf('%s%u\n','SIntRxnBool:                 ',nnz(model.SIntRxnBool))
     fprintf('%s%u\n','SConsistentRxnBool:          ',nnz(model.SConsistentRxnBool))
+    fprintf('%s%u\n','FRuniqueColBool:               ',nnz(model.FRuniqueColBool))
     fprintf('\n')
 end
 
@@ -169,7 +179,7 @@ if ~isempty(find(strcmp(model.mets(~model.SConsistentMetBool),'h[c]')))
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-metBool2=(model.SConsistentMetBool | ~model.SIntMetBool) & model.FRuniqueRowBool;
+metBool2=model.SConsistentMetBool & model.FRuniqueRowBool;
 rxnBool2=(model.SConsistentRxnBool | ~model.SIntRxnBool) & model.FRuniqueColBool;
 
 %the uniqueness check has to be done before flux consistency since some
@@ -235,70 +245,76 @@ model.fluxConsistentMetBool = sum(model.S(:,model.fluxConsistentRxnBool)~=0,2)~=
 % nnz(strcmp('EX_C00238',model.rxns(model.fluxConsistentRxnBool)))
 % pause(eps)
 
+% %eliminate the metabolites and reactions that are stoichiometrically 
+% %inconsistent or flux inconsistent from further consideration, but keep the
+% %flux consistent exchange reactions
+% metBool3=model.SConsistentMetBool & model.FRuniqueRowBool & model.fluxConsistentMetBool;
+% rxnBool3=(model.SConsistentRxnBool | ~model.SIntRxnBool) & model.FRuniqueColBool & model.fluxConsistentRxnBool;
+% 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A=F+R;%invariant to direction of reaction
+% 
+% %detect the rows of A that are identical upto scalar multiplication
+% %divide each row by the sum of each row.
+% sumA2            = sum(A,2);
+% sumA2(sumA2==0) = 1;
+% normalA2          = diag(1./sumA2)*A;
+% 
+% %get unique rows, but do not change the order
+% % [C,IA,IC] = unique(A,'rows') also returns index vectors IA and IC such
+% % that C = A(IA,:) and A = C(IC,:).
+% [uniqueRowsA,IA,IC] = unique(normalA2,'rows','stable');
+% model.FRuniqueRowBool=zeros(nMet,1);
+% model.FRuniqueRowBool(IA)=1;
+% 
+% if any(~model.FRuniqueRowBool & metBool3)
+%     fprintf('%u%s\n',nnz(~model.FRuniqueRowBool & metBool3),' non-unique rows of [F,R]')
+%     for i=1:nMet
+%         if ~model.FRuniqueRowBool(i) && metBool3(i)
+%             fprintf('%s%s\n',model.mets{i},': not unique row of [F,R]')
+%         end
+%     end
+%     fprintf('\n')
+% end
+% 
+% %detect the cols of A that are identical upto scalar multiplication
+% %divide each col by the sum of each row.
+% sumA1          = sum(A,1);
+% sumA1(sumA1==0)  = 1;
+% normalA1          = A*diag(1./sumA1);
+% 
+% %get unique rows, but do not change the order
+% % [C,IA,IC] = unique(A,'rows') also returns index vectors IA and IC such
+% % that C = A(IA,:) and A = C(IC,:).
+% [uniqueColsA,IA,IC] = unique(normalA1','rows','stable');
+% model.FRuniqueColBool=zeros(nRxn,1);
+% model.FRuniqueColBool(IA)=1;
+% 
+% if any(~model.FRuniqueColBool & rxnBool3)
+%     fprintf('%u%s\n',nnz(~model.FRuniqueColBool & rxnBool3),' non-unique cols of consistent [F;R]')
+%     for i=1:nRxn
+%         if ~model.FRuniqueColBool(i) && rxnBool3(i)
+%             fprintf('%s%s\n',model.rxns{i},': not unique col of consistent [F;R]')
+%         end
+%     end
+% end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %eliminate the metabolites and reactions that are stoichiometrically 
 %inconsistent or flux inconsistent from further consideration, but keep the
-%flux consistent exchange reactions
-metBool3=(model.SConsistentMetBool | ~model.SIntMetBool) & model.fluxConsistentMetBool;
-rxnBool3=(model.SConsistentRxnBool | ~model.SIntRxnBool) & model.fluxConsistentRxnBool;
+%flux consistent exchange reactions, also eliminate scalar multiples
+metBool4=model.SConsistentMetBool & model.fluxConsistentMetBool & model.FRuniqueRowBool;
+rxnBool4=(model.SConsistentRxnBool | ~model.SIntRxnBool) & model.fluxConsistentRxnBool & model.FRuniqueColBool;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-A=F+R;%invariant to direction of reaction
-
-%detect the rows of A that are identical upto scalar multiplication
-%divide each row by the sum of each row.
-sumA2            = sum(A,2);
-sumA2(sumA2==0) = 1;
-normalA2          = diag(1./sumA2)*A;
-
-%get unique rows, but do not change the order
-% [C,IA,IC] = unique(A,'rows') also returns index vectors IA and IC such
-% that C = A(IA,:) and A = C(IC,:).
-[uniqueRowsA,IA,IC] = unique(normalA2,'rows','stable');
-model.FRuniqueRowBool=zeros(nMet,1);
-model.FRuniqueRowBool(IA)=1;
-
-if any(~model.FRuniqueRowBool & metBool3)
-    fprintf('%u%s\n',nnz(~model.FRuniqueRowBool & metBool3),' non-unique rows of [F,R]')
-    for i=1:nMet
-        if ~model.FRuniqueRowBool(i) && metBool3(i)
-            fprintf('%s%s\n',model.mets{i},': not unique row of [F,R]')
-        end
-    end
-    fprintf('\n')
-end
-
-%detect the cols of A that are identical upto scalar multiplication
-%divide each col by the sum of each row.
-sumA1          = sum(A,1);
-sumA1(sumA1==0)  = 1;
-normalA1          = A*diag(1./sumA1);
-
-%get unique rows, but do not change the order
-% [C,IA,IC] = unique(A,'rows') also returns index vectors IA and IC such
-% that C = A(IA,:) and A = C(IC,:).
-[uniqueColsA,IA,IC] = unique(normalA1','rows','stable');
-model.FRuniqueColBool=zeros(nRxn,1);
-model.FRuniqueColBool(IA)=1;
-
-if any(~model.FRuniqueColBool & rxnBool3)
-    fprintf('%u%s\n',nnz(~model.FRuniqueColBool & rxnBool3),' non-unique cols of consistent [F;R]')
-    for i=1:nRxn
-        if ~model.FRuniqueColBool(i) && rxnBool3(i)
-            fprintf('%s%s\n',model.rxns{i},': not unique col of consistent [F;R]')
-        end
-    end
-end
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%find rows that are not all zero when subset of reactions omitted
-A2=[F(:,rxnBool3) R(:,rxnBool3)];
+%find rows that are not all zero when the subset of reactions omitted
+A2=[F(:,rxnBool4) R(:,rxnBool4)];
 model.FRnonZeroRowBool = any(A2,2);
 
 %only report for the consistent rows
-if any(~model.FRnonZeroRowBool & metBool3)
-    fprintf('%u%s\n',nnz(~model.FRnonZeroRowBool & metBool3),' zero rows of [F,R]')
+if any(~model.FRnonZeroRowBool & metBool4)
+    fprintf('%u%s\n',nnz(~model.FRnonZeroRowBool & metBool4),' zero rows of [F,R]')
     for i=1:nMet
-        if ~model.FRnonZeroRowBool(i) && metBool3(i)
+        if ~model.FRnonZeroRowBool(i) && metBool4(i)
             fprintf('%s%s\n',model.mets{i},': is a zero row of [F,R]')
         end
     end
@@ -306,15 +322,15 @@ if any(~model.FRnonZeroRowBool & metBool3)
 end
 
 %find cols that are not all zero when subset of metabolites omitted
-A1=F(metBool3,:)+R(metBool3,:);
+A1=F(metBool4,:)+R(metBool4,:);
 model.FRnonZeroColBool = any(A1,1)';
 
 %only report for the consistent cols
-if any(~model.FRnonZeroColBool & rxnBool3)
-    fprintf('%u%s\n',nnz(~model.FRnonZeroColBool & rxnBool3),' zero cols of consistent [F;R]')
+if any(~model.FRnonZeroColBool & rxnBool4)
+    fprintf('%u%s\n',nnz(~model.FRnonZeroColBool & rxnBool4),' zero cols of consistent [F;R]')
     for i=1:nRxn
-        if ~model.FRnonZeroColBool(i) && rxnBool3(i)
-            fprintf('%s%s\n',model.rxns{i},': is a zero cols of consistent [F;R]')
+        if ~model.FRnonZeroColBool(i) && rxnBool4(i)
+            fprintf('%s%s\n',model.rxns{i},': is a zero col of consistent [F;R]')
         end
     end
     fprintf('\n')
@@ -365,30 +381,29 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %only use rows that are nonzero, unique upto positive scaling, part of
 %the maximal conservation vector, and part of the largest component
-model.FRrows = model.FRnonZeroRowBool...
-    & model.FRuniqueRowBool...
-    & model.SConsistentMetBool...
-    & model.fluxConsistentMetBool...
-    & model.largestConnectedRowsFRBool;
-
-if 0
-    %only use columns that are nonzero, unique upto positive scaling,
-    %non exchange reactions, and flux consistent
-    model.FRVcols = model.FRnonZeroColBool...
-        & model.FRuniqueColBool...
-        & model.SConsistentRxnBool...
-        & model.fluxConsistentRxnBool...
-        & model.largestConnectedColsFRVBool...
-        & model.SIntRxnBool;
-else
-    %only use columns that corresopond to 
-    %(a) stoichiometrically consistent rows
-    %(b) flux consistent (internal and exchange) reactions
-    model.FRVcols = (model.SConsistentRxnBool | ~model.SIntRxnBool)...
-                   & model.fluxConsistentRxnBool...
-                   & model.FRuniqueColBool;
+selection='a';
+switch selection
+    case 'a'
+        model.FRrows = model.SConsistentMetBool...
+            & model.fluxConsistentMetBool...
+            & model.FRnonZeroRowBool...
+            & model.FRuniqueRowBool;
+        model.FRVcols = (model.SConsistentRxnBool | ~model.SIntRxnBool)...
+            & model.fluxConsistentRxnBool...
+            & model.FRuniqueColBool...
+            &model.FRnonZeroColBool;
+    case 'b'
+        %exchange reactions not considered when rank([F,R]) measured
+        model.FRrows = model.SConsistentMetBool...
+            & model.fluxConsistentMetBool...
+            & model.FRnonZeroRowBool...
+            & model.FRuniqueRowBool;
+        model.FRVcols = model.SConsistentRxnBool...
+            & model.fluxConsistentRxnBool...
+            & model.FRuniqueColBool...
+            & model.FRnonZeroColBool;
+    case 'c'
 end
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if 0
@@ -505,17 +520,17 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %examine the dependencies between rows and columns if any
-rowRankDeficiency=nnz(model.FRrows)-rankFR;
-if rowRankDeficiency>0
+model.FRrowRankDeficiency=nnz(model.FRrows)-rankFR;
+if model.FRrowRankDeficiency>0
     T  = [Fr Rr];
     %code from Michael
     C1 = T(FRp(1:rankFR),:);
     C2 = T(FRp(rankFR+1:length(FRp)),:);
     W0 = C1' \ C2'; % solves LS problems min ||C1*W_k - C2_k||
 
-    model.FRW=sparse(rowRankDeficiency,nMet);
+    model.FRW=sparse(model.FRrowRankDeficiency,nMet);
     model.FRW(:,iR)=W0';
-    model.FRW(:,dR)=-speye(rowRankDeficiency);
+    model.FRW(:,dR)=-speye(model.FRrowRankDeficiency);
     
     %indices of independent rows that other rows are dependent on
     wR=find(sum(model.FRW,1)>0)';
@@ -525,14 +540,14 @@ if rowRankDeficiency>0
     if 0
         %sanity checks
         disp(norm(C1'*W0 - C2',inf)) %should be zero
-        disp(norm([W0',-speye(rowRankDeficiency)]*[C1;C2],inf)) %should be zero
+        disp(norm([W0',-speye(model.FRrowRankDeficiency)]*[C1;C2],inf)) %should be zero
         
-        W = sparse(rowRankDeficiency,size([Fr Rr],1));
+        W = sparse(model.FRrowRankDeficiency,size([Fr Rr],1));
         W(:,FRp(1:rankFR))=W0';
-        W(:,FRp(rankFR+1:length(FRp)))=-speye(rowRankDeficiency);
+        W(:,FRp(rankFR+1:length(FRp)))=-speye(model.FRrowRankDeficiency);
         disp(norm(W*[Fr Rr],inf)) %should be zero
                
-        model.FRW=sparse(rowRankDeficiency,nMet);
+        model.FRW=sparse(model.FRrowRankDeficiency,nMet);
         model.FRW(:,model.FRrows)=W;
         disp(norm(model.FRW*[F(:,model.FRVcols), R(:,model.FRVcols)],inf)) %should be zero
         %%%%% N B %%%%
@@ -546,87 +561,17 @@ if rowRankDeficiency>0
     end
 end
 
-
-if printLevel>0 && rowRankDeficiency>0
-    if 0
-        %print out dependencies
-        for i=1:size(model.FRW,1)
-            fprintf('%s%s',model.mets{dR(i)},' is dependent on: ')
-            ind=find(model.FRW(i,:)>0);
-            for j=1:length(ind)
-                fprintf('%s',model.mets{ind(j)})
-                if j==length(ind)
-                    fprintf('%s\n','.');
-                else
-                    fprintf('%s',' and ');
-                end
-            end
-        end
-    else
-        %print out dependencies
-        for i=1:size(model.FRW,1)
-            fprintf('%s%s',model.mets{dR(i)},' is dependent on: ')
-            ind=find(model.FRW(i,:)>0);
-            if length(ind)<9
-                for j=1:length(ind)
-                    fprintf('%s',model.mets{ind(j)})
-                    if j==length(ind)
-                        fprintf('%s\n','.');
-                    else
-                        fprintf('%s',' and ');
-                    end
-                end
-            else
-                fprintf('%s\n',' 10 or more metabolites, will not be displayed')
-            end
-            %print out reactions involving dependent rows
-            F0=F;
-            F0(:,~model.FRVcols)=0;
-            R0=R;
-            R0(:,~model.FRVcols)=0;
-            indRxn=[find(F0(dR(i),:)~=0) find(R0(dR(i),:)~=0)];
-            if length(indRxn)>1
-                fprintf('%s\n','The reactions are:')
-            else
-                fprintf('%s\n','The reaction is:')
-            end
-            for k=1:length(indRxn)
-                printRxnFormula(model,model.rxns{indRxn(k)});
-                fprintf('\n')
-            end
-            fprintf('\n')
-        end
-
-        %display the rows involved
-        FRdisplay=[F(:,model.FRVcols), R(:,model.FRVcols)];
-        FRdisplay=FRdisplay([wR;dR],:);
-        FRdisplay=FRdisplay(:,sum(FRdisplay,1)~=0);
-        FRdisplay=full(FRdisplay);
-        %disp(FRdisplay)
-        
-        fprintf('%s%d%s%d%s%d%s\n','FR subset of dimension ',size(FRdisplay,1),' x ', size(FRdisplay,2), ', of rank ', rank(FRdisplay),'.')
-        if max(size(FRdisplay))>15
-            fprintf('%s\n','More than 15 rows or columns in the depencency, so will not display.')
-        else
-            fprintf('%d%s\n', length(wR), ' independent rows:')
-            disp(FRdisplay(1:length(wR),:))
-            fprintf('%d%s\n',length(dR),' dependent rows:')
-            disp(FRdisplay(length(wR)+1:end,:))
-        end
-    end
-end
-
-colRankDeficiency=nnz(model.FRVcols)-rankFRV;
-if colRankDeficiency>0
+model.FRcolRankDeficiency=nnz(model.FRVcols)-rankFRV;
+if model.FRcolRankDeficiency>0
     VT  = [Fc;Rc];
     %code from Michael
     VC1  = VT(:,model.FRVq(1:rankFRV)); % independent columns
     VC2  = VT(:,model.FRVq(rankFRV+1:size(VT,2))); % dependent columns
     VW0  = VC1 \ VC2; % solves LS problems min ||VC1*WV_k - VC2_k||
     
-    model.FRVW=sparse(nRxn,colRankDeficiency);
+    model.FRVW=sparse(nRxn,model.FRcolRankDeficiency);
     model.FRVW(iC,:)=VW0; % independent columns
-    model.FRVW(dC,:)=-speye(colRankDeficiency); % dependent columns
+    model.FRVW(dC,:)=-speye(model.FRcolRankDeficiency); % dependent columns
     
     %indices of independent cols that other cols are dependent on
     wC=find(sum(model.FRVW,2)>0);
@@ -644,69 +589,5 @@ if colRankDeficiency>0
         nnz(VW0)
         figure; spy(VW0)
         figure; spy(abs(VW0) > 1e-3)  % say
-    end
-end
-
-if printLevel>2 && colRankDeficiency>0
-    if 0
-        for i=1:size(model.FRVW,2)
-            fprintf('%s%s',model.rxns{dC(i)},' is dependent on: ')
-            ind=find(model.FRVW(:,i)>0);
-            for j=1:length(ind)
-                fprintf('%s',model.rxns{ind(j)})
-                if j==length(ind)
-                    fprintf('%s\n','.');
-                else
-                    fprintf('%s',' and ');
-                end
-            end
-        end
-    else
-        %print out metabolites involved in dependent cols
-        for i=1:size(model.FRVW,2)
-            fprintf('%s%s',model.rxns{dC(i)},' is dependent on: ')
-            ind=find(model.FRVW(i,:)>0);
-            for j=1:length(ind)
-                fprintf('%s',model.rxns{ind(j)})
-                if j==length(ind)
-                    fprintf('%s\n','.');
-                else
-                    fprintf('%s',' and ');
-                end
-            end
-            fprintf('%s\n','The metabolites  are:')
-            F0=F;
-            F0(~model.FRrows,:)=0;
-            R0=R;
-            R0(~model.FRrows,:)=0;
-            indMet=[find(F0(:,dC(i))~=0)' find(R0(:,dC(i))~=0)'];
-            disp(indMet)
-%             for k=1:length(indMet)
-%                 printRxnFormula(model,model.mets{indMet(k)});
-%             end
-            fprintf('\n\n')
-        end
-
-        %display the cols involved
-        FRdisplay=[F(model.FRrows,:), R(model.FRrows,:)];
-        FRdisplay=FRdisplay(:,[wC;dC]);
-        FRdisplay=FRdisplay(sum(FRdisplay,2)~=0,:);
-        FRdisplay=full(FRdisplay);
-        %disp(FRdisplay)
-        
-        fprintf('%s%d%s%d%s%d%s\n','FRV subset of dimension ',size(FRdisplay,1),' x ', size(FRdisplay,2), ', of rank ', rank(FRdisplay),'.')
-        fprintf('%d%s\n', length(wC), ' independent cols:')
-        if length(wC)>10
-            fprintf('%s\n','Too many to print out.')
-        else
-            disp(FRdisplay(:,1:length(wC)))
-        end
-        fprintf('%d%s\n',length(dC),' dependent rows:')
-        
-        if length(dC)>10
-            fprintf('%s\n','Too many to print out.')
-        else
-            disp(FRdisplay(:,length(wC)+1:end))
-        end
     end
 end

@@ -87,9 +87,6 @@ else
     else
         intR='';
     end
-    if isfield(model,'rxns')
-        model.SIntRxnBool(strcmp('ATPM',model.rxns),1)=0;
-    end
 end
 
 SInt=model.S(:,model.SIntRxnBool);
