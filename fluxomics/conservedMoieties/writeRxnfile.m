@@ -1,4 +1,20 @@
 function writeRxnfile(mets,stoichiometry,rxnfileName,molfileDirectory,rxnfileDirectory)
+% Writes a rxnfile (Accelrys, San Diego, CA) for a metabolic reaction.
+% 
+% writeRxnfile(mets,stoichiometry,rxnfileName,molfileDirectory,rxnfileDirectory)
+% 
+% INPUTS
+% mets              ... An m x 1 cell array of metabolite identifiers.
+% stoichiometry     ... An m x 1 vector of stoichiometric coefficients for
+%                       metabolites in mets.
+% rxnfileName       ... A name for the rxnfile.
+% molfileDirectory  ... Path to directory containing molfiles for
+%                       reactants. Molfile names should match metabolite
+%                       identifiers in mets.
+% rxnfileDirectory  ... Path to directory where rxnfiles should be saved.
+% 
+% OUTPUT
+% The file 'rxnfileDirectory/rxnfileName.rxn'
 
 %% format inputs
 if nargin < 3

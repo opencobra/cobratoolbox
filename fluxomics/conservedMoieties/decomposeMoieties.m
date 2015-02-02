@@ -49,11 +49,11 @@ while ~isempty(D0) % Iterate since decomposed moieties might themselves be decom
         suma = [ones(size(c')) zeros(size(c'))];
         sumb = [zeros(size(c')) ones(size(c'))];
         
-        milpModel.A = sparse([S' zeros(size(S')); zeros(size(S')) S'; Sigma; suma; suma; sumb]);
+        milpModel.A = sparse([S' zeros(size(S')); zeros(size(S')) S'; Sigma; sumb; suma; sumb]);
         milpModel.sense = [repmat('=', 2*size(S,2) + length(c), 1); '<'; '>'; '>'];
         milpModel.vtype = 'I';
-        milpModel.rhs = [zeros(size(S,2),1); zeros(size(S,2),1); c; sum(0.5*c) - 1; 1; 1];
-        milpModel.obj = ones(size(milpModel.A,2),1);
+        milpModel.rhs = [zeros(size(S,2),1); zeros(size(S,2),1); c; sum(c) - 1; 1; 1];
+        milpModel.obj = suma';
         milpModel.modelsense = 'min';
         
         params.outputflag = 0;
@@ -68,6 +68,8 @@ while ~isempty(D0) % Iterate since decomposed moieties might themselves be decom
         if strcmp(result.status,'OPTIMAL')
             a(mbool) = result.x(1:length(c));
             b(mbool) = result.x(length(c)+1:end);
+        elseif ~strcmp(result.status,'INFEASIBLE')
+            fprintf('%s\n',result.status);
         end
         
         if any(a)
