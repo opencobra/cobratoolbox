@@ -16,7 +16,7 @@ function modelOut = removeRxns(model,rxnRemoveList,irrevFlag,metFlag)
 % model             COBRA model w/o selected reactions
 %
 % Markus Herrgard 7/22/05
-% Uri David Akavia 1/18/14
+% Uri David Akavia 2/01/14
 
 if (nargin < 3)
   irrevFlag = false;
@@ -25,7 +25,7 @@ if (nargin < 4)
   metFlag = true;
 end
 
-[nMets,nRxns] = size(model.S);
+[~,nRxns] = size(model.S);
 modelOut = model;
 % Find indices to rxns in the model
 [isValidRxn,removeInd] = ismember(rxnRemoveList,model.rxns);
@@ -67,38 +67,11 @@ if (isfield(model,'genes'))
     modelOut.genes = model.genes;
     modelOut.grRules = model.grRules(selectRxns);
 end
-if (isfield(model,'subSystems'))
-    modelOut.subSystems = model.subSystems(selectRxns);
-end
-if (isfield(model,'rxnNames'))
-    modelOut.rxnNames = model.rxnNames(selectRxns);
-end
-if (isfield(model, 'rxnReferences'))
-  modelOut.rxnReferences = model.rxnReferences(selectRxns);
-end
-if (isfield(model, 'rxnECNumbers'))
-  modelOut.rxnECNumbers = model.rxnECNumbers(selectRxns);
-end
-if (isfield(model, 'rxnNotes'))
-  modelOut.rxnNotes = model.rxnNotes(selectRxns);
-end
-if (isfield(model, 'confidenceScores'))
-  modelOut.confidenceScores = model.confidenceScores(selectRxns);
-end
-if (isfield(model, 'comments'))
-	modelOut.confidenceScores = model.comments(selectRxns);
-end
-if (isfield(model, 'citations'))
-	modelOut.citations = model.citations(selectRxns);
-end
-if (isfield(model, 'ecNumbers'))
-	modelOut.ecNumbers = model.ecNumbers(selectRxns);
-end
-if (isfield(model, 'rxnKeggID'))
-	modelOut.rxnKeggID = model.rxnKeggID(selectRxns);
-end
-if (isfield(model, 'comments'))
-	modelOut.comments = model.comments(selectRxns);
+reactionFields = {'subSystems', 'rxnNames', 'rxnReferences', 'rxnECNumbers', 'ecNumbers', 'rxnNotes', 'confidenceScores', 'citations', 'rxnKeggID', 'comments'};
+reactionFields = intersect(reactionFields, fieldnames(model));
+
+for i=1:length(reactionFields)
+	modelOut.(reactionFields{i}) = model.(reactionFields{i})(selectRxns);
 end
 
 % Reconstruct the match list
