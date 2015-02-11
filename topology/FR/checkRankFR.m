@@ -66,6 +66,7 @@ if ~isfield(model,'SIntRxnBool')  || ~isfield(model,'SIntMetBool')
     %     Sink reactions
     model = findSExRxnInd(model);
 end
+model.SIntRxnBool_findSExRxnInd=model.SIntRxnBool;
 
 %mass and charge balance
 if isfield(model,'metFormulas')
@@ -103,11 +104,63 @@ if ~isfield(model,'SConsistentMetBool') || ~isfield(model,'SConsistentRxnBool')
     model.SIntMetBool = model.SIntMetBool & model.SConsistentMetBool;
 end
 
+if 1
+    fprintf('%u%s\n',nnz(~model.SIntRxnBool),' exchange reactions (imbalanced elementally, or involves a stoichiometrically inconsistent molecular species)')
+    for i=1:nRxn
+        if ~model.SIntRxnBool(i) && model.SIntRxnBool_findSExRxnInd(i)
+            fprintf('%s%s\n',model.rxns{i},': deemed an exchange reaction')
+        end
+    end
+    fprintf('---------\n')
+end
+
+if any(~model.SIntMetBool)
+    fprintf('%u%s\n',nnz(~model.SIntMetBool),' rows of S only involved in exchange reactions')
+    for i=1:nMet
+        if ~model.SIntMetBool(i)
+            fprintf('%s%s\n',model.mets{i}',': deemed a molecular species only involved in exchange reactions')
+        end
+    end
+    fprintf('---------\n')
+end
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %metBool1=(model.SConsistentMetBool | ~model.SIntMetBool); %incorrect to
 %include mets that are only exchanged
 metBool1=model.SConsistentMetBool;
 rxnBool1=(model.SConsistentRxnBool | ~model.SIntRxnBool);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%find rows that are not all zero when a subset of reactions omitted
+A1=[F(:,rxnBool1) R(:,rxnBool1)];
+model.FRnonZeroRowBool1 = any(A1,2);
+
+%find cols that are not all zero when a subset of metabolites omitted
+A1=[F(metBool1,:); R(metBool1,:)];
+model.FRnonZeroColBool1 = any(A1,1)';
+
+%only report for the consistent rows
+if any(~model.FRnonZeroRowBool1 & metBool1)
+    fprintf('%u%s\n',nnz(~model.FRnonZeroRowBool1 & metBool1),' zero rows of [F,R]')
+    for i=1:nMet
+        if ~model.FRnonZeroRowBool1(i) && metBool1(i)
+            fprintf('%s%s\n',model.mets{i},': is a zero row of [F,R]')
+        end
+    end
+    fprintf('\n')
+end
+
+%only report for the consistent cols
+if any(~model.FRnonZeroColBool1 & rxnBool1) && 0
+    fprintf('%u%s\n',nnz(~model.FRnonZeroColBool1 & rxnBool1),' zero cols of consistent [F;R]')
+    for i=1:nRxn
+        if ~model.FRnonZeroColBool1(i) && rxnBool1(i)
+            fprintf('%s%s\n',model.rxns{i},': is a zero col of consistent [F;R]')
+        end
+    end
+    fprintf('\n')
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 A=[F,R];
@@ -165,11 +218,14 @@ if 1
     fprintf('\n%s\n','Diagnostics on size of boolean vectors for rows:')
     fprintf('%s%u\n','SIntMetBool:                 ',nnz(model.SIntMetBool))
     fprintf('%s%u\n','SConsistentMetBool:          ',nnz(model.SConsistentMetBool))
+    fprintf('%s%u\n','FRnonZeroRowBool1:               ',nnz(model.FRnonZeroRowBool1))
     fprintf('%s%u\n','FRuniqueRowBool:               ',nnz(model.FRuniqueRowBool))
+    
     
     fprintf('\n%s\n','Diagnostics on size of boolean vectors for cols:')
     fprintf('%s%u\n','SIntRxnBool:                 ',nnz(model.SIntRxnBool))
     fprintf('%s%u\n','SConsistentRxnBool:          ',nnz(model.SConsistentRxnBool))
+    fprintf('%s%u\n','FRnonzeroColBool:               ',nnz(model.FRnonZeroColBool1))
     fprintf('%s%u\n','FRuniqueColBool:               ',nnz(model.FRuniqueColBool))
     fprintf('\n')
 end
@@ -179,8 +235,8 @@ if ~isempty(find(strcmp(model.mets(~model.SConsistentMetBool),'h[c]')))
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-metBool2=model.SConsistentMetBool & model.FRuniqueRowBool;
-rxnBool2=(model.SConsistentRxnBool | ~model.SIntRxnBool) & model.FRuniqueColBool;
+metBool2=model.SConsistentMetBool & model.FRuniqueRowBool & model.FRnonZeroRowBool1;
+rxnBool2=(model.SConsistentRxnBool | ~model.SIntRxnBool);
 
 %the uniqueness check has to be done before flux consistency since some
 %models have a forward and backward reaction in separately, but these are
@@ -241,95 +297,37 @@ end
 %rows corresponding to flux consistent reactions
 model.fluxConsistentMetBool = sum(model.S(:,model.fluxConsistentRxnBool)~=0,2)~=0;
 
-% pause(eps)
-% nnz(strcmp('EX_C00238',model.rxns(model.fluxConsistentRxnBool)))
-% pause(eps)
-
-% %eliminate the metabolites and reactions that are stoichiometrically 
-% %inconsistent or flux inconsistent from further consideration, but keep the
-% %flux consistent exchange reactions
-% metBool3=model.SConsistentMetBool & model.FRuniqueRowBool & model.fluxConsistentMetBool;
-% rxnBool3=(model.SConsistentRxnBool | ~model.SIntRxnBool) & model.FRuniqueColBool & model.fluxConsistentRxnBool;
-% 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% A=F+R;%invariant to direction of reaction
-% 
-% %detect the rows of A that are identical upto scalar multiplication
-% %divide each row by the sum of each row.
-% sumA2            = sum(A,2);
-% sumA2(sumA2==0) = 1;
-% normalA2          = diag(1./sumA2)*A;
-% 
-% %get unique rows, but do not change the order
-% % [C,IA,IC] = unique(A,'rows') also returns index vectors IA and IC such
-% % that C = A(IA,:) and A = C(IC,:).
-% [uniqueRowsA,IA,IC] = unique(normalA2,'rows','stable');
-% model.FRuniqueRowBool=zeros(nMet,1);
-% model.FRuniqueRowBool(IA)=1;
-% 
-% if any(~model.FRuniqueRowBool & metBool3)
-%     fprintf('%u%s\n',nnz(~model.FRuniqueRowBool & metBool3),' non-unique rows of [F,R]')
-%     for i=1:nMet
-%         if ~model.FRuniqueRowBool(i) && metBool3(i)
-%             fprintf('%s%s\n',model.mets{i},': not unique row of [F,R]')
-%         end
-%     end
-%     fprintf('\n')
-% end
-% 
-% %detect the cols of A that are identical upto scalar multiplication
-% %divide each col by the sum of each row.
-% sumA1          = sum(A,1);
-% sumA1(sumA1==0)  = 1;
-% normalA1          = A*diag(1./sumA1);
-% 
-% %get unique rows, but do not change the order
-% % [C,IA,IC] = unique(A,'rows') also returns index vectors IA and IC such
-% % that C = A(IA,:) and A = C(IC,:).
-% [uniqueColsA,IA,IC] = unique(normalA1','rows','stable');
-% model.FRuniqueColBool=zeros(nRxn,1);
-% model.FRuniqueColBool(IA)=1;
-% 
-% if any(~model.FRuniqueColBool & rxnBool3)
-%     fprintf('%u%s\n',nnz(~model.FRuniqueColBool & rxnBool3),' non-unique cols of consistent [F;R]')
-%     for i=1:nRxn
-%         if ~model.FRuniqueColBool(i) && rxnBool3(i)
-%             fprintf('%s%s\n',model.rxns{i},': not unique col of consistent [F;R]')
-%         end
-%     end
-% end
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %eliminate the metabolites and reactions that are stoichiometrically 
 %inconsistent or flux inconsistent from further consideration, but keep the
 %flux consistent exchange reactions, also eliminate scalar multiples
-metBool4=model.SConsistentMetBool & model.fluxConsistentMetBool & model.FRuniqueRowBool;
-rxnBool4=(model.SConsistentRxnBool | ~model.SIntRxnBool) & model.fluxConsistentRxnBool & model.FRuniqueColBool;
+metBool3=model.SConsistentMetBool & model.fluxConsistentMetBool & model.FRuniqueRowBool & model.FRnonZeroRowBool1;
+rxnBool3=(model.SConsistentRxnBool | ~model.SIntRxnBool) & model.fluxConsistentRxnBool;
 
-%find rows that are not all zero when the subset of reactions omitted
-A2=[F(:,rxnBool4) R(:,rxnBool4)];
-model.FRnonZeroRowBool = any(A2,2);
+%find rows that are not all zero when a subset of reactions omitted
+A3=[F(:,rxnBool3) R(:,rxnBool3)];
+model.FRnonZeroRowBool = any(A3,2);
 
-%only report for the consistent rows
-if any(~model.FRnonZeroRowBool & metBool4)
-    fprintf('%u%s\n',nnz(~model.FRnonZeroRowBool & metBool4),' zero rows of [F,R]')
+%find cols that are not all zero when a subset of metabolites omitted
+A3=[F(metBool3,:); R(metBool3,:)];
+model.FRnonZeroColBool = any(A3,1)';
+
+%only report for the latest subset of rows
+if any(~model.FRnonZeroRowBool & metBool3)
+    fprintf('%u%s\n',nnz(~model.FRnonZeroRowBool & metBool3),' zero rows of [F,R]')
     for i=1:nMet
-        if ~model.FRnonZeroRowBool(i) && metBool4(i)
+        if ~model.FRnonZeroRowBool(i) && metBool3(i)
             fprintf('%s%s\n',model.mets{i},': is a zero row of [F,R]')
         end
     end
     fprintf('\n')
 end
 
-%find cols that are not all zero when subset of metabolites omitted
-A1=F(metBool4,:)+R(metBool4,:);
-model.FRnonZeroColBool = any(A1,1)';
-
-%only report for the consistent cols
-if any(~model.FRnonZeroColBool & rxnBool4)
-    fprintf('%u%s\n',nnz(~model.FRnonZeroColBool & rxnBool4),' zero cols of consistent [F;R]')
+%only report for the latest subset of cols
+if any(~model.FRnonZeroColBool & rxnBool3) && 0
+    fprintf('%u%s\n',nnz(~model.FRnonZeroColBool & rxnBool3),' zero cols of consistent [F;R]')
     for i=1:nRxn
-        if ~model.FRnonZeroColBool(i) && rxnBool4(i)
+        if ~model.FRnonZeroColBool(i) && rxnBool3(i)
             fprintf('%s%s\n',model.rxns{i},': is a zero col of consistent [F;R]')
         end
     end
@@ -338,8 +336,34 @@ end
 
 pause(eps)
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A4=F(:,rxnBool3)+R(:,rxnBool3);%invariant to direction of reaction
+% 
+% %detect the cols of A that are identical upto scalar multiplication
+% %divide each col by the sum of each row.
+% sumA4             = sum(A4,1);
+% sumA4(sumA4==0)   = 1;
+% normalA4          = A4*diag(1./sumA4);
+% 
+% %get unique cols, but do not change the order
+% % [C,IA,IC] = unique(A,'rows') also returns index vectors IA and IC such
+% % that C = A(IA,:) and A = C(IC,:).
+% [uniqueColsA,IA,IC] = unique(normalA4','rows','stable');
+% model.FRuniqueColBool2=zeros(nRxn,1);
+% model.FRuniqueColBool2(IA)=1;
+% 
+% if any(~model.FRuniqueColBool2 & rxnBool3)
+%     fprintf('%u%s\n',nnz(~model.FRuniqueColBool2 & rxnBool3),' non-unique cols of consistent [F;R]')
+%     for i=1:nRxn
+%         if ~model.FRuniqueColBool(i) && rxnBool1(i)
+%             fprintf('%s%s\n',model.rxns{i},': not unique col of consistent [F;R]')
+%         end
+%     end
+% end
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%The largest connected component
+%The largest connected component - not necessary, flux consistency takes
+%care of this
 if 0
     if 1
         %connected rows of [F,R] and columns of [F;R]
@@ -358,30 +382,32 @@ else
     model.largestConnectedColsFRVBool=true(nRxn,1);
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%diagnostics
 
+%diagnostics
 if 1
     fprintf('\n%s\n','Diagnostics on size of boolean vectors for rows:')
-    fprintf('%s%u\n','FRnonZeroRowBool:              ',nnz(model.FRnonZeroRowBool))
-    fprintf('%s%u\n','FRuniqueRowBool:               ',nnz(model.FRuniqueRowBool))
     fprintf('%s%u\n','SConsistentMetBool:         ',nnz(model.SConsistentMetBool))
     fprintf('%s%u\n','fluxConsistentMetBool:      ',nnz(model.fluxConsistentMetBool))
+    fprintf('%s%u\n','FRuniqueRowBool:               ',nnz(model.FRuniqueRowBool))
+    fprintf('%s%u\n','FRnonZeroRowBool1:              ',nnz(model.FRnonZeroRowBool1))
+    fprintf('%s%u\n','FRnonZeroRowBool:              ',nnz(model.FRnonZeroRowBool))
    % fprintf('%s%u\n','largestConnectedRowsFRBool: ',nnz(model.largestConnectedRowsFRBool))
 
     fprintf('\n%s\n','Diagnostics on size of boolean vectors for cols:')
-    fprintf('%s%u\n','FRnonZeroColBool:              ',nnz(model.FRnonZeroColBool))
-    fprintf('%s%u\n','FRuniqueColBool:               ',nnz(model.FRuniqueColBool))
+    fprintf('%s%u\n','SIntRxnBool:                 ',nnz(model.SIntRxnBool))
     fprintf('%s%u\n','SConsistentRxnBool:          ',nnz(model.SConsistentRxnBool))
     fprintf('%s%u\n','fluxConsistentRxnBool:       ',nnz(model.fluxConsistentRxnBool))
+    fprintf('%s%u\n','FRuniqueColBool:               ',nnz(model.FRuniqueColBool))
+    fprintf('%s%u\n','FRnonZeroColBool1:              ',nnz(model.FRnonZeroColBool1))
+    fprintf('%s%u\n','FRnonZeroColBool:              ',nnz(model.FRnonZeroColBool))
     %fprintf('%s%u\n','largestConnectedColsFRVBool: ',nnz(model.largestConnectedColsFRVBool))
-    fprintf('%s%u\n','SIntRxnBool:                 ',nnz(model.SIntRxnBool))
     fprintf('\n')
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %only use rows that are nonzero, unique upto positive scaling, part of
 %the maximal conservation vector, and part of the largest component
-selection='a';
+selection='c';
 switch selection
     case 'a'
         model.FRrows = model.SConsistentMetBool...
@@ -391,7 +417,7 @@ switch selection
         model.FRVcols = (model.SConsistentRxnBool | ~model.SIntRxnBool)...
             & model.fluxConsistentRxnBool...
             & model.FRuniqueColBool...
-            &model.FRnonZeroColBool;
+            & model.FRnonZeroColBool;
     case 'b'
         %exchange reactions not considered when rank([F,R]) measured
         model.FRrows = model.SConsistentMetBool...
@@ -403,22 +429,31 @@ switch selection
             & model.FRuniqueColBool...
             & model.FRnonZeroColBool;
     case 'c'
+        model.FRrows = model.SConsistentMetBool...
+            & model.fluxConsistentMetBool...
+            & model.FRnonZeroRowBool1...
+            & model.FRnonZeroRowBool...
+            & model.FRuniqueRowBool;
+        model.FRVcols = (model.SConsistentRxnBool | ~model.SIntRxnBool)...
+            & model.fluxConsistentRxnBool...
+            & model.FRuniqueColBool...
+            & model.FRnonZeroColBool;
+    case 'd'
+        model.FRrows = model.SConsistentMetBool...
+            & model.fluxConsistentMetBool...
+            & model.FRnonZeroRowBool1...
+            & model.FRnonZeroRowBool...
+            & model.FRuniqueRowBool;
+        model.FRVcols = (model.SConsistentRxnBool | ~model.SIntRxnBool)...
+            & model.fluxConsistentRxnBool;
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if 0
-    %only omit either the rows or the columns
-    Fr = F(model.FRrows,:);
-    Rr = R(model.FRrows,:);
-    Fc = F(:,model.FRVcols);
-    Rc = R(:,model.FRVcols);
-else
-    %omit both the rows and the columns
-    Fr = F(model.FRrows,model.FRVcols);
-    Rr = R(model.FRrows,model.FRVcols);
-    Fc = F(model.FRrows,model.FRVcols);
-    Rc = R(model.FRrows,model.FRVcols);
-end
+%omit both the rows and the columns as specified above
+Fr = F(model.FRrows,model.FRVcols);
+Rr = R(model.FRrows,model.FRVcols);
+Fc = F(model.FRrows,model.FRVcols);
+Rc = R(model.FRrows,model.FRVcols);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if 0

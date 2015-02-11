@@ -229,9 +229,9 @@ if inform~=1
         else
             fprintf('%s%s%s%s%s%g%s\n','Maximal conservation vector, using ', method.interface, ' ', method.solver,', in time ',timetaken,' sec.')
         end
-        fprintf('%10f\t%s\n',ones(1,nMet) * z,'= Optimal objective (i.e. 1''*z)')
-        fprintf('%10d\t%s\n', nnz(model.SConsistentMetBool),'= Number of stoichiometrically consistent rows')
-        fprintf('%10g\t%s\n',norm(m'*SInt),'= || S''*m ||_inf for non-exchange reactions of S')
+        fprintf('%10f%s\n',ones(1,nMet) * z,' = Optimal objective (i.e. 1''*z)')
+        fprintf('%10d%s\n', nnz(model.SConsistentMetBool),' = Number of stoichiometrically consistent rows')
+        fprintf('%10g%s\n',norm(m'*SInt),' = || S''*m ||_inf for non-exchange reactions of S')
     end
 else
     m=solution.full;

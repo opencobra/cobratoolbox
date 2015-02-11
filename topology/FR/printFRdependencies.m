@@ -51,6 +51,8 @@ if exist('filePathName','var')
         end
         for k=1:length(indRxn)
             printFlag=0;
+            %printing to file does not normally print out model.rxn{}
+            fprintf(fileID,'%s\t',model.rxns{indRxn(k)});
             tmp=printRxnFormula(model,model.rxns{indRxn(k)},printFlag);
             fprintf(fileID,'%s\n',tmp{1});
         end
