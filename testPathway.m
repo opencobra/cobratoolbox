@@ -49,6 +49,6 @@ end
 FBAsolution = optimizeCbModel(model,'max');
 Flux = FBAsolution.f;
 if ~isempty(FBAsolution.x)
-printFluxVector(model,FBAsolution.x);
+%printFluxVector(model,FBAsolution.x);
 else display('zero flux in network')
 end
