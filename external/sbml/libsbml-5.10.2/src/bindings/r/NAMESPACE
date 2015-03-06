@@ -1,4 +1,0 @@
-#import(methods)
-useDynLib(libSBML, .registration = TRUE)
-
-exportPattern(".")

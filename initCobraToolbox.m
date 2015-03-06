@@ -22,7 +22,7 @@ pth=which('initCobraToolbox.m');
 global CBTDIR
 CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1));
 path(path,[CBTDIR, filesep, 'external']);
-addpath_recurse(CBTDIR,{'.svn','obsolete','m2html','docs','src','stow'});
+addpath_recurse(CBTDIR,{'.git','obsolete','m2html','docs','src','stow'});
 
 %% Define Solvers
 % Define the default linear programming solver to be used by the toolbox
@@ -99,11 +99,28 @@ else
     fprintf('Cb map output set failed\n');
 end
 
-
 % Set global LP solution accuracy tolerance
 changeOK = changeCobraSolverParams('LP','objTol',1e-6);
 
+if exist([CBTDIR, filesep, 'external' filesep 'SBMLToolbox-4.1.0'],'dir')==7 && exist([CBTDIR, filesep, 'external' filesep 'sbml' filesep 'libsbml-5.10.2'],'dir')==7
+    path(path,[CBTDIR, filesep, 'external' filesep 'SBMLToolbox-4.1.0' filesep 'toolbox']);
+    %cobratoolbox/external/sbml/libsbml-5.10.2/src/bindings/matlab
+    sbmlBindingsPath=[CBTDIR, filesep, 'external' filesep 'sbml' filesep 'libsbml-5.10.2' filesep 'src' filesep 'bindings' filesep 'matlab'];
+    path(path,sbmlBindingsPath);
+    setenv('LD_LIBRARY_PATH',[getenv('LD_LIBRARY_PATH') ';' sbmlBindingsPath])
+    getenv('LD_LIBRARY_PATH')
+    %now attempt to install
+    %UBUNTU 14.04 LTS
+    if isunix
+        fprintf('make sure that xml2 is installed')
+        fprintf('sudo apt-get install xml2')
+        %TODO - windows bindings, only ubuntu bindings available at the moment
+    installSBMLToolbox
+    %http://sbml.org/Software/SBMLToolbox/SBMLToolbox_4.0_API_Manual
+end
 % Check that SBML toolbox is installed and accessible
-if (~exist('TranslateSBML'))
+if (~exist('TranslateSBML','file'))
     warning('SBML Toolbox not in Matlab path: COBRA Toolbox will be unable to read SBML files');
 end
+
+

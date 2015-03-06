@@ -1,14 +1,46 @@
 %test a set of models for the feasibility of a nonzero objective (>1e-4)
 %using gurobi5 and quadMinos
-clear
+clear 
 
-% 1. choose the folder within the folder 'testModels' where the .xml files are located
-folder='m_model_collection';
-% 2. convert a batch of sbml files in xml format into cobra toolbox models,
-% each saved as a mat file 
+%Set and navigate to the path containing (or to contain)
+%repositories cloned from opencobra. e.g.
+pathContainingOpencobra='/usr/local/bin/';
+%path to gurobi solver
+pathContainingGurobi='/usr/local/bin/gurobi600/linux64/matlab/';
+%path to quadMinos solver
+pathContainingQuadMinos='/usr/local/bin/quadLP/matlab';
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%The remainder of this code should run uninterupted, 
+%Optionally clone opencobra code into pathContainingOpencobra, if not already
+%there or if out of date, then initialise cobratoobox
 if 0
+    cd(pathContainingOpencobra)
+    system('git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox_master')
+    system('git clone https://github.com/opencobra/m_model_collection.git')
+    cd(['pathContainingOpencobra' cobratoolbox_master])
+    initCobraToolbox
+end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%gurobi
+addpath(pathContainingGurobi)
+QPsolverOK = changeCobraSolver('gurobi6','QP');
+LPsolverOK = changeCobraSolver('gurobi6','LP');
+        
+%quadMinos
+addpath(pathContainingQuadMinos)
+
+%the folder where the SBML .xml files are located
+originFolder=[pathContainingOpencobra 'm_model_collection'];
+
+%folder where 
+destFolder=[pathContainingOpencobra 'cobratoolbox_master/testing/testModels/m_model_collection'];
+
+if 1
     %parsing via cobra toolbox and sbml toolbox and libsbml with matlab bindings
-    sbmlTestModelToMat(folder);
+    sbmlTestModelToMat(originFolder,destFolder);
 end
 
 %chose the amount to be printed to screen
@@ -146,15 +178,10 @@ open_boundaries = {...
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if 1
-    %
-    
-    %batch of mat files models the testModels directory
-    directory=which('testModels');
-    directory=[directory(1:end-12) folder filesep];
-    cd(directory)
-       
-    matFiles=dir(directory);
-    
+    % batch of mat files models the destFolder directory
+    cd(destFolder)
+    %list of mat files
+    matFiles=dir(destFolder);
     nModels=length(matFiles)-2;
     results=cell(nModels,4);
     j=1;
