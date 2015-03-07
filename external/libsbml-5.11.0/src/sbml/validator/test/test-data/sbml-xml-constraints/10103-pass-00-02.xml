@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+	<model id="Branch" name="wed">
+		<notes>
+			<body xmlns="http://www.w3.org/1999/xhtml">
+				<p>Simple branch system.</p>
+				<p>The reaction looks like this:</p>
+				<p>reaction-1:   X0 -&gt; S1; k1*X0;</p>
+				<p>reaction-2:   S1 -&gt; X1; k2*S1;</p>
+				<p>reaction-3:   S1 -&gt; X2; k3*S1;</p>
+			</body>
+		</notes>
+		<annotation>
+			<rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+			</rdf:RDF>
+		</annotation>
+		<listOfCompartments>
+			<compartment id="compartmentOne" size="1"/>
+		</listOfCompartments>
+	</model>
+</sbml>

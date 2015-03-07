@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model id="csymbolTime_reaction">
+    <listOfCompartments>
+      <compartment id="c" size="1" constant="true" spatialDimensions="3"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="S1" compartment="c" initialAmount="1" constant="false" hasOnlySubstanceUnits="false" boundaryCondition="false"/>
+      <species id="S2" compartment="c" initialAmount="0" boundaryCondition="false" hasOnlySubstanceUnits="false" constant="false"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="r" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="S1" constant="true" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="S2" constant="true" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> S1 </ci>
+                <ci> c </ci>
+              </apply>
+              <csymbol encoding="text" definitionURL="http://www.sbml.org/sbml/symbols/avogadro"> avo </csymbol>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

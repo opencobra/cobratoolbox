@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (3002) The units returned by the assignment rule that assigns value
+    to a parameter must be consistent with the units declared for
+    that parameter provnameed units have been declared.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+  <model>
+    <listOfCompartments>
+      <compartment name="c" units="litre"/>
+    </listOfCompartments>
+    <listOfParameters>
+      <parameter name="p" value="1" units="volt"/>
+       <parameter name="p1" value="1" units="dimensionless"/>
+   </listOfParameters>
+    <listOfRules>
+      <parameterRule name="p" formula="c*p1"/>
+    </listOfRules>
+  </model>
+</sbml>

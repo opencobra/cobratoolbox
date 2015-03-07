@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+  <model metaid="_case00901" id="case00901" name="case00901" xmlns="http://www.sbml.org/sbml/level2/version2">
+    <listOfCompartments>
+      <compartment id="c" name="c" size="5" units="volume" constant="false"/>
+    </listOfCompartments>
+    <listOfParameters  xmlns="http://www.sbml.org/sbml/level2/version2">
+      <parameter id="k1" name="k1" value="1" units="second"/>
+    </listOfParameters>
+    <listOfRules>
+      <rateRule metaid="rule1" variable="c">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <ci> c </ci>
+            <ci> k1 </ci>
+          </apply>
+        </math>
+      </rateRule>
+    </listOfRules>
+  </model>
+</sbml>

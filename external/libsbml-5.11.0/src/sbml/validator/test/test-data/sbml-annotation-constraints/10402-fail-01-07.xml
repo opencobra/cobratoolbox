@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" metaid="metaid_0000001" level="3" version="1">
+  <model metaid="metaid_0000002" id="model_0000001" name="model">
+    <listOfUnitDefinitions>
+      <unitDefinition id="volume">
+        <listOfUnits>
+          <unit kind="litre" exponent="1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="time">
+        <listOfUnits>
+          <unit kind="second" exponent="1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment metaid="metaid_0000003" id="compartment_0000001" size="1" units="volume" constant="true">
+        <annotation>
+          <mysim:nodecolors xmlns:mysim="http://www.mysim.org/ns" mysim:bgcolor="green" mysim:fgcolor="white"/>
+          <mysim:textcolors xmlns:mysim="http://www.mysim.org/ns" mysim:bgcolor="green" mysim:fgcolor="white"/>
+        </annotation>
+      </compartment>
+    </listOfCompartments>
+  </model>
+</sbml>

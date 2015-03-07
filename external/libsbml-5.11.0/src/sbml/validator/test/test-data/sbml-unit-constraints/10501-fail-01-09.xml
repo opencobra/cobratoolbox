@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fail: (3300) Inconsistent math
+      adding different units
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+  <model>
+    <listOfCompartments>
+      <compartment name="c"/>
+    </listOfCompartments>
+    <listOfParameters>
+      <parameter name="p" value="1" units="litre"/>
+      <parameter name="p1" value="1" units="metre"/>
+    </listOfParameters>
+    <listOfRules>
+      <algebraicRule formula="p+p1+0.5">
+      </algebraicRule>
+    </listOfRules>
+  </model>
+</sbml>

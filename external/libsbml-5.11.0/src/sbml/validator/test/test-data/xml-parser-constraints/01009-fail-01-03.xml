@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (3400) When a delay is specified within an event the units
+    of the delay formula must correspond to the timeUnits
+    specified within the event or, if no timeUnits are
+    specified, be a variation of 'time'.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+	<model>
+		<listOfUnitDefinitions>
+			<unitDefinition id="minutes">
+				<listOfUnits>
+					<unit kind="second" exponent="1" multiplier="60"/>
+				</listOfUnits>
+			</unitDefinition>
+		</listOfUnitDefinitions>
+		<listOfParameters>
+			<parameter id="p" value="1" units="second" constant="false"/>
+			<parameter id="p1" value="1" units="minutes" constant="false"/>
+			<parameter id="p2" constant="false"/>
+		</listOfParameters>
+		<listOfEvents>
+			<event>
+				<trigger>
+					<math xmlns="http://www.w3.org/1998/Math/MathML">
+						<apply>
+							<lt/>
+							<ci> p </ci>
+							<cn> 0.1 </cn>
+						</apply>
+					</math>
+				</trigger>
+				<delay>
+					<math xmlns="http://www.w3.org/1998/Math/MathML">
+						<ci> p </ci>
+					</math>
+				</delay>
+				<listOfEventAssignments>
+					<eventAssignment variable="p2">
+						<math xmlns="http://www.w3.org/1998/Math/MathML">
+							<cn> 1 </cn>
+						</math>
+					</eventAssignment>
+				</listOfEventAssignments>
+		</listOfEvents>
+	</model>
+</sbml>

@@ -1,0 +1,9 @@
+/** @page libsbml-license LibSBML license
+@n
+
+<!-- LICENSE.html is located in ../../.  The include search path for
+     doxygen is set in doxygen-common-config.txt -->
+
+@htmlinclude LICENSE.html
+
+*/

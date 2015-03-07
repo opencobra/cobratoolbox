@@ -13,16 +13,17 @@ function initCobraToolbox(CobraLPSolver)
 %     changeCobraSolver('tomlab_cplex', 'MIQP');
 %     changeCbMapOutput('svg');
 %
-% Markus Herrgard 8/30/06
-%
-% Rewritten to utilize addpath_recurse. Richard Que (11/19/09)
+
+% Maintained by Ronan M.T. Fleming: ronan.mt.fleming gmail.com
 
 %% add cobra toolbox paths
 pth=which('initCobraToolbox.m');
 global CBTDIR
 CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1));
 path(path,[CBTDIR, filesep, 'external']);
-addpath_recurse(CBTDIR,{'.git','obsolete','m2html','docs','src','stow'});
+
+%add all paths below cobra directory, but not certain folders
+addpath_recurse(CBTDIR,{'.git','obsolete','m2html','docs','src','stow','libsbml-5.11.0','SBMLToolbox-4.1.0'});
 
 %% Define Solvers
 % Define the default linear programming solver to be used by the toolbox
@@ -102,19 +103,17 @@ end
 % Set global LP solution accuracy tolerance
 changeOK = changeCobraSolverParams('LP','objTol',1e-6);
 
-if exist([CBTDIR, filesep, 'external' filesep 'SBMLToolbox-4.1.0'],'dir')==7 && exist([CBTDIR, filesep, 'external' filesep 'sbml' filesep 'libsbml-5.10.2'],'dir')==7
-    path(path,[CBTDIR, filesep, 'external' filesep 'SBMLToolbox-4.1.0' filesep 'toolbox']);
-    %cobratoolbox/external/sbml/libsbml-5.10.2/src/bindings/matlab
-    sbmlBindingsPath=[CBTDIR, filesep, 'external' filesep 'sbml' filesep 'libsbml-5.10.2' filesep 'src' filesep 'bindings' filesep 'matlab'];
+%attempt to provide support for sbml
+if exist([CBTDIR, filesep, 'external' filesep 'SBMLToolbox-4.1.0'],'dir')==7 && exist([CBTDIR, filesep, 'external' filesep 'libsbml-5.11.0'],'dir')==7
+    SBMLToolboxPath=[CBTDIR, filesep, 'external' filesep 'SBMLToolbox-4.1.0' filesep 'toolbox'];
+    path(path,SBMLToolboxPath);
+    %/usr/local/bin/cobratoolbox_master/external/libsbml-5.11.0/compiled/lib
+    sbmlBindingsPath=[CBTDIR, filesep, 'external' filesep 'libsbml-5.11.0' filesep 'compiled' filesep 'lib'];
     path(path,sbmlBindingsPath);
-    setenv('LD_LIBRARY_PATH',[getenv('LD_LIBRARY_PATH') ';' sbmlBindingsPath])
+    setenv('LD_LIBRARY_PATH',[getenv('LD_LIBRARY_PATH') ':' sbmlBindingsPath])
     getenv('LD_LIBRARY_PATH')
-    %now attempt to install
-    %UBUNTU 14.04 LTS
-    if isunix
-        fprintf('make sure that xml2 is installed')
-        fprintf('sudo apt-get install xml2')
-        %TODO - windows bindings, only ubuntu bindings available at the moment
+
+    %TODO - windows bindings, only ubuntu bindings available at the moment
     installSBMLToolbox
     %http://sbml.org/Software/SBMLToolbox/SBMLToolbox_4.0_API_Manual
 end
@@ -123,4 +122,33 @@ if (~exist('TranslateSBML','file'))
     warning('SBML Toolbox not in Matlab path: COBRA Toolbox will be unable to read SBML files');
 end
 
+%%Download http://sourceforge.net/projects/sbml/files/libsbml/5.11.0/stable/libSBML-5.11.0-core-src.tar.gz 
 
+%Installation of libsbml source from libSBML-5.11.0-core-src.tar.gz on a UBUNTU 14.04 LTS machine
+%sudo apt-get install xml2
+%sudo apt-get install libxml2-dev
+%cd /usr/local/bin/cobratoolbox_master/external
+%cp ~/Downloads/libSBML-5.11.0-core-src.tar.gz .
+%tar -xzvf libSBML-5.11.0-core-src.tar.gz
+%cd libsbml-5.11.0/
+%mkdir compiled
+%./configure --prefix="/usr/local/bin/cobratoolbox_master/external/libsbml-5.11.0/compiled" --with-matlab="/usr/local/bin/MATLAB/R2014b/"
+%cd src/
+%make
+%make install
+
+%Test the installation with:
+TranslateSBML('/usr/local/bin/cobratoolbox_master/testing/testSBML/Ecoli_core_ECOSAL.xml')
+
+% If there is a problem with the mex file:
+% in matlab check: !ldd /usr/local/bin/cobratoolbox_master/external/libsbml-5.11.0/compiled/lib/TranslateSBML.mexa64
+% a terminal check: ldd /usr/local/bin/cobratoolbox_master/external/libsbml-5.11.0/compiled/lib/TranslateSBML.mexa64
+% make sure that none of the libraries for both checks are are 'not found'
+
+%     %now attempt to install
+%     if isunix
+%         fprintf('%s\n','make sure that xml2 and libxml2-dev are installed')
+%         fprintf('%s\n','sudo apt-get install xml2')
+%         fprintf('%s\n','sudo apt-get install libxml2-dev')
+%     end
+    

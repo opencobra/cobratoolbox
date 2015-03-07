@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3" xmlns:math="http://www.w3.org/1998/Math/MathML">
+	<model>
+		<listOfFunctionDefinitions>
+			<functionDefinition id="fpow">
+				<math xmlns="http://www.w3.org/1998/Math/MathML">
+					<lambda>
+						<bvar>
+							<ci> x </ci>
+						</bvar>
+						<bvar>
+							<ci> y </ci>
+						</bvar>
+						<apply>
+							<power/>
+							<ci> x </ci>
+							<ci> y </ci>
+						</apply>
+					</lambda>
+				</math>
+			</functionDefinition>
+		</listOfFunctionDefinitions>
+		<listOfCompartments>
+			<compartment id="cell" size="0.013"/>
+		</listOfCompartments>
+		<listOfSpecies>
+			<species id="X0" compartment="cell"/>
+		</listOfSpecies>
+		<listOfParameters>
+			<parameter id="z"/>
+		</listOfParameters>
+		<listOfInitialAssignments>
+			<initialAssignment symbol="z">
+				<math xmlns="http://www.w3.org/1998/Math/MathML">
+					<apply>
+						<ci> fpow </ci>
+						<ci> cell </ci>
+						<cn> 3.0 </cn>
+					</apply>
+				</math>
+			</initialAssignment>
+		</listOfInitialAssignments>
+	</model>
+</sbml>

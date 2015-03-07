@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+  <model id="algebraicRules_basic">
+    <listOfCompartments>
+      <compartment id="cell" size="1"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="x" compartment="cell" initialConcentration="0.5"/>
+      <species id="y" compartment="cell" initialConcentration="0.5"/>
+      <species id="z" compartment="cell" initialConcentration="1"/>
+    </listOfSpecies>
+    <listOfRules>
+      <algebraicRule>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <abs/>
+            <ci> z </ci>
+          </apply>
+        </math>
+      </algebraicRule>
+    </listOfRules>
+    <listOfReactions>
+      <reaction id="R1" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="y"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> K_1 </ci>
+              <ci> x </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="K_1"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

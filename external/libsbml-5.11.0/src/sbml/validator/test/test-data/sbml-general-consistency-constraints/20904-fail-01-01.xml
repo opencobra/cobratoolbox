@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Fail: (1502) A Compartment, Species, or Parameter referenced by a
+RateRule must have constant='false'.
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment id="c"/>
+    </listOfCompartments>
+    <listOfRules>
+      <rateRule variable="c"/>
+    </listOfRules>
+  </model>
+</sbml>

@@ -1,0 +1,43 @@
+{
+ "targets": [
+    {
+
+    "target_name": "sbml",
+
+    "include_dirs": [ 
+      "@LIBSBML_ROOT_BINARY_DIR@/src",
+      "@LIBSBML_ROOT_BINARY_DIR@/src/bindings/javascript",
+      "@LIBSBML_ROOT_SOURCE_DIR@/src",
+      "@LIBSBML_ROOT_SOURCE_DIR@/src/bindings/swig",
+      "@LIBSBML_ROOT_SOURCE_DIR@/src/bindings/javascript",
+    ],
+
+    "sources": [ "libsbml_wrap.cpp" ],
+    
+    "libraries": [
+      "LIBSBML_LOCATION"
+      @NODE_JS_LIBS@
+    ],
+  
+    "defines": [ @NODE_JS_DEFINES@
+    ],
+
+    "cflags": ["-fPIC"],
+    
+    "cflags!": [ "-fno-exceptions" ],
+    "cflags_cc!": [ "-fno-exceptions" ],
+    
+    "conditions": [
+        ['OS=="mac"', {
+          "xcode_settings": {
+            "GCC_ENABLE_CPP_EXCEPTIONS": "YES",
+            "MACOSX_DEPLOYMENT_TARGET": "10.7",
+            "OTHER_CPLUSPLUSFLAGS" : ["-std=c++11","-stdlib=libstdc++"],
+            "OTHER_LDFLAGS": ["-stdlib=libstdc++"],
+          }
+        }]
+     ]
+    
+    }
+  ], 
+}

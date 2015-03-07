@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ggg:sbml xmlns:foo="http://www.sbml.org/sbml/level3/version1/core" xmlns:ggg="http://www.some" level="3" version="1">
+  <model/>
+</ggg:sbml>

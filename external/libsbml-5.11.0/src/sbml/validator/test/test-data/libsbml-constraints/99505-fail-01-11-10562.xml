@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model id="ValidateBug">
+	<listOfCompartments>
+	 <compartment id="comp" name="comp" size="1.0"/>
+	</listOfCompartments>
+    <listOfSpecies>
+      <species id="S1" compartment="comp" initialAmount="0"/>
+      <species id="S2" compartment="comp" initialAmount="0"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="p1" value="2" units="metre"/>
+      <parameter id="p2" constant="false"/>
+    </listOfParameters>
+		<listOfEvents>
+			<event>
+				<trigger>
+					<math xmlns="http://www.w3.org/1998/Math/MathML">
+						<apply>
+							<lt/>
+							<ci> p1 </ci>
+							<cn> 0.1 </cn>
+						</apply>
+					</math>
+				</trigger>
+				<listOfEventAssignments>
+					<eventAssignment variable="S2">
+						<math xmlns="http://www.w3.org/1998/Math/MathML">
+						  <apply>
+						    <plus/>
+						    <ci> p1</ci>
+						    <ci> p2</ci>
+						  </apply>
+						</math>
+					</eventAssignment>
+				</listOfEventAssignments>
+			</event>
+		</listOfEvents>
+  </model>
+</sbml>

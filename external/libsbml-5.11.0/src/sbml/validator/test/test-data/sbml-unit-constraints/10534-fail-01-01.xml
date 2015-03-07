@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model timeUnits="second">
+    <listOfUnitDefinitions>
+      <unitDefinition id="substance">
+        <listOfUnits>
+          <unit kind="mole" exponent="1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment id="c" constant="false" units="litre"/>
+    </listOfCompartments>
+    <listOfParameters>
+      <parameter id="p2" value="1" units="dimensionless" constant="false"/>
+      <parameter id="p1" value="1" units="dimensionless" constant="false"/> 
+      <parameter id="p3" value="1" units="mole" constant="false"/> 
+    </listOfParameters>
+    <listOfRules>
+      <rateRule variable="sr">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <ci> p3 </ci>
+            <ci> p1 </ci>
+          </apply>
+        </math>
+      </rateRule >
+    </listOfRules>
+    <listOfReactions>
+      <reaction id="r" reversible="true" fast="false">
+        <listOfReactants>
+          <speciesReference species="s" stoichiometry="1" constant="false" id="sr"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="p" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+      </reaction>
+    </listOfReactions>
+    <listOfSpecies>
+      <species id="s" compartment="c" substanceUnits="substance" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="e" compartment="c" substanceUnits="substance" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="p" compartment="c" substanceUnits="substance" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+    </listOfSpecies>
+  </model>
+</sbml>

@@ -247,21 +247,30 @@ if 1
     results2=results(1:j-1,1:4);
     clear results;
     
-    results=cell(size(modelNames,1),6);
+    results=cell(size(modelNames,1)+1,6);
+    results{1,1}='Species';
+    results{1,2}='Model';
+    results{1,3}='Rxn optimised';
+    results{1,4}=['true if quadMinos objective greater than ' num2str(tol)];
+    results{1,5}='quadMinos objective';
+    results{1,6}='gurobi objective';
+    results{1,7}='difference between objectives';
     for k=1:size(modelNames,1)
         %Abbreviation of model
-        results{k,1}=modelNames{k,2};
+        results{k+1,1}=modelNames{k,1};
+        results{k+1,2}=modelNames{k,2};
         bool=strcmp(modelNames{k,2},results2(:,1));
         if any(bool)
-            results{k,2}=results2{bool,2};
+            %Abbreviation of reaction optimised'
+            results{k+1,3}=results2{bool,2};
             %true if quadMinos objective greater than tol
-            results{k,3}=abs(results2{bool,4})>tol;
+            results{k+1,4}=abs(results2{bool,4})>tol;
             %quadMinos objective
-            results{k,4}=results2{bool,4};
+            results{k+1,5}=results2{bool,4};
             %gurobi objective
-            results{k,5}=results2{bool,3};
+            results{k+1,6}=results2{bool,3};
             %difference between objectives
-            results{k,6}=abs(results2{bool,3}-results2{bool,4});
+            results{k+1,7}=abs(results2{bool,3}-results2{bool,4});
         end
     end
     clear results2;

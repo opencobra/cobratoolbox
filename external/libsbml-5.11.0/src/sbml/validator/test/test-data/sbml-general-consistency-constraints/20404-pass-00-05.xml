@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1204) An 'area' UnitDefinition may only have a single Unit of
+kind 'metre' and the Unit's exponent must be '2'.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+	<model>
+		<listOfUnitDefinitions>
+			<unitDefinition id="area">
+				<listOfUnits>
+					<unit kind="metre" exponent="2"/>
+				</listOfUnits>
+			</unitDefinition>
+		</listOfUnitDefinitions>
+	</model>
+</sbml>

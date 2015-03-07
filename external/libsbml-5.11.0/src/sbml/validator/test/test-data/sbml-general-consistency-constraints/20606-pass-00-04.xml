@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Pass: (1406) A Species whose Compartment has spatialDimensions='2'
+must have spatialSizeUnits of 'area' or the id of a UnitDefinition
+that defines a variant of 'metre' with exponent='2'.
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2/version2" level="2" version="2">
+  <model>
+    <listOfUnitDefinitions>
+      <unitDefinition id="sqmm">
+        <listOfUnits>
+          <unit kind="metre" exponent="2" scale="-3"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment id="c" spatialDimensions="2"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="c" spatialSizeUnits="sqmm"/>
+    </listOfSpecies>
+  </model>
+</sbml>

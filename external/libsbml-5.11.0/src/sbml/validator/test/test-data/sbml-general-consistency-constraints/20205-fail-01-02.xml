@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" spatialDimensions="1" units="dimensionless" constant="true"/>
+    </listOfCompartments>
+    <listOfCompartments>
+      <compartment id="c1" spatialDimensions="1" units="dimensionless" constant="true"/>
+    </listOfCompartments>
+  </model>
+</sbml>

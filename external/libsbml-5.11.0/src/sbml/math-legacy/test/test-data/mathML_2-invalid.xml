@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+  <model id="l2v3_all">
+    <listOfFunctionDefinitions>
+      <functionDefinition id="fd">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <apply/>
+          </lambda>
+        </math>
+      </functionDefinition>
+      <functionDefinition id="fd1">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar>
+              <ci> x </ci>
+            </bvar>
+            <piecewise>
+              <piece>
+                <ci> p </ci>
+                <apply>
+                  <leq/>
+                  <ci> x </ci>
+                  <cn type="integer"> 4 </cn>
+                </apply>
+              </piece>
+            </piecewise>
+          </lambda>
+        </math>
+      </functionDefinition>
+    </listOfFunctionDefinitions>
+    <listOfCompartments>
+      <compartment id="a" size="1" constant="false"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="a" initialAmount="0"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="p" value="2" units="second" constant="false"/>
+      <parameter id="p1" value="2" units="litre" constant="false"/>
+      <parameter id="p2" value="2" units="litre" constant="false"/>
+      <parameter id="p3" value="2" units="litre" constant="false"/>
+      <parameter id="x" value="2" units="dimensionless" constant="false"/>
+    </listOfParameters>
+    <listOfInitialAssignments>
+      <initialAssignment symbol="p1">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <piecewise>
+              <piece>
+                  <apply><minus/><ci> x </ci></apply>
+                  <apply><lt/><ci> x </ci> <cn> 0 </cn></apply>
+              </piece>
+              <piece>
+                  <cn> 0 </cn>
+                  <apply><eq/><ci> x </ci> <cn> 0 </cn></apply>
+              </piece>
+            </piecewise>
+        </math>
+      </initialAssignment>
+    </listOfInitialAssignments>
+    <listOfRules>
+      <algebraicRule>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+          <true/>
+          </apply>
+        </math>
+      </algebraicRule>
+      <assignmentRule variable="p2">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <log/>
+            <logbase>
+              <cn> 3 </cn>
+            </logbase>
+            <ci> x </ci>
+          </apply>
+        </math>
+      </assignmentRule>
+    </listOfRules>
+  </model>
+</sbml>

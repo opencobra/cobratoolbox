@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Pass: (3300) Inconsistent math
+-->
+
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" constant="false"/>
+    </listOfCompartments>
+    <listOfParameters>
+      <parameter id="p" value="1" constant="false"/>
+      <parameter id="p1" units="metre" value="1" constant="false"/>
+    </listOfParameters>
+    <listOfRules>
+      <algebraicRule>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <piecewise>
+            <piece>
+              <apply>
+                <times/>
+                <ci> p </ci>
+                <cn> 6 </cn>
+              </apply> 
+              <apply>
+                <gt/>
+                <ci> c </ci>
+                <cn> 4 </cn>
+              </apply> 
+            </piece>
+            <otherwise>
+              <apply>
+              <gt/>
+              <ci> p1 </ci>
+              <cn> 3.5 </cn>
+              </apply>
+            </otherwise>
+          </piecewise>
+        </math>
+      </algebraicRule>
+    </listOfRules>
+  </model>
+</sbml>

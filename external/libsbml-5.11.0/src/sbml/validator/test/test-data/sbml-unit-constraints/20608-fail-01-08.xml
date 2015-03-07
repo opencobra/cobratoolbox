@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fail: (1408): A Species' substanceUnits must be 'substance', 'item',
+'mole', or the id of a UnitDefinition that defines a variant of 'item'
+or 'mole'.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+	<model>
+		<listOfUnitDefinitions>
+			<unitDefinition id="mi">
+				<listOfUnits>
+					<unit kind="item" exponent="2" scale="-3"/>
+				</listOfUnits>
+			</unitDefinition>
+		</listOfUnitDefinitions>
+		<listOfCompartments>
+			<compartment id="c"/>
+		</listOfCompartments>
+		<listOfSpecies>
+			<species id="s" compartment="c" substanceUnits="mi"/>
+		</listOfSpecies>
+	</model>
+</sbml>

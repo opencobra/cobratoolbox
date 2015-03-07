@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+  <model>
+    <listOfCompartments>
+      <compartment id="c" constant="false"/>
+      <compartment id="d" constant="false"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="c"/>
+      <species id="t" compartment="c"/>
+    </listOfSpecies>
+    <listOfRules>
+      <assignmentRule variable="c"/>
+      <rateRule variable="s"/>
+      <assignmentRule variable="d"/>
+      <rateRule variable="t"/>
+    </listOfRules>
+  </model>
+</sbml>

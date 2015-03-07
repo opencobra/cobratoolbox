@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+  <model metaid="mg" id="m">
+    <listOfCompartments>
+      <compartment id="default_compartment" size="1"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="enzyme1" compartment="default_compartment"/>
+      <species id="ABA" compartment="default_compartment"/>
+      <species id="ABA80H" compartment="default_compartment"/>
+    </listOfSpecies>
+    <listOfEvents>
+      <event>
+        <trigger/>
+        <listOfEventAssignments>
+          <eventAssignment variable="ABA" metaid="mg"/>
+        </listOfEventAssignments>
+      </event>
+    </listOfEvents>
+  </model>
+</sbml>

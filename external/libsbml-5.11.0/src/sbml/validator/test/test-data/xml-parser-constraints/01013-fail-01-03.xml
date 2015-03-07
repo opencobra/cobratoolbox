@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" metaid="metaid_0000001" version="1">
+	<model>
+		<annotation>
+			<rdf:RDF>
+				<rdf:Description rdf:about="#metaid_0000003">
+					<bqbiol:is>
+						<rdf:Bag>
+							<rdf:li rdf:resource="http://www.geneontology.org/#GO:0000567"/>
+						</rdf:Bag>
+					</bqbiol:is>
+				</rdf:Description>
+			</rdf:RDF>
+		</annotation>
+	</model>
+</sbml>

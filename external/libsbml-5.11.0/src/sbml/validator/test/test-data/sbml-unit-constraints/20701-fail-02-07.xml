@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fail: (1500) A Parameter's 'units' must be a UnitKind, a built-in
+unit, or the id of a UnitDefinition.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+	<model>
+		<listOfCompartments>
+			<compartment name="c"/>
+		</listOfCompartments>
+		<listOfParameters>
+			<parameter name="p" units="length" value="1"/>
+			<parameter name="p1" units="area" value="1"/>
+		</listOfParameters>
+	</model>
+</sbml>

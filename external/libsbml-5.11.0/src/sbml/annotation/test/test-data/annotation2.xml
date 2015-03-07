@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" metaid="_000000" level="2" version="1">
+	<model metaid="_000001">
+		<annotation>
+			<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+				<rdf:Description rdf:about="#_000001">
+					<dc:creator rdf:parseType="Resource">
+						<rdf:Bag>
+							<rdf:li rdf:parseType="Resource">
+								<vCard:N rdf:parseType="Resource">
+									<vCard:Family>Hucka</vCard:Family>
+									<vCard:Given>Mike</vCard:Given>
+								</vCard:N>
+								<vCard:EMAIL>mhucka@caltech.edu</vCard:EMAIL>
+								<vCard:ORG>
+									<vCard:Orgname>BNMC</vCard:Orgname>
+								</vCard:ORG>
+							</rdf:li>
+							<rdf:li rdf:parseType="Resource">
+								<vCard:N rdf:parseType="Resource">
+									<vCard:Family>Keating</vCard:Family>
+									<vCard:Given>Sarah</vCard:Given>
+								</vCard:N>
+								<vCard:EMAIL>skeating@caltech.edu</vCard:EMAIL>
+								<vCard:ORG>
+									<vCard:Orgname>UH</vCard:Orgname>
+								</vCard:ORG>
+							</rdf:li>
+						</rdf:Bag>
+					</dc:creator>
+					<dcterms:created rdf:parseType="Resource">
+						<dcterms:W3CDTF>2005-02-02T14:56:11</dcterms:W3CDTF>
+					</dcterms:created>
+					<dcterms:modified rdf:parseType="Resource">
+						<dcterms:W3CDTF>2006-05-30T10:46:02</dcterms:W3CDTF>
+					</dcterms:modified>
+					<dcterms:modified rdf:parseType="Resource">
+						<dcterms:W3CDTF>2007-01-16T15:31:52</dcterms:W3CDTF>
+					</dcterms:modified>
+				</rdf:Description>
+			</rdf:RDF>
+		</annotation>
+	</model>
+</sbml>

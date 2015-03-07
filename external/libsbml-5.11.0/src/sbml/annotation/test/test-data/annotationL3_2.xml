@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" xmlns:jd2="http://www.sys-bio.org/sbml" metaid="_000000" level="3" version="1">
+	<model metaid="_000001">
+		<annotation>
+			<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+				<rdf:Description rdf:about="#_000001">
+					<dc:creator>
+						<rdf:Bag>
+							<rdf:li rdf:parseType="Resource">
+								<vCard:N rdf:parseType="Resource">
+									<vCard:Family>Le Novere</vCard:Family>
+									<vCard:Given>Nicolas</vCard:Given>
+								</vCard:N>
+								<vCard:EMAIL>lenov@ebi.ac.uk</vCard:EMAIL>
+								<vCard:ORG>
+									<vCard:Orgname>EMBL-EBI</vCard:Orgname>
+								</vCard:ORG>
+							</rdf:li>
+						</rdf:Bag>
+					</dc:creator>
+					<dcterms:created rdf:parseType="Resource">
+						<dcterms:W3CDTF>2005-02-02T14:56:11</dcterms:W3CDTF>
+					</dcterms:created>
+					<dcterms:modified rdf:parseType="Resource">
+						<dcterms:W3CDTF>2006-05-30T10:46:02</dcterms:W3CDTF>
+					</dcterms:modified>
+					<bqbiol:is>
+						<rdf:Bag>
+							<rdf:li rdf:resource="http://www.geneontology.org/#GO:0007274"/>
+						</rdf:Bag>
+					</bqbiol:is>
+				</rdf:Description>
+			</rdf:RDF>
+		</annotation>
+		<listOfCompartments>
+			<compartment metaid="_000002" id="comp1" constant="true"/>
+			<compartment id="A" metaid="_000003" constant="true">
+				<annotation>
+					<jd2:JDesignerLayout version="2.0" MajorVersion="2" MinorVersion="0" BuildVersion="41">
+						<jd2:header>
+							<jd2:VersionHeader JDesignerVersion="2.0"/>
+							<jd2:ModelHeader Author="Mr Untitled" ModelVersion="0.0" ModelTitle="untitled"/>
+							<jd2:TimeCourseDetails timeStart="0" timeEnd="10" numberOfPoints="1000"/>
+						</jd2:header>
+					</jd2:JDesignerLayout>
+					<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+						<rdf:Description rdf:about="#_000003">
+					<dc:creator>
+						<rdf:Bag>
+							<rdf:li rdf:parseType="Resource">
+								<vCard:N rdf:parseType="Resource">
+									<vCard:Family>Le Novere</vCard:Family>
+									<vCard:Given>Nicolas</vCard:Given>
+								</vCard:N>
+								<vCard:EMAIL>lenov@ebi.ac.uk</vCard:EMAIL>
+								<vCard:ORG>
+									<vCard:Orgname>EMBL-EBI</vCard:Orgname>
+								</vCard:ORG>
+							</rdf:li>
+						</rdf:Bag>
+					</dc:creator>
+					<dcterms:created rdf:parseType="Resource">
+						<dcterms:W3CDTF>2005-02-02T14:56:11</dcterms:W3CDTF>
+					</dcterms:created>
+					<dcterms:modified rdf:parseType="Resource">
+						<dcterms:W3CDTF>2006-05-30T10:46:02</dcterms:W3CDTF>
+					</dcterms:modified>
+							<bqbiol:is>
+								<rdf:Bag>
+									<rdf:li rdf:resource="http://www.geneontology.org/#GO:0007274"/>
+								</rdf:Bag>
+							</bqbiol:is>
+						</rdf:Description>
+						<rdf:Description>
+							<rdf:other/>
+						</rdf:Description>
+					</rdf:RDF>
+				</annotation>
+			</compartment>
+			<compartment id="B" constant="true">
+				<annotation>
+					<jd2:JDesignerLayout version="2.0" MajorVersion="2" MinorVersion="0" BuildVersion="41">
+						<jd2:header>
+							<jd2:VersionHeader JDesignerVersion="2.0"/>
+							<jd2:ModelHeader Author="Mr Untitled" ModelVersion="0.0" ModelTitle="untitled"/>
+							<jd2:TimeCourseDetails timeStart="0" timeEnd="10" numberOfPoints="1000"/>
+						</jd2:header>
+					</jd2:JDesignerLayout>
+				</annotation>
+			</compartment>
+			<compartment id="C" metaid="_000004" constant="true">
+				<annotation>
+					<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+						<rdf:Description rdf:about="#_000004">
+					<dc:creator>
+						<rdf:Bag>
+							<rdf:li rdf:parseType="Resource">
+								<vCard:N rdf:parseType="Resource">
+									<vCard:Family>Le Novere</vCard:Family>
+									<vCard:Given>Nicolas</vCard:Given>
+								</vCard:N>
+								<vCard:EMAIL>lenov@ebi.ac.uk</vCard:EMAIL>
+								<vCard:ORG>
+									<vCard:Orgname>EMBL-EBI</vCard:Orgname>
+								</vCard:ORG>
+							</rdf:li>
+						</rdf:Bag>
+					</dc:creator>
+					<dcterms:created rdf:parseType="Resource">
+						<dcterms:W3CDTF>2005-02-02T14:56:11</dcterms:W3CDTF>
+					</dcterms:created>
+					<dcterms:modified rdf:parseType="Resource">
+						<dcterms:W3CDTF>2006-05-30T10:46:02</dcterms:W3CDTF>
+					</dcterms:modified>
+						</rdf:Description>
+					</rdf:RDF>
+				</annotation>
+			</compartment>			
+			<compartment id="cc" metaid="_000012" constant="true">
+				<annotation>
+					<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+						<rdf:Description rdf:about="#_000012">
+							<bqbiol:is>
+								<rdf:Bag>
+									<rdf:li rdf:resource="http://www.geneontology.org/#GO:0007274"/>
+								</rdf:Bag>
+							</bqbiol:is>
+						</rdf:Description>
+					</rdf:RDF>
+				</annotation>
+			</compartment>
+			<compartment id="C1" metaid="_000032" constant="true">
+				<annotation>
+					<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+						<rdf:Description rdf:about="#_000032">
+							<dc:creator>
+								<rdf:Bag>
+									<rdf:li rdf:parseType="Resource">
+										<vCard:N rdf:parseType="Resource">
+											<vCard:Family>Le Novere</vCard:Family>
+											<vCard:Given>Nicolas</vCard:Given>
+										</vCard:N>
+										<vCard:EMAIL>lenov@ebi.ac.uk</vCard:EMAIL>
+										<vCard:ORG>
+											<vCard:Orgname>EMBL-EBI</vCard:Orgname>
+										</vCard:ORG>
+									</rdf:li>
+								</rdf:Bag>
+							</dc:creator>
+							<dcterms:created rdf:parseType="Resource">
+								<dcterms:W3CDTF>2005-02-02T14:56:11</dcterms:W3CDTF>
+							</dcterms:created>
+							<dcterms:modified rdf:parseType="Resource">
+								<dcterms:W3CDTF>2006-05-30T10:46:02</dcterms:W3CDTF>
+							</dcterms:modified>
+						</rdf:Description>
+						<rdf:other/>
+					</rdf:RDF>
+				</annotation>
+			</compartment>			
+			<compartment id="cc1" metaid="_000042" constant="true">
+				<annotation>
+					<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+						<rdf:Description rdf:about="#_000042">
+							<bqbiol:is>
+								<rdf:Bag>
+									<rdf:li rdf:resource="http://www.geneontology.org/#GO:0007274"/>
+								</rdf:Bag>
+							</bqbiol:is>
+						</rdf:Description>
+						<rdf:Description/>
+					</rdf:RDF>
+				</annotation>
+			</compartment>
+			<compartment id="C2" metaid="_000033" constant="true">
+				<annotation>
+					<jd2:JDesignerLayout version="2.0" MajorVersion="2" MinorVersion="0" BuildVersion="41">
+						<jd2:header>
+							<jd2:VersionHeader JDesignerVersion="2.0"/>
+							<jd2:ModelHeader Author="Mr Untitled" ModelVersion="0.0" ModelTitle="untitled"/>
+							<jd2:TimeCourseDetails timeStart="0" timeEnd="10" numberOfPoints="1000"/>
+						</jd2:header>
+					</jd2:JDesignerLayout>
+					<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+						<rdf:Description rdf:about="#_000033">
+							<dc:creator>
+								<rdf:Bag>
+									<rdf:li rdf:parseType="Resource">
+										<vCard:N rdf:parseType="Resource">
+											<vCard:Family>Le Novere</vCard:Family>
+											<vCard:Given>Nicolas</vCard:Given>
+										</vCard:N>
+										<vCard:EMAIL>lenov@ebi.ac.uk</vCard:EMAIL>
+										<vCard:ORG>
+											<vCard:Orgname>EMBL-EBI</vCard:Orgname>
+										</vCard:ORG>
+									</rdf:li>
+								</rdf:Bag>
+							</dc:creator>
+							<dcterms:created rdf:parseType="Resource">
+								<dcterms:W3CDTF>2005-02-02T14:56:11</dcterms:W3CDTF>
+							</dcterms:created>
+							<dcterms:modified rdf:parseType="Resource">
+								<dcterms:W3CDTF>2006-05-30T10:46:02</dcterms:W3CDTF>
+							</dcterms:modified>
+						</rdf:Description>
+					</rdf:RDF>
+				</annotation>
+			</compartment>			
+			
+		</listOfCompartments>
+	</model>
+</sbml>

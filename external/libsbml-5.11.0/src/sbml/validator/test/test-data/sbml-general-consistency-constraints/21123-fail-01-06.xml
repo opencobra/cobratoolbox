@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass (21122): The order of subelements within KineticLaw must be the
+following: math, listOfParameters. The listOfParameters is optional,
+but if present, must follow math. (References: L2V2 Section 4.13.9.).
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+  <model>
+    <listOfCompartments>
+      <compartment id="c"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="s" compartment="c" hasOnlySubstanceUnits="true"/>
+    </listOfSpecies>
+    
+    <listOfParameters>
+      <parameter id="k"/>
+    </listOfParameters>
+    <listOfReactions>
+      <reaction id="r">
+        <listOfReactants>
+          <speciesReference species="s"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <divide/>
+              <ci> s </ci>
+              <ci> k </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

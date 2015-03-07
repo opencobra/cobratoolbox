@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1308) If the compartmentType field is given a value in a Compartment 
+    it must contain the identifier of an existing compartmentType. 
+    (L2V2 Section 4.7.2).
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+	<model>
+		<listOfCompartments>
+			<compartment name="c"/>
+		</listOfCompartments>
+		<listOfSpecies>
+    		</listOfSpecies>
+	</model>
+</sbml>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<a:sbml xmlns:a="http://www.sbml.org/sbml/level3/version1/core" level="3"
+version="1">
+  <a:model>
+    <a:listOfCompartments>
+      <a:compartment id="a" constant="true" units="litre"/>
+    </a:listOfCompartments>
+  </a:model>
+</a:sbml>
+

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1700) An AssignmentRule's variable must be the id of a Compartment,
+Species, or Parameter.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+	<model>
+		<listOfCompartments>
+			<compartment name="c"/>
+		</listOfCompartments>
+		<listOfSpecies>
+			<species name="s" compartment="c" initialAmount="0"/>
+		</listOfSpecies>
+		<listOfParameters>
+			<parameter name="p" value="0"/>
+		</listOfParameters>
+		<listOfRules>
+			<speciesConcentrationRule type="rate" species="s" formula="p"/>
+		</listOfRules>
+	</model>
+</sbml>

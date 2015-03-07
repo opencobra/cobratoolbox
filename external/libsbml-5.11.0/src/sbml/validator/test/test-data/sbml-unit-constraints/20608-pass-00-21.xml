@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Pass: (1408): A Species' substanceUnits must be 'substance', 'item',
+'mole', or the id of a UnitDefinition that defines a variant of 'item'
+or 'mole'.
+-->
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+	<model>
+		<listOfCompartments>
+			<compartment name="c"/>
+		</listOfCompartments>
+		<listOfSpecies>
+			<species name="s" compartment="c" initialAmount="0" units="substance"/>
+		</listOfSpecies>
+	</model>
+</sbml>
