@@ -6,8 +6,6 @@ cbPath=which('initCobraToolbox');
 cbPath=cbPath(1:end-length('initCobraToolbox.m'));
 
 %model directory
-%modelCollectionDirectory=[cbPath 'SystemsPhysiologyGroup/modelCollection/'];
-%modelCollectionDirectory=[cbPath 'testing/testModels/AliEbrahim/'];
 modelCollectionDirectory='/home/rfleming/Dropbox/graphStoich/data/modelCollectionFR';
 
 %results directory
@@ -17,64 +15,11 @@ cd(resultsDirectory)
 if 0
     %single model
     if 0
-        load ecoli_core_xls2model.mat
-        model=findSExRxnInd(model);
-    end
-    if 0
-        load Ecoli_core.mat
-        model=findSExRxnInd(model);
-    end
-    if 0
-        load TLR_Maike_20110616Recon.mat
-        model=TLR_Maike_20110616Recon;
-    end
-    if 0
         load iAF1260.mat
         model=iAF1;
     end
-    if 0
-        load K_pneumonieae_rBioNet.mat
-        model=K_pneumonieae_rBioNet;
-    end
-    if 0
-        load cardiac_mit_glcuptake_atpmax.mat
-        model=modelCardioMito;
-    end
-    if 0
-        addpath(genpath('~/Dropbox/graphStoich/data/modelCollectionBig'));
-        load ME_matrix_GlcAer_WT.mat
-        model=modelGlcOAer_WT;
-    end
-    if 0
-        load iexGF_MM_BT.mat
-        model=modelJointLU;
-    end
-    if 0
-        load iRS1563.mat
-    end
-    if 0
-        load Recon2betaModel_121114.mat
-        model=modelRecon2beta121114;
-    end
     if 1
         load Recon205_20150128.mat
-    end
-    if 0
-        load Recon2.v03.mat
-        model=modelRecon2beta121114_fixed_updatedID;
-    end
-    if 0
-        load iMM904.mat
-    end
-    if 0
-        load iND750.mat
-    end
-    if 1
-        load iNJ661.mat
-    end
-    if 0
-        load L_lactis_MG1363.mat
-        model=L_lactis_MG1363;
     end
         
     %%%%%%%%%%%
@@ -207,7 +152,7 @@ else
             end
         end
     end
-    save([resultsDirectory resultsFileName],'FRresults','resultsFileName');
+    %save([resultsDirectory resultsFileName],'FRresults','resultsFileName');
 end
 fprintf(['%s\n','checkRankFRdriver complete. FRresults saved to ' resultsDirectory resultsFileName]);
 
