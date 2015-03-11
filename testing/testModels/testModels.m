@@ -7,7 +7,9 @@ clear
 pathContainingOpencobra='/usr/local/bin/';
 %path to gurobi solver
 pathContainingGurobi='/usr/local/bin/gurobi600/linux64/matlab/';
-%path to quadMinos solver
+
+quadMINOS=0;
+%optionally: path to quadMinos solver
 pathContainingQuadMinos='/usr/local/bin/quadLP/matlab';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -28,9 +30,21 @@ end
 addpath(pathContainingGurobi)
 QPsolverOK = changeCobraSolver('gurobi6','QP');
 LPsolverOK = changeCobraSolver('gurobi6','LP');
-        
-%quadMinos
-addpath(pathContainingQuadMinos)
+solvers={'gurobi5'};
+
+if quadMINOS & isunix
+    %quadMinos
+    addpath(pathContainingQuadMinos)
+    %try to find the minos solver
+    [status,cmdout]=system('which minos');
+    if isempty(cmdout)
+        [status,cmdout]=system('echo $PATH');
+        disp(cmdout);
+        warning('Minos not installed or not on system path.');
+    else
+        solvers={'gurobi5','quadMinos'};
+    end
+end
 
 %the folder where the SBML .xml files are located
 originFolder=[pathContainingOpencobra 'm_model_collection'];
@@ -44,7 +58,7 @@ if 1
 end
 
 %chose the amount to be printed to screen
-printLevel=1;
+printLevel=0;
 
 %choose the minimum magnitude considered a nonzero objective
 tol=1e-4;
@@ -166,7 +180,16 @@ curated_objectives = {...
 'PpaMBEL1254';
 'R01288';
 'AbyMBEL891';
-'R761'};
+'R761';
+'Biomass';
+'RXNBiomass';
+'BIOMASS_LM3';
+'BIOMASS';
+'biomass_mm_1_no_glygln';
+'Biomass_Chlamy_auto';
+'biomass_target';
+'biomass';
+'Ec_biomass_iAF1260_core_59p81M'};
     
 %in some models, the bounds on exchange reactions are closed by default so
 %open them
@@ -174,21 +197,9 @@ open_boundaries = {...
 'iRsp1095';
 'AORYZAE_COBRA';
 'iFF708'};
+         
+maxBound=1000;
 
-solvers={'gurobi5'};
-if ~isunix
-    solvers={'gurobi5'};
-else
-    [status,cmdout]=system('which minos');
-    if isempty(cmdout)
-        [status,cmdout]=system('echo $PATH');
-        disp(cmdout);
-        warning('Minos not installed or not on system path.');
-    else
-        solvers={'gurobi5','quadMinos'};
-    end
-end
-            
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if 1
     % batch of mat files models the destFolder directory
@@ -209,6 +220,7 @@ if 1
             %name of the model from the filename
             whosFile=whos('-file',matFiles(k).name);
             results{j,1}=matFiles(k).name(1:end-4);
+            fprintf('%20s  ',matFiles(k).name(1:end-4));
             
             load(matFiles(k).name);
             model=eval(whosFile.name);
@@ -219,7 +231,7 @@ if 1
             
             for k=1:length(curated_objectives)
                 bool=strcmp(model.rxns,curated_objectives{k});
-                if any(bool)>0
+                if any(bool)
                     if nnz(bool)>1
                         error('Should be only one biomass reaction')
                     else
@@ -229,6 +241,45 @@ if 1
                 end
             end
 
+            %add biomass reaction to some models
+            [m,n]=size(model.S);
+            bool=false(m,1);
+            for i=1:m
+                bool(i)=~isempty(strfind('biomass',lower(model.mets{i})));
+            end
+            if any(bool)
+                model.S(bool,n+1)=-1;
+                model.c(:)=0;
+                model.c(n+1)=1;
+                model.lb(n+1)=-maxBound;
+                model.ub(n+1)=maxBound;
+                model.rxns{n+1,1}='Added_biomass_rxn';
+                model.osense=1;
+                fprintf('%s%s%s%s\n','Model ',matFiles(k).name,' added biomass exchange reaction.');
+            end
+            
+            if 0
+                %ensure the biomass reaction is unconstrained
+                if strcmp(matFiles(k).name(1:end-4),open_boundaries)
+                    fprintf('%s%s\n','Open boundaries for :',matFiles(k).name(1:end-4))
+                    model.lb(model.c~=0)=-maxBound;
+                    model.ub(model.c~=0)=maxBound;
+                end
+            else
+                if strcmp(matFiles(k).name(1:end-4),open_boundaries)
+                    fprintf('%s%s\n','Open boundaries for :',matFiles(k).name(1:end-4))
+                    for j=1:n
+                        if model.SIntRxnBool(j)
+                            if sum(model.S(:,j))>0
+                                model.ub(j)=10;
+                            else
+                                model.lb(j)=-10;
+                            end
+                        end
+                    end
+                end
+            end
+            
             %record the reaction to be optimized
             if any(model.c~=0)
                 results{j,2}=model.rxns{model.c~=0};
@@ -236,39 +287,34 @@ if 1
                 results{j,2}='?';
             end
             
-            if strcmp(matFiles(k).name(1:end-4),open_boundaries)
-                fprintf('%s%s\n','Open boundaries for :',matFiles(k).name(1:end-4))
-                for j=1:n
-                    if model.SIntRxnBool(j)
-                        if sum(model.S(:,j))>0
-                            model.ub(j)=10;
-                        else
-                            model.lb(j)=-10;
-                        end
-                    end
-                end
-            end
-            %
-
-            
+            %test the model with different solvers
             [out,solutions{j}]=testDifferentLPSolvers(model,solvers,printLevel);
             
             results{j,3}=solutions{j}{1}.obj;
-            results{j,4}=solutions{j}{2}.obj;
+            if quadMINOS
+                results{j,4}=solutions{j}{2}.obj;
+            end
             j=j+1;
         end
     end
     results2=results(1:j-1,1:4);
     clear results;
     
-    results=cell(size(modelNames,1)+1,6);
+    if quadMINOS
+        results=cell(size(modelNames,1)+1,7);
+    else
+        results=cell(size(modelNames,1)+1,5);
+    end
     results{1,1}='Species';
     results{1,2}='Model';
     results{1,3}='Rxn optimised';
     results{1,4}=['true if quadMinos objective greater than ' num2str(tol)];
-    results{1,5}='quadMinos objective';
-    results{1,6}='gurobi objective';
-    results{1,7}='difference between objectives';
+    results{1,5}='gurobi objective';
+    if quadMINOS
+        results{1,6}='quadMinos objective';
+        results{1,7}='difference between objectives';
+    end
+    
     for k=1:size(modelNames,1)
         %Abbreviation of model
         results{k+1,1}=modelNames{k,1};
@@ -279,12 +325,14 @@ if 1
             results{k+1,3}=results2{bool,2};
             %true if quadMinos objective greater than tol
             results{k+1,4}=abs(results2{bool,4})>tol;
-            %quadMinos objective
-            results{k+1,5}=results2{bool,4};
             %gurobi objective
-            results{k+1,6}=results2{bool,3};
-            %difference between objectives
-            results{k+1,7}=abs(results2{bool,3}-results2{bool,4});
+            results{k+1,5}=results2{bool,3};
+            if quadMINOS
+                %quadMinos objective
+                results{k+1,6}=results2{bool,4};
+                %difference between objectives
+                results{k+1,7}=abs(results2{bool,3}-results2{bool,4});
+            end
         end
     end
     clear results2;
