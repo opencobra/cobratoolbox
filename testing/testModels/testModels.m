@@ -175,7 +175,20 @@ open_boundaries = {...
 'AORYZAE_COBRA';
 'iFF708'};
 
-
+solvers={'gurobi5'};
+if ~isunix
+    solvers={'gurobi5'};
+else
+    [status,cmdout]=system('which minos');
+    if isempty(cmdout)
+        [status,cmdout]=system('echo $PATH');
+        disp(cmdout);
+        warning('Minos not installed or not on system path.');
+    else
+        solvers={'gurobi5','quadMinos'};
+    end
+end
+            
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if 1
     % batch of mat files models the destFolder directory
@@ -236,7 +249,8 @@ if 1
                 end
             end
             %
-            solvers={'gurobi5','quadMinos'};
+
+            
             [out,solutions{j}]=testDifferentLPSolvers(model,solvers,printLevel);
             
             results{j,3}=solutions{j}{1}.obj;
