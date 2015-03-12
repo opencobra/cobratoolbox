@@ -4,9 +4,12 @@ clear
 
 %Set and navigate to the path containing (or to contain)
 %repositories cloned from opencobra. e.g.
-pathContainingOpencobra='/usr/local/bin/';
+%pathContainingOpencobra='/usr/local/bin/';
+pathContainingOpencobra='/home/rfleming/work/sbg-code/';
+
 %path to gurobi solver
-pathContainingGurobi='/usr/local/bin/gurobi600/linux64/matlab/';
+%pathContainingGurobi='/usr/local/bin/gurobi600/linux64/matlab/';
+pathContainingGurobi='/usr/local/bin/gurobi562/linux64/matlab/';
 
 quadMINOS=0;
 %optionally: path to quadMinos solver
@@ -220,7 +223,7 @@ if 1
             %name of the model from the filename
             whosFile=whos('-file',matFiles(k).name);
             results{j,1}=matFiles(k).name(1:end-4);
-            fprintf('%20s  ',matFiles(k).name(1:end-4));
+            fprintf('%20s%s',matFiles(k).name(1:end-4),': ');
             
             load(matFiles(k).name);
             model=eval(whosFile.name);
@@ -229,33 +232,35 @@ if 1
             [m,n]=size(model.S);
             model=findSExRxnInd(model,m,1);
             
-            for k=1:length(curated_objectives)
-                bool=strcmp(model.rxns,curated_objectives{k});
+            for ind=1:length(curated_objectives)
+                bool=strcmp(model.rxns,curated_objectives{ind});
                 if any(bool)
                     if nnz(bool)>1
                         error('Should be only one biomass reaction')
                     else
                         model.c(bool)=1;
-                        fprintf('%s%s%s%s\n','Model ',matFiles(k).name,' added biomass coefficient for ',model.rxns{bool});
+                        fprintf('%20s%s%s\n',matFiles(k).name(1:end-4),': Added biomass coefficient for ',model.rxns{bool});
                     end
                 end
             end
 
             %add biomass reaction to some models
-            [m,n]=size(model.S);
-            bool=false(m,1);
-            for i=1:m
-                bool(i)=~isempty(strfind('biomass',lower(model.mets{i})));
-            end
-            if any(bool)
-                model.S(bool,n+1)=-1;
-                model.c(:)=0;
-                model.c(n+1)=1;
-                model.lb(n+1)=-maxBound;
-                model.ub(n+1)=maxBound;
-                model.rxns{n+1,1}='Added_biomass_rxn';
-                model.osense=1;
-                fprintf('%s%s%s%s\n','Model ',matFiles(k).name,' added biomass exchange reaction.');
+            if ~any(model.c)
+                [m,n]=size(model.S);
+                bool=false(m,1);
+                for i=1:m
+                    bool(i)=~isempty(strfind(lower(model.mets{i}),'biomass'));
+                end
+                if any(bool)
+                    model.S(bool,n+1)=-1;
+                    model.c(:)=0;
+                    model.c(n+1)=1;
+                    model.lb(n+1)=-maxBound;
+                    model.ub(n+1)=maxBound;
+                    model.rxns{n+1,1}='Added_biomass_rxn';
+                    model.osense=1;
+                    fprintf('%20s%s\n',matFiles(k).name,': Added biomass exchange reaction.');
+                end
             end
             
             if 0
@@ -267,14 +272,16 @@ if 1
                 end
             else
                 if strcmp(matFiles(k).name(1:end-4),open_boundaries)
-                    fprintf('%s%s\n','Open boundaries for :',matFiles(k).name(1:end-4))
+                    fprintf('%20s%s\n',matFiles(k).name(1:end-4),': Opening all exchange reactions')
                     for j=1:n
-                        if model.SIntRxnBool(j)
-                            if sum(model.S(:,j))>0
-                                model.ub(j)=10;
-                            else
-                                model.lb(j)=-10;
-                            end
+                        if ~model.SIntRxnBool(j)
+                            model.ub(j)=maxBound;
+                            model.lb(j)=-maxBound;
+%                             if sum(model.S(:,j))>0
+%                                 model.ub(j)=10;
+%                             else
+%                                 model.lb(j)=-10;
+%                             end
                         end
                     end
                 end

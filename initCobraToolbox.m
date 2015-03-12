@@ -138,8 +138,11 @@ end
 %make install
 
 %Test the installation with:
-TranslateSBML('/usr/local/bin/cobratoolbox_master/testing/testSBML/Ecoli_core_ECOSAL.xml')
-
+try
+    TranslateSBML('/usr/local/bin/cobratoolbox_master/testing/testSBML/Ecoli_core_ECOSAL.xml')
+catch
+    warning('TranslateSBML did not work with the test .xml file: Ecoli_core_ECOSAL.xml')
+end
 % If there is a problem with the mex file:
 % in matlab check: !ldd /usr/local/bin/cobratoolbox_master/external/libsbml-5.11.0/compiled/lib/TranslateSBML.mexa64
 % a terminal check: ldd /usr/local/bin/cobratoolbox_master/external/libsbml-5.11.0/compiled/lib/TranslateSBML.mexa64
