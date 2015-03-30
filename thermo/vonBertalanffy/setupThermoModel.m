@@ -232,7 +232,8 @@ model = addThermoToModel(model);
 
 % Check for imbalanced reactions
 fprintf('\nChecking mass- and charge balance.\n');
-[massImbalance,imBalancedMass,imBalancedCharge,imBalancedBool] = checkMassChargeBalance(model);
+model_tmp=findSExRxnInd(model);
+[massImbalance,imBalancedMass,imBalancedCharge,imBalancedBool] = checkMassChargeBalance(model_tmp);
 if any(imBalancedBool)
     fprintf(['\nWarning: Uncertainty in reaction Gibbs energy estimates will be set to %.2e for the following imbalanced reactions:\n' sprintf('%s\n',model.rxns{imBalancedBool})],max(model.ur));
 else
