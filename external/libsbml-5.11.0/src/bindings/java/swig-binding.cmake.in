@@ -1,0 +1,102 @@
+###############################################################################
+#
+# Description       : CMake build script for swigging the java bindings
+# Original author(s): Frank Bergmann <fbergman@caltech.edu>
+# Organization      : California Institute of Technology
+#
+# This file is part of libSBML.  Please visit http://sbml.org for more
+# information about SBML, and the latest version of libSBML.
+#
+# Copyright (C) 2013-2014 jointly by the following organizations:
+#     1. California Institute of Technology, Pasadena, CA, USA
+#     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
+#     3. University of Heidelberg, Heidelberg, Germany
+#
+# Copyright (C) 2009-2013 jointly by the following organizations: 
+#     1. California Institute of Technology, Pasadena, CA, USA
+#     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
+#  
+# Copyright (C) 2006-2008 by the California Institute of Technology,
+#     Pasadena, CA, USA 
+#  
+# Copyright (C) 2002-2005 jointly by the following organizations: 
+#     1. California Institute of Technology, Pasadena, CA, USA
+#     2. Japan Science and Technology Agency, Japan
+# 
+# This library is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation.  A copy of the license agreement is provided
+# in the file named "LICENSE.txt" included with this software distribution
+# and also available online as http://sbml.org/software/libsbml/license.html
+#
+###############################################################################
+
+message("Swig: Java Bindings")
+
+if(NOT EXISTS ${CUR_BIN_DIRECTORY}/java-files/org/sbml/libsbml)
+ file(MAKE_DIRECTORY ${CUR_BIN_DIRECTORY}/java-files/org/sbml/libsbml)
+endif()
+
+# generate documentation if needed
+if (WITH_DOXYGEN)
+  # separate munged arguments
+  separate_arguments(SWIG_SWIGDOCDEFINES)
+
+  message("Creating class-list.txt")
+  execute_process(
+    COMMAND "${PYTHON_EXECUTABLE}"
+  
+      "${CUR_BIN_DIRECTORY}/generate-class-name-list.py"
+      "${SRC_DIRECTORY}/src"
+
+      OUTPUT_FILE "${CUR_BIN_DIRECTORY}/class-list.txt"
+  )
+
+  message("Creating libsbml-converters.txt")
+  execute_process(
+    COMMAND "${PYTHON_EXECUTABLE}"
+
+      "${CUR_BIN_DIRECTORY}/generate-converters-list.py"
+      "${CUR_BIN_DIRECTORY}/class-list.txt"
+    
+    OUTPUT_FILE 
+      "${CUR_BIN_DIRECTORY}/libsbml-converters.txt"
+  )
+
+  message("Creating javadoc.i")
+  execute_process(
+    COMMAND "${PYTHON_EXECUTABLE}"
+            "${CUR_SRC_DIRECTORY}/../swig/swigdoc.py"
+            --top "${SRC_DIRECTORY}"
+            --master "${CUR_SRC_DIRECTORY}/../swig/libsbml.i"
+            --extra "${CUR_BIN_DIRECTORY}/libsbml-converters.txt"
+            --output "${CUR_BIN_DIRECTORY}/javadoc.i"
+            ${SWIG_SWIGDOCDEFINES}
+            --language java
+  )
+else()
+  file(WRITE ${CUR_BIN_DIRECTORY}/javadoc.i "/* documentation not generated */")
+endif()
+
+# separate munged arguments
+separate_arguments(SWIG_ARGS)
+
+# execute swig
+execute_process(
+
+    COMMAND "${SWIG_EXECUTABLE}"
+         -I${CUR_SRC_DIRECTORY}/../swig/
+         -I${BIN_DIRECTORY}/src
+         -I${SRC_DIRECTORY}/src
+         -I${SRC_DIRECTORY}/include
+         -I${CUR_SRC_DIRECTORY}
+         -c++
+         -java
+         -package org.sbml.libsbml
+         ${SWIG_ARGS}
+         -outdir ${CUR_BIN_DIRECTORY}/java-files/org/sbml/libsbml
+         -o ${CUR_BIN_DIRECTORY}/libsbml_wrap.cpp
+         ${CUR_SRC_DIRECTORY}/../swig/libsbml.i
+
+    WORKING_DIRECTORY "${CUR_BIN_DIRECTORY}"
+)

@@ -1,0 +1,49 @@
+XMLMemoryBuffer.lo: XMLMemoryBuffer.cpp /usr/include/stdc-predef.h \
+ /usr/include/c++/4.8/cstring \
+ /usr/include/x86_64-linux-gnu/c++/4.8/bits/c++config.h \
+ /usr/include/x86_64-linux-gnu/c++/4.8/bits/os_defines.h \
+ /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/c++/4.8/bits/cpu_defines.h \
+ /usr/include/string.h /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/xlocale.h \
+ /usr/local/bin/cobratoolbox_master/external/libsbml-5.11.0/src/sbml/xml/XMLMemoryBuffer.h \
+ /usr/local/bin/cobratoolbox_master/external/libsbml-5.11.0/src/sbml/xml/XMLBuffer.h \
+ /usr/local/bin/cobratoolbox_master/external/libsbml-5.11.0/src/sbml/xml/XMLExtern.h \
+ /usr/local/bin/cobratoolbox_master/external/libsbml-5.11.0/src/sbml/common/libsbml-namespace.h
+
+/usr/include/stdc-predef.h:
+
+/usr/include/c++/4.8/cstring:
+
+/usr/include/x86_64-linux-gnu/c++/4.8/bits/c++config.h:
+
+/usr/include/x86_64-linux-gnu/c++/4.8/bits/os_defines.h:
+
+/usr/include/features.h:
+
+/usr/include/x86_64-linux-gnu/sys/cdefs.h:
+
+/usr/include/x86_64-linux-gnu/bits/wordsize.h:
+
+/usr/include/x86_64-linux-gnu/gnu/stubs.h:
+
+/usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
+
+/usr/include/x86_64-linux-gnu/c++/4.8/bits/cpu_defines.h:
+
+/usr/include/string.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h:
+
+/usr/include/xlocale.h:
+
+/usr/local/bin/cobratoolbox_master/external/libsbml-5.11.0/src/sbml/xml/XMLMemoryBuffer.h:
+
+/usr/local/bin/cobratoolbox_master/external/libsbml-5.11.0/src/sbml/xml/XMLBuffer.h:
+
+/usr/local/bin/cobratoolbox_master/external/libsbml-5.11.0/src/sbml/xml/XMLExtern.h:
+
+/usr/local/bin/cobratoolbox_master/external/libsbml-5.11.0/src/sbml/common/libsbml-namespace.h:

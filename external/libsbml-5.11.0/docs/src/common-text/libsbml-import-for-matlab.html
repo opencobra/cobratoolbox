@@ -1,0 +1,92 @@
+<h4>MATLAB on Linux, Mac&nbsp;OS X and similar Unix-like systems</h4>
+
+<p> The installation directory is also the same one where the additional
+files <code>TranslateSBML</code>.<em>extension</em>,
+<code>OutputSBML</code>.<em>extension</em> and <code>CheckAndConvert.m</code>
+will have been placed.  These files implement the MATLAB interface to
+libSBML.  On Linux and Unix-based systems including Mac&nbsp;OS&nbsp;X, the
+<code>LD_LIBRARY_PATH</code>/<code>DYLD_LIBRARY_PATH</code> environment
+variable may need to be set in the terminal shell from which MATLAB is
+started prior to starting MATLAB.  (Otherwise, MATLAB itself will not "see"
+the value of the variable.)
+
+<p class="warning">
+Important: some versions of MATLAB produced for Linux include a version of
+the stdc++ library that conflicts with the version provided by the operating 
+system, causing a mystifying error when MATLAB tries to run or compile code
+involving libSBML.  Please see the <a
+href="libsbml-issues.html#matlab-linux">section in the <em>Known Issues</em>
+document</a> for more information. </p>
+
+<p> An additional step is necessary in the MATLAB environment itself:
+adding the same directory to the list of directories that MATLAB searches
+to find functions.  If <span class="placeholder">DIR</span> is the
+directory where the libSBML shared library as well as
+<code>TranslateSBML</code>.<em>extension</em>,
+<code>OutputSBML</code>.<em>extension</em>, and
+<code>CheckAndConvert.m</code> have been installed, then the following
+MATLAB command must be executed:
+
+<pre class="fragment">
+addpath('<span class="placeholder">DIR</span>');
+</pre>
+
+<p> For example, suppose you are using an Intel-based Mac&nbsp;OS X system
+and you have configured libSBML to install itself into
+<code>/usr/local</code>.  Then the files
+<code>TranslateSBML.mexmaci</code>, <code>OutputSBML.mexmaci</code>
+and <code>CheckAndConvert.m</code>
+will have been installed as
+<code>/usr/local/lib/TranslateSBML.mexmaci</code>,
+<code>/usr/local/lib/OutpuSBML.mexmaci</code> and
+<code>/usr/local/lib/CheckAndConvert.m</code>.  You will need to set
+your <code>DYLD_LIBRARY_PATH</code> environment variable to
+<code>/usr/local/lib</code>, and also execute the following command
+(or an equivalent) in MATLAB:
+
+<pre class="fragment">
+addpath('/usr/local/lib');
+</pre>
+
+<p> To save the trouble of having to type the command above each
+time you start MATLAB, you may wish to put it in your
+<code>startup.m</code> file (i.e., the file MATLAB uses for user
+initialization).  Please refer to the MATLAB documentation for more
+information about <code>startup.m</code> and where it is located.
+
+
+<h4>MATLAB on Windows systems</h4>
+
+<p> Most Windows users will probably prefer to install libSBML using the
+self-extracting installer provided separately and available for downloading
+from the same servers as the libSBML source code distribution.  The
+installer will take care of placing the MATLAB files in directories where
+MATLAB can find them.  Nothing further needs to be done in that case.  You
+should be able to start MATLAB at will, and be able to invoke functions
+like <code>TranslateSBML</code> and <code>OutputSBML</code>.
+
+<p> If you are compiling and installing libSBML from the sources, or else
+want/need to install the MATLAB bindings directly from the libSBML source
+distribution on Windows, follow these simple steps:
+
+<ol>
+
+<li style="margin-bottom: 1em">Start MATLAB.
+
+<li style="margin-bottom: 1em">Within MATLAB, change directory to the
+directory in your libSBML source tree containing the MATLAB code.  This
+directory will be <code><span
+class="placeholder">libsbml</span>/src/bindings/matlab</code>, where
+<code><span class="placeholder">libsbml</span></code> is the root of your
+libSBML source directory on your computer.
+
+<li style="margin-bottom: 1em">Execute <code>buildSBML</code> in MATLAB.
+
+<li style="margin-bottom: 1em">Execute <code>installSBML</code> in MATLAB.
+
+</ol>
+
+<p> After these steps, you should be able to invoke functions such as
+<code>TranslateSBML</code> and <code>OutputSBML</code>.  These will be
+accessible after you restart MATLAB and even when you are no longer in the
+libSBML directory.

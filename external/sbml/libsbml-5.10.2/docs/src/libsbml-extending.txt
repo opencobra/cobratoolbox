@@ -1,8 +1,0 @@
-/** @page libsbml-extending Extending libSBML to support SBML packages
-
-@htmlinclude doxygen-regular-text-start.html
-- @subpage libsbml-extension-support-classes
-- @subpage libsbml-howto-implement-extension
-@htmlinclude doxygen-regular-text-end.html
-
-*/

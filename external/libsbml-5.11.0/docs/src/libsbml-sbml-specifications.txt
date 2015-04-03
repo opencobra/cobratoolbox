@@ -1,0 +1,10 @@
+/** @page libsbml-sbml-specifications SBML specifications
+
+<p><div class="warning">This API guide for libSBML does <strong>not</strong>
+provide a complete explanation of SBML itself. If you are developing SBML
+software, you are strongly urged to read the actual SBML
+specifications.</div>
+
+@htmlinclude sbml-specifications-table.html
+
+*/
