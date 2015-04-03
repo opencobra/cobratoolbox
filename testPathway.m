@@ -40,11 +40,15 @@ if nargin <5,ObjectiveOption=1;end
 for i = 1:length(MetIn) % add inputs
     model = addReaction(model,cat(2,'TempInput_',MetIn{i}),{MetIn{i} },1 ,false);
 end
-model = addReaction(model,cat(2,'TempOutput_',MetOut{1}),{MetOut{1} },-1 ,false);
-if ObjectiveOption==1,model = changeObjective(model,cat(2,'TempOutput_',MetOut{1}));end
+[model, rxnExists] = addReaction(model,cat(2,'TempOutput_',MetOut{1}),{MetOut{1} },-1 ,false);
+if (ObjectiveOption==1 && isempty(rxnExists))
+	model = changeObjective(model,cat(2,'TempOutput_',MetOut{1}));
+elseif (ObjectiveOption == 1 && ~isempty(rxnExists))
+	model = changeObjective(model,model.rxns(rxnExists));
+end
 FBAsolution = optimizeCbModel(model,'max');
 Flux = FBAsolution.f;
 if ~isempty(FBAsolution.x)
-printFluxVector(model,FBAsolution.x);
+%printFluxVector(model,FBAsolution.x);
 else display('zero flux in network')
 end
