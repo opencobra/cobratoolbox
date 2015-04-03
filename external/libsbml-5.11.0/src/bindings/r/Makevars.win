@@ -1,0 +1,2 @@
+PKG_CFLAGS=-g -D_R_=1 -DUSE_R=1 -I$(LIBSBML_PATH)/include/sbml -I$(LIBSBML_PATH)/include/expat -I$(R_HOME)/include
+PKG_LIBS=-L$(LIBSBML_PATH)/bin -lsbml

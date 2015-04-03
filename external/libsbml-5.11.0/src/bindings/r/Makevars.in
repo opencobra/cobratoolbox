@@ -1,0 +1,43 @@
+PKG_CPPFLAGS = @CPPFLAGS@
+PKG_LIBS = @LIBS@
+
+ifeq "$(PLATFORM)" ""
+  PLATFORM := $(shell uname)
+endif
+
+ifeq "$(PLATFORM)" "Darwin"
+  ifeq ($(shell sw_vers -productVersion | grep -c 10.6),0)
+  ifeq ($(shell sw_vers -productVersion | grep -c 10.7),0)
+    PKG_CXXFLAGS = -std=c++11
+    CXX_STD = CXX11
+  endif
+  endif
+endif
+
+CPP_SOURCES = \
+    sbml/compress/CompressCommon.cpp                \
+    sbml/compress/InputDecompressor.cpp             \
+    sbml/compress/OutputCompressor.cpp              \
+    $(wildcard                                      \
+        sbml/*.cpp sbml/annotation/*.cpp            \
+        sbml/common/*.cpp sbml/conversion/*.cpp     \
+        sbml/extension/*.cpp sbml/math/*.cpp        \
+        sbml/units/*.cpp sbml/util/*.cpp            \
+        sbml/validator/*.cpp sbml/validator/*/*.cpp \
+        sbml/xml/*.cpp sbml/packages/*/*.cpp        \
+        sbml/packages/*/*/*.cpp                     \
+        sbml/packages/*/validator/constraints/*.cpp \
+    )
+
+C_SOURCES = \
+   $(wildcard                                       \
+        sbml/math/*.c                               \
+        sbml/util/*.c                               \
+        sbml/units/*.c                              \
+        sbml/*.c                                    \
+    )
+
+SOURCES = libsbml_wrap.cpp $(C_SOURCES) $(CPP_SOURCES)
+
+OBJECTS = libsbml_wrap.o $(CPP_SOURCES:.cpp=.o) $(C_SOURCES:.c=.o)
+

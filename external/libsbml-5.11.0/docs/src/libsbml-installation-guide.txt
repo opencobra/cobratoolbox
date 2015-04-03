@@ -1,0 +1,19 @@
+/** @page libsbml-installation-guide Installation
+
+<p>The easiest way to install libSBML is to use one of the binary
+installers.  Please follow the link below for more information:
+
+@htmlinclude doxygen-regular-text-start.html
+- @subpage libsbml-downloading
+@htmlinclude doxygen-regular-text-end.html
+
+If an installer is not available for your platform or the combination of
+features you would like, you may need to build and configure libSBML
+yourself. For that, please follow the instructions below:
+
+@htmlinclude doxygen-regular-text-start.html
+- @subpage libsbml-installation
+- @subpage libsbml-accessing
+@htmlinclude doxygen-regular-text-end.html
+
+*/

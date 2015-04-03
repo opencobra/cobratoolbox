@@ -42,6 +42,8 @@ model.rxnGeneMat=sparse(0,0);
 model.rules=cell(0,1);
 model.grRules=cell(0,1);
 model.genes=cell(0,1);
+lbGivenFlag = true; %reversibility implied by lower bound
+revGivenFlag = true; %reversibility implied by revFlag
 
 if nargin < 1
     return;
@@ -60,16 +62,19 @@ if nargin < 7
 end
 if nargin < 5
     lowerBoundList = -1000*ones(nRxns,1);
+    lbGivenFlag = false; %reversibility not implied by lower bound
 end
 if nargin < 6
     upperBoundList = 1000*ones(nRxns,1);
 end
 if nargin < 4
     revFlagList = ones(nRxns,1);
+    revGivenFlag = false; %reversibility not implied by default revFlag
 end
 if isempty(revFlagList)
     revFlagList = zeros(nRxns,1);
-    revFlagList(find(lowerBoundList)< 0) = 1;
+    revFlagList(lowerBoundList< 0) = 1;
+    revGivenFlag = false; %reversibility not implied by default revFlag
 end
 
 for i = 1 : nRxns
@@ -87,7 +92,16 @@ for i = 1 : nRxns
           grRuleList{i}= (regexprep(grRuleList{i},'+',' and '));
        end
     end
-    [metaboliteList,stoichCoeffList] = parseRxnFormula(rxnList{i});
+    [metaboliteList,stoichCoeffList,revFlag_i] = parseRxnFormula(rxnList{i});
+    if ~lbGivenFlag
+        if ~revGivenFlag
+            %if both revFlag and lb are not given, update the revFlag 
+            %implied by the rxn formula
+            revFlagList(i) = revFlag_i;
+        end
+        %update the lower bound implied by revFlag
+        lowerBoundList(i) = revFlagList(i) * lowerBoundList(i);
+    end
     for q=1:length(metaboliteList)
         if length(metaboliteList{q})<=3 || ~strcmp(metaboliteList{q}(end-2),'[')
             %assuming the default compartment is cytoplasmic
@@ -97,4 +111,8 @@ for i = 1 : nRxns
     model = addReaction(model,{rxnAbrList{i},rxnNameList{i}},metaboliteList,stoichCoeffList,...
         revFlagList(i),lowerBoundList(i),upperBoundList(i),0,...
         subSystemList{i},grRuleList{i},geneNameList,systNameList,false);
+<<<<<<< HEAD
 end
+=======
+end
+>>>>>>> upstream/master

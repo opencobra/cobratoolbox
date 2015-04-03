@@ -1,0 +1,68 @@
+<p> SBML Level 3 introduced a modular architecture, in which SBML
+Level&nbsp;3 Core is usable in its own right (much like SBML Levels&nbsp;1
+and&nbsp;2 before it), and optional SBML Level&nbsp;3 <em>Packages</em> add
+features to this Core.  To support this architecture, libSBML is itself
+divided into a core libSBML and optional extensions.
+
+
+<h2>Differences between core libSBML and extensions to libSBML </h2>
+
+<p> Core libSBML corresponds to the features of SBML Levels&nbsp;1 to&nbsp;3
+Core; they are always available, and do not require applications to
+understand more than the SBML core specifications.  The classes listed on the
+rest of page constitute libSBML's implementation of SBML Levels 1&ndash;3,
+<em>without</em> any SBML Level&nbsp;3 packages.
+
+<p> By contrast, the libSBML extensions are plug-ins that each implement
+support for a given SBML Level&nbsp;3 package.  Separate pages of this API
+manual describe the libSBML extensions for those SBML Level&nbsp;3 packages
+that are supported at this time.  They are grouped under the section titled
+<a href="usergroup0.html">Level 3 Extensions</a>.  The stable releases of
+libSBML only include extensions for officially-released package
+specifications; additional, experimental extensions may be available for
+other Level&nbsp;3 packages that may not yet have been finalized by the SBML
+community.  You can find copies of these experimental extensions at the <a
+target="_blank" href="http://sf.net/projects/sbml/files/libsbml">download
+site for libSBML on SourceForge.net</a>.
+
+
+<h2>Summary of core SBML objects implemented in libSBML </h2>
+
+<p>Each type of component in a plain SBML model (i.e., one that does not use
+any SBML packages) is described using a specific type of SBML data object
+that organizes the relevant information.  The top level of an SBML model
+definition consists of lists of these components, with every list being
+optional.  The next table enumerates the lists and objects defined by core
+SBML; also shown are the SBML Level+Version combinations for which they are
+valid.
+
+<table border="0" class="centered text-table normal-font
+alt-row-colors" style="padding-bottom: 0.5em"> <caption
+class="top-caption">SBML components and corresponding libSBML objects.  The
+meaning of expressions such as &ldquo;L2V4&rdquo; is as follows:
+&ldquo;L<u>x</u>&rdquo; = SBML Level&nbsp;<u>x</u>, and
+&ldquo;V<u>y</u>&rdquo; = Version <u>y</u> within a given SBML
+Level.</caption>
+<tr>
+<th style="text-align: left">Level &amp; Version</th>
+<th style="text-align: left">LibSBML container object</th>
+<th style="text-align: left">LibSBML data object(s)</th>
+</tr>
+<tr><td>L2V1+</td>           <td class="code">ListOfFunctionDefinitions</td><td class="code">FunctionDefinition</td></tr>
+<tr><td>L2V1+</td>           <td class="code">ListOfUnitDefinitions</td><td class="code">UnitDefinition</td></tr>
+<tr><td>L2V2&ndash;L2V4</td> <td class="code">ListOfCompartmentTypes</td><td class="code">CompartmentType</td></tr>
+<tr><td>L1+</td>             <td class="code">ListOfCompartments</td><td class="code">Compartment</td></tr>
+<tr><td>L2V2&ndash;L2V4</td> <td class="code">ListOfSpeciesTypes</td><td class="code">SpeciesType</td></tr>
+<tr><td>L1+</td>             <td class="code">ListOfSpecies</td><td class="code">Species</td></tr>
+<tr><td>L1+</td>             <td class="code">ListOfParameters</td><td class="code">Parameter</td></tr>
+<tr><td>L2V2+</td>           <td class="code">ListOfInitialAssignments</td><td class="code">InitialAssignment</td></tr>
+<tr><td>L1+</td>             <td class="code">ListOfRules</td><td class="code">AssignmentRule, AlgebraicRule, RateRule</td></tr>
+<tr><td>L2V2+</td>           <td class="code">ListOfConstraints</td><td class="code">Constraint</td></tr>
+<tr><td>L1+</td>             <td class="code">ListOfReactions</td><td class="code">Reaction</td></tr>
+<tr><td>L2V1+</td>           <td class="code">ListOfEvents</td><td class="code">Event</td></tr>
+</table>
+
+<p> The list of classes below constitutes the public API of core libSBML.
+The list includes classes that are not defined in any SBML specification;
+these utility classes are provided by libSBML to implement various kinds of
+functionality useful in the context of working with SBML content.

@@ -1,0 +1,60 @@
+AC_INIT(src/libsbml_wrap.cpp)
+
+: ${R_HOME=`R RHOME`}
+if test -z "${R_HOME}"; then
+  echo "could not determine R_HOME"
+  exit 1
+fi
+
+CC=`"${R_HOME}/bin/R" CMD config CC`
+CFLAGS=`"${R_HOME}/bin/R" CMD config CFLAGS`
+CPPFLAGS=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
+
+AC_MSG_CHECKING([for xml2-config script])
+
+AC_ARG_WITH(xml2-config,
+    [  --with-xml2-config      the xml2-config configuration script],
+    with_xml2_config=${withval})
+
+LIBXML2_CONFIG=
+if test "x${with_xml2_config}" = "x" ; then
+    for c in \
+	/Library/Frameworks/libxml.framework/Resources/Scripts/xml2-config \
+	${prefix}/bin/xml2-config \
+	/usr/bin/xml2-config \
+	/usr/local/bin/xml2-config
+    do
+	if test -x "$c" ; then
+	    LIBXML2_CONFIG="$c"
+	    break
+	fi
+    done
+else
+    LIBXML2_CONFIG="${with_xml2_config}"
+fi
+if test "x$LIBXML2_CONFIG" = "x" ; then
+    AC_MSG_ERROR([unable to find xml2-config])
+else
+    AC_MSG_RESULT([${LIBXML2_CONFIG}])
+    XML2_VERSION=`${LIBXML2_CONFIG} --version`
+    XML2_PREFIX=`${LIBXML2_CONFIG} --prefix`
+    XML2_LIBS="`${LIBXML2_CONFIG} --libs`"
+    XML2_CFLAGS=`${LIBXML2_CONFIG} --cflags`
+fi
+
+if test [ -n "${LIBSBML_INCLUDE}" ] ; then
+  LIBSBML_CPPFLAGS="-I${LIBSBML_INCLUDE}"
+else
+  LIBSBML_CPPFLAGS="-I/usr/include/sbml -I/usr/local/include/sbml"
+fi
+PACKAGE_FLAGS="-DUSE_COMP=1 -DUSE_LAYOUT=1 -DUSE_FBC=1 -DUSE_QUAL=1 -DUSE_LIBXML=1 "
+CPPFLAGS="${CPPFLAGS} -I./src -I./src/sbml -Iswig -Isbml -I. -I../.. ${PACKAGE_FLAGS} ${LIBSBML_CPPFLAGS} ${XML2_CFLAGS}"
+
+LIBS="${XML2_LIBS}"
+if test [ -n "${LIBSBML_LIBS}" ] ; then
+  LIBS="${LIBS} -L${LIBSBML_LIBS} ${LIBS}"
+fi
+
+AC_SUBST(CPPFLAGS)
+AC_SUBST(LIBS)
+AC_OUTPUT(src/Makevars)
