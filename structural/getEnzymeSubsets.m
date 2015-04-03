@@ -1,6 +1,29 @@
-function [EnzymeSubsets] = getEnzymeSubsets(model,tol)
+function [ReactionSubsets] = getReactionSubsets(model,tol)
+% getReactionSubsets Find the enzymatic subsets (i.e. perfectly correlated
+% reaction sets)
+%
+% [ReactionSubsets] = getReactionSubsets(model,tol)
+%
+%INPUT
+% model             COBRA model structure
+%
+%OPTIONAL INPUTS
+% tol               The tolerance used for the Single Value decomposition
+%                   used in the sparse nullspace determination and for correlations
+%
+%OUTPUTS
+% ReactionSubsets     Cell Array of sets of reactions contained in each
+%                   enzyme subset
+%
+% Reactionsubsets are the enzymesubsets as defined in Pfeiffer et al. 1999, Bioinformatics, 15(3) pp 251-257
+% In essence, reactions in a reaction subset are perfectly correlated,
+% which can be directly deduced from the nullspace of the stoichiometric
+% matrix.
+%
+% 04/03/15 Thomas Pfau
 
-EnzymeSubsets = {};
+
+ReactionSubsets = {};
 
 % obtain nullspace 
 NullSpace = sparseNull(model.S,tol);
@@ -17,6 +40,6 @@ EssIDs = unique(Ess);
 for i = 1:numel(EssIDs)
     index = NonNulls(find(Ess == EssIDs(i)));
     if numel(index) > 1
-        EnzymeSubsets{end+1} = index;
+        ReactionSubsets{end+1} = index;
     end
 end
