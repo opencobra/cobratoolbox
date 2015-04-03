@@ -1,9 +1,9 @@
 function Supp = findSparseMode( J, P, singleton, model, epsilon, orig )
 %
-% A = fastcore( C, model, epsilon )
+% A = findSparseMode( J, P, singleton, model, epsilon, orig )
 %
-% The FASTCORE algorithm for context-specific metabolic network reconstruction
-% Input C is the core set, and output A is the reconstruction
+% The findsparseMode function of the FASTCORE algorithm for context-specific
+% metabolic network reconstruction to detect a minimal supporting set of reactions
 % 
 % J         indicies of the reactions for which card(v) is maximized
 % P         indicies of penalized reactions
