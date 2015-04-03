@@ -1,4 +1,4 @@
-function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel)
+function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel, orig)
 % [A,V] = fastcc(model,epsilon,printLevel)
 %
 % The FASTCC algorithm for testing the consistency of a stoichiometric model
@@ -23,6 +23,11 @@ function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel)
 %     LCSB / LSRU, University of Luxembourg
 %
 % Ronan Fleming      17/10/14 Commenting of inputs/outputs/code
+% Maria Pires Pacheco  27/01/15 Added a switch to select between COBRA code and the original code
+tic 
+if nargin < 4
+   orig = 0;
+end
 
 tic
 
@@ -47,7 +52,7 @@ V=[];
 
 %v is the flux vector that approximately maximizes the cardinality 
 %of the set of irreversible reactions v(J)
-v = LP7( J, model, epsilon );
+v = LP7( J, model, epsilon, orig );
 
 %A is the set of reactions in v with absoulte value greater than epsilon
 Supp = find( abs(v) >= 0.99*epsilon );
@@ -84,10 +89,10 @@ orientation=ones(size(model.S,2),1);
 while ~isempty( J )
     if singleton
         Ji = J(1);
-        v = LP3( Ji, model ) ;
+        v = LP3( Ji, model, orig ) ;
     else
         Ji = J;
-        v = LP7( Ji, model, epsilon ) ;
+        v = LP7( Ji, model, epsilon, orig );
     end
     %Supp is the set of reactions in v with absoulte value greater than epsilon
     Supp = find( abs(v) >= 0.99*epsilon );
