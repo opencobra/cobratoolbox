@@ -12,6 +12,7 @@ function [metaboliteList,stoichCoeffList,revFlag] = parseRxnFormula(formula)
 %                   'cit[c] + icit[x]  <=> cit[x] + icit[c] ' (reversible reaction)
 %                   If no stoichiometric coefficient is provided, it is assumed
 %                   to be = 1
+%                   Reaction formula should be a string, not a cell array
 %
 %OUTPUTS
 % metaboliteList    Cell array with metabolite names
