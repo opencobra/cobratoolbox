@@ -32,6 +32,9 @@ function A = fastcore( C, model, epsilon , orig)
 % (c) Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013
 %     LCSB / LSRU, University of Luxembourg
 %
+% Fast Reconstruction of Compact Context-Specific Metabolic Network Models
+% ( Vlassis et al. 2014)   10.1371/journal.pcbi.1003424
+%
 % Maria Pires Pacheco  27/01/15 Added a switch to select between COBRA code and the original code
 tic
 if nargin < 4
