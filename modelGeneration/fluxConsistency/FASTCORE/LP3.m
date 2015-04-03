@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 function V = LP3( J, model, orig )
+=======
+function V = LP3( J, model )
+>>>>>>> d5562420a822295f562c1cdf458cf5ebac0d69a0
 % V = LP3( J, model )
 % CPLEX implementation of LP-3 for input set J (see FASTCORE paper)
 % Maximizes the sum of fluxes of reactions in set J
@@ -10,11 +14,14 @@ function V = LP3( J, model, orig )
 %   ub        n x 1 flux upper bound
 %   rxns      n x 1 cell array of reaction abbreviations
 % 
+<<<<<<< HEAD
 %OPTIONAL INPUT
 % orig 	    Indicator whether the original code or COBRA adjusted code 
 %           should be used. If original code is requested, CPLEX needs 
 %           to be installed (default 0)
 %
+=======
+>>>>>>> d5562420a822295f562c1cdf458cf5ebac0d69a0
 %OUTPUT
 % V         optimal steady state flux vector
 %

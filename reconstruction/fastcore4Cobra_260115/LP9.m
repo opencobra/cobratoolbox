@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-function V = LP9( K, P, model, epsilon, orig )
-=======
 function V = LP9( K, P, model, epsilon )
->>>>>>> d5562420a822295f562c1cdf458cf5ebac0d69a0
 % V = LP9( K, P, model, epsilon )
 %
 % CPLEX implementation of LP-9 for input sets K, P (see FASTCORE paper)
@@ -13,19 +9,6 @@ function V = LP9( K, P, model, epsilon )
 % K         indicies of the reaction for which card(v) is maximized 
 % P         indicies of penalized reactions
 % model     cobra model structure containing the fields
-<<<<<<< HEAD
-%   S         m x n stoichiometric matrix
-%   lb        n x 1 flux lower bound
-%   ub        n x 1 flux upper bound
-%   rxns      n x 1 cell array of reaction abbreviations
-% epsilon   flux threshold
-%
-%OPTIONAL INPUT
-% orig 	    Indicator whether the original code or COBRA adjusted code 
-%           should be used. If original code is requested, CPLEX needs 
-%           to be installed (default 0)
-% 
-=======
 %   S         m x n stoichiometric matrix    
 %   lb        n x 1 flux lower bound
 %   ub        n x 1 flux upper bound
@@ -33,24 +16,12 @@ function V = LP9( K, P, model, epsilon )
 % 
 % epsilon   flux threshold      
 %
->>>>>>> d5562420a822295f562c1cdf458cf5ebac0d69a0
 %OUTPUT
 % V         optimal steady state flux vector
 %
 % (c) Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013
 %     LCSB / LSRU, University of Luxembourg
-%
-% Maria Pires Pacheco      27/01/15 Adjustement to Cobra toolbox, also added a 
-%                                   switch to select between COBRA code and the original code
 
-<<<<<<< HEAD
-
-if nargin < 5
-   orig = 0;
-end
-
-=======
->>>>>>> d5562420a822295f562c1cdf458cf5ebac0d69a0
 scalingfactor = 1e5;
 
 V = [];
@@ -81,30 +52,6 @@ bineq = [zeros(2*np,1); -ones(nk,1)*epsilon*scalingfactor];
 lb = [model.lb; zeros(np,1)] * scalingfactor;
 ub = [model.ub; max(abs(model.ub(P)),abs(model.lb(P)))] * scalingfactor;
 
-<<<<<<< HEAD
-% Original Code from the FASTCORE paper using cplex directly
-if orig 
-   options = cplexoptimset('cplex');
-   %options = cplexoptimset(options,'diagnostics','off');
-   options.output.clonelog=0;
-   options.workdir='~/tmp';
-   x = cplexlp(f,Aineq,bineq,Aeq,beq,lb,ub,options);
-   if exist('clone1.log','file')
-       delete('clone1.log')
-   end
-else
-   %Set up the COBRA Problem
-   LPproblem.A=[Aeq;Aineq];
-   LPproblem.b=[beq;bineq];
-   LPproblem.lb=lb;
-   LPproblem.ub=ub;
-   LPproblem.c=f;
-   LPproblem.osense=1;%minimise
-   LPproblem.csense(1:size(LPproblem.A,1))='E';
-   LPproblem.csense(size(Aeq,1)+1:size(LPproblem.A,1))='L';
-   solution = solveCobraLP(LPproblem);
-   x=solution.full;
-=======
 if 0
     %quiet
     options = cplexoptimset('cplex');
@@ -127,7 +74,6 @@ else
     LPproblem.csense(size(Aeq,1)+1:size(LPproblem.A,1))='L';
     solution = solveCobraLP(LPproblem);
     x=solution.full;
->>>>>>> d5562420a822295f562c1cdf458cf5ebac0d69a0
 end
 
 V = x(1:n);

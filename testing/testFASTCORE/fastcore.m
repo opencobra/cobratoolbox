@@ -1,35 +1,3 @@
-<<<<<<< HEAD
-function A = fastcore( C, model, epsilon , orig) 
-%
-% A = fastcore( C, model, epsilon )
-%
-% The FASTCORE algorithm for context-specific metabolic network reconstruction
-% Input C is the core set, and output A is the reconstruction
-% 
-% C         indicies of the core set of reactions
-% model     cobra model structure containing the fields
-%   S         m x n stoichiometric matrix    
-%   lb        n x 1 flux lower bound
-%   ub        n x 1 flux upper bound
-%   rxns      n x 1 cell array of reaction abbreviations
-% epsilon   flux threshold
-% 
-%OPTIONAL INPUT
-% orig 	    Indicator whether the original code or COBRA adjusted code 
-%           should be used. If original code is requested, CPLEX needs 
-%           to be installed (default 0)
-%
-%OUTPUT
-% A         Indices of reactions in the input model that have to be included in the 
-%           target model (On a consistent COBRA compliant model the target model can 
-%           be obtained by the following command:
-%           FCmodel = removeRxns(model,setdiff(model.rxns,model.rxns(A)));
-%
-%
-% Please be aware, that tests using the glpk solver have often shown issues while CPLEX 
-% worked fine. So if you encounter irreversible core reactions, first try to use a different solver.
-%
-=======
 function A = fastcore( C, model, epsilon, printLevel)
 % A = fastcore( C, model, epsilon, printLevel)
 %
@@ -50,23 +18,14 @@ function A = fastcore( C, model, epsilon, printLevel)
 % OUTPUT
 % A             n x 1 boolean vector indicating the flux consistent
 %               reactions
->>>>>>> d5562420a822295f562c1cdf458cf5ebac0d69a0
 %
 % (c) Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013
 %     LCSB / LSRU, University of Luxembourg
 %
 % Fast Reconstruction of Compact Context-Specific Metabolic Network Models
 % ( Vlassis et al. 2014)   10.1371/journal.pcbi.1003424
-<<<<<<< HEAD
-%
-% Maria Pires Pacheco  27/01/15 Added a switch to select between COBRA code and the original code
-=======
 
->>>>>>> d5562420a822295f562c1cdf458cf5ebac0d69a0
 tic
-if nargin < 4
-   orig = 0;
-end
 
 model_org = model;
 
@@ -88,12 +47,6 @@ end
 
 % P is the set of reactions that is penalized
 P = setdiff( N, C);
-<<<<<<< HEAD
-Supp = findSparseMode( J, P, singleton, model, epsilon, orig );
-if ~isempty( setdiff( J, Supp ) ) 
-  fprintf ('Error: Inconsistent irreversible core reactions.\n');
-  return;
-=======
 
 % Supp is the set of reactions in v with absolute value greater than epsilon
 Supp = findSparseMode( J, P, singleton, model, epsilon );
@@ -105,7 +58,6 @@ A = Supp;
 if printLevel>1
     fprintf('|J|=%d  ', numel(J));
     fprintf('|A|=%d\n', length(A));
->>>>>>> d5562420a822295f562c1cdf458cf5ebac0d69a0
 end
 
 
@@ -114,10 +66,6 @@ end
 % flipping the sign of the latter if necessary
 while ~isempty( J )
     P = setdiff( P, A);
-<<<<<<< HEAD
-    Supp = findSparseMode( J, P, singleton, model, epsilon, orig );
-    A = union( A, Supp );   fprintf('|A|=%d\n', length(A)); 
-=======
     
     % Supp is the set of reactions in v with absolute value greater than epsilon
     Supp = findSparseMode( J, P, singleton, model, epsilon );
@@ -129,7 +77,6 @@ while ~isempty( J )
     % Check if reactions of the set J were found among the set of reactions
     % A.
     % If yes, the reactions present in A are removed from J.
->>>>>>> d5562420a822295f562c1cdf458cf5ebac0d69a0
     if ~isempty( intersect( J, A ))
         J = setdiff( J, A );
         if printLevel>1
@@ -178,10 +125,6 @@ while ~isempty( J )
         end
     end
 end
-<<<<<<< HEAD
-fprintf('|A|=%d\n', length(A));
-toc
-=======
 
 % Sanity check
 % Extract from the input model, a smaller consistent model that includes
@@ -196,4 +139,3 @@ else
 end
 
 toc
->>>>>>> d5562420a822295f562c1cdf458cf5ebac0d69a0
