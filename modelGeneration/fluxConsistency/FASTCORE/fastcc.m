@@ -1,5 +1,5 @@
-function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel)
-% [A,V] = fastcc(model,epsilon,printLevel)
+function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel, orig)
+% [A,modelflipped,V] = fastcc(model,epsilon,printLevel,orig)
 %
 % The FASTCC algorithm for testing the consistency of a stoichiometric model
 % Output A is the consistent part of the model
@@ -14,17 +14,25 @@ function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel)
 % epsilon       
 % printLevel    0 = silent, 1 = summary, 2 = debug
 %
+%OPTIONAL INPUT
+% orig 	    Indicator whether the original code or COBRA adjusted code 
+%           should be used. If original code is requested, CPLEX needs 
+%           to be installed (default 0)
+%
 % OUTPUT
 % A             n x 1 boolean vector indicating the flux consistent
 %               reactions
+% modelFlipped  the model with all flipped reactions necessitated during the consistency check
 % V             n x k matrix such that S(:,A)*V(:,A)=0 and |V(:,A)|'*1>0
- 
 % (c) Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013
 %     LCSB / LSRU, University of Luxembourg
 %
 % Ronan Fleming      17/10/14 Commenting of inputs/outputs/code
-
-tic
+% Maria Pires Pacheco  27/01/15 Added a switch to select between COBRA code and the original code
+tic 
+if nargin < 4
+   orig = 0;
+end
 
 origModel=model;
 
@@ -47,7 +55,7 @@ V=[];
 
 %v is the flux vector that approximately maximizes the cardinality 
 %of the set of irreversible reactions v(J)
-v = LP7( J, model, epsilon );
+v = LP7( J, model, epsilon, orig );
 
 %A is the set of reactions in v with absoulte value greater than epsilon
 Supp = find( abs(v) >= 0.99*epsilon );
@@ -84,10 +92,10 @@ orientation=ones(size(model.S,2),1);
 while ~isempty( J )
     if singleton
         Ji = J(1);
-        v = LP3( Ji, model ) ;
+        v = LP3( Ji, model, orig ) ;
     else
         Ji = J;
-        v = LP7( Ji, model, epsilon ) ;
+        v = LP7( Ji, model, epsilon, orig );
     end
     %Supp is the set of reactions in v with absoulte value greater than epsilon
     Supp = find( abs(v) >= 0.99*epsilon );
