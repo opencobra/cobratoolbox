@@ -1,6 +1,22 @@
 function [r_info] = readCD(parsed)
 
-% converting the parsed Matlab struct (the outputed by parseCD)
+% Convert the a type of the parsed model structure (orgnised by reaction) into the other type of the
+% parsed model structure (organised by property (namely, ID, width,
+% colour, etc.)
+% 
+% 
+% INPUT
+% 
+% parsed       the first type of the parsed model structure outputed by
+%              'parseCD' funciton (more user-friendely to modify speicfic
+%              graphic properties for speicific reactions)
+% 
+% OUTPUT
+% 
+% r_info       the second type of the parsed model structure (similar to a
+%              COBRA Matlab structure).
+%
+% Longfei Mao Oct/2014
 
 
 r_info.ID=fieldnames(parsed);
@@ -19,9 +35,8 @@ for r=1:length(r_info.ID(:,1)); % number of reactions
 end
 
 if isfield(parsed.r_info,'species')
-r_info.species=parsed.r_info.species;
+    r_info.species=parsed.r_info.species;
 end
-
 
 
 end

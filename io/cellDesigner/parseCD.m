@@ -1,8 +1,27 @@
 function [annotation] = parseCD(fname)
 
-
+%
+% Parse an XML file into two types of CellDesigner model structures. The
+% first type organises data by reaction; the second type organises data
+% by property (namely, ID, width, colour, etc.)
+% 
+% 
+%INPUT
+% 
+% fanme               A CellDesigner XML file
+% 
+%OUTPUTS
+% 
+% annotation          The first type of the parsed model structure
+% annotation.r_info   The second type of the parsed model structure
+%
+%EXAMPLES:
+%
 % example: parsePD=parseCD('PD_140620_1.xml')
 % parsePD_1=parseCD('PD_140620_1.xml')
+%
+%
+% Longfei Mao Oct/2014
 %
 
 

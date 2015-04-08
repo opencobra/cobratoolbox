@@ -1,23 +1,38 @@
 function [ref,normalizedFlux] = addFlux(model,FBA_result,parsed,listRxn)
 
+% CHANGE the thickness attributes of the reaction links in a CellDesigner
+% model structure and make them propotional to the flux values obtained
+% from COBRA functions
+% 
+%
+%INPUTS
+% 
+% model               A COBRA model structure
+% FBAresult           FBA results of a COBRA simulation by the
+%                     'optimizeCbModel' fucntion
+% parsed              The CD model structure outputed by the 'parseCD'
+%                     function
+%
+%
+% listRxn             A list of reaction IDs, after which the flux values
+% are modified or added. P.s., the reaction IDs must be present in both the parsed CD model and the
+% COBRA model structures. the list can be identified by 'cmpR' funciton.
+% 
+% 
+%OUTPUTS
+% 
+% ref                 An updated parsed CellDesigner model that include
+%                     information about the width of reaciton links
+%
+% normalizedFlux      A list of normalised flux values generated based on
+%                     'FBA_result'.
+%
+%
+%EXAMPLE
+%
 % [ parsed_1 ] = addFlux(recon2,fba_results,parsePD,listRxn);
-
-
-
-% INPUT
-
-% model - a COBRA model
-% FBAresult - FBA results;
-% parsed - outputed by pareCD function
-% listRxn - a list of reaction present in both the CellDsigner file and the
-% COBRA model; the list can be identified by cmpR funciton.
-
-
-
-%OUTPUT
-
-% ref - a updated parased CellDesigner model.
-% normalizedFlux - a list of normalized flux values.
+%
+% Longfei Mao Oct/2014
 
 
 ref=parsed;

@@ -1,17 +1,27 @@
-function [fname_out,var] = annotation(fname, fname_out,infix,model)
+function [var] = addAnnotation(fname,fname_out,infix,model)
 
-
-% fname      the original XML file to be modified to include the annotations
-% fanme_out  the output file name of the XML file
-% infix      the ID (e.g., the metabolite or reaction IDs)
-% model      a COBRA model that contains the annotations which can be
+% Retrive omics data from a COBRA model structure and add them to a
+% CellDesginer XML file; The omics data will be shown as texts on ReconMap
+% online
+% 
+%
+%INPUTS
+% 
+% fname      An XML file to be modified to include annotations
+% fanme_out  the name of the output XML file
+% infix      The metabolite/reaction IDs to be used to retrieve omics data
+%            in the COBRA model structure.
+% model      a COBRA model structure that contains the annotations which can be
 %            retrieved by using the infix as the index value.
-
-% e.g., [a,var]=annotation('example_annot.xml','anno_test.xml','r1922',recon2);
-
-% e.g., [a,var]=annotation('example_annot.xml','anno_test.xml',{'r1922','10fthf[c]'},recon2)
-
-% e.g., [a,var]=addAnnotation_b('listOfMets.xml','listOfMets_annoted.xml',{'10fthf5glu[c]'},recon2)
+%
+%
+%
+%OPTIONAL OUTPUT
+% 
+% var        the content of the moidfied XML file with annotations
+%
+%
+% Longfei Mao Oct/2014
 
 
 if nargin<4
