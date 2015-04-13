@@ -1,8 +1,8 @@
 function [var] = addAnnotation(fname,fname_out,infix,model)
 
 % Retrive omics data from a COBRA model structure and add them to a
-% CellDesginer XML file; The omics data will be shown as texts on ReconMap
-% online
+% CellDesginer XML file; The omics data will be shown as texts in
+% CellDesigner or ReconMap online.
 % 
 %
 %INPUTS
@@ -21,7 +21,7 @@ function [var] = addAnnotation(fname,fname_out,infix,model)
 % var        the content of the moidfied XML file with annotations
 %
 %
-% Longfei Mao Oct/2014
+% Longfei Mao Jan/2015
 
 
 if nargin<4

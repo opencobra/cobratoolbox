@@ -18,16 +18,19 @@ function [fname_out,var] = addMiriam(fname,fname_out,infix,model)
 %
 %OPTIONAL OUTPUT
 % 
-% var         the content of the moidfied XML file with annotations
+% var         the content of the modified XML file with annotations
 %
 %
-% EXAMPLE:
+%EXAMPLE:
 %
 % the following example command is intended to add all MIRIAM information
 % for the metabolites in the ReconMap
 %
 % [var]=addMiriam('ReconMap.xml','ReconMap_annotated.xml',recon2.mets(:),recon2)
-
+%
+%
+%
+% Longfei Mao Jan/2015
 
 if nargin<4
     model=recon2;

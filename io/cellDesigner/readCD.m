@@ -1,8 +1,8 @@
 function [r_info] = readCD(parsed)
 
-% Convert the a type of the parsed model structure (orgnised by reaction) into the other type of the
-% parsed model structure (organised by property (namely, ID, width,
-% colour, etc.)
+% Convert the a type of the parsed model structure (orgnised by reaction)
+% into the other type of the parsed model structure (organised by property
+% (namely, ID, width, colour, etc.)
 % 
 % 
 % INPUT

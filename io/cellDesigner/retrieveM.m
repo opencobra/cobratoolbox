@@ -1,6 +1,6 @@
 function [identifier]=retrieveM(parsed,lkup)
 
-% Retireve all the identifiers for a metabolite in the parsed CD model
+% Retrieve all the identifiers for a metabolite in the parsed CD model
 % structure; there could be multiple identifiers for a metabolite.
 %
 %
