@@ -1,9 +1,0 @@
-/** @page libsbml-news Version history
-@n
-
-<!-- NEWS.txt is located in ../../.  The include search path for
-     doxygen is set in doxygen-common-config.txt -->
-
-@verbinclude NEWS.txt
-
-*/

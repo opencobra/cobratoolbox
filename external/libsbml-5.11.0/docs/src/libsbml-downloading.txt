@@ -1,5 +1,0 @@
-/** @page libsbml-downloading Downloading libSBML
-
-@htmlinclude libsbml-downloading.html
-
-*/

@@ -1,8 +1,0 @@
-To write a gzip/zip file, libSBML needs to be configured and linked with
-the <a target="_blank" href="http://www.zlib.net/">zlib</a> library at
-compile time.  It also needs to be linked with the <a target="_blank"
-href="">bzip2</a> library to write files in <em>bzip2</em> format.  (Both
-of these are the default configurations for libSBML.)  Errors about
-unreadable files will be logged and this method will return
-<code>false</code> if a compressed filename is given and libSBML was
-<em>not</em> linked with the corresponding required library.
