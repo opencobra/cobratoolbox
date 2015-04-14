@@ -151,9 +151,9 @@ for i = 1:nRxns
     end
 end
 %close the waitbar if this is matlab
-if (regexp(version, 'R20'))
-    close(h);
-end
+% if (regexp(version, 'R20'))
+%     close(h);
+% end
 allGenes = unique(allGenes);
 
 %% Construct gene to rxn mapping
@@ -177,10 +177,10 @@ if (hasNotesField)
         end
         rules{i} = strrep(rules{i},'_TMP_','');
     end
-    %close the waitbar if this is matlab
-    if (regexp(version, 'R20'))
-        close(h);
-    end
+%     %close the waitbar if this is matlab
+%     if (regexp(version, 'R20'))
+%         close(h);
+%     end
     
 end
 
@@ -260,9 +260,9 @@ for i = 1:nMets
         metInChIString{i} = metInChI;
     end
 end
-if ( regexp( version, 'R20') )
-    close(h);
-end
+% if ( regexp( version, 'R20') )
+%     close(h);
+% end
 
 %% Collect everything into a structure
 model.rxns = rxns;

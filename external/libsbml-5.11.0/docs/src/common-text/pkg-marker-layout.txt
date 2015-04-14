@@ -1,2 +1,0 @@
-[SBML 'layout' package]
-
