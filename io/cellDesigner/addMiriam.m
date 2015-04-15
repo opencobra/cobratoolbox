@@ -376,7 +376,7 @@ if strcmp(para,'met')
     
     m=[];
     
-    %% The template used here contains three types of information, namely,obo.chebi:CHEBI, hmdb and pubchem.substance. More Miriam type
+    %% The template used here contains three types of information, namely,obo.chebi:CHEBI, hmdb and pubchem.substance.
     %% you may have to modify the part of the codes accordingly to include more MIRIAM types.
    
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
