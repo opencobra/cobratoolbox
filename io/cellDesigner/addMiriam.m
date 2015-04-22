@@ -1,4 +1,4 @@
-function [fname_out,var] = addMiriam(fname,fname_out,infix,model)
+function [fname_out,var] = addMiriam(fname,fname_out,infix,model,infix_type)
 
 % Add Miriam information to CellDesigner XML file; the Miriam information
 % is retrieved from a COBRA model structure using Metbolite/Reaction IDs as
@@ -14,6 +14,11 @@ function [fname_out,var] = addMiriam(fname,fname_out,infix,model)
 %             in the COBRA model structure.
 % model       a COBRA model structure contains the annotations that can be 
 %             retrieved by using the infix as the index value.
+% infix_type      'name' or 'id'; 1) 'name'indicates that 'infix' contains
+%                 a list of reaction names, which are normally used in a
+%                 COBRA model structure. 2)'id' indicates that 'infix'
+%                 contains a list of IDs used in CellDesigner such as
+%                 're32'.
 %
 %
 %OPTIONAL OUTPUT
@@ -32,6 +37,22 @@ function [fname_out,var] = addMiriam(fname,fname_out,infix,model)
 %
 % Longfei Mao Jan/2015
 
+
+if nargin<5
+    prefix='name="';  % for metabolites in recon2
+
+else
+    if strcmp(infix_type, 'id');
+        
+        prefix='id="';
+    elseif strcmp(infix_typ,'name');
+        prefix='name="';
+    else
+        error('the type of the list should be set ethier as "id" or "name"')
+    end
+end
+
+
 if nargin<4
     model=recon2;
 end
@@ -43,9 +64,9 @@ if nargin<3
     rxnName=[prefix,infix,suffix];
 end
 
-% prefix='name="';  % for metabolites in recon2
+ prefix='name="';  % for metabolites in recon2
 
-prefix='id="'; % for example file
+% prefix='id="'; % for example file
 
 %
 
@@ -340,33 +361,74 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%
 
 
-function [rxnItems,rxnContent]=constructItems(index,model)
+function [finalItems,finalContent]=constructItems(index,model)
 
 % rxnItems    an array of combined Keywords and Contents
 
 % rxnContent   an array of Contents
 
-infix=index;
 
-rxnItems=[];
-rxnContent=[];
+
+finalItems=[];
+finalContent=[];
+
+
 keyStr='<rdf:li rdf:resource="urn:miriam:';
 %%
 
-num=find(strcmp(model.rxns(:,1),infix)); %% find the reaction number in the model.
+% num=find(strcmp(model.rxns(:,1),infix)); %% find the reaction number in the model.
+% para='rxn';
+% 
+% 
+% if isempty(num)
+%     num=find(strcmp(model.mets(:,1),infix));
+%     para='met';
+%     
+% elseif ~isempty(find(strcmp(model.mets(:,1),infix), 1))        %%%%% Error! the reaction and metabolite use the same name.
+%     
+%     msg=strcat(infix, ' is used as a reaction name as well as a metabolite name');
+%     warndlg(msg,'Warning!');
+%     
+% end
+
+
+infix=index;
+
+expr='\s\w*';
+infix=regexp(infix{1},expr,'match');
+
+if isempty(infix)||size(infix,2)>1
+    infix=index
+end
+
+infix_trimed=strtrim(infix);
+
+
+
+try
+num=find(strcmp(model.rxns(:,1),infix_trimed)); %% find the reaction number in the model.
+catch
+    disp(infix_trimed);
+end
+
 para='rxn';
-
-
-if isempty(num)
-    num=find(strcmp(model.mets(:,1),infix));
-    para='met';
-    
-elseif ~isempty(find(strcmp(model.mets(:,1),infix), 1))        %%%%% Error! the reaction and metabolite use the same name.
-    
+if isempty(num)    
+    num=find(strcmp(model.mets(:,1),infix_trimed));
+    if ~isempty(num)
+        para='met';
+    else
+        msg=strcat(infix, ' cannot be found in both reaction and metabolite name lists');
+        para='not_found';
+        warndlg(msg,'Warning!');
+    end
+elseif ~isempty(find(strcmp(model.mets(:,1),infix_trimed), 1))        %%%%% Error! the reaction and metabolite use the same name.
     msg=strcat(infix, ' is used as a reaction name as well as a metabolite name');
     warndlg(msg,'Warning!');
-    
 end
+
+
+
+
 
 %% the annotation template for metabolites
 
@@ -377,7 +439,7 @@ if strcmp(para,'met')
     m=[];
     
     %% The template used here contains three types of information, namely,obo.chebi:CHEBI, hmdb and pubchem.substance.
-    %% you may have to modify the part of the codes accordingly to include more MIRIAM types.
+    %% you may have to modify this part of the codes accordingly to include more MIRIAM types.
    
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     metKeywords={'obo.chebi:CHEBI%';
@@ -390,7 +452,7 @@ if strcmp(para,'met')
   
     for d=1:length(metKeywords);
         
-        rxnContent{d}=strcat(keyStr,metKeywords(d));
+        finalContent{d}=strcat(keyStr,metKeywords(d));
         
         %%
     end
@@ -403,13 +465,13 @@ if strcmp(para,'met')
     % HMDB=model.metHMDB;
     % PubChemID=model.metPubChemID;
     
-    for i=1:length(rxnContent);
-        rxnItems{i}=strcat(rxnContent{i},m{i})
+    for i=1:length(finalContent);
+        finalItems{i}=strcat(finalContent{i},m{i})
     end
     postfix_key='"/>';
     
-    for i=1:length(rxnContent);
-        rxnItems{i}=strcat(rxnItems{i},postfix_key)
+    for i=1:length(finalContent);
+        finalItems{i}=strcat(finalItems{i},postfix_key)
     end
     
     
