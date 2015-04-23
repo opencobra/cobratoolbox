@@ -14,6 +14,8 @@ function [fname_out,var] = addMiriam(fname,fname_out,infix,model,infix_type)
 %             in the COBRA model structure.
 % model       a COBRA model structure contains the annotations that can be 
 %             retrieved by using the infix as the index value.
+%
+%OPTIONAL INPUT
 % infix_type      'name' or 'id'; 1) 'name'indicates that 'infix' contains
 %                 a list of reaction names, which are normally used in a
 %                 COBRA model structure. 2)'id' indicates that 'infix'
@@ -45,7 +47,7 @@ else
     if strcmp(infix_type, 'id');
         
         prefix='id="';
-    elseif strcmp(infix_typ,'name');
+    elseif strcmp(infix_type,'name');
         prefix='name="';
     else
         error('the type of the list should be set ethier as "id" or "name"')
