@@ -145,11 +145,11 @@ fPath={'Ecoli_core_ECOSAL.xml';
     'testing'}
 
 if ~isequal(exist(fPath{1},'file'),2)
-    fprintf('the testing XML file - ''%s'' is missing from the COBRA folder! \n',fpath{1});
+    fprintf('the testing XML file - ''%s'' is missing from the COBRA folder! \n',fPath{1});
     if ~isequal(exist(fPath{2},'dir'),7)
-        fprintf('the testing folder ''%s'' is missing from the COBRA folder!!\n',fpath{2});
+        fprintf('the testing folder ''%s'' is missing from the COBRA folder!!\n',fPath{2});
         if ~isequal(exist(fPath{3},'dir'),7)
-            fprintf('the testing folder ''%s'' is missing from the COBRA folder!!\n',fpath{3});
+            fprintf('the testing folder ''%s'' is missing from the COBRA folder!!\n',fPath{3});
         end
     end
 else
