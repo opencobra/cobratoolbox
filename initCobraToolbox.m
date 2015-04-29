@@ -138,11 +138,11 @@ end
 %make install
 
 %Test the installation with:
-current_path=strcat(pwd,'/testing/testSBML/Ecoli_core_ECOSAL.xml')
+current_path=strcat(pwd,'/testing/testSBML/Ecoli_core_ECOSAL.xml');
 
 fPath={'Ecoli_core_ECOSAL.xml';
     'testSBML';
-    'testing'}
+    'testing'};
 
 if ~isequal(exist(fPath{1},'file'),2)
     fprintf('the testing XML file - ''%s'' is missing from the COBRA folder! \n',fPath{1});
