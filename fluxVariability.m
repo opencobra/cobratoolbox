@@ -148,7 +148,16 @@ else
 end
 
 solutionPool = zeros(length(model.lb), 0); 
-if ~exist('matlabpool') || (matlabpool('size') == 0) %aka nothing is active
+
+
+p = gcp('nocreate');
+if isempty(p)
+    poolsize = 0;
+else
+    poolsize = p.NumWorkers
+end
+
+if ~exist('parpool') || poolsize == 0 %aka nothing is active
     m = 0;
     for i = 1:length(rxnNameList)
         if mod(i,10) == 0, clear mex, end
@@ -234,6 +243,11 @@ if ~exist('matlabpool') || (matlabpool('size') == 0) %aka nothing is active
         end
     end
 else % parallel job.  pretty much does the same thing.
+    
+
+    global CBTLPSOLVER
+    solver = CBTLPSOLVER;
+    
     parfor i = 1:length(rxnNameList)
         %if mod(i,10) == 0, clear mex, end
         %if (verbFlag == 1),fprintf('iteration %d.  skipped %d\n', i, round(m));end
@@ -249,7 +263,8 @@ else % parallel job.  pretty much does the same thing.
                 'c',c,...
                 'osense',-1, ...
                 'basis', LPproblem.basis ...
-            ));
+            ),'solver',solver);
+        
             %take the maximum flux from the flux vector, not from the obj -Ronan
             maxFlux(i) = LPsolution.full(c~=0);
             %LPproblemb.osense = 1;
@@ -262,7 +277,7 @@ else % parallel job.  pretty much does the same thing.
                 'c',c,...
                 'osense',1, ... %only part that's different.
                 'basis', LPproblem.basis ...
-            ));
+            ),'solver',solver);
             minFlux(i) = LPsolution.full(c~=0);
         else
             LPsolution = solveCobraMILP(addLoopLawConstraints(struct(...
