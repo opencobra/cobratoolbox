@@ -1,13 +1,24 @@
 function [text]=writeTXT (para,fname_out)
  
-%% Input
+% Write a txt file for online PD map to highlight specific reaction nodes.
+% 
+% 
+% INPUTS
+% 
+% para           A variable that stores two columns: the first column
+%                contains a list of reaction names,whereas the second
+%                column contains a corresponding list of the colours (Hex
+%                triplet, e.g.,
+%                https://closedxml.codeplex.com/wikipage?title=Excel%20Indexed%20Colors)
+% fanme_out      The name of the output text file name.
+% 
+% OPTIONAL OUTPUT
+% 
+% text           The lines of the text file
+%
+% Longfei Mao Oct/2014
+% 
 
-% para is a variable that stores two columns: a list of reaction name, and
-% a list of colours.
-% para(c,1)='name'; 
-% para(c,2)='color';
-
-% color - Hex triplet;
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%  open
@@ -49,7 +60,7 @@ for rr=s:r; % content rows + one title row
 
 end
 
-%%%%%%% Write
+%%%%%%% Write to the file %%%%
 
 
 for d=1:length(text);

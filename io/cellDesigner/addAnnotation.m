@@ -1,19 +1,50 @@
-function [fname_out,var] = annotation(fname, fname_out,infix,model)
+function [var] = addAnnotation(fname,fname_out,infix,model,infix_type)
+
+% Retrieve omics data from a COBRA model structure and add them to a
+% CellDesginer XML file; The omics data will be shown as texts in
+% CellDesigner or ReconMap online.
+%
+%
+%INPUTS
+%
+% fname      An XML file to be modified to include annotations
+% fanme_out  the name of the output XML file
+% infix      The metabolite/reaction IDs to be used to retrieve omics data
+%            in the COBRA model structure.
+% model      a COBRA model structure that contains the annotations which
+%            can be retrieved by using the infix as the index value.
+
+%OPTIONAL INPUT
+%
+% infix_type      'name' or 'id'; 1) 'name'indicates that 'infix' contains
+%                 a list of reaction names, which are normally used in a
+%                 COBRA model structure. 2)'id' indicates that 'infix'
+%                 contains a list of IDs used in CellDesigner such as
+%                 're32'.
+% 
+%OPTIONAL OUTPUT
+%
+% var        the content of the moidfied XML file with annotations
+%
+%
+% Longfei Mao Jan/2015
+
+if nargin<5
+    prefix='name="';  % for metabolites in recon2
+
+else
+    if strcmp(infix_type, 'id');
+        
+        prefix='id="';
+    elseif strcmp(infix_type,'name');
+        prefix='name="';
+    else
+        error('the type of the list should be set ethier as "id" or "name"')
+    end
+end
 
 
-% fname      the original XML file to be modified to include the annotations
-% fanme_out  the output file name of the XML file
-% infix      the ID (e.g., the metabolite or reaction IDs)
-% model      a COBRA model that contains the annotations which can be
-%            retrieved by using the infix as the index value.
-
-% e.g., [a,var]=annotation('example_annot.xml','anno_test.xml','r1922',recon2);
-
-% e.g., [a,var]=annotation('example_annot.xml','anno_test.xml',{'r1922','10fthf[c]'},recon2)
-
-% e.g., [a,var]=addAnnotation_b('listOfMets.xml','listOfMets_annoted.xml',{'10fthf5glu[c]'},recon2)
-
-
+%
 if nargin<4
     
     model=recon2;
@@ -30,12 +61,7 @@ if nargin<3
 end
 
 
-prefix='name="';  % for metabolites in recon2
 
-
-% prefix='id="';
-
-%
 
 suffix='"';
 
@@ -44,12 +70,8 @@ suffix='"';
 
 
 for d=1:length(infix)
-    
     rxnName(d)=strcat(prefix,infix(d),suffix);
-    
 end
-
-
 
 
 if nargin<2 || isempty(fname_out)
@@ -79,7 +101,7 @@ numOfLine=0;
 
 % rem=fgets(f_id); numOfLine=numOfLine+1;
 
-%%% the template for online map system to recognize
+%%% the template for CellDesginer or the online map system to recognise
 
 preTxt(1).str='<notes>';
 preTxt(2).str='<html xmlns="http://www.w3.org/1999/xhtml">';
@@ -100,7 +122,7 @@ MainTxt={};
 
 
 while ~feof(f_id);
-      
+    
     numOfLine=numOfLine+1;
     rem=fgets(f_id);
     %     try
@@ -125,49 +147,33 @@ for i=1:10;
     ct(i,1)=i*total_length/10;
 end
 
-   % met_str='name="'
-    
-    met_str='<species metaid="'
-    
-    rxn_str='<reaction metaid="'
+% met_str='name="'
 
+met_str='<species metaid="'  % keywords in the line describing the metabolite.
+
+rxn_str='<reaction metaid="' % keywords in the line describing the reaction.
+
+
+MainTxt_new={};
 
 for t=1:total_length   % go through each line of the SBML file.
-    
-    
     if ismember(t, ct)~=0||t==total_length;
         
         disp(t)
-        waitbar(t/total_length,h);
-        
-    end
-    
-    
-    
+        waitbar(t/total_length,h);        
+    end    
     n=n+1;
     
     MainTxt_new(n,1)=MainTxt(t);
-    
-
-    
-    if ((~isempty(strfind(MainTxt(t),met_str)))||(~isempty(strfind(MainTxt(t),met_str))));
-
-        
+    if ((~isempty(strfind(MainTxt(t),met_str)))||(~isempty(strfind(MainTxt(t),rxn_str))));
         for in=1:length(rxnName);% for in=1:length(infix); go though each line of the Rxn List.
             
             % disp(length(rxnName));
-            
             line_st=strfind(MainTxt(t),rxnName{in});
-            
-            
             if ~isempty(line_st{1})  %isempty(line_st)~=0; % the line contains the rxn keywords
-                
                 
                 % msgbox('reaction found');
                 disp(line_st)
-                
-                
-                
                 %%%%%% preTxt (1:6)
                 for p=1:6;
                     
@@ -177,33 +183,39 @@ for t=1:total_length   % go through each line of the SBML file.
                 n=n+p;
                 total_length=total_length+p;
                 
-                
-                [rxnItems,rxnContent]=contructItems(infix(in),model);
-                
+                %                 try
+%                  try                    
+                    [rxnItems,rxnContent]=contructItems(infix(in),model);
+                    
+%                  catch
+                     
+%                      disp(infix(in));
+%                      error('stop');
+%                  end
+                %                 catch
+                %                     size(infix)
+                %                     disp(in)
+                %                     infix(in)
+                %                 end
+                %
                 
                 for k=1:length(rxnContent);
                     
-                    rxnContent(k)          
+                    rxnContent(k)
                     disp(n);
                     disp(k);
                     
                     disp(MainTxt_new(n,1));
                     disp('%%%%%%%%%%%%');
-                    disp(rxnItems(k));
-                    
-                    
+                    disp(rxnItems(k));    
                     MainTxt_new(n+k,1)=rxnItems(k);
-                    
-                    
-                    
+                                        
                 end
-                
-                
                 n=n+k;
                 total_length=total_length+k;
                 
                 
-                for p_e=1:3
+                for p_e=1:3    % text after the main text
                     
                     MainTxt_new(n+p_e,1)=cellstr(preTxt(p_e+6).str);
                     
@@ -224,23 +236,15 @@ var=MainTxt_new;
 
 
 for ww=1:length(MainTxt_new);
-    
-    
+        
     fprintf(f_out,'%s\n',char(MainTxt_new(ww)));
-    
-    
-    
+            
 end
-
 
 close(h);
-
 fclose(f_out);
 
-
-
 end
-
 
 % <body>
 % Symbol:
@@ -256,57 +260,61 @@ end
 % </body>
 
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%
 
 
-function [rxnItems,rxnContent]=contructItems(index,model)
+function [finalItems,finalContent]=contructItems(index,model)
 
 % rxnItems    an array of combined Keywords and Contents
 
-% rxnConent   an array of Conetens
+% rxnContent   an array of Contents
 
 
 infix=index;
 
+expr='\s\w*';
+infix=regexp(infix{1},expr,'match');
 
-%%
-
-
-
-num=find(strcmp(model.rxns(:,1),infix)); %% find the reaction number in the model.
-para='rxn';
-
-
-if isempty(num)
-    num=find(strcmp(model.mets(:,1),infix));
-    para='met';
-    
-elseif ~isempty(find(strcmp(model.mets(:,1),infix), 1))        %%%%% Error! the reaction and metabolite use the same name.
-    
-    msg=strcat(infix, ' is used as a reaction name as well as a metabolite name');
-    warndlg(msg,'Warning!');
-    
+if isempty(infix)||size(infix,2)>1
+    infix=index
 end
 
+infix_trimed=strtrim(infix);
+%infix_trimed=cellstr(infix_trimed);
+%%
+try
+num=find(strcmp(model.rxns(:,1),infix_trimed)); %% find the reaction number in the model.
+catch
+    disp(infix_trimed);
+end
 
+para='rxn';
+if isempty(num)    
+    num=find(strcmp(model.mets(:,1),infix_trimed));
+    if ~isempty(num)
+        para='met';
+    else
+        msg=strcat(infix, ' cannot be found in both reaction and metabolite name lists');
+        para='not_found';
+        warndlg(msg,'Warning!');
+    end
+elseif ~isempty(find(strcmp(model.mets(:,1),infix_trimed), 1))        %%%%% Error! the reaction and metabolite use the same name.
+    msg=strcat(infix, ' is used as a reaction name as well as a metabolite name');
+    warndlg(msg,'Warning!');
+end
 
 %% the annotation template for metabolites
 
 if strcmp(para,'met')
-    
-    
     metKeywords={
         'Symbol: ';
         'Abbreviation: ';
         'ChargedFormula: ';
         'Charge: ';
         'Synonyms: ';
+        'metInchiString: ';
         'Description: '
         };
-    
-    
-    
     %%% assign a initial value of ' ' to the list of the variables.
     
     Symbol=' ';
@@ -314,40 +322,51 @@ if strcmp(para,'met')
     ChargedFormula=' ';
     Charge=' ';
     Synonyms=' ';
+    metInchiString=' ';
     Description=' ';
     
-    
-    
-    if ~isfield(model,'Symbol');
-        Symbol=' ';
+  
+    if ~isempty(num)
+                
+        if ~isfield(model,'Symbol');
+            Symbol=' ';
+        else
+            Symbol=model.Symbol(num);
+        end
+        
+        if ~isfield(model,'Synonyms');
+            Synonyms=' ';
+        end
+        if ~isfield(model,'metInchiString')
+            metInchiString=' ';
+        else
+            metInchiString=model.metInchiString(num);
+            
+        end
+        
+        if ~isfield(model,'Description')
+            Description=' ';
+        else
+            Description=model.Description(num);
+        end
+        
+
+
+        Abbreviation=model.mets(num);
+        ChargedFormula=model.metFormulas(num);
+        Charge=model.metCharge(num);
+        Synonyms=model.metNames(num);
+
+
     end
-    
-    Abbreviation=model.mets(num);
-    ChargedFormula=model.metFormulas(num);
-    
-    
-    Charge=model.metCharge(num);
     
     if isnumeric(Charge)
         Charge=num2str(Charge);
     end
-    
-    
-    if ~isfield(model,'Synonyms');
-        Synonyms=' ';
-    end
-    
-    
-    if ~isfield(model,'Description: ')
-        Description=' ';
-    end
-    
-    
+        
+
     
     %%%%%%%%%%%%%%%%%%%%%%%%
-    
-    
-    
     
     metContent=[
         Symbol(1);
@@ -355,20 +374,19 @@ if strcmp(para,'met')
         ChargedFormula(1);
         Charge(1);
         Synonyms(1);
+        metInchiString(1);
         Description(1);
         ];
-    
-    
+        
     %%%%%
-    
-    
+        
     for f=1:length(metContent);
         
-        rxnItems(f)=strcat(metKeywords(f),metContent(f));
+        finalItems(f)=strcat(metKeywords(f),metContent(f));
     end
     
     
-    rxnContent=metContent;
+    finalContent=metContent;
 elseif strcmp(para,'rxn')
     
     
@@ -395,11 +413,8 @@ elseif strcmp(para,'rxn')
     
     if isnumeric(LB)|isnumeric(UB)
         LB=num2str(LB);
-        UB=num2str(UB);
-        
+        UB=num2str(UB);        
     end
-    
-    
     if ~isfield(model,'grRules');
         grRules=' ';
     end
@@ -411,7 +426,6 @@ elseif strcmp(para,'rxn')
     if isnumeric(CS)
         CS=num2str(CS);
     end
-    
     
     GPR=model.grRules(num);
     
@@ -439,9 +453,7 @@ elseif strcmp(para,'rxn')
         'GPR: ';
         'Subsystem: '};
     
-    
-    
-    rxnContent=[
+    finalContent=[
         Abbreviation(1);
         Description(1);
         MCS(1);
@@ -455,14 +467,16 @@ elseif strcmp(para,'rxn')
         GPR;
         Subsystem];
     
-    
     %%
     
-    for d=1:length(rxnContent);
-        
-        rxnItems(d)=strcat(rxnKeywords(d),rxnContent(d));
+    for d=1:length(finalContent);        
+        finalItems(d)=strcat(rxnKeywords(d),finalContent(d));
     end
+elseif strcmp(para,'not_found');
+    finalItems(1)=strcat(infix,' not found in both met and rxn lists');
+    finalContent(1)=strcat(infix,' not found in both met and rxn lists');
 end
+
 end
 
 
