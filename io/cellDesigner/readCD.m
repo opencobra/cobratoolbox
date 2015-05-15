@@ -18,7 +18,9 @@ function [r_info] = readCD(parsed)
 %
 % Longfei Mao Oct/2014
 
-r_info.ID=fieldnames(parsed);
+parsed_temp=rmfield(parsed,'r_info');
+
+r_info_temp.ID=fieldnames(parsed_temp);
 % a={'ID','reactant','product','number','width','color'};
 
 
@@ -27,20 +29,30 @@ names_l1=fieldnames(parsed);
 attribute=fieldnames(parsed.(names_l1{1}))' % retrieve the field names of the first entry of the model structure.
 
 % attribute={'number','width','color'}; % add any attribute names here
-for r=1:length(r_info.ID(:,1)); % number of reactions
-    if strcmp(r_info.ID{r},'r_info')~=1; % excluding the field, 'r_info'.
+for r=1:length(r_info_temp.ID(:,1)); % number of reactions
+    if strcmp(r_info_temp.ID{r},'r_info')~=1; % excluding the field, 'r_info'.
         for e=1:length(attribute);     % number of attributes
-            if isfield(parsed.(r_info.ID{r}),(attribute{e})) % Check if the field name exsits. In some cases, the field name may not appear for some entiries.  
-                for s=1:length(parsed.(r_info.ID{r}).(attribute{e})(1,:))
-                    r_info.(attribute{e})(r,s)=parsed.(r_info.ID{r}).(attribute{e})(1,s)
+            if isfield(parsed.(r_info_temp.ID{r}),(attribute{e})) % Check if the field name exsits. In some cases, the field name may not appear for some entiries.  
+                for s=1:length(parsed.(r_info_temp.ID{r}).(attribute{e})(1,:))
+                    r_info_temp.(attribute{e})(r,s)=parsed.(r_info_temp.ID{r}).(attribute{e})(1,s)
                 end
             end
         end
     end
 end
 if isfield(parsed.r_info,'species')
-    r_info.species=parsed.r_info.species;
+    r_info_temp.species=parsed.r_info.species;
 end
+
+
+r_info=r_info_temp;
+
+r_info=rmfield(r_info,'name');
+r_info.ID(:,2:(size(r_info_temp.name,2)+1))=r_info_temp.name(:,:);
+
+
+
+
 
 
 

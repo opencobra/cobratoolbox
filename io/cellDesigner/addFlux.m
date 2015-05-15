@@ -84,13 +84,33 @@ flux(:,1)=FBAsolution.x(rxnID)
 %%%%%% normalise the flux values.
 absFlux=abs(flux);
 rxnWidth=absFlux/max(absFlux);
-rxnWidth(rxnWidth>=1)=10;   % normalize the values in the descending order
-rxnWidth(rxnWidth>0.5 & rxnWidth<1)=5;
-rxnWidth(rxnWidth>1e-3 & rxnWidth<=0.5)=2;
+rxnWidth(rxnWidth>=1)=8;   % normalize the values in the descending order
+rxnWidth(rxnWidth>0.8 & rxnWidth<1)=6;
+rxnWidth(rxnWidth>0.5 & rxnWidth<=0.8)=5;
+rxnWidth(rxnWidth>0.2 & rxnWidth<=0.5)=4;
+rxnWidth(rxnWidth>1e-3 & rxnWidth<=0.2)=3;
 rxnWidth(rxnWidth<1e-3)=0;
 % normalized values
 normalizedFlux=flux(:,1);
 normalizedFlux(:,2)=rxnWidth(:,1);
+
+
+%results=[];
+
+
+[ID_row,ID_Column]=size(ref.r_info.ID);
+
+for m=1:ID_row;
+    for n=1:ID_Column;
+        r=iscellstr(ref.r_info.ID(m,n));
+        if ~r; 
+            %results(or,1)=m; 
+            %results(or,2)=n;
+            ref.r_info.ID{m,n}=' '
+        end;
+    end;
+end
+
 for r=1: length(flux)
     rxnList_width(r)=rxnWidth(r);
     id=find(ismember(ref.r_info.ID,listRxn(r)))  % a situation where the third column stores the reaction IDs.
@@ -99,7 +119,13 @@ for r=1: length(flux)
         if id>m*(n-1)  % the third column of ref.r_info.ID contains reaction ID; for example: {'re5160','re8','DESAT16_2'}
             newRxnName=ref.r_info.ID{id-2*m}; % newRxnName is defined to be the ID in the first column of ref.r_info.ID.
         end
+        try
         [rw,cw]=size(ref.(newRxnName).width)
+        catch
+            return
+            
+        end
+        
         for  ddr=1:rw
             for  ddc=1:cw
                 ref.(newRxnName).width{ddr,ddc}=rxnList_width(r)

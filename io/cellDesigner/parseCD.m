@@ -36,7 +36,7 @@ else
     
 end
 
-numOfLine=0;
+
 
 %%%%%%%%%%%%%%%%
 % h = waitbar(0,'progressing')
@@ -45,7 +45,7 @@ numOfLine=0;
 % disp(numlines);
 %%%%%%%%%%%%%%%%
 
-rem=fgets(f_id); numOfLine=numOfLine+1;
+
 % data=fread(fr)
 
 
@@ -77,7 +77,10 @@ toFD(7).str='<celldesigner:listOfModification>';
 toFD(8).str='<celldesigner:baseReactant '
 toFD(9).str='<celldesigner:baseProduct '
 
-baseReactant={'species','alias'}
+baseReactantAndProduct={'species','alias'}
+
+reactantLink={'reactant','alias'}
+productLink={'product','alias'}
 
 
 %toFD(10).str='<celldesigner:species(\w*) id=' ;   %regular expression for '<celldesigner:speciesAlias'; '<celldesigner:species '
@@ -90,7 +93,7 @@ toFD(10).str='<species (\w*)' % A blank space before the (\w*).
 
 %toFD(10).str='species(\w*)'
 
-listID={' metaid', ' id', ' name'};% keywords in "<reaction "
+listID={' metaid', ' id', ' name'};% keywords in "<reaction "; NOTE: the blank space before each string is intended to distingush the difference between 'metaid' and 'id' 
 
 width_color={'width', 'color'} % width and color of the reaction lines.
 
@@ -130,13 +133,25 @@ erroMesg=cellstr('not found');
 
 results=[];
 
+numOfLineOfText=0;
+text.str=[];
+while ~feof(f_id);
 
+    numOfLineOfText=1+numOfLineOfText;  % read next line.
+    rem=fgets(f_id);
+    
+    text(numOfLineOfText).str=cellstr(rem)
+end
+
+frewind(f_id);
+
+numOfLine=0;
+rem=fgets(f_id); 
+numOfLine=numOfLine+1;
 
 while ischar(rem) % &&r_num<10;
     
-    %% numOfLine=1+numOfLine;  % read next line.
-    
-    
+
     %%%%%%%%%%%%%%%%
     %     if ismember(numOfLine/numlines,[0.25 0.5 0.75 1]);
     %          waitbar(numOfLine/numlines ,h)
@@ -233,8 +248,8 @@ while ischar(rem) % &&r_num<10;
         numbOfColor=0;
         
         
-        numbOfreactant=0;
-        numbOfproduct=0;
+        numbOfreactant=1;
+        numbOfproduct=1;
         
         
         numOfBase=1;
@@ -270,12 +285,12 @@ while ischar(rem) % &&r_num<10;
                 
                 %% every new line
                 
-                for base=1:length(baseReactant);
+                for base=1:length(baseReactantAndProduct);
                     
                     
                     % if (strfind(rem,baseReactant{base})~=0)
                     
-                    [p_st,p_ed]=position(rem,baseReactant{base});
+                    [p_st,p_ed]=position(rem,baseReactantAndProduct{base});
                     
                     r_info.baseReactant(r_num,numOfBase+base-1)=cellstr(rem(p_st:p_ed));
                     %     results.(r_info.ID{r_num,1}).baseReactant(1,r_num,numOfBase+base-1)=r_info.baseReactant(r_num,numOfBase+base-1)
@@ -295,12 +310,12 @@ while ischar(rem) % &&r_num<10;
                 
                 %% every new line
                 
-                for base=1:length(baseReactant);
+                for base=1:length(baseReactantAndProduct);
                     
                     
                     % if (strfind(rem,baseReactant{base})~=0)
                     
-                    [p_st,p_ed]=position(rem,baseReactant{base});
+                    [p_st,p_ed]=position(rem,baseReactantAndProduct{base});
                     
                     r_info.baseProduct(r_num,numOfBaseP+base-1)=cellstr(rem(p_st:p_ed));
                     %     results.(r_info.ID{r_num,1}).baseReactant(1,r_num,numOfBase+base-1)=r_info.baseReactant(r_num,numOfBase+base-1)
@@ -359,29 +374,51 @@ while ischar(rem) % &&r_num<10;
             end
             
             
-            if (strfind(rem,toFD(4).str))
+            if (strfind(rem,toFD(4).str))     % '<celldesigner:reactantLink';
+                
+                %% 03.05.2015
+%                 numbOfreactant=1+numbOfreactant;
+%                 ind_rem_reactant=strfind(rem,'"');
+%                 
+%                 p_st_r=ind_rem_reactant(1)+1;
+%                 p_et_r=ind_rem_reactant(2)-1;
+%                 
+%                 r_info.reactant(r_num,numbOfreactant)=cellstr(rem(p_st_r:p_et_r));
+%                                
+%                 results.(r_info.ID{r_num,1}).reactant(1,numbOfreactant)=r_info.reactant(r_num,numbOfreactant)
                 
                 
-                numbOfreactant=1+numbOfreactant;
-                ind_rem_reactant=strfind(rem,'"');
-                %  disp(rem);
-                % disp(ind_rem_reactant);
-                
-                % r_metaid.width(r_num,1)=cellstr(rem);
-                
-                p_st_r=ind_rem_reactant(1)+1;
-                p_et_r=ind_rem_reactant(2)-1;
-                
-                r_info.reactant(r_num,numbOfreactant)=cellstr(rem(p_st_r:p_et_r));
                 
                 
+                for link=1:length(reactantLink);
+                    
+                    if strfind(reactantLink{link},'reactant')
+                        ind_rem_reactant=strfind(rem,'"');
+                        
+                        p_st_r=ind_rem_reactant(1)+1;
+                        p_et_r=ind_rem_reactant(2)-1;
+                        
+                        r_info.reactant(r_num,numbOfreactant+link-1)=cellstr(rem(p_st_r:p_et_r));
+                    else
+                        
+                        [p_st,p_ed]=position(rem,reactantLink{link});
+                        
+                        r_info.reactant(r_num,numbOfreactant+link-1)=cellstr(rem(p_st:p_ed));                        
+                        
+                    end
+                end
                 
-                %             else
-                %                 numbOfreactant=1+numbOfreactant;
-                %                 r_info.reactant(r_num,numbOfreactant)=erroMesg
                 
                 
-                results.(r_info.ID{r_num,1}).reactant(1,numbOfreactant)=r_info.reactant(r_num,numbOfreactant)
+                %  if isfield(r_info,baseReactant);
+                results.(r_info.ID{r_num,1}).reactant(1,1:numbOfreactant+link-1)=r_info.reactant(r_num,1:numbOfreactant+link-1);
+                %  end
+                
+                numbOfreactant=numbOfreactant+2;
+                
+                
+                
+                
                 
                 %% 9.10.2014
 %                 [p_st,p_ed]=position(rem,' alias');
@@ -399,23 +436,45 @@ while ischar(rem) % &&r_num<10;
             if (strfind(rem,toFD(5).str))
                 
                 
-                numbOfproduct=1+numbOfproduct;
-                ind_rem_product=strfind(rem,'"');
-                % disp(rem);
-                % disp(ind_rem_product);
+                %                 numbOfproduct=1+numbOfproduct;
+                %                 ind_rem_product=strfind(rem,'"');
+                %
+                %
+                %                 p_st_p=ind_rem_product(1)+1;
+                %                 p_et_p=ind_rem_product(2)-1;
+                %                 r_info.product(r_num,numbOfproduct)=cellstr(rem(p_st_p:p_et_p));
+                %
+                %
+                %                 results.(r_info.ID{r_num,1}).product(1,numbOfproduct)=r_info.product(r_num,numbOfproduct)
                 
-                % r_metaid.width(r_num,1)=cellstr(rem);
                 
-                p_st_p=ind_rem_product(1)+1;
-                p_et_p=ind_rem_product(2)-1;
-                r_info.product(r_num,numbOfproduct)=cellstr(rem(p_st_p:p_et_p));
+                for link=1:length(productLink);
+                    if strfind(productLink{link},'product')
+                        ind_rem_product=strfind(rem,'"');
+                        
+                        p_st_r=ind_rem_product(1)+1;
+                        p_et_r=ind_rem_product(2)-1;
+                        
+                        r_info.product(r_num,numbOfproduct+link-1)=cellstr(rem(p_st_r:p_et_r));
+                    else
+                        
+                        
+                        [p_st,p_ed]=position(rem,productLink{link});
+                        
+                        r_info.product(r_num,numbOfproduct+link-1)=cellstr(rem(p_st:p_ed));
+
+                    end
+                end
                 
                 
-                results.(r_info.ID{r_num,1}).product(1,numbOfproduct)=r_info.product(r_num,numbOfproduct)
                 
-                %             else
-                %                  numbOfproduct=1+numbOfproduct;
-                %                 r_info.product(r_num,numbOfproduct)=erroMesg
+                %  if isfield(r_info,baseReactant);
+                results.(r_info.ID{r_num,1}).product(1,1:numbOfproduct+link-1)=r_info.product(r_num,1:numbOfproduct+link-1);
+                %  end
+                
+                numbOfproduct=numbOfproduct+2;
+                
+                
                 
             end
             
@@ -479,6 +538,7 @@ end
 %   end
 
 annotation=results;
+r_info.XMLtext=text;
 annotation.r_info=r_info;
 
 

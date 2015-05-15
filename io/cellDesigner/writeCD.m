@@ -1,6 +1,6 @@
-function [annotedText] = writeXML(fname,parsed,fname_out)
+function [parsed_update,annotedText] = writeCD(parsed,fname_out)
 
-% Write a parsed CD model strucutre to a CD-compatible XML file.
+% Write the parsed CD model structure to a CD-compatible XML file.
 %
 %INPUTS
 %
@@ -9,6 +9,9 @@ function [annotedText] = writeXML(fname,parsed,fname_out)
 % fanme_out      The name of the output XML file.
 % 
 %OUTPUTS
+%
+%
+%parsed_update    An updated version of the parsed 
 % 
 % annotedText     A matlab variable storing the all the XML lines
 % 
@@ -29,7 +32,7 @@ function [annotedText] = writeXML(fname,parsed,fname_out)
 %     fba_sol
 %  if strcmp(var,'m');
 
-if nargin<3 || isempty(fname_out)    
+if nargin<2 || isempty(fname_out)    
     
     [fname_out, fpath]=uiputfile('*.xml','CellDesigner SBML Source File');
     if(fname_out==0)
@@ -40,31 +43,12 @@ else
     f_out=fopen(fname_out,'w');
 end
 
-if nargin<1 || isempty(fname)
-    [fname, fpath]=uigetfile('*.xml','CellDesigner SBML Source File');
-    if(fname==0)
-        return;
-    end
-    f_id=fopen([fpath,fname],'r');
+if isfield(parsed.r_info,'XMLtext');
+    text=parsed.r_info.XMLtext;
 else
-    f_id=fopen(fname,'r');
-    
+    errordlg('The XMLtext doesn''t exit in the parsed model structure');
 end
 
-numOfLine=0;
-%test=[];
-text.str=[];
-
-while ~feof(f_id);
-    numOfLine=numOfLine+1;
-    
-    rem=fgets(f_id);
-    
-    text(numOfLine).str=cellstr(rem);
-        
-end
-
-fclose(f_id);
 
 %%%%%%%%%%%%%%%%%%%%%%%%  modify
 
@@ -99,7 +83,7 @@ for r=1:r_c(1,1); % the row number; the reaction number.
                 subText=ref.(items{i})(r,c);                
                 %%% <write>
                 reText=cellstr(text(num).str)
-                %%% find location and replace it               
+                %%% find location and replace it                               
                 
              ToBeRplaced=position(reText,items{i})
                 %%%                
@@ -129,6 +113,9 @@ end
 
 
 annotedText=text;
+parsed_update=parsed;
+parsed_update.r_info=ref; % update r_info structure
+parsed_update.r_info.XMLtext=text; % update XMLtext
 
 %%%%%%%%%%%%%%%%%%%%%%%%  write to the file
 
