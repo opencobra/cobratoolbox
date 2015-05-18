@@ -149,15 +149,23 @@ end
 
 solutionPool = zeros(length(model.lb), 0); 
 
-
-p = gcp('nocreate');
-if isempty(p)
-    poolsize = 0;
+v=ver;
+PCT='Parallel Computing Toolbox';
+if  any(strcmp(PCT,{v.Name}))&&license('test',PCT)    
+    p = gcp('nocreate');
+    if isempty(p)
+        poolsize = 0;
+    else
+        poolsize = p.NumWorkers
+    end
+    PCT_status=1;
 else
-    poolsize = p.NumWorkers
+     PCT_status=0;  % Parallel Computing Toolbox not found.    
 end
 
-if ~exist('parpool') || poolsize == 0 %aka nothing is active
+
+
+if PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
     m = 0;
     for i = 1:length(rxnNameList)
         if mod(i,10) == 0, clear mex, end
