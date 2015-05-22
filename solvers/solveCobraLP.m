@@ -1,4 +1,4 @@
-function solution = solveCobraLP(LPproblem, varargin)
+function solution = solveCobraLP(LPproblem,varargin)
 %solveCobraLP Solve constraint-based LP problems
 %
 % solution = solveCobraLP(LPproblem, parameters)
@@ -96,14 +96,15 @@ function solution = solveCobraLP(LPproblem, varargin)
 %% Process arguments etc
 
 global CBTLPSOLVER
+global MINOSPATH
 if (~isempty(CBTLPSOLVER))
     solver = CBTLPSOLVER;
-else
+elseif nargin==1
     error('No solver found.  call changeCobraSolver(solverName)');
 end
 %names_of_parameters that users can specify with values, using option
 % A) as parameter followed by parameter value:
-optParamNames = {'minNorm','printLevel','primalOnly','saveInput','feasTol','optTol'};
+optParamNames = {'minNorm','printLevel','primalOnly','saveInput','feasTol','optTol','solver'};
 
 %not a good idea to do this here for every solver as there would end up
 %being hundreds of different parameters, so removed - Ronan
@@ -119,6 +120,9 @@ if nargin ~=1
                 else
                     parameters.(varargin{i}) = varargin{i+1};
                 end
+                if strcmp(varargin{i},'solver');
+                    solver=varargin{i+1}
+                end 
             else
                 error([varargin{i} ' is not a valid optional parameter']);
             end
@@ -214,15 +218,23 @@ switch solver
         % modelName     name is the problem name (a character string)
         %modelName=['minosFBAprob-' date];
         modelName='qFBA';
-        % directory     the directory where optimization problem file is saved
-        [status,cmdout]=system('which minos');
-        if isempty(cmdout)
-            [status,cmdout]=system('echo $PATH');
-            disp(cmdout);
-            error('Minos not installed or not on system path.')
+        
+        %TODO: for some reason repeated system call to find minos path does not work, this is a workaround
+        if 0
+            % directory     the directory where optimization problem file is saved
+            [status,cmdout]=system('which minos');
+            if isempty(cmdout)
+                disp(cmdout);
+                [status,cmdout2]=system('echo $PATH');
+                disp(cmdout2);
+                error('Minos not installed or not on system path.')
+            else
+                quadLPPath=cmdout(1:end-length('/bin/minos')-1);
+            end
         else
-            quadLPPath=cmdout(1:end-length('/bin/minos')-1);
+            quadLPPath=MINOSPATH;
         end
+        
         dataDirectory=[quadLPPath '/data/FBA'];
         %write out flat file to current folder
         %printLevel=2;

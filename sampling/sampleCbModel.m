@@ -1,4 +1,4 @@
-function [modelSampling,samples] = sampleCbModel(model,sampleFile,samplerName,options)
+function [modelSampling,samples,volume] = sampleCbModel(model,sampleFile,samplerName,options)
 %sampleCbModel Sample the solution-space of a constraint-based model
 %
 % [modelSampling,samples] = sampleCbModel(model,sampleFile,samplerName,options)
@@ -58,51 +58,51 @@ if (nargin < 3)
     samplerName = 'ACHR';
 end
 
-% Handle options
-if (nargin > 3)
-    if (isfield(options,'nWarmupPoints'))
-        nWarmupPoints = options.nWarmupPoints;
-    end
-    if (isfield(options,'nFiles'))
-        nFiles = options.nFiles;
-    end
-    if (isfield(options,'nPointsPerFile'))
-        nPointsPerFile = options.nPointsPerFile;
-    end
-    if (isfield(options,'nStepsPerPoint'))
-        nStepsPerPoint = options.nStepsPerPoint;
-    end
-    if (isfield(options,'nPointsReturned'))
-        nPointsReturned = options.nPointsReturned;
-    end
-    if (isfield(options,'nFilesSkipped'))
-        nFilesSkipped = options.nFilesSkipped;
-    end
-    if (isfield(options,'removeLoopsFlag'))
-        removeLoopsFlag = options.removeLoopsFlag;
-    end
-    if (isfield(options,'removeLoopSamplesFlag'))
-        removeLoopSamplesFlag = options.removeLoopSamplesFlag;
-    end
-end
-
-
-fprintf('Prepare model for sampling\n');
-% Prepare model for sampling by reducing bounds
-[nMet,nRxn] = size(model.S);
-fprintf('Original model: %d rxns %d metabolites\n',nRxn,nMet);
-
-% Reduce model
-fprintf('Reduce model\n');
-modelRed = reduceModel(model, 1e-6, false,false);
-[nMet,nRxn] = size(modelRed.S);
-fprintf('Reduced model: %d rxns %d metabolites\n',nRxn,nMet);
-save modelRedTmp modelRed;
-
-modelSampling = modelRed;
-
 switch samplerName
     case 'ACHR'
+        % Handle options
+        if (nargin > 3)
+            if (isfield(options,'nWarmupPoints'))
+                nWarmupPoints = options.nWarmupPoints;
+            end
+            if (isfield(options,'nFiles'))
+                nFiles = options.nFiles;
+            end
+            if (isfield(options,'nPointsPerFile'))
+                nPointsPerFile = options.nPointsPerFile;
+            end
+            if (isfield(options,'nStepsPerPoint'))
+                nStepsPerPoint = options.nStepsPerPoint;
+            end
+            if (isfield(options,'nPointsReturned'))
+                nPointsReturned = options.nPointsReturned;
+            end
+            if (isfield(options,'nFilesSkipped'))
+                nFilesSkipped = options.nFilesSkipped;
+            end
+            if (isfield(options,'removeLoopsFlag'))
+                removeLoopsFlag = options.removeLoopsFlag;
+            end
+            if (isfield(options,'removeLoopSamplesFlag'))
+                removeLoopSamplesFlag = options.removeLoopSamplesFlag;
+            end
+        end
+        
+        
+        fprintf('Prepare model for sampling\n');
+        % Prepare model for sampling by reducing bounds
+        [nMet,nRxn] = size(model.S);
+        fprintf('Original model: %d rxns %d metabolites\n',nRxn,nMet);
+        
+        % Reduce model
+        fprintf('Reduce model\n');
+        modelRed = reduceModel(model, 1e-6, false,false);
+        [nMet,nRxn] = size(modelRed.S);
+        fprintf('Reduced model: %d rxns %d metabolites\n',nRxn,nMet);
+        save modelRedTmp modelRed;
+        
+        modelSampling = modelRed;
+
         % Use Artificial Centering Hit-and-run
         
         fprintf('Create warmup points\n');
@@ -115,6 +115,62 @@ switch samplerName
         % Sample model
         ACHRSampler(modelSampling,warmupPts,sampleFile,nFiles,nPointsPerFile,nStepsPerPoint);
 
+    case 'MFE'
+        %[volume,T,steps] = Volume(P,E,eps,p,flags)
+        %This function is a randomized algorithm to approximate the volume of a convex
+        %body K = P \cap E with relative error eps. The last 4 parameters are optional;
+        %you can see the default values at the top of Volume.m.
+        
+        %---INPUT VALUES---
+        %P: the polytope [A b] which is {x | Ax <= b}
+        %E: the ellipsoid [Q v] which is {x | (x-v)'Q^{-1}(x-v)<=1}
+        %eps: the target relative error
+        %p: a point inside P \cap E close to the center
+        %flags: a string of input flags. see parseFlags.m
+        
+        %---RETURN VALUES---
+        %volume: the computed volume estimate
+        %T: the rounding matrix. If no rounding, then T is identity matrix
+        %steps: the number of steps the volume algorithm took
+        %r_steps: the number of steps the rounding algorithm took
+        
+        %assign default values if not assigned in function call
+        [m,n]=size(model.S);
+        if 1
+        A=[ model.S;...
+           -model.S;...
+           -eye(n,n);...
+            eye(n,n)];
+        b=[ model.b;...
+           -model.b;...
+           -model.lb;...
+            model.ub];
+        else
+           A=[ model.S;...
+           -eye(n,n);...
+            eye(n,n)];
+        b=[ model.b;...
+           -model.lb;...
+            model.ub];
+        end
+        P=[A b];
+        E=[];
+        if ~isfield(options,'eps')
+            eps=0.15;
+        else
+            eps=options.eps;
+        end
+        
+        %get an intial point
+        FBAsolution = optimizeCbModel(model);
+        p=FBAsolution.x;
+        %[volume,T,steps,r_steps] = Volume(P,E,eps,p,flags);
+        %[volume,T,steps,r_steps] = Volume(P,E,eps,p);
+        [volume,T,steps,r_steps] = Volume(P,E,eps);
+        
+        modelSampling=[];
+        samples=[];
+        
     otherwise
         error(['Unknown sampler: ' samplerName]);
 end

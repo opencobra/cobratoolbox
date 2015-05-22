@@ -12,7 +12,7 @@ function V = LP3( J, model )
 [m,n] = size(model.S);
 
 % objective
-f = zeros(1,n);
+f = zeros(n,1);
 f(J) = -1;
 
 % equalities
@@ -29,7 +29,7 @@ if 0
     options = cplexoptimset(options,'diagnostics','off');
     options.output.clonelog=0;
     options.workdir='~/tmp';
-    x = cplexlp(f,[],[],Aeq,beq,lb,ub,options);
+    x = cplexlp(f',[],[],Aeq,beq,lb,ub,options);
     if exist('clone1.log','file')
         delete('clone1.log')
     end

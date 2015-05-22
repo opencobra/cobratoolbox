@@ -111,13 +111,13 @@ while ~isempty( J )
         if ~isempty(JiRev)
             %make sure the sign of the flux is consistent with the sign of
             %the original S matrix if any reactions have been flipped
-            vf=v;
             vf=diag(orientation)*v;
             V=[V,vf];
             
             %sanity check
-            if norm(origModel.S*vf)>1e-6
+            if norm(origModel.S*vf)>epsilon/100
                 pause(eps)
+                fprintf('%g%s\n',epsilon/100, '= epsilon/100')
                 fprintf('%s\t%g\n','should be zero :',norm(model.S*v)) % should be zero
                 fprintf('%s\t%g\n','should be zero :',norm(origModel.S*vf)) % should be zero
                 fprintf('%s\t%g\n','may not be zero:',norm(model.S*vf)) % may not be zero
@@ -189,9 +189,14 @@ modelFlipped=model;
 
 if modeFlag
     %sanity check
-    if norm(origModel.S*V,inf)>1e-6
-        norm(origModel.S*V,inf)
-        error('Flux consistency check failed')
+    if norm(origModel.S*V,inf)>epsilon/100
+        fprintf('%g%s\n',epsilon/100, '= epsilon/100')
+        fprintf('%g%s\n',norm(origModel.S*V,inf),' = ||S*V||.')
+        if 0
+            error('Flux consistency check failed')
+        else
+            warning('Flux consistency numerically challenged')
+        end
     else
         fprintf('%s\n','Flux consistency check finished...')
         fprintf('%10u%s\n',sum(any(V,2)),' = Number of flux consistent columns.')

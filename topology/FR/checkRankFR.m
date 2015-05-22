@@ -44,6 +44,39 @@ if ~exist('printLevel','var')
     printLevel=1;
 end
 
+%scaling of stoichiometric matrix may be necessary when badly scaled, off
+%by default
+scaling='none';
+%scaling='gmscal';
+%scaling='minimumCoefficient';
+switch scaling
+    case 'minimumCoefficient'
+        %rescale stoichiometric coefficients
+        A=abs(model.S);
+        minCoefficient=min(min(A(model.S~=0)));
+        model.S=model.S*(1000/minCoefficient);
+        model.lb=model.lb*(1000/minCoefficient);
+        model.ub=model.ub*(1000/minCoefficient);
+    case 'gmscal'
+        %geometric mean scaling
+        [cscale,rscale] = gmscal(model.S,0,0.9);
+        %
+        if 0
+            model.S =diag(rscale)*model.S*diag(cscale);
+            model.b =diag(rscale)*model.b;
+            model.lb=diag(cscale)*model.lb;
+            model.ub=diag(cscale)*model.ub;
+            model.c =diag(cscale)*model.c;
+        else
+            %only scale columns
+            model.S =model.S*diag(cscale);
+            model.b =model.b;
+            model.lb=diag(cscale)*model.lb;
+            model.ub=diag(cscale)*model.ub;
+            model.c =diag(cscale)*model.c;
+        end
+end
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %vanilla forward and reverse half stoichiometric matrices
 F       = -model.S;
@@ -247,19 +280,33 @@ if 1
     %check for reactions that are also flux consistent, with all reactions
     %reversible
     modelRev.S = model.S(metBool2,rxnBool2);
-    if 1
-        %use all reactions reversible
-        modelRev.lb=-1000*ones(size(modelRev.S,2),1);
-        modelRev.ub= 1000*ones(size(modelRev.S,2),1);
-    else
-        %use reconstruction reactions
-        modelRev.lb=model.lb(rxnBool2);
-        modelRev.ub=model.ub(rxnBool2);
+    
+    %infinite bounds may be necessary when stoichiometric matrix is badly
+    %scaled, in that case the minimum flux required (epsilon) is set to 1, the 
+    %default lower and upper bounds are {-1000, 1000}, with epsilon 1e-4,
+    %as that is two orders of magnitude higher than the typical feasibility
+    %tolerance for volation of mass balance constraints.
+    fluxConsistencyBounds='aThousand';
+    switch fluxConsistencyBounds
+        case 'aThousand'
+            %use all reactions reversible
+            modelRev.lb=-1000*ones(size(modelRev.S,2),1);
+            modelRev.ub= 1000*ones(size(modelRev.S,2),1);
+            epsilon = 1e-4;
+        case 'infinity'
+            %use all reactions reversible
+            modelRev.lb=-inf*ones(size(modelRev.S,2),1);
+            modelRev.ub= inf*ones(size(modelRev.S,2),1);
+            epsilon = 1;
+        case 'reconstruction'
+            %use reconstruction reactions
+            modelRev.lb=model.lb(rxnBool2);
+            modelRev.ub=model.ub(rxnBool2);
+            epsilon = 1e-4;
     end
     modelRev.mets=model.mets(metBool2);
     modelRev.rxns=model.rxns(rxnBool2);
-
-    epsilon = 1e-4;
+    
     %fast consistency check code from Nikos Vlassis et al
     modeFlag=1;
     [indFluxConsist,~,V0]=fastcc(modelRev,epsilon,printLevel-1,modeFlag);
@@ -283,7 +330,8 @@ if 1
     %check to make sure that V in nullspace of S.
     tmp=norm(full(model.S(metBool2,model.SConsistentRxnBool & model.SIntRxnBool)*model.V(model.SConsistentRxnBool & model.SIntRxnBool,:)...
            + model.S(metBool2,~model.SIntRxnBool)*model.V(~model.SIntRxnBool,:)));
-    if tmp>1e-6
+    %two extra digits spare   
+    if tmp>100*epsilon
         disp(tmp)
         error('Not flux consistent')
     end

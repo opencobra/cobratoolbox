@@ -1,42 +1,58 @@
-function [FRresultsTable,FRresults]=makeFRresultsTable(FRresults,resultsDirectory,filename)
+function [FRresultsTable,FRresults]=makeFRresultsTable(FRresults,resultsDirectory,resultsFileName)
 %makes a table of FR results
+%
+%INPUT
+% FRresults             output of checkRankFRdriver
+%
+%OPTIONAL INPUT
+% resultsDirectory      directory where output of checkRankFRdriver has been saved
+% filename              filename where output of checkRankFRdriver has been saved
+%
+%OUTPUT
+% FRresultsTable        table displaying the results of checkRankFRdriver 
+% FRresults             output of checkRankFRdriver
 
 if isempty(FRresults)
-    if ~exist('filename','var')
-        %filename='FRresults_20150128T225813';
-        filename='FRresults_20150130T011200';
+    if ~exist('resultsFileName','var')
+        %resultsFileName='FRresults_20150128T225813';
+        resultsFileName='FRresults_20150130T011200';
     end
     %results directory
     if ~exist('resultsDirectory','var')
         resultsDirectory='/home/rfleming/Dropbox/graphStoich/results/FRresults/';
     end
     cd(resultsDirectory)
-    load([resultsDirectory filename])
+    load([resultsDirectory resultsFileName])
+    
+    nResults=length(FRresults);
+    if 1
+        %filename order of results structure
+        for k=1:nResults
+            tmp=FRresults(k).modelFilename;
+            FRresults(k).modelID=tmp(1:end-4);%take off .mat
+        end
+    end
+else
+    nResults=length(FRresults);
 end
 
 %citations about each model
 if ~exist('modelMetaData','var')
-    modelMetaData=modelCitations();
+    if nResults>1
+        modelMetaData=modelCitations();
+    else
+        modelMetaData={'testModel','testModel',FRresults(1).modelID,'testModel','testModel'};
+    end
 end
-
-nResults=length(FRresults);
 
 %extra column and extra row for headings
 FRresultsTable=cell(29,nResults+1); %todo, come back and set correct number
-
-if 1
-    %filename order of results structure
-    for k=1:nResults
-        tmp=FRresults(k).modelFilename;
-        FRresults(k).modelID=tmp(1:end-4);%take off .mat
-    end
-end
 
 firstColumn=1;
 k=1;
 z=1;
 while k<=nResults
-    if ~firstColumn & 0
+    if ~firstColumn && 0
         disp(FRresults(k).modelID)
     end
     i=1;
@@ -105,6 +121,30 @@ while k<=nResults
     end
     i=i+1;
     if firstColumn
+        FRresultsTable{i,1}='min coefficient magnitude [S S_e]';
+    else
+        bool=FRresults(k).model.S~=0;
+        A=abs(FRresults(k).model.S);
+        FRresultsTable{i,n+1}=min(min(A(A~=0)));
+    end
+    i=i+1;
+    if firstColumn
+        FRresultsTable{i,1}='max coefficient magnitude [S S_e]';
+    else
+        bool=FRresults(k).model.S~=0;
+        A=abs(FRresults(k).model.S);
+        FRresultsTable{i,n+1}=max(max(A(A~=0)));
+    end
+    i=i+1;
+    if firstColumn
+        FRresultsTable{i,1}='min/max coefficient magnitude [S S_e]';
+    else
+        bool=FRresults(k).model.S~=0;
+        A=abs(FRresults(k).model.S);
+        FRresultsTable{i,n+1}=min(min(A(A~=0)))/max(max(A(A~=0)));
+    end
+    i=i+1;
+    if firstColumn
         FRresultsTable{i,1}='# Elementally balanced rows (given formulae)';
     else
         if isfield(FRresults(k).model,'balancedMetBool')
@@ -145,7 +185,7 @@ while k<=nResults
     end
     i=i+1;
     if firstColumn
-        FRresultsTable{i,1}='# Rank of proper [F,R]';
+        FRresultsTable{i,1}='  Rank of nontrivial stoich. and flux consistent [F,R]';
     else
         FRresultsTable{i,n+1}=FRresults(k).rankFR;
     end

@@ -1,6 +1,13 @@
 clear
 beep on
 
+%solver='quadMinos';
+solver='gurobi6';
+solverOK = changeCobraSolver(solver,'LP');
+if ~solverOK
+    error('quadMinos not installed: quadruple precision essential');
+end
+
 %parameters
 cbPath=which('initCobraToolbox');
 cbPath=cbPath(1:end-length('initCobraToolbox.m'));
@@ -15,13 +22,23 @@ cd(resultsDirectory)
 if 0
     %single model
     if 0
-        load iAF1260.mat
-        model=iAF1;
+        modelID='Ecoli_core.mat';
+        load(modelID)
+    end
+    if 0
+        modelID='iBsu1103.mat';
+        load(modelID)
     end
     if 1
-        load Recon205_20150128.mat
+        modelID='iAH991.mat';
+        load(modelID)
+        model=BT_Model;
     end
-        
+    
+
+    %load model
+    
+     
     %%%%%%%%%%%
     printLevel=2;
     [rankFR,rankFRV,rankFRvanilla,rankFRVvanilla,model] = checkRankFR(model,printLevel);
@@ -39,13 +56,19 @@ if 0
     [rankS,p,q]= getRankLUSOL(model.S);
     
     k=1;
-    results(k).rankS=rankS;
-    results(k).rankFR=rankFR;
-    results(k).rankFRV=rankFRV;
-    results(k).rankFRvanilla=rankFRvanilla;
-    results(k).rankFRVvanilla=rankFRVvanilla;
-    results(k).model=model;
-    results(k).modelID='testModel';
+    %maximum and minimim magnitude stoichiometric coefficient
+    FRresults(k).maxSij=norm(model.S,inf);
+    FRresults(k).minSij=min(min(abs(model.S)));
+                
+    FRresults(k).rankS=rankS;
+    FRresults(k).rankFR=rankFR;
+    FRresults(k).rankFRV=rankFRV;
+    FRresults(k).rankFRvanilla=rankFRvanilla;
+    FRresults(k).rankFRVvanilla=rankFRVvanilla;
+    FRresults(k).model=model;
+    FRresults(k).modelID=modelID;
+    
+    [FRresultsTable,FRresults]=makeFRresultsTable(FRresults);
     
     %results filename timestamped
     resultsFileName=['FRresults_' datestr(now,30) '.mat'];
@@ -98,6 +121,11 @@ else
                 load(matFiles(k).name);
                 model=eval(whosFile.name);
                 printLevel=1;
+                
+                %maximum and minimim magnitude stoichiometric coefficient
+                FRresults(k).maxSij=norm(model.S,inf);
+                FRresults(k).minSij=min(min(abs(model.S)));
+                
                 %%%%
                 [rankFR,rankFRV,rankFRvanilla,rankFRVvanilla,model] = checkRankFR(model,printLevel);
                 if printLevel>0 && model.FRrowRankDeficiency>0

@@ -40,7 +40,7 @@ sameSignBool = (nReactants==nSubstrates | nReactants==nProducts) & nReactants>3;
 nExtraReactants(sameSignBool)=nExtraReactants(sameSignBool)+1;
 
 cumSumExtraReactants=cumsum(nExtraReactants);
-nExtra=cumSumExtraReactants(end);
+nExtra=cumSumExtraReactants(length(cumSumExtraReactants));
 
 A = [eye(nMet), sparse(nMet,nExtra)];
     

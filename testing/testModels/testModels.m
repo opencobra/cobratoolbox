@@ -1,5 +1,9 @@
-%test a set of models for the feasibility of a nonzero objective (>1e-4)
-%using gurobi5 and quadMinos
+%test a set of models for the feasibility of a nonzero objective (>1e-4) using 
+%gurobi5 (http://www.gurobi.com/) 
+%and if it is installed, 
+%quadMINOS (a quadruple precision solver by Michael Saunders, Stanford Systems Optimization Laboratory)
+
+%%%
 clear
 
 % 1. choose the folder within the folder 'testModels' where the .xml files are located
@@ -209,7 +213,20 @@ if 1
                 end
             end
             %
-            solvers={'gurobi5','quadMinos'};
+            solvers={'gurobi5'};
+            if ~isunix
+                solvers={'gurobi5'};
+            else
+                [status,cmdout]=system('which minos');
+                if isempty(cmdout)
+                    [status,cmdout]=system('echo $PATH');
+                    disp(cmdout);
+                    warning('Minos not installed or not on system path.');
+                else
+                solvers={'gurobi5','quadMinos'};
+                end
+            end
+            
             [out,solutions{j}]=testDifferentLPSolvers(model,solvers,printLevel);
             
             results{j,3}=solutions{j}{1}.obj;
