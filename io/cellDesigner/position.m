@@ -27,6 +27,11 @@ function [string,p_st,p_ed]=position(str_long,str_ID)
         end_rem=strfind(str_long{1}(p_st:end),'"');
         % disp(str_long{1}(ind_pos{1}:end));
         disp(str_long{1}(p_st:end));
+        
+%         if size(end_rem)
+%         end_rem{1}=[];
+%         end
+        
         p_ed=end_rem(1)+p_st-2;
         disp(p_ed);
 
