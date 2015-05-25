@@ -269,7 +269,12 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 metBool2=model.SConsistentMetBool & model.FRuniqueRowBool & model.FRnonZeroRowBool1;
+if 0
 rxnBool2=(model.SConsistentRxnBool | ~model.SIntRxnBool);
+else
+rxnBool2=(model.SConsistentRxnBool | ~model.SIntRxnBool) & model.FRuniqueColBool;
+end
+
 
 %the uniqueness check has to be done before flux consistency since some
 %models have a forward and backward reaction in separately, but these are

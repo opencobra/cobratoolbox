@@ -1,25 +1,30 @@
 clear
 beep on
 
-%solver='quadMinos';
-solver='gurobi6';
-solverOK = changeCobraSolver(solver,'LP');
-if ~solverOK
-    error('quadMinos not installed: quadruple precision essential');
-end
-
 %parameters
 cbPath=which('initCobraToolbox');
 cbPath=cbPath(1:end-length('initCobraToolbox.m'));
 
-%model directory
-modelCollectionDirectory='/home/rfleming/Dropbox/graphStoich/data/modelCollectionFR';
+if ismac
+    %model & results directories
+    modelCollectionDirectory='/Users/ronan.fleming/Dropbox/graphStoich/data/modelCollectionFR/';
+    resultsDirectory='/Users/ronan.fleming/Dropbox/graphStoich/results/FRresults/';
+    solverOK = changeCobraSolver('gurobi5','LP');
+else
+    %model & results directories
+    modelCollectionDirectory='/home/rfleming/Dropbox/graphStoich/data/modelCollectionFR/';
+    resultsDirectory='/home/rfleming/Dropbox/graphStoich/results/FRresults/';
+    %solver='quadMinos';
+    solver='gurobi6';
+    solverOK = changeCobraSolver(solver,'LP');
+    if ~solverOK
+        error('quadMinos not installed: quadruple precision essential');
+    end
+end
 
-%results directory
-resultsDirectory='/home/rfleming/Dropbox/graphStoich/results/FRresults/';
 cd(resultsDirectory)
 
-if 0
+if 1
     %single model
     if 0
         modelID='Ecoli_core.mat';
@@ -29,12 +34,15 @@ if 0
         modelID='iBsu1103.mat';
         load(modelID)
     end
-    if 1
+    if 0
         modelID='iAH991.mat';
         load(modelID)
         model=BT_Model;
     end
-    
+    if 1
+        modelID='iMM904.mat';
+        load(modelID)
+    end
 
     %load model
     
