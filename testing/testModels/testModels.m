@@ -7,7 +7,9 @@
 clear
 
 % 1. choose the folder within the folder 'testModels' where the .xml files are located
-folder='m_model_collection';
+%folder='m_model_collection';
+folder='AliEbrahim';
+
 % 2. convert a batch of sbml files in xml format into cobra toolbox models,
 % each saved as a mat file 
 if 0
@@ -21,6 +23,19 @@ printLevel=1;
 %choose the minimum magnitude considered a nonzero objective
 tol=1e-4;
 
+solvers={'gurobi5'};
+if ~isunix | ismac
+    solvers={'gurobi5'};
+else
+    [status,cmdout]=system('which minos');
+    if isempty(cmdout)
+        [status,cmdout]=system('echo $PATH');
+        disp(cmdout);
+        warning('Minos not installed or not on system path.');
+    else
+        solvers={'gurobi5','quadMinos'};
+    end
+end
 %choose the set of mat files to look for, the second column contains a
 %unique abbreviation for each model
 modelNames={...
@@ -172,7 +187,8 @@ if 1
             
             %name of the model from the filename
             whosFile=whos('-file',matFiles(k).name);
-            results{j,1}=matFiles(k).name(1:end-4);
+            modelID=matFiles(k).name(1:end-4);
+            results{j,1}=modelID;
             
             load(matFiles(k).name);
             model=eval(whosFile.name);
@@ -213,24 +229,12 @@ if 1
                 end
             end
             %
-            solvers={'gurobi5'};
-            if ~isunix
-                solvers={'gurobi5'};
-            else
-                [status,cmdout]=system('which minos');
-                if isempty(cmdout)
-                    [status,cmdout]=system('echo $PATH');
-                    disp(cmdout);
-                    warning('Minos not installed or not on system path.');
-                else
-                solvers={'gurobi5','quadMinos'};
-                end
-            end
-            
+            save([directory(1:end-12) '/testedModels/' modelID '.mat'],'model')
             [out,solutions{j}]=testDifferentLPSolvers(model,solvers,printLevel);
             
-            results{j,3}=solutions{j}{1}.obj;
-            results{j,4}=solutions{j}{2}.obj;
+            for z=1:length(solvers)
+                results{j,k+2}=solutions{j}{z}.obj;
+            end
             j=j+1;
         end
     end
