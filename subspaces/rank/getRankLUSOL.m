@@ -35,7 +35,7 @@ if any(bool)
     A=A(:,~bool);
 end
 
-if isempty(which('lusol_obj'))
+if ~isempty(which('lusol_obj'))
     
     archstr = computer('arch');
     archstr = lower(archstr);
@@ -136,8 +136,11 @@ if isempty(which('lusol_obj'))
             
     end
 else
-    warning('Cannot find lusol_obj.m from lusol interface, calling matlab LU implementation (slower)')
-    [L,U,p,q] = lu(full(A));
+    fprintf('%s\n','Cannot find lusol_obj.m from lusol interface, calling matlab LU implementation (slower)')
+    [L,U,p,q] = lu(A,'vector');
+    p=p';
+    q=q';
+    rankA=rank(full(A));
 end
 
 %pad out q in case some columns are dropped
