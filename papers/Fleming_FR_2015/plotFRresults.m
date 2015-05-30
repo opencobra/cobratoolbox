@@ -1,18 +1,18 @@
-function plotFRresults(FRresults,nRows,nCols,resultsDirectory,filename)
+function plotFRresults(FRresults,nRows,nCols,resultsDirectory,resultsFileName)
 %plots FR results in the same order as the FRresultsTable using FRresults 
 %structure or by loading the FRresults structure
 
 if isempty(FRresults)
-    if ~exist('filename','var')
+    if ~exist('resultsFileName','var')
         %filename='FRresults_20150128T225813';
-        filename='FRresults_20150130T011200';
+        resultsFileName='FRresults_20150130T011200';
     end
     %results directory
     if ~exist('resultsDirectory','var')
         resultsDirectory='/home/rfleming/Dropbox/graphStoich/results/FRresults/';
     end
     cd(resultsDirectory)
-    load([resultsDirectory filename])
+    load([resultsDirectory resultsFileName])
 end
 
 %used for merged metadata and results
@@ -90,7 +90,7 @@ h=figure;
 k=1;%first plot is for legend
 subplot(nRows,nCols,k)
 hold on;
-ylabel('# Molecules','FontSize',13)
+ylabel('# Molec.','FontSize',13)
 title('Species, Version','FontWeight','normal','FontSize',11)
 %Reconstruction
 X=[0,0,100,100];
@@ -144,7 +144,7 @@ for n=1:nReconstructions
     
     %lable first column in each row
     if mod(k,nCols)==1
-        ylabel('# Molecules','FontSize',13)
+        ylabel('# Molec.','FontSize',13)
     end
     if k>(nRows-1)*nCols
         xlabel('# Reactions','FontSize',13)

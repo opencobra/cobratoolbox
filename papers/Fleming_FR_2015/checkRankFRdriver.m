@@ -1,3 +1,14 @@
+%checkRankFRdriver.m
+%Code to reproduce the results reported in:
+%'Conditions for duality between fluxes and concentrations in biochemical networks
+%by Ronan M.T. Fleming^{1}ronan.mt.fleming@gmail.com, Nikos Vlassis^{2}, Ines Thiele^{1}, Michael A. Saunders^{3}
+%{1} Luxembourg Centre for Systems Biomedicine, University of Luxembourg, 7 avenue des Hauts-Fourneaux, Esch-sur-Alzette, Luxembourg.
+%{2} Adobe Research, 345 Park Ave, San Jose, CA, USA.
+%{3} Dept of Management Science and Engineering, Stanford University, Stanford, CA, USA.
+ 
+%it is assumed that you have installed The COBRA toolbox and have a linear
+%optimization solver installed, e.g., gurobi.com
+
 clear
 beep on
 
@@ -5,45 +16,41 @@ beep on
 cbPath=which('initCobraToolbox');
 cbPath=cbPath(1:end-length('initCobraToolbox.m'));
 
-if ismac
-    %model & results directories
-    modelCollectionDirectory='/Users/ronan.fleming/Dropbox/graphStoich/data/modelCollectionFR/';
-    resultsDirectory='/Users/ronan.fleming/Dropbox/graphStoich/results/FRresults/';
-    solverOK = changeCobraSolver('gurobi5','LP');
-else
-    %model & results directories
-    modelCollectionDirectory='/home/rfleming/Dropbox/graphStoich/data/modelCollectionFR/';
-    resultsDirectory='/home/rfleming/Dropbox/graphStoich/results/FRresults/';
-    %solver='quadMinos';
-    solver='gurobi6';
-    solverOK = changeCobraSolver(solver,'LP');
-    if ~solverOK
-        error('quadMinos not installed: quadruple precision essential');
-    end
-end
+%choose model & results directories
+modelCollectionDirectory=[cbPath 'testing/testModels/modelCollectionFR/'];
+resultsDirectory=[cbPath 'papers/Fleming_FR_2015/results/'];
 
+%choose solver
+solver='gurobi6';
+solverOK = changeCobraSolver(solver,'LP');
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
 cd(resultsDirectory)
 
-if 1
+%by default, it will run all models in modelCollectionDirectory, but here
+%you can set it up to run only one model
+if 0
     %single model
     if 0
         modelID='Ecoli_core.mat';
-        load(modelID)
+        load([modelCollectionDirectory modelID])
     end
     if 0
         modelID='iBsu1103.mat';
-        load(modelID)
+        load([modelCollectionDirectory modelID])
     end
     if 0
-        modelID='iAH991.mat';
-        load(modelID)
-        model=BT_Model;
+        modelID='iAI549.mat';
+        load([modelCollectionDirectory modelID])
     end
     if 1
         modelID='iMM904.mat';
-        load(modelID)
+        load([modelCollectionDirectory modelID])
     end
-
+    if 0
+        modelID='Recon205_20150128.mat';
+        load([modelCollectionDirectory modelID])
+    end
     %load model
     
      
@@ -181,6 +188,7 @@ else
                         FRresults(k).model=model;
                         FRresults(k).rankFRvanilla=rankFRvanilla;
                         FRresults(k).rankFRVvanilla=rankFRVvanilla;
+                        FRresults(k).coherenceS=matrixCoherence(model.S);
                         save([resultsDirectory resultsFileName],'FRresults');
                         clear FRresults model;
                     end
@@ -188,9 +196,10 @@ else
             end
         end
     end
+    [FRresultsTable,FRresults]=makeFRresultsTable([],resultsDirectory,resultsFileName);
     %save([resultsDirectory resultsFileName],'FRresults','resultsFileName');
 end
-fprintf(['%s\n','checkRankFRdriver complete. FRresults saved to ' resultsDirectory resultsFileName]);
+fprintf('%s\n',['checkRankFRdriver complete. FRresults saved to ' resultsDirectory resultsFileName]);
 
 
 

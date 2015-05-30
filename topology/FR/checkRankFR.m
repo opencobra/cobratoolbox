@@ -355,7 +355,7 @@ model.fluxConsistentMetBool = sum(model.S(:,model.fluxConsistentRxnBool)~=0,2)~=
 %inconsistent or flux inconsistent from further consideration, but keep the
 %flux consistent exchange reactions, also eliminate scalar multiples
 metBool3=model.SConsistentMetBool & model.fluxConsistentMetBool & model.FRuniqueRowBool & model.FRnonZeroRowBool1;
-rxnBool3=(model.SConsistentRxnBool | ~model.SIntRxnBool) & model.fluxConsistentRxnBool;
+rxnBool3=(model.SConsistentRxnBool | ~model.SIntRxnBool)  & model.FRuniqueColBool & model.fluxConsistentRxnBool;
 
 %find rows that are not all zero when a subset of reactions omitted
 A3=[F(:,rxnBool3) R(:,rxnBool3)];
@@ -614,18 +614,18 @@ if model.FRrowRankDeficiency>0
     %code from Michael
     C1 = T(FRp(1:rankFR),:);
     C2 = T(FRp(rankFR+1:length(FRp)),:);
-    W0 = C1' \ C2'; % solves LS problems min ||C1*W_k - C2_k||
+    W0 = C1' \ C2'; % solves LS problems min ||C1'*W_k - C2_k'||
 
     model.FRW=sparse(model.FRrowRankDeficiency,nMet);
-    model.FRW(:,iR)=W0';
+    model.FRW(:,iR)=W0';%L
     model.FRW(:,dR)=-speye(model.FRrowRankDeficiency);
     
     %indices of independent rows that other rows are dependent on
-    wR=find(sum(model.FRW,1)>0)';
+    wR=find(sum(abs(model.FRW),1)>0)';
     model.FRwrows=false(nMet,1);
     model.FRwrows(wR)=1;
 
-    if 0
+    if 1
         %sanity checks
         disp(norm(C1'*W0 - C2',inf)) %should be zero
         disp(norm([W0',-speye(model.FRrowRankDeficiency)]*[C1;C2],inf)) %should be zero
@@ -662,7 +662,7 @@ if model.FRcolRankDeficiency>0
     model.FRVW(dC,:)=-speye(model.FRcolRankDeficiency); % dependent columns
     
     %indices of independent cols that other cols are dependent on
-    wC=find(sum(model.FRVW,2)>0);
+    wC=find(sum(abs(model.FRVW),2)>0);
     model.FRVwcols=false(nRxn,1);
     model.FRVwcols(wC)=1;
     

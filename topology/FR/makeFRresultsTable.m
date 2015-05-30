@@ -284,6 +284,13 @@ while k<=nResults
         FRresultsTable{i,n+1}=FRresults(k).rankFRVvanilla;
     end
     i=i+1;
+    if firstColumn
+        FRresultsTable{i,1}='Coherence of S';
+    else
+        FRresultsTable{i,n+1}=FRresults(k).coherenceS;
+    end
+    i=i+1;
+    
     %now move to columns for results
     if firstColumn
         firstColumn=0;

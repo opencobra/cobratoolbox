@@ -84,7 +84,7 @@ else
     %print out dependencies to console
     for i=1:size(model.FRW,1)
         fprintf('%s%s',model.mets{dR(i)},' is dependent on: ')
-        ind=find(model.FRW(i,:));
+        ind=find(abs(model.FRW(i,:))>1e-6);
         if length(ind)<9
             for j=1:length(ind)
                 fprintf('%s',model.mets{ind(j)})

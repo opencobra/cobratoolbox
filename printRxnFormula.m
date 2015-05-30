@@ -188,6 +188,10 @@ for i = 1:length(rxnAbbrList);
             fprintf(fid,'\n');
         end
     end
+    
+    if printFlag && lineChangeFlag
+            fprintf(fid,'\n');
+    end
     formulas{i} = formulaStr;
 
 end
