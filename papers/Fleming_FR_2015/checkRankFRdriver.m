@@ -6,8 +6,19 @@
 %{2} Adobe Research, 345 Park Ave, San Jose, CA, USA.
 %{3} Dept of Management Science and Engineering, Stanford University, Stanford, CA, USA.
  
-%it is assumed that you have installed The COBRA toolbox and have a linear
-%optimization solver installed, e.g., gurobi.com
+%REQUIRED:
+%Install The COBRA toolbox
+%1. git clone https://github.com/opencobra/cobratoolbox.git
+%2. initCobraToolbox
+%Install a linear optimization solver 
+% e.g. www.gurobi.com
+%Change The COBRA toolbox solver to gurobi
+% changeCobraSolver(solver,'LP')
+
+%OPTIONAL:
+% It is faster if you have the LU solver 'lusol' compiled and installed
+% correctly, otherwise matlab's LU solver is used.
+% https://github.com/nwh/lusol
 
 clear
 beep on
