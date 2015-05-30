@@ -199,10 +199,11 @@ if 1
             
             for k=1:length(curated_objectives)
                 bool=strcmp(model.rxns,curated_objectives{k});
-                if any(bool)>0
+                if any(bool)
                     if nnz(bool)>1
                         error('Should be only one biomass reaction')
                     else
+                        curated_objectives{k,2}=matFiles(k).name;
                         model.c(bool)=1;
                         fprintf('%s%s%s%s\n','Model ',matFiles(k).name,' added biomass coefficient for ',model.rxns{bool});
                     end
