@@ -42,9 +42,15 @@ for i = 1:length(fieldList)
         subSystem = regexprep(strrep(fieldStr,'SUBSYSTEM:',''),'^(\s)+','');
         subSystem = strrep(subSystem,'S_','');
         subSystem = regexprep(subSystem,'_+',' ');
-        if (isempty(subSystem))
-            subSystem = 'Exchange';
-        end
+        
+        
+%%%% The following commented three lines of codes assigns the SubSystem
+%%%% 'Exchange' to any reaction that has SUBSYSTEM showing up in its notes
+%%%% field but with no subsystem assigne
+
+%         if (isempty(subSystem))
+%             subSystem = 'Exchange';
+%         end
     elseif (regexp(fieldStr,'EC Number'))
         ecNumber = regexprep(strrep(fieldStr,'EC Number:',''),'^(\s)+','');
     elseif (regexp(fieldStr,'FORMULA'))
