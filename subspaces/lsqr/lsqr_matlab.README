@@ -1,0 +1,20 @@
+%lsqr_matlab.README
+
+The software for LSQR (MATLAB version) is provided by SOL, Stanford University
+under the terms of the OSI Common Public License (CPL):
+http://www.opensource.org/licenses/cpl1.0.php
+
+
+04 Feb 2000: First set of files available for download from SOL.
+
+Please send comments to Michael Saunders, SOL, Stanford University
+                        saunders@stanford.edu  650-723-1875
+-----------------------------------------------------------------------------
+
+The MATLAB version of LSQR involves the following files:
+
+   lsqr.m       CG-type solver for unsymmetrix Ax = b and least-squares
+   lsqraprod.m  y = A*x and A'*x product routine for lsqrtest.m
+   lsqrtest.m   Function that calls lsqr.m
+
+
