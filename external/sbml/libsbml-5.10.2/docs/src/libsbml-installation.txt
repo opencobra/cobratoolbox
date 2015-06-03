@@ -1,5 +1,0 @@
-/** @page libsbml-installation Building and installing libSBML
-
-@htmlinclude libsbml-installation.html
-
-*/

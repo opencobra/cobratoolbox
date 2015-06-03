@@ -98,7 +98,7 @@ if nMet > 2000 && 0 %Ronan
     
     bool=strcmp('DM_atp(c)',model.rxns);
     if any(bool)
-        if printLevel>0
+        if printLevel>1
             fprintf('%s\n','ATP demand reaction is not considered an exchange reaction by default.')
         end
         model.DMRxnBool(bool)=0;
@@ -197,7 +197,7 @@ else
         end
     end
     if ~isempty(strcmp('ATPM',model.rxns))
-        if printLevel>0
+        if printLevel>1
             fprintf('%s\n','ATP maintenance reaction is not considered an exchange reaction by default.')
         end
         ATPM_Ind=find(strcmp('ATPM',model.rxns)==1);

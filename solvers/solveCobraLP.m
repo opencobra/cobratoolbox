@@ -1,4 +1,4 @@
-function solution = solveCobraLP(LPproblem, varargin)
+function solution = solveCobraLP(LPproblem,varargin)
 %solveCobraLP Solve constraint-based LP problems
 %
 % solution = solveCobraLP(LPproblem, parameters)
@@ -16,6 +16,8 @@ function solution = solveCobraLP(LPproblem, varargin)
 %         each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
 %OPTIONAL INPUTS
+%
+%
 % Optional parameters can be entered in three different ways {A,B,C}
 % A) as parameter followed by parameter value: 
 % e.g.[solution]=solveCobraLP(LPCoupled,'printLevel',1,);
@@ -51,6 +53,8 @@ function solution = solveCobraLP(LPproblem, varargin)
 % solver can be set through changeCobraSolver('LP', value);
 % changeCobraSolverParams('LP', 'parameter', value) function.  This
 % includes the minNorm and the printLevel flags
+%
+%
 %
 %OUTPUT
 % solution Structure containing the following fields describing a LP
@@ -98,12 +102,13 @@ function solution = solveCobraLP(LPproblem, varargin)
 global CBTLPSOLVER
 if (~isempty(CBTLPSOLVER))
     solver = CBTLPSOLVER;
-else
+elseif nargin==1
     error('No solver found.  call changeCobraSolver(solverName)');
 end
+
 %names_of_parameters that users can specify with values, using option
 % A) as parameter followed by parameter value:
-optParamNames = {'minNorm','printLevel','primalOnly','saveInput','feasTol','optTol'};
+optParamNames = {'minNorm','printLevel','primalOnly','saveInput','feasTol','optTol','solver'};
 
 %not a good idea to do this here for every solver as there would end up
 %being hundreds of different parameters, so removed - Ronan
@@ -119,12 +124,18 @@ if nargin ~=1
                 else
                     parameters.(varargin{i}) = varargin{i+1};
                 end
+                if strcmp(varargin{i},'solver');
+                    solver=varargin{i+1}
+                end 
+                
             else
                 error([varargin{i} ' is not a valid optional parameter']);
             end
         end
         parametersStructureFlag=0;
         parameters = '';
+
+            
     elseif strcmp(varargin{1},'default')
         %default cobra parameters 
         parameters = 'default';

@@ -1,6 +1,0 @@
-/** @page libsbml-issues Known issues and pitfalls
-
-@htmlinclude libsbml-issues.html
-
-*/
-

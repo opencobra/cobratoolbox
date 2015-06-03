@@ -254,6 +254,7 @@ if (isfield(model,'genes'))
     if (nargin < 11)
         model = changeGeneAssociation(model,rxnName,grRule);
     else
+        fprintf('In addReaction, the class of systNameList is %s', class(systNameList));
         model = changeGeneAssociation(model,rxnName,grRule,geneNameList,systNameList);
     end
 end
