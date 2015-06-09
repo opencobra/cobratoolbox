@@ -1,0 +1,115 @@
+<html>
+  <head>
+    <title>Odefy documentation - Function overview</title>
+    <meta content="">
+    <style></style>
+      <LINK href="styles.css" rel="stylesheet" type="text/css">
+
+  </head>
+  <body>
+  
+<a target="_blank" href="http://cmb.helmholtz-muenchen.de/odefy"><span style="font-weight: bold;"><img alt="Odefy" style="border: 0px solid ; width: 174px; height: 61px;" alt="Odefy" src="odefy.png"></span></a><br>
+
+<h3>Function overview</h3>
+
+<ol>
+	<li><a href="#main">Odefy main</a></li>
+	<li><a href="#creation">Model creation</a></li>
+	<li><a href="#bool">Analysis of Boolean models</a></li>
+	<li><a href="#simulation">Simulation-related functions</a></li>
+	<li><a href="#export">Model exporting</a></li>
+	<li><a href="#cna">CellNetAnalyzer</a></li>
+	<li><a href="#misc">Miscellaneous</a></li>
+</ol>
+
+<font size="-1"><a href="index.html">&lt;&lt; Back to main page</a></font><p></p>
+
+
+The following tables show a list of all Odefy functions along with short descriptions. For detailed instructions please refer to the help pages of the respective functions by calling <code>help [function]</code>.<p></p>
+
+<tr><td><code></code></td><td></td></tr>
+
+
+<a name="main"></a><b>Odefy main</b><p></p>
+<table cellspacing="0" cellpadding="4" border="1">
+<tr><td><code>InitOdefy</code></td><td>Initialize Odefy, set paths and load Java classes</td></tr>
+<tr><td><code>AboutOdefy</code></td><td>Show Odefy version information</td></tr>
+<tr><td><code>OdefyHelp</code></td><td>Display Odefy HTML help</td></tr>
+</table><p></p>
+
+
+<a name="creation"></a><b>Model creation</b><p></p>
+<table cellspacing="0" cellpadding="4" border="1">
+<tr><td><code>ExpressionsToOdefy</code></td><td>Create an Odefy Boolean model from a set of Boolean formulas</td></tr>
+<tr><td><code>yEdToOdefy</code></td><td>Convert graph from <a href="http://www.yworks.com/en/products_yed_about.html" target="_blank">yEd</a> graphml file to an Odefy model</td></tr>
+<tr><td><code>BNPBNToOdefy</code></td><td>Convert <a href="http://personal.systemsbiology.net/ilya/PBN/PBN.htm" target="_blank">PBN toolbox</a> model to Odefy model</td></tr>
+<tr><td><code>LoadModelMAT</code></td><td>Load Odefy model or simulation structure from MATLAB .mat file</td></tr>
+<tr><td><code>LoadModelFile</code></td><td>Load Odefy model from MATLAB .mat file, yEd graph file, GINsim GINML file or a text file containing Boolean equations</td></tr>
+<tr><td><code>GraphToOdefy</code></td><td>Convert conventional graphs (represented as adjacency matrices) into Boolean models by automatic rule generation</td></tr>
+<tr><td><code>MultiModel</code></td><td>Turn normal model into multi-compartment model (see also: <a href="simulate.html#multi">link</a>)</td></tr>
+</table>
+<p></p>
+
+
+<a name="bool"></a><b>Analysis of Boolean models</b><p></p>
+<table cellspacing="0" cellpadding="4" border="1">
+<tr><td><code>BooleanStates</code></td><td>Calculate Boolean steady states and the state-transition graph</td></tr>
+<tr><td><code>PrettyPrintStates</code></td><td>Print Boolean states in human-readable form</td></tr>
+</table><p></p>
+
+
+<a name="simulation"></a><b>Simulation-related functions</b><p></p>
+<table cellspacing="0" cellpadding="4" border="1">
+<tr><td><code>Simulate</code></td><td>Show graphical user interface for simulations</td></tr>
+<tr><td><code>CreateSimstruct</code></td><td>Create simulation structure with default values (see also: <a href="simulate.html#simstruct">link</a>)</td></tr>
+<tr><td><code>SetInitialValue</code></td><td>Change initial value of certain species in simulation structure</td></tr>
+<tr><td><code>SetParameters</code></td><td>Change parameters of dynamic model in simulation structure</td></tr>
+<tr><td><code>DefaultParameters</code></td><td>Generate set of default parameters for a given model</td></tr>
+<tr><td><code>ParameterVector</code></td><td>Convert parameter structure to ODE-script compatible parameter vector</td></tr>
+<tr><td><code>OdefySimulation</code></td><td>Perform Boolean or dynamic simulation using given simulation structure</td></tr>
+<tr><td><code>OdefyPhasePlane</code></td><td>Draw phase-plane view of multiple time-course trajectories</td></tr>
+<tr><td><code>PhasePlane</code></td><td>Phase-plane function suitable for generic ODE script files</td></tr>
+</table><p></p>
+
+
+<a name="export"></a><b>Model exporting</b><p></p>
+<table cellspacing="0" cellpadding="4" border="1">
+<tr><td><code>Export</code></td><td>Show graphical user interface for model exporting</td></tr>
+<tr><td><code>SaveModelMAT</code></td><td>Save Odefy model or simulation structure as MATLAB .mat file</td></tr>
+<tr><td><code>SaveGNAModel</code></td><td>Save Odefy model as <a href="http://ibis.inrialpes.fr/article122.html" target="_blank">GNA</a> model</td></tr>
+<tr><td><code>SaveSQUADModel</code></td><td>Save Odefy model as <a href="http://www.enfin.org/squad" target="_blank">SQUAD</a> model</td></tr>
+<tr><td><code>CreateBNPBNModel</code></td><td>Convert Odefy model to <a href="http://personal.systemsbiology.net/ilya/PBN/PBN.htm" target="_blank">PBN toolbox</a> format</td></tr>
+<tr><td><code>SaveMatlabODE</code></td><td>Export Odefy model to a MATLAB script file compatible with common numerical ODE solvers</td></tr>
+<tr><td><code>SaveSBML</code></td><td>Save ODE-transformed Odefy model in <a href="http://sbml.org/" target="_blank">SBML</a> format</td></tr>
+<tr><td><code>SaveRModel</code></td><td>Export Odefy model to an ODE <a target="_blank" href="http://www.r-project.org/">R-script</a></td></tr>
+<tr><td><code>CreateSBToolboxModel</code></td><td>Convert ODE-transformed ODE to <a href="http://sbtoolbox2.org/" target="_blank">SBToolbox</a> model</td></tr>
+</table>
+<p></p>
+
+
+<a name="cna"></a><b>CellNetAnalyzer</b><p></p>
+<table cellspacing="0" cellpadding="4" border="1">
+<tr><td><code>CNAInstall</code></td><td>Installs Odefy as a CellNetAnalyzer plugin for a currently opened network</td></tr>
+<tr><td><code>CNAToOdefy</code></td><td>Convert CellNetAnalyzer model to Odefy model</td></tr>
+</table><p></p>
+
+
+<a name="misc"></a><b>Miscellaneous</b><p></p>
+<table cellspacing="0" cellpadding="4" border="1">
+<tr><td><code>IsMatlab</code></td><td>Checks whether the environment is MATLAB or Octave</td></tr>
+<tr><td><code>IsXML</code></td><td>Determines whether a file is an XML file</td></tr>
+<tr><td><code>IsOdefyModel</code></td><td>Checks whether a variable contains a valid Odefy model</td></tr>
+<tr><td><code>IsGINML</code></td><td>Determines whether a file is a GINsim GINML file</td></tr>
+</table>
+
+<br/><br/>
+<hr size="1">
+<div align="right">
+<font size="-1">
+Odefy by CMB, <a target="_blank" href="http://cmb.helmholtz-muenchen.de/odefy">http://cmb.helmholtz-muenchen.de/odefy</a>
+</font>
+</div>
+
+
+</body>
+</html>

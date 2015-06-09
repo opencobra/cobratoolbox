@@ -16,8 +16,6 @@ function solution = solveCobraLP(LPproblem,varargin)
 %         each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
 %OPTIONAL INPUTS
-%
-%
 % Optional parameters can be entered in three different ways {A,B,C}
 % A) as parameter followed by parameter value: 
 % e.g.[solution]=solveCobraLP(LPCoupled,'printLevel',1,);
@@ -53,8 +51,6 @@ function solution = solveCobraLP(LPproblem,varargin)
 % solver can be set through changeCobraSolver('LP', value);
 % changeCobraSolverParams('LP', 'parameter', value) function.  This
 % includes the minNorm and the printLevel flags
-%
-%
 %
 %OUTPUT
 % solution Structure containing the following fields describing a LP
@@ -100,12 +96,12 @@ function solution = solveCobraLP(LPproblem,varargin)
 %% Process arguments etc
 
 global CBTLPSOLVER
+global MINOSPATH
 if (~isempty(CBTLPSOLVER))
     solver = CBTLPSOLVER;
 elseif nargin==1
     error('No solver found.  call changeCobraSolver(solverName)');
 end
-
 %names_of_parameters that users can specify with values, using option
 % A) as parameter followed by parameter value:
 optParamNames = {'minNorm','printLevel','primalOnly','saveInput','feasTol','optTol','solver'};
@@ -127,15 +123,12 @@ if nargin ~=1
                 if strcmp(varargin{i},'solver');
                     solver=varargin{i+1}
                 end 
-                
             else
                 error([varargin{i} ' is not a valid optional parameter']);
             end
         end
         parametersStructureFlag=0;
         parameters = '';
-
-            
     elseif strcmp(varargin{1},'default')
         %default cobra parameters 
         parameters = 'default';
@@ -225,15 +218,23 @@ switch solver
         % modelName     name is the problem name (a character string)
         %modelName=['minosFBAprob-' date];
         modelName='qFBA';
-        % directory     the directory where optimization problem file is saved
-        [status,cmdout]=system('which minos');
-        if isempty(cmdout)
-            [status,cmdout]=system('echo $PATH');
-            disp(cmdout);
-            error('Minos not installed or not on system path.')
+        
+        %TODO: for some reason repeated system call to find minos path does not work, this is a workaround
+        if 0
+            % directory     the directory where optimization problem file is saved
+            [status,cmdout]=system('which minos');
+            if isempty(cmdout)
+                disp(cmdout);
+                [status,cmdout2]=system('echo $PATH');
+                disp(cmdout2);
+                error('Minos not installed or not on system path.')
+            else
+                quadLPPath=cmdout(1:end-length('/bin/minos')-1);
+            end
         else
-            quadLPPath=cmdout(1:end-length('/bin/minos')-1);
+            quadLPPath=MINOSPATH;
         end
+        
         dataDirectory=[quadLPPath '/data/FBA'];
         %write out flat file to current folder
         %printLevel=2;

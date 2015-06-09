@@ -244,7 +244,6 @@ if 1 %by default, do not run this script with testAll
             modelID=matFiles(k).name(1:end-4);
             results{j,1}=modelID;
             fprintf('%20s%s',modelID,': ');
-            
             load(matFiles(k).name);
             model=eval(whosFile.name);
             
@@ -328,60 +327,56 @@ if 1 %by default, do not run this script with testAll
                     end
                 end
             end
-            %
             if 0
                 %save out models for individual debugging
                 save([matFolder(1:end-length('m_model_collection_mat')) 'testedModels/' modelID '.mat'],'model')
             end
-                
             [out,solutions{j}]=testDifferentLPSolvers(model,solvers,printLevel);
-            
             for z=1:length(solvers)
                 results{j,k+2}=solutions{j}{z}.obj;
             end
             j=j+1;
-            
         end
-        results2=results(1:j-1,1:4);
-        clear results;
-        
-        if any(strcmp(solvers,'quadMINOS')) & isunix
-            results=cell(size(modelNames,1)+1,7);
-        else
-            results=cell(size(modelNames,1)+1,5);
-        end
-        results{1,1}='Species';
-        results{1,2}='Model';
-        results{1,3}='Rxn optimised';
-        results{1,4}=['true if quadMinos objective greater than ' num2str(tol)];
-        results{1,5}='gurobi objective';
-        if any(strcmp(solvers,'quadMINOS')) & isunix
-            results{1,6}='quadMinos objective';
-            results{1,7}='difference between objectives';
-        end
-        
-        for k=1:size(modelNames,1)
-            %Abbreviation of model
-            results{k+1,1}=modelNames{k,1};
-            results{k+1,2}=modelNames{k,2};
-            bool=strcmp(modelNames{k,2},results2(:,1));
-            if any(bool)
-                %Abbreviation of reaction optimised'
-                results{k+1,3}=results2{bool,2};
-                %true if quadMinos objective greater than tol
-                results{k+1,4}=abs(results2{bool,4})>tol;
-                %gurobi objective
-                results{k+1,5}=results2{bool,3};
-                if any(strcmp(solvers,'quadMINOS')) & isunix
-                    %quadMinos objective
-                    results{k+1,6}=results2{bool,4};
-                    %difference between objectives
-                    results{k+1,7}=abs(results2{bool,3}-results2{bool,4});
-                end
+    end
+    results2=results(1:j-1,1:4);
+    clear results;
+    
+    if any(strcmp(solvers,'quadMINOS')) & isunix
+        results=cell(size(modelNames,1)+1,7);
+    else
+        results=cell(size(modelNames,1)+1,5);
+    end
+    results{1,1}='Species';
+    results{1,2}='Model';
+    results{1,3}='Rxn optimised';
+    results{1,4}=['true if quadMinos objective greater than ' num2str(tol)];
+    results{1,5}='gurobi objective';
+    if any(strcmp(solvers,'quadMINOS')) & isunix
+        results{1,6}='quadMinos objective';
+        results{1,7}='difference between objectives';
+    end
+    
+    for k=1:size(modelNames,1)
+        %Abbreviation of model
+        results{k+1,1}=modelNames{k,1};
+        results{k+1,2}=modelNames{k,2};
+        bool=strcmp(modelNames{k,2},results2(:,1));
+        if any(bool)
+            %Abbreviation of reaction optimised'
+            results{k+1,3}=results2{bool,2};
+            %true if quadMinos objective greater than tol
+            results{k+1,4}=abs(results2{bool,4})>tol;
+            %gurobi objective
+            results{k+1,5}=results2{bool,3};
+            if any(strcmp(solvers,'quadMINOS')) & isunix
+                %quadMinos objective
+                results{k+1,6}=results2{bool,4};
+                %difference between objectives
+                results{k+1,7}=abs(results2{bool,3}-results2{bool,4});
             end
         end
-        clear results2;
     end
+    clear results2;
 end
 % %old version, cobrapy parsing
 % %load the test set of models parsed with cobrapy

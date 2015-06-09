@@ -1,0 +1,6 @@
+[submodule "external/lusol"]
+	path = external/lusol
+	url = https://github.com/nwh/lusol.git
+[submodule "external/pdco"]
+	path = external/pdco
+	url = https://github.com/mxsaunders/pdco.git

@@ -185,11 +185,11 @@ for i = 1:length(rxnAbbrList);
                 fprintf('\t%s',model.grRules{rxnID});
             end
         end
+
     end    
     if (lineChangeFlag)
         fprintf(fid,'\n');
     end    
     formulas{i} = formulaStr;
-
 end
 formulas = formulas';

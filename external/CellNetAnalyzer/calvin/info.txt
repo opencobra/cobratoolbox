@@ -1,0 +1,5 @@
+This network was adapted from:
+
+Poolman, M.G., Fell, D.A. and Raines, C.A. (2003)
+Elementary modes analysis of photosynthate metabolsim in
+the chloroplast stroma. eur J Biochem, 270, 430-439.

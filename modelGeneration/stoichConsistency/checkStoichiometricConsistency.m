@@ -87,9 +87,6 @@ else
     else
         intR='';
     end
-    if isfield(model,'rxns')
-        model.SIntRxnBool(strcmp('ATPM',model.rxns),1)=0;
-    end
 end
 
 SInt=model.S(:,model.SIntRxnBool);
@@ -122,15 +119,15 @@ solution = solveCobraLP(LPproblem,'printLevel',printLevel-1);
 
 inform=solution.stat;
 epsilon = 1e-4;
-zeroCutoff=1e-6;
+smallestM =epsilon;
+largestM  =1e4;
 if inform~=1
     switch method.interface
         case 'none'
             warning(['Stoichiometrically INconsistent ' intR 'stoichiometry.']);
         case 'cvx'
             cvx_solver(method.solver) 
-
-            largestM = 1e2;
+            
             [nMet,~]=size(SInt);
             %maximal conservation vector
             %cvx code from Nikos Vlassis
@@ -154,14 +151,14 @@ if inform~=1
                 error('NaN in maximal conservation vector')
             end
             %boolean indicating metabolites involved in the maximal consistent vector
-            model.SConsistentMetBool=m>zeroCutoff & model.SIntMetBool;
+            model.SConsistentMetBool=m>smallestM & model.SIntMetBool;
         case 'solveCobraLP'
             %set the solver and solver parameters
             global CBTLPSOLVER
             oldSolver=CBTLPSOLVER;
             solverOK = changeCobraSolver(method.solver,'LP');
             
-            largestM = 1e2;
+            
             [nMet,~]=size(SInt);
             
             nInt=nnz(model.SIntRxnBool);
@@ -169,20 +166,17 @@ if inform~=1
                          speye(nMet),      -speye(nMet)];
             
             LPproblem.b=zeros(nInt+nMet,1);
-            if 0
-                LPproblem.lb=[-ones(nMet,1);zeros(nMet,1)];
-            else
-                LPproblem.lb=[-ones(nMet,1);zeros(nMet,1)];
-                %LPproblem.lb=zeros(2*nMet,1); %causes a segmentation fault
-            end
+            
+            LPproblem.lb=[-ones(nMet,1);zeros(nMet,1)];
             LPproblem.ub=[ones(nMet,1)*largestM;ones(nMet,1)*epsilon];
+            
             LPproblem.c=zeros(nMet+nMet,1);
             LPproblem.c(nMet+1:2*nMet,1)=1;
             LPproblem.osense=-1;
             LPproblem.csense(nInt,1)='E';
             LPproblem.csense(nInt+1:nInt+nMet,1)='G';
             
-            %Requires the openCOBRA toolbox
+            %Requires the COBRA toolbox
             tic
             if isfield(method,'param')
                 solution = solveCobraLP(LPproblem,'printLevel',printLevel-1,method.param);
@@ -196,10 +190,10 @@ if inform~=1
                 z=solution.full(nMet+1:end,1);
                 if isfield(model,'SIntMetBool')
                     %boolean indicating metabolites involved in the maximal consistent vector
-                    model.SConsistentMetBool=m>zeroCutoff & model.SIntMetBool;
+                    model.SConsistentMetBool=m>smallestM & model.SIntMetBool;
                 else
                     %boolean indicating metabolites involved in the maximal consistent vector
-                    model.SConsistentMetBool=m>zeroCutoff;
+                    model.SConsistentMetBool=m>smallestM;
                 end
                 inform=1;
             else
@@ -218,10 +212,10 @@ if inform~=1
             timetaken=toc;
             if isfield(model,'SIntMetBool')
                 %boolean indicating metabolites involved in the maximal consistent vector
-                model.SConsistentMetBool=m>zeroCutoff & model.SIntMetBool;
+                model.SConsistentMetBool=m>smallestM & model.SIntMetBool;
             else
                 %boolean indicating metabolites involved in the maximal consistent vector
-                model.SConsistentMetBool=m>zeroCutoff;
+                model.SConsistentMetBool=m>smallestM;
             end
             z=zeros(nMet,1);
     end
@@ -232,9 +226,9 @@ if inform~=1
         else
             fprintf('%s%s%s%s%s%g%s\n','Maximal conservation vector, using ', method.interface, ' ', method.solver,', in time ',timetaken,' sec.')
         end
-        fprintf('%10f\t%s\n',ones(1,nMet) * z,'= Optimal objective (i.e. 1''*z)')
-        fprintf('%10d\t%s\n', nnz(model.SConsistentMetBool),'= Number of stoichiometrically consistent rows')
-        fprintf('%10g\t%s\n',norm(m'*SInt),'= || S''*m ||_inf for non-exchange reactions of S')
+        fprintf('%10f%s\n',ones(1,nMet) * z,' = Optimal objective (i.e. 1''*z)')
+        fprintf('%10d%s\n', nnz(model.SConsistentMetBool),' = Number of stoichiometrically consistent rows')
+        fprintf('%10g%s\n',norm(m'*SInt),' = || S''*m ||_inf for non-exchange reactions of S')
     end
 else
     m=solution.full;

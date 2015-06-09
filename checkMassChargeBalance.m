@@ -1,6 +1,6 @@
-function [massImbalance,imBalancedMass,imBalancedCharge,imBalancedBool,Elements,missingFormulaeBool,balancedMetBool]...
-    = checkMassChargeBalance(model,rxnBool,printLevel)
-%[massImbalance,imBalancedMass,imBalancedCharge,imBalancedBool,Elements] = checkMassChargeBalance(model,rxnBool,printLevel)
+function [massImbalance,imBalancedMass,imBalancedCharge,imBalancedRxnBool,Elements,missingFormulaeBool,balancedMetBool]...
+    = checkMassChargeBalance(model,printLevel)
+%[massImbalance,imBalancedMass,imBalancedCharge,imBalancedRxnBool,Elements] = checkMassChargeBalance(model,rxnBool,printLevel)
 %checkMassChargeBalance tests for a list of reactions if these reactions are
 %mass-balanced by adding all elements on left hand side and comparing them
 %with the sums of elements on the right hand side of the reaction.
@@ -10,10 +10,6 @@ function [massImbalance,imBalancedMass,imBalancedCharge,imBalancedBool,Elements,
 % model                         COBRA model structure
 %
 %OPTIONAL INPUT
-% rxnBool       Boolean vector corresponding to reactions in model to be
-%               tested. If empty, then all tested.
-%               Alternatively, can be the indices of reactions to test:
-%               i.e. rxnBool(indexes)=1;
 % printLevel    {-1,(0),1} 
 %               -1 = print out diagnostics on problem reactions to a file 
 %                0 = silent
@@ -42,29 +38,10 @@ function [massImbalance,imBalancedMass,imBalancedCharge,imBalancedBool,Elements,
 % Ines Thiele 12/09
 % IT, 06/10, Corrected some bugs and improved speed.
 % RF, 09/09/10, Support for very large models and printing to file.
+% RF, 18/12/14, Default is now to check balancing of all reactions.
 
 [nMet,nRxn]=size(model.S);
 
-if exist('rxnBool','var')
-    if ~isempty(rxnBool)
-        if length(rxnBool)~=nRxn
-            rxnBool2=false(nRxn,1);
-            rxnBool2(rxnBool)=1;
-            rxnBool=rxnBool2;
-        end
-        model=findSExRxnInd(model);
-        %only check mass balance of internal reactions
-        rxnBool=rxnBool & model.SIntRxnBool;
-    else
-        model=findSExRxnInd(model);
-        %only check mass balance of internal reactions
-        rxnBool=model.SIntRxnBool;
-    end
-else
-    model=findSExRxnInd(model);
-    %only check mass balance of internal reactions
-    rxnBool=model.SIntRxnBool;
-end
 if ~exist('printLevel','var')
     printLevel=0;
 end
@@ -91,15 +68,13 @@ for j = 1 : length(Elements)
         end
     end
 end
-massImbalance(~rxnBool,:)=0;
-imBalancedBool=sum(abs(massImbalance'))'~=0;
 
-imBalancedBool=rxnBool & imBalancedBool;
+imBalancedRxnBool=any(massImbalance,2);
 
 imBalancedMass=cell(nRxn,1);
 for i = 1 : nRxn
     imBalancedMass{i,1}='';   
-    if imBalancedBool(i)
+    if imBalancedRxnBool(i)
         for j = 1 : length(Elements)
             if massImbalance(i,j)~=0
                 if ~strcmp(imBalancedMass{i,1},'')
@@ -195,12 +170,6 @@ if isfield(model, 'metCharges')
             dC=model.S'*model.metCharges;
         end
     end
-    if any(dC(rxnBool))~=0
-        imBalancedCharge=dC;
-        imBalancedCharge(~rxnBool)=0;
-    else
-        imBalancedCharge=[];
-    end
 end
 
 if printLevel==-1
@@ -250,11 +219,11 @@ if printLevel==2
 end
 
 if ~isempty(imBalancedCharge)
-    imBalancedBool = imBalancedBool |  imBalancedCharge~=0;
+    imBalancedRxnBool = imBalancedRxnBool |  imBalancedCharge~=0;
 end
 
 %nonzero rows corresponding to completely mass balanced reactions
-balancedMetBool = (sum(abs(model.S(:,model.SIntRxnBool & ~imBalancedBool)),2)~=0);
+balancedMetBool = (sum(abs(model.S(:,model.SIntRxnBool & ~imBalancedRxnBool)),2)~=0);
 
 
 
