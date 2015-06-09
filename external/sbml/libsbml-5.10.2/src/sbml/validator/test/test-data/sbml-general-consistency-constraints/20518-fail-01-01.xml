@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
-  <model metaid="_case00026" id="case00026" name="case00026">
-    <listOfCompartments>
-      <compartment id="compartment" name="compartment" size="1" constant="true"/>
-    </listOfCompartments>
-  </model>
-</sbml>

@@ -30,6 +30,7 @@ function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,m
 % 10/11/09 Jeff Ortn      added metNameFlag option
 % 03/10/10 Richard Que    added lb < 0 requirement for reversing directionality
 % 21/11/14 Ronan Fleming  printing gpr optional
+% 15/12/14 Thomas Pfau  corrected line end
 
 if (nargin < 2)
     rxnAbbrList = model.rxns;
@@ -184,15 +185,11 @@ for i = 1:length(rxnAbbrList);
                 fprintf('\t%s',model.grRules{rxnID});
             end
         end
-        if (lineChangeFlag)
-            fprintf(fid,'\n');
-        end
-    end
-    
-    if printFlag && lineChangeFlag
-            fprintf(fid,'\n');
-    end
-    formulas{i} = formulaStr;
 
+    end    
+    if (lineChangeFlag)
+        fprintf(fid,'\n');
+    end    
+    formulas{i} = formulaStr;
 end
 formulas = formulas';

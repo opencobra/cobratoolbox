@@ -1,9 +1,0 @@
-This installer contains the core libSBML @PACKAGE_VERSION@ library as well as the libSBML language interfaces for C#, Java, MATLAB, Perl, Python, and Ruby.  It uses the @XML_PARSER@ XML parser library.
-
-The interface for Octave is currently not supplied in this installer. If you need the Octave interface, please compile it directly using the libSBML source code distribution.
-
-The default target root for the installation is /usr/local.  You can select a different root by clicking the "Customize" button in the "Installation Type" panel.  You can also select a different volume on your system by clicking on the "Change Install Location..." button in the same panel.
-
-For more information about SBML and libSBML, please visit the website http://sbml.org
-
-Thank you for your interest in SBML!

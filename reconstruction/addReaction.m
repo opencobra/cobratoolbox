@@ -199,6 +199,25 @@ if isfield(model,'rxnECNumbers')
 end
 
 
+%Give warning and combine the coeffeicient if a metabolite appears more than once
+ [metaboliteListUnique,~,IC] = unique(metaboliteList);
+ if numel(metaboliteListUnique) ~= numel(metaboliteList)
+     warning('Repeated mets in the formula for rxn ''%s''. Combine the stoichiometry.', rxnName)
+     stoichCoeffListUnique = zeros(size(metaboliteListUnique));
+     for nMetsUnique = 1:numel(metaboliteListUnique)
+        stoichCoeffListUnique(nMetsUnique) = sum(stoichCoeffList(IC == nMetsUnique));
+     end
+     %preserve the order of metabolites:
+     metOrder = [];
+     for i = 1:numel(IC)
+         if ~ismember(IC(i), metOrder)
+             metOrder = [metOrder; IC(i)];
+         end
+     end
+     metaboliteList = metaboliteListUnique(metOrder);
+     stoichCoeffList = stoichCoeffListUnique(metOrder);
+ end
+ 
 % Figure out which metabolites are already in the model
 [isInModel,metID] = ismember(metaboliteList,model.mets);
 
@@ -254,6 +273,7 @@ if (isfield(model,'genes'))
     if (nargin < 11)
         model = changeGeneAssociation(model,rxnName,grRule);
     else
+        fprintf('In addReaction, the class of systNameList is %s', class(systNameList));
         model = changeGeneAssociation(model,rxnName,grRule,geneNameList,systNameList);
     end
 end

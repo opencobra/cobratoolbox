@@ -75,12 +75,12 @@ rxns = cell(nRxns,1);
 rules = cell(nRxns,1);
 genes = cell(nRxns,1);
 allGenes = {};
-h = waitbar(0,'Reading SBML file ...');
+%h = waitbar(0,'Reading SBML file ...');
 hasNotesField = false;
 for i = 1:nRxns
-    if mod(i,10) == 0
-        waitbar(i/nRxns,h);
-    end
+    %if mod(i,10) == 0
+    %    waitbar(i/nRxns,h);
+    %end
     % Read the gpra from the notes field
     notesField = modelSBML.reaction(i).notes;
     if (~isempty(notesField))
@@ -151,20 +151,20 @@ for i = 1:nRxns
     end
 end
 %close the waitbar if this is matlab
-if (regexp(version, 'R20'))
-    close(h);
-end
+% if (regexp(version, 'R20'))
+%     close(h);
+% end
 allGenes = unique(allGenes);
 
 %% Construct gene to rxn mapping
 if (hasNotesField)
     
     rxnGeneMat = sparse(nRxns,length(allGenes));
-    h = waitbar(0,'Constructing GPR mapping ...');
+    %h = waitbar(0,'Constructing GPR mapping ...');
     for i = 1:nRxns
-        if mod(i,10) == 0
-            waitbar(i/nRxns,h);
-        end
+        %if mod(i,10) == 0
+       %     waitbar(i/nRxns,h);
+       % end
         if iscell(genes{i})
             [tmp,geneInd] = ismember(genes{i},allGenes);
         else
@@ -177,10 +177,10 @@ if (hasNotesField)
         end
         rules{i} = strrep(rules{i},'_TMP_','');
     end
-    %close the waitbar if this is matlab
-    if (regexp(version, 'R20'))
-        close(h);
-    end
+%     %close the waitbar if this is matlab
+%     if (regexp(version, 'R20'))
+%         close(h);
+%     end
     
 end
 
@@ -192,12 +192,12 @@ for i=1:length(modelSBML.compartment)
     compartmentList{i} = modelSBML.compartment(i).id;
 end
 
-h = waitbar(0,'Constructing metabolite lists ...');
+%h = waitbar(0,'Constructing metabolite lists ...');
 hasAnnotationField = 0;
 for i = 1:nMets
-    if mod(i,10) == 0
-        waitbar(i/nMets,h);
-    end
+    %if mod(i,10) == 0
+    %    waitbar(i/nMets,h);
+    %end
     % Parse metabolite id's
     % Get rid of the M_ in the beginning of metabolite id's
     metID = regexprep(speciesList{i},'^M_','');
@@ -260,9 +260,9 @@ for i = 1:nMets
         metInChIString{i} = metInChI;
     end
 end
-if ( regexp( version, 'R20') )
-    close(h);
-end
+% if ( regexp( version, 'R20') )
+%     close(h);
+% end
 
 %% Collect everything into a structure
 model.rxns = rxns;
