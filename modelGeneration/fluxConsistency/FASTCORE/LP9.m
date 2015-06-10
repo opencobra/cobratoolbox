@@ -40,13 +40,26 @@ bineq = [zeros(2*np,1); -ones(nk,1)*epsilon*scalingfactor];
 lb = [model.lb; zeros(np,1)] * scalingfactor;
 ub = [model.ub; max(abs(model.ub(P)),abs(model.lb(P)))] * scalingfactor;
 
-%quiet
-options = cplexoptimset('cplex');
-options = cplexoptimset(options,'diagnostics','off');
-options.output.clonelog=0;
-options.workdir='~/tmp';
-
-x = cplexlp(f,Aineq,bineq,Aeq,beq,lb,ub,options);
-delete('clone1.log')
+if 0
+    %quiet
+    options = cplexoptimset('cplex');
+    options = cplexoptimset(options,'diagnostics','off');
+    options.output.clonelog=0;
+    options.workdir='~/tmp';
+    x = cplexlp(f,Aineq,bineq,Aeq,beq,lb,ub,options);
+    if exist('clone1.log','file')
+        delete('clone1.log')
+    end
+else
+    LPproblem.A=Aeq;
+    LPproblem.b=beq;
+    LPproblem.lb=lb;
+    LPproblem.ub=ub;
+    LPproblem.c=f;
+    LPproblem.osense=1;%minimise
+    LPproblem.csense(1:size(LPproblem.A,1))='E';
+    solution = solveCobraLP(LPproblem);
+    x=solution.full;
+end
 
 V = x(1:n);

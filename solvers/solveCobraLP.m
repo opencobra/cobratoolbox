@@ -1056,6 +1056,7 @@ switch solver
         %%
         error('Solver type lindo is obsolete - use lindo_new or lindo_old instead');
     case 'pdco'
+        %changed 30th May 2015 with Michael Saunders
         %%-----------------------------------------------------------------------
         % pdco.m: Primal-Dual Barrier Method for Convex Objectives (16 Dec 2008)
         %-----------------------------------------------------------------------
@@ -1065,7 +1066,7 @@ switch solver
         %Interfaced with Cobra toolbox by Ronan Fleming, 27 June 2009
         [nMet,nRxn]=size(LPproblem.A);
         x0 = ones(nRxn,1);
-        y0 = ones(nMet,1);
+        y0 = zeros(nMet,1); 
         z0 = ones(nRxn,1);
         
         if 0
@@ -1076,8 +1077,8 @@ switch solver
             d1=0;
             d2=1e-6;
         else
-            d1=1e-4;
-            d2=1e-4;
+            d1=5e-4;
+            d2=5e-4;
         end
         
         options = pdcoSet;
@@ -1092,14 +1093,14 @@ switch solver
         %also means you may have to tune the various parameters here,
         %especially xsize and zsize (see pdco.m) to get the real optimal
         %objective value
-        xsize = 1000;
-        zsize = 10000;
+        xsize = 100;
+        zsize = 100;
         
-        options.Method=2; %QR
-        options.MaxIter=100;
+        options.Method=1; %Cholesky
+        options.MaxIter=200;
         options.Print=printLevel;
         [x,y,w,inform,PDitns,CGitns,time] = ...
-            pdco(osense*c*10000,A,b,lb,ub,d1,d2,options,x0,y0,z0,xsize,zsize);
+            pdco(osense*c,A,b,lb,ub,d1,d2,options,x0,y0,z0,xsize,zsize);
         f= c'*x;
         % inform = 0 if a solution is found;
         %        = 1 if too many iterations were required;
