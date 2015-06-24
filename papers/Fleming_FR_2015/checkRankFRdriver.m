@@ -40,7 +40,7 @@ cd(resultsDirectory)
 
 %by default, it will run all models in modelCollectionDirectory, but here
 %you can set it up to run only one model
-if 0
+if 1
     %single model
     if 0
         modelID='Ecoli_core.mat';
@@ -54,7 +54,7 @@ if 0
         modelID='iAI549.mat';
         load([modelCollectionDirectory modelID])
     end
-    if 1
+    if 0
         modelID='iMM904.mat';
         load([modelCollectionDirectory modelID])
     end
@@ -62,6 +62,13 @@ if 0
         modelID='Recon205_20150128.mat';
         load([modelCollectionDirectory modelID])
     end
+    if 1
+        modelID='isolatedBrainModel';
+        load(modelID);
+        %
+        model=modelC;
+    end
+    
     %load model
     
      
@@ -93,7 +100,10 @@ if 0
     FRresults(k).rankFRVvanilla=rankFRVvanilla;
     FRresults(k).model=model;
     FRresults(k).modelID=modelID;
-    
+   
+   if ~exist('modelMetaData','var')
+        modelMetaData={'testModel','testModel',FRresults(k).modelID,'testModel','testModel'};
+   end
     [FRresultsTable,FRresults]=makeFRresultsTable(FRresults);
     
     %results filename timestamped
@@ -207,7 +217,12 @@ else
             end
         end
     end
-    [FRresultsTable,FRresults]=makeFRresultsTable([],resultsDirectory,resultsFileName);
+    
+    %citations about each model
+    if ~exist('modelMetaData','var')
+        modelMetaData=modelCitations();
+    end
+    [FRresultsTable,FRresults]=makeFRresultsTable([],resultsDirectory,resultsFileName,modelMetaData);
     %save([resultsDirectory resultsFileName],'FRresults','resultsFileName');
 end
 fprintf('%s\n',['checkRankFRdriver complete. FRresults saved to ' resultsDirectory resultsFileName]);

@@ -22,7 +22,7 @@ nk = numel(K);
 % x = [v;z]
 
 % objective
-f = [zeros(1,n), ones(1,np)];
+f = [zeros(n,1); ones(np,1)];
 
 % equalities
 Aeq = [model.S, sparse(m,np)];
@@ -46,20 +46,30 @@ if 0
     options = cplexoptimset(options,'diagnostics','off');
     options.output.clonelog=0;
     options.workdir='~/tmp';
-    x = cplexlp(f,Aineq,bineq,Aeq,beq,lb,ub,options);
+    x = cplexlp(f',Aineq,bineq,Aeq,beq,lb,ub,options);
     if exist('clone1.log','file')
         delete('clone1.log')
     end
 else
-    LPproblem.A=Aeq;
-    LPproblem.b=beq;
+    LPproblem.A=[Aeq;Aineq];
+    LPproblem.b=[beq;bineq];
     LPproblem.lb=lb;
     LPproblem.ub=ub;
     LPproblem.c=f;
     LPproblem.osense=1;%minimise
     LPproblem.csense(1:size(LPproblem.A,1))='E';
+    LPproblem.csense(size(Aeq,1)+1:size(LPproblem.A,1))='L';
     solution = solveCobraLP(LPproblem);
+    if solution.stat~=1
+        fprintf('\n%s%s\n',num2str(solution.stat),' = sol.stat')
+        fprintf('%s%s\n',num2str(solution.origStat),' = sol.origStat')
+        warning('LP solution may not be optimal')
+    end
     x=solution.full;
 end
 
-V = x(1:n);
+if ~isempty(x)
+    V = x(1:n);
+else
+    V=ones(n,1)*NaN;
+end

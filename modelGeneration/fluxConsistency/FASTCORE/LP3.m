@@ -1,7 +1,4 @@
-function V = LP3( J, model )
-%
-% V = LP3( J, model )
-%
+function [V, basis] = LP3(J, model, basis)
 % CPLEX implementation of LP-3 for input set J (see FASTCORE paper)
 
 % (c) Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013
@@ -10,6 +7,9 @@ function V = LP3( J, model )
 % Ronan Fleming      02/12/14 solveCobraLP compatible
 
 [m,n] = size(model.S);
+
+%
+
 
 % objective
 f = zeros(n,1);
@@ -23,6 +23,8 @@ beq = zeros(m,1);
 lb = model.lb;
 ub = model.ub;
 
+basis=[];
+ 
 %quiet
 if 0
     options = cplexoptimset('cplex');
@@ -41,7 +43,21 @@ else
     LPproblem.c=f;
     LPproblem.osense=1;%minimise
     LPproblem.csense(1:size(LPproblem.A,1))='E';
-    solution = solveCobraLP(LPproblem);
+    if ~exist('basis','var') && 0 %cant reuse basis without size change
+        solution = solveCobraLP(LPproblem);
+    else
+        if ~isempty(basis)
+            LPproblem.basis=basis;
+            solution = solveCobraLP(LPproblem);
+        else
+            solution = solveCobraLP(LPproblem);
+        end
+    end
+    if isfield(solution,'basis')
+        basis=solution.basis;
+    else
+        basis=[];
+    end
     x=solution.full;
 end
 

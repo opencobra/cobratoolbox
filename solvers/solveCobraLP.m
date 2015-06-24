@@ -733,7 +733,9 @@ switch solver
         
         %basis reuse - Ronan
         if isfield(LPproblem,'basis') && ~isempty(LPproblem.basis)
-            LPproblem.cbasis = full(LPproblem.basis);
+            LPproblem.cbasis = full(LPproblem.basis.cbasis);
+            LPproblem.vbasis = full(LPproblem.basis.vbasis);
+            LPproblem=rmfield(LPproblem,'basis');
         end
         
         %call the solver
@@ -745,6 +747,15 @@ switch solver
             case 'OPTIMAL'
                 stat = 1; % Optimal solution found
                 [x,f,y,w] = deal(resultgurobi.x,resultgurobi.objval,-resultgurobi.pi,-resultgurobi.rc);
+                %save the basis
+                basis.vbasis=resultgurobi.vbasis;
+                basis.cbasis=resultgurobi.cbasis;
+%                 if isfield(LPproblem,'cbasis')
+%                     LPproblem=rmfield(LPproblem,'cbasis');
+%                 end
+%                 if isfield(LPproblem,'vbasis')
+%                     LPproblem=rmfield(LPproblem,'vbasis');
+%                 end
             case 'INFEASIBLE'
                 stat = 0; % Infeasible
             case 'UNBOUNDED'

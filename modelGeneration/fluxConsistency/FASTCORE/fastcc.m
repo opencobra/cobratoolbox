@@ -57,7 +57,7 @@ V=[];
 
 %v is the flux vector that approximately maximizes the cardinality 
 %of the set of irreversible reactions v(J)
-v = LP7( J, model, epsilon );
+[v, basis] = LP7( J, model, epsilon);
 
 %A is the set of reactions in v with absoulte value greater than epsilon
 Supp = find( abs(v) >= 0.99*epsilon );
@@ -94,10 +94,10 @@ orientation=ones(size(model.S,2),1);
 while ~isempty( J )
     if singleton
         Ji = J(1);
-        v = LP3( Ji, model ) ;
+        [v, basis] = LP3( Ji, model, basis);
     else
         Ji = J;
-        v = LP7( Ji, model, epsilon ) ;
+        [v, basis] = LP7( Ji, model, epsilon, basis);
     end
     %Supp is the set of reactions in v with absoulte value greater than epsilon
     Supp = find( abs(v) >= 0.99*epsilon );
@@ -116,7 +116,6 @@ while ~isempty( J )
             
             %sanity check
             if norm(origModel.S*vf)>epsilon/100
-                pause(eps)
                 fprintf('%g%s\n',epsilon/100, '= epsilon/100')
                 fprintf('%s\t%g\n','should be zero :',norm(model.S*v)) % should be zero
                 fprintf('%s\t%g\n','should be zero :',norm(origModel.S*vf)) % should be zero
@@ -206,7 +205,7 @@ end
 
 if numel(A) == numel(N)
     if printLevel>0
-        fprintf('\nThe input model is consistent.\n');
+        fprintf('\n fastcc.m: The input model is consistent.\n');
     end
 end
 if printLevel>1

@@ -1,4 +1,4 @@
-function [FRresultsTable,FRresults]=makeFRresultsTable(FRresults,resultsDirectory,resultsFileName)
+function [FRresultsTable,FRresults]=makeFRresultsTable(FRresults,resultsDirectory,resultsFileName,modelMetaData)
 %makes a table of FR results
 %
 %INPUT
@@ -36,15 +36,6 @@ else
     nResults=length(FRresults);
 end
 
-%citations about each model
-if ~exist('modelMetaData','var')
-    if nResults>1
-        modelMetaData=modelCitations();
-    else
-        modelMetaData={'testModel','testModel',FRresults(1).modelID,'testModel','testModel'};
-    end
-end
-
 %extra column and extra row for headings
 FRresultsTable=cell(29,nResults+1); %todo, come back and set correct number
 
@@ -62,43 +53,64 @@ while k<=nResults
     %Each row of modelMetaData: species, modelID, PMID, doi;
     if ~firstColumn
         %search against the filename specific to each model
-        bool=strcmp(FRresults(k).modelID,modelMetaData(:,3));
-        if any(bool)
-            n=find(bool);
+        if exist('modelMetaData','var')
+            bool=strcmp(FRresults(k).modelID,modelMetaData(:,3));
+            if any(bool)
+                n=find(bool);
+            else
+                n=z;
+                z=z+1;
+                warning('no metadata found for for model')
+            end
         else
             n=z;
             z=z+1;
-            warning('no metadata for model')
         end
     end
     
     if firstColumn
-        FRresultsTable{i,1}='Species';      
+        FRresultsTable{i,1}='Species';
     else
-        FRresultsTable{i,n+1}=modelMetaData{bool,1};
+        if exist('modelMetaData','var')
+            FRresultsTable{i,n+1}=modelMetaData{bool,1};
+        else
+            FRresultsTable{i,n+1}='';
+        end
     end
     i=i+1;
     if firstColumn
         FRresultsTable{i,1}='Version';
     else
-        FRresultsTable{i,n+1}=modelMetaData{bool,2};
+        if exist('modelMetaData','var')
+            FRresultsTable{i,n+1}=modelMetaData{bool,2};
+        else
+            FRresultsTable{i,n+1}='';
+        end
     end
     i=i+1;
     if firstColumn
         FRresultsTable{i,1}='modelID';
     else
-        FRresultsTable{i,n+1}=modelMetaData{bool,3};
+        if exist('modelMetaData','var')
+            FRresultsTable{i,n+1}=modelMetaData{bool,3};
+        else
+            FRresultsTable{i,n+1}='';
+        end
     end
     i=i+1;
     if firstColumn
         FRresultsTable{i,1}='PMID or DOI';
     else
-        if ~isempty(modelMetaData{bool,4})
-            %pubmed id
-            FRresultsTable{i,n+1}=modelMetaData{bool,4};
+        if exist('modelMetaData','var')
+            if ~isempty(modelMetaData{bool,4})
+                %pubmed id
+                FRresultsTable{i,n+1}=modelMetaData{bool,4};
+            else
+                %doi
+                FRresultsTable{i,n+1}=modelMetaData{bool,5};
+            end
         else
-            %doi
-            FRresultsTable{i,n+1}=modelMetaData{bool,5};
+            FRresultsTable{i,n+1}='';
         end
     end
     i=i+1;
@@ -284,12 +296,12 @@ while k<=nResults
         FRresultsTable{i,n+1}=FRresults(k).rankFRVvanilla;
     end
     i=i+1;
-    if firstColumn
-        FRresultsTable{i,1}='Coherence of S';
-    else
-        FRresultsTable{i,n+1}=FRresults(k).coherenceS;
-    end
-    i=i+1;
+%     if firstColumn
+%         FRresultsTable{i,1}='Coherence of S';
+%     else
+%         FRresultsTable{i,n+1}=FRresults(k).coherenceS;
+%     end
+%     i=i+1;
     
     %now move to columns for results
     if firstColumn
