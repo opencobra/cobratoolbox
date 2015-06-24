@@ -42,7 +42,7 @@ cd(resultsDirectory)
 %you can set it up to run only one model
 if 1
     %single model
-    if 0
+    if 1
         modelID='Ecoli_core.mat';
         load([modelCollectionDirectory modelID])
     end

@@ -301,7 +301,6 @@ while k<=nResults
 %     else
 %         FRresultsTable{i,n+1}=FRresults(k).coherenceS;
 %     end
-%     i=i+1;
     
     %now move to columns for results
     if firstColumn

@@ -77,8 +77,8 @@ else
         basis=[];
     end
     if solution.stat~=1
-        fprintf('%s%s\n',num2str(sol.stat),' = sol.stat')
-        fprintf('%s%s\n',num2str(sol.origStat),' = sol.origStat')
+        fprintf('%s%s\n',num2str(solution.stat),' = solution.stat')
+        fprintf('%s%s\n',num2str(solution.origStat),' = solution.origStat')
         warning('LP solution may not be optimal')
     end
     x=solution.full;
