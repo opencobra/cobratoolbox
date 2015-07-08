@@ -68,7 +68,16 @@ else
 end
 
 % Only estimate pKa for unique metabolites to increase speed
-bool = ~cellfun('isempty',inchi);
+bool
+% do not estimate for H+ and H2
+for i=1:length(inchi)
+    if find(strcmp(inchi{i},'InChI=1/p+1/fH/q+1'))
+       bool(i)=0;
+    elseif find(strcmp(inchi{i},'InChI=1/H2/h1H'))
+       bool(i)=0;
+    end
+end
+
 [umets,crossi,crossj] = unique(mets(bool));
 uinchi = inchi(bool);
 uinchi = uinchi(crossi);
@@ -81,6 +90,33 @@ fclose(fid);
 
 % Estimate pKa
 [status,result] = system(['cxcalc pka -a ' num2str(npKas) ' -b ' num2str(npKas) ' -M ' takeMajorTaut ' ' inchiFileName]);
+
+% Split for cxcalc 15.6.15.0 in tabs and empty lines.
+result = regexp(result,'\n?\t?','split');
+
+% create a new result excluding the header
+for i=1:length(result)
+    if i>(2*npKas + 3)
+        g=i-(2*npKas + 2);
+        newresult{1,g}=result{i};
+    end
+end
+
+% split this result in lines for each metabolite
+count=0;
+for i=1:(2*npKas + 2):(length(newresult)-(2*npKas + 2))
+    count=count+1;
+    
+    for j=1:(2*npKas + 2)
+        if j<(2*npKas + 2)
+            % for pKa values change , by .
+            newesresult{count,j}=strrep(newresult{j+i-1},',','.');
+        else
+            newesresult{count,j}=newresult{j+i-1};
+        end
+    end
+        
+end
 
 % Delete temporary file
 delete(inchiFileName);
@@ -116,7 +152,8 @@ for n = 1:length(uinchi)
     if length(pkalist) == 2*npKas + 2;
         pkalist = pkalist(2:end-1);
         pkalist = pkalist(~cellfun('isempty',pkalist));
-        pkalist = regexprep(pkalist,',','.');
+        % This had to be commented due to doing it before:
+        %pkalist = regexprep(pkalist,',','.');
         pkalist = str2double(pkalist);
         pkalist = sort(pkalist,'descend');
         pkalist = pkalist(pkalist >= 0 & pkalist <= 14);
