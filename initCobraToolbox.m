@@ -26,6 +26,7 @@ path(path,[CBTDIR, filesep, 'external']);
 %add all paths below cobra directory, but not certain folders
 addpath_recurse(CBTDIR,{'.git','obsolete','m2html','docs','src','stow','libsbml-5.11.0','SBMLToolbox-4.1.0'});
 
+% add SMBL lib path?
 if isunix && exist('usr/local/lib/', 'dir')
   addpath('/usr/local/lib/');
 end
