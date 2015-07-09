@@ -149,9 +149,11 @@ for i = 1:nLoops
                 pause(.25);
             end
             fprintf(1,'\nloading files four next round.\n');
-            try load(strcat('xxRound', num2str(i)), 'points', 'centerPoint'); % load actual points
-            catch pause(15) % for some reason at round 64 it needs extra time to load
-                load(strcat('xxRound', num2str(i)), 'points', 'centerPoint'); % load actual points
+            try 
+              load(strcat('xxRound', num2str(i)), 'points', 'centerPoint'); % load actual points
+            catch 
+              pause(15) % for some reason at round 64 it needs extra time to load
+              load(strcat('xxRound', num2str(i)), 'points', 'centerPoint'); % load actual points
             end
             save(strcat('xxRoundAck', num2str(i),'x', num2str(proc) ), 'blah'); % save acknowledgement
             display(strcat('finished reading input and acknowledgment sent ', num2str(i)));
