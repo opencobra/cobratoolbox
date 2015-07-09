@@ -116,7 +116,7 @@ while ~isempty( J )
             
             %sanity check
             if norm(origModel.S*vf)>epsilon/100
-                pause(eps)
+                %pause(eps)
                 fprintf('%g%s\n',epsilon/100, '= epsilon/100')
                 fprintf('%s\t%g\n','should be zero :',norm(model.S*v)) % should be zero
                 fprintf('%s\t%g\n','should be zero :',norm(origModel.S*vf)) % should be zero

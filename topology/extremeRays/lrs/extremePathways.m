@@ -89,7 +89,7 @@ sh=0;
 %                         D*x>=(d)
 lrsInputHalfspace(A,D,filename,positivity,inequality,a,d,f,sh);
 
-pause(eps)
+%pause(eps)
 if isunix
     if ~isempty(unix('which lrs'))
         %call lrs and wait until extreme pathways have been calculated

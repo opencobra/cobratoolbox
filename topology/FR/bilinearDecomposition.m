@@ -58,7 +58,7 @@ end
 x=1;
 for n=1:nRxn
 %     if n==745%83%7384
-%         pause(eps);
+%         %pause(eps);
 %     end
     substrateInd=find(F(:,n)~=0);
     productInd  =find(R(:,n)~=0);

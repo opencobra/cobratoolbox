@@ -151,7 +151,7 @@ if nargin ~=1
                 error([varargin{i} ' is not a valid optional parameter']);
             end
         end
-        pause(eps)
+        %pause(eps)
     else
         error('solveCobraLP: Invalid number of parameters/values')
     end

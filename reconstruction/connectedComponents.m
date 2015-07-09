@@ -245,7 +245,7 @@ for j=1:m
         end
     end
 end
-pause(eps)
+%pause(eps)
 
 if strcmp(type,'largestComponent')
     if ~exist('largest_component')

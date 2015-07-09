@@ -194,7 +194,7 @@ if PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
             %quadratic optimization
             solution = solveCobraQP(QPproblem);
             if isempty(solution.full)
-                pause(eps)
+                %pause(eps)
             end
             Vmax(:,rxnBool)=solution.full(1:nRxns,1);
         end
