@@ -32,7 +32,7 @@ if ~isa(metID,'cell')
 end
 
 if nargin < 10
-    b = zeros(1,numel(metID);
+    b = zeros(1,numel(metID));
 else
     if numel(metID) ~= numel(b)
         fprintf('Inconsistent Argument length (%i) and b(%i)\n',numel(metID),numel(b));
@@ -45,7 +45,7 @@ else
 end
 
 if nargin < 9
-    Charge = zeros(1,numel(metID);
+    Charge = zeros(1,numel(metID));
 else
     
     if numel(metID) ~= numel(Charge)
