@@ -1,4 +1,4 @@
-=   function W = nullspaceLUSOLapply2Modes(mode,m,n,V,nullS)
+function W = nullspaceLUSOLapply2Modes(mode,m,n,V,nullS)
 % computes the matrix vector product with the operator nullspace 
 % function handle of the form y = pdMat(mode,m,n,x)
 % 
