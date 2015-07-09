@@ -38,7 +38,7 @@ if ~exist('CobraLPSolver','var')
     %CobraLPSolver = 'mosek';
     % CobraLPSolver = 'cplx';
 end
-if isunix
+if isunix && exist('usr/local/lib/', 'dir')
   addpath('/usr/local/lib/');
 end
 CobraLPSolvers = { 'gurobi5', 'gurobi', 'tomlab_cplex', 'glpk', 'mosek', 'cplx' };
