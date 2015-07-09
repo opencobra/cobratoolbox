@@ -53,7 +53,7 @@ switch testS
         S2=model.S(:,[1,6]);
         S=S2(sum(S2~=0,2)~=0,:);
         disp(full(S))
-        pause(eps)
+        %pause(eps)
         end
     case 10
         load /home/rfleming/workspace/graphStoich/data/modelCollection/121114_Recon2betaModel.mat

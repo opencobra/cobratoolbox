@@ -62,6 +62,6 @@ sol = solveCobraLP(LPproblem);
 
 fluxConsistent=[];
 
-pause(eps)
+%pause(eps)
  
 
