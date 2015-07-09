@@ -16,7 +16,7 @@ function [atomicWeights]=parse_Atomic_Weights_and_Isotopic_Compositions_for_All_
 %
 % Ronan Fleming 9 March 09
 
-fid=fopen('Atomic_Weights_and_Isotopic_Compositions_for_All_Elements.m','r');
+fid=fopen('Atomic_Weights_and_Isotopic_Compositions_for_All_Elements.txt','r');
 
 nElements=2816/8;
 p=1;
