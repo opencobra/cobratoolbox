@@ -177,7 +177,7 @@ for i = 1:length(rxnAbbrList);
         end
         formulaStr = 'NA';
     end
-    if printFlag && gprFlag
+    if printFlag & gprFlag
         if (rxnID > 0) && (isfield(model,'grRules'))
             if (isempty(model.grRules{rxnID}))
                 fprintf('\t');
