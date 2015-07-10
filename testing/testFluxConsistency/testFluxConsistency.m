@@ -25,7 +25,7 @@ switch modelToUse
         model=modelRecon2beta121114;
 end
 
-epsilon = 1e-8  vdfhaaaaaa;
+epsilon = 1e-8;
 printLevel=0;
 
 if 1
