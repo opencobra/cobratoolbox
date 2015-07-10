@@ -1,4 +1,4 @@
-function initCobraToolbox()
+function initCobraToolbox(CobraLPSolver)
 %initCobraToolbox Initialize COnstraint-Based Reconstruction and Analysis Toolbox
 %
 % Define default solvers and paths
@@ -16,8 +16,7 @@ function initCobraToolbox()
 
 % Maintained by Ronan M.T. Fleming: ronan.mt.fleming gmail.com
 
-%% Add cobra toolbox paths
-
+%% add cobra toolbox paths
 pth=which('initCobraToolbox.m');
 global CBTDIR
 CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1));
@@ -26,11 +25,6 @@ path(path,[CBTDIR, filesep, 'external']);
 %add all paths below cobra directory, but not certain folders
 addpath_recurse(CBTDIR,{'.git','obsolete','m2html','docs','src','stow','libsbml-5.11.0','SBMLToolbox-4.1.0'});
 
-% add SMBL lib path?
-if isunix && exist('usr/local/lib/', 'dir')
-  addpath('/usr/local/lib/');
-end
-
 %% Define Solvers
 % Define the default linear programming solver to be used by the toolbox
 % Available solver options:
@@ -38,69 +32,76 @@ end
 % 'cplex_direct','gurobi'
 % Note that you must install the solver separately and make sure Matlab can
 % access the solver
-
-% Define LP solver
-fprintf('Define LP solver...');
-for CobraLPSolver = {'gurobi5', 'gurobi', 'tomlab_cplex', 'glpk', 'mosek', 'cplx'}
+if ~exist('CobraLPSolver','var')
+    CobraLPSolver = 'tomlab_cplex';
+    % CobraLPSolver = 'glpk';
+    %CobraLPSolver = 'mosek';
+    % CobraLPSolver = 'cplx';
+end
+if isunix
+  addpath('/usr/local/lib/');
+end
+CobraLPSolvers = { 'gurobi5', 'gurobi', 'tomlab_cplex', 'glpk', 'mosek', 'cplx' };
+for CobraLPSolver = CobraLPSolvers
     LPsolverOK = changeCobraSolver(char(CobraLPSolver));
-    if LPsolverOK; break; end
+    if LPsolverOK
+        fprintf('LP solver set to %s successful\n',char(CobraLPSolver));
+    	break;
+    end
 end
-if LPsolverOK
-    fprintf('LP solver: %s \n\n',char(CobraLPSolver));
-else
-    fprintf('LP solver: FAILED\n\n');
+if ~LPsolverOK
+    fprintf('LP solver set failed\n');
 end
-
 % Define default MILP solver
-fprintf('Define MILP solver...\n');
+%CobraMILPSolver = 'tomlab_cplex';
+%CobraMILPSolver = 'glpk';
 for CobraMILPSolver = { 'gurobi5', 'gurobi', 'tomlab_cplex', 'glpk' }
     MILPsolverOK = changeCobraSolver(char(CobraMILPSolver),'MILP');
-    if MILPsolverOK; break; end 
+    if MILPsolverOK
+        fprintf('MILP solver set to %s successful\n',char(CobraMILPSolver));
+        break;
+   end 
 end
-if MILPsolverOK
-    fprintf('MILP solver: %s\n\n',char(CobraMILPSolver));
-else
-    fprintf('MILP solver: FAILED\n\n');
+if ~MILPsolverOK
+    fprintf('MILP solver set failed\n');
 end
-
 % Define default QP solver
-fprintf('Define QP solver...\n');
+%CobraQPSolver = 'tomlab_cplex';
 for CobraQPSolver = {'gurobi5', 'gurobi', 'tomlab_cplex', 'qpng' }
     QPsolverOK = changeCobraSolver(char(CobraQPSolver),'QP');
-    if QPsolverOK; break; end
+    if QPsolverOK
+        fprintf('QP solver set to %s successful\n',char(CobraQPSolver));
+        break;
+    end
 end
-if QPsolverOK
-    fprintf('QP solver: %s\n\n', char(CobraQPSolver));
-else
-    fprintf('QP solver: FAILED\n\n');
+if ~QPsolverOK
+    fprintf('QP solver set failed\n');
 end
-
 % Define default MIQP solver
-fprintf('Define MIQP solver...\n');
 for CobraMIQPSolver = {'gurobi5', 'gurobi' 'tomlab_cplex'}
     MIQPsolverOK = changeCobraSolver(char(CobraMIQPSolver),'MIQP');
-    if MIQPsolverOK; break; end
+    if MIQPsolverOK
+        fprintf('MIQP solver set to %s successful\n',char(CobraMIQPSolver));
+        break;
+    end
 end
-if MIQPsolverOK
-    fprintf('MIQP solver: %s\n\n',char(CobraMIQPSolver));
-else
-    fprintf('MIQP solver: FAILED\n\n');
+if ~MIQPsolverOK
+    fprintf('MIQP solver set failed\n');
 end
 
+
 % Define default CB map output
-fprintf('Define CB map output...\n');
-for CbMapOutput = {'svg', 'matlab'}
-    CbMapOutputOK = changeCbMapOutput(char(CbMapOutput));
-    if CbMapOutputOK; break; end   
-end
+% CbMapOutput = 'matlab';
+CbMapOutput = 'svg';
+CbMapOutputOK = changeCbMapOutput(CbMapOutput);
 if CbMapOutputOK
-    fprintf('CB map output: %s\n\n',char(CbMapOutput));
-else 
-    fprintf('Cb map output: FAILED\n\n');
+    fprintf('CB map output set to %s successful\n',CbMapOutput);
+else
+    fprintf('Cb map output set failed\n');
 end
 
 % Set global LP solution accuracy tolerance
-changeCobraSolverParams('LP','objTol',1e-6);
+changeOK = changeCobraSolverParams('LP','objTol',1e-6);
 
 %attempt to provide support for sbml
 if exist([CBTDIR, filesep, 'external' filesep 'SBMLToolbox-4.1.0'],'dir')==7 && exist([CBTDIR, filesep, 'external' filesep 'libsbml-5.11.0'],'dir')==7
