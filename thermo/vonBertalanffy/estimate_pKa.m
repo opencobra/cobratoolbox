@@ -68,7 +68,8 @@ else
 end
 
 % Only estimate pKa for unique metabolites to increase speed
-bool
+bool = ~cellfun('isempty',inchi);
+
 % do not estimate for H+ and H2
 for i=1:length(inchi)
     if find(strcmp(inchi{i},'InChI=1/p+1/fH/q+1'))
@@ -134,21 +135,13 @@ upKa.nHs = [];
 upKa.majorMSpH7 = [];
 upKa = repmat(upKa,length(uinchi),1);
 
-% Parse cxcalc output
-result = regexp(result,'\r?\n','split');
-result = regexp(result,'^\d+.*','match');
-result = [result{:}];
-if length(result) ~= length(uinchi)
-    error('Output from ChemAxon''s pKa calculator plugin does not have the correct format.')
-end
-
 errorMets = {};
 for n = 1:length(uinchi)
     met = umets{n};
     currentInchi = uinchi{n};
     [formula, nH, charge] = getFormulaAndChargeFromInChI(currentInchi);
     
-    pkalist = regexp(result{n},'\t','split');
+    pkalist = {newesresult{n,:}};
     if length(pkalist) == 2*npKas + 2;
         pkalist = pkalist(2:end-1);
         pkalist = pkalist(~cellfun('isempty',pkalist));
