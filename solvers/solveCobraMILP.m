@@ -77,7 +77,7 @@ else
     error('No solver found.  Run changeCobraSolver');
 end
 
-if ~isstruct(MILPproplem)
+if ~isstruct(MILPproblem)
     error('MILPproblem needs to be a strcuture array');
 end
 
