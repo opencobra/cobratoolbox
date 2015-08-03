@@ -582,6 +582,8 @@ model.FRirows=false(nMet,1);
 model.FRirows(iR)=1;
 model.FRq=FRq;
 model.FRp=FRp;
+model.Fr=Fr;
+model.Rr=Rr;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %rank of [F;R]
@@ -597,6 +599,8 @@ model.FRVicols=false(nRxn,1);
 model.FRVicols(iC)=1;
 model.FRVq=FRVq;
 model.FRVp=FRVp;
+model.Fc=Fc;
+model.Rc=Rc;
 
 %sanity check
 if nnz(model.FRrows) ~= nnz(model.FRrows & model.FRdrows)

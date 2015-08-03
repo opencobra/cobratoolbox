@@ -62,7 +62,7 @@ if 1
         modelID='Recon205_20150128.mat';
         load([modelCollectionDirectory modelID])
     end
-    if 1
+    if 0
         modelID='isolatedBrainModel';
         load(modelID);
         %
