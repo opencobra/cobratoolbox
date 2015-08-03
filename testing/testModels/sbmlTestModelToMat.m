@@ -64,7 +64,7 @@ for k=3:length(files)
             end
         else
             if strcmp(fileName,'textbook.xml')
-                pause(eps)
+                %pause(eps)
             end
             if printLevel>1
                 fprintf('%s%s\n',fileName, [' :already parsed and compatible with readCbModel'])

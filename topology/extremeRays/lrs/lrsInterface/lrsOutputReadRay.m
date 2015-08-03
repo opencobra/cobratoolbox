@@ -10,7 +10,7 @@ function [R,V]=lrsOutputReadExt(filename)
 
 fid=fopen(filename);
 
-pause(eps)
+%pause(eps)
 while 1
     if strcmp(fgetl(fid),'begin')
         break;
@@ -74,7 +74,7 @@ for r=1:nRows
                 scannedLine(c)=int16(scannedLine(c));
             end
         end
-        pause(eps);
+        %pause(eps);
     end
 end
 fclose(fid);

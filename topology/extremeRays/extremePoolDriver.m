@@ -36,7 +36,7 @@ end
 if 1
     signPl=sign(Pl);
     nnzPl=sum(signPl,2);
-    pause(eps)
+    %pause(eps)
 end
 
 %draw certain pools within metabolites

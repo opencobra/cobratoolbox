@@ -387,7 +387,7 @@ if any(~model.FRnonZeroColBool & rxnBool3) && 0
     fprintf('\n')
 end
 
-pause(eps)
+%pause(eps)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % A4=F(:,rxnBool3)+R(:,rxnBool3);%invariant to direction of reaction
@@ -547,7 +547,7 @@ if 0
     tic
     [isit,partA,partB]=isbipartite(adj2adjL(adj));
     toc
-    pause(eps)
+    %pause(eps)
 end
 
 %check rank of bilinear version
@@ -564,7 +564,7 @@ if 1
     model.Frb=Frb;
     model.Rrb=Rrb;
     model.rankBilinearFrRr=rankBilinearFrRr;
-    pause(eps)
+    %pause(eps)
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

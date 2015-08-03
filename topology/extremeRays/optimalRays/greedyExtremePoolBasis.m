@@ -37,7 +37,7 @@ while nPools < (nMet-rankS)
         else
             %error as reports wrong rank if zero columns
             rankB = getRankLUSOL(B(1:nPools+1,:));
-            pause(eps)
+            %pause(eps)
         end
     end
     if rankB==(nPools+1)
