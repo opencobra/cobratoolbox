@@ -111,7 +111,8 @@ while ~isempty( J )
         if ~isempty(JiRev)
             %make sure the sign of the flux is consistent with the sign of
             %the original S matrix if any reactions have been flipped
-            vf=spdiags(orientation,0,N,N)*v;
+            len=length(orientation);
+            vf=spdiags(orientation,0,len,len)*v;
             V=[V,vf];
             
             %sanity check
