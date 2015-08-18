@@ -1,55 +1,368 @@
-<!DOCTYPE html>
-<html>
-
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="COBRA Toolbox : COnstraints Based Reconstruction and Analysis toolbox for MATLAB" />
-
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>Cobra Toolbox</title>
-  </head>
-
-  <body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/opencobra/cobratoolbox">View on GitHub</a>
-	  <img src=images/cobra_toolbox_b.jpg></img>
-          <h1 id="project_title">COBRA Toolbox</h1>
-          <h2 id="project_tagline">COnstraints Based Reconstruction and Analysis toolbox for MATLAB</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/opencobra/cobratoolbox/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/opencobra/cobratoolbox/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>COBRA Toolbox</title>
+<meta name="viewport" content="width=device-width">
+<meta name="description" content="">
+<meta name="author" content="">
+<!-- Styles -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link rel='stylesheet' id='prettyphoto-css'  href="css/prettyPhoto.css" type='text/css' media='all'>
+<link href="css/fontello.css" type="text/css" rel="stylesheet">
+<!--[if lt IE 7]>
+            <link href="css/fontello-ie7.css" type="text/css" rel="stylesheet">  
+        <![endif]-->
+<!-- Google Web fonts -->
+<link href='http://fonts.googleapis.com/css?family=Quattrocento:400,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Patua+One' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<style>
+body {
+	padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+</style>
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+<!-- Favicon -->
+<link rel="shortcut icon" href="img/favicon.ico">
+<!-- JQuery -->
+<script type="text/javascript" src="js/jquery.js"></script>
+<!-- Load ScrollTo -->
+<script type="text/javascript" src="js/jquery.scrollTo-1.4.2-min.js"></script>
+<!-- Load LocalScroll -->
+<script type="text/javascript" src="js/jquery.localscroll-1.2.7-min.js"></script>
+<!-- prettyPhoto Initialization -->
+<script type="text/javascript" charset="utf-8">
+          $(document).ready(function(){
+            $("a[rel^='prettyPhoto']").prettyPhoto();
+          });
+        </script>
+<!--The following script tag downloads a font from the Adobe Edge Web Fonts server for use within the web page. We recommend that you do not modify it.-->
+<script>var __adobewebfontsappname__="dreamweaver"</script>
+<script src="http://use.edgefonts.net/calligraffitti:n4:default;crafty-girls:n4:default.js" type="text/javascript"></script>
+</head>
+<body>
+<!--******************** NAVBAR ********************-->
+<div class="navbar-wrapper">
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container"> 
+        <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. --> 
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>
+        <h1 class="brand"><a href="#top">COBRA Toolbox</a></h1>
+        <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+        <nav class="pull-right nav-collapse collapse">
+          <ul id="menu-main" class="nav">
+            <li><a title="a letter" href="#a letter"> Dr Fleming's letter </a></li>
+            <li><a title="download" href="#download">Download</a></li>
+            <li><a title="documents" href="#documents">Documents</a></li>
+            <!-- <li><a title="news" href="#news">News</a></li> -->
+            <li><a title="team" href="#team">Developer</a></li>
+            <li><a title="collaborator" href="#collaborator">Collaborator</a></li>
+          </ul>
+        </nav>
+      </div>
+      <!-- /.container --> 
     </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <ul>
-<li><a href="http://opencobra.sourceforge.net/openCOBRA/opencobra_documentation/cobra_toolbox_2/index.html">Documentation</a></li>
-<li><a href="https://sourceforge.net/projects/opencobra/files/cobra/">Downloads</a></li>
-<li><a href="http://groups.google.com/group/cobra-toolbox">Help</a></li>
-<li><a href="https://github.com/opencobra/cobratoolbox/issues">Issues</a></li>
-<li><a href="http://dx.doi.org/10.1038/protex.2011.234">Protocol</a></li>
-</ul>
-      </section>
+    <!-- /.navbar-inner --> 
+  </div>
+  <!-- /.navbar --> 
+</div>
+<!-- /.navbar-wrapper --> 
+<!-- ******************** HeaderWrap ********************-->
+<div id="headerwrap">
+  <header class="clearfix">
+    <h1><span>COBRA</span> COnstraints Based Reconstruction and Analysis toolbox</h1>
+    <div class="container">
+      <div class="row">
+        <div class="span12">
+          <h2> for MATLAB &nbsp;Version 3.0</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span12">
+          <ul class="icon">
+            <!--<li><a href="#" target="_blank"><i class="icon-pinterest-circled"></i></a></li>
+                <li><a href="#" target="_blank"><i class="icon-facebook-circled"></i></a></li>
+                <li><a href="#" target="_blank"><i class="icon-twitter-circled"></i></a></li> -->
+            <li><a href="https://groups.google.com/forum/#!forum/cobra-toolbox" target="_blank"><em class="icon-gplus-circled"></em></a></li>
+            <!-- <li><a href="#" target="_blank"><i class="icon-skype-circled"></i></a></li> -->
+          </ul>
+        </div>
+      </div>
     </div>
+  </header>
+</div>
+<!--******************** Feature ********************--> 
+<a name="a letter"> </a>
+<div class="scrollblock">
+  <section id="testimonials" class="single-page hidden-phone">
+    <div class="container">
+      <hgroup>
+        <h3>A letter from the lead developer</h3>
+        <hr />
+      </hgroup>
+      <!--<p class="entry-content"> -->
+      <p class="letter"> Dear All,</p>
+      <p class="letter"> As of Jan 30, 2015, I am now the Lead Developer for the COBRA Toolbox (<a href="http://opencobra.github.io/cobratoolbox" target="new"> http://opencobra.github.io/cobratoolbox/ </a>). I and others have already begun bringing the COBRA Toolbox up to date and the latest version is and will henceforth be available here: <a href="https://github.com/opencobra/cobratoolbox/archive/master.zip" target="new"> https://github.com/opencobra/cobratoolbox/archive/master.zip </a> </p>
+      <p class="letter"> Everyone is encouraged to work together to improve the latest version of the COBRA Toolbox by cloning the master version available here:
+        https://github.com/opencobra </p>
+      <p class="letter"> Instructions on on how to use git are available here (<a href="http://gitref.org/" target="new"> http://gitref.org/ </a> for *nix users and <a href="https://windows.github.com" target="new">https://windows.github.com</a> for windows users). </p>
+      <p class="letter"> Please raise any new issues you wish to have fixed here:
+        https://github.com/opencobra/cobratoolbox/issues
+        That is also a good place to tell the community what you want from the next version of the cobra toolbox and why. </p>
+      <
+      <p class="letter"> I am looking for committed developers to actively engage in the project in particular domains especially where I am not sufficiently active to maintain the code on my own, e.g., bioenginneering, but also where people are interested to develop new and maintain existing parts of the COBRA toolbox. </p>
+      <p class="letter"> I am delighted to be supporting Nathan Lewis, Department of Pediatrics in the UC San Diego School of Medicine in his role as chief steward of the The openCOBRA Project (<a href="http://opencobra.github.io/" target="new"> http://opencobra.github.io/ </a>), which we agree should be a welcome home to COBRA code in a language agnostic manner. </p>
+      <p class="letter"> Regards, </p>
+      <h3 style="font-family: calligraffitti; font-style: normal; font-weight: 400;"> Dr. Ronan Fleming </h3>
+      <p class="letter"> Luxembourg Centre for Systems Biomedicine,<br />
+        University of Luxembourg</p>
+  
+      <div class="row">
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Cobra Toolbox maintained by <a href="https://github.com/opencobra">opencobra</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
+        <!-- /.blockquote-wrapper -->
+      </div>
+      <!-- /.row -->
     </div>
+    <!-- /.container -->
+    <!-- ./container -->
+  </section>
+</div>
+<!--******************** Download Section ********************-->
+<a name="download"> </a>
+<section id="portfolio" class="single-page scrollblock">
+<div class="container">
+<div class="align"><i class="icon-desktop-circled"></i></div>
 
+<h1 id="folio-headline">Download</h1>
+<div class="row">
+<div class="span7"> 
+<a class="zip_download_link" href="https://github.com/opencobra/cobratoolbox/zipball/master">Download this project as a .zip file</a> 
+
+<a class="tar_download_link" href="https://github.com/opencobra/cobratoolbox/tarball/master">Download this project as a tar.gz file</a>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+  <!--   <div class="mask2"> <a href="img/portfolio-01.jpg" rel="prettyPhoto"><img src="img/portfolio-01.jpg" alt=""></a> </div> -->
+</div>
+</div>
+</div>
+
+<!--<div class="inside">
+              <hgroup>
+
+              </hgroup>
+              <div class="entry-content">
+              
+
+                <p> </p>
+              </div>
+            </div>
+            <!-- /.inside --> 
+<!--  </div> --> 
+<!-- /.span4 -->
+</section>
+
+<!--******************** DocumentsSection ********************-->
+<a name="documents"> </a>
+<section id="services" class="single-page scrollblock">
+  <div class="container">
+    <div class="align"><i class="icon-cog-circled"></i></div>
+    <h1>Documents</h1>
+    <!-- Four columns -->
+    <div class="row">
+
+      <div class="span12">
+        <div class="align"> <i class="icon-desktop sev_icon"></i> </div>
+        <h2><span style="font-size:24px; color:#862123">Manual</span></h2>
+        <p>
+        <li class="sec_doc"><a href="http://opencobra.sourceforge.net/openCOBRA/opencobra_documentation/cobra_toolbox_2/index.html" target="_blank">Documentation</a></li>
+<li class="sec_doc"><a href="http://dx.doi.org/10.1038/protex.2011.234" target="_blank">Protocol</a></li>
+<li class="sec_doc"><a href="https://github.com/opencobra/cobratoolbox/issues" target="_blank">Issues</a></li>
+</div>
+      <div class="span12">
+        <div class="align"> <i class="icon-desktop sev_icon"></i> </div>
+        <h2> <span style="font-size:24px; color:#862123"> Tutorial </span></h2>
+        <p> 
+        <li class="sec_doc"><a href="http://groups.google.com/group/cobra-toolbox" target="_blank">Help</a></li>
+        </p>
+      </div>
+      
+      
+            <div class="span12">
+        <div class="align"> <i class="icon-desktop sev_icon"></i> </div>
+        <h2> <span style="font-size:24px; color:#862123"> Publication</span></h2>
+        <p> <span style="font-style: normal">Schellenberger J, Que R, Fleming RMT, Thiele I, Orth JD, Feist AM, Zielinski DC, Bordbar A, Lewis NE, Rahmanian S, Kang J, Hyduke DR, Palsson BØ.<a href="http://www.nature.com/nprot/journal/v6/n9/full/nprot.2011.308.html" style="font-size:16px"> 2011 Quantitative prediction of cellular metabolism with constraint-based models: the COBRA Toolbox v2.0. Nature Protocols 6:1290-1307.</a> </p>
+        
+      </div>
+      
+      
+    </div>
+    <!-- /.row --> 
+  </div>
+  <!-- /.container --> 
+</section>
+<!--******************** News Section ********************-->
+
+
+<!--******************** Team Section ********************-->
+<section id="team" class="single-page scrollblock">
+<div class="container">
+<div class="align"><em class="icon-group-circled"></em></div>
+<h1>Developers</h1>
+<!-- Five columns -->
+<div class="row">
+  <div class="span2 offset1">
+    <div class="teamalign"> <a href="https://github.com/opencobra/cobratoolbox/commits?author=rmtfleming" target="_blank"> <img class="team-thumb img-circle" src="img/ronan.jpg" alt=""> </a></div>
+    <h3>Dr. Ronan Fleming</h3>
+    <div class="job-position">Lead Developer</div>
+  </div>
+    <div class="span2">
+    <div class="teamalign"> <a href="https://github.com/opencobra/cobratoolbox/commits?author=ithiele" target="_blank"> <img class="team-thumb img-circle" src="img/ines.png" alt=""> </a></div>
+    <h3>Prof. Dr. Ines Thiele</h3>
+    <div class="job-position">Developer</div>
+  </div>
+
+  <!-- ./span2 -->
+  <div class="span2">
+    <div class="teamalign"> <a href="http://lewislab.ucsd.edu/lab/n/" target="_blank"> <img class="team-thumb img-circle" src="img/Nathan.png" alt=""> </a></div>
+    <h3>Prof. Dr. Nathan Lewis</h3>
+    <div class="job-position">Developer</div>
+  </div>
+  <!-- ./span2 -->
+  <div class="span2">
+    <div class="teamalign"> <a href="https://github.com/opencobra/cobratoolbox/commits?author=huldash" target="_blank"> <img class="team-thumb img-circle" src="img/hulda.png" alt=""> </a> </div>
+    <h3>Dr. Hulda Haraldsdottir</h3>
+    <div class="job-position">Developer</div>
+  </div>
+  <!-- ./span2 -->
+  <div class="span2">
+    <div class="teamalign"> <a href="https://github.com/opencobra/cobratoolbox/commits?author=longfeimao" target="_blank"> <img class="team-thumb img-circle" src="img/longfei.png" alt=""> </a></div>
+    <h3>Dr. Longfei Mao</h3>
+    <div class="job-position">Developer</div>
+  </div>
+  <!-- ./span2 -->
+  <!-- ./span2 -->
+</div>
+<!-- /.row -->
+<div class="row">
+<div class="span10 offset1">
+<hr class="featurette-divider">
+<div class="featurette">
+<h2 class="featurette-heading">Want to join us? <span class="muted">| Contact Dr. Ronan Fleming </span></h2>
+<p ID="contact"> <span style="color: #FFFFFF"; font-size: 16px;> 
+<a href="mailto:ronan.mt.fleming@gmail.com" target="_blank"> E-mail: ronan.mt.fleming@gmail.com </a>
+<br />
+Mobile: +352 621 175 112<br />
+Office: +352 466 644</span><br />
+</span>
+</p>
+<script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
+<div id="SkypeButton_Call_ronan.fleming_1">
+  <script type="text/javascript">
+    Skype.ui({
+      "name": "dropdown",
+      "element": "SkypeButton_Call_ronan.fleming_1",
+      "participants": ["ronan.fleming"],
+      "imageSize": 32
+    });
+  </script>
+</div>
+</p>
+
+</div>
+<!-- /.featurette -->
+<hr class="featurette-divider">
+</div>
+<!-- .span10 -->
+</div>
+<!-- /.row -->
+</div>
+<!-- /.container -->
+</section>
+<!--******************** Contact Section ********************-->
+
+<a name="collaborator"> </a>
+<section id="contact" class="single-page scrollblock">
+<div class="container">
+<div class="align"><em class="icon-group-circled"></em></div>
+<h1>Collaborators</h1>
+<div class="row">
+  <article class="span4 span_center">
+  <a href="http://wwwen.uni.lu/lcsb/research/systems_biochemistry" target="_blank"> <img class="img-news" src="img/sbg.jpg" alt=""> </a>
+  <div class="inside">
+    <h_collaborator> Systems Biochemistry Group (SBG), Luxembourg</h_collaborator>
+    <div class="entry-content">
+      <!--<p class="post-date">since 2015</p>
+                <a href="#" class="more-link">more</a> </div> -->
+    </div>
+    <!-- /.inside -->
     
-
-  </body>
+    <!-- ./span12 -->
+  </div>
+  
+  </article>
+  
+  <article class="span4 span_center">
+  <a href="http://wwwen.uni.lu/lcsb" target="_blank"> <img class="img-news" src="img/collaborator/LCSB.jpg" alt=""> </a>
+  <div class="inside">
+    <h_collaborator> Luxembourg Centre for Systems Biomedicine (LCSB), University of Luxembourg</h_collaborator>
+    <div class="entry-content">
+      <!--<p class="post-date">since 2015</p>
+                <a href="#" class="more-link">more</a> </div> -->
+    </div>
+    <!-- /.inside -->
+    
+    <!-- ./span12 -->
+  </div>
+  
+  </article>
+  
+  <!-- /.row -->
+  
+  <!-- UCSD research group -->
+  <article class="span4 span_center">
+  <a href="http://sbrg.ucsd.edu/" target="_blank"> <img class="img-news" src="img/collaborator/sbrg_2.png" alt=""> </a>
+  <div class="inside">
+    <h_collaborator> Systems Biology Research Group at the University of California, San Diego </h_collaborator>
+    <div class="entry-content"> 
+      <!--<p class="post-date">since 2015</p>
+                <a href="#" class="more-link">more</a> </div> --> 
+    </div>
+    <!-- /.inside -->
+    
+    <!-- ./span12 --> 
+  </div>
+  
+  </article>
+  
+  
+  
+  
+</div>
+<!-- /.container -->
+</section>
+<hr>
+<div class="footer-wrapper">
+  <div class="container">
+    <footer><small>&copy; 2015 Systems Biochemistry Group. All rights reserved.</small><br />
+      <small>Luxembourg Centre for Systems Biomedicine,
+      University of Luxembourg, Luxembourg</small></footer>
+  </div>
+  <!-- ./container -->
+</div>
+<!-- Loading the javaScript at the end of the page -->
+<script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/jquery.prettyPhoto.js"></script>
+<script type="text/javascript" src="js/site.js"></script>
+<div style="display:none">
+  <script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script>
+</div>
+</body>
 </html>
