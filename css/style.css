@@ -251,7 +251,7 @@ em {
 }
 #menu-main {
 	margin-top: 1.125em;
-	margin-bottom: 3em;
+	margin-bottom: 2em;
 }
 ul#menu-main > li > a {
 	font-family: 'Patua One', cursive;
@@ -594,7 +594,8 @@ section#services .span12:hover {
 /* Testimonials */
 
 section#testimonials {
-	height:  800px;
+	min-height: 800px;
+	height:  880px;
 	background: url("../img/yellow_testimonial.png");
 	background-repeat:repeat-x repeat-y;	
 	padding: 0;
