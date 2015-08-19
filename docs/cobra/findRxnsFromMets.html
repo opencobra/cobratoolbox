@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of findRxnsFromMets</title>
+  <meta name="keywords" content="findRxnsFromMets">
+  <meta name="description" content="findRxnsFromMets returns a list of reactions in which at least one">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html cobra -->
+<h1>findRxnsFromMets
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>findRxnsFromMets returns a list of reactions in which at least one</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [rxnList, rxnFormulaList] = findRxnsFromMets(model, metList, verbFlag) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">findRxnsFromMets returns a list of reactions in which at least one
+metabolite listed in metList participates.
+
+ [rxnList, rxnFormulaList] = findRxnsFromMets(model, metList, verbFlag)
+
+INPUTS
+ model             COBRA model structure
+ metList           Metabolite list
+
+OPTIONAL INPUT
+ verbFlag          Print reaction formulas to screen (Default = false)
+
+OUTPUTS
+ rxnList           List of reactions
+ rxnFormulaList    Reaction formulas coresponding to rxnList
+
+Richard Que (08/12/2010)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="printRxnFormula.html" class="code" title="function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)">printRxnFormula</a>	printRxnFormula Print the reaction formulas for a list of reactions</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [rxnList, rxnFormulaList] = findRxnsFromMets(model, metList, verbFlag)</a>
+0002 <span class="comment">%findRxnsFromMets returns a list of reactions in which at least one</span>
+0003 <span class="comment">%metabolite listed in metList participates.</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% [rxnList, rxnFormulaList] = findRxnsFromMets(model, metList, verbFlag)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%INPUTS</span>
+0008 <span class="comment">% model             COBRA model structure</span>
+0009 <span class="comment">% metList           Metabolite list</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">%OPTIONAL INPUT</span>
+0012 <span class="comment">% verbFlag          Print reaction formulas to screen (Default = false)</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">%OUTPUTS</span>
+0015 <span class="comment">% rxnList           List of reactions</span>
+0016 <span class="comment">% rxnFormulaList    Reaction formulas coresponding to rxnList</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%Richard Que (08/12/2010)</span>
+0019 
+0020 <span class="keyword">if</span> nargin &lt; 3 || isempty(verbFlag), verbFlag = false; <span class="keyword">end</span>
+0021 
+0022 <span class="comment">%Find met indicies</span>
+0023 [isMet index] = ismember(metList,model.mets);
+0024 index = index(isMet);
+0025 <span class="comment">%expand rxns list for logical indexing</span>
+0026 rxns = repmat(model.rxns,1,length(index));
+0027 <span class="comment">%find reactions</span>
+0028 rxnList = unique(rxns(model.S(index,:)'~=0));
+0029 <span class="keyword">if</span> nargout &gt; 1
+0030     rxnFormulaList = <a href="printRxnFormula.html" class="code" title="function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)">printRxnFormula</a>(model,rxnList,verbFlag);
+0031 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

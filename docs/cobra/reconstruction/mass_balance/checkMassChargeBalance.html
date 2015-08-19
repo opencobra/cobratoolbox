@@ -1,0 +1,319 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of checkMassChargeBalance</title>
+  <meta name="keywords" content="checkMassChargeBalance">
+  <meta name="description" content="checkMassChargeBalance tests for a list of reactions if these reactions are">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../../menu.html cobra --><!-- ../menu.html reconstruction --><!-- menu.html mass_balance -->
+<h1>checkMassChargeBalance
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>checkMassChargeBalance tests for a list of reactions if these reactions are</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [massImbalance,imBalancedMass,imBalancedCharge,imBalancedBool,Elements] = checkMassChargeBalance(model,rxnBool,printLevel) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">checkMassChargeBalance tests for a list of reactions if these reactions are
+mass-balanced by adding all elements on left hand side and comparing them
+with the sums of elements on the right hand side of the reaction.
+
+ [UnbalancedRxns] = checkMassChargeBalance(model,RxnList)
+
+INPUT
+ model                         COBRA model structure
+
+OPTIONAL INPUT
+ rxnBool       Boolean vector corresponding to reactions in model to be
+               tested. If empty, then all tested.
+               Alternatively, can be the indices of reactions to test:
+               i.e. rxnBool(indixes)=1;
+ printLevel    {-1,(0),1} 
+               -1 = print out diagnostics on problem reactions to a file 
+                0 = silent
+                1 = print out diagnostics on problem reactions to screen
+
+OUTPUTS
+ massImbalance                 nRxn x nElement matrix with mass imblance
+                               for each element checked. 0 if balanced.
+ imBalancedMass                nRxn x 1 cell with charge imbalance
+                               e.g. -3 H means three hydrogens disappear
+                               in the reaction.
+ imBalancedCharge              nRxn x 1 vector with charge imbalance,
+                               empty if no imbalanced reactions
+
+ imbalancedBool                boolean vector indicating imbalanced reactions
+       
+ Elements                      nElement x 1 cell array of element
+                               abbreviations checked 
+ Ines Thiele 12/09
+ IT, 06/10, Corrected some bugs and improved speed.
+ RF, 09/09/10, Support for very large models and printing to file.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../cobra/printRxnFormula.html" class="code" title="function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)">printRxnFormula</a>	printRxnFormula Print the reaction formulas for a list of reactions</li><li><a href="checkBalance.html" class="code" title="function [dE,E]=checkBalance(model,element,printLevel)">checkBalance</a>	Checks whether a set of reactions is elementally balanced.</li><li><a href="findSExRxnInd.html" class="code" title="function model=findSExRxnInd(model,nRealMet)">findSExRxnInd</a>	Returns a model with boolean vectors indicating internal vs exchange/demand/sink reactions.</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [massImbalance,imBalancedMass,imBalancedCharge,imBalancedBool,Elements] = checkMassChargeBalance(model,rxnBool,printLevel)</a>
+0002 <span class="comment">%checkMassChargeBalance tests for a list of reactions if these reactions are</span>
+0003 <span class="comment">%mass-balanced by adding all elements on left hand side and comparing them</span>
+0004 <span class="comment">%with the sums of elements on the right hand side of the reaction.</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% [UnbalancedRxns] = checkMassChargeBalance(model,RxnList)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">%INPUT</span>
+0009 <span class="comment">% model                         COBRA model structure</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">%OPTIONAL INPUT</span>
+0012 <span class="comment">% rxnBool       Boolean vector corresponding to reactions in model to be</span>
+0013 <span class="comment">%               tested. If empty, then all tested.</span>
+0014 <span class="comment">%               Alternatively, can be the indices of reactions to test:</span>
+0015 <span class="comment">%               i.e. rxnBool(indixes)=1;</span>
+0016 <span class="comment">% printLevel    {-1,(0),1}</span>
+0017 <span class="comment">%               -1 = print out diagnostics on problem reactions to a file</span>
+0018 <span class="comment">%                0 = silent</span>
+0019 <span class="comment">%                1 = print out diagnostics on problem reactions to screen</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">%OUTPUTS</span>
+0022 <span class="comment">% massImbalance                 nRxn x nElement matrix with mass imblance</span>
+0023 <span class="comment">%                               for each element checked. 0 if balanced.</span>
+0024 <span class="comment">% imBalancedMass                nRxn x 1 cell with charge imbalance</span>
+0025 <span class="comment">%                               e.g. -3 H means three hydrogens disappear</span>
+0026 <span class="comment">%                               in the reaction.</span>
+0027 <span class="comment">% imBalancedCharge              nRxn x 1 vector with charge imbalance,</span>
+0028 <span class="comment">%                               empty if no imbalanced reactions</span>
+0029 <span class="comment">%</span>
+0030 <span class="comment">% imbalancedBool                boolean vector indicating imbalanced reactions</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">% Elements                      nElement x 1 cell array of element</span>
+0033 <span class="comment">%                               abbreviations checked</span>
+0034 <span class="comment">% Ines Thiele 12/09</span>
+0035 <span class="comment">% IT, 06/10, Corrected some bugs and improved speed.</span>
+0036 <span class="comment">% RF, 09/09/10, Support for very large models and printing to file.</span>
+0037 
+0038 [nMet,nRxn]=size(model.S);
+0039 <span class="keyword">if</span> exist(<span class="string">'rxnBool'</span>,<span class="string">'var'</span>)
+0040     <span class="keyword">if</span> ~isempty(rxnBool)
+0041         <span class="keyword">if</span> length(rxnBool)~=nRxn
+0042             rxnBool2=false(nRxn,1);
+0043             rxnBool2(rxnBool)=1;
+0044             rxnBool=rxnBool2;
+0045         <span class="keyword">end</span>
+0046     <span class="keyword">else</span>
+0047         model=<a href="findSExRxnInd.html" class="code" title="function model=findSExRxnInd(model,nRealMet)">findSExRxnInd</a>(model);
+0048         <span class="comment">%only check mass balance of internal reactions</span>
+0049         rxnBool=model.SIntRxnBool;
+0050     <span class="keyword">end</span>
+0051 <span class="keyword">else</span>
+0052     model=<a href="findSExRxnInd.html" class="code" title="function model=findSExRxnInd(model,nRealMet)">findSExRxnInd</a>(model);
+0053     <span class="comment">%only check mass balance of internal reactions</span>
+0054     rxnBool=model.SIntRxnBool;
+0055 <span class="keyword">end</span>
+0056 <span class="keyword">if</span> ~exist(<span class="string">'printLevel'</span>,<span class="string">'var'</span>)
+0057     printLevel=0;
+0058 <span class="keyword">end</span>
+0059 
+0060 <span class="comment">% List of Elements</span>
+0061 Elements = {<span class="string">'H'</span>,<span class="string">'C'</span>, <span class="string">'O'</span>, <span class="string">'P'</span>, <span class="string">'S'</span>, <span class="string">'N'</span>, <span class="string">'Mg'</span>,<span class="string">'X'</span>,<span class="string">'Fe'</span>,<span class="string">'Zn'</span>,<span class="string">'Co'</span>,<span class="string">'R'</span>};
+0062 
+0063 E=sparse(nMet,length(Elements));
+0064 massImbalance=sparse(nRxn,length(Elements));
+0065 <span class="keyword">for</span> j = 1 : length(Elements)
+0066     <span class="keyword">if</span> j==1
+0067         [dE,E_el]=<a href="checkBalance.html" class="code" title="function [dE,E]=checkBalance(model,element,printLevel)">checkBalance</a>(model,Elements{j},printLevel);
+0068         massImbalance(:,j)=dE;
+0069         E(:,j)=E_el;
+0070         fprintf(<span class="string">'%s\n'</span>,[<span class="string">'Checked element '</span> Elements{j}]);  
+0071     <span class="keyword">else</span>
+0072         <span class="comment">%no need to print out for each element which metabolites have no</span>
+0073         <span class="comment">%formula</span>
+0074         [massImbalance(:,j),E(:,j)]=<a href="checkBalance.html" class="code" title="function [dE,E]=checkBalance(model,element,printLevel)">checkBalance</a>(model,Elements{j},0);
+0075         fprintf(<span class="string">'%s\n'</span>,[<span class="string">'Checking element '</span> Elements{j}]);
+0076     <span class="keyword">end</span>
+0077 <span class="keyword">end</span>
+0078 massImbalance(~rxnBool,:)=0;
+0079 imBalancedBool=sum(abs(massImbalance'))'~=0;
+0080 
+0081 imBalancedBool=rxnBool &amp; imBalancedBool;
+0082 
+0083 imBalancedMass=cell(nRxn,1);
+0084 <span class="keyword">for</span> i = 1 : nRxn
+0085     imBalancedMass{i,1}=<span class="string">''</span>;   
+0086     <span class="keyword">if</span> imBalancedBool(i)
+0087         <span class="keyword">for</span> j = 1 : length(Elements)
+0088             <span class="keyword">if</span> massImbalance(i,j)~=0
+0089                 <span class="keyword">if</span> ~strcmp(imBalancedMass{i,1},<span class="string">''</span>)
+0090                     imBalancedMass{i,1} = [imBalancedMass{i,1} <span class="string">', '</span> int2str(massImbalance(i,j)) <span class="string">' '</span> Elements{j}];
+0091                 <span class="keyword">else</span>
+0092                     imBalancedMass{i,1} = [int2str(massImbalance(i,j)) <span class="string">' '</span> Elements{j}];
+0093                 <span class="keyword">end</span>
+0094             <span class="keyword">end</span>
+0095             
+0096         <span class="keyword">end</span>
+0097         <span class="keyword">if</span> strfind(imBalancedMass{i,1},<span class="string">'NaN'</span>)
+0098             imBalancedMass{i,1}=<span class="string">'NaN'</span>;
+0099         <span class="keyword">end</span>
+0100     <span class="keyword">end</span>
+0101     <span class="keyword">if</span> mod(i,1000)==0
+0102         fprintf(<span class="string">'%n\t%s\n'</span>,i,[<span class="string">'reactions checked for '</span> Elements{j} <span class="string">' balance'</span>]);
+0103     <span class="keyword">end</span>
+0104 <span class="keyword">end</span>
+0105 <span class="keyword">if</span> printLevel==-1
+0106     firstMissing=0;
+0107     <span class="keyword">for</span> p=1:nRxn
+0108         <span class="keyword">if</span> ~strcmp(imBalancedMass{p,1},<span class="string">''</span>)
+0109             <span class="comment">%at the moment, ignore reactions with a metabolite that have</span>
+0110             <span class="comment">%no formula</span>
+0111             <span class="keyword">if</span> ~strcmp(imBalancedMass{p,1},<span class="string">'NaN'</span>)
+0112                 <span class="keyword">if</span> ~firstMissing
+0113                     fid=fopen(<span class="string">'mass_imbalanced_reactions.txt'</span>,<span class="string">'w'</span>);
+0114                     fprintf(fid,<span class="string">'%s;%s;%s;%s\n'</span>,<span class="string">'#Rxn'</span>,<span class="string">'rxnAbbr'</span>,<span class="string">'imbalance'</span>,<span class="string">'equation'</span>);
+0115 
+0116                     warning(<span class="string">'There are mass imbalanced reactions, see mass_imbalanced_reactions.txt'</span>)
+0117                     firstMissing=1;
+0118                 <span class="keyword">end</span>
+0119                 equation=<a href="../../../cobra/printRxnFormula.html" class="code" title="function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)">printRxnFormula</a>(model,model.rxns(p),0);
+0120                 fprintf(fid,<span class="string">'%s;%s;%s;%s\n'</span>,int2str(p),model.rxns{p},imBalancedMass{p,1},equation{1});
+0121                 <span class="keyword">for</span> m=1:size(model.S,1)
+0122                     <span class="keyword">if</span> model.S(m,p)~=0
+0123                         fprintf(fid,<span class="string">'%s\t%s\t%s\t%s\t%s\n'</span>,int2str(m),model.mets{m},int2str(model.S(m,p)),int2str(E(m)),model.metFormulas{m});
+0124                     <span class="keyword">end</span>
+0125                 <span class="keyword">end</span>
+0126             <span class="keyword">end</span>
+0127         <span class="keyword">end</span>
+0128     <span class="keyword">end</span>
+0129     <span class="keyword">if</span> firstMissing
+0130         fclose(fid);
+0131     <span class="keyword">end</span>
+0132 <span class="keyword">end</span>
+0133 <span class="keyword">if</span> printLevel==1
+0134     <span class="keyword">for</span> p=1:nRxn
+0135         <span class="keyword">if</span> ~strcmp(imBalancedMass{p,1},<span class="string">''</span>)
+0136             <span class="comment">%at the moment, ignore reactions with a metabolite that have</span>
+0137             <span class="comment">%no formula</span>
+0138             <span class="keyword">if</span> ~strcmp(imBalancedMass{p,1},<span class="string">'NaN'</span>)
+0139                 equation=<a href="../../../cobra/printRxnFormula.html" class="code" title="function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)">printRxnFormula</a>(model,model.rxns(p),0);
+0140                 fprintf(<span class="string">'%6s\t%30s\t%10s\t%s\n'</span>,int2str(p),model.rxns{p},imBalancedMass{p,1},equation{1});
+0141                 <span class="keyword">if</span> 0
+0142                 <span class="keyword">for</span> m=1:size(model.S,1)
+0143                     <span class="keyword">if</span> model.S(m,p)~=0
+0144                         fprintf(fid,<span class="string">'%s\t%s\t%s\t%s\t%s\n'</span>,int2str(m),model.mets{m},int2str(model.S(m,p)),int2str(E(m)),model.metFormulas{m});
+0145                     <span class="keyword">end</span>
+0146                 <span class="keyword">end</span>
+0147                 <span class="keyword">end</span>
+0148             <span class="keyword">end</span>
+0149         <span class="keyword">end</span>
+0150     <span class="keyword">end</span>
+0151 <span class="keyword">end</span>
+0152 
+0153 <span class="comment">%</span>
+0154 <span class="keyword">if</span> nnz(strcmp(<span class="string">''</span>,imBalancedMass))==nRxn
+0155     imBalancedMass=[];
+0156 <span class="keyword">end</span>
+0157 
+0158 <span class="comment">% Check for charge balance</span>
+0159 imBalancedCharge=[];
+0160 firstMissing=0;
+0161 <span class="keyword">if</span> isfield(model, <span class="string">'metCharges'</span>)
+0162     <span class="keyword">for</span> m=1:nMet
+0163         <span class="keyword">if</span> isnan(model.metCharges(m)) &amp;&amp; ~isempty(model.metFormulas{m})
+0164             <span class="keyword">if</span> printLevel==1
+0165                 fprintf(<span class="string">'%s\t%s\n'</span>,int2str(m),[model.mets{m} <span class="string">' has no charge but has formula.'</span>])
+0166                 <span class="keyword">if</span> ~firstMissing
+0167                     warning(<span class="string">'model structure must contain model.metCharges field for each metabolite'</span>);
+0168                 <span class="keyword">end</span>
+0169                 firstMissing=1;
+0170             <span class="keyword">end</span>
+0171             <span class="keyword">if</span> printLevel==-1
+0172                 <span class="keyword">if</span> ~firstMissing
+0173                     fid=fopen(<span class="string">'metabolites_without_charge.txt'</span>,<span class="string">'w'</span>);
+0174                 <span class="keyword">end</span>
+0175                 firstMissing=1;
+0176                 fprintf(fid,<span class="string">'%s\t%s\n'</span>,int2str(m),model.mets{m})
+0177             <span class="keyword">end</span>
+0178         <span class="keyword">else</span>
+0179             dC=model.S'*model.metCharges;
+0180         <span class="keyword">end</span>
+0181     <span class="keyword">end</span>
+0182     <span class="keyword">if</span> any(dC(rxnBool))~=0
+0183         imBalancedCharge=dC;
+0184         imBalancedCharge(~rxnBool)=0;
+0185     <span class="keyword">else</span>
+0186         imBalancedCharge=[];
+0187     <span class="keyword">end</span>
+0188 <span class="keyword">end</span>
+0189 
+0190 <span class="keyword">if</span> printLevel==-1
+0191     firstMissing=0;
+0192     <span class="keyword">if</span> ~isempty(imBalancedCharge)
+0193         <span class="keyword">for</span> q=1:nRxn
+0194             <span class="keyword">if</span> model.SIntRxnBool(q) &amp;&amp; dC(q)~=0 &amp;&amp; strcmp(imBalancedMass{p,1},<span class="string">''</span>)
+0195                 <span class="keyword">if</span> ~firstMissing
+0196                     fid=fopen(<span class="string">'charge_imbalanced_reactions.txt'</span>,<span class="string">'w'</span>);
+0197                     warning(<span class="string">'There are charged imbalanced reactions (that are mass balanced), see charge_imbalanced_reactions.txt'</span>)
+0198                     firstMissing=1;
+0199                 <span class="keyword">end</span>
+0200                 equation=<a href="../../../cobra/printRxnFormula.html" class="code" title="function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)">printRxnFormula</a>(model,model.rxns(q),0);
+0201                 fprintf(fid,<span class="string">'%s\t%s\t%s\n'</span>,int2str(q),model.rxns{q},equation{1});
+0202                 <span class="keyword">if</span> 0
+0203                     <span class="keyword">for</span> m=1:size(model.S,1)
+0204                         <span class="keyword">if</span> model.S(m,q)~=0
+0205                             fprintf(fid,<span class="string">'%s\t%15s\t%3s\t%3s\t%s\n'</span>,int2str(m),model.mets{m},int2str(model.S(m,q)),int2str(model.metCharges(m)),model.metFormulas{m});
+0206                         <span class="keyword">end</span>
+0207                     <span class="keyword">end</span>
+0208                 <span class="keyword">end</span>
+0209             <span class="keyword">end</span>
+0210         <span class="keyword">end</span>
+0211         <span class="keyword">if</span> firstMissing
+0212             fclose(fid);
+0213         <span class="keyword">end</span>
+0214     <span class="keyword">end</span>
+0215 <span class="keyword">end</span>
+0216 
+0217 <span class="keyword">if</span> printLevel==1
+0218     <span class="keyword">if</span> ~isempty(imBalancedCharge)
+0219         fprintf(<span class="string">'%s\n'</span>,<span class="string">'Mass balanced, but charged imbalanced reactions:'</span>)
+0220         <span class="keyword">for</span> q=1:nRxn
+0221             <span class="keyword">if</span> model.SIntRxnBool(q) &amp;&amp; dC(q)~=0 &amp;&amp; strcmp(imBalancedMass{p,1},<span class="string">''</span>)
+0222                 equation=<a href="../../../cobra/printRxnFormula.html" class="code" title="function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)">printRxnFormula</a>(model,model.rxns(q),0);
+0223                 fprintf(<span class="string">'%s\t%s\t%s\n'</span>,int2str(q),model.rxns{q},equation{1});
+0224                 <span class="keyword">if</span> 1
+0225                     <span class="keyword">for</span> m=1:size(model.S,1)
+0226                         <span class="keyword">if</span> model.S(m,q)~=0
+0227                             fprintf(<span class="string">'%s\t%15s\t%3s\t%3s\t%s\n'</span>,int2str(m),model.mets{m},int2str(model.S(m,q)),int2str(model.metCharges(m)),model.metFormulas{m});
+0228                         <span class="keyword">end</span>
+0229                     <span class="keyword">end</span>
+0230                 <span class="keyword">end</span>
+0231             <span class="keyword">end</span>
+0232         <span class="keyword">end</span>
+0233     <span class="keyword">end</span>
+0234 <span class="keyword">end</span>
+0235 
+0236 <span class="keyword">if</span> ~isempty(imBalancedCharge)
+0237     imBalancedBool = imBalancedBool |  imBalancedCharge~=0;
+0238 <span class="keyword">end</span>
+0239 
+0240 
+0241 
+0242 
+0243</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

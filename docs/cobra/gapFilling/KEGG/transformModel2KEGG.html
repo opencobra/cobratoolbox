@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of transformModel2KEGG</title>
+  <meta name="keywords" content="transformModel2KEGG">
+  <meta name="description" content="transformModel2KEGG replaces model.mets with model.KEGGID; if no KEGGID">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../../menu.html cobra --><!-- ../menu.html gapFilling --><!-- menu.html KEGG -->
+<h1>transformModel2KEGG
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>transformModel2KEGG replaces model.mets with model.KEGGID; if no KEGGID</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function modelKEGG = transformModel2KEGG(model,Dictionary) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">transformModel2KEGG replaces model.mets with model.KEGGID; if no KEGGID
+ defined, the empty cell will be replaced with metabolite abreviation
+
+   modelKEGG = transformModel2KEGG(model,CompAbr, KEGGID)
+
+ model      model structure
+ CompAbr    List of compounds abreviation (non-compartelized)
+ KEGGID     List of KEGGIDs for compounds in CompAbr
+
+ 11-09-07 IT</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="mapKEGGID2Model.html" class="code" title="function model = mapKEGGID2Model(model,Dictionary)">mapKEGGID2Model</a>	this function matches the compound abreviation in model and from CompAbr</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function modelKEGG = transformModel2KEGG(model,Dictionary)</a>
+0002 <span class="comment">%transformModel2KEGG replaces model.mets with model.KEGGID; if no KEGGID</span>
+0003 <span class="comment">% defined, the empty cell will be replaced with metabolite abreviation</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">%   modelKEGG = transformModel2KEGG(model,CompAbr, KEGGID)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% model      model structure</span>
+0008 <span class="comment">% CompAbr    List of compounds abreviation (non-compartelized)</span>
+0009 <span class="comment">% KEGGID     List of KEGGIDs for compounds in CompAbr</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% 11-09-07 IT</span>
+0012 
+0013 <span class="keyword">if</span> (nargin == 3)
+0014     modelKEGG = <a href="mapKEGGID2Model.html" class="code" title="function model = mapKEGGID2Model(model,Dictionary)">mapKEGGID2Model</a>(model, Dictionary);
+0015 <span class="keyword">elseif</span>(nargin == 2)
+0016     warning(<span class="string">'missing data'</span>);
+0017 <span class="keyword">elseif</span>(nargin ==1)
+0018     modelKEGG = model;
+0019 <span class="keyword">end</span>
+0020 
+0021 modelKEGG.metsAbr = modelKEGG.mets;
+0022 modelKEGG.mets = modelKEGG.KEGGID;
+0023 
+0024 <span class="keyword">for</span> i = 1: length(modelKEGG.metsAbr)
+0025     <span class="keyword">if</span> (isempty(modelKEGG.mets{i}))
+0026         modelKEGG.mets(i)=modelKEGG.metsAbr(i);
+0027     <span class="keyword">end</span>
+0028 <span class="keyword">end</span>
+0029</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

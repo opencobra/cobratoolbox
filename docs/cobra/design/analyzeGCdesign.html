@@ -1,0 +1,281 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of analyzeGCdesign</title>
+  <meta name="keywords" content="analyzeGCdesign">
+  <meta name="description" content="analyzeGCdesign Analyze results with replacement knockouts">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html design -->
+<h1>analyzeGCdesign
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>analyzeGCdesign Analyze results with replacement knockouts</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [improvedRxns,intermediateSlns] = analyzeGCdesign(modelRed,selectedRxns,target,deletions,maxKOs,objFunction,delPenalty,intermediateSlns) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">analyzeGCdesign Analyze results with replacement knockouts
+should get closer to local maxima.  must have num KOs &gt; 1
+
+ [improvedRxns,intermediateSlns] = analyzeGCdesign(modelRed,selectedRxns,target,deletions,maxKOs,objFunction,delPenalty,intermediateSlns)
+
+INPUTS
+ modelRed          reduced model
+ selectedRxns      selected reaction list from the reduced model
+ target            exchange rxn to optimize
+ deletions         initial set of KO rxns (must have at least 1 rxn)
+
+OPTIONAL INPUTS
+ maxKOs            maximum number of rxn KOs to allow (Default = 10)
+ objFunction       pick an objective function to use (Default = 1):
+                      1: obj = maxRate (yield)
+                      2: obj = growth*maxRate (SSP)
+                      3: obj = maxRate*(delPenalty^numDels) (yield with KO penalty)
+                      4: obj = growth*maxRate*(delPenalty^numDels)  (SSP with KO penalty)
+                      5: obj = maxRate*(slope^(-1))  (GC_yield)
+                      6: obj = growth*maxRate*(slope^(-1))  (GC_SSP)
+                      7: obj = maxRate*(delPenalty^numDels)*(slope^(-1)) (GC_yield with KO penalty)
+                      8: obj = growth*maxRate*(delPenalty^numDels)*(slope^(-1))  (GC_SSP with KO penalty)
+ delPenalty        penalty on extra rxn deletions (Default = .99)
+ intermediateSlns  Previous set of solutions (Default = deletions)
+
+OUTPUTS
+ improvedRxns      the KO rxns for an improved strain
+ intermediateSlns  all the sets of best KO rxns that are picked before the
+                   final set is reached
+
+ Jeff Orth  7/25/07
+ Richard Que 1/19/10       Replaced try/catch blocks</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/changeObjective.html" class="code" title="function model = changeObjective(model,rxnNameList,objectiveCoeff)">changeObjective</a>	changeObjective Changes the objective function of a constraint-based model</li><li><a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>	changeRxnBounds Change upper or lower bounds of a reaction or a set of</li><li><a href="analyzeGCdesign.html" class="code" title="function [improvedRxns,intermediateSlns] = analyzeGCdesign(modelRed,selectedRxns,target,deletions,maxKOs,objFunction,delPenalty,intermediateSlns)">analyzeGCdesign</a>	analyzeGCdesign Analyze results with replacement knockouts</li><li><a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>	optimizeCbModel Solve a flux balance analysis problem</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="analyzeGCdesign.html" class="code" title="function [improvedRxns,intermediateSlns] = analyzeGCdesign(modelRed,selectedRxns,target,deletions,maxKOs,objFunction,delPenalty,intermediateSlns)">analyzeGCdesign</a>	analyzeGCdesign Analyze results with replacement knockouts</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [improvedRxns,intermediateSlns] = analyzeGCdesign(modelRed,selectedRxns,target,deletions,maxKOs,objFunction,delPenalty,intermediateSlns)</a>
+0002 <span class="comment">%analyzeGCdesign Analyze results with replacement knockouts</span>
+0003 <span class="comment">%should get closer to local maxima.  must have num KOs &gt; 1</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% [improvedRxns,intermediateSlns] = analyzeGCdesign(modelRed,selectedRxns,target,deletions,maxKOs,objFunction,delPenalty,intermediateSlns)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%INPUTS</span>
+0008 <span class="comment">% modelRed          reduced model</span>
+0009 <span class="comment">% selectedRxns      selected reaction list from the reduced model</span>
+0010 <span class="comment">% target            exchange rxn to optimize</span>
+0011 <span class="comment">% deletions         initial set of KO rxns (must have at least 1 rxn)</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%OPTIONAL INPUTS</span>
+0014 <span class="comment">% maxKOs            maximum number of rxn KOs to allow (Default = 10)</span>
+0015 <span class="comment">% objFunction       pick an objective function to use (Default = 1):</span>
+0016 <span class="comment">%                      1: obj = maxRate (yield)</span>
+0017 <span class="comment">%                      2: obj = growth*maxRate (SSP)</span>
+0018 <span class="comment">%                      3: obj = maxRate*(delPenalty^numDels) (yield with KO penalty)</span>
+0019 <span class="comment">%                      4: obj = growth*maxRate*(delPenalty^numDels)  (SSP with KO penalty)</span>
+0020 <span class="comment">%                      5: obj = maxRate*(slope^(-1))  (GC_yield)</span>
+0021 <span class="comment">%                      6: obj = growth*maxRate*(slope^(-1))  (GC_SSP)</span>
+0022 <span class="comment">%                      7: obj = maxRate*(delPenalty^numDels)*(slope^(-1)) (GC_yield with KO penalty)</span>
+0023 <span class="comment">%                      8: obj = growth*maxRate*(delPenalty^numDels)*(slope^(-1))  (GC_SSP with KO penalty)</span>
+0024 <span class="comment">% delPenalty        penalty on extra rxn deletions (Default = .99)</span>
+0025 <span class="comment">% intermediateSlns  Previous set of solutions (Default = deletions)</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">%OUTPUTS</span>
+0028 <span class="comment">% improvedRxns      the KO rxns for an improved strain</span>
+0029 <span class="comment">% intermediateSlns  all the sets of best KO rxns that are picked before the</span>
+0030 <span class="comment">%                   final set is reached</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">% Jeff Orth  7/25/07</span>
+0033 <span class="comment">% Richard Que 1/19/10       Replaced try/catch blocks</span>
+0034 
+0035 <span class="keyword">if</span> (nargin &lt; 5)
+0036     maxKOs = 10;
+0037 <span class="keyword">end</span>
+0038 <span class="keyword">if</span> (nargin &lt; 6)
+0039     objFunction = 1;
+0040 <span class="keyword">end</span>
+0041 <span class="keyword">if</span> (nargin &lt; 7)
+0042     delPenalty = .99;
+0043 <span class="keyword">end</span>
+0044 <span class="keyword">if</span> (nargin &lt; 8)
+0045     intermediateSlns = {deletions};
+0046 <span class="keyword">end</span>
+0047 
+0048 <span class="comment">%set the objective function</span>
+0049 <span class="keyword">switch</span> objFunction
+0050     <span class="keyword">case</span> 1
+0051         objectiveFunction = <span class="string">'maxRate'</span>;
+0052         hasSlope = false;
+0053     <span class="keyword">case</span> 2
+0054         objectiveFunction = <span class="string">'growth*maxRate'</span>;
+0055         hasSlope = false;
+0056     <span class="keyword">case</span> 3
+0057         objectiveFunction = <span class="string">'maxRate*(delPenalty^numDels)'</span>;
+0058         hasSlope = false;
+0059     <span class="keyword">case</span> 4
+0060         objectiveFunction = <span class="string">'growth*maxRate*(delPenalty^numDels)'</span>;
+0061         hasSlope = false;
+0062     <span class="keyword">case</span> 5
+0063         objectiveFunction = <span class="string">'maxRate*(slope^(-1))'</span>;
+0064         hasSlope = true;
+0065     <span class="keyword">case</span> 6
+0066         objectiveFunction = <span class="string">'growth*maxRate*(slope^(-1))'</span>;
+0067         hasSlope = true;
+0068     <span class="keyword">case</span> 7
+0069         objectiveFunction = <span class="string">'maxRate*(delPenalty^numDels)*(slope^(-1))'</span>;
+0070         hasSlope = true;
+0071     <span class="keyword">case</span> 8
+0072         objectiveFunction = <span class="string">'growth*maxRate*(delPenalty^numDels)*(slope^(-1))'</span>;
+0073         hasSlope = true;
+0074 <span class="keyword">end</span>
+0075 
+0076 <span class="keyword">if</span> isempty(deletions)
+0077     error(<span class="string">'no knockout reactions defined'</span>)
+0078 <span class="keyword">end</span>
+0079 
+0080 delArraySize = size(deletions); <span class="comment">%make sure deletions list is horizontal</span>
+0081 <span class="keyword">if</span> delArraySize(1) &gt; 1
+0082     rxns = deletions';
+0083 <span class="keyword">else</span>
+0084     rxns = deletions;
+0085 <span class="keyword">end</span>
+0086 
+0087 BOF = modelRed.rxns(modelRed.c==1); <span class="comment">%get biomass objective function</span>
+0088 
+0089 
+0090 modelKO = <a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>(modelRed,rxns,0,<span class="string">'b'</span>);
+0091 FBAsol1 = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelKO,<span class="string">'max'</span>,true); <span class="comment">%find max growth rate of strain</span>
+0092 <span class="keyword">if</span> FBAsol1.stat&gt;0
+0093     modelKOfixed = <a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>(modelKO,BOF,FBAsol1.f-1e-6,<span class="string">'l'</span>); <span class="comment">%fix the growth rate</span>
+0094     modelKOfixed = <a href="../../cobra/changeObjective.html" class="code" title="function model = changeObjective(model,rxnNameList,objectiveCoeff)">changeObjective</a>(modelKOfixed,target); <span class="comment">%set target as the objective</span>
+0095     FBAsol2 = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelKOfixed,<span class="string">'min'</span>,true); <span class="comment">%find minimum target rate at this growth rate</span>
+0096     growth = FBAsol1.f;
+0097     maxRate = FBAsol2.f;
+0098     numDels = length(rxns);
+0099     
+0100     <span class="keyword">if</span> hasSlope <span class="comment">%only calculate these if the obj function includes slope</span>
+0101         modelTarget = <a href="../../cobra/changeObjective.html" class="code" title="function model = changeObjective(model,rxnNameList,objectiveCoeff)">changeObjective</a>(modelKO,target); <span class="comment">%set target as the objective</span>
+0102         FBAsol4 = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelTarget,<span class="string">'min'</span>,true); <span class="comment">%find min production rate</span>
+0103         modelTargetFixed = <a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>(modelKO,target,FBAsol4.f,<span class="string">'b'</span>); <span class="comment">%fix production to minimum</span>
+0104         FBAsol5 = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelTargetFixed,<span class="string">'max'</span>,true); <span class="comment">%find max growth at min production</span>
+0105         minProdRate = FBAsol4.f;
+0106         maxGrowthMinRate = FBAsol5.f;
+0107         
+0108         <span class="keyword">if</span> growth ~= maxGrowthMinRate
+0109             slope = (maxRate-minProdRate)/(growth-maxGrowthMinRate);
+0110         <span class="keyword">else</span>
+0111             slope = 1; <span class="comment">%don't consider slope if div by 0</span>
+0112         <span class="keyword">end</span>
+0113     <span class="keyword">end</span>
+0114     
+0115     objective = eval(objectiveFunction);
+0116     
+0117     bestObjective = objective
+0118     bestRxns = rxns;
+0119     <span class="comment">% if the initial reactions are lethal</span>
+0120 <span class="keyword">else</span>
+0121     bestObjective = 0
+0122     bestRxns = rxns;
+0123 <span class="keyword">end</span>
+0124 
+0125 <span class="comment">% loop through each KO rxn and replace with every rxn from selectedRxns to</span>
+0126 <span class="comment">% search for a possible improvement</span>
+0127 h = waitbar(0,<span class="string">'improving knockout design'</span>);
+0128 <span class="keyword">for</span> i = 1:length(rxns)+1
+0129     bestObjective2 = bestObjective;
+0130     bestRxns2 = bestRxns;
+0131     <span class="keyword">for</span> j = 1:length(selectedRxns)+1
+0132         waitbar((j+(i-1)*length(selectedRxns))/((length(rxns)+1)*(length(selectedRxns)+1)),h);
+0133         newRxns = rxns;
+0134         <span class="keyword">if</span> (i==length(rxns)+1)&amp;&amp;(j==length(selectedRxns)+1)
+0135             <span class="comment">%don't do anything at the very end</span>
+0136         <span class="keyword">elseif</span> j ~= length(selectedRxns)+1
+0137             newRxns{i} = selectedRxns{j}; <span class="comment">%replace rxn with different one</span>
+0138         <span class="keyword">elseif</span> i == 1 <span class="comment">%or else remove one of the rxns</span>
+0139             newRxns = rxns(2:length(rxns));
+0140         <span class="keyword">elseif</span> i == length(rxns)
+0141             newRxns = rxns(1:length(rxns)-1);
+0142         <span class="keyword">else</span>
+0143             newRxns = cat(2,rxns(1:i-1),rxns(i+1:length(rxns)));
+0144         <span class="keyword">end</span>
+0145         
+0146         <span class="keyword">if</span> length(newRxns) &lt;= maxKOs <span class="comment">%limit the total number of knockouts</span>
+0147             
+0148             modelKO = <a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>(modelRed,newRxns,0,<span class="string">'b'</span>);
+0149             FBAsol1 = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelKO,<span class="string">'max'</span>,true); <span class="comment">%find max growth rate of strain</span>
+0150             <span class="keyword">if</span> FBAsol1.stat&gt;0
+0151                 modelKOfixed = <a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>(modelKO,BOF,FBAsol1.f-1e-6,<span class="string">'l'</span>); <span class="comment">%fix the growth rate</span>
+0152                 modelKOfixed = <a href="../../cobra/changeObjective.html" class="code" title="function model = changeObjective(model,rxnNameList,objectiveCoeff)">changeObjective</a>(modelKOfixed,target); <span class="comment">%set target as the objective</span>
+0153                 FBAsol2 = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelKOfixed,<span class="string">'min'</span>,true); <span class="comment">%find minimum target rate at this growth rate</span>
+0154                 FBAsol3 = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelKOfixed,<span class="string">'max'</span>,true); <span class="comment">%find maximum target rate at this growth rate</span>
+0155                 growth = FBAsol1.f;
+0156                 maxRate = FBAsol2.f;
+0157                 numDels = length(newRxns);
+0158                 
+0159                 <span class="keyword">if</span> hasSlope <span class="comment">%only calculate these if the obj function includes slope</span>
+0160                     modelTarget = <a href="../../cobra/changeObjective.html" class="code" title="function model = changeObjective(model,rxnNameList,objectiveCoeff)">changeObjective</a>(modelKO,target); <span class="comment">%set target as the objective</span>
+0161                     FBAsol4 = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelTarget,<span class="string">'min'</span>,true); <span class="comment">%find min production rate</span>
+0162                     modelTargetFixed = <a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>(modelKO,target,FBAsol4.f,<span class="string">'b'</span>); <span class="comment">%fix production to minimum</span>
+0163                     FBAsol5 = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelTargetFixed,<span class="string">'max'</span>,true); <span class="comment">%find max growth at min production</span>
+0164                     minProdRate = FBAsol4.f;
+0165                     maxGrowthMinRate = FBAsol5.f;
+0166                     
+0167                     <span class="keyword">if</span> growth ~= maxGrowthMinRate
+0168                         slope = (maxRate-minProdRate)/(growth-maxGrowthMinRate);
+0169                     <span class="keyword">else</span>
+0170                         slope = 1; <span class="comment">%don't consider slope if div by 0</span>
+0171                     <span class="keyword">end</span>
+0172                 <span class="keyword">end</span>
+0173                 
+0174                 newObjective = eval(objectiveFunction);
+0175                 
+0176                 <span class="comment">%see if objective is increased by this new gene</span>
+0177                 <span class="keyword">if</span> newObjective &gt; bestObjective2
+0178                     bestObjective2 = newObjective
+0179                     bestRxns2 = newRxns
+0180                     intermediateSlns{length(intermediateSlns)+1} = bestRxns2; <span class="comment">%add new intermediateSln to the list</span>
+0181                 <span class="keyword">end</span>
+0182             <span class="keyword">end</span>
+0183         <span class="keyword">end</span>
+0184     <span class="keyword">end</span>
+0185     
+0186     <span class="keyword">if</span> bestObjective2 &gt; bestObjective
+0187         bestObjective = bestObjective2
+0188         bestRxns = bestRxns2
+0189     <span class="keyword">end</span>
+0190 <span class="keyword">end</span>
+0191 close(h);
+0192 
+0193 bestObjective
+0194 bestRxns
+0195 
+0196 <span class="comment">% recursively call analyzeGCdesign again until no improvement is found</span>
+0197 <span class="keyword">if</span> length(bestRxns) ~= length(rxns)
+0198     [bestRxns,intermediateSlns] = <a href="analyzeGCdesign.html" class="code" title="function [improvedRxns,intermediateSlns] = analyzeGCdesign(modelRed,selectedRxns,target,deletions,maxKOs,objFunction,delPenalty,intermediateSlns)">analyzeGCdesign</a>(modelRed,selectedRxns,target,bestRxns,maxKOs,objFunction,delPenalty,intermediateSlns);
+0199 <span class="keyword">elseif</span> length(find(strcmp(bestRxns,rxns)))~=length(rxns)
+0200     [bestRxns,intermediateSlns] = <a href="analyzeGCdesign.html" class="code" title="function [improvedRxns,intermediateSlns] = analyzeGCdesign(modelRed,selectedRxns,target,deletions,maxKOs,objFunction,delPenalty,intermediateSlns)">analyzeGCdesign</a>(modelRed,selectedRxns,target,bestRxns,maxKOs,objFunction,delPenalty,intermediateSlns);
+0201 <span class="keyword">end</span>
+0202 
+0203 <span class="comment">% print final results</span>
+0204 improvedRxns = sort(bestRxns)
+0205 
+0206 
+0207 
+0208</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

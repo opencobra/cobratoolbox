@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of findBlockedReaction</title>
+  <meta name="keywords" content="findBlockedReaction">
+  <meta name="description" content="findBlockedReaction determines those reactions which cannot carry any">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html cobra -->
+<h1>findBlockedReaction
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>findBlockedReaction determines those reactions which cannot carry any</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function blockedReactions = findBlockedReaction(model) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">findBlockedReaction determines those reactions which cannot carry any 
+flux in the given simulation conditions.
+
+ BlockedReaction = findBlockedReaction(model)
+
+INPUT
+ model              COBRA model structure
+
+OUTPUT
+ blockedReactions   List of blocked reactions
+
+
+ Ines Thiele 02/09</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="fluxVariability.html" class="code" title="function [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,optPercentage,osenseStr,rxnNameList,verbFlag, allowLoops)">fluxVariability</a>	fluxVariability Performs flux variablity analysis</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function blockedReactions = findBlockedReaction(model)</a>
+0002 <span class="comment">%findBlockedReaction determines those reactions which cannot carry any</span>
+0003 <span class="comment">%flux in the given simulation conditions.</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% BlockedReaction = findBlockedReaction(model)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%INPUT</span>
+0008 <span class="comment">% model              COBRA model structure</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">%OUTPUT</span>
+0011 <span class="comment">% blockedReactions   List of blocked reactions</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% Ines Thiele 02/09</span>
+0015 
+0016 
+0017 tol = 1e-10;
+0018 blockedReactions =[];
+0019 [minMax(:,1),minMax(:,2)] = <a href="fluxVariability.html" class="code" title="function [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,optPercentage,osenseStr,rxnNameList,verbFlag, allowLoops)">fluxVariability</a>(model,0);
+0020 cnt = 1;
+0021 <span class="keyword">for</span> i=1:length(minMax)
+0022     <span class="keyword">if</span> (minMax(i,2) &lt; tol &amp;&amp; minMax(i,2) &gt; -tol &amp;&amp; minMax(i,1) &lt; tol &amp;&amp; minMax(i,1) &gt; -tol)
+0023         blockedReactions(cnt) = model.rxns(i);
+0024         cnt = cnt + 1;
+0025     <span class="keyword">end</span>
+0026 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

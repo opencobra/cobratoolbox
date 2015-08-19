@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of translateList</title>
+  <meta name="keywords" content="translateList">
+  <meta name="description" content="translateList Translate a list of identifiers (either numerical or cell">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html tools -->
+<h1>translateList
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>translateList Translate a list of identifiers (either numerical or cell</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function list = translateList(list,trList1,trList2) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">translateList Translate a list of identifiers (either numerical or cell
+array) using a dictionary
+
+ list = translateList(list,trList1,trList2)
+
+ Usage:
+
+ Define original list
+
+ list = {'a','b','c'}
+
+ Define dictionary
+
+ trList1 = {'b','c'} 
+ trList2 = {'B','C'}
+
+ newList = translateList(list,trList1,trList2);
+ 
+ returns
+
+ newList = {'a','B','C'};
+
+ Markus Herrgard 8/17/06</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function list = translateList(list,trList1,trList2)</a>
+0002 <span class="comment">%translateList Translate a list of identifiers (either numerical or cell</span>
+0003 <span class="comment">%array) using a dictionary</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% list = translateList(list,trList1,trList2)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% Usage:</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% Define original list</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% list = {'a','b','c'}</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% Define dictionary</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% trList1 = {'b','c'}</span>
+0016 <span class="comment">% trList2 = {'B','C'}</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% newList = translateList(list,trList1,trList2);</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% returns</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">% newList = {'a','B','C'};</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">% Markus Herrgard 8/17/06</span>
+0025 
+0026 [isInList,listInd] = ismember(list,trList1);
+0027 
+0028 list(isInList) = trList2(listInd(listInd ~= 0));</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

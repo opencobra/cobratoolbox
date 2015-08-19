@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of calcMDVfromSamp</title>
+  <meta name="keywords" content="calcMDVfromSamp">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html fluxomics -->
+<h1>calcMDVfromSamp
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [output] = calcMDVfromSamp(glc,points,experiment) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="compareMultSamp.html" class="code" title="function [totalz,zscore,mdvs] = compareMultSamp(xglc,model,samps,measuredMetabolites)">compareMultSamp</a>	Compare the multiple sets of samples</li><li><a href="compareTwoSamp.html" class="code" title="function [totalz,zscore,mdv1,mdv2] = compareTwoSamp(xglc,model,samp1,samp2,measuredMetabolites)">compareTwoSamp</a>	Compare the 2 sets of samples</li><li><a href="runHiLoExp.html" class="code" title="function [experiment] = runHiLoExp(experiment)">runHiLoExp</a>	runHiLoExp</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [output] = calcMDVfromSamp(glc,points,experiment)</a>
+0002 
+0003 npoints = size(points,2);
+0004 fprintf(<span class="string">'found %d samples in input\n'</span>,npoints);
+0005 
+0006 <span class="comment">% hard set for # of samples we will convert to mdv.</span>
+0007 <span class="comment">% npoints = 2;</span>
+0008 fprintf(<span class="string">'processing %d samples\n'</span>,npoints);
+0009 
+0010 output = struct;
+0011 mdv = [];
+0012 
+0013 <span class="keyword">if</span> isempty(glc)
+0014     glc = experiment.inputfrag;
+0015 <span class="keyword">else</span>
+0016     glc = convert_input(glc);
+0017 <span class="keyword">end</span>
+0018 <span class="keyword">if</span> isempty(experiment)
+0019     o = slvrEMU_fast(points(:,1), glc);
+0020     names = fields(o);
+0021 <span class="keyword">else</span>
+0022     names = fields(experiment.fragments);
+0023 <span class="keyword">end</span>
+0024 
+0025 parfor c = 1:npoints 
+0026     o = slvrEMU_fast(points(:,c), glc);
+0027     tmdv = zeros(0,1);
+0028     <span class="keyword">if</span> ~ isempty(experiment)
+0029         <span class="keyword">for</span> l = 1:length(names)
+0030             name = names{l};
+0031             tname = experiment.fragments.(name).metfrag;
+0032             tresult = o.(tname);
+0033             tmdv = [tmdv; tresult];
+0034         <span class="keyword">end</span>
+0035     <span class="keyword">else</span>
+0036         <span class="keyword">for</span> l = 1:length(names)
+0037             tresult = o.(names{l});
+0038             tmdv = [tmdv; tresult];
+0039         <span class="keyword">end</span>
+0040     <span class="keyword">end</span>
+0041     mdv(:,c) = tmdv;
+0042 <span class="keyword">end</span>
+0043 
+0044 o = slvrEMU_fast(points(:,1), glc);
+0045 mdvnames = {};
+0046 k = 1;
+0047 <span class="keyword">for</span> l = 1:length(names)
+0048     name = names{l};
+0049     <span class="keyword">if</span> isempty(experiment)
+0050         tname = name; 
+0051     <span class="keyword">else</span>
+0052         tname = experiment.fragments.(name).metfrag;
+0053     <span class="keyword">end</span>
+0054     tresult = o.(tname);
+0055     <span class="keyword">for</span> i = 1:length(tresult)
+0056         newname = strcat(name, num2str(i-1));
+0057         mdvnames{k,1} = newname;
+0058         k = k+1;
+0059     <span class="keyword">end</span>
+0060 <span class="keyword">end</span>
+0061             
+0062 
+0063 <span class="comment">%Here's what the function does.</span>
+0064 <span class="comment">%Apply slvrEMU_fast to each point</span>
+0065 <span class="comment">%for each field in the output, apply iso2mdv to get a much shorter vector.</span>
+0066 <span class="comment">%store all the mdv's for each point and for each metabolite in both sets.</span>
+0067 <span class="comment">%</span>
+0068 <span class="comment">%Compute the mean and standard deviation of each mdv and then get a z-score</span>
+0069 <span class="comment">% between them (=(mean1-mean2)/(sqrt(sd1^2+sd2^2))).</span>
+0070 <span class="comment">%Add up all the z-scores (their absolute value) and have this function return</span>
+0071 <span class="comment">% that value.</span>
+0072 <span class="comment">%</span>
+0073 <span class="comment">%Intuitively what we're doing here is comparing the two sets based on</span>
+0074 <span class="comment">% how different the mdv's appear.</span>
+0075 <span class="comment">%We're going to see if different glucose mixtures result in different values.</span>
+0076 <span class="comment">%I'm going to rewrite part of slvrEMU_fast.m so it doesn't return every metabolite</span>
+0077 <span class="comment">% but only those we can actually measure, but for now just make it generic.</span>
+0078 
+0079 <span class="comment">%calculate mean and stdev for each metabolite</span>
+0080 ave = mean(mdv,2);
+0081 stdev = std(mdv,0,2);
+0082    
+0083 output.mdv = mdv;
+0084 output.names = mdvnames;
+0085 output.ave = ave;
+0086 output.stdev = stdev;
+0087 <span class="keyword">if</span> ~isempty(experiment)
+0088     output.xglc = experiment.input;
+0089 <span class="keyword">end</span>
+0090 
+0091 <span class="keyword">return</span>
+0092 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

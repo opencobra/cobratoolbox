@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of changeObjective</title>
+  <meta name="keywords" content="changeObjective">
+  <meta name="description" content="changeObjective Changes the objective function of a constraint-based model">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html cobra -->
+<h1>changeObjective
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>changeObjective Changes the objective function of a constraint-based model</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function model = changeObjective(model,rxnNameList,objectiveCoeff) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">changeObjective Changes the objective function of a constraint-based model
+
+ model = changeObjective(model,rxnNameList,objectiveCoeff)
+
+INPUTS
+ model             COBRA structure
+ rxnNameList       List of reactions (cell array or string)
+
+OPTIONAL INPUT
+ objectiveCoeff    Value of objective coefficient for each reaction
+                   (Default = 1)
+
+OUTPUT
+ model             COBRA model structure with new objective
+
+ Monica Mo &amp; Markus Herrgard - 8/21/06</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>	findRxnIDs Find reaction numbers in a model</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../cobra/design/analyzeGCdesign.html" class="code" title="function [improvedRxns,intermediateSlns] = analyzeGCdesign(modelRed,selectedRxns,target,deletions,maxKOs,objFunction,delPenalty,intermediateSlns)">analyzeGCdesign</a>	analyzeGCdesign Analyze results with replacement knockouts</li><li><a href="../cobra/design/analyzeOptKnock.html" class="code" title="function [type,maxGrowth,maxProd,minProd] = analyzeOptKnock(model,deletions,target,biomassRxn,geneDelFlag)">analyzeOptKnock</a>	analyzeOptKnock determines whether an optknock solution is growth coupled</li><li><a href="../cobra/design/doubleProductionEnvelope.html" class="code" title="function [x1,x2,y] = doubleProductionEnvelope(model,deletions,prod1,prod2,biomassRxn,geneDelFlag,nPts)">doubleProductionEnvelope</a>	doubleProductionEnvelope plots maximum growth rate as a function of the</li><li><a href="../cobra/design/multiProductionEnvelope.html" class="code" title="function [biomassValues,targetValues] = multiProductionEnvelope(model,deletions,biomassRxn,geneDelFlag,nPts,plotAllFlag)">multiProductionEnvelope</a>	multiProductionEnvelope Calculates the byproduct secretion envelopes for</li><li><a href="../cobra/design/multiProductionEnvelopeInorg.html" class="code" title="function [biomassValues,targetValues] = multiProductionEnvelopeInorg(model,deletions,biomassRxn,geneDelFlag,nPts,plotAllFlag)">multiProductionEnvelopeInorg</a>	multiProductionEnvelopeInorg calculates the byproduct secretion envelopes</li><li><a href="../cobra/design/simpleOptKnock.html" class="code" title="function [wtRes,delRes] = simpleOptKnock(model,targetRxn,deletions,geneDelFlag,minGrowth,doubleDelFlag)">simpleOptKnock</a>	simpleOptKnock Simple OptKnock to check all one gene or reaction deletions for</li><li><a href="../cobra/design/testOptKnockSol.html" class="code" title="function [growthRate,minProd,maxProd] = testOptKnockSol(model,targetRxn,deletions)">testOptKnockSol</a>	testOptKnockSol Test an OptKnock knockout strain</li><li><a href="doubleRobustnessAnalysis.html" class="code" title="function [controlFlux1, controlFlux2, objFlux] = doubleRobustnessAnalysis(model, controlRxn1, controlRxn2, nPoints, plotResFlag, objRxn,objType)">doubleRobustnessAnalysis</a>	doubleRobustnessAnalysis Performs robustness analysis for a pair of reactions of</li><li><a href="pFBA.html" class="code" title="function [GeneClasses RxnClasses modelIrrevFM] = pFBA(model, varargin)">pFBA</a>	Parsimoneous enzyme usage Flux Balance Analysis - method that optimizes</li><li><a href="productionEnvelope.html" class="code" title="function [biomassValues,targetValues,lineHandle] = productionEnvelope(model,deletions,lineColor,targetRxn,biomassRxn,geneDelFlag,nPts)">productionEnvelope</a>	productionEnvelope Calculates the byproduct secretion envelope</li><li><a href="reduceModel.html" class="code" title="function [modelRed,hasFlux,maxes,mins] = reduceModel(model,tol,irrevFlag,verbFlag,negFluxAllowedFlag,checkConsistencyFlag,changeBoundsFlag)">reduceModel</a>	reduceModel Removes from the model all of the reactions that are never used (max and</li><li><a href="robustnessAnalysis.html" class="code" title="function [controlFlux, objFlux] = robustnessAnalysis(model, controlRxn, nPoints, plotResFlag, objRxn,objType)">robustnessAnalysis</a>	robustnessAnalysis Performs robustness analysis for a reaction of</li><li><a href="testPathway.html" class="code" title="function [Flux FBAsolution model]= testPathway(model, MetIn,MetOut,AdditionalMetsInorOut,ObjectiveOption)">testPathway</a>	this gapfiling function allows the user to see if given one metabolite A,</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function model = changeObjective(model,rxnNameList,objectiveCoeff)</a>
+0002 <span class="comment">%changeObjective Changes the objective function of a constraint-based model</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% model = changeObjective(model,rxnNameList,objectiveCoeff)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%INPUTS</span>
+0007 <span class="comment">% model             COBRA structure</span>
+0008 <span class="comment">% rxnNameList       List of reactions (cell array or string)</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">%OPTIONAL INPUT</span>
+0011 <span class="comment">% objectiveCoeff    Value of objective coefficient for each reaction</span>
+0012 <span class="comment">%                   (Default = 1)</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">%OUTPUT</span>
+0015 <span class="comment">% model             COBRA model structure with new objective</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% Monica Mo &amp; Markus Herrgard - 8/21/06</span>
+0018 
+0019 <span class="keyword">if</span> (nargin &lt; 3)
+0020     objectiveCoeff = 1;
+0021 <span class="keyword">end</span>
+0022 
+0023 rxnID = <a href="findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(model,rxnNameList);
+0024 
+0025 model.c = zeros(size(model.c));
+0026 
+0027 <span class="keyword">if</span> iscell(rxnNameList)
+0028     missingRxns = rxnNameList(rxnID == 0);
+0029     <span class="keyword">for</span> i = 1:length(missingRxns)
+0030         fprintf(<span class="string">'%s not in model\n'</span>,missingRxns{i});
+0031     <span class="keyword">end</span>
+0032     rxnID = rxnID(rxnID ~= 0);
+0033     <span class="keyword">if</span> (length(objectiveCoeff) &gt; 1)
+0034         objectiveCoeff = objectiveCoeff(rxnID ~= 0);
+0035     <span class="keyword">end</span>
+0036 <span class="keyword">end</span>
+0037 
+0038 <span class="keyword">if</span> (isempty(rxnID) | rxnID == 0)
+0039     error(<span class="string">'Objective reactions not found in model!'</span>);
+0040 <span class="keyword">else</span>
+0041     model.c(rxnID) = objectiveCoeff;
+0042 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of plotSampleHist</title>
+  <meta name="keywords" content="plotSampleHist">
+  <meta name="description" content="plotSampleHist Compare flux histograms for one or more samples">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html sampling -->
+<h1>plotSampleHist
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>plotSampleHist Compare flux histograms for one or more samples</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function plotSampleHist(rxnNames,samples,models,nBins,perScreen) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">plotSampleHist Compare flux histograms for one or more samples
+for one or more reactions
+
+ plotSampleHist(rxnNames,samples,models,nBins,perScreen)
+
+INPUTS
+ rxnNames  Cell array of reaction abbreviations
+ samples   Cell array containing samples
+ models    Cell array containing model structures or common model
+ structure
+
+OPTIONAL INPUTS
+ nBins     Number of bins to be used
+ perScreen Number of reactions to show per screen.  Either a number or [nY, nX] vector.
+     (press Enter to advance screens)
+
+CONTROLS
+ To advance to next screen hit enter/return or type f and hit enter/return
+ To rewind to previous screen type r or b and hit enter/return
+ To quit script type q and hit enter/return
+
+EXAMPLE
+ sampleStructOut1 = gpSampler(model1, 2150);
+ sampleStructOut2 = gpSampler(model2, 2150);
+ Plot for model 1
+ plotSampleHist(model1.rxns,{samplePoints1},{model1})
+
+ Plot reactions reactions in model 1 that also exist in model 2 using 10
+ bins and plotting 12 reactions per screen.
+ plotSampleHist(model1.rxns,{samplePoints1,samplePoints2},{model1,model2},10,12)
+
+ Markus Herrgard 7/17/06
+
+ Added ability to move in reverse direction. Richard Que (2/05/10)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>	findRxnIDs Find reaction numbers in a model</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function plotSampleHist(rxnNames,samples,models,nBins,perScreen)</a>
+0002 <span class="comment">%plotSampleHist Compare flux histograms for one or more samples</span>
+0003 <span class="comment">%for one or more reactions</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% plotSampleHist(rxnNames,samples,models,nBins,perScreen)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%INPUTS</span>
+0008 <span class="comment">% rxnNames  Cell array of reaction abbreviations</span>
+0009 <span class="comment">% samples   Cell array containing samples</span>
+0010 <span class="comment">% models    Cell array containing model structures or common model</span>
+0011 <span class="comment">% structure</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%OPTIONAL INPUTS</span>
+0014 <span class="comment">% nBins     Number of bins to be used</span>
+0015 <span class="comment">% perScreen Number of reactions to show per screen.  Either a number or [nY, nX] vector.</span>
+0016 <span class="comment">%     (press Enter to advance screens)</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%CONTROLS</span>
+0019 <span class="comment">% To advance to next screen hit enter/return or type f and hit enter/return</span>
+0020 <span class="comment">% To rewind to previous screen type r or b and hit enter/return</span>
+0021 <span class="comment">% To quit script type q and hit enter/return</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">%EXAMPLE</span>
+0024 <span class="comment">% sampleStructOut1 = gpSampler(model1, 2150);</span>
+0025 <span class="comment">% sampleStructOut2 = gpSampler(model2, 2150);</span>
+0026 <span class="comment">% Plot for model 1</span>
+0027 <span class="comment">% plotSampleHist(model1.rxns,{samplePoints1},{model1})</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">% Plot reactions reactions in model 1 that also exist in model 2 using 10</span>
+0030 <span class="comment">% bins and plotting 12 reactions per screen.</span>
+0031 <span class="comment">% plotSampleHist(model1.rxns,{samplePoints1,samplePoints2},{model1,model2},10,12)</span>
+0032 <span class="comment">%</span>
+0033 <span class="comment">% Markus Herrgard 7/17/06</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">% Added ability to move in reverse direction. Richard Que (2/05/10)</span>
+0036 
+0037 <span class="keyword">if</span> (nargin &lt; 5)
+0038     perScreen = 1e5;
+0039 <span class="keyword">end</span>
+0040 
+0041 <span class="keyword">if</span> (nargin &lt; 4 || isempty(nBins))
+0042     [tmp,nSamples] = size(samples{1});
+0043     nBins = round(nSamples/25);
+0044 <span class="keyword">end</span>
+0045 
+0046 <span class="keyword">if</span> (~iscell(samples))
+0047     singleDataFlag = true;
+0048     samplesTmp = samples;
+0049     clear samples;
+0050     samples{1} = samplesTmp;
+0051 <span class="keyword">end</span>
+0052 
+0053 <span class="keyword">if</span> (~iscell(models))
+0054     commonModelFlag = true;
+0055 <span class="keyword">else</span>
+0056     commonModelFlag = false;
+0057 <span class="keyword">end</span>
+0058 
+0059 <span class="keyword">if</span> (~iscell(rxnNames))
+0060     rxnNameList{1} = rxnNames;
+0061 <span class="keyword">else</span>
+0062     rxnNameList = rxnNames;
+0063 <span class="keyword">end</span>
+0064 
+0065 nRxns = length(rxnNameList);
+0066 
+0067 <span class="keyword">for</span> i = 1:nRxns
+0068     <span class="keyword">if</span> (commonModelFlag)
+0069         keepRxn(i) = ismember(rxnNameList{i},models.rxns);
+0070     <span class="keyword">else</span>
+0071         <span class="keyword">for</span> j = 1:length(models)
+0072             isIn(j) = ismember(rxnNameList{i},models{j}.rxns);
+0073         <span class="keyword">end</span>
+0074         <span class="keyword">if</span> (all(isIn))
+0075             keepRxn(i) = true;
+0076         <span class="keyword">else</span>
+0077             keepRxn(i) = false;
+0078         <span class="keyword">end</span>
+0079     <span class="keyword">end</span>
+0080 <span class="keyword">end</span>
+0081 
+0082 rxnNameList = rxnNameList(keepRxn');
+0083 nRxns = length(rxnNameList);
+0084 <span class="keyword">if</span> length(perScreen) ==2
+0085     nX = perScreen(2);
+0086     nY = perScreen(1);
+0087     perScreen = nX*nY;
+0088 <span class="keyword">else</span>
+0089     nX = ceil(sqrt(min(nRxns, perScreen)));
+0090     nY = ceil(min(nRxns, perScreen)/nX);
+0091 <span class="keyword">end</span>
+0092 
+0093 j=1;
+0094 flagQuit = false;
+0095 fig=figure;
+0096 <span class="keyword">while</span> ~flagQuit
+0097     clear counts;
+0098     currLB = 1e6;
+0099     currUB = -1e6;
+0100     <span class="keyword">for</span> i = 1:length(samples)
+0101         <span class="keyword">if</span> (commonModelFlag)
+0102             id = <a href="../../cobra/findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(models,rxnNameList{j});
+0103         <span class="keyword">else</span>
+0104             id = <a href="../../cobra/findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(models{i},rxnNameList{j});
+0105         <span class="keyword">end</span>
+0106         <span class="keyword">if</span> (isempty(id))
+0107             <span class="keyword">if</span> (commonModelFlag)
+0108                 id = <a href="../../cobra/findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(models,[rxnNameList{j} <span class="string">'_r'</span>]);
+0109             <span class="keyword">else</span>
+0110                 id = <a href="../../cobra/findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(models{i},[rxnNameList{j} <span class="string">'_r'</span>]);
+0111             <span class="keyword">end</span>
+0112             <span class="keyword">if</span> (isempty(id))
+0113                 warning(<span class="string">'Reaction does not exist'</span>);
+0114             <span class="keyword">end</span>
+0115         <span class="keyword">end</span>
+0116         currLB = min(currLB,min(samples{i}(id,:)'));
+0117         currUB = max(currUB,max(samples{i}(id,:)'));
+0118     <span class="keyword">end</span>
+0119     
+0120     <span class="keyword">if</span> currUB-currLB &lt; 8*eps*abs(mean([currUB, currLB])) <span class="comment">%rescale currUB, LB if they are the same # within numerical precision (8*eps)</span>
+0121         av = abs(mean([currUB, currLB]));
+0122         currUB = currUB+8*eps*av;
+0123         currLB = currLB-8*eps*av;
+0124     <span class="keyword">end</span>
+0125     bins = linspace(currLB,currUB,nBins);
+0126 
+0127     <span class="keyword">for</span> i = 1:length(samples)
+0128         sampleSign = 1;
+0129         <span class="keyword">if</span> (commonModelFlag)
+0130             id = <a href="../../cobra/findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(models,rxnNameList{j});
+0131         <span class="keyword">else</span>
+0132             id = <a href="../../cobra/findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(models{i},rxnNameList{j});
+0133         <span class="keyword">end</span>
+0134         <span class="keyword">if</span> (isempty(id))
+0135             <span class="keyword">if</span> (commonModelFlag)
+0136                 id = <a href="../../cobra/findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(models,[rxnNameList{j} <span class="string">'_r'</span>]);
+0137             <span class="keyword">else</span>
+0138                 id = <a href="../../cobra/findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(models{i},[rxnNameList{j} <span class="string">'_r'</span>]);
+0139             <span class="keyword">end</span>
+0140             sampleSign = -1;
+0141         <span class="keyword">end</span>
+0142         n = hist(sampleSign*samples{i}(id,:),bins);
+0143         counts(:,i) = smooth(bins,n');
+0144     <span class="keyword">end</span>
+0145     freq = counts./repmat(sum(counts),size(counts,1),1);
+0146     
+0147     subplot(nY,nX, mod(j-1, perScreen)+1);
+0148     plot(bins,freq,<span class="string">'-'</span>);
+0149     axis([currLB-.0001 currUB+.0001 0 max(max(freq))]);
+0150     h = text((currUB+currLB)/2,max(max(freq))*1.1,strrep(rxnNameList{j},<span class="string">'_'</span>,<span class="string">'-'</span>));
+0151     set(h,<span class="string">'HorizontalAlignment'</span>,<span class="string">'center'</span>);
+0152     
+0153     user_input = <span class="string">'f'</span>;
+0154     <span class="keyword">if</span> j&gt;=nRxns
+0155         <span class="keyword">if</span> nRxns&lt;=perScreen, <span class="keyword">return</span>; <span class="keyword">end</span>
+0156         user_input = input(<span class="string">'End of sampples; reverse (r) or quit (q): '</span>,<span class="string">'s'</span>);
+0157         <span class="keyword">while</span> isempty(user_input)|| ~(ismember(user_input(1),{<span class="string">'b'</span>,<span class="string">'r'</span>,<span class="string">'q'</span>,<span class="string">'e'</span>}))
+0158             user_input = input(<span class="string">'End of sampples; reverse (r) or quit (q)): '</span>,<span class="string">'s'</span>);
+0159         <span class="keyword">end</span>
+0160         clear fig
+0161     <span class="keyword">elseif</span> mod(j, perScreen) ==0
+0162         user_input = input(<span class="string">'Move forward (f), reverse (r) or quit (q): '</span>,<span class="string">'s'</span>);
+0163         <span class="keyword">if</span> isempty(user_input), user_input=<span class="string">'f'</span>; <span class="keyword">end</span>
+0164         clear fig
+0165     <span class="keyword">end</span>
+0166     <span class="keyword">if</span> user_input(1)==<span class="string">'r'</span> || user_input(1)==<span class="string">'b'</span>
+0167         j=j-perScreen*2+1;
+0168         <span class="keyword">if</span> j&lt;0, j=1; <span class="keyword">end</span>
+0169     <span class="keyword">elseif</span> user_input(1)==<span class="string">'q'</span>|| user_input(1)==<span class="string">'e'</span>
+0170         flagQuit=true;
+0171     <span class="keyword">elseif</span> user_input(1)==<span class="string">'f'</span>
+0172         j=j+1;
+0173     <span class="keyword">end</span>
+0174 <span class="keyword">end</span>
+0175</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

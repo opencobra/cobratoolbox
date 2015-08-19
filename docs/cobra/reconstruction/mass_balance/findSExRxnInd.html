@@ -1,0 +1,229 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of findSExRxnInd</title>
+  <meta name="keywords" content="findSExRxnInd">
+  <meta name="description" content="Returns a model with boolean vectors indicating internal vs exchange/demand/sink reactions.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../../menu.html cobra --><!-- ../menu.html reconstruction --><!-- menu.html mass_balance -->
+<h1>findSExRxnInd
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>Returns a model with boolean vectors indicating internal vs exchange/demand/sink reactions.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function model=findSExRxnInd(model,nRealMet) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">Returns a model with boolean vectors indicating internal vs exchange/demand/sink reactions.
+
+finds the reactions in the model which export/import from the model
+boundary
+e.g. Exchange reactions
+     Demand reactions
+     Sink reactions
+
+INPUT
+ model
+ model.biomassRxnAbbr      abbreviation of biomass reaction 
+
+OPTIONAL INPUT
+ nRealMet                  specified in case extra rows in S which dont
+                           correspond to metabolties
+OUTPUT
+ model.SIntRxnBool         Boolean of internal (mass balanced) reactions.
+
+ OPTIONAL OUTPUT
+ model.DMRxnBool           Boolean of demand reactions. Prefix 'DM_'
+ model.SinkRxnBool         Boolean of sink reactions. Prefix 'sink_'
+
+ Ronan M.T. Fleming</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../cobra/printRxnFormula.html" class="code" title="function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)">printRxnFormula</a>	printRxnFormula Print the reaction formulas for a list of reactions</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="checkMassChargeBalance.html" class="code" title="function [massImbalance,imBalancedMass,imBalancedCharge,imBalancedBool,Elements] = checkMassChargeBalance(model,rxnBool,printLevel)">checkMassChargeBalance</a>	checkMassChargeBalance tests for a list of reactions if these reactions are</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function model=findSExRxnInd(model,nRealMet)</a>
+0002 <span class="comment">%Returns a model with boolean vectors indicating internal vs exchange/demand/sink reactions.</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">%finds the reactions in the model which export/import from the model</span>
+0005 <span class="comment">%boundary</span>
+0006 <span class="comment">%e.g. Exchange reactions</span>
+0007 <span class="comment">%     Demand reactions</span>
+0008 <span class="comment">%     Sink reactions</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">%INPUT</span>
+0011 <span class="comment">% model</span>
+0012 <span class="comment">% model.biomassRxnAbbr      abbreviation of biomass reaction</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">%OPTIONAL INPUT</span>
+0015 <span class="comment">% nRealMet                  specified in case extra rows in S which dont</span>
+0016 <span class="comment">%                           correspond to metabolties</span>
+0017 <span class="comment">%OUTPUT</span>
+0018 <span class="comment">% model.SIntRxnBool         Boolean of internal (mass balanced) reactions.</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% OPTIONAL OUTPUT</span>
+0021 <span class="comment">% model.DMRxnBool           Boolean of demand reactions. Prefix 'DM_'</span>
+0022 <span class="comment">% model.SinkRxnBool         Boolean of sink reactions. Prefix 'sink_'</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">% Ronan M.T. Fleming</span>
+0025 
+0026 [nMet,nRxn]=size(model.S);
+0027 
+0028 <span class="keyword">if</span> ~exist(<span class="string">'nRealMet'</span>,<span class="string">'var'</span>)
+0029     nRealMet=length(model.mets);
+0030     <span class="keyword">if</span> nMet~=nRealMet
+0031         fprintf(<span class="string">'%s\n'</span>,<span class="string">'Detected extra rows of S without corresponding metabolite abbreviations.'</span>)
+0032     <span class="keyword">end</span>
+0033 <span class="keyword">end</span>
+0034 
+0035 biomassBool=false(nRxn,1);
+0036 
+0037 <span class="comment">%locate biomass reaction if there is one</span>
+0038 <span class="keyword">if</span> ~isfield(model,<span class="string">'biomassRxnAbbr'</span>)
+0039     <span class="keyword">if</span> 0
+0040         fprintf(<span class="string">'%s\n'</span>,<span class="string">'No model.biomassRxnAbbr ? Give abbreviation of biomass reaction if there is one.'</span>);
+0041     <span class="keyword">else</span>
+0042         bool=model.c~=0;
+0043         <span class="keyword">if</span> nnz(bool)==1
+0044             model.biomassRxnAbbr=model.rxns{model.c~=0};
+0045             fprintf(<span class="string">'%s%s\n'</span>,<span class="string">'Assuming biomass reaction is: '</span>, model.biomassRxnAbbr);
+0046             biomassBool(bool)=1;
+0047         <span class="keyword">else</span>
+0048             <span class="keyword">if</span> nnz(bool)==0
+0049                 fprintf(<span class="string">'%s\n'</span>,<span class="string">'No model.biomassRxnAbbr ? Give abbreviation of biomass reaction if there is one.'</span>);
+0050             <span class="keyword">else</span>
+0051                 error(<span class="string">'More than one biomass reaction?'</span>);
+0052             <span class="keyword">end</span>
+0053         <span class="keyword">end</span>
+0054     <span class="keyword">end</span>
+0055 <span class="keyword">else</span>
+0056     bool=strcmp(model.biomassRxnAbbr,model.rxns);
+0057     <span class="keyword">if</span> nnz(bool)==1
+0058         fprintf(<span class="string">'%s%s\n'</span>,<span class="string">'Found biomass reaction: '</span>, model.biomassRxnAbbr);
+0059         biomassBool(bool)=1;
+0060     <span class="keyword">else</span>
+0061         <span class="keyword">if</span> nnz(bool)==0
+0062             fprintf(<span class="string">'%s\n'</span>,<span class="string">'No model.biomassRxnAbbr ? Give abbreviation of biomass reaction if there is one.'</span>);
+0063         <span class="keyword">else</span>
+0064             error(<span class="string">'More than one biomass reaction?'</span>);
+0065         <span class="keyword">end</span>
+0066     <span class="keyword">end</span>
+0067 <span class="keyword">end</span>
+0068 
+0069 <span class="keyword">if</span> nMet &gt; 2000
+0070 
+0071 
+0072     <span class="comment">% Human model or E.coli merged matrix</span>
+0073     model.ExchRxnBool=strncmp(<span class="string">'Exch_'</span>, model.rxns, 5)==1;
+0074     model.EXRxnBool=strncmp(<span class="string">'EX_'</span>, model.rxns, 3)==1;
+0075     <span class="comment">%demand reactions going out of model</span>
+0076     model.DMRxnBool=strncmp(<span class="string">'DM_'</span>, model.rxns, 3)==1;
+0077     
+0078     bool=strcmp(<span class="string">'DM_atp(c)'</span>,model.rxns);
+0079     <span class="keyword">if</span> any(bool)
+0080         fprintf(<span class="string">'%s\n'</span>,<span class="string">'ATP demand reaction is not considered an exchange reaction by default.'</span>)
+0081         model.DMRxnBool(bool)=0;
+0082     <span class="keyword">end</span>
+0083 
+0084     <span class="comment">%sink reactions going into or out of model</span>
+0085     model.SinkRxnBool=strncmp(<span class="string">'sink_'</span>, model.rxns, 5)==1;
+0086     
+0087     <span class="comment">%input/output</span>
+0088     SExRxnBool = model.ExchRxnBool | model.EXRxnBool | model.DMRxnBool | model.SinkRxnBool | biomassBool;
+0089     
+0090     <span class="comment">%double check now by identifying reactions with only one metabolite</span>
+0091     SExRxnBool2=false(nRxn,1);
+0092     <span class="keyword">for</span> n=1:nRxn
+0093         <span class="comment">%find reactions with only one coefficient</span>
+0094         <span class="keyword">if</span> nnz(model.S(1:nRealMet,n))==1
+0095             SExRxnBool2(n)=1;
+0096         <span class="keyword">end</span>
+0097     <span class="keyword">end</span>
+0098     SExRxnBool2 = SExRxnBool2 | biomassBool;
+0099     
+0100     diffBool= ~SExRxnBool &amp; SExRxnBool2;
+0101     <span class="keyword">if</span> any(diffBool)
+0102         fprintf(<span class="string">'%s\n'</span>,<span class="string">'Missed Exchanges:'</span>)
+0103         fprintf(<span class="string">'%s\t%s\t%s\t\t%s\t\t%s\n'</span>,<span class="string">'Coefficient'</span>,<span class="string">'Metabolite'</span>,<span class="string">'#'</span>,<span class="string">'Reaction'</span>,<span class="string">'#'</span>)
+0104         <span class="keyword">for</span> n=1:nRxn
+0105             <span class="keyword">if</span> diffBool(n)
+0106                 objMetInd=find(model.S(:,n));
+0107                 <span class="keyword">for</span> m=1:length(objMetInd)
+0108                     Sij=model.S(objMetInd(m),n);
+0109                     <span class="keyword">if</span> length(model.mets{objMetInd(m)})&lt;4
+0110                         fprintf(<span class="string">'%g\t\t\t%s\t\t\t%i\t%s\t\t%i\n'</span>,Sij,model.mets{objMetInd(m)},objMetInd(m),model.rxns{n},n)
+0111                     <span class="keyword">else</span>
+0112                         <span class="keyword">if</span> length(model.mets{objMetInd(m)})&lt;8
+0113                             fprintf(<span class="string">'%g\t\t\t%s\t\t%i\t%s\t\t%i\n'</span>,Sij,model.mets{objMetInd(m)},objMetInd(m),model.rxns{n},n)
+0114                         <span class="keyword">else</span>
+0115                             <span class="keyword">if</span> length(model.mets{objMetInd(m)})&lt;12
+0116                                 fprintf(<span class="string">'%g\t\t\t%s\t%i\t%s\t\t%i\n'</span>,Sij,model.mets{objMetInd(m)},objMetInd(m),model.rxns{n},n)
+0117                             <span class="keyword">end</span>
+0118                         <span class="keyword">end</span>
+0119                     <span class="keyword">end</span>
+0120                 <span class="keyword">end</span>
+0121             <span class="keyword">end</span>
+0122         <span class="keyword">end</span>
+0123     <span class="keyword">end</span>
+0124     
+0125     <span class="comment">%dont check if there are coupling constraints</span>
+0126     <span class="comment">%(E. coli E matrix specific)</span>
+0127     <span class="keyword">if</span> ~isfield(model,<span class="string">'A'</span>)
+0128         diffBool= SExRxnBool &amp; ~SExRxnBool2;
+0129         <span class="keyword">if</span> any(diffBool)
+0130             fprintf(<span class="string">'%s\n'</span>,<span class="string">'Exchanges (by prefix) with more than one coefficient:'</span>)
+0131             fprintf(<span class="string">'%s\t%s\n'</span>,<span class="string">'#'</span>, <span class="string">'Exchange'</span>)
+0132             <span class="keyword">for</span> n=1:length(diffBool)
+0133                 <span class="keyword">if</span> diffBool(n)
+0134                     equation=<a href="../../../cobra/printRxnFormula.html" class="code" title="function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)">printRxnFormula</a>(model,model.rxns(n),0);
+0135                     fprintf(<span class="string">'%i\t%s\t%s\n'</span>,n,model.rxns{n},equation{1});
+0136                 <span class="keyword">end</span>
+0137             <span class="keyword">end</span>
+0138         <span class="keyword">end</span>
+0139     <span class="keyword">end</span>
+0140     
+0141 <span class="keyword">else</span>
+0142     SExRxnBool=false(nRxn,1);
+0143     
+0144     <span class="keyword">for</span> n=1:nRxn
+0145         <span class="comment">%find reactions with only one coefficient</span>
+0146         <span class="keyword">if</span> nnz(model.S(1:nRealMet,n))==1
+0147             SExRxnBool(n,1)=1;
+0148             <span class="keyword">if</span> 0
+0149                 <span class="keyword">if</span> nonzeros(model.S(1:nRealMet,n))&gt;0
+0150                     fprintf(<span class="string">'%s\t%s\n'</span>,<span class="string">'Positive coefficient:'</span>,model.rxns{n});
+0151                 <span class="keyword">else</span>
+0152                     fprintf(<span class="string">'%s\t%s\n'</span>,<span class="string">'Negative coefficient:'</span>,model.rxns{n});
+0153                     <span class="comment">%                 fprintf('%s%s%s%s%s\n','''',model.rxns{n},''',0 ,0 ''',model.mets{find(model.S(1:nRealMet,n)~=0)},''',0 ,0 ;');</span>
+0154                 <span class="keyword">end</span>
+0155             <span class="keyword">end</span>
+0156         <span class="keyword">end</span>
+0157     <span class="keyword">end</span>
+0158     <span class="keyword">if</span> ~isempty(strcmp(<span class="string">'ATPM'</span>,model.rxns))
+0159         fprintf(<span class="string">'%s\n'</span>,<span class="string">'ATP maintenance reaction is not considered an exchange reaction by default.'</span>)
+0160         ATPM_Ind=find(strcmp(<span class="string">'ATPM'</span>,model.rxns)==1);
+0161         SExRxnBool(ATPM_Ind,1)=0;
+0162     <span class="keyword">end</span>
+0163     SExRxnBool(biomassBool)=1;
+0164 <span class="keyword">end</span>
+0165 model.SIntRxnBool=~SExRxnBool;</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

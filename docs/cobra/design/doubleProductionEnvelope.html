@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of doubleProductionEnvelope</title>
+  <meta name="keywords" content="doubleProductionEnvelope">
+  <meta name="description" content="doubleProductionEnvelope plots maximum growth rate as a function of the">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html design -->
+<h1>doubleProductionEnvelope
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>doubleProductionEnvelope plots maximum growth rate as a function of the</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [x1,x2,y] = doubleProductionEnvelope(model,deletions,prod1,prod2,biomassRxn,geneDelFlag,nPts) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">doubleProductionEnvelope plots maximum growth rate as a function of the
+output of two specified products
+
+ [x1,x2,y] = doubleProductionEnvelope(model,deletions,prod1,prod2,biomassRxn,geneDelFlag,nPts)
+
+INPUTS
+ model         COBRA model structure
+ deletions     The reactions or genes to knockout of the model
+ prod1         One of the two products to investigate
+ prod2         The other product to investigate
+
+OPTIONAL INPUTS
+ biomassRxn    The biomass objective function rxn name
+               (Default = 'biomass_SC4_bal')
+ geneDelFlag   Perform gene and not reaction deletions
+               (Default = false)
+ nPts          Number of points to plot for each product
+               (Default = 20)
+
+OUTPUTS
+ x1            The range of rates plotted for prod1
+ x2            The range of rates plotted for prod2
+ y             The plotted growth rates at each (x1,x2)
+
+ Jeff Orth  9/12/07</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/changeObjective.html" class="code" title="function model = changeObjective(model,rxnNameList,objectiveCoeff)">changeObjective</a>	changeObjective Changes the objective function of a constraint-based model</li><li><a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>	changeRxnBounds Change upper or lower bounds of a reaction or a set of</li><li><a href="../../cobra/deleteModelGenes.html" class="code" title="function [model,hasEffect,constrRxnNames,deletedGenes] = deleteModelGenes(model,geneList,downRegFraction)">deleteModelGenes</a>	deleteModelGenes Delete one or more genes and constrain the reactions</li><li><a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>	optimizeCbModel Solve a flux balance analysis problem</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [x1,x2,y] = doubleProductionEnvelope(model,deletions,prod1,prod2,biomassRxn,geneDelFlag,nPts)</a>
+0002 <span class="comment">%doubleProductionEnvelope plots maximum growth rate as a function of the</span>
+0003 <span class="comment">%output of two specified products</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% [x1,x2,y] = doubleProductionEnvelope(model,deletions,prod1,prod2,biomassRxn,geneDelFlag,nPts)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%INPUTS</span>
+0008 <span class="comment">% model         COBRA model structure</span>
+0009 <span class="comment">% deletions     The reactions or genes to knockout of the model</span>
+0010 <span class="comment">% prod1         One of the two products to investigate</span>
+0011 <span class="comment">% prod2         The other product to investigate</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%OPTIONAL INPUTS</span>
+0014 <span class="comment">% biomassRxn    The biomass objective function rxn name</span>
+0015 <span class="comment">%               (Default = 'biomass_SC4_bal')</span>
+0016 <span class="comment">% geneDelFlag   Perform gene and not reaction deletions</span>
+0017 <span class="comment">%               (Default = false)</span>
+0018 <span class="comment">% nPts          Number of points to plot for each product</span>
+0019 <span class="comment">%               (Default = 20)</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">%OUTPUTS</span>
+0022 <span class="comment">% x1            The range of rates plotted for prod1</span>
+0023 <span class="comment">% x2            The range of rates plotted for prod2</span>
+0024 <span class="comment">% y             The plotted growth rates at each (x1,x2)</span>
+0025 <span class="comment">%</span>
+0026 <span class="comment">% Jeff Orth  9/12/07</span>
+0027 
+0028 <span class="keyword">if</span> (nargin &lt; 5)
+0029     biomassRxn = <span class="string">'biomass_SC4_bal'</span>;
+0030 <span class="keyword">end</span>
+0031 <span class="keyword">if</span> (nargin &lt; 6)
+0032     geneDelFlag = false;
+0033 <span class="keyword">end</span>
+0034 <span class="keyword">if</span> (nargin &lt; 7)
+0035     nPts = 20;
+0036 <span class="keyword">end</span>
+0037 
+0038 <span class="comment">% Create model with deletions</span>
+0039 <span class="keyword">if</span> (length(deletions) &gt; 0)
+0040     <span class="keyword">if</span> (geneDelFlag)
+0041         model = <a href="../../cobra/deleteModelGenes.html" class="code" title="function [model,hasEffect,constrRxnNames,deletedGenes] = deleteModelGenes(model,geneList,downRegFraction)">deleteModelGenes</a>(model,deletions);
+0042     <span class="keyword">else</span>
+0043         model = <a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>(model,deletions,zeros(size(deletions)),<span class="string">'b'</span>);
+0044     <span class="keyword">end</span>
+0045 <span class="keyword">end</span>
+0046 
+0047 <span class="comment">% find range for prod1</span>
+0048 modelFixed1 = <a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>(model,biomassRxn,0,<span class="string">'b'</span>);
+0049 modelFixed1 = <a href="../../cobra/changeObjective.html" class="code" title="function model = changeObjective(model,rxnNameList,objectiveCoeff)">changeObjective</a>(modelFixed1,prod1);
+0050 fbasol1 = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelFixed1,<span class="string">'max'</span>);
+0051 max1 = fbasol1.f;
+0052 
+0053 <span class="comment">% find range for prod2</span>
+0054 modelFixed2 = <a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>(model,biomassRxn,0,<span class="string">'b'</span>);
+0055 modelFixed2 = <a href="../../cobra/changeObjective.html" class="code" title="function model = changeObjective(model,rxnNameList,objectiveCoeff)">changeObjective</a>(modelFixed2,prod2);
+0056 fbasol2 = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelFixed2,<span class="string">'max'</span>);
+0057 max2 = fbasol2.f;
+0058 
+0059 <span class="comment">% vary both ranges, find max growth rate</span>
+0060 x1 = linspace(0,max1,nPts);
+0061 x2 = linspace(0,max2,nPts);
+0062 y = zeros(nPts);
+0063 
+0064 <span class="keyword">for</span> i = 1:nPts
+0065     <span class="keyword">for</span> j = 1:nPts
+0066         prod1val = x1(i);
+0067         prod2val = x2(j);
+0068         modelY = <a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>(model,prod1,prod1val,<span class="string">'b'</span>);
+0069         modelY = <a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>(modelY,prod2,prod2val,<span class="string">'b'</span>);
+0070         fbasol = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelY,<span class="string">'max'</span>);
+0071         y(j,i) = fbasol.f; <span class="comment">%no, this isn't a mistake (probably)</span>
+0072     <span class="keyword">end</span> 
+0073 <span class="keyword">end</span>
+0074 
+0075 <span class="comment">% plot</span>
+0076 surf(x1,x2,y);
+0077 alpha(.4);
+0078 xlabel([strrep(prod1,<span class="string">'_'</span>,<span class="string">'\_'</span>),<span class="string">' (mmol/gDW h)'</span>]);
+0079 ylabel([strrep(prod2,<span class="string">'_'</span>,<span class="string">'\_'</span>),<span class="string">' (mmol/gDW h)'</span>]);
+0080 zlabel(<span class="string">'Growth Rate (1/h)'</span>);
+0081 
+0082</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

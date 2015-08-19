@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of generateSUXMatrix</title>
+  <meta name="keywords" content="generateSUXMatrix">
+  <meta name="description" content="generateSUXMatrix creates the matrices for matlab smiley -- > combines S, U">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../../menu.html cobra --><!-- ../menu.html gapFilling --><!-- menu.html growthExpMatch -->
+<h1>generateSUXMatrix
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>generateSUXMatrix creates the matrices for matlab smiley -- > combines S, U</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function MatricesSUX =generateSUXMatrix(model,dictionary, KEGGFilename, KEGGBlackList, compartment, addModel) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> generateSUXMatrix creates the matrices for matlab smiley -- &gt; combines S, U
+  (KEGG), X (transport)
+
+    MatricesSUX =generateSUXMatrix(model,CompAbr, KEGGID,
+    KEGGFilename, compartment)
+
+ model          model structure
+ CompAbr        List of compounds abreviation (non-compartelized)
+ KEGGID         List of KEGGIDs for compounds in CompAbr
+ KEGGFilename   File name containing KEGG database
+ KEGGBlackList
+ compartment   [c] --&gt; transport from cytoplasm [c] to extracellulat space
+               [e] (default), [p] creates transport from [c] to [p] and from [p] to [c],
+               if '' - no exchange reactions/transport will be added to the matrix.
+ addModel      model structure, containing an additional matrix or model
+               that should be combined with SUX matrix.% Note that the naming of metabolites in this matrix has to be identical to
+               model naming. Also, the list should be unique.
+
+ 11-10-07 IT</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../cobra/convertToIrreversible.html" class="code" title="function [modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model)">convertToIrreversible</a>	convertToIrreversible Convert model to irreversible format</li><li><a href="../../../cobra/gapFilling/KEGG/createUniversalReactionModel.html" class="code" title="function KEGG = createUniversalReactionModel(KEGGFilename, KEGGBlackList)">createUniversalReactionModel</a>	createUMatrix creates the U matrix using the universal data from the KEGG</li><li><a href="../../../cobra/gapFilling/KEGG/mergeTwoModels.html" class="code" title="function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel)">mergeTwoModels</a>	function [modelNew] = MergeTwoModels(model1,model2,objrxnmodel)</li><li><a href="../../../cobra/gapFilling/KEGG/transformKEGG2Model.html" class="code" title="function model = transformKEGG2Model(modelKEGG,dictionary)">transformKEGG2Model</a>	translate the metabolites from KEGG to cobra model names</li><li><a href="createXMatrix.html" class="code" title="function ExchangeRxnMatrix = createXMatrix(compoundsIn, transport, compartment)">createXMatrix</a>	createXMatrix creates a matrix full of exchange reactions based</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="growthExpMatch.html" class="code" title="function [solution]=growthExpMatch(model, KEGGFilename, compartment, iterations, dictionary, logFile, threshold)">growthExpMatch</a>	growExpMatch run the growthExpMatch algorythm</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function model = CheckMetName(model)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function MatricesSUX =generateSUXMatrix(model,dictionary, KEGGFilename, KEGGBlackList, compartment, addModel)</a>
+0002 <span class="comment">% generateSUXMatrix creates the matrices for matlab smiley -- &gt; combines S, U</span>
+0003 <span class="comment">%  (KEGG), X (transport)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">%    MatricesSUX =generateSUXMatrix(model,CompAbr, KEGGID,</span>
+0006 <span class="comment">%    KEGGFilename, compartment)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% model          model structure</span>
+0009 <span class="comment">% CompAbr        List of compounds abreviation (non-compartelized)</span>
+0010 <span class="comment">% KEGGID         List of KEGGIDs for compounds in CompAbr</span>
+0011 <span class="comment">% KEGGFilename   File name containing KEGG database</span>
+0012 <span class="comment">% KEGGBlackList</span>
+0013 <span class="comment">% compartment   [c] --&gt; transport from cytoplasm [c] to extracellulat space</span>
+0014 <span class="comment">%               [e] (default), [p] creates transport from [c] to [p] and from [p] to [c],</span>
+0015 <span class="comment">%               if '' - no exchange reactions/transport will be added to the matrix.</span>
+0016 <span class="comment">% addModel      model structure, containing an additional matrix or model</span>
+0017 <span class="comment">%               that should be combined with SUX matrix.% Note that the naming of metabolites in this matrix has to be identical to</span>
+0018 <span class="comment">%               model naming. Also, the list should be unique.</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% 11-10-07 IT</span>
+0021 <span class="comment">%</span>
+0022 
+0023 <span class="keyword">if</span> nargin &lt; 6
+0024     addModel = <span class="string">''</span>;
+0025 <span class="keyword">end</span>
+0026 
+0027 <span class="keyword">if</span> nargin &lt; 5
+0028     compartment = <span class="string">'[c]'</span>;
+0029 <span class="keyword">end</span>
+0030 <span class="keyword">if</span> nargin &lt; 4
+0031     KEGGBlackList = {};
+0032 <span class="keyword">end</span>
+0033 <span class="keyword">if</span> nargin &lt; 3
+0034     KEGGFilename = <span class="string">'11-20-08-KEGG-reaction.lst'</span>;
+0035 <span class="keyword">end</span>
+0036 
+0037 <span class="comment">% checks if model.mets has () or [] for compartment, or adds cytosol to</span>
+0038 <span class="comment">% compounds if no compartment is specified</span>
+0039 model = <a href="#_sub1" class="code" title="subfunction model = CheckMetName(model)">CheckMetName</a>(model);
+0040 
+0041 
+0042 <span class="comment">% create KEGG Matrix - U</span>
+0043 KEGG = <a href="../../../cobra/gapFilling/KEGG/createUniversalReactionModel.html" class="code" title="function KEGG = createUniversalReactionModel(KEGGFilename, KEGGBlackList)">createUniversalReactionModel</a>(KEGGFilename, KEGGBlackList);
+0044 KEGG = <a href="../../../cobra/gapFilling/KEGG/transformKEGG2Model.html" class="code" title="function model = transformKEGG2Model(modelKEGG,dictionary)">transformKEGG2Model</a>(KEGG,dictionary);
+0045 
+0046 
+0047 <span class="comment">%merge all 3 matrixes</span>
+0048 <span class="comment">% 1. S with U</span>
+0049 
+0050 model.RxnSubsystem = model.subSystems;
+0051 KEGG.RxnSubsystem = KEGG.subSystems;
+0052 [model_SU] = <a href="../../../cobra/gapFilling/KEGG/mergeTwoModels.html" class="code" title="function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel)">mergeTwoModels</a>(model,KEGG,1);
+0053 
+0054 <span class="comment">% Adds an additional matrix if given as input</span>
+0055 <span class="comment">% Note that the naming of metabolites in this matrix has to be identical to</span>
+0056 <span class="comment">% model naming. Also, the list should be unique.</span>
+0057 <span class="keyword">if</span> isstruct(addModel)
+0058     addModel = <a href="#_sub1" class="code" title="subfunction model = CheckMetName(model)">CheckMetName</a>(addModel);
+0059     [model_SU] = <a href="../../../cobra/gapFilling/KEGG/mergeTwoModels.html" class="code" title="function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel)">mergeTwoModels</a>(model_SU,addModel,1);
+0060 <span class="keyword">end</span>
+0061 
+0062 <span class="keyword">if</span> ~isempty(compartment)
+0063     ExchangeRxnMatrix = <a href="createXMatrix.html" class="code" title="function ExchangeRxnMatrix = createXMatrix(compoundsIn, transport, compartment)">createXMatrix</a>(model_SU.mets,1,compartment);
+0064     <span class="comment">% 2. SU with X</span>
+0065     ExchangeRxnMatrix.RxnSubsystem = ExchangeRxnMatrix.subSystems;
+0066     <span class="comment">%model_SU.RxnSubsystem = model_SU.subSystems;</span>
+0067     [MatricesSUX] = <a href="../../../cobra/gapFilling/KEGG/mergeTwoModels.html" class="code" title="function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel)">mergeTwoModels</a>(model_SU,ExchangeRxnMatrix,1);
+0068     <span class="comment">% creates a vector assigning the origin of the reactions to the parentfprintf(1,'Converting merged model into an irreversible model...');</span>
+0069 <span class="keyword">else</span>
+0070     MatricesSUX=model_SU;
+0071 <span class="keyword">end</span>
+0072 
+0073 MatricesSUX.rxnGeneMat(length(MatricesSUX.rxns),length(MatricesSUX.genes))=0;
+0074 MatricesSUX.rxnGeneMat = sparse(MatricesSUX.rxnGeneMat);
+0075 MatricesSUX = <a href="../../../cobra/convertToIrreversible.html" class="code" title="function [modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model)">convertToIrreversible</a>(MatricesSUX);
+0076 
+0077 <span class="comment">% MatrixPart indicates in which area of MatricesSUX the model reactions,</span>
+0078 <span class="comment">% kegg reactions, and exchange/transport reactions are located (ie. 1 -</span>
+0079 <span class="comment">% model, 2 - kegg, 3 - X)</span>
+0080 tmp=find(model.rev);
+0081 MatricesSUX.MatrixPart(1:length(model.rxns)+length(tmp),1)=1; <span class="comment">% model reactions</span>
+0082 MatricesSUX.MatrixPart(length(MatricesSUX.MatrixPart)+1:length(MatricesSUX.MatrixPart)+length(KEGG.rxns)+length(find(KEGG.rev)),1)=2;<span class="comment">%KEGG DB reactions</span>
+0083 MatricesSUX.MatrixPart(length(MatricesSUX.MatrixPart)+1:length(MatricesSUX.rxns),1)=3; <span class="comment">%exchange and transport reactions</span>
+0084 
+0085 <a name="_sub1" href="#_subfunctions" class="code">function model = CheckMetName(model)</a>
+0086 <span class="comment">% checks if model.mets has () or [] for compartment</span>
+0087 <span class="keyword">if</span> ~isempty(strfind(model.mets,<span class="string">'(c)'</span>)) ||~isempty(strfind(model.mets,<span class="string">'(e)'</span>))
+0088     <span class="keyword">for</span> i = 1 :length(model.mets)
+0089         model.mets{i} = regexprep(model.mets{i},<span class="string">'('</span>,<span class="string">'['</span>);
+0090         model.mets{i} = regexprep(model.mets{i},<span class="string">')'</span>,<span class="string">']'</span>);
+0091     <span class="keyword">end</span>
+0092 <span class="keyword">end</span>
+0093 <span class="comment">% fixes metabolites names if no compartment has been added to metabolites.</span>
+0094 <span class="comment">% It assumes that the metabolites without compartment are in the cytosol</span>
+0095     <span class="keyword">for</span> i = 1 :length(model.mets)
+0096         <span class="keyword">if</span>  isempty(regexp(model.mets{i},<span class="string">'\(\w\)'</span>)) &amp;&amp; isempty(regexp(model.mets{i},<span class="string">'\[\w\]'</span>))
+0097             model.mets{i} = strcat(model.mets{i},<span class="string">'[c]'</span>);
+0098         <span class="keyword">end</span>
+0099     <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

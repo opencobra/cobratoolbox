@@ -1,0 +1,214 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of simpleOptKnock</title>
+  <meta name="keywords" content="simpleOptKnock">
+  <meta name="description" content="simpleOptKnock Simple OptKnock to check all one gene or reaction deletions for">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html design -->
+<h1>simpleOptKnock
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>simpleOptKnock Simple OptKnock to check all one gene or reaction deletions for</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [wtRes,delRes] = simpleOptKnock(model,targetRxn,deletions,geneDelFlag,minGrowth,doubleDelFlag) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">simpleOptKnock Simple OptKnock to check all one gene or reaction deletions for
+growth-coupled metabolite production
+
+ [wtRes,delRes] = simpleOptKnock(model,targetRxn,deletions,geneDelFlag,minGrowth,doubleDelFlag)
+
+INPUTS
+ model         COBRA model structure
+ targetRxn     Target metabolite production reaction      
+
+OPTIONAL INPUTS
+ deletions     Set of gene or reaction deletions to consider for KO 
+               (Default = all reactions)
+ geneDelFlag   Gene deletion flag (Default = false)
+ minGrowth     Minimum KO growth rate (Default = 0.05)
+ doubleDelFlag Double deletions (Default = false)
+
+OUTPUTS
+ wtRes         Wild type results
+ delRes        Deletion strain results
+
+ The results structures have fields: 
+    growth     Growth rate of strain
+    minProd    Minimum prod rate of target metabolite
+    maxProd    Maximum prod rate of target metabolite
+
+ Markus Herrgard 2/14/07</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/changeObjective.html" class="code" title="function model = changeObjective(model,rxnNameList,objectiveCoeff)">changeObjective</a>	changeObjective Changes the objective function of a constraint-based model</li><li><a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>	changeRxnBounds Change upper or lower bounds of a reaction or a set of</li><li><a href="../../cobra/deleteModelGenes.html" class="code" title="function [model,hasEffect,constrRxnNames,deletedGenes] = deleteModelGenes(model,geneList,downRegFraction)">deleteModelGenes</a>	deleteModelGenes Delete one or more genes and constrain the reactions</li><li><a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>	optimizeCbModel Solve a flux balance analysis problem</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [wtRes,delRes] = simpleOptKnock(model,targetRxn,deletions,geneDelFlag,minGrowth,doubleDelFlag)</a>
+0002 <span class="comment">%simpleOptKnock Simple OptKnock to check all one gene or reaction deletions for</span>
+0003 <span class="comment">%growth-coupled metabolite production</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% [wtRes,delRes] = simpleOptKnock(model,targetRxn,deletions,geneDelFlag,minGrowth,doubleDelFlag)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%INPUTS</span>
+0008 <span class="comment">% model         COBRA model structure</span>
+0009 <span class="comment">% targetRxn     Target metabolite production reaction</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">%OPTIONAL INPUTS</span>
+0012 <span class="comment">% deletions     Set of gene or reaction deletions to consider for KO</span>
+0013 <span class="comment">%               (Default = all reactions)</span>
+0014 <span class="comment">% geneDelFlag   Gene deletion flag (Default = false)</span>
+0015 <span class="comment">% minGrowth     Minimum KO growth rate (Default = 0.05)</span>
+0016 <span class="comment">% doubleDelFlag Double deletions (Default = false)</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%OUTPUTS</span>
+0019 <span class="comment">% wtRes         Wild type results</span>
+0020 <span class="comment">% delRes        Deletion strain results</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">% The results structures have fields:</span>
+0023 <span class="comment">%    growth     Growth rate of strain</span>
+0024 <span class="comment">%    minProd    Minimum prod rate of target metabolite</span>
+0025 <span class="comment">%    maxProd    Maximum prod rate of target metabolite</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">% Markus Herrgard 2/14/07</span>
+0028 
+0029 <span class="keyword">if</span> (nargin &lt; 3)
+0030     deletions = model.rxns;
+0031 <span class="keyword">end</span>
+0032 <span class="keyword">if</span> (nargin &lt; 4)
+0033     geneDelFlag = false;
+0034 <span class="keyword">end</span>
+0035 <span class="keyword">if</span> (nargin &lt; 5)
+0036     minGrowth = 0.05;
+0037 <span class="keyword">end</span>
+0038 <span class="keyword">if</span> (nargin &lt; 6)
+0039     doubleDelFlag = false;
+0040 <span class="keyword">end</span>
+0041 
+0042 tol = 1e-7;
+0043 
+0044 <span class="comment">% Number of deletions</span>
+0045 nDel = length(deletions);
+0046 
+0047 <span class="comment">% Wild type values</span>
+0048 solWT = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(model);
+0049 grRounded = floor(solWT.f/tol)*tol;
+0050 modelWT = <a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>(model,model.rxns(model.c==1),grRounded,<span class="string">'l'</span>);
+0051 modelWT = <a href="../../cobra/changeObjective.html" class="code" title="function model = changeObjective(model,rxnNameList,objectiveCoeff)">changeObjective</a>(modelWT,targetRxn,1);
+0052 solMax = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelWT);
+0053 solMin = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelWT);
+0054 
+0055 wtRes.growth = solWT.f;
+0056 wtRes.maxProd = solMax.f;
+0057 wtRes.minProd = solMin.f;
+0058 
+0059 <span class="keyword">if</span> (doubleDelFlag)
+0060     growthRate = sparse(nDel,nDel);
+0061     maxProd = sparse(nDel,nDel);
+0062     minProd = sparse(nDel,nDel);  
+0063 <span class="keyword">else</span>
+0064     growthRate = zeros(nDel,1);
+0065     maxProd = zeros(nDel,1);
+0066     minProd = zeros(nDel,1);
+0067 <span class="keyword">end</span>
+0068 
+0069 
+0070 <span class="keyword">if</span> (~doubleDelFlag)
+0071     h = waitbar(0,<span class="string">'Simple OptKnock in progress ...'</span>);
+0072 <span class="keyword">end</span>
+0073 t0 = cputime;
+0074 delCounter = 0;
+0075 <span class="keyword">for</span> i = 1:nDel
+0076     <span class="keyword">if</span> (~doubleDelFlag)
+0077         <span class="keyword">if</span> mod(i,10) == 0
+0078             waitbar(i/nDel,h);
+0079         <span class="keyword">end</span>
+0080     <span class="keyword">end</span>
+0081     <span class="keyword">if</span> (geneDelFlag)
+0082         <span class="comment">% Gene deletion</span>
+0083         modelKO = <a href="../../cobra/deleteModelGenes.html" class="code" title="function [model,hasEffect,constrRxnNames,deletedGenes] = deleteModelGenes(model,geneList,downRegFraction)">deleteModelGenes</a>(model,deletions{i});
+0084     <span class="keyword">else</span>
+0085         <span class="comment">% Reaction deletion</span>
+0086         modelKO = <a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>(model,deletions{i},0,<span class="string">'b'</span>);
+0087     <span class="keyword">end</span>
+0088     <span class="comment">% Calculate optimal growth rate</span>
+0089     solKO = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelKO);
+0090     <span class="comment">%fprintf('Single %s %f\n',deletions{i},solKO.f);</span>
+0091     growthRate(i,1) = solKO.f;    
+0092     <span class="keyword">if</span> (solKO.f &gt; minGrowth &amp;&amp; solKO.stat == 1)
+0093         <span class="comment">% Max &amp; min production of the metabolite at the optimal growth rate</span>
+0094         grRounded = floor(solKO.f/tol)*tol;
+0095         modelKO = <a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>(modelKO,modelKO.rxns(modelKO.c==1),grRounded,<span class="string">'l'</span>);
+0096         modelKO = <a href="../../cobra/changeObjective.html" class="code" title="function model = changeObjective(model,rxnNameList,objectiveCoeff)">changeObjective</a>(modelKO,targetRxn,1);
+0097         solMax = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelKO,<span class="string">'max'</span>);
+0098         solMin = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelKO,<span class="string">'min'</span>);
+0099         <span class="keyword">if</span> (~doubleDelFlag)
+0100             maxProd(i,1) = solMax.f;
+0101             minProd(i,1) = solMin.f;
+0102         <span class="comment">%fprintf('%f %f\n',solMax.f,solMin.f);</span>
+0103         <span class="keyword">else</span>
+0104             maxProd(i,i) = solMax.f;
+0105             minProd(i,i) = solMin.f;            
+0106             <span class="keyword">for</span> j = i+1:nDel
+0107                 delCounter = delCounter+1;
+0108                 <span class="keyword">if</span> mod(j,50) == 0
+0109                     fComp = delCounter/(nDel*(nDel-1)/2);
+0110                     fprintf(<span class="string">'%d\t%f\t%f\n'</span>,delCounter,100*fComp,(cputime-t0)/60);
+0111                 <span class="keyword">end</span>
+0112                 <span class="keyword">if</span> (geneDelFlag)
+0113                     <span class="comment">% Gene deletion</span>
+0114                     modelKO2 = <a href="../../cobra/deleteModelGenes.html" class="code" title="function [model,hasEffect,constrRxnNames,deletedGenes] = deleteModelGenes(model,geneList,downRegFraction)">deleteModelGenes</a>(model,deletions{i});
+0115                     modelKO2 = <a href="../../cobra/deleteModelGenes.html" class="code" title="function [model,hasEffect,constrRxnNames,deletedGenes] = deleteModelGenes(model,geneList,downRegFraction)">deleteModelGenes</a>(modelKO2,deletions{j});
+0116                 <span class="keyword">else</span>
+0117                     modelKO2 = <a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>(model,deletions{i},0,<span class="string">'b'</span>);
+0118                     modelKO2 = <a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>(modelKO2,deletions{j},0,<span class="string">'b'</span>);
+0119                 <span class="keyword">end</span>
+0120                 <span class="comment">% Calculate optimal growth rate</span>
+0121                 solKO2 = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelKO2);
+0122                 growthRate(i,j) = solKO2.f;
+0123                 <span class="comment">%fprintf('Double %s %s %f\n',deletions{i},deletions{j},solKO2.f);</span>
+0124                 <span class="keyword">if</span> (solKO2.f &gt; minGrowth &amp;&amp; solKO2.stat == 1)
+0125                     grRounded2 = floor(solKO2.f/tol)*tol;
+0126                     modelKO2 = <a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>(modelKO2,modelKO2.rxns(modelKO2.c==1),grRounded2,<span class="string">'l'</span>);
+0127                     modelKO2 = <a href="../../cobra/changeObjective.html" class="code" title="function model = changeObjective(model,rxnNameList,objectiveCoeff)">changeObjective</a>(modelKO2,targetRxn,1);
+0128                     solMax2 = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelKO2,<span class="string">'max'</span>);
+0129                     solMin2 = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelKO2,<span class="string">'min'</span>);
+0130                     <span class="keyword">if</span> (solMin2.f &gt; 0)
+0131                         fprintf(<span class="string">'%s %s %f %f %f\n'</span>,deletions{i},deletions{j},solKO2.f,solMax2.f,solMin2.f);
+0132                     <span class="keyword">end</span>
+0133                     maxProd(i,j) = solMax2.f;
+0134                     minProd(i,j) = solMin2.f;
+0135                 <span class="keyword">end</span>
+0136             <span class="keyword">end</span>
+0137         <span class="keyword">end</span>
+0138     <span class="keyword">end</span>
+0139 <span class="keyword">end</span>
+0140 <span class="keyword">if</span> (~doubleDelFlag) 
+0141     close(h);
+0142 <span class="keyword">end</span>
+0143 
+0144 <span class="comment">% Store results</span>
+0145 delRes.maxProd = maxProd;
+0146 delRes.minProd = minProd;
+0147 delRes.growth = growthRate;</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

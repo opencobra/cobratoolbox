@@ -1,0 +1,799 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of createTissueSpecificModel</title>
+  <meta name="keywords" content="createTissueSpecificModel">
+  <meta name="description" content="createTissueSpecificModel Create draft tissue specific model from mRNA expression data">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html reconstruction -->
+<h1>createTissueSpecificModel
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>createTissueSpecificModel Create draft tissue specific model from mRNA expression data</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [tissueModel,Rxns] = createTissueSpecificModel(model,expressionData,proceedExp,orphan,exRxnRemove,solver,options,funcModel) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">createTissueSpecificModel Create draft tissue specific model from mRNA expression data
+
+ [tissueModel,Rxns] =
+ createTissueSpecificModel(model,expressionData,proceedExp,orphan,exRxnRemove,solver,options,funcModel)
+
+INPUTS
+   model               global recon1 model
+   expressionData      mRNA expression Data structure
+       Locus           Vector containing GeneIDs
+       Data            Presence/Absence Calls
+                             Use: (1 - Present, 0 - Absent) when proceedExp = 1
+                             Use: (2 - Present, 1 - Marginal, 0 - Absent)
+                               when proceedExp = 0
+       Transcript      RefSeq Accession (only required if proceedExp = 0)
+ 
+OPTINAL INPUTS
+   proceedExp          1 - data are processed ; 0 - data need to be
+                           processed (Default = 1)
+   orphan              1 - leave orphan reactions in model for Shlomi Method
+                       0 - remove orphan reactions
+                       (Default = 1)
+   exRxnRemove         Names of exchange reactions to remove
+                       (Default = [])
+   solver              Use either 'GIMME', 'iMAT', or 'Shlomi' to create tissue
+                       specific model. 'Shlomi' is the same as 'iMAT' the names
+                       are just maintained for historical purposes.
+                       (Default = 'GIMME')
+   options             If using GIMME, enter objectiveCol here
+                       Default: objective function with 90% flux cutoff,
+                       written as: [find(model.c) 0.9]
+   funcModel           1 - Build a functional model having only reactions
+                       that can carry a flux (using FVA), 0 - skip this
+                       step (Default = 0)
+
+
+OUTPUTS
+   tissueModel         Model produced by GIMME or iMAT, containing only
+                       reactions carrying flux
+   Rxns                Statistics of test
+                               ExpressedRxns - predicted by mRNA data
+                               UnExpressedRxns - predicted by mRNA data
+                               unknown - unable to be predicted by mRNA
+                                   data
+                               Upregulated - added back into model
+                               Downregulated - removed from model
+                               UnknownIncluded - orphans added
+ 
+ NOTE: If there are multiple transcripts to one probe that have different
+ expression patterns the script will ask what the locus is of the
+ expressed and unexpressed transcripts
+
+ Note: GIMME script matches objective functions flux, Shlomi algorithm is
+ based on maintaining pathway length comparable to expression data, not flux
+
+ Aarash Bordbar 05/15/2009
+ Added proceedExp, IT 10/30/09
+ Adjusted manual input for alt. splice form, IT 05/27/10
+ Final Corba 2.0 Version, AB 08/05/10</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/convertToIrreversible.html" class="code" title="function [modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model)">convertToIrreversible</a>	convertToIrreversible Convert model to irreversible format</li><li><a href="../../cobra/findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>	findRxnIDs Find reaction numbers in a model</li><li><a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>	optimizeCbModel Solve a flux balance analysis problem</li><li><a href="removeRxns.html" class="code" title="function modelOut = removeRxns(model,rxnRemoveList,irrevFlag,metFlag)">removeRxns</a>	removeRxns Remove reactions from a model</li><li><a href="../../cobra/solvers/solveCobraMILP.html" class="code" title="function solution = solveCobraMILP(MILPproblem,varargin)">solveCobraMILP</a>	solveCobraMILP Solve constraint-based MILP problems</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function [reactionActivity,reactionActivityIrrev,model2gimme,gimmeSolution] = solveGimme(model,objectiveCol,expressionCol,cutoff)</a></li><li><a href="#_sub2" class="code">function [rxnExpressed,unExpressed,unknown] = mapProbes(parsedGPR,corrRxn,locus,genePresence,match_strings)</a></li><li><a href="#_sub3" class="code">function [parsedGPR,corrRxn] = extractGPRs(model)</a></li><li><a href="#_sub4" class="code">function [Results,Transcripts] = charExpData(ExpressionData)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [tissueModel,Rxns] = createTissueSpecificModel(model, </a><span class="keyword">...</span>
+0002                                                   expressionData,proceedExp,orphan,exRxnRemove,solver,options,funcModel)
+0003 <span class="comment">%createTissueSpecificModel Create draft tissue specific model from mRNA expression data</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% [tissueModel,Rxns] =</span>
+0006 <span class="comment">% createTissueSpecificModel(model,expressionData,proceedExp,orphan,exRxnRemove,solver,options,funcModel)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">%INPUTS</span>
+0009 <span class="comment">%   model               global recon1 model</span>
+0010 <span class="comment">%   expressionData      mRNA expression Data structure</span>
+0011 <span class="comment">%       Locus           Vector containing GeneIDs</span>
+0012 <span class="comment">%       Data            Presence/Absence Calls</span>
+0013 <span class="comment">%                             Use: (1 - Present, 0 - Absent) when proceedExp = 1</span>
+0014 <span class="comment">%                             Use: (2 - Present, 1 - Marginal, 0 - Absent)</span>
+0015 <span class="comment">%                               when proceedExp = 0</span>
+0016 <span class="comment">%       Transcript      RefSeq Accession (only required if proceedExp = 0)</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%OPTINAL INPUTS</span>
+0019 <span class="comment">%   proceedExp          1 - data are processed ; 0 - data need to be</span>
+0020 <span class="comment">%                           processed (Default = 1)</span>
+0021 <span class="comment">%   orphan              1 - leave orphan reactions in model for Shlomi Method</span>
+0022 <span class="comment">%                       0 - remove orphan reactions</span>
+0023 <span class="comment">%                       (Default = 1)</span>
+0024 <span class="comment">%   exRxnRemove         Names of exchange reactions to remove</span>
+0025 <span class="comment">%                       (Default = [])</span>
+0026 <span class="comment">%   solver              Use either 'GIMME', 'iMAT', or 'Shlomi' to create tissue</span>
+0027 <span class="comment">%                       specific model. 'Shlomi' is the same as 'iMAT' the names</span>
+0028 <span class="comment">%                       are just maintained for historical purposes.</span>
+0029 <span class="comment">%                       (Default = 'GIMME')</span>
+0030 <span class="comment">%   options             If using GIMME, enter objectiveCol here</span>
+0031 <span class="comment">%                       Default: objective function with 90% flux cutoff,</span>
+0032 <span class="comment">%                       written as: [find(model.c) 0.9]</span>
+0033 <span class="comment">%   funcModel           1 - Build a functional model having only reactions</span>
+0034 <span class="comment">%                       that can carry a flux (using FVA), 0 - skip this</span>
+0035 <span class="comment">%                       step (Default = 0)</span>
+0036 <span class="comment">%</span>
+0037 <span class="comment">%</span>
+0038 <span class="comment">%OUTPUTS</span>
+0039 <span class="comment">%   tissueModel         Model produced by GIMME or iMAT, containing only</span>
+0040 <span class="comment">%                       reactions carrying flux</span>
+0041 <span class="comment">%   Rxns                Statistics of test</span>
+0042 <span class="comment">%                               ExpressedRxns - predicted by mRNA data</span>
+0043 <span class="comment">%                               UnExpressedRxns - predicted by mRNA data</span>
+0044 <span class="comment">%                               unknown - unable to be predicted by mRNA</span>
+0045 <span class="comment">%                                   data</span>
+0046 <span class="comment">%                               Upregulated - added back into model</span>
+0047 <span class="comment">%                               Downregulated - removed from model</span>
+0048 <span class="comment">%                               UnknownIncluded - orphans added</span>
+0049 <span class="comment">%</span>
+0050 <span class="comment">% NOTE: If there are multiple transcripts to one probe that have different</span>
+0051 <span class="comment">% expression patterns the script will ask what the locus is of the</span>
+0052 <span class="comment">% expressed and unexpressed transcripts</span>
+0053 <span class="comment">%</span>
+0054 <span class="comment">% Note: GIMME script matches objective functions flux, Shlomi algorithm is</span>
+0055 <span class="comment">% based on maintaining pathway length comparable to expression data, not flux</span>
+0056 <span class="comment">%</span>
+0057 <span class="comment">% Aarash Bordbar 05/15/2009</span>
+0058 <span class="comment">% Added proceedExp, IT 10/30/09</span>
+0059 <span class="comment">% Adjusted manual input for alt. splice form, IT 05/27/10</span>
+0060 <span class="comment">% Final Corba 2.0 Version, AB 08/05/10</span>
+0061 
+0062 <span class="comment">% Define defaults</span>
+0063 <span class="comment">% Deal with hardcoded belief that all the genes will have human entrez</span>
+0064 <span class="comment">% ids and the user wants to collapse alternative constructs</span>
+0065 <span class="keyword">if</span> iscell(expressionData.Locus(1))
+0066   match_strings = true;
+0067 <span class="keyword">else</span>
+0068   match_strings = false;
+0069 <span class="keyword">end</span>
+0070 
+0071 <span class="keyword">if</span> ~exist(<span class="string">'proceedExp'</span>,<span class="string">'var'</span>) || isempty(proceedExp)
+0072     proceedExp = 1;
+0073 <span class="keyword">end</span>
+0074 
+0075 <span class="keyword">if</span> ~exist(<span class="string">'solver'</span>,<span class="string">'var'</span>) || isempty(solver)
+0076     solver = <span class="string">'GIMME'</span>;
+0077 <span class="keyword">end</span>
+0078 
+0079 <span class="keyword">if</span> ~exist(<span class="string">'exRxnRemove'</span>,<span class="string">'var'</span>) || isempty(exRxnRemove)
+0080     exRxnRemove = [];
+0081 <span class="keyword">end</span>
+0082 
+0083 <span class="keyword">if</span> ~exist(<span class="string">'orphan'</span>,<span class="string">'var'</span>) || isempty(orphan)
+0084     orphan = 1;
+0085 <span class="keyword">end</span>
+0086 
+0087 <span class="keyword">if</span> ~exist(<span class="string">'funcModel'</span>,<span class="string">'var'</span>) || isempty(funcModel)
+0088     funcModel = 0;
+0089 <span class="keyword">end</span>
+0090 
+0091 
+0092 <span class="comment">% Extracting GPR data from model</span>
+0093 [parsedGPR,corrRxn] = <a href="#_sub3" class="code" title="subfunction [parsedGPR,corrRxn] = extractGPRs(model)">extractGPRs</a>(model);
+0094 
+0095 <span class="keyword">if</span> proceedExp == 0
+0096     <span class="comment">% Making presence/absence calls on mRNA expression data</span>
+0097     [Results,Transcripts] = <a href="#_sub4" class="code" title="subfunction [Results,Transcripts] = charExpData(ExpressionData)">charExpData</a>(expressionData);
+0098     
+0099     x = ismember(Transcripts.Locus,[Transcripts.Expressed;Transcripts.UnExpressed]);
+0100     unkLocus = find(x==0);
+0101     
+0102     AltSplice.Locus = Transcripts.Locus(unkLocus);
+0103     AltSplice.Transcripts = Transcripts.Data(unkLocus);
+0104     AltSplice.Expression = Transcripts.Expression(unkLocus);
+0105     
+0106     fprintf(<span class="string">'There are some probes that match up with different transcripts and expression patterns\n'</span>);
+0107     fprintf(<span class="string">'Please elucidate these discrepancies below\n'</span>);
+0108     fprintf(<span class="string">'To do so, look up the transcript in RefSeq and enter the proper locii below\n'</span>);
+0109     
+0110     cnt1 = 1;
+0111     cnt2 = 1;
+0112     locusNE =[];
+0113     locusE = [];
+0114     <span class="keyword">for</span> i = 1:length(AltSplice.Locus)
+0115         <span class="keyword">if</span> length(AltSplice.Transcripts{i}) &lt; 1
+0116         <span class="keyword">elseif</span> AltSplice.Expression(i) == 0
+0117             fprintf(<span class="string">'Probe: %i, Transcript: %s, Expression: %i\n'</span>,AltSplice.Locus(i),AltSplice.Transcripts{i},AltSplice.Expression(i));
+0118          <span class="comment">%   locusNE(cnt1,1) = input('What is the proper locii? ');</span>
+0119                      locusNE(cnt1,1) = AltSplice.Locus(i);<span class="comment">%input('What is the proper locii? ');</span>
+0120             cnt1=cnt1+1;
+0121         <span class="keyword">elseif</span> AltSplice.Expression(i) == 1
+0122             fprintf(<span class="string">'Probe: %i, Transcript: %s, Expression: %i\n'</span>,AltSplice.Locus(i),AltSplice.Transcripts{i},AltSplice.Expression(i));
+0123            <span class="comment">% locusE(cnt2,1) = input('What is the proper locii? ');</span>
+0124             locusE(cnt2,1) = AltSplice.Locus(i);<span class="comment">% Hack by Maike %input('What is the proper locii? ');</span>
+0125             cnt2=cnt2+1;
+0126         <span class="keyword">end</span>
+0127     <span class="keyword">end</span>
+0128 
+0129     locusP = [Results.Expressed;Transcripts.Expressed;locusE];
+0130     locusNP = [Results.UnExpressed;Transcripts.UnExpressed;locusNE];
+0131     
+0132     genePresenceP = ones(length(locusP),1);
+0133     genePresenceNP = zeros(length(locusNP),1);
+0134     
+0135     locus = [locusP;locusNP];
+0136     genePresence = [genePresenceP;genePresenceNP];
+0137 <span class="keyword">else</span>
+0138     locus = expressionData.Locus;
+0139     genePresence = zeros(length(locus),1);
+0140     genePresence(find(expressionData.Data(:,1))) = 1;
+0141 <span class="keyword">end</span>
+0142 
+0143 <span class="comment">% Mapping probes to reactions in model</span>
+0144 [ExpressedRxns,UnExpressedRxns,unknown] = <a href="#_sub2" class="code" title="subfunction [rxnExpressed,unExpressed,unknown] = mapProbes(parsedGPR,corrRxn,locus,genePresence,match_strings)">mapProbes</a>(parsedGPR,corrRxn,locus,genePresence,match_strings);
+0145 
+0146 <span class="comment">% Removing exchange reactions that are not in this specific tissue</span>
+0147 <span class="comment">% metabolome</span>
+0148 <span class="keyword">if</span> ~isempty(exRxnRemove)
+0149     model = <a href="removeRxns.html" class="code" title="function modelOut = removeRxns(model,rxnRemoveList,irrevFlag,metFlag)">removeRxns</a>(model,exRxnRemove);
+0150 <span class="keyword">end</span>
+0151 
+0152 nRxns = length(model.lb);
+0153 
+0154 <span class="comment">% Determine reaction indices of expressed and unexpressed reactions</span>
+0155 RHindex = <a href="../../cobra/findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(model,ExpressedRxns);
+0156 RLindex = <a href="../../cobra/findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(model,UnExpressedRxns);
+0157 <span class="keyword">if</span> (strcmp(solver, <span class="string">'iMAT'</span>))
+0158   solver = <span class="string">'Shlomi'</span>;
+0159 <span class="keyword">end</span>
+0160 <span class="keyword">switch</span> solver
+0161     <span class="keyword">case</span> <span class="string">'Shlomi'</span>
+0162         
+0163         S = model.S;
+0164         lb = model.lb;
+0165         ub = model.ub;
+0166         eps = 1;
+0167         
+0168         <span class="comment">% Creating A matrix</span>
+0169         A = sparse(size(S,1)+2*length(RHindex)+2*length(RLindex),size(S,2)+2*length(RHindex)+length(RLindex));
+0170         [nConstr,nVar] = size(S);
+0171         [m,n,s] = find(S);
+0172         <span class="keyword">for</span> i = 1:length(m)
+0173             A(m(i),n(i)) = s(i);
+0174         <span class="keyword">end</span>
+0175         
+0176         <span class="keyword">for</span> i = 1:length(RHindex)
+0177             A(i+size(S,1),RHindex(i)) = 1;
+0178             A(i+size(S,1),i+size(S,2)) = lb(RHindex(i)) - eps;
+0179             A(i+size(S,1)+length(RHindex),RHindex(i)) = 1;
+0180             A(i+size(S,1)+length(RHindex),i+size(S,2)+length(RHindex)+length(RLindex)) = ub(RHindex(i)) + eps;
+0181         <span class="keyword">end</span>
+0182         
+0183         <span class="keyword">for</span> i = 1:length(RLindex)
+0184             A(i+size(S,1)+2*length(RHindex),RLindex(i)) = 1;
+0185             A(i+size(S,1)+2*length(RHindex),i+size(S,2)+length(RHindex)) = lb(RLindex(i));
+0186             A(i+size(S,1)+2*length(RHindex)+length(RLindex),RLindex(i)) = 1;
+0187             A(i+size(S,1)+2*length(RHindex)+length(RLindex),i+size(S,2)+length(RHindex)) = ub(RLindex(i));
+0188         <span class="keyword">end</span>
+0189         
+0190         <span class="comment">% Creating csense</span>
+0191         csense1(1:size(S,1)) = <span class="string">'E'</span>;
+0192         csense2(1:length(RHindex)) = <span class="string">'G'</span>;
+0193         csense3(1:length(RHindex)) = <span class="string">'L'</span>;
+0194         csense4(1:length(RLindex)) = <span class="string">'G'</span>;
+0195         csense5(1:length(RLindex)) = <span class="string">'L'</span>;
+0196         csense = [csense1 csense2 csense3 csense4 csense5];
+0197         
+0198         <span class="comment">% Creating lb and ub</span>
+0199         lb_y = zeros(2*length(RHindex)+length(RLindex),1);
+0200         ub_y = ones(2*length(RHindex)+length(RLindex),1);
+0201         lb = [lb;lb_y];
+0202         ub = [ub;ub_y];
+0203         
+0204         <span class="comment">% Creating c</span>
+0205         c_v = zeros(size(S,2),1);
+0206         c_y = ones(2*length(RHindex)+length(RLindex),1);
+0207         c = [c_v;c_y];
+0208         
+0209         <span class="comment">% Creating b</span>
+0210         b_s = zeros(size(S,1),1);
+0211         lb_rh = lb(RHindex);
+0212         ub_rh = ub(RHindex);
+0213         lb_rl = lb(RLindex);
+0214         ub_rl = ub(RLindex);
+0215         b = [b_s;lb_rh;ub_rh;lb_rl;ub_rl];
+0216         
+0217         <span class="comment">% Creating vartype</span>
+0218         vartype1(1:size(S,2),1) = <span class="string">'C'</span>;
+0219         vartype2(1:2*length(RHindex)+length(RLindex),1) = <span class="string">'B'</span>;
+0220         vartype = [vartype1;vartype2];
+0221         n_int = length(vartype2);
+0222         
+0223         MILPproblem.A = A;
+0224         MILPproblem.b = b;
+0225         MILPproblem.c = c;
+0226         MILPproblem.lb = lb;
+0227         MILPproblem.ub = ub;
+0228         MILPproblem.csense = csense;
+0229         MILPproblem.vartype = vartype;
+0230         MILPproblem.osense = -1;
+0231         MILPproblem.x0 = [];
+0232 
+0233         verboseFlag = true;
+0234         
+0235         solution = <a href="../../cobra/solvers/solveCobraMILP.html" class="code" title="function solution = solveCobraMILP(MILPproblem,varargin)">solveCobraMILP</a>(MILPproblem);
+0236         
+0237         Rxns.solution = solution;
+0238         
+0239         x = solution.cont;
+0240         <span class="keyword">for</span> i = 1:length(x)
+0241             <span class="keyword">if</span> abs(x(i)) &lt; 1e-6
+0242                 x(i,1) = 0;
+0243             <span class="keyword">end</span>
+0244         <span class="keyword">end</span>
+0245         
+0246         removed = find(x==0);
+0247         <span class="comment">% option to leave orphan reactions</span>
+0248         <span class="keyword">if</span> orphan == 1
+0249             orphans = findorphanRxns(model);
+0250             removed(find(ismember(model.rxns(removed),orphans)))=[]; 
+0251         <span class="keyword">end</span>
+0252         rxnRemList = model.rxns(removed);
+0253         tissueModel = <a href="removeRxns.html" class="code" title="function modelOut = removeRxns(model,rxnRemoveList,irrevFlag,metFlag)">removeRxns</a>(model,rxnRemList);
+0254         
+0255         Rxns.Expressed = ExpressedRxns;
+0256         Rxns.UnExpressed = UnExpressedRxns;
+0257         Rxns.unknown = unknown;
+0258         
+0259         x = ismember(UnExpressedRxns,tissueModel.rxns);
+0260         loc = find(x);
+0261         Rxns.UpRegulated = UnExpressedRxns(loc);
+0262         
+0263         x = ismember(ExpressedRxns,tissueModel.rxns);
+0264         loc = find(x==0);
+0265         Rxns.DownRegulated = ExpressedRxns(loc);
+0266         
+0267         x = ismember(model.rxns,[ExpressedRxns;UnExpressedRxns]);
+0268         loc = find(x==0);
+0269         x = ismember(tissueModel.rxns,model.rxns(loc));
+0270         loc = find(x);
+0271         Rxns.UnknownIncluded = tissueModel.rxns(loc);
+0272         
+0273     <span class="keyword">case</span> <span class="string">'GIMME'</span>
+0274         x = ismember(model.rxns,[ExpressedRxns;UnExpressedRxns]);
+0275         unk = find(x==0);
+0276         
+0277         expressionCol = zeros(length(model.rxns),1);
+0278         <span class="keyword">for</span> i = 1:length(unk)
+0279             expressionCol(unk(i)) = -1;
+0280         <span class="keyword">end</span>
+0281         
+0282         <span class="keyword">for</span> i = 1:length(RHindex)
+0283             expressionCol(RHindex(i)) = 2;
+0284         <span class="keyword">end</span>
+0285         <span class="keyword">if</span> ~exist(<span class="string">'options'</span>,<span class="string">'var'</span>) || isempty(options)
+0286             loc = find(model.c);
+0287             
+0288             sol = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(model);
+0289             
+0290             options = [loc 0.9];
+0291         <span class="keyword">end</span>
+0292         cutoff = 1;
+0293         [reactionActivity,reactionActivityIrrev,model2gimme,gimmeSolution] = <a href="#_sub1" class="code" title="subfunction [reactionActivity,reactionActivityIrrev,model2gimme,gimmeSolution] = solveGimme(model,objectiveCol,expressionCol,cutoff)">solveGimme</a>(model,options,expressionCol,cutoff);
+0294         
+0295         remove = model.rxns(find(reactionActivity == 0));
+0296         tissueModel = <a href="removeRxns.html" class="code" title="function modelOut = removeRxns(model,rxnRemoveList,irrevFlag,metFlag)">removeRxns</a>(model,remove);
+0297         
+0298         <span class="keyword">if</span> funcModel ==1
+0299             c = tissueModel.c;
+0300             
+0301             remove = [];
+0302             tissueModel.c = zeros(length(tissueModel.c),1);
+0303             <span class="keyword">for</span> i = 1:length(tissueModel.rxns)
+0304                 tissueModel.c(i) = 1;
+0305                 sol1 = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(tissueModel,<span class="string">'max'</span>);
+0306                 sol2 = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(tissueModel,<span class="string">'min'</span>);
+0307                 <span class="keyword">if</span> sol1.f == 0 &amp; sol2.f == 0
+0308                     remove = [remove tissueModel.rxns(i)];
+0309                 <span class="keyword">end</span>
+0310                 tissueModel.c(i) = 0;
+0311             <span class="keyword">end</span>
+0312             
+0313             tissueModel.c = c;
+0314             tissueModel = <a href="removeRxns.html" class="code" title="function modelOut = removeRxns(model,rxnRemoveList,irrevFlag,metFlag)">removeRxns</a>(tissueModel,remove);
+0315         <span class="keyword">end</span>
+0316         
+0317         Rxns.Expressed = ExpressedRxns;
+0318         Rxns.UnExpressed = UnExpressedRxns;
+0319         Rxns.unknown = unknown;
+0320         
+0321         x = ismember(UnExpressedRxns,tissueModel.rxns);
+0322         loc = find(x);
+0323         Rxns.UpRegulated = UnExpressedRxns(loc);
+0324         
+0325         x = ismember(ExpressedRxns,tissueModel.rxns);
+0326         loc = find(x==0);
+0327         Rxns.DownRegulated = ExpressedRxns(loc);
+0328         
+0329         x = ismember(model.rxns,[ExpressedRxns;UnExpressedRxns]);
+0330         loc = find(x==0);
+0331         x = ismember(tissueModel.rxns,model.rxns(loc));
+0332         loc = find(x);
+0333         Rxns.UnknownIncluded = tissueModel.rxns(loc);
+0334         
+0335 <span class="keyword">end</span>
+0336 
+0337 <span class="comment">%% Internal Functions</span>
+0338 <a name="_sub1" href="#_subfunctions" class="code">function [reactionActivity,reactionActivityIrrev,model2gimme,gimmeSolution] = solveGimme(model,objectiveCol,expressionCol,cutoff)</a>
+0339 
+0340 nRxns = size(model.S,2);
+0341 
+0342 <span class="comment">%first make model irreversible</span>
+0343 [modelIrrev,matchRev,rev2irrev,irrev2rev] = <a href="../../cobra/convertToIrreversible.html" class="code" title="function [modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model)">convertToIrreversible</a>(model);
+0344 
+0345 nExpressionCol = size(expressionCol,1);
+0346 <span class="keyword">if</span> (nExpressionCol &lt; nRxns)
+0347     display(<span class="string">'Warning: Fewer expression data inputs than reactions'</span>);
+0348     expressionCol(nExpressionCol+1:nRxns,:) = zeros(nRxns-nExpressionCol, size(expressionCol,2));
+0349 <span class="keyword">end</span>
+0350 
+0351 nIrrevRxns = size(irrev2rev,1);
+0352 expressionColIrrev = zeros(nIrrevRxns,1);
+0353 <span class="keyword">for</span> i=1:nIrrevRxns
+0354 <span class="comment">%     objectiveColIrrev(i,:) = objectiveCol(irrev2rev(i,1),:);</span>
+0355     expressionColIrrev(i,1) = expressionCol(irrev2rev(i,1),1);
+0356 <span class="keyword">end</span>
+0357     
+0358 nObjectives = size(objectiveCol,1);
+0359 <span class="keyword">for</span> i=1:nObjectives
+0360     objectiveColIrrev(i,:) = [rev2irrev{objectiveCol(i,1),1}(1,1) objectiveCol(i,2)];
+0361 <span class="keyword">end</span>
+0362 
+0363 <span class="comment">%Solve initially to get max for each objective</span>
+0364 <span class="keyword">for</span> i=1:size(objectiveCol)
+0365     <span class="comment">%define parameters for initial solution</span>
+0366     modelIrrev.c=zeros(nIrrevRxns,1);
+0367     modelIrrev.c(objectiveColIrrev(i,1),1)=1;
+0368     
+0369     <span class="comment">%find max objective</span>
+0370     FBAsolution = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelIrrev);
+0371     <span class="keyword">if</span> (FBAsolution.stat ~= 1)
+0372         not_solved=1;
+0373         display(<span class="string">'Failed to solve initial FBA problem'</span>);
+0374         <span class="keyword">return</span>
+0375     <span class="keyword">end</span>
+0376     maxObjective(i)=FBAsolution.f;
+0377 <span class="keyword">end</span>
+0378 
+0379 model2gimme = modelIrrev;
+0380 model2gimme.c = zeros(nIrrevRxns,1);
+0381 
+0382 
+0383 <span class="keyword">for</span> i=1:nIrrevRxns
+0384     <span class="keyword">if</span> (expressionColIrrev(i,1) &gt; -1)   <span class="comment">%if not absent reaction</span>
+0385         <span class="keyword">if</span> (expressionColIrrev(i,1) &lt; cutoff)
+0386             model2gimme.c(i,1) = cutoff-expressionColIrrev(i,1);
+0387         <span class="keyword">end</span>
+0388     <span class="keyword">end</span>
+0389 <span class="keyword">end</span>
+0390 
+0391 <span class="keyword">for</span> i=1:size(objectiveColIrrev,1)
+0392     model2gimme.lb(objectiveColIrrev(i,1),1) = objectiveColIrrev(i,2) * maxObjective(i);
+0393 <span class="keyword">end</span>
+0394 
+0395 gimmeSolution = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(model2gimme,<span class="string">'min'</span>);
+0396 
+0397 <span class="keyword">if</span> (gimmeSolution.stat ~= 1)
+0398 <span class="comment">%%        gimme_not_solved=1;</span>
+0399 <span class="comment">%        display('Failed to solve GIMME problem');</span>
+0400 <span class="comment">%        return</span>
+0401 gimmeSolution.x = zeros(nIrrevRxns,1);
+0402 <span class="keyword">end</span>
+0403 
+0404 reactionActivityIrrev = zeros(nIrrevRxns,1);
+0405 <span class="keyword">for</span> i=1:nIrrevRxns
+0406     <span class="keyword">if</span> ((expressionColIrrev(i,1) &gt; cutoff) | (expressionColIrrev(i,1) == -1))
+0407         reactionActivityIrrev(i,1)=1;
+0408     <span class="keyword">elseif</span> (gimmeSolution.x(i,1) &gt; 0)
+0409         reactionActivityIrrev(i,1)=2;
+0410     <span class="keyword">end</span>
+0411 <span class="keyword">end</span>
+0412         
+0413 <span class="comment">%Translate reactionActivity to reversible model</span>
+0414 reactionActivity = zeros(nRxns,1);
+0415 <span class="keyword">for</span> i=1:nRxns
+0416     <span class="keyword">for</span> j=1:size(rev2irrev{i,1},2)
+0417         <span class="keyword">if</span> (reactionActivityIrrev(rev2irrev{i,1}(1,j)) &gt; reactionActivity(i,1))
+0418             reactionActivity(i,1) = reactionActivityIrrev(rev2irrev{i,1}(1,j));
+0419         <span class="keyword">end</span>
+0420     <span class="keyword">end</span>
+0421 <span class="keyword">end</span>
+0422 
+0423 <a name="_sub2" href="#_subfunctions" class="code">function [rxnExpressed,unExpressed,unknown] = mapProbes(parsedGPR,corrRxn,locus,genePresence,match_strings)</a>
+0424 <span class="keyword">if</span> ~exist(<span class="string">'match_strings'</span>, <span class="string">'var'</span>) || isempty(match_strings)
+0425   match_strings = false;
+0426 <span class="keyword">end</span>
+0427 
+0428 rxnExpressed = [];
+0429 unExpressed = [];
+0430 unknown = [];
+0431 <span class="keyword">for</span> i = 1:size(parsedGPR,1)
+0432     cnt = 0;
+0433     <span class="keyword">for</span> j = 1:size(parsedGPR,2)
+0434         <span class="keyword">if</span> length(parsedGPR{i,j}) == 0
+0435             <span class="keyword">break</span>
+0436         <span class="keyword">end</span>
+0437         cnt = cnt+1;
+0438     <span class="keyword">end</span>
+0439     
+0440     test = 0;
+0441     <span class="keyword">for</span> j = 1:cnt
+0442       <span class="keyword">if</span> match_strings
+0443         loc = parsedGPR{i,j};
+0444         x = strmatch(loc, locus, <span class="string">'exact'</span>);
+0445       <span class="keyword">else</span>
+0446         loc = str2num(parsedGPR{i,j});
+0447         loc = floor(loc);
+0448         x = find(locus == loc);
+0449       <span class="keyword">end</span>
+0450 
+0451         <span class="keyword">if</span> length(x) &gt; 0 &amp; genePresence(x) == 0
+0452             unExpressed = [unExpressed;corrRxn(i)];
+0453             test = 1;
+0454             <span class="keyword">break</span>
+0455         <span class="keyword">elseif</span> length(x) == 0
+0456           test = 2;
+0457         <span class="keyword">end</span>
+0458     <span class="keyword">end</span>
+0459     
+0460     <span class="keyword">if</span> test == 0
+0461         rxnExpressed = [rxnExpressed;corrRxn(i)];  
+0462     <span class="keyword">elseif</span> test == 2
+0463       unknown = [unknown;corrRxn(i)];
+0464     <span class="keyword">end</span>
+0465 <span class="keyword">end</span>
+0466 
+0467 rxnExpressed = unique(rxnExpressed);
+0468 unExpressed = unique(unExpressed);
+0469 unknown = unique(unknown);
+0470 
+0471 unknown = setdiff(unknown,rxnExpressed);
+0472 unknown = setdiff(unknown,unExpressed);
+0473 unExpressed = setdiff(unExpressed,rxnExpressed);
+0474 
+0475 <a name="_sub3" href="#_subfunctions" class="code">function [parsedGPR,corrRxn] = extractGPRs(model)</a>
+0476 
+0477 warning off all
+0478 
+0479 parsedGPR = [];
+0480 corrRxn = [];
+0481 cnt = 1;
+0482 
+0483 <span class="keyword">for</span> i = 1:length(model.rxns)
+0484     <span class="keyword">if</span> length(model.grRules{i}) &gt; 1
+0485         <span class="comment">% Parsing each reactions gpr</span>
+0486         [parsing{1,1},parsing{2,1}] = strtok(model.grRules{i},<span class="string">'or'</span>);
+0487         <span class="keyword">for</span> j = 2:1000
+0488             [parsing{j,1},parsing{j+1,1}] = strtok(parsing{j,1},<span class="string">'or'</span>);
+0489             <span class="keyword">if</span> isempty(parsing{j+1,1})==1
+0490                 <span class="keyword">break</span>
+0491             <span class="keyword">end</span>
+0492         <span class="keyword">end</span>
+0493         
+0494         <span class="keyword">for</span> j = 1:length(parsing)
+0495             <span class="keyword">for</span> k = 1:1000
+0496                 [parsing{j,k},parsing{j,k+1}] = strtok(parsing{j,k},<span class="string">'and'</span>);
+0497                 <span class="keyword">if</span> isempty(parsing{j,k+1})==1
+0498                     <span class="keyword">break</span>
+0499                 <span class="keyword">end</span>
+0500             <span class="keyword">end</span>
+0501         <span class="keyword">end</span>
+0502         
+0503         <span class="keyword">for</span> j = 1:size(parsing,1)
+0504             <span class="keyword">for</span> k = 1:size(parsing,2)
+0505                 parsing{j,k} = strrep(parsing{j,k},<span class="string">'('</span>,<span class="string">''</span>);
+0506                 parsing{j,k} = strrep(parsing{j,k},<span class="string">')'</span>,<span class="string">''</span>);
+0507                 parsing{j,k} = strrep(parsing{j,k},<span class="string">' '</span>,<span class="string">''</span>);
+0508             <span class="keyword">end</span>
+0509         <span class="keyword">end</span>
+0510         
+0511         <span class="keyword">for</span> j = 1:size(parsing,1)-1
+0512             newparsing(j,:) = parsing(j,1:length(parsing(j,:))-1);
+0513         <span class="keyword">end</span>
+0514         
+0515         parsing = newparsing;
+0516         
+0517      
+0518         <span class="keyword">for</span> j = 1:size(parsing,1)
+0519             <span class="keyword">for</span> k = 1:size(parsing,2)
+0520                 <span class="keyword">if</span> length(parsing{j,k}) == 0
+0521                     parsing{j,k} = <span class="string">''</span>;                    
+0522                 <span class="keyword">end</span>
+0523             <span class="keyword">end</span>
+0524         <span class="keyword">end</span>
+0525         
+0526               
+0527         num = size(parsing,1);
+0528         <span class="keyword">for</span> j = 1:num
+0529             sizeP = length(parsing(j,:));
+0530             <span class="keyword">if</span> sizeP &gt; size(parsedGPR,2)
+0531                 <span class="keyword">for</span> k = 1:size(parsedGPR,1)
+0532                     parsedGPR{k,sizeP} = {<span class="string">''</span>};
+0533                 <span class="keyword">end</span>
+0534             <span class="keyword">end</span>
+0535             
+0536             <span class="keyword">for</span> l = 1:sizeP          
+0537             parsedGPR{cnt,l} = parsing(j,l);
+0538             <span class="keyword">end</span>           
+0539             cnt = cnt+1;
+0540         <span class="keyword">end</span>
+0541         
+0542         <span class="keyword">for</span> j = 1:num
+0543             corrRxn = [corrRxn;model.rxns(i)];
+0544         <span class="keyword">end</span>
+0545         
+0546         clear parsing newparsing
+0547         
+0548     <span class="keyword">end</span>
+0549     
+0550 <span class="keyword">end</span>
+0551 
+0552 <span class="keyword">for</span> i = 1:size(parsedGPR,1)
+0553     <span class="keyword">for</span> j = 1:size(parsedGPR,2)
+0554         <span class="keyword">if</span> isempty(parsedGPR{i,j}) == 1
+0555             parsedGPR{i,j} = {<span class="string">''</span>};
+0556         <span class="keyword">end</span>
+0557     <span class="keyword">end</span>
+0558 <span class="keyword">end</span>
+0559 
+0560 i =1 ;
+0561 sizeP = size(parsedGPR,1);
+0562 <span class="keyword">while</span> i &lt; sizeP
+0563     <span class="keyword">if</span> strcmp(parsedGPR{i,1},{<span class="string">''</span>}) == 1
+0564         parsedGPR = [parsedGPR(1:i-1,:);parsedGPR(i+1:<span class="keyword">end</span>,:)];
+0565         corrRxn = [corrRxn(1:i-1,:);corrRxn(i+1:<span class="keyword">end</span>,:)];
+0566         sizeP = sizeP-1;        
+0567         i=i-1;
+0568     <span class="keyword">end</span>
+0569     i = i+1;
+0570 <span class="keyword">end</span>
+0571 
+0572 <span class="keyword">for</span> i = 1:size(parsedGPR,1)
+0573     <span class="keyword">for</span> j= 1:size(parsedGPR,2)
+0574         parsedGPR2(i,j) = cellstr(parsedGPR{i,j});
+0575     <span class="keyword">end</span>
+0576 <span class="keyword">end</span>
+0577 
+0578 parsedGPR = parsedGPR2;
+0579 
+0580 <a name="_sub4" href="#_subfunctions" class="code">function [Results,Transcripts] = charExpData(ExpressionData)</a>
+0581 
+0582 n = length(ExpressionData.Locus);
+0583 Locus = ExpressionData.Locus;
+0584 
+0585 ExpThreshold = floor(0.75*size(ExpressionData.Data,2))/size(ExpressionData.Data,2);
+0586 UnExpThreshold = ceil(0.25*size(ExpressionData.Data,2))/size(ExpressionData.Data,2);
+0587 Results.Expressed = [];
+0588 Results.UnExpressed = [];
+0589 Results.AltSplice = [];
+0590 Results.Total = 0;
+0591 <span class="keyword">for</span> i = 1:n
+0592     <span class="keyword">if</span> ExpressionData.Locus(i) &gt; 0
+0593         
+0594         locus = ExpressionData.Locus(i);
+0595         loc = find(ExpressionData.Locus == locus);
+0596         cap = length(loc)*size(ExpressionData.Data,2)*2;
+0597         
+0598         <span class="keyword">for</span> j = 1:length(loc)
+0599             total(j) = sum(ExpressionData.Data(loc(j),:));
+0600             ExpressionData.Locus(loc(j)) = 0;
+0601         <span class="keyword">end</span>
+0602         
+0603         transcripts = {};
+0604         <span class="keyword">for</span> j = 1:length(loc)
+0605             <span class="keyword">if</span> length(ExpressionData.Transcript{loc(j)}) &gt; 0
+0606                 transcripts = [transcripts;ExpressionData.Transcript{loc(j)}];
+0607             <span class="keyword">end</span>
+0608         <span class="keyword">end</span>
+0609         
+0610         <span class="keyword">if</span> length(unique(transcripts)) &lt;= 1
+0611             
+0612             <span class="comment">% Overall expression patterns (&gt; 75% in binary data, Expressed)</span>
+0613             <span class="keyword">if</span> sum(total)/cap &gt;= ExpThreshold
+0614                 Results.Expressed = [Results.Expressed;locus];
+0615             <span class="comment">% If &lt; 25% in binary data, UnExpressed</span>
+0616             <span class="keyword">elseif</span> sum(total)/cap &lt;= UnExpThreshold
+0617                 Results.UnExpressed = [Results.UnExpressed;locus];
+0618             
+0619             <span class="comment">% Accounting for different probes and their binding positions</span>
+0620             <span class="keyword">else</span>
+0621                 cntP = 0;
+0622                 <span class="keyword">for</span> j = 1:length(total)
+0623                     
+0624                     <span class="comment">% Threshold once again, 75%</span>
+0625                     <span class="keyword">if</span> total(j) &gt;= floor(0.75*size(ExpressionData.Data,2))*2;
+0626                         cntP = cntP+1;
+0627                     <span class="keyword">end</span>
+0628                 <span class="keyword">end</span>
+0629                 
+0630                 <span class="comment">% If 50% or more of the probes have met the threshold,</span>
+0631                 <span class="comment">% expressed</span>
+0632                 <span class="keyword">if</span> cntP/length(total) &gt;= 0.5
+0633                     Results.Expressed = [Results.Expressed;locus];
+0634                 <span class="keyword">else</span>
+0635                     Results.UnExpressed = [Results.UnExpressed;locus];
+0636                 <span class="keyword">end</span>
+0637             <span class="keyword">end</span>
+0638         <span class="keyword">else</span>
+0639             
+0640             <span class="comment">% If different RefSeq Accession codes, different transcripts,</span>
+0641             <span class="comment">% must be manually curated</span>
+0642             Results.AltSplice = [Results.AltSplice;locus];
+0643         <span class="keyword">end</span>
+0644         Results.Total = Results.Total+1;
+0645         clear total
+0646     <span class="keyword">end</span>
+0647 <span class="keyword">end</span>
+0648 
+0649 <span class="comment">% Setting up different transcripts for manual curation</span>
+0650 Transcripts.Locus = [];
+0651 Transcripts.Data = {};
+0652 <span class="keyword">for</span> i = 1:length(Results.AltSplice)
+0653     num = find(Locus==Results.AltSplice(i));
+0654     transcripts = unique(ExpressionData.Transcript(num));
+0655     <span class="keyword">for</span> j = 1:length(transcripts)
+0656         Transcripts.Locus = [Transcripts.Locus;Results.AltSplice(i)];
+0657     <span class="keyword">end</span>
+0658     Transcripts.Data = [Transcripts.Data;transcripts];
+0659 <span class="keyword">end</span>
+0660 
+0661 <span class="comment">% Determining each transcripts expression using a similar threshold as</span>
+0662 <span class="comment">% before</span>
+0663 <span class="keyword">for</span> i = 1:length(Transcripts.Data)
+0664     loc = strmatch(Transcripts.Data{i},ExpressionData.Transcript,<span class="string">'exact'</span>);
+0665     <span class="keyword">for</span> j = 1:length(loc)
+0666         total(j) = sum(ExpressionData.Data(loc(j),:));
+0667         ExpressionData.Locus(loc(j)) = 0;
+0668     <span class="keyword">end</span>
+0669     cap = length(loc)*11*2;
+0670     <span class="keyword">if</span> sum(total)/cap &gt;= ExpThreshold
+0671         Transcripts.Expression(i,1) = 1;
+0672     <span class="keyword">else</span>
+0673         Transcripts.Expression(i,1) = 0;
+0674     <span class="keyword">end</span>
+0675 <span class="keyword">end</span>
+0676 
+0677 <span class="comment">% If expression of transcripts of one locus are the same, added as if no</span>
+0678 <span class="comment">% alternative splicing occurs for simplicity</span>
+0679 Transcripts.Expressed = [];
+0680 Transcripts.UnExpressed = [];
+0681 mem_tran = Transcripts.Locus;
+0682 <span class="keyword">for</span> i = 1:length(Transcripts.Locus)
+0683     <span class="keyword">if</span> Transcripts.Locus(i) &gt; 0
+0684         locus = Transcripts.Locus(i);
+0685         loc = find(Transcripts.Locus==locus);
+0686         sumExp = 0;
+0687         <span class="keyword">for</span> j = 1:length(loc)
+0688             sumExp = sumExp+Transcripts.Expression(loc(j));
+0689             Transcripts.Locus(loc(j)) = 0;
+0690         <span class="keyword">end</span>
+0691         <span class="keyword">if</span> sumExp == 0
+0692             Transcripts.UnExpressed = [Transcripts.UnExpressed;locus];
+0693         <span class="keyword">elseif</span> sumExp == length(loc)
+0694             Transcripts.Expressed = [Transcripts.Expressed;locus];
+0695         <span class="keyword">end</span>
+0696     <span class="keyword">end</span>
+0697 <span class="keyword">end</span>
+0698 Transcripts.Locus = mem_tran;</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of drawFlux</title>
+  <meta name="keywords" content="drawFlux">
+  <meta name="description" content="drawFlux overlays a flux distribution onto a reaction map">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html maps -->
+<h1>drawFlux
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>drawFlux overlays a flux distribution onto a reaction map</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function options = drawFlux(map,model,flux,options,varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">drawFlux overlays a flux distribution onto a reaction map
+
+ options = drawFlux(map,model,flux,options,varargin)
+
+INPUTS
+ map               map structure
+ model             COBRA model structure
+ flux              Flux vector to overlay
+
+OPTIONAL INPUTS
+ Optional parameters can be set using either the options structure, a
+ parameter name / value pair input arguments, or a combination of both.
+
+ options            Structure containing optional parameters
+   lb                Lower limit to round smaller values up to.
+   ub                Upper limit to round larger values down to.
+   colorScale        Colormap
+   zeroFluxWidth     Width of arrows of reactions which carry zero flux.
+   zeroFluxColor     Color of arrows of reactions which carry zero flux.
+   fileName          Name of output file
+   rxnDirMultiplier  scaling value of arrows denoting flux direction
+
+  Note: see setMapOptions for additional options.
+
+ varargin          optional parameter name / parameter value pairs
+
+OUTPUT
+ options           Structure containing optional parameters.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="drawCbMap.html" class="code" title="function options = drawCbMap(map,options,varargin)">drawCbMap</a>	Draws a map with the specified optional parameters</li><li><a href="setMapOptions.html" class="code" title="function options = setMapOptions(options, map, varargin)">setMapOptions</a>	setMapOptions set the values of the options fields</li><li><a href="../../cobra/maps/tools/getColorFromColorScale.html" class="code" title="function color = getColorFromColorScale(value, colorScale)">getColorFromColorScale</a>	getColorFromColorScale Obtains color from color scale</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/pFBA.html" class="code" title="function [GeneClasses RxnClasses modelIrrevFM] = pFBA(model, varargin)">pFBA</a>	Parsimoneous enzyme usage Flux Balance Analysis - method that optimizes</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function options = drawFlux(map,model,flux,options,varargin)</a>
+0002 <span class="comment">%drawFlux overlays a flux distribution onto a reaction map</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% options = drawFlux(map,model,flux,options,varargin)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%INPUTS</span>
+0007 <span class="comment">% map               map structure</span>
+0008 <span class="comment">% model             COBRA model structure</span>
+0009 <span class="comment">% flux              Flux vector to overlay</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">%OPTIONAL INPUTS</span>
+0012 <span class="comment">% Optional parameters can be set using either the options structure, a</span>
+0013 <span class="comment">% parameter name / value pair input arguments, or a combination of both.</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% options            Structure containing optional parameters</span>
+0016 <span class="comment">%   lb                Lower limit to round smaller values up to.</span>
+0017 <span class="comment">%   ub                Upper limit to round larger values down to.</span>
+0018 <span class="comment">%   colorScale        Colormap</span>
+0019 <span class="comment">%   zeroFluxWidth     Width of arrows of reactions which carry zero flux.</span>
+0020 <span class="comment">%   zeroFluxColor     Color of arrows of reactions which carry zero flux.</span>
+0021 <span class="comment">%   fileName          Name of output file</span>
+0022 <span class="comment">%   rxnDirMultiplier  scaling value of arrows denoting flux direction</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">%  Note: see setMapOptions for additional options.</span>
+0025 <span class="comment">%</span>
+0026 <span class="comment">% varargin          optional parameter name / parameter value pairs</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">%OUTPUT</span>
+0029 <span class="comment">% options           Structure containing optional parameters.</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">%</span>
+0033 
+0034 <span class="keyword">if</span> nargin&lt;4, options=[]; <span class="keyword">end</span>
+0035 <span class="comment">%Parse optional parameters</span>
+0036 <span class="keyword">if</span> mod(length(varargin),2)==0
+0037     <span class="keyword">for</span> i=1:2:length(varargin)-1
+0038         options = <a href="setMapOptions.html" class="code" title="function options = setMapOptions(options, map, varargin)">setMapOptions</a>(options,map,model,varargin{i},varargin{i+1});
+0039     <span class="keyword">end</span>
+0040 <span class="keyword">else</span>
+0041     error(<span class="string">'Invalid number of parameters/values'</span>);
+0042 <span class="keyword">end</span>
+0043 
+0044 <span class="keyword">if</span> ~isfield(options,<span class="string">'colorScale'</span>)
+0045     options.colorScale = cool(100);
+0046 <span class="keyword">end</span>
+0047 <span class="keyword">if</span> ~isfield(options,<span class="string">'scaleType'</span>), options.scaleType=1; <span class="keyword">end</span>
+0048 <span class="keyword">if</span> ~isfield(options,<span class="string">'lb'</span>), lb=[];<span class="keyword">else</span> lb = options.lb; <span class="keyword">end</span>
+0049 <span class="keyword">if</span> ~isfield(options,<span class="string">'ub'</span>), ub=[];<span class="keyword">else</span> ub = options.ub; <span class="keyword">end</span>
+0050 <span class="keyword">if</span> ~isfield(options,<span class="string">'rxnDirMultiplier'</span>), options.rxnDirMultiplier = 2; <span class="keyword">end</span>
+0051 <span class="keyword">if</span> ~isfield(options,<span class="string">'rxnDirFlag'</span>), rxnDirFlag = false; <span class="keyword">else</span> rxnDirFlag = options.rxnDirFlag; <span class="keyword">end</span>
+0052 rxnListZero = model.rxns(abs(flux)&lt;=1e-9);
+0053 absFlag=false;
+0054 <span class="keyword">switch</span> lower(options.scaleType)
+0055     <span class="keyword">case</span> {1, <span class="string">'linear'</span>}
+0056         options.scaleTypeLabel=<span class="string">'Linear;'</span>;
+0057     <span class="keyword">case</span> {2 ,<span class="string">'linear absolute'</span>}
+0058         flux=abs(flux);
+0059         absFlag=true;
+0060         options.scaleTypeLabel=<span class="string">'Linear absolute;'</span>;
+0061     <span class="keyword">case</span> {3,<span class="string">'log10'</span>}
+0062         flux = log10(abs(flux));
+0063         rxnListZero = model.rxns(isinf(flux));
+0064         options.scaleTypeLabel=<span class="string">'Log10;'</span>;
+0065 <span class="keyword">end</span>
+0066 <span class="keyword">if</span> ~isempty(ub)
+0067     flux(flux&gt;ub)=ub;
+0068     options.overlayUB = [num2str(ub) <span class="string">'+'</span>];
+0069     fluxMax = ub;
+0070 <span class="keyword">else</span>
+0071     options.overlayUB = num2str(max(flux));
+0072     fluxMax = max(flux);
+0073 <span class="keyword">end</span>
+0074 <span class="keyword">if</span> ~isempty(lb)
+0075     flux(flux&lt;lb)=lb;
+0076     options.overlayLB = [num2str(lb) <span class="string">'-'</span>];
+0077     fluxMin = lb;
+0078 <span class="keyword">elseif</span> absFlag
+0079     options.overlayLB = <span class="string">'0'</span>;
+0080     fluxMin = 0;
+0081 <span class="keyword">else</span>
+0082     fluxMin = min(flux(~isinf(flux)));
+0083     options.overlayLB = num2str(fluxMin);
+0084 <span class="keyword">end</span>
+0085 <span class="keyword">if</span> isempty(find(options.colorScale&gt;1, 1))
+0086     options.colorScale = round(options.colorScale*255);
+0087 <span class="keyword">end</span>
+0088 flux2 = flux-fluxMin;
+0089 <span class="keyword">if</span> (fluxMax-fluxMin~=0), flux2 = flux2/(fluxMax-fluxMin); <span class="keyword">end</span>
+0090 color = <a href="../../cobra/maps/tools/getColorFromColorScale.html" class="code" title="function color = getColorFromColorScale(value, colorScale)">getColorFromColorScale</a>(flux2,options.colorScale);
+0091 <span class="keyword">if</span> isfield(options,<span class="string">'zeroFluxWidth'</span>)
+0092     <span class="keyword">global</span> CB_MAP_OUTPUT
+0093     <span class="keyword">if</span> ~isfield(options,<span class="string">'edgeWeight'</span>)
+0094         s= size(map.connection);      
+0095         <span class="keyword">if</span> strcmp(CB_MAP_OUTPUT,<span class="string">'svg'</span>)
+0096             options.edgeWeight = ones(s(1),1)*9;
+0097         <span class="keyword">else</span>
+0098             options.edgeWeight = ones(s(1),1)*2;
+0099         <span class="keyword">end</span>
+0100     <span class="keyword">end</span>
+0101     options.edgeWeight(ismember(map.connectionAbb,rxnListZero))=options.zeroFluxWidth;
+0102 <span class="keyword">end</span>
+0103 <span class="keyword">if</span> isfield(options,<span class="string">'zeroFluxColor'</span>)
+0104     zeroFluxRxns = find(ismember(model.rxns,rxnListZero));
+0105     color(zeroFluxRxns,:)=repmat(options.zeroFluxColor,size(zeroFluxRxns,1),1);
+0106 <span class="keyword">end</span>
+0107 
+0108 <span class="comment">%rxnDirectionality</span>
+0109 <span class="keyword">if</span> rxnDirFlag
+0110     options.rxnDir = zeros(length(map.rxnIndex),1);
+0111     options.rxnDir(ismember(map.connectionAbb,model.rxns(flux&gt;0))) = 1;
+0112     options.rxnDir(ismember(map.connectionAbb,model.rxns(flux&lt;0))) = -1;
+0113 <span class="keyword">end</span>
+0114 
+0115 
+0116 
+0117 options = <a href="setMapOptions.html" class="code" title="function options = setMapOptions(options, map, varargin)">setMapOptions</a>(options,map,model,<span class="string">'edgeColor'</span>,color);
+0118 options.colorScale=options.colorScale;
+0119 options.lb = fluxMin;
+0120 options.ub = fluxMax;
+0121 options.overlayType = <span class="string">'Flux'</span>;
+0122 <a href="drawCbMap.html" class="code" title="function options = drawCbMap(map,options,varargin)">drawCbMap</a>(map,options);</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

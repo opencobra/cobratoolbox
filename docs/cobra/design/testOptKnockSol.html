@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of testOptKnockSol</title>
+  <meta name="keywords" content="testOptKnockSol">
+  <meta name="description" content="testOptKnockSol Test an OptKnock knockout strain">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html design -->
+<h1>testOptKnockSol
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>testOptKnockSol Test an OptKnock knockout strain</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [growthRate,minProd,maxProd] = testOptKnockSol(model,targetRxn,deletions) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">testOptKnockSol Test an OptKnock knockout strain
+
+ [growthRate,minProd,maxProd] = testOptKnockSol(model,targetRxn,deletions)
+
+INPUTS
+ model         COBRA model structure
+ targetRxn     Target reaction (e.g. 'EX_etoh(e)')
+
+OPTIONAL INPUT
+ deletions     Set of reaction deletions (e.g. {'PGI','TPI'})
+               (Default = [])
+
+OUTPUTS
+ growthRate    Maximim growth rate of the strain
+ minProd       Minimum production rate at max growth rate
+ maxProd       Maximum production rate at max growth rate
+
+ Markus Herrgard 5/23/07</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/changeObjective.html" class="code" title="function model = changeObjective(model,rxnNameList,objectiveCoeff)">changeObjective</a>	changeObjective Changes the objective function of a constraint-based model</li><li><a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>	changeRxnBounds Change upper or lower bounds of a reaction or a set of</li><li><a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>	optimizeCbModel Solve a flux balance analysis problem</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="GetOptGeneSol.html" class="code" title="function [optGeneSol] = GetOptGeneSol(model, targetRxn, substrateRxn, generxnList, population, x, scores, isGeneList)">GetOptGeneSol</a>	GetOptGeneSol save the solution from optGene and optGeneR in same format as OptKnock</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [growthRate,minProd,maxProd] = testOptKnockSol(model,targetRxn,deletions)</a>
+0002 <span class="comment">%testOptKnockSol Test an OptKnock knockout strain</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% [growthRate,minProd,maxProd] = testOptKnockSol(model,targetRxn,deletions)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%INPUTS</span>
+0007 <span class="comment">% model         COBRA model structure</span>
+0008 <span class="comment">% targetRxn     Target reaction (e.g. 'EX_etoh(e)')</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">%OPTIONAL INPUT</span>
+0011 <span class="comment">% deletions     Set of reaction deletions (e.g. {'PGI','TPI'})</span>
+0012 <span class="comment">%               (Default = [])</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">%OUTPUTS</span>
+0015 <span class="comment">% growthRate    Maximim growth rate of the strain</span>
+0016 <span class="comment">% minProd       Minimum production rate at max growth rate</span>
+0017 <span class="comment">% maxProd       Maximum production rate at max growth rate</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% Markus Herrgard 5/23/07</span>
+0020  
+0021 <span class="keyword">if</span> (nargin &lt; 3)
+0022     deletions = [];
+0023 <span class="keyword">end</span>
+0024 
+0025 tol = 1e-7;
+0026 
+0027 <span class="comment">% Number of deletions</span>
+0028 nDel = length(deletions);
+0029 
+0030 modelKO = model;
+0031 <span class="keyword">for</span> i = 1:nDel
+0032     modelKO = <a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>(modelKO,deletions{i},0,<span class="string">'b'</span>);
+0033 <span class="keyword">end</span>
+0034 <span class="comment">% Calculate optimal growth rate</span>
+0035 solKO = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelKO);
+0036 growthRate = solKO.f;
+0037 <span class="keyword">if</span> (solKO.stat == 1)
+0038     <span class="comment">% Max &amp; min production of the metabolite at the optimal growth rate</span>
+0039     grRounded = floor(solKO.f/tol)*tol;
+0040     modelKO = <a href="../../cobra/changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>(modelKO,modelKO.rxns(modelKO.c==1),grRounded,<span class="string">'l'</span>);
+0041     modelKO = <a href="../../cobra/changeObjective.html" class="code" title="function model = changeObjective(model,rxnNameList,objectiveCoeff)">changeObjective</a>(modelKO,targetRxn);
+0042     solMax = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelKO,<span class="string">'max'</span>);
+0043     solMin = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelKO,<span class="string">'min'</span>);
+0044     maxProd = solMax.f;
+0045     minProd = solMin.f;
+0046 <span class="keyword">else</span>
+0047     maxProd = 0;
+0048     minProd = 0;
+0049 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

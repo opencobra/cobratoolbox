@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of printUptakeBound</title>
+  <meta name="keywords" content="printUptakeBound">
+  <meta name="description" content="printUptakeBound Print substrate uptake bounds">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html cobra -->
+<h1>printUptakeBound
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>printUptakeBound Print substrate uptake bounds</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function upInd = printUptakeBound(model) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">printUptakeBound Print substrate uptake bounds
+
+ uptakeInd = printUptakeBound(model)
+
+INPUTS
+ model     CORBRA model structure
+
+OUTPUTS
+ upInd     Vector containing indecies of uptake reactions
+
+ Returns the indices to the substrate uptake reactions and prints the
+ bounds
+
+ Markus Herrgard 6/9/06</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="findExcRxns.html" class="code" title="function [selExc,selUpt] = findExcRxns(model,inclObjFlag,irrevFlag)">findExcRxns</a>	findExcRxns Find exchange and uptake rxns</li><li><a href="../cobra/tools/printLabeledData.html" class="code" title="function printLabeledData(labels,data,nonzeroFlag,sortCol,fileName,headerRow,sortMode)">printLabeledData</a>	printLabeledData Print a matrix of data with labels</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function upInd = printUptakeBound(model)</a>
+0002 <span class="comment">%printUptakeBound Print substrate uptake bounds</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% uptakeInd = printUptakeBound(model)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%INPUTS</span>
+0007 <span class="comment">% model     CORBRA model structure</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%OUTPUTS</span>
+0010 <span class="comment">% upInd     Vector containing indecies of uptake reactions</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% Returns the indices to the substrate uptake reactions and prints the</span>
+0013 <span class="comment">% bounds</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% Markus Herrgard 6/9/06</span>
+0016 
+0017 [selExc,selUptake] = <a href="findExcRxns.html" class="code" title="function [selExc,selUpt] = findExcRxns(model,inclObjFlag,irrevFlag)">findExcRxns</a>(model,false,false);
+0018 <a href="../cobra/tools/printLabeledData.html" class="code" title="function printLabeledData(labels,data,nonzeroFlag,sortCol,fileName,headerRow,sortMode)">printLabeledData</a>(model.rxns(selUptake),model.lb(selUptake));
+0019 
+0020 upInd = find(selUptake);</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

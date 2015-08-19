@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of verifyPoints</title>
+  <meta name="keywords" content="verifyPoints">
+  <meta name="description" content="function [errorsA, errorsLUB] = verifyPoints(sampleStruct)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html sampling -->
+<h1>verifyPoints
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [errorsA, errorsLUB] = verifyPoints(sampleStruct)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [errorsA, errorsLUB, stuckPoints] = verifyPoints(sampleStruct) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> function [errorsA, errorsLUB] = verifyPoints(sampleStruct)
+verifyPoints Verify that a set of points are in the solutoin space of sampleStruct.
+ Typically, this method would be called to check a set of warmup points or
+ points generated via gpSampler. Also verifies if points moved from
+ warmup points.
+
+ function [errorsA, errorsLUB, stuckPoints] = verifyPoints(sampleStruct)
+ 
+INPUT
+ sampleStruct      LPProblem containing points and warmup points
+
+OUTPUTS
+ errorsA           Row index of the constraint in sampleStruct that
+                   is not consistent with the given points
+ errorsLUB         Upper and lower bounds of the constraint + tolerance
+ stuckPoints       Index of points which did not move.
+
+ Author: Ellen Tsai 2007
+ Richard Que (12/1/09) Combined with checkWP.m</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% function [errorsA, errorsLUB] = verifyPoints(sampleStruct)</span>
+0002 <a name="_sub0" href="#_subfunctions" class="code">function [errorsA, errorsLUB, stuckPoints] = verifyPoints(sampleStruct)</a>
+0003 <span class="comment">%verifyPoints Verify that a set of points are in the solutoin space of sampleStruct.</span>
+0004 <span class="comment">% Typically, this method would be called to check a set of warmup points or</span>
+0005 <span class="comment">% points generated via gpSampler. Also verifies if points moved from</span>
+0006 <span class="comment">% warmup points.</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% function [errorsA, errorsLUB, stuckPoints] = verifyPoints(sampleStruct)</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">%INPUT</span>
+0011 <span class="comment">% sampleStruct      LPProblem containing points and warmup points</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%OUTPUTS</span>
+0014 <span class="comment">% errorsA           Row index of the constraint in sampleStruct that</span>
+0015 <span class="comment">%                   is not consistent with the given points</span>
+0016 <span class="comment">% errorsLUB         Upper and lower bounds of the constraint + tolerance</span>
+0017 <span class="comment">% stuckPoints       Index of points which did not move.</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% Author: Ellen Tsai 2007</span>
+0020 <span class="comment">% Richard Que (12/1/09) Combined with checkWP.m</span>
+0021 
+0022 <span class="comment">%check to see if warmup points moved</span>
+0023 [warmupPts, points] = deal(sampleStruct.warmupPts, sampleStruct.points);
+0024 
+0025 n=size(points,2);
+0026 len=size(n,1);
+0027 stuckPoints=zeros(0,1);
+0028 
+0029 <span class="keyword">for</span> i=1:n
+0030     len(i,1)=norm(warmupPts(:,i)-points(:,i));
+0031     <span class="keyword">if</span> len(i,1)&lt;10
+0032         stuckPoints=[stuckPoints; i];
+0033     <span class="keyword">end</span>
+0034 <span class="keyword">end</span>
+0035 minL = min(len);
+0036 
+0037 <span class="comment">%check to see if points are within solution space</span>
+0038 [A,b,csense]=deal(sampleStruct.A,sampleStruct.b,sampleStruct.csense);
+0039 t=.01; <span class="comment">%tolerance</span>
+0040 npoints = size(points, 2);
+0041 
+0042 LHS = A*points;
+0043 EIndex = (csense == <span class="string">'E'</span>);
+0044 LIndex = (csense == <span class="string">'L'</span>);
+0045 GIndex = (csense == <span class="string">'G'</span>);
+0046 
+0047 [errorsL(:,1), errorsL(:,2)] = find(LHS(LIndex,:) - b(LIndex)* ones(1, npoints) &gt; t);
+0048 [errorsG(:,1), errorsG(:,2)] = find(b(GIndex)* ones(1, npoints) - LHS(GIndex,:)   &gt; t);
+0049 [errorsE(:,1), errorsE(:,2)] = find( abs(LHS(EIndex,:) - b(EIndex)* ones(1, npoints))   &gt; t);
+0050 
+0051 errorsUB = find(points &gt; sampleStruct.ub*ones(1,npoints) + t);
+0052 errorsLB = find(points &lt; sampleStruct.lb*ones(1,npoints) - t);
+0053 
+0054 errorsA = [errorsL; errorsG; errorsE];
+0055 errorsLUB = [errorsLB; errorsUB];
+0056 
+0057 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

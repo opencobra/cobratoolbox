@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of assignGPRA</title>
+  <meta name="keywords" content="assignGPRA">
+  <meta name="description" content="assignGPRA Assign each reaction a Gene-protein-reaction association">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html reconstruction -->
+<h1>assignGPRA
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>assignGPRA Assign each reaction a Gene-protein-reaction association</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function model = assignGPRA(model,gpraFile) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">assignGPRA Assign each reaction a Gene-protein-reaction association
+
+ model = assignGPRA(model,gpraFile)
+
+INPUTS
+ model         COBRA model structure
+ gpraFile      SimPheny GPRA file
+
+OUTPUT
+ model         COBRA model with gene-protein-reaction assoction
+
+ 10/4/06 Markus Herrgard</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function model = assignGPRA(model,gpraFile)</a>
+0002 <span class="comment">%assignGPRA Assign each reaction a Gene-protein-reaction association</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% model = assignGPRA(model,gpraFile)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%INPUTS</span>
+0007 <span class="comment">% model         COBRA model structure</span>
+0008 <span class="comment">% gpraFile      SimPheny GPRA file</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">%OUTPUT</span>
+0011 <span class="comment">% model         COBRA model with gene-protein-reaction assoction</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% 10/4/06 Markus Herrgard</span>
+0014 
+0015 [rxnList,genes,rxnGeneMat,subSystems] = parseSimPhenyGPRA(gpraFile);
+0016 
+0017 [tmp,gpraRxnInd,modelRxnInd] = intersect(rxnList,model.rxns);
+0018 
+0019 model.genes = genes;
+0020 
+0021 model.rxnGeneMat = sparse(length(model.rxns),length(genes));
+0022 model.rxnGeneMat(modelRxnInd,:) = rxnGeneMat(gpraRxnInd,:);</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

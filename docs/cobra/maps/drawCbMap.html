@@ -1,0 +1,377 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of drawCbMap</title>
+  <meta name="keywords" content="drawCbMap">
+  <meta name="description" content="Draws a map with the specified optional parameters">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html maps -->
+<h1>drawCbMap
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Draws a map with the specified optional parameters</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function options = drawCbMap(map,options,varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">Draws a map with the specified optional parameters
+
+ drawCbMap(map,options)
+
+INPUTS
+ map                       COBRA map structure
+
+OPTIONAL INPUTS
+ options                  Structure containing optional parameters
+   nodeWeight              Size of primary metabolite nodes  
+   nodeWeightSecondary     Size of secondary metabolite nodes
+   nodeColor               Color of metabolite nodes
+   edgeColor               Color of reaction arrows2
+   edgeArrowColor          Color of reaction arrowheads
+   edgeWeight              Width of reaction arrows
+   textSize                Font size of metabolite text
+   textColor               Text color for metaboltes
+   rxnTextSize             Font size of reaction text
+   rxnTextColor            Text color for reactions
+   otherTextColor          Color of other text
+   fileName                Name of output file
+
+ varargin                  optional parameter name / parameter value pairs
+
+OUTPUT
+ Displays map in a matlab figure ('matlab') or target.svg ('svg') file
+ depending on value of CB_MAP_OUTPUT.
+ options                  Structure containing optional parameters
+
+
+ Turner Conrad     6/12/12     Added rxnTextSize default (8) to fix error 
+                               in writing reaction texts to .svg</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="plotcbmap.html" class="code" title="function plotcbmap()">plotcbmap</a>	</li><li><a href="../../cobra/maps/tools/drawCircle.html" class="code" title="function drawCircle(p,radius,color)">drawCircle</a>	drawCircle draw a circle in a figure</li><li><a href="../../cobra/maps/tools/drawLine.html" class="code" title="function drawLine(node1,node2,map,edgeColor,edgeArrowColor,edgeWeight,nodeWeight,rxnDir,rxnDirMultiplier)">drawLine</a>	drawLine</li><li><a href="../../cobra/maps/tools/drawShape.html" class="code" title="function drawShape(sType,begPt,sLength, color, thickness,sStyle,verbose)">drawShape</a>	drawShape Draw shapes to figure</li><li><a href="../../cobra/maps/tools/drawText.html" class="code" title="function drawText(x,y, drawString, fontSize, fontStyle, color, font, fontWeight, flagCenter)">drawText</a>	drawText Draws text to figure</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="drawConc.html" class="code" title="function options = drawConc(map,model,conc,options,varargin)">drawConc</a>	drawConc overlays a flux distribution onto a reaction map</li><li><a href="drawFlux.html" class="code" title="function options = drawFlux(map,model,flux,options,varargin)">drawFlux</a>	drawFlux overlays a flux distribution onto a reaction map</li><li><a href="drawFluxVariability.html" class="code" title="function options = drawFluxVariability(map,model,minFlux,maxFlux,options,varargin)">drawFluxVariability</a>	drawFluxVariablity Overlay flux variability data on a metabolic map</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function options = drawCbMap(map,options,varargin)</a>
+0002 <span class="comment">%Draws a map with the specified optional parameters</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% drawCbMap(map,options)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%INPUTS</span>
+0007 <span class="comment">% map                       COBRA map structure</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%OPTIONAL INPUTS</span>
+0010 <span class="comment">% options                  Structure containing optional parameters</span>
+0011 <span class="comment">%   nodeWeight              Size of primary metabolite nodes</span>
+0012 <span class="comment">%   nodeWeightSecondary     Size of secondary metabolite nodes</span>
+0013 <span class="comment">%   nodeColor               Color of metabolite nodes</span>
+0014 <span class="comment">%   edgeColor               Color of reaction arrows2</span>
+0015 <span class="comment">%   edgeArrowColor          Color of reaction arrowheads</span>
+0016 <span class="comment">%   edgeWeight              Width of reaction arrows</span>
+0017 <span class="comment">%   textSize                Font size of metabolite text</span>
+0018 <span class="comment">%   textColor               Text color for metaboltes</span>
+0019 <span class="comment">%   rxnTextSize             Font size of reaction text</span>
+0020 <span class="comment">%   rxnTextColor            Text color for reactions</span>
+0021 <span class="comment">%   otherTextColor          Color of other text</span>
+0022 <span class="comment">%   fileName                Name of output file</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">% varargin                  optional parameter name / parameter value pairs</span>
+0025 <span class="comment">%</span>
+0026 <span class="comment">%OUTPUT</span>
+0027 <span class="comment">% Displays map in a matlab figure ('matlab') or target.svg ('svg') file</span>
+0028 <span class="comment">% depending on value of CB_MAP_OUTPUT.</span>
+0029 <span class="comment">% options                  Structure containing optional parameters</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">% Turner Conrad     6/12/12     Added rxnTextSize default (8) to fix error</span>
+0033 <span class="comment">%                               in writing reaction texts to .svg</span>
+0034 
+0035 <span class="keyword">global</span> mapHandle
+0036 <span class="keyword">global</span> CB_MAP_OUTPUT
+0037 
+0038 <span class="comment">%check for render output</span>
+0039 <span class="keyword">if</span> ~exist(<span class="string">'CB_MAP_OUTPUT'</span>, <span class="string">'var'</span>) || isempty(CB_MAP_OUTPUT)
+0040     error(<span class="string">'No render target specified.  Call changeCbMapOutput(outputFormat)'</span>);
+0041 <span class="keyword">end</span>
+0042 
+0043 
+0044 <span class="keyword">if</span> (nargin &lt; 2)
+0045     options = [];
+0046 <span class="keyword">end</span>
+0047 
+0048 <span class="keyword">if</span> mod(length(varargin),2)==0
+0049     <span class="keyword">for</span> i=1:2:length(varargin)-1
+0050         <span class="keyword">switch</span> lower(varargin{i})
+0051             <span class="keyword">case</span> <span class="string">'nodeweight'</span>, options.nodeWeight = cell2mat(varargin(i+1));
+0052             <span class="keyword">case</span> <span class="string">'nodecolor'</span>, options.nodeColor = cell2mat(varargin(i+1));
+0053             <span class="keyword">case</span> <span class="string">'edgeweight'</span>, options.edgeWeight = cell2mat(varargin(i+1));
+0054             <span class="keyword">case</span> <span class="string">'edgecolor'</span>, options.edgeColor = cell2mat(varargin(i+1));
+0055             <span class="keyword">case</span> <span class="string">'edgearrowcolor'</span>, options.edgeArrowColor = cell2mat(varargin(i+1));
+0056             <span class="keyword">case</span> <span class="string">'textsize'</span>, options.textSize = cell2mat(varargin(i+1));
+0057             <span class="keyword">case</span> <span class="string">'textcolor'</span>, options.textColor = cell2mat(varargin(i+1));
+0058             <span class="keyword">case</span> <span class="string">'othertextsize'</span>, options.otherTextSize = cell2mat(varargin(i+1));
+0059             <span class="keyword">case</span> <span class="string">'othertextcolor'</span>, options.otherTextColor = cell2mat(varargin(i+1));
+0060             <span class="keyword">case</span> <span class="string">'filename'</span>, options.fileName = varargin{i+1};
+0061             <span class="keyword">otherwise</span>, options.(varargin{i}) = varargin{i+1};
+0062         <span class="keyword">end</span>
+0063     <span class="keyword">end</span>
+0064 <span class="keyword">else</span>
+0065     error(<span class="string">'Invalid number of parameters/values'</span>);
+0066 <span class="keyword">end</span>
+0067 
+0068 <span class="comment">%%%% Compelete the missing parts of the option</span>
+0069 nNodes = size(map.molName,1);
+0070 nEdges = size(map.connection,1);
+0071 <span class="comment">%Node size</span>
+0072 <span class="keyword">if</span> ~isfield(options,<span class="string">'nodeWeight'</span>)
+0073     options.nodeWeight = ones(nNodes,1)*15;
+0074     <span class="keyword">if</span> strcmp(CB_MAP_OUTPUT,<span class="string">'svg'</span>)
+0075         options.nodeWeight = ones(nNodes,1)*25;
+0076     <span class="keyword">end</span>
+0077 <span class="keyword">end</span>
+0078 
+0079 <span class="keyword">if</span> ~isfield(options,<span class="string">'nodeWeightSecondary'</span>)
+0080     options.nodeWeightSecondary = ones(nNodes,1)*10;
+0081     <span class="keyword">if</span> strcmp(CB_MAP_OUTPUT,<span class="string">'svg'</span>)
+0082         options.nodeWeightSecondary = ones(nNodes,1)*15;
+0083     <span class="keyword">end</span>
+0084 <span class="keyword">end</span>
+0085 <span class="comment">%Node color</span>
+0086 <span class="keyword">if</span> ~isfield(options,<span class="string">'nodeColor'</span>)
+0087     options.nodeColor = repmat([255,160,128],nNodes,1);
+0088 <span class="keyword">end</span>
+0089 <span class="comment">%Edge color</span>
+0090 <span class="keyword">if</span> ~isfield(options,<span class="string">'edgeColor'</span>)
+0091     options.edgeColor = repmat([0,191,255],nEdges,1);
+0092 <span class="keyword">end</span>
+0093 <span class="comment">%Arrowhead color</span>
+0094 <span class="keyword">if</span> ~isfield(options,<span class="string">'edgeArrowColor'</span>)
+0095     options.edgeArrowColor = repmat([0,0,255],nEdges,1);
+0096 <span class="keyword">end</span>
+0097 <span class="comment">%Edge thickness</span>
+0098 <span class="keyword">if</span> ~isfield(options,<span class="string">'edgeWeight'</span>)
+0099     options.edgeWeight = ones(nEdges,1)*2;
+0100     <span class="keyword">if</span> strcmp(CB_MAP_OUTPUT,<span class="string">'svg'</span>)
+0101         options.edgeWeight = ones(nEdges,1)*4;
+0102     <span class="keyword">end</span>
+0103 <span class="keyword">end</span>
+0104 <span class="comment">%Font Size</span>
+0105 <span class="keyword">if</span> ~isfield(options,<span class="string">'textSize'</span>)
+0106     options.textSize = ones(max(nNodes,nEdges),1)*12;
+0107     <span class="keyword">if</span> strcmp(CB_MAP_OUTPUT,<span class="string">'svg'</span>)
+0108         options.textSize = ones(max(nNodes,nEdges),1)*6;
+0109     <span class="keyword">end</span>
+0110 <span class="keyword">end</span>
+0111 <span class="comment">%Font Color</span>
+0112 <span class="keyword">if</span> ~isfield(options,<span class="string">'textColor'</span>)
+0113     options.textColor = zeros(nNodes,3);
+0114 <span class="keyword">end</span>
+0115 
+0116 <span class="comment">% if ~isfield(options,'otherTextSize')</span>
+0117 <span class="comment">%     options.otherTextSize = ones(size(map.text,1),1)*12;</span>
+0118 <span class="comment">%     if strcmp(CB_MAP_OUTPUT,'svg')</span>
+0119 <span class="comment">%         options.otherTextSize = ones(size(map.text,1),1)*135;</span>
+0120 <span class="comment">%     end</span>
+0121 <span class="comment">% end</span>
+0122 
+0123 <span class="keyword">if</span> ~isfield(options,<span class="string">'otherTextColor'</span>)
+0124     options.otherTextColor= zeros(size(map.text,1),3);
+0125 <span class="keyword">end</span>
+0126 
+0127 nodeWeight = options.nodeWeightSecondary;
+0128 nodeWeight(strcmp(map.molPrime,<span class="string">'Y'</span>)) = options.nodeWeight(strcmp(map.molPrime,<span class="string">'Y'</span>));
+0129 
+0130 <span class="keyword">if</span> ~isfield(options,<span class="string">'fileName'</span>)
+0131     options.fileName = <span class="string">'target.svg'</span>;
+0132 <span class="keyword">end</span>
+0133 
+0134 <span class="keyword">if</span> ~isfield(options,<span class="string">'rxnDir'</span>)
+0135     options.rxnDir = zeros(size(map.connectionAbb,1),1);
+0136 <span class="keyword">end</span>
+0137 
+0138 <span class="keyword">if</span> ~isfield(options,<span class="string">'rxnDirMultiplier'</span>)
+0139     options.rxnDirMultiplier = 2;
+0140 <span class="keyword">end</span>
+0141 
+0142 <span class="comment">%%%%%%%% initialization</span>
+0143 <span class="keyword">if</span> strcmp(CB_MAP_OUTPUT,<span class="string">'matlab'</span>)    <span class="comment">% use matlab to draw the map</span>
+0144     clf; <span class="comment">% this was in line 41 before</span>
+0145     <span class="comment">% setting the color bar</span>
+0146     figure(1);colormap(cool(100))
+0147     colorbar(<span class="string">'location'</span>,<span class="string">'southoutside'</span>);
+0148     axis equal;
+0149     hold on
+0150 <span class="keyword">elseif</span> strcmp(CB_MAP_OUTPUT, <span class="string">'java'</span>)
+0151     <span class="comment">% use Java/OpenGL to draw the map</span>
+0152     <a href="plotcbmap.html" class="code" title="function plotcbmap()">plotcbmap</a>;
+0153     <span class="comment">% send the transformation coordinates</span>
+0154     R=map.molPosition';
+0155     R=sort(R);
+0156     a=max(R);
+0157     b=min(R);
+0158     xmax=a(1,1);
+0159     xmin=b(1,1);
+0160     ymax=a(1,2);
+0161     ymin=b(1,2);
+0162     settrans(mapHandle,xmax,xmin,ymax,ymin);
+0163 <span class="keyword">elseif</span> strcmp(CB_MAP_OUTPUT, <span class="string">'svg'</span>)
+0164     <span class="comment">%check fileName extension</span>
+0165     <span class="keyword">if</span> isempty(regexp(lower(options.fileName),<span class="string">'.svg$'</span>))
+0166         options.fileName = strcat(options.fileName,<span class="string">'.svg'</span>);
+0167     <span class="keyword">end</span>
+0168     textPos = (map.textPos);
+0169     x1 = min(map.molPosition(1,:));
+0170     <span class="keyword">if</span> min(textPos(:,1))&lt;x1
+0171         x1 = min(textPos(:,1));
+0172     <span class="keyword">end</span>
+0173     y1 = min(map.molPosition(2,:));
+0174     <span class="keyword">if</span> min(textPos(:,2))&lt;y1
+0175         y1 = min(textPos(:,2));
+0176     <span class="keyword">end</span>
+0177     x2 = max(map.molPosition(1,:));
+0178     <span class="keyword">if</span> max(textPos(:,1))&gt;x2
+0179         x2 = max(textPos(:,1));
+0180     <span class="keyword">end</span>
+0181     y2 = max(map.molPosition(2,:));
+0182     <span class="keyword">if</span> max(textPos(:,2))&gt;y2
+0183         y2 = max(textPos(:,2));
+0184     <span class="keyword">end</span>
+0185     <span class="keyword">if</span> isfield(options,<span class="string">'colorScale'</span>)
+0186         numColorBins = size(options.colorScale,1);
+0187         colorScaleWidth = 0.25*(x2-x1);
+0188         binWidth = colorScaleWidth/numColorBins;
+0189         colorScaleHeight = 0.05*colorScaleWidth;
+0190         colorScaleBuffer = colorScaleHeight*1.5;
+0191         y2 = y2+colorScaleBuffer; <span class="comment">%add buffer for scale</span>
+0192     <span class="keyword">end</span>
+0193     <span class="keyword">if</span> isfield(options,<span class="string">'fluxVarColor'</span>)
+0194         colorScaleHeight = 0.0125*(x2-x1);
+0195         colorScaleBuffer = colorScaleHeight*1.5;
+0196         colorWidth = 0.025*(x2-x1);
+0197         y2 = y2+colorScaleBuffer;
+0198     <span class="keyword">end</span>
+0199     [x1,y1,x2,y2] = deal(x1-200, y1-200, x2+200, y2+200); <span class="comment">% add buffer</span>
+0200     SF = .25;
+0201     mapHandle = fopen(options.fileName, <span class="string">'w'</span>);
+0202     fprintf(mapHandle, <span class="string">'&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;\n'</span>);
+0203     fprintf(mapHandle,<span class="string">'&lt;!DOCTYPE svg PUBLIC &quot;-//W3C//DTD SVG 1.0//EN&quot; &quot;http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd&quot;&gt;\n'</span>);
+0204     fprintf(mapHandle,<span class="string">'&lt;svg height=&quot;%+.2f&quot; width=&quot;%+.2f&quot; viewBox=&quot;%+.2f %+.2f %+.2f %+.2f&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;&gt;\n'</span>,(y2-y1+20)*SF,(x2-x1+20)*SF,(x1-10)*SF,(y1-10)*SF,(x2-x1+0)*SF,(y2-y1+20)*SF);
+0205     fprintf(mapHandle,<span class="string">'&lt;g transform=&quot;scale(%5.3f)&quot;&gt;\n'</span>,SF);
+0206    
+0207     <span class="comment">%Add Scale</span>
+0208     <span class="keyword">if</span> isfield(options,<span class="string">'overlayType'</span>)
+0209         <span class="keyword">for</span> i=1:numColorBins
+0210             color = strcat(<span class="string">'rgb('</span>,num2str(options.colorScale(i,1)),<span class="string">','</span>,num2str(options.colorScale(i,2)),<span class="string">','</span>,num2str(options.colorScale(i,3)),<span class="string">')'</span>);
+0211             fprintf(mapHandle,<span class="string">'&lt;g style=&quot;stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 20; fill: %s; &quot;&gt;\n'</span>,color);
+0212             fprintf(mapHandle,<span class="string">'&lt;rect x=&quot;%.2f&quot; y=&quot;%.2f&quot; width=&quot;%.2f&quot; height=&quot;%.2f&quot; /&gt;\n&lt;/g&gt;\n'</span>,x2-colorScaleWidth-200*2+(binWidth*(i-1)),y2-colorScaleHeight*1.25,binWidth,colorScaleHeight);
+0213         <span class="keyword">end</span>
+0214         fprintf(mapHandle, <span class="string">'&lt;g style=&quot;font-family: sans; stroke: none; text-anchor:end&quot;&gt;\n'</span>);
+0215         fprintf(mapHandle,<span class="string">'&lt;text style=&quot;fill: rgb(0,0,0); text-rendering: optimizeLegibility;&quot; x=&quot;%.2f&quot; y=&quot;%.2f&quot; font-size=&quot;%dpx&quot;&gt;%s&lt;/text&gt;\n&lt;/g&gt;\n'</span>,x2-colorScaleWidth-200*2-0.25*colorScaleHeight,y2-colorScaleHeight*.4,colorScaleHeight,[<span class="string">'Scale: '</span> options.scaleTypeLabel <span class="string">'    '</span> options.overlayType <span class="string">': '</span> options.overlayLB]); 
+0216         fprintf(mapHandle, <span class="string">'&lt;g style=&quot;font-family: sans; stroke: none; text-anchor:start&quot;&gt;\n'</span>);
+0217         fprintf(mapHandle,<span class="string">'&lt;text style=&quot;fill: rgb(0,0,0); text-rendering: optimizeLegibility;&quot; x=&quot;%.2f&quot; y=&quot;%.2f&quot; font-size=&quot;%dpx&quot;&gt;%s&lt;/text&gt;\n&lt;/g&gt;\n'</span>,x2-200*2+0.25*colorScaleHeight,y2-colorScaleHeight*.4,colorScaleHeight,[options.overlayUB]); 
+0218     <span class="keyword">end</span>
+0219     <span class="keyword">if</span> isfield(options,<span class="string">'fluxVarColor'</span>)
+0220         colorTextLabel = {<span class="string">'Bidirectional / reversible:'</span>, <span class="string">'Unidirectional / reversible forward:'</span>, <span class="string">'Unidirectional / reversible reverse:'</span>, <span class="string">'Unidirectional / irreversible:'</span>};
+0221         color{1} = strcat(<span class="string">'rgb('</span>,num2str(options.fluxVarColor.biDirColor(1)),<span class="string">','</span>,num2str(options.fluxVarColor.biDirColor(2)),<span class="string">','</span>,num2str(options.fluxVarColor.biDirColor(3)),<span class="string">')'</span>);
+0222         color{2} = strcat(<span class="string">'rgb('</span>,num2str(options.fluxVarColor.uniDirFwdColor(1)),<span class="string">','</span>,num2str(options.fluxVarColor.uniDirFwdColor(2)),<span class="string">','</span>,num2str(options.fluxVarColor.uniDirFwdColor(3)),<span class="string">')'</span>);
+0223         color{3} = strcat(<span class="string">'rgb('</span>,num2str(options.fluxVarColor.uniDirRevColor(1)),<span class="string">','</span>,num2str(options.fluxVarColor.uniDirRevColor(2)),<span class="string">','</span>,num2str(options.fluxVarColor.uniDirRevColor(3)),<span class="string">')'</span>);
+0224         color{4} = strcat(<span class="string">'rgb('</span>,num2str(options.fluxVarColor.uniDirIrrColor(1)),<span class="string">','</span>,num2str(options.fluxVarColor.uniDirIrrColor(2)),<span class="string">','</span>,num2str(options.fluxVarColor.uniDirIrrColor(3)),<span class="string">')'</span>);
+0225         <span class="keyword">for</span> i=2:3:11
+0226             fprintf(mapHandle, <span class="string">'&lt;g style=&quot;font-family: sans; stroke: none; text-anchor:end&quot;&gt;\n'</span>);
+0227             fprintf(mapHandle,<span class="string">'&lt;text style=&quot;fill: rgb(0,0,0); text-rendering: optimizeLegibility;&quot; x=&quot;%.2f&quot; y=&quot;%.2f&quot; font-size=&quot;%dpx&quot;&gt;%s&lt;/text&gt;\n&lt;/g&gt;\n'</span>,i*(x2-x1)/12,y2-colorScaleHeight*.4,colorScaleHeight,colorTextLabel{ceil(i/3)});            
+0228             fprintf(mapHandle,<span class="string">'&lt;g style=&quot;stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 20; fill: %s; &quot;&gt;\n'</span>,color{ceil(i/3)});
+0229             fprintf(mapHandle,<span class="string">'&lt;rect x=&quot;%.2f&quot; y=&quot;%.2f&quot; width=&quot;%.2f&quot; height=&quot;%.2f&quot; /&gt;\n&lt;/g&gt;\n'</span>,i*(x2-x1)/12,y2-colorScaleHeight*1.25,colorWidth,colorScaleHeight);
+0230         <span class="keyword">end</span>
+0231     <span class="keyword">end</span>
+0232 <span class="keyword">end</span>
+0233 
+0234 <span class="comment">%%%%% actual map drawing code</span>
+0235 <span class="comment">% draw other shapes</span>
+0236 <span class="keyword">if</span> isfield(map,<span class="string">'shapeThickness'</span>)
+0237     <span class="keyword">for</span> i = 1:size((map.shapeThickness),1)
+0238         <a href="../../cobra/maps/tools/drawShape.html" class="code" title="function drawShape(sType,begPt,sLength, color, thickness,sStyle,verbose)">drawShape</a>(map.shapeType(i,1),map.shapePos(i,1:2),map.shapeSize(i,1:2),map.shapeColor(i,1:3),map.shapeThickness(i,1),map.shapeStyle(i,1));
+0239     <span class="keyword">end</span>
+0240 <span class="keyword">end</span>
+0241 <span class="comment">% draw the connection segments traversing through the connection matrix</span>
+0242 <span class="keyword">for</span> i = 1:(size((map.connection),1))
+0243     <a href="../../cobra/maps/tools/drawLine.html" class="code" title="function drawLine(node1,node2,map,edgeColor,edgeArrowColor,edgeWeight,nodeWeight,rxnDir,rxnDirMultiplier)">drawLine</a>(map.connection(i,1),map.connection(i,2),map,options.edgeColor(i,:),options.edgeArrowColor(i,:),options.edgeWeight(i),nodeWeight,options.rxnDir(i),options.rxnDirMultiplier);
+0244 <span class="keyword">end</span>
+0245 <span class="comment">% draw the circles representing molecules</span>
+0246 <span class="keyword">for</span> i = 1:size((map.molPosition),2)
+0247     <a href="../../cobra/maps/tools/drawCircle.html" class="code" title="function drawCircle(p,radius,color)">drawCircle</a>(map.molPosition(:,i),nodeWeight(i),options.nodeColor(i,:));
+0248 <span class="keyword">end</span>
+0249 <span class="comment">% draw texts</span>
+0250 <span class="keyword">for</span> i = 1:length(map.text)
+0251     textFont =map.textFont{i};
+0252     <span class="keyword">if</span> regexp(textFont,<span class="string">'@'</span>)
+0253         [textFont, textSize] = strtok(textFont,<span class="string">'@'</span>);
+0254         textSize = str2num(regexprep(textSize,<span class="string">'@'</span>,<span class="string">''</span>));
+0255     <span class="keyword">elseif</span>(map.textSize(i) &gt;= 60)
+0256         textSize = 60;
+0257     <span class="keyword">else</span>
+0258         textSize = map.textSize(i);
+0259     <span class="keyword">end</span>
+0260     <span class="keyword">if</span> find(regexp(textFont,<span class="string">'Italic'</span>))
+0261         textStyle = <span class="string">'italic;'</span>;
+0262     <span class="keyword">else</span>
+0263         textStyle = <span class="string">''</span>;
+0264     <span class="keyword">end</span>
+0265     <span class="comment">%textFont</span>
+0266     <span class="comment">% if find(regexp(textFont,' B')) || find(regexp(textFont(end),'B'))</span>
+0267     <span class="keyword">if</span> (find(regexp(textFont,<span class="string">'B'</span>)))
+0268         textWeight = <span class="string">'bold'</span>;
+0269         textFont = regexprep(textFont,<span class="string">' B'</span>,<span class="string">''</span>);
+0270     <span class="keyword">else</span>
+0271         textWeight = <span class="string">''</span>;
+0272     <span class="keyword">end</span>
+0273     <span class="keyword">if</span> isfield(options,<span class="string">'otherTextSize'</span>), textSize = options.otherTextSize(i); <span class="keyword">end</span>
+0274     <a href="../../cobra/maps/tools/drawText.html" class="code" title="function drawText(x,y, drawString, fontSize, fontStyle, color, font, fontWeight, flagCenter)">drawText</a>(map.textPos(i,1),map.textPos(i,2),map.text{i,1},textSize,textStyle,options.otherTextColor(i,:),lower(textFont),textWeight,true);
+0275 <span class="keyword">end</span>
+0276 <span class="comment">% Write Metabolite Label</span>
+0277 <span class="keyword">for</span> i = 1:size((map.molPosition),2)  
+0278     <span class="comment">% write the labels for molecules</span>
+0279     <span class="keyword">if</span>(options.textSize(i) ~= 0)
+0280         <a href="../../cobra/maps/tools/drawText.html" class="code" title="function drawText(x,y, drawString, fontSize, fontStyle, color, font, fontWeight, flagCenter)">drawText</a>(map.molLabelPos(i,1),map.molLabelPos(i,2),map.molAbbreviation{i},options.textSize(i),<span class="string">''</span>,options.textColor(i,:));
+0281     <span class="keyword">end</span>
+0282 <span class="keyword">end</span>
+0283 <span class="comment">% Write Reaction Label</span>
+0284 <span class="keyword">for</span> i = 1:size(map.rxnLabelPosition,2)
+0285     <span class="keyword">if</span> ~any(isnan(map.rxnLabelPosition(:,i)))
+0286       <span class="keyword">if</span> isfield(options, <span class="string">'rxnTextSize'</span>)
+0287         <a href="../../cobra/maps/tools/drawText.html" class="code" title="function drawText(x,y, drawString, fontSize, fontStyle, color, font, fontWeight, flagCenter)">drawText</a>(map.rxnLabelPosition(1,i),map.rxnLabelPosition(2,i),map.connectionAbb{find(map.rxnIndex(i)==map.connection,1)},options.rxnTextSize(i),<span class="string">'italic'</span>);
+0288       <span class="keyword">else</span>
+0289         <a href="../../cobra/maps/tools/drawText.html" class="code" title="function drawText(x,y, drawString, fontSize, fontStyle, color, font, fontWeight, flagCenter)">drawText</a>(map.rxnLabelPosition(1,i),map.rxnLabelPosition(2,i),map.connectionAbb{find(map.rxnIndex(i)==map.connection,1)},8,<span class="string">'italic'</span>);
+0290       <span class="keyword">end</span>
+0291     <span class="keyword">end</span>
+0292 <span class="keyword">end</span>
+0293 
+0294 <span class="keyword">if</span> strcmp(CB_MAP_OUTPUT,<span class="string">'matlab'</span>)
+0295     hold off;
+0296 <span class="keyword">elseif</span> strcmp(CB_MAP_OUTPUT,<span class="string">'java'</span>)
+0297     
+0298 <span class="keyword">elseif</span> strcmp(CB_MAP_OUTPUT,<span class="string">'svg'</span>)
+0299 
+0300     fprintf(mapHandle,<span class="string">'&lt;/g&gt;\n'</span>);
+0301     fprintf(mapHandle,<span class="string">'&lt;/svg&gt;\n'</span>);
+0302     fclose(mapHandle);
+0303     display(<span class="string">'Document Written'</span>)
+0304 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

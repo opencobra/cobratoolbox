@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of numAtomsOfElementInFormula</title>
+  <meta name="keywords" content="numAtomsOfElementInFormula">
+  <meta name="description" content="returns the number of atoms of a single element in a formula">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../../menu.html cobra --><!-- ../menu.html reconstruction --><!-- menu.html mass_balance -->
+<h1>numAtomsOfElementInFormula
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>returns the number of atoms of a single element in a formula</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function N=numAtomsOfElementInFormula(formula,element) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> returns the number of atoms of a single element in a formula
+
+ INPUT
+ formula       formula in format Element then NumberOfAtoms with no spaces
+ element       Abbreviation of element e.g. C or Mg
+
+ OUTPUT
+ N             number of atoms of this element in the formula provided
+
+ Ronan Fleming 9 March 09
+ Ronan Fleming 21 July 09 handles formulae with same first letter for
+                          element e.g.C &amp; Co in 'C55H80CoN15O11'
+ Ronan Fleming 18 Sept 09 handles composite formulae like C62H90N13O14P.C10H11N5O3.Co
+ Hulda SH 7 July 2011 Simplified and generalized code. Now handles most or
+                      all exceptional formulas.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../cobra/reconstruction/mass_balance/basicPhysicochemicalData/getMolecularMass.html" class="code" title="function M=getMolecularMass(formulae,isotopeAbundance)">getMolecularMass</a>	get mono-isotopic exact molecular mass for a single formula or a cell array of</li><li><a href="checkBalance.html" class="code" title="function [dE,E]=checkBalance(model,element,printLevel)">checkBalance</a>	Checks whether a set of reactions is elementally balanced.</li><li><a href="pHbalanceProtons.html" class="code" title="function model=pHbalanceProtons(model,massImbalance)">pHbalanceProtons</a>	Mass balance protons for each reaction by adjusting the hydrogen ion stoichiometric coefficient.</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function N=numAtomsOfElementInFormula(formula,element)</a>
+0002 <span class="comment">% returns the number of atoms of a single element in a formula</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% INPUT</span>
+0005 <span class="comment">% formula       formula in format Element then NumberOfAtoms with no spaces</span>
+0006 <span class="comment">% element       Abbreviation of element e.g. C or Mg</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% OUTPUT</span>
+0009 <span class="comment">% N             number of atoms of this element in the formula provided</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% Ronan Fleming 9 March 09</span>
+0012 <span class="comment">% Ronan Fleming 21 July 09 handles formulae with same first letter for</span>
+0013 <span class="comment">%                          element e.g.C &amp; Co in 'C55H80CoN15O11'</span>
+0014 <span class="comment">% Ronan Fleming 18 Sept 09 handles composite formulae like C62H90N13O14P.C10H11N5O3.Co</span>
+0015 <span class="comment">% Hulda SH 7 July 2011 Simplified and generalized code. Now handles most or</span>
+0016 <span class="comment">%                      all exceptional formulas.</span>
+0017 
+0018 <span class="keyword">if</span> any(~isletter(element))
+0019     disp(element)
+0020     error(<span class="string">'Element must not contain numbers'</span>)
+0021 <span class="keyword">end</span>
+0022 
+0023 <span class="keyword">if</span> length(element)==1
+0024     <span class="keyword">if</span> ~strcmp(upper(element),element)
+0025         disp(element)
+0026         error(<span class="string">'Single letter element must not be lower case'</span>)
+0027     <span class="keyword">end</span>
+0028 <span class="keyword">end</span>
+0029 
+0030 <span class="keyword">if</span> ~isletter(formula(1))
+0031     disp(formula)
+0032     error(<span class="string">'Formula format expected is element then number of elements, not the other way around'</span>)
+0033 <span class="keyword">end</span>
+0034 
+0035 zero=<span class="string">'0'</span>;
+0036 indZero=strfind(formula,zero);
+0037 <span class="keyword">if</span> ~isempty(indZero)
+0038     <span class="keyword">if</span> isletter(formula(indZero-1))
+0039         <span class="comment">% formula = strrep(formula, zero, 'O');</span>
+0040         error(<span class="string">'Formula contains a zero with a letter preceeding it, represent oxygen with a the character O not zero'</span>)
+0041     <span class="keyword">end</span>
+0042 <span class="keyword">end</span>
+0043 
+0044 <span class="comment">%Count FULLR and FULLR2 groups as R groups (Human reconstruction)</span>
+0045 formula = strrep(formula, <span class="string">'FULLR2'</span>, <span class="string">'R'</span>);
+0046 formula = strrep(formula, <span class="string">'FULLR'</span>, <span class="string">'R'</span>);
+0047 
+0048 <span class="keyword">if</span> ischar(element) &amp;&amp; ischar(formula)
+0049     elementStart = regexp(formula, <span class="string">'[A-Z]'</span>, <span class="string">'start'</span>); <span class="comment">% Get indices of all capital letters in the string formula. Treated as starting indices of elements.</span>
+0050     elementArray = cell(length(elementStart),2); <span class="comment">% Initialize cell array for element symbols (Column 1) and numerical subscripts (Column 2)</span>
+0051     
+0052     <span class="keyword">for</span> n = 1:length(elementStart) <span class="comment">% Loop for each element in formula</span>
+0053         <span class="keyword">if</span> n &lt; length(elementStart)
+0054             splitFormula = formula(elementStart(n):(elementStart(n+1)-1)); <span class="comment">% Extract section of formula from starting index of element n to starting index of element n+1</span>
+0055             
+0056         <span class="keyword">else</span>
+0057             splitFormula = formula(elementStart(n):end);
+0058             
+0059         <span class="keyword">end</span>
+0060         
+0061         <span class="keyword">if</span> ~isempty(regexp(splitFormula, <span class="string">'[^a-z_A-Z]'</span>, <span class="string">'once'</span>)) <span class="comment">% If current section of formula contains non-alphabetic characters</span>
+0062             elementArray{n,1} = splitFormula(1:(regexp(splitFormula, <span class="string">'[^a-z_A-Z]'</span>, <span class="string">'once'</span>)-1)); <span class="comment">% Element symbol assumed to extend from beginning of current section to the first non-alphabetic character</span>
+0063             rest = splitFormula(regexp(splitFormula, <span class="string">'[^a-z_A-Z]'</span>, <span class="string">'once'</span>):end); <span class="comment">% Rest of section after element symbol.</span>
+0064             
+0065             <span class="keyword">if</span> ~isempty(regexp(rest, <span class="string">'\W'</span>, <span class="string">'once'</span>)) <span class="comment">% Rest of section may contain word characters such as numbers and dots.</span>
+0066                 <span class="keyword">if</span> ~isempty(regexp(rest(1), <span class="string">'\d'</span>, <span class="string">'once'</span>)) <span class="comment">% If first character following element symbol is numeric it is assumed to represent the number of atoms of that element.</span>
+0067                     elementArray{n,2} = rest(1:(regexp(rest, <span class="string">'\W'</span>, <span class="string">'once'</span>)-1)); <span class="comment">% Extract element's numeric subscript.</span>
+0068                     
+0069                 <span class="keyword">else</span>
+0070                     elementArray{n,2} = <span class="string">'1'</span>; <span class="comment">% If no number follows element symbol the numeric subscript is assumed to be 1.</span>
+0071                     
+0072                 <span class="keyword">end</span>
+0073                 
+0074             <span class="keyword">else</span>
+0075                 elementArray{n,2} = rest;
+0076             
+0077             <span class="keyword">end</span>
+0078             
+0079         <span class="keyword">else</span>
+0080             elementArray{n,1} = splitFormula;
+0081             elementArray{n,2} = <span class="string">'1'</span>;
+0082             
+0083         <span class="keyword">end</span>
+0084     <span class="keyword">end</span>
+0085     
+0086     elementRows = strmatch(element, elementArray(:,1), <span class="string">'exact'</span>); <span class="comment">% Element may appear in two different locations within formula.</span>
+0087     
+0088     <span class="keyword">if</span> ~isempty(elementRows)
+0089         elementCount = zeros(length(elementRows),1);
+0090         
+0091         <span class="keyword">for</span> m = 1:length(elementRows)
+0092             elementCount(m,1) = str2double(elementArray{elementRows(m),2}); <span class="comment">% Get numeric subscript by each instance of element in formula and convert from char to double</span>
+0093             
+0094         <span class="keyword">end</span>
+0095         
+0096         N = sum(elementCount);
+0097         
+0098     <span class="keyword">else</span>
+0099         N = 0;
+0100         
+0101     <span class="keyword">end</span>
+0102     
+0103 <span class="keyword">else</span>
+0104     <span class="keyword">if</span> ~ischar(element)
+0105         disp(element)
+0106         error(<span class="string">'Element must be given by a variable of class char'</span>)
+0107     <span class="keyword">else</span>
+0108         disp(element)
+0109         error(<span class="string">'Formula must be given by a variable of class char'</span>)
+0110     <span class="keyword">end</span>
+0111 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

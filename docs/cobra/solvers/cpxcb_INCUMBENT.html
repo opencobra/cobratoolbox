@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of cpxcb_INCUMBENT</title>
+  <meta name="keywords" content="cpxcb_INCUMBENT">
+  <meta name="description" content="function ret = cpxcb_INCUMBENT(x,f,Prob,cbxCBInfo)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html solvers -->
+<h1>cpxcb_INCUMBENT
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function ret = cpxcb_INCUMBENT(x,f,Prob,cbxCBInfo)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function ret = cpxcb_INCUMBENT(x,f,Prob) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> function ret = cpxcb_INCUMBENT(x,f,Prob,cbxCBInfo)
+
+ CPLEX MIP Incumbent callback
+
+ Called from TOMLAB /CPLEX during mixed integer optimization when a new integer
+ solution has been found but before this solution has replaced the current best known integer solution.
+
+ This file can be used to perform any desired analysis of the new integer
+ solution and return a status flag to the solver deciding whether to stop 
+ or continue the optimization, and also whether to accept or discard the newly 
+ found solution. 
+
+ This callback is enabled by setting callback(14)=1 in the call to
+ cplex.m, or Prob.MIP.callback(14)=1 if using tomRun('cplex',...)
+
+ cpxcb_INCUMBENT is called by the solver with three arguments:
+
+  x    - the new integer solution
+  f    - the objective value at x
+  Prob - the Tomlab problem structure 
+
+ cpxcb_INCUMBENT should return one of the following scalar values:
+
+   0    Continue optimization and accept new integer solution
+   1    Continue optimization but discard new integer solution
+   2    Stop optimization and accept new integer solution
+   3    Stop optimization adn discard new integer solution
+
+ Any other return value will be interpreted as 0. 
+
+ If modifying this file, it is recommended to make a copy of it which
+ is placed before the original file in the MATLAB path.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% function ret = cpxcb_INCUMBENT(x,f,Prob,cbxCBInfo)</span>
+0002 <span class="comment">%</span>
+0003 <span class="comment">% CPLEX MIP Incumbent callback</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Called from TOMLAB /CPLEX during mixed integer optimization when a new integer</span>
+0006 <span class="comment">% solution has been found but before this solution has replaced the current best known integer solution.</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% This file can be used to perform any desired analysis of the new integer</span>
+0009 <span class="comment">% solution and return a status flag to the solver deciding whether to stop</span>
+0010 <span class="comment">% or continue the optimization, and also whether to accept or discard the newly</span>
+0011 <span class="comment">% found solution.</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% This callback is enabled by setting callback(14)=1 in the call to</span>
+0014 <span class="comment">% cplex.m, or Prob.MIP.callback(14)=1 if using tomRun('cplex',...)</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% cpxcb_INCUMBENT is called by the solver with three arguments:</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%  x    - the new integer solution</span>
+0019 <span class="comment">%  f    - the objective value at x</span>
+0020 <span class="comment">%  Prob - the Tomlab problem structure</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">% cpxcb_INCUMBENT should return one of the following scalar values:</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">%   0    Continue optimization and accept new integer solution</span>
+0025 <span class="comment">%   1    Continue optimization but discard new integer solution</span>
+0026 <span class="comment">%   2    Stop optimization and accept new integer solution</span>
+0027 <span class="comment">%   3    Stop optimization adn discard new integer solution</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">% Any other return value will be interpreted as 0.</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">% If modifying this file, it is recommended to make a copy of it which</span>
+0032 <span class="comment">% is placed before the original file in the MATLAB path.</span>
+0033 <span class="comment">%</span>
+0034 
+0035 <span class="comment">% Anders Goran, Tomlab Optimization Inc., E-mail: tomlab@tomopt.com</span>
+0036 <span class="comment">% Copyright (c) 2002-2007 by Tomlab Optimization Inc., $Release: 10.1.0$</span>
+0037 <span class="comment">% Written Jun 1, 2007.  Last modified Jun 1, 2007.</span>
+0038 
+0039 <a name="_sub0" href="#_subfunctions" class="code">function ret = cpxcb_INCUMBENT(x,f,Prob)</a>
+0040 
+0041 <span class="comment">% ADD USER CODE HERE.</span>
+0042 
+0043 <span class="comment">% Accepted return values are:</span>
+0044 <span class="comment">%</span>
+0045 <span class="comment">%   0    Continue optimization and accept new integer solution</span>
+0046 <span class="comment">%   1    Continue optimization but discard new integer solution</span>
+0047 <span class="comment">%   2    Stop optimization and accept new integer solution</span>
+0048 <span class="comment">%   3    Stop optimization adn discard new integer solution</span>
+0049 <span class="comment">%</span>
+0050 <span class="comment">% Any other return value will be interpreted as 0.</span>
+0051 
+0052 <span class="keyword">global</span> MILPproblemType;
+0053 
+0054 <span class="keyword">switch</span> MILPproblemType
+0055     <span class="keyword">case</span> <span class="string">'OptKnock'</span>
+0056         <span class="comment">% Allow printing intermediate OptKnock solutions</span>
+0057 
+0058         <span class="keyword">global</span> cobraIntSolInd;
+0059         <span class="keyword">global</span> cobraContSolInd;
+0060         <span class="keyword">global</span> selectedRxnIndIrrev;
+0061         <span class="keyword">global</span> rxnList;
+0062         <span class="keyword">global</span> irrev2rev;
+0063         <span class="keyword">global</span> biomassRxnID;
+0064         <span class="keyword">global</span> solutionFileName;
+0065         
+0066         <span class="keyword">global</span> OptKnockKOrxnList;
+0067         <span class="keyword">global</span> OptKnockObjective;
+0068         <span class="keyword">global</span> OptKnockGrowth;
+0069         <span class="keyword">global</span> solID;
+0070         
+0071         <span class="comment">% Initialize</span>
+0072         <span class="keyword">if</span> isempty(solID)
+0073             solID = 0;
+0074             OptKnockObjective = [];
+0075             OptKnockGrowth = [];
+0076             OptKnockKOrxnList = {};
+0077         <span class="keyword">end</span>
+0078             
+0079         solID = solID + 1;
+0080         
+0081         <span class="comment">% Get the reactions</span>
+0082         OptKnockObjective(solID) = -f;
+0083         optKnockRxnInd = selectedRxnIndIrrev(x(cobraIntSolInd) &lt; 1e-4);
+0084         optKnockRxns = rxnList(unique(irrev2rev(optKnockRxnInd)));
+0085         OptKnockKOrxnList{solID} = optKnockRxns;
+0086         
+0087         <span class="comment">% Get the growth rate</span>
+0088         fluxes = x(cobraContSolInd);
+0089         growth = fluxes(biomassRxnID);
+0090         OptKnockGrowth(solID) = growth;
+0091         
+0092         fprintf(<span class="string">'OptKnock\t%f\t%f\t'</span>,-f,growth);
+0093         <span class="keyword">for</span> i = 1:length(optKnockRxns)
+0094             fprintf(<span class="string">'%s '</span>,optKnockRxns{i});
+0095         <span class="keyword">end</span>
+0096         fprintf(<span class="string">'\n'</span>);
+0097         save(solutionFileName,<span class="string">'OptKnockKOrxnList'</span>,<span class="string">'OptKnockObjective'</span>,<span class="string">'OptKnockGrowth'</span>);
+0098         ret = 0;
+0099         
+0100     <span class="keyword">otherwise</span>
+0101         ret = 0;
+0102 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

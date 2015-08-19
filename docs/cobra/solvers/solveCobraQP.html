@@ -1,0 +1,539 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of solveCobraQP</title>
+  <meta name="keywords" content="solveCobraQP">
+  <meta name="description" content="solveCobraQP Solve constraint-based QP problems">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html solvers -->
+<h1>solveCobraQP
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>solveCobraQP Solve constraint-based QP problems</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function solution = solveCobraQP(QPproblem,varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">solveCobraQP Solve constraint-based QP problems
+
+ solution = solveCobraQP(QPproblem,parameters)
+
+ % Solves problems of the type 
+
+      min   0.5 x' * F * x + osense * c' * x
+      s/t   lb &lt;= x &lt;= ub
+            A * x  &lt;=/=/&gt;= b
+
+INPUT
+ QPproblem Structure containing the following fields describing the QP
+ problem to be solved
+  A      LHS matrix
+  b      RHS vector
+  F      F matrix for quadratic objective (must be positive definite)
+  c      Objective coeff vector
+  lb     Lower bound vector
+  ub     Upper bound vector
+  osense Objective sense (-1 max, +1 min)
+  csense Constraint senses, a string containting the constraint sense for
+         each row in A ('E', equality, 'G' greater than, 'L' less than).
+
+OPTIONAL INPUTS
+ Optional parameters can be entered using parameters structure or as
+ parameter followed by parameter value: i.e. ,'printLevel',3)
+
+ parameters    Structure containing optional parameters as fields.
+  printLevel   Print level for solver
+  saveInput    Saves LPproblem to filename specified in field. 
+               Setting parameters = 'default' uses default setting set in
+               getCobraSolverParameters.
+
+ The solver is defined in the CBT_MILP_SOLVER global variable
+ (set using changeCobraSolver). Solvers currently available are
+ 'tomlab_cplex', 'mosek' and 'qpng' (limited support for small problems)
+
+OUTPUT
+ solution  Structure containing the following fields describing a QP
+           solution
+  full     Full QP solution vector
+  obj      Objective value
+  solver   Solver used to solve QP problem
+  stat     Solver status in standardized form (see below)
+  origStat Original status returned by the specific solver 
+  time     Solve time in seconds
+
+  stat     Solver status in standardized form
+           1   Optimal solution
+           2   Unbounded solution
+           0   Infeasible
+           -1  No solution reported (timelimit, numerical problem etc)
+
+ Markus Herrgard        6/8/07
+ Ronan Fleming         12/07/09  Added support for mosek
+ Ronan Fleming         18 Jan 10 Added support for pdco
+ Josh Lerman           04/17/10 changed def. parameters, THREADS, QPMETHOD
+ Tim Harrington        05/18/12 Added support for the Gurobi 5.0 solver</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="getCobraSolverParams.html" class="code" title="function varargout = getCobraSolverParams(solverType, paramNames, parameters)">getCobraSolverParams</a>	This function gets the specified parameters in paramNames from</li><li><a href="solveCobraLPCPLEX.html" class="code" title="function [solution,LPProblem]=solveCobraLPCPLEX(LPProblem,printLevel,basisReuse,conflictResolve,contFunctName,minNorm)">solveCobraLPCPLEX</a>	[solution,LPProblem]=solveCobraLPCPLEX(LPProblem,printLevel,basisReuse,conflictResolve,contFunctName,minNorm)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/MOMA.html" class="code" title="function [solutionDel,solutionWT,totalFluxDiff,solStatus] =MOMA(modelWT,modelDel,osenseStr,verbFlag,minNormFlag)">MOMA</a>	MOMA Performs a quadratic version of the MOMA (minimization of</li><li><a href="../../cobra/fluxVariability.html" class="code" title="function [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,optPercentage,osenseStr,rxnNameList,verbFlag, allowLoops)">fluxVariability</a>	fluxVariability Performs flux variablity analysis</li><li><a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>	optimizeCbModel Solve a flux balance analysis problem</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function [obj,grad,hess] = QPObj(x)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function solution = solveCobraQP(QPproblem,varargin)</a>
+0002 <span class="comment">%solveCobraQP Solve constraint-based QP problems</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% solution = solveCobraQP(QPproblem,parameters)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% % Solves problems of the type</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">%      min   0.5 x' * F * x + osense * c' * x</span>
+0009 <span class="comment">%      s/t   lb &lt;= x &lt;= ub</span>
+0010 <span class="comment">%            A * x  &lt;=/=/&gt;= b</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">%INPUT</span>
+0013 <span class="comment">% QPproblem Structure containing the following fields describing the QP</span>
+0014 <span class="comment">% problem to be solved</span>
+0015 <span class="comment">%  A      LHS matrix</span>
+0016 <span class="comment">%  b      RHS vector</span>
+0017 <span class="comment">%  F      F matrix for quadratic objective (must be positive definite)</span>
+0018 <span class="comment">%  c      Objective coeff vector</span>
+0019 <span class="comment">%  lb     Lower bound vector</span>
+0020 <span class="comment">%  ub     Upper bound vector</span>
+0021 <span class="comment">%  osense Objective sense (-1 max, +1 min)</span>
+0022 <span class="comment">%  csense Constraint senses, a string containting the constraint sense for</span>
+0023 <span class="comment">%         each row in A ('E', equality, 'G' greater than, 'L' less than).</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">%OPTIONAL INPUTS</span>
+0026 <span class="comment">% Optional parameters can be entered using parameters structure or as</span>
+0027 <span class="comment">% parameter followed by parameter value: i.e. ,'printLevel',3)</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">% parameters    Structure containing optional parameters as fields.</span>
+0030 <span class="comment">%  printLevel   Print level for solver</span>
+0031 <span class="comment">%  saveInput    Saves LPproblem to filename specified in field.</span>
+0032 <span class="comment">%               Setting parameters = 'default' uses default setting set in</span>
+0033 <span class="comment">%               getCobraSolverParameters.</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">% The solver is defined in the CBT_MILP_SOLVER global variable</span>
+0036 <span class="comment">% (set using changeCobraSolver). Solvers currently available are</span>
+0037 <span class="comment">% 'tomlab_cplex', 'mosek' and 'qpng' (limited support for small problems)</span>
+0038 <span class="comment">%</span>
+0039 <span class="comment">%OUTPUT</span>
+0040 <span class="comment">% solution  Structure containing the following fields describing a QP</span>
+0041 <span class="comment">%           solution</span>
+0042 <span class="comment">%  full     Full QP solution vector</span>
+0043 <span class="comment">%  obj      Objective value</span>
+0044 <span class="comment">%  solver   Solver used to solve QP problem</span>
+0045 <span class="comment">%  stat     Solver status in standardized form (see below)</span>
+0046 <span class="comment">%  origStat Original status returned by the specific solver</span>
+0047 <span class="comment">%  time     Solve time in seconds</span>
+0048 <span class="comment">%</span>
+0049 <span class="comment">%  stat     Solver status in standardized form</span>
+0050 <span class="comment">%           1   Optimal solution</span>
+0051 <span class="comment">%           2   Unbounded solution</span>
+0052 <span class="comment">%           0   Infeasible</span>
+0053 <span class="comment">%           -1  No solution reported (timelimit, numerical problem etc)</span>
+0054 <span class="comment">%</span>
+0055 <span class="comment">% Markus Herrgard        6/8/07</span>
+0056 <span class="comment">% Ronan Fleming         12/07/09  Added support for mosek</span>
+0057 <span class="comment">% Ronan Fleming         18 Jan 10 Added support for pdco</span>
+0058 <span class="comment">% Josh Lerman           04/17/10 changed def. parameters, THREADS, QPMETHOD</span>
+0059 <span class="comment">% Tim Harrington        05/18/12 Added support for the Gurobi 5.0 solver</span>
+0060 
+0061 <span class="keyword">global</span> CBT_QP_SOLVER;
+0062 
+0063 <span class="keyword">if</span> (~isempty(CBT_QP_SOLVER))
+0064     solver = CBT_QP_SOLVER;
+0065 <span class="keyword">else</span>
+0066     error(<span class="string">'No solver found'</span>);
+0067 <span class="keyword">end</span>
+0068 
+0069 optParamNames = {<span class="string">'printLevel'</span>,<span class="string">'saveInput'</span>};
+0070 parameters = <span class="string">''</span>;
+0071 <span class="keyword">if</span> nargin ~=1
+0072     <span class="keyword">if</span> mod(length(varargin),2)==0
+0073         <span class="keyword">for</span> i=1:2:length(varargin)-1
+0074             <span class="keyword">if</span> ismember(varargin{i},optParamNames)
+0075                 parameters.(varargin{i}) = varargin{i+1};
+0076             <span class="keyword">else</span>
+0077                 error([varargin{i} <span class="string">' is not a valid optional parameter'</span>]);
+0078             <span class="keyword">end</span>
+0079         <span class="keyword">end</span>
+0080     <span class="keyword">elseif</span> strcmp(varargin{1},<span class="string">'default'</span>)
+0081         parameters = <span class="string">'default'</span>;
+0082     <span class="keyword">elseif</span> isstruct(varargin{1})
+0083         parameters = varargin{1};
+0084     <span class="keyword">else</span>
+0085         display(<span class="string">'Warning: Invalid number of parameters/values'</span>)
+0086         solution=[];
+0087         <span class="keyword">return</span>;
+0088     <span class="keyword">end</span>
+0089 <span class="keyword">end</span>
+0090 
+0091 <span class="comment">% Defaults in case the solver does not return anything</span>
+0092 x = [];
+0093 y = [];
+0094 w = [];
+0095 f = [];
+0096 xInt = [];
+0097 xCont = [];
+0098 stat = -99;
+0099 solStat = -99;
+0100 
+0101 <span class="comment">%parameters</span>
+0102 [printLevel, saveInput] = <a href="getCobraSolverParams.html" class="code" title="function varargout = getCobraSolverParams(solverType, paramNames, parameters)">getCobraSolverParams</a>(<span class="string">'QP'</span>,optParamNames,parameters);
+0103 
+0104 [A,b,F,c,lb,ub,csense,osense] = <span class="keyword">...</span>
+0105     deal(QPproblem.A,QPproblem.b,QPproblem.F,QPproblem.c,QPproblem.lb,QPproblem.ub,<span class="keyword">...</span>
+0106     QPproblem.csense,QPproblem.osense);
+0107 
+0108 t_start = clock;
+0109 <span class="keyword">switch</span> solver
+0110 <span class="comment">%%</span>
+0111     <span class="keyword">case</span> <span class="string">'tomlab_cplex'</span>
+0112         <span class="keyword">if</span> (~isempty(csense))
+0113             b_L(csense == <span class="string">'E'</span>) = b(csense == <span class="string">'E'</span>);
+0114             b_U(csense == <span class="string">'E'</span>) = b(csense == <span class="string">'E'</span>);
+0115             b_L(csense == <span class="string">'G'</span>) = b(csense == <span class="string">'G'</span>);
+0116             b_U(csense == <span class="string">'G'</span>) = inf;
+0117             b_L(csense == <span class="string">'L'</span>) = -inf;
+0118             b_U(csense == <span class="string">'L'</span>) = b(csense == <span class="string">'L'</span>);
+0119         <span class="keyword">else</span>
+0120             b_L = b;
+0121             b_U = b;
+0122         <span class="keyword">end</span>
+0123         tomlabProblem = qpAssign(F,osense*c,A,b_L,b_U,lb,ub,[],<span class="string">'CobraQP'</span>);
+0124         
+0125         <span class="comment">%optional parameters</span>
+0126         tomlabProblem.PriLvl=printLevel;
+0127         tomlabProblem.MIP.cpxControl.QPMETHOD = 1;
+0128         tomlabProblem.MIP.cpxControl.THREADS = 1;
+0129                 
+0130         <span class="comment">%Save Input if selected</span>
+0131         <span class="keyword">if</span> ~isempty(saveInput)
+0132             fileName = saveInput;
+0133             <span class="keyword">if</span> ~find(regexp(fileName,<span class="string">'.mat'</span>))
+0134                 fileName = [fileName <span class="string">'.mat'</span>];
+0135             <span class="keyword">end</span>
+0136             display([<span class="string">'Saving QPproblem in '</span> fileName]);
+0137             save(fileName,<span class="string">'QPproblem'</span>)
+0138         <span class="keyword">end</span>
+0139         
+0140         Result = tomRun(<span class="string">'cplex'</span>, tomlabProblem);
+0141         x = Result.x_k;
+0142         f = osense*Result.f_k;
+0143         origStat = Result.Inform;
+0144         <span class="keyword">if</span> (origStat == 1)
+0145             stat = 1; <span class="comment">% Optimal</span>
+0146         <span class="keyword">elseif</span> (origStat == 3 || origStat == 4)
+0147             stat = 0; <span class="comment">% Infeasible</span>
+0148         <span class="keyword">elseif</span> (origStat == 2)
+0149             stat = 2; <span class="comment">% Unbounded</span>
+0150         <span class="keyword">elseif</span> (origStat &gt;= 10)
+0151             stat = -1; <span class="comment">% No optimal solution found (time or other limits reached, other infeasibility problems)</span>
+0152         <span class="keyword">else</span>
+0153             stat = 3; <span class="comment">% Solution exists, but either scaling problems or not proven to be optimal</span>
+0154         <span class="keyword">end</span>
+0155         <span class="comment">%%</span>
+0156     <span class="keyword">case</span> <span class="string">'cplex_direct'</span>
+0157         <span class="comment">%% Tomlab cplex.m direct</span>
+0158         <span class="comment">%Used with the current script, only some of the control affoarded with</span>
+0159         <span class="comment">%this interface is provided. Primarily, this is to change the print</span>
+0160         <span class="comment">%level and whether to minimise the Euclidean Norm of the internal</span>
+0161         <span class="comment">%fluxes or not.</span>
+0162         <span class="comment">%See solveCobraLPCPLEX.m for more refined control of cplex</span>
+0163         <span class="comment">%Ronan Fleming 11/12/2008</span>
+0164                
+0165         solution=<a href="solveCobraLPCPLEX.html" class="code" title="function [solution,LPProblem]=solveCobraLPCPLEX(LPProblem,printLevel,basisReuse,conflictResolve,contFunctName,minNorm)">solveCobraLPCPLEX</a>(QPproblem,printLevel,[],[],[],minNorm);
+0166         <span class="comment">%%</span>
+0167    <span class="keyword">case</span> <span class="string">'qpng'</span>
+0168         <span class="comment">% qpng.m This file is part of GLPKMEX.</span>
+0169         <span class="comment">% Copyright 2006-2007 Nicolo Giorgetti.</span>
+0170         <span class="comment">%</span>
+0171         <span class="comment">% Solves the general quadratic program</span>
+0172         <span class="comment">%      min 0.5 x'*H*x + q'*x</span>
+0173         <span class="comment">%       x</span>
+0174         <span class="comment">% subject to</span>
+0175         <span class="comment">%      A*x [ &quot;=&quot; | &quot;&lt;=&quot; | &quot;&gt;=&quot; ] b</span>
+0176         <span class="comment">%      lb &lt;= x &lt;= ub</span>
+0177         ctype=csense;
+0178         ctype((<span class="string">'G'</span>==csense))=<span class="string">'L'</span>;
+0179         ctype((<span class="string">'E'</span>==csense))=<span class="string">'E'</span>;
+0180         ctype((<span class="string">'L'</span>==csense))=<span class="string">'U'</span>;
+0181         
+0182         x0=ones(size(QPproblem.A,2),1);
+0183         <span class="comment">%equality constraint matrix must be full row rank</span>
+0184         [x, f, y, info] = qpng (QPproblem.F, QPproblem.c*QPproblem.osense, full(QPproblem.A), QPproblem.b, ctype, QPproblem.lb, QPproblem.ub, x0);
+0185         
+0186         f = 0.5*x'*QPproblem.F*x + c'*x;
+0187         
+0188         w=[];
+0189         
+0190         <span class="keyword">if</span> (info.status == 0)
+0191             stat = 1;
+0192         <span class="keyword">elseif</span> (info.status == 1)
+0193             stat = 0;
+0194         <span class="keyword">else</span>
+0195             stat = -1;
+0196         <span class="keyword">end</span>
+0197         origStat=info.status;
+0198         <span class="comment">%%</span>
+0199     <span class="keyword">case</span> <span class="string">'mosek'</span>
+0200         <span class="keyword">if</span> (~isempty(csense))
+0201             b_L(csense == <span class="string">'E'</span>) = b(csense == <span class="string">'E'</span>);
+0202             b_U(csense == <span class="string">'E'</span>) = b(csense == <span class="string">'E'</span>);
+0203             b_L(csense == <span class="string">'G'</span>) = b(csense == <span class="string">'G'</span>);
+0204             b_U(csense == <span class="string">'G'</span>) = inf;
+0205             b_L(csense == <span class="string">'L'</span>) = -inf;
+0206             b_U(csense == <span class="string">'L'</span>) = b(csense == <span class="string">'L'</span>);
+0207         <span class="keyword">else</span>
+0208             b_L = b;
+0209             b_U = b;
+0210         <span class="keyword">end</span>
+0211                 
+0212         <span class="keyword">if</span> printLevel&gt;0
+0213             cmd=<span class="string">'minimize'</span>;
+0214         <span class="keyword">else</span>
+0215             cmd=<span class="string">'minimize echo(0)'</span>;
+0216         <span class="keyword">end</span>
+0217         
+0218         <span class="comment">% Optimize the problem.</span>
+0219         <span class="comment">% min 0.5*x'*F*x + osense*c'*x</span>
+0220         <span class="comment">% st. blc &lt;= A*x &lt;= buc</span>
+0221         <span class="comment">%     bux &lt;= x   &lt;= bux</span>
+0222         [res] = mskqpopt(F,osense*c,A,b_L,b_U,lb,ub,[],cmd);
+0223         
+0224         <span class="keyword">if</span> isempty(res)
+0225             stat=3;
+0226         <span class="keyword">else</span>
+0227             <span class="keyword">if</span> isfield(res,<span class="string">'sol'</span>)
+0228                 origStat=res.sol.itr.solsta;
+0229                 <span class="keyword">if</span> strcmp(res.sol.itr.prosta,<span class="string">'PRIMAL_AND_DUAL_FEASIBLE'</span>) &amp;&amp;  (strcmp(res.sol.itr.solsta,<span class="string">'OPTIMAL'</span>) || strcmp(res.sol.itr.solsta,<span class="string">'NEAR_OPTIMAL'</span>))
+0230                     stat=1;
+0231                     <span class="comment">% x solution.</span>
+0232                     x = res.sol.itr.xx;
+0233                     f = 0.5*x'*F*x + c'*x;
+0234                     
+0235                     <span class="comment">%dual to equality</span>
+0236                     y=res.sol.itr.y;
+0237                     
+0238                     <span class="comment">%dual to lower and upper bounds</span>
+0239                     w=res.sol.itr.slx - res.sol.itr.sux;
+0240                 <span class="keyword">else</span>
+0241                     stat=3;
+0242                 <span class="keyword">end</span>
+0243             <span class="keyword">else</span>
+0244                 stat=3;
+0245                 origStat=res.rmsg;
+0246             <span class="keyword">end</span>
+0247         <span class="keyword">end</span>
+0248         <span class="comment">% stat   Solver status</span>
+0249         <span class="comment">%           1   Optimal solution found</span>
+0250         <span class="comment">%           2   Unbounded solution</span>
+0251         <span class="comment">%           0   Infeasible QP</span>
+0252         <span class="comment">%           3   Other problem (time limit etc)</span>
+0253         <span class="comment">%%</span>
+0254       <span class="keyword">case</span> <span class="string">'pdco'</span>
+0255         <span class="comment">%-----------------------------------------------------------------------</span>
+0256         <span class="comment">% pdco.m: Primal-Dual Barrier Method for Convex Objectives (16 Dec 2008)</span>
+0257         <span class="comment">%-----------------------------------------------------------------------</span>
+0258         <span class="comment">% AUTHOR:</span>
+0259         <span class="comment">%    Michael Saunders, Systems Optimization Laboratory (SOL),</span>
+0260         <span class="comment">%    Stanford University, Stanford, California, USA.</span>
+0261         <span class="comment">%Interfaced with Cobra toolbox by Ronan Fleming, 18 Jan 2010</span>
+0262         [nMet,nRxn]=size(A);
+0263         d1=ones(nRxn,1)*1e-4;
+0264         <span class="comment">%dont minimise the norm of reactions in linear objective</span>
+0265         d1(c~=0)=0;
+0266         d2=1e-5;
+0267         options = pdcoSet;
+0268         
+0269         x0 = ones(nRxn,1);
+0270         y0 = ones(nMet,1);
+0271         z0 = ones(nRxn,1);
+0272         xsize = 1000;
+0273         zsize = 1000;
+0274         options.Method=2; <span class="comment">%QR</span>
+0275         options.MaxIter=100;
+0276         options.Print=printLevel;
+0277         <span class="comment">%get handle to helper function for objective</span>
+0278         pdObjHandle = @(x) <a href="#_sub1" class="code" title="subfunction [obj,grad,hess] = QPObj(x)">QPObj</a>(x);
+0279         <span class="comment">%solve the QP</span>
+0280         [x,y,w,inform,PDitns,CGitns,time] = <span class="keyword">...</span>
+0281             pdco(pdObjHandle,A,b,lb,ub,d1,d2,options,x0,y0,z0,xsize,zsize);
+0282         f= c'*x + 0.5*x'*F*x;
+0283         <span class="comment">% inform = 0 if a solution is found;</span>
+0284 <span class="comment">%        = 1 if too many iterations were required;</span>
+0285 <span class="comment">%        = 2 if the linesearch failed too often;</span>
+0286 <span class="comment">%        = 3 if the step lengths became too small;</span>
+0287 <span class="comment">%        = 4 if Cholesky said ADDA was not positive definite.</span>
+0288         <span class="keyword">if</span> (inform == 0)
+0289             stat = 1;
+0290         <span class="keyword">elseif</span> (inform == 1 || inform == 2 || inform == 3)
+0291             stat = 0;
+0292         <span class="keyword">else</span>
+0293             stat = -1;
+0294         <span class="keyword">end</span>
+0295         origStat=inform;
+0296     <span class="comment">%%</span>
+0297     <span class="keyword">case</span> <span class="string">'gurobi'</span>
+0298         <span class="comment">% Free academic licenses for the Gurobi solver can be obtained from</span>
+0299         <span class="comment">% http://www.gurobi.com/html/academic.html</span>
+0300         <span class="comment">%</span>
+0301         <span class="comment">% The code below uses Gurobi Mex to interface with Gurobi. It can be downloaded from</span>
+0302         <span class="comment">% http://www.convexoptimization.com/wikimization/index.php/Gurobi_Mex:_A_MATLAB_interface_for_Gurobi</span>
+0303 
+0304         clear opts            <span class="comment">% Use the default parameter settings</span>
+0305         <span class="keyword">if</span> printLevel == 0
+0306            <span class="comment">% Version v1.10 of Gurobi Mex has a minor bug. For complete silence</span>
+0307            <span class="comment">% Remove Line 736 of gurobi_mex.c: mexPrintf(&quot;\n&quot;);</span>
+0308            opts.Display = 0;
+0309            opts.DisplayInterval = 0;
+0310         <span class="keyword">else</span>
+0311            opts.Display = 1;
+0312         <span class="keyword">end</span>
+0313 
+0314         
+0315         
+0316         <span class="keyword">if</span> (isempty(csense))
+0317             clear csense
+0318             csense(1:length(b),1) = <span class="string">'='</span>;
+0319         <span class="keyword">else</span>
+0320             csense(csense == <span class="string">'L'</span>) = <span class="string">'&lt;'</span>;
+0321             csense(csense == <span class="string">'G'</span>) = <span class="string">'&gt;'</span>;
+0322             csense(csense == <span class="string">'E'</span>) = <span class="string">'='</span>;
+0323             csense = csense(:);
+0324         <span class="keyword">end</span>
+0325         
+0326         <span class="comment">% Gurobi passes individual terms instead of an F matrix. qrow and</span>
+0327         <span class="comment">% qcol specify which variables are multipled to get each term,</span>
+0328         <span class="comment">% while qval specifies the coefficients of each term.</span>
+0329 
+0330         [qrow,qcol,qval]=find(F);
+0331         qrow=qrow'-1;   <span class="comment">% -1 because gurobi numbers indices from zero, not one.</span>
+0332         qcol=qcol'-1;
+0333         qval=0.5*qval';
+0334         
+0335         opts.QP.qrow = int32(qrow); 
+0336         opts.QP.qcol = int32(qcol); 
+0337         opts.QP.qval = qval;
+0338         opts.Method = 0;    <span class="comment">% 0 - primal, 1 - dual</span>
+0339         opts.Presolve = -1; <span class="comment">% -1 - auto, 0 - no, 1 - conserv, 2 - aggressive</span>
+0340         opts.FeasibilityTol = 1e-6;
+0341         opts.IntFeasTol = 1e-5;
+0342         opts.OptimalityTol = 1e-6;
+0343         <span class="comment">%opt.Quad=1;</span>
+0344         
+0345         <span class="comment">%gurobi_mex doesn't cast logicals to doubles automatically</span>
+0346         c = double(c);
+0347         [x,f,origStat,output,y] = gurobi_mex(c,osense,sparse(A),b, <span class="keyword">...</span>
+0348                                              csense,lb,ub,[],opts);
+0349         <span class="keyword">if</span> origStat==2
+0350            stat = 1; <span class="comment">% Optimal solutuion found</span>
+0351         <span class="keyword">elseif</span> origStat==3
+0352            stat = 0; <span class="comment">% Infeasible</span>
+0353         <span class="keyword">elseif</span> origStat==5
+0354            stat = 2; <span class="comment">% Unbounded</span>
+0355         <span class="keyword">elseif</span> origStat==4
+0356            stat = 0; <span class="comment">% Gurobi reports infeasible *or* unbounded</span>
+0357         <span class="keyword">else</span>
+0358            stat = -1; <span class="comment">% Solution not optimal or solver problem</span>
+0359         <span class="keyword">end</span>
+0360         
+0361     <span class="keyword">case</span> <span class="string">'gurobi5'</span>
+0362      <span class="comment">%% gurobi 5</span>
+0363      <span class="comment">% Free academic licenses for the Gurobi solver can be obtained from</span>
+0364         <span class="comment">% http://www.gurobi.com/html/academic.html</span>
+0365         resultgurobi = struct(<span class="string">'x'</span>,[],<span class="string">'objval'</span>,[],<span class="string">'pi'</span>,[]);
+0366         clear params            <span class="comment">% Use the default parameter settings</span>
+0367         <span class="keyword">if</span> printLevel == 0 
+0368             params.OutputFlag = 0;
+0369             params.DisplayInterval = 1;
+0370         <span class="keyword">else</span>
+0371             params.OutputFlag = 1;
+0372             params.DisplayInterval = 5;
+0373         <span class="keyword">end</span>
+0374 
+0375         params.Method = 0;    <span class="comment">%-1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent</span>
+0376         params.Presolve = -1; <span class="comment">% -1 - auto, 0 - no, 1 - conserv, 2 - aggressive</span>
+0377         params.IntFeasTol = 1e-5;
+0378         params.FeasibilityTol = 1e-6;
+0379         params.OptimalityTol = 1e-6;
+0380         <span class="comment">%params.Quad = 1;</span>
+0381         
+0382         <span class="keyword">if</span> (isempty(QPproblem.csense))
+0383             clear QPproblem.csense
+0384             QPproblem.csense(1:length(b),1) = <span class="string">'='</span>;
+0385         <span class="keyword">else</span>
+0386             QPproblem.csense(QPproblem.csense == <span class="string">'L'</span>) = <span class="string">'&lt;'</span>;
+0387             QPproblem.csense(QPproblem.csense == <span class="string">'G'</span>) = <span class="string">'&gt;'</span>;
+0388             QPproblem.csense(QPproblem.csense == <span class="string">'E'</span>) = <span class="string">'='</span>;
+0389             QPproblem.csense = QPproblem.csense(:);
+0390         <span class="keyword">end</span>
+0391     
+0392         <span class="keyword">if</span> QPproblem.osense == -1
+0393             QPproblem.osense = <span class="string">'max'</span>;
+0394         <span class="keyword">else</span>
+0395             QPproblem.osense = <span class="string">'min'</span>;
+0396         <span class="keyword">end</span>
+0397         
+0398         QPproblem.Q = 0.5*sparse(QPproblem.F);
+0399         QPproblem.modelsense = QPproblem.osense;
+0400         [QPproblem.A,QPproblem.rhs,QPproblem.obj,QPproblem.sense] = deal(sparse(QPproblem.A),QPproblem.b,double(QPproblem.c),QPproblem.csense);
+0401         resultgurobi = gurobi(QPproblem,params);
+0402         origStat = resultgurobi.status;
+0403         <span class="keyword">if</span> strcmp(resultgurobi.status,<span class="string">'OPTIMAL'</span>)
+0404            stat = 1; <span class="comment">% Optimal solution found</span>
+0405            [x,f,y] = deal(resultgurobi.x,resultgurobi.objval,resultgurobi.pi);
+0406         <span class="keyword">elseif</span> strcmp(resultgurobi.status,<span class="string">'INFEASIBLE'</span>)
+0407            stat = 0; <span class="comment">% Infeasible</span>
+0408         <span class="keyword">elseif</span> strcmp(resultgurobi.status,<span class="string">'UNBOUNDED'</span>)
+0409            stat = 2; <span class="comment">% Unbounded</span>
+0410         <span class="keyword">elseif</span> strcmp(resultgurobi.status,<span class="string">'INF_OR_UNBD'</span>)
+0411            stat = 0; <span class="comment">% Gurobi reports infeasible *or* unbounded</span>
+0412         <span class="keyword">else</span>
+0413            stat = -1; <span class="comment">% Solution not optimal or solver problem</span>
+0414         <span class="keyword">end</span>
+0415         
+0416     <span class="comment">%%</span>
+0417     <span class="keyword">otherwise</span>
+0418         error([<span class="string">'Unknown solver: '</span> solver]);
+0419 <span class="keyword">end</span>
+0420 <span class="comment">%%</span>
+0421 t = etime(clock, t_start);
+0422 solution.obj = f;
+0423 solution.solver = solver;
+0424 solution.stat = stat;
+0425 solution.origStat = origStat; 
+0426 solution.time = t;
+0427 solution.full = x;
+0428 solution.dual = y;
+0429 solution.rcost = w;
+0430 
+0431 <span class="comment">%Helper function for pdco</span>
+0432 <span class="comment">%%</span>
+0433     <span class="keyword">function</span> [obj,grad,hess] = <a href="#_sub1" class="code" title="subfunction [obj,grad,hess] = QPObj(x)">QPObj</a>(x)
+0434         obj  = c'*x + 0.5*x'*F*x;
+0435         grad = c + F*x;
+0436         hess = F;
+0437     <span class="keyword">end</span>
+0438 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

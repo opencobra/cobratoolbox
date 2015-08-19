@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of phenotypePhasePlane</title>
+  <meta name="keywords" content="phenotypePhasePlane">
+  <meta name="description" content="phenotypePhasePlane Plots three phenotype phase planes for two reactions.  The first plot is">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html cobra -->
+<h1>phenotypePhasePlane
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>phenotypePhasePlane Plots three phenotype phase planes for two reactions.  The first plot is</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [growthRates,shadowPrices1,shadowPrices2] = phenotypePhasePlane(model,controlRxn1,controlRxn2,nPts,range1,range2) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">phenotypePhasePlane Plots three phenotype phase planes for two reactions.  The first plot is 
+ a double robustness analysis, a kind of 3D surface plot.  The second
+ two plots show the shadow prices of the metabolites from the two control 
+ reactions, which define the phases.  Use the COLORMAP and SHADING 
+ functions to change the looks of the plots.
+
+ [growthRates,shadowPrices1,shadowPrices2] = phenotypePhasePlane(model,controlRxn1,controlRxn2,nPts,range1,range2)
+
+INPUTS
+ model             COBRA model structure
+ controlRxn1       the first reaction to be plotted
+ controlRxn2       the second reaction to be plotted
+
+OPTIONAL INPUTS
+ nPts              the number of points to plot in each dimension
+                   (Default = 50)
+ range1            the range of reaction 1 to plot
+                   (Default = 20)
+ range2            the range of reaction 2 to plot
+                   (Default = 20)
+
+OUTPUTS
+ growthRates1      a matrix of maximum growth rates
+ shadowPrices1     a matrix of rxn 1 shadow prices
+ shadowPrices2     a matrix of rxn 2 shadow prices
+
+ Jeff Orth 6/26/08</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>	changeRxnBounds Change upper or lower bounds of a reaction or a set of</li><li><a href="findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>	findRxnIDs Find reaction numbers in a model</li><li><a href="optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>	optimizeCbModel Solve a flux balance analysis problem</li><li><a href="../cobra/solvers/changeCobraSolverParams.html" class="code" title="function changeOK = changeCobraSolverParams(solverType,paramName,paramValue)">changeCobraSolverParams</a>	changeCobraSolverParams Changes parameters for the Cobra Toolbox optimization solver(s)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [growthRates,shadowPrices1,shadowPrices2] = phenotypePhasePlane(model,controlRxn1,controlRxn2,nPts,range1,range2)</a>
+0002 <span class="comment">%phenotypePhasePlane Plots three phenotype phase planes for two reactions.  The first plot is</span>
+0003 <span class="comment">% a double robustness analysis, a kind of 3D surface plot.  The second</span>
+0004 <span class="comment">% two plots show the shadow prices of the metabolites from the two control</span>
+0005 <span class="comment">% reactions, which define the phases.  Use the COLORMAP and SHADING</span>
+0006 <span class="comment">% functions to change the looks of the plots.</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% [growthRates,shadowPrices1,shadowPrices2] = phenotypePhasePlane(model,controlRxn1,controlRxn2,nPts,range1,range2)</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">%INPUTS</span>
+0011 <span class="comment">% model             COBRA model structure</span>
+0012 <span class="comment">% controlRxn1       the first reaction to be plotted</span>
+0013 <span class="comment">% controlRxn2       the second reaction to be plotted</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">%OPTIONAL INPUTS</span>
+0016 <span class="comment">% nPts              the number of points to plot in each dimension</span>
+0017 <span class="comment">%                   (Default = 50)</span>
+0018 <span class="comment">% range1            the range of reaction 1 to plot</span>
+0019 <span class="comment">%                   (Default = 20)</span>
+0020 <span class="comment">% range2            the range of reaction 2 to plot</span>
+0021 <span class="comment">%                   (Default = 20)</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">%OUTPUTS</span>
+0024 <span class="comment">% growthRates1      a matrix of maximum growth rates</span>
+0025 <span class="comment">% shadowPrices1     a matrix of rxn 1 shadow prices</span>
+0026 <span class="comment">% shadowPrices2     a matrix of rxn 2 shadow prices</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">% Jeff Orth 6/26/08</span>
+0029 
+0030 <span class="keyword">if</span> (nargin &lt; 4)
+0031     nPts = 50;
+0032 <span class="keyword">end</span>
+0033 <span class="keyword">if</span> (nargin &lt; 5)
+0034     range1 = 20;
+0035 <span class="keyword">end</span>
+0036 <span class="keyword">if</span> (nargin &lt; 6)
+0037     range2 = 20;
+0038 <span class="keyword">end</span>
+0039 
+0040 <span class="comment">% find rxn and met ID numbers to get shadow prices and reduced costs</span>
+0041 rxnID1 = <a href="findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(model,controlRxn1);
+0042 metID1 = find(model.S(:,rxnID1));
+0043 rxnID2 = <a href="findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(model,controlRxn2);
+0044 metID2 = find(model.S(:,rxnID2));
+0045 
+0046 <span class="comment">% create empty vectors for the results</span>
+0047 ind1 = linspace(0,range1,nPts);
+0048 ind2 = linspace(0,range2,nPts);
+0049 growthRates = zeros(nPts);
+0050 shadowPrices1 = zeros(nPts);
+0051 shadowPrices2 = zeros(nPts);
+0052 
+0053 <span class="comment">% calulate points</span>
+0054 h = waitbar(0,<span class="string">'generating PhPP'</span>);
+0055 <span class="keyword">global</span> CBT_LP_PARAMS  <span class="comment">% save the state of the primal only flag.</span>
+0056 <span class="keyword">if</span> isfield( CBT_LP_PARAMS, <span class="string">'primalOnly'</span>)
+0057     primalOnlySave = CBT_LP_PARAMS.primalOnly;
+0058 <span class="keyword">end</span>
+0059 <a href="../cobra/solvers/changeCobraSolverParams.html" class="code" title="function changeOK = changeCobraSolverParams(solverType,paramName,paramValue)">changeCobraSolverParams</a>(<span class="string">'LP'</span>, <span class="string">'primalOnly'</span>, false);
+0060 <span class="keyword">for</span> i = 1:nPts <span class="comment">%ind1</span>
+0061     <span class="keyword">for</span> j = 1:nPts <span class="comment">%ind2</span>
+0062         waitbar((nPts*(i-1)+j)/(nPts^2),h);
+0063         model1 = <a href="changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>(model,controlRxn1,-1*ind1(i),<span class="string">'b'</span>);
+0064         model1 = <a href="changeRxnBounds.html" class="code" title="function model = changeRxnBounds(model,rxnNameList,value,boundType)">changeRxnBounds</a>(model1,controlRxn2,-1*ind2(j),<span class="string">'b'</span>);
+0065                 
+0066         fbasol = <a href="optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(model1,<span class="string">'max'</span>);
+0067         growthRates(j,i) = fbasol.f;
+0068         <span class="keyword">try</span> <span class="comment">% calculate shadow prices</span>
+0069             shadowPrices1(j,i) = fbasol.y(metID1(1));
+0070             shadowPrices2(j,i) = fbasol.y(metID2(1));
+0071         <span class="keyword">end</span>
+0072     <span class="keyword">end</span>
+0073 <span class="keyword">end</span>
+0074 <span class="keyword">if</span> ( regexp( version, <span class="string">'R20'</span>) )
+0075         close(h);
+0076 <span class="keyword">end</span>
+0077 <span class="keyword">if</span> exist(<span class="string">'primalOnlySave'</span>, <span class="string">'var'</span>)
+0078     <a href="../cobra/solvers/changeCobraSolverParams.html" class="code" title="function changeOK = changeCobraSolverParams(solverType,paramName,paramValue)">changeCobraSolverParams</a>(<span class="string">'LP'</span>, <span class="string">'primalOnly'</span>, primalOnlySave);
+0079 <span class="keyword">else</span>
+0080     <a href="../cobra/solvers/changeCobraSolverParams.html" class="code" title="function changeOK = changeCobraSolverParams(solverType,paramName,paramValue)">changeCobraSolverParams</a>(<span class="string">'LP'</span>, <span class="string">'primalOnly'</span>, true);
+0081 <span class="keyword">end</span>
+0082 
+0083 <span class="comment">% plot the points</span>
+0084 figure(2);
+0085 pcolor(ind1,ind2,shadowPrices1);
+0086 xlabel(strrep(strcat(controlRxn1,<span class="string">' (mmol/g DW-hr)'</span>),<span class="string">'_'</span>,<span class="string">'\_'</span>)), ylabel(strrep(strcat(controlRxn2,<span class="string">' (mmol/g DW-hr)'</span>),<span class="string">'_'</span>,<span class="string">'\_'</span>)), zlabel(<span class="string">'growth rate (1/hr)'</span>);
+0087 figure(3);
+0088 pcolor(ind1,ind2,shadowPrices2);
+0089 xlabel(strrep(strcat(controlRxn1,<span class="string">' (mmol/g DW-hr)'</span>),<span class="string">'_'</span>,<span class="string">'\_'</span>)), ylabel(strrep(strcat(controlRxn2,<span class="string">' (mmol/g DW-hr)'</span>),<span class="string">'_'</span>,<span class="string">'\_'</span>)), zlabel(<span class="string">'growth rate (1/hr)'</span>);
+0090 figure(1);
+0091 surfl(ind1,ind2,growthRates);
+0092 xlabel(strrep(strcat(controlRxn1,<span class="string">' (mmol/g DW-hr)'</span>),<span class="string">'_'</span>,<span class="string">'\_'</span>)), ylabel(strrep(strcat(controlRxn2,<span class="string">' (mmol/g DW-hr)'</span>),<span class="string">'_'</span>,<span class="string">'\_'</span>)), zlabel(<span class="string">'growth rate (1/hr)'</span>);
+0093 
+0094 
+0095 
+0096</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>
