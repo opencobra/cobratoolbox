@@ -1,0 +1,77 @@
+<html>
+  <head>
+    <title>Odefy documentation - Modeling framework</title>
+    <meta content="">
+    <style></style>
+      <LINK href="styles.css" rel="stylesheet" type="text/css">
+
+  </head>
+  <body>
+  
+<a target="_blank" href="http://cmb.helmholtz-muenchen.de/odefy"><span style="font-weight: bold;"><img alt="Odefy" style="border: 0px solid ; width: 174px; height: 61px;" alt="Odefy" src="odefy.png"></span></a><br>
+
+<h3>Modeling framework</h3>
+
+<ol>
+	<li><a href="#bool">Boolean models</a></li>
+	<li><a href="#update">Update orders in Boolean models and the state-transition graph</a></li>
+	<li><a href="#booltocont">From Boolean to continuous models</a></li>
+	<li><a href="#params">Parameters of continuous models</a></li>
+</ol>
+
+<font size="-1"><a href="index.html">&lt;&lt; Back to main page</a></font><br/>
+
+<br/><a name="bool"></a><b>Boolean models</b><p></p>
+
+A Boolean version of a biological system is a simplified model where each player can be either ON or OFF. Influences between players are described by Boolean update rules, which can for instance be represented by truth tables or symbolic expressions (like <i>A = B and not C</i>). A Boolean state for a system of 3 species might look like [1 0 1], indicating that the first and third players are ON and the second one is OFF.<p></p>
+
+
+
+<br/><a name="update"></a><b>Update orders in Boolean models and state-transition graphs</b><p></p>
+
+For a given Boolean expression vector at timepoint <i>t</i>, how do we calculate the followup state <i>t+1</i> by means of the Boolean update rules? Two general principles of updating in Boolean models exist. When updating <i>synchronously</i>, all Boolean update rules are executed at the same time, i.e. all species in the current state may change. For <i>asynchronous</i> updating, on the other hand, only one species is updated at a time. The update rules can be executed in a specific order, or a random species is selected for each update step. <p></p> Consider the following simple Boolean system:
+<pre>A = not B
+B = not A</pre>
+
+with an initial state of [1 1]. Synchronous updating yields the followup state [0 0], as both Boolean equations evalulate to false. For the asychronous variant we assume here that species A has been selected to be updated first. We get the follow-up state [0 1] which is a steady state (i.e. a state that will not change anymore) of the system.<p></p>
+
+In the state-transition graph of a Boolean model nodes represent states and edges represent possible transitions from one state to another state through a Boolean update rule. Again both synchronous and asynchronous update policies are applicable for the creation of a state-transition graph.
+[zuende bringen hier...] For more information on the state-transition graph concept, see e.g. <a href="http://www.ncbi.nlm.nih.gov/pubmed/16873462" target="_blank">Faur&eacute; et al., 2006</a> <p></p>
+
+<br/><a name="booltocont"></a><b>From Boolean to continuous models</b><p></p>
+
+In <a href="http://www.biomedcentral.com/1752-0509/3/98" target="_blank">Wittmann et al., 2009</a> we described a method for the automated conversion of Boolean models to systems of ordinary differential equations (ODEs). Odefy implements three variants of this transformation method:
+
+<ol>
+	<li><i>BoolCube</i> - Continuous homologues of Boolean functions based on multivariate polynomial
+interpolation </li>
+	<li><i>HillCube</i> - Influences between players are passed through a sigmoidal function (Hill function)</li>
+	<li><i>normalized HillCube</i> - a normalized version that always yields full activation at an input value of 1</li>
+</ol>
+
+<br/><a name="params"></a><b>Parameters of continuous models</b><p></p>
+
+The following table briefly explains the roles of the different parameter types in the automatically-generated ODE systems. For more detailed explanations please refer to the original publication (<a href="http://www.biomedcentral.com/1752-0509/3/98" target="_blank">link</a>). <p></p>
+
+<div align="center">
+<table border="1" cellspacing="0" cellpadding="4">
+<tr><td><b>Parameter</b></td><td><b>Occurence</b></td><td><b>Def. value</b></td><td><b>Explanation</b></td></tr>
+<tr><td>tau</td><td>for each species</td><td>1</td><td>latency or decay parameter, the higher the value, the slower the decay</td></tr>
+<tr><td>n</td><td>for each edge (i.e. influence of one species on another)</td><td>3</td><td>"cooperativity", the higher the value, the sharper the decision boundary</td></tr>
+<tr><td>k</td><td>for each edge (i.e. influence of one species on another)</td><td>0.5</td><td>threshold, value of half-maximal activation; the higher the value the less responsive is the target species to the influence</td></tr>
+</table>
+</div><p></p>
+
+Note that the <i>BooleCube</i> method does not employ the <i>k</i> and <i>n</i> parameters, as those originate from the sigmoidal Hill functions.
+<p></p>
+
+<br/>
+<hr size="1">
+<div align="right">
+<font size="-1">
+Odefy by CMB, <a target="_blank" href="http://cmb.helmholtz-muenchen.de/odefy">http://cmb.helmholtz-muenchen.de/odefy</a>
+</font>
+</div>
+
+</body>
+</html>

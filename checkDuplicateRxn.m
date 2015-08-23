@@ -1,4 +1,4 @@
-function [model,removed] = checkDuplicateRxn(model,method)
+function [model,removed, rxnRelationship] = checkDuplicateRxn(model,method)
 %checkDuplicateRxn Checks model for duplicate reactions and removes them
 %
 % [model,removed] = checkDuplicateRxn(model,method)
@@ -13,10 +13,12 @@ function [model,removed] = checkDuplicateRxn(model,method)
 % removed   reaction numbers that were removed
 %
 % Aarash Bordbar 02/11/08
+% Uri David Akavia 20-Feb-2014
 
+model = removeMetabolites(model, model.mets(all(model.S == 0,2)));
 [nMets,nRxns] = size(model.S);
- removed = '';
-cnt = 1;
+removed = cell(0); 
+cnt = 0;
 switch method
     case 1
         h = waitbar(0, 'Checking by Abbreviation ...');
@@ -38,27 +40,39 @@ switch method
         end
         close(h);
     case 2
-        h = waitbar(0, 'Checking by reaction ...');
-        for i = 1:nMets
-            possibleMatches = find(model.S(i,:));
-            for j = 1:length(possibleMatches)
-                for k = 1:length(possibleMatches)
-                    if model.S(:,possibleMatches(j)) == model.S(:,possibleMatches(k)) & strcmp(model.rxns(possibleMatches(j)),model.rxns(possibleMatches(k))) == 0
-                        model = removeRxns(model,model.rxns(possibleMatches(k)));
-                        removed{cnt,1} = model.rxns(possibleMatches(k));
-                        cnt = cnt+1;
-                    elseif model.S(:,possibleMatches(j)) == model.S(:,possibleMatches(k)) & strcmp(model.rxns(possibleMatches(j)),model.rxns(possibleMatches(k))) == 1
-                        model2 = model;
-                        model2.rxns{possibleMatches(j)} = '';
-                        model2 = removeRxns(model2,model.rxns(possibleMatches(j)));
-                        model2.rxns{possibleMatches(j)} = model.rxns{possibleMatches(j)};
-                        model = model2;
-                        removed{cnt,1} = model.rxns{possibleMatches(j)};
-                        cnt = cnt+1;
-                    end
-                end
-            end
-            waitbar(i/nMets,h);
-        end
-        close(h);
+		h = waitbar(0, 'Checking by reaction ...');
+		[~, ia, ic] = unique(model.S', 'rows');
+		reactionsToRemove = cell(0);
+		rxnsKept = cell(0);
+		duplicateReactions = cell(0);
+		if (length(ia) ~= length(ic))
+			for rxnInd=1:max(ic)
+				% If the current reaction appears more than once
+				if (sum(rxnInd == ic) > 1)
+					identicalRxns = find(ic == rxnInd);
+					rxnWithDuplicates = model.rxns(identicalRxns(1));
+					rxnsToRemove = model.rxns(identicalRxns(2:end))';
+					% Same abbreviation
+					if (strcmp(rxnWithDuplicates, rxnsToRemove))
+						model2 = model;
+						model2.rxns(identicalRxns(1)) = '';
+						model2 = removeRxns(model2, rxnsToRemove);
+						model2.rxns(identicalRxns(1)) = rxnWithDuplicates;
+						removed = [removed; rxnsToRemove'];
+						cnt = cnt+1;
+					else
+						reactionsToRemove = [reactionsToRemove, rxnsToRemove];
+					end
+					rxnsKept = [rxnsKept; rxnWithDuplicates];
+					duplicateReactions = [duplicateReactions; {rxnsToRemove}];
+				end
+				waitbar(rxnInd/max(ic), h);
+			end
+			removed = [removed; reactionsToRemove'];
+			model = removeRxns(model, reactionsToRemove);
+			cnt = cnt + length(reactionsToRemove);
+			rxnRelationship.keptRxns = rxnsKept;
+			rxnRelationship.duplicates = duplicateReactions;
+		end
+		close(h);
 end

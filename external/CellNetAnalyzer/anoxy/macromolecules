@@ -1,0 +1,10 @@
+Prot     	Proteine               	0.51 	805.7497       676.881             2             1 
+RNA      	RNA                    	0.16 	808.7825      883.5965             2             1 
+DNA      	DNA                    	0.02 	810.7989      1003.4775              2              1 
+Lip      	Lipide                 	0.16 	788.7005       89.8167             2             1 
+LPS      	Lipopolysaccharide     	0.03 	787.7005      357.7315             2             1 
+PepGly   	Peptidoglykane         	0.03 	790.7005      446.0129             2             1 
+Glyc     	Glycogen               	0 	790.7005      423.8955             2             1 
+PHB      	Polyhydroxybutyrat     	0.06 	790.7005       168.463             2             1 
+PolyPhos 	Polyphosphat           	0.025 	810.7907         1073.1              2              1 
+Bchl     	Bacteriochlorophyll(a) 	0.005 	790.7005       253.337             2             1 

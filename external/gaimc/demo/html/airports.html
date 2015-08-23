@@ -1,0 +1,321 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>The US airport network</title>
+      <meta name="generator" content="MATLAB 7.7">
+      <meta name="date" content="2009-05-16">
+      <meta name="m-file" content="airports"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>The US airport network</h1>
+         <!--introduction-->
+         <p>THe North American airport network is an interesting graph to examine. The source for this data was a file on Brendan Frey's
+            affinity propagation website.  A(i,j) is the negative travel time between two airports.  Although the data didn't include
+            the airport locations, I used the Yahoo! Geocoding API to generate a latitude and longitude for each airport.
+         </p>
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">The data</a></li>
+               <li><a href="#5">Graph analysis: connected?</a></li>
+               <li><a href="#7">Distance instead of time</a></li>
+               <li><a href="#9">Minimum spanning tree</a></li>
+               <li><a href="#13">Honolulu to St. Johns?</a></li>
+               <li><a href="#15">All pairs shortest paths</a></li>
+               <li><a href="#16">Conclusion</a></li>
+            </ul>
+         </div>
+         <h2>The data<a name="1"></a></h2><pre class="codeinput">load_gaimc_graph(<span class="string">'airports'</span>);
+</pre><p>Plot a histogram for all route time estimates</p><pre class="codeinput">[si, ti, rt] = find(A);
+hist(-rt,100);  <span class="comment">% times are stored as negative values</span>
+</pre><img vspace="5" hspace="5" src="airports_01.png" alt=""> <p>Find the lengthiest route</p><pre class="codeinput">[val,ind] = max(-rt)
+{labels{si(ind)} labels{ti(ind)}}
+</pre><pre class="codeoutput">
+val =
+
+        2855
+
+
+ind =
+
+       63478
+
+
+ans = 
+
+    'Honolulu, HI'    'St. Johns, NL'
+
+</pre><p>Some of the routes include stop overs, so it's probable that is what we find in this case.</p>
+         <h2>Graph analysis: connected?<a name="5"></a></h2>
+         <p>One of the first questions about any graph should be if it's connected or not.</p><pre class="codeinput">max(scomponents(A))
+</pre><pre class="codeoutput">
+ans =
+
+     1
+
+</pre><p>There is only one connected component, so the graph is connected.</p>
+         <h2>Distance instead of time<a name="7"></a></h2>
+         <p>Let's see how the edges correlate distance with estimated travel time.</p><pre class="codeinput">[ai aj te] = find(A);
+de = distance(xy(ai,:), xy(aj,:));
+plot(de,-te,<span class="string">'.'</span>);
+xlabel(<span class="string">'distance (arclength)'</span>); ylabel(<span class="string">'time (?)'</span>);
+</pre><img vspace="5" hspace="5" src="airports_02.png" alt=""> <p>Wow!  It's all over the place, but there is a lower bound.  Some of these routes can include stop</p>
+         <h2>Minimum spanning tree<a name="9"></a></h2>
+         <p>This section repeats and extends some analysis in the overall gaimc demo. First, let's recompute the minimum spanning tree
+            based on travel time.
+         </p><pre class="codeinput">load_gaimc_graph(<span class="string">'airports'</span>)
+A = -A;          <span class="comment">% we store the negative travel time</span>
+A = max(A,A');   <span class="comment">% travel time isn't symmetric</span>
+T = mst_prim(A);
+clf;
+gplot(T,xy);
+
+
+<span class="comment">% These next lines plot a map of the US with states colored.</span>
+ax = worldmap(<span class="string">'USA'</span>);
+load <span class="string">coast</span>
+geoshow(ax, lat, long,<span class="keyword">...</span>
+    <span class="string">'DisplayType'</span>, <span class="string">'polygon'</span>, <span class="string">'FaceColor'</span>, [.45 .60 .30])
+states = shaperead(<span class="string">'usastatelo'</span>, <span class="string">'UseGeoCoords'</span>, true);
+faceColors = makesymbolspec(<span class="string">'Polygon'</span>,<span class="keyword">...</span>
+    {<span class="string">'INDEX'</span>, [1 numel(states)], <span class="string">'FaceColor'</span>, polcmap(numel(states))});
+    geoshow(ax, states, <span class="string">'DisplayType'</span>, <span class="string">'polygon'</span>, <span class="string">'SymbolSpec'</span>, faceColors)
+set(gcf,<span class="string">'Position'</span>, [   52   234   929   702]);
+</pre><img vspace="5" hspace="5" src="airports_03.png" alt=""> <p>That's the US, now we need to plot our data on top of it.</p><pre class="codeinput">[X,Y] = gplot(T,xy); <span class="comment">% get the information to reproduce a gplot</span>
+plotm(Y,X,<span class="string">'k.-'</span>,<span class="string">'LineWidth'</span>,1.5); <span class="comment">% plot the lines on the map</span>
+</pre><img vspace="5" hspace="5" src="airports_04.png" alt=""> <p>Let's just look at the continential US too.</p><pre class="codeinput">clf; ax = usamap(<span class="string">'conus'</span>);
+states = shaperead(<span class="string">'usastatelo'</span>, <span class="string">'UseGeoCoords'</span>, true, <span class="string">'Selector'</span>,<span class="keyword">...</span>
+    {@(name) ~any(strcmp(name,{<span class="string">'Alaska'</span>,<span class="string">'Hawaii'</span>})), <span class="string">'Name'</span>});
+faceColors = makesymbolspec(<span class="string">'Polygon'</span>,<span class="keyword">...</span>
+    {<span class="string">'INDEX'</span>, [1 numel(states)], <span class="string">'FaceColor'</span>, polcmap(numel(states))});
+geoshow(ax, states, <span class="string">'DisplayType'</span>, <span class="string">'polygon'</span>, <span class="string">'SymbolSpec'</span>, faceColors)
+framem <span class="string">off</span>; gridm <span class="string">off</span>; mlabel <span class="string">off</span>; plabel <span class="string">off</span>
+set(gcf,<span class="string">'Position'</span>, [   52   234   929   702]);
+plotm(Y,X,<span class="string">'k.-'</span>,<span class="string">'LineWidth'</span>,1.5); <span class="comment">% plot the lines on the map</span>
+</pre><img vspace="5" hspace="5" src="airports_05.png" alt=""> <p>One interesting aspect of this map is that major airline hubs (Chicago, New York, etc. are not well represented.  One possible
+            explaination is that they have larger delays than other regional airports.
+         </p>
+         <h2>Honolulu to St. Johns?<a name="13"></a></h2>
+         <p>Before, we saw that the lengthiest route was between St. John's and Honolulu.  But, does the network have a better path to
+            follow between these cities?  Let's check using Dijkstra's shortest path algorithm!
+         </p><pre class="codeinput"><span class="comment">% Reload the network to restore it.</span>
+load_gaimc_graph(<span class="string">'airports'</span>)
+A = -A;
+
+<span class="comment">% find the longest route again</span>
+[si, ti, rt] = find(A);
+[val,ind] = max(rt); <span class="comment">% we've already negated above, so no need to redo it</span>
+start = si(ind);
+dest = ti(ind);
+[d pred] = dijkstra(A,start); <span class="comment">% compute the distance to everywhere from St. Johns</span>
+d(dest)
+</pre><pre class="codeoutput">
+ans =
+
+   735
+
+</pre><p>That value is considerably shorter than the direct time.  How do we find this awesome route?</p><pre class="codeinput">path =[]; u = dest; <span class="keyword">while</span> (u ~= start) path=[u path]; u=pred(u); <span class="keyword">end</span>
+fprintf(<span class="string">'%s'</span>,labels{start});
+<span class="keyword">for</span> i=path; fprintf(<span class="string">' --&gt; %s'</span>, labels{i}); <span class="keyword">end</span>, fprintf(<span class="string">'\n'</span>);
+</pre><pre class="codeoutput">Honolulu, HI --&gt; Chicago, IL --&gt; Montreal, QC --&gt; St. Johns, NL
+</pre><h2>All pairs shortest paths<a name="15"></a></h2>
+         <p>At this point, the right thing to do would be to recompute each edge in the network using an all-pairs shortest path algorithm,
+            and then look at how distance correlates with time in that network.  However, I haven't had time to implement that algorithm
+            yet.
+         </p>
+         <h2>Conclusion<a name="16"></a></h2>
+         <p>Hopefully, you will agree that network algorithms are a powerful way to look at the relationships between airports!</p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.7<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% The US airport network
+% THe North American airport network is an interesting graph to examine.
+% The source for this data was a file on Brendan Frey's affinity
+% propagation website.  A(i,j) is the negative travel time between two
+% airports.  Although the data didn't include the airport locations, I used
+% the Yahoo! Geocoding API to generate a latitude and longitude for each
+% airport.
+
+%% The data
+load_gaimc_graph('airports');
+%% 
+% Plot a histogram for all route time estimates
+[si, ti, rt] = find(A);
+hist(-rt,100);  % times are stored as negative values
+
+%%
+% Find the lengthiest route
+[val,ind] = max(-rt)
+{labels{si(ind)} labels{ti(ind)}}
+
+%%
+% Some of the routes include stop overs, so it's probable that is what 
+% we find in this case.
+
+%% Graph analysis: connected?
+% One of the first questions about any graph should be if it's connected or
+% not. 
+
+max(scomponents(A))
+
+%%
+% There is only one connected component, so the graph is connected.
+
+%% Distance instead of time
+% Let's see how the edges correlate distance with estimated travel time.
+[ai aj te] = find(A);
+de = distance(xy(ai,:), xy(aj,:));
+plot(de,-te,'.');
+xlabel('distance (arclength)'); ylabel('time (?)');
+
+%%
+% Wow!  It's all over the place, but there is a lower bound.  Some of
+% these routes can include stop
+
+%% Minimum spanning tree 
+% This section repeats and extends some analysis in the overall gaimc demo.
+% First, let's recompute the minimum spanning tree based on travel time.
+load_gaimc_graph('airports')
+A = -A;          % we store the negative travel time
+A = max(A,A');   % travel time isn't symmetric
+T = mst_prim(A);
+clf;
+gplot(T,xy);
+
+
+% These next lines plot a map of the US with states colored.  
+ax = worldmap('USA');
+load coast
+geoshow(ax, lat, long,...
+    'DisplayType', 'polygon', 'FaceColor', [.45 .60 .30])
+states = shaperead('usastatelo', 'UseGeoCoords', true);
+faceColors = makesymbolspec('Polygon',...
+    {'INDEX', [1 numel(states)], 'FaceColor', polcmap(numel(states))});
+    geoshow(ax, states, 'DisplayType', 'polygon', 'SymbolSpec', faceColors)
+set(gcf,'Position', [   52   234   929   702]);
+%%
+% That's the US, now we need to plot our data on top of it.
+[X,Y] = gplot(T,xy); % get the information to reproduce a gplot
+plotm(Y,X,'k.-','LineWidth',1.5); % plot the lines on the map 
+
+%%
+% Let's just look at the continential US too.
+clf; ax = usamap('conus');
+states = shaperead('usastatelo', 'UseGeoCoords', true, 'Selector',...
+    {@(name) ~any(strcmp(name,{'Alaska','Hawaii'})), 'Name'});
+faceColors = makesymbolspec('Polygon',...
+    {'INDEX', [1 numel(states)], 'FaceColor', polcmap(numel(states))});
+geoshow(ax, states, 'DisplayType', 'polygon', 'SymbolSpec', faceColors)
+framem off; gridm off; mlabel off; plabel off
+set(gcf,'Position', [   52   234   929   702]);
+plotm(Y,X,'k.-','LineWidth',1.5); % plot the lines on the map 
+%%
+% One interesting aspect of this map is that major airline hubs (Chicago,
+% New York, etc. are not well represented.  One possible explaination is
+% that they have larger delays than other regional airports.
+
+%% Honolulu to St. Johns?
+% Before, we saw that the lengthiest route was between St. John's and
+% Honolulu.  But, does the network have a better path to follow between
+% these cities?  Let's check using Dijkstra's shortest path algorithm!
+
+% Reload the network to restore it.
+load_gaimc_graph('airports')
+A = -A;
+
+% find the longest route again
+[si, ti, rt] = find(A);
+[val,ind] = max(rt); % we've already negated above, so no need to redo it
+start = si(ind);
+dest = ti(ind);
+[d pred] = dijkstra(A,start); % compute the distance to everywhere from St. Johns
+d(dest)
+
+%%
+% That value is considerably shorter than the direct time.  How do we find
+% this awesome route?
+path =[]; u = dest; while (u ~= start) path=[u path]; u=pred(u); end
+fprintf('%s',labels{start}); 
+for i=path; fprintf(' REPLACE_WITH_DASH_DASH> %s', labels{i}); end, fprintf('\n');
+
+%% All pairs shortest paths
+% At this point, the right thing to do would be to recompute each edge in
+% the network using an all-pairs shortest path algorithm, and then look at
+% how distance correlates with time in that network.  However, I haven't
+% had time to implement that algorithm yet.
+
+%% Conclusion
+% Hopefully, you will agree that network algorithms are a powerful way to
+% look at the relationships between airports!
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

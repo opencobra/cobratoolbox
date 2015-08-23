@@ -108,4 +108,4 @@ for i=1:length(paramNames)
         end
     end
 end
-pause(eps)
+%pause(eps)

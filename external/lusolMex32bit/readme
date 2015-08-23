@@ -1,0 +1,48 @@
+README for lusol/matlab/
+
+27 May 2007: First version of README for LUSOL Mex interface.
+-------------------------------------------------------------
+
+
+TO INSTALL
+Edit makefile to suit your Linux and compilers.
+(Sorry -- this is dreadfully machine dependent.)
+Then type
+   make
+
+
+TO TEST
+In Matlab, run the test programs
+   lusolTest
+   lusolTest2
+   lusolTest3
+
+
+FILES
+
+<makefile> compiles lu1fac.c mi27lu.f mi15blas.f sort.c
+on a selected Linux system to make the Mex file lu1fac.mexglx.
+lu1fac is the sparse LU factorization called by lusolFactor.m.
+
+
+<lusolSet.m> sets default options for LUSOL.
+
+
+<luSOL.m> is an example script for calling lusolFactor.m.
+It is probably best to mimic the way it sets options
+and then call lusolFactor.m yourself.
+
+
+<lusolTest.m> loads a 1033 x 320 sparse matrix A from illc1033.mat
+and runs luSOL.m on A, B, and A', where B is a square submatrix from A.
+The options used are those set in luSOL.m.
+
+
+<lusolTest2.m> tests TRP and TCP on two 3 x 4 matrices.
+It seems to give good L and U.
+
+
+<lusolTest3.m> tests TRP and TCP on two 3 x 4 matrices
+and reveals trouble with TCP when an empty column is present.
+This bug has yet to be chased down.
+

@@ -60,11 +60,16 @@ function solverOK = changeCobraSolver(solverName,solverType)
 % it is a good idea to put this function call into your startup.m file
 % (usually matlabinstall/toolboxes/local/startup.m)
 % Markus Herrgard 1/19/07
+
 global CBTLPSOLVER;
 global CBT_MILP_SOLVER;
 global CBT_QP_SOLVER;
 global CBT_MIQP_SOLVER;
 global CBT_NLP_SOLVER;
+
+%TODO: for some reason repeated system call to find minos path does not
+%work, this is a workaround
+global MINOSPATH; 
 
 if (nargin < 1)
     display('The solvers defined are: ');
@@ -175,6 +180,7 @@ if (strcmp(solverType,'LP'))
                 warning('Minos not installed or not on system path.');
                 solverOK = false;
             end
+            MINOSPATH=cmdout(1:end-length('/bin/minos')-1);
         otherwise
             warning(['LP solver ' solverName ' not supported by COBRA Toolbox']);
             solverOK = false;

@@ -1,0 +1,10 @@
+The stoichiometric model of this network
+project has been adapted from the following 
+reference:
+
+Wiback,S.J. and Palsson,B.O. (2002)
+Extreme pathway analysis of human red
+blood cell metabolsim.  
+Biophysical Journal, 83, 808-818.
+
+

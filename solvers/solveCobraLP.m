@@ -16,8 +16,6 @@ function solution = solveCobraLP(LPproblem,varargin)
 %         each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
 %OPTIONAL INPUTS
-%
-%
 % Optional parameters can be entered in three different ways {A,B,C}
 % A) as parameter followed by parameter value: 
 % e.g.[solution]=solveCobraLP(LPCoupled,'printLevel',1,);
@@ -53,8 +51,6 @@ function solution = solveCobraLP(LPproblem,varargin)
 % solver can be set through changeCobraSolver('LP', value);
 % changeCobraSolverParams('LP', 'parameter', value) function.  This
 % includes the minNorm and the printLevel flags
-%
-%
 %
 %OUTPUT
 % solution Structure containing the following fields describing a LP
@@ -100,12 +96,12 @@ function solution = solveCobraLP(LPproblem,varargin)
 %% Process arguments etc
 
 global CBTLPSOLVER
+global MINOSPATH
 if (~isempty(CBTLPSOLVER))
     solver = CBTLPSOLVER;
 elseif nargin==1
     error('No solver found.  call changeCobraSolver(solverName)');
 end
-
 %names_of_parameters that users can specify with values, using option
 % A) as parameter followed by parameter value:
 optParamNames = {'minNorm','printLevel','primalOnly','saveInput','feasTol','optTol','solver'};
@@ -127,15 +123,12 @@ if nargin ~=1
                 if strcmp(varargin{i},'solver');
                     solver=varargin{i+1}
                 end 
-                
             else
                 error([varargin{i} ' is not a valid optional parameter']);
             end
         end
         parametersStructureFlag=0;
         parameters = '';
-
-            
     elseif strcmp(varargin{1},'default')
         %default cobra parameters 
         parameters = 'default';
@@ -157,7 +150,7 @@ if nargin ~=1
                 error([varargin{i} ' is not a valid optional parameter']);
             end
         end
-        pause(eps)
+        %pause(eps)
     else
         error('solveCobraLP: Invalid number of parameters/values')
     end
@@ -225,15 +218,23 @@ switch solver
         % modelName     name is the problem name (a character string)
         %modelName=['minosFBAprob-' date];
         modelName='qFBA';
-        % directory     the directory where optimization problem file is saved
-        [status,cmdout]=system('which minos');
-        if isempty(cmdout)
-            [status,cmdout]=system('echo $PATH');
-            disp(cmdout);
-            error('Minos not installed or not on system path.')
+        
+        %TODO: for some reason repeated system call to find minos path does not work, this is a workaround
+        if 0
+            % directory     the directory where optimization problem file is saved
+            [status,cmdout]=system('which minos');
+            if isempty(cmdout)
+                disp(cmdout);
+                [status,cmdout2]=system('echo $PATH');
+                disp(cmdout2);
+                error('Minos not installed or not on system path.')
+            else
+                quadLPPath=cmdout(1:end-length('/bin/minos')-1);
+            end
         else
-            quadLPPath=cmdout(1:end-length('/bin/minos')-1);
+            quadLPPath=MINOSPATH;
         end
+        
         dataDirectory=[quadLPPath '/data/FBA'];
         %write out flat file to current folder
         %printLevel=2;
@@ -732,7 +733,9 @@ switch solver
         
         %basis reuse - Ronan
         if isfield(LPproblem,'basis') && ~isempty(LPproblem.basis)
-            LPproblem.cbasis = full(LPproblem.basis);
+            LPproblem.cbasis = full(LPproblem.basis.cbasis);
+            LPproblem.vbasis = full(LPproblem.basis.vbasis);
+            LPproblem=rmfield(LPproblem,'basis');
         end
         
         %call the solver
@@ -744,6 +747,15 @@ switch solver
             case 'OPTIMAL'
                 stat = 1; % Optimal solution found
                 [x,f,y,w] = deal(resultgurobi.x,resultgurobi.objval,-resultgurobi.pi,-resultgurobi.rc);
+                %save the basis
+                basis.vbasis=resultgurobi.vbasis;
+                basis.cbasis=resultgurobi.cbasis;
+%                 if isfield(LPproblem,'cbasis')
+%                     LPproblem=rmfield(LPproblem,'cbasis');
+%                 end
+%                 if isfield(LPproblem,'vbasis')
+%                     LPproblem=rmfield(LPproblem,'vbasis');
+%                 end
             case 'INFEASIBLE'
                 stat = 0; % Infeasible
             case 'UNBOUNDED'
@@ -1055,6 +1067,7 @@ switch solver
         %%
         error('Solver type lindo is obsolete - use lindo_new or lindo_old instead');
     case 'pdco'
+        %changed 30th May 2015 with Michael Saunders
         %%-----------------------------------------------------------------------
         % pdco.m: Primal-Dual Barrier Method for Convex Objectives (16 Dec 2008)
         %-----------------------------------------------------------------------
@@ -1064,7 +1077,7 @@ switch solver
         %Interfaced with Cobra toolbox by Ronan Fleming, 27 June 2009
         [nMet,nRxn]=size(LPproblem.A);
         x0 = ones(nRxn,1);
-        y0 = ones(nMet,1);
+        y0 = zeros(nMet,1); 
         z0 = ones(nRxn,1);
         
         if 0
@@ -1075,8 +1088,8 @@ switch solver
             d1=0;
             d2=1e-6;
         else
-            d1=1e-4;
-            d2=1e-4;
+            d1=5e-4;
+            d2=5e-4;
         end
         
         options = pdcoSet;
@@ -1091,14 +1104,14 @@ switch solver
         %also means you may have to tune the various parameters here,
         %especially xsize and zsize (see pdco.m) to get the real optimal
         %objective value
-        xsize = 1000;
-        zsize = 10000;
+        xsize = 100;
+        zsize = 100;
         
-        options.Method=2; %QR
-        options.MaxIter=100;
+        options.Method=1; %Cholesky
+        options.MaxIter=200;
         options.Print=printLevel;
         [x,y,w,inform,PDitns,CGitns,time] = ...
-            pdco(osense*c*10000,A,b,lb,ub,d1,d2,options,x0,y0,z0,xsize,zsize);
+            pdco(osense*c,A,b,lb,ub,d1,d2,options,x0,y0,z0,xsize,zsize);
         f= c'*x;
         % inform = 0 if a solution is found;
         %        = 1 if too many iterations were required;

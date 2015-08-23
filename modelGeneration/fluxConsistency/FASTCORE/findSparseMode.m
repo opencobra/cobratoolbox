@@ -1,4 +1,4 @@
-function Supp = findSparseMode( J, P, singleton, model, epsilon )
+function [Supp, basis] = findSparseMode( J, P, singleton, model, epsilon, basis)
 %
 % Supp = findSparseMode( J, P, singleton, model, epsilon )
 %
@@ -13,10 +13,14 @@ if isempty( J )
   return;
 end
 
+if ~exist('basis','var')
+    basis=[];
+end
+
 if singleton
-  V = LP7( J(1), model, epsilon );
+  [V, basis] = LP7( J(1), model, epsilon, basis);
 else
-  V = LP7( J, model, epsilon );
+  [V, basis] = LP7( J, model, epsilon, basis);
 end
 
 K = intersect( J, find(V >= 0.99*epsilon) );   

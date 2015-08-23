@@ -1,0 +1,221 @@
+%<html>
+  <head>
+    <title>Odefy documentation - Model simulation</title>
+    <meta content="">
+    <style></style>
+      <LINK href="styles.css" rel="stylesheet" type="text/css">
+
+  </head>
+  <body>
+  
+<a target="_blank" href="http://cmb.helmholtz-muenchen.de/odefy"><span style="font-weight: bold;"><img alt="Odefy" style="border: 0px solid ; width: 174px; height: 61px;" alt="Odefy" src="odefy.png"></span></a><br>
+
+<h3>Model simulation</h3>
+
+<ol>
+	<li><a href="#gui">Using the Odefy graphical user interface</a></li>
+   <li><a href="#bool">Boolean simulations and state-transition graphs</a></li>
+	<li><a href="#cmd">Continuous simulations from the MATLAB command line</a></li>
+	<li><a href="#phase">Phase planes</a></li>
+	<li><a href="#exp">Usage of exported ODE scripts</a></li>
+	<li><a href="#transient">Transient activations by exteral signals</a></li>
+	<li><a href="#simstruct">Simulation structures</a></li>
+	<li><a href="#sbt">Using SBToolbox</a></li>
+</ol>
+
+<u>Note:</u> The source codes of all examples on this page can be found in <code>cmdsim.m</code> in the <code>examples</code> directory.<p></p><p>
+
+<font size="-1"><a href="index.html">&lt;&lt; Back to main page</a></font><br/>
+
+
+<br/><b><a name="gui"></a>Using the Odefy graphical user interface</b><p></p>
+
+The Odefy package provides a Java Swing-based graphical user interface for convenient access to the plotting functionality. Start the Simulation dialog by running the command
+
+<pre>Simulate</pre>
+
+This will show a selection dialog for a file which can be read as an Odefy model (see also: <a href="guide_create.html#load">Model creation: Loading models</a>). Alternatively, you can directly pass a model to the Simulate function. For the full functionality of this function, check out the integrated help:
+
+<pre>help Simulate</pre>
+
+The Simulation dialog contains the following settings:<br/><br/>
+<center><img src="simdialog.png"></center>
+
+<ul>
+<li><i>Time units to simulate</i> - The number of time units the simulation will run. </li>
+<li><i>Edit parameters</i> - Shows an editable table view of all dynamic parameters in the sytem. Parameters are encoded as <code>species_paramname_regulator</code>. For instance, the parameter <code>a_k_b</code> regulates influence threshold of b towards a. See also: <a href="modeling.html#params">Parameters of continuous models</a></li>
+<li><i>Initial values</i> - Edit the starting values for all involved species. Input species will stay constant throughout the simulation.</li>
+<li><i>Simulation type</i> - The type of dynamic or Boolean model to run the system. See also: <a href="modeling.html">Modeling framework</a></li>
+<li><i>Plot type</i> - Determines whether Odefy draws a regular line diagram or a heatmap-like view of the simulation results (especially suitable for large numbers of species)</li>
+<li><i>Save results into workspace</i> - If selected, the simulation results and the time vector will be stored in the workspace as <code>simy</code> and <code>simt</code>, respectively</li>
+<li><i>File menu</i> - From this menu you can save and load initial value vectors, parameter vectors and the entire simulation settings. Note that the simulation settings structure can also be an input argument to the <code>Simulate</code> function again.</li>
+</ul>
+
+Odefy uses the MATLAB <code>ode15s</code> function and the Octave <code>lsode</code> function to numerically integrate differential equation systems.<p></p>
+
+<br/><a name="bool"></a><b>Boolean simulations and state-transition graphs</b><p></p>
+
+The Odefy toolbox contains some functions for the direct analysis of Boolean models without prior ODE transformation. Boolean time-course simulations can be performed by the Simulation GUI (<a href="#gui">see above</a>) or using <code>OdefySimulation</code>.<p></p>
+Create model and simulation structure:
+<pre>model = ExpressionsToOdefy({'a = <>','b = a','c = a && ~b'});
+simstruct = CreateSimstruct(model);</pre>
+
+Set to asynchronous random updating, set initial value of <i>a</i> to 1
+<pre>simstruct.type = 'boolrandom';
+simstruct = SetInitialValue(simstruct,'a',1);</pre>
+
+Perform simulation, display results in heat-map style:
+<pre>OdefySimulation(simstruct,1,1)</pre>
+
+Note that the Boolean simulation ignores all dynamic parameters in the simulation structure. 
+Multiple runs of this incoherent forward loop simulation will produce different results due to the random update order. The third species <i>c</i> might or might not get transiently activated, depending on whether <i>b</i> gets activated first. (see also: <a href="modeling.html#update">Update orders in Boolean models</a>)<p></p>
+In the final example we calculate the steady states and the state transition graph of a Boolean model:
+<pre>model = ExpressionsToOdefy({'a = a || ~b', 'b = b || ~a'}); 
+[s g] = BooleanStates(model);
+</pre>
+
+The <code>PrettyPrintStates</code> function can be used to display states in a human-readable format:
+<pre>PrettyPrintStates(model,s);</pre>
+
+Then we display the edges of the state-transition graph with self-loops removed:
+<pre>g-diag(diag(g))</pre>
+
+See also: <a href="modeling.html#update">State-transition graphs</a>
+
+<p></p>
+<br/><a name="cmd"></a><b>Continuous simulations the MATLAB command line</b><p></p>
+
+The functionality used by the <code>Simulate</code> method can also be accessed from the MATLAB command line. The following example reproduces the simulation of an incoherent feed forward loop as described in the <a href="quickstart.html">quick start tutorial</a>.<p></p>
+
+First, we load the model and create a generic simulation structure (<a href="#simstruct">see below</a>):
+<pre>model = ExpressionsToOdefy({'a = <>','b = a','c = a && ~b'});
+simstruct = CreateSimstruct(model);</pre>
+
+Next, we change the simulation type, the initial values and the influence threshold of <i>b</i> on <i>c</i>.
+
+<pre>simstruct.type = 'hillcubenorm';
+simstruct = SetInitialValue(simstruct, 'a', 1);
+simstruct = SetParameters(simstruct, 'c', 'b', 'k', 0.9);</pre>
+
+Note that the <code>SetParameters</code> function can change multiple parameters in the current model at once. Check out <code>help SetParametes</code> for more information.<p></p>
+
+To perform the actual simulation and display the results, we call the <code>OdefySimulation</code> function:
+
+<pre>OdefySimulation(simstruct,1);</pre>
+
+<div align="center"><img src="ffsim2.png"></div><p></p>
+
+<br/><a name="phase"></a><b>Phase planes</b><p></p><p></p>
+
+Odefy contains a method to generate multiple simulation trajectories in a phase plane perspective (see image below). After defining a model and generating a generic simulation structure (<a href="#simstruct">see below</a>):
+
+<pre>model = ExpressionsToOdefy({'a = a || ~b', 'b = b || ~a'});
+simstruct = CreateSimstruct(model);</pre>
+we call the phase plane function:
+
+<pre>OdefyPhasePlane(simstruct, 1, 0:0.1:1, 2, 0:0.1:1);</pre>
+
+The parameters 2 to 5 indicate that the initial values for the first and second species vary on the range <code>0:0.1:1</code>. The resulting phase plane visualizes the 3 stable steady states of the system:<p></p>
+
+<div align="center"><img src="phaseplane.png"></div><p></p>
+
+<br/><a name="exp"></a><b>Usage of exported ODE scripts</b><p></p>
+
+Odefy can generate script files compatible with common ODE solvers integrated within MATLAB. This section provides a small example of how to programmatically access the Odefy structures from the MATLAB command line.<p></p>
+
+Generate the model and a simulation structure (<a href="#simstruct">see below</a>):
+<pre>model = ExpressionsToOdefy({'a = <>','b = a','c = a && ~b'});
+SaveMatlabODE(model, 'myode.m', 'hillcubenorm');
+rehash;
+</pre>
+(<code>rehash</code> might be required so that the following code immediately finds the newly created function)<p></p>
+
+Create initial value vector and set value of first species to 1:
+<pre>initial = zeros(3,1);
+initial = SetInitialValue(initial, model, 'a', 1);</pre>
+
+Create parameter set and change influence of b on c:
+<pre>params = DefaultParameters(model);
+params = SetParameters(params,model,'c', 'b', 'k', 0.9);
+</pre>
+
+Transform parameter set to script-file compatible vector, set time units and perform simulation:
+<pre>paramvec = ParameterVector(model,params);
+time = 10;
+r = ode15s(@(t,y)myode(t,y,paramvec), [0 time], initial);</pre>
+
+Show results:
+<pre>Visualize(r.x,r.y,model.species);</pre>
+
+See also: <code>help Visualize</code><p></p>
+
+<div align="center"><img src="ffsim2.png"></div><p></p>
+
+<br/><a name="simstruct"></a><b>Transient activations by exteral signals</b><p></p>
+
+You can include extended features like transient activation of a factor into your system by manually editing the exported ODE systems. For instance, you create an ODE file of the incoherent feed forward loop with:
+<pre>model = ExpressionsToOdefy({'a = <>','b = a','c = a && ~b'});
+SaveMatlabODE(model, 'myode.m', 'hillcubenorm');</pre>
+and then replace the differential equation of <i>a</i> in <code>myode.m</code> by
+<pre>ydot(a) = (t>=3&&t<=6) - cvals(a);</pre> 
+
+The equation above contains a logical term which is 1 if the time is between 3 and 6 and 0 otherwise. In addition, we added a first order decay term so the variable valuees are bounded. The complete example can be found in the <code>examples/</code> in <code>cmdsim.m</code>. The simulation will look like this:<p></p>
+
+<div align="center"><img src="simtransient.png"></div>
+<p></p>
+Note that due to the discontinuity of the equation the function is not differentiable at the two event points.
+
+<p></p>
+
+<br/><a name="simstruct"></a><b>Simulation structures</b><p></p>
+
+The simulation structures created by CreateSimstruct contain all information required to perform a time-course simulation within Odefy. Note that the simulation setting saving functionality of the graphical user interfaces produces identical structures. A simulation structure contains the following fields:<p></p>
+
+<div align="center">
+<table cellpadding="4" cellspacing="0" border="1">
+<tr><td><b>Field name</b></td><td><b>Default value</b></td><td><b>Description</b></td></tr>
+<tr><td>model</td><td>-</td><td>The Odefy model to be simulated</td></tr>
+<tr><td>timeto</td><td>10</td><td>Number of time steps for the simulation</td></tr>  
+<tr><td>params</td><td>all tau=1, n=3, k=0.5</td><td>Parameter matrix, can be conveniently edited using <code>SetParameters</code></td></tr>
+<tr><td>initial</td><td>0 for all species</td><td>Initial values, can be conveniently edited using <code>SetInitialValue</code></td></tr>
+<tr><td>type</td><td><code>hillcube</code></td><td>Type of simulation, must be one of <code>boolcube, hillcube, hillcubenorm, boolsync, boolasync, boolrandom</code>; see also: <a href="modeling.html">Modeling framework</a></td></tr>
+<tr><td>asyncorder</td><td><code>1:n</code></td><td>Permutation describing the Boolean update order for asynchronous Boolean updating</td></tr>
+<tr><td>speciesorder</td><td><code>1:n</code></td><td>Permutation for the ordering of species in heat-map visualizations</td></tr>
+</table>
+</div>
+<p></p>
+
+<br/><a name="sbt"></a><b>Using SBToolbox</b><p></p>
+
+The following example demonstrates the usage of SB Toolbox to simulate a transformed Odefy GUI. We create an Odefy model, convert it to a SBToolbox, change parameters and initial conditions and perform the simulation:<p></p>
+<pre>model = ExpressionsToOdefy({'a = <>','b = a','c = a && ~b'});
+sbmodel = CreateSBToolboxModel(model,'hillcubenorm',1);
+sbmodel = SBparameters(sbmodel,'c_k_b',0.9);
+sbmodel = SBinitialconditions(sbmodel, [1 0 0]);
+SBsimulate(sbmodel);</pre>
+
+A very powerful feature of SB Toolbox is the ability to automatically generate compiled C-codes as MEX files from any model (you need the SBPD extension which is also available on the SB Toolbox website). These compiled models are typically 50-100 times faster than the respective MATLAB versions. Here is a short example:
+<pre>
+model = ExpressionsToOdefy({'a = <>','b = a','c = a && ~b'});
+sbmodel = CreateSBToolboxModel(model,'hillcubenorm',1);
+
+SBPDmakeMEXmodel(sbmodel, 'model_compiled.mex');
+output = model_compiled(0:0.1:10, [1 0 0]);
+plot(output.time, output.statevalues);
+</pre>
+
+After generating the SBToolbox model we compile a .mex file and perform simulation with 10 timesteps and initial values [1 0 0]. 
+<p></p>
+
+
+
+<br/><br/>
+<hr size="1">
+<div align="right">
+<font size="-1">
+Odefy by CMB, <a target="_blank" href="http://cmb.helmholtz-muenchen.de/odefy">http://cmb.helmholtz-muenchen.de/odefy</a>
+</font>
+</div>
+
+</body>
+</html>
