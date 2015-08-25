@@ -77,7 +77,7 @@ else
     error('No solver found.  Run changeCobraSolver');
 end
 
-if ~isstruct(MILPproplem)
+if ~isstruct(MILPproblem)
     error('MILPproblem needs to be a strcuture array');
 end
 
@@ -183,9 +183,10 @@ if ~isempty(saveInput)
 end
 
 % Defaults in case the solver does not return anything
-%x = [];
+x = [];
 xInt = [];
 xCont = [];
+f = [];
 %stat = -99;
 %solStat = -99;
 
