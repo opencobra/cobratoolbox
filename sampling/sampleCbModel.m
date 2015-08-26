@@ -96,7 +96,7 @@ switch samplerName
         
         % Reduce model
         fprintf('Reduce model\n');
-        modelRed = reduceModel(model, 1e-6, false,false);
+        modelRed = reduceModel(model, 1e-6, false,false,true);
         [nMet,nRxn] = size(modelRed.S);
         fprintf('Reduced model: %d rxns %d metabolites\n',nRxn,nMet);
         save modelRedTmp modelRed;

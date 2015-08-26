@@ -118,7 +118,7 @@ while rxnID <= nRxns
     end
 
     % Ignore negative lower bounds for irrev reactions
-    if abs(minBound) < tol || (minBound < 0 && ~model.rev(rxnID))
+    if abs(minBound) < tol || (~negFluxAllowedFlag && minBound < 0 && ~model.rev(rxnID))
         minBound = 0;
     end
 
