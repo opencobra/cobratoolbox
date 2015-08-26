@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of isotopomerViewer</title>
+  <meta name="keywords" content="isotopomerViewer">
+  <meta name="description" content="takes in an "experiment" and views the isotopomer as distributions">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html fluxomics -->
+<h1>isotopomerViewer
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>takes in an "experiment" and views the isotopomer as distributions</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [] = isotopomerViewer(mdv1, mdv2, names) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> takes in an &quot;experiment&quot; and views the isotopomer as distributions
+ between mdv1 and mdv2.  No output.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [] = isotopomerViewer(mdv1, mdv2, names)</a>
+0002 <span class="comment">% takes in an &quot;experiment&quot; and views the isotopomer as distributions</span>
+0003 <span class="comment">% between mdv1 and mdv2.  No output.</span>
+0004 
+0005 bins = round(sqrt(size(mdv1,2)));
+0006 
+0007 <span class="keyword">for</span> i = 1:size(mdv1,1)    
+0008     subplot(4,4,mod(i-1,16)+1);
+0009     [x1,x2]=hist(mdv1(i,:), bins);
+0010     plot(x2,x1);
+0011     <span class="keyword">if</span> max(x2) &lt; .02
+0012         plot(x2,x1, <span class="string">'k'</span>);
+0013     <span class="keyword">end</span>
+0014     hold on;
+0015     [x1,x2]=hist(mdv2(i,:), bins);
+0016     plot(x2,x1, <span class="string">'g'</span>);
+0017     <span class="keyword">if</span> max(x2) &lt; .02
+0018         plot(x2,x1, <span class="string">'k'</span>);
+0019     <span class="keyword">end</span>
+0020     title(names{i});
+0021     hold off;
+0022     <span class="keyword">if</span> mod(i,16) == 0
+0023         pause;
+0024     <span class="keyword">end</span>
+0025 <span class="keyword">end</span>
+0026 
+0027 
+0028 
+0029 
+0030</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

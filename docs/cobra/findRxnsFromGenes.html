@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of findRxnsFromGenes</title>
+  <meta name="keywords" content="findRxnsFromGenes">
+  <meta name="description" content="findRxnsFromGenes print every reaction associated with a gene of interest">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html cobra -->
+<h1>findRxnsFromGenes
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>findRxnsFromGenes print every reaction associated with a gene of interest</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [results ListResults] = findRxnsFromGenes(model, genes, humanFlag,ListResultsFlag) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">findRxnsFromGenes print every reaction associated with a gene of interest
+
+ [results ListResults] = findRxnsFromGenes(model, genes, humanFlag,ListResultsFlag)
+
+INPUTS
+ model                 COBRA model structure
+ genes                 string of single gene or cell array of multiple
+                       genes for which rxns are desired.
+
+OPTIONAL INPUTS
+ humanFlag             1 if using Human Recon  (Default = 0)
+ ListResultsFlag       1 if you want to output ListResults (Default = 0)
+
+OPUTPUTS
+ results               structure containing cell arrays for each gene.
+                       Each cell array has one column of rxn abbreviations
+                       and one column containing the reaction formulae
+ ListResults           same as above, but in a cell array
+ 
+ by Nathan Lewis 02/16/08
+ edited 04/05/09 (MUCH faster now -- NL)
+ edited 06/11/10 (yet even faster now -- NL)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="printRxnFormula.html" class="code" title="function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)">printRxnFormula</a>	printRxnFormula Print the reaction formulas for a list of reactions</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [results ListResults] = findRxnsFromGenes(model, genes, humanFlag,ListResultsFlag)</a>
+0002 <span class="comment">%findRxnsFromGenes print every reaction associated with a gene of interest</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% [results ListResults] = findRxnsFromGenes(model, genes, humanFlag,ListResultsFlag)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%INPUTS</span>
+0007 <span class="comment">% model                 COBRA model structure</span>
+0008 <span class="comment">% genes                 string of single gene or cell array of multiple</span>
+0009 <span class="comment">%                       genes for which rxns are desired.</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">%OPTIONAL INPUTS</span>
+0012 <span class="comment">% humanFlag             1 if using Human Recon  (Default = 0)</span>
+0013 <span class="comment">% ListResultsFlag       1 if you want to output ListResults (Default = 0)</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">%OPUTPUTS</span>
+0016 <span class="comment">% results               structure containing cell arrays for each gene.</span>
+0017 <span class="comment">%                       Each cell array has one column of rxn abbreviations</span>
+0018 <span class="comment">%                       and one column containing the reaction formulae</span>
+0019 <span class="comment">% ListResults           same as above, but in a cell array</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% by Nathan Lewis 02/16/08</span>
+0022 <span class="comment">% edited 04/05/09 (MUCH faster now -- NL)</span>
+0023 <span class="comment">% edited 06/11/10 (yet even faster now -- NL)</span>
+0024 
+0025 <span class="keyword">if</span> nargin&lt; 3
+0026     humanFlag = 0;
+0027     ListResultsFlag = 0;
+0028 <span class="keyword">end</span>
+0029 
+0030 <span class="keyword">if</span> ~iscell(genes)
+0031     gene = genes;
+0032     clear genes
+0033     genes{1} = gene;
+0034     clear gene
+0035 <span class="keyword">end</span>
+0036 <span class="keyword">if</span> iscell(genes{1})
+0037     <span class="keyword">for</span> i = 1:length(genes)
+0038         gene(i) = genes{i};
+0039     <span class="keyword">end</span>
+0040     clear genes
+0041     genes = gene;
+0042     clear gene
+0043 <span class="keyword">end</span>
+0044 model.genes = regexprep(model.genes,<span class="string">'-'</span>,<span class="string">'_DASH_'</span>);
+0045 model.genes = regexprep(model.genes,<span class="string">'\.'</span>,<span class="string">'_POINT_'</span>);
+0046 genes = regexprep(genes,<span class="string">'-'</span>,<span class="string">'_DASH_'</span>);
+0047 genes = regexprep(genes,<span class="string">'\.'</span>,<span class="string">'_POINT_'</span>);
+0048 
+0049 <span class="comment">%find where the genes are located in the rxnGeneMat</span>
+0050 GeneID(1) = 0;
+0051 <span class="keyword">for</span> j = 1:length(genes)
+0052     Ind = find(~cellfun(<span class="string">'isempty'</span>, regexp(model.genes,cat(2,<span class="string">'^'</span>,genes{j},<span class="string">'$'</span>))));
+0053     
+0054             <span class="keyword">if</span> ~isempty(Ind)
+0055                 GeneID(j) = Ind;
+0056             <span class="keyword">end</span>
+0057 
+0058 <span class="keyword">end</span>
+0059 <span class="keyword">if</span> min(GeneID) == 0
+0060     warning(<span class="string">'A gene was not found in the model!'</span>)
+0061     results = struct([]);
+0062     <span class="keyword">if</span> max(GeneID) ==0,results = struct([]);ListResults = {};
+0063     <span class="keyword">return</span>
+0064     <span class="keyword">end</span>
+0065     Ind = find(GeneID==0);
+0066     GeneID(Ind) = [];
+0067     genes(Ind) = [];
+0068 <span class="keyword">end</span>
+0069 results = struct([]);
+0070 <span class="keyword">for</span> i = 1:length(GeneID)
+0071     
+0072     k=1;
+0073     Ind_rxns = find(model.rxnGeneMat(:,GeneID(i))==1);
+0074     <span class="keyword">for</span> j=1:length(Ind_rxns)
+0075 <span class="comment">%         if model.rxnGeneMat(j,GeneID(i))==1</span>
+0076             <span class="keyword">if</span> isempty(results)
+0077                 results = struct;
+0078             <span class="keyword">end</span>
+0079             <span class="keyword">if</span> humanFlag == 1
+0080                 tempGene = cat(2,<span class="string">'gene_'</span>,genes{i});
+0081             <span class="keyword">else</span> tempGene = genes{i};
+0082             <span class="keyword">end</span>
+0083             results.(tempGene){k,1} = model.rxns(Ind_rxns(j));
+0084             results.(tempGene)(k,2) = <a href="printRxnFormula.html" class="code" title="function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)">printRxnFormula</a>(model,model.rxns(Ind_rxns(j)),0);
+0085             <span class="keyword">if</span> isfield(model,<span class="string">'subSystems'</span>)
+0086                 results.(tempGene)(k,3) = model.subSystems(Ind_rxns(j));
+0087             <span class="keyword">end</span>
+0088             <span class="keyword">if</span> isfield(model,<span class="string">'rxnNames'</span>)
+0089             results.(tempGene){k,4} = model.rxnNames{Ind_rxns(j)};
+0090             <span class="keyword">end</span>
+0091             k=k+1;
+0092 <span class="comment">%         end</span>
+0093     <span class="keyword">end</span>
+0094 <span class="keyword">end</span>
+0095 ListResults = {};
+0096 <span class="keyword">if</span> isempty(results)
+0097     warning(<span class="string">'Your gene was not associated with any reactions!'</span>)
+0098     ListResults = {};
+0099 <span class="keyword">else</span>
+0100     <span class="keyword">if</span> ListResultsFlag ==1
+0101     tmp = fieldnames(results);
+0102     
+0103     <span class="keyword">for</span> i = 1:length(tmp) 
+0104         tmp2 = results.(tmp{i});
+0105         ListResults(end+1:end+length(tmp2(:,1)),1:4) = tmp2;
+0106         ListResults(end-length(tmp2(:,1))+1:<span class="keyword">end</span>,5) = tmp(i);
+0107     <span class="keyword">end</span>
+0108     
+0109    
+0110     <span class="keyword">for</span> j = 1:length(ListResults(:,1))
+0111         ListResults(j,1) = ListResults{j,1};
+0112     <span class="keyword">end</span>
+0113     
+0114     <span class="keyword">end</span>
+0115     
+0116 <span class="keyword">end</span>
+0117</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

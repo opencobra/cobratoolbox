@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements</title>
+  <meta name="keywords" content="parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements">
+  <meta name="description" content="Parses NIST data on atomic weights">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../../../menu.html cobra --><!-- ../../menu.html reconstruction --><!-- ../menu.html mass_balance --><!-- menu.html basicPhysicochemicalData -->
+<h1>parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="box"><strong>Parses NIST data on atomic weights</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="box"><strong>function [atomicWeights]=parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Parses NIST data on atomic weights
+
+ The atomic weight    J. S. Coursey, D. J. Schwab, and R. A. Dragoset 
+ NIST, Physics Laboratory, Office of Electronic Commerce in Scientific and 
+ Engineering Data 
+ The atomic weights are available for elements 1 through 112, 114, &amp; 116 and
+ isotopic compositions or abundances are given when appropriate. The atomic 
+ weights data were published by T.B. Coplen1 in Atomic Weights of the Elements
+ 1999, (and include changes reported from the 2001 review in Chem. Int., 23, 179 (2001))
+ and the isotopic compositions data were published by K.J.R. Rosman2 and P.D.P. Taylor3 
+ in Isotopic Compositions of the Elements 1997. The relative atomic masses of the
+ isotopes data were published by G. Audi4 and A. H. Wapstra5 in The 1995 Update To
+ The Atomic Mass Evaluation.
+ http://physics.nist.gov/PhysRefData/Compositions/
+
+ Ronan Fleming 9 March 09</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="getMolecularMass.html" class="code" title="function M=getMolecularMass(formulae,isotopeAbundance)">getMolecularMass</a>	get mono-isotopic exact molecular mass for a single formula or a cell array of</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [atomicWeights]=parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements</a>
+0002 <span class="comment">% Parses NIST data on atomic weights</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% The atomic weight    J. S. Coursey, D. J. Schwab, and R. A. Dragoset</span>
+0005 <span class="comment">% NIST, Physics Laboratory, Office of Electronic Commerce in Scientific and</span>
+0006 <span class="comment">% Engineering Data</span>
+0007 <span class="comment">% The atomic weights are available for elements 1 through 112, 114, &amp; 116 and</span>
+0008 <span class="comment">% isotopic compositions or abundances are given when appropriate. The atomic</span>
+0009 <span class="comment">% weights data were published by T.B. Coplen1 in Atomic Weights of the Elements</span>
+0010 <span class="comment">% 1999, (and include changes reported from the 2001 review in Chem. Int., 23, 179 (2001))</span>
+0011 <span class="comment">% and the isotopic compositions data were published by K.J.R. Rosman2 and P.D.P. Taylor3</span>
+0012 <span class="comment">% in Isotopic Compositions of the Elements 1997. The relative atomic masses of the</span>
+0013 <span class="comment">% isotopes data were published by G. Audi4 and A. H. Wapstra5 in The 1995 Update To</span>
+0014 <span class="comment">% The Atomic Mass Evaluation.</span>
+0015 <span class="comment">% http://physics.nist.gov/PhysRefData/Compositions/</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% Ronan Fleming 9 March 09</span>
+0018 
+0019 fid=fopen(<span class="string">'Atomic_Weights_and_Isotopic_Compositions_for_All_Elements.m'</span>,<span class="string">'r'</span>);
+0020 
+0021 nElements=2816/8;
+0022 p=1;
+0023 ele=1;
+0024 fieldNames={<span class="string">'AtomicNumber'</span>;
+0025 <span class="string">'AtomicSymbol'</span>;
+0026 <span class="string">'MassNumber'</span>;
+0027 <span class="string">'RelativeAtomicMass'</span>;
+0028 <span class="string">'IsotopicComposition'</span>;
+0029 <span class="string">'StandardAtomicWeight'</span>;
+0030 <span class="string">'Notes'</span>};
+0031 
+0032 <span class="keyword">for</span> x=1:2816
+0033     line= fgetl(fid);
+0034     <span class="keyword">if</span> ~isempty(line)
+0035         <span class="keyword">if</span> p==2 || p==7
+0036             tmp=textscan(line,<span class="string">'%s%s\n'</span>,2815,<span class="string">'Delimiter'</span>,<span class="string">'=('</span>,<span class="string">'TreatAsEmpty'</span>,<span class="string">' '</span>);
+0037             <span class="keyword">if</span> ~isempty(tmp{2})
+0038                 atomicWeights.data(ele).(fieldNames{p})=tmp{2};
+0039             <span class="keyword">end</span>
+0040             <span class="keyword">if</span> p==2
+0041                 tmp2=tmp{2};
+0042                 <span class="keyword">if</span> ~isempty(tmp2)
+0043                     atomicWeights.AtomicSymbol{ele}=tmp2{1};
+0044                 <span class="keyword">end</span>
+0045             <span class="keyword">end</span>
+0046         <span class="keyword">else</span>
+0047             tmp=textscan(line,<span class="string">'%s%f\n'</span>,2815,<span class="string">'Delimiter'</span>,<span class="string">'=('</span>,<span class="string">'TreatAsEmpty'</span>,<span class="string">' '</span>);
+0048             atomicWeights.data(ele).(fieldNames{p})=tmp{2};
+0049         <span class="keyword">end</span>
+0050         p=p+1;
+0051     <span class="keyword">else</span>
+0052         ele=ele+1;
+0053         p=1;
+0054     <span class="keyword">end</span>
+0055 <span class="keyword">end</span>
+0056 
+0057 fclose(fid);
+0058</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

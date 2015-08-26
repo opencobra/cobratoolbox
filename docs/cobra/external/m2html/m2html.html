@@ -1,0 +1,1193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of m2html</title>
+  <meta name="keywords" content="m2html">
+  <meta name="description" content="M2HTML - Documentation System for Matlab M-files in HTML">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../../menu.html cobra --><!-- ../menu.html external --><!-- menu.html m2html -->
+<h1>m2html
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>M2HTML - Documentation System for Matlab M-files in HTML</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function m2html(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">M2HTML - Documentation System for Matlab M-files in HTML
+  M2HTML by itself generates an HTML documentation of Matlab M-files in the
+  current directory. HTML files are also written in the current directory.
+  M2HTML('PropertyName1',PropertyValue1,'PropertyName2',PropertyValue2,...)
+  sets multiple option values. The list of option names and default values is:
+    o mFiles - Cell array of strings or character array containing the
+       list of M-files and/or directories of M-files for which an HTML
+       documentation will be built [ '.' ]
+    o htmlDir - Top level directory for generated HTML files [ '.' ]
+    o recursive - Process subdirectories [ on | {off} ]
+    o source - Include Matlab source code in the HTML documentation
+                               [ {on} | off ]
+    o syntaxHighlighting - Syntax Highlighting [ {on} | off ]
+    o tabs - Replace '\t' (horizontal tab) in source code by n white space
+        characters [ 0 ... {4} ... n ]
+    o globalHypertextLinks - Hypertext links among separate Matlab 
+        directories [ on | {off} ]
+    o todo - Create a TODO file in each directory summarizing all the
+        '% TODO %' lines found in Matlab code [ on | {off}]
+    o graph - Compute a dependency graph using GraphViz [ on | {off}]
+        'dot' required, see &lt;http://www.research.att.com/sw/tools/graphviz/&gt;
+    o indexFile - Basename of the HTML index file [ 'index' ]
+    o extension - Extension of generated HTML files [ '.html' ]
+    o template - HTML template name to use [ 'blue' ]
+    o save - Save current state after M-files parsing in 'm2html.mat' 
+        in directory htmlDir [ on | {off}]
+    o load - Load a previously saved '.mat' M2HTML state to generate HTML 
+        files once again with possibly other options [ &lt;none&gt; ]
+    o verbose - Verbose mode [ {on} | off ]
+
+  Examples:
+    &gt;&gt; m2html('mfiles','matlab', 'htmldir','doc');
+    &gt;&gt; m2html('mfiles',{'matlab/signal' 'matlab/image'}, 'htmldir','doc');
+    &gt;&gt; m2html('mfiles','matlab', 'htmldir','doc', 'recursive','on');
+    &gt;&gt; m2html('mfiles','mytoolbox', 'htmldir','doc', 'source','off');
+    &gt;&gt; m2html('mfiles','matlab', 'htmldir','doc', 'global','on');
+    &gt;&gt; m2html( ... , 'template','frame', 'index','menu');
+
+  See also HIGHLIGHT, <a href="mdot.html" class="code" title="function mdot(mmat, dotfile,f)">MDOT</a>, TEMPLATE.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="mdot.html" class="code" title="function mdot(mmat, dotfile,f)">mdot</a>	MDOT - Export a dependency graph into DOT language</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../cobra/generateDoc.html" class="code" title="function generateDoc(pathname, graph)">generateDoc</a>	generateDoc uses m2html to create a set of html docs</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function mfiles = getmfiles(mdirs,mfiles,recursive)</a></li><li><a href="#_sub2" class="code">function s = backtomaster(mdir)</a></li><li><a href="#_sub3" class="code">function ldir = splitpath(p)</a></li><li><a href="#_sub4" class="code">function name = extractname(synopsis)</a></li><li><a href="#_sub5" class="code">function f = fullurl(varargin)</a></li><li><a href="#_sub6" class="code">function str = entity(str)</a></li><li><a href="#_sub7" class="code">function str = horztab(str,n)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function m2html(varargin)</a>
+0002 <span class="comment">%M2HTML - Documentation System for Matlab M-files in HTML</span>
+0003 <span class="comment">%  M2HTML by itself generates an HTML documentation of Matlab M-files in the</span>
+0004 <span class="comment">%  current directory. HTML files are also written in the current directory.</span>
+0005 <span class="comment">%  M2HTML('PropertyName1',PropertyValue1,'PropertyName2',PropertyValue2,...)</span>
+0006 <span class="comment">%  sets multiple option values. The list of option names and default values is:</span>
+0007 <span class="comment">%    o mFiles - Cell array of strings or character array containing the</span>
+0008 <span class="comment">%       list of M-files and/or directories of M-files for which an HTML</span>
+0009 <span class="comment">%       documentation will be built [ '.' ]</span>
+0010 <span class="comment">%    o htmlDir - Top level directory for generated HTML files [ '.' ]</span>
+0011 <span class="comment">%    o recursive - Process subdirectories [ on | {off} ]</span>
+0012 <span class="comment">%    o source - Include Matlab source code in the HTML documentation</span>
+0013 <span class="comment">%                               [ {on} | off ]</span>
+0014 <span class="comment">%    o syntaxHighlighting - Syntax Highlighting [ {on} | off ]</span>
+0015 <span class="comment">%    o tabs - Replace '\t' (horizontal tab) in source code by n white space</span>
+0016 <span class="comment">%        characters [ 0 ... {4} ... n ]</span>
+0017 <span class="comment">%    o globalHypertextLinks - Hypertext links among separate Matlab</span>
+0018 <span class="comment">%        directories [ on | {off} ]</span>
+0019 <span class="comment">%    o todo - Create a TODO file in each directory summarizing all the</span>
+0020 <span class="comment">%        '% TODO %' lines found in Matlab code [ on | {off}]</span>
+0021 <span class="comment">%    o graph - Compute a dependency graph using GraphViz [ on | {off}]</span>
+0022 <span class="comment">%        'dot' required, see &lt;http://www.research.att.com/sw/tools/graphviz/&gt;</span>
+0023 <span class="comment">%    o indexFile - Basename of the HTML index file [ 'index' ]</span>
+0024 <span class="comment">%    o extension - Extension of generated HTML files [ '.html' ]</span>
+0025 <span class="comment">%    o template - HTML template name to use [ 'blue' ]</span>
+0026 <span class="comment">%    o save - Save current state after M-files parsing in 'm2html.mat'</span>
+0027 <span class="comment">%        in directory htmlDir [ on | {off}]</span>
+0028 <span class="comment">%    o load - Load a previously saved '.mat' M2HTML state to generate HTML</span>
+0029 <span class="comment">%        files once again with possibly other options [ &lt;none&gt; ]</span>
+0030 <span class="comment">%    o verbose - Verbose mode [ {on} | off ]</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">%  Examples:</span>
+0033 <span class="comment">%    &gt;&gt; m2html('mfiles','matlab', 'htmldir','doc');</span>
+0034 <span class="comment">%    &gt;&gt; m2html('mfiles',{'matlab/signal' 'matlab/image'}, 'htmldir','doc');</span>
+0035 <span class="comment">%    &gt;&gt; m2html('mfiles','matlab', 'htmldir','doc', 'recursive','on');</span>
+0036 <span class="comment">%    &gt;&gt; m2html('mfiles','mytoolbox', 'htmldir','doc', 'source','off');</span>
+0037 <span class="comment">%    &gt;&gt; m2html('mfiles','matlab', 'htmldir','doc', 'global','on');</span>
+0038 <span class="comment">%    &gt;&gt; m2html( ... , 'template','frame', 'index','menu');</span>
+0039 <span class="comment">%</span>
+0040 <span class="comment">%  See also HIGHLIGHT, MDOT, TEMPLATE.</span>
+0041 
+0042 <span class="comment">%  Copyright (C) 2003 Guillaume Flandin &lt;Guillaume@artefact.tk&gt;</span>
+0043 <span class="comment">%  $Revision: 1.2 $Date: 2003/31/08 17:25:20 $</span>
+0044 
+0045 <span class="comment">%  This program is free software; you can redistribute it and/or</span>
+0046 <span class="comment">%  modify it under the terms of the GNU General Public License</span>
+0047 <span class="comment">%  as published by the Free Software Foundation; either version 2</span>
+0048 <span class="comment">%  of the License, or any later version.</span>
+0049 <span class="comment">%</span>
+0050 <span class="comment">%  This program is distributed in the hope that it will be useful,</span>
+0051 <span class="comment">%  but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+0052 <span class="comment">%  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+0053 <span class="comment">%  GNU General Public License for more details.</span>
+0054 <span class="comment">%</span>
+0055 <span class="comment">%  You should have received a copy of the GNU General Public License</span>
+0056 <span class="comment">%  along with this program; if not, write to the Free Software</span>
+0057 <span class="comment">%  Foundation Inc, 59 Temple Pl. - Suite 330, Boston, MA 02111-1307, USA.</span>
+0058 
+0059 <span class="comment">%  Suggestions for improvement and fixes are always welcome, although no</span>
+0060 <span class="comment">%  guarantee is made whether and when they will be implemented.</span>
+0061 <span class="comment">%  Send requests to Guillaume.Flandin@laposte.net</span>
+0062 
+0063 <span class="comment">%  For tips on how to write Matlab code, see:</span>
+0064 <span class="comment">%     * MATLAB Programming Style Guidelines, by R. Johnson:</span>
+0065 <span class="comment">%       &lt;http://www.datatool.com/prod02.htm&gt;</span>
+0066 <span class="comment">%     * For tips on creating help for your m-files 'type help.m'.</span>
+0067 <span class="comment">%     * Matlab documentation on M-file Programming:</span>
+0068 <span class="comment">%  &lt;http://www.mathworks.com/access/helpdesk/help/techdoc/matlab_prog/ch10_pr9.shtml&gt;</span>
+0069 
+0070 <span class="comment">%  This function uses the Template class so that you can fully customize</span>
+0071 <span class="comment">%  the output. You can modify .tpl files in templates/blue/ or create new</span>
+0072 <span class="comment">%  templates in a new directory.</span>
+0073 <span class="comment">%  See the template class documentation for more details.</span>
+0074 <span class="comment">%  &lt;http://www.madic.org/download/matlab/template/&gt;</span>
+0075 
+0076 <span class="comment">%  Latest information on M2HTML is available on the web through:</span>
+0077 <span class="comment">%  &lt;http://www.artefact.tk/software/matlab/m2html/&gt;</span>
+0078 
+0079 <span class="comment">%  Other Matlab to HTML converters available on the web:</span>
+0080 <span class="comment">%  1/ mat2html.pl, J.C. Kantor, in Perl, 1995:</span>
+0081 <span class="comment">%     &lt;http://fresh.t-systems-sfr.com/unix/src/www/mat2html&gt;</span>
+0082 <span class="comment">%  2/ htmltools, B. Alsberg, in Matlab, 1997:</span>
+0083 <span class="comment">%     &lt;http://www.mathworks.com/matlabcentral/fileexchange/loadFile.do?objectId=175&gt;</span>
+0084 <span class="comment">%  3/ mtree2html2001, H. Pohlheim, in Perl, 1996, 2001:</span>
+0085 <span class="comment">%     &lt;http://www.pohlheim.com/perl_main.html#matlabdocu&gt;</span>
+0086 <span class="comment">%  4/ MatlabToHTML, T. Kristjansson, binary, 2001:</span>
+0087 <span class="comment">%     &lt;http://www.psi.utoronto.ca/~trausti/MatlabToHTML/MatlabToHTML.html&gt;</span>
+0088 <span class="comment">%  5/ Highlight, G. Flandin, in Matlab, 2003:</span>
+0089 <span class="comment">%     &lt;http://www.madic.org/download/matlab/highlight/&gt;</span>
+0090 <span class="comment">%  6/ mdoc, P. Brinkmann, in Matlab, 2003:</span>
+0091 <span class="comment">%     &lt;http://www.math.uiuc.edu/~brinkman/software/mdoc/&gt;</span>
+0092 <span class="comment">%  7/ Ocamaweb, Miriad Technologies, in Ocaml, 2002:</span>
+0093 <span class="comment">%     &lt;http://ocamaweb.sourceforge.net/&gt;</span>
+0094 <span class="comment">%  8/ Matdoc, M. Kaminsky, in Perl, 2003:</span>
+0095 <span class="comment">%     &lt;http://www.mathworks.com/matlabcentral/fileexchange/loadFile.do?objectId=3498&gt;</span>
+0096 <span class="comment">%  9/ Matlab itself, The Mathworks Inc, with HELPWIN and DOC</span>
+0097 
+0098 <span class="comment">%-------------------------------------------------------------------------------</span>
+0099 <span class="comment">%- Set up options and default parameters</span>
+0100 <span class="comment">%-------------------------------------------------------------------------------</span>
+0101 msgInvalidPair = <span class="string">'Bad value for argument: ''%s'''</span>;
+0102 
+0103 options = struct(<span class="string">'verbose'</span>, 1,<span class="keyword">...</span>
+0104                  <span class="string">'mFiles'</span>, {{<span class="string">'.'</span>}},<span class="keyword">...</span>
+0105                  <span class="string">'htmlDir'</span>, <span class="string">'.'</span>,<span class="keyword">...</span>
+0106                  <span class="string">'recursive'</span>, 0,<span class="keyword">...</span>
+0107                  <span class="string">'source'</span>, 1,<span class="keyword">...</span>
+0108                  <span class="string">'syntaxHighlighting'</span>, 1,<span class="keyword">...</span>
+0109                  <span class="string">'tabs'</span>, 4,<span class="keyword">...</span>
+0110                  <span class="string">'globalHypertextLinks'</span>, 0,<span class="keyword">...</span>
+0111                  <span class="string">'graph'</span>, 0,<span class="keyword">...</span>
+0112                  <span class="string">'todo'</span>, 0,<span class="keyword">...</span>
+0113                  <span class="string">'load'</span>, 0,<span class="keyword">...</span>
+0114                  <span class="string">'save'</span>, 0,<span class="keyword">...</span>
+0115                  <span class="string">'search'</span>, 0,<span class="keyword">...</span>
+0116                  <span class="string">'indexFile'</span>, <span class="string">'index'</span>,<span class="keyword">...</span>
+0117                  <span class="string">'extension'</span>, <span class="string">'.html'</span>,<span class="keyword">...</span>
+0118                  <span class="string">'template'</span>, <span class="string">'blue'</span>);
+0119 
+0120 <span class="keyword">if</span> nargin == 1 &amp; isstruct(varargin{1})
+0121     paramlist = [ fieldnames(varargin{1}) <span class="keyword">...</span>
+0122                   struct2cell(varargin{1}) ]';
+0123     paramlist = { paramlist{:} };
+0124 <span class="keyword">else</span>
+0125     <span class="keyword">if</span> mod(nargin,2)
+0126         error(<span class="string">'Invalid parameter/value pair arguments.'</span>);
+0127     <span class="keyword">end</span>
+0128     paramlist = varargin;
+0129 <span class="keyword">end</span>
+0130 
+0131 optionsnames = lower(fieldnames(options));
+0132 <span class="keyword">for</span> i=1:2:length(paramlist)
+0133     pname = paramlist{i};
+0134     pvalue = paramlist{i+1};
+0135     ind = strmatch(lower(pname),optionsnames);
+0136     <span class="keyword">if</span> isempty(ind)
+0137         error([<span class="string">'Invalid parameter: '''</span> pname <span class="string">'''.'</span>]);
+0138     <span class="keyword">elseif</span> length(ind) &gt; 1
+0139         error([<span class="string">'Ambiguous parameter: '''</span> pname <span class="string">'''.'</span>]);
+0140     <span class="keyword">end</span>
+0141     <span class="keyword">switch</span>(optionsnames{ind})
+0142         <span class="keyword">case</span> <span class="string">'verbose'</span>
+0143             <span class="keyword">if</span> strcmpi(pvalue,<span class="string">'on'</span>)
+0144                 options.verbose = 1;
+0145             <span class="keyword">elseif</span> strcmpi(pvalue,<span class="string">'off'</span>)
+0146                 options.verbose = 0;
+0147             <span class="keyword">else</span>
+0148                 error(sprintf(msgInvalidPair,pname));
+0149             <span class="keyword">end</span>
+0150         <span class="keyword">case</span> <span class="string">'mfiles'</span>
+0151             <span class="keyword">if</span> iscellstr(pvalue)
+0152                 options.mFiles = pvalue;
+0153             <span class="keyword">elseif</span> ischar(pvalue)
+0154                 options.mFiles = cellstr(pvalue);
+0155             <span class="keyword">else</span>
+0156                 error(sprintf(msgInvalidPair,pname));
+0157             <span class="keyword">end</span>
+0158             options.load = 0;
+0159         <span class="keyword">case</span> <span class="string">'htmldir'</span>
+0160             <span class="keyword">if</span> ischar(pvalue)
+0161                 <span class="keyword">if</span> isempty(pvalue),
+0162                     options.htmlDir = <span class="string">'.'</span>;
+0163                 <span class="keyword">else</span>
+0164                     options.htmlDir = pvalue;
+0165                 <span class="keyword">end</span>
+0166             <span class="keyword">else</span>
+0167                 error(sprintf(msgInvalidPair,pname));
+0168             <span class="keyword">end</span>
+0169         <span class="keyword">case</span> <span class="string">'recursive'</span>
+0170             <span class="keyword">if</span> strcmpi(pvalue,<span class="string">'on'</span>)
+0171                 options.recursive = 1;
+0172             <span class="keyword">elseif</span> strcmpi(pvalue,<span class="string">'off'</span>)
+0173                 options.recursive = 0;
+0174             <span class="keyword">else</span>
+0175                 error(sprintf(msgInvalidPair,pname));
+0176             <span class="keyword">end</span>
+0177             options.load = 0;
+0178         <span class="keyword">case</span> <span class="string">'source'</span>
+0179             <span class="keyword">if</span> strcmpi(pvalue,<span class="string">'on'</span>)
+0180                 options.source = 1;
+0181             <span class="keyword">elseif</span> strcmpi(pvalue,<span class="string">'off'</span>)
+0182                 options.source = 0;
+0183             <span class="keyword">else</span>
+0184                 error(sprintf(msgInvalidPair,pname));
+0185             <span class="keyword">end</span>
+0186         <span class="keyword">case</span> <span class="string">'syntaxhighlighting'</span>
+0187             <span class="keyword">if</span> strcmpi(pvalue,<span class="string">'on'</span>)
+0188                 options.syntaxHighlighting = 1;
+0189             <span class="keyword">elseif</span> strcmpi(pvalue,<span class="string">'off'</span>)
+0190                 options.syntaxHighlighting = 0;
+0191             <span class="keyword">else</span>
+0192                 error(sprintf(msgInvalidPair,pname));
+0193             <span class="keyword">end</span>
+0194         <span class="keyword">case</span> <span class="string">'tabs'</span>
+0195             <span class="keyword">if</span> pvalue &gt;= 0
+0196                 options.tabs = pvalue;
+0197             <span class="keyword">else</span>
+0198                 error(sprintf(msgInvalidPair,pname));
+0199             <span class="keyword">end</span>
+0200         <span class="keyword">case</span> <span class="string">'globalhypertextlinks'</span>
+0201             <span class="keyword">if</span> strcmpi(pvalue,<span class="string">'on'</span>)
+0202                 options.globalHypertextLinks = 1;
+0203             <span class="keyword">elseif</span> strcmpi(pvalue,<span class="string">'off'</span>)
+0204                 options.globalHypertextLinks = 0;
+0205             <span class="keyword">else</span>
+0206                 error(sprintf(msgInvalidPair,pname));
+0207             <span class="keyword">end</span>
+0208             options.load = 0;
+0209         <span class="keyword">case</span> <span class="string">'graph'</span>
+0210             <span class="keyword">if</span> strcmpi(pvalue,<span class="string">'on'</span>)
+0211                 options.graph = 1;
+0212             <span class="keyword">elseif</span> strcmpi(pvalue,<span class="string">'off'</span>)
+0213                 options.graph = 0;
+0214             <span class="keyword">else</span>
+0215                 error(sprintf(msgInvalidPair,pname));
+0216             <span class="keyword">end</span>
+0217         <span class="keyword">case</span> <span class="string">'todo'</span>
+0218             <span class="keyword">if</span> strcmpi(pvalue,<span class="string">'on'</span>)
+0219                 options.todo = 1;
+0220             <span class="keyword">elseif</span> strcmpi(pvalue,<span class="string">'off'</span>)
+0221                 options.todo = 0;
+0222             <span class="keyword">else</span>
+0223                 error(sprintf(msgInvalidPair,pname));
+0224             <span class="keyword">end</span>
+0225         <span class="keyword">case</span> <span class="string">'load'</span>
+0226             <span class="keyword">if</span> ischar(pvalue)
+0227                 <span class="keyword">try</span>
+0228                     load(pvalue);
+0229                 <span class="keyword">catch</span>
+0230                     error(sprintf(<span class="string">'Unable to load %s.'</span>,pvalue));
+0231                 <span class="keyword">end</span>
+0232                 options.load = 1;
+0233                 [dummy options.template] = fileparts(options.template);
+0234             <span class="keyword">else</span>
+0235                 error(sprintf(msgInvalidPair,pname));
+0236             <span class="keyword">end</span>
+0237         <span class="keyword">case</span> <span class="string">'save'</span>
+0238             <span class="keyword">if</span> strcmpi(pvalue,<span class="string">'on'</span>)
+0239                 options.save = 1;
+0240             <span class="keyword">elseif</span> strcmpi(pvalue,<span class="string">'off'</span>)
+0241                 options.save = 0;
+0242             <span class="keyword">else</span>
+0243                 error(sprintf(msgInvalidPair,pname));
+0244             <span class="keyword">end</span>
+0245         <span class="keyword">case</span> <span class="string">'search'</span>
+0246             <span class="keyword">if</span> strcmpi(pvalue,<span class="string">'on'</span>)
+0247                 options.search = 1;
+0248             <span class="keyword">elseif</span> strcmpi(pvalue,<span class="string">'off'</span>)
+0249                 options.search = 0;
+0250             <span class="keyword">else</span>
+0251                 error(sprintf(msgInvalidPair,pname));
+0252             <span class="keyword">end</span>
+0253         <span class="keyword">case</span> <span class="string">'indexfile'</span>
+0254             <span class="keyword">if</span> ischar(pvalue)
+0255                 options.indexFile = pvalue;
+0256             <span class="keyword">else</span>
+0257                 error(sprintf(msgInvalidPair,pname));
+0258             <span class="keyword">end</span>
+0259         <span class="keyword">case</span> <span class="string">'extension'</span>
+0260             <span class="keyword">if</span> ischar(pvalue) &amp; pvalue(1) == <span class="string">'.'</span>
+0261                 options.extension = pvalue;
+0262             <span class="keyword">else</span>
+0263                 error(sprintf(msgInvalidPair,pname));
+0264             <span class="keyword">end</span>
+0265         <span class="keyword">case</span> <span class="string">'template'</span>
+0266             <span class="keyword">if</span> ischar(pvalue)
+0267                 options.template = pvalue;
+0268             <span class="keyword">else</span>
+0269                 error(sprintf(msgInvalidPair,pname));
+0270             <span class="keyword">end</span>
+0271         <span class="keyword">otherwise</span>
+0272             error([<span class="string">'Invalid parameter: '''</span> pname <span class="string">'''.'</span>]);
+0273     <span class="keyword">end</span>
+0274 <span class="keyword">end</span>
+0275 
+0276 <span class="comment">%-------------------------------------------------------------------------------</span>
+0277 <span class="comment">%- Get template files location</span>
+0278 <span class="comment">%-------------------------------------------------------------------------------</span>
+0279 s = fileparts(which(mfilename));
+0280 options.template = fullfile(s,<span class="string">'templates'</span>,options.template);
+0281 <span class="keyword">if</span> exist(options.template) ~= 7
+0282     error(<span class="string">'[Template] Unknown template.'</span>);
+0283 <span class="keyword">end</span>
+0284 
+0285 <span class="comment">%-------------------------------------------------------------------------------</span>
+0286 <span class="comment">%- Get list of M-files</span>
+0287 <span class="comment">%-------------------------------------------------------------------------------</span>
+0288 <span class="keyword">if</span> ~options.load
+0289     mfiles = <a href="#_sub1" class="code" title="subfunction mfiles = getmfiles(mdirs,mfiles,recursive)">getmfiles</a>(options.mFiles,{},options.recursive);
+0290     <span class="keyword">if</span> ~length(mfiles), fprintf(<span class="string">'Nothing to be done.\n'</span>); <span class="keyword">return</span>; <span class="keyword">end</span>
+0291     <span class="keyword">if</span> options.verbose,
+0292         fprintf(<span class="string">'Found %d M-files.\n'</span>,length(mfiles));
+0293     <span class="keyword">end</span>
+0294     mfiles = sort(mfiles); <span class="comment">% sort list of M-files in dictionary order</span>
+0295 <span class="keyword">end</span>
+0296 
+0297 <span class="comment">%-------------------------------------------------------------------------------</span>
+0298 <span class="comment">%- Get list of (unique) directories and (unique) names</span>
+0299 <span class="comment">%-------------------------------------------------------------------------------</span>
+0300 <span class="keyword">if</span> ~options.load
+0301     mdirs = {};
+0302     names = {};
+0303     <span class="keyword">for</span> i=1:length(mfiles)
+0304         [mdirs{i}, names{i}] = fileparts(mfiles{i});
+0305         <span class="keyword">if</span> isempty(mdirs{i}), mdirs{i} = <span class="string">'.'</span>; <span class="keyword">end</span>
+0306     <span class="keyword">end</span>
+0307 
+0308     mdir = unique(mdirs);
+0309     <span class="keyword">if</span> options.verbose,
+0310         fprintf(<span class="string">'Found %d unique Matlab directories.\n'</span>,length(mdir));
+0311     <span class="keyword">end</span>
+0312 
+0313     name = names;
+0314     <span class="comment">%name = unique(names); % output is sorted</span>
+0315     <span class="comment">%if options.verbose,</span>
+0316     <span class="comment">%    fprintf('Found %d unique Matlab files.\n',length(name));</span>
+0317     <span class="comment">%end</span>
+0318 <span class="keyword">end</span>
+0319 
+0320 <span class="comment">%-------------------------------------------------------------------------------</span>
+0321 <span class="comment">%- Create output directory, if necessary</span>
+0322 <span class="comment">%-------------------------------------------------------------------------------</span>
+0323 <span class="keyword">if</span> isempty(dir(options.htmlDir))                                               
+0324     <span class="comment">%- Create the top level output directory</span>
+0325     <span class="keyword">if</span> options.verbose                                                         
+0326         fprintf(<span class="string">'Creating directory %s...\n'</span>,options.htmlDir);                 
+0327     <span class="keyword">end</span>                                                                        
+0328     <span class="keyword">if</span> options.htmlDir(end) == filesep,                                        
+0329         options.htmlDir(end) = [];                                             
+0330     <span class="keyword">end</span>                                                                        
+0331     [pathdir, namedir] = fileparts(options.htmlDir);                           
+0332     <span class="keyword">if</span> isempty(pathdir)                                                        
+0333         [status, msg] = mkdir(namedir);                                        
+0334     <span class="keyword">else</span>                                                                       
+0335         [status, msg] = mkdir(pathdir, namedir);                               
+0336     <span class="keyword">end</span>                                                                        
+0337     <span class="keyword">if</span> ~status, error(msg); <span class="keyword">end</span>                                                                
+0338 <span class="keyword">end</span>                                                                            
+0339 
+0340 <span class="comment">%-------------------------------------------------------------------------------</span>
+0341 <span class="comment">%- Get synopsis, H1 line, script/function, subroutines, cross-references, todo</span>
+0342 <span class="comment">%-------------------------------------------------------------------------------</span>
+0343 <span class="keyword">if</span> ~options.load
+0344     synopsis   = cell(size(mfiles));
+0345     h1line     = cell(size(mfiles));
+0346     subroutine = cell(size(mfiles));
+0347     hrefs      = sparse(length(mfiles),length(mfiles));
+0348     todo       = struct(<span class="string">'mfile'</span>,[],<span class="string">'line'</span>,[],<span class="string">'comment'</span>,{{}});
+0349     ismex      = zeros(length(mfiles),length(mexexts));
+0350 
+0351     <span class="keyword">for</span> i=1:length(mfiles)
+0352         s = mfileparse(mfiles{i}, mdirs, names, options);
+0353         synopsis{i}   = s.synopsis;
+0354         h1line{i}     = s.h1line;
+0355         subroutine{i} = s.subroutine;
+0356         hrefs(i,:)    = s.hrefs;
+0357         todo.mfile    = [todo.mfile repmat(i,1,length(s.todo.line))];
+0358         todo.line     = [todo.line s.todo.line];
+0359         todo.comment  = {todo.comment{:} s.todo.comment{:}};
+0360         ismex(i,:)    = s.ismex;
+0361     <span class="keyword">end</span>
+0362     hrefs = hrefs &gt; 0;
+0363 <span class="keyword">end</span>
+0364 
+0365 <span class="comment">%-------------------------------------------------------------------------------</span>
+0366 <span class="comment">%- Save M-filenames and cross-references for further analysis</span>
+0367 <span class="comment">%-------------------------------------------------------------------------------</span>
+0368 matfilesave = <span class="string">'m2html.mat'</span>;
+0369 
+0370 <span class="keyword">if</span> options.save
+0371     <span class="keyword">if</span> options.verbose
+0372         fprintf(<span class="string">'Saving MAT file %s...\n'</span>,matfilesave);
+0373     <span class="keyword">end</span>
+0374     save(fullfile(options.htmlDir,matfilesave), <span class="keyword">...</span>
+0375         <span class="string">'mfiles'</span>, <span class="string">'names'</span>, <span class="string">'mdirs'</span>, <span class="string">'name'</span>, <span class="string">'mdir'</span>, <span class="string">'options'</span>, <span class="keyword">...</span>
+0376         <span class="string">'hrefs'</span>, <span class="string">'synopsis'</span>, <span class="string">'h1line'</span>, <span class="string">'subroutine'</span>, <span class="string">'todo'</span>, <span class="string">'ismex'</span>);
+0377 <span class="keyword">end</span>
+0378 
+0379 <span class="comment">%-------------------------------------------------------------------------------</span>
+0380 <span class="comment">%- Setup the output directories</span>
+0381 <span class="comment">%-------------------------------------------------------------------------------</span>
+0382 <span class="keyword">for</span> i=1:length(mdir)
+0383     <span class="keyword">if</span> exist(fullfile(options.htmlDir,mdir{i})) ~= 7
+0384         ldir = <a href="#_sub3" class="code" title="subfunction ldir = splitpath(p)">splitpath</a>(mdir{i});
+0385         <span class="keyword">for</span> j=1:length(ldir)
+0386             <span class="keyword">if</span> exist(fullfile(options.htmlDir,ldir{1:j})) ~= 7
+0387                 <span class="comment">%- Create the output directory</span>
+0388                 <span class="keyword">if</span> options.verbose
+0389                     fprintf(<span class="string">'Creating directory %s...\n'</span>,<span class="keyword">...</span>
+0390                             fullfile(options.htmlDir,ldir{1:j}));
+0391                 <span class="keyword">end</span>
+0392                 <span class="keyword">if</span> j == 1
+0393                     [status, msg] = mkdir(options.htmlDir,ldir{1});
+0394                 <span class="keyword">else</span>
+0395                     [status, msg] = mkdir(options.htmlDir,fullfile(ldir{1:j}));
+0396                 <span class="keyword">end</span>
+0397                 error(msg);
+0398             <span class="keyword">end</span>
+0399         <span class="keyword">end</span>
+0400     <span class="keyword">end</span>
+0401 <span class="keyword">end</span>
+0402 
+0403 <span class="comment">%-------------------------------------------------------------------------------</span>
+0404 <span class="comment">%- Write the master index file</span>
+0405 <span class="comment">%-------------------------------------------------------------------------------</span>
+0406 tpl_master = <span class="string">'master.tpl'</span>;
+0407 tpl_master_identifier_nbyline = 4;
+0408 
+0409 <span class="comment">%- Create the HTML template</span>
+0410 tpl = template(options.template,<span class="string">'remove'</span>);
+0411 tpl = set(tpl,<span class="string">'file'</span>,<span class="string">'TPL_MASTER'</span>,tpl_master);
+0412 tpl = set(tpl,<span class="string">'block'</span>,<span class="string">'TPL_MASTER'</span>,<span class="string">'rowdir'</span>,<span class="string">'rowdirs'</span>);
+0413 tpl = set(tpl,<span class="string">'block'</span>,<span class="string">'TPL_MASTER'</span>,<span class="string">'idrow'</span>,<span class="string">'idrows'</span>);
+0414 tpl = set(tpl,<span class="string">'block'</span>,<span class="string">'idrow'</span>,<span class="string">'idcolumn'</span>,<span class="string">'idcolumns'</span>);
+0415 
+0416 <span class="comment">%- Open for writing the HTML master index file</span>
+0417 curfile = fullfile(options.htmlDir,[options.indexFile options.extension]);
+0418 <span class="keyword">if</span> options.verbose
+0419     fprintf(<span class="string">'Creating HTML file %s...\n'</span>,curfile);
+0420 <span class="keyword">end</span>
+0421 fid = openfile(curfile,<span class="string">'w'</span>);
+0422 
+0423 <span class="comment">%- Set some template variables</span>
+0424 tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'DATE'</span>,[datestr(now,8) <span class="string">' '</span> datestr(now,1) <span class="string">' '</span> <span class="keyword">...</span>
+0425                             datestr(now,13)]);
+0426 tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'MASTERPATH'</span>,       <span class="string">'./'</span>);
+0427 tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'DIRS'</span>,    sprintf(<span class="string">'%s '</span>,mdir{:}));
+0428 
+0429 <span class="comment">%- Print list of unique directories</span>
+0430 <span class="keyword">for</span> i=1:length(mdir)
+0431     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'L_DIR'</span>,<span class="keyword">...</span>
+0432               <a href="#_sub5" class="code" title="subfunction f = fullurl(varargin)">fullurl</a>(mdir{i},[options.indexFile options.extension]));
+0433     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'DIR'</span>,mdir{i});
+0434     tpl = parse(tpl,<span class="string">'rowdirs'</span>,<span class="string">'rowdir'</span>,1);
+0435 <span class="keyword">end</span>
+0436 
+0437 <span class="comment">%- Print full list of M-files (sorted by column)</span>
+0438 [sortnames, ind] = sort(names);
+0439 m_mod = mod(length(sortnames), tpl_master_identifier_nbyline);
+0440 ind = [ind zeros(1,tpl_master_identifier_nbyline-m_mod)];
+0441 m_floor = floor(length(ind) / tpl_master_identifier_nbyline);
+0442 ind = reshape(ind,m_floor,tpl_master_identifier_nbyline)';
+0443 
+0444 <span class="keyword">for</span> i=1:prod(size(ind))
+0445     <span class="keyword">if</span> ind(i)
+0446         tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'L_IDNAME'</span>,<span class="keyword">...</span>
+0447             <a href="#_sub5" class="code" title="subfunction f = fullurl(varargin)">fullurl</a>(mdirs{ind(i)},[names{ind(i)} options.extension]));
+0448         tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'T_IDNAME'</span>,mdirs{ind(i)});
+0449         tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'IDNAME'</span>,names{ind(i)});
+0450         tpl = parse(tpl,<span class="string">'idcolumns'</span>,<span class="string">'idcolumn'</span>,1);
+0451     <span class="keyword">else</span>
+0452         tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'L_IDNAME'</span>,<span class="string">''</span>);
+0453         tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'T_IDNAME'</span>,<span class="string">''</span>);
+0454         tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'IDNAME'</span>,<span class="string">''</span>);
+0455         tpl = parse(tpl,<span class="string">'idcolumns'</span>,<span class="string">'idcolumn'</span>,1);
+0456     <span class="keyword">end</span>
+0457     <span class="keyword">if</span> mod(i,tpl_master_identifier_nbyline) == 0
+0458         tpl = parse(tpl,<span class="string">'idrows'</span>,<span class="string">'idrow'</span>,1);
+0459         tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'idcolumns'</span>,<span class="string">''</span>);
+0460     <span class="keyword">end</span>
+0461 <span class="keyword">end</span>
+0462 
+0463 <span class="comment">%- Print the template in the HTML file</span>
+0464 tpl = parse(tpl,<span class="string">'OUT'</span>,<span class="string">'TPL_MASTER'</span>);
+0465 fprintf(fid,<span class="string">'%s'</span>,get(tpl,<span class="string">'OUT'</span>));
+0466 fclose(fid);
+0467 
+0468 <span class="comment">%-------------------------------------------------------------------------------</span>
+0469 <span class="comment">%- Copy template files (CSS, images, ...)</span>
+0470 <span class="comment">%-------------------------------------------------------------------------------</span>
+0471 <span class="comment">% Get list of files</span>
+0472 d = dir(options.template);
+0473 d = {d(~[d.isdir]).name};
+0474 <span class="comment">% Copy files</span>
+0475 <span class="keyword">for</span> i=1:length(d)
+0476     [p, n, ext] = fileparts(d{i});
+0477     <span class="keyword">if</span> ~strcmp(ext,<span class="string">'.tpl'</span>) <span class="comment">% do not copy .tpl files</span>
+0478         <span class="keyword">if</span> ~(exist(fullfile(options.htmlDir,d{i})))
+0479             <span class="keyword">if</span> options.verbose
+0480                 fprintf(<span class="string">'Copying template file %s...\n'</span>,d{i});
+0481             <span class="keyword">end</span>
+0482             [status, errmsg] = copyfile(fullfile(options.template,d{i}),<span class="keyword">...</span>
+0483                                         options.htmlDir);
+0484             error(errmsg);
+0485         <span class="keyword">end</span>
+0486     <span class="keyword">end</span>
+0487 <span class="keyword">end</span>
+0488 
+0489 <span class="comment">%-------------------------------------------------------------------------------</span>
+0490 <span class="comment">%- Write an index for each output directory</span>
+0491 <span class="comment">%-------------------------------------------------------------------------------</span>
+0492 tpl_mdir = <span class="string">'mdir.tpl'</span>;
+0493 tpl_mdir_link = <span class="string">'&lt;a href=&quot;%s&quot;&gt;%s&lt;/a&gt;'</span>;
+0494 dotbase = <span class="string">'graph'</span>;
+0495 
+0496 <span class="comment">%- Create the HTML template</span>
+0497 tpl = template(options.template,<span class="string">'remove'</span>);
+0498 tpl = set(tpl,<span class="string">'file'</span>,<span class="string">'TPL_MDIR'</span>,tpl_mdir);
+0499 tpl = set(tpl,<span class="string">'block'</span>,<span class="string">'TPL_MDIR'</span>,<span class="string">'row-m'</span>,<span class="string">'rows-m'</span>);
+0500 tpl = set(tpl,<span class="string">'block'</span>,<span class="string">'row-m'</span>,<span class="string">'mexfile'</span>,<span class="string">'mex'</span>);
+0501 tpl = set(tpl,<span class="string">'block'</span>,<span class="string">'TPL_MDIR'</span>,<span class="string">'othermatlab'</span>,<span class="string">'other'</span>);
+0502 tpl = set(tpl,<span class="string">'block'</span>,<span class="string">'othermatlab'</span>,<span class="string">'row-other'</span>,<span class="string">'rows-other'</span>);
+0503 tpl = set(tpl,<span class="string">'block'</span>,<span class="string">'TPL_MDIR'</span>,<span class="string">'subfolder'</span>,<span class="string">'subfold'</span>);
+0504 tpl = set(tpl,<span class="string">'block'</span>,<span class="string">'subfolder'</span>,<span class="string">'subdir'</span>,<span class="string">'subdirs'</span>);
+0505 tpl = set(tpl,<span class="string">'block'</span>,<span class="string">'TPL_MDIR'</span>,<span class="string">'todolist'</span>,<span class="string">'todolists'</span>);
+0506 tpl = set(tpl,<span class="string">'block'</span>,<span class="string">'TPL_MDIR'</span>,<span class="string">'graph'</span>,<span class="string">'graphs'</span>);
+0507 tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'DATE'</span>,[datestr(now,8) <span class="string">' '</span> datestr(now,1) <span class="string">' '</span> <span class="keyword">...</span>
+0508                             datestr(now,13)]);
+0509 
+0510 <span class="keyword">for</span> i=1:length(mdir)
+0511     <span class="comment">%- Open for writing each output directory index file</span>
+0512     curfile = fullfile(options.htmlDir,mdir{i},<span class="keyword">...</span>
+0513                        [options.indexFile options.extension]);
+0514     <span class="keyword">if</span> options.verbose
+0515         fprintf(<span class="string">'Creating HTML file %s...\n'</span>,curfile);
+0516     <span class="keyword">end</span>
+0517     fid = openfile(curfile,<span class="string">'w'</span>);
+0518 
+0519     <span class="comment">%- Set template fields</span>
+0520     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'INDEX'</span>,     [options.indexFile options.extension]);
+0521     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'MASTERPATH'</span>,<a href="#_sub2" class="code" title="subfunction s = backtomaster(mdir)">backtomaster</a>(mdir{i}));
+0522     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'MDIR'</span>,      mdir{i});
+0523     
+0524     <span class="comment">%- Display Matlab m-files, their H1 line and their Mex status</span>
+0525     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'rows-m'</span>,<span class="string">''</span>);
+0526     <span class="keyword">for</span> j=1:length(mdirs)
+0527         <span class="keyword">if</span> strcmp(mdirs{j},mdir{i})
+0528             tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'L_NAME'</span>, [names{j} options.extension]);
+0529             tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'NAME'</span>,   names{j});
+0530             tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'H1LINE'</span>, h1line{j});
+0531             <span class="keyword">if</span> any(ismex(j,:))
+0532                 tpl = parse(tpl,<span class="string">'mex'</span>,<span class="string">'mexfile'</span>);
+0533             <span class="keyword">else</span>
+0534                 tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'mex'</span>,<span class="string">''</span>);
+0535             <span class="keyword">end</span>
+0536             tpl = parse(tpl,<span class="string">'rows-m'</span>,<span class="string">'row-m'</span>,1);
+0537         <span class="keyword">end</span>
+0538     <span class="keyword">end</span>
+0539     
+0540     <span class="comment">%- Display other Matlab-specific files (.mat,.mdl,.p)</span>
+0541     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'other'</span>,<span class="string">''</span>);
+0542     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'rows-other'</span>,<span class="string">''</span>);
+0543     w = what(mdir{i}); w = w(1);
+0544     w = {w.mat{:} w.mdl{:} w.p{:}};
+0545     <span class="keyword">for</span> j=1:length(w)
+0546         tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'OTHERFILE'</span>,w{j});
+0547         tpl = parse(tpl,<span class="string">'rows-other'</span>,<span class="string">'row-other'</span>,1);
+0548     <span class="keyword">end</span>
+0549     <span class="keyword">if</span> ~isempty(w)
+0550         tpl = parse(tpl,<span class="string">'other'</span>,<span class="string">'othermatlab'</span>);
+0551     <span class="keyword">end</span>
+0552     
+0553     <span class="comment">%- Display subsequent directories and classes</span>
+0554     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'subdirs'</span>,<span class="string">''</span>);
+0555     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'subfold'</span>,<span class="string">''</span>);
+0556     d = dir(mdir{i});
+0557     d = {d([d.isdir]).name};
+0558     d = {d{~ismember(d,{<span class="string">'.'</span> <span class="string">'..'</span>})}};
+0559     <span class="keyword">for</span> j=1:length(d)
+0560         <span class="keyword">if</span> ismember(fullfile(mdir{i},d{j}),mdir)
+0561             tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'SUBDIRECTORY'</span>,<span class="keyword">...</span>
+0562                 sprintf(tpl_mdir_link,<span class="keyword">...</span>
+0563                 <a href="#_sub5" class="code" title="subfunction f = fullurl(varargin)">fullurl</a>(d{j},[options.indexFile options.extension]),d{j}));
+0564         <span class="keyword">else</span>
+0565             tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'SUBDIRECTORY'</span>,d{j});
+0566         <span class="keyword">end</span>
+0567         tpl = parse(tpl,<span class="string">'subdirs'</span>,<span class="string">'subdir'</span>,1);
+0568     <span class="keyword">end</span>
+0569     <span class="keyword">if</span> ~isempty(d)
+0570         tpl = parse(tpl,<span class="string">'subfold'</span>,<span class="string">'subfolder'</span>);
+0571     <span class="keyword">end</span>
+0572     
+0573     <span class="comment">%- Link to the TODO list if necessary</span>
+0574     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'todolists'</span>,<span class="string">''</span>);
+0575     <span class="keyword">if</span> options.todo
+0576         <span class="keyword">if</span> ~isempty(intersect(find(strcmp(mdir{i},mdirs)),todo.mfile))
+0577             tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'LTODOLIST'</span>,[<span class="string">'todo'</span> options.extension]);
+0578             tpl = parse(tpl,<span class="string">'todolists'</span>,<span class="string">'todolist'</span>,1);
+0579         <span class="keyword">end</span>
+0580     <span class="keyword">end</span>
+0581     
+0582     <span class="comment">%- Link to the dependency graph if necessary</span>
+0583     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'graphs'</span>,<span class="string">''</span>);
+0584     <span class="keyword">if</span> options.graph
+0585         tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'LGRAPH'</span>,[dotbase options.extension]);
+0586         tpl = parse(tpl,<span class="string">'graphs'</span>,<span class="string">'graph'</span>,1);
+0587     <span class="keyword">end</span>
+0588     
+0589     <span class="comment">%- Print the template in the HTML file</span>
+0590     tpl = parse(tpl,<span class="string">'OUT'</span>,<span class="string">'TPL_MDIR'</span>);
+0591     fprintf(fid,<span class="string">'%s'</span>,get(tpl,<span class="string">'OUT'</span>));
+0592     fclose(fid);
+0593 <span class="keyword">end</span>
+0594 
+0595 <span class="comment">%-------------------------------------------------------------------------------</span>
+0596 <span class="comment">%- Write a TODO list file for each output directory, if necessary</span>
+0597 <span class="comment">%-------------------------------------------------------------------------------</span>
+0598 tpl_todo = <span class="string">'todo.tpl'</span>;
+0599 
+0600 <span class="keyword">if</span> options.todo
+0601     <span class="comment">%- Create the HTML template</span>
+0602     tpl = template(options.template,<span class="string">'remove'</span>);
+0603     tpl = set(tpl,<span class="string">'file'</span>,<span class="string">'TPL_TODO'</span>,tpl_todo);
+0604     tpl = set(tpl,<span class="string">'block'</span>,<span class="string">'TPL_TODO'</span>,<span class="string">'filelist'</span>,<span class="string">'filelists'</span>);
+0605     tpl = set(tpl,<span class="string">'block'</span>,<span class="string">'filelist'</span>,<span class="string">'row'</span>,<span class="string">'rows'</span>);
+0606     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'DATE'</span>,[datestr(now,8) <span class="string">' '</span> datestr(now,1) <span class="string">' '</span> <span class="keyword">...</span>
+0607                                 datestr(now,13)]);
+0608 
+0609     <span class="keyword">for</span> i=1:length(mdir)
+0610         mfilestodo = intersect(find(strcmp(mdir{i},mdirs)),todo.mfile);
+0611         <span class="keyword">if</span> ~isempty(mfilestodo)
+0612             <span class="comment">%- Open for writing each TODO list file</span>
+0613             curfile = fullfile(options.htmlDir,mdir{i},<span class="keyword">...</span>
+0614                                [<span class="string">'todo'</span> options.extension]);
+0615             <span class="keyword">if</span> options.verbose
+0616                 fprintf(<span class="string">'Creating HTML file %s...\n'</span>,curfile);
+0617             <span class="keyword">end</span>
+0618             fid = openfile(curfile,<span class="string">'w'</span>);
+0619             
+0620             <span class="comment">%- Set template fields</span>
+0621             tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'INDEX'</span>,[options.indexFile options.extension]);
+0622             tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'MASTERPATH'</span>, <a href="#_sub2" class="code" title="subfunction s = backtomaster(mdir)">backtomaster</a>(mdir{i}));
+0623             tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'MDIR'</span>,       mdir{i});
+0624             tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'filelists'</span>,  <span class="string">''</span>);
+0625     
+0626             <span class="keyword">for</span> k=1:length(mfilestodo)
+0627                 tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'MFILE'</span>,names{mfilestodo(k)});
+0628                 tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'rows'</span>,<span class="string">''</span>);
+0629                 nbtodo = find(todo.mfile == mfilestodo(k));
+0630                 <span class="keyword">for</span> l=1:length(nbtodo)
+0631                     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'L_NBLINE'</span>,<span class="keyword">...</span>
+0632                         [names{mfilestodo(k)} <span class="keyword">...</span>
+0633                             options.extension <span class="keyword">...</span>
+0634                             <span class="string">'#l'</span> num2str(todo.line(nbtodo(l)))]);
+0635                     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'NBLINE'</span>,num2str(todo.line(nbtodo(l))));
+0636                     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'COMMENT'</span>,todo.comment{nbtodo(l)});
+0637                     tpl = parse(tpl,<span class="string">'rows'</span>,<span class="string">'row'</span>,1);
+0638                 <span class="keyword">end</span>
+0639                 tpl = parse(tpl,<span class="string">'filelists'</span>,<span class="string">'filelist'</span>,1);
+0640             <span class="keyword">end</span>
+0641     
+0642             <span class="comment">%- Print the template in the HTML file</span>
+0643             tpl = parse(tpl,<span class="string">'OUT'</span>,<span class="string">'TPL_TODO'</span>);
+0644             fprintf(fid,<span class="string">'%s'</span>,get(tpl,<span class="string">'OUT'</span>));
+0645             fclose(fid);
+0646         <span class="keyword">end</span>
+0647     <span class="keyword">end</span>
+0648 <span class="keyword">end</span>
+0649 
+0650 <span class="comment">%-------------------------------------------------------------------------------</span>
+0651 <span class="comment">%- Create a dependency graph for each output directory, if requested</span>
+0652 <span class="comment">%-------------------------------------------------------------------------------</span>
+0653 tpl_graph = <span class="string">'graph.tpl'</span>;
+0654 dot_exec  = <span class="string">'dot'</span>;
+0655 <span class="comment">%dotbase defined earlier</span>
+0656 
+0657 <span class="keyword">if</span> options.graph
+0658     <span class="comment">%- Create the HTML template</span>
+0659     tpl = template(options.template,<span class="string">'remove'</span>);
+0660     tpl = set(tpl,<span class="string">'file'</span>,<span class="string">'TPL_GRAPH'</span>,tpl_graph);
+0661     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'DATE'</span>,[datestr(now,8) <span class="string">' '</span> datestr(now,1) <span class="string">' '</span> <span class="keyword">...</span>
+0662                                 datestr(now,13)]);
+0663     
+0664     <span class="keyword">for</span> i=1:length(mdir)
+0665         mdotfile = fullfile(options.htmlDir,mdir{i},[dotbase <span class="string">'.dot'</span>]);
+0666         <span class="keyword">if</span> options.verbose
+0667             fprintf(<span class="string">'Creating dependency graph %s...'</span>,mdotfile);
+0668         <span class="keyword">end</span>
+0669         ind = find(strcmp(mdirs,mdir{i}));
+0670         <span class="comment">%ind = find(strncmp(mdirs,mdir{i},length(mdir{i}))); %R.F.</span>
+0671         href1 = zeros(length(ind),length(hrefs));
+0672         <span class="keyword">for</span> j=1:length(hrefs), href1(:,j) = hrefs(ind,j); <span class="keyword">end</span>
+0673         href2 = zeros(length(ind));
+0674         <span class="keyword">for</span> j=1:length(ind), href2(j,:) = href1(j,ind); <span class="keyword">end</span>
+0675         <a href="mdot.html" class="code" title="function mdot(mmat, dotfile,f)">mdot</a>({href2,{names{ind}},options,{mfiles{ind}}}, mdotfile);
+0676         <span class="comment">%mdot({href2,{names{ind}},options,{mfiles{ind}}},mdotfile,mdir{i});%R.F.</span>
+0677         <span class="keyword">try</span>
+0678             <span class="comment">%- see &lt;http://www.research.att.com/sw/tools/graphviz/&gt;</span>
+0679             <span class="comment">%  &lt;dot&gt; must be in your system path:</span>
+0680             <span class="comment">%    - on Linux, modify $PATH accordingly</span>
+0681             <span class="comment">%    - on Windows, modify the environment variable PATH like this:</span>
+0682             
+0683 <span class="comment">% From the Start-menu open the Control Panel, open 'System' and activate the</span>
+0684 <span class="comment">% panel named 'Extended'. Open the dialog 'Environment Variables'. Select the</span>
+0685 <span class="comment">% variable 'Path' of the panel 'System Variables' and press the 'Modify button.</span>
+0686 <span class="comment">% Then add 'C:\GraphViz\bin' to your current definition of PATH, assuming that</span>
+0687 <span class="comment">% you did install GraphViz into directory 'C:\GraphViz'. Note that the various</span>
+0688 <span class="comment">% paths in PATH have to be separated by a colon. Her is an example how the final</span>
+0689 <span class="comment">% Path should look like:  ...;C:\WINNT\System32;...;C:\GraphViz\bin</span>
+0690 <span class="comment">% (Note that this should have been done automatically during GraphViz installation)</span>
+0691 
+0692             eval([<span class="string">'!'</span> dot_exec <span class="string">' -Tcmap -Tpng '</span> mdotfile <span class="keyword">...</span>
+0693                 <span class="string">' -o '</span> fullfile(options.htmlDir,mdir{i},[dotbase <span class="string">'.map'</span>]) <span class="keyword">...</span><span class="comment"> </span>
+0694                 <span class="string">' -o '</span> fullfile(options.htmlDir,mdir{i},[dotbase <span class="string">'.png'</span>])])
+0695             <span class="comment">% use '!' rather than 'system' for backward compability</span>
+0696         <span class="keyword">catch</span>
+0697             fprintf(<span class="string">'failed.'</span>);
+0698         <span class="keyword">end</span>
+0699         fprintf(<span class="string">'\n'</span>);
+0700         fid = openfile(fullfile(options.htmlDir,mdir{i},<span class="keyword">...</span>
+0701             [dotbase options.extension]),<span class="string">'w'</span>);
+0702         tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'INDEX'</span>,[options.indexFile options.extension]);
+0703         tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'MASTERPATH'</span>, <a href="#_sub2" class="code" title="subfunction s = backtomaster(mdir)">backtomaster</a>(mdir{i}));
+0704         tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'MDIR'</span>,       mdir{i});
+0705         tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'GRAPH_IMG'</span>,  [dotbase <span class="string">'.png'</span>]);
+0706         fmap = openfile(fullfile(options.htmlDir,mdir{i},[dotbase <span class="string">'.map'</span>]),<span class="string">'r'</span>);
+0707         tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'GRAPH_MAP'</span>,  fscanf(fmap,<span class="string">'%c'</span>));
+0708         fclose(fmap);
+0709         tpl = parse(tpl,<span class="string">'OUT'</span>,<span class="string">'TPL_GRAPH'</span>);
+0710         fprintf(fid,<span class="string">'%s'</span>, get(tpl,<span class="string">'OUT'</span>));
+0711         fclose(fid);
+0712     <span class="keyword">end</span>
+0713 <span class="keyword">end</span>
+0714 
+0715 <span class="comment">%-------------------------------------------------------------------------------</span>
+0716 <span class="comment">%- Write an HTML file for each M-file</span>
+0717 <span class="comment">%-------------------------------------------------------------------------------</span>
+0718 <span class="comment">%- List of Matlab keywords (output from iskeyword)</span>
+0719 matlabKeywords = {<span class="string">'break'</span>, <span class="string">'case'</span>, <span class="string">'catch'</span>, <span class="string">'continue'</span>, <span class="string">'elseif'</span>, <span class="string">'else'</span>, <span class="keyword">...</span>
+0720                   <span class="string">'end'</span>, <span class="string">'for'</span>, <span class="string">'function'</span>, <span class="string">'global'</span>, <span class="string">'if'</span>, <span class="string">'otherwise'</span>, <span class="keyword">...</span>
+0721                   <span class="string">'persistent'</span>, <span class="string">'return'</span>, <span class="string">'switch'</span>, <span class="string">'try'</span>, <span class="string">'while'</span>};
+0722                   <span class="comment">%'keyboard', 'pause', 'eps', 'NaN', 'Inf'</span>
+0723 
+0724 tpl_mfile = <span class="string">'mfile.tpl'</span>;
+0725 
+0726 tpl_mfile_code     = <span class="string">'&lt;a href=&quot;%s&quot; class=&quot;code&quot; title=&quot;%s&quot;&gt;%s&lt;/a&gt;'</span>;
+0727 tpl_mfile_keyword  = <span class="string">'&lt;span class=&quot;keyword&quot;&gt;%s&lt;/span&gt;'</span>;
+0728 tpl_mfile_comment  = <span class="string">'&lt;span class=&quot;comment&quot;&gt;%s&lt;/span&gt;'</span>;
+0729 tpl_mfile_string   = <span class="string">'&lt;span class=&quot;string&quot;&gt;%s&lt;/span&gt;'</span>;
+0730 tpl_mfile_aname    = <span class="string">'&lt;a name=&quot;%s&quot; href=&quot;#_subfunctions&quot; class=&quot;code&quot;&gt;%s&lt;/a&gt;'</span>;
+0731 tpl_mfile_line     = <span class="string">'%04d %s\n'</span>;
+0732 
+0733 <span class="comment">%- Delimiters used in strtok: some of them may be useless (% &quot; .), removed '.'</span>
+0734 strtok_delim = sprintf(<span class="string">' \t\n\r(){}[]&lt;&gt;+-*~!|\\@&amp;/,:;=&quot;''%%'</span>);
+0735 
+0736 <span class="comment">%- Create the HTML template</span>
+0737 tpl = template(options.template,<span class="string">'remove'</span>);
+0738 tpl = set(tpl,<span class="string">'file'</span>,<span class="string">'TPL_MFILE'</span>,tpl_mfile);
+0739 tpl = set(tpl,<span class="string">'block'</span>,<span class="string">'TPL_MFILE'</span>,<span class="string">'pathline'</span>,<span class="string">'pl'</span>);
+0740 tpl = set(tpl,<span class="string">'block'</span>,<span class="string">'TPL_MFILE'</span>,<span class="string">'mexfile'</span>,<span class="string">'mex'</span>);
+0741 tpl = set(tpl,<span class="string">'block'</span>,<span class="string">'TPL_MFILE'</span>,<span class="string">'script'</span>,<span class="string">'scriptfile'</span>);
+0742 tpl = set(tpl,<span class="string">'block'</span>,<span class="string">'TPL_MFILE'</span>,<span class="string">'crossrefcall'</span>,<span class="string">'crossrefcalls'</span>);
+0743 tpl = set(tpl,<span class="string">'block'</span>,<span class="string">'TPL_MFILE'</span>,<span class="string">'crossrefcalled'</span>,<span class="string">'crossrefcalleds'</span>);
+0744 tpl = set(tpl,<span class="string">'block'</span>,<span class="string">'TPL_MFILE'</span>,<span class="string">'subfunction'</span>,<span class="string">'subf'</span>);
+0745 tpl = set(tpl,<span class="string">'block'</span>,<span class="string">'subfunction'</span>,<span class="string">'onesubfunction'</span>,<span class="string">'onesubf'</span>);
+0746 tpl = set(tpl,<span class="string">'block'</span>,<span class="string">'TPL_MFILE'</span>,<span class="string">'source'</span>,<span class="string">'thesource'</span>);
+0747 tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'DATE'</span>,[datestr(now,8) <span class="string">' '</span> datestr(now,1) <span class="string">' '</span> <span class="keyword">...</span>
+0748                             datestr(now,13)]);
+0749 
+0750 <span class="keyword">for</span> i=1:length(mdir)
+0751     <span class="keyword">for</span> j=1:length(mdirs)
+0752         <span class="keyword">if</span> strcmp(mdirs{j},mdir{i})
+0753         
+0754             curfile = fullfile(options.htmlDir,mdir{i},<span class="keyword">...</span>
+0755                                [names{j} options.extension]);
+0756 
+0757             <span class="comment">%- Open for writing the HTML file</span>
+0758             <span class="keyword">if</span> options.verbose
+0759                 fprintf(<span class="string">'Creating HTML file %s...\n'</span>,curfile);
+0760             <span class="keyword">end</span>
+0761             fid = openfile(curfile,<span class="string">'w'</span>);
+0762             
+0763             <span class="comment">%- Open for reading the M-file</span>
+0764             fid2 = openfile(mfiles{j},<span class="string">'r'</span>);
+0765             
+0766             <span class="comment">%- Set some template fields</span>
+0767             tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'INDEX'</span>, [options.indexFile options.extension]);
+0768             tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'MASTERPATH'</span>,       <a href="#_sub2" class="code" title="subfunction s = backtomaster(mdir)">backtomaster</a>(mdir{i}));
+0769             tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'MDIR'</span>,             mdirs{j});
+0770             tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'NAME'</span>,             names{j});
+0771             tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'H1LINE'</span>,           h1line{j});
+0772             tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'scriptfile'</span>,       <span class="string">''</span>);
+0773             <span class="keyword">if</span> isempty(synopsis{j})
+0774                 tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'SYNOPSIS'</span>,get(tpl,<span class="string">'var'</span>,<span class="string">'script'</span>));
+0775             <span class="keyword">else</span>
+0776                 tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'SYNOPSIS'</span>, synopsis{j});
+0777             <span class="keyword">end</span>
+0778             s = <a href="#_sub3" class="code" title="subfunction ldir = splitpath(p)">splitpath</a>(mdir{i});
+0779             tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'pl'</span>,<span class="string">''</span>);
+0780             <span class="keyword">for</span> k=1:length(s)
+0781                 c = cell(1,k); <span class="keyword">for</span> l=1:k, c{l} = filesep; <span class="keyword">end</span>
+0782                 cpath = {s{1:k};c{:}}; cpath = [cpath{:}];
+0783                 <span class="keyword">if</span> ~isempty(cpath), cpath = cpath(1:end-1); <span class="keyword">end</span>
+0784                 <span class="keyword">if</span> ismember(cpath,mdir)
+0785                     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'LPATHDIR'</span>,[repmat(<span class="string">'../'</span>,<span class="keyword">...</span>
+0786                         1,length(s)-k) options.indexFile options.extension]);
+0787                 <span class="keyword">else</span>
+0788                     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'LPATHDIR'</span>,<span class="string">'#'</span>);
+0789                 <span class="keyword">end</span>
+0790                 tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'PATHDIR'</span>,s{k});
+0791                 tpl = parse(tpl,<span class="string">'pl'</span>,<span class="string">'pathline'</span>,1);
+0792             <span class="keyword">end</span>
+0793             
+0794             <span class="comment">%- Handle mex files</span>
+0795             tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'mex'</span>, <span class="string">''</span>);
+0796             samename = dir(fullfile(mdir{i},[names{j}    <span class="string">'.*'</span>]));
+0797             samename = {samename.name};
+0798             <span class="keyword">for</span> k=1:length(samename)
+0799                 [dummy, dummy, ext] = fileparts(samename{k});
+0800                 <span class="keyword">switch</span> ext
+0801                     <span class="keyword">case</span> <span class="string">'.c'</span>
+0802                         tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'MEXTYPE'</span>, <span class="string">'c'</span>);
+0803                     <span class="keyword">case</span> {<span class="string">'.cpp'</span> <span class="string">'.c++'</span> <span class="string">'.cxx'</span> <span class="string">'.C'</span>}
+0804                         tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'MEXTYPE'</span>, <span class="string">'c++'</span>);
+0805                     <span class="keyword">case</span> {<span class="string">'.for'</span> <span class="string">'.f'</span> <span class="string">'.FOR'</span> <span class="string">'.F'</span>}
+0806                         tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'MEXTYPE'</span>, <span class="string">'fortran'</span>);
+0807                 <span class="keyword">end</span>
+0808             <span class="keyword">end</span>
+0809             [exts, platform] = mexexts;
+0810             mexplatforms = sprintf(<span class="string">'%s, '</span>,platform{find(ismex(j,:))});
+0811             <span class="keyword">if</span> ~isempty(mexplatforms)
+0812                 tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'PLATFORMS'</span>, mexplatforms(1:end-2));
+0813                 tpl = parse(tpl,<span class="string">'mex'</span>,<span class="string">'mexfile'</span>);
+0814             <span class="keyword">end</span>
+0815             
+0816             <span class="comment">%- Set description template field</span>
+0817             descr = <span class="string">''</span>;
+0818             flagsynopcont = 0;
+0819             flag_seealso  = 0;
+0820             <span class="keyword">while</span> 1
+0821                 tline = fgets(fid2);
+0822                 <span class="keyword">if</span> ~ischar(tline), <span class="keyword">break</span>, <span class="keyword">end</span>
+0823                 tline = <a href="#_sub6" class="code" title="subfunction str = entity(str)">entity</a>(fliplr(deblank(fliplr(tline))));
+0824                 <span class="comment">%- Synopsis line</span>
+0825                 <span class="keyword">if</span> ~isempty(strmatch(<span class="string">'function'</span>,tline))
+0826                     <span class="keyword">if</span> ~isempty(strmatch(<span class="string">'...'</span>,fliplr(deblank(tline))))
+0827                         flagsynopcont = 1;
+0828                     <span class="keyword">end</span>
+0829                 <span class="comment">%- H1 line and description</span>
+0830                 <span class="keyword">elseif</span> ~isempty(strmatch(<span class="string">'%'</span>,tline))
+0831                     <span class="comment">%- Hypertext links on the &quot;See also&quot; line</span>
+0832                     ind = findstr(lower(tline),<span class="string">'see also'</span>);
+0833                     <span class="keyword">if</span> ~isempty(ind) | flag_seealso
+0834                         <span class="comment">%- &quot;See also&quot; only in files in the same directory</span>
+0835                         indsamedir = find(strcmp(mdirs{j},mdirs));
+0836                         hrefnames = {names{indsamedir}};
+0837                         r = deblank(tline);
+0838                         flag_seealso = 1; <span class="comment">%(r(end) == ',');</span>
+0839                         tline = <span class="string">''</span>;
+0840                         <span class="keyword">while</span> 1
+0841                             [t,r,q] = strtok(r,sprintf(<span class="string">' \t\n\r.,;%%'</span>));
+0842                             tline = [tline q];
+0843                             <span class="keyword">if</span> isempty(t), <span class="keyword">break</span>, <span class="keyword">end</span>;
+0844                             ii = strcmpi(hrefnames,t);
+0845                             <span class="keyword">if</span> any(ii)
+0846                                 jj = find(ii);
+0847                                 tline = [tline sprintf(tpl_mfile_code,<span class="keyword">...</span>
+0848                                     [hrefnames{jj(1)} options.extension],<span class="keyword">...</span>
+0849                                     synopsis{indsamedir(jj(1))},t)];
+0850                             <span class="keyword">else</span>
+0851                                 tline = [tline t];
+0852                             <span class="keyword">end</span>
+0853                         <span class="keyword">end</span>
+0854                         tline = sprintf(<span class="string">'%s\n'</span>,tline);
+0855                     <span class="keyword">end</span>
+0856                     descr = [descr tline(2:end)];
+0857                 <span class="keyword">elseif</span> isempty(tline)
+0858                     <span class="keyword">if</span> ~isempty(descr), <span class="keyword">break</span>, <span class="keyword">end</span>;
+0859                 <span class="keyword">else</span>
+0860                     <span class="keyword">if</span> flagsynopcont
+0861                         <span class="keyword">if</span> isempty(strmatch(<span class="string">'...'</span>,fliplr(deblank(tline))))
+0862                             flagsynopcont = 0;
+0863                         <span class="keyword">end</span>
+0864                     <span class="keyword">else</span>
+0865                         <span class="keyword">break</span>;
+0866                     <span class="keyword">end</span>
+0867                 <span class="keyword">end</span>
+0868             <span class="keyword">end</span>
+0869             tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'DESCRIPTION'</span>,<span class="keyword">...</span>
+0870                 <a href="#_sub7" class="code" title="subfunction str = horztab(str,n)">horztab</a>(descr,options.tabs));
+0871             
+0872             <span class="comment">%- Set cross-references template fields:</span>
+0873             <span class="comment">%  Function called</span>
+0874             ind = find(hrefs(j,:) == 1);
+0875             tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'crossrefcalls'</span>,<span class="string">''</span>);
+0876             <span class="keyword">for</span> k=1:length(ind)
+0877                 <span class="keyword">if</span> strcmp(mdirs{j},mdirs{ind(k)})
+0878                     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'L_NAME_CALL'</span>, <span class="keyword">...</span>
+0879                         [names{ind(k)} options.extension]);
+0880                 <span class="keyword">else</span>
+0881                     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'L_NAME_CALL'</span>, <span class="keyword">...</span>
+0882                               <a href="#_sub5" class="code" title="subfunction f = fullurl(varargin)">fullurl</a>(<a href="#_sub2" class="code" title="subfunction s = backtomaster(mdir)">backtomaster</a>(mdirs{j}), <span class="keyword">...</span>
+0883                                          mdirs{ind(k)}, <span class="keyword">...</span>
+0884                                        [names{ind(k)} options.extension]));
+0885                 <span class="keyword">end</span>
+0886                 tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'SYNOP_CALL'</span>,   synopsis{ind(k)});
+0887                 tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'NAME_CALL'</span>,   names{ind(k)});
+0888                 tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'H1LINE_CALL'</span>, h1line{ind(k)});
+0889                 tpl = parse(tpl,<span class="string">'crossrefcalls'</span>,<span class="string">'crossrefcall'</span>,1);
+0890             <span class="keyword">end</span>
+0891             <span class="comment">%  Callers</span>
+0892             ind = find(hrefs(:,j) == 1);
+0893             tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'crossrefcalleds'</span>,<span class="string">''</span>);
+0894             <span class="keyword">for</span> k=1:length(ind)
+0895                 <span class="keyword">if</span> strcmp(mdirs{j},mdirs{ind(k)})
+0896                     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'L_NAME_CALLED'</span>, <span class="keyword">...</span>
+0897                         [names{ind(k)} options.extension]);
+0898                 <span class="keyword">else</span>
+0899                     tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'L_NAME_CALLED'</span>, <span class="keyword">...</span>
+0900                         <a href="#_sub5" class="code" title="subfunction f = fullurl(varargin)">fullurl</a>(<a href="#_sub2" class="code" title="subfunction s = backtomaster(mdir)">backtomaster</a>(mdirs{j}),<span class="keyword">...</span>
+0901                             mdirs{ind(k)}, <span class="keyword">...</span>
+0902                             [names{ind(k)} options.extension]));
+0903                 <span class="keyword">end</span>
+0904                 tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'SYNOP_CALLED'</span>,   synopsis{ind(k)});
+0905                 tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'NAME_CALLED'</span>,   names{ind(k)});
+0906                 tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'H1LINE_CALLED'</span>, h1line{ind(k)});
+0907                 tpl = parse(tpl,<span class="string">'crossrefcalleds'</span>,<span class="string">'crossrefcalled'</span>,1);
+0908             <span class="keyword">end</span>
+0909             
+0910             <span class="comment">%- Set subfunction template field</span>
+0911             tpl = set(tpl,<span class="string">'var'</span>,{<span class="string">'subf'</span> <span class="string">'onesubf'</span>},{<span class="string">''</span> <span class="string">''</span>});
+0912             <span class="keyword">if</span> ~isempty(subroutine{j}) &amp; options.source
+0913                 <span class="keyword">for</span> k=1:length(subroutine{j})
+0914                     tpl = set(tpl, <span class="string">'var'</span>, <span class="string">'L_SUB'</span>, [<span class="string">'#_sub'</span> num2str(k)]);
+0915                     tpl = set(tpl, <span class="string">'var'</span>, <span class="string">'SUB'</span>,   subroutine{j}{k});
+0916                     tpl = parse(tpl, <span class="string">'onesubf'</span>, <span class="string">'onesubfunction'</span>,1);
+0917                 <span class="keyword">end</span>
+0918                 tpl = parse(tpl,<span class="string">'subf'</span>,<span class="string">'subfunction'</span>);
+0919             <span class="keyword">end</span>
+0920             subname = <a href="#_sub4" class="code" title="subfunction name = extractname(synopsis)">extractname</a>(subroutine{j});
+0921             
+0922             <span class="comment">%- Display source code with cross-references</span>
+0923             <span class="keyword">if</span> options.source &amp; ~strcmpi(names{j},<span class="string">'contents'</span>)
+0924                 fseek(fid2,0,-1);
+0925                 it = 1;
+0926                 matlabsource = <span class="string">''</span>;
+0927                 nbsubroutine = 1;
+0928                 <span class="comment">%- Get href function names of this file</span>
+0929                 indhrefnames = find(hrefs(j,:) == 1);
+0930                 hrefnames = {names{indhrefnames}};
+0931                 <span class="comment">%- Loop over lines</span>
+0932                 <span class="keyword">while</span> 1
+0933                     tline = fgetl(fid2);
+0934                     <span class="keyword">if</span> ~ischar(tline), <span class="keyword">break</span>, <span class="keyword">end</span>
+0935                     myline = <span class="string">''</span>;
+0936                     splitc = splitcode(<a href="#_sub6" class="code" title="subfunction str = entity(str)">entity</a>(tline));
+0937                     <span class="keyword">for</span> k=1:length(splitc)
+0938                         <span class="keyword">if</span> isempty(splitc{k})
+0939                         <span class="keyword">elseif</span> ~isempty(strmatch(<span class="string">'function'</span>,splitc{k}))
+0940                             <span class="comment">%- Subfunctions definition</span>
+0941                             myline = [myline <span class="keyword">...</span>
+0942                                 sprintf(tpl_mfile_aname,<span class="keyword">...</span>
+0943                                     [<span class="string">'_sub'</span> num2str(nbsubroutine-1)],splitc{k})];
+0944                             nbsubroutine = nbsubroutine + 1;
+0945                         <span class="keyword">elseif</span> splitc{k}(1) == <span class="string">''''</span>
+0946                             myline = [myline <span class="keyword">...</span>
+0947                                 sprintf(tpl_mfile_string,splitc{k})];
+0948                         <span class="keyword">elseif</span> splitc{k}(1) == <span class="string">'%'</span>
+0949                             myline = [myline <span class="keyword">...</span>
+0950                                 sprintf(tpl_mfile_comment,deblank(splitc{k}))];
+0951                         <span class="keyword">elseif</span> ~isempty(strmatch(<span class="string">'...'</span>,splitc{k}))
+0952                             myline = [myline sprintf(tpl_mfile_keyword,<span class="string">'...'</span>)];
+0953                             <span class="keyword">if</span> ~isempty(splitc{k}(4:end))
+0954                                 myline = [myline <span class="keyword">...</span>
+0955                                     sprintf(tpl_mfile_comment,splitc{k}(4:end))];
+0956                             <span class="keyword">end</span>
+0957                         <span class="keyword">else</span>
+0958                             <span class="comment">%- Look for keywords</span>
+0959                             r = splitc{k};
+0960                             <span class="keyword">while</span> 1
+0961                                 [t,r,q] = strtok(r,strtok_delim);
+0962                                 myline = [myline q];
+0963                                 <span class="keyword">if</span> isempty(t), <span class="keyword">break</span>, <span class="keyword">end</span>;
+0964                                 <span class="comment">%- Highlight Matlab keywords &amp;</span>
+0965                                 <span class="comment">%  cross-references on known functions</span>
+0966                                 <span class="keyword">if</span> options.syntaxHighlighting &amp; <span class="keyword">...</span>
+0967                                         any(strcmp(matlabKeywords,t))
+0968                                     <span class="keyword">if</span> strcmp(<span class="string">'end'</span>,t)
+0969                                         rr = fliplr(deblank(fliplr(r)));
+0970                                         icomma = strmatch(<span class="string">','</span>,rr);
+0971                                         isemicolon = strmatch(<span class="string">';'</span>,rr);
+0972                                         <span class="keyword">if</span> ~(isempty(rr) | ~isempty([icomma isemicolon]))
+0973                                             myline = [myline t];
+0974                                         <span class="keyword">else</span>
+0975                                             myline = [myline sprintf(tpl_mfile_keyword,t)];
+0976                                         <span class="keyword">end</span>
+0977                                     <span class="keyword">else</span>
+0978                                         myline = [myline sprintf(tpl_mfile_keyword,t)];
+0979                                     <span class="keyword">end</span>
+0980                                 <span class="keyword">elseif</span> any(strcmp(hrefnames,t))
+0981                                     indt = indhrefnames(logical(strcmp(hrefnames,t)));
+0982                                     flink = [t options.extension];
+0983                                     ii = ismember({mdirs{indt}},mdirs{j});
+0984                                     <span class="keyword">if</span> ~any(ii)
+0985                                         <span class="comment">% take the first one...</span>
+0986                                         flink = <a href="#_sub5" class="code" title="subfunction f = fullurl(varargin)">fullurl</a>(<a href="#_sub2" class="code" title="subfunction s = backtomaster(mdir)">backtomaster</a>(mdirs{j}),<span class="keyword">...</span>
+0987                                                           mdirs{indt(1)}, flink);
+0988                                     <span class="keyword">else</span>
+0989                                         indt = indt(logical(ii));
+0990                                     <span class="keyword">end</span>
+0991                                     myline = [myline sprintf(tpl_mfile_code,<span class="keyword">...</span>
+0992                                               flink, synopsis{indt(1)}, t)];
+0993                                 <span class="keyword">elseif</span> any(strcmp(subname,t))
+0994                                     ii = find(strcmp(subname,t));
+0995                                     myline = [myline sprintf(tpl_mfile_code,<span class="keyword">...</span>
+0996                                         [<span class="string">'#_sub'</span> num2str(ii)],<span class="keyword">...</span>
+0997                                         [<span class="string">'sub'</span> subroutine{j}{ii}],t)];
+0998                                 <span class="keyword">else</span>
+0999                                     myline = [myline t];
+1000                                 <span class="keyword">end</span>
+1001                             <span class="keyword">end</span>
+1002                         <span class="keyword">end</span>
+1003                     <span class="keyword">end</span>
+1004                     matlabsource = [matlabsource sprintf(tpl_mfile_line,it,myline)];
+1005                     it = it + 1;
+1006                 <span class="keyword">end</span>
+1007                 tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'SOURCECODE'</span>,<span class="keyword">...</span>
+1008                           <a href="#_sub7" class="code" title="subfunction str = horztab(str,n)">horztab</a>(matlabsource,options.tabs));
+1009                 tpl = parse(tpl,<span class="string">'thesource'</span>,<span class="string">'source'</span>);
+1010             <span class="keyword">else</span>
+1011                 tpl = set(tpl,<span class="string">'var'</span>,<span class="string">'thesource'</span>,<span class="string">''</span>);
+1012             <span class="keyword">end</span>
+1013             tpl = parse(tpl,<span class="string">'OUT'</span>,<span class="string">'TPL_MFILE'</span>);
+1014             fprintf(fid,<span class="string">'%s'</span>,get(tpl,<span class="string">'OUT'</span>));
+1015             fclose(fid2);
+1016             fclose(fid);
+1017         <span class="keyword">end</span>
+1018     <span class="keyword">end</span>
+1019 <span class="keyword">end</span>
+1020 
+1021 <span class="comment">%===============================================================================</span>
+1022 <a name="_sub1" href="#_subfunctions" class="code">function mfiles = getmfiles(mdirs,mfiles,recursive)</a>
+1023     <span class="comment">%- Extract M-files from a list of directories and/or M-files</span>
+1024 
+1025     <span class="keyword">for</span> i=1:length(mdirs)
+1026         <span class="keyword">if</span> exist(mdirs{i}) == 2 <span class="comment">% M-file</span>
+1027             mfiles{end+1} = mdirs{i};
+1028         <span class="keyword">elseif</span> exist(mdirs{i}) == 7 <span class="comment">% Directory</span>
+1029             w = what(mdirs{i});
+1030             w = w(1); <span class="comment">%- Sometimes an array is returned...</span>
+1031             <span class="keyword">for</span> j=1:length(w.m)
+1032                 mfiles{end+1} = fullfile(mdirs{i},w.m{j});
+1033             <span class="keyword">end</span>
+1034             <span class="keyword">if</span> recursive
+1035                 d = dir(mdirs{i});
+1036                 d = {d([d.isdir]).name};
+1037                 d = {d{~ismember(d,{<span class="string">'.'</span> <span class="string">'..'</span>})}};
+1038                 <span class="keyword">for</span> j=1:length(d)
+1039                     mfiles = <a href="#_sub1" class="code" title="subfunction mfiles = getmfiles(mdirs,mfiles,recursive)">getmfiles</a>(cellstr(fullfile(mdirs{i},d{j})),<span class="keyword">...</span>
+1040                                        mfiles,recursive);
+1041                 <span class="keyword">end</span>
+1042             <span class="keyword">end</span>
+1043         <span class="keyword">else</span>
+1044             fprintf(<span class="string">'Warning: Unprocessed file %s.\n'</span>,mdirs{i});
+1045         <span class="keyword">end</span>
+1046     <span class="keyword">end</span>
+1047 
+1048 <span class="comment">%===============================================================================</span>
+1049 <a name="_sub2" href="#_subfunctions" class="code">function s = backtomaster(mdir)</a>
+1050     <span class="comment">%- Provide filesystem path to go back to the root folder</span>
+1051 
+1052     ldir = <a href="#_sub3" class="code" title="subfunction ldir = splitpath(p)">splitpath</a>(mdir);
+1053     s = repmat(<span class="string">'../'</span>,1,length(ldir));
+1054     
+1055 <span class="comment">%===============================================================================</span>
+1056 <a name="_sub3" href="#_subfunctions" class="code">function ldir = splitpath(p)</a>
+1057     <span class="comment">%- Split a filesystem path into parts using filesep as separator</span>
+1058 
+1059     ldir = {};
+1060     p = deblank(p);
+1061     <span class="keyword">while</span> 1
+1062         [t,p] = strtok(p,filesep);
+1063         <span class="keyword">if</span> isempty(t), <span class="keyword">break</span>; <span class="keyword">end</span>
+1064         <span class="keyword">if</span> ~strcmp(t,<span class="string">'.'</span>)
+1065             ldir{end+1} = t;
+1066         <span class="keyword">end</span>
+1067     <span class="keyword">end</span>
+1068     <span class="keyword">if</span> isempty(ldir)
+1069         ldir{1} = <span class="string">'.'</span>; <span class="comment">% should be removed</span>
+1070     <span class="keyword">end</span>
+1071 
+1072 <span class="comment">%===============================================================================</span>
+1073 <a name="_sub4" href="#_subfunctions" class="code">function name = extractname(synopsis)</a>
+1074     <span class="keyword">if</span> ischar(synopsis), synopsis = {synopsis}; <span class="keyword">end</span>
+1075     name = cell(size(synopsis));
+1076     <span class="keyword">for</span> i=1:length(synopsis)
+1077         ind = findstr(synopsis{i},<span class="string">'='</span>);
+1078         <span class="keyword">if</span> isempty(ind)
+1079             ind = findstr(synopsis{i},<span class="string">'function'</span>);
+1080             s = synopsis{i}(ind(1)+8:end);
+1081         <span class="keyword">else</span>
+1082             s = synopsis{i}(ind(1)+1:end);
+1083         <span class="keyword">end</span>
+1084         name{i} = strtok(s,[9:13 32 <span class="string">'('</span>]);
+1085     <span class="keyword">end</span>
+1086     <span class="keyword">if</span> length(name) == 1, name = name{1}; <span class="keyword">end</span>
+1087 
+1088 <span class="comment">%===============================================================================</span>
+1089 <a name="_sub5" href="#_subfunctions" class="code">function f = fullurl(varargin)</a>
+1090     <span class="comment">%- Build full url from parts (using '/' and not filesep)</span>
+1091     
+1092     f = strrep(fullfile(varargin{:}),<span class="string">'\'</span>,<span class="string">'/'</span>);
+1093 
+1094 <span class="comment">%===============================================================================</span>
+1095 <a name="_sub6" href="#_subfunctions" class="code">function str = entity(str)</a>
+1096     <span class="comment">%- See http://www.w3.org/TR/html4/charset.html#h-5.3.2</span>
+1097     
+1098     str = strrep(str,<span class="string">'&amp;'</span>,<span class="string">'&amp;amp;'</span>);
+1099     str = strrep(str,<span class="string">'&lt;'</span>,<span class="string">'&amp;lt;'</span>);
+1100     str = strrep(str,<span class="string">'&gt;'</span>,<span class="string">'&amp;gt;'</span>);
+1101     str = strrep(str,<span class="string">'&quot;'</span>,<span class="string">'&amp;quot;'</span>);
+1102     
+1103 <span class="comment">%===============================================================================</span>
+1104 <a name="_sub7" href="#_subfunctions" class="code">function str = horztab(str,n)</a>
+1105     <span class="comment">%- For browsers, the horizontal tab character is the smallest non-zero</span>
+1106     <span class="comment">%- number of spaces necessary to line characters up along tab stops that are</span>
+1107     <span class="comment">%- every 8 characters: behaviour obtained when n = 0.</span>
+1108     
+1109     <span class="keyword">if</span> n &gt; 0
+1110         str = strrep(str,sprintf(<span class="string">'\t'</span>),blanks(n));
+1111     <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

@@ -1,0 +1,458 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of C13ConfidenceInterval</title>
+  <meta name="keywords" content="C13ConfidenceInterval">
+  <meta name="description" content="v0 - set of flux vectors to be used as initial guesses.  They may be">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html fluxomics -->
+<h1>C13ConfidenceInterval
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>v0 - set of flux vectors to be used as initial guesses.  They may be</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [vs, output, v0] = C13ConfidenceInterval(v0, expdata, model, max_score, directions, majorIterationLimit) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> v0 - set of flux vectors to be used as initial guesses.  They may be
+ valid or not.
+ expdata - experimental data.
+ model - The standard model.  Additional field .N (= null(S)) should also
+ be provided.  This is a basis of the flux space.
+ max score - maximum allowable data fit error.  
+ directions (optional) - ones and zeros of which reactions to compute (size = n
+ x 1).  
+   OR
+ numbers of reactions to use  aka.  [1;5;7;8;200]
+   OR
+ reaction strings  aka.  {'GPK', 'PGL'}.  Ratios are possible with this
+ input only.  Default = [] meaning do FVA with no ratios.
+ majorIterationLimit (optional) - default = 10000</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>	findRxnIDs Find reaction numbers in a model</li><li><a href="../../cobra/fluxomics/c13solver/errorComputation2.html" class="code" title="function [out] = errorComputation2(x,Prob)">errorComputation2</a>	</li><li><a href="defineLinearConstraints.html" class="code" title="function [A, b_L, b_U, model] = defineLinearConstraints(model, method)">defineLinearConstraints</a>	</li><li><a href="fitC13Data.html" class="code" title="function [vout, rout] = fitC13Data(v0,expdata,model, majorIterationLimit)">fitC13Data</a>	v0 is input v.  It will automatically be converted to alpha by solving N*alpha = v;</li><li><a href="../../cobra/solvers/solveCobraLP.html" class="code" title="function solution = solveCobraLP(LPproblem, varargin)">solveCobraLP</a>	solveCobraLP Solve constraint-based LP problems</li><li><a href="../../cobra/solvers/solveCobraNLP.html" class="code" title="function solution = solveCobraNLP(NLPproblem,varargin)">solveCobraNLP</a>	solveCobraNLP Solves a COBRA non-linear (objective and/or constraints)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function [rxn, direction, point] = getValues(index, numpoints)</a></li><li><a href="#_sub2" class="code">function [d] =  objective_coefficient(i, model)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [vs, output, v0] = C13ConfidenceInterval(v0, expdata, model, max_score, directions, majorIterationLimit)</a>
+0002 
+0003 <span class="comment">% v0 - set of flux vectors to be used as initial guesses.  They may be</span>
+0004 <span class="comment">% valid or not.</span>
+0005 <span class="comment">% expdata - experimental data.</span>
+0006 <span class="comment">% model - The standard model.  Additional field .N (= null(S)) should also</span>
+0007 <span class="comment">% be provided.  This is a basis of the flux space.</span>
+0008 <span class="comment">% max score - maximum allowable data fit error.</span>
+0009 <span class="comment">% directions (optional) - ones and zeros of which reactions to compute (size = n</span>
+0010 <span class="comment">% x 1).</span>
+0011 <span class="comment">%   OR</span>
+0012 <span class="comment">% numbers of reactions to use  aka.  [1;5;7;8;200]</span>
+0013 <span class="comment">%   OR</span>
+0014 <span class="comment">% reaction strings  aka.  {'GPK', 'PGL'}.  Ratios are possible with this</span>
+0015 <span class="comment">% input only.  Default = [] meaning do FVA with no ratios.</span>
+0016 <span class="comment">% majorIterationLimit (optional) - default = 10000</span>
+0017 <span class="keyword">if</span> nargin &lt; 5
+0018     directions = ones(size(v0,1),1);
+0019 <span class="keyword">end</span>
+0020 <span class="keyword">if</span> isempty(directions)
+0021     directions = ones(size(v0,1),1);
+0022 <span class="keyword">end</span>
+0023 t_start = clock;
+0024 printLevel = 3; 
+0025 <span class="keyword">if</span> nargin &lt; 6
+0026     majorIterationLimit = 1000;  <span class="comment">%max number of iterations</span>
+0027 <span class="keyword">end</span>
+0028 diffInterval = 1e-5;         <span class="comment">%gradient step size.</span>
+0029 feasibilityTolerance = max_score/20; <span class="comment">% how close you need to be to the max score.</span>
+0030 logdirectory = strcat(<span class="string">'temp'</span>, filesep);
+0031 
+0032 <span class="comment">% isratio(i):  &gt;0 indicates not a ratio and points to reaction#</span>
+0033 <span class="comment">%              &lt;0 indicates -numerator of ratio fraction.  In this case,</span>
+0034 <span class="comment">%              denom(i) stores the denominator</span>
+0035 <span class="comment">%</span>
+0036 denom = zeros(size(directions));
+0037 <span class="keyword">if</span> isnumeric(directions) <span class="comment">%cannot be an actual ratio</span>
+0038     <span class="keyword">if</span> max(directions) == 1
+0039         isratio = find(directions);
+0040     <span class="keyword">else</span>
+0041         isratio = directions;
+0042     <span class="keyword">end</span>
+0043 <span class="keyword">else</span> <span class="comment">% might be a ratio.  Gotta process strings</span>
+0044     isratio = zeros(size(directions));
+0045     <span class="keyword">for</span> i = 1:length(directions)
+0046         <span class="keyword">if</span> findstr(directions{i}, <span class="string">'/'</span>)
+0047             [rxn1,rest] = strtok(directions{i}, <span class="string">'/'</span>);
+0048             rxnID = <a href="../../cobra/findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(model,rxn1);
+0049             <span class="keyword">if</span> rxnID == 0
+0050                 display(<span class="string">'unable to process rxn from list'</span>);
+0051                 display(directions{i});
+0052                 <span class="keyword">return</span>;
+0053             <span class="keyword">else</span>
+0054                 isratio(i) = -rxnID;
+0055             <span class="keyword">end</span>
+0056             rxn2 = rest(2:end);
+0057             rxnID = <a href="../../cobra/findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(model,rxn2);
+0058             <span class="keyword">if</span> rxnID == 0
+0059                 display(<span class="string">'unable to process rxn from list'</span>);
+0060                 display(rest(2:end));
+0061                 <span class="keyword">return</span>;
+0062             <span class="keyword">else</span>
+0063                 denom(i) = rxnID;
+0064             <span class="keyword">end</span>
+0065         <span class="keyword">else</span>
+0066             rxnID = <a href="../../cobra/findRxnIDs.html" class="code" title="function rxnID = findRxnIDs(model,rxnList)">findRxnIDs</a>(model,directions{i});
+0067             <span class="keyword">if</span> rxnID == 0
+0068                 display(<span class="string">'unable to process rxn from list'</span>);
+0069                 display(directions{i});
+0070                 <span class="keyword">return</span>;
+0071             <span class="keyword">else</span>
+0072                 isratio(i) = rxnID;
+0073             <span class="keyword">end</span>
+0074         <span class="keyword">end</span>
+0075     <span class="keyword">end</span>
+0076 <span class="keyword">end</span>
+0077 
+0078 numdirections = length(isratio);
+0079 numpoints = size(v0,2);
+0080 
+0081 numiterations = numdirections*numpoints*2; <span class="comment">% total number of iterations.</span>
+0082 
+0083 x0 = model.N\v0; <span class="comment">% back substitute</span>
+0084 scores = zeros(numpoints,1);
+0085 
+0086 tProb.user.expdata = expdata;
+0087 tProb.user.model = model;
+0088 <span class="keyword">for</span> i = 1:numpoints
+0089     scores(i) = <a href="../../cobra/fluxomics/c13solver/errorComputation2.html" class="code" title="function [out] = errorComputation2(x,Prob)">errorComputation2</a>(x0(:,i),tProb);
+0090 <span class="keyword">end</span>
+0091 
+0092 <span class="comment">% fit points if they are not currently feasible</span>
+0093 v0(:,scores&gt; max_score) = <a href="fitC13Data.html" class="code" title="function [vout, rout] = fitC13Data(v0,expdata,model, majorIterationLimit)">fitC13Data</a>(v0(:,scores &gt; max_score),expdata,model, majorIterationLimit);
+0094 
+0095 <span class="keyword">if</span> ~isfield(model, <span class="string">'N'</span>)
+0096    model.N = null(model.S); 
+0097 <span class="keyword">end</span>
+0098 
+0099 x0 = model.N\v0; <span class="comment">% back substitute</span>
+0100 
+0101 <span class="comment">% safety check:</span>
+0102 <span class="keyword">if</span> (max(abs(model.S*v0))&gt; 1e-6)
+0103     display(<span class="string">'v0 not quite in null space'</span>);
+0104     pause;
+0105 <span class="keyword">end</span>
+0106 <span class="keyword">if</span>(max(abs(model.N*x0 - v0)) &gt; 1e-6)
+0107     display(<span class="string">'null basis is weird'</span>);
+0108     pause;
+0109 <span class="keyword">end</span>
+0110 
+0111 Name = <span class="string">'t2'</span>;
+0112 nalpha = size(model.N, 2);
+0113 
+0114 x_L = -1000*ones(nalpha,1);
+0115 x_U = 1000*ones(nalpha,1);
+0116 [A, b_L, b_U] = <a href="defineLinearConstraints.html" class="code" title="function [A, b_L, b_U, model] = defineLinearConstraints(model, method)">defineLinearConstraints</a>(model);
+0117 
+0118 scores = zeros(numpoints,1);
+0119 <span class="comment">% compute scores for all points.</span>
+0120 <span class="keyword">for</span> i = 1:numpoints
+0121     scores(i) = <a href="../../cobra/fluxomics/c13solver/errorComputation2.html" class="code" title="function [out] = errorComputation2(x,Prob)">errorComputation2</a>(x0(:,i),tProb);
+0122 <span class="keyword">end</span>
+0123 valid_index = scores &lt; max_score + feasibilityTolerance;
+0124 fprintf(<span class="string">'found %d valid points\n'</span>, sum(valid_index));
+0125 
+0126 x0_valid = x0(:,valid_index);
+0127 x0_invalid = x0;
+0128 scores_valid = scores(valid_index);
+0129 
+0130 
+0131 <span class="comment">% pre-compute unnecesary directions.</span>
+0132 <span class="comment">% if checkedbefore(i) ~= 0 then direction i is redundant</span>
+0133 <span class="comment">% if checkedbefore(i) = j then direction i and j are identical and do not</span>
+0134 <span class="comment">% need to be recomputed.</span>
+0135 <span class="comment">% checkedbefore(i) = j &lt; 0 means that direction j is the same as i except</span>
+0136 <span class="comment">% for a sign switch.</span>
+0137 
+0138 checkedbefore = zeros(length(isratio),1);
+0139 <span class="keyword">for</span> i = 2:length(isratio)
+0140     <span class="keyword">if</span>(isratio(i) &lt; 0) <span class="comment">% meaning it actually IS a ratio and no simplification possible</span>
+0141         <span class="keyword">continue</span>
+0142     <span class="keyword">end</span>
+0143     d = <a href="#_sub2" class="code" title="subfunction [d] =  objective_coefficient(i, model)">objective_coefficient</a>(isratio(i), model);
+0144     <span class="keyword">for</span> j = 1:i-1
+0145         <span class="keyword">if</span>(isratio(j) &lt; 0) <span class="comment">% meaning it actually IS a ratio and no simplification possible</span>
+0146             <span class="keyword">continue</span>
+0147         <span class="keyword">end</span>
+0148         dj = <a href="#_sub2" class="code" title="subfunction [d] =  objective_coefficient(i, model)">objective_coefficient</a>(isratio(j), model);
+0149         <span class="keyword">if</span> max(abs(dj - d))&lt; 1e-4
+0150             checkedbefore(i) = j;
+0151             <span class="keyword">break</span>;
+0152         <span class="keyword">elseif</span> max(abs(dj + d))&lt; 1e-4
+0153             checkedbefore(i) = -j;
+0154             <span class="keyword">break</span>;
+0155         <span class="keyword">end</span>
+0156     <span class="keyword">end</span>
+0157 <span class="keyword">end</span>
+0158 
+0159 <span class="comment">% initialize variables;</span>
+0160 outputv = 222*ones(numiterations,1);
+0161 outputexitflag = -222*ones(numiterations,1);
+0162 outputfinalscore = -222*ones(numiterations,1);
+0163 outputstruct = cell(numiterations,1);
+0164 
+0165 csense = <span class="string">''</span>;
+0166 <span class="keyword">for</span> mm = 1:length(b_L),csense(mm,1) = <span class="string">'L'</span>;<span class="keyword">end</span>
+0167 <span class="keyword">for</span> mm = 1:length(b_L),csense(mm+length(b_L),1) = <span class="string">'G'</span>;<span class="keyword">end</span>
+0168 
+0169 fLowBnds = zeros(length(isratio), 2); <span class="comment">%initialize but fill in later.</span>
+0170 <span class="keyword">for</span> rxn = 1:length(isratio)
+0171     <span class="keyword">for</span> direction = -1:2:1
+0172         <span class="keyword">if</span> isratio(rxn) &lt; 0
+0173             ration = <a href="#_sub2" class="code" title="subfunction [d] =  objective_coefficient(i, model)">objective_coefficient</a>(-isratio(rxn),model);
+0174             ratiod = <a href="#_sub2" class="code" title="subfunction [d] =  objective_coefficient(i, model)">objective_coefficient</a>(denom(rxn),model);
+0175             
+0176             <span class="comment">% in case RXN is a ratio</span>
+0177             Result = <a href="../../cobra/solvers/solveCobraNLP.html" class="code" title="function solution = solveCobraNLP(NLPproblem,varargin)">solveCobraNLP</a>(<span class="keyword">...</span>
+0178                 struct(<span class="string">'lb'</span>, x_L, <span class="string">'ub'</span>, x_U,<span class="keyword">...</span>
+0179                 <span class="string">'name'</span>, Name,<span class="keyword">...</span>
+0180                 <span class="string">'A'</span>, A,<span class="keyword">...</span>
+0181                 <span class="string">'b_L'</span>, b_L, <span class="string">'b_U'</span>, b_U,<span class="keyword">...</span>
+0182                 <span class="string">'objFunction'</span>, <span class="string">'ratioScore'</span>, <span class="string">'g'</span>, <span class="string">'ratioScore_grad'</span>,<span class="keyword">...</span>
+0183                 <span class="string">'userParams'</span>, struct(<span class="keyword">...</span>
+0184                      <span class="string">'ration'</span>, direction*ration, <span class="string">'ratiod'</span>, ratiod,<span class="keyword">...</span><span class="comment"> % set direction here too.</span>
+0185                      <span class="string">'diff_interval'</span>, diffInterval,<span class="string">'useparfor'</span>, true)<span class="keyword">...</span>
+0186                 ),<span class="keyword">...</span>
+0187                 <span class="string">'printLevel'</span>, 1, <span class="keyword">...</span>
+0188                 <span class="string">'iterationLimit'</span>, 1000);
+0189         <span class="keyword">else</span>
+0190             d = <a href="#_sub2" class="code" title="subfunction [d] =  objective_coefficient(i, model)">objective_coefficient</a>(isratio(rxn),model);
+0191             Result = <a href="../../cobra/solvers/solveCobraLP.html" class="code" title="function solution = solveCobraLP(LPproblem, varargin)">solveCobraLP</a>(<span class="keyword">...</span>
+0192              struct(<span class="string">'A'</span>, [A;A],<span class="string">'b'</span>,[b_U;b_L],<span class="string">'csense'</span>, csense, <span class="keyword">...</span>
+0193                     <span class="string">'c'</span>, direction*d, <span class="keyword">...</span>
+0194                     <span class="string">'lb'</span>, x_L,<span class="string">'ub'</span>, x_U, <span class="keyword">...</span>
+0195                     <span class="string">'osense'</span>, 1),<span class="keyword">...</span>
+0196                     <span class="string">'feasTol'</span>,1e-7,<span class="string">'optTol'</span>,1e-7);
+0197             <span class="keyword">if</span> Result.stat ~= 1
+0198                 Result
+0199                 pause
+0200             <span class="keyword">end</span>
+0201         <span class="keyword">end</span>
+0202         fLowBnds(rxn, (direction+3)/2) = direction*Result.obj; <span class="comment">% fill in</span>
+0203     <span class="keyword">end</span>
+0204 <span class="keyword">end</span>
+0205 
+0206 <span class="keyword">if</span> ~exist (logdirectory, <span class="string">'dir'</span>)
+0207     <span class="keyword">if</span> ~mkdir(logdirectory)
+0208         display(<span class="string">'unable to create logdirectory'</span>);
+0209         <span class="keyword">return</span>;
+0210     <span class="keyword">end</span>
+0211 <span class="keyword">end</span>
+0212 clear d
+0213 <span class="comment">%iterate through directions</span>
+0214 parfor itnum = 1:numiterations
+0215     <span class="keyword">if</span> exist(<span class="string">'ttt.txt'</span>, <span class="string">'file'</span>) <span class="comment">% abort w/o crashing if file 'ttt.txt' found in current directory</span>
+0216         fprintf(<span class="string">'quitting due to file found\n'</span>);
+0217         <span class="keyword">continue</span>;
+0218     <span class="keyword">end</span>
+0219     [rxn, direction, point] = <a href="#_sub1" class="code" title="subfunction [rxn, direction, point] = getValues(index, numpoints)">getValues</a>(itnum, numpoints); <span class="comment">% translate itnum to rxn, direction and point</span>
+0220     <span class="comment">% direction == 1 means minimize.  direction == -1 means maximize</span>
+0221     <span class="comment">% (opposite of what you might think.</span>
+0222     
+0223     <span class="keyword">if</span> checkedbefore(rxn) ~= 0 <span class="comment">%if this reaction maps to a previous reaction, we can skip</span>
+0224         <span class="keyword">continue</span>;
+0225     <span class="keyword">end</span>
+0226     
+0227     
+0228     fLowBnd = fLowBnds(rxn, (direction+3)/2); <span class="comment">%get the absolute bound in the space w/o regards to C13 constraints.</span>
+0229     fprintf(<span class="string">'reaction %d of %d, direction %d, lowerbound %f point %d of %d\n'</span>, rxn ,length(isratio), direction, fLowBnd, point, numpoints);
+0230      <span class="comment">% short circuit if x0 already close to a bound.</span>
+0231     <span class="keyword">if</span> isratio(rxn) &gt; 0
+0232         di = <a href="#_sub2" class="code" title="subfunction [d] =  objective_coefficient(i, model)">objective_coefficient</a>(isratio(rxn),model);
+0233         obj1 = di'*x0_valid;
+0234     <span class="keyword">else</span>
+0235         rationi = <a href="#_sub2" class="code" title="subfunction [d] =  objective_coefficient(i, model)">objective_coefficient</a>(-isratio(rxn),model);
+0236         ratiodi = <a href="#_sub2" class="code" title="subfunction [d] =  objective_coefficient(i, model)">objective_coefficient</a>(denom(rxn),model);
+0237         obj1 = (rationi'*x0_valid) ./ (ratiodi'*x0_valid);
+0238     <span class="keyword">end</span>
+0239 
+0240     <span class="keyword">if</span>(any(abs(obj1-fLowBnd)&lt;.0001))
+0241         display(<span class="string">'short circuiting'</span>);
+0242         [nil, min_index] = min(obj1);
+0243         outputv(itnum,1) = fLowBnd; <span class="comment">% multiply by direction to correct sign.</span>
+0244         outputexitflag(itnum,1) = 111;
+0245         outputfinalscore(itnum,1) = scores_valid(min_index);
+0246 
+0247     <span class="keyword">else</span> <span class="comment">% gotta actually do the computation.</span>
+0248         xinitial = x0_invalid(:,point);
+0249         <span class="keyword">if</span> isratio(rxn) &gt; 0
+0250             NLPsolution = <a href="../../cobra/solvers/solveCobraNLP.html" class="code" title="function solution = solveCobraNLP(NLPproblem,varargin)">solveCobraNLP</a>(<span class="keyword">...</span>
+0251                 struct(<span class="string">'x0'</span>, xinitial, <span class="keyword">...</span>
+0252                 <span class="string">'lb'</span>, x_L, <span class="string">'ub'</span>, x_U,<span class="keyword">...</span>
+0253                 <span class="string">'name'</span>, Name,<span class="keyword">...</span>
+0254                 <span class="string">'A'</span>, A, <span class="string">'b_L'</span>, b_L, <span class="string">'b_U'</span>, b_U,<span class="keyword">...</span>
+0255                 <span class="string">'d'</span>, <span class="string">'errorComputation2'</span>, <span class="string">'dd'</span>, <span class="string">'errorComputation2_grad'</span>,<span class="keyword">...</span>
+0256                 <span class="string">'d_L'</span>, 0, <span class="string">'d_U'</span>, max_score,<span class="keyword">...</span>
+0257                 <span class="string">'c'</span>, di*direction, <span class="keyword">...</span><span class="comment"> % direction of optimization</span>
+0258                 <span class="string">'userParams'</span>, struct(<span class="keyword">...</span>
+0259                      <span class="string">'expdata'</span>, expdata,<span class="string">'model'</span>, model,<span class="string">'max_error'</span>, max_score,<span class="keyword">...</span>
+0260                      <span class="string">'diff_interval'</span>, diffInterval,<span class="string">'useparfor'</span>, true)<span class="keyword">...</span>
+0261                 ),<span class="keyword">...</span>
+0262                 <span class="string">'printLevel'</span>, printLevel, <span class="keyword">...</span>
+0263                 <span class="keyword">...</span><span class="comment">%'intTol', 1e-7, ...</span>
+0264                 <span class="string">'iterationLimit'</span>, majorIterationLimit, <span class="keyword">...</span>
+0265                 <span class="string">'logFile'</span>, strcat(logdirectory, <span class="string">'ci_'</span>, num2str(rxn),<span class="string">'x'</span>,num2str(direction),<span class="string">'x'</span>, point, <span class="string">'.txt'</span>));
+0266         <span class="keyword">else</span>
+0267             NLPsolution = <a href="../../cobra/solvers/solveCobraNLP.html" class="code" title="function solution = solveCobraNLP(NLPproblem,varargin)">solveCobraNLP</a>(<span class="keyword">...</span>
+0268                 struct(<span class="string">'x0'</span>, xinitial, <span class="keyword">...</span>
+0269                 <span class="string">'lb'</span>, x_L, <span class="string">'ub'</span>, x_U,<span class="keyword">...</span>
+0270                 <span class="string">'name'</span>, Name,<span class="keyword">...</span>
+0271                 <span class="string">'A'</span>, A, <span class="string">'b_L'</span>, b_L, <span class="string">'b_U'</span>, b_U,<span class="keyword">...</span>
+0272                 <span class="string">'d'</span>, <span class="string">'errorComputation2'</span>, <span class="string">'dd'</span>, <span class="string">'errorComputation2_grad'</span>,<span class="keyword">...</span>
+0273                 <span class="string">'d_L'</span>, 0, <span class="string">'d_U'</span>, max_score,<span class="keyword">...</span>
+0274                 <span class="string">'objFunction'</span>, <span class="string">'ratioScore'</span>, <span class="string">'g'</span>, <span class="string">'ratioScore_grad'</span>,<span class="keyword">...</span>
+0275                 <span class="string">'userParams'</span>, struct(<span class="keyword">...</span>
+0276                      <span class="string">'expdata'</span>, expdata,<span class="string">'model'</span>, model,<span class="string">'max_error'</span>, max_score,<span class="keyword">...</span>
+0277                      <span class="string">'ration'</span>, direction*rationi,<span class="keyword">...</span>
+0278                      <span class="string">'ratiod'</span>, ratiodi,<span class="keyword">...</span>
+0279                      <span class="string">'diff_interval'</span>, diffInterval,<span class="string">'useparfor'</span>, false)<span class="keyword">...</span>
+0280                 ),<span class="keyword">...</span>
+0281                 <span class="string">'printLevel'</span>, printLevel, <span class="keyword">...</span>
+0282                 <span class="keyword">...</span><span class="comment">%'intTol', 1e-7, ...</span>
+0283                 <span class="string">'iterationLimit'</span>, majorIterationLimit, <span class="keyword">...</span>
+0284                 <span class="string">'logFile'</span>, strcat(logdirectory, <span class="string">'ci_'</span>, num2str(rxn),<span class="string">'x'</span>,num2str(direction),<span class="string">'x'</span>, point, <span class="string">'.txt'</span>));
+0285         <span class="keyword">end</span>
+0286        
+0287         tscore = <a href="../../cobra/fluxomics/c13solver/errorComputation2.html" class="code" title="function [out] = errorComputation2(x,Prob)">errorComputation2</a>(NLPsolution.full, tProb);
+0288         tbest = NLPsolution.obj;
+0289 
+0290         fprintf(<span class="string">'reaction %d (%d), x %d; x=%f (%f); score=%f (%f)\n'</span>, rxn, length(isratio),direction, tbest,fLowBnd, tscore, max_score)
+0291 
+0292         outputv(itnum,1) = direction*tbest; <span class="comment">% multiply by direction to correct sign.</span>
+0293         outputexitflag(itnum,1) = NLPsolution.origStat;
+0294         outputfinalscore(itnum,1) = tscore;
+0295         outputstruct{itnum,1} = NLPsolution;
+0296     <span class="keyword">end</span>
+0297 <span class="keyword">end</span>
+0298 
+0299 <span class="keyword">for</span> itnum = 1:numiterations
+0300     [rxn, direction, point] = <a href="#_sub1" class="code" title="subfunction [rxn, direction, point] = getValues(index, numpoints)">getValues</a>(itnum,numpoints);
+0301     <span class="keyword">if</span> direction == 1;
+0302         output.minv(rxn,point) = outputv(itnum);
+0303         output.minexitflag(rxn,point) = outputexitflag(itnum);
+0304         output.minfinalscore(rxn,point) = outputfinalscore(itnum);
+0305         output.minstruct(rxn,point) = outputstruct(itnum);
+0306     <span class="keyword">else</span>
+0307         output.maxv(rxn,point) = outputv(itnum);
+0308         output.maxexitflag(rxn,point) = outputexitflag(itnum);
+0309         output.maxfinalscore(rxn,point) = outputfinalscore(itnum);
+0310         output.maxstruct(rxn,point) = outputstruct(itnum);
+0311     <span class="keyword">end</span>
+0312 <span class="keyword">end</span>
+0313 
+0314 <span class="keyword">for</span> i = 1:length(isratio)
+0315     <span class="keyword">if</span> checkedbefore(i) &gt; 0 <span class="comment">%short circuit if seen before.</span>
+0316         output.minv(i) = output.minv(checkedbefore(i));
+0317         output.maxv(i) = output.maxv(checkedbefore(i));
+0318         output.minexitflag(i) = output.minexitflag(checkedbefore(i));
+0319         output.maxexitflag(i) = output.maxexitflag(checkedbefore(i));
+0320         output.minfinalscore(i) = output.minfinalscore(checkedbefore(i));
+0321         output.maxfinalscore(i) = output.maxfinalscore(checkedbefore(i));
+0322         output.minstruct(i) = output.minstruct(checkedbefore(i));
+0323         output.maxstruct(i) = output.maxstruct(checkedbefore(i));
+0324     <span class="keyword">elseif</span> checkedbefore(i) &lt; 0
+0325         output.minv(i) = -output.maxv(-checkedbefore(i));
+0326         output.maxv(i) = -output.minv(-checkedbefore(i));
+0327         output.minexitflag(i) = output.maxexitflag(-checkedbefore(i));
+0328         output.maxexitflag(i) = output.minexitflag(-checkedbefore(i));
+0329         output.minfinalscore(i) = output.maxfinalscore(-checkedbefore(i));
+0330         output.maxfinalscore(i) = output.minfinalscore(-checkedbefore(i));
+0331         output.minstruct(i) = output.maxstruct(-checkedbefore(i));
+0332         output.maxstruct(i) = output.minstruct(-checkedbefore(i));
+0333     <span class="keyword">end</span>
+0334 <span class="keyword">end</span>
+0335 
+0336 vs = zeros(length(isratio), 2);
+0337 <span class="keyword">for</span> i = 1:length(isratio)
+0338     validindex = output.minfinalscore(i,:) &lt; max_score + feasibilityTolerance;
+0339     <span class="keyword">if</span> any(validindex)
+0340         vs(i,1) = min(output.minv(i,validindex));
+0341     <span class="keyword">else</span>
+0342         vs(i,1) = 222;
+0343     <span class="keyword">end</span>
+0344     validindex = output.maxfinalscore(i,:) &lt; max_score + feasibilityTolerance;
+0345     <span class="keyword">if</span> any(validindex)
+0346         vs(i,2) = max(output.maxv(i,validindex));
+0347     <span class="keyword">else</span>
+0348         vs(i,2) = -222;
+0349     <span class="keyword">end</span>   
+0350 <span class="keyword">end</span>
+0351 
+0352 elapsed_time = etime(clock, t_start)
+0353 <span class="keyword">return</span>;
+0354 
+0355 
+0356 
+0357 <span class="comment">% function [index] = getIndex(rxn, direction, point, numpoints)</span>
+0358 <span class="comment">% % point goes from 1 .. NUMPOINTS</span>
+0359 <span class="comment">% % rxn goes from 1 .. NUMRXNS</span>
+0360 <span class="comment">% % direction is -1 or 1</span>
+0361 <span class="comment">% % index goes from 1 to NUMPOINTS*NUMRXNS*2</span>
+0362 <span class="comment">%</span>
+0363 <span class="comment">% rxn = rxn - 1;</span>
+0364 <span class="comment">% point = point -1;</span>
+0365 <span class="comment">% direction = (direction + 1)/2;</span>
+0366 <span class="comment">%</span>
+0367 <span class="comment">%</span>
+0368 <span class="comment">% index = rxn*numpoints*2 + direction*numpoints + point;</span>
+0369 <span class="comment">% index = index+1;</span>
+0370 <span class="comment">%</span>
+0371 <span class="comment">% return;</span>
+0372 
+0373 <a name="_sub1" href="#_subfunctions" class="code">function [rxn, direction, point] = getValues(index, numpoints)</a>
+0374 <span class="comment">% point goes from 1 .. NUMPOINTS</span>
+0375 <span class="comment">% rxn goes from 1 .. NUMRXNS</span>
+0376 <span class="comment">% direction is -1 or 1</span>
+0377 <span class="comment">% index goes from 1 to NUMPOINTS*NUMRXNS*2</span>
+0378 index = index - 1;
+0379 point = mod(index, numpoints);
+0380 index = index - point;
+0381 index = index/numpoints;
+0382 direction = mod(index,2);
+0383 index = index - direction;
+0384 index = index/2;
+0385 rxn = index;
+0386 
+0387 point = point +1; <span class="comment">% remap to 1..NUMPOINTS</span>
+0388 direction = direction*2-1; <span class="comment">% remap to -1,1</span>
+0389 rxn = rxn+1; <span class="comment">% remap to 1 .. number of rxns;</span>
+0390 <span class="keyword">return</span>;
+0391 
+0392 <span class="comment">% function that returns the proper objective coefficient for each reaction</span>
+0393 <span class="comment">% takes into account the reversibility of reactinos etc.</span>
+0394 <a name="_sub2" href="#_subfunctions" class="code">function [d] =  objective_coefficient(i, model)</a>
+0395 d = zeros(length(model.lb),1);
+0396 d(i) = 1;
+0397 <span class="keyword">if</span> (model.match(i))
+0398     d(model.match(i)) = -1;
+0399 <span class="keyword">end</span>
+0400 d = (d'*model.N)'; <span class="comment">% transform to null space;</span>
+0401 <span class="keyword">return</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

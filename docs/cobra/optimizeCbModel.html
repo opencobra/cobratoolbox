@@ -1,0 +1,428 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of optimizeCbModel</title>
+  <meta name="keywords" content="optimizeCbModel">
+  <meta name="description" content="optimizeCbModel Solve a flux balance analysis problem">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html cobra -->
+<h1>optimizeCbModel
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>optimizeCbModel Solve a flux balance analysis problem</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">optimizeCbModel Solve a flux balance analysis problem
+
+ Solves LP problems of the form: max/min c'*v
+                                 subject to S*v = b
+                                            lb &lt;= v &lt;= ub
+ FBAsolution = optimizeCbModel(model,osenseStr,minNormFlag)
+
+INPUT
+ model (the following fields are required - others can be supplied)
+   S            Stoichiometric matrix
+   b            Right hand side = dx/dt
+   c            Objective coefficients
+   lb           Lower bounds
+   ub           Upper bounds
+
+OPTIONAL INPUTS
+ osenseStr      Maximize ('max')/minimize ('min') (opt, default = 'max')
+
+ minNorm        {(0), 'one', &gt; 0 , n x 1 vector}, where [m,n]=size(S);
+                0      Default, normal LP
+                'one'  Minimise the Taxicab Norm using LP.
+                                 min |v|
+                                   s.t. S*v = b
+                                        c'v = f
+                                        lb &lt;= v &lt;= ub
+                -----
+                The remaining options work only with a valid QP solver:
+                -----
+                &gt; 0    Minimises the Euclidean Norm of internal fluxes.
+                       Typically 1e-6 works well.
+                                 min ||v||
+                                   s.t. S*v = b
+                                        c'v = f
+                                        lb &lt;= v &lt;= ub
+               n x 1   Forms the diagonal of positive definiate
+                       matrix F in the quadratic program
+                               min 0.5*v'*F*v
+                               st. S*v = b
+                                   c'*v = f
+                                   lb &lt;= v &lt;= ub
+
+ allowLoops    {0,(1)} If true, then instead of a conventional FBA,
+               the solver will run an MILP version which does not allow
+               loops in the final solution.  Default is true.
+               Runs much slower when set to false.
+               See addLoopLawConstraints.m to for more info.
+
+OUTPUT
+ FBAsolution
+   f         Objective value
+   x         Primal
+   y         Dual
+   w         Reduced costs
+   s         Slacks
+   stat      Solver status in standardized form
+              1   Optimal solution
+              2   Unbounded solution
+              0   Infeasible
+             -1  No solution reported (timelimit, numerical problem etc)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="addLoopLawConstraints.html" class="code" title="function [MILPproblem] = addLoopLawConstraints(LPproblem, model, rxnIndex)">addLoopLawConstraints</a>	addLoopLawConstraints adds loop law constraints to LP problem or MILP problem.</li><li><a href="../cobra/solvers/changeCobraSolverParams.html" class="code" title="function changeOK = changeCobraSolverParams(solverType,paramName,paramValue)">changeCobraSolverParams</a>	changeCobraSolverParams Changes parameters for the Cobra Toolbox optimization solver(s)</li><li><a href="../cobra/solvers/getCobraSolverParams.html" class="code" title="function varargout = getCobraSolverParams(solverType, paramNames, parameters)">getCobraSolverParams</a>	This function gets the specified parameters in paramNames from</li><li><a href="../cobra/solvers/solveCobraLP.html" class="code" title="function solution = solveCobraLP(LPproblem, varargin)">solveCobraLP</a>	solveCobraLP Solve constraint-based LP problems</li><li><a href="../cobra/solvers/solveCobraMILP.html" class="code" title="function solution = solveCobraMILP(MILPproblem,varargin)">solveCobraMILP</a>	solveCobraMILP Solve constraint-based MILP problems</li><li><a href="../cobra/solvers/solveCobraMIQP.html" class="code" title="function solution = solveCobraMIQP(MIQPproblem,varargin)">solveCobraMIQP</a>	solveCobraQP Solve constraint-based QP problems</li><li><a href="../cobra/solvers/solveCobraQP.html" class="code" title="function solution = solveCobraQP(QPproblem,varargin)">solveCobraQP</a>	solveCobraQP Solve constraint-based QP problems</li><li><a href="../cobra/solvers/verifyCobraProblem.html" class="code" title="function [statusOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(XPproblem, x, tol, verbose)">verifyCobraProblem</a>	[statusOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(XPproblem, x, tol)</li><li><a href="../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>	columnVector Converts a vector to a column vector</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="MOMA.html" class="code" title="function [solutionDel,solutionWT,totalFluxDiff,solStatus] =MOMA(modelWT,modelDel,osenseStr,verbFlag,minNormFlag)">MOMA</a>	MOMA Performs a quadratic version of the MOMA (minimization of</li><li><a href="../cobra/design/analyzeGCdesign.html" class="code" title="function [improvedRxns,intermediateSlns] = analyzeGCdesign(modelRed,selectedRxns,target,deletions,maxKOs,objFunction,delPenalty,intermediateSlns)">analyzeGCdesign</a>	analyzeGCdesign Analyze results with replacement knockouts</li><li><a href="../cobra/design/analyzeOptKnock.html" class="code" title="function [type,maxGrowth,maxProd,minProd] = analyzeOptKnock(model,deletions,target,biomassRxn,geneDelFlag)">analyzeOptKnock</a>	analyzeOptKnock determines whether an optknock solution is growth coupled</li><li><a href="../cobra/design/doubleProductionEnvelope.html" class="code" title="function [x1,x2,y] = doubleProductionEnvelope(model,deletions,prod1,prod2,biomassRxn,geneDelFlag,nPts)">doubleProductionEnvelope</a>	doubleProductionEnvelope plots maximum growth rate as a function of the</li><li><a href="../cobra/design/multiProductionEnvelope.html" class="code" title="function [biomassValues,targetValues] = multiProductionEnvelope(model,deletions,biomassRxn,geneDelFlag,nPts,plotAllFlag)">multiProductionEnvelope</a>	multiProductionEnvelope Calculates the byproduct secretion envelopes for</li><li><a href="../cobra/design/multiProductionEnvelopeInorg.html" class="code" title="function [biomassValues,targetValues] = multiProductionEnvelopeInorg(model,deletions,biomassRxn,geneDelFlag,nPts,plotAllFlag)">multiProductionEnvelopeInorg</a>	multiProductionEnvelopeInorg calculates the byproduct secretion envelopes</li><li><a href="../cobra/design/randomKO.html" class="code" title="function [products,productRates,KOrxns,BOF] = randomKO(modelRed,selectedRxns,N)">randomKO</a>	randomKO knock out N random genes and reports products from FBA</li><li><a href="../cobra/design/simpleOptKnock.html" class="code" title="function [wtRes,delRes] = simpleOptKnock(model,targetRxn,deletions,geneDelFlag,minGrowth,doubleDelFlag)">simpleOptKnock</a>	simpleOptKnock Simple OptKnock to check all one gene or reaction deletions for</li><li><a href="../cobra/design/testOptKnockSol.html" class="code" title="function [growthRate,minProd,maxProd] = testOptKnockSol(model,targetRxn,deletions)">testOptKnockSol</a>	testOptKnockSol Test an OptKnock knockout strain</li><li><a href="../cobra/design/theoretMaxProd.html" class="code" title="function [ExRxns,MaxTheoOut]= theoretMaxProd(model, criterion, inputrxn, normalize, rxns)">theoretMaxProd</a>	determines the max theoretical output for each exchange reaction</li><li><a href="doubleGeneDeletion.html" class="code" title="function [grRatioDble,grRateKO,grRateWT] = doubleGeneDeletion(model,method,geneList1,geneList2,verbFlag)">doubleGeneDeletion</a>	doubleGeneDeletion Performs double gene deletion analysis using FBA, MOMA,</li><li><a href="doubleRobustnessAnalysis.html" class="code" title="function [controlFlux1, controlFlux2, objFlux] = doubleRobustnessAnalysis(model, controlRxn1, controlRxn2, nPoints, plotResFlag, objRxn,objType)">doubleRobustnessAnalysis</a>	doubleRobustnessAnalysis Performs robustness analysis for a pair of reactions of</li><li><a href="dynamicFBA.html" class="code" title="function [concentrationMatrix,excRxnNames,timeVec,biomassVec] =dynamicFBA(model,substrateRxns,initConcentrations,initBiomass,timeStep,nSteps,plotRxns,exclUptakeRxns)">dynamicFBA</a>	dynamicFBA Perform dynamic FBA simulation using the static optimization</li><li><a href="enumerateOptimalSolutions.html" class="code" title="function [solution] = enumerateOptimalSolutions(model)">enumerateOptimalSolutions</a>	enumerateOptimalSolution returns a set of optimal flux distributions</li><li><a href="fluxVariability.html" class="code" title="function [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,optPercentage,osenseStr,rxnNameList,verbFlag, allowLoops)">fluxVariability</a>	fluxVariability Performs flux variablity analysis</li><li><a href="../cobra/fluxomics/goodInitialPoint.html" class="code" title="function [out] = goodInitialPoint(model, n)">goodInitialPoint</a>	generates 4*length(model.lb) random points</li><li><a href="geometricFBA.html" class="code" title="function flux = geometricFBA(model,varargin)">geometricFBA</a>	geometricFBA finds a unique optimal FBA solution that is (in some sense)</li><li><a href="linearMOMA.html" class="code" title="function [solutionDel,solutionWT,totalFluxDiff,solStatus] =linearMOMA(modelWT,modelDel,osenseStr,minFluxFlag,verbFlag)">linearMOMA</a>	linearMOMA Performs a linear version of the MOMA (minimization of</li><li><a href="optimizeCbModelNLP.html" class="code" title="function [currentSol,allObjValues,allSolutions] =optimizeCbModelNLP(model,osenseStr,objFunction,initFunction,nOpt,objArgs,initArgs)">optimizeCbModelNLP</a>	optimizeCbModelNLP Optimize constraint-based model using a non-linear objective</li><li><a href="optimizeTwoCbModels.html" class="code" title="function [solution1,solution2,totalFluxDiff] = optimizeTwoCbModels(model1,model2,osenseStr,minFluxFlag,verbFlag)">optimizeTwoCbModels</a>	optimizeTwoCbModels Simultaneously solve two flux balance problems and</li><li><a href="pFBA.html" class="code" title="function [GeneClasses RxnClasses modelIrrevFM] = pFBA(model, varargin)">pFBA</a>	Parsimoneous enzyme usage Flux Balance Analysis - method that optimizes</li><li><a href="phenotypePhasePlane.html" class="code" title="function [growthRates,shadowPrices1,shadowPrices2] = phenotypePhasePlane(model,controlRxn1,controlRxn2,nPts,range1,range2)">phenotypePhasePlane</a>	phenotypePhasePlane Plots three phenotype phase planes for two reactions.  The first plot is</li><li><a href="productionEnvelope.html" class="code" title="function [biomassValues,targetValues,lineHandle] = productionEnvelope(model,deletions,lineColor,targetRxn,biomassRxn,geneDelFlag,nPts)">productionEnvelope</a>	productionEnvelope Calculates the byproduct secretion envelope</li><li><a href="../cobra/rFBA/dynamicRFBA.html" class="code" title="function [concentrationMatrix,excRxnNames,timeVec,biomassVec,drGenes,constrainedRxns,states] =dynamicRFBA(model,substrateRxns,initConcentrations,initBiomass,timeStep,nSteps,plotRxns,exclUptakeRxns)">dynamicRFBA</a>	dynamicRFBA - perform dynamic rFBA simulation using the static optimization</li><li><a href="../cobra/rFBA/optimizeRegModel.html" class="code" title="function [FBAsols,DRgenes,constrainedRxns,cycleStart,states] = optimizeRegModel(model,initialRegState)">optimizeRegModel</a>	optimizeRegModel - finds the steady state solution of a model with</li><li><a href="../cobra/rFBA/solveBooleanRegModel.html" class="code" title="function [finalState,finalInputs1States,finalInputs2States] = solveBooleanRegModel(model,initialState,inputs1States,inputs2States)">solveBooleanRegModel</a>	solveBooleanRegModel - determines the next state of the regulatory</li><li><a href="randomObjFBASol.html" class="code" title="function x0 = randomObjFBASol(model,initArgs)">randomObjFBASol</a>	randomObjFBASol Solves an FBA problem with a random objective function</li><li><a href="../cobra/reconstruction/biomassPrecursorCheck.html" class="code" title="function [missingMets,presentMets] = biomassPrecursorCheck(model)">biomassPrecursorCheck</a>	biomassPrecursorCheck   Checks if biomass precursors are able to be</li><li><a href="../cobra/reconstruction/createTissueSpecificModel.html" class="code" title="function [tissueModel,Rxns] = createTissueSpecificModel(model,expressionData,proceedExp,orphan,exRxnRemove,solver,options,funcModel)">createTissueSpecificModel</a>	createTissueSpecificModel Create draft tissue specific model from mRNA expression data</li><li><a href="reduceModel.html" class="code" title="function [modelRed,hasFlux,maxes,mins] = reduceModel(model,tol,irrevFlag,verbFlag,negFluxAllowedFlag,checkConsistencyFlag,changeBoundsFlag)">reduceModel</a>	reduceModel Removes from the model all of the reactions that are never used (max and</li><li><a href="robustnessAnalysis.html" class="code" title="function [controlFlux, objFlux] = robustnessAnalysis(model, controlRxn, nPoints, plotResFlag, objRxn,objType)">robustnessAnalysis</a>	robustnessAnalysis Performs robustness analysis for a reaction of</li><li><a href="singleGeneDeletion.html" class="code" title="function [grRatio,grRateKO,grRateWT,hasEffect,delRxns,fluxSolution] = singleGeneDeletion(model,method,geneList,verbFlag)">singleGeneDeletion</a>	singleGeneDeletion Performs single gene deletion analysis using FBA, MOMA or</li><li><a href="singleRxnDeletion.html" class="code" title="function [grRatio,grRateKO,grRateWT,hasEffect,delRxn,fluxSolution] = singleRxnDeletion(model,method,rxnList,verbFlag)">singleRxnDeletion</a>	singleRxnDeletion Performs single reaction deletion analysis using FBA,</li><li><a href="testForTypeIIIPathways.html" class="code" title="function testForTypeIIIPathways(model,ListExch,filename)">testForTypeIIIPathways</a>	testForTypeIIIPathways Set up the model to run extreme pathway analysis</li><li><a href="testPathway.html" class="code" title="function [Flux FBAsolution model]= testPathway(model, MetIn,MetOut,AdditionalMetsInorOut,ObjectiveOption)">testPathway</a>	this gapfiling function allows the user to see if given one metabolite A,</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)</a>
+0002 <span class="comment">%optimizeCbModel Solve a flux balance analysis problem</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% Solves LP problems of the form: max/min c'*v</span>
+0005 <span class="comment">%                                 subject to S*v = b</span>
+0006 <span class="comment">%                                            lb &lt;= v &lt;= ub</span>
+0007 <span class="comment">% FBAsolution = optimizeCbModel(model,osenseStr,minNormFlag)</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%INPUT</span>
+0010 <span class="comment">% model (the following fields are required - others can be supplied)</span>
+0011 <span class="comment">%   S            Stoichiometric matrix</span>
+0012 <span class="comment">%   b            Right hand side = dx/dt</span>
+0013 <span class="comment">%   c            Objective coefficients</span>
+0014 <span class="comment">%   lb           Lower bounds</span>
+0015 <span class="comment">%   ub           Upper bounds</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">%OPTIONAL INPUTS</span>
+0018 <span class="comment">% osenseStr      Maximize ('max')/minimize ('min') (opt, default = 'max')</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% minNorm        {(0), 'one', &gt; 0 , n x 1 vector}, where [m,n]=size(S);</span>
+0021 <span class="comment">%                0      Default, normal LP</span>
+0022 <span class="comment">%                'one'  Minimise the Taxicab Norm using LP.</span>
+0023 <span class="comment">%                                 min |v|</span>
+0024 <span class="comment">%                                   s.t. S*v = b</span>
+0025 <span class="comment">%                                        c'v = f</span>
+0026 <span class="comment">%                                        lb &lt;= v &lt;= ub</span>
+0027 <span class="comment">%                -----</span>
+0028 <span class="comment">%                The remaining options work only with a valid QP solver:</span>
+0029 <span class="comment">%                -----</span>
+0030 <span class="comment">%                &gt; 0    Minimises the Euclidean Norm of internal fluxes.</span>
+0031 <span class="comment">%                       Typically 1e-6 works well.</span>
+0032 <span class="comment">%                                 min ||v||</span>
+0033 <span class="comment">%                                   s.t. S*v = b</span>
+0034 <span class="comment">%                                        c'v = f</span>
+0035 <span class="comment">%                                        lb &lt;= v &lt;= ub</span>
+0036 <span class="comment">%               n x 1   Forms the diagonal of positive definiate</span>
+0037 <span class="comment">%                       matrix F in the quadratic program</span>
+0038 <span class="comment">%                               min 0.5*v'*F*v</span>
+0039 <span class="comment">%                               st. S*v = b</span>
+0040 <span class="comment">%                                   c'*v = f</span>
+0041 <span class="comment">%                                   lb &lt;= v &lt;= ub</span>
+0042 <span class="comment">%</span>
+0043 <span class="comment">% allowLoops    {0,(1)} If true, then instead of a conventional FBA,</span>
+0044 <span class="comment">%               the solver will run an MILP version which does not allow</span>
+0045 <span class="comment">%               loops in the final solution.  Default is true.</span>
+0046 <span class="comment">%               Runs much slower when set to false.</span>
+0047 <span class="comment">%               See addLoopLawConstraints.m to for more info.</span>
+0048 <span class="comment">%</span>
+0049 <span class="comment">%OUTPUT</span>
+0050 <span class="comment">% FBAsolution</span>
+0051 <span class="comment">%   f         Objective value</span>
+0052 <span class="comment">%   x         Primal</span>
+0053 <span class="comment">%   y         Dual</span>
+0054 <span class="comment">%   w         Reduced costs</span>
+0055 <span class="comment">%   s         Slacks</span>
+0056 <span class="comment">%   stat      Solver status in standardized form</span>
+0057 <span class="comment">%              1   Optimal solution</span>
+0058 <span class="comment">%              2   Unbounded solution</span>
+0059 <span class="comment">%              0   Infeasible</span>
+0060 <span class="comment">%             -1  No solution reported (timelimit, numerical problem etc)</span>
+0061 <span class="comment">%</span>
+0062 
+0063 <span class="comment">% Markus Herrgard       9/16/03</span>
+0064 <span class="comment">% Ronan Fleming         4/25/09  Option to minimises the Euclidean Norm of internal</span>
+0065 <span class="comment">%                                fluxes using 'cplex_direct' solver</span>
+0066 <span class="comment">% Ronan Fleming         7/27/09  Return an error if any imputs are NaN</span>
+0067 <span class="comment">% Ronan Fleming         10/24/09 Fixed 'E' for all equality constraints</span>
+0068 <span class="comment">% Jan Schellenberger             MILP option to remove flux around loops</span>
+0069 <span class="comment">% Ronan Fleming         12/07/09 Reworked minNorm parameter option to allow</span>
+0070 <span class="comment">%                                the full range of approaches for getting</span>
+0071 <span class="comment">%                                rid of net flux around loops.</span>
+0072 <span class="comment">% Jan Schellenberger    2/3/09   fixed bug with .f being set incorrectly</span>
+0073 <span class="comment">%                                when minNorm was set.</span>
+0074 <span class="comment">% Nathan Lewis          12/2/10  Modified code to allow for inequality</span>
+0075 <span class="comment">%                                constraints.</span>
+0076 <span class="comment">% Ronan Fleming         12/03/10 Minor changes to the internal handling of global parameters.</span>
+0077 <span class="comment">%% Process arguments and set up problem</span>
+0078 
+0079 <span class="keyword">if</span> exist(<span class="string">'osenseStr'</span>, <span class="string">'var'</span>)
+0080     <span class="keyword">if</span> isempty(osenseStr)
+0081         osenseStr = <span class="string">'max'</span>;
+0082     <span class="keyword">end</span>
+0083 <span class="keyword">else</span>
+0084     osenseStr = <span class="string">'max'</span>;
+0085 <span class="keyword">end</span>
+0086 
+0087 <span class="keyword">if</span> exist(<span class="string">'minNorm'</span>, <span class="string">'var'</span>)
+0088     <span class="keyword">if</span> isempty(minNorm)
+0089         minNorm = false;
+0090         changeOK = <a href="../cobra/solvers/changeCobraSolverParams.html" class="code" title="function changeOK = changeCobraSolverParams(solverType,paramName,paramValue)">changeCobraSolverParams</a>(<span class="string">'LP'</span>,<span class="string">'minNorm'</span>,minNorm);
+0091     <span class="keyword">else</span>
+0092         changeOK = <a href="../cobra/solvers/changeCobraSolverParams.html" class="code" title="function changeOK = changeCobraSolverParams(solverType,paramName,paramValue)">changeCobraSolverParams</a>(<span class="string">'LP'</span>,<span class="string">'minNorm'</span>,minNorm);
+0093     <span class="keyword">end</span>
+0094 <span class="keyword">else</span>
+0095     minNorm = false;
+0096     changeOK = <a href="../cobra/solvers/changeCobraSolverParams.html" class="code" title="function changeOK = changeCobraSolverParams(solverType,paramName,paramValue)">changeCobraSolverParams</a>(<span class="string">'LP'</span>,<span class="string">'minNorm'</span>,minNorm);
+0097 <span class="keyword">end</span>
+0098 <span class="keyword">if</span> exist(<span class="string">'allowLoops'</span>, <span class="string">'var'</span>)
+0099     <span class="keyword">if</span> isempty(allowLoops)
+0100         allowLoops = true;
+0101     <span class="keyword">end</span>
+0102 <span class="keyword">else</span>
+0103     allowLoops = true;
+0104 <span class="keyword">end</span>
+0105 
+0106 [minNorm, printLevel, primalOnlyFlag, saveInput] = <a href="../cobra/solvers/getCobraSolverParams.html" class="code" title="function varargout = getCobraSolverParams(solverType, paramNames, parameters)">getCobraSolverParams</a>(<span class="string">'LP'</span>,{<span class="string">'minNorm'</span>,<span class="string">'printLevel'</span>,<span class="string">'primalOnly'</span>,<span class="string">'saveInput'</span>});
+0107 
+0108 
+0109 <span class="comment">% if exist('minNorm', 'var')</span>
+0110 <span class="comment">%     if isempty(minNorm)</span>
+0111 <span class="comment">%         minNorm = false;</span>
+0112 <span class="comment">%     end</span>
+0113 <span class="comment">% else</span>
+0114 <span class="comment">%     minNorm = false;</span>
+0115 <span class="comment">% end</span>
+0116 <span class="comment">% if exist('allowLoops', 'var')</span>
+0117 <span class="comment">%     if isempty(allowLoops)</span>
+0118 <span class="comment">%         allowLoops = true;</span>
+0119 <span class="comment">%     end</span>
+0120 <span class="comment">% else</span>
+0121 <span class="comment">%     allowLoops = true;</span>
+0122 <span class="comment">% end</span>
+0123 <span class="comment">%</span>
+0124 <span class="comment">%</span>
+0125 <span class="comment">% global CBT_LP_PARAMS</span>
+0126 <span class="comment">% if (exist('CBT_LP_PARAMS', 'var'))</span>
+0127 <span class="comment">%     if isfield(CBT_LP_PARAMS, 'objTol')</span>
+0128 <span class="comment">%         tol = CBT_LP_PARAMS.objTol;</span>
+0129 <span class="comment">%     else</span>
+0130 <span class="comment">%         tol = 1e-6;</span>
+0131 <span class="comment">%     end</span>
+0132 <span class="comment">%     if isfield(CBT_LP_PARAMS, 'primalOnly')</span>
+0133 <span class="comment">%         primalOnlyFlag = CBT_LP_PARAMS.primalOnly;</span>
+0134 <span class="comment">%     else</span>
+0135 <span class="comment">%         primalOnlyFlag = false;</span>
+0136 <span class="comment">%     end</span>
+0137 <span class="comment">%     if isfield(CBT_LP_PARAMS, 'printLevel')</span>
+0138 <span class="comment">%         printLevel = CBT_LP_PARAMS.printLevel;</span>
+0139 <span class="comment">%     else</span>
+0140 <span class="comment">%         printLevel = 0;</span>
+0141 <span class="comment">%     end</span>
+0142 <span class="comment">% else</span>
+0143 <span class="comment">%     tol = 1e-6;</span>
+0144 <span class="comment">%     primalOnlyFlag = false;</span>
+0145 <span class="comment">%     printLevel = 0;</span>
+0146 <span class="comment">% end</span>
+0147 
+0148 <span class="comment">% Figure out objective sense</span>
+0149 <span class="keyword">if</span> strcmpi(osenseStr,<span class="string">'max'</span>)
+0150     LPproblem.osense = -1;
+0151 <span class="keyword">else</span>
+0152     LPproblem.osense = +1;
+0153 <span class="keyword">end</span>
+0154 
+0155 <span class="comment">% this is dangerous... if model does not have S, it should not be called in</span>
+0156 <span class="comment">% this function.</span>
+0157 <span class="comment">% if ~isfield(model,'S')</span>
+0158 <span class="comment">%     model.S=model.A;</span>
+0159 <span class="comment">% end</span>
+0160 
+0161 [nMets,nRxns] = size(model.S);
+0162 
+0163 <span class="comment">% add csense</span>
+0164 <span class="comment">%Doing this makes csense a double array.  Totally smart design move.</span>
+0165 <span class="comment">%LPproblem.csense = [];</span>
+0166 <span class="keyword">if</span> ~isfield(model,<span class="string">'csense'</span>)
+0167     <span class="comment">% If csense is not declared in the model, assume that all</span>
+0168     <span class="comment">% constraints are equalities.</span>
+0169     LPproblem.csense(1:nMets,1) = <span class="string">'E'</span>;
+0170 <span class="keyword">else</span> <span class="comment">% if csense is in the model, move it to the lp problem structure</span>
+0171     <span class="keyword">if</span> length(model.csense)~=nMets,
+0172         warning(<span class="string">'Length of csense is invalid! Defaulting to equality constraints.'</span>)
+0173         LPproblem.csense(1:nMets,1) = <span class="string">'E'</span>;
+0174     <span class="keyword">else</span>
+0175         model.csense = <a href="../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>(model.csense);
+0176         LPproblem.csense = model.csense;
+0177     <span class="keyword">end</span>
+0178 <span class="keyword">end</span>
+0179 
+0180 
+0181 <span class="comment">% Fill in the RHS vector if not provided</span>
+0182 <span class="keyword">if</span> (~isfield(model,<span class="string">'b'</span>))
+0183     LPproblem.b = zeros(size(model.S,1),1);
+0184 <span class="keyword">else</span>
+0185     LPproblem.b = model.b;
+0186 <span class="keyword">end</span>
+0187 
+0188 <span class="comment">% Rest of the LP problem</span>
+0189 LPproblem.A = model.S;
+0190 LPproblem.c = model.c;
+0191 LPproblem.lb = model.lb;
+0192 LPproblem.ub = model.ub;
+0193 
+0194 <span class="comment">%Double check that all inputs are valid:</span>
+0195 <span class="keyword">if</span> ~(<a href="../cobra/solvers/verifyCobraProblem.html" class="code" title="function [statusOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(XPproblem, x, tol, verbose)">verifyCobraProblem</a>(LPproblem, [], [], false) == 1)
+0196     warning(<span class="string">'invalid problem'</span>);
+0197     <span class="keyword">return</span>;
+0198 <span class="keyword">end</span>
+0199 
+0200 <span class="comment">%%</span>
+0201 t1 = clock;
+0202 <span class="comment">% Solve initial LP</span>
+0203 <span class="keyword">if</span> allowLoops
+0204     solution = <a href="../cobra/solvers/solveCobraLP.html" class="code" title="function solution = solveCobraLP(LPproblem, varargin)">solveCobraLP</a>(LPproblem);
+0205 <span class="keyword">else</span>
+0206     MILPproblem = <a href="addLoopLawConstraints.html" class="code" title="function [MILPproblem] = addLoopLawConstraints(LPproblem, model, rxnIndex)">addLoopLawConstraints</a>(LPproblem, model, 1:nRxns);
+0207     solution = <a href="../cobra/solvers/solveCobraMILP.html" class="code" title="function solution = solveCobraMILP(MILPproblem,varargin)">solveCobraMILP</a>(MILPproblem);
+0208 <span class="keyword">end</span>
+0209 
+0210 <span class="keyword">if</span> (solution.stat ~= 1) <span class="comment">% check if initial solution was successful.</span>
+0211     <span class="keyword">if</span> printLevel&gt;0
+0212         warning(<span class="string">'Optimal solution was not found'</span>);
+0213     <span class="keyword">end</span>
+0214     FBAsolution.f = 0;
+0215     FBAsolution.x = [];
+0216     FBAsolution.stat = solution.stat;
+0217     FBAsolution.origStat = solution.origStat;
+0218     FBAsolution.solver = solution.solver;
+0219     FBAsolution.time = etime(clock, t1);
+0220     <span class="keyword">return</span>;
+0221 <span class="keyword">end</span>
+0222 
+0223 objective = solution.obj; <span class="comment">% save for later use.</span>
+0224 
+0225 <span class="keyword">if</span> strcmp(minNorm, <span class="string">'one'</span>)
+0226     <span class="comment">% Minimize the absolute value of fluxes to 'avoid' loopy solutions</span>
+0227     <span class="comment">% Solve secondary LP to minimize one-norm of |v|</span>
+0228     <span class="comment">% Set up the optimization problem</span>
+0229     <span class="comment">% min sum(delta+ + delta-)</span>
+0230     <span class="comment">% 1: S*v1 = 0</span>
+0231     <span class="comment">% 3: delta+ &gt;= -v1</span>
+0232     <span class="comment">% 4: delta- &gt;= v1</span>
+0233     <span class="comment">% 5: c'v1 &gt;= f (optimal value of objective)</span>
+0234     <span class="comment">%</span>
+0235     <span class="comment">% delta+,delta- &gt;= 0</span>
+0236     LPproblem2.A = [model.S sparse(nMets,2*nRxns);
+0237         speye(nRxns,nRxns) speye(nRxns,nRxns) sparse(nRxns,nRxns);
+0238         -speye(nRxns,nRxns) sparse(nRxns,nRxns) speye(nRxns,nRxns);
+0239         model.c' sparse(1,2*nRxns)];
+0240     LPproblem2.c = [zeros(nRxns,1);ones(2*nRxns,1)];
+0241     LPproblem2.lb = [model.lb;zeros(2*nRxns,1)];
+0242     LPproblem2.ub = [model.ub;10000*ones(2*nRxns,1)];
+0243     LPproblem2.b = [LPproblem.b;zeros(2*nRxns,1);solution.obj];
+0244     <span class="keyword">if</span> ~isfield(model,<span class="string">'csense'</span>)
+0245         <span class="comment">% If csense is not declared in the model, assume that all</span>
+0246         <span class="comment">% constraints are equalities.</span>
+0247         LPproblem2.csense(1:nMets) = <span class="string">'E'</span>;
+0248     <span class="keyword">else</span> <span class="comment">% if csense is in the model, move it to the lp problem structure</span>
+0249         <span class="keyword">if</span> length(model.csense)~=nMets,
+0250             warning(<span class="string">'Length of csense is invalid! Defaulting to equality constraints.'</span>)
+0251             LPproblem2.csense(1:nMets) = <span class="string">'E'</span>;
+0252         <span class="keyword">else</span>
+0253             LPproblem2.csense = <a href="../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>(model.csense);
+0254         <span class="keyword">end</span>
+0255     <span class="keyword">end</span>
+0256     LPproblem2.csense((nMets+1):(nMets+2*nRxns)) = <span class="string">'G'</span>;
+0257     LPproblem2.csense(nMets+2*nRxns+1) = <span class="string">'G'</span>;
+0258     LPproblem2.csense = <a href="../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>(LPproblem2.csense);
+0259     LPproblem2.osense = 1;
+0260     <span class="comment">% Re-solve the problem</span>
+0261     <span class="keyword">if</span> allowLoops
+0262         solution = <a href="../cobra/solvers/solveCobraLP.html" class="code" title="function solution = solveCobraLP(LPproblem, varargin)">solveCobraLP</a>(LPproblem2); <span class="comment">%,printLevel,minNorm);</span>
+0263         solution.dual = []; <span class="comment">% slacks and duals will not be valid for this computation.</span>
+0264         solution.rcost = [];
+0265     <span class="keyword">else</span>
+0266         MILPproblem2 = <a href="addLoopLawConstraints.html" class="code" title="function [MILPproblem] = addLoopLawConstraints(LPproblem, model, rxnIndex)">addLoopLawConstraints</a>(LPproblem, model, 1:nRxns);
+0267         solution = <a href="../cobra/solvers/solveCobraMILP.html" class="code" title="function solution = solveCobraMILP(MILPproblem,varargin)">solveCobraMILP</a>(MILPproblem2);
+0268     <span class="keyword">end</span>
+0269 <span class="keyword">elseif</span> length(minNorm)&gt; 1 || minNorm &gt; 0
+0270     <span class="comment">% quadratic minimization of the norm.</span>
+0271     <span class="comment">% set previous optimum as constraint.</span>
+0272     LPproblem.A = [LPproblem.A;
+0273         LPproblem.c'];
+0274     LPproblem.csense(end+1) = <span class="string">'E'</span>;
+0275     <span class="keyword">if</span> nnz(LPproblem.c)&gt;1
+0276         error(<span class="string">'Code assumes only one non-negative coefficient in linear part of objective'</span>);
+0277     <span class="keyword">end</span>
+0278     LPproblem.b = [LPproblem.b;solution.full(LPproblem.c~=0)];
+0279     LPproblem.c = zeros(size(LPproblem.c)); <span class="comment">% no need for c anymore.</span>
+0280     <span class="comment">%Minimise Euclidean norm using quadratic programming</span>
+0281     <span class="keyword">if</span> length(minNorm)==1
+0282         minNorm=ones(nRxns,1)*minNorm;
+0283     <span class="keyword">end</span>
+0284     LPproblem.F = spdiags(minNorm,0,nRxns,nRxns);
+0285     <span class="comment">%quadratic optimization</span>
+0286     <span class="keyword">if</span> allowLoops
+0287         solution = <a href="../cobra/solvers/solveCobraQP.html" class="code" title="function solution = solveCobraQP(QPproblem,varargin)">solveCobraQP</a>(LPproblem);
+0288     <span class="keyword">else</span>
+0289         MIQPproblem = <a href="addLoopLawConstraints.html" class="code" title="function [MILPproblem] = addLoopLawConstraints(LPproblem, model, rxnIndex)">addLoopLawConstraints</a>(LPproblem, model, 1:nRxns);
+0290         solution = <a href="../cobra/solvers/solveCobraMIQP.html" class="code" title="function solution = solveCobraMIQP(MIQPproblem,varargin)">solveCobraMIQP</a>(MIQPproblem);
+0291     <span class="keyword">end</span>
+0292     <span class="comment">%     if isempty(solution.full)</span>
+0293     <span class="comment">%         % QP problem did not work.  This will return empty structure later.</span>
+0294     <span class="comment">%     else</span>
+0295     <span class="comment">%         %dont include dual variable to additional constraint</span>
+0296     <span class="comment">%         %solution.dual=solution.dual(1:end-1,1);</span>
+0297     <span class="comment">%     end</span>
+0298 <span class="keyword">end</span>
+0299 
+0300 <span class="comment">% Store results</span>
+0301 <span class="keyword">if</span> (solution.stat == 1)
+0302     <span class="comment">%solution found.</span>
+0303     FBAsolution.x = solution.full(1:nRxns);
+0304     
+0305     <span class="comment">%this line IS necessary.</span>
+0306     FBAsolution.f = model.c'*solution.full(1:nRxns); <span class="comment">%objective from original optimization problem.</span>
+0307     <span class="keyword">if</span> abs(FBAsolution.f - objective) &gt; .01
+0308         display(<span class="string">'warning:  objective appears to have changed while performing secondary optimization (minNorm)'</span>);
+0309     <span class="keyword">end</span>
+0310     
+0311     <span class="keyword">if</span> (~primalOnlyFlag &amp;&amp; allowLoops &amp;&amp; any(~minNorm)) <span class="comment">% rcost/dual only correct if not doing minNorm</span>
+0312         FBAsolution.y = solution.dual;
+0313         FBAsolution.w = solution.rcost;
+0314     <span class="keyword">end</span>
+0315 <span class="keyword">else</span>
+0316     <span class="comment">%some sort of error occured.</span>
+0317     <span class="keyword">if</span> printLevel&gt;0
+0318         warning(<span class="string">'Optimal solution was not found'</span>);
+0319     <span class="keyword">end</span>
+0320     FBAsolution.f = 0;
+0321     FBAsolution.x = [];
+0322 <span class="keyword">end</span>
+0323 
+0324 FBAsolution.stat = solution.stat;
+0325 FBAsolution.origStat = solution.origStat;
+0326 FBAsolution.solver = solution.solver;
+0327 FBAsolution.time = etime(clock, t1);
+0328</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

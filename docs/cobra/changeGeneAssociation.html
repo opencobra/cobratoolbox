@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of changeGeneAssociation</title>
+  <meta name="keywords" content="changeGeneAssociation">
+  <meta name="description" content="changeGeneAssociation Change gene associations in a model">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html cobra -->
+<h1>changeGeneAssociation
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>changeGeneAssociation Change gene associations in a model</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function model = changeGeneAssociation(model,rxnName,grRule,geneNameList,systNameList) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">changeGeneAssociation Change gene associations in a model
+
+ model = changeGeneAssociation(model,rxnName,grRule,geneName,systName)
+
+INPUTS
+ model             COBRA Toolbox model structure
+ rxnName           Name of the new reaction
+ grRule            Gene-reaction rule in boolean format (and/or allowed)
+
+OPTIONAL INPUTS
+ geneNameList      List of gene names (used only for translation from
+                   common gene names to systematic gene names)
+ systNameList      List of systematic names
+
+OUTPUT
+ model             COBRA Toolbox model structure with new gene reaction
+                   associations
+
+ Markus Herrgard 1/12/07</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>	columnVector Converts a vector to a column vector</li><li><a href="../cobra/tools/parseBoolean.html" class="code" title="function [elements,newRule] = parseBoolean(str,tokens,allowedElementChars)">parseBoolean</a>	parseBoolean Parses a Boolean logic statement</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../cobra/reconstruction/addReaction.html" class="code" title="function [model,rxnIDexists] = addReaction(model,rxnName,metaboliteList,stoichCoeffList,revFlag,lowerBound,upperBound,objCoeff,subSystem,grRule,geneNameList,systNameList,checkDuplicate)">addReaction</a>	addReaction Add a reaction to the model or modify an existing reaction</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function model = changeGeneAssociation(model,rxnName,grRule,geneNameList,systNameList)</a>
+0002 <span class="comment">%changeGeneAssociation Change gene associations in a model</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% model = changeGeneAssociation(model,rxnName,grRule,geneName,systName)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%INPUTS</span>
+0007 <span class="comment">% model             COBRA Toolbox model structure</span>
+0008 <span class="comment">% rxnName           Name of the new reaction</span>
+0009 <span class="comment">% grRule            Gene-reaction rule in boolean format (and/or allowed)</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">%OPTIONAL INPUTS</span>
+0012 <span class="comment">% geneNameList      List of gene names (used only for translation from</span>
+0013 <span class="comment">%                   common gene names to systematic gene names)</span>
+0014 <span class="comment">% systNameList      List of systematic names</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">%OUTPUT</span>
+0017 <span class="comment">% model             COBRA Toolbox model structure with new gene reaction</span>
+0018 <span class="comment">%                   associations</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% Markus Herrgard 1/12/07</span>
+0021 
+0022 <span class="keyword">if</span> (nargin &lt; 4)
+0023     translateNamesFlag = false;
+0024 <span class="keyword">else</span>
+0025     translateNamesFlag = true;
+0026 <span class="keyword">end</span>
+0027 
+0028 [isInModel,rxnID] = ismember(rxnName,model.rxns);
+0029 
+0030 <span class="keyword">if</span> (~isInModel)
+0031     error([<span class="string">'Reaction '</span> rxnName <span class="string">' not in the model'</span>]); 
+0032 <span class="keyword">end</span>
+0033 
+0034 <span class="keyword">if</span> ~isfield(model,<span class="string">'genes'</span>)
+0035     model.genes = {};
+0036 <span class="keyword">end</span>
+0037 nGenes = length(model.genes);
+0038 model.rules{rxnID} = <span class="string">''</span>;
+0039 <span class="comment">% IT 01/2010 - this line caused problems for xls2model.m</span>
+0040     model.rxnGeneMat(rxnID,:) = zeros(1,nGenes);
+0041 <span class="comment">% Remove extra white space</span>
+0042 grRule = regexprep(grRule,<span class="string">'\s{2,}'</span>,<span class="string">' '</span>);
+0043 grRule = regexprep(grRule,<span class="string">'( '</span>,<span class="string">'('</span>);
+0044 grRule = regexprep(grRule,<span class="string">' )'</span>,<span class="string">')'</span>);
+0045 
+0046 <span class="keyword">if</span> (~isempty(grRule))
+0047     [genes,rule] = <a href="../cobra/tools/parseBoolean.html" class="code" title="function [elements,newRule] = parseBoolean(str,tokens,allowedElementChars)">parseBoolean</a>(grRule);
+0048     <span class="keyword">for</span> i = 1:length(genes)
+0049         <span class="keyword">if</span> (translateNamesFlag)
+0050             <span class="comment">% Translate gene names to systematic names</span>
+0051             [isInList,translID] = ismember(genes{i},geneNameList);
+0052             <span class="keyword">if</span> isInList
+0053                 newGene = systNameList{translID};
+0054                 grRule = regexprep(grRule,[genes{i} <span class="string">'$'</span>],newGene);
+0055                 grRule = regexprep(grRule,[genes{i} <span class="string">'\s'</span>],[newGene <span class="string">' '</span>]);
+0056                 grRule = regexprep(grRule,[genes{i} <span class="string">')'</span>],[newGene <span class="string">')'</span>]);
+0057                 genes{i} = newGene;
+0058             <span class="keyword">else</span>
+0059                 warning([<span class="string">'Gene name '</span> genes{i} <span class="string">' not in translation list'</span>]);
+0060             <span class="keyword">end</span>
+0061         <span class="keyword">end</span>
+0062         geneID = find(strcmp(model.genes,genes{i}));
+0063         <span class="keyword">if</span> (isempty(geneID))
+0064             warning([<span class="string">'New gene '</span> genes{i} <span class="string">' added to model'</span>]);
+0065             <span class="comment">% Append gene</span>
+0066             model.genes = [model.genes; genes(i)];
+0067             nGenes = length(model.genes);
+0068             model.rxnGeneMat(rxnID,end+1) = 1;
+0069             rule = strrep(rule,[<span class="string">'x('</span> num2str(i) <span class="string">')'</span>],[<span class="string">'x('</span> num2str(nGenes) <span class="string">')'</span>]);
+0070         <span class="keyword">else</span>
+0071             model.rxnGeneMat(rxnID,geneID) = 1;
+0072             rule = strrep(rule,[<span class="string">'x('</span> num2str(i) <span class="string">')'</span>],[<span class="string">'x('</span> num2str(geneID) <span class="string">')'</span>]);
+0073         <span class="keyword">end</span>
+0074     <span class="keyword">end</span>
+0075     model.rules{rxnID} = rule;
+0076 <span class="keyword">end</span>
+0077 
+0078 model.grRules{rxnID} = grRule;
+0079 
+0080 <span class="comment">%make sure variables are column vectors</span>
+0081 model.rules = <a href="../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>(model.rules);
+0082 model.grRules = <a href="../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>(model.grRules);</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

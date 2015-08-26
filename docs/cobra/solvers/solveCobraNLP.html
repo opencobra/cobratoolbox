@@ -1,0 +1,355 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of solveCobraNLP</title>
+  <meta name="keywords" content="solveCobraNLP">
+  <meta name="description" content="solveCobraNLP Solves a COBRA non-linear (objective and/or constraints)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html solvers -->
+<h1>solveCobraNLP
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>solveCobraNLP Solves a COBRA non-linear (objective and/or constraints)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function solution = solveCobraNLP(NLPproblem,varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">solveCobraNLP Solves a COBRA non-linear (objective and/or constraints)
+problem.
+
+ solution = solveCobraNLP(NLPproblem,varargin)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="getCobraSolverParams.html" class="code" title="function varargout = getCobraSolverParams(solverType, paramNames, parameters)">getCobraSolverParams</a>	This function gets the specified parameters in paramNames from</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/fluxomics/C13ConfidenceInterval.html" class="code" title="function [vs, output, v0] = C13ConfidenceInterval(v0, expdata, model, max_score, directions, majorIterationLimit)">C13ConfidenceInterval</a>	v0 - set of flux vectors to be used as initial guesses.  They may be</li><li><a href="../../cobra/fluxomics/fitC13Data.html" class="code" title="function [vout, rout] = fitC13Data(v0,expdata,model, majorIterationLimit)">fitC13Data</a>	v0 is input v.  It will automatically be converted to alpha by solving N*alpha = v;</li><li><a href="../../cobra/optimizeCbModelNLP.html" class="code" title="function [currentSol,allObjValues,allSolutions] =optimizeCbModelNLP(model,osenseStr,objFunction,initFunction,nOpt,objArgs,initArgs)">optimizeCbModelNLP</a>	optimizeCbModelNLP Optimize constraint-based model using a non-linear objective</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function solution = solveCobraNLP(NLPproblem,varargin)</a>
+0002 <span class="comment">%solveCobraNLP Solves a COBRA non-linear (objective and/or constraints)</span>
+0003 <span class="comment">%problem.</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% solution = solveCobraNLP(NLPproblem,varargin)</span>
+0006 
+0007 <span class="comment">% Solves a problem of the following form:</span>
+0008 <span class="comment">%     min objFunction(x) or c'*x</span>
+0009 <span class="comment">%     st.       A*x  &lt;=&gt; b   or b_L &lt; A*x &lt; b_U</span>
+0010 <span class="comment">%        and    d_L &lt; d(x) &lt; d_U</span>
+0011 <span class="comment">%     where A is a matrix, d(x) is an optional function and the objective</span>
+0012 <span class="comment">%     is either a general function or a linear function.</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">%INPUT</span>
+0015 <span class="comment">% NLPproblem  Non-linear optimization problem</span>
+0016 <span class="comment">%  Required Fields</span>
+0017 <span class="comment">%   A               LHS matrix</span>
+0018 <span class="comment">%   b               RHS vector</span>
+0019 <span class="comment">%   lb              Lower bounds</span>
+0020 <span class="comment">%   ub              Upper bounds</span>
+0021 <span class="comment">%   csense          Constraint senses ('L','E','G')</span>
+0022 <span class="comment">%   objFunction     Function to evaluate as the objective.  Input as string</span>
+0023 <span class="comment">%       or</span>
+0024 <span class="comment">%   c               linear objective such that c*x is minimized.</span>
+0025 <span class="comment">%  Note: 'b_L' and 'b_U' can be used in place of 'b' and 'csense'</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">%  Optional Fields</span>
+0028 <span class="comment">%   x0              Initial solution</span>
+0029 <span class="comment">%   gradFunction    Name of the function that computes the n x 1 gradient</span>
+0030 <span class="comment">%                   vector (ignored if 'd' is set).</span>
+0031 <span class="comment">%   H               Name of the function that computes the n x n Hessian</span>
+0032 <span class="comment">%                   matrix</span>
+0033 <span class="comment">%   fLowBnd         A lower bound on the function value at optimum.</span>
+0034 <span class="comment">%   d               Name of function that computes the mN nonlinear</span>
+0035 <span class="comment">%                   constraints</span>
+0036 <span class="comment">%   dd              Name of function that computes the constraint Jacobian</span>
+0037 <span class="comment">%                   mN x n</span>
+0038 <span class="comment">%   d2d             Name of function that computes the second part of the</span>
+0039 <span class="comment">%                   Lagrangian function (only needed for some solvers)</span>
+0040 <span class="comment">%   d_L             Lower bound vector in nonlinear constraints</span>
+0041 <span class="comment">%   d_U             Upper bound vector in nonlinear constraints</span>
+0042 <span class="comment">%   userParams      Solver specific user parameters structure</span>
+0043 <span class="comment">%   optParams       Solver specific optional parameters structure</span>
+0044 <span class="comment">%</span>
+0045 <span class="comment">%OPTIONAL INPUTS</span>
+0046 <span class="comment">%(If using matlab solver)</span>
+0047 <span class="comment">%   varargin Any additional arguments to the 'objFunction' function</span>
+0048 <span class="comment">%</span>
+0049 <span class="comment">%(for other solvers)</span>
+0050 <span class="comment">% Optional parameters can be entered using parameters structure or as</span>
+0051 <span class="comment">% parameter followed by parameter value: i.e. ,'printLevel',3)</span>
+0052 <span class="comment">%</span>
+0053 <span class="comment">% parameters    Structure containing optional parameters as fields.</span>
+0054 <span class="comment">%               Setting parameters = 'default' uses default setting set in</span>
+0055 <span class="comment">%               getCobraSolverParameters.</span>
+0056 <span class="comment">% printLevel    Printing level</span>
+0057 <span class="comment">%               = 0    Silent (Default)</span>
+0058 <span class="comment">%               = 1    Warnings and Errors</span>
+0059 <span class="comment">%               = 2    Summary information</span>
+0060 <span class="comment">%               = 3    More detailed information</span>
+0061 <span class="comment">%               &gt; 10   Pause statements, and maximal printing (debug mode)</span>
+0062 <span class="comment">% checkNaN      Check for NaN elements (Default = false)</span>
+0063 <span class="comment">% PbName        NLP problem name (Default = NLP problem)</span>
+0064 <span class="comment">%</span>
+0065 <span class="comment">%OUTPUT</span>
+0066 <span class="comment">% solution Structure containing the following fields describing an NLP</span>
+0067 <span class="comment">% solution</span>
+0068 <span class="comment">%  full             Full LP solution vector</span>
+0069 <span class="comment">%  obj              Objective value</span>
+0070 <span class="comment">%  rcost            Reduced costs</span>
+0071 <span class="comment">%  dual             Dual solution</span>
+0072 <span class="comment">%  solver           Solver used to solve LP problem</span>
+0073 <span class="comment">%</span>
+0074 <span class="comment">%  stat             Solver status in standardized form</span>
+0075 <span class="comment">%                   1   Optimal solution</span>
+0076 <span class="comment">%                   2   Unbounded solution</span>
+0077 <span class="comment">%                   0   Infeasible</span>
+0078 <span class="comment">%                   -1  No solution reported (timelimit, numerical</span>
+0079 <span class="comment">%                       problem etc)</span>
+0080 <span class="comment">%</span>
+0081 <span class="comment">%  origStat         Original status returned by the specific solver</span>
+0082 <span class="comment">%  time             Solve time in seconds</span>
+0083 <span class="comment">%  origSolStruct    Original solution structure</span>
+0084 <span class="comment">%</span>
+0085 <span class="comment">% Markus Herrgard 12/7/07</span>
+0086 <span class="comment">% Richard Que (02/10/10) Added tomlab_snopt support.</span>
+0087 
+0088 <span class="keyword">global</span> CBT_NLP_SOLVER
+0089 <span class="keyword">if</span> (~isempty(CBT_NLP_SOLVER))
+0090     solver = CBT_NLP_SOLVER;
+0091 <span class="keyword">else</span>
+0092     error(<span class="string">'No solver found.  call changeCobraSolver(solverName)'</span>);
+0093 <span class="keyword">end</span>
+0094 
+0095 optParamNames = {<span class="string">'printLevel'</span>,<span class="string">'warning'</span>,<span class="string">'checkNaN'</span>,<span class="string">'PbName'</span>, <span class="keyword">...</span>
+0096     <span class="string">'iterationLimit'</span>, <span class="string">'logFile'</span>};
+0097 parameters = <span class="string">''</span>;
+0098 <span class="keyword">if</span> nargin ~=1
+0099     <span class="keyword">if</span> mod(length(varargin),2)==0
+0100         <span class="keyword">for</span> i=1:2:length(varargin)-1
+0101             <span class="keyword">if</span> ismember(varargin{i},optParamNames)
+0102                 parameters.(varargin{i}) = varargin{i+1};
+0103             <span class="keyword">else</span>
+0104                 error([varargin{i} <span class="string">' is not a valid optional parameter'</span>]);
+0105             <span class="keyword">end</span>
+0106         <span class="keyword">end</span>
+0107     <span class="keyword">elseif</span> strcmp(varargin{1},<span class="string">'default'</span>)
+0108         parameters = <span class="string">'default'</span>;
+0109     <span class="keyword">elseif</span> isstruct(varargin{1})
+0110         parameters = varargin{1};
+0111     <span class="keyword">else</span>
+0112         display(<span class="string">'Warning: Invalid number of parameters/values'</span>)
+0113         solution=[];
+0114         <span class="keyword">return</span>;
+0115     <span class="keyword">end</span>
+0116 <span class="keyword">end</span>
+0117 [printLevel warning] = <a href="getCobraSolverParams.html" class="code" title="function varargout = getCobraSolverParams(solverType, paramNames, parameters)">getCobraSolverParams</a>(<span class="string">'NLP'</span>,{<span class="string">'printLevel'</span>,<span class="string">'warning'</span>},parameters);
+0118 
+0119 <span class="comment">%deal variables</span>
+0120 [A,lb,ub] = deal(NLPproblem.A,NLPproblem.lb,NLPproblem.ub);
+0121 <span class="keyword">if</span> isfield(NLPproblem,<span class="string">'csense'</span>)
+0122     [b, csense] = deal(NLPproblem.b, NLPproblem.csense);
+0123 <span class="keyword">elseif</span> isfield(NLPproblem,<span class="string">'b_U'</span>)
+0124     [b_L,b_U] = deal(NLPproblem.b_L,NLPproblem.b_U);
+0125 <span class="keyword">else</span>
+0126     display(<span class="string">'either .b_U, .b_L or .b, .csense must be defined'</span>)
+0127 <span class="keyword">end</span>
+0128 
+0129 <span class="keyword">if</span> isfield(NLPproblem, <span class="string">'objFunction'</span>)
+0130     objFunction = NLPproblem.objFunction;
+0131 <span class="keyword">elseif</span> isfield(NLPproblem, <span class="string">'c'</span>)
+0132     c = NLPproblem.c;
+0133 <span class="keyword">else</span>
+0134     display(<span class="string">'either .objFunction or .c must be defined'</span>)
+0135 <span class="keyword">end</span>
+0136 <span class="keyword">if</span> isfield(NLPproblem,<span class="string">'x0'</span>)
+0137     x0 = NLPproblem.x0;
+0138 <span class="keyword">else</span>
+0139     x0 = [];
+0140 <span class="keyword">end</span>
+0141 
+0142 
+0143 t_start = clock;
+0144 <span class="comment">% Solvers</span>
+0145 <span class="keyword">switch</span> solver
+0146     <span class="keyword">case</span> <span class="string">'matlab'</span>
+0147         <span class="comment">%% fmincon</span>
+0148         A1 = [A(csense == <span class="string">'L'</span>,:);-A(csense == <span class="string">'G'</span>,:)];
+0149         b1 = [b(csense == <span class="string">'L'</span>),-b(csense == <span class="string">'G'</span>)];
+0150         
+0151         A2 = A(csense == <span class="string">'E'</span>,:);
+0152         b2 = b(csense == <span class="string">'E'</span>);
+0153         
+0154         options.nIter = 100000;
+0155         
+0156         [x,f,origStat,output,lambda] = fmincon(objFunction,x0,A1,b1,A2,b2,lb,ub,[],options,varargin);
+0157         
+0158         <span class="comment">%Assign Results</span>
+0159         <span class="keyword">if</span> (origStat &gt; 0)
+0160             stat = 1; <span class="comment">% Optimal solution found</span>
+0161             y = lambda.eqlin;
+0162         <span class="keyword">elseif</span> (origStat &lt; 0)
+0163             stat = 0; <span class="comment">% Infeasible</span>
+0164         <span class="keyword">else</span>
+0165             stat = -1; <span class="comment">% Solution did not converge</span>
+0166         <span class="keyword">end</span>
+0167     <span class="keyword">case</span> <span class="string">'tomlab_snopt'</span>
+0168         <span class="comment">%% tomlab_snopt</span>
+0169         
+0170         <span class="comment">%get settings</span>
+0171         [checkNaN, PbName, iterationLimit, logFile] =  <span class="keyword">...</span>
+0172             <a href="getCobraSolverParams.html" class="code" title="function varargout = getCobraSolverParams(solverType, paramNames, parameters)">getCobraSolverParams</a>(<span class="string">'NLP'</span>,{<span class="string">'checkNaN'</span>,<span class="string">'PbName'</span>, <span class="string">'iterationLimit'</span>, <span class="string">'logFile'</span>},parameters);     
+0173         <span class="keyword">if</span> isfield(NLPproblem,<span class="string">'gradFunction'</span>)
+0174             gradFunction = NLPproblem.gradFunction;
+0175         <span class="keyword">else</span>
+0176             gradFunction = [];
+0177         <span class="keyword">end</span>
+0178         <span class="keyword">if</span> isfield(NLPproblem,<span class="string">'H'</span>)
+0179             H = NLPproblem.H;
+0180         <span class="keyword">else</span>
+0181             H = [];
+0182         <span class="keyword">end</span>
+0183         <span class="keyword">if</span> isfield(NLPproblem,<span class="string">'fLowBnd'</span>)
+0184             fLowBnd = NLPproblem.fLowBnd;
+0185         <span class="keyword">else</span>
+0186             fLowBnd = [];
+0187         <span class="keyword">end</span>
+0188         <span class="keyword">if</span> isfield(NLPproblem,<span class="string">'d'</span>)
+0189             d = NLPproblem.d;
+0190         <span class="keyword">else</span>
+0191             d = [];
+0192         <span class="keyword">end</span>
+0193         <span class="keyword">if</span> isfield(NLPproblem,<span class="string">'dd'</span>)
+0194             dd = NLPproblem.dd;
+0195         <span class="keyword">else</span>
+0196             dd = [];
+0197         <span class="keyword">end</span>
+0198         <span class="keyword">if</span> isfield(NLPproblem,<span class="string">'d2d'</span>)
+0199             d2d = NLPproblem.d2c;
+0200         <span class="keyword">else</span>
+0201             d2d = [];
+0202         <span class="keyword">end</span>
+0203         <span class="keyword">if</span> isfield(NLPproblem,<span class="string">'d_L'</span>)
+0204             d_L = NLPproblem.d_L;
+0205         <span class="keyword">else</span>
+0206             d_L = [];
+0207         <span class="keyword">end</span>
+0208         <span class="keyword">if</span> isfield(NLPproblem,<span class="string">'d_U'</span>)
+0209             d_U = NLPproblem.d_U;
+0210         <span class="keyword">else</span>
+0211             d_U = [];
+0212         <span class="keyword">end</span>
+0213         <span class="keyword">if</span> isfield(NLPproblem,<span class="string">'userParams'</span>)
+0214             userParams = NLPproblem.userParams;
+0215         <span class="keyword">else</span>
+0216             userParams = [];
+0217         <span class="keyword">end</span>
+0218         <span class="keyword">if</span> isfield(NLPproblem,<span class="string">'optParams'</span>)
+0219             optParams = NLPproblem.optParams;
+0220         <span class="keyword">else</span>
+0221             optParams = [];
+0222         <span class="keyword">end</span>
+0223         <span class="keyword">if</span> isfield(NLPproblem,<span class="string">'SOL'</span>), Prob.SOL = NLPproblem.SOL; <span class="keyword">end</span>
+0224         
+0225         x_L = lb;
+0226         x_U = ub;
+0227         <span class="keyword">if</span> ~exist(<span class="string">'b_L'</span>,<span class="string">'var'</span>)
+0228             <span class="keyword">if</span> (~isempty(csense))
+0229                 b_L(csense == <span class="string">'E'</span>) = b(csense == <span class="string">'E'</span>);
+0230                 b_U(csense == <span class="string">'E'</span>) = b(csense == <span class="string">'E'</span>);
+0231                 b_L(csense == <span class="string">'G'</span>) = b(csense == <span class="string">'G'</span>);
+0232                 b_U(csense == <span class="string">'G'</span>) = 1e6;
+0233                 b_L(csense == <span class="string">'L'</span>) = -1e6;
+0234                 b_U(csense == <span class="string">'L'</span>) = b(csense == <span class="string">'L'</span>);
+0235             <span class="keyword">else</span>
+0236                 b_L = b;
+0237                 b_U = b;
+0238             <span class="keyword">end</span>
+0239         <span class="keyword">end</span>
+0240         
+0241         <span class="comment">%settings</span>
+0242         HessPattern = []; 
+0243         pSepFunc = [];
+0244         ConsPattern = [];
+0245         x_min = []; x_max = [];
+0246         f_opt = [];  x_opt = [];
+0247         
+0248         <span class="keyword">if</span> exist(<span class="string">'c'</span>, <span class="string">'var'</span>) <span class="comment">% linear objective function</span>
+0249             Prob  = lpconAssign(c, x_L, x_U, PbName, x0,<span class="keyword">...</span>
+0250                A, b_L, b_U,<span class="keyword">...</span>
+0251                d, dd, d2d, ConsPattern, d_L, d_U,<span class="keyword">...</span>
+0252                fLowBnd, x_min, x_max, f_opt, x_opt); 
+0253         <span class="keyword">else</span> <span class="comment">% general objective function</span>
+0254             f = objFunction;
+0255             g = gradFunction;
+0256             Prob = conAssign(f, g, H, HessPattern, x_L, x_U, PbName, x0, <span class="keyword">...</span>
+0257                 pSepFunc, fLowBnd, <span class="keyword">...</span>
+0258                 A, b_L, b_U, d, dd, d2d, ConsPattern, d_L, d_U, <span class="keyword">...</span>
+0259                 x_min, x_max, f_opt, x_opt);
+0260         <span class="keyword">end</span>
+0261         Prob.user = userParams;
+0262         Prob.optParam = optParams;
+0263         Prob.Warning = warning;
+0264         Prob.SOL.optPar(35) = iterationLimit; <span class="comment">%This is major iteration limit.</span>
+0265         Prob.SOL.optPar(30) = 1e9; <span class="comment">%this is the minor iteration limit.  Essentially unlimited</span>
+0266         Prob.CheckNaN = checkNaN;
+0267         
+0268         Prob.SOL.PrintFile = strcat(logFile, <span class="string">'_iterations.txt'</span>);
+0269         Prob.SOL.SummFile = strcat(logFile, <span class="string">'_summary.txt'</span>);
+0270         
+0271         <span class="keyword">if</span> printLevel &gt;= 1
+0272             Prob.optParam.IterPrint = 1;
+0273         <span class="keyword">end</span>
+0274         <span class="keyword">if</span> printLevel &gt;=3
+0275             Prob.PriLevOpt = 1;
+0276             
+0277         <span class="keyword">end</span>
+0278         
+0279         <span class="comment">%Call Solver</span>
+0280         Result = tomRun(<span class="string">'snopt'</span>, Prob, printLevel);
+0281         
+0282         <span class="comment">% Assign results</span>
+0283         x = Result.x_k;
+0284         f = Result.f_k;
+0285         
+0286         origStat = Result.Inform;
+0287         w = Result.v_k(1:length(lb));
+0288         y = Result.v_k((length(lb)+1):end);
+0289         <span class="keyword">if</span> (origStat &gt;= 1) &amp;&amp; (origStat &lt;= 3)
+0290             stat = 1;
+0291         <span class="keyword">elseif</span> (origStat &gt;= 11) &amp;&amp; (origStat &lt;= 14)
+0292             stat = 0;
+0293         <span class="keyword">elseif</span> (origStat == 21 || origStat == 22)
+0294             stat = 2;
+0295         <span class="keyword">else</span>
+0296             stat = -1;
+0297         <span class="keyword">end</span>
+0298         save ttt
+0299     <span class="keyword">otherwise</span>
+0300         error([<span class="string">'Unknown solver: '</span> solver]);
+0301 <span class="keyword">end</span>
+0302 
+0303 <span class="comment">%% Assign Solution</span>
+0304 t = etime(clock, t_start);
+0305 [solution.full,solution.obj,solution.rcost,solution.dual, <span class="keyword">...</span>
+0306     solution.solver,solution.stat,solution.origStat,solution.time] = <span class="keyword">...</span>
+0307     deal(x,f,w,y,solver,stat,origStat,t);
+0308 <span class="keyword">if</span> strcmp(solver,<span class="string">'tomlab_snopt'</span>)
+0309     solution.origSolStruct = Result;
+0310 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

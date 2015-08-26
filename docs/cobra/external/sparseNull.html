@@ -1,0 +1,324 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sparseNull</title>
+  <meta name="keywords" content="sparseNull">
+  <meta name="description" content="sparseNull returns computes the sparse Null basis of a matrix">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html external -->
+<h1>sparseNull
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>sparseNull returns computes the sparse Null basis of a matrix</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function N = sparseNull(S, tol) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> sparseNull returns computes the sparse Null basis of a matrix
+
+ N = sparseNull(S, tol)
+ 
+ Computes a basis of the null space for a sparse matrix.  For sparse
+ matrixes this is much faster than using null.  It does however have lower
+ numerical accuracy.  N is itself sparse and not orthonormal.  So in this
+ way it is like using N = null(S, 'r'), except of course much faster.
+
+ Jan Schellenberger 10/20/2009 
+ based on this:
+ http://www.mathworks.com/matlabcentral/fileexchange/11120-null-space-of-a-sparse-matrix</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/addLoopLawConstraints.html" class="code" title="function [MILPproblem] = addLoopLawConstraints(LPproblem, model, rxnIndex)">addLoopLawConstraints</a>	addLoopLawConstraints adds loop law constraints to LP problem or MILP problem.</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function [SpLeft, SpRight] = spspaces(A,opt,tol)</a></li><li><a href="#_sub2" class="code">function [L,U,Q] = luq(A,do_pivot,tol)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function N = sparseNull(S, tol)</a>
+0002 <span class="comment">% sparseNull returns computes the sparse Null basis of a matrix</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% N = sparseNull(S, tol)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% Computes a basis of the null space for a sparse matrix.  For sparse</span>
+0007 <span class="comment">% matrixes this is much faster than using null.  It does however have lower</span>
+0008 <span class="comment">% numerical accuracy.  N is itself sparse and not orthonormal.  So in this</span>
+0009 <span class="comment">% way it is like using N = null(S, 'r'), except of course much faster.</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% Jan Schellenberger 10/20/2009</span>
+0012 <span class="comment">% based on this:</span>
+0013 <span class="comment">% http://www.mathworks.com/matlabcentral/fileexchange/11120-null-space-of-a-sparse-matrix</span>
+0014 <span class="keyword">if</span> nargin &lt;2
+0015     tol = 1e-9;
+0016 <span class="keyword">end</span>
+0017 [SpLeft, SpRight] = <a href="#_sub1" class="code" title="subfunction [SpLeft, SpRight] = spspaces(A,opt,tol)">spspaces</a>(S,2, tol);
+0018 N = SpRight{1}(:,SpRight{3});
+0019 N(abs(N) &lt; tol) = 0;
+0020 
+0021 
+0022 <span class="comment">%%%%%%%%%%%%%% code from website.  I did not write this myself. -Jan</span>
+0023 <span class="comment">%%%%</span>
+0024 
+0025 <a name="_sub1" href="#_subfunctions" class="code">function [SpLeft, SpRight] = spspaces(A,opt,tol)</a>
+0026 <span class="comment">%  PURPOSE: finds left and right null and range space of a sparse matrix A</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">% ---------------------------------------------------</span>
+0029 <span class="comment">%  USAGE: [SpLeft, SpRight] = spspaces(A,opt,tol)</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">%  INPUT:</span>
+0032 <span class="comment">%       A                           a sparse matrix</span>
+0033 <span class="comment">%       opt                         spaces to calculate</span>
+0034 <span class="comment">%                                   = 1: left null and range space</span>
+0035 <span class="comment">%                                   = 2: right null and range space</span>
+0036 <span class="comment">%                                   = 3: both left and right spaces</span>
+0037 <span class="comment">%       tol                         uses the tolerance tol when calculating</span>
+0038 <span class="comment">%                                   null subspaces (optional)</span>
+0039 <span class="comment">%</span>
+0040 <span class="comment">%   OUTPUT:</span>
+0041 <span class="comment">%       SpLeft                      1x4 cell. SpLeft = {} if opt =2.</span>
+0042 <span class="comment">%           SpLeft{1}               an invertible matrix Q</span>
+0043 <span class="comment">%           SpLeft{2}               indices, I, of rows of the matrix Q that</span>
+0044 <span class="comment">%                                   span the left range of the matrix A</span>
+0045 <span class="comment">%           SpLeft{3}               indices, J, of rows of the matrix Q that</span>
+0046 <span class="comment">%                                   span the left null space of the matrix A</span>
+0047 <span class="comment">%                                   Q(J,:)A = 0</span>
+0048 <span class="comment">%           SpLeft{4}               inverse of the matrix Q</span>
+0049 <span class="comment">%       SpRight                     1x4 cell. SpRight = {} if opt =1.</span>
+0050 <span class="comment">%           SpLeft{1}               an invertible matrix Q</span>
+0051 <span class="comment">%           SpLeft{2}               indices, I, of rows of the matrix Q that</span>
+0052 <span class="comment">%                                   span the right range of the matrix A</span>
+0053 <span class="comment">%           SpLeft{3}               indices, J, of rows of the matrix Q that</span>
+0054 <span class="comment">%                                   span the right null space of the matrix A</span>
+0055 <span class="comment">%                                   AQ(:,J) = 0</span>
+0056 <span class="comment">%           SpLeft{4}               inverse of the matrix Q</span>
+0057 <span class="comment">%</span>
+0058 <span class="comment">%   COMMENTS:</span>
+0059 <span class="comment">%       uses luq routine, that finds matrices L, U, Q such that</span>
+0060 <span class="comment">%</span>
+0061 <span class="comment">%           A = L | U 0 | Q</span>
+0062 <span class="comment">%                 | 0 0 |</span>
+0063 <span class="comment">%</span>
+0064 <span class="comment">%       where L, Q, U are invertible matrices, U is upper triangular. This</span>
+0065 <span class="comment">%       decomposition is calculated using lu decomposition.</span>
+0066 <span class="comment">%</span>
+0067 <span class="comment">%       This routine is fast, but can deliver inaccurate null and range</span>
+0068 <span class="comment">%       spaces if zero and nonzero singular values of the matrix A are not</span>
+0069 <span class="comment">%       well separated.</span>
+0070 <span class="comment">%</span>
+0071 <span class="comment">%   WARNING:</span>
+0072 <span class="comment">%       right null and rang space may be very inaccurate</span>
+0073 <span class="comment">%</span>
+0074 <span class="comment">% Copyright  (c) Pawel Kowal (2006)</span>
+0075 <span class="comment">% All rights reserved</span>
+0076 <span class="comment">% LREM_SOLVE toolbox is available free for noncommercial academic use only.</span>
+0077 <span class="comment">% pkowal3@sgh.waw.pl</span>
+0078 
+0079 <span class="keyword">if</span> nargin&lt;3
+0080     tol                 = max(max(size(A)) * norm(A,1) * eps,100*eps);
+0081 <span class="keyword">end</span>
+0082 
+0083 <span class="keyword">switch</span> opt
+0084     <span class="keyword">case</span> 1
+0085         calc_left       = 1;
+0086         calc_right      = 0;
+0087     <span class="keyword">case</span> 2
+0088         calc_left       = 0;
+0089         calc_right      = 1;
+0090     <span class="keyword">case</span> 3
+0091         calc_left       = 1;
+0092         calc_right      = 1;
+0093 <span class="keyword">end</span>
+0094 
+0095 [L,U,Q]                 = <a href="#_sub2" class="code" title="subfunction [L,U,Q] = luq(A,do_pivot,tol)">luq</a>(A,0,tol);
+0096 
+0097 <span class="keyword">if</span> calc_left
+0098     <span class="keyword">if</span> ~isempty(L)
+0099         LL              = L^-1;
+0100     <span class="keyword">else</span>
+0101         LL              = L;
+0102     <span class="keyword">end</span>
+0103     S                   = max(abs(U),[],2);
+0104     I                   = find(S&gt;tol);
+0105     <span class="keyword">if</span> ~isempty(S)
+0106         J               = find(S&lt;=tol);
+0107     <span class="keyword">else</span>
+0108         J               = (1:size(S,1))';
+0109     <span class="keyword">end</span>    
+0110     SpLeft              = {LL,I,J,L};
+0111 <span class="keyword">else</span>
+0112     SpLeft              = {};
+0113 <span class="keyword">end</span>
+0114 <span class="keyword">if</span> calc_right
+0115     <span class="keyword">if</span> ~isempty(Q)
+0116         QQ              = Q^-1;
+0117     <span class="keyword">else</span>
+0118         QQ              = Q;
+0119     <span class="keyword">end</span>    
+0120     S                   = max(abs(U),[],1);
+0121     I                   = find(S&gt;tol);
+0122     <span class="keyword">if</span> ~isempty(S)
+0123         J               = find(S&lt;=tol);
+0124     <span class="keyword">else</span>
+0125         J               = (1:size(S,2))';
+0126     <span class="keyword">end</span>
+0127     SpRight             = {QQ,I,J,Q};
+0128 <span class="keyword">else</span>
+0129     SpRight             = {};
+0130 <span class="keyword">end</span>
+0131 
+0132 
+0133 <a name="_sub2" href="#_subfunctions" class="code">function [L,U,Q] = luq(A,do_pivot,tol)</a>
+0134 <span class="comment">%  PURPOSE: calculates the following decomposition</span>
+0135 <span class="comment">%</span>
+0136 <span class="comment">%       A = L |Ubar  0 | Q</span>
+0137 <span class="comment">%             |0     0 |</span>
+0138 <span class="comment">%</span>
+0139 <span class="comment">%       where Ubar is a square invertible matrix</span>
+0140 <span class="comment">%       and matrices L, Q are invertible.</span>
+0141 <span class="comment">%</span>
+0142 <span class="comment">% ---------------------------------------------------</span>
+0143 <span class="comment">%  USAGE: [L,U,Q] = luq(A,do_pivot,tol)</span>
+0144 <span class="comment">%  INPUT:</span>
+0145 <span class="comment">%         A             a sparse matrix</span>
+0146 <span class="comment">%         do_pivot      = 1 with column pivoting</span>
+0147 <span class="comment">%                       = 0 without column pivoting</span>
+0148 <span class="comment">%         tol           uses the tolerance tol in separating zero and</span>
+0149 <span class="comment">%                       nonzero values</span>
+0150 <span class="comment">%</span>
+0151 <span class="comment">%   OUTPUT:</span>
+0152 <span class="comment">%         L,U,Q          matrices</span>
+0153 <span class="comment">%</span>
+0154 <span class="comment">%   COMMENTS:</span>
+0155 <span class="comment">%         based on lu decomposition</span>
+0156 <span class="comment">%</span>
+0157 <span class="comment">% Copyright  (c) Pawel Kowal (2006)</span>
+0158 <span class="comment">% All rights reserved</span>
+0159 <span class="comment">% LREM_SOLVE toolbox is available free for noncommercial academic use only.</span>
+0160 <span class="comment">% pkowal3@sgh.waw.pl</span>
+0161 
+0162 [n,m]                   = size(A);
+0163 
+0164 <span class="keyword">if</span> ~issparse(A)
+0165     A                   = sparse(A);
+0166 <span class="keyword">end</span>
+0167 
+0168 <span class="comment">%--------------------------------------------------------------------------</span>
+0169 <span class="comment">%       SPECIAL CASES</span>
+0170 <span class="comment">%--------------------------------------------------------------------------</span>
+0171 <span class="keyword">if</span> size(A,1)==0
+0172     L                   = speye(n);
+0173     U                   = A;
+0174     Q                   = speye(m);
+0175     <span class="keyword">return</span>;
+0176 <span class="keyword">end</span>
+0177 <span class="keyword">if</span> size(A,2)==0
+0178     L                   = speye(n);
+0179     U                   = A;    
+0180     Q                   = speye(m);
+0181     <span class="keyword">return</span>;
+0182 <span class="keyword">end</span>        
+0183 
+0184 <span class="comment">%--------------------------------------------------------------------------</span>
+0185 <span class="comment">%       LU DECOMPOSITION</span>
+0186 <span class="comment">%--------------------------------------------------------------------------</span>
+0187 <span class="keyword">if</span> do_pivot
+0188     [L,U,P,Q]           = lu(A);   
+0189     Q                   = Q';
+0190 <span class="keyword">else</span>
+0191     [L,U,P]             = lu(A);   
+0192     Q                   = speye(m);
+0193 <span class="keyword">end</span>
+0194 p                       = size(A,1)-size(L,2);
+0195 LL                      = [sparse(n-p,p);speye(p)];
+0196 L                       = [P'*L P(n-p+1:n,:)'];
+0197 U                       = [U;sparse(p,m)];
+0198 
+0199 <span class="comment">%--------------------------------------------------------------------------</span>
+0200 <span class="comment">%       FINDS ROWS WITH ZERO AND NONZERO ELEMENTS ON THE DIAGONAL</span>
+0201 <span class="comment">%--------------------------------------------------------------------------</span>
+0202 <span class="keyword">if</span> size(U,1)==1 || size(U,2)==1
+0203     S                   = U(1,1);
+0204 <span class="keyword">else</span>
+0205     S                   = diag(U);
+0206 <span class="keyword">end</span>
+0207 I                       = find(abs(S)&gt;tol);
+0208 Jl                      = (1:n)';
+0209 Jl(I)                   = [];
+0210 Jq                      = (1:m)';
+0211 Jq(I)                   = [];
+0212 
+0213 Ubar1                   = U(I,I);
+0214 Ubar2                   = U(Jl,Jq);
+0215 Qbar1                   = Q(I,:);
+0216 Lbar1                   = L(:,I);
+0217 
+0218 <span class="comment">%--------------------------------------------------------------------------</span>
+0219 <span class="comment">%       ELININATES NONZEZO ELEMENTS BELOW AND ON THE RIGHT OF THE</span>
+0220 <span class="comment">%       INVERTIBLE BLOCK OF THE MATRIX U</span>
+0221 <span class="comment">%</span>
+0222 <span class="comment">%       UPDATES MATRICES L, Q</span>
+0223 <span class="comment">%--------------------------------------------------------------------------</span>
+0224 <span class="keyword">if</span> ~isempty(I)
+0225     Utmp                = U(I,Jq);
+0226     X                   = Ubar1'\U(Jl,I)';
+0227     Ubar2               = Ubar2-X'*Utmp;
+0228     Lbar1               = Lbar1+L(:,Jl)*X';
+0229 
+0230     X                   = Ubar1\Utmp;
+0231     Qbar1               = Qbar1+X*Q(Jq,:);    
+0232     Utmp                = [];
+0233     X                   = [];
+0234 <span class="keyword">end</span>
+0235 
+0236 <span class="comment">%--------------------------------------------------------------------------</span>
+0237 <span class="comment">%       FINDS ROWS AND COLUMNS WITH ONLY ZERO ELEMENTS</span>
+0238 <span class="comment">%--------------------------------------------------------------------------</span>
+0239 I2                      = find(max(abs(Ubar2),[],2)&gt;tol);
+0240 I5                      = find(max(abs(Ubar2),[],1)&gt;tol);
+0241 
+0242 I3                      = Jl(I2);
+0243 I4                      = Jq(I5);
+0244 Jq(I5)                  = [];
+0245 Jl(I2)                  = [];
+0246 U                       = [];
+0247 
+0248 <span class="comment">%--------------------------------------------------------------------------</span>
+0249 <span class="comment">%       FINDS A PART OF THE MATRIX U WHICH IS NOT IN THE REQIRED FORM</span>
+0250 <span class="comment">%--------------------------------------------------------------------------</span>
+0251 A                       = Ubar2(I2,I5);
+0252 
+0253 <span class="comment">%--------------------------------------------------------------------------</span>
+0254 <span class="comment">%       PERFORMS LUQ DECOMPOSITION OF THE MATRIX A</span>
+0255 <span class="comment">%--------------------------------------------------------------------------</span>
+0256 [L1,U1,Q1]              = <a href="#_sub2" class="code" title="subfunction [L,U,Q] = luq(A,do_pivot,tol)">luq</a>(A,do_pivot,tol);
+0257 
+0258 <span class="comment">%--------------------------------------------------------------------------</span>
+0259 <span class="comment">%       UPDATES MATRICES L, U, Q</span>
+0260 <span class="comment">%--------------------------------------------------------------------------</span>
+0261 Lbar2                   = L(:,I3)*L1;
+0262 Qbar2                   = Q1*Q(I4,:);
+0263 L                       = [Lbar1 Lbar2 L(:,Jl)];
+0264 Q                       = [Qbar1; Qbar2; Q(Jq,:)];
+0265 
+0266 n1                      = length(I);
+0267 n2                      = length(I3);
+0268 m2                      = length(I4);
+0269 U                       = [Ubar1 sparse(n1,m-n1);sparse(n2,n1) U1 sparse(n2,m-n1-m2);sparse(n-n1-n2,m)];</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

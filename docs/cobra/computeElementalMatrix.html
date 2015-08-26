@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of computeElementalMatrix</title>
+  <meta name="keywords" content="computeElementalMatrix">
+  <meta name="description" content="computeElementalMatrix Compute elemental matrix">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html cobra -->
+<h1>computeElementalMatrix
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>computeElementalMatrix Compute elemental matrix</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [Ematrix] = computeElementalMatrix(model, metList, warnings) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">computeElementalMatrix Compute elemental matrix
+
+ [Ematrix] = computeElementalMatrix(model, metList, warnings)
+
+ INPUT
+ model             COBRA model structure 
+                   (must define .mets and .metFormulas)
+
+ OPTIONAL INPUTS
+ metList           Cell array of which metabolites to search for
+                   (Default = all metabolites in model)
+ warnings          Display warnings if there are errors with the
+                   formula.  (Default = true)
+
+ OUTPUT
+ Ematrix           m x 6 matrix of order [C N O H P other]</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="findMetIDs.html" class="code" title="function metID = findMetIDs(model,metList)">findMetIDs</a>	findMetIDs Find metabolite numbers in a model</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="computeMW.html" class="code" title="function [MW, Ematrix] = computeMW(model, metList, warnings)">computeMW</a>	computeMW Compute molecular weight and elemental matrix of compounds</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [Ematrix] = computeElementalMatrix(model, metList, warnings)</a>
+0002 <span class="comment">%computeElementalMatrix Compute elemental matrix</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% [Ematrix] = computeElementalMatrix(model, metList, warnings)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% INPUT</span>
+0007 <span class="comment">% model             COBRA model structure</span>
+0008 <span class="comment">%                   (must define .mets and .metFormulas)</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% OPTIONAL INPUTS</span>
+0011 <span class="comment">% metList           Cell array of which metabolites to search for</span>
+0012 <span class="comment">%                   (Default = all metabolites in model)</span>
+0013 <span class="comment">% warnings          Display warnings if there are errors with the</span>
+0014 <span class="comment">%                   formula.  (Default = true)</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% OUTPUT</span>
+0017 <span class="comment">% Ematrix           m x 6 matrix of order [C N O H P other]</span>
+0018 
+0019 <span class="comment">% Extracted from computeMW. Richard Que (1/22/10)</span>
+0020 
+0021 <span class="keyword">if</span> nargin &lt; 3
+0022     warnings = true;
+0023 <span class="keyword">end</span>
+0024 
+0025 <span class="keyword">if</span> nargin &lt; 2 || isempty(metList)
+0026     metIDs = 1:length(model.mets);
+0027 <span class="keyword">else</span>
+0028     metIDs = <a href="findMetIDs.html" class="code" title="function metID = findMetIDs(model,metList)">findMetIDs</a>(model,metList);
+0029 <span class="keyword">end</span>
+0030 
+0031 metIDs = reshape(metIDs, length(metIDs),1);
+0032 
+0033 Ematrix = zeros(length(metIDs), 6);
+0034 <span class="keyword">for</span> n = 1:length(metIDs)
+0035     i = metIDs(n);
+0036     formula = model.metFormulas(i);
+0037     [compounds, tok] = regexp(formula, <span class="string">'([A-Z][a-z]*)(\d*)'</span>, <span class="string">'match'</span>, <span class="string">'tokens'</span>);
+0038     tok = tok{1,1};
+0039     <span class="keyword">for</span> j = 1:length(tok) <span class="comment">% go through each token.</span>
+0040         t = tok{1,j};
+0041         comp = t{1,1};
+0042         q = str2num(t{1,2});
+0043         <span class="keyword">if</span> (isempty(q))
+0044             q = 1;
+0045         <span class="keyword">end</span>
+0046         <span class="keyword">switch</span> comp
+0047             <span class="keyword">case</span> <span class="string">'H'</span>
+0048                 Ematrix(n,4) = q;
+0049             <span class="keyword">case</span> <span class="string">'C'</span>
+0050                 Ematrix(n,1) = q;
+0051             <span class="keyword">case</span> <span class="string">'N'</span>
+0052                 Ematrix(n,2) = q;
+0053             <span class="keyword">case</span> <span class="string">'O'</span>
+0054                 Ematrix(n,3) = q;
+0055             <span class="keyword">case</span> <span class="string">'Na'</span>
+0056                 Ematrix(n,6) = Ematrix(n,6) + q;
+0057             <span class="keyword">case</span> <span class="string">'Mg'</span>
+0058                 Ematrix(n,6) = Ematrix(n,6) + q;
+0059             <span class="keyword">case</span> <span class="string">'P'</span>
+0060                 Ematrix(n,5) = q;
+0061             <span class="keyword">case</span> <span class="string">'S'</span>
+0062                 Ematrix(n,6) = Ematrix(n,6) + q;
+0063             <span class="keyword">case</span> <span class="string">'Cl'</span>
+0064                 Ematrix(n,6) = Ematrix(n,6) + q;
+0065             <span class="keyword">case</span> <span class="string">'K'</span>
+0066                 Ematrix(n,6) = Ematrix(n,6) + q;
+0067             <span class="keyword">case</span> <span class="string">'Ca'</span>
+0068                 Ematrix(n,6) = Ematrix(n,6) + q;
+0069             <span class="keyword">case</span> <span class="string">'Mn'</span>
+0070                 Ematrix(n,6) = Ematrix(n,6) + q;
+0071             <span class="keyword">case</span> <span class="string">'Fe'</span>
+0072                 Ematrix(n,6) = Ematrix(n,6) + q;
+0073             <span class="keyword">case</span> <span class="string">'Ni'</span>
+0074                 Ematrix(n,6) = Ematrix(n,6) + q;                
+0075             <span class="keyword">case</span> <span class="string">'Co'</span>
+0076                 Ematrix(n,6) = Ematrix(n,6) + q;
+0077             <span class="keyword">case</span> <span class="string">'Cu'</span>
+0078                 Ematrix(n,6) = Ematrix(n,6) + q;
+0079             <span class="keyword">case</span> <span class="string">'Zn'</span>
+0080                 Ematrix(n,6) = Ematrix(n,6) + q;
+0081             <span class="keyword">case</span> <span class="string">'As'</span>
+0082                 Ematrix(n,6) = Ematrix(n,6) + q;
+0083             <span class="keyword">case</span> <span class="string">'Se'</span>
+0084                 Ematrix(n,6) = Ematrix(n,6) + q;
+0085             <span class="keyword">case</span> <span class="string">'Ag'</span>
+0086                 Ematrix(n,6) = Ematrix(n,6) + q;
+0087             <span class="keyword">case</span> <span class="string">'Cd'</span>
+0088                 Ematrix(n,6) = Ematrix(n,6) + q;
+0089             <span class="keyword">case</span> <span class="string">'W'</span>
+0090                 Ematrix(n,6) = Ematrix(n,6) + q;
+0091             <span class="keyword">case</span> <span class="string">'Hg'</span>
+0092                 Ematrix(n,6) = Ematrix(n,6) + q;
+0093             <span class="keyword">otherwise</span>
+0094                 <span class="keyword">if</span> warnings
+0095                     display(<span class="string">'Warning'</span>);
+0096                     display(formula)
+0097                     display(comp);
+0098                 <span class="keyword">end</span>
+0099         <span class="keyword">end</span>
+0100     <span class="keyword">end</span>
+0101 
+0102 <span class="keyword">end</span>
+0103</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

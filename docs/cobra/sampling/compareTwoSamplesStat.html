@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of compareTwoSamplesStat</title>
+  <meta name="keywords" content="compareTwoSamplesStat">
+  <meta name="description" content="compareTwoSamplesStat Compare statistically the difference between two">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html sampling -->
+<h1>compareTwoSamplesStat
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>compareTwoSamplesStat Compare statistically the difference between two</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [stats,pVals] = compareTwoSamplesStat(sample1,sample2,tests) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">compareTwoSamplesStat Compare statistically the difference between two
+samples
+
+ [stats,pVals] = compareTwoSamplesStat(sample1,sample2,tests)
+
+ Does the Kolmogorov-Smirnov, rank-sum, chi-square, and T-tests
+
+INPUTS
+ sample1, sample2          Samples to compare
+ tests                     {'test1', 'test2',...} (Default = all tests)
+   Test Name                   Input
+   Kolmogorov-Smirnov test     'ks'
+   rank-sum test               'rankSum'
+   chi-squre test              'chiSquare'
+   T-test                      'tTest
+
+OUTPUTS
+ Output will be in order that tests are inputed. i.e. {'ks','rankSum'}
+ stats                     stats
+ pVals                     p values
+
+ Markus Herrgard 8/14/06
+
+ Combined test m-files into this m-file. Richard Que 11/20/09.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [stats,pVals] = compareTwoSamplesStat(sample1,sample2,tests)</a>
+0002 <span class="comment">%compareTwoSamplesStat Compare statistically the difference between two</span>
+0003 <span class="comment">%samples</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% [stats,pVals] = compareTwoSamplesStat(sample1,sample2,tests)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% Does the Kolmogorov-Smirnov, rank-sum, chi-square, and T-tests</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%INPUTS</span>
+0010 <span class="comment">% sample1, sample2          Samples to compare</span>
+0011 <span class="comment">% tests                     {'test1', 'test2',...} (Default = all tests)</span>
+0012 <span class="comment">%   Test Name                   Input</span>
+0013 <span class="comment">%   Kolmogorov-Smirnov test     'ks'</span>
+0014 <span class="comment">%   rank-sum test               'rankSum'</span>
+0015 <span class="comment">%   chi-squre test              'chiSquare'</span>
+0016 <span class="comment">%   T-test                      'tTest</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%OUTPUTS</span>
+0019 <span class="comment">% Output will be in order that tests are inputed. i.e. {'ks','rankSum'}</span>
+0020 <span class="comment">% stats                     stats</span>
+0021 <span class="comment">% pVals                     p values</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">% Markus Herrgard 8/14/06</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% Combined test m-files into this m-file. Richard Que 11/20/09.</span>
+0026 
+0027 <span class="comment">%Determine which tests to run</span>
+0028 
+0029 <span class="keyword">if</span> nargin&lt;3
+0030     tests = {<span class="string">'ks'</span>, <span class="string">'rankSum'</span>, <span class="string">'chiSquare'</span>, <span class="string">'tTest'</span>};
+0031 <span class="keyword">end</span>
+0032 
+0033 stats = [];
+0034 pVals = [];
+0035 [nVar,nSample] = size(sample1);
+0036 
+0037 <span class="keyword">for</span> i=1:length(tests)
+0038     <span class="keyword">switch</span> lower(tests{i})
+0039         <span class="keyword">case</span> <span class="string">'ks'</span>
+0040             <span class="keyword">for</span> j = 1:nVar
+0041                 [h,pLarger,statLarger] = kstest2(sample1(j,:),sample2(j,:),0.01,<span class="string">'larger'</span>);
+0042                 [h,pSmaller,statSmaller] = kstest2(sample1(j,:),sample2(j,:),0.01,<span class="string">'smaller'</span>);
+0043                 <span class="keyword">if</span> (statLarger &gt; statSmaller)
+0044                     stat(j,1) = statLarger;
+0045                     p(j,1) = pLarger;
+0046                 <span class="keyword">else</span>
+0047                     stat(j,1) = -statSmaller;
+0048                     p(j,1) = pSmaller;
+0049                 <span class="keyword">end</span>
+0050             <span class="keyword">end</span>
+0051         <span class="keyword">case</span> <span class="string">'ranksum'</span>
+0052             <span class="keyword">for</span> j = 1:nVar
+0053                 [p(j,1),h,stats] = ranksum(sample1(j,:),sample2(j,:),<span class="string">'method'</span>,<span class="string">'approximate'</span>);
+0054                 stat(j,1) = -stats.zval;
+0055             <span class="keyword">end</span>
+0056         <span class="keyword">case</span> <span class="string">'chisquare'</span>
+0057             warning off MATLAB:divideByZero
+0058             nBin = round(nSample/50);
+0059             <span class="keyword">for</span> j = 1:nVar
+0060                 counts = hist([sample1(j,:)' sample2(j,:)'],nBin)/nSample;
+0061                 tmpStat = (counts(:,1)-counts(:,2)).^2./(counts(:,1)+counts(:,2));
+0062                 tmpStat(isnan(tmpStat)) = 0;
+0063                 stat(j,1) = sum(tmpStat);
+0064             <span class="keyword">end</span>
+0065             p = chi2cdf(stat,nBin-1);
+0066             warning on MATLAB:divideByZero
+0067         <span class="keyword">case</span> <span class="string">'ttest'</span>
+0068             <span class="keyword">for</span> j = 1:nVar
+0069                 [h,p(j,1),tmp,tmpstats] = ttest2(sample1(j,:),sample2(j,:));
+0070                 stat(j,1) = tmpstats.tstat;
+0071             <span class="keyword">end</span>
+0072         <span class="keyword">otherwise</span>
+0073             fprintf(<span class="string">'%s is not a valid option'</span>,tests{i});
+0074     <span class="keyword">end</span>
+0075     stats = [stats stat];
+0076     pVals = [pVals p];
+0077 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

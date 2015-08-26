@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of biomassPrecursorCheck</title>
+  <meta name="keywords" content="biomassPrecursorCheck">
+  <meta name="description" content="biomassPrecursorCheck   Checks if biomass precursors are able to be">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html reconstruction -->
+<h1>biomassPrecursorCheck
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>biomassPrecursorCheck   Checks if biomass precursors are able to be</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [missingMets,presentMets] = biomassPrecursorCheck(model) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">biomassPrecursorCheck   Checks if biomass precursors are able to be
+synthesized. 
+
+ [missingMets,presentMets] = checkBiomassPrecursors(model)
+
+INPUT
+ model         COBRA model structure
+
+OUTPUTS
+ missingMets   List of biomass precursors that are not able to be synthesized
+ presentMets   List of biomass precursors that are able to be synthesized
+
+ NOTE: May identify metabolites that are typically recycled within the
+ network such as ATP, NAD, NADPH, ACCOA.
+
+
+ Pep Charusanti &amp; Richard Que (July 2010)
+--------------------------------------------------------------------------</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>	optimizeCbModel Solve a flux balance analysis problem</li><li><a href="addDemandReaction.html" class="code" title="function [model,rxnNames] = addDemandReaction(model,metaboliteNameList)">addDemandReaction</a>	addDemandReaction adds demand reactions for a set of metabolites</li><li><a href="../../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>	columnVector Converts a vector to a column vector</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [missingMets,presentMets] = biomassPrecursorCheck(model)</a>
+0002 <span class="comment">%biomassPrecursorCheck   Checks if biomass precursors are able to be</span>
+0003 <span class="comment">%synthesized.</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% [missingMets,presentMets] = checkBiomassPrecursors(model)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%INPUT</span>
+0008 <span class="comment">% model         COBRA model structure</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">%OUTPUTS</span>
+0011 <span class="comment">% missingMets   List of biomass precursors that are not able to be synthesized</span>
+0012 <span class="comment">% presentMets   List of biomass precursors that are able to be synthesized</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% NOTE: May identify metabolites that are typically recycled within the</span>
+0015 <span class="comment">% network such as ATP, NAD, NADPH, ACCOA.</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% Pep Charusanti &amp; Richard Que (July 2010)</span>
+0019 <span class="comment">%--------------------------------------------------------------------------</span>
+0020 
+0021 
+0022 <span class="comment">% FIND COLUMN IN S-MATRIX THAT CORRESPONDS TO BIOMASS EQUATION</span>
+0023 colS_biomass = find(model.c);
+0024 
+0025 <span class="comment">% LIST ALL METABOLITES IN THE BIOMASS FUNCTION</span>
+0026 biomassMetabs = model.mets(model.S(:,colS_biomass)&lt;0);
+0027 
+0028 <span class="comment">% ADD DEMAND REACTION, SET OBJECTIVE FUNCTION TO MAXIMIZE ITS PRODUCTION,</span>
+0029 <span class="comment">% AND OPTIMIZE.  NOTE: A CRITICAL ASSUMPTION IS THAT THE ADDED DEMAND</span>
+0030 <span class="comment">% REACTION IS APPENDED TO THE FAR RIGHT OF THE S-MATRIX.  THE CODE NEEDS TO</span>
+0031 <span class="comment">% BE REVISED IF THIS IS NOT THE CASE.</span>
+0032 k=1;
+0033 m=1;
+0034 <span class="comment">% ADD DEMAND REACTIONS</span>
+0035 [model_newDemand,addedRxns] = <a href="addDemandReaction.html" class="code" title="function [model,rxnNames] = addDemandReaction(model,metaboliteNameList)">addDemandReaction</a>(model,biomassMetabs);   
+0036 <span class="keyword">for</span> i=1:length(biomassMetabs)
+0037 <span class="comment">%     [model_newDemand,addedRxn] = addDemandReaction(model,biomassMetabs(i));   % ADD DEMAND REACTION</span>
+0038     model_newDemand.c = zeros(length(model_newDemand.c),1);                     <span class="comment">% CHANGE OBJECTIVE FUNCTION TO NEW DEMAND RXN</span>
+0039     model_newDemand.c(strmatch(addedRxns{i},model_newDemand.rxns)) = 1;         
+0040     solution = <a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(model_newDemand);                                <span class="comment">% OPTIMIZE</span>
+0041     <span class="keyword">if</span> solution.f == 0                                                          <span class="comment">% MAKE LIST OF WHICH BIOMASS PRECURSORS ARE ...</span>
+0042         missingMets(k) = biomassMetabs(i);                                      <span class="comment">%  SYNTHESIZED AND WHICH ARE NOT</span>
+0043         k = k+1;
+0044     <span class="keyword">else</span>
+0045         presentMets(m) = biomassMetabs(i);
+0046         m = m+1;
+0047     <span class="keyword">end</span>
+0048 <span class="keyword">end</span>
+0049 
+0050 
+0051 missingMets = <a href="../../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>(missingMets); 
+0052 presentMets = <a href="../../cobra/tools/columnVector.html" class="code" title="function vec = columnVector(vec)">columnVector</a>(presentMets);
+0053 
+0054 
+0055 
+0056 
+0057 
+0058 
+0059 
+0060 
+0061 
+0062 
+0063 
+0064 
+0065 
+0066 
+0067</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

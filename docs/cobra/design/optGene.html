@@ -1,0 +1,336 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of optGene</title>
+  <meta name="keywords" content="optGene">
+  <meta name="description" content="OPTGENE implements the optgene algorithm.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html design -->
+<h1>optGene
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>OPTGENE implements the optgene algorithm.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [x, population, scores, optGeneSol] = optGene(model, targetRxn, substrateRxn, generxnList, MaxKOs, population) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">OPTGENE implements the optgene algorithm.
+
+ [x, population, scores, optGeneSol] = optGene(model, targetRxn, substrateRxn, generxnList, MaxKOs, population)
+
+INPTUS
+ mode          Model of reconstruction
+ targetRxn     String name of reaction which is to be maximized.
+ generxnList   List of genes or rxns which can be knocked out.  The
+               program will guess which of the two it is, based on the 
+               content in model.
+
+OPTIONAL INPUT
+ population    population matrix (binary matrix).  Use this
+               parameter to interrupt simulation and resume afterwards.
+
+OUTPUTS
+   x           best optimized value found
+   population  Population of individuals.  Pass this back into optgene to
+               continue simulating where you left off.
+   scores      An array of scores
+   optGeneSol  optGene solution strcture
+
+ Jan Schellenberger and Adam Feist 04/08/08</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="GetOptGeneSol.html" class="code" title="function [optGeneSol] = GetOptGeneSol(model, targetRxn, substrateRxn, generxnList, population, x, scores, isGeneList)">GetOptGeneSol</a>	GetOptGeneSol save the solution from optGene and optGeneR in same format as OptKnock</li><li><a href="optGeneFitnessTilt.html" class="code" title="function [val] = optGeneFitnessTilt(rxn_vector_matrix, model, targetRxn, rxnListInput, isGeneList)">optGeneFitnessTilt</a>	optGeneFitnessTilt GeneOptFitness the fitness function</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function [Population] = lowmutationcreation(GenomeLength,FitnessFcn,options)</a></li><li><a href="#_sub2" class="code">function mutationChildren = mutationUniformEqual(parents,options,GenomeLength,FitnessFcn,state,thisScore,thisPopulation,mutationRate)</a></li><li><a href="#_sub3" class="code">function xoverKids  = crossoverCustom(parents,options,GenomeLength,FitnessFcn,unused,thisPopulation, mutationRate)</a></li><li><a href="#_sub4" class="code">function state = gaplotmutationdiversity(options,state,flag,p1)</a></li></ul>
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [x, population, scores, optGeneSol] = optGene(model, targetRxn, substrateRxn, generxnList, MaxKOs, population)</a>
+0002 <span class="comment">%OPTGENE implements the optgene algorithm.</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% [x, population, scores, optGeneSol] = optGene(model, targetRxn, substrateRxn, generxnList, MaxKOs, population)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%INPTUS</span>
+0007 <span class="comment">% mode          Model of reconstruction</span>
+0008 <span class="comment">% targetRxn     String name of reaction which is to be maximized.</span>
+0009 <span class="comment">% generxnList   List of genes or rxns which can be knocked out.  The</span>
+0010 <span class="comment">%               program will guess which of the two it is, based on the</span>
+0011 <span class="comment">%               content in model.</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%OPTIONAL INPUT</span>
+0014 <span class="comment">% population    population matrix (binary matrix).  Use this</span>
+0015 <span class="comment">%               parameter to interrupt simulation and resume afterwards.</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">%OUTPUTS</span>
+0018 <span class="comment">%   x           best optimized value found</span>
+0019 <span class="comment">%   population  Population of individuals.  Pass this back into optgene to</span>
+0020 <span class="comment">%               continue simulating where you left off.</span>
+0021 <span class="comment">%   scores      An array of scores</span>
+0022 <span class="comment">%   optGeneSol  optGene solution strcture</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">% Jan Schellenberger and Adam Feist 04/08/08</span>
+0025 
+0026 <span class="comment">% hash table for hashing results... faster than not using it.</span>
+0027 <span class="keyword">global</span> HTABLE
+0028 HTABLE = java.util.Hashtable;
+0029 <span class="keyword">global</span> MaxKnockOuts
+0030 
+0031 ngenes = length(generxnList);
+0032 
+0033 <span class="comment">% figure out if list is genes or reactions</span>
+0034 rxnok = 1;
+0035 geneok = 1;
+0036 <span class="keyword">for</span> i = 1:length(generxnList)
+0037     <span class="keyword">if</span>(~ ismember(generxnList{i}, model.rxns)),  rxnok = 0; <span class="keyword">end</span>
+0038     <span class="keyword">if</span>(~ ismember(generxnList{i}, model.genes)),geneok = 0; <span class="keyword">end</span>
+0039 <span class="keyword">end</span>
+0040 <span class="keyword">if</span> geneok
+0041     display(<span class="string">'assuming list is genes'</span>);
+0042 <span class="keyword">elseif</span> rxnok
+0043     display(<span class="string">'assuming list is reactions'</span>);
+0044 <span class="keyword">else</span>
+0045     display(<span class="string">'list appears to be neither genes nor reactions:  aborting'</span>);
+0046     <span class="keyword">return</span>;
+0047 <span class="keyword">end</span>
+0048 
+0049 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0050 <span class="comment">%%% PARAMETERS - set parameters here %%%%%%</span>
+0051 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0052 <span class="keyword">if</span> nargin &lt; 5
+0053     MaxKnockOuts = 10;
+0054 <span class="keyword">else</span>
+0055     MaxKnockOuts = MaxKOs;
+0056 <span class="keyword">end</span>
+0057 mutationRate = 1/ngenes; <span class="comment">% paper: a mutation rate of 1/(genome size) was found to be optimal for both representations.</span>
+0058 crossovermutationRate = mutationRate*.2;  <span class="comment">% the rate of mutation after a crossover.  This value should probably be fairly low.  It is only there to ensure that not every member of the population ends up with the same genotype.</span>
+0059 CrossoverFraction = .80;    <span class="comment">% Percentage of offspring created by crossing over (as opposed to mutation). 0.7 - 0.8 were found to generate the highest mean, but this can be adjusted.</span>
+0060 PopulationSize = [125 125 125 125]; <span class="comment">% paper: it was found that an increase beyond 125 individuals did not improve the results significantly.</span>
+0061 Generations = 10000;    <span class="comment">% paper: 5000.  maximum number of generations to perform</span>
+0062 TimeLimit =  3600*24*2;  <span class="comment">% global time limit in seconds</span>
+0063 StallTimeLimit = 3600*24*1;   <span class="comment">% Stall time limit (terminate after this much time of not finding an improvement in fitness)</span>
+0064 StallGenLimit =  10000;       <span class="comment">% terminate after this many generations of not finding an improvement</span>
+0065 PlotFcns =  {@gaplotscores, @gaplotbestf, @gaplotscorediversity, @gaplotstopping, @<a href="#_sub4" class="code" title="subfunction state = gaplotmutationdiversity(options,state,flag,p1)">gaplotmutationdiversity</a>}; <span class="comment">% what to plot.</span>
+0066 crossfun = @(a,b,c,d,e,f) <a href="#_sub3" class="code" title="subfunction xoverKids  = crossoverCustom(parents,options,GenomeLength,FitnessFcn,unused,thisPopulation, mutationRate)">crossoverCustom</a>(a,b,c,d,e,f,crossovermutationRate);
+0067 MigrationFraction = .1;   <span class="comment">% how many individuals migrate (.1 * 125 ~ 12 individuals).</span>
+0068 MigrationInterval = 100;  <span class="comment">% how often individuals migrate from one population to another.</span>
+0069 
+0070 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0071 <span class="comment">%%% END PARAMETERS %%%%%%%%%%%%%%%%%%%%%%%%</span>
+0072 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0073 
+0074 InitialPopulation = [];
+0075 <span class="keyword">if</span> nargin &gt; 5
+0076     InitialPopulation = double(population);
+0077 <span class="keyword">end</span>
+0078 options = gaoptimset(                                   <span class="keyword">...</span>
+0079     <span class="string">'PopulationType'</span>, <span class="string">'bitstring'</span>,                          <span class="keyword">...</span>
+0080     <span class="string">'CreationFcn'</span>, @<a href="#_sub1" class="code" title="subfunction [Population] = lowmutationcreation(GenomeLength,FitnessFcn,options)">lowmutationcreation</a>,                    <span class="keyword">...</span>
+0081     <span class="string">'MutationFcn'</span>, {@<a href="#_sub2" class="code" title="subfunction mutationChildren = mutationUniformEqual(parents,options,GenomeLength,FitnessFcn,state,thisScore,thisPopulation,mutationRate)">mutationUniformEqual</a>, mutationRate},   <span class="keyword">...</span>
+0082     <span class="string">'PopulationSize'</span>, PopulationSize,                       <span class="keyword">...</span>
+0083     <span class="string">'StallTimeLimit'</span>, StallTimeLimit,                       <span class="keyword">...</span>
+0084     <span class="string">'TimeLimit'</span>, TimeLimit,                                 <span class="keyword">...</span>
+0085     <span class="string">'PlotFcns'</span>, PlotFcns,                                   <span class="keyword">...</span>
+0086     <span class="string">'InitialPopulation'</span>, InitialPopulation,                 <span class="keyword">...</span>
+0087     <span class="string">'CrossoverFraction'</span>, CrossoverFraction,                 <span class="keyword">...</span>
+0088     <span class="string">'CrossoverFcn'</span>, crossfun,                               <span class="keyword">...</span>
+0089     <span class="string">'StallGenLimit'</span>, StallGenLimit,                         <span class="keyword">...</span>
+0090     <span class="string">'Generations'</span>, Generations,                             <span class="keyword">...</span>
+0091     <span class="string">'TolFun'</span>, 1e-10,                                        <span class="keyword">...</span>
+0092     <span class="string">'Vectorize'</span>, <span class="string">'on'</span>, <span class="keyword">...</span>
+0093     <span class="string">'MigrationFraction'</span>, MigrationFraction, <span class="keyword">...</span>
+0094     <span class="string">'MigrationInterval'</span>, MigrationInterval <span class="keyword">...</span>
+0095     <span class="keyword">...</span><span class="comment"> % 'SelectionFcn',  @selectionstochunif ...</span>
+0096     );
+0097 
+0098 <span class="comment">%     options</span>
+0099 <span class="comment">%     pause;</span>
+0100 
+0101 <span class="comment">%finess function call</span>
+0102 <span class="comment">%FitnessFunction = @(x) optGeneFitness(x,model,targetRxn, generxnList, geneok);</span>
+0103 FitnessFunction = @(x) <a href="optGeneFitnessTilt.html" class="code" title="function [val] = optGeneFitnessTilt(rxn_vector_matrix, model, targetRxn, rxnListInput, isGeneList)">optGeneFitnessTilt</a>(x,model,targetRxn, generxnList, geneok);
+0104 
+0105 gap.fitnessfcn  = FitnessFunction;
+0106 gap.nvars = ngenes;
+0107 gap.options = options;
+0108 
+0109 [x,FVAL,REASON,OUTPUT,population, scores] = ga(gap);
+0110 
+0111 <span class="comment">% save the solution</span>
+0112 [optGeneSol] = <a href="GetOptGeneSol.html" class="code" title="function [optGeneSol] = GetOptGeneSol(model, targetRxn, substrateRxn, generxnList, population, x, scores, isGeneList)">GetOptGeneSol</a>(model, targetRxn, substrateRxn, generxnList, population, x, scores, geneok); <span class="comment">% in case of genes</span>
+0113 
+0114 <span class="keyword">return</span>;
+0115 
+0116 
+0117 <span class="comment">%% Creation Function</span>
+0118 <span class="comment">% generates initial warmup with much lower number of mutations (on average</span>
+0119 <span class="comment">% one mutation per</span>
+0120 <a name="_sub1" href="#_subfunctions" class="code">function [Population] = lowmutationcreation(GenomeLength,FitnessFcn,options)</a>
+0121 totalPopulation = sum(options.PopulationSize);
+0122 initPopProvided = size(options.InitialPopulation,1);
+0123 individualsToCreate = totalPopulation - initPopProvided;
+0124 
+0125 <span class="comment">% Initialize Population to be created</span>
+0126 Population = true(totalPopulation,GenomeLength);
+0127 <span class="comment">% Use initial population provided already</span>
+0128 <span class="keyword">if</span> initPopProvided &gt; 0
+0129     Population(1:initPopProvided,:) = options.InitialPopulation;
+0130 <span class="keyword">end</span>
+0131 <span class="comment">% Create remaining population</span>
+0132 Population(initPopProvided+1:<span class="keyword">end</span>,:) = logical(1/GenomeLength &gt; rand(individualsToCreate,GenomeLength));
+0133 <span class="keyword">return</span>;
+0134 
+0135 <span class="comment">%% Mutation Function</span>
+0136 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0137 <span class="comment">%%% mutation function %%%%%</span>
+0138 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0139 <a name="_sub2" href="#_subfunctions" class="code">function mutationChildren = mutationUniformEqual(parents,options,GenomeLength,FitnessFcn,state,thisScore,thisPopulation,mutationRate)</a>
+0140 <span class="keyword">global</span> MaxKnockOuts
+0141 <span class="keyword">if</span>(nargin &lt; 8)
+0142     mutationRate = 0.01; <span class="comment">% default mutation rate</span>
+0143 <span class="keyword">end</span>
+0144 mutationChildren = zeros(length(parents),GenomeLength);
+0145 <span class="keyword">for</span> i=1:length(parents)
+0146     child = thisPopulation(parents(i),:);
+0147     kos = sum(child);
+0148     mutationPoints = find(rand(1,length(child)) &lt; mutationRate);
+0149     child(mutationPoints) = ~child(mutationPoints);
+0150 
+0151     <span class="keyword">if</span> MaxKnockOuts &gt; 0
+0152         <span class="keyword">while</span>(sum(child(:))&gt; MaxKnockOuts)
+0153             ind2 = find(child);
+0154             removeindex = ind2(randint(1,1,length(ind2))+1);
+0155             child(removeindex) = 0;
+0156         <span class="keyword">end</span>
+0157     <span class="keyword">end</span>
+0158 
+0159     <span class="comment">% with 50% chance, you will have fewer knockouts after mutation</span>
+0160     <span class="comment">% than before.  This is to stop aquiring so many mutations.</span>
+0161     <span class="keyword">if</span> rand &gt; .5 &amp;&amp; kos &gt; 1
+0162         <span class="keyword">while</span>(sum(child(:))&gt;= kos)
+0163             ind2 = find(child);
+0164             removeindex = ind2(randint(1,1,length(ind2))+1);
+0165             child(removeindex) = 0;
+0166         <span class="keyword">end</span>
+0167     <span class="keyword">end</span>
+0168     mutationChildren(i,:) = child;
+0169 <span class="keyword">end</span>
+0170 <span class="keyword">return</span>;
+0171 
+0172 <span class="comment">%% Crossover Function</span>
+0173 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0174 <span class="comment">%%%% crossover function %%%%%%%%</span>
+0175 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0176 <a name="_sub3" href="#_subfunctions" class="code">function xoverKids  = crossoverCustom(parents,options,GenomeLength,FitnessFcn,unused,thisPopulation, mutationRate)</a>
+0177 nKids = length(parents)/2;
+0178 <span class="comment">% Extract information about linear constraints</span>
+0179 <span class="comment">% Allocate space for the kids</span>
+0180 xoverKids = zeros(nKids,GenomeLength);
+0181 
+0182 <span class="keyword">global</span> MaxKnockOuts;
+0183 
+0184 <span class="comment">% To move through the parents twice as fast as thekids are</span>
+0185 <span class="comment">% being produced, a separate index for the parents is needed</span>
+0186 index = 1;
+0187 
+0188 <span class="comment">% for each kid...</span>
+0189 <span class="keyword">for</span> i=1:nKids
+0190     <span class="comment">% get parents</span>
+0191     r1 = parents(index);
+0192     index = index + 1;
+0193     r2 = parents(index);
+0194     index = index + 1;
+0195 
+0196     <span class="comment">% Randomly select half of the genes from each parent</span>
+0197     <span class="comment">% This loop may seem like brute force, but it is twice as fast as the</span>
+0198     <span class="comment">% vectorized version, because it does no allocation.</span>
+0199     <span class="keyword">for</span> j = 1:GenomeLength
+0200         <span class="keyword">if</span>(rand &gt; 0.5)
+0201             xoverKids(i,j) = thisPopulation(r1,j);
+0202         <span class="keyword">else</span>
+0203             xoverKids(i,j) = thisPopulation(r2,j);
+0204         <span class="keyword">end</span>
+0205     <span class="keyword">end</span>
+0206     <span class="keyword">if</span> MaxKnockOuts&gt;0
+0207         <span class="keyword">while</span>(sum(xoverKids(i,:))&gt; MaxKnockOuts)
+0208             ind2 = find(xoverKids(i,:));
+0209             removeindex = ind2(randint(1,1,length(ind2))+1);
+0210             xoverKids(i,removeindex) = 0;
+0211         <span class="keyword">end</span>
+0212     <span class="keyword">end</span>
+0213 <span class="keyword">end</span>
+0214 <span class="comment">% also apply mutations to crossover kids...</span>
+0215 xoverKids = <a href="#_sub2" class="code" title="subfunction mutationChildren = mutationUniformEqual(parents,options,GenomeLength,FitnessFcn,state,thisScore,thisPopulation,mutationRate)">mutationUniformEqual</a>(1:size(xoverKids,1) ,[],GenomeLength,[],[],[],xoverKids,mutationRate);
+0216 <span class="keyword">return</span>;
+0217 
+0218 
+0219 <a name="_sub4" href="#_subfunctions" class="code">function state = gaplotmutationdiversity(options,state,flag,p1)</a>
+0220 <span class="comment">%GAPLOTSCOREDIVERSITY Plots a histogram of this generation's scores.</span>
+0221 <span class="comment">%   STATE = GAPLOTSCOREDIVERSITY(OPTIONS,STATE,FLAG) plots a histogram of current</span>
+0222 <span class="comment">%   generation's scores.</span>
+0223 <span class="comment">%</span>
+0224 <span class="comment">%   Example:</span>
+0225 <span class="comment">%   Create an options structure that uses GAPLOTSCOREDIVERSITY</span>
+0226 <span class="comment">%   as the plot function</span>
+0227 <span class="comment">%     options = gaoptimset('PlotFcns',@gaplotscorediversity);</span>
+0228 
+0229 <span class="comment">%   Copyright 2003-2007 The MathWorks, Inc.</span>
+0230 <span class="comment">%   $Revision: 1.6.4.3 $  $Date: 2007/05/23 18:49:53 $</span>
+0231 <span class="keyword">global</span> MaxKnockOuts
+0232 <span class="keyword">if</span> nargin &lt; 4
+0233     p1 = 10;
+0234 <span class="keyword">end</span>
+0235 
+0236 p1 = MaxKnockOuts+1;
+0237 p1 = [0:(MaxKnockOuts)];
+0238 <span class="keyword">switch</span> flag
+0239     <span class="keyword">case</span> <span class="string">'init'</span>
+0240         title(<span class="string">'Mutation Histogram'</span>,<span class="string">'interp'</span>,<span class="string">'none'</span>)
+0241         xlabel(<span class="string">'number of mutations'</span>);
+0242         ylabel(<span class="string">'Number of individuals'</span>);
+0243     <span class="keyword">case</span> <span class="string">'iter'</span>
+0244         <span class="comment">% Check if Rank is a field and there are more than one objectives, then plot for Rank == 1</span>
+0245         <span class="keyword">if</span> size(state.Score,2) &gt; 1 &amp;&amp; isfield(state,<span class="string">'Rank'</span>) 
+0246             index = (state.Rank == 1);
+0247             <span class="comment">% When there is one point hist will treat it like a vector</span>
+0248             <span class="comment">% instead of matrix; we need to add one more duplicate row</span>
+0249             <span class="keyword">if</span> nnz(index) &gt; 1
+0250                 set(gca,<span class="string">'ylimmode'</span>,<span class="string">'auto'</span>);
+0251                 hist(sum(state.Population(index,:)),p1);
+0252             <span class="keyword">else</span>
+0253                 set(gca,<span class="string">'ylim'</span>,[0 1]);
+0254                 hist([sum(state.Population(index,:)); sum(state.Population(index,:))],p1);
+0255             <span class="keyword">end</span>
+0256             <span class="comment">% Legend for each function &lt;min max&gt; values on the Pareto front</span>
+0257             nObj = size(state.Score,2);
+0258             fminval = min(state.Score(index,:),[],1);
+0259             fmaxval = max(state.Score(index,:),[],1);
+0260             legendText = cell(1,nObj);
+0261             <span class="keyword">for</span> i = 1:nObj
+0262                legendText{i} = [<span class="string">'fun'</span>,num2str(i),<span class="string">' ['</span>,sprintf(<span class="string">'%g  '</span>,fminval(i)), <span class="keyword">...</span>
+0263                    sprintf(<span class="string">'%g'</span>,fmaxval(i)),<span class="string">']'</span>];
+0264             <span class="keyword">end</span>
+0265             legend(legendText);
+0266         <span class="keyword">else</span> <span class="comment">% else plot all score</span>
+0267             hist(sum(state.Population,2),p1);
+0268         <span class="keyword">end</span>
+0269 <span class="keyword">end</span>
+0270</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

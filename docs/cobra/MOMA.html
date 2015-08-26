@@ -1,0 +1,356 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of MOMA</title>
+  <meta name="keywords" content="MOMA">
+  <meta name="description" content="MOMA Performs a quadratic version of the MOMA (minimization of">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html cobra -->
+<h1>MOMA
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>MOMA Performs a quadratic version of the MOMA (minimization of</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [solutionDel,solutionWT,totalFluxDiff,solStatus] =MOMA(modelWT,modelDel,osenseStr,verbFlag,minNormFlag) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">MOMA Performs a quadratic version of the MOMA (minimization of
+metabolic adjustment) approach 
+
+ [solutionDel,solutionWT,totalFluxDiff,solStatus] = MOMA(modelWT,modelDel,osenseStr,verbFlag,minNormFlag)
+
+INPUTS
+ modelWT           Wild type model
+ modelDel          Deletion strain model
+
+OPTIONAL INPUTS
+ osenseStr         Maximize ('max')/minimize ('min') (Default = 'max')
+ verbFlag          Verbose output (Default = false)
+ minNormFlag       Work with minimum 1-norm flux distribution for the FBA
+                   problem (Default = false)
+ 
+OUTPUTS
+ solutionDel       Deletion solution structure
+ solutionWT        Wild-type solution structure
+ totalFluxDiff     Value of the linear MOMA objective, i.e.
+                   sum(v_wt-v_del)^2
+ solStatus         Solution status
+
+ Solves two different types of MOMA problems:
+
+ 1) MOMA that avoids problems with alternative optima (this is the
+ default)
+
+    First solve:
+    
+    max c_wt'*v_wt0
+     lb_wt &lt;= v_wt0 &lt;= ub_wt
+     S_wt*v_wt0 = 0
+    
+    Then solve: 
+
+    min sum(v_wt - v_del)^2
+     S_wt*v_wt = 0
+     S_del*v_del = 0
+     lb_wt &lt;= v_wt &lt;= ub_wt
+     lb_del &lt;= v_del &lt;= ub_del
+     c_wt'*v_wt = f_wt
+
+   Here f_wt is the optimal wild type objective value found by FBA in the
+   first problem. Note that the FBA solution v_wt0 is not used in the second
+   problem. This formulation avoids any problems with alternative optima
+
+ 2) MOMA that uses a minimum 1-norm wild type FBA solution (this approach
+ is used if minNormFlag = true)
+
+    First solve
+
+    max c_wt'*v_wt0
+     lb_wt &lt;= v_wt0 &lt;= ub_wt
+     S_wt*v_wt0 = 0
+
+    Then solve
+
+    min |v_wt|
+     S_wt*v_wt = b_wt
+     c_wt'*v_wt = f_wt
+     lb_wt &lt;= v_wt &lt;= ub_wt
+    
+    Here f_wt is the objective value obtained in the 1st optimization.
+
+    Finally solve:
+
+    min sum(v_wt - v_del)^2
+     S_del*v_del = 0
+     lb_del &lt;= v_del &lt;= ub_del
+
+ Notes:
+
+ 1) These formulation allows for selecting for more appropriate
+ optimal wild type FBA solutions as the starting point as opposed to
+ picking an arbitrary starting point (original MOMA implementation).
+
+ 2) The reaction sets in the two models do not have to be equal as long as
+ there is at least one reaction in common
+
+ Markus Herrgard 11/7/06</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>	optimizeCbModel Solve a flux balance analysis problem</li><li><a href="../cobra/solvers/solveCobraQP.html" class="code" title="function solution = solveCobraQP(QPproblem,varargin)">solveCobraQP</a>	solveCobraQP Solve constraint-based QP problems</li><li><a href="../cobra/tools/createDeltaMatchMatrix.html" class="code" title="function A = createDeltaMatchMatrix(set1,set2)">createDeltaMatchMatrix</a>	createDeltaMatchMatrix Create a flux difference constraint matrix for MOMA</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="doubleGeneDeletion.html" class="code" title="function [grRatioDble,grRateKO,grRateWT] = doubleGeneDeletion(model,method,geneList1,geneList2,verbFlag)">doubleGeneDeletion</a>	doubleGeneDeletion Performs double gene deletion analysis using FBA, MOMA,</li><li><a href="singleGeneDeletion.html" class="code" title="function [grRatio,grRateKO,grRateWT,hasEffect,delRxns,fluxSolution] = singleGeneDeletion(model,method,geneList,verbFlag)">singleGeneDeletion</a>	singleGeneDeletion Performs single gene deletion analysis using FBA, MOMA or</li><li><a href="singleRxnDeletion.html" class="code" title="function [grRatio,grRateKO,grRateWT,hasEffect,delRxn,fluxSolution] = singleRxnDeletion(model,method,rxnList,verbFlag)">singleRxnDeletion</a>	singleRxnDeletion Performs single reaction deletion analysis using FBA,</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [solutionDel,solutionWT,totalFluxDiff,solStatus] = </a><span class="keyword">...</span>
+0002     MOMA(modelWT,modelDel,osenseStr,verbFlag,minNormFlag)
+0003 <span class="comment">%MOMA Performs a quadratic version of the MOMA (minimization of</span>
+0004 <span class="comment">%metabolic adjustment) approach</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% [solutionDel,solutionWT,totalFluxDiff,solStatus] = MOMA(modelWT,modelDel,osenseStr,verbFlag,minNormFlag)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">%INPUTS</span>
+0009 <span class="comment">% modelWT           Wild type model</span>
+0010 <span class="comment">% modelDel          Deletion strain model</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">%OPTIONAL INPUTS</span>
+0013 <span class="comment">% osenseStr         Maximize ('max')/minimize ('min') (Default = 'max')</span>
+0014 <span class="comment">% verbFlag          Verbose output (Default = false)</span>
+0015 <span class="comment">% minNormFlag       Work with minimum 1-norm flux distribution for the FBA</span>
+0016 <span class="comment">%                   problem (Default = false)</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%OUTPUTS</span>
+0019 <span class="comment">% solutionDel       Deletion solution structure</span>
+0020 <span class="comment">% solutionWT        Wild-type solution structure</span>
+0021 <span class="comment">% totalFluxDiff     Value of the linear MOMA objective, i.e.</span>
+0022 <span class="comment">%                   sum(v_wt-v_del)^2</span>
+0023 <span class="comment">% solStatus         Solution status</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% Solves two different types of MOMA problems:</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">% 1) MOMA that avoids problems with alternative optima (this is the</span>
+0028 <span class="comment">% default)</span>
+0029 <span class="comment">%</span>
+0030 <span class="comment">%    First solve:</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">%    max c_wt'*v_wt0</span>
+0033 <span class="comment">%     lb_wt &lt;= v_wt0 &lt;= ub_wt</span>
+0034 <span class="comment">%     S_wt*v_wt0 = 0</span>
+0035 <span class="comment">%</span>
+0036 <span class="comment">%    Then solve:</span>
+0037 <span class="comment">%</span>
+0038 <span class="comment">%    min sum(v_wt - v_del)^2</span>
+0039 <span class="comment">%     S_wt*v_wt = 0</span>
+0040 <span class="comment">%     S_del*v_del = 0</span>
+0041 <span class="comment">%     lb_wt &lt;= v_wt &lt;= ub_wt</span>
+0042 <span class="comment">%     lb_del &lt;= v_del &lt;= ub_del</span>
+0043 <span class="comment">%     c_wt'*v_wt = f_wt</span>
+0044 <span class="comment">%</span>
+0045 <span class="comment">%   Here f_wt is the optimal wild type objective value found by FBA in the</span>
+0046 <span class="comment">%   first problem. Note that the FBA solution v_wt0 is not used in the second</span>
+0047 <span class="comment">%   problem. This formulation avoids any problems with alternative optima</span>
+0048 <span class="comment">%</span>
+0049 <span class="comment">% 2) MOMA that uses a minimum 1-norm wild type FBA solution (this approach</span>
+0050 <span class="comment">% is used if minNormFlag = true)</span>
+0051 <span class="comment">%</span>
+0052 <span class="comment">%    First solve</span>
+0053 <span class="comment">%</span>
+0054 <span class="comment">%    max c_wt'*v_wt0</span>
+0055 <span class="comment">%     lb_wt &lt;= v_wt0 &lt;= ub_wt</span>
+0056 <span class="comment">%     S_wt*v_wt0 = 0</span>
+0057 <span class="comment">%</span>
+0058 <span class="comment">%    Then solve</span>
+0059 <span class="comment">%</span>
+0060 <span class="comment">%    min |v_wt|</span>
+0061 <span class="comment">%     S_wt*v_wt = b_wt</span>
+0062 <span class="comment">%     c_wt'*v_wt = f_wt</span>
+0063 <span class="comment">%     lb_wt &lt;= v_wt &lt;= ub_wt</span>
+0064 <span class="comment">%</span>
+0065 <span class="comment">%    Here f_wt is the objective value obtained in the 1st optimization.</span>
+0066 <span class="comment">%</span>
+0067 <span class="comment">%    Finally solve:</span>
+0068 <span class="comment">%</span>
+0069 <span class="comment">%    min sum(v_wt - v_del)^2</span>
+0070 <span class="comment">%     S_del*v_del = 0</span>
+0071 <span class="comment">%     lb_del &lt;= v_del &lt;= ub_del</span>
+0072 <span class="comment">%</span>
+0073 <span class="comment">% Notes:</span>
+0074 <span class="comment">%</span>
+0075 <span class="comment">% 1) These formulation allows for selecting for more appropriate</span>
+0076 <span class="comment">% optimal wild type FBA solutions as the starting point as opposed to</span>
+0077 <span class="comment">% picking an arbitrary starting point (original MOMA implementation).</span>
+0078 <span class="comment">%</span>
+0079 <span class="comment">% 2) The reaction sets in the two models do not have to be equal as long as</span>
+0080 <span class="comment">% there is at least one reaction in common</span>
+0081 <span class="comment">%</span>
+0082 <span class="comment">% Markus Herrgard 11/7/06</span>
+0083 
+0084 <span class="keyword">if</span> (nargin &lt;3 || isempty(osenseStr))
+0085     osenseStr = <span class="string">'max'</span>;
+0086 <span class="keyword">end</span>
+0087 <span class="keyword">if</span> (nargin &lt; 4)
+0088     verbFlag = false;
+0089 <span class="keyword">end</span>
+0090 <span class="keyword">if</span> (nargin &lt; 5)
+0091     minNormFlag = false;
+0092 <span class="keyword">end</span>
+0093 
+0094 <span class="comment">% LP solution tolerance</span>
+0095 <span class="keyword">global</span> CBT_LP_PARAMS
+0096 <span class="keyword">if</span> (exist(<span class="string">'CBT_LP_PARAMS'</span>, <span class="string">'var'</span>))
+0097     <span class="keyword">if</span> isfield(CBT_LP_PARAMS, <span class="string">'objTol'</span>)
+0098         tol = CBT_LP_PARAMS.objTol;
+0099     <span class="keyword">else</span>
+0100         tol = 1e-6;
+0101     <span class="keyword">end</span>
+0102 <span class="keyword">else</span>
+0103     tol = 1e-6;
+0104 <span class="keyword">end</span>
+0105 
+0106 [nMets1,nRxns1] = size(modelWT.S);
+0107 [nMets2,nRxns2] = size(modelDel.S);
+0108 
+0109 <span class="comment">% Match model reaction sets</span>
+0110 selCommon1 = ismember(modelWT.rxns,modelDel.rxns);
+0111 nCommon = sum(selCommon1);
+0112 <span class="keyword">if</span> (nCommon == 0)
+0113     error(<span class="string">'No common rxns in the models'</span>);
+0114 <span class="keyword">end</span>
+0115 
+0116 solutionWT.f = [];
+0117 solutionWT.x = [];
+0118 solutionWT.stat = -1;
+0119 solutionDel.f = [];
+0120 solutionDel.x = [];
+0121 solutionDel.stat = -1;
+0122 
+0123 <span class="keyword">if</span> (verbFlag)
+0124     fprintf(<span class="string">'Solving wild type FBA: %d constraints %d variables '</span>,nMets1,nRxns1);
+0125 <span class="keyword">end</span>
+0126 <span class="comment">% Solve wt problem</span>
+0127 <span class="keyword">if</span> minNormFlag
+0128     solutionWT = <a href="optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelWT,osenseStr,true);
+0129 <span class="keyword">else</span>
+0130     solutionWT = <a href="optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>(modelWT,osenseStr);
+0131 <span class="keyword">end</span>
+0132 
+0133 <span class="keyword">if</span> (verbFlag)
+0134     fprintf(<span class="string">'%f seconds\n'</span>,solutionWT.time);
+0135 <span class="keyword">end</span>
+0136 <span class="comment">% Round off solution to avoid numerical problems</span>
+0137 
+0138 <span class="keyword">if</span> (strcmp(osenseStr,<span class="string">'max'</span>))
+0139     objValWT = floor(solutionWT.f/tol)*tol;
+0140 <span class="keyword">else</span>
+0141     objValWT = ceil(solutionWT.f/tol)*tol;
+0142 <span class="keyword">end</span>
+0143 
+0144 <span class="comment">% Variables in the following problem are</span>
+0145 <span class="comment">% x = [v1;v2;delta]</span>
+0146 <span class="comment">% where v1 = wild type flux vector</span>
+0147 <span class="comment">%       v2 = deletion strain flux vector</span>
+0148 <span class="comment">%       delta = v1 - v2</span>
+0149 
+0150 <span class="keyword">if</span> (solutionWT.stat &gt; 0)
+0151     
+0152     <span class="keyword">if</span> minNormFlag
+0153 
+0154         b = zeros(nMets2,1);
+0155         A = modelDel.S;
+0156         c = -2*solutionWT.x;
+0157         F = 2*eye(nRxns2);
+0158         lb = modelDel.lb;
+0159         ub = modelDel.ub;
+0160         csense(1:nMets2) = <span class="string">'E'</span>;
+0161 
+0162     <span class="keyword">else</span>
+0163 
+0164         <span class="comment">% Construct the LHS matrix</span>
+0165         <span class="comment">% Rows:</span>
+0166         <span class="comment">% 1: Swt*v1 = 0 for the wild type</span>
+0167         <span class="comment">% 2: Sdel*v2 = 0 for the deletion strain</span>
+0168         <span class="comment">% 5: c'v1 = f1 (wild type)</span>
+0169         deltaMat = <a href="../cobra/tools/createDeltaMatchMatrix.html" class="code" title="function A = createDeltaMatchMatrix(set1,set2)">createDeltaMatchMatrix</a>(modelWT.rxns,modelDel.rxns);
+0170         deltaMat = deltaMat(1:nCommon,1:(nRxns1+nRxns2+nCommon));
+0171         A = [modelWT.S sparse(nMets1,nRxns2+nCommon);
+0172             sparse(nMets2,nRxns1) modelDel.S sparse(nMets2,nCommon);
+0173             deltaMat;
+0174             modelWT.c' sparse(1,nRxns2+nCommon)];
+0175 
+0176         <span class="comment">% Construct the RHS vector</span>
+0177         b = [zeros(nMets1+nMets2+nCommon,1);objValWT];
+0178 
+0179         <span class="comment">% Linear objective = 0</span>
+0180         c = zeros(nRxns1+nRxns2+nCommon,1);
+0181 
+0182         <span class="comment">% Construct the ub/lb</span>
+0183         <span class="comment">% delta [-10000 10000]</span>
+0184         lb = [modelWT.lb;modelDel.lb;-10000*ones(nCommon,1)];
+0185         ub = [modelWT.ub;modelDel.ub;10000*ones(nCommon,1)];
+0186 
+0187         <span class="comment">% Construct the constraint direction vector (G for delta's, E for</span>
+0188         <span class="comment">% everything else)</span>
+0189         csense(1:(nMets1+nMets2+nCommon)) = <span class="string">'E'</span>;
+0190         <span class="keyword">if</span> (strcmp(osenseStr,<span class="string">'max'</span>))
+0191             csense(end+1) = <span class="string">'G'</span>;
+0192         <span class="keyword">else</span>
+0193             csense(end+1) = <span class="string">'L'</span>;
+0194         <span class="keyword">end</span>
+0195 
+0196         <span class="comment">% F matrix</span>
+0197         F = [sparse(nRxns1+nRxns2,nRxns1+nRxns2+nCommon);
+0198             sparse(nCommon,nRxns1+nRxns2) 2*eye(nCommon)];
+0199 
+0200     <span class="keyword">end</span>
+0201     
+0202     <span class="keyword">if</span> (verbFlag)
+0203         fprintf(<span class="string">'Solving MOMA: %d constraints %d variables '</span>,size(A,1),size(A,2));
+0204     <span class="keyword">end</span>
+0205     
+0206     <span class="comment">% Solve the linearMOMA problem</span>
+0207     [QPproblem.A,QPproblem.b,QPproblem.F,QPproblem.c,QPproblem.lb,QPproblem.ub,QPproblem.csense,QPproblem.osense] = deal(A,b,F,c,lb,ub,csense,1);
+0208     <span class="comment">%QPsolution = solveCobraQP(QPproblem,[],verbFlag-1);</span>
+0209     QPsolution = <a href="../cobra/solvers/solveCobraQP.html" class="code" title="function solution = solveCobraQP(QPproblem,varargin)">solveCobraQP</a>(QPproblem, <span class="string">'printLevel'</span>, verbFlag-1);
+0210 
+0211     <span class="keyword">if</span> (verbFlag)
+0212         fprintf(<span class="string">'%f seconds\n'</span>,QPsolution.time);
+0213     <span class="keyword">end</span>
+0214 
+0215     <span class="comment">% Get the solution(s)</span>
+0216     <span class="keyword">if</span> (QPsolution.stat &gt; 0)
+0217         <span class="keyword">if</span> minNormFlag
+0218             solutionDel.x = QPsolution.full;
+0219         <span class="keyword">else</span>
+0220             solutionDel.x = QPsolution.full((nRxns1+1):(nRxns1+nRxns2));
+0221             solutionWT.x = QPsolution.full(1:nRxns1);
+0222         <span class="keyword">end</span>
+0223         solutionDel.f = sum(modelDel.c.*solutionDel.x);
+0224         totalFluxDiff = sum((solutionWT.x-solutionDel.x).^2);
+0225     <span class="keyword">end</span>
+0226     solutionDel.stat = QPsolution.stat;
+0227     solStatus = QPsolution.stat;
+0228     solutionDel.solver = QPsolution.solver;
+0229     solutionDel.time = QPsolution.time;
+0230     
+0231 <span class="keyword">else</span>
+0232     warning(<span class="string">'Wild type FBA problem is infeasible or unconstrained'</span>);
+0233 <span class="keyword">end</span>
+0234 
+0235</pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

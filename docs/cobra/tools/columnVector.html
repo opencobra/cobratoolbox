@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of columnVector</title>
+  <meta name="keywords" content="columnVector">
+  <meta name="description" content="columnVector Converts a vector to a column vector">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<!-- ../menu.html cobra --><!-- menu.html tools -->
+<h1>columnVector
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>columnVector Converts a vector to a column vector</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function vec = columnVector(vec) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">columnVector Converts a vector to a column vector
+
+ vec = columnVector(vec)
+
+ Markus Herrgard</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../cobra/changeGeneAssociation.html" class="code" title="function model = changeGeneAssociation(model,rxnName,grRule,geneNameList,systNameList)">changeGeneAssociation</a>	changeGeneAssociation Change gene associations in a model</li><li><a href="../../cobra/convertIrrevFluxDistribution.html" class="code" title="function vRev = convertIrrevFluxDistribution(vIrrev,matchRev)">convertIrrevFluxDistribution</a>	convertInrrevFluxDistribution  Convert irreversible flux distribution to</li><li><a href="../../cobra/convertToIrreversible.html" class="code" title="function [modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model)">convertToIrreversible</a>	convertToIrreversible Convert model to irreversible format</li><li><a href="../../cobra/convertToReversible.html" class="code" title="function modelRev = convertToReversible(model)">convertToReversible</a>	convertToReversible convert a model structure from reversible format to</li><li><a href="../../cobra/design/findCarbonRxns.html" class="code" title="function [hiCarbonRxns,zeroCarbonRxns,nCarbon] = findCarbonRxns(model,nCarbonThr)">findCarbonRxns</a>	findHiCarbonRxns returns the list of reactions that act of compounds which</li><li><a href="../../cobra/design/findHiCarbonRxns.html" class="code" title="function [hiCarbonRxns,zeroCarbonRxns,nCarbon] = findHiCarbonRxns(model,nCarbonThr)">findHiCarbonRxns</a>	findHiCarbonRxns returns the list of reactions that act of compounds which</li><li><a href="../../cobra/design/setConstraintsIrrevModel.html" class="code" title="function constrOptIrrev = setConstraintsIrrevModel(constrOpt,model,modelIrrev,rev2irrev)">setConstraintsIrrevModel</a>	setConstraintsIrrevModel Set constraints for a subset of rxns while</li><li><a href="../../cobra/findGenesFromRxns.html" class="code" title="function [geneList]=findGenesFromRxns(model,reactions)">findGenesFromRxns</a>	findGenesFromRxns make a gene list of the genes that correspond to the</li><li><a href="../../cobra/fluxVariability.html" class="code" title="function [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,optPercentage,osenseStr,rxnNameList,verbFlag, allowLoops)">fluxVariability</a>	fluxVariability Performs flux variablity analysis</li><li><a href="../../cobra/generateDoc.html" class="code" title="function generateDoc(pathname, graph)">generateDoc</a>	generateDoc uses m2html to create a set of html docs</li><li><a href="../../cobra/io/convertSBMLToCobra.html" class="code" title="function model = convertSBMLToCobra(modelSBML,defaultBound,compSymbolList,compNameList)">convertSBMLToCobra</a>	convertSBMLToCobra Convert SBML format model (created using SBML Toolbox)</li><li><a href="../../cobra/io/readBooleanRegModel.html" class="code" title="function regModel = readBooleanRegModel(metModel,fileName)">readBooleanRegModel</a>	readBooleanRegModel Read Boolean regulatory network model</li><li><a href="../../cobra/io/readCbModel.html" class="code" title="function model = readCbModel(fileName,defaultBound,fileType,modelDescription,compSymbolList,compNameList)">readCbModel</a>	readCbModel Read in a constraint-based model</li><li><a href="../../cobra/io/readSimPhenyCMPD.html" class="code" title="function [metInfo,mets] = readSimPhenyCMPD(fileName)">readSimPhenyCMPD</a>	readSimPhenyCMPD Read SimPheny compound file obtained from admin console</li><li><a href="../../cobra/io/readSimPhenyGPR.html" class="code" title="function [rxnInfo,rxns,allGenes] = readSimPhenyGPR(fileName)">readSimPhenyGPR</a>	readSimPhenyGPR Read SimPheny gene-protein-reaction association file obtained from admin console</li><li><a href="../../cobra/io/readSimPhenyGprText.html" class="code" title="function gpraModel = readSimPhenyGprText(file,model)">readSimPhenyGprText</a>	readSimPhenyGprText Parses SimPheny GPRA's in text format into a rxn x gene association</li><li><a href="../../cobra/io/xls2model.html" class="code" title="function model = xls2model(fileName,biomassRxnEquation)">xls2model</a>	xls2model Writes a model from Excel spreadsheet.</li><li><a href="../../cobra/optimizeCbModel.html" class="code" title="function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)">optimizeCbModel</a>	optimizeCbModel Solve a flux balance analysis problem</li><li><a href="../../cobra/pFBA.html" class="code" title="function [GeneClasses RxnClasses modelIrrevFM] = pFBA(model, varargin)">pFBA</a>	Parsimoneous enzyme usage Flux Balance Analysis - method that optimizes</li><li><a href="../../cobra/parseMetNames.html" class="code" title="function [baseMetNames,compSymbols,uniqueMetNames,uniqueCompSymbols] = parseMetNames(metNames)">parseMetNames</a>	parseMetNames Figure out the base metabolite names and compartments for each metabolite</li><li><a href="../../cobra/reconstruction/biomassPrecursorCheck.html" class="code" title="function [missingMets,presentMets] = biomassPrecursorCheck(model)">biomassPrecursorCheck</a>	biomassPrecursorCheck   Checks if biomass precursors are able to be</li><li><a href="../../cobra/reduceModel.html" class="code" title="function [modelRed,hasFlux,maxes,mins] = reduceModel(model,tol,irrevFlag,verbFlag,negFluxAllowedFlag,checkConsistencyFlag,changeBoundsFlag)">reduceModel</a>	reduceModel Removes from the model all of the reactions that are never used (max and</li><li><a href="../../cobra/sampling/removeCorrelRxns.html" class="code" title="function [selRxns,rxnSets,rxnList,Rfilt] = removeCorrelRxns(model,R,correlCutoff)">removeCorrelRxns</a>	removeCorrelRxns Remove fully or almost fully correlated reactions</li><li><a href="../../cobra/singleRxnDeletion.html" class="code" title="function [grRatio,grRateKO,grRateWT,hasEffect,delRxn,fluxSolution] = singleRxnDeletion(model,method,rxnList,verbFlag)">singleRxnDeletion</a>	singleRxnDeletion Performs single reaction deletion analysis using FBA,</li><li><a href="../../cobra/solvers/solveCobraLP.html" class="code" title="function solution = solveCobraLP(LPproblem, varargin)">solveCobraLP</a>	solveCobraLP Solve constraint-based LP problems</li><li><a href="../../cobra/solvers/solveCobraMILP.html" class="code" title="function solution = solveCobraMILP(MILPproblem,varargin)">solveCobraMILP</a>	solveCobraMILP Solve constraint-based MILP problems</li><li><a href="countUnique.html" class="code" title="function [sortedList,sortedCount] = countUnique(list)">countUnique</a>	countUnique Count unique elements in a vector (cell array or numerical)</li><li><a href="splitString.html" class="code" title="function fields = splitString(string,delimiter)">splitString</a>	splitString Splits a string Perl style</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function vec = columnVector(vec)</a>
+0002 <span class="comment">%columnVector Converts a vector to a column vector</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% vec = columnVector(vec)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% Markus Herrgard</span>
+0007 
+0008 [n,m] = size(vec);
+0009 
+0010 <span class="keyword">if</span> (n &lt; m)
+0011     vec = vec';
+0012 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 21-Jun-2012 15:39:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>
