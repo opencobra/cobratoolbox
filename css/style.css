@@ -452,25 +452,35 @@ section#portfolio .align {
 
 
 .zip_download_link {
-  display: block;
-  float: right;
+  display:block;
+  /*float: left; */
+  margin-left: auto;
+  margin-right: auto;
   width: 90px;
   height:70px;
   text-indent: -5000px;
   overflow: hidden;
+  text-align:center;
   background: url(../img/sprite_download.png) no-repeat bottom left;
 }
 
 .tar_download_link {
-  display: block;
-  float: right;
+  display:block;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
   width: 90px;
   height:70px;
   text-indent: -5000px;
+   text-align:center;
   overflow: hidden;
   background: url(../img/sprite_download.png) no-repeat bottom right;
-  margin-left: 10px;
+  /*margin-left: 10px; */
 }
+.align_download{
+	
+}
+
 
 .zip_download_link:hover{
   background: url(../img/sprite_download.png) no-repeat top left;
@@ -560,7 +570,21 @@ section#services .span12 {
 	transition: all 0.3s ease-in-out; */
 }
 
+section#portfolio .span12 {
+	background: #16718B;
+	/*#F0BF2A;
+	/* #faecc0;*/
+	/* background:#67A3F2; */
+	text-align:center;
 
+}
+
+section#portfolio .span12:hover {
+	background:#FAECC0;
+	/*background:#e3e3e3;*/
+	box-shadow: 1px 1px 6px #C1BAC1;
+
+}
 
 section#services .span12:hover {
 	background:#FAECC0;
