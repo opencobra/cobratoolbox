@@ -123,14 +123,18 @@ end
 % [sampleStruct.A, sampleStruct.b, sampleStruct.csense, sampleStruct.lb, sampleStruct.ub] = deal(A, b, csense, lb, ub);
 
 if (~ isfield(sampleStruct, 'internal'))
-    Anew = A(csense == 'E', :);
-    Bnew = b(csense == 'E', :);
-    Cnew = [-A(csense == 'G', :); A(csense == 'L', :)];
-    Dnew = [-b(csense == 'G'); b(csense == 'L')];
     if any(~(csense == 'E' | csense == 'G' | csense == 'L'))
-        display('whoops.  csense can only contain E, G, or L');
+        display ('whoops.  csense can only contain E, G, or L')
         return;
     end
+    Anew = A(csense == 'E', :);
+    Bnew = b(csense == 'E');
+    Cnew = sparse(sum(csense ~= 'E'), size(A,2));
+    Cnew(csense(csense ~= 'E') == 'G', :) = -A(csense == 'G', :);
+    Cnew(csense(csense ~= 'E') == 'L', :) = A(csense == 'L', :);
+    Dnew = zeros(sum(csense ~= 'E'), 1);    
+    Dnew(csense(csense ~= 'E') == 'G') = -b(csense == 'G');
+    Dnew(csense(csense ~= 'E') == 'L') = b(csense == 'L');
     
     % calculate offset
     if find(Bnew ~= 0)
