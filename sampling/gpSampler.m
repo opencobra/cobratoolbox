@@ -122,39 +122,16 @@ end
 % ub = ub(~constInd);
 % [sampleStruct.A, sampleStruct.b, sampleStruct.csense, sampleStruct.lb, sampleStruct.ub] = deal(A, b, csense, lb, ub);
 
-[rA, dimx] = size(A);
 if (~ isfield(sampleStruct, 'internal'))
-    Anew = sparse(0, dimx);
-    Cnew = sparse(0, dimx);
-    Bnew = zeros(rA, 1);
-    Dnew = zeros(rA, 1);
-    rAnew = 0;
-    rCnew = 0 ;
-    for i = 1:size(A, 1)
-        switch csense(i)
-            case 'E'
-                rAnew = rAnew+1;
-                Anew(rAnew,:) = A(i,:);
-                Bnew(rAnew,:) = b(i);
-
-            case 'G'
-                rCnew=rCnew+1;
-                Cnew(rCnew,:) = -A(i,:);
-                Dnew(rCnew,:) = -b(i);
-            case 'L'
-                rCnew=rCnew+1;
-                Cnew(rCnew,:) = A(i,:);
-                Dnew(rCnew,:) = b(i);
-            otherwise
-                display ('whoops.  csense can only contain E, G, or L')
-                return;
-        end
+    Anew = A(csense == 'E', :);
+    Bnew = b(csense == 'E', :);
+    Cnew = [-A(csense == 'G', :); A(csense == 'L', :)];
+    Dnew = [-b(csense == 'G'); b(csense == 'L')];
+    if any(~(csense == 'E' | csense == 'G' | csense == 'L'))
+        display('bias does not have a method set');
+        return;
     end
     
-    %Anew = Anew(1:rAnew,:);
-    Bnew = Bnew(1:rAnew,:);
-    Dnew = Dnew(1:rCnew,:);
-
     % calculate offset
     if find(Bnew ~= 0)
         offset = Anew\Bnew;
