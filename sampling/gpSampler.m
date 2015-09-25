@@ -128,7 +128,7 @@ if (~ isfield(sampleStruct, 'internal'))
     Cnew = [-A(csense == 'G', :); A(csense == 'L', :)];
     Dnew = [-b(csense == 'G'); b(csense == 'L')];
     if any(~(csense == 'E' | csense == 'G' | csense == 'L'))
-        display('bias does not have a method set');
+        display('whoops.  csense can only contain E, G, or L');
         return;
     end
     
