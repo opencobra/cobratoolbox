@@ -16,7 +16,6 @@ function modelOut = removeRxns(model,rxnRemoveList,irrevFlag,metFlag)
 % model             COBRA model w/o selected reactions
 %
 % Markus Herrgard 7/22/05
-% Uri David Akavia 2/01/14
 
 if (nargin < 3)
   irrevFlag = false;
@@ -25,7 +24,7 @@ if (nargin < 4)
   metFlag = true;
 end
 
-[~,nRxns] = size(model.S);
+[nMets,nRxns] = size(model.S);
 modelOut = model;
 % Find indices to rxns in the model
 [isValidRxn,removeInd] = ismember(rxnRemoveList,model.rxns);
@@ -62,18 +61,42 @@ if (isfield(model,'c'))
     modelOut.c = model.c(selectRxns);
 end
 if (isfield(model,'genes'))
-    modelOut.rxnGeneMat = model.rxnGeneMat(selectRxns,:);
-    modelOut.rules = model.rules(selectRxns);
     modelOut.genes = model.genes;
     modelOut.grRules = model.grRules(selectRxns);
 end
-reactionFields = {'subSystems', 'rxnNames', 'rxnReferences', 'rxnECNumbers', 'ecNumbers', 'rxnNotes', 'confidenceScores', 'citations', 'rxnKeggID', 'comments'};
-reactionFields = intersect(reactionFields, fieldnames(model));
-
-for i=1:length(reactionFields)
-	modelOut.(reactionFields{i}) = model.(reactionFields{i})(selectRxns);
+if (isfield(model,'rxnGeneMat'))
+    modelOut.rxnGeneMat = model.rxnGeneMat(selectRxns,:);
 end
-
+if (isfield(model,'rules'))
+    modelOut.rules = model.rules(selectRxns);
+end
+if (isfield(model,'subSystems'))
+    modelOut.subSystems = model.subSystems(selectRxns);
+end
+if (isfield(model,'rxnNames'))
+    modelOut.rxnNames = model.rxnNames(selectRxns);
+end
+if (isfield(model, 'rxnReferences'))
+  modelOut.rxnReferences = model.rxnReferences(selectRxns);
+end
+if (isfield(model, 'rxnECNumbers'))
+  modelOut.rxnECNumbers = model.rxnECNumbers(selectRxns);
+end
+if (isfield(model, 'rxnNotes'))
+  modelOut.rxnNotes = model.rxnNotes(selectRxns);
+end
+if (isfield(model, 'rxnsboTerm'))
+  modelOut.rxnsboTerm = model.rxnsboTerm(selectRxns);
+end
+if (isfield(model, 'rxnKeggID'))
+  modelOut.rxnKeggID = model.rxnKeggID(selectRxns);
+end
+if (isfield(model, 'rxnConfidenceEcoIDA'))
+  modelOut.rxnConfidenceEcoIDA = model.rxnConfidenceEcoIDA(selectRxns);
+end
+if (isfield(model, 'rxnConfidenceScores'))
+  modelOut.rxnConfidenceScores = model.rxnConfidenceScores(selectRxns);
+end
 % Reconstruct the match list
 if (irrevFlag)
   modelOut.match = reassignFwBwMatch(model.match,selectRxns);
@@ -81,27 +104,9 @@ if (irrevFlag)
 end
 
 % Remove metabolites that are not used anymore
-% Identify metabolite fields (that start with 'met')
-foo = strncmp('met', fields(model), 3);
-metabolicFields = fieldnames(model);
-metabolicFields = metabolicFields(foo);
-clear foo;
-
 if (metFlag)
-  selMets = any(modelOut.S ~= 0,2);
-  modelOut.S = modelOut.S(selMets,:);
-  for i = 1:length(metabolicFields) 
-	  modelOut.(metabolicFields{i}) = model.(metabolicFields{i})(selMets);
-  end
-  if (isfield(model,'b'))
-      modelOut.b = model.b(selMets);
-  else
-      modelOut.b = zeros(length(modelOut.mets),1);
-  end
-% This seems unnecessary (because of line 28, but modified it to be consistent  
-else
-  modelOut.b = model.b;
-  for i = 1:length(metabolicFields)
-	  modelOut.(metabolicFields{i}) = model.(metabolicFields{i});
+  selMets = modelOut.mets(any(sum(abs(modelOut.S),2) == 0,2));
+  if (~isempty(selMets))
+    modelOut = removeMetabolites(modelOut, selMets, false);
   end
 end
