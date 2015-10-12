@@ -20,9 +20,9 @@ function [modelSBMLfbc,listCorrectedFields]=convertCobra2Fbc2(modelSBML,filename
 % modelSBMLfbc             A corrected SBML variable that serves as an
 %                          input for "OutputSBML" function.
 %
-% listCorrectedFields      Lists of field names of the SBML sturcture
-%                          that are different from the SBML with FBCv2
-%                          file.
+% listCorrectedFields      Lists of field names of the COBRA SBML
+%                          sturctures that are different from the SBML with
+%                          FBCv2 file.
 %                       
 %
 % Longfei Mao 28/09/2015
