@@ -24,7 +24,7 @@ if ~exist('compSymbolList','var') || isempty(compSymbolList)
     compSymbolList = {'c','m','v','x','e','t','g','r','n','p','l','y'};
     compNameList = {'Cytoplasm','Mitochondrion','Vacuole','Peroxisome','Extracellular','Pool','Golgi','Endoplasmic_reticulum','Nucleus','Periplasm','Lysosome','Glycosome'};
 end
-
+ 
 if nargin < 6
     sbmlLevel = 2;
     sbmlVersion = 1;
@@ -103,17 +103,17 @@ switch format
         fclose(fid);
         %% Excel file
     case 'xls'
-        tmpData{1,1} = 'Rxn name';
-        tmpData{1,2} = 'Rxn description';
+        tmpData{1,1} = 'Abbreviation';
+        tmpData{1,2} = 'Description';
         baseInd = 3;
-        tmpData{1,baseInd} = 'Formula';
-        tmpData{1,baseInd+1} = 'Gene-reaction association';
+        tmpData{1,baseInd} = 'Reaction';
+        tmpData{1,baseInd+1} = 'GPR';
         tmpData{1,baseInd+2} = 'Genes';
         tmpData{1,baseInd+3} = 'Proteins';
         tmpData{1,baseInd+4} = 'Subsystem';
         tmpData{1,baseInd+5} = 'Reversible';
-        tmpData{1,baseInd+6} = 'LB';
-        tmpData{1,baseInd+7} = 'UB';
+        tmpData{1,baseInd+6} = 'Lower bound';
+        tmpData{1,baseInd+7} = 'Upper bound';
         tmpData{1,baseInd+8} = 'Objective';
         tmpData{1,baseInd+9} = 'Confidence Score';
         tmpData{1,baseInd+10} = 'EC Number';
@@ -180,19 +180,19 @@ switch format
             end
         end
         %keyboard
-        xlswrite(fileName,tmpData,'reactions');
+        xlswrite(fileName,tmpData,'Reaction List');
         if isfield(model,'metNames')
-            tmpMetData{1,1} = 'Metabolite name';
-            tmpMetData{1,2} = 'Metabolite description';
-            tmpMetData{1,3} = 'Metabolite neutral formula';
-            tmpMetData{1,4} = 'Metabolite charged formula';
-            tmpMetData{1,5} = 'Metabolite charge';
-            tmpMetData{1,6} = 'Metabolite Compartment';
-            tmpMetData{1,7} = 'Metabolite KEGGID';
-            tmpMetData{1,8} = 'Metabolite PubChemID';
-            tmpMetData{1,9} = 'Metabolite CheBI ID';
-            tmpMetData{1,10} = 'Metabolite Inchi String';
-            tmpMetData{1,11} = 'Metabolite Smile';
+            tmpMetData{1,1} = 'Abbreviation';
+            tmpMetData{1,2} = 'Description';
+            tmpMetData{1,3} = 'Neutral formula';
+            tmpMetData{1,4} = 'Charged formula';
+            tmpMetData{1,5} = 'Charge';
+            tmpMetData{1,6} = 'Compartment';
+            tmpMetData{1,7} = 'KEGG ID';
+            tmpMetData{1,8} = 'PubChem ID';
+            tmpMetData{1,9} = 'ChEBI ID';
+            tmpMetData{1,10} = 'InChI String';
+            tmpMetData{1,11} = 'SMILES';
             for i = 1:nMets
                 tmpMetData{i+1,1} = chopForExcel(model.mets{i});
                 tmpMetData{i+1,2} = chopForExcel(model.metNames{i});
@@ -247,9 +247,9 @@ switch format
                     tmpMetData{i+1,11} = '';
                 end
             end
-            xlswrite(fileName,tmpMetData,'metabolites');
+            xlswrite(fileName,tmpMetData,'Metabolite List');
         else
-            xlswrite(fileName,model.mets,'metabolites');
+            xlswrite(fileName,model.mets,'Metabolite List');
         end
         %% SBML
     case 'sbml'
