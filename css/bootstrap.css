@@ -357,7 +357,8 @@ a:hover, a:focus {
  *width: 40.37234042553192%;
 }
 .row-fluid .span4 {
-	width: 31.914893617021278%;
+	
+ width: 31.914893617021278%;
  *width: 31.861702127659576%;
 }
 .row-fluid .span3 {
@@ -372,6 +373,18 @@ a:hover, a:focus {
 	width: 6.382978723404255%;
  *width: 6.329787234042553%;
 }
+
+/* add by Longfei 20.10.2015 */
+	
+.row-fluid .offset13 {
+	margin-left: 10.638297872340425%;
+ *margin-left: 10.53191489361702%;
+}
+.row-fluid .offset13:first-child {
+	margin-left: 8.51063829787234%;
+ *margin-left: 8.404255319148938%;
+}
+/* ... */
 .row-fluid .offset12 {
 	margin-left: 104.25531914893617%;
  *margin-left: 104.14893617021275%;
