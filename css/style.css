@@ -81,9 +81,12 @@ p {
 	font-family: Quattrocento, serif;
 }
 
+
 .letter{
 	font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', 'DejaVu Sans', Verdana, sans-serif; font-style: normal; font-weight: 400;"
 }
+
+	
 
 ul, ol {
 	font-size: 1em; /* 16px */
@@ -103,9 +106,12 @@ a:hover, a:active {
 	color: #F1505A;
 	text-decoration: underline;
 }
+
+
 h1, h2, h3, h4, h5, h6 , h_collaborator{
 	font-weight: normal; /* reset default browser weight for our webfonts */
-	font-family: 'Patua One', cursive;
+	font-family: 'Quattrocento', serif;
+	/*font-family: 'Patua One', cursive;*/
 }
 h1 {
 	font-size: 1.5em; /* 24px */
@@ -254,7 +260,7 @@ em {
 	margin-bottom: 2em;
 }
 ul#menu-main > li > a {
-	font-family: 'Patua One', cursive;
+	
 	font-weight: normal;
 	font-size: 1em;
 	color: #fff;
@@ -289,7 +295,7 @@ ul#menu-main > li > a:hover {
 }
 #headerwrap h1 {
 	color: #FFFFFF;
-	font-family: 'Patua One', cursive;
+	font-family: 'Open Sans', sans serif;
 	font-size: 4em;
 	font-weight: 400;
 	margin: 1em 0;
@@ -302,7 +308,8 @@ ul#menu-main > li > a:hover {
 	margin: 0.5em 0;
 	text-shadow: 1px 1px 1px #333333;
 }
-#headerwrap h1 span {
+#headerwrap span {
+	font-family: 'Patua One', cursive;
 	color:#f0bf00;
 }
 #headerwrap input[type=text] {
@@ -326,7 +333,7 @@ ul#menu-main > li > a:hover {
 	width:50%;
 }
 #headerwrap input[type=submit] {
-	font-family: 'Patua One', cursive;
+	
 	color: #fff;
 	width: 185px;
 	height: 2.9em;
@@ -391,7 +398,6 @@ section.single-page h1 {
 	background-size: 100% auto;
 }
 #feature-headline span {
-	font-family: 'Patua One', cursive;
 	text-transform: lowercase;
 }
 #feature article p {
@@ -554,6 +560,16 @@ section#services .span3:hover {
 	box-shadow: 1px 1px 6px #C1BAC1;
 }
 
+
+
+
+
+section#contact .span4:hover {
+	background:#0A333F;
+	box-shadow: 1px 1px 6px #C1BAC1;
+}
+
+
 section#services .span12 {
 	background: #16718B;
 	/*#F0BF2A;
@@ -571,8 +587,8 @@ section#services .span12 {
 }
 
 section#portfolio .span12 {
-	background: #16718B;
-	/*#F0BF2A;
+	background: #0A333F;
+	/*#F0BF2A;#16718B
 	/* #faecc0;*/
 	/* background:#67A3F2; */
 	text-align:center;
@@ -582,7 +598,7 @@ section#portfolio .span12 {
 section#portfolio .span12:hover {
 	background:#FAECC0;
 	/*background:#e3e3e3;*/
-	box-shadow: 1px 1px 6px #C1BAC1;
+	box-shadow: 1px 1px 6px #0A333F; /*#C1BAC1;*/
 
 }
 
@@ -604,10 +620,10 @@ section#services .span12:hover {
 .sec_doc:hover {
 	background:#0A333F;
 	line-height:  200%
-	
-
 
 }
+
+
 
 .sec_post{background: none repeat scroll 0 0 rgba(255, 255, 255, 0.7);
 	border-bottom-left-radius: 6px;
@@ -659,19 +675,29 @@ section#news .align {
 	font-size: 6em;
 	text-align: center;
 }
-article.post {
+article .post {
 	background: none repeat scroll 0 0 rgba(255, 255, 255, 0.7);
 	border-bottom-left-radius: 6px;
 	border-bottom-right-radius: 6px;
+	margin-bottom:auto;
 	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
 	-moz-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
 	-webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
 }
 article .inside {
-	margin: 18px 24px 24px;
+	/** margin: 18px 24px 24px; **/
+	margin-top:auto;
+	margin-left:auto;
+	margin-right:auto;
+	margin-bottom:1cm;
+	text-align:center;
 	padding-top: 1em;
 	background: url("../img/dot-row-2.png") repeat-x scroll 0 0 transparent !important;
+	
 }
+
+
+
 .post-date {
 	color: #A5A5A2;
 	float: right;
@@ -728,7 +754,7 @@ section#team .align, section#contact .align {
 	margin-top: 0.5em;
 }
 #contact, #team {
-	padding-top: 4.75em;
+	padding-top: 3.00em;
 }
 #team {
 	padding-bottom: 0;
@@ -1149,12 +1175,15 @@ footer p {
  color: #fff;
 }
  .img-news {
+
  width: 100%;
+ 
 }
  .img-news {
  margin-right: auto;
  margin-left: auto;
  display: block;
+ 
 }
  section#portfolio hgroup h2 {
  margin-top: 1.5em;
