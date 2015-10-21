@@ -22,6 +22,14 @@ CONTENTS:
 div, article, section, header, footer, nav, li {
 	position:relative;
 }
+
+#menu-main {
+	/*font-family: 'Open Sans', sans-serif; */
+	/*font-family:"Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, sans-serif */
+	font-family: "Gill Sans";
+}
+
+
 .group:after {
 	display:block;
 	height:0;
@@ -310,6 +318,7 @@ ul#menu-main > li > a:hover {
 }
 #headerwrap span {
 	font-family: 'Patua One', cursive;
+	font-weight: bold;
 	color:#f0bf00;
 }
 #headerwrap input[type=text] {
