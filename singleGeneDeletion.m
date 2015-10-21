@@ -22,6 +22,7 @@ function [grRatio,grRateKO,grRateWT,hasEffect,delRxns,fluxSolution] = singleGene
 % fluxSolution  FBA/MOMA/lMOMA fluxes for KO strains
 %
 % Markus Herrgard 8/7/06
+% Ines Thiele 10/2015 delete all alternate transcripts and if solKO.stat not 1 or 5, grRateKO(i) = NaN;
 
 if (nargin < 2)
     method = 'FBA';
@@ -36,12 +37,19 @@ end
 if (nargin < 4)
     verbFlag = false;
 end
-
-nGenes = length(model.genes);
-nDelGenes = length(geneList);
-
-solWT = optimizeCbModel(model,'max','one'); % by default uses the min manhattan distance norm FBA solution.
-grRateWT = solWT.f;
+% detect whether there are alternate transcripts
+if ~isempty(strfind(model.genes{1},'.'))
+    [geneList,rem] = strtok(model.genes,'.');
+    geneList = unique(geneList);
+    nGenes = length(geneList);
+    nDelGenes = length(geneList);
+else
+    nGenes = length(model.genes);
+    nDelGenes = length(geneList);
+end
+%solWT = optimizeCbModel(model,'max','one'); % by default uses the min manhattan distance norm FBA solution.
+solWT = optimizeCbModel(model,'max');
+grRateWT = solWT.f
 
 grRateKO = ones(nDelGenes,1)*grRateWT;
 grRatio = ones(nDelGenes,1);
@@ -56,7 +64,13 @@ for i = 1:nDelGenes
     if mod(i,10) == 0
         waitbar(i/nDelGenes,h);
     end
-    [modelDel,hasEffect(i),constrRxnNames] = deleteModelGenes(model,geneList{i});
+    if ~isempty(strfind(model.genes{1},'.'))
+        % delete all alternate transcripts
+        delGenes = model.genes(strmatch(geneList{i},model.genes));
+        [modelDel,hasEffect(i),constrRxnNames] = deleteModelGenes(model,delGenes);
+    else 
+        [modelDel,hasEffect(i),constrRxnNames] = deleteModelGenes(model,geneList{i});
+    end
     delRxns{i} = constrRxnNames;
     if (hasEffect(i))
         switch method
@@ -65,9 +79,9 @@ for i = 1:nDelGenes
             case 'MOMA'
                 solKO = MOMA(model,modelDel,'max',false,true);
             otherwise
-                solKO = optimizeCbModel(modelDel,'max');
+                solKO = optimizeCbModel(modelDel,'max')
         end
-        if (solKO.stat == 1)
+        if (solKO.stat == 1 ||solKO.stat == 5 )
             grRateKO(i) = solKO.f;
             fluxSolution(:,i) = solKO.x;
         else
