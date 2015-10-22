@@ -1,3 +1,4 @@
+function results = testModels()
 %test a set of models for the feasibility of a nonzero objective(>1e-4)
 if 1 %by default, do not run this script with testAll
     clear
@@ -39,7 +40,7 @@ if 1 %by default, do not run this script with testAll
     global CBTDIR
     matFolder=[CBTDIR '/testing/testModels/m_model_collection_mat']; %selection of mat files already parsed from https://github.com/opencobra/m_model_collection.git'
     matFolder=['/usr/local/bin/cobratoolbox_master' '/testing/testModels/m_model_collection_mat'];
-    
+    matFolder=[CBTDIR '/testing/testModels/testedModels'];
     %optionally convert the batch of .xml files into .mat files
     if 0
         %the folder where the SBML .xml files are located
@@ -249,7 +250,22 @@ if 1 %by default, do not run this script with testAll
             
             %find the exchange reactions
             [m,n]=size(model.S);
+            try
+                if length(find(model.c~=0))~=1 % if more than one objectiive vector are defined in the model, only the one of the them is chosen for the testing.
+                    ind=find(model.c~=0);
+                    if isempty(ind); % if no objective vector is defined, set the first reaction as the objective for the testing.
+                        model.c(1)=1
+                    else
+                        
+                        model.c(ind)=0;
+                        model.c(ind(1))=1; % by default, the first objective vector is used for the testing
+                    end
+                end
             model=findSExRxnInd(model,m,1);
+            
+            catch
+                disp('good');
+            end
             
             
             for ind=1:length(curated_objectives)

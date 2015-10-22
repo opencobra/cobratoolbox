@@ -46,30 +46,38 @@ for i=1:size(dir(test_path))
         for j = 1: size(folder_functions)
               cd(test_folder);
               func =folder_functions{j};
-              
               %parse func so that it doesn't include '.m' (stores in p)
               p = strtok(func, '.');
               
               try
                  pass = eval(p);
+                 if iscellstr(pass)||iscell(pass)
+                     pass=1;
+                 end
               catch
                   fprintf('Error in %s\n', func);
                   pass = 0;
               end
-              
-              if(pass == 0)
-                    fprintf('%s did not pass\n',p);
-                    notPassedCnt = notPassedCnt +1;
-                    listNotPassed{notPassedCnt} = p;
-              else
+%               try
                   
-                    passedCnt = passedCnt +1;
-                    listPassed{passedCnt} = p;
-              end
+%               if(pass == 0)
+%                     fprintf('%s did not pass\n',p);
+%                     notPassedCnt = notPassedCnt +1;
+%                     listNotPassed{notPassedCnt} = p;
+%               else
+%                   
+%                     passedCnt = passedCnt +1;
+%                     listPassed{passedCnt} = p;
+%               end
+%               catch
+%                   disp('good')
+%               end
               
              %if test was passed, would increment tests_passed
              %test_completed is incremented every iteration
+
              tests_passed = tests_passed + pass;
+
              tests_completed = tests_completed + 1;
              
              %change back the solvers after each test
