@@ -22,6 +22,14 @@ CONTENTS:
 div, article, section, header, footer, nav, li {
 	position:relative;
 }
+
+#menu-main {
+	/*font-family: 'Open Sans', sans-serif; */
+	/*font-family:"Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, sans-serif */
+	font-family: "Gill Sans";
+}
+
+
 .group:after {
 	display:block;
 	height:0;
@@ -310,6 +318,7 @@ ul#menu-main > li > a:hover {
 }
 #headerwrap span {
 	font-family: 'Patua One', cursive;
+	font-weight: bold;
 	color:#f0bf00;
 }
 #headerwrap input[type=text] {
@@ -588,6 +597,12 @@ section#services .span12 {
 	-o-transition: all 0.3s ease-in-out;
 	-ms-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out; */
+}
+
+section#services .span12:hover {
+	background:#FAECC0;
+	/*background:#e3e3e3;*/
+	box-shadow: 1px 1px 6px #C1BAC1;
 }
 
 section#portfolio .span12 {
