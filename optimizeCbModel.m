@@ -238,6 +238,7 @@ elseif length(minNorm)> 1 || minNorm > 0
         minNorm=ones(nRxns,1)*minNorm;
     end
     LPproblem.F = spdiags(minNorm,0,nRxns,nRxns);
+    LPproblem.osense=1;
     
     if allowLoops
         %quadratic optimization will get rid of the loops unless you are maximizing a flux which is

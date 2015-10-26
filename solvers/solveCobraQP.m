@@ -364,12 +364,16 @@ switch solver
         % http://www.gurobi.com/html/academic.html
         resultgurobi = struct('x',[],'objval',[],'pi',[]);
         clear params            % Use the default parameter settings
-        if printLevel == 0 
-            params.OutputFlag = 0;
-            params.DisplayInterval = 1;
-        else
-            params.OutputFlag = 1;
-            params.DisplayInterval = 5;
+        switch printLevel
+            case 0
+                params.OutputFlag = 0;
+                params.DisplayInterval = 1;
+            case printLevel>1
+                params.OutputFlag = 1;
+                params.DisplayInterval = 5;
+            otherwise
+                params.OutputFlag = 0;
+                params.DisplayInterval = 1;
         end
 
         params.Method = 0;    %-1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent

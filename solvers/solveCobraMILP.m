@@ -355,6 +355,7 @@ switch solver
         % http://www.gurobi.com/html/academic.html
         resultgurobi = struct('x',[],'objval',[]);
         MILPproblem.A = deal(sparse(MILPproblem.A));
+
         clear params            % Use the default parameter settings
         
         if solverParams.printLevel == 0 
@@ -391,6 +392,14 @@ switch solver
             MILPproblem.osense = 'max';
         else
             MILPproblem.osense = 'min';
+        end
+
+        %overwrite default params with directParams
+        if parametersStructureFlag
+            fieldNames = fieldnames(directParamStruct);
+            for i = 1:size(fieldNames,1)
+                params.(fieldNames{i}) = directParamStruct.(fieldNames{i});
+            end
         end
         
         MILPproblem.vtype = vartype;
