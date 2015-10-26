@@ -3,7 +3,7 @@ function [vfN,vfR,vrN,vrR,vnetN,vnetR,uL,uC,u0L,u0C,lnxL,lnxC]=projectOntoSubspa
 % their respective subspaces of the internal reaction stoichiometric matrix
 % using projection matrices generated using the Moore-Penrose pseudoinverse
 % 
-% Let M  denote the Moore-Penrose pseudoinverse of the internal reaction
+% Let M denote the Moore-Penrose pseudoinverse of the internal reaction
 % stoichiometric matrix and the subscripts are the following
 % _R row space
 % _N nullspace

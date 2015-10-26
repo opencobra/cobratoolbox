@@ -45,7 +45,7 @@ function [PR,PN,PC,PL]=subspaceProjector(model,printLevel,subspace,fullS)
 %                       'C' column space
 %                       'L' left nullspace
 % fullS                 0 = uses only those columns given by model.SIntRxnBool
-%                       S = m x n Stoichiometric matrix, uses all columns
+%                       1 = uses full m x n Stoichiometric matrix (all columns)
 
 
 if ~exist('printLevel','var')
