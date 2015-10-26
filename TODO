@@ -1,3 +1,0 @@
-2011
-*Add in compartment support related to patch 3404592.
-*Add error handling to GDLS related to BUG 3394704.  Basically, the script should inform the user that the combined number of paths, neighborhood size, and maxKOs for the specified objective and reactions will not work.
