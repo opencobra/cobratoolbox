@@ -40,8 +40,8 @@ cd(resultsDirectory)
 
 %by default, it will run all models in modelCollectionDirectory, but here
 %you can set it up to run only one model
-if 1
-    %single model
+if 0
+    %load single model
     if 1
         modelID='Ecoli_core.mat';
         load([modelCollectionDirectory modelID])
@@ -62,16 +62,7 @@ if 1
         modelID='Recon205_20150128.mat';
         load([modelCollectionDirectory modelID])
     end
-    if 0
-        modelID='isolatedBrainModel';
-        load(modelID);
-        %
-        model=modelC;
-    end
-    
-    %load model
-    
-     
+
     %%%%%%%%%%%
     printLevel=2;
     [rankFR,rankFRV,rankFRvanilla,rankFRVvanilla,model] = checkRankFR(model,printLevel);
