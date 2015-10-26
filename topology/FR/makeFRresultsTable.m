@@ -1,4 +1,4 @@
-function [FRresultsTable,FRresults]=makeFRresultsTable(FRresults,resultsDirectory,resultsFileName,modelMetaData)
+function [FRresultsTable,FRresults]=makeFRresultsTable(FRresults,resultsDirectory,resultsFileName,modelMetaData,tableFilename)
 %makes a table of FR results
 %
 %INPUT
@@ -7,6 +7,11 @@ function [FRresultsTable,FRresults]=makeFRresultsTable(FRresults,resultsDirector
 %OPTIONAL INPUT
 % resultsDirectory      directory where output of checkRankFRdriver has been saved
 % filename              filename where output of checkRankFRdriver has been saved
+% modelMetaData         Cell array, where each row is metadata for one model
+%                       with five columns: species, version, fileName, PMID, doi.
+%                       See function modelMetaData=modelCitations()
+% tableFilename         If provided, a the table of results is written out
+%                       to a csv file, with specified filename
 %
 %OUTPUT
 % FRresultsTable        table displaying the results of checkRankFRdriver 
@@ -94,7 +99,7 @@ while k<=nResults
         if exist('modelMetaData','var')
             FRresultsTable{i,n+1}=modelMetaData{bool,3};
         else
-            FRresultsTable{i,n+1}='';
+            FRresultsTable{i,n+1}=FRresults(k).modelID;
         end
     end
     i=i+1;
@@ -308,4 +313,10 @@ while k<=nResults
     else
         k=k+1;
     end
+end
+
+FRresultsTable=cell2table(FRresultsTable);
+
+if exist('tableFilename','var')
+    writetable(FRresultsTable,tableFilename,'Delimiter','\t')
 end

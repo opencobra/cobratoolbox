@@ -3,7 +3,7 @@ function [PR,PN,PC,PL]=subspaceProjector(model,printLevel,subspace,fullS)
 %reaction stoichiometric matrix specified by subspace
 %If subspace is 'all' then all are returned
 
-% Let M� denote the Moore-Penrose pseudoinverse of the internal reaction
+% Let M denote the Moore-Penrose pseudoinverse of the internal reaction
 % stoichiometric matrix and the subscripts are the following
 % _R row space
 % _N nullspace
@@ -28,6 +28,25 @@ function [PR,PN,PC,PL]=subspaceProjector(model,printLevel,subspace,fullS)
 %
 % 10 July 2009 : Ronan Fleming. First Version.
 % 10 Aug  2009 : Changed to use Micheal Saunders faster approach
+%
+% INPUT
+% model.S               m x n Stoichiometric matrix
+% model.SIntRxnBool     n x 1 Boolean of reactions though to be mass balanced.
+%                       By default, projectors only provided for the
+%                       matrix: model.S(:,model.SIntRxnBool)                          
+%
+% OPTIONAL INPUT
+% printLevel            {(1),0} 1=print diagnostics, 0 = silent
+% subspace              return projection matrices onto all or one select
+%                       subspace
+%                       'all'
+%                       'R' row space
+%                       'N' nullspace
+%                       'C' column space
+%                       'L' left nullspace
+% fullS                 0 = uses only those columns given by model.SIntRxnBool
+%                       S = m x n Stoichiometric matrix, uses all columns
+
 
 if ~exist('printLevel','var')
     printLevel=1;

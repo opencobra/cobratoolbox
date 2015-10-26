@@ -1,4 +1,10 @@
 function modelMetaData=modelCitations()
+%generates metadata for the models indicated below
+%
+%OUTPUT
+% modelMetaData         Cell array, where each row is metadata for one model
+%                       with five columns: species, version, fileName, PMID, doi.
+
 %Each row: species, version, fileName, PMID, doi;
 modelMetaData={...
 'Escherichia coli','core','Ecoli_core','','doi:10.1128/ecosalplus.10.2.1';...
