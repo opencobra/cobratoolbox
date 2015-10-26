@@ -155,7 +155,7 @@ if ~isequal(exist(fPath{1},'file'),2)
 else
     
     try
-        TranslateSBML(current_path)
+        TranslateSBML(current_path);
     catch
         warning('TranslateSBML did not work with the test .xml file: Ecoli_core_ECOSAL.xml')
     end
