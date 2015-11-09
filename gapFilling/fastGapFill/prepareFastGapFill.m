@@ -1,5 +1,5 @@
-function [consistModel,consistMatricesSUX,BlockedRxns] = prepareFastGapFill(model,listCompartments,epsilon,filename,dictionary,blackList)
-%% function [consistModel,consistMatricesSUX,allBlockedRxns,solvableBlockedRxns] = prepareFastGapFill(model,epsilon,filename,dictionary,blackList)
+function [consistModel,consistMatricesSUX,BlockedRxns] = prepareFastGapFill(model,listCompartments,epsilon,filename,dictionary_file,blackList)
+%% function [consistModel,consistMatricesSUX,allBlockedRxns,solvableBlockedRxns] = prepareFastGapFill(model,epsilon,filename,dictionary_file,blackList)
 %
 % This function is required to generate the input data for fastGapFill.
 %
@@ -24,7 +24,7 @@ function [consistModel,consistMatricesSUX,BlockedRxns] = prepareFastGapFill(mode
 %                       1e-4). Please refer to Vlassis et al. to get more
 %                       details on this parameter.
 % filename              File name containing universal database (e.g., KEGG; optional input, default: reaction.lst)
-% dictionary            List of universal database IDs and their counterpart in the model
+% dictionary_file       List of universal database IDs and their counterpart in the model
 %                        (optional input, default: KEGG_dictionary.xls)
 % blackList             List of excluded reactions from the universal database
 %                       (e.g., KEGG) (optional input, default: no
@@ -45,29 +45,41 @@ function [consistModel,consistMatricesSUX,BlockedRxns] = prepareFastGapFill(mode
 
 %% 
 
-if ~exist('epsilon','var')
+if ~exist('epsilon','var') || isempty(epsilon)
     epsilon = 1e-4;
 end
 
-if ~exist('listCompartments','var')
+if ~exist('listCompartments','var') || isempty(listCompartments)
  [tok,rem] = strtok(model.mets,'\[');
     listCompartments = unique(rem);
 end
 
-if ~exist('Filename','var')
+if ~exist('Filename','var') || isempty(Filename)
     % KEGG reaction list
     filename = 'reaction.lst';
 end
 
-if ~exist('dictionary','var')
+if ~exist('dictionary_file','var') || isempty(dictionary_file)
     % dictionary (need to make your own dictionary file for each model, I made mine in an excel file)
     % column 1: all model metabolite abbreviations (without compartments)
     % column 2: the consistMatricesSUXextendedprime ID for each metabolite
-    [num,txt,raw] = xlsread('KEGG_dictionary.xls');
-    dictionary = txt;
+    dictionary_file = 'KEGG_dictionary.xls';    
 end
 
-if ~exist('blackList','var')
+if regexp(dictionary_file,'.xls$')
+    [~,dictionary,~] = xlsread(dictionary_file);
+elseif regexp(dictionary_file,'.tsv$')
+    file_handle = fopen(dictionary_file);
+    u = textscan(file_handle,'%s\t%s');
+    dictionary = {};
+    for i = 1:length(u{1})
+        dictionary{i,1} = u{1}{i};
+        dictionary{i,2} = u{2}{i};
+    end
+    fclose(file_handle);
+end
+
+if ~exist('blackList','var') || isempty(blacklist)
     %BlackList - reactions in KEGG to be omitted from SMILEY solutions
     blackList = {};
 end
