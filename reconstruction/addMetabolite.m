@@ -198,7 +198,7 @@ for i = 1:numel(metID)
             cmetName = metName{i};
             if strcmp(cmetName,'')
                 model.metNames{end+1,1} = regexprep(cmetID,'(\[.+\]) | (\(.+\))','') ;                
-                warning(['Metabolite name for ' metID ' set to ' model.metNames{end}]);
+                warning(['Metabolite name for ' metID{i} ' set to ' model.metNames{end}]);
             else
                 model.metNames{end+1,1} = metName{i} ;                
         %          model.metNames(end) = cellstr(input('Enter complete metabolite name, if available:', 's'));
@@ -208,7 +208,7 @@ for i = 1:numel(metID)
         end
         if (isfield(model,'metFormulas'))
             model.metFormulas{end+1,1} = formula{i};
-            warning(['Metabolite formula for ' metID ' set to ''''']);
+            warning(['Metabolite formula for ' metID{i} ' set to ''''']);
         %             model.metFormulas(end) = cellstr(input('Enter metabolite chemical formula, if available:', 's'));
         end
         if isfield(model,'metChEBIID')
@@ -229,6 +229,7 @@ for i = 1:numel(metID)
     end
 end
 
+newmodel = model;
 
 end
 
