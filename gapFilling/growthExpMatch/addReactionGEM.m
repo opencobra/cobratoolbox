@@ -28,18 +28,21 @@ function [newmodel, HTABLE] = addReactionGEM(model,rxns,rxnNames,rxnFormulas,rev
 % IT 11-19-08
 
 if ~exist('subSystems', 'var') || isempty(subSystems)
+    clear subSystems;
     for i = 1:length(rev)
         subSystems(i,1) = {''};
     end
 end
 
 if ~exist('grRules', 'var') || isempty(grRules)
+    clear grRules;
     for i = 1:length(rev)
         grRules(i,1) = {''};
     end
 end
 
 if ~exist('rules', 'var')|| isempty(rules)
+    clear rules;
     for i = 1:length(rev)
         rules(i,1) = {''};
     end
