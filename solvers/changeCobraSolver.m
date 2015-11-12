@@ -192,6 +192,13 @@ elseif (strcmp(solverType,'MILP'))
                 warning('MILP solver CPLEX through Tomlab not usable: tomRun.m not in Matlab path');
                 solverOK = false;
             end
+        case 'ibm_cplex'
+            try
+                ILOGcplex = Cplex('fba');% Initialize the CPLEX object
+            catch ME
+                solverOK = false;
+                warning('MILP solver CPLEX from IBM not usable: IBM CPLEX not installed or licence server not up');
+            end
         case 'glpk'
             if (~exist('glpkmex'))
                 warning('MILP solver glpk not usable: glpkmex not in Matlab path');
