@@ -48,7 +48,7 @@ else
             URLnames{i}=mfiles{i}(length(options.mFiles{1})+2:end-2);
         end
     end
-    pause(eps)
+    %pause(eps)
 end
 
 fid = fopen(dotfile,'w');

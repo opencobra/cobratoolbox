@@ -1,4 +1,0 @@
-Name: org.sbml.libsbml
-Implementation-Title: "@PACKAGE_NAME@ Java API"
-Implementation-Version: "@PACKAGE_VERSION@"
-Implementation-Vendor: "The SBML Team"

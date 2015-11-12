@@ -1,6 +1,4 @@
-
-function V = LP3( J, model, orig )
-% V = LP3( J, model )
+function [V, basis] = LP3(J, model, basis)
 % CPLEX implementation of LP-3 for input set J (see FASTCORE paper)
 % Maximizes the sum of fluxes of reactions in set J
 % 
@@ -31,8 +29,11 @@ end
 
 [m,n] = size(model.S);
 
+%
+
+
 % objective
-f = zeros(1,n);
+f = zeros(n,1);
 f(J) = -1;
 
 % equalities
@@ -43,14 +44,20 @@ beq = zeros(m,1);
 lb = model.lb;
 ub = model.ub;
 
-%
-% Original Code From FastCore using CPLEX directly
+basis=[];
+ 
 if orig
    options = cplexoptimset('cplex');
    %options = cplexoptimset(options,'diagnostics','off');
    options.output.clonelog=0;
    options.workdir='~/tmp';
-   x = cplexlp(f,[],[],Aeq,beq,lb,ub,options);
+%quiet
+if 0
+    options = cplexoptimset('cplex');
+    options = cplexoptimset(options,'diagnostics','off');
+    options.output.clonelog=0;
+    options.workdir='~/tmp';
+    x = cplexlp(f',[],[],Aeq,beq,lb,ub,options);
    if exist('clone1.log','file')
        delete('clone1.log')
    end
@@ -63,7 +70,22 @@ else
    LPproblem.c=f;
    LPproblem.osense=1;%minimise
    LPproblem.csense(1:size(LPproblem.A,1))='E';
-   solution = solveCobraLP(LPproblem);
+    if ~exist('basis','var') && 0 %cant reuse basis without size change
+        solution = solveCobraLP(LPproblem);
+    else
+        if ~isempty(basis)
+            LPproblem.basis=basis;
+            solution = solveCobraLP(LPproblem);
+        else
+            solution = solveCobraLP(LPproblem);
+        end
+    end
+    if isfield(solution,'basis')
+        basis=solution.basis;
+    else
+        basis=[];
+    end
    x=solution.full;
 end
+
 V = x;

@@ -1,4 +1,5 @@
-function V = LP9( K, P, model, epsilon, orig )
+function V = LP9( K, P, model, epsilon )
+%
 % V = LP9( K, P, model, epsilon )
 %
 % CPLEX implementation of LP-9 for input sets K, P (see FASTCORE paper)
@@ -45,8 +46,10 @@ np = numel(P);
 nk = numel(K);
 [m,n] = size(model.S);
 
+% x = [v;z]
+
 % objective
-f = [zeros(1,n), ones(1,np)];
+f = [zeros(n,1); ones(np,1)];
 
 % equalities
 Aeq = [model.S, sparse(m,np)];
@@ -64,28 +67,37 @@ bineq = [zeros(2*np,1); -ones(nk,1)*epsilon*scalingfactor];
 lb = [model.lb; zeros(np,1)] * scalingfactor;
 ub = [model.ub; max(abs(model.ub(P)),abs(model.lb(P)))] * scalingfactor;
 
-% Original Code from the FASTCORE paper using cplex directly
-if orig 
-   options = cplexoptimset('cplex');
-   %options = cplexoptimset(options,'diagnostics','off');
-   options.output.clonelog=0;
-   options.workdir='~/tmp';
-   x = cplexlp(f,Aineq,bineq,Aeq,beq,lb,ub,options);
+if 0
+    %quiet
+    options = cplexoptimset('cplex');
+    options = cplexoptimset(options,'diagnostics','off');
+    options.output.clonelog=0;
+    options.workdir='~/tmp';
+    x = cplexlp(f',Aineq,bineq,Aeq,beq,lb,ub,options);
+    if exist('clone1.log','file')
    if exist('clone1.log','file')
-       delete('clone1.log')
-   end
+        delete('clone1.log')
+    end
 else
-   %Set up the COBRA Problem
-   LPproblem.A=[Aeq;Aineq];
-   LPproblem.b=[beq;bineq];
-   LPproblem.lb=lb;
-   LPproblem.ub=ub;
-   LPproblem.c=f;
-   LPproblem.osense=1;%minimise
-   LPproblem.csense(1:size(LPproblem.A,1))='E';
-   LPproblem.csense(size(Aeq,1)+1:size(LPproblem.A,1))='L';
-   solution = solveCobraLP(LPproblem);
-   x=solution.full;
+    LPproblem.A=[Aeq;Aineq];
+    LPproblem.b=[beq;bineq];
+    LPproblem.lb=lb;
+    LPproblem.ub=ub;
+    LPproblem.c=f;
+    LPproblem.osense=1;%minimise
+    LPproblem.csense(1:size(LPproblem.A,1))='E';
+    LPproblem.csense(size(Aeq,1)+1:size(LPproblem.A,1))='L';
+    solution = solveCobraLP(LPproblem);
+    if solution.stat~=1
+        fprintf('\n%s%s\n',num2str(solution.stat),' = sol.stat')
+        fprintf('%s%s\n',num2str(solution.origStat),' = sol.origStat')
+        warning('LP solution may not be optimal')
+    end
+    x=solution.full;
 end
 
-V = x(1:n);
+if ~isempty(x)
+    V = x(1:n);
+else
+    V=ones(n,1)*NaN;
+end

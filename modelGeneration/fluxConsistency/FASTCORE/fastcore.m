@@ -1,27 +1,25 @@
-function A = fastcore( C, model, epsilon , orig) 
-%
+function A = fastcore(C, model, epsilon, printLevel) 
 % A = fastcore( C, model, epsilon )
-%
 % The FASTCORE algorithm for context-specific metabolic network reconstruction
 % Input C is the core set, and output A is the reconstruction
-% 
-% C         indicies of the core set of reactions
-% model     cobra model structure containing the fields
-%   S         m x n stoichiometric matrix    
-%   lb        n x 1 flux lower bound
-%   ub        n x 1 flux upper bound
-%   rxns      n x 1 cell array of reaction abbreviations
-% epsilon   flux threshold
-% 
-%OPTIONAL INPUT
-% orig 	    Indicator whether the original code or COBRA adjusted code 
-%           should be used. If original code is requested, CPLEX needs 
-%           to be installed (default 0)
 %
-%OUTPUT
-% A         Indices of reactions in the input model that have to be included in the 
-%           target model (On a consistent COBRA compliant model the target model can 
-%           be obtained by the following command:
+% INPUT
+% C             indices of reactions in cobra model that are part of the
+%               core set of reactions
+% model         cobra model structure containing the fields
+%   S           m x n stoichiometric matrix    
+%   lb          n x 1 flux lower bound
+%   ub          n x 1 flux uppper bound
+%   rxns        n x 1 cell array of reaction abbreviations
+% 
+% epsilon       {1e-4} smallest flux that is considered nonzero 
+%
+% printLevel    0 = silent, 1 = summary, 2 = debug
+%
+% OUTPUT
+% A             indices of reactions in the new model 
+%
+%
 %           FCmodel = removeRxns(model,setdiff(model.rxns,model.rxns(A)));
 %
 %
@@ -32,7 +30,6 @@ function A = fastcore( C, model, epsilon , orig)
 % (c) Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013
 %     LCSB / LSRU, University of Luxembourg
 %
-% Fast Reconstruction of Compact Context-Specific Metabolic Network Models
 % ( Vlassis et al. 2014)   10.1371/journal.pcbi.1003424
 %
 % Maria Pires Pacheco  27/01/15 Added a switch to select between COBRA code and the original code
@@ -41,10 +38,9 @@ if nargin < 4
    orig = 0;
 end
 
-model_org = model;
-
 N = 1:numel(model.rxns);
-I = find(model.lb==0);
+%reactions assumed to be irreversible in forward direction
+I = find(model.lb>=0);
 
 A = [];
 flipped = false;
@@ -53,18 +49,20 @@ singleton = false;
 % start with I
 J = intersect( C, I ); fprintf('|J|=%d  ', length(J));
 P = setdiff( N, C);
-Supp = findSparseMode( J, P, singleton, model, epsilon, orig );
+[Supp, basis] = findSparseMode( J, P, singleton, model, epsilon);
 if ~isempty( setdiff( J, Supp ) ) 
-  fprintf ('Error: Inconsistent irreversible core reactions.\n');
+  fprintf ('fastcore.m Error: Inconsistent irreversible core reactions.\n');
   return;
 end
 A = Supp;  fprintf('|A|=%d\n', length(A));
+% J is the set of irreversible reactions
 J = setdiff( C, A ); fprintf('|J|=%d  ', length(J));
 
 % main loop     
 while ~isempty( J )
     P = setdiff( P, A);
-    Supp = findSparseMode( J, P, singleton, model, epsilon, orig );
+    %reuse the basis from the previous solve if it exists
+    [Supp, basis] = findSparseMode( J, P, singleton, model, epsilon, basis);
     A = union( A, Supp );   fprintf('|A|=%d\n', length(A)); 
     if ~isempty( intersect( J, A ))
         J = setdiff( J, A );     fprintf('|J|=%d  ', length(J));
@@ -77,7 +75,7 @@ while ~isempty( J )
         end
         if flipped || isempty( JiRev )
             if singleton
-                fprintf('\nError: Global network is not consistent.\n');
+                fprintf('\n fastcore.m Error: Global network is not consistent.\n');
                 return
             else
               flipped = false;
@@ -93,4 +91,6 @@ while ~isempty( J )
     end
 end
 fprintf('|A|=%d\n', length(A));
+
 toc
+

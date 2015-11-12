@@ -1,4 +1,4 @@
-function [transRxns,nonTransRxns] = findTransRxns(model,inclExc, ... 
+function [transRxns,nonTransRxns,transRxnsBool] = findTransRxns(model,inclExc, ... 
     rxnInds,inclObjAsExc,irrevFlag)
 %findTransRxns identify all transport reactions in a model, which are
 %defined as reactions involved with metabolites in more than 1 compartment
@@ -27,6 +27,9 @@ function [transRxns,nonTransRxns] = findTransRxns(model,inclExc, ...
 % 
 % modified the function to work with arbitrary compartments, to accept 
 % rxnInds, & to use findExcRxns. Jonathan Dreyfuss, 10/9/12
+%
+% modified to also output a boolean vector version of transRxns. Thierry
+% Mondeel, 07/15/15
 
 if nargin < 2
     inclExc = false;
@@ -68,5 +71,6 @@ end
 rxnAbbrevs=model.rxns(rxnInds);
 % if inclExc==1, exchange rxns will have isExc==1, and should be counted as
 % transport rxns; else, all isExc will be 0.
-transRxns = rxnAbbrevs(isNonexchTrans==1 | isExc==1);
+transRxnsBool = isNonexchTrans==1 | isExc==1;
+transRxns = rxnAbbrevs(transRxnsBool);
 nonTransRxns = setdiff(rxnAbbrevs, transRxns);

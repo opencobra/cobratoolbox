@@ -155,9 +155,11 @@ fprintf('Finished\n');
 % % Creating GPR Rules
 fprintf('Combining Genes: ');
 modelNew.genes = model1.genes;
+a=1;
 for i = 1:length(model2.genes)
-    if isempty(strmatch(model2.genes{i},modelNew.genes,'exact')) == 1
-        modelNew.genes(size(model.genes,1)+i) = model2.genes{i};
+    if isempty(strmatch(model2.genes{i},modelNew.genes,'exact')) == 1 
+        modelNew.genes(size(model1.genes,1)+a) = model2.genes(i);
+        a=a+1;
     end
 end
 fprintf('Finished\n');
@@ -165,19 +167,22 @@ fprintf('Finished\n');
 fprintf('Combining Remaining Genetic Information: ');
 h = waitbar(0, 'Combining Genetic Info ...');
 modelNew.rxnGeneMat = model1.rxnGeneMat;
-for i = 1:size(model2.rxnGeneMat,1)
-    for j = 1:size(model2.rxnGeneMat,2)
-        if model2.rxnGeneMat(i,j) ~= 0
-            geneLoc = strmatch(model2.genes{j},modelNew.genes,'exact');
-            modelNew.rxnGeneMat(length(model1.lb)+i,j) = 1;
-        end
-    end
-    if(mod(i, 40) == 0),waitbar(i/size(model2.rxnGeneMat,1),h);end
-end
+% for i = 1:size(model2.rxnGeneMat,1)
+%     G = find(model2.rxnGeneMat(i,:));
+%     if (~isempty(G))
+%             geneLoc = find(ismember(modelNew.genes,model2.genes{G}));
+%             modelNew.rxnGeneMat(length(model1.lb)+i,geneLoc) = 1;
+%     else
+%                     modelNew.rxnGeneMat(length(model1.lb)+i,:) = 0;
+%     end
+%     if(mod(i, 40) == 0),waitbar(i/size(model2.rxnGeneMat,1),h);end
+% end
 close(h);
 
 modelNew.grRules = model1.grRules;
 modelNew.grRules(size(model1.grRules,1)+1:size(model1.grRules,1)+size(model2.grRules,1)) = model2.grRules;
+if isfield(model1,'rules')
 modelNew.rules = model1.rules;
 modelNew.rules(size(model1.rules,1)+1:size(model1.rules,1)+size(model2.rules,1)) = model2.rules;
+end
 fprintf('Finished\n');

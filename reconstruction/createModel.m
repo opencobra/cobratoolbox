@@ -79,7 +79,7 @@ end
 
 for i = 1 : nRxns
     if i==nRxns
-        pause(eps)
+        %pause(eps)
     end
     if ~isempty(grRuleList{i})
         if ~isempty(strfind(grRuleList{i},','))

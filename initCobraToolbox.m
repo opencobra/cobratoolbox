@@ -138,11 +138,30 @@ end
 %make install
 
 %Test the installation with:
-try
-    TranslateSBML('/usr/local/bin/cobratoolbox_master/testing/testSBML/Ecoli_core_ECOSAL.xml')
-catch
-    warning('TranslateSBML did not work with the test .xml file: Ecoli_core_ECOSAL.xml')
+current_path=strcat(pwd,'/testing/testSBML/Ecoli_core_ECOSAL.xml');
+
+fPath={'Ecoli_core_ECOSAL.xml';
+    'testSBML';
+    'testing'};
+
+if ~isequal(exist(fPath{1},'file'),2)
+    fprintf('the testing XML file - ''%s'' is missing from the COBRA folder! \n',fPath{1});
+    if ~isequal(exist(fPath{2},'dir'),7)
+        fprintf('the testing folder ''%s'' is missing from the COBRA folder!!\n',fPath{2});
+        if ~isequal(exist(fPath{3},'dir'),7)
+            fprintf('the testing folder ''%s'' is missing from the COBRA folder!!\n',fPath{3});
+        end
+    end
+else
+    
+    try
+        TranslateSBML(current_path);
+    catch
+        warning('TranslateSBML did not work with the test .xml file: Ecoli_core_ECOSAL.xml')
+    end
+    
 end
+
 % If there is a problem with the mex file:
 % in matlab check: !ldd /usr/local/bin/cobratoolbox_master/external/libsbml-5.11.0/compiled/lib/TranslateSBML.mexa64
 % a terminal check: ldd /usr/local/bin/cobratoolbox_master/external/libsbml-5.11.0/compiled/lib/TranslateSBML.mexa64

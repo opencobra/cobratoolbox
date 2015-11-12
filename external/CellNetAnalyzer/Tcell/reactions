@@ -1,0 +1,123 @@
+mek=erk                                  	1 mek = 1 erk 	| 	# 	0  1  0 	436  825    1    1 	0.01 
+ras=raf                                  	1 ras = 1 raf 	| 	# 	0  1  0 	432  726    1    1 	0.01 
+cdc42=mekk1                              	1 cdc42 = 1 mekk1 	| 	# 	0  1  0 	403  728    1    1 	0.01 
+=pten                                    	 = 1 pten 	| 	0 	0  1  0 	865  299    1    1 	0.01 
+=ship1                                   	 = 1 ship1 	| 	0 	0  1  0 	857  236    1    1 	0.01 
+ap1=                                     	1 ap1 =  	| 	# 	0  1  0 	361  985    1    1 	0.01 
+bcat=                                    	1 bcat =  	| 	# 	0  1  0 	876  974    1    1 	0.01 
+malt1+card11+bcl10=card11a               	1 bcl10 + 1 card11 + 1 malt1 = 1 card11a 	| 	# 	0  1  0 	647  733    1    1 	0.01 
+bclxl=                                   	1 bclxl =  	| 	# 	0  1  0 	1203   978     1     1 	0.01 
+calcin=nfat                              	1 calcin = 1 nfat 	| 	# 	0  1  0 	820  884    1    1 	0.01 
+ikkg+camk2=ikkab                         	1 camk2 + 1 ikkg = 1 ikkab 	| 	# 	0  1  0 	740  680    1    1 	0.01 
+cam=camk2                                	1 cam = 1 camk2 	| 	# 	0  1  0 	733  431    1    1 	0.01 
+cam=camk4                                	1 cam = 1 camk4 	| 	# 	0  1  0 	827  408    1    1 	0.01 
+ca=cam                                   	1 ca = 1 cam 	| 	# 	0  1  0 	693  408    1    1 	0.01 
+ccblr+fyn=ccblp2                         	1 ccblr + 1 fyn = 1 ccblp2 	| 	# 	0  2  0 	324  340    1    1 	0.01 
+ccblr+zap70=ccblp1                       	1 ccblr + 1 zap70 = 1 ccblp1 	| 	# 	0  2  0 	136  288    1    1 	0.01 
+!shp1+cd45+cd4+!csk+lckr=lckp1           	1 cd45 + 1 cd4 + 1 !csk + 1 lckr + 1 !shp1 = 1 lckp1 	| 	# 	0  1  0 	162  168    1    1 	0.01 
+creb=cre                                 	1 creb = 1 cre 	| 	# 	0  1  0 	442  943    1    1 	0.01 
+cre=                                     	1 cre =  	| 	# 	0  1  0 	462  982    1    1 	0.01 
+cyc1=                                    	1 cyc1 =  	| 	# 	0  1  0 	950  979    1    1 	0.01 
+dag+vav1+pdk1=pkcth                      	1 dag + 1 pdk1 + 1 vav1 = 1 pkcth 	| 	# 	0  1  0 	604  633    1    1 	0.01 
+dag=rasgrp                               	1 dag = 1 rasgrp 	| 	# 	0  1  0 	518  595    1    1 	0.01 
+erk=fos                                  	1 erk = 1 fos 	| 	# 	0  1  0 	430  877    1    1 	0.01 
+erk=rsk                                  	1 erk = 1 rsk 	| 	# 	0  1  0 	469  876    1    1 	0.01 
+fkhr=                                    	1 fkhr =  	| 	# 	0  1  0 	1154   980     1     1 	0.01 
+x=vav1                                   	1 x = 1 vav1 	| 	# 	0  1  0 	14  499    1    1 	0.01 
+!tcrb=pag                                	1 !tcrb = 1 pag 	| 	# 	0  1  0 	328  133    1    1 	0.01 
+fyn=pag                                  	1 fyn = 1 pag 	| 	# 	0  2  0 	362  183    1    1 	0.01 
+gab2=shp2                                	1 gab2 = 1 shp2 	| 	# 	0  1  0 	75  397    1    1 	0.01 
+gads+lat+zap70=gab2                      	1 gads + 1 lat + 1 zap70 = 1 gab2 	| 	# 	0  2  0 	37  423    1    1 	0.01 
+grb2+lat+zap70=gab2                      	1 grb2 + 1 lat + 1 zap70 = 1 gab2 	| 	# 	0  2  0 	106  460    1    1 	0.01 
+hpk1=mekk1                               	1 hpk1 = 1 mekk1 	| 	# 	0  1  0 	334  706    1    1 	0.01 
+hpk1=mlk3                                	1 hpk1 = 1 mlk3 	| 	# 	0  1  0 	293  708    1    1 	0.01 
+=akap79                                  	 = 1 akap79 	| 	0 	0  1  0 	964  431    1    1 	0.01 
+=calpr1                                  	 = 1 calpr1 	| 	0 	0  1  0 	1037   431     1     1 	0.01 
+=ccblr                                   	 = 1 ccblr 	| 	1 	0  1  0 	-307 -271    1    1 	0.01 
+=cd45                                    	 = 1 cd45 	| 	1 	0  1  0 	137  101    1    1 	0.01 
+=cdc42                                   	 = 1 cdc42 	| 	0 	0  1  0 	384  672    1    1 	0.01 
+=gadd45                                  	 = 1 gadd45 	| 	0 	0  1  0 	86  772    1    1 	0.01 
+=gap                                     	 = 1 gap 	| 	0 	0  1  0 	573  651    1    1 	0.01 
+=lckr                                    	 = 1 lckr 	| 	1 	0  1  0 	-251 -207    1    1 	0.01 
+=rac1r                                   	 = 1 rac1r 	| 	1 	0  1  0 	-106 -714    1    1 	0.01 
+=bcl10                                   	 = 1 bcl10 	| 	1 	0  1  0 	494  746    1    1 	0.01 
+=card11                                  	 = 1 card11 	| 	1 	0  1  0 	495  720    1    1 	0.01 
+=malt1                                   	 = 1 malt1 	| 	1 	0  1  0 	494  772    1    1 	0.01 
+ip3=ca                                   	1 ip3 = 1 ca 	| 	# 	0  1  0 	620  440    1    1 	0.01 
+jnk=jun                                  	1 jnk = 1 jun 	| 	# 	0  1  0 	364  892    1    1 	0.01 
+fos+jun=ap1                              	1 fos + 1 jun = 1 ap1 	| 	# 	0  1  0 	363  934    1    1 	0.01 
+zap70+lat=sh3bp2                         	1 lat + 1 zap70 = 1 sh3bp2 	| 	# 	0  1  0 	140  583    1    1 	0.01 
+lat=grb2                                 	1 lat = 1 grb2 	| 	# 	0  1  0 	236  638    1    1 	0.01 
+grb2=sos                                 	1 grb2 = 1 sos 	| 	# 	0  1  0 	320  647    1    1 	0.01 
+lat=hpk1                                 	1 lat = 1 hpk1 	| 	# 	0  1  0 	218  685    1    1 	0.01 
+lat=plcgb                                	1 lat = 1 plcgb 	| 	# 	0  1  0 	227  578    1    1 	0.01 
+lckp1+cd45=fyn                           	1 cd45 + 1 lckp1 = 1 fyn 	| 	# 	0  1  0 	288  228    1    1 	0.01 
+!erk+lckp1=shp1                          	1 !erk + 1 lckp1 = 1 shp1 	| 	# 	0  2  0 	81  200    1    1 	0.01 
+lckp1=rlk                                	1 lckp1 = 1 rlk 	| 	# 	0  1  0 	378  302    1    1 	0.01 
+x+!cblb=pi3k                             	1 !cblb + 1 x = 1 pi3k 	| 	# 	0  1  0 	898  211    1    1 	0.01 
+lckp2+!cblb=pi3k                         	1 !cblb + 1 lckp2 = 1 pi3k 	| 	# 	0  1  0 	948  211    1    1 	0.01 
+lckr+tcrb=lckp2                          	1 lckr + 1 tcrb = 1 lckp2 	| 	# 	0  1  0 	480  149    1    1 	0.01 
+cd28=x                                   	1 cd28 = 1 x 	| 	# 	0  1  0 	52  59   1   1 	0.01 
+tcrb+lckr=fyn                            	1 lckr + 1 tcrb = 1 fyn 	| 	# 	0  1  0 	380  236    1    1 	0.01 
+=cd28                                    	 = 1 cd28 	| 	0 	0  1  0 	86  19   1   1 	0.01 
+=cd4                                     	 = 1 cd4 	| 	0 	0  1  0 	184   19    1    1 	0.01 
+=tcrlig                                  	 = 1 tcrlig 	| 	0 	0  1  0 	294   20    1    1 	0.01 
+mekk1=jnk                                	1 mekk1 = 1 jnk 	| 	# 	0  1  0 	373  819    1    1 	0.01 
+mekk1=mkk4                               	1 mekk1 = 1 mkk4 	| 	# 	0  1  0 	338  756    1    1 	0.01 
+mekk1=p38                                	1 mekk1 = 1 p38 	| 	# 	0  1  0 	298  822    1    1 	0.01 
+mkk4=jnk                                 	1 mkk4 = 1 jnk 	| 	# 	0  1  0 	336  840    1    1 	0.01 
+mlk3=mkk4                                	1 mlk3 = 1 mkk4 	| 	# 	0  1  0 	259  775    1    1 	0.01 
+nfkb=                                    	1 nfkb =  	| 	# 	0  1  0 	741  979    1    1 	0.01 
+!bad=bclxl                               	1 !bad = 1 bclxl 	| 	# 	0  1  0 	1216   911     1     1 	0.01 
+!cabin1+!calpr1+!akap79+cam=calcin       	1 !akap79 + 1 !cabin1 + 1 !calpr1 + 1 cam = 1 calcin 	| 	# 	0  1  0 	947  512    1    1 	0.01 
+!camk4=cabin1                            	1 !camk4 = 1 cabin1 	| 	# 	0  1  0 	875  441    1    1 	0.01 
+!ccblp1+tcrp+abl=zap70                   	1 abl + 1 !ccblp1 + 1 tcrp = 1 zap70 	| 	# 	0  1  0 	173  425    1    1 	0.01 
+plcgb+!ccblp2+slp76+zap70+vav1+itk=plcga 	1 !ccblp2 + 1 itk + 1 plcgb + 1 slp76 + 1 vav1 + 1 zap70 = 1 plcga 	| 	# 	0  1  0 	367  564    1    1 	0.01 
+plcgb+!ccblp2+zap70+vav1+slp76+rlk=plcga 	1 !ccblp2 + 1 plcgb + 1 rlk + 1 slp76 + 1 vav1 + 1 zap70 = 1 plcga 	| 	# 	0  1  0 	430  528    1    1 	0.01 
+zap70+!gab2+gads=slp76                   	1 !gab2 + 1 gads + 1 zap70 = 1 slp76 	| 	# 	0  1  0 	308  524    1    1 	0.01 
+!gsk3=bcat                               	1 !gsk3 = 1 bcat 	| 	# 	0  1  0 	889  906    1    1 	0.01 
+!gsk3=cyc1                               	1 !gsk3 = 1 cyc1 	| 	# 	0  1  0 	963  906    1    1 	0.01 
+!ikb=nfkb                                	1 !ikb = 1 nfkb 	| 	# 	0  1  0 	754  917    1    1 	0.01 
+!ikkab=ikb                               	1 !ikkab = 1 ikb 	| 	# 	0  1  0 	737  727    1    1 	0.01 
+!pkb=bad                                 	1 !pkb = 1 bad 	| 	# 	0  1  0 	1195   571     1     1 	0.01 
+!pkb=fkhr                                	1 !pkb = 1 fkhr 	| 	# 	0  1  0 	1147   911     1     1 	0.01 
+!pkb=gsk3                                	1 !pkb = 1 gsk3 	| 	# 	0  1  0 	893  596    1    1 	0.01 
+!pkb=p21c                                	1 !pkb = 1 p21c 	| 	# 	0  1  0 	1027   907     1     1 	0.01 
+!pkb=p27k                                	1 !pkb = 1 p27k 	| 	# 	0  1  0 	1084   908     1     1 	0.01 
+pkcth+card11a=ikkg                       	1 card11a + 1 pkcth = 1 ikkg 	| 	# 	0  1  0 	642  666    1    1 	0.01 
+!cd28=cblb                               	1 !cd28 = 1 cblb 	| 	# 	0  2  0 	934  145    1    1 	0.01 
+p21c=                                    	1 p21c =  	| 	# 	0  1  0 	1034   977     1     1 	0.01 
+p27k=                                    	1 p27k =  	| 	# 	0  1  0 	1093   977     1     1 	0.01 
+p38=                                     	1 p38 =  	| 	# 	0  1  0 	231  961    1    1 	0.01 
+p70s=                                    	1 p70s =  	| 	# 	0  1  0 	1265   983     1     1 	0.01 
+pdk1=p70s                                	1 pdk1 = 1 p70s 	| 	# 	0  1  0 	1282   909     1     1 	0.01 
+pdk1=pkb                                 	1 pdk1 = 1 pkb 	| 	# 	0  1  0 	1068   297     1     1 	0.01 
+pi3k+!ship1+!pten=pip3                   	1 pi3k + 1 !pten + 1 !ship1 = 1 pip3 	| 	# 	0  1  0 	938  257    1    1 	0.01 
+pip3=pdk1                                	1 pip3 = 1 pdk1 	| 	# 	0  1  0 	1015   257     1     1 	0.01 
+!dgk+plcga=dag                           	1 !dgk + 1 plcga = 1 dag 	| 	# 	0  1  0 	518  553    1    1 	0.01 
+plcga=ip3                                	1 plcga = 1 ip3 	| 	# 	0  1  0 	517  534    1    1 	0.01 
+rac1p1=mlk3                              	1 rac1p1 = 1 mlk3 	| 	# 	0  1  0 	219  741    1    1 	0.01 
+rac1p2=sre                               	1 rac1p2 = 1 sre 	| 	# 	0  1  0 	153  901    1    1 	0.01 
+cdc42=sre                                	1 cdc42 = 1 sre 	| 	# 	0  1  0 	176  918    1    1 	0.01 
+rac1p2=mekk1                             	1 rac1p2 = 1 mekk1 	| 	# 	0  1  0 	242  717    1    1 	0.01 
+rac1r+vav1=rac1p1                        	1 rac1r + 1 vav1 = 1 rac1p1 	| 	# 	0  1  0 	22  668    1    1 	0.01 
+rac1r+vav3=rac1p2                        	1 rac1r + 1 vav3 = 1 rac1p2 	| 	# 	0  1  0 	136  679    1    1 	0.01 
+raf=mek                                  	1 raf = 1 mek 	| 	# 	0  1  0 	431  774    1    1 	0.01 
+rsk=creb                                 	1 rsk = 1 creb 	| 	# 	0  1  0 	444  909    1    1 	0.01 
+sh3bp2=vav3                              	1 sh3bp2 = 1 vav3 	| 	# 	0  1  0 	142  630    1    1 	0.01 
+pip3+zap70+slp76=itk                     	1 pip3 + 1 slp76 + 1 zap70 = 1 itk 	| 	# 	0  1  0 	364  490    1    1 	0.01 
+sre=                                     	1 sre =  	| 	# 	0  1  0 	143  978    1    1 	0.01 
+!ccblp1+tcrlig=tcrb                      	1 !ccblp1 + 1 tcrlig = 1 tcrb 	| 	# 	0  1  0 	305   88    1    1 	0.01 
+tcrb+lckp1=tcrp                          	1 lckp1 + 1 tcrb = 1 tcrp 	| 	# 	0  1  0 	219  289    1    1 	0.01 
+tcrb=dgk                                 	1 tcrb = 1 dgk 	| 	# 	0  2  0 	520  411    1    1 	0.01 
+tcrb+fyn=tcrp                            	1 fyn + 1 tcrb = 1 tcrp 	| 	# 	0  1  0 	289  341    1    1 	0.01 
+lat=gads                                 	1 lat = 1 gads 	| 	# 	0  1  0 	253  495    1    1 	0.01 
+!gadd45+zap70=p38                        	1 !gadd45 + 1 zap70 = 1 p38 	| 	# 	0  1  0 	207  826    1    1 	0.01 
+zap70+sh3bp2=vav1                        	1 zap70 + 1 sh3bp2 = 1 vav1 	| 	# 	0  1  0 	59  607    1    1 	0.01 
+zap70=lat                                	1 zap70 = 1 lat 	| 	# 	0  1  0 	156  500    1    1 	0.01 
+sos+!gap+rasgrp=ras                      	1 !gap + 1 sos + 1 rasgrp = 1 ras 	| 	# 	0  1  0 	434  677    1    1 	0.01 
+lckp1=abl                                	1 lckp1 = 1 abl 	| 	# 	0  1  0 	162  338    1    1 	0.01 
+fyn=abl                                  	1 fyn = 1 abl 	| 	# 	0  1  0 	215  378    1    1 	0.01 
+pag=csk                                  	1 pag = 1 csk 	| 	# 	0  1  0 	336  155    1    1 	0.01 
+nfat=                                    	1 nfat =  	| 	# 	0  1  0 	806  981    1    1 	0 
+shp2=                                    	1 shp2 =  	| 	# 	0  1  0 	78  361    1    1 	0 

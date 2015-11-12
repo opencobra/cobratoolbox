@@ -27,12 +27,35 @@ function [ newmodel ] = addMetabolite(model,metID,metName,formula,CHEBIID,KEGGId
 % Thomas Pfau 15/12/2014
 
 %Convert into cell array
-if ~isa(metID,'cell')
-    metID = {metID};
+
+varName={'char','cell','numeric','logical'};
+
+if ~isempty(metID)
+    if ~isa(metID,'cell')
+        for i=1:numel(varName);
+            if isa(metID,varName{i});
+                type=i;
+            end
+            
+        end
+        if type==1;
+            metID = {metID};
+        else
+            %errorMsg=sprintf('The type of the metID should be ''char'',but here the provided metID is ''%d''',varName{type});
+            errorMsg=varName{type};
+            
+            errorMsg=['The type of the provided metID should be ''char'' or ''cell'', but here the provided metID is ', errorMsg]; 
+            errordlg(errorMsg);            
+        end
+    end
+else
+    errordlg('metID is empty');
 end
 
+
+
 if nargin < 10
-    b = zeros(1,numel(metID);
+    b = zeros(1,numel(metID));
 else
     if numel(metID) ~= numel(b)
         fprintf('Inconsistent Argument length (%i) and b(%i)\n',numel(metID),numel(b));
@@ -45,7 +68,7 @@ else
 end
 
 if nargin < 9
-    Charge = zeros(1,numel(metID);
+    Charge = zeros(1,numel(metID));
 else
     
     if numel(metID) ~= numel(Charge)
@@ -149,7 +172,7 @@ else
 end
 
 if nargin < 3
-    metName = cell(1,numel(metName))
+    metName = cell(1,numel(metID))
     metName(:) = {''};
 else
     if ~isa(metName,'cell')
@@ -175,7 +198,7 @@ for i = 1:numel(metID)
             cmetName = metName{i};
             if strcmp(cmetName,'')
                 model.metNames{end+1,1} = regexprep(cmetID,'(\[.+\]) | (\(.+\))','') ;                
-                warning(['Metabolite name for ' metID ' set to ' model.metNames{end}]);
+                warning(['Metabolite name for ' metID{i} ' set to ' model.metNames{end}]);
             else
                 model.metNames{end+1,1} = metName{i} ;                
         %          model.metNames(end) = cellstr(input('Enter complete metabolite name, if available:', 's'));
@@ -185,7 +208,7 @@ for i = 1:numel(metID)
         end
         if (isfield(model,'metFormulas'))
             model.metFormulas{end+1,1} = formula{i};
-            warning(['Metabolite formula for ' metID ' set to ''''']);
+            warning(['Metabolite formula for ' metID{i} ' set to ''''']);
         %             model.metFormulas(end) = cellstr(input('Enter metabolite chemical formula, if available:', 's'));
         end
         if isfield(model,'metChEBIID')
@@ -206,6 +229,7 @@ for i = 1:numel(metID)
     end
 end
 
+newmodel = model;
 
 end
 

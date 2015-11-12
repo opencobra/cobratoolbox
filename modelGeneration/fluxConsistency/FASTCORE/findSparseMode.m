@@ -1,4 +1,4 @@
-function Supp = findSparseMode( J, P, singleton, model, epsilon, orig )
+function [Supp, basis] = findSparseMode( J, P, singleton, model, epsilon, basis)
 %
 % A = findSparseMode( J, P, singleton, model, epsilon, orig )
 %
@@ -24,6 +24,9 @@ function Supp = findSparseMode( J, P, singleton, model, epsilon, orig )
 % Supp      Support of the set to be maximized. I.e. the indices of the set of reactions 
 %           determined to be needed to activate as many reactions of J as possible
 %
+% Finds a mode that contains as many reactions from J and as few from P
+% Returns its support, or [] if no reaction from J can get flux above epsilon
+
 % (c) Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013
 %     LCSB / LSRU, University of Luxembourg
 %
@@ -38,10 +41,14 @@ if isempty( J )
   return;
 end
 
+if ~exist('basis','var')
+    basis=[];
+end
+
 if singleton
-  V = LP7( J(1), model, epsilon, orig );
+  [V, basis] = LP7( J(1), model, epsilon, basis);
 else
-  V = LP7( J, model, epsilon, orig );
+  [V, basis] = LP7( J, model, epsilon, basis);
 end
 
 K = intersect( J, find(V >= 0.99*epsilon) );   

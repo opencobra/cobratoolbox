@@ -71,9 +71,17 @@ global CBT_MILP_SOLVER
 
 if (~isempty(CBT_MILP_SOLVER))
     solver = CBT_MILP_SOLVER;
+
 else
     error('No solver found.  Run changeCobraSolver');
 end
+
+if ~isstruct(MILPproblem)
+    error('MILPproblem needs to be a strcuture array');
+end
+
+
+
 
 optParamNames = {'intTol', 'relMipGapTol', 'timeLimit', ...
     'logFile', 'printLevel', 'saveInput', 'DATACHECK', 'DEPIND', ...
@@ -103,6 +111,7 @@ optParamNames = {'intTol', 'relMipGapTol', 'timeLimit', ...
 %         return;
 %     end
 % end
+parameters=[];
 
 if nargin ~=1
     if mod(length(varargin),2)==0
@@ -141,7 +150,7 @@ if nargin ~=1
                 error([varargin{i} ' is not a valid optional parameter']);
             end
         end
-        pause(eps)
+        %pause(eps)
     else
         error('solveCobraLP: Invalid number of parameters/values')
     end
@@ -175,9 +184,10 @@ if ~isempty(saveInput)
 end
 
 % Defaults in case the solver does not return anything
-%x = [];
+x = [];
 xInt = [];
 xCont = [];
+f = [];
 %stat = -99;
 %solStat = -99;
 
@@ -411,6 +421,7 @@ switch solver
         % http://www.gurobi.com/html/academic.html
         resultgurobi = struct('x',[],'objval',[]);
         MILPproblem.A = deal(sparse(MILPproblem.A));
+
         clear params            % Use the default parameter settings
         
         if solverParams.printLevel == 0 
@@ -447,6 +458,14 @@ switch solver
             MILPproblem.osense = 'max';
         else
             MILPproblem.osense = 'min';
+        end
+
+        %overwrite default params with directParams
+        if parametersStructureFlag
+            fieldNames = fieldnames(directParamStruct);
+            for i = 1:size(fieldNames,1)
+                params.(fieldNames{i}) = directParamStruct.(fieldNames{i});
+            end
         end
         
         MILPproblem.vtype = vartype;

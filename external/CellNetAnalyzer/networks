@@ -1,0 +1,16 @@
+Stoich.;Network;Example	SmallExample	1
+Escherichia;coli;(Central;Metabolism);	coli	1
+Signaling;Toy;Network	sigtoynet	2
+T;cell;activation;(Large)	Tcell	2
+EGFR/ErbB;signaling	Egfr	2
+HGF;and;H.pylori;induced;c-Met;signaling	hgf_and_hpylori_signaling	2
+Electron;Transport;Chain;in;Purple;Bacteria	etc_purple	1
+Chloroplast;Carbon;Metabolism	calvin	1
+Human;Red;Blood;Cell;(Large)	redbloodcell	1
+Purple;Nonsulfur;Bacteria;	anoxy	1
+Stoich.;Network;Example;2	SmallExample2	1
+Tiny;Network;Example	tinynet	1
+Tiny;Figure;Example	figex	1
+Escherichia;coli;(Small)	coli_small	1
+Human;Red;Blood;Cell;(Small)	redbloodcell1024/	1
+T;cell;model;(Small)	Tcellsmall	2

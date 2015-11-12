@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	=====================================================
+	efmtool version 4.7.1, 2009-12-04 18:30:05
+	Copyright (c) 2009, Marco Terzer, Zurich, Switzerland
+	This is free software, !!! NO WARRANTY !!!
+	See LICENCE.txt for redistribution conditions
+	=====================================================
+ -->
+<config-list default="default">
+	<!--
+
+	Predefined values for attribute expressions:
+		${work-dir}	the current work directory (where java has been started)
+		${app-name}	the application or unit-test name		
+		${sys-prop}	any system property, e.g. 
+					user.home					-> ${sys-prop:user.home}
+					myprop with default value	-> ${sys-prop:myprop:mydefault}
+		${date}		current date, formatted like this: 2006-18-09
+		${time}		current time, formatted like this: 19:35:43.415
+		${now}		current timestamp, formatted like this: 2006-09-18_19:35:43.415
+
+	Command line arguments can directly be addressed:
+		${1}			the first argument
+		${2}			the second
+		...
+	Command line arguments can also have the 'option' structure, e.g. for the
+	arguments '-in PARSEDIR -log file LOGFILE', the can be accessed like the
+	following:
+		${-in[1]}	will be resolved as: PARSEDIR
+		${-log[1]}	will be resolved as: file
+		${-log[2]}	will be resolved as: LOGFILE
+		
+	Command line arguments can also have the 'list' structure, where the number
+	of arguments is not known in advance. For instance, to list any number of
+	files like '-files file1 file2 file3 file4 ...', you can access the files
+	list 
+		${-file[*,*]}	will be resolved as file1,file2,file3,file4,...
+		${-file[*:*]}	will be resolved as file1:file2:file3:file4:...
+
+	After command line arguments, options and lists, a default value can be 
+	defined, e.g.
+	    ${-log[1]:/tmp/log.txt}
+					
+	referable entries can be referred using the ref attribute 
+	(see samples below)
+	-->
+
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++ -->		
+	<!-- =================== referables =================== -->	
+
+	<!-- =================== logging =================== -->
+	<!-- 
+		predefined command line options/arguments:
+			-log[1]		logging kind, supported: file, console
+			-log[2] 	log file name (only for logging kind 'file')
+			-level[1]	global log level, e.g. WARNING, CONFIG, INFO, FINE, FINER, FINEST 
+			-format[1]	logging format, supported: default, plain			
+				
+	 -->
+	<referable name="default-logging-format">
+ 		<!--  
+ 			log format, arguments (0-based) are:
+ 				0: current time / 1: thread / 2: logger / 3: level / 4: message / 5: line break
+ 		-->
+ 		<property 	name="ch.javasoft.util.logging.LogFormatter.format" 	
+ 					value="{0,date,yyyy-MM-dd}  {0,time,HH:mm:ss.SSS}  {1}  {2}  {3}  | {4}{5}"/>
+	</referable>
+	<referable name="plain-logging-format">
+ 		<!--  
+ 			log format, arguments (0-based) are:
+ 				0: current time / 1: thread / 2: logger / 3: level / 4: message / 5: line break
+ 		-->
+ 		<property 	name="ch.javasoft.util.logging.LogFormatter.format" 	
+ 					value="{4}{5}"/>
+	</referable>
+	<referable name="console-logging-handlers">
+ 		<property name="handlers" 	value="ch.javasoft.util.logging.StandardOutHandler,ch.javasoft.util.logging.StandardErrHandler"/>	
+ 		<!--  handler configurations  -->
+ 		<property name="ch.javasoft.util.logging.StandardErrHandler.level" 		value="WARNING"/>	
+ 		<property name="ch.javasoft.util.logging.StandardErrHandler.formatter" 	value="ch.javasoft.util.logging.LogFormatter"/>	
+ 		<property name="ch.javasoft.util.logging.StandardOutHandler.level" 		value="ALL"/>	
+ 		<property name="ch.javasoft.util.logging.StandardOutHandler.formatter" 	value="ch.javasoft.util.logging.LogFormatter"/>	
+ 		<property name="ch.javasoft.util.logging.StandardOutHandler.filter" 	value="ch.javasoft.util.logging.LevelFilter"/>
+ 		<!--  filter configurations -->
+ 		<property name="ch.javasoft.util.logging.LevelFilter.type" 		value="LessSevere"/>	
+ 		<property name="ch.javasoft.util.logging.LevelFilter.threshold" value="WARNING"/>	
+	</referable>
+	<referable name="file-logging-handlers">
+ 		<property name="handlers" 	value="java.util.logging.FileHandler"/>	
+ 		<!--  handler configurations  -->
+ 		<property name="java.util.logging.FileHandler.level" 		value="ALL"/>	
+ 		<property name="java.util.logging.FileHandler.formatter" 	value="ch.javasoft.util.logging.LogFormatter"/>
+ 		<property name="java.util.logging.FileHandler.pattern"		value="${-log[2]:%t/metabolic-efm.log}"/>
+	</referable>
+	<referable name="console-logging">
+ 		<property name=".level" value="${-level[1]:INFO}"/>
+ 		<property name="java.level" value="WARNING"/>
+ 		<property name="javax.level" value="WARNING"/>
+ 		<property name="org.ietf.level" value="WARNING"/>
+ 		<property name="org.jcp.level" value="WARNING"/>
+ 		<property name="org.omg.level" value="WARNING"/>
+ 		<property name="org.w3c.level" value="WARNING"/>
+ 		<property name="sun.level" value="WARNING"/>
+ 		<property name="sunw.level" value="WARNING"/>
+ 		<property ref="console-logging-handlers"/>
+ 		<property ref="${-format[1]:default}-logging-format"/>
+	</referable>
+	<referable name="file-logging">
+ 		<property name=".level" value="${-level[1]:INFO}"/>
+ 		<property name="java.level" value="WARNING"/>
+ 		<property name="javax.level" value="WARNING"/>
+ 		<property name="org.ietf.level" value="WARNING"/>
+ 		<property name="org.jcp.level" value="WARNING"/>
+ 		<property name="org.omg.level" value="WARNING"/>
+ 		<property name="org.w3c.level" value="WARNING"/>
+ 		<property name="sun.level" value="WARNING"/>
+ 		<property name="sunw.level" value="WARNING"/>
+ 		<property ref="file-logging-handlers"/>
+ 		<property ref="${-format[1]:default}-logging-format"/>
+	</referable>
+	
+	<!-- =================== parsing input =================== -->
+	<!-- 
+		predefined command line options/arguments:
+			-kind	parser to use (input file type), one of: 
+						flux-analyzer-dir, flux-analyzer-files, 
+						reaction-list, excel, stoichiometry, sbml							
+	-->
+	
+	<!-- flux analyzer -->		
+	<!-- 
+		-in reactions macromolecules macromolecule_synthesis							
+	-->
+	<referable name="flux-analyzer-dir-parser">
+		<parse type="flux-analyzer">
+			<input name="directory" type="file">							
+				<file name="${-in[1]}"/>	<!-- directory, containing files "reactions", "macromolecules", "macromolecule_synthesis" -->
+			</input>
+		</parse>
+	</referable>
+	<!-- 
+		-in directory					
+	-->
+	<referable name="flux-analyzer-files-parser">
+		<parse type="flux-analyzer">
+			<input name="reactions-file" type="file">							
+				<file name="${-in[1]}"/>	<!-- reactions -->
+			</input>
+			<input name="macromolecules-file" type="file">							
+				<file name="${-in[2]}"/>	<!-- macromolecules -->
+			</input>
+			<input name="macromolecule-synthesis-file" type="file">							
+				<file name="${-in[3]}"/>	<!-- macromolecule_synthesis -->
+			</input>
+		</parse>
+	</referable>
+	<!-- 
+		-in file				
+	-->
+	<referable name="reaction-list-parser">
+		<parse type="reaction-list">
+			<input name="text-file" type="file">					
+				<file name="${-in[1]}"/>
+			</input>
+			<external pattern="xt.*"/>
+		</parse>
+	</referable>
+	<!-- 
+		-in file -sheet s -headers h -rcol r -rncol rn -xt pat			
+	-->
+	<referable name="excel-parser">
+		<parse type="reaction-excel">
+			<input name="excel-file" type="file">					
+				<file name="${-in[1]}"/>	<!-- excel file -->
+			</input>
+			<input name="excel-sheet" type="const">
+				<const value="${-sheet[1]}" type="String"/>
+<!--				<const value="1" type="int"/>	<!-!!- 1 based -->
+			</input>
+			<input name="reaction-column" type="const">
+				<const value="${-rcol[1]}" type="int"/>	<!-- 1 based -->
+			</input>
+			<input name="reaction-name-column" type="const">
+				<const value="${-rncol[1]}" type="int"/>	<!-- 1 based -->
+			</input>
+			<input name="header-rows" type="const">
+				<const value="${-headers[1]}" type="int"/>	<!-- 1 based -->
+			</input>
+			<external pattern="${-xt[1]}"/>
+		</parse>
+	</referable>
+	<!-- 
+		-stoich sfile -rev rvfile		
+	-->
+	<referable name="stoichiometry-parser">
+		<parse type="stoichiometry">
+			<input name="stoichiometry-file" type="file">
+				<file name="${work-dir}/${-stoich[1]}"/>	<!-- stoichiometric matrix -->
+			</input>
+			<input name="reversibilities-file" type="file">
+				<file name="${work-dir}/${-rev[1]}"/>	<!-- reaction reversibilities -->
+			</input>
+			<input name="metabolite-names-file" type="file">
+				<file name="${work-dir}/${-meta[1]}"/>	<!-- metabolite names -->
+			</input>
+			<input name="reaction-names-file" type="file">
+				<file name="${work-dir}/${-reac[1]}"/>	<!-- reaction names -->
+			</input>
+			<separator value="${-sep[1]: }"/>
+		</parse>
+	</referable>		
+	<!-- 
+		-in file	
+	-->
+	<referable name="sbml-parser">
+		<parse type="sbml">
+			<input type="file">
+				<file name="${-in[1]}"/>
+			</input>
+			<external-compartment name="${-ext[1]}"/>
+			<sbml-validate-schema>
+				<const value="${-sbml-validate-schema[1]:true}" type="boolean"/>
+			</sbml-validate-schema>			
+		</parse>
+	</referable>
+
+	<referable name="built-in-parser">
+		<parse type="junit">
+			<test class="${-in[1]}" method="${-in[2]}"/>
+		</parse>
+	</referable>
+	
+	<!-- =================== compression =================== -->	
+	<!-- 
+		predefined command line options/arguments:
+			-compression[1]	compression to use, one of: 
+							default, off, unique, nullspace, 
+							unique-no-recursion, nullspace-no-recursion
+		
+	-->
+	<referable name="default-compression-methods">
+		<compression-methods>
+			<method name="CoupledZero"/>
+			<method name="CoupledContradicting"/>
+			<method name="CoupledCombine"/>
+			<method name="UniqueFlows"/>
+			<method name="DeadEnd"/>
+			<method name="Recursive"/>
+			<method name="DuplicateGene" value="false"/>
+			<method name="DuplicateGeneExtended" value="false"/>
+			<method name="InterchangeableMetabolite" value="false"/>
+		</compression-methods>
+	</referable>
+	<referable name="default-no-combine-compression-methods">
+		<compression-methods>
+			<method name="CoupledZero"/>
+			<method name="CoupledContradicting"/>
+			<method name="CoupledCombine" value="false"/>
+			<method name="UniqueFlows" value="false"/>
+			<method name="DeadEnd"/>
+			<method name="Recursive"/>
+			<method name="DuplicateGene" value="false"/>
+			<method name="DuplicateGeneExtended" value="false"/>
+			<method name="InterchangeableMetabolite" value="false"/>
+		</compression-methods>
+	</referable>
+	<referable name="default-no-couple-combine-compression-methods">
+		<compression-methods>
+			<method name="CoupledZero"/>
+			<method name="CoupledContradicting"/>
+			<method name="CoupledCombine" value="false"/>
+			<method name="UniqueFlows"/>
+			<method name="DeadEnd"/>
+			<method name="Recursive"/>
+			<method name="DuplicateGene" value="false"/>
+			<method name="DuplicateGeneExtended" value="false"/>
+			<method name="InterchangeableMetabolite" value="false"/>
+		</compression-methods>
+	</referable>
+	<referable name="default-no-duplicate-compression-methods">
+		<compression-methods>
+			<method name="CoupledZero"/>
+			<method name="CoupledContradicting"/>
+			<method name="CoupledCombine"/>
+			<method name="UniqueFlows"/>
+			<method name="DeadEnd"/>
+			<method name="Recursive"/>
+			<method name="DuplicateGene" value="false"/>
+			<method name="DuplicateGeneExtended" value="false"/>
+			<method name="InterchangeableMetabolite" value="false"/>
+		</compression-methods>
+	</referable>
+	<referable name="default-all-duplicate-compression-methods">
+		<compression-methods>
+			<method name="CoupledZero"/>
+			<method name="CoupledContradicting"/>
+			<method name="CoupledCombine"/>
+			<method name="UniqueFlows"/>
+			<method name="DeadEnd"/>
+			<method name="Recursive"/>
+			<method name="DuplicateGene"/>
+			<method name="DuplicateGeneExtended"/>
+			<method name="InterchangeableMetabolite" value="false"/>
+		</compression-methods>
+	</referable>
+	<referable name="off-compression-methods">
+		<compression-methods>
+			<method name="CoupledZero" value="false"/>
+			<method name="CoupledContradicting" value="false"/>
+			<method name="CoupledCombine" value="false"/>
+			<method name="UniqueFlows" value="false"/>
+			<method name="DeadEnd" value="false"/>
+			<method name="Recursive" value="false"/>
+			<method name="DuplicateGene" value="false"/>
+			<method name="DuplicateGeneExtended" value="false"/>
+			<method name="InterchangeableMetabolite" value="false"/>
+		</compression-methods>
+	</referable>
+	<referable name="unique-compression-methods">
+		<compression-methods>
+			<method name="CoupledZero" value="false"/>
+			<method name="CoupledContradicting" value="false"/>
+			<method name="CoupledCombine" value="false"/>
+			<method name="UniqueFlows"/>
+			<method name="DeadEnd"/>
+			<method name="Recursive"/>
+			<method name="DuplicateGene" value="false"/>
+			<method name="DuplicateGeneExtended" value="false"/>
+			<method name="InterchangeableMetabolite" value="false"/>
+		</compression-methods>
+	</referable>
+	<referable name="nullspace-compression-methods">
+		<compression-methods>
+			<method name="CoupledZero"/>
+			<method name="CoupledContradicting"/>
+			<method name="CoupledCombine"/>
+			<method name="UniqueFlows" value="false"/>
+			<method name="DeadEnd" value="false"/>
+			<method name="Recursive"/>
+			<method name="DuplicateGene" value="false"/>
+			<method name="DuplicateGeneExtended" value="false"/>
+			<method name="InterchangeableMetabolite" value="false"/>
+		</compression-methods>
+	</referable>
+	<referable name="unique-no-recursion-compression-methods">
+		<compression-methods>
+			<method name="CoupledZero" value="false"/>
+			<method name="CoupledContradicting" value="false"/>
+			<method name="CoupledCombine" value="false"/>
+			<method name="UniqueFlows"/>
+			<method name="DeadEnd"/>
+			<method name="Recursive" value="false"/>
+			<method name="DuplicateGene" value="false"/>
+			<method name="DuplicateGeneExtended" value="false"/>
+			<method name="InterchangeableMetabolite" value="false"/>
+		</compression-methods>
+	</referable>
+	<referable name="nullspace-no-recursion-compression-methods">
+		<compression-methods>
+			<method name="CoupledZero"/>
+			<method name="CoupledContradicting"/>
+			<method name="CoupledCombine"/>
+			<method name="UniqueFlows" value="false"/>
+			<method name="DeadEnd" value="false"/>
+			<method name="Recursive" value="false"/>
+			<method name="DuplicateGene" value="false"/>
+			<method name="DuplicateGeneExtended" value="false"/>
+			<method name="InterchangeableMetabolite" value="false"/>
+		</compression-methods>
+	</referable>
+    
+	<!-- =================== output =================== -->
+	<!-- 
+		predefined command line options/arguments:
+			-out[1]	output kind, one of: 
+						null, count, text-boolean, text-doubles, 
+						binary-boolean, binary-doubles, matlab			
+			-out[2] output file (not if kind is null/count)
+	-->
+	<referable name="file-output-stream">
+		<stream type="file">
+			<file name="${-out[2]}"/>					
+		</stream>
+	</referable>
+	<referable name="file-output">
+		<file name="${-out[2]}"/>					
+	</referable>
+    
+	<referable name="null">
+		<callback type="ch.javasoft.metabolic.efm.output.NullOutputCallback"/>
+	</referable>
+	<referable name="count">
+		<callback type="ch.javasoft.metabolic.efm.output.CountOutputCallback">
+			<uncompress value="true"/>
+			<stream type="logger">
+				<logger name="" level="INFO"/>
+			</stream>
+		</callback>
+	</referable>
+	<referable name="text-boolean">
+		<callback type="ch.javasoft.metabolic.efm.output.TextOutputCallback">
+			<mode value="BinaryUncompressed"/>
+			<stream ref="file-output-stream"/>
+		</callback>
+	</referable>
+	<referable name="text-doubles">
+		<callback type="ch.javasoft.metabolic.efm.output.TextOutputCallback">
+			<mode value="DoubleUncompressed"/>
+			<stream ref="file-output-stream"/>
+		</callback>
+	</referable>
+	<referable name="binary-boolean">
+		<callback type="ch.javasoft.metabolic.efm.output.RandomAccessFileOutputCallback">
+			<mode value="BinaryUncompressed"/>
+			<file ref="file-output"/>
+		</callback>
+	</referable>
+	<referable name="binary-doubles">
+		<callback type="ch.javasoft.metabolic.efm.output.RandomAccessFileOutputCallback">
+			<mode value="DoubleUncompressed"/>
+			<file ref="file-output"/>
+		</callback>
+	</referable>
+	<referable name="matlab">
+		<callback type="ch.javasoft.metabolic.efm.output.mat.MatFileOutputCallback">
+			<mode value="DoubleUncompressed"/>
+			<file name="${-out[2]}" efms-per-file="${-out[3]:0}"/>
+		</callback>
+	</referable>
+	<referable name="matlab-directions">
+		<callback type="ch.javasoft.metabolic.efm.output.mat.MatFileOutputCallback">
+			<mode value="SignUncompressed"/>
+			<file name="${-out[2]}" efms-per-file="${-out[3]:0}"/>
+		</callback>
+	</referable>
+	
+	<!-- =================== efm distribute =================== -->
+	<!-- 
+	     config stuff for distributed computation on multiple hosts
+	-->
+	
+	<referable name="efm-distribute-config">
+		<distribute ID="distribute" partition="256" candidate-threshold="100000"><!--use power of 4, e.g. 65536-->
+			<!-- local host config 			-->
+			<nodes vmargs = "-Xmx500M" level="FINER">
+				<node name="localhost" vmargs="-Xmx800M"/>
+				<node name="localhost"/>
+			</nodes>
+			<command value="/usr/bin/java [vmargs] -cp [classpath] [class] [args]"/>
+		</distribute>
+	</referable>
+		
+	<!-- =================== adj stuff =================== -->
+	<referable name="adjacency-methods">
+		<factories>
+			<class name="ch.javasoft.metabolic.efm.adj.incore.tree.search.PatternTreeMinZerosAdjacencyEnumerator"/>
+			<class name="ch.javasoft.metabolic.efm.adj.incore.tree.search.PatternTreeLinearSearchAdjacencyEnumerator"/>			
+			<class name="ch.javasoft.metabolic.efm.adj.incore.tree.rank.PatternTreeRankAdjacencyEnumerator"/>
+			<class name="ch.javasoft.metabolic.efm.adj.incore.tree.rank.PatternTreeModRankAdjacencyEnumerator"/>
+			<class name="ch.javasoft.metabolic.efm.adj.incore.tree.urank.modpi.ModIntPrimePatternTreeRankUpdateAdjacencyEnumerator"/>
+			<class name="ch.javasoft.metabolic.efm.adj.incore.tree.urank.modp.ModPrimePatternTreeRankUpdateAdjacencyEnumerator"/>
+			<class name="ch.javasoft.metabolic.efm.adj.incore.tree.urank.frac.FractionalPatternTreeRankUpdateAdjacencyEnumerator"/>
+			<class name="ch.javasoft.metabolic.efm.adj.incore.tree.urank.frac2.Fractional2PatternTreeRankUpdateAdjacencyEnumerator"/>
+			<class name="ch.javasoft.metabolic.efm.adj.incore.tree.urank.dbl.DoublePatternTreeRankUpdateAdjacencyEnumerator"/>
+			<class name="ch.javasoft.metabolic.efm.adj.incore.tree.urank.dbl2.Double2PatternTreeRankUpdateAdjacencyEnumerator"/>
+			<class name="ch.javasoft.metabolic.efm.adj.incore.FastRankTestAdjacencyEnumerator"/>
+			<class name="ch.javasoft.metabolic.efm.adj.incore.ModRankTestAdjacencyEnumerator"/>
+			<class name="ch.javasoft.metabolic.efm.adj.incore.PatternTreeSearchAdjacencyEnumerator"/>
+			<class name="ch.javasoft.metabolic.efm.adj.incore.LinearSearchAdjacencyEnumerator"/>
+			<class name="ch.javasoft.metabolic.efm.adj.ModIntPrimeInCoreAdjEnum"/>
+			<class name="ch.javasoft.metabolic.efm.adj.ModIntPrimeOutCoreAdjEnum"/>
+			<class name="ch.javasoft.metabolic.efm.adj.SearchInCoreAdjEnum"/>
+			<class name="ch.javasoft.metabolic.efm.dist.impl.adj.DistModIntPrimeInCoreAdjEnum"/>
+			<class name="ch.javasoft.metabolic.efm.dist.impl.adj.DistModIntPrimeOutCoreAdjEnum"/>
+			<class name="ch.javasoft.metabolic.efm.dist.impl.adj.MultiThreadedAdjEnum"/>
+			<class name="ch.javasoft.metabolic.efm.dist.impl.adj.MultiProcessedAdjEnum"/>
+		</factories>
+	</referable>
+
+	<!-- =================== impl stuff =================== -->
+	<referable name="nullspace-model">
+		<model factory="ch.javasoft.metabolic.efm.model.nullspace.NullspaceEfmModelFactory"/>
+	</referable>
+	<referable name="canonical-model">
+		<model factory="ch.javasoft.metabolic.efm.model.canonical.CanonicalEfmModelFactory"/>
+	</referable>
+	<referable name="borndie-model">
+		<model factory="ch.javasoft.metabolic.efm.borndie.model.BornDieEfmModelFactory"/>
+	</referable>
+
+	<referable name="in-core-memory">
+		<memory factory="ch.javasoft.metabolic.efm.memory.incore.InCoreMemoryFactory"/>
+	</referable>
+	<referable name="out-core-memory">
+		<memory factory="ch.javasoft.metabolic.efm.memory.outcore.SortInCoreOutOfCoreMemoryFactory"/>
+	</referable>
+	<referable name="sort-out-core-memory">
+		<memory factory="ch.javasoft.metabolic.efm.memory.outcore.OutOfCoreMemoryFactory"/>
+	</referable>
+
+	<!-- =================== efm config =================== -->
+	<!-- 
+		predefined command line options/arguments:
+			-rowordering[1]			row ordering to use
+			-adjacency-method[1]	one of (incomplete list):
+										pattern-tree-minzero,
+										pattern-tree-rank
+			-maxthreads[1]			maximum number of threads to use
+			-arithmetic[1]			number arithmetic to use, one of: 
+										double, fractional
+			-precision[1]			fractional precision							
+										bit count, e.g. 128, 256, -1 (infinite)
+			-zero[1]				e.g. 0       for fractional arithmetic 
+									e.g. 1e-10   for double arithmetic								
+			-normalize[1]			normalization type for efm output, one of:
+										max, min, norm2, squared, none
+			-selftest[1]			selftest after each iteration, true or false
+										
+	-->
+	<referable name="efm-config">
+		<config>
+			<row-ordering value="${-rowordering[1]:default}"/>
+		    <adjacency-method value="${-adjacency-method[1]:default}">
+		    	<factories ref="adjacency-methods"/>
+		    </adjacency-method>
+		    <maxthreads value="${-maxthreads[1]:-1}"/>
+			<numeric>
+		    	<arithmetic value="${-arithmetic[1]:double}"/>
+				<precision value="${-precision[1]:-1}"/>
+				<zero value="${-zero[1]:1e-10}"/>
+			</numeric>
+			<self-test value="${-selftest[1]:false}"/>
+			<parse-only value="${-parseonly[1]:false}"/>
+			<generator value="${-generator[1]:efm}"/>
+			<reactions-to-suppress value="${-suppress[*,*]}"/>
+			<reactions-to-enforce value="${-enforce[*,*]}"/>
+			<reactions-no-split value="${-nosplit[*,*]}"/>
+			<temp-dir name="${-tmpdir[1]:/local/tmp}"/>
+			<progress type="${-progress[1]:none}" partition="${-progress[2]:100}"/>
+			<flag value="${-flag[1]:}"/> <!-- e.g. recover:/local/tmp/2008 -->
+			<distribute ref="efm-distribute-config"/>
+		</config>
+	</referable>	
+	<referable name="welcome-message">
+		<usage>
+			<line value="====================================================="/>
+			<line value="efmtool version 4.7.1, 2009-12-04 18:30:05"/>
+			<line value="Copyright (c) 2009, Marco Terzer, Zurich, Switzerland"/>
+			<line value="This is free software, !!! NO WARRANTY !!!"/>
+			<line value="See LICENCE.txt for redistribution conditions"/>
+			<line value="====================================================="/>
+		</usage>
+	</referable>
+	
+	<!-- =================== usage =================== -->
+	<referable name="efm-usage">
+		<usage ref="welcome-message"/>
+		<usage>
+			<line value="efmtool parses different metabolic network sources and"/>
+			<line value="calculates elementary flux modes (efms) for the network."/>
+			<line value=""/>
+			<line value="usage: "/>
+			<line value="   ${app-name} -kind reaction-list -in file -out format [file]"/>
+			<line value="              parses a reaction list (text file), where each line contains"/>
+			<line value="              2 quoted strings (separated by whitespace) containing reaction"/>
+			<line value="              name and definition"/>
+			<line value=""/>
+			<line value="   ${app-name} -kind stoichiometry -stoich sfile -rev rvfile -meta mfile -reac rfile [-sep s]"/>
+			<line value="              parses the following text files:"/>
+			<line value="                  sfile   stoichiometric matrix, each row corresponding to a metabolite"/>
+			<line value="                  rvfile  reaction reversibilities file (single row)"/>
+			<line value="                  mfile   metabolite names in double quotes (single row)"/>
+			<line value="                  rfile   reaction names in double quotes (single row)"/>
+			<line value="              the option s defines the separator character for column values in a row,"/>
+			<line value="              which is whitespace by default."/>
+			<line value=""/>
+			<line value="   ${app-name} -kind sbml -in file -ext comp"/>
+			<line value="              parses an sbml file, where comp is the name of the external compartment"/>
+			<line value=""/>
+			<line value="   ${app-name} -kind flux-analyzer-files -in reactions macromolecules macromolecule_synthesis"/>
+			<line value="              parses the flux analyzer source files"/>
+			<line value=""/>
+			<line value="   ${app-name} -kind flux-analyzer-dir -in dir"/>
+			<line value="              parses flux analyzer sources, dir being the"/>
+			<line value="              directory containing the flux analyzer files"/>
+			<line value=""/>
+			<line value="   ${app-name} -kind excel -in file -sheet s -headers h -rcol r -rncol rn -xt pat"/>
+			<line value="              parses the sheet s of an excel file, where"/>
+			<line value="                  s   is the sheet name"/>
+			<line value="                  h   is the number of heading rows to be ignored"/>
+			<line value="                  r   is the column index containing the reaction definitions"/>
+			<line value="                  rn  is the column index containing the reaction names"/>
+			<line value="                  pat is the (regexp) pattern identifying external metabolites"/>
+			<line value="                      sample patterns:"/>
+			<line value="                        &quot;external_.*&quot; for external metabolites being prefixed with &quot;external_&quot;"/>
+			<line value="                        &quot;A|B|C&quot; for external metabolites A, B, C"/>
+			<line value="                        &quot;.*xt|BM&quot; for external metabolites ending with xt plus biomass BM"/>
+			<line value="                        &quot;&quot; to indicate that external metabolites have already an exchange reaction"/>
+			<line value=""/>
+			<line value="   ${app-name} --help"/>
+			<line value="              display this help message"/>
+			<line value=""/>
+			<line value="output formats: "/>
+			<line value="   -out null                           no output"/>
+			<line value="   -out count                          count only"/>
+			<line value="   -out text-boolean file.txt          textual 0/1 values, header row and column, support information only"/>
+			<line value="   -out text-doubles file.txt          textual double values, header row and column, tab separated"/>
+			<line value="   -out binary-boolean file.bin        binary encoded values, support information only"/>
+			<line value="   -out binary-doubles file.bin        binary encoded double values"/>
+			<line value="   -out matlab file.mat                double values, one or multiple matlab .mat file(s)"/>
+			<line value="   -out matlab-directions file.mat     sign values (as int8), one or multiple matlab .mat file(s)"/>
+			<line value=""/>
+			<line value="notes: "/>
+			<line value="   - use quotes for arguments containing white space"/>
+			<line value="   - reaction definitions used in 'excel' and 'reaction-list' have the form"/>
+			<line value="        S1 + 2 S2  --> 2 P1 + 3 P2"/>			
+			<line value="        S1 + 2 S2 &lt;--> 2 P1 + 3 P2"/>
+		</usage>
+	</referable>
+
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++ -->		
+	<!-- =================== usages =================== -->
+    	
+	<usage name="efm-usage">
+		<usage ref="efm-usage"/>
+	</usage>
+	<usage name="efm-help">
+		<usage ref="efm-usage"/>
+	</usage>
+	<usage name="efm-version">
+		<usage ref="welcome-message"/>
+	</usage>
+    
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++ -->		
+	<!-- =================== configs =================== -->    
+	<config name="default">
+		<app>
+			<name value="efmtool"/>
+			<version value="4.7.1"/>
+			<copyright value="Copyright (c) 2009, Marco Terzer, Zurich, Switzerland"/>
+		</app>
+		<logging>
+			<handler ref="${-log[1]:console}-logging"/> <!-- console-logging / file-logging -->
+		</logging>
+		<metabolic-parse>
+			<parse ref="${-kind[1]}-parser"/>
+		</metabolic-parse>
+		<metabolic-compression>
+			<preprocess-duplicate-genes value="true"/>
+			<compression-methods ref="${-compression[1]:default}-compression-methods"/>
+		</metabolic-compression>
+		<metabolic-efm>
+			<efm-impl class="${-impl[1]:ch.javasoft.metabolic.efm.impl.SequentialDoubleDescriptionImpl}">
+				<config ref="efm-config"/>
+				<model ref="${-model[1]:nullspace}-model"/>
+				<memory ref="${-memory[1]:in-core}-memory"/>
+			</efm-impl>
+			<efm-output normalize="${-normalize[1]:norm2}">
+			    <callback ref="${-out[1]}"/>
+			</efm-output>
+		</metabolic-efm>
+	</config>
+</config-list>

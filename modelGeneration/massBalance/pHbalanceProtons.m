@@ -125,7 +125,7 @@ for n=1:nRxn
         warning('vonBertalanffy:pHbalanceProtons:OriginallyUnbalancedRxn', [model.rxns{n} ' reconstruction reaction not balanced for H to begin with']); % Changed from error to warning and added a message ID - Hulda
     end
     if strcmp('ACITL',model.rxns{n})
-        pause(eps)
+        %pause(eps)
     end
 
     %no change for biomass reaction or exchange reactions or imbalanced
@@ -284,7 +284,7 @@ for n=1:nRxn
                         model.S(indexHRxn1,n)=model.S(indexHRxn1,n) - deltaHBound(metCompartBool1)*model.S(metCompartBool1,n);
                         model.S(indexHRxn2,n)=model.S(indexHRxn2,n) - deltaHBound(metCompartBool2)*model.S(metCompartBool2,n);
 
-                        pause(eps)
+                        %pause(eps)
                     end
                 end
             end
@@ -298,7 +298,7 @@ for n=1:nRxn
             error(['Failure to proton balance. Reaction ' model.rxns{n} ', #' int2str(n)])
         end
         if any(isnan(model.S(:,n)))
-            pause(eps);
+            %pause(eps);
         end
     end
     if aveHbound*model.S(:,n)>(eps*1e4)

@@ -1,4 +1,4 @@
-function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel, orig)
+function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel,modeFlag)
 % [A,V] = fastcc(model,epsilon,printLevel,orig)
 %
 % The FASTCC algorithm for testing the consistency of a stoichiometric model
@@ -14,9 +14,9 @@ function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel, orig)
 % epsilon       
 % printLevel    0 = silent, 1 = summary, 2 = debug
 %
-%OPTIONAL INPUT
-% orig 	    Indicator whether the original code or COBRA adjusted code 
-%           should be used. If original code is requested, CPLEX needs 
+% OPTIONAL INPUT
+% modeFlag      {(0),1}; 1=return matrix of modes V
+%
 %           to be installed (default 0)
 %
 % OUTPUT
@@ -33,6 +33,13 @@ function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel, orig)
 tic 
 if nargin < 4
    orig = 0;
+end
+
+if ~exist('printLevel','var')
+    printLevel = 2;
+end
+if ~exist('modeFlag','var')
+    modeFlag=0;
 end
 
 tic
@@ -58,7 +65,7 @@ V=[];
 
 %v is the flux vector that approximately maximizes the cardinality 
 %of the set of irreversible reactions v(J)
-v = LP7( J, model, epsilon, orig );
+[v, basis] = LP7( J, model, epsilon);
 
 %A is the set of reactions in v with absoulte value greater than epsilon
 Supp = find( abs(v) >= 0.99*epsilon );
@@ -67,7 +74,7 @@ if printLevel>1
     fprintf('|A|=%d\n', numel(A));
 end
 
-if length(A)>0
+if length(A)>0 && modeFlag
     %save the first v
     V=[V,v];
 end
@@ -95,10 +102,10 @@ orientation=ones(size(model.S,2),1);
 while ~isempty( J )
     if singleton
         Ji = J(1);
-        v = LP3( Ji, model, orig ) ;
+        [v, basis] = LP3( Ji, model, basis);
     else
         Ji = J;
-        v = LP7( Ji, model, epsilon, orig );
+        [v, basis] = LP7( Ji, model, epsilon, basis);
     end
     %Supp is the set of reactions in v with absoulte value greater than epsilon
     Supp = find( abs(v) >= 0.99*epsilon );
@@ -108,21 +115,21 @@ while ~isempty( J )
     nA2=length(A);
     
     %save v if new flux consistent reaction found
-    if nA2>nA1
+    if nA2>nA1 && modeFlag
         if ~isempty(JiRev)
             %make sure the sign of the flux is consistent with the sign of
             %the original S matrix if any reactions have been flipped
-            vf=v;
-            vf=diag(orientation)*v;
+            len=length(orientation);
+            vf=spdiags(orientation,0,len,len)*v;
             V=[V,vf];
             
             %sanity check
-            if norm(origModel.S*vf)>1e-7
-                pause(eps)
+            if norm(origModel.S*vf)>epsilon/100
+                fprintf('%g%s\n',epsilon/100, '= epsilon/100')
                 fprintf('%s\t%g\n','should be zero :',norm(model.S*v)) % should be zero
                 fprintf('%s\t%g\n','should be zero :',norm(origModel.S*vf)) % should be zero
                 fprintf('%s\t%g\n','may not be zero:',norm(model.S*vf)) % may not be zero
-                fprintf('%s\t%g\n','may not be zero:',norm(origModel.S*v)) % may not be zero 
+                fprintf('%s\t%g\n','may not be zero:',norm(origModel.S*v)) % may not be zero
                 error('Flipped flux consistency step failed.')
             end
         else
@@ -188,20 +195,26 @@ end
 
 modelFlipped=model;
 
-%sanity check
-if norm(origModel.S*V,inf)>1e-6
-    norm(origModel.S*V,inf)
-    error('Flux consistency check failed')
-else
-    fprintf('%s\n','Flux consistency check finished...')
-    fprintf('%10u%s\n',sum(any(V,2)),' = Number of flux consistent columns.')
-    fprintf('%10f%s\n\n',norm(origModel.S*V,inf),' = ||S*V||.')
+if modeFlag
+    %sanity check
+    if norm(origModel.S*V,inf)>epsilon/100
+        fprintf('%g%s\n',epsilon/100, '= epsilon/100')
+        fprintf('%g%s\n',norm(origModel.S*V,inf),' = ||S*V||.')
+        if 0
+            error('Flux consistency check failed')
+        else
+            warning('Flux consistency numerically challenged')
+        end
+    else
+        fprintf('%s\n','Flux consistency check finished...')
+        fprintf('%10u%s\n',sum(any(V,2)),' = Number of flux consistent columns.')
+        fprintf('%10f%s\n\n',norm(origModel.S*V,inf),' = ||S*V||.')
+    end
 end
-
 
 if numel(A) == numel(N)
     if printLevel>0
-        fprintf('\nThe input model is consistent.\n');
+        fprintf('\n fastcc.m: The input model is consistent.\n');
     end
 end
 if printLevel>1

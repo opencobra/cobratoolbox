@@ -61,10 +61,14 @@ if (isfield(model,'c'))
     modelOut.c = model.c(selectRxns);
 end
 if (isfield(model,'genes'))
-    modelOut.rxnGeneMat = model.rxnGeneMat(selectRxns,:);
-    modelOut.rules = model.rules(selectRxns);
     modelOut.genes = model.genes;
     modelOut.grRules = model.grRules(selectRxns);
+end
+if (isfield(model,'rxnGeneMat'))
+    modelOut.rxnGeneMat = model.rxnGeneMat(selectRxns,:);
+end
+if (isfield(model,'rules'))
+    modelOut.rules = model.rules(selectRxns);
 end
 if (isfield(model,'subSystems'))
     modelOut.subSystems = model.subSystems(selectRxns);
@@ -81,10 +85,18 @@ end
 if (isfield(model, 'rxnNotes'))
   modelOut.rxnNotes = model.rxnNotes(selectRxns);
 end
-if (isfield(model, 'confidenceScores'))
-  modelOut.confidenceScores = model.confidenceScores(selectRxns);
+if (isfield(model, 'rxnsboTerm'))
+  modelOut.rxnsboTerm = model.rxnsboTerm(selectRxns);
 end
-
+if (isfield(model, 'rxnKeggID'))
+  modelOut.rxnKeggID = model.rxnKeggID(selectRxns);
+end
+if (isfield(model, 'rxnConfidenceEcoIDA'))
+  modelOut.rxnConfidenceEcoIDA = model.rxnConfidenceEcoIDA(selectRxns);
+end
+if (isfield(model, 'rxnConfidenceScores'))
+  modelOut.rxnConfidenceScores = model.rxnConfidenceScores(selectRxns);
+end
 % Reconstruct the match list
 if (irrevFlag)
   modelOut.match = reassignFwBwMatch(model.match,selectRxns);
@@ -93,23 +105,8 @@ end
 
 % Remove metabolites that are not used anymore
 if (metFlag)
-  selMets = any(modelOut.S ~= 0,2);
-  modelOut.S = modelOut.S(selMets,:);
-  modelOut.mets = model.mets(selMets);
-  if (isfield(model,'b'))
-      modelOut.b = model.b(selMets);
-  else
-      modelOut.b = zeros(length(modelOut.mets),1);
+  selMets = modelOut.mets(any(sum(abs(modelOut.S),2) == 0,2));
+  if (~isempty(selMets))
+    modelOut = removeMetabolites(modelOut, selMets, false);
   end
-  if (isfield(model,'metNames'))
-      modelOut.metNames = model.metNames(selMets);
-  end
-  if (isfield(model,'metFormulas'))
-      modelOut.metFormulas = model.metFormulas(selMets);
-  end
-else
-  modelOut.mets = model.mets;
-  modelOut.metNames = model.metNames;
-  modelOut.metFormulas = model.metFormulas;
-  modelOut.b = model.b;
 end

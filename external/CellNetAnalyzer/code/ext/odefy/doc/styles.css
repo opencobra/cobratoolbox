@@ -1,0 +1,19 @@
+pre {
+color : maroon;
+margin-left: 1em;
+}
+
+code {
+color : maroon;
+}
+
+a {
+text-decoration: none;
+color: blue
+}
+
+
+a:hover {
+text-decoration: underline
+}
+
