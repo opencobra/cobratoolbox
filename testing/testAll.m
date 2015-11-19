@@ -51,12 +51,22 @@ for i=1:size(dir(test_path))
               
               try
                  pass = eval(p);
-                 if iscellstr(pass)||iscell(pass)
+                 if pass==1||iscellstr(pass)||iscell(pass)
+                     fprintf('%s successfully passed\n',p);
                      pass=1;
-                 end
+                     passedCnt = passedCnt +1;
+                     listPassed{passedCnt} = p;
+                 elseif pass==0
+                      fprintf('Error in %s\n', p);
+                      pass = 0;
+                      notPassedCnt = notPassedCnt +1;
+                      listNotPassed{notPassedCnt} = p;                     
+                 end                 
               catch
-                  fprintf('Error in %s\n', func);
+                  fprintf('Error in %s\n', p);
                   pass = 0;
+                  notPassedCnt = notPassedCnt +1;
+                  listNotPassed{notPassedCnt} = p;
               end
 %               try
                   
