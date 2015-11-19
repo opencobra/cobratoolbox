@@ -1,4 +1,4 @@
-function [AddedRxns] = fastGapFill(consistMatricesSUX,epsilon, weights)
+function [AddedRxns] = fastGapFill(consistMatricesSUX,epsilon, weights,weightsPerReaction)
 %% function [AddedRxns] = fastGapFill(consistMatricesSUX,epsilon, weights)
 % 
 % This function requires the fastCORE algorithm (Vlassis et al., 2013, http://arxiv.org/abs/1304.7992) as
@@ -46,8 +46,14 @@ if ~exist('weights','var')
     weights.TransportRxns = 10; % Transport reactions  
 end
 
+if ~exist('weightsPerReaction','var')
+    weightsPerReaction.rxns = [];
+    weightsPerReaction.weights = [];
+end
+
+
 % assign weights to the potentially to be added reactions to MatricesSUX
-consistMatricesSUX = assignRxnWeights(consistMatricesSUX,weights);
+consistMatricesSUX = assignRxnWeights(consistMatricesSUX,weights,weightsPerReaction);
 
 % solve problem by finding the most compact subnetwork containing all core
 % reactions
