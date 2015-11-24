@@ -417,6 +417,9 @@ switch solver
            solStat = 2; % Unbounded
         elseif strcmp(resultgurobi.status,'INF_OR_UNBD')
            solStat = 0; % Gurobi reports infeasible *or* unbounded
+        elseif strcmp(resultgurobi.status,'SUBOPTIMAL')
+           solStat = -1; % Suboptimal solution
+           [x,f] = deal(resultgurobi.x,resultgurobi.objval);
         else
            solStat = -1; % Solution not optimal or solver problem
         end
