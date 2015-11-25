@@ -1,4 +1,4 @@
-function [grRatio,grRateKO,grRateWT,hasEffect,delRxns,fluxSolution] = singleGeneDeletion_new(model,method,geneList,verbFlag,uniqueGene)
+function [grRatio,grRateKO,grRateWT,hasEffect,delRxns,fluxSolution] = singleGeneDeletion(model,method,geneList,verbFlag,uniqueGene)
 %singleGeneDeletion Performs single gene deletion analysis using FBA, MOMA or
 %linearMOMA
 %
