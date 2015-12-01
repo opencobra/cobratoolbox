@@ -17,6 +17,9 @@ function [FRresultsTable,FRresults]=makeFRresultsTable(FRresults,resultsDirector
 % FRresultsTable        table displaying the results of checkRankFRdriver 
 % FRresults             output of checkRankFRdriver
 
+%'Conditions for duality between fluxes and concentrations in biochemical networks
+%by Ronan M.T. Fleming^{1}ronan.mt.fleming@gmail.com,
+
 if isempty(FRresults)
     if ~exist('resultsFileName','var')
         %resultsFileName='FRresults_20150128T225813';
@@ -24,7 +27,7 @@ if isempty(FRresults)
     end
     %results directory
     if ~exist('resultsDirectory','var')
-        resultsDirectory='/home/rfleming/Dropbox/graphStoich/results/FRresults/';
+        resultsDirectory='/home/rfleming/Dropbox/modelling/results/FRresults/';
     end
     cd(resultsDirectory)
     load([resultsDirectory resultsFileName])
