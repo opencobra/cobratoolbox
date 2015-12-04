@@ -7,7 +7,7 @@ Notes:
 
     1) When reading some old COBRA SBML files, there could be some warning messages in the command window, which are probably caused by the lack of some reconstruction information in the SBML files. It is safe to ignore the messages.
 
-    2) When exporting a COBRA Matlab structure to an FBC file, it is needed to ensure an objective function is specified in the structure. This means that at least one value of the objective coefficient vector (i.e., the c field of the COBRA model structure) should be set to a number other than zero. For example, if the COBRA SBML files are in the SBML level 2 version 1 format, to convert the Matlab structures of these old SBML files to FBC files, it is necessary to ensure the objective coefficient vector (the c field) cannot be all zeros  (at least one objective function is defined), which is required by the FBC extension.
+    2) When exporting a COBRA Matlab structure to an FBC file, it is needed to ensure an objective function is specified in the structure. This means that at least one value of the objective coefficient vector (i.e., the c field of the COBRA model structure) should be set to a number other than zero. For example, if a COBRA SBML file is in the SBML level 2 version 1 format, to convert the Matlab structure of the old SBML file to a FBC file, it is necessary to ensure the objective coefficient vector (the c field) is not all zeros  (at least one objective function is defined), which is required by the FBC extension.
 
 
 Solutions to issues with reading/writing FBC files
