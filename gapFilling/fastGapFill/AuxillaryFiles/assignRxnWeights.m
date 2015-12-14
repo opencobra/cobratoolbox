@@ -60,9 +60,9 @@ if exist('WeightsPerRxn','var') && isfield(WeightsPerRxn,'rxns')
         %MatricesSUX.weights(ismember(MatricesSUX.rxns,MatricesSUX.rxns(MatricesSUX.C1))) = 0;
         for k = 1 : length(WeightsPerRxn.rxns)
             clear R;
-            R =find(ismember(MatricesSUX.rxns,WeightsPerRxn.rxns(k)));
+            R =find(ismember(MatricesSUX.rxns,WeightsPerRxn.rxns{k}));
             if ~isempty(R)
-                MatricesSUX.weights(R) = WeightsPerRxn.weights(k);
+                MatricesSUX.weights(R) = WeightsPerRxn.weights{k};
             end
         end
     end
