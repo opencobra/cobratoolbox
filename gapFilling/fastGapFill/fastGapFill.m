@@ -1,5 +1,5 @@
-function [AddedRxns] = fastGapFill(consistMatricesSUX,epsilon, weights,weightsPerReaction)
-%% function [AddedRxns] = fastGapFill(consistMatricesSUX,epsilon, weights)
+function [AddedRxns] = fastGapFill(consistMatricesSUX,epsilon,weights,weightsPerReaction)
+%% function [AddedRxns] = fastGapFill(consistMatricesSUX,epsilon,weights,weightsPerReaction)
 % 
 % This function requires the fastCORE algorithm (Vlassis et al., 2013, http://arxiv.org/abs/1304.7992) as
 % well as the output from prepareFastGapFill.
@@ -26,6 +26,7 @@ function [AddedRxns] = fastGapFill(consistMatricesSUX,epsilon, weights,weightsPe
 %                           weights.TransportRxns = 10; % Transport reactions  
 %                       Optional input. Default: weigth of 10 for all non-core
 %                       reactions.
+% weightsPerReaction
 % OUTPUT
 % AddedRxns             Reactions that have been added from UX matrix to S 
 %
@@ -33,11 +34,11 @@ function [AddedRxns] = fastGapFill(consistMatricesSUX,epsilon, weights,weightsPe
 % Ines Thiele, http://thielelab.eu. 
 
 %%
-if ~exist('epsilon','var')
+if ~exist('epsilon','var') || isempty(epsilon)
     epsilon = 1e-4;
 end
 
-if ~exist('weights','var')
+if ~exist('weights','var') || isempty(weights)
      % define weights for reactions to be added - the lower the weight the
     % higher the priority
     % default = equal weights
@@ -46,7 +47,7 @@ if ~exist('weights','var')
     weights.TransportRxns = 10; % Transport reactions  
 end
 
-if ~exist('weightsPerReaction','var')
+if ~exist('weightsPerReaction','var') || isempty(weightsPerReaction)
     weightsPerReaction.rxns = [];
     weightsPerReaction.weights = [];
 end
