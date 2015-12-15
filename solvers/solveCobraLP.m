@@ -121,7 +121,7 @@ if nargin ~=1
                     parameters.(varargin{i}) = varargin{i+1};
                 end
                 if strcmp(varargin{i},'solver');
-                    solver=varargin{i+1}
+                    solver=varargin{i+1};
                 end 
             else
                 error([varargin{i} ' is not a valid optional parameter']);

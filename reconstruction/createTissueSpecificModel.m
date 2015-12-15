@@ -483,9 +483,11 @@ cnt = 1;
 for i = 1:length(model.rxns)
     if length(model.grRules{i}) > 1
         % Parsing each reactions gpr
-        [parsing{1,1},parsing{2,1}] = strtok(model.grRules{i},'or');
+		%Replace and/or which are surrounded by whitespace (e.g. not within a gene id) with the symbols &/| to make strtok parsing of geneids containing the letters "adnor" possible.
+		grRuleIn=regexprep(regexprep(model.grRules{i},'\s+or\s+','|'),'\s+and\s+','&');
+        [parsing{1,1},parsing{2,1}] = strtok(grRuleIn,'|');
         for j = 2:1000
-            [parsing{j,1},parsing{j+1,1}] = strtok(parsing{j,1},'or');
+            [parsing{j,1},parsing{j+1,1}] = strtok(parsing{j,1},'|');
             if isempty(parsing{j+1,1})==1
                 break
             end
@@ -493,7 +495,7 @@ for i = 1:length(model.rxns)
         
         for j = 1:length(parsing)
             for k = 1:1000
-                [parsing{j,k},parsing{j,k+1}] = strtok(parsing{j,k},'and');
+                [parsing{j,k},parsing{j,k+1}] = strtok(parsing{j,k},'&');
                 if isempty(parsing{j,k+1})==1
                     break
                 end
