@@ -1,0 +1,84 @@
+121114_Recon2betaModel.mat
+cys_L[m] is dependent on:  10 or more metabolites, will not be displayed
+The reactions are:
+r1097	348 h2o[m] + 9 glu_L[m] + 13 asp_L[m] + 348 atp[m] + 3 ala_L[m] + 3 gly[m] + 7 lys_L[m] + arg_L[m] + asn_L[m] + cys_L[m] + 3 ser_L[m] + 3 gln_L[m] + 8 ile_L[m] + 10 leu_L[m] + 5 pro_L[m] + 3 phe_L[m] + 4 tyr_L[m] + 6 val_L[m] + 5 met_L[m] + his_L[m] + thr_L[m]  => 261 adp[m] + 261 pi[m] + 87 amp[m] + 87 ppi[m] + HC02222[m] 
+r1359	43 h2o[m] + 43 atp[m] + HC02222[m]  => 9 glu_L[m] + 13 asp_L[m] + 43 adp[m] + 43 pi[m] + 3 ala_L[m] + 3 gly[m] + 7 lys_L[m] + arg_L[m] + asn_L[m] + cys_L[m] + 3 ser_L[m] + 3 gln_L[m] + 8 ile_L[m] + 10 leu_L[m] + 5 pro_L[m] + 3 phe_L[m] + 4 tyr_L[m] + 6 val_L[m] + 5 met_L[m] + his_L[m] + thr_L[m] 
+
+phe_L[m] is dependent on:  10 or more metabolites, will not be displayed
+The reactions are:
+r1097	348 h2o[m] + 9 glu_L[m] + 13 asp_L[m] + 348 atp[m] + 3 ala_L[m] + 3 gly[m] + 7 lys_L[m] + arg_L[m] + asn_L[m] + cys_L[m] + 3 ser_L[m] + 3 gln_L[m] + 8 ile_L[m] + 10 leu_L[m] + 5 pro_L[m] + 3 phe_L[m] + 4 tyr_L[m] + 6 val_L[m] + 5 met_L[m] + his_L[m] + thr_L[m]  => 261 adp[m] + 261 pi[m] + 87 amp[m] + 87 ppi[m] + HC02222[m] 
+r1359	43 h2o[m] + 43 atp[m] + HC02222[m]  => 9 glu_L[m] + 13 asp_L[m] + 43 adp[m] + 43 pi[m] + 3 ala_L[m] + 3 gly[m] + 7 lys_L[m] + arg_L[m] + asn_L[m] + cys_L[m] + 3 ser_L[m] + 3 gln_L[m] + 8 ile_L[m] + 10 leu_L[m] + 5 pro_L[m] + 3 phe_L[m] + 4 tyr_L[m] + 6 val_L[m] + 5 met_L[m] + his_L[m] + thr_L[m] 
+
+thr_L[m] is dependent on:  10 or more metabolites, will not be displayed
+The reactions are:
+r1097	348 h2o[m] + 9 glu_L[m] + 13 asp_L[m] + 348 atp[m] + 3 ala_L[m] + 3 gly[m] + 7 lys_L[m] + arg_L[m] + asn_L[m] + cys_L[m] + 3 ser_L[m] + 3 gln_L[m] + 8 ile_L[m] + 10 leu_L[m] + 5 pro_L[m] + 3 phe_L[m] + 4 tyr_L[m] + 6 val_L[m] + 5 met_L[m] + his_L[m] + thr_L[m]  => 261 adp[m] + 261 pi[m] + 87 amp[m] + 87 ppi[m] + HC02222[m] 
+r1359	43 h2o[m] + 43 atp[m] + HC02222[m]  => 9 glu_L[m] + 13 asp_L[m] + 43 adp[m] + 43 pi[m] + 3 ala_L[m] + 3 gly[m] + 7 lys_L[m] + arg_L[m] + asn_L[m] + cys_L[m] + 3 ser_L[m] + 3 gln_L[m] + 8 ile_L[m] + 10 leu_L[m] + 5 pro_L[m] + 3 phe_L[m] + 4 tyr_L[m] + 6 val_L[m] + 5 met_L[m] + his_L[m] + thr_L[m] 
+
+FR subset of dimension 2388 x 9306, of rank 2382.
+More than 15 rows or columns in the dependency, so will not display.
+-------------------------------
+iMM904.mat
+amp[x] is dependent on: hexccoa[r] and pi[r] and psphings[r] and sphgn[r] and ttccoa[r].
+The reactions are:
+ACSp	ac[x] + atp[x] + coa[x]  => accoa[x] + amp[x] + ppi[x] 
+FACOAL100p	atp[x] + coa[x] + dca[x]  <=> amp[x] + dcacoa[x] + ppi[x] 
+FACOAL120p	atp[x] + coa[x] + ddca[x]  <=> amp[x] + ddcacoa[x] + ppi[x] 
+FACOAL140p	atp[x] + coa[x] + ttdca[x]  <=> amp[x] + ppi[x] + tdcoa[x] 
+FACOAL141p	atp[x] + coa[x] + ttdcea[x]  <=> amp[x] + ppi[x] + tdecoa[x] 
+FACOAL160p	atp[x] + coa[x] + hdca[x]  <=> amp[x] + pmtcoa[x] + ppi[x] 
+FACOAL161p	atp[x] + coa[x] + hdcea[x]  <=> amp[x] + hdcoa[x] + ppi[x] 
+FACOAL240p	atp[x] + coa[x] + ttc[x]  <=> amp[x] + ppi[x] + ttccoa[x] 
+FACOAL260p	atp[x] + coa[x] + hexc[x]  <=> amp[x] + hexccoa[x] + ppi[x] 
+FACOAL80p	atp[x] + coa[x] + octa[x]  <=> amp[x] + occoa[x] + ppi[x] 
+
+coa[r] is dependent on:  10 or more metabolites, will not be displayed
+The reactions are:
+CERASE124er	cer1_24[r] + coa[r] + h[r]  => sphgn[r] + ttccoa[r] 
+CERASE126er	cer1_26[r] + coa[r] + h[r]  => hexccoa[r] + sphgn[r] 
+CERASE224er	cer2_24[r] + coa[r] + h[r]  => psphings[r] + ttccoa[r] 
+CERASE226er	cer2_26[r] + coa[r] + h[r]  => hexccoa[r] + psphings[r] 
+
+psphings[r] is dependent on:  10 or more metabolites, will not be displayed
+The reactions are:
+CERASE224er	cer2_24[r] + coa[r] + h[r]  => psphings[r] + ttccoa[r] 
+CERASE226er	cer2_26[r] + coa[r] + h[r]  => hexccoa[r] + psphings[r] 
+SBPP2er	h2o[r] + psph1p[r]  => pi[r] + psphings[r] 
+
+FR subset of dimension 810 x 2235, of rank 804.
+More than 15 rows or columns in the dependency, so will not display.
+-------------------------------
+iND750.mat
+h[r] is dependent on: 6pgl[r] and dolp[r] and ergtetrol[r] and h[r] and nadph[r] and o2[r] and sql[r].
+The reactions are:
+C24STRer	ergtetrol[r] + h[r] + nadph[r]  => ergst[r] + nadp[r] 
+SQLEr	h[r] + nadph[r] + o2[r] + sql[r]  => Ssq23epx[r] + h2o[r] + nadp[r] 
+DOLPMMer	dolmanp[r]  => dolp[r] + h[r] + mannan[r] 
+DOLPt2er	dolp[c] + h[c]  <=> dolp[r] + h[r] 
+G6PDH2er	g6p[r] + nadp[r]  => 6pgl[r] + h[r] + nadph[r] 
+
+pi[x] is dependent on:  10 or more metabolites, will not be displayed
+The reactions are:
+FA140COAabcp	atp[x] + h2o[x] + tdcoa[c]  => adp[x] + h[x] + pi[x] + tdcoa[x] 
+FA141COAabcp	atp[x] + h2o[x] + tdecoa[c]  => adp[x] + h[x] + pi[x] + tdecoa[x] 
+FA160COAabcp	atp[x] + h2o[x] + pmtcoa[c]  => adp[x] + h[x] + pi[x] + pmtcoa[x] 
+FA161COAabcp	atp[x] + h2o[x] + hdcoa[c]  => adp[x] + h[x] + hdcoa[x] + pi[x] 
+FA180COAabcp	atp[x] + h2o[x] + stcoa[c]  => adp[x] + h[x] + pi[x] + stcoa[x] 
+FA181COAabcp	atp[x] + h2o[x] + odecoa[c]  => adp[x] + h[x] + odecoa[x] + pi[x] 
+FA182COAabcp	atp[x] + h2o[x] + ocdycacoa[c]  => adp[x] + h[x] + ocdycacoa[x] + pi[x] 
+
+ppi[x] is dependent on:  10 or more metabolites, will not be displayed
+The reactions are:
+ACSp	ac[x] + atp[x] + coa[x]  => accoa[x] + amp[x] + ppi[x] 
+FACOAL100p	atp[x] + coa[x] + dca[x]  <=> amp[x] + dcacoa[x] + ppi[x] 
+FACOAL120p	atp[x] + coa[x] + ddca[x]  <=> amp[x] + ddcacoa[x] + ppi[x] 
+FACOAL140p	atp[x] + coa[x] + ttdca[x]  <=> amp[x] + ppi[x] + tdcoa[x] 
+FACOAL141p	atp[x] + coa[x] + ttdcea[x]  <=> amp[x] + ppi[x] + tdecoa[x] 
+FACOAL160p	atp[x] + coa[x] + hdca[x]  <=> amp[x] + pmtcoa[x] + ppi[x] 
+FACOAL161p	atp[x] + coa[x] + hdcea[x]  <=> amp[x] + hdcoa[x] + ppi[x] 
+FACOAL240p	atp[x] + coa[x] + ttc[x]  <=> amp[x] + ppi[x] + ttccoa[x] 
+FACOAL260p	atp[x] + coa[x] + hexc[x]  <=> amp[x] + hexccoa[x] + ppi[x] 
+FACOAL80p	atp[x] + coa[x] + octa[x]  <=> amp[x] + occoa[x] + ppi[x] 
+
+FR subset of dimension 688 x 1776, of rank 682.
+More than 15 rows or columns in the dependency, so will not display.
+-------------------------------
