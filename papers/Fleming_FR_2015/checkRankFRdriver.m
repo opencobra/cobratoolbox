@@ -191,8 +191,9 @@ else
                         [rankFR,rankFRV,rankFRvanilla,rankFRVvanilla,model] = checkRankFR(model,printLevel);
                         %%%%
                         [rankS,p,q]= getRankLUSOL(model.S);
-                        
+                                              
                         load([resultsDirectory resultsFileName])
+                        FRresults(k).FBAsolution=FBAsolution;
                         FRresults(k).modelFilename=matFiles(k).name;
                         FRresults(k).rankFR=rankFR;
                         FRresults(k).rankFRV=rankFRV;
@@ -201,6 +202,7 @@ else
                         FRresults(k).rankFRvanilla=rankFRvanilla;
                         FRresults(k).rankFRVvanilla=rankFRVvanilla;
                         FRresults(k).coherenceS=matrixCoherence(model.S);
+
                         save([resultsDirectory resultsFileName],'FRresults');
                         clear FRresults model;
                     end
