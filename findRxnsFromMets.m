@@ -16,6 +16,8 @@ function [rxnList, rxnFormulaList] = findRxnsFromMets(model, metList, verbFlag)
 % rxnFormulaList    Reaction formulas coresponding to rxnList
 %
 %Richard Que (08/12/2010)
+% Almut Heinken (09/25/2015)- made change so formulas are not printed if reaction list
+% is empty.
 
 if nargin < 3 || isempty(verbFlag), verbFlag = false; end
 
@@ -27,5 +29,9 @@ rxns = repmat(model.rxns,1,length(index));
 %find reactions
 rxnList = unique(rxns(model.S(index,:)'~=0));
 if nargout > 1
+    if ~isempty(rxnList)
     rxnFormulaList = printRxnFormula(model,rxnList,verbFlag);
+    else
+        rxnFormulaList={};
+    end
 end

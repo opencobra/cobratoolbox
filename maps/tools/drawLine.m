@@ -65,6 +65,7 @@ elseif type1 == 1 && type2 == 2
         drawVector(point1, nodePos(:,2),edgeColor,edgeWeight);
         if isend
             if rxnDir > 0, rad = rad*rxnDirMultiplier; end
+			%if rxnDir < 0, rad = rad*rxnDirMultiplier; end - Ines version
             drawArrowhead(point1,dir,rad,edgeArrowColor);
         end
     elseif length(index1) > 1 && length(index2) == 1

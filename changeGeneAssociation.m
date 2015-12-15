@@ -1,5 +1,5 @@
-function model = changeGeneAssociation(model,rxnName,grRule,geneNameList,systNameList)
-%changeGeneAssociation Change gene associations in a model
+function model = changeGeneAssociation(model,rxnName,grRule,geneNameList,systNameList,addRxnGeneMat)
+% Change gene associations in a model
 %
 % model = changeGeneAssociation(model,rxnName,grRule,geneName,systName)
 %
@@ -12,6 +12,7 @@ function model = changeGeneAssociation(model,rxnName,grRule,geneNameList,systNam
 % geneNameList      List of gene names (used only for translation from
 %                   common gene names to systematic gene names)
 % systNameList      List of systematic names
+% addRxnGeneMat     adds rxnGeneMat to model structure (default = true)
 %
 %OUTPUT
 % model             COBRA Toolbox model structure with new gene reaction
@@ -19,11 +20,17 @@ function model = changeGeneAssociation(model,rxnName,grRule,geneNameList,systNam
 %
 
 % Markus Herrgard 1/12/07
+% Ines Thiele 08/03/2015, made rxnGeneMat optional
 
-if (nargin < 4)
-    translateNamesFlag = false;
-else
+% IT: updated the nargin statement to accommodate the additional option
+if exist('geneNameList','var') && exist('systNameList','var')
     translateNamesFlag = true;
+else
+    translateNamesFlag = false;
+end
+
+if ~exist('addRxnGeneMat','var')
+    addRxnGeneMat = 1;
 end
 
 [isInModel,rxnID] = ismember(rxnName,model.rxns);
@@ -38,8 +45,13 @@ end
 nGenes = length(model.genes);
 model.rules{rxnID} = '';
 % IT 01/2010 - this line caused problems for xls2model.m
-model.rxnGeneMat(rxnID,:) = zeros(1,nGenes);
-model.rxnGeneMat(rxnID,find(model.rxnGeneMat(rxnID,:))) = 0;
+if addRxnGeneMat ==1
+    model.rxnGeneMat(rxnID,:) = zeros(1,nGenes);
+end
+% Remove extra white space
+grRule = regexprep(grRule,'\s{2,}',' ');
+grRule = regexprep(grRule,'( ','(');
+grRule = regexprep(grRule,' )',')');
 
 
 if (~isempty(grRule))
@@ -53,9 +65,6 @@ if (~isempty(grRule))
     for i = 1:length(genes)
         if (translateNamesFlag)
             % Translate gene names to systematic names
-            genes{i};
-            geneNameList;
-            systNameList;
             [isInList,translID] = ismember(genes{i},geneNameList);         
             if isInList
                 newGene = systNameList{translID};
@@ -73,10 +82,14 @@ if (~isempty(grRule))
             % Append gene
             model.genes = [model.genes; genes(i)];
             nGenes = length(model.genes);
-            model.rxnGeneMat(rxnID,end+1) = 1;
+            if addRxnGeneMat == 1
+                model.rxnGeneMat(rxnID,end+1) = 1;
+            end
             rule = strrep(rule,['x(' num2str(i) ')'],['x(' num2str(nGenes) ')']);
         else
-            model.rxnGeneMat(rxnID,geneID) = 1;
+            if addRxnGeneMat == 1
+                model.rxnGeneMat(rxnID,geneID) = 1;
+            end
             rule = strrep(rule,['x(' num2str(i) ')'],['x(' num2str(geneID) ')']);
         end
     end

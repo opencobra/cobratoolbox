@@ -2,6 +2,7 @@ function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,m
 %formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)
 %printRxnFormula Print the reaction formulas for a list of reactions
 %
+%
 %INPUTS
 % model             COBRA model structure
 %
@@ -134,9 +135,9 @@ for i = 1:length(rxnAbbrList);
             formulaStr = [formulaStr ' <=> '];
         else
             if (printFlag)
-                fprintf(fid,'\t=>\t');
+                fprintf(fid,'\t->\t');
             end
-            formulaStr = [formulaStr ' => '];
+            formulaStr = [formulaStr ' -> '];
         end
         
         if 0

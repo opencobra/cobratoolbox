@@ -298,7 +298,7 @@ for n=1:nRxn
             error(['Failure to proton balance. Reaction ' model.rxns{n} ', #' int2str(n)])
         end
         if any(isnan(model.S(:,n)))
-            %pause(eps);
+            error('Detected NaN entries in model.S');
         end
     end
     if aveHbound*model.S(:,n)>(eps*1e4)
