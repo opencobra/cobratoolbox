@@ -414,7 +414,10 @@ switch solver
         else
             solStat = 3; % Other problem, but integer solution exists
         end
- 
+ 	if exist([pwd filesep 'clone1.log'],'file')
+            delete('clone1.log')
+        end
+
  case {'gurobi5','gurobi6'}
         %% gurobi 5
         % Free academic licenses for the Gurobi solver can be obtained from
