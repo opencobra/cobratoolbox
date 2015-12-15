@@ -55,7 +55,7 @@ end
 if (isfield(model,'ub'))
     subModel.ub = model.ub(selRxns);
 end
-if (isfield(model,'r'))
+if (isfield(model,'c'))
     subModel.c = model.c(selRxns);
 end
 if (isfield(model,'genes'))
@@ -79,5 +79,5 @@ if (isfield(model,'rules'))
     subModel.rules = model.rules(selRxns);
 end
 if (isfield(model,'metCharge'))
-    subModel.metCharge = model.metCharge(selRxns);
+    subModel.metCharge = model.metCharge(selMets);
 end
