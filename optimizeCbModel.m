@@ -196,7 +196,7 @@ if strcmp(minNorm, 'one')
     % 1: S*v1 = 0
     % 3: delta+ >= -v1
     % 4: delta- >= v1
-    % 5: c'v1 >= f (optimal value of objective)
+    % 5: c'v1 >= f or c'v1 <= f (optimal value of objective)
     %
     % delta+,delta- >= 0
     LPproblem2.A = [model.S sparse(nMets,2*nRxns);
@@ -220,7 +220,13 @@ if strcmp(minNorm, 'one')
         end
     end
     LPproblem2.csense((nMets+1):(nMets+2*nRxns)) = 'G';
-    LPproblem2.csense(nMets+2*nRxns+1) = 'G';
+    
+    % constrain the optimal value according to the original problem
+    if LPproblem.osense==-1
+        LPproblem2.csense(nMets+2*nRxns+1) = 'G';
+    else
+        LPproblem2.csense(nMets+2*nRxns+1) = 'L';
+    end
     LPproblem2.csense = columnVector(LPproblem2.csense);
     LPproblem2.osense = 1;
     % Re-solve the problem
