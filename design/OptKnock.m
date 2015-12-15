@@ -81,6 +81,7 @@ if ~exist('constrOpt','var')
     constrOpt.rxnInd = [];
     constrOpt.values = [];
     constrOpt.sense = [];
+    constrOpt.rxnList = [];
 end
 
 if (nargin < 5)
