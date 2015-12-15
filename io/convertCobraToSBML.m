@@ -82,8 +82,8 @@ tmp_unit_definition = UnitDefinition_create(sbmlModel.SBML_level, sbmlModel.SBML
 
 %% Compartments
 if ~exist('compSymbolList','var') || isempty(compSymbolList)
-    compSymbolList = {'c','m','v','x','e','t','g','r','n','p','l'};
-    compNameList = {'Cytoplasm','Mitochondrion','Vacuole','Peroxisome','Extracellular','Pool','Golgi','Endoplasmic_reticulum','Nucleus','Periplasm','Lysosome'};
+    compSymbolList = {'c','m','v','x','e','t','g','r','n','p','l','u'};
+    compNameList = {'Cytoplasm','Mitochondrion','Vacuole','Peroxisome','Extracellular','Pool','Golgi','Endoplasmic_reticulum','Nucleus','Periplasm','Lysosome','Lumen'};
 end
 
 %Create and add the unit definition to the sbml model struct.

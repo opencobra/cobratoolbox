@@ -1,5 +1,5 @@
-function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel)
-% function [modelNew] = MergeTwoModels(model1,model2,objrxnmodel)
+function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel,mergeRxnGeneMat)
+% function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel)
 %
 % Inputs
 %   model1          model 1
@@ -11,12 +11,13 @@ function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel)
 % 07/06/07);
 % 11/10/2007 IT
 
-
- 
 if nargin < 3
     objrxnmodel =1;
 end
 
+if nargin < 4
+    mergeRxnGeneMat =1; % merge this part
+end
 % Creating Universal Metabolite Names
 
 % Only needed if metabolite names vary, in the specific instance of iAF1260
@@ -54,6 +55,16 @@ for i = 1:size(model2.mets,1)
 %     end
     if isempty(tmp) == 1
         modelNew.mets(sizemets,1) = model2.mets(i,1);
+        if isfield(model1,'metNames') && isfield(model2,'metNames') && length(model2.metNames)>0
+            modelNew.metNames(sizemets,1) = model2.metNames(i,1);
+        end
+        if isfield(model1,'metFormulas') && isfield(model2,'metFormulas')&& length(model2.metFormulas)>0
+            modelNew.metFormulas(sizemets,1) = model2.metFormulas(i,1);
+        end
+        % causes errors when joining with enterocyte model
+         if isfield(model1,'metCharge')&& isfield(model2,'metCharge')&& length(model2.metCharge)>0
+             modelNew.metCharge(sizemets,1) = model2.metCharge(i,1);
+         end
         sizemets = sizemets+1;
     end
     if(mod(i,40) == 0),waitbar(i/size(model2.mets,1),h);end
@@ -79,12 +90,51 @@ modelNew.ub(size(model1.ub,1)+1:size(model1.ub,1)+size(model2.ub,1),1) = modelNe
 fprintf('Finished\n');
 
 % Combining subsystem List
-% fprintf('Combining Subsystem List: ');
-% modelNew.subSystems = model1.RxnSubsystem;
-% modelNew.subSystems(size(model1.RxnSubsystem,1)+1:size(model1.RxnSubsystem,1)+size(model2.subSystems)) = model2.subSystems;
-% modelNew.rxnNames = model1.rxnNames;
-% modelNew.rxnNames(size(model1.rxnNames,1)+1:size(model1.rxnNames,1)+size(model2.rxnNames)) = model2.rxnNames;
-% fprintf('Finished\n');
+fprintf('Combining Subsystem List: ');
+modelNew.subSystems = model1.subSystems;
+modelNew.subSystems(size(model1.subSystems,1)+1:size(model1.subSystems,1)+size(model2.subSystems)) = model2.subSystems;
+modelNew.rxnNames = model1.rxnNames;
+modelNew.rxnNames(size(model1.rxnNames,1)+1:size(model1.rxnNames,1)+size(model2.rxnNames)) = model2.rxnNames;
+if isfield(model1,'rxnKeggID') && isfield(model2,'rxnKeggID')
+    modelNew.rxnKeggID = model1.rxnKeggID;
+    modelNew.rxnKeggID(size(model1.rxnKeggID,1)+1:size(model1.rxnKeggID,1)+size(model2.rxnKeggID)) = model2.rxnKeggID;
+end
+if isfield(model1,'rxnConfidenceEcoIDA') && isfield(model2,'rxnConfidenceEcoIDA')
+    modelNew.rxnConfidenceEcoIDA = model1.rxnConfidenceEcoIDA;
+    modelNew.rxnConfidenceEcoIDA(size(model1.rxnConfidenceEcoIDA,1)+1:size(model1.rxnConfidenceEcoIDA,1)+size(model2.rxnConfidenceEcoIDA)) = model2.rxnConfidenceEcoIDA;
+end
+if isfield(model1,'rxnConfidenceScores') && isfield(model2,'rxnConfidenceScores')
+    modelNew.rxnConfidenceScores = model1.rxnConfidenceScores;
+    modelNew.rxnConfidenceScores(size(model1.rxnConfidenceScores,1)+1:size(model1.rxnConfidenceScores,1)+size(model2.rxnConfidenceScores)) = model2.rxnConfidenceScores;
+end
+if isfield(model1,'rxnsboTerm') && isfield(model2,'rxnsboTerm')
+    modelNew.rxnsboTerm = model1.rxnsboTerm;
+    modelNew.rxnsboTerm(size(model1.rxnsboTerm,1)+1:size(model1.rxnsboTerm,1)+size(model2.rxnsboTerm)) = model2.rxnsboTerm;
+end
+if isfield(model1,'rxnReferences') && isfield(model2,'rxnReferences')
+    modelNew.rxnReferences = model1.rxnReferences;
+    modelNew.rxnReferences(size(model1.rxnReferences,1)+1:size(model1.rxnReferences,1)+size(model2.rxnReferences)) = model2.rxnReferences;
+end
+if isfield(model1,'rxnECNumbers') && isfield(model2,'rxnECNumbers')
+    modelNew.rxnECNumbers = model1.rxnECNumbers;
+    modelNew.rxnECNumbers(size(model1.rxnECNumbers,1)+1:size(model1.rxnECNumbers,1)+size(model2.rxnECNumbers)) = model2.rxnECNumbers;
+end
+if isfield(model1,'rxnNotes') && isfield(model2,'rxnNotes')
+    modelNew.rxnNotes = model1.rxnNotes;
+    modelNew.rxnNotes(size(model1.rxnNotes,1)+1:size(model1.rxnNotes,1)+size(model2.rxnNotes)) = model2.rxnNotes;
+end
+
+
+% modelNew.metCHEBIID = model1.metCHEBIID;
+% modelNew.metCHEBIID(size(model1.metCHEBIID,1)+1:size(model1.metCHEBIID,1)+size(model2.metCHEBIID)) = model2.metCHEBIID;
+% modelNew.metKeggID = model1.metKeggID;
+% modelNew.metKeggID(size(model1.metKeggID,1)+1:size(model1.metKeggID,1)+size(model2.metKeggID)) = model2.metKeggID;
+% modelNew.metPubChemID = model1.metPubChemID;
+% modelNew.metPubChemID(size(model1.metPubChemID,1)+1:size(model1.metPubChemID,1)+size(model2.metPubChemID)) = model2.metPubChemID;
+% modelNew.metInchiString = model1.metInchiString;
+% modelNew.metInchiString(size(model1.metInchiString,1)+1:size(model1.metInchiString,1)+size(model2.metInchiString)) = model2.metInchiString;
+
+fprintf('Finished\n');
 
 % Combining S Matrices (using sparse allocation)
 fprintf('Combining S matrices: ');
@@ -157,32 +207,38 @@ fprintf('Combining Genes: ');
 modelNew.genes = model1.genes;
 a=1;
 for i = 1:length(model2.genes)
-    if isempty(strmatch(model2.genes{i},modelNew.genes,'exact')) == 1 
+    if isempty(strmatch(model2.genes{i},modelNew.genes,'exact')) == 1
         modelNew.genes(size(model1.genes,1)+a) = model2.genes(i);
         a=a+1;
     end
 end
 fprintf('Finished\n');
 
+if mergeRxnGeneMat == 1
 fprintf('Combining Remaining Genetic Information: ');
 h = waitbar(0, 'Combining Genetic Info ...');
 modelNew.rxnGeneMat = model1.rxnGeneMat;
-% for i = 1:size(model2.rxnGeneMat,1)
-%     G = find(model2.rxnGeneMat(i,:));
-%     if (~isempty(G))
-%             geneLoc = find(ismember(modelNew.genes,model2.genes{G}));
-%             modelNew.rxnGeneMat(length(model1.lb)+i,geneLoc) = 1;
-%     else
-%                     modelNew.rxnGeneMat(length(model1.lb)+i,:) = 0;
-%     end
-%     if(mod(i, 40) == 0),waitbar(i/size(model2.rxnGeneMat,1),h);end
-% end
+for i = 1:size(model2.rxnGeneMat,1)
+    R = find(model2.rxnGeneMat(i,:));
+    if ~isempty(R)
+        for j = 1:length(R)
+            geneLoc = find(ismember(modelNew.genes,model2.genes(R(j))));
+            T = find(ismember(modelNew.rxns,model2.rxns(i)));
+            modelNew.rxnGeneMat(T,geneLoc) = 1;
+        end
+    else
+        T = find(ismember(modelNew.rxns,model2.rxns(i)));
+        modelNew.rxnGeneMat(T,:) = 0;
+    end
+    if(mod(i, 40) == 0),waitbar(i/size(model2.rxnGeneMat,1),h);end
+end
 close(h);
+end
 
 modelNew.grRules = model1.grRules;
 modelNew.grRules(size(model1.grRules,1)+1:size(model1.grRules,1)+size(model2.grRules,1)) = model2.grRules;
 if isfield(model1,'rules')
-modelNew.rules = model1.rules;
-modelNew.rules(size(model1.rules,1)+1:size(model1.rules,1)+size(model2.rules,1)) = model2.rules;
+    modelNew.rules = model1.rules;
+    modelNew.rules(size(model1.rules,1)+1:size(model1.rules,1)+size(model2.rules,1)) = model2.rules;
 end
 fprintf('Finished\n');
