@@ -187,8 +187,9 @@ if ~cellfun('isempty',(strfind(MetStrings(2,metCol),'[')))
                 end
                 
             end
-            
-            model.metKEGGID{MetLoc} = MetStrings{i,strmatch('KEGG ID',metHeaders,'exact')};
+            if ~isempty(strmatch('InChI string',metHeaders,'exact'))
+                model.metKEGGID{MetLoc} = MetStrings{i,strmatch('KEGG ID',metHeaders,'exact')};
+            end
             if ~isempty(strmatch('InChI string',metHeaders,'exact'))
                 model.metInChIString{MetLoc} = MetStrings{i,strmatch('InChI string',metHeaders,'exact')};
             end

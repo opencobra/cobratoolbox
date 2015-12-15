@@ -53,10 +53,10 @@ if (~isempty(grRule))
     for i = 1:length(genes)
         if (translateNamesFlag)
             % Translate gene names to systematic names
-            genes{i}
-            geneNameList
-            systNameList
-            [isInList,translID] = ismember(genes{i},geneNameList)            
+            genes{i};
+            geneNameList;
+            systNameList;
+            [isInList,translID] = ismember(genes{i},geneNameList);         
             if isInList
                 newGene = systNameList{translID};
                 grRule = regexprep(grRule,[genes{i} '$'],newGene);
