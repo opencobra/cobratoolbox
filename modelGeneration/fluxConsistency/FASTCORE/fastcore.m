@@ -20,10 +20,23 @@ function A = fastcore(C, model, epsilon, printLevel)
 % A             indices of reactions in the new model 
 %
 %
+%           FCmodel = removeRxns(model,setdiff(model.rxns,model.rxns(A)));
+%
+%
+% Please be aware, that tests using the glpk solver have often shown issues while CPLEX 
+% worked fine. So if you encounter irreversible core reactions, first try to use a different solver.
+%
+%
 % (c) Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013
 %     LCSB / LSRU, University of Luxembourg
-
+%
+% ( Vlassis et al. 2014)   10.1371/journal.pcbi.1003424
+%
+% Maria Pires Pacheco  27/01/15 Added a switch to select between COBRA code and the original code
 tic
+if nargin < 4
+   orig = 0;
+end
 
 N = 1:numel(model.rxns);
 %reactions assumed to be irreversible in forward direction

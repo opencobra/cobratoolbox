@@ -3,15 +3,42 @@ function V = LP9( K, P, model, epsilon )
 % V = LP9( K, P, model, epsilon )
 %
 % CPLEX implementation of LP-9 for input sets K, P (see FASTCORE paper)
-
+% Minimizes the number of additional reactions from the set of
+% penalized reactions P that are required for set K to carry a flux
+%
+%INPUT
+% K         indicies of the reaction for which card(v) is maximized 
+% P         indicies of penalized reactions
+% model     cobra model structure containing the fields
+%   S         m x n stoichiometric matrix
+%   lb        n x 1 flux lower bound
+%   ub        n x 1 flux upper bound
+%   rxns      n x 1 cell array of reaction abbreviations
+% epsilon   flux threshold
+%
+%OPTIONAL INPUT
+% orig 	    Indicator whether the original code or COBRA adjusted code 
+%           should be used. If original code is requested, CPLEX needs 
+%           to be installed (default 0)
+% 
+%OUTPUT
+% V         optimal steady state flux vector
+%
 % (c) Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013
 %     LCSB / LSRU, University of Luxembourg
+%
+% Maria Pires Pacheco      27/01/15 Adjustement to Cobra toolbox, also added a 
+%                                   switch to select between COBRA code and the original code
 
+
+if nargin < 5
+   orig = 0;
+end
 
 scalingfactor = 1e5;
 
 V = [];
-if isempty(P) || isempty(K)
+if isempty(P) || isempty(K)    
     return;
 end
 
@@ -48,6 +75,7 @@ if 0
     options.workdir='~/tmp';
     x = cplexlp(f',Aineq,bineq,Aeq,beq,lb,ub,options);
     if exist('clone1.log','file')
+   if exist('clone1.log','file')
         delete('clone1.log')
     end
 else

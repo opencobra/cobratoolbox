@@ -1,5 +1,5 @@
 function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel,modeFlag)
-% [A,V] = fastcc(model,epsilon,printLevel)
+% [A,V] = fastcc(model,epsilon,printLevel,orig)
 %
 % The FASTCC algorithm for testing the consistency of a stoichiometric model
 % Output A is the consistent part of the model
@@ -17,15 +17,23 @@ function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel,modeFlag)
 % OPTIONAL INPUT
 % modeFlag      {(0),1}; 1=return matrix of modes V
 %
+%           to be installed (default 0)
+%
 % OUTPUT
 % A             n x 1 boolean vector indicating the flux consistent
 %               reactions
+% modelFlipped  the model with all flipped reactions necessitated during the consistency check
 % V             n x k matrix such that S(:,A)*V(:,A)=0 and |V(:,A)|'*1>0
  
 % (c) Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013
 %     LCSB / LSRU, University of Luxembourg
 %
 % Ronan Fleming      17/10/14 Commenting of inputs/outputs/code
+% Maria Pires Pacheco  27/01/15 Added a switch to select between COBRA code and the original code
+tic 
+if nargin < 4
+   orig = 0;
+end
 
 if ~exist('printLevel','var')
     printLevel = 2;

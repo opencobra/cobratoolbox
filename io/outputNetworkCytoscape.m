@@ -1,4 +1,4 @@
-function notShownMets = outputNetworkCytoscape(model,fileBase,rxnList,rxnData,metList,metData,metDegreeThr)
+function notShownMets = outputNetworkCytoscape(model,fileBase,rxnList,rxnData,metList,metData,metDegreeThr,rxnEdgeData)
 %outputNetworkCytoscape Output a metabolic network in Cytoscape format
 %
 % notShownMets =
@@ -21,6 +21,7 @@ function notShownMets = outputNetworkCytoscape(model,fileBase,rxnList,rxnData,me
 % metDegreeThr  Maximum degree of metabolites that will be included in the
 %               output. Allows filtering out highly connected metabolites
 %               such as h2o or atp (Default = no filtering)
+% rxnEdgeData   Data to link to the Edges in the Cytoscape networks.
 %
 %OUTPUT
 % notShownMets  Metabolites that are not included in the output
@@ -36,6 +37,8 @@ function notShownMets = outputNetworkCytoscape(model,fileBase,rxnList,rxnData,me
 % [baseName]_subSys.noa     Describes the subsystems for reactions (if
 %                           provided)
 % [baseName]_rxnMetData.noa   Reaction and metabolite data (if provided)
+%
+% [baseName]_edgeData.tsv   Data to add to the network edges
 %
 % Markus Herrgard 9/21/06
 
@@ -80,18 +83,31 @@ if (nargin < 7)
     allowedMet = true(length(model.mets),1);
     notShownMets = [];
 else
-    nRxnsMet = sum(model.S' ~= 0)';
-    allowedMet = nRxnsMet <= metDegreeThr;
-    metsNotAllowed = model.mets(~allowedMet);
-    baseMetNames = parseMetNames(model.mets);
-    if (~isempty(metsNotAllowed))
-        metsNotAllowedBase = parseMetNames(metsNotAllowed);
-        allowedMet = ~ismember(baseMetNames,metsNotAllowedBase);
-        notShownMets = model.mets(~allowedMet);
-    else
+    if isempty(metDegreeThr)
         allowedMet = true(length(model.mets),1);
         notShownMets = [];
+    else
+        nRxnsMet = sum(model.S' ~= 0)';
+        allowedMet = nRxnsMet <= metDegreeThr;
+        metsNotAllowed = model.mets(~allowedMet);
+        baseMetNames = parseMetNames(model.mets);
+        if (~isempty(metsNotAllowed))
+            metsNotAllowedBase = parseMetNames(metsNotAllowed);
+            allowedMet = ~ismember(baseMetNames,metsNotAllowedBase);
+            notShownMets = model.mets(~allowedMet);
+        else
+            allowedMet = true(length(model.mets),1);
+            notShownMets = [];
+        end
     end
+end
+
+
+if nargin < 8
+    rxnEdgeData = []
+else
+    fidRxnEdgeData = fopen([fileBase '_edgeData.tsv'],'w');
+    fprintf(fidRxnEdgeData,'Edge\tData');    
 end
 
 % Open files
@@ -125,7 +141,7 @@ for i = 1:length(rxnList)
         geneInd = full(find(model.rxnGeneMat(rxnNo,:)));
         for geneNo = 1:length(geneInd)
             fprintf(fid,'%s gra %s\n',model.rxns{rxnNo},model.genes{geneInd(geneNo)});
-            fprintf(fidEdgeType,'%s (gra) %s = gra\n',model.rxns{rxnNo},model.genes{geneInd(geneNo)});
+            fprintf(fidEdgeType,'%s (gra) %s = gra\n',model.rxns{rxnNo},model.genes{geneInd(geneNo)});            
         end
     end
     % Reaction associations
@@ -135,6 +151,22 @@ for i = 1:length(rxnList)
             metNo = metInd(j);
             fprintf(fid,'%s rev %s\n',model.rxns{rxnNo},model.mets{metNo});
             fprintf(fidEdgeType,'%s (rev) %s = rev\n',model.rxns{rxnNo},model.mets{metNo});
+            if ~isempty(rxnEdgeData)
+                fprintf(fidRxnEdgeData,'%s dir %s',model.rxns{rxnNo},model.mets{metNo});
+                for edgeDataEntry=1:size(rxnEdgeData,2)
+                    if iscell(rxnEdgeData)
+                        value = rxnEdgeData{i,edgeDataEntry};
+                    else
+                        value = rxnEdgeData(i,edgeDataEntry);
+                    end
+                    
+                    if isa(value,'double')
+                        value= num2str(value);
+                    end
+                    fprintf(fidRxnEdgeData,'\t%s',value);                    
+                end
+                fprintf(fidRxnEdgeData,'\n');
+            end
         end
     else
         metInd = find(model.S(:,rxnNo) < 0 & allowedMet & selMet);
@@ -142,12 +174,44 @@ for i = 1:length(rxnList)
             metNo = metInd(j);
             fprintf(fid,'%s dir %s\n',model.mets{metNo},model.rxns{rxnNo});
             fprintf(fidEdgeType,'%s (dir) %s = dir\n',model.mets{metNo},model.rxns{rxnNo});
+            if ~isempty(rxnEdgeData)
+                fprintf(fidRxnEdgeData,'%s dir %s',model.rxns{rxnNo},model.mets{metNo});
+                for edgeDataEntry=1:size(rxnEdgeData,2)
+                    if iscell(rxnEdgeData)
+                        value = rxnEdgeData{i,edgeDataEntry};
+                    else
+                        value = rxnEdgeData(i,edgeDataEntry);
+                    end
+                    
+                    if isa(value,'double')
+                        value= num2str(value);
+                    end
+                    fprintf(fidRxnEdgeData,'\t%s',value);                    
+                end
+                fprintf(fidRxnEdgeData,'\n');
+            end
         end
         metInd = find(model.S(:,rxnNo) > 0 & allowedMet & selMet);
         for j = 1:length(metInd)
             metNo = metInd(j);
             fprintf(fid,'%s dir %s\n',model.rxns{rxnNo},model.mets{metNo});
             fprintf(fidEdgeType,'%s (dir) %s = dir\n',model.rxns{rxnNo},model.mets{metNo});
+            if ~isempty(rxnEdgeData)
+                fprintf(fidRxnEdgeData,'%s dir %s',model.rxns{rxnNo},model.mets{metNo});
+                for edgeDataEntry=1:size(rxnEdgeData,2)
+                    if iscell(rxnEdgeData)
+                        value = rxnEdgeData{i,edgeDataEntry};
+                    else
+                        value = rxnEdgeData(i,edgeDataEntry);
+                    end
+                    
+                    if isa(value,'double')
+                        value= num2str(value);
+                    end
+                    fprintf(fidRxnEdgeData,'\t%s',value);                    
+                end
+                fprintf(fidRxnEdgeData,'\n');
+            end
         end
     end
 end
