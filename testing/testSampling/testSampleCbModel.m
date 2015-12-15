@@ -1,5 +1,5 @@
 function status = testSampleCbModel
-%tests the newSamppler function using the E. coli Core Model
+%tests the newSampler function using the E. coli Core Model
 
 samplerName='MFE';
 

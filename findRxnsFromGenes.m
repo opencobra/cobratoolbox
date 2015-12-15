@@ -1,7 +1,7 @@
-function [results ListResults] = findRxnsFromGenes(model, genes, ListResultsFlag)
+function [results ListResults] = findRxnsFromGenes(model, genes, numericFlag, ListResultsFlag)
 %findRxnsFromGenes print every reaction associated with a gene of interest
 %
-% [results ListResults] = findRxnsFromGenes(model, genes, humanFlag,ListResultsFlag)
+% [results ListResults] = findRxnsFromGenes(model, genes, numericFlag,ListResultsFlag)
 %
 %INPUTS
 % model                 COBRA model structure
@@ -9,6 +9,7 @@ function [results ListResults] = findRxnsFromGenes(model, genes, ListResultsFlag
 %                       genes for which rxns are desired.
 %
 %OPTIONAL INPUTS
+% numericFlag             1 if using Human Recon  (Default = 0)
 % ListResultsFlag       1 if you want to output ListResults (Default = 0)
 %
 %OPUTPUTS
@@ -20,9 +21,15 @@ function [results ListResults] = findRxnsFromGenes(model, genes, ListResultsFlag
 % by Nathan Lewis 02/16/08
 % edited 04/05/09 (MUCH faster now -- NL)
 % edited 06/11/10 (yet even faster now -- NL)
+% edited interface for backward compatibility (Ronan, Ines)
 
-if nargin<3
-	ListResultsFlag = 0;
+if nargin==4
+   warning('3rd argument is numericFlag, currently redundant, will be depreciated')
+end
+
+if nargin< 3
+    numericFlag = 0;
+    ListResultsFlag = 0;
 end
 
 if ~iscell(genes)

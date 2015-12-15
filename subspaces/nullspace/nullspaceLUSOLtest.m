@@ -1,6 +1,5 @@
 function [Z,nullS,rankS] = nullspaceLUSOLtest(S,printLevel)
-
-%        Z = nullspaceLUSOLtest(S);
+%[Z,nullS,rankS] = nullspaceLUSOLtest(S,printLevel)
 % tests computation of an operator form of the nullspace
 % of the m x n sparse matrix S of rank r (r <= m < n).
 % It uses nullS = nullspaceLUSOLform(S) to form the operator,
@@ -10,7 +9,7 @@ function [Z,nullS,rankS] = nullspaceLUSOLtest(S,printLevel)
 %    addpath ~/SOLVERS/lusol/matlab     makes LUSOL accessible
 %    load iCore_stoich_mu_Stanford.mat  loads a stoichiometric matrix A.
 %    Z = nullspaceLUSOLtest(S);         computes the nullspace explicitly.
-
+ 
 if ~exist('printLevel','var')
     printLevel=1;
 end

@@ -6,6 +6,16 @@ function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)
 %                                            lb <= v <= ub   : w
 % FBAsolution = optimizeCbModel(model,osenseStr,minNormFlag)
 %
+% FBAsolution.stat is either 1,2,0 or -1, and is a translation from FBAsolution.origStat,
+% which is returned by each solver in a solver specific way. That is, not all solvers return 
+% the same type of FBAsolution.origStat and because the cobra toolbox can use many solvers, 
+% we need to return to the user of optimizeCbModel.m a standard representation, which is what
+% FBAsolution.stat is.
+%
+% When running optimizeCbModel.m, unless FBAsolution.stat = 1, then no solution is returned.
+% This means that it is up to the person calling optimizeCbModel to adapt their code to the
+% case when no solution is returned, by checking the value of FBAsolution.stat first.
+%
 %INPUT
 % model (the following fields are required - others can be supplied)
 %   S            Stoichiometric matrix
@@ -77,6 +87,7 @@ function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)
 %                                global parameters.
 % Ronan Fleming         14/09/11 Fixed bug in minNorm with negative
 %                                coefficient in objective
+
 %% Process arguments and set up problem
 
 if exist('osenseStr', 'var')
@@ -112,7 +123,7 @@ end
 
 %use global solver parameter for printLevel
 [printLevel,primalOnlyFlag] = getCobraSolverParams('LP',{'printLevel','primalOnly'});
-primalOnlyFlag = 0;
+
 [nMets,nRxns] = size(model.S);
 
 % add csense
@@ -185,7 +196,7 @@ if strcmp(minNorm, 'one')
     % 1: S*v1 = 0
     % 3: delta+ >= -v1
     % 4: delta- >= v1
-    % 5: c'v1 >= f (optimal value of objective)
+    % 5: c'v1 >= f or c'v1 <= f (optimal value of objective)
     %
     % delta+,delta- >= 0
     LPproblem2.A = [model.S sparse(nMets,2*nRxns);
@@ -209,7 +220,13 @@ if strcmp(minNorm, 'one')
         end
     end
     LPproblem2.csense((nMets+1):(nMets+2*nRxns)) = 'G';
-    LPproblem2.csense(nMets+2*nRxns+1) = 'G';
+    
+    % constrain the optimal value according to the original problem
+    if LPproblem.osense==-1
+        LPproblem2.csense(nMets+2*nRxns+1) = 'G';
+    else
+        LPproblem2.csense(nMets+2*nRxns+1) = 'L';
+    end
     LPproblem2.csense = columnVector(LPproblem2.csense);
     LPproblem2.osense = 1;
     % Re-solve the problem
