@@ -1,4 +1,4 @@
-function [results ListResults] = findRxnsFromGenes(model, genes, humanFlag,ListResultsFlag)
+function [results ListResults] = findRxnsFromGenes(model, genes, ListResultsFlag)
 %findRxnsFromGenes print every reaction associated with a gene of interest
 %
 % [results ListResults] = findRxnsFromGenes(model, genes, humanFlag,ListResultsFlag)
@@ -9,7 +9,6 @@ function [results ListResults] = findRxnsFromGenes(model, genes, humanFlag,ListR
 %                       genes for which rxns are desired.
 %
 %OPTIONAL INPUTS
-% humanFlag             1 if using Human Recon  (Default = 0)
 % ListResultsFlag       1 if you want to output ListResults (Default = 0)
 %
 %OPUTPUTS
@@ -22,9 +21,8 @@ function [results ListResults] = findRxnsFromGenes(model, genes, humanFlag,ListR
 % edited 04/05/09 (MUCH faster now -- NL)
 % edited 06/11/10 (yet even faster now -- NL)
 
-if nargin< 3
-    humanFlag = 0;
-    ListResultsFlag = 0;
+if nargin<3
+	ListResultsFlag = 0;
 end
 
 if ~iscell(genes)
@@ -76,10 +74,17 @@ for i = 1:length(GeneID)
             if isempty(results)
                 results = struct;
             end
-            if humanFlag == 1
-                tempGene = cat(2,'gene_',genes{i});
+			%Ensures that geneids can become field names for structures
+            if regexp(genes{i},'[^a-zA-Z0-9_]')
+				tempGene = regexprep(genes{i},'[^a-zA-Z0-9_]','_')
             else tempGene = genes{i};
             end
+			
+			%If gene starts with a digit it cannot be a field name, prepend gene_ to correct
+			if regexp(tempGene,'^\d')
+				tempGene = cat(2,'gene_',tempGene);
+			end
+			
             results.(tempGene){k,1} = model.rxns(Ind_rxns(j));
             results.(tempGene)(k,2) = printRxnFormula(model,model.rxns(Ind_rxns(j)),0);
             if isfield(model,'subSystems')
