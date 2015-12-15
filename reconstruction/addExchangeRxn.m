@@ -1,4 +1,4 @@
-function newModel = addExchangeRxn(model,metList,lb,ub)
+function [newModel,AddedExchRxn] = addExchangeRxn(model,metList,lb,ub)
 %addExchangeRxn adds exchange reactions
 %
 % newModel = addExchangeRxn(model,metList,lb,ub)
@@ -26,6 +26,9 @@ Revs = zeros(length(metList),1);
 Revs(lb<0) = 1;
 
 newModel = model;
+AddedExchRxn = '';
 for i = 1 : length(metList)
-    [newModel] = addReaction(newModel,strcat('Ex_',metList{i}),metList(i),-1,Revs(i),lb(i),ub(i));
+    [newModel,rxnIDexists] = addReaction(newModel,strcat('EX_',metList{i}),metList(i),-1,Revs(i),...
+        lb(i),ub(i));
+    AddedExchRxn=[AddedExchRxn;strcat('EX_',metList(i))];
 end

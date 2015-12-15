@@ -25,7 +25,8 @@ function [model,rxnIDexists] = addReaction(model,rxnName,metaboliteList,stoichCo
 %                   common gene names to systematic gene names)
 % systNameList      List of systematic names
 % checkDuplicate    Check S matrix too see if a duplicate reaction is
-%                   already in the model (Deafult true)
+%                   already in the model (Deafult false)
+% addRxnGeneMat     adds rxnGeneMat to model structure (default = true)
 %
 %OUTPUTS
 % model             COBRA model structure with new reaction
@@ -48,7 +49,11 @@ function [model,rxnIDexists] = addReaction(model,rxnName,metaboliteList,stoichCo
 % Modified the check to see if duplicate reaction already is in model by
 % using S matrix coefficients to be able to handle larger matricies
 % Richard Que 11/13/2008
+% Ines Thiele 08/03/2015, made rxnGeneMat optional
 
+if ~exist('addRxnGeneMat','var')
+    addRxnGeneMat = 1;
+end
 
 parseFormulaFlag = false;
 rxnIDexists = [];

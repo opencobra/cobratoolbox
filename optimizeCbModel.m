@@ -6,6 +6,16 @@ function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)
 %                                            lb <= v <= ub   : w
 % FBAsolution = optimizeCbModel(model,osenseStr,minNormFlag)
 %
+% FBAsolution.stat is either 1,2,0 or -1, and is a translation from FBAsolution.origStat,
+% which is returned by each solver in a solver specific way. That is, not all solvers return 
+% the same type of FBAsolution.origStat and because the cobra toolbox can use many solvers, 
+% we need to return to the user of optimizeCbModel.m a standard representation, which is what
+% FBAsolution.stat is.
+%
+% When running optimizeCbModel.m, unless FBAsolution.stat = 1, then no solution is returned.
+% This means that it is up to the person calling optimizeCbModel to adapt their code to the
+% case when no solution is returned, by checking the value of FBAsolution.stat first.
+%
 %INPUT
 % model (the following fields are required - others can be supplied)
 %   S            Stoichiometric matrix
@@ -77,6 +87,7 @@ function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)
 %                                global parameters.
 % Ronan Fleming         14/09/11 Fixed bug in minNorm with negative
 %                                coefficient in objective
+
 %% Process arguments and set up problem
 
 if exist('osenseStr', 'var')
@@ -112,7 +123,7 @@ end
 
 %use global solver parameter for printLevel
 [printLevel,primalOnlyFlag] = getCobraSolverParams('LP',{'printLevel','primalOnly'});
-primalOnlyFlag = 0;
+
 [nMets,nRxns] = size(model.S);
 
 % add csense
