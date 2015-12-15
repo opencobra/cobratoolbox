@@ -40,7 +40,7 @@ end
 % access the solver
 
 % Define LP solver
-fprintf('Define LP solver...');
+fprintf('Define LP solver...\n');
 for CobraLPSolver = {'gurobi5', 'gurobi', 'tomlab_cplex', 'glpk', 'mosek', 'cplx'}
     LPsolverOK = changeCobraSolver(char(CobraLPSolver));
     if LPsolverOK; break; end
