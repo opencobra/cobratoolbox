@@ -62,7 +62,12 @@ for i = 1:nMetsTmp
             try
                 chargeList= [chargeList modelSBML.species(i).charge];
             catch ME
-                disp('error');
+                try
+                    chargeList= [chargeList modelSBML.species(i).fbc_charge];
+                catch
+                    disp('error');
+                end
+                
             end
             
         end
@@ -394,6 +399,8 @@ if strcmp(para_version, 'fbc') % Check if it is a SBML with FBC file
     % model=changeObjective(model,modelSBML.fbc_objective.fbc_id,-1) % By default set the objective function to maximisation
     
     modelSBML.fbc_objective.fbc_fluxObjective.fbc_reaction
+    chargeList=double(chargeList) % convert to type of charge values to double
+    model.metCharge = transpose(chargeList)
 
 elseif strcmp(para_version, 'non_fbc') 
     model.lb = lb;
