@@ -73,13 +73,13 @@ for i = 1:length(constrOpt.rxnList)
                     for j = 1:nThisConstr
                         constrIndIrrev(end+1) = irrevRxnID;
                         constrValIrrev(end+1) = thisConstrValue(j);
-                        constrSenseIrrev(end+1) = thisConstrSense(j);
+                        constrSenseIrrev(end+1) = thisConstrSense{j};
                     end
                 else %Reaction is reversed in model. Flip sign of value
                     for j = 1:nThisConstr
                         constrIndIrrev(end+1) = irrevRxnID;
                         constrValIrrev(end+1) = -thisConstrValue(j);
-                        constrSenseIrrev(end+1) = thisConstrSense(j);
+                        constrSenseIrrev(end+1) = thisConstrSense{j};
                     end
                 end
             else % Reversible
