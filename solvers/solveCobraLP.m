@@ -1060,9 +1060,9 @@ switch solver
         end
         %1 = (Simplex or Barrier) Optimal solution is available.
         stat=origStat;
-       if exist('clone1.log','file')
-           delete('clone1.log')
-       end
+	if exist([pwd filesep 'clone1.log'],'file')
+            delete('clone1.log')
+        end
     case 'lindo'
         %%
         error('Solver type lindo is obsolete - use lindo_new or lindo_old instead');
