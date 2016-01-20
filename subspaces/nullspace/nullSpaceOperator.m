@@ -1,23 +1,47 @@
-function nullS = nullspaceLUSOLform(S,gmscale,printLevel)
-
-%        nullS = nullspaceLUSOLform(S);
-% computes a structure nullS from which
-%        W = nullspaceLUSOLapply(nullS,V);
-% can compute W from matrix V such that S*W = 0.
+function nullS = nullSpaceOperator(S,scale,printLevel)
+% Uses LUSOL to compute a nullspace operator nullS
+% nullS = nullSpaceOperator(S,gmscale,printLevel);
+% We assume S is m x n with m < n with rank r.
 %
-% We assume S is m x n with m < n.
-% nullS.rank returns the rank of S (rank <= m).
+% First,
+%        nullS = nullSpaceOperator(S);
+% computes a structure nullS from an m x n sparse matrix S (m < n).
+% Second, if V is an (n-r) x k sparse matrix (k >= 1),
+%        W = nullSpaceOperatorApply(nullS,V);
+% computes an n x k sparse matrix W from V such that S*W = 0.
+%
+% This is an operator form of finding an n x (n-r) matrix Z
+% such that S*Z = 0 and then computing W = Z*V.
+% The aim is to obtain W without forming Z explicitly.
+%
+% nullS.rank returns the rank of S (r <= m).
 % It doesn't matter if rank < m.
 %
-% REQUIRED: lusolSet.m and lusolFactor.m (which calls the LUSOL mex-file).
+% INPUT
+% S             m x n matrix
+% scale       {(1),0} geometric mean scaling of S
+% printLevel    {(1),0}
+%
+% OUTPUT
+% nullS         nullspace operator to be used with nullSpaceOperatorApply.m
+% nullS.rank    rank of S
+%
+% REQUIRES
+% Requires Nick Henderson's 64 bit LUSOL interface to be intalled and added
+% to the matlab path. See https://github.com/nwh/lusol
+% see also http://www.stanford.edu/group/SOL/software/lusol.html
 
-% 02 May 2008: (MAS) First version of nullspaceLUSOLform.m.
+% 02 May 2008: First version of nullspaceLUSOLform.m.
 %              load iCore_stoich_mu_Stanford.mat   % loads a matrix A;
 %              nullS = nullspaceLUSOLform(A);      % forms Z.
+%              Michael Saunders                       
+% 20 Jan 2015: Updated to use Nick Henderson's 64 bit LUSOL interface
+%              Ronan Fleming and renamed nullSpaceOperator
+
 
 %by default turn on scaling
-if ~exist('gmscale','var')
-    gmscale=1;
+if ~exist('scale','var')
+    scale=1;
 end
 if ~exist('printLevel','var')
     printLevel=1;
@@ -44,12 +68,12 @@ if printLevel
     fprintf('\n nnz(S) = %10g\n\n', nnz(S))
 end
 
-if gmscale
+if scale
     %%%%%%% Scale S
     tic
     iprint  = 1;
     scltol  = 0.9;
-    [cscale,rscale] = gmscal(S,sign(printLevel),scltol);
+    [cscale,rscale] = gmscale(S,sign(printLevel),scltol);
     
     C = spdiags(cscale,0,n,n);   Cinv = spdiags(1./cscale,0,n,n);
     R = spdiags(rscale,0,m,m);   Rinv = spdiags(1./rscale,0,m,m);
@@ -69,6 +93,7 @@ archstr = computer('arch');
 archstr = lower(archstr);
 switch archstr
     case {'glnxa86'}
+        % REQUIRED: lusolSet.m and lusolFactor.m (which calls the LUSOL mex-file).
         % 02 May 2008: (MAS) First version of nullspaceLUSOLform.m.
         options = lusolSet;
         options.Pivoting  = 'TRP';
@@ -118,10 +143,10 @@ switch archstr
                 options.Ltol1 = 1.5;
                 options.nzinit = 1e7;
                 %factorise
-                mylu = lusol_obj(A,options);
+                mylu = lusol_obj(A',options);
             else
                 %factorise
-                mylu = lusol_obj(A);
+                mylu = lusol_obj(A');
             end
             
             %extract results
@@ -137,8 +162,12 @@ switch archstr
             p = mylu.p();
             % column permutation
             q = mylu.q();
+            
+            L     = L(p,p);      % New L is strictly lower triangular (and square).
+            % U     = U(p,q);      % New U would be upper trapezoidal the size of S'.
+        
             %return the rank of the matrix
-            rankA=mylu.rank();
+            r=mylu.rank();
             
             %    lu.factorize inform codes:
             switch stats.inform
@@ -167,7 +196,7 @@ switch archstr
             
             if stats.inform~=0 && stats.inform~=1
                 % solve Ax=b
-                b = ones(size(A,1),1);
+                b = ones(size(A',1),1);
                 x = mylu.solve(b);
                 % multiply Ax
                 b2 = mylu.mulA(x);
@@ -175,7 +204,7 @@ switch archstr
                 fprintf('%s\t%g\n','Check norm(b-b2) : ', norm(b-b2))
             end
         else
-            fprintf('%s\n','Cannot find lusol_obj.m from lusol interface, calling matlab null implementation (slower)')
+            error('%s\n','nullspaceLUSOLform Cannot find lusol_obj.m from lusol interface. Make sure https://github.com/nwh/lusol is intalled and added to the matlab path.')
         end
 end
 
@@ -198,12 +227,12 @@ nullS.Cinv = Cinv;
 nullS.L    = L;
 nullS.p    = p;
 nullS.q    = q;
-nullS.rank = rankS;
+nullS.rank = r;
 
 if printLevel
     fprintf('\nnRows(S) = %10g', m)
     fprintf('\nnCols(S) = %10g', n)
-    fprintf('\nrank(S) = %10g', rankS)
+    fprintf('\nrank(S) = %10g', r)
     fprintf('\nnnz(L)  = %10g', nnz(L))
     fprintf('\nnnz(U)  = %10g', nnz(U))
     fprintf('\nnull(S) is represented by L, permutation p, and column scaling Cinv\n\n')

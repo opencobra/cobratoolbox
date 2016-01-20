@@ -1,8 +1,8 @@
-function [cscale,rscale] = gmscal(A,iprint,scltol)
+function [cscale,rscale] = gmscale(A,iprint,scltol)
 
-%        [cscale,rscale] = gmscal(A,iprint,scltol);
+%        [cscale,rscale] = gmscale(A,iprint,scltol);
 %------------------------------------------------------------------
-% gmscal (Geometric-Mean Scaling) finds the scale values for the
+% gmscale (Geometric-Mean Scaling) finds the scale values for the
 % m x n sparse matrix A.
 %
 % On entry:
@@ -10,7 +10,7 @@ function [cscale,rscale] = gmscal(A,iprint,scltol)
 % iprint    > 0 requests messages to the screen (0 means no output).
 % scltol    should be in the range (0.0, 1.0).
 %           Typically scltol = 0.9.  A bigger value like 0.99 asks
-%           gmscal to work a little harder (more passes).
+%           gmscale to work a little harder (more passes).
 %
 % On exit:
 % cscale, rscale are column vectors of column and row scales such that
@@ -54,11 +54,12 @@ function [cscale,rscale] = gmscal(A,iprint,scltol)
 %              We can't find the biggest and smallest Aij
 %              on each scaling pass, so no longer print them.
 % 24 Apr 2008: (MAS, Kaustuv) Allow for empty rows and columns.
+% 13 Nov 2009: gmscal.m renamed gmscale.m.
 %------------------------------------------------------------------
 
   if iprint > 0
-    fprintf('\ngmscal: Geometric-Mean scaling of matrix')
-    fprintf('\n------\n                 Max col ratio')
+    fprintf('\ngmscale: Geometric-Mean scaling of matrix')
+    fprintf('\n-------\n                 Max col ratio')
   end
 
   [m,n]   = size(A);
@@ -135,9 +136,8 @@ function [cscale,rscale] = gmscal(A,iprint,scltol)
     [cmax,jmax] = max(cscale);
 
     fprintf('\n\n  Min scale               Max scale')
-    fprintf('\n  Row %6g %9.1e    Row %6g %9.1e', imin, rmin, imax, rmax)
-    fprintf('\n  Col %6g %9.1e    Col %6g %9.1e', jmin, cmin, jmax, cmax)
-    fprintf('\n\n')
+    fprintf('\n  Row %6g %9.1e    Row %6g %9.1e'  , imin, rmin, imax, rmax)
+    fprintf('\n  Col %6g %9.1e    Col %6g %9.1e\n', jmin, cmin, jmax, cmax)
   end
 
-% end of gmscal
+% end of gmscale
