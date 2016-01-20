@@ -46,7 +46,7 @@ cpxControl.BAREPCOMP=1e-8;
 
 % Barrier iteration limit.
 % Sets the number of Barrier iterations before termination. When set to 0, no Barrier iterations occur, but problem
-% ”setup” occurs and information about the setup is displayed (such as Cholesky factorization information).
+% ï¿½setupï¿½ occurs and information about the setup is displayed (such as Cholesky factorization information).
 % 0 No Barrier iterations
 % or, any positive integer
 % Default: Large (varies by computer)
@@ -119,7 +119,7 @@ cpxControl.EPPER=1e-6;
 cpxControl.EPRELAX=1e-6;
 
 % Feasibility tolerance.
-% The feasibility tolerance specifies the degree to which a problem’s basic variables may violate their bounds.
+% The feasibility tolerance specifies the degree to which a problemï¿½s basic variables may violate their bounds.
 % FEASIBILITY influences the selection of an optimal basis and can be reset to a higher value when a problem
 % is having difficulty maintaining feasibility during optimization. You may also wish to lower this tolerance after
 % finding an optimal solution if there is any doubt that the solution is truly optimal. If the feasibility tolerance is
@@ -180,7 +180,7 @@ cpxControl.LPMETHOD=0;  %%% was changed now default
 % computation
 % 1 On: Emphasize extreme caution in computation
 % Default: Off
-cpxControl.NUMERICALEMPHASIS=0; %%% Changed
+cpxControl.NUMERICALEMPHASIS=0; %%%
 
 
 % Polishing best solution.
@@ -219,7 +219,7 @@ cpxControl.CLOCKTYPE=1; %Changed
 % of the CLOCKTYPE parameter. The time limit applies to primal simplex, dual simplex, barrier, and mixed
 % integer optimizations, as well as infeasibility finder computations. (Network simplex and barrier crossover
 % operations are exceptions; these processes do not terminate if the time limit is exceeded.) The time limit
-% includes preprocessing time. For ‘hybrid’ optimizations (such as network optimization followed by dual or
+% includes preprocessing time. For ï¿½hybridï¿½ optimizations (such as network optimization followed by dual or
 % primal simplex, barrier optimization followed by crossover), the
 % cumulative time applies.
 cpxControl.TILIM=600;%sec
