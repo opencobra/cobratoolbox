@@ -21,24 +21,23 @@ function [rxnList, rxnFormulaList] = findRxnsFromMets(model, metList, varargin)
 % rxnFormulaList    Reaction formulas coresponding to rxnList
 %
 %Richard Que (08/12/2010)
-%Richard Que (08/12/2010)
-% Almut Heinken (09/25/2015)- made change so formulas are not printed if reaction list 
+%Almut Heinken (09/25/2015)- made change so formulas are not printed if reaction list 
 %                             is empty.
-% Thomas Pfau (21/1/2016) - Additional Options, and minimal speedup of the indexing, 
+%Thomas Pfau (21/1/2016) - Additional Options, and minimal speedup of the indexing, 
 %                           also updated behaviour of verbFlag to accurately reflect the description.
 % 
 
 verbFlag = false;
 containsAll = false;
 
-if mod(numel(varargin), 2) == 1 % the first argument has to be verbFlag, the remainder Argument/Value pairs
+if mod(numel(varargin), 2) == 1 % the first argument has to be verbFlag, the remaining are property/value pairs
     verbFlag = varargin{1};
     if numel(varargin) > 1
         varargin = varargin(2:end);
     end
 end
 
-if numel(varargin) > 1 % we have already checked whether we have a verbFlag, now we can go for Argument value pairs
+if numel(varargin) > 1 % we have already checked whether we have a verbFlag, now we can go for property/value pairs
     for i=1:2:numel(varargin)
         key = varargin{i};
         value = varargin{i+1};
