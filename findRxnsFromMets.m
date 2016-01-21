@@ -29,6 +29,10 @@ function [rxnList, rxnFormulaList] = findRxnsFromMets(model, metList, varargin)
 
 verbFlag = false;
 containsAll = false;
+if isa(metList,'char')
+    metList = {metList};
+end
+    
 
 if mod(numel(varargin), 2) == 1 % the first argument has to be verbFlag, the remaining are property/value pairs
     verbFlag = varargin{1};
@@ -57,11 +61,11 @@ end
 %Find met indicies
 index = ismember(model.mets,metList);
 if containsAll
-   rxnList = model.rxns(sum(model.S(index,:) ~= 0) == numel(metList));   
+   rxnList = model.rxns(sum(model.S(index,:) ~= 0,1) == numel(metList));   
 else
     %rxns = repmat(model.rxns,1,length(index));
     %find reactions i.e. all columns with at least one non zero value
-    rxnList = model.rxns(sum(model.S(index,:)~=0) > 0);
+    rxnList = model.rxns(sum(model.S(index,:)~=0,1) > 0);
 end
 
 if (nargout > 1) | verbFlag
