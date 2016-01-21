@@ -25,7 +25,7 @@ function [rxnList, rxnFormulaList] = findRxnsFromMets(model, metList, varargin)
 % Almut Heinken (09/25/2015)- made change so formulas are not printed if reaction list 
 %                             is empty.
 % Thomas Pfau (21/1/2016) - Additional Options, and minimal speedup of the indexing, 
-%                           also updated behaviour of verbFlag to accurately reflect description.
+%                           also updated behaviour of verbFlag to accurately reflect the description.
 % 
 
 verbFlag = false;
@@ -65,9 +65,9 @@ else
     rxnList = model.rxns(sum(model.S(index,:)~=0) > 0);
 end
 
-if verbFlag
+if (nargout > 1) | verbFlag
     if ~isempty(rxnList)
-    rxnFormulaList = printRxnFormula(model,rxnList,verbFlag);
+        rxnFormulaList = printRxnFormula(model,rxnList,verbFlag);
     else
         rxnFormulaList={};
     end
