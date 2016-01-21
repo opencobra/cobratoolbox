@@ -52,7 +52,11 @@ save KEGGMatrix KEGG
 % checks if model.mets has () or [] for compartment, or adds cytosol to
 % compounds if no compartment is specified
 model = CheckMetName(model);
-model.RxnSubsystem = model.subSystems;
+try
+    model.RxnSubsystem = model.subSystems;
+catch
+    model.RxnSubsystem = {};
+end
 
 % merge model with KEGG reaction list for each defined compartment
 modelExpanded = model;
