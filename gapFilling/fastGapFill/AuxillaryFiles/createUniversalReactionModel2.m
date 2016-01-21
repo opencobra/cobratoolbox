@@ -38,51 +38,50 @@ h=waitbar(0,'KEGG reaction list ...');
 HTABLE = java.util.Hashtable; % hashes Kegg.mets
 
 for i = 1: length(KEGGReactionList)
-    clear Rxn rxnFormulas;
-    [Rxn, rxnFormulas] = strtok(KEGGReactionList(i),':');
+    clear rxnID rxnFormula;
+    [rxnID, rxnFormula] = strtok(KEGGReactionList(i),':');
     %continue if reaction is not in KEGGBlacklist
     
-    if isempty(strmatch(Rxn, KEGGBlackList, 'exact')) || isempty(strfind(rxnFormulas,'(n\+m)'))%length(strmatch(Rxn,KEGGBlackList,'exact'))==0
+    if isempty(strmatch(rxnID, KEGGBlackList, 'exact')) || isempty(strfind(rxnFormula,'(n\+m)'))%length(strmatch(rxnID,KEGGBlackList,'exact'))==0
         
-        KEGG.rxns(cnti,1)=Rxn;
+        KEGG.rxns(cnti,1)=rxnID;
         
         %reformats syntax of reaction
-        rxnFormulas= regexprep(rxnFormulas,': ','');
-        rxnFormulas= regexprep(rxnFormulas,'\+ C','\+ 1 C');
-        rxnFormulas= regexprep(rxnFormulas,' \+','[c] \+');
-        rxnFormulas= regexprep(rxnFormulas,'=> C','=> 1 C');
-        rxnFormulas= regexprep(rxnFormulas,' <','[c] <');
-        rxnFormulas= regexprep(rxnFormulas,'^(C)','1 C');
-        rxnFormulas= regexprep(rxnFormulas,' \[c]','[c]');
-        rxnFormulas= regexprep(rxnFormulas,'\+ G','\+ 1 G');
-        rxnFormulas= regexprep(rxnFormulas,'=> G','=> 1 G');
-        rxnFormulas= regexprep(rxnFormulas,'^(G)','1 G');
-        rxnFormulas= regexprep(rxnFormulas,'^(n) ','2 ');
-        rxnFormulas= regexprep(rxnFormulas,'\+ n ','\+ 2 ');
-        rxnFormulas= regexprep(rxnFormulas,'\> n ','\> 2 ');
-        rxnFormulas= regexprep(rxnFormulas,'\ n\-1 ','\ 1 ');
-        rxnFormulas= regexprep(rxnFormulas,'^\(n\-1) ','1 ');
-        rxnFormulas= regexprep(rxnFormulas,' \(n\-1) ',' 1 ');
-        rxnFormulas= regexprep(rxnFormulas,'^n\-1 ','1 ');
-        rxnFormulas= regexprep(rxnFormulas,'\+ 2n ','\+ 2 ');
-        rxnFormulas= regexprep(rxnFormulas,'\+ 4n ','\+ 4 ');
-        rxnFormulas= regexprep(rxnFormulas,'\+ (n\+1) ','\+ 3 ');
-        rxnFormulas= regexprep(rxnFormulas,' \(n\+1) ',' 3 ');
-        rxnFormulas= regexprep(rxnFormulas,'^\(n\+1) ','\3 ');
-        rxnFormulas= regexprep(rxnFormulas,' 3C',' 3 C');
-        rxnFormulas= regexprep(rxnFormulas,' 2C',' 2 C');
-        rxnFormulas= regexprep(rxnFormulas,' 4C',' 4 C');
+        rxnFormula= regexprep(rxnFormula,': ','');
+        rxnFormula= regexprep(rxnFormula,'\+ C','\+ 1 C');
+        rxnFormula= regexprep(rxnFormula,' \+','[c] \+');
+        rxnFormula= regexprep(rxnFormula,'=> C','=> 1 C');
+        rxnFormula= regexprep(rxnFormula,' <','[c] <');
+        rxnFormula= regexprep(rxnFormula,'^(C)','1 C');
+        rxnFormula= regexprep(rxnFormula,' \[c]','[c]');
+        rxnFormula= regexprep(rxnFormula,'\+ G','\+ 1 G');
+        rxnFormula= regexprep(rxnFormula,'=> G','=> 1 G');
+        rxnFormula= regexprep(rxnFormula,'^(G)','1 G');
+        rxnFormula= regexprep(rxnFormula,'^(n) ','2 ');
+        rxnFormula= regexprep(rxnFormula,'\+ n ','\+ 2 ');
+        rxnFormula= regexprep(rxnFormula,'\> n ','\> 2 ');
+        rxnFormula= regexprep(rxnFormula,'\ n\-1 ','\ 1 ');
+        rxnFormula= regexprep(rxnFormula,'^\(n\-1) ','1 ');
+        rxnFormula= regexprep(rxnFormula,' \(n\-1) ',' 1 ');
+        rxnFormula= regexprep(rxnFormula,'^n\-1 ','1 ');
+        rxnFormula= regexprep(rxnFormula,'\+ 2n ','\+ 2 ');
+        rxnFormula= regexprep(rxnFormula,'\+ 4n ','\+ 4 ');
+        rxnFormula= regexprep(rxnFormula,'\+ (n\+1) ','\+ 3 ');
+        rxnFormula= regexprep(rxnFormula,' \(n\+1) ',' 3 ');
+        rxnFormula= regexprep(rxnFormula,'^\(n\+1) ','\3 ');
+        rxnFormula= regexprep(rxnFormula,' 3C',' 3 C');
+        rxnFormula= regexprep(rxnFormula,' 2C',' 2 C');
+        rxnFormula= regexprep(rxnFormula,' 4C',' 4 C');
         
-        rxnFormulas = strcat(rxnFormulas,'[c]');
-        rxnFormulas= regexprep(rxnFormulas,'<=>','<==>');
-        rxnFormulas= regexprep(rxnFormulas,'\=>>','=>');
+        rxnFormula = strcat(rxnFormula,'[c]');
+        rxnFormula= regexprep(rxnFormula,'<=>','<==>');
+        rxnFormula= regexprep(rxnFormula,'\=>>','=>');
         
-        KEGG.rxnFormulas(cnti,1)=rxnFormulas;
+        KEGG.rxnFormula(cnti,1)=rxnFormula;
         cnti=cnti+1;
         %compounds is a list of each of metabolites involved in the
-        %reaction that has a KEGGID starting with 'C'. b1 and c1 are just
-        %so that the output has the correct number of variable
-        [compounds, b1, c1] = regexp(char(rxnFormulas),'C\w+\[c]','match','start','end');
+        %reaction that has a KEGGID starting with 'C'.
+        [compounds, ~, ~] = regexp(char(rxnFormula),'C\w+\[c]','match','start','end');
         for j=1:length(compounds)
             if (~isempty(compounds(j)))
                 %condition1 = length(strmatch(compounds(j),KEGG.mets))==0
@@ -99,7 +98,7 @@ for i = 1: length(KEGGReactionList)
         
         %compounds is a list of each of metabolites involved in the
         %reaction that has a KEGGID starting with 'G'
-        [compounds, b1, c1] = regexp(char(rxnFormulas),'G\w+\[c]','match','start','end');
+        [compounds, ~, ~] = regexp(char(rxnFormula),'G\w+\[c]','match','start','end');
         for j=1:length(compounds)
             if (~isempty(compounds(j)))
                 %condition1 = length(strmatch(compounds(j),KEGG.mets))==0
@@ -119,7 +118,7 @@ end
 close(h);
 KEGG.S=spalloc(length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets) );
 
-[KEGG] = addReactionGEM(KEGG,KEGG.rxns,KEGG.rxns,KEGG.rxnFormulas,ones(length(KEGG.rxns),1),-10000*ones(length(KEGG.rxns),1),10000*ones(length(KEGG.rxns),1),1);
+[KEGG] = addReactionGEM(KEGG,KEGG.rxns,KEGG.rxns,KEGG.rxnFormula,ones(length(KEGG.rxns),1),-10000*ones(length(KEGG.rxns),1),10000*ones(length(KEGG.rxns),1),1);
 a=length(KEGG.mets);
 KEGG.S(a+1:end,:)=[];
 a=length(KEGG.rxns);
@@ -147,7 +146,7 @@ end
 KEGG.S(:,NullRxns==1)=[];
 KEGG.rxns(NullRxns==1)=[];
 KEGG.rxnNames(NullRxns==1)=[];
-KEGG.rxnFormulas(NullRxns==1)=[];
+KEGG.rxnFormula(NullRxns==1)=[];
 KEGG.subSystems(NullRxns==1)=[];
 KEGG.lb(NullRxns==1)=[];
 KEGG.ub(NullRxns==1)=[];
