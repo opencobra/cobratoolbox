@@ -37,6 +37,9 @@ cnti=1;
 h=waitbar(0,'KEGG reaction list ...');
 HTABLE = java.util.Hashtable; % hashes Kegg.mets
 
+%Create reversibility vector, default=1 (reversible)
+KEGG.rev = [];
+
 for i = 1: length(KEGGReactionList)
     clear rxnID rxnFormula;
     [rxnID, rxnFormula] = strtok(KEGGReactionList(i),':');
@@ -51,11 +54,13 @@ for i = 1: length(KEGGReactionList)
         rxnFormula= regexprep(rxnFormula,'\+ C','\+ 1 C');
         rxnFormula= regexprep(rxnFormula,' \+','[c] \+');
         rxnFormula= regexprep(rxnFormula,'=> C','=> 1 C');
+        rxnFormula= regexprep(rxnFormula,'= C','= 1 C');
         rxnFormula= regexprep(rxnFormula,' <','[c] <');
         rxnFormula= regexprep(rxnFormula,'^(C)','1 C');
         rxnFormula= regexprep(rxnFormula,' \[c]','[c]');
         rxnFormula= regexprep(rxnFormula,'\+ G','\+ 1 G');
         rxnFormula= regexprep(rxnFormula,'=> G','=> 1 G');
+        rxnFormula= regexprep(rxnFormula,'= G','= 1 G');
         rxnFormula= regexprep(rxnFormula,'^(G)','1 G');
         rxnFormula= regexprep(rxnFormula,'^(n) ','2 ');
         rxnFormula= regexprep(rxnFormula,'\+ n ','\+ 2 ');
@@ -76,8 +81,26 @@ for i = 1: length(KEGGReactionList)
         rxnFormula = strcat(rxnFormula,'[c]');
         rxnFormula= regexprep(rxnFormula,'<=>','<==>');
         rxnFormula= regexprep(rxnFormula,'\=>>','=>');
+        rxnFormula= regexprep(rxnFormula,'\s<=+>\s',' <==> ');
+        rxnFormula= regexprep(rxnFormula,'\s=+>\s',' => ');
         
-        KEGG.rxnFormula(cnti,1)=rxnFormula;
+        
+        %If reaction is irreversible backwards, flip around formula
+        irrevBackwards = regexp(rxnFormula,'\s<=+[^>]*\s','ONCE');
+        if ~isempty(irrevBackwards{1})
+            [~,rxnSides] = regexp(rxnFormula,'(.+)<=+(.+)','match','tokens');
+            rxnFormula = strcat(strtrim(rxnSides{1}{1}{2}),{' => '},strtrim(rxnSides{1}{1}{1}));
+        end
+        
+        %Assign reversibility
+        revResult = regexp(rxnFormula,'<=+>','ONCE');
+        if isempty(revResult{1})
+            KEGG.rev(cnti,1) = 0;
+        else
+            KEGG.rev(cnti,1) = 1;
+        end
+        
+        KEGG.rxnFormulas(cnti,1)=rxnFormula;
         cnti=cnti+1;
         %compounds is a list of each of metabolites involved in the
         %reaction that has a KEGGID starting with 'C'.
@@ -118,7 +141,7 @@ end
 close(h);
 KEGG.S=spalloc(length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets) );
 
-[KEGG] = addReactionGEM(KEGG,KEGG.rxns,KEGG.rxns,KEGG.rxnFormula,ones(length(KEGG.rxns),1),-10000*ones(length(KEGG.rxns),1),10000*ones(length(KEGG.rxns),1),1);
+[KEGG] = addReactionGEM(KEGG,KEGG.rxns,KEGG.rxns,KEGG.rxnFormulas,KEGG.rev,-10000*ones(length(KEGG.rxns),1),10000*ones(length(KEGG.rxns),1),1);
 a=length(KEGG.mets);
 KEGG.S(a+1:end,:)=[];
 a=length(KEGG.rxns);
@@ -139,14 +162,14 @@ KEGG.b(NullMet==1)=[];
 % ditto for rxns
 for i = 1: size(KEGG.S,2)
     if isempty(find(KEGG.S(:,i)~=0))
-    NullRxns(i)=1;
+        NullRxns(i)=1;
     end
 end
 
 KEGG.S(:,NullRxns==1)=[];
 KEGG.rxns(NullRxns==1)=[];
 KEGG.rxnNames(NullRxns==1)=[];
-KEGG.rxnFormula(NullRxns==1)=[];
+KEGG.rxnFormulas(NullRxns==1)=[];
 KEGG.subSystems(NullRxns==1)=[];
 KEGG.lb(NullRxns==1)=[];
 KEGG.ub(NullRxns==1)=[];
