@@ -27,7 +27,7 @@ function solverOK = changeCobraSolver(solverName,solverType)
 %                   package)
 %   gurobi          Gurobi accessed through Matlab mex interface (Gurobi mex)
 %   gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
-%   gurobi6         Gurobi 6  accessed through built-in Matlab mex interface
+%   gurobi6         Gurobi 6.*  accessed through built-in Matlab mex interface
 %   matlab          Matlab's own linprog.m (currently unsupported, may not
 %                   work on COBRA-type LP problems)
 %   mps             Outputs a MPS matrix string. Does not solve LP problem
@@ -37,7 +37,7 @@ function solverOK = changeCobraSolver(solverName,solverType)
 %   glpk            glpk MILP solver with Matlab mex interface (glpkmex)
 %   gurobi          Gurobi accessed through Matlab mex interface (Gurobi mex)
 %   gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
-%   gurobi6         Gurobi 6.0 accessed through built-in Matlab mex interface
+%   gurobi6         Gurobi 6.* accessed through built-in Matlab mex interface
 %   mps             Outputs a MPS matrix string. Does not solve MILP
 %                   problem
 %
@@ -46,12 +46,12 @@ function solverOK = changeCobraSolver(solverName,solverType)
 %   qpng            qpng QP solver with Matlab mex interface (in glpkmex
 %                   package, only limited support for small problems)
 %   gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
-%   gurobi6         Gurobi 6.0 accessed through built-in Matlab mex interface
+%   gurobi6         Gurobi 6.* accessed through built-in Matlab mex interface
 %
 % Currently allowed MIQP solvers:
 %   tomlab_cplex    CPLEX MIQP solver accessed through Tomlab environment
 %   gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
-%   gurobi6         Gurobi 6.0 accessed through built-in Matlab mex interface
+%   gurobi6         Gurobi 6.* accessed through built-in Matlab mex interface
 %
 % Currently allowed NLP solvers
 %   matlab          MATLAB's fmincon.m
