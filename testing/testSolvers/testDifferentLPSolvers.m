@@ -59,8 +59,8 @@ global CBTLPSOLVER
 oldSolver=CBTLPSOLVER;
 
 if ~exist('solvers','var')
-    solvers={'gurobi5','mosek','ibm_cplex','cplex_direct','pdco','glpk','quadMinos'};
-    %solvers={'gurobi5','mosek_linprog','mosek','ibm_cplex','cplex_direct','pdco','glpk','quadMinos'};
+    solvers={'gurobi6','mosek','ibm_cplex','cplex_direct','pdco','glpk','quadMinos'};
+    %solvers={'gurobi6','mosek_linprog','mosek','ibm_cplex','cplex_direct','pdco','glpk','quadMinos'};
 end
 
 i=1;
@@ -68,7 +68,7 @@ for j=1:length(solvers)
     %current solver
     solver=solvers{j};
     
-    if strcmp(solver,'gurobi5')
+    if strcmp(solver,'gurobi6')
         if 1
             solverOK = changeCobraSolver(solver,'LP');
             param.Method=1;

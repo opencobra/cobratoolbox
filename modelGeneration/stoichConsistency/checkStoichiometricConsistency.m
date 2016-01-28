@@ -17,12 +17,7 @@ function [inform,m,model]=checkStoichiometricConsistency(model,printLevel,method
 % Detection of conserved and unconserved metabolites based on a new
 % implementation by Nikos Vlassis & Ronan Fleming.
 %
-% Requires the openCOBRA toolbox
-% http://opencobra.sourceforge.net/openCOBRA/Welcome.html
-% 
-% Getting the Latest Code From the Subversion Repository:
-% Linux:
-% svn co https://opencobra.svn.sourceforge.net/svnroot/opencobra/cobra-devel
+% Requires the COBRA toolbox: https://github.com/opencobra/cobratoolbox.git
 %
 % INPUT
 % model.S            m x n Stoichiometric matrix

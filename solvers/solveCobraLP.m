@@ -247,6 +247,7 @@ switch solver
         [status,cmdout]=system([quadLPPath '/testFBA/runfba solveLP ' fname ' lp1']);
         if status~=0
            disp(cmdout)
+           disp('Error. if the error is /bin/tcsh: bad interpreter: No such file or directory, then install tsch on your system')
            error('Call to minos failed');
         end
         %call qminos
