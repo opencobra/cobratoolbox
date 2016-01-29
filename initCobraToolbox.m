@@ -16,10 +16,13 @@ function initCobraToolbox()
 
 % Maintained by Ronan M.T. Fleming
 
+
 %% Add cobra toolbox paths
+global CBTDIR
+global MINOSPATH
+global DQQMINOSPATH
 
 pth=which('initCobraToolbox.m');
-global CBTDIR
 CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1));
 path(path,[CBTDIR, filesep, 'external']);
 
@@ -149,6 +152,17 @@ else
         warning('TranslateSBML did not work with the test .xml file: Ecoli_core_ECOSAL.xml')
     end
     
+end
+
+%quadMinos and dqqMinos support
+[status,cmdout]=system('which minos');
+if ~isempty(cmdout)
+    MINOSPATH=cmdout(1:end-length('/bin/minos')-1);
+end
+[status,cmdout]=system('which run1DQQ');
+if ~isempty(cmdout)
+    str=strrep(cmdout,'//run1DQQ','/run1DQQ');
+    DQQMINOSPATH=str(1:end-length('/run1DQQ')-1);
 end
 
 %saves the current paths

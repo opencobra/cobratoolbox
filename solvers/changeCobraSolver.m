@@ -67,10 +67,6 @@ global CBT_QP_SOLVER;
 global CBT_MIQP_SOLVER;
 global CBT_NLP_SOLVER;
 
-%TODO: for some reason repeated system call to find minos path does not
-%work, this is a workaround
-global MINOSPATH; 
-
 if (nargin < 1)
     display('The solvers defined are: ');
     display(CBTLPSOLVER);
@@ -180,7 +176,17 @@ if (strcmp(solverType,'LP'))
                 warning('Minos not installed or not on system path.');
                 solverOK = false;
             end
-            MINOSPATH=cmdout(1:end-length('/bin/minos')-1);
+        case 'dqqMinos'
+            if ~isunix
+                error('dqqMinos interface not implemented for non unix OS')
+            end
+            [status,cmdout]=system('which run1DQQ');
+            if isempty(cmdout)
+                [status,cmdout]=system('echo $PATH');
+                disp(cmdout);
+                warning('Minos not installed or not on system path.');
+                solverOK = false;
+            end
         otherwise
             warning(['LP solver ' solverName ' not supported by COBRA Toolbox']);
             solverOK = false;

@@ -143,12 +143,10 @@ else % if csense is in the model, move it to the lp problem structure
     end
 end
 
-
 % Fill in the RHS vector if not provided
-if (~isfield(model,'b'))
-    LPproblem.b = zeros(size(model.S,1),1);
-else
-    LPproblem.b = model.b;
+if ~isfield(model,'b')
+    warning('LP problem has no defined b in S*v=b. b should be defined, for now we assume b=0')
+    LPproblem.b=zeros(size(LPproblem.A,1),1);
 end
 
 % Rest of the LP problem
@@ -173,17 +171,23 @@ else
     solution = solveCobraMILP(MILPproblem);
 end
 
-if (solution.stat ~= 1) % check if initial solution was successful.
-    if printLevel>0
-        warning('Optimal solution was not found');
-    end
-    FBAsolution.f = 0;
-    FBAsolution.x = [];
-    FBAsolution.stat = solution.stat;
-    FBAsolution.origStat = solution.origStat;
-    FBAsolution.solver = solution.solver;
-    FBAsolution.time = etime(clock, t1);
+global CBTLPSOLVER
+if strcmp(CBTLPSOLVER,'mps')
+    FBAsolution=solution;
     return;
+else
+    if (solution.stat ~= 1) % check if initial solution was successful.
+        if printLevel>0
+            warning('Optimal solution was not found');
+        end
+        FBAsolution.f = 0;
+        FBAsolution.x = [];
+        FBAsolution.stat = solution.stat;
+        FBAsolution.origStat = solution.origStat;
+        FBAsolution.solver = solution.solver;
+        FBAsolution.time = etime(clock, t1);
+        return;
+    end
 end
 
 objective = solution.obj; % save for later use.

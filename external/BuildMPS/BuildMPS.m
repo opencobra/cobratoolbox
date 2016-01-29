@@ -1,4 +1,4 @@
-function [Contain OK]=BuildMPS(A, b, Aeq, beq, cost, L, U, PbName, varargin)
+function [Contain]=BuildMPS(A, b, Aeq, beq, cost, L, U, PbName, varargin)
 %
 % function Contain=BuildMPS(A, b, Aeq, beq, cost, L, U, PbName); OR
 %          Contain=BuildMPS(..., Param1, Value1, ...);
@@ -30,10 +30,10 @@ function [Contain OK]=BuildMPS(A, b, Aeq, beq, cost, L, U, PbName, varargin)
 % Optional:
 %   - PbName is a string of problem name, default value is 'GENERIC'.
 % Other Params:
-%    'EltNames', 'EqtNames', or 'VarNames'
+%    'EleNames', 'EqtNames', or 'VarNames'
 %     Cells contain string of respectively
 %        (LE) equations, (EQ) equations, or variable names
-%   - 'EltNameFun', 'EqtNameFun', or 'VarNameFun'
+%   - 'EleNameFun', 'EqtNameFun', or 'VarNameFun'
 %     Corresponding Value are function handles that return
 %     Equation/Variable name from equation/Variable number
 %       Example: > VarNameFun=@(m) char('x'+(m-1));
@@ -41,19 +41,43 @@ function [Contain OK]=BuildMPS(A, b, Aeq, beq, cost, L, U, PbName, varargin)
 %     are defined.
 %   - Param is 'MPSfilename': output MPS file to be saved
 %     No saving if MPSfilename is undefined.
-%   - 'I', 'Int' 'Integer', 'Integers'
-%       Array that stores the index of the set of integer variables (>=0).
-%       The indexes must belong to [1,..., n] and correspond to the column
-%       of A, Aeq.
-%   - 'B', 'Bin' 'Binary', 'Binaries'
-%       Array that stores the index of the set of binary variables {0,1}.
-%       Indexes follow the same convention as with integer case.
+%   - 'I', 'Int', 'Integer', 'Integers'
+%       Array that stores the indexes that defines the set of integer
+%       variables (>=0). The indexes must belong to [1,..., n] and
+%       correspond to the column of A, Aeq.
+%   - 'B', 'Bin', 'Binary', 'Binaries'
+%       Array that stores the index that defines the set of binary
+%       variables {0,1}. Indexes follow the same convention as with integer
+%       case.
+%   - 'QUAD', 'Q': a structure with following fields
+%         'Q': (n x n) matrix
+%            The lower triangle of Q is assumed to be the transpose of the
+%            upper triangle (in other word, Q must be symmetric and we use
+%            only the upper part).
+%         'g': (n x 1) vector
+%         'bquad': scalar
+%         'name' (optional): string, name of the constraint.
+%                if qs.name is 'COST' then the quadratic term in the
+%                cost function to be minimized (see below)
+%         'type' (optional): must contains the string 'QLE'
+%                (This field is reserved for future for extension of BuildMPS)
+%
+%      QUAD parameters is used to enforce an additional quadratic
+%      constraint on the unknown x of the type:
+%           0.5*x'*Q*x + g'*x <= bquad        (QLE)
+%
+%      Provide as many QUAD parameters as the number of constraints to be
+%      meet.
+%      Spatial case: if name is 'COST' then it corresponds to a quadratic
+%      term of the cost function
+%           f(x) = cost'*x + 0.5*x'*Q*x
+%      For this case, the 'g' and 'bquad' fields will be ignored.
 %
 % OUTPUT:
 %   Contain: char matrix of the MPS format description of LP/IP problem.
 %
 % RESTRICTION:
-%   Only single rhs (b and beq) is supported.
+%   Only single column rhs (b and beq) is supported.
 %
 % The MPS (Mathematical Programming System) file format was introduced by
 % IBM in 1970s, but has also been accepted by most subsequent linear
@@ -64,25 +88,39 @@ function [Contain OK]=BuildMPS(A, b, Aeq, beq, cost, L, U, PbName, varargin)
 %
 % Usage example:
 %
-%   A = [1 1 0; -1 0 -1];
-%   b = [5; -10];
-%   L = [0; -1; 0];
-%   U = [4; +1; +inf];
-%   Aeq = [0 -1 1];
-%   beq = 7;
-%   cost = [1 4 9];
-%   VarNameFun = @(m) (char('x'+(m-1))); % returning varname 'x', 'y' 'z'
+%     A = [1 1 0; -1 0 -1];
+%     b = [5; -10];
+%     L = [0; -1; 0];
+%     U = [4; +1; +inf];
+%     Aeq = [0 -1 1];
+%     beq = 7;
+%     cost = [1 4 9];
+%     VarNameFun = @(m) (char('x'+(m-1))); % returning varname 'x', 'y' 'z'
 % 
-%   Contain = BuildMPS(A, b, Aeq, beq, cost, L, U, 'Pbtest', ...
-%                      'VarNameFun', VarNameFun, ...
-%                      'EqtNames', {'Equality'}, ...
-%                       'Integer', [1], ... % first variable 'x' is integer
-%                      'MPSfilename', 'Pbtest.mps');
+%     Qle = [2 1 0;
+%          1 2 0;
+%          0 0 1];
+%     g = [0; 0; -3];
+%     bquad = 100;
+%     quad_le = struct('Q', Qle, ...
+%                      'g', g, ...
+%                      'bquad', bquad);
+% 
+%     Qcost = speye(3);
+%     quad_cost = struct('Q', Qcost, ...
+%                        'name', 'cost'), 
+%     Contain = BuildMPS(A, b, Aeq, beq, cost, L, U, 'Pbtest', ...
+%                        'VarNameFun', VarNameFun, ...
+%                        'EqtNames', {'Equality'}, ...
+%                        'Q', quad_le, 'Q', quad_cost, ...
+%                        'Integer', [1], ... % first variable 'x' integer
+%                        'MPSfilename', 'Pbtest.mps');
 %
 % Author: Bruno Luong
 % update: 15-Jul-2008: sligly improved number formatting
 %         25-Aug-2009: Improvement in handling sparse matrix
 %         03-Sep-2009: integer/binary variables
+%         02-May-2010: quadratic term
 
 if nargin<8 || isempty(PbName)
     PbName='GENERIC';
@@ -135,6 +173,9 @@ bset = [];
 % Parse options (varargin)
 %
 parseoptions(varargin{:});
+
+% Number of quadratic constraints
+nquadle = length(quadle);
 
 if ~exist('elenames','var')
     elenames=arrayfun(elenamefun, (1:nle), 'UniformOutput', false);
@@ -194,19 +235,28 @@ for m=1:neq
     l_rows_eq(m,:)=setfields(l_rows_eq(m,:),1,'E',2,eqtnames{m});
 end
 
-l_rows_le=emptyline(nle);
+l_rows_le=emptyline(nle+nquadle);
 for m=1:nle
     l_rows_le(m,:)=setfields(l_rows_le(m,:),1,'L',2,elenames{m});
 end
-
-CostAeq = [cost(:)'; Aeq; A]; % CostAeq is sparse if any is sparse
-MustWrite = (CostAeq ~= 0);
-NWrite = sum(MustWrite,1);
-NLines = sum(ceil(NWrite/2));
+for m=1:nquadle
+    l_rows_le(nle+m,:)=setfields(l_rows_le(nle+m,:),1,'L',2,quadle(m).name);
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Set coefficients of constraint equations in COLUMNS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Put all the linear constraint terms of quadratic in a matrix
+quadle_g = cat(2,quadle(:).g).'; % (nquadle x nvar)
+CostAeq = [cost(:).'; 
+           Aeq;
+           A;
+           quadle_g]; % CostAeq is sparse if any is sparse
+MustWrite = (CostAeq ~= 0);
+NWrite = sum(MustWrite,1);
+NLines = sum(ceil(NWrite/2));
+
 l_columns=setfields([],0,'COLUMNS');
 l_columnsbody=emptyline(NLines);
 
@@ -214,17 +264,21 @@ c=0;
 for n=1:nvar % Loop over variables
     var=varnames{n};
     field=3;
-    eqtn = find(MustWrite(:,n)); % subset of (1:1+neq+nle)
-    for m=eqtn(:).' % 1:1+neq+nle % Loop over eqt
+    eqtn = find(MustWrite(:,n)); % subset of (1:1+neq+nle+nquadle)
+    for m=eqtn(:).' % 1:1+neq+nle+nquadle % Loop over eqt
         if m==1
             colname='COST';
             val = cost(n);
         elseif m<=1+neq
             colname=eqtnames{m-1};
             val=Aeq(m-1,n);
-        else
+        elseif m<=1+neq+nle
             colname=elenames{m-(1+neq)};
-            val=A(m-(1+neq),n);            
+            val=A(m-(1+neq),n);
+        else
+            iquad = m-(1+neq+nle);
+            colname=quadle(iquad).name;
+            val=quadle_g(iquad,n);            
         end
         if field==3
             c=c+1;
@@ -246,7 +300,9 @@ l_columnsbody(c+1:end,:)=[];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Set equation RHS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-rhs=[beq(:); b(:)];
+quadle_bquad = [quadle(:).bquad]; % (1 x nquadle)
+
+rhs=[beq(:); b(:); quadle_bquad(:)];
 MustWrite = (rhs ~= 0);
 NWrite = sum(MustWrite);
 NLines = ceil(NWrite/2);
@@ -256,12 +312,15 @@ l_rhsbody=emptyline(NLines);
 c=0;
 field=3;
 eqt = find(MustWrite); % subset of (1:neq+nle)
-for m=eqt(:).' % 1:neq+nle % Loop over eqt
+for m=eqt(:).' % 1:neq+nle+nquadle % Loop over eqt
     if m<=neq
         colname=eqtnames{m};
         val=rhs(m);
-    else
+    elseif m<=neq+nle
         colname=elenames{m-neq};
+        val=rhs(m);
+    else
+        colname=quadle(m-(neq+nle)).name;
         val=rhs(m);
     end
     if field==3
@@ -399,6 +458,43 @@ end % for-loop on variable
 l_boundbody(c+1:end,:)=[];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Quad section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+for m=1:nquadle
+    % Get the current quad structure
+    qs = quadle(m);
+    l_quad = setfields([],0,'QSECTION');
+    l_quad = setfields(l_quad,3,qs.name);
+    
+    % Use only the upper-triangular part of Q
+    [i j Qij] = find(triu(qs.Q));
+    NLines = length(Qij);
+    l_quadbody = emptyline(NLines);
+    
+    for n=1:NLines % Loop over non-zeros elements
+        vari=varnames{i(n)};
+        varj=varnames{j(n)};
+        l_quadbody(n,:) = setfields(l_quadbody(n,:), ...
+            2,vari,...
+            3,varj, ...
+            4,Qij(n));
+    end
+    
+    quadle(m).qsection = [l_quad; 
+                          l_quadbody]; %#ok
+
+end % for-loop on quadratic constraints
+
+if nquadle>1
+    % concatenate together all the qsections
+    l_allquad = cat(1,quadle(:).qsection);
+else
+    % empty line
+    l_allquad = l_name([],:);
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Set the last card
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 l_end=setfields([],0,'ENDATA');
@@ -407,17 +503,18 @@ l_end=setfields([],0,'ENDATA');
 % Concatenate together all parts of mps format
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Contain=[l_name; ...
-    l_rows; ...
-    l_cost; ...
-    l_rows_eq; ...
-    l_rows_le; ...
-    l_columns; ...
-    l_columnsbody; ...
-    l_rhs; ...
-    l_rhsbody; ...
-    l_bound; ...
-    l_boundbody; ...
-    l_end];
+         l_rows; ...
+         l_cost; ...
+         l_rows_eq; ...
+         l_rows_le; ...
+         l_columns; ...
+         l_columnsbody; ...
+         l_rhs; ...
+         l_rhsbody; ...
+         l_bound; ...
+         l_boundbody; ...
+         l_allquad; ...
+         l_end];
 
 if ~isempty(MPSfilename)
     %
@@ -593,6 +690,13 @@ end
     end
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Generate equation name for (QLE) constraint
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    function name=quadlename(m)
+        name=['QLE' num2str(m)];
+    end
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Parse a pair of Name/Value option
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     function parseoption(strname, value)
@@ -658,11 +762,56 @@ end
                     if any(iset<1 | iset>nvar)
                         error('Integer set contains invalid index');
                     end
-                case {'b' 'bin' 'binary', 'binaries'},
+                case {'b' 'bin' 'binary' 'binaries'},
                     bset = value(:);
                     if any(bset<1 | bset>nvar)
                         error('Binary set contains invalid index');                        
                     end
+                case {'quad' 'q'},
+                    qcounter = length(quadle)+1;
+                    % Basic check of quad structure
+                    if isstruct(value)
+                        qs = value;
+                        if ~isfield(qs,'Q') || ~isequal(size(qs.Q),[nvar nvar])
+                            error('Missing or invalid <Q> field in QUAD structure');
+                        end
+                        if ~isfield(qs,'g') || isempty(qs.g)
+                            qs.g = zeros(nvar,1);
+                        elseif isequal(size(qs.g), [1 nvar])
+                            % reshape in column
+                            qs.g = qs.g(:);
+                        elseif ~isequal(size(qs.g), [nvar 1])
+                            error('Invalid <g> field in QUAD');
+                        end
+                        if ~isfield(qs,'bquad') || isempty(qs.bquad)
+                            qs.bquad = 0;
+                        end
+                        if ~isscalar(qs.bquad)
+                            error('Missing or invalid <bquad> field in QUAD structure');
+                        end  
+                        if ~isfield(qs,'type')
+                            qs.type = 'QLE';
+                        end
+                        if ~strcmpi(qs.type ,'QLE')
+                            error('Invalid <type> field in QUAD structure');
+                        end
+                        if ~isfield(qs,'name') || isempty(qs.name)
+                            qs.name = quadlename(qcounter);
+                        elseif strcmpi(qs.name,'COST') %
+                            qs.name = 'COST'; % force to be upper case
+                            % The linear term for the functional must be
+                            % provides in the 5th parameter
+                            % so we set 'g' to zero
+                            qs.g(:) = 0;
+                            qs.bquad(:) = 0;
+                        end
+                    else
+                        if isempty(value)
+                            return % ignore empty argument
+                        end
+                        error('Invalid input QUAD (must be a structure)');
+                    end
+                    quadle(qcounter) = orderfields(qs);
                 otherwise
                     warning('BuildMPS:UnknownParams', ...
                         ['BuildMPS: Unknown parameter ' strname]);
@@ -681,12 +830,24 @@ end
             error('BuildMPS:IncorrectCall', ...
                   'BuildMPS: options must be pair of Name/Value');            
         end
+        
+        % default empty quadle
+        quadle = struct('Q', {}, ...
+                        'g', {}, ...
+                        'bquad', {}, ...
+                        'type', {}, ...
+                        'name', {} ...
+                        );
+                    
+        quadle = orderfields(quadle);         
+        
         %
         % Loop over pair of Name/Value option
         %
         for ivararg=1:2:nargin
             parseoption(varargin{ivararg},varargin{ivararg+1});
         end
+   
     end
 
 end % BuildMPS

@@ -97,6 +97,8 @@ function solution = solveCobraLP(LPproblem,varargin)
 
 global CBTLPSOLVER
 global MINOSPATH
+global DQQMINOSPATH
+
 if (~isempty(CBTLPSOLVER))
     solver = CBTLPSOLVER;
 elseif nargin==1
@@ -176,6 +178,40 @@ if ~isempty(saveInput)
     save(fileName,'LPproblem')
 end
 
+%support for lifting of ill scaled models
+if parametersStructureFlag
+    if isfield(directParamStruct,'lifting')
+        if directParamStruct.lifting==1
+            BIG=1e4;%suitable for double precision solvers
+            [LPproblem] = reformulate(LPproblem, BIG, printLevel);
+        end
+    end
+end
+
+% Assume constraint matrix is S if no A provided.
+if ~isfield(LPproblem,'A')
+    LPproblem.A = LPproblem.S;
+end
+
+% Assume constraint S*v = b if csense not provided
+if ~isfield(LPproblem,'csense')
+    % If csense is not declared in the model, assume that all
+    % constraints are equalities.
+    LPproblem.csense(:,1) = 'E';
+end
+
+% Assume constraint S*v = 0 if b not provided
+if ~isfield(LPproblem,'b')
+    warning('LP problem has no defined b in S*v=b. b should be defined, for now we assume b=0')
+    LPproblem.b=zeros(size(LPproblem.A,1),1);
+end
+
+% Assume max c'v s.t. S v = b if osense not provided
+if ~isfield(LPproblem,'osense')
+    LPproblem.osense = -1;
+end
+
+%extract the problem from the structure
 [A,b,c,lb,ub,csense,osense] = deal(LPproblem.A,LPproblem.b,LPproblem.c,LPproblem.lb,LPproblem.ub,LPproblem.csense,LPproblem.osense);
 
 % Defaults in case the solver does not return anything
@@ -189,6 +225,173 @@ algorithm='default';
 
 t_start = clock;
 switch solver
+    case 'dqqMinos'
+        if ~isunix 
+            error('dqqMinos interface not yet implemented for non unix OS.')
+        end
+        
+        if isfield(directParamStruct,'mpsParentFolderPath')
+            mpsParentFolderPath=directParamStruct.mpsParentFolderPath;
+        else
+            %use current path for MPS folder
+            mpsParentFolderPath=pwd;
+        end
+        if ~exist(mpsParentFolderPath,'dir')
+            mkdir([mpsParentFolderPath filesep 'MPS'])
+        end
+        
+        %set default mps filename if none provided
+        if ~isfield(directParamStruct,'fname')
+            fname='mpsLP';
+        end
+        
+        if 1
+            addpath('/home/rfleming/Dropbox/modelling/natureComm/source/83models')
+            %use Stanford code to write mps file
+            fname=dumpMPS2(LPproblem,mpsParentFolderPath);
+        else
+            %write out the mps file to the dataDirectory
+            %% BuildMPS
+            % This calls buildMPS and generates a MPS format description of the
+            % problem as the result
+            % Build MPS Author: Bruno Luong
+            % Interfaced with CobraToolbox by Richard Que (12/18/09)
+            display('Solver set to MPS. This function will output an MPS matrix string for the LP problem');
+            
+            %default MPS parameters are no longer global variables, but set
+            %here inside this function
+            if parametersStructureFlag
+                param=directParamStruct;
+            else
+                param=struct();
+            end
+            if isfield(param,'EleNames')
+                EleNames=param.EleNames;
+            else
+                EleNames='';
+            end
+            if isfield(param,'EqtNames')
+                EqtNames=param.EqtNames;
+            else
+                EqtNames='';
+            end
+            if isfield(param,'VarNames')
+                VarNames=param.VarNames;
+            else
+                VarNames='';
+            end
+            if isfield(param,'EleNameFun')
+                EleNameFun=directParamStruct.EleNameFun;
+            else
+                EleNameFun = @(m)(['LE' num2str(m)]);
+            end
+            if isfield(param,'EqtNameFun')
+                EqtNameFun=param.EqtNameFun;
+            else
+                EqtNameFun = @(m)(['EQ' num2str(m)]);
+            end
+            if isfield(param,'VarNameFun')
+                VarNameFun=param.VarNameFun;
+            else
+                VarNameFun = @(m)(['X' num2str(m)]);
+            end
+            if isfield(param,'PbName')
+                PbName=param.PbName;
+            else
+                PbName='LPproble';
+            end
+            if isfield(param,'MPSfilename')
+                MPSfilename=param.MPSfilename;
+            else
+                MPSfilename=[dataDirectory '/dqqFBA'];
+            end
+            %split A matrix for L and E csense
+            Ale = A(csense=='L',:);
+            ble = b(csense=='L');
+            Aeq = A(csense=='E',:);
+            beq = b(csense=='E');
+            
+            %%%%Adapted from BuildMPS%%%%%
+            [neq nvar]=size(Aeq);
+            nle=size(Ale,1);
+            if isempty(EleNames)
+                EleNames=arrayfun(EleNameFun,(1:nle),'UniformOutput', false);
+            end
+            if isempty(EqtNames)
+                EqtNames=arrayfun(EqtNameFun,(1:neq),'UniformOutput', false);
+            end
+            if isempty(VarNames)
+                VarNames=arrayfun(VarNameFun,(1:nvar),'UniformOutput', false);
+            end
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+            
+            % input precision     ('double') or 'single' precision
+            precision='double';
+            
+            %http://www.mathworks.com/matlabcentral/fileexchange/19618-mps-format-exporting-tool/content/BuildMPS/BuildMPS.m
+            [solution] = BuildMPS(Ale, ble, Aeq, beq, c, lb, ub, PbName,'MPSfilename',[mpsParentFolderPath filesep fname '.mps'],'EleNames',EleNames,'EqtNames',EqtNames,'VarNames',VarNames);
+        end
+                
+        %need to change to DDQ directory, need to improve on this - Ronan
+        originalDirectory=pwd;
+        cd(DQQMINOSPATH)
+        sysCall=['run1DQQ ' fname ' ' mpsParentFolderPath];
+        [status,cmdout]=system(sysCall);
+        %why is status returned 1 here?
+        if status~=0
+            disp('\n')
+            disp(sysCall)
+            disp(cmdout)
+            error('Call to dqq failed');
+        end
+        
+        %read the solution
+        solfname=[mpsParentFolderPath '/results/' fname '.sol'];
+        sol = readMinosSolution(solfname);
+        %disp(sol)
+        % The optimization problem solved by MINOS is assumed to be
+        %        min   osense*s(iobj)
+        %        st    Ax - s = 0    + bounds on x and s,
+        % where A has m rows and n columns.  The output structure "sol"
+        % contains the following data:
+        %
+        %        sol.inform          MINOS exit condition
+        %        sol.m               Number of rows in A
+        %        sol.n               Number of columns in A
+        %        sol.osense          osense
+        %        sol.objrow          Row of A containing a linear objective
+        %        sol.obj             Value of MINOS objective (linear + nonlinear)
+        %        sol.numinf          Number of infeasibilities in x and s.
+        %        sol.suminf          Sum    of infeasibilities in x and s.
+        %        sol.xstate          n vector: state of each variable in x.
+        %        sol.sstate          m vector: state of each slack in s.
+        %        sol.x               n vector: value of each variable in x.
+        %        sol.s               m vector: value of each slack in s.
+        %        sol.rc              n vector: reduced gradients for x.
+        %        sol.y               m vector: dual variables for Ax - s = 0.
+        x=sol.x;
+        f=c'*x;
+        y=sol.y;
+        w=sol.rc;
+        origStat=sol.inform;
+        
+        k=sol.s;
+        
+        % Note that status handling may change (see lp_lib.h)
+        if (origStat == 0)
+            stat = 1; % Optimal solution found
+%         elseif (origStat == 3)
+%             stat = 2; % Unbounded
+%         elseif (origStat == 2)
+%             stat = 0; % Infeasible
+        else
+            stat = -1; % Solution not optimal or solver problem
+        end
+        %cleanup
+        delete(solfname)
+        %return to original directory
+        cd(originalDirectory);
     case 'quadMinos'
 %         It is a prerequisite to have installed and compiled minos, qminos 
 %         and the testFBA interface to minos and qminos, then don't alter
@@ -244,8 +447,10 @@ switch solver
         cd([quadLPPath '/testFBA'])
         %[status,cmdout]=system(['cd ' quadLPPath '/testFBA']); 
         %call minos
-        [status,cmdout]=system([quadLPPath '/testFBA/runfba solveLP ' fname ' lp1']);
+        sysCall=[quadLPPath '/testFBA/runfba solveLP ' fname ' lp1'];
+        [status,cmdout]=system(sysCall);
         if status~=0
+           disp(sysCall)
            disp(cmdout)
            disp('Error. if the error is /bin/tcsh: bad interpreter: No such file or directory, then install tsch on your system')
            error('Call to minos failed');
@@ -1178,9 +1383,9 @@ switch solver
             PbName='LPproble';
         end
         if isfield(param,'MPSfilename')
-            MPSfilename=param.MPSfilename;
+            MPSfilename=[param.MPSfilename '.mps'];
         else
-            MPSfilename='';
+            MPSfilename='LP.mps';
         end
         %split A matrix for L and E csense
         Ale = A(csense=='L',:);
@@ -1202,9 +1407,8 @@ switch solver
         end
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
+        %http://www.mathworks.com/matlabcentral/fileexchange/19618-mps-format-exporting-tool/content/BuildMPS/BuildMPS.m
         [solution] = BuildMPS(Ale, ble, Aeq, beq, c, lb, ub, PbName,'MPSfilename',MPSfilename,'EleNames',EleNames,'EqtNames',EqtNames,'VarNames',VarNames);
-        
-        
     otherwise
         error(['Unknown solver: ' solver]);
         
