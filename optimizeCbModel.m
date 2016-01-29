@@ -150,6 +150,7 @@ if ~isfield(model,'b')
 end
 
 % Rest of the LP problem
+[m,n] = size(model.S);
 LPproblem.A = model.S;
 LPproblem.c = model.c;
 LPproblem.lb = model.lb;
@@ -269,8 +270,7 @@ elseif length(minNorm)> 1 || minNorm > 0
         
         if isfield(solution,'dual')
             if ~isempty(solution.dual)
-                %dont include dual variable to constraint enforcing LP optimum
-                solution.dual=solution.dual(1:end-1,1);
+                solution.dual=solution.dual(1:m,1);
             end
         end
     else
@@ -288,8 +288,7 @@ if (solution.stat == 1)
     
     if isfield(solution,'dual')
         if ~isempty(solution.dual)
-            %dont include dual variable to additional constraint
-            solution.dual=solution.dual(1:end-1,1);
+            solution.dual=solution.dual(1:m,1);
         end
     end
     
