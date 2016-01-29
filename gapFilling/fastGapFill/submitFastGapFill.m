@@ -1,4 +1,4 @@
-function [AddedRxns, AddedRxnsExtended] = submitFastGapFill(modelFileIn,dbFileIn,dictionaryFileIn,workspaceFileIn,weightsPerRxnFileIn,forceRerun,epsilon,blackList,listCompartments)
+function [AddedRxns, AddedRxnsExtended] = submitFastGapFill(modelFileIn,dbFileIn,dictionaryFileIn,prepareFGFresultsIn,weightsPerRxnFileIn,forceRerun,epsilon,blackList,listCompartments)
 %% function [AddedRxns] = submitFastGapFill(modelFile,dbFile,dictionaryFile,workspaceFile,paramsFile)
 %
 % A test function for both prepareFastGapFill and
@@ -29,7 +29,11 @@ function [AddedRxns, AddedRxnsExtended] = submitFastGapFill(modelFileIn,dbFileIn
 %                        (default: 'examples/defaultWorkspace.mat')
 % weightsPerRxnFile   File containing individual weights for reactions 
 %                        (default: 'examples/sampleWeights.tsv')
-% forceRerun          Rerun prepareFastGapFill even if it has already been run?
+% forceRerun          Rerun prepareFastGapFill even if it has already been 
+%                     run? N.B. If this is set to 'true' it will overwrite
+%                     the precalculated default results files, unless 
+%                     prepareFGFResultsIn is specified not in the examples
+%                     directory
 %                        (default: false)
 % epsilon             fastCore parameter (default: 1e-4)
 % blackList           List of excluded universal DB reactions 
@@ -74,8 +78,8 @@ end
 if exist('dictionaryFileIn','var') && ~isempty(dictionaryFileIn)
     dictionaryFile = dictionaryFileIn;
 end
-if exist('workspaceFileIn','var') && ~isempty(workspaceFileIn)
-    prepareFGFResults = workspaceFileIn;
+if exist('prepareFGFResultsIn','var') && ~isempty(prepareFGFresultsIn)
+    prepareFGFResults = prepareFGFresultsIn;
 end
 
 if exist('weightsPerRxnFileIn','var') && ~isempty(weightsPerRxnFileIn)
