@@ -1,5 +1,5 @@
-function [AddedRxns, AddedRxnsExtended] = submitFastGapFill(modelFile,dbFile,dictionaryFile,prepareFGFresults,weightsPerRxnFile,forceRerun,epsilon,blackList,listCompartments)
-%% function [AddedRxns] = submitFastGapFill(modelFile,dbFile,dictionaryFile,workspaceFile,paramsFile)
+function [AddedRxns] = submitFastGapFill(modelFile,dbFile,dictionaryFile,prepareFGFresults,weightsPerRxnFile,forceRerun,epsilon,blackList,listCompartments)
+%% function [AddedRxns] = submitFastGapFill(modelFile,dbFile,dictionaryFile,prepareFGFresults,weightsPerRxnFile,forceRerun,epsilon,blackList,listCompartments)
 %
 % A test function for both prepareFastGapFill and
 % fastGapFill, allowing all files to be optionally specified and not 
@@ -11,6 +11,9 @@ function [AddedRxns, AddedRxnsExtended] = submitFastGapFill(modelFile,dbFile,dic
 % code.  The 'runs' variable can be appended to or changed to enable the 
 % running of fastGapFill for different combinations of weights (and 
 % different weightsPerRxnFile files).
+%
+% This function draws inspiration heavily from the example already 
+% available for fastGapFill, i.e. runGapFill_example.m
 %
 % N.B. The defaults are set for testing all of the functionality of the
 % algorithm, including setting a (toy) weight file, which is not necessary 
@@ -35,7 +38,8 @@ function [AddedRxns, AddedRxnsExtended] = submitFastGapFill(modelFile,dbFile,dic
 %                     prepareFGFResultsIn is specified not in the examples
 %                     directory
 %                        (default: false)
-% epsilon             fastCore parameter (default: 1e-4)
+% epsilon             fastCore parameter 
+%                        (default: 1e-4)
 % blackList           List of excluded universal DB reactions 
 %                        (default: none)
 % listCompartments    List of compartments in the model to be gapFilled N.B.
