@@ -50,7 +50,7 @@ if ~exist('epsilon','var') || isempty(epsilon)
 end
 
 if ~exist('listCompartments','var') || isempty(listCompartments)
- [tok,rem] = strtok(model.mets,'\[');
+    [~,rem] = strtok(model.mets,'\[');
     listCompartments = unique(rem);
 end
 
