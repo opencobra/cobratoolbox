@@ -79,7 +79,7 @@ elseif regexp(dictionary_file,'.tsv$')
     fclose(file_handle);
 end
 
-if ~exist('blackList','var') || isempty(blacklist)
+if ~exist('blackList','var') || isempty(blackList)
     %BlackList - reactions in KEGG to be omitted from SMILEY solutions
     blackList = {};
 end

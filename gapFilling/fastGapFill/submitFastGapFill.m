@@ -1,4 +1,4 @@
-function [AddedRxns, AddedRxnsExtended] = submitFastGapFill(modelFileIn,dbFileIn,dictionaryFileIn,prepareFGFresultsIn,weightsPerRxnFileIn,forceRerun,epsilon,blackList,listCompartments)
+function [AddedRxns, AddedRxnsExtended] = submitFastGapFill(modelFile,dbFile,dictionaryFile,prepareFGFresults,weightsPerRxnFile,forceRerun,epsilon,blackList,listCompartments)
 %% function [AddedRxns] = submitFastGapFill(modelFile,dbFile,dictionaryFile,workspaceFile,paramsFile)
 %
 % A test function for both prepareFastGapFill and
@@ -54,37 +54,30 @@ function [AddedRxns, AddedRxnsExtended] = submitFastGapFill(modelFileIn,dbFileIn
 % Suppress load warnings and deal with in the function
 warning('off','MATLAB:load:variableNotFound')
 
-% Default files
+% Get folder for finding default files relative to submitGapFill
 runFile = which('submitFastGapFill');
 runDirCell = regexp(runFile,'(.+/)[^/]+$','tokens');
 runDir = runDirCell{1}{1};
-modelFile = strcat(runDir,'examples/iAF1260.mat');
-dbFile = strcat(runDir,'AuxillaryFiles/reaction.lst');
-dictionaryFile = strcat(runDir,'AuxillaryFiles/KEGG_dictionary.xls');
-prepareFGFResults = strcat(runDir,'examples/prepareFGFResultsDefault.mat');
-weightsPerRxnFile = strcat(runDir,'examples/sampleWeights.tsv');
+
+% Get input files where specified
+if ~exist('modelFile','var') || isempty(modelFile)
+    modelFile = strcat(runDir,'examples/iAF1260.mat');
+end
+if ~exist('dbFile','var') || isempty(dbFile)
+    dbFile = strcat(runDir,'AuxillaryFiles/reaction.lst');
+end
+if ~exist('dictionaryFile','var') || isempty(dictionaryFile)
+    dictionaryFile = strcat(runDir,'AuxillaryFiles/KEGG_dictionary.xls');
+end
+if ~exist('prepareFGFResults','var') || isempty(prepareFGFresults)
+    prepareFGFResults = strcat(runDir,'examples/prepareFGFResultsDefault.mat');
+end
+if ~exist('weightsPerRxnFile','var') || isempty(weightsPerRxnFile)
+    weightsPerRxnFile = strcat(runDir,'examples/sampleWeights.tsv');
+end
 % fastGapFill results files will be created in the same directory as prepareFGFResults
 resultsDirCell = regexp(prepareFGFResults,'(.+/)[^/]+$','tokens');
 resultsDir = resultsDirCell{1}{1};
-
-
-% Get input files where specified
-if exist('modelFileIn','var') && ~isempty(modelFileIn)
-    modelFile = modelFileIn;
-end
-if exist('dbFileIn','var') && ~isempty(dbFileIn)
-    dbFile = dbFileIn;
-end
-if exist('dictionaryFileIn','var') && ~isempty(dictionaryFileIn)
-    dictionaryFile = dictionaryFileIn;
-end
-if exist('prepareFGFResultsIn','var') && ~isempty(prepareFGFresultsIn)
-    prepareFGFResults = prepareFGFresultsIn;
-end
-
-if exist('weightsPerRxnFileIn','var') && ~isempty(weightsPerRxnFileIn)
-    weightsPerRxnFile = weightsPerRxnFileIn;
-end
 
 if ~exist('forceRerun','var') || isempty(forceRerun)
     forceRerun=false;
@@ -116,7 +109,7 @@ clear a;
 if (length_a == 4) && ~forceRerun
     fprintf('prepareGapFill already run, and forceRerun set to "false", prepareGapFill will not be rerun\n');
 else
-% load model using relevant load function
+    % load model using relevant load function
     if regexp(modelFile,'.mat$')
         model = readMlModel(modelFile);
     elseif regexp(modelFile,'.xml$')
@@ -179,11 +172,10 @@ end
 % end
 
 fprintf('Running fastGapFill ...\n')
-% define weights for reactions to be added - the lower the weight the
-% higher the priority
-
 
 %% Define Runs
+% define weights for reactions to be added - the lower the weight the
+% higher the priority
 % WARNING: weights should not be 1, as this impacts on the algorithm
 % performance
 
