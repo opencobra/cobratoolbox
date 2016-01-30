@@ -147,6 +147,8 @@ end
 if ~isfield(model,'b')
     warning('LP problem has no defined b in S*v=b. b should be defined, for now we assume b=0')
     LPproblem.b=zeros(size(LPproblem.A,1),1);
+else
+    LPproblem.b = model.b;
 end
 
 % Rest of the LP problem
