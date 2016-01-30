@@ -1,5 +1,5 @@
-function [AddedRxns] = submitFastGapFill(modelFile,dbFile,dictionaryFile,prepareFGFresults,weightsPerRxnFile,forceRerun,epsilon,blackList,listCompartments)
-%% function [AddedRxns] = submitFastGapFill(modelFile,dbFile,dictionaryFile,prepareFGFresults,weightsPerRxnFile,forceRerun,epsilon,blackList,listCompartments)
+function [AddedRxns] = submitFastGapFill(modelFile,dbFile,dictionaryFile,prepareFGFResults,weightsPerRxnFile,forceRerun,epsilon,blackList,listCompartments)
+%% function [AddedRxns] = submitFastGapFill(modelFile,dbFile,dictionaryFile,prepareFGFResults,weightsPerRxnFile,forceRerun,epsilon,blackList,listCompartments)
 %
 % A test function for both prepareFastGapFill and
 % fastGapFill, allowing all files to be optionally specified and not 
@@ -73,7 +73,7 @@ end
 if ~exist('dictionaryFile','var') || isempty(dictionaryFile)
     dictionaryFile = strcat(runDir,'AuxillaryFiles/KEGG_dictionary.xls');
 end
-if ~exist('prepareFGFResults','var') || isempty(prepareFGFresults)
+if ~exist('prepareFGFResults','var') || isempty(prepareFGFResults)
     prepareFGFResults = strcat(runDir,'examples/prepareFGFResultsDefault.mat');
 end
 if ~exist('weightsPerRxnFile','var') || isempty(weightsPerRxnFile)
@@ -126,6 +126,9 @@ else
     model.ub(EX)=100;
     clear EX
 
+%     % Switch all model IDs to lower-case
+%     model.mets = cellfun(@lower,model.mets,'UniformOutput',false);    
+    
     tic;
     [consistModel,consistMatricesSUX,BlockedRxns] = prepareFastGapFill(model, listCompartments, epsilon, dbFile, dictionaryFile, blackList);
     tpre=toc;
