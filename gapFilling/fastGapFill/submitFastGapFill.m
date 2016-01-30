@@ -90,7 +90,7 @@ if ~exist('epsilon','var') || isempty(epsilon)
     epsilon=1e-4;
 end
 if ~exist('blackList','var') || isempty(blackList)
-    blackList=1e-4;
+    blackList=[];
 end
 if ~exist('listCompartments','var') || isempty(listCompartments)
     listCompartments=[];
