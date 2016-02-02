@@ -1,6 +1,12 @@
 function bool=testFastcc()
 %test fastcc with reconx
 
+%save original solver
+global CBTLPSOLVER;
+origSolverLP = CBTLPSOLVER;
+
+changeCobraSolver('gurobi6','LP');
+
 epsilon = 1e-4;
 printLevel=2;
 
@@ -25,3 +31,10 @@ else
     rev_fluxConsistentBool = fastcc(modelRev,epsilon,printLevel);
     nnz(rev_fluxConsistentBool)
 end
+
+%switch solvers back to original
+if ~isempty(origSolverLP)
+    changeCobraSolver(origSolverLP,'LP');
+end
+
+

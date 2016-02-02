@@ -1,4 +1,11 @@
-clear
+function bool=testFluxConsistency()
+%test fastcc with toy model
+
+%save original solver
+global CBTLPSOLVER;
+origSolverLP = CBTLPSOLVER;
+
+changeCobraSolver('gurobi6','LP');
 
 modelToUse='toy';
 switch modelToUse
@@ -26,15 +33,15 @@ switch modelToUse
 end
 
 epsilon = 1e-8;
-printLevel=0;
+printLevel=2;
 
 if 1
-    [fluxConsistent,sol]=checkFluxConsistency(model,epsilon);
+    fluxConsistentBool = fastcc(model,epsilon,printLevel);
     model.S
-    x=sol.full;
-    [m,n]=size(model.S);
-    for j=1:n
-        fprintf('%d\t%d\t%d\t%d\t%d\t%d\n',x(j),x(j+n),x(j+m+2*n),x(j+m+3*n),x(j+m+4*n),x(j+m+5*n));
+    if isequal(fluxConsistentBool,[1 2 3 5 6]')
+        bool = true;
+    else
+        bool = false;
     end
 else
     if 0
@@ -50,4 +57,11 @@ else
         rev_fluxConsistentBool = fastcc(modelRev,epsilon,printLevel);
         nnz(rev_fluxConsistentBool)
     end
+end
+
+%switch solvers back to original
+if ~isempty(origSolverLP)
+    changeCobraSolver(origSolverLP,'LP');
+end
+
 end
