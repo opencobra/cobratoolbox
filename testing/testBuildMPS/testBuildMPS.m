@@ -108,8 +108,12 @@ delete('testMPSMILP.mps');
 delete('testMPSLP.mps');
 
 %switch solvers back to original
-changeCobraSolver(origSolverLP,'LP');
-changeCobraSolver(origSolverMILP,'MILP');
+if ~isempty(origSolverLP)
+    changeCobraSolver(origSolverLP,'LP');
+end
+if ~isempty(origSolverMILP)
+    changeCobraSolver(origSolverMILP,'MILP');
+end
 
 %change to original directory
 cd(origDir);
