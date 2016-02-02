@@ -24,10 +24,8 @@ switch modelToUse
         model.S=S;
         model.lb=zeros(6,1);
         model.ub=10*ones(6,1);
-        model.b=zeros(4,1);
-        
+        model.b=zeros(4,1);        
     otherwise
-        %graphStoich/data/modelCollection/121114_Recon2betaModel.mat
         load 121114_Recon2betaModel.mat
         model=modelRecon2beta121114;
 end

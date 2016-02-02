@@ -26,8 +26,8 @@ global CBT_QP_SOLVER;
 CBT_QP_SOLVERx=CBT_QP_SOLVER;
 global CBT_MIQP_SOLVER;
 CBT_MIQP_SOLVERx=CBT_MIQP_SOLVER;
-%global CBT_NLP_SOLVER;
-%CBT_NLP_SOLVERx=CBT_NLP_SOLVER;
+global CBT_NLP_SOLVER;
+CBT_NLP_SOLVERx=CBT_NLP_SOLVER;
 
 listPassed = {};
 listNotPassed = {};
@@ -103,8 +103,9 @@ for i=1:size(dir(test_path))
              if ~isempty(CBT_MIQP_SOLVERx)
                 changeCobraSolver(CBT_MIQP_SOLVERx,'MIQP');
              end
-             
-%              changeCobraSolver(CBT_NLP_SOLVERx,'NLP');
+             if ~isempty(CBT_NLP_SOLVERx)
+                changeCobraSolver(CBT_NLP_SOLVERx,'NLP');
+             end             
         end
     end
 end
