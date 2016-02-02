@@ -104,10 +104,6 @@ for i=1:size(dir(test_path))
                 changeCobraSolver(CBT_MIQP_SOLVERx,'MIQP');
              end
              
-%              changeCobraSolver(CBTLPSOLVERx,'LP');
-%              changeCobraSolver(CBT_MILP_SOLVERx,'MILP');
-%              changeCobraSolver(CBT_QP_SOLVERx,'QP');
-%              changeCobraSolver(CBT_MIQP_SOLVERx,'MIQP');
 %              changeCobraSolver(CBT_NLP_SOLVERx,'NLP');
         end
     end
