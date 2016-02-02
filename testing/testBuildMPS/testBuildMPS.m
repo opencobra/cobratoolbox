@@ -35,7 +35,7 @@ changeCobraSolver('mps','LP');
 changeCobraSolver('mps','MILP');
 
 %Call solveCobraLP; Name output file 'testMPSLP.mps'
-paramStruct.MPSfilename='testMPSLP.mps';
+paramStruct.MPSfilename='testMPSLP';
 paramStruct.EqtNames=EqtNames;
 paramStruct.VarNameFun=VarNameFun;
 
