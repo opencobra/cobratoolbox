@@ -12,7 +12,10 @@ function [out,solution]=testDifferentLPSolvers(model,solvers,printLevel)
 
 if exist('model','var')
     if ~isempty(model)
-        model.A=model.S;
+        %model.A assumed to be matrix with coupling constraints
+        if ~isfield(model,'A')
+            model.A=model.S;
+        end
         model.lb=double(full(model.lb));
         model.ub=double(full(model.ub));
         model.c=double(full(model.c));

@@ -190,7 +190,9 @@ end
 
 % Assume constraint matrix is S if no A provided.
 if ~isfield(LPproblem,'A')
-    LPproblem.A = LPproblem.S;
+    if isfield(LPproblem,'S')
+        LPproblem.A = LPproblem.S;
+    end
 end
 
 % Assume constraint S*v = b if csense not provided
@@ -210,6 +212,7 @@ end
 if ~isfield(LPproblem,'osense')
     LPproblem.osense = -1;
 end
+
 
 %extract the problem from the structure
 [A,b,c,lb,ub,csense,osense] = deal(LPproblem.A,LPproblem.b,LPproblem.c,LPproblem.lb,LPproblem.ub,LPproblem.csense,LPproblem.osense);
@@ -240,15 +243,29 @@ switch solver
             mkdir([mpsParentFolderPath filesep 'MPS'])
         end
         
-        %set default mps filename if none provided
-        if ~isfield(directParamStruct,'fname')
-            fname='mpsLP';
+        if parametersStructureFlag
+            if isfield(directParamStruct,'MPSfilename')
+                MPSfilename=directParamStruct.MPSfilename;
+            else
+                if isfield(LPproblem,'modelID')
+                    MPSfilename=LPproblem.modelID;
+                else
+                    MPSfilename='file';
+                end
+            end
         end
         
+        
         if 1
-            addpath('/home/rfleming/Dropbox/modelling/natureComm/source/83models')
             %use Stanford code to write mps file
-            fname=dumpMPS2(LPproblem,mpsParentFolderPath);
+            %fname=writeMINOSMPS(LPproblem,mpsParentFolderPath,printLevel);
+            tempFileName  = MPSfilename(1:min(8,length(MPSfilename)));
+            if exist([mpsParentFolderPath filesep 'MPS' filesep tempFileName '.mps'],'file')
+                MPSfilename=tempFileName;
+            else
+                longMPSfilename=MPSfilename;
+                MPSfilename=writeMINOSMPS(A,b,c,lb,ub,csense,osense,longMPSfilename,mpsParentFolderPath,printLevel);
+            end
         else
             %write out the mps file to the dataDirectory
             %% BuildMPS
@@ -256,7 +273,7 @@ switch solver
             % problem as the result
             % Build MPS Author: Bruno Luong
             % Interfaced with CobraToolbox by Richard Que (12/18/09)
-            display('Solver set to MPS. This function will output an MPS matrix string for the LP problem');
+            display('Solver set to MPS. This function will write out a .MPS file and return a matrix string for the LP problem');
             
             %default MPS parameters are no longer global variables, but set
             %here inside this function
@@ -330,13 +347,13 @@ switch solver
             precision='double';
             
             %http://www.mathworks.com/matlabcentral/fileexchange/19618-mps-format-exporting-tool/content/BuildMPS/BuildMPS.m
-            [solution] = BuildMPS(Ale, ble, Aeq, beq, c, lb, ub, PbName,'MPSfilename',[mpsParentFolderPath filesep fname '.mps'],'EleNames',EleNames,'EqtNames',EqtNames,'VarNames',VarNames);
+            [solution] = BuildMPS(Ale, ble, Aeq, beq, c, lb, ub, PbName,'MPSfilename',[mpsParentFolderPath filesep MPSfilename '.mps'],'EleNames',EleNames,'EqtNames',EqtNames,'VarNames',VarNames);
         end
                 
         %need to change to DDQ directory, need to improve on this - Ronan
         originalDirectory=pwd;
         cd(DQQMINOSPATH)
-        sysCall=['run1DQQ ' fname ' ' mpsParentFolderPath];
+        sysCall=['run1DQQ ' MPSfilename ' ' mpsParentFolderPath];
         [status,cmdout]=system(sysCall);
         %why is status returned 1 here?
         if status~=0
@@ -347,7 +364,7 @@ switch solver
         end
         
         %read the solution
-        solfname=[mpsParentFolderPath '/results/' fname '.sol'];
+        solfname=[mpsParentFolderPath '/results/' MPSfilename '.sol'];
         sol = readMinosSolution(solfname);
         %disp(sol)
         % The optimization problem solved by MINOS is assumed to be
@@ -389,7 +406,9 @@ switch solver
             stat = -1; % Solution not optimal or solver problem
         end
         %cleanup
-        delete(solfname)
+        if 0
+            delete(solfname)
+        end
         %return to original directory
         cd(originalDirectory);
     case 'quadMinos'
@@ -1338,7 +1357,7 @@ switch solver
         % problem as the result
         % Build MPS Author: Bruno Luong
         % Interfaced with CobraToolbox by Richard Que (12/18/09)
-        display('Solver set to MPS. This function will output an MPS matrix string for the LP problem');
+        display('Solver set to MPS. This function will write out a .MPS file and return a matrix string for the LP problem');
 
         %default MPS parameters are no longer global variables, but set
         %here inside this function
@@ -1408,7 +1427,8 @@ switch solver
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
         %http://www.mathworks.com/matlabcentral/fileexchange/19618-mps-format-exporting-tool/content/BuildMPS/BuildMPS.m
-        [solution] = BuildMPS(Ale, ble, Aeq, beq, c, lb, ub, PbName,'MPSfilename',MPSfilename,'EleNames',EleNames,'EqtNames',EqtNames,'VarNames',VarNames);
+        %31st Jan 2016, changed c to osense*c as most solvers assume minimisation
+        [solution] = BuildMPS(Ale, ble, Aeq, beq, osense*c, lb, ub, PbName,'MPSfilename',MPSfilename,'EleNames',EleNames,'EqtNames',EqtNames,'VarNames',VarNames);
     otherwise
         error(['Unknown solver: ' solver]);
         

@@ -1,7 +1,7 @@
 function initCobraToolbox()
 %initCobraToolbox Initialize COnstraint-Based Reconstruction and Analysis Toolbox
 %
-% Defines default solvers and paths as well as test SBML io functionality.
+% Defines default solvers and paths, tests SBML io functionality.
 % Function only needs to be called once per installation. Saves paths afer script terminates.
 %
 % In addition add either of the following into startup.m (generally in MATLAB_DIRECTORY/toolbox/local/startup.m)

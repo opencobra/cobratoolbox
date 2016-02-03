@@ -1,20 +1,24 @@
-function results = testModelsAlgorithmically(solvers,matFolder,modelNames)
+function results = testModelsAlgorithmically(solvers,matFolder,modelNames,printLevel)
 %test a set of models for the feasibility of a nonzero objective(>1e-4)
 %by default, do not run this script with testAll
 %
 %INPUT
-% solvers       cell array of solvers to test e.g. {'gurobi5','quadMinos'}
-% matFolder     absolute path to the folder where model .mat files 
+% solvers       z x 1 cell array of solvers to test e.g. {'gurobi5','quadMinos'}
+% matFolder     absolute path to the folder where k model .mat files are
 %
 %OPTIONAL INPUT
 % modelNames    k x 2 cell array of {Species, modelFilename} setting order
-%               of results structure
+%               of results structure when returned
 %               e.g. modelNames={...
 %                    'Lactococcus lactis','LLACTIS';
-%                    'Mus musculus','nameOfFile'};
+%                    'Mus musculus','iMM302'};
+%
+%printLevel    {(0),1} choose the amount to be printed to screen
 %
 %OUTPUT
 % results      k x (2 + z) cell array of results
+
+% 39 Jan 2016 Ronan M.T. Fleming
 
 if 1
     %%parameters
@@ -41,34 +45,7 @@ if 1
         %solvers={'gurobi6','quadMinos'};
         solvers={'quadMinos'};
     end
-    
-    %optionally: path to quadMinos solver
-    %pathContainingQuadMinos='/usr/local/bin/quadLP/matlab';
-    %pathContainingQuadMinos='/usr/local/bin/quadLP/matlab';
-    
-    %test if cobra toolbox is installed
-    if ~exist('initCobraToolbox','file')
-        %Set and navigate to the path to contain repositories cloned from opencobra. e.g.
-        %pathContainingOpencobra='/usr/local/bin/';
-        pathContainingOpencobra='/home/rfleming/work/code/';
-        cd(pathContainingOpencobra)
         
-        %path to gurobi solver
-        pathContainingGurobi='/usr/local/bin/gurobi650/linux64/matlab/';
-        addpath(pathContainingGurobi)
-        
-        %clone opencobra code into pathContainingOpencobra
-        system('git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox')
-        %system('git clone https://github.com/opencobra/m_model_collection.git')
-        cd(['pathContainingOpencobra' cobratoolbox])
-        %initialise cobra toolbox
-        initCobraToolbox
-        
-        %gurobi
-        QPsolverOK = changeCobraSolver('gurobi6','QP');
-        LPsolverOK = changeCobraSolver('gurobi6','LP');
-    end
-    
     pth=which('initCobraToolbox.m');
     global CBTDIR
     CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1));
@@ -219,6 +196,9 @@ if 1
         sbmlTestModelToMat(xmlFolder,matFolder);
     end
     
+    if ~exist('printLevel','var')
+        printLevel=0;
+    end    
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -240,18 +220,17 @@ if 1
         end
     end
     
-    %choose the amount to be printed to screen
-    printLevel=0;
-    
-    %choose the minimum magnitude considered a nonzero objective
-    tol=1e-4;
 
+    
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % batch of mat files models the matFolder directory
     cd(matFolder)
-    %list of mat files
+    
+    %batch of models in .mat format in a directory
+    %assumes that each .mat file is a model
     matFiles=dir(matFolder);
     nModels=length(matFiles)-2;
+    
     modelResults=cell(nModels,2+length(solvers));
     j=1;
     for k=3:length(matFiles) %loop through the mat files in the directory
@@ -266,8 +245,8 @@ if 1
             whosFile=whos('-file',matFiles(k).name);
             modelID=matFiles(k).name(1:end-4);
             modelResults{j,1}=modelID;
-            if printLevel>0
-                fprintf('%20s%s',modelID,': ');
+            if printLevel>-1
+                fprintf('%20s\n',modelID);
             end
             load(matFiles(k).name);
             model=eval(whosFile.name);
@@ -305,14 +284,10 @@ if 1
             else
                 modelResults{j,2}='?';
             end
-            
-            if 0
-                %save out models for individual debugging
-                save([matFolder(1:end-length('m_model_collection_mat')) 'testedModels/' modelID '.mat'],'model')
-            end
-            
+                        
             %test with different solvers
             [out,solutions{j}]=testDifferentLPSolvers(model,solvers,printLevel);
+            %save results
             for z=1:length(solvers)
                 modelResults{j,2+z}=solutions{j}{z}.obj;
             end
@@ -325,22 +300,27 @@ if 1
     %different
     if isempty(modelNames)
         %create results structure
-        results=cell(j,2+length(solvers)); 
+        results=cell(j,2+length(solvers));
         %add results in the order given by modelNames
         for k=1:j-1
             %Abbreviation of model
             results{k+1,1}=modelResults{k,1};
             results{k+1,2}=modelResults{k,2};
             %Abbreviation of reaction optimised'
-            results{k+1,3}=modelResults{k,2};
             %solver objectives
             for z=1:length(solvers)
-                results{k+1,3+z}=modelResults{k,2+z};
+                results{k+1,2+z}=modelResults{k,2+z};
             end
+        end
+        %add headings to the results structure
+        results{1,1}='Model';
+        results{1,2}='Rxn maximised';
+        for z=1:length(solvers)
+            results{1,2+z}=solvers{z};
         end
     else
         %create results structure
-        results=cell(size(modelNames,1)+1,3+length(solvers)); 
+        results=cell(size(modelNames,1)+1,3+length(solvers));
         %add results in the order given by modelNames
         for k=1:size(modelNames,1)
             %Abbreviation of model
@@ -356,12 +336,12 @@ if 1
                 end
             end
         end
-    end
-    %add headings to the results structure
-    results{1,1}='Species';
-    results{1,2}='Model';
-    results{1,3}='Rxn maximised';
-    for z=1:length(solvers)
-       results{1,3+z}=solvers{z};
+        %add headings to the results structure
+        results{1,1}='Species';
+        results{1,2}='Model';
+        results{1,3}='Rxn maximised';
+        for z=1:length(solvers)
+            results{1,3+z}=solvers{z};
+        end
     end
 end
