@@ -32,13 +32,14 @@ function [AddedRxns] = submitFastGapFill(modelFile,dbFile,dictionaryFile,prepare
 %                        (default: 'examples/defaultWorkspace.mat')
 % weightsPerRxnFile   File containing individual weights for reactions 
 %                        (default: 'examples/sampleWeights.tsv')
-% forceRerun          Rerun prepareFastGapFill even if it has already been 
-%                     run? N.B. If this is set to 'true' it will overwrite
+% forceRerun          Boolean specifying whether to rerun 
+%                     prepareFastGapFill even if it has already been 
+%                     run. N.B. If this is set to 'true' it will overwrite
 %                     the precalculated default results files, unless 
-%                     prepareFGFResultsIn is specified not in the examples
+%                     prepareFGFResults is specified outside the examples
 %                     directory
 %                        (default: false)
-% epsilon             fastCore parameter 
+% epsilon             Float, a fastCore parameter 
 %                        (default: 1e-4)
 % blackList           List of excluded universal DB reactions 
 %                        (default: none)
@@ -82,6 +83,9 @@ end
 % fastGapFill results files will be created in the same directory as prepareFGFResults
 resultsDirCell = regexp(prepareFGFResults,'(.+/)[^/]+$','tokens');
 resultsDir = resultsDirCell{1}{1};
+if ~exist(resultsDir, 'dir')
+  mkdir(resultsDir);
+end
 
 if ~exist('forceRerun','var') || isempty(forceRerun)
     forceRerun=false;
