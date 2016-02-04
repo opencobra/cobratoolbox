@@ -13,7 +13,7 @@ function model = loadIdentifiedModel(filename,directory)
 
 %Ronan Fleming
 
-if ~exist('dir','var')
+if ~exist('directory','var')
     directory=pwd;
 end
 
@@ -23,9 +23,16 @@ matFile=[directory filesep filename '.mat'];
 whosFile=whos('-file',matFile);
 modelName=whosFile.name;
 %load the .mat file
-load([filename '.mat']);
+load(matFile);
 %rename the variable of the model to the standard, i.e. 'model'
 model=eval(modelName);
+%model.rev should be depreciated as it duplicates model.lb and model.ub
+if isfield(model,'rev')
+    model=rmfield(model,'rev');
+end
+if isfield(model,'osense')
+    model.osense=cast(model.osense,'double');
+end
 %stamp the model with the ID of the file
 model.modelID=modelName;
 
