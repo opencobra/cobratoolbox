@@ -364,7 +364,7 @@ switch solver
         end
         
         %read the solution
-        solfname=[mpsParentFolderPath '/results/' MPSfilename '.sol'];
+        solfname=[mpsParentFolderPath filesep 'results' filesep MPSfilename '.sol'];
         sol = readMinosSolution(solfname);
         %disp(sol)
         % The optimization problem solved by MINOS is assumed to be
@@ -387,7 +387,7 @@ switch solver
         %        sol.s               m vector: value of each slack in s.
         %        sol.rc              n vector: reduced gradients for x.
         %        sol.y               m vector: dual variables for Ax - s = 0.
-        x=sol.x;
+        x=sol.x
         f=c'*x;
         y=sol.y;
         w=sol.rc;

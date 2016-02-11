@@ -257,7 +257,7 @@ if 1
             %find the exchange reactions
             [m,n]=size(model.S);
             try
-                if length(find(model.c~=0))~=1 % if more than one objectiive vector are defined in the model, only the one of the them is chosen for the testing.
+                if length(find(model.c~=0))~=1 % if more than one objective vector are defined in the model, only the one of the them is chosen for the testing.
                     ind=find(model.c~=0);
                     if isempty(ind); % if no objective vector is defined, set the first reaction as the objective for the testing.
                         warning('all zero entries in model.c')
@@ -279,7 +279,7 @@ if 1
             end
             
             %record the reaction to be optimized
-            if any(model.c~=0)
+            if any(model.c~=0) && isfield(model,'rxns')
                 modelResults{j,2}=model.rxns{model.c~=0};
             else
                 modelResults{j,2}='?';
