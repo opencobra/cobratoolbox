@@ -202,7 +202,19 @@ end
 if isfield(model,'rxnECNumbers')
     model.rxnECNumbers{rxnID,1} = '';
 end
-
+% 17/02/2016 Update 4 additional fields that are present in Recon 2
+if isfield(model,'rxnKeggID')
+    model.rxnKeggID{rxnID,1} = '';
+end
+if isfield(model,'rxnConfidenceEcoIDA')
+    model.rxnConfidenceEcoIDA{rxnID,1} = '';
+end
+if isfield(model,'rxnConfidenceScores')
+    model.rxnConfidenceScores{rxnID,1} = '';
+end
+if isfield(model,'rxnsboTerm')
+    model.rxnsboTerm{rxnID,1} = '';
+end
 
 %Give warning and combine the coeffeicient if a metabolite appears more than once
  [metaboliteListUnique,~,IC] = unique(metaboliteList);
@@ -248,20 +260,29 @@ for i = 1:length(metaboliteList)
             warning(['Metabolite formula for ' metaboliteList{i} ' set to ''''']);
 %             model.metFormulas(end) = cellstr(input('Enter metabolite chemical formula, if available:', 's'));
         end
-        if isfield(model,'metChEBIID')
-            model.metChEBIID{end+1,1} = '';
+        if isfield(model,'metCHEBIID')
+            model.metCHEBIID{end+1,1} = ''; %changed to match Recon 2 nomenclature 
         end
-        if isfield(model,'metKEGGID')
-            model.metKEGGID{end+1,1} = '';
+        if isfield(model,'metKeggID')
+            model.metKeggID{end+1,1} = ''; %changed to match Recon 2 nomenclature
         end
         if isfield(model,'metPubChemID')
             model.metPubChemID{end+1,1} = '';
         end
-        if isfield(model,'metInChIString')
-            model.metInChIString{end+1,1} = '';
+        if isfield(model,'metInchiString')
+            model.metInchiString{end+1,1} = ''; %changed to match Recon 2 nomenclature
         end
         if isfield(model,'metCharge')
             model.metCharge(end+1,1) = 0;
+        end
+        if isfield(model,'metHepatoNetID')
+            model.metHepatoNetID{end+1,1} = ''; %added
+        end
+        if isfield(model,'metEHMNID')
+            model.metEHMNID{end+1,1} = ''; %added
+        end
+        if isfield(model,'metHMDB')
+            model.metHMDB{end+1,1} = ''; %added
         end
     end
 end
