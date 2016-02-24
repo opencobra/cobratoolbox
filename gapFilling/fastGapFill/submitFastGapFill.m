@@ -117,6 +117,7 @@ clear a;
 if (length_a == 4) && ~forceRerun
     fprintf('prepareGapFill already run, and forceRerun set to "false", prepareGapFill will not be rerun\n');
 else
+    
     % load model using relevant load function
     if regexp(modelFile,'.mat$')
         model = readMlModel(modelFile);
@@ -136,7 +137,7 @@ else
     tic;
     [consistModel,consistMatricesSUX,BlockedRxns] = prepareFastGapFill(model, listCompartments, epsilon, dbFile, dictionaryFile, blackList);
     tpre=toc;
-
+    
     % Prepare the output table with statistics
     cnt = 1;
     prepStats{cnt,1} = 'Model name';cnt = cnt+1;
