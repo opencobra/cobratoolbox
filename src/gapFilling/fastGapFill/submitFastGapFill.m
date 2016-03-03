@@ -206,15 +206,15 @@ run.weightsPerReactionFile = weightsPerRxnFile;
 run.weights.MetabolicRxns = 0.1; % Kegg metabolic reactions
 run.weights.ExchangeRxns = 0.9; % Exchange reactions
 run.weights.TransportRxns = 40; % Transport reactions
-run.name = 'high_weight';
+run.name = 'hw';
 runs = [runs; run];
 
 % RUN 3
 run.weightsPerReactionFile = '';
-run.weights.MetabolicRxns = 0.1; % Kegg metabolic reactions
-run.weights.ExchangeRxns = 0.5; % Exchange reactions
-run.weights.TransportRxns = 10; % Transport reactions
-run.name = 'no_weight_file';
+run.weights.MetabolicRxns = 0.01; % Kegg metabolic reactions
+run.weights.ExchangeRxns = 2.1; % Exchange reactions
+run.weights.TransportRxns = 20; % Transport reactions
+run.name = 'vhw';
 runs = [runs; run];
 
 
