@@ -1,5 +1,5 @@
 
-Last updated 26.5.2010.
+Last updated 14.3.2016.
 
 The following files are supplied
 
@@ -12,13 +12,13 @@ glpkFVAcc.cpp		Source code for the GLPK version of fastFVA
 
 The following precompiled Matlab executables are supplied
 
-glpkFVAcc.mexw32	32-bit Windows version, built with GLPK-4.42, Matlab 2009b and Windows XP
-glpkFVAcc.mexw64	64-bit Windows version, built with GLPK-4.42, Matlab 2009b and Windows 7
-glpkFVAcc.mexa64	64-Bit Linux version,   built with GLPK-4.43, Matlab 2009b and Linux 2.6.9-89
+win/glpkFVAcc.mexw32	32-bit Windows version, built with GLPK-4.42, Matlab 2009b and Windows XP
+win/glpkFVAcc.mexw64	64-bit Windows version, built with GLPK-4.42, Matlab 2009b and Windows 7
+win/cplexFVAc.mexw32  32-bit Windows version, built with CPLEX 12.1, Matlab 2009b and Windows XP
+win/cplexFVAc.mexw64  64-bit Windows version, built with CPLEX 12.1, Matlab 2009b and Windows 7
 
-cplexFVAc.mexw32	32-bit Windows version, built with CPLEX 12.1, Matlab 2009b and Windows XP
-cplexFVAc.mexw64	64-bit Windows version, built with CPLEX 12.1, Matlab 2009b and Windows 7
-
+linux/glpkFVAcc.mexa64	64-Bit Linux version, built with GLPK-4.43, Matlab 2009b and Linux 2.6.9-89
+linux/cplexFVAc.mexa64  64-Bit Linux version, built with CPLEX 12.6.2.0, Matlab R2014a and Linux Ubuntu 15.10
 
 
 Introduction
@@ -81,7 +81,6 @@ For Win32
 >> mex -IC:\ILOG\CPLEX121\include\ilcplex cplexFVAc.c C:\ILOG\CPLEX121\lib\x86_windows_vs2008\stat_mda\cplex121.lib C:\ILOG\CPLEX121\lib\x86_windows_vs2008\stat_mda\ilocplex.lib
 
 For Win64
-
 >> mex -largeArrayDims -IC:\ILOG\CPLEX121\include\ilcplex cplexFVAc.c C:\ILOG\CPLEX121\lib\x64_windows_vs2008\stat_mda\cplex121.lib C:\ILOG\CPLEX121\lib\x64_windows_vs2008\stat_mda\ilocplex.lib
 
 
@@ -100,25 +99,20 @@ http://www.gnu.org/software/glpk/
 64-bit
 >> mex -largeArrayDims glpkFVAcc.cpp -lglpk -lm
 
-%% start - [March 2016: edit LHT]
-
 2.2 CPLEX version
 -----------------
 
 64 - bit
 
->>
-filename ='cplexFVAc.c';
+>> filename ='cplexFVAc.c';
 
-CPLEXpath ='/opt/ibm/ILOG/CPLEX_Studio1262/cplex'
-include =[CPLEXpath '/include'];
-lib =[CPLEXpath '/lib/x86-64_linux/static_pic'];
-library =[lib '/libcplex.a'];
+>> CPLEXpath ='/opt/ibm/ILOG/CPLEX_Studio1262/cplex'
+>> include =[CPLEXpath '/include'];
+>> lib =[CPLEXpath '/lib/x86-64_linux/static_pic'];
+>> library =[lib '/libcplex.a'];
 
-cmd = ['-largeArrayDims -I' include ' ' filename ' ' library];
-eval(['mex ' cmd]);
-
-%% end - [March 2016: edit LHT]
+>> cmd = ['-largeArrayDims -I' include ' ' filename ' ' library];
+>> eval(['mex ' cmd]);
 
 Usage
 =====
