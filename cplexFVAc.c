@@ -47,6 +47,8 @@
 #include <matrix.h>
 #include <ilcplex/cplex.h>
 #include "mex.h"
+#define _GNU_SOURCE
+#include <string.h>
 
 /* CPLEX declarations.  */
 
@@ -528,6 +530,13 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     int             status;
 
     int             errors = 1;     /* keep track of errors during initialization */
+
+
+/*UST FOR DEBUGGING LHT*/
+      mexPrintf("CPLEXINT, Version %s.\n", CPLEXINT_VERSION);
+      mexPrintf("MEX interface for using CPLEX in Matlab.\n");
+/*JUST FOR DEBUGGING LHT*/
+
 
     /* If there are no input nor output arguments display version number */
     if ((nrhs == 0) && (nlhs == 0)){

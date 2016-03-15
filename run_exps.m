@@ -3,18 +3,22 @@
 % "Computationally efficient Flux Variability Analysis"
 % Authors: S. Gudmundsson and I. Thiele.
 
+% 20160315: Minor modifications for Linux support by L. Heirendt
+
+addpath(genpath('~/Dropbox/UNI.LU'))
+
 % FVA settings
 optPercentage=90;
 objective='max';
 
-solver='cplexint'; % or 'glpk'
+solver='cplexint'; % or 'glpk' %%cplexint
 
 % Parallel settings
 bParallel=true;
 nworkers=8;       % Number of parallel workers (quad core CPU + hyperthr.)
 
 % Data sets
-dataDir='../models';
+dataDir='';
 modelList={ 'TM',      '1174671 TM_minimal_medium_glc.mat',      []
             'Pputida'  'Pputida_model_glc_min.mat',              []
             'E.Coli',  'ecoli_core_model.mat',                            []
@@ -35,7 +39,7 @@ else
    SetWorkerCount(0);
 end
 
-iModel = 3;
+iModel = 4;
 %for iModel=1:nmodels
    % Read model data
    data=load([dataDir,'/',modelList{iModel,2}]);

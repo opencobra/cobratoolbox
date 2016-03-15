@@ -104,15 +104,15 @@ http://www.gnu.org/software/glpk/
 
 64 - bit
 
->> filename ='cplexFVAc.c';
+>>
 
->> CPLEXpath ='/opt/ibm/ILOG/CPLEX_Studio1262/cplex'
->> include =[CPLEXpath '/include'];
->> lib =[CPLEXpath '/lib/x86-64_linux/static_pic'];
->> library =[lib '/libcplex.a'];
-
->> cmd = ['-largeArrayDims -I' include ' ' filename ' ' library];
->> eval(['mex ' cmd]);
+filename ='cplexFVAc.c';
+CPLEXpath ='/opt/ibm/ILOG/CPLEX_Studio1262/cplex'
+include =[CPLEXpath '/include'];
+lib =[CPLEXpath '/lib/x86-64_linux/static_pic'];
+library =[lib '/libcplex.a'];
+cmd = ['-largeArrayDims -I' include ' ' filename ' ' library];
+eval(['mex ' cmd]);
 
 Usage
 =====

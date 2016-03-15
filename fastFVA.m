@@ -45,7 +45,7 @@ function [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective,so
 % Author: Steinn Gudmundsson.
 % Last updated: April 21st, 2010.
 
-verbose=0;
+verbose=1;
 
 if nargin<4, solver='glpk'; end
 if nargin<3, objective='max'; end
@@ -86,7 +86,7 @@ if nworkers<=1
                                      optPercentage,obj,(1:n)');
 
    if ret ~= 0 && verbose
-      fprintf('Unable to complete the FVA, return code=%d\n', ret)
+      fprintf('Unable to complete the FVA, return code=%d\n', ret);
    end
 else
    % Divide the reactions amongst workers
@@ -115,6 +115,9 @@ else
    minFlux=zeros(n,1); maxFlux=zeros(n,1);
    iopt=zeros(nworkers,1);
    iret=zeros(nworkers,1);
+
+   fprintf('\n -- Starting to loop through the %d workers. -- \n\n', nworkers);
+
    parfor i=1:nworkers
       [minf,maxf,iopt(i),iret(i)]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                        optPercentage,obj,(istart(i):iend(i))');
