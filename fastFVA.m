@@ -136,8 +136,13 @@ else
        t = getCurrentTask();
        fprintf('Worker Nb(i%d) %d: \n', i, t.ID);
 
+  tstart=tic;
+
       [minf,maxf,iopt(i),iret(i)]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                        optPercentage,obj,(istart(i):iend(i))');
+      
+   fprintf('Time spent in FVAc: %1.1f seconds.\n', toc(tstart));
+
       if iret(i) ~= 0 && verbose
          fprintf('Problems solving partition %d, return code=%d\n', i, iret(i))
       end

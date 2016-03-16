@@ -46,11 +46,11 @@
 #include <stdlib.h>
 #include <math.h> /*missing package here*/
 #include <matrix.h>
+#include <time.h>
 /*#include <cplex.h>*/
 #include <ilcplex/cplex.h>
 #include "mex.h"
 #include <string.h>
-
 
 /* CPLEX declarations.  */
 
@@ -121,7 +121,6 @@ enum {MINFLUX_OUT_POS, MAXFLUX_OUT_POS, OPTSOL_OUT_POS, RET_OUT_POS, MAX_NUM_OUT
 
 /* this is for TRYING to release the CPLEX license when pressing CTRL-C */
 #define RELEASE_CPLEX_LIC   1
-
 
 /* 
     Display CPLEX error code message
@@ -535,11 +534,11 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     int             errors = 1;     /* keep track of errors during initialization */
 
 
-/*JUST FOR DEBUGGING LHT*/
-      mexPrintf("CPLEXINT, Version %s.\n", CPLEXINT_VERSION);
-      mexPrintf("MEX interface for using CPLEX in Matlab.\n");
-/*JUST FOR DEBUGGING LHT*/
 
+clock_t begin, end, marker1Begin, marker1End;
+double time_spent, marker1TimeSpent;
+
+begin = clock();
 
     /* If there are no input nor output arguments display version number */
     if ((nrhs == 0) && (nlhs == 0)){
@@ -734,7 +733,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     }
 
     /* Create a log file. */
-/* LHT    if (opt_logfile){*/
+    if (opt_logfile){
     	/* 
     	   Open a LogFile to print out any CPLEX messages in there.
     	   We do this since Matlab does not execute printf commands
@@ -749,10 +748,15 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
             dispCPLEXerror(env, status);
             goto TERMINATE;
         }
-/* LHT    } */
+    }
+
+    marker1Begin = clock();
 
     /* Create the problem. */
     lp = CPXcreateprob(env, &status, probname);
+
+    marker1End = clock();
+    marker1TimeSpent = (double)(marker1End - marker1Begin) / CLOCKS_PER_SEC;
 
     /*
        A returned pointer of NULL may mean that not enough memory
@@ -910,6 +914,14 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     if (errors) {
         TROUBLE_mexErrMsgTxt("There were errors.");
     }
+
+end = clock();
+time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+/*
+mexPrintf("\n >> CLOCKS_PER_SEC: %d.\n", CLOCKS_PER_SEC);
+*/
+mexPrintf("\n >> Total c-Script Execution time: %.2f seconds.\n\n", time_spent);
+mexPrintf("\n >> Marker1 Execution time: %.2f seconds.\n\n", marker1TimeSpent);
 
     return;
 }

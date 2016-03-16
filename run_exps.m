@@ -44,9 +44,9 @@ else
    SetWorkerCount(0);
 end
 
-%iModel = 5;
+iModel = 4;
 
-for iModel=4:nmodels-2
+%for iModel=3:nmodels-3
 
    fprintf('\n >> Currently solving model %s\n\n',  modelList{iModel,1});
 
@@ -71,4 +71,4 @@ for iModel=4:nmodels-2
    [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective, solver);
    T(iModel) = toc(tstart);
    fprintf('%s\t%1.1f\n', modelList{iModel,1}, T(iModel))
-end
+%end
