@@ -83,6 +83,15 @@ For Win32
 For Win64
 >> mex -largeArrayDims -IC:\ILOG\CPLEX121\include\ilcplex cplexFVAc.c C:\ILOG\CPLEX121\lib\x64_windows_vs2008\stat_mda\cplex121.lib C:\ILOG\CPLEX121\lib\x64_windows_vs2008\stat_mda\ilocplex.lib
 
+On Server Winx64
+%addpath('C:\Program Files\IBM\ILOG\CPLEX_Studio1251\cplex\matlab\x64_win64')
+
+>> mex -largeArrayDims -compatibleArrayDims -D_LP64 -IC:\Program' Files'\IBM\ILOG\CPLEX_Studio1251\cplex\include\ilcplex cplexFVAc.c C:\Program' Files'\IBM\ILOG\CPLEX_Studio1251\cplex\lib\x64_windows_vs2012\stat_mda\cplex1251.lib C:\Program' Files'\IBM\ILOG\CPLEX_Studio1251\cplex\lib\x64_windows_vs2012\stat_mda\ilocplex.lib
+
+mex -largeArrayDims -compatibleArrayDims -D_LP64 -IC:\Progra~1\IBM\ILOG\CPLEX_Studio1251\cplex\include\ilcplex cplexFVAc.c C:\Progra~1\IBM\ILOG\CPLEX_Studio1251\cplex\lib\x64_windows_vs2012\stat_mda\cplex1251.lib C:\Progra~1\IBM\ILOG\CPLEX_Studio1251\cplex\lib\x64_windows_vs2012\stat_mda\ilocplex.lib
+
+
+
 
 2) Linux
 
@@ -107,11 +116,12 @@ http://www.gnu.org/software/glpk/
 >>
 
 filename ='cplexFVAc.c';
-CPLEXpath ='/opt/ibm/ILOG/CPLEX_Studio1262/cplex'
+CPLEXpath ='/opt/ibm/ILOG/CPLEX_Studio1262/cplex';
 include =[CPLEXpath '/include'];
 lib =[CPLEXpath '/lib/x86-64_linux/static_pic'];
 library =[lib '/libcplex.a'];
-cmd = ['-largeArrayDims -I' include ' ' filename ' ' library];
+CFLAGS='-O3';
+cmd = ['-largeArrayDims CFLAGS="\$CFLAGS" -I' include ' ' filename ' ' library];
 eval(['mex ' cmd]);
 
 Usage

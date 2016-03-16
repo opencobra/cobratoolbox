@@ -44,11 +44,13 @@
 
 /* MATLAB declarations. */
 #include <stdlib.h>
+#include <math.h> /*missing package here*/
 #include <matrix.h>
+/*#include <cplex.h>*/
 #include <ilcplex/cplex.h>
 #include "mex.h"
-#define _GNU_SOURCE
 #include <string.h>
+
 
 /* CPLEX declarations.  */
 
@@ -120,6 +122,7 @@ enum {MINFLUX_OUT_POS, MAXFLUX_OUT_POS, OPTSOL_OUT_POS, RET_OUT_POS, MAX_NUM_OUT
 /* this is for TRYING to release the CPLEX license when pressing CTRL-C */
 #define RELEASE_CPLEX_LIC   1
 
+
 /* 
     Display CPLEX error code message
  */
@@ -145,7 +148,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
    double* val = NULL;
    int j, k, iRound;
    char sense;
-   double TargetValue = 0, objval = 0;
+   double TargetValue = 0.0, objval = 0;
    const double tol = 1.0e-6;
 
     /* Solve the problem */
@@ -490,7 +493,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     char           *sense = NULL;        /* constraints 'L', 'G' or 'E'    */
 
     /* OPT_PERCENT */
-    double          optPercent = 100;
+    double          optPercent = 100; /*100*/;
 
     /* OBJECTIVE */
     int             objective = -1;
@@ -532,7 +535,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     int             errors = 1;     /* keep track of errors during initialization */
 
 
-/*UST FOR DEBUGGING LHT*/
+/*JUST FOR DEBUGGING LHT*/
       mexPrintf("CPLEXINT, Version %s.\n", CPLEXINT_VERSION);
       mexPrintf("MEX interface for using CPLEX in Matlab.\n");
 /*JUST FOR DEBUGGING LHT*/
@@ -731,7 +734,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     }
 
     /* Create a log file. */
-    if (opt_logfile){
+/* LHT    if (opt_logfile){*/
     	/* 
     	   Open a LogFile to print out any CPLEX messages in there.
     	   We do this since Matlab does not execute printf commands
@@ -746,7 +749,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
             dispCPLEXerror(env, status);
             goto TERMINATE;
         }
-    }
+/* LHT    } */
 
     /* Create the problem. */
     lp = CPXcreateprob(env, &status, probname);

@@ -63,6 +63,7 @@ if strmatch('glpk',solver)
    FVAc=@glpkFVAcc;
 elseif strmatch('cplex',solver)
    FVAc=@cplexFVAc;
+   fprintf('\n>> The solver is CPLEX.\n\n');
 else
    error(sprintf('Solver %s not supported', solver))
 end
@@ -79,7 +80,17 @@ end
 b=model.b;
 [m,n]=size(A);
 
-nworkers=matlabpool('size');
+
+poolobj = gcp('nocreate'); % If no pool, do not create new one.
+if isempty(poolobj)
+    nworkers = 0;
+else
+    nworkers = poolobj.NumWorkers;
+end
+
+
+fprintf('\n>> The number of workers is %d.\n\n', nworkers);
+
 if nworkers<=1
    % Sequential version
    [minFlux,maxFlux,optsol,ret]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
@@ -94,9 +105,11 @@ else
    % The load balancing can be improved for certain problems, e.g. in case
    % of problems involving E-type matrices, some workers will get mostly
    % well-behaved LPs while others may get many badly scaled LPs.
+   
+   % For debugging, leave out
    if n > 5000
       % A primitive load-balancing strategy for large problems
-      nworkers=4*nworkers;
+  %    nworkers=4*nworkers;
    end
 
    nrxn=repmat(fix(n/nworkers),nworkers,1);
@@ -119,6 +132,10 @@ else
    fprintf('\n -- Starting to loop through the %d workers. -- \n\n', nworkers);
 
    parfor i=1:nworkers
+
+       t = getCurrentTask();
+       fprintf('Worker Nb(i%d) %d: \n', i, t.ID);
+
       [minf,maxf,iopt(i),iret(i)]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                        optPercentage,obj,(istart(i):iend(i))');
       if iret(i) ~= 0 && verbose
