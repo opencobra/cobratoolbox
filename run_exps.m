@@ -19,8 +19,8 @@ objective='max';
 solver='cplexint'; % or 'glpk' %%cplexint
 
 % Parallel settings
-bParallel=true; %true;
-nworkers=8;       % Number of parallel workers (quad core CPU + hyperthr.)
+bParallel=false; %false; true
+nworkers=16;       % Number of parallel workers (quad core CPU + hyperthr.)
 
 % Data sets
 dataDir='';
@@ -44,7 +44,7 @@ else
    SetWorkerCount(0);
 end
 
-iModel = 4;
+iModel = 5;
 
 %for iModel=3:nmodels-3
 
@@ -70,5 +70,5 @@ iModel = 4;
    tstart=tic;
    [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective, solver);
    T(iModel) = toc(tstart);
-   fprintf('%s\t%1.1f\n', modelList{iModel,1}, T(iModel))
+   fprintf('>> nworkers = %d, \t model = %s\t%1.1f\n', nworkers, modelList{iModel,1}, T(iModel))
 %end

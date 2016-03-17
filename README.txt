@@ -120,7 +120,7 @@ CPLEXpath ='/opt/ibm/ILOG/CPLEX_Studio1262/cplex';
 include =[CPLEXpath '/include'];
 lib =[CPLEXpath '/lib/x86-64_linux/static_pic'];
 library =[lib '/libcplex.a'];
-CFLAGS='-O3';
+CFLAGS='-O3 -xc++ -lstdc++ -shared-libgcc ';
 cmd = ['-largeArrayDims CFLAGS="\$CFLAGS" -I' include ' ' filename ' ' library];
 eval(['mex ' cmd]);
 
