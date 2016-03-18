@@ -57,7 +57,7 @@ elseif strcmpi(objective,'min')
    obj=1;
 else
    error('Unknown objective')
-end
+end;
 
 if strmatch('glpk',solver)
    FVAc=@glpkFVAcc;
@@ -66,7 +66,7 @@ elseif strmatch('cplex',solver)
    fprintf('\n>> The solver is CPLEX.\n\n');
 else
    error(sprintf('Solver %s not supported', solver))
-end
+end;
 
 if isfield(model,'A')
    % "Generalized FBA"
@@ -86,7 +86,7 @@ if isempty(poolobj)
     nworkers = 0;
 else
     nworkers = poolobj.NumWorkers;
-end
+end;
 
 
 fprintf('\n>> The number of workers is %d.\n\n', nworkers);
@@ -98,19 +98,19 @@ if nworkers<=1
 
    if ret ~= 0 && verbose
       fprintf('Unable to complete the FVA, return code=%d\n', ret);
-   end
+   end;
 else
    % Divide the reactions amongst workers
    %
    % The load balancing can be improved for certain problems, e.g. in case
    % of problems involving E-type matrices, some workers will get mostly
    % well-behaved LPs while others may get many badly scaled LPs.
-   
+
    % For debugging, leave out
-   if n > 5000
-      % A primitive load-balancing strategy for large problems
-  %    nworkers=4*nworkers;
-   end
+   %if n > 5000
+   %   % A primitive load-balancing strategy for large problems
+   %   nworkers=4*nworkers;
+   %end
 
    nrxn=repmat(fix(n/nworkers),nworkers,1);
    i=1;
@@ -133,22 +133,35 @@ else
 
    parfor i=1:nworkers
 
-       t = getCurrentTask();
-       fprintf('Worker Nb(i%d) %d: \n', i, t.ID);
+      t = getCurrentTask();
+      fprintf('Worker LoopID = %d, TaskID = %d  (%d, %d) of (%d, %d) \n', i, ...
+              t.ID, istart(i), iend(i), m, n);
 
-  tstart=tic;
+      tstart=tic;
 
       [minf,maxf,iopt(i),iret(i)]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                        optPercentage,obj,(istart(i):iend(i))');
-      
-   fprintf('Time spent in FVAc: %1.1f seconds.\n', toc(tstart));
+
+      fprintf(' >> Time spent in FVAc: %1.1f seconds.\n\n', toc(tstart));
+
+      % Storing the matrix
+      outArray0(i) = i;
+      %outArray1(i) = t.iD;
+      outArray2(i) = istart(i);
+      outArray3(i) = iend(i);
+      outArray4(i) = iopt(i);
 
       if iret(i) ~= 0 && verbose
          fprintf('Problems solving partition %d, return code=%d\n', i, iret(i))
       end
+
       minFlux=minFlux+minf;
       maxFlux=maxFlux+maxf;
-   end
+
+   end;
+
+   outputData = struct('outArray0',outArray0,'outArray2',outArray2,'outArray3',outArray3,'outArray4',outArray4)
+
    optsol=iopt(1);
    ret=max(iret);
-end
+end;

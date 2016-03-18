@@ -7,6 +7,7 @@
 % 20160316: Support for Matlab R2014a+
 
 addpath(genpath('~/Dropbox/UNI.LU'))
+addpath(genpath('../../../UNI.LU'))
 
 %clear all
 %clc
@@ -19,12 +20,12 @@ objective='max';
 solver='cplexint'; % or 'glpk' %%cplexint
 
 % Parallel settings
-bParallel=false; %false; true
-nworkers=16;       % Number of parallel workers (quad core CPU + hyperthr.)
+bParallel=true; %false; true
+nworkers= 16;       % Number of parallel workers (quad core CPU + hyperthr.)
 
 % Data sets
 dataDir='';
-modelList={ 'TM',      '1174671 TM_minimal_medium_glc.mat',      [] 
+modelList={ 'TM',      '1174671 TM_minimal_medium_glc.mat',      []
             'Pputida'  'Pputida_model_glc_min.mat',              []
             'E.Coli',  'ecoli_core_model.mat',                            []
             'Human',   'modelRecon1Biomass.mat',                 [3820] % Biomass_reaction
@@ -37,14 +38,15 @@ T=zeros(nmodels,1);
 fprintf('Solver: %s\n', solver)
 
 if bParallel
-   fprintf('Multi-process version with %d workers\n', nworkers)
-   SetWorkerCount(nworkers);
+   fprintf('Multi-process version with %d workers\n', nworkers);
 else
-   fprintf('Sequential version\n')
-   SetWorkerCount(0);
+   fprintf('Sequential version\n');
+   nworkers = 0;
 end
 
-iModel = 5;
+SetWorkerCount(nworkers);
+
+iModel = 6;
 
 %for iModel=3:nmodels-3
 

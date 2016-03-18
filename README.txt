@@ -45,7 +45,7 @@ Compiling
 
 1) Windows
 
-You need to install a C++ compiler if you haven't done so already, e. g. The Microsoft Visual Studio Express 2008 compiler which is available free of charge. Depending on your Matlab version, see 
+You need to install a C++ compiler if you haven't done so already, e. g. The Microsoft Visual Studio Express 2008 compiler which is available free of charge. Depending on your Matlab version, see
 
 http://www.mathworks.com/support/compilers/R2009b/
 http://www.mathworks.com/support/compilers/R2010a/
@@ -57,7 +57,7 @@ The instructions below refer to the Visual Studio Express compiler.
 1.1 GLPK version
 ----------------
 
-Download WinGLPK from 
+Download WinGLPK from
 
 http://sourceforge.net/projects/winglpk/
 
@@ -84,11 +84,8 @@ For Win64
 >> mex -largeArrayDims -IC:\ILOG\CPLEX121\include\ilcplex cplexFVAc.c C:\ILOG\CPLEX121\lib\x64_windows_vs2008\stat_mda\cplex121.lib C:\ILOG\CPLEX121\lib\x64_windows_vs2008\stat_mda\ilocplex.lib
 
 On Server Winx64
-%addpath('C:\Program Files\IBM\ILOG\CPLEX_Studio1251\cplex\matlab\x64_win64')
 
->> mex -largeArrayDims -compatibleArrayDims -D_LP64 -IC:\Program' Files'\IBM\ILOG\CPLEX_Studio1251\cplex\include\ilcplex cplexFVAc.c C:\Program' Files'\IBM\ILOG\CPLEX_Studio1251\cplex\lib\x64_windows_vs2012\stat_mda\cplex1251.lib C:\Program' Files'\IBM\ILOG\CPLEX_Studio1251\cplex\lib\x64_windows_vs2012\stat_mda\ilocplex.lib
-
-mex -largeArrayDims -compatibleArrayDims -D_LP64 -IC:\Progra~1\IBM\ILOG\CPLEX_Studio1251\cplex\include\ilcplex cplexFVAc.c C:\Progra~1\IBM\ILOG\CPLEX_Studio1251\cplex\lib\x64_windows_vs2012\stat_mda\cplex1251.lib C:\Progra~1\IBM\ILOG\CPLEX_Studio1251\cplex\lib\x64_windows_vs2012\stat_mda\ilocplex.lib
+>> mex -largeArrayDims -O -D_LP64 -IC:\Progra~1\IBM\ILOG\CPLEX_Studio1251\cplex\include\ilcplex cplexFVAc.c C:\Progra~1\IBM\ILOG\CPLEX_Studio1251\cplex\lib\x64_windows_vs2012\stat_mda\cplex1251.lib C:\Progra~1\IBM\ILOG\CPLEX_Studio1251\cplex\lib\x64_windows_vs2012\stat_mda\ilocplex.lib
 
 
 
