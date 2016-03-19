@@ -1,0 +1,49 @@
+
+                                         < M A T L A B (R) >
+                               Copyright 1984-2014 The MathWorks, Inc.
+                                 R2014a (8.3.0.532) 64-bit (glnxa64)
+                                          February 11, 2014
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+Solver: cplexint
+Multi-process version with 16 workers
+Starting parallel pool (parpool) using the 'local' profile ... [Warning: Removed '/home/laurent.heirendt/.matlab/local_cluster_jobs/R2014a/Job5' from the MATLAB path for this MATLAB
+session.
+	See 'doc path' for more information.] 
+[> In distcomp.filestorage.destroyLocation at 43
+  In CJSSupport>CJSSupport.destroyJob at 692
+  In CJSJobMethods>CJSJobMethods.destroyOneJob at 82
+  In CJSCommunicatingJob>CJSCommunicatingJob.destroyOneJob at 94
+  In Job.Job>Job.delete at 1037
+  In InteractiveClient>iDeleteJobs at 847
+  In InteractiveClient>InteractiveClient.pRemoveOldJobs at 454
+  In InteractiveClient>InteractiveClient.start at 309
+  In Pool.Pool>iStartClient at 537
+  In Pool.Pool>Pool.hBuildPool at 434
+  In parpool at 104
+  In SetWorkerCount at 30
+  In run_exps_happy at 53] 
+connected to 16 workers.
+Parallel computation initialized
+
+ >> Currently solving model hsall
+
+
+>> The solver is CPLEX.
+
+Size of model: (19714,28199)
+>> The number of workers is 16.
+
+
+ -- Starting to loop through the 16 workers. -- 
+
+Worker LoopID = 14, TaskID = 1  (22914, 24675) of (19714, 28199) 
+Successfully set CPX_PARAM_PARALLELMODE and the status is 0 
+Successfully set CPX_PARAM_THREADS and the status is 0 
+Successfully set CPX_PARAM_AUXROOTTHREADS and the status is 0 
+Successfully set CPXPARAM_MIP_Strategy_PresolveNode and the status is 0 
+  >> Time spent in FVAc: 120.2 seconds.
+

@@ -1,0 +1,175 @@
+
+                                                                       < M A T L A B (R) >
+                                                             Copyright 1984-2014 The MathWorks, Inc.
+                                                               R2014a (8.3.0.532) 64-bit (glnxa64)
+                                                                        February 11, 2014
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+Solver: glpk
+Multi-process version with 32 workers
+Starting parallel pool (parpool) using the 'local' profile ... [Warning: Removed '/home/laurent.heirendt/.matlab/local_cluster_jobs/R2014a/Job3' from the MATLAB path for this MATLAB session.
+	See 'doc path' for more information.] 
+[> In distcomp.filestorage.destroyLocation at 43
+  In CJSSupport>CJSSupport.destroyJob at 692
+  In CJSJobMethods>CJSJobMethods.destroyOneJob at 82
+  In CJSCommunicatingJob>CJSCommunicatingJob.destroyOneJob at 94
+  In Job.Job>Job.delete at 1037
+  In InteractiveClient>iDeleteJobs at 847
+  In InteractiveClient>InteractiveClient.pRemoveOldJobs at 454
+  In InteractiveClient>InteractiveClient.start at 309
+  In Pool.Pool>iStartClient at 537
+  In Pool.Pool>Pool.hBuildPool at 434
+  In parpool at 104
+  In SetWorkerCount at 30
+  In run_exps_happy at 53] 
+connected to 32 workers.
+Parallel computation initialized
+
+ >> Currently solving model hsall
+
+Size of model: (19714,28199)
+>> The number of workers is 32.
+
+
+ -- Starting to loop through the 32 workers. -- 
+
+Worker LoopID = 27, TaskID = 5  (22914, 23794) of (19714, 28199) 
+ >> Time spent in FVAc: 26.0 seconds.
+
+Worker LoopID = 4, TaskID = 16  (2647, 3528) of (19714, 28199) 
+ >> Time spent in FVAc: 26.1 seconds.
+
+Problems solving partition 4, return code=1
+Problems solving partition 27, return code=1
+Worker LoopID = 26, TaskID = 12  (22033, 22913) of (19714, 28199) 
+ >> Time spent in FVAc: 26.1 seconds.
+
+Problems solving partition 26, return code=1
+Worker LoopID = 32, TaskID = 20  (27319, 28199) of (19714, 28199) 
+ >> Time spent in FVAc: 26.4 seconds.
+
+Problems solving partition 32, return code=1
+Worker LoopID = 23, TaskID = 26  (19390, 20270) of (19714, 28199) 
+ >> Time spent in FVAc: 26.5 seconds.
+
+Problems solving partition 23, return code=1
+Worker LoopID = 1, TaskID = 10  (1, 882) of (19714, 28199) 
+ >> Time spent in FVAc: 26.8 seconds.
+
+Problems solving partition 1, return code=1
+Worker LoopID = 25, TaskID = 21  (21152, 22032) of (19714, 28199) 
+ >> Time spent in FVAc: 26.7 seconds.
+
+Problems solving partition 25, return code=1
+Worker LoopID = 6, TaskID = 2  (4411, 5292) of (19714, 28199) 
+ >> Time spent in FVAc: 27.0 seconds.
+
+Worker LoopID = 16, TaskID = 4  (13223, 14103) of (19714, 28199) 
+ >> Time spent in FVAc: 27.0 seconds.
+
+Worker LoopID = 24, TaskID = 6  (20271, 21151) of (19714, 28199) 
+ >> Time spent in FVAc: 26.8 seconds.
+
+Problems solving partition 6, return code=1
+Problems solving partition 24, return code=1
+Problems solving partition 16, return code=1
+Worker LoopID = 15, TaskID = 17  (12342, 13222) of (19714, 28199) 
+ >> Time spent in FVAc: 27.1 seconds.
+
+Problems solving partition 15, return code=1
+Worker LoopID = 2, TaskID = 25  (883, 1764) of (19714, 28199) 
+ >> Time spent in FVAc: 27.3 seconds.
+
+Worker LoopID = 17, TaskID = 13  (14104, 14984) of (19714, 28199) 
+ >> Time spent in FVAc: 27.1 seconds.
+
+Problems solving partition 2, return code=1
+Problems solving partition 17, return code=1
+Worker LoopID = 13, TaskID = 29  (10580, 11460) of (19714, 28199) 
+ >> Time spent in FVAc: 29.4 seconds.
+
+Problems solving partition 13, return code=1
+Worker LoopID = 5, TaskID = 14  (3529, 4410) of (19714, 28199) 
+ >> Time spent in FVAc: 30.1 seconds.
+
+Worker LoopID = 3, TaskID = 28  (1765, 2646) of (19714, 28199) 
+ >> Time spent in FVAc: 30.1 seconds.
+
+Worker LoopID = 10, TaskID = 31  (7937, 8817) of (19714, 28199) 
+ >> Time spent in FVAc: 30.0 seconds.
+
+Problems solving partition 10, return code=1
+Problems solving partition 5, return code=1
+Problems solving partition 3, return code=1
+Worker LoopID = 12, TaskID = 7  (9699, 10579) of (19714, 28199) 
+ >> Time spent in FVAc: 30.3 seconds.
+
+Problems solving partition 12, return code=1
+Worker LoopID = 29, TaskID = 22  (24676, 25556) of (19714, 28199) 
+ >> Time spent in FVAc: 30.3 seconds.
+
+Problems solving partition 29, return code=1
+Worker LoopID = 11, TaskID = 30  (8818, 9698) of (19714, 28199) 
+ >> Time spent in FVAc: 30.5 seconds.
+
+Problems solving partition 11, return code=1
+Worker LoopID = 28, TaskID = 1  (23795, 24675) of (19714, 28199) 
+ >> Time spent in FVAc: 30.5 seconds.
+
+Worker LoopID = 30, TaskID = 8  (25557, 26437) of (19714, 28199) 
+ >> Time spent in FVAc: 30.4 seconds.
+
+Worker LoopID = 19, TaskID = 15  (15866, 16746) of (19714, 28199) 
+ >> Time spent in FVAc: 30.5 seconds.
+
+Problems solving partition 30, return code=1
+Worker LoopID = 14, TaskID = 18  (11461, 12341) of (19714, 28199) 
+ >> Time spent in FVAc: 30.7 seconds.
+
+Problems solving partition 19, return code=1
+Problems solving partition 28, return code=1
+Problems solving partition 14, return code=1
+Worker LoopID = 18, TaskID = 32  (14985, 15865) of (19714, 28199) 
+ >> Time spent in FVAc: 30.7 seconds.
+
+Problems solving partition 18, return code=1
+Worker LoopID = 21, TaskID = 11  (17628, 18508) of (19714, 28199) 
+ >> Time spent in FVAc: 30.8 seconds.
+
+Worker LoopID = 8, TaskID = 24  (6175, 7055) of (19714, 28199) 
+ >> Time spent in FVAc: 30.9 seconds.
+
+Problems solving partition 8, return code=1
+Problems solving partition 21, return code=1
+Worker LoopID = 20, TaskID = 23  (16747, 17627) of (19714, 28199) 
+ >> Time spent in FVAc: 30.8 seconds.
+
+Problems solving partition 20, return code=1
+Worker LoopID = 7, TaskID = 19  (5293, 6174) of (19714, 28199) 
+ >> Time spent in FVAc: 32.0 seconds.
+
+Problems solving partition 7, return code=1
+Worker LoopID = 31, TaskID = 3  (26438, 27318) of (19714, 28199) 
+ >> Time spent in FVAc: 32.2 seconds.
+
+Problems solving partition 31, return code=1
+Worker LoopID = 9, TaskID = 9  (7056, 7936) of (19714, 28199) 
+ >> Time spent in FVAc: 33.3 seconds.
+
+Problems solving partition 9, return code=1
+Worker LoopID = 22, TaskID = 27  (18509, 19389) of (19714, 28199) 
+ >> Time spent in FVAc: 33.7 seconds.
+
+Problems solving partition 22, return code=1
+
+outputData = 
+
+    outArray0: [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32]
+    outArray2: [1x32 double]
+    outArray3: [1x32 double]
+    outArray4: [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+
+>> nworkers = 32, 	 model = hsall	35.2

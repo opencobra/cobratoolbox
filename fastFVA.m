@@ -68,18 +68,19 @@ else
    error(sprintf('Solver %s not supported', solver))
 end;
 
-if isfield(model,'A')
-   % "Generalized FBA"
-   A=model.A;
-   csense=model.csense(:);
-else
+%if isfield(model,'A')
+%   % "Generalized FBA"
+%   A=model.A;
+%   csense=model.csense(:);
+%else
    % Standard FBA
    A=model.S;
    csense=char('E'*ones(size(A,1),1));
-end
+%end
 b=model.b;
+b = b(1:size(A,1));
 [m,n]=size(A);
-
+fprintf('Size of model: (%d,%d)', m,n)
 
 poolobj = gcp('nocreate'); % If no pool, do not create new one.
 if isempty(poolobj)

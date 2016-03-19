@@ -1,0 +1,73 @@
+
+                                                     < M A T L A B (R) >
+                                           Copyright 1984-2014 The MathWorks, Inc.
+                                             R2014a (8.3.0.532) 64-bit (glnxa64)
+                                                      February 11, 2014
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+Solver: cplexint
+Multi-process version with 32 workers
+Starting parallel pool (parpool) using the 'local' profile ... [Warning: Removed '/home/laurent.heirendt/.matlab/local_cluster_jobs/R2014a/Job1' from the MATLAB path for this MATLAB session.
+	See 'doc path' for more information.] 
+[> In distcomp.filestorage.destroyLocation at 43
+  In CJSSupport>CJSSupport.destroyJob at 692
+  In CJSJobMethods>CJSJobMethods.destroyOneJob at 82
+  In CJSCommunicatingJob>CJSCommunicatingJob.destroyOneJob at 94
+  In Job.Job>Job.delete at 1037
+  In InteractiveClient>iDeleteJobs at 847
+  In InteractiveClient>InteractiveClient.pRemoveOldJobs at 454
+  In InteractiveClient>InteractiveClient.start at 309
+  In Pool.Pool>iStartClient at 537
+  In Pool.Pool>Pool.hBuildPool at 434
+  In parpool at 104
+  In SetWorkerCount at 30
+  In run_exps_sneezy at 53] 
+connected to 32 workers.
+Parallel computation initialized
+
+ >> Currently solving model harvey
+
+
+>> The solver is CPLEX.
+
+Size of model: (47123,61230)
+>> The number of workers is 32.
+
+
+ -- Starting to loop through the 32 workers. -- 
+
+Worker LoopID = 6, TaskID = 1  (9571, 11484) of (47123, 61230) 
+Worker LoopID = 5, TaskID = 3  (7657, 9570) of (47123, 61230) 
+Worker LoopID = 19, TaskID = 4  (34449, 36361) of (47123, 61230) 
+Worker LoopID = 10, TaskID = 7  (17227, 19140) of (47123, 61230) 
+Worker LoopID = 13, TaskID = 9  (22969, 24882) of (47123, 61230) 
+Worker LoopID = 11, TaskID = 11  (19141, 21054) of (47123, 61230) 
+Worker LoopID = 7, TaskID = 12  (11485, 13398) of (47123, 61230) 
+Worker LoopID = 4, TaskID = 13  (5743, 7656) of (47123, 61230) 
+Worker LoopID = 9, TaskID = 15  (15313, 17226) of (47123, 61230) 
+Worker LoopID = 8, TaskID = 16  (13399, 15312) of (47123, 61230) 
+Worker LoopID = 17, TaskID = 17  (30623, 32535) of (47123, 61230) 
+Worker LoopID = 20, TaskID = 18  (36362, 38274) of (47123, 61230) 
+Worker LoopID = 2, TaskID = 19  (1915, 3828) of (47123, 61230) 
+Worker LoopID = 18, TaskID = 20  (32536, 34448) of (47123, 61230) 
+Worker LoopID = 12, TaskID = 21  (21055, 22968) of (47123, 61230) 
+Worker LoopID = 15, TaskID = 25  (26797, 28709) of (47123, 61230) 
+Worker LoopID = 1, TaskID = 26  (1, 1914) of (47123, 61230) 
+Worker LoopID = 16, TaskID = 27  (28710, 30622) of (47123, 61230) 
+Worker LoopID = 14, TaskID = 30  (24883, 26796) of (47123, 61230) 
+Worker LoopID = 3, TaskID = 31  (3829, 5742) of (47123, 61230) 
+Worker LoopID = 23, TaskID = 8  (42101, 44013) of (47123, 61230) 
+Worker LoopID = 22, TaskID = 22  (40188, 42100) of (47123, 61230) 
+Worker LoopID = 26, TaskID = 24  (47840, 49752) of (47123, 61230) 
+Worker LoopID = 21, TaskID = 28  (38275, 40187) of (47123, 61230) 
+Worker LoopID = 27, TaskID = 5  (49753, 51665) of (47123, 61230) 
+Worker LoopID = 24, TaskID = 6  (44014, 45926) of (47123, 61230) 
+Worker LoopID = 25, TaskID = 10  (45927, 47839) of (47123, 61230) 
+Worker LoopID = 29, TaskID = 14  (53579, 55491) of (47123, 61230) 
+Worker LoopID = 28, TaskID = 2  (51666, 53578) of (47123, 61230) 
+Worker LoopID = 32, TaskID = 23  (59318, 61230) of (47123, 61230) 
+Worker LoopID = 31, TaskID = 29  (57405, 59317) of (47123, 61230) 
+Worker LoopID = 30, TaskID = 32  (55492, 57404) of (47123, 61230) 

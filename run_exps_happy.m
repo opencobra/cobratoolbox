@@ -21,13 +21,13 @@ solver='cplexint'; % or 'glpk' %%cplexint
 
 % Parallel settings
 bParallel=true; %false; true
-nworkers= 32;       % Number of parallel workers (quad core CPU + hyperthr.)
+nworkers= 16;       % Number of parallel workers (quad core CPU + hyperthr.)
 
 % Data sets
 dataDir='';
 modelList={ 'TM',      '1174671 TM_minimal_medium_glc.mat',      []
             'Pputida'  'Pputida_model_glc_min.mat',              []
-            'E.Coli',  'ecoli_core_model.mat',                            []
+            'EColi',  'ecoli_core_model.mat',                            []
             'Human',   'modelRecon1Biomass.mat',                 [3820] % Biomass_reaction
             'Ematrix' 'Thiele et al. - E-matrix_LB_medium.mat'   [] % Added RHS values b=0 to the model file
             'Ecoupled','EMatrix_LPProblemtRNACoupled90.mat',      []
@@ -52,7 +52,7 @@ end
 
 SetWorkerCount(nworkers);
 
-iModel = 9;
+iModel = 8;
 
 %for iModel=3:nmodels-3
 
@@ -81,3 +81,9 @@ iModel = 9;
    T(iModel) = toc(tstart);
    fprintf('>> nworkers = %d, \t model = %s\t%1.1f\n', nworkers, modelList{iModel,1}, T(iModel))
 %end
+
+
+%matlab -r run_exps_happy -logfile run_exps_happy_log.txt </dev/null &
+%filename = strcat('exp_',num2str(nworkers),'_',modelList{iModel,1} ,'_',solver,'.mat');
+
+save  run_exps_happy_db.mat

@@ -27,7 +27,7 @@ nworkers= 32;       % Number of parallel workers (quad core CPU + hyperthr.)
 dataDir='';
 modelList={ 'TM',      '1174671 TM_minimal_medium_glc.mat',      []
             'Pputida'  'Pputida_model_glc_min.mat',              []
-            'E.Coli',  'ecoli_core_model.mat',                            []
+            'EColi',  'ecoli_core_model.mat',                            []
             'Human',   'modelRecon1Biomass.mat',                 [3820] % Biomass_reaction
             'Ematrix' 'Thiele et al. - E-matrix_LB_medium.mat'   [] % Added RHS values b=0 to the model file
             'Ecoupled','EMatrix_LPProblemtRNACoupled90.mat',      []
@@ -81,3 +81,9 @@ iModel = 9;
    T(iModel) = toc(tstart);
    fprintf('>> nworkers = %d, \t model = %s\t%1.1f\n', nworkers, modelList{iModel,1}, T(iModel))
 %end
+
+
+%matlab -r run_exps_sneezy -logfile run_exps_sneezy_log.txt
+%filename = strcat('exp_',num2str(nworkers),'_',modelList{iModel,1} ,'_',solver,'.mat');
+
+save  run_exps_sneezy_db.mat
