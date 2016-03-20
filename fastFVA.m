@@ -61,6 +61,7 @@ end;
 
 if strmatch('glpk',solver)
    FVAc=@glpkFVAcc;
+   fprintf('\n>> The solver is GLPK.\n\n');
 elseif strmatch('cplex',solver)
    FVAc=@cplexFVAc;
    fprintf('\n>> The solver is CPLEX.\n\n');
@@ -68,17 +69,22 @@ else
    error(sprintf('Solver %s not supported', solver))
 end;
 
-%if isfield(model,'A')
-%   % "Generalized FBA"
-%   A=model.A;
-%   csense=model.csense(:);
-%else
+if isfield(model,'A')
+   % "Generalized FBA"
+   A=model.A;
+   csense=model.csense(:);
+   b=model.b;
+   fprintf('\n >> Generalized FBA - Solving Model.A. \n \n')
+else
    % Standard FBA
    A=model.S;
    csense=char('E'*ones(size(A,1),1));
-%end
-b=model.b;
-b = b(1:size(A,1));
+   b=model.b;
+   b = b(1:size(A,1));
+   fprintf('\n >> Standard FBA - Solving Model.S. \n \n')
+end
+%b=model.b;
+%b = b(1:size(A,1));
 [m,n]=size(A);
 fprintf('Size of model: (%d,%d)', m,n)
 

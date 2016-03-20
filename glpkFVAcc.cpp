@@ -5,6 +5,7 @@
 #include <glpk.h>
 #include <math.h>
 #include "mex.h"
+#include "matrix.h"
 
 // Return codes
 #define FVA_SUCCESS        0
@@ -64,7 +65,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
    if (nrhs != 9)
    {
     mexErrMsgTxt("Nine input arguments required.");
-   } 
+   }
    if (nlhs != 4)
    {
     mexErrMsgTxt("Four output arguments required.");

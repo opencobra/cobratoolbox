@@ -17,11 +17,12 @@ addpath(genpath('~/'))
 optPercentage=90;
 objective='max';
 
+format long
 solver='cplexint'; % or 'glpk' %%cplexint
 
 % Parallel settings
 bParallel=true; %false; true
-nworkers= 16;       % Number of parallel workers (quad core CPU + hyperthr.)
+nworkers= 32;       % Number of parallel workers (quad core CPU + hyperthr.)
 
 % Data sets
 dataDir='';
@@ -36,9 +37,6 @@ modelList={ 'TM',      '1174671 TM_minimal_medium_glc.mat',      []
             'harvey', 'harvey', []
            }; %
 
-
-
-
 nmodels=size(modelList,1);
 T=zeros(nmodels,1);
 fprintf('Solver: %s\n', solver)
@@ -52,7 +50,7 @@ end
 
 SetWorkerCount(nworkers);
 
-iModel = 8;
+iModel = 6;
 
 %for iModel=3:nmodels-3
 
