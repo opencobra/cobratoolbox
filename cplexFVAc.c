@@ -64,7 +64,7 @@
 #define FVA_MODIFIED_FAIL  2
 
 #define CPLEXINT_VERSION "2.3"
-#define CPLEXINT_COPYRIGHT "Copyright (C) 2001-2005  Mato Baotic"
+#define CPLEXINT_COPYRIGHT "Copyright (C) 2001-2016  Mato Baotic & Dr. Laurent Heirendt"
 
 static CPXENVptr env = NULL;
 static CPXFILEptr LogFile = NULL;
@@ -173,6 +173,13 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     mexPrintf("Successfully set CPX_PARAM_THREADS and the status is %d \n", status);
     status = CPXsetintparam (env, CPX_PARAM_AUXROOTTHREADS, 2);
     mexPrintf("Successfully set CPX_PARAM_AUXROOTTHREADS and the status is %d \n", status);
+    /*
+    PARAMETERS SUGGESTED TO BE TWEAKED BY ED KLOTZ FROM IBM
+    status = CPXsetintparam (env, CPX_PARAM_REDUCE, 1);
+    mexPrintf("Successfully set CPX_PARAM_AUXROOTTHREADS and the status is %d \n", status);
+
+
+    */
     /*
     status = CPXsetintparam (env, CPXPARAM_MIP_Strategy_PresolveNode, 1);
     mexPrintf("Successfully set CPXPARAM_MIP_Strategy_PresolveNode and the status is %d \n ", status);

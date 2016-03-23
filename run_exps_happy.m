@@ -21,8 +21,8 @@ format long
 solver='cplexint'; % or 'glpk' %%cplexint
 
 % Parallel settings
-bParallel=true; %false; true
-nworkers= 32;       % Number of parallel workers (quad core CPU + hyperthr.)
+bParallel= false; %false; true
+nworkers= 8;       % Number of parallel workers (quad core CPU + hyperthr.)
 
 % Data sets
 dataDir='';
@@ -50,7 +50,7 @@ end
 
 SetWorkerCount(nworkers);
 
-iModel = 6;
+iModel = 8;
 
 %for iModel=3:nmodels-3
 
@@ -81,7 +81,7 @@ iModel = 6;
 %end
 
 
-%matlab -r run_exps_happy -logfile run_exps_happy_log.txt </dev/null &
+%matlab -r run_exps_happy -logfile run_exps_happy_log.txt
 %filename = strcat('exp_',num2str(nworkers),'_',modelList{iModel,1} ,'_',solver,'.mat');
 
 save  run_exps_happy_db.mat

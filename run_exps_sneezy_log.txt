@@ -1,0 +1,73 @@
+
+                                                                    < M A T L A B (R) >
+                                                          Copyright 1984-2014 The MathWorks, Inc.
+                                                            R2014a (8.3.0.532) 64-bit (glnxa64)
+                                                                     February 11, 2014
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+Solver: cplexint
+Multi-process version with 32 workers
+Starting parallel pool (parpool) using the 'local' profile ... connected to 32 workers.
+Parallel computation initialized
+
+ >> Currently solving model harvey
+
+
+>> The solver is CPLEX.
+
+
+ >> Generalized FBA - Solving Model.A. 
+ 
+Size of model: (96436,61230)
+>> The number of workers is 32.
+
+
+ -- Starting to loop through the 32 workers. -- 
+
+Worker LoopID = 17, TaskID = 2  (30623, 32535) of (96436, 61230) 
+Worker LoopID = 8, TaskID = 3  (13399, 15312) of (96436, 61230) 
+Worker LoopID = 11, TaskID = 6  (19141, 21054) of (96436, 61230) 
+Worker LoopID = 16, TaskID = 7  (28710, 30622) of (96436, 61230) 
+Worker LoopID = 4, TaskID = 8  (5743, 7656) of (96436, 61230) 
+Worker LoopID = 6, TaskID = 9  (9571, 11484) of (96436, 61230) 
+Worker LoopID = 3, TaskID = 11  (3829, 5742) of (96436, 61230) 
+Worker LoopID = 12, TaskID = 12  (21055, 22968) of (96436, 61230) 
+Worker LoopID = 15, TaskID = 14  (26797, 28709) of (96436, 61230) 
+Worker LoopID = 13, TaskID = 16  (22969, 24882) of (96436, 61230) 
+Worker LoopID = 9, TaskID = 17  (15313, 17226) of (96436, 61230) 
+Worker LoopID = 1, TaskID = 18  (1, 1914) of (96436, 61230) 
+Worker LoopID = 20, TaskID = 22  (36362, 38274) of (96436, 61230) 
+Worker LoopID = 2, TaskID = 23  (1915, 3828) of (96436, 61230) 
+Worker LoopID = 7, TaskID = 24  (11485, 13398) of (96436, 61230) 
+Worker LoopID = 18, TaskID = 27  (32536, 34448) of (96436, 61230) 
+Worker LoopID = 10, TaskID = 28  (17227, 19140) of (96436, 61230) 
+Worker LoopID = 5, TaskID = 31  (7657, 9570) of (96436, 61230) 
+Worker LoopID = 14, TaskID = 32  (24883, 26796) of (96436, 61230) 
+Worker LoopID = 21, TaskID = 13  (38275, 40187) of (96436, 61230) 
+Worker LoopID = 23, TaskID = 25  (42101, 44013) of (96436, 61230) 
+Worker LoopID = 25, TaskID = 26  (45927, 47839) of (96436, 61230) 
+Worker LoopID = 19, TaskID = 29  (34449, 36361) of (96436, 61230) 
+Worker LoopID = 24, TaskID = 1  (44014, 45926) of (96436, 61230) 
+Worker LoopID = 27, TaskID = 4  (49753, 51665) of (96436, 61230) 
+Worker LoopID = 26, TaskID = 10  (47840, 49752) of (96436, 61230) 
+Worker LoopID = 22, TaskID = 20  (40188, 42100) of (96436, 61230) 
+Worker LoopID = 29, TaskID = 5  (53579, 55491) of (96436, 61230) 
+Worker LoopID = 31, TaskID = 15  (57405, 59317) of (96436, 61230) 
+Worker LoopID = 28, TaskID = 19  (51666, 53578) of (96436, 61230) 
+Worker LoopID = 30, TaskID = 30  (55492, 57404) of (96436, 61230) 
+Worker LoopID = 32, TaskID = 21  (59318, 61230) of (96436, 61230) 
+Successfully set CPX_PARAM_PARALLELMODE and the status is 0 
+Successfully set CPX_PARAM_THREADS and the status is 0 
+Successfully set CPX_PARAM_AUXROOTTHREADS and the status is 0 
+Successfully set CPXPARAM_MIP_Strategy_PresolveNode and the status is 0 
+  >> Time spent in FVAc: 41116.1 seconds.
+
+Successfully set CPX_PARAM_PARALLELMODE and the status is 0 
+Successfully set CPX_PARAM_THREADS and the status is 0 
+Successfully set CPX_PARAM_AUXROOTTHREADS and the status is 0 
+Successfully set CPXPARAM_MIP_Strategy_PresolveNode and the status is 0 
+  >> Time spent in FVAc: 44899.9 seconds.
+

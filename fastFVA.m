@@ -73,8 +73,8 @@ if isfield(model,'A')
    % "Generalized FBA"
    A=model.A;
    csense=model.csense(:);
-   b=model.b;
-   fprintf('\n >> Generalized FBA - Solving Model.A. \n \n')
+  b=model.b;
+  fprintf('\n >> Generalized FBA - Solving Model.A. \n \n')
 else
    % Standard FBA
    A=model.S;
