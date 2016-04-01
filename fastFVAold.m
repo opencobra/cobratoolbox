@@ -1,4 +1,4 @@
-function [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective,solver,matrixAS)
+function [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective,solver)
 %fastFVA Flux variablity analysis optimized for the GLPK and CPLEX solvers.
 %
 % [minFlux,maxFlux] = fastFVA(model,optPercentage,objective, solver)
@@ -28,7 +28,6 @@ function [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective,so
 %                    or optimal solutions only)
 %   objective        Objective ('min' or 'max') (default 'max')
 %   solver           'cplex' or 'glpk' (default 'glpk')
-%   matrixAS         'A' or 'S' - choice of the model matrix, coupled (A) or uncoupled (S)
 %
 % Outputs:
 %   minFlux   Minimum flux for each reaction
@@ -70,8 +69,7 @@ else
    error(sprintf('Solver %s not supported', solver))
 end;
 
-
-if isfield(model,'A') && (matrixAS == 'A')
+if isfield(model,'A')
    % "Generalized FBA"
    A=model.A;
    csense=model.csense(:);

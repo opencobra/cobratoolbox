@@ -6,38 +6,38 @@
 % 20160315: Minor modifications for Linux support by L. Heirendt
 % 20160316: Support for Matlab R2014a+
 
-addpath(genpath('./../../'))
-addpath(genpath('~/'))
 
-%clear all
-%clc
+addpath(genpath('~/Dropbox/UNI.LU/models'))
+
+clear all
+clc
 %close all
 
 % FVA settings
 optPercentage=90;
 objective='max';
+matrixAS = 'A';
 
+format long
 solver='cplexint'; % or 'glpk' %%cplexint
 
 % Parallel settings
-bParallel=true; %false; true
-nworkers= 32;       % Number of parallel workers (quad core CPU + hyperthr.)
+bParallel= true; %false; true
+nworkers= 8;       % Number of parallel workers (quad core CPU + hyperthr.)
 
 % Data sets
 dataDir='';
-modelList={ 'TM',      '1174671 TM_minimal_medium_glc.mat',      []
-            'Pputida'  'Pputida_model_glc_min.mat',              []
-            'EColi',  'ecoli_core_model.mat',                            []
-            'Human',   'modelRecon1Biomass.mat',                 [3820] % Biomass_reaction
-            'Ematrix' 'Thiele et al. - E-matrix_LB_medium.mat'   [] % Added RHS values b=0 to the model file
-            'Ecoupled','EMatrix_LPProblemtRNACoupled90.mat',      []
-            'paired', 'pairedModel_253_260', []
+modelList={ 'TM',         '1174671 TM_minimal_medium_glc.mat',      []
+            'Pputida'     'Pputida_model_glc_min.mat',              []
+            'EColi',      'ecoli_core_model.mat',                            []
+            'Human',      'modelRecon1Biomass.mat',                 [3820] % Biomass_reaction
+            'Ematrix'     'Thiele et al. - E-matrix_LB_medium.mat'   [] % Added RHS values b=0 to the model file
+            'Ecoupled',   'EMatrix_LPProblemtRNACoupled90.mat',      []
+            'paired',     'pairedModel_253_260',  []
+            'harvey',     'harvey', [],
+            'pairedModelRearranged',         'pairedModelRearranged', []
             'hsall', 'HS_All', []
-            'harvey', 'harvey', []
            }; %
-
-
-
 
 nmodels=size(modelList,1);
 T=zeros(nmodels,1);
@@ -48,11 +48,11 @@ if bParallel
 else
    fprintf('Sequential version\n');
    nworkers = 0;
-end
+end;
 
 SetWorkerCount(nworkers);
 
-iModel = 9;
+iModel = 10;
 
 %for iModel=3:nmodels-3
 
@@ -68,7 +68,13 @@ iModel = 9;
    else
       fname=fname{idx(1)};
    end
+
    model=getfield(data,fname);
+
+   %chop b to the correct length
+   model.b = model.b(1:size(model.A,1));
+   model.csense = model.csense(1:size(model.A,1));
+
 
    % Modify objective if needed
    if ~isempty(modelList{iModel,3})
@@ -77,13 +83,13 @@ iModel = 9;
    end
 
    tstart=tic;
-   [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective, solver);
+   [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective, solver,matrixAS);
    T(iModel) = toc(tstart);
    fprintf('>> nworkers = %d, \t model = %s\t%1.1f\n', nworkers, modelList{iModel,1}, T(iModel))
 %end
 
 
-%matlab -r run_exps_sneezy -logfile run_exps_sneezy_log.txt
+%matlab -r run_exps_happy -logfile run_exps_happy_log.txt
 %filename = strcat('exp_',num2str(nworkers),'_',modelList{iModel,1} ,'_',solver,'.mat');
 
-save  run_exps_sneezy_db.mat
+%save  run_exps_happy_db.mat
