@@ -43,6 +43,7 @@ function sbmlModel = convertCobraToSBML(model,sbmlLevel,sbmlVersion,compSymbolLi
 
 
 % modified by Longfei Mao 24/09/15   FBCv2 support added
+% modified by Almut Heinken 04/04/16  fixed error in unit multiplier
 
 if nargin<7||(~exist('fbc','var') || isempty(fbc))
     fbc='false';
@@ -92,7 +93,7 @@ tmp_unit_definition.id =  reaction_units;
 unit_kinds = {'mole','gram','second'};
 unit_exponents = [1 -1 -1];
 unit_scales = [-3 0 0];
-unit_multipliers = [1 1 1.0/60/60];
+unit_multipliers = [1 1 1*60*60];
 %Add the units to the unit definition
 for i = 1:size(unit_kinds, 2)
     tmp_unit.kind = unit_kinds{ i };
