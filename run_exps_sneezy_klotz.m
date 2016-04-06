@@ -23,7 +23,7 @@ solver='cplexint'; % or 'glpk' %%cplexint
 
 % Parallel settings
 bParallel= true; %false; true
-nworkers= 8;       % Number of parallel workers (quad core CPU + hyperthr.)
+nworkers= 32;       % Number of parallel workers (quad core CPU + hyperthr.)
 
 % Data sets
 dataDir='';
