@@ -1,6 +1,7 @@
 /*
  *    Optimized fluxVariability (FVA) code for CPLEX.
  *    Author: Steinn Gudmundsson, 3.22.2010
+ *    Modifications: Laurent Heirendt, 4.2016
  *
  * Usage:
  *   [minFlux, maxFlux,optsol,ret,details]=cplexFVAc(c,A,b,csense,lb,ub,optPercent,objective,rxns)
@@ -39,12 +40,13 @@
  *
  *
  * CPLEXINT (C) Sep 24 2005 by Mato Baotic
+ * CPLEXINT (C) 2016 by Laurent Heirendt
  * All rights reserved.
  */
 
 /* MATLAB declarations. */
 #include <stdlib.h>
-#include <math.h> /*missing package here*/
+#include <math.h>
 #include <matrix.h>
 #include <time.h>
 #include <cplex.h>
@@ -159,7 +161,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     bool monitorPerformance = false;
 
     /*
-      Best performance so far:
+      Best performance for running on 4core/2threads server rack:
 
       CPX_PARAM_PARALLELMODE = 1
       CPX_PARAM_THREADS = 1
@@ -167,14 +169,14 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     */
 
     /*  Setting of the parameters for CPLEX*/
-    status = CPXsetintparam (env, CPX_PARAM_PARALLELMODE, 1); /*-1 gave best performance so far*/
+    status = CPXsetintparam (env, CPX_PARAM_PARALLELMODE, 1);
     mexPrintf("Successfully set CPX_PARAM_PARALLELMODE and the status is %d \n", status);
     status = CPXsetintparam (env, CPX_PARAM_THREADS, 1);
     mexPrintf("Successfully set CPX_PARAM_THREADS and the status is %d \n", status);
     status = CPXsetintparam (env, CPX_PARAM_AUXROOTTHREADS, 2);
     mexPrintf("Successfully set CPX_PARAM_AUXROOTTHREADS and the status is %d \n", status);
 
-/*
+    /*
     status = CPXsetintparam (env, CPX_PARAM_MEMORYEMPHASIS, 1);
     mexPrintf("Successfully set CPX_PARAM_MEMORYEMPHASIS = 1 and the status is %d \n", status);
 
