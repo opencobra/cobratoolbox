@@ -59,10 +59,13 @@ for i = 1:nMetsTmp
                 formulaCount = formulaCount + 1;
                 haveFormulasFlag = true;
             end
+            
             try
                 chargeList= [chargeList modelSBML.species(i).charge];
+                
             catch ME
                 disp('error');
+                
             end
             
         end

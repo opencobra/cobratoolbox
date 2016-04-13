@@ -173,7 +173,7 @@ for i = 1:size(model2.S,2)
     end
     if mod(i,40) == 0,waitbar(i/size(model2.S,2),h);end
 end
-close(h);
+delete(h);
 fprintf('Finished\n');
 
 % Creating b

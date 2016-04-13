@@ -131,7 +131,9 @@ switch fileType
         if isempty(regexp(fileName,'\.xml$', 'once'))
             model = readSBMLCbModel([fileName '.xml'],defaultBound,compSymbolList,compNameList);
         else
+            
             model = readSBMLCbModel(fileName,defaultBound,compSymbolList,compNameList);
+            
         end
     case 'SimPheny',
         model = readSimPhenyCbModel(fileName,defaultBound,compSymbolList,compNameList);
@@ -178,10 +180,12 @@ end
 % Read SBML
 validate=0;
 verbose=0;% Ronan Nov 24th 2014
+
 modelSBML = TranslateSBML(fileName,validate,verbose);
 
 % Convert
 model = convertSBMLToCobra(modelSBML,defaultBound,compSymbolList,compNameList);
+
 
 %%
 function model = readSimPhenyCbModel(baseName,defaultBound,compSymbolList,compNameList)
