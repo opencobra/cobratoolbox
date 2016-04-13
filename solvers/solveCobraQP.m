@@ -417,6 +417,65 @@ switch solver
            stat = -1; % Solution not optimal or solver problem
         end
         
+    case 'gurobi6'
+     %% gurobi 6
+     % Free academic licenses for the Gurobi solver can be obtained from
+        % http://www.gurobi.com/html/academic.html
+        resultgurobi = struct('x',[],'objval',[],'pi',[]);
+        clear params            % Use the default parameter settings
+        switch printLevel
+            case 0
+                params.OutputFlag = 0;
+                params.DisplayInterval = 1;
+            case printLevel>1
+                params.OutputFlag = 1;
+                params.DisplayInterval = 5;
+            otherwise
+                params.OutputFlag = 0;
+                params.DisplayInterval = 1;
+        end
+
+        params.Method = 0;    %-1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent
+        params.Presolve = -1; % -1 - auto, 0 - no, 1 - conserv, 2 - aggressive
+        params.IntFeasTol = 1e-5;
+        params.FeasibilityTol = 1e-6;
+        params.OptimalityTol = 1e-6;
+        %params.Quad = 1;
+        
+        if (isempty(QPproblem.csense))
+            clear QPproblem.csense
+            QPproblem.csense(1:length(b),1) = '=';
+        else
+            QPproblem.csense(QPproblem.csense == 'L') = '<';
+            QPproblem.csense(QPproblem.csense == 'G') = '>';
+            QPproblem.csense(QPproblem.csense == 'E') = '=';
+            QPproblem.csense = QPproblem.csense(:);
+        end
+	
+        if QPproblem.osense == -1
+            QPproblem.osense = 'max';
+        else
+            QPproblem.osense = 'min';
+        end
+        
+        QPproblem.Q = 0.5*sparse(QPproblem.F);
+        QPproblem.modelsense = QPproblem.osense;
+        [QPproblem.A,QPproblem.rhs,QPproblem.obj,QPproblem.sense] = deal(sparse(QPproblem.A),QPproblem.b,double(QPproblem.c),QPproblem.csense);
+        resultgurobi = gurobi(QPproblem,params);
+        origStat = resultgurobi.status;
+        if strcmp(resultgurobi.status,'OPTIMAL')
+           stat = 1; % Optimal solution found
+           [x,f,y] = deal(resultgurobi.x,resultgurobi.objval,resultgurobi.pi);
+        elseif strcmp(resultgurobi.status,'INFEASIBLE')
+           stat = 0; % Infeasible
+        elseif strcmp(resultgurobi.status,'UNBOUNDED')
+           stat = 2; % Unbounded
+        elseif strcmp(resultgurobi.status,'INF_OR_UNBD')
+           stat = 0; % Gurobi reports infeasible *or* unbounded
+        else
+           stat = -1; % Solution not optimal or solver problem
+        end
+                
     %%
     otherwise
         error(['Unknown solver: ' solver]);
