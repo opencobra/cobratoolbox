@@ -178,22 +178,15 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     status = CPXsetintparam (env, CPX_PARAM_MEMORYEMPHASIS, 1);
     mexPrintf("Successfully set CPX_PARAM_MEMORYEMPHASIS = 1 and the status is %d \n", status);
 
-*/
     status = CPXsetintparam (env, CPX_PARAM_ADVIND, 2);
     mexPrintf("Successfully set CPX_PARAM_ADVIND = 2 and the status is %d \n", status);
-
-/*
 
     status = CPXsetintparam (env, CPX_PARAM_REDUCE, 0);
     mexPrintf("Successfully set CPX_PARAM_REDUCE = 0 and the status is %d \n", status);
 
-    PARAMETERS SUGGESTED TO BE TWEAKED BY ED KLOTZ FROM IBM
     status = CPXsetintparam (env, CPX_PARAM_REDUCE, 1);
     mexPrintf("Successfully set CPX_PARAM_AUXROOTTHREADS and the status is %d \n", status);
 
-
-    */
-    /*
     status = CPXsetintparam (env, CPXPARAM_MIP_Strategy_PresolveNode, 1);
     mexPrintf("Successfully set CPXPARAM_MIP_Strategy_PresolveNode and the status is %d \n ", status);
     */
