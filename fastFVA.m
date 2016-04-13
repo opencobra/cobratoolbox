@@ -44,7 +44,8 @@ function [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective,so
 % Reference: "Computationally efficient Flux Variability Analysis"
 
 % Author: Steinn Gudmundsson.
-% Last updated: April 21st, 2010.
+% Contributor: Laurent Heirendt, LCSB.
+% Last updated: April 2016
 
 verbose=1;
 

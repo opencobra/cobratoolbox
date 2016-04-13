@@ -1,7 +1,7 @@
 /*
  *    Optimized fluxVariability (FVA) code for CPLEX.
  *    Author: Steinn Gudmundsson, 3.22.2010
- *    Modifications: Laurent Heirendt, 4.2016
+ *    Contributor: Laurent Heirendt, 4.2016
  *
  * Usage:
  *   [minFlux, maxFlux,optsol,ret,details]=cplexFVAc(c,A,b,csense,lb,ub,optPercent,objective,rxns)
@@ -40,7 +40,6 @@
  *
  *
  * CPLEXINT (C) Sep 24 2005 by Mato Baotic
- * CPLEXINT (C) 2016 by Laurent Heirendt
  * All rights reserved.
  */
 
