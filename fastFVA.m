@@ -1,4 +1,4 @@
-function [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective,solver,matrixAS)
+function [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective,solver,matrixAS,numThread)
 %fastFVA Flux variablity analysis optimized for the GLPK and CPLEX solvers.
 %
 % [minFlux,maxFlux] = fastFVA(model,optPercentage,objective, solver)
@@ -29,6 +29,7 @@ function [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective,so
 %   objective        Objective ('min' or 'max') (default 'max')
 %   solver           'cplex' or 'glpk' (default 'glpk')
 %   matrixAS         'A' or 'S' - choice of the model matrix, coupled (A) or uncoupled (S)
+%   numThread        Number of the thread, appended to the CPLEX logFile for debugging
 %
 % Outputs:
 %   minFlux   Minimum flux for each reaction
@@ -39,7 +40,7 @@ function [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective,so
 % Example:
 %    load modelRecon1Biomass.mat % Human reconstruction network
 %    SetWorkerCount(4) % Only if you have the parallel toolbox installed
-%    [minFlux,maxFlux]=fas tFVA(model, 90);
+%    [minFlux,maxFlux] = fastFVA(model, 90);
 %
 % Reference: "Computationally efficient Flux Variability Analysis"
 
@@ -49,9 +50,11 @@ function [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective,so
 
 verbose=1;
 
-if nargin<4, solver='glpk'; end
-if nargin<3, objective='max'; end
-if nargin<2, optPercentage=100; end
+if nargin<6, numThread      = 0;      end
+if nargin<5, matrixAS       = 'S';    end
+if nargin<4, solver         = 'glpk'; end
+if nargin<3, objective      = 'max';  end
+if nargin<2, optPercentage  = 100;    end
 
 if strcmpi(objective,'max')
    obj=-1;
@@ -116,7 +119,7 @@ else
    % of problems involving E-type matrices, some workers will get mostly
    % well-behaved LPs while others may get many badly scaled LPs.
 
-   % For debugging, leave out
+   % For debugging and benchmarking - leave out
    %if n > 5000
    %   % A primitive load-balancing strategy for large problems
    %   nworkers=4*nworkers;
@@ -141,7 +144,7 @@ else
 
    fprintf('\n -- Starting to loop through the %d workers. -- \n\n', nworkers);
 
-   parfor i=1:nworkers
+   parfor i = 1:nworkers
 
       t = getCurrentTask();
       fprintf('Worker LoopID = %d, TaskID = %d  (%d, %d) of (%d, %d) \n', i, ...
