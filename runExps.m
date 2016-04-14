@@ -1,10 +1,17 @@
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% MATLAB command: >> matlab -nodesktop -r runExps -logfile runExps_auto.log
+%
 % Perform the experiments described in the application note
 % "Computationally efficient Flux Variability Analysis"
 % Authors: S. Gudmundsson and I. Thiele.
-
-% 20160315: Minor modifications for Linux support by L. Heirendt
+% Contributor: Laurent Heirendt, LCSB
+%
+% 20160315: Minor modifications for Linux support
 % 20160316: Support for Matlab R2014a+
+% 201604 : Support for running multiple experiments with multiple models,
+%          matrices and workers
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Adding the paths
 addpath(genpath('~/Dropbox/UNI.LU/sbgCloud/models'))
@@ -92,45 +99,37 @@ for k = 1:length(nworkersvect)
 
             model = getfield(data,fname);
 
-   %chop b to the correct length
-   if isfield(model,'A')
-      model.b = model.b(1:size(model.A,1));
-      model.csense = model.csense(1:size(model.A,1));
-   end
+            %chop b to the correct length
+            if isfield(model,'A')
+                model.b = model.b(1:size(model.A,1));
+                model.csense = model.csense(1:size(model.A,1));
+            end
 
-   % Modify objective if needed
-   if ~isempty(modelList{iModel,3})
-      model.c=0*model.c;
-      model.c(modelList{iModel,3})=1;
-   end
+            % Modify objective if needed
+            if ~isempty(modelList{iModel,3})
+                model.c=0*model.c;
+                model.c(modelList{iModel,3})=1;
+            end
 
-   tstart=tic;
-   [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective, solver,matrixAS);
-   T(iModel) = toc(tstart);
-   fprintf('>> nworkers = %d, \t model = %s\t%1.1f\n', nworkers, modelList{iModel,1}, T(iModel))
+            % Call the external fastFVA function
+            tstart=tic;
+            [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective, solver,matrixAS);
+            T(iModel) = toc(tstart);
+            fprintf('>> nworkers = %d, \t model = %s\t%1.1f\n', nworkers, modelList{iModel,1}, T(iModel))
 
-   filename = strcat(modelList{iModel,1},'_',matrixAS,'_n',num2str(nworkers),'_',paramstring,'.mat');
+            % Output the file and save the respective MATLAB workspaces
+            filename = strcat(modelList{iModel,1},'_',matrixAS,'_n',num2str(nworkers),'_',paramstring,'.mat');
 
-   autonames{end+1} = {filename};
-   autotimes(end+1) = T(iModel);
+            autonames{end+1} = {filename};
+            autotimes(end+1) = T(iModel);
 
-   %save the corresponding solution files
-   save(filename)
+            % Save the corresponding solution files
+            save(filename);
 
-   end
-   end
+        end %end looping through the matrices A or S
+    end % loop through the models
+end %loop through the workers
 
-
-
-end
-
-
+% Print all the names of the numerical experiments and their respective total solution times
 celldisp(autonames)
 autotimes
-
-%matlab -nodesktop -r run_exps_happy_klotz_auto -logfile run_exps_happy_auto.log
-
-%matlab -r run_exps_happy -logfile run_exps_happy_log.txt
-%filename = strcat('exp_',num2str(nworkers),'_',modelList{iModel,1} ,'_',solver,'.mat');
-
-%save  run_exps_happy_db.mat
