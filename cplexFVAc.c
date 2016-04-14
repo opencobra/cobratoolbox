@@ -1,4 +1,5 @@
 /*
+ *    fastFVA - C language implementation for CPLEX.
  *    Optimized fluxVariability (FVA) code for CPLEX.
  *    Author: Steinn Gudmundsson, 3.22.2010
  *    Contributor: Laurent Heirendt, 4.2016
@@ -64,7 +65,7 @@
 #define FVA_INIT_FAIL      1
 #define FVA_MODIFIED_FAIL  2
 
-#define CPLEXINT_VERSION "2.3"
+#define CPLEXINT_VERSION "2.4"
 #define CPLEXINT_COPYRIGHT "Copyright (C) 2001-2016  Mato Baotic & Dr. Laurent Heirendt"
 
 static CPXENVptr env = NULL;
@@ -255,8 +256,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     ind = (int*)malloc( (n_vars)*sizeof(int));
     val = (double*)malloc( (n_vars)*sizeof(double));
 
-    if(monitorPerformance)
-    {
+    if(monitorPerformance) {
         markersBegin[3] = clock();
     }
 
@@ -270,8 +270,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
        }
     }
 
-    if(monitorPerformance)
-    {
+    if(monitorPerformance) {
         markersEnd[3] = clock();
     }
 
@@ -289,8 +288,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     free(ind);
     free(val);
 
-    if(monitorPerformance)
-    {
+    if(monitorPerformance) {
         markersBegin[4] = clock();
     }
 
@@ -304,8 +302,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
       }
     }
 
-    if(monitorPerformance)
-    {
+    if(monitorPerformance) {
         markersEnd[4] = clock();
     }
     /* Solve all the minimization problems first. The difference in the optimal
@@ -313,8 +310,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     *  than the difference between one min and one max solution, leading to fewer
     *  simplex iterations in each step. */
 
-    if(monitorPerformance)
-    {
+    if(monitorPerformance) {
       markersBegin[5] = clock();
     }
 
@@ -325,27 +321,23 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
       {
         int j = rxns[k];
 
-        if(monitorPerformance)
-        {
+        if(monitorPerformance) {
           markersBegin[6] = clock();
         }
 
         status = CPXchgcoef (env, lp, -1, j-1, 1.0);
 
-        if(monitorPerformance)
-        {
+        if(monitorPerformance) {
           markersEnd[6] = clock();
         }
 
-        if(monitorPerformance)
-        {
+        if(monitorPerformance) {
           markersBegin[7] = clock();
         }
 
         status = CPXlpopt(env, lp); /*this is the most time consuming step*/
 
-        if(monitorPerformance)
-        {
+        if(monitorPerformance) {
           markersEnd[7] = clock();
         }
 
@@ -655,7 +647,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     int             opt_lic_rel = 1;    /* user can specify after how many calls will
                                            CPLEX environment be closed and license released */
 
-    int             opt_logfile = 1;    /* log file */
+    int             opt_logfile = 1;    /* use a CPLEX log file */
 
     char           *vartype = NULL;
     int            objsense = 1;
