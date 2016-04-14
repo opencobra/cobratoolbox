@@ -114,7 +114,10 @@ optParamNames = {'minNorm','printLevel','primalOnly','saveInput','feasTol','optT
     getCobraSolverParams('LP',optParamNames(1:4));
 
 % Set user specified parameter values
-% First input can be 'default' or an optional parameter structure
+solverParams.dummy = 3;
+solverParams = rmfield(solverParams,'dummy'); % workaround to initialize nonempty structure
+
+% First input can be 'default' or a solver-specific parameter structure
 if ~isempty(varargin)
     isdone = false(size(varargin));
     
@@ -123,33 +126,17 @@ if ~isempty(varargin)
         isdone(1) = true;
         varargin = varargin(~isdone);
         
-    elseif isstruct(varargin{1}) % optional parameter structure
-        parameters = varargin{1};
-        if isfield(parameters,'feasTol')
-            feasTol = parameters.feasTol;
-            parameters = rmfield(parameters,'feasTol');
+    elseif isstruct(varargin{1}) % solver-specific parameter structure
+        if isstruct(varargin{1})
+            solverParams = varargin{1};
+            
+            isdone(1) = true;
+            varargin = varargin(~isdone);
         end
-        if isfield(parameters,'optTol')
-            optTol = parameters.optTol;
-            parameters = rmfield(parameters,'optTol');
-        end
-        if isfield(parameters,'solver')
-            solver = parameters.solver;
-            parameters = rmfield(parameters,'solver');
-        end
-        
-        [minNorm, printLevel, primalOnlyFlag, saveInput] = ...
-            getCobraSolverParams('LP',optParamNames(1:4),parameters);
-        
-        
-        isdone(1) = true;
-        varargin = varargin(~isdone);
     end
 end
 
 % Last input can be a solver specific parameter structure
-solverParams.dummy = 3;
-solverParams = rmfield(solverParams,'dummy'); % workaround to initialize nonempty structure
 if ~isempty(varargin)
     isdone = false(size(varargin));
     
@@ -172,6 +159,7 @@ if ~isempty(varargin)
             error('solveCobraLP: Invalid parameter name-value pairs.')
         end
         
+        % only create feaTol, optTol and solver if specified by user
         if isfield(parameters,'feasTol')
             feasTol = parameters.feasTol;
             parameters = rmfield(parameters,'feasTol');
@@ -185,6 +173,7 @@ if ~isempty(varargin)
             parameters = rmfield(parameters,'solver');
         end
         
+        % overwrite defaults
         [minNorm, printLevel, primalOnlyFlag, saveInput] = ...
             getCobraSolverParams('LP',optParamNames(1:4),parameters);
         
