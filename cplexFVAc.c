@@ -59,7 +59,6 @@
 /* FVA constants */
 #define FVA_MIN_OBJECTIVE  1
 
-
 /* FVA return codes */
 #define FVA_SUCCESS        0
 #define FVA_INIT_FAIL      1
@@ -75,13 +74,16 @@ static int NUM_CALLS_CPLEXINT = 0;  /* number of calls to CPLEXINT before cleari
                                        environment CPXenv and releasing the license */
 static int FIRST_CALL_CPLEXINT = 1; /* is this first call to CPLEXINT */
 
-/* MEX Input Arguments */
+/* MEX Input Arguments
+mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
+*/
 enum {F_IN_POS, A_IN_POS, B_IN_POS, CSENSE_IN_POS,
       LB_IN_POS, UB_IN_POS,
-      OPT_PERCENT_IN_POS, OBJECTIVE_IN_POS, RXNS_IN_POS,
+      OPT_PERCENT_IN_POS, OBJECTIVE_IN_POS, RXNS_IN_POS, NUM_THREAD_IN,
       MAX_NUM_IN_ARG};
 
-#define MIN_NUM_IN_ARG      9
+/* Number of input arguments */
+#define MIN_NUM_IN_ARG      10
 
 #define F_IN            prhs[F_IN_POS]
 #define A_IN            prhs[A_IN_POS]
@@ -92,10 +94,13 @@ enum {F_IN_POS, A_IN_POS, B_IN_POS, CSENSE_IN_POS,
 #define OPT_PERCENT_IN  prhs[OPT_PERCENT_IN_POS]
 #define OBJECTIVE_IN    prhs[OBJECTIVE_IN_POS]
 #define RXNS_IN         prhs[RXNS_IN_POS]
+#define NUM_THREAD_IN   prhs[NUM_THREAD_IN]
 
 /* MEX Output Arguments */
 
 enum {MINFLUX_OUT_POS, MAXFLUX_OUT_POS, OPTSOL_OUT_POS, RET_OUT_POS, MAX_NUM_OUT_ARG};
+
+/* Number of output arguments */
 #define MIN_NUM_OUT_ARG    4
 
 #define MINFLUX_OUT     plhs[MINFLUX_OUT_POS]
@@ -126,6 +131,20 @@ enum {MINFLUX_OUT_POS, MAXFLUX_OUT_POS, OPTSOL_OUT_POS, RET_OUT_POS, MAX_NUM_OUT
 
 #define Nmarkers 10
 
+/* Concatenate 3 strings */
+char* concat(char *s1, char *s2, char *s3)
+{
+    size_t len1 = strlen(s1);
+    size_t len2 = strlen(s2);
+    size_t len3 = strlen(s3);
+    char *result = malloc(len1+len2+len3+1);
+    memcpy(result, s1, len1);
+    memcpy(result+len1, s2, len2+1);
+    memcpy(result+len1+len2, s3, len3+1);
+    return result;
+}
+
+
 /*
     Display CPLEX error code message
  */
@@ -153,7 +172,6 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     char sense;
     double TargetValue = 0.0, objval = 0;
     const double tol = 1.0e-6;
-
 
     clock_t markersBegin[Nmarkers], markersEnd[Nmarkers];
     double markers[Nmarkers];
@@ -192,6 +210,11 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     status = CPXsetintparam (env, CPXPARAM_MIP_Strategy_PresolveNode, 1);
     mexPrintf("Successfully set CPXPARAM_MIP_Strategy_PresolveNode and the status is %d \n ", status);
     */
+
+    /* Print ot a warning message if high optPercentage */
+    if(optPercentage > 90) {
+      mexPrintf("\n -- Warning: The optPercentage is higher than 90. The solution process might take longer than you might expect.\n\n");
+    }
 
     if(monitorPerformance)
     {
@@ -277,7 +300,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     rmatbeg[0] = 0;
     rmatbeg[1] = n_vars-1;
 
-    status=CPXaddrows(env, lp, 0, 1, n_vars, &TargetValue, &sense, rmatbeg, ind, val, NULL, NULL);
+    status = CPXaddrows(env, lp, 0, 1, n_vars, &TargetValue, &sense, rmatbeg, ind, val, NULL, NULL);
 
     if (status)
     {
@@ -349,15 +372,13 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
         }
 
 
-        if(monitorPerformance)
-        {
+        if(monitorPerformance) {
           markersBegin[8] = clock();
         }
 
         status = CPXgetobjval(env, lp, &objval);
 
-        if(monitorPerformance)
-        {
+        if(monitorPerformance) {
           markersEnd[8] = clock();
         }
 
@@ -367,8 +388,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
            dispCPLEXerror(env, status);
         }
 
-        if(monitorPerformance)
-        {
+        if(monitorPerformance) {
           markersBegin[9] = clock();
         }
 
@@ -588,8 +608,6 @@ static void freelicence(void)
 
 }
 
-
-
 /************************************
  *                                  *
  *   CPLEXINT solver MATLAB side    *
@@ -664,6 +682,10 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     mxArray         *RET = NULL;
     double          *ret = NULL;
 
+    /* numThread_IN*/
+    int             numThread = 0;
+    char            numThreadstr[15];
+
     /* CPLEX variables */
     char            probname[] = "cplexint_problem\0";
     extern CPXENVptr env;
@@ -677,14 +699,11 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     int             errors = 1;     /* keep track of errors during initialization */
 
     /* Variables for monitoring the performance */
-
     clock_t         begin, end, markersBegin[Nmarkers], markersEnd[Nmarkers];
     double          time_spent, markers[Nmarkers];
     bool            monitorPerformance = false;
 
-
-    if(monitorPerformance)
-    {
+    if(monitorPerformance) {
       for (j = 0; j < Nmarkers; j++)
       {
         markers[j] = 0.0;
@@ -792,9 +811,10 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
         }
     }
 
+
     if ((nrhs > LB_IN_POS) && (!mxIsEmpty(LB_IN))) {
         if (   (!mxIsNumeric(LB_IN))
-            || (mxGetNumberOfDimensions(LB_IN) > 2)
+
             || (mxGetM(LB_IN) != n_vars)
             || (mxGetN(LB_IN) != 1)
             || (mxIsComplex(LB_IN))
@@ -851,10 +871,9 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     objective = mxGetScalar(OBJECTIVE_IN);
     rxns = mxGetPr(RXNS_IN);
     nrxn = mxGetM(RXNS_IN);
+    numThread = mxGetScalar(NUM_THREAD_IN);
 
-     /*
-       Register safe exit.
-     */
+    /* Register safe exit. */
     #ifdef RELEASE_CPLEX_LIC
       mexAtExit(freelicence);
     #endif
@@ -864,8 +883,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
      *  CPLEXINT solver CPLEX side     *
      *                                 *
      ***********************************/
-    if(monitorPerformance)
-    {
+    if(monitorPerformance) {
       markersBegin[1] = clock();
     }
 
@@ -878,8 +896,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     	NUM_CALLS_CPLEXINT--;
     }
 
-    if(monitorPerformance)
-    {
+    if(monitorPerformance) {
       markersEnd[1] = clock();
     }
 
@@ -904,7 +921,20 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     	   We do this since Matlab does not execute printf commands
     	   in MEX files properly under Windows.
     	 */
-        LogFile = CPXfopen("cplexint_logfile.log", "w");
+
+       /* Convert numThreads to a string */
+       sprintf(numThreadstr, "%d", numThread);
+
+       mexPrintf("The name of the logfile is %s\n",concat("cplexint_logfile_", numThreadstr,".log"));
+
+
+       mexPrintf(" >> Reponse from C - #ID = %s\n", numThreadstr);
+
+       LogFile = CPXfopen(concat("cplexint_logfile_", numThreadstr,".log"), "w");
+
+
+      /*  LogFile = CPXfopen("cplexint_logfile.log", "w");*/
+
         if (LogFile == NULL) {
             TROUBLE_mexErrMsgTxt("Could not open the log file cplexint_logfile.log.\n");
         }
@@ -915,16 +945,14 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
         }
     }
 
-    if(monitorPerformance)
-    {
+    if(monitorPerformance) {
       markersBegin[2] = clock();
     }
 
     /* Create the problem. */
     lp = CPXcreateprob(env, &status, probname);
 
-    if(monitorPerformance)
-    {
+    if(monitorPerformance) {
       markersEnd[2] = clock();
     }
 
@@ -943,8 +971,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
         goto TERMINATE;
     }
 
-    if(monitorPerformance)
-    {
+    if(monitorPerformance) {
       markersBegin[3] = clock();
     }
 
@@ -954,8 +981,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
                sense, A_matbeg, A_matcnt, A_matind, A_matval,
                LB_matval, UB_matval, NULL);
 
-    if(monitorPerformance)
-    {
+    if(monitorPerformance) {
       markersEnd[3] = clock();
     }
 
@@ -992,15 +1018,14 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     RET     = mxCreateDoubleMatrix(1,1,mxREAL);
     ret     = mxGetPr(RET);
 
-    if(monitorPerformance)
-    {
+    if(monitorPerformance) {
       markersBegin[4] = clock();
     }
 
+    /* Call FVA properly speaking */
     *ret = _fva(env,lp,minFlux,maxFlux,optSol,n_constr,n_vars,optPercent,objective,rxns,nrxn);
 
-    if(monitorPerformance)
-    {
+    if(monitorPerformance) {
       markersEnd[4] = clock();
     }
 
@@ -1117,8 +1142,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
         TROUBLE_mexErrMsgTxt("There were errors.");
     }
 
-    if(monitorPerformance)
-    {
+    if(monitorPerformance) {
       /* Finish the total execution time of the function */
       end = clock();
       time_spent = (double)(end - begin) / CLOCKS_PER_SEC;

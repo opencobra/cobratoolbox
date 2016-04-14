@@ -1,4 +1,4 @@
-function [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective,solver,matrixAS,numThread)
+function [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective,solver,matrixAS)
 %fastFVA Flux variablity analysis optimized for the GLPK and CPLEX solvers.
 %
 % [minFlux,maxFlux] = fastFVA(model,optPercentage,objective, solver)
@@ -50,7 +50,6 @@ function [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective,so
 
 verbose=1;
 
-if nargin<6, numThread      = 0;      end
 if nargin<5, matrixAS       = 'S';    end
 if nargin<4, solver         = 'glpk'; end
 if nargin<3, objective      = 'max';  end
@@ -77,22 +76,21 @@ end;
 
 if isfield(model,'A') && (matrixAS == 'A')
    % "Generalized FBA"
-   A=model.A;
-   csense=model.csense(:);
-  b=model.b;
-  fprintf('\n >> Generalized FBA - Solving Model.A. \n \n')
+   A = model.A;
+   csense = model.csense(:);
+   b = model.b;
+   fprintf('\n >> Generalized FBA - Solving Model.A. (coupled) \n \n')
 else
    % Standard FBA
-   A=model.S;
-   csense=char('E'*ones(size(A,1),1));
-   b=model.b;
+   A = model.S;
+   csense = char('E'*ones(size(A,1),1));
+   b = model.b;
    b = b(1:size(A,1));
-   fprintf('\n >> Standard FBA - Solving Model.S. \n \n')
+   fprintf('\n >> Standard FBA - Solving Model.S. (uncoupled) \n \n')
 end
-%b=model.b;
-%b = b(1:size(A,1));
+
 [m,n]=size(A);
-fprintf('Size of model: (%d,%d)', m,n)
+fprintf('Size of stoichiometric matrix: (%d,%d)', m,n)
 
 poolobj = gcp('nocreate'); % If no pool, do not create new one.
 if isempty(poolobj)
@@ -100,7 +98,6 @@ if isempty(poolobj)
 else
     nworkers = poolobj.NumWorkers;
 end;
-
 
 fprintf('\n>> The number of workers is %d.\n\n', nworkers);
 
@@ -150,10 +147,10 @@ else
       fprintf('Worker LoopID = %d, TaskID = %d  (%d, %d) of (%d, %d) \n', i, ...
               t.ID, istart(i), iend(i), m, n);
 
-      tstart=tic;
+      tstart = tic;
 
-      [minf,maxf,iopt(i),iret(i)]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
-                                       optPercentage,obj,(istart(i):iend(i))');
+      [minf,maxf,iopt(i),iret(i)] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
+                                         optPercentage,obj,(istart(i):iend(i))', t.ID);
 
       fprintf(' >> Time spent in FVAc: %1.1f seconds.\n\n', toc(tstart));
 

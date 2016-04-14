@@ -23,12 +23,12 @@ clc
 format long
 
 % FVA settings
-optPercentage=90;
-objective='max';
+optPercentage = 90;
+objective = 'max';
 
 % Define the model indices to be solved
 modelStart = 4;
-modelIncrement = 1;
+modelIncrement = 1; % step through the model array
 modelEnd = 4;
 
 % Define the respective parameter to be appended - make sure that the appropriate
@@ -53,11 +53,17 @@ datasets
 nmodels = size(modelList,1);
 T = zeros(nmodels,1);
 
+
+% Print warning for optPercentage
+if (optPercentage > 90)
+  fprintf('\n Warning: The optPercentage is higher than 90. The solution process might take longer than you might expect.\n\n');
+end
+
 % Print out information o
 fprintf('Solver: %s\n', solver)
 fprintf('\n >> The following models will be solved:\n\n');
 for iModel=modelStart:modelIncrement:modelEnd
-   fprintf('- %s\n\n',  modelList{iModel,1});
+   fprintf('   - %s\n\n',  modelList{iModel,1});
 end
 
 % Main loop for numerical experiments
@@ -80,12 +86,9 @@ for k = 1:length(nworkersvect)
 
             matrixAS = matrixASvect(j);
 
-            fprintf('\n >> Currently solving model %s\n\n',  modelList{iModel,1});
-            fprintf('\n >> Currently solving matrix %s\n\n', matrixAS);
-            fprintf('\n >> Currently solving with %d workers\n\n', nworkers);
+            fprintf('\n >> Currently solving model %s, matrix: %s with %d workers. \n\n',  modelList{iModel,1}, matrixAS, nworkers);
 
             % Read model data
-
             data=load([modelList{iModel,2}]);
             %data=load([dataDir,'/',modelList{iModel,2}]);
             fname=fieldnames(data);
