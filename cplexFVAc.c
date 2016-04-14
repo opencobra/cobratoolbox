@@ -131,7 +131,9 @@ enum {MINFLUX_OUT_POS, MAXFLUX_OUT_POS, OPTSOL_OUT_POS, RET_OUT_POS, MAX_NUM_OUT
 
 #define Nmarkers 10
 
-/* Concatenate 3 strings */
+/*
+    Concatenate 3 strings
+*/
 char* concat(char *s1, char *s2, char *s3)
 {
     size_t len1 = strlen(s1);
@@ -144,10 +146,9 @@ char* concat(char *s1, char *s2, char *s3)
     return result;
 }
 
-
 /*
     Display CPLEX error code message
- */
+*/
 void dispCPLEXerror(CPXENVptr env, int status)
 {
     char errmsg[MAX_STR_LENGTH];
@@ -161,6 +162,9 @@ void dispCPLEXerror(CPXENVptr env, int status)
     }
 }
 
+/*
+    FVA Wrapper
+*/
 int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* optSol, mwSize n_constr, mwSize n_vars,
          double optPercentage, int objective, const double* rxns, int nrxn)
 {
