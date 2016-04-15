@@ -873,9 +873,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
      *  CPLEXINT solver CPLEX side     *
      *                                 *
      ***********************************/
-    if(monitorPerformance) {
-      markersBegin[1] = clock();
-    }
+    if(monitorPerformance) markersBegin[1] = clock();
 
     /* Initialize the CPLEX environment. */
     if (FIRST_CALL_CPLEXINT){
@@ -886,9 +884,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     	NUM_CALLS_CPLEXINT--;
     }
 
-    if(monitorPerformance) {
-      markersEnd[1] = clock();
-    }
+    if(monitorPerformance) markersEnd[1] = clock();
 
     /*
        If an error occurs, the status value indicates the reason for
@@ -908,20 +904,18 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
 
     current_time = time(NULL);
 
-    if (current_time == ((time_t)-1))
-    {
+    if (current_time == ((time_t)-1)) {
         TROUBLE_mexErrMsgTxt("Failure to obtain the current time.\n");
     }
 
     /* Convert to local time format. */
     c_time_string = ctime(&current_time);
 
-    if (c_time_string == NULL)
-    {
+    if (c_time_string == NULL) {
         TROUBLE_mexErrMsgTxt("Failure to convert the current time.\n");
     }
 
-    mexPrintf(" -- Current time is %s", c_time_string);
+    mexPrintf(" -- Start time is %s", c_time_string);
 
     /* Create a log file. */
     if (opt_logfile){
@@ -1159,6 +1153,22 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
       mexPrintf("\n >> Total c-Script Execution time: %.2f seconds.\n\n", time_spent);
     }
 
+    /* Print out the time stamp for each worker */
+
+    current_time = time(NULL);
+
+    if (current_time == ((time_t)-1)) {
+        TROUBLE_mexErrMsgTxt("Failure to obtain the current time.\n");
+    }
+
+    /* Convert to local time format. */
+    c_time_string = ctime(&current_time);
+
+    if (c_time_string == NULL) {
+        TROUBLE_mexErrMsgTxt("Failure to convert the current time.\n");
+    }
+
+    mexPrintf(" -- End time is %s", c_time_string);
 
     return;
 }

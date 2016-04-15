@@ -118,7 +118,7 @@ for k = 1:length(nworkersvect)
             tstart=tic;
             [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective, solver,matrixAS);
             T(iModel) = toc(tstart);
-            fprintf('>> nworkers = %d, \t model = %s\t%1.1f\n', nworkers, modelList{iModel,1}, T(iModel))
+            fprintf(' >> nworkers = %d; model = %s; Time = %1.1f [s]\n', nworkers, modelList{iModel,1}, T(iModel))
 
             % Output the file and save the respective MATLAB workspaces
             filename = strcat(modelList{iModel,1},'_',matrixAS,'_n',num2str(nworkers),'_',paramstring,'.mat');
@@ -134,5 +134,8 @@ for k = 1:length(nworkersvect)
 end %loop through the workers
 
 % Print all the names of the numerical experiments and their respective total solution times
-celldisp(autonames)
-autotimes
+fprintf('\n ===================================== Summary ==================================== \n\n');
+for i =1:length(autotimes)
+      fprintf('\t %d. \t <> \t %s \t <> \t %d [s]\n', i, autonames{i}{1}, autotimes(i));
+end
+fprintf('\n ================================================================================== \n');

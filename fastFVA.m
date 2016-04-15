@@ -136,20 +136,24 @@ else
    iopt=zeros(nworkers,1);
    iret=zeros(nworkers,1);
 
-   fprintf('\n -- Starting to loop through the %d workers. -- \n\n', nworkers);
+   fprintf('\n -- Starting to loop through the %d workers. -- \n', nworkers);
+
+   out = parfor_progress(nworkers);
 
    parfor i = 1:nworkers
 
+      fprintf('\n----------------------------------------------------------------------------------\n');
+
       t = getCurrentTask();
-      fprintf('Worker LoopID = %d, TaskID = %d  (%d, %d) of (%d, %d) \n', i, ...
-              t.ID, istart(i), iend(i), m, n);
+      fprintf(' -- TaskID: %d / %d (LoopID = %d) <> [%d, %d] / [%d, %d] \n', ...
+              t.ID, nworkers, i, istart(i), iend(i), m, n);
 
       tstart = tic;
 
       [minf,maxf,iopt(i),iret(i)] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj,(istart(i):iend(i))', t.ID);
 
-      fprintf(' >> Time spent in FVAc: %1.1f seconds.\n\n', toc(tstart));
+      fprintf(' >> Time spent in FVAc: %1.1f seconds.', toc(tstart));
 
       % Storing the matrix
       outArray0(i) = i;
@@ -165,9 +169,25 @@ else
       minFlux=minFlux+minf;
       maxFlux=maxFlux+maxf;
 
+      %responsiveWorkers(i) = 1;
+
+      fprintf('\n----------------------------------------------------------------------------------\n');
+
+
+      % print out the percentage of the progress
+      percout =   parfor_progress;
+
+      if(percout < 100)
+        fprintf(' ==> %d%% done. Please wait...\n', percout);
+      else
+        fprintf(' ==> 100%% done. Analysis completed.\n\n', percout);
+      end
+
    end;
 
-   outputData = struct('outArray0',outArray0,'outArray2',outArray2,'outArray3',outArray3,'outArray4',outArray4)
+out = parfor_progress(0);
+
+   outputData = struct('outArray0',outArray0,'outArray2',outArray2,'outArray3',outArray3,'outArray4',outArray4);
 
    optsol=iopt(1);
    ret=max(iret);
