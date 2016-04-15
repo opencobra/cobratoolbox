@@ -53,7 +53,7 @@ datasets
 nmodels = size(modelList,1);
 T = zeros(nmodels,1);
 
-fprintf('\n ========================== fastFVA analysis started ========================== \n');
+fprintf('\n ============================= fastFVA driver started ============================= \n');
 
 % Print warning for optPercentage
 if (optPercentage > 90)

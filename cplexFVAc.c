@@ -170,7 +170,7 @@ void dispCPLEXerror(CPXENVptr env, int status)
 int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* optSol, mwSize n_constr, mwSize n_vars,
          double optPercentage, int objective, const double* rxns, int nrxn)
 {
-    int status;
+    int status, getStatus;
     int rmatbeg[2];
     int* ind = NULL;
     double* val = NULL;
@@ -178,6 +178,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     char sense;
     double TargetValue = 0.0, objval = 0;
     const double tol = 1.0e-6;
+    int getParam = 0;
 
     clock_t markersBegin[Nmarkers], markersEnd[Nmarkers];
     double markers[Nmarkers];
@@ -192,13 +193,19 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
       CPX_PARAM_AUXROOTTHREADS = 2
     */
 
+    mexPrintf("    -- Setting CPLEX parameters ... \n");
     /*  Setting of the parameters for CPLEX*/
-    status = CPXsetintparam (env, CPX_PARAM_PARALLELMODE, 1);
-    mexPrintf("    ++ Successfully set CPX_PARAM_PARALLELMODE and the status is %d \n", status);
-    status = CPXsetintparam (env, CPX_PARAM_THREADS, 1);
-    mexPrintf("    ++ Successfully set CPX_PARAM_THREADS and the status is %d \n", status);
-    status = CPXsetintparam (env, CPX_PARAM_AUXROOTTHREADS, 2);
-    mexPrintf("    ++ Successfully set CPX_PARAM_AUXROOTTHREADS and the status is %d \n", status);
+    status    = CPXsetintparam (env, CPX_PARAM_PARALLELMODE, 1);
+    getStatus = CPXgetintparam (env, CPX_PARAM_PARALLELMODE, &getParam);
+    mexPrintf("        ++ (status = %d, getStatus = %d): CPX_PARAM_PARALLELMODE = %d \n", status, getStatus, getParam);
+
+    status    = CPXsetintparam (env, CPX_PARAM_THREADS, 1);
+    getStatus = CPXgetintparam (env, CPX_PARAM_THREADS, &getParam);
+    mexPrintf("        ++ (status = %d, getStatus = %d): CPX_PARAM_THREADS = %d \n", status, getStatus, getParam);
+
+    status    = CPXsetintparam (env, CPX_PARAM_AUXROOTTHREADS, 2);
+    getStatus = CPXgetintparam (env, CPX_PARAM_AUXROOTTHREADS, &getParam);
+    mexPrintf("        ++ (status = %d, getStatus = %d): CPX_PARAM_AUXROOTTHREADS = %d \n", status, getStatus, getParam);
 
     /*
     status = CPXsetintparam (env, CPX_PARAM_MEMORYEMPHASIS, 1);
@@ -216,6 +223,8 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     status = CPXsetintparam (env, CPXPARAM_MIP_Strategy_PresolveNode, 1);
     mexPrintf("Successfully set CPXPARAM_MIP_Strategy_PresolveNode and the status is %d \n ", status);
     */
+
+    mexPrintf("    -- All CPLEX parameters set --\n");
 
     /* Print ot a warning message if high optPercentage */
     if(optPercentage > 90) {
