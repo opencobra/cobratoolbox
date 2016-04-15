@@ -65,41 +65,38 @@ end;
 
 if strmatch('glpk',solver)
    FVAc=@glpkFVAcc;
-   fprintf('\n>> The solver is GLPK.\n\n');
 elseif strmatch('cplex',solver)
    FVAc=@cplexFVAc;
-   fprintf('\n>> The solver is CPLEX.\n\n');
 else
    error(sprintf('Solver %s not supported', solver))
 end;
 
-
+% Define the stoichiometric matrix to be solved
 if isfield(model,'A') && (matrixAS == 'A')
    % "Generalized FBA"
    A = model.A;
    csense = model.csense(:);
    b = model.b;
-   fprintf('\n >> Generalized FBA - Solving Model.A. (coupled) \n \n')
+   fprintf(' >> Generalized FBA - Solving Model.A. (coupled) \n')
 else
    % Standard FBA
    A = model.S;
    csense = char('E'*ones(size(A,1),1));
    b = model.b;
    b = b(1:size(A,1));
-   fprintf('\n >> Standard FBA - Solving Model.S. (uncoupled) \n \n')
+   fprintf(' >> Standard FBA - Solving Model.S. (uncoupled) \n')
 end
 
 [m,n]=size(A);
-fprintf('Size of stoichiometric matrix: (%d,%d)', m,n)
+fprintf(' >> Size of stoichiometric matrix: (%d,%d)\n', m,n)
 
+% Create a MATLAB parallel pool
 poolobj = gcp('nocreate'); % If no pool, do not create new one.
 if isempty(poolobj)
     nworkers = 0;
 else
     nworkers = poolobj.NumWorkers;
 end;
-
-fprintf('\n>> The number of workers is %d.\n\n', nworkers);
 
 if nworkers<=1
    % Sequential version

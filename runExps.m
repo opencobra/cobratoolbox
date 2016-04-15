@@ -39,10 +39,10 @@ paramstring = 'DEF';
 matrixASvect = ['S'];
 
 % Define the solver
-solver='cplexint'; % or 'glpk' %%cplexint
+solver = 'cplexint'; % or 'glpk' %%cplexint
 
 % Parallel settings
-bParallel= true; %false; true
+bParallel = true; %false; true
 nworkersvect = [4]; %[8; 16; 32];% Number of parallel workers
 
 autonames = {};
@@ -53,6 +53,7 @@ datasets
 nmodels = size(modelList,1);
 T = zeros(nmodels,1);
 
+fprintf('\n ========================== fastFVA analysis started ========================== \n');
 
 % Print warning for optPercentage
 if (optPercentage > 90)
@@ -60,22 +61,21 @@ if (optPercentage > 90)
 end
 
 % Print out information o
-fprintf('Solver: %s\n', solver)
-fprintf('\n >> The following models will be solved:\n\n');
-for iModel=modelStart:modelIncrement:modelEnd
-   fprintf('   - %s\n\n',  modelList{iModel,1});
+if modelEnd ~= modelStart
+    fprintf('\n >> The following models have been loaded and will be solved:\n\n');
+    for iModel=modelStart:modelIncrement:modelEnd
+        fprintf('     - %s\n\n',  modelList{iModel,1});
+    end
 end
 
 % Main loop for numerical experiments
 for k = 1:length(nworkersvect)
-    nworkers = nworkersvect(k);
 
-
-    if bParallel
-      fprintf('Multi-process version with %d workers\n', nworkers);
-    else
-      fprintf('Sequential version\n');
+    % Set the number of workers
+    if ~bParallel
       nworkers = 0;
+    else
+      nworkers = nworkersvect(k);
     end
 
     % Start a parallel pool from Matlab
@@ -86,7 +86,7 @@ for k = 1:length(nworkersvect)
 
             matrixAS = matrixASvect(j);
 
-            fprintf('\n >> Currently solving model %s, matrix: %s with %d workers. \n\n',  modelList{iModel,1}, matrixAS, nworkers);
+            fprintf('\n >> Currently solving model %s, matrix: %s with %d workers. Solver: %s\n',  modelList{iModel,1}, matrixAS, nworkers, solver);
 
             % Read model data
             data=load([modelList{iModel,2}]);

@@ -53,6 +53,8 @@
 /*#include <ilcplex/cplex.h>*/
 #include "mex.h"
 #include <string.h>
+#include <time.h>
+
 
 /* CPLEX declarations.  */
 
@@ -192,11 +194,11 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
     /*  Setting of the parameters for CPLEX*/
     status = CPXsetintparam (env, CPX_PARAM_PARALLELMODE, 1);
-    mexPrintf("Successfully set CPX_PARAM_PARALLELMODE and the status is %d \n", status);
+    mexPrintf("    ++ Successfully set CPX_PARAM_PARALLELMODE and the status is %d \n", status);
     status = CPXsetintparam (env, CPX_PARAM_THREADS, 1);
-    mexPrintf("Successfully set CPX_PARAM_THREADS and the status is %d \n", status);
+    mexPrintf("    ++ Successfully set CPX_PARAM_THREADS and the status is %d \n", status);
     status = CPXsetintparam (env, CPX_PARAM_AUXROOTTHREADS, 2);
-    mexPrintf("Successfully set CPX_PARAM_AUXROOTTHREADS and the status is %d \n", status);
+    mexPrintf("    ++ Successfully set CPX_PARAM_AUXROOTTHREADS and the status is %d \n", status);
 
     /*
     status = CPXsetintparam (env, CPX_PARAM_MEMORYEMPHASIS, 1);
@@ -239,9 +241,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
        return FVA_INIT_FAIL;
     }
 
-    if(monitorPerformance) {
-      markersEnd[1] = clock();
-    }
+    if(monitorPerformance) markersEnd[1] = clock();
 
     /* Get status of the solution. */
     status = (double)CPXgetstat(env, lp);
@@ -258,9 +258,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
          return FVA_INIT_FAIL;
     }
 
-    if(monitorPerformance) {
-      markersBegin[2] = clock();
-    }
+    if(monitorPerformance) markersBegin[2] = clock();
 
     /* Determine the value of objective function bound */
     if (objective == FVA_MIN_OBJECTIVE)
@@ -272,9 +270,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
        TargetValue = ceil(*optSol/tol)*tol*optPercentage/100.0;
     }
 
-    if(monitorPerformance) {
-        markersEnd[2] = clock();
-    }
+    if(monitorPerformance) markersEnd[2] = clock();
 
     /* Add a constraint which bounds the objective, c'v >= objValue in case of max, (<= for min) */
     sense = (objective==FVA_MIN_OBJECTIVE) ? 'L' : 'G';
@@ -283,9 +279,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     ind = (int*)malloc( (n_vars)*sizeof(int));
     val = (double*)malloc( (n_vars)*sizeof(double));
 
-    if(monitorPerformance) {
-        markersBegin[3] = clock();
-    }
+    if(monitorPerformance) markersBegin[3] = clock();
 
     for (j = 0; j < n_vars; j++)
     {
@@ -297,9 +291,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
        }
     }
 
-    if(monitorPerformance) {
-        markersEnd[3] = clock();
-    }
+    if(monitorPerformance) markersEnd[3] = clock();
 
     rmatbeg[0] = 0;
     rmatbeg[1] = n_vars-1;
@@ -315,9 +307,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     free(ind);
     free(val);
 
-    if(monitorPerformance) {
-        markersBegin[4] = clock();
-    }
+    if(monitorPerformance) markersBegin[4] = clock();
 
     /* Zero all objective function coefficients */
     for (j = 0; j < n_vars; j++)
@@ -348,25 +338,17 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
       {
         int j = rxns[k];
 
-        if(monitorPerformance) {
-          markersBegin[6] = clock();
-        }
+        if(monitorPerformance) markersBegin[6] = clock();
 
         status = CPXchgcoef (env, lp, -1, j-1, 1.0);
 
-        if(monitorPerformance) {
-          markersEnd[6] = clock();
-        }
+        if(monitorPerformance) markersEnd[6] = clock();
 
-        if(monitorPerformance) {
-          markersBegin[7] = clock();
-        }
+        if(monitorPerformance) markersBegin[7] = clock();
 
         status = CPXlpopt(env, lp); /*this is the most time consuming step*/
 
-        if(monitorPerformance) {
-          markersEnd[7] = clock();
-        }
+        if(monitorPerformance) markersEnd[7] = clock();
 
         if (status)
         {
@@ -376,15 +358,11 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
         }
 
 
-        if(monitorPerformance) {
-          markersBegin[8] = clock();
-        }
+        if(monitorPerformance) markersBegin[8] = clock();
 
         status = CPXgetobjval(env, lp, &objval);
 
-        if(monitorPerformance) {
-          markersEnd[8] = clock();
-        }
+        if(monitorPerformance) markersEnd[8] = clock();
 
         if (status != 0)
         {
@@ -392,15 +370,11 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
            dispCPLEXerror(env, status);
         }
 
-        if(monitorPerformance) {
-          markersBegin[9] = clock();
-        }
+        if(monitorPerformance) markersBegin[9] = clock();
 
         status = CPXchgcoef (env, lp, -1, j-1, 0.0);
 
-        if(monitorPerformance) {
-          markersEnd[9] = clock();
-        }
+        if(monitorPerformance) markersEnd[9] = clock();
 
         if (status != 0)
         {
@@ -707,6 +681,9 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     double          time_spent, markers[Nmarkers];
     bool            monitorPerformance = false;
 
+    time_t current_time;
+    char* c_time_string;
+
     if(monitorPerformance) {
       for (j = 0; j < Nmarkers; j++)
       {
@@ -918,28 +895,41 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
         goto TERMINATE;
     }
 
+    /* Print out the time stamp for each worker */
+
+    current_time = time(NULL);
+
+    if (current_time == ((time_t)-1))
+    {
+        TROUBLE_mexErrMsgTxt("Failure to obtain the current time.\n");
+    }
+
+    /* Convert to local time format. */
+    c_time_string = ctime(&current_time);
+
+    if (c_time_string == NULL)
+    {
+        TROUBLE_mexErrMsgTxt("Failure to convert the current time.\n");
+    }
+
+    mexPrintf(" -- Current time is %s", c_time_string);
+
     /* Create a log file. */
     if (opt_logfile){
-    	/*
-    	   Open a LogFile to print out any CPLEX messages in there.
-    	   We do this since Matlab does not execute printf commands
-    	   in MEX files properly under Windows.
-    	 */
+       	/*
+    	  Open a LogFile to print out any CPLEX messages in there.
+    	  We do this since Matlab does not execute printf commands
+    	  in MEX files properly under Windows.
+    	  */
 
-       /* Convert numThreads to a string */
-       sprintf(numThreadstr, "%d", numThread);
+        /* Convert numThreads to a string */
+        sprintf(numThreadstr, "%d", numThread);
 
-       mexPrintf("The name of the logfile is %s\n",concat("cplexint_logfile_", numThreadstr,".log"));
+        mexPrintf(" >> #Task.ID = %s; logfile: %s\n", numThreadstr, concat("cplexint_logfile_", numThreadstr,".log"));
 
+        LogFile = CPXfopen(concat("cplexint_logfile_", numThreadstr,".log"), "w");
 
-       mexPrintf(" >> Reponse from C - #ID = %s\n", numThreadstr);
-
-       LogFile = CPXfopen(concat("cplexint_logfile_", numThreadstr,".log"), "w");
-
-
-      /*  LogFile = CPXfopen("cplexint_logfile.log", "w");*/
-
-        if (LogFile == NULL) {
+       if (LogFile == NULL) {
             TROUBLE_mexErrMsgTxt("Could not open the log file cplexint_logfile.log.\n");
         }
         status = CPXsetlogfile(env, LogFile);
@@ -1159,6 +1149,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
 
       mexPrintf("\n >> Total c-Script Execution time: %.2f seconds.\n\n", time_spent);
     }
+
 
     return;
 }
