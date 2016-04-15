@@ -22,6 +22,23 @@ clear all
 clc
 format long
 
+% Print out the header of the script
+fprintf('\n ============================= fastFVA driver started ============================= \n');
+
+%clear previous log files and results
+m=input('\n Do you want to clean all log files in logFiles/ ? - Y/N [Y]:','s');
+if m=='Y' || m =='y'
+  unix('sudo rm logFiles/*.log');
+  fprintf(' >> All log files in logFiles/ removed.\n');
+end
+
+
+m=input('\n Do you want to clean al results files in results/ ? - Y/N [Y]:','s');
+if m=='Y' || m =='y'
+  unix('sudo rm results/*.mat');
+  fprintf(' >> All result files in results/ removed.\n');
+end
+
 % FVA settings
 optPercentage = 90;
 objective = 'max';
@@ -43,7 +60,7 @@ solver = 'cplexint'; % or 'glpk' %%cplexint
 
 % Parallel settings
 bParallel = true; %false; true
-nworkersvect = [4]; %[8; 16; 32];% Number of parallel workers
+nworkersvect = [8]; %[8; 16; 32];% Number of parallel workers
 
 autonames = {};
 autotimes = [];
@@ -52,8 +69,6 @@ autotimes = [];
 datasets
 nmodels = size(modelList,1);
 T = zeros(nmodels,1);
-
-fprintf('\n ============================= fastFVA driver started ============================= \n');
 
 % Print warning for optPercentage
 if (optPercentage > 90)
@@ -66,6 +81,9 @@ if modelEnd ~= modelStart
     for iModel=modelStart:modelIncrement:modelEnd
         fprintf('     - %s\n\n',  modelList{iModel,1});
     end
+else
+  iModel = modelStart;
+  fprintf('\n >> The following model has been loaded and will be solved: %s\n\n', modelList{iModel,1});
 end
 
 % Main loop for numerical experiments
@@ -118,10 +136,10 @@ for k = 1:length(nworkersvect)
             tstart=tic;
             [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective, solver,matrixAS);
             T(iModel) = toc(tstart);
-            fprintf(' >> nworkers = %d; model = %s; Time = %1.1f [s]\n', nworkers, modelList{iModel,1}, T(iModel))
+            fprintf('\n >> nworkers = %d; model = %s; Time = %1.1f [s]\n', nworkers, modelList{iModel,1}, T(iModel))
 
             % Output the file and save the respective MATLAB workspaces
-            filename = strcat(modelList{iModel,1},'_',matrixAS,'_n',num2str(nworkers),'_',paramstring,'.mat');
+            filename = strcat('results/', modelList{iModel,1},'_',matrixAS,'_n',num2str(nworkers),'_',paramstring,'.mat');
 
             autonames{end+1} = {filename};
             autotimes(end+1) = T(iModel);
@@ -136,6 +154,6 @@ end %loop through the workers
 % Print all the names of the numerical experiments and their respective total solution times
 fprintf('\n ===================================== Summary ==================================== \n\n');
 for i =1:length(autotimes)
-      fprintf('\t %d. \t <> \t %s \t <> \t %d [s]\n', i, autonames{i}{1}, autotimes(i));
+      fprintf('\t %d. \t <> \t %s \t <> \t %1.1f [s]\n', i, autonames{i}{1}, autotimes(i));
 end
 fprintf('\n ================================================================================== \n');

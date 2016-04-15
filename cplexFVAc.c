@@ -556,7 +556,7 @@ static void freelicence(void)
     	status=CPXfclose(LogFile);
 
         if (status) {
-            mexPrintf("Could not close log file cplexint_logfile.log.\n");
+            mexPrintf("Could not close log file.\n");
         } else {
             /* Just to be on the safe side we declare that the LogFile after
                closing is NULL. In this way we avoid possible error when trying
@@ -915,7 +915,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
         TROUBLE_mexErrMsgTxt("Failure to convert the current time.\n");
     }
 
-    mexPrintf(" -- Start time is %s", c_time_string);
+    mexPrintf(" -- Start time:     %s", c_time_string);
 
     /* Create a log file. */
     if (opt_logfile){
@@ -930,10 +930,10 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
 
         mexPrintf(" >> #Task.ID = %s; logfile: %s\n", numThreadstr, concat("cplexint_logfile_", numThreadstr,".log"));
 
-        LogFile = CPXfopen(concat("cplexint_logfile_", numThreadstr,".log"), "w");
+        LogFile = CPXfopen(concat("logFiles/cplexint_logfile_", numThreadstr,".log"), "w");
 
        if (LogFile == NULL) {
-            TROUBLE_mexErrMsgTxt("Could not open the log file cplexint_logfile.log.\n");
+            TROUBLE_mexErrMsgTxt("Could not open the log file logFiles/cplexint_logfile.log.\n");
         }
         status = CPXsetlogfile(env, LogFile);
         if (status) {
@@ -1037,7 +1037,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     	status = CPXfclose(LogFile);
 
         if (status) {
-            mexPrintf("Could not close log file cplexint_logfile.log.\n");
+            mexPrintf("Could not close log file.\n");
         } else {
             /* Just to be on the safe side we declare that the LogFile after
                closing is NULL. In this way we avoid possible error when trying
@@ -1168,7 +1168,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
         TROUBLE_mexErrMsgTxt("Failure to convert the current time.\n");
     }
 
-    mexPrintf(" -- End time is %s", c_time_string);
+    mexPrintf(" -- End time:     %s", c_time_string);
 
     return;
 }

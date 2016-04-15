@@ -132,9 +132,9 @@ else
       iend(i)=istart(i)+nrxn(i)-1;
    end
 
-   minFlux=zeros(n,1); maxFlux=zeros(n,1);
-   iopt=zeros(nworkers,1);
-   iret=zeros(nworkers,1);
+   minFlux = zeros(n,1); maxFlux=zeros(n,1);
+   iopt = zeros(nworkers,1);
+   iret = zeros(nworkers,1);
 
    fprintf('\n -- Starting to loop through the %d workers. -- \n', nworkers);
 
@@ -142,10 +142,10 @@ else
 
    parfor i = 1:nworkers
 
-      fprintf('\n----------------------------------------------------------------------------------\n');
-
       t = getCurrentTask();
-      fprintf(' -- TaskID: %d / %d (LoopID = %d) <> [%d, %d] / [%d, %d] \n', ...
+
+      fprintf('\n----------------------------------------------------------------------------------\n');
+      fprintf(' --  TaskID: %d / %d (LoopID = %d) <> [%d, %d] / [%d, %d]\n', ...
               t.ID, nworkers, i, istart(i), iend(i), m, n);
 
       tstart = tic;
@@ -178,16 +178,16 @@ else
       percout =   parfor_progress;
 
       if(percout < 100)
-        fprintf(' ==> %d%% done. Please wait...\n', percout);
+        fprintf(' ==> %1.1f%% done. Please wait ...\n', percout);
       else
-        fprintf(' ==> 100%% done. Analysis completed.\n\n', percout);
+        fprintf(' ==> 100%% done. Analysis completed.\n', percout);
       end
 
    end;
 
-out = parfor_progress(0);
+   out = parfor_progress(0);
 
-   outputData = struct('outArray0',outArray0,'outArray2',outArray2,'outArray3',outArray3,'outArray4',outArray4);
+   %outputData = struct('outArray0',outArray0,'outArray2',outArray2,'outArray3',outArray3,'outArray4',outArray4)
 
    optsol=iopt(1);
    ret=max(iret);
