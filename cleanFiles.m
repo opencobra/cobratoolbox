@@ -5,12 +5,11 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
 % Clear previous log files in logFiles/
 D = dir('logFiles/*.log');
 nbFiles = numel(D);
 if(nbFiles > 0)
-    fprintf('\n There are %d files in logFiles/\n', nbFiles);
+    fprintf('\n Number of files in logFiles/: %d\n', nbFiles);
     m=input('\n Do you want to clean all log files in logFiles/ ? - Y/N [Y]:','s');
     if m=='Y' || m =='y'
       unix('sudo rm logFiles/*.log');
@@ -24,7 +23,7 @@ end
 D = dir('results/*.mat');
 nbFiles = numel(D);
 if(nbFiles > 0)
-    fprintf('\n There are %d files in results/\n', nbFiles);
+    fprintf('\n Number of files in results/: %d\n', nbFiles);
     m=input('\n Do you want to clean al results files in results/ ? - Y/N [Y]:','s');
     if m=='Y' || m =='y'
       unix('sudo rm results/*.mat');
@@ -33,3 +32,5 @@ if(nbFiles > 0)
 else
     fprintf('\n The directory results/ is empty.\n');
 end
+
+fprintf('\n');
