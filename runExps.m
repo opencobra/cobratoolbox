@@ -25,6 +25,7 @@ format long
 % Print out the header of the script
 fprintf('\n ============================= fastFVA driver started ============================= \n');
 
+% Clean files from previous run
 cleanFiles
 
 % FVA settings
