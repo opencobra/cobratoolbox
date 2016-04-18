@@ -25,19 +25,7 @@ format long
 % Print out the header of the script
 fprintf('\n ============================= fastFVA driver started ============================= \n');
 
-%clear previous log files and results
-m=input('\n Do you want to clean all log files in logFiles/ ? - Y/N [Y]:','s');
-if m=='Y' || m =='y'
-  unix('sudo rm logFiles/*.log');
-  fprintf(' >> All log files in logFiles/ removed.\n');
-end
-
-
-m=input('\n Do you want to clean al results files in results/ ? - Y/N [Y]:','s');
-if m=='Y' || m =='y'
-  unix('sudo rm results/*.mat');
-  fprintf(' >> All result files in results/ removed.\n');
-end
+cleanFiles
 
 % FVA settings
 optPercentage = 90;
