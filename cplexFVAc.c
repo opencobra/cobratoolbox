@@ -17,10 +17,11 @@
  *
  * The FVA code builds heavily upon CPLEXINT by Mato Baotic.
  *
- *    CPLEXINT      MATLAB MEX INTERFACE FOR CPLEX, ver. 2.3
+ *    CPLEXINT      MATLAB MEX INTERFACE FOR CPLEX, ver. 3.0
  *
  *    Copyright (C) 2001-2005  Mato Baotic
  *    Copyright (C) 2006       Michal Kvasnica
+ *    Copyright (C) 2016       Laurent Heirendt
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -41,6 +42,7 @@
  *
  *
  * CPLEXINT (C) Sep 24 2005 by Mato Baotic
+ * Contributor: Dr. Laurent Heirendt, LCSB
  * All rights reserved.
  */
 
@@ -49,14 +51,10 @@
 #include <math.h>
 #include <matrix.h>
 #include <time.h>
-#include <cplex.h>
-/*#include <ilcplex/cplex.h>*/
+#include <cplex.h> /*#include <ilcplex/cplex.h> -- for WIN OS*/
 #include "mex.h"
 #include <string.h>
 #include <time.h>
-
-
-/* CPLEX declarations.  */
 
 /* FVA constants */
 #define FVA_MIN_OBJECTIVE  1
@@ -66,7 +64,7 @@
 #define FVA_INIT_FAIL      1
 #define FVA_MODIFIED_FAIL  2
 
-#define CPLEXINT_VERSION "2.4"
+#define CPLEXINT_VERSION "3.0"
 #define CPLEXINT_COPYRIGHT "Copyright (C) 2001-2016  Mato Baotic & Dr. Laurent Heirendt"
 
 static CPXENVptr env = NULL;
@@ -79,39 +77,49 @@ static int FIRST_CALL_CPLEXINT = 1; /* is this first call to CPLEXINT */
 /* MEX Input Arguments
 mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
 */
-enum {F_IN_POS, A_IN_POS, B_IN_POS, CSENSE_IN_POS,
-      LB_IN_POS, UB_IN_POS,
-      OPT_PERCENT_IN_POS, OBJECTIVE_IN_POS, RXNS_IN_POS, NUM_THREAD_IN,
+enum {F_IN_POS,
+      A_IN_POS,
+      B_IN_POS,
+      CSENSE_IN_POS,
+      LB_IN_POS,
+      UB_IN_POS,
+      OPT_PERCENT_IN_POS,
+      OBJECTIVE_IN_POS,
+      RXNS_IN_POS,
+      NUM_THREAD_IN,
+      NAMES_CPLEX_PARAMS,
+      VALUES_CPLEX_PARAMS,
       MAX_NUM_IN_ARG};
 
 /* Number of input arguments */
-#define MIN_NUM_IN_ARG      10
+#define MIN_NUM_IN_ARG      12
 
-#define F_IN            prhs[F_IN_POS]
-#define A_IN            prhs[A_IN_POS]
-#define B_IN            prhs[B_IN_POS]
-#define CSENSE_IN       prhs[CSENSE_IN_POS]
-#define LB_IN           prhs[LB_IN_POS]
-#define UB_IN           prhs[UB_IN_POS]
-#define OPT_PERCENT_IN  prhs[OPT_PERCENT_IN_POS]
-#define OBJECTIVE_IN    prhs[OBJECTIVE_IN_POS]
-#define RXNS_IN         prhs[RXNS_IN_POS]
-#define NUM_THREAD_IN   prhs[NUM_THREAD_IN]
+#define F_IN                  prhs[F_IN_POS]
+#define A_IN                  prhs[A_IN_POS]
+#define B_IN                  prhs[B_IN_POS]
+#define CSENSE_IN             prhs[CSENSE_IN_POS]
+#define LB_IN                 prhs[LB_IN_POS]
+#define UB_IN                 prhs[UB_IN_POS]
+#define OPT_PERCENT_IN        prhs[OPT_PERCENT_IN_POS]
+#define OBJECTIVE_IN          prhs[OBJECTIVE_IN_POS]
+#define RXNS_IN               prhs[RXNS_IN_POS]
+#define NUM_THREAD_IN         prhs[NUM_THREAD_IN]
+#define NAMES_CPLEX_PARAMS    prhs[NAMES_CPLEX_PARAMS]
+#define VALUES_CPLEX_PARAMS   prhs[VALUES_CPLEX_PARAMS]
 
 /* MEX Output Arguments */
-
 enum {MINFLUX_OUT_POS, MAXFLUX_OUT_POS, OPTSOL_OUT_POS, RET_OUT_POS, MAX_NUM_OUT_ARG};
 
 /* Number of output arguments */
-#define MIN_NUM_OUT_ARG    4
+#define MIN_NUM_OUT_ARG       4
 
-#define MINFLUX_OUT     plhs[MINFLUX_OUT_POS]
-#define MAXFLUX_OUT     plhs[MAXFLUX_OUT_POS]
-#define OPTSOL_OUT      plhs[OPTSOL_OUT_POS]
-#define RET_OUT         plhs[RET_OUT_POS]
+#define MINFLUX_OUT           plhs[MINFLUX_OUT_POS]
+#define MAXFLUX_OUT           plhs[MAXFLUX_OUT_POS]
+#define OPTSOL_OUT            plhs[OPTSOL_OUT_POS]
+#define RET_OUT               plhs[RET_OUT_POS]
 
-#define MAX_STR_LENGTH      1024
-
+#define MAX_STR_LENGTH        1024
+#define OPT_PERCENTAGE        90
 
 #if !defined(MAX)
 #define MAX(A, B)   ((A) > (B) ? (A) : (B))
@@ -133,9 +141,7 @@ enum {MINFLUX_OUT_POS, MAXFLUX_OUT_POS, OPTSOL_OUT_POS, RET_OUT_POS, MAX_NUM_OUT
 
 #define Nmarkers 10
 
-/*
-    Concatenate 3 strings
-*/
+/* Concatenate 3 strings */
 char* concat(char *s1, char *s2, char *s3)
 {
     size_t len1 = strlen(s1);
@@ -167,7 +173,7 @@ void setCPLEXparam(CPXENVptr env, int numberParam, int valueParam)
 {
   int           status, getStatus, nameStatus;
   int           getParam = 0;
-  char          nameParam[60] = "";
+  char          nameParam[MAX_STR_LENGTH] = "";
 
   status      = CPXsetintparam  (env, numberParam, valueParam);
   getStatus   = CPXgetintparam  (env, numberParam, &getParam);
@@ -191,7 +197,6 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     clock_t       markersBegin[Nmarkers], markersEnd[Nmarkers];
     double        markers[Nmarkers];
     bool          monitorPerformance = false;
-
 
     int           nCPLEXparams = 3;
     int           arrCPLEXparams[nCPLEXparams][2];
@@ -236,7 +241,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     mexPrintf("    -- All CPLEX parameters set --\n");
 
     /* Print ot a warning message if high optPercentage */
-    if(optPercentage > 90) {
+    if(optPercentage > OPT_PERCENTAGE) {
       mexPrintf("\n -- Warning: The optPercentage is higher than 90. The solution process might take longer than you might expect.\n\n");
     }
 
@@ -663,8 +668,8 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
 
     int             opt_logfile = 1;    /* use a CPLEX log file */
 
-    char           *vartype = NULL;
-    int            objsense = 1;
+    char            *vartype = NULL;
+    int             objsense = 1;
 
     mxArray         *MINFLUX = NULL;
     double          *minFlux = NULL;
@@ -680,19 +685,20 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
 
     /* numThread_IN*/
     int             numThread = 0;
-    char            numThreadstr[15];
+    char            numThreadstr[MAX_STR_LENGTH];
 
     /* CPLEX variables */
     char            probname[] = "cplexint_problem\0";
-    extern CPXENVptr env;
-    extern CPXFILEptr LogFile;
-    extern int NUM_CALLS_CPLEXINT;  /* number of calls to CPLEXINT before clearing
+    extern          CPXENVptr env;
+    extern          CPXFILEptr LogFile;
+    extern int      NUM_CALLS_CPLEXINT;  /* number of calls to CPLEXINT before clearing
                                        environment CPXenv and releasing the license */
-    extern int FIRST_CALL_CPLEXINT; /* is this first call to CPLEXINT */
+    extern int      FIRST_CALL_CPLEXINT; /* is this first call to CPLEXINT */
     CPXLPptr        lp = NULL;
     int             status;
 
     int             errors = 1;     /* keep track of errors during initialization */
+
 
     /* Variables for monitoring the performance */
     clock_t         begin, end, markersBegin[Nmarkers], markersEnd[Nmarkers];
@@ -701,6 +707,13 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
 
     time_t current_time;
     char* c_time_string;
+
+    mxArray         *pm = NULL;
+
+
+    /* Retrieve the number of parameters to be set for CPLEX*/
+    mexPrintf("The number of parameters is: %d \n\n", mxGetNumberOfElements(NAMES_CPLEX_PARAMS));
+    mexPrintf("The number of parameters is: %d \n\n", mxGetNumberOfElements(VALUES_CPLEX_PARAMS));
 
     if(monitorPerformance) {
       for (j = 0; j < Nmarkers; j++)
@@ -810,7 +823,6 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
         }
     }
 
-
     if ((nrhs > LB_IN_POS) && (!mxIsEmpty(LB_IN))) {
         if (   (!mxIsNumeric(LB_IN))
 
@@ -819,9 +831,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
             || (mxIsComplex(LB_IN))
             || (mxGetPr(LB_IN) == NULL)
             ) {
-            sprintf(errmsg,
-                "LB must be a real valued (%d x 1) column vector.",
-                n_vars);
+            sprintf(errmsg, "LB must be a real valued (%d x 1) column vector.", n_vars);
             TROUBLE_mexErrMsgTxt(errmsg);
         }
         LB_nnz = get_vector(LB_IN, &LB_matval);
@@ -866,11 +876,13 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     }
 
     /* FVA specific arguments */
-    optPercent = mxGetScalar(OPT_PERCENT_IN);
-    objective = mxGetScalar(OBJECTIVE_IN);
-    rxns = mxGetPr(RXNS_IN);
-    nrxn = mxGetM(RXNS_IN);
-    numThread = mxGetScalar(NUM_THREAD_IN);
+    optPercent    = mxGetScalar(OPT_PERCENT_IN);
+    objective     = mxGetScalar(OBJECTIVE_IN);
+    rxns          = mxGetPr(RXNS_IN);
+    nrxn          = mxGetM(RXNS_IN);
+
+    /* Retrieve the number of the thread */
+    numThread     = mxGetScalar(NUM_THREAD_IN);
 
     /* Register safe exit. */
     #ifdef RELEASE_CPLEX_LIC

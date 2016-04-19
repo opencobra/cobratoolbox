@@ -1,4 +1,4 @@
-function [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective,solver,matrixAS)
+function [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective,solver,matrixAS,cpxControl)
 %fastFVA Flux variablity analysis optimized for the GLPK and CPLEX solvers.
 %
 % [minFlux,maxFlux] = fastFVA(model,optPercentage,objective, solver)
@@ -49,12 +49,13 @@ function [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective,so
 % Last updated: April 2016
 
 verbose=1;
+if nargin<6, cpxControl     = struct([]); end
+if nargin<5, matrixAS       = 'S';        end
+if nargin<4, solver         = 'glpk';     end
+if nargin<3, objective      = 'max';      end
+if nargin<2, optPercentage  = 100;        end
 
-if nargin<5, matrixAS       = 'S';    end
-if nargin<4, solver         = 'glpk'; end
-if nargin<3, objective      = 'max';  end
-if nargin<2, optPercentage  = 100;    end
-
+% Define the objective
 if strcmpi(objective,'max')
    obj=-1;
 elseif strcmpi(objective,'min')
@@ -63,6 +64,7 @@ else
    error('Unknown objective')
 end;
 
+% Define the solver
 if strmatch('glpk',solver)
    FVAc=@glpkFVAcc;
 elseif strmatch('cplex',solver)
@@ -70,6 +72,14 @@ elseif strmatch('cplex',solver)
 else
    error(sprintf('Solver %s not supported', solver))
 end;
+
+% Define the CPLEX parameter set and the associated values
+namesCPLEXparams    = fieldnames(cpxControl);
+nCPLEXparams        = length(namesCPLEXparams);
+valuesCPLEXparams   = zeros(nCPLEXparams,1);
+for i =1:nCPLEXparams
+  valuesCPLEXparams(i) = getfield(cpxControl, namesCPLEXparams{i});
+end
 
 % Define the stoichiometric matrix to be solved
 if isfield(model,'A') && (matrixAS == 'A')
@@ -151,7 +161,8 @@ else
       tstart = tic;
 
       [minf,maxf,iopt(i),iret(i)] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
-                                         optPercentage,obj,(istart(i):iend(i))', t.ID);
+                                         optPercentage,obj,(istart(i):iend(i))', ...
+                                         t.ID, namesCPLEXparams, valuesCPLEXparams);
 
       fprintf(' >> Time spent in FVAc: %1.1f seconds.', toc(tstart));
 

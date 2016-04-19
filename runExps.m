@@ -49,7 +49,7 @@ solver = 'cplexint'; % or 'glpk' %%cplexint
 
 % Parallel settings
 bParallel = true; %false; true
-nworkersvect = [8]; %[8; 16; 32];% Number of parallel workers
+nworkersvect = [2]; %[8; 16; 32];% Number of parallel workers
 
 autonames = {};
 autotimes = [];
@@ -75,6 +75,9 @@ else
   iModel = modelStart;
   fprintf('\n >> The following model has been loaded and will be solved: %s\n\n', modelList{iModel,1});
 end
+
+% Load all the CPLEX parameters of the parameter set in CPLEXParamSet.m
+cpxControl = CPLEXParamSet;
 
 % Main loop for numerical experiments
 for k = 1:length(nworkersvect)
@@ -124,7 +127,7 @@ for k = 1:length(nworkersvect)
 
             % Call the external fastFVA function
             tstart=tic;
-            [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective, solver,matrixAS);
+            [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective, solver,matrixAS, cpxControl);
             T(iModel) = toc(tstart);
             fprintf('\n >> nworkers = %d; model = %s; Time = %1.1f [s]\n', nworkers, modelList{iModel,1}, T(iModel))
 
