@@ -165,27 +165,42 @@ void dispCPLEXerror(CPXENVptr env, int status)
 }
 
 /*
-    FVA Wrapper
+    Set CPLEX parameter
 */
+void setCPLEXparam(CPXENVptr env, int numberParam, int valueParam)
+{
+  int           status, getStatus, nameStatus;
+  int           getParam = 0;
+  char          nameParam[20] = "";
+  /*  int           numberParam = 0; */
+
+  status      = CPXsetintparam  (env, numberParam, valueParam);
+  getStatus   = CPXgetintparam  (env, numberParam, &getParam);
+  nameStatus  = CPXgetparamname (env, numberParam, nameParam);
+  mexPrintf("        ++ (status = %d, getStatus = %d): %s = %d \n", status, getStatus, nameParam, getParam);
+
+}
+
+/* FVA Wrapper */
 int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* optSol, mwSize n_constr, mwSize n_vars,
          double optPercentage, int objective, const double* rxns, int nrxn)
 {
-    int status, getStatus, nameStatus;
-    int rmatbeg[2];
-    int* ind = NULL;
-    double* val = NULL;
-    int j, k, iRound;
-    char sense;
-    double TargetValue = 0.0, objval = 0;
-    const double tol = 1.0e-6;
-    int getParam = 0;
-    char nameParam[20] = "";
-    int numberParam = 0;
+    int           status, getStatus, nameStatus;
+    int           rmatbeg[2];
+    int*          ind = NULL;
+    double*       val = NULL;
+    int           j, k, iRound;
+    char          sense;
+    double        TargetValue = 0.0, objval = 0;
+    const double  tol = 1.0e-6;
+    int           getParam = 0;
+    char          nameParam[20] = "";
+    int           numberParam = 0;
 
-    clock_t markersBegin[Nmarkers], markersEnd[Nmarkers];
-    double markers[Nmarkers];
+    clock_t       markersBegin[Nmarkers], markersEnd[Nmarkers];
+    double        markers[Nmarkers];
 
-    bool monitorPerformance = false;
+    bool          monitorPerformance = false;
 
     /*
       Best performance for running on 4core/2threads server rack:
@@ -196,14 +211,16 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     */
 
     mexPrintf("    -- Setting CPLEX parameters ... \n");
+    setCPLEXparam(env, 1109, 1); /* CPX_PARAM_PARALLELMODE */
+    setCPLEXparam(env, 1067, 1); /* CPX_PARAM_THREADS */
+    setCPLEXparam(env, 2139, 1); /* CPX_PARAM_AUXROOTTHREADS */
     /*  Setting of the parameters for CPLEX*/
-    numberParam = 1109; /* CPX_PARAM_PARALLELMODE */
+    /*
+    numberParam = 1109; CPX_PARAM_PARALLELMODE
 
-    status    = CPXsetintparam (env, numberParam, 1);
-    /* status    = CPXsetintparam (env, CPX_PARAM_PARALLELMODE, 1);*/
-    getStatus = CPXgetintparam (env, numberParam, &getParam);
-    nameStatus = CPXgetparamname (env, numberParam, nameParam);
-
+    status      = CPXsetintparam  (env, numberParam, 1);
+    getStatus   = CPXgetintparam  (env, numberParam, &getParam);
+    nameStatus  = CPXgetparamname (env, numberParam, nameParam);
     mexPrintf("        ++ (status = %d, getStatus = %d): %s = %d \n", status, getStatus, nameParam, getParam);
 
     status    = CPXsetintparam (env, CPX_PARAM_THREADS, 1);
@@ -214,7 +231,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     getStatus = CPXgetintparam (env, CPX_PARAM_AUXROOTTHREADS, &getParam);
     mexPrintf("        ++ (status = %d, getStatus = %d): CPX_PARAM_AUXROOTTHREADS = %d \n", status, getStatus, getParam);
 
-    /*
+
     status = CPXsetintparam (env, CPX_PARAM_MEMORYEMPHASIS, 1);
     mexPrintf("Successfully set CPX_PARAM_MEMORYEMPHASIS = 1 and the status is %d \n", status);
 
