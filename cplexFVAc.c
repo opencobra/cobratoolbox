@@ -172,13 +172,11 @@ void setCPLEXparam(CPXENVptr env, int numberParam, int valueParam)
   int           status, getStatus, nameStatus;
   int           getParam = 0;
   char          nameParam[20] = "";
-  /*  int           numberParam = 0; */
 
   status      = CPXsetintparam  (env, numberParam, valueParam);
   getStatus   = CPXgetintparam  (env, numberParam, &getParam);
   nameStatus  = CPXgetparamname (env, numberParam, nameParam);
   mexPrintf("        ++ (status = %d, getStatus = %d): %s = %d \n", status, getStatus, nameParam, getParam);
-
 }
 
 /* FVA Wrapper */
@@ -189,19 +187,27 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     int           rmatbeg[2];
     int*          ind = NULL;
     double*       val = NULL;
-    int           j, k, iRound;
+    int           i, j, k, iRound;
     char          sense;
     double        TargetValue = 0.0, objval = 0;
     const double  tol = 1.0e-6;
     int           getParam = 0;
     char          nameParam[20] = "";
     int           numberParam = 0;
-
     clock_t       markersBegin[Nmarkers], markersEnd[Nmarkers];
     double        markers[Nmarkers];
-
     bool          monitorPerformance = false;
+    int           nCPLEXparams = 3;
+    int           arrCPLEXparams[nCPLEXparams][2];
 
+    arrCPLEXparams[0][0] = 1109; /*CPX_PARAM_PARALLELMODE*/
+    arrCPLEXparams[0][1] = 1;
+
+    arrCPLEXparams[1][0] = 1067; /*CPX_PARAM_THREADS*/
+    arrCPLEXparams[1][1] = 1;
+
+    arrCPLEXparams[2][0] = 2139;
+    arrCPLEXparams[2][1] = 2; /*CPX_PARAM_AUXROOTTHREADS*/
     /*
       Best performance for running on 4core/2threads server rack:
 
@@ -209,13 +215,16 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
       CPX_PARAM_THREADS = 1
       CPX_PARAM_AUXROOTTHREADS = 2
     */
-
-    mexPrintf("    -- Setting CPLEX parameters ... \n");
-    setCPLEXparam(env, 1109, 1); /* CPX_PARAM_PARALLELMODE */
-    setCPLEXparam(env, 1067, 1); /* CPX_PARAM_THREADS */
-    setCPLEXparam(env, 2139, 1); /* CPX_PARAM_AUXROOTTHREADS */
     /*  Setting of the parameters for CPLEX*/
+    mexPrintf("    -- Setting CPLEX parameters ... \n");
+    for(i = 0; i < nCPLEXparams; i++){
+          setCPLEXparam(env, arrCPLEXparams[i][0], arrCPLEXparams[i][1]); /* CPX_PARAM_PARALLELMODE */
+    }
     /*
+    setCPLEXparam(env, 1109, 1);
+    setCPLEXparam(env, 1067, 1);
+    setCPLEXparam(env, 2139, 1);
+
     numberParam = 1109; CPX_PARAM_PARALLELMODE
 
     status      = CPXsetintparam  (env, numberParam, 1);
