@@ -148,9 +148,7 @@ char* concat(char *s1, char *s2, char *s3)
     return result;
 }
 
-/*
-    Display CPLEX error code message
-*/
+/* Display CPLEX error code message */
 void dispCPLEXerror(CPXENVptr env, int status)
 {
     char errmsg[MAX_STR_LENGTH];
@@ -164,9 +162,7 @@ void dispCPLEXerror(CPXENVptr env, int status)
     }
 }
 
-/*
-    Set CPLEX parameter
-*/
+/* Set CPLEX parameter */
 void setCPLEXparam(CPXENVptr env, int numberParam, int valueParam)
 {
   int           status, getStatus, nameStatus;
@@ -191,7 +187,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     char          sense;
     double        TargetValue = 0.0, objval = 0;
     const double  tol = 1.0e-6;
-    
+
     clock_t       markersBegin[Nmarkers], markersEnd[Nmarkers];
     double        markers[Nmarkers];
     bool          monitorPerformance = false;
@@ -221,27 +217,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
           setCPLEXparam(env, arrCPLEXparams[i][0], arrCPLEXparams[i][1]); /* CPX_PARAM_PARALLELMODE */
     }
     /*
-    setCPLEXparam(env, 1109, 1);
-    setCPLEXparam(env, 1067, 1);
-    setCPLEXparam(env, 2139, 1);
-
-    numberParam = 1109; CPX_PARAM_PARALLELMODE
-
-    status      = CPXsetintparam  (env, numberParam, 1);
-    getStatus   = CPXgetintparam  (env, numberParam, &getParam);
-    nameStatus  = CPXgetparamname (env, numberParam, nameParam);
-    mexPrintf("        ++ (status = %d, getStatus = %d): %s = %d \n", status, getStatus, nameParam, getParam);
-
-    status    = CPXsetintparam (env, CPX_PARAM_THREADS, 1);
-    getStatus = CPXgetintparam (env, CPX_PARAM_THREADS, &getParam);
-    mexPrintf("        ++ (status = %d, getStatus = %d): CPX_PARAM_THREADS = %d \n", status, getStatus, getParam);
-
-    status    = CPXsetintparam (env, CPX_PARAM_AUXROOTTHREADS, 2);
-    getStatus = CPXgetintparam (env, CPX_PARAM_AUXROOTTHREADS, &getParam);
-    mexPrintf("        ++ (status = %d, getStatus = %d): CPX_PARAM_AUXROOTTHREADS = %d \n", status, getStatus, getParam);
-
-
-    status = CPXsetintparam (env, CPX_PARAM_MEMORYEMPHASIS, 1);
+        status = CPXsetintparam (env, CPX_PARAM_MEMORYEMPHASIS, 1);
     mexPrintf("Successfully set CPX_PARAM_MEMORYEMPHASIS = 1 and the status is %d \n", status);
 
     status = CPXsetintparam (env, CPX_PARAM_ADVIND, 2);

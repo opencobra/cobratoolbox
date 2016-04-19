@@ -56,6 +56,7 @@ autotimes = [];
 
 % Load the respective datasets
 datasets
+
 nmodels = size(modelList,1);
 T = zeros(nmodels,1);
 
@@ -120,7 +121,6 @@ for k = 1:length(nworkersvect)
                 model.c=0*model.c;
                 model.c(modelList{iModel,3})=1;
             end
-
 
             % Call the external fastFVA function
             tstart=tic;
