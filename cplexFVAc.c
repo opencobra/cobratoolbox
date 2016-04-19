@@ -171,7 +171,7 @@ void setCPLEXparam(CPXENVptr env, int numberParam, int valueParam)
 {
   int           status, getStatus, nameStatus;
   int           getParam = 0;
-  char          nameParam[20] = "";
+  char          nameParam[60] = "";
 
   status      = CPXsetintparam  (env, numberParam, valueParam);
   getStatus   = CPXgetintparam  (env, numberParam, &getParam);
@@ -183,7 +183,7 @@ void setCPLEXparam(CPXENVptr env, int numberParam, int valueParam)
 int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* optSol, mwSize n_constr, mwSize n_vars,
          double optPercentage, int objective, const double* rxns, int nrxn)
 {
-    int           status, getStatus, nameStatus;
+    int           status;
     int           rmatbeg[2];
     int*          ind = NULL;
     double*       val = NULL;
@@ -191,12 +191,12 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     char          sense;
     double        TargetValue = 0.0, objval = 0;
     const double  tol = 1.0e-6;
-    int           getParam = 0;
-    char          nameParam[20] = "";
-    int           numberParam = 0;
+    
     clock_t       markersBegin[Nmarkers], markersEnd[Nmarkers];
     double        markers[Nmarkers];
     bool          monitorPerformance = false;
+
+
     int           nCPLEXparams = 3;
     int           arrCPLEXparams[nCPLEXparams][2];
 

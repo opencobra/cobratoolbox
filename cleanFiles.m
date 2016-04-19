@@ -10,7 +10,7 @@ D = dir('logFiles/*.log');
 nbFiles = numel(D);
 if(nbFiles > 0)
     fprintf('\n Number of files in logFiles/: %d\n', nbFiles);
-    m=input('\n Do you want to clean all log files in logFiles/ ? - Y/N [Y]:','s');
+    m=input('\n Do you want to clean all log files in logFiles/ ? - Y/N [Y]: ','s');
     if m=='Y' || m =='y'
       unix('sudo rm logFiles/*.log');
       fprintf(' >> All log files in logFiles/ removed.\n');
@@ -24,7 +24,7 @@ D = dir('results/*.mat');
 nbFiles = numel(D);
 if(nbFiles > 0)
     fprintf('\n Number of files in results/: %d\n', nbFiles);
-    m=input('\n Do you want to clean al results files in results/ ? - Y/N [Y]:','s');
+    m=input('\n Do you want to clean al results files in results/ ? - Y/N [Y]: ','s');
     if m=='Y' || m =='y'
       unix('sudo rm results/*.mat');
       fprintf(' >> All result files in results/ removed.\n');
