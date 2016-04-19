@@ -33,9 +33,9 @@ optPercentage = 90;
 objective = 'max';
 
 % Define the model indices to be solved
-modelStart = 4;
+modelStart = 3;
 modelIncrement = 1; % step through the model array
-modelEnd = 4;
+modelEnd = 3;
 
 % Define the respective parameter to be appended - make sure that the appropriate
 % arameters are set in the external code

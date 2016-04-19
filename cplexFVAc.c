@@ -170,7 +170,7 @@ void dispCPLEXerror(CPXENVptr env, int status)
 int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* optSol, mwSize n_constr, mwSize n_vars,
          double optPercentage, int objective, const double* rxns, int nrxn)
 {
-    int status, getStatus;
+    int status, getStatus, nameStatus;
     int rmatbeg[2];
     int* ind = NULL;
     double* val = NULL;
@@ -179,6 +179,8 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     double TargetValue = 0.0, objval = 0;
     const double tol = 1.0e-6;
     int getParam = 0;
+    char nameParam[20] = "";
+    int numberParam = 0;
 
     clock_t markersBegin[Nmarkers], markersEnd[Nmarkers];
     double markers[Nmarkers];
@@ -195,9 +197,14 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
     mexPrintf("    -- Setting CPLEX parameters ... \n");
     /*  Setting of the parameters for CPLEX*/
-    status    = CPXsetintparam (env, CPX_PARAM_PARALLELMODE, 1);
-    getStatus = CPXgetintparam (env, CPX_PARAM_PARALLELMODE, &getParam);
-    mexPrintf("        ++ (status = %d, getStatus = %d): CPX_PARAM_PARALLELMODE = %d \n", status, getStatus, getParam);
+    numberParam = 1109; /* CPX_PARAM_PARALLELMODE */
+
+    status    = CPXsetintparam (env, numberParam, 1);
+    /* status    = CPXsetintparam (env, CPX_PARAM_PARALLELMODE, 1);*/
+    getStatus = CPXgetintparam (env, numberParam, &getParam);
+    nameStatus = CPXgetparamname (env, numberParam, nameParam);
+
+    mexPrintf("        ++ (status = %d, getStatus = %d): %s = %d \n", status, getStatus, nameParam, getParam);
 
     status    = CPXsetintparam (env, CPX_PARAM_THREADS, 1);
     getStatus = CPXgetintparam (env, CPX_PARAM_THREADS, &getParam);
