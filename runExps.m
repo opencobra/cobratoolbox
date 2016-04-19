@@ -100,22 +100,11 @@ for k = 1:length(nworkersvect)
             %data=load([dataDir,'/',modelList{iModel,2}]);
             fname=fieldnames(data);
 
-      CPX_PARAM_PARALLELMODE = 1
-      CPX_PARAM_THREADS = 1
-      CPX_PARAM_AUXROOTTHREADS = 2
-    */
-
-    mexPrintf("    -- Setting CPLEX parameters ... \n");
-    /*  Setting of the parameters for CPLEX*/
-    status    = CPXsetintparam (env, CPX_PARAM_PARALLELMODE, 1);
-    getStatus = CPXgetintparam (env, CPX_PARAM_PARALLELMODE, &getParam);
-    mexPrintf("        ++ (status = %d, getStatus = %d): CPX_PARAM_PARALLELMODE = %d \n", status, getStatus, getParam);
-
-    status    = CPXsetintparam (env, CPX_PARAM_THREADS, 1);
-    getStatus = CPXgetintparam (env, CPX_PARAM_THREADS, &getParam);
-    mexPrintf("        ++ (status = %d, getStatus = %d): CPX_PARAM_THREADS = %d \n", status, getStatus, getParam);
-
-    status    = CPXsetintparam (env, CPX_PARAM_AUXROOTTHREADS, 2);
+            idx=strmatch('model',fname);
+            if isempty(idx)
+                fname=fname{1};
+            else
+                fname=fname{idx(1)};
             end
 
             model = getfield(data,fname);
@@ -131,6 +120,7 @@ for k = 1:length(nworkersvect)
                 model.c=0*model.c;
                 model.c(modelList{iModel,3})=1;
             end
+
 
             % Call the external fastFVA function
             tstart=tic;
