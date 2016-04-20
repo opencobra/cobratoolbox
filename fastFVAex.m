@@ -35,8 +35,8 @@ function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVAex(model,opt
 %   maxFlux   Maximum flux for each reaction
 %   optsol    Optimal solution (of the initial FBA)
 %   ret       Zero if success
-%   
-% [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVAex(...) returns 
+%
+% [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVAex(...) returns
 % vectors for the initial FBA in FBASOL together with matrices FVAMIN and
 % FVAMAX containing the flux values for each individual min/max problem.
 % Note that for large models the memory requirements may become prohibitive.
@@ -57,7 +57,7 @@ function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVAex(model,opt
 
 verbose=0;
 
-if nargin<5, 
+if nargin<5,
     rxns=1:length(model.lb);
 else
     rxns = find(ismember(model.rxns, rxnsList));
@@ -169,7 +169,7 @@ else
          fbasolRes{i}=fbasol_single;
       end
    end
-   % Aggregate results   
+   % Aggregate results
    optsol=iopt(1);
    ret=max(iret);
    if bExtraOutputs

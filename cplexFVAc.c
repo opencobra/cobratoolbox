@@ -88,10 +88,12 @@ enum {F_IN_POS,
       RXNS_IN_POS,
       NUM_THREAD_IN,
       CPLEX_PARAMS,
+      NAMES_CPLEX_PARAMS,
+      VALUES_CPLEX_PARAMS,
       MAX_NUM_IN_ARG};
 
 /* Number of input arguments */
-#define MIN_NUM_IN_ARG        11
+#define MIN_NUM_IN_ARG        13
 
 #define F_IN                  prhs[F_IN_POS]
 #define A_IN                  prhs[A_IN_POS]
@@ -104,7 +106,8 @@ enum {F_IN_POS,
 #define RXNS_IN               prhs[RXNS_IN_POS]
 #define NUM_THREAD_IN         prhs[NUM_THREAD_IN]
 #define CPLEX_PARAMS          prhs[CPLEX_PARAMS]
-/*#define VALUES_CPLEX_PARAMS   prhs[VALUES_CPLEX_PARAMS]*/
+#define NAMES_CPLEX_PARAMS    prhs[NAMES_CPLEX_PARAMS]
+#define VALUES_CPLEX_PARAMS   prhs[VALUES_CPLEX_PARAMS]
 
 /* MEX Output Arguments */
 enum {MINFLUX_OUT_POS, MAXFLUX_OUT_POS, OPTSOL_OUT_POS, RET_OUT_POS, MAX_NUM_OUT_ARG};
@@ -233,6 +236,9 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     status = CPXsetintparam (env, CPX_PARAM_REDUCE, 1);
     mexPrintf("Successfully set CPX_PARAM_AUXROOTTHREADS and the status is %d \n", status);
 
+    if(monitorPerformance) markersBegin[4] = clock();
+
+    /* Zero all objective function coefficients
     status = CPXsetintparam (env, CPXPARAM_MIP_Strategy_PresolveNode, 1);
     mexPrintf("Successfully set CPXPARAM_MIP_Strategy_PresolveNode and the status is %d \n ", status);
     */
@@ -372,8 +378,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
         if(monitorPerformance) markersEnd[7] = clock();
 
-        if (status)
-        {
+        if (status) {
            /* To be done: Try to restart from scratch! */
            mexPrintf("Numerical difficulties, round=%d, j=%d\n", iRound, j);
            return FVA_MODIFIED_FAIL;
@@ -386,8 +391,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
         if(monitorPerformance) markersEnd[8] = clock();
 
-        if (status != 0)
-        {
+        if (status != 0) {
            mexPrintf("Unable to get objective function value (%d,%d)\n", iRound, j);
            dispCPLEXerror(env, status);
         }
@@ -398,12 +402,10 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
         if(monitorPerformance) markersEnd[9] = clock();
 
-        if (status != 0)
-        {
+        if (status != 0) {
           mexPrintf("Unable to set coeff to zero\n");
         }
-        if (iRound == 0)
-        {
+        if (iRound == 0) {
           minFlux[j-1] = objval;
         }
         else
@@ -522,12 +524,9 @@ int get_vector(const mxArray *IN, double **outval)
 {
     int i;
     int gcount = 0;
-
     int m = mxGetM(IN);
     int n = mxGetN(IN);
-
     double *matval = NULL;
-
     double *in = mxGetPr(IN);
 
     matval = (double *)mxCalloc(m*n, sizeof(double));
@@ -548,6 +547,24 @@ int get_vector(const mxArray *IN, double **outval)
     }
     *outval = matval;
     return (gcount);
+}
+
+int get_vector_full(const mxArray *IN, double **outval)
+{
+  int i;
+  int m = mxGetM(IN);
+  int n = mxGetN(IN);
+  double *matval = NULL;
+  double *in = mxGetPr(IN);
+
+  matval = (double *)mxCalloc(m*n, sizeof(double));
+
+  for (i = 0; i < m*n; i++) {
+    matval[i] = in[i];
+    mexPrintf("The value at position %d is %f\n", i+1, *(in+i+1));
+  }
+  *outval = matval;
+  return(m);
 }
 
 /*
@@ -607,6 +624,8 @@ static void freelicence(void)
     }
 
 }
+
+
 
 /************************************
  *                                  *
@@ -705,17 +724,46 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     time_t          current_time;
     char*           c_time_string;
 
-    const char            *fieldName;
-    int fieldnum;
+    const char      *fieldName;
+    int             fieldNumber;
+    int countParams = 0;
+    /*const mwSize    *countParams;*/
+    const mxArray         *mxTmp;
+    double          *tmp;
+    double tmmp;
+
+    int             valuesCPLEX_nnz = 0;          /* number of non-zero elements */
+    double         *valuesCPLEX_matval = NULL;
+
 
     /* Retrieve the number of parameters to be set for CPLEX*/
-    mexPrintf("The number of parameters is: %d \n\n", mxGetNumberOfFields(CPLEX_PARAMS));
+    countParams = mxGetNumberOfFields(CPLEX_PARAMS);
+    mexPrintf("The number of parameters is: %d \n\n", countParams);
+    mexPrintf("The structure is valid; Boolean = : %d \n\n", mxIsStruct(CPLEX_PARAMS));
 
-    for(j = 0; j< mxGetNumberOfFields(CPLEX_PARAMS); j++)
+    valuesCPLEX_nnz = get_vector_full(VALUES_CPLEX_PARAMS, &valuesCPLEX_matval);
+
+
+    for(j = 0; j < countParams; j++)
     {
       fieldName = mxGetFieldNameByNumber(CPLEX_PARAMS, j);
-      fieldnum = mxGetFieldNumber(CPLEX_PARAMS, fieldName );
-        mexPrintf("Parameter to be set: %s with field number: %d\n", fieldName, mxGetFieldByNumber(CPLEX_PARAMS,1,fieldnum) );
+      /*fieldNumber  = mxGetFieldNumber(CPLEX_PARAMS, fieldName);*/
+      mxTmp     = mxGetField(CPLEX_PARAMS,0,fieldName); /* index is 0 for a 1x1 structure */
+    /*  mxTmp = mxGetFieldByNumber(CPLEX_PARAMS, 0, j);*/
+
+      mxTmp = mxGetField(CPLEX_PARAMS,0,"AGGIND");
+
+      if( mxTmp == NULL ) mexPrintf("The field %s not found in structure", fieldName);
+
+      /*
+      countTmp = mxGetNumberOfElements(mxTmp);
+      mexPrintf("There is (are) %d element(s) in the field %s.\n", countTmp, fieldName);
+      tmp       = mxGetPr(mxTmp);
+      tmmp = mxGetScalar(mxTmp);
+      */
+      mexPrintf("Parameter: %s; of %d; value: tmp %f \n", fieldName, valuesCPLEX_nnz, *(valuesCPLEX_matval+j) );
+
+
     }
 
     if(monitorPerformance) {

@@ -74,12 +74,12 @@ else
 end;
 
 % Define the CPLEX parameter set and the associated values
-%namesCPLEXparams    = fieldnames(cpxControl);
-%nCPLEXparams        = length(namesCPLEXparams);
-%valuesCPLEXparams   = zeros(nCPLEXparams,1);
-%for i =1:nCPLEXparams
-%  valuesCPLEXparams(i) = getfield(cpxControl, namesCPLEXparams{i});
-%end
+namesCPLEXparams    = fieldnames(cpxControl);
+nCPLEXparams        = length(namesCPLEXparams);
+valuesCPLEXparams   = zeros(nCPLEXparams,1);
+for i =1:nCPLEXparams
+  valuesCPLEXparams(i) = getfield(cpxControl, namesCPLEXparams{i});
+end
 
 % Define the stoichiometric matrix to be solved
 if isfield(model,'A') && (matrixAS == 'A')
@@ -123,12 +123,6 @@ else
    % of problems involving E-type matrices, some workers will get mostly
    % well-behaved LPs while others may get many badly scaled LPs.
 
-   % For debugging and benchmarking - leave out
-   %if n > 5000
-   %   % A primitive load-balancing strategy for large problems
-   %   nworkers=4*nworkers;
-   %end
-
    nrxn=repmat(fix(n/nworkers),nworkers,1);
    i=1;
    while sum(nrxn) < n
@@ -162,7 +156,7 @@ else
 
       [minf,maxf,iopt(i),iret(i)] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj,(istart(i):iend(i))', ...
-                                         t.ID, cpxControl);
+                                         t.ID, cpxControl, namesCPLEXparams, valuesCPLEXparams);
 
       fprintf(' >> Time spent in FVAc: %1.1f seconds.', toc(tstart));
 
@@ -203,3 +197,5 @@ else
    optsol=iopt(1);
    ret=max(iret);
 end;
+
+valuesCPLEXparams
