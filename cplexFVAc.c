@@ -88,12 +88,11 @@ enum {F_IN_POS,
       RXNS_IN_POS,
       NUM_THREAD_IN,
       CPLEX_PARAMS,
-      NAMES_CPLEX_PARAMS,
       VALUES_CPLEX_PARAMS,
       MAX_NUM_IN_ARG};
 
 /* Number of input arguments */
-#define MIN_NUM_IN_ARG        13
+#define MIN_NUM_IN_ARG        12
 
 #define F_IN                  prhs[F_IN_POS]
 #define A_IN                  prhs[A_IN_POS]
@@ -106,7 +105,6 @@ enum {F_IN_POS,
 #define RXNS_IN               prhs[RXNS_IN_POS]
 #define NUM_THREAD_IN         prhs[NUM_THREAD_IN]
 #define CPLEX_PARAMS          prhs[CPLEX_PARAMS]
-#define NAMES_CPLEX_PARAMS    prhs[NAMES_CPLEX_PARAMS]
 #define VALUES_CPLEX_PARAMS   prhs[VALUES_CPLEX_PARAMS]
 
 /* MEX Output Arguments */
@@ -165,7 +163,7 @@ void dispCPLEXerror(CPXENVptr env, int status)
     errstr = (char *)CPXgeterrorstring (env, status, errmsg);
     if ( errstr != NULL ) {
         mexPrintf("%s",errmsg);
-    }else {
+    } else {
         mexPrintf("CPLEX Error %5d:  Unknown error code.\n", status);
     }
 }
@@ -177,9 +175,9 @@ void setCPLEXparam(CPXENVptr env, int numberParam, int valueParam)
   int           getParam = 0;
   char          nameParam[MAX_STR_LENGTH] = "";
 
-  status      = CPXsetintparam  (env, numberParam, valueParam);
-  getStatus   = CPXgetintparam  (env, numberParam, &getParam);
-  nameStatus  = CPXgetparamname (env, numberParam, nameParam);
+  status        = CPXsetintparam  (env, numberParam, valueParam);
+  getStatus     = CPXgetintparam  (env, numberParam, &getParam);
+  nameStatus    = CPXgetparamname (env, numberParam, nameParam);
   mexPrintf("        ++ (status = %d, getStatus = %d): %s = %d \n", status, getStatus, nameParam, getParam);
 }
 
@@ -549,6 +547,7 @@ int get_vector(const mxArray *IN, double **outval)
     return (gcount);
 }
 
+/* Retrieve the vector and return the lengh of the vector */
 int get_vector_full(const mxArray *IN, double **outval)
 {
   int i;
@@ -559,10 +558,8 @@ int get_vector_full(const mxArray *IN, double **outval)
 
   matval = (double *)mxCalloc(m*n, sizeof(double));
 
-  for (i = 0; i < m*n; i++) {
-    matval[i] = in[i];
-    mexPrintf("The value at position %d is %f\n", i+1, *(in+i+1));
-  }
+  for (i = 0; i < m*n; i++) matval[i] = in[i];
+
   *outval = matval;
   return(m);
 }
@@ -725,45 +722,18 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     char*           c_time_string;
 
     const char      *fieldName;
-    int             fieldNumber;
-    int countParams = 0;
-    /*const mwSize    *countParams;*/
-    const mxArray         *mxTmp;
-    double          *tmp;
-    double tmmp;
-
-    int             valuesCPLEX_nnz = 0;          /* number of non-zero elements */
-    double         *valuesCPLEX_matval = NULL;
-
+    int             countParam = 0;          /* number of non-zero elements */
+    double         *valuesCPLEX = NULL;
 
     /* Retrieve the number of parameters to be set for CPLEX*/
-    countParams = mxGetNumberOfFields(CPLEX_PARAMS);
-    mexPrintf("The number of parameters is: %d \n\n", countParams);
-    mexPrintf("The structure is valid; Boolean = : %d \n\n", mxIsStruct(CPLEX_PARAMS));
+    countParam = get_vector_full(VALUES_CPLEX_PARAMS, &valuesCPLEX);
 
-    valuesCPLEX_nnz = get_vector_full(VALUES_CPLEX_PARAMS, &valuesCPLEX_matval);
+    mexPrintf("The number of parameters is: %d \n\n", countParam);
 
-
-    for(j = 0; j < countParams; j++)
+    for(j = 0; j < countParam; j++)
     {
       fieldName = mxGetFieldNameByNumber(CPLEX_PARAMS, j);
-      /*fieldNumber  = mxGetFieldNumber(CPLEX_PARAMS, fieldName);*/
-      mxTmp     = mxGetField(CPLEX_PARAMS,0,fieldName); /* index is 0 for a 1x1 structure */
-    /*  mxTmp = mxGetFieldByNumber(CPLEX_PARAMS, 0, j);*/
-
-      mxTmp = mxGetField(CPLEX_PARAMS,0,"AGGIND");
-
-      if( mxTmp == NULL ) mexPrintf("The field %s not found in structure", fieldName);
-
-      /*
-      countTmp = mxGetNumberOfElements(mxTmp);
-      mexPrintf("There is (are) %d element(s) in the field %s.\n", countTmp, fieldName);
-      tmp       = mxGetPr(mxTmp);
-      tmmp = mxGetScalar(mxTmp);
-      */
-      mexPrintf("Parameter: %s; of %d; value: tmp %f \n", fieldName, valuesCPLEX_nnz, *(valuesCPLEX_matval+j) );
-
-
+      mexPrintf("Parameter: %s; value: tmp %f \n", fieldName, *(valuesCPLEX+j) );
     }
 
     if(monitorPerformance) {

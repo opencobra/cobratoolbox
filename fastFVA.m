@@ -73,7 +73,7 @@ else
    error(sprintf('Solver %s not supported', solver))
 end;
 
-% Define the CPLEX parameter set and the associated values
+% Define the CPLEX parameter set and the associated values - split the struct
 namesCPLEXparams    = fieldnames(cpxControl);
 nCPLEXparams        = length(namesCPLEXparams);
 valuesCPLEXparams   = zeros(nCPLEXparams,1);
@@ -156,7 +156,7 @@ else
 
       [minf,maxf,iopt(i),iret(i)] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj,(istart(i):iend(i))', ...
-                                         t.ID, cpxControl, namesCPLEXparams, valuesCPLEXparams);
+                                         t.ID, cpxControl, valuesCPLEXparams);
 
       fprintf(' >> Time spent in FVAc: %1.1f seconds.', toc(tstart));
 
@@ -197,5 +197,3 @@ else
    optsol=iopt(1);
    ret=max(iret);
 end;
-
-valuesCPLEXparams
