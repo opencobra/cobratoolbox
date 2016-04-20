@@ -169,21 +169,28 @@ void dispCPLEXerror(CPXENVptr env, int status)
 }
 
 /* Set CPLEX parameter */
-void setCPLEXparam(CPXENVptr env, int numberParam, int valueParam)
+void setCPLEXparam(CPXENVptr env, char const* nameParam, int valueParam)
 {
-  int           status, getStatus, nameStatus;
+  int           status, getStatus, numStatus, numParam;
   int           getParam = 0;
-  char          nameParam[MAX_STR_LENGTH] = "";
+  char const*          nameParam2;
 
-  status        = CPXsetintparam  (env, numberParam, valueParam);
-  getStatus     = CPXgetintparam  (env, numberParam, &getParam);
-  nameStatus    = CPXgetparamname (env, numberParam, nameParam);
+  nameParam2 = &nameParam;
+
+/*  numStatus     = CPXgetparamnum (env, "CPX_PARAM_ADVIND", &numParam);  --- this works*/
+  numStatus     = CPXgetparamnum (env, nameParam2, &numParam);
+    mexPrintf("status = %d, %s - %d \n", numStatus, nameParam, numParam);
+
+  status        = CPXsetintparam  (env, numParam, valueParam);
+  getStatus     = CPXgetintparam  (env, numParam, &getParam);
+  /*nameStatus    = CPXgetparamname (env, nameParam, nameParam);*/
   mexPrintf("        ++ (status = %d, getStatus = %d): %s = %d \n", status, getStatus, nameParam, getParam);
 }
 
 /* FVA Wrapper */
 int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* optSol, mwSize n_constr, mwSize n_vars,
-         double optPercentage, int objective, const double* rxns, int nrxn)
+         double optPercentage, int objective, const double* rxns, int nrxn,
+         const mxArray* namesCPLEXparams, const mxArray *valuesCPLEXparams)
 {
     int           status;
     int           rmatbeg[2];
@@ -201,6 +208,11 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     int           nCPLEXparams = 3;
     int           arrCPLEXparams[nCPLEXparams][2];
 
+    const char      *fieldName;
+    int             countParam = 0;          /* number of non-zero elements */
+    double         *valuesCPLEX = NULL;
+
+
     arrCPLEXparams[0][0] = 1109; /*CPX_PARAM_PARALLELMODE*/
     arrCPLEXparams[0][1] = 1;
 
@@ -209,6 +221,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
     arrCPLEXparams[2][0] = 2139;
     arrCPLEXparams[2][1] = 2; /*CPX_PARAM_AUXROOTTHREADS*/
+
     /*
       Best performance for running on 4core/2threads server rack:
 
@@ -216,13 +229,27 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
       CPX_PARAM_THREADS = 1
       CPX_PARAM_AUXROOTTHREADS = 2
     */
+
+
+    /* Retrieve the number of parameters to be set for CPLEX*/
     /*  Setting of the parameters for CPLEX*/
     mexPrintf("    -- Setting CPLEX parameters ... \n");
-    for(i = 0; i < nCPLEXparams; i++){
-          setCPLEXparam(env, arrCPLEXparams[i][0], arrCPLEXparams[i][1]); /* CPX_PARAM_PARALLELMODE */
+
+    countParam = get_vector_full(valuesCPLEXparams, &valuesCPLEX);
+
+    for(j = 0; j < countParam; j++)
+    {
+      fieldName = mxGetFieldNameByNumber(namesCPLEXparams, j);
+      /*mexPrintf("_FVA . Parameter: %s; value: tmp %f \n", fieldName, *(valuesCPLEX+j) );*/
+        setCPLEXparam(env, fieldName, *(valuesCPLEX+j));
     }
-    /*
-        status = CPXsetintparam (env, CPX_PARAM_MEMORYEMPHASIS, 1);
+
+  /*
+    for(i = 0; i < nCPLEXparams; i++){
+         setCPLEXparam(env, arrCPLEXparams[i][0], arrCPLEXparams[i][1]);
+    }
+
+    status = CPXsetintparam (env, CPX_PARAM_MEMORYEMPHASIS, 1);
     mexPrintf("Successfully set CPX_PARAM_MEMORYEMPHASIS = 1 and the status is %d \n", status);
 
     status = CPXsetintparam (env, CPX_PARAM_ADVIND, 2);
@@ -233,7 +260,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
     status = CPXsetintparam (env, CPX_PARAM_REDUCE, 1);
     mexPrintf("Successfully set CPX_PARAM_AUXROOTTHREADS and the status is %d \n", status);
-
+*/
     if(monitorPerformance) markersBegin[4] = clock();
 
     /* Zero all objective function coefficients
@@ -622,8 +649,6 @@ static void freelicence(void)
 
 }
 
-
-
 /************************************
  *                                  *
  *   CPLEXINT solver MATLAB side    *
@@ -720,21 +745,6 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     bool            monitorPerformance = false;
     time_t          current_time;
     char*           c_time_string;
-
-    const char      *fieldName;
-    int             countParam = 0;          /* number of non-zero elements */
-    double         *valuesCPLEX = NULL;
-
-    /* Retrieve the number of parameters to be set for CPLEX*/
-    countParam = get_vector_full(VALUES_CPLEX_PARAMS, &valuesCPLEX);
-
-    mexPrintf("The number of parameters is: %d \n\n", countParam);
-
-    for(j = 0; j < countParam; j++)
-    {
-      fieldName = mxGetFieldNameByNumber(CPLEX_PARAMS, j);
-      mexPrintf("Parameter: %s; value: tmp %f \n", fieldName, *(valuesCPLEX+j) );
-    }
 
     if(monitorPerformance) {
       for (j = 0; j < Nmarkers; j++)
@@ -1062,11 +1072,10 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     }
 
     /* Call FVA properly speaking */
-    *ret = _fva(env,lp,minFlux,maxFlux,optSol,n_constr,n_vars,optPercent,objective,rxns,nrxn);
+    *ret = _fva(env,lp,minFlux,maxFlux,optSol,n_constr,n_vars,optPercent,objective,rxns,nrxn,
+                CPLEX_PARAMS, VALUES_CPLEX_PARAMS);
 
-    if(monitorPerformance) {
-      markersEnd[4] = clock();
-    }
+    if(monitorPerformance) markersEnd[4] = clock();
 
     /* The FVA may have been unsuccessful, but there were no errors when
        initializing CPLEX. The success of FVA is determined by RET */
