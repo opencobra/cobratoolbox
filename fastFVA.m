@@ -74,12 +74,12 @@ else
 end;
 
 % Define the CPLEX parameter set and the associated values
-namesCPLEXparams    = fieldnames(cpxControl);
-nCPLEXparams        = length(namesCPLEXparams);
-valuesCPLEXparams   = zeros(nCPLEXparams,1);
-for i =1:nCPLEXparams
-  valuesCPLEXparams(i) = getfield(cpxControl, namesCPLEXparams{i});
-end
+%namesCPLEXparams    = fieldnames(cpxControl);
+%nCPLEXparams        = length(namesCPLEXparams);
+%valuesCPLEXparams   = zeros(nCPLEXparams,1);
+%for i =1:nCPLEXparams
+%  valuesCPLEXparams(i) = getfield(cpxControl, namesCPLEXparams{i});
+%end
 
 % Define the stoichiometric matrix to be solved
 if isfield(model,'A') && (matrixAS == 'A')
@@ -162,7 +162,7 @@ else
 
       [minf,maxf,iopt(i),iret(i)] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj,(istart(i):iend(i))', ...
-                                         t.ID, namesCPLEXparams, valuesCPLEXparams);
+                                         t.ID, cpxControl);
 
       fprintf(' >> Time spent in FVAc: %1.1f seconds.', toc(tstart));
 

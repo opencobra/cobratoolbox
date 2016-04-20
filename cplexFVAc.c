@@ -87,12 +87,11 @@ enum {F_IN_POS,
       OBJECTIVE_IN_POS,
       RXNS_IN_POS,
       NUM_THREAD_IN,
-      NAMES_CPLEX_PARAMS,
-      VALUES_CPLEX_PARAMS,
+      CPLEX_PARAMS,
       MAX_NUM_IN_ARG};
 
 /* Number of input arguments */
-#define MIN_NUM_IN_ARG      12
+#define MIN_NUM_IN_ARG        11
 
 #define F_IN                  prhs[F_IN_POS]
 #define A_IN                  prhs[A_IN_POS]
@@ -104,8 +103,8 @@ enum {F_IN_POS,
 #define OBJECTIVE_IN          prhs[OBJECTIVE_IN_POS]
 #define RXNS_IN               prhs[RXNS_IN_POS]
 #define NUM_THREAD_IN         prhs[NUM_THREAD_IN]
-#define NAMES_CPLEX_PARAMS    prhs[NAMES_CPLEX_PARAMS]
-#define VALUES_CPLEX_PARAMS   prhs[VALUES_CPLEX_PARAMS]
+#define CPLEX_PARAMS          prhs[CPLEX_PARAMS]
+/*#define VALUES_CPLEX_PARAMS   prhs[VALUES_CPLEX_PARAMS]*/
 
 /* MEX Output Arguments */
 enum {MINFLUX_OUT_POS, MAXFLUX_OUT_POS, OPTSOL_OUT_POS, RET_OUT_POS, MAX_NUM_OUT_ARG};
@@ -699,21 +698,25 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
 
     int             errors = 1;     /* keep track of errors during initialization */
 
-
     /* Variables for monitoring the performance */
     clock_t         begin, end, markersBegin[Nmarkers], markersEnd[Nmarkers];
     double          time_spent, markers[Nmarkers];
     bool            monitorPerformance = false;
+    time_t          current_time;
+    char*           c_time_string;
 
-    time_t current_time;
-    char* c_time_string;
-
-    mxArray         *pm = NULL;
-
+    const char            *fieldName;
+    int fieldnum;
 
     /* Retrieve the number of parameters to be set for CPLEX*/
-    mexPrintf("The number of parameters is: %d \n\n", mxGetNumberOfElements(NAMES_CPLEX_PARAMS));
-    mexPrintf("The number of parameters is: %d \n\n", mxGetNumberOfElements(VALUES_CPLEX_PARAMS));
+    mexPrintf("The number of parameters is: %d \n\n", mxGetNumberOfFields(CPLEX_PARAMS));
+
+    for(j = 0; j< mxGetNumberOfFields(CPLEX_PARAMS); j++)
+    {
+      fieldName = mxGetFieldNameByNumber(CPLEX_PARAMS, j);
+      fieldnum = mxGetFieldNumber(CPLEX_PARAMS, fieldName );
+        mexPrintf("Parameter to be set: %s with field number: %d\n", fieldName, mxGetFieldByNumber(CPLEX_PARAMS,1,fieldnum) );
+    }
 
     if(monitorPerformance) {
       for (j = 0; j < Nmarkers; j++)
