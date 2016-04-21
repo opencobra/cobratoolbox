@@ -198,14 +198,6 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     int           getParamint = 0;
     bool          flag = true;
 
-    /*
-      Best performance for running on 4core/2threads server rack:
-
-      CPX_PARAM_PARALLELMODE = 1
-      CPX_PARAM_THREADS = 1
-      CPX_PARAM_AUXROOTTHREADS = 2
-    */
-
     /*  Setting of the parameters for CPLEX*/
     countParam = get_vector_full(valuesCPLEXparams, &valuesCPLEX);
     mexPrintf("    -- Setting %i CPLEX parameters ... \n", countParam);
@@ -255,25 +247,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
     }
 
-  /*
-    status = CPXsetintparam (env, CPX_PARAM_MEMORYEMPHASIS, 1);
-    mexPrintf("Successfully set CPX_PARAM_MEMORYEMPHASIS = 1 and the status is %d \n", status);
-
-    status = CPXsetintparam (env, CPX_PARAM_ADVIND, 2);
-    mexPrintf("Successfully set CPX_PARAM_ADVIND = 2 and the status is %d \n", status);
-
-    status = CPXsetintparam (env, CPX_PARAM_REDUCE, 0);
-    mexPrintf("Successfully set CPX_PARAM_REDUCE = 0 and the status is %d \n", status);
-
-    status = CPXsetintparam (env, CPX_PARAM_REDUCE, 1);
-    mexPrintf("Successfully set CPX_PARAM_AUXROOTTHREADS and the status is %d \n", status);
-*/
     if(monitorPerformance) markersBegin[4] = clock();
-
-    /* Zero all objective function coefficients
-    status = CPXsetintparam (env, CPXPARAM_MIP_Strategy_PresolveNode, 1);
-    mexPrintf("Successfully set CPXPARAM_MIP_Strategy_PresolveNode and the status is %d \n ", status);
-    */
 
     mexPrintf("    -- All %i CPLEX parameters set --\n", countParam);
 
@@ -294,7 +268,9 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     }
 
     /* Solve the problem */
-    status = CPXlpopt(env, lp);
+     status = CPXlpopt(env, lp);
+    /*status = CPXprimopt(env, lp);*/
+
     if (status)
     {
        dispCPLEXerror(env, status);

@@ -33,9 +33,9 @@ optPercentage = 90;
 objective = 'max';
 
 % Define the model indices to be solved
-modelStart = 3;
+modelStart = 5;
 modelIncrement = 1; % step through the model array
-modelEnd = 3;
+modelEnd = modelStart;
 
 % Define the respective parameter to be appended - make sure that the appropriate
 % arameters are set in the external code
@@ -49,7 +49,7 @@ solver = 'cplexint'; % or 'glpk' %%cplexint
 
 % Parallel settings
 bParallel = true; %false; true
-nworkersvect = [2]; %[8; 16; 32];% Number of parallel workers
+nworkersvect = [32]; %[8; 16; 32];% Number of parallel workers
 
 autonames = {};
 autotimes = [];
@@ -88,6 +88,11 @@ for k = 1:length(nworkersvect)
     else
       nworkers = nworkersvect(k);
     end
+
+    %try to take advantage of more cores
+    %if nworkers == 16
+      cpxControl.AUXROOTTHREADS = 4
+%    end
 
     % Start a parallel pool from Matlab
     SetWorkerCount(nworkers);

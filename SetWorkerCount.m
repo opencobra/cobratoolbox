@@ -27,7 +27,7 @@ else
       if poolsize  > 0
          delete(poolobj);
       end
-      parpool('local', nworkers);
+      parpool('local', nworkers); %'SpmdEnabled',false
       fprintf('Parallel computation initialized\n')
    end
 end
