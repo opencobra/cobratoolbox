@@ -2,21 +2,21 @@ function cpxControl=CPLEXParamSet
 %this is a function which returns user specified CPLEX control
 %parameters. It is not necessary to use a file like this if you want to use
 %CPLEX default control parameters. It is intended to be a template for
-%individual users to save with their own problem specific settings for 
+%individual users to save with their own problem specific settings for
 %CPLEX.
 
-% %e.g. 
+% %e.g.
 % (1) Paddy saves this file as CPLEXParamSetPaddyLPJob1
 % (2) Paddy edits CPLEXParamSetPaddyLPJob1 in a problem specific way
 % (3) Paddy then passes the name of this file to solveCobraLP_CPLEX using something like:
 %     [solution,LPProblem]=solveCobraLP_CPLEX(LPProblem,[],[],[],'CPLEXParamSetPaddyLPJob1');
 
 % CPLEX consists of 4 different LP solvers which can be used to solve sysbio LP problems
-% you can control which of the solvers, e.g. simplex or interior point solve using the 
+% you can control which of the solvers, e.g. simplex or interior point solve using the
 % CPLEX control parameter cpxControl.LPMETHOD
 
 %Ronan Fleming 10th June 2008
-    
+
 %SELECT CPLEX CONTROL PARAMETERS (alphabetical order)
 % Description: Preprocessing aggregator application limit. Invokes the aggregator to use substitution where
 % possible to reduce the number of rows and columns before the problem is solved. If set to a positive value, the
@@ -109,8 +109,8 @@ cpxControl.EPOPT=1e-6;
 % Sets the amount by which CPLEX perturbs the upper and lower bounds on the variables when a problem is
 % perturbed. This parameter can be set to a smaller value if the default value creates too large a change in the
 % problem.
-% Any positive number  10?8
-% Default: 10?6
+% Any positive number  1e-8
+% Default: 1e-6
 cpxControl.EPPER=1e-6;
 
 % FeasOpt tolerance.
@@ -223,4 +223,3 @@ cpxControl.CLOCKTYPE=1; %Changed
 % primal simplex, barrier optimization followed by crossover), the
 % cumulative time applies.
 cpxControl.TILIM=600;%sec
-

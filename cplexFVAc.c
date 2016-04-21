@@ -169,21 +169,48 @@ void dispCPLEXerror(CPXENVptr env, int status)
 }
 
 /* Set CPLEX parameter */
-void setCPLEXparam(CPXENVptr env, char const* nameParam, int valueParam)
+void setCPLEXparam(CPXENVptr env, char const* nameParam, int numParam, double valueParam)
 {
-  int           status, getStatus, numStatus, numParam;
-  int           getParam = 0;
-  char const*   nameParam2;
+  int           statusint = -1, getStatusint = -1;
+  int           statusdbl = -1, getStatusdbl = -1;
+  double        getParamdbl = 0;
+  int           getParamint = 0;
 
-/*  numStatus     = CPXgetparamnum (env, "CPX_PARAM_ADVIND", &numParam);  --- this works*/
-  /*numStatus     = CPXgetparamnum (env, nameParam2, &numParam);
-    mexPrintf("LEN = %d, status = %d, %s - %d \n", sizeof(nameParam), numStatus, nameParam, numParam);
+  mexPrintf(" *** Parameter setting started %s (%d) = %d *** \n", nameParam, numParam, valueParam);
+/*
 
-  status        = CPXsetintparam  (env, numParam, valueParam);
-  getStatus     = CPXgetintparam  (env, numParam, &getParam);*/
-  /*nameStatus    = CPXgetparamname (env, nameParam, nameParam);
-  mexPrintf("        ++ (status = %d, getStatus = %d): %s = %d \n", status, getStatus, nameParam, getParam);*/
+  statusint        = CPXsetintparam  (env, numParam, valueParam);
+  getStatusint     = CPXgetintparam  (env, numParam, &getParamint);
+
+  if(statusint == 0 && getStatusint == 0 ){
+     mexPrintf("        ++ (int) (status = %d, getStatus = %d): %s (%d) = [> %d] & [< %d] \n\n",
+             statusint, getStatusint, nameParam, numParam, valueParam, getParamint);
+  } else {
+
+    statusdbl        = CPXsetdblparam  (env, numParam, valueParam);
+    getStatusdbl     = CPXgetdblparam  (env, numParam, &getParamdbl);
+
+    if(statusdbl == 0 && getStatusdbl == 0 ){
+       mexPrintf("        ++ (dbl) (status = %d, getStatus = %d): %s (%d) = [> %d] & [< %d] \n\n",
+               statusdbl, getStatusdbl, nameParam, numParam, valueParam, getParamdbl);
+    }else{
+       mexPrintf("        --> \033[1mWarning\033[0m: Impossible to set or get %s (%d).\n", nameParam, numParam);
+    }
+
+
+  }
+
+*/
+
+/*
+  if( (statusint != 0 || getStatusint != 0) && (statusdbl == 0 && getStatusdbl == 0) )
+    mexPrintf("        --> \033[1mWarning\033[0m: Impossible to set or get (int) %s (%d).\n", nameParam, numParam);
+  if( (statusdbl != 0 || getStatusdbl != 0) && (statusint == 0 && getStatusint == 0) )
+      mexPrintf("        --> \033[1mWarning\033[0m: Impossible to set or get (dbl) %s (%d).\n", nameParam, numParam);
+
+*/
 }
+
 
 /* FVA Wrapper */
 int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* optSol, mwSize n_constr, mwSize n_vars,
@@ -206,10 +233,17 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     int           nCPLEXparams = 3;
     int           arrCPLEXparams[nCPLEXparams][2];
 
-    const char      *fieldName;
-    int             countParam = 0;          /* number of non-zero elements */
-    double         *valuesCPLEX = NULL;
-    int numStatus, numParam;
+    const char    *fieldName;
+    int           countParam = 0;          /* number of non-zero elements */
+    double        *valuesCPLEX = NULL;
+    int           numStatus, numParam;
+    double        *valueCPLEXdbl = NULL;
+
+    int           statusint = -1, getStatusint = MAX_STR_LENGTH;
+    int           statusdbl = -1, getStatusdbl = MAX_STR_LENGTH;
+    double        getParamdbl = 0.0;
+    int           getParamint = 0;
+
 
     arrCPLEXparams[0][0] = 1109; /*CPX_PARAM_PARALLELMODE*/
     arrCPLEXparams[0][1] = 1;
@@ -220,6 +254,8 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     arrCPLEXparams[2][0] = 2139;
     arrCPLEXparams[2][1] = 2; /*CPX_PARAM_AUXROOTTHREADS*/
 
+
+
     /*
       Best performance for running on 4core/2threads server rack:
 
@@ -227,7 +263,6 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
       CPX_PARAM_THREADS = 1
       CPX_PARAM_AUXROOTTHREADS = 2
     */
-
 
     /* Retrieve the number of parameters to be set for CPLEX*/
     /*  Setting of the parameters for CPLEX*/
@@ -239,14 +274,39 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
     for(j = 0; j < countParam; j++)
     {
+      /* Reinitialisation for each new parameter*/
+      statusint = -1;
+      getStatusint = 10;
+      statusdbl = -1;
+      getStatusdbl = 10;
+      getParamdbl = 0.0;
+      getParamint = 0;
+
       fieldName = mxGetFieldNameByNumber(namesCPLEXparams, j);
       fieldName = concat("CPX_PARAM_",fieldName,"");
 
       numStatus     = CPXgetparamnum (env, fieldName, &numParam);
-      mexPrintf("LEN = %d -- status = %d, %s - %d \n", strlen(fieldName), numStatus, fieldName, numParam);
+      /*valueCPLEXdbl = &(valuesCPLEX+j);*/
+      /*mexPrintf("LEN = %d -- status = %d, %s - %d \n", strlen(fieldName), numStatus, fieldName, numParam);*/
+      mexPrintf("_FVA . Parameter: %s; ID: %d, value: %f \n", fieldName, numParam, *(valuesCPLEX+j) );
 
-      /*mexPrintf("_FVA . Parameter: %s; value: tmp %f \n", fieldName, *(valuesCPLEX+j) );*/
-        /*setCPLEXparam(env, fieldName, *(valuesCPLEX+j));*/
+      statusint        = CPXsetintparam  (env, numParam,  *(valuesCPLEX+j));
+      getStatusint     = CPXgetintparam  (env, numParam, &getParamint);
+
+      if(statusint == 0 && getStatusint == 0 ){
+            mexPrintf("        ++ (int) (status = %i, getStatus = %i): %s (%d) = [> %i] & [< %i] \n\n",
+              statusint, getStatusint, fieldName, numParam, (int)*(valuesCPLEX+j), getParamint);
+      }
+      else{
+          mexPrintf("        --> \033[1mWarning\033[0m: Impossible to set or get %s (%d).\n\n", fieldName, numParam);
+
+      }
+
+
+
+      /*  mexPrintf("This parameter is %s",  typeid(*(valuesCPLEX+j)).name());
+      mexPrintf("Value passed on to the fct> %d - %d - %d\n", &valueCPLEXdbl, valueCPLEXdbl, *valueCPLEXdbl);*/
+      /*setCPLEXparam(env, fieldName, numParam, (*(valuesCPLEX+j)));*/
     }
 
   /*
