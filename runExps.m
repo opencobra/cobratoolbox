@@ -33,13 +33,13 @@ optPercentage = 90;
 objective = 'max';
 
 % Define the model indices to be solved
-modelStart = 5;
+modelStart = 10;
 modelIncrement = 1; % step through the model array
 modelEnd = modelStart;
 
 % Define the respective parameter to be appended - make sure that the appropriate
 % arameters are set in the external code
-paramstring = 'DEF';
+paramstring = 'METHOD_PRIMOPT';
 
 % Define the model matrix to be solved A: coupled; S: uncoupled
 matrixASvect = ['S'];
@@ -49,7 +49,7 @@ solver = 'cplexint'; % or 'glpk' %%cplexint
 
 % Parallel settings
 bParallel = true; %false; true
-nworkersvect = [32]; %[8; 16; 32];% Number of parallel workers
+nworkersvect = [8; 16; 32]; %[8; 16; 32];% Number of parallel workers
 
 autonames = {};
 autotimes = [];

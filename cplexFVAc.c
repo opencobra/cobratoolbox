@@ -228,36 +228,32 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
       statusint        = CPXsetintparam  (env, numParam,  (int)*(valuesCPLEX+j));
       getStatusint     = CPXgetintparam  (env, numParam, &getParamint);
 
-      /* Print out a status message*/
+      /* Print out a status message */
       if(statusint == 0 && getStatusint == 0 ){   /* set INT parameters */
             mexPrintf("        ++ (int)[\e[1;32m%i\e[0m|\e[1;32m%i\e[0m]: %s (%i) = [set> %i] & [%i <get] \n",
                       statusint, getStatusint, nameParam, numParam, (int)*(valuesCPLEX+j), getParamint);
             flag = false;
-
       } else {   /* set DOUBLE or FLOAT parameters */
 
           /* Set the DOUBLE parameter, and retrieve the copy for proof of successful setting */
           statusdbl        = CPXsetdblparam  (env, numParam, (double)*(valuesCPLEX+j));
           getStatusdbl     = CPXgetdblparam  (env, numParam, &getParamdbl);
 
-          /* Print out a status message*/
+          /* Print out a status message */
           if(statusdbl == 0 && getStatusdbl == 0 ){
                 mexPrintf("        ++ (dbl)[\e[1;32m%i\e[0m|\e[1;32m%i\e[0m]: %s (%i) = [set> %.10e] & [%.10e <get] \n",
                           statusdbl, getStatusdbl, nameParam, numParam, (double)*(valuesCPLEX+j), getParamdbl);
                 flag = false;
               }
       }
-
       /* Print warning messages */
-      if(flag){
+      if(flag)
           mexPrintf("        --> %s Impossible to set or get %s (%d).\n\n", PRINT_WARNING, nameParam, numParam);
-      }
-
     }
 
-    if(monitorPerformance) markersBegin[4] = clock();
-
     mexPrintf("    -- All %i CPLEX parameters set --\n", countParam);
+
+    if(monitorPerformance) markersBegin[4] = clock();
 
     /* Print ot a warning message if high optPercentage */
     if(optPercentage > OPT_PERCENTAGE) {
@@ -275,8 +271,8 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     }
 
     /* Solve the problem */
-    status = CPXlpopt(env, lp);
-    /*status = CPXprimopt(env, lp);*/
+    /*status = CPXlpopt(env, lp);*/
+    status = CPXprimopt(env, lp);
 
     if (status) {
        dispCPLEXerror(env, status);
@@ -381,8 +377,8 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
         if(monitorPerformance) markersEnd[6] = clock();
         if(monitorPerformance) markersBegin[7] = clock();
 
-        status = CPXlpopt(env, lp); /*this is the most time consuming step*/
-        /*status = CPXprimopt(env, lp);*/
+        /*status = CPXlpopt(env, lp);*/ /* most time consuming step*/
+        status = CPXprimopt(env, lp);
 
         if(monitorPerformance) markersEnd[7] = clock();
 
