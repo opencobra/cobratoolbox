@@ -121,6 +121,8 @@ enum {MINFLUX_OUT_POS, MAXFLUX_OUT_POS, OPTSOL_OUT_POS, RET_OUT_POS, MAX_NUM_OUT
 #define MAX_STR_LENGTH        1024
 #define OPT_PERCENTAGE        90
 
+#define PRINT_WARNING         "\e[0;33mWarning:\e[0m"
+
 #if !defined(MAX)
 #define MAX(A, B)   ((A) > (B) ? (A) : (B))
 #endif
@@ -186,7 +188,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     double        markers[Nmarkers];
     bool          monitorPerformance = false;
 
-    const char    *fieldName;
+    const char    *nameParam;
     int           countParam = 0;          /* number of non-zero elements */
     double        *valuesCPLEX = NULL;
     int           numStatus, numParam;
@@ -205,44 +207,50 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     for(j = 0; j < countParam; j++)
     {
       /* Reinitialisation for each new parameter*/
-      statusint = -1;
-      getStatusint = 10;
-      statusdbl = -1;
-      getStatusdbl = 10;
-      getParamdbl = 0.0;
-      getParamint = 0;
-      flag = true;
+      statusint     = -1;
+      getStatusint  = 10;
+      statusdbl     = -1;
+      getStatusdbl  = 10;
+      getParamdbl   = 0.0;
+      getParamint   = 0;
+      flag          = true;
 
-      fieldName = mxGetFieldNameByNumber(namesCPLEXparams, j);
-      fieldName = concat("CPX_PARAM_",fieldName,"");
+      /* Retrieve the name of the parameter as specified in the external parameter file */
+      nameParam = mxGetFieldNameByNumber(namesCPLEXparams, j);
+      nameParam = concat("CPX_PARAM_",nameParam,"");
 
-      numStatus     = CPXgetparamnum (env, fieldName, &numParam);
+      /* Retrieve the numeric identifier of the CPLEX parameter */
+      numStatus     = CPXgetparamnum (env, nameParam, &numParam);
 
-      /*mexPrintf("_FVA . Parameter: %s; ID: %d, value: %f \n", fieldName, numParam, *(valuesCPLEX+j) );*/
+      /*mexPrintf("_FVA . Parameter: %s; ID: %d, value: %f \n", nameParam, numParam, *(valuesCPLEX+j) );*/
 
+      /* Set the INTEGER parameter, and retrieve the copy for proof of successful setting */
       statusint        = CPXsetintparam  (env, numParam,  (int)*(valuesCPLEX+j));
       getStatusint     = CPXgetintparam  (env, numParam, &getParamint);
 
+      /* Print out a status message*/
       if(statusint == 0 && getStatusint == 0 ){   /* set INT parameters */
             mexPrintf("        ++ (int)[\e[1;32m%i\e[0m|\e[1;32m%i\e[0m]: %s (%i) = [set> %i] & [%i <get] \n",
-                      statusint, getStatusint, fieldName, numParam, (int)*(valuesCPLEX+j), getParamint);
+                      statusint, getStatusint, nameParam, numParam, (int)*(valuesCPLEX+j), getParamint);
             flag = false;
 
       } else {   /* set DOUBLE or FLOAT parameters */
 
-        statusdbl        = CPXsetdblparam  (env, numParam, (double)*(valuesCPLEX+j));
-        getStatusdbl     = CPXgetdblparam  (env, numParam, &getParamdbl);
+          /* Set the DOUBLE parameter, and retrieve the copy for proof of successful setting */
+          statusdbl        = CPXsetdblparam  (env, numParam, (double)*(valuesCPLEX+j));
+          getStatusdbl     = CPXgetdblparam  (env, numParam, &getParamdbl);
 
-        if(statusdbl == 0 && getStatusdbl == 0 ){
-              mexPrintf("        ++ (dbl)[\e[1;32m%i\e[0m|\e[1;32m%i\e[0m]: %s (%i) = [set> %.10e] & [%.10e <get] \n",
-                        statusdbl, getStatusdbl, fieldName, numParam, (double)*(valuesCPLEX+j), getParamdbl);
-              flag = false;
-            }
+          /* Print out a status message*/
+          if(statusdbl == 0 && getStatusdbl == 0 ){
+                mexPrintf("        ++ (dbl)[\e[1;32m%i\e[0m|\e[1;32m%i\e[0m]: %s (%i) = [set> %.10e] & [%.10e <get] \n",
+                          statusdbl, getStatusdbl, nameParam, numParam, (double)*(valuesCPLEX+j), getParamdbl);
+                flag = false;
+              }
       }
 
       /* Print warning messages */
       if(flag){
-          mexPrintf("        --> \031[1mWarning\031[0m: Impossible to set or get %s (%d).\n\n", fieldName, numParam);
+          mexPrintf("        --> %s Impossible to set or get %s (%d).\n\n", PRINT_WARNING, nameParam, numParam);
       }
 
     }
@@ -253,11 +261,10 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
     /* Print ot a warning message if high optPercentage */
     if(optPercentage > OPT_PERCENTAGE) {
-      mexPrintf("\n -- Warning: The optPercentage is higher than 90. The solution process might take longer than you might expect.\n\n");
+      mexPrintf("\n -- %s: The optPercentage is higher than 90. The solution process might take longer than you might expect.\n\n",PRINT_WARNING);
     }
 
-    if(monitorPerformance)
-    {
+    if(monitorPerformance) {
         for (j = 0; j < Nmarkers; j++)
         {
           markers[j] = 0.0;
@@ -268,11 +275,10 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     }
 
     /* Solve the problem */
-     status = CPXlpopt(env, lp);
+    status = CPXlpopt(env, lp);
     /*status = CPXprimopt(env, lp);*/
 
-    if (status)
-    {
+    if (status) {
        dispCPLEXerror(env, status);
        return FVA_INIT_FAIL;
     }
@@ -281,8 +287,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
     /* Get status of the solution. */
     status = (double)CPXgetstat(env, lp);
-    if (status != 1)
-    {
+    if (status != 1) {
         dispCPLEXerror(env, status);
         return FVA_INIT_FAIL;
     }
@@ -297,12 +302,9 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     if(monitorPerformance) markersBegin[2] = clock();
 
     /* Determine the value of objective function bound */
-    if (objective == FVA_MIN_OBJECTIVE)
-    {
+    if (objective == FVA_MIN_OBJECTIVE) {
        TargetValue = floor(*optSol/tol)*tol*optPercentage/100.0;
-    }
-    else
-    {
+    } else {
        TargetValue = ceil(*optSol/tol)*tol*optPercentage/100.0;
     }
 
@@ -319,8 +321,8 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
     for (j = 0; j < n_vars; j++)
     {
-       ind[j]=j;
-       status=CPXgetcoef(env, lp, -1, j, &val[j]);
+       ind[j] = j;
+       status = CPXgetcoef(env, lp, -1, j, &val[j]);
        if (status)
        {
           mexPrintf("Unable to create new row (failed at element %d)\n", j);
@@ -334,8 +336,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
     status = CPXaddrows(env, lp, 0, 1, n_vars, &TargetValue, &sense, rmatbeg, ind, val, NULL, NULL);
 
-    if (status)
-    {
+    if (status) {
       mexPrintf("Call to CPXaddrows failed\n");
       dispCPLEXerror(env, status);
     }
@@ -350,26 +351,25 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     {
       status = CPXchgcoef (env, lp, -1, j, 0.0);
       if (status != 0)
-      {
          mexPrintf("CPXchgcoef failed for %d\n", j);
-      }
     }
 
-    if(monitorPerformance) {
-        markersEnd[4] = clock();
-    }
+    if(monitorPerformance) markersEnd[4] = clock();
+
     /* Solve all the minimization problems first. The difference in the optimal
     *  solution for two minimization problems is probably much smaller on average
     *  than the difference between one min and one max solution, leading to fewer
     *  simplex iterations in each step. */
 
-    if(monitorPerformance) {
-      markersBegin[5] = clock();
-    }
+    if(monitorPerformance) markersBegin[5] = clock();
 
     for (iRound = 0; iRound < 2; iRound++)
     {
-        CPXchgobjsen(env, lp, (iRound == 0) ? CPX_MIN : CPX_MAX);
+
+      mexPrintf("        -- Changing the objective - iRound = %i\n", iRound);
+
+      CPXchgobjsen(env, lp, (iRound == 0) ? CPX_MIN : CPX_MAX);
+
       for (k = 0; k < nrxn; k++)
       {
         int j = rxns[k];
@@ -379,10 +379,10 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
         status = CPXchgcoef (env, lp, -1, j-1, 1.0);
 
         if(monitorPerformance) markersEnd[6] = clock();
-
         if(monitorPerformance) markersBegin[7] = clock();
 
         status = CPXlpopt(env, lp); /*this is the most time consuming step*/
+        /*status = CPXprimopt(env, lp);*/
 
         if(monitorPerformance) markersEnd[7] = clock();
 
@@ -415,16 +415,13 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
         }
         if (iRound == 0) {
           minFlux[j-1] = objval;
-        }
-        else
-        {
+        } else {
           maxFlux[j-1] = objval;
         }
       }
     }
 
-    if(monitorPerformance)
-    {
+    if(monitorPerformance) {
       markersEnd[5] = clock();
 
       for (j = 0; j < Nmarkers; j++)

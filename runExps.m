@@ -91,7 +91,7 @@ for k = 1:length(nworkersvect)
 
     %try to take advantage of more cores
     %if nworkers == 16
-      cpxControl.AUXROOTTHREADS = 4
+    %  cpxControl.AUXROOTTHREADS = 4
 %    end
 
     % Start a parallel pool from Matlab
