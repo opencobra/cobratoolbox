@@ -168,50 +168,6 @@ void dispCPLEXerror(CPXENVptr env, int status)
     }
 }
 
-/* Set CPLEX parameter */
-void setCPLEXparam(CPXENVptr env, char const* nameParam, int numParam, double valueParam)
-{
-  int           statusint = -1, getStatusint = -1;
-  int           statusdbl = -1, getStatusdbl = -1;
-  double        getParamdbl = 0;
-  int           getParamint = 0;
-
-  mexPrintf(" *** Parameter setting started %s (%d) = %d *** \n", nameParam, numParam, valueParam);
-/*
-
-  statusint        = CPXsetintparam  (env, numParam, valueParam);
-  getStatusint     = CPXgetintparam  (env, numParam, &getParamint);
-
-  if(statusint == 0 && getStatusint == 0 ){
-     mexPrintf("        ++ (int) (status = %d, getStatus = %d): %s (%d) = [> %d] & [< %d] \n\n",
-             statusint, getStatusint, nameParam, numParam, valueParam, getParamint);
-  } else {
-
-    statusdbl        = CPXsetdblparam  (env, numParam, valueParam);
-    getStatusdbl     = CPXgetdblparam  (env, numParam, &getParamdbl);
-
-    if(statusdbl == 0 && getStatusdbl == 0 ){
-       mexPrintf("        ++ (dbl) (status = %d, getStatus = %d): %s (%d) = [> %d] & [< %d] \n\n",
-               statusdbl, getStatusdbl, nameParam, numParam, valueParam, getParamdbl);
-    }else{
-       mexPrintf("        --> \033[1mWarning\033[0m: Impossible to set or get %s (%d).\n", nameParam, numParam);
-    }
-
-
-  }
-
-*/
-
-/*
-  if( (statusint != 0 || getStatusint != 0) && (statusdbl == 0 && getStatusdbl == 0) )
-    mexPrintf("        --> \033[1mWarning\033[0m: Impossible to set or get (int) %s (%d).\n", nameParam, numParam);
-  if( (statusdbl != 0 || getStatusdbl != 0) && (statusint == 0 && getStatusint == 0) )
-      mexPrintf("        --> \033[1mWarning\033[0m: Impossible to set or get (dbl) %s (%d).\n", nameParam, numParam);
-
-*/
-}
-
-
 /* FVA Wrapper */
 int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* optSol, mwSize n_constr, mwSize n_vars,
          double optPercentage, int objective, const double* rxns, int nrxn,
@@ -243,7 +199,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     int           statusdbl = -1, getStatusdbl = MAX_STR_LENGTH;
     double        getParamdbl = 0.0;
     int           getParamint = 0;
-
+    bool          flag = true;
 
     arrCPLEXparams[0][0] = 1109; /*CPX_PARAM_PARALLELMODE*/
     arrCPLEXparams[0][1] = 1;
@@ -266,11 +222,12 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
     /* Retrieve the number of parameters to be set for CPLEX*/
     /*  Setting of the parameters for CPLEX*/
-    mexPrintf("    -- Setting CPLEX parameters ... \n");
 
     countParam = get_vector_full(valuesCPLEXparams, &valuesCPLEX);
 
-      mexPrintf("_FVA . Number of parameters: %d", countParam);
+    mexPrintf("    -- Setting %i CPLEX parameters ... \n", countParam);
+
+    /* mexPrintf("_FVA . Number of parameters: %d", countParam);*/
 
     for(j = 0; j < countParam; j++)
     {
@@ -281,39 +238,44 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
       getStatusdbl = 10;
       getParamdbl = 0.0;
       getParamint = 0;
+      flag = true;
 
       fieldName = mxGetFieldNameByNumber(namesCPLEXparams, j);
       fieldName = concat("CPX_PARAM_",fieldName,"");
 
       numStatus     = CPXgetparamnum (env, fieldName, &numParam);
-      /*valueCPLEXdbl = &(valuesCPLEX+j);*/
-      /*mexPrintf("LEN = %d -- status = %d, %s - %d \n", strlen(fieldName), numStatus, fieldName, numParam);*/
-      mexPrintf("_FVA . Parameter: %s; ID: %d, value: %f \n", fieldName, numParam, *(valuesCPLEX+j) );
 
-      statusint        = CPXsetintparam  (env, numParam,  *(valuesCPLEX+j));
+      /*mexPrintf("_FVA . Parameter: %s; ID: %d, value: %f \n", fieldName, numParam, *(valuesCPLEX+j) );*/
+
+      statusint        = CPXsetintparam  (env, numParam,  (int)*(valuesCPLEX+j));
       getStatusint     = CPXgetintparam  (env, numParam, &getParamint);
 
-      if(statusint == 0 && getStatusint == 0 ){
-            mexPrintf("        ++ (int) (status = %i, getStatus = %i): %s (%d) = [> %i] & [< %i] \n\n",
-              statusint, getStatusint, fieldName, numParam, (int)*(valuesCPLEX+j), getParamint);
+      if(statusint == 0 && getStatusint == 0 ){   /* set INT parameters */
+            mexPrintf("        ++ (int) (status = %i, getStatus = %i): %s (%i) = [set> %i] & [%i <get] \n",
+                      statusint, getStatusint, fieldName, numParam, (int)*(valuesCPLEX+j), getParamint);
+            flag = false;
+
+      } else {   /* set DOUBLE or FLOAT parameters */
+
+        statusdbl        = CPXsetdblparam  (env, numParam, (double)*(valuesCPLEX+j));
+        getStatusdbl     = CPXgetdblparam  (env, numParam, &getParamdbl);
+
+        if(statusdbl == 0 && getStatusdbl == 0 ){
+              mexPrintf("        ++ (dbl) (status = %i, getStatus = %i): %s (%i) = [set> %.10e] & [%.10e <get] \n",
+                        statusdbl, getStatusdbl, fieldName, numParam, (double)*(valuesCPLEX+j), getParamdbl);
+              flag = false;
+            }
+
       }
-      else{
+
+      /* Print warning messages */
+      if(flag){
           mexPrintf("        --> \033[1mWarning\033[0m: Impossible to set or get %s (%d).\n\n", fieldName, numParam);
-
       }
 
-
-
-      /*  mexPrintf("This parameter is %s",  typeid(*(valuesCPLEX+j)).name());
-      mexPrintf("Value passed on to the fct> %d - %d - %d\n", &valueCPLEXdbl, valueCPLEXdbl, *valueCPLEXdbl);*/
-      /*setCPLEXparam(env, fieldName, numParam, (*(valuesCPLEX+j)));*/
     }
 
   /*
-    for(i = 0; i < nCPLEXparams; i++){
-         setCPLEXparam(env, arrCPLEXparams[i][0], arrCPLEXparams[i][1]);
-    }
-
     status = CPXsetintparam (env, CPX_PARAM_MEMORYEMPHASIS, 1);
     mexPrintf("Successfully set CPX_PARAM_MEMORYEMPHASIS = 1 and the status is %d \n", status);
 
@@ -333,7 +295,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     mexPrintf("Successfully set CPXPARAM_MIP_Strategy_PresolveNode and the status is %d \n ", status);
     */
 
-    mexPrintf("    -- All CPLEX parameters set --\n");
+    mexPrintf("    -- All %i CPLEX parameters set --\n", countParam);
 
     /* Print ot a warning message if high optPercentage */
     if(optPercentage > OPT_PERCENTAGE) {
