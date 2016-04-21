@@ -142,7 +142,7 @@ enum {MINFLUX_OUT_POS, MAXFLUX_OUT_POS, OPTSOL_OUT_POS, RET_OUT_POS, MAX_NUM_OUT
 #define Nmarkers 10
 
 /* Concatenate 3 strings */
-char* concat(char *s1, char *s2, char *s3)
+const char* concat(const char *s1, const char *s2, const char *s3)
 {
     size_t len1 = strlen(s1);
     size_t len2 = strlen(s2);
@@ -173,18 +173,16 @@ void setCPLEXparam(CPXENVptr env, char const* nameParam, int valueParam)
 {
   int           status, getStatus, numStatus, numParam;
   int           getParam = 0;
-  char const*          nameParam2;
-
-  nameParam2 = &nameParam;
+  char const*   nameParam2;
 
 /*  numStatus     = CPXgetparamnum (env, "CPX_PARAM_ADVIND", &numParam);  --- this works*/
-  numStatus     = CPXgetparamnum (env, nameParam2, &numParam);
-    mexPrintf("status = %d, %s - %d \n", numStatus, nameParam, numParam);
+  /*numStatus     = CPXgetparamnum (env, nameParam2, &numParam);
+    mexPrintf("LEN = %d, status = %d, %s - %d \n", sizeof(nameParam), numStatus, nameParam, numParam);
 
   status        = CPXsetintparam  (env, numParam, valueParam);
-  getStatus     = CPXgetintparam  (env, numParam, &getParam);
-  /*nameStatus    = CPXgetparamname (env, nameParam, nameParam);*/
-  mexPrintf("        ++ (status = %d, getStatus = %d): %s = %d \n", status, getStatus, nameParam, getParam);
+  getStatus     = CPXgetintparam  (env, numParam, &getParam);*/
+  /*nameStatus    = CPXgetparamname (env, nameParam, nameParam);
+  mexPrintf("        ++ (status = %d, getStatus = %d): %s = %d \n", status, getStatus, nameParam, getParam);*/
 }
 
 /* FVA Wrapper */
@@ -211,7 +209,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     const char      *fieldName;
     int             countParam = 0;          /* number of non-zero elements */
     double         *valuesCPLEX = NULL;
-
+    int numStatus, numParam;
 
     arrCPLEXparams[0][0] = 1109; /*CPX_PARAM_PARALLELMODE*/
     arrCPLEXparams[0][1] = 1;
@@ -237,11 +235,18 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
     countParam = get_vector_full(valuesCPLEXparams, &valuesCPLEX);
 
+      mexPrintf("_FVA . Number of parameters: %d", countParam);
+
     for(j = 0; j < countParam; j++)
     {
       fieldName = mxGetFieldNameByNumber(namesCPLEXparams, j);
+      fieldName = concat("CPX_PARAM_",fieldName,"");
+
+      numStatus     = CPXgetparamnum (env, fieldName, &numParam);
+      mexPrintf("LEN = %d -- status = %d, %s - %d \n", strlen(fieldName), numStatus, fieldName, numParam);
+
       /*mexPrintf("_FVA . Parameter: %s; value: tmp %f \n", fieldName, *(valuesCPLEX+j) );*/
-        setCPLEXparam(env, fieldName, *(valuesCPLEX+j));
+        /*setCPLEXparam(env, fieldName, *(valuesCPLEX+j));*/
     }
 
   /*
