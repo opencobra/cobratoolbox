@@ -15,7 +15,8 @@ function cpxControl=CPLEXParamSet
 % you can control which of the solvers, e.g. simplex or interior point solve using the
 % CPLEX control parameter cpxControl.LPMETHOD
 
-%Ronan Fleming 10th June 2008
+% Ronan Fleming 10th June 2008
+% Laurent Heirendt, April 2016
 
 %SELECT CPLEX CONTROL PARAMETERS (alphabetical order)
 % Description: Preprocessing aggregator application limit. Invokes the aggregator to use substitution where
@@ -182,7 +183,6 @@ cpxControl.LPMETHOD=0;  %%% was changed now default
 % Default: Off
 cpxControl.NUMERICALEMPHASIS=0; %%%
 
-
 % Polishing best solution.
 % Regulates the amount of time spent on polishing the best solution found. During solution polishing, CPLEX
 % applies its effort to improve the best feasible solution. Polishing can yield better solutions in some situations.
@@ -223,3 +223,26 @@ cpxControl.CLOCKTYPE=1; %Changed
 % primal simplex, barrier optimization followed by crossover), the
 % cumulative time applies.
 cpxControl.TILIM=600;%sec
+
+% Parallel mode switch
+% Sets the parallel optimization mode. Possible modes are automatic, deterministic, and opportunistic.
+% -1 Opportunistic
+% 0 AutoParallel
+% 1 Deterministic
+cpxControl.PARALLELMODE=1;
+
+% Global Default Thread Count
+% Sets the default maximal number of parallel threads that will be invoked by any CPLEX parallel optimizer.
+% 0 	Automatic: let CPLEX decide; default
+% 1 	Sequential; single threaded
+% N 	Uses up to N threads; N is limited by available processors and Processor Value Units (PVU).
+cpxControl.THREADS=1;
+
+% Auxiliary Root Threads
+% Partitions the number of threads for CPLEX to use for auxiliary tasks while it solves the root node of a problem.
+% On a system that offers N processors or N global threads, if you set this parameter to n, where
+% N > n > 0
+% -1 	Off: do not use additional threads for auxiliary tasks.
+% 0 	Automatic: let CPLEX choose the number of threads to use; default
+% N > n > 0 	Use n threads for auxiliary root tasks
+cpxControl.AUXROOTTHREADS=2;

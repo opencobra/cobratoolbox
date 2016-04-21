@@ -186,9 +186,6 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     double        markers[Nmarkers];
     bool          monitorPerformance = false;
 
-    int           nCPLEXparams = 3;
-    int           arrCPLEXparams[nCPLEXparams][2];
-
     const char    *fieldName;
     int           countParam = 0;          /* number of non-zero elements */
     double        *valuesCPLEX = NULL;
@@ -201,17 +198,6 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     int           getParamint = 0;
     bool          flag = true;
 
-    arrCPLEXparams[0][0] = 1109; /*CPX_PARAM_PARALLELMODE*/
-    arrCPLEXparams[0][1] = 1;
-
-    arrCPLEXparams[1][0] = 1067; /*CPX_PARAM_THREADS*/
-    arrCPLEXparams[1][1] = 1;
-
-    arrCPLEXparams[2][0] = 2139;
-    arrCPLEXparams[2][1] = 2; /*CPX_PARAM_AUXROOTTHREADS*/
-
-
-
     /*
       Best performance for running on 4core/2threads server rack:
 
@@ -220,14 +206,9 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
       CPX_PARAM_AUXROOTTHREADS = 2
     */
 
-    /* Retrieve the number of parameters to be set for CPLEX*/
     /*  Setting of the parameters for CPLEX*/
-
     countParam = get_vector_full(valuesCPLEXparams, &valuesCPLEX);
-
     mexPrintf("    -- Setting %i CPLEX parameters ... \n", countParam);
-
-    /* mexPrintf("_FVA . Number of parameters: %d", countParam);*/
 
     for(j = 0; j < countParam; j++)
     {
@@ -251,7 +232,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
       getStatusint     = CPXgetintparam  (env, numParam, &getParamint);
 
       if(statusint == 0 && getStatusint == 0 ){   /* set INT parameters */
-            mexPrintf("        ++ (int) (status = %i, getStatus = %i): %s (%i) = [set> %i] & [%i <get] \n",
+            mexPrintf("        ++ (int)[\e[1;32m%i\e[0m|\e[1;32m%i\e[0m]: %s (%i) = [set> %i] & [%i <get] \n",
                       statusint, getStatusint, fieldName, numParam, (int)*(valuesCPLEX+j), getParamint);
             flag = false;
 
@@ -261,16 +242,15 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
         getStatusdbl     = CPXgetdblparam  (env, numParam, &getParamdbl);
 
         if(statusdbl == 0 && getStatusdbl == 0 ){
-              mexPrintf("        ++ (dbl) (status = %i, getStatus = %i): %s (%i) = [set> %.10e] & [%.10e <get] \n",
+              mexPrintf("        ++ (dbl)[\e[1;32m%i\e[0m|\e[1;32m%i\e[0m]: %s (%i) = [set> %.10e] & [%.10e <get] \n",
                         statusdbl, getStatusdbl, fieldName, numParam, (double)*(valuesCPLEX+j), getParamdbl);
               flag = false;
             }
-
       }
 
       /* Print warning messages */
       if(flag){
-          mexPrintf("        --> \033[1mWarning\033[0m: Impossible to set or get %s (%d).\n\n", fieldName, numParam);
+          mexPrintf("        --> \031[1mWarning\031[0m: Impossible to set or get %s (%d).\n\n", fieldName, numParam);
       }
 
     }
