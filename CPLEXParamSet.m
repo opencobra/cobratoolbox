@@ -33,7 +33,7 @@ function cpxControl = CPLEXParamSet
 % 5 Sifting
 % 6 Concurrent Dual, Barrier and Primal
 % Default: 0
-cpxControl.LPMETHOD = 2;  %%% was changed now default
+cpxControl.LPMETHOD = 0;  %%% was changed now default
 
 % Parallel mode switch
 % Sets the parallel optimization mode. Possible modes are automatic, deterministic, and opportunistic.
@@ -75,7 +75,7 @@ cpxControl.AUXROOTTHREADS = 2;
 % 0 	Do not use advanced start information
 % 1 	Use an advanced basis supplied by the user; default
 % 2 	Crush an advanced basis or starting vector supplied by the user
-%cpxControl.ADVIND = 1;
+cpxControl.ADVIND = 2;
 
 % Manual control of presolve
 % primal and dual reduction type
