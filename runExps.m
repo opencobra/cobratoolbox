@@ -55,7 +55,7 @@ nworkersvect = [8; 16; 32]; %[8; 16; 32];% Number of parallel workers
 % 0: DEFAULT: CPXlpopt
 % 1: CPXprimopt
 % 2: CPXdualopt
-cpxAlgorithm = 0;
+cpxAlgorithm = 1;
 
 autonames = {};
 autotimes = [];
@@ -109,7 +109,7 @@ for k = 1:length(nworkersvect)
     %  cpxControl.AUXROOTTHREADS = 4
 %    end
 
-    
+
 
     % Start a parallel pool from Matlab
     SetWorkerCount(nworkers);

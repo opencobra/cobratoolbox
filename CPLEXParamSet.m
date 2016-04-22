@@ -33,7 +33,7 @@ function cpxControl = CPLEXParamSet
 % 5 Sifting
 % 6 Concurrent Dual, Barrier and Primal
 % Default: 0
-cpxControl.LPMETHOD = 0;  %%% was changed now default
+cpxControl.LPMETHOD = 2;  %%% was changed now default
 
 % Parallel mode switch
 % Sets the parallel optimization mode. Possible modes are automatic, deterministic, and opportunistic.
