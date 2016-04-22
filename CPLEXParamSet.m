@@ -17,7 +17,23 @@ function cpxControl = CPLEXParamSet
 
 % Ronan Fleming 10th June 2008
 % Laurent Heirendt, April 2016
+% =========================================================================================================
 
+% Method for linear optimization.
+% Determines which algorithm is used. Currently, the behavior of the Automatic setting is that CPLEX almost
+% always invokes the dual simplex method. The one exception is when solving the relaxation of an MILP model
+% when multiple threads have been requested. In this case, the Automatic setting will use the concurrent optimization
+% method. The Automatic setting may be expanded in the future so that CPLEX chooses the method
+% based on additional problem characteristics.
+%  0 Automatic
+% 1 Primal Simplex
+% 2 Dual Simplex
+% 3 Network Simplex (Does not work for almost all stoichiometric matrices)
+% 4 Barrier (Interior point method)
+% 5 Sifting
+% 6 Concurrent Dual, Barrier and Primal
+% Default: 0
+cpxControl.LPMETHOD = 0;  %%% was changed now default
 
 % Parallel mode switch
 % Sets the parallel optimization mode. Possible modes are automatic, deterministic, and opportunistic.

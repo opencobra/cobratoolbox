@@ -89,10 +89,11 @@ enum {F_IN_POS,
       NUM_THREAD_IN,
       CPLEX_PARAMS,
       VALUES_CPLEX_PARAMS,
+      CPLEX_ALGO_IN,
       MAX_NUM_IN_ARG};
 
 /* Number of input arguments */
-#define MIN_NUM_IN_ARG        12
+#define MIN_NUM_IN_ARG        13
 
 #define F_IN                  prhs[F_IN_POS]
 #define A_IN                  prhs[A_IN_POS]
@@ -106,6 +107,7 @@ enum {F_IN_POS,
 #define NUM_THREAD_IN         prhs[NUM_THREAD_IN]
 #define CPLEX_PARAMS          prhs[CPLEX_PARAMS]
 #define VALUES_CPLEX_PARAMS   prhs[VALUES_CPLEX_PARAMS]
+#define CPLEX_ALGO_IN         prhs[CPLEX_ALGO_IN]
 
 /* MEX Output Arguments */
 enum {MINFLUX_OUT_POS, MAXFLUX_OUT_POS, OPTSOL_OUT_POS, RET_OUT_POS, MAX_NUM_OUT_ARG};
@@ -173,7 +175,7 @@ void dispCPLEXerror(CPXENVptr env, int status)
 /* FVA Wrapper */
 int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* optSol, mwSize n_constr, mwSize n_vars,
          double optPercentage, int objective, const double* rxns, int nrxn,
-         const mxArray* namesCPLEXparams, const mxArray *valuesCPLEXparams)
+         const mxArray* namesCPLEXparams, const mxArray *valuesCPLEXparams, int cplexAlgo)
 {
     int           status;
     int           rmatbeg[2];
@@ -199,6 +201,11 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     double        getParamdbl = 0.0;
     int           getParamint = 0;
     bool          flag = true;
+
+    /* CPLEX algorithm IN
+    int cplexAlgo   = 0;
+
+    cplexAlgo     = mxGetScalar(CPLEX_ALGO_IN);*/
 
     /*  Setting of the parameters for CPLEX*/
     countParam = get_vector_full(valuesCPLEXparams, &valuesCPLEX);
@@ -270,9 +277,16 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
       markersBegin[1] = clock();
     }
 
+    mexPrintf("        -- Changing the solution method: %i\n", cplexAlgo);
+
     /* Solve the problem */
-    /*status = CPXlpopt(env, lp);*/
-    status = CPXprimopt(env, lp);
+    if(cplexAlgo == 1){
+        status = CPXprimopt(env, lp);
+    } else if(cplexAlgo == 2){
+        status = CPXdualopt(env, lp);
+    } else {
+        status = CPXlpopt(env, lp);
+    }
 
     if (status) {
        dispCPLEXerror(env, status);
@@ -362,7 +376,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     for (iRound = 0; iRound < 2; iRound++)
     {
 
-      mexPrintf("        -- Changing the objective - iRound = %i\n", iRound);
+      /*mexPrintf("        -- Changing the objective - iRound = %i\n", iRound);*/
 
       CPXchgobjsen(env, lp, (iRound == 0) ? CPX_MIN : CPX_MAX);
 
@@ -378,7 +392,19 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
         if(monitorPerformance) markersBegin[7] = clock();
 
         /*status = CPXlpopt(env, lp);*/ /* most time consuming step*/
-        status = CPXprimopt(env, lp);
+        /*status = CPXprimopt(env, lp);*/
+
+        /*mexPrintf("        -- Changing the solution method: %i\n", cplexAlgo);*/
+
+        /* Solve the problem */
+        if(cplexAlgo == 1){
+            status = CPXprimopt(env, lp);
+        } else if(cplexAlgo == 2){
+            status = CPXdualopt(env, lp);
+        } else {
+            status = CPXlpopt(env, lp);
+        }
+
 
         if(monitorPerformance) markersEnd[7] = clock();
 
@@ -722,6 +748,9 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     time_t          current_time;
     char*           c_time_string;
 
+    /*  CPLEX algorithm IN*/
+    int cplexAlgo   =  mxGetScalar(CPLEX_ALGO_IN);
+
     if(monitorPerformance) {
       for (j = 0; j < Nmarkers; j++)
       {
@@ -970,16 +999,12 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
         }
     }
 
-    if(monitorPerformance) {
-      markersBegin[2] = clock();
-    }
+    if(monitorPerformance) markersBegin[2] = clock();
 
     /* Create the problem. */
     lp = CPXcreateprob(env, &status, probname);
 
-    if(monitorPerformance) {
-      markersEnd[2] = clock();
-    }
+    if(monitorPerformance) markersEnd[2] = clock();
 
     /*
        A returned pointer of NULL may mean that not enough memory
@@ -996,9 +1021,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
         goto TERMINATE;
     }
 
-    if(monitorPerformance) {
-      markersBegin[3] = clock();
-    }
+    if(monitorPerformance) markersBegin[3] = clock();
 
     /* Now copy the problem data into the lp. */
     objsense = (objective==FVA_MIN_OBJECTIVE) ? CPX_MIN : CPX_MAX;
@@ -1006,9 +1029,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
                sense, A_matbeg, A_matcnt, A_matind, A_matval,
                LB_matval, UB_matval, NULL);
 
-    if(monitorPerformance) {
-      markersEnd[3] = clock();
-    }
+    if(monitorPerformance) markersEnd[3] = clock();
 
     if (status) {
         *ret = FVA_INIT_FAIL;
@@ -1043,13 +1064,11 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     RET     = mxCreateDoubleMatrix(1,1,mxREAL);
     ret     = mxGetPr(RET);
 
-    if(monitorPerformance) {
-      markersBegin[4] = clock();
-    }
+    if(monitorPerformance) markersBegin[4] = clock();
 
     /* Call FVA properly speaking */
     *ret = _fva(env,lp,minFlux,maxFlux,optSol,n_constr,n_vars,optPercent,objective,rxns,nrxn,
-                CPLEX_PARAMS, VALUES_CPLEX_PARAMS);
+                CPLEX_PARAMS, VALUES_CPLEX_PARAMS, cplexAlgo);
 
     if(monitorPerformance) markersEnd[4] = clock();
 
@@ -1076,9 +1095,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     /*
        Free up the problem as allocated by CPXcreateprob, if necessary.
      */
-    if (lp != NULL) {
-        status = CPXfreeprob(env, &lp);
-    }
+    if (lp != NULL) status = CPXfreeprob(env, &lp);
 
     /* Free up the CPLEX environment, if necessary. */
     if (NUM_CALLS_CPLEXINT <= 0){
@@ -1087,18 +1104,11 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
 
         if (env != NULL) {
 
-            if(monitorPerformance)
-            {
-              markersBegin[5] = clock();
-            }
+            if(monitorPerformance) markersBegin[5] = clock();
 
             status = CPXcloseCPLEX(&env);
 
-            if(monitorPerformance)
-            {
-              markersEnd[5] = clock();
-            }
-
+            if(monitorPerformance) markersEnd[5] = clock();
             /*
                Note that CPXcloseCPLEX produces no output,
                so the only way to see the cause of the error is to use

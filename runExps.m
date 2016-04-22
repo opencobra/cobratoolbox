@@ -15,7 +15,7 @@
 
 % Adding the paths
 addpath(genpath('~/Dropbox/UNI.LU/sbgCloud/models'))
-addpath(genpath('~/Dropbox/UNI.LU/git'))
+addpath(genpath('~/Dropbox/UNI.LU/git/pCOBRA'))
 
 % MATLAB commands for setting a fresh environment
 clear all
@@ -33,13 +33,13 @@ optPercentage = 90;
 objective = 'max';
 
 % Define the model indices to be solved
-modelStart = 10;
+modelStart = 4;
 modelIncrement = 1; % step through the model array
 modelEnd = modelStart;
 
 % Define the respective parameter to be appended - make sure that the appropriate
 % arameters are set in the external code
-paramstring = 'METHOD_PRIMOPT';
+paramstring = '';
 
 % Define the model matrix to be solved A: coupled; S: uncoupled
 matrixASvect = ['S'];
@@ -51,11 +51,26 @@ solver = 'cplexint'; % or 'glpk' %%cplexint
 bParallel = true; %false; true
 nworkersvect = [8; 16; 32]; %[8; 16; 32];% Number of parallel workers
 
+% Change the solution algorithm
+% 0: DEFAULT: CPXlpopt
+% 1: CPXprimopt
+% 2: CPXdualopt
+cpxAlgorithm = 0;
+
 autonames = {};
 autotimes = [];
 
 % Load the respective datasets
 datasets
+
+% Adjust the file names according to the parameter experiment
+if cpxAlgorithm == 1
+  paramstring = strcat(paramstring,'_METHOD_PRIMOPT');
+elseif cpxAlgorithm == 2
+  paramstring = strcat(paramstring,'_METHOD_DUALOPT');
+else
+  paramstring = strcat(paramstring,'_METHOD_LPOPT');
+end
 
 nmodels = size(modelList,1);
 T = zeros(nmodels,1);
@@ -94,6 +109,8 @@ for k = 1:length(nworkersvect)
     %  cpxControl.AUXROOTTHREADS = 4
 %    end
 
+    
+
     % Start a parallel pool from Matlab
     SetWorkerCount(nworkers);
 
@@ -131,8 +148,10 @@ for k = 1:length(nworkersvect)
             end
 
             % Call the external fastFVA function
+
+
             tstart=tic;
-            [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective, solver,matrixAS, cpxControl);
+            [minFlux,maxFlux,optsol,ret] = fastFVA(model, optPercentage, objective, solver, matrixAS, cpxControl, cpxAlgorithm);
             T(iModel) = toc(tstart);
             fprintf('\n >> nworkers = %d; model = %s; Time = %1.1f [s]\n', nworkers, modelList{iModel,1}, T(iModel))
 
@@ -152,6 +171,6 @@ end %loop through the workers
 % Print all the names of the numerical experiments and their respective total solution times
 fprintf('\n ===================================== Summary ==================================== \n\n');
 for i =1:length(autotimes)
-      fprintf('\t %d. \t <> \t %s \t <> \t %1.1f [s]\n', i, autonames{i}{1}, autotimes(i));
+      fprintf('    %d. \t <> \t %s \t <> \t %1.1f [s]\n', i, autonames{i}{1}, autotimes(i));
 end
 fprintf('\n ================================================================================== \n');

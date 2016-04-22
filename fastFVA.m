@@ -1,4 +1,4 @@
-function [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective,solver,matrixAS,cpxControl)
+function [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective,solver,matrixAS,cpxControl,cpxAlgorithm)
 %fastFVA Flux variablity analysis optimized for the GLPK and CPLEX solvers.
 %
 % [minFlux,maxFlux] = fastFVA(model,optPercentage,objective, solver)
@@ -29,7 +29,8 @@ function [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective,so
 %   objective        Objective ('min' or 'max') (default 'max')
 %   solver           'cplex' or 'glpk' (default 'glpk')
 %   matrixAS         'A' or 'S' - choice of the model matrix, coupled (A) or uncoupled (S)
-%   numThread        Number of the thread, appended to the CPLEX logFile for debugging
+%   cpxControl       Parameter set of CPLEX loaded externally
+%   cpxAlgorithm     Choice of the solution algorithm within CPLEX
 %
 % Outputs:
 %   minFlux   Minimum flux for each reaction
@@ -48,7 +49,9 @@ function [minFlux,maxFlux,optsol,ret] = fastFVA(model,optPercentage,objective,so
 % Contributor: Laurent Heirendt, LCSB.
 % Last updated: April 2016
 
+
 verbose=1;
+if nargin<7, cpxAlgorithm   = 0;          end
 if nargin<6, cpxControl     = struct([]); end
 if nargin<5, matrixAS       = 'S';        end
 if nargin<4, solver         = 'glpk';     end
@@ -156,7 +159,7 @@ else
 
       [minf,maxf,iopt(i),iret(i)] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj,(istart(i):iend(i))', ...
-                                         t.ID, cpxControl, valuesCPLEXparams);
+                                         t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm);
 
       fprintf(' >> Time spent in FVAc: %1.1f seconds.', toc(tstart));
 
