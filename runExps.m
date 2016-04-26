@@ -33,7 +33,7 @@ optPercentage = 90;
 objective = 'max';
 
 % Define the model indices to be solved
-modelStart = 10;
+modelStart = 4;
 modelIncrement = 1; % step through the model array
 modelEnd = modelStart;
 
@@ -49,13 +49,13 @@ solver = 'cplexint'; % or 'glpk' %%cplexint
 
 % Parallel settings
 bParallel = true; %false; true
-nworkersvect = [32]; %[8; 16; 32];% Number of parallel workers
+nworkersvect = [4]; %[8; 16; 32];% Number of parallel workers
 
 % Change the solution algorithm
 % 0: DEFAULT: CPXlpopt
 % 1: CPXprimopt
 % 2: CPXdualopt
-cpxAlgorithm = 2;
+cpxAlgorithm = 0;
 
 autonames = {};
 autotimes = [];

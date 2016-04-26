@@ -1,4 +1,7 @@
 function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVAex(model,optPercentage,objective,solver,rxnsList)
+
+%% equivalent: for full reaction set fastFVA(model,optPercentage,objective,solver,matrixAS,cpxControl,cpxAlgorithm)
+
 %fastFVAex Flux variablity analysis optimized for the GLPK and CPLEX solvers.
 %
 % [minFlux,maxFlux] = fastFVAex(model,optPercentage,objective, solver)
@@ -107,6 +110,9 @@ n=length(rxns);
 nworkers=GetWorkerCount();
 if nworkers<=1
    % Sequential version
+
+%%%%%%%%%%%%%% CURRENTLY HERE
+
    if bExtraOutputs
       [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                                              optPercentage,obj,rxns(:));
