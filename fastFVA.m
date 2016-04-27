@@ -223,7 +223,7 @@ else
 
       tstart = tic;
 
-      fvamin_single = 0; fvamax_single = 0; fbasol_single=0;% To silence warnings
+      fvamin_single = 0; fvamax_single = 0; fbasol_single=0; % silence warnings
 
       if bExtraOutputs
         [minf,maxf,iopt(i),iret(i),fbasol_single,fvamin_single,fvamax_single] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
@@ -269,8 +269,8 @@ else
    ret=max(iret);
    if bExtraOutputs
       fbasol=fbasolRes{1}; % Initial FBA solutions are identical across workers
-      fvamin=zeros(length(model.rxns),length(model.rxns));
-      fvamax=zeros(length(model.rxns),length(model.rxns));
+      fvamin = zeros(length(model.rxns),length(model.rxns));
+      fvamax = zeros(length(model.rxns),length(model.rxns));
       for i=1:nworkers
          fvamin(:,rxns(istart(i):iend(i)))=fvaminRes{i};
          fvamax(:,rxns(istart(i):iend(i)))=fvamaxRes{i};
