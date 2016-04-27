@@ -33,7 +33,7 @@ optPercentage = 90;
 objective = 'max';
 
 % Define the model indices to be solved
-modelStart = 2;
+modelStart = 4;
 modelIncrement = 1; % step through the model array
 modelEnd = modelStart;
 
@@ -48,7 +48,7 @@ matrixASvect = ['A']; %['S', 'A'];
 solver = 'cplexint'; % or 'glpk' %%cplexint
 
 % Parallel settings
-bParallel = false; %false; true
+bParallel = true; %false; true
 nworkersvect = [4]; %[8; 16; 32];% Number of parallel workers
 
 % Change the solution algorithm
@@ -147,11 +147,12 @@ for k = 1:length(nworkersvect)
                 model.c(modelList{iModel,3})=1;
             end
 
+            % Define a subest of reactions
+            rxnsList = model.rxns(1:floor(0.1*size(model.S,1)));
+
             % Call the external fastFVA function
-
-
             tstart=tic;
-            [minFlux,maxFlux,optsol,ret] = fastFVA(model, optPercentage, objective, solver, matrixAS, cpxControl, cpxAlgorithm);
+            [minFlux,maxFlux,optsol,ret] = fastFVA(model, optPercentage, objective, solver, matrixAS, cpxControl, cpxAlgorithm,rxnsList);
             T(iModel) = toc(tstart);
             fprintf('\n >> nworkers = %d; model = %s; Time = %1.1f [s]\n', nworkers, modelList{iModel,1}, T(iModel))
 

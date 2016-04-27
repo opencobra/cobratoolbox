@@ -111,8 +111,6 @@ nworkers=GetWorkerCount();
 if nworkers<=1
    % Sequential version
 
-%%%%%%%%%%%%%% CURRENTLY HERE %%%%%%%%%%%%%%
-
    if bExtraOutputs
       [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                                              optPercentage,obj,rxns(:));
@@ -140,20 +138,25 @@ else
       nrxn(i)=nrxn(i)+1;
       i=i+1;
    end
-   assert(sum(nrxn)==n);
-   istart=1; iend=nrxn(1);
+   assert(sum(nrxn) == n);
+   istart = 1; iend = nrxn(1);
    for i=2:nworkers
-      istart(i)=iend(i-1)+1;
-      iend(i)=istart(i)+nrxn(i)-1;
+      istart(i) = iend(i-1)+1;
+      iend(i)   = istart(i)+nrxn(i)-1;
    end
 
-   minFlux=zeros(length(model.rxns),1); maxFlux=zeros(length(model.rxns),1);
-   iopt=zeros(nworkers,1);
+
+   minFlux = zeros(length(model.rxns),1); maxFlux=zeros(length(model.rxns),1);
+   iopt = zeros(nworkers,1);
    iret=zeros(nworkers,1);
    if bExtraOutputs
       fvaminRes={}; fvamaxRes={};
       fbasolRes={};
    end
+
+
+
+
    parfor i=1:nworkers
       fvamin_single = 0; fvamax_single = 0; fbasol_single=0;% To silence warnings
       if bExtraOutputs

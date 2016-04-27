@@ -140,7 +140,8 @@ fprintf(' >> Size of stoichiometric matrix: (%d,%d)\n', m,n);
 % Determine the number of reactions that are considered
 nR = length(rxns);
 if nR ~= n
-  fprintf(' >> Only %d reactions are solved of a total of %d.\n', nR, n);
+  fprintf(' >> Only %d reactions of %d are solved.\n', nR, n);
+  n = nR;
 else
   fprintf(' >> All the %d reactions are solved.\n', n);
 end
@@ -155,20 +156,17 @@ end;
 
 % Launch fastFVA externally
 if nworkers<=1
-  fprintf(' \nWARNING: The Sequential Version might take a long time.\n\n');
    % Sequential version
-
-    if bExtraOutputs
+   fprintf(' \n WARNING: The Sequential Version might take a long time.\n\n');
+   if bExtraOutputs
        [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                                               optPercentage,obj,rxns(1:n)', ...
                                                               1, cpxControl, valuesCPLEXparams, cpxAlgorithm);
-    else
+   else
        [minFlux,maxFlux,optsol,ret]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj,rxns(1:n)', ...
                                          1, cpxControl, valuesCPLEXparams, cpxAlgorithm);
-    end
-
-%%%%%%%%%%%%%% CURRENTLY HERE %%%%%%%%%%%%%%
+   end
 
    if ret ~= 0 && verbose
       fprintf('Unable to complete the FVA, return code=%d\n', ret);
@@ -200,9 +198,16 @@ else
       iend(i)=istart(i)+nrxn(i)-1;
    end
 
-   minFlux = zeros(n,1); maxFlux=zeros(n,1);
-   iopt = zeros(nworkers,1);
-   iret = zeros(nworkers,1);
+   minFlux = zeros(length(model.rxns),1);
+   maxFlux = zeros(length(model.rxns),1);
+   iopt    = zeros(nworkers,1);
+   iret    = zeros(nworkers,1);
+
+   % Initialilze extra outputs
+   if bExtraOutputs
+      fvaminRes={}; fvamaxRes={};
+      fbasolRes={};
+   end
 
    fprintf('\n -- Starting to loop through the %d workers. -- \n', nworkers);
 
@@ -218,18 +223,20 @@ else
 
       tstart = tic;
 
+      fvamin_single = 0; fvamax_single = 0; fbasol_single=0;% To silence warnings
+
+      if bExtraOutputs
+        [minf,maxf,iopt(i),iret(i),fbasol_single,fvamin_single,fvamax_single] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
+                                           optPercentage,obj,(rxns(istart(i):iend(i)))', ...
+                                           t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm);
+      else
       [minf,maxf,iopt(i),iret(i)] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj,(rxns(istart(i):iend(i)))', ...
                                          t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm);
 
-      fprintf(' >> Time spent in FVAc: %1.1f seconds.', toc(tstart));
+      end
 
-      % Storing the matrix
-      outArray0(i) = i;
-      %outArray1(i) = t.iD;
-      outArray2(i) = istart(i);
-      outArray3(i) = iend(i);
-      outArray4(i) = iopt(i);
+      fprintf(' >> Time spent in FVAc: %1.1f seconds.', toc(tstart));
 
       if iret(i) ~= 0 && verbose
          fprintf('Problems solving partition %d, return code=%d\n', i, iret(i))
@@ -238,10 +245,13 @@ else
       minFlux=minFlux+minf;
       maxFlux=maxFlux+maxf;
 
-      %responsiveWorkers(i) = 1;
+      if bExtraOutputs
+         fvaminRes{i}=fvamin_single;
+         fvamaxRes{i}=fvamax_single;
+         fbasolRes{i}=fbasol_single;
+      end
 
       fprintf('\n----------------------------------------------------------------------------------\n');
-
 
       % print out the percentage of the progress
       percout =   parfor_progress;
@@ -254,10 +264,24 @@ else
 
    end;
 
-   out = parfor_progress(0);
-
-   %outputData = struct('outArray0',outArray0,'outArray2',outArray2,'outArray3',outArray3,'outArray4',outArray4)
-
+   % Aggregate results
    optsol=iopt(1);
    ret=max(iret);
-end;
+   if bExtraOutputs
+      fbasol=fbasolRes{1}; % Initial FBA solutions are identical across workers
+      fvamin=zeros(length(model.rxns),length(model.rxns));
+      fvamax=zeros(length(model.rxns),length(model.rxns));
+      for i=1:nworkers
+         fvamin(:,rxns(istart(i):iend(i)))=fvaminRes{i};
+         fvamax(:,rxns(istart(i):iend(i)))=fvamaxRes{i};
+      end
+   end
+
+   out = parfor_progress(0);
+
+
+end
+
+%% extract only reaction flux results that have been computed
+minFlux(find(~ismember(model.rxns, rxnsList)))=[];
+maxFlux(find(~ismember(model.rxns, rxnsList)))=[];
