@@ -155,14 +155,20 @@ end;
 
 % Launch fastFVA externally
 if nworkers<=1
-  fprintf('WARNING: The Sequential Version might take a long time.\n\n');
+  fprintf(' \nWARNING: The Sequential Version might take a long time.\n\n');
    % Sequential version
 
-%%%%%%%%%%%%%% CURRENTLY HERE %%%%%%%%%%%%%%
+    if bExtraOutputs
+       [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
+                                                              optPercentage,obj,rxns(1:n)', ...
+                                                              1, cpxControl, valuesCPLEXparams, cpxAlgorithm);
+    else
+       [minFlux,maxFlux,optsol,ret]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
+                                         optPercentage,obj,rxns(1:n)', ...
+                                         1, cpxControl, valuesCPLEXparams, cpxAlgorithm);
+    end
 
-   [minFlux,maxFlux,optsol,ret]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
-                                     optPercentage,obj,(1:n)', ...
-                                     1, cpxControl, valuesCPLEXparams, cpxAlgorithm);
+%%%%%%%%%%%%%% CURRENTLY HERE %%%%%%%%%%%%%%
 
    if ret ~= 0 && verbose
       fprintf('Unable to complete the FVA, return code=%d\n', ret);
@@ -213,7 +219,7 @@ else
       tstart = tic;
 
       [minf,maxf,iopt(i),iret(i)] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
-                                         optPercentage,obj,(istart(i):iend(i))', ...
+                                         optPercentage,obj,(rxns(istart(i):iend(i)))', ...
                                          t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm);
 
       fprintf(' >> Time spent in FVAc: %1.1f seconds.', toc(tstart));

@@ -33,7 +33,7 @@ optPercentage = 90;
 objective = 'max';
 
 % Define the model indices to be solved
-modelStart = 4;
+modelStart = 2;
 modelIncrement = 1; % step through the model array
 modelEnd = modelStart;
 
@@ -48,7 +48,7 @@ matrixASvect = ['A']; %['S', 'A'];
 solver = 'cplexint'; % or 'glpk' %%cplexint
 
 % Parallel settings
-bParallel = true; %false; true
+bParallel = false; %false; true
 nworkersvect = [4]; %[8; 16; 32];% Number of parallel workers
 
 % Change the solution algorithm
