@@ -111,7 +111,7 @@ nworkers=GetWorkerCount();
 if nworkers<=1
    % Sequential version
 
-%%%%%%%%%%%%%% CURRENTLY HERE
+%%%%%%%%%%%%%% CURRENTLY HERE %%%%%%%%%%%%%%
 
    if bExtraOutputs
       [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
