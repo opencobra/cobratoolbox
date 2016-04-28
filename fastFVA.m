@@ -63,7 +63,7 @@ function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVA(model,optPe
 % Last updated: April/May 2016
 
 % Turn on the load balancing for large problems
-loadBalancing = 1;
+loadBalancing = 0; %0: off; 1: on
 
 % Turn on the verbose mode
 verbose=1;
@@ -144,7 +144,7 @@ fprintf(' >> Size of stoichiometric matrix: (%d,%d)\n', m,n);
 % Determine the number of reactions that are considered
 nR = length(rxns);
 if nR ~= n
-  fprintf(' >> Only %d reactions of %d are solved.\n', nR, n);
+  fprintf(' >> Only %d reactions of %d are solved (~ %1.2f%%).\n', nR, n, nR*100/n);
   n = nR;
 else
   fprintf(' >> All the %d reactions are solved.\n', n);
