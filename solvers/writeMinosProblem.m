@@ -45,7 +45,7 @@ function [directory,fname]=writeMinosProblem(LPproblem,precision,modelName,direc
 %              and FBA data    is in ~/../data/FBA/
 % 15 Ocr 2014: Turn script into function to be used with solveCobraLP
 
-%   BEFORE RUNNING dumpLP, DO THIS:
+%   BEFORE RUNNING writeMinosProblem, DO THIS:
 %
 %   1. Set modelNo = one of the switch numbers
 %   2. Set format  = 1 or 2

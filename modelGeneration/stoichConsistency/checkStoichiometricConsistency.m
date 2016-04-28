@@ -17,12 +17,7 @@ function [inform,m,model]=checkStoichiometricConsistency(model,printLevel,method
 % Detection of conserved and unconserved metabolites based on a new
 % implementation by Nikos Vlassis & Ronan Fleming.
 %
-% Requires the openCOBRA toolbox
-% http://opencobra.sourceforge.net/openCOBRA/Welcome.html
-% 
-% Getting the Latest Code From the Subversion Repository:
-% Linux:
-% svn co https://opencobra.svn.sourceforge.net/svnroot/opencobra/cobra-devel
+% Requires the COBRA toolbox: https://github.com/opencobra/cobratoolbox.git
 %
 % INPUT
 % model.S            m x n Stoichiometric matrix
@@ -89,10 +84,15 @@ else
     end
 end
 
+% Check the stoichiometric consistency of the network by
+% solving the following linear problem
+%       min sum(l_i)
+%           s.t     S'*l = 0
+%                   l_i >= 1
+% where l  is is a  mx1 vector of the molecular mass of m molecular species
 SInt=model.S(:,model.SIntRxnBool);
 LPproblem.A=SInt';
 LPproblem.b=zeros(size(LPproblem.A,1),1);
-%changing the 
 LPproblem.lb=ones(size(LPproblem.A,2),1);
 LPproblem.ub=inf*ones(size(LPproblem.A,2),1);
 LPproblem.c=1*ones(size(LPproblem.A,2),1);
@@ -121,6 +121,8 @@ inform=solution.stat;
 epsilon = 1e-4;
 smallestM =epsilon;
 largestM  =1e4;
+% If the network is not stoichiometrically consistent then one maximizes
+% the number of  positive component of the molecular masses vector
 if inform~=1
     switch method.interface
         case 'none'
@@ -161,13 +163,19 @@ if inform~=1
             
             [nMet,~]=size(SInt);
             
+            % Solve the linear problem
+            %   max sum(z_i)
+            %       s.t S'*l = 0
+            %           z <= l
+            %           0 <= l <= 1e+4            
+            %           0 <= z <= 1e-4
             nInt=nnz(model.SIntRxnBool);
             LPproblem.A=[SInt'      , sparse(nInt,nMet); 
                          speye(nMet),      -speye(nMet)];
             
             LPproblem.b=zeros(nInt+nMet,1);
             
-            LPproblem.lb=[-ones(nMet,1);zeros(nMet,1)];
+            LPproblem.lb=[zeros(nMet,1);zeros(nMet,1)];
             LPproblem.ub=[ones(nMet,1)*largestM;ones(nMet,1)*epsilon];
             
             LPproblem.c=zeros(nMet+nMet,1);

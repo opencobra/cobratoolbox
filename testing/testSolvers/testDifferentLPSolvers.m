@@ -12,17 +12,20 @@ function [out,solution]=testDifferentLPSolvers(model,solvers,printLevel)
 
 if exist('model','var')
     if ~isempty(model)
-        model.A=model.S;
+        %model.A assumed to be matrix with coupling constraints
+        if ~isfield(model,'A')
+            model.A=model.S;
+        end
         model.lb=double(full(model.lb));
         model.ub=double(full(model.ub));
-	model.c=double(full(model.c));
+        model.c=double(full(model.c));
         model.osense=-1;
         [m,n]=size(model.S);
         if isfield(model,'csense')
-model.csense=model.csense(:);
-else
-        model.csense(1:m,1)='E';
-end
+            model.csense=model.csense(:);
+        else
+            model.csense(1:m,1)='E';
+        end
         solveDefaultModel=0;
     else
         solveDefaultModel=1;
@@ -59,8 +62,8 @@ global CBTLPSOLVER
 oldSolver=CBTLPSOLVER;
 
 if ~exist('solvers','var')
-    solvers={'gurobi5','mosek','ibm_cplex','cplex_direct','pdco','glpk','quadMinos'};
-    %solvers={'gurobi5','mosek_linprog','mosek','ibm_cplex','cplex_direct','pdco','glpk','quadMinos'};
+    solvers={'gurobi6','mosek','ibm_cplex','cplex_direct','pdco','glpk','quadMinos','dqqMinos'};
+    %solvers={'gurobi6','mosek_linprog','mosek','ibm_cplex','cplex_direct','pdco','glpk','quadMinos'};
 end
 
 i=1;
@@ -68,7 +71,17 @@ for j=1:length(solvers)
     %current solver
     solver=solvers{j};
     
-    if strcmp(solver,'gurobi5')
+    if strcmp(solver,'dqqMinos')
+        if 1
+            solverOK = changeCobraSolver(solver,'LP');
+            param.Method=1;
+            solution{i} = solveCobraLP(model,param);
+            i=i+1;
+            clear param
+        end
+    end
+    
+    if strcmp(solver,'gurobi6')
         if 1
             solverOK = changeCobraSolver(solver,'LP');
             param.Method=1;

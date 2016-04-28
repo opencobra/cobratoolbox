@@ -1,2 +1,0 @@
-#!/bin/bash
-nohup matlab -nodisplay -nodesktop -nojvm -nosplash -r $1 > $2 &

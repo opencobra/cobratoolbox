@@ -52,13 +52,25 @@ save KEGGMatrix KEGG
 % checks if model.mets has () or [] for compartment, or adds cytosol to
 % compounds if no compartment is specified
 model = CheckMetName(model);
-model.RxnSubsystem = model.subSystems;
+try
+    model.RxnSubsystem = model.subSystems;
+catch
+    model.RxnSubsystem = {};
+end
 
 % merge model with KEGG reaction list for each defined compartment
 modelExpanded = model;
 for i = 1 : length(listCompartments)
     KEGGComp = KEGG;
     KEGGComp.mets = regexprep(KEGGComp.mets,'\[c\]',listCompartments{i});
+    
+    % Try changing the reaction IDs so that there is no ambiguity between
+    % different compartments for each reaction
+    compartmentID = regexprep(listCompartments{i},'[\[\]]','');
+    if ~strcmp(compartmentID,'c')
+        KEGGComp.rxns = strcat(KEGGComp.rxns,'_',compartmentID);
+    end
+    
     [modelExpanded] = mergeTwoModels(modelExpanded,KEGGComp,1);
 end
 clear  KEGGComp KEGG;
@@ -67,7 +79,7 @@ clear  KEGGComp KEGG;
 ExchangeRxnMatrix = createXMatrix2(modelExpanded.mets,1,'all');
 ExchangeRxnMatrix.RxnSubsystem = ExchangeRxnMatrix.subSystems;
 
-[MatricesSUX] = mergeTwoModels(modelExpanded,ExchangeRxnMatrix,1);;
+[MatricesSUX] = mergeTwoModels(modelExpanded,ExchangeRxnMatrix,1);
 MatricesSUX.rxnGeneMat(length(MatricesSUX.rxns),length(MatricesSUX.genes))=0;
 MatricesSUX.rxnGeneMat = sparse(MatricesSUX.rxnGeneMat);
 

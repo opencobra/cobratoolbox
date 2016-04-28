@@ -3,8 +3,7 @@ function [LPproblem] = reformulate(LPproblem, BIG, printLevel)
 % REFORMULATE transforms LPproblems with badly-scaled stoichiometric and 
 % coupling constraints of the form:
 % 
-%   max c*v  subject to: Sv  = 0
-%    x                   Cv <= 0
+%   max c*x  subject to: Ax <= b
 % 
 % REFORMULATE eliminates the need for scaling and hence prevents infeasibilities
 % after unscaling. After using PREFBA to transform a badly-scaled FBA program,
@@ -54,7 +53,11 @@ function [LPproblem] = reformulate(LPproblem, BIG, printLevel)
   mets   = LPproblem.mets;
   rxns   = LPproblem.rxns;
   nrxn   = length(rxns);
-
+  if isfield(LPproblem,'modelID')
+      modelID=LPproblem.modelID;
+  else
+      modelID='aModel';
+  end
 % find reactions with large coefficients
 
   logbig  = log(BIG);
@@ -152,8 +155,8 @@ function [LPproblem] = reformulate(LPproblem, BIG, printLevel)
   
   if printLevel == 1
     fprintf([...
-    'Transforming %i badly-scaled coupling constraints with sequences of well-scaled'...
-    'coupling constraints. This may take a few\n minutes.\n'...
+    'Transforming %i badly-scaled coupling constraints with sequences of\n'...
+    'well-scaled coupling constraints. This may take a few minutes.\n'...
     ],nbadrow)
   end
   
@@ -210,6 +213,7 @@ function [LPproblem] = reformulate(LPproblem, BIG, printLevel)
   LPproblem.lb     = x_L;
   LPproblem.ub     = x_U;
   LPproblem.csense = csense;
+  LPproblem.modelID = ['L_' modelID];
 end
 
 

@@ -97,71 +97,96 @@ function solution = solveCobraLP(LPproblem,varargin)
 
 global CBTLPSOLVER
 global MINOSPATH
+global DQQMINOSPATH
+
 if (~isempty(CBTLPSOLVER))
     solver = CBTLPSOLVER;
 elseif nargin==1
     error('No solver found.  call changeCobraSolver(solverName)');
 end
+
 %names_of_parameters that users can specify with values, using option
 % A) as parameter followed by parameter value:
 optParamNames = {'minNorm','printLevel','primalOnly','saveInput','feasTol','optTol','solver'};
 
-%not a good idea to do this here for every solver as there would end up
-%being hundreds of different parameters, so removed - Ronan
-%,'EleNames','EqtNames','VarNames','EleNameFun', ...
-%    'EqtNameFun','VarNameFun','PbName','MPSfilename'};
-if nargin ~=1
-    if mod(length(varargin),2)==0
-        %expecting pairs of parameter names and parameter values
-        for i=1:2:length(varargin)-1
-            if ismember(varargin{i},optParamNames)
-                if isstruct(varargin{i+1})
-                    error('solveCobraLP: Invalid number of parameters/values')
-                else
-                    parameters.(varargin{i}) = varargin{i+1};
-                end
-                if strcmp(varargin{i},'solver');
-                    solver=varargin{i+1};
-                end 
-            else
-                error([varargin{i} ' is not a valid optional parameter']);
-            end
+% Set default parameter values
+[minNorm, printLevel, primalOnlyFlag, saveInput] = ...
+    getCobraSolverParams('LP',optParamNames(1:4));
+
+% Set user specified parameter values
+solverParams.dummy = 3;
+solverParams = rmfield(solverParams,'dummy'); % workaround to initialize nonempty structure
+
+% First input can be 'default' or a solver-specific parameter structure
+if ~isempty(varargin)
+    isdone = false(size(varargin));
+    
+    if strcmp(varargin{1},'default') % Set tolerances to COBRA toolbox defaults
+        [feasTol,optTol] = getCobraSolverParams('LP',optParamNames(5:6),'default');
+        isdone(1) = true;
+        varargin = varargin(~isdone);
+        
+    elseif isstruct(varargin{1}) % solver-specific parameter structure
+        if isstruct(varargin{1})
+            solverParams = varargin{1};
+            
+            isdone(1) = true;
+            varargin = varargin(~isdone);
         end
-        parametersStructureFlag=0;
-        parameters = '';
-    elseif strcmp(varargin{1},'default')
-        %default cobra parameters 
-        parameters = 'default';
-    elseif isstruct(varargin{1})
-        %uses the structure for setting parameters in preference to those
-        %of the optParamNames, where appropriate
-        parametersStructureFlag=1;
-        directParamStruct = varargin{1};
-        parameters='';
-    elseif isstruct(varargin{length(varargin)})
-        %expecting pairs of parameter names and parameter values, then a
-        %parameter structure at the end
-        parametersStructureFlag=1;
-        directParamStruct=varargin{length(varargin)};
-        for i=1:2:length(varargin)-2
-            if ismember(varargin{i},optParamNames)
-                parameters.(varargin{i}) = varargin{i+1};
-            else
-                error([varargin{i} ' is not a valid optional parameter']);
-            end
-        end
-        %pause(eps)
-    else
-        error('solveCobraLP: Invalid number of parameters/values')
     end
-    [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
-    getCobraSolverParams('LP',optParamNames(1:6),parameters);
-else
-    parametersStructureFlag=0;
-    [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
-    getCobraSolverParams('LP',optParamNames(1:6));
 end
 
+% Last input can be a solver specific parameter structure
+if ~isempty(varargin)
+    isdone = false(size(varargin));
+    
+    if isstruct(varargin{end})
+        solverParams = varargin{end};
+        
+        isdone(end) = true;
+        varargin = varargin(~isdone);
+    end
+end
+   
+% Remaining inputs should be parameter name-value pairs
+if ~isempty(varargin)
+    isdone = false(size(varargin));
+    
+    if mod(length(varargin),2)==0 % parameter name-value pairs
+        try
+            parameters = struct(varargin{:});
+        catch
+            error('solveCobraLP: Invalid parameter name-value pairs.')
+        end
+        
+        % only create feaTol, optTol and solver if specified by user
+        if isfield(parameters,'feasTol')
+            feasTol = parameters.feasTol;
+            parameters = rmfield(parameters,'feasTol');
+        end
+        if isfield(parameters,'optTol')
+            optTol = parameters.optTol;
+            parameters = rmfield(parameters,'optTol');
+        end
+        if isfield(parameters,'solver')
+            solver = parameters.solver;
+            parameters = rmfield(parameters,'solver');
+        end
+        
+        % overwrite defaults
+        [minNorm, printLevel, primalOnlyFlag, saveInput] = ...
+            getCobraSolverParams('LP',optParamNames(1:4),parameters);
+        
+        isdone(:) = true;
+        varargin = varargin(~isdone);
+    end
+end
+
+if ~isempty(varargin)
+    error('solveCobraLP: Invalid parameter input.')
+end
+
+% Check solver compatibility with minNorm option
 if max(minNorm)~=0 && ~any(strcmp(solver,{'cplex_direct','cplex'}))
   error('minNorm only works for LP solver ''cplex_direct'' from this interface, use optimizeCbModel for other solvers.')
 end
@@ -176,6 +201,41 @@ if ~isempty(saveInput)
     save(fileName,'LPproblem')
 end
 
+%support for lifting of ill scaled models
+if isfield(solverParams,'lifting')
+    if solverParams.lifting==1
+        BIG=1e4;%suitable for double precision solvers
+        [LPproblem] = reformulate(LPproblem, BIG, printLevel);
+    end
+end
+
+% Assume constraint matrix is S if no A provided.
+if ~isfield(LPproblem,'A')
+    if isfield(LPproblem,'S')
+        LPproblem.A = LPproblem.S;
+    end
+end
+
+% Assume constraint S*v = b if csense not provided
+if ~isfield(LPproblem,'csense')
+    % If csense is not declared in the model, assume that all
+    % constraints are equalities.
+    LPproblem.csense(:,1) = 'E';
+end
+
+% Assume constraint S*v = 0 if b not provided
+if ~isfield(LPproblem,'b')
+    warning('LP problem has no defined b in S*v=b. b should be defined, for now we assume b=0')
+    LPproblem.b=zeros(size(LPproblem.A,1),1);
+end
+
+% Assume max c'v s.t. S v = b if osense not provided
+if ~isfield(LPproblem,'osense')
+    LPproblem.osense = -1;
+end
+
+
+%extract the problem from the structure
 [A,b,c,lb,ub,csense,osense] = deal(LPproblem.A,LPproblem.b,LPproblem.c,LPproblem.lb,LPproblem.ub,LPproblem.csense,LPproblem.osense);
 
 % Defaults in case the solver does not return anything
@@ -189,6 +249,183 @@ algorithm='default';
 
 t_start = clock;
 switch solver
+    case 'dqqMinos'
+        if ~isunix
+            error('dqqMinos interface not yet implemented for non unix OS.')
+        end
+        
+        if isfield(solverParams,'mpsParentFolderPath')
+            mpsParentFolderPath=solverParams.mpsParentFolderPath;
+        else
+            %use current path for MPS folder
+            mpsParentFolderPath=pwd;
+        end
+        if ~exist(mpsParentFolderPath,'dir')
+            mkdir([mpsParentFolderPath filesep 'MPS'])
+        end
+        
+        if isfield(solverParams,'MPSfilename')
+            MPSfilename=solverParams.MPSfilename;
+        else
+            if isfield(LPproblem,'modelID')
+                MPSfilename=LPproblem.modelID;
+            else
+                MPSfilename='file';
+            end
+        end
+        
+        
+        if 1
+            %use Stanford code to write mps file
+            %fname=writeMINOSMPS(LPproblem,mpsParentFolderPath,printLevel);
+            tempFileName  = MPSfilename(1:min(8,length(MPSfilename)));
+            if exist([mpsParentFolderPath filesep 'MPS' filesep tempFileName '.mps'],'file')
+                MPSfilename=tempFileName;
+            else
+                longMPSfilename=MPSfilename;
+                MPSfilename=writeMINOSMPS(A,b,c,lb,ub,csense,osense,longMPSfilename,mpsParentFolderPath,printLevel);
+            end
+        else
+            %write out the mps file to the dataDirectory
+            %% BuildMPS
+            % This calls buildMPS and generates a MPS format description of the
+            % problem as the result
+            % Build MPS Author: Bruno Luong
+            % Interfaced with CobraToolbox by Richard Que (12/18/09)
+            display('Solver set to MPS. This function will write out a .MPS file and return a matrix string for the LP problem');
+            
+            %default MPS parameters are no longer global variables, but set
+            %here inside this function
+            param=solverParams;
+            if isfield(param,'EleNames')
+                EleNames=param.EleNames;
+            else
+                EleNames='';
+            end
+            if isfield(param,'EqtNames')
+                EqtNames=param.EqtNames;
+            else
+                EqtNames='';
+            end
+            if isfield(param,'VarNames')
+                VarNames=param.VarNames;
+            else
+                VarNames='';
+            end
+            if isfield(param,'EleNameFun')
+                EleNameFun=param.EleNameFun;
+            else
+                EleNameFun = @(m)(['LE' num2str(m)]);
+            end
+            if isfield(param,'EqtNameFun')
+                EqtNameFun=param.EqtNameFun;
+            else
+                EqtNameFun = @(m)(['EQ' num2str(m)]);
+            end
+            if isfield(param,'VarNameFun')
+                VarNameFun=param.VarNameFun;
+            else
+                VarNameFun = @(m)(['X' num2str(m)]);
+            end
+            if isfield(param,'PbName')
+                PbName=param.PbName;
+            else
+                PbName='LPproble';
+            end
+            if isfield(param,'MPSfilename')
+                MPSfilename=param.MPSfilename;
+            else
+                MPSfilename=[dataDirectory '/dqqFBA'];
+            end
+            %split A matrix for L and E csense
+            Ale = A(csense=='L',:);
+            ble = b(csense=='L');
+            Aeq = A(csense=='E',:);
+            beq = b(csense=='E');
+            
+            %%%%Adapted from BuildMPS%%%%%
+            [neq nvar]=size(Aeq);
+            nle=size(Ale,1);
+            if isempty(EleNames)
+                EleNames=arrayfun(EleNameFun,(1:nle),'UniformOutput', false);
+            end
+            if isempty(EqtNames)
+                EqtNames=arrayfun(EqtNameFun,(1:neq),'UniformOutput', false);
+            end
+            if isempty(VarNames)
+                VarNames=arrayfun(VarNameFun,(1:nvar),'UniformOutput', false);
+            end
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+            
+            % input precision     ('double') or 'single' precision
+            precision='double';
+            
+            %http://www.mathworks.com/matlabcentral/fileexchange/19618-mps-format-exporting-tool/content/BuildMPS/BuildMPS.m
+            [solution] = BuildMPS(Ale, ble, Aeq, beq, c, lb, ub, PbName,'MPSfilename',[mpsParentFolderPath filesep MPSfilename '.mps'],'EleNames',EleNames,'EqtNames',EqtNames,'VarNames',VarNames);
+        end
+                
+        %need to change to DDQ directory, need to improve on this - Ronan
+        originalDirectory=pwd;
+        cd(DQQMINOSPATH)
+        sysCall=['run1DQQ ' MPSfilename ' ' mpsParentFolderPath];
+        [status,cmdout]=system(sysCall);
+        %why is status returned 1 here?
+        if status~=0
+            disp('\n')
+            disp(sysCall)
+            disp(cmdout)
+            error('Call to dqq failed');
+        end
+        
+        %read the solution
+        solfname=[mpsParentFolderPath filesep 'results' filesep MPSfilename '.sol'];
+        sol = readMinosSolution(solfname);
+        %disp(sol)
+        % The optimization problem solved by MINOS is assumed to be
+        %        min   osense*s(iobj)
+        %        st    Ax - s = 0    + bounds on x and s,
+        % where A has m rows and n columns.  The output structure "sol"
+        % contains the following data:
+        %
+        %        sol.inform          MINOS exit condition
+        %        sol.m               Number of rows in A
+        %        sol.n               Number of columns in A
+        %        sol.osense          osense
+        %        sol.objrow          Row of A containing a linear objective
+        %        sol.obj             Value of MINOS objective (linear + nonlinear)
+        %        sol.numinf          Number of infeasibilities in x and s.
+        %        sol.suminf          Sum    of infeasibilities in x and s.
+        %        sol.xstate          n vector: state of each variable in x.
+        %        sol.sstate          m vector: state of each slack in s.
+        %        sol.x               n vector: value of each variable in x.
+        %        sol.s               m vector: value of each slack in s.
+        %        sol.rc              n vector: reduced gradients for x.
+        %        sol.y               m vector: dual variables for Ax - s = 0.
+        x=sol.x
+        f=c'*x;
+        y=sol.y;
+        w=sol.rc;
+        origStat=sol.inform;
+        
+        k=sol.s;
+        
+        % Note that status handling may change (see lp_lib.h)
+        if (origStat == 0)
+            stat = 1; % Optimal solution found
+%         elseif (origStat == 3)
+%             stat = 2; % Unbounded
+%         elseif (origStat == 2)
+%             stat = 0; % Infeasible
+        else
+            stat = -1; % Solution not optimal or solver problem
+        end
+        %cleanup
+        if 0
+            delete(solfname)
+        end
+        %return to original directory
+        cd(originalDirectory);
     case 'quadMinos'
 %         It is a prerequisite to have installed and compiled minos, qminos 
 %         and the testFBA interface to minos and qminos, then don't alter
@@ -244,9 +481,12 @@ switch solver
         cd([quadLPPath '/testFBA'])
         %[status,cmdout]=system(['cd ' quadLPPath '/testFBA']); 
         %call minos
-        [status,cmdout]=system([quadLPPath '/testFBA/runfba solveLP ' fname ' lp1']);
+        sysCall=[quadLPPath '/testFBA/runfba solveLP ' fname ' lp1'];
+        [status,cmdout]=system(sysCall);
         if status~=0
+           disp(sysCall)
            disp(cmdout)
+           disp('Error. if the error is /bin/tcsh: bad interpreter: No such file or directory, then install tsch on your system')
            error('Call to minos failed');
         end
         %call qminos
@@ -305,8 +545,12 @@ switch solver
     case 'glpk'
         %% GLPK
         param.msglev = printLevel; % level of verbosity
-        param.tolbnd = feasTol; %tolerance
-        param.toldj = optTol; %tolerance
+        if exist('feasTol','var')
+            param.tolbnd = feasTol; %tolerance
+        end
+        if exist('optTol','var')
+            param.toldj = optTol; %tolerance
+        end
         if (isempty(csense))
             clear csense
             csense(1:length(b),1) = 'S';
@@ -386,13 +630,10 @@ switch solver
         %e.g.
         %http://docs.mosek.com/7.0/toolbox/MSK_IPAR_OPTIMIZER.html
         
-        %[rcode,res]         = mosekopt('param echo(0)',[],parameters);
-        if parametersStructureFlag
-            param=directParamStruct;
-        else
-            param=struct();
-        end
-        %only set the print level if not already set via parameters
+        %[rcode,res]         = mosekopt('param echo(0)',[],solverParams);
+        
+        param=solverParams;
+        %only set the print level if not already set via solverParams
         %structure
         if ~isfield(param,'MSK_IPAR_LOG')
             switch printLevel
@@ -556,11 +797,8 @@ switch solver
         %if mosek is installed, and the paths are added ahead of matlab's
         %built in paths, then mosek linprog shaddows matlab linprog and
         %is used preferentially
-        if parametersStructureFlag
-            options=directParamStruct;
-        else
-            options=struct();
-        end
+        
+        options=solverParams;
         %only set print level if not set already
         if ~isfield(options,'Display')
             switch printLevel
@@ -615,11 +853,7 @@ switch solver
         % The code below uses Gurobi Mex to interface with Gurobi. It can be downloaded from
         % http://www.convexoptimization.com/wikimization/index.php/Gurobi_Mex:_A_MATLAB_interface_for_Gurobi
 
-        if parametersStructureFlag
-            opts=directParamStruct;
-        else
-            opts=struct();
-        end    
+        opts=solverParams;
         if ~isfield(opts,'Display')
             if printLevel == 0
                 % Version v1.10 of Gurobi Mex has a minor bug. For complete silence
@@ -630,10 +864,10 @@ switch solver
                 opts.Display = 1;
             end
         end
-        if ~isfield(opts,'FeasibilityTol')
+        if exist('feasTol','var')
             opts.FeasibilityTol = feasTol;
         end
-        if ~isfield(opts,'OptimalityTol')
+        if exist('optTol','var')
             opts.OptimalityTol = optTol;
         end
         
@@ -686,28 +920,24 @@ switch solver
         %  4=deterministic concurrent 
         %i.e. params.method     = 1;          % Use dual simplex method
 
-        if parametersStructureFlag
-            param=directParamStruct;
-        else
-            param=struct();
-        end
+        param=solverParams;
         if ~isfield(param,'OutputFlag')
             switch printLevel
                 case 0
                     param.OutputFlag = 0;
                     param.DisplayInterval = 1;
-                case printLevel>1
-                    param.OutputFlag = 1;
-                    param.DisplayInterval = 5;
-                otherwise
+                case 1
                     param.OutputFlag = 0;
                     param.DisplayInterval = 1;
+                otherwise
+                    param.OutputFlag = 1;
+                    param.DisplayInterval = 5;
             end
         end
-        if ~isfield(param,'FeasibilityTol')
+        if exist('feasTol','var')
             param.FeasibilityTol = feasTol;
         end
-        if ~isfield(param,'OptimalityTol')
+        if exist('optTol','var')
             param.OptimalityTol = optTol;
         end
 
@@ -847,8 +1077,12 @@ switch solver
         end
         
         %set tolerance
-        tomlabProblem.MIP.cpxControl.EPRHS = feasTol;
-        tomlabProblem.MIP.cpxControl.EPOPT = optTol;
+        if exist('feasTol','var')
+            tomlabProblem.MIP.cpxControl.EPRHS = feasTol;
+        end
+        if exist('optTol','var')
+            tomlabProblem.MIP.cpxControl.EPOPT = optTol;
+        end
         
         %solve
         Result = cplexTL(tomlabProblem);
@@ -940,12 +1174,10 @@ switch solver
             % 6 Concurrent Dual, Barrier and Primal
             % Default: 0
             
-            if parametersStructureFlag
-                %TODO assign all parameters
-                if isfield(directParamStruct,'lpmethod')
-                    if isfield(directParamStruct.lpmethod,'Cur')
-                        ILOGcplex.Param.lpmethod.Cur=directParamStruct.lpmethod.Cur;
-                    end
+            %TODO assign all parameters
+            if isfield(solverParams,'lpmethod')
+                if isfield(solverParams.lpmethod,'Cur')
+                    ILOGcplex.Param.lpmethod.Cur=solverParams.lpmethod.Cur;
                 end
             else
                 %automatically chooses algorithm
@@ -994,11 +1226,9 @@ switch solver
             end
         else
             %simple ibm ilog cplex interface
-            if parametersStructureFlag
-            	options = cplexoptimset(parameters,'param',default);
-            else
-                options = cplexoptimset('cplex');
-            end
+            options = cplexoptimset('cplex');
+            options = cplexoptimset(options,solverParams);
+            
             switch printLevel
                 case 0
                     %tries to stop print out of file
@@ -1060,9 +1290,9 @@ switch solver
         end
         %1 = (Simplex or Barrier) Optimal solution is available.
         stat=origStat;
-       if exist('clone1.log','file')
-           delete('clone1.log')
-       end
+        if exist([pwd filesep 'clone1.log'],'file')
+            delete('clone1.log')
+        end
     case 'lindo'
         %%
         error('Solver type lindo is obsolete - use lindo_new or lindo_old instead');
@@ -1132,15 +1362,11 @@ switch solver
         % problem as the result
         % Build MPS Author: Bruno Luong
         % Interfaced with CobraToolbox by Richard Que (12/18/09)
-        display('Solver set to MPS. This function will output an MPS matrix string for the LP problem');
+        display('Solver set to MPS. This function will write out a .MPS file and return a matrix string for the LP problem');
 
         %default MPS parameters are no longer global variables, but set
         %here inside this function
-        if parametersStructureFlag
-            param=directParamStruct;
-        else
-            param=struct();
-        end
+        param=solverParams;
         if isfield(param,'EleNames')
             EleNames=param.EleNames;
         else
@@ -1157,7 +1383,7 @@ switch solver
             VarNames='';
         end
         if isfield(param,'EleNameFun')
-            EleNameFun=directParamStruct.EleNameFun;
+            EleNameFun=param.EleNameFun;
         else
             EleNameFun = @(m)(['LE' num2str(m)]);
         end
@@ -1177,9 +1403,9 @@ switch solver
             PbName='LPproble';
         end
         if isfield(param,'MPSfilename')
-            MPSfilename=param.MPSfilename;
+            MPSfilename=[param.MPSfilename '.mps'];
         else
-            MPSfilename='';
+            MPSfilename='LP.mps';
         end
         %split A matrix for L and E csense
         Ale = A(csense=='L',:);
@@ -1201,9 +1427,9 @@ switch solver
         end
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
-        [solution] = BuildMPS(Ale, ble, Aeq, beq, c, lb, ub, PbName,'MPSfilename',MPSfilename,'EleNames',EleNames,'EqtNames',EqtNames,'VarNames',VarNames);
-        
-        
+        %http://www.mathworks.com/matlabcentral/fileexchange/19618-mps-format-exporting-tool/content/BuildMPS/BuildMPS.m
+        %31st Jan 2016, changed c to osense*c as most solvers assume minimisation
+        [solution] = BuildMPS(Ale, ble, Aeq, beq, osense*c, lb, ub, PbName,'MPSfilename',MPSfilename,'EleNames',EleNames,'EqtNames',EqtNames,'VarNames',VarNames);
     otherwise
         error(['Unknown solver: ' solver]);
         

@@ -59,12 +59,11 @@ function solution = solveCobraMILP(MILPproblem,varargin)
 
 % Markus Herrgard 1/23/07
 % Tim Harrington  05/18/12 Added support for the Gurobi 5.0 solver
-% <<<<<<< HEAD
 % Ronan (16/07/2013) default MPS parameters are no longer global variables
-% =======
 % Meiyappan Lakshmanan  11/14/14 Added support for the cplex_direct solver
 % cplex_direct solver accesible through CPLEX m-file and CPLEX C-interface
-% >>>>>>> 987a38606db2c6c47ed5421155258bb27fd34cbe
+% Thomas Pfau (12/11/2015) Added support for ibm_cplex (the IBM Matlab
+% interface) to the solvers.
 
 %% Process options
 
@@ -161,6 +160,8 @@ else
     parametersStructureFlag=0;
     [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
     getCobraSolverParams('LP',optParamNames(1:6));
+    %parameters will later be accessed and should be initialized.
+    parameters = '';
 end
 
 
@@ -348,8 +349,76 @@ switch solver
         else
            solStat = -1; % Solution not optimal or solver problem
         end
+    case 'ibm_cplex'
+        cplexlp = Cplex();
+        if (~isempty(csense))
+            b_L(csense == 'E') = b(csense == 'E');
+            b_U(csense == 'E') = b(csense == 'E');
+            b_L(csense == 'G') = b(csense == 'G');
+            b_U(csense == 'G') = inf;
+            b_L(csense == 'L') = -inf;
+            b_U(csense == 'L') = b(csense == 'L');
+        elseif isfield(MILPproblem, 'b_L') && isfield(MILPproblem, 'b_U')
+            b_L = MILPproblem.b_L;
+            b_U = MILPproblem.b_U;
+        else
+            b_L = b;
+            b_U = b;
+        end
+        intVars = (vartype == 'B') | (vartype == 'I');
+        %intVars
+        %pause;
+        cplexlp.Model.A = A;
+        cplexlp.Model.rhs = b_U;
+        cplexlp.Model.lhs = b_L;
+        cplexlp.Model.ub = ub;
+        cplexlp.Model.lb = lb;
+        cplexlp.Model.obj = osense * c;
+        cplexlp.Model.name = 'CobraMILP';
+        cplexlp.Model.ctype = vartype';
+        cplexlp.Start.x = x0;
+        cplexlp.Param.mip.tolerances.mipgap.Cur =  solverParams.relMipGapTol;
+        cplexlp.Param.mip.tolerances.integrality.Cur =  solverParams.intTol;
+        cplexlp.Param.timelimit.Cur = solverParams.timeLimit;
+        cplexlp.Param.output.writelevel.Cur = solverParams.printLevel;
         
- case 'gurobi5'
+        outputfile = fopen(solverParams.logFile,'a');
+        cplexlp.DisplayFunc = @redirect;
+        
+        cplexlp.Param.simplex.tolerances.optimality.Cur = solverParams.optTol;
+        cplexlp.Param.mip.tolerances.absmipgap.Cur =  solverParams.absMipGapTol;
+        cplexlp.Param.simplex.tolerances.feasibility.Cur = solverParams.feasTol;
+        % Strict numerical tolerances
+        cplexlp.Param.emphasis.numerical.Cur = solverParams.NUMERICALEMPHASIS;
+        save('MILPProblem','cplexlp')
+     
+        % Set up callback to print out intermediate solutions
+        % only set this up if you know that you actually need these
+        % results.  Otherwise do not specify intSolInd and contSolInd
+        
+        % Solve problem
+        Result = cplexlp.solve();
+        
+        % Get results
+        x = Result.x;
+        f = osense*Result.objval;
+        stat = Result.status;
+        if (stat == 101 || stat == 102 || stat == 1)
+            solStat = 1; % Opt integer within tolerance
+        elseif (stat == 103 || stat == 3)
+            solStat = 0; % Integer infeas
+        elseif (stat == 118 || stat == 119 || stat == 2)
+            solStat = 2; % Unbounded
+        elseif (stat == 106 || stat == 106 || stat == 108 || stat == 110 || stat == 112 || stat == 114 || stat == 117)
+            solStat = -1; % No integer solution exists
+        else
+            solStat = 3; % Other problem, but integer solution exists
+        end
+ 	if exist([pwd filesep 'clone1.log'],'file')
+            delete('clone1.log')
+        end
+
+ case {'gurobi5','gurobi6'}
         %% gurobi 5
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
@@ -417,9 +486,6 @@ switch solver
            solStat = 2; % Unbounded
         elseif strcmp(resultgurobi.status,'INF_OR_UNBD')
            solStat = 0; % Gurobi reports infeasible *or* unbounded
-        elseif strcmp(resultgurobi.status,'SUBOPTIMAL')
-           solStat = -1; % Suboptimal solution
-           [x,f] = deal(resultgurobi.x,resultgurobi.objval);
         else
            solStat = -1; % Solution not optimal or solver problem
         end
@@ -506,7 +572,6 @@ switch solver
         % This calls buildMPS and generates a MPS format description of the
         % problem as the result
         % Build MPS Author: Bruno Luong
-        % Interfaced with CobraToolbox by Richard Que (12/18/09)
         display('Solver set to MPS. This function will output an MPS matrix string for the MILP problem');
         
         %Get optional parameters
@@ -558,7 +623,7 @@ switch solver
         if isfield(param,'MPSfilename')
             MPSfilename=param.MPSfilename;
         else
-            MPSfilename='test.mps';
+            MPSfilename='test';
         end
 
         %split A matrix for L and E csense
@@ -572,23 +637,15 @@ switch solver
         
         %%%%Adapted from BuildMPS%%%%%
         [neq nvar]=size(Aeq);
-%         nle=size(Ale,1);
-%         if strcmp(EleNames,'')
-%             EleNames=arrayfun(EleNameFun,(1:nle),'UniformOutput', false);
-%         end
         if strcmp(EqtNames,'')
             EqtNames=arrayfun(EqtNameFun,(1:neq),'UniformOutput', false);
         end
-%         if strcmp(VarNames,'')
-%             VarNames=arrayfun(VarNameFun,(1:nvar),'UniformOutput', false);
-%         end
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-        %TODO - does not seem to write out file
-        [solution] = BuildMPS(Ale, ble, Aeq, beq, c, lb, ub, PbName,'MPSfilename',MPSfilename,'EqtNames',EqtNames,'VarNameFun',VarNameFun,'Integer',intIndex,'Binary',binaryIndex);
+        %31st Jan 2016, changed c to osense*c as most solvers assume minimisation
+        [solution] = BuildMPS(Ale, ble, Aeq, beq, osense*c, lb, ub, PbName,'MPSfilename',[MPSfilename '.mps'],'EqtNames',EqtNames,'VarNameFun',VarNameFun,'Integer',intIndex,'Binary',binaryIndex);
         %[solution] = BuildMPS(Ale, ble, Aeq, beq, c, lb, ub, PbName,'MPSfilename',MPSfilename,'EleNames',EleNames,'EqtNames',EqtNames,'VarNames',VarNames);
 
         return
+        
     otherwise
         error(['Unknown solver: ' solver]);
 end
@@ -614,5 +671,13 @@ if ~strcmp(solver,'mps')
     if(isfield(MILPproblem, 'intSolInd'))
         solution.intInd = MILPproblem.intSolInd;
     end
+end
+
+%% Redirection function such that cplex redirects its output to the defined outputfile.
+function redirect(l)
+    % Write the line of log output
+    fprintf(outputfile, '%s\n', l);
+end
+
 end
 

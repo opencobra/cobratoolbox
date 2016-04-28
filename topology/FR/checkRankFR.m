@@ -127,7 +127,7 @@ if ~isfield(model,'SConsistentMetBool') || ~isfield(model,'SConsistentRxnBool')
         method.param.MSK_IPAR_OPTIMIZER='MSK_OPTIMIZER_DUAL_SIMPLEX';
     else
         method.interface='solveCobraLP';
-        method.solver='gurobi5';
+        method.solver='gurobi6';
         method.param.Method=1;
     end
     [inform,m,model]=checkStoichiometricConsistency(model,printLevel-1,method);

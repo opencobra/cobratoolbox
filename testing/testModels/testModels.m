@@ -5,9 +5,9 @@ if 1 %by default, do not run this script with testAll
     
     %select solver to use
     %gurobi (http://www.gurobi.com/) gurboi versions 5 and 6 are supported
-    solvers={'gurobi5'};
+    solvers={'gurobi6'};
     %optionally also test with quadMINOS (a quadruple precision solver by Michael Saunders, Stanford Systems Optimization Laboratory)
-    %solvers={'gurobi5','quadMINOS'};
+    %solvers={'gurobi6','quadMINOS'};
     
     %optionally: path to quadMinos solver
     pathContainingQuadMinos='/usr/local/bin/quadLP/matlab';
@@ -21,13 +21,13 @@ if 1 %by default, do not run this script with testAll
         
         %path to gurobi solver
         %pathContainingGurobi='/usr/local/bin/gurobi600/linux64/matlab/';
-        pathContainingGurobi='/usr/local/bin/gurobi562/linux64/matlab/';
+        pathContainingGurobi='/usr/local/bin/gurobi650/linux64/matlab/';
         addpath(pathContainingGurobi)
         
         %clone opencobra code into pathContainingOpencobra
-        system('git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox_master')
+        system('git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox')
         %system('git clone https://github.com/opencobra/m_model_collection.git')
-        cd(['pathContainingOpencobra' cobratoolbox_master])
+        cd(['pathContainingOpencobra' cobratoolbox])
         %initialise cobra toolbox
         initCobraToolbox
         
@@ -254,7 +254,7 @@ if 1 %by default, do not run this script with testAll
                 if length(find(model.c~=0))~=1 % if more than one objectiive vector are defined in the model, only the one of the them is chosen for the testing.
                     ind=find(model.c~=0);
                     if isempty(ind); % if no objective vector is defined, set the first reaction as the objective for the testing.
-                        model.c(1)=1
+                        model.c(1)=1;
                     else
                         
                         model.c(ind)=0;

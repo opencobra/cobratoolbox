@@ -83,7 +83,7 @@ for i = 1:length(GeneID)
             end
 			%Ensures that geneids can become field names for structures
             if regexp(genes{i},'[^a-zA-Z0-9_]')
-				tempGene = regexprep(genes{i},'[^a-zA-Z0-9_]','_')
+				tempGene = regexprep(genes{i},'[^a-zA-Z0-9_]','_');
             else tempGene = genes{i};
             end
 			

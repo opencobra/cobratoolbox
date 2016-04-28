@@ -103,25 +103,25 @@ if ~isempty(which('lusol_obj'))
             switch stats.inform
                 case 0
                     if printLevel>0
-                        fprintf('%s\n','The LU factors were obtained successfully.')
+                        fprintf('%s\n','getRankLUSOL: The LU factors were obtained successfully.')
                     end
                 case 1
                     if printLevel>0
-                        fprintf('%s\n','U appears to be singular, as judged by lu6chk.');
+                        fprintf('%s\n','getRankLUSOL: U appears to be singular, as judged by lu6chk.');
                     end
                 case 3
-                    fprintf('%s\n','Some index pair indc(l), indr(l) lies outside the matrix dimensions 1:m , 1:n.');
+                    fprintf('%s\n','getRankLUSOL: Some index pair indc(l), indr(l) lies outside the matrix dimensions 1:m , 1:n.');
                 case    4
-                    fprintf('%s\n','Some index pair indc(l), indr(l) duplicates another such pair.');
+                    fprintf('%s\n','getRankLUSOL: Some index pair indc(l), indr(l) duplicates another such pair.');
                 case    7
-                    fprintf('%s\n','The arrays a, indc, indr were not large enough.');
-                    fprintf('%s\n','Their length "lena" should be increase to at least');
-                    fprintf('%s\n','The value "minlen" given in luparm(13).');
+                    fprintf('%s\n','getRankLUSOL: The arrays a, indc, indr were not large enough.');
+                    fprintf('%s\n','getRankLUSOL: Their length "lena" should be increase to at least');
+                    fprintf('%s\n','getRankLUSOL: The value "minlen" given in luparm(13).');
                 case 8
-                    fprintf('%s\n','There was some other fatal error.  (Shouldn''t happen!)');
+                    fprintf('%s\n','getRankLUSOL: There was some other fatal error.  (Shouldn''t happen!)');
                 case 9
-                    fprintf('%s\n','No diagonal pivot could be found with TSP or TDP.');
-                    fprintf('%s\n','The matrix must not be sufficiently definite or quasi-definite.');
+                    fprintf('%s\n','getRankLUSOL: No diagonal pivot could be found with TSP or TDP.');
+                    fprintf('%s\n','getRankLUSOL: The matrix must not be sufficiently definite or quasi-definite.');
             end
             
             if stats.inform~=0 && stats.inform~=1
@@ -131,7 +131,7 @@ if ~isempty(which('lusol_obj'))
                 % multiply Ax
                 b2 = mylu.mulA(x);
                 % check the result
-                fprintf('%s\t%g\n','Check norm(b-b2) : ', norm(b-b2))
+                fprintf('%s\t%g\n','getRankLUSOL: Check norm(b-b2) : ', norm(b-b2))
             end
             
     end

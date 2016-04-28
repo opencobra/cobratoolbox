@@ -1,4 +1,4 @@
-function install
+function installSBMLToolbox
 % install
 %
 % 1. reports whether the libsbml binding is installed
