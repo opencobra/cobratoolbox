@@ -38,12 +38,16 @@ function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVA(model,optPe
 %   maxFlux   Maximum flux for each reaction
 %   optsol    Optimal solution (of the initial FBA)
 %   ret       Zero if success
+%   fbasol    Initial FBA in FBASOL
+%   fvamin    matrix with flux values for the minimization problem
+%   fvamax    matrix with flux values for the maximization problem
+%
 % [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVA(...) returns
 % vectors for the initial FBA in FBASOL together with matrices FVAMIN and
 % FVAMAX containing the flux values for each individual min/max problem.
 % Note that for large models the memory requirements may become prohibitive.
 %
-% If a RXNS vector is specified then only the corresponding entries in
+% If a rxnsList vector is specified then only the corresponding entries in
 % minFlux and maxFlux are defined (all remaining entries are zero).
 %
 % Example:
@@ -55,7 +59,7 @@ function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVA(model,optPe
 %            Flux Variability Analysis. BMC Bioinformatics, 2010, 11:489
 
 % Author: Steinn Gudmundsson.
-% Contributor: Laurent Heirendt, LCSB.
+% Contributor: Laurent Heirendt, LCSB - Linux verison
 % Last updated: April/May 2016
 
 % Turn on the load balancing for large problems
