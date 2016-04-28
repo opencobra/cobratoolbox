@@ -124,6 +124,7 @@ enum {MINFLUX_OUT_POS, MAXFLUX_OUT_POS, OPTSOL_OUT_POS, RET_OUT_POS, MAX_NUM_OUT
 #define OPT_PERCENTAGE        90
 
 #define PRINT_WARNING         "\e[0;33mWarning:\e[0m"
+#define LOGFILE_DIR            "../fastFVA/logFiles/cplexint_logfile_"
 
 #if !defined(MAX)
 #define MAX(A, B)   ((A) > (B) ? (A) : (B))
@@ -987,10 +988,10 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
 
         mexPrintf(" >> #Task.ID = %s; logfile: %s\n", numThreadstr, concat("cplexint_logfile_", numThreadstr,".log"));
 
-        LogFile = CPXfopen(concat("logFiles/cplexint_logfile_", numThreadstr,".log"), "w");
+        LogFile = CPXfopen(concat(LOGFILE_DIR, numThreadstr,".log"), "w");
 
        if (LogFile == NULL) {
-            TROUBLE_mexErrMsgTxt("Could not open the log file logFiles/cplexint_logfile.log.\n");
+            TROUBLE_mexErrMsgTxt(concat("Could not open the log file ",LOGFILE_DIR,".log.\n"));
         }
         status = CPXsetlogfile(env, LogFile);
         if (status) {
