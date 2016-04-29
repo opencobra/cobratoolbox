@@ -285,6 +285,8 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     else if(cplexAlgo == 2)   status = CPXdualopt(env, lp);
     else                      status = CPXlpopt(env, lp);
 
+    mexPrintf("Reaction\n");
+
     if (status) {
        dispCPLEXerror(env, status);
        return FVA_INIT_FAIL;
@@ -381,7 +383,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
       {
         int j = rxns[k];
 
-        mexPrintf("        -- Loop k = %i with j= %i.\n", k, j);
+        /*mexPrintf("        -- Loop k = %i with j= %i.\n", k, j);*/
 
         if(monitorPerformance) markersBegin[6] = clock();
 
@@ -904,6 +906,8 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     objective     = mxGetScalar(OBJECTIVE_IN);
     rxns          = mxGetPr(RXNS_IN);
     nrxn          = mxGetM(RXNS_IN);
+
+    mexPrintf("The number of reactions retrieved is %d\n", nrxn);
 
     /* Retrieve the number of the thread */
     numThread     = mxGetScalar(NUM_THREAD_IN);

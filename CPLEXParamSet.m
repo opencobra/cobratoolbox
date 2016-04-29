@@ -75,7 +75,7 @@ cpxControl.AUXROOTTHREADS = 2;
 % 0 	Do not use advanced start information
 % 1 	Use an advanced basis supplied by the user; default
 % 2 	Crush an advanced basis or starting vector supplied by the user
-cpxControl.ADVIND = 2;
+%cpxControl.ADVIND = 2;
 
 % Manual control of presolve
 % primal and dual reduction type
