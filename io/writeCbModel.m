@@ -19,6 +19,8 @@ function writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLeve
 % Ines Thiele 01/10 - Added more options for field to write in xls format
 % Richard Que (3/17/10) Added ability to specify compartment names and
 %                       symbols
+%
+% Longfei Mao 26/04/2016 Added support for the FBCv2 format
 
 if ~exist('compSymbolList','var') || isempty(compSymbolList)
     compSymbolList = {'c','m','v','x','e','t','g','r','n','p','l','y'};
@@ -253,12 +255,13 @@ switch format
         end
         %% SBML
     case 'sbml'
-        sbmlModel = convertCobraToSBML(model,sbmlLevel,sbmlVersion,compSymbolList,compNameList);
-        if exist('fileName','var')&&~isempty(fileName)
-            OutputSBML(sbmlModel,fileName);
-        else
-            OutputSBML(sbmlModel);
-        end
+        % sbmlModel = convertCobraToSBML(model,sbmlLevel,sbmlVersion,compSymbolList,compNameList);
+        writeSBML(model,fileName,compSymbolList,compNameList)
+%         if exist('fileName','var')&&~isempty(fileName)
+%             OutputSBML(sbmlModel,fileName);
+%         else
+%             OutputSBML(sbmlModel);
+%         end
         %% Unknown
     otherwise
         error('Unknown file format');
