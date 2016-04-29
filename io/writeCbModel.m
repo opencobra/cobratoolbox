@@ -20,7 +20,7 @@ function writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLeve
 % Richard Que (3/17/10) Added ability to specify compartment names and
 %                       symbols
 %
-% Longfei Mao 26/04/2010 Added support for the FBCv2 format
+% Longfei Mao 26/04/2016 Added support for the FBCv2 format
 
 if ~exist('compSymbolList','var') || isempty(compSymbolList)
     compSymbolList = {'c','m','v','x','e','t','g','r','n','p','l','y'};
