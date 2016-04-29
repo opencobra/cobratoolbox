@@ -65,6 +65,9 @@ function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVA(model,optPe
 % Turn on the load balancing for large problems
 loadBalancing = 0; %0: off; 1: on
 
+% Define if information about the work load distriibution shall be shown or not
+showSplitting = 1;
+
 % Turn on the verbose mode
 verbose=1;
 
@@ -229,11 +232,16 @@ else
 
       fvamin_single = 0; fvamax_single = 0; fbasol_single=0; % silence warnings
 
+      %%determine the reaction density here
+
       if bExtraOutputs
         [minf,maxf,iopt(i),iret(i),fbasol_single,fvamin_single,fvamax_single] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                            optPercentage,obj,(rxns(istart(i):iend(i)))', ...
                                            t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm);
       else
+
+        fprintf(' >> Number of reactions given to the worker: %d \n', length(rxns(istart(i):iend(i)) ) );
+
       [minf,maxf,iopt(i),iret(i)] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj,(rxns(istart(i):iend(i)))', ...
                                          t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm);

@@ -281,13 +281,9 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     mexPrintf("        -- Changing the solution method: %i\n", cplexAlgo);
 
     /* Solve the problem */
-    if(cplexAlgo == 1){
-        status = CPXprimopt(env, lp);
-    } else if(cplexAlgo == 2){
-        status = CPXdualopt(env, lp);
-    } else {
-        status = CPXlpopt(env, lp);
-    }
+    if(cplexAlgo == 1)        status = CPXprimopt(env, lp);
+    else if(cplexAlgo == 2)   status = CPXdualopt(env, lp);
+    else                      status = CPXlpopt(env, lp);
 
     if (status) {
        dispCPLEXerror(env, status);
@@ -377,13 +373,15 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     for (iRound = 0; iRound < 2; iRound++)
     {
 
-      /*mexPrintf("        -- Changing the objective - iRound = %i\n", iRound);*/
+      mexPrintf("        -- Changing the objective - iRound = %i. nrxn = %i.\n", iRound, nrxn);
 
       CPXchgobjsen(env, lp, (iRound == 0) ? CPX_MIN : CPX_MAX);
 
       for (k = 0; k < nrxn; k++)
       {
         int j = rxns[k];
+
+        mexPrintf("        -- Loop k = %i with j= %i.\n", k, j);
 
         if(monitorPerformance) markersBegin[6] = clock();
 
@@ -392,20 +390,10 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
         if(monitorPerformance) markersEnd[6] = clock();
         if(monitorPerformance) markersBegin[7] = clock();
 
-        /*status = CPXlpopt(env, lp);*/ /* most time consuming step*/
-        /*status = CPXprimopt(env, lp);*/
-
-        /*mexPrintf("        -- Changing the solution method: %i\n", cplexAlgo);*/
-
-        /* Solve the problem */
-        if(cplexAlgo == 1){
-            status = CPXprimopt(env, lp);
-        } else if(cplexAlgo == 2){
-            status = CPXdualopt(env, lp);
-        } else {
-            status = CPXlpopt(env, lp);
-        }
-
+        /* Solve the problem - most time consuming step*/
+        if(cplexAlgo == 1)        status = CPXprimopt(env, lp);
+        else if(cplexAlgo == 2)   status = CPXdualopt(env, lp);
+        else                      status = CPXlpopt(env, lp);
 
         if(monitorPerformance) markersEnd[7] = clock();
 
@@ -414,7 +402,6 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
            mexPrintf("Numerical difficulties, round=%d, j=%d\n", iRound, j);
            return FVA_MODIFIED_FAIL;
         }
-
 
         if(monitorPerformance) markersBegin[8] = clock();
 
