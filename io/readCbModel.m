@@ -73,7 +73,7 @@ function model = readCbModel(fileName,defaultBound,fileType,modelDescription,com
 %
 % Richard Que 02/08/10 - Added inptus for compartment names and symbols
 %
-% Longfei Mao 26/04/2010 Added support for the FBCv2 format
+% Longfei Mao 26/04/2016 Added support for the FBCv2 format
 
 %% Process arguments
 
