@@ -225,7 +225,7 @@ else
       t = getCurrentTask();
 
       %fprintf('\n----------------------------------------------------------------------------------\n');
-      fprintf('\n --  TaskID: %d / %d (LoopID = %d) <> [%d, %d] / [%d, %d]\n', ...
+      fprintf('\n --  Task Launched -- TaskID: %d / %d (LoopID = %d) <> [%d, %d] / [%d, %d]\n', ...
               t.ID, nworkers, i, istart(i), iend(i), m, n);
 
       tstart = tic;
