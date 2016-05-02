@@ -73,7 +73,7 @@ verbose=1;
 
 % Define the input arguments
 if nargin<8,
-    rxns=1:length(model.lb);
+    rxns = 1:length(model.rxns);
 else
     rxns = find(ismember(model.rxns, rxnsList));
 end
@@ -224,8 +224,8 @@ else
 
       t = getCurrentTask();
 
-      fprintf('\n----------------------------------------------------------------------------------\n');
-      fprintf(' --  TaskID: %d / %d (LoopID = %d) <> [%d, %d] / [%d, %d]\n', ...
+      %fprintf('\n----------------------------------------------------------------------------------\n');
+      fprintf('\n --  TaskID: %d / %d (LoopID = %d) <> [%d, %d] / [%d, %d]\n', ...
               t.ID, nworkers, i, istart(i), iend(i), m, n);
 
       tstart = tic;
