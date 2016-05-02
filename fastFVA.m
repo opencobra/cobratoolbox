@@ -74,6 +74,7 @@ verbose=1;
 % Define the input arguments
 if nargin<8,
     rxns = 1:length(model.rxns);
+    rxnsList = {};
 else
     rxns = find(ismember(model.rxns, rxnsList));
 end
@@ -87,6 +88,7 @@ if nargin<2, optPercentage  = 100;        end
 % Define extra outputs if required
 if nargout>4
    assert(nargout == 7);
+   fprintf('Intialized 7 outputs ...\n');
    bExtraOutputs=true;
 else
    bExtraOutputs=false;
@@ -235,14 +237,14 @@ else
       %%determine the reaction density here
 
       if bExtraOutputs
-        [minf,maxf,iopt(i),iret(i),fbasol_single,fvamin_single,fvamax_single] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
+          [minf,maxf,iopt(i),iret(i),fbasol_single,fvamin_single,fvamax_single] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                            optPercentage,obj,((istart(i):iend(i)))', ...
                                            t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm);
       else
 
-        fprintf(' >> Number of reactions given to the worker: %d \n', length((istart(i):iend(i)) ) );
+          fprintf(' >> Number of reactions given to the worker: %d \n', length((istart(i):iend(i)) ) );
 
-      [minf,maxf,iopt(i),iret(i)] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
+          [minf,maxf,iopt(i),iret(i)] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj,((istart(i):iend(i)))', ...
                                          t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm);
 
@@ -290,7 +292,6 @@ else
    end
 
    out = parfor_progress(0);
-
 
 end
 
