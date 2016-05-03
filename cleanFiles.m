@@ -5,6 +5,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+unix('sudo rm ../drivers/*.log');
+
 % Clear previous log files in logFiles/
 D = dir('../fastFVA/logFiles/*.log');
 nbFiles = numel(D);

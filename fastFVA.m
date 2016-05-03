@@ -136,6 +136,8 @@ else
    fprintf(' >> Standard FBA - Solving Model.S. (uncoupled) \n');
 end
 
+fprintf(' >> The number of arguments is: input: %d, output %d.\n', nargin, nargout);
+
 % Define the matrix A as sparse in case it is not
 if ~issparse(A)
    A = sparse(A); % C code assumes a sparse stochiometric matrix
