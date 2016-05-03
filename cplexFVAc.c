@@ -110,15 +110,25 @@ enum {F_IN_POS,
 #define CPLEX_ALGO_IN         prhs[CPLEX_ALGO_IN]
 
 /* MEX Output Arguments */
-enum {MINFLUX_OUT_POS, MAXFLUX_OUT_POS, OPTSOL_OUT_POS, RET_OUT_POS, MAX_NUM_OUT_ARG};
+enum {MINFLUX_OUT_POS,
+      MAXFLUX_OUT_POS,
+      OPTSOL_OUT_POS,
+      RET_OUT_POS,
+      FBASOLSINGLE_OUT_POS,
+      FVAMIN_OUT_POS,
+      FVAMAX_OUT_POS,
+      MAX_NUM_OUT_ARG};
 
 /* Number of output arguments */
-#define MIN_NUM_OUT_ARG       4
+#define MIN_NUM_OUT_ARG       7
 
 #define MINFLUX_OUT           plhs[MINFLUX_OUT_POS]
 #define MAXFLUX_OUT           plhs[MAXFLUX_OUT_POS]
 #define OPTSOL_OUT            plhs[OPTSOL_OUT_POS]
 #define RET_OUT               plhs[RET_OUT_POS]
+#define FBASOLSINGLE_OUT      plhs[FBASOLSINGLE_OUT_POS]
+#define FVAMIN_OUT            plhs[FVAMIN_OUT_POS]
+#define FVAMAX_OUT            plhs[FVAMAX_OUT_POS]
 
 #define MAX_STR_LENGTH        1024
 #define OPT_PERCENTAGE        90
@@ -719,6 +729,16 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     mxArray         *RET = NULL;
     double          *ret = NULL;
 
+    /* Optional Arguments */
+    mxArray         *FVAMIN = NULL;
+    double          *minFluxSingle = NULL;
+
+    mxArray         *FVAMAX = NULL;
+    double          *maxFluxSingle = NULL;
+
+    mxArray         *FBASOL = NULL;
+    double          *optSolSingle = NULL;
+
     /* numThread_IN*/
     int             numThread = 0;
     char            numThreadstr[MAX_STR_LENGTH];
@@ -1046,7 +1066,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     n_constr = CPXgetnumrows(env,lp); /* THINK: Will have to subtract one after FVA */
 
     /*
-       Create matrices for the three main return arguments.
+       Create matrices for the main return arguments.
     */
     MINFLUX = mxCreateDoubleMatrix(n_vars,1,mxREAL);
     minFlux = mxGetPr(MINFLUX);
@@ -1059,6 +1079,11 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
 
     RET     = mxCreateDoubleMatrix(1,1,mxREAL);
     ret     = mxGetPr(RET);
+
+    /* Optional Output */
+    FVAMIN  = mxCreateDoubleMatrix(n_vars,1,mxREAL);
+    FVAMAX  = mxCreateDoubleMatrix(n_vars,1,mxREAL);
+    FBASOL  = mxCreateDoubleMatrix(1,1,mxREAL);
 
     if(monitorPerformance) markersBegin[4] = clock();
 
@@ -1129,6 +1154,12 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
         MAXFLUX_OUT = MAXFLUX;
         OPTSOL_OUT = OPTSOL;
         RET_OUT = RET;
+
+        /* Optional Output arguments */
+        FVAMIN_OUT = FVAMIN;
+        FVAMAX_OUT = FVAMAX;
+        FBASOLSINGLE_OUT = FBASOL;
+
     } else {
         if (MINFLUX != NULL)
             mxDestroyArray(MINFLUX);

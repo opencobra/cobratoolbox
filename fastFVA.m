@@ -1,4 +1,4 @@
-function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVA(model,optPercentage,objective,solver,matrixAS,cpxControl,cpxAlgorithm,rxnsList)
+function [minFlux,maxFlux,optsol,ret,varargout] = fastFVA(model,optPercentage,objective,solver,matrixAS,cpxControl,cpxAlgorithm,rxnsList)
 %fastFVA Flux variablity analysis optimized for the GLPK and CPLEX solvers.
 %
 % [minFlux,maxFlux] = fastFVA(model,optPercentage,objective, solver)
@@ -172,7 +172,7 @@ if nworkers<=1
                                                               optPercentage,obj,(1:n)', ...
                                                               1, cpxControl, valuesCPLEXparams, cpxAlgorithm);
    else
-       [minFlux,maxFlux,optsol,ret]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
+       [minFlux,maxFlux,optsol,ret,fbasol_single,fvamin_single,fvamax_single]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj,(1:n)', ...
                                          1, cpxControl, valuesCPLEXparams, cpxAlgorithm);
    end
@@ -214,7 +214,8 @@ else
 
    % Initialilze extra outputs
    if bExtraOutputs
-      fvaminRes={}; fvamaxRes={};
+      fvaminRes={};
+      fvamaxRes={};
       fbasolRes={};
    end
 
@@ -226,8 +227,8 @@ else
 
       t = getCurrentTask();
 
-      %fprintf('\n----------------------------------------------------------------------------------\n');
-      fprintf('\n --  Task Launched // TaskID: %d / %d (LoopID = %d) <> [%d, %d] / [%d, %d]. Please wait ...\n', ...
+      fprintf('\n----------------------------------------------------------------------------------\n');
+      fprintf(' --  Task Launched // TaskID: %d / %d (LoopID = %d) <> [%d, %d] / [%d, %d].\n', ...
               t.ID, nworkers, i, istart(i), iend(i), m, n);
 
       tstart = tic;
@@ -244,7 +245,7 @@ else
 
           fprintf(' >> Number of reactions given to the worker: %d \n', length((istart(i):iend(i)) ) );
 
-          [minf,maxf,iopt(i),iret(i)] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
+          [minf,maxf,iopt(i),iret(i),fbasol_single,fvamin_single,fvamax_single] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj,((istart(i):iend(i)))', ...
                                          t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm);
 
@@ -279,17 +280,28 @@ else
    end;
 
    % Aggregate results
+   %{
    optsol=iopt(1);
    ret=max(iret);
+
+   fbasolRes{1}
+
    if bExtraOutputs
-      fbasol=fbasolRes{1}; % Initial FBA solutions are identical across workers
+      fbasol = fbasolRes{1}; % Initial FBA solutions are identical across workers
       fvamin = zeros(length(model.rxns),length(model.rxns));
       fvamax = zeros(length(model.rxns),length(model.rxns));
+
       for i=1:nworkers
+        %istart(i)
+
+        %iend(i)
+
+        %rxns
          fvamin(:,rxns(istart(i):iend(i)))=fvaminRes{i};
          fvamax(:,rxns(istart(i):iend(i)))=fvamaxRes{i};
       end
    end
+   %}
 
    out = parfor_progress(0);
 
@@ -298,3 +310,19 @@ end
 %% extract only reaction flux results that have been computed
 minFlux(find(~ismember(model.rxns, rxnsList)))=[];
 maxFlux(find(~ismember(model.rxns, rxnsList)))=[];
+
+bExtraOutputs
+
+fbasol
+
+if bExtraOutputs
+    if nargout > 4
+      varargout{1} = fbasol;
+    end
+    if nargout > 5
+      varargout{2} = fvamin;
+    end
+    if nargout > 6
+      varargout{2} = fvamax;
+    end
+end
