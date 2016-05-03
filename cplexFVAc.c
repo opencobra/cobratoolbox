@@ -114,9 +114,9 @@ enum {MINFLUX_OUT_POS,
       MAXFLUX_OUT_POS,
       OPTSOL_OUT_POS,
       RET_OUT_POS,
-      FBASOLSINGLE_OUT_POS,
-      FVAMIN_OUT_POS,
-      FVAMAX_OUT_POS,
+      FBA_SOL_OUT_POS,
+      FVA_MIN_OUT_POS,
+      FVA_MAX_OUT_POS,
       MAX_NUM_OUT_ARG};
 
 /* Number of output arguments */
@@ -126,9 +126,9 @@ enum {MINFLUX_OUT_POS,
 #define MAXFLUX_OUT           plhs[MAXFLUX_OUT_POS]
 #define OPTSOL_OUT            plhs[OPTSOL_OUT_POS]
 #define RET_OUT               plhs[RET_OUT_POS]
-#define FBA_SOL_OUT     plhs[FBA_SOL_OUT_POS]
-#define FVA_MIN_OUT     plhs[FVA_MIN_OUT_POS]
-#define FVA_MAX_OUT     plhs[FVA_MAX_OUT_POS]
+#define FBA_SOL_OUT           plhs[FBA_SOL_OUT_POS]
+#define FVA_MIN_OUT           plhs[FVA_MIN_OUT_POS]
+#define FVA_MAX_OUT           plhs[FVA_MAX_OUT_POS]
 
 #define MAX_STR_LENGTH        1024
 #define OPT_PERCENTAGE        90
@@ -1106,7 +1106,9 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     if(monitorPerformance) markersBegin[4] = clock();
 
     /* Call FVA properly speaking */
-    *ret = _fva(env,lp,minFlux,maxFlux,optSol,n_constr,n_vars,optPercent,objective,rxns,nrxn,
+    *ret = _fva(env,lp,minFlux,maxFlux,optSol,
+                fbasol, fvaminsol, fvamaxsol,
+                n_constr,n_vars,optPercent,objective,rxns,nrxn,
                 CPLEX_PARAMS, VALUES_CPLEX_PARAMS, cplexAlgo);
 
     if(monitorPerformance) markersEnd[4] = clock();
@@ -1188,6 +1190,16 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
             mxDestroyArray(OPTSOL);
         if (RET != NULL)
             mxDestroyArray(RET);
+        if (FBA_SOL_OUT != NULL) {
+            mxDestroyArray(FBA_SOL_OUT);
+        }
+        if (FVA_MIN_OUT != NULL) {
+            mxDestroyArray(FVA_MIN_OUT);
+        }
+        if (FVA_MAX_OUT != NULL) {
+            mxDestroyArray(FVA_MAX_OUT);
+        }
+
     }
 
     /* Free allocated memory. */
