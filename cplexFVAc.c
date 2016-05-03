@@ -120,15 +120,15 @@ enum {MINFLUX_OUT_POS,
       MAX_NUM_OUT_ARG};
 
 /* Number of output arguments */
-#define MIN_NUM_OUT_ARG       7
+#define MIN_NUM_OUT_ARG       4
 
 #define MINFLUX_OUT           plhs[MINFLUX_OUT_POS]
 #define MAXFLUX_OUT           plhs[MAXFLUX_OUT_POS]
 #define OPTSOL_OUT            plhs[OPTSOL_OUT_POS]
 #define RET_OUT               plhs[RET_OUT_POS]
-#define FBASOLSINGLE_OUT      plhs[FBASOLSINGLE_OUT_POS]
-#define FVAMIN_OUT            plhs[FVAMIN_OUT_POS]
-#define FVAMAX_OUT            plhs[FVAMAX_OUT_POS]
+#define FBA_SOL_OUT     plhs[FBA_SOL_OUT_POS]
+#define FVA_MIN_OUT     plhs[FVA_MIN_OUT_POS]
+#define FVA_MAX_OUT     plhs[FVA_MAX_OUT_POS]
 
 #define MAX_STR_LENGTH        1024
 #define OPT_PERCENTAGE        90
@@ -184,10 +184,10 @@ void dispCPLEXerror(CPXENVptr env, int status)
 }
 
 /* FVA Wrapper */
-int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* optSol, mwSize n_constr, mwSize n_vars,
+int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* optSol,
+         double* FBAsol, double* FVAmin, double* FVAmax, mwSize n_constr, mwSize n_vars,
          double optPercentage, int objective, const double* rxns, int nrxn,
-         const mxArray* namesCPLEXparams, const mxArray *valuesCPLEXparams, int cplexAlgo)
-{
+         const mxArray* namesCPLEXparams, const mxArray *valuesCPLEXparams, int cplexAlgo) {
     int           status;
     int           rmatbeg[2];
     int*          ind = NULL;
@@ -428,6 +428,18 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
         if (status != 0) {
            mexPrintf("Unable to get objective function value (%d,%d)\n", iRound, j);
            dispCPLEXerror(env, status);
+        }
+
+        /* Store flux vectors also */
+        if (FVAmin != NULL && FVAmax != NULL)
+        {
+           double* ptr = (iRound == 0) ? FVAmin : FVAmax;
+           status = CPXgetx (env, lp, &ptr[k * n_vars], 0, CPXgetnumcols(env, lp)-1);
+           if (status != 0)
+           {
+              mexPrintf("Unable to get FVAsol. Status=%d\n", status);
+              return FVA_INIT_FAIL;
+           }
         }
 
         if(monitorPerformance) markersBegin[9] = clock();
@@ -730,14 +742,14 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     double          *ret = NULL;
 
     /* Optional Arguments */
-    mxArray         *FVAMIN = NULL;
-    double          *minFluxSingle = NULL;
-
-    mxArray         *FVAMAX = NULL;
-    double          *maxFluxSingle = NULL;
-
     mxArray         *FBASOL = NULL;
-    double          *optSolSingle = NULL;
+    double          *fbasol = NULL;
+
+    mxArray         *FVAMINSOL = NULL;
+    double          *fvaminsol = NULL;
+
+    mxArray         *FVAMAXSOL = NULL;
+    double          *fvamaxsol = NULL;
 
     /* numThread_IN*/
     int             numThread = 0;
@@ -1080,10 +1092,16 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     RET     = mxCreateDoubleMatrix(1,1,mxREAL);
     ret     = mxGetPr(RET);
 
-    /* Optional Output */
-    FVAMIN  = mxCreateDoubleMatrix(n_vars,1,mxREAL);
-    FVAMAX  = mxCreateDoubleMatrix(n_vars,1,mxREAL);
-    FBASOL  = mxCreateDoubleMatrix(1,1,mxREAL);
+    if (nlhs == MAX_NUM_OUT_ARG)
+    {
+       /* Optional arguments */
+       FBASOL = mxCreateDoubleMatrix(n_vars,1,mxREAL);
+       FVAMINSOL = mxCreateDoubleMatrix(n_vars,nrxn,mxREAL);
+       FVAMAXSOL = mxCreateDoubleMatrix(n_vars,nrxn,mxREAL);
+       fbasol = mxGetPr(FBASOL);
+       fvaminsol = mxGetPr(FVAMINSOL);
+       fvamaxsol = mxGetPr(FVAMAXSOL);
+    }
 
     if(monitorPerformance) markersBegin[4] = clock();
 
@@ -1155,11 +1173,12 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
         OPTSOL_OUT = OPTSOL;
         RET_OUT = RET;
 
-        /* Optional Output arguments */
-        FVAMIN_OUT = FVAMIN;
-        FVAMAX_OUT = FVAMAX;
-        FBASOLSINGLE_OUT = FBASOL;
-
+        if (nlhs == MAX_NUM_OUT_ARG)
+        {
+           FBA_SOL_OUT = FBASOL;
+           FVA_MIN_OUT = FVAMINSOL;
+           FVA_MAX_OUT = FVAMAXSOL;
+        }
     } else {
         if (MINFLUX != NULL)
             mxDestroyArray(MINFLUX);
