@@ -88,7 +88,6 @@ if nargin<2, optPercentage  = 100;        end
 % Define extra outputs if required
 if nargout>4
    assert(nargout == 7);
-   fprintf('Intialized 7 outputs ...\n');
    bExtraOutputs=true;
 else
    bExtraOutputs=false;
@@ -280,7 +279,6 @@ else
    end;
 
    % Aggregate results
-
    optsol=iopt(1);
    ret=max(iret);
 
@@ -290,16 +288,10 @@ else
       fvamax = zeros(length(model.rxns),length(model.rxns));
 
       for i=1:nworkers
-        %istart(i)
-
-        %iend(i)
-
-        %rxns
          fvamin(:,rxns(istart(i):iend(i)))=fvaminRes{i};
          fvamax(:,rxns(istart(i):iend(i)))=fvamaxRes{i};
       end
    end
-
 
    out = parfor_progress(0);
 
@@ -308,15 +300,3 @@ end
 %% extract only reaction flux results that have been computed
 minFlux(find(~ismember(model.rxns, rxnsList)))=[];
 maxFlux(find(~ismember(model.rxns, rxnsList)))=[];
-
-%if bExtraOutputs
-%    if nargout > 4
-%      varargout{1} = fbasol;
-%    end
-%    if nargout > 5
-%      varargout{2} = fvamin;
-%    end
-%    if nargout > 6
-%      varargout{2} = fvamax;
-%    end
-%end

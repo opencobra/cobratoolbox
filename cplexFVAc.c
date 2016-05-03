@@ -333,6 +333,16 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
     if(monitorPerformance) markersEnd[2] = clock();
 
+    if (FBAsol != NULL)
+    {
+       status = CPXgetx (env, lp, FBAsol, 0, CPXgetnumcols(env, lp)-1);
+       if (status)
+       {
+          mexPrintf("Unable to get FBAsol. Status=%d\n", status);
+          return FVA_INIT_FAIL;
+       }
+    }
+
     /* Add a constraint which bounds the objective, c'v >= objValue in case of max, (<= for min) */
     sense = (objective==FVA_MIN_OBJECTIVE) ? 'L' : 'G';
 
