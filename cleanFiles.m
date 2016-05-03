@@ -3,6 +3,7 @@
 % Purpose: Clean log and result files
 % Author: Laurent Heiredt, LCSB
 %
+% Feature request by Marouen - featured key user: optional request for confirmation of deletion of files
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Clear log files from the drivers directory
