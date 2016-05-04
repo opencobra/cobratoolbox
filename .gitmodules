@@ -7,3 +7,6 @@
 [submodule "external/Smith-Decomposition"]
 	path = external/Smith-Decomposition
 	url = https://github.com/nbfigueroa/Smith-Decomposition.git
+[submodule "external/SBMLToolbox"]
+	path = external/SBMLToolbox
+	url = https://github.com/sbmlteam/SBMLToolbox.git
