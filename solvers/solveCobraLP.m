@@ -104,66 +104,89 @@ if (~isempty(CBTLPSOLVER))
 elseif nargin==1
     error('No solver found.  call changeCobraSolver(solverName)');
 end
+
 %names_of_parameters that users can specify with values, using option
 % A) as parameter followed by parameter value:
 optParamNames = {'minNorm','printLevel','primalOnly','saveInput','feasTol','optTol','solver'};
 
-%not a good idea to do this here for every solver as there would end up
-%being hundreds of different parameters, so removed - Ronan
-%,'EleNames','EqtNames','VarNames','EleNameFun', ...
-%    'EqtNameFun','VarNameFun','PbName','MPSfilename'};
-if nargin ~=1
-    if mod(length(varargin),2)==0
-        %expecting pairs of parameter names and parameter values
-        for i=1:2:length(varargin)-1
-            if ismember(varargin{i},optParamNames)
-                if isstruct(varargin{i+1})
-                    error('solveCobraLP: Invalid number of parameters/values')
-                else
-                    parameters.(varargin{i}) = varargin{i+1};
-                end
-                if strcmp(varargin{i},'solver');
-                    solver=varargin{i+1};
-                end 
-            else
-                error([varargin{i} ' is not a valid optional parameter']);
-            end
+% Set default parameter values
+[minNorm, printLevel, primalOnlyFlag, saveInput] = ...
+    getCobraSolverParams('LP',optParamNames(1:4));
+
+% Set user specified parameter values
+solverParams.dummy = 3;
+solverParams = rmfield(solverParams,'dummy'); % workaround to initialize nonempty structure
+
+% First input can be 'default' or a solver-specific parameter structure
+if ~isempty(varargin)
+    isdone = false(size(varargin));
+    
+    if strcmp(varargin{1},'default') % Set tolerances to COBRA toolbox defaults
+        [feasTol,optTol] = getCobraSolverParams('LP',optParamNames(5:6),'default');
+        isdone(1) = true;
+        varargin = varargin(~isdone);
+        
+    elseif isstruct(varargin{1}) % solver-specific parameter structure
+        if isstruct(varargin{1})
+            solverParams = varargin{1};
+            
+            isdone(1) = true;
+            varargin = varargin(~isdone);
         end
-        parametersStructureFlag=0;
-        parameters = '';
-    elseif strcmp(varargin{1},'default')
-        %default cobra parameters 
-        parameters = 'default';
-    elseif isstruct(varargin{1})
-        %uses the structure for setting parameters in preference to those
-        %of the optParamNames, where appropriate
-        parametersStructureFlag=1;
-        directParamStruct = varargin{1};
-        parameters='';
-    elseif isstruct(varargin{length(varargin)})
-        %expecting pairs of parameter names and parameter values, then a
-        %parameter structure at the end
-        parametersStructureFlag=1;
-        directParamStruct=varargin{length(varargin)};
-        for i=1:2:length(varargin)-2
-            if ismember(varargin{i},optParamNames)
-                parameters.(varargin{i}) = varargin{i+1};
-            else
-                error([varargin{i} ' is not a valid optional parameter']);
-            end
-        end
-        %pause(eps)
-    else
-        error('solveCobraLP: Invalid number of parameters/values')
     end
-    [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
-    getCobraSolverParams('LP',optParamNames(1:6),parameters);
-else
-    parametersStructureFlag=0;
-    [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
-    getCobraSolverParams('LP',optParamNames(1:6));
 end
 
+% Last input can be a solver specific parameter structure
+if ~isempty(varargin)
+    isdone = false(size(varargin));
+    
+    if isstruct(varargin{end})
+        solverParams = varargin{end};
+        
+        isdone(end) = true;
+        varargin = varargin(~isdone);
+    end
+end
+   
+% Remaining inputs should be parameter name-value pairs
+if ~isempty(varargin)
+    isdone = false(size(varargin));
+    
+    if mod(length(varargin),2)==0 % parameter name-value pairs
+        try
+            parameters = struct(varargin{:});
+        catch
+            error('solveCobraLP: Invalid parameter name-value pairs.')
+        end
+        
+        % only create feaTol, optTol and solver if specified by user
+        if isfield(parameters,'feasTol')
+            feasTol = parameters.feasTol;
+            parameters = rmfield(parameters,'feasTol');
+        end
+        if isfield(parameters,'optTol')
+            optTol = parameters.optTol;
+            parameters = rmfield(parameters,'optTol');
+        end
+        if isfield(parameters,'solver')
+            solver = parameters.solver;
+            parameters = rmfield(parameters,'solver');
+        end
+        
+        % overwrite defaults
+        [minNorm, printLevel, primalOnlyFlag, saveInput] = ...
+            getCobraSolverParams('LP',optParamNames(1:4),parameters);
+        
+        isdone(:) = true;
+        varargin = varargin(~isdone);
+    end
+end
+
+if ~isempty(varargin)
+    error('solveCobraLP: Invalid parameter input.')
+end
+
+% Check solver compatibility with minNorm option
 if max(minNorm)~=0 && ~any(strcmp(solver,{'cplex_direct','cplex'}))
   error('minNorm only works for LP solver ''cplex_direct'' from this interface, use optimizeCbModel for other solvers.')
 end
@@ -179,12 +202,10 @@ if ~isempty(saveInput)
 end
 
 %support for lifting of ill scaled models
-if parametersStructureFlag
-    if isfield(directParamStruct,'lifting')
-        if directParamStruct.lifting==1
-            BIG=1e4;%suitable for double precision solvers
-            [LPproblem] = reformulate(LPproblem, BIG, printLevel);
-        end
+if isfield(solverParams,'lifting')
+    if solverParams.lifting==1
+        BIG=1e4;%suitable for double precision solvers
+        [LPproblem] = reformulate(LPproblem, BIG, printLevel);
     end
 end
 
@@ -229,12 +250,12 @@ algorithm='default';
 t_start = clock;
 switch solver
     case 'dqqMinos'
-        if ~isunix 
+        if ~isunix
             error('dqqMinos interface not yet implemented for non unix OS.')
         end
         
-        if isfield(directParamStruct,'mpsParentFolderPath')
-            mpsParentFolderPath=directParamStruct.mpsParentFolderPath;
+        if isfield(solverParams,'mpsParentFolderPath')
+            mpsParentFolderPath=solverParams.mpsParentFolderPath;
         else
             %use current path for MPS folder
             mpsParentFolderPath=pwd;
@@ -243,15 +264,13 @@ switch solver
             mkdir([mpsParentFolderPath filesep 'MPS'])
         end
         
-        if parametersStructureFlag
-            if isfield(directParamStruct,'MPSfilename')
-                MPSfilename=directParamStruct.MPSfilename;
+        if isfield(solverParams,'MPSfilename')
+            MPSfilename=solverParams.MPSfilename;
+        else
+            if isfield(LPproblem,'modelID')
+                MPSfilename=LPproblem.modelID;
             else
-                if isfield(LPproblem,'modelID')
-                    MPSfilename=LPproblem.modelID;
-                else
-                    MPSfilename='file';
-                end
+                MPSfilename='file';
             end
         end
         
@@ -277,11 +296,7 @@ switch solver
             
             %default MPS parameters are no longer global variables, but set
             %here inside this function
-            if parametersStructureFlag
-                param=directParamStruct;
-            else
-                param=struct();
-            end
+            param=solverParams;
             if isfield(param,'EleNames')
                 EleNames=param.EleNames;
             else
@@ -298,7 +313,7 @@ switch solver
                 VarNames='';
             end
             if isfield(param,'EleNameFun')
-                EleNameFun=directParamStruct.EleNameFun;
+                EleNameFun=param.EleNameFun;
             else
                 EleNameFun = @(m)(['LE' num2str(m)]);
             end
@@ -530,8 +545,12 @@ switch solver
     case 'glpk'
         %% GLPK
         param.msglev = printLevel; % level of verbosity
-        param.tolbnd = feasTol; %tolerance
-        param.toldj = optTol; %tolerance
+        if exist('feasTol','var')
+            param.tolbnd = feasTol; %tolerance
+        end
+        if exist('optTol','var')
+            param.toldj = optTol; %tolerance
+        end
         if (isempty(csense))
             clear csense
             csense(1:length(b),1) = 'S';
@@ -611,13 +630,10 @@ switch solver
         %e.g.
         %http://docs.mosek.com/7.0/toolbox/MSK_IPAR_OPTIMIZER.html
         
-        %[rcode,res]         = mosekopt('param echo(0)',[],parameters);
-        if parametersStructureFlag
-            param=directParamStruct;
-        else
-            param=struct();
-        end
-        %only set the print level if not already set via parameters
+        %[rcode,res]         = mosekopt('param echo(0)',[],solverParams);
+        
+        param=solverParams;
+        %only set the print level if not already set via solverParams
         %structure
         if ~isfield(param,'MSK_IPAR_LOG')
             switch printLevel
@@ -781,11 +797,8 @@ switch solver
         %if mosek is installed, and the paths are added ahead of matlab's
         %built in paths, then mosek linprog shaddows matlab linprog and
         %is used preferentially
-        if parametersStructureFlag
-            options=directParamStruct;
-        else
-            options=struct();
-        end
+        
+        options=solverParams;
         %only set print level if not set already
         if ~isfield(options,'Display')
             switch printLevel
@@ -840,11 +853,7 @@ switch solver
         % The code below uses Gurobi Mex to interface with Gurobi. It can be downloaded from
         % http://www.convexoptimization.com/wikimization/index.php/Gurobi_Mex:_A_MATLAB_interface_for_Gurobi
 
-        if parametersStructureFlag
-            opts=directParamStruct;
-        else
-            opts=struct();
-        end    
+        opts=solverParams;
         if ~isfield(opts,'Display')
             if printLevel == 0
                 % Version v1.10 of Gurobi Mex has a minor bug. For complete silence
@@ -855,10 +864,10 @@ switch solver
                 opts.Display = 1;
             end
         end
-        if ~isfield(opts,'FeasibilityTol')
+        if exist('feasTol','var')
             opts.FeasibilityTol = feasTol;
         end
-        if ~isfield(opts,'OptimalityTol')
+        if exist('optTol','var')
             opts.OptimalityTol = optTol;
         end
         
@@ -911,28 +920,24 @@ switch solver
         %  4=deterministic concurrent 
         %i.e. params.method     = 1;          % Use dual simplex method
 
-        if parametersStructureFlag
-            param=directParamStruct;
-        else
-            param=struct();
-        end
+        param=solverParams;
         if ~isfield(param,'OutputFlag')
             switch printLevel
                 case 0
                     param.OutputFlag = 0;
                     param.DisplayInterval = 1;
-                case printLevel>1
-                    param.OutputFlag = 1;
-                    param.DisplayInterval = 5;
-                otherwise
+                case 1
                     param.OutputFlag = 0;
                     param.DisplayInterval = 1;
+                otherwise
+                    param.OutputFlag = 1;
+                    param.DisplayInterval = 5;
             end
         end
-        if ~isfield(param,'FeasibilityTol')
+        if exist('feasTol','var')
             param.FeasibilityTol = feasTol;
         end
-        if ~isfield(param,'OptimalityTol')
+        if exist('optTol','var')
             param.OptimalityTol = optTol;
         end
 
@@ -1072,8 +1077,12 @@ switch solver
         end
         
         %set tolerance
-        tomlabProblem.MIP.cpxControl.EPRHS = feasTol;
-        tomlabProblem.MIP.cpxControl.EPOPT = optTol;
+        if exist('feasTol','var')
+            tomlabProblem.MIP.cpxControl.EPRHS = feasTol;
+        end
+        if exist('optTol','var')
+            tomlabProblem.MIP.cpxControl.EPOPT = optTol;
+        end
         
         %solve
         Result = cplexTL(tomlabProblem);
@@ -1165,12 +1174,10 @@ switch solver
             % 6 Concurrent Dual, Barrier and Primal
             % Default: 0
             
-            if parametersStructureFlag
-                %TODO assign all parameters
-                if isfield(directParamStruct,'lpmethod')
-                    if isfield(directParamStruct.lpmethod,'Cur')
-                        ILOGcplex.Param.lpmethod.Cur=directParamStruct.lpmethod.Cur;
-                    end
+            %TODO assign all parameters
+            if isfield(solverParams,'lpmethod')
+                if isfield(solverParams.lpmethod,'Cur')
+                    ILOGcplex.Param.lpmethod.Cur=solverParams.lpmethod.Cur;
                 end
             else
                 %automatically chooses algorithm
@@ -1219,11 +1226,9 @@ switch solver
             end
         else
             %simple ibm ilog cplex interface
-            if parametersStructureFlag
-            	options = cplexoptimset(parameters,'param',default);
-            else
-                options = cplexoptimset('cplex');
-            end
+            options = cplexoptimset('cplex');
+            options = cplexoptimset(options,solverParams);
+            
             switch printLevel
                 case 0
                     %tries to stop print out of file
@@ -1285,7 +1290,7 @@ switch solver
         end
         %1 = (Simplex or Barrier) Optimal solution is available.
         stat=origStat;
-	if exist([pwd filesep 'clone1.log'],'file')
+        if exist([pwd filesep 'clone1.log'],'file')
             delete('clone1.log')
         end
     case 'lindo'
@@ -1361,11 +1366,7 @@ switch solver
 
         %default MPS parameters are no longer global variables, but set
         %here inside this function
-        if parametersStructureFlag
-            param=directParamStruct;
-        else
-            param=struct();
-        end
+        param=solverParams;
         if isfield(param,'EleNames')
             EleNames=param.EleNames;
         else
@@ -1382,7 +1383,7 @@ switch solver
             VarNames='';
         end
         if isfield(param,'EleNameFun')
-            EleNameFun=directParamStruct.EleNameFun;
+            EleNameFun=param.EleNameFun;
         else
             EleNameFun = @(m)(['LE' num2str(m)]);
         end

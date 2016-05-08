@@ -3,7 +3,7 @@ function solution = solveCobraQP(QPproblem,varargin)
 %
 % solution = solveCobraQP(QPproblem,parameters)
 %
-% % Solves problems of the type 
+% % Solves problems of the type
 %
 %      min   0.5 x' * F * x + osense * c' * x
 %      s/t   lb <= x <= ub
@@ -28,7 +28,7 @@ function solution = solveCobraQP(QPproblem,varargin)
 %
 % parameters    Structure containing optional parameters as fields.
 %  printLevel   Print level for solver
-%  saveInput    Saves LPproblem to filename specified in field. 
+%  saveInput    Saves LPproblem to filename specified in field.
 %               Setting parameters = 'default' uses default setting set in
 %               getCobraSolverParameters.
 %
@@ -43,7 +43,7 @@ function solution = solveCobraQP(QPproblem,varargin)
 %  obj      Objective value
 %  solver   Solver used to solve QP problem
 %  stat     Solver status in standardized form (see below)
-%  origStat Original status returned by the specific solver 
+%  origStat Original status returned by the specific solver
 %  time     Solve time in seconds
 %
 %  stat     Solver status in standardized form
@@ -107,7 +107,7 @@ solStat = -99;
 
 t_start = clock;
 switch solver
-%%
+    %%
     case 'tomlab_cplex'
         if (~isempty(csense))
             b_L(csense == 'E') = b(csense == 'E');
@@ -126,7 +126,7 @@ switch solver
         tomlabProblem.PriLvl=printLevel;
         tomlabProblem.MIP.cpxControl.QPMETHOD = 1;
         tomlabProblem.MIP.cpxControl.THREADS = 1;
-                
+        
         %Save Input if selected
         if ~isempty(saveInput)
             fileName = saveInput;
@@ -161,10 +161,10 @@ switch solver
         %fluxes or not.
         %See solveCobraLPCPLEX.m for more refined control of cplex
         %Ronan Fleming 11/12/2008
-               
+        
         solution=solveCobraLPCPLEX(QPproblem,printLevel,[],[],[],minNorm);
         %%
-   case 'qpng'
+    case 'qpng'
         % qpng.m This file is part of GLPKMEX.
         % Copyright 2006-2007 Nicolo Giorgetti.
         %
@@ -208,7 +208,7 @@ switch solver
             b_L = b;
             b_U = b;
         end
-                
+        
         if printLevel>0
             cmd='minimize';
         else
@@ -251,7 +251,7 @@ switch solver
         %           0   Infeasible QP
         %           3   Other problem (time limit etc)
         %%
-      case 'pdco'
+    case 'pdco'
         %-----------------------------------------------------------------------
         % pdco.m: Primal-Dual Barrier Method for Convex Objectives (16 Dec 2008)
         %-----------------------------------------------------------------------
@@ -281,10 +281,10 @@ switch solver
             pdco(pdObjHandle,A,b,lb,ub,d1,d2,options,x0,y0,z0,xsize,zsize);
         f= c'*x + 0.5*x'*F*x;
         % inform = 0 if a solution is found;
-%        = 1 if too many iterations were required;
-%        = 2 if the linesearch failed too often;
-%        = 3 if the step lengths became too small;
-%        = 4 if Cholesky said ADDA was not positive definite.
+        %        = 1 if too many iterations were required;
+        %        = 2 if the linesearch failed too often;
+        %        = 3 if the step lengths became too small;
+        %        = 4 if Cholesky said ADDA was not positive definite.
         if (inform == 0)
             stat = 1;
         elseif (inform == 1 || inform == 2 || inform == 3)
@@ -293,24 +293,24 @@ switch solver
             stat = -1;
         end
         origStat=inform;
-    %%
+        %%
     case 'gurobi'
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
         %
         % The code below uses Gurobi Mex to interface with Gurobi. It can be downloaded from
         % http://www.convexoptimization.com/wikimization/index.php/Gurobi_Mex:_A_MATLAB_interface_for_Gurobi
-
+        
         clear opts            % Use the default parameter settings
         if printLevel == 0
-           % Version v1.10 of Gurobi Mex has a minor bug. For complete silence
-           % Remove Line 736 of gurobi_mex.c: mexPrintf("\n"); 
-           opts.Display = 0;
-           opts.DisplayInterval = 0;
+            % Version v1.10 of Gurobi Mex has a minor bug. For complete silence
+            % Remove Line 736 of gurobi_mex.c: mexPrintf("\n");
+            opts.Display = 0;
+            opts.DisplayInterval = 0;
         else
-           opts.Display = 1;
+            opts.Display = 1;
         end
-
+        
         
         
         if (isempty(csense))
@@ -323,17 +323,17 @@ switch solver
             csense = csense(:);
         end
         
-        % Gurobi passes individual terms instead of an F matrix. qrow and 
+        % Gurobi passes individual terms instead of an F matrix. qrow and
         % qcol specify which variables are multipled to get each term,
         % while qval specifies the coefficients of each term.
-
+        
         [qrow,qcol,qval]=find(F);
         qrow=qrow'-1;   % -1 because gurobi numbers indices from zero, not one.
         qcol=qcol'-1;
         qval=0.5*qval';
         
-        opts.QP.qrow = int32(qrow); 
-        opts.QP.qcol = int32(qcol); 
+        opts.QP.qrow = int32(qrow);
+        opts.QP.qcol = int32(qcol);
         opts.QP.qval = qval;
         opts.Method = 0;    % 0 - primal, 1 - dual
         opts.Presolve = -1; % -1 - auto, 0 - no, 1 - conserv, 2 - aggressive
@@ -343,24 +343,24 @@ switch solver
         %opt.Quad=1;
         
         %gurobi_mex doesn't cast logicals to doubles automatically
-    	c = double(c);
+        c = double(c);
         [x,f,origStat,output,y] = gurobi_mex(c,osense,sparse(A),b, ...
-                                             csense,lb,ub,[],opts);
+            csense,lb,ub,[],opts);
         if origStat==2
-           stat = 1; % Optimal solutuion found
+            stat = 1; % Optimal solutuion found
         elseif origStat==3
-           stat = 0; % Infeasible
+            stat = 0; % Infeasible
         elseif origStat==5
-           stat = 2; % Unbounded
+            stat = 2; % Unbounded
         elseif origStat==4
-           stat = 0; % Gurobi reports infeasible *or* unbounded
+            stat = 0; % Gurobi reports infeasible *or* unbounded
         else
-           stat = -1; % Solution not optimal or solver problem
+            stat = -1; % Solution not optimal or solver problem
         end
         
-    case 'gurobi5'
-     %% gurobi 5
-     % Free academic licenses for the Gurobi solver can be obtained from
+    case {'gurobi5','gurobi6'}
+        %% gurobi 5
+        % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
         resultgurobi = struct('x',[],'objval',[],'pi',[]);
         clear params            % Use the default parameter settings
@@ -375,7 +375,7 @@ switch solver
                 params.OutputFlag = 0;
                 params.DisplayInterval = 1;
         end
-
+        
         params.Method = 0;    %-1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent
         params.Presolve = -1; % -1 - auto, 0 - no, 1 - conserv, 2 - aggressive
         params.IntFeasTol = 1e-5;
@@ -392,7 +392,7 @@ switch solver
             QPproblem.csense(QPproblem.csense == 'E') = '=';
             QPproblem.csense = QPproblem.csense(:);
         end
-	
+        
         if QPproblem.osense == -1
             QPproblem.osense = 'max';
         else
@@ -405,19 +405,18 @@ switch solver
         resultgurobi = gurobi(QPproblem,params);
         origStat = resultgurobi.status;
         if strcmp(resultgurobi.status,'OPTIMAL')
-           stat = 1; % Optimal solution found
-           [x,f,y] = deal(resultgurobi.x,resultgurobi.objval,resultgurobi.pi);
+            stat = 1; % Optimal solution found
+            [x,f,y] = deal(resultgurobi.x,resultgurobi.objval,resultgurobi.pi);
         elseif strcmp(resultgurobi.status,'INFEASIBLE')
-           stat = 0; % Infeasible
+            stat = 0; % Infeasible
         elseif strcmp(resultgurobi.status,'UNBOUNDED')
-           stat = 2; % Unbounded
+            stat = 2; % Unbounded
         elseif strcmp(resultgurobi.status,'INF_OR_UNBD')
-           stat = 0; % Gurobi reports infeasible *or* unbounded
+            stat = 0; % Gurobi reports infeasible *or* unbounded
         else
-           stat = -1; % Solution not optimal or solver problem
+            stat = -1; % Solution not optimal or solver problem
         end
-        
-    %%
+        %%
     otherwise
         error(['Unknown solver: ' solver]);
 end
@@ -426,7 +425,7 @@ t = etime(clock, t_start);
 solution.obj = f;
 solution.solver = solver;
 solution.stat = stat;
-solution.origStat = origStat; 
+solution.origStat = origStat;
 solution.time = t;
 solution.full = x;
 solution.dual = y;
