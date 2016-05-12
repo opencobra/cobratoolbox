@@ -1,6 +1,6 @@
 function surfNet(model, metrxn, metNameFlag, flux, NonzeroFluxFlag, showMets, nCharBreak, iterOptions)
 %surfNet(model, metrxn, metNameFlag, flux, NonzeroFluxFlag, nCharBreak)
-%   A simple and convenient tool to nevigate through the metabolic network 
+%   A simple and convenient tool to navigate through the metabolic network 
 %   interactively, possibly with a given flux vector, in the Matlab command 
 %   window using mouse once the starting point is called by command.
 %
@@ -17,16 +17,16 @@ function surfNet(model, metrxn, metNameFlag, flux, NonzeroFluxFlag, showMets, nC
 %   showMets:           show metabolites in a list when printing reactions (true)
 %   nCharBreak:         max. no. of characters per line for reaction formulas (65)
 %   iterOptions:        Not used for calling, for interactive calling only.
-%                       Display the path of the previous nevigation. (false)
+%                       Display the path of the previous navigation. (false)
 %Example calls:
-% surfNet(model, 'glc-D[c]') for starting the nevigation at D-glucose
-% surfNet(model, 'EX_glc-D(e)') for starting the nevigation at the glucose
+% surfNet(model, 'glc-D[c]') for starting the navigation at D-glucose
+% surfNet(model, 'EX_glc-D(e)') for starting the navigation at the glucose
 %   exchange reaction
 % surfNet(model, 'glc-D[c]', 1) for printing model.metNames in reaction formulas
 % surfNet(model, 'glc-D[c]', 0, flux, 1) for starting at glucose and show
 %   reactions with non-zero flux in 'flux' only
 % surfNet(model, 'EX_glc-D(e)', 0, [], [], 0) to show the reaction formulas
-%   only but not the details of metabolites during nevigation
+%   only but not the details of metabolites during navigation
 % surfNet(model, {'glc-D[c]';'fru[c]'}) to view several mets and rxns
 
 %(feel free to change the following parameters not set as input)
@@ -105,7 +105,7 @@ if showPrev
     fprintf('\n');
     nChar = 0;
     for jPast = 1:size(pathLocal)
-        %print each of the previous metabolites nevigated
+        %print each of the previous metabolites navigated
         if ~isempty(pathLocal{jPast,1})
             if metNameFlag
                 %print the metabolite name
@@ -123,7 +123,7 @@ if showPrev
             printFcn(pathLocal{jPast,1}, namePrint,0);
             fprintf('>>'); 
         end
-        %print each of the previous reactions nevigated
+        %print each of the previous reactions navigated
         if ~isempty(pathLocal{jPast,2})
             %line break if exceeding character per line
             if nChar > 0 && nChar + length(pathLocal{jPast,2}) > nCharBreak
@@ -386,7 +386,7 @@ else
     end
     
 end
-%print the button leading to show previous nevigated mets and rxns
+%print the button leading to show previous navigated mets and rxns
 if printShowPrev
     if ~isempty(fluxLocal)
         fprintf('\n<a href="matlab: surfNet([],[],%d, [], %d, %d, %d, struct(''showPrev'',true));">%s</a>\n',...
@@ -409,4 +409,3 @@ end
     end
 
 end
-
