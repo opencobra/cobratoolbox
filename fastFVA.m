@@ -76,7 +76,7 @@ if nargin<8,
     rxns = 1:length(model.rxns);
     rxnsList = {};
 else
-    rxns = find(ismember(model.rxns, rxnsList));
+    rxns = find(ismember(model.rxns, rxnsList))';%transpose rxns
 end
 if nargin<7, cpxAlgorithm   = 0;          end
 if nargin<6, cpxControl     = struct([]); end
@@ -87,7 +87,7 @@ if nargin<2, optPercentage  = 100;        end
 
 % Define extra outputs if required
 if nargout>4
-   assert(nargout == 7);
+   assert(nargout == 7); 
    bExtraOutputs=true;
 else
    bExtraOutputs=false;
@@ -298,6 +298,9 @@ else
 
 end
 
-%% extract only reaction flux results that have been computed
-minFlux(find(~ismember(model.rxns, rxnsList)))=[];
-maxFlux(find(~ismember(model.rxns, rxnsList)))=[];
+if nargin==5 %test on nargin
+    fvamin = fvamin(:,rxns);%keep only nonzero columns
+    fvamax = fvamax(:,rxns);
+    minFlux(find(~ismember(model.rxns, rxnsList)))=[];
+    maxFlux(find(~ismember(model.rxns, rxnsList)))=[];
+end
