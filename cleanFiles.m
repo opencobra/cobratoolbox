@@ -7,11 +7,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Clear log files from the drivers directory
-D = dir('../drivers/*.log');
-nbFiles = numel(D);
-if(nbFiles > 0)
-  unix('sudo rm ../drivers/*.log');
-end
+%D = dir('../drivers/*.log');
+%nbFiles = numel(D);
+%if(nbFiles > 0)
+%  unix('sudo rm ../drivers/*.log');
+%end
 
 % Clear previous log files in logFiles/
 D = dir('../fastFVA/logFiles/*.log');

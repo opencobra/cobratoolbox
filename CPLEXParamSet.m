@@ -75,7 +75,7 @@ cpxControl.AUXROOTTHREADS = 2;
 % 0 	Do not use advanced start information
 % 1 	Use an advanced basis supplied by the user; default
 % 2 	Crush an advanced basis or starting vector supplied by the user
-%cpxControl.ADVIND = 2;
+%cpxControl.ADVIND = 0;
 
 % Manual control of presolve
 % primal and dual reduction type
@@ -93,4 +93,20 @@ cpxControl.AUXROOTTHREADS = 2;
 % 1 	Force presolve at nodes
 % 2 	Perform probing on integer-infeasible variables
 % 3 	Perform aggressive node probing
-%cpxControl.PRESLVND = 0;
+%cpxControl.PRESLVND = 1;
+
+% Method for linear optimization.
+% Determines which algorithm is used. Currently, the behavior of the Automatic setting is that CPLEX almost
+% always invokes the dual simplex method. The one exception is when solving the relaxation of an MILP model
+% when multiple threads have been requested. In this case, the Automatic setting will use the concurrent optimization
+% method. The Automatic setting may be expanded in the future so that CPLEX chooses the method
+% based on additional problem characteristics.
+%  0 Automatic
+% 1 Primal Simplex
+% 2 Dual Simplex
+% 3 Network Simplex (Does not work for almost all stoichiometric matrices)
+% 4 Barrier (Interior point method)
+% 5 Sifting
+% 6 Concurrent Dual, Barrier and Primal
+% Default: 0
+cpxControl.LPMETHOD = 0;  %%% was changed now default

@@ -183,6 +183,12 @@ void dispCPLEXerror(CPXENVptr env, int status)
     }
 }
 
+/*int file_exist (char *filename)
+{
+  struct stat   buffer;
+  return (stat (filename, &buffer) == 0);
+}*/
+
 /* FVA Wrapper */
 int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* optSol,
          double* FBAsol, double* FVAmin, double* FVAmax, mwSize n_constr, mwSize n_vars,
@@ -294,10 +300,16 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
     mexPrintf("        -- Changing the solution method: %i\n", cplexAlgo);
 
+      /*status = CPXreadcopybase(env, lp, "myprob.bas");*/
+
+
+
     /* Solve the problem */
     if(cplexAlgo == 1)        status = CPXprimopt(env, lp);
     else if(cplexAlgo == 2)   status = CPXdualopt(env, lp);
     else                      status = CPXlpopt(env, lp);
+
+    /*status = CPXmbasewrite(env, lp, "myprob.bas");/*
 
     mexPrintf("  Initial FBA done.\n");
 
@@ -416,10 +428,14 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
         if(monitorPerformance) markersEnd[6] = clock();
         if(monitorPerformance) markersBegin[7] = clock();
 
+      /*  status = CPXreadcopybase(env, lp, "myprob.bas");*/
+
         /* Solve the problem - most time consuming step*/
         if(cplexAlgo == 1)        status = CPXprimopt(env, lp);
         else if(cplexAlgo == 2)   status = CPXdualopt(env, lp);
         else                      status = CPXlpopt(env, lp);
+
+        /*status = CPXmbasewrite(env, lp, "myprob.bas");*/
 
         if(monitorPerformance) markersEnd[7] = clock();
 
@@ -734,7 +750,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     int             opt_lic_rel = 1;    /* user can specify after how many calls will
                                            CPLEX environment be closed and license released */
 
-    int             opt_logfile = 1;    /* use a CPLEX log file */
+    int             opt_logfile = 0;    /* use a CPLEX log file */
 
     char            *vartype = NULL;
     int             objsense = 1;
