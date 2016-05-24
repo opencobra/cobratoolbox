@@ -309,17 +309,30 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
         
         % Optimize the problem
         ILOGcplex.solve();
-
-        solution.obj        = osense*ILOGcplex.Solution.objval;
-        solution.full       = ILOGcplex.Solution.x;
-        solution.rcost      = ILOGcplex.Solution.reducedcost;
-        solution.dual       = ILOGcplex.Solution.dual;
-        solution.nInfeas    = NaN;
-        solution.sumInfeas  = NaN;
-        %solution.stat       = ILOGcplex.Solution.
-        solution.origStat   = ILOGcplex.Solution.status;
-        solution.solver     = ILOGcplex.Solution.method;
-        solution.time       = ILOGcplex.Solution.time;
+%http://www-01.ibm.com/support/knowledgecenter/SSSA5P_12.2.0/ilog.odms.cplex.help/Content/Optimization/Documentation/CPLEX/_pubskel/CPLEX1210.html
+        if ILOGcplex.Solution.status == 1
+            solution.obj        = osense*ILOGcplex.Solution.objval;
+            solution.full       = ILOGcplex.Solution.x;
+            solution.rcost      = ILOGcplex.Solution.reducedcost;
+            solution.dual       = ILOGcplex.Solution.dual;
+            solution.nInfeas    = NaN;
+            solution.sumInfeas  = NaN;
+            %solution.stat       = ILOGcplex.Solution.
+            solution.origStat   = ILOGcplex.Solution.status;
+            solution.solver     = ILOGcplex.Solution.method;
+            solution.time       = ILOGcplex.Solution.time;
+        else
+            warning(['IBM CPLEX STATUS = ' int2str(ILOGcplex.Solution.status) ', see: http://www-01.ibm.com/support/knowledgecenter/SSSA5P_12.2.0/ilog.odms.cplex.help/Content/Optimization/Documentation/CPLEX/_pubskel/CPLEX1210.html'])
+            solution.origStat   = ILOGcplex.Solution.status;
+            solution.full       = NaN;
+            solution.obj        = NaN;
+            solution.rcost      = NaN;
+            solution.dual       = NaN;
+            solution.nInfeas    = NaN;
+            solution.sumInfeas  = NaN;
+            solution.solver     = NaN;
+            solution.time       = NaN;
+        end
     else
         try
            ILOGcplex = Cplex('fba');
