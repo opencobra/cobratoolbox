@@ -1,9 +1,8 @@
-function x=testFASTCORE()
-%test FASTCORE algorithm and returns 1 for correct, else 0
+function x=testFASTCC()
+%test FASTCC algorithm and returns 1 for correct, else 0
 %
 
-% Ronan Fleming, August 2015
-% Modified by Thomas Pfau, May 2016
+% Thomas Pfau, May 2016
 
 
 ibm = changeCobraSolver('ibm_cplex');
@@ -16,21 +15,21 @@ if ~ibm
             %used, but likely lead to numeric issues.
             x = 0;
             return
-        end    
+        end  
     end
 end
 
 %load a model
 load('FastCoreTest.mat')
-model=ConsistentRecon2;
+model=modelR204;
 
 %randomly pick some reactions
 epsilon=1e-4;
 printLevel=0;
 
-A = fastcore(coreInd, model, epsilon, printLevel);
-fastcore
-if numel(A)==5064
+A = fastcc(model, epsilon, printLevel);
+
+if numel(A)==5317
     %|J|=0  |A|=6975
     %CBTLPSOLVER = quadMinos
     x=1;
