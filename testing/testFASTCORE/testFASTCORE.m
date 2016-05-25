@@ -3,35 +3,45 @@ function x=testFASTCORE()
 %
 
 % Ronan Fleming, August 2015
+% Modified by Thomas Pfau, May 2016
 
-if 0
-    changeCobraSolver('quadMinos','LP')
-end
-if 1
-    changeCobraSolver('gurobi6','LP')
+
+ibm = changeCobraSolver('ibm_cplex');
+if ~ibm
+    gurobi = changeCobraSolver('gurobi6');
+    if ~gurobi
+        tomlab = changeCobraSolver('tomlab_cplex')
+        if ~tomlab
+            %Those are the allowed solvers for FASTCORE. Others can be
+            %used, but likely lead to numeric issues.
+            x = 0;
+            return
+        end    
+    end
 end
 
 %load a model
-load('Recon205_20150515Consistent.mat')
-model=modelConsistent;
+load('FastCoreTest.mat')
+model=ConsistentRecon2;
 
 %randomly pick some reactions
-[nMet,nRxn]=size(model.S);
-
-s = RandStream('mt19937ar','Seed',0);
-
-coreInd=find(rand(s,nRxn,1)>0.1);
-
 epsilon=1e-4;
-printLevel=1;
-
+printLevel=0;
 A = fastcore(coreInd, model, epsilon, printLevel);
-
-if numel(A)==6975
-    %|J|=0  |A|=6975
-    %CBTLPSOLVER = quadMinos
-    x=1;
-else
-    x=0;
+reducedmodel = removeRxns(model,setdiff(model.rxns,model.rxns(A)));
+%test, whether all of the core fluxes can carry flux
+corereacs = find(ismember(reducedmodel.rxns,model.rxns(coreInd)));
+x = 1;
+reducedmodel.csense(1:numel(reducedmodel.mets)) = 'E';
+reducedmodel.c(:) = 0;
+for i=1:numel(corereacs)
+    reducedmodel.c(corereacs(i)) = 1;
+    solmax = optimizeCbModel(reducedmodel,'max');
+    solmin = optimizeCbModel(reducedmodel,'min');
+    if (abs(solmax.x(corereacs(i))) < epsilon) && (abs(solmin.x(corereacs(i))) < epsilon)
+        x = 0;
+        break
+    end
+    reducedmodel.c(corereacs(i)) = 0;
 end
     

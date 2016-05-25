@@ -50,6 +50,9 @@ if 0
     if exist('clone1.log','file')
         delete('clone1.log')
     end
+    if exist('clone2.log','file')
+        delete('clone2.log')
+    end
 else
     LPproblem.A=[Aeq;Aineq];
     LPproblem.b=[beq;bineq];
