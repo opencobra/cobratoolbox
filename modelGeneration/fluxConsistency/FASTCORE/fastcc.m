@@ -161,9 +161,6 @@ while ~isempty( J )
                 end
                 if printLevel>1
                     fprintf('%s\n',model.rxns{Ji});
-                    if printLevel>1
-                        save A A;
-                    end
                 end
             else
                 singleton = true;
