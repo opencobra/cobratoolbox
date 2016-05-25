@@ -31,6 +31,7 @@ function solverOK = changeCobraSolver(solverName,solverType)
 %   matlab          Matlab's own linprog.m (currently unsupported, may not
 %                   work on COBRA-type LP problems)
 %   mps             Outputs a MPS matrix string. Does not solve LP problem
+%   ibm_cplex       The IBM API for CPLEX using the CPLEX class
 %
 % Currently allowed MILP solvers:
 %   tomlab_cplex    CPLEX MILP solver accessed through Tomlab environment
@@ -40,6 +41,7 @@ function solverOK = changeCobraSolver(solverName,solverType)
 %   gurobi6         Gurobi 6.* accessed through built-in Matlab mex interface
 %   mps             Outputs a MPS matrix string. Does not solve MILP
 %                   problem
+%   ibm_cplex       The IBM API for CPLEX using the CPLEX class
 %
 % Currently allowed QP solvers:
 %   tomlab_cplex    CPLEX QP solver accessed through Tomlab environment

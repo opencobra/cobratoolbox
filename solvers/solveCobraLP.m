@@ -1293,6 +1293,9 @@ switch solver
         if exist([pwd filesep 'clone1.log'],'file')
             delete('clone1.log')
         end
+        if exist('clone2.log','file')
+            delete('clone2.log')
+        end
     case 'lindo'
         %%
         error('Solver type lindo is obsolete - use lindo_new or lindo_old instead');
