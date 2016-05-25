@@ -89,7 +89,10 @@ while ~isempty( J )
             tmp = model.ub(JiRev);
             model.ub(JiRev) = -model.lb(JiRev);
             model.lb(JiRev) = -tmp;
-            flipped = true;  fprintf('(flip)  ');
+            flipped = true; 
+            if printlevel > 0
+                fprintf('(flip)  ');
+            end
         end
     end
 end
@@ -97,5 +100,7 @@ if printlevel > 0
     fprintf('|A|=%d\n', length(A));
 end
 
-toc
+if printlevel > 1
+    toc
+end
 

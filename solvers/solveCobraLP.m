@@ -1293,7 +1293,7 @@ switch solver
         if exist([pwd filesep 'clone1.log'],'file')
             delete('clone1.log')
         end
-        if exist('clone2.log','file')
+        if exist([pwd filesep 'clone2.log'],'file')
             delete('clone2.log')
         end
     case 'lindo'
