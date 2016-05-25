@@ -4,32 +4,30 @@ function x=testFASTCORE()
 
 % Ronan Fleming, August 2015
 
-
-ibm = changeCobraSolver('ibm_cplex');
-if ~ibm
-    gurobi = changeCobraSolver('gurobi6');
-    if ~gurobi
-        tomlab = changeCobraSolver('tomlab_cplex')
-        if ~tomlab
-            %Those are the allowed solvers for FASTCORE. Others can be
-            %used, but likely lead to numeric issues.
-            x = 0;
-            return
-        end    
-    end
+if 0
+    changeCobraSolver('quadMinos','LP')
+end
+if 1
+    changeCobraSolver('gurobi6','LP')
 end
 
 %load a model
-load('FastCoreTest.mat')
-model=ConsistentRecon2;
+load('Recon205_20150515Consistent.mat')
+model=modelConsistent;
 
 %randomly pick some reactions
+[nMet,nRxn]=size(model.S);
+
+s = RandStream('mt19937ar','Seed',0);
+
+coreInd=find(rand(s,nRxn,1)>0.1);
+
 epsilon=1e-4;
-printLevel=0;
+printLevel=1;
 
 A = fastcore(coreInd, model, epsilon, printLevel);
-fastcore
-if numel(A)==5064
+
+if numel(A)==6975
     %|J|=0  |A|=6975
     %CBTLPSOLVER = quadMinos
     x=1;
