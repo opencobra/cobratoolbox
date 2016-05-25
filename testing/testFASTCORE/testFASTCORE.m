@@ -10,7 +10,7 @@ ibm = changeCobraSolver('ibm_cplex');
 if ~ibm
     gurobi = changeCobraSolver('gurobi6');
     if ~gurobi
-        tomlab = changeCobraSolver('tomlab_cplex')
+        tomlab = changeCobraSolver('tomlab_cplex');
         if ~tomlab
             %Those are the allowed solvers for FASTCORE. Others can be
             %used, but likely lead to numeric issues.
@@ -28,20 +28,16 @@ model=ConsistentRecon2;
 epsilon=1e-4;
 printLevel=0;
 A = fastcore(coreInd, model, epsilon, printLevel);
-reducedmodel = removeRxns(model,setdiff(model.rxns,model.rxns(A)));
+
 %test, whether all of the core fluxes can carry flux
-corereacs = find(ismember(reducedmodel.rxns,model.rxns(coreInd)));
-x = 1;
+reducedmodel = removeRxns(model,setdiff(model.rxns,model.rxns(A)));
+corereacs = intersect(reducedmodel.rxns,model.rxns(coreInd));
 reducedmodel.csense(1:numel(reducedmodel.mets)) = 'E';
 reducedmodel.c(:) = 0;
-for i=1:numel(corereacs)
-    reducedmodel.c(corereacs(i)) = 1;
-    solmax = optimizeCbModel(reducedmodel,'max');
-    solmin = optimizeCbModel(reducedmodel,'min');
-    if (abs(solmax.x(corereacs(i))) < epsilon) && (abs(solmin.x(corereacs(i))) < epsilon)
-        x = 0;
-        break
-    end
-    reducedmodel.c(corereacs(i)) = 0;
+[minFlux,maxFlux] = fluxVariability(reducedmodel,[],[],corereacs);
+
+if all(minFlux < epsilon | maxFlux > epsilon)
+    x = 1;
+else
+    x = 0;
 end
-    
