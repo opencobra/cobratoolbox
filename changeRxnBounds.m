@@ -60,10 +60,10 @@ else
                 case 'u'
                     model.ub(rxnID(i)) = value(i);
                 case 'l'
-                    model.lb(rxnID) = value(i);
+                    model.lb(rxnID(i)) = value(i);
                 case 'b'
-                    model.lb(rxnID) = value(i);
-                    model.ub(rxnID) = value(i);
+                    model.lb(rxnID(i)) = value(i);
+                    model.ub(rxnID(i)) = value(i);
             end
         end
     else
