@@ -387,7 +387,7 @@ switch solver
         %        sol.s               m vector: value of each slack in s.
         %        sol.rc              n vector: reduced gradients for x.
         %        sol.y               m vector: dual variables for Ax - s = 0.
-        x=sol.x
+        x=sol.x;
         f=c'*x;
         y=sol.y;
         w=sol.rc;

@@ -36,7 +36,8 @@
 %% #######################    FUNCTION START   ############################
 function Build_Dependency_Map(root_dir, varargin)
 
-default_file_types = {'*.m','*.java', '*.mdl'};
+%default_file_types = {'*.m','*.java', '*.mdl'};
+default_file_types = {'*.m'}; %Ronan
 
 %% Get the directory structure
 if length(varargin) == 1

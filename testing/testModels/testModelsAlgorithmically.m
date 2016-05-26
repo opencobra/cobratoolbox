@@ -2,11 +2,9 @@ function results = testModelsAlgorithmically(solvers,matFolder,modelNames,printL
 %test a set of models for the feasibility of a nonzero objective(>1e-4)
 %by default, do not run this script with testAll
 %
-%INPUT
+%OPTIONAL INPUT
 % solvers       z x 1 cell array of solvers to test e.g. {'gurobi5','quadMinos'}
 % matFolder     absolute path to the folder where k model .mat files are
-%
-%OPTIONAL INPUT
 % modelNames    k x 2 cell array of {Species, modelFilename} setting order
 %               of results structure when returned
 %               e.g. modelNames={...
@@ -20,14 +18,14 @@ function results = testModelsAlgorithmically(solvers,matFolder,modelNames,printL
 
 % 39 Jan 2016 Ronan M.T. Fleming
 
+global CBTLPSOLVER
 if 1
     %%parameters
     
     %select solver to use
     if ~exist('solvers','var')
-        
         if ~isunix || ismac
-            solvers={'gurobi5'};
+            solvers={CBTLPSOLVER};
         else
             [status,cmdout]=system('which minos');
             if isempty(cmdout)
@@ -35,21 +33,23 @@ if 1
                 disp(cmdout);
                 warning('Minos not installed or not on system path.');
             else
-                solvers={'gurobi5','quadMinos'};
+                solvers={CBTLPSOLVER,'dqqMinos'};
             end
         end
         
         %gurobi (http://www.gurobi.com/) gurboi versions 5 and 6 are supported
         %solvers={'gurobi6'};
         %optionally also test with quadMinos (a quadruple precision solver by Michael Saunders, Stanford Systems Optimization Laboratory)
-        %solvers={'gurobi6','quadMinos'};
-        solvers={'quadMinos'};
+        %solvers={'gurobi6','dqqMinos'};
+        solvers={'dqqMinos'};
     end
         
     pth=which('initCobraToolbox.m');
     global CBTDIR
     CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1));
+    
     if ~exist('matFolder','var')
+        matFolder=pwd;
         % set the folder within the folder 'testModels' where the .xml files are located
         %matFolder=[CBTDIR '/testing/testModels/m_model_collection_mat']; %selection of mat files already parsed from https://github.com/opencobra/m_model_collection.git'
         %matFolder=['/usr/local/bin/cobratoolbox_master' '/testing/testModels/m_model_collection_mat'];

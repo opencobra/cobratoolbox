@@ -28,8 +28,18 @@ cbPath=which('initCobraToolbox');
 cbPath=cbPath(1:end-length('initCobraToolbox.m'));
 
 %choose model & results directories
-modelCollectionDirectory=[cbPath 'testing/testModels/modelCollectionFR/'];
-resultsDirectory=[cbPath 'papers/Fleming_FR_2015/results/'];
+if 0
+    modelCollectionDirectory=[cbPath 'testing/testModels/modelCollectionFR/'];
+    resultsDirectory=[cbPath 'papers/Fleming_FR_2015/results/'];
+    modelMetaData=modelCitations();
+else
+    %modelCollectionDirectory=['/home/rfleming/work/collaborators/Ines/2016/2015_321AGORA/Models_16_02_11/'];
+    %resultsDirectory=['/home/rfleming/work/collaborators/Ines/2016/2015_321AGORA/Models_16_02_11_results/'];
+    %modelCollectionDirectory=['/home/rfleming/work/collaborators/confidential/Ines/2016/2015_321AGORA/ModelsBefore'];
+    %resultsDirectory=['/home/rfleming/work/collaborators/confidential/Ines/2016/2015_321AGORA/ModelsBeforeResults'];
+    modelCollectionDirectory=['/home/rfleming/work/collaborators/confidential/Ines/2016/2015_321AGORA/ModelsAfter'];
+    resultsDirectory=['/home/rfleming/work/collaborators/confidential/Ines/2016/2015_321AGORA/ModelsAfterResults'];
+end
 
 %choose solver
 solver='gurobi6';
@@ -193,7 +203,7 @@ else
                         [rankS,p,q]= getRankLUSOL(model.S);
                                               
                         load([resultsDirectory resultsFileName])
-                        FRresults(k).FBAsolution=FBAsolution;
+                        %FRresults(k).FBAsolution=FBAsolution;
                         FRresults(k).modelFilename=matFiles(k).name;
                         FRresults(k).rankFR=rankFR;
                         FRresults(k).rankFRV=rankFRV;
@@ -212,10 +222,11 @@ else
     end
     
     %citations about each model
-    if ~exist('modelMetaData','var')
-        modelMetaData=modelCitations();
+    if exist('modelMetaData','var')
+        [FRresultsTable,FRresults]=makeFRresultsTable([],resultsDirectory,resultsFileName,modelMetaData);
+    else
+        [FRresultsTable,FRresults]=makeFRresultsTable([],resultsDirectory,resultsFileName);
     end
-    [FRresultsTable,FRresults]=makeFRresultsTable([],resultsDirectory,resultsFileName,modelMetaData);
     %save([resultsDirectory resultsFileName],'FRresults','resultsFileName');
 end
 fprintf('%s\n',['checkRankFRdriver complete. FRresults saved to ' resultsDirectory resultsFileName]);
