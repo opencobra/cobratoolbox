@@ -57,8 +57,14 @@ tValueMat = [0.50, 0;...
 tValue = tValueMat(tValueMat(:,1) == confidenceLevel,2);
 
 % Define constants
+if ~isfield(model,'R')
 R = 8.3144621e-3; % Gas constant in kJ/(K*mol)
-T = model.T; % Temperature in K
+end
+if ~isfield(model,'T')
+    T= 310.15;
+else
+    T = model.T; % Temperature in K
+end
 
 % Calculate bounds on transformed Gibbs energies of formation
 DfGtMin = model.DfGt0 - tValue*model.uf + R*T*log(model.xmin);

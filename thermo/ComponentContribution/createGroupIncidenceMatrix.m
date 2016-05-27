@@ -1,6 +1,6 @@
+function training_data = createGroupIncidenceMatrix(model, training_data)
 % Initialize G matrix, and then use the python script "inchi2gv.py" to decompose each of the 
 % compounds that has an InChI and save the decomposition as a row in the G matrix.
-function training_data = createGroupIncidenceMatrix(model, training_data)
 
 % get the scores for the mappings of compounds (reflecting the certainty in the mapping)
 mappingScore = getMappingScores(model, training_data);
@@ -10,7 +10,10 @@ fprintf('Creating group incidence matrix\n');
 % first just run the script to get the list of group names
 fullpath = which('getGroupVectorFromInchi.m');
 fullpath = regexprep(fullpath,'getGroupVectorFromInchi.m','');
-[~,groups] = system(['python ' fullpath 'inchi2gv.py -l']);
+[status,groups] = system(['python2 ' fullpath 'inchi2gv.py -l']);%seems to only work with python 2, poor coding to not check the status here!
+if status~=0
+    error('createGroupIncidenceMatrix: call to inchi2gv.py failed')
+end
 groups = regexp(groups,'\n','split');
 training_data.groups = groups(~cellfun(@isempty, groups));
 training_data.G = zeros(length(training_data.cids), length(training_data.groups));

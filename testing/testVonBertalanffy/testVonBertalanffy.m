@@ -6,7 +6,11 @@
 %% Add required fields and directories to path
 initVonBertalanffy
 
+%todo, clean up this so it is not needed
 global CBTDIR
+pth=which('initCobraToolbox.m');
+CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1));
+
 cd([CBTDIR filesep 'testing' filesep 'testVonBertalanffy'])
 
 %% Configure inputs

@@ -1,8 +1,4 @@
 % Setup the paths to the data, scripts and functions
-
-% Clear workspace
-clear
-
 % Check if this COBRA toolbox extension is in the Matlab path
 stm_dir = which('setupThermoModel.m');
 cc_dir = which('addThermoToModel.m');
@@ -30,6 +26,6 @@ end
 %have to edit the 'LD_LIBRARY_PATH' to make sure that it has the correct
 %system path before the Matlab path! The solution will be arch dependent
 
-%This is what works on Ubuntu 15.10
-setenv('LD_LIBRARY_PATH',['/usr/lib/x86_64-linux-gnu:' getenv('LD_LIBRARY_PATH')])
+%This is what works on Ubuntu 15.10 - paste it into your startup file
+setenv('LD_LIBRARY_PATH',['/home/rfleming/work/ownCloud/code/Chemaxon/bin/bin/:/usr/lib/x86_64-linux-gnu:' getenv('LD_LIBRARY_PATH')])
 

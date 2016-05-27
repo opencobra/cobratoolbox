@@ -102,130 +102,117 @@ fclose(fid);
 
 % Estimate pKa
 [status,result] = system(['cxcalc pka -a ' num2str(npKas) ' -b ' num2str(npKas) ' -M ' takeMajorTaut ' ' inchiFileName]);
-
-%check if call to cxcalc works and fail gracefully if not - Ronan
-if status == 0
-    % Split for cxcalc 15.6.15.0 in tabs and empty lines.
-    result = regexp(result,'\n?\t?','split');
-    
-    % create a new result excluding the header
-    for i=1:length(result)
-        if i>(2*npKas + 3)
-            g=i-(2*npKas + 2);
-            newresult{1,g}=result{i};
-        end
-    end
-    
-    % split this result in lines for each metabolite
-    count=0;
-    for i=1:(2*npKas + 2):(length(newresult)-(2*npKas + 2))
-        count=count+1;
-        
-        for j=1:(2*npKas + 2)
-            if j<(2*npKas + 2)
-                % for pKa values change , by .
-                newesresult{count,j}=strrep(newresult{j+i-1},',','.');
-            else
-                newesresult{count,j}=newresult{j+i-1};
-            end
-        end
-        
-    end
-    
-    % Delete temporary file
-    delete(inchiFileName);
-    
-    if status ~= 0
-        error('Could not estimate pKa values. Check that ChemAxon Calculator Plugins are installed correctly.')
-    end
-    
-    % Create unique pKa structure
-    upKa.success = true;
-    upKa.met = [];
-    upKa.pKas = [];
-    upKa.zs = [];
-    upKa.nHs = [];
-    upKa.majorMSpH7 = [];
-    upKa = repmat(upKa,length(uinchi),1);
-    
-    errorMets = {};
-    for n = 1:length(uinchi)
-        met = umets{n};
-        currentInchi = uinchi{n};
-        [formula, nH, charge] = getFormulaAndChargeFromInChI(currentInchi);
-        
-        pkalist = {newesresult{n,:}};
-        if length(pkalist) == 2*npKas + 2;
-            pkalist = pkalist(2:end-1);
-            pkalist = pkalist(~cellfun('isempty',pkalist));
-            % This had to be commented due to doing it before:
-            %pkalist = regexprep(pkalist,',','.');
-            pkalist = str2double(pkalist);
-            pkalist = sort(pkalist,'descend');
-            pkalist = pkalist(pkalist >= 0 & pkalist <= 14);
-        else
-            errorMets = [errorMets; {met}];
-            upKa(n).success = false;
-            pkalist = [];
-        end
-        
-        if ~isempty(pkalist)
-            pkas = zeros(length(pkalist)+1);
-            pkas(2:end,1:end-1) = diag(pkalist);
-            pkas = pkas + pkas';
-            
-            mmsbool = false(size(pkas,1),1);
-            if any(pkalist <= 7)
-                mmsbool(find(pkalist <= 7,1)) = true;
-            else
-                mmsbool(end) = true;
-            end
-            
-            zs = 1:size(pkas,1);
-            zs = zs - find(mmsbool);
-            zs = zs + charge;
-            
-            nHs = 1:size(pkas,1);
-            nHs = nHs - find(mmsbool);
-            nHs = nHs + nH;
-        else
-            pkas = [];
-            zs = charge;
-            nHs = nH;
-            mmsbool = true;
-        end
-        
-        upKa(n).met = met;
-        upKa(n).pKas = pkas;
-        upKa(n).zs = zs;
-        upKa(n).nHs = nHs;
-        upKa(n).majorMSpH7 = mmsbool;
-    end
-    
-    if ~isempty(errorMets)
-        fprintf(['\nChemAxon''s pKa calculator plugin returned an error for metabolites:\n' sprintf('%s\n',errorMets{:})]);
-    end
-    
-    % Create final output structure
-    pKa.success = false;
-    pKa.met = [];
-    pKa.pKas = [];
-    pKa.zs = [];
-    pKa.nHs = [];
-    pKa.majorMSpH7 = [];
-    pKa = repmat(pKa,length(inchi),1);
-    
-    % Map pKa to input cell array
-    pKa(bool) = upKa(crossj);
-else
-    % Create dummy output structure if call to Chemaxon cxcalc is not a
-    % success
-    pKa.success = false;
-    pKa.met = [];
-    pKa.pKas = [];
-    pKa.zs = [];
-    pKa.nHs = [];
-    pKa.majorMSpH7 = [];
-    pKa = repmat(pKa,length(inchi),1);
+if status ~= 0
+    error('Could not estimate pKa values. Check that ChemAxon Calculator Plugins are installed correctly.')
 end
+
+% Split for cxcalc 15.6.15.0 in tabs and empty lines.
+result = regexp(result,'\n?\t?','split');
+
+% create a new result excluding the header
+for i=1:length(result)
+    if i>(2*npKas + 3)
+        g=i-(2*npKas + 2);
+        newresult{1,g}=result{i};
+    end
+end
+
+% split this result in lines for each metabolite
+count=0;
+for i=1:(2*npKas + 2):(length(newresult)-(2*npKas + 2))
+    count=count+1;
+    
+    for j=1:(2*npKas + 2)
+        if j<(2*npKas + 2)
+            % for pKa values change , by .
+            newesresult{count,j}=strrep(newresult{j+i-1},',','.');
+        else
+            newesresult{count,j}=newresult{j+i-1};
+        end
+    end
+    
+end
+
+% Delete temporary file
+delete(inchiFileName);
+
+% Create unique pKa structure
+upKa.success = true;
+upKa.met = [];
+upKa.pKas = [];
+upKa.zs = [];
+upKa.nHs = [];
+upKa.majorMSpH7 = [];
+upKa = repmat(upKa,length(uinchi),1);
+
+errorMets = {};
+for n = 1:length(uinchi)
+    met = umets{n};
+    currentInchi = uinchi{n};
+    [formula, nH, charge] = getFormulaAndChargeFromInChI(currentInchi);
+    
+    pkalist = {newesresult{n,:}};
+    if length(pkalist) == 2*npKas + 2;
+        pkalist = pkalist(2:end-1);
+        pkalist = pkalist(~cellfun('isempty',pkalist));
+        % This had to be commented due to doing it before:
+        %pkalist = regexprep(pkalist,',','.');
+        pkalist = str2double(pkalist);
+        pkalist = sort(pkalist,'descend');
+        pkalist = pkalist(pkalist >= 0 & pkalist <= 14);
+    else
+        errorMets = [errorMets; {met}];
+        upKa(n).success = false;
+        pkalist = [];
+    end
+    
+    if ~isempty(pkalist)
+        pkas = zeros(length(pkalist)+1);
+        pkas(2:end,1:end-1) = diag(pkalist);
+        pkas = pkas + pkas';
+        
+        mmsbool = false(size(pkas,1),1);
+        if any(pkalist <= 7)
+            mmsbool(find(pkalist <= 7,1)) = true;
+        else
+            mmsbool(end) = true;
+        end
+        
+        zs = 1:size(pkas,1);
+        zs = zs - find(mmsbool);
+        zs = zs + charge;
+        
+        nHs = 1:size(pkas,1);
+        nHs = nHs - find(mmsbool);
+        nHs = nHs + nH;
+    else
+        pkas = [];
+        zs = charge;
+        nHs = nH;
+        mmsbool = true;
+    end
+    
+    upKa(n).met = met;
+    upKa(n).pKas = pkas;
+    upKa(n).zs = zs;
+    upKa(n).nHs = nHs;
+    upKa(n).majorMSpH7 = mmsbool;
+end
+
+if ~isempty(errorMets)
+    fprintf(['\nChemAxon''s pKa calculator plugin returned an error for metabolites:\n' sprintf('%s\n',errorMets{:})]);
+end
+
+% Create final output structure
+pKa.success = false;
+pKa.met = [];
+pKa.pKas = [];
+pKa.zs = [];
+pKa.nHs = [];
+pKa.majorMSpH7 = [];
+pKa = repmat(pKa,length(inchi),1);
+
+% Map pKa to input cell array
+pKa(bool) = upKa(crossj);
+
 

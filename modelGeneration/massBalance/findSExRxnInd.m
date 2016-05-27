@@ -45,6 +45,10 @@ end
 
 biomassBool=false(nRxn,1);
 
+if ~isfield(model,'c')
+    model.c=zeros(nMet,1);
+end
+
 %locate biomass reaction if there is one
 if ~isfield(model,'biomassRxnAbbr')
     if 0

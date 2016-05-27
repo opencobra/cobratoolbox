@@ -1,3 +1,4 @@
+function model = addThermoToModel(model)
 % given a standard COBRA model, add thermodynamic data to it using
 % the Component Contribution method
 %
@@ -6,8 +7,6 @@
 %
 % returns:
 %   model        - same as the input, but with values of Gibbs energies
-%
-function model = addThermoToModel(model)
 
 use_cached_kegg_inchis = true;
 % use_cached_kegg_inchis = false;
