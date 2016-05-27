@@ -1,0 +1,12 @@
+Test files created with the help of 
+  http://www.json-generator.com/
+
+Template
+[
+    '{{repeat(5)}}',
+    {
+        id: '{{index}}',
+        name: '{{company}}',
+        city: '{{city}}'
+    }
+]

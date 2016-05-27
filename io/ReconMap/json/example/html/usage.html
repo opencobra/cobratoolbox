@@ -1,0 +1,210 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Reading in JSON Strings</title><meta name="generator" content="MATLAB 8.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2013-06-14"><meta name="DC.source" content="usage.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Reading in JSON Strings</h1><!--introduction--><p>This file is designed to help you oonvert JSON strings into MATLAB-usable data. Note that it works with a string, not a file, so you have to load in the file yourself.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Starting with a string</a></li><li><a href="#3">Dealing with Numbers</a></li><li><a href="#7">Reading from Files</a></li></ul></div><h2>Starting with a string<a name="1"></a></h2><p>Let's take a simple structure in JSON and load it. The JSON.m file is a MATLAB class with a single public method: JSON.parse()</p><pre class="codeinput">str = <span class="string">'{"name":"North Carolina","capital":"Raleigh","population":"9,752,073"}'</span>;
+data = JSON.parse(str)
+</pre><pre class="codeoutput">
+data = 
+
+          name: 'North Carolina'
+       capital: 'Raleigh'
+    population: '9,752,073'
+
+</pre><p>Now we can work with the data in MATLAB.</p><pre class="codeinput">fprintf(<span class="string">'The capital of %s is %s\n'</span>, <span class="keyword">...</span>
+    data.name,data.capital)
+</pre><pre class="codeoutput">The capital of North Carolina is Raleigh
+</pre><h2>Dealing with Numbers<a name="3"></a></h2><p>Be aware the numbers may be represented as strings or as numbers, depending on how they appear in the JSON text.</p><pre class="codeinput">fprintf(<span class="string">'The population of %s is %s\n'</span>, <span class="keyword">...</span>
+    data.name, <span class="keyword">...</span>
+    data.population)
+</pre><pre class="codeoutput">The population of North Carolina is 9,752,073
+</pre><p>That looks good. But if you try to do math on the population, you're in for a surprise. Suppose we try to round to the nearest thousand.</p><pre class="codeinput">round(data.population/1000)*1000
+</pre><pre class="codeoutput">
+ans =
+
+     0     0     0     0     0     0     0     0     0
+
+</pre><p>Not exactly what we want. So we can use <a href="http://www.mathworks.com/help/matlab/ref/str2double.html">str2double</a> like so:</p><pre class="codeinput">round(str2double(data.population)/1000)*1000
+</pre><pre class="codeoutput">
+ans =
+
+     9752000
+
+</pre><p>If we are the ones making the JSON string in the first place, it might be preferable to store the number without the quotes. In this case</p><pre class="codeinput">str = <span class="string">'{"name":"North Carolina","capital":"Raleigh","population":9752073}'</span>;
+data = JSON.parse(str)
+
+fprintf(<span class="string">'Rounded to the nearest thousand, the population of %s is %d\n'</span>, <span class="keyword">...</span>
+    data.name, <span class="keyword">...</span>
+    round(data.population/1000)*1000)
+</pre><pre class="codeoutput">
+data = 
+
+          name: 'North Carolina'
+       capital: 'Raleigh'
+    population: 9752073
+
+Rounded to the nearest thousand, the population of North Carolina is 9752000
+</pre><h2>Reading from Files<a name="7"></a></h2><p>Generally your JSON text will come from a file.</p><pre class="codeinput">fname = <span class="string">'capitals.json'</span>;
+fid = fopen(fname);
+raw = fread(fid,inf);
+str = char(raw');
+fclose(fid);
+
+data = JSON.parse(str)
+</pre><pre class="codeoutput">
+data = 
+
+  Columns 1 through 4
+
+    [1x1 struct]    [1x1 struct]    [1x1 struct]    [1x1 struct]
+
+  Column 5
+
+    [1x1 struct]
+
+</pre><p>The result in this case is a cell array of structures.</p><pre class="codeinput"><span class="keyword">for</span> n = 1:length(data)
+    fprintf(<span class="string">'The capital of %s is %s\n'</span>, <span class="keyword">...</span>
+        data{n}.name,data{n}.capital)
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">The capital of Alabama is Montgomery
+The capital of Georgia is Atlanta
+The capital of New York is Albany
+The capital of Missouri is Jefferson City
+The capital of North Carolina is Raleigh
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2013a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Reading in JSON Strings
+% This file is designed to help you oonvert JSON strings into MATLAB-usable
+% data. Note that it works with a string, not a file, so you have to load
+% in the file yourself.
+
+%% Starting with a string
+% Let's take a simple structure in JSON and load it. The JSON.m file is a
+% MATLAB class with a single public method: JSON.parse()
+
+str = '{"name":"North Carolina","capital":"Raleigh","population":"9,752,073"}';
+data = JSON.parse(str)
+
+%% 
+% Now we can work with the data in MATLAB.
+
+fprintf('The capital of %s is %s\n', ...
+    data.name,data.capital)
+
+%% Dealing with Numbers
+% Be aware the numbers may be represented as strings or as numbers,
+% depending on how they appear in the JSON text.
+
+fprintf('The population of %s is %s\n', ...
+    data.name, ...
+    data.population)
+
+%% 
+% That looks good. But if you try to do math on the population, you're in
+% for a surprise. Suppose we try to round to the nearest thousand.
+
+round(data.population/1000)*1000
+
+%%
+% Not exactly what we want. So we can use
+% <http://www.mathworks.com/help/matlab/ref/str2double.html str2double>
+% like so:
+
+round(str2double(data.population)/1000)*1000
+
+%%
+% If we are the ones making the JSON string in the first place, it might be
+% preferable to store the number without the quotes. In this case
+
+str = '{"name":"North Carolina","capital":"Raleigh","population":9752073}';
+data = JSON.parse(str)
+
+fprintf('Rounded to the nearest thousand, the population of %s is %d\n', ...
+    data.name, ...
+    round(data.population/1000)*1000)
+
+%% Reading from Files
+% Generally your JSON text will come from a file.
+
+fname = 'capitals.json';
+fid = fopen(fname);
+raw = fread(fid,inf);
+str = char(raw');
+fclose(fid);
+
+data = JSON.parse(str)
+
+%% 
+% The result in this case is a cell array of structures.
+
+for n = 1:length(data)
+    fprintf('The capital of %s is %s\n', ...
+        data{n}.name,data{n}.capital)
+end
+
+
+##### SOURCE END #####
+--></body></html>

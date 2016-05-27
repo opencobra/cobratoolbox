@@ -1,0 +1,30 @@
+[
+  {
+     "ASCII":"34.0",
+     "char":"doubleQuote"
+  },
+  {
+     "ASCII":"44",
+     "char":","
+  },
+  {
+     "ASCII":"91",
+     "char":"["
+  },
+  {
+     "ASCII":"93",
+     "char":"]"
+  },
+  {
+     "ASCII":"93",
+     "char":"]"
+  },
+  {
+     "ASCII":"123",
+     "char":"{"
+  },
+  {
+     "ASCII":"125",
+     "char":"}"
+  }
+]

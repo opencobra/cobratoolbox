@@ -1,0 +1,27 @@
+[
+  {
+     "name":"Alabama",
+     "capital":"Montgomery",
+     "population":"4,822,023"
+  },
+  {
+     "name":"Georgia",
+     "capital":"Atlanta",
+     "population":"9,919,945"
+  },
+  {
+     "name":"New York",
+     "capital":"Albany",
+     "population":"19,570,261"
+  },
+  {
+     "name":"Missouri",
+     "capital":"Jefferson City",
+     "population":"6,021,988"
+  },
+  {
+     "name":"North Carolina",
+     "capital":"Raleigh",
+     "population":"9,752,073"
+  }
+]

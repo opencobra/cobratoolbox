@@ -1,0 +1,32 @@
+{
+    "id": 1,
+    "jsonrpc": "2.0",
+    "total": 5,
+    "result": [
+        {
+            "id": 1,
+            "name": "Transtouch",
+            "city": "Alaska"
+        },
+        {
+            "id": 2,
+            "name": "Celgra",
+            "city": "Cleveland"
+        },
+        {
+            "id": 3,
+            "name": "Systheon",
+            "city": "Beaumont"
+        },
+        {
+            "id": 4,
+            "name": "Anagraph",
+            "city": "Buffalo"
+        },
+        {
+            "id": 5,
+            "name": "Videobanc",
+            "city": "Fairfield"
+        }
+    ]
+}
