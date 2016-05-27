@@ -106,23 +106,35 @@ function modelT = setupThermoModel(model,molfileDir,cid,T,cellCompartments,ph,is
 %                       component contribution method for estimation of
 %                       standard Gibbs energies. 
 % 
-% AVAILABILITY OF EXTERNAL DEPENDENCIES
+% DEPENDENCIES
 % The COBRA toolbox: Freely available at
-% http://sourceforge.net/projects/opencobra/files/cobra/
-% 
-% The component contribution method: Freely available at
-% http://sourceforge.net/projects/opencobra/files/cobra/foundry/
+% https://github.com/opencobra/cobratoolbox
+% which includes the component contribution method
+% https://github.com/opencobra/cobratoolbox/thermo/
 % 
 % Python: Freely available at http://www.python.org/download/
 % 
 % Numpy: Freely available at
 % http://sourceforge.net/projects/numpy/files/NumPy/
 % 
-% ChemAxon's Calculator Plugins: Free academic license available for
-% application at http://www.chemaxon.com/my-chemaxon/my-academic-license/
-% 
+% ChemAxon's cxcalc, with licence, which is part of Marvin Beans
+% ChemAxon Marvin Beans download
+% https://www.chemaxon.com/download/marvin-suite/#mbeans
+% ChemAxon Marvin Beans installation - all platforms
+% https://docs.chemaxon.com/display/docs/Installation+MS#InstallationMS-MarvinBeansforJava
+% ChemAxon Marvin Beans installation - linux
+% https://docs.chemaxon.com/display/docs/Installation+MS#InstallationMS-Linux/SolarisLinux/Solaris
+% ChemAxon Marvin Beans cxcalc - about
+% https://docs.chemaxon.com/display/CALCPLUGS/cxcalc+command+line+tool
+% ChemAxon Marvin Beans cxcalc - installation
+% ChemAxon Free academic license - available from 
+% http://www.chemaxon.com/my-chemaxon/my-academic-license/
+% ChemAxon Free academic license - installation
+% https://marvin-demo.chemaxon.com/marvin/help/licensedoc/installToDesktop.html#gui
+%
 % Open Babel and Python bindings: Freely available at
 % http://openbabel.org/wiki/Get_Open_Babel
+% In linux, these are the openbabel and python-openbabel packages
 % 
 % Ronan M. T. Fleming, Sept. 2012   Version 1.0
 % Hulda S. H., Dec. 2012            Version 2.0

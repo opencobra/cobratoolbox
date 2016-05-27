@@ -23,3 +23,13 @@ if isempty(stm_dir) || isempty(cc_dir)
     end
 end
 
+
+
+%Setup Babel
+%libstdc++.so.6 must be the system one, not the one in Matlab's path, so we
+%have to edit the 'LD_LIBRARY_PATH' to make sure that it has the correct
+%system path before the Matlab path! The solution will be arch dependent
+
+%This is what works on Ubuntu 15.10
+setenv('LD_LIBRARY_PATH',['/usr/lib/x86_64-linux-gnu:' getenv('LD_LIBRARY_PATH')])
+
