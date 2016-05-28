@@ -1,4 +1,4 @@
-function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVA(model,optPercentage,objective,solver,matrixAS,cpxControl,cpxAlgorithm,rxnsList)
+function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVA(model,optPercentage,objective,solver,matrixAS,cpxControl,cpxAlgorithm,rxnsList,strategy)
 %fastFVA Flux variablity analysis optimized for the GLPK and CPLEX solvers.
 %
 % [minFlux,maxFlux] = fastFVA(model,optPercentage,objective, solver)
@@ -62,17 +62,33 @@ function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVA(model,optPe
 % Contributor: Laurent Heirendt, LCSB - Linux verison
 % Last updated: April/May 2016
 
+% SPLITTING STRATEGIES
+
+% (0) Blind-splitting : DEFAULT
+%
+% (1) Extremal Hard-and-Easy Blocks Splitting
+% everyone gets a heavy chunk and everyone gets and easy chunk
+% ----
+% (2) Central Hard-and-Easy Blocks Splitting
+% the first one gets one bad and one very easy
+% the last one get a hard on and one very easy
+% ----
+% (3) Extremal Hard-and-Easy Points
+% every thread gets the worst, until nothing else is left
+
+
 % Turn on the load balancing for large problems
 loadBalancing = 0; %0: off; 1: on
 
-% Define if information about the work load distriibution shall be shown or not
+% Define if information about the work load distriibution will be shown or not
 showSplitting = 1;
 
 % Turn on the verbose mode
 verbose=1;
 
 % Define the input arguments
-if nargin<8,
+if nargin<9, strategy = 0;                end
+if nargin<8
     rxns = 1:length(model.rxns);
     rxnsList = {};
 else
@@ -201,12 +217,89 @@ else
       i=i+1;
    end
 
-   assert(sum(nrxn)==n);
-   istart=1; iend=nrxn(1);
-   for i=2:nworkers
-      istart(i)=iend(i-1)+1;
-      iend(i)=istart(i)+nrxn(i)-1;
-   end
+     Nrxns = length(model.rxns);
+     assert(sum(nrxn)==n);
+     istart=1; iend=nrxn(1);
+     for i=2:nworkers
+        istart(i)=iend(i-1)+1;
+        iend(i)=istart(i)+nrxn(i)-1;
+     end
+
+   startMarker1 = istart;
+   endMarker1 = iend;
+
+   startMarker2 = istart;
+   endMarker2 = iend;
+
+
+%% Calculate the column density and row density
+   [Nmets,Nrxns] = size(A);
+
+   cdVect = zeros(Nrxns,1);
+   rdVect = zeros(Nmets,1);
+
+   for i=1:Nmets
+     rowDensity = nnz(A(i,:));
+     rowDensity = rowDensity / Nrxns * 100;
+     rdVect(i) = rowDensity;
+   end;
+
+   for i=1:Nrxns
+     columnDensity = nnz(A(:,i));
+     columnDensity = columnDensity / Nmets * 100;
+     cdVect(i) = columnDensity;
+   end;
+
+
+   [sortedcdVect,indexcdVect] = sort(cdVect,'descend');
+   [sortedrdVect,indexrdVect] = sort(rdVect,'descend');
+
+   rxnsVect = linspace(1,Nrxns,Nrxns);
+   metsVect = linspace(1,Nmets,Nmets);
+
+   sortedrxnsVect = rxnsVect(indexcdVect);
+   sortedmetsVect = metsVect(indexrdVect);
+
+
+
+   if(strategy == 1)
+
+       nbRxnsPerThread = ceil(Nrxns/(2*nworkers));
+
+       for i = 1:nworkers
+         startMarker1(i) = (i-1) * nbRxnsPerThread + 1;
+         endMarker1(i) = i * nbRxnsPerThread;
+
+         startMarker2(i) = startMarker1(i) + ceil(Nrxns/2);
+         endMarker2(i) = endMarker1(i) + ceil(Nrxns/2);
+
+           if endMarker1(i) > Nrxns
+             endMarker1(i) = Nrxns;
+           end;
+
+           if endMarker2(i) > Nrxns
+             endMarker2(i) = Nrxns;
+           end;
+       end;
+    elseif(strategy == 2)
+      nbRxnsPerThread = ceil(Nrxns/(2*nworkers));
+
+      for i = 1:nworkers
+        startMarker1(i) = (i-1) * nbRxnsPerThread + 1;
+        endMarker1(i) = i * nbRxnsPerThread;
+
+        endMarker2(i) = Nrxns - startMarker1(i) - 1;
+        startMarker2(i) = Nrxns - endMarker1(i);
+
+          if endMarker1(i) > Nrxns
+            endMarker1(i) = Nrxns;
+          end;
+
+          if endMarker2(i) > Nrxns
+            endMarker2(i) = Nrxns;
+          end;
+      end;
+   end;
 
    minFlux = zeros(length(model.rxns),1);
    maxFlux = zeros(length(model.rxns),1);
@@ -221,15 +314,28 @@ else
    end
 
    fprintf('\n -- Starting to loop through the %d workers. -- \n', nworkers);
+   fprintf('\n -- The splitting strategy is %d. -- \n', strategy);
 
    out = parfor_progress(nworkers);
 
    parfor i = 1:nworkers
 
+     rxnsKey = 0; %silence warning
+
+     %preparation of reactionKey
+      if strategy == 1 || strategy == 2
+        rxnsKey = [sortedrxnsVect(startMarker1(i):endMarker1(i)), sortedrxnsVect(startMarker2(i):endMarker2(i))];
+      else
+
+        rxnsKey = istart(i):iend(i);
+      end
+
       t = getCurrentTask();
 
+      if(strategy == 0)
       fprintf('\n----------------------------------------------------------------------------------\n --  Task Launched // TaskID: %d / %d (LoopID = %d) <> [%d, %d] / [%d, %d].\n', ...
               t.ID, nworkers, i, istart(i), iend(i), m, n);
+      end;
 
       tstart = tic;
 
@@ -239,14 +345,15 @@ else
 
       if bExtraOutputs
           [minf,maxf,iopt(i),iret(i),fbasol_single,fvamin_single,fvamax_single] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
-                                           optPercentage,obj,((istart(i):iend(i)))', ...
+                                           optPercentage,obj, rxnsKey', ...
                                            t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm);
       else
-
+      if(strategy == 0)
           fprintf(' >> Number of reactions given to the worker: %d \n', length((istart(i):iend(i)) ) );
+      end;
 
           [minf,maxf,iopt(i),iret(i)] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
-                                         optPercentage,obj,((istart(i):iend(i)))', ...
+                                         optPercentage,obj, rxnsKey', ...
                                          t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm);
 
       end
@@ -287,10 +394,11 @@ else
       fbasol = fbasolRes{1}; % Initial FBA solutions are identical across workers
       fvamin = zeros(length(model.rxns),length(model.rxns));
       fvamax = zeros(length(model.rxns),length(model.rxns));
-
-      for i=1:nworkers
+      if(strategy == 0)
+        for i=1:nworkers
          fvamin(:,rxns(istart(i):iend(i)))=fvaminRes{i};
          fvamax(:,rxns(istart(i):iend(i)))=fvamaxRes{i};
+        end;
       end
    end
 
@@ -298,9 +406,11 @@ else
 
 end
 
+  if(strategy == 0)
 if nargin==5 %test on nargin
     fvamin = fvamin(:,rxns);%keep only nonzero columns
     fvamax = fvamax(:,rxns);
     minFlux(find(~ismember(model.rxns, rxnsList)))=[];
     maxFlux(find(~ismember(model.rxns, rxnsList)))=[];
 end
+end;
