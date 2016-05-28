@@ -1,5 +1,11 @@
 function group_def = getGroupVectorFromInchi(inchi, silent)
-
+% poor programming not to explain what this function does
+% INPUTS
+%
+% OUTPUTS
+%
+% DEPENDENCIES
+ 
 if nargin < 2
     silent = true;
 end
@@ -13,9 +19,9 @@ fullpath = which('getGroupVectorFromInchi.m');
 fullpath = regexprep(fullpath,'getGroupVectorFromInchi.m','');
 
 if silent
-    cmd = ['python ' fullpath 'inchi2gv.py -s -i '];
+    cmd = ['python2 ' fullpath 'inchi2gv.py -s -i '];
 else
-    cmd = ['python ' fullpath 'inchi2gv.py -i '];
+    cmd = ['python2 ' fullpath 'inchi2gv.py -i '];
 end
 
 if ~ispc
@@ -35,6 +41,7 @@ if rval == 0 % && ~strcmp('Traceback', group_def(1:9))
         group_def = [];
     end
 else
+    fprintf('%s\n',['Warning: getGroupVectorFromInchi did not succeed for: ' inchi])
     group_def = [];
 end
 

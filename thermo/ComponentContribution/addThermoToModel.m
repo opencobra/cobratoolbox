@@ -2,6 +2,11 @@ function model = addThermoToModel(model)
 % given a standard COBRA model, add thermodynamic data to it using
 % the Component Contribution method
 %
+% INPUTS
+%
+% OUTPUTS
+%
+
 % inputs:
 %   model        - a standard COBRA model
 %

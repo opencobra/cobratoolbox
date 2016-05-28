@@ -1,3 +1,33 @@
+% These are the Von Bertylanffy DEPENDENCIES
+% The COBRA toolbox: Freely available at
+% https://github.com/opencobra/cobratoolbox
+% which includes the component contribution method
+% https://github.com/opencobra/cobratoolbox/thermo/
+% 
+% Python 2: Freely available at http://www.python.org/download/
+% 
+% Numpy: Freely available at
+% http://sourceforge.net/projects/numpy/files/NumPy/
+% 
+% ChemAxon's cxcalc, with licence, which is part of Marvin Beans
+% ChemAxon Marvin Beans download
+% https://www.chemaxon.com/download/marvin-suite/#mbeans
+% ChemAxon Marvin Beans installation - all platforms
+% https://docs.chemaxon.com/display/docs/Installation+MS#InstallationMS-MarvinBeansforJava
+% ChemAxon Marvin Beans installation - linux
+% https://docs.chemaxon.com/display/docs/Installation+MS#InstallationMS-Linux/SolarisLinux/Solaris
+% ChemAxon Marvin Beans cxcalc - about
+% https://docs.chemaxon.com/display/CALCPLUGS/cxcalc+command+line+tool
+% ChemAxon Marvin Beans cxcalc - installation
+% ChemAxon Free academic license - available from 
+% http://www.chemaxon.com/my-chemaxon/my-academic-license/
+% ChemAxon Free academic license - installation
+% https://marvin-demo.chemaxon.com/marvin/help/licensedoc/installToDesktop.html#gui
+%
+% Open Babel and Python bindings: Freely available at
+% http://openbabel.org/wiki/Get_Open_Babel
+% In linux, these are the openbabel and python-openbabel packages
+
 % Setup the paths to the data, scripts and functions
 % Check if this COBRA toolbox extension is in the Matlab path
 stm_dir = which('setupThermoModel.m');
@@ -19,7 +49,23 @@ if isempty(stm_dir) || isempty(cc_dir)
     end
 end
 
+% test if call to python2 works
+[status,groupsTemp] = system('python2 --version');
+if status~=0
+    error('python2 should be installed')
+end
 
+%test if call to cxcalc works
+[status,result] = system('cxcalc');
+if status ~= 0
+    error('Check that ChemAxon Marvin Beans is installed, licence is working and cxcalc is on the system path.')
+end
+
+%check if call to babel works
+[status,result] = system('babel');
+if status ~= 0
+    error('Check that OpenBabel is installed and on the system path.')
+end
 
 %Setup Babel
 %libstdc++.so.6 must be the system one, not the one in Matlab's path, so we

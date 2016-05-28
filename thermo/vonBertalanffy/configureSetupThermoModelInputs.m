@@ -1,5 +1,9 @@
 function model = configureSetupThermoModelInputs(model,T,cellCompartments,ph,is,chi,xmin,xmax,confidenceLevel)
 % Configures inputs to setupThermoModel (sets defaults etc.).
+% INPUTS
+%
+% OUTPUTS
+%
 
 % Configure metabolite identifiers
 model.mets = reshape(model.mets,length(model.mets),1);

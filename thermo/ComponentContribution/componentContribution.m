@@ -1,11 +1,18 @@
-% Perform the GERALD method on the training data which comprises
-% S - the stoichiometric matrix of measured reactions
-% G - the group incidence matrix
-% b - the observation vector (standard Gibbs energy of reactions)
-% w - the weight vector for each reaction in S
 function [G_gerald, cov_G, params] = componentContribution(S, G, b, w)
+% Perform the component contribution method on the training data
+%
+% INPUTS
+% S     the stoichiometric matrix of measured reactions
+% G 	the group incidence matrix
+% b     the observation vector (standard Gibbs energy of reactions)
+% w     the weight vector for each reaction in S
+%
+% OUTPUTS
+%
+
 
 [m, n] = size(S);
+%assert Generate an error when a condition is violated.
 assert (size(G, 1) == m);
 assert (size(b, 1) == n);
 assert (size(b, 2) == 1);
