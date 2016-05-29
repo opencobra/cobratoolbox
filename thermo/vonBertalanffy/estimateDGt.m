@@ -58,7 +58,7 @@ tValue = tValueMat(tValueMat(:,1) == confidenceLevel,2);
 
 % Define constants
 if ~isfield(model,'R')
-R = 8.3144621e-3; % Gas constant in kJ/(K*mol)
+    R = 8.3144621e-3; % Gas constant in kJ/(K*mol)
 end
 if ~isfield(model,'T')
     T= 310.15;

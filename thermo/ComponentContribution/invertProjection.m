@@ -21,9 +21,9 @@ if 0
     P_N = U(:, (r+1):end) * U(:, (r+1):end)';
     
 else
-    %Michael Saunders code -TODO integrate this properly
+    %Michael Saunders code
     [U1,D1,V1,r] = subspaceSVD(A);
     P_R=U1*U1';%projection matrix onto the range(A)
     P_N=eye(m) - U1*U1';%projection matrix onto the null(A')
-    inv_A=pinv(A);
+    inv_A=pinv(A,1e-12);
 end
