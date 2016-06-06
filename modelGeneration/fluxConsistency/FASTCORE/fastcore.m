@@ -23,7 +23,10 @@ function A = fastcore(C, model, epsilon, printlevel)
 % (c) Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013
 %     LCSB / LSRU, University of Luxembourg
 
-tic
+if ~exist('printLevel','var')
+    %For Compatability with the original fastcore syntax
+    printLevel = 1;
+end
 
 N = 1:numel(model.rxns);
 %reactions assumed to be irreversible in forward direction
