@@ -25,7 +25,7 @@ function A = fastcore(C, model, epsilon, printlevel)
 
 if ~exist('printLevel','var')
     %For Compatability with the original fastcore syntax
-    printLevel = 1;
+    printlevel = 1;
 end
 
 N = 1:numel(model.rxns);
