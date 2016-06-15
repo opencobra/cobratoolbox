@@ -33,7 +33,7 @@ function [inform,m,model]=checkStoichiometricConsistency(model,printLevel,method
 %                    reactions are supposed to be mass balanced.
 %
 % printLevel         {(0),1}
-% method.interface   {('solveCobraLP'),'cvx'} interface called to do the consistency check
+% method.interface   {('solveCobraLP'),'cvx','nonconvex'} interface called to do the consistency check
 % method.solver      {(default solver),'gurobi','mosek'} 
 % method.param       solver specific parameter structure
 %           
@@ -86,9 +86,9 @@ end
 
 % Check the stoichiometric consistency of the network by
 % solving the following linear problem
-%       min sum(l_i)
-%           s.t     S'*l = 0
-%                   l_i >= 1
+%       min sum(m_i)
+%           s.t     S'*m = 0
+%                   m >= 1
 % where l  is is a  mx1 vector of the molecular mass of m molecular species
 SInt=model.S(:,model.SIntRxnBool);
 LPproblem.A=SInt';
@@ -165,9 +165,9 @@ if inform~=1
             
             % Solve the linear problem
             %   max sum(z_i)
-            %       s.t S'*l = 0
-            %           z <= l
-            %           0 <= l <= 1e+4            
+            %       s.t S'*m = 0
+            %           z <= m
+            %           0 <= m <= 1e+4            
             %           0 <= z <= 1e-4
             nInt=nnz(model.SIntRxnBool);
             LPproblem.A=[SInt'      , sparse(nInt,nMet); 
@@ -213,6 +213,76 @@ if inform~=1
             algorithm=solution.algorithm;
             %change back the solver
             solverOK = changeCobraSolver(oldSolver,'LP');
+        case 'nonconvex'
+            tic
+            solution=maxCardinalityConservationVector(SInt);
+            timetaken=toc;
+            
+            if solution.stat==1
+                m = solution.l;
+                if isfield(model,'SIntMetBool')
+                    %boolean indicating metabolites involved in the maximal consistent vector
+                    model.SConsistentMetBool=m>smallestM & model.SIntMetBool;
+                else
+                    %boolean indicating metabolites involved in the maximal consistent vector
+                    model.SConsistentMetBool=m>smallestM;
+                end
+                inform=1;
+            else
+                disp(solution)
+                error('solve for maximal conservation vector failed')
+            end           
+        case 'MILP'
+            [nMet,~]=size(SInt);
+            
+            % Solve the MILP problem
+            %   max sum(z_i)
+            %       s.t S'*m = 0
+            %           z <= m
+            %           z binary
+            nInt=nnz(model.SIntRxnBool);
+            MILPproblem.A=[SInt'      , sparse(nInt,nMet); 
+                         speye(nMet),      -speye(nMet)];
+            
+            MILPproblem.b=zeros(nInt+nMet,1);
+            
+            MILPproblem.lb=[zeros(nMet,1);zeros(nMet,1)];
+            MILPproblem.ub=[ones(nMet,1)*largestM;ones(nMet,1)];
+            
+            MILPproblem.c=zeros(nMet+nMet,1);
+            MILPproblem.c(nMet+1:2*nMet,1)=1;
+            MILPproblem.osense=-1;
+            MILPproblem.csense(1:nInt,1)='E';
+            MILPproblem.csense(nInt+1:nInt+nMet,1)='G';
+            MILPproblem.vartype(1:nMet,1)='C';
+            MILPproblem.vartype(nMet+1:nMet+nMet,1)='B';
+            MILPproblem.x0 = zeros(nMet+nMet,1);
+            
+%             solverOK = changeCobraSolver('gurobi6','MILP');
+            %Requires the COBRA toolbox            
+            tic
+            if isfield(method,'param')
+                solution = solveCobraMILP(MILPproblem,'printLevel',printLevel-1,method.param);
+            else
+                solution = solveCobraMILP(MILPproblem,'printLevel',printLevel-1);
+            end
+            timetaken=toc;
+            
+            if solution.stat==1
+                m=solution.full(1:nMet,1);
+                z=solution.full(nMet+1:end,1);
+                if isfield(model,'SIntMetBool')
+                    %boolean indicating metabolites involved in the maximal consistent vector
+                    model.SConsistentMetBool=m>smallestM & model.SIntMetBool;
+                else
+                    %boolean indicating metabolites involved in the maximal consistent vector
+                    model.SConsistentMetBool=m>smallestM;
+                end
+                inform=1;
+            else
+                disp(solution)
+                error('solve for maximal conservation vector failed')
+            end
         case 'maxEnt'
             %does not work very well
             tic

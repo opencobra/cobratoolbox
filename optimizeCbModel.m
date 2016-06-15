@@ -171,7 +171,7 @@ end
 if ~isfield(model,'csense')
     % If csense is not declared in the model, assume that all
     % constraints are equalities.
-     warning('LP problem has no defined csense. We assume that all constraints are equalities.')
+    fprintf('%s\n','LP problem has no defined csense. We assume that all constraints are equalities.')
     LPproblem.csense(1:nMets,1) = 'E';
 else % if csense is in the model, move it to the lp problem structure
     if length(model.csense)~=nMets,
