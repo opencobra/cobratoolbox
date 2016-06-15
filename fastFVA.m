@@ -1,4 +1,4 @@
-function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVA(model,optPercentage,objective,solver,matrixAS,cpxControl,cpxAlgorithm,rxnsList,strategy)
+function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVA(model,optPercentage,objective,solver,rxnsList,matrixAS,cpxControl,cpxAlgorithm,strategy)
 %fastFVA Flux variablity analysis optimized for the GLPK and CPLEX solvers.
 %
 % [minFlux,maxFlux] = fastFVA(model,optPercentage,objective, solver)
@@ -88,15 +88,15 @@ verbose=1;
 
 % Define the input arguments
 if nargin<9, strategy = 0;                end
-if nargin<8
+if nargin<8, cpxAlgorithm   = 0;          end
+if nargin<7, cpxControl     = struct([]); end
+if nargin<6, matrixAS       = 'S';        end
+if nargin<5
     rxns = 1:length(model.rxns);
     rxnsList = {};
 else
     rxns = find(ismember(model.rxns, rxnsList))';%transpose rxns
 end
-if nargin<7, cpxAlgorithm   = 0;          end
-if nargin<6, cpxControl     = struct([]); end
-if nargin<5, matrixAS       = 'S';        end
 if nargin<4, solver         = 'glpk';     end
 if nargin<3, objective      = 'max';      end
 if nargin<2, optPercentage  = 100;        end
@@ -143,13 +143,13 @@ if isfield(model,'A') && (matrixAS == 'A')
    % "Generalized FBA"
    A = model.A;
    csense = model.csense(:);
-   fprintf(' >> Generalized FBA - Solving Model.A. (coupled) \n');
+   fprintf(' >> Solving Model.A. (coupled) - Generalized\n');
 else
    % Standard FBA
    A = model.S;
    csense = char('E'*ones(size(A,1),1));
    b = b(1:size(A,1));
-   fprintf(' >> Standard FBA - Solving Model.S. (uncoupled) \n');
+   fprintf(' >> Solving Model.S. (uncoupled) \n');
 end
 
 fprintf(' >> The number of arguments is: input: %d, output %d.\n', nargin, nargout);
