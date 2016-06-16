@@ -15,7 +15,7 @@ function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,m
 %                   (Default = false)
 % fid               Optional file identifier for printing in files
 % directionFlag     Checks directionality of reaction. See Note.
-%                   (Default = true)
+%                   (Default = false)
 % gprFlag           print gene protein reaction association
 %                   (Default = false)
 %
@@ -32,6 +32,7 @@ function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,m
 % 03/10/10 Richard Que    added lb < 0 requirement for reversing directionality
 % 21/11/14 Ronan Fleming  printing gpr optional
 % 15/12/14 Thomas Pfau  corrected line end
+% 16/07/16 Ronan Fleming directionality not flipped by default anymore
 
 if (nargin < 2)
     rxnAbbrList = model.rxns;
@@ -49,7 +50,7 @@ if (nargin < 6)
     fid = 1;
 end
 if (nargin < 7)
-    directionFlag = true;
+    directionFlag = false;
 end
 if (nargin < 8)
     gprFlag = false;

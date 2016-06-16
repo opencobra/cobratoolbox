@@ -100,7 +100,7 @@ LPproblem.osense=1;
 LPproblem.csense(1:size(LPproblem.A,1),1)='E';
 
 %Requires the openCOBRA toolbox
-solution = solveCobraLP(LPproblem,'printLevel',printLevel-1);
+solution = solveCobraLP(LPproblem,'printLevel',printLevel);
 
 %OUTPUT
 % solution Structure containing the following fields describing a LP
@@ -160,7 +160,6 @@ if inform~=1
             oldSolver=CBTLPSOLVER;
             solverOK = changeCobraSolver(method.solver,'LP');
             
-            
             [nMet,~]=size(SInt);
             
             % Solve the linear problem
@@ -214,12 +213,17 @@ if inform~=1
             %change back the solver
             solverOK = changeCobraSolver(oldSolver,'LP');
         case 'nonconvex'
+            %set the solver and solver parameters
+            global CBTLPSOLVER
+            method.solver=CBTLPSOLVER;
             tic
             solution=maxCardinalityConservationVector(SInt);
             timetaken=toc;
-            
+            method.solver='cappedL1';
             if solution.stat==1
                 m = solution.l;
+                %dummy z
+                z = zeros(nMet,1);
                 if isfield(model,'SIntMetBool')
                     %boolean indicating metabolites involved in the maximal consistent vector
                     model.SConsistentMetBool=m>smallestM & model.SIntMetBool;
@@ -297,6 +301,9 @@ if inform~=1
             end
             z=zeros(nMet,1);
     end
+    if any(m<0)
+        error('m should be greater than or equal to zero')
+    end
     m(m<0)=0;
     if printLevel>0
         if isfield(method,'param')
@@ -310,11 +317,10 @@ if inform~=1
     end
 else
     m=solution.full;
-    %The only consistent rows are those corresponding to non-exchange
-    %reactions
+    %The only consistent rows are those corresponding to non-exchange reactions
     model.SConsistentMetBool=model.SIntMetBool;
     if printLevel>0
-        fprintf('%s\n',['Stoichiometrically consistent ' intR 'with respect to non-exchange reactions.']);
+        fprintf('%s\n',['Stoichiometrically consistent ' intR ' with respect to non-exchange reactions.']);
     end
 end
 

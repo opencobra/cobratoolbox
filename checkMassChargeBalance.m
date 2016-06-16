@@ -223,7 +223,7 @@ if ~isempty(imBalancedCharge)
 end
 
 %nonzero rows corresponding to completely mass balanced reactions
-balancedMetBool = (sum(abs(model.S(:,model.SIntRxnBool & ~imBalancedRxnBool)),2)~=0);
+balancedMetBool = (sum(abs(model.S(:,~imBalancedRxnBool)),2)~=0);
 
 
 

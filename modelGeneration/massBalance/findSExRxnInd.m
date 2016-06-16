@@ -11,6 +11,7 @@ function model=findSExRxnInd(model,nRealMet,printLevel)
 %INPUT
 % model
 % model.biomassRxnAbbr      abbreviation of biomass reaction
+% printLevel                
 %
 %OPTIONAL INPUT
 % nRealMet                  specified in case extra rows in S which dont
@@ -43,13 +44,13 @@ if ~exist('nRealMet','var')
     end
 end
 
-biomassBool=false(nRxn,1);
+SExRxnBool=false(nRxn,1);
 
+%locate biomass reaction if there is one
+biomassBool=false(nRxn,1);
 if ~isfield(model,'c')
     model.c=zeros(nMet,1);
 end
-
-%locate biomass reaction if there is one
 if ~isfield(model,'biomassRxnAbbr')
     if 0
         if printLevel>0
@@ -92,125 +93,125 @@ else
         end
     end
 end
+%add biomass reaction to list of exchange reactions
+SExRxnBool(biomassBool)=1;
 
-if nMet > 2000 && 0 %Ronan
-    % Human model or E.coli merged matrix
-    model.ExchRxnBool=strncmp('Exch_', model.rxns, 5)==1;
-    model.EXRxnBool=strncmp('EX_', model.rxns, 3)==1;
-    %demand reactions going out of model
-    model.DMRxnBool=strncmp('DM_', model.rxns, 3)==1;
-    
-    bool=strcmp('DM_atp(c)',model.rxns);
-    if any(bool)
-        if printLevel>0
-            fprintf('%s\n','ATP demand reaction is not considered an exchange reaction by default.')
-        end
-        model.DMRxnBool(bool)=0;
-    end
-    
-    %sink reactions going into or out of model
-    model.SinkRxnBool=strncmp('sink_', model.rxns, 5)==1;
-    
-    %input/output
-    SExRxnBool = model.ExchRxnBool | model.EXRxnBool | model.DMRxnBool | model.SinkRxnBool | biomassBool;
-    
-    %double check now by identifying reactions with only one metabolite
-    SExRxnBool2=false(nRxn,1);
-    for n=1:nRxn
-        %find reactions with only one coefficient
-        if nnz(model.S(1:nRealMet,n))==1
-            SExRxnBool2(n)=1;
-        end
-    end
-    SExRxnBool2 = SExRxnBool2 | biomassBool;
-    
-    diffBool= ~SExRxnBool & SExRxnBool2;
-    if any(diffBool)
-        if printLevel>0
-            fprintf('%s\n','Missed Exchanges:')
-            fprintf('%s\t%s\t%s\t\t%s\t\t%s\n','Coefficient','Metabolite','#','Reaction','#')
-        end
-        for n=1:nRxn
-            if diffBool(n)
-                objMetInd=find(model.S(:,n));
-                for m=1:length(objMetInd)
-                    Sij=full(model.S(objMetInd(m),n));
-                    if length(model.mets{objMetInd(m)})<4
-                        if printLevel>0
-                            fprintf('%g\t\t\t%s\t\t\t%i\t%s\t\t%i\n',Sij,model.mets{objMetInd(m)},objMetInd(m),model.rxns{n},n)
-                        end
-                    else
-                        if length(model.mets{objMetInd(m)})<8
-                            if printLevel>0
-                                fprintf('%g\t\t\t%s\t\t%i\t%s\t\t%i\n',Sij,model.mets{objMetInd(m)},objMetInd(m),model.rxns{n},n)
-                            end
-                        else
-                            if length(model.mets{objMetInd(m)})<12
-                                if printLevel>0
-                                    fprintf('%g\t\t\t%s\t%i\t%s\t\t%i\n',Sij,model.mets{objMetInd(m)},objMetInd(m),model.rxns{n},n)
-                                end
-                            end
-                        end
-                    end
+for n=1:nRxn
+    %find reactions with only one coefficient
+    %or no coefficient at all - Ronan May 29th 2011
+    if nnz(model.S(1:nRealMet,n))<=1
+        SExRxnBool(n,1)=1;
+        if 0
+            if nonzeros(model.S(1:nRealMet,n))>0
+                if printLevel>0
+                    fprintf('%s\t%s\n','Positive coefficient:',model.rxns{n});
+                end
+            else
+                if printLevel>0
+                    fprintf('%s\t%s\n','Negative coefficient:',model.rxns{n});
+                    %                 fprintf('%s%s%s%s%s\n','''',model.rxns{n},''',0 ,0 ''',model.mets{find(model.S(1:nRealMet,n)~=0)},''',0 ,0 ;');
                 end
             end
         end
     end
-    
-    %dont check if there are coupling constraints
-    %(E. coli E matrix specific)
-    if ~isfield(model,'A')
-        diffBool= SExRxnBool & ~SExRxnBool2;
-        if any(diffBool)
-            if printLevel>0
-                
-                fprintf('%s\n','Exchanges (by prefix) with more than one coefficient:')
-                fprintf('%s\t%s\n','#', 'Exchange')
-            end
-            for n=1:length(diffBool)
-                if diffBool(n)
-                    equation=printRxnFormula(model,model.rxns(n),0);
-                    if printLevel>0
-                        fprintf('%i\t%s\t%s\n',n,model.rxns{n},equation{1});
-                    end
-                end
-            end
-        end
+end
+
+% models with typical COBRA abbreviations - heuristic
+model.ExchRxnBool=strncmp('Exch_', model.rxns, 5)==1;
+model.EXRxnBool=strncmp('EX_', model.rxns, 3)==1;
+%demand reactions going out of model
+model.DMRxnBool=strncmp('DM_', model.rxns, 3)==1;
+%sink reactions going into or out of model
+model.SinkRxnBool=strncmp('sink_', model.rxns, 5)==1;
+
+%remove ATP demand as it is usually mass balanced
+bool=strcmp('ATPM',model.rxns);
+if any(bool)
+    if printLevel>0
+        fprintf('%s\n','ATP maintenance reaction is not considered an exchange reaction by default. Should be mass balanced:')
     end
-    
-else
-    SExRxnBool=false(nRxn,1);
-    
+    formulas = printRxnFormula(model,{'ATPM'});
+    model.DMRxnBool(bool)=0;
+end
+
+bool=strcmp('DM_atp(c)',model.rxns);
+if any(bool)
+    if printLevel>0
+        fprintf('%s\n','ATP demand reaction is not considered an exchange reaction by default. Should be mass balanced:')
+    end
+    formulas = printRxnFormula(model,{'DM_atp(c)'});
+    model.DMRxnBool(bool)=0;
+end
+
+bool=strcmp('DM_atp_c_',model.rxns);
+if any(bool)
+    if printLevel>0
+        fprintf('%s\n','ATP demand reaction is not considered an exchange reaction by default. Should be mass balanced:')
+    end
+    formulas = printRxnFormula(model,{'DM_atp_c_'});
+    model.DMRxnBool(bool)=0;
+end
+
+%input/output
+SExRxnBool2 = model.ExchRxnBool | model.EXRxnBool | model.DMRxnBool | model.SinkRxnBool | biomassBool;
+
+diffBool= ~SExRxnBool & SExRxnBool2;
+if any(diffBool)
+    if printLevel>0
+        fprintf('%s\n','Exchanges that would otherwise have been missed without abbreviation prefix search:')
+        fprintf('%s\t%s\t%s\t\t%s\t\t%s\n','Coefficient','Metabolite','#','Reaction','#')
+    end
     for n=1:nRxn
-        %find reactions with only one coefficient
-        %or no coefficient at all - Ronan May 29th 2011
-        if nnz(model.S(1:nRealMet,n))<=1
-            SExRxnBool(n,1)=1;
-            if 0
-                if nonzeros(model.S(1:nRealMet,n))>0
+        if diffBool(n)
+            objMetInd=find(model.S(:,n));
+            for m=1:length(objMetInd)
+                Sij=full(model.S(objMetInd(m),n));
+                if length(model.mets{objMetInd(m)})<4
                     if printLevel>0
-                        fprintf('%s\t%s\n','Positive coefficient:',model.rxns{n});
+                        fprintf('%g\t\t\t%s\t\t\t%i\t%s\t\t%i\n',Sij,model.mets{objMetInd(m)},objMetInd(m),model.rxns{n},n)
                     end
                 else
-                    if printLevel>0
-                        fprintf('%s\t%s\n','Negative coefficient:',model.rxns{n});
-                        %                 fprintf('%s%s%s%s%s\n','''',model.rxns{n},''',0 ,0 ''',model.mets{find(model.S(1:nRealMet,n)~=0)},''',0 ,0 ;');
+                    if length(model.mets{objMetInd(m)})<8
+                        if printLevel>0
+                            fprintf('%g\t\t\t%s\t\t%i\t%s\t\t%i\n',Sij,model.mets{objMetInd(m)},objMetInd(m),model.rxns{n},n)
+                        end
+                    else
+                        if length(model.mets{objMetInd(m)})<12
+                            if printLevel>0
+                                fprintf('%g\t\t\t%s\t%i\t%s\t\t%i\n',Sij,model.mets{objMetInd(m)},objMetInd(m),model.rxns{n},n)
+                            end
+                        end
                     end
                 end
             end
         end
     end
-    if ~isempty(strcmp('ATPM',model.rxns))
-        if printLevel>0
-            fprintf('%s\n','ATP maintenance reaction is not considered an exchange reaction by default.')
-        end
-        ATPM_Ind=find(strcmp('ATPM',model.rxns)==1);
-        SExRxnBool(ATPM_Ind,1)=0;
-    end
-    SExRxnBool(biomassBool)=1;
 end
-model.SIntRxnBool=~SExRxnBool;
+    
+%dont check if there are coupling constraints
+%(E. coli E matrix specific)
+if ~isfield(model,'A')
+    diffBool= SExRxnBool & ~SExRxnBool2;
+    if any(diffBool)
+        if printLevel>0
+            fprintf('%s\n','Exchanges missed by prefix search:')
+            fprintf('%s\t%s\n','#', 'Exchange')
+        end
+        for n=1:length(diffBool)
+            if diffBool(n)
+                equation=printRxnFormula(model,model.rxns(n),0);
+                if printLevel>0
+                    fprintf('%i\t%s\t%s\n',n,model.rxns{n},equation{1});
+                end
+            end
+        end
+    end
+end
+    
+%amalagamate all exchanges
+SExRxnBool= SExRxnBool | SExRxnBool2;
 
+model.SIntRxnBool=~SExRxnBool;
 model.biomassBool=biomassBool;
 %rows corresponding to internal reactions
 model.SIntMetBool = sum(model.S(:,model.SIntRxnBool)~=0,2)~=0;
