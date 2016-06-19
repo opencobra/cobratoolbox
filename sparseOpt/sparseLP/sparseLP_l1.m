@@ -65,7 +65,7 @@ end
           speye(n)  -speye(n);
           -speye(n) -speye(n)];
     b2 = [b; zeros(2*n,1)];
-    csense2 = [csense;repmat('<',2*n, 1)];
+    csense2 = [csense;repmat('L',2*n, 1)];
     
     %Bound;
     lb2 = [lb;zeros(n,1)];
@@ -73,8 +73,7 @@ end
     
     %Solve the linear problem  
     LPproblem = struct('c',obj,'osense',1,'A',A2,'csense',csense2,'b',b2,'lb',lb2,'ub',ub2);  
-    CobraParams = struct('FeasibilityTol',1e-6);
-    LPsolution = solveCobraLP(LPproblem,CobraParams);
+    LPsolution = solveCobraLP(LPproblem);
         
     
     if LPsolution.stat == 1
