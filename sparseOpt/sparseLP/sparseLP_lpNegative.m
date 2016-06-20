@@ -108,7 +108,7 @@ A2 = [A         sparse(m,n);
       speye(n)  -speye(n);
       -speye(n) -speye(n)];
 b2 = [b; zeros(2*n,1)];
-csense2 = [csense;repmat('<',2*n, 1)];
+csense2 = [csense;repmat('L',2*n, 1)];
     
 % Bound;
 % lb <= x <= ub
