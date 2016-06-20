@@ -119,15 +119,22 @@ end
 
 % split this result in lines for each metabolite
 count=0;
-for i=1:(2*npKas + 2):(length(newresult)-(2*npKas + 2))
+%for i=1:(2*npKas + 2):(length(newresult)-(2*npKas + 2))%original
+for i=1:(2*npKas + 2):length(newresult)%Ronan changed this 20th June 2016, temp fix, need to check with Hulda
     count=count+1;
-    
+    %disp(count)
     for j=1:(2*npKas + 2)
-        if j<(2*npKas + 2)
-            % for pKa values change , by .
-            newesresult{count,j}=strrep(newresult{j+i-1},',','.');
+        %disp(j+i-1)
+        if j+i-1>=86702
+            newesresult{count,j}='';
         else
-            newesresult{count,j}=newresult{j+i-1};
+            %disp(newresult{j+i-1})
+            if j<(2*npKas + 2)
+                % for pKa values change , by .
+                newesresult{count,j}=strrep(newresult{j+i-1},',','.');
+            else
+                newesresult{count,j}=newresult{j+i-1};
+            end
         end
     end
     
@@ -146,11 +153,18 @@ upKa.majorMSpH7 = [];
 upKa = repmat(upKa,length(uinchi),1);
 
 errorMets = {};
-for n = 1:length(uinchi)
+for n = 1:min(length(uinchi),length(newesresult))
     met = umets{n};
     currentInchi = uinchi{n};
     [formula, nH, charge] = getFormulaAndChargeFromInChI(currentInchi);
     
+    disp(n)
+    if n>length(newesresult)
+        warning('uinchi longer than newesresult')
+        errorMets=[errorMets; {met}];
+        break
+    end
+    %disp(newesresult{n,1})
     pkalist = {newesresult{n,:}};
     if length(pkalist) == 2*npKas + 2;
         pkalist = pkalist(2:end-1);

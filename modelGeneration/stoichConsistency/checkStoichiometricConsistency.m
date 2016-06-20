@@ -301,7 +301,7 @@ if inform~=1
             end
             z=zeros(nMet,1);
     end
-    if any(m<0)
+    if any(m<-1e-6)
         error('m should be greater than or equal to zero')
     end
     m(m<0)=0;

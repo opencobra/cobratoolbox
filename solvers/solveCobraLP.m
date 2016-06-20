@@ -899,7 +899,7 @@ switch solver
         end
         
     case {'gurobi5','gurobi6'}
-        %% gurobi 5
+        %% gurobi 5 or 6 or 6.5
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
         %resultgurobi = struct('x',[],'objval',[],'pi',[]);

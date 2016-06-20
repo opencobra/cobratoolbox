@@ -24,16 +24,14 @@ function model=findSExRxnInd(model,nRealMet,printLevel)
 % OPTIONAL OUTPUT
 % model.DMRxnBool           Boolean of demand reactions. Prefix 'DM_'
 % model.SinkRxnBool         Boolean of sink reactions. Prefix 'sink_'
-%
+% model.ExchRxnBool         Boolean of exchange reactions. Prefix 'Exch_' or 'EX_'
 
 % Ronan Fleming	11/05/2014  commit to git	              
 
 
 [nMet,nRxn]=size(model.S);
 
-if ~exist('printLevel','var')
-    printLevel=0;
-end
+
 
 if ~exist('nRealMet','var')
     nRealMet=length(model.mets);
@@ -42,9 +40,15 @@ if ~exist('nRealMet','var')
             fprintf('%s\n','Detected extra rows of S without corresponding metabolite abbreviations.')
         end
     end
+else
+    if isempty(nRealMet)
+        nRealMet=length(model.mets);
+    end
 end
 
-SExRxnBool=false(nRxn,1);
+if ~exist('printLevel','var')
+    printLevel=0;
+end
 
 %locate biomass reaction if there is one
 biomassBool=false(nRxn,1);
@@ -79,7 +83,6 @@ else
     bool=strcmp(model.biomassRxnAbbr,model.rxns);
     if nnz(bool)==1
         if printLevel>0
-            
             fprintf('%s%s\n','Found biomass reaction: ', model.biomassRxnAbbr);
         end
         biomassBool(bool)=1;
@@ -93,15 +96,15 @@ else
         end
     end
 end
-%add biomass reaction to list of exchange reactions
-SExRxnBool(biomassBool)=1;
+model.biomassBool=biomassBool;
 
+SExRxnBoolOneCoefficient=false(nRxn,1);
 for n=1:nRxn
     %find reactions with only one coefficient
     %or no coefficient at all - Ronan May 29th 2011
     if nnz(model.S(1:nRealMet,n))<=1
-        SExRxnBool(n,1)=1;
-        if 0
+        SExRxnBoolOneCoefficient(n,1)=1;
+        if printLevel>1
             if nonzeros(model.S(1:nRealMet,n))>0
                 if printLevel>0
                     fprintf('%s\t%s\n','Positive coefficient:',model.rxns{n});
@@ -129,33 +132,31 @@ bool=strcmp('ATPM',model.rxns);
 if any(bool)
     if printLevel>0
         fprintf('%s\n','ATP maintenance reaction is not considered an exchange reaction by default. Should be mass balanced:')
+        formulas = printRxnFormula(model,{'ATPM'});
     end
-    formulas = printRxnFormula(model,{'ATPM'});
     model.DMRxnBool(bool)=0;
 end
-
 bool=strcmp('DM_atp(c)',model.rxns);
 if any(bool)
     if printLevel>0
         fprintf('%s\n','ATP demand reaction is not considered an exchange reaction by default. Should be mass balanced:')
+        formulas = printRxnFormula(model,{'DM_atp(c)'});
     end
-    formulas = printRxnFormula(model,{'DM_atp(c)'});
     model.DMRxnBool(bool)=0;
 end
-
 bool=strcmp('DM_atp_c_',model.rxns);
 if any(bool)
     if printLevel>0
         fprintf('%s\n','ATP demand reaction is not considered an exchange reaction by default. Should be mass balanced:')
+        formulas = printRxnFormula(model,{'DM_atp_c_'});
     end
-    formulas = printRxnFormula(model,{'DM_atp_c_'});
     model.DMRxnBool(bool)=0;
 end
 
 %input/output
-SExRxnBool2 = model.ExchRxnBool | model.EXRxnBool | model.DMRxnBool | model.SinkRxnBool | biomassBool;
+SExRxnBoolHeuristic = model.ExchRxnBool | model.EXRxnBool | model.DMRxnBool | model.SinkRxnBool | biomassBool;
 
-diffBool= ~SExRxnBool & SExRxnBool2;
+diffBool= ~SExRxnBoolHeuristic & SExRxnBoolOneCoefficient;
 if any(diffBool)
     if printLevel>0
         fprintf('%s\n','Exchanges that would otherwise have been missed without abbreviation prefix search:')
@@ -191,7 +192,7 @@ end
 %dont check if there are coupling constraints
 %(E. coli E matrix specific)
 if ~isfield(model,'A')
-    diffBool= SExRxnBool & ~SExRxnBool2;
+    diffBool= SExRxnBoolHeuristic & ~SExRxnBoolOneCoefficient;
     if any(diffBool)
         if printLevel>0
             fprintf('%s\n','Exchanges missed by prefix search:')
@@ -209,10 +210,8 @@ if ~isfield(model,'A')
 end
     
 %amalagamate all exchanges
-SExRxnBool= SExRxnBool | SExRxnBool2;
-
+SExRxnBool= SExRxnBoolHeuristic | SExRxnBoolOneCoefficient;
 model.SIntRxnBool=~SExRxnBool;
-model.biomassBool=biomassBool;
 %rows corresponding to internal reactions
 model.SIntMetBool = sum(model.S(:,model.SIntRxnBool)~=0,2)~=0;
 
