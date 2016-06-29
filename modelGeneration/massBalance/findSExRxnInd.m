@@ -17,7 +17,7 @@ function model=findSExRxnInd(model,nRealMet,printLevel)
 % nRealMet                  specified in case extra rows in S which dont
 %                           correspond to metabolties
 %OUTPUT
-% model.SIntRxnBool         Boolean of reactions though to be mass balanced.
+% model.SIntRxnBool         Boolean of reactions heuristically though to be mass balanced.
 % model.SIntMetBool         Boolean of metabolites though only to be involved in mass balanced reactions.
 % model.biomassBool         Boolean of biomass reaction
 % 
@@ -75,24 +75,29 @@ if ~isfield(model,'biomassRxnAbbr')
                     fprintf('%s\n','No model.biomassRxnAbbr ? Give abbreviation of biomass reaction if there is one.');
                 end
             else
-                error('More than one biomass reaction?');
+                warning('More than one biomass reaction?');
             end
         end
     end
 else
-    bool=strcmp(model.biomassRxnAbbr,model.rxns);
-    if nnz(bool)==1
-        if printLevel>0
-            fprintf('%s%s\n','Found biomass reaction: ', model.biomassRxnAbbr);
-        end
-        biomassBool(bool)=1;
-    else
-        if nnz(bool)==0
+    %bool=strcmp(model.biomassRxnAbbr,model.rxns);
+    biomassBool=false(nRxn,1);
+    foundBiomass=strfind(model.rxns,model.biomassRxnAbbr);%finds a subset of the abbreviation
+    for n=1:nRxn
+        if ~isempty(foundBiomass{n})
             if printLevel>0
-                fprintf('%s\n','Assuming no biomass reaction.');
+                fprintf('%s%s\n','Found biomass reaction: ', model.rxns{n});
             end
-        else
-            error('More than one biomass reaction?');
+            biomassBool(n)=1;
+        end
+    end
+    if nnz(biomassBool)==0
+        if printLevel>0
+            fprintf('%s\n','Assuming no biomass reaction.');
+        end
+    else
+        if nnz(biomassBool)>1
+            %warning('More than one biomass reaction?');
         end
     end
 end

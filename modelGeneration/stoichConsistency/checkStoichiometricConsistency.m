@@ -26,11 +26,14 @@ function [inform,m,model]=checkStoichiometricConsistency(model,printLevel,method
 % model.mets         If exists, but SIntRxnBool does not exist, then 
 %                    findSExRxnBool will attempt to identify exchange
 %                    reactions.
+% model.SIntMetBool  m x 1 boolean vector indicating the metabolites that
+%                    are thought to be exclusively involved in non-exchange
+%                    reactions
 % model.SIntRxnBool  n x 1 boolean vector indicating the reactions that are
-%                    thought to be mass balanced. If this is not present,
+%                    thought to be non-exchange reactions. If this is not present,
 %                    then we will attempt to identify such reactions,
 %                    model.rxns exists, otherwise, we will assume all
-%                    reactions are supposed to be mass balanced.
+%                    reactions are supposed to be non-exchange reactions.
 %
 % printLevel         {(0),1}
 % method.interface   {('solveCobraLP'),'cvx','nonconvex'} interface called to do the consistency check
@@ -320,7 +323,7 @@ else
     %The only consistent rows are those corresponding to non-exchange reactions
     model.SConsistentMetBool=model.SIntMetBool;
     if printLevel>0
-        fprintf('%s\n',['Stoichiometrically consistent ' intR ' with respect to non-exchange reactions.']);
+        fprintf('%s\n',['Stoichiometrically consistent ' intR ' with respect to heuristically determined non-exchange reactions.']);
     end
 end
 

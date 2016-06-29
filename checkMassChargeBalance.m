@@ -15,6 +15,7 @@ function [massImbalance,imBalancedMass,imBalancedCharge,imBalancedRxnBool,Elemen
 %                0 = silent
 %                1 = print elements as they are checked (display progress)
 %                2 = also print out diagnostics on problem reactions to screen
+% SIntRxnBool    Boolean of reactions heuristically though to be mass balanced.
 %
 %OUTPUTS
 % massImbalance                 nRxn x nElement matrix with mass imblance
@@ -47,7 +48,7 @@ if ~exist('printLevel','var')
 end
 
 % List of Elements
-Elements = {'H','C', 'O', 'P', 'S', 'N', 'Mg','X','Fe','Zn','Co','R'};
+Elements = {'H','C', 'O', 'P', 'S', 'N', 'Mg','X','Fe','Zn','Co','R','Ca','Y','I','Na','Cl','K'};
 
 E=sparse(nMet,length(Elements));
 massImbalance=sparse(nRxn,length(Elements));
@@ -172,7 +173,7 @@ if isfield(model, 'metCharges')
     end
 end
 
-if printLevel==-1
+if printLevel==-1 && isfield(model,'SIntRxnBool')
     firstMissing=0;
     if ~isempty(imBalancedCharge)
         for q=1:nRxn
@@ -199,7 +200,7 @@ if printLevel==-1
     end
 end
 
-if printLevel==2
+if printLevel==2 && isfield(model,'SIntRxnBool')
     if ~isempty(imBalancedCharge)
         fprintf('%s\n','Mass balanced, but charged imbalanced reactions:')
         for q=1:nRxn

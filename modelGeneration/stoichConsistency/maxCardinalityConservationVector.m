@@ -1,5 +1,4 @@
 function  [solution]=maxCardinalityConservationVector(SInt, params)
-
 % Maximise the cardinality of the conservation vector:
 % max   ||l||_0   
 % st.   S'l = 0
@@ -134,6 +133,15 @@ while nbIteration < nbMaxIteration && stop ~= true,
     nbIteration = nbIteration + 1;
     
 end
+
+%find rows that are not all zero when a subset of reactions omitted
+zeroRowBool = ~any(SInt,2);
+if any(zeroRowBool)
+    %any zero row of S is automatically inconsistent
+    l(zeroRowBool)=0;
+end
+
+    
 if solution.stat == 1
     solution.l = l;
 end

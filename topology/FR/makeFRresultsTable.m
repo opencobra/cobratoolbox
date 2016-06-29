@@ -126,6 +126,7 @@ while k<=nResults
     if firstColumn
         FRresultsTable{i,1}='# Reactants = # Rows of [S S_e]';
     else
+        disp(k)
         FRresultsTable{i,n+1}=size(FRresults(k).model.S,1);
     end
     i=i+1;
