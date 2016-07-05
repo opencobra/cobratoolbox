@@ -1,24 +1,24 @@
 
-Last updated April 2016.
 
 The following files are supplied
 
-README.txt		This file
-fastFVA.m		Matlab wrapper for the mex functions
-run_exps.m		Performs the experiments described in the paper
-SetWorkerCount.m	Helper function to configure the number of processes
-cplexFVAc.c		Source code for the CPLEX version of fastFVA
-glpkInterface/glpkFVAcc.cpp		Source code for the GLPK version of fastFVA
+- README.txt		This file
+- fastFVA.m		Matlab wrapper for the mex functions
+- run_exps.m		Performs the experiments described in the paper
+- SetWorkerCount.m	Helper function to configure the number of processes
+- cplexFVAc.c		Source code for the CPLEX version of fastFVA
+<!--- - glpkInterface/glpkFVAcc.cpp		Source code for the GLPK version of fastFVA --->
 
 The following precompiled Matlab executables are supplied
-
+<!---
 win/glpkFVAcc.mexw32	32-bit Windows, built with GLPK-4.42, Matlab 2009b and Windows XP
 win/glpkFVAcc.mexw64	64-bit Windows, built with GLPK-4.42, Matlab 2009b and Windows 7
 win/cplexFVAc.mexw32  32-bit Windows, built with CPLEX 12.1, Matlab 2009b and Windows XP
 win/cplexFVAc.mexw64  64-bit Windows, built with CPLEX 12.1, Matlab 2009b and Windows 7
-
 linux/glpkFVAcc.mexa64	64-Bit Linux, built with GLPK-4.43, Matlab 2009b and Linux Ubuntu 14+
-linux/cplexFVAc.mexa64  64-Bit Linux, built with CPLEX 12.6, Matlab R2014a and Linux Ubuntu 14+
+--->
+
+- cplexFVAc.mexa64  64-Bit Linux, built with CPLEX 12.6, Matlab R2014a and Linux Ubuntu 14.04+
 
 
 Introduction
@@ -149,4 +149,7 @@ Usage
    ret       Zero if success
 
 
-Please report problems to steinng@hi.is or laurent.heirendt@uni.lu
+Please report problems to laurent.heirendt@uni.lu
+
+
+Last updated: July 2016.
