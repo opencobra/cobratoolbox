@@ -65,6 +65,9 @@ valDef.optTol = 1e-9;
 valDef.absMipGapTol = 1e-12;
 valDef.NUMERICALEMPHASIS = 1;
 
+%OPTI parameters
+valDef.algorithm = 'automatic';
+
 
 %%
 if ~iscell(paramNames)
