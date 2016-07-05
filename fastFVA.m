@@ -97,7 +97,7 @@ if nargin<5
 else
     rxns = find(ismember(model.rxns, rxnsList))';%transpose rxns
 end
-if nargin<4, solver         = 'glpk';     end
+if nargin<4, solver         = 'cplex';     end
 if nargin<3, objective      = 'max';      end
 if nargin<2, optPercentage  = 100;        end
 
