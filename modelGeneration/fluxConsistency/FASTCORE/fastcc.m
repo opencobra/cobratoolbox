@@ -200,9 +200,11 @@ if modeFlag
             warning('Flux consistency numerically challenged')
         end
     else
-        fprintf('%s\n','Flux consistency check finished...')
-        fprintf('%10u%s\n',sum(any(V,2)),' = Number of flux consistent columns.')
-        fprintf('%10f%s\n\n',norm(origModel.S*V,inf),' = ||S*V||.')
+        if printLevel>0
+            fprintf('%s\n','Flux consistency check finished...')
+            fprintf('%10u%s\n',sum(any(V,2)),' = Number of flux consistent columns.')
+            fprintf('%10f%s\n\n',norm(origModel.S*V,inf),' = ||S*V||.')
+        end
     end
 end
 

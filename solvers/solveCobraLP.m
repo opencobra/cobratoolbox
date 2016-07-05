@@ -930,8 +930,9 @@ switch solver
                     param.OutputFlag = 0;
                     param.DisplayInterval = 1;
                 otherwise
-                    param.OutputFlag = 1;
-                    param.DisplayInterval = 5;
+                    %silent
+                    param.OutputFlag = 0;
+                    param.DisplayInterval = 1;
             end
         end
         if exist('feasTol','var')

@@ -183,7 +183,7 @@ if inform~=1
             LPproblem.c=zeros(nMet+nMet,1);
             LPproblem.c(nMet+1:2*nMet,1)=1;
             LPproblem.osense=-1;
-            LPproblem.csense(nInt,1)='E';
+            LPproblem.csense(1:nInt,1)='E';
             LPproblem.csense(nInt+1:nInt+nMet,1)='G';
             
             %Requires the COBRA toolbox
@@ -198,7 +198,7 @@ if inform~=1
             if solution.stat==1
                 m=solution.full(1:nMet,1);
                 z=solution.full(nMet+1:end,1);
-                if isfield(model,'SIntMetBool')
+                if isfield(model,'SIntMetBool') && 0
                     %boolean indicating metabolites involved in the maximal consistent vector
                     model.SConsistentMetBool=m>smallestM & model.SIntMetBool;
                 else
@@ -227,7 +227,7 @@ if inform~=1
                 m = solution.l;
                 %dummy z
                 z = zeros(nMet,1);
-                if isfield(model,'SIntMetBool')
+                if isfield(model,'SIntMetBool')  && 0
                     %boolean indicating metabolites involved in the maximal consistent vector
                     model.SConsistentMetBool=m>smallestM & model.SIntMetBool;
                 else
@@ -278,7 +278,7 @@ if inform~=1
             if solution.stat==1
                 m=solution.full(1:nMet,1);
                 z=solution.full(nMet+1:end,1);
-                if isfield(model,'SIntMetBool')
+                if isfield(model,'SIntMetBool')  && 0
                     %boolean indicating metabolites involved in the maximal consistent vector
                     model.SConsistentMetBool=m>smallestM & model.SIntMetBool;
                 else
@@ -295,7 +295,7 @@ if inform~=1
             tic
             m=maxEntConsVector(SInt,printLevel);
             timetaken=toc;
-            if isfield(model,'SIntMetBool')
+            if isfield(model,'SIntMetBool')  && 0
                 %boolean indicating metabolites involved in the maximal consistent vector
                 model.SConsistentMetBool=m>smallestM & model.SIntMetBool;
             else
@@ -330,6 +330,12 @@ end
 %find every non-exchange reaction involving a stoichiometrically consistent metabolite
 model.SConsistentRxnBool =(sum(model.S(model.SConsistentMetBool,:)~=0,1)~=0)';
 model.SConsistentRxnBool(~model.SIntRxnBool)=0;
+
+%     %corresponding metabolites exclusively involved in the non-relaxed reactions
+%     minConservationNonRelaxMetBool=false(nMet,1);
+%     minConservationNonRelaxMetBool(model.SConsistentMetBool | unknownSConsistencyMetBool)=...
+%         any(model.S(model.SConsistentMetBool | unknownSConsistencyMetBool, minConservationNonRelaxRxnBool),2)...
+%      & ~any(model.S(model.SConsistentMetBool | unknownSConsistencyMetBool,~minConservationNonRelaxRxnBool),2);   
 
 
 
