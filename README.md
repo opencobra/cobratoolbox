@@ -152,4 +152,9 @@ Usage
 Please report problems to laurent.heirendt@uni.lu
 
 
+How may I install gcc on Windows?
+=====
+
+http://preshing.com/20141108/how-to-install-the-latest-gcc-on-windows/
+
 Last updated: July 2016.
