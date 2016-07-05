@@ -104,7 +104,7 @@ elseif nargin==1
 end
 %names_of_parameters that users can specify with values, using option
 % A) as parameter followed by parameter value:
-optParamNames = {'minNorm','printLevel','primalOnly','saveInput','feasTol','optTol','solver'};
+optParamNames = {'minNorm','printLevel','primalOnly','saveInput','feasTol','optTol','algorithm','solver'};
 
 %not a good idea to do this here for every solver as there would end up
 %being hundreds of different parameters, so removed - Ronan
@@ -128,7 +128,7 @@ if nargin ~=1
             end
         end
         parametersStructureFlag=0;
-        parameters = '';
+%         parameters = '';
     elseif strcmp(varargin{1},'default')
         %default cobra parameters 
         parameters = 'default';
@@ -154,12 +154,12 @@ if nargin ~=1
     else
         error('solveCobraLP: Invalid number of parameters/values')
     end
-    [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
-    getCobraSolverParams('LP',optParamNames(1:6),parameters);
+    [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol,algorithm] = ...
+    getCobraSolverParams('LP',optParamNames(1:7),parameters);
 else
     parametersStructureFlag=0;
     [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
-    getCobraSolverParams('LP',optParamNames(1:6));
+    getCobraSolverParams('LP',optParamNames(1:7));
 end
 
 if max(minNorm)~=0 && ~any(strcmp(solver,{'cplex_direct','cplex'}))
@@ -185,10 +185,147 @@ y = [];
 w = [];
 origStat = -99;
 stat = -99;
-algorithm='default';
+if ~exist('algorithm','var')||isempty(algorithm)
+    algorithm='automatic'; % changed for OPTI
+end
 
 t_start = clock;
-switch solver
+
+% check if solver name is related to opti
+% optisolver = regexp(solver,'(\w+)?\S(\w+)?','tokens');
+% optisolver = optisolver{1}(~cellfun('isempty',optisolver{1}));
+% 
+% if any(strcmpi(optisolver{1},'opti'))
+%     % check if opti is installed    
+%     try
+%         checkSolver();
+%         opti = 1;
+%     catch        
+%         error('OPTI and its associated MEX interfaces are not installed/not on MATLAB path\n');
+%     end
+%     
+%     % check if any solver is specified
+%     if length(optisolver{1})>1        
+%         % check if solver is compatible to LPs
+%         opti_lpsolvers = {'clp','csdp','dsdp','ooqp','scip'};
+%         if any(strcmpi(optisolver{1}{2},opti_lpsolvers))
+%             % check if solver is installed
+%             try
+%                 checkSolver(optisolver{1}{2});                
+%             catch
+%                 fprintf('Requested solver not installed\nUsing default solver, CLP');
+%                 optisolver{1}{2} = 'clp';
+%             end
+%         else
+%             fprintf('Specified solver incompatible to problem type\n Switching to default');
+%             optisolver{1}{2} = 'clp';
+%         end         
+%     else
+%         fprintf('Using default OPTI solver\n');
+%         optisolver{1}{2} = 'clp';
+%     end  
+%     solver = optisolver{1}{2};
+% end
+
+switch solver 
+    % option to call solvers provided by OPTI TB for MATLAB from
+    % http://www.i2c2.aut.ac.nz/Wiki/OPTI/index.php
+    % OPTI supports: CLP, CSDP, DSDP, GLPK, LP_SOLVE, OOQP and SCIP
+    % since solveCobraLP already includes calls to LP_SOLVE and GLPK, they
+    % will not be included. Using each of the other solvers involves a separate 
+    % case  
+    % based on preliminary check above, it is assumed opti and associate
+    % solvers are installed
+    case 'opti-clp'         
+        % set opti/clp options
+        if parametersStructureFlag
+            opts = optiset(directParamStruct);
+        else
+            % default options for all OPTI solvers
+            opts = optiset();
+        end
+        opts = optiset(opts,'solver','clp','tolrfun',optTol,'tolafun',optTol);
+        
+        % set clp algorithm
+        solverOpts.algorithm = algorithm;
+        opts = optiset('solver','clp','solverOpts',solverOpts);
+        
+        % set constraint type
+        e = zeros(size(A,1),1);
+        e(strcmpi(csense,'L')) = -1;
+        e(strcmpi(csense,'E')) = 0;
+        e(strcmpi(csense,'G')) = 1;
+        
+        %option A. create opti problem object       
+        opti_prob = opti('f',double(c*osense),'mix',A,b,e,'bounds',lb,ub,'options',opts);
+        
+        % solve opti problem
+        [x,obj,exitflag,info] = solve(opti_prob);
+        
+        %option B. Call for clp using opti wrapper - optional
+%         Aeq = A(e==0,:);
+%         beq = b(e==0,:);        
+%         Ainl = A(e<0,:);
+%         binl = b(e<0,:);        
+%         Aing = A(e>0,:);
+%         bing = b(e>0,:);
+%         Aineq = [Ainl;-Aing];
+%         bineq = [binl;-bing];        
+%         Amod = [Aineq;Aeq];
+%         ru = [bineq;beq];
+%         rl = -Inf(size(Aineq,1)+size(Aeq,1),1);
+%         rl(size(Aineq,1)+1:end) = beq;             
+%         
+%         [x,obj,exitflag,info] = opti_clp([],double(c*osense),Amod,rl,ru,lb,ub);
+        
+        % parse results for solution output structure
+        f = obj*osense;
+        w = info.Lambda.bounds;
+        % need to check whether duals from all constraints are included
+        y = info.Lambda.eqlin; 
+%         solution.solver = solver;
+        algorithm = info.Algorithm;        
+        switch exitflag
+            case -5 % user exit
+                stat = -1;
+            case -4 % unknown exit
+                stat = -1;
+            case -3 % clp error
+                stat = -1;
+            case -1 % primal/dual infeasible
+                stat = 0;
+            case 0 % exceeded maximum iterations - no solution
+                stat = -1;
+            case 1 % primal optimal
+                stat = 1;                      
+        end
+        origStat = exitflag;   
+        t = info.Time;
+
+    case 'csdp'
+        if opti
+            x = opti_csdp([],f,A,rl,ru,lb,ub);
+        else
+            error('OPTI CSDP/CSDP not found');
+        end        
+    case 'dsdp'
+        if opti
+            x = opti_dsdp([],f,A,rl,ru,lb,ub);
+        else
+            error('OPTI DSDP/DSDP not found');
+        end        
+    case 'ooqp'
+        if opti
+            x = opti_ooqp([],f,A,rl,ru,lb,ub);
+        else
+            error('OPTI OOQP/OOQP not found');
+        end         
+    case 'scip'
+         if opti
+            x = opti_scip([],f,A,rl,ru,lb,ub);
+        else
+            error('OPTI SCIP/SCIP not found');
+         end       
     case 'quadMinos'
 %         It is a prerequisite to have installed and compiled minos, qminos 
 %         and the testFBA interface to minos and qminos, then don't alter
