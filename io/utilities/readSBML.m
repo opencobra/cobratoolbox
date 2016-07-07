@@ -50,7 +50,7 @@ nRxns = length(modelSBML.reaction);
 
 if ~isfield(modelSBML,'fbc_version')
     warning('The current version of the COBRA toolbox only supports SBML-FBCv2 files');
- 
+    
 end
 
 %% Construct initial metabolite list
@@ -126,8 +126,8 @@ if isfield(modelSBML,'parameter')&&~isempty(modelSBML.parameter)
                 converted.(listKey{d}).(fieldNameList{f})(i,1)={modelSBML.(listKey{d})(i).(fieldNameList{f})};
                 
                 % for each reactions there are two fields "reactant" and
-                % "product"; they are two indepedent substructures.
-                % {'reactant', 'product', 'modifier', 'kineticLaw'}; they are structures.
+                % "product"; they are two indepedent sub-structures.
+                % {'reactant', 'product', 'modifier', 'kineticLaw'} are are structures.
             end
             
         end
@@ -145,8 +145,8 @@ if isfield(modelSBML,'fbc_version')&&modelSBML.fbc_version==1;
             
             for f=1:length(fieldNameList) % fieldname in each substructure
                 
-                numValues=length(modelSBML.(listKey{d})); % number of structures in one array                
-                for i=1:numValues                    
+                numValues=length(modelSBML.(listKey{d})); % number of structures in one array
+                for i=1:numValues
                     convertedFluxbounds.(listKey{d}).(fieldNameList{f})(i,1)={modelSBML.(listKey{d})(i).(fieldNameList{f})};
                     % for each reactions there are two fields "reactant" and
                     % "product"; they are two indepedent substructures.
@@ -245,7 +245,7 @@ for i = 1:nRxns
         speciesID = find(strcmp(productStruct(j).species,speciesList));
         if (~isempty(speciesID))
             stoichCoeff = productStruct(j).stoichiometry;
-             if (isnan(stoichCoeff))
+            if (isnan(stoichCoeff))
                 warning on;
                 warning(['In the SBML file, ', 'the stoichiometric coefficient of ', '"', reactantStruct(j).species,'"', ' in the reaction ', '"', rxns{i}, '"', ' is not defined']);
             end
@@ -287,11 +287,11 @@ for i = 1:nRxns
                         end
                     else % if the objective function is not specified according to the FBCv2 rules.
                         noObjective=1; % no objective function is defined for the COBRA model.
-% % % %                         ind_obj=1;
-% % % %                         fbc_obj=modelSBML.reaction(ind_obj).id;
-% % % %                         fbc_obj=regexprep(fbc_obj,'^R_','');
-% % % %                         fbc_obj_value=-1;
-
+                        % % % %                         ind_obj=1;
+                        % % % %                         fbc_obj=modelSBML.reaction(ind_obj).id;
+                        % % % %                         fbc_obj=regexprep(fbc_obj,'^R_','');
+                        % % % %                         fbc_obj_value=-1;
+                        
                     end
                     
                 elseif f==2 % In the case of fbc_bound
@@ -312,10 +312,10 @@ for i = 1:nRxns
                                 for b=1:length(indBds)
                                     ind=find(strcmp(listOfboundKeys,convertedFluxbounds.fbc_fluxBound.fbc_operation(indBds(b))));
                                     switch ind
-                                        case 1                                            
+                                        case 1
                                             % In the first case, the first row contains a lower bound, wheresas the second contains a upper bound
                                             fbc_lb(i)=convertedFluxbounds.(fbc_list{f}).fbc_value{indBds(b)};
-
+                                            
                                         case 2
                                             
                                             fbc_ub(i)=convertedFluxbounds.(fbc_list{f}).fbc_value{indBds(b)};
@@ -327,37 +327,36 @@ for i = 1:nRxns
                                 end
                                 
                             end
+                            %%% start of the depreicated code chunk %%%
+                            %                             try
+                            %
+                            %                             ind=find(strcmp(listOfboundKeys,modelSBML.(fbc_list{f})(2*i-1).fbc_operation));
+                            %                             catch
+                            % %                                 find(strcmp(modelSBML.reaction(1).id,convertedFluxbounds.fbc_fluxBound.fbc_reaction))
+                            %                                 disp('good');
+                            %                                 find(strcmp(modelSBML.reaction(i).id,convertedFluxbounds.fbc_fluxBound.id))
+                            %                                 % index text
+                            %                                 indUpper=find(strcmp(modelSBML.reaction(i).id,fbc_upperFluxBound,convertedFluxbounds.fbc_fluxBound.id)); % index text
+                            %                             end
+                            %
                             
-%                             try
-%                                 
-%                             ind=find(strcmp(listOfboundKeys,modelSBML.(fbc_list{f})(2*i-1).fbc_operation));
-%                             catch
-% %                                 find(strcmp(modelSBML.reaction(1).id,convertedFluxbounds.fbc_fluxBound.fbc_reaction))
-%                                 disp('good');
-%                                 find(strcmp(modelSBML.reaction(i).id,convertedFluxbounds.fbc_fluxBound.id))
-%                                 % index text
-%                                 indUpper=find(strcmp(modelSBML.reaction(i).id,fbc_upperFluxBound,convertedFluxbounds.fbc_fluxBound.id)); % index text
-%                             end
-%                             
-                            
-                            
-                            
-%                             
-%                             if ind==1 % In the first case, the first row contains a lower bound, wheresas the second contains a upper bound
-%                                 fbc_lb(i)=modelSBML.(fbc_list{f})(2*i-1).fbc_value;
-%                                 fbc_ub(i)=modelSBML.(fbc_list{f})(2*i).fbc_value;
-%                             else ind==2  % In the second case, the first row contains a upper bound, wheresas the second contains a lower bound
-%                                 fbc_ub(i)=modelSBML.(fbc_list{f})(2*i-1).fbc_value;
-%                                 fbc_lb(i)=modelSBML.(fbc_list{f})(2*i).fbc_value;
-%                             end
-%                         else % in case that there is an empty structure, the default bounds are assigned.
-%                             if rev(i)==0
-%                                 fbc_lb(i)=0;
-%                                 fbc_ub(i)=defaultBound;
-%                             else
-%                                 fbc_lb(i)=-defaultBound;
-%                                 fbc_ub(i)=defaultBound;
-%                             end
+                            %
+                            %                             if ind==1 % In the first case, the first row contains a lower bound, wheresas the second contains a upper bound
+                            %                                 fbc_lb(i)=modelSBML.(fbc_list{f})(2*i-1).fbc_value;
+                            %                                 fbc_ub(i)=modelSBML.(fbc_list{f})(2*i).fbc_value;
+                            %                             else ind==2  % In the second case, the first row contains a upper bound, wheresas the second contains a lower bound
+                            %                                 fbc_ub(i)=modelSBML.(fbc_list{f})(2*i-1).fbc_value;
+                            %                                 fbc_lb(i)=modelSBML.(fbc_list{f})(2*i).fbc_value;
+                            %                             end
+                            %                         else % in case that there is an empty structure, the default bounds are assigned.
+                            %                             if rev(i)==0
+                            %                                 fbc_lb(i)=0;
+                            %                                 fbc_ub(i)=defaultBound;
+                            %                             else
+                            %                                 fbc_lb(i)=-defaultBound;
+                            %                                 fbc_ub(i)=defaultBound;
+                            %                             end
+                            %%% end of the depreicated code chunk %%%
                         end
                     end
                 end
@@ -516,7 +515,7 @@ for i = 1:nMets
     tmpCell = {};
     if useCompList
         for j=1:length(compartmentList)
-            tmpCell = regexp(metID,['_(' compartmentList{j} ')$'],'tokens');
+            tmpCell = regexp(metID,['_(' compartmentList{j} ')$'],'tokens'); % search the metID for compartment IDs.
             if ~isempty(tmpCell), break; end
         end
         if isempty(tmpCell), useCompList = false; end
@@ -525,23 +524,20 @@ for i = 1:nMets
             tmpCell = regexp(metID,['_(' compSymbolList{j} ')$'],'tokens');
             if ~isempty(tmpCell), break; end
         end
-    else
-        modelSBML.species(1).compartment;
+        %     else
+        %         modelSBML.species(1).compartment;
     end
     
-    
-    
-    
-% 31/03/2016    
-%     if isempty(tmpCell), tmpCell = regexp(metID,'_(.)$','tokens'); end
+    % 31/03/2016
+    %     if isempty(tmpCell), tmpCell = regexp(metID,'_(.)$','tokens'); end
     
     if ~isempty(tmpCell)
         compID = tmpCell{1};
         metTmp = [regexprep(metID,['_' compID{1} '$'],'') '[' compID{1} ']'];
     else
         metTmp = metID;
-        if ~isempty(modelSBML.species(1).compartment)
-            metTmp=[metTmp,'[',modelSBML.species(1).compartment,']'];
+        if ~isempty(modelSBML.species(i).compartment)
+            metTmp=[metTmp,'[',modelSBML.species(i).compartment,']'];
         end
     end
     %Clean up met ID
@@ -575,9 +571,9 @@ for i = 1:nMets
     % parse the anotation fields of the species structures
     if isfield(modelSBML.species(i),'annotation')
         hasAnnotationField = 1;
-% %         if i==2 % for debugging
-% %             disp('good');
-% %         end
+        % %         if i==2 % for debugging
+        % %             disp('good');
+        % %         end
         
         if exist('parseSBMLAnnotationField','file')
             [metCHEBI,metHMDBparsed,metKEGG,metPubChem,metInChI] = parseSBMLAnnotationField(modelSBML.species(i).annotation); %% replace the older version of the function with the newer version

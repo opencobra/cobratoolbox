@@ -1,4 +1,3 @@
-
 function sbmlModel = writeSBML(model,fileName,compSymbolList,compNameList)
 
 % writeSBML exports a COBRA structure into an SBML FBCv2 file.
@@ -28,16 +27,14 @@ end
 if nargin<2
     fileName='output';
 end
-
 % % debug_function=0; % implement SBML toolbox's debug function
-
 % five types of funcitons for initilising the variables
 
 initFunList={'struct()';
     'cell(1,1)';
     'zeros(1,1)';
     'sparse(1,0)';
-    'cell(1,0)'
+    'cell(1,0)';
     '{}'};
 
 emptyChar='';
@@ -156,7 +153,6 @@ unit_exponents = [1 -1 -1];
 unit_scales = [-3 0 0];
 unit_multipliers = [1 1 1*60*60];
 
-
 % Add the units to the unit definition
 
 sbmlModel.unitDefinition=tmp_unitDefinition;
@@ -196,7 +192,6 @@ sbmlModel.initialAssignment=struct('typecode',eval(initFunList{5}),...
     'level',defaultLevel,...
     'version',defaultVersion);
 
-
 %% Other fields
 
 list={'SBML_level';
@@ -232,6 +227,19 @@ for i=1:length(list)
         sbmlModel.(list{i})='SBML_MODEL';
     elseif strfind(list{i},'fbc_activeObjective')
         sbmlModel.(list{i})='obj'; % a default fbc_activeObjective field is assigned.
+    elseif strfind(list{i},'id')
+        if isfield(model,'id')
+            sbmlModel.(list{i})=model.id;
+        else
+            sbmlModel.(list{i})='emptyModelID';
+        end
+    elseif strfind(list{i},'metaid')
+        if isfield(model,'description')
+            sbmlModel.(list{i})=model.description;
+        else
+            sbmlModel.(list{i})='emptyModelMetaid';
+        end
+        
     elseif strfind(list{i},'sboTerm')
         sbmlModel.(list{i})=defaultSboTerm; % a default fbc_activeObjective field is assigned.
     else
@@ -239,7 +247,6 @@ for i=1:length(list)
     end
     
 end
-
 
 %% Species
 
@@ -257,8 +264,8 @@ tmp_species=struct('typecode','SBML_SPECIES',...
     'sboTerm',defaultSboTerm,...
     'name',emptyChar,...
     'id',emptyChar,...  %%
-    'compartment',emptyChar,... %%  
-    'initialAmount',1,...  % (Modeling Practice Guideline #80601) As a principle of best modeling practice, the <species> should set an initial value (amount or concentration) rather than be left undefined. 
+    'compartment',emptyChar,... %%
+    'initialAmount',1,...  % (Modeling Practice Guideline #80601) As a principle of best modeling practice, the <species> should set an initial value (amount or concentration) rather than be left undefined.
     'initialConcentration',emptyChar,...
     'substanceUnits',emptyChar,...
     'hasOnlySubstanceUnits',0,...
@@ -315,7 +322,7 @@ for i=1:size(model.mets, 1)
         end
         tmp_metFormulas = model.metFormulas{i};
     else
-        tmp_metFormulas=emptyChar %cell(0,1)% {''};%0;%emptyChar;
+        tmp_metFormulas=emptyChar; %cell(0,1)% {''};%0;%emptyChar;
     end
     % % %     if isfield(model, 'metCharge')
     % % %         %NOTE: charge is being removed in SBML level 3
@@ -334,7 +341,6 @@ for i=1:size(model.mets, 1)
     % % %         model.sboTerm(i)=-1;
     % % %     end
     % % %     %%
-    
     if isfield(model, 'metCharge')
         %NOTE: charge is being removed in SBML level 3
         %         tmp_species.charge = model.metCharge(i);
@@ -410,7 +416,6 @@ for i=1:size(model.mets, 1)
     
     % sbmlModel.species = [ sbmlModel.species, tmp_species ];
     %This is where the compartment symbols are aggregated.
-    
     
 end
 % % for i=1:size(model.mets, 1) % The following code block converts COBRA formats of the speicies structure into FBC formats.
@@ -813,11 +818,11 @@ for i=1:size(model.rxns, 1)
     if defaultFbcVersion==1  % in the cae of FBCv1
         % generate the sbmlModel.reaction.
         
-% %         if i==1;
-% %             sbmlModel.reaction=tmp_Rxn;
-% %         else
-% %             sbmlModel.reaction=[sbmlModel.reaction,tmp_Rxn];
-% %         end
+        % %         if i==1;
+        % %             sbmlModel.reaction=tmp_Rxn;
+        % %         else
+        % %             sbmlModel.reaction=[sbmlModel.reaction,tmp_Rxn];
+        % %         end
         
         tmp_fbc_fluxBoundLb.fbc_reaction=tmp_rxnID; % Reaction ID
         tmp_fbc_fluxBoundUb.fbc_reaction=tmp_rxnID;
@@ -831,9 +836,8 @@ for i=1:size(model.rxns, 1)
             sbmlModel.fbc_fluxBound=[sbmlModel.fbc_fluxBound,tmp_fbc_fluxBoundLb,tmp_fbc_fluxBoundUb];
         end
     end
-
+    
 end
-
 
 % % if debug_function
 % %     for (i = 1:size(sbmlModel.reaction, 2))
@@ -874,7 +878,7 @@ tmp_fbc_objective=struct('typecode','SBML_FBC_OBJECTIVE',...   % Create template
     'notes',emptyChar,...
     'annotation',emptyChar,...
     'sboTerm',defaultSboTerm,...
-    'fbc_id','obj',... % define a term (No. 6) 
+    'fbc_id','obj',... % define a term (No. 6)
     'fbc_type', 'maximize',... % define the type (No.7)
     'fbc_fluxObjective',emptyChar,... % is acturally a structure (No.8)
     'level', defaultLevel,...
@@ -909,7 +913,7 @@ ind=find(model.c); % Find the index numbers for the objective reactions
 % The fields of a COBRA model are converted into respective fields of a FBCv2 structure.
 if isempty(ind)
     tmp_fbc_objective.fbc_fluxObjective.fbc_coefficient=0; % no objective function is set
-     sbmlModel.fbc_objective=tmp_fbc_objective;
+    sbmlModel.fbc_objective=tmp_fbc_objective;
 else
     for i=1:length(ind);
         %     model.c(ind(i));
