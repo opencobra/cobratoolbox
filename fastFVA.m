@@ -46,6 +46,7 @@ function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVA(model,optPe
 % vectors for the initial FBA in FBASOL together with matrices FVAMIN and
 % FVAMAX containing the flux values for each individual min/max problem.
 % Note that for large models the memory requirements may become prohibitive.
+% To save large fvamin and fvamax matrices please toggle v7.3 in Preferences -> General -> MAT-Files
 %
 % If a rxnsList vector is specified then only the corresponding entries in
 % minFlux and maxFlux are defined (all remaining entries are zero).
