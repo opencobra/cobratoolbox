@@ -41,13 +41,16 @@ origModel=model;
 %number of reactions
 N = (1:size(model.S,2));
 
-%reactions assumed to be irreversible in forward direction
-I = find(model.lb==0);
+% %reactions assumed to be irreversible in forward direction
+% I = find(model.lb==0);
+% 
+% bool=model.lb<0 & model.ub==0;
+% if any(bool)
+%     error('fastcc is only designed to work with networks that have forward or reversible reactions')
+% end
 
-bool=model.lb<0 & model.ub==0;
-if any(bool)
-    error('fastcc is only designed to work with networks that have forward or reversible reactions')
-end
+%reactions assumed to be irreversible in forward direction
+I = find((model.lb==0 & model.ub>0) | model.lb<0 & model.ub==0);
 
 A = [];
 

@@ -30,7 +30,8 @@ end
 
 N = 1:numel(model.rxns);
 %reactions assumed to be irreversible in forward direction
-I = find(model.lb>=0);
+%I = find(model.lb>=0);
+I = find((model.lb==0 & model.ub>0) | model.lb<0 & model.ub==0);
 
 A = [];
 flipped = false;
