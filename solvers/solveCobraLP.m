@@ -17,7 +17,7 @@ function solution = solveCobraLP(LPproblem,varargin)
 %
 %OPTIONAL INPUTS
 % Optional parameters can be entered in three different ways {A,B,C}
-% A) as parameter followed by parameter value: 
+% A) as a generic solver parameter followed by parameter value: 
 % e.g.[solution]=solveCobraLP(LPCoupled,'printLevel',1,);
 % e.g.[solution]=solveCobraLP(LPCoupled,'printLevel',1,'feasTol',1e-8);
 %
@@ -110,8 +110,8 @@ end
 optParamNames = {'minNorm','printLevel','primalOnly','saveInput','feasTol','optTol','solver'};
 
 % Set default parameter values
-[minNorm, printLevel, primalOnlyFlag, saveInput] = ...
-    getCobraSolverParams('LP',optParamNames(1:4));
+[minNorm, printLevel, primalOnlyFlag, saveInput,feasTol,optTol] = ...
+    getCobraSolverParams('LP',optParamNames(1:6));
 
 % Set user specified parameter values
 solverParams.dummy = 3;
@@ -937,9 +937,15 @@ switch solver
         end
         if exist('feasTol','var')
             param.FeasibilityTol = feasTol;
+            if isfield(param,'feasTol')
+                param=rmfield(param,'feasTol');
+            end
         end
         if exist('optTol','var')
             param.OptimalityTol = optTol;
+            if isfield(param,'optTol')
+                param=rmfield(param,'optTol');
+            end
         end
 
         if (isempty(LPproblem.csense))
