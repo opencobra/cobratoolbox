@@ -191,64 +191,28 @@ end
 
 t_start = clock;
 
-% check if solver name is related to opti
-% optisolver = regexp(solver,'(\w+)?\S(\w+)?','tokens');
-% optisolver = optisolver{1}(~cellfun('isempty',optisolver{1}));
-% 
-% if any(strcmpi(optisolver{1},'opti'))
-%     % check if opti is installed    
-%     try
-%         checkSolver();
-%         opti = 1;
-%     catch        
-%         error('OPTI and its associated MEX interfaces are not installed/not on MATLAB path\n');
-%     end
-%     
-%     % check if any solver is specified
-%     if length(optisolver{1})>1        
-%         % check if solver is compatible to LPs
-%         opti_lpsolvers = {'clp','csdp','dsdp','ooqp','scip'};
-%         if any(strcmpi(optisolver{1}{2},opti_lpsolvers))
-%             % check if solver is installed
-%             try
-%                 checkSolver(optisolver{1}{2});                
-%             catch
-%                 fprintf('Requested solver not installed\nUsing default solver, CLP');
-%                 optisolver{1}{2} = 'clp';
-%             end
-%         else
-%             fprintf('Specified solver incompatible to problem type\n Switching to default');
-%             optisolver{1}{2} = 'clp';
-%         end         
-%     else
-%         fprintf('Using default OPTI solver\n');
-%         optisolver{1}{2} = 'clp';
-%     end  
-%     solver = optisolver{1}{2};
-% end
-
 switch solver 
     % option to call solvers provided by OPTI TB for MATLAB from
     % http://www.i2c2.aut.ac.nz/Wiki/OPTI/index.php
     % OPTI supports: CLP, CSDP, DSDP, GLPK, LP_SOLVE, OOQP and SCIP
     % since solveCobraLP already includes calls to LP_SOLVE and GLPK, they
     % will not be included. Using each of the other solvers involves a separate 
-    % case  
-    % based on preliminary check above, it is assumed opti and associate
-    % solvers are installed
-    case 'opti-clp'         
+    % case
+    % it is assumed opti and associate solvers are installed
+    case 'opti-clp'                 
         % set opti/clp options
+        % set clp algorithm 
+        solverOpts.algorithm = algorithm;   
         if parametersStructureFlag
-            opts = optiset(directParamStruct);
+            opts = setupOPTIopts(printLevel,optTol,...
+                         parametersStructureFlag,directParamStruct,...
+                         solverOpts);
         else
-            % default options for all OPTI solvers
-            opts = optiset();
+            opts = setupOPTIopts(printLevel,optTol,...
+                         parametersStructureFlag,[],...
+                         solverOpts);
         end
-        opts = optiset(opts,'solver','clp','tolrfun',optTol,'tolafun',optTol);
-        
-        % set clp algorithm
-        solverOpts.algorithm = algorithm;
-        opts = optiset('solver','clp','solverOpts',solverOpts);
+        opts = optiset(opts,'solver','clp');
         
         % set constraint type
         e = zeros(size(A,1),1);
@@ -257,7 +221,8 @@ switch solver
         e(strcmpi(csense,'G')) = 1;
         
         %option A. create opti problem object       
-        opti_prob = opti('f',double(c*osense),'mix',A,b,e,'bounds',lb,ub,'options',opts);
+        opti_prob =...
+        opti('f',double(c*osense),'mix',A,b,e,'bounds',lb,ub,'options',opts);
         
         % solve opti problem
         [x,obj,exitflag,info] = solve(opti_prob);
@@ -280,31 +245,21 @@ switch solver
         
         % parse results for solution output structure
         f = obj*osense;
-        w = info.Lambda.bounds;
-        % need to check whether duals from all constraints are included
-        y = info.Lambda.eqlin; 
-%         solution.solver = solver;
-        algorithm = info.Algorithm;        
-        switch exitflag
-            case -5 % user exit
-                stat = -1;
-            case -4 % unknown exit
-                stat = -1;
-            case -3 % clp error
-                stat = -1;
-            case -1 % primal/dual infeasible
-                stat = 0;
-            case 0 % exceeded maximum iterations - no solution
-                stat = -1;
-            case 1 % primal optimal
-                stat = 1;                      
-        end
-        origStat = exitflag;   
-        t = info.Time;
+        [w,y,algorithm,stat,origStat,t] = parseOPTIresult(exitflag,info);
+
 
     case 'csdp'
+        if parametersStructureFlag
+            opts = setupOPTIopts(c,A,b,lb,ub,csense,osense,printLevel,optTol,...
+                         parametersStructureFlag,directParamStruct);
+        else
+            opts = setupOPTIopts(c,A,b,lb,ub,csense,osense,printLevel,optTol,...
+                         parametersStructureFlag,[]);
+        end
+        opts = optiset(opts,'solver','csdp');
+        
         if opti
-            x = opti_csdp([],f,A,rl,ru,lb,ub);
+            x = opti_csdp(f,A,b,lb,ub,[],[],opts);
         else
             error('OPTI CSDP/CSDP not found');
         end        
@@ -1347,6 +1302,70 @@ if ~strcmp(solver,'cplex_direct') && ~strcmp(solver,'mps')
     [solution.full,solution.obj,solution.rcost,solution.dual,solution.solver,solution.algorithm,solution.stat,solution.origStat,solution.time,solution.basis] = ...
         deal(x,f,w,y,solver,algorithm,stat,origStat,t,basis);
 end
+function [w,y,algorithm,stat,exitflag,t] = parseOPTIresult(varargin)
+exitflag = varargin{1};
+info = varargin{2};
+w = info.Lambda.bounds;
+% need to check whether duals from all constraints are included
+y = info.Lambda.eqlin; 
+algorithm = info.Algorithm; 
+switch exitflag
+    case -5 % user exit
+        stat = -1;
+    case -4 % unknown exit
+        stat = -1;
+    case -3 % clp error
+        stat = -1;
+    case -1 % primal/dual infeasible
+        stat = 0;
+    case 0 % exceeded maximum iterations - no solution
+        stat = -1;
+    case 1 % primal optimal
+        stat = 1;                      
+end
+t = info.Time;
+
+function opts = setupOPTIopts(varargin)
+printLevel = varargin{1};
+optTol = varargin{2};
+paramflag = varargin{3};
+params = varargin{4};
+if nargin<5
+    solverOpts = [];
+else
+    solverOpts = varargin{5};
+end
+    
+% printLevel
+if printLevel == 0
+    disp = 'off';
+    warnings = 'none';
+elseif printLevel == 1
+    disp = 'off';
+    warnings = 'critical';
+elseif printLevel == 2
+    disp = 'final';
+    warnings = 'critical';
+elseif printLevel == 3
+    disp = 'iter';
+    warnings = 'critical';
+elseif printLevel > 10
+    disp = 'all';
+    warnings = 'all';
+end
+if paramflag
+    opts = optiset(params);
+else
+    % default options for all OPTI solvers
+    opts = optiset();
+end
+opts = optiset(opts,'tolrfun',optTol,...
+                    'tolafun',optTol,'display',disp,...
+                    'warnings',warnings);
+if ~isempty(solverOpts)
+    opts = optiset(opts,'solverOpts',solverOpts);
+end
+
 
 %% solveGlpk Solve actual LP problem using glpk and return relevant results
 function [x,f,y,w,stat,origStat] = solveGlpk(c,A,b,lb,ub,csense,osense,params)
