@@ -32,6 +32,7 @@ function varargout = getCobraSolverParams(solverType, paramNames, parameters)
 
 % Richard Que (12/01/2009)
 % Ronan (16/07/2013) default MPS parameters are no longer global variables
+% Shyam (27/06/2016) added default parameter for OPTI solvers
 
 if nargin < 2
     error('getCobraSolverParams: No parameters specified')
