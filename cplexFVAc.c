@@ -156,6 +156,23 @@ enum {MINFLUX_OUT_POS,
 
 #define Nmarkers 10
 
+/* Retrieve the vector and return the lengh of the vector */
+int get_vector_full(const mxArray *IN, double **outval)
+{
+  int i;
+  int m = mxGetM(IN);
+  int n = mxGetN(IN);
+  double *matval = NULL;
+  double *in = mxGetPr(IN);
+
+  matval = (double *)mxCalloc(m*n, sizeof(double));
+
+  for (i = 0; i < m*n; i++) matval[i] = in[i];
+
+  *outval = matval;
+  return(m);
+}
+
 /* Concatenate 3 strings */
 const char* concat(const char *s1, const char *s2, const char *s3)
 {
@@ -309,9 +326,10 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     else if(cplexAlgo == 2)   status = CPXdualopt(env, lp);
     else                      status = CPXlpopt(env, lp);
 
-    /*status = CPXmbasewrite(env, lp, "myprob.bas");/*
+    /*status = CPXmbasewrite(env, lp, "myprob.bas");
 
     mexPrintf("  Initial FBA done.\n");
+    */
 
     if (status) {
        dispCPLEXerror(env, status);
@@ -618,22 +636,7 @@ int get_vector(const mxArray *IN, double **outval)
     return (gcount);
 }
 
-/* Retrieve the vector and return the lengh of the vector */
-int get_vector_full(const mxArray *IN, double **outval)
-{
-  int i;
-  int m = mxGetM(IN);
-  int n = mxGetN(IN);
-  double *matval = NULL;
-  double *in = mxGetPr(IN);
 
-  matval = (double *)mxCalloc(m*n, sizeof(double));
-
-  for (i = 0; i < m*n; i++) matval[i] = in[i];
-
-  *outval = matval;
-  return(m);
-}
 
 /*
    Here is the exit function, which gets run when the MEX-file is
