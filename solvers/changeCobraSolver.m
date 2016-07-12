@@ -181,10 +181,27 @@ if (strcmp(solverType,'LP'))
                 solverOK = false;
             end
             MINOSPATH=cmdout(1:end-length('/bin/minos')-1);
-        case 'opti-clp'
+        case 'opti_clp'
             if ~checkSolver('clp')
                 solverOK = false;            
-            end                
+            end    
+        case 'opti_csdp'
+            if ~checkSolver('csdp')
+                solverOK = false;            
+            end  
+        case 'opti_dsdp'
+            if ~checkSolver('dsdp')
+                solverOK = false;            
+            end  
+        case 'opti_ooqp'
+            % not supported fully
+            if ~checkSolver('ooqp')
+                solverOK = false;            
+            end  
+        case 'opti_scip'
+            if ~checkSolver('scip')
+                solverOK = false;            
+            end              
         otherwise
             warning(['LP solver ' solverName ' not supported by COBRA Toolbox']);
             solverOK = false;
