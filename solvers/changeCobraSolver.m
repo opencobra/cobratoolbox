@@ -153,12 +153,12 @@ if (strcmp(solverType,'LP'))
                 solverOK=false;
             end
         case 'gurobi5'
-            if (~exist('gurobi'))
+            if (~exist('gurobi','file'))
                 warning('LP solver Gurobi not useable: gurobi.m not in Matlab path');
                 solverOK=false;
             end
         case 'gurobi6'
-            if (~exist('gurobi'))
+            if (~exist('gurobi','file'))
                 warning('LP solver Gurobi not useable: gurobi.m not in Matlab path');
                 solverOK=false;
             end

@@ -36,21 +36,24 @@ end
 
 tic
 
-origModel=model;
-
 %number of reactions
 N = (1:size(model.S,2));
 
-% %reactions assumed to be irreversible in forward direction
-% I = find(model.lb==0);
-% 
-% bool=model.lb<0 & model.ub==0;
-% if any(bool)
-%     error('fastcc is only designed to work with networks that have forward or reversible reactions')
-% end
+veryOrigModel=model;
 
-%reactions assumed to be irreversible in forward direction
-I = find((model.lb==0 & model.ub>0) | model.lb<0 & model.ub==0);
+%reactions irreversible in the reverse direction
+Ir = find(model.ub<=0);
+%flip direction of reactions irreversible in the reverse direction
+model.S(:,Ir) = -model.S(:,Ir);
+tmp = model.ub(Ir);
+model.ub(Ir) = -model.lb(Ir);
+model.lb(Ir) = -tmp;
+
+%save the model with only the flips of the reverse reactions
+origModel=model;
+
+%all irreversible reactions should only be in the forward direction
+I  = find(model.lb>=0);
 
 A = [];
 
@@ -192,11 +195,16 @@ end
 
 modelFlipped=model;
 
+flippedReverseOrientation=ones(size(model.S,2),1);
+flippedReverseOrientation(Ir)=-1;
+%flip the direction of the returned fluxes
+V=spdiags(flippedReverseOrientation,0,size(model.S,2),size(model.S,2))*V;
+
 if modeFlag
     %sanity check
-    if norm(origModel.S*V,inf)>epsilon/100
+    if norm(veryOrigModel.S*V,inf)>epsilon/100
         fprintf('%g%s\n',epsilon/100, '= epsilon/100')
-        fprintf('%g%s\n',norm(origModel.S*V,inf),' = ||S*V||.')
+        fprintf('%g%s\n',norm(veryOrigModel.S*V,inf),' = ||S*V||.')
         if 0
             error('Flux consistency check failed')
         else
@@ -206,11 +214,11 @@ if modeFlag
         if printLevel>0
             fprintf('%s\n','Flux consistency check finished...')
             fprintf('%10u%s\n',sum(any(V,2)),' = Number of flux consistent columns.')
-            fprintf('%10f%s\n\n',norm(origModel.S*V,inf),' = ||S*V||.')
+            fprintf('%10f%s\n\n',norm(veryOrigModel.S*V,inf),' = ||S*V||.')
         end
     end
 end
-
+origModel=veryOrigModel;
 if numel(A) == numel(N)
     if printLevel>0
         fprintf('\n fastcc.m: The input model is consistent.\n');

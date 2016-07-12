@@ -29,9 +29,17 @@ if ~exist('printLevel','var')
 end
 
 N = 1:numel(model.rxns);
-%reactions assumed to be irreversible in forward direction
-%I = find(model.lb>=0);
-I = find((model.lb==0 & model.ub>0) | model.lb<0 & model.ub==0);
+
+%reactions irreversible in the reverse direction
+Ir = find(model.ub<=0);
+%flip direction of reactions irreversible in the reverse direction
+model.S(:,Ir) = -model.S(:,Ir);
+tmp = model.ub(Ir);
+model.ub(Ir) = -model.lb(Ir);
+model.lb(Ir) = -tmp;
+
+%all irreversible reactions should only be in the forward direction
+I  = find(model.lb>=0);
 
 A = [];
 flipped = false;

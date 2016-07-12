@@ -6,11 +6,20 @@ function x=testFASTCORE()
 % Modified by Thomas Pfau, May 2016
 
 
-ibm = changeCobraSolver('ibm_cplex');
+try
+    ILOGcplex = Cplex('fba');% Initialize the CPLEX object
+    ibm = changeCobraSolver('ibm_cplex','LP');
+catch
+    ibm=0;
+end
 if ~ibm
-    gurobi = changeCobraSolver('gurobi6');
+    if exist('gurobi','file')
+        gurobi = changeCobraSolver('gurobi6','LP');
+    else
+        gurobi=0;
+    end
     if ~gurobi
-        tomlab = changeCobraSolver('tomlab_cplex');
+        tomlab = changeCobraSolver('tomlab_cplex','LP');
         if ~tomlab
             %Those are the allowed solvers for FASTCORE. Others can be
             %used, but likely lead to numeric issues.
