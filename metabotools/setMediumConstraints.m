@@ -37,7 +37,6 @@ function [modelMedium,basisMedium] = setMediumConstraints(model, set_inf, curren
 % Maike K. Aurich 26/05/15
 
 %% 
-
 if ~exist('customizedConstraints','var') || isempty(customizedConstraints)
     customizedConstraints = {};
 end
@@ -93,6 +92,4 @@ if close_exchanges ==1
     AllExMedium(ismember(AllExMedium,customizedConstraints))='';
     
     modelMedium.lb(find(ismember(modelMedium.rxns,AllExMedium)))= 0; % all exchanges not specified are set to secretion only
-end
-
 end
