@@ -1,39 +1,39 @@
 function [modelMedium,basisMedium] = setMediumConstraints(model, set_inf, current_inf, medium_composition, met_Conc_mM, cellConc, t, cellWeight, mediumCompounds, mediumCompounds_lb, customizedConstraints, customizedConstraints_ub, customizedConstraints_lb, close_exchanges)
 
-% Calculates and sets constraints according to medium composition in mM. Is based on the function Conc2Rate. Returns a model with constraints.
-%
+% Calculates and sets constraints according to medium composition in mM. Is 
+% based on the function Conc2Rate. Returns a model with new constraints.
 %  INPUTS
 %
-%       model                     Metabolic model (Recon)
-%       current_inf               Models can have differently defined infinite constraints, e.g., 500
-%       set_inf                   New value for infinite constraints, e.g., 1000
-%       medium_composition        Vector of exchange reactions of metabolites in the cell medium, e.g., RPMI medium
-%       met_Conc_mM               Vector of the same length of 'Exchanges', providing the concentration (in Mm) of each metabolite in the respective row
-%       cellConc                  Cell concentration (cells per 1 ml)
-%       t                         Time in hours (in hours)
-%       cellWeight                Cellular dry weight
+%   model                     Global metabolic model (Recon)
+%   current_inf               Models can have differently defined infinite constraints, e.g., 500
+%   set_inf                   New value for infinite constraints, e.g., 1000
+%   medium_composition        Vector of exchange reactions of metabolites in the cell medium, e.g., RPMI medium
+%   met_Conc_mM               Vector of the same length of 'Exchanges', providing the concentration (in Mm) of each metabolite in the respective row
+%   cellConc                  Cell concentration (cells per 1 ml)
+%   t                         Time in hours (in hours)
+%   cellWeight                gDW per cell
 %
 %
-%       mediumCompounds           Composition of basic medium, which are usually not defined in the composition of the medium and need to be defined in addition.
-%       mediumCompounds_lb        Lower bound applied for all mediumCompounds (the same for all)
+%   mediumCompounds           Composition of basic medium, which are
+%                             usually not defined in the composition of the medium and need to be defined in addition.
+%   mediumCompounds_lb        lower bound applied for all mediumCompounds (the same for all)
 %
 %
 % optional inputs
 %
-%       customizedConstraints     If additional constraints should be set apart from the basic medium and medium composition, e.g. 'EX_o2(e)'
-%       customizedConstraints_lb  Vecor of lower bounds to be set (mmol/gDW/hr), must be of same length as customizedConstraints
-%       customizedConstraints_ub  Vecor of upper bounds to be set (mmol/gDW/hr), must be of same length as customizedConstraints
-%       close_exchanges           If exchange reactions except those specified should be closed (Defauld = 1) 1= close exchanges, 0=no
+%   customizedConstraints     If additional constraints should be set apart from the basic medium and medium composition, e.g. 'EX_o2(e)'
+%   customizedConstraints_lb  Vecor of lower bounds to be set (mmol/gDW/hr), must be of same length as customizedConstraints
+%   customizedConstraints_ub  Vecor of upper bounds to be set (mmol/gDW/hr), must be of same length as customizedConstraints
+%   close_exchanges           If exchange reactions except those specified should be closed (Defauld = 1)1= close exchanges, 0=no
 %
 %  OUTPUT
 %
-%       modelMedium              Model with set constraints, all exchanges not specified in  mediumCompounds, ions or customizedConstraints are set to secretion only
-%       basisMedium              Vector of adjusted constraints, for reference such that these constraints are not overwritten at a later stage
+%    modelMedium              Model with set constraints, all exchanges not specified in  mediumCompounds, ions or customizedConstraints are set to secretion only
+%    basisMedium              Vector of adjusted constraints, for reference such that these constraints are not overwritten at a later stage
 %
 % Please note that if metabolites of Medium_composition and mediumCompounds overlap, the constraints of the Medium_composition will
-% be set to 0 in the output model. The function depends on the functions conc2Rate, changeRxnBounds.
+% be set to 0 in the output model. The function depends on the functions Conc2Rate, changeRxnBounds.
 %
-% Ines Thiele
 % Maike K. Aurich 26/05/15
 
 %% 
@@ -71,7 +71,7 @@ if ~isempty(medium_composition)
     
     for i = 1 : length(medium_composition)
         
-        [flux_Medium(i,1)] = conc2Rate(met_Conc_mM(i), cellConc, t, cellWeight);%
+        [flux_Medium(i,1)] = Conc2Rate(met_Conc_mM(i), cellConc, t, cellWeight);%
         
     end
     

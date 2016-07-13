@@ -138,7 +138,7 @@ if (nargin < 8 | isempty(objCoeff))
         objCoeff = 0;
     end
 end
-if (nargin < 9)
+if (nargin < 9 | isempty(subSystem))
     if (oldRxnFlag) && (isfield(model,'subSystems'))
         subSystem = model.subSystems{rxnID};
     else
@@ -158,6 +158,10 @@ if (nargin < 10) && (isfield(model,'grRules'))
     else
         grRule = '';
     end
+end
+
+if isempty(grRule)
+    grRule = '';
 end
 
 if (~exist('checkDuplicate','var'))
@@ -305,12 +309,16 @@ end
 % if ~oldRxnFlag, model.rxnGeneMat(rxnID,:)=0; end
 
 if (isfield(model,'genes'))
-    if (nargin < 11)
+    if (nargin < 11) 
         model = changeGeneAssociation(model,rxnName,grRule);
     else
         %fprintf('In addReaction, the class of systNameList is %s',
         %class(systNameList)); % commented out by Thierry Mondeel
+        if ~isempty(geneNameList) && ~isempty(systNameList)
         model = changeGeneAssociation(model,rxnName,grRule,geneNameList,systNameList);
+        else
+            model = changeGeneAssociation(model,rxnName,grRule);
+        end
     end
 end
 
