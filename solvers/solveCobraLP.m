@@ -1349,9 +1349,9 @@ varargout{1} = full(c*osense);
 
 % set constraint type
 e = zeros(size(A,1),1);
-e(strcmpi(csense,'L')) = -1;
-e(strcmpi(csense,'E')) = 0;
-e(strcmpi(csense,'G')) = 1;
+e(strcmpi(cellstr(csense),'L')) = -1;
+e(strcmpi(cellstr(csense),'E')) = 0;
+e(strcmpi(cellstr(csense),'G')) = 1;
 Aeq = A(e==0,:);
 Ainl = A(e<0,:);
 Aing = A(e>0,:);
