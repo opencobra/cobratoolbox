@@ -93,5 +93,3 @@ if close_exchanges ==1
     
     modelMedium.lb(find(ismember(modelMedium.rxns,AllExMedium)))= 0; % all exchanges not specified are set to secretion only
 end
-
-end
