@@ -1,11 +1,51 @@
-%% Step 1: Shaping the model's environment using setMediumConstraints 
-path = 'ADD YOUR PATH TO YOUR OUTPUT FOLDER'; 
+%% Define variables
+clear 
+initCobraToolbox
+
+pathToCOBRA = 'ADD PATH TO COBRATOOLBOX'; % e.g., 'C:\Users...\GitHub'
+path = 'ADD YOUR PATH TO YOUR OUTPUT FOLDER'; %
 solver = 'ADD YOUR SOLVER'; %, e.g., 'cplex_direct' for ILOG
-load([path '\' 'starting_model.mat']);
 
 
-changeCobraSolver(solver,'LP');
+%% set and check solver 
+solverOK = changeCobraSolver(solver,'LP');
 
+if solverOK ==1
+    display('The solver is set.');
+else
+    display('Error in solver: Check if the solver is in the matlab path (set path) or check for typos?');
+end
+
+
+%% load and check input is loaded correctly
+
+if isequal(exist([pathToCOBRA '\cobratoolbox\metabotools\tutorial_I\starting_model.mat'],'file'),2)% 2 means it's a file.
+
+    load([pathToCOBRA '\cobratoolbox\metabotools\tutorial_I\starting_model.mat']);
+    display('The model is loaded.');
+   
+else 
+    display('Error in pathToCOBRA: The starting_model could not be loaded. Does pathToCOBRA contain typos or additional '\'? ');
+end 
+
+%% Check output path and writing permission
+if ~exist(path)==7
+    display('Error in path: Does pathToCOBRA contain typos or additional '\' ?');
+end
+
+% display if writing is not possible
+display('Warning: If a red matlab error message appears after this message, files cannot be saved to your path location! Obtain rights to write into output directory or set path to a different directory.');
+
+% make and save dummy file to test writing to output directory
+A = rand(1);
+save([path '\' 'A']);
+
+
+display('Continue with tutorial if solver and paths are set correctly.');
+
+%% beginn computations 
+
+%% Step 1: Shaping the model's environment using setMediumConstraints 
 %% RPMI medium composition. 
 medium_composition={'EX_ala_L(e)'
 'EX_arg_L(e)'

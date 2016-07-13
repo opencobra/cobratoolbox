@@ -2,21 +2,65 @@
 
 %% Start of the tutorial
 clear
-
 initCobraToolbox
 tol =  1e-6;
 
 %%% specify your own solver
-solver = '... add your solver ... '; % can be gurobi or tomlab_cplex
+solver = '...ADD YOUR SOLVER...'; % can be gurobi or tomlab_cplex
 solverQuant = 'cplex_direct'; % can only be cplex_direct
-path = ' ... add your path...\';
+path = ' ... ADD YOUR PATH...\'; % output is saved to this location, can be the same as pathToCOBRA 'C: ... \cobratoolbox\metabotools\tutorial_II\';
+pathToCOBRA =  '.. ADD YOUR PATH TO cobratoolbox...'; % to load tutorial input files ,; e.g., pathToCOBRA = 'D:\..\Documents\GitHub\'
 
 
-changeCobraSolver(solver,'LP');
-changeCobraSolver(solver,'QP');
+%% set and check solver
+solverQOK = changeCobraSolver(solverQuant,'LP');
 
-load([path 'starting_model']);
+if solverQOK ==1
+    display('The solverQuant is set.');
+else
+    display('Error in solverQuant: Check if the solver is in the matlab path (set path) or check for typos? Ignore if not required');
+end
 
+solverOK = changeCobraSolver(solver,'LP');
+
+if solverOK ==1
+    display('The LP solver is set.');
+else
+    display('Error in  LP solver: Check if the solver is in the matlab path (set path) or check for typos?');
+end
+
+solverQPOK = changeCobraSolver(solver,'QP');
+if solverOK ==1
+    display('The QP solver is set.');
+else
+    display('Error in  LP solver: Check if the solver is in the matlab path (set path) or check for typos?');
+end
+
+
+%% load and check tutorial input is loaded correctly
+if isequal(exist([pathToCOBRA '\cobratoolbox\metabotools\tutorial_I\starting_model.mat'],'file'),2)% 2 means it's a file.
+    % We have a file!
+    load([pathToCOBRA '\cobratoolbox\metabotools\tutorial_II\starting_model.mat']);
+    display('The model is loaded.');
+   
+else 
+    display('Error in pathToCOBRA: The starting_model and tutorial_II_data could not be loaded. Does pathToCOBRA contain typos or additional '\'? ');
+end 
+
+% Check output path and writing permission
+if ~exist(path)==7
+    display('Error in path: Does pathToCOBRA contain typos or additional '\' ?');
+end
+
+% display if writing is not possible
+display('Warning: If a red matlab error message appears after this message, files cannot be saved to your path location! Obtain rights to write into output directory or set path to a different directory.');
+
+% make and save dummy file to test writing to output directory
+A = rand(1);
+save([path '\' 'A']);
+
+
+display('Continue with tutorial if solver and paths are set correctly.');
 
 %% Section 1 - Define the model bounds using setMediumConstraints
 
