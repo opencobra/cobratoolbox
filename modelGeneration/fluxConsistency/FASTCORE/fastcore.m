@@ -19,9 +19,11 @@ function A = fastcore(C, model, epsilon, printlevel)
 % OUTPUT
 % A             indices of reactions in the new model 
 %
-%
+
 % (c) Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013
 %     LCSB / LSRU, University of Luxembourg
+%
+% Ronan Fleming, commenting of code and inputs/outputs
 
 if ~exist('printLevel','var')
     %For Compatability with the original fastcore syntax

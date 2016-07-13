@@ -35,7 +35,7 @@ model=modelR204;
 %randomly pick some reactions
 epsilon=1e-4;
 printLevel=2;
-modeFlag=1;
+modeFlag=0;
 
 A = fastcc(model, epsilon, printLevel,modeFlag);
 

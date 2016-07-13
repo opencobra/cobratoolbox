@@ -195,12 +195,12 @@ end
 
 modelFlipped=model;
 
-flippedReverseOrientation=ones(size(model.S,2),1);
-flippedReverseOrientation(Ir)=-1;
-%flip the direction of the returned fluxes
-V=spdiags(flippedReverseOrientation,0,size(model.S,2),size(model.S,2))*V;
-
 if modeFlag
+    flippedReverseOrientation=ones(size(model.S,2),1);
+    flippedReverseOrientation(Ir)=-1;
+    %flip the direction of the returned fluxes
+    V=spdiags(flippedReverseOrientation,0,size(model.S,2),size(model.S,2))*V;
+    
     %sanity check
     if norm(veryOrigModel.S*V,inf)>epsilon/100
         fprintf('%g%s\n',epsilon/100, '= epsilon/100')
