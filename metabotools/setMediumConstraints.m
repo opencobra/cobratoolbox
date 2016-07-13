@@ -1,7 +1,7 @@
 function [modelMedium,basisMedium] = setMediumConstraints(model, set_inf, current_inf, medium_composition, met_Conc_mM, cellConc, t, cellWeight, mediumCompounds, mediumCompounds_lb, customizedConstraints, customizedConstraints_ub, customizedConstraints_lb, close_exchanges)
 
 % Calculates and sets constraints according to medium composition in mM. Is 
-% based on the function Conc2Rate. Returns a model with new constraints.
+% based on the function conc2Rate. Returns a model with new constraints.
 %  INPUTS
 %
 %   model                     Global metabolic model (Recon)
@@ -32,7 +32,7 @@ function [modelMedium,basisMedium] = setMediumConstraints(model, set_inf, curren
 %    basisMedium              Vector of adjusted constraints, for reference such that these constraints are not overwritten at a later stage
 %
 % Please note that if metabolites of Medium_composition and mediumCompounds overlap, the constraints of the Medium_composition will
-% be set to 0 in the output model. The function depends on the functions Conc2Rate, changeRxnBounds.
+% be set to 0 in the output model. The function depends on the functions conc2Rate, changeRxnBounds.
 %
 % Maike K. Aurich 26/05/15
 
@@ -71,7 +71,7 @@ if ~isempty(medium_composition)
     
     for i = 1 : length(medium_composition)
         
-        [flux_Medium(i,1)] = Conc2Rate(met_Conc_mM(i), cellConc, t, cellWeight);%
+        [flux_Medium(i,1)] = conc2Rate(met_Conc_mM(i), cellConc, t, cellWeight);%
         
     end
     
