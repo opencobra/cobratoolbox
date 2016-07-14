@@ -67,7 +67,8 @@ valDef.absMipGapTol = 1e-12;
 valDef.NUMERICALEMPHASIS = 1;
 
 %OPTI parameters
-valDef.algorithm = 'automatic';
+valDef.OPTIsolver = 'auto';
+valDef.OPTIalgorithm = 'automatic';
 
 
 %%
