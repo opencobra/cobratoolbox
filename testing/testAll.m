@@ -16,6 +16,7 @@ test_path = (mFilePath(1:end-length(mfilename)));
 test_directory = dir(test_path);
 f = filesep;
 
+
 %make sure the solvers are the predefined ones for each test as if a test
 %fails it can fail to switch back the solver
 global CBTLPSOLVER;

@@ -31,6 +31,10 @@ function solverOK = changeCobraSolver(solverName,solverType)
 %   matlab          Matlab's own linprog.m (currently unsupported, may not
 %                   work on COBRA-type LP problems)
 %   mps             Outputs a MPS matrix string. Does not solve LP problem
+%   opti            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
+%                   solver installed and called with OPTI TB wrapper
+%                   Lower level calls with installed mex files are possible
+%                   but best avoided for all solvers
 %
 % Currently allowed MILP solvers:
 %   tomlab_cplex    CPLEX MILP solver accessed through Tomlab environment
@@ -181,6 +185,14 @@ if (strcmp(solverType,'LP'))
                 solverOK = false;
             end
             MINOSPATH=cmdout(1:end-length('/bin/minos')-1);
+        case 'opti'
+            allLPsolvers = {'CLP','CSDP','DSDP','OOQP','SCIP'};
+            availableSolvers = cellfun(@(x)checkSolver(lower(x)),allLPsolvers);            
+            display('Available OPTI solvers that are installed currently');
+            display(char(allLPsolvers(logical(availableSolvers))));
+            if ~any(logical(availableSolvers))
+                solverOK = false;
+            end
         otherwise
             warning(['LP solver ' solverName ' not supported by COBRA Toolbox']);
             solverOK = false;

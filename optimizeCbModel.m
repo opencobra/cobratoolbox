@@ -155,7 +155,7 @@ end
 %%
 t1 = clock;
 % Solve initial LP
-if allowLoops
+if allowLoops    
     solution = solveCobraLP(LPproblem);
 else
     MILPproblem = addLoopLawConstraints(LPproblem, model, 1:nRxns);
@@ -300,5 +300,6 @@ end
 FBAsolution.stat = solution.stat;
 FBAsolution.origStat = solution.origStat;
 FBAsolution.solver = solution.solver;
+FBAsolution.algorithm = solution.algorithm;
 FBAsolution.time = etime(clock, t1);
 
