@@ -155,8 +155,8 @@ end
 %%
 t1 = clock;
 % Solve initial LP
-if allowLoops
-    solution = solveCobraLP(LPproblem,'algorithm','Barrier');
+if allowLoops    
+    solution = solveCobraLP(LPproblem);
 else
     MILPproblem = addLoopLawConstraints(LPproblem, model, 1:nRxns);
     solution = solveCobraMILP(MILPproblem);
