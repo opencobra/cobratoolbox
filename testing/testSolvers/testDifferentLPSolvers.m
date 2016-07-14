@@ -50,7 +50,10 @@ if solveDefaultModel
     end
 end
 %print size of model
-[m,n]=size(model.S);
+[m,n]=size(model.A);
+if ~exist('printLevel','var')
+    printLevel = 3;
+end
 if printLevel>0
     fprintf('%s\n',['Testing model with linear constraint matrix that has ' num2str(m) ' rows and ' num2str(n) ' columns...'])
 end
@@ -59,15 +62,50 @@ global CBTLPSOLVER
 oldSolver=CBTLPSOLVER;
 
 if ~exist('solvers','var')
-    solvers={'gurobi5','mosek','ibm_cplex','cplex_direct','pdco','glpk','quadMinos'};
-    %solvers={'gurobi5','mosek_linprog','mosek','ibm_cplex','cplex_direct','pdco','glpk','quadMinos'};
+    solvers={'opti'};
+    % solvers={'gurobi5','mosek_linprog','mosek','ibm_cplex',...
+    %          'cplex_direct','pdco','glpk','quadMinos',...
+    %          'opti'};
 end
 
 i=1;
 for j=1:length(solvers)
     %current solver
     solver=solvers{j};
-    
+    if strcmp(solver,'opti')
+        if 1   
+            % clp
+            solverOK = changeCobraSolver(solver,'LP');
+            opts.solver = 'clp';
+            opts.tolrfun = 1e-9;
+            opts.tolafun = 1e-9;
+            opts.display = 'iter';
+            opts.warnings = 'all';            
+            solution{i} = solveCobraLP(model,opts);
+            i = i+1;            
+        end
+        if 1   
+            % clp:barrier
+            solverOK = changeCobraSolver(solver,'LP');
+            opts.solver = 'clp';
+            opts.tolrfun = 1e-9;
+            opts.tolafun = 1e-9;
+            opts.display = 'iter';
+            opts.warnings = 'all';            
+            opts.algorithm = 'barrier';
+            solution{i} = solveCobraLP(model,opts);
+            i=i+1;            
+        end
+        % note that scip does not return the dual solution
+        if 1
+            solverOK = changeCobraSolver(solver,'LP');
+            solution{i} = solveCobraLP(model,'printLevel',3,...
+                                       'optTol',1e-9,...
+                                       'OPTIsolver','clp',...
+                                       'OPTIalgorithm','barrier');
+            i = i+1;
+        end
+    end
     if strcmp(solver,'gurobi5')
         if 1
             solverOK = changeCobraSolver(solver,'LP');
