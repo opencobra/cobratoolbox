@@ -1372,9 +1372,9 @@ if isfield(info,'Lambda')
     if isfield(info.Lambda,'bounds')
         w = info.Lambda.bounds;    
     end
-    if isfield(info.Lambda,'eqlin')
+    if isfield(info.Lambda,'eqlin') & isfield(info.Lambda,'ineqlin')
         % need to check whether duals from all constraints are included
-        y = info.Lambda.eqlin;
+        y = [info.Lambda.ineqlin;info.Lambda.eqlin];
     end    
 end    
 if isfield(info,'Algorithm')
