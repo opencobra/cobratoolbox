@@ -60,6 +60,15 @@ for more details on compiler options.
 
 The instructions below refer to the Visual Studio Express compiler.
 
+----
+
+In order to generate the MEX file on Windows, you must have a compiler installed that is compatible with your MATLAB release.
+
+For R2015b, it is recommended to have the Microsoft Windows SDK for Windows 7 and .NET Framework 4 installed. The compiler can SDK can be downloaded from [here](https://www.microsoft.com/en-us/download/details.aspx?id=8279). Other compilers that are compatible with R2015b can be found [here](http://www.mathworks.com/support/sysreq/files/SystemRequirements-Release2015b_SupportedCompilers.pdf). In order to have the compiler set up properly, you must start MATLAB and run
+```
+mex -setup
+```
+
 1.1 GLPK version
 ----------------
 

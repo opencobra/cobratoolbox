@@ -51,7 +51,7 @@
 #include <math.h>
 #include <matrix.h>
 #include <time.h>
-#include <cplex.h> /*#include <ilcplex/cplex.h> -- for WIN OS*/
+#include <cplex.h>
 #include "mex.h"
 #include <string.h>
 #include <time.h>
@@ -741,7 +741,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     char           *sense = NULL;        /* constraints 'L', 'G' or 'E'    */
 
     /* OPT_PERCENT */
-    double          optPercent = 100; /*100*/;
+    double          optPercent = 100;   /*100*/
 
     /* OBJECTIVE */
     int             objective = -1;

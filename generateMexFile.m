@@ -14,21 +14,37 @@ filename      = 'cplexFVAc.c';
 if isunix == 1 && ismac ~= 1
   CPLEXpath     = '/opt/ibm/ILOG/CPLEX_Studio1262/cplex';
 elseif ismac == 1
-  CPLEXpath = '$HOME/Applications/IBM/ILOG/CPLEX_Studio1263/cplex';
+  CPLEXpath     = '$HOME/Applications/IBM/ILOG/CPLEX_Studio1263/cplex';
+else
+  CPLEXpath     = 'C:\Progra~1\IBM\ILOG\CPLEX_Studio1263\cplex';
 end
-include       = [CPLEXpath '/include/ilcplex']; %%sometimes as well without /ilcplex
+
+% Determine the include path
+if isunix == 1 || ismac == 1
+  include       = [CPLEXpath '/include/ilcplex'];
+else
+  include       = [CPLEXpath '\include\ilcplex'];
+end
 
 % Set the CPLEX library path
 if isunix == 1 && ismac ~= 1
   lib           = [CPLEXpath '/lib/x86-64_linux/static_pic'];
 elseif ismac == 1
   lib           = [CPLEXpath '/lib/x86-64_osx/static_pic'];
+else
+  lib           = [CPLEXpath '\lib\x64_windows_vs2013\stat_mda'];
 end
 
 % The library file is the same for *nix systems
-library       = [lib '/libcplex.a'];
+if isunix == 1 || ismac == 1
+  library       = [lib '/libcplex.a'];
+else
+  library       = [lib '\cplex1263.lib ' lib '\ilocplex.lib'];
+end
 
 % Generation of MEX string with compiler options
 CFLAGS        = '-O3 -lstdc++ -xc++ -Wall -Werror -march=native -save-temps -shared-libgcc -v '; %
 cmd           = ['-largeArrayDims CFLAGS="\$CFLAGS" -I' include ' ' filename ' ' library];
+
+% Generation of the MEX file
 eval(['mex ' cmd]);
