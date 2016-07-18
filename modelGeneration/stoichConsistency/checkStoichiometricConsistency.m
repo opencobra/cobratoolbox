@@ -122,8 +122,6 @@ solution = solveCobraLP(LPproblem,'printLevel',printLevel);
 
 inform=solution.stat;
 epsilon = 1e-4;
-smallestM =epsilon;
-largestM  =1e4;
 % If the network is not stoichiometrically consistent then one maximizes
 % the number of  positive component of the molecular masses vector
 if inform~=1
@@ -146,7 +144,7 @@ if inform~=1
             
             z>=0; z<=epsilon;
             
-            m>=z; m<=largestM;
+            m>=z; m<=(1/epsilon);
             
             SInt'*m==0;
             
@@ -156,7 +154,7 @@ if inform~=1
                 error('NaN in maximal conservation vector')
             end
             %boolean indicating metabolites involved in the maximal consistent vector
-            model.SConsistentMetBool=m>smallestM & model.SIntMetBool;
+            model.SConsistentMetBool=m>epsilon & model.SIntMetBool;
         case 'solveCobraLP'
             %set the solver and solver parameters
             global CBTLPSOLVER
@@ -169,8 +167,8 @@ if inform~=1
             %   max sum(z_i)
             %       s.t S'*m = 0
             %           z <= m
-            %           0 <= m <= 1e+4            
-            %           0 <= z <= 1e-4
+            %           0 <= m <= 1/epsilon            
+            %           0 <= z <= epsilon
             nInt=nnz(model.SIntRxnBool);
             LPproblem.A=[SInt'      , sparse(nInt,nMet); 
                          speye(nMet),      -speye(nMet)];
@@ -178,7 +176,7 @@ if inform~=1
             LPproblem.b=zeros(nInt+nMet,1);
             
             LPproblem.lb=[zeros(nMet,1);zeros(nMet,1)];
-            LPproblem.ub=[ones(nMet,1)*largestM;ones(nMet,1)*epsilon];
+            LPproblem.ub=[ones(nMet,1)*(1/epsilon);ones(nMet,1)*epsilon];
             
             LPproblem.c=zeros(nMet+nMet,1);
             LPproblem.c(nMet+1:2*nMet,1)=1;
@@ -200,10 +198,10 @@ if inform~=1
                 z=solution.full(nMet+1:end,1);
                 if isfield(model,'SIntMetBool') && 0
                     %boolean indicating metabolites involved in the maximal consistent vector
-                    model.SConsistentMetBool=m>smallestM & model.SIntMetBool;
+                    model.SConsistentMetBool=m>epsilon & model.SIntMetBool;
                 else
                     %boolean indicating metabolites involved in the maximal consistent vector
-                    model.SConsistentMetBool=m>smallestM;
+                    model.SConsistentMetBool=m>epsilon;
                 end
                 inform=1;
             else
@@ -229,10 +227,10 @@ if inform~=1
                 z = zeros(nMet,1);
                 if isfield(model,'SIntMetBool')  && 0
                     %boolean indicating metabolites involved in the maximal consistent vector
-                    model.SConsistentMetBool=m>smallestM & model.SIntMetBool;
+                    model.SConsistentMetBool=m>epsilon & model.SIntMetBool;
                 else
                     %boolean indicating metabolites involved in the maximal consistent vector
-                    model.SConsistentMetBool=m>smallestM;
+                    model.SConsistentMetBool=m>epsilon;
                 end
                 inform=1;
             else
@@ -254,7 +252,7 @@ if inform~=1
             MILPproblem.b=zeros(nInt+nMet,1);
             
             MILPproblem.lb=[zeros(nMet,1);zeros(nMet,1)];
-            MILPproblem.ub=[ones(nMet,1)*largestM;ones(nMet,1)];
+            MILPproblem.ub=[ones(nMet,1)*(1/epsilon);ones(nMet,1)];
             
             MILPproblem.c=zeros(nMet+nMet,1);
             MILPproblem.c(nMet+1:2*nMet,1)=1;
@@ -280,10 +278,10 @@ if inform~=1
                 z=solution.full(nMet+1:end,1);
                 if isfield(model,'SIntMetBool')  && 0
                     %boolean indicating metabolites involved in the maximal consistent vector
-                    model.SConsistentMetBool=m>smallestM & model.SIntMetBool;
+                    model.SConsistentMetBool=m>epsilon & model.SIntMetBool;
                 else
                     %boolean indicating metabolites involved in the maximal consistent vector
-                    model.SConsistentMetBool=m>smallestM;
+                    model.SConsistentMetBool=m>epsilon;
                 end
                 inform=1;
             else
@@ -297,10 +295,10 @@ if inform~=1
             timetaken=toc;
             if isfield(model,'SIntMetBool')  && 0
                 %boolean indicating metabolites involved in the maximal consistent vector
-                model.SConsistentMetBool=m>smallestM & model.SIntMetBool;
+                model.SConsistentMetBool=m>epsilon & model.SIntMetBool;
             else
                 %boolean indicating metabolites involved in the maximal consistent vector
-                model.SConsistentMetBool=m>smallestM;
+                model.SConsistentMetBool=m>epsilon;
             end
             z=zeros(nMet,1);
     end
@@ -327,15 +325,15 @@ else
     end
 end
 
-%find every non-exchange reaction involving a stoichiometrically consistent metabolite
-model.SConsistentRxnBool =(sum(model.S(model.SConsistentMetBool,:)~=0,1)~=0)';
-model.SConsistentRxnBool(~model.SIntRxnBool)=0;
+%OLD - incorrect way July 14th 2016 - Ronan.
+% %find every non-exchange reaction involving a stoichiometrically consistent metabolite
+% model.SConsistentRxnBool =(sum(model.S(model.SConsistentMetBool,:)~=0,1)~=0)';
+% model.SConsistentRxnBool(~model.SIntRxnBool)=0;
 
-%     %corresponding metabolites exclusively involved in the non-relaxed reactions
-%     minConservationNonRelaxMetBool=false(nMet,1);
-%     minConservationNonRelaxMetBool(model.SConsistentMetBool | unknownSConsistencyMetBool)=...
-%         any(model.S(model.SConsistentMetBool | unknownSConsistencyMetBool, minConservationNonRelaxRxnBool),2)...
-%      & ~any(model.S(model.SConsistentMetBool | unknownSConsistencyMetBool,~minConservationNonRelaxRxnBool),2);   
+%corresponding reactions exclusively involving consistent metabolites
+model.SConsistentRxnBool=false(nRxn,1);
+model.SConsistentRxnBool(~model.SIntRxnBool)= any(model.S( model.SConsistentMetBool,~model.SIntRxnBool),1)'...
+                                           & ~any(model.S(~model.SConsistentMetBool,~model.SIntRxnBool),1)';
 
 
 
