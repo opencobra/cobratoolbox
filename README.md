@@ -1,4 +1,27 @@
 
+<!-- MDTOC maxdepth:6 firsth1:1 numbering:0 flatten:0 bullets:1 updateOnSave:1 -->
+
+- [Compatibility](#compatibility)   
+- [File Structure](#file-structure)   
+- [Introduction](#introduction)   
+- [Compiling](#compiling)   
+   - [1.1 GLPK version](#11-glpk-version)   
+   - [1.2 CPLEX version](#12-cplex-version)   
+   - [2.1 GLPK version](#21-glpk-version)   
+   - [2.2 CPLEX version](#22-cplex-version)   
+- [Usage](#usage)   
+- [How may I install gcc on Windows?](#how-may-i-install-gcc-on-windows)   
+
+<!-- /MDTOC -->
+
+Compatibility
+============
+
+- Matlab R2014a fully tested on UNIX and DOS Systems
+- Matalb R2015b throws compatibility errors with CPLEX 12.6.3 on DOS Systems
+
+File Structure
+==============
 
 The following files are supplied
 
@@ -64,7 +87,7 @@ The instructions below refer to the Visual Studio Express compiler.
 
 In order to generate the MEX file on Windows, you must have a compiler installed that is compatible with your MATLAB release.
 
-For R2015b, it is recommended to have the Microsoft Windows SDK for Windows 7 and .NET Framework 4 installed. The compiler can SDK can be downloaded from [here](https://www.microsoft.com/en-us/download/details.aspx?id=8279). Other compilers that are compatible with R2015b can be found [here](http://www.mathworks.com/support/sysreq/files/SystemRequirements-Release2015b_SupportedCompilers.pdf). In order to have the compiler set up properly, you must start MATLAB and run
+For R2015b, it is recommended to have the Microsoft Windows SDK for Windows 7 and .NET Framework 4 installed. The compiler and SDK can be downloaded from [here](https://www.microsoft.com/en-us/download/details.aspx?id=8279). Other compilers that are compatible with R2015b can be found [here](http://www.mathworks.com/support/sysreq/files/SystemRequirements-Release2015b_SupportedCompilers.pdf). In order to have the compiler set up properly, you must start MATLAB and run
 ```
 mex -setup
 ```
