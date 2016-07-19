@@ -34,7 +34,7 @@ The ""io/writeCbModel" function relies on another function "io/utilities/write
 
  2) When exporting a COBRA Matlab structure to an FBC file, it is usually required that the objective coefficient vector (the c field) of the COBRA model structure is not all zeros  (i.e., at least one objective function is specified), which is demanded by the FBC extension.
 
-If an SBML-FBCv2 file is exported from a COBRA Matlab structure without an objective function defined,validatition of the SBML-FBCv2 file on BiGG validator (http://bigg.ucsd.edu/validator/app) may give a warning.
+If an SBML-FBCv2 file is exported from a COBRA Matlab structure without an objective function defined, validation of the SBML-FBCv2 file on BiGG validator (http://bigg.ucsd.edu/validator/app) may give a warning.
 
 Solutions to some potential issues with reading/writing FBC files.
 
