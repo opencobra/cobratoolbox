@@ -20,7 +20,7 @@ if(nbFiles > 0)
     fprintf('\n Number of files in logFiles/: %d\n', nbFiles);
     m=input('\n Do you want to clean all log files in logFiles/ ? - Y/N [Y]: ','s');
     if m=='Y' || m =='y'
-      unix('sudo rm ../fastFVA/logFiles/*.log');
+      unix('rm ../fastFVA/logFiles/*.log');
       fprintf(' >> All log files in logFiles/ removed.\n');
     end
 else
@@ -34,7 +34,7 @@ if(nbFiles > 0)
     fprintf('\n Number of files in results/: %d\n', nbFiles);
     m=input('\n Do you want to clean al results files in results/ ? - Y/N [Y]: ','s');
     if m=='Y' || m =='y'
-      unix('sudo rm ../fastFVA/results/*.mat');
+      unix('rm ../fastFVA/results/*.mat');
       fprintf(' >> All result files in results/ removed.\n');
     end
 else
