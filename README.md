@@ -59,6 +59,8 @@ The following files are supplied
 Installation
 ============
 
+*Please make sure that you have CPLEX installed. You must have IBM/ILOG CPLEX, not the TOMLAB version.*
+
 In order to generate the MEX file, you must have a compiler installed that is compatible with your MATLAB release. You need to install a C++ compiler if you haven't done so already, e. g. The Microsoft Visual Studio Express 2008 compiler which is available free of charge. Depending on your Matlab version, you must verify the supported compiler [here](http://www.mathworks.com/support/compilers).
 
 ## Linux
