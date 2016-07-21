@@ -27,7 +27,7 @@ function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVA(model,optPe
 %                    percentage of the optimal solution (default = 100
 %                    or optimal solutions only)
 %   objective        Objective ('min' or 'max') (default 'max')
-%   solver           'cplex' or 'glpk' (default 'glpk')
+%   solver           'cplex'
 %   matrixAS         'A' or 'S' - choice of the model matrix, coupled (A) or uncoupled (S)
 %   cpxControl       Parameter set of CPLEX loaded externally
 %   cpxAlgorithm     Choice of the solution algorithm within CPLEX

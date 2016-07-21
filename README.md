@@ -8,7 +8,9 @@
    - [Windows](#windows)   
    - [Generation of MEX files](#generation-of-mex-files)   
 - [Test and Example](#test-and-example)   
-- [Usage](#usage)   
+- [Running FVA](#running-fva)   
+   - [Basic Usage](#basic-usage)   
+   - [Advanced Usage](#advanced-usage)   
 
 <!-- /MDTOC -->
 
@@ -85,54 +87,85 @@ exampleFVA.m
 ```
 in the folder `pCOBRA/drivers/exampleFVA`.
 
-Usage
-=====
+Running FVA
+===========
 
- [minFlux,maxFlux] = fastFVA(model, optPercentage, objective, solver)
+## Basic Usage
+```
+[minFlux,maxFlux] = fastFVA(model, optPercentage, objective, solver)
+```
 
  Solves LPs of the form for all v_j:   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; max/min v_j  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; subject to S*v = b  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lb <= v <= ub  
 
- **Inputs:**  
-   model             Model structure  
+**Inputs**  
 
-     Required fields  
+| Argument       | Description              |
+| ---------------|--------------------------|
+| model          | Model structure          |
+| optPercentage | Only consider solutions that give you at least a certain percentage of the optimal solution (default = 100 or optimal solutions only)  |
+| objective | Objective ('min' or 'max') (default 'max')  |
+|  solver | 'cplex' (default)  |
 
-       S            Stoichiometric matrix  
-       b            Right hand side = 0  
-       c            Objective coefficients  
-       lb           Lower bounds  
-       ub           Upper bounds  
+*Required fields of the model argument*
 
-     Optional fields  
+| Field       | Description              |
+| ------------|--------------------------|
+| model.S     | Stoichiometric matrix    |
+| model.b     | Right hand side = 0      |
+| model.c     | Objective coefficients   |
+| model.lb    | Lower bounds             |
+| model.ub    | Upper bounds             |
 
-       A            General constraint matrix  
-       csense       Type of constraints, csense is a vector with elements  
-                    'E' (equal), 'L' (less than) or 'G' (greater than).  
+*Optional fields of the model argument*
 
-     If the optional fields are supplied, following LPs are solved  
-                    max/min v_j  
-                    subject to Av {'<=' | '=' | '>='} b  
-                                lb <= v <= ub  
+| Field        | Description              |
+| -------------|--------------------------|
+| model.A      | General constraint matrix  
+| model.csense | Type of constraints, csense is a vector with elements 'E' (equal), 'L' (less than) or 'G' (greater than).       |
 
-   optPercentage    Only consider solutions that give you at least a certain  
-                    percentage of the optimal solution (default = 100  
-                    or optimal solutions only)  
-                    
-   objective        Objective ('min' or 'max') (default 'max')  
-
-   solver           'cplex' or 'glpk' (default 'glpk')  
-
- **Outputs:  **
-- minFlux   Minimum flux for each reaction  
-- maxFlux   Maximum flux for each reaction  
-- optsol    Optimal solution (of the initial FBA)  
-- ret       Zero if success  
+If the optional fields are supplied, following LPs are solved  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max/min v_j  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subject to Av {'<=' | '=' | '>='} b  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lb <= v <= ub  
 
 
-Please report problems to laurent.heirendt@uni.lu
+**Outputs**
+
+| Argument        | Description                          |
+| ----------------|--------------------------------------|
+| minFlux         | Minimum flux for each reaction       |
+| maxFlux         | Maximum flux for each reaction       |
+| optsol          | Optimal solution (of the initial FBA)|  
+| ret             | Zero if success                      |
+
+## Advanced Usage
+```
+[minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT] = fastFVA(model,optPercentage,objective,solver,rxnsList,matrixAS,cpxControl,cpxAlgorithm, strategy);
+```
+
+**Optional Inputs**  
+
+| Argument        | Description                                             |
+| ----------------|---------------------------------------------------------|
+| matrixAS        | 'A' or 'S' - coupled (A) or uncoupled (S)               |
+| cpxControl      | Parameter set of CPLEX loaded externally                |
+| cpxAlgorithm    | Choice of the solution algorithm within CPLEX           |
+| rxnsList        | List of reactions to analyze (default all rxns, i.e.    |
+
+**Optional Outputs**
+
+| Argument        | Description                                             |
+| ----------------|---------------------------------------------------------|
+|   optsol        | Optimal solution (of the initial FBA)                   |
+|   ret           | Zero if success                                         |
+|   fbasol        | Initial FBA in FBASOL                                   |
+|   fvamin        | matrix with flux values for the minimization problem    |
+|   fvamax        | matrix with flux values for the maximization problem    |
 
 ---
-Last updated: July 2016.
+Please report problems to [Laurent Heirendt](laurent.heirendt@uni.lu) or open up an issue.
+
+*Last updated: July 2016.*
