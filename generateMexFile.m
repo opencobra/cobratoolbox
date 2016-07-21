@@ -8,7 +8,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-filename      = 'cplexFVAc.c';
+filename      = 'cplexFVAnew.c';
 
 % Set the CPLEX file path
 if isunix == 1 && ismac ~= 1

@@ -133,7 +133,7 @@ enum {MINFLUX_OUT_POS,
 #define MAX_STR_LENGTH        1024
 #define OPT_PERCENTAGE        90
 
-#define PRINT_WARNING         "\e[0;33mWarning:\e[0m"
+#define PRINT_WARNING         "Warning:"
 #define LOGFILE_DIR            "../fastFVA/logFiles/cplexint_logfile_"
 
 #if !defined(MAX)
@@ -273,7 +273,9 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
           /* Print out a status message */
           if(statusint == 0 && getStatusint == 0 ){   /* set INT parameters */
-                mexPrintf("        ++ (int)[\e[1;32m%i\e[0m|\e[1;32m%i\e[0m]: %s (%i) = [set> %i] & [%i <get] \n",
+                /*mexPrintf("        ++ (int)[\e[1;32m%i\e[0m|\e[1;32m%i\e[0m]: %s (%i) = [set> %i] & [%i <get] \n",
+                          statusint, getStatusint, nameParam, numParam, (int)*(valuesCPLEX+j), getParamint);*/
+                mexPrintf("        ++ (int)[%i|%i]: %s (%i) = [set> %i] & [%i <get] \n",
                           statusint, getStatusint, nameParam, numParam, (int)*(valuesCPLEX+j), getParamint);
                 flag = false;
           } else {   /* set DOUBLE or FLOAT parameters */
@@ -284,7 +286,9 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
               /* Print out a status message */
               if(statusdbl == 0 && getStatusdbl == 0 ){
-                    mexPrintf("        ++ (dbl)[\e[1;32m%i\e[0m|\e[1;32m%i\e[0m]: %s (%i) = [set> %.10e] & [%.10e <get] \n",
+                  /*  mexPrintf("        ++ (dbl)[\e[1;32m%i\e[0m|\e[1;32m%i\e[0m]: %s (%i) = [set> %.10e] & [%.10e <get] \n",
+                              statusdbl, getStatusdbl, nameParam, numParam, (double)*(valuesCPLEX+j), getParamdbl);*/
+                    mexPrintf("        ++ (dbl)[%i|%i]: %s (%i) = [set> %.10e] & [%.10e <get] \n",
                               statusdbl, getStatusdbl, nameParam, numParam, (double)*(valuesCPLEX+j), getParamdbl);
                     flag = false;
                   }
@@ -302,7 +306,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
     /* Print ot a warning message if high optPercentage */
     if(optPercentage > OPT_PERCENTAGE) {
-      mexPrintf("\n -- %s: The optPercentage is higher than 90. The solution process might take longer than you might expect.\n\n",PRINT_WARNING);
+      mexPrintf("\n -- %s: The optPercentage is higher than 90. The solution process might take longer than you expect.\n\n",PRINT_WARNING);
     }
 
     if(monitorPerformance) {

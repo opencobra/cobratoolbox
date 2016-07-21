@@ -121,9 +121,10 @@ end;
 
 % Define the solver
 if strmatch('glpk',solver)
-   FVAc=@glpkFVAcc;
+   %FVAc=@glpkFVAcc;
+   fprintf('ERROR : GLPK is not supported.')
 elseif strmatch('cplex',solver)
-   FVAc=@cplexFVAc;
+   FVAc=@cplexFVAnew;
 else
    error(sprintf('Solver %s not supported', solver))
 end;
