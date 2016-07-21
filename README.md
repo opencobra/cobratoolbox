@@ -47,7 +47,7 @@ The following files are supplied
 | cplexFVAnew.mexmaci64  | *macOS MEX file; CPLEX 12.6.2, 64-bit Matlab R2014a*    |
 | cplexFVAnew.mexw64     | *Windows MEX file; CPLEX 12.6.2, 64-bit Matlab R2014a*  |
 | CPLEXParamSetFVA.m     | *Parameter set for CPLEX*                               |
-| fastFVA.m              | *Matlab wrapper for the MEX function*                  |
+| fastFVA.m              | *Matlab wrapper for the MEX function*                   |
 | generateMexFile.m      | *Generate the MEX file of the .c file*                  |
 | **logFiles**           | *Folder for storing log files*                          |
 | README.md              | *this file*                                             |
@@ -90,33 +90,42 @@ Usage
 
  [minFlux,maxFlux] = fastFVA(model, optPercentage, objective, solver)
 
- Solves LPs of the form for all v_j: max/min v_j
-                                     subject to S*v = b
-                                     lb <= v <= ub
- Inputs:
-   model             Model structure
-     Required fields
-       S            Stoichiometric matrix
-       b            Right hand side = 0
-       c            Objective coefficients
-       lb           Lower bounds
-       ub           Upper bounds
-     Optional fields
-       A            General constraint matrix
-       csense       Type of constraints, csense is a vector with elements
-                    'E' (equal), 'L' (less than) or 'G' (greater than).
-     If the optional fields are supplied, following LPs are solved
-                    max/min v_j
-                    subject to Av {'<=' | '=' | '>='} b
-                                lb <= v <= ub
+ Solves LPs of the form for all v_j:   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; max/min v_j  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; subject to S*v = b  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lb <= v <= ub  
 
-   optPercentage    Only consider solutions that give you at least a certain
-                    percentage of the optimal solution (default = 100
-                    or optimal solutions only)
-   objective        Objective ('min' or 'max') (default 'max')
-   solver           'cplex' or 'glpk' (default 'glpk')
+ **Inputs:**  
+   model             Model structure  
 
- Outputs:  
+     Required fields  
+
+       S            Stoichiometric matrix  
+       b            Right hand side = 0  
+       c            Objective coefficients  
+       lb           Lower bounds  
+       ub           Upper bounds  
+
+     Optional fields  
+
+       A            General constraint matrix  
+       csense       Type of constraints, csense is a vector with elements  
+                    'E' (equal), 'L' (less than) or 'G' (greater than).  
+
+     If the optional fields are supplied, following LPs are solved  
+                    max/min v_j  
+                    subject to Av {'<=' | '=' | '>='} b  
+                                lb <= v <= ub  
+
+   optPercentage    Only consider solutions that give you at least a certain  
+                    percentage of the optimal solution (default = 100  
+                    or optimal solutions only)  
+                    
+   objective        Objective ('min' or 'max') (default 'max')  
+
+   solver           'cplex' or 'glpk' (default 'glpk')  
+
+ **Outputs:  **
 - minFlux   Minimum flux for each reaction  
 - maxFlux   Maximum flux for each reaction  
 - optsol    Optimal solution (of the initial FBA)  
