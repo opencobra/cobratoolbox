@@ -105,9 +105,9 @@ Running FVA
 | Argument       | Description              |
 | ---------------|--------------------------|
 | model          | Model structure          |
-| optPercentage | Only consider solutions that give you at least a certain percentage of the optimal solution (default = 100 or optimal solutions only)  |
-| objective | Objective ('min' or 'max') (default 'max')  |
-|  solver | 'cplex' (default)  |
+| optPercentage  | Only consider solutions that give you at least a certain percentage of the optimal solution (default = 100 or optimal solutions only)  |
+| objective      | Objective ('min' or 'max') (default 'max')  |
+|  solver        | 'cplex' (default)  |
 
 *Required fields of the model argument*
 
