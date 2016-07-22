@@ -96,7 +96,21 @@ if nargin<5
     rxns = 1:length(model.rxns);
     rxnsList = {};
 else
+
+    %% check here if the vector of rxns is sorted or not
+    % this needs to be fixed to sort the flux vectors accordingly
+    % as the find() function sorts the reactions automatically
+    [~,indexRxns]=ismember(model.rxns, rxnsList) ;
+    nonZeroIndices = [];
+    for i=1:length(indexRxns)
+      if(indexRxns(i) ~= 0) nonZeroIndices = [nonZeroIndices, indexRxns(i)]; end
+    end
+    if issorted(nonZeroIndices) == 0
+      fprintf('\n-- Warning:: Your input reaction vector is not sorted. Please sort your vector first.\n\n')
+    end
+
     rxns = find(ismember(model.rxns, rxnsList))';%transpose rxns
+
 end
 if nargin<4, solver         = 'cplex';     end
 if nargin<3, objective      = 'max';      end
