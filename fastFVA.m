@@ -422,10 +422,12 @@ else
 
 end
 
-  if(strategy == 0)
+if(strategy == 0)
 if nargin==5 %test on nargin
-    fvamin = fvamin(:,rxns);%keep only nonzero columns
-    fvamax = fvamax(:,rxns);
+    if bExtraOutputs
+        fvamin = fvamin(:,rxns);%keep only nonzero columns
+        fvamax = fvamax(:,rxns);
+    end
     minFlux(find(~ismember(model.rxns, rxnsList)))=[];
     maxFlux(find(~ismember(model.rxns, rxnsList)))=[];
 end
