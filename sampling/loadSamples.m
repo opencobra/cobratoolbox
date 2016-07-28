@@ -31,13 +31,18 @@ h = waitbar(0,'Loading samples ...');
 for i = 1:numFiles
     if (i > numSkipped)
         
-        data = load([filename '_' num2str(i) '.mat']);
+        try
+            data = load([filename '_' num2str(i) '.mat']);
+        catch
+            fprintf('Unable to read file ''%s_%d.mat''. No such file or directory. Check sampling time limit.\n',filename,i);
+            break;
+        end
         selPoints = any(data.points ~= 0);
         numPoints = sum(selPoints);        
         if (randPts)
           % Pick a random set of points
             pointInd = randperm(numPoints);
-            samples = [samples data.points(:,pointInd(1:pointsPerFile))];
+            samples = [samples data.points(:,pointInd(1:min([pointsPerFile,numPoints])))];
         else
           % Pick points at regular intervals
             pSkip = max([floor(numPoints/pointsPerFile) 1]);
