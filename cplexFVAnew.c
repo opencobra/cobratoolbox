@@ -90,10 +90,11 @@ enum {F_IN_POS,
       CPLEX_PARAMS,
       VALUES_CPLEX_PARAMS,
       CPLEX_ALGO_IN,
+      RXNS_OPTMODE_IN,
       MAX_NUM_IN_ARG};
 
 /* Number of input arguments */
-#define MIN_NUM_IN_ARG        13
+#define MIN_NUM_IN_ARG        14
 
 #define F_IN                  prhs[F_IN_POS]
 #define A_IN                  prhs[A_IN_POS]
@@ -108,6 +109,7 @@ enum {F_IN_POS,
 #define CPLEX_PARAMS          prhs[CPLEX_PARAMS]
 #define VALUES_CPLEX_PARAMS   prhs[VALUES_CPLEX_PARAMS]
 #define CPLEX_ALGO_IN         prhs[CPLEX_ALGO_IN]
+#define RXNS_OPTMODE_IN       prhs[RXNS_OPTMODE_IN]
 
 /* MEX Output Arguments */
 enum {MINFLUX_OUT_POS,
@@ -210,7 +212,8 @@ void dispCPLEXerror(CPXENVptr env, int status)
 int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* optSol,
          double* FBAsol, double* FVAmin, double* FVAmax, mwSize n_constr, mwSize n_vars,
          double optPercentage, int objective, const double* rxns, int nrxn,
-         const mxArray* namesCPLEXparams, const mxArray *valuesCPLEXparams, int cplexAlgo) {
+         const mxArray* namesCPLEXparams, const mxArray *valuesCPLEXparams, int cplexAlgo,
+         const double* rxnsOptMode) {
     int           status;
     int           rmatbeg[2];
     int*          ind = NULL;
@@ -752,6 +755,8 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
 
     /* RXNS */
     double          *rxns = NULL;
+    double          *rxnsOptMode = NULL;
+
     mwSize          nrxn = 0;
 
     int             opt_lic_rel = 1;    /* user can specify after how many calls will
@@ -975,6 +980,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     objective     = mxGetScalar(OBJECTIVE_IN);
     rxns          = mxGetPr(RXNS_IN);
     nrxn          = mxGetM(RXNS_IN);
+    rxnsOptMode   = mxGetPr(RXNS_OPTMODE_IN);
 
     mexPrintf("The number of reactions retrieved is %d\n", nrxn);
 
@@ -1142,7 +1148,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     *ret = _fva(env,lp,minFlux,maxFlux,optSol,
                 fbasol, fvaminsol, fvamaxsol,
                 n_constr,n_vars,optPercent,objective,rxns,nrxn,
-                CPLEX_PARAMS, VALUES_CPLEX_PARAMS, cplexAlgo);
+                CPLEX_PARAMS, VALUES_CPLEX_PARAMS, cplexAlgo, rxnsOptMode);
 
     if(monitorPerformance) markersEnd[4] = clock();
 

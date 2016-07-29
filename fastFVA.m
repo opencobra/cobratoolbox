@@ -1,4 +1,4 @@
-function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVA(model,optPercentage,objective,solver,rxnsList,matrixAS,cpxControl,cpxAlgorithm,strategy)
+function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVA(model,optPercentage,objective,solver,rxnsList,matrixAS,cpxControl,cpxAlgorithm,strategy,rxnsOptMode)
 %fastFVA Flux variablity analysis optimized for the GLPK and CPLEX solvers.
 %
 % [minFlux,maxFlux] = fastFVA(model,optPercentage,objective, solver)
@@ -88,7 +88,8 @@ showSplitting = 1;
 verbose=1;
 
 % Define the input arguments
-if nargin<9, strategy = 0;                end
+if nargin<10, rxnsOptMode   = {};         end
+if nargin<9, strategy       = 0;          end
 if nargin<8, cpxAlgorithm   = 0;          end
 if nargin<7, cpxControl     = struct([]); end
 if nargin<6, matrixAS       = 'S';        end
@@ -276,8 +277,6 @@ else
    sortedrxnsVect = rxnsVect(indexcdVect);
    sortedmetsVect = metsVect(indexrdVect);
 
-
-
    if(strategy == 1)
 
        nbRxnsPerThread = ceil(Nrxns/(2*nworkers));
@@ -342,7 +341,6 @@ else
       if strategy == 1 || strategy == 2
         rxnsKey = [sortedrxnsVect(startMarker1(i):endMarker1(i)), sortedrxnsVect(startMarker2(i):endMarker2(i))];
       else
-
         rxnsKey = istart(i):iend(i);
       end
 
@@ -363,7 +361,7 @@ else
       if bExtraOutputs
           [minf,maxf,iopt(i),iret(i),fbasol_single,fvamin_single,fvamax_single] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                            optPercentage,obj, rxnsKey', ...
-                                           t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm);
+                                           t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode);
       else
       if(strategy == 0)
           fprintf(' >> Number of reactions given to the worker: %d \n', length((istart(i):iend(i)) ) );
@@ -371,7 +369,7 @@ else
 
           [minf,maxf,iopt(i),iret(i)] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj, rxnsKey', ...
-                                         t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm);
+                                         t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode);
 
       end
 
