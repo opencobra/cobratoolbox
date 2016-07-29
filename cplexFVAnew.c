@@ -238,6 +238,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     double        getParamdbl = 0.0;
     int           getParamint = 0;
     bool          flag = true;
+    bool          performOptim = true;     /* switch to perform optimizations */
 
     /* CPLEX algorithm IN
     int cplexAlgo   = 0;
@@ -324,9 +325,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
     mexPrintf("        -- Changing the solution method: %i\n", cplexAlgo);
 
-      /*status = CPXreadcopybase(env, lp, "myprob.bas");*/
-
-
+    /*status = CPXreadcopybase(env, lp, "myprob.bas");*/
 
     /* Solve the problem */
     if(cplexAlgo == 1)        status = CPXprimopt(env, lp);
@@ -436,79 +435,92 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     for (iRound = 0; iRound < 2; iRound++)
     {
 
-      mexPrintf("        -- Changing the objective - iRound = %i. nrxn = %i.\n", iRound, nrxn);
+      mexPrintf("        -- Changing the objective - iRound = %i (0->min;1->max). nrxn = %i.\n", iRound, nrxn);
 
       CPXchgobjsen(env, lp, (iRound == 0) ? CPX_MIN : CPX_MAX);
 
       for (k = 0; k < nrxn; k++)
       {
-        int j = rxns[k];
 
-        /*mexPrintf("        -- Loop k = %i with j= %i.\n", k, j);*/
+        /* Determine if a reaction should be minimized, maximized, or both
+           0: only minimization; 1: only maximization; 2: minimization & maximization*/
 
-        if(monitorPerformance) markersBegin[6] = clock();
-
-        status = CPXchgcoef (env, lp, -1, j-1, 1.0);
-
-        if(monitorPerformance) markersEnd[6] = clock();
-        if(monitorPerformance) markersBegin[7] = clock();
-
-      /*  status = CPXreadcopybase(env, lp, "myprob.bas");*/
-
-        /* Solve the problem - most time consuming step*/
-        if(cplexAlgo == 1)        status = CPXprimopt(env, lp);
-        else if(cplexAlgo == 2)   status = CPXdualopt(env, lp);
-        else                      status = CPXlpopt(env, lp);
-
-        /*status = CPXmbasewrite(env, lp, "myprob.bas");*/
-
-        if(monitorPerformance) markersEnd[7] = clock();
-
-        if (status) {
-           /* To be done: Try to restart from scratch! */
-           mexPrintf("Numerical difficulties, round=%d, j=%d\n", iRound, j);
-           return FVA_MODIFIED_FAIL;
-        }
-
-        if(monitorPerformance) markersBegin[8] = clock();
-
-        status = CPXgetobjval(env, lp, &objval);
-
-        if(monitorPerformance) markersEnd[8] = clock();
-
-        if (status != 0) {
-           mexPrintf("Unable to get objective function value (%d,%d)\n", iRound, j);
-           dispCPLEXerror(env, status);
-        }
-
-        /* Store flux vectors also */
-        if (FVAmin != NULL && FVAmax != NULL)
-        {
-           double* ptr = (iRound == 0) ? FVAmin : FVAmax;
-           status = CPXgetx (env, lp, &ptr[k * n_vars], 0, CPXgetnumcols(env, lp)-1);
-           if (status != 0)
-           {
-              mexPrintf("Unable to get FVAsol. Status=%d\n", status);
-              return FVA_INIT_FAIL;
-           }
-        }
-
-        if(monitorPerformance) markersBegin[9] = clock();
-
-        status = CPXchgcoef (env, lp, -1, j-1, 0.0);
-
-        if(monitorPerformance) markersEnd[9] = clock();
-
-        if (status != 0) {
-          mexPrintf("Unable to set coeff to zero\n");
-        }
-        if (iRound == 0) {
-          minFlux[j-1] = objval;
+        if( (rxnsOptMode[k] == 0 && iRound == 0) || (rxnsOptMode[k] == 1 && iRound == 1) || (rxnsOptMode[k] == 2)) {
+           performOptim = true;
         } else {
-          maxFlux[j-1] = objval;
+           performOptim = false;
         }
-      }
-    }
+
+        if (performOptim) {
+
+          int j = rxns[k];
+
+          /*mexPrintf("        -- Loop k = %i with j= %i.\n", k, j);*/
+
+          if(monitorPerformance) markersBegin[6] = clock();
+
+          status = CPXchgcoef (env, lp, -1, j-1, 1.0);
+
+          if(monitorPerformance) markersEnd[6] = clock();
+          if(monitorPerformance) markersBegin[7] = clock();
+
+          /*  status = CPXreadcopybase(env, lp, "myprob.bas");*/
+
+          /* Solve the problem - most time consuming step*/
+          if(cplexAlgo == 1)        status = CPXprimopt(env, lp);
+          else if(cplexAlgo == 2)   status = CPXdualopt(env, lp);
+          else                      status = CPXlpopt(env, lp);
+
+          /*status = CPXmbasewrite(env, lp, "myprob.bas");*/
+
+          if(monitorPerformance) markersEnd[7] = clock();
+
+          if (status) {
+             /* To be done: Try to restart from scratch! */
+             mexPrintf("Numerical difficulties, round=%d, j=%d\n", iRound, j);
+             return FVA_MODIFIED_FAIL;
+          }
+
+          if(monitorPerformance) markersBegin[8] = clock();
+
+          status = CPXgetobjval(env, lp, &objval);
+
+          if(monitorPerformance) markersEnd[8] = clock();
+
+          if (status != 0) {
+             mexPrintf("Unable to get objective function value (%d,%d)\n", iRound, j);
+             dispCPLEXerror(env, status);
+          }
+
+          /* Store flux vectors also */
+          if (FVAmin != NULL && FVAmax != NULL)
+          {
+             double* ptr = (iRound == 0) ? FVAmin : FVAmax;
+             status = CPXgetx (env, lp, &ptr[k * n_vars], 0, CPXgetnumcols(env, lp)-1);
+             if (status != 0)
+             {
+                mexPrintf("Unable to get FVAsol. Status=%d\n", status);
+                return FVA_INIT_FAIL;
+             }
+          }
+
+          if(monitorPerformance) markersBegin[9] = clock();
+
+          status = CPXchgcoef (env, lp, -1, j-1, 0.0);
+
+          if(monitorPerformance) markersEnd[9] = clock();
+
+          if (status != 0) {
+            mexPrintf("Unable to set coeff to zero\n");
+          }
+          if (iRound == 0) {
+            minFlux[j-1] = objval;
+          } else {
+            maxFlux[j-1] = objval;
+          }
+       } /* end if performOptim */
+      } /* end loop reactions k */
+    } /* end iRound */
 
     if(monitorPerformance) {
       markersEnd[5] = clock();

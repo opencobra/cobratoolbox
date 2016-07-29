@@ -32,6 +32,10 @@ function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVA(model,optPe
 %   cpxControl       Parameter set of CPLEX loaded externally
 %   cpxAlgorithm     Choice of the solution algorithm within CPLEX
 %   rxnsList         List of reactions to analyze (default all rxns, i.e. 1:length(model.rxns))
+%   rxnsOptMode      List of min/max optimizations to perform:
+%                    0 = only minimization;
+%                    1 = only maximization;
+%                    2 = minimization & maximization;
 %
 % Outputs:
 %   minFlux   Minimum flux for each reaction
@@ -88,7 +92,9 @@ showSplitting = 1;
 verbose=1;
 
 % Define the input arguments
-if nargin<10, rxnsOptMode   = {};         end
+if nargin<10
+    rxnsOptMode = 2*ones(length(model.rxns),1)'; %status = 2 (min & max) for all reactions
+end
 if nargin<9, strategy       = 0;          end
 if nargin<8, cpxAlgorithm   = 0;          end
 if nargin<7, cpxControl     = struct([]); end
@@ -189,6 +195,13 @@ else
   fprintf(' >> All the %d reactions are solved.\n', n);
 end
 
+% output how many reactions are min, max, or both
+rxnsOptMode
+for optMode = 0:2
+    totalOptMode = length(find(rxnsOptMode == i));
+    fprintf(' >> %d reactions out of %d are minimized (%d).\n', totalOptMode , n, totalOptMode*100/n);
+end
+
 % Create a MATLAB parallel pool
 poolobj = gcp('nocreate'); % If no pool, do not create new one.
 if isempty(poolobj)
@@ -204,11 +217,11 @@ if nworkers<=1
    if bExtraOutputs
        [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                                               optPercentage,obj,(1:n)', ...
-                                                              1, cpxControl, valuesCPLEXparams, cpxAlgorithm);
+                                                              1, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode);
    else
        [minFlux,maxFlux,optsol,ret]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj,(1:n)', ...
-                                         1, cpxControl, valuesCPLEXparams, cpxAlgorithm);
+                                         1, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode);
    end
 
    if ret ~= 0 && verbose
