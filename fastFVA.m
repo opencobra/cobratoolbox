@@ -349,7 +349,8 @@ else
       t = getCurrentTask();
 
       if(strategy == 0)
-      fprintf('\n----------------------------------------------------------------------------------\n --  Task Launched // TaskID: %d / %d (LoopID = %d) <> [%d, %d] / [%d, %d].\n', ...
+      fprintf('\n----------------------------------------------------------------------------------\n');
+      fprintf('--  Task Launched // TaskID: %d / %d (LoopID = %d) <> [%d, %d] / [%d, %d].\n', ...
               t.ID, nworkers, i, istart(i), iend(i), m, n);
       end;
 
