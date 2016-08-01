@@ -119,7 +119,8 @@ enum {MINFLUX_OUT_POS,
       FBA_SOL_OUT_POS,
       FVA_MIN_OUT_POS,
       FVA_MAX_OUT_POS,
-      STATUS_OUT_POS,
+      STATUS_MIN_OUT_POS,
+      STATUS_MAX_OUT_POS,
       MAX_NUM_OUT_ARG
       };
 
@@ -133,7 +134,8 @@ enum {MINFLUX_OUT_POS,
 #define FBA_SOL_OUT           plhs[FBA_SOL_OUT_POS]
 #define FVA_MIN_OUT           plhs[FVA_MIN_OUT_POS]
 #define FVA_MAX_OUT           plhs[FVA_MAX_OUT_POS]
-#define STATUS_OUT            plhs[STATUS_OUT_POS]
+#define STATUS_MIN_OUT        plhs[STATUS_MIN_OUT_POS]
+#define STATUS_MAX_OUT        plhs[STATUS_MAX_OUT_POS]
 
 #define MAX_STR_LENGTH        1024
 #define OPT_PERCENTAGE        90 /* confidence threshold if not specified */
@@ -210,7 +212,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
          double* FBAsol, double* FVAmin, double* FVAmax, mwSize n_constr, mwSize n_vars,
          double optPercentage, int objective, const double* rxns, int nrxn,
          const mxArray* namesCPLEXparams, const mxArray *valuesCPLEXparams, int cplexAlgo,
-         const double* rxnsOptMode, double* statussol) {
+         const double* rxnsOptMode, double* statussolmin,  double* statussolmax) {
 
     int           status;
     int           rmatbeg[2];
@@ -487,11 +489,14 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
 
           /* save the status of each optimization problem */
-          if(statussol != NULL) {
-            if(iRound == 0) {
-              statussol[k] = CPXgetstat (env, lp); /* Retrieving the solution status from CPLEX as given in the group optim.cplex.solutionstatus*/
-              mexPrintf(" -- Status: (%i,%i) = %1.2f\n", iRound, j,statussol[k]);
-            }
+          if(statussolmin != NULL && statussolmax != NULL) {
+              if(iRound == 0) {
+                statussolmin[k] = CPXgetstat (env, lp); /* Retrieving the solution status from CPLEX as given in the group optim.cplex.solutionstatus*/
+                mexPrintf(" -- Minimization status: (%i,%i) = %1.2f\n", iRound, j, statussolmin[k]);
+              } else if (iRound == 1) {
+                statussolmax[k] = CPXgetstat (env, lp);
+                mexPrintf(" -- Maximization status: (%i,%i) = %1.2f\n", iRound, j, statussolmax[k]);
+              }
           } else{
             /*  mexPrintf(" -- WARNING: Failed to retrieve or set the solution status (%d,%d).\n", iRound, j);*/
           }
@@ -822,8 +827,11 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     mxArray         *FVAMAXSOL = NULL;
     double          *fvamaxsol = NULL;
 
-    mxArray         *STATUSSOL = NULL;
-    double          *statussol = NULL;
+    mxArray         *STATUSSOLMIN = NULL;
+    double          *statussolmin = NULL;
+
+    mxArray         *STATUSSOLMAX = NULL;
+    double          *statussolmax = NULL;
 
     /* numThread_IN*/
     int             numThread = 0;
@@ -1173,11 +1181,13 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
        FBASOL       = mxCreateDoubleMatrix(n_vars,1,mxREAL);
        FVAMINSOL    = mxCreateDoubleMatrix(n_vars,nrxn,mxREAL);
        FVAMAXSOL    = mxCreateDoubleMatrix(n_vars,nrxn,mxREAL);
-       STATUSSOL    = mxCreateDoubleMatrix(n_vars,1,mxREAL);
+       STATUSSOLMIN = mxCreateDoubleMatrix(n_vars,1,mxREAL);
+       STATUSSOLMAX = mxCreateDoubleMatrix(n_vars,1,mxREAL);
        fbasol       = mxGetPr(FBASOL);
        fvaminsol    = mxGetPr(FVAMINSOL);
        fvamaxsol    = mxGetPr(FVAMAXSOL);
-       statussol    = mxGetPr(STATUSSOL);
+       statussolmin = mxGetPr(STATUSSOLMIN);
+       statussolmax = mxGetPr(STATUSSOLMAX);
     }
 
     if(monitorPerformance) markersBegin[4] = clock();
@@ -1187,7 +1197,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
                 fbasol, fvaminsol, fvamaxsol,
                 n_constr,n_vars,optPercent,objective,rxns,nrxn,
                 CPLEX_PARAMS, VALUES_CPLEX_PARAMS, cplexAlgo,
-                rxnsOptMode, statussol);
+                rxnsOptMode, statussolmin, statussolmax);
 
     if(monitorPerformance) markersEnd[4] = clock();
 
@@ -1256,7 +1266,8 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
            FBA_SOL_OUT = FBASOL;
            FVA_MIN_OUT = FVAMINSOL;
            FVA_MAX_OUT = FVAMAXSOL;
-           STATUS_OUT = STATUSSOL;
+           STATUS_MIN_OUT = STATUSSOLMIN;
+           STATUS_MAX_OUT = STATUSSOLMAX;
         }
     } else {
         if (MINFLUX != NULL)
@@ -1276,8 +1287,11 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
         if (FVA_MAX_OUT != NULL) {
             mxDestroyArray(FVA_MAX_OUT);
         }
-        if (STATUS_OUT != NULL) {
-            mxDestroyArray(STATUS_OUT);
+        if (STATUS_MIN_OUT != NULL) {
+            mxDestroyArray(STATUS_MIN_OUT);
+        }
+        if (STATUS_MAX_OUT != NULL) {
+            mxDestroyArray(STATUS_MAX_OUT);
         }
 
     }

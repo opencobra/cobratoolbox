@@ -1,4 +1,4 @@
-function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVA(model,optPercentage,objective,solver,rxnsList,matrixAS,cpxControl,cpxAlgorithm,strategy,rxnsOptMode)
+function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax,statussolmin,statussolmax] = fastFVA(model,optPercentage,objective,solver,rxnsList,matrixAS,cpxControl,cpxAlgorithm,strategy,rxnsOptMode)
 %fastFVA Flux variablity analysis optimized for the GLPK and CPLEX solvers.
 %
 % [minFlux,maxFlux] = fastFVA(model,optPercentage,objective, solver)
@@ -38,13 +38,15 @@ function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVA(model,optPe
 %                    2 = minimization & maximization;
 %
 % Outputs:
-%   minFlux   Minimum flux for each reaction
-%   maxFlux   Maximum flux for each reaction
-%   optsol    Optimal solution (of the initial FBA)
-%   ret       Zero if success (global return code from FVA)
-%   fbasol    Initial FBA in FBASOL
-%   fvamin    matrix with flux values for the minimization problem
-%   fvamax    matrix with flux values for the maximization problem
+%   minFlux         Minimum flux for each reaction
+%   maxFlux         Maximum flux for each reaction
+%   optsol          Optimal solution (of the initial FBA)
+%   ret             Zero if success (global return code from FVA)
+%   fbasol          Initial FBA in FBASOL
+%   fvamin          matrix with flux values for the minimization problem
+%   fvamax          matrix with flux values for the maximization problem
+%   statussolmin    vector of solution status for each reaction (minimization)
+%   statussolmax    vector of solution status for each reaction (maximization)
 %
 % [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVA(...) returns
 % vectors for the initial FBA in FBASOL together with matrices FVAMIN and
@@ -63,9 +65,9 @@ function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVA(model,optPe
 % Reference: S. Gudmundsson and I. Thiele, Computationally efficient
 %            Flux Variability Analysis. BMC Bioinformatics, 2010, 11:489
 
-% Author: Steinn Gudmundsson.
-% Contributor: Laurent Heirendt, LCSB - Linux verison
-% Last updated: April/May 2016
+% Oirignal author: Steinn Gudmundsson.
+% Contributor: Laurent Heirendt, LCSB
+% Last updated: August 2016
 
 % SPLITTING STRATEGIES
 
@@ -126,7 +128,7 @@ end
 
 % Define extra outputs if required
 if nargout>4
-   assert(nargout == 7);
+   assert(nargout == 9);
    bExtraOutputs=true;
 else
    bExtraOutputs=false;
@@ -231,17 +233,13 @@ if nworkers<=1
    % Sequential version
    fprintf(' \n WARNING: The Sequential Version might take a long time.\n\n');
    if bExtraOutputs
-       [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax,statussol]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
+       [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax,statussolmin,statussolmax]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                                               optPercentage,obj,(1:n)', ...
                                                               1, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode);
    else
        [minFlux,maxFlux,optsol,ret]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj,(1:n)', ...
                                          1, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode);
-   end
-
-   if bExtraOutputs
-      statussol;
    end
 
    if ret ~= 0 && verbose
@@ -392,7 +390,7 @@ else
       %%determine the reaction density here
 
       if bExtraOutputs
-          [minf,maxf,iopt(i),iret(i),fbasol_single,fvamin_single,fvamax_single] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
+          [minf,maxf,iopt(i),iret(i),fbasol_single,fvamin_single,fvamax_single,statussol_single] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                            optPercentage,obj, rxnsKey', ...
                                            t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode);
       else
