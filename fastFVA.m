@@ -357,6 +357,8 @@ else
       fvaminRes={};
       fvamaxRes={};
       fbasolRes={};
+      statussolminRes = {};
+      statussolmaxRes = {};
    end
 
    fprintf('\n -- Starting to loop through the %d workers. -- \n', nworkers);
@@ -385,14 +387,15 @@ else
 
       tstart = tic;
 
-      fvamin_single = 0; fvamax_single = 0; fbasol_single=0; % silence warnings
+      fvamin_single = 0; fvamax_single = 0; fbasol_single=0;statussolmin_single = 0; statussolmax_single = 0; % silence warnings
 
       %%determine the reaction density here
 
       if bExtraOutputs
-          [minf,maxf,iopt(i),iret(i),fbasol_single,fvamin_single,fvamax_single,statussol_single] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
-                                           optPercentage,obj, rxnsKey', ...
-                                           t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode);
+          [minf,maxf,iopt(i),iret(i),fbasol_single,fvamin_single,fvamax_single, ...
+          statussolmin_single,statussolmax_single] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
+                                                           optPercentage,obj, rxnsKey', ...
+                                                           t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode);
       else
       if(strategy == 0)
           fprintf(' >> Number of reactions given to the worker: %d \n', length((istart(i):iend(i)) ) );
@@ -416,6 +419,8 @@ else
          fvaminRes{i}=fvamin_single;
          fvamaxRes{i}=fvamax_single;
          fbasolRes{i}=fbasol_single;
+         statussolminRes{i} = statussolmin_single;
+         statussolmaxRes{i} = statussolmax_single;
       end
 
       fprintf('\n----------------------------------------------------------------------------------\n');
@@ -451,10 +456,18 @@ if bExtraOutputs
   fvamin = zeros(length(model.rxns),length(model.rxns));
   fvamax = zeros(length(model.rxns),length(model.rxns));
 
+  statussolmin = -1 + zeros(length(model.rxns),1);
+  statussolmax = -1 + zeros(length(model.rxns),1);
+
   if(strategy == 0)
     for i=1:nworkers
       fvamin(:,rxns(istart(i):iend(i)))=fvaminRes{i};
       fvamax(:,rxns(istart(i):iend(i)))=fvamaxRes{i};
+      tmp =  statussolminRes{i}';
+      %tmp(rxns(istart(i):iend(i)))
+      statussolmin(rxns(istart(i):iend(i)),1) = tmp(rxns(istart(i):iend(i)));
+      tmp =  statussolmaxRes{i}';
+      statussolmax(rxns(istart(i):iend(i)),1) = tmp(rxns(istart(i):iend(i)));
     end;
   end
 end

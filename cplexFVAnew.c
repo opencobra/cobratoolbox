@@ -487,18 +487,15 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
           if(monitorPerformance) markersEnd[7] = clock();
 
-
-          /* save the status of each optimization problem */
+          /* Retrieving the solution status from CPLEX as given in the group optim.cplex.solutionstatus*/
           if(statussolmin != NULL && statussolmax != NULL) {
               if(iRound == 0) {
-                statussolmin[k] = CPXgetstat (env, lp); /* Retrieving the solution status from CPLEX as given in the group optim.cplex.solutionstatus*/
+                statussolmin[k] = CPXgetstat (env, lp);
                 mexPrintf(" -- Minimization status: (%i,%i) = %1.2f\n", iRound, j, statussolmin[k]);
               } else if (iRound == 1) {
                 statussolmax[k] = CPXgetstat (env, lp);
                 mexPrintf(" -- Maximization status: (%i,%i) = %1.2f\n", iRound, j, statussolmax[k]);
               }
-          } else{
-            /*  mexPrintf(" -- WARNING: Failed to retrieve or set the solution status (%d,%d).\n", iRound, j);*/
           }
 
           if (status != 0) {
