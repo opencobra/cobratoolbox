@@ -41,7 +41,7 @@ function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax] = fastFVA(model,optPe
 %   minFlux   Minimum flux for each reaction
 %   maxFlux   Maximum flux for each reaction
 %   optsol    Optimal solution (of the initial FBA)
-%   ret       Zero if success
+%   ret       Zero if success (global return code from FVA)
 %   fbasol    Initial FBA in FBASOL
 %   fvamin    matrix with flux values for the minimization problem
 %   fvamax    matrix with flux values for the maximization problem
@@ -231,13 +231,17 @@ if nworkers<=1
    % Sequential version
    fprintf(' \n WARNING: The Sequential Version might take a long time.\n\n');
    if bExtraOutputs
-       [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
+       [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax,statussol]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                                               optPercentage,obj,(1:n)', ...
                                                               1, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode);
    else
        [minFlux,maxFlux,optsol,ret]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj,(1:n)', ...
                                          1, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode);
+   end
+
+   if bExtraOutputs
+      statussol;
    end
 
    if ret ~= 0 && verbose
@@ -429,15 +433,14 @@ else
 
    end;
 
-   for i =1:length(iret)
-     fprintf(' >> iRet( %i ) = %1.1f << \n', i, iret(i));
-   end
+   %for i =1:length(iret)
+   %   fprintf(' >> iRet( %i ) = %1.1f << \n', i, iret(i));
+   %end
 
    % Aggregate results
-   optsol=iopt(1);
-   ret=max(iret);
-
-   out = parfor_progress(0);
+   optsol = iopt(1);
+   ret    = max(iret);
+   out    = parfor_progress(0);
 
 end
 
