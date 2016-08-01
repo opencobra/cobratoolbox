@@ -490,11 +490,11 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
           /* Retrieving the solution status from CPLEX as given in the group optim.cplex.solutionstatus*/
           if(statussolmin != NULL && statussolmax != NULL) {
               if(iRound == 0) {
-                statussolmin[k] = CPXgetstat (env, lp);
-                mexPrintf(" -- Minimization status: (%i,%i) = %1.2f\n", iRound, j, statussolmin[k]);
+                statussolmin[j-1] = CPXgetstat (env, lp);
+                mexPrintf(" -- Minimization status: (%i, rxn = %i) = %1.2f\n", iRound, j, statussolmin[j-1]);
               } else if (iRound == 1) {
-                statussolmax[k] = CPXgetstat (env, lp);
-                mexPrintf(" -- Maximization status: (%i,%i) = %1.2f\n", iRound, j, statussolmax[k]);
+                statussolmax[j-1] = CPXgetstat (env, lp);
+                mexPrintf(" -- Maximization status: (%i, rxn = %i) = %1.2f\n", iRound, j, statussolmax[j-1]);
               }
           }
 

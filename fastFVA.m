@@ -387,7 +387,7 @@ else
 
       tstart = tic;
 
-      fvamin_single = 0; fvamax_single = 0; fbasol_single=0;statussolmin_single = 0; statussolmax_single = 0; % silence warnings
+      fvamin_single = 0; fvamax_single = 0; fbasol_single=0; statussolmin_single = 0; statussolmax_single = 0; % silence warnings
 
       %%determine the reaction density here
 
@@ -396,10 +396,12 @@ else
           statussolmin_single,statussolmax_single] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                                            optPercentage,obj, rxnsKey', ...
                                                            t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode);
+
+            statussolmin_single
       else
-      if(strategy == 0)
-          fprintf(' >> Number of reactions given to the worker: %d \n', length((istart(i):iend(i)) ) );
-      end;
+          if(strategy == 0)
+              fprintf(' >> Number of reactions given to the worker: %d \n', length((istart(i):iend(i)) ) );
+          end;
 
           [minf,maxf,iopt(i),iret(i)] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj, rxnsKey', ...
@@ -461,13 +463,25 @@ if bExtraOutputs
 
   if(strategy == 0)
     for i=1:nworkers
-      fvamin(:,rxns(istart(i):iend(i)))=fvaminRes{i};
-      fvamax(:,rxns(istart(i):iend(i)))=fvamaxRes{i};
-      tmp =  statussolminRes{i}';
-      %tmp(rxns(istart(i):iend(i)))
-      statussolmin(rxns(istart(i):iend(i)),1) = tmp(rxns(istart(i):iend(i)));
-      tmp =  statussolmaxRes{i}';
-      statussolmax(rxns(istart(i):iend(i)),1) = tmp(rxns(istart(i):iend(i)));
+      fvamin(:,rxns(istart(i):iend(i))) = fvaminRes{i};
+      fvamax(:,rxns(istart(i):iend(i))) = fvamaxRes{i};
+
+      %startMarker   = istart(i)
+      %endMarker = iend(i)
+      testvect = (istart(i):iend(i))
+
+      %numberMinMax = length(find(rxnsOptMode( (istart(i):iend(i)) ) == 2))
+      %numberMinimizations = numberMinMax + length(find(rxnsOptMode( (istart(i):iend(i)) ) == 0))
+      %numberMaximizations = numberMinMax + length(find(rxnsOptMode( (istart(i):iend(i)) ) == 1));
+
+      %if (numberMinimizations > 0)
+        tmp =  statussolminRes{i}';
+        statussolmin(rxns(istart(i):iend(i)),1) = tmp((istart(i):iend(i)))
+      %end
+      %if (numberMaximizations > 0)
+        tmp =  statussolmaxRes{i}';
+        statussolmax(rxns(istart(i):iend(i)),1) = tmp((istart(i):iend(i)));
+      %end
     end;
   end
 end
@@ -476,6 +490,9 @@ if(strategy == 0 && ~ isempty(rxnsList))
     if bExtraOutputs
         fvamin = fvamin(:,rxns);%keep only nonzero columns
         fvamax = fvamax(:,rxns);
+        %statussolmin;
+        %statussolmin = statussolmin(rxns);
+        %statussolmax = statussolmax(rxns)
     end
     minFlux(find(~ismember(model.rxns, rxnsList)))=[];
     maxFlux(find(~ismember(model.rxns, rxnsList)))=[];
