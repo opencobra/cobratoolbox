@@ -399,7 +399,6 @@ else
           [minf,maxf,iopt(i),iret(i)] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj, rxnsKey', ...
                                          t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode);
-
       end
 
       fprintf(' >> Time spent in FVAc: %1.1f seconds.', toc(tstart));
@@ -429,6 +428,10 @@ else
       end
 
    end;
+
+   for i =1:length(iret)
+     fprintf(' >> iRet( %i ) = %1.1f << \n', i, iret(i));
+   end
 
    % Aggregate results
    optsol=iopt(1);

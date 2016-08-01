@@ -485,6 +485,8 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
           /*status = CPXmbasewrite(env, lp, "myprob.bas");*/
 
+          /*mexPrintf(" -- The return status for reaction %i in iRound = %i is %i\n", j, iRound, status);*/
+
           if(monitorPerformance) markersEnd[7] = clock();
 
           if (status) {
