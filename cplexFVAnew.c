@@ -453,6 +453,12 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
         if (performOptim) {
 
+         if (iRound == 0) {
+            mexPrintf(" >> Rxns %i is minimized\n",k);
+         } else{
+            mexPrintf(" >> Rxns %i is maximized\n",k);
+         }
+
           int j = rxns[k];
 
           /*mexPrintf("        -- Loop k = %i with j= %i.\n", k, j);*/

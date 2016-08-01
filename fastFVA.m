@@ -92,14 +92,14 @@ showSplitting = 1;
 verbose=1;
 
 % Define the input arguments
-if nargin<10
+if (nargin<10 || isempty(rxnsOptMode))
     rxnsOptMode = 2*ones(length(model.rxns),1)'; %status = 2 (min & max) for all reactions
 end
-if nargin<9, strategy       = 0;          end
-if nargin<8, cpxAlgorithm   = 0;          end
-if nargin<7, cpxControl     = struct([]); end
-if nargin<6, matrixAS       = 'S';        end
-if nargin<5
+if (nargin<9 || isempty(strategy)), strategy       = 0;          end
+if (nargin<8 || isempty(cpxAlgorithm)), cpxAlgorithm   = 0;          end
+if (nargin<7 || isempty(cpxControl)) , cpxControl   = struct([]); end
+if (nargin<6 || isempty(matrixAS)) , matrixAS       = 'S';        end
+if (nargin<5 || isempty(rxnsList))
     rxns = 1:length(model.rxns);
     rxnsList = {};
 else
@@ -119,9 +119,9 @@ else
     rxns = find(ismember(model.rxns, rxnsList))';%transpose rxns
 
 end
-if nargin<4, solver         = 'cplex';     end
-if nargin<3, objective      = 'max';      end
-if nargin<2, optPercentage  = 100;        end
+if (nargin<4 || isempty(solver)), solver         = 'cplex';     end
+if (nargin<3 || isempty(objective)), objective      = 'max';      end
+if (nargin<2 || isempty(optPercentage)), optPercentage  = 100;        end
 
 % Define extra outputs if required
 if nargout>4
@@ -198,23 +198,23 @@ end
 % output how many reactions are min, max, or both
 totalOptMode = length(find(rxnsOptMode == 0));
 if(totalOptMode == 1)
-    fprintf(' >> %d reaction out of %d is minimized (%d%%).\n', totalOptMode , n, totalOptMode*100/n);
+    fprintf(' >> %d reaction out of %d is minimized (%1.2f%%).\n', totalOptMode , n, totalOptMode*100/n);
 else
-    fprintf(' >> %d reactions out of %d are minimized (%d%%).\n', totalOptMode , n, totalOptMode*100/n);
+    fprintf(' >> %d reactions out of %d are minimized (%1.2f%%).\n', totalOptMode , n, totalOptMode*100/n);
 end
 
 totalOptMode = length(find(rxnsOptMode == 1));
 if(totalOptMode == 1)
-    fprintf(' >> %d reaction out of %d is maximized (%d%%).\n', totalOptMode , n, totalOptMode*100/n);
+    fprintf(' >> %d reaction out of %d is maximized (%1.2f%%).\n', totalOptMode , n, totalOptMode*100/n);
 else
-    fprintf(' >> %d reactions out of %d are maximized (%d%%).\n', totalOptMode , n, totalOptMode*100/n);
+    fprintf(' >> %d reactions out of %d are maximized (%1.2f%%).\n', totalOptMode , n, totalOptMode*100/n);
 end
 
 totalOptMode = length(find(rxnsOptMode == 2));
 if(totalOptMode == 1)
-    fprintf(' >> %d reaction out of %d is minimized and maximized (%d%%).\n', totalOptMode , n, totalOptMode*100/n);
+    fprintf(' >> %d reaction out of %d is minimized and maximized (%1.2f%%).\n', totalOptMode , n, totalOptMode*100/n);
 else
-    fprintf(' >> %d reactions out of %d are minimized and maximized (%d%%).\n', totalOptMode , n, totalOptMode*100/n);
+    fprintf(' >> %d reactions out of %d are minimized and maximized (%1.2f%%).\n', totalOptMode , n, totalOptMode*100/n);
 end
 
 % Create a MATLAB parallel pool
