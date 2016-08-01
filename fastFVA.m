@@ -196,10 +196,25 @@ else
 end
 
 % output how many reactions are min, max, or both
-rxnsOptMode
-for optMode = 0:2
-    totalOptMode = length(find(rxnsOptMode == i));
-    fprintf(' >> %d reactions out of %d are minimized (%d).\n', totalOptMode , n, totalOptMode*100/n);
+totalOptMode = length(find(rxnsOptMode == 0));
+if(totalOptMode == 1)
+    fprintf(' >> %d reaction out of %d is minimized (%d%%).\n', totalOptMode , n, totalOptMode*100/n);
+else
+    fprintf(' >> %d reactions out of %d are minimized (%d%%).\n', totalOptMode , n, totalOptMode*100/n);
+end
+
+totalOptMode = length(find(rxnsOptMode == 1));
+if(totalOptMode == 1)
+    fprintf(' >> %d reaction out of %d is maximized (%d%%).\n', totalOptMode , n, totalOptMode*100/n);
+else
+    fprintf(' >> %d reactions out of %d are maximized (%d%%).\n', totalOptMode , n, totalOptMode*100/n);
+end
+
+totalOptMode = length(find(rxnsOptMode == 2));
+if(totalOptMode == 1)
+    fprintf(' >> %d reaction out of %d is minimized and maximized (%d%%).\n', totalOptMode , n, totalOptMode*100/n);
+else
+    fprintf(' >> %d reactions out of %d are minimized and maximized (%d%%).\n', totalOptMode , n, totalOptMode*100/n);
 end
 
 % Create a MATLAB parallel pool
