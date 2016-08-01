@@ -92,9 +92,7 @@ showSplitting = 1;
 verbose=1;
 
 % Define the input arguments
-if (nargin<10 || isempty(rxnsOptMode))
-    rxnsOptMode = 2*ones(length(model.rxns),1)'; %status = 2 (min & max) for all reactions
-end
+
 if (nargin<9 || isempty(strategy)), strategy       = 0;          end
 if (nargin<8 || isempty(cpxAlgorithm)), cpxAlgorithm   = 0;          end
 if (nargin<7 || isempty(cpxControl)) , cpxControl   = struct([]); end
@@ -122,6 +120,9 @@ end
 if (nargin<4 || isempty(solver)), solver         = 'cplex';     end
 if (nargin<3 || isempty(objective)), objective      = 'max';      end
 if (nargin<2 || isempty(optPercentage)), optPercentage  = 100;        end
+if (nargin<10 || isempty(rxnsOptMode))
+    rxnsOptMode = 2*ones(length(rxns),1)'; %status = 2 (min & max) for all reactions
+end
 
 % Define extra outputs if required
 if nargout>4
@@ -225,7 +226,7 @@ else
     nworkers = poolobj.NumWorkers;
 end;
 
-% Launch fastFVA externally
+% Launch fastFVA on 1 core
 if nworkers<=1
    % Sequential version
    fprintf(' \n WARNING: The Sequential Version might take a long time.\n\n');
@@ -433,29 +434,32 @@ else
    optsol=iopt(1);
    ret=max(iret);
 
-   if bExtraOutputs
-      fbasol = fbasolRes{1}; % Initial FBA solutions are identical across workers
-      fvamin = zeros(length(model.rxns),length(model.rxns));
-      fvamax = zeros(length(model.rxns),length(model.rxns));
-      if(strategy == 0)
-        for i=1:nworkers
-         fvamin(:,rxns(istart(i):iend(i)))=fvaminRes{i};
-         fvamax(:,rxns(istart(i):iend(i)))=fvamaxRes{i};
-        end;
-      end
-   end
-
    out = parfor_progress(0);
 
 end
 
-if(strategy == 0)
-if nargin==5 %test on nargin
+
+if bExtraOutputs
+  if nworkers > 1
+      fbasol = fbasolRes{1}; % Initial FBA solutions are identical across workers
+  end
+
+  fvamin = zeros(length(model.rxns),length(model.rxns));
+  fvamax = zeros(length(model.rxns),length(model.rxns));
+
+  if(strategy == 0)
+    for i=1:nworkers
+      fvamin(:,rxns(istart(i):iend(i)))=fvaminRes{i};
+      fvamax(:,rxns(istart(i):iend(i)))=fvamaxRes{i};
+    end;
+  end
+end
+
+if(strategy == 0 && ~ isempty(rxnsList))
     if bExtraOutputs
         fvamin = fvamin(:,rxns);%keep only nonzero columns
         fvamax = fvamax(:,rxns);
     end
     minFlux(find(~ismember(model.rxns, rxnsList)))=[];
     maxFlux(find(~ismember(model.rxns, rxnsList)))=[];
-end
 end;

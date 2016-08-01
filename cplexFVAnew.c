@@ -435,7 +435,11 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     for (iRound = 0; iRound < 2; iRound++)
     {
 
-      mexPrintf("        -- Changing the objective - iRound = %i (0->min;1->max). nrxn = %i.\n", iRound, nrxn);
+      if (iRound == 0) {
+        mexPrintf("        -- Minimization (iRound = %i). Number of reactions: %i.\n", iRound, nrxn);
+      } else {
+        mexPrintf("        -- Maximization (iRound = %i). Number of reactions: %i.\n", iRound, nrxn);
+      }
 
       CPXchgobjsen(env, lp, (iRound == 0) ? CPX_MIN : CPX_MAX);
 
@@ -453,11 +457,13 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
         if (performOptim) {
 
-         if (iRound == 0) {
-            mexPrintf(" >> Rxns %i is minimized\n",k);
-         } else{
-            mexPrintf(" >> Rxns %i is maximized\n",k);
-         }
+          /*
+          if (iRound == 0) {
+             mexPrintf(" >> Rxns %i is minimized\n",k);
+          } else{
+             mexPrintf(" >> Rxns %i is maximized\n",k);
+          }
+          */
 
           int j = rxns[k];
 
