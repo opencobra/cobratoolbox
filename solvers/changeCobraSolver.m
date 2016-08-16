@@ -32,6 +32,10 @@ function solverOK = changeCobraSolver(solverName,solverType)
 %                   work on COBRA-type LP problems)
 %   mps             Outputs a MPS matrix string. Does not solve LP problem
 %   ibm_cplex       The IBM API for CPLEX using the CPLEX class
+%   opti            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
+%                   solver installed and called with OPTI TB wrapper
+%                   Lower level calls with installed mex files are possible
+%                   but best avoided for all solvers
 %
 % Currently allowed MILP solvers:
 %   tomlab_cplex    CPLEX MILP solver accessed through Tomlab environment
@@ -187,6 +191,14 @@ if (strcmp(solverType,'LP'))
                 [status,cmdout]=system('echo $PATH');
                 disp(cmdout);
                 warning('Minos not installed or not on system path.');
+                solverOK = false;
+            end
+        case 'opti'
+            allLPsolvers = {'CLP','CSDP','DSDP','OOQP','SCIP'};
+            availableSolvers = cellfun(@(x)checkSolver(lower(x)),allLPsolvers);            
+            display('Available OPTI solvers that are installed currently');
+            display(char(allLPsolvers(logical(availableSolvers))));
+            if ~any(logical(availableSolvers))
                 solverOK = false;
             end
         otherwise
