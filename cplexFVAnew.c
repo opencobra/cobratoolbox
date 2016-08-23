@@ -126,6 +126,7 @@ enum {MINFLUX_OUT_POS,
 
 /* Number of output arguments */
 #define MIN_NUM_OUT_ARG       4
+#define MAX_NUM_OUT_ARG       9
 
 #define MINFLUX_OUT           plhs[MINFLUX_OUT_POS]
 #define MAXFLUX_OUT           plhs[MAXFLUX_OUT_POS]
@@ -885,7 +886,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
         TROUBLE_mexErrMsgTxt("Too many input arguments.");
     } else if (nlhs < MIN_NUM_OUT_ARG) {
         mexPrintf("NOTE: This is a way of forcing people to notice RES output.\n");
-        mexPrintf("Always check RES for correct inpterpretation of the results.\n");
+        mexPrintf("Always check RES for correct interpretation of the results.\n");
         sprintf(errmsg, "At least %d output arguments required.",
                 MIN_NUM_OUT_ARG);
         TROUBLE_mexErrMsgTxt(errmsg);
@@ -1172,19 +1173,20 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     RET     = mxCreateDoubleMatrix(1,1,mxREAL); /* global return error from _fva */
     ret     = mxGetPr(RET);
 
-    if (nlhs == MAX_NUM_OUT_ARG)
+    if (nlhs >= MAX_NUM_OUT_ARG-2)
     {
        /* Optional arguments */
        FBASOL       = mxCreateDoubleMatrix(n_vars,1,mxREAL);
        FVAMINSOL    = mxCreateDoubleMatrix(n_vars,nrxn,mxREAL);
        FVAMAXSOL    = mxCreateDoubleMatrix(n_vars,nrxn,mxREAL);
-       STATUSSOLMIN = mxCreateDoubleMatrix(n_vars,1,mxREAL);
-       STATUSSOLMAX = mxCreateDoubleMatrix(n_vars,1,mxREAL);
        fbasol       = mxGetPr(FBASOL);
        fvaminsol    = mxGetPr(FVAMINSOL);
        fvamaxsol    = mxGetPr(FVAMAXSOL);
-       statussolmin = mxGetPr(STATUSSOLMIN);
-       statussolmax = mxGetPr(STATUSSOLMAX);
+    }
+    if(nlhs == MAX_NUM_OUT_ARG)
+    {
+      STATUSSOLMIN = mxCreateDoubleMatrix(n_vars,1,mxREAL);
+      STATUSSOLMAX = mxCreateDoubleMatrix(n_vars,1,mxREAL);
     }
 
     if(monitorPerformance) markersBegin[4] = clock();
@@ -1258,13 +1260,17 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
         OPTSOL_OUT = OPTSOL;
         RET_OUT = RET;
 
-        if (nlhs == MAX_NUM_OUT_ARG)
+        if (nlhs >= MAX_NUM_OUT_ARG-2)
         {
            FBA_SOL_OUT = FBASOL;
            FVA_MIN_OUT = FVAMINSOL;
            FVA_MAX_OUT = FVAMAXSOL;
-           STATUS_MIN_OUT = STATUSSOLMIN;
-           STATUS_MAX_OUT = STATUSSOLMAX;
+
+        }
+        if(nlhs == MAX_NUM_OUT_ARG)
+        {
+          STATUS_MIN_OUT = STATUSSOLMIN;
+          STATUS_MAX_OUT = STATUSSOLMAX;
         }
     } else {
         if (MINFLUX != NULL)

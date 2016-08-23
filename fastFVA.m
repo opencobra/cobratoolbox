@@ -103,7 +103,6 @@ if (nargin<5 || isempty(rxnsList))
     rxns = 1:length(model.rxns);
     rxnsList = {};
 else
-
     %% check here if the vector of rxns is sorted or not
     % this needs to be fixed to sort the flux vectors accordingly
     % as the find() function sorts the reactions automatically
@@ -127,11 +126,19 @@ if (nargin<10 || isempty(rxnsOptMode))
 end
 
 % Define extra outputs if required
-if nargout>4
-   assert(nargout == 9);
+if nargout>4 && nargout <= 7
+   assert(nargout == 7);
    bExtraOutputs=true;
 else
    bExtraOutputs=false;
+end
+
+% Define extra outputs if required
+if nargout > 7
+   assert(nargout == 9);
+   bExtraOutputs1=true;
+else
+   bExtraOutputs1=false;
 end
 
 % Define the objective
@@ -232,10 +239,14 @@ end;
 if nworkers<=1
    % Sequential version
    fprintf(' \n WARNING: The Sequential Version might take a long time.\n\n');
-   if bExtraOutputs
+   if bExtraOutputs1
        [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax,statussolmin,statussolmax]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
-                                                              optPercentage,obj,(1:n)', ...
-                                                              1, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode);
+                                                                                      optPercentage,obj,(1:n)', ...
+                                                                                      1, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode);
+   elseif bExtraOutputs
+     [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
+                                                            optPercentage,obj,(1:n)', ...
+                                                            1, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode);
    else
        [minFlux,maxFlux,optsol,ret]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj,(1:n)', ...
@@ -353,10 +364,13 @@ else
    iret    = zeros(nworkers,1);
 
    % Initialilze extra outputs
-   if bExtraOutputs
+   if bExtraOutputs || bExtraOutputs1
       fvaminRes={};
       fvamaxRes={};
       fbasolRes={};
+   end
+
+   if bExtraOutputs1
       statussolminRes = {};
       statussolmaxRes = {};
    end
@@ -391,19 +405,21 @@ else
 
       %%determine the reaction density here
 
-      if bExtraOutputs
+      if bExtraOutputs1
           [minf,maxf,iopt(i),iret(i),fbasol_single,fvamin_single,fvamax_single, ...
-          statussolmin_single,statussolmax_single] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
+          statussolmin_single,statussolmax_single]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                                            optPercentage,obj, rxnsKey', ...
                                                            t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode(istart(i):iend(i)));
-
-            statussolmin_single;
+      elseif bExtraOutputs
+        [minf,maxf,iopt(i),iret(i),fbasol_single,fvamin_single,fvamax_single]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
+                                                         optPercentage,obj, rxnsKey', ...
+                                                         t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode(istart(i):iend(i)));
       else
           if(strategy == 0)
               fprintf(' >> Number of reactions given to the worker: %d \n', length((istart(i):iend(i)) ) );
           end;
 
-          [minf,maxf,iopt(i),iret(i)] = FVAc(model.c,A,b,csense,model.lb,model.ub, ...
+          [minf,maxf,iopt(i),iret(i)]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj, rxnsKey', ...
                                          t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode(istart(i):iend(i)));
       end
@@ -417,10 +433,13 @@ else
       minFlux=minFlux+minf;
       maxFlux=maxFlux+maxf;
 
-      if bExtraOutputs
-         fvaminRes{i}=fvamin_single;
-         fvamaxRes{i}=fvamax_single;
-         fbasolRes{i}=fbasol_single;
+      if bExtraOutputs || bExtraOutputs1
+        fvaminRes{i}=fvamin_single;
+        fvamaxRes{i}=fvamax_single;
+        fbasolRes{i}=fbasol_single;
+      end
+
+      if bExtraOutputs1
          statussolminRes{i} = statussolmin_single;
          statussolmaxRes{i} = statussolmax_single;
       end
@@ -438,10 +457,6 @@ else
 
    end;
 
-   %for i =1:length(iret)
-   %   fprintf(' >> iRet( %i ) = %1.1f << \n', i, iret(i));
-   %end
-
    % Aggregate results
    optsol = iopt(1);
    ret    = max(iret);
@@ -450,7 +465,8 @@ else
 end
 
 
-if bExtraOutputs
+if bExtraOutputs || bExtraOutputs1
+
   if nworkers > 1
       fbasol = fbasolRes{1}; % Initial FBA solutions are identical across workers
   end
@@ -458,29 +474,37 @@ if bExtraOutputs
   fvamin = zeros(length(model.rxns),length(model.rxns));
   fvamax = zeros(length(model.rxns),length(model.rxns));
 
-  statussolmin = -1 + zeros(length(model.rxns),1);
-  statussolmax = -1 + zeros(length(model.rxns),1);
+  if bExtraOutputs1
+    statussolmin = -1 + zeros(length(model.rxns),1);
+    statussolmax = -1 + zeros(length(model.rxns),1);
+  end
 
   if(strategy == 0)
     for i=1:nworkers
         fvamin(:,rxns(istart(i):iend(i))) = fvaminRes{i};
         fvamax(:,rxns(istart(i):iend(i))) = fvamaxRes{i};
-        tmp =  statussolminRes{i}';
-        statussolmin(rxns(istart(i):iend(i)),1) = tmp((istart(i):iend(i)));
-        tmp =  statussolmaxRes{i}';
-        statussolmax(rxns(istart(i):iend(i)),1) = tmp((istart(i):iend(i)));
-      %end
+
+        if bExtraOutputs1
+          tmp =  statussolminRes{i}';
+          statussolmin(rxns(istart(i):iend(i)),1) = tmp((istart(i):iend(i)));
+          tmp =  statussolmaxRes{i}';
+          statussolmax(rxns(istart(i):iend(i)),1) = tmp((istart(i):iend(i)));
+        end
     end;
   end
 end
 
 if(strategy == 0 && ~ isempty(rxnsList))
-    if bExtraOutputs
+    if bExtraOutputs || bExtraOutputs1
         fvamin = fvamin(:,rxns);%keep only nonzero columns
         fvamax = fvamax(:,rxns);
+    end
+
+    if bExtraOutputs1
         statussolmin = statussolmin(rxns);
         statussolmax = statussolmax(rxns);
     end
+
     minFlux(find(~ismember(model.rxns, rxnsList)))=[];
     maxFlux(find(~ismember(model.rxns, rxnsList)))=[];
 end;
