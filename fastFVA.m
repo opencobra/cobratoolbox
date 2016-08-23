@@ -141,6 +141,11 @@ else
    bExtraOutputs1=false;
 end
 
+% print a warning when output arguments are not defined.
+if nargout ~= 4 || nargout ~= 7 || nargout ~= 9
+      fprintf('\n-- Warning:: You may only ouput 4, 7 or 9 variables.\n\n')
+end
+
 % Define the objective
 if strcmpi(objective,'max')
    obj=-1;
