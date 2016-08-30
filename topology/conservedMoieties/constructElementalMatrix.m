@@ -27,8 +27,8 @@ if nargin < 2 || isempty(metCharges)
 end
 
 load atomicNumbers.mat % Load list of elements (s) and their atomic numbers (n)
-s = [s; {'e'}];
-n = [n; 0];
+s = [s; {'R'; 'X'; 'e'}]; % add pseudoelements and electron
+n = [n; 0; 0; 0];
 p = length(s);
 
 % Construct elemental matrix
