@@ -1,3 +1,9 @@
+% The "writeCbModel"?function relies on another function
+% "io/utilities/writeSBML.m"?to convert a COBRA- Matlab structure into
+% a?libSBML-Matlab structure and then call libSBML to export a
+% FBCv2?file.?The current version of the "writeSBML.m" does?not?require the
+% SBML toolbox (http://sbml.org/Software/SBMLToolbox).
+
 function writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLevel,sbmlVersion)
 %writeCbModel Write out COBRA models in various formats
 %
