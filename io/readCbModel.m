@@ -1,10 +1,10 @@
-% The "readCbModel.m"?function is dependent on another?function
+% The "readCbModel.m" function is dependent on another function
 % "io/utilities/readSBML.m" to use libSBML library
 % (http://sbml.org/Software/libSBML), to parse a SBML-FBCv2 file into a
 % COBRA-Matlab structure. The "readCbModel.m" function is backward
-% compatible with older?SBML versions. A list of fields of a COBRA
+% compatible with older SBML versions. A list of fields of a COBRA
 % structure is described in an Excel spreadsheet
-% "io/COBRA_structure_fields.xlsx". While some fields are?necessary for a
+% "io/COBRA_structure_fields.xlsx". While some fields are necessary for a
 % COBRA model, others are not.
 
 function model = readCbModel(fileName,defaultBound,fileType,modelDescription,compSymbolList,compNameList)
