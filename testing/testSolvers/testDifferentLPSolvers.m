@@ -33,6 +33,9 @@ if exist('model','var')
 else
     solveDefaultModel=1;
 end
+if ~exist('printLevel','var')
+    printLevel  = 1;
+end
 
 if solveDefaultModel
     %solve a default model
@@ -53,7 +56,11 @@ if solveDefaultModel
     end
 end
 %print size of model
-[m,n]=size(model.S);
+try
+    [m,n]=size(model.S);
+catch
+    [m,n]=size(model.A);
+end
 if printLevel>0
     fprintf('%s\n',['Testing model with linear constraint matrix that has ' num2str(m) ' rows and ' num2str(n) ' columns...'])
 end
@@ -62,7 +69,8 @@ global CBTLPSOLVER
 oldSolver=CBTLPSOLVER;
 
 if ~exist('solvers','var')
-    solvers={'gurobi6','mosek','ibm_cplex','cplex_direct','pdco','glpk','quadMinos','dqqMinos'};
+    solvers = {'opti'};
+%     solvers={'gurobi6','mosek','ibm_cplex','cplex_direct','pdco','glpk','quadMinos','dqqMinos'};
     %solvers={'gurobi6','mosek_linprog','mosek','ibm_cplex','cplex_direct','pdco','glpk','quadMinos'};
 end
 
@@ -70,7 +78,72 @@ i=1;
 for j=1:length(solvers)
     %current solver
     solver=solvers{j};
-    
+    if strcmp(solver,'opti')
+        if 1   
+            % clp
+            if exist('opts','var')
+                clear opts
+            end
+            solverOK = changeCobraSolver(solver,'LP');
+            opts.solver = 'clp';
+            opts.tolrfun = 1e-9;
+            opts.tolafun = 1e-9;
+            opts.display = 'iter';
+            opts.warnings = 'all';            
+            solution{i} = solveCobraLP(model,opts);
+            i = i+1;            
+        end
+        if 1   
+            % clp:barrier
+            if exist('opts','var')
+                clear opts
+            end
+            solverOK = changeCobraSolver(solver,'LP');
+            opts.solver = 'clp';
+            opts.tolrfun = 1e-9;
+            opts.tolafun = 1e-9;
+            opts.display = 'iter';
+            opts.warnings = 'all';            
+            opts.algorithm = 'barrier';
+            solution{i} = solveCobraLP(model,opts);
+            i=i+1;            
+        end
+        % note that scip does not return the dual solution        
+        if 1
+            if exist('opts','var')
+                clear opts
+            end
+            solverOK = changeCobraSolver(solver,'LP');
+            opts.solver = 'scip';            
+            solution{i} = solveCobraLP(model,'printLevel',3,...
+                                       'optTol',1e-9,...
+                                       opts);
+            i = i+1;
+        end
+        if 1
+            if exist('opts','var')
+                clear opts
+            end
+            solverOK = changeCobraSolver(solver,'LP');
+            opts.solver = 'auto';
+            opts.algorithm = 'automatic';
+            solution{i} = solveCobraLP(model,'printLevel',3,...
+                                       'optTol',1e-9,...
+                                       opts);
+            i = i+1;
+        end
+        if 1
+            if exist('opts','var')
+                clear opts
+            end
+            solverOK = changeCobraSolver(solver,'LP');
+            opts.solver = 'auto';            
+            solution{i} = solveCobraLP(model,'printLevel',3,...
+                                       'optTol',1e-9,...
+                                       opts);
+            i = i+1;
+        end
+    end
     if strcmp(solver,'dqqMinos')
         if 1
             solverOK = changeCobraSolver(solver,'LP');

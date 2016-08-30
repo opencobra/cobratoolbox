@@ -22,6 +22,7 @@ function [modelSampling,samples,volume] = sampleCbModel(model,sampleFile,sampler
 %   removeLoopsFlag         Attempt to remove loops from the model (false)
 %   removeLoopSamplesFlag   Remove sampling data for reactions involved in
 %                           loops (true)
+%   maxTime                 Maximum time limit (Default = 36000 s)
 %
 %OUTPUTS
 % modelSampling Cleaned up model used in sampling
@@ -51,6 +52,7 @@ nPointsPerFile = 1000;
 nStepsPerPoint = 200;
 nPointsReturned = 2000;
 nFilesSkipped = 2;
+maxTime = 10*3600;
 removeLoopsFlag = false;
 removeLoopSamplesFlag = true;
 
@@ -80,6 +82,9 @@ switch samplerName
             if (isfield(options,'nFilesSkipped'))
                 nFilesSkipped = options.nFilesSkipped;
             end
+            if (isfield(options,'maxTime'))
+                maxTime = options.maxTime;
+            end
             if (isfield(options,'removeLoopsFlag'))
                 removeLoopsFlag = options.removeLoopsFlag;
             end
@@ -96,7 +101,11 @@ switch samplerName
         
         % Reduce model
         fprintf('Reduce model\n');
+        model.rxns = regexprep(model.rxns,'(_r)$','_bladibla'); % Workaround to avoid renaming reactions that end in '_r'
+        
         modelRed = reduceModel(model, 1e-6, false,false,true);
+        
+        modelRed.rxns = regexprep(modelRed.rxns,'(_bladibla)$','_r'); % Replace '_r' ending
         [nMet,nRxn] = size(modelRed.S);
         fprintf('Reduced model: %d rxns %d metabolites\n',nRxn,nMet);
         save modelRedTmp modelRed;
@@ -113,7 +122,7 @@ switch samplerName
 
         fprintf('Run sampler for a total of %d steps\n',nFiles*nPointsPerFile*nStepsPerPoint);
         % Sample model
-        ACHRSampler(modelSampling,warmupPts,sampleFile,nFiles,nPointsPerFile,nStepsPerPoint);
+        ACHRSampler(modelSampling,warmupPts,sampleFile,nFiles,nPointsPerFile,nStepsPerPoint,[],[],maxTime);
 
     case 'MFE'
         %[volume,T,steps] = Volume(P,E,eps,p,flags)
@@ -182,6 +191,6 @@ if (nPointsPerFileLoaded > nPointsPerFile)
    error('Attempted to return more points than were saved'); 
 end
 samples = loadSamples(sampleFile,nFiles,nPointsPerFileLoaded,nFilesSkipped);
-samples = samples(:,round(linspace(1,size(samples,2),nPointsReturned)));
+samples = samples(:,round(linspace(1,size(samples,2),min([nPointsReturned,size(samples,2)]))));
 % Fix reaction directions
 [modelSampling,samples] = convRevSamples(modelSampling,samples);
