@@ -1,4 +1,4 @@
-function cpxControl = CPLEXParamSet
+function cpxControl = CPLEXParamSetFVA
 %this is a function which returns user specified CPLEX control
 %parameters. It is not necessary to use a file like this if you want to use
 %CPLEX default control parameters. It is intended to be a template for
