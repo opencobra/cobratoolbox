@@ -1,0 +1,41 @@
+function [ response ] = postMINERVArequest(minerva_servlet, login, password, model, identifier, content)
+
+% Sends a new layout to a MINERVA instance
+% 
+%
+% INPUT
+%
+% minerva_servlet           Struct with the information of minerva instance:
+%                           address, login, password and model (map)
+% login                     MINERVA username   
+% password                  MINERVA password
+% model                     MINERVA map
+% identifier                Layout name
+% content                   Content of the layout
+%
+% OUTPUT
+% 
+% response                  MINERVA's response
+% 
+% Alberto Noronha Jan/2016
+    
+   content = {'identifier', identifier, 'login', login, 'password', password, 'model', model, 'expression_value', content};
+   response = urlread(minerva_servlet, 'POST', content);
+   
+   success = strfind(response, '<span id="default_form:status">OK</span>');
+   if isempty(success)
+       split = strsplit(response, '<span id="default_form:status">');
+       split = split{2};
+       split = strsplit(split, '</span>');
+       response = split{1};
+       response = strrep(response, '&quot;', '"');
+       a = cell(1,2)
+       cell(1,1) = 0;
+       cell(1,2) = response;
+       resp
+       response = {0, response};
+   else
+       response = {1, 'Overlay was sucessfully sent to ReconMap!'};
+   end
+end
+

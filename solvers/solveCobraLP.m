@@ -64,6 +64,8 @@ function solution = solveCobraLP(LPproblem,varargin)
 %  stat         Solver status in standardized form
 %               1   Optimal solution
 %               2   Unbounded solution
+%               3   Partial success (OPTI-csdp) - will not give desired
+%                   result from OptimizeCbModel
 %               0   Infeasible
 %               -1   No solution reported (timelimit, numerical problem etc)
 %
@@ -249,6 +251,90 @@ algorithm='default';
 
 t_start = clock;
 switch solver
+    case 'opti'
+        % J. Currie and D. I. Wilson, "OPTI: Lowering the Barrier Between Open 
+        % Source Optimizers and the Industrial MATLAB User," Foundations of 
+        % Computer-Aided Process Operations, Georgia, USA, 2012
+        % option to call solvers provided by OPTI TB for MATLAB from
+        % http://www.i2c2.aut.ac.nz/Wiki/OPTI/index.php
+        % OPTI supports: CLP, CSDP, DSDP, GLPK, LP_SOLVE, OOQP and SCIP
+        % since solveCobraLP already includes calls to LP_SOLVE and GLPK, they
+        % will not be included. In case the solver is not specified by user,
+        % opti auto selects the solver depending on problem type
+%         if parametersStructureFlag
+%             opts = setupOPTIoptions(parametersStructureFlag,directParamStruct);
+%         else
+%             opts = setupOPTIoptions(printLevel,optTol,...
+%                          OPTIsolver,OPTIalgorithm);
+%         end     
+        if ~isempty(fieldnames(solverParams))
+            opts = setupOPTIoptions(solverParams,'printLevel',printLevel,...
+                                             'optTol',optTol);       
+        else
+            opts = setupOPTIoptions('printLevel',printLevel,...
+                                             'optTol',optTol);       
+        end
+        
+        auto = 0;
+        switch opts.solver
+            case 'clp'
+                % https://projects.coin-or.org/Clp
+                % set CLP algorithm  - options        
+                % 1. automatic
+                % 2. barrier 
+                % 3. primalsimplex - primal simplex
+                % 4. dualsimplex - dual simplex
+                % 5. primalsimplexorsprint - primal simplex or sprint
+                % 6. barriernocross - barrier without simplex crossover
+                % opts.solver = [];
+                % setup problem for OPTI based solver      
+                [f,A,rl,ru] = setupOPTIproblem(c,A,b,osense,csense,'clp');
+                % solve optimization problem
+                [x,obj,exitflag,info] =...
+                opti_clp([],f,A,rl,ru,lb,ub,opts);                
+            case 'csdp'
+                % https://projects.coin-or.org/Csdp/
+                % not recommended for solving LPs
+                [f,A,b] = setupOPTIproblem(c,A,b,osense,csense,'csdp');        
+                % solve problem using csdp
+                [x,obj,exitflag,info] = opti_csdp(f,A,b,lb,ub,[],[],opts);        
+            case 'dsdp'
+                % http://www.mcs.anl.gov/hs/software/DSDP/   
+                % not recommended for solving large LPs
+                [f,A,b] = setupOPTIproblem(c,A,b,osense,csense,'dsdp');        
+                %solve problem using dsdp
+                [x,obj,exitflag,info] = opti_dsdp(f,A,b,lb,ub,[],[],opts);
+            case 'ooqp'
+                % http://pages.cs.wisc.edu/~swright/ooqp/
+                % not recommended for solving large LPs
+                [f,Aineq,rl,ru,Aeq,beq] =...
+                setupOPTIproblem(c,A,b,osense,csense,'ooqp');        
+                % solve problem using ooqp
+                [x,obj,exitflag,info] =...
+                opti_ooqp([],f,Aineq,rl,ru,Aeq,beq,lb,ub,opts);
+            case 'scip'
+                % http://scip.zib.de/
+                % http://scip.zib.de/scip.shtml
+                [f,A,rl,ru,xtype] =...
+                setupOPTIproblem(c,A,b,osense,csense,'scip');        
+                [x,obj,exitflag,info] =...
+                opti_scip([],f,A,rl,ru,lb,ub,xtype,[],[],opts);
+            otherwise
+                % construct opti object and solve using an automatically
+                % chosen solver
+                [f,A,b,e] = setupOPTIproblem(c,A,b,osense,csense,'auto');
+                optiobj = opti('f',f,'mix',A,b,e,'bounds',lb,ub,...
+                               'sense',osense,'options',opts);
+                [x,obj,exitflag,info] = solve(optiobj);
+                auto = 1;
+        end
+        % parse results for solution output structure
+        if ~auto
+            f = obj*osense;
+        else
+            f = obj;
+        end
+        [w,y,algorithm,stat,origStat,t] = parseOPTIresult(exitflag,info);  
     case 'dqqMinos'
         if ~isunix
             error('dqqMinos interface not yet implemented for non unix OS.')
@@ -1458,6 +1544,242 @@ if ~strcmp(solver,'cplex_direct') && ~strcmp(solver,'mps')
     [solution.full,solution.obj,solution.rcost,solution.dual,solution.solver,solution.algorithm,solution.stat,solution.origStat,solution.time,solution.basis] = ...
         deal(x,f,w,y,solver,algorithm,stat,origStat,t,basis);
 end
+
+function [varargout] = setupOPTIproblem(c,A,b,osense,csense,solver)
+% setup the constraint coeffiecient matrix and rhs vector for OPTI solvers
+% this can be done here for lower level calls or disregarded when solver is
+% called using an OPTI object as argument
+
+
+
+% set constraint type
+e = zeros(size(A,1),1);
+e(strcmpi(cellstr(csense),'L')) = -1;
+e(strcmpi(cellstr(csense),'E')) = 0;
+e(strcmpi(cellstr(csense),'G')) = 1;
+Aeq = A(e==0,:);
+Ainl = A(e<0,:);
+Aing = A(e>0,:);
+beq = b(e==0,:);
+binl = b(e<0,:);
+bing = b(e>0,:);
+Aineq = [Ainl;-Aing];
+bineq = [binl;-bing];
+
+switch solver
+    case 'clp'
+        varargout{1} = full(c*osense);
+        varargout{2} = [Aineq;Aeq];
+        ru = [bineq;beq];
+        rl = -Inf(size(Aineq,1)+size(Aeq,1),1);
+        rl(size(Aineq,1)+1:end) = beq;           
+        varargout{3} = rl;
+        varargout{4} = ru;
+    case 'csdp'
+        varargout{1} = full(c*osense);
+        varargout{2} = [Aineq;Aeq;-Aeq];
+        varargout{3} = [bineq;beq;-beq];
+    case 'dsdp'
+        varargout{1} = full(c*osense);
+        varargout{2} = [Aineq;Aeq;-Aeq];
+        varargout{3} = [bineq;beq;-beq];
+    case 'ooqp'
+        varargout{1} = full(c*osense);
+        varargout{2} = Aineq;
+        ru = bineq;
+        rl = -Inf(size(Aineq,1),1);        
+        varargout{3} = rl;
+        varargout{4} = ru;
+        varargout{5} = Aeq;
+        varargout{6} = beq;
+    case 'scip'
+        varargout{1} = full(c*osense);
+        varargout{2} = [Aineq;Aeq];
+        ru = [bineq;beq];
+        rl = -Inf(size(Aineq,1)+size(Aeq,1),1);
+        rl(size(Aineq,1)+1:end) = beq;  
+        varargout{3} = rl;
+        varargout{4} = ru;
+        varargout{5} = repmat('C',size(c*osense));
+    case 'auto'
+        varargout{1} = full(c);
+        varargout{2} = A;
+        varargout{3} = b;
+        varargout{4} = e;
+    otherwise
+        warning('Unsupported solver specified.\n OPTI will automatically determine problem type and solver');        
+end
+if ~issparse(A)
+    varargout{2} = sparse(varargout{2});
+end
+
+
+function [w,y,algorithm,stat,exitflag,t] = parseOPTIresult(varargin)
+exitflag = varargin{1};
+info = varargin{2};
+w = [];
+y = [];
+algorithm = [];
+stat = exitflag;
+t = [];
+if isfield(info,'Lambda')
+    if isfield(info.Lambda,'bounds')
+        w = info.Lambda.bounds;    
+    end
+    if isfield(info.Lambda,'eqlin') & isfield(info.Lambda,'ineqlin')
+        % need to check whether duals from all constraints are included
+        y = [info.Lambda.ineqlin;info.Lambda.eqlin];
+    end    
+end    
+if isfield(info,'Algorithm')
+    algorithm = info.Algorithm;    
+end
+switch exitflag
+    case -5 % user exit
+        stat = -1;
+    case -4 % unknown exit
+        stat = -1;
+    case -3 % clp error/lack of progress/numerical error
+        stat = -1;
+    case -2 % stuck at edge primal/dual infeasibility
+        stat = 0;
+    case -1 % primal/dual infeasible
+        stat = 0;
+    case 0 % exceeded maximum iterations - no solution
+        stat = -1;
+    case 1 % primal optimal
+        stat = 1;        
+    case 3 % partial success - csdp
+        stat = 3;
+end
+if isfield(info,'Time')
+    t = info.Time;
+end
+
+function opts = setupOPTIoptions(varargin)
+% since most mex files for solvers and OPTI do error handling from within
+% only the basic options compliant with other cobra methods has been setup
+% with with similar exception handling
+% input accepted is either a list of parameters or structure with fields
+% corresponding to opti parameters
+opts = optiset();      
+setdisp = 0;
+setwarn = 0;
+% if first argument is structure
+if isstruct(varargin{1})
+    params = varargin{1};
+    if isfield(params,'solver')
+        opts = optiset(opts,'solver',params.solver);
+    else
+        opts = optiset(opts,'solver','auto');
+    end
+    if isfield(params,'printLevel')
+        printLevel = params.printLevel;
+        params = rmfield(params,'printLevel');
+    end
+    if isfield(params,'display')
+        opts = optiset(opts,'display',params.display);
+        setdisp = 1;
+    end     
+    if isfield(params,'warnings')
+        opts = optiset(opts,'warnings',params.warnings);
+        setwarn = 1;
+    end
+    if isfield(params,'tolrfun')
+        opts = optiset(opts,'tolrfun',params.tolrfun);
+    end
+    if isfield(params,'tolafun')
+        opts = optiset(opts,'tolafun',params.tolafun);
+    end      
+    if isfield(params,'solverOpts')
+        solverOpts = params.solverOpts;
+    else
+        solverOpts = [];
+    end 
+    if strcmp(params.solver,'clp') | strcmp(params.solver,'ooqp') |...
+       strcmp(params.solver,'scip') | strcmp(params.solver,'auto')
+        if isfield(params,'algorithm')                   
+            solverOpts.algorithm = params.algorithm;                                
+        end  
+    else
+        warning('OPTI algorithm cannot be set for LP solvers other than CLP, OOQP and SCIP');
+    end       
+    varargin = varargin(2:end);
+end
+% other input arguments are name value pairs
+optname = varargin(1:2:length(varargin));
+optval = varargin(2:2:length(varargin));
+% optlist = {'solver','algorithm','printLevel','display','warnings',...
+%            'tolrfun','tolafun','optTol','solverOpts'};
+if any(strcmpi(optname,'solver'))
+    opts = optiset(opts,'solver',optval{strcmpi(optname,'solver')});
+end
+if any(strcmpi(optname,'printLevel'))
+    printLevel = optval{strcmpi(optname,'printLevel')};
+end
+% override printLevel using display and warning fields in params
+if any(strcmpi(optname,'display'))
+    opts = optiset(opts,'display',optval{strcmpi(optname,'display')});
+    setdisp = 1;
+end
+if any(strcmpi(optname,'warnings'))
+    opts = optiset(opts,'warnings',optval{strcmpi(optname,'warnings')});
+    setwarn = 1;
+end
+if any(strcmpi(optname,'tolrfun'))
+    opts = optiset(opts,'tolrfun',optval{strcmpi(optname,'tolrfun')});
+end
+if any(strcmpi(optname,'tolafun'))
+    opts = optiset(opts,'tolafun',optval{strcmpi(optname,'tolafun')});
+end
+% functionality to be added later
+% if any(strcmpi(optname,'solverOpts'))
+%     if ~exist('solverOpts','var')||(exist('solverOpts','var') && isempty(solverOpts))
+%         solverOpts = optval{strcmpi(optname,'solverOpts')};
+%     else
+%         % overwrite existing solverOpts fields and values
+%         newsolverOpts = optval{strcmpi(optname,'solverOpts')};
+%         newOpts = fieldnames(newsolverOpts);
+%         oldOpts = fieldnames(solverOpts);
+%         
+%     end
+% %     opts = optiset(opts,'solverOpts',optval{strcmpi(optname,'solverOpts')});
+% else
+%     solverOpts = [];
+% end
+if any(strcmpi(optname,'algorithm'))
+    solverOpts.algorithm = optval{strcmpi(optname,'algorithm')};
+end
+if any(strcmpi(optname,'optTol'))
+    optTol = optval{strcmpi(optname,'optTol')};
+end 
+if exist('solverOpts','var')&&~isempty(solverOpts)
+    opts = optiset(opts,'solverOpts',solverOpts);
+end 
+if exist('optTol','var')&& ~isempty(optTol)
+    opts = optiset(opts,'tolrfun',optTol,'tolafun',optTol);
+end   
+% printLevel
+if exist('printLevel','var') & ~setdisp & ~setwarn
+    if printLevel == 0
+        disp = 'off';
+        warnings = 'none';
+    elseif printLevel == 1
+        disp = 'off';
+        warnings = 'critical';
+    elseif printLevel == 2
+        disp = 'final';
+        warnings = 'critical';
+    elseif printLevel == 3
+        disp = 'iter';
+        warnings = 'critical';
+    elseif printLevel > 10
+        disp = 'all';
+        warnings = 'all';
+    end
+    opts = optiset(opts,'display',disp,'warnings',warnings);
+end
+
 
 %% solveGlpk Solve actual LP problem using glpk and return relevant results
 function [x,f,y,w,stat,origStat] = solveGlpk(c,A,b,lb,ub,csense,osense,params)
