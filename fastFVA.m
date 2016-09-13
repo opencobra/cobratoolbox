@@ -510,6 +510,6 @@ if(strategy == 0 && ~ isempty(rxnsList))
         statussolmax = statussolmax(rxns);
     end
 
-    minFlux(find(~ismember(model.rxns, rxnsList)))=[];
-    maxFlux(find(~ismember(model.rxns, rxnsList)))=[];
+  minFlux(find(~ismember(model.rxns, rxnsList)))=[];
+  maxFlux(find(~ismember(model.rxns, rxnsList)))=[];
 end;
