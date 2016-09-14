@@ -1,4 +1,4 @@
-function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax,statussolmin,statussolmax] = fastFVA(model,optPercentage,objective,solver,rxnsList,matrixAS,cpxControl,cpxAlgorithm,strategy,rxnsOptMode)
+function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax,statussolmin,statussolmax] = fastFVA(model,optPercentage,objective,solver,rxnsList,matrixAS,cpxControl,strategy,rxnsOptMode)
 %fastFVA Flux variablity analysis optimized for the GLPK and CPLEX solvers.
 %
 % [minFlux,maxFlux] = fastFVA(model,optPercentage,objective, solver)
@@ -30,7 +30,6 @@ function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax,statussolmin,statussol
 %   solver           'cplex'
 %   matrixAS         'A' or 'S' - choice of the model matrix, coupled (A) or uncoupled (S)
 %   cpxControl       Parameter set of CPLEX loaded externally
-%   cpxAlgorithm     Choice of the solution algorithm within CPLEX
 %   rxnsList         List of reactions to analyze (default all rxns, i.e. 1:length(model.rxns))
 %   rxnsOptMode      List of min/max optimizations to perform:
 %                    0 = only minimization;
@@ -95,8 +94,7 @@ verbose=1;
 
 % Define the input arguments
 
-if (nargin<9 || isempty(strategy)), strategy       = 0;          end
-if (nargin<8 || isempty(cpxAlgorithm)), cpxAlgorithm   = 0;          end
+if (nargin<8 || isempty(strategy)), strategy       = 0;          end
 if (nargin<7 || isempty(cpxControl)) , cpxControl   = struct([]); end
 if (nargin<6 || isempty(matrixAS)) , matrixAS       = 'S';        end
 if (nargin<5 || isempty(rxnsList))
@@ -247,15 +245,15 @@ if nworkers<=1
    if bExtraOutputs1
        [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax,statussolmin,statussolmax]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                                                                       optPercentage,obj,(1:n)', ...
-                                                                                      1, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode);
+                                                                                      1, cpxControl, valuesCPLEXparams, rxnsOptMode);
    elseif bExtraOutputs
      [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                                             optPercentage,obj,(1:n)', ...
-                                                            1, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode);
+                                                            1, cpxControl, valuesCPLEXparams, rxnsOptMode);
    else
        [minFlux,maxFlux,optsol,ret]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj,(1:n)', ...
-                                         1, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode);
+                                         1, cpxControl, valuesCPLEXparams, rxnsOptMode);
    end
 
    if ret ~= 0 && verbose
@@ -414,11 +412,11 @@ else
           [minf,maxf,iopt(i),iret(i),fbasol_single,fvamin_single,fvamax_single, ...
           statussolmin_single,statussolmax_single]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                                            optPercentage,obj, rxnsKey', ...
-                                                           t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode(istart(i):iend(i)));
+                                                           t.ID, cpxControl, valuesCPLEXparams, rxnsOptMode(istart(i):iend(i)));
       elseif bExtraOutputs
         [minf,maxf,iopt(i),iret(i),fbasol_single,fvamin_single,fvamax_single]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                                          optPercentage,obj, rxnsKey', ...
-                                                         t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode(istart(i):iend(i)));
+                                                         t.ID, cpxControl, valuesCPLEXparams, rxnsOptMode(istart(i):iend(i)));
       else
           if(strategy == 0)
               fprintf(' >> Number of reactions given to the worker: %d \n', length((istart(i):iend(i)) ) );
@@ -426,7 +424,7 @@ else
 
           [minf,maxf,iopt(i),iret(i)]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj, rxnsKey', ...
-                                         t.ID, cpxControl, valuesCPLEXparams, cpxAlgorithm,rxnsOptMode(istart(i):iend(i)));
+                                         t.ID, cpxControl, valuesCPLEXparams, rxnsOptMode(istart(i):iend(i)));
       end
 
       fprintf(' >> Time spent in FVAc: %1.1f seconds.', toc(tstart));
@@ -479,9 +477,11 @@ if bExtraOutputs || bExtraOutputs1
   fvamin = zeros(length(model.rxns),length(model.rxns));
   fvamax = zeros(length(model.rxns),length(model.rxns));
 
-  if bExtraOutputs1
-    statussolmin = -1 + zeros(length(model.rxns),1);
-    statussolmax = -1 + zeros(length(model.rxns),1);
+  if nworkers > 1
+      if bExtraOutputs1
+        statussolmin = -1 + zeros(length(model.rxns),1);
+        statussolmax = -1 + zeros(length(model.rxns),1);
+      end
   end
 
   if(strategy == 0)
