@@ -467,7 +467,6 @@ else
 
 end
 
-
 if bExtraOutputs || bExtraOutputs1
 
   if nworkers > 1
