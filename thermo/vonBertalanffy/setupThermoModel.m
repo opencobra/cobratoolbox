@@ -174,20 +174,11 @@ sdfMetList = mol2sdf(model.mets,molfileDir,sdfFileName,includeRs);
 
 fprintf('Converting SDF to InChI strings.\n')
 model.inchi = createInChIStruct(model.mets,sdfFileName);
-
-
 compositeBool = ~cellfun('isempty',regexp(model.inchi.nonstandard,'\.')); % Remove InChI for composite compounds as they cause problems later.
 model.inchi.standard(compositeBool) = cell(sum(compositeBool),1);
 model.inchi.standardWithStereo(compositeBool) = cell(sum(compositeBool),1);
 model.inchi.standardWithStereoAndCharge(compositeBool) = cell(sum(compositeBool),1);
 model.inchi.nonstandard(compositeBool) = cell(sum(compositeBool),1);
-
-
-% model.inchi.standard = unique(model.standard);
-% model.inchi.standardWithStereo = unique(model.inchi.standardWithStereo);
-% model.inchi.standardWithStereoAndCharge = unique(model.inchi.standardWithStereoAndCharge);
-% model.inchi.nonstandard = unique(model.inchi.nonstandard);
-
 
 
 %% Estimate metabolite pKa values with ChemAxon calculator plugins and determine all relevant pseudoisomers.

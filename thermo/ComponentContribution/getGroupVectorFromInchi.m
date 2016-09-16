@@ -30,7 +30,7 @@ else
     [rval, group_def] = system([cmd, inchi]);
 end
 
-if rval == 0  %&& ~strcmp('Traceback', group_def(1:9))
+if rval == 0 % && ~strcmp('Traceback', group_def(1:9))
     group_def = regexp(group_def,'(\d+,\s){162}\d+','match');
     if ~isempty(group_def)
         group_def = group_def{:};
