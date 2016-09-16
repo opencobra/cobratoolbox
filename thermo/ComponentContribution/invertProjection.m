@@ -10,9 +10,9 @@ if nargin < 2
     epsilon = 1e-10;
 end
 [m, n] = size(A);
-if 0
-    [U, S, V] = svd(A);
-    %[U, S, V] = svds(A,min(size(A))); % Bugfix due to svd convergence problems
+if 1
+    %[U, S, V] = svd(A); % not working, uncommented line below - Lemmer
+    [U, S, V] = svds(A,min(size(A))); % Bugfix due to svd convergence problems
     %[U, S, V] = svd(full(A),'econ'); %from Michael Saunders code
     r = sum(sum(abs(S) > epsilon));
     inv_S = diag(1 ./ S(abs(S) > epsilon));

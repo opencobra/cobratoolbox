@@ -119,8 +119,8 @@ end
 
 % split this result in lines for each metabolite
 count=0;
-%for i=1:(2*npKas + 2):(length(newresult)-(2*npKas + 2))%original
-for i=1:(2*npKas + 2):length(newresult)%Ronan changed this 20th June 2016, temp fix, need to check with Hulda
+for i=1:(2*npKas + 2):(length(newresult)-(2*npKas + 2))%original
+%for i=1:(2*npKas + 2):length(newresult)%Ronan changed this 20th June 2016, temp fix, need to check with Hulda
     count=count+1;
     %disp(count)
     for j=1:(2*npKas + 2)
@@ -131,9 +131,13 @@ for i=1:(2*npKas + 2):length(newresult)%Ronan changed this 20th June 2016, temp 
             %disp(newresult{j+i-1})
             if j<(2*npKas + 2)
                 % for pKa values change , by .
-                newesresult{count,j}=strrep(newresult{j+i-1},',','.');
+                if (j+i-1) <= length(newresult)
+                    newesresult{count,j}=strrep(newresult{j+i-1},',','.');
+                end
             else
-                newesresult{count,j}=newresult{j+i-1};
+                if (j+i-1) <= length(newresult)
+                    newesresult{count,j}=newresult{j+i-1};
+                end
             end
         end
     end

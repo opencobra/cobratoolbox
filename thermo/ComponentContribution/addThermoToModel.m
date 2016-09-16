@@ -54,6 +54,10 @@ fprintf('Running Component Contribution method\n');
 % Map estimates back to model
 model.DfG0 = x(training_data.Model2TrainingMap);
 model.covf = cov_x(training_data.Model2TrainingMap, training_data.Model2TrainingMap);
+
+%temp = mean(mean(model.covf));
+%model.covf(model.covf < 0) = temp; % model.covf has negative values... this makes the sqrt add imaginary numbers!
+
 model.uf = diag(sqrt(model.covf));
 model.DrG0 = model.S' * model.DfG0;
 model.ur = sqrt(diag(model.S'*model.covf*model.S));
