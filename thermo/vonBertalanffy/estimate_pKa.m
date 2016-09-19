@@ -80,15 +80,8 @@ end
 
 % Only estimate pKa for unique metabolites to increase speed
 bool = ~cellfun('isempty',inchi);
-
-% do not estimate for H+ and H2
-for i=1:length(inchi)
-    if find(strcmp(inchi{i},'InChI=1/p+1/fH/q+1'))
-        bool(i)=0;
-    elseif find(strcmp(inchi{i},'InChI=1/H2/h1H'))
-        bool(i)=0;
-    end
-end
+inchi(~bool) = {''};
+bool(ismember(inchi,{'InChI=1/p+1/fH/q+1'; 'InChI=1/H2/h1H'})) = false; % do not estimate for H+ and H2
 
 [umets,crossi,crossj] = unique(mets(bool));
 uinchi = inchi(bool);
@@ -102,47 +95,48 @@ fclose(fid);
 
 % Estimate pKa
 [status,result] = system(['cxcalc pka -a ' num2str(npKas) ' -b ' num2str(npKas) ' -M ' takeMajorTaut ' ' inchiFileName]);
+
 if status ~= 0
     error('Could not estimate pKa values. Check that ChemAxon Calculator Plugins are installed correctly.')
 end
 
-% Split for cxcalc 15.6.15.0 in tabs and empty lines.
-result = regexp(result,'\n?\t?','split');
-
-% create a new result excluding the header
-for i=1:length(result)
-    if i>(2*npKas + 3)
-        g=i-(2*npKas + 2);
-        newresult{1,g}=result{i};
-    end
-end
-
-% split this result in lines for each metabolite
-count=0;
-for i=1:(2*npKas + 2):(length(newresult)-(2*npKas + 2))%original
-%for i=1:(2*npKas + 2):length(newresult)%Ronan changed this 20th June 2016, temp fix, need to check with Hulda
-    count=count+1;
-    %disp(count)
-    for j=1:(2*npKas + 2)
-        %disp(j+i-1)
-        if j+i-1>=86702
-            newesresult{count,j}='';
-        else
-            %disp(newresult{j+i-1})
-            if j<(2*npKas + 2)
-                % for pKa values change , by .
-                if (j+i-1) <= length(newresult)
-                    newesresult{count,j}=strrep(newresult{j+i-1},',','.');
-                end
-            else
-                if (j+i-1) <= length(newresult)
-                    newesresult{count,j}=newresult{j+i-1};
-                end
-            end
-        end
-    end
-    
-end
+% % Split for cxcalc 15.6.15.0 in tabs and empty lines.
+% result = regexp(result,'\n?\t?','split');
+% 
+% % create a new result excluding the header
+% for i=1:length(result)
+%     if i>(2*npKas + 3)
+%         g=i-(2*npKas + 2);
+%         newresult{1,g}=result{i};
+%     end
+% end
+% 
+% % split this result in lines for each metabolite
+% count=0;
+% for i=1:(2*npKas + 2):(length(newresult)-(2*npKas + 2))%original
+% %for i=1:(2*npKas + 2):length(newresult)%Ronan changed this 20th June 2016, temp fix, need to check with Hulda
+%     count=count+1;
+%     %disp(count)
+%     for j=1:(2*npKas + 2)
+%         %disp(j+i-1)
+%         if j+i-1>=86702
+%             newesresult{count,j}='';
+%         else
+%             %disp(newresult{j+i-1})
+%             if j<(2*npKas + 2)
+%                 % for pKa values change , by .
+%                 if (j+i-1) <= length(newresult)
+%                     newesresult{count,j}=strrep(newresult{j+i-1},',','.');
+%                 end
+%             else
+%                 if (j+i-1) <= length(newresult)
+%                     newesresult{count,j}=newresult{j+i-1};
+%                 end
+%             end
+%         end
+%     end
+%     
+% end
 
 % Delete temporary file
 delete(inchiFileName);
@@ -156,25 +150,25 @@ upKa.nHs = [];
 upKa.majorMSpH7 = [];
 upKa = repmat(upKa,length(uinchi),1);
 
+% Parse cxcalc output
+result = regexp(result,'\r?\n','split');
+result = regexp(result,'^\d+.*','match');
+result = [result{:}];
+if length(result) ~= length(uinchi)
+    error('Output from ChemAxon''s pKa calculator plugin does not have the correct format.')
+end
+
 errorMets = {};
-for n = 1:min(length(uinchi),length(newesresult))
+for n = 1:length(uinchi)
     met = umets{n};
     currentInchi = uinchi{n};
     [formula, nH, charge] = getFormulaAndChargeFromInChI(currentInchi);
     
-    disp(n)
-    if n>length(newesresult)
-        warning('uinchi longer than newesresult')
-        errorMets=[errorMets; {met}];
-        break
-    end
-    %disp(newesresult{n,1})
-    pkalist = {newesresult{n,:}};
+    pkalist = regexp(result{n},'\t','split');
     if length(pkalist) == 2*npKas + 2;
         pkalist = pkalist(2:end-1);
         pkalist = pkalist(~cellfun('isempty',pkalist));
-        % This had to be commented due to doing it before:
-        %pkalist = regexprep(pkalist,',','.');
+        pkalist = regexprep(pkalist,',','.');
         pkalist = str2double(pkalist);
         pkalist = sort(pkalist,'descend');
         pkalist = pkalist(pkalist >= 0 & pkalist <= 14);
