@@ -55,6 +55,8 @@ if status~=0
     error('python2 should be installed')
 end
 
+setenv('PATH', [getenv('PATH') ':/opt/ChemAxon/MarvinBeans/bin/'])
+
 %test if call to cxcalc works
 [status,result] = system('cxcalc');
 if status ~= 0
