@@ -57,5 +57,6 @@ if (~exist('sbmlVersion','var') || isempty(sbmlVersion))
     sbmlVersion = 1;
 end
 
-sbmlModel = writeCbModel(model,'sbml','Temp.xml',[],[],sbmlLevel,sbmlVersion);
-delete Temp.xml
+TemporaryFileName = [tempname '.xml']
+sbmlModel = writeCbModel(model,'sbml',TemporaryFileName,[],[],sbmlLevel,sbmlVersion);
+delete(TemporaryFileName)
