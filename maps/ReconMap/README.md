@@ -46,7 +46,7 @@ In order to access remotely to ReconMap, the user has to be registered and add t
 
 
 ```matlab
-minerva.minervaURL = 'http://vmh.life/minerva/galaxy.xhtml';
+minerva.minervaURL = 'http://vmh.uni.lu/MapViewer/galaxy.xhtml';
 minerva.login = 'username';
 minerva.password = 'password';
 minerva.model = 'ReconMap-2.01';
