@@ -32,7 +32,7 @@ Compatibility
 ============
 
 - Matlab R2014a fully tested on UNIX and DOS Systems
-- Matalb R2015b throws compatibility errors with CPLEX 12.6.3 on DOS Systems
+- Matlab R2015b throws compatibility errors with CPLEX 12.6.3 on DOS Systems
 
 The version of fastFVA only supports the CPLEX solver. The code has been tested for the CPLEX 12.6.2 and 12.6.3 versions. Download the appropriate version of CPLEX (32-bit or 64-bit) from IBM and make sure the license is valid. A particular interface, such as TOMLAB are not needed in order to run fastFVA. Please note that only 64-bit versions are supported. In order to run the code on 32-bit systems, the appopropriate MEX files would need to be generated.
 
@@ -73,6 +73,8 @@ You may find information on how to install `gcc` [here](http://preshing.com/2014
 ```
 mex -setup
 ```
+Please make sure that you install CPLEX 12.6.2+ into `C:\Program Files\IBM\ILOG\`. Do not install `CPLEX` into the root folder.
+
 ## Generation of MEX files
 
 In order to generate the MEX file, please run_exps
