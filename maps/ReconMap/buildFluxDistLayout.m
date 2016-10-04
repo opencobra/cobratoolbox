@@ -48,11 +48,11 @@ function [ response ] = buildFluxDistLayout( minerva, model, fd, identifier, dic
     minerva_servlet = minerva.minervaURL;
     login = minerva.login;
     password = minerva.password;
-    model = minerva.model;
+    map = minerva.map;
     %     have to turn it into string
 %     disp(content);
     content = sprintf(content);
-    response = postMINERVArequest(minerva_servlet, login, password, model, identifier, content);
+    response = postMINERVArequest(minerva_servlet, login, password, map, identifier, content);
 end
 
 %% Normalize a flux into a range of 1 to 10
