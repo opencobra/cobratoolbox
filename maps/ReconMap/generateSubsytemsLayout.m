@@ -25,7 +25,7 @@ function [ response ] = generateSubsytemsLayout(minerva, cobra_model, subsystem,
     minerva_servlet = minerva.minervaURL;
     login = minerva.login;
     password = minerva.password;
-    model = minerva.model;
+    model = minerva.map;
     %     have to turn it into string
     content = sprintf(content);
     response = postMINERVArequest(minerva_servlet, login, password, model, subsystem, content);
