@@ -24,10 +24,11 @@ Nmets = size(model.S,1);
 
 selMets = ~ismember(model.mets,metaboliteList);
 
-%avoid selection too many metabolites in case of a coupled model
+% Avoid selecting too many metabolites in case of a coupled model
 selMets = selMets(1:Nmets);
 
 model.S = model.S(selMets,:);
+
 % Identify metabolite fields (that start with 'met')
 foo = strncmp('met', fields(model), 3);
 metabolicFields = fieldnames(model);
