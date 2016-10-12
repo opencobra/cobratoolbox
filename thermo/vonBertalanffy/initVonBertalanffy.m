@@ -55,10 +55,17 @@ if status~=0
     error('python2 should be installed')
 end
 
+%setenv('PATH', [getenv('PATH') ':/opt/ChemAxon/MarvinBeans/bin/'])
+
 %test if call to cxcalc works
 [status,result] = system('cxcalc');
 if status ~= 0
-    error('Check that ChemAxon Marvin Beans is installed, licence is working and cxcalc is on the system path.')
+    setenv('PATH', [getenv('PATH') ':/opt/ChemAxon/MarvinBeans/bin/'])
+    setenv('CHEMAXON_LICENSE_URL',[getenv('HOME') '/.chemaxon/license.cxl'])
+    [status,result] = system('cxcalc');
+    if status ~= 0
+        error('Check that ChemAxon Marvin Beans is installed, licence is working and cxcalc is on the system path.')
+    end
 end
 
 %check if call to babel works
@@ -73,5 +80,4 @@ end
 %system path before the Matlab path! The solution will be arch dependent
 
 %This is what works on Ubuntu 15.10 - paste it into your startup file
-setenv('LD_LIBRARY_PATH',['/home/rfleming/work/ownCloud/code/Chemaxon/bin/bin/:/usr/lib/x86_64-linux-gnu:' getenv('LD_LIBRARY_PATH')])
-
+%setenv('LD_LIBRARY_PATH',['/home/rfleming/work/ownCloud/code/Chemaxon/bin/bin/:/usr/lib/x86_64-linux-gnu:' getenv('LD_LIBRARY_PATH')])

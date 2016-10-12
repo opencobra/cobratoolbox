@@ -1,15 +1,14 @@
-function [ response ] = postMINERVArequest(minerva_servlet, login, password, model, identifier, content)
+function [ response ] = postMINERVArequest(minerva_servlet, login, password, map, identifier, content)
 
 % Sends a new layout to a MINERVA instance
 % 
 %
 % INPUT
 %
-% minerva_servlet           Struct with the information of minerva instance:
-%                           address, login, password and model (map)
+% minerva_servlet           URL
 % login                     MINERVA username   
 % password                  MINERVA password
-% model                     MINERVA map
+% map                       MINERVA map
 % identifier                Layout name
 % content                   Content of the layout
 %
@@ -21,7 +20,7 @@ function [ response ] = postMINERVArequest(minerva_servlet, login, password, mod
 % 
 % Alberto Noronha Jan/2016
     
-   content = {'identifier', identifier, 'login', login, 'password', password, 'model', model, 'expression_value', content};
+   content = {'identifier', identifier, 'login', login, 'password', password, 'model', map, 'expression_value', content};
    xmlresponse = urlread(minerva_servlet, 'POST', content);
    
    success = strfind(xmlresponse, '<span id="default_form:status">OK</span>');
