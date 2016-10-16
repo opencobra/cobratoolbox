@@ -20,16 +20,15 @@ if (nargin < 3)
     removeRxnFlag = true;
 end
 
-Nmets = size(model.S,1);
+% Nmets = size(model.S,1);
 
 selMets = ~ismember(model.mets,metaboliteList);
 
 if isfield(model,'A')
     % Avoid selecting too many metabolites in case of a coupled model
     %selMets = selMets(1:Nmets);
+    model.S = model.S(selMets,:);
 end
-
-model.S = model.S(selMets,:);
 
 % Identify metabolite fields (that start with 'met')
 foo = strncmp('met', fields(model), 3);
@@ -37,11 +36,11 @@ metabolicFields = fieldnames(model);
 metabolicFields = metabolicFields(foo);
 clear foo;
 for i = 1:length(metabolicFields)
-  if length(model.(metabolicFields{i})) > Nmets
+  %if length(model.(metabolicFields{i})) > Nmets
 	   model.(metabolicFields{i}) = model.(metabolicFields{i})(selMets);
-  else
-     fprintf(' Warning: The number of metabolites does not correspond to the length of %s. Ignored.\n',metabolicFields{i});
-  end
+  %else
+  %   fprintf(' Warning: The number of metabolites does not correspond to the length of %s. Ignored.\n',metabolicFields{i});
+  %end
 end
 if (isfield(model,'b'))
     model.b = model.b(selMets);
