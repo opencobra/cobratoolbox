@@ -4,7 +4,7 @@
 % FBCv2 file. The current version of the "writeSBML.m" does not require the
 % SBML toolbox (http://sbml.org/Software/SBMLToolbox).
 
-function writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLevel,sbmlVersion)
+function outmodel = writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLevel,sbmlVersion)
 %writeCbModel Write out COBRA models in various formats
 %
 % writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLevel,sbmlVersion)
@@ -12,6 +12,9 @@ function writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLeve
 %INPUTS
 % model             Standard COBRA model structure
 % format            File format to be used ('text','xls' or 'sbml')
+%
+% OPTIONAL OUTPUTS
+% outmodel          Only useable with sbml export. Will return the sbml structure, otherwise the input COBRA model structure is returned.
 %
 %OPTIONAL INPUTS
 % fileName          File name for output file (optional, default opens
@@ -37,7 +40,7 @@ if nargin < 6
     sbmlLevel = 2;
     sbmlVersion = 1;
 end
-
+outmodel = model;
 [nMets,nRxns] = size(model.S);
 
 formulas = printRxnFormula(model,model.rxns,false,false,false,1,false);
@@ -262,7 +265,7 @@ switch format
         %% SBML
     case 'sbml'
         % sbmlModel = convertCobraToSBML(model,sbmlLevel,sbmlVersion,compSymbolList,compNameList);
-        writeSBML(model,fileName,compSymbolList,compNameList)
+        outmodel = writeSBML(model,fileName,compSymbolList,compNameList)
 %         if exist('fileName','var')&&~isempty(fileName)
 %             OutputSBML(sbmlModel,fileName);
 %         else
