@@ -24,8 +24,10 @@ Nmets = size(model.S,1);
 
 selMets = ~ismember(model.mets,metaboliteList);
 
-% Avoid selecting too many metabolites in case of a coupled model
-selMets = selMets(1:Nmets);
+if isfield(model,'A')
+    % Avoid selecting too many metabolites in case of a coupled model
+    %selMets = selMets(1:Nmets);
+end
 
 model.S = model.S(selMets,:);
 
