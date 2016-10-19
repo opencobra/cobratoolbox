@@ -399,7 +399,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     rmatbeg[0] = 0;
     rmatbeg[1] = n_vars-1;
 
-    mexPrintf("rmatbeg[1] = %f; n_vars-1 = %f\n", rmatbeg[1], n_vars-1);
+    /*mexPrintf("rmatbeg[1] = %f; n_vars-1 = %f\n", rmatbeg[1], n_vars-1);*/
 
     status = CPXaddrows(env, lp, 0, 1, n_vars, &TargetValue, &sense, rmatbeg, ind, val, NULL, NULL);
 
