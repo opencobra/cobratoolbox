@@ -119,7 +119,7 @@ end
 if (nargin<4 || isempty(solver)), solver         = 'cplex';     end
 if (nargin<3 || isempty(objective)), objective      = 'max';      end
 if (nargin<2 || isempty(optPercentage)), optPercentage  = 100;        end
-if (nargin<10 || isempty(rxnsOptMode))
+if (nargin<9 || isempty(rxnsOptMode))
     rxnsOptMode = 2*ones(length(rxns),1)'; %status = 2 (min & max) for all reactions
 end
 
@@ -240,21 +240,35 @@ end;
 
 % Launch fastFVA on 1 core
 if nworkers<=1
+
+    if length(rxnsList) > 0
+        rxnsKey = find(ismember(model.rxns, rxnsList));
+    else
+        rxnsKey = (1:n);
+    end
+
    % Sequential version
    fprintf(' \n WARNING: The Sequential Version might take a long time.\n\n');
    if bExtraOutputs1
-       [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax,statussolmin,statussolmax]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
-                                                                                      optPercentage,obj,(1:n)', ...
+        [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax,statussolmin,statussolmax]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
+                                                                                      optPercentage,obj,rxnsKey, ...
                                                                                       1, cpxControl, valuesCPLEXparams, rxnsOptMode);
    elseif bExtraOutputs
-     [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
-                                                            optPercentage,obj,(1:n)', ...
+        [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
+                                                            optPercentage,obj,rxnsKey, ...
                                                             1, cpxControl, valuesCPLEXparams, rxnsOptMode);
    else
-       [minFlux,maxFlux,optsol,ret]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
-                                         optPercentage,obj,(1:n)', ...
+        [minFlux,maxFlux,optsol,ret]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
+                                         optPercentage,obj,rxnsKey, ...
                                          1, cpxControl, valuesCPLEXparams, rxnsOptMode);
    end
+
+   %fprintf('DEBUG: %i, minf = %2.20f, maxf = %2.20f\n', j, minFlux, maxFlux)
+   %if bExtraOutputs1
+    % fprintf('-----------------------------------\n')
+     %statussolmin
+   %end
+
 
    if ret ~= 0 && verbose
       fprintf('Unable to complete the FVA, return code=%d\n', ret);
@@ -414,7 +428,7 @@ else
                                                            optPercentage,obj, rxnsKey', ...
                                                            t.ID, cpxControl, valuesCPLEXparams, rxnsOptMode(istart(i):iend(i)));
       elseif bExtraOutputs
-        [minf,maxf,iopt(i),iret(i),fbasol_single,fvamin_single,fvamax_single]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
+          [minf,maxf,iopt(i),iret(i),fbasol_single,fvamin_single,fvamax_single]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                                          optPercentage,obj, rxnsKey', ...
                                                          t.ID, cpxControl, valuesCPLEXparams, rxnsOptMode(istart(i):iend(i)));
       else
@@ -430,11 +444,12 @@ else
       fprintf(' >> Time spent in FVAc: %1.1f seconds.', toc(tstart));
 
       if iret(i) ~= 0 && verbose
-         fprintf('Problems solving partition %d, return code=%d\n', i, iret(i))
+          fprintf('Problems solving partition %d, return code=%d\n', i, iret(i))
       end
 
-      minFlux=minFlux+minf;
-      maxFlux=maxFlux+maxf;
+
+      minFlux = minFlux + minf;
+      maxFlux = maxFlux + maxf;
 
       if bExtraOutputs || bExtraOutputs1
         fvaminRes{i}=fvamin_single;
@@ -443,8 +458,8 @@ else
       end
 
       if bExtraOutputs1
-         statussolminRes{i} = statussolmin_single;
-         statussolmaxRes{i} = statussolmax_single;
+          statussolminRes{i} = statussolmin_single;
+          statussolmaxRes{i} = statussolmax_single;
       end
 
       fprintf('\n----------------------------------------------------------------------------------\n');
@@ -453,9 +468,9 @@ else
       percout =   parfor_progress;
 
       if(percout < 100)
-        fprintf(' ==> %1.1f%% done. Please wait ...\n', percout);
+          fprintf(' ==> %1.1f%% done. Please wait ...\n', percout);
       else
-        fprintf(' ==> 100%% done. Analysis completed.\n', percout);
+          fprintf(' ==> 100%% done. Analysis completed.\n', percout);
       end
 
    end;
@@ -489,12 +504,12 @@ if bExtraOutputs || bExtraOutputs1
         fvamax(:,rxns(istart(i):iend(i))) = fvamaxRes{i};
 
         if bExtraOutputs1
-          tmp =  statussolminRes{i}';
-          statussolmin(rxns(istart(i):iend(i)),1) = tmp((istart(i):iend(i)));
-          tmp =  statussolmaxRes{i}';
-          statussolmax(rxns(istart(i):iend(i)),1) = tmp((istart(i):iend(i)));
+            tmp =  statussolminRes{i}';
+            statussolmin(rxns(istart(i):iend(i)),1) = tmp((istart(i):iend(i)));
+            tmp =  statussolmaxRes{i}';
+            statussolmax(rxns(istart(i):iend(i)),1) = tmp((istart(i):iend(i)));
         end
-    end;
+    end
   end
 end
 
@@ -505,10 +520,14 @@ if(strategy == 0 && ~ isempty(rxnsList))
     end
 
     if bExtraOutputs1
+    %  statussolmin(rxns)
         statussolmin = statussolmin(rxns);
         statussolmax = statussolmax(rxns);
     end
 
-  minFlux(find(~ismember(model.rxns, rxnsList)))=[];
-  maxFlux(find(~ismember(model.rxns, rxnsList)))=[];
+    %  fprintf('DEBUG2: %i, minf = %f, maxf = %f\n', j, minFlux, maxFlux)
+    %fprintf('=======================')
+%maxFlux(rxns)
+    minFlux(find(~ismember(model.rxns, rxnsList)))=[];
+    maxFlux(find(~ismember(model.rxns, rxnsList)))=[];
 end;

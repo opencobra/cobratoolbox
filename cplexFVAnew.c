@@ -347,11 +347,15 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     if(monitorPerformance) markersBegin[2] = clock();
 
     /* Determine the value of objective function bound */
+    /*mexPrintf(">> The original optSol = %3.30f\n", *optSol);*/
+
     if (objective == FVA_MIN_OBJECTIVE) {
        TargetValue = floor(*optSol/tol)*tol*optPercentage/100.0;
     } else {
        TargetValue = ceil(*optSol/tol)*tol*optPercentage/100.0;
     }
+
+    /*mexPrintf(">> The target value = %3.30f\n", TargetValue);*/
 
     if(monitorPerformance) markersEnd[2] = clock();
 
@@ -376,20 +380,26 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
     if(monitorPerformance) markersBegin[3] = clock();
 
+    /*mexPrintf(">> n_vars = %i\n", n_vars);*/
+
     for (j = 0; j < n_vars; j++)
     {
        ind[j] = j;
+       /*mexPrintf("ind[j] = %i\n", ind[j]);*/
        status = CPXgetcoef(env, lp, -1, j, &val[j]);
        if (status)
        {
           mexPrintf("Unable to create new row (failed at element %d)\n", j);
        }
+       /*mexPrintf("val[%i] = %f\n", j, *(val+j));*/
     }
 
     if(monitorPerformance) markersEnd[3] = clock();
 
     rmatbeg[0] = 0;
     rmatbeg[1] = n_vars-1;
+
+    mexPrintf("rmatbeg[1] = %f; n_vars-1 = %f\n", rmatbeg[1], n_vars-1);
 
     status = CPXaddrows(env, lp, 0, 1, n_vars, &TargetValue, &sense, rmatbeg, ind, val, NULL, NULL);
 
@@ -404,11 +414,12 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
     if(monitorPerformance) markersBegin[4] = clock();
 
     /* Zero all objective function coefficients */
-    for (j = 0; j < nrxn; j++)
+    for (j = 0; j < n_vars; j++)
     {
       status = CPXchgcoef (env, lp, -1, j, 0.0);
+      /*mexPrintf("Coefficient %i set to zero\n", j);*/
       if (status != 0)
-         mexPrintf("CPXchgcoef failed for %d\n", j);
+          mexPrintf("CPXchgcoef failed for %d\n", j);
     }
 
     if(monitorPerformance) markersEnd[4] = clock();
@@ -455,7 +466,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
           int j = rxns[k];
 
-          /*mexPrintf("        -- Loop k = %i with j= %i.\n", k, j);*/
+          /* mexPrintf("        -- Loop k = %i with j= %i.\n", k, j); */
 
           if(monitorPerformance) markersBegin[6] = clock();
 
@@ -479,13 +490,14 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
           if(monitorPerformance) markersEnd[7] = clock();
 
           /* Retrieving the solution status from CPLEX as given in the group optim.cplex.solutionstatus*/
+          /*  mexPrintf(" -- Status: (%i, rxn = %i, index = %i, rxnsOptMode = %1.2f)\n", iRound, j, k, rxnsOptMode[k]);*/
           if(statussolmin != NULL && statussolmax != NULL) {
               if(iRound == 0) {
                 statussolmin[j-1] =  CPXgetstat (env, lp);
-                /* mexPrintf(" -- Minimization status: (%i, rxn = %i, index = %i, rxnsOptMode = %1.2f) = %1.2f\n", iRound, j, k, rxnsOptMode[k], statussolmin[j-1]); */
+                /*mexPrintf(" -- Minimization status: (%i, rxn = %i, index = %i, rxnsOptMode = %1.2f) = %1.2f\n", iRound, j, k, rxnsOptMode[k], statussolmin[j-1]);*/
               } else if (iRound == 1) {
                 statussolmax[j-1] =  CPXgetstat (env, lp);
-                /* mexPrintf(" -- Maximization status: (%i, rxn = %i, index = %i, rxnsOptMode = %1.2f) = %1.2f\n", iRound, j, k, rxnsOptMode[k], statussolmax[j-1]); */
+                 /*mexPrintf(" -- Maximization status: (%i, rxn = %i, index = %i, rxnsOptMode = %1.2f) = %1.2f\n", iRound, j, k, rxnsOptMode[k], statussolmax[j-1]);*/
               }
           }
 
@@ -511,7 +523,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
           {
              double* ptr = (iRound == 0) ? FVAmin : FVAmax;
              status = CPXgetx (env, lp, &ptr[k * n_vars], 0, CPXgetnumcols(env, lp)-1);
-             /* mexPrintf(" fvaminsol %f, fvamaxsol %f\n", FVAmin[j-1], FVAmax[j-1]); */
+             /* mexPrintf(" fvaminsol %f, fvamaxsol %f, objval/1000 = %f\n", FVAmin[j-1], FVAmax[j-1], objval/1000.0);*/
              if (status != 0)
              {
                 mexPrintf(" ERROR: Unable to get FVAsol. Status=%d\n", status);
