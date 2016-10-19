@@ -136,8 +136,12 @@ switch samplerName
         % Fix reaction directions
         [modelSampling,samples] = convRevSamples(modelSampling,samples);
         
+        volume = 'Set samplerName = ''MFE'' to estimate volume.';
+        
     case 'CHRR'
         [samples,modelSampling] = chrrSampler(model,nStepsPerPoint,nPointsReturned,toRound,modelSampling);
+        
+        volume = 'Set samplerName = ''MFE'' to estimate volume.';
         
     case 'MFE'
         %[volume,T,steps] = Volume(P,E,eps,p,flags)
