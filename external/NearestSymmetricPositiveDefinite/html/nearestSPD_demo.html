@@ -1,0 +1,311 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>nearestSPD_demo</title><meta name="generator" content="MATLAB 8.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2013-07-30"><meta name="DC.source" content="nearestSPD_demo.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">nearestSPD works on any matrix, and it is reasonably fast.</a></li><li><a href="#7">A realistic test case</a></li></ul></div><pre class="codeinput"><span class="comment">% Neearest Symmetric, Positive Definite matrices</span>
+<span class="comment">%</span>
+<span class="comment">% This tool saves your covariance matrices, turning them into something</span>
+<span class="comment">% that really does have the property you will need. That is, when you are</span>
+<span class="comment">% trying to use a covariance matrix in a tool like mvnrnd, it makes no</span>
+<span class="comment">% sense if your matrix is not positive definite. So mvnrnd will fail in</span>
+<span class="comment">% that case.</span>
+<span class="comment">%</span>
+<span class="comment">% But sometimes, it appears that users end up with matrices that are NOT</span>
+<span class="comment">% symmetric and positive definite (commonly abbreviated as SPD) and they</span>
+<span class="comment">% still wish to use them to generate random numbers, often in a tool like</span>
+<span class="comment">% mvnrnd. A solution is to find the NEAREST matrix that has the desired</span>
+<span class="comment">% property of being SPD.</span>
+<span class="comment">%</span>
+<span class="comment">% I see the question come up every once in a while, so I looked in the file</span>
+<span class="comment">% exchange to see what is in there. All I found was nearest_posdef. While</span>
+<span class="comment">% this usually almost works, it could be better. It actually failed</span>
+<span class="comment">% completely on most of my test cases, and it was not as fast as I would</span>
+<span class="comment">% like, using an optimization. In fact, in the comments to nearest_posdef,</span>
+<span class="comment">% a logical alternative was posed. That alternative too has its failures,</span>
+<span class="comment">% so I wrote nearestSPD.</span>
+</pre><h2>nearestSPD works on any matrix, and it is reasonably fast.<a name="2"></a></h2><p>As a test, randn generates a matrix that is not symmetric nor is it at all positive definite in general.</p><pre class="codeinput">U = randn(100);
+</pre><p>nearestSPD will be able to convert U into something that is indeed SPD, and for a 100 by 100 matrix, do it quickly enough</p><pre class="codeinput">tic,Uj = nearestSPD(U);toc
+</pre><pre class="codeoutput">Elapsed time is 0.005662 seconds.
+</pre><p>The ultimate test of course, is to use chol. If chol returns a second argument that is zero, then MATLAB (and mvnrnd) will be happy!</p><pre class="codeinput">[R,p] = chol(Uj);
+p
+</pre><pre class="codeoutput">p =
+     0
+</pre><p>As you can see, mvnrnd did not complain at all.</p><pre class="codeinput">mvnrnd(zeros(1,100),Uj,1)
+</pre><pre class="codeoutput">ans =
+  Columns 1 through 7
+    0.6206   -1.3824    0.8017   -0.2522   -1.6578   -3.7084   -3.7997
+  Columns 8 through 14
+    0.2101    0.3997    2.6344   -0.6991   -1.5288   -0.0655    1.2957
+  Columns 15 through 21
+    0.5635   -1.7118    1.4419   -1.9975    0.9702   -0.7824   -0.9111
+  Columns 22 through 28
+   -0.6243   -0.9555   -0.8648    3.9613   -2.9741    0.8544   -1.7191
+  Columns 29 through 35
+    2.2032   -1.1222   -0.8262   -2.1132    2.0091   -0.8174   -0.2515
+  Columns 36 through 42
+   -0.3103   -0.8486   -0.1352   -3.4751    1.5693    0.0114   -2.6613
+  Columns 43 through 49
+   -1.5377   -3.7468    1.7067   -1.0868   -0.3011   -1.2440    0.1904
+  Columns 50 through 56
+   -0.7234    0.9335    2.2027    0.9502    0.1257   -4.4532   -0.0755
+  Columns 57 through 63
+   -1.5667   -0.5757   -0.6353   -0.5836   -2.5437   -0.3126    2.4465
+  Columns 64 through 70
+    2.1601    0.4921    1.4246    3.0354    1.4341    1.5398    5.4932
+  Columns 71 through 77
+    0.2329    0.7502    0.4124   -1.5297    2.3390   -1.3886   -1.6488
+  Columns 78 through 84
+   -0.1357   -1.4652   -3.4085   -0.4108    0.1225    2.0608    2.4883
+  Columns 85 through 91
+    3.1590   -1.7421   -1.3297    5.2951   -0.9421   -0.2190   -1.3316
+  Columns 92 through 98
+    1.1916   -0.3938   -1.3629   -2.7727    0.6032    0.0956   -0.8630
+  Columns 99 through 100
+   -1.7379   -1.5663
+</pre><p>nearest_posdef would have failed here, as U was not even symmetric, nor does it even have positive diagonal entries.</p><h2>A realistic test case<a name="7"></a></h2><p>Next I'll try a simpler test case. This one will have positive diamgonal entries, and it will indeed be symmetric. So this matrix is much closer to a true covariance matrix than that first mess we tried. And since nearest_posdef was quite slow on a 100x100 matrix, I'll use something smaller.</p><pre class="codeinput">U = rand(25);
+U = (U + U')/2;
+</pre><p>Really, it is meaningless as a covariance matrix, because it is clearly not positive definite. We can see many negative eigenvalues, and chol gets upset. So mvnrnd would fail here.</p><pre class="codeinput">eig(U)'
+[R,p] = chol(U);
+p
+</pre><pre class="codeoutput">ans =
+  Columns 1 through 7
+   -1.6748   -1.3845   -1.3380   -1.2144   -1.0673   -0.9856   -0.6934
+  Columns 8 through 14
+   -0.6398   -0.4336   -0.3471   -0.2484   -0.1653   -0.0160    0.1141
+  Columns 15 through 21
+    0.4482    0.5044    0.5448    0.6195    0.6827    0.9338    1.3431
+  Columns 22 through 25
+    1.4957    1.7989    2.0236   12.1344
+p =
+     3
+</pre><p>nearest_posdef took a bit of time, about 9 seconds on my machine. Admittedly, much of that time was wasted in doing fancy graphics that nobody actually needs if they just need a result.</p><pre class="codeinput">tic,Um = nearest_posdef(U);toc
+</pre><pre class="codeoutput">Elapsed time is 8.768167 seconds.
+</pre><img vspace="5" hspace="5" src="nearestSPD_demo_01.png" alt=""> <p>Is Um truly positive definite according to chol? Sadly, it is usually not.</p><pre class="codeinput">[R,p] = chol(Um);
+p
+</pre><pre class="codeoutput">p =
+    18
+</pre><p>We can see how it failed, by looking at what eig returns.</p><pre class="codeinput">eig(Um)
+</pre><pre class="codeoutput">ans =
+  11.8426 + 0.0000i
+   1.7845 + 0.0000i
+   1.5092 + 0.0000i
+   1.2512 + 0.0000i
+   1.0957 + 0.0000i
+   0.7042 + 0.0000i
+   0.4589 + 0.0000i
+   0.3627 + 0.0000i
+   0.3080 + 0.0000i
+   0.2593 + 0.0000i
+   0.1571 + 0.0000i
+   0.0417 + 0.0000i
+   0.0387 + 0.0000i
+   0.0290 + 0.0000i
+   0.0190 + 0.0000i
+   0.0052 + 0.0000i
+   0.0021 + 0.0000i
+  -0.0000 + 0.0000i
+  -0.0000 - 0.0000i
+  -0.0000 + 0.0000i
+   0.0000 + 0.0000i
+   0.0000 + 0.0000i
+  -0.0000 + 0.0000i
+  -0.0000 - 0.0000i
+   0.0000 + 0.0000i
+</pre><p>There will usually be some tiny negative eigenvalues</p><pre class="codeinput">min(real(eig(Um)))
+</pre><pre class="codeoutput">ans =
+  -1.8002e-16
+</pre><p>and sometimes even some imaginary eigenvalues. All usually tiny, but still enough to upset chol.</p><pre class="codeinput">max(imag(eig(Um)))
+</pre><pre class="codeoutput">ans =
+   2.2548e-16
+</pre><p>The trick suggested by Shuo Han is pretty fast, but it too fails. Since U is already symmetric, we need not symmetrize it first, but chol still gets upset.</p><p>Note that the slash used by Shuo was not a good idea. transpose would have been sufficient.</p><pre class="codeinput">[V,D] = eig(U);
+U_psd = V * max(D,0) / V;
+[R,p] = chol(U_psd);
+p
+</pre><pre class="codeoutput">p =
+    13
+</pre><p>Whereas nearestSPD works nicely.</p><pre class="codeinput">Uj = nearestSPD(U);
+[R,p] = chol(Uj);
+</pre><p>nearestSPD returns a solution that is a bit closer to the original matrix U too. Thus comparing 1,2,inf and Frobenious norms, nearestSPD was better under all norms in my tests, even though it is designed only to optimize the Frobenious norm.</p><pre class="codeinput">[norm(U - Um,1), norm(U - Um,2), norm(U - Um,inf), norm(U - Um,<span class="string">'fro'</span>)]
+[norm(U - Uj,1), norm(U - Uj,2), norm(U - Uj,inf), norm(U - Uj,<span class="string">'fro'</span>)]
+</pre><pre class="codeoutput">ans =
+    3.6183    1.6779    3.6183    3.5082
+ans =
+    3.1950    1.6748    3.1950    3.3743
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2013a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% Neearest Symmetric, Positive Definite matrices
+% 
+% This tool saves your covariance matrices, turning them into something
+% that really does have the property you will need. That is, when you are
+% trying to use a covariance matrix in a tool like mvnrnd, it makes no
+% sense if your matrix is not positive definite. So mvnrnd will fail in
+% that case.
+%
+% But sometimes, it appears that users end up with matrices that are NOT
+% symmetric and positive definite (commonly abbreviated as SPD) and they
+% still wish to use them to generate random numbers, often in a tool like
+% mvnrnd. A solution is to find the NEAREST matrix that has the desired
+% property of being SPD.
+% 
+% I see the question come up every once in a while, so I looked in the file
+% exchange to see what is in there. All I found was nearest_posdef. While
+% this usually almost works, it could be better. It actually failed
+% completely on most of my test cases, and it was not as fast as I would
+% like, using an optimization. In fact, in the comments to nearest_posdef,
+% a logical alternative was posed. That alternative too has its failures,
+% so I wrote nearestSPD.
+
+%% nearestSPD works on any matrix, and it is reasonably fast.
+% As a test, randn generates a matrix that is not symmetric nor is it at
+% all positive definite in general.
+U = randn(100);
+
+%%
+% nearestSPD will be able to convert U into something that is indeed SPD,
+% and for a 100 by 100 matrix, do it quickly enough
+tic,Uj = nearestSPD(U);toc
+
+%%
+% The ultimate test of course, is to use chol. If chol returns a second
+% argument that is zero, then MATLAB (and mvnrnd) will be happy!
+[R,p] = chol(Uj);
+p
+
+%%
+% As you can see, mvnrnd did not complain at all.
+mvnrnd(zeros(1,100),Uj,1)
+
+%%
+% nearest_posdef would have failed here, as U was not even symmetric, nor
+% does it even have positive diagonal entries.
+
+%% A realistic test case
+% Next I'll try a simpler test case. This one will have positive diamgonal
+% entries, and it will indeed be symmetric. So this matrix is much closer
+% to a true covariance matrix than that first mess we tried. And since
+% nearest_posdef was quite slow on a 100x100 matrix, I'll use something
+% smaller.
+U = rand(25);
+U = (U + U')/2;
+
+%%
+% Really, it is meaningless as a covariance matrix, because it is clearly
+% not positive definite. We can see many negative eigenvalues, and chol
+% gets upset. So mvnrnd would fail here.
+eig(U)'
+[R,p] = chol(U);
+p
+
+%%
+% nearest_posdef took a bit of time, about 9 seconds on my machine.
+% Admittedly, much of that time was wasted in doing fancy graphics that
+% nobody actually needs if they just need a result.
+tic,Um = nearest_posdef(U);toc
+
+%%
+% Is Um truly positive definite according to chol? Sadly, it is usually not.
+[R,p] = chol(Um);
+p
+
+%%
+% We can see how it failed, by looking at what eig returns.
+eig(Um)
+%%
+% There will usually be some tiny negative eigenvalues
+min(real(eig(Um)))
+%%
+% and sometimes even some imaginary eigenvalues. All usually tiny, but
+% still enough to upset chol.
+max(imag(eig(Um)))
+
+%%
+% The trick suggested by Shuo Han is pretty fast, but it too fails. Since
+% U is already symmetric, we need not symmetrize it first, but chol still
+% gets upset.
+%
+% Note that the slash used by Shuo was not a good idea. transpose would
+% have been sufficient.
+[V,D] = eig(U);
+U_psd = V * max(D,0) / V;
+[R,p] = chol(U_psd);
+p
+
+%%
+% Whereas nearestSPD works nicely.
+Uj = nearestSPD(U);
+[R,p] = chol(Uj);
+
+%%
+% nearestSPD returns a solution that is a bit closer to the original
+% matrix U too. Thus comparing 1,2,inf and Frobenious norms, nearestSPD was
+% better under all norms in my tests, even though it is designed only to
+% optimize the Frobenious norm.
+[norm(U - Um,1), norm(U - Um,2), norm(U - Um,inf), norm(U - Um,'fro')]
+[norm(U - Uj,1), norm(U - Uj,2), norm(U - Uj,inf), norm(U - Uj,'fro')]
+
+
+##### SOURCE END #####
+--></body></html>

@@ -1,28 +1,30 @@
-function [modelSampling,samples,volume] = sampleCbModel(model,sampleFile,samplerName,options)
+function [modelSampling,samples,volume] = sampleCbModel(model,sampleFile,samplerName,options,modelSampling)
 %sampleCbModel Sample the solution-space of a constraint-based model
 %
-% [modelSampling,samples] = sampleCbModel(model,sampleFile,samplerName,options)
+% [modelSampling,samples] = sampleCbModel(model,sampleFile,samplerName,options,modelSampling)
 %
 %INPUTS
 % model         COBRA model structure
-% sampleFile    File names for sampling output files
+% sampleFile    File names for sampling output files (only required for
+%               ACHR)
 %
 %OPTIONAL INPUTS
-% samplerName   Name of the sampler to be used to sample the solution
-% (default 'ACHR')
+% samplerName   {('ACHR'),'CHRR'} Name of the sampler to be used to sample the solution
 % options       Options for sampling and pre/postprocessing (default values
 %               in parenthesis)
-%   nWarmupPoints           Number of warmup points (5000)
-%   nFiles                  Number of output files (10)
-%   nPointsPerFile          Number of points per file (1000)
-%   nStepsPerPoint          Number of sampler steps per point saved (200)
-%   nPointsReturned         Number of points loaded for analysis (2000)
-%   nFilesSkipped           Number of output files skipped when loading
-%                           points to avoid potentially biased initial samples (2)
-%   removeLoopsFlag         Attempt to remove loops from the model (false)
-%   removeLoopSamplesFlag   Remove sampling data for reactions involved in
-%                           loops (true)
-%   maxTime                 Maximum time limit (Default = 36000 s)
+%   .nStepsPerPoint          Number of sampler steps per point saved (200)
+%   .nPointsReturned         Number of points loaded for analysis (2000)
+%   .nWarmupPoints           Number of warmup points (5000). ACHR only.
+%   .nFiles                  Number of output files (10). ACHR only.
+%   .nPointsPerFile          Number of points per file (1000). ACHR only.
+%   .nFilesSkipped           Number of output files skipped when loading
+%                            points to avoid potentially biased initial samples (2). ACHR only.
+%                            loops (true). ACHR only.
+%   .maxTime                 Maximum time limit (Default = 36000 s). ACHR only.
+%   .toRound                 Option to round the model before sampling
+%                            (true). CHRR only.
+% modelSampling              From a previous round of sampling the same
+%                            model. Input to avoid repeated preprocessing.
 %
 %OUTPUTS
 % modelSampling Cleaned up model used in sampling
@@ -36,7 +38,7 @@ function [modelSampling,samples,volume] = sampleCbModel(model,sampleFile,sampler
 %           [modelSampling,samples] = sampleCbModel(superModel,'superModelSamples');
 %
 % 2)    Sample a model called 'hyperModel' using default settings except with a total of 50 sample files
-%       saved and with 5000 sample points returned. 
+%       saved and with 5000 sample points returned.
 %       Save the results in files with the common beginning 'hyperModelSamples'
 %
 %           options.nFiles = 50;
@@ -53,47 +55,46 @@ nStepsPerPoint = 200;
 nPointsReturned = 2000;
 nFilesSkipped = 2;
 maxTime = 10*3600;
-removeLoopsFlag = false;
-removeLoopSamplesFlag = true;
+toRound = 1;
 
-if (nargin < 3)
+if (nargin < 3 || isempty(samplerName))
     samplerName = 'ACHR';
+end
+
+% Handle options
+if exist('options','var')
+    if (isfield(options,'nStepsPerPoint'))
+        nStepsPerPoint = options.nStepsPerPoint;
+    end
+    if (isfield(options,'nPointsReturned'))
+        nPointsReturned = options.nPointsReturned;
+    end
+    if (isfield(options,'nWarmupPoints'))
+        nWarmupPoints = options.nWarmupPoints;
+    end
+    if (isfield(options,'nFiles'))
+        nFiles = options.nFiles;
+    end
+    if (isfield(options,'nPointsPerFile'))
+        nPointsPerFile = options.nPointsPerFile;
+    end
+    if (isfield(options,'nFilesSkipped'))
+        nFilesSkipped = options.nFilesSkipped;
+    end
+    if (isfield(options,'maxTime'))
+        maxTime = options.maxTime;
+    end
+    if (isfield(options,'toRound'))
+        toRound = double(options.toRound);
+    end
+end
+
+if nargin < 5
+    modelSampling = [];
 end
 
 switch samplerName
     case 'ACHR'
-        % Handle options
-        if (nargin > 3)
-            if (isfield(options,'nWarmupPoints'))
-                nWarmupPoints = options.nWarmupPoints;
-            end
-            if (isfield(options,'nFiles'))
-                nFiles = options.nFiles;
-            end
-            if (isfield(options,'nPointsPerFile'))
-                nPointsPerFile = options.nPointsPerFile;
-            end
-            if (isfield(options,'nStepsPerPoint'))
-                nStepsPerPoint = options.nStepsPerPoint;
-            end
-            if (isfield(options,'nPointsReturned'))
-                nPointsReturned = options.nPointsReturned;
-            end
-            if (isfield(options,'nFilesSkipped'))
-                nFilesSkipped = options.nFilesSkipped;
-            end
-            if (isfield(options,'maxTime'))
-                maxTime = options.maxTime;
-            end
-            if (isfield(options,'removeLoopsFlag'))
-                removeLoopsFlag = options.removeLoopsFlag;
-            end
-            if (isfield(options,'removeLoopSamplesFlag'))
-                removeLoopSamplesFlag = options.removeLoopSamplesFlag;
-            end
-        end
-        
-        
         fprintf('Prepare model for sampling\n');
         % Prepare model for sampling by reducing bounds
         [nMet,nRxn] = size(model.S);
@@ -111,19 +112,33 @@ switch samplerName
         save modelRedTmp modelRed;
         
         modelSampling = modelRed;
-
+        
         % Use Artificial Centering Hit-and-run
         
         fprintf('Create warmup points\n');
         % Create warmup points for sampler
         warmupPts= createHRWarmup(modelSampling,nWarmupPoints);
-
+        
         save sampleCbModelTmp modelSampling warmupPts
-
+        
         fprintf('Run sampler for a total of %d steps\n',nFiles*nPointsPerFile*nStepsPerPoint);
         % Sample model
         ACHRSampler(modelSampling,warmupPts,sampleFile,nFiles,nPointsPerFile,nStepsPerPoint,[],[],maxTime);
-
+        
+        fprintf('Load samples\n');
+        % Load samples
+        nPointsPerFileLoaded = ceil(nPointsReturned/(nFiles-nFilesSkipped));
+        if (nPointsPerFileLoaded > nPointsPerFile)
+            error('Attempted to return more points than were saved');
+        end
+        samples = loadSamples(sampleFile,nFiles,nPointsPerFileLoaded,nFilesSkipped);
+        samples = samples(:,round(linspace(1,size(samples,2),min([nPointsReturned,size(samples,2)]))));
+        % Fix reaction directions
+        [modelSampling,samples] = convRevSamples(modelSampling,samples);
+        
+    case 'CHRR'
+        [samples,modelSampling] = chrrSampler(model,nStepsPerPoint,nPointsReturned,toRound,modelSampling);
+        
     case 'MFE'
         %[volume,T,steps] = Volume(P,E,eps,p,flags)
         %This function is a randomized algorithm to approximate the volume of a convex
@@ -146,21 +161,21 @@ switch samplerName
         %assign default values if not assigned in function call
         [m,n]=size(model.S);
         if 1
-        A=[ model.S;...
-           -model.S;...
-           -eye(n,n);...
-            eye(n,n)];
-        b=[ model.b;...
-           -model.b;...
-           -model.lb;...
-            model.ub];
+            A=[ model.S;...
+                -model.S;...
+                -eye(n,n);...
+                eye(n,n)];
+            b=[ model.b;...
+                -model.b;...
+                -model.lb;...
+                model.ub];
         else
-           A=[ model.S;...
-           -eye(n,n);...
-            eye(n,n)];
-        b=[ model.b;...
-           -model.lb;...
-            model.ub];
+            A=[ model.S;...
+                -eye(n,n);...
+                eye(n,n)];
+            b=[ model.b;...
+                -model.lb;...
+                model.ub];
         end
         P=[A b];
         E=[];
@@ -184,13 +199,3 @@ switch samplerName
         error(['Unknown sampler: ' samplerName]);
 end
 
-fprintf('Load samples\n');
-% Load samples
-nPointsPerFileLoaded = ceil(nPointsReturned/(nFiles-nFilesSkipped));
-if (nPointsPerFileLoaded > nPointsPerFile)
-   error('Attempted to return more points than were saved'); 
-end
-samples = loadSamples(sampleFile,nFiles,nPointsPerFileLoaded,nFilesSkipped);
-samples = samples(:,round(linspace(1,size(samples,2),min([nPointsReturned,size(samples,2)]))));
-% Fix reaction directions
-[modelSampling,samples] = convRevSamples(modelSampling,samples);
