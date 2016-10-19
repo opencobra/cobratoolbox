@@ -99,7 +99,7 @@ if (nargin<7 || isempty(cpxControl)) , cpxControl   = struct([]); end
 if (nargin<6 || isempty(matrixAS)) , matrixAS       = 'S';        end
 if (nargin<5 || isempty(rxnsList))
     rxns = 1:length(model.rxns);
-    rxnsList = {};
+    rxnsList = model.rxns;
 else
     %% check here if the vector of rxns is sorted or not
     % this needs to be fixed to sort the flux vectors accordingly
@@ -380,6 +380,9 @@ else
    iopt    = zeros(nworkers,1);
    iret    = zeros(nworkers,1);
 
+   maxFluxTmp = {};
+   minFluxTmp = {};
+
    % Initialilze extra outputs
    if bExtraOutputs || bExtraOutputs1
       fvaminRes={};
@@ -405,7 +408,7 @@ else
       if strategy == 1 || strategy == 2
         rxnsKey = [sortedrxnsVect(startMarker1(i):endMarker1(i)), sortedrxnsVect(startMarker2(i):endMarker2(i))];
       else
-        rxnsKey = istart(i):iend(i);
+        rxnsKey = rxns(istart(i):iend(i));
       end
 
       t = getCurrentTask();
@@ -418,9 +421,9 @@ else
 
       tstart = tic;
 
+      minf = zeros(length(model.rxns),1);
+      maxf = zeros(length(model.rxns),1);
       fvamin_single = 0; fvamax_single = 0; fbasol_single=0; statussolmin_single = 0; statussolmax_single = 0; % silence warnings
-
-      %%determine the reaction density here
 
       if bExtraOutputs1
           [minf,maxf,iopt(i),iret(i),fbasol_single,fvamin_single,fvamax_single, ...
@@ -448,8 +451,13 @@ else
       end
 
 
-      minFlux = minFlux + minf;
-      maxFlux = maxFlux + maxf;
+      %rxnIndices
+      minFluxTmp{i} = minf;
+      maxFluxTmp{i} = maxf;
+      %minFlux = minFlux + minf;
+      %maxFlux = maxFlux + maxf;
+      %minFlux = minFlux + tmpMin
+      %maxFlux = maxFlux + tmpMax
 
       if bExtraOutputs || bExtraOutputs1
         fvaminRes{i}=fvamin_single;
@@ -482,6 +490,18 @@ else
 
 end
 
+rxns
+for i=1:nworkers
+    indices = rxns(istart(i):iend(i))
+    tmp = maxFluxTmp{i};
+    maxfluxcomplete =tmp
+    maxfluxchunk = tmp(indices)
+    %rxnIndices = find(ismember(model.rxns, rxnsList(istart(i):iend(i))))
+    maxFlux(indices,1) = tmp(indices);
+    tmp = minFluxTmp{i}';
+    minFlux(indices,1) = tmp(indices);
+end
+
 if bExtraOutputs || bExtraOutputs1
 
   if nworkers > 1
@@ -500,13 +520,14 @@ if bExtraOutputs || bExtraOutputs1
 
   if(strategy == 0)
     for i=1:nworkers
+
         fvamin(:,rxns(istart(i):iend(i))) = fvaminRes{i};
         fvamax(:,rxns(istart(i):iend(i))) = fvamaxRes{i};
 
         if bExtraOutputs1
-            tmp =  statussolminRes{i}';
+            tmp = statussolminRes{i}';
             statussolmin(rxns(istart(i):iend(i)),1) = tmp((istart(i):iend(i)));
-            tmp =  statussolmaxRes{i}';
+            tmp = statussolmaxRes{i}';
             statussolmax(rxns(istart(i):iend(i)),1) = tmp((istart(i):iend(i)));
         end
     end
@@ -520,7 +541,6 @@ if(strategy == 0 && ~ isempty(rxnsList))
     end
 
     if bExtraOutputs1
-    %  statussolmin(rxns)
         statussolmin = statussolmin(rxns);
         statussolmax = statussolmax(rxns);
     end
