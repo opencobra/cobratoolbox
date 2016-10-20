@@ -466,7 +466,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
 
           int j = rxns[k];
 
-          /* mexPrintf("        -- Loop k = %i with j= %i.\n", k, j); */
+          /* mexPrintf("        -- Loop k = %i with j= %i.\n", k, j);*/
 
           if(monitorPerformance) markersBegin[6] = clock();
 
@@ -523,7 +523,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
           {
              double* ptr = (iRound == 0) ? FVAmin : FVAmax;
              status = CPXgetx (env, lp, &ptr[k * n_vars], 0, CPXgetnumcols(env, lp)-1);
-             /* mexPrintf(" fvaminsol %f, fvamaxsol %f, objval/1000 = %f\n", FVAmin[j-1], FVAmax[j-1], objval/1000.0);*/
+             /*mexPrintf(" fvaminsol %f, fvamaxsol %f, objval/1000 = %f\n", FVAmin[j-1], FVAmax[j-1], objval/1000.0);*/
              if (status != 0)
              {
                 mexPrintf(" ERROR: Unable to get FVAsol. Status=%d\n", status);
@@ -553,6 +553,7 @@ int _fva(CPXENVptr env, CPXLPptr lp, double* minFlux, double* maxFlux, double* o
           }*/
             maxFlux[j-1] = objval/1000.0;
           }
+          /*mexPrintf("iRound = %i, k = %i, j = %i, objval/1000 = %2.8f\n", iRound, k, j,objval/1000.0);*/
        } /* end if performOptim */
       } /* end loop reactions k */
     } /* end iRound */

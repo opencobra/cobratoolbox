@@ -263,13 +263,6 @@ if nworkers<=1
                                          1, cpxControl, valuesCPLEXparams, rxnsOptMode);
    end
 
-   %fprintf('DEBUG: %i, minf = %2.20f, maxf = %2.20f\n', j, minFlux, maxFlux)
-   %if bExtraOutputs1
-    % fprintf('-----------------------------------\n')
-     %statussolmin
-   %end
-
-
    if ret ~= 0 && verbose
       fprintf('Unable to complete the FVA, return code=%d\n', ret);
    end;
@@ -450,14 +443,8 @@ else
           fprintf('Problems solving partition %d, return code=%d\n', i, iret(i))
       end
 
-
-      %rxnIndices
       minFluxTmp{i} = minf;
       maxFluxTmp{i} = maxf;
-      %minFlux = minFlux + minf;
-      %maxFlux = maxFlux + maxf;
-      %minFlux = minFlux + tmpMin
-      %maxFlux = maxFlux + tmpMax
 
       if bExtraOutputs || bExtraOutputs1
         fvaminRes{i}=fvamin_single;
@@ -490,15 +477,17 @@ else
 
 end
 
-rxns
+% Aggregate the results for the maximum and minimum flux vectors
 for i=1:nworkers
-    indices = rxns(istart(i):iend(i))
+    indices = rxns(istart(i):iend(i));
     tmp = maxFluxTmp{i};
-    maxfluxcomplete =tmp
-    maxfluxchunk = tmp(indices)
-    %rxnIndices = find(ismember(model.rxns, rxnsList(istart(i):iend(i))))
+    %maxfluxcomplete = tmp;
+    %maxfluxchunk = tmp(indices);
     maxFlux(indices,1) = tmp(indices);
-    tmp = minFluxTmp{i}';
+
+    tmp = minFluxTmp{i};
+    %minfluxcomplete = tmp;
+    %minfluxchunk = tmp(indices);
     minFlux(indices,1) = tmp(indices);
 end
 
@@ -525,10 +514,11 @@ if bExtraOutputs || bExtraOutputs1
         fvamax(:,rxns(istart(i):iend(i))) = fvamaxRes{i};
 
         if bExtraOutputs1
+            indices = rxns(istart(i):iend(i));
             tmp = statussolminRes{i}';
-            statussolmin(rxns(istart(i):iend(i)),1) = tmp((istart(i):iend(i)));
+            statussolmin(rxns(istart(i):iend(i)),1) = tmp(indices);
             tmp = statussolmaxRes{i}';
-            statussolmax(rxns(istart(i):iend(i)),1) = tmp((istart(i):iend(i)));
+            statussolmax(rxns(istart(i):iend(i)),1) = tmp(indices);
         end
     end
   end
@@ -545,9 +535,6 @@ if(strategy == 0 && ~ isempty(rxnsList))
         statussolmax = statussolmax(rxns);
     end
 
-    %  fprintf('DEBUG2: %i, minf = %f, maxf = %f\n', j, minFlux, maxFlux)
-    %fprintf('=======================')
-%maxFlux(rxns)
     minFlux(find(~ismember(model.rxns, rxnsList)))=[];
     maxFlux(find(~ismember(model.rxns, rxnsList)))=[];
 end;
