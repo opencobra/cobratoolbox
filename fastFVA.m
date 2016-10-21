@@ -31,6 +31,10 @@ function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax,statussolmin,statussol
 %   matrixAS         'A' or 'S' - choice of the model matrix, coupled (A) or uncoupled (S)
 %   cpxControl       Parameter set of CPLEX loaded externally
 %   rxnsList         List of reactions to analyze (default all rxns, i.e. 1:length(model.rxns))
+%   strategy         Paralell distribution strategy of reactions among workers
+%                    0 = Blind splitting: default random distribution
+%                    1 = Extremal dense-and-sparse splitting: every worker receives dense and sparse reactions, starting from both extremal indices of the sorted column density vector
+%                    2 = Central dense-and-sparse splitting: every worker receives dense and sparse reactions, starting from the beginning and center indices of the sorted column density vector
 %   rxnsOptMode      List of min/max optimizations to perform:
 %                    0 = only minimization;
 %                    1 = only maximization;
@@ -66,22 +70,7 @@ function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax,statussolmin,statussol
 
 % Oirignal author: Steinn Gudmundsson.
 % Contributor: Laurent Heirendt, LCSB
-% Last updated: August 2016
-
-% SPLITTING STRATEGIES
-
-% (0) Blind-splitting : DEFAULT
-%
-% (1) Extremal Hard-and-Easy Blocks Splitting
-% everyone gets a heavy chunk and everyone gets and easy chunk
-% ----
-% (2) Central Hard-and-Easy Blocks Splitting
-% the first one gets one bad and one very easy
-% the last one get a hard on and one very easy
-% ----
-% (3) Extremal Hard-and-Easy Points
-% every thread gets the worst, until nothing else is left
-
+% Last updated: October 2016
 
 % Turn on the load balancing for large problems
 loadBalancing = 0; %0: off; 1: on
