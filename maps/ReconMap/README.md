@@ -5,7 +5,7 @@ This  tutorial will guide you through the necessary steps of accessing ReconMap.
 
 ## 1 - Request an account
 
-To access ReconMap please follow the link: http://vmh.life/#mapnavigator.
+To access ReconMap please follow the link: http://vmh.uni.lu/#reconmap.
 
 To access the Overlay functionality you will need to create an user account. To do so, access the ADMIN area and request and account. We will  get back to you as soon as possible with your credentials.
 
@@ -46,10 +46,10 @@ In order to access remotely to ReconMap, the user has to be registered and add t
 
 
 ```matlab
-minerva.minervaURL = 'http://vmh.uni.lu/MapViewer/galaxy.xhtml';
+minerva.minervaURL = 'http://vmh.life/minerva/galaxy.xhtml';
 minerva.login = 'username';
 minerva.password = 'password';
-minerva.map = 'ReconMap-2.01';
+minerva.model = 'ReconMap-2.01';
 ```
 
 This structure stores the URL of the minerva instance, the username and password, and finally the model we want to upload the overlay to (this is important as each instance can have several maps).
@@ -84,6 +84,10 @@ ans =
 ```
 
 And now you can visualize your flux distributio overlaid in the network!
+
+At this point the overlay will be available in the "Overlays" menu of the ReconMap's interface (remember that you have to be logged in). In this menu it is possible to choose the overlay to visualize. In general overlays you can select "Empty" if you wish the network to be faded, as displayed in the figure below.
+
+<img src="http://vmh.uni.lu/resources/images/mapviewer/tutorial-overlay.png" width="800" alt="Overlay menu overview">
 
 ### 3.2 - Overlaying subsystems
 
