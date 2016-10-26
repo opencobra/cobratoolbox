@@ -1,20 +1,19 @@
-function [msg,x,t,s,y] = mve_presolve(A,b,maxiter,tol)
+function [msg,x,t,s,y] = presolve(A,b,maxiter,tol)
 % Solve LP: max t, s.t. Ax + t*e <= b
 
 %--------------------------------------
 % Yin Zhang, Rice University, 07/29/02
-% Last modified: 09/29/16
 %--------------------------------------
 
 [m, n] = size(A);  bnrm = norm(b); 
 o_m = zeros(m,1);  o_n = zeros(n,1);
-e_m =  ones(m,1);  %e_n =  ones(n,1);
+e_m =  ones(m,1);  e_n =  ones(n,1);
 
 % initialize
 x = o_n; y = e_m/m;
 t = min(b) - 1; s = b - t;
 
-dx = o_n; dxc = dx; %#ok<*NASGU>
+dx = o_n; dxc = dx;
 ds = o_m; dsc = ds;
 dy = o_m; dyc = dy;
 dt = 0;   dtc = 0;
@@ -25,7 +24,7 @@ msg = 'successful';
 p = 1:n;
 if issparse(A)
     absA = abs(A); 
-    p = symamd(absA'*absA);
+    p = symmmd(absA'*absA);
 end
 p(n+1) = n+1;
 
@@ -54,7 +53,7 @@ for iter = 0:maxiter
   end
   fprintf('  iter. %3i: %9.1e %9.1e %9.1e %9.1e\n',...
              iter,prif,drif,rgap,t); 
-  if dt > 1.e+3*bnrm || t > 1.e+6*bnrm
+  if dt > 1.e+3*bnrm | t > 1.e+6*bnrm
       msg = 'unbounded?'; break; 
   end  
 
@@ -69,8 +68,7 @@ for iter = 0:maxiter
   if ~issparse(A)
       R = chol(B);
   else
-      %R = cholinc(B(p,p),'inf');
-      R = chol(B(p,p));
+      R = cholinc(B(p,p),'inf');
   end
   
   % predictor step & length
@@ -100,12 +98,12 @@ for iter = 0:maxiter
   t = t + alphap * dt; 
   y = y + alphad * dy;
 end
-if t < eps, msg = 'no volume'; end
+if t < eps msg = 'no volume'; end
 %disp(msg);
  
   
 %%%%%%%%%%%%%%%%%%%%%%%%%%
-function [dx,ds,dt,dy] = calcstep(A,R,p,s,y,r1,r2,r3,r4)
+function [dx,ds,dt,dy] = calcstep(A,R,p,s,y,r1,r2,r3,r4);
  dxdt = zeros(size(R,1),1);
  tmp = (r1.*y-r4)./s;
  rhs = [r2+A'*tmp; r3+sum(tmp)]; 

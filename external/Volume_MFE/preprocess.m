@@ -26,6 +26,18 @@ function [P] = preprocess( P , to_round)
 % P = preprocess(P);
 % vol = Volume(P);
 
+% % geometric scaling
+% iprint  = 0;
+% scltol  = 0.9;
+% [cscale,rscale] = gmscale(P.A_eq,iprint,scltol);
+% 
+% C = spdiags(cscale,0,size(P.A_eq,2),size(P.A_eq,2));
+% Cinv = spdiags(1./cscale,0,size(P.A_eq,2),size(P.A_eq,2));
+% Rinv = spdiags(1./rscale,0,size(P.A_eq,1),size(P.A_eq,1));
+% P.A_eq = Rinv*P.A_eq*Cinv;
+% P.b_eq = Rinv*P.b_eq;
+% P.b = [C sparse(size(C,1),size(C,2)); sparse(size(C,1),size(C,2)) C]*P.b;
+
 
 %restrict to the degenerate subspace
 %     N = null(eq_constraints);
@@ -71,7 +83,7 @@ fprintf('Rounding...\n');
 if to_round==1
     T = eye(dim);
     LP.A = P.A;
-%     LP.b = P.b-1e-6*sqrt(sum((P.A').^2,1))';
+    %     LP.b = P.b-1e-6*sqrt(sum((P.A').^2,1))';
     LP.b = P.b;
     LP.c = zeros(dim,1);
     LP.lb = -Inf * ones(dim,1);
@@ -86,7 +98,7 @@ if to_round==1
     end
     [T_shift, Tmve] = mve_run(P.A,P.b+sqrt(sum((P.A').^2,1))'/sqrt(dim), x0);
     
-    while(abs(det(Tmve))>20 || abs(det(Tmve))<1/20) 
+    while(abs(det(Tmve))>20 || abs(det(Tmve))<1/20)
         det(Tmve)
         p_shift = p_shift + N_total*T_shift;
         N_total = N_total * Tmve;
@@ -118,16 +130,16 @@ if to_round==1
     end
     
     
-%     Volume(Q);
+    %     Volume(Q);
     
-%     [T,T_shift]=max_Ellipsoid(P.A, P.b);
-%     P.b = P.b - P.A*T_shift;
-%     P.A = P.A*T;
-%     p_shift = p_shift + N_total*T_shift;
-%     N_total = N_total * T;
-%     Volume(P)
-%     Volume(Q)
-%     fprintf('hi\n');
+    %     [T,T_shift]=max_Ellipsoid(P.A, P.b);
+    %     P.b = P.b - P.A*T_shift;
+    %     P.A = P.A*T;
+    %     p_shift = p_shift + N_total*T_shift;
+    %     N_total = N_total * T;
+    %     Volume(P)
+    %     Volume(Q)
+    %     fprintf('hi\n');
 else
     T = eye(size(N_total,2));
 end
@@ -137,14 +149,14 @@ fprintf('Trying to find a point inside the convex body...\n');
 % if isfield(P,'p')==0 || isempty(P.p)
 % p=zeros(dim,1);
 % options = optimset('Display','none');
-% 
+%
 % LP.lb = -Inf*ones(size(P.A,2),1);
 % LP.ub = -LP.lb;
 % LP.osense = 1;
 % LP.csense = 'L';
 % LP.A = P.A;
 % LP.b = P.b;
-% 
+%
 % for i=1:2*size(P.A,2)
 %     %     f = randn(dim,1);
 %     if i<=size(P.A,2)
@@ -163,12 +175,12 @@ fprintf('Trying to find a point inside the convex body...\n');
 %     end
 %     %     fprintf('Number of low rows: %d\n', sum(P.b - P.A*p < eps_cutoff));
 % end
-% 
+%
 % %hopefully found a point reasonably inside the polytope
 % %shift so that this point is the origin
 % P.b = P.b - P.A*p;
 % p_shift = p_shift + N_total*p;
-% 
+%
 % if min(P.b) < -eps_cutoff
 %     error('We tried to find a point inside the polytope but failed.');
 % elseif min(P.b) < 0
