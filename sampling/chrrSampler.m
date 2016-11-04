@@ -73,7 +73,7 @@ if toPreprocess
         [minFlux, maxFlux] = fluxVariability(model);
     end
     
-    eps_cutoff = 1e-7;
+    eps_cutoff = 1e-8;
     
     isEq = (maxFlux - minFlux) < eps_cutoff;
     eq_constraints = sparse(sum(isEq),size(P.A_eq,2));
