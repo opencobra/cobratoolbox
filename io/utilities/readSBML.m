@@ -278,12 +278,16 @@ for i = 1:nRxns
                     if ~isempty(modelSBML.(fbc_list{f}).fbc_fluxObjective)
                         fbc_obj=modelSBML.(fbc_list{f}).fbc_fluxObjective.fbc_reaction; % the variable stores the objective reaction ID
                         fbc_obj=regexprep(fbc_obj,'^R_','');
-                        ind_obj=find(strcmp(listOffbc_type,modelSBML.(fbc_list{f}).fbc_type));
-                        switch ind_obj
-                            case 1 % maximise
-                                fbc_obj_value=-1;
-                            case 2 % minimise
-                                fbc_obj_value=1;
+                        if isfield(modelSBML.(fbc_list{f}).fbc_fluxObjective,'fbc_coefficient')
+                            fbc_obj_value=modelSBML.(fbc_list{f}).fbc_fluxObjective.fbc_coefficient;
+                        else
+                            ind_obj=find(strcmp(listOffbc_type,modelSBML.(fbc_list{f}).fbc_type));
+                            switch ind_obj
+                                case 1 % maximise
+                                    fbc_obj_value=-1;
+                                case 2 % minimise
+                                    fbc_obj_value=1;
+                            end
                         end
                     else % if the objective function is not specified according to the FBCv2 rules.
                         noObjective=1; % no objective function is defined for the COBRA model.
