@@ -2,7 +2,7 @@ function [samples,roundedPolytope] = chrrSampler(model,numSkip,numSamples,toRoun
 % CHRRSAMPLER Generate uniform random flux samples with CHRR
 %   Coordinate Hit-and-Run with Rounding
 % 
-% [samples,roundedPolytope,minFlux,maxFlux] = chrrSampler(model,numSkip,numSamples,toRound,roundedPolytope,minFlux,maxFlux);
+% [samples,roundedPolytope] = chrrSampler(model,numSkip,numSamples,toRound,roundedPolytope,minFlux,maxFlux)
 % 
 %   chrrSampler will generate numSamples samples from model, taking
 %   numSkip steps of a random walk between each sample
