@@ -122,7 +122,7 @@ if ~isfield(model,'csense')
     fprintf('%s\n','csense is not defined. We assume that all constraints are equalities.')
     csense(1:m,1) = 'E';
 else
-    if length(model.csense)~=m,
+    if length(model.csense)~=m
         warning('Length of csense is invalid! Defaulting to equality constraints.')
         csense(1:m,1) = 'E';
     else
@@ -155,21 +155,27 @@ else
     FBAsolution.full=zeros(size(model.lb));
 end
 
-    %       stat                status
-    %                           1 =  Solution found
-    %                           2 =  Unbounded
-    %                           0 =  Infeasible
-    %                           -1=  Invalid input
+%       stat                status
+%                           1 =  Solution found
+%                           2 =  Unbounded
+%                           0 =  Infeasible
+%                           -1=  Invalid input
+    
+%dummy output in case problem with FBA    
+vSparse=[];
+sparseRxnBool=[];
+essentialRxnBool=[];
+    
 switch FBAsolution.stat
     case 2
-        v = [];
-        fprintf('%s\n','FBA problem error: Unbounded !!!!')
+        warning('%s\n','FBA problem error: Unbounded !!!!')
+        return
     case 0
-        v = [];
-        fprintf('%s\n','FBA problem error: Infeasible !!!!')
+        warning('%s\n','FBA problem error: Infeasible !!!!')
+        return
     case -1
-        v = [];
         warning('%s\n','FBA problem error: Invalid input !!!!')
+        return
     case 1
         vFBA = FBAsolution.full(1:n);
         objFBA = c'*vFBA;
