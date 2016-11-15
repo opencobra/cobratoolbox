@@ -344,7 +344,7 @@ end
 
           
 if printLevel>0
-    fprintf('%s\n','--- summary----')
+    fprintf('%s\n','--- Summary of stoichiometric consistency ----')
     fprintf('%6u\t%6u\t%s\n',nMet,nRxn,' totals.')
     fprintf('%6u\t%6u\t%s\n',nnz(~model.SIntMetBool),nnz(~model.SIntRxnBool),' heuristically exchange.')
     fprintf('%6u\t%6u\t%s\n',nnz(model.SIntMetBool),nnz(model.SIntRxnBool),' heuristically non-exchange:')
@@ -361,7 +361,7 @@ if printLevel>0
     end
     fprintf('%6u\t%6u\t%s\n',nnz(model.SInConsistentMetBool),nnz(model.SInConsistentRxnBool),' total stoichiometrically inconsistent.')
     fprintf('%6u\t%6u\t%s\n',nnz(model.unknownSConsistencyMetBool),nnz(model.unknownSConsistencyRxnBool),' unknown consistency.')
-    fprintf('%s\n','-------')
+    fprintf('%s\n','--- END ----')
 end
 
 
