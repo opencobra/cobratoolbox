@@ -293,7 +293,7 @@ while iterateCardinalityOpt>0
     end
     
     %remove reactions with unknown consistency of maximal cardinality
-    if any(model.unknownSConsistencyRxnBool)
+    if any(model.unknownSConsistencyMetBool) || any(model.unknownSConsistencyRxnBool)
         fprintf('%6u\t%6u\t%s\n',nnz(model.unknownSConsistencyMetBool),nnz(model.unknownSConsistencyRxnBool),' unknown consistency.')
         nMetsPerRxnTmp=nMetsPerRxn;
         %reactions with known consistency set to zero
@@ -301,6 +301,10 @@ while iterateCardinalityOpt>0
         %find the reaction(s) with unknown consistency involving maximum
         %number of metabolites
         maxMetsPerRxn=full(max(nMetsPerRxnTmp(model.unknownSConsistencyRxnBool)));
+        %check in case any(model.unknownSConsistencyRxnBool)==0
+        if isempty(maxMetsPerRxn)
+            maxMetsPerRxn=0;
+        end
         %boolean reactions to be consisdered inconsistent and removed
         rxnRemoveBool=nMetsPerRxnTmp==maxMetsPerRxn;
         %remove metabolites exclusively involved in reactions considered

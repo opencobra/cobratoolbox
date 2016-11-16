@@ -1,9 +1,9 @@
-function [solution,LPProblem]=solveCobraLPCPLEX(LPProblem,printLevel,basisReuse,conflictResolve,contFunctName,minNorm)
+function [solution,LPProblem]=solveCobraLPCPLEX(LPProblem,printLevel,basisReuse,conflictResolve,contFunctName,minNorm,interface)
 % [solution,LPProblem]=solveCobraLPCPLEX(LPProblem,printLevel,basisReuse,conflictResolve,contFunctName,minNorm)
 % call CPLEX to solve an LP problem
 % By default, use the matlab interface to cplex written by TOMLAB, in
 % preference to the one written by ILOG.
-% 
+%
 %INPUT
 % LPproblem Structure containing the following fields describing the LP
 % problem to be solved
@@ -55,6 +55,9 @@ function [solution,LPProblem]=solveCobraLPCPLEX(LPProblem,printLevel,basisReuse,
 %               but minimises the square of flux. minNorm ~1e-6 should be
 %               high enough for regularisation yet keep the same objective
 %
+% interface     {'ILOGcomplex','ILOGsimple','tomlab_cplex'}
+%               Default is the tomlab_cplex interface
+%
 %OUTPUT
 % solution Structure containing the following fields describing a LP
 % solution
@@ -84,12 +87,7 @@ function [solution,LPProblem]=solveCobraLPCPLEX(LPProblem,printLevel,basisReuse,
 % automatically chosen for you
 %
 
-% Ronan Fleming 10 June 08
-%               20 Mar  09  min norm can be specific to each variable
-%               12 Jul  09  more description of basis reuse
-%               23 Oct  09  ILOG-CPLEX matlab simple interface by default
-%                           See solveCobraCPLEX for full control of CPLEX
-%                           12.1 via API
+% Ronan Fleming 
 
 if ~exist('printLevel','var')
     printLevel=0;
@@ -134,6 +132,9 @@ else
     cpxControl.ADVIND=0;
 end
 
+if ~exist('interface','var')
+    interface='tomlab_cplex';
+end
 if ~isfield(LPProblem,'A')
     if ~isfield(LPProblem,'S')
             error('Equality constraint matrix must either be a field denoted A or S.')
@@ -243,17 +244,27 @@ xIP=[];
 %Logical constraints, i.e. an additional set of single-sided linear constraints that are controlled
 %by a binary variable (switch) in the problem
 logcon=[];
-   
+
 %call cplex
 tic;
-%by default use the complex ILOG-CPLEX interface as it seems to be faster
-%IBM(R) ILOG(R) CPLEX(R) Interactive Optimizer 12.5.1.0
-ILOGcomplex=1;
+%tic;
+%by default use the complex ILOG-CPLEX interface
+% ILOGcomplex=0;
+% tomlab_cplex = 1;
+% tomlab_cplex=1; %by default use the tomlab_cplex interface
+%ILOGcomplex=0;
+%if ~isempty(which('cplexlp')) %this is very slow
 
-tomlab_cplex=0; %by default use the complex ilog interface instead of the tomlab_cplex interface
+if strcmp(interface,'ILOGcomplex')
+    ILOGcomplex = 1;
+    tomlab_cplex = 0;
+else
+    tomlab_cplex = 1;
+    ILOGcomplex = 0;
+end
 
-if ~isempty(which('cplexlp')) && tomlab_cplex==0
-    if ILOGcomplex
+switch interface
+    case 'ILOGcomplex'
         %complex ibm ilog cplex interface
         if ~isempty(csense)
             %set up constant vectors for CPLEX
@@ -267,7 +278,7 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
             b_L = b;
             b_U = b;
         end
-
+        
         
         % Initialize the CPLEX object
         try
@@ -275,7 +286,7 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
         catch ME
             error('CPLEX not installed or licence server not up')
         end
-
+        
         ILOGcplex.Model.sense = 'minimize';
         
         % Now populate the problem with the data
@@ -285,12 +296,12 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
         ILOGcplex.Model.A     = LPProblem.A;
         ILOGcplex.Model.lhs   = b_L;
         ILOGcplex.Model.rhs   = b_U;
-
+        
         if ~isempty(F)
             %quadratic constraint matrix, size n x n
             ILOGcplex.Model.Q=F;
         end
-
+        
         if ~isempty(cpxControl)
             if isfield(cpxControl,'LPMETHOD')
                 %set the solver
@@ -309,7 +320,7 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
         
         % Optimize the problem
         ILOGcplex.solve();
-%http://www-01.ibm.com/support/knowledgecenter/SSSA5P_12.2.0/ilog.odms.cplex.help/Content/Optimization/Documentation/CPLEX/_pubskel/CPLEX1210.html
+        %http://www-01.ibm.com/support/knowledgecenter/SSSA5P_12.2.0/ilog.odms.cplex.help/Content/Optimization/Documentation/CPLEX/_pubskel/CPLEX1210.html
         if ILOGcplex.Solution.status == 1
             solution.obj        = osense*ILOGcplex.Solution.objval;
             solution.full       = ILOGcplex.Solution.x;
@@ -333,9 +344,9 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
             solution.solver     = NaN;
             solution.time       = NaN;
         end
-    else
+    case 'ILOGsimple'
         try
-           ILOGcplex = Cplex('fba');
+            ILOGcplex = Cplex('fba');
         catch ME
             error('CPLEX not installed or licence server not up')
         end
@@ -346,12 +357,12 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
                 options = cplexoptimset(options,'Display','off');
             case 1
                 options = cplexoptimset(options,'Display','off');
-                case 1
+            case 1
                 options = cplexoptimset(options,'Display','off');
             case 1
                 options = cplexoptimset(options,'Display','off');
         end
-                
+        
         if ~isempty(csense)
             if sum(minNorm)~=0
                 Aineq = [LPProblem.A(csense == 'L',:); - LPProblem.A(csense == 'G',:)];
@@ -397,11 +408,12 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
         solution.nInfeas = [];
         solution.sumInfeas = [];
         solution.origStat = output.cplexstatus;
-    end
-    %1 = (Simplex or Barrier) Optimal solution is available.
-    Inform = solution.origStat;
-    
-else
+    otherwise
+        error([interface ' is not a recognised solveCobraLPCPLEX interface'])
+end
+Inform = solution.origStat;
+
+case 'tomlab_cplex'
     %tomlab cplex interface
     if ~isempty(csense)
         %set up constant vectors for CPLEX
@@ -415,7 +427,7 @@ else
         b_L = b;
         b_U = b;
     end
-
+    
     %tomlab cplex interface
     %   minimize   0.5 * x'*F*x + c'x     subject to:
     %      x             x_L <=    x   <= x_U
@@ -424,7 +436,7 @@ else
         cpxControl, callback, printLevel, Prob, IntVars, PI, SC, SI, ...
         sos1, sos2, F, logfile, savefile, savemode, qc, ...
         confgrps, conflictFile, saRequest, basis, xIP, logcon);
-
+    
     solution.full=x;
     %this is the dual to the equality constraints but it's not the chemical potential
     solution.dual=v*osense;%negative sign Jan 25th
