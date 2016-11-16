@@ -500,11 +500,11 @@ if strcmp(interface, 'tomlab_cplex')
     if Inform==1
         solution.stat = 1;
         if printLevel>0
-        %use tomlab code to print out exit meassage
-        [ExitText,ExitFlag] = cplexStatus(Inform);
-        solution.ExitText=ExitText;
-        solution.ExitFlag=ExitFlag;
-        fprintf('\n%s%g\n',[ExitText ', Objective '],  c'*solution.full*osense);
+            %use tomlab code to print out exit meassage
+            [ExitText,ExitFlag] = cplexStatus(Inform);
+            solution.ExitText=ExitText;
+            solution.ExitFlag=ExitFlag;
+            fprintf('\n%s%g\n',[ExitText ', Objective '],  c'*solution.full*osense);
         end
     else
         if Inform==2
