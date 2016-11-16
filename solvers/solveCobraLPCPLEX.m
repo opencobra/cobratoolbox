@@ -486,46 +486,46 @@ if Inform~=1 && conflictResolve ==1
             error([interface ' conflict resolution not yet implemented'])
     end
 else
-    if printLevel>0
+    if printLevel>0 && Inform~=1
         fprintf('%s\n','No conflict resolution file. Consider to set conflictResolve = 1 next time.');
     end
 end
 
-
-
-% Try to give back COBRA Standardized solver status:
-%           1   Optimal solution
-%           2   Unbounded solution
-%           0   Infeasible
-%           -1  No solution reported (timelimit, numerical problem etc)
-if Inform==1
-    solution.stat = 1;
-    if printLevel>0
-    %use tomlab code to print out exit meassage
-    [ExitText,ExitFlag] = cplexStatus(Inform);
-    solution.ExitText=ExitText;
-    solution.ExitFlag=ExitFlag;
-    fprintf('\n%s%g\n',[ExitText ', Objective '],  c'*solution.full*osense);
-    end
-else
-    if Inform==2
-        solution.stat = 2;
+if strcmp(interface, 'tomlab_cplex')
+    % Try to give back COBRA Standardized solver status:
+    %           1   Optimal solution
+    %           2   Unbounded solution
+    %           0   Infeasible
+    %           -1  No solution reported (timelimit, numerical problem etc)
+    if Inform==1
+        solution.stat = 1;
+        if printLevel>0
         %use tomlab code to print out exit meassage
         [ExitText,ExitFlag] = cplexStatus(Inform);
         solution.ExitText=ExitText;
         solution.ExitFlag=ExitFlag;
         fprintf('\n%s%g\n',[ExitText ', Objective '],  c'*solution.full*osense);
+        end
     else
-        if Inform==3
-            solution.stat = 0;
-        else
-            %this is a conservative view
-            solution.stat = -1;
+        if Inform==2
+            solution.stat = 2;
             %use tomlab code to print out exit meassage
             [ExitText,ExitFlag] = cplexStatus(Inform);
             solution.ExitText=ExitText;
             solution.ExitFlag=ExitFlag;
             fprintf('\n%s%g\n',[ExitText ', Objective '],  c'*solution.full*osense);
+        else
+            if Inform==3
+                solution.stat = 0;
+            else
+                %this is a conservative view
+                solution.stat = -1;
+                %use tomlab code to print out exit meassage
+                [ExitText,ExitFlag] = cplexStatus(Inform);
+                solution.ExitText=ExitText;
+                solution.ExitFlag=ExitFlag;
+                fprintf('\n%s%g\n',[ExitText ', Objective '],  c'*solution.full*osense);
+            end
         end
     end
 end
