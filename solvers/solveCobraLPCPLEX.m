@@ -247,22 +247,6 @@ logcon=[];
 
 %call cplex
 tic;
-%tic;
-%by default use the complex ILOG-CPLEX interface
-% ILOGcomplex=0;
-% tomlab_cplex = 1;
-% tomlab_cplex=1; %by default use the tomlab_cplex interface
-%ILOGcomplex=0;
-%if ~isempty(which('cplexlp')) %this is very slow
-
-if strcmp(interface,'ILOGcomplex')
-    ILOGcomplex = 1;
-    tomlab_cplex = 0;
-else
-    tomlab_cplex = 1;
-    ILOGcomplex = 0;
-end
-
 switch interface
     case 'ILOGcomplex'
         %complex ibm ilog cplex interface
@@ -408,104 +392,105 @@ switch interface
         solution.nInfeas = [];
         solution.sumInfeas = [];
         solution.origStat = output.cplexstatus;
+    case 'tomlab_cplex'
+        %tomlab cplex interface
+        if ~isempty(csense)
+            %set up constant vectors for CPLEX
+            b_L(csense == 'E',1) = b(csense == 'E');
+            b_U(csense == 'E',1) = b(csense == 'E');
+            b_L(csense == 'G',1) = b(csense == 'G');
+            b_U(csense == 'G',1) = Inf;
+            b_L(csense == 'L',1) = -Inf;
+            b_U(csense == 'L',1) = b(csense == 'L');
+        else
+            b_L = b;
+            b_U = b;
+        end
+        
+        %tomlab cplex interface
+        %   minimize   0.5 * x'*F*x + c'x     subject to:
+        %      x             x_L <=    x   <= x_U
+        %                    b_L <=   Ax   <= b_U
+        [x, slack, v, rc, f_k, ninf, sinf, Inform, basis] = cplex(c, LPProblem.A, x_L, x_U, b_L, b_U, ...
+            cpxControl, callback, printLevel, Prob, IntVars, PI, SC, SI, ...
+            sos1, sos2, F, logfile, savefile, savemode, qc, ...
+            confgrps, conflictFile, saRequest, basis, xIP, logcon);
+        
+        solution.full=x;
+        %this is the dual to the equality constraints but it's not the chemical potential
+        solution.dual=v*osense;%negative sign Jan 25th
+        %this is the dual to the simple ineequality constraints : reduced costs
+        solution.rcost=rc*osense;%negative sign Jan 25th
+        if Inform~=1
+            solution.obj = NaN;
+        else
+            if minNorm==0
+                solution.obj=f_k*osense;
+            else
+                solution.obj=c'*x*osense;
+            end
+            %     solution.obj
+            %     norm(x)
+        end
+        solution.nInfeas = ninf;
+        solution.sumInfeas = sinf;
+        solution.origStat = Inform;
     otherwise
         error([interface ' is not a recognised solveCobraLPCPLEX interface'])
 end
+solution.time=toc;
 Inform = solution.origStat;
 
-case 'tomlab_cplex'
-    %tomlab cplex interface
-    if ~isempty(csense)
-        %set up constant vectors for CPLEX
-        b_L(csense == 'E',1) = b(csense == 'E');
-        b_U(csense == 'E',1) = b(csense == 'E');
-        b_L(csense == 'G',1) = b(csense == 'G');
-        b_U(csense == 'G',1) = Inf;
-        b_L(csense == 'L',1) = -Inf;
-        b_U(csense == 'L',1) = b(csense == 'L');
-    else
-        b_L = b;
-        b_U = b;
-    end
-    
-    %tomlab cplex interface
-    %   minimize   0.5 * x'*F*x + c'x     subject to:
-    %      x             x_L <=    x   <= x_U
-    %                    b_L <=   Ax   <= b_U
-    [x, slack, v, rc, f_k, ninf, sinf, Inform, basis] = cplex(c, LPProblem.A, x_L, x_U, b_L, b_U, ...
-        cpxControl, callback, printLevel, Prob, IntVars, PI, SC, SI, ...
-        sos1, sos2, F, logfile, savefile, savemode, qc, ...
-        confgrps, conflictFile, saRequest, basis, xIP, logcon);
-    
-    solution.full=x;
-    %this is the dual to the equality constraints but it's not the chemical potential
-    solution.dual=v*osense;%negative sign Jan 25th
-    %this is the dual to the simple ineequality constraints : reduced costs
-    solution.rcost=rc*osense;%negative sign Jan 25th
-    if Inform~=1
-        solution.obj = NaN;
-    else
-        if minNorm==0
-            solution.obj=f_k*osense;
-        else
-            solution.obj=c'*x*osense;
-        end
-        %     solution.obj
-        %     norm(x)
-    end
-    solution.nInfeas = ninf;
-    solution.sumInfeas = sinf;
-    solution.origStat = Inform;
-end
-solution.time=toc;
-
-if Inform~=1 && ~isempty(which('cplex'))
-    if conflictResolve ==1
-        if isfield(LPProblem,'mets') && isfield(LPProblem,'rxns')
-            %this code reads the conflict resolution file and replaces the
-            %arbitrary names with the abbreviations of metabolites and reactions
-            [nMet,nRxn]=size(LPProblem.A);
-            totAbbr=nMet+nRxn;
-            conStrFind=cell(nMet+nRxn,1);
-            conStrReplace=cell(nMet+nRxn,1);
-            %only equality constraint rows
-            for m=1:nMet
-                conStrFind{m,1}=['c' int2str(m) ':'];
-                conStrReplace{m,1}=[LPProblem.mets{m} ':  '];
-            end
-            %reactions
-            for n=1:nRxn
-                conStrFind{nMet+n,1}=['x' int2str(n) ' '];
-                conStrReplace{nMet+n,1}=[LPProblem.rxns{n} ' '];
-            end
-            fid1 = fopen(suffix);
-            fid2 = fopen(['COBRA_' suffix], 'w');
-            while ~feof(fid1)
-                tline{1}=fgetl(fid1);
-                %replaces all occurrences of the string str2 within string str1
-                %with the string str3.
-                %str= strrep(str1, str2, str3)
-                for t=1:totAbbr
-                    tline= strrep(tline, conStrFind{t}, conStrReplace{t});
+if Inform~=1 && conflictResolve ==1
+    switch interface
+        case {'ILOGcomplex','ILOGsimple'}
+            if isfield(LPProblem,'mets') && isfield(LPProblem,'rxns')
+                %this code reads the conflict resolution file and replaces the
+                %arbitrary names with the abbreviations of metabolites and reactions
+                [nMet,nRxn]=size(LPProblem.A);
+                totAbbr=nMet+nRxn;
+                conStrFind=cell(nMet+nRxn,1);
+                conStrReplace=cell(nMet+nRxn,1);
+                %only equality constraint rows
+                for m=1:nMet
+                    conStrFind{m,1}=['c' int2str(m) ':'];
+                    conStrReplace{m,1}=[LPProblem.mets{m} ':  '];
                 end
-                fprintf(fid2,'%s\n', tline{1});
+                %reactions
+                for n=1:nRxn
+                    conStrFind{nMet+n,1}=['x' int2str(n) ' '];
+                    conStrReplace{nMet+n,1}=[LPProblem.rxns{n} ' '];
+                end
+                fid1 = fopen(suffix);
+                fid2 = fopen(['COBRA_' suffix], 'w');
+                while ~feof(fid1)
+                    tline{1}=fgetl(fid1);
+                    %replaces all occurrences of the string str2 within string str1
+                    %with the string str3.
+                    %str= strrep(str1, str2, str3)
+                    for t=1:totAbbr
+                        tline= strrep(tline, conStrFind{t}, conStrReplace{t});
+                    end
+                    fprintf(fid2,'%s\n', tline{1});
+                end
+                fclose(fid1);
+                fclose(fid2);
+                %delete other file without replacements
+                %         delete(suffix)
+                fprintf('%s\n',['Conflict resolution file written to: ' prefix '\COBRA_' suffix]);
+                fprintf('%s\n%s\n','The Conflict resolution file gives an irreducible infeasible subset ','of constraints which are making this LP Problem infeasible');
+            else
+                warning('Need reaction and metabolite abbreviations in order to make a readable conflict resolution file');
             end
-            fclose(fid1);
-            fclose(fid2);
-            %delete other file without replacements
-            %         delete(suffix)
-        else
-            warning('Need reaction and metabolite abbreviations in order to make a readable conflict resolution file');
-        end
-        fprintf('%s\n',['Conflict resolution file written to: ' prefix '\COBRA_' suffix]);
-        fprintf('%s\n%s\n','The Conflict resolution file gives an irreducible infeasible subset ','of constraints which are making this LP Problem infeasible');
-    else
-        if printLevel>0
-            fprintf('%s\n','No conflict resolution file. Perhaps set conflictResolve = 1 next time.');
-        end
+        otherwise
+            error([interface ' conflict resolution not yet implemented'])
     end
-    solution.solver = 'cplex_direct';
+else
+    if printLevel>0
+        fprintf('%s\n','No conflict resolution file. Consider to set conflictResolve = 1 next time.');
+    end
 end
+
 
 
 % Try to give back COBRA Standardized solver status:
