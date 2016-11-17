@@ -2,7 +2,7 @@ function [samples,roundedPolytope] = chrrSampler(model,numSkip,numSamples,toRoun
 % CHRRSAMPLER Generate uniform random flux samples with CHRR
 %   Coordinate Hit-and-Run with Rounding
 % 
-% [samples,roundedPolytope] = chrrSampler(model,numSkip,numSamples,toRound,roundedPolytope,minFlux,maxFlux)
+% [samples,roundedPolytope,minFlux,maxFlux] = chrrSampler(model,numSkip,numSamples,toRound,roundedPolytope,minFlux,maxFlux);
 % 
 %   chrrSampler will generate numSamples samples from model, taking
 %   numSkip steps of a random walk between each sample
@@ -73,7 +73,7 @@ if toPreprocess
         [minFlux, maxFlux] = fluxVariability(model);
     end
     
-    eps_cutoff = 1e-8;
+    eps_cutoff = 1e-7;
     
     isEq = (maxFlux - minFlux) < eps_cutoff;
     eq_constraints = sparse(sum(isEq),size(P.A_eq,2));

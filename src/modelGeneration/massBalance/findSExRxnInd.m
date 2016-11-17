@@ -216,15 +216,9 @@ end
     
 %amalagamate all exchanges
 SExRxnBool= SExRxnBoolHeuristic | SExRxnBoolOneCoefficient;
-
-%metabolites exclusively involved in exchange reactions
-SExMetBool = getCorrespondingRows(model.S,true(nMet,1),SExRxnBool,'exclusive');
-
-%heuristically internal reactions and metabolites involved in at least one
-%internal reaction
 model.SIntRxnBool=~SExRxnBool;
-model.SIntMetBool=~SExMetBool;
-
+%rows corresponding to internal reactions
+model.SIntMetBool = sum(model.S(:,model.SIntRxnBool)~=0,2)~=0;
 
 
 

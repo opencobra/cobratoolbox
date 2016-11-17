@@ -41,7 +41,7 @@ function [vSparse,sparseRxnBool,essentialRxnBool]  = sparseFBA(model,osenseStr,c
 %  v                    reaction rate vector
 
 % Hoai Minh Le	23/10/2015
-% Ronan Fleming 12/07/2016 nonzero flux is set according to current COBRA toolbox 
+% Ronan Fleming 12/07/2016 nonzero flux is set according to current 
 %                          feasibility tol. Default is 1e-9.
 
 
@@ -78,9 +78,17 @@ if ~exist('printLevel', 'var')
     printLevel = 1;
 end
 
-%use the COBRA default feasTol and optTol
-COBRAparams.feasTol = getCobraSolverParams('LP', 'feasTol');
-COBRAparams.optTol = getCobraSolverParams('LP', 'optTol');
+%%%%%%%%%
+feasTol = getCobraSolverParams('LP', 'feasTol');
+optTol = getCobraSolverParams('LP', 'optTol');
+
+% tolerance for non-zero flux
+    epsilon = feasTol;
+    %use the default feasTol
+    params.feasTol=feasTol;
+    params.optTol=optTol;
+    %default feasibility and optimality tolerance is 1e-9, which is anyway lower than epislon
+    CobraParams = struct('feasTol',params.feasTol,'optTol',params.optTol);
     
 [m,n] = size(model.S);
 
@@ -92,7 +100,7 @@ if ~isfield(model,'csense')
     end
     csense(1:m,1) = 'E';
 else % if csense is in the model, move it to the lp problem structure
-    if length(model.csense)~=m
+    if length(model.csense)~=m,
         warning('Length of csense is invalid! Defaulting to equality constraints.')
         csense(1:m,1) = 'E';
     else
@@ -114,7 +122,7 @@ if ~isfield(model,'csense')
     fprintf('%s\n','csense is not defined. We assume that all constraints are equalities.')
     csense(1:m,1) = 'E';
 else
-    if length(model.csense)~=m
+    if length(model.csense)~=m,
         warning('Length of csense is invalid! Defaulting to equality constraints.')
         csense(1:m,1) = 'E';
     else
@@ -139,7 +147,7 @@ end
 if nnz(c)~=0
     time=cputime;
     LPproblem = struct('c',c,'osense',osense,'A',S,'csense',csense,'b',b,'lb',lb,'ub',ub);
-    FBAsolution = solveCobraLP(LPproblem,COBRAparams);
+    FBAsolution = solveCobraLP(LPproblem,CobraParams);
     time = cputime-time;
 else
     time=0;
@@ -147,34 +155,29 @@ else
     FBAsolution.full=zeros(size(model.lb));
 end
 
-%       stat                status
-%                           1 =  Solution found
-%                           2 =  Unbounded
-%                           0 =  Infeasible
-%                           -1=  Invalid input
-    
-%dummy output in case problem with FBA    
-vSparse=[];
-sparseRxnBool=[];
-essentialRxnBool=[];
-    
+    %       stat                status
+    %                           1 =  Solution found
+    %                           2 =  Unbounded
+    %                           0 =  Infeasible
+    %                           -1=  Invalid input
 switch FBAsolution.stat
     case 2
-        warning('%s\n','FBA problem error: Unbounded !!!!')
-        return
+        v = [];
+        fprintf('%s\n','FBA problem error: Unbounded !!!!')
     case 0
-        warning('FBA problem error: Infeasible !!!!')
-        return
+        v = [];
+        fprintf('%s\n','FBA problem error: Infeasible !!!!')
     case -1
-        error('%s\n','FBA problem error: Invalid input !!!!')
+        v = [];
+        warning('%s\n','FBA problem error: Invalid input !!!!')
     case 1
         vFBA = FBAsolution.full(1:n);
         objFBA = c'*vFBA;
         
-        if nnz(c)~=0 && printLevel >= 0
+        if nnz(c)~=0 & printLevel >= 0
             display('---FBA')
             display(strcat('Obj = ',num2str(objFBA)));
-            display(strcat('|vFBA|_0 = ',num2str(nnz(abs(vFBA)>=COBRAparams.feasTol))));
+            display(strcat('|vFBA|_0 = ',num2str(nnz(abs(vFBA)>=epsilon))));
             display(strcat('Comp. time = ',num2str(time)));
         end
         
@@ -195,11 +198,11 @@ switch FBAsolution.stat
         
         %% Minimise l_0 norm
         time = cputime;
-        COBRAparams.epsilon=COBRAparams.feasTol;
-        solutionL0 = sparseLP(zeroNormApprox,constraint,COBRAparams);
+        params.epsilon=epsilon;
+        solutionL0 = sparseLP(zeroNormApprox,constraint,params);
         
         if printLevel>2
-            fprintf('%10g%s%g%s\n',norm(constraint.A*solutionL0.x-constraint.b),' ||S*v-b||_0, should be less than tolerance (',COBRAparams.feasTol,').')
+            fprintf('%10g%s%g%s\n',norm(constraint.A*solutionL0.x-constraint.b),' ||S*v-b||_0, should be less than tolerance (',epsilon,').')
             fprintf('%10g%s\n',min(constraint.ub-solutionL0.x),'  min(ub-v), should be non-negative.')
             fprintf('%10g%s\n',min(solutionL0.x-constraint.lb),'  min(v-lb), should be non-negative.')
         end
@@ -208,25 +211,25 @@ switch FBAsolution.stat
         %save the solution
         vApprox=solutionL0.x;
         %identify active reactions
-        activeRxnBool = abs(vApprox)>=COBRAparams.feasTol;
+        activeRxnBool = abs(vApprox)>=epsilon;
        
         %Check if one can still achieve the same objective only with predicted active reactions
         %remove all predicted non-active reactions
         tightLPproblem = struct('c',c(activeRxnBool),'osense',osense,'A',S(:,activeRxnBool),'csense',csense,'b',b,'lb',model.lb(activeRxnBool),'ub',model.ub(activeRxnBool));
         
         %solve the tighter problem
-        tightSolution = solveCobraLP(tightLPproblem,COBRAparams);
+        tightSolution = solveCobraLP(tightLPproblem,CobraParams);
         
-        if tightSolution.stat == 1 && abs(tightSolution.obj - objFBA)<COBRAparams.feasTol
+        if tightSolution.stat == 1 && abs(tightSolution.obj - objFBA)<epsilon
             %it could be that this solution is more sparse
-            if nnz(activeRxnBool)> nnz(abs(tightSolution.full)>=COBRAparams.feasTol)
+            if nnz(activeRxnBool)> nnz(abs(tightSolution.full)>=epsilon)
                 if 1       
                     %identify active reactions
                     activeRxnBoolOld=activeRxnBool;
                     %update sparse solution and active reactions
                     vApprox=sparse(n,1);
                     vApprox(activeRxnBool)=tightSolution.full;
-                    activeRxnBool = abs(vApprox)>=COBRAparams.feasTol;
+                    activeRxnBool = abs(vApprox)>=epsilon;
                 end
             end
             if printLevel>1
@@ -238,7 +241,7 @@ switch FBAsolution.stat
         end
 end
 %identify active reactions
-activeRxnBool = abs(vApprox)>=COBRAparams.feasTol;
+activeRxnBool = abs(vApprox)>=epsilon;
 
 %number of reactions in sparse solution
 nSparse=nnz(activeRxnBool);
@@ -261,8 +264,8 @@ if checkEssentialSet == true
         essentialTightRxnsBoolTemp(i)=0;
         tighterLPproblem = struct('c',tightLPproblem.c(essentialTightRxnsBoolTemp),'osense',osense,'A',tightLPproblem.A(:,essentialTightRxnsBoolTemp),'csense',csense,'b',b,'lb',tightLPproblem.lb(essentialTightRxnsBoolTemp),'ub',tightLPproblem.ub(essentialTightRxnsBoolTemp));        
         %see if a solution exists
-        LPsolution = solveCobraLP(tighterLPproblem,COBRAparams);
-        if LPsolution.stat == 1 && abs(LPsolution.obj - objFBA)< optTol %&& any(abs(LPsolution.full)>=COBRAparams.feasTol)
+        LPsolution = solveCobraLP(tighterLPproblem,CobraParams);
+        if LPsolution.stat == 1 && abs(LPsolution.obj - objFBA)< optTol %&& any(abs(LPsolution.full)>=epsilon)
             essentialTightRxnsBool(i) = false;
         end
     end
@@ -294,8 +297,8 @@ if checkMinimalSet == true
             tighterRxnsBool(i)=0;
             tighterLPproblem = struct('c',tightLPproblem.c(tighterRxnsBool),'osense',osense,'A',tightLPproblem.A(:,tighterRxnsBool),'csense',csense,'b',b,'lb',tightLPproblem.lb(tighterRxnsBool),'ub',tightLPproblem.ub(tighterRxnsBool));
             %see if a solution exists
-            LPsolution = solveCobraLP(tighterLPproblem,COBRAparams);
-            if LPsolution.stat == 1 && abs(LPsolution.obj - objFBA)< optTol %&& any(abs(LPsolution.full)>=COBRAparams.feasTol)
+            LPsolution = solveCobraLP(tighterLPproblem,CobraParams);
+            if LPsolution.stat == 1 && abs(LPsolution.obj - objFBA)< optTol %&& any(abs(LPsolution.full)>=epsilon)
                 minimalTightRxnBool(i) = false;
                 tmp = zeros(size(tighterRxnsBool)); % not sparse
                 tmp(tighterRxnsBool) = LPsolution.full;
@@ -315,7 +318,7 @@ if checkMinimalSet == true
 else
     vSparse=vApprox;
 end
-sparseRxnBool=abs(vSparse)>=COBRAparams.feasTol;
+sparseRxnBool=abs(vSparse)>=epsilon;
 
 
 %% Display result
