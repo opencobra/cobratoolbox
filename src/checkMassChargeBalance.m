@@ -15,7 +15,7 @@ function [massImbalance,imBalancedMass,imBalancedCharge,imBalancedRxnBool,Elemen
 %                0 = silent
 %                1 = print elements as they are checked (display progress)
 %                2 = also print out diagnostics on problem reactions to screen
-% SIntRxnBool    Boolean of reactions heuristically though to be mass balanced.
+% model.SIntRxnBool    Boolean of reactions heuristically though to be mass balanced.
 %
 %OUTPUTS
 % massImbalance                 nRxn x nElement matrix with mass imblance

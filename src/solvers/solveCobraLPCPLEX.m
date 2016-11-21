@@ -84,12 +84,16 @@ function [solution,LPProblem]=solveCobraLPCPLEX(LPProblem,printLevel,basisReuse,
 % automatically chosen for you
 %
 
+<<<<<<< HEAD
 % Ronan Fleming 10 June 08
 %               20 Mar  09  min norm can be specific to each variable
 %               12 Jul  09  more description of basis reuse
 %               23 Oct  09  ILOG-CPLEX matlab simple interface by default
 %                           See solveCobraCPLEX for full control of CPLEX
 %                           12.1 via API
+=======
+% Ronan Fleming
+>>>>>>> 394d240372260c2130fde598cfba2e430692bd43
 
 if ~exist('printLevel','var')
     printLevel=0;
@@ -243,13 +247,17 @@ xIP=[];
 %Logical constraints, i.e. an additional set of single-sided linear constraints that are controlled
 %by a binary variable (switch) in the problem
 logcon=[];
+<<<<<<< HEAD
    
+=======
+
 %Report of incompatibility R2016b - ILOGcomplex interface
 verMATLAB = version('-release');
 if str2num(verMATLAB(1:end-1)) >= 2016 && strcmp(interface, 'ILOGcomplex')
     error(['MATLAB ',verMATLAB, ' and the ILOGcomplex interface are not compatible. Select ILOGsimple or tomlab_cplex as a CPLEX interface.'])
 end
 
+>>>>>>> 394d240372260c2130fde598cfba2e430692bd43
 %call cplex
 tic;
 %by default use the complex ILOG-CPLEX interface as it seems to be faster
@@ -274,6 +282,10 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
             b_U = b;
         end
 
+<<<<<<< HEAD
+        
+=======
+>>>>>>> 394d240372260c2130fde598cfba2e430692bd43
         % Initialize the CPLEX object
         try
             ILOGcplex = Cplex('fba');
@@ -356,7 +368,11 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
             case 1
                 options = cplexoptimset(options,'Display','off');
         end
+<<<<<<< HEAD
+                
+=======
 
+>>>>>>> 394d240372260c2130fde598cfba2e430692bd43
         if ~isempty(csense)
             if sum(minNorm)~=0
                 Aineq = [LPProblem.A(csense == 'L',:); - LPProblem.A(csense == 'G',:)];
@@ -402,6 +418,7 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
         solution.nInfeas = [];
         solution.sumInfeas = [];
         solution.origStat = output.cplexstatus;
+<<<<<<< HEAD
     end
     %1 = (Simplex or Barrier) Optimal solution is available.
     Inform = solution.origStat;
@@ -440,6 +457,39 @@ else
     else
         if minNorm==0
             solution.obj=f_k*osense;
+=======
+    case 'tomlab_cplex'
+        %tomlab cplex interface
+        if ~isempty(csense)
+            %set up constant vectors for CPLEX
+            b_L(csense == 'E',1) = b(csense == 'E');
+            b_U(csense == 'E',1) = b(csense == 'E');
+            b_L(csense == 'G',1) = b(csense == 'G');
+            b_U(csense == 'G',1) = Inf;
+            b_L(csense == 'L',1) = -Inf;
+            b_U(csense == 'L',1) = b(csense == 'L');
+        else
+            b_L = b;
+            b_U = b;
+        end
+
+        %tomlab cplex interface
+        %   minimize   0.5 * x'*F*x + c'x     subject to:
+        %      x             x_L <=    x   <= x_U
+        %                    b_L <=   Ax   <= b_U
+        [x, slack, v, rc, f_k, ninf, sinf, Inform, basis] = cplex(c, LPProblem.A, x_L, x_U, b_L, b_U, ...
+            cpxControl, callback, printLevel, Prob, IntVars, PI, SC, SI, ...
+            sos1, sos2, F, logfile, savefile, savemode, qc, ...
+            confgrps, conflictFile, saRequest, basis, xIP, logcon);
+
+        solution.full=x;
+        %this is the dual to the equality constraints but it's not the chemical potential
+        solution.dual=v*osense;%negative sign Jan 25th
+        %this is the dual to the simple ineequality constraints : reduced costs
+        solution.rcost=rc*osense;%negative sign Jan 25th
+        if Inform~=1
+            solution.obj = NaN;
+>>>>>>> 394d240372260c2130fde598cfba2e430692bd43
         else
             solution.obj=c'*x*osense;
         end

@@ -56,6 +56,8 @@ if (nargin < 8)
     gprFlag = false;
 end
 
+formulas={};
+
 if (~iscell(rxnAbbrList))
     if (strcmp(rxnAbbrList,'all'))
         rxnAbbrList = model.rxns;
@@ -118,7 +120,7 @@ for i = 1:length(rxnAbbrList);
             end
             if (abs(Sreact(j)) ~= 1)
                 if (printFlag)
-                    fprintf(fid,'%f %s ',abs(Sreact(j)),reactMets{j});
+                    fprintf(fid,'%g %s ',abs(Sreact(j)),reactMets{j});
                 end
                 formulaStr = [formulaStr num2str(abs(Sreact(j))) ' ' reactMets{j} ' '];
             else
@@ -159,7 +161,7 @@ for i = 1:length(rxnAbbrList);
             end
             if (Sprod(j) ~= 1)
                 if (printFlag)
-                    fprintf(fid,'%f %s ',Sprod(j),prodMets{j});
+                    fprintf(fid,'%g %s ',Sprod(j),prodMets{j});
                 end
                 formulaStr = [formulaStr num2str(Sprod(j)) ' ' prodMets{j} ' '];
             else
