@@ -109,6 +109,10 @@ else
     model.balancedRxnBool=model.SIntRxnBool;
 end
 
+%add dummy entries for mass balanced
+%model.balancedMetBool=model.SIntMetBool;
+%model.balancedRxnBool=model.SIntRxnBool;
+
 %assumes that all mass imbalanced reactions are exchange reactions
 model.SIntMetBool = model.SIntMetBool & model.balancedMetBool;
 model.SIntRxnBool = model.SIntRxnBool & model.balancedRxnBool;
@@ -174,6 +178,8 @@ leakParams.eta=feasTol*100;
 leakParams.theta = 0.5;
 
 %start the iterative loop
+lastUnkownConsistencyMetBool=inf;
+lastUnkownConsistencyRxnBool=inf;
 iterateCardinalityOpt=1;
 while iterateCardinalityOpt>0   
     if printLevel>0
@@ -216,7 +222,11 @@ while iterateCardinalityOpt>0
         
       
         %corresponding rows matching non-relaxed reactions
-        minConservationNonRelaxMetBool = getCorrespondingRows(model.S,boolMet,minConservationNonRelaxRxnBool,'inclusive');
+        if 1
+            minConservationNonRelaxMetBool = getCorrespondingRows(model.S,boolMet,minConservationNonRelaxRxnBool,'inclusive');
+        else
+            minConservationNonRelaxMetBool = getCorrespondingRows(model.S,boolMet,minConservationNonRelaxRxnBool,'exclusive');
+        end
         %reactions matching consistent metabolites
         %minConservationNonRelaxRxnBool = getCorrespondingCols(model.S,minConservationNonRelaxMetBool,minConservationNonRelaxRxnBool,'inclusive');
         if printLevel>2 | 0
@@ -258,10 +268,17 @@ while iterateCardinalityOpt>0
         fprintf('%6u\t%6u\t%s\n',nnz(minConservationNonRelaxMetBool),nnz(minConservationNonRelaxRxnBool),' confirmed stoichiometrically consistent by min cardinality of stoich consistency relaxation (after leak testing).')
     end
     
-    if iterateCardinalityOpt==13
-        pause(eps)
+    if 0
+        solutionRelax.x(~boolRxn)=0;
+        hist(log10(abs(solutionRelax.x)),200)
+        log10absSolutionRelax=log10(abs(solutionRelax.x));
+        [~,sortedlog10absSolutionRelaxInd]=sort(log10absSolutionRelax,'descend');
+        sortedlog10absSolutionRelaxAbbr=model.rxns(sortedlog10absSolutionRelaxInd);
+        for k=1:10
+            formulas = printRxnFormula(model,model.rxns(sortedlog10absSolutionRelaxInd(k)));
+            fprintf('%s\n',imBalancedMass{sortedlog10absSolutionRelaxInd(k)});
+        end
     end
-    
     %update consistent part
     model.SConsistentMetBool=minConservationNonRelaxMetBool;
     model.SConsistentRxnBool=minConservationNonRelaxRxnBool;
@@ -273,17 +290,19 @@ while iterateCardinalityOpt>0
     %reduce unknown part
     model.unknownSConsistencyMetBool=~model.SConsistentMetBool & ~model.SInConsistentMetBool;
     model.unknownSConsistencyRxnBool=~model.SConsistentRxnBool & ~model.SInConsistentRxnBool;
-    
+    %model.unknownSConsistencyMetBool2=~model.SConsistentMetBool | ~model.SInConsistentMetBool;
+    %model.unknownSConsistencyRxnBool2=~model.SConsistentRxnBool | ~model.SInConsistentRxnBool;
     if printLevel>0
         fprintf('%6u\t%6u\t%s\n',nnz(model.SConsistentMetBool),nnz(model.SConsistentRxnBool),' total stoichiometrically consistent thus far.')
-        
+        fprintf('%6u\t%6u\t%s\n',nnz(model.unknownSConsistencyMetBool),nnz(model.unknownSConsistencyRxnBool),' unknown consistency.')
+        %fprintf('%6u\t%6u\t%s\n',nnz(model.unknownSConsistencyMetBool2),nnz(model.unknownSConsistencyRxnBool2),' unknown consistency |.')
     end
     
     if nnz(model.unknownSConsistencyMetBool)==0 && nnz(model.unknownSConsistencyRxnBool)==0
         break
     else
         %stop the loop when the number is too high
-        if iterateCardinalityOpt==1000
+        if iterateCardinalityOpt==100
             break;
         end
      end
@@ -292,45 +311,55 @@ while iterateCardinalityOpt>0
         pause(eps)
     end
     
-    if 1
-        %remove reactions with unknown consistency of maximal cardinality
+    metRemoveBool=0;
+    rxnRemoveBool=0;
+    if 0
+        %%remove reactions with unknown consistency of maximal cardinality
         if any(model.unknownSConsistencyMetBool) || any(model.unknownSConsistencyRxnBool)
-            fprintf('%6u\t%6u\t%s\n',nnz(model.unknownSConsistencyMetBool),nnz(model.unknownSConsistencyRxnBool),' unknown consistency.')
             nMetsPerRxnTmp=nMetsPerRxn;
             %reactions with known consistency set to zero
             nMetsPerRxnTmp(~model.unknownSConsistencyRxnBool)=0;
             %find the reaction(s) with unknown consistency involving maximum
             %number of metabolites
             maxMetsPerRxn=full(max(nMetsPerRxnTmp(model.unknownSConsistencyRxnBool)));
-            %check in case any(model.unknownSConsistencyRxnBool)==0
-            if isempty(maxMetsPerRxn)
-                maxMetsPerRxn=0;
-            end
-            %boolean reactions to be consisdered inconsistent and removed
-            rxnRemoveBool=nMetsPerRxnTmp==maxMetsPerRxn;
             
-            %extend inconsistent reaction boolean vector
-            model.SInConsistentRxnBool = model.SInConsistentRxnBool | rxnRemoveBool;
-            
-            %metabolites exclusively involved in inconsistent reactions are
-            %deemed inconsistent also
-            metRemoveBool = getCorrespondingRows(model.S,true(nMet,1),model.SInConsistentRxnBool,'exclusive');
-            model.SInConsistentMetBool = model.SInConsistentMetBool | metRemoveBool;
-            %[rxnList, rxnFormulaList] = findRxnsFromMets(model, model.mets(model.unknownSConsistencyMetBool))
-            
-            %reduce unknown part
-            model.unknownSConsistencyMetBool=~model.SConsistentMetBool & ~model.SInConsistentMetBool;
-            model.unknownSConsistencyRxnBool=~model.SConsistentRxnBool & ~model.SInConsistentRxnBool;
-            if printLevel>0
-                fprintf('%6u\t%6u\t%s%u%s\n',nnz(metRemoveBool), nnz(rxnRemoveBool), ' removed inconsistent heuristically non-exchange reactions, each involving ',maxMetsPerRxn, ' metabolites.')
+            if maxMetsPerRxn>=8
+                %check in case any(model.unknownSConsistencyRxnBool)==0
+                if isempty(maxMetsPerRxn)
+                    maxMetsPerRxn=0;
+                end
+                %boolean reactions to be consisdered inconsistent and removed
+                rxnRemoveBool=nMetsPerRxnTmp==maxMetsPerRxn;
+                
+                %metabolites exclusively involved in inconsistent reactions are
+                %deemed inconsistent also
+                metRemoveBool = getCorrespondingRows(model.S,true(nMet,1),rxnRemoveBool,'exclusive');
+                
+                %extend inconsistent reaction boolean vector
+                model.SInConsistentRxnBool = model.SInConsistentRxnBool | rxnRemoveBool;
+                model.SInConsistentMetBool = model.SInConsistentMetBool | metRemoveBool;
+                
+                %reduce unknown part
+                model.unknownSConsistencyMetBool=~model.SConsistentMetBool & ~model.SInConsistentMetBool;
+                model.unknownSConsistencyRxnBool=~model.SConsistentRxnBool & ~model.SInConsistentRxnBool;
+                if printLevel>0
+                    fprintf('%6u\t%6u\t%s%u%s\n',nnz(metRemoveBool), nnz(rxnRemoveBool), ' removed heuristically non-exchange reactions, each involving ',maxMetsPerRxn, ' metabolites.')
+                end
+           else
+                %stop the loop when the number of metabolites in exchange
+                %reactions is too small
+                break
             end
         end
-        
     else
-        %decide subset to be tested during this iteration
-        boolMet=model.unknownSConsistencyMetBool;
+        %%decide subset to be tested during this iteration
         boolRxn=model.unknownSConsistencyRxnBool;
+        boolMet = getCorrespondingRows(model.S,true(nMet,1),boolRxn,'inclusive');
         
+        if printLevel>0
+            fprintf('%s\n','------')
+            fprintf('%6u\t%6u\t%s\n',nnz(boolMet),nnz(boolRxn),' subset of unknown consistency being tested in isolation.')
+        end
         %% minimum cardinality of conservation relaxation vector
         solutionRelax = minCardinalityConservationRelaxationVector(model.S(boolMet,boolRxn),epsilon);
         
@@ -356,10 +385,57 @@ while iterateCardinalityOpt>0
             disp(solutionRelax)
             error('solve for maximal conservation vector failed')
         end
+        minConservationNonRelaxMetBool = getCorrespondingRows(model.S,boolMet,minConservationNonRelaxRxnBool,'inclusive');
         
         if printLevel>0
-            fprintf('%6u\t%6u\t%s\n',nnz(minConservationNonRelaxMetBool),nnz(minConservationNonRelaxRxnBool),' confirmed stoichiometrically consistent by min cardinality of stoich consistency relaxation (after leak testing).')
+            fprintf('%6u\t%6u\t%s\n',nnz(minConservationNonRelaxMetBool),nnz(minConservationNonRelaxRxnBool),' subset confirmed stoichiometrically consistent by min cardinality of stoich consistency relaxation (after leak testing).')
+            pause(eps)
         end
+        rxnRemoveBool=model.unknownSConsistencyRxnBool & ~minConservationNonRelaxRxnBool;
+        
+        %metabolites exclusively involved in inconsistent reactions are
+        %deemed inconsistent also
+        metRemoveBool = getCorrespondingRows(model.S,true(nMet,1),rxnRemoveBool,'exclusive');
+        
+        %extend inconsistent reaction boolean vector
+        model.SInConsistentRxnBool = model.SInConsistentRxnBool | rxnRemoveBool;
+        model.SInConsistentMetBool = model.SInConsistentMetBool | metRemoveBool;
+        
+        %reduce unknown part
+        model.unknownSConsistencyMetBool=~model.SConsistentMetBool & ~model.SInConsistentMetBool;
+        model.unknownSConsistencyRxnBool=~model.SConsistentRxnBool & ~model.SInConsistentRxnBool;
+    end
+    
+    if any(metRemoveBool) | any(rxnRemoveBool)
+        %print out reactions and metabolites being removed
+        if printLevel>0
+            if printLevel>1 | 1
+                if any(rxnRemoveBool)
+                    fprintf('%s\n','Removed reactions:')
+                    for j=1:length(rxnRemoveBool)
+                        if rxnRemoveBool(j)==1
+                            fprintf('%s\t%s\n',model.rxns{j},model.rxnNames{j})
+                        end
+                    end
+                end
+                if any(metRemoveBool)
+                    fprintf('%s\n','Removed metabolites:')
+                    for j=1:length(metRemoveBool)
+                        if metRemoveBool(j)==1
+                            fprintf('%s\t%s\n',model.mets{j},model.metNames{j})
+                        end
+                    end
+                end
+            end
+        end
+    end
+    
+    %check if there has been any progress
+    if lastUnkownConsistencyMetBool==nnz(model.unknownSConsistencyMetBool) && lastUnkownConsistencyRxnBool==nnz(model.unknownSConsistencyRxnBool)
+        break
+    else
+        lastUnkownConsistencyMetBool=nnz(model.unknownSConsistencyMetBool);
+        lastUnkownConsistencyRxnBool=nnz(model.unknownSConsistencyRxnBool);
     end
     
     iterateCardinalityOpt=iterateCardinalityOpt+1;
@@ -418,7 +494,7 @@ end
 
 
 if exist('fileName','var') && ~isempty(fileName)
-    fid=fopen([fileName '_InconsistentNonHeuristicallyExchangeRxns_' datestr(now,30) '.tab'],'w');
+    fid=fopen([fileName '_Inconsistent_Heuristically_NonExchange_Rxns_' datestr(now,30) '.tab'],'w');
     
     for m=1:nMet
         if model.unknownSConsistencyMetBool(m)
@@ -426,24 +502,25 @@ if exist('fileName','var') && ~isempty(fileName)
         end
     end
     
-    rxnAbbrList=model.rxns(model.SInConsistentRxnBool);
-    printFlag=1;
-    lineChangeFlag=1;
-    metNameFlag=0;
-    directionFlag=0;
-    gprFlag=0;
     % rxnAbbrList       Abbrs of reactions whose formulas are to be printed
+    rxnAbbrList=model.rxns(model.SInConsistentRxnBool & model.SIntRxnBool);
     % printFlag         Print formulas or just return them (Default = true)
+    printFlag=1;
     % lineChangeFlag    Append a line change at the end of each line
-    %                   (Default = true)
+    lineChangeFlag=1;
     % metNameFlag       print full met names instead of abbreviations
-    %                   (Default = false)
+    metNameFlag=0;
     % fid               Optional file identifier for printing in files
     % directionFlag     Checks directionality of reaction. See Note.
-    %                   (Default = false)
+    directionFlag=0;
     % gprFlag           print gene protein reaction association
-    %                   (Default = false)
+    gprFlag=0;
     formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag,gprFlag);
+    
+    fid=fopen([fileName '_UnknownConsistency_Rxns_' datestr(now,30) '.tab'],'w');
+    rxnAbbrList=model.rxns(model.unknownSConsistencyRxnBool);
+    formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag,gprFlag);
+    
 end
 
 %deal variables out for result
