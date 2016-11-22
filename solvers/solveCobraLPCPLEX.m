@@ -343,15 +343,10 @@ switch interface
         end
         %simple ibm ilog cplex interface
         options = cplexoptimset;
-        switch printLevel
-            case 0
-                options = cplexoptimset(options,'Display','off');
-            case 1
-                options = cplexoptimset(options,'Display','off');
-            case 1
-                options = cplexoptimset(options,'Display','off');
-            case 1
-                options = cplexoptimset(options,'Display','off');
+        if printLevel == 0
+            options = cplexoptimset(options,'Display','off');
+        else
+            options = cplexoptimset(options,'Display','on');
         end
 
         if ~isempty(csense)
