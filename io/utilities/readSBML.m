@@ -628,7 +628,8 @@ else    % in the case of fbc file
     if noObjective==0; % when there is an objective function
         indexObj=findRxnIDs(model,fbc_obj);
         % indexObj=find(strcmp(fbc_obj,model.rxns))
-        model.c(indexObj)=fbc_obj_value;
+        model.c(indexObj)=1;
+        model.osense=fbc_obj_value;
     end
     
     if all(cellfun('isempty',fbcMet.fbc_chemicalFormula))~=1  % if all formulas are empty
