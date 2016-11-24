@@ -2,11 +2,11 @@
 	path = external/lusol
 	url = https://github.com/nwh/lusol.git
 [submodule "external/pdco"]
-	path = external/pdco
+	path = src/external/pdco
 	url = https://github.com/mxsaunders/pdco.git
 [submodule "external/Smith-Decomposition"]
-	path = external/Smith-Decomposition
+	path = src/external/Smith-Decomposition
 	url = https://github.com/nbfigueroa/Smith-Decomposition.git
 [submodule "external/SBMLToolbox"]
-	path = external/SBMLToolbox
+	path = src/external/SBMLToolbox
 	url = https://github.com/sbmlteam/SBMLToolbox.git
