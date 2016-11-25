@@ -1,14 +1,27 @@
+# Windows default autosave extension
+*.asv
+
+# OSX / *nix default autosave extension
+*.m~
+
+# Compiled MEX binaries (all platforms)
+*.mex*
+
+# Simulink Code Generation
+slprj/
+
+# Session info
+octave-workspace
+
 Thumbs.db
 *.pyc
 gurobi.log
-*~
 fluxomics/c13solver/IsotopomerModel.txt
 fluxomics/c13solver/convertCarbonInput.m
 fluxomics/c13solver/slvrCumomer.m
 fluxomics/c13solver/slvrCumomer_fast.m
 fluxomics/c13solver/slvrEMU.m
 fluxomics/c13solver/slvrEMU_fast.m
-gurobi.log
 testing/testBuildMPS/testMPSLP.mps
 testing/testBuildMPS/testMPSMILP.mps
 testing/testGrowthExpMatch/GEMLog.txt
