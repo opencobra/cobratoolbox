@@ -93,13 +93,14 @@ else
     %% check here if the vector of rxns is sorted or not
     % this needs to be fixed to sort the flux vectors accordingly
     % as the find() function sorts the reactions automatically
+    % ->> this is currently an issue on git
     [~,indexRxns]=ismember(model.rxns, rxnsList) ;
     nonZeroIndices = [];
     for i=1:length(indexRxns)
-      if(indexRxns(i) ~= 0) nonZeroIndices = [nonZeroIndices, indexRxns(i)]; end
+        if(indexRxns(i) ~= 0) nonZeroIndices = [nonZeroIndices, indexRxns(i)]; end
     end
     if issorted(nonZeroIndices) == 0
-      fprintf('\n-- Warning:: Your input reaction vector is not sorted. Please sort your vector first.\n\n')
+        error('\n-- ERROR:: Your input reaction vector is not sorted. Please sort your reaction vector first.\n\n')
     end
 
     rxns = find(ismember(model.rxns, rxnsList))';%transpose rxns
@@ -108,9 +109,9 @@ end
 if (nargin<4 || isempty(solver)), solver         = 'cplex';     end
 if (nargin<3 || isempty(objective)), objective      = 'max';      end
 if (nargin<2 || isempty(optPercentage)), optPercentage  = 100;        end
-if (nargin<9 || isempty(rxnsOptMode))
-    rxnsOptMode = 2*ones(length(rxns),1)'; %status = 2 (min & max) for all reactions
-end
+if (nargin<10 || isempty(rxnsOptMode))
+      rxnsOptMode = 2*ones(length(rxns),1)'; %status = 2 (min & max) for all reactions
+  end
 
 % Define extra outputs if required
 if nargout>4 && nargout <= 7
@@ -194,7 +195,7 @@ if nR ~= n
   fprintf(' >> Only %d reactions of %d are solved (~ %1.2f%%).\n', nR, n, nR*100/n);
   n = nR;
 else
-  fprintf(' >> All the %d reactions are solved.\n', n);
+  fprintf(' >> All reactions are solved (%d reactions - 100%%).\n', n);
 end
 
 % output how many reactions are min, max, or both
