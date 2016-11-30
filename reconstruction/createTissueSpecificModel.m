@@ -59,6 +59,9 @@ function [tissueModel,Rxns] = createTissueSpecificModel(model, ...
 % Adjusted manual input for alt. splice form, IT 05/27/10
 % Final Corba 2.0 Version, AB 08/05/10
 
+% extractGPRs subfunction was replaced with a much more sufficient script
+% Oveis Jamialahmadi, 11/30/2016
+
 % Define defaults
 % Deal with hardcoded belief that all the genes will have human entrez
 % ids and the user wants to collapse alternative constructs
