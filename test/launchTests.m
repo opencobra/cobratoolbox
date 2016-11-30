@@ -1,6 +1,3 @@
-% add the paths
-pwd
-
 % do not change the paths below
 addpath(genpath('/var/lib/jenkins/MOcov'))
 addpath(genpath('/var/lib/jenkins/jsonlab'))
