@@ -10,10 +10,8 @@ before_install:
     - git submodule update --force --init --recursive
 
 script:
-    - pwd
-    - cd ~/COBRAmodels
-    - git pull
-    - cd -
+    - CURRENT_DIR=`pwd`
+    - if [ "$MATLAB_VER" == "R2016b" ]; then cd ~/COBRAmodels; git pull; cd $CURRENT_DIR; fi
     - sh ./runtests.sh
 
 #deploy:
