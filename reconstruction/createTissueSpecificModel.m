@@ -484,9 +484,6 @@ for i = 1:numel(AllRules)
         continue
     end
     EachRule = AllRules{i};
-    EachRule = strrep(EachRule,'(','');
-    EachRule = strrep(EachRule,')','');
-
     orFind = textscan(EachRule,'%s','delimiter','or'); orFind = orFind{1};
     orFind(cellfun('isempty',orFind)) = [];
 
@@ -496,10 +493,10 @@ for i = 1:numel(AllRules)
 end
 
 maxSize = max(cellfun(@numel,AllGPR));  
-FillerFunc = @(x) [x repmat({'0'},1,maxSize-numel(x))]; 
+FillerFunc = @(x) [x repmat({'Del'},1,maxSize-numel(x))]; 
 ParsedGPR = cellfun(FillerFunc,AllGPR,'UniformOutput',false); 
 ParsedGPR = vertcat(ParsedGPR{:});
-ParsedGPR = strrep(ParsedGPR,'0','');
+ParsedGPR = strrep(ParsedGPR,'Del','');
 
 function [Results,Transcripts] = charExpData(ExpressionData)
 
