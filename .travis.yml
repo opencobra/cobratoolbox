@@ -2,11 +2,11 @@ language: bash
 
 before_install:
     - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-    - git rm --cached binary
-    - git rm --cached external/SBMLToolbox
-    - git rm --cached external/lusol
-    - git rm --cached external/pdco
-    - git rm --cached external/Smith-Decomposition
+#    - git rm --cached binary
+#    - git rm --cached external/SBMLToolbox
+#    - git rm --cached external/lusol
+#    - git rm --cached external/pdco
+#    - git rm --cached external/Smith-Decomposition
     - git submodule update --force --init --recursive
 
 script:
