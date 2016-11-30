@@ -6,8 +6,6 @@ addpath(genpath('/var/lib/jenkins/MOcov'))
 addpath(genpath('/var/lib/jenkins/jsonlab'))
 addpath(genpath('.')) % include the root folder and all subfolders
 
-which testRightTri.m
-
 % add GUROBI
 addpath(genpath('/opt/gurobi650'))
 
