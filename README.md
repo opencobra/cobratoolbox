@@ -1,6 +1,13 @@
 The COBRAToolbox - COnstraint-Based Reconstruction and Analysis Toolbox
 =======================================================================
 
+<!-- [![codecov](https://codecov.io/gh/opencobra/cobratoolbox/branch/CI/graph/badge.svg)](https://codecov.io/gh/cobrabot/trial_wo_errors) -->
+
+
+|  MATLAB R2016b | MATLAB R2015b | MATLAB R2014b |
+|--------|--------|--------|
+| [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox/MATLAB_VER=R2016b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox/MATLAB_VER=R2016b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox/MATLAB_VER=R2016b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox/MATLAB_VER=R2016b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox/MATLAB_VER=R2016b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox/MATLAB_VER=R2016b/) |
+
 For convenience, we provide the [`SBMLToolbox 4.1.0`](http://sbml.org/Software/SBMLToolbox), and [`glpk_mex`](https://github.com/blegat/glpkmex) in `external/toolboxes`, [`libSBML-5.13.0-matlab`](http://sbml.org/Software/libSBML) in `io/utilities`.
 Binaries for these librairies are provided in a [submodule](https://github.com/opencobra/COBRA.binary) for Mac OS X 10.6 or later (64-bit), GNU/Linux Ubuntu 10.0 (64-bit), and Microsoft Windows 7 (64-bit).
 For unsupported OS, please refer to their respective building instructions ([`glpk_mex`](https://github.com/blegat/glpkmex#instructions-for-compiling-from-source), [`libSBML`](http://sbml.org/Software/libSBML/5.13.0/docs//cpp-api/libsbml-installation.html)).
@@ -52,7 +59,7 @@ When citing The `COBRA Toolbox`, it is important to cite the original paper wher
 SBML-FBCv2 update note
 ----------------------
 
-`The COBRA toolbox` supports reading SBML with FBC-v2 files and writing COBRA-Matlab structures to SBML-FBCv2 files. Two COBRA functions, `io/readCbModel.m` and `io/writeCbModel.m`, were updated in 04/2016 to support the input and output of COBRA models in the SBML-FBCv2 files. 
+`The COBRA toolbox` supports reading SBML with FBC-v2 files and writing COBRA-Matlab structures to SBML-FBCv2 files. Two COBRA functions, `io/readCbModel.m` and `io/writeCbModel.m`, were updated in 04/2016 to support the input and output of COBRA models in the SBML-FBCv2 files.
 
 The `io/readCbModel.m` function is dependent on another function `io/utilities/readSBML.m` to use [`libSBML` library](http://sbml.org/Software/libSBML), to parse a SBML-FBCv2 file into a COBRA-Matlab structure. The `io/readCbModel.m` function is backward compatible with older SBML versions. A list of fields of a COBRA structure is described in a Excel spreadsheet `io/COBRA_structure_fields.xlsx`. While some fields are necessary for a COBRA model, others are not.
 
@@ -65,7 +72,7 @@ If an SBML-FBCv2 file is exported from a COBRA Matlab structure without an objec
 
 Solutions to some potential issues with reading/writing FBC files.
 
-1. Ensure there are NO multiple versions of COBRA toolbox on the Matlab path. 
+1. Ensure there are NO multiple versions of COBRA toolbox on the Matlab path.
 2. Currently the latest libSBML 5.13.0 supports FBCv2 extension. Ensure the old versions of libSBML Matlab bindings are NOT on the Matlab path.
 3. Validate the problematic FBC file using the [online SBML validator](http://sbml.org/validator/) and [BiGG validator](http://bigg.ucsd.edu/validator/app).
 
