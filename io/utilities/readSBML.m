@@ -72,14 +72,20 @@ for i = 1:nMetsTmp
             % Get formula if in notes field
             if (~isempty(notesField))
                 [tmp,tmp,tmp,tmp,formula,tmp,tmp,tmp,tmp,charge] = parseSBMLNotesField(notesField);
-                tmpCharge = charge;
+                chargeList = [chargeList; charge];
                 metFormulas {end+1} = formula;
                 formulaCount = formulaCount + 1;
                 haveFormulasFlag = true;
             end
-            try
-                chargeList= [chargeList modelSBML.species(i).charge]; % for compatibility with the old version
-            catch ME
+            % This is a really bad idea, since charge is initialized
+            % as zero even if it is undefined in the SBML file. Seems like
+            % a bug in libSBML, perhaps?
+            % Keeping it for compatibility, but adding an if statement
+            % around it. Can it be reomved?
+            if (modelSBML.species(i).isSetCharge && isempty(charge))
+                try
+                    chargeList(end) = modelSBML.species(i).charge; % for compatibility with the old version
+                catch ME
                 %                 try
                 %                     chargeList= [chargeList modelSBML.species(i).fbc_charge];
                 %                 catch
@@ -87,8 +93,8 @@ for i = 1:nMetsTmp
                 %                     case where the code above fails to retrieve the
                 %                     charge information from the species(i).charge
                 %                 end
+                end
             end
-            
         end
     end
 end
@@ -174,6 +180,13 @@ listOffbc_type={'maximize','minimize'};
 modelVersion=struct();
 noObjective=0; % by default there is an objective function.
 
+subSystems = cell(nRxns, 1);
+grRules = cell(nRxns, 1);
+confidenceScores = cell(nRxns, 1);
+citations = cell(nRxns, 1);
+comments = cell(nRxns, 1);
+ecNumbers = cell(nRxns, 1);
+
 for i = 1:nRxns
     %if mod(i,10) == 0
     %    waitbar(i/nRxns,h);
@@ -193,6 +206,16 @@ for i = 1:nRxns
         citations{i} = citation;
         comments{i} = comment;
         ecNumbers{i} = ecNumber;
+    end
+    annotationField = modelSBML.reaction(i).annotation;
+    if (~isempty(annotationField))
+        [ecNumber, citation] = parseSBMLAnnotationFieldRxn(annotationField);
+        tmpStr = '';
+        if (~isempty(ecNumbers{i})); tmpStr = ','; end
+        citations{i} = strcat(citations{i}, tmpStr, citation);
+        tmpStr = '';
+        if (~isempty(ecNumbers{i})); tmpStr = ','; end
+        ecNumbers{i} = strcat(ecNumbers{i}, tmpStr, ecNumber);
     end
     
     %if isfield(model, 'grRules')
@@ -278,16 +301,12 @@ for i = 1:nRxns
                     if ~isempty(modelSBML.(fbc_list{f}).fbc_fluxObjective)
                         fbc_obj=modelSBML.(fbc_list{f}).fbc_fluxObjective.fbc_reaction; % the variable stores the objective reaction ID
                         fbc_obj=regexprep(fbc_obj,'^R_','');
-                        if isfield(modelSBML.(fbc_list{f}).fbc_fluxObjective,'fbc_coefficient')
-                            fbc_obj_value=modelSBML.(fbc_list{f}).fbc_fluxObjective.fbc_coefficient;
-                        else
-                            ind_obj=find(strcmp(listOffbc_type,modelSBML.(fbc_list{f}).fbc_type));
-                            switch ind_obj
-                                case 1 % maximise
-                                    fbc_obj_value=-1;
-                                case 2 % minimise
-                                    fbc_obj_value=1;
-                            end
+                        ind_obj=find(strcmp(listOffbc_type,modelSBML.(fbc_list{f}).fbc_type));
+                        switch ind_obj
+                            case 1 % maximise
+                                fbc_obj_value=-1;
+                            case 2 % minimise
+                                fbc_obj_value=1;
                         end
                     else % if the objective function is not specified according to the FBCv2 rules.
                         noObjective=1; % no objective function is defined for the COBRA model.
@@ -632,8 +651,7 @@ else    % in the case of fbc file
     if noObjective==0; % when there is an objective function
         indexObj=findRxnIDs(model,fbc_obj);
         % indexObj=find(strcmp(fbc_obj,model.rxns))
-        model.c(indexObj)=1;
-        model.osense=fbc_obj_value;
+        model.c(indexObj)=fbc_obj_value;
     end
     
     if all(cellfun('isempty',fbcMet.fbc_chemicalFormula))~=1  % if all formulas are empty
@@ -677,7 +695,7 @@ if (hasNotesField)
     model.rxnGeneMat = rxnGeneMat;
     model.grRules = columnVector(grRules);
     model.subSystems = columnVector(subSystems);
-    model.confidenceScores = columnVector(confidenceScores);
+    model.rxnConfidenceScores = columnVector(confidenceScores);
     model.rxnReferences = columnVector(citations);
     model.rxnECNumbers = columnVector(ecNumbers);
     model.rxnNotes = columnVector(comments);
@@ -705,6 +723,7 @@ end
 
 if (hasAnnotationField)
     model.metCHEBIID = columnVector(metCHEBIID);
+    model.metHMDB = columnVector(metHMDB);
     model.metKEGGID = columnVector(metKEGGID);
     model.metPubChemID = columnVector(metPubChemID);
     model.metInChIString = columnVector(metInChIString);
