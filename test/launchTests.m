@@ -14,9 +14,9 @@ addpath(genpath('/opt/tomlab'))
 
 % retrieve the home folder
 if ispc
-    home = [getenv('HOMEDRIVE') getenv('HOMEPATH')];
+    global homePath = [getenv('HOMEDRIVE') getenv('HOMEPATH')];
 else
-    home = getenv('HOME');
+    global homePath = getenv('HOME');
 end
 
 % run the official initialisation script
