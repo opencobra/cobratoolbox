@@ -63,7 +63,7 @@ for i = 1:length(fieldList)
     elseif (regexp(fieldStr,'^FORMULA'))
         formula = regexprep(strrep(fieldStr,'FORMULA:',''),'^(\s)+','');
     elseif (regexp(fieldStr,'^CHARGE'))
-        charge = str2num(regexprep(strrep(fieldStr,'CHARGE:',''),'^(\s)+',''));
+        charge = str2double(regexprep(strrep(fieldStr,'CHARGE:',''),'^(\s)+',''));
     elseif (regexp(fieldStr,'AUTHORS'))
         if isempty(citation)
             citation = strcat(regexprep(strrep(fieldStr,'AUTHORS:',''),'^(\s)+',''));
@@ -71,7 +71,7 @@ for i = 1:length(fieldList)
             citation = strcat(citation,';',regexprep(strrep(fieldStr,'AUTHORS:',''),'^(\s)+',''));
         end
     elseif (regexp(fieldStr,'^Confidence Level'))
-        confidenceScore = regexprep(strrep(fieldStr,'Confidence Level:',''),'^(\s)+','');
+        tmpTokens = regexpi(fieldStr, 'Confidence[ _]Level: (\w+)', 'tokens');
     elseif (regexp(fieldStr,'^NOTES'))
 	comment = strcat(comment,';',regexprep(strrep(fieldStr,'AUTHORS:',''),'^(\s)+',''));
     else 
