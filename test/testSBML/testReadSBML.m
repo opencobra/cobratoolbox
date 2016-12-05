@@ -3,6 +3,18 @@
 % Note:
 % the solver libraries must be included separately
 
+fprintf('\n\n > Adding all the COBRA Toolbox files ... ')
+
+pth = which('initCobraToolbox.m');
+CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1));
+%path(path,[CBTDIR, filesep, 'external']);
+
+addpath(genpath(CBTDIR))
+rmpath([CBTDIR,filesep,'.git'])
+rmpath([CBTDIR,filesep,'/docs'])
+rmpath([CBTDIR,filesep,'/external/SBMLToolbox'])
+fprintf(' Done.\n')
+
 % set the solver
 changeCobraSolver('tomlab_cplex');
 
