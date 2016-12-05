@@ -12,13 +12,6 @@ addpath(genpath('/opt/gurobi650'))
 % add TOMLAB interface
 addpath(genpath('/opt/tomlab'))
 
-% retrieve the home folder
-if ispc
-    global homePath = [getenv('HOMEDRIVE') getenv('HOMEPATH')];
-else
-    global homePath = getenv('HOME');
-end
-
 % run the official initialisation script
 %initCobraToolbox
 %{

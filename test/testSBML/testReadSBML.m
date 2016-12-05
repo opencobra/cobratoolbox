@@ -8,7 +8,8 @@ CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1));
 addpath(genpath(CBTDIR))
 
 % set the solver
-changeCobraSolver('tomlab_cplex');
+%changeCobraSolver('tomlab_cplex');
+changeCobraSolver('cplex_direct');
 
 % set the tolerance
 tol = 1e-9;
@@ -24,8 +25,11 @@ modelFBAf_min = [0.0; 0.0; 0.0; 0.0];
 
 % loop through the models
 for i = 1:length(modelArr)
+
+    fprintf('Testing %s ...', [CBTDIR '/test/models/' modelArr{i}]);
+
     % load the model
-    model = readCbModel([homePath '/COBRAmodels/' modelArr{i}]);
+    model = readCbModel([CBTDIR '/test/models/' modelArr{i}]);
 
     % solve the maximisation problem
     FBA = optimizeCbModel(model,'max');
@@ -42,4 +46,8 @@ for i = 1:length(modelArr)
     assert(FBA.stat == 1);
     assert(abs(FBA.f - modelFBAf_min(i)) < tol);
     assert(norm(model.S*FBA.x) < tol);
+
+    % print a line for success of loop i
+    fprintf(' Done.\n');
+
 end
