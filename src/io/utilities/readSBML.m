@@ -643,6 +643,7 @@ else    % in the case of fbc file
     model.lb = fbc_lb;
     model.ub = fbc_ub;
     if noObjective==0; % when there is an objective function
+        model.osense=fbc_obj_value;
         indexObj=findRxnIDs(model,fbc_obj);
         % indexObj=find(strcmp(fbc_obj,model.rxns))
         model.c(indexObj)=1;        
