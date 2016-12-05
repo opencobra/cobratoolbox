@@ -17,32 +17,32 @@ Installation
 ------------
 
 1. Clone this repository
-```bash
-git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
-```
+  ```bash
+  git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
+  ```
 
 2. Initialize submodules
-```bash
-git submodule init
-```
+  ```bash
+  git submodule init
+  ```
 
 3. Update submodules
-```bash
-git submodule update
-```
+  ```bash
+  git submodule update
+  ```
 
 4. From MATLAB, run
-```Matlab
-initCobraToolbox
-```
-NOTE: If you do not have `gurobi_mex` and `tomlab` installed on your machine, you will get some warnings and some errors. The `COBRAToolbox` will try to use `glpk` if it cannot find `gurobi` for LP / MILP.  To solve any NLP problems you need `tomlab_snopt`.
+  ```Matlab
+  initCobraToolbox
+  ```
+  NOTE: If you do not have `gurobi_mex` and `tomlab` installed on your machine, you will get some warnings and some errors. The `COBRAToolbox` will try to use `glpk` if it cannot find `gurobi` for LP / MILP.  To solve any NLP problems you need `tomlab_snopt`.
 
 5. Test your installation, run
-```Matlab
-testAll
-```  
-to see what functions will work with your current configuration.
-Note, it is likely that one or more functions will not work unless you have `tomlab` with `snopt` installed.
+  ```Matlab
+  testAll
+  ```
+  to see what functions will work with your current configuration.
+  Note, it is likely that one or more functions will not work unless you have `tomlab` with `snopt` installed.
 
 
 Citation policy
