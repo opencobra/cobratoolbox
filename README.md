@@ -6,7 +6,7 @@ The COBRAToolbox - COnstraint-Based Reconstruction and Analysis Toolbox
 
 |  MATLAB R2016b | MATLAB R2015b | MATLAB R2014b |
 |--------|--------|--------|
-| [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox/MATLAB_VER=R2016b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox/MATLAB_VER=R2016b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox/MATLAB_VER=R2016b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox/MATLAB_VER=R2016b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox/MATLAB_VER=R2016b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox/MATLAB_VER=R2016b/) |
+| [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox/MATLAB_VER=R2016b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox/MATLAB_VER=R2016b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox/MATLAB_VER=R2015b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox/MATLAB_VER=R2015b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox/MATLAB_VER=R2014b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox/MATLAB_VER=R2014b/) |
 
 For convenience, we provide the [`SBMLToolbox 4.1.0`](http://sbml.org/Software/SBMLToolbox), and [`glpk_mex`](https://github.com/blegat/glpkmex) in `external/toolboxes`, [`libSBML-5.13.0-matlab`](http://sbml.org/Software/libSBML) in `io/utilities`.
 Binaries for these librairies are provided in a [submodule](https://github.com/opencobra/COBRA.binary) for Mac OS X 10.6 or later (64-bit), GNU/Linux Ubuntu 10.0 (64-bit), and Microsoft Windows 7 (64-bit).
@@ -17,32 +17,32 @@ Installation
 ------------
 
 1. Clone this repository
-```bash
-git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
-```
+  ```bash
+  git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
+  ```
 
 2. Initialize submodules
-```bash
-git submodule init
-```
+  ```bash
+  git submodule init
+  ```
 
 3. Update submodules
-```bash
-git submodule update
-```
+  ```bash
+  git submodule update
+  ```
 
 4. From MATLAB, run
-```Matlab
-initCobraToolbox
-```
-NOTE: If you do not have `gurobi_mex` and `tomlab` installed on your machine, you will get some warnings and some errors. The `COBRAToolbox` will try to use `glpk` if it cannot find `gurobi` for LP / MILP.  To solve any NLP problems you need `tomlab_snopt`.
+  ```Matlab
+  initCobraToolbox
+  ```
+  NOTE: If you do not have `gurobi_mex` and `tomlab` installed on your machine, you will get some warnings and some errors. The `COBRAToolbox` will try to use `glpk` if it cannot find `gurobi` for LP / MILP.  To solve any NLP problems you need `tomlab_snopt`.
 
 5. Test your installation, run
-```Matlab
-testAll
-```  
-to see what functions will work with your current configuration.
-Note, it is likely that one or more functions will not work unless you have `tomlab` with `snopt` installed.
+  ```Matlab
+  testAll
+  ```
+  to see what functions will work with your current configuration.
+  Note, it is likely that one or more functions will not work unless you have `tomlab` with `snopt` installed.
 
 
 Citation policy
