@@ -3,9 +3,7 @@
 % Note:
 % the solver libraries must be included separately
 
-%CBTDIR
-
-%addpath(genpath(CBTDIR))
+addpath(genpath([pwd '/../../']))
 
 % set the solver
 solverOK = changeCobraSolver('tomlab_cplex');
