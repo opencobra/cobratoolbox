@@ -3,6 +3,8 @@ addpath(genpath('/var/lib/jenkins/MOcov'))
 addpath(genpath('/var/lib/jenkins/jsonlab'))
 addpath(genpath('.')) % include the root folder and all subfolders
 
+global CBTDIR
+
 % add GUROBI
 addpath(genpath('/opt/gurobi650'))
 
@@ -11,6 +13,9 @@ addpath(genpath('/opt/gurobi650'))
 
 % add TOMLAB interface
 addpath(genpath('/opt/tomlab'))
+
+pth = which('initCobraToolbox.m');
+CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1))
 
 % run the official initialisation script
 %initCobraToolbox

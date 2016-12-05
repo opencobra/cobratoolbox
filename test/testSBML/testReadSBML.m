@@ -3,8 +3,8 @@
 % Note:
 % the solver libraries must be included separately
 
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1))
+CBTDIR
+
 addpath(genpath(CBTDIR))
 
 % set the solver
