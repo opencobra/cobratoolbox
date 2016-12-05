@@ -8,8 +8,8 @@
 %addpath(genpath(CBTDIR))
 
 % set the solver
-%changeCobraSolver('tomlab_cplex');
-solverOK = changeCobraSolver('cplex_direct');
+solverOK = changeCobraSolver('tomlab_cplex');
+%solverOK = changeCobraSolver('cplex_direct');
 
 if solverOK ~= 1
     error('Solver cannot be set properly.\n');
@@ -29,10 +29,11 @@ else
     % loop through the models
     for i = 1:length(modelArr)
 
-        fprintf('Testing %s ...', [CBTDIR '/test/models/' modelArr{i}]);
+        % output a line before launching the test for model i
+        fprintf('Testing %s ...', [pwd '/../../test/models/' modelArr{i}]);
 
         % load the model
-        model = readCbModel([CBTDIR '/test/models/' modelArr{i}]);
+        model = readCbModel([pwd '/../../test/models/' modelArr{i}]);
 
         % solve the maximisation problem
         FBA = optimizeCbModel(model,'max');
