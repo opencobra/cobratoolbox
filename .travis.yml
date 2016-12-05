@@ -11,7 +11,7 @@ before_install:
 
 script:
     - CURRENT_DIR=`pwd`
-    - if [ "$MATLAB_VER" == "R2016b" ]; then cd ~/COBRAmodels; git pull; cd $CURRENT_DIR; fi
+    - if [ "$MATLAB_VER" == "R2016b" ]; then cd ~/COBRAmodels; sh ./retrieveModels.sh; cd $CURRENT_DIR; fi
     - sh ./runtests.sh
 
 #deploy:

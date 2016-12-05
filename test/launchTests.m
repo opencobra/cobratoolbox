@@ -7,10 +7,17 @@ addpath(genpath('.')) % include the root folder and all subfolders
 addpath(genpath('/opt/gurobi650'))
 
 % add CPLEX
-addpath(genpath('/opt/ibm/ILOG/CPLEX_Studio1263'))
+%addpath(genpath('/opt/ibm/ILOG/CPLEX_Studio1263'))
 
 % add TOMLAB interface
 addpath(genpath('/opt/tomlab'))
+
+% retrieve the home folder
+if ispc
+    home = [getenv('HOMEDRIVE') getenv('HOMEPATH')];
+else
+    home = getenv('HOME');
+end
 
 % run the official initialisation script
 %initCobraToolbox
@@ -27,7 +34,7 @@ profile on;
 % call the first test
 %result = runtests('./metabotools/tutorial_I/run_Tutorial_I'); %fails for now
 try
-  result = runtests('testRightTri');
+  result = runtests('testReadSBML.m');
 
 % write coverage based on profile('info')
 mocov('-cover','./src',...
