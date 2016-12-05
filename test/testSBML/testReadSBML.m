@@ -4,50 +4,54 @@
 % the solver libraries must be included separately
 
 pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1));
+CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1))
 addpath(genpath(CBTDIR))
 
 % set the solver
 %changeCobraSolver('tomlab_cplex');
-changeCobraSolver('cplex_direct');
+solverOK = changeCobraSolver('cplex_direct');
 
-% set the tolerance
-tol = 1e-9;
+if solverOK ~= 1
+    error('Solver cannot be set properly.\n');
+else
+    % set the tolerance
+    tol = 1e-9;
 
-% load the models
-modelArr = {'Abiotrophia_defectiva_ATCC_49176.xml', 'STM_v1.0.xml', 'iIT341.xml', 'Ec_iAF1260_flux1.xml'};
+    % load the models
+    modelArr = {'Abiotrophia_defectiva_ATCC_49176.xml', 'STM_v1.0.xml', 'iIT341.xml', 'Ec_iAF1260_flux1.xml'};
 
-% define the maximum objective values
-modelFBAf_max = [0.149475406282249; 0.477833660760744; 0.692812693473487; 0.736700938865275];
+    % define the maximum objective values
+    modelFBAf_max = [0.149475406282249; 0.477833660760744; 0.692812693473487; 0.736700938865275];
 
-% define the minimum objective values
-modelFBAf_min = [0.0; 0.0; 0.0; 0.0];
+    % define the minimum objective values
+    modelFBAf_min = [0.0; 0.0; 0.0; 0.0];
 
-% loop through the models
-for i = 1:length(modelArr)
+    % loop through the models
+    for i = 1:length(modelArr)
 
-    fprintf('Testing %s ...', [CBTDIR '/test/models/' modelArr{i}]);
+        fprintf('Testing %s ...', [CBTDIR '/test/models/' modelArr{i}]);
 
-    % load the model
-    model = readCbModel([CBTDIR '/test/models/' modelArr{i}]);
+        % load the model
+        model = readCbModel([CBTDIR '/test/models/' modelArr{i}]);
 
-    % solve the maximisation problem
-    FBA = optimizeCbModel(model,'max');
+        % solve the maximisation problem
+        FBA = optimizeCbModel(model,'max');
 
-    % test the maximisation solution
-    assert(FBA.stat == 1);
-    assert(abs(FBA.f - modelFBAf_max(i)) < tol);
-    assert(norm(model.S*FBA.x) < tol);
+        % test the maximisation solution
+        assert(FBA.stat == 1);
+        assert(abs(FBA.f - modelFBAf_max(i)) < tol);
+        assert(norm(model.S*FBA.x) < tol);
 
-    % solve the minimisation problem
-    FBA = optimizeCbModel(model,'min');
+        % solve the minimisation problem
+        FBA = optimizeCbModel(model,'min');
 
-    % test the minimisation solution
-    assert(FBA.stat == 1);
-    assert(abs(FBA.f - modelFBAf_min(i)) < tol);
-    assert(norm(model.S*FBA.x) < tol);
+        % test the minimisation solution
+        assert(FBA.stat == 1);
+        assert(abs(FBA.f - modelFBAf_min(i)) < tol);
+        assert(norm(model.S*FBA.x) < tol);
 
-    % print a line for success of loop i
-    fprintf(' Done.\n');
+        % print a line for success of loop i
+        fprintf(' Done.\n');
 
+    end
 end
