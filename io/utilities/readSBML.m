@@ -301,12 +301,9 @@ for i = 1:nRxns
                     if ~isempty(modelSBML.(fbc_list{f}).fbc_fluxObjective)
                         fbc_obj=modelSBML.(fbc_list{f}).fbc_fluxObjective.fbc_reaction; % the variable stores the objective reaction ID
                         fbc_obj=regexprep(fbc_obj,'^R_','');
-                        ind_obj=find(strcmp(listOffbc_type,modelSBML.(fbc_list{f}).fbc_type));
-                        switch ind_obj
-                            case 1 % maximise
-                                fbc_obj_value=-1;
-                            case 2 % minimise
-                                fbc_obj_value=1;
+                        if isfield(modelSBML.(fbc_list{f}).fbc_fluxObjective,'fbc_coefficient')
+                            fbc_obj_value=modelSBML.(fbc_list{f}).fbc_fluxObjective.fbc_coefficient;
+                        else
                             ind_obj=find(strcmp(listOffbc_type,modelSBML.(fbc_list{f}).fbc_type));
                             switch ind_obj
                                 case 1 % maximise
@@ -323,7 +320,7 @@ for i = 1:nRxns
                         % % % %                         fbc_obj_value=-1;
                         
                     end
-                    
+                        
                 elseif f==2 % In the case of fbc_bound
                     if modelSBML.fbc_version==1;
                         
@@ -334,7 +331,6 @@ for i = 1:nRxns
                             fbc_lb(i)=-defaultBound;
                             fbc_ub(i)=defaultBound;
                         end
-                        
                             
                         if size(modelSBML.fbc_fluxBound,2)>0 % not an empty structure;
                             
@@ -658,6 +654,7 @@ else    % in the case of fbc file
     model.ub = fbc_ub;
     if noObjective==0; % when there is an objective function
         model.c(indexObj)=1;
+        model.osense=fbc_obj_value;
         indexObj=findRxnIDs(model,fbc_obj);
         % indexObj=find(strcmp(fbc_obj,model.rxns))
         model.c(indexObj)=fbc_obj_value;
