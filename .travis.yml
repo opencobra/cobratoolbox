@@ -6,10 +6,11 @@ before_install:
 
 script:
     - CURRENT_DIR=`pwd`
-#    - if [ "$MATLAB_VER" == "R2016b" ]; then
+    # update the models for testing
     - cd ./test/models
     - sh ./retrieveModels.sh
-    - cd $CURRENT_DIR #fi
+    - cd $CURRENT_DIR
+    # launch the tests
     - sh ./runtests.sh
 
 #deploy:

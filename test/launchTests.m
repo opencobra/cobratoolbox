@@ -7,13 +7,10 @@ addpath(genpath('.')) % include the root folder and all subfolders
 addpath(genpath('/opt/gurobi650'))
 
 % add CPLEX
-%addpath(genpath('/opt/ibm/ILOG/CPLEX_Studio1263'))
+addpath(genpath('/opt/ibm/ILOG/CPLEX_Studio1263'))
 
 % add TOMLAB interface
 addpath(genpath('/opt/tomlab'))
-
-%pth = which('initCobraToolbox.m');
-%CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1))
 
 % run the official initialisation script
 %initCobraToolbox
