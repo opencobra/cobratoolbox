@@ -307,6 +307,13 @@ for i = 1:nRxns
                                 fbc_obj_value=-1;
                             case 2 % minimise
                                 fbc_obj_value=1;
+                            ind_obj=find(strcmp(listOffbc_type,modelSBML.(fbc_list{f}).fbc_type));
+                            switch ind_obj
+                                case 1 % maximise
+                                    fbc_obj_value=-1;
+                                case 2 % minimise
+                                    fbc_obj_value=1;
+                            end
                         end
                     else % if the objective function is not specified according to the FBCv2 rules.
                         noObjective=1; % no objective function is defined for the COBRA model.
@@ -328,6 +335,7 @@ for i = 1:nRxns
                             fbc_ub(i)=defaultBound;
                         end
                         
+                            
                         if size(modelSBML.fbc_fluxBound,2)>0 % not an empty structure;
                             
                             indBds=find(strcmp(modelSBML.reaction(i).id,convertedFluxbounds.fbc_fluxBound.fbc_reaction));
@@ -649,6 +657,7 @@ else    % in the case of fbc file
     model.lb = fbc_lb;
     model.ub = fbc_ub;
     if noObjective==0; % when there is an objective function
+        model.c(indexObj)=1;
         indexObj=findRxnIDs(model,fbc_obj);
         % indexObj=find(strcmp(fbc_obj,model.rxns))
         model.c(indexObj)=fbc_obj_value;
