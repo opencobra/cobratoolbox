@@ -330,6 +330,7 @@ for i = 1:nRxns
                             fbc_ub(i)=defaultBound;
                         end
 
+                            
                         if size(modelSBML.fbc_fluxBound,2)>0 % not an empty structure;
 
                             indBds=find(strcmp(modelSBML.reaction(i).id,convertedFluxbounds.fbc_fluxBound.fbc_reaction));
@@ -643,6 +644,7 @@ else    % in the case of fbc file
     model.lb = fbc_lb;
     model.ub = fbc_ub;
     if noObjective==0; % when there is an objective function
+        model.c(indexObj)=1;
         indexObj=findRxnIDs(model,fbc_obj);
         % indexObj=find(strcmp(fbc_obj,model.rxns))
         model.c(indexObj)=1;        
