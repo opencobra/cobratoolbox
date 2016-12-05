@@ -28,7 +28,7 @@ else
     for i = 1:length(modelArr)
 
         % output a line before launching the test for model i
-        fprintf('Testing %s ...', [pwd '/../../test/models/' modelArr{i}]);
+        fprintf('Testing %s ...', modelArr{i});
 
         % load the model
         model = readCbModel([pwd '/../../test/models/' modelArr{i}]);

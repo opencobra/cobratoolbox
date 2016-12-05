@@ -55,14 +55,14 @@ for i = 1:length(sf)
 end
 
 % average the values for each file
-cl = sum(clFiles)
-tl = sum(tlFiles)
+cl = sum(clFiles);
+tl = sum(tlFiles);
 
 % print out a summary table
 rt = table(result)
 
 % print out the coverage as requested by gitlab
-fprintf('(%f%%) covered\n', cl/tl * 100)
+fprintf('Covered Lines: %i, Total Lines: %i, Coverage: %f%%.\n', cl, tl, cl/tl * 100)
 
 if sumFailed > 0 || sumIncomplete > 0
     exit_code = 1
