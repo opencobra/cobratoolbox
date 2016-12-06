@@ -27,49 +27,50 @@ profile on;
 % call the first test
 %result = runtests('./metabotools/tutorial_I/run_Tutorial_I'); %fails for now
 try
-  result = runtests('testReadSBML.m');
 
-% write coverage based on profile('info')
-mocov('-cover','./src',...
-      '-profile_info',...
-      '-cover_json_file','coverage.json',...
-      '-cover_method', 'profile');
+    result = runtests('testReadSBML.m');
 
-sumFailed = 0;
-sumIncomplete = 0;
+    % write coverage based on profile('info')
+    mocov('-cover','src',...
+          '-profile_info',...
+          '-cover_json_file','coverage.json',...
+          '-cover_method', 'profile');
 
-for i = 1:size(result,2)
-    sumFailed = sumFailed + result(i).Failed;
-    sumIncomplete = sumIncomplete + result(i).Incomplete;
-end
+    sumFailed = 0;
+    sumIncomplete = 0;
 
-data = loadjson('coverage.json', 'SimplifyCell', 1);
+    for i = 1:size(result,2)
+        sumFailed = sumFailed + result(i).Failed;
+        sumIncomplete = sumIncomplete + result(i).Incomplete;
+    end
 
-sf = data.source_files;
-clFiles = [];
-tlFiles = [];
+    data = loadjson('coverage.json', 'SimplifyCell', 1);
 
-for i = 1:length(sf)
-    clFiles(i) = nnz(sf(i).coverage);
-    tlFiles(i) = length(sf(i).coverage);
-end
+    sf = data.source_files;
+    clFiles = [];
+    tlFiles = [];
 
-% average the values for each file
-cl = sum(clFiles);
-tl = sum(tlFiles);
+    for i = 1:length(sf)
+        clFiles(i) = nnz(sf(i).coverage);
+        tlFiles(i) = length(sf(i).coverage);
+    end
 
-% print out a summary table
-rt = table(result)
+    % average the values for each file
+    cl = sum(clFiles);
+    tl = sum(tlFiles);
 
-% print out the coverage as requested by gitlab
-fprintf('Covered Lines: %i, Total Lines: %i, Coverage: %f%%.\n', cl, tl, cl/tl * 100)
+    % print out a summary table
+    rt = table(result)
 
-if sumFailed > 0 || sumIncomplete > 0
-    exit_code = 1
-end
+    % print out the coverage as requested by gitlab
+    fprintf('Covered Lines: %i, Total Lines: %i, Coverage: %f%%.\n', cl, tl, cl/tl * 100);
 
-% ensure that we ALWAYS call exit
-exit(exit_code);
+    if sumFailed > 0 || sumIncomplete > 0
+        exit_code = 1
+    end
+
+    % ensure that we ALWAYS call exit
+    exit(exit_code);
 
 catch
   exit(1);
