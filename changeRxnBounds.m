@@ -48,7 +48,9 @@ if (iscell(rxnNameList))
 end
 
 if (isempty(rxnID))
-    warning('Reaction %s not in model',rxnNameList{1});
+    %rxnNameList was a cell with a single reaction not found
+    %Warning would have already been triggered in line 39 above
+    %So do nothing!
 elseif (sum(rxnID) == 0)
     warning('Reaction %s not in model',rxnNameList);
 else
