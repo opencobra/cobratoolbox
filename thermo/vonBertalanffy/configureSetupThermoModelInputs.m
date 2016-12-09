@@ -1,4 +1,4 @@
-function model = configureSetupThermoModelInputs(model,T,cellCompartments,ph,is,chi,xmin,xmax,confidenceLevel)
+function model = configureSetupThermoModelInputs(model,T,cellCompartments,ph,is,chi,xmin,xmax,confidenceLevel,debug)
 % Configures inputs to setupThermoModel (sets defaults etc.).
 % INPUTS
 %
@@ -33,10 +33,15 @@ end
 
 % Check for model.metCompartments
 if isempty(model.metCompartments)
-    fprintf('\nField metCompartments is missing from model structure. Attempting to create it.\n')
+    if debug > 0
+        fprintf('\nField metCompartments is missing from model structure. Attempting to create it.\n')
+    end
+    
     if ~any(cellfun('isempty',regexp(model.mets,'\[\w\]$')))
         model.metCompartments = getCompartment(model.mets);
-        fprintf('Attempt to create field metCompartments successful.\n')
+        if debug > 0
+            fprintf('Attempt to create field metCompartments successful.\n')
+        end
     else
         error('Could not create field metCompartments. Please do so manually.\n')
     end
@@ -56,10 +61,14 @@ end
 % Configure temperature
 if isempty(T)
     T = 298.15; % Default temperature in Kelvin
-    fprintf('\nSetting temperature to %.2f K.\n',T);
+    if debug > 0
+        fprintf('\nSetting temperature to %.2f K.\n',T);
+    end
 end
 if abs(T-298) > 0.15
-    fprintf('\nWarning: Setting temperature to a value other than 298.15 K may introduce error, since enthalpies and heat capacities are not specified.\n');
+    if debug > 1
+        fprintf('\nWarning: Setting temperature to a value other than 298.15 K may introduce error, since enthalpies and heat capacities are not specified.\n');
+    end
 end
 model.T = T;
 
@@ -96,8 +105,10 @@ if ~isempty(missingCompartments)
     default_is = 0; % Default ionic strength in mol/L
     default_chi = 0; % default electrical potential in mV
     
-    fprintf(['\nph, is and chi not specified for compartments: ' regexprep(sprintf('%s, ',missingCompartments{:}),'(,\s)$','.') '\n']);
-    fprintf('Setting ph = %.2f, is = %.2f M and chi = %.2f mV in these compartments.\n',default_ph,default_is,default_chi);
+    if debug > 0
+        fprintf(['\nph, is and chi not specified for compartments: ' regexprep(sprintf('%s, ',missingCompartments{:}),'(,\s)$','.') '\n']);
+        fprintf('Setting ph = %.2f, is = %.2f M and chi = %.2f mV in these compartments.\n',default_ph,default_is,default_chi);
+    end
     
     cellCompartments = [cellCompartments; missingCompartments];
     ph = [ph; default_ph*ones(length(missingCompartments),1)];
@@ -120,7 +131,9 @@ model.chi = chi;
 % Configure concentration bounds
 if isempty(xmin)
     defaultMin = 1e-5;
-    fprintf('\nSetting lower bound on metabolite concentrations to %.2e.\n',defaultMin)
+    if debug > 0
+        fprintf('\nSetting lower bound on metabolite concentrations to %.2e.\n',defaultMin)
+    end
     xmin = defaultMin*ones(size(model.mets)); % Default lower bound on metabolite concentrations in mol/L
 end
 xmin = reshape(xmin,length(xmin),1);
@@ -128,7 +141,9 @@ model.xmin = xmin;
 
 if isempty(xmax)
     defaultMax = 1e-2;
-    fprintf('\nSetting upper bound on metabolite concentrations to %.2e.\n',defaultMax)
+    if debug > 0
+        fprintf('\nSetting upper bound on metabolite concentrations to %.2e.\n',defaultMax)
+    end
     xmax = defaultMax*ones(size(model.mets)); % Default upper bound on metabolite concentrations in mol/L
 end
 xmax = reshape(xmax,length(xmax),1);
@@ -147,7 +162,9 @@ model.xmax(h2oi) = 1;
 % Configure confidence level
 if isempty(confidenceLevel)
     confidenceLevel = 0.95;
-    fprintf('\nSetting confidence level to %.2f.\n',confidenceLevel);
+    if debug > 0
+        fprintf('\nSetting confidence level to %.2f.\n',confidenceLevel);
+    end
 end
 model.confidenceLevel = confidenceLevel;
 
