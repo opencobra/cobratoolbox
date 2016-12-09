@@ -1,4 +1,4 @@
-function model = addThermoToModel(model)
+function model = addThermoToModel(model,debug)
 % given a standard COBRA model, add thermodynamic data to it using
 % the Component Contribution method
 %
@@ -10,6 +10,12 @@ function model = addThermoToModel(model)
 % inputs:
 %   model        - a standard COBRA model
 %
+
+% optional inputs:
+% debug             0: No verbose output
+%                   1: Progress information only (no warnings)
+%                   2: Progress and warnings
+
 % returns:
 %   model        - same as the input, but with values of Gibbs energies
 
@@ -18,11 +24,11 @@ use_cached_kegg_inchis = true;
 use_model_pKas_by_default = true;
 
 % load the training data (from TECRDB, Alberty, etc.)
-training_data = loadTrainingData();
+training_data = loadTrainingData(1,debug);
 
 % get the InChIs for all the compounds in the training data
 % (note that all of them have KEGG IDs)
-kegg_inchies = getInchies(training_data.cids, use_cached_kegg_inchis);
+kegg_inchies = getInchies(training_data.cids, use_cached_kegg_inchis, debug);
 inds = ismember(kegg_inchies.cids, training_data.cids);
 training_data.std_inchi = kegg_inchies.std_inchi(inds);
 training_data.std_inchi_stereo = kegg_inchies.std_inchi_stereo(inds);
@@ -31,22 +37,24 @@ training_data.nstd_inchi = kegg_inchies.nstd_inchi(inds);
 
 % use the chemical formulas from the InChIs to verify that each and every
 % reaction is balanced.
-training_data = balanceReactionsInTrainingData(training_data);
+training_data = balanceReactionsInTrainingData(training_data,debug);
 
 % get the pKas for the compounds in the training data (using ChemAxon)
-training_data.kegg_pKa = getTrainingDatapKas(training_data);
+training_data.kegg_pKa = getTrainingDatapKas(training_data,true,debug);
 
 % match between the compounds in the model and the KEGG IDs used in the
 % training data, and create the group incidence matrix (G) for the
 % combined set of all compounds.
-training_data = createGroupIncidenceMatrix(model, training_data);
+training_data = createGroupIncidenceMatrix(model, training_data, debug);
 
 % apply the reverse Legendre transform for the relevant training observations (typically
 % apparent reaction Keq from TECRDB)
-training_data = reverseTransformTrainingData(model, training_data, use_model_pKas_by_default);
+training_data = reverseTransformTrainingData(model, training_data, use_model_pKas_by_default, debug);
 
 %%
-fprintf('Running Component Contribution method\n');
+if debug > 0
+    fprintf('Running Component Contribution method\n');
+end
 % Estimate standard Gibbs energies of formation
 [x, cov_x] = componentContribution(full(training_data.S), full(training_data.G), training_data.dG0, training_data.weights);
 
