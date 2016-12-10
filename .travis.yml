@@ -1,0 +1,19 @@
+language: bash
+
+before_install:
+    - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+    - git submodule update --force --init --recursive
+
+script:
+    - CURRENT_DIR=`pwd`
+    # update the models for testing
+    - cd ./test/models
+    - sh ./retrieveModels.sh
+    - cd $CURRENT_DIR
+    # launch the tests
+    - sh ./runtests.sh
+
+#deploy:
+
+after_success:
+    - if [ "$MATLAB_VER" == "R2016b" ]; then bash <(curl -s https://codecov.io/bash); fi

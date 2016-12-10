@@ -13,6 +13,9 @@ slprj/
 # Session info
 octave-workspace
 
+# model files for testing
+test/models/*.xml
+
 Thumbs.db
 *.pyc
 gurobi.log
