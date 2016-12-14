@@ -4,15 +4,15 @@
 
 <!-- MDTOC maxdepth:6 firsth1:0 numbering:1 flatten:0 bullets:0 updateOnSave:1 -->
 
-1. [How can I contribute?](#how-can-i-contribute)
-&emsp;1.1. [Reporting an issue or enhancement](#reporting-an-issue-or-enhancement)
-&emsp;1.2. [Submitting a pull request (PR)](#submitting-a-pull-request-pr)
-2. [Styleguides](#styleguides)
-&emsp;2.1. [Git commit messages](#git-commit-messages)
-&emsp;2.2. [Code styleguide](#code-styleguide)
-&emsp;2.3. [Documentation and comments styleguide](#documentation-and-comments-styleguide)
-&emsp;2.4. [Test styleguide](#test-styleguide)
-3. [Labels](#labels)
+1. [How can I contribute?](#how-can-i-contribute)   
+&emsp;1.1. [Reporting an issue or enhancement](#reporting-an-issue-or-enhancement)   
+&emsp;1.2. [Submitting a pull request (PR)](#submitting-a-pull-request-pr)   
+2. [Styleguides](#styleguides)   
+&emsp;2.1. [Git commit messages](#git-commit-messages)   
+&emsp;2.2. [Code styleguide](#code-styleguide)   
+&emsp;2.3. [Documentation and comments styleguide](#documentation-and-comments-styleguide)   
+&emsp;2.4. [Test styleguide](#test-styleguide)   
+3. [Labels](#labels)   
 
 <!-- /MDTOC -->
 
