@@ -15,11 +15,11 @@
 
 #### Previous output
 
-[*Include here information of the current version of the COBRA Toolbox*]
+[*Include here information of the current version of The COBRAToolbox*]
 
 #### Output of PR-merged version
 
-[*Include here information of modified version of the COBRA Toolbox after your proposed PR is accepted*]
+[*Include here information of modified version of The COBRAToolbox after your proposed PR is accepted*]
 
 ###  Documentation updates
 
