@@ -71,7 +71,7 @@ for i = 1:length(fieldList)
             citation = strcat(citation,';',regexprep(strrep(fieldStr,'AUTHORS:',''),'^(\s)+',''));
         end
     elseif (regexp(fieldStr,'^Confidence Level'))
-        tmpTokens = regexpi(fieldStr, 'Confidence[ _]Level: (\w+)', 'tokens');
+        [matches, tmpTokens] = regexpi(fieldStr, 'Confidence[ _]Level: (\w+)', 'match', 'tokens');
     elseif (regexp(fieldStr,'^NOTES'))
 	comment = strcat(comment,';',regexprep(strrep(fieldStr,'AUTHORS:',''),'^(\s)+',''));
     else 
