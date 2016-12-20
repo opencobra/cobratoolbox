@@ -36,7 +36,7 @@ rxnID = findRxnIDs(model,rxnNameList);
 if (iscell(rxnNameList))
     missingRxns = rxnNameList(rxnID == 0);
     for i = 1:length(missingRxns)
-        fprintf('Reaction %s not in model\n',missingRxns{i});    
+        warning('Reaction %s not in model',missingRxns{i});    
     end
     if (length(boundType) > 1)
         boundType = boundType(rxnID ~= 0);
@@ -47,8 +47,12 @@ if (iscell(rxnNameList))
     rxnID = rxnID(rxnID ~= 0);    
 end
 
-if (isempty(rxnID) | sum(rxnID) == 0)
-    warning('No such reaction in model');
+if (isempty(rxnID))
+    %rxnNameList was a cell with a single reaction not found
+    %Warning would have already been triggered in line 39 above
+    %So do nothing!
+elseif (sum(rxnID) == 0)
+    warning('Reaction %s not in model',rxnNameList);
 else
     nRxns = length(rxnID);
     if (length(boundType) > 1)
