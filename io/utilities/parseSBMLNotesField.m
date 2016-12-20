@@ -67,8 +67,10 @@ for i = 1:length(fieldList)
         Comment = 0;
         comment = fieldStr;
     elseif (regexpi(fieldStr,'Confidence'))
-        tmpTokens = regexpi(fieldStr, 'Confidence[ _]Level: (\w+)', 'tokens');
-        confidenceScore = str2double(tmpTokens{1}{1});
+        [matches, tmpTokens] = regexpi(fieldStr, 'Confidence[ _]Level: (\w+)', 'match', 'tokens');
+        if (~isempty(matches))
+            confidenceScore = str2double(tmpTokens{1}{1});
+        end
         Comment = 1;
     end
 end
