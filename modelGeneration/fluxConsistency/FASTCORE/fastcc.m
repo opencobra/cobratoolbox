@@ -1,4 +1,4 @@
-function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel,modeFlag)
+function [A,V] = fastcc(model,epsilon,printLevel)
 % [A,V] = fastcc(model,epsilon,printLevel)
 %
 % The FASTCC algorithm for testing the consistency of a stoichiometric model
@@ -26,34 +26,26 @@ function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel,modeFlag)
 %     LCSB / LSRU, University of Luxembourg
 %
 % Ronan Fleming      17/10/14 Commenting of inputs/outputs/code
+% Oveis Jamialahmadi 17/08/16 Modifying the fastcc to reduce cpu time.
 
 if ~exist('printLevel','var')
     printLevel = 2;
 end
-if ~exist('modeFlag','var')
-    modeFlag=0;
-end
+% ///// Commented only for comparison with original fastcc withouth modeFlag
+% if ~exist('modeFlag','var')
+%     modeFlag=0;
+% end
+%//////////////////////////////////////////////////////////////////////////
 
 tic
+
+% origModel=model; % Commented only for comparison with original fastcc
 
 %number of reactions
 N = (1:size(model.S,2));
 
-veryOrigModel=model;
-
-%reactions irreversible in the reverse direction
-Ir = find(model.ub<=0);
-%flip direction of reactions irreversible in the reverse direction
-model.S(:,Ir) = -model.S(:,Ir);
-tmp = model.ub(Ir);
-model.ub(Ir) = -model.lb(Ir);
-model.lb(Ir) = -tmp;
-
-%save the model with only the flips of the reverse reactions
-origModel=model;
-
-%all irreversible reactions should only be in the forward direction
-I  = find(model.lb>=0);
+%reactions assumed to be irreversible in forward direction
+I = find(model.lb==0);
 
 A = [];
 
@@ -64,177 +56,114 @@ if printLevel>1
 end
 
 %V is the n x k matrix of maximum cardinality vectors
-V=[];
+% V=[]; Commented only for comparison with original fastcc withouth modeFlag
 
 %v is the flux vector that approximately maximizes the cardinality 
 %of the set of irreversible reactions v(J)
-[v, basis] = LP7( J, model, epsilon);
+V = LP7( J, model, epsilon);
 
-%A is the set of reactions in v with absoulte value greater than epsilon
-Supp = find( abs(v) >= 0.99*epsilon );
-A = Supp;
-if printLevel>1
-    fprintf('|A|=%d\n', numel(A));
-end
-
-if length(A)>0 && modeFlag
-    %save the first v
-    V=[V,v];
-end
-
-%incI is the set of irreversible reactions that are flux inconsistent
-incI = setdiff( J, A );
-if ~isempty( incI )
-    if printLevel>0
-        fprintf('\n(flux inconsistent subset of I detected)\n');
-    end
-end
-
-%J is the set of reactions with absolute value less than epsilon in V
-J = setdiff( setdiff( N, A ), incI);
-if printLevel>1
-    fprintf('|J|=%d  ', numel(J));
-end
-
-% reversible reactions have to be tried for flux consistency in both
-% directions
-flipped = false;
-singleton = false;
-JiRev=[];
-orientation=ones(size(model.S,2),1);
-while ~isempty( J )
-    if singleton
-        Ji = J(1);
-        [v, basis] = LP3( Ji, model, basis);
-    else
-        Ji = J;
-        [v, basis] = LP7( Ji, model, epsilon, basis);
-    end
-    %Supp is the set of reactions in v with absoulte value greater than epsilon
-    Supp = find( abs(v) >= 0.99*epsilon );
-    %A is the set of reactions in V with absoulte value greater than epsilon
-    nA1=length(A);
-    A = union( A, Supp);
-    nA2=length(A);
+% ======================= EDITED on original LP7 of FASTCORE | Oveis Jamialahmadi =============
+% NOTE: The following lines are not documented; however, the overall ideas are:
+% 1- After identifying the inconsistent irreversible rxns by original LP7, similar to original
+%    fastcc, the reversible reactions which their consistency have not been established yet are 
+%    set as objectives to form a new LP problem. On the other hand, the lb of irreversible consistent 
+%    reactions are set to epsilon (clearly they can carry flux). This new LP is run two times:one
+%    for 'max' and the other for 'min'. Reversible rxns which can carry a flux in either of these 
+%    two optimization states are moved to consistent rxns (Threshold is the same as that of LP-7). Also,
+%    similar to original fastcc, by flipping the S matrix sign, the flux rates in reverse directions are
+%    also checked similar to the above-mentioned procedure. These steps are run in a loop (just
+%     like the fastcc, but without iterative use of LP-7). 
+% 2- Comparing these results with those of fastcc revealed that some rxns cannot be checked merely 
+%    with this method. These rxns have special characteristics as mentioned in lines 168-169.
+% 3- This approach takea much less cpu time comparing with fastcc, simply by using Lp-7 only for one time.
+N = (1:size(model.S,2));
+ThrowME = 1; loopME = 1;
+while ThrowME
+    Supp = find( abs(V) >= 0.99*epsilon );
+    A = Supp;
+    A_original = A;
     
-    %save v if new flux consistent reaction found
-    if nA2>nA1 && modeFlag
-        if ~isempty(JiRev)
-            %make sure the sign of the flux is consistent with the sign of
-            %the original S matrix if any reactions have been flipped
-            len=length(orientation);
-            vf=spdiags(orientation,0,len,len)*v;
-            V=[V,vf];
-            
-            %sanity check
-            if norm(origModel.S*vf)>epsilon/100
-                fprintf('%g%s\n',epsilon/100, '= epsilon/100')
-                fprintf('%s\t%g\n','should be zero :',norm(model.S*v)) % should be zero
-                fprintf('%s\t%g\n','should be zero :',norm(origModel.S*vf)) % should be zero
-                fprintf('%s\t%g\n','may not be zero:',norm(model.S*vf)) % may not be zero
-                fprintf('%s\t%g\n','may not be zero:',norm(origModel.S*v)) % may not be zero
-                error('Flipped flux consistency step failed.')
-            end
-        else
-            V=[V,v];
-        end
-    end
-        
-    if printLevel>1
-        fprintf('|A|=%d\n', numel(A));
-    end
-    %if the set of reactions in V with absolute value less than epsilon has
-    %no reactions in common with the set of reactions in V with absolute value
-    %greater than epsilon, then flip the sign of the reactions with absolute
-    %value less than epsilon because perhaps they are flux consistent in
-    %the reverse direction
-    if ~isempty( intersect( J, A ))
-        %J is the set of reactions with absolute value less than epsilon in V
-        J = setdiff( J, A );
-        if printLevel>1
-            fprintf('|J|=%d  ', numel(J));
-        end
-        flipped = false;
-    else
-        %do not flip the direction of exclusively forward reactions
-        JiRev = setdiff( Ji, I );
-        
-        if flipped || isempty( JiRev )
-            %if reactions flipped, check if first reaction without flux
-            %can really not carry flux
-            %if only forward reactions are candidates suggested to be flipped
-            %then report reaction as flux inconsistent
-            flipped = false;
-            if singleton
-                J = setdiff( J, Ji );
-                if printLevel>1
-                    fprintf('%s','Flux inconsistent reversible reaction detected:');
-                end
-                if printLevel>1
-                    fprintf('%s\n',model.rxns{Ji});
-                end
-            else
-                singleton = true;
-            end
-        else
-            %flipping the orientation of reactions
-            model.S(:,JiRev) = -model.S(:,JiRev);
-            tmp = model.ub(JiRev);
-            model.ub(JiRev) = -model.lb(JiRev);
-            model.lb(JiRev) = -tmp;
-            flipped = true;
-            %need to keep track of the orientation of model.S compared with
-            %origModel.S
-            orientation(JiRev)=orientation(JiRev)*-1;
-            if printLevel>1
-                fprintf('%s\n',['Flipped ' num2str(length(JiRev)) ' reaction.']);
-            end
-        end
-    end
-end
-
-modelFlipped=model;
-
-if modeFlag
-    flippedReverseOrientation=ones(size(model.S,2),1);
-    flippedReverseOrientation(Ir)=-1;
-    %flip the direction of the returned fluxes
-    V=spdiags(flippedReverseOrientation,0,size(model.S,2),size(model.S,2))*V;
+    inconsistent_irrevs = setdiff( J, A );
+    consistent_revs = setdiff( A, J );
+    zero_revs = setdiff( setdiff( N, A ), inconsistent_irrevs);
+    zero_revs_rxns = model.rxns(zero_revs);
+%     consistent_revs_rxns = model.rxns(consistent_revs);
+%     inconsistent_irrevs = model.rxns(setdiff( J, A ));
     
-    %sanity check
-    if norm(veryOrigModel.S*V,inf)>epsilon/100
-        fprintf('%g%s\n',epsilon/100, '= epsilon/100')
-        fprintf('%g%s\n',norm(veryOrigModel.S*V,inf),' = ||S*V||.')
-        if 0
-            error('Flux consistency check failed')
-        else
-            warning('Flux consistency numerically challenged')
-        end
-    else
-        if printLevel>0
-            fprintf('%s\n','Flux consistency check finished...')
-            fprintf('%10u%s\n',sum(any(V,2)),' = Number of flux consistent columns.')
-            fprintf('%10f%s\n\n',norm(veryOrigModel.S*V,inf),' = ||S*V||.')
+    model.lb(setdiff(A,consistent_revs)) = epsilon;
+    model.c(find(model.c)) = 0;
+    model.c(zero_revs) = 1;
+
+    New_V1 = optimizeCbModel(model,'min');
+    New_Vm1 = optimizeCbModel(model,'max');
+
+    Flg_revs = zeros(numel(V),1);
+    for i = 1:numel(zero_revs_rxns)
+        if abs(New_V1.x(zero_revs(i))) >= 0.99*epsilon || abs(New_Vm1.x(zero_revs(i))) >= 0.99*epsilon
+
+            V(zero_revs(i)) = epsilon;
+            Flg_revs(zero_revs(i)) = 1;
         end
     end
+
+    JiRev = find(model.rev);
+    model.S(:,JiRev) = -model.S(:,JiRev);
+    tmp = model.ub(JiRev);
+    model.ub(JiRev) = -model.lb(JiRev);
+    model.lb(JiRev) = -tmp;
+    New_V1 = optimizeCbModel(model,'min');
+    New_Vm1 = optimizeCbModel(model,'max');
+
+    for i = 1:numel(zero_revs_rxns)
+        if abs(New_V1.x(zero_revs(i))) >= 0.99*epsilon || abs(New_Vm1.x(zero_revs(i))) >= 0.99*epsilon
+              if ~Flg_revs(zero_revs(i))
+                  V(zero_revs(i)) = epsilon;
+              end
+        end
+    end
+    
+    model.S(:,JiRev) = -model.S(:,JiRev);
+    tmp = model.ub(JiRev);
+    model.ub(JiRev) = -model.lb(JiRev);
+    model.lb(JiRev) = -tmp;
+    
+    Supp = find( abs(V) >= 0.99*epsilon );
+    A = Supp;
+    if numel(A) == numel(A_original)
+        ThrowME = 0;
+    end
+    loopME = loopME + 1;
 end
-origModel=veryOrigModel;
-if numel(A) == numel(N)
-    if printLevel>0
-        fprintf('\n fastcc.m: The input model is consistent.\n');
+
+% Check for remaining reversible rxns with one single metabolite in common:
+% For example: Rxns 1515 and 3145 in Recon2 and Rxns 881 and 1327 in Recon1
+[MetIndx,~] = find(model.S(:,zero_revs));
+[unique_ids,~,Idx] = unique(MetIndx);
+% Repeated_ids = unique_ids(histc(Idx,1:numel(Idx))==2);
+
+candidate_revs = (0); ct1 = 1;
+for ct = 1:numel(zero_revs)
+    if numel(find(model.S(:,zero_revs(ct)))) == 1
+       Temp_mets = find(model.S(:,zero_revs(ct)));
+       Temp_rxns = find(model.S(Temp_mets,:));
+       if numel(Temp_rxns) == 2 && isempty(setdiff(Temp_rxns,zero_revs))
+        candidate_revs(ct1) = zero_revs(ct);
+        ct1 = ct1 + 1;
+       end
     end
 end
-if printLevel>1
-    toc
-end
 
-
-
-
-
-
-
-
-
-
-
+% Set new objectives
+model.c(find(model.c)) = 0;
+model.c(candidate_revs) = 1;
+Min_res = optimizeCbModel(model,'min');
+Min_res = Min_res.x(candidate_revs);
+Min_res(Min_res<0.99*epsilon) = 0;
+Max_res = optimizeCbModel(model,'max');
+Max_res = Max_res.x(candidate_revs);
+Max_res(Max_res<0.99*epsilon) = 0;
+[~,candInd] = setdiff(abs(Min_res),abs(Max_res));
+[candInd,~] = find(model.S(:,candidate_revs(candInd)));
+[~,candInd] = find(model.S(candInd,:));
+Cons_revs = intersect(zero_revs,candInd);
+A = union(A,Cons_revs);
