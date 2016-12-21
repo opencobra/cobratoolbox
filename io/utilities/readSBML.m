@@ -60,6 +60,8 @@ chargeList = [];
 metFormulas = {};
 haveFormulasFlag = false;
 tmpSpecies = [];
+%mark the order of non-boundary metabolites
+metNB = false(nMetsTmp,1);
 
 for i = 1:nMetsTmp
     % Ignore boundary metabolites
@@ -69,6 +71,7 @@ for i = 1:nMetsTmp
             tmpSpecies = [ tmpSpecies  modelSBML.species(i)];
             speciesList{end+1} = modelSBML.species(i).id;
             notesField = modelSBML.species(i).notes;
+            metNB(i) = true;
             % Get formula if in notes field
             if (~isempty(notesField))
                 [tmp,tmp,tmp,tmp,formula,tmp,tmp,tmp,tmp,charge] = parseSBMLNotesField(notesField);
@@ -93,6 +96,8 @@ for i = 1:nMetsTmp
     end
 end
 
+%get the indices of non-boundary metabolites
+metNB = find(metNB);
 nMets = length(speciesList);
 
 %% Construct stoichiometric matrix and reaction list
@@ -540,8 +545,8 @@ for i = 1:nMets
         metTmp = [regexprep(metID,['_' compID{1} '$'],'') '[' compID{1} ']'];
     else
         metTmp = metID;
-        if ~isempty(modelSBML.species(i).compartment)
-            metTmp=[metTmp,'[',modelSBML.species(i).compartment,']'];
+        if ~isempty(modelSBML.species(metNB(i)).compartment)
+            metTmp=[metTmp,'[',modelSBML.species(metNB(i)).compartment,']'];
         end
     end
     %Clean up met ID
@@ -573,14 +578,14 @@ for i = 1:nMets
         metNames{i} = metNamesTmp;
     end
     % parse the anotation fields of the species structures
-    if isfield(modelSBML.species(i),'annotation')
+    if isfield(modelSBML.species(metNB(i)),'annotation')
         hasAnnotationField = 1;
         % %         if i==2 % for debugging
         % %             disp('good');
         % %         end
         
         if exist('parseSBMLAnnotationField','file')
-            [metCHEBI,metHMDBparsed,metKEGG,metPubChem,metInChI] = parseSBMLAnnotationField(modelSBML.species(i).annotation); %% replace the older version of the function with the newer version
+            [metCHEBI,metHMDBparsed,metKEGG,metPubChem,metInChI] = parseSBMLAnnotationField(modelSBML.species(metNB(i)).annotation); %% replace the older version of the function with the newer version
             metCHEBIID{i} = metCHEBI;
             metHMDB{i}=metHMDBparsed;
             metKEGGID{i} = metKEGG;
@@ -595,7 +600,7 @@ for i = 1:nMets
     %%%%%%%%%%%% charge and formula %%%%%%%%%%%%
     if isfield(modelSBML,'fbc_version')
         for s=1:length(listSpeciesField);
-            fbcMet.(listSpeciesField{s}){i,1}=modelSBML.species(i).(listSpeciesField{s});
+            fbcMet.(listSpeciesField{s}){i,1}=modelSBML.species(metNB(i)).(listSpeciesField{s});
             
         end
     end
