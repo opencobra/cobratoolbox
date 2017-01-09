@@ -59,6 +59,9 @@ function [tissueModel,Rxns] = createTissueSpecificModel(model, ...
 % Adjusted manual input for alt. splice form, IT 05/27/10
 % Final Corba 2.0 Version, AB 08/05/10
 
+% extractGPRs subfunction was replaced with a much more sufficient script
+% Oveis Jamialahmadi, 11/30/2016
+
 % Define defaults
 % Deal with hardcoded belief that all the genes will have human entrez
 % ids and the user wants to collapse alternative constructs
@@ -472,112 +475,31 @@ unknown = setdiff(unknown,rxnExpressed);
 unknown = setdiff(unknown,unExpressed);
 unExpressed = setdiff(unExpressed,rxnExpressed);
 
-function [parsedGPR,corrRxn] = extractGPRs(model)
+function [ParsedGPR,corrRxns] = extractGPRs(model)
 
-warning off all
-
-parsedGPR = [];
-corrRxn = [];
-cnt = 1;
-
-for i = 1:length(model.rxns)
-    if length(model.grRules{i}) > 1
-        % Parsing each reactions gpr
-		%Replace and/or which are surrounded by whitespace (e.g. not within a gene id) with the symbols &/| to make strtok parsing of geneids containing the letters "adnor" possible.
-		grRuleIn=regexprep(regexprep(model.grRules{i},'\s+or\s+','|'),'\s+and\s+','&');
-        [parsing{1,1},parsing{2,1}] = strtok(grRuleIn,'|');
-        for j = 2:1000
-            [parsing{j,1},parsing{j+1,1}] = strtok(parsing{j,1},'|');
-            if isempty(parsing{j+1,1})==1
-                break
-            end
-        end
-        
-        for j = 1:length(parsing)
-            for k = 1:1000
-                [parsing{j,k},parsing{j,k+1}] = strtok(parsing{j,k},'&');
-                if isempty(parsing{j,k+1})==1
-                    break
-                end
-            end
-        end
-        
-        for j = 1:size(parsing,1)
-            for k = 1:size(parsing,2)
-                parsing{j,k} = strrep(parsing{j,k},'(','');
-                parsing{j,k} = strrep(parsing{j,k},')','');
-                parsing{j,k} = strrep(parsing{j,k},' ','');
-            end
-        end
-        
-        for j = 1:size(parsing,1)-1
-            newparsing(j,:) = parsing(j,1:length(parsing(j,:))-1);
-        end
-        
-        parsing = newparsing;
-        
-     
-        for j = 1:size(parsing,1)
-            for k = 1:size(parsing,2)
-                if length(parsing{j,k}) == 0
-                    parsing{j,k} = '';                    
-                end
-            end
-        end
-        
-              
-        num = size(parsing,1);
-        for j = 1:num
-            sizeP = length(parsing(j,:));
-            if sizeP > size(parsedGPR,2)
-                for k = 1:size(parsedGPR,1)
-                    parsedGPR{k,sizeP} = {''};
-                end
-            end
-            
-            for l = 1:sizeP          
-            parsedGPR{cnt,l} = parsing(j,l);
-            end           
-            cnt = cnt+1;
-        end
-        
-        for j = 1:num
-            corrRxn = [corrRxn;model.rxns(i)];
-        end
-        
-        clear parsing newparsing
-        
+AllRules = model.grRules;
+[AllGPR,corrRxns] = deal({});
+for i = 1:numel(AllRules)
+    if isempty(AllRules{i})
+        continue
     end
-    
+    EachRule = AllRules{i};
+    EachRule = strrep(EachRule,'(','');
+    EachRule = strrep(EachRule,')','');
+
+    orFind = textscan(EachRule,'%s','delimiter','or'); orFind = orFind{1};
+    orFind(cellfun('isempty',orFind)) = [];
+
+    GPR_temp=regexp(orFind,'\d*','match');
+    corrRxns = [corrRxns;repmat(model.rxns(i),numel(GPR_temp),1)];
+    AllGPR = [AllGPR;GPR_temp];
 end
 
-for i = 1:size(parsedGPR,1)
-    for j = 1:size(parsedGPR,2)
-        if isempty(parsedGPR{i,j}) == 1
-            parsedGPR{i,j} = {''};
-        end
-    end
-end
-
-i =1 ;
-sizeP = size(parsedGPR,1);
-while i <= sizeP
-    if strcmp(parsedGPR{i,1},{''}) == 1
-        parsedGPR = [parsedGPR(1:i-1,:);parsedGPR(i+1:end,:)];
-        corrRxn = [corrRxn(1:i-1,:);corrRxn(i+1:end,:)];
-        sizeP = sizeP-1;        
-        i=i-1;
-    end
-    i = i+1;
-end
-
-for i = 1:size(parsedGPR,1)
-    for j= 1:size(parsedGPR,2)
-        parsedGPR2(i,j) = cellstr(parsedGPR{i,j});
-    end
-end
-
-parsedGPR = parsedGPR2;
+maxSize = max(cellfun(@numel,AllGPR));  
+FillerFunc = @(x) [x repmat({'0'},1,maxSize-numel(x))]; 
+ParsedGPR = cellfun(FillerFunc,AllGPR,'UniformOutput',false); 
+ParsedGPR = vertcat(ParsedGPR{:});
+ParsedGPR = strrep(ParsedGPR,'0','');
 
 function [Results,Transcripts] = charExpData(ExpressionData)
 
