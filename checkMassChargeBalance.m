@@ -70,7 +70,9 @@ for j = 1 : length(Elements)
     end
 end
 
-imBalancedRxnBool=any(massImbalance,2);
+%Add everything that either has mass imbalances or where metabolites with
+%missing formulas are present.
+imBalancedRxnBool=any(massImbalance,2) | any(model.S(missingFormulaeBool,:))';
 
 imBalancedMass=cell(nRxn,1);
 for i = 1 : nRxn
