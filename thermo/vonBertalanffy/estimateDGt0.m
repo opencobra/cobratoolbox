@@ -1,4 +1,4 @@
-function model = estimateDGt0(model)
+function model = estimateDGt0(model,debug)
 % Estimate standard transformed Gibbs energies for metabolites and
 % reactions in model
 % 
@@ -25,6 +25,12 @@ function model = estimateDGt0(model)
 %                       formation.
 % .pKa                  m x 1 structure array with metabolite pKa values.
 % 
+
+% debug             0: No verbose output
+%                   1: Progress information only (no warnings)
+%                   2: Progress and warnings
+
+
 % OUTPUTS
 % model                 Model structure with following fields added:
 % .DfG0_pseudoisomers   Four column matrix with pseudoisomer standard Gibbs

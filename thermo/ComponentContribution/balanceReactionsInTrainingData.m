@@ -1,4 +1,8 @@
-function training_data = balanceReactionsInTrainingData(training_data)
+function training_data = balanceReactionsInTrainingData(training_data, debug)
+
+% debug             0: No verbose output
+%                   1: Progress information only (no warnings)
+%                   2: Progress and warnings
 
 if ~isfield(training_data, 'Ematrix') || isempty(training_data.Ematrix)
     [MW, Ematrix] = getMolecularWeight(training_data.nstd_inchi, 0);
@@ -32,5 +36,7 @@ if ~isfield(training_data, 'Ematrix') || isempty(training_data.Ematrix)
     training_data.balance = false(size(inds));
 end
 
-fprintf('Successfully created balanced training-data structure: %d compounds and %d reactions\n',...
-        size(training_data.S, 1), size(training_data.S, 2));
+if debug > 0
+    fprintf('Successfully created balanced training-data structure: %d compounds and %d reactions\n',...
+            size(training_data.S, 1), size(training_data.S, 2));
+end
