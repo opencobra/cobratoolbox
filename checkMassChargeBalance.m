@@ -26,7 +26,8 @@ function [massImbalance,imBalancedMass,imBalancedCharge,imBalancedRxnBool,Elemen
 % imBalancedCharge              nRxn x 1 vector with charge imbalance,
 %                               empty if no imbalanced reactions
 %
-% imBalancedRxnBool             boolean vector indicating imbalanced non-exchange reactions
+% imBalancedRxnBool             boolean vector indicating imbalanced
+%                               reactions (including exchange reactions!)
 %       
 % Elements                      nElement x 1 cell array of element
 %                               abbreviations checked
@@ -149,8 +150,9 @@ if nnz(strcmp('',imBalancedMass))==nRxn
     imBalancedMass=[];
 end
 
-% Check for charge balance
-imBalancedCharge=[];
+% Check for charge balance (initialize with NaN, if the fields are not set 
+% this will make it clear.
+imBalancedCharge=NaN * ones(nRxn,1);
 firstMissing=0;
 if isfield(model, 'metCharges')
     for m=1:nMet
@@ -169,15 +171,15 @@ if isfield(model, 'metCharges')
                 firstMissing=1;
                 fprintf(fid,'%s\t%s\n',int2str(m),model.mets{m})
             end
-        else
-            dC=model.S'*model.metCharges;
         end
     end
+    
+    imBalancedCharge=model.S'*model.metCharges;
 end
 
 if printLevel==-1 && isfield(model,'SIntRxnBool')
     firstMissing=0;
-    if ~isempty(imBalancedCharge)
+    if any(imBalancedCharge)
         for q=1:nRxn
             if model.SIntRxnBool(q) && dC(q)~=0 && strcmp(imBalancedMass{p,1},'')
                 if ~firstMissing
@@ -203,7 +205,7 @@ if printLevel==-1 && isfield(model,'SIntRxnBool')
 end
 
 if printLevel==2 && isfield(model,'SIntRxnBool')
-    if ~isempty(imBalancedCharge)
+    if any(imBalancedCharge)
         fprintf('%s\n','Mass balanced, but charged imbalanced reactions:')
         for q=1:nRxn
             if model.SIntRxnBool(q) && dC(q)~=0 && strcmp(imBalancedMass{p,1},'')
@@ -221,8 +223,9 @@ if printLevel==2 && isfield(model,'SIntRxnBool')
     end
 end
 
-if ~isempty(imBalancedCharge)
-    imBalancedRxnBool = imBalancedRxnBool |  imBalancedCharge~=0;
+%If the field is set we should assume, that all values are defined. 
+if isfield(model, 'metCharges')
+    imBalancedRxnBool = imBalancedRxnBool | imBalancedCharge~=0 ;
 end
 
 %nonzero rows corresponding to completely mass balanced reactions
