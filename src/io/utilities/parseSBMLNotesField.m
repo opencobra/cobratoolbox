@@ -7,6 +7,19 @@ function [genes,rule,subSystem,grRule,formula,confidenceScore,citation,comment,e
 % Markus Herrgard 8/7/06
 % Ines Thiele 1/27/10 Added new fields
 % Handle different notes fields
+% Thomas Pfau 1/10/17 Make distinction between Matlab versions
+
+MatlabVer = version('-release');
+[A,B] = regexp(MatlabVer,'[\d]+');
+MatlabYear = str2num(MatlabVer(A:B));
+%if we are prior to 2013 use the old version
+if MatlabYear < 2013
+    [genes,rule,subSystem,grRule,formula,confidenceScore,citation,comment,ecNumber,charge] = parseSBMLNotesField2012(notesField)
+    return
+end
+
+
+
 if isempty(regexp(notesField,'html:p', 'once'))
     tag = 'p';
 else
@@ -29,45 +42,47 @@ Comment = 0;
 
 for i = 1:length(fieldList)
     fieldTmp = regexp(fieldList{i},['<' tag '>(.*)</' tag '>'],'tokens');
-    fieldStr = fieldTmp{1}{1};
-    if (regexp(fieldStr,'GENE_ASSOCIATION'))
-        gprStr = regexprep(strrep(fieldStr,'GENE_ASSOCIATION:',''),'^(\s)+','');
-        grRule = gprStr;
-        [genes,rule] = parseBoolean(gprStr);
-    elseif (regexp(fieldStr,'GENE ASSOCIATION'))
-        gprStr = regexprep(strrep(fieldStr,'GENE ASSOCIATION:',''),'^(\s)+','');
-        grRule = gprStr;
-        [genes,rule] = parseBoolean(gprStr);
-    elseif (regexp(fieldStr,'SUBSYSTEM'))
-        subSystem = regexprep(strrep(fieldStr,'SUBSYSTEM:',''),'^(\s)+','');
+    fieldStr = strtrim(fieldTmp{1}{1});
+    strfields = strsplit(fieldStr,':');
+    %We have several
+    if strcmp(strfields{1}, 'GENE_ASSOCIATION') || strcmp(strfields{1}, 'GENE ASSOCIATION')
+        %Remove leading and trailing whitespace, and join the remaining strin again with the : separator
+        grRule = strtrim(strjoin(strfields(2:end),':'));
+        [genes,rule] = parseBoolean(grRule);
+    elseif strcmp(strfields{1},'SUBSYSTEM')
+        subSystem = strtrim(strjoin(strfields(2:end),':'));
         subSystem = strrep(subSystem,'S_','');
         subSystem = regexprep(subSystem,'_+',' ');
         
-        
-%%%% The following commented three lines of codes assigns the SubSystem
-%%%% 'Exchange' to any reaction that has SUBSYSTEM showing up in its notes
-%%%% field but with no subsystem assigne
-
-%         if (isempty(subSystem))
-%             subSystem = 'Exchange';
-%         end
-    elseif (regexp(fieldStr,'EC Number'))
-        ecNumber = regexprep(strrep(fieldStr,'EC Number:',''),'^(\s)+','');
-    elseif (regexp(fieldStr,'FORMULA'))
-        formula = regexprep(strrep(fieldStr,'FORMULA:',''),'^(\s)+','');
-    elseif (regexp(fieldStr,'CHARGE'))
-        charge = str2num(regexprep(strrep(fieldStr,'CHARGE:',''),'^(\s)+',''));
-    elseif (regexp(fieldStr,'AUTHORS'))
+    elseif strcmp(strfields{1},'EC Number') || strcmp(strfields{1},'EC_Number') || strcmp(strfields{1},'EC_NUMBER') || strcmp(strfields{1},'EC NUMBER')
+        ecNumber = strtrim(strjoin(strfields(2:end),':'));
+    elseif strcmp(strfields{1},'FORMULA') || strcmp(strfields{1},'Formula')
+        formula = strtrim(strjoin(strfields(2:end),':'));
+    elseif strcmp(strfields{1},'CHARGE') || strcmp(strfields{1},'Charge')
+        charge = str2num(strtrim(strjoin(strfields(2:end),':')));
+    elseif strcmp(strfields{1},'AUTHORS')
         if isempty(citation)
-            citation = strcat(regexprep(strrep(fieldStr,'AUTHORS:',''),'^(\s)+',''));
+            citation = strtrim(strjoin(strfields(2:end),':'));
         else
-            citation = strcat(citation,';',regexprep(strrep(fieldStr,'AUTHORS:',''),'^(\s)+',''));
+            citation = strcat(citation,';',strtrim(strjoin(strfields(2:end),':')));
         end
-    elseif Comment == 1 && isempty(regexp(fieldStr,'genes:', 'once'))
-        Comment = 0;
-        comment = fieldStr;
-    elseif (regexp(fieldStr,'Confidence'))
-        confidenceScore = regexprep(strrep(fieldStr,'Confidence Level:',''),'^(\s)+','');
-        Comment = 1;
+    elseif strcmp(strfields{1},'Confidence')
+        confidenceScore = strtrim(strjoin(strfields(2:end),':'));
+    elseif strcmp(strfields{1},'NOTES')
+        if isempty(comment)
+            comment = strtrim(strjoin(strfields(2:end),':'));
+        else
+            if ~isempty(strjoin(strfields(2:end),':'))
+                comment = strcat(comment,';',strjoin(strfields(2:end),':'));
+            end
+        end
+    else
+        if isempty(comment)
+            comment = strtrim(strjoin(strfields(1:end),':'));
+        else
+            if ~isempty(strjoin(strfields(1:end),':'))
+                comment = strcat(comment,';',strjoin(strfields(1:end),':'));
+            end
+        end
     end
 end
