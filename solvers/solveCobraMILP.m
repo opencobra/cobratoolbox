@@ -572,7 +572,6 @@ switch solver
         % This calls buildMPS and generates a MPS format description of the
         % problem as the result
         % Build MPS Author: Bruno Luong
-        % Interfaced with CobraToolbox by Richard Que (12/18/09)
         display('Solver set to MPS. This function will output an MPS matrix string for the MILP problem');
         
         %Get optional parameters
@@ -624,7 +623,7 @@ switch solver
         if isfield(param,'MPSfilename')
             MPSfilename=param.MPSfilename;
         else
-            MPSfilename='test.mps';
+            MPSfilename='test';
         end
 
         %split A matrix for L and E csense
@@ -638,20 +637,11 @@ switch solver
         
         %%%%Adapted from BuildMPS%%%%%
         [neq nvar]=size(Aeq);
-%         nle=size(Ale,1);
-%         if strcmp(EleNames,'')
-%             EleNames=arrayfun(EleNameFun,(1:nle),'UniformOutput', false);
-%         end
         if strcmp(EqtNames,'')
             EqtNames=arrayfun(EqtNameFun,(1:neq),'UniformOutput', false);
         end
-%         if strcmp(VarNames,'')
-%             VarNames=arrayfun(VarNameFun,(1:nvar),'UniformOutput', false);
-%         end
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-        %TODO - does not seem to write out file
-        [solution] = BuildMPS(Ale, ble, Aeq, beq, c, lb, ub, PbName,'MPSfilename',MPSfilename,'EqtNames',EqtNames,'VarNameFun',VarNameFun,'Integer',intIndex,'Binary',binaryIndex);
+        %31st Jan 2016, changed c to osense*c as most solvers assume minimisation
+        [solution] = BuildMPS(Ale, ble, Aeq, beq, osense*c, lb, ub, PbName,'MPSfilename',[MPSfilename '.mps'],'EqtNames',EqtNames,'VarNameFun',VarNameFun,'Integer',intIndex,'Binary',binaryIndex);
         %[solution] = BuildMPS(Ale, ble, Aeq, beq, c, lb, ub, PbName,'MPSfilename',MPSfilename,'EleNames',EleNames,'EqtNames',EqtNames,'VarNames',VarNames);
 
         return

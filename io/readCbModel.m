@@ -1,3 +1,12 @@
+% The "readCbModel.m" function is dependent on another function
+% "io/utilities/readSBML.m" to use libSBML library
+% (http://sbml.org/Software/libSBML), to parse a SBML-FBCv2 file into a
+% COBRA-Matlab structure. The "readCbModel.m" function is backward
+% compatible with older SBML versions. A list of fields of a COBRA
+% structure is described in an Excel spreadsheet
+% "io/COBRA_structure_fields.xlsx". While some fields are necessary for a
+% COBRA model, others are not.
+
 function model = readCbModel(fileName,defaultBound,fileType,modelDescription,compSymbolList,compNameList)
 %readCbModel Read in a constraint-based model
 %
@@ -72,6 +81,8 @@ function model = readCbModel(fileName,defaultBound,fileType,modelDescription,com
 % Markus Herrgard 7/11/06
 %
 % Richard Que 02/08/10 - Added inptus for compartment names and symbols
+%
+% Longfei Mao 26/04/2016 Added support for the FBCv2 format
 
 %% Process arguments
 
@@ -129,9 +140,9 @@ end
 switch fileType
     case 'SBML',
         if isempty(regexp(fileName,'\.xml$', 'once'))
-            model = readSBMLCbModel([fileName '.xml'],defaultBound,compSymbolList,compNameList);
+            model = readSBML([fileName '.xml'],defaultBound,compSymbolList,compNameList);
         else
-            model = readSBMLCbModel(fileName,defaultBound,compSymbolList,compNameList);
+            model = readSBML(fileName,defaultBound,compSymbolList,compNameList);
         end
     case 'SimPheny',
         model = readSimPhenyCbModel(fileName,defaultBound,compSymbolList,compNameList);
@@ -163,25 +174,27 @@ function model = checkReversibility(model)
 selRev = (model.lb < 0 & model.ub > 0);
 model.rev(selRev) = 1;
 
-%% readSBMLCbModel Read SBML format constraint-based model
-function model =  readSBMLCbModel(fileName,defaultBound,compSymbolList,compNameList)
+%% the following chunk of code is depreciated (Longfei Mao 27/04/2016)
 
-if ~(exist(fileName,'file'))
-    error(['Input file ' fileName ' not found']);
-end
-
-if isempty(compSymbolList)
-    compSymbolList = {'c','m','v','x','e','t','g','r','n','p'};
-    compNameList = {'Cytosol','Mitochondria','Vacuole','Peroxisome','Extra-organism','Pool','Golgi Apparatus','Endoplasmic Reticulum','Nucleus','Periplasm'};
-end
-
-% Read SBML
-validate=0;
-verbose=0;% Ronan Nov 24th 2014
-modelSBML = TranslateSBML(fileName,validate,verbose);
-
-% Convert
-model = convertSBMLToCobra(modelSBML,defaultBound,compSymbolList,compNameList);
+% readSBMLCbModel Read SBML format constraint-based model
+% function model =  readSBMLCbModel(fileName,defaultBound,compSymbolList,compNameList)
+% 
+% if ~(exist(fileName,'file'))
+%     error(['Input file ' fileName ' not found']);
+% end
+% 
+% if isempty(compSymbolList)
+%     compSymbolList = {'c','m','v','x','e','t','g','r','n','p'};
+%     compNameList = {'Cytosol','Mitochondria','Vacuole','Peroxisome','Extra-organism','Pool','Golgi Apparatus','Endoplasmic Reticulum','Nucleus','Periplasm'};
+% end
+% 
+% % Read SBML
+% validate=0;
+% verbose=0;% Ronan Nov 24th 2014
+% modelSBML = TranslateSBML(fileName,validate,verbose);
+% 
+% % Convert
+% model = convertSBMLToCobra(modelSBML,defaultBound,compSymbolList,compNameList);
 
 %%
 function model = readSimPhenyCbModel(baseName,defaultBound,compSymbolList,compNameList)

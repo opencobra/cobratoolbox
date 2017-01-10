@@ -1,10 +1,10 @@
-function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)
+function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops, zeroNormApprox)
 %optimizeCbModel Solve a flux balance analysis problem
 %
 % Solves LP problems of the form: max/min c'*v
 %                                 subject to S*v = b         : y
 %                                            lb <= v <= ub   : w
-% FBAsolution = optimizeCbModel(model,osenseStr,minNormFlag)
+% optimizeCbModel(model,osenseStr, minNorm, allowLoops, zeroNormApprox)
 %
 % FBAsolution.stat is either 1,2,0 or -1, and is a translation from FBAsolution.origStat,
 % which is returned by each solver in a solver specific way. That is, not all solvers return 
@@ -25,37 +25,62 @@ function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)
 %   ub           Upper bounds
 %
 %OPTIONAL INPUTS
-% osenseStr      Maximize ('max')/minimize ('min') (opt, default = 'max')
+% osenseStr         Maximize ('max')/minimize ('min') (opt, default = 'max')
 %
-% minNorm        {(0), 'one', > 0 , n x 1 vector}, where [m,n]=size(S);
-%                0      Default, normal LP
-%                'one'  Minimise the Taxicab Norm using LP.
+% minNorm           {(0), 'one', 'zero', > 0 , n x 1 vector}, where [m,n]=size(S);
+%                   0      Default, normal LP
+%                   'one'  Minimise the Taxicab Norm using LP.
 %                                 min |v|
 %                                   s.t. S*v = b
 %                                        c'v = f
 %                                        lb <= v <= ub
-%                -----
-%                The remaining options work only with a valid QP solver:
-%                -----
-%                > 0    Minimises the Euclidean Norm of internal fluxes.
+%                       A LP solver is required.
+%                   'zero' Minimize the cardinality (zero-norm) of v
+%                                 min ||v||_0
+%                                   s.t. S*v = b
+%                                        c'v = f
+%                                        lb <= v <= ub
+%                       The zero-norm is approximated by a non-convex approximation
+%                       Six approximations are available: capped-L1 norm, exponential function
+%                       logarithmic function, SCAD function, L_p norm with p<0, L_p norm with 0<p<1
+%                       Note : capped-L1, exponential and logarithmic function often give 
+%                       the best result in term of sparsity.
+% 
+%                       See "Le Thi et al., DC approximation approaches for sparse optimization,
+%                       European Journal of Operational Research, 2014"
+%                       http://dx.doi.org/10.1016/j.ejor.2014.11.031
+%                       A LP solver is required.
+%                   -----
+%                   The remaining options work only with a valid QP solver:
+%                   -----
+%                   > 0    Minimises the Euclidean Norm of internal fluxes.
 %                       Typically 1e-6 works well.
 %                                 min ||v||
 %                                   s.t. S*v = b
 %                                        c'v = f
 %                                        lb <= v <= ub
-%               n x 1   Forms the diagonal of positive definiate
+%                   n x 1   Forms the diagonal of positive definiate
 %                       matrix F in the quadratic program
 %                               min 0.5*v'*F*v
 %                               st. S*v = b
 %                                   c'*v = f
 %                                   lb <= v <= ub
 %
-% allowLoops    {0,(1)} If false,  then instead of a conventional FBA,
-%               the solver will run an MILP version which does not allow
-%               loops in the final solution.  Default is true.
-%               Runs much slower when set to false.
-%               See addLoopLawConstraints.m to for more info.
+% allowLoops        {0,(1)} If false,  then instead of a conventional FBA,
+%                   the solver will run an MILP version which does not allow
+%                   loops in the final solution.  Default is true.
+%                   Runs much slower when set to false.
+%                   See addLoopLawConstraints.m to for more info.
 %
+% zeroNormApprox    appoximation type of zero-norm (only available when minNorm='zero') (default = 'cappedL1')
+%                           'cappedL1' : Capped-L1 norm
+%                           'exp'      : Exponential function
+%                           'log'      : Logarithmic function
+%                           'SCAD'     : SCAD function
+%                           'lp-'      : L_p norm with p<0
+%                           'lp+'      : L_p norm with 0<p<1
+%                           'all'      : try all approximations and return the best result
+
 %OUTPUT
 % FBAsolution
 %   f         Objective value
@@ -87,6 +112,8 @@ function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops)
 %                                global parameters.
 % Ronan Fleming         14/09/11 Fixed bug in minNorm with negative
 %                                coefficient in objective
+% Minh Le               11/02/16 Option to minimise the cardinality of
+%                                fluxes vector
 
 %% Process arguments and set up problem
 
@@ -108,6 +135,18 @@ if exist('minNorm', 'var')
     if isempty(minNorm)
         %use global solver parameter for minNorm
         minNorm = getCobraSolverParams('LP','minNorm');
+    end
+    % if minNorm = 'zero' then check the parameter 'zeroNormApprox'
+    if isequal(minNorm,'zero')
+        if exist('zeroNormApprox', 'var')
+            availableApprox = {'cappedL1','exp','log','SCAD','lp-','lp+','all'};
+            if ~ismember(zeroNormApprox,availableApprox)
+                warning('Approximation is not valid. Default value will be used');
+                zeroNormApprox = 'cappedL1';
+            end
+        else
+            zeroNormApprox = 'cappedL1';
+        end
     end
 else
     %use global solver parameter for minNorm
@@ -132,6 +171,9 @@ end
 if ~isfield(model,'csense')
     % If csense is not declared in the model, assume that all
     % constraints are equalities.
+    if printLevel>1
+        fprintf('%s\n','LP problem has no defined csense. We assume that all constraints are equalities.')
+    end
     LPproblem.csense(1:nMets,1) = 'E';
 else % if csense is in the model, move it to the lp problem structure
     if length(model.csense)~=nMets,
@@ -143,15 +185,16 @@ else % if csense is in the model, move it to the lp problem structure
     end
 end
 
-
 % Fill in the RHS vector if not provided
-if (~isfield(model,'b'))
-    LPproblem.b = zeros(size(model.S,1),1);
+if ~isfield(model,'b')
+    warning('LP problem has no defined b in S*v=b. b should be defined, for now we assume b=0')
+    LPproblem.b=zeros(nMets,1);
 else
     LPproblem.b = model.b;
 end
 
 % Rest of the LP problem
+[m,n] = size(model.S);
 LPproblem.A = model.S;
 LPproblem.c = model.c;
 LPproblem.lb = model.lb;
@@ -173,17 +216,23 @@ else
     solution = solveCobraMILP(MILPproblem);
 end
 
-if (solution.stat ~= 1) % check if initial solution was successful.
-    if printLevel>0
-        warning('Optimal solution was not found');
-    end
-    FBAsolution.f = 0;
-    FBAsolution.x = [];
-    FBAsolution.stat = solution.stat;
-    FBAsolution.origStat = solution.origStat;
-    FBAsolution.solver = solution.solver;
-    FBAsolution.time = etime(clock, t1);
+global CBTLPSOLVER
+if strcmp(CBTLPSOLVER,'mps')
+    FBAsolution=solution;
     return;
+else
+    if (solution.stat ~= 1) % check if initial solution was successful.
+        if printLevel>0
+            warning('Optimal solution was not found');
+        end
+        FBAsolution.f = 0;
+        FBAsolution.x = [];
+        FBAsolution.stat = solution.stat;
+        FBAsolution.origStat = solution.origStat;
+        FBAsolution.solver = solution.solver;
+        FBAsolution.time = etime(clock, t1);
+        return;
+    end
 end
 
 objective = solution.obj; % save for later use.
@@ -238,6 +287,29 @@ if strcmp(minNorm, 'one')
         MILPproblem2 = addLoopLawConstraints(LPproblem, model, 1:nRxns);
         solution = solveCobraMILP(MILPproblem2);
     end
+elseif strcmp(minNorm, 'zero')
+    % Minimize the cardinality (zero-norm) of v
+    %       min ||v||_0
+    %           s.t.    S*v = b
+    %                   c'v = f
+    %                   lb <= v <= ub
+    
+    % Define the constraints structure
+    constraint.A = [LPproblem.A ; LPproblem.c'];
+    constraint.b = [LPproblem.b ; solution.obj];
+    constraint.csense = [LPproblem.csense;'E'];    
+    constraint.lb = LPproblem.lb;
+    constraint.ub = LPproblem.ub;
+    
+    % Call the sparse LP solver
+    solutionL0 = sparseLP(zeroNormApprox,constraint);
+    
+    %Store results
+    solution.stat   = solutionL0.stat;
+    solution.full   = solutionL0.x;
+    solution.dual   = [];
+    solution.rcost  = [];        
+    
 elseif length(minNorm)> 1 || minNorm > 0
     if nnz(LPproblem.c)>1
         error('Code assumes only one non-negative coefficient in linear part of objective');
@@ -265,8 +337,7 @@ elseif length(minNorm)> 1 || minNorm > 0
         
         if isfield(solution,'dual')
             if ~isempty(solution.dual)
-                %dont include dual variable to constraint enforcing LP optimum
-                solution.dual=solution.dual(1:end-1,1);
+                solution.dual=solution.dual(1:m,1);
             end
         end
     else
@@ -284,8 +355,7 @@ if (solution.stat == 1)
     
     if isfield(solution,'dual')
         if ~isempty(solution.dual)
-            %dont include dual variable to additional constraint
-            solution.dual=solution.dual(1:end-1,1);
+            solution.dual=solution.dual(1:m,1);
         end
     end
     

@@ -1,0 +1,73 @@
+ESTIMATED ENERGY;ESTIMATE UNCERTAINTY;GROUPS;MOLECULAR CHARGE DETERMINED FROM GROUPS;MOLECULAR CHARGE FROM INPUT FILE;MOLECULAR FORMULA;NOTES
+-33.4;1;acetaldehyde:1|0;0;C2H4O;No special notes for this compound.
+-751.994;6.90415;ring -N<:1|ring -CH<:4|two fused rings >C=:2|ring =CH-:2|ring -O-:1|ring =N-:3|-OH:2|ring =C<:1|-CH2-:6|-OPO3:1|-NH2:1|-OPO3-:1|-OPO2-:1|>C<:1|>CH-:1|-CH3:2|>C=O:2|-SH:1|amide:2|-NH-:2|Origin:1|heteroaromatic:2|-2;0;C21H32N7O16P3SH;No special notes for this compound.
+-529.59;8.71385;ring -N<:1|two fused rings >C=:2|ring -CH<:8|ring =CH-:6|ring =N-:3|ring -O-:2|ring =C<:2|-OH:4|-NH2:2|-CH2-:2|-OPO3-:1|-OPO2-:1|dbl sgl ring =N<:1|>C=O:1|amide:1|Origin:1|OCCC:1|heteroaromatic:3|-1;0;C21H26N7O14P2;No special notes for this compound.
+-785.83;7.06881;ring -N<:1|ring -CH<:4|two fused rings >C=:2|ring =CH-:2|ring -O-:1|ring =N-:3|-OH:2|ring =C<:1|-CH2-:6|-OPO3:1|-NH2:1|-OPO3-:1|-OPO2-:1|>C<:1|>CH-:1|-CH3:3|>C=O:3|amide:2|-NH-:2|-S-:1|thioester:1|Origin:1|heteroaromatic:2|-2;0;C23H34N7O17P3SH;No special notes for this compound.
+-9.53;0;H:1|1;0;H;No special notes for this compound.
+-524.32;8.53589;ring -N<:2|two fused rings >C=:2|ring -CH<:8|ring =CH-:5|ring =N-:3|ring -O-:2|ring =C<:2|-OH:4|-NH2:2|-CH2-:2|-OPO3-:1|-OPO2-:1|ring -CH2-:1|>C=O:1|amide:1|Origin:1|OCCC:1|heteroaromatic:2|-2;0;C21H27N7O14P2;No special notes for this compound.
+-33.4;1;acetaldehyde:1|0;0;C2H4O;No special notes for this compound.
+-88.29;1;acetate:1|-1;0;C2H3O2;No special notes for this compound.
+-673.85;6.08627;ring -N<:1|two fused rings >C=:2|ring -CH<:4|ring =CH-:2|ring =N-:3|ring -O-:1|ring =C<:1|-OH:2|-NH2:1|-CH2-:1|-OPO2-:2|-OPO3:1|Origin:1|heteroaromatic:2|-2;0;C10H12N5O13P3H;No special notes for this compound.
+-301.65;0.525365;-CO-OPO3-:1|-CH3:1|Origin:1|-1;0;C2H4O5P;No special notes for this compound.
+-465.85;6.07158;ring -N<:1|two fused rings >C=:2|ring -CH<:4|ring =CH-:2|ring =N-:3|ring -O-:1|ring =C<:1|-OH:2|-NH2:1|-CH2-:1|-OPO2-:1|-OPO3:1|Origin:1|heteroaromatic:2|-1;0;C10H12N5O10P2H;No special notes for this compound.
+-280.44;0.992783;>C<:1|-CH2-:2|-COO:3|-OH:1|Origin:1|-3;0;C6H5O7;No special notes for this compound.
+-222.28;1.5004;=C<:1|-CH2-:1|=CH-:1|-COO:3|Origin:1|OCCC:2|-3;0;C6H3O6;No special notes for this compound.
+-56.687;1;H2O:1|0;0;H2O;No special notes for this compound.
+-279.02;0.955217;>CH-:2|-CH2-:1|-COO:3|-OH:1|Origin:1|-3;0;C6H5O7;No special notes for this compound.
+-88.29;1;acetate:1|-1;0;C2H3O2;No special notes for this compound.
+-9.53;0;H:1|1;0;H;No special notes for this compound.
+-257.85;6.06668;ring -N<:1|two fused rings >C=:2|ring -CH<:4|ring =CH-:2|ring =N-:3|ring -O-:1|ring =C<:1|-OH:2|-NH2:1|-CH2-:1|-OPO3:1|Origin:1|heteroaromatic:2|0;0;C10H12N5O7PH;No special notes for this compound.
+-188.9;0.764221;>C=O:1|-CH2-:2|-COO:2|Origin:1|OCCO:1|-2;0;C5H4O5;No special notes for this compound.
+-92.26;1;CO2:1|0;0;CO2;No special notes for this compound.
+-862.04;7.1164;ring -N<:1|ring -CH<:4|two fused rings >C=:2|ring =CH-:2|ring -O-:1|ring =N-:3|-OH:2|ring =C<:1|-OPO3:1|-CH2-:8|-NH2:1|-OPO3-:1|-OPO2-:1|>C<:1|>CH-:1|-CH3:2|>C=O:3|-COO:1|amide:2|-NH-:2|-S-:1|thioester:1|Origin:1|heteroaromatic:2|-3;0;C25H35N7O19P3SH;No special notes for this compound.
+-188.9;0.764221;>C=O:1|-CH2-:2|-COO:2|Origin:1|OCCO:1|-2;0;C5H4O5;No special notes for this compound.
+-43.44;1;ethanol:1|0;0;C2H6O;No special notes for this compound.
+-261.974;1;orthophosphate:1|-2;0;HO4P;No special notes for this compound.
+-371.9;0.581707;-OPO3:1|-CH2-:1|>CH-:1|-COO:1|-OH:1|Origin:1|-2;0;C3H4O7PH;No special notes for this compound.
+-355.62;0.931721;-OPO3:1|-CH2-:1|>CH-:2|-OH:2|-CH=O:1|Origin:1|-1;0;C4H7O7PH;No special notes for this compound.
+-431.67;2.62301;ring -CH<:3|ring -O-:1|-CH2-:2|ring >C<:1|-OH:4|-OPO3:1|Origin:1|0;0;C6H11O9PH;No special notes for this compound.
+-319.2;0.629828;-OPO3:1|-CH2-:1|>CH-:1|-CH=O:1|-OH:1|Origin:1|-1;0;C3H5O6PH;No special notes for this compound.
+-430.78;3.01132;-OPO3:1|-CH2-:1|ring -CH<:5|ring -O-:1|-OH:4|Origin:1|-1;0;C6H11O9PH;No special notes for this compound.
+-121.69;1.21334;>CH-:1|-CH2-:2|-COO:1|-NH3:1|>C=O:1|amide:1|-NH2:1|Origin:1|0;0;C5H10N2O3;No special notes for this compound.
+-164.13;0.75351;>CH-:1|-CH2-:2|-COO:2|-NH3:1|Origin:1|-1;0;C5H8NO4;No special notes for this compound.
+-736.82;8.51575;ring -CH<:8|ring -N<:2|ring -O-:2|two fused rings >C=:2|ring =CH-:5|-OPO3:1|ring =N-:3|-OH:3|-CH2-:2|ring =C<:2|-OPO3-:1|-NH2:2|-OPO2-:1|ring -CH2-:1|>C=O:1|amide:1|Origin:1|OCCC:1|heteroaromatic:2|-2;0;C21H26N7O17P3H;No special notes for this compound.
+-190.52;0.70109;>C=O:1|-CH2-:1|-COO:2|Origin:1|OCCO:1|-2;0;C4H2O5;No special notes for this compound.
+-316.08;1.17946;-OPO3:1|=C<:1|-COO:1|=CH2:1|Origin:1|OCCC:1|-2;0;C3H2O6PH;No special notes for this compound.
+-112.69;0.600303;>C=O:1|-COO:1|-CH3:1|Origin:1|OCCO:1|-1;0;C3H3O3;No special notes for this compound.
+-394.12;2.63513;-OPO3:1|-CH2-:1|ring -CH<:4|ring -O-:1|-OH:3|Origin:1|-1;0;C5H9O8PH;No special notes for this compound.
+-742.09;8.69413;ring -CH<:8|ring -N<:1|ring -O-:2|two fused rings >C=:2|ring =CH-:6|-OPO3:1|ring =N-:3|-OH:3|-CH2-:2|ring =C<:2|-OPO3-:1|-NH2:2|-OPO2-:1|dbl sgl ring =N<:1|>C=O:1|amide:1|Origin:1|OCCC:1|heteroaromatic:3|-1;0;C21H25N7O17P3H;No special notes for this compound.
+-92.26;1;CO2:1|0;0;CO2;No special notes for this compound.
+3.9197;1;O2:1|0;0;O2;No special notes for this compound.
+120.8;9.24874;aromatic ring =C<:6|-OH:2|-CH3:12|-O-:2|-CH2-:15|=CH-:8|=C<:8|Origin:1|0;0;C49H76O4;No special notes for this compound.
+142.5;9.19865;ring =C<:4|ring >C=O:2|-CH3:12|-O-:2|-CH2-:15|=CH-:8|=C<:8|Origin:1|OCCC:4|0;0;C49H74O4;No special notes for this compound.
+-123.17;0.503933;>CH-:1|-COO:1|-CH3:1|-OH:1|Origin:1|-1;0;C3H5O3;No special notes for this compound.
+-123.17;0.503933;>CH-:1|-COO:1|-CH3:1|-OH:1|Origin:1|-1;0;C3H5O3;No special notes for this compound.
+-371.9;0.581707;-OPO3:1|>CH-:1|-COO:1|-CH2-:1|-OH:1|Origin:1|-2;0;C3H4O7PH;No special notes for this compound.
+-43.44;1;ethanol:1|0;0;C2H6O;No special notes for this compound.
+-83.9;1;formate:1|-1;0;CHO2;No special notes for this compound.
+-219.17;2.71119;ring >C<:1|ring -CH<:3|ring -O-:1|-CH2-:2|-OH:5|Origin:1|0;0;C6H12O6;No special notes for this compound.
+-143.7;1.43379;-COO:2|=CH-:2|Origin:1|OCCC:2|-2;0;C4H2O4;No special notes for this compound.
+-218.28;3.08844;ring -CH<:5|ring -O-:1|-CH2-:1|-OH:5|Origin:1|0;0;C6H12O6;No special notes for this compound.
+-121.69;1.21334;>CH-:1|-CH2-:2|-COO:1|-NH3:1|>C=O:1|amide:1|-NH2:1|Origin:1|0;0;C5H10N2O3;No special notes for this compound.
+-164.13;0.75351;>CH-:1|-CH2-:2|-COO:2|-NH3:1|Origin:1|-1;0;C5H8NO4;No special notes for this compound.
+-56.687;1;H2O:1|0;0;H2O;No special notes for this compound.
+-201;0.620573;>CH-:1|-CH2-:1|-COO:2|-OH:1|Origin:1|-2;0;C4H4O5;No special notes for this compound.
+-18.97;1;NH4:1|1;0;H4N;No special notes for this compound.
+3.9197;1;O2:1|0;0;O2;No special notes for this compound.
+-261.974;1;orthophosphate:1|-2;0;HO4P;No special notes for this compound.
+-112.69;0.600303;>C=O:1|-COO:1|-CH3:1|Origin:1|OCCO:1|-1;0;C3H3O3;No special notes for this compound.
+-162.96;0.566107;-COO:2|-CH2-:2|Origin:1|-2;0;C4H4O4;No special notes for this compound.
+-644.17;2.59596;ring >C<:1|ring -O-:1|ring -CH<:3|-CH2-:2|-OH:3|-OPO3:2|Origin:1|0;0;C6H10O12P2H2;No special notes for this compound.
+-320.66;0.646196;-OPO3:1|-CH2-:2|>C=O:1|-OH:1|Origin:1|-1;0;C3H5O6PH;No special notes for this compound.
+-83.9;1;formate:1|-1;0;CHO2;No special notes for this compound.
+-143.7;1.43379;-COO:2|=CH-:2|Origin:1|OCCC:2|-2;0;C4H2O4;No special notes for this compound.
+-162.96;0.566107;-COO:2|-CH2-:2|Origin:1|-2;0;C4H4O4;No special notes for this compound.
+-201;0.620573;>CH-:1|-CH2-:1|-COO:2|-OH:1|Origin:1|-2;0;C4H4O5;No special notes for this compound.
+-428.52;2.48334;-OPO3:1|-CH2-:1|ring -CH<:4|ring -O-CO-:1|-OH:3|Origin:1|-1;0;C6H9O9PH;No special notes for this compound.
+-586.8;0.719433;-CO-OPO3-:1|>CH-:1|-CH2-:1|-OH:1|-OPO3:1|Origin:1|-1;0;C3H5O10P2H;No special notes for this compound.
+-18.97;1;NH4:1|1;0;H4N;No special notes for this compound.
+-481.16;1.64179;-OPO3:1|-CH2-:1|>CH-:4|-OH:4|-COO:1|Origin:1|-2;0;C6H10O10PH;No special notes for this compound.
+-393.5;1.14024;>CH-:2|>C=O:1|-OH:3|-CH2-:2|-OPO3:1|Origin:1|0;0;C5H9O8PH;No special notes for this compound.
+-111.04;0.539281;-COO:1|-CH=O:1|Origin:1|OCCO:1|-1;0;C2HO3;No special notes for this compound.
+-393.5;1.14024;>CH-:2|>C=O:1|-OH:3|-CH2-:2|-OPO3:1|Origin:1|0;0;C5H9O8PH;No special notes for this compound.
+-466.34;1.85468;>CH-:4|-OH:5|>C=O:1|-CH2-:2|-OPO3:1|Origin:1|0;0;C7H13O10PH;No special notes for this compound.

@@ -64,7 +64,6 @@ function sol = readMinosSolution(fname)
 %  rc(n+1:nb)  is the dual variables for each row of Ax + x = 0.
 
     data = load(fname);   % Should be a (3+nb) x 3 matrix
-
     sol.inform = data(1,1);
     sol.m      = data(1,2);
     sol.n      = data(1,3);

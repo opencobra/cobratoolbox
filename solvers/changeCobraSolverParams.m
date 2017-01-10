@@ -10,7 +10,8 @@ function changeOK = changeCobraSolverParams(solverType,paramName,paramValue)
 % paramValue    Parameter value
 %
 % Allowed LP parameter names:
-% objTol        Optimal objective accuracy tolerance
+% optTol        Optimal objective accuracy tolerance
+% teasTol       Constraint feasibilty tolerance
 % 
 % minNorm       {(0), scalar , n x 1 vector}, where [m,n]=size(S); 
 %               If not zero then, minimise the Euclidean length 
@@ -46,7 +47,12 @@ function changeOK = changeCobraSolverParams(solverType,paramName,paramValue)
 
 changeOK = false;
 
-allowedLPparams = {'objTol', 'primalOnly', 'minNorm', 'printLevel'};
+if strcmp(paramName,'objTol')
+    warning('objTol being depreciated for the more standard optTol')
+    paramName='optTol';
+end
+
+allowedLPparams = {'optTol', 'primalOnly', 'minNorm', 'printLevel','feasTol'};
 allowedQPparams = {'minNorm', 'printLevel'};
 allowedMILPparams = {'intTol','relMipGapTol','timeLimit','logFile','printLevel'};
 

@@ -8,11 +8,11 @@ function [model] = moveRxn(model,startspot,endspot)
 %INPUTS
 % model         COBRA model structure
 % startspot     The reaction number to move
-% endspot       The spot where the reaction is moving to% 
-% 
+% endspot       The spot where the reaction is moving to%
+%
 %OUTPUTS
 % model         COBRA toolbox model structure with moved reaction
-% 
+%
 % Aarash Bordbar 09/21/09
 
 if startspot > endspot
@@ -116,20 +116,24 @@ if isfield(model,'rev')
     end
 end
 
-rxnS = oldModel.S(:,startspot);
-if option == 1
-    model.S(:,endspot+1:startspot) = oldModel.S(:,endspot:startspot-1);
-    model.S(:,endspot) = rxnS;
-else
-    model.S(:,startspot:endspot-1) = oldModel.S(:,startspot+1:endspot);
-    model.S(:,endspot) = rxnS;
+if isfield(model,'S')
+  rxnS = oldModel.S(:,startspot);
+  if option == 1
+      model.S(:,endspot+1:startspot) = oldModel.S(:,endspot:startspot-1);
+      model.S(:,endspot) = rxnS;
+  else
+      model.S(:,startspot:endspot-1) = oldModel.S(:,startspot+1:endspot);
+      model.S(:,endspot) = rxnS;
+  end
 end
 
-rxnGene = oldModel.rxnGeneMat(startspot,:);
-if option == 1
-    model.rxnGeneMat(endspot+1:startspot,:) = oldModel.rxnGeneMat(endspot:startspot-1,:);
-    model.rxnGeneMat(endspot,:) = rxnGene;
-else
-    model.rxnGeneMat(startspot:endspot-1,:) = oldModel.rxnGeneMat(startspot+1:endspot,:);
-    model.rxnGeneMat(endspot,:) = rxnGene;
+if isfield(model,'rxnGeneMat')
+  rxnGene = oldModel.rxnGeneMat(startspot,:);
+  if option == 1
+      model.rxnGeneMat(endspot+1:startspot,:) = oldModel.rxnGeneMat(endspot:startspot-1,:);
+      model.rxnGeneMat(endspot,:) = rxnGene;
+  else
+      model.rxnGeneMat(startspot:endspot-1,:) = oldModel.rxnGeneMat(startspot+1:endspot,:);
+      model.rxnGeneMat(endspot,:) = rxnGene;
+  end
 end

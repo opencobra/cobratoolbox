@@ -21,7 +21,7 @@ function [model,rxnIDexists] = addReaction(model,rxnName,metaboliteList,stoichCo
 % subSystem         Subsystem (Default = '')
 % grRule            Gene-reaction rule in boolean format (and/or allowed)
 %                   (Default = '');
-% geneNameList      List of gene names (used only for translation from 
+% geneNameList      List of gene names (used only for translation from
 %                   common gene names to systematic gene names)
 % systNameList      List of systematic names
 % checkDuplicate    Check S matrix too see if a duplicate reaction is
@@ -138,7 +138,7 @@ if (nargin < 8 | isempty(objCoeff))
         objCoeff = 0;
     end
 end
-if (nargin < 9)
+if (nargin < 9 | isempty(subSystem))
     if (oldRxnFlag) && (isfield(model,'subSystems'))
         subSystem = model.subSystems{rxnID};
     else
@@ -160,8 +160,12 @@ if (nargin < 10) && (isfield(model,'grRules'))
     end
 end
 
+if isempty(grRule)
+    grRule = '';
+end
+
 if (~exist('checkDuplicate','var'))
-   checkDuplicate=true;
+    checkDuplicate=true;
 end
 
 nMets = length(model.mets);
@@ -202,27 +206,39 @@ end
 if isfield(model,'rxnECNumbers')
     model.rxnECNumbers{rxnID,1} = '';
 end
-
+% 17/02/2016 Update 4 additional fields that are present in Recon 2
+if isfield(model,'rxnKeggID')
+    model.rxnKeggID{rxnID,1} = '';
+end
+if isfield(model,'rxnConfidenceEcoIDA')
+    model.rxnConfidenceEcoIDA{rxnID,1} = '';
+end
+if isfield(model,'rxnConfidenceScores')
+    model.rxnConfidenceScores{rxnID,1} = '';
+end
+if isfield(model,'rxnsboTerm')
+    model.rxnsboTerm{rxnID,1} = '';
+end
 
 %Give warning and combine the coeffeicient if a metabolite appears more than once
- [metaboliteListUnique,~,IC] = unique(metaboliteList);
- if numel(metaboliteListUnique) ~= numel(metaboliteList)
-     warning('Repeated mets in the formula for rxn ''%s''. Combine the stoichiometry.', rxnName)
-     stoichCoeffListUnique = zeros(size(metaboliteListUnique));
-     for nMetsUnique = 1:numel(metaboliteListUnique)
+[metaboliteListUnique,~,IC] = unique(metaboliteList);
+if numel(metaboliteListUnique) ~= numel(metaboliteList)
+    warning('Repeated mets in the formula for rxn ''%s''. Combine the stoichiometry.', rxnName)
+    stoichCoeffListUnique = zeros(size(metaboliteListUnique));
+    for nMetsUnique = 1:numel(metaboliteListUnique)
         stoichCoeffListUnique(nMetsUnique) = sum(stoichCoeffList(IC == nMetsUnique));
-     end
-     %preserve the order of metabolites:
-     metOrder = [];
-     for i = 1:numel(IC)
-         if ~ismember(IC(i), metOrder)
-             metOrder = [metOrder; IC(i)];
-         end
-     end
-     metaboliteList = metaboliteListUnique(metOrder);
-     stoichCoeffList = stoichCoeffListUnique(metOrder);
- end
- 
+    end
+    %preserve the order of metabolites:
+    metOrder = [];
+    for i = 1:numel(IC)
+        if ~ismember(IC(i), metOrder)
+            metOrder = [metOrder; IC(i)];
+        end
+    end
+    metaboliteList = metaboliteListUnique(metOrder);
+    stoichCoeffList = stoichCoeffListUnique(metOrder);
+end
+
 % Figure out which metabolites are already in the model
 [isInModel,metID] = ismember(metaboliteList,model.mets);
 
@@ -241,18 +257,24 @@ for i = 1:length(metaboliteList)
         if (isfield(model,'metNames'))      %Prompts to add missing info if desired
             model.metNames{end+1,1} = regexprep(metaboliteList{i},'(\[.+\]) | (\(.+\))','') ;
             warning(['Metabolite name for ' metaboliteList{i} ' set to ' model.metNames{end}]);
-%             model.metNames(end) = cellstr(input('Enter complete metabolite name, if available:', 's'));
+            %             model.metNames(end) = cellstr(input('Enter complete metabolite name, if available:', 's'));
         end
         if (isfield(model,'metFormulas'))
             model.metFormulas{end+1,1} = '';
             warning(['Metabolite formula for ' metaboliteList{i} ' set to ''''']);
-%             model.metFormulas(end) = cellstr(input('Enter metabolite chemical formula, if available:', 's'));
+            %             model.metFormulas(end) = cellstr(input('Enter metabolite chemical formula, if available:', 's'));
         end
         if isfield(model,'metChEBIID')
             model.metChEBIID{end+1,1} = '';
         end
+        if isfield(model,'metCHEBIID')
+            model.metCHEBIID{end+1,1} = ''; %changed to match Recon 2 nomenclature
+        end
         if isfield(model,'metKEGGID')
             model.metKEGGID{end+1,1} = '';
+        end
+        if isfield(model,'metKeggID')
+            model.metKeggID{end+1,1} = ''; %changed to match Recon 2 nomenclature
         end
         if isfield(model,'metPubChemID')
             model.metPubChemID{end+1,1} = '';
@@ -260,8 +282,20 @@ for i = 1:length(metaboliteList)
         if isfield(model,'metInChIString')
             model.metInChIString{end+1,1} = '';
         end
+        if isfield(model,'metInchiString')
+            model.metInchiString{end+1,1} = ''; %changed to match Recon 2 nomenclature
+        end
         if isfield(model,'metCharge')
             model.metCharge(end+1,1) = 0;
+        end
+        if isfield(model,'metHepatoNetID')
+            model.metHepatoNetID{end+1,1} = ''; %added
+        end
+        if isfield(model,'metEHMNID')
+            model.metEHMNID{end+1,1} = ''; %added
+        end
+        if isfield(model,'metHMDB')
+            model.metHMDB{end+1,1} = ''; %added
         end
     end
 end
@@ -275,12 +309,16 @@ end
 % if ~oldRxnFlag, model.rxnGeneMat(rxnID,:)=0; end
 
 if (isfield(model,'genes'))
-    if (nargin < 11)
+    if (nargin < 11) 
         model = changeGeneAssociation(model,rxnName,grRule);
     else
         %fprintf('In addReaction, the class of systNameList is %s',
         %class(systNameList)); % commented out by Thierry Mondeel
+        if ~isempty(geneNameList) && ~isempty(systNameList)
         model = changeGeneAssociation(model,rxnName,grRule,geneNameList,systNameList);
+        else
+            model = changeGeneAssociation(model,rxnName,grRule);
+        end
     end
 end
 
@@ -291,22 +329,22 @@ if (nNewMets > 0) && isempty(find(newMetsCoefs == 0, 1))
 else
     Stmp = model.S;
     if (checkDuplicate)
-       if size(Stmp,2)<6000
-           tmpSel = all(repmat((Scolumn),1,size(Stmp,2)) == (Stmp));
-           rxnIDexists = full(find(tmpSel));
-           if (~isempty(rxnIDexists))
-               rxnIDexists=rxnIDexists(1);
-               rxnInModel = true;
-           end
-       else
-           for i=1:size(Stmp,2)
-               if(Scolumn==Stmp(:,i))
-                   rxnInModel=true;
-                   rxnIDexists=i;
-                   break
-               end
-           end
-       end
+        if size(Stmp,2)<6000
+            tmpSel = all(repmat((Scolumn),1,size(Stmp,2)) == (Stmp));
+            rxnIDexists = full(find(tmpSel));
+            if (~isempty(rxnIDexists))
+                rxnIDexists=rxnIDexists(1);
+                rxnInModel = true;
+            end
+        else
+            for i=1:size(Stmp,2)
+                if(Scolumn==Stmp(:,i))
+                    rxnInModel=true;
+                    rxnIDexists=i;
+                    break
+                end
+            end
+        end
     end
 end
 

@@ -23,7 +23,7 @@ if ~exist('printLevel','var')
 end
 
 [m,n]   = size(S);
-if m>n
+if m>n & 0%TODO need to check this
     error('getNullSpace only tested when the number of rows of S is less than the number of columns')
 end
 

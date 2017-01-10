@@ -34,8 +34,9 @@ origSolverMILP = CBT_MILP_SOLVER;
 changeCobraSolver('mps','LP');
 changeCobraSolver('mps','MILP');
 
-%Call solveCobraLP; Name output file 'testMPSLP.mps'
-paramStruct.MPSfilename='testMPSLP.mps';
+%Call solveCobraLP; Name output file 'testMPSLP' .mps suffix added
+%automatically
+paramStruct.MPSfilename='testMPSLP';
 paramStruct.EqtNames=EqtNames;
 paramStruct.VarNameFun=VarNameFun;
 
@@ -69,7 +70,7 @@ MILPproblem.osense = 1;                             %Minimize
 %parameters
 VarNameFun = @(m) (char('x'+(m-1)));    %Function used to name variables
 EqtNames = {'Equality'};
-paramStruct.MPSfilename='testMPSMILP.mps';
+paramStruct.MPSfilename='testMPSMILP';
 paramStruct.EqtNames=EqtNames;
 paramStruct.VarNameFun=VarNameFun;
 
@@ -108,8 +109,12 @@ delete('testMPSMILP.mps');
 delete('testMPSLP.mps');
 
 %switch solvers back to original
-changeCobraSolver(origSolverLP,'LP');
-changeCobraSolver(origSolverMILP,'MILP');
+if ~isempty(origSolverLP)
+    changeCobraSolver(origSolverLP,'LP');
+end
+if ~isempty(origSolverMILP)
+    changeCobraSolver(origSolverMILP,'MILP');
+end
 
 %change to original directory
 cd(origDir);

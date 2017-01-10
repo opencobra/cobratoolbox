@@ -1,6 +1,9 @@
-% finds the best mapping between the model compounds and the training data (KEGG) compounds
 function mappingScore = getMappingScores(model, training_data)
-
+% finds the best mapping between the model compounds and the training data (KEGG) compounds
+% INPUTS
+%
+% OUTPUTS
+%
 FIXED_MAPPING_TSV_FNAME = 'data/fixed_mappings.tsv';
 if ~exist(FIXED_MAPPING_TSV_FNAME, 'file')
     error(['file not found: ', FIXED_MAPPING_TSV_FNAME]);

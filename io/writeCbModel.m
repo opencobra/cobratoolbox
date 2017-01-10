@@ -1,4 +1,10 @@
-function writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLevel,sbmlVersion)
+% The "writeCbModel" function relies on another function
+% "io/utilities/writeSBML.m" to convert a COBRA-Matlab structure into
+% a libSBML-Matlab structure and then call libSBML to export a
+% FBCv2 file. The current version of the "writeSBML.m" does not require the
+% SBML toolbox (http://sbml.org/Software/SBMLToolbox).
+
+function outmodel = writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLevel,sbmlVersion)
 %writeCbModel Write out COBRA models in various formats
 %
 % writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLevel,sbmlVersion)
@@ -6,6 +12,9 @@ function writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLeve
 %INPUTS
 % model             Standard COBRA model structure
 % format            File format to be used ('text','xls' or 'sbml')
+%
+% OPTIONAL OUTPUTS
+% outmodel          Only useable with sbml export. Will return the sbml structure, otherwise the input COBRA model structure is returned.
 %
 %OPTIONAL INPUTS
 % fileName          File name for output file (optional, default opens
@@ -19,6 +28,8 @@ function writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLeve
 % Ines Thiele 01/10 - Added more options for field to write in xls format
 % Richard Que (3/17/10) Added ability to specify compartment names and
 %                       symbols
+%
+% Longfei Mao 26/04/2016 Added support for the FBCv2 format
 
 if ~exist('compSymbolList','var') || isempty(compSymbolList)
     compSymbolList = {'c','m','v','x','e','t','g','r','n','p','l','y'};
@@ -29,7 +40,7 @@ if nargin < 6
     sbmlLevel = 2;
     sbmlVersion = 1;
 end
-
+outmodel = model;
 [nMets,nRxns] = size(model.S);
 
 formulas = printRxnFormula(model,model.rxns,false,false,false,1,false);
@@ -253,12 +264,13 @@ switch format
         end
         %% SBML
     case 'sbml'
-        sbmlModel = convertCobraToSBML(model,sbmlLevel,sbmlVersion,compSymbolList,compNameList);
-        if exist('fileName','var')&&~isempty(fileName)
-            OutputSBML(sbmlModel,fileName);
-        else
-            OutputSBML(sbmlModel);
-        end
+        % sbmlModel = convertCobraToSBML(model,sbmlLevel,sbmlVersion,compSymbolList,compNameList);
+        outmodel = writeSBML(model,fileName,compSymbolList,compNameList)
+%         if exist('fileName','var')&&~isempty(fileName)
+%             OutputSBML(sbmlModel,fileName);
+%         else
+%             OutputSBML(sbmlModel);
+%         end
         %% Unknown
     otherwise
         error('Unknown file format');

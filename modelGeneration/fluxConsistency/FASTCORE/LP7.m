@@ -33,12 +33,14 @@ beq = zeros(m,1);
 % inequalities
 Ij = sparse(nj,n); 
 Ij(sub2ind(size(Ij),(1:nj)',J(:))) = -1;
+% Ij(sub2ind(size(Ij),(1:nj)',J(:))) = -1/epsilon;
 Aineq = sparse([Ij, speye(nj)]);
 bineq = zeros(nj,1);
 
 % bounds
-lb = [model.lb; zeros(nj,1)];
+lb = [model.lb; -inf*ones(nj,1)];
 ub = [model.ub; ones(nj,1)*epsilon];
+% ub = [model.ub; ones(nj,1)];
 
 basis=[];
  
@@ -52,6 +54,10 @@ if 0
     if exist('clone1.log','file')
         delete('clone1.log')
     end
+    if exist('clone2.log','file')
+        delete('clone2.log')
+    end
+
 else
     LPproblem.A=[Aeq;Aineq];
     LPproblem.b=[beq;bineq];

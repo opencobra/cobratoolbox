@@ -106,23 +106,8 @@ function modelT = setupThermoModel(model,molfileDir,cid,T,cellCompartments,ph,is
 %                       component contribution method for estimation of
 %                       standard Gibbs energies. 
 % 
-% AVAILABILITY OF EXTERNAL DEPENDENCIES
-% The COBRA toolbox: Freely available at
-% http://sourceforge.net/projects/opencobra/files/cobra/
-% 
-% The component contribution method: Freely available at
-% http://sourceforge.net/projects/opencobra/files/cobra/foundry/
-% 
-% Python: Freely available at http://www.python.org/download/
-% 
-% Numpy: Freely available at
-% http://sourceforge.net/projects/numpy/files/NumPy/
-% 
-% ChemAxon's Calculator Plugins: Free academic license available for
-% application at http://www.chemaxon.com/my-chemaxon/my-academic-license/
-% 
-% Open Babel and Python bindings: Freely available at
-% http://openbabel.org/wiki/Get_Open_Babel
+% DEPENDENCIES
+% see initVonBertylanffy
 % 
 % Ronan M. T. Fleming, Sept. 2012   Version 1.0
 % Hulda S. H., Dec. 2012            Version 2.0

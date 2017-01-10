@@ -1,3 +1,4 @@
+function convertModelToEX(model,filename,rxnzero,EXrxns)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % convert Matlab Model to XPA format
 % Inputs:
@@ -17,9 +18,6 @@
 % Aarash Bordbar, 07/06/07
 % Updated Aarash Bordbar 02/22/10
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-function convertModelToEX(model,filename,rxnzero,EXrxns)
-
 fid = fopen(filename,'w');
 fprintf(fid,'(Internal Fluxes)\n');
 

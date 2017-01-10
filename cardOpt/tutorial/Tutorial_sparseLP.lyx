@@ -1,0 +1,629 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,	                   % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Octave,                 % the language of the code
+  otherkeywords={*,...},           % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,	                   % sets default tabsize to 2 spaces
+  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+In this tutorial, we will show how to use the sparse LP solver.
+ This solver aims to solve the following optimisation problem
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\begin{array}{ll}
+\min & \Vert x\Vert_{0}\\
+s.t & A_{eq}x=b_{eq}\\
+ & A_{ieq}x\leq b_{ieq}\\
+ & l\leq x\leq u
+\end{array}\label{eq:mainPrb}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It has been proved that zero-norm is a non-convex function and the minimisation
+ of zero-norm is a NP-hard problem.
+ Non-convex approximations of zero-norm extensively developed.
+ For a complete study of non-convex approximations of zero-norm, the reader
+ is referred to 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "sparsePaper"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The method is described in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "sparsePaper"
+
+\end_inset
+
+.
+ The sparse LP solver contains one convex (
+\begin_inset Formula $\ell_{1}$
+\end_inset
+
+norm) and 6 non-convex approximation of zero-norm
+\end_layout
+
+\begin_layout Itemize
+Capped-L1 norm
+\end_layout
+
+\begin_layout Itemize
+Exponential function
+\end_layout
+
+\begin_layout Itemize
+Logarithmic function
+\end_layout
+
+\begin_layout Itemize
+SCAD (Smoothly Clipped Absolute Deviation) function
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\ell_{p}$
+\end_inset
+
+ norm with 
+\begin_inset Formula $p<0$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\ell_{p}$
+\end_inset
+
+ norm with 
+\begin_inset Formula $0<p<1$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The tutorial consist of two parts.
+ Part 1 shows a basic usage of the solver.
+ In part 2 provides an application of the code for finding the minimal set
+ of reactions subject to a LP objective.
+ Ready-made scripts are provided for both parts.
+\end_layout
+
+\begin_layout Section*
+Example of using sparseLP solver on randomly generated data
+\end_layout
+
+\begin_layout Standard
+One randomly generates a matrix 
+\begin_inset Formula $A\in\mathbb{R}^{^{m\times n}}$
+\end_inset
+
+ and a vector 
+\begin_inset Formula $x_{0}\in\mathbb{R}^{^{n}}$
+\end_inset
+
+.
+ The right hand side vector 
+\begin_inset Formula $b$
+\end_inset
+
+ is then computed by 
+\begin_inset Formula $b=A*x_{0}$
+\end_inset
+
+.
+ 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+n = 100; 
+\end_layout
+
+\begin_layout Plain Layout
+
+m = 50; 
+\end_layout
+
+\begin_layout Plain Layout
+
+x0 = rand(n,1); 
+\end_layout
+
+\begin_layout Plain Layout
+
+constraint.A = rand(m,n); 
+\end_layout
+
+\begin_layout Plain Layout
+
+constraint.b = constraint.A*x0; 
+\end_layout
+
+\begin_layout Plain Layout
+
+constraint.lb = -1000*ones(n,1); 
+\end_layout
+
+\begin_layout Plain Layout
+
+constraint.ub = 1000*ones(n,1); 
+\end_layout
+
+\begin_layout Plain Layout
+
+constraint.csense = repmat('E', m, 1);  
+\end_layout
+
+\end_inset
+
+There are three optional inputs for the method.
+ The two first ones : maximum number of iterations (
+\shape italic
+nbMaxIteration
+\shape default
+) and threshold (
+\shape italic
+epsilon
+\shape default
+) are stopping criterion conditions.
+ 
+\shape italic
+theta
+\shape default
+ is the parameter of zero-norm approximation.
+ The greater the value of 
+\shape italic
+theta
+\shape default
+, the better the approximation of the zero-norm.
+ However, the greater the value of 
+\shape italic
+theta
+\shape default
+, the more local solutions the problem 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:mainPrb"
+
+\end_inset
+
+ has.
+ If the value of 
+\shape italic
+theta 
+\shape default
+is not given then the algorithm will use a default value and update it gradually.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+params.nbMaxIteration = 100;    % stopping criteria
+\end_layout
+
+\begin_layout Plain Layout
+
+params.epsilon = 10e-6; 		% stopping criteria
+\end_layout
+
+\begin_layout Plain Layout
+
+params.theta   = 2;    		 % parameter of l0 approximation   
+\end_layout
+
+\end_inset
+
+Call the solver with a chosen approximation
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+solution = sparseLP('cappedL1',constraint,params); 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+or with default parameter
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+solution = sparseLP('cappedL1',constraint);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Finding the minimal set of reactions subject to a LP objective
+\end_layout
+
+\begin_layout Standard
+Load a model
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+model = load('iLC915.mat');
+\end_layout
+
+\end_inset
+
+We will firstly find the optimal value subject to a LP objective
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+%% Solve FBA  
+\end_layout
+
+\begin_layout Plain Layout
+
+% max c'v 
+\end_layout
+
+\begin_layout Plain Layout
+
+% s.t   Sv = b 
+\end_layout
+
+\begin_layout Plain Layout
+
+%       l <= v <= u
+\end_layout
+
+\begin_layout Plain Layout
+
+% Define the LP structure 
+\end_layout
+
+\begin_layout Plain Layout
+
+[c,S,b,lb,ub] = deal(model.c,model.S,model.b,model.lb,model.ub); 
+\end_layout
+
+\begin_layout Plain Layout
+
+[m,n] = size(S); 
+\end_layout
+
+\begin_layout Plain Layout
+
+if ~isfield(model,'csense')     
+\end_layout
+
+\begin_layout Plain Layout
+
+	csense = repmat('E',m,1); 
+\end_layout
+
+\begin_layout Plain Layout
+
+end 
+\end_layout
+
+\begin_layout Plain Layout
+
+LPproblem = struct('c',-c,'osense',1,'A',S,'csense',csense,'b',b,'lb',lb,'ub',ub
+);  
+\end_layout
+
+\begin_layout Plain Layout
+
+% Call solveCobraLP to solve the LP 
+\end_layout
+
+\begin_layout Plain Layout
+
+LPsolution = solveCobraLP(LPproblem);
+\end_layout
+
+\end_inset
+
+We will now find the minimum number of reactions needed to achieve the same
+ max objective found previously.
+ Then one will add one more constraint: 
+\begin_inset Formula $c^{T}v=c^{T}v_{FBA}=:f_{FBA}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+constraint.A = [S ; c']; 
+\end_layout
+
+\begin_layout Plain Layout
+
+constraint.b = [b ; c'*vFBA]; 
+\end_layout
+
+\begin_layout Plain Layout
+
+constraint.csense = [csense;'E'];
+\end_layout
+
+\begin_layout Plain Layout
+
+constraint.lb = lb; 
+\end_layout
+
+\begin_layout Plain Layout
+
+constraint.ub = ub;
+\end_layout
+
+\end_inset
+
+Call the sparseLP solver to solve the problem
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\begin{array}{ll}
+\min & \Vert v\Vert_{0}\\
+s.t & Sv=b\\
+ & c^{T}v=f_{FBA}\\
+ & l\leq v\leq u
+\end{array}\label{eq:MinNbReaction}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+% Try all non-convex approximations of zero norm and take the best result
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+approximations = {'cappedL1','exp','log','SCAD','lp-','lp+'}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+bestResult = n; 
+\end_layout
+
+\begin_layout Plain Layout
+
+bestAprox = ''; 
+\end_layout
+
+\begin_layout Plain Layout
+
+for i=1:length(approximations)     
+\end_layout
+
+\begin_layout Plain Layout
+
+	solution = sparseLP(char(approximations(i)),constraint);
+\end_layout
+
+\begin_layout Plain Layout
+
+	if solution.stat == 1         
+\end_layout
+
+\begin_layout Plain Layout
+
+		if bestResult > length(find(abs(solution.x)>eps))             
+\end_layout
+
+\begin_layout Plain Layout
+
+			bestResult=length(find(abs(solution.x)>eps));             
+\end_layout
+
+\begin_layout Plain Layout
+
+			bestAprox = char(approximations(i));             
+\end_layout
+
+\begin_layout Plain Layout
+
+			solutionL0 = solution;         
+\end_layout
+
+\begin_layout Plain Layout
+
+		end     
+\end_layout
+
+\begin_layout Plain Layout
+
+	end 
+\end_layout
+
+\begin_layout Plain Layout
+
+end 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "1"
+key "sparsePaper"
+
+\end_inset
+
+
+\shape italic
+Le Thi et al., DC approximation approaches for sparse optimization, European
+ Journal of Operational Research, 2014, http://dx.doi.org/10.1016/j.ejor.2014.11.031.
+
+\shape default
+ 
+\end_layout
+
+\end_body
+\end_document
