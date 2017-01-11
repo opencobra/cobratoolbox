@@ -68,7 +68,7 @@ end
 
 if regexp(dictionary_file,'.xls$')
     [~,dictionary,~] = xlsread(dictionary_file);
-elseif regexp(dictionary_file,'.tsv$')
+elseif regexp(dictionary_file,'(.tsv)|(.txt)$')
     file_handle = fopen(dictionary_file);
     u = textscan(file_handle,'%s\t%s');
     dictionary = {};
