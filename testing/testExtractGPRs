@@ -26,6 +26,7 @@ for i = 1:numel(AllRules)
     orFind(cellfun('isempty',orFind)) = [];
 
     GPR_temp = regexp(orFind,'(\d*)[.](\d*)|(\d*)|(\w+)(\d*)[.](\d*)|(\w+)(\d+)','match');
+    GPR_temp(cellfun('isempty',GPR_temp)) =[];
     corrRxn = [corrRxn;repmat(model.rxns(i),numel(GPR_temp),1)];
     AllGPR = [AllGPR;GPR_temp];
 end
