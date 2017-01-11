@@ -167,3 +167,28 @@ end
 
 %saves the current paths
 savepath
+
+%Add tab completion updates to cobra Functions
+%Temporarily add the tabcomplete path to the path.
+addTabcompletion();
+
+
+function addTabcompletion()
+global CBTDIR
+
+addpath([CBTDIR filesep 'external' filesep 'tabcomplete'])
+cleanpath = onCleanup(@() rmpath([CBTDIR filesep 'external' filesep 'tabcomplete']));
+try
+    [~,success] = tabcomplete(1,'readSBML','FILE');
+    if success
+        tabcomplete(0,'readCbModel','FILE');
+        tabcomplete(0,'readBooleanRegModel','VAR','FILE');
+        tabcomplete(0,'xls2model','FILE');
+        tabcomplete(0,'readAtomMappingFromRxnFile','FILE');
+    end
+    
+catch ME
+    disp('A Problem occured while trying to add tabcompletion properties for the Toolbox');
+    warning(ME)
+end
+
