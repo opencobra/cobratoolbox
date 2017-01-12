@@ -80,8 +80,12 @@ ExchangeRxnMatrix = createXMatrix2(modelExpanded.mets,1,'all');
 ExchangeRxnMatrix.RxnSubsystem = ExchangeRxnMatrix.subSystems;
 
 [MatricesSUX] = mergeTwoModels(modelExpanded,ExchangeRxnMatrix,1);
-MatricesSUX.rxnGeneMat(length(MatricesSUX.rxns),length(MatricesSUX.genes))=0;
-MatricesSUX.rxnGeneMat = sparse(MatricesSUX.rxnGeneMat);
+if length(MatricesSUX.genes) > 0
+    MatricesSUX.rxnGeneMat(length(MatricesSUX.rxns),length(MatricesSUX.genes))=0;
+    MatricesSUX.rxnGeneMat = sparse(MatricesSUX.rxnGeneMat);
+else
+    MatricesSUX.rxnGeneMat = zeros(length(MatricesSUX.rxns),0);
+end
 
 % MatrixPart indicates in which area of MatricesSUX the model reactions,
 % kegg reactions, and exchange/transport reactions are located (ie. 1 -
