@@ -62,6 +62,8 @@ Installation
 
 **Please make sure that you have CPLEX installed. You must have IBM/ILOG CPLEX, not the TOMLAB version.**
 
+For **Windows**, please follow [these instructions](https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/GettingStarted/topics/set_up/Windows.html) to properly configure CPLEX. Please make sure that you install CPLEX 12.6.2+ into `C:\Program Files\IBM\ILOG\`. Do not install `CPLEX` into the root folder.
+
 In order to generate the MEX file, you must have a compiler installed that is compatible with your MATLAB release. You need to install a C++ compiler if you haven't done so already, e. g. The Microsoft Visual Studio Express 2008 compiler which is available free of charge. Depending on your Matlab version, you must verify the supported compiler [here](http://www.mathworks.com/support/compilers).
 
 ## Linux
@@ -74,7 +76,6 @@ You may find information on how to install `gcc` [here](http://preshing.com/2014
 ```
 mex -setup
 ```
-Please make sure that you install CPLEX 12.6.2+ into `C:\Program Files\IBM\ILOG\`. Do not install `CPLEX` into the root folder.
 
 ***Note for Matlab R2016b***
 
