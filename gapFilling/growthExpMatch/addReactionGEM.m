@@ -1,7 +1,7 @@
-function [newmodel, HTABLE] = addReactionGEM(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,nRxn,subSystems,grRules,rules,genes, HTABLE)
+function [newmodel, HTABLE] = addReactionGEM(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,nRxn,subSystems,grRules,rules,genes, HTABLE,hideWaitbar)
 %addReactionGEM manually adds reactions to a specified model, may add one or more reactions at a time 
 %
-%   [newmodel] = addReactionSmiley(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,subSystems,grRules,rules,genes)
+%   [newmodel] = addReactionSmiley(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,subSystems,grRules,rules,genes,HTABLE,hideWaitbar)
 %
 % - Manually add reactions to a specified model, can either add one or
 %   multiple reactions at a time
@@ -21,6 +21,8 @@ function [newmodel, HTABLE] = addReactionGEM(model,rxns,rxnNames,rxnFormulas,rev
 %     grRules         default = ''
 %     rules           default = ''
 %     genes           default = ''
+%     HTABLE
+%     hideWaitbar     [optional] if set, suppress waitbars during execution
 % Output
 %     newmodel
 %
@@ -78,10 +80,16 @@ else
     useHashTable = false;
 end
 
+if ~exist('hideWaitbar','var') || isempty(hideWaitbar)
+    hideWaitbar = false;
+else
+    hideWaitbar = true;
+end
 
 
-
-%h = waitbar(0, 'Adding Rxns ...');
+if not(hideWaitbar)
+    h = waitbar(0, 'Adding Rxns ...');
+end
 for i = 1:length(rev)
     %IO indicates whether it is part of the reactants or part of the
     %product (ie. IO = -1 is reactant, IO = 1 products)
@@ -211,9 +219,13 @@ for i = 1:length(rev)
     end
     nRxn = nRxn + 1;
     clear parsing
-    %    waitbar(i/length(rev),h);
+    if not(hideWaitbar)
+        waitbar(i/length(rev),h);
+    end
 end
-%close(h);
+if not(hideWaitbar)
+    close(h);
+end
 
 for i = 1:length(genes)
     if ~isempty(genes{i}) %length(genes{i}) ~= 0

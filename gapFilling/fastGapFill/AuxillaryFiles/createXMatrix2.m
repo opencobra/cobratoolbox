@@ -1,4 +1,4 @@
-function ExchangeRxnMatrix = createXMatrix2(compoundsIn, transport, compartment, model)
+function ExchangeRxnMatrix = createXMatrix2(compoundsIn, transport, compartment, model,hideWaitbar)
 %% ExchangeRxnMatrix = createXMatrix2(compoundsIn, transport, compartment, model)
 % createXMatrix creates a matrix full of exchange reactions based
 % on the input list (creates an exchange reaction for each of the
@@ -12,6 +12,7 @@ function ExchangeRxnMatrix = createXMatrix2(compoundsIn, transport, compartment,
 %                       [e] (default), [p] creates transport from [c] to [p] and from [p] to [c]
 % model                 model structure - used to check if exchange reaction exists
 %                       already before adding it to ExchangeRxnMatrix
+% hideWaitbar           [optional] if set, suppress waitbars during execution
 %
 % OUTPUT
 % ExchangeRxnMatrix     Model structure containing all exchange and
@@ -28,13 +29,21 @@ function ExchangeRxnMatrix = createXMatrix2(compoundsIn, transport, compartment,
 % Ines Thiele, http://thielelab.eu. 
 %
 
-if nargin < 3
-    compartment = '[c]';
-end
-if nargin < 2
+if ~exist('transport','var') || isempty(transport)
     transport = 0;
 end
-h=waitbar(0,'Exchange reaction list ...');
+if ~exist('compartment','var') || isempty(compartment)
+    compartment = '[c]';
+end
+if ~exist('hideWaitbar','var') || isempty(hideWaitbar)
+    hideWaitbar = false;
+else
+    hideWaitbar = true;
+end
+
+if not(hideWaitbar)
+    h=waitbar(0,'Exchange reaction list ...');
+end
 ExchangeRxnMatrix = createModel;
 
 
@@ -225,8 +234,12 @@ for i=1:length(compounds)
             end
         end
     end
-    if(mod(i, 40) ==0),waitbar(i/length(compounds),h);end
+    if not(hideWaitbar)
+        if(mod(i, 40) ==0),waitbar(i/length(compounds),h);end
+    end
 end
 
 ExchangeRxnMatrix.mets = ExchangeRxnMatrix.mets';
-close(h);
+if not(hideWaitbar)
+    close(h);
+end

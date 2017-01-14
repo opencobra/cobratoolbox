@@ -1,5 +1,5 @@
-function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList)
-%% function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList)
+function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList,hideWaitbar)
+%% function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList,hideWaitbar)
 %
 % createUMatrix creates the U matrix using the universal data from the KEGG
 % database
@@ -12,10 +12,11 @@ function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList)
 %
 % INPUT
 % KEGGFilename          File name containing universal database (e.g., KEGG; optional input, default: reaction.lst)
-% blackList             List of excluded reactions from the universal database
+% KEGGblackList         List of excluded reactions from the universal database
 %                       (e.g., KEGG) (optional input, default: no
 %                       blacklist)
-%
+% hideWaitbar           [optional] if set, suppress waitbars during execution
+% 
 % OUTPUT
 % KEGG              Contains universal database (U Matrix) in matrix format
 %
@@ -23,18 +24,25 @@ function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList)
 % Expanded June 2013, , http://thielelab.eu. 
 %
 
-if nargin < 2
-    KEGGBlackList= {};
-end
-if nargin < 1
+if ~exist('KEGGFilename','var') || isempty(KEGGFilename)
     KEGGFilename='reaction.lst';
+end
+if ~exist('KEGGBlackList','var') || isempty(KEGGBlackList)
+    KEGGBlackList = {};
+end
+if ~exist('hideWaitbar','var') || isempty(hideWaitbar)
+    hideWaitbar = false;
+else
+    hideWaitbar = true;
 end
 
 KEGGReactionList = importdata(KEGGFilename);
 KEGG = createModel;
 cnt=1;
 cnti=1;
-h=waitbar(0,'KEGG reaction list ...');
+if not(hideWaitbar)
+    h=waitbar(0,'KEGG reaction list ...');
+end
 HTABLE = java.util.Hashtable; % hashes Kegg.mets
 
 %Create reversibility vector, default=1 (reversible)
@@ -136,9 +144,13 @@ for i = 1: length(KEGGReactionList)
         end
         
     end
-    if (mod(i,40) ==0), waitbar(i/length(KEGGReactionList),h), end
+    if not(hideWaitbar)
+        if (mod(i,40) ==0), waitbar(i/length(KEGGReactionList),h), end
+    end
 end
-close(h);
+if not(hideWaitbar)
+    close(h);
+end
 KEGG.S=spalloc(length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets) );
 
 [KEGG] = addReactionGEM(KEGG,KEGG.rxns,KEGG.rxns,KEGG.rxnFormulas,KEGG.rev,-10000*ones(length(KEGG.rxns),1),10000*ones(length(KEGG.rxns),1),1);
