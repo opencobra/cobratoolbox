@@ -8,7 +8,7 @@ function KEGG = createUniversalReactionModel(KEGGFilename, KEGGBlackList, hideWa
 % 
 % KEGGFilename      - downloaded from KEGG database (ie. 'reaction.lst')
 % KEGGBlackList     - KEGG reactions not to use
-% hideWaitbar       - [optional] if set, suppress waitbars during run
+% hideWaitbar       - [optional] if set, suppress waitbars during execution
 %
 % Output
 %

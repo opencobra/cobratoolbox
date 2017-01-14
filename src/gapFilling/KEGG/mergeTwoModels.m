@@ -1,23 +1,35 @@
-function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel,mergeRxnGeneMat)
-% function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel)
+function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel,mergeRxnGeneMat,hideWaitbar)
+%% function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel,mergeRxnGeneMat,hideWaitbar)
 %
 % Inputs
-%   model1          model 1
-%   model2          model 2
-%   objrxnmodel     Set as 1 or 2 to set objective reaction from
-%                   desired model
+%
+% model1          - model 1
+% model2          - model 2
+% objrxnmodel     - Set as 1 or 2 to set objective reaction from
+%                 desired model
+% mergeRxnGeneMat - if false, do not merge rxnGeneMat
+% hideWaitbar     - [optional] if set, suppress waitbars during execution%
+%
+% Outputs
+%
+% modelNew        - merged model
 %
 % based on[model_metE] = CreateMetE(model_E,model_M)) (Aarash Bordbar,
 % 07/06/07);
 % 11/10/2007 IT
 
-if nargin < 3
-    objrxnmodel =1;
+if ~exist('objrxnmodel','var') || isempty(objrxnmodel)
+    objrxnmodel = 1;
+end
+if ~exist('mergeRxnGeneMat','var') || isempty(mergeRxnGeneMat)
+    mergeRxnGeneMat = true;
+end
+if ~exist('hideWaitbar','var') || isempty(hideWaitbar)
+    hideWaitbar = false;
+else
+    hideWaitbar = true;
 end
 
-if nargin < 4
-    mergeRxnGeneMat =1; % merge this part
-end
 % Creating Universal Metabolite Names
 
 % Only needed if metabolite names vary, in the specific instance of iAF1260
@@ -68,6 +80,7 @@ for i = 1:size(model2.mets,1)
         sizemets = sizemets+1;
     end
     showprogress(i/size(model2.mets,1));
+    end
 end
 
 lengthmet = size(modelNew.mets,1);
@@ -144,10 +157,14 @@ model2_num = length(a2);
 modelNew.S = spalloc(size(modelNew.mets,1),size(modelNew.rxns,1),model1_num+model2_num);
 
 showprogress(0, 'Adding Matrix 1 in Progress ...');
+end
 for i = 1:size(a1,1)
     modelNew.S(a1(i),b1(i)) = model1.S(a1(i),b1(i));
     showprogress(i/size(a1,1));
+    end
 end
+
+
 
 
 HTABLE = java.util.Hashtable;
@@ -155,6 +172,7 @@ for i = 1:length(modelNew.mets)
     HTABLE.put(modelNew.mets{i}, i);
 end
 showprogress(0, 'Adding Matrix 2 in Progress ...');
+end
 for i = 1:size(model2.S,2)
     compounds = find(model2.S(:,i));
     for j = 1:size(compounds,1)
@@ -169,7 +187,8 @@ for i = 1:size(model2.S,2)
         modelNew.S(tmp,i+size(model1.S,2)) = model2.S(compounds(j),i);
     end
     showprogress(i/size(model2.S,2));
-end
+    end
+
 
 fprintf('Finished\n');
 
@@ -211,9 +230,10 @@ for i = 1:length(model2.genes)
 end
 fprintf('Finished\n');
 
-if mergeRxnGeneMat == 1
+if mergeRxnGeneMat
 fprintf('Combining Remaining Genetic Information: ');
 showprogress(0, 'Combining Genetic Info ...');
+end
 modelNew.rxnGeneMat = model1.rxnGeneMat;
 for i = 1:size(model2.rxnGeneMat,1)
     R = find(model2.rxnGeneMat(i,:));
@@ -228,7 +248,10 @@ for i = 1:size(model2.rxnGeneMat,1)
         modelNew.rxnGeneMat(T,:) = 0;
     end
     showprogress(i/size(model2.rxnGeneMat,1));
+    end
 end
+
+
 end
 
 modelNew.grRules = model1.grRules;
