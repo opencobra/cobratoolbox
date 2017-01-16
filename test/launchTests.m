@@ -3,8 +3,6 @@ addpath(genpath('/var/lib/jenkins/MOcov'))
 addpath(genpath('/var/lib/jenkins/jsonlab'))
 addpath(genpath(pwd)) % include the root folder and all subfolders
 
-rmpath(genpath('./test/unVerifiedTests'))
-
 % add GUROBI
 addpath(genpath('/opt/gurobi650'))
 
@@ -30,7 +28,7 @@ profile on;
 %result = runtests('./metabotools/tutorial_I/run_Tutorial_I'); %fails for now
 try
 
-    result = runtests;
+    result = runtests('./test/verifiedTests/', 'IncludeSubfolders', true);
 
     % write coverage based on profile('info')
     mocov('-cover','src',...
