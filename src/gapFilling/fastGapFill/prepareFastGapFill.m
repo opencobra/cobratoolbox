@@ -54,7 +54,7 @@ if ~exist('listCompartments','var') || isempty(listCompartments)
     listCompartments = unique(rem);
 end
 
-if ~exist('Filename','var') || isempty(Filename)
+if ~exist('filename','var') || isempty(filename)
     % KEGG reaction list
     filename = 'reaction.lst';
 end
