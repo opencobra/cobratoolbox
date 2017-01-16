@@ -22,7 +22,7 @@ function [newmodel, HTABLE] = addReactionGEM(model,rxns,rxnNames,rxnFormulas,rev
 %     rules           default = ''
 %     genes           default = ''
 %     HTABLE
-%     hideWaitbar     [optional] if set, suppress waitbars during execution
+%     hideWaitbar     [optional, default: true] if set, suppress waitbars during execution
 % Output
 %     newmodel
 %
@@ -81,9 +81,9 @@ else
 end
 
 if ~exist('hideWaitbar','var') || isempty(hideWaitbar)
-    hideWaitbar = false;
-else
     hideWaitbar = true;
+else
+    hideWaitbar = false;
 end
 
 
