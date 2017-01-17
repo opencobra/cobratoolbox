@@ -1,11 +1,9 @@
 The COBRAToolbox - COnstraint-Based Reconstruction and Analysis Toolbox
 =======================================================================
 
-|  MATLAB R2016b | MATLAB R2015b | MATLAB R2014b |
-|--------|--------|--------|
-| [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches/MATLAB_VER=R2016b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches/MATLAB_VER=R2016b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches/MATLAB_VER=R2015b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches/MATLAB_VER=R2015b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches/MATLAB_VER=R2014b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches/MATLAB_VER=R2014b/) |
-
-Coverage: [![codecov](https://codecov.io/gh/opencobra/cobratoolbox/branch/develop/graph/badge.svg)](https://codecov.io/gh/opencobra/cobratoolbox/branch/develop)
+|  Code Coverage |  MATLAB R2016b | MATLAB R2015b | MATLAB R2014b |
+|--------|--------|--------|--------|
+| [![codecov](https://codecov.io/gh/opencobra/cobratoolbox/branch/develop/graph/badge.svg)](https://codecov.io/gh/opencobra/cobratoolbox/branch/develop) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2016b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2016b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2015b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2015b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2014b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2014b/) |
 
 Installation
 ------------
