@@ -541,6 +541,7 @@ for i = 1:nMets
     else
         metTmp = metID;
         if ~isempty(modelSBML.species(i).compartment)
+            metTmp=regexprep(metTmp,'(\[[a-z]{1,2}\])$','');
             metTmp=[metTmp,'[',modelSBML.species(i).compartment,']'];
         end
     end

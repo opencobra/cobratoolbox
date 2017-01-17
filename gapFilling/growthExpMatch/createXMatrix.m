@@ -1,27 +1,45 @@
-function ExchangeRxnMatrix = createXMatrix(compoundsIn, transport, compartment)
+function ExchangeRxnMatrix = createXMatrix(compoundsIn, transport, compartment,hideWaitbar)
 %createXMatrix creates a matrix full of exchange reactions based
 % on the input list (creates an exchange reaction for each of the
 % metabolites present in the model)
 %
-% ExchangeRxnMatrix = createXMatrix(compoundsIn, transport, compartment)
+% ExchangeRxnMatrix = createXMatrix(compoundsIn,transport,compartment,hideWaitbar)
+% 
+% INPUTS
 %
-% compoundsIn - SU matrix 
+% compoundsIn   - SU matrix 
+% transport     - if 1, transport reactions will be defined as well for 
+%               every compound (default: 0, which corresponds to only
+%               exchange reactions)
+% compartment   - (default = [c]) --> transport from cytoplasm [c] to 
+%               extracellulat space [e], [p] creates transport from [c] to 
+%               [p] and from [p] to [c]
+% hideWaitbar   - [optional] if set, suppress waitbars during execution
+% 
+% OUTPUT
 %
-% transport     if 1, transport reactions will be defined as well for every
-% compounds (default: 0, which corresponds to only exchange reactions)
-% compartment   [c] --> transport from cytoplasm [c] to extracellulat space
-% [e] (default), [p] creates transport from [c] to [p] and from [p] to [c]
+% ExchangeRxnMatrix - model containing all exchange reactions for all
+%                   compounds in compoundsIn
 %
 % 11-10-07 IT
 %
 
-if nargin < 3
-    compartment = '[c]';
-end
-if nargin < 2
+if ~exist('transport','var') || isempty(transport)
     transport = 0;
 end
-h=waitbar(0,'Exchange reaction list ...');
+if ~exist('compartment','var') || isempty(compartment)
+    compartment = '[c]';
+end
+if ~exist('hideWaitbar','var') || isempty(hideWaitbar)
+    hideWaitbar = false;
+else
+    hideWaitbar = true;
+end
+
+
+if not(hideWaitbar)
+    h=waitbar(0,'Exchange reaction list ...');
+end
 ExchangeRxnMatrix = createModel;
 
 
@@ -124,6 +142,10 @@ for i=1:length(compounds)
             end
         end
     end
-    if(mod(i, 40) ==0),waitbar(i/length(compounds),h);end
+    if not(hideWaitbar)
+        if(mod(i, 40) ==0),waitbar(i/length(compounds),h);end
+    end
 end
-close(h);
+if not(hideWaitbar)
+    close(h);
+end

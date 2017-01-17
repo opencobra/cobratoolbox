@@ -1,5 +1,5 @@
-function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList)
-%% function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList)
+function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList,hideWaitbar)
+%% function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList,hideWaitbar)
 %
 % createUMatrix creates the U matrix using the universal data from the KEGG
 % database
@@ -12,29 +12,41 @@ function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList)
 %
 % INPUT
 % KEGGFilename          File name containing universal database (e.g., KEGG; optional input, default: reaction.lst)
-% blackList             List of excluded reactions from the universal database
+% KEGGblackList         List of excluded reactions from the universal database
 %                       (e.g., KEGG) (optional input, default: no
 %                       blacklist)
-%
+% hideWaitbar           [optional] if set, suppress waitbars during execution
+% 
 % OUTPUT
 % KEGG              Contains universal database (U Matrix) in matrix format
+%
+%
+% N.B. This file is KEGG-specific: if non-KEGG-type metabolite IDs are used
+% it will not parse the reactions correctly and will throw an error.
 %
 % 11-10-07 Ines Thiele
 % Expanded June 2013, , http://thielelab.eu. 
 %
 
-if nargin < 2
-    KEGGBlackList= {};
-end
-if nargin < 1
+if ~exist('KEGGFilename','var') || isempty(KEGGFilename)
     KEGGFilename='reaction.lst';
+end
+if ~exist('KEGGBlackList','var') || isempty(KEGGBlackList)
+    KEGGBlackList = {};
+end
+if ~exist('hideWaitbar','var') || isempty(hideWaitbar)
+    hideWaitbar = false;
+else
+    hideWaitbar = true;
 end
 
 KEGGReactionList = importdata(KEGGFilename);
 KEGG = createModel;
 cnt=1;
 cnti=1;
-h=waitbar(0,'KEGG reaction list ...');
+if not(hideWaitbar)
+    h=waitbar(0,'KEGG reaction list ...');
+end
 HTABLE = java.util.Hashtable; % hashes Kegg.mets
 
 %Create reversibility vector, default=1 (reversible)
@@ -78,7 +90,9 @@ for i = 1: length(KEGGReactionList)
         rxnFormula= regexprep(rxnFormula,' 2C',' 2 C');
         rxnFormula= regexprep(rxnFormula,' 4C',' 4 C');
         
-        rxnFormula = strcat(rxnFormula,'[c]');
+        %Add compartment specification to ID for each metabolite in formula
+        rxnFormula=regexprep(rxnFormula,'([CG]\d{5})($|\s)','$1[c]$2');
+        %rxnFormula = strcat(rxnFormula,'[c]');
         rxnFormula= regexprep(rxnFormula,'<=>','<==>');
         rxnFormula= regexprep(rxnFormula,'\=>>','=>');
         rxnFormula= regexprep(rxnFormula,'\s<=+>\s',' <==> ');
@@ -136,9 +150,13 @@ for i = 1: length(KEGGReactionList)
         end
         
     end
-    if (mod(i,40) ==0), waitbar(i/length(KEGGReactionList),h), end
+    if not(hideWaitbar)
+        if (mod(i,40) ==0), waitbar(i/length(KEGGReactionList),h), end
+    end
 end
-close(h);
+if not(hideWaitbar)
+    close(h);
+end
 KEGG.S=spalloc(length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets) );
 
 [KEGG] = addReactionGEM(KEGG,KEGG.rxns,KEGG.rxns,KEGG.rxnFormulas,KEGG.rev,-10000*ones(length(KEGG.rxns),1),10000*ones(length(KEGG.rxns),1),1);
@@ -155,9 +173,11 @@ for i = 1 : length(KEGG.mets)
     NullMet(i)=1;
     end
 end
-KEGG.S(NullMet==1,:)=[];
-KEGG.mets(NullMet==1)=[];
-KEGG.b(NullMet==1)=[];
+if exist('NullMet','var')
+    KEGG.S(NullMet==1,:)=[];
+    KEGG.mets(NullMet==1)=[];
+    KEGG.b(NullMet==1)=[];
+end
 
 % ditto for rxns
 for i = 1: size(KEGG.S,2)
@@ -165,15 +185,16 @@ for i = 1: size(KEGG.S,2)
         NullRxns(i)=1;
     end
 end
-
-KEGG.S(:,NullRxns==1)=[];
-KEGG.rxns(NullRxns==1)=[];
-KEGG.rxnNames(NullRxns==1)=[];
-KEGG.rxnFormulas(NullRxns==1)=[];
-KEGG.subSystems(NullRxns==1)=[];
-KEGG.lb(NullRxns==1)=[];
-KEGG.ub(NullRxns==1)=[];
-KEGG.rev(NullRxns==1)=[];
-KEGG.rules(NullRxns==1)=[];
-KEGG.grRules(NullRxns==1)=[];
-KEGG.c(NullRxns==1)=[];
+if exist('NullRxns','var')
+    KEGG.S(:,NullRxns==1)=[];
+    KEGG.rxns(NullRxns==1)=[];
+    KEGG.rxnNames(NullRxns==1)=[];
+    KEGG.rxnFormulas(NullRxns==1)=[];
+    KEGG.subSystems(NullRxns==1)=[];
+    KEGG.lb(NullRxns==1)=[];
+    KEGG.ub(NullRxns==1)=[];
+    KEGG.rev(NullRxns==1)=[];
+    KEGG.rules(NullRxns==1)=[];
+    KEGG.grRules(NullRxns==1)=[];
+    KEGG.c(NullRxns==1)=[];
+end
