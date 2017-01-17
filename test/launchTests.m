@@ -24,11 +24,9 @@ exit_code = 0;
 % enable profiler
 profile on;
 
-% call the first test
-%result = runtests('./metabotools/tutorial_I/run_Tutorial_I'); %fails for now
 try
 
-    result = runtests('testReadSBML.m');
+    result = runtests('./test/', 'Recursively', true, 'BaseFolder', '*verified*');
 
     % write coverage based on profile('info')
     mocov('-cover','src',...

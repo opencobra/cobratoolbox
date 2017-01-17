@@ -29,7 +29,7 @@ else
         fprintf('Testing %s ...', modelArr{i});
 
         % load the model
-        model = readCbModel([pwd '/../../test/models/' modelArr{i}]);
+        model = readCbModel([pwd '/../../../test/models/' modelArr{i}]);
 
         % solve the maximisation problem
         FBA = optimizeCbModel(model,'max');
