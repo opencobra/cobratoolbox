@@ -28,7 +28,7 @@ profile on;
 %result = runtests('./metabotools/tutorial_I/run_Tutorial_I'); %fails for now
 try
 
-    result = runtests(['./test/verifiedTests/'], 'Recursively', true, 'BaseFolder', 'test*');
+    result = runtests(['./test/'], 'Recursively', true, 'BaseFolder', '*verified*');
 
     % write coverage based on profile('info')
     mocov('-cover','src',...
