@@ -303,9 +303,15 @@ for i = 1:length(runs)
     % Postprocessing
     [AddedRxnsExtended] = postProcessGapFillSolutions(AddedRxns,model,BlockedRxns,0);
     
-    Stats{cnt,run_idx} = num2str(AddedRxnsExtended.Stats.metabolicSol);cnt = cnt+1;
-    Stats{cnt,run_idx} = num2str(AddedRxnsExtended.Stats.transportSol);cnt = cnt+1;
-    Stats{cnt,run_idx} = num2str(AddedRxnsExtended.Stats.exchangeSol);cnt = cnt+1;
+    try
+        Stats{cnt,run_idx} = num2str(AddedRxnsExtended.Stats.metabolicSol);cnt = cnt+1;
+        Stats{cnt,run_idx} = num2str(AddedRxnsExtended.Stats.transportSol);cnt = cnt+1;
+        Stats{cnt,run_idx} = num2str(AddedRxnsExtended.Stats.exchangeSol);cnt = cnt+1;
+    catch
+        Stats{cnt,run_idx} = num2str(0);cnt = cnt+1;
+        Stats{cnt,run_idx} = num2str(0);cnt = cnt+1;
+        Stats{cnt,run_idx} = num2str(0);cnt = cnt+1;
+    end
     Stats{cnt,run_idx} = num2str(tgap);cnt = cnt+1;
     Stats{cnt,run_idx} = resultsFile;cnt = cnt+1;
     clear a b
@@ -313,9 +319,15 @@ for i = 1:length(runs)
     % Reaction List
     col = 1;
     RxnList={};
-    RxnList{1,col}=resultsFile;RxnList(2:length(AddedRxnsExtended.rxns)+1,col) = AddedRxnsExtended.rxns; col = col + 1;
-    RxnList{1,col}=resultsFile;RxnList(2:length(AddedRxnsExtended.rxns)+1,col) = AddedRxnsExtended.rxnFormula; col = col + 1;
-    RxnList{1,col}=resultsFile;RxnList(2:length(AddedRxnsExtended.rxns)+1,col) = AddedRxnsExtended.subSystem; col = col + 1;
+    try
+        RxnList{1,col}=resultsFile;RxnList(2:length(AddedRxnsExtended.rxns)+1,col) = AddedRxnsExtended.rxns; col = col + 1;
+        RxnList{1,col}=resultsFile;RxnList(2:length(AddedRxnsExtended.rxns)+1,col) = AddedRxnsExtended.rxnFormula; col = col + 1;
+        RxnList{1,col}=resultsFile;RxnList(2:length(AddedRxnsExtended.rxns)+1,col) = AddedRxnsExtended.subSystem; col = col + 1;
+    catch
+        RxnList{1,col}=resultsFile; col = col + 1;
+        RxnList{1,col}=resultsFile; col = col + 1;
+        RxnList{1,col}=resultsFile; col = col + 1;
+    end
 
     save(resultsFile);
 end

@@ -131,6 +131,9 @@ for i = 1:length(rev)
         elseif strcmp(parsing{j},'=>') == 1
             IO = 1;
             j = j+1;
+        elseif strcmp(parsing{j},'-->') == 1
+            IO = 1;
+            j = j+1;
         elseif str2double(parsing{j}) > 0
 
             j = j+1;
