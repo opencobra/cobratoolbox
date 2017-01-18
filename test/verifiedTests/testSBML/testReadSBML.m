@@ -40,8 +40,8 @@ assert(length(model.metFormulas) == length(testModel.metFormulas))
 assert(length(model.b) == length(testModel.b))
 
 % set the solver
-%solverOK = changeCobraSolver('tomlab_cplex');
-solverOK = changeCobraSolver('ibm_cplex');
+solverOK = changeCobraSolver('tomlab_cplex');
+%solverOK = changeCobraSolver('ibm_cplex');
 
 if solverOK ~= 1
     error('Solver cannot be set properly.\n');
