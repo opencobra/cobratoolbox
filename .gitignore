@@ -38,8 +38,6 @@ test/models/*.xml
 test/models/*.mat
 
 # tests
-test/testBuildMPS/testMPSLP.mps
-test/testBuildMPS/testMPSMILP.mps
 test/testGrowthExpMatch/GEMLog.txt
 test/testGrowthExpMatch/GEMLog_solution_1.mat
 test/testMaps/target.svg

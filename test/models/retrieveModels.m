@@ -43,7 +43,5 @@ else
     fprintf('%s\n', 'STM_v1.0.xml already exists.');
 end
 
-% change back to the test directory
+% change back to the root directory
 cd('../../')
-%pth = which('initCobraToolbox.m');
-%cd(pth(1:end-(length('initCobraToolbox.m')+1)));
