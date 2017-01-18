@@ -8,6 +8,10 @@
 %     - Partial original file: Joseph Kang 04/07/09
 %     - CI integration: Laurent Heirendt
 
+% define the path to The COBRAToolbox
+pth = which('initCobraToolbox.m');
+CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
+
 % read in the .xml model first
 testModelXML = readCbModel('Ec_iJR904.xml');
 

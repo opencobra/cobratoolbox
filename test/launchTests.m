@@ -25,10 +25,6 @@ exit_code = 0;
 profile on;
 
 try
-    % define the path to The COBRAToolbox
-    pth = which('initCobraToolbox.m');
-    CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
-
     % retrieve the models first
     retrieveModels;
 

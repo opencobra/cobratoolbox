@@ -13,8 +13,14 @@
 % Note:
 %     - The solver libraries must be included separately
 
+% define the path to The COBRAToolbox
+pth = which('initCobraToolbox.m');
+CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
+
+% change to the folder with all the models
 cd([CBTDIR '/test/models'])
 
+% load the test models
 testModel = readCbModel('Ec_iJR904.xml');
 load('Ec_iJR904.mat', 'model');
 
