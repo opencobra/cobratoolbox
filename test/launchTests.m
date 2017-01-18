@@ -1,23 +1,23 @@
 % do not change the paths below
 addpath(genpath('/var/lib/jenkins/MOcov'))
 addpath(genpath('/var/lib/jenkins/jsonlab'))
-addpath(genpath(pwd)) % include the root folder and all subfolders
+
+% include the root folder and all subfolders
+addpath(genpath(pwd))
 
 % add GUROBI
 addpath(genpath('/opt/gurobi650'))
 
 % add CPLEX
-addpath(genpath('/opt/ibm/ILOG/CPLEX_Studio1263'))
+addpath(genpath('/opt/ibm/ILOG/CPLEX_Studio1263')) % Linux
 
 % add TOMLAB interface
 addpath(genpath('/opt/tomlab'))
 
 % run the official initialisation script
 %initCobraToolbox
-%{
 % run the official testsuite
-testAll
-%}
+%testAll
 
 exit_code = 0;
 
@@ -25,7 +25,10 @@ exit_code = 0;
 profile on;
 
 try
+    % retrieve the models first
+    retrieveModels;
 
+    % run the tests in the subfolder verifiedTests/ recursively
     result = runtests('./test/', 'Recursively', true, 'BaseFolder', '*verified*');
 
     % write coverage based on profile('info')
@@ -42,6 +45,7 @@ try
         sumIncomplete = sumIncomplete + result(i).Incomplete;
     end
 
+    % load the coverage file
     data = loadjson('coverage.json', 'SimplifyCell', 1);
 
     sf = data.source_files;
@@ -69,7 +73,6 @@ try
 
     % ensure that we ALWAYS call exit
     exit(exit_code);
-
 catch
-  exit(1);
+    exit(1);
 end
