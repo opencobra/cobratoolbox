@@ -24,7 +24,5 @@ testModelSBML = readCbModel('testModelSBML.sbml');
 assert(any(numDiff))
 
 % remove the written file to clean up
-pth = which('initCobraToolbox.m');
-cd(pth(1:end-(length('initCobraToolbox.m')+1)));
-cd('./test/models')
-system('rm testModelSBML.sbml')
+cd([CBTDIR '/test/models'])
+system('rm testModelSBML.sbml.xml')

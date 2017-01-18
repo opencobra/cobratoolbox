@@ -13,9 +13,7 @@
 % Note:
 %     - The solver libraries must be included separately
 
-pth = which('initCobraToolbox.m');
-cd(pth(1:end-(length('initCobraToolbox.m')+1)));
-cd('./test/models')
+cd([CBTDIR '/test/models'])
 
 testModel = readCbModel('Ec_iJR904.xml');
 load('Ec_iJR904.mat', 'model');
