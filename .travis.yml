@@ -5,11 +5,12 @@ before_install:
     - git submodule update --force --init --recursive
 
 script:
+    # set the environment variable CURRENT_DIR
     - CURRENT_DIR=`pwd`
-    # update the models for testing
-    - cd ./test/models
-    - sh ./retrieveModels.sh
+
+    # change to the current directory
     - cd $CURRENT_DIR
+    
     # launch the tests
     - sh ./runtests.sh
 
