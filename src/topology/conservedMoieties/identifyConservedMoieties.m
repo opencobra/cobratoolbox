@@ -59,24 +59,27 @@ clear ATN
 [nMets] = size(S,1);
 [nAtoms] = size(A,1);
 
-% A = abs(A); % Convert directed atom transition network to an undirected graph
-% [A,xt] = unique(A','rows','stable'); % Remove multiedges to conserve memory
-% clear A
-% A = A';
 xt = 1:size(A,2);
 
 % Convert incidence matrix to adjacency matrix
 [row1,col1] = find(A == 1);
 [row2,col2] = find(A == -1);
 adj = sparse([row1;row2],[row2;row1],ones(size([row1;row2]))); % Convert incidence matrix to adjacency matrix
-% components = find_conn_comp(adj); % Find connected components. Each component corresponds to an "atom conservation relation".
-[nComps,a2c] = graphconncomp(adj,'DIRECTED',false);
-components = cell(nComps,1);
-for i = 1:nComps
-    components{i} = find(a2c == i);
+
+% Find connected components. Each component corresponds to an "atom conservation relation".
+if license('test','Bioinformatics_Toolbox')
+    [nComps,a2c] = graphconncomp(adj,'DIRECTED',false);
+    components = cell(nComps,1);
+    for i = 1:nComps
+        components{i} = find(a2c == i);
+    end
+else
+    % components = connectedComponents(adj); % Matlab implementation of Tarjan's algorithm. Does not work for large networks due to Matlab limitations on stack size.
+    components = find_conn_comp(adj);
+    nComps = length(components);
 end
+
 clear adj % conserve memory
-% nComps = length(components);
 
 % Construct moiety matrix
 L = sparse(nComps,nMets); % Initialize moiety matrix.
