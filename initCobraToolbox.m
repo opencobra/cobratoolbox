@@ -21,30 +21,28 @@ global CBTDIR
 global MINOSPATH
 global DQQMINOSPATH
 
-fprintf('\n\n      _____   _____   _____   _____     _____     |\n     /  ___| /  _  \\ |  _  \\ |  _  \\   / ___ \\    |   COnstraint-Based Reconstruction and Analysis\n     | |     | | | | | |_| | | |_| |  | |___| |   |   COBRAToolbox 3.0 - 2016\n     | |     | | | | |  _  { |  _  /  |  ___  |   |\n     | |___  | |_| | | |_| | | | \\ \\  | |   | |   |   Documentation:\n     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |   http://opencobra.github.io/cobratoolbox\n                                                  | \n\n');
+fprintf('\n\n      _____   _____   _____   _____     _____     |\n     /  ___| /  _  \\ |  _  \\ |  _  \\   / ___ \\    |   COnstraint-Based Reconstruction and Analysis\n     | |     | | | | | |_| | | |_| |  | |___| |   |   COBRAToolbox 3.0 - 2017\n     | |     | | | | |  _  { |  _  /  |  ___  |   |\n     | |___  | |_| | | |_| | | | \\ \\  | |   | |   |   Documentation:\n     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |   http://opencobra.github.io/cobratoolbox\n                                                  | \n\n');
 
 fprintf('\n\n > Adding all the COBRA Toolbox files ... ')
 
-pth=which('initCobraToolbox.m');
+pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1));
 %path(path,[CBTDIR, filesep, 'external']);
 
 addpath(genpath(CBTDIR))
-rmpath([CBTDIR,filesep,'.git'])
-rmpath([CBTDIR,filesep,'/docs'])
-rmpath([CBTDIR,filesep,'/external/SBMLToolbox'])
+rmpath([CBTDIR, filesep, '.git'])
+rmpath([CBTDIR, filesep, '/deprecated'])
+rmpath([CBTDIR, filesep, '/external/SBMLToolbox'])
 fprintf(' Done.\n')
-
-%add all paths below cobra directory, but not certain folders
-%addpath_recurse(CBTDIR,{'.git','obsolete','m2html','docs','src','stow','libsbml-5.11.0','SBMLToolbox-4.1.0'});
 
 % add SMBL lib path
-fprintf(' > Adding all the SBML Toolbox library files ... ')
+% temporary comment
+%fprintf(' > Adding all the SBML Toolbox library files ... ')
 
-if isunix && exist('usr/local/lib/', 'dir')
-  addpath('/usr/local/lib/');
-end
-fprintf(' Done.\n')
+%if isunix && exist('usr/local/lib/', 'dir')
+%  addpath('/usr/local/lib/');
+%end
+%fprintf(' Done.\n')
 
 %% Define Solvers
 % Define the default linear programming solver to be used by the toolbox
@@ -99,7 +97,7 @@ else
 end
 
 % Set global LP solution accuracy tolerance
-changeCobraSolverParams('LP','optTol',1e-6);
+changeCobraSolverParams('LP', 'optTol', 1e-6);
 
 %attempt to provide support for sbml
 if exist([CBTDIR, filesep, 'external' filesep 'SBMLToolbox-4.1.0'],'dir')==7 && exist([CBTDIR, filesep, 'external' filesep 'libsbml-5.11.0'],'dir')==7
