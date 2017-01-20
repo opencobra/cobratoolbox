@@ -54,3 +54,12 @@ test/testSampling/sampleStructTmp.mat
 
 # verified tests
 test/verifiedTests/testSBML/test_model.sbml.xml
+
+# shared libraries
+*.so
+
+# Windows executable files
+*.exe
+
+# Windows dynamic library files
+*.dll
