@@ -1,0 +1,1173 @@
+AACOAT	atp[c] + coa[c] + acac[c] 	->	aacoa[c] + amp[c] + ppi[c] 
+ABUTD	h2o[c] + nad[c] + 4abutn[c] 	->	2.000000 h[c] + nadh[c] + 4abut[c] 
+ACCOAC	atp[c] + hco3[c] + accoa[c] 	->	adp[c] + h[c] + pi[c] + malcoa[c] 
+ACCOAL	atp[c] + coa[c] + ppa[c] 	->	adp[c] + pi[c] + ppcoa[c] 
+ACGAMK	atp[c] + acgam[c] 	->	adp[c] + h[c] + acgam6p[c] 
+ACHVESSEC	h2o[c] + atp[c] + ach[c] 	->	adp[c] + h[c] + pi[c] + ach[e] 
+ACITL	atp[c] + coa[c] + cit[c] 	->	adp[c] + pi[c] + accoa[c] + oaa[c] 
+ACNAMlt	h[c] + acnam[c] 	<=>	h[l] + acnam[l] 
+ACNMLr	acnam[c] 	<=>	pyr[c] + acmana[c] 
+ACS	atp[c] + coa[c] + ac[c] 	->	amp[c] + ppi[c] + accoa[c] 
+ACS2	atp[c] + coa[c] + ppa[c] 	->	amp[c] + ppi[c] + ppcoa[c] 
+ACSm	coa[m] + atp[m] + ac[m] 	->	accoa[m] + amp[m] + ppi[m] 
+ACTNMO	o2[c] + h[c] + nadph[c] + acetone[c] 	->	h2o[c] + nadp[c] + acetol[c] 
+ADNK1	atp[c] + adn[c] 	->	adp[c] + h[c] + amp[c] 
+ADNK1m	atp[m] + adn[m] 	->	h[m] + adp[m] + amp[m] 
+ADPRDP	h2o[c] + adprib[c] 	->	2.000000 h[c] + amp[c] + r5p[c] 
+ADPtx	adp[c] 	<=>	adp[x] 
+ADSK	atp[c] + aps[c] 	->	adp[c] + h[c] + paps[c] 
+ADSS	asp_L[c] + gtp[c] + imp[c] 	->	2.000000 h[c] + pi[c] + gdp[c] + dcamp[c] 
+AKGDm	akg[m] + coa[m] + nad[m] 	->	co2[m] + nadh[m] + succoa[m] 
+ALAt2rL	h[l] + ala_L[l] 	<=>	h[c] + ala_L[c] 
+ALKP	h2o[c] + dhap[c] 	->	pi[c] + dha[c] 
+AMCOXO	h2o[c] + h[c] + nadph[c] + amuco[c] 	->	nh4[c] + nadp[c] + 2oxoadp[c] 
+AMETr	amet[c] 	<=>	amet[r] 
+AOBUTDsm	h[m] + 2aobut[m] 	->	co2[m] + aact[m] 
+APOC_LYS_BTNP	h2o[c] + apoC_Lys_btn[c] 	->	apoC[c] + biocyt[c] 
+ARGSS	atp[c] + asp_L[c] + citr_L[c] 	->	h[c] + amp[c] + ppi[c] + argsuc[c] 
+R_group_phosphotase_1	atp[c] + coa[c] + Rtotal[c] 	->	amp[c] + ppi[c] + Rtotalcoa[c] 
+R_group_phosphotase_2	atp[c] + coa[c] + Rtotal2[c] 	->	amp[c] + ppi[c] + Rtotal2coa[c] 
+R_group_phosphotase_3	atp[c] + coa[c] + Rtotal3[c] 	->	amp[c] + ppi[c] + Rtotal3coa[c] 
+ARTFR13	tdcoa[c] 	->	0.875000 R1coa_hs[c] 
+ARTFR202	h[m] + nadph[m] + 2.000000 fadh2[m] + lnlncacoa[c] 	->	nadp[m] + 2.000000 fad[m] + 1.125000 R2coa_hs[c] 
+ARTFR203	h[m] + nadph[m] + 2.000000 fadh2[m] + lnlncgcoa[c] 	->	nadp[m] + 2.000000 fad[m] + 1.125000 R2coa_hs[c] 
+ARTFR204	2.000000 h[m] + 2.000000 nadph[m] + 2.000000 fadh2[m] + strdnccoa[c] 	->	2.000000 nadp[m] + 2.000000 fad[m] + 1.125000 R2coa_hs[c] 
+ARTFR209	2.000000 h[m] + 2.000000 nadph[m] + 2.000000 fadh2[m] + adrncoa[c] 	->	2.000000 nadp[m] + 2.000000 fad[m] + 1.375000 R2coa_hs[c] 
+ARTFR210	h[m] + nadph[m] + fadh2[m] + lnlccoa[c] 	->	nadp[m] + fad[m] + 1.125000 R2coa_hs[c] 
+ARTFR211	2.000000 h[m] + 2.000000 nadph[m] + 3.000000 fadh2[m] + clpndcoa[c] 	->	2.000000 nadp[m] + 3.000000 fad[m] + 1.375000 R2coa_hs[c] 
+ARTFR212	2.000000 h[m] + 2.000000 nadph[m] + 3.000000 fadh2[m] + dcsptn1coa[c] 	->	2.000000 nadp[m] + 3.000000 fad[m] + 1.375000 R2coa_hs[c] 
+ARTFR213	3.000000 h[m] + 3.000000 nadph[m] + 3.000000 fadh2[m] + c226coa[c] 	->	3.000000 nadp[m] + 3.000000 fad[m] + 1.375000 R2coa_hs[c] 
+ARTFR41	fadh2[m] + hdcoa[c] 	->	fad[m] + R4coa_hs[c] 
+ARTFR45	fadh2[m] + nrvnccoa[c] 	->	fad[m] + 1.500000 R4coa_hs[c] 
+ARTFR52	hexccoa[c] 	->	1.625000 R5coa_hs[c] 
+ARTFR53	2.000000 h[m] + 2.000000 nadph[m] + 2.000000 fadh2[m] + eicostetcoa[c] 	->	2.000000 nadp[m] + 2.000000 fad[m] + 1.250000 R5coa_hs[c] 
+ARTFR61	fadh2[m] + hdd2coa[c] 	->	fad[m] + R6coa_hs[c] 
+ARTPLM1	Rtotalcoa[c] 	->	pmtcoa[c] 
+ARTPLM1m	Rtotalcoa[m] 	->	pmtcoa[m] 
+ARTPLM2	Rtotal2coa[c] 	->	pmtcoa[c] 
+ARTPLM2m	Rtotal2coa[m] 	->	pmtcoa[m] 
+ARTPLM3	Rtotal3coa[c] 	->	pmtcoa[c] 
+ASNS1	h2o[c] + atp[c] + asp_L[c] + gln_L[c] 	->	h[c] + glu_L[c] + amp[c] + ppi[c] + asn_L[c] 
+ATP1ter	atp[c] + adp[r] 	<=>	adp[c] + atp[r] 
+ATPasel	h2o[c] + atp[c] 	->	adp[c] + pi[c] + h[l] 
+ATPH1e	2.000000 h2o[e] + atp[e] 	->	2.000000 h[e] + amp[e] + 2.000000 pi[e] 
+ATPS4m	4.000000 h[c] + adp[m] + pi[m] 	->	3.000000 h[m] + h2o[m] + atp[m] 
+BALAVECSEC	h2o[c] + atp[c] + ala_B[c] 	->	adp[c] + h[c] + pi[c] + ala_B[e] 
+BAMPPALDOX	h2o[c] + bamppald[c] + nad[c] 	->	2.000000 h[c] + nadh[c] + ala_B[c] 
+BILDGLCURte	h2o[c] + atp[c] + bildglcur[c] 	->	adp[c] + h[c] + pi[c] + bildglcur[e] 
+BILGLCURte	h2o[c] + atp[c] + bilglcur[c] 	->	adp[c] + h[c] + pi[c] + bilglcur[e] 
+BTNDm	h2o[m] + biocyt[m] 	->	lys_L[m] + btn[m] 
+BTNt3i	h2o[c] + atp[c] + na1[e] + btn[e] 	->	adp[c] + h[c] + pi[c] + na1[c] + btn[c] 
+BUP2	h2o[c] + 2.000000 h[c] + 3uib[c] 	->	nh4[c] + co2[c] + 3aib_D[c] 
+CAATPS	h2o[c] + atp[c] + ca2[c] 	->	adp[c] + pi[c] + h[e] + ca2[e] 
+CAMPt	h2o[c] + atp[c] + camp[c] 	->	adp[c] + h[c] + pi[c] + camp[e] 
+CBPS	h2o[c] + 2.000000 atp[c] + hco3[c] + gln_L[c] 	->	2.000000 adp[c] + 2.000000 h[c] + pi[c] + glu_L[c] + cbp[c] 
+CBPSam	2.000000 atp[m] + hco3[m] + nh4[m] 	->	2.000000 h[m] + 2.000000 adp[m] + pi[m] + cbp[m] 
+CDIPTr	cdpdag_hs[c] + inost[c] 	<=>	h[c] + cmp[c] + pail_hs[c] 
+CDS	h[c] + pa_hs[c] + ctp[c] 	->	ppi[c] + cdpdag_hs[c] 
+CEPTE	cdpea[c] + dag_hs[c] 	->	h[c] + cmp[c] + pe_hs[c] 
+CHLPCTD	h[c] + ctp[c] + cholp[c] 	->	ppi[c] + cdpchol[c] 
+CHOLATEt3	h2o[c] + atp[c] + cholate[c] 	->	adp[c] + h[c] + pi[c] + cholate[e] 
+CHOLK	atp[c] + chol[c] 	->	adp[c] + h[c] + cholp[c] 
+CHSTEROLt	h2o[c] + atp[c] + chsterol[c] 	->	adp[c] + h[c] + pi[c] + chsterol[e] 
+CO2ter	co2[c] 	<=>	co2[r] 
+CSND	h2o[c] + h[c] + csn[c] 	->	nh4[c] + ura[c] 
+CTPS1	nh4[c] + atp[c] + utp[c] 	->	adp[c] + 2.000000 h[c] + pi[c] + ctp[c] 
+CTPS2	h2o[c] + atp[c] + gln_L[c] + utp[c] 	->	adp[c] + 2.000000 h[c] + pi[c] + glu_L[c] + ctp[c] 
+CYOOm2	o2[m] + 4.000000 focytC[m] 	->	4.000000 h[m] + 2.000000 h2o[m] + 4.000000 ficytC[m] 
+CYOR_u10m	2.000000 h[m] + 2.000000 ficytC[m] + q10h2[m] 	->	4.000000 h[c] + q10[m] + 2.000000 focytC[m] 
+CYSO	o2[c] + cys_L[c] 	->	2.000000 h[c] + 3sala[c] 
+CYTDK1	atp[c] + cytd[c] 	->	adp[c] + h[c] + cmp[c] 
+DADNK	atp[c] + dad_2[c] 	->	adp[c] + h[c] + damp[c] 
+DAGK_hs	atp[c] + dag_hs[c] 	<=>	adp[c] + h[c] + pa_hs[c] 
+DDPGAm	4h2oglt[m] 	<=>	pyr[m] + glx[m] 
+DGNSKm	atp[m] + dgsn[m] 	->	h[m] + adp[m] + dgmp[m] 
+DM_13_cis_oretn_n_	13_cis_oretn[n] 	->	
+DM_13_cis_retn_n_	13_cis_retn[n] 	->	
+DM_Asn_X_Ser_Thr_ly_	Asn_X_Ser_Thr[l] 	->	
+DM_atp_c_	h2o[c] + atp[c] 	->	adp[c] + h[c] + pi[c] 
+DM_avite1_c_	avite1[c] 	->	
+DM_avite2_c_	avite2[c] 	->	
+DM_bvite_c_	bvite[c] 	->	
+DM_core5_g_	core5[g] 	->	
+DM_core7_g_	core7[g] 	->	
+DM_core8_g_	core8[g] 	->	
+DM_datp_m_	datp[m] 	->	
+DM_datp_n_	datp[n] 	->	
+DM_dctp_m_	dctp[m] 	->	
+DM_dctp_n_	dctp[n] 	->	
+DM_dem2emgacpail_prot_hs_r_	dem2emgacpail_prot_hs[r] 	->	
+DM_dgpi_prot_hs_r_	dgpi_prot_hs[r] 	->	
+DM_dgtp_m_	dgtp[m] 	->	
+DM_dgtp_n_	dgtp[n] 	->	
+DM_dsT_antigen_g_	dsT_antigen[g] 	->	
+DM_dttp_m_	dttp[m] 	->	
+DM_dttp_n_	dttp[n] 	->	
+DM_ethamp_r_	ethamp[r] 	->	
+DM_gncore2_g_	gncore2[g] 	->	
+DM_gpi_sig_er_	gpi_sig[r] 	->	
+DM_hretn_n_	hretn[n] 	->	
+DM_kdn_c_	kdn[c] 	->	
+DM_m_em_3gacpail_prot_hs_r_	m3gacpail_prot_hs[r] 	->	
+DM_melanin_c_	melanin[c] 	->	
+DM_mem2emgacpail_prot_hs_r_	mem2emgacpail_prot_hs[r] 	->	
+DM_n5m2masn_g_	n5m2masn[g] 	->	
+DM_oretn_n_	oretn[n] 	->	
+DM_Ser_Thr_ly_	Ser_Thr[l] 	->	
+DM_Ser_Gly_Ala_X_Gly_ly_	Ser_Gly_Ala_X_Gly[l] 	->	
+DM_sprm_c_	sprm[c] 	->	
+DM_sTn_antigen_g_	sTn_antigen[g] 	->	
+DM_T_antigen_g_	T_antigen[g] 	<=>	
+DM_yvite_c_	yvite[c] 	->	
+DOLGLCP_Lter	0.100000 dolglcp_L[c] 	->	0.100000 dolglcp_L[r] 
+DOLGLCP_Uter	0.100000 dolglcp_U[c] 	->	0.100000 dolglcp_U[r] 
+DOLICHOL_Uter	0.100000 dolichol_U[r] 	<=>	0.100000 dolichol_U[c] 
+DOLPGT3_Ler	h2o[r] + 0.100000 dolp_L[r] 	->	pi[r] + 0.100000 dolichol_L[r] 
+DOPABMO	o2[c] + h[c] + dopa[c] + ascb_L[c] 	->	h2o[c] + nrpphr[c] + dhdascb[c] 
+DOPAVESSEC	h2o[c] + atp[c] + dopa[c] 	->	adp[c] + h[c] + pi[c] + dopa[e] 
+DPCOAK	atp[c] + dpcoa[c] 	->	adp[c] + h[c] + coa[c] 
+DRBK	atp[c] + drib[c] 	->	adp[c] + h[c] + 2dr5p[c] 
+DRPA	2dr5p[c] 	->	acald[c] + g3p[c] 
+DTDPtn	dtdp[c] 	<=>	dtdp[n] 
+DURIK1	atp[c] + duri[c] 	->	adp[c] + h[c] + dump[c] 
+DURIK1m	atp[m] + duri[m] 	->	h[m] + adp[m] + dump[m] 
+DUTPDPm	h2o[m] + dutp[m] 	->	h[m] + ppi[m] + dump[m] 
+ENO	2pg[c] 	<=>	h2o[c] + pep[c] 
+ESTRADIOLGLCt2	h2o[c] + atp[c] + estradiolglc[c] 	->	adp[c] + h[c] + pi[c] + estradiolglc[e] 
+ETHAK	atp[c] + etha[c] 	->	adp[c] + h[c] + ethamp[c] 
+EX_10fthf(e)	10fthf[e] 	<=>	
+EX_10fthf5glu(e)	10fthf5glu[e] 	<=>	
+EX_10fthf6glu(e)	10fthf6glu[e] 	<=>	
+EX_10fthf7glu(e)	10fthf7glu[e] 	<=>	
+EX_11_cis_retfa(e)	11_cis_retfa[e] 	<=>	
+EX_13_cis_retnglc(e)	13_cis_retnglc[e] 	<=>	
+EX_1glyc_hs(e)	1glyc_hs[e] 	<=>	
+EX_1mncam(e)	1mncam[e] 	<=>	
+EX_2425dhvitd2(e)	2425dhvitd2[e] 	<=>	
+EX_2425dhvitd3(e)	2425dhvitd3[e] 	<=>	
+EX_24nph(e)	24nph[e] 	<=>	
+EX_25hvitd2(e)	25hvitd2[e] 	<=>	
+EX_25hvitd3(e)	25hvitd3[e] 	<=>	
+EX_2hb(e)	2hb[e] 	<=>	
+EX_2mcit(e)	2mcit[e] 	<=>	
+EX_34dhoxpeg(e)	34dhoxpeg[e] 	<=>	
+EX_34dhphe(e)	34dhphe[e] 	<=>	
+EX_35cgmp(e)	35cgmp[e] 	<=>	
+EX_3aib(e)	3aib[e] 	<=>	
+EX_3aib_D(e)	3aib_D[e] 	<=>	
+EX_3mlda(e)	3mlda[e] 	<=>	
+EX_4abut(e)	4abut[e] 	<=>	
+EX_4hdebrisoquine(e)	4hdebrisoquine[e] 	<=>	
+EX_4hphac(e)	4hphac[e] 	<=>	
+EX_4mptnl(e)	4mptnl[e] 	<=>	
+EX_4mtolbutamide(e)	4mtolbutamide[e] 	<=>	
+EX_4nph(e)	4nph[e] 	<=>	
+EX_4nphsf(e)	4nphsf[e] 	<=>	
+EX_4pyrdx(e)	4pyrdx[e] 	<=>	
+EX_5adtststerone(e)	5adtststerone[e] 	<=>	
+EX_5adtststeroneglc(e)	5adtststeroneglc[e] 	<=>	
+EX_5adtststerones(e)	5adtststerones[e] 	<=>	
+EX_5dhf(e)	5dhf[e] 	<=>	
+EX_5fthf(e)	5fthf[e] 	<=>	
+EX_5homeprazole(e)	5homeprazole[e] 	<=>	
+EX_5htrp(e)	5htrp[e] 	<=>	
+EX_5mthf(e)	5mthf[e] 	<=>	
+EX_5thf(e)	5thf[e] 	<=>	
+EX_6dhf(e)	6dhf[e] 	<=>	
+EX_6htststerone(e)	6htststerone[e] 	<=>	
+EX_6thf(e)	6thf[e] 	<=>	
+EX_7dhf(e)	7dhf[e] 	<=>	
+EX_7thf(e)	7thf[e] 	<=>	
+EX_9_cis_retfa(e)	9_cis_retfa[e] 	<=>	
+EX_abt(e)	abt[e] 	<=>	
+EX_ac(e)	ac[e] 	<=>	
+EX_acac(e)	acac[e] 	<=>	
+EX_acald(e)	acald[e] 	<=>	
+EX_acetone(e)	acetone[e] 	<=>	
+EX_acgalfucgalacgalfuc12gal14acglcgalgluside_hs(e)	acgalfucgalacgalfuc12gal14acglcgalgluside_hs[e] 	<=>	
+EX_acgalfucgalacgalfucgalacglcgal14acglcgalgluside_hs(e)	acgalfucgalacgalfucgalacglcgal14acglcgalgluside_hs[e] 	<=>	
+EX_acgam(e)	acgam[e] 	<=>	
+EX_ach(e)	ach[e] 	<=>	
+EX_acn13acngalgbside_hs(e)	acn13acngalgbside_hs[e] 	<=>	
+EX_acn23acngalgbside_hs(e)	acn23acngalgbside_hs[e] 	<=>	
+EX_acnacngal14acglcgalgluside_hs(e)	acnacngal14acglcgalgluside_hs[e] 	<=>	
+EX_acnacngalgbside_hs(e)	acnacngalgbside_hs[e] 	<=>	
+EX_acngalacglcgal14acglcgalgluside_hs(e)	acngalacglcgal14acglcgalgluside_hs[e] 	<=>	
+EX_ade(e)	ade[e] 	<=>	
+EX_adn(e)	adn[e] 	<=>	
+EX_adp	adp[e] 	<=>	
+EX_adprbp(e)	adprbp[e] 	<=>	
+EX_adprib(e)	adprib[e] 	<=>	
+EX_adrn(e)	adrn[e] 	<=>	
+EX_adrnl(e)	adrnl[e] 	<=>	
+EX_aflatoxin(e)	aflatoxin[e] 	<=>	
+EX_ahandrostanglc(e)	ahandrostanglc[e] 	<=>	
+EX_ak2lgchol_hs(e)	ak2lgchol_hs[e] 	<=>	
+EX_akg(e)	akg[e] 	<=>	
+EX_ala_B(e)	ala_B[e] 	<=>	
+EX_ala_D(e)	ala_D[e] 	<=>	
+EX_ala_L(e)	ala_L[e] 	<=>	
+EX_aldstrn(e)	aldstrn[e] 	<=>	
+EX_amp(e)	amp[e] 	<=>	
+EX_andrstrn(e)	andrstrn[e] 	<=>	
+EX_andrstrnglc(e)	andrstrnglc[e] 	<=>	
+EX_antipyrene(e)	antipyrene[e] 	<=>	
+EX_apnnox(e)	apnnox[e] 	<=>	
+EX_appnn(e)	appnn[e] 	<=>	
+EX_aprgstrn(e)	aprgstrn[e] 	<=>	
+EX_aqcobal(e)	aqcobal[e] 	<=>	
+EX_arab_L(e)	arab_L[e] 	<=>	
+EX_arach(e)	arach[e] 	<=>	
+EX_arachd(e)	arachd[e] 	<=>	
+EX_arg_L(e)	arg_L[e] 	<=>	
+EX_ascb_L(e)	ascb_L[e] 	<=>	
+EX_asn_L(e)	asn_L[e] 	<=>	
+EX_asp_D(e)	asp_D[e] 	<=>	
+EX_asp_L(e)	asp_L[e] 	<=>	
+EX_atp(e)	atp[e] 	<=>	
+EX_avite1(e)	avite1[e] 	<=>	
+EX_avite2(e)	avite2[e] 	<=>	
+EX_bhb(e)	bhb[e] 	<=>	
+EX_bildglcur(e)	bildglcur[e] 	<=>	
+EX_bilglcur(e)	bilglcur[e] 	<=>	
+EX_bilirub(e)	bilirub[e] 	<=>	
+EX_biocyt(e)	biocyt[e] 	<=>	
+EX_btn(e)	btn[e] 	<=>	
+EX_but(e)	but[e] 	<=>	
+EX_bvite(e)	bvite[e] 	<=>	
+EX_bz(e)	bz[e] 	<=>	
+EX_ca2(e)	ca2[e] 	<=>	
+EX_camp(e)	camp[e] 	<=>	
+EX_caro(e)	caro[e] 	<=>	
+EX_carveol(e)	carveol[e] 	<=>	
+EX_cca_d3(e)	cca_d3[e] 	<=>	
+EX_cgly(e)	cgly[e] 	<=>	
+EX_chol(e)	chol[e] 	<=>	
+EX_cholate(e)	cholate[e] 	<=>	
+EX_chsterol(e)	chsterol[e] 	<=>	
+EX_chtn(e)	chtn[e] 	<=>	
+EX_cit(e)	cit[e] 	<=>	
+EX_cl(e)	cl[e] 	<=>	
+EX_CLPND(e)	clpnd[e] 	<=>	
+EX_cmp(e)	cmp[e] 	<=>	
+EX_co(e)	co[e] 	<=>	
+EX_co2(e)	co2[e] 	<=>	
+EX_coumarin(e)	coumarin[e] 	<=>	
+EX_creat(e)	creat[e] 	<=>	
+EX_crmp_hs(e)	crmp_hs[e] 	<=>	
+EX_crn(e)	crn[e] 	<=>	
+EX_crtsl(e)	crtsl[e] 	<=>	
+EX_crtstrn(e)	crtstrn[e] 	<=>	
+EX_crvnc(e)	crvnc[e] 	<=>	
+EX_csn(e)	csn[e] 	<=>	
+EX_cspg_a(e)	cspg_a[e] 	<=>	
+EX_cspg_b(e)	cspg_b[e] 	<=>	
+EX_cspg_c(e)	cspg_c[e] 	<=>	
+EX_cspg_d(e)	cspg_d[e] 	<=>	
+EX_cspg_e(e)	cspg_e[e] 	<=>	
+EX_cyan(e)	cyan[e] 	<=>	
+EX_cys_L(e)	cys_L[e] 	<=>	
+EX_cytd(e)	cytd[e] 	<=>	
+EX_dad_2(e)	dad_2[e] 	<=>	
+EX_dag_hs(e)	dag_hs[e] 	<=>	
+EX_dcsptn1(e)	dcsptn1[e] 	<=>	
+EX_dcyt(e)	dcyt[e] 	<=>	
+EX_debrisoquine(e)	debrisoquine[e] 	<=>	
+EX_dgchol(e)	dgchol[e] 	<=>	
+EX_dgsn(e)	dgsn[e] 	<=>	
+EX_dhdascb(e)	dhdascb[e] 	<=>	
+EX_dheas(e)	dheas[e] 	<=>	
+EX_dhf(e)	dhf[e] 	<=>	
+EX_digalsgalside_hs(e)	digalsgalside_hs[e] 	<=>	
+EX_din(e)	din[e] 	<=>	
+EX_dlnlcg(e)	dlnlcg[e] 	<=>	
+EX_dmantipyrine(e)	dmantipyrine[e] 	<=>	
+EX_dmhptcrn(e)	dmhptcrn[e] 	<=>	
+EX_dopa(e)	dopa[e] 	<=>	
+EX_dopasf(e)	dopasf[e] 	<=>	
+EX_drib(e)	drib[e] 	<=>	
+EX_duri(e)	duri[e] 	<=>	
+EX_eaflatoxin(e)	eaflatoxin[e] 	<=>	
+EX_ebastine(e)	ebastine[e] 	<=>	
+EX_ebastineoh(e)	ebastineoh[e] 	<=>	
+EX_eicostet(e)	eicostet[e] 	<=>	
+EX_elaid(e)	elaid[e] 	<=>	
+EX_estradiol(e)	estradiol[e] 	<=>	
+EX_estradiolglc(e)	estradiolglc[e] 	<=>	
+EX_estriolglc(e)	estriolglc[e] 	<=>	
+EX_estroneglc(e)	estroneglc[e] 	<=>	
+EX_estrones(e)	estrones[e] 	<=>	
+EX_etoh(e)	etoh[e] 	<=>	
+EX_fe2(e)	fe2[e] 	<=>	
+EX_fe3(e)	fe3[e] 	<=>	
+EX_fol(e)	fol[e] 	<=>	
+EX_for(e)	for[e] 	<=>	
+EX_fru(e)	fru[e] 	<=>	
+EX_fuc13galacglcgal14acglcgalgluside_hs(e)	fuc13galacglcgal14acglcgalgluside_hs[e] 	<=>	
+EX_fuc14galacglcgalgluside_hs(e)	fuc14galacglcgalgluside_hs[e] 	<=>	
+EX_fucacgalfucgalacglcgalgluside_hs(e)	fucacgalfucgalacglcgalgluside_hs[e] 	<=>	
+EX_fucacngal14acglcgalgluside_hs(e)	fucacngal14acglcgalgluside_hs[e] 	<=>	
+EX_fucacngalacglcgalgluside_hs(e)	fucacngalacglcgalgluside_hs[e] 	<=>	
+EX_fucfuc12gal14acglcgalgluside_hs(e)	fucfuc12gal14acglcgalgluside_hs[e] 	<=>	
+EX_fucfuc132galacglcgal14acglcgalgluside_hs(e)	fucfuc132galacglcgal14acglcgalgluside_hs[e] 	<=>	
+EX_fucfucfucgalacglc13galacglcgal14acglcgalgluside_hs(e)	fucfucfucgalacglc13galacglcgal14acglcgalgluside_hs[e] 	<=>	
+EX_fucfucfucgalacglcgal14acglcgalgluside_hs(e)	fucfucfucgalacglcgal14acglcgalgluside_hs[e] 	<=>	
+EX_fucfucgalacglcgalgluside_hs(e)	fucfucgalacglcgalgluside_hs[e] 	<=>	
+EX_fucgal14acglcgalgluside_hs(e)	fucgal14acglcgalgluside_hs[e] 	<=>	
+EX_fucgalfucgalacglcgalgluside_hs(e)	fucgalfucgalacglcgalgluside_hs[e] 	<=>	
+EX_fucgalgbside_hs(e)	fucgalgbside_hs[e] 	<=>	
+EX_fuc_L(e)	fuc_L[e] 	<=>	
+EX_gal(e)	gal[e] 	<=>	
+EX_galacglcgalgbside_hs(e)	galacglcgalgbside_hs[e] 	<=>	
+EX_galfuc12gal14acglcgalgluside_hs(e)	galfuc12gal14acglcgalgluside_hs[e] 	<=>	
+EX_galfucgalacglcgal14acglcgalgluside_hs(e)	galfucgalacglcgal14acglcgalgluside_hs[e] 	<=>	
+EX_galgalfucfucgalacglcgalacglcgal14acglcgalgluside_hs(e)	galgalfucfucgalacglcgalacglcgal14acglcgalgluside_hs[e] 	<=>	
+EX_galgalgalthcrm_hs(e)	galgalgalthcrm_hs[e] 	<=>	
+EX_gam(e)	gam[e] 	<=>	
+EX_gbside_hs(e)	gbside_hs[e] 	<=>	
+EX_gchola(e)	gchola[e] 	<=>	
+EX_gd1b2_hs(e)	gd1b2_hs[e] 	<=>	
+EX_gd1c_hs(e)	gd1c_hs[e] 	<=>	
+EX_gdp(e)	gdp[e] 	<=>	
+EX_glc(e)	glc_D[e] 	<=>	
+EX_gln_L(e)	gln_L[e] 	<=>	
+EX_gluala(e)	gluala[e] 	<=>	
+EX_glu_L(e)	glu_L[e] 	<=>	
+EX_gly(e)	gly[e] 	<=>	
+EX_glyb(e)	glyb[e] 	<=>	
+EX_glyc(e)	glyc[e] 	<=>	
+EX_glyc_S(e)	glyc_S[e] 	<=>	
+EX_glygn2(e)	glygn2[e] 	<=>	
+EX_glygn4(e)	glygn4[e] 	<=>	
+EX_glygn5(e)	glygn5[e] 	<=>	
+EX_gmp(e)	gmp[e] 	<=>	
+EX_gp1c_hs(e)	gp1c_hs[e] 	<=>	
+EX_gp1calpha_hs(e)	gp1calpha_hs[e] 	<=>	
+EX_gq1b_hs(e)	gq1b_hs[e] 	<=>	
+EX_gq1balpha_hs(e)	gq1balpha_hs[e] 	<=>	
+EX_gsn(e)	gsn[e] 	<=>	
+EX_gt1a_hs(e)	gt1a_hs[e] 	<=>	
+EX_gthox(e)	gthox[e] 	<=>	
+EX_gthrd(e)	gthrd[e] 	<=>	
+EX_gtp(e)	gtp[e] 	<=>	
+EX_gua(e)	gua[e] 	<=>	
+EX_h(e)	h[e] 	<=>	
+EX_h2o(e)	h2o[e] 	<=>	
+EX_h2o2(e)	h2o2[e] 	<=>	
+EX_ha(e)	ha[e] 	<=>	
+EX_ha_pre1(e)	ha_pre1[e] 	<=>	
+EX_hco3(e)	hco3[e] 	<=>	
+EX_hcoumarin(e)	hcoumarin[e] 	<=>	
+EX_hdca(e)	hdca[e] 	<=>	
+EX_hdcea(e)	hdcea[e] 	<=>	
+EX_hestratriol(e)	hestratriol[e] 	<=>	
+EX_hexc(e)	hexc[e] 	<=>	
+EX_his_L(e)	his_L[e] 	<=>	
+EX_hista(e)	hista[e] 	<=>	
+EX_hom_L(e)	hom_L[e] 	<=>	
+EX_hpdca(e)	hpdca[e] 	<=>	
+EX_hspg(e)	hspg[e] 	<=>	
+EX_htaxol(e)	htaxol[e] 	<=>	
+EX_hxan(e)	hxan[e] 	<=>	
+EX_i(e)	i[e] 	<=>	
+EX_idp(e)	idp[e] 	<=>	
+EX_ile_L(e)	ile_L[e] 	<=>	
+EX_imp(e)	imp[e] 	<=>	
+EX_inost(e)	inost[e] 	<=>	
+EX_ins(e)	ins[e] 	<=>	
+EX_k(e)	k[e] 	<=>	
+EX_ksi(e)	ksi[e] 	<=>	
+EX_ksi_deg1(e)	ksi_deg1[e] 	<=>	
+EX_ksii_core2(e)	ksii_core2[e] 	<=>	
+EX_ksii_core4(e)	ksii_core4[e] 	<=>	
+EX_lac_D(e)	lac_D[e] 	<=>	
+EX_lac_L(e)	lac_L[e] 	<=>	
+EX_lcts(e)	lcts[e] 	<=>	
+EX_Lcystin(e)	Lcystin[e] 	<=>	
+EX_leuktrA4(e)	leuktrA4[e] 	<=>	
+EX_leuktrB4(e)	leuktrB4[e] 	<=>	
+EX_leuktrC4(e)	leuktrC4[e] 	<=>	
+EX_leuktrD4(e)	leuktrD4[e] 	<=>	
+EX_leuktrE4(e)	leuktrE4[e] 	<=>	
+EX_leuktrF4(e)	leuktrF4[e] 	<=>	
+EX_leu_L(e)	leu_L[e] 	<=>	
+EX_lgnc(e)	lgnc[e] 	<=>	
+EX_limnen(e)	limnen[e] 	<=>	
+EX_lipoate(e)	lipoate[e] 	<=>	
+EX_lneldc(e)	lneldc[e] 	<=>	
+EX_lnlc(e)	lnlc[e] 	<=>	
+EX_lnlnca(e)	lnlnca[e] 	<=>	
+EX_lnlncg(e)	lnlncg[e] 	<=>	
+EX_lpchol_hs(e)	lpchol_hs[e] 	<=>	
+EX_lys_L(e)	lys_L[e] 	<=>	
+EX_mag_hs(e)	mag_hs[e] 	<=>	
+EX_malt(e)	malt[e] 	<=>	
+EX_malttr(e)	malttr[e] 	<=>	
+EX_man(e)	man[e] 	<=>	
+EX_meoh(e)	meoh[e] 	<=>	
+EX_mepi(e)	mepi[e] 	<=>	
+EX_mercplaccys(e)	mercplaccys[e] 	<=>	
+EX_met_L(e)	met_L[e] 	<=>	
+EX_mthgxl(e)	mthgxl[e] 	<=>	
+EX_n2m2nmasn(e)	n2m2nmasn[e] 	<=>	
+EX_na1(e)	na1[e] 	<=>	
+EX_nac(e)	nac[e] 	<=>	
+EX_nad(e)	nad[e] 	<=>	
+EX_nadp(e)	nadp[e] 	<=>	
+EX_ncam(e)	ncam[e] 	<=>	
+EX_nh4(e)	nh4[e] 	<=>	
+EX_nifedipine(e)	nifedipine[e] 	<=>	
+EX_no(e)	no[e] 	<=>	
+EX_npthl(e)	npthl[e] 	<=>	
+EX_nrpphr(e)	nrpphr[e] 	<=>	
+EX_nrpphrsf(e)	nrpphrsf[e] 	<=>	
+EX_nrvnc(e)	nrvnc[e] 	<=>	
+EX_o2(e)	o2[e] 	<=>	
+EX_o2s(e)	o2s[e] 	<=>	
+EX_oagd3_hs(e)	oagd3_hs[e] 	<=>	
+EX_oagt3_hs(e)	oagt3_hs[e] 	<=>	
+EX_ocdca(e)	ocdca[e] 	<=>	
+EX_ocdcea(e)	ocdcea[e] 	<=>	
+EX_octa(e)	octa[e] 	<=>	
+EX_omeprazole(e)	omeprazole[e] 	<=>	
+EX_onpthl(e)	onpthl[e] 	<=>	
+EX_orn(e)	orn[e] 	<=>	
+EX_oxa(e)	oxa[e] 	<=>	
+EX_paf_hs(e)	paf_hs[e] 	<=>	
+EX_pchol_hs(e)	pchol_hs[e] 	<=>	
+EX_pe_hs(e)	pe_hs[e] 	<=>	
+EX_peplys(e)	peplys[e] 	<=>	
+EX_perillyl(e)	perillyl[e] 	<=>	
+EX_pglyc_hs(e)	pglyc_hs[e] 	<=>	
+EX_pheacgln(e)	pheacgln[e] 	<=>	
+EX_phe_L(e)	phe_L[e] 	<=>	
+EX_pheme(e)	pheme[e] 	<=>	
+EX_phyQ(e)	phyQ[e] 	<=>	
+EX_phyt(e)	phyt[e] 	<=>	
+EX_pi(e)	pi[e] 	<=>	
+EX_pnto_R(e)	pnto_R[e] 	<=>	
+EX_ppa(e)	ppa[e] 	<=>	
+EX_prgstrn(e)	prgstrn[e] 	<=>	
+EX_pro_D(e)	pro_D[e] 	<=>	
+EX_pro_L(e)	pro_L[e] 	<=>	
+EX_prostgd2(e)	prostgd2[e] 	<=>	
+EX_prostge1(e)	prostge1[e] 	<=>	
+EX_prostge2(e)	prostge2[e] 	<=>	
+EX_prostgf2(e)	prostgf2[e] 	<=>	
+EX_ps_hs(e)	ps_hs[e] 	<=>	
+EX_ptdca(e)	ptdca[e] 	<=>	
+EX_pydam(e)	pydam[e] 	<=>	
+EX_pydx(e)	pydx[e] 	<=>	
+EX_pydxn(e)	pydxn[e] 	<=>	
+EX_pyr(e)	pyr[e] 	<=>	
+EX_rbt(e)	rbt[e] 	<=>	
+EX_retfa(e)	retfa[e] 	<=>	
+EX_retinol(e)	retinol[e] 	<=>	
+EX_retinol_9_cis(e)	retinol_9_cis[e] 	<=>	
+EX_retinol_cis_11(e)	retinol_cis_11[e] 	<=>	
+EX_retn(e)	retn[e] 	<=>	
+EX_retnglc(e)	retnglc[e] 	<=>	
+EX_rib_D(e)	rib_D[e] 	<=>	
+EX_ribflv(e)	ribflv[e] 	<=>	
+EX_Rtotal(e)	Rtotal[e] 	<=>	
+EX_Rtotal2(e)	Rtotal2[e] 	<=>	
+EX_Rtotal3(e)	Rtotal3[e] 	<=>	
+EX_s2l2fn2m2masn(e)	s2l2fn2m2masn[e] 	<=>	
+EX_s2l2n2m2masn(e)	s2l2n2m2masn[e] 	<=>	
+EX_sarcs(e)	sarcs[e] 	<=>	
+EX_sel(e)	sel[e] 	<=>	
+EX_ser_D(e)	ser_D[e] 	<=>	
+EX_ser_L(e)	ser_L[e] 	<=>	
+EX_sl_L(e)	sl_L[e] 	<=>	
+EX_so4(e)	so4[e] 	<=>	
+EX_spc_hs(e)	spc_hs[e] 	<=>	
+EX_sph1p(e)	sph1p[e] 	<=>	
+EX_sphs1p(e)	sphs1p[e] 	<=>	
+EX_srtn(e)	srtn[e] 	<=>	
+EX_strch1(e)	strch1[e] 	<=>	
+EX_strch2(e)	strch2[e] 	<=>	
+EX_strdnc(e)	strdnc[e] 	<=>	
+EX_succ(e)	succ[e] 	<=>	
+EX_sucr(e)	sucr[e] 	<=>	
+EX_tag_hs(e)	tag_hs[e] 	<=>	
+EX_tagat_D(e)	tagat_D[e] 	<=>	
+EX_taur(e)	taur[e] 	<=>	
+EX_taxol(e)	taxol[e] 	<=>	
+EX_tchola(e)	tchola[e] 	<=>	
+EX_tcynt(e)	tcynt[e] 	<=>	
+EX_tdchola(e)	tdchola[e] 	<=>	
+EX_tethex3(e)	tethex3[e] 	<=>	
+EX_tetpent3(e)	tetpent3[e] 	<=>	
+EX_tetpent6(e)	tetpent6[e] 	<=>	
+EX_tettet6(e)	tettet6[e] 	<=>	
+EX_thf(e)	thf[e] 	<=>	
+EX_thm(e)	thm[e] 	<=>	
+EX_thmmp(e)	thmmp[e] 	<=>	
+EX_thmtp(e)	thmtp[e] 	<=>	
+EX_thr_L(e)	thr_L[e] 	<=>	
+EX_thym(e)	thym[e] 	<=>	
+EX_thymd(e)	thymd[e] 	<=>	
+EX_thyox_L(e)	thyox_L[e] 	<=>	
+EX_tmndnc(e)	tmndnc[e] 	<=>	
+EX_tolbutamide(e)	tolbutamide[e] 	<=>	
+EX_tre(e)	tre[e] 	<=>	
+EX_triodthy(e)	triodthy[e] 	<=>	
+EX_triodthysuf(e)	triodthysuf[e] 	<=>	
+EX_trp_L(e)	trp_L[e] 	<=>	
+EX_tststerone(e)	tststerone[e] 	<=>	
+EX_tststeroneglc(e)	tststeroneglc[e] 	<=>	
+EX_tststerones(e)	tststerones[e] 	<=>	
+EX_tsul(e)	tsul[e] 	<=>	
+EX_ttdca(e)	ttdca[e] 	<=>	
+EX_txa2(e)	txa2[e] 	<=>	
+EX_tymsf(e)	tymsf[e] 	<=>	
+EX_Tyr_ggn(e)	Tyr_ggn[e] 	<=>	
+EX_tyr_L(e)	tyr_L[e] 	<=>	
+EX_udp(e)	udp[e] 	<=>	
+EX_ump(e)	ump[e] 	<=>	
+EX_ura(e)	ura[e] 	<=>	
+EX_urate(e)	urate[e] 	<=>	
+EX_urea(e)	urea[e] 	<=>	
+EX_uri(e)	uri[e] 	<=>	
+EX_utp(e)	utp[e] 	<=>	
+EX_vacc(e)	vacc[e] 	<=>	
+EX_val_L(e)	val_L[e] 	<=>	
+EX_vitd2(e)	vitd2[e] 	<=>	
+EX_vitd3(e)	vitd3[e] 	<=>	
+EX_whddca(e)	whddca[e] 	<=>	
+EX_whhdca(e)	whhdca[e] 	<=>	
+EX_whtststerone(e)	whtststerone[e] 	<=>	
+EX_whttdca(e)	whttdca[e] 	<=>	
+EX_xolest_hs(e)	xolest_hs[e] 	<=>	
+EX_xolest2_hs(e)	xolest2_hs[e] 	<=>	
+EX_xoltri24(e)	xoltri24[e] 	<=>	
+EX_xoltri25(e)	xoltri25[e] 	<=>	
+EX_xoltri27(e)	xoltri27[e] 	<=>	
+EX_xyl_D(e)	xyl_D[e] 	<=>	
+EX_xylt(e)	xylt[e] 	<=>	
+EX_yvite(e)	yvite[e] 	<=>	
+FA140ACPH	h2o[c] + myrsACP[c] 	<=>	h[c] + ACP[c] + ttdca[c] 
+FACOAL181i	atp[c] + coa[c] + ocdcea[c] 	->	amp[c] + ppi[c] + odecoa[c] 
+FADDP	h2o[c] + fad[c] 	->	2.000000 h[c] + amp[c] + fmn[c] 
+FBP	h2o[c] + fdp[c] 	->	pi[c] + f6p[c] 
+FDH	nad[c] + for[c] 	->	nadh[c] + co2[c] 
+FTCD	2.000000 h[c] + 5forthf[c] 	->	nh4[c] + methf[c] 
+FTHFDH	10fthf[c] + h2o[c] + nadp[c] 	->	h[c] + nadph[c] + co2[c] + thf[c] 
+FTHFL	atp[c] + thf[c] + for[c] 	->	10fthf[c] + adp[c] + pi[c] 
+FTHFLm	atp[m] + for[m] + thf[m] 	->	10fthf[m] + adp[m] + pi[m] 
+FUM	h2o[c] + fum[c] 	<=>	mal_L[c] 
+FUMm	h2o[m] + fum[m] 	<=>	mal_L[m] 
+G5SDym	h[m] + nadph[m] + glu5p[m] 	->	nadp[m] + pi[m] + glu5sa[m] 
+GABAVESSEC	h2o[c] + atp[c] + 4abut[c] 	->	adp[c] + h[c] + pi[c] + 4abut[e] 
+GALT	h[c] + utp[c] + gal1p[c] 	<=>	udpgal[c] + ppi[c] 
+GALU	h[c] + g1p[c] + utp[c] 	<=>	ppi[c] + udpg[c] 
+GBA	h2o[c] + gluside_hs[c] 	->	glc_D[c] + crm_hs[c] 
+GCALDD	h2o[c] + nad[c] + gcald[c] 	->	2.000000 h[c] + nadh[c] + glyclt[c] 
+GCHOLAt3	h2o[c] + atp[c] + gchola[c] 	->	adp[c] + h[c] + pi[c] + gchola[e] 
+GGH_10FTHF6GLUl	10fthf6glu[l] + h2o[l] 	->	10fthf5glu[l] + glu_L[l] 
+GGH_10FTHF7GLUl	10fthf7glu[l] + h2o[l] 	->	10fthf6glu[l] + glu_L[l] 
+GGH_6DHFl	h2o[l] + 6dhf[l] 	->	5dhf[l] + glu_L[l] 
+GGH_6THFl	h2o[l] + 6thf[l] 	->	5thf[l] + glu_L[l] 
+GGH_7DHFl	h2o[l] + 7dhf[l] 	->	6dhf[l] + glu_L[l] 
+GGH_7THFl	h2o[l] + 7thf[l] 	->	6thf[l] + glu_L[l] 
+GGLUCT	gluala[e] 	->	ala_L[c] + 5oxpro[c] 
+GLCURtly	h[c] + glcur[c] 	<=>	h[l] + glcur[l] 
+GLNS	nh4[c] + atp[c] + glu_L[c] 	->	adp[c] + h[c] + pi[c] + gln_L[c] 
+GLUCYS	atp[c] + glu_L[c] + cys_L[c] 	->	adp[c] + h[c] + pi[c] + glucys[c] 
+GLUVESSEC	h2o[c] + atp[c] + glu_L[c] 	->	adp[c] + h[c] + pi[c] + glu_L[e] 
+GLYt2rL	h[l] + gly[l] 	<=>	h[c] + gly[c] 
+GLYVESSEC	h2o[c] + atp[c] + gly[c] 	->	adp[c] + h[c] + pi[c] + gly[e] 
+GNDer	nadp[r] + 6pgc[r] 	->	nadph[r] + co2[r] + ru5p_D[r] 
+GTHRDt	h2o[c] + atp[c] + gthrd[c] 	<=>	adp[c] + h[c] + pi[c] + gthrd[m] 
+GTHS	atp[c] + gly[c] + glucys[c] 	->	adp[c] + h[c] + pi[c] + gthrd[c] 
+GUACYC	gtp[c] 	->	35cgmp[c] + ppi[c] 
+GULNDer	h[r] + nadph[r] + glcur[r] 	<=>	nadp[r] + guln[r] 
+H2CO3Dm	h2o[m] + co2[m] 	->	h[m] + hco3[m] 
+H2Oter	h2o[c] 	<=>	h2o[r] 
+H2Otg	h2o[c] 	<=>	h2o[g] 
+H2Otly	h2o[c] 	<=>	h2o[l] 
+HEX1	atp[c] + glc_D[c] 	->	adp[c] + h[c] + g6p[c] 
+HISTAVESSEC	h2o[c] + atp[c] + hista[c] 	->	adp[c] + h[c] + pi[c] + hista[e] 
+HKt	h2o[c] + atp[c] + k[e] 	->	adp[c] + pi[c] + h[e] + k[c] 
+HPYRDC	h[c] + hpyr[c] 	->	co2[c] + gcald[c] 
+HPYRRy	h[c] + nadph[c] + hpyr[c] 	->	nadp[c] + glyc_R[c] 
+IMPD	h2o[c] + nad[c] + imp[c] 	->	h[c] + nadh[c] + xmp[c] 
+INOSTO	o2[c] + inost[c] 	->	h2o[c] + h[c] + glcur[c] 
+KAS8	20.000000 h[c] + 14.000000 nadph[c] + accoa[c] + 7.000000 malcoa[c] 	->	6.000000 h2o[c] + 14.000000 nadp[c] + 7.000000 co2[c] + 8.000000 coa[c] + hdca[c] 
+KYN3OX	o2[c] + h[c] + nadph[c] + Lkynr[c] 	->	h2o[c] + nadp[c] + hLkynr[c] 
+LACZe	h2o[e] + lcts[e] 	->	glc_D[e] + gal[e] 
+LCAT1e	chsterol[e] + pchol_hs[e] 	->	lpchol_hs[e] + xolest2_hs[e] 
+L_LACDcm	2.000000 ficytC[m] + lac_L[c] 	->	2.000000 h[c] + pyr[c] + 2.000000 focytC[m] 
+LNS14DM	3.000000 o2[c] + 2.000000 h[c] + 3.000000 nadph[c] + lanost[c] 	->	4.000000 h2o[c] + 3.000000 nadp[c] + for[c] + 44mctr[c] 
+LPCOXp	Lpipecol[x] + o2[x] 	->	h[x] + h2o2[x] + thp2c[x] 
+LPS3	h2o[c] + mag_hs[c] 	->	h[c] + Rtotal2[c] + glyc[c] 
+LPS3e	h2o[e] + mag_hs[e] 	->	h[e] + glyc[e] + Rtotal2[e] 
+LYSOXp	o2[x] + h2o[x] + lys_L[x] 	->	h2o2[x] + nh4[x] + 6a2ohxnt[x] 
+MAN1PT2	h[c] + gdp[c] + man1p[c] 	->	pi[c] + gdpmann[c] 
+MCCCrm	atp[m] + hco3[m] + 3mb2coa[m] 	<=>	h[m] + adp[m] + pi[m] + 3mgcoa[m] 
+MCOATA	malcoa[c] + ACP[c] 	<=>	coa[c] + malACP[c] 
+MELATNOX	o2[c] + h[c] + nadph[c] + melatn[c] 	->	h2o[c] + nadp[c] + 6hoxmelatn[c] 
+METAT	h2o[c] + atp[c] + met_L[c] 	->	pi[c] + amet[c] + ppi[c] 
+MGSA	dhap[c] 	->	pi[c] + mthgxl[c] 
+MGSA2	g3p[c] 	->	pi[c] + mthgxl[c] 
+MI1345PP	h2o[c] + mi1345p[c] 	->	pi[c] + mi134p[c] 
+MI134PP	h2o[c] + mi134p[c] 	->	pi[c] + mi34p[c] 
+MI13PP	h2o[c] + mi13p[c] 	->	pi[c] + mi1p_D[c] 
+MMMm	mmcoa_R[m] 	<=>	succoa[m] 
+MMSAD3m	coa[m] + nad[m] + msa[m] 	->	co2[m] + nadh[m] + accoa[m] 
+N3Tg	udpgal[g] + Tn_antigen[g] 	->	h[g] + udp[g] + T_antigen[g] 
+NADS2	h2o[c] + atp[c] + gln_L[c] + dnad[c] 	->	h[c] + nad[c] + glu_L[c] + amp[c] + ppi[c] 
+NaKt	h2o[c] + atp[c] + na1[c] + k[e] 	->	adp[c] + h[c] + pi[c] + na1[e] + k[c] 
+NBAHH_ir	h2o[c] + carn[c] 	->	ala_B[c] + his_L[c] 
+NDP6	h2o[c] + dcdp[c] 	->	h[c] + pi[c] + dcmp[c] 
+NDP7er	h2o[r] + udp[r] 	->	h[r] + pi[r] + ump[r] 
+NDP7ex	h2o[e] + udp[e] 	->	h[e] + pi[e] + ump[e] 
+NDP7g	udp[g] + h2o[g] 	->	h[g] + pi[g] + ump[g] 
+NDP8	h2o[c] + dudp[c] 	->	h[c] + pi[c] + dump[c] 
+NDPK10	atp[c] + didp[c] 	<=>	adp[c] + ditp[c] 
+NDPK6n	atp[n] + dudp[n] 	<=>	adp[n] + dutp[n] 
+NDPK9n	atp[n] + idp[n] 	<=>	adp[n] + itp[n] 
+NICRNS	atp[c] + nicrns[c] 	->	adp[c] + h[c] + nicrnt[c] 
+NOS1	o2[c] + h[c] + nadph[c] + arg_L[c] 	->	h2o[c] + nadp[c] + nwharg[c] 
+NOS2	o2[c] + nadph[c] + nwharg[c] 	->	h2o[c] + h[c] + nadp[c] + citr_L[c] + no[c] 
+NRPPHRVESSEC	h2o[c] + atp[c] + nrpphr[c] 	->	adp[c] + h[c] + pi[c] + nrpphr[e] 
+NTD10	h2o[c] + xmp[c] 	->	pi[c] + xtsn[c] 
+O2ter	o2[c] 	<=>	o2[r] 
+OPAHir	2.000000 h2o[c] + atp[c] + 5oxpro[c] 	->	adp[c] + h[c] + pi[c] + glu_L[c] 
+P5CDm	2.000000 h2o[m] + nad[m] + 1pyr5c[m] 	->	h[m] + nadh[m] + glu_L[m] 
+PAIL_HStn	pail_hs[c] 	<=>	pail_hs[n] 
+PAIL45P_HStn	pail45p_hs[c] 	<=>	pail45p_hs[n] 
+PAN4PP	h2o[c] + pan4p[c] 	->	pi[c] + ptth[c] 
+PAPStg	paps[c] 	<=>	paps[g] 
+PCHOLPg_hs	h2o[g] + pchol_hs[g] 	->	h[g] + chol[g] + pa_hs[g] 
+PCHOLPr_hs	h2o[r] + pchol_hs[r] 	->	h[r] + chol[r] + pa_hs[r] 
+PCt	h2o[c] + atp[c] + pchol_hs[c] 	->	adp[c] + h[c] + pi[c] + pchol_hs[e] 
+PDE1	h2o[c] + camp[c] 	->	h[c] + amp[c] 
+PDHm	coa[m] + nad[m] + pyr[m] 	->	co2[m] + nadh[m] + accoa[m] 
+PEFLIP	h2o[c] + atp[c] + pe_hs[e] 	->	adp[c] + h[c] + pi[c] + pe_hs[c] 
+PEFLIPm	h2o[c] + atp[c] + pe_hs[c] 	->	adp[c] + h[c] + pi[c] + pe_hs[m] 
+PEPCKm	gtp[m] + oaa[m] 	->	co2[m] + gdp[m] + pep[m] 
+PEROXx	3.000000 nad[x] + 3.000000 coa[x] + 2.000000 o2[x] + 3.000000 h2o[x] + pristcoa[x] 	->	3.000000 h[x] + 3.000000 nadh[x] + accoa[x] + 2.000000 h2o2[x] + dmnoncoa[x] + 2.000000 ppcoa[x] 
+PFK	atp[c] + f6p[c] 	->	adp[c] + h[c] + fdp[c] 
+PFK26	atp[c] + f6p[c] 	->	adp[c] + h[c] + f26bp[c] 
+PGCD	nad[c] + 3pg[c] 	->	h[c] + nadh[c] + 3php[c] 
+PGI	g6p[c] 	<=>	f6p[c] 
+PGK	atp[c] + 3pg[c] 	<=>	adp[c] + 13dpg[c] 
+PGMT	g1p[c] 	<=>	g6p[c] 
+PHYQt	h2o[c] + atp[c] + phyQ[e] 	->	adp[c] + h[c] + pi[c] + phyQ[c] 
+PI345P3P	h2o[c] + pail345p_hs[c] 	->	pi[c] + pail45p_hs[c] 
+PI34P5K	atp[c] + pail34p_hs[c] 	->	adp[c] + h[c] + pail345p_hs[c] 
+PI45P5P	h2o[c] + pail45p_hs[c] 	->	pi[c] + pail4p_hs[c] 
+PI45PLC	h2o[c] + pail45p_hs[c] 	->	h[c] + dag_hs[c] + mi145p[c] 
+PI4P3K	atp[c] + pail4p_hs[c] 	->	adp[c] + h[c] + pail34p_hs[c] 
+PI4P5K	atp[c] + pail4p_hs[c] 	->	adp[c] + h[c] + pail45p_hs[c] 
+PI4PLC	h2o[c] + pail4p_hs[c] 	->	h[c] + dag_hs[c] + mi14p[c] 
+PI4PLCn	h2o[n] + pail4p_hs[n] 	->	h[n] + dag_hs[n] + mi14p[n] 
+PI4PP	h2o[c] + pail4p_hs[c] 	->	pi[c] + pail_hs[c] 
+PI5P4K	atp[c] + pail5p_hs[c] 	->	adp[c] + h[c] + pail45p_hs[c] 
+PIK4	atp[c] + pail_hs[c] 	->	adp[c] + h[c] + pail4p_hs[c] 
+PIPLCn	h2o[n] + pail_hs[n] 	->	h[n] + dag_hs[n] + mi1p_D[n] 
+PItn	pi[n] 	<=>	pi[c] 
+PMI12346PH	h2o[c] + ppmi12346p[c] 	->	h[c] + pi[c] + minohp[c] 
+PMI1346PH	h2o[c] + ppmi1346p[c] 	->	h[c] + pi[c] + mi13456p[c] 
+PNTOt5	h2o[c] + atp[c] + na1[e] + pnto_R[e] 	->	adp[c] + h[c] + pi[c] + na1[c] + pnto_R[c] 
+PPA	h2o[c] + ppi[c] 	->	h[c] + 2.000000 pi[c] 
+PPA2	h2o[c] + pppi[c] 	->	h[c] + pi[c] + ppi[c] 
+PPAer	h2o[r] + ppi[r] 	->	h[r] + 2.000000 pi[r] 
+PPAm	h2o[m] + ppi[m] 	->	h[m] + 2.000000 pi[m] 
+PPAn	h2o[n] + ppi[n] 	->	h[n] + 2.000000 pi[n] 
+PPM	r1p[c] 	<=>	r5p[c] 
+PPNCL3	atp[c] + cys_L[c] + 4ppan[c] 	->	h[c] + amp[c] + ppi[c] + 4ppcys[c] 
+PRDXl	h2o2[l] + meoh[l] 	->	2.000000 h2o[l] + fald[l] 
+PRFGS	h2o[c] + atp[c] + gln_L[c] + fgam[c] 	->	adp[c] + h[c] + pi[c] + glu_L[c] + fpram[c] 
+PROSTGE1t3	h2o[c] + atp[c] + prostge1[c] 	->	adp[c] + h[c] + pi[c] + prostge1[e] 
+PROSTGE2t3	h2o[c] + atp[c] + prostge2[c] 	->	adp[c] + h[c] + pi[c] + prostge2[e] 
+PROt2rL	h[l] + pro_L[l] 	<=>	h[c] + pro_L[c] 
+PRPPS	atp[c] + r5p[c] 	<=>	h[c] + amp[c] + prpp[c] 
+PSERT	glu_L[c] + 3php[c] 	->	h[c] + akg[c] + pser_L[c] 
+PSFLIP	h2o[c] + atp[c] + ps_hs[e] 	->	adp[c] + h[c] + pi[c] + ps_hs[c] 
+PSFLIPm	h2o[c] + atp[c] + ps_hs[c] 	->	adp[c] + h[c] + pi[c] + ps_hs[m] 
+PTE3x	h2o[x] + pristcoa[x] 	->	h[x] + coa[x] + prist[x] 
+PTPAT	atp[c] + h[c] + pan4p[c] 	->	ppi[c] + dpcoa[c] 
+PYDAMK	atp[c] + pydam[c] 	->	adp[c] + h[c] + pyam5p[c] 
+PYDXK	atp[c] + pydx[c] 	->	adp[c] + h[c] + pydx5p[c] 
+PYDXNK	atp[c] + pydxn[c] 	->	adp[c] + h[c] + pdx5p[c] 
+PYK	adp[c] + h[c] + pep[c] 	->	atp[c] + pyr[c] 
+RBFK	atp[c] + ribflv[c] 	->	adp[c] + h[c] + fmn[c] 
+RIBFLVt3	h2o[c] + atp[c] + ribflv[e] 	->	adp[c] + h[c] + pi[c] + ribflv[c] 
+RNMK	atp[c] + rnam[c] 	->	adp[c] + h[c] + nmn[c] 
+RTOT1	R1coa_hs[c] 	->	Rtotalcoa[c] 
+RTOT2	R2coa_hs[c] 	->	Rtotalcoa[c] 
+RTOT5	R5coa_hs[c] 	->	Rtotalcoa[c] 
+RTOTAL3CRNCPT2	coa[m] + Rtotal3crn[m] 	->	crn[m] + Rtotal3coa[m] 
+SADT	atp[c] + h[c] + so4[c] 	->	ppi[c] + aps[c] 
+SARDHm	fad[m] + sarcs[m] + thf[m] 	->	fadh2[m] + gly[m] + mlthf[m] 
+SBPP1er	h2o[r] + sph1p[r] 	->	pi[r] + sphgn[r] 
+SBTD_D2	nad[c] + sbt_D[c] 	->	h[c] + nadh[c] + fru[c] 
+SFGTH	h2o[c] + Sfglutth[c] 	->	h[c] + for[c] + gthrd[c] 
+sink_citr(c)	citr_L[c] 	->	
+sink_pre_prot(r)	pre_prot[r] 	<=>	
+SLCBK1	atp[c] + sphgn[c] 	->	adp[c] + h[c] + sph1p[c] 
+SMPD4	h2o[c] + spc_hs[c] 	->	h[c] + cholp[c] + sphings[c] 
+SMS	pchol_hs[c] + crm_hs[c] 	->	dag_hs[c] + sphmyln_hs[c] 
+SOAT11	R1coa_hs[c] + chsterol[c] 	->	coa[c] + xolest_hs[c] 
+SPHK21c	atp[c] + sphings[c] 	->	adp[c] + h[c] + sphs1p[c] 
+SUCD1m	fad[m] + succ[m] 	<=>	fadh2[m] + fum[m] 
+SUCOAS1m	coa[m] + gtp[m] + succ[m] 	<=>	pi[m] + gdp[m] + succoa[m] 
+SUCOASm	coa[m] + atp[m] + succ[m] 	<=>	adp[m] + pi[m] + succoa[m] 
+SULFOX	h2o[c] + so3[c] + 2.000000 ficytC[m] 	->	2.000000 h[c] + 2.000000 focytC[m] + so4[c] 
+TCHOLAt3	h2o[c] + atp[c] + tchola[c] 	->	adp[c] + h[c] + pi[c] + tchola[e] 
+THMTP	h2o[c] + thmtp[c] 	->	h[c] + pi[c] + thmpp[c] 
+TMDK1	atp[c] + thymd[c] 	->	adp[c] + h[c] + dtmp[c] 
+TMDK1m	atp[m] + thymd[m] 	->	h[m] + adp[m] + dtmp[m] 
+TMDPK	atp[c] + thm[c] 	->	h[c] + amp[c] + thmpp[c] 
+TYRTA	akg[c] + tyr_L[c] 	<=>	34hpp[c] + glu_L[c] 
+UAGALDP	h[c] + acgal1p[c] + utp[c] 	->	ppi[c] + udpacgal[c] 
+UDPG1P	h2o[c] + udpglcur[c] 	->	2.000000 h[c] + ump[c] + glcur1p[c] 
+UDPGALtg	udpgal[c] + ump[g] 	<=>	udpgal[g] + ump[c] 
+UDPGP	h2o[c] + udpg[c] 	->	2.000000 h[c] + g1p[c] + ump[c] 
+UGLCNACtg	uacgam[c] + ump[g] 	<=>	uacgam[g] + ump[c] 
+UGT1A10r	bilirub[r] + 2.000000 h[r] + udpglcur[r] 	<=>	bilglcur[r] + udp[r] 
+UNK2	2.000000 h[c] + gln_L[c] + 2kmb[c] 	->	glu_L[c] + met_L[c] 
+UPPN	h2o[c] + 2.000000 h[c] + cala[c] 	->	nh4[c] + co2[c] + ala_B[c] 
+URIK1	atp[c] + uri[c] 	->	adp[c] + h[c] + ump[c] 
+XYLTD_Dr	nad[c] + xylt[c] 	<=>	h[c] + nadh[c] + xylu_D[c] 
+EX_4abutn(e)	4abutn[e] 	<=>	
+EX_acmana(e)	acmana[e] 	<=>	
+EX_ahdt(e)	ahdt[e] 	<=>	
+EX_ctp(e)	ctp[e] 	<=>	
+EX_dgmp(e)	dgmp[e] 	<=>	
+EX_dgtp(e)	dgtp[e] 	<=>	
+EX_dha(e)	dha[e] 	<=>	
+EX_dhap(e)	dhap[e] 	<=>	
+EX_dtmp(e)	dtmp[e] 	<=>	
+EX_dttp(e)	dttp[e] 	<=>	
+EX_fad(e)	fad[e] 	<=>	
+EX_fald(e)	fald[e] 	<=>	
+EX_g1p(e)	g1p[e] 	<=>	
+EX_HC00229(e)	HC00229[e] 	<=>	
+EX_HC00250(e)	HC00250[e] 	<=>	
+EX_HC01104(e)	HC01104[e] 	<=>	
+EX_HC01361(e)	HC01361[e] 	<=>	
+EX_HC01440(e)	HC01440[e] 	<=>	
+EX_HC01441(e)	HC01441[e] 	<=>	
+EX_HC01444(e)	HC01444[e] 	<=>	
+EX_HC01446(e)	HC01446[e] 	<=>	
+EX_HC01577(e)	HC01577[e] 	<=>	
+EX_HC01609(e)	HC01609[e] 	<=>	
+EX_HC01610(e)	HC01610[e] 	<=>	
+EX_HC01700(e)	HC01700[e] 	<=>	
+EX_HC02160(e)	HC02160[e] 	<=>	
+EX_HC02161(e)	HC02161[e] 	<=>	
+EX_itp(e)	itp[e] 	<=>	
+EX_orot(e)	orot[e] 	<=>	
+EX_prpp(e)	prpp[e] 	<=>	
+EX_ptrc(e)	ptrc[e] 	<=>	
+EX_pydx5p(e)	pydx5p[e] 	<=>	
+EX_spmd(e)	spmd[e] 	<=>	
+EX_udpg(e)	udpg[e] 	<=>	
+r0009	h2o[x] + ppi[x] 	->	h[x] + 2.000000 pi[x] 
+r0023	nadh[c] + 2.000000 HC00617[c] 	->	nad[c] + 2.000000 HC00619[c] 
+r0028	h2o[c] + adp[c] 	->	h[c] + pi[c] + amp[c] 
+r0034	h2o[m] + co2[m] + 2.000000 atp[m] + nh4[m] 	->	3.000000 h[m] + 2.000000 adp[m] + pi[m] + cbp[m] 
+r0068	coa[c] + HC01672[c] 	->	h[c] + amp[c] + accoa[c] 
+r0074	h2o[m] + nad[m] + glu5sa[m] 	<=>	2.000000 h[m] + nadh[m] + glu_L[m] 
+r0119	h2o[c] + gtp[c] 	->	h[c] + ppi[c] + gmp[c] 
+r0145	2.000000 o2[c] + 2.000000 nadph[c] + arg_L[c] 	<=>	2.000000 h2o[c] + 2.000000 nadp[c] + citr_L[c] + no[c] 
+r0186	h2o[c] + ethamp[c] 	->	nh4[c] + pi[c] + acald[c] 
+r0193	h2o[c] + cys_L[c] 	<=>	nh4[c] + h[c] + pyr[c] + HC00250[c] 
+r0208	h[c] + gtp[c] + man1p[c] 	<=>	ppi[c] + gdpmann[c] 
+r0220	coa[c] + HC01668[c] 	->	2.000000 h[c] + amp[c] + ppcoa[c] 
+r0221	coa[m] + HC01668[m] 	->	2.000000 h[m] + ppcoa[m] + amp[m] 
+r0265	atp[c] + gal[c] 	->	adp[c] + h[c] + HC01111[c] 
+r0280	h[c] + pep[c] + dadp[c] 	->	pyr[c] + datp[c] 
+r0321	coa[m] + acac[m] + atp[m] 	->	aacoa[m] + amp[m] + ppi[m] 
+r0354	itp[c] + glc_D[c] 	->	h[c] + idp[c] + g6p[c] 
+r0355	datp[c] + glc_D[c] 	->	h[c] + dadp[c] + g6p[c] 
+r0366	h2o[c] + ACP[c] 	->	pan4p[c] + HC01161[c] 
+r0377	atp[c] + dcyt[c] 	->	adp[c] + h[c] + dcmp[c] 
+r0408	atp[c] + s7p[c] 	<=>	adp[c] + h[c] + HC00361[c] 
+r0456	atp[c] + dgsn[c] 	->	adp[c] + h[c] + dgmp[c] 
+r0465	atp[c] + 4abut[c] + his_L[c] 	->	2.000000 h[c] + amp[c] + ppi[c] + HC00576[c] 
+r0475	h2o[c] + dutp[c] + trdox[c] 	<=>	utp[c] + trdrd[c] 
+r0480	amet[c] + ethamp[c] 	<=>	h[c] + ahcys[c] + HC00718[c] 
+r0509	q10[m] + succ[m] 	->	q10h2[m] + fum[m] 
+r0523	atp[m] + 5fthf[m] 	->	adp[m] + pi[m] + methf[m] 
+r0531	cytd[c] + dutp[c] 	<=>	h[c] + cmp[c] + dudp[c] 
+r0555	coa[m] + HC00682[m] 	->	accoa[m] + dhlam[m] 
+r0584	h2o[c] + dnad[c] 	<=>	2.000000 h[c] + amp[c] + nicrnt[c] 
+r0590	h[m] + atp[m] + pan4p[m] 	->	ppi[m] + dpcoa[m] 
+r0591	h2o[c] + dpcoa[c] 	<=>	2.000000 h[c] + amp[c] + pan4p[c] 
+r0611	itp[c] + HC00664[c] 	<=>	h[c] + idp[c] + HC01180[c] 
+r0666	atp[c] + fpram[c] 	<=>	adp[c] + 2.000000 h[c] + pi[c] + air[c] 
+r0671	cys_L[c] + ctp[c] + 4ppan[c] 	->	h[c] + ppi[c] + cmp[c] + 4ppcys[c] 
+r0698	4.000000 h[x] + dcholcoa[x] + ppcoa[x] 	->	coa[x] + h2o[x] + dhcholestancoa[x] 
+r0787	h2o[c] + sph1p[c] 	->	pi[c] + sphgn[c] 
+r0825	ile_L[l] 	->	ile_L[c] 
+r0859	atp[c] + adp[l] 	->	adp[c] + atp[l] 
+r0860	adp[c] + atp[x] 	<=>	atp[c] + adp[x] 
+r0941	hco3[c] 	<=>	hco3[m] 
+r0989	cholcoa[r] 	<=>	cholcoa[c] 
+r0993	h2o[c] + atp[c] + C02528[c] 	->	adp[c] + h[c] + pi[c] + C02528[e] 
+r1017	h2o[x] + atp[x] + tchola[x] 	->	h[x] + adp[x] + pi[x] + tchola[e] 
+r1026	h2o[c] + atp[c] + dgchol[c] 	->	adp[c] + h[c] + pi[c] + dgchol[e] 
+r1028	h2o[c] + atp[c] + tdchola[c] 	->	adp[c] + h[c] + pi[c] + tdchola[e] 
+r1029	h2o[x] + atp[x] + tdchola[x] 	->	h[x] + adp[x] + pi[x] + tdchola[e] 
+r1061	asn_L[l] 	->	asn_L[c] 
+r1063	cys_L[l] 	->	cys_L[c] 
+r1068	leu_L[l] 	->	leu_L[c] 
+r1076	ser_L[l] 	->	ser_L[c] 
+r1093	1692.000000 h2o[c] + 1692.000000 atp[c] + 29.000000 glu_L[c] + 25.000000 asp_L[c] + 19.000000 asn_L[c] + 34.000000 ala_L[c] + 3.000000 cys_L[c] + 17.000000 gln_L[c] + 16.000000 gly[c] + 30.000000 ser_L[c] + 29.000000 thr_L[c] + 26.000000 lys_L[c] + 16.000000 arg_L[c] + 14.000000 met_L[c] + 9.000000 his_L[c] + 9.000000 tyr_L[c] + 20.000000 ile_L[c] + 59.000000 leu_L[c] + 3.000000 trp_L[c] + 25.000000 phe_L[c] + 16.000000 pro_L[c] + 24.000000 val_L[c] 	->	1269.000000 adp[c] + 1269.000000 pi[c] + 423.000000 amp[c] + 423.000000 ppi[c] + HC00002[c] 
+r1094	1672.000000 h2o[c] + 1672.000000 atp[c] + 32.000000 glu_L[c] + 24.000000 asp_L[c] + 19.000000 asn_L[c] + 26.000000 ala_L[c] + 3.000000 cys_L[c] + 18.000000 gln_L[c] + 24.000000 gly[c] + 25.000000 ser_L[c] + 30.000000 thr_L[c] + 34.000000 lys_L[c] + 7.000000 arg_L[c] + 10.000000 met_L[c] + 13.000000 his_L[c] + 6.000000 tyr_L[c] + 20.000000 ile_L[c] + 51.000000 leu_L[c] + 3.000000 trp_L[c] + 27.000000 phe_L[c] + 19.000000 pro_L[c] + 27.000000 val_L[c] 	->	1254.000000 adp[c] + 1254.000000 pi[c] + 418.000000 amp[c] + 418.000000 ppi[c] + HC00003[c] 
+r1096	496.000000 h2o[c] + 496.000000 atp[c] + 5.000000 glu_L[c] + 8.000000 asp_L[c] + asn_L[c] + 11.000000 ala_L[c] + 2.000000 cys_L[c] + 7.000000 gln_L[c] + 6.000000 gly[c] + 8.000000 ser_L[c] + 6.000000 thr_L[c] + 4.000000 lys_L[c] + 9.000000 arg_L[c] + 5.000000 met_L[c] + his_L[c] + 4.000000 tyr_L[c] + 4.000000 ile_L[c] + 20.000000 leu_L[c] + 3.000000 phe_L[c] + 9.000000 pro_L[c] + 11.000000 val_L[c] 	->	372.000000 adp[c] + 372.000000 pi[c] + 124.000000 amp[c] + 124.000000 ppi[c] + HC01161[c] 
+r1101	10696.000000 h2o[c] + 10696.000000 atp[c] + 186.000000 glu_L[c] + 176.000000 asp_L[c] + 138.000000 asn_L[c] + 134.000000 ala_L[c] + 48.000000 cys_L[c] + 110.000000 gln_L[c] + 262.000000 gly[c] + 278.000000 ser_L[c] + 182.000000 thr_L[c] + 154.000000 lys_L[c] + 134.000000 arg_L[c] + 48.000000 met_L[c] + 62.000000 his_L[c] + 98.000000 tyr_L[c] + 104.000000 ile_L[c] + 166.000000 leu_L[c] + 60.000000 trp_L[c] + 98.000000 phe_L[c] + 114.000000 pro_L[c] + 122.000000 val_L[c] 	->	8022.000000 adp[c] + 8022.000000 pi[c] + 2674.000000 amp[c] + 2674.000000 ppi[c] + HC01852[c] 
+r1103	3240.000000 h2o[c] + 3240.000000 atp[c] + 56.000000 glu_L[c] + 36.000000 asp_L[c] + 40.000000 asn_L[c] + 37.000000 ala_L[c] + 48.000000 cys_L[c] + 31.000000 gln_L[c] + 62.000000 gly[c] + 56.000000 ser_L[c] + 61.000000 thr_L[c] + 49.000000 lys_L[c] + 42.000000 arg_L[c] + 11.000000 met_L[c] + 24.000000 his_L[c] + 30.000000 tyr_L[c] + 22.000000 ile_L[c] + 48.000000 leu_L[c] + 19.000000 trp_L[c] + 21.000000 phe_L[c] + 69.000000 pro_L[c] + 48.000000 val_L[c] 	->	2430.000000 adp[c] + 2430.000000 pi[c] + 810.000000 amp[c] + 810.000000 ppi[c] + HC01942[c] 
+r1104	2488.000000 h2o[c] + 2488.000000 atp[c] + 51.000000 glu_L[c] + 35.000000 asp_L[c] + 25.000000 asn_L[c] + 42.000000 ala_L[c] + 26.000000 cys_L[c] + 26.000000 gln_L[c] + 49.000000 gly[c] + 38.000000 ser_L[c] + 36.000000 thr_L[c] + 29.000000 lys_L[c] + 44.000000 arg_L[c] + 9.000000 met_L[c] + 13.000000 his_L[c] + 21.000000 tyr_L[c] + 22.000000 ile_L[c] + 51.000000 leu_L[c] + 14.000000 trp_L[c] + 21.000000 phe_L[c] + 33.000000 pro_L[c] + 37.000000 val_L[c] 	->	1866.000000 adp[c] + 1866.000000 pi[c] + 622.000000 amp[c] + 622.000000 ppi[c] + HC01943[c] 
+r1113	1068.000000 h2o[c] + 1068.000000 atp[c] + 30.000000 glu_L[c] + 16.000000 asp_L[c] + 5.000000 asn_L[c] + 23.000000 ala_L[c] + 19.000000 gln_L[c] + 11.000000 gly[c] + 16.000000 ser_L[c] + 12.000000 thr_L[c] + 22.000000 lys_L[c] + 17.000000 arg_L[c] + 4.000000 met_L[c] + 6.000000 his_L[c] + 7.000000 tyr_L[c] + 41.000000 leu_L[c] + 5.000000 trp_L[c] + 8.000000 phe_L[c] + 10.000000 pro_L[c] + 15.000000 val_L[c] 	->	801.000000 adp[c] + 801.000000 pi[c] + 267.000000 amp[c] + 267.000000 ppi[c] + HC00004[c] 
+r1134	2.000000 o2[r] + h[r] + nadph[r] + 44mzym[r] 	->	2.000000 h2o[r] + nadp[r] + HC02108[r] 
+r1150	pi[l] 	->	pi[c] 
+r1156	uri[c] + dutp[c] 	<=>	h[c] + dudp[c] + ump[c] 
+r1162	h2o[c] + atp[c] + so4[c] 	->	adp[c] + h[c] + pi[c] + so4[e] 
+r1253	atp[r] + 8.000000 h[r] + coa[r] + strdnc[r] 	->	amp[r] + ppi[r] + stcoa[r] 
+r1254	atp[c] + 8.000000 h[c] + coa[c] + strdnc[c] 	->	amp[c] + ppi[c] + stcoa[c] 
+r1294	664.000000 h2o[c] + 664.000000 atp[c] + 6.000000 glu_L[c] + 12.000000 asp_L[c] + 4.000000 asn_L[c] + 11.000000 ala_L[c] + 3.000000 cys_L[c] + 10.000000 gln_L[c] + 10.000000 gly[c] + 8.000000 ser_L[c] + 12.000000 thr_L[c] + 11.000000 lys_L[c] + 9.000000 arg_L[c] + 4.000000 met_L[c] + 3.000000 his_L[c] + 2.000000 tyr_L[c] + 9.000000 ile_L[c] + 15.000000 leu_L[c] + 2.000000 trp_L[c] + 6.000000 phe_L[c] + 12.000000 pro_L[c] + 17.000000 val_L[c] 	->	498.000000 adp[c] + 498.000000 pi[c] + 166.000000 amp[c] + 166.000000 ppi[c] + trdrd[c] 
+r1313	h[c] + palmACP[c] + malACP[c] 	->	co2[c] + ACP[c] + HC02097[c] 
+r1319	h2o[c] + atp[c] 	->	adp[c] + pi[c] + HC02111[c] 
+r1320	h2o[m] + atp[m] 	->	adp[m] + pi[m] + HC02111[m] 
+r1321	nadh[r] 	->	nad[r] + HC02112[r] 
+r1322	nadh[c] 	->	nad[c] + HC02112[c] 
+r1323	nadh[m] 	->	nad[m] + HC02112[m] 
+r1324	nadh[x] 	->	nad[x] + HC02112[x] 
+r1325	nadph[r] 	->	nadp[r] + HC02113[r] 
+r1326	nadph[c] 	->	nadp[c] + HC02113[c] 
+r1327	nadph[m] 	->	nadp[m] + HC02113[m] 
+r1328	nadph[x] 	->	nadp[x] + HC02113[x] 
+r1329	fadh2[c] 	->	fad[c] + HC02114[c] 
+r1330	h[m] 	->	h[c] + HC02115[m] 
+r1331	h[c] 	->	h[e] + HC02115[c] 
+r1333	304.000000 h2o[c] + 304.000000 atp[c] + HC00001[c] 	->	304.000000 adp[c] + 304.000000 pi[c] + 62.000000 glu_L[c] + 36.000000 asp_L[c] + 17.000000 asn_L[c] + 63.000000 ala_L[c] + 35.000000 cys_L[c] + 20.000000 gln_L[c] + 13.000000 gly[c] + 28.000000 ser_L[c] + 29.000000 thr_L[c] + 60.000000 lys_L[c] + 27.000000 arg_L[c] + 7.000000 met_L[c] + 16.000000 his_L[c] + 19.000000 tyr_L[c] + 9.000000 ile_L[c] + 64.000000 leu_L[c] + 2.000000 trp_L[c] + 35.000000 phe_L[c] + 24.000000 pro_L[c] + 43.000000 val_L[c] 
+r1343	41.000000 h2o[c] + 41.000000 atp[c] + HC00006[c] 	->	41.000000 adp[c] + 41.000000 pi[c] + 8.000000 glu_L[c] + 4.000000 asp_L[c] + asn_L[c] + 5.000000 ala_L[c] + 3.000000 gln_L[c] + 3.000000 gly[c] + 9.000000 ser_L[c] + 3.000000 thr_L[c] + 9.000000 lys_L[c] + 4.000000 arg_L[c] + 2.000000 met_L[c] + 4.000000 ile_L[c] + 12.000000 leu_L[c] + trp_L[c] + 4.000000 phe_L[c] + 4.000000 pro_L[c] + 7.000000 val_L[c] 
+r1344	50.000000 h2o[c] + 50.000000 atp[c] + HC00007[c] 	->	50.000000 adp[c] + 50.000000 pi[c] + 8.000000 glu_L[c] + 4.000000 asp_L[c] + asn_L[c] + 7.000000 ala_L[c] + 8.000000 gln_L[c] + 5.000000 gly[c] + 9.000000 ser_L[c] + 10.000000 thr_L[c] + 6.000000 lys_L[c] + 2.000000 arg_L[c] + 3.000000 met_L[c] + 5.000000 tyr_L[c] + ile_L[c] + 15.000000 leu_L[c] + trp_L[c] + 4.000000 phe_L[c] + 5.000000 pro_L[c] + 7.000000 val_L[c] 
+r1345	49.000000 h2o[c] + 49.000000 atp[c] + HC00008[c] 	->	49.000000 adp[c] + 49.000000 pi[c] + 5.000000 glu_L[c] + 7.000000 asp_L[c] + 15.000000 ala_L[c] + 6.000000 gln_L[c] + 3.000000 gly[c] + 12.000000 ser_L[c] + 5.000000 thr_L[c] + 6.000000 lys_L[c] + 4.000000 arg_L[c] + 3.000000 met_L[c] + his_L[c] + 2.000000 tyr_L[c] + 11.000000 leu_L[c] + 3.000000 trp_L[c] + 4.000000 phe_L[c] + 3.000000 pro_L[c] + 9.000000 val_L[c] 
+r1346	158.000000 h2o[c] + 158.000000 atp[c] + HC00009[c] 	->	158.000000 adp[c] + 158.000000 pi[c] + 40.000000 glu_L[c] + 11.000000 asp_L[c] + asn_L[c] + 39.000000 ala_L[c] + 2.000000 cys_L[c] + 32.000000 gln_L[c] + 18.000000 gly[c] + 14.000000 ser_L[c] + 12.000000 thr_L[c] + 13.000000 lys_L[c] + 34.000000 arg_L[c] + 8.000000 met_L[c] + 2.000000 his_L[c] + 4.000000 tyr_L[c] + 2.000000 ile_L[c] + 41.000000 leu_L[c] + 8.000000 trp_L[c] + 4.000000 phe_L[c] + 8.000000 pro_L[c] + 24.000000 val_L[c] 
+r1350	203.000000 h2o[c] + 203.000000 atp[c] + HC01939[c] 	->	203.000000 adp[c] + 203.000000 pi[c] + 25.000000 glu_L[c] + 25.000000 asp_L[c] + 21.000000 asn_L[c] + 30.000000 ala_L[c] + 12.000000 cys_L[c] + 17.000000 gln_L[c] + 31.000000 gly[c] + 18.000000 ser_L[c] + 22.000000 thr_L[c] + 35.000000 lys_L[c] + 9.000000 arg_L[c] + 5.000000 met_L[c] + 13.000000 his_L[c] + 21.000000 tyr_L[c] + 18.000000 ile_L[c] + 31.000000 leu_L[c] + 8.000000 trp_L[c] + 8.000000 phe_L[c] + 21.000000 pro_L[c] + 36.000000 val_L[c] 
+r1356	349.000000 h2o[c] + 349.000000 atp[c] + HC01944[c] 	->	349.000000 adp[c] + 349.000000 pi[c] + 42.000000 glu_L[c] + 45.000000 asp_L[c] + 34.000000 asn_L[c] + 61.000000 ala_L[c] + 40.000000 cys_L[c] + 17.000000 gln_L[c] + 52.000000 gly[c] + 41.000000 ser_L[c] + 30.000000 thr_L[c] + 58.000000 lys_L[c] + 27.000000 arg_L[c] + 10.000000 met_L[c] + 19.000000 his_L[c] + 26.000000 tyr_L[c] + 15.000000 ile_L[c] + 65.000000 leu_L[c] + 8.000000 trp_L[c] + 28.000000 phe_L[c] + 32.000000 pro_L[c] + 48.000000 val_L[c] 
+r1382	6.000000 h2o[c] + 6.000000 atp[c] + 6.000000 glu_L[c] + thf[c] 	->	6.000000 adp[c] + 6.000000 pi[c] + HC02129[c] 
+r1402	1400.000000 h2o[c] + 1400.000000 atp[c] + 15.000000 glu_L[c] + 26.000000 asp_L[c] + 12.000000 asn_L[c] + 22.000000 ala_L[c] + 6.000000 cys_L[c] + 14.000000 gln_L[c] + 18.000000 gly[c] + 31.000000 ser_L[c] + 25.000000 thr_L[c] + 18.000000 lys_L[c] + 12.000000 arg_L[c] + 8.000000 met_L[c] + 9.000000 his_L[c] + 13.000000 tyr_L[c] + 12.000000 ile_L[c] + 39.000000 leu_L[c] + 7.000000 trp_L[c] + 20.000000 phe_L[c] + 15.000000 pro_L[c] + 28.000000 val_L[c] 	->	1050.000000 adp[c] + 1050.000000 pi[c] + 350.000000 amp[c] + 350.000000 ppi[c] + ggn[c] 
+r1432	h2o[m] + dgdp[m] + trdox[m] 	->	gdp[m] + trdrd[m] 
+r1453	q10h2[m] + pro_L[m] 	<=>	5.000000 h[m] + q10[m] + 1pyr5c[m] 
+r1472	fad[m] + odecoa[m] 	->	fadh2[m] + HC10856[m] 
+r1479	coa[m] + CE0692[m] 	->	accoa[m] + dd3coa[m] 
+r1514	h2o[c] + atp[c] + arachd[c] 	->	adp[c] + h[c] + pi[c] + arachd[e] 
+r1515	h2o[c] + atp[c] + hdca[c] 	->	adp[c] + h[c] + pi[c] + hdca[e] 
+r1516	h2o[c] + atp[c] + ocdcea[c] 	->	adp[c] + h[c] + pi[c] + ocdcea[e] 
+r1517	h2o[c] + atp[c] + strdnc[c] 	->	adp[c] + h[c] + pi[c] + strdnc[e] 
+r1518	h2o[c] + atp[c] + lnlc[c] 	->	adp[c] + h[c] + pi[c] + lnlc[e] 
+r1519	h2o[c] + atp[c] + elaid[c] 	->	adp[c] + h[c] + pi[c] + elaid[e] 
+r1520	h2o[c] + atp[c] + lnlncg[c] 	->	adp[c] + h[c] + pi[c] + lnlncg[e] 
+r1521	h2o[c] + atp[c] + lnlnca[c] 	->	adp[c] + h[c] + pi[c] + lnlnca[e] 
+r1522	h2o[c] + atp[c] + lgnc[c] 	->	adp[c] + h[c] + pi[c] + lgnc[e] 
+r1523	h2o[c] + atp[c] + hdcea[c] 	->	adp[c] + h[c] + pi[c] + hdcea[e] 
+r1525	h2o[c] + atp[c] + dlnlcg[c] 	->	adp[c] + h[c] + pi[c] + dlnlcg[e] 
+r1527	h2o[c] + atp[c] + HC02175[c] 	->	adp[c] + h[c] + pi[c] + HC02175[e] 
+r1528	h2o[c] + atp[c] + ddca[c] 	->	adp[c] + h[c] + pi[c] + HC02176[e] 
+r1529	h2o[c] + atp[c] + ttdca[c] 	->	adp[c] + h[c] + pi[c] + ttdca[e] 
+r1530	h2o[c] + atp[c] + gthrd[c] 	->	adp[c] + h[c] + pi[c] + gthrd[e] 
+r1531	h2o[c] + atp[c] + HC02199[c] 	->	adp[c] + 2.000000 h[c] + pi[c] + HC02199[e] 
+r1532	h2o[c] + atp[c] + HC02200[c] 	->	adp[c] + 2.000000 h[c] + pi[c] + HC02200[e] 
+r1533	h2o[c] + atp[c] + HC02201[c] 	->	adp[c] + 2.000000 h[c] + pi[c] + HC02201[e] 
+r1536	h2o[c] + atp[c] + urate[c] 	->	adp[c] + h[c] + pi[c] + urate[e] 
+r2497	h2o[c] + atp[c] + arachd[c] 	->	adp[c] + h[c] + pi[c] + arachd[x] 
+r2498	h2o[c] + atp[c] + hdca[c] 	->	adp[c] + h[c] + pi[c] + hdca[x] 
+r2499	h2o[c] + atp[c] + ppcoa[c] 	->	adp[c] + h[c] + pi[c] + ppcoa[x] 
+r2501	h2o[c] + atp[c] + cholcoa[c] 	->	adp[c] + h[c] + pi[c] + cholcoa[x] 
+r2502	h2o[c] + atp[c] + lnlccoa[c] 	->	adp[c] + h[c] + pi[c] + lnlccoa[x] 
+r2503	h2o[c] + atp[c] + arachdcoa[c] 	->	adp[c] + h[c] + pi[c] + arachdcoa[x] 
+r2505	h2o[c] + atp[c] + HC02198[c] 	->	adp[c] + h[c] + pi[c] + HC02198[e] 
+r2517	h2o[c] + atp[c] + thcholstoic[c] 	->	adp[c] + h[c] + pi[c] + thcholstoic[x] 
+r2518	h2o[c] + atp[c] + dhcholestanate[c] 	->	adp[c] + h[c] + pi[c] + dhcholestanate[x] 
+r2521	ppi[c] + pi[r] 	<=>	pi[c] + ppi[r] 
+EX_no2(e)	no2[e] 	<=>	
+EX_so3(e)	so3[e] 	<=>	
+EX_sprm(e)	sprm[e] 	<=>	
+RE0344C	h2o[c] + stcoa[c] 	<=>	h[c] + coa[c] + ocdca[c] 
+RE0456M	utp[m] + trdrd[m] 	<=>	h2o[m] + dutp[m] + trdox[m] 
+RE0577C	h2o[c] + arachcoa[c] 	<=>	h[c] + coa[c] + arach[c] 
+RE1254C	h2o[c] + h[c] + thp2c[c] 	<=>	L2aadp6sa[c] 
+RE1530C	dgtp[c] + duri[c] 	<=>	h[c] + dgdp[c] + dump[c] 
+RE1530M	dgtp[m] + duri[m] 	<=>	h[m] + dgdp[m] + dump[m] 
+RE1810M	2.000000 nadp[m] + xol7ah2[m] 	<=>	2.000000 h[m] + 2.000000 nadph[m] + xol7aone[m] 
+RE1835C	h2o[c] + dcholcoa[c] 	->	h[c] + coa[c] + C02528[c] 
+RE1836X	coa[x] + o2[x] + dhcholestancoa[x] 	->	h2o[x] + dcholcoa[x] + ppcoa[x] 
+RE1921C	CE5626[c] 	<=>	2.000000 h[c] + co2[c] + CE5629[c] 
+RE2111M	3mb2coa[m] + gly[m] 	<=>	h[m] + coa[m] + CE2026[m] 
+RE2605C	ascb_L[c] + CE6252[c] 	->	urate[c] + C01041[c] 
+RE2649C	h2o[c] + ppcoa[c] 	<=>	h[c] + coa[c] + ppa[c] 
+RE2649M	h2o[m] + ppcoa[m] 	->	h[m] + coa[m] + ppa[m] 
+RE2649X	h2o[x] + ppcoa[x] 	<=>	h[x] + coa[x] + ppa[x] 
+RE2666C	udpgal[c] + galside_hs[c] 	->	h[c] + udp[c] + digalside_hs[c] 
+RE2666G	udpgal[g] + galside_hs[g] 	->	h[g] + udp[g] + digalside_hs[g] 
+RE2677C	udpgal[c] + crm_hs[c] 	->	h[c] + udp[c] + galside_hs[c] 
+RE2677G	udpgal[g] + crm_hs[g] 	->	h[g] + udp[g] + galside_hs[g] 
+RE2704C	CE1924[c] 	->	h[c] + no2[c] + CE7047[c] 
+RE2814R	nad[r] + xol27oh[r] 	<=>	h[r] + nadh[r] + xol7aone[r] 
+RE2954C	h[c] + pep[c] + dtdp[c] 	<=>	pyr[c] + dttp[c] 
+RE2972M	atp[m] + CE5101[m] 	->	h[m] + adp[m] + pail45p_hs[m] 
+RE2977C	h[c] + nadph[c] + akgp_hs[c] 	->	nadp[c] + C03968[c] 
+RE3241R	h[r] + malcoa[r] + HC10852[r] 	->	co2[r] + coa[r] + CE5160[r] 
+RE3268C	h2o[c] + pail345p_hs[c] 	->	pi[c] + mi34p[c] 
+RE3269C	h2o[c] + pail35p_hs[c] 	<=>	pi[c] + pail5p_hs[c] 
+RE3270C	h2o[c] + pail3p_hs[c] 	<=>	pi[c] + pail_hs[c] 
+EX_prostgh2(e)	prostgh2[e] 	<=>	
+EX_prostgi2(e)	prostgi2[e] 	<=>	
+EX_ppi(e)	ppi[e] 	<=>	
+EX_cdp(e)	cdp[e] 	<=>	
+EX_dtdp(e)	dtdp[e] 	<=>	
+EX_HC00955(e)	HC00955[e] 	<=>	
+EX_HC00001(e)	HC00001[e] 	<=>	
+EX_HC00002(e)	HC00002[e] 	<=>	
+EX_HC00003(e)	HC00003[e] 	<=>	
+EX_HC00004(e)	HC00004[e] 	<=>	
+EX_citr_L(e)	citr_L[e] 	<=>	
+EX_HC01787(e)	HC01787[e] 	<=>	
+EX_C02470(e)	C02470[e] 	<=>	
+EX_HC01852(e)	HC01852[e] 	<=>	
+EX_HC01939(e)	HC01939[e] 	<=>	
+EX_HC01942(e)	HC01942[e] 	<=>	
+EX_HC01943(e)	HC01943[e] 	<=>	
+EX_HC01944(e)	HC01944[e] 	<=>	
+EX_HC00822(e)	HC00822[e] 	<=>	
+EX_C02528(e)	C02528[e] 	<=>	
+EX_HC02192(e)	HC02192[e] 	<=>	
+EX_HC02193(e)	HC02193[e] 	<=>	
+EX_HC02195(e)	HC02195[e] 	<=>	
+EX_HC02196(e)	HC02196[e] 	<=>	
+EX_HC02220(e)	HC02220[e] 	<=>	
+EX_HC02154(e)	HC02154[e] 	<=>	
+EX_HC02175(e)	HC02175[e] 	<=>	
+EX_HC02176(e)	HC02176[e] 	<=>	
+EX_HC02199(e)	HC02199[e] 	<=>	
+EX_HC02200(e)	HC02200[e] 	<=>	
+EX_HC02201(e)	HC02201[e] 	<=>	
+EX_HC02172(e)	HC02172[e] 	<=>	
+EX_HC02191(e)	HC02191[e] 	<=>	
+EX_HC02194(e)	HC02194[e] 	<=>	
+EX_HC02197(e)	HC02197[e] 	<=>	
+EX_HC02198(e)	HC02198[e] 	<=>	
+EX_HC02187(e)	HC02187[e] 	<=>	
+EX_HC02180(e)	HC02180[e] 	<=>	
+EX_HC02179(e)	HC02179[e] 	<=>	
+EX_HC02202(e)	HC02202[e] 	<=>	
+EX_HC02203(e)	HC02203[e] 	<=>	
+EX_HC02204(e)	HC02204[e] 	<=>	
+EX_HC02205(e)	HC02205[e] 	<=>	
+EX_HC02206(e)	HC02206[e] 	<=>	
+EX_HC02207(e)	HC02207[e] 	<=>	
+EX_HC02208(e)	HC02208[e] 	<=>	
+EX_HC02210(e)	HC02210[e] 	<=>	
+EX_HC02213(e)	HC02213[e] 	<=>	
+EX_HC02214(e)	HC02214[e] 	<=>	
+EX_HC02216(e)	HC02216[e] 	<=>	
+EX_HC02217(e)	HC02217[e] 	<=>	
+EX_malcoa(e)	malcoa[e] 	<=>	
+EX_arachcoa(e)	arachcoa[e] 	<=>	
+EX_coa(e)	coa[e] 	<=>	
+EX_CE2250(e)	CE2250[e] 	<=>	
+EX_CE1935(e)	CE1935[e] 	<=>	
+EX_CE1940(e)	CE1940[e] 	<=>	
+EX_CE1943(e)	CE1943[e] 	<=>	
+EX_CE2011(e)	CE2011[e] 	<=>	
+EX_CE1936(e)	CE1936[e] 	<=>	
+EX_CE1939(e)	CE1939[e] 	<=>	
+EX_maltttr(e)	maltttr[e] 	<=>	
+EX_maltpt(e)	maltpt[e] 	<=>	
+EX_malthx(e)	malthx[e] 	<=>	
+EX_CE2915(e)	CE2915[e] 	<=>	
+EX_CE4722(e)	CE4722[e] 	<=>	
+EX_CE2916(e)	CE2916[e] 	<=>	
+EX_CE4723(e)	CE4723[e] 	<=>	
+EX_CE2917(e)	CE2917[e] 	<=>	
+EX_CE4724(e)	CE4724[e] 	<=>	
+EX_malthp(e)	malthp[e] 	<=>	
+EX_CE2839(e)	CE2839[e] 	<=>	
+EX_CE2838(e)	CE2838[e] 	<=>	
+EX_CE1950(e)	CE1950[e] 	<=>	
+EX_cynt(e)	cynt[e] 	<=>	
+EX_23cump(e)	23cump[e] 	<=>	
+EX_3ump(e)	3ump[e] 	<=>	
+EX_CE5786(e)	CE5786[e] 	<=>	
+EX_CE5788(e)	CE5788[e] 	<=>	
+EX_CE5789(e)	CE5789[e] 	<=>	
+EX_CE5797(e)	CE5797[e] 	<=>	
+EX_CE5798(e)	CE5798[e] 	<=>	
+EX_CE5787(e)	CE5787[e] 	<=>	
+EX_CE5791(e)	CE5791[e] 	<=>	
+EX_CE5867(e)	CE5867[e] 	<=>	
+EX_CE5868(e)	CE5868[e] 	<=>	
+EX_CE5869(e)	CE5869[e] 	<=>	
+EX_CE4633(e)	CE4633[e] 	<=>	
+EX_CE4881(e)	CE4881[e] 	<=>	
+EX_CE5854(e)	CE5854[e] 	<=>	
+EX_glcur(e)	glcur[e] 	<=>	
+EX_CE1926(e)	CE1926[e] 	<=>	
+EX_udpgal(e)	udpgal[e] 	<=>	
+EX_crm_hs(e)	crm_hs[e] 	<=>	
+EX_galside_hs(e)	galside_hs[e] 	<=>	
+EX_CE0074(e)	CE0074[e] 	<=>	
+EX_cdpea(e)	cdpea[e] 	<=>	
+EX_12dgr120(e)	12dgr120[e] 	<=>	
+EX_CE5853(e)	CE5853[e] 	<=>	
+EX_CE1925(e)	CE1925[e] 	<=>	
+EX_C05965(e)	C05965[e] 	<=>	
+EX_C04849(e)	C04849[e] 	<=>	
+biomass_reaction	20.650823 h2o[c] + 20.704451 atp[c] + 0.385872 glu_L[c] + 0.352607 asp_L[c] + 0.036117 gtp[c] + 0.279425 asn_L[c] + 0.505626 ala_L[c] + 0.046571 cys_L[c] + 0.325996 gln_L[c] + 0.538891 gly[c] + 0.392525 ser_L[c] + 0.312690 thr_L[c] + 0.592114 lys_L[c] + 0.359260 arg_L[c] + 0.153018 met_L[c] + 0.023315 pail_hs[c] + 0.039036 ctp[c] + 0.154463 pchol_hs[c] + 0.055374 pe_hs[c] + 0.020401 chsterol[c] + 0.002914 pglyc_hs[c] + 0.011658 clpn_hs[c] + 0.053446 utp[c] + 0.009898 dgtp[n] + 0.009442 dctp[n] + 0.013183 datp[n] + 0.013091 dttp[n] + 0.275194 g6p[c] + 0.126406 his_L[c] + 0.159671 tyr_L[c] + 0.286078 ile_L[c] + 0.545544 leu_L[c] + 0.013306 trp_L[c] + 0.259466 phe_L[c] + 0.412484 pro_L[c] + 0.005829 ps_hs[c] + 0.017486 sphmyln_hs[c] + 0.352607 val_L[c] 	->	20.650823 adp[c] + 20.650823 h[c] + 20.650823 pi[c] 
+ADPCOAPTE	h2o[x] + adpcoa[x] 	->	h[x] + coa[x] + adpac[x] 
+sink_c101coa(c)	c101coa[c] 	<=>	
+C12DCACOT	h2o[x] + c12dccoa[x] 	->	h[x] + coa[x] + dodecanac[x] 
+C16txc	h2o[c] + atp[c] + pmtcoa[c] 	->	adp[c] + h[c] + pi[c] + pmtcoa[x] 
+sink_c81coa(c)	c81coa[c] 	<=>	
+DCSPTN1COAtxc	h2o[c] + atp[c] + dcsptn1coa[c] 	->	adp[c] + h[c] + pi[c] + dcsptn1coa[x] 
+sink_dd2coa(c)	dd2coa[c] 	<=>	
+sink_decdicoa(c)	decdicoa[c] 	<=>	
+EX_3bcrn	3bcrn[e] 	<=>	
+EX_3ddcrn	3ddcrn[e] 	<=>	
+EX_3deccrn	3deccrn[e] 	<=>	
+EX_3hdececrn	3hdececrn[e] 	<=>	
+EX_3hexdcrn	3hexdcrn[e] 	<=>	
+EX_3ivcrn	3ivcrn[e] 	<=>	
+EX_3octdec2crn	3octdec2crn[e] 	<=>	
+EX_3octdeccrn	3octdeccrn[e] 	<=>	
+EX_3octdece1crn	3octdece1crn[e] 	<=>	
+EX_3tdcrn	3tdcrn[e] 	<=>	
+EX_3tetd7ecoacrn	3tetd7ecoacrn[e] 	<=>	
+EX_3thexddcoacrn	3thexddcoacrn[e] 	<=>	
+EX_3ttetddcoacrn	3ttetddcoacrn[e] 	<=>	
+EX_c101crn	c101crn[e] 	<=>	
+EX_c10crn	c10crn[e] 	<=>	
+EX_c10dc	c10dc[e] 	<=>	
+EX_c12dc	c12dc[e] 	<=>	
+EX_c16dc	c16dc[e] 	<=>	
+EX_c3dc	c3dc[e] 	<=>	
+EX_c4crn	c4crn[e] 	<=>	
+EX_c4dc	c4dc[e] 	<=>	
+EX_c51crn	c51crn[e] 	<=>	
+EX_c5dc	c5dc[e] 	<=>	
+EX_c6crn	c6crn[e] 	<=>	
+EX_c6dc	c6dc[e] 	<=>	
+EX_c81crn	c81crn[e] 	<=>	
+EX_c8crn	c8crn[e] 	<=>	
+EX_c8dc	c8dc[e] 	<=>	
+EX_ddece1crn	ddece1crn[e] 	<=>	
+EX_ddecrn	ddeccrn[e] 	<=>	
+EX_decdicrn	decdicrn[e] 	<=>	
+EX_doco13ac	doco13ac[e] 	<=>	
+EX_docosac	docosac[e] 	<=>	
+EX_docosdiac	docosdiac[e] 	<=>	
+EX_ivcrn	ivcrn[e] 	<=>	
+EX_tdcrn	tdcrn[e] 	<=>	
+EX_tetdec2crn	tetdec2crn[e] 	<=>	
+EX_tetdece1crn	tetdece1crn[e] 	<=>	
+EX_dca(e)	dca[e] 	<=>	
+FAOXC16BRx	coa[x] + atp[x] + phyt[x] 	->	amp[x] + ppi[x] + phytcoa[x] 
+FAOXC16OHC16r	o2[r] + nadph[r] + hdca[r] 	->	h2o[r] + nadp[r] + omhpal[r] 
+FAOXC22OHC22r	o2[r] + nadph[r] + docosac[r] 	->	h2o[r] + nadp[r] + omhdocosac[r] 
+FAOXMC10OHMC10r	o2[r] + h[r] + nadph[r] + dca[r] 	->	h2o[r] + nadp[r] + omhdecacid[r] 
+LGNCCOAtcx	h2o[c] + atp[c] + lgnccoa[c] 	->	adp[c] + h[c] + pi[c] + lgnccoa[x] 
+NRVNCCOAtxc	h2o[c] + atp[c] + nrvnccoa[c] 	->	adp[c] + h[c] + pi[c] + nrvnccoa[x] 
+sink_octdececoa(c)	octdececoa[c] 	<=>	
+PRISTCOAtcx	h2o[c] + atp[c] + pristcoa[c] 	->	adp[c] + h[c] + pi[c] + pristcoa[x] 
+SBCOAACOTx	h2o[x] + sbcoa[x] 	->	h[x] + coa[x] + subeac[x] 
+SCP21cx	h2o[c] + atp[c] + phytcoa[c] 	->	adp[c] + h[c] + pi[c] + phytcoa[x] 
+SEBCOAPET	h2o[x] + sebcoa[x] 	->	h[x] + coa[x] + sebacid[x] 
+STCOATxc	h2o[c] + atp[c] + stcoa[c] 	->	adp[c] + h[c] + pi[c] + stcoa[x] 
+STRDNCCOAtxc	h2o[c] + atp[c] + strdnccoa[c] 	->	adp[c] + h[c] + pi[c] + strdnccoa[x] 
+SUCCOAPET	h2o[x] + succoa[x] 	->	h[x] + coa[x] + succ[x] 
+sink_tetdec2coa(c)	tetdec2coa[c] 	<=>	
+sink_tetdece1coa(c)	tetdece1coa[c] 	<=>	
+ASCBSVCTtc	h2o[c] + atp[c] + 2.000000 na1[e] + ascb_L[e] 	->	adp[c] + h[c] + pi[c] + 2.000000 na1[c] + ascb_L[c] 
+GALSGLT1le	h2o[c] + atp[c] + 2.000000 na1[e] + gal[e] 	->	adp[c] + h[c] + pi[c] + 2.000000 na1[c] + gal[c] 
+GLCSGLT1le	h2o[c] + atp[c] + 2.000000 na1[e] + glc_D[e] 	->	adp[c] + h[c] + pi[c] + 2.000000 na1[c] + glc_D[c] 
+HIShPTtc	h[l] + his_L[l] 	->	h[c] + his_L[c] 
+OLEICFATPtc	atp[c] + coa[c] + ocdcea[e] 	->	amp[c] + ppi[c] + odecoa[c] 
+RIBFLVte	h2o[c] + atp[c] + ribflv[c] 	->	adp[c] + h[c] + pi[c] + ribflv[e] 
+THMATPe	h2o[c] + atp[c] + thm[c] 	->	adp[c] + h[c] + pi[c] + thm[e] 
+VITEtl	h2o[c] + atp[c] + avite1[c] 	->	adp[c] + h[c] + pi[c] + avite1[e] 
+ADNK3	adn[c] + gtp[c] 	->	h[c] + amp[c] + gdp[c] 
+ADNK4	adn[c] + dgtp[c] 	->	h[c] + amp[c] + dgdp[c] 
+BTNt3ile	h2o[c] + atp[c] + 2.000000 na1[e] + btn[e] 	->	adp[c] + h[c] + pi[c] + 2.000000 na1[c] + btn[c] 
+DM_1a25dhvitd3(n)	1a25dhvitd3[n] 	->	
+DM_4abut(n)	4abut[n] 	->	
+DM_5hpet(r)	5HPET[r] 	->	
+DM_taur(c)	taur[c] 	->	
+DM_pe_hs(r)	pe_hs[r] 	->	
+DM_pmtcoa(r)	pmtcoa[r] 	->	
+DUTPDP	h2o[c] + dutp[c] 	->	h[c] + ppi[c] + dump[c] 
+EX_4hpro(e)	4hpro_LT[e] 	<=>	
+EX_adpcbl(e)	adocbl[e] 	<=>	
+EX_alaala(e)	alaala[e] 	<=>	
+EX_bglc(e)	bglc[e] 	<=>	
+EX_carn(e)	carn[e] 	<=>	
+EX_dchac(e)	dchac[e] 	<=>	
+EX_glgchlo(e)	glgchlo[e] 	<=>	
+EX_gltcho(e)	gltcho[e] 	<=>	
+EX_gltdechol(e)	gltdechol[e] 	<=>	
+EX_glygly(e)	glygly[e] 	<=>	
+EX_glyleu(e)	glyleu[e] 	<=>	
+EX_glyphe(e)	glyphe[e] 	<=>	
+EX_glypro(e)	glypro[e] 	<=>	
+EX_glysar(e)	glysar[e] 	<=>	
+EX_gum(e)	gum[e] 	<=>	
+EX_gumdchac(e)	gumdchac[e] 	<=>	
+EX_gumgchol(e)	gumgchol[e] 	<=>	
+EX_gumtchol(e)	gumtchol[e] 	<=>	
+EX_leugly(e)	leugly[e] 	<=>	
+EX_leuleu(e)	leuleu[e] 	<=>	
+EX_pect(e)	pect[e] 	<=>	
+EX_pectindchac(e)	pectindchac[e] 	<=>	
+EX_pectingchol(e)	pectingchol[e] 	<=>	
+EX_pectintchol(e)	pectintchol[e] 	<=>	
+EX_progly(e)	progly[e] 	<=>	
+EX_psyl(e)	psyl[e] 	<=>	
+EX_psylchol(e)	psylchol[e] 	<=>	
+EX_psyltchol(e)	psyltchol[e] 	<=>	
+EX_psyltdechol(e)	psyltdechol[e] 	<=>	
+EX_sbt-d(e)	sbt_D[e] 	<=>	
+EX_sfcys(e)	slfcys[e] 	->	
+EX_tdechola(e)	tdechola[e] 	<=>	
+EX_cysam(e)	cysam[e] 	<=>	
+EX_dpcoa(e)	dpcoa[e] 	<=>	
+EX_fmn(e)	fmn[e] 	<=>	
+EX_hyptaur(e)	hyptaur[e] 	<=>	
+EX_oh1(e)	oh1[e] 	<=>	
+EX_pan4p(e)	pan4p[e] 	<=>	
+EX_ptth(e)	ptth[e] 	<=>	
+EX_q10(e)	q10[e] 	<=>	
+EX_q10h2(e)	q10h2[e] 	->	
+FADDPle	h2o[e] + fad[e] 	->	2.000000 h[e] + amp[e] + fmn[e] 
+INSK	atp[c] + ins[c] 	->	adp[c] + h[c] + imp[c] 
+MEVK1c	atp[c] + mev_R[c] 	->	adp[c] + h[c] + 5pmev[c] 
+PNTOt5le	h2o[c] + atp[c] + 2.000000 na1[e] + pnto_R[e] 	->	adp[c] + h[c] + pi[c] + 2.000000 na1[c] + pnto_R[c] 
+PPItm	ppi[c] 	<=>	ppi[m] 
+RTOTAL2FATPc	atp[c] + coa[c] + Rtotal2[e] 	->	amp[c] + ppi[c] + Rtotal2coa[c] 
+RTOTAL3FATPc	atp[c] + coa[c] + Rtotal3[e] 	->	amp[c] + ppi[c] + Rtotal3coa[c] 
+RTOTALFATPc	atp[c] + coa[c] + Rtotal[e] 	->	amp[c] + ppi[c] + Rtotalcoa[c] 
+sink_5hpet(c)	5HPET[c] 	<=>	
+DM_4hrpo	4hpro_LT[m] 	->	
+DM_Lcystin	Lcystin[c] 	->	
+DM_anth	anth[c] 	->	
+DM_btn	btn[c] 	->	
+DM_fol	fol[c] 	->	
+DM_ncam	ncam[c] 	->	
+DM_pnto_R	pnto_R[c] 	->	
+EX_34hpp	34hpp[e] 	<=>	
+EX_3mob(e)	3mob[e] 	<=>	
+EX_3mop(e)	3mop[e] 	<=>	
+EX_4mop(e)	4mop[e] 	<=>	
+EX_5mta(e)	5mta[e] 	<=>	
+EX_5oxpro(e)	5oxpro[e] 	<=>	
+EX_ahcys(e)	ahcys[e] 	<=>	
+EX_aicar(e)	aicar[e] 	<=>	
+EX_anth(e)	anth[e] 	<=>	
+EX_cbasp(e)	cbasp[e] 	<=>	
+EX_mal_L(e)	mal_L[e] 	<=>	
+EX_idour(e)	idour[e] 	<=>	

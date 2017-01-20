@@ -31,6 +31,11 @@ function solverOK = changeCobraSolver(solverName,solverType)
 %   matlab          Matlab's own linprog.m (currently unsupported, may not
 %                   work on COBRA-type LP problems)
 %   mps             Outputs a MPS matrix string. Does not solve LP problem
+%   ibm_cplex       The IBM API for CPLEX using the CPLEX class
+%   opti            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
+%                   solver installed and called with OPTI TB wrapper
+%                   Lower level calls with installed mex files are possible
+%                   but best avoided for all solvers
 %
 % Currently allowed MILP solvers:
 %   tomlab_cplex    CPLEX MILP solver accessed through Tomlab environment
@@ -40,6 +45,7 @@ function solverOK = changeCobraSolver(solverName,solverType)
 %   gurobi6         Gurobi 6.* accessed through built-in Matlab mex interface
 %   mps             Outputs a MPS matrix string. Does not solve MILP
 %                   problem
+%   ibm_cplex       The IBM API for CPLEX using the CPLEX class
 %
 % Currently allowed QP solvers:
 %   tomlab_cplex    CPLEX QP solver accessed through Tomlab environment
@@ -151,12 +157,12 @@ if (strcmp(solverType,'LP'))
                 solverOK=false;
             end
         case 'gurobi5'
-            if (~exist('gurobi'))
+            if (~exist('gurobi','file'))
                 warning('LP solver Gurobi not useable: gurobi.m not in Matlab path');
                 solverOK=false;
             end
         case 'gurobi6'
-            if (~exist('gurobi'))
+            if (~exist('gurobi','file'))
                 warning('LP solver Gurobi not useable: gurobi.m not in Matlab path');
                 solverOK=false;
             end
@@ -185,6 +191,14 @@ if (strcmp(solverType,'LP'))
                 [status,cmdout]=system('echo $PATH');
                 disp(cmdout);
                 warning('Minos not installed or not on system path.');
+                solverOK = false;
+            end
+        case 'opti'
+            allLPsolvers = {'CLP','CSDP','DSDP','OOQP','SCIP'};
+            availableSolvers = cellfun(@(x)checkSolver(lower(x)),allLPsolvers);            
+            display('Available OPTI solvers that are installed currently');
+            display(char(allLPsolvers(logical(availableSolvers))));
+            if ~any(logical(availableSolvers))
                 solverOK = false;
             end
         otherwise

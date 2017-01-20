@@ -21,3 +21,13 @@ function quantDir = assignQuantDir(DrGtMin,DrGtMax)
 quantDir = zeros(size(DrGtMin));
 quantDir(DrGtMax < 0) = 1;
 quantDir(DrGtMin > 0) = -1;
+
+nEqualDrGt=nnz(DrGtMin==DrGtMax & DrGtMin~=0);
+if any(nEqualDrGt)
+    fprintf('%s\n',[num2str(nEqualDrGt) '/' num2str(length(DrGtMin)) ' reactions with DrGtMin=DrGtMax~=0' ]);
+end
+
+nZeroDrGt=nnz(DrGtMin==0 & DrGtMax==0);
+if any(nZeroDrGt)
+    fprintf('%s\n',[num2str(nZeroDrGt) '/' num2str(length(DrGtMin)) ' reactions with DrGtMin=DrGtMax=0' ]);
+end

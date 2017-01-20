@@ -15,20 +15,16 @@ function ACHRSampler(model,warmupPoints,fileName,nFiles,pointsPerFile,stepsPerPo
 % initPoint     Initial point (Default = centerPoint)
 % fileBaseNo    Base file number for continuing previous sampler run 
 %               (Default = 0)
-% maxTime       Maximum time limit (Default = 36000)
+% maxTime       Maximum time limit (Default = 36000 s)
 %
 % Markus Herrgard, Gregory Hannum, Ines Thiele, Nathan Price 4/14/06
 
 warning off MATLAB:divideByZero;
 
-if (nargin < 8)
+if (nargin < 8) || isempty(fileBaseNo)
   fileBaseNo = 0;
-else
-    if (isempty(fileBaseNo))
-        fileBaseNo = 0;
-    end
 end
-if (nargin < 9)
+if (nargin < 9) || isempty(maxTime)
     maxTime = 10*3600;
 end
 
@@ -48,14 +44,10 @@ dTol = 1e-14;
 centerPoint = mean(warmupPoints,2);
 
 % Set the start point
-if (nargin < 7)
+if (nargin < 7) || isempty(initPoint)
     prevPoint = centerPoint;
 else
-    if (~isempty(initPoint))
-        prevPoint = initPoint;
-    else
-        prevPoint = centerPoint;
-    end
+    prevPoint = initPoint;
 end
 
 fidErr = fopen('ACHRerror.txt','w');

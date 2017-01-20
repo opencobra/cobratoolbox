@@ -103,7 +103,7 @@ else
 end
 
 % Set global LP solution accuracy tolerance
-changeCobraSolverParams('LP','objTol',1e-6);
+changeCobraSolverParams('LP','optTol',1e-6);
 
 %attempt to provide support for sbml
 if exist([CBTDIR, filesep, 'external' filesep 'SBMLToolbox-4.1.0'],'dir')==7 && exist([CBTDIR, filesep, 'external' filesep 'libsbml-5.11.0'],'dir')==7

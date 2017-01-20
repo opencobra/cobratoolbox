@@ -171,6 +171,9 @@ end
 if ~isfield(model,'csense')
     % If csense is not declared in the model, assume that all
     % constraints are equalities.
+    if printLevel>1
+        fprintf('%s\n','LP problem has no defined csense. We assume that all constraints are equalities.')
+    end
     LPproblem.csense(1:nMets,1) = 'E';
 else % if csense is in the model, move it to the lp problem structure
     if length(model.csense)~=nMets,
@@ -185,7 +188,7 @@ end
 % Fill in the RHS vector if not provided
 if ~isfield(model,'b')
     warning('LP problem has no defined b in S*v=b. b should be defined, for now we assume b=0')
-    LPproblem.b=zeros(size(LPproblem.A,1),1);
+    LPproblem.b=zeros(nMets,1);
 else
     LPproblem.b = model.b;
 end
@@ -292,11 +295,11 @@ elseif strcmp(minNorm, 'zero')
     %                   lb <= v <= ub
     
     % Define the constraints structure
-    constraint.A = [model.S ; model.c'];
-    constraint.b = [model.b ; solution.obj];
+    constraint.A = [LPproblem.A ; LPproblem.c'];
+    constraint.b = [LPproblem.b ; solution.obj];
     constraint.csense = [LPproblem.csense;'E'];    
-    constraint.lb = model.lb;
-    constraint.ub = model.ub;
+    constraint.lb = LPproblem.lb;
+    constraint.ub = LPproblem.ub;
     
     % Call the sparse LP solver
     solutionL0 = sparseLP(zeroNormApprox,constraint);

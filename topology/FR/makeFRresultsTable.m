@@ -18,7 +18,7 @@ function [FRresultsTable,FRresults]=makeFRresultsTable(FRresults,resultsDirector
 % FRresults             output of checkRankFRdriver
 
 %'Conditions for duality between fluxes and concentrations in biochemical networks
-%by Ronan M.T. Fleming^{1}ronan.mt.fleming@gmail.com,
+%Ronan M.T. Fleming
 
 if isempty(FRresults)
     if ~exist('resultsFileName','var')
@@ -47,11 +47,16 @@ end
 %extra column and extra row for headings
 FRresultsTable=cell(29,nResults+1); %todo, come back and set correct number
 
+if exist('modelMetaData','var')
+    if isempty(modelMetaData)
+        clear modelMetaData;
+    end
+end
+
 firstColumn=1;
 k=1;
-z=1;
 while k<=nResults
-    if ~firstColumn && 0
+    if ~firstColumn %&& 0
         disp(FRresults(k).modelID)
     end
     i=1;
@@ -65,14 +70,10 @@ while k<=nResults
             bool=strcmp(FRresults(k).modelID,modelMetaData(:,3));
             if any(bool)
                 n=find(bool);
-            else
-                n=z;
-                z=z+1;
-                warning('no metadata found for for model')
             end
         else
-            n=z;
-            z=z+1;
+            n=k;
+            warning('no metadata found for for model')
         end
     end
     
@@ -125,6 +126,7 @@ while k<=nResults
     if firstColumn
         FRresultsTable{i,1}='# Reactants = # Rows of [S S_e]';
     else
+        disp(k)
         FRresultsTable{i,n+1}=size(FRresults(k).model.S,1);
     end
     i=i+1;

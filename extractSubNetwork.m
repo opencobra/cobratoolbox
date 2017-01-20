@@ -15,7 +15,7 @@ function subModel = extractSubNetwork(model,rxnList,metList)
 %
 % Markus Herrgard 12/11/06
 %
-% Srikiran C 7/15/14 
+% Srikiran C 7/15/14
 % - Replaced rxnNames with rxnList as model.rxnNames is different from
 % model.rxns, and model.rxns is used to select the subnetwork.
 % - Replaced metNames with metList, to avoid similar confusion.
@@ -51,15 +51,15 @@ if (isfield(model,'rev'))
 end
 if (isfield(model,'lb'))
     subModel.lb = model.lb(selRxns);
-end 
+end
 if (isfield(model,'ub'))
     subModel.ub = model.ub(selRxns);
 end
 if (isfield(model,'c'))
     subModel.c = model.c(selRxns);
 end
-if (isfield(model,'genes'))
-   newRxnGeneMat = model.rxnGeneMat(selRxns,:); 
+if (isfield(model,'genes') && isfield(model,'rxnGeneMat'))
+   newRxnGeneMat = model.rxnGeneMat(selRxns,:);
    selGenes = sum(newRxnGeneMat)' > 0;
    subModel.rxnGeneMat = newRxnGeneMat(:,selGenes);
    subModel.genes = model.genes(selGenes);

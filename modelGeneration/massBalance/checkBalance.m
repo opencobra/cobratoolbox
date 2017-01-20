@@ -65,6 +65,7 @@ for m=1:nMet
 end
 
 dE=model.S'*E; 
+dE(abs(dE) < 1e-12) = 0;
 
 if exist('fid','var')
     fclose(fid);

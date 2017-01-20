@@ -137,7 +137,7 @@ if ~isfield(model,'SConsistentMetBool') || ~isfield(model,'SConsistentRxnBool')
     model.SIntMetBool = model.SIntMetBool & model.SConsistentMetBool;
 end
 
-if 1
+if printLevel>0
     fprintf('%u%s\n',nnz(~model.SIntRxnBool),' exchange reactions (imbalanced elementally, or involves a stoichiometrically inconsistent molecular species)')
     for i=1:nRxn
         if ~model.SIntRxnBool(i) && model.SIntRxnBool_findSExRxnInd(i)
@@ -147,7 +147,7 @@ if 1
     fprintf('---------\n')
 end
 
-if any(~model.SIntMetBool)
+if any(~model.SIntMetBool) & printLevel>0
     fprintf('%u%s\n',nnz(~model.SIntMetBool),' rows of S only involved in exchange reactions')
     for i=1:nMet
         if ~model.SIntMetBool(i)
@@ -174,7 +174,7 @@ A1=[F(metBool1,:); R(metBool1,:)];
 model.FRnonZeroColBool1 = any(A1,1)';
 
 %only report for the consistent rows
-if any(~model.FRnonZeroRowBool1 & metBool1)
+if any(~model.FRnonZeroRowBool1 & metBool1) & printLevel>0
     fprintf('%u%s\n',nnz(~model.FRnonZeroRowBool1 & metBool1),' zero rows of [F,R]')
     for i=1:nMet
         if ~model.FRnonZeroRowBool1(i) && metBool1(i)
@@ -211,7 +211,7 @@ normalA2          = diag(1./sumA2)*A;
 model.FRuniqueRowBool=zeros(nMet,1);
 model.FRuniqueRowBool(IA)=1;
 
-if any(~model.FRuniqueRowBool & metBool1)
+if any(~model.FRuniqueRowBool & metBool1) & printLevel>0
     fprintf('%u%s\n',nnz(~model.FRuniqueRowBool & metBool1),' non-unique rows of stoich consistent [F,R]')
     for i=1:nMet
         if ~model.FRuniqueRowBool(i) && metBool1(i)
@@ -237,7 +237,7 @@ normalA1          = A*diag(1./sumA1);
 model.FRuniqueColBool=zeros(nRxn,1);
 model.FRuniqueColBool(IA)=1;
 
-if any(~model.FRuniqueColBool & rxnBool1)
+if any(~model.FRuniqueColBool & rxnBool1) & printLevel>0
     fprintf('%u%s\n',nnz(~model.FRuniqueColBool & rxnBool1),' non-unique cols of stoich consistent [F;R]')
     for i=1:nRxn
         if ~model.FRuniqueColBool(i) && rxnBool1(i)
@@ -247,7 +247,7 @@ if any(~model.FRuniqueColBool & rxnBool1)
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if 1
+if printLevel>0
     fprintf('\n%s\n','Diagnostics on size of boolean vectors for rows:')
     fprintf('%s%u\n','SIntMetBool:                 ',nnz(model.SIntMetBool))
     fprintf('%s%u\n','SConsistentMetBool:          ',nnz(model.SConsistentMetBool))
@@ -366,7 +366,7 @@ A3=[F(metBool3,:); R(metBool3,:)];
 model.FRnonZeroColBool = any(A3,1)';
 
 %only report for the latest subset of rows
-if any(~model.FRnonZeroRowBool & metBool3)
+if any(~model.FRnonZeroRowBool & metBool3) & printLevel>0
     fprintf('%u%s\n',nnz(~model.FRnonZeroRowBool & metBool3),' zero rows of [F,R]')
     for i=1:nMet
         if ~model.FRnonZeroRowBool(i) && metBool3(i)
@@ -437,7 +437,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %diagnostics
-if 1
+if printLevel>0
     fprintf('\n%s\n','Diagnostics on size of boolean vectors for rows:')
     fprintf('%s%u\n','SConsistentMetBool:         ',nnz(model.SConsistentMetBool))
     fprintf('%s%u\n','fluxConsistentMetBool:      ',nnz(model.fluxConsistentMetBool))

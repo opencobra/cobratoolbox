@@ -72,7 +72,12 @@ for i = 1:length(model.mets)
     model.DfG0_pseudoisomers = [model.DfG0_pseudoisomers; ...
                                 i * ones(size(pseudoisomers, 1), 1), ...
                                 pseudoisomers];
-    model.DfGt0(i) = Transform(pseudoisomers, pH, I, T);
+    tmp=Transform(pseudoisomers, pH, I, T);
+    if isempty(tmp)
+        warning([model.mets{i} ' has an empty transform, setting to NaN'])
+        tmp=NaN;
+    end
+    model.DfGt0(i) = tmp;
 end
 
 % Estimate standard transformed reaction Gibbs energies

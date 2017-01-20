@@ -23,6 +23,7 @@ if nargin < 3
     lb = ones(nMets,1)*min(model.lb);
     ub = ones(nMets,1)*max(model.ub);
 end
+
 if size(lb,2)==2
     ub = lb(:,2);
     lb = lb(:,1);
@@ -31,7 +32,7 @@ end
 rxnsInModel=-ones(length(metabolites),1);
 for i = 1 : nMets
     rxnName = strcat('sink_',metabolites{i});
-    [model,rxnIDs] = addReaction(model,rxnName,metabolites(i),-1,1,lb(i),ub(i),0,'Sink');
+    [model,rxnIDs] = addReaction(model,rxnName,metabolites(i),-1,1,lb(i),ub(i),0,'Sink', [], [], [], 0); % ignore duplicates
     if ~isempty(rxnIDs)
        rxnsInModel(i)=rxnIDs;
     end    
