@@ -1,0 +1,36 @@
+% The COBRAToolbox: testPrintMatrix.m
+%
+% Purpose:
+%     - Tests the printMatrix function
+% Author:
+%     - Original file: Laurent Heirendt
+%     - CI integration: Laurent Heirendt
+
+% define the path to The COBRAToolbox
+pth = which('initCobraToolbox.m');
+CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
+
+% change to the test folder
+cd([CBTDIR '/test/verifiedTests/testTools'])
+
+% load the model
+A = rand(10, 10);
+
+% print the matrix on screen with default format
+assert(printMatrix(A) == 1)
+
+% print the matrix on screen with short format
+assert(printMatrix(A, '%3.2f\t') == 1);
+
+% print the matrix to a file with short format
+assert(printMatrix(A, '%3.2f\t', 'testPrintMatrix.txt') == 1);
+
+% remove the generated file
+cd([CBTDIR '/test/verifiedTests/testTools'])
+system('rm testPrintMatrix.txt');
+
+% test for a cell matrix
+A = {0, 1; 2, 3; 4, 5}
+
+% print the matrix on screen with default format
+assert(printMatrix(A) == 1)
