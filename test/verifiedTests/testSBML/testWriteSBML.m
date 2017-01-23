@@ -13,6 +13,7 @@ pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
 
 % read in the .xml model first
+cd([CBTDIR '/test/verifiedTests/testSBML'])
 testModelXML = readCbModel('Ec_iJR904.xml');
 
 % write the model as a .sbml file
