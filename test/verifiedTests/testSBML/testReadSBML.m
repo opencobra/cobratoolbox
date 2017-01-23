@@ -44,6 +44,8 @@ assert(length(model.b) == length(testModel.b))
 solverOK = changeCobraSolver('tomlab_cplex');
 %solverOK = changeCobraSolver('cplex_direct');
 
+cd([CBTDIR '/test/models'])
+
 if solverOK ~= 1
     error('Solver cannot be set properly.\n');
 else
