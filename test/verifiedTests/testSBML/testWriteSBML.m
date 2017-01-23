@@ -13,7 +13,7 @@ pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
 
 % read in the .xml model first
-testModelXML = readCbModel('Ec_iJR904.xml');
+testModelXML = readCbModel([CBTDIR, '/test/models/Ec_iJR904.xml']);
 
 % write the model as a .sbml file
 writeCbModel(testModelXML, 'sbml', 'testModelSBML.sbml');
@@ -25,7 +25,7 @@ testModelSBML = readCbModel('testModelSBML.sbml');
 [isSame numDiff fieldNames] = isSameCobraModel(testModelXML, testModelSBML);
 
 % assess any potential differences
-assert(any(numDiff))
+assert(any(numDiff) == false)
 
 % remove the written file to clean up
 cd([CBTDIR '/test/models'])

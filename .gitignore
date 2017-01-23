@@ -53,7 +53,7 @@ test/testSampling/sampleCbModelTmp.mat
 test/testSampling/sampleStructTmp.mat
 
 # verified tests
-test/verifiedTests/testSBML/test_model.sbml.xml
+test/verifiedTests/testSBML/*.sbml.xml
 
 # shared libraries
 *.so
