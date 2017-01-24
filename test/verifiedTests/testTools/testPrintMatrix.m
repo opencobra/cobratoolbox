@@ -6,6 +6,10 @@
 %     - Original file: Laurent Heirendt
 %     - CI integration: Laurent Heirendt
 
+% define the path to The COBRAToolbox
+pth = which('initCobraToolbox.m');
+CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
+
 % define the matrix A
 A = rand(10, 10);
 
