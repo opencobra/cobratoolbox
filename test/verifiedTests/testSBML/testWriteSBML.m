@@ -31,3 +31,6 @@ assert(~any(numDiff))
 % remove the written file to clean up
 cd([CBTDIR '/test/verifiedTests/testSBML'])
 system('rm testModelSBML.sbml.xml')
+
+% change the directory
+cd(CBTDIR)

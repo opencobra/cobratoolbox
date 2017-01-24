@@ -13,5 +13,4 @@ if n < m
     vecT = vec';
 else
     vecT = vec;
-    warning('columnVector: The input vector is already a column vector. Same vector is returned.')
 end

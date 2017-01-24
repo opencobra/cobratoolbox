@@ -30,3 +30,6 @@ assert(length(model.mets) == 5)
 
 % test the number of fields in the model structure
 assert(length(fields(model)) == 27)
+
+% change the directory
+cd(CBTDIR)

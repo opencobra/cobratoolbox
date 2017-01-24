@@ -16,8 +16,10 @@ CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
 % change the COBRA solver (LP)
 solverOK = changeCobraSolver('tomlab_cplex');
 
+cd([CBTDIR '/test/verifiedTests/testOptimizeCbModel']);
+
 %load the model
-load('iLC915.mat')
+load('iLC915.mat');
 
 osenseStr = 'max';
 allowLoops = true;
@@ -51,3 +53,6 @@ L2solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops);
 assert(L2solution.stat == 1);
 assert(norm(model.S * L2solution.x - model.b, 2) < 1e-6);
 assert(abs(FBAsolution.f - L2solution.x'*model.c) < .01);
+
+% change the directory
+cd(CBTDIR)

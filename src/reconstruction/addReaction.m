@@ -160,7 +160,7 @@ if (nargin < 10) && (isfield(model,'grRules'))
     end
 end
 
-if isempty(grRule)
+if (nargin < 10 | isempty(grRule))
     grRule = '';
 end
 
@@ -309,7 +309,7 @@ end
 % if ~oldRxnFlag, model.rxnGeneMat(rxnID,:)=0; end
 
 if (isfield(model,'genes'))
-    if (nargin < 11) 
+    if (nargin < 11)
         model = changeGeneAssociation(model,rxnName,grRule);
     else
         %fprintf('In addReaction, the class of systNameList is %s',
