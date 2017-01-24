@@ -1,12 +1,17 @@
-function vec = columnVector(vec)
-%columnVector Converts a vector to a column vector
+function vecT = columnVector(vec)
+% columnVector Converts a vector to a column vector
 %
-% vec = columnVector(vec)
+% vecT = columnVector(vec)
 %
-% Markus Herrgard 
+% Authors:
+%     - Original file: Markus Herrgard
+%     - Minor changes: Laurent Heirendt January 2017
 
-[n,m] = size(vec);
+[n, m] = size(vec);
 
-if (n < m)
-    vec = vec';
+if n < m
+    vecT = vec';
+else
+    vecT = vec;
+    warning('columnVector: The input vector is already a column vector. Same vector is returned.')
 end
