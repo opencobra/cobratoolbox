@@ -27,7 +27,8 @@ addpath(genpath('/opt/ibm/ILOG/CPLEX_Studio1263')) % Linux
 addpath(genpath('/opt/tomlab'))
 
 % run the official initialisation script
-%initCobraToolbox
+initCobraToolbox
+
 % run the official testsuite
 %testAll
 

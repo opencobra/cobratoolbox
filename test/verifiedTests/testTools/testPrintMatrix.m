@@ -34,3 +34,6 @@ A = {0, 1, 2;
 
 % print the matrix on screen with default format
 assert(printMatrix(A) == 1);
+
+% change the directory
+cd(CBTDIR)

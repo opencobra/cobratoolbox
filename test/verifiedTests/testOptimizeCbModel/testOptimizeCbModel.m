@@ -51,3 +51,6 @@ L2solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops);
 assert(L2solution.stat == 1);
 assert(norm(model.S * L2solution.x - model.b, 2) < 1e-6);
 assert(abs(FBAsolution.f - L2solution.x'*model.c) < .01);
+
+% change the directory
+cd(CBTDIR)

@@ -89,3 +89,6 @@ else
         fprintf(' Done.\n');
     end
 end
+
+% change the directory
+cd(CBTDIR)
