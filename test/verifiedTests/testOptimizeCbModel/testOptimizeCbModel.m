@@ -16,8 +16,10 @@ CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
 % change the COBRA solver (LP)
 solverOK = changeCobraSolver('tomlab_cplex');
 
+cd([CBTDIR '/test/verifiedTests/testOptimizeCbModel']);
+
 %load the model
-load('iLC915.mat')
+load('iLC915.mat');
 
 osenseStr = 'max';
 allowLoops = true;
