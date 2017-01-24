@@ -5,6 +5,18 @@ addpath(genpath('/var/lib/jenkins/jsonlab'))
 % include the root folder and all subfolders
 addpath(genpath(pwd))
 
+if length(which('initCobraToolbox.m')) == 0
+    % define the path to The COBRAToolbox
+    pth = which('launchTests.m');
+    CBTDIR = pth(1:end-(length('launchTests.m') + 1));
+
+    % change the directory to the root
+    cd([CBTDIR, '/../'])
+
+    % include the root folder and all subfolders
+    addpath(genpath(pwd))
+end
+
 % add GUROBI
 addpath(genpath('/opt/gurobi650'))
 

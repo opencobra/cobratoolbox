@@ -17,9 +17,6 @@
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
 
-% change to the folder with all the models
-cd([CBTDIR '/test/models'])
-
 % load the test models
 testModel = readCbModel('Ec_iJR904.xml');
 load('Ec_iJR904.mat', 'model');
@@ -46,6 +43,8 @@ assert(length(model.b) == length(testModel.b))
 % set the solver
 solverOK = changeCobraSolver('tomlab_cplex');
 %solverOK = changeCobraSolver('cplex_direct');
+
+cd([CBTDIR '/test/models'])
 
 if solverOK ~= 1
     error('Solver cannot be set properly.\n');

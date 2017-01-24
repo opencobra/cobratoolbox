@@ -73,13 +73,13 @@ for i = 1:length(solverTypes)
     fprintf('\n-- Checking the installation of %s solvers --\n\n', char(solverTypes(i)));
     for CobraLPSolver = catSolverNames{i}
         fprintf(' > Testing %s ... ', char(CobraLPSolver))
-        solverOK = changeCobraSolver(char(CobraLPSolver),char(solverTypes(i)), false);
+        solverOK = changeCobraSolver(char(CobraLPSolver), char(solverTypes(i)));
         if solverOK
             fprintf(' Passed.\n')
-            solverStatus( find(strcmp(allSolverNames,char(CobraLPSolver))), i) = 1;
+            solverStatus( find(strcmp(allSolverNames, char(CobraLPSolver))), i) = 1;
         else
             fprintf(' Failed.\n')
-            solverStatus( find(strcmp(allSolverNames,char(CobraLPSolver))), i) = 0;
+            solverStatus( find(strcmp(allSolverNames, char(CobraLPSolver))), i) = 0;
         end
     end
 end
@@ -124,9 +124,9 @@ if ~exist('TranslateSBML','file')
 end
 
 %Test the installation with:
-xmlTestFile=strcat([CBTDIR,filesep,'testing',filesep,'testSBML',filesep','Ecoli_core_ECOSAL.xml']);
+xmlTestFile = strcat([CBTDIR, filesep, 'testing', filesep, 'testSBML', filesep, 'Ecoli_core_ECOSAL.xml']);
 
-fPath={'Ecoli_core_ECOSAL.xml'; 'testSBML'; 'testing'};
+fPath = {'Ecoli_core_ECOSAL.xml'; 'testSBML'; 'testing'};
 
 if ~isequal(exist(fPath{1},'file'),2)
     fprintf('the testing XML file - ''%s'' is missing from the COBRA folder.\n',fPath{1});
