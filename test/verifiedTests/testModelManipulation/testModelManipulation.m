@@ -12,7 +12,6 @@
 %     - Joseph Kang 04/16/09
 %     - Richard Que (12/16/09) Added testing of convertToIrrevsible/Reversible
 %     - CI integration: Laurent Heirendt January 2017
-%
 
 % define the path to The COBRAToolbox
 pth = which('initCobraToolbox.m');
@@ -110,7 +109,7 @@ assert(length(model.rxns) == rxns_length);
 model = removeMetabolites(model, {'A', 'B', 'C'});
 assert(length(model.mets) == mets_length);
 
-%% Convert to irreversible
+% Convert to irreversible
 fprintf('>> Testing convertToIrreversible\n');
 load('testModelManipulation.mat','model','modelIrrev');
 [testModelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model);
@@ -118,7 +117,7 @@ load('testModelManipulation.mat','model','modelIrrev');
 % test if both models are the same
 assert(isSameCobraModel(modelIrrev, testModelIrrev));
 
-%% Convert to reversible
+% Convert to reversible
 fprintf('>> Testing convertToReversible\n');
 testModelRev = convertToReversible(testModelIrrev);
 load('testModelManipulation.mat','modelRev');
