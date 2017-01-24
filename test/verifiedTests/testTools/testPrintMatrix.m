@@ -6,14 +6,7 @@
 %     - Original file: Laurent Heirendt
 %     - CI integration: Laurent Heirendt
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
-
-% change to the test folder
-cd([CBTDIR '/test/verifiedTests/testTools'])
-
-% load the model
+% define the matrix A
 A = rand(10, 10);
 
 % print the matrix on screen with default format
