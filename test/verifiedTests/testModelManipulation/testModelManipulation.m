@@ -52,6 +52,9 @@ assert(length(model.rxns) == rxns_length+1);
 % remove the reaction from the model
 model = removeRxns(model, {'EX_glc'} );
 
+% add exchange reaction
+addExchangeRxn(model, {'glc-D[e]'; 'glc-D';})
+
 %check if rxns length was decremented by 1
 assert(length(model.rxns) == rxns_length);
 
