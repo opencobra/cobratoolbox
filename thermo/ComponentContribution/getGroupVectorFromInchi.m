@@ -1,7 +1,12 @@
-function group_def = getGroupVectorFromInchi(inchi, silent)
+function group_def = getGroupVectorFromInchi(inchi, silent, debug)
 % poor programming not to explain what this function does
 % INPUTS
 %
+
+% debug             0: No verbose output
+%                   1: Progress information only (no warnings)
+%                   2: Progress and warnings
+
 % OUTPUTS
 %
 % DEPENDENCIES
@@ -41,7 +46,9 @@ if rval == 0 % && ~strcmp('Traceback', group_def(1:9))
         group_def = [];
     end
 else
-    fprintf('%s\n',['Warning: getGroupVectorFromInchi did not succeed for: ' inchi])
+    if debug > 1
+        fprintf('%s\n',['Warning: getGroupVectorFromInchi did not succeed for: ' inchi])
+    end
     group_def = [];
 end
 

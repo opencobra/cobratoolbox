@@ -1,4 +1,4 @@
-function pKa = estimate_pKa(mets,inchi,npKas,takeMajorTaut)
+function pKa = estimate_pKa(mets,inchi,npKas,takeMajorTaut,printlevel)
 % Estimates pKa values with ChemAxon's Calculator plugins and determines
 % all physiologically relevant pseudoisomers.
 %
@@ -15,6 +15,11 @@ function pKa = estimate_pKa(mets,inchi,npKas,takeMajorTaut)
 %                   tautomer at pH 7. If 0 (default), they are estimated
 %                   for the given tautomer.
 %
+
+% printlevel        0: No verbose output
+%                   1: Progress information only (no warnings)
+%                   2: Progress and warnings
+
 % OUTPUTS
 % pKa               m x 1 structure array where each element has the fields
 %                   listed below. All fields are empty for metabolites
@@ -212,7 +217,9 @@ for n = 1:length(uinchi)
 end
 
 if ~isempty(errorMets)
-    fprintf(['\nChemAxon''s pKa calculator plugin returned an error for metabolites:\n' sprintf('%s\n',errorMets{:})]);
+    if printlevel > 0
+        fprintf(['\nChemAxon''s pKa calculator plugin returned an error for metabolites:\n' sprintf('%s\n',errorMets{:})]);
+    end
 end
 
 % Create final output structure
