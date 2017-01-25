@@ -27,7 +27,11 @@ if (nargin < 4)
 end
 
 [nMets,nRxns] = size(model.S);
-nGenes = length(model.genes);
+if (isfield(model,'genes'))
+    nGenes = length(model.genes);
+else
+    nGenes = 0;
+end
 
 % Find indices to rxns in the model
 [isValidRxn,removeInd] = ismember(rxnRemoveList,model.rxns);
