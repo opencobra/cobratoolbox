@@ -1,4 +1,4 @@
-function model = estimateDGt0(model,debug)
+function model = estimateDGt0(model,printlevel)
 % Estimate standard transformed Gibbs energies for metabolites and
 % reactions in model
 % 
@@ -26,7 +26,7 @@ function model = estimateDGt0(model,debug)
 % .pKa                  m x 1 structure array with metabolite pKa values.
 % 
 
-% debug             0: No verbose output
+% printlevel        0: No verbose output
 %                   1: Progress information only (no warnings)
 %                   2: Progress and warnings
 
@@ -80,7 +80,9 @@ for i = 1:length(model.mets)
                                 pseudoisomers];
     tmp=Transform(pseudoisomers, pH, I, T);
     if isempty(tmp)
-        warning([model.mets{i} ' has an empty transform, setting to NaN'])
+        if printlevel > 1
+            warning([model.mets{i} ' has an empty transform, setting to NaN']);
+        end
         tmp=NaN;
     end
     model.DfGt0(i) = tmp;
@@ -93,7 +95,9 @@ St(hBool,:) = 0; % Set proton coefficients to 0
 model.DrGt0 = St' * model.DfGt0;
 
 % Adjust DrGt0 for transport across membranes
-fprintf('Assuming that only metabolite species in model.metFormulas are transported across membranes.\n');
+if printlevel > 0
+    fprintf('Assuming that only metabolite species in model.metFormulas are transported across membranes.\n');
+end
 
 metCompartmentBool = strcmp(repmat(model.metCompartments,1,length(model.cellCompartments)),repmat(model.cellCompartments',length(model.metCompartments),1));
 

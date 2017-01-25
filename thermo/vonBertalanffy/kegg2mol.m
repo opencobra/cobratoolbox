@@ -1,4 +1,4 @@
-function kegg2mol(cid,molfileDir,mets,takeMajorMS,pH,takeMajorTaut,debug)
+function kegg2mol(cid,molfileDir,mets,takeMajorMS,pH,takeMajorTaut,printlevel)
 % Retreive molfiles from the KEGG Compound database.
 % 
 % kegg2mol(cid,molfileDir,mets,takeMajorMS,pH,takeMajorTaut)
@@ -22,7 +22,7 @@ function kegg2mol(cid,molfileDir,mets,takeMajorMS,pH,takeMajorTaut,debug)
 %                   major tautomers of the major microspecies at the
 %                   specified pH. 
 
-% debug             0: No verbose output
+% printlevel        0: No verbose output
 %                   1: Progress information only (no warnings)
 %                   2: Progress and warnings
 
@@ -164,7 +164,7 @@ end
 delete('tmp.mol'); % Delete temporary file
 
 if ~isempty(nomol)
-    if debug > 0
+    if printlevel > 0
         fprintf(['Could not retrieve molfiles from KEGG for metabolites:\n' sprintf('%s\n', nomol{:})]);
     end
 end

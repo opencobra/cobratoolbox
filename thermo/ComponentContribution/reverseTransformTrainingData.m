@@ -1,12 +1,12 @@
-function training_data = reverseTransformTrainingData(model, training_data, use_model_pKas_by_default, debug)
+function training_data = reverseTransformTrainingData(model, training_data, use_model_pKas_by_default, printlevel)
 
-% debug             0: No verbose output
+% printlevel        0: No verbose output
 %                   1: Progress information only (no warnings)
 %                   2: Progress and warnings
 
 R = 8.31e-3; % kJ/mol/K
 
-if debug > 0
+if printlevel > 0
     fprintf('Performing reverse transform\n');
 end
 

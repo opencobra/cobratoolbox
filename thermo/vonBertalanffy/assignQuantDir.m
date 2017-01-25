@@ -1,4 +1,4 @@
-function quantDir = assignQuantDir(DrGtMin,DrGtMax,debug)
+function quantDir = assignQuantDir(DrGtMin,DrGtMax,printlevel)
 % Quantitatively assigns reaction directionality based on estimated bounds
 % on transformed reaction Gibbs energies
 % 
@@ -9,7 +9,7 @@ function quantDir = assignQuantDir(DrGtMin,DrGtMax,debug)
 % DrGtMax   Upper bounds on transformed reaction Gibbs energies in kJ/mol.
 % 
 
-% debug             0: No verbose output
+% printlevel             0: No verbose output
 %                   1: Progress information only (no warnings)
 %                   2: Progress and warnings
 
@@ -29,14 +29,14 @@ quantDir(DrGtMin > 0) = -1;
 
 nEqualDrGt=nnz(DrGtMin==DrGtMax & DrGtMin~=0);
 if any(nEqualDrGt)
-    if debug > 0
+    if printlevel > 0
         fprintf('%s\n',[num2str(nEqualDrGt) '/' num2str(length(DrGtMin)) ' reactions with DrGtMin=DrGtMax~=0' ]);
     end
 end
 
 nZeroDrGt=nnz(DrGtMin==0 & DrGtMax==0);
 if any(nZeroDrGt)
-    if debug > 0
+    if printlevel > 0
         fprintf('%s\n',[num2str(nZeroDrGt) '/' num2str(length(DrGtMin)) ' reactions with DrGtMin=DrGtMax=0' ]);
     end
 end

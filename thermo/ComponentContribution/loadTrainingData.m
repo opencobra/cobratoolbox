@@ -5,11 +5,11 @@
 %   formation_weight - the relative weight to give the formation energies (Alberty's data)
 %                      compared to the reaction measurements (TECRDB)
 
-% debug             0: No verbose output
+% printlevel             0: No verbose output
 %                   1: Progress information only (no warnings)
 %                   2: Progress and warnings
 
-function training_data = loadTrainingData(formation_weight,debug)
+function training_data = loadTrainingData(formation_weight,printlevel)
 if nargin < 1
     formation_weight = 1;
 end
@@ -61,7 +61,7 @@ for i = 1:length(inds)
     cids = unique([cids, find(sprs)]);
     reactions = [reactions, {sprs}];
 end
-if debug > 0
+if printlevel > 0
     fprintf('Successfully added %d values from TECRDB\n', length(inds));
 end
 
@@ -86,7 +86,7 @@ end
 cids = union(cids, res{1}');
 cids_that_dont_decompose = res{1}(find(res{8} == 0));
 
-if debug > 0
+if printlevel > 0
     fprintf('Successfully added %d formation energies\n', length(res{1}));
 end
 
@@ -113,7 +113,7 @@ for i = 1:length(res{1})
     reactions = [reactions, {sprs}];
 end
 
-if debug > 0
+if printlevel > 0
     fprintf('Successfully added %d redox potentials\n', length(res{1}));
 end
 

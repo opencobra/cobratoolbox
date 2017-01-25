@@ -1,4 +1,4 @@
-function metList = mol2sdf(mets,molfileDir,sdfFileName,includeRs,debug)
+function metList = mol2sdf(mets,molfileDir,sdfFileName,includeRs,printlevel)
 % Concatenates molfiles in molfileDir into one SDF file.
 % 
 % metList = mol2sdf(mets,molfileDir,sdfFileName)
@@ -15,7 +15,7 @@ function metList = mol2sdf(mets,molfileDir,sdfFileName,includeRs,debug)
 % includeRs         {0,(1)}. If 0, variable structures such as R groups and
 %                   repeat units will not be included in SDF.
 
-% debug             0: No verbose output
+% printlevel        0: No verbose output
 %                   1: Progress information only (no warnings)
 %                   2: Progress and warnings
 
@@ -122,7 +122,7 @@ end
 fclose(fid);
 
 noMolFileCount = sum(~ismember(mets,molfileNames));
-if debug > 0
+if printlevel > 0
     fprintf('Percentage of metabolites without mol files: %.1f%%\n', 100*noMolFileCount/length(mets));
 end
 

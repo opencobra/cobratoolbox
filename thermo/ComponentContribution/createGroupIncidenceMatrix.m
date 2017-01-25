@@ -1,11 +1,11 @@
-function training_data = createGroupIncidenceMatrix(model, training_data, debug)
+function training_data = createGroupIncidenceMatrix(model, training_data, printlevel)
 % Initialize G matrix, and then use the python script "inchi2gv.py" to decompose each of the 
 % compounds that has an InChI and save the decomposition as a row in the G matrix.
 %
 % INPUTS
 %
 
-% debug             0: No verbose output
+% printlevel        0: No verbose output
 %                   1: Progress information only (no warnings)
 %                   2: Progress and warnings
 
@@ -15,7 +15,7 @@ function training_data = createGroupIncidenceMatrix(model, training_data, debug)
 % get the scores for the mappings of compounds (reflecting the certainty in the mapping)
 mappingScore = getMappingScores(model, training_data);
 
-if debug > 0
+if printlevel > 0
     fprintf('Creating group incidence matrix\n');
 end
 
@@ -47,12 +47,12 @@ for i = 1:length(training_data.cids)
         training_data.G(i, end) = 1;
         training_data.has_gv(i) = false;
     else            
-        group_def = getGroupVectorFromInchi(inchi,true,debug);
+        group_def = getGroupVectorFromInchi(inchi,true,printlevel);
         if length(group_def) == length(training_data.groups)
             training_data.G(i, 1:length(group_def)) = group_def;
             training_data.has_gv(i) = true;
         elseif isempty(group_def)
-            if debug > 1
+            if printlevel > 1
                 warning(['createGroupIncidenceMatrix: undecomposable inchi: ' inchi])
             end
             training_data.G(:, end+1) = 0; % add a unique 1 in a new column for this undecomposable compound
@@ -60,7 +60,7 @@ for i = 1:length(training_data.cids)
             training_data.has_gv(i) = false;
             training_data.cids_that_dont_decompose = [training_data.cids_that_dont_decompose; training_data.cids(i)];
         else
-            if debug > 1
+            if printlevel > 1
                 fprintf('InChI = %s\n', inchi);
                 fprintf('*************\n%s\n', getGroupVectorFromInchi(inchi, false));
             end
@@ -90,7 +90,7 @@ for n = 1:length(model.mets)
         % Add a row in G for this compound, either with its group vector,
         % or with a unique 1 in a new column dedicate to this compound        
         training_data.G(trainingRow, :) = 0;
-        group_def = getGroupVectorFromInchi(inchi,true,debug);
+        group_def = getGroupVectorFromInchi(inchi,true,printlevel);
         if length(group_def) == length(training_data.groups)
             training_data.G(trainingRow, 1:length(group_def)) = group_def;
             training_data.has_gv(trainingRow) = true;
