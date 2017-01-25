@@ -16,7 +16,7 @@ function modelOut = removeRxns(model,rxnRemoveList,irrevFlag,metFlag)
 % model             COBRA model w/o selected reactions
 %
 % Markus Herrgard 7/22/05
-% Liliana Monteiro and Hulda Haroldsdottir, November 2016
+% Fatima Liliana Monteiro and Hulda Haraldsdóttir, November 2016
 
 
 if (nargin < 3)
@@ -71,70 +71,10 @@ end
 for i = 1:length(rfields)
    if size(model.(rfields{i}),1) == nRxns
        modelOut.(rfields{i}) = modelOut.(rfields{i})(selectRxns,:);
-   elseif size(model.(rfields{i}),2) == nRxns
+   else size(model.(rfields{i}),2) == nRxns
        modelOut.(rfields{i}) = modelOut.(rfields{i})(:,selectRxns);
-   else
    end
 end
-
-% modelOut.S = model.S(:,selectRxns);
-% modelOut.rxns = model.rxns(selectRxns);
-% modelOut.lb = model.lb(selectRxns);
-% modelOut.ub = model.ub(selectRxns);
-% modelOut.rev = model.rev(selectRxns);
-% if (isfield(model,'c'))
-%     modelOut.c = model.c(selectRxns);
-% end
-% if (isfield(model,'genes'))
-%     modelOut.grRules = model.grRules(selectRxns);
-% end
-% if (isfield(model,'rxnGeneMat'))
-%     modelOut.rxnGeneMat = model.rxnGeneMat(selectRxns,:);
-% end
-% if (isfield(model,'rules'))
-%     modelOut.rules = model.rules(selectRxns);
-% end
-% if (isfield(model,'subSystems'))
-%     modelOut.subSystems = model.subSystems(selectRxns);
-% end
-% if (isfield(model,'rxnNames'))
-%     modelOut.rxnNames = model.rxnNames(selectRxns);
-% end
-% if (isfield(model, 'rxnReferences'))
-%   modelOut.rxnReferences = model.rxnReferences(selectRxns);
-% end
-% if (isfield(model, 'rxnECNumbers'))
-%   modelOut.rxnECNumbers = model.rxnECNumbers(selectRxns);
-% end
-% if (isfield(model, 'rxnNotes'))
-%   modelOut.rxnNotes = model.rxnNotes(selectRxns);
-% end
-% if (isfield(model, 'rxnsboTerm'))
-%   modelOut.rxnsboTerm = model.rxnsboTerm(selectRxns);
-% end
-% if (isfield(model, 'rxnKeggID'))
-%   modelOut.rxnKeggID = model.rxnKeggID(selectRxns);
-% end
-% if (isfield(model, 'rxnConfidenceEcoIDA'))
-%   modelOut.rxnConfidenceEcoIDA = model.rxnConfidenceEcoIDA(selectRxns);
-% end
-% if (isfield(model, 'rxnConfidenceScores'))
-%   modelOut.rxnConfidenceScores = model.rxnConfidenceScores(selectRxns);
-% end
-% 
-% % Identify reaction fields (that start with 'rxn')
-% foo = strncmp('rxn', fields(model), 3);
-% rxnFields = fieldnames(model);
-% rxnFields = rxnFields(foo);
-% clear foo;
-% 
-% for i = 1:length(rxnFields)
-%     if length(model.(rxnFields{i})) == length(selectRxns)
-%         modelOut.(rxnFields{i}) = model.(rxnFields{i})(selectRxns,:);
-%     else
-%         warning('There are rxn fields with different dimensions')
-%     end
-% end
 
 % Reconstruct the match list
 if (irrevFlag)

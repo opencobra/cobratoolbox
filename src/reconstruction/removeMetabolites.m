@@ -15,7 +15,7 @@ function model = removeMetabolites(model,metaboliteList,removeRxnFlag)
 %
 % Markus Herrgard 6/5/07
 % Uri David Akavia 1/18/14
-% Fatima Monteiro 17/11/16 add an if condition to remove metabolites just from fields with same length
+% Fatima Liliana Monteiro 17/11/16 add an if condition to remove metabolites just from fields with same length
 
 if (nargin < 3)
     removeRxnFlag = true;
