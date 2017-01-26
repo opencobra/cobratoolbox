@@ -18,7 +18,7 @@ script:
 
 after_success:
     - if [ "$MATLAB_VER" == "R2016b" ]; then 
-      # bash <(curl -s https://codecov.io/bash); 
+      bash <(curl -s https://codecov.io/bash); 
       export PATH="/var/lib/jenkins/.local/bin":$PATH;
       pip install --user sphinx;
       pip install --user sphinxcontrib-matlabdomain;
