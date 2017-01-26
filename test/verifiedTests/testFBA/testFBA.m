@@ -41,10 +41,10 @@ for k = 1:length(solverPkgs)
         solution = optimizeCbModel(model);
 
         % testing if f values are within range
-        assert(abs(solution.f - solutionStd.f) < tol)
+        assert(abs(solution.f - solutionStd.f) < tol);
 
         % testing if c*x == f
-        assert(abs(model.c' * solution.x - solution.f) < tol)
+        assert(abs(model.c' * solution.x - solution.f) < tol);
 
         % print the flux vector
         printFluxVector(model, solution.x, true, true);
@@ -55,10 +55,10 @@ for k = 1:length(solverPkgs)
         solution2 = optimizeCbModel(model2);
 
         % testing if f values are within range
-        assert(abs(solution2.f - solution2Std.f) < tol)
+        assert(abs(solution2.f - solution2Std.f) < tol);
 
         % testing if c*x == f
-        assert(abs(model2.c' * solution2.x - solution2.f) < tol)
+        assert(abs(model2.c' * solution2.x - solution2.f) < tol);
 
         % print the flux vector
         printFluxVector(model2, solution.x, true, true);
@@ -69,10 +69,10 @@ for k = 1:length(solverPkgs)
         solution3 = optimizeCbModel(model3);
 
         % testing if f values are within range
-        assert(abs(solution3.f - solution3Std.f) < tol)
+        assert(abs(solution3.f - solution3Std.f) < tol);
 
         % testing if c*x == f
-        assert(abs(model3.c' * solution3.x - solution3.f) < tol)
+        assert(abs(model3.c' * solution3.x - solution3.f) < tol);
 
         % check the optimal ethanol secretion rate solution
         fprintf('\n>> Optimal ethanol secretion rate solution \n');
@@ -80,10 +80,10 @@ for k = 1:length(solverPkgs)
         solution4 = optimizeCbModel(model4);
 
         % testing if f values are within range
-        assert(abs(solution4.f - solution4Std.f) < tol)
+        assert(abs(solution4.f - solution4Std.f) < tol);
 
         % testing if c*x == f
-        assert(abs(model4.c' * solution4.x - solution4.f) < tol)
+        assert(abs(model4.c' * solution4.x - solution4.f) < tol);
 
         % output a success message
         fprintf('Done.\n');
