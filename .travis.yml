@@ -17,10 +17,6 @@ script:
 #deploy:
 
 after_success:
-    - pip install --user sphinx
-    - pip install --user sphinxcontrib-matlabdomain
-    - pip install --user sphinx_julia_theme==0.0.2rc0
-    - pip install --user git+https://github.com/syarra/Documenter.py@develop#egg=documenter
     - if [ "$MATLAB_VER" == "R2016b" ]; then 
       bash <(curl -s https://codecov.io/bash); 
       pip install --user sphinx;
