@@ -16,7 +16,7 @@ CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 cd([CBTDIR '/test/verifiedTests/testOptimizeCbModel']);
 
 % set the tolerance
-tol = 1e-8;
+tol = 1e-6;
 
 % define the solver packages to be used to run this test
 solverPkgs = {'tomlab_cplex', 'glpk'};
@@ -45,14 +45,14 @@ for k = 1:length(solverPkgs)
         L1solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops);
         assert(L1solution.stat == 1);
         assert(norm(model.S * L1solution.x - model.b, 2) < tol);
-        assert(abs(FBAsolution.f - L1solution.x'* model.c) < tol);
+        assert(abs(FBAsolution.f - L1solution.x'* model.c) < 0.01);
 
         % Minimise the zero norm
         minNorm = 'zero';
         L0solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops);
         assert(L0solution.stat == 1);
         assert(norm(model.S * L0solution.x - model.b, 2) < tol);
-        assert(abs(FBAsolution.f - L0solution.x'* model.c) < tol);
+        assert(abs(FBAsolution.f - L0solution.x'* model.c) < 0.01);
 
         if strcmp(solverPkgs{k}, 'tomlab_cplex')
         % change the COBRA solver (QP)
@@ -63,7 +63,7 @@ for k = 1:length(solverPkgs)
             L2solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops);
             assert(L2solution.stat == 1);
             assert(norm(model.S * L2solution.x - model.b, 2) < tol);
-            assert(abs(FBAsolution.f - L2solution.x'* model.c) < tol);
+            assert(abs(FBAsolution.f - L2solution.x'* model.c) < 0.01);
         end
 
         % output a success message
