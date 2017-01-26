@@ -8,7 +8,7 @@
 
 % define the path to The COBRAToolbox
 pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
+CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
 % change to the test folder
 cd([CBTDIR '/test/verifiedTests/testElementalBalance'])

@@ -13,45 +13,56 @@
 
 % define the path to The COBRAToolbox
 pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
+CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
 cd([CBTDIR '/test/verifiedTests/testFVA'])
 
 % set the tolerance
 tol = 1e-8;
 
-% set the solver
-changeCobraSolver('tomlab_cplex')
+% define the solver packages to be used to run this test
+solverPkgs = {'tomlab_cplex', 'glpk'};
 
 % load the model
 load('Ec_iJR904.mat', 'model');
 load('testFVAData.mat');
 
-fprintf('\n>> Flux variability analysis\n\n');
+for k = 1:length(solverPkgs)
+    % change the COBRA solver (LP)
+    solverOK = changeCobraSolver(solverPkgs{k});
 
-% launch the flux variability analysis
-[minFluxT, maxFluxT] = fluxVariability(model, 90);
+    if solverOK == 1
+        fprintf('   Testing flux variability analysis using %s ... ', solverPkgs{k});
 
-rxnNames = {'PGI', 'PFK', 'FBP', 'FBA', 'TPI', 'GAPD', 'PGK', 'PGM', 'ENO', 'PYK', 'PPS', 'G6PDH2r', 'PGL', 'GND', 'RPI', 'RPE', 'TKT1', 'TKT2', 'TALA'};
+        % launch the flux variability analysis
+        [minFluxT, maxFluxT] = fluxVariability(model, 90);
 
-% retrieve the IDs of each reaction
-rxnID = findRxnIDs(model, rxnNames);
+        rxnNames = {'PGI', 'PFK', 'FBP', 'FBA', 'TPI', 'GAPD', 'PGK', 'PGM', 'ENO', 'PYK', 'PPS', 'G6PDH2r', 'PGL', 'GND', 'RPI', 'RPE', 'TKT1', 'TKT2', 'TALA'};
 
-% check if each flux value corresponds to a pre-calculated value
-for i =1:size(rxnID)
-    assert(minFlux(i) - tol <= minFluxT(i))
-    assert(minFluxT(i) <= minFlux(i) + tol)
+        % retrieve the IDs of each reaction
+        rxnID = findRxnIDs(model, rxnNames);
 
-    assert(maxFlux(i) - tol <= maxFluxT(i))
-    assert(maxFluxT(i) <= maxFlux(i) + tol)
+        % check if each flux value corresponds to a pre-calculated value
+        for i = 1:size(rxnID)
+            % test the components of the minFlux and maxFlux vectors
+            assert(minFlux(i) - tol <= minFluxT(i))
+            assert(minFluxT(i) <= minFlux(i) + tol)
 
-    maxMinusMin = maxFlux(i) - minFlux(i);
-    maxTMinusMinT = maxFluxT(i) - minFluxT(i);
-    assert(maxMinusMin - tol <= maxTMinusMinT)
-    assert(maxTMinusMinT <= maxMinusMin + tol)
+            assert(maxFlux(i) - tol <= maxFluxT(i))
+            assert(maxFluxT(i) <= maxFlux(i) + tol)
 
-    % print the labels
-    printLabeledData(model.rxns(i), [minFlux(i) maxFlux(i) maxFlux(i)-minFlux(i)], true, 3);
+            maxMinusMin = maxFlux(i) - minFlux(i);
+            maxTMinusMinT = maxFluxT(i) - minFluxT(i);
+            assert(maxMinusMin - tol <= maxTMinusMinT)
+            assert(maxTMinusMinT <= maxMinusMin + tol)
+
+            % print the labels
+            printLabeledData(model.rxns(i), [minFlux(i) maxFlux(i) maxFlux(i)-minFlux(i)], true, 3);
+        end
+
+        % output a success message
+        fprintf('Done.\n');
+    end
 end
 
 % change the directory
