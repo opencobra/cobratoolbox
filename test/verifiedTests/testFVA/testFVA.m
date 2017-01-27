@@ -34,6 +34,9 @@ for k = 1:length(solverPkgs)
     if solverOK == 1
         fprintf('   Testing flux variability analysis using %s ... ', solverPkgs{k});
 
+        % launch 2 workers
+        parpool(2);
+
         % launch the flux variability analysis
         [minFluxT, maxFluxT] = fluxVariability(model, 90);
 
