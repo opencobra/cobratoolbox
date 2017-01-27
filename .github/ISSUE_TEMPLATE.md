@@ -36,7 +36,7 @@
 
 ### Additional information (N/A for enhancement)
 
-- [ ] Problem might be related to external program (e.g., solver) and **not** The COBRAToolbox
-- [ ] Problem started happening recently, didn't happen in an older version of The COBRAToolbox
+- [ ] Problem might be related to external program (e.g., solver) and **not** The COBRA Toolbox
+- [ ] Problem started happening recently, didn't happen in an older version of The COBRA Toolbox
 - [ ] Problem can be reliably reproduced, doesn't happen randomly
 - [ ] Problem happens for all COBRA models, not only some

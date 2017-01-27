@@ -1,6 +1,6 @@
-# Contributing to The COBRAToolbox
+# Contributing to The COBRA Toolbox
 
-:+1::tada: First off, thanks for taking the time to contribute to [The COBRAToolbox](https://github.com/opencobra/cobratoolbox)! :tada::+1:
+:+1::tada: First off, thanks for taking the time to contribute to [The COBRA Toolbox](https://github.com/opencobra/cobratoolbox)! :tada::+1:
 
 <!-- MDTOC maxdepth:6 firsth1:0 numbering:1 flatten:0 bullets:0 updateOnSave:1 -->
 
@@ -20,17 +20,17 @@
 
 ### Reporting an issue or enhancement
 
-This section guides you through submitting an issue for The COBRAToolbox. You may use a [template](https://github.com/opencobra/cobratoolbox/blob/documentation/.github/ISSUE_TEMPLATE.md) for submitting an issue or enhancement. Following these guidelines helps maintainers and the community understand your report :pencil:, reproduce the behavior :computer:, and fix it.
+This section guides you through submitting an issue for The COBRA Toolbox. You may use a [template](https://github.com/opencobra/cobratoolbox/blob/documentation/.github/ISSUE_TEMPLATE.md) for submitting an issue or enhancement. Following these guidelines helps maintainers and the community understand your report :pencil:, reproduce the behavior :computer:, and fix it.
 
-* **Pull the latest version of The COBRAToolbox** You might be able to find the cause of the problem yourself. Most importantly, check if you can reproduce the problem with the latest version, if the problem happens when you run your script/function using the COBRAToolbox with a different version of `MATLAB` or when using a different computer :computer: or different operating system (such as `Linux`, `Windows`, or `macOS`).
+* **Pull the latest version of The COBRA Toolbox** You might be able to find the cause of the problem yourself. Most importantly, check if you can reproduce the problem with the latest version, if the problem happens when you run your script/function using the COBRA Toolbox with a different version of `MATLAB` or when using a different computer :computer: or different operating system (such as `Linux`, `Windows`, or `macOS`).
 * **Check the list of currently reported issues [here](https://github.com/opencobra/cobratoolbox/issues)**. If you happen to find a related issue, please use that thread or refer in your new issue to an already existing one.
-* **Check The COBRAToolbox Forum on Google [here](https://groups.google.com/forum/#!forum/cobra-toolbox)** Has your question already been asked, or has your problem already been reported. If it has, add a comment to the existing issue instead of opening a new one.
+* **Check The COBRA Toolbox Forum on Google [here](https://groups.google.com/forum/#!forum/cobra-toolbox)** Has your question already been asked, or has your problem already been reported. If it has, add a comment to the existing issue instead of opening a new one.
 
 After you've determined that you discovered a bug and need to open a new issue, you may want to follow these guidelines in order to have your issue resolved quickly. Explain the problem and include additional details to help maintainers reproduce the problem:
 
 * **Use a clear and descriptive title** for the issue to identify the problem.
-* **Provide information when you last updated The COBRAToolbox or which tagged version you are using**. It is important to know which version you are using in order to reproduce the error.
-* **Describe the exact steps which reproduce the problem and that describe the proposed enhancement** in as many details as possible. For example, start by explaining how you started and initialized The COBRAToolbox.
+* **Provide information when you last updated The COBRA Toolbox or which tagged version you are using**. It is important to know which version you are using in order to reproduce the error.
+* **Describe the exact steps which reproduce the problem and that describe the proposed enhancement** in as many details as possible. For example, start by explaining how you started and initialized The COBRA Toolbox.
 * **Provide specific examples to demonstrate the steps**. Include links to files or GitHub projects, or copy/pasteable snippets, which you use in those examples. If you're providing snippets in the issue, use [Markdown code blocks](https://help.github.com/articles/markdown-basics/#multiple-lines).
 * **Describe the current behavior you observed after following the steps** and point out what exactly is the problem with that behavior.
 * **Explain which behavior you expected to see instead and why**
@@ -43,7 +43,7 @@ Provide details on the nature of the issue:
 
 Include details about your configuration and environment:
 
-* **Provide details on your `startup.m` and your `pathdef.m` file.** If you have pre-configured your system to load the files of The COBRAToolbox, please give more details about which solver directories, COBRA
+* **Provide details on your `startup.m` and your `pathdef.m` file.** If you have pre-configured your system to load the files of The COBRA Toolbox, please give more details about which solver directories, COBRA
 * **Which version of MATLAB are you using?**
 * **What's the name and version of the OS you're using?**
 * **Which solvers do you have installed?** You can get that list by running `initCobraToolbox`.
@@ -52,7 +52,7 @@ Provide more context by answering these questions:
 
 * **Might the problem be related to an external program?** If you are using a specific `MATLAB` function or a pre-compiled binary and the problem occurs with that function call, please mention it here.
 * **Did the problem start happening recently** (e.g. after updating to a new version of Atom) or was this always a problem?
-* If the problem started happening recently, **can you reproduce the problem in an older version of The COBRAToolbox?** What's the most recent version in which the problem doesn't happen? You can checkout older versions of The COBRAToolbox using `git checkout <tag or commit-ID>`.
+* If the problem started happening recently, **can you reproduce the problem in an older version of The COBRA Toolbox?** What's the most recent version in which the problem doesn't happen? You can checkout older versions of The COBRA Toolbox using `git checkout <tag or commit-ID>`.
 * **Can you reliably reproduce the issue?** If not, provide details about how often the problem happens and under which conditions it normally happens.
 * If the problem is related to working with models, **does the problem happen for all COBRA models, or only some?**
 
@@ -161,19 +161,19 @@ This section lists the labels we use to help us track and manage issues and pull
 | `help wanted` | The Atom core team would appreciate help from the community in resolving these issues. |
 | `in progress` | Pull requests/issues that are still being worked on, more changes will follow. |
 | `invalid` | Issues that aren't valid (e.g. user errors). |
-| `linux` | Related to The COBRAToolbox running on Linux. |
-| `mac` | Related to The COBRAToolbox running on macOS. |
+| `linux` | Related to The COBRA Toolbox running on Linux. |
+| `mac` | Related to The COBRA Toolbox running on macOS. |
 | `needs more information` | More information needs to be collected about these problems or feature requests (e.g. steps to reproduce). |
 | `needs reproduction` | Likely bugs, but haven't been reliably reproduced. |
 | `needs response` | A response is needed from the author of the PR. Issue will likely be closed unless a response is provided. |
-| `needs review` | Pull requests/issues that need code review, and approval from maintainers or The COBRAToolbox core team. |
+| `needs review` | Pull requests/issues that need code review, and approval from maintainers or The COBRA Toolbox core team. |
 | `needs testing` | Pull requests/issues that need manual testing. |
 | `parallel` | Related to parallel computing |
 | `performance` | Related to performance. |
 | `question` | Questions more than bug reports or feature requests (e.g. how do I do X). |
 | `requires changes` | Pull requests/issues that need to be updated based on review comments and then reviewed again. |
-| `under review` | Pull requests/issues being reviewed by maintainers or The COBRAToolbox core team. |
-| `windows` | Related to The COBRAToolbox running on Windows. |
-| `wontfix`  | The COBRAToolbox core team has decided not to fix these issues for now, either because they're working as intended or for some other reason. |
+| `under review` | Pull requests/issues being reviewed by maintainers or The COBRA Toolbox core team. |
+| `windows` | Related to The COBRA Toolbox running on Windows. |
+| `wontfix`  | The COBRA Toolbox core team has decided not to fix these issues for now, either because they're working as intended or for some other reason. |
 
 *This guide is inspired by [ATOM's contributing guide](https://github.com/atom/atom/blob/master/CONTRIBUTING.md). Feel free to propose changes to this document in a pull request.*

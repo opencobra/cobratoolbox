@@ -1,4 +1,4 @@
-The COBRAToolbox - COnstraint-Based Reconstruction and Analysis Toolbox
+The COBRA Toolbox - COnstraint-Based Reconstruction and Analysis Toolbox
 =======================================================================
 
 |  MATLAB R2016b | MATLAB R2015b | MATLAB R2014b | Code Coverage | Statistics |
@@ -33,21 +33,31 @@ Installation
   ```
   NOTE: If you do not have `gurobi_mex` and `tomlab` installed on your machine, you will get some warnings and some errors. The `COBRAToolbox` will try to use `glpk` if it cannot find `gurobi` for LP / MILP.  To solve any NLP problems you need `tomlab_snopt`.
 
-5. Test your installation, run
+5. In order to test your installation, run
   ```Matlab
   testAll
   ```
   to see what functions will work with your current configuration.
-  Note, it is likely that one or more functions will not work unless you have `tomlab` with `snopt` installed.
+  It might be that some functions may not work unless you have `tomlab` with `snopt` installed.
 
 Tutorials
 ------------
 
+All tutorials are included in the folder [tutorials](https://github.com/opencobra/cobratoolbox/tree/master/tutorials). More tutorial are currently being prepared.
+
 Documentation
 ------------
 
+The documentation is available on [opencobra.github.io/cobratoolbox](http://opencobra.github.io/cobratoolbox). As this version is in development, you may find the legacy version of the documentation [here](http://opencobra.github.io/cobratoolbox/deprecated/docs/index.html).
+
 How to contribute
 ------------
+
+- In order to contribute, you may follow the [Contributing Guide](https://github.com/opencobra/cobratoolbox/blob/master/.github/CONTRIBUTING.md).
+- When opening an **issue**, please follow the [Issue template](https://github.com/opencobra/cobratoolbox/blob/master/.github/ISSUE_TEMPLATE.md).
+- When submitting a **Pull Request**, please follow the [PR template](https://github.com/opencobra/cobratoolbox/blob/master/.github/PULL_REQUEST_TEMPLATE.md).
+
+
 
 
 How to cite `The COBRA Toolbox`
