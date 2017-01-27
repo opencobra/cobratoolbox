@@ -17,4 +17,13 @@ script:
 #deploy:
 
 after_success:
-    - if [ "$MATLAB_VER" == "R2016b" ]; then bash <(curl -s https://codecov.io/bash); fi
+    - if [ "$MATLAB_VER" == "R2016b" ]; then 
+      bash <(curl -s https://codecov.io/bash); 
+      export PATH="/var/lib/jenkins/.local/bin":$PATH;
+      pip install --user sphinx;
+      pip install --user recommonmark;
+      pip install --user sphinxcontrib-matlabdomain;
+      pip install --user sphinx_julia_theme==0.0.2rc0;
+      pip install --user --upgrade git+https://github.com/syarra/Documenter.py@develop#egg=documenter;
+      python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', latest='autodeploy_doc', local_upstream='/var/lib/jenkins/workspace/COBRAToolbox-branches-manual/MATLAB_VER/R2016b'); doc.deploy()";
+      fi
