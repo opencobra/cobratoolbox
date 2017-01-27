@@ -10,3 +10,6 @@
 [submodule "external/SBMLToolbox"]
 	path = external/SBMLToolbox
 	url = https://github.com/sbmlteam/SBMLToolbox.git
+[submodule "binary"]
+	path = binary
+	url = https://github.com/opencobra/COBRA.binary.git

@@ -1,3 +1,0 @@
--Xms256m -Xmx1024m -XX:+UseParallelGC -XX:+UseAdaptiveSizePolicy -XX:+UseAdaptiveGCBoundary -XX:+UseTLAB -XX:+ResizeTLAB -XX:MaxPermSize=20m
-# only the first line of this file is used by CNA when 
-# calling EFM Tool
