@@ -2,7 +2,8 @@
 % eventual enhancement with rsync possible
 
 pth = which('retrieveModels.m');
-cd(pth(1:end-(length('retrieveModels.m')+1)));
+MODELDIR = pth(1:end-(length('retrieveModels.m')+1));
+cd(MODELDIR);
 
 fprintf('\nDownloading models ...\n');
 
@@ -14,7 +15,7 @@ modelArr = {
     };
 
 for i = 1:length(modelArr)
-    if exist(modelArr{i,1}, 'file') ~= 2
+    if exist([MODELDIR, filesep, modelArr{i,1}], 'file') ~= 2
         urlwrite(modelArr{i,2}, modelArr{i, 1});
         fprintf('Model %s saved.\n', modelArr{i, 1});
     else
