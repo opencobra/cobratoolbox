@@ -15,7 +15,7 @@ coverage:
   status:
     project:
       default:
-        threshold: 115
+        threshold: 15
   patch:
     default:
       target: auto
@@ -32,6 +32,6 @@ parsers:
       loop: true
       macro: false
       method: false
-      
+
   javascript:
     enable_partials: false
