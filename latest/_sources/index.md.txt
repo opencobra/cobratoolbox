@@ -1,5 +1,5 @@
-The COBRAToolbox
-================
+The COBRA Toolbox
+=================
 
 .. |matlab_2014b| image:: http://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2014b
    :scale: 100%
