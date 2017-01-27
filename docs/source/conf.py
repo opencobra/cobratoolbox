@@ -58,9 +58,9 @@ source_suffix = '.md'
 master_doc = 'index'
 
 # General information about the project.
-project = u'The COBRAToolbox'
-copyright = u'2017, The COBRAToolbox developers'
-author = u'The COBRAToolbox developers'
+project = u'The COBRA Toolbox'
+copyright = u'2017, The COBRA Toolbox developers'
+author = u'The COBRA Toolbox developers'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -156,7 +156,7 @@ html_context = {'conf_py_path': os.path.join(os.sep, 'docs', 'source', ''),
 # The name for this set of Sphinx documents.
 # "<project> v<release> documentation" by default.
 #
-html_title = u'The COBRAToolbox v3.0'
+html_title = u'The COBRA Toolbox v3.0'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #
