@@ -26,6 +26,4 @@ after_success:
       pip install --user sphinx_julia_theme==0.0.2rc0;
       pip install --user --upgrade git+https://github.com/syarra/Documenter.py@develop#egg=documenter;
       pip install --user pyGithub;
-      python .github/github_stats.py;
-      python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='/var/lib/jenkins/workspace/COBRAToolbox-branches-manual/MATLAB_VER/R2016b'); doc.deploy()";
       fi
