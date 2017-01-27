@@ -1,6 +1,6 @@
 from github import Github
 
-g = Github("cobrabot", "0835d7a0adba95c6aa6fa301943ba7335f006059")
+g = Github("cobrabot", "dd31ac21736aeeaeac764ce1192c17e370679a25")
 
 cobratoolbox = g.get_user("opencobra").get_repo("cobratoolbox")
 
