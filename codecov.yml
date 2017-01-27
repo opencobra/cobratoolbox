@@ -7,17 +7,13 @@ comment:
   require_changes: false
 coverage:
   precision: 2
-  range:
-  - 70.0
-  - 100.0
+  range: "70...100"
   round: down
   status:
     changes: false
-	threshold: 100
-    patch: true
     project:
-	default:
-	    threshold: 100
+      default:
+        threshold: 1%
 parsers:
   gcov:
     branch_detection:
