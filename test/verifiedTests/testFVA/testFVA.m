@@ -34,6 +34,12 @@ for k = 1:length(solverPkgs)
     if solverOK == 1
         fprintf('   Testing flux variability analysis using %s ... ', solverPkgs{k});
 
+        poolobj = gcp('nocreate'); % If no pool, do not create new one.
+        if isempty(poolobj)
+            % launch 2 workers
+            parpool(2);
+        end
+
         % launch the flux variability analysis
         [minFluxT, maxFluxT] = fluxVariability(model, 90);
 
