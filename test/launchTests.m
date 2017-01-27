@@ -6,7 +6,7 @@ addpath(genpath('/var/lib/jenkins/jsonlab'))
 addpath(genpath(pwd))
 
 if length(which('initCobraToolbox.m')) == 0
-    % define the path to The COBRAToolbox
+    % define the path to The COBRA Toolbox
     pth = which('launchTests.m');
     CBTDIR = pth(1:end-(length('launchTests.m') + 1));
 
