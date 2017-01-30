@@ -90,6 +90,6 @@ end
 if metFlag
     selMets = modelOut.mets(any(sum(abs(modelOut.S), 2) == 0, 2));
     if ~isempty(selMets)
-      modelOut = removeMetabolites(modelOut, selMets, false);
+        modelOut = removeMetabolites(modelOut, selMets, false);
     end
 end
