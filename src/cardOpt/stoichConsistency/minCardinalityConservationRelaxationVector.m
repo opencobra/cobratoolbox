@@ -2,7 +2,7 @@ function solution = minCardinalityConservationRelaxationVector(S,epsilon)
 % DC programming for solving the cardinality optimization problem
 % min    lambda*||x||_0
 % s.t.   x + S'*z = 0
-%             0  <= x <= inf
+%           -inf <= x <= inf
 %              1 <= z <= 1/epsilon
 %
 %INPUT

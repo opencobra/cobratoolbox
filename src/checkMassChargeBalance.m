@@ -1,5 +1,5 @@
 function [massImbalance,imBalancedMass,imBalancedCharge,imBalancedRxnBool,Elements,missingFormulaeBool,balancedMetBool]...
-    = checkMassChargeBalance(model,printLevel)
+    = checkMassChargeBalance(model,printLevel,fileName)
 %[massImbalance,imBalancedMass,imBalancedCharge,imBalancedRxnBool,Elements] = checkMassChargeBalance(model,rxnBool,printLevel)
 %checkMassChargeBalance tests for a list of reactions if these reactions are
 %mass-balanced by adding all elements on left hand side and comparing them
@@ -47,6 +47,13 @@ if ~exist('printLevel','var')
     printLevel=0;
 end
 
+if ~isfield(model,'SIntRxnBool')
+    model.SIntRxnBool=true(nRxn,1);%assume all reactions are supposed to be internal if no other info provided
+end
+
+if ~exist('fileName','var')
+    fileName='';
+end
 % List of Elements
 Elements = {'H','C', 'O', 'P', 'S', 'N', 'Mg','X','Fe','Zn','Co','R','Ca','Y','I','Na','Cl','K'};
 
@@ -84,7 +91,6 @@ for i = 1 : nRxn
                     imBalancedMass{i,1} = [int2str(massImbalance(i,j)) ' ' Elements{j}];
                 end
             end
-            
         end
         if strfind(imBalancedMass{i,1},'NaN')
             imBalancedMass{i,1}='NaN';
@@ -97,15 +103,16 @@ end
 if printLevel==-1
     firstMissing=0;
     for p=1:nRxn
-        if ~strcmp(imBalancedMass{p,1},'')
+        %only print out for reactions supposed to be mass balanced
+        if model.SIntRxnBool(p) && ~strcmp(imBalancedMass{p,1},'')
             %at the moment, ignore reactions with a metabolite that have
             %no formula
             if ~strcmp(imBalancedMass{p,1},'NaN')
                 if ~firstMissing
-                    fid=fopen('mass_imbalanced_reactions.txt','w');
+                    fid=fopen([fileName 'mass_imbalanced_reactions.txt'],'w');
                     fprintf(fid,'%s;%s;%s;%s\n','#Rxn','rxnAbbr','imbalance','equation');
 
-                    warning('There are mass imbalanced reactions, see mass_imbalanced_reactions.txt')
+                    warning(['There are mass imbalanced reactions, see ' fileName 'mass_imbalanced_reactions.txt'])
                     firstMissing=1;
                 end
                 equation=printRxnFormula(model,model.rxns(p),0);
@@ -124,7 +131,8 @@ if printLevel==-1
 end
 if printLevel==2
     for p=1:nRxn
-        if ~strcmp(imBalancedMass{p,1},'')
+        %only print out for reactions supposed to be mass balanced
+        if model.SIntRxnBool(q) && ~strcmp(imBalancedMass{p,1},'')
             %at the moment, ignore reactions with a metabolite that have
             %no formula
             if ~strcmp(imBalancedMass{p,1},'NaN')
@@ -162,7 +170,7 @@ if isfield(model, 'metCharges')
             end
             if printLevel==-1
                 if ~firstMissing
-                    fid=fopen('metabolites_without_charge.txt','w');
+                    fid=fopen([fileName 'metabolites_without_charge.txt'],'w');
                 end
                 firstMissing=1;
                 fprintf(fid,'%s\t%s\n',int2str(m),model.mets{m})
@@ -173,13 +181,13 @@ if isfield(model, 'metCharges')
     end
 end
 
-if printLevel==-1 && isfield(model,'SIntRxnBool')
+if printLevel==-1
     firstMissing=0;
     if ~isempty(imBalancedCharge)
         for q=1:nRxn
             if model.SIntRxnBool(q) && dC(q)~=0 && strcmp(imBalancedMass{p,1},'')
                 if ~firstMissing
-                    fid=fopen('charge_imbalanced_reactions.txt','w');
+                    fid=fopen([fileName 'charge_imbalanced_reactions.txt'],'w');
                     warning('There are charged imbalanced reactions (that are mass balanced), see charge_imbalanced_reactions.txt')
                     firstMissing=1;
                 end
@@ -200,7 +208,7 @@ if printLevel==-1 && isfield(model,'SIntRxnBool')
     end
 end
 
-if printLevel==2 && isfield(model,'SIntRxnBool')
+if printLevel==2
     if ~isempty(imBalancedCharge)
         fprintf('%s\n','Mass balanced, but charged imbalanced reactions:')
         for q=1:nRxn

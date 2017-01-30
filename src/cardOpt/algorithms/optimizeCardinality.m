@@ -50,7 +50,8 @@ solution.stat = 1;
 % Check inputs
 if nargin < 2
     params.nbMaxIteration = 1000;
-    params.epsilon = 10e-6;
+    %params.epsilon = 10e-6;
+    params.epsilon = getCobraSolverParams('LP', 'feasTol');
     params.theta   = 2;  
 else
     if isfield(params,'nbMaxIteration') == 0
@@ -58,7 +59,8 @@ else
     end
     
     if isfield(params,'epsilon') == 0
-        params.epsilon = 10e-6;
+        %params.epsilon = 10e-6;
+        params.epsilon = getCobraSolverParams('LP', 'feasTol');
     end
 
     if isfield(params,'theta') == 0
