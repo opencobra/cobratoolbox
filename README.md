@@ -50,15 +50,17 @@ Documentation
 
 The documentation is available on [opencobra.github.io/cobratoolbox](http://opencobra.github.io/cobratoolbox). As this version is in development, you may find the legacy version of the documentation [here](http://opencobra.github.io/cobratoolbox/deprecated/docs/index.html).
 
+Frequently Asked Questions (FAQ)
+--------------------------------
+
+Before opening a new issue, please read first the section of Frequently Asked Questions [FAQ](https://github.com/opencobra/cobratoolbox/blob/master/.github/FAQ.md).
+
 How to contribute
 ------------
 
 - In order to contribute, you may follow the [Contributing Guide](https://github.com/opencobra/cobratoolbox/blob/master/.github/CONTRIBUTING.md).
 - When opening an **issue**, please follow the [Issue template](https://github.com/opencobra/cobratoolbox/blob/master/.github/ISSUE_TEMPLATE.md).
 - When submitting a **Pull Request**, please follow the [PR template](https://github.com/opencobra/cobratoolbox/blob/master/.github/PULL_REQUEST_TEMPLATE.md).
-
-
-
 
 How to cite `The COBRA Toolbox`
 ---------------
