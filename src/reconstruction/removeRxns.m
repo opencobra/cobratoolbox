@@ -27,7 +27,7 @@ if nargin < 4
 end
 
 [nMets, nRxns] = size(model.S);
-if (isfield(model, 'genes'))
+if isfield(model, 'genes')
     nGenes = length(model.genes);
 else
     nGenes = 0;
