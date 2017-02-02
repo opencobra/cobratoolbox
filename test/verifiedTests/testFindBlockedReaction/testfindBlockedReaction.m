@@ -23,10 +23,10 @@ for k ={'ibm_cplex' 'tomlab_cplex' 'glpk'}
     solverLPOK=changeCobraSolver(k);
     if solverLPOK
         %Using FVA
-        blockedReactionsFVA = findBlockedReaction(modelEcore);
+        blockedReactionsFVA = findBlockedReaction(model);
         assert(isequal(ecoli_blckd_rxn,blockedReactionsFVA))
         %Using 2-norm min
-        blockedReactions = findBlockedReaction(modelEcore,'L2');
+        blockedReactions = findBlockedReaction(model,'L2');
         assert(isequal(ecoli_blckd_rxn,blockedReactions))
     end
 end
