@@ -179,8 +179,9 @@ b=full(b);
 %conflict refinement is desired in the case that infeasibility is detected
 %by CPLEX.
 if conflictResolve
-    cpxControl.PARALLEL = 1;
-    cpxControl.PARALLELMODE = 1;
+    % set to deterministic mode to get reproducible conflict resolve file
+    cpxControl.PARALLEL = 1; % Tomlab CPLEX interface
+    cpxControl.PARALLELMODE = 1; % ILOG CPLEX interface
     [m_lin,n]=size(LPProblem.A);
     m_quad=0;
     m_sos=0;
