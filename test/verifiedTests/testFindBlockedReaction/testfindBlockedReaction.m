@@ -19,12 +19,17 @@ load ecoli_core_model.mat;
 ecoli_blckd_rxn = {'EX_fru(e)','EX_fum(e)','EX_gln_L(e)','EX_mal_L(e)',...
     'FRUpts2','FUMt2_2','GLNabc','MALt2_2'};
 
-%Using FVA
-blockedReactionsFVA = findBlockedReaction(modelEcore);
-assert(isequal(ecoli_blckd_rxn,blockedReactionsFVA))
-%Using 2-norm min
-blockedReactions = findBlockedReaction(modelEcore,'L2');
-assert(isequal(ecoli_blckd_rxn,blockedReactions))
+for k ={'ibm_cplex' 'tomlab_cplex' 'glpk'}
+    solverLPOK=changeCobraSolver(k);
+    if solverLPOK
+        %Using FVA
+        blockedReactionsFVA = findBlockedReaction(modelEcore);
+        assert(isequal(ecoli_blckd_rxn,blockedReactionsFVA))
+        %Using 2-norm min
+        blockedReactions = findBlockedReaction(modelEcore,'L2');
+        assert(isequal(ecoli_blckd_rxn,blockedReactions))
+    end
+end
 
 % change the directory
 cd(CBTDIR)
