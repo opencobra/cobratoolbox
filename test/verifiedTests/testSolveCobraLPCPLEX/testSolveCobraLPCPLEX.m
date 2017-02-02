@@ -23,28 +23,29 @@ ecoli_blckd_rxn = {'EX_fru(e)','EX_fum(e)','EX_gln_L(e)','EX_mal_L(e)',...
 
 %test TOMLAB
 changeCobraSolver('tomlab_cplex','LP');
-solTest=solveCobraLPCPLEX(modelEcore,0,0,0,[],0,'tomlab_cplex')
+solTest=solveCobraLPCPLEX(model,0,0,0,[],0,'tomlab_cplex')
 %test was performed on objective as solution can vary between machines,
 %solver version etc..
 assert(any(abs(solTest.obj-sol.obj) < tol))
 
 %test ILOG
 changeCobraSolver('ibm_cplex','LP');
-solTest=solveCobraLPCPLEX(modelEcore,0,0,0,[],0,'ILOGcomplex');
+solTest=solveCobraLPCPLEX(model,0,0,0,[],0,'ILOGcomplex');
 assert(any(abs(solTest.obj-sol.obj) < tol))
 
-%test minNorm
-solTest=solveCobraLPCPLEX(modelEcore,0,0,0,[],1e-6,'ILOGcomplex')
-assert(isequal(ecoli_blckd_rxn,modelEcore.rxns(find(~solTest.full))'))
-assert(any(abs(solTest.obj-sol.obj) < tol))
+for k = {'tomlab_cplex' 'ILOGcomplex'}%test solver packages
+    %test minNorm
+    solTest=solveCobraLPCPLEX(model,0,0,0,[],1e-6,k)
+    assert(isequal(ecoli_blckd_rxn,model.rxns(find(~solTest.full))'))
+    assert(any(abs(solTest.obj-sol.obj) < tol))
 
-%test basis generation
-[solTest,basisTest]=solveCobraLPCPLEX(modelEcore,0,1,0,[],0,'tomlab_cplex')
-assert(any(abs(solTest.obj-sol.obj) < tol))
+    %test basis generation
+    [solTest,basisTest]=solveCobraLPCPLEX(model,0,1,0,[],0,k)
+    assert(any(abs(solTest.obj-sol.obj) < tol))
 
-%test basis reuse
-[solTest]=solveCobraLPCPLEX(basis,0,1,0,[],0,'tomlab_cplex')
-assert(any(abs(solTest.obj-sol.obj) < tol))
-
+    %test basis reuse
+    [solTest]=solveCobraLPCPLEX(basis,0,1,0,[],0,k)
+    assert(any(abs(solTest.obj-sol.obj) < tol))
+end
 % change the directory
 cd(CBTDIR) 
