@@ -180,8 +180,13 @@ b=full(b);
 %by CPLEX.
 if conflictResolve
     % set to deterministic mode to get reproducible conflict resolve file
-    cpxControl.PARALLEL = 1; % Tomlab CPLEX interface
-    cpxControl.PARALLELMODE = 1; % ILOG CPLEX interface
+    if isfield(cpxControl,'PARALLEL') && cpxControl.PARALLEL ~=1
+        fprintf('PARALLEL Parameter was changed to 1 to ensure a reproducible log file');
+        cpxControl.PARALLEL = 1; % Tomlab CPLEX interface
+    elseif isfield(cpxControl,'PARALLELMODE') && cpxControl.PARALLELMODE ~=1
+        cpxControl.PARALLELMODE = 1; % ILOG CPLEX interface
+        fprintf('PARALLELMODE Parameter was changed to 1 to ensure a reproducible log file');
+    end
     [m_lin,n]=size(LPProblem.A);
     m_quad=0;
     m_sos=0;
