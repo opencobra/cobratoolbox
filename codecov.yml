@@ -16,10 +16,7 @@ coverage:
     project:
       default:
         threshold: 15
-  patch:
-    default:
-      target: auto
-      branches: null
+    patch: off
 
   changes:
     default:
