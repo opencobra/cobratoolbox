@@ -13,8 +13,6 @@ CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
   
 cd([CBTDIR '/test/verifiedTests/testDynamicFBA'])
   
-changeCobraSolver('tomlab_cplex');%or preferred LP solver
-
 load ecoli_core_model;
 
 smi = {'EX_glc(e)'
@@ -26,13 +24,18 @@ Xec = 0.001;%Initial biomass
 dt = 1/100;%Time steps
 time = 1/dt; %Simulation time
 
-[concentrationMatrixtest,excRxnNamestest,timeVectest,biomassVectest]=dynamicFBA(modelEcore,smi,smc,Xec,dt,time);
+for k ={'tomlab_cplex' 'ibm_cplex' 'glpk'}
+    solverLPOK = changeCobraSolver(k);
+    if solverLPOK
+        [concentrationMatrixtest,excRxnNamestest,timeVectest,biomassVectest]=dynamicFBA(model,smi,smc,Xec,dt,time);
 
-tol = eps(0.5);%set tolerance
-assert(any(any(abs(concentrationMatrixtest-concentrationMatrix) < tol)))
-assert(isequal(excRxnNamestest,excRxnNames))
-assert(isequal(timeVectest,timeVec))
-assert(any(abs(biomassVectest-biomassVec) < tol))
+        tol = eps(0.5);%set tolerance
+        assert(any(any(abs(concentrationMatrixtest-concentrationMatrix) < tol)))
+        assert(isequal(excRxnNamestest,excRxnNames))
+        assert(isequal(timeVectest,timeVec))
+        assert(any(abs(biomassVectest-biomassVec) < tol))
+    end
+end
 
 % change the directory
 cd(CBTDIR)  
