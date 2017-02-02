@@ -66,13 +66,13 @@ if ~exist('ATPprod','var') || isempty(ATPprod)
     ATPproducer = 0;
 elseif ~isempty(ATPprod)
     ATPproducer = 1;
-    
+
 end
 
 if nargout>3
-    bExtraOutputs=true;
+    bExtraOutputs = true;
 else
-    bExtraOutputs=false;
+    bExtraOutputs = false;
 end
 
 
@@ -96,31 +96,29 @@ for k =1:length(samples)
     namesRecon = model.rxns;
     % submodel names
     submodel = eval(['ResultsAllCellLines.' samples{k} '.modelPruned']);
-    
+
     [ID,XI] = ismember(namesRecon, submodel.rxns);
-    
-    
+
     submodel = changeObjective(submodel,obj);
-    
+
     %[solBMa,LPProblem]=solveCobraLPCPLEX(submodel,1,0,0,[],1e-6);
-    
+
     solBMa =optimizeCbModel(submodel,'max',1e-6);
-    
+
     solBMa.obj = solBMa.f; % purpose of renaming fields?
     %BMs(k,2) = solBMa.obj;
     solBMa.full = solBMa.x;
     %solBMa.x = solBMa.full;
-    
+
     %setting the fluxes below eucNorm to zero
     for i=1:length(solBMa.x)
         if abs(solBMa.x(i))< eucNorm % threshold applied to solBMa.x but flux splits computed with solBMa.full
             solBMa.x(i)=0;
         end
     end
-    
-    
+
     BMall(ID,k) = solBMa.x(XI(ID));
-    
+
     %% Compute flux splits
     % Remove excluded reactions (transportRxns)
     tmpModel.mets = submodel.mets;
@@ -128,7 +126,7 @@ for k =1:length(samples)
     tmpModel.S = submodel.S(:,isIncluded);
     tmpV = solBMa.full(isIncluded);
     [P,C,vP,vC] = computeFluxSplits(tmpModel,met2test,tmpV);
-    
+
     % decide if production (1) or consumption ~1.
     vMetAll = zeros(size(isIncluded));
     metprod_phi = zeros(size(isIncluded));
@@ -139,43 +137,41 @@ for k =1:length(samples)
         vMetAll(isIncluded) = vC;
         metprod_phi(isIncluded) = C;
     end
-    
+
     % collect results for submodel
     metprod = find(vMetAll);
     RxnsNamesAll = submodel.rxns(metprod);
     vMetAll = vMetAll(metprod);
     metprod_phi = metprod_phi(metprod);
-    metRs = [RxnsNamesAll cellstr(string([vMetAll metprod_phi]))];
-    
+    metRs = [RxnsNamesAll cellstr(char([vMetAll metprod_phi]))];
+
     % map results to generic model
     [IDm,XIm] = ismember(model.rxns,RxnsNamesAll);
-    metRsall(IDm,2*k) = cellstr(string(vMetAll(XIm(IDm))));
-    metRsall(IDm,2*k+1) = cellstr(string(metprod_phi(XIm(IDm))));
-    
+    metRsall(IDm,2*k) = cellstr(char(vMetAll(XIm(IDm))));
+    metRsall(IDm,2*k+1) = cellstr(char(metprod_phi(XIm(IDm))));
+
     clear IDm
     name  = ['flux_split_' strtok(met2test{1}, '[')];
-    
+
     ResultsAllCellLines.(samples{k}).(name).metRs = metRs;
-    
-    
+
     %% check for contribution of glycolysis etc.
     if ATPproducer == 1
         idx_gly =find(ismember(metRs(:,1), ATPprod(2:3,1)));
         idx_ETC =find(ismember(metRs(:,1), ATPprod(1,1)));
         idx_glu = find(ismember(metRs(:,1), ATPprod(4,1)));
-        
-        
+
         A(k,1)=sum(vMetAll);
         maximum_contributing_rxn(k,1) = RxnsNamesAll(find(ismember(vMetAll,max(vMetAll)),1));
         %maximum_contributing_rxn(k,1) = RxnsNamesAll(find(vMetAll==max(vMetAll)));
-        
+
         maximum_contributing_flux(k,1) = max(vMetAll);
         maximum_contributing_flux(k,2) = sum(vMetAll);
         maximum_contributing_flux(k,3) = max(vMetAll)/sum(vMetAll)*100;
         maximum_contributing_flux(k,4) = (vMetAll(idx_gly(1,1))+ vMetAll(idx_gly(2,1)))/sum(vMetAll)*100; % contriburion of glycolysis
         maximum_contributing_flux(k,5) = vMetAll(idx_ETC)/sum(vMetAll)*100; % contribution of ETC
         maximum_contributing_flux(k,6) = maximum_contributing_flux(k,4)+ maximum_contributing_flux(k,5);
-        
+
         if ~isempty(vMetAll(idx_glu))
             maximum_contributing_flux(k,7) = vMetAll(idx_glu)/sum(vMetAll)*100; %contribution of TCA to ATP
             maximum_contributing_flux(k,8) = maximum_contributing_flux(k,6)+ maximum_contributing_flux(k,7);%contribution of glycolysis, TCA and ETC
@@ -183,38 +179,29 @@ for k =1:length(samples)
             maximum_contributing_flux(k,7) = nan;
             maximum_contributing_flux(k,8) = nan;
         end
-        
+
         vglc= solBMa.full(find(ismember(submodel.rxns,carbon_source)),1);
         ATPyield(k,1) = (maximum_contributing_flux(k,2)/abs(vglc));
-        
+
         ResultsAllCellLines.(samples{k}).(name).maximum_contributing_flux = maximum_contributing_flux(k,:);
         ResultsAllCellLines.(samples{k}).(name).maximum_contributing_rxn = maximum_contributing_rxn(k,1);
-        
+
     elseif ATPproducer == 0
-        
+
         ATPyield = [];
-        
+
         A(k,1)=sum(vMetAll);
         maximum_contributing_rxn{k,1} = strjoin(RxnsNamesAll(find(ismember(vMetAll,max(vMetAll))),:)','\\');
-        
+
         maximum_contributing_flux(k,1) = max(vMetAll);
         maximum_contributing_flux(k,2) = sum(vMetAll);
         maximum_contributing_flux(k,3) = max(vMetAll)/sum(vMetAll)*100;
-        
+
         ResultsAllCellLines.(samples{k}).(name).maximum_contributing_flux = maximum_contributing_flux(k,1);
         ResultsAllCellLines.(samples{k}).(name).maximum_contributing_rxn = maximum_contributing_rxn{k,1};
     end
-    
-    
+
     clear metsR vMetAll idx* RxnsNamesAll
 end
 
 end
-
-
-
-
-
-
-
-

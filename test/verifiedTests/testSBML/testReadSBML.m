@@ -13,6 +13,9 @@
 % Note:
 %     - The solver libraries must be included separately
 
+% define global paths
+global path_TOMLAB
+
 % define the path to The COBRAToolbox
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
@@ -40,14 +43,17 @@ assert(length(model.metNames) == length(testModel.metNames))
 assert(length(model.metFormulas) == length(testModel.metFormulas))
 assert(length(model.b) == length(testModel.b))
 
+% initialize the test
+initTest([CBTDIR '/test/models'])
+
+% add the path of the TOMLAB solver
+addpath(genpath(path_TOMLAB));
+
 % set the solver
 solverOK = changeCobraSolver('tomlab_cplex');
-%solverOK = changeCobraSolver('cplex_direct');
-
-cd([CBTDIR '/test/models'])
 
 if solverOK ~= 1
-    error('Solver cannot be set properly.\n');
+    error('Solver cannot be set properly.');
 else
     % set the tolerance
     tol = 1e-9;
