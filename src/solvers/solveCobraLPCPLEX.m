@@ -180,6 +180,7 @@ b=full(b);
 %by CPLEX.
 if conflictResolve
     cpxControl.PARALLEL = 1;
+    cpxControl.PARALLELMODE = 1;
     [m_lin,n]=size(LPProblem.A);
     m_quad=0;
     m_sos=0;
