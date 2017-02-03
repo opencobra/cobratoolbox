@@ -1,6 +1,11 @@
+% define global paths
+global path_GUROBI
+global path_ILOG_CPLEX
+global path_TOMLAB
+
 % do not change the paths below
-addpath(genpath('/var/lib/jenkins/MOcov'))
-addpath(genpath('/var/lib/jenkins/jsonlab'))
+addpath(genpath('/var/lib/jenkins/MOcov'));
+addpath(genpath('/var/lib/jenkins/jsonlab'));
 
 % include the root folder and all subfolders
 addpath(genpath(pwd))
@@ -11,20 +16,11 @@ if length(which('initCobraToolbox.m')) == 0
     CBTDIR = pth(1:end-(length('launchTests.m') + 1));
 
     % change the directory to the root
-    cd([CBTDIR, '/../'])
+    cd([CBTDIR, '/../']);
 
     % include the root folder and all subfolders
-    addpath(genpath(pwd))
+    addpath(genpath(pwd));
 end
-
-% add GUROBI
-addpath(genpath('/opt/gurobi650'))
-
-% add CPLEX
-addpath(genpath('/opt/ibm/ILOG/CPLEX_Studio1263')) % Linux
-
-% add TOMLAB interface
-addpath(genpath('/opt/tomlab'))
 
 % run the official initialisation script
 initCobraToolbox
@@ -62,8 +58,8 @@ try
     data = loadjson('coverage.json', 'SimplifyCell', 1);
 
     sf = data.source_files;
-    clFiles = [];
-    tlFiles = [];
+    clFiles = zeros(length(sf), 1);
+    tlFiles = zeros(length(sf), 1);
 
     for i = 1:length(sf)
         clFiles(i) = nnz(sf(i).coverage);
@@ -75,13 +71,13 @@ try
     tl = sum(tlFiles);
 
     % print out a summary table
-    rt = table(result)
+    table(result)
 
     % print out the coverage as requested by gitlab
     fprintf('Covered Lines: %i, Total Lines: %i, Coverage: %f%%.\n', cl, tl, cl/tl * 100);
 
     if sumFailed > 0 || sumIncomplete > 0
-        exit_code = 1
+        exit_code = 1;
     end
 
     % ensure that we ALWAYS call exit
