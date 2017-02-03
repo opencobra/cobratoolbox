@@ -143,7 +143,7 @@ for k =1:length(samples)
     RxnsNamesAll = submodel.rxns(metprod);
     vMetAll = vMetAll(metprod);
     metprod_phi = metprod_phi(metprod);
-    metRs = [RxnsNamesAll cellstr(char([vMetAll metprod_phi]))];
+    metRs = [RxnsNamesAll num2cell([vMetAll metprod_phi])];
 
     % map results to generic model
     [IDm,XIm] = ismember(model.rxns,RxnsNamesAll);
