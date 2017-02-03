@@ -11,11 +11,14 @@
 % Note:
 %     - The solver libraries must be included separately
 
+% define global paths
+global path_TOMLAB
+
 % define the path to The COBRAToolbox
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-cd([CBTDIR '/test/verifiedTests/testFVA'])
+initTest([CBTDIR '/test/verifiedTests/testFVA'])
 
 % set the tolerance
 tol = 1e-8;
@@ -28,6 +31,11 @@ load('Ec_iJR904.mat', 'model');
 load('testFVAData.mat');
 
 for k = 1:length(solverPkgs)
+    % add the solver paths (temporary addition for CI)
+    if strcmp(solverPkgs{k}, 'tomlab_cplex')
+        addpath(genpath(path_TOMLAB));
+    end
+
     % change the COBRA solver (LP)
     solverOK = changeCobraSolver(solverPkgs{k});
 

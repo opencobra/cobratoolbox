@@ -180,11 +180,29 @@ if (revFlag)
 else
     model.rev(rxnID,1) = 0;
 end
-model.lb(rxnID,1) = lowerBound;
-model.ub(rxnID,1) = upperBound;
-model.c(rxnID,1) = objCoeff;
 
-if (isfield(model,'rxnNames'))
+% set the reaction lower bound
+if isfield(model, 'lb')
+    model.lb(rxnID) = lowerBound;
+else
+    model.lb = zeros(length(model.rxns), 1);
+end
+
+% set the reaction upper bound
+if isfield(model, 'ub')
+    model.ub(rxnID) = upperBound;
+else
+    model.ub = zeros(length(model.rxns), 1);
+end
+
+% set the objective coefficient of the reaction
+if isfield(model, 'c')
+    model.c(rxnID) = objCoeff;
+else
+    model.c = zeros(length(model.rxns), 1);
+end
+
+if isfield(model,'rxnNames')
     if exist('rxnNameFull','var')
         model.rxnNames{rxnID,1} = rxnNameFull;
     else

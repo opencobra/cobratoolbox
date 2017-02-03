@@ -46,11 +46,20 @@ rxns_length = length(model.rxns);
 % adding a reaction to the model
 model = addReaction(model, 'EX_glc', model.mets, sc, 0, 0, 20);
 
+% adding a reaction to the model (test only)
+model = addReaction(model, 'ABC_def', model.mets, 2 * sc, 0, -5, 10);
+
 % check if the number of reactions was incremented by 1
-assert(length(model.rxns) == rxns_length+1);
+assert(length(model.rxns) == rxns_length + 2);
+
+% adding a reaction to the model (test only)
+model = addReaction(model, 'ABC_def', model.mets, 3 * sc);
 
 % remove the reaction from the model
-model = removeRxns(model, {'EX_glc'} );
+model = removeRxns(model, {'EX_glc'});
+
+% remove the reaction from the model
+model = removeRxns(model, {'ABC_def'});
 
 % add exchange reaction
 addExchangeRxn(model, {'glc-D[e]'; 'glc-D';})

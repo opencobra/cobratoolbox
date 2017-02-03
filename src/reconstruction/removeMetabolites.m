@@ -15,6 +15,7 @@ function model = removeMetabolites(model,metaboliteList,removeRxnFlag)
 %
 % Markus Herrgard 6/5/07
 % Uri David Akavia 1/18/14
+% Fatima Liliana Monteiro 17/11/16 add an if condition to remove metabolites just from fields with same length
 
 if (nargin < 3)
     removeRxnFlag = true;
@@ -28,8 +29,13 @@ foo = strncmp('met', fields(model), 3);
 metabolicFields = fieldnames(model);
 metabolicFields = metabolicFields(foo);
 clear foo;
+
 for i = 1:length(metabolicFields)
-	model.(metabolicFields{i}) = model.(metabolicFields{i})(selMets);
+    if length(model.(metabolicFields{i})) == length(selMets)
+        model.(metabolicFields{i}) = model.(metabolicFields{i})(selMets);
+    else
+        warning('There are metabolic fields with different dimensions')
+    end
 end
 if (isfield(model,'b'))
     model.b = model.b(selMets);
