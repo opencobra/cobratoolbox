@@ -1,4 +1,4 @@
-function [leakMetBool,leakRxnBool,siphonMetBool,siphonRxnBool,statp,statn] = findMassLeaksAndSiphons(model,metBool,rxnBool,modelBoundsFlag,params,printLevel)
+function [leakMetBool,leakRxnBool,siphonMetBool,siphonRxnBool,leakY,siphonY,statp,statn] = findMassLeaksAndSiphons(model,metBool,rxnBool,modelBoundsFlag,params,printLevel)
 % Find the metabolites in a network that either leak mass or act as a 
 % siphon for mass, with (default) or without the bounds on a model.
 % The approach is to solve the problem
@@ -42,6 +42,8 @@ function [leakMetBool,leakRxnBool,siphonMetBool,siphonRxnBool,statp,statn] = fin
 % leakRxnBool       n x 1 boolean of reactions exclusively involved in a positive leakage mode
 % siphonMetBool     m x 1 boolean of metabolites in a negative leakage mode
 % siphonRxnBool     n x 1 boolean of reactions exclusively involved in a negative leakage mode
+% leakY                 m x 1 boolean of metabolites in a positive leakage mode
+% siphonY               m x 1 boolean of metabolites in a negative siphon mode
 % statp             status (positive leakage modes)
 %                       1 =  Solution found
 %                       2 =  Unbounded
@@ -161,14 +163,14 @@ switch method
             statp   = 1;
             Vp=sparse(nRxn,1);
             Vp(rxnBool) = solp.full(1:nlt);
-            Yp=sparse(nMet,1);
+            leakY=sparse(nMet,1);
             tmp = solp.full(nlt+1:nlt+mlt);
             tmp(zeroRows)=0;%ignore zero rows
-            Yp(metBool) = tmp;           
+            leakY(metBool) = tmp;           
         else
             fprintf('%s\n','Infeasibility while detecting semipositive leaking metabolites.');
             Vp=[];
-            Yp=[];
+            leakY=[];
             statp=[];
         end
         
@@ -189,15 +191,15 @@ switch method
         if soln.stat == 1
             statn   = 1;
             Vn=sparse(nRxn,1);
-            Yn=sparse(nMet,1);
+            siphonY=sparse(nMet,1);
             Vn(rxnBool) = soln.full(1:nlt);
             tmp = soln.full(nlt+1:nlt+mlt);
             tmp(zeroRows)=0;%ignore zero rows
-            Yn(metBool) = tmp;
+            siphonY(metBool) = tmp;
         else
             fprintf('%s\n','Infeasibility while detecting seminegative leaking metabolites.');
             Vn=[];
-            Yn=[];
+            siphonY=[];
             statn=[];
         end             
     case 'dc'
@@ -242,18 +244,18 @@ switch method
         if solutionCardp.stat == 1
             statp   = 1;
             Vp=sparse(nRxn,1);
-            Yp=sparse(nMet,1);
+            leakY=sparse(nMet,1);
             % [-I,S]*[y;z]=0
             % leakage
             tmp = solutionCardp.y;
             tmp(zeroRows)=0;%ignore zero rows
-            Yp(metBool) = tmp;
+            leakY(metBool) = tmp;
             % flux
             Vp(rxnBool) = solutionCardp.z;
         else
             fprintf('%s\n','Infeasibility while detecting semipositive leaking metabolites.');
             Vp=[];
-            Yp=[];
+            leakY=[];
             statp=[];
         end
         
@@ -268,21 +270,21 @@ switch method
             Vn(rxnBool) = solutionCardn.z;
             % [I,S]*[y;z]=0
             % siphon
-            Yn=sparse(nMet,1);
+            siphonY=sparse(nMet,1);
             tmp = solutionCardn.y;
             tmp(zeroRows)=0;%ignore zero rows
-            Yn(metBool) = tmp;
+            siphonY(metBool) = tmp;
         else
             fprintf('%s\n','Infeasibility while detecting seminegative leaking metabolites.');
             Vn=[];
-            Yn=[];
+            siphonY=[];
             statn=[];
         end
 end
 
 %only metBool rxnBool were tested for leaks
 
-leakMetBool=Yp>=params.eta;
+leakMetBool=leakY>=params.eta;
 leakRxnBool = getCorrespondingCols(model.S,leakMetBool,rxnBool,'exclusive');
 if printLevel>0
     %fprintf('%6u\t%6u\t%s\n',mlt,nlt,' subset tested for leakage...');
@@ -292,10 +294,10 @@ end
 if printLevel>0 && any(leakMetBool)
     %relaxation of stoichiometric consistency for reactions above the
     %threshold of leakParams.eta
-    Yp(Yp<0)=0;
-    log10Yp=log10(Yp);
+    leakY(leakY<0)=0;
+    log10Yp=log10(leakY);
     log10YpFinite=isfinite(log10Yp);
-    if printLevel>1
+    if printLevel>2
         %histogram
         figure;
         hist(log10Yp(metBool & log10YpFinite),200)
@@ -304,8 +306,16 @@ if printLevel>0 && any(leakMetBool)
         ylabel('#mets')
     end
     [~,sortedlog10YpInd]=sort(log10Yp,'descend');
-    for k=1:min(13,nnz(leakMetBool))
-        fprintf('%s\n',model.mets{sortedlog10YpInd(k)});
+    if printLevel>1
+        for k=1:min(10,nnz(leakMetBool))
+            mass=getMolecularMass(model.metFormulas{sortedlog10YpInd(k)});
+            fprintf('%s\t%u\n',model.mets{sortedlog10YpInd(k)},mass);
+        end
+    else
+        for k=1:nnz(leakMetBool)
+            mass=getMolecularMass(model.metFormulas{sortedlog10YpInd(k)});
+            fprintf('%s\t%u\n',model.mets{sortedlog10YpInd(k)},mass);
+        end
     end
     if any(leakRxnBool)
         fprintf('%s\n','...')
@@ -316,7 +326,7 @@ if printLevel>0 && any(leakMetBool)
     end
 end
 
-siphonMetBool=Yn>=params.eta;
+siphonMetBool=siphonY>=params.eta;
 siphonRxnBool = getCorrespondingCols(model.S,siphonMetBool,rxnBool,'exclusive');
 if printLevel>0
     fprintf('%6u\t%6u\t%s\n',nnz(siphonMetBool),nnz(siphonRxnBool),' seminegative siphon metabolites (and exclusive reactions).');
@@ -325,10 +335,10 @@ end
 if printLevel>0 && any(siphonMetBool)
     %relaxation of stoichiometric consistency for reactions above the
     %threshold of leakParams.eta
-    Yn(Yn<0)=0;
-    log10Yn=log10(Yn);
+    siphonY(siphonY<0)=0;
+    log10Yn=log10(siphonY);
     log10YnFinite=isfinite(log10Yn);
-    if printLevel>1
+    if printLevel>2
         %histogram
         figure;
         hist(log10Yn(metBool & log10YnFinite),200)
@@ -337,8 +347,16 @@ if printLevel>0 && any(siphonMetBool)
         ylabel('#mets')
     end
     [~,sortedlog10YnInd]=sort(log10Yn,'descend');
-    for k=1:min(10,nnz(siphonMetBool))
-        fprintf('%s\n',model.mets{sortedlog10YnInd(k)});
+    if printLevel>1
+        for k=1:min(10,nnz(siphonMetBool))
+            mass=getMolecularMass(model.metFormulas{sortedlog10YnInd(k)});
+            fprintf('%s\t%u\n',model.mets{sortedlog10YnInd(k)},mass);
+        end
+    else
+        for k=1:nnz(siphonMetBool)
+            mass=getMolecularMass(model.metFormulas{sortedlog10YnInd(k)});
+            fprintf('%s\t%u\n',model.mets{sortedlog10YnInd(k)},mass);
+        end
     end
     if any(siphonRxnBool)
         fprintf('%s\n','...')

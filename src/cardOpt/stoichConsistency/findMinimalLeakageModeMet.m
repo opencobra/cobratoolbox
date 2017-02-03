@@ -1,4 +1,4 @@
-function [minLeakMetBool,minLeakRxnBool,minSiphonMetBool,minSiphonRxnBool,metAbbr,statp,statn] = findMinimalLeakageModeMet(model,metBool,rxnBool,modelBoundsFlag,params,printLevel)
+function [minLeakMetBool,minLeakRxnBool,minSiphonMetBool,minSiphonRxnBool,leakY,siphonY,statp,statn] = findMinimalLeakageModeMet(model,metBool,rxnBool,modelBoundsFlag,params,printLevel)
 % Solve the problem
 % min   ||v||_0 + ||y||_0
 % s.t.  Sv - y = 0
@@ -33,20 +33,22 @@ function [minLeakMetBool,minLeakRxnBool,minSiphonMetBool,minSiphonRxnBool,metAbb
 % printLevel            {(0),1}
 %
 % OUTPUT
-%       Vp                  n x 1 vector (positive leakage modes)
-%       Yp                  m x 1 vector (positive leakage modes)
-%       statp               status (positive leakage modes)
-%                           1 =  Solution found
-%                           2 =  Unbounded
-%                           0 =  Infeasible
-%                           -1=  Invalid input
-%       Vn                  n x 1 vector (negative leakage modes)
-%       Yn                  m x 1 vector (negative leakage modes)
-%       statn               status (negative leakage modes)
-%                           1 =  Solution found
-%                           2 =  Unbounded
-%                           0 =  Infeasible
-%                           -1=  Invalid input
+% minLeakRxnBool        m x 1 boolean of metabolites in a positive leakage mode
+% minLeakRxnBool        n x 1 boolean of reactions exclusively involved in a positive leakage mode
+% minSiphonMetBool      m x 1 boolean of metabolites in a negative leakage mode
+% minSiphonRxnBool      n x 1 boolean of reactions exclusively involved in a negative leakage mode
+% leakY                 m x 1 boolean of metabolites in a positive leakage mode
+% siphonY               m x 1 boolean of metabolites in a negative siphon mode
+% statp             status (positive leakage modes)
+%                       1 =  Solution found
+%                       2 =  Unbounded
+%                       0 =  Infeasible
+%                      -1 =  Invalid input
+% statn               status (negative leakage modes)
+%                       1 =  Solution found
+%                       2 =  Unbounded
+%                       0 =  Infeasible
+%                      -1 =  Invalid input
 %
 % Ines Thiele & Ronan Fleming June 2016
 
@@ -138,9 +140,9 @@ metAbbr=model.mets{metBool};
 zlt=nnz(metBool);
 statp=ones(zlt,1)*NaN;
 Vp=sparse(nlt,zlt);
-Yp=sparse(mlt,zlt);
+siphonY=sparse(mlt,zlt);
 minLeakRxnBool=logical(Vp);
-minLeakMetBool=logical(Yp);
+minLeakMetBool=logical(siphonY);
 
 %%Define the seminegative optimisation problem
 cardPrbn=cardProb;
@@ -148,9 +150,9 @@ cardPrbn.A = [S speye(mlt)]; %note the positive on lhs of constraints
 %preallocate for results
 statn=ones(zlt,1)*NaN;
 Vn=sparse(nlt,zlt);
-Yn=sparse(mlt,zlt);
+leakY=sparse(mlt,zlt);
 minSiphonRxnBool=logical(Vn);
-minSiphonMetBool=logical(Yn);
+minSiphonMetBool=logical(leakY);
 
 %leak/siphon of only one metabolite if true
 monoMetMode=params.monoMetMode;
@@ -158,7 +160,7 @@ monoMetMode=params.monoMetMode;
 if printLevel>0
     fprintf('%s\n','-------')
     if monoMetMode
-        fprintf('%u%s\n',zlt,' rows of S to test for minimal leakage modes...')
+        fprintf('%u%s\n',zlt,' rows of S to test for minimal leakage modes (one by one)...')
     else
         fprintf('%u%s\n',zlt,' rows of S to test for minimal leakage modes...')
 
@@ -197,8 +199,8 @@ for m=1:mlt
             case 1
                 Vp(:,z)          = solution.x(1:nlt,1);
                 minLeakRxnBool(:,z) = Vp(:,z)>=params.epsilon;
-                Yp(:,z)          = solution.x(nlt+1:nlt+mlt,1);
-                minLeakMetBool(:,z) = Yp(:,z)>=params.epsilon;
+                siphonY(:,z)          = solution.x(nlt+1:nlt+mlt,1);
+                minLeakMetBool(:,z) = siphonY(:,z)>=params.epsilon;
                 
                 if printLevel>0
                     fprintf('%6u\t%6u\t%6s\t%s\n',nnz(minLeakMetBool(:,z)),nnz(minLeakRxnBool(:,z)),'leak',model.mets{m});
@@ -220,8 +222,8 @@ for m=1:mlt
                 if printLevel>1 && any(minLeakMetBool(:,z))
                     %relaxation of stoichiometric consistency for reactions above the
                     %threshold of leakParams.eta
-                    Yp(Yp(:,z)<0,z)=0;
-                    log10Yp=log10(Yp(:,z));
+                    siphonY(siphonY(:,z)<0,z)=0;
+                    log10Yp=log10(siphonY(:,z));
                     log10YpFinite=isfinite(log10Yp);
                     if printLevel>2
                         %histogram
@@ -272,8 +274,8 @@ for m=1:mlt
                 case 1
                     Vn(:,z)            = solution.x(1:nlt,1);
                     minSiphonRxnBool(:,z) = Vn(:,z)>=params.epsilon;
-                    Yn(:,z)            = solution.x(nlt+1:nlt+mlt,1);
-                    minSiphonMetBool(:,z) = Yn(:,z)>=params.epsilon;
+                    leakY(:,z)            = solution.x(nlt+1:nlt+mlt,1);
+                    minSiphonMetBool(:,z) = leakY(:,z)>=params.epsilon;
 
                     if printLevel>0
                         fprintf('%6u\t%6u\t%6s\t%s\n',nnz(minSiphonMetBool(:,z)),nnz(minSiphonRxnBool(:,z)),'siphon',model.mets{m});
@@ -291,8 +293,8 @@ for m=1:mlt
                     if printLevel>1 && any(minSiphonMetBool)
                         %relaxation of stoichiometric consistency for reactions above the
                         %threshold of leakParams.eta
-                        Yn(Yn(:,z)<0,z)=0;
-                        log10Yn=log10(Yn(:,z));
+                        leakY(leakY(:,z)<0,z)=0;
+                        log10Yn=log10(leakY(:,z));
                         log10YnFinite=isfinite(log10Yn);
                         if printLevel>2
                             %histogram

@@ -1,4 +1,5 @@
-function [SConsistentMetBool,SConsistentRxnBool,SInConsistentMetBool,SInConsistentRxnBool,unknownSConsistencyMetBool,unknownSConsistencyRxnBool,model]=findStoichConsistentSubset(model,massBalanceCheck,printLevel,fileName,epsilon)
+function [SConsistentMetBool,SConsistentRxnBool,SInConsistentMetBool,SInConsistentRxnBool,unknownSConsistencyMetBool,unknownSConsistencyRxnBool,model]=...
+    findStoichConsistentSubset(model,massBalanceCheck,printLevel,fileName,epsilon)
 %finds the subset of S that is stoichiometrically consistent using
 %an iterative cardinality optimisation approach
 %
@@ -57,6 +58,10 @@ end
 %final double check of stoichiometric consistent subset
 finalCheckMethod='findMassLeaksAndSiphons'; %works with smaller leakParams.epsilon
 %finalCheckMethod='maxCardinalityConservationVector'; %Needs leakParams.epsilon=1e-4;
+
+removalStrategy='imBalanced';
+%removalStrategy='isolatedInconsistent';
+%removalStrategy='highCardinalityReactions';
 
 maxCardConsParams.epsilon=epsilon;%1/epsilon is the largest mass considered, needed for numerical stability
 maxCardConsParams.method = 'quasiConcave';%seems to work the best, but sometimes infeasible
@@ -342,8 +347,6 @@ while iterateCardinalityOpt>0
     metRemoveBool=0;
     rxnRemoveBool=0;
             
-    removalStrategy='imBalanced';
-    %removalStrategy='isolatedInconsistent';
     switch removalStrategy
         case 'highCardinalityReactions'
             %%remove reactions with unknown consistency of maximal cardinality
@@ -376,6 +379,9 @@ while iterateCardinalityOpt>0
                     model.unknownSConsistencyRxnBool=~model.SConsistentRxnBool & ~model.SInConsistentRxnBool;
                     if printLevel>1
                         fprintf('%6u\t%6u\t%s%u%s\n',nnz(metRemoveBool), nnz(rxnRemoveBool), ' removed heuristically non-exchange reactions, each involving ',maxMetsPerRxn, ' metabolites.')
+                        if printLevel >1
+                             formulas = printRxnFormula(model,model.rxns(rxnRemoveBool));
+                        end
                     end
                 else
                     %stop the loop when the number of metabolites in exchange

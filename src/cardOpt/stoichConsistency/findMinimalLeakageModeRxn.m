@@ -1,4 +1,4 @@
-function [minLeakMetBool,minLeakRxnBool,minSiphonMetBool,minSiphonRxnBool,rxnAbbr,statp,statn] = findMinimalLeakageModeRxn(model,rxnBool,metBool,modelBoundsFlag,params,printLevel)
+function [minLeakMetBool,minLeakRxnBool,minSiphonMetBool,minSiphonRxnBool,leakY,siphonY,statp,statn] = findMinimalLeakageModeRxn(model,rxnBool,metBool,modelBoundsFlag,params,printLevel)
 % Solve the problem
 % min   ||v||_0 + ||y||_0
 % s.t.  Sv - y = 0
@@ -34,8 +34,12 @@ function [minLeakMetBool,minLeakRxnBool,minSiphonMetBool,minSiphonRxnBool,rxnAbb
 % printLevel             {(0),1}
 %
 % OUTPUT
-%       Vp                  n x 1 vector (positive leakage modes)
-%       Yp                  m x 1 vector (positive leakage modes)
+% minLeakRxnBool        m x 1 boolean of metabolites in a positive leakage mode
+% minLeakRxnBool        n x 1 boolean of reactions exclusively involved in a positive leakage mode
+% minSiphonMetBool      m x 1 boolean of metabolites in a negative leakage mode
+% minSiphonRxnBool      n x 1 boolean of reactions exclusively involved in a negative leakage mode
+% leakY                 m x 1 boolean of metabolites in a positive leakage mode
+% siphonY               m x 1 boolean of metabolites in a negative siphon mode
 %       statp               status (positive leakage modes)
 %                           1 =  Solution found
 %                           2 =  Unbounded
@@ -55,7 +59,7 @@ function [minLeakMetBool,minLeakRxnBool,minSiphonMetBool,minSiphonRxnBool,rxnAbb
 [mlt,nlt]=size(S);
 %set parameters according to feastol
 feasTol = getCobraSolverParams('LP', 'feasTol');
-
+    
 if ~exist('metBool','var')
     %involve all metabolites unless otherwise specified
     metBool=true(mlt,1);
@@ -81,7 +85,16 @@ end
 if ~islogical(rxnBool)
     error('rxnBool must be a logical vector')
 end
-
+if ~any(rxnBool)
+    minLeakMetBool=[];
+    minLeakRxnBool=[];
+    minSiphonMetBool=[];
+    minSiphonRxnBool=[];
+    rxnAbbr=[];
+    statp=[];
+    statn=[];
+    return
+end
 if ~exist('modelBoundsFlag','var')
     modelBoundsFlag = 1;
 end
@@ -144,9 +157,9 @@ rxnAbbr=model.rxns{rxnBool};
 zlt=nnz(rxnBool);
 statp=ones(zlt,1)*NaN;
 Vp=sparse(nlt,zlt);
-Yp=sparse(mlt,zlt);
+leakY=sparse(mlt,zlt);
 minLeakRxnBool=logical(Vp);
-minLeakMetBool=logical(Yp);
+minLeakMetBool=logical(leakY);
 
 %%Define the seminegative optimisation problem
 cardProbn=cardProb;
@@ -154,14 +167,21 @@ cardProbn.A = [S speye(mlt)]; %note the positive on lhs of constraints
 %preallocate for results
 statn=ones(zlt,1)*NaN;
 Vn=sparse(nlt,zlt);
-Yn=sparse(mlt,zlt);
+siphonY=sparse(mlt,zlt);
 minSiphonRxnBool=logical(Vn);
-minSiphonMetBool=logical(Yn);
+minSiphonMetBool=logical(siphonY);
+
+%leak/siphon of only one metabolite if true
+monoRxnMode=params.monoRxnMode;
 
 if printLevel>0
     fprintf('%s\n','-------')
-    fprintf('%u%s\n',zlt,' reactions to test for minimal leakage modes...')
-    
+    if monoRxnMode
+        fprintf('%u%s\n',zlt,' cols of S to test for minimal leakage modes (one by one)...')
+    else
+        fprintf('%u%s\n',zlt,' cols of S to test for minimal leakage modes...')
+
+    end
 end
 
 %%
@@ -207,6 +227,9 @@ for n=1:nlt
         end
         %Call the cardinality optimisation solver
         solution = optimizeCardinality(cardProb);
+        if solution.stat==1 && length(solution.y)==0
+            solution.stat=3;
+        end
         %fetch the solution
         statp(z)   = solution.stat;
         switch solution.stat
@@ -217,50 +240,60 @@ for n=1:nlt
             case 1
                 Vp(:,z)          = solution.x(1:nlt,1);
                 minLeakRxnBool(:,z) = Vp(:,z)>=params.eta;
-                Yp(:,z)          = solution.x(nlt+1:nlt+mlt,1);
-                minLeakMetBool(:,z) = Yp(:,z)>=params.eta;
+                leakY(:,z)          = solution.x(nlt+1:nlt+mlt,1);
+                minLeakMetBool(:,z) = leakY(:,z)>=params.eta;
                 
-                if printLevel>0
-                    fprintf('%6u\t%6u\t%6s\t%15s\t%6g\t%6g\t%6g\t%6g\n',nnz(minLeakMetBool(:,z)),nnz(minLeakRxnBool(:,z)),'leak',model.rxns{n},lb(n),ub(n),cardProb.lb(n),cardProb.ub(n));
-                end
-                if nnz(minLeakRxnBool(:,z))==1
-                    formulas = printRxnFormula(model,model.rxns(minLeakRxnBool(:,z)));
-                    fprintf('%g\t%s\n',full(Vp(minLeakRxnBool(:,z),z)),' flux value')
-                end
-                
-                if printLevel>1
-                    if nnz(minLeakRxnBool(:,z)) < 10
+                if 0
+                    if printLevel>0
+                        fprintf('%6u\t%6u\t%6s\t%15s\t%6g\t%6g\t%6g\t%6g\n',nnz(minLeakMetBool(:,z)),nnz(minLeakRxnBool(:,z)),'leak',model.rxns{n},lb(n),ub(n),cardProb.lb(n),cardProb.ub(n));
+                    end
+                    if nnz(minLeakRxnBool(:,z))==1
                         formulas = printRxnFormula(model,model.rxns(minLeakRxnBool(:,z)));
+                        fprintf('%g\t%s\n',full(Vp(minLeakRxnBool(:,z),z)),' flux value')
                     end
-                end
-                
-                if printLevel>2 && any(minLeakMetBool(:,z))
-                    %relaxation of stoichiometric consistency for reactions above the
-                    %threshold of leakParams.eta
-                    Yp(Yp(:,z)<0,z)=0;
-                    log10Yp=log10(Yp(:,z));
-                    log10YpFinite=isfinite(log10Yp);
-                    if printLevel>2
-                        %histogram
-                        figure;
-                        hist(log10Yp(metBool & log10YpFinite),200)
-                        title(['Semipositive leaks above ' num2str(params.eta)])
-                        xlabel('log_{10}(leak)')
-                        ylabel('#mets')
+                    
+                    if printLevel>1
+                        if nnz(minLeakRxnBool(:,z)) < 10
+                            formulas = printRxnFormula(model,model.rxns(minLeakRxnBool(:,z)));
+                        end
                     end
-                    [~,sortedlog10YpInd]=sort(log10Yp,'descend');
-                    for k=1:min(13,nnz(minLeakMetBool(:,z)))
-                        fprintf('%s\n',model.mets{sortedlog10YpInd(k)});
+                    
+                    if printLevel>2 && any(minLeakMetBool(:,z))
+                        %relaxation of stoichiometric consistency for reactions above the
+                        %threshold of leakParams.eta
+                        leakY(leakY(:,z)<0,z)=0;
+                        log10Yp=log10(leakY(:,z));
+                        log10YpFinite=isfinite(log10Yp);
+                        if printLevel>2
+                            %histogram
+                            figure;
+                            hist(log10Yp(metBool & log10YpFinite),200)
+                            title(['Semipositive leaks above ' num2str(params.eta)])
+                            xlabel('log_{10}(leak)')
+                            ylabel('#mets')
+                        end
+                        [~,sortedlog10YpInd]=sort(log10Yp,'descend');
+                        for k=1:min(13,nnz(minLeakMetBool(:,z)))
+                            fprintf('%s\n',model.mets{sortedlog10YpInd(k)});
+                        end
+                        for k=1:min(10,nnz(minLeakRxnBool(:,z)))
+                            ind=find(minLeakRxnBool(:,z));
+                            fprintf('%s\n',model.rxns{ind(k)});
+                        end
                     end
-                    for k=1:min(10,nnz(minLeakRxnBool(:,z)))
-                        ind=find(minLeakRxnBool(:,z));
-                        fprintf('%s\n',model.rxns{ind(k)});
-                    end
+                else
+                    minMetBool=minLeakMetBool(:,z);
+                    minRxnBool=minLeakRxnBool(:,z);
+                    y=leakY(:,z);
+                    y(~minLeakMetBool(:,z))=0;
+                    printMinimalLeakageMode(model,minMetBool,minRxnBool,y,printLevel)
                 end
                 %find minimal semi negative leakage mode also
                 trySemiNegativeLeakageMode=1;
             case 2
-                warning([model.mets{n} ': Problem unbounded !!!!!']);
+                warning([model.rxns{n} ': Problem unbounded !!!!!']);
+            case 3 
+                warning([model.rxns{n} ': Solution empty !!!!!']);
         end
         %reset the bound
         cardProb.lb(n)=oldlb;
@@ -300,6 +333,9 @@ for n=1:nlt
             
             %Call the cardinality optimisation solver
             solution = optimizeCardinality(cardProbn);
+            if solution.stat==1 && length(solution.y)==0
+                solution.stat=3;
+            end
             %fetch the solution
             statn(z)   = solution.stat;
             switch solution.stat
@@ -310,43 +346,54 @@ for n=1:nlt
                 case 1
                     Vn(:,z)            = solution.x(1:nlt,1);
                     minSiphonRxnBool(:,z) = Vn(:,z)>=params.eta;
-                    Yn(:,z)            = solution.x(nlt+1:nlt+mlt,1);
-                    minSiphonMetBool(:,z) = Yn(:,z)>=params.eta;
+                    siphonY(:,z)            = solution.x(nlt+1:nlt+mlt,1);
+                    minSiphonMetBool(:,z) = siphonY(:,z)>=params.eta;
                     
-                    if printLevel>0
-                        fprintf('%6u\t%6u\t%6s\t%15s\t%6g\t%6g\t%6g\t%6g\n',nnz(minSiphonMetBool(:,z)),nnz(minSiphonRxnBool(:,z)),'siphon',model.rxns{n},lb(n),ub(n),cardProbn.lb(n),cardProbn.ub(n));
-                    end
-                    if printLevel>1
-                        if nnz(minSiphonRxnBool(:,z)) < 10
-                            formulas = printRxnFormula(model,model.rxns(minSiphonRxnBool(:,z)));
+                    if 0
+                        if printLevel>0
+                            fprintf('%6u\t%6u\t%6s\t%15s\t%6g\t%6g\t%6g\t%6g\n',nnz(minSiphonMetBool(:,z)),nnz(minSiphonRxnBool(:,z)),'siphon',model.rxns{n},lb(n),ub(n),cardProbn.lb(n),cardProbn.ub(n));
                         end
-                    end
-                    
-                    if printLevel>2 && any(minSiphonMetBool(:,z))
-                        %relaxation of stoichiometric consistency for reactions above the
-                        %threshold of leakParams.eta
-                        Yn(Yn(:,z)<0,z)=0;
-                        log10Yn=log10(Yn(:,z));
-                        log10YnFinite=isfinite(log10Yn);
-                        if printLevel>2
-                            %histogram
-                            figure;
-                            hist(log10Yn(metBool & log10YnFinite),200)
-                            title(['Semipositive siphons above ' num2str(params.eta)])
-                            xlabel('log_{10}(siphon)')
-                            ylabel('#mets')
+                        if printLevel>1
+                            if nnz(minSiphonRxnBool(:,z)) < 10
+                                formulas = printRxnFormula(model,model.rxns(minSiphonRxnBool(:,z)));
+                                fprintf('%g\t%s\n',full(Vn(minSiphonRxnBool(:,z),z)),' flux value')
+                            end
                         end
-                        [~,sortedlog10YnInd]=sort(log10Yn,'descend');
-                        for k=1:min(13,nnz(minSiphonMetBool(:,z)))
-                            fprintf('%s\n',model.rxns{sortedlog10YnInd(k)});
+                        
+                        if printLevel>2 && any(minSiphonMetBool(:,z))
+                            %relaxation of stoichiometric consistency for reactions above the
+                            %threshold of leakParams.eta
+                            siphonY(siphonY(:,z)<0,z)=0;
+                            log10Yn=log10(siphonY(:,z));
+                            log10YnFinite=isfinite(log10Yn);
+                            if printLevel>2
+                                %histogram
+                                figure;
+                                hist(log10Yn(metBool & log10YnFinite),200)
+                                title(['Semipositive siphons above ' num2str(params.eta)])
+                                xlabel('log_{10}(siphon)')
+                                ylabel('#mets')
+                            end
+                            [~,sortedlog10YnInd]=sort(log10Yn,'descend');
+                            for k=1:min(13,nnz(minSiphonMetBool(:,z)))
+                                fprintf('%s\n',model.rxns{sortedlog10YnInd(k)});
+                            end
+                            for k=1:min(10,nnz(minSiphonRxnBool(:,z)))
+                                ind=find(minSiphonRxnBool(:,z));
+                                fprintf('%s\n',model.rxns{ind(k)});
+                            end
                         end
-                        for k=1:min(10,nnz(minSiphonRxnBool(:,z)))
-                            ind=find(minSiphonRxnBool(:,z));
-                            fprintf('%s\n',model.rxns{ind(k)});
-                        end
+                    else
+                        minMetBool=minSiphonMetBool(:,z);
+                        minRxnBool=minSiphonRxnBool(:,z);
+                        y=siphonY(:,z);
+                        y(~minSiphonMetBool(:,z))=0;
+                        printMinimalLeakageMode(model,minMetBool,minRxnBool,y,printLevel)
                     end
                 case 2
                     warning([model.rxns{n} ': Problem unbounded !!!!!']);
+                case 3
+                    warning([model.rxns{n} ': Solution empty !!!!!']);
             end
             %reset the bound
             cardProbn.lb(n)=oldlb;
