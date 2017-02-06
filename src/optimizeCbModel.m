@@ -114,6 +114,8 @@ function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops, zer
 %                                coefficient in objective
 % Minh Le               11/02/16 Option to minimise the cardinality of
 %                                fluxes vector
+% Stefania Magnusdottir 06/02/17 Replace LPproblem2 upper bound 10000 with 
+%                                Inf
 
 %% Process arguments and set up problem
 
@@ -254,7 +256,7 @@ if strcmp(minNorm, 'one')
         model.c' sparse(1,2*nRxns)];
     LPproblem2.c  = [zeros(nRxns,1);ones(2*nRxns,1)];
     LPproblem2.lb = [model.lb;zeros(2*nRxns,1)];
-    LPproblem2.ub = [model.ub;10000*ones(2*nRxns,1)];
+    LPproblem2.ub = [model.ub;Inf*ones(2*nRxns,1)];
     LPproblem2.b  = [LPproblem.b;zeros(2*nRxns,1);solution.obj];
     if ~isfield(model,'csense')
         % If csense is not declared in the model, assume that all
