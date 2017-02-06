@@ -1,8 +1,8 @@
 function sampleScatterMatrix(rxnNames,model,sample,nPoints,fontSize,dispRFlag,rxnNames2)
 %sampleScatterMatrix Draws a scatterplot matrix with pairwise scatterplots
 %for multiple reactions
-% 
-% sampleScatterMatrix(rxnNames,model,sample,nPoints,dispRFlag,rxnNames2)
+%
+% sampleScatterMatrix(rxnNames,model,sample,nPoints,fontSize,dispRFlag,rxnNames2)
 %
 %INPUTS
 % rxnNames      Cell array of reaction names to be plotted
@@ -10,7 +10,7 @@ function sampleScatterMatrix(rxnNames,model,sample,nPoints,fontSize,dispRFlag,rx
 % sample        Samples to be analyzed (nRxns x nSamples)
 %
 %OPTIONAL INPUTS
-% nPoints       How many sample points to plot (Default 100)
+% nPoints       How many sample points to plot (Default nSamples)
 % fontSize      Font size for labels (Default calculated based on
 %               number of reactions)
 % dispRFlag     Display correlation coefficients (Default false)
@@ -23,7 +23,7 @@ function sampleScatterMatrix(rxnNames,model,sample,nPoints,fontSize,dispRFlag,rx
 %    histograms for each reaction will be on the diagonal
 %
 % 2) sampleScatterMatrix({'PFK','PYK','PGL'},model,sample,100,10,true,{'ENO','TPI');
-%    Plots the scatterplots between each of the first set of reactions and 
+%    Plots the scatterplots between each of the first set of reactions and
 %    each of the second set of reactions. No histograms will be shown.
 %
 % Markus Herrgard 9/14/06
@@ -33,46 +33,44 @@ rxnNames = rxnNames(isInModel);
 rxnInd = rxnInd(isInModel);
 nRxns = length(rxnNames);
 
-if (nargin < 4)
-    nPoints = 100;
-end
-    
-if (nargin < 6)
+if nargin < 4%no optional inputs specified
+    nPoints = size(sample,2);
     dispRFlag = false;
-end
-
-if (nargin > 6)
-
-    [isInModel2,rxnInd2] = ismember(rxnNames2,model.rxns);
-
-    rxnNames2 = rxnNames2(isInModel2);
-    rxnInd2 = rxnInd2(isInModel2);
-
-    nRxns2 = length(rxnNames2);
-    twoSetsFlag = true;
-
-else
-    
     nRxns2 = nRxns;
     rxnNames2 = rxnNames;
-    twoSetsFlag = false;
-    
-end
-
-if (twoSetsFlag)
-    nRxns = nRxns+1;
-    nRxns2 = nRxns2+1;
-end
-
-if (nargin < 5)
     nPanels = nRxns*nRxns2;
     fontSize = 10+ceil(50/sqrt(nPanels));
+    twoSetsFlag = false;
+else%some optional inputs specified
+    if isempty(nPoints)
+        nPoints = size(sample,2);
+    end
+    if isempty(dispRFlag)
+        dispRFlag = false;
+    end
+    if nargin == 7
+        [isInModel2,rxnInd2] = ismember(rxnNames2,model.rxns);
+        
+        rxnNames2 = rxnNames2(isInModel2);
+        rxnInd2 = rxnInd2(isInModel2);
+        
+        nRxns2 = length(rxnNames2);
+        twoSetsFlag = true;
+        nRxns = nRxns+1;
+        nRxns2 = nRxns2+1;
+    else
+        nRxns2 = nRxns;
+        rxnNames2 = rxnNames;
+        twoSetsFlag = false;
+    end
+    if isempty(fontSize)
+        nPanels = nRxns*nRxns2;
+        fontSize = 10+ceil(50/sqrt(nPanels));
+    end
 end
-
 height = 0.8/nRxns;
 width = 0.8/nRxns2;
 
-fontSize = 10;
 clf
 h = waitbar(0,'Drawing scatterplots ...');
 for i = 1:nRxns
@@ -82,23 +80,24 @@ for i = 1:nRxns
         left = 0.1+(j-1)*width;
         bottom = 0.9-i*height;
         if (twoSetsFlag)
-            if (i == 1 & j == 1)
+            if (i == 1 && j == 1)
             else
                 %subplot(nRxns,nRxns2,(i-1)*nRxns2+j);
                 subplot('position',[left bottom width height]);
-                if (j >1 & i >1)
+                if (j >1 && i >1)
                     sampleScatterPlot(sample,rxnInd2(j-1),rxnInd(i-1),nPoints,fontSize,dispRFlag);
                 elseif (i == 1)
                     sampleHistInternal(sample,rxnInd2(j-1),fontSize);
                 elseif (j == 1)
                     sampleHistInternal(sample,rxnInd(i-1),fontSize);
                 end
-                                    if (i == 1)
-                title(rxnNames2{j-1},'FontSize',fontSize);
-            end
-            if (j == 1)
-                ylabel(rxnNames{i-1},'FontSize',fontSize);
-            end
+                if (i == 1)
+                    xlabel(rxnNames2{j-1},'FontSize',fontSize);
+                    set(gca,'XAxisLocation','top');
+                end
+                if (j == 1)
+                    ylabel(rxnNames{i-1},'FontSize',fontSize);
+                end
             end
         else
             if (j == i)
@@ -111,8 +110,9 @@ for i = 1:nRxns
                 subplot('position',[left bottom width height]);
                 sampleScatterPlot(sample,rxnInd(j),rxnInd(i),nPoints,fontSize,dispRFlag);
             end
-                    if (i == 1)
-                title(rxnNames2{j},'FontSize',fontSize);
+            if (i == 1)
+                xlabel(rxnNames2{j},'FontSize',fontSize);
+                set(gca,'XAxisLocation','top');
             end
             if (j == nRxns2)
                 set(gca,'YAxisLocation','right');
@@ -140,9 +140,8 @@ axis([minx maxx miny maxy]);
 % Display correlation coefficients
 if (dispRFlag)
     r = corrcoef(sample(id1,:)',sample(id2,:)');
-    %h = text(minx+0.66*(maxx-minx),miny+0.2*(maxy-miny),num2str(round(100*r(1,2))/100));
-    %set(h,'FontSize',fontSize-5);
-    xlabel(num2str(round(100*r(1,2))/100),'FontSize',fontSize-5);
+    h = text(minx+0.66*(maxx-minx),miny+0.2*(maxy-miny),num2str(round(100*r(1,2))/100));
+    set(h,'FontSize',fontSize-5);
 end
 
 function sampleHistInternal(sample,id,fontSize)
