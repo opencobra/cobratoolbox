@@ -122,7 +122,7 @@ model = removeMetabolites(model, {'A', 'B', 'C'});
 assert(length(model.mets) == mets_length);
 
 % Convert to irreversible
-fprintf('>> Testing convertToIrreversible\n');
+fprintf('>> Testing convertToIrreversible (1)\n');
 load('testModelManipulation.mat','model','modelIrrev');
 [testModelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model);
 
@@ -133,7 +133,31 @@ assert(isSameCobraModel(modelIrrev, testModelIrrev));
 fprintf('>> Testing convertToReversible\n');
 testModelRev = convertToReversible(testModelIrrev);
 load('testModelManipulation.mat','modelRev');
+
+% test if both models are the same
 assert(isSameCobraModel(modelRev,testModelRev));
+
+% test irreversibility of model
+fprintf('>> Testing convertToIrreversible (2)\n');
+load('testModelManipulation.mat','model','modelIrrev');
+
+% set a lower bound to positive (faulty model)
+modelRev.lb(1) = 10;
+[testModelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model);
+
+% test if both models are the same
+assert(isSameCobraModel(modelIrrev, testModelIrrev));
+
+% test irreversibility of model
+fprintf('>> Testing convertToIrreversible (3)\n');
+load('testModelManipulation.mat','model','modelIrrev');
+
+% set a reaction as not reversible although the reaction is reversible as suggested by the bounds
+model.rev(1) = 0;
+[testModelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model);
+
+% test if both models are the same
+assert(isSameCobraModel(modelIrrev, testModelIrrev));
 
 % change the directory
 cd(CBTDIR)
