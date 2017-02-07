@@ -119,10 +119,11 @@ modelIrrev.rxns = columnVector(modelIrrev.rxns);
 modelIrrev.mets = model.mets;
 matchRev = columnVector(matchRev(1:cnt));
 modelIrrev.match = matchRev;
-if (isfield(model,'b'))
+
+if isfield(model,'b')
     modelIrrev.b = model.b;
 end
-if (isfield(model,'csense'))
+if isfield(model,'csense')
     modelIrrev.csense = model.csense;
 end
 if isfield(model,'description')
