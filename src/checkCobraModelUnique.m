@@ -14,6 +14,9 @@ function model = checkCobraModelUnique(model,renameFlag)
 % model         COBRA model structure
 %
 % Markus Herrgard 10/17/07
+% Stefania Magnusdottir 07/02/17    Replace use of findRxnIDs and
+%                                   findMetIDs, both only return one index
+%                                   even if more are found in model.
 
 if (nargin < 2)
     renameFlag = false;
@@ -28,7 +31,7 @@ if ~isempty(rxnInd)
         fprintf('%s\t%d\n',thisRxnName,rxnCnt(rxnInd(i)));
         if (renameFlag)
             fprintf('Renaming non-unique reactions\n');
-            rxnIDs = findRxnIDs(model,thisRxnName);
+            rxnIDs = find(ismember(model.rxns,thisRxnName));
             for j = 1:length(rxnIDs)
                 model.rxns{rxnIDs(j)} = [thisRxnName '_' num2str(j)];
                 fprintf('%s\n',model.rxns{rxnIDs(j)});
@@ -46,10 +49,10 @@ if ~isempty(metInd)
         fprintf('%s\n',thisMetName);
         if (renameFlag)
             fprintf('Renaming non-unique metabolites\n');
-            metIDs = findMetIDs(model,thisMetName);
+            metIDs = find(ismember(model.mets,thisMetName));
             for j = 1:length(metIDs)
                 model.mets{metIDs(j)} = [thisMetName '_' num2str(j)];
-                fprintf('%s\n',model.mets{rxnIDs(j)});
+                fprintf('%s\n',model.mets{metIDs(j)});
             end
         end
     end
