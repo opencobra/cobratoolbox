@@ -68,8 +68,8 @@ if ~any([nMets nGenes] == nRxns)
     end
 else
     rfields = {'S', 'c', 'lb', 'ub', 'rxns', 'rules', 'grRules', 'rev', 'subSystems'}';
-    rfields = [rfields; mfields(strncmp('rxn', mfileds, 3))];
-    rfields = intersect(rfields,mfields);
+    rfields = [rfields; mfields(strncmp('rxn', mfields, 3))];
+    rfields = intersect(rfields, mfields);
 end
 
 for i = 1:length(rfields)

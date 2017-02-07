@@ -10,15 +10,13 @@ script:
 
     # change to the current directory
     - cd $CURRENT_DIR
-    
+
     # launch the tests
     - sh ./runtests.sh
 
-#deploy:
-
 after_success:
-    - if [ "$MATLAB_VER" == "R2016b" ]; then 
-      bash <(curl -s https://codecov.io/bash); 
+    - if [ "$MATLAB_VER" == "R2016b" ]; then
+      bash <(curl -s https://codecov.io/bash) -f "!*.lst";
       export PATH="/var/lib/jenkins/.local/bin":$PATH;
       pip install --user sphinx;
       pip install --user recommonmark;

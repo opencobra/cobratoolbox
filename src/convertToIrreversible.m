@@ -52,7 +52,8 @@ for i = 1:nRxns
     if (model.ub(i) > 0 && model.lb(i) < 0) && model.rev(i) == false
         model.rev(i) = true;
         warning(cat(2,'Reaction: ',model.rxns{i},' is classified as irreversible, but bounds are positive and negative!'))
-
+    elseif (sign(model.ub(i)) == sign(model.lb(i)) ) && model.rev(i) == true
+        model.rev(i) = false;
     end
    
     % Reaction entirely in the negative direction
@@ -118,8 +119,12 @@ modelIrrev.rxns = columnVector(modelIrrev.rxns);
 modelIrrev.mets = model.mets;
 matchRev = columnVector(matchRev(1:cnt));
 modelIrrev.match = matchRev;
-if (isfield(model,'b'))
+
+if isfield(model,'b')
     modelIrrev.b = model.b;
+end
+if isfield(model,'csense')
+    modelIrrev.csense = model.csense;
 end
 if isfield(model,'description')
     modelIrrev.description = [model.description ' irreversible'];
