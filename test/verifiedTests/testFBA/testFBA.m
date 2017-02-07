@@ -15,6 +15,7 @@
 
 % define global paths
 global path_TOMLAB
+global path_GUROBI
 
 % define the path to The COBRAToolbox
 pth = which('initCobraToolbox.m');
@@ -26,15 +27,18 @@ initTest([CBTDIR '/test/verifiedTests/testFBA']);
 tol = 1e-8;
 
 % define the solver packages to be used to run this test
-solverPkgs = {'tomlab_cplex', 'glpk'};
+solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
 
 % load the model
 load('testFBAData.mat');
 
 for k = 1:length(solverPkgs)
+
     % add the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
         addpath(genpath(path_TOMLAB));
+    elseif strcmp(solverPkgs{k}, 'gurobi6')
+        addpath(genpath(path_GUROBI));
     end
 
     % change the COBRA solver (LP)
@@ -95,6 +99,14 @@ for k = 1:length(solverPkgs)
 
         % output a success message
         fprintf('Done.\n');
+
+        % remove the solver paths (temporary addition for CI)
+        if strcmp(solverPkgs{k}, 'tomlab_cplex')
+            rmpath(genpath(path_TOMLAB));
+        elseif strcmp(solverPkgs{k}, 'gurobi6')
+            rmpath(genpath(path_GUROBI));
+        end
+
     end
 end
 
