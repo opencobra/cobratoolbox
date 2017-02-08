@@ -14,6 +14,7 @@ CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 cd([CBTDIR '/test/verifiedTests/testDynamicFBA'])
   
 load ecoli_core_model;
+load testDataDynamicFBA;
 
 smi = {'EX_glc(e)'
     'EX_ac(e)'};%Exchange reaction for substrate in environment
