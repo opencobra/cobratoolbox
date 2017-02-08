@@ -35,16 +35,16 @@ assert(any(abs(solTest.obj-sol.obj) < tol))
 
 for k = {'tomlab_cplex' 'ILOGcomplex'}%test solver packages
     %test minNorm
-    solTest=solveCobraLPCPLEX(model,0,0,0,[],1e-6,k)
+    solTest=solveCobraLPCPLEX(model,0,0,0,[],1e-6,k{1})
     assert(isequal(ecoli_blckd_rxn,model.rxns(find(~solTest.full))'))
     assert(any(abs(solTest.obj-sol.obj) < tol))
 
     %test basis generation
-    [solTest,basisTest]=solveCobraLPCPLEX(model,0,1,0,[],0,k)
+    [solTest,basisTest]=solveCobraLPCPLEX(model,0,1,0,[],0,k{1})
     assert(any(abs(solTest.obj-sol.obj) < tol))
 
     %test basis reuse
-    [solTest]=solveCobraLPCPLEX(basis,0,1,0,[],0,k)
+    [solTest]=solveCobraLPCPLEX(basis,0,1,0,[],0,k{1})
     assert(any(abs(solTest.obj-sol.obj) < tol))
 end
 % change the directory
