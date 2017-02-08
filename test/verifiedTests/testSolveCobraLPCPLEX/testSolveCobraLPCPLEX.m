@@ -28,11 +28,11 @@ solTest=solveCobraLPCPLEX(model,0,0,0,[],0,'tomlab_cplex')
 assert(any(abs(solTest.obj-sol.obj) < tol))
 
 %test ILOG
-solTest=solveCobraLPCPLEX(model,0,0,0,[],0,'ILOGcomplex');
-assert(any(abs(solTest.obj-sol.obj) < tol))
+% solTest=solveCobraLPCPLEX(model,0,0,0,[],0,'ILOGcomplex');
+% assert(any(abs(solTest.obj-sol.obj) < tol))
 
 %test solver packages
-solverPkgs = {'tomlab_cplex','ibm_cplex','glpk'};
+solverPkgs = {'tomlab_cplex'};%,'ILOGcomplex'};
 
 for k =1:length(solverPkgs)
     %test minNorm
