@@ -24,7 +24,7 @@ Xec = 0.001;%Initial biomass
 dt = 1/100;%Time steps
 time = 1/dt; %Simulation time
 
-for k ={'tomlab_cplex' 'ibm_cplex' 'glpk'}
+for k ={'tomlab_cplex' 'ibm_cplex'}
     solverLPOK = changeCobraSolver(k{1});
     if solverLPOK
         [concentrationMatrixtest,excRxnNamestest,timeVectest,biomassVectest]=dynamicFBA(model,smi,smc,Xec,dt,time);
