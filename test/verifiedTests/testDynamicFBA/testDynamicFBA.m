@@ -11,9 +11,9 @@
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
   
-cd([CBTDIR '/test/verifiedTests/testDynamicFBA'])
+cd([CBTDIR filesep 'test' filesep 'verifiedTests' filesep 'testDynamicFBA'])
   
-load ecoli_core_model;
+load('ecoli_core_model', 'model');
 load testDataDynamicFBA;
 
 smi = {'EX_glc(e)'
@@ -25,8 +25,11 @@ Xec = 0.001;%Initial biomass
 dt = 1/100;%Time steps
 time = 1/dt; %Simulation time
 
-for k ={'tomlab_cplex'}
-    solverLPOK = changeCobraSolver(k{1});
+%define solver packages
+solverPkgs = {'tomlab_cplex','ibm_cplex','glpk'};
+
+for k =1:length(solverPkgs)
+    solverLPOK = changeCobraSolver(solverPkgs{1});
     if solverLPOK
         [concentrationMatrixtest,excRxnNamestest,timeVectest,biomassVectest]=dynamicFBA(model,smi,smc,Xec,dt,time);
 
