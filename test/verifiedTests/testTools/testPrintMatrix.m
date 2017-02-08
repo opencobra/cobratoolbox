@@ -23,8 +23,8 @@ assert(printMatrix(A, '%3.2f\t') == 1);
 assert(printMatrix(A, '%3.2f\t', 'testPrintMatrix.txt') == 1);
 
 % remove the generated file
-cd([CBTDIR '/test/verifiedTests/testTools']);
-system('rm testPrintMatrix.txt');
+cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools']);
+system(['rm ', CBTDIR, '/testPrintMatrix.txt']);
 
 % test for a cell matrix
 A = {0, 1, 2;

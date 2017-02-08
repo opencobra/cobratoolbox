@@ -16,7 +16,7 @@ global path_TOMLAB
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-initTest([CBTDIR '/test/verifiedTests/testOptimizeCbModel']);
+initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testOptimizeCbModel']);
 
 % set the tolerance
 tol = 1e-6;
