@@ -60,7 +60,12 @@ for m=1:nMet
             error('model structure must contain model.metForumlas field for each metabolite');
         end
     else
-        E(m,1)=numAtomsOfElementInFormula(model.metFormulas{m},element);
+        try
+            E(m,1)=numAtomsOfElementInFormula(model.metFormulas{m},element);
+        catch ME
+            disp(model.mets{m})
+            rethrow(ME)
+        end
     end
 end
 
