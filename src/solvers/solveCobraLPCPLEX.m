@@ -179,6 +179,14 @@ b=full(b);
 %conflict refinement is desired in the case that infeasibility is detected
 %by CPLEX.
 if conflictResolve
+    % set to deterministic mode to get reproducible conflict resolve file
+    if isfield(cpxControl,'PARALLEL') && cpxControl.PARALLEL ~=1
+        fprintf('PARALLEL Parameter was changed to 1 to ensure a reproducible log file');
+        cpxControl.PARALLEL = 1; % Tomlab CPLEX interface
+    elseif isfield(cpxControl,'PARALLELMODE') && cpxControl.PARALLELMODE ~=1
+        cpxControl.PARALLELMODE = 1; % ILOG CPLEX interface
+        fprintf('PARALLELMODE Parameter was changed to 1 to ensure a reproducible log file');
+    end
     [m_lin,n]=size(LPProblem.A);
     m_quad=0;
     m_sos=0;
@@ -189,7 +197,7 @@ if conflictResolve
     confgrps = cpxBuildConflict(n,m_lin,m_quad,m_sos,m_log,mode);
     prefix=pwd;
     suffix='LP_CPLEX_conflict_file.txt';
-    conflictFile=[prefix '\' suffix];
+    conflictFile=[prefix filesep suffix];
 else
     confgrps=[]; conflictFile=[];
 end
@@ -484,8 +492,6 @@ if Inform~=1 && conflictResolve ==1
             else
                 warning('Need reaction and metabolite abbreviations in order to make a readable conflict resolution file');
             end
-        otherwise
-            error([interface ' conflict resolution not yet implemented'])
     end
 else
     if printLevel>0 && Inform~=1
