@@ -18,9 +18,6 @@ cd(test_folder.path);
 %tolerance
 tol = 0.00000001;
 
-%set number of workers
-parpool(8);
-
 % load models and expected results
 load('testpFBAData.mat','model_glc','model_lac')
 og_ = load('testpFBAData.mat','GeneClasses_glc1','GeneClasses_glc0','GeneClasses_lac1','GeneClasses_lac0');
