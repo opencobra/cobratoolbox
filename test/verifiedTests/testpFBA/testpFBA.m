@@ -28,7 +28,7 @@ or_ = load('testpFBAData.mat','RxnClasses_glc1','RxnClasses_glc0','RxnClasses_la
 om_ = load('testpFBAData.mat','modelIrrev_glc1','modelIrrev_glc0','modelIrrev_lac1','modelIrrev_lac0');
 
 % list of solver packages
-solverPkgs = {'tomlab_cplex', 'gurobi', 'glpk'};
+solverPkgs = {'tomlab_cplex'};
 
 for k = 1:length(solverPkgs)
     fprintf(' -- Running testfindBlockedReaction using the solver interface: %s ... ', solverPkgs{k});
@@ -97,11 +97,7 @@ for k = 1:length(solverPkgs)
             end
         end
 
-        if(min(t_fr)==0)
-            disp('Test failed for classifying reactions');
-        else
-            disp('Test succeeded for classifying reactions');
-        end
+        assert(min(t_fr)==1)
 
         % testing if flux minima are consistent with expected values
         t_fm=zeros(8,1);cnt=0;
