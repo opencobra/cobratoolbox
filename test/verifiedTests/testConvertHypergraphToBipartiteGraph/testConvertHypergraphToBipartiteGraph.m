@@ -1,4 +1,7 @@
 %testConvertHypergraphToBipartiteGraph
+%Ronan Fleming 2013
+%tests performance of ConvertHypergraphToBipartiteGraph
+
 clear
 
 flag=3;
@@ -30,19 +33,19 @@ switch flag
         disp(full(A))
 end
 
-%compare with nikos code
-tic
-B2 = hypergraph2bipartgraph(S~=0);
-toc
-
-switch flag
-    case 1 | 2
-        disp('B2')
-        disp(full(B2))
-        disp('')
-        disp('A')
-        disp(full(A))
-end
+% %compare with nikos code
+% tic
+% B2 = hypergraph2bipartgraph(S~=0);
+% toc
+% 
+% switch flag
+%     case 1 | 2
+%         disp('B2')
+%         disp(full(B2))
+%         disp('')
+%         disp('A')
+%         disp(full(A))
+% end
 
 if 0
     %Compute the strongly connected components of a graph
