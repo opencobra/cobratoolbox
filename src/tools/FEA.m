@@ -1,14 +1,19 @@
 function resultCellF = FEA(rxnSet,model,group)
-    %significane analysis - Flux enrichment analysis using hypergeometric
-    % 1-sided test and FDR correction for multiple testing
-    %input  
-    %rxnSet: reaction set to be enriched (vector of reaction indices)
-    %model : COBRA structure model
-    %group : e.g.'subSystems' look for significantly enriched subsystem in rxnSet               
-    %output
-    %resultCellF : cell structure of enriched groups 
-    %Usage: FEA(1:10,modelEcore,'subSystems')
-    %Marouen BEN GUEBILA 04/2016
+% Significane analysis - Flux enrichment analysis using hypergeometric
+% 1-sided test and FDR correction for multiple testing
+% 
+% resultCellF = FEA(1:10,modelEcore,'subSystems')
+% 
+% INPUTS  
+% rxnSet        reaction set to be enriched (vector of reaction indices)
+% model         COBRA structure model
+% group         model.group structure e.g.
+%              'subSystems' look for significantly enriched subsystem in rxnSet   
+%       
+% OUTPUT
+% resultCellF    cell structure of enriched groups 
+% 
+% Marouen BEN GUEBILA 04/2016
     %%
     %compute frequency of enriched terms
     [uniquehSubsystemsA, ~, K]=unique(eval(['model.' group]));
