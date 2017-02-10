@@ -1,7 +1,7 @@
-% The COBRAToolbox: testcobra2cytoscape.m
+% The COBRAToolbox: testoutputNetworkCytoscape.m
 %
 % Purpose:
-%     - testcobra2cytoscape tests the cobra2cytoscape function
+%     - testtestoutputNetworkCytoscape tests the testoutputNetworkCytoscape function
 %       that transforms a hypergraph into a graph (cytoscape format)
 % 
 %
@@ -15,7 +15,7 @@ global path_TOMLAB
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testcobra2cytoscape']);
+initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testoutputNetworkCytoscape']);
 
 load('ecoli_core_model', 'model');
 
@@ -28,16 +28,15 @@ for k = 1:length(solverPkgs)
         addpath(genpath(path_TOMLAB));
     end
     
-    %load test data
-    testData=csvread('GraphMetCentrictest.csv');
-    %call fucntion
-    cobra2cytoscape(model)
-    %save produced data
-    Data=csvread('GraphMetCentrictest.csv');
-    %compare with produced data
-    assert(isequal(testData,Data));
-    %delete data
-    delete GraphMetCentric.csv
+    %call function
+    notShownMets = outputNetworkCytoscape(model,'data',model.rxns,[],model.mets,[],100);
+    
+    %call test
+    for j={'test.sif','test_edgeType.noa','test_nodeComp.noa',...
+            'test_nodeType.noa','test_subSys.noa'}
+        testIO(j{1});
+    end
+    
     % remove the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
         rmpath(genpath(path_TOMLAB));
@@ -46,3 +45,5 @@ end
 
 % change the directory
 cd(CBTDIR)
+
+
