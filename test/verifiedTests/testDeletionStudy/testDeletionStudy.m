@@ -96,7 +96,7 @@ for k = 1:length(solverPkgs)
         fprintf('\n\nStarting singleRxnDeletion test:\n');
 
         [test_grRatio,test_grRateKO,test_grRateWT,test_hasEffect,test_delRxn]= singleRxnDeletion(model, 'FBA');
-        load('rxnDeletionDataMarouen.mat');
+        load('rxnDeletionData.mat');
 
         % if(~isequal(isnan(grRatio), isnan(test_grRatio)))
         grRatio(isnan(grRatio))=-1;
