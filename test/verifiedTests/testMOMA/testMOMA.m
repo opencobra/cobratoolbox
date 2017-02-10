@@ -61,5 +61,5 @@ for k = 1:length(solverPkgs)
     fprintf('Done.\n');
 end
 %return to original director
-cd(ori);
+cd(CBTDIR)
 % end
