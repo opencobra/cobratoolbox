@@ -16,7 +16,7 @@ switch flag
         1;
         0];
     case 3
-        load ecoli_core_xls2model.mat
+        load('ecoli_core_model', 'model');
         S=model.S;
 end
  
