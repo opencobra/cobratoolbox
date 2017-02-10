@@ -28,7 +28,7 @@ for k = 1:length(solverPkgs)
         addpath(genpath(path_TOMLAB));
     end
 
-    resultCellFtest=FEA(1:10,model,'subsystem');
+    resultCellFtest=FEA(1:10,model,'subSystems');
     assert(isequal(resultCellFtest,resultCellF));
     
     % remove the solver paths (temporary addition for CI)
