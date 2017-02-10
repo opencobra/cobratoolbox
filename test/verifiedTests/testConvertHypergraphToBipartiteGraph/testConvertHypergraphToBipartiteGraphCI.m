@@ -30,9 +30,9 @@ for k = 1:length(solverPkgs)
     end
     
     %silent mode
-    [A,B]=convertHypergraphToBipartiteGraph(modelEcore.S,0);
+    [A,B]=convertHypergraphToBipartiteGraph(model.S,0);
     %verbose mode
-    [A,B]=convertHypergraphToBipartiteGraph(modelEcore.S,1);
+    [A,B]=convertHypergraphToBipartiteGraph(model.S,1);
     %Compare test data and results
     assert(isequal(A,testA))
     assert(isequal(B,testB))
