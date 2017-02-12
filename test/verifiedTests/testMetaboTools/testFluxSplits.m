@@ -18,7 +18,7 @@ global path_TOMLAB
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-initTest([CBTDIR '/test/verifiedTests/testMetaboTools']);
+initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testMetaboTools']);
 
 % define a toy model with single internal loop
 model.mets = {'A'; 'B'; 'C'};

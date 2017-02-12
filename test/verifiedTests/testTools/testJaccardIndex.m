@@ -11,7 +11,7 @@
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-cd([CBTDIR '/test/verifiedTests/testTools'])
+cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools'])
 
 % define the test vectors
 testVect1 = [0; -1; -2; -3; -4; -5; -6];

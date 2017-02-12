@@ -44,7 +44,7 @@ assert(length(model.metFormulas) == length(testModel.metFormulas))
 assert(length(model.b) == length(testModel.b))
 
 % initialize the test
-initTest([CBTDIR '/test/models'])
+initTest([CBTDIR, filesep, 'test', filesep, 'models'])
 
 % add the path of the TOMLAB solver
 addpath(genpath(path_TOMLAB));

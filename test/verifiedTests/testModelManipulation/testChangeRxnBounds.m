@@ -9,7 +9,7 @@
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-cd([CBTDIR '/test/verifiedTests/testModelManipulation'])
+cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testModelManipulation'])
 
 % define the test model
 toyModel = struct;

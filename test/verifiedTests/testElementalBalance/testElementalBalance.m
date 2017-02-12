@@ -11,7 +11,7 @@ pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
 % change to the test folder
-initTest([CBTDIR '/test/verifiedTests/testElementalBalance']);
+initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testElementalBalance']);
 
 % load the model and data
 load('testElementalBalanceData.mat');
