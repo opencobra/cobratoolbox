@@ -164,7 +164,7 @@ assert(isSameCobraModel(modelIrrev, testModelIrrev));
 % set a reaction as not reversible although the reaction is reversible as
 % suggested by the bounds (case2)
 model=modelSave;
-model.rev(20) = 0;
+model.rev(20) = 1;
 [testModelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model);
 
 % test if both models are the same

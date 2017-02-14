@@ -52,7 +52,9 @@ for i = 1:nRxns
     if (model.ub(i) > 0 && model.lb(i) < 0) && model.rev(i) == false
         model.rev(i) = true;
         warning(cat(2,'Reaction: ',model.rxns{i},' is classified as irreversible, but bounds are positive and negative!'))
-    elseif (sign(model.ub(i)) == sign(model.lb(i)) ) && model.rev(i) == true
+    elseif (sign(model.ub(i)) == sign(model.lb(i)) ) ||...
+            (sign(model.ub(i)) * sign(model.lb(i)) == 0) &&...
+            model.rev(i) == true
         model.rev(i) = false;
     end
    
