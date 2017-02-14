@@ -1,7 +1,7 @@
-% The COBRAToolbox: testcobra2net.m
+% The COBRAToolbox: testwritePajekNet.m
 %
 % Purpose:
-%     - testcobra2cytoscape tests the cobra2net function
+%     - testwritePajekNet tests the writePajekNet function
 %       that transforms a hypergraph into a graph (Pajek format)
 % 
 %
@@ -15,7 +15,7 @@ global path_TOMLAB
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testcobra2net']);
+initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testwritePajekNet']);
 
 load('ecoli_core_model', 'model');
 
@@ -33,7 +33,7 @@ for k = 1:length(solverPkgs)
     testData=fscanf(fileID,'%s');
     fclose(fileID);
     %call fucntion
-    cobra2net(model)
+    writePajekNet(model)
     %save produced data
     fileID = fopen('COBRAmodel.net','r');  
     Data=fscanf(fileID,'%s');
