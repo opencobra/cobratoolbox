@@ -57,20 +57,63 @@ selectRxns(removeInd) = false;
 % Construct new model
 modelOut = model;
 
-mfields = fieldnames(model);
-rfields = {};
-
-if ~any([nMets nGenes] == nRxns)
-    for i = 1:length(mfields)
-        if any(size(model.(mfields{i})) == nRxns) && ~strcmp(mfields{i}, 'mets')
-            rfields = [rfields mfields(i)];
-        end
-    end
-else
-    rfields = {'S', 'c', 'lb', 'ub', 'rxns', 'rules', 'grRules', 'rev', 'subSystems'}';
-    rfields = [rfields; mfields(strncmp('rxn', mfields, 3))];
-    rfields = intersect(rfields, mfields);
+modelOut.S = model.S(:,selectRxns);
+modelOut.rxns = model.rxns(selectRxns);
+modelOut.lb = model.lb(selectRxns);
+modelOut.ub = model.ub(selectRxns);
+modelOut.rev = model.rev(selectRxns);
+if (isfield(model,'c'))
+    modelOut.c = model.c(selectRxns);
 end
+if (isfield(model,'genes'))
+    modelOut.genes = model.genes;
+    modelOut.grRules = model.grRules(selectRxns);
+end
+if (isfield(model,'rxnGeneMat'))
+    modelOut.rxnGeneMat = model.rxnGeneMat(selectRxns,:);
+end
+if (isfield(model,'rules'))
+    modelOut.rules = model.rules(selectRxns);
+end
+if (isfield(model,'subSystems'))
+    modelOut.subSystems = model.subSystems(selectRxns);
+end
+if (isfield(model,'rxnNames'))
+    modelOut.rxnNames = model.rxnNames(selectRxns);
+end
+if (isfield(model, 'rxnReferences'))
+   modelOut.rxnReferences = model.rxnReferences(selectRxns);
+end
+if (isfield(model, 'rxnECNumbers'))
+  modelOut.rxnECNumbers = model.rxnECNumbers(selectRxns);
+end
+if (isfield(model, 'rxnNotes'))
+  modelOut.rxnNotes = model.rxnNotes(selectRxns);
+end
+if (isfield(model, 'rxnsboTerm'))
+  modelOut.rxnsboTerm = model.rxnsboTerm(selectRxns);
+end
+if (isfield(model, 'rxnKeggID'))
+  modelOut.rxnKeggID = model.rxnKeggID(selectRxns);
+end
+if (isfield(model, 'rxnConfidenceEcoIDA'))
+  modelOut.rxnConfidenceEcoIDA = model.rxnConfidenceEcoIDA(selectRxns);
+end
+%=======
+%mfields = fieldnames(model);
+%rfields = {};
+
+%if ~any([nMets nGenes] == nRxns)
+%    for i = 1:length(mfields)
+%        if any(size(model.(mfields{i})) == nRxns) && ~strcmp(mfields{i}, 'mets')
+%            rfields = [rfields mfields(i)];
+%        end
+%    end
+%else
+%    rfields = {'S', 'c', 'lb', 'ub', 'rxns', 'rules', 'grRules', 'rev', 'subSystems'}';
+%    rfields = [rfields; mfields(strncmp('rxn', mfields, 3))];
+%    rfields = intersect(rfields, mfields);
+%>>>>>>> 0e731e1a2779fb645e71ed6e0c7bcf0087d9a3c2
 
 for i = 1:length(rfields)
    if size(model.(rfields{i}), 1) == nRxns
