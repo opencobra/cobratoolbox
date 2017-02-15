@@ -1,22 +1,44 @@
-function solution = minCardinalityConservationRelaxationVector(S,epsilon)
+function [relaxRxnBool,solutionRelax] = minCardinalityConservationRelaxationVector(S,params,printLevel)
 % DC programming for solving the cardinality optimization problem
 % min    lambda*||x||_0
 % s.t.   x + S'*z = 0
 %           -inf <= x <= inf
 %              1 <= z <= 1/epsilon
 %
-%INPUT
-% S         m x n stoichiometric matrix
-% epsilon   smallest molecular mass considered nonzero, 1/epsilon is the
-%           largest molecular mass expected
+% INPUT
+% S                     m x n stoichiometric matrix
 %
-%OUTPUT
-% solution.stat   solution status
-% solution.x      n x 1 vector where nonzeros correspond to relaxations  
-% solution.z      m x 1 vector where positives correspond to molecular mass
-
+% OPTIONAL INPUT
+% params.epsilon        (1e-4) 1/epsilon is the largest flux expected
+% params.eta            (feasTol*100), cutoff for mass leak/siphon  
+% params.nonRelaxBool   (false(n,1)), n x 1 boolean vector for reactions not to relax
+% 
+% OUTPUT
+% relaxRxnBool         n x 1 boolean vector where tru correspond to relaxation
+% solutionRelax.stat   solution status
+% solutionRelax.x      n x 1 vector where nonzeros>eta correspond to relaxations  
+% solutionRelax.z      m x 1 vector where positives correspond to molecular mass
 
 [mlt,nlt]=size(S');
+
+if ~exist('params','var') || isempty(params)
+    params.epsilon=1e-4;
+    feasTol = getCobraSolverParams('LP', 'feasTol');
+    params.eta=feasTol*100;
+    params.nonRelaxBool=false(mlt,1);
+else
+    if ~isfield(params,'epsilon')
+        params.epsilon=1e-4;
+    end
+    if ~isfield(params,'eta')
+        feasTol = getCobraSolverParams('LP', 'feasTol');
+        params.eta=feasTol*100;
+    end
+    if ~isfield(params,'nonRelaxBool')
+        params.nonRelaxBool=false(mlt,1);
+    end
+end
+
 cardProblem.p=mlt;
 cardProblem.q=0;
 cardProblem.r=nlt;
@@ -25,11 +47,17 @@ cardProblem.A=[speye(mlt,mlt),S'];
 cardProblem.b=zeros(mlt,1);
 cardProblem.lb=[-inf*ones(mlt,1);ones(nlt,1)];
 %cardProblem.lb=[zeros(mlt,1);epsilon*ones(nlt,1)];
-cardProblem.ub=[inf*ones(nlt,1);(1/epsilon)*ones(mlt,1)];
+cardProblem.ub=[inf*ones(nlt,1);(1/params.epsilon)*ones(mlt,1)];
+%omits flux from this reaction - perhaps not a good way to do it.
+if any(params.nonRelaxBool)
+    %prevent relaxation of specified reactions
+    cardProblem.lb([params.nonRelaxBool;false(mlt,1)])=0;
+    cardProblem.ub([params.nonRelaxBool;false(mlt,1)])=0;
+end
 cardProblem.csense(1:mlt,1)='E';
 params.lambda=1;
 params.delta=0;
-solution = optimizeCardinality(cardProblem,params);
+solutionRelax = optimizeCardinality(cardProblem,params);
 %  problem                  Structure containing the following fields describing the problem
 %       p                   size of vector x
 %       q                   size of vector y
@@ -60,3 +88,23 @@ solution = optimizeCardinality(cardProblem,params);
 %                           2 =  Unbounded
 %                           0 =  Infeasible
 %                           -1=  Invalid input
+
+%check optimality
+if printLevel>2
+    fprintf('%g%s\n',norm(solutionRelax.x + S'*solutionRelax.z),' = ||x + S''*z||')
+    fprintf('%g%s\n',min(solutionRelax.z),' = min(z_i)')
+    fprintf('%g%s\n',max(solutionRelax.z),' = min(z_i)')
+    fprintf('%g%s\n',min(solutionRelax.x),' = min(x_i)')
+    fprintf('%g%s\n',max(solutionRelax.x),' = max(x_i)')
+end
+
+if solutionRelax.stat==1
+    %conserved if relaxation is below epsilon
+    relaxRxnBool=abs(solutionRelax.x)>=params.eta;
+    if printLevel>1
+        fprintf('%g%s\n',norm(S(:,~relaxRxnBool)'*solutionRelax.z),' = ||N''*z|| (should be zero)')
+    end
+else
+    disp(solutionRelax)
+    error('solve for minimum cardinality of conservation relaxation vector failed')
+end

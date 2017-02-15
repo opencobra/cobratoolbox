@@ -199,7 +199,7 @@ switch method
         else
             fprintf('%s\n','Infeasibility while detecting seminegative leaking metabolites.');
             Vn=[];
-            siphonY=[];
+            siphonY=sparse(nMet,1);
             statn=[];
         end             
     case 'dc'
@@ -255,7 +255,7 @@ switch method
         else
             fprintf('%s\n','Infeasibility while detecting semipositive leaking metabolites.');
             Vp=[];
-            leakY=[];
+            leakY=sparse(nMet,1);
             statp=[];
         end
         
@@ -277,17 +277,15 @@ switch method
         else
             fprintf('%s\n','Infeasibility while detecting seminegative leaking metabolites.');
             Vn=[];
-            siphonY=[];
+            siphonY=sparse(nMet,1);
             statn=[];
         end
 end
 
 %only metBool rxnBool were tested for leaks
-
 leakMetBool=leakY>=params.eta;
 leakRxnBool = getCorrespondingCols(model.S,leakMetBool,rxnBool,'exclusive');
 if printLevel>0
-    %fprintf('%6u\t%6u\t%s\n',mlt,nlt,' subset tested for leakage...');
     fprintf('%6u\t%6u\t%s\n',nnz(leakMetBool),nnz(leakRxnBool),' semipositive leaking metabolites (and exclusive reactions).')
 end
 
@@ -305,16 +303,16 @@ if printLevel>0 && any(leakMetBool)
         xlabel('log_{10}(leak)')
         ylabel('#mets')
     end
-    [~,sortedlog10YpInd]=sort(log10Yp,'descend');
+    [~,sortedlog10YpInd]=sort(log10Yp,'ascend');
     if printLevel>1
         for k=1:min(10,nnz(leakMetBool))
             mass=getMolecularMass(model.metFormulas{sortedlog10YpInd(k)});
-            fprintf('%s\t%u\n',model.mets{sortedlog10YpInd(k)},mass);
+            fprintf('%g\t%10s\n',mass,model.mets{sortedlog10YpInd(k)});
         end
     else
         for k=1:nnz(leakMetBool)
             mass=getMolecularMass(model.metFormulas{sortedlog10YpInd(k)});
-            fprintf('%s\t%u\n',model.mets{sortedlog10YpInd(k)},mass);
+            fprintf('%g\t%10s\n',mass,model.mets{sortedlog10YpInd(k)});
         end
     end
     if any(leakRxnBool)
@@ -346,16 +344,16 @@ if printLevel>0 && any(siphonMetBool)
         xlabel('log_{10}(siphon)')
         ylabel('#mets')
     end
-    [~,sortedlog10YnInd]=sort(log10Yn,'descend');
+    [~,sortedlog10YnInd]=sort(log10Yn,'ascend');
     if printLevel>1
         for k=1:min(10,nnz(siphonMetBool))
             mass=getMolecularMass(model.metFormulas{sortedlog10YnInd(k)});
-            fprintf('%s\t%u\n',model.mets{sortedlog10YnInd(k)},mass);
+            fprintf('%g\t%10s\n',mass,model.mets{sortedlog10YnInd(k)});
         end
     else
         for k=1:nnz(siphonMetBool)
             mass=getMolecularMass(model.metFormulas{sortedlog10YnInd(k)});
-            fprintf('%s\t%u\n',model.mets{sortedlog10YnInd(k)},mass);
+            fprintf('%g\t%10s\n',mass,model.mets{sortedlog10YnInd(k)});
         end
     end
     if any(siphonRxnBool)

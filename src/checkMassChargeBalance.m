@@ -55,7 +55,7 @@ if ~exist('fileName','var')
     fileName='';
 end
 % List of Elements
-Elements = {'H','C', 'O', 'P', 'S', 'N', 'Mg','X','Fe','Zn','Co','R','Ca','Y','I','Na','Cl','K'};
+Elements = {'H','C', 'O', 'P', 'S', 'N', 'Mg','X','Fe','Zn','Co','R','Ca','Y','I','Na','Cl','K','R','FULLR'};
 
 E=sparse(nMet,length(Elements));
 massImbalance=sparse(nRxn,length(Elements));
@@ -232,7 +232,8 @@ if ~isempty(imBalancedCharge)
 end
 
 %nonzero rows corresponding to completely mass balanced reactions
-balancedMetBool = (sum(abs(model.S(:,~imBalancedRxnBool)),2)~=0);
+%balancedMetBool = (sum(abs(model.S(:,~imBalancedRxnBool)),2)~=0);
+balancedMetBool = getCorrespondingRows(model.S,true(nMet,1),~imBalancedRxnBool,'exclusive');
 
 
 

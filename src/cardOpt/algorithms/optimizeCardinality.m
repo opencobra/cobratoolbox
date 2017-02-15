@@ -48,25 +48,24 @@ solution.z = [];
 solution.stat = 1;
 
 % Check inputs
-if nargin < 2
+if ~exist('params','var') || isempty(params)
     params.nbMaxIteration = 1000;
-    %params.epsilon = 10e-6;
     params.epsilon = getCobraSolverParams('LP', 'feasTol');
     params.theta   = 2;  
-else
-    if isfield(params,'nbMaxIteration') == 0
-        params.nbMaxIteration = 1000;
-    end
-    
-    if isfield(params,'epsilon') == 0
-        %params.epsilon = 10e-6;
-        params.epsilon = getCobraSolverParams('LP', 'feasTol');
-    end
-
-    if isfield(params,'theta') == 0
-        params.theta   = 2;
-    end            
 end
+if ~isfield(params,'nbMaxIteration')
+    params.nbMaxIteration = 1000;
+end
+if ~isfield(params,'epsilon')
+    params.epsilon = getCobraSolverParams('LP', 'feasTol');
+end
+if ~isfield(params,'theta')
+    params.theta   = 2;
+end
+if ~isfield(params,'nbMaxIteration')
+    params.nbMaxIteration = 1000;
+end
+
 
 if isfield(problem,'p') == 0
     error('Error: the size of vector x is not defined');
@@ -160,7 +159,7 @@ else
     end            
 end        
 
-if ~isempty(find(problem.lb > problem.ub))
+if any(problem.lb > problem.ub)
     error('Error: lb is greater than ub');
     solution.stat = -1;
     return;    

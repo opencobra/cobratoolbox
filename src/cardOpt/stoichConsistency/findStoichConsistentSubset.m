@@ -52,7 +52,7 @@ end
 feasTol = getCobraSolverParams('LP', 'feasTol');
 
 if ~exist('epsilon','var')
-    epsilon=feasTol*100;
+    epsilon=1e-4;
 end
 
 %final double check of stoichiometric consistent subset
@@ -63,10 +63,14 @@ removalStrategy='imBalanced';
 %removalStrategy='isolatedInconsistent';
 %removalStrategy='highCardinalityReactions';
 
-maxCardConsParams.epsilon=epsilon;%1/epsilon is the largest mass considered, needed for numerical stability
-maxCardConsParams.method = 'quasiConcave';%seems to work the best, but sometimes infeasible
-%maxCardConsParams.method = 'dc';%seems to work, but not always the best
-maxCardConsParams.theta = 0.5;
+minCardRelaxParams.epsilon=epsilon;
+minCardRelaxParams.eta=feasTol*100;
+
+maxCardinalityConsParams.epsilon=epsilon;%1/epsilon is the largest mass considered, needed for numerical stability
+maxCardinalityConsParams.method = 'quasiConcave';%seems to work the best, but sometimes infeasible
+%maxCardinalityConsParams.method = 'dc';%seems to work, but not always the best
+maxCardinalityConsParams.theta = 0.5;
+maxCardinalityConsParams.eta=feasTol*100;
 
 leakParams.epsilon=epsilon;
 %leakParams.method='quasiConcave'; %seems to have problems need to debug
@@ -76,7 +80,8 @@ leakParams.eta=feasTol*100;
 leakParams.theta = 0.5;
 
 %do leak test after each step to make sure that we are working correctly
-doubleCheckConsistency=1; %turn on when debugging a model
+doubleCheckConsistency=1;  %leak/siphon test, turn on when debugging a model
+tripleCheckConsistencey=0; %max card conservation vector, needs debugging
 
 %show the relaxation from stoichiometric consistency relative to the cutoff
 %at each iteration. Useful for debugging if numerical issues are suspected
@@ -146,8 +151,36 @@ if massBalanceCheck
             end
         end
     end
+    
+    %% minimum cardinality of conservation relaxation vector
+    [relaxRxnBool,solutionRelax] = minCardinalityConservationRelaxationVector(model.S(:,model.balancedRxnBool),minCardRelaxParams,printLevel-1);
+    minConservationNonRelaxRxnBool=false(nRxn,1);
+    minConservationNonRelaxRxnBool(model.balancedRxnBool)=~relaxRxnBool;
+    minConservationNonRelaxMetBool = getCorrespondingRows(model.S,true(nMet,1),minConservationNonRelaxRxnBool,'exclusive');
+    
+    %keeps the mass balanced reactions as part of the non-relaxed reaction
+    %set when testing for the minimal number of relaxed reactions
+    if nnz(model.balancedRxnBool)==nnz(minConservationNonRelaxRxnBool) && 0
+        minCardRelaxParams.nonRelaxBool=model.balancedRxnBool;
+    end
+    
+    %         %check to see if the mass balanced part is leaking
+    %         [leakMetBool,leakRxnBool,siphonMetBool,siphonRxnBool,statpRelax,statnRelax]= findMassLeaksAndSiphons(model,model.balancedMetBool,model.balancedRxnBool,modelBoundsFlag,leakParams,printLevel-2);
+    %         leakSiphonMetBool=leakMetBool | siphonMetBool;
+    %         if any(leakMetBool | siphonMetBool)
+    %             %omit leaking metabolites
+    %             minConservationNonRelaxMetBool(leakMetBool | siphonMetBool)=0;
+    %             %columns exclusively involved in stoichiometrically consistent rows
+    %             if iterateCardinalityOpt==1
+    %                 minConservationNonRelaxRxnBool = getCorrespondingCols(model.S,minConservationNonRelaxMetBool,model.SConsistentRxnBool | minConservationNonRelaxRxnBool,'inclusive');
+    %             else
+    %                 minConservationNonRelaxRxnBool = getCorrespondingCols(model.S,minConservationNonRelaxMetBool,model.SConsistentRxnBool | minConservationNonRelaxRxnBool,'inclusive');
+    %             end
+    %         end
+    
     if printLevel>1
         fprintf('%6u\t%6u\t%s\n',nnz(model.balancedMetBool),nnz(model.balancedRxnBool),' seemingly elementally balanced.')
+        fprintf('%6u\t%6u\t%s\n',nnz(minConservationNonRelaxMetBool),nnz(minConservationNonRelaxRxnBool),' seemingly elementally balanced and stoichiometrically consistent.')
     end
     if printLevel>1
         fprintf('%6u\t%6u\t%s\n',nnz(~model.balancedMetBool),nnz(~model.balancedRxnBool),' seemingly elementally imbalanced.')
@@ -157,11 +190,12 @@ if massBalanceCheck
     end
     if printLevel>1
         fprintf('%6u\t%6u\t%s\n',nnz(model.balancedMetBool & model.SIntMetBool),nnz(model.balancedRxnBool & model.SIntRxnBool),' heuristically non-exchange and seemingly elementally balanced.')
+        fprintf('%6u\t%6u\t%s\n',nnz(minConservationNonRelaxMetBool  & model.SIntMetBool),nnz(minConservationNonRelaxRxnBool & model.SIntRxnBool),' seemingly elementally balanced and stoichiometrically consistent.')
     end
     if printLevel>1
         fprintf('%6u\t%6u\t%s\n',nnz(~model.balancedMetBool & model.SIntMetBool),nnz(~model.balancedRxnBool & model.SIntRxnBool),' heuristically non-exchange and seemingly elementally imbalanced.')
     end    
-
+   
 end
 
 if 0
@@ -211,7 +245,7 @@ iterateCardinalityOpt=1;
 if printLevel>1
     fprintf('%s\n','-------')
 end
-while iterateCardinalityOpt>0   
+while iterateCardinalityOpt>0
     if printLevel>1
         fprintf('%s%u%s\n','Iteration #',iterateCardinalityOpt,' minimum cardinality of conservation relaxation vector.')
         fprintf('%6u\t%6u\t%s\n',nnz(model.unknownSConsistencyMetBool),nnz(model.unknownSConsistencyRxnBool),' unknown consistency.')
@@ -226,31 +260,10 @@ while iterateCardinalityOpt>0
     %compute minimum relaxation
     if nnz(model.S(boolMet,boolRxn))~=0
         %% minimum cardinality of conservation relaxation vector
-        solutionRelax = minCardinalityConservationRelaxationVector(model.S(boolMet,boolRxn),epsilon);
-        %check optimality
-        if printLevel>2 | 0
-            fprintf('%g%s\n',norm(solutionRelax.x + model.S(boolMet,boolRxn)'*solutionRelax.z),' = ||x + S''*z||')
-            fprintf('%g%s\n',min(solutionRelax.z),' = min(z_i)')
-            fprintf('%g%s\n',max(solutionRelax.z),' = min(z_i)')
-            fprintf('%g%s\n',min(solutionRelax.x),' = min(x_i)')
-            fprintf('%g%s\n',max(solutionRelax.x),' = max(x_i)')
-        end
-        
+        [relaxRxnBool,solutionRelax] = minCardinalityConservationRelaxationVector(model.S(boolMet,boolRxn),minCardRelaxParams,printLevel-1);
         minConservationNonRelaxRxnBool=false(nRxn,1);
-        if solutionRelax.stat==1
-            %conserved if relaxation is below epsilon
-            minConservationNonRelaxRxnBool(boolRxn)=abs(solutionRelax.x)<leakParams.eta;
-            if printLevel>2 | 0
-                fprintf('%g%s\n',norm(model.S(boolMet,minConservationNonRelaxRxnBool)'*solutionRelax.z),' = ||N''*z||')
-            end
-            minConservationRelaxRxnBool=false(nRxn,1);
-            minConservationRelaxRxnBool(boolRxn)=abs(solutionRelax.x)>=leakParams.eta;
-        else
-            disp(solutionRelax)
-            error('solve for minimum cardinality of conservation relaxation vector failed')
-        end
-        
-      
+        minConservationNonRelaxRxnBool(boolRxn)=~relaxRxnBool;
+
         %corresponding rows matching non-relaxed reactions
         if 1
             minConservationNonRelaxMetBool = getCorrespondingRows(model.S,boolMet,minConservationNonRelaxRxnBool,'inclusive');
@@ -259,13 +272,7 @@ while iterateCardinalityOpt>0
         end
         %reactions matching consistent metabolites
         %minConservationNonRelaxRxnBool = getCorrespondingCols(model.S,minConservationNonRelaxMetBool,minConservationNonRelaxRxnBool,'inclusive');
-        if printLevel>2 | 0
-            z=zeros(nMet,1);
-            z(boolMet)=solutionRelax.z;
-            z(~minConservationNonRelaxMetBool)=0;
-            fprintf('%g%s\n',norm(model.S(minConservationNonRelaxMetBool,minConservationNonRelaxRxnBool)'*z(minConservationNonRelaxMetBool)),' = ||N''*z||')
-        end
-        
+                
         if printLevel>1
             if nnz(minConservationNonRelaxMetBool)~=0 || nnz(minConservationNonRelaxRxnBool)~=0
                 fprintf('%6u\t%6u\t%s\n',nnz(minConservationNonRelaxMetBool),nnz(minConservationNonRelaxRxnBool),' ... of which are stoichiometrically consistent by min cardinality of stoich consistency relaxation.')
@@ -273,11 +280,12 @@ while iterateCardinalityOpt>0
         end
         
         if doubleCheckConsistency && any(minConservationNonRelaxMetBool)
+            %leakParams.method='quasiConcave';
             %check to see if the stoichiometrically consistent part is leaking
             [leakMetBool,leakRxnBool,siphonMetBool,siphonRxnBool,statpRelax,statnRelax]= findMassLeaksAndSiphons(model,minConservationNonRelaxMetBool,minConservationNonRelaxRxnBool,modelBoundsFlag,leakParams,printLevel-2);
             if any(leakMetBool | siphonMetBool)
                 %omit leaking metabolites
-                minConservationNonRelaxMetBool(leakSiphonMetBool)=0;
+                minConservationNonRelaxMetBool(leakMetBool | siphonMetBool)=0;
                 %columns exclusively involved in stoichiometrically consistent rows
                 if iterateCardinalityOpt==1
                     minConservationNonRelaxRxnBool = getCorrespondingCols(model.S,minConservationNonRelaxMetBool,model.SConsistentRxnBool | minConservationNonRelaxRxnBool,'inclusive');
@@ -287,6 +295,12 @@ while iterateCardinalityOpt>0
             end
             if printLevel>1
                 fprintf('%6u\t%6u\t%s\n',nnz(minConservationNonRelaxMetBool),nnz(minConservationNonRelaxRxnBool),' ... of which are confirmed stoichiometrically consistent by leak/siphon testing.')
+            end
+        end
+       if tripleCheckConsistencey && any(minConservationNonRelaxMetBool)
+            [maxConservationMetBool,maxConservationRxnBool,solution]=maxCardinalityConservationVector(model.S, maxCardinalityConsParams);
+             if printLevel>1
+                fprintf('%6u\t%6u\t%s\n',nnz(maxConservationMetBool),nnz(maxConservationRxnBool),' ... of which are confirmed stoichiometrically consistent by maximum conservation vector testing.')
             end
         end
     else
