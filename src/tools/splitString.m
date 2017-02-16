@@ -1,7 +1,7 @@
-function fields = splitString(string,delimiter)
-%splitString Splits a string Perl style
+function fields = splitString(string, delimiter)
+% splitString Splits a string Perl style
 %
-% fields = splitString(string,delimiter)
+% fields = splitString(string, delimiter)
 %
 % string      Either a single string or a cell array of strings
 % delimiter   Splitting delimiter
@@ -24,22 +24,22 @@ end
 if iscell(string)
     stringList = string;
     for i = 1:length(stringList)
-        fields{i} = splitOneString(stringList{i},delimiter);
+        fields{i} = splitOneString(stringList{i}, delimiter);
     end
 else
-    fields = splitOneString(string,delimiter);
+    fields = splitOneString(string, delimiter);
 end
 
 fields = columnVector(fields);
 
-%%
-function fields = splitOneString(string,delimiter)
+
+function fields = splitOneString(string, delimiter)
 % Internal function that splits one string
 
 [startIndex, endIndex] = regexp(string, delimiter);
 
 if ~isempty(startIndex)
-cnt = 0;
+    cnt = 0;
     for i = 1:length(startIndex) + 1
         if i == 1
             if endIndex(i) > 1
@@ -47,13 +47,13 @@ cnt = 0;
                 fields{cnt} = string(1:endIndex(i) - 1);
             end
         elseif i == length(startIndex) + 1
-            if startIndex(i-1) < length(string)
+            if startIndex(i - 1) < length(string)
                 cnt = cnt + 1;
                 fields{cnt} = string(startIndex(i - 1) + 1:end);
             end
         else
             cnt = cnt + 1;
-            fields{cnt} = string(startIndex(i - 1) + 1:endIndex(i) - 1);
+            fields{cnt} = string(1:endIndex(i) - 1);
         end
     end
 else

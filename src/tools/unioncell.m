@@ -1,17 +1,14 @@
 function AB = unioncell(A, colA, B, colB)
-% return a cell which is the union of cell B to cell A given by a comparing
-%***the first n characters in the string of B, column B****
+% Return a cell which is the union of cell B to cell A given by a comparing
 %
-% INPUT
-% A          cell array A
-% colA       column of A for comparison
-% B          cell array B
-% colB       column of B for comparison
-
-% OUTPUT
-% AB         cell which is the union of cell B to cell A
-
-% Ronan Fleming
+% Inputs:
+%     A:      cell array A
+%     colA:   column of A for comparison
+%     B:      cell array B
+%     colB:   column of B for comparison
+%
+% Outputs:
+%     AB:     cell which is the union of cell B to cell A
 
 [rlt, clt] = size(A);
 [rlt2, clt2] = size(B);

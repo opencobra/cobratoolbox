@@ -2,28 +2,28 @@ function [groupStat, groupList, groupCnt, zScore] = calcGroupStats(data, groups,
 % calcGroupStats Calculate statistics such as mean or standard deviation for
 % subgroups of a population
 %
-% [groupStat,groupList,groupCnt,zScore] =
-% calcGroupStats(data,groups,statName,groupList,randStat,nRand)
+% [groupStat, groupList, groupCnt, zScore] =
+% calcGroupStats(data, groups, statName, groupList, randStat, nRand)
 %
-% data      Matrix of data (individuals x variables)
-% groups    Group identifier for each individual
-% statName  Name of the statistic to be computed for each group:
+% Inputs:
+%   data:      Matrix of data (individuals x variables)
+%   groups:    Group identifier for each individual
+%   statName:  Name of the statistic to be computed for each group:
 %               'mean': mean value for group (default)
 %               'std': standard deviation for group
 %               'median': median for group
 %               'count': sum total of variable values for group
-% groupList List of group identifiers to be considered (optional, default
-%           all values occurring in groups)
-% randStat  Perform randomization analysis
-% nRand     # of randomizations
+%   groupList: List of group identifiers to be considered (optional, default
+%              all values occurring in groups)
+%   randStat:  Perform randomization analysis
+%   nRand:     # of randomizations
 %
 % Group identifier can be either strings or numerical values
 %
-% groupStat     Matrix of group statistic values for each group and variable
-% groupList     List of group identifiers considered
-% groupCount    Number of individuals in a group
-%
-% Markus Herrgard 2006
+% Ouputs:
+%   groupStat:     Matrix of group statistic values for each group and variable
+%   groupList:     List of group identifiers considered
+%   groupCount:    Number of individuals in a group
 
 [nItems, nSets] = size(data);
 
