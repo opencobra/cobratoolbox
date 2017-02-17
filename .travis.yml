@@ -23,12 +23,7 @@ after_success:
     - if [ "$MATLAB_VER" == "R2016b" ]; then
       bash <(curl -s https://codecov.io/bash) -f "!*.lst";
       export PATH="/var/lib/jenkins/.local/bin":$PATH;
-      pip install --user sphinx;
-      pip install --user recommonmark;
-      pip install --user sphinxcontrib-matlabdomain;
-      pip install --user sphinx_julia_theme==0.0.2rc0;
-      pip install --user --upgrade git+https://github.com/syarra/Documenter.py@develop#egg=documenter;
-      pip install --user pyGithub;
+      pip install --user -r docs/requirements.txt
       here=`pwd`;
       python ~/github_stats.py $here/docs/source/contributors.rst;
       python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='/var/lib/jenkins/workspace/COBRAToolbox-branches-auto-doc/MATLAB_VER/R2016b'); doc.deploy()";
