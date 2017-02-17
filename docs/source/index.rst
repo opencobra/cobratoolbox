@@ -1,3 +1,5 @@
+
+
 The COBRA Toolbox
 -----------------
 
@@ -20,16 +22,16 @@ The COBRA Toolbox
    :scale: 100%
    :align: middle
    :target: http://codecov.io/gh/opencobra/cobratoolbox/branch/develop
- 
+
 .. |stats| image:: http://img.shields.io/badge/github-stats-ff5500.svg
    :scale: 100%
    :align: middle
    :target: http://githubstats.com/opencobra/cobratoolbox
- 
+
 +---------------+---------------+---------------+---------------+------------+
 | MATLAB R2016b | MATLAB R2015b | MATLAB R2014b | Code Coverage | Statistics |
 +---------------+---------------+---------------+---------------+------------+
-| |matlab_2016b|| |matlab_2015b|| |matlab_2014b|| |codecov|     | |stats|    | 
+| |matlab_2016b|| |matlab_2015b|| |matlab_2014b|| |codecov|     | |stats|    |
 +---------------+---------------+---------------+---------------+------------+
 
 .. note::
@@ -38,8 +40,19 @@ The COBRA Toolbox
 
    * As this version is in development, you may find the legacy version of the documentation `here <http://opencobra.github.io/cobratoolbox/deprecated/docs/index.html>`_.
 
+
+Content of the documentation
+----------------------------
+
+.. toctree::
+   :maxdepth: 2
+
+   modules/index
+   tutorials/index
+
 Contributors
 ------------
 
 .. include:: contributors.rst
+
 

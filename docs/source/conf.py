@@ -35,11 +35,16 @@ matlab_src_dir = os.path.abspath(os.path.join('..', '..'))
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinxcontrib.fulltoc',
     'sphinx.ext.autodoc',
+    'sphinxcontrib.napoleon',
     'sphinxcontrib.matlab']
 
 # autodoc_member_order='groupwise'
 primary_domain = 'mat'
+
+# remove path in function names
+add_module_names = False
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
