@@ -22,6 +22,8 @@ global MINOSPATH
 global DQQMINOSPATH
 global WAITBAR_TYPE
 
+WAITBAR_TYPE = 0;
+
 fprintf('\n\n      _____   _____   _____   _____     _____     |\n     /  ___| /  _  \\ |  _  \\ |  _  \\   / ___ \\    |   COnstraint-Based Reconstruction and Analysis\n     | |     | | | | | |_| | | |_| |  | |___| |   |   COBRA Toolbox 3.0 - 2017\n     | |     | | | | |  _  { |  _  /  |  ___  |   |\n     | |___  | |_| | | |_| | | | \\ \\  | |   | |   |   Documentation:\n     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |   http://opencobra.github.io/cobratoolbox\n                                                  | \n\n');
 
 fprintf('\n\n > Adding all the COBRA Toolbox files ... ')
