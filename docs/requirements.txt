@@ -2,7 +2,7 @@ sphinx
 recommonmark
 sphinxcontrib-matlabdomain
 sphinxcontrib-fulltoc
-sphinx_julia_theme==0.0.2rc0
+git+https://github.com/uni-lu/sphinx_julia_theme.git@develop#egg=sphinx_julia_theme
 git+https://github.com/syarra/Documenter.py@develop#egg=documenter
 git+https://github.com/uni-lu/sphinxcontrib-napoleon.git#egg=sphinxcontrib_napoleon
 pyGithub
