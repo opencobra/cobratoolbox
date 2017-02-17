@@ -35,10 +35,11 @@ matlab_src_dir = os.path.abspath(os.path.join('..', '..'))
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinxcontrib.fulltoc',
     'sphinx.ext.autodoc',
     'sphinxcontrib.napoleon',
-    'sphinxcontrib.matlab']
+    'sphinxcontrib.matlab',
+    'sphinxcontrib.fulltoc']
+
 
 # autodoc_member_order='groupwise'
 primary_domain = 'mat'
