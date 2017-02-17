@@ -124,12 +124,14 @@ end
 
 % loop through each KO rxn and replace with every rxn from selectedRxns to
 % search for a possible improvement
-h = waitbar(0,'improving knockout design');
+%h = waitbar(0,'improving knockout design');
+h = showprogress(0,'improving knockout design');
 for i = 1:length(rxns)+1
     bestObjective2 = bestObjective;
     bestRxns2 = bestRxns;
     for j = 1:length(selectedRxns)+1
-        waitbar((j+(i-1)*length(selectedRxns))/((length(rxns)+1)*(length(selectedRxns)+1)),h);
+        %waitbar((j+(i-1)*length(selectedRxns))/((length(rxns)+1)*(length(selectedRxns)+1)),h);
+        showprogress((j+(i-1)*length(selectedRxns))/((length(rxns)+1)*(length(selectedRxns)+1)),h);
         newRxns = rxns;
         if (i==length(rxns)+1)&&(j==length(selectedRxns)+1)
             %don't do anything at the very end

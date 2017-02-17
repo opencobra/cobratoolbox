@@ -116,7 +116,7 @@ for m=1:ID_row;
 end
 
 
-h = waitbar(0,'progressing')
+h = showprogress(0,'progressing')
 
 num=[];
 
@@ -199,7 +199,7 @@ end
 
 for i=1:length(num)  % "num" contains number of reaction nodes
     if ismember(i, progress)~=0||i==total_length;
-        waitbar((i/total_length*2/4)/4,h);
+        showprogress((i/total_length*2/4)/4,h);
     end
     
     
@@ -375,7 +375,7 @@ found=0;
 
 
 
-waitbar(3/4,h);
+showprogress(3/4,h);
 
 for t=1:length(MainTxt);
     
@@ -563,7 +563,7 @@ for t=1:length(MainTxt);
     
 end
 
-waitbar(3.5/4,h);
+showprogress(3.5/4,h);
 
 %% old version of the "write" funciton
 
@@ -587,7 +587,7 @@ parsed_updated=parsed;
 
 writeCD(parsed_updated,fname_out)
 
-waitbar(4/4,h);
+showprogress(4/4,h);
 
 close(h)
 

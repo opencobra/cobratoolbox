@@ -92,7 +92,8 @@ end
 delCounter = 0;
 fprintf('Double gene deletion analysis\n');
 fprintf('Total of %d pairs to analyze\n',nTotalPairs);
-h = waitbar(0,'Double gene deletion analysis in progress ...');
+%h = waitbar(0,'Double gene deletion analysis in progress ...');
+h = showprogress(0,'Double gene deletion analysis in progress ...');
 t = cputime;
 fprintf('Perc complete\tCPU time\n');
 for geneNo1 = 1:nDelGenes1
@@ -108,7 +109,8 @@ for geneNo1 = 1:nDelGenes1
     for geneNo2 = initID:nDelGenes2
         delCounter = delCounter + 1;
         if (mod(delCounter,10) == 0)
-            waitbar(delCounter/nTotalPairs,h);
+            %waitbar(delCounter/nTotalPairs,h);
+            showprogress(delCounter/nTotalPairs,h);
         end
         if (mod(delCounter,100) == 0)
             fprintf('%5.2f\t%8.1f\n',100*delCounter/nTotalPairs,cputime-t);

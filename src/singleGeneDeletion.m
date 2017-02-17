@@ -71,10 +71,10 @@ if (uniqueGene == 1)
     if (verbFlag)
         fprintf('%4s\t%4s\t%10s\t%9s\t%9s\n','No','Perc','Name','Growth rate','Rel. GR');
     end
-    h = waitbar(0,'Single gene deletion analysis in progress ...');
+    h = showprogress(0,'Single gene deletion analysis in progress ...');
     for i = 1:nDelGenes
         if mod(i,10) == 0
-            waitbar(i/nDelGenes,h);
+            showprogress(i/nDelGenes,h);
         end
         if ~isempty(strfind(model.genes{1},'.'))
             % delete all alternate transcripts
@@ -121,10 +121,10 @@ else
     if (verbFlag)
         fprintf('%4s\t%4s\t%10s\t%9s\t%9s\n','No','Perc','Name','Growth rate','Rel. GR');
     end
-    h = waitbar(0,'Single gene deletion analysis in progress ...');
+    h = showprogress(0,'Single gene deletion analysis in progress ...');
     for i = 1:nDelGenes
         if mod(i,10) == 0
-            waitbar(i/nDelGenes,h);
+            showprogress(i/nDelGenes,h);
         end
         [modelDel,hasEffect(i),constrRxnNames] = deleteModelGenes(model,geneList{i});
         delRxns{i} = constrRxnNames;

@@ -50,9 +50,9 @@ end
 objFlux = [];
 controlFlux = linspace(solMin.f,solMax.f,nPoints)';
 
-h = waitbar(0,'Robustness analysis in progress ...');
+h = showprogress(0,'Robustness analysis in progress ...');
 for i=1:length(controlFlux)
-    waitbar(i/length(controlFlux),h);
+    showprogress(i/length(controlFlux),h);
     modelControlled = changeRxnBounds(baseModel,controlRxn,controlFlux(i),'b');
     solControlled = optimizeCbModel(modelControlled,objType);
     objFlux(i) = solControlled.f;

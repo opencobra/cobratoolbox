@@ -78,7 +78,7 @@ if isempty(data)
     msgbox('There are no reactions to save.','No reactions.','error');
     return
 end
-h = waitbar(0,'Creating model...');
+h = showprogress(0,'Creating model...');
 %createModel has been altered from the cobra toolbox version.
 UB = [];
 LB = [];
