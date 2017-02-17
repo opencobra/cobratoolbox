@@ -113,9 +113,16 @@ ub(~rxnBool)=0;
 % s.t.      A*(x,y,z) <= b
 %           l <= (x,y,z) <=u
 %           x in R^p, y in R^q, z in R^r
-cardProb.p       = nlt+mlt;
-cardProb.q       = 0;
-cardProb.r       = 0;
+findSparseRxnSet=0;
+if findSparseRxnSet
+    cardProb.p       = nlt;
+    cardProb.q       = 0;
+    cardProb.r       = mlt;
+else
+    cardProb.p       = nlt+mlt;
+    cardProb.q       = 0;
+    cardProb.r       = 0;
+end
 cardProb.c       = zeros(cardProb.p+cardProb.q+cardProb.r,1);
 cardProb.lambda  = 1;
 cardProb.delta   = 0;
@@ -199,7 +206,11 @@ for m=1:mlt
             case 1
                 Vp(:,z)          = solution.x(1:nlt,1);
                 minLeakRxnBool(:,z) = Vp(:,z)>=params.epsilon;
-                siphonY(:,z)          = solution.x(nlt+1:nlt+mlt,1);
+                if findSparseRxnSet
+                    siphonY(:,z)          = solution.z(1:mlt,1);
+                else
+                    siphonY(:,z)          = solution.x(nlt+1:nlt+mlt,1);
+                end
                 minLeakMetBool(:,z) = siphonY(:,z)>=params.epsilon;
                 
                 if any(minLeakMetBool(:,z))
@@ -280,7 +291,11 @@ for m=1:mlt
                 case 1
                     Vn(:,z)            = solution.x(1:nlt,1);
                     minSiphonRxnBool(:,z) = Vn(:,z)>=params.epsilon;
-                    leakY(:,z)            = solution.x(nlt+1:nlt+mlt,1);
+                    if findSparseRxnSet
+                        leakY(:,z)          = solution.z(1:mlt,1);
+                    else
+                        leakY(:,z)          = solution.x(nlt+1:nlt+mlt,1);
+                    end
                     minSiphonMetBool(:,z) = leakY(:,z)>=params.epsilon;
                     
                     if any(minSiphonMetBool)

@@ -1,4 +1,4 @@
-function [model,rxnIDexists] = addReaction(model,rxnName,metaboliteList,stoichCoeffList,revFlag,lowerBound,upperBound,objCoeff,subSystem,grRule,geneNameList,systNameList,checkDuplicate)
+function [model,rxnIDexists] = addReaction(model,rxnName,metaboliteList,stoichCoeffList,revFlag,lowerBound,upperBound,objCoeff,subSystem,grRule,geneNameList,systNameList,checkDuplicate,printLevel)
 %addReaction Add a reaction to the model or modify an existing reaction
 %
 % model = addReaction(model,rxnName,metaboliteList,stoichCoeffList,revFlag,lowerBound,upperBound,objCoeff,subSystem,grRule,geneNameList,systNameList,checkDuplicate)
@@ -54,6 +54,10 @@ function [model,rxnIDexists] = addReaction(model,rxnName,metaboliteList,stoichCo
 if ~exist('addRxnGeneMat','var')
     addRxnGeneMat = 1;
 end
+if ~exist('printLevel','var')
+    printLevel = 1;
+end
+
 
 parseFormulaFlag = false;
 rxnIDexists = [];
@@ -376,5 +380,7 @@ else
     else
         model.S = [Stmp Scolumn];
     end
-    printRxnFormula(model,rxnName);
+    if printLevel>0
+        printRxnFormula(model,rxnName);
+    end
 end

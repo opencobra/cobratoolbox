@@ -122,9 +122,17 @@ if isfield(params,'monoRxnMode') == 0
 end
 
 %%Define the semipositive optimisation problem
-cardProb.p       = nlt+mlt;
-cardProb.q       = 0;
-cardProb.r       = 0;
+findSparseRxnSet=1;
+if findSparseRxnSet
+    cardProb.p       = nlt;
+    cardProb.q       = 0;
+    cardProb.r       = mlt;
+else
+    cardProb.p       = nlt+mlt;
+    cardProb.q       = 0;
+    cardProb.r       = 0;
+end
+
 cardProb.c       = zeros(cardProb.p+cardProb.q+cardProb.r,1);
 cardProb.lambda  = 1;
 cardProb.delta   = 0;
@@ -243,7 +251,11 @@ for n=1:nlt
             case 1
                 Vp(:,z)          = solution.x(1:nlt,1);
                 minLeakRxnBool(:,z) = Vp(:,z)>=params.eta;
-                leakY(:,z)          = solution.x(nlt+1:nlt+mlt,1);
+                                    if findSparseRxnSet
+                        leakY(:,z)          = solution.z(1:mlt,1);
+                    else
+                        leakY(:,z)          = solution.x(nlt+1:nlt+mlt,1);
+                    end
                 minLeakMetBool(:,z) = leakY(:,z)>=params.eta;
                 
                 if any(minLeakMetBool(:,z))
@@ -359,7 +371,11 @@ for n=1:nlt
                 case 1
                     Vn(:,z)            = solution.x(1:nlt,1);
                     minSiphonRxnBool(:,z) = Vn(:,z)>=params.eta;
-                    siphonY(:,z)            = solution.x(nlt+1:nlt+mlt,1);
+                    if findSparseRxnSet
+                        siphonY(:,z)          = solution.z(1:mlt,1);
+                    else
+                        siphonY(:,z)          = solution.x(nlt+1:nlt+mlt,1);
+                    end
                     minSiphonMetBool(:,z) = siphonY(:,z)>=params.eta;
                     
                     if any(minSiphonMetBool(:,z))

@@ -135,6 +135,9 @@ model.DMRxnBool=strncmp('DM_', model.rxns, 3)==1;
 %sink reactions going into or out of model
 model.SinkRxnBool=strncmp('sink_', model.rxns, 5)==1;
 
+% %HMR
+%model.SinkRxnBool=strncmp('HMR_', model.rxns, 4)==1;
+
 %remove ATP demand as it is usually mass balanced
 bool=strcmp('ATPM',model.rxns);
 if any(bool)
