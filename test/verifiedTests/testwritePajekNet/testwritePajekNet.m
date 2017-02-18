@@ -3,7 +3,6 @@
 % Purpose:
 %     - testwritePajekNet tests the writePajekNet function
 %       that transforms a hypergraph into a graph (Pajek format)
-% 
 %
 % Author:
 %     - Marouen BEN GUEBILA 09/02/2017
@@ -20,28 +19,36 @@ initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testwrite
 load('ecoli_core_model', 'model');
 
 %test solver packages
-solverPkgs = {'tomlab_cplex'};%,'ILOGcomplex'};
+solverPkgs = {'tomlab_cplex'};  %,'ILOGcomplex'};
 
 for k = 1:length(solverPkgs)
+
+    fprintf('   Testing writePajekNet using %s ... ', solverPkgs{k});
+
     % add the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
         addpath(genpath(path_TOMLAB));
     end
-    
+
     %load test data
-    fileID = fopen('COBRAmodeltest.net','r');  
-    testData=fscanf(fileID,'%s');
+    fileID = fopen('COBRAmodeltest.net', 'r');
+    testData = fscanf(fileID, '%s');
     fclose(fileID);
+
     %call fucntion
-    writePajekNet(model)
+    writePajekNet(model);
+
     %save produced data
-    fileID = fopen('COBRAmodel.net','r');  
-    Data=fscanf(fileID,'%s');
+    fileID = fopen('COBRAmodel.net', 'r');
+    Data = fscanf(fileID, '%s');
     fclose(fileID);
+
     %compare with produced data
-    assert(isequal(testData,Data));
+    assert(isequal(testData, Data));
+
     %delete data
     delete COBRAmodel.net
+
     % remove the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
         rmpath(genpath(path_TOMLAB));
