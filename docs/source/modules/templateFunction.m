@@ -19,7 +19,6 @@ function [out1, out2] = templateFunction(arg1, arg2, arg3)
 %    out2: the product of arg1, arg2 and arg3
 %
 % Example:
-% ::
 %
 %   [out1, out2] = templateFunction(1, 2, 3);
 %   >> out1 = 2
