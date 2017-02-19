@@ -17,7 +17,7 @@ pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
 
 % remove the generated file
-cd([CBTDIR '/test/verifiedTests/testXls2Model']);
+cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testXls2Model']);
 
 % convert the model
 model = xls2model('cobra_import_toy_model.xlsx');
