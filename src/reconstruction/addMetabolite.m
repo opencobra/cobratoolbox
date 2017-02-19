@@ -211,8 +211,8 @@ for i = 1:numel(metID)
             warning(['Metabolite formula for ' metID{i} ' set to ''''']);
         %             model.metFormulas(end) = cellstr(input('Enter metabolite chemical formula, if available:', 's'));
         end
-        if isfield(model,'metChEBIID')
-            model.metChEBIID{end+1,1} = CHEBIID{i};
+        if isfield(model,'metCHEBIID')
+            model.metCHEBIID{end+1,1} = CHEBIID{i};
         end
         if isfield(model,'metKEGGID')
             model.metKEGGID{end+1,1} = KEGGId{i};

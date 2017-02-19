@@ -420,7 +420,7 @@ model.rxnNames = columnVector(rxnNames);
 
 
 if (hasAnnotationField)
-    model.metChEBIID = columnVector(metCHEBIID);
+    model.metCHEBIID = columnVector(metCHEBIID);
     model.metKEGGID = columnVector(metKEGGID);
     model.metPubChemID = columnVector(metPubChemID);
     model.metInChIString = columnVector(metInChIString);
