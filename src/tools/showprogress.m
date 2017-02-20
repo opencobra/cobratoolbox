@@ -1,9 +1,17 @@
-% showprogress shows waitbars
-% Inputs
-% x, whichbar, varagin: see waitbar header for explanation
-% Feb 2017, Lemmer El Assal
-
 function fout = showprogress(x, whichbar, varargin)
+% showprogress shows waitbars
+%
+% Inputs:
+%   x: percentage in integer (e.g.: 1 = 1%, 40 = 40%, etc.)
+%   whichbar: caption
+%   varagin: see waitbar header for explanation
+% 
+% Output:
+%   fout: 
+%
+% .. Author: 
+%        - Lemmer El Assal (Feb 2017)
+%
     global WAITBAR_TYPE;
     fout = [];
     if ~isempty(WAITBAR_TYPE)
