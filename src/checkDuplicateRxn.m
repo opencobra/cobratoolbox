@@ -41,7 +41,7 @@ switch method
         end
         close(h);
     case 2
-        h = showprogress(0, 'Checking by reaction ...');
+		h = showprogress(0, 'Checking by reaction ...');
 		[~, ia, ic] = unique(model.S', 'rows');
 		reactionsToRemove = cell(0);
 		rxnsKept = cell(0);
