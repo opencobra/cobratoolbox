@@ -45,9 +45,9 @@ function model = xls2model(fileName,biomassRxnEquation)
 % model         COBRA Toolbox model
 %
 % Ines Thiele   01/02/09
-% Richard Que   04/27/10    Modified reading of PubChemID and ChEBIID so that if met
+% Richard Que   04/27/10    Modified reading of PubChemID and CHEBIID so that if met
 %                           has multiple IDs, all are passed to model. Confidence Scores
-%                           PubChemIDs, and ChEBIIDs, are properly passed as cell arrays.
+%                           PubChemIDs, and CHEBIIDs, are properly passed as cell arrays.
 % Ronan Fleming 08/17/10    Support for unix
 % Hulda S.H.    10/11/10    Modified reading of xls document. Identifies
 %                           columns by their headers. Added reading of
@@ -206,7 +206,7 @@ if ~cellfun('isempty',(strfind(MetStrings(2,metCol),'[')))
                 model.metPubChemID(MetLoc) = metInfo{i,strmatch('PubChem ID',metHeaders,'exact')};
             end
             if ~isempty(strmatch('ChEBI ID',metHeaders,'exact'))
-                model.metChEBIID{MetLoc} = metInfo{i,strmatch('ChEBI ID',metHeaders,'exact')};
+                model.metCHEBIID{MetLoc} = metInfo{i,strmatch('ChEBI ID',metHeaders,'exact')};
             end
         else
             warning(['Metabolite ' metInfo{i,metCol} ' not in model']);
@@ -257,7 +257,7 @@ else
                     model.metPubChemID(MetLoc(j)) = metInfo{i,strmatch('PubChem ID',metHeaders,'exact')};
                 end
                 if ~isempty(strmatch('ChEBI ID',metHeaders,'exact'))
-                    model.metChEBIID{MetLoc(j)} = metInfo{i,strmatch('ChEBI ID',metHeaders,'exact')};
+                    model.metCHEBIID{MetLoc(j)} = metInfo{i,strmatch('ChEBI ID',metHeaders,'exact')};
                 end
             end
         else
@@ -290,7 +290,7 @@ model.rxnNotes = columnVector(model.rxnNotes);
 model.rxnReferences = columnVector(model.rxnReferences);
 model.proteins = columnVector(model.proteins);
 model.metPubChemID = columnVector(model.metPubChemID);
-model.metChEBIID = columnVector(model.metChEBIID);
+model.metCHEBIID = columnVector(model.metCHEBIID);
 
 if isfield(model,'metCompartment')
     model.metCompartment = columnVector(model.metCompartment);
