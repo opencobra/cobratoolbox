@@ -7,7 +7,7 @@ function fout = showprogress(x, whichbar, varargin)
 %   varagin: see waitbar header for explanation
 % 
 % Output:
-%   fout: 
+%   fout: handle output from waitbar() (WAITBAR_TYPE = 1)
 %
 % .. Author: 
 %        - Lemmer El Assal (Feb 2017)
