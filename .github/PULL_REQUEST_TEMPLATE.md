@@ -3,8 +3,8 @@
 **I hereby confirm that I have:**
 
 - [ ] Tested my code on my own machine
-- [ ] Followed the guidelines in the [contributing](https://github.com/opencobra/cobratoolbox/blob/documentation/.github/CONTRIBUTING.md) document
-- [ ] Followed the [code styleguide](https://github.com/opencobra/cobratoolbox/blob/documentation/.github/CONTRIBUTING.md#code-styleguide)
+- [ ] Followed the guidelines in the [contributing](https://github.com/opencobra/cobratoolbox/blob/master/.github/CONTRIBUTING.md) document
+- [ ] Followed the [code styleguide](https://github.com/opencobra/cobratoolbox/blob/master/.github/CONTRIBUTING.md#code-styleguide)
 - [ ] Checked to ensure there aren't other open [Pull Requests](https://github.com/opencobra/cobratoolbox/pulls) for the same update/change
 - [ ] Written platform-independent code
 - [ ] Used `pwd` to get the current directory
@@ -27,7 +27,7 @@
 
 **I hereby confirm that I have:**
 
-- [ ] Documented your code based on the [Documentation styleguide](#documentation-and-comments-styleguide).
+- [ ] Documented your code based on the [Documentation styleguide](https://github.com/opencobra/cobratoolbox/blob/master/.github/CONTRIBUTING.md#documentation-and-comments-styleguide).
 - [ ] Documented the `Input` and `Output` arguments
 - [ ] Followed the guidelines to automatically generate the documentation
 
@@ -37,7 +37,7 @@
 
 **I hereby confirm that I have:**
 
-- [ ] Written a sensible test according to the [Test styleguide](#test-styleguide)
+- [ ] Written a sensible test according to the [Test styleguide](https://github.com/opencobra/cobratoolbox/blob/master/.github/CONTRIBUTING.md#test-styleguide)
 - [ ] Tested your PR locally prior to submission
 - [ ] Checked that all tests pass
 - [ ] Tested the code on Linux
