@@ -37,12 +37,10 @@ switch method
                 cnt = cnt+1;
             end
             i = i+1;
-            %waitbar(i/nRxns,h);
             showprogress(i/nRxns,h);
         end
         close(h);
     case 2
-		%h = waitbar(0, 'Checking by reaction ...');
         h = showprogress(0, 'Checking by reaction ...');
 		[~, ia, ic] = unique(model.S', 'rows');
 		reactionsToRemove = cell(0);
@@ -69,7 +67,6 @@ switch method
 					rxnsKept = [rxnsKept; rxnWithDuplicates];
 					duplicateReactions = [duplicateReactions; {rxnsToRemove}];
 				end
-				%waitbar(rxnInd/max(ic), h);
 				showprogress(rxnInd/max(ic), h);
 			end
 			removed = [removed; reactionsToRemove'];

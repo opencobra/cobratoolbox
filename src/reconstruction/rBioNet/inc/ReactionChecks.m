@@ -228,12 +228,8 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % cnt = 1;
 % sims = sparse(1,1);
-% h = waitbar(0,['Unique checking textfile ' num2str(i) ' of ' ...
 %     num2str(S_nrxns(1)) '. This may take a while.']);
 % for i = 1:S_nrxns(1)-1
-%     waitbar(i/S_nrxns(1),h,['Unique checking textfile '...
-%         num2str(i) ' of ' num2str(S_nrxns(1)) '.']);
-% 
 %     similar = similarity(newrxns{i,3},newrxns(i+1:end,3),0); %similarity test
 %     
 %     if ~isempty(similar)

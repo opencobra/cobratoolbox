@@ -59,11 +59,9 @@ objFlux = [];
 controlFlux1 = linspace(solMin1.f,solMax1.f,nPoints)';
 controlFlux2 = linspace(solMin2.f,solMax2.f,nPoints)';
 
-%h = waitbar(0,'Double robustness analysis in progress ...');
 h = showprogress(0,'Double robustness analysis in progress ...');
 for i=1:nPoints
     for j = 1:nPoints
-        %waitbar(((i-1)*nPoints+j)/nPoints^2,h);
         showprogress(((i-1)*nPoints+j)/nPoints^2,h);
         modelControlled = changeRxnBounds(baseModel,controlRxn1,controlFlux1(i),'b');
         modelControlled = changeRxnBounds(modelControlled,controlRxn2,controlFlux2(j),'b');

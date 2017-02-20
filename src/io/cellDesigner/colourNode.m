@@ -140,9 +140,6 @@ num=[];
 % num=num_1;
 
 for i=1:length(list_nodes);
-    
-    %  waitbar(((i/length(list_nodes))*1/4)/4,h);
-    
     %if ~isempty(list_nodes{i,2})
     re=find(~cellfun('isempty',strfind(r_info.ID(:,3),list_nodes{i,1})))
     if isempty(re)

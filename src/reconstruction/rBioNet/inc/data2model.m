@@ -126,7 +126,6 @@ model.metCharge = {};
 % met_list = cell(1,9); %size depends on size of met_k!
 % met_list{1,1} = 'Thorleifsson';
 % missing_mets = {'Thorleifsson'};missing_cnt = 0;
-% h = waitbar(0,'Checking reactions....');
 % max_msgbox = 0;
 %
 

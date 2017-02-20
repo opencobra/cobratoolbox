@@ -68,7 +68,6 @@ end
 
 
 if (~doubleDelFlag)
-    %h = waitbar(0,'Simple OptKnock in progress ...');
     h = showprogress(0,'Simple OptKnock in progress ...');
 end
 t0 = cputime;
@@ -76,7 +75,6 @@ delCounter = 0;
 for i = 1:nDel
     if (~doubleDelFlag)
         if mod(i,10) == 0
-            %waitbar(i/nDel,h);
             showprogress(i/nDel,h);
         end
     end

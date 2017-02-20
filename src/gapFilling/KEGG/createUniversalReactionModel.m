@@ -20,7 +20,6 @@ KEGGReactionList = importdata(KEGGFilename);
 KEGG = createModel;
 cnt=1;
 cnti=1;
-%h=waitbar(0,'KEGG reaction list ...');
 h=showprogress(0,'KEGG reaction list ...');
 HTABLE = java.util.Hashtable; % hashes Kegg.mets
 

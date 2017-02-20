@@ -37,7 +37,6 @@ fprintf('Finished, %i Distinct Reactions\n',lengthreaction);
 
 % Combining Metabolite List
 fprintf('Combining metabolite lists: ');
-%h = waitbar(0, 'Combining Metabolites in Progress ...');
 h = showprogress(0, 'Combining Metabolites in Progress ...');
 modelNew.mets = model1.mets;
 
@@ -145,11 +144,12 @@ model1_num = length(a1);
 model2_num = length(a2);
 modelNew.S = spalloc(size(modelNew.mets,1),size(modelNew.rxns,1),model1_num+model2_num);
 
-%h = waitbar(0, 'Adding Matrix 1 in Progress ...');
 h = showprogress(0, 'Adding Matrix 1 in Progress ...');
 for i = 1:size(a1,1)
     modelNew.S(a1(i),b1(i)) = model1.S(a1(i),b1(i));
-    if mod(i,40) == 0,showprogress(i/size(a1,1),h);end
+    if mod(i,40) == 0
+        showprogress(i/size(a1,1),h);
+    end
 end
 close(h);
 
@@ -173,7 +173,9 @@ for i = 1:size(model2.S,2)
         %end
         modelNew.S(tmp,i+size(model1.S,2)) = model2.S(compounds(j),i);
     end
-    if mod(i,40) == 0,showprogress(i/size(model2.S,2),h);end
+    if mod(i,40) == 0
+        showprogress(i/size(model2.S,2),h);
+    end
 end
 delete(h);
 fprintf('Finished\n');
@@ -232,7 +234,9 @@ for i = 1:size(model2.rxnGeneMat,1)
         T = find(ismember(modelNew.rxns,model2.rxns(i)));
         modelNew.rxnGeneMat(T,:) = 0;
     end
-    if(mod(i, 40) == 0),showprogress(i/size(model2.rxnGeneMat,1),h);end
+    if(mod(i, 40) == 0)
+        showprogress(i/size(model2.rxnGeneMat,1),h);
+    end
 end
 close(h);
 end

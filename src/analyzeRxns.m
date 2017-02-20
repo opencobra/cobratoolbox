@@ -18,10 +18,8 @@ function [allRxns,rxnCount] = analyzeRxns(product,listProducts,listRxns)
 
 %find all product producers
 makesProd = [];
-%h = waitbar(0,['finding ',product,' producing strains']);
 h = showprogress(0,['finding ',product,' producing strains']);
 for i = 1:length(listProducts)
-    %waitbar(i/length(listProducts),h);
     showprogress(i/length(listProducts),h);
     pos = strmatch(product,listProducts{i});
     if pos ~= 0
