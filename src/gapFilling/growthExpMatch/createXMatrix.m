@@ -124,6 +124,8 @@ for i=1:length(compounds)
             end
         end
     end
-    if(mod(i, 40) ==0),showprogress(i/length(compounds),h);end
+    if mod(i, 40) == 0
+        showprogress(i/length(compounds),h);
+    end
 end
 close(h);

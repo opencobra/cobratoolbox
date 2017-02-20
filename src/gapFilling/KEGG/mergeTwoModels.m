@@ -67,7 +67,9 @@ for i = 1:size(model2.mets,1)
          end
         sizemets = sizemets+1;
     end
-    if(mod(i,40) == 0),showprogress(i/size(model2.mets,1),h);end
+    if mod(i,40) == 0
+        showprogress(i/size(model2.mets,1),h);
+    end
 end
 
 lengthmet = size(modelNew.mets,1);
