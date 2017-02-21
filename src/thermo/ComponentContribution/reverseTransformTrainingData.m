@@ -1,8 +1,14 @@
-function training_data = reverseTransformTrainingData(model, training_data, use_model_pKas_by_default)
+function training_data = reverseTransformTrainingData(model, training_data, use_model_pKas_by_default, debug)
+
+% debug             0: No verbose output
+%                   1: Progress information only (no warnings)
+%                   2: Progress and warnings
 
 R = 8.31e-3; % kJ/mol/K
 
-fprintf('Performing reverse transform\n');
+if debug > 0
+    fprintf('Performing reverse transform\n');
+end
 
 % Calculate the reverse transform for all reactions in training_data.
 % Note that many of the compounds in the training data are missing from the iAF1260

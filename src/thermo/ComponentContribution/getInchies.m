@@ -1,4 +1,4 @@
-function inchies = getInchies(target_cids, use_cache)
+function inchies = getInchies(target_cids, use_cache, debug)
 if nargin < 2
     use_cache = true;
 end
@@ -26,7 +26,9 @@ end
 
 % Load relevant InChIs (for all compounds in the training data)
 if exist(CACHED_KEGG_INCHI_MAT_FNAME, 'file') && use_cache
-    fprintf('Loading the InChIs for the training data from: %s\n', CACHED_KEGG_INCHI_MAT_FNAME);
+    if debug > 0
+        fprintf('Loading the InChIs for the training data from: %s\n', CACHED_KEGG_INCHI_MAT_FNAME);
+    end
     load(CACHED_KEGG_INCHI_MAT_FNAME);
 else
     inchies.cids = [];
@@ -36,7 +38,9 @@ if ~isempty(setdiff(target_cids, inchies.cids))
     % load the InChIs for all KEGG compounds in the 'kegg_additions.tsv' file.
     % this contains a few corrections needed in KEGG and added compounds (all starting with C80000)
     
-    fprintf('Obtaining MOL files for the training data from KEGG and converting to InChI using OpenBabel\n');
+    if debug > 0
+        fprintf('Obtaining MOL files for the training data from KEGG and converting to InChI using OpenBabel\n');
+    end
     
     fid = fopen(KEGG_ADDITIONS_TSV_FNAME, 'r');
     fgetl(fid); % fields are: name, cid, inchi
