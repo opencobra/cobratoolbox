@@ -66,7 +66,7 @@ for i = 1:length(fieldList)
         else
             citation = strcat(citation,';',strtrim(strjoin(strfields(2:end),':')));
         end
-    elseif strcmp(strfields{1},'Confidence')
+    elseif strcmp(strfields{1},'Confidence Level')
         confidenceScore = strtrim(strjoin(strfields(2:end),':'));
     elseif strcmp(strfields{1},'NOTES')
         if isempty(comment)

@@ -14,8 +14,10 @@
 %     - The solver libraries must be included separately
 
 % define global paths
-global path_TOMLAB
+global CBTLPSOLVER
 
+%get the current working directory
+cpath = pwd;
 % define the path to The COBRAToolbox
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
@@ -47,10 +49,10 @@ assert(length(model.b) == length(testModel.b))
 initTest([CBTDIR, filesep, 'test', filesep, 'models'])
 
 % add the path of the TOMLAB solver
-addpath(genpath(path_TOMLAB));
+%addpath(genpath(path_TOMLAB));
 
 % set the solver
-solverOK = changeCobraSolver('tomlab_cplex');
+solverOK = changeCobraSolver(CBTLPSOLVER);
 
 if solverOK ~= 1
     error('Solver cannot be set properly.');
@@ -58,9 +60,18 @@ else
     % set the tolerance
     tol = 1e-9;
 
+    %Download the models if they were not yet downloaded
+    retrieveModels()
+    
+    %And return to this folder. However, this SHOULD be done by
+    %retrieveModels (in my opinion), but that function switches to ../../
+    %and not a defined path so I don't want to fiddle around in there at
+    %the moment.
+    cd(cpath)
+    
     % load the models
     modelArr = {'Abiotrophia_defectiva_ATCC_49176.xml', 'STM_v1.0.xml', 'iIT341.xml', 'Ec_iAF1260_flux1.xml'};
-
+    
     % define the maximum objective values calculated from pre-converted .mat files
     modelFBAf_max = [0.149475406282249; 0.477833660760744; 0.692812693473487; 0.736700938865275];
 
@@ -72,8 +83,9 @@ else
         % output a line before launching the test for model i
         fprintf('Testing %s ...', modelArr{i});
 
-        % load the model
-        model = readCbModel(modelArr{i});
+        % load the model (actually supply the full filename of the path
+        % where the model is found)
+        model = readCbModel(which(modelArr{i}));
 
         % solve the maximisation problem
         FBA = optimizeCbModel(model, 'max');
