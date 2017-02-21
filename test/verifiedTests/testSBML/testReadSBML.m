@@ -14,13 +14,14 @@
 %     - The solver libraries must be included separately
 
 % define global paths
-global CBTLPSOLVER
+global path_TOMLAB
+global path_GUROBI
 
-%get the current working directory
-cpath = pwd;
 % define the path to The COBRAToolbox
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
+
+cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testSBML'])
 
 % load the test models
 testModel = readCbModel('Ec_iJR904.xml');
@@ -46,65 +47,73 @@ assert(length(model.metFormulas) == length(testModel.metFormulas))
 assert(length(model.b) == length(testModel.b))
 
 % initialize the test
-initTest([CBTDIR, filesep, 'test', filesep, 'models'])
+initTest([CBTDIR, filesep, 'test', filesep, 'models']);
 
-% add the path of the TOMLAB solver
-%addpath(genpath(path_TOMLAB));
+% define the solver packages to be used to run this test
+solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
 
-% set the solver
-solverOK = changeCobraSolver(CBTLPSOLVER);
+for k = 1:length(solverPkgs)
 
-if solverOK ~= 1
-    error('Solver cannot be set properly.');
-else
-    % set the tolerance
-    tol = 1e-9;
+    % add the solver paths (temporary addition for CI)
+    if strcmp(solverPkgs{k}, 'tomlab_cplex')
+        addpath(genpath(path_TOMLAB));
+    elseif strcmp(solverPkgs{k}, 'gurobi6')
+        addpath(genpath(path_GUROBI));
+    end
 
-    %Download the models if they were not yet downloaded
-    retrieveModels()
-    
-    %And return to this folder. However, this SHOULD be done by
-    %retrieveModels (in my opinion), but that function switches to ../../
-    %and not a defined path so I don't want to fiddle around in there at
-    %the moment.
-    cd(cpath)
-    
-    % load the models
-    modelArr = {'Abiotrophia_defectiva_ATCC_49176.xml', 'STM_v1.0.xml', 'iIT341.xml', 'Ec_iAF1260_flux1.xml'};
-    
-    % define the maximum objective values calculated from pre-converted .mat files
-    modelFBAf_max = [0.149475406282249; 0.477833660760744; 0.692812693473487; 0.736700938865275];
+    % set the solver
+    solverOK = changeCobraSolver(solverPkgs{k});
 
-    % define the minimum objective values
-    modelFBAf_min = [0.0; 0.0; 0.0; 0.0];
+    if solverOK == 1
+        fprintf('   Testing readSBML using %s ... \n', solverPkgs{k});
 
-    % loop through the models
-    for i = 1:length(modelArr)
-        % output a line before launching the test for model i
-        fprintf('Testing %s ...', modelArr{i});
+        % set the tolerance
+        tol = 1e-6;
 
-        % load the model (actually supply the full filename of the path
-        % where the model is found)
-        model = readCbModel(which(modelArr{i}));
+        % load the models
+        modelArr = {'Abiotrophia_defectiva_ATCC_49176.xml', 'STM_v1.0.xml', 'iIT341.xml', 'Ec_iAF1260_flux1.xml'};
 
-        % solve the maximisation problem
-        FBA = optimizeCbModel(model, 'max');
+        % define the maximum objective values calculated from pre-converted .mat files
+        modelFBAf_max = [0.149475406282249; 0.477833660760744; 0.692812693473487; 0.736700938865275];
 
-        % test the maximisation solution
-        assert(FBA.stat == 1);
-        assert(abs(FBA.f - modelFBAf_max(i)) < tol);
-        assert(norm(model.S * FBA.x) < tol);
+        % define the minimum objective values
+        modelFBAf_min = [0.0; 0.0; 0.0; 0.0];
 
-        % solve the minimisation problem
-        FBA = optimizeCbModel(model, 'min');
+        % loop through the models
+        for i = 1:length(modelArr)
+            % output a line before launching the test for model i
+            fprintf('   Testing %s ...', modelArr{i});
 
-        % test the minimisation solution
-        assert(FBA.stat == 1);
-        assert(abs(FBA.f - modelFBAf_min(i)) < tol);
-        assert(norm(model.S * FBA.x) < tol);
+            % load the model (actually supply the full filename of the path
+            % where the model is found)
+            model = readCbModel(which(modelArr{i}));
 
-        % print a line for success of loop i
-        fprintf(' Done.\n');
+            % solve the maximisation problem
+            FBA = optimizeCbModel(model, 'max');
+
+            % test the maximisation solution
+            assert(FBA.stat == 1);
+            assert(abs(FBA.f - modelFBAf_max(i)) < tol);
+            assert(norm(model.S * FBA.x) < tol);
+
+            % solve the minimisation problem
+            FBA = optimizeCbModel(model, 'min');
+
+            % test the minimisation solution
+            assert(FBA.stat == 1);
+            assert(abs(FBA.f - modelFBAf_min(i)) < tol);
+            assert(norm(model.S * FBA.x) < tol);
+
+            % print a line for success of loop i
+            fprintf(' Done.\n');
+        end
+
+        % remove the solver paths (temporary addition for CI)
+        if strcmp(solverPkgs{k}, 'tomlab_cplex')
+            rmpath(genpath(path_TOMLAB));
+        elseif strcmp(solverPkgs{k}, 'gurobi6')
+            rmpath(genpath(path_GUROBI));
+        end
     end
 end
 
