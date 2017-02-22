@@ -342,9 +342,15 @@ else % parallel job.  pretty much does the same thing.
                 'osense',-1, ...
                 'basis', LPproblem.basis ...
             ),'solver',solver);
-
-            %take the maximum flux from the flux vector, not from the obj -Ronan
-            maxFlux(i) = LPsolution.full(c~=0);
+        
+            %take the maximum flux from the flux vector, not from the obj -Ronan           
+            if LPsolution.full(LPproblem.c~=0)<LPproblem.lb(i) %takes out tolerance issues 
+                maxFlux(i) = LPproblem.lb(i);
+            elseif LPsolution.full(LPproblem.c~=0)>LPproblem.ub(i)
+                maxFlux(i) = LPproblem.ub(i);
+            else
+                maxFlux(i) = LPsolution.full(LPproblem.c~=0);
+            end
             %LPproblemb.osense = 1;
             LPsolution = solveCobraLP(struct(...
                 'A', LPproblem.A,...
@@ -356,7 +362,14 @@ else % parallel job.  pretty much does the same thing.
                 'osense',1, ... %only part that's different.
                 'basis', LPproblem.basis ...
             ),'solver',solver);
-            minFlux(i) = LPsolution.full(c~=0);
+        
+            if LPsolution.full(LPproblem.c~=0)<LPproblem.lb(i) %takes out tolerance issues 
+                minFlux(i) = LPproblem.lb(i);
+            elseif LPsolution.full(LPproblem.c~=0)>LPproblem.ub(i)
+                minFlux(i) = LPproblem.ub(i);
+            else
+                minFlux(i) = LPsolution.full(LPproblem.c~=0);
+            end
         else
             LPsolution = solveCobraMILP(addLoopLawConstraints(struct(...
                 'A', LPproblem.A,...
