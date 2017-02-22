@@ -146,8 +146,9 @@ else
     LPproblem.b = model.b;
 end
 
+LPproblem.S = LPproblem.A;%needed for sparse optimisation
 
-% %solve to generate initial basis
+%solve to generate initial basis
 LPproblem.osense = -1;
 tempSolution = solveCobraLP(LPproblem);
 LPproblem.basis = tempSolution.basis;
@@ -183,8 +184,6 @@ else
      PCT_status=0;  % Parallel Computing Toolbox not found.
 end
 
-
-
 if PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
     m = 0;
     for i = 1:length(rxnNameList)
@@ -197,10 +196,10 @@ if PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
         LPproblem.osense = -1;
         LPsolution = solveCobraLP(LPproblem);
         %take the maximum flux from the flux vector, not from the obj -Ronan
-        if LPsolution.full(LPproblem.c~=0)<lb(i) %takes out tolerance issues 
-            maxFlux(i) = lb(i)
-        elseif LPsolution.full(LPproblem.c~=0)>ub(i)
-            maxFlux(i) = ub(i)
+        if LPsolution.full(LPproblem.c~=0)<LPproblem.lb(i) %takes out tolerance issues 
+            maxFlux(i) = LPproblem.lb(i);
+        elseif LPsolution.full(LPproblem.c~=0)>LPproblem.ub(i)
+            maxFlux(i) = LPproblem.ub(i);
         else
             maxFlux(i) = LPsolution.full(LPproblem.c~=0);
         end
@@ -231,19 +230,28 @@ if PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
             vSparse = sparseFBA(LPproblem,'max',0,0,'all');
             Vmax(:,rxnBool) = vSparse;
         elseif (nargout > 2 && isequal(method,'FBA'))
-            Vmax(:,rxnBool)=LPsolution.full;
+            Vmax(:,rxnBool) = LPsolution.full;
         elseif (nargout > 2 && isequal(method,'minOrigSol'))
-            momaSolution = MOMA(model,LPproblem);
-            Vmax(:,rxnBool)=momaSolution;
+                LPproblemMOMA = LPproblem;
+                rmfield(LPproblemMOMA,'csense');
+                LPproblemMOMA.A = model.S;
+                LPproblemMOMA.S = LPproblemMOMA.A;
+                LPproblemMOMA.b = model.b;
+                LPproblemMOMA.lb(find(model.c)) = objValue;
+                LPproblemMOMA.lb(i) = maxFlux(i);
+                LPproblemMOMA.ub(i) = maxFlux(i);
+                LPproblemMOMA.rxns = model.rxns;
+                momaSolution = linearMOMA(model,LPproblemMOMA);
+                Vmax(:,rxnBool)=momaSolution.x;
         end
 
         LPproblem.osense = 1;
         LPsolution = solveCobraLP(LPproblem);
         %take the maximum flux from the flux vector, not from the obj -Ronan
-        if LPsolution.full(LPproblem.c~=0)<lb(i) %takes out tolerance issues 
-            minFlux(i) = lb(i)
-        elseif LPsolution.full(LPproblem.c~=0)>ub(i)
-            minFlux(i) = ub(i)
+        if LPsolution.full(LPproblem.c~=0)<LPproblem.lb(i) %takes out tolerance issues 
+            minFlux(i) = LPproblem.lb(i);
+        elseif LPsolution.full(LPproblem.c~=0)>LPproblem.ub(i)
+            minFlux(i) = LPproblem.ub(i);
         else
             minFlux(i) = LPsolution.full(LPproblem.c~=0);
         end
@@ -274,8 +282,17 @@ if PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
         elseif (nargout > 2 && isequal(method,'FBA'))
             Vmin(:,rxnBool)=LPsolution.full;
         elseif (nargout > 2 && isequal(method,'minOrigSol'))
-            momaSolution = MOMA(model,LPproblem);
-            Vmin(:,rxnBool)=momaSolution;
+                LPproblemMOMA = LPproblem;
+                rmfield(LPproblemMOMA,'csense');
+                LPproblemMOMA.A = model.S;
+                LPproblemMOMA.S = LPproblemMOMA.A;
+                LPproblemMOMA.b = model.b;
+                LPproblemMOMA.lb(find(model.c)) = objValue;
+                LPproblemMOMA.lb(i) = minFlux(i);
+                LPproblemMOMA.ub(i) = minFlux(i);
+                LPproblemMOMA.rxns = model.rxns;
+                momaSolution = linearMOMA(model,LPproblemMOMA);
+                Vmin(:,rxnBool)=momaSolution.x;
         end
 
 
