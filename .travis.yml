@@ -1,0 +1,27 @@
+language: bash
+
+before_install:
+    - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+    - git submodule update --force --init --recursive
+
+script:
+    # set the environment variable CURRENT_DIR
+    - CURRENT_DIR=`pwd`
+
+    # change to the current directory
+    - cd $CURRENT_DIR
+
+    # launch the tests
+    - sh ./runtests.sh
+
+after_success:
+    - if [ "$MATLAB_VER" == "R2016b" ]; then
+      bash <(curl -s https://codecov.io/bash) -f "!*.lst";
+      export PATH="/var/lib/jenkins/.local/bin":$PATH;
+      pip install --user sphinx;
+      pip install --user recommonmark;
+      pip install --user sphinxcontrib-matlabdomain;
+      pip install --user sphinx_julia_theme==0.0.2rc0;
+      pip install --user --upgrade git+https://github.com/syarra/Documenter.py@develop#egg=documenter;
+      pip install --user pyGithub;
+      fi
