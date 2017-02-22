@@ -1,4 +1,4 @@
-% Tests functionality of calcGroupStats.
+% Tests functionality of countUnique.
 
 %save original directory
 oriDir = pwd;
