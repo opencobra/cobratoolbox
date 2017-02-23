@@ -17,10 +17,10 @@ fileDir = fileparts(which('testFVA'));
 cd(fileDir);
 
 % set the tolerance
-tol = 1e-3;
+tol = 1e-8;
 
 % define the solver packages to be used to run this test
-solverPkgs = {'tomlab_cplex','glpk'};
+solverPkgs = {'tomlab_cplex'};
 
 % load the model
 load('Ec_iJR904.mat', 'model');
@@ -51,16 +51,17 @@ for k = 1:length(solverPkgs)
         % check if each flux value corresponds to a pre-calculated value
         for i = 1:size(rxnID)
             % test the components of the minFlux and maxFlux vectors
-            assert(minFlux(i) - tol <= minFluxT(i))
-            assert(minFluxT(i) <= minFlux(i) + tol)
+            assert(abs(minFlux(i) - minFluxT(i)) <= tol)
+%             assert(minFluxT(i) <= minFlux(i) + tol)
 
-            assert(maxFlux(i) - tol <= maxFluxT(i))
-            assert(maxFluxT(i) <= maxFlux(i) + tol)
+            assert(abs(maxFlux(i) - maxFluxT(i)) <= tol)
+%             assert(maxFlux(i) - tol <= maxFluxT(i))
+%             assert(maxFluxT(i) <= maxFlux(i) + tol)
 
-            maxMinusMin = maxFlux(i) - minFlux(i);
-            maxTMinusMinT = maxFluxT(i) - minFluxT(i);
-            assert(maxMinusMin - tol <= maxTMinusMinT)
-            assert(maxTMinusMinT <= maxMinusMin + tol)
+%             maxMinusMin = maxFlux(i) - minFlux(i);
+%             maxTMinusMinT = maxFluxT(i) - minFluxT(i);
+%             assert(maxMinusMin - tol <= maxTMinusMinT)
+%             assert(maxTMinusMinT <= maxMinusMin + tol)
 
             % print the labels
             printLabeledData(model.rxns(i), [minFlux(i) maxFlux(i) maxFlux(i)-minFlux(i)], true, 3);
