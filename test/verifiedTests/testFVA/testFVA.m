@@ -52,16 +52,8 @@ for k = 1:length(solverPkgs)
         for i = 1:size(rxnID)
             % test the components of the minFlux and maxFlux vectors
             assert(abs(minFlux(i) - minFluxT(i)) <= tol)
-%             assert(minFluxT(i) <= minFlux(i) + tol)
 
             assert(abs(maxFlux(i) - maxFluxT(i)) <= tol)
-%             assert(maxFlux(i) - tol <= maxFluxT(i))
-%             assert(maxFluxT(i) <= maxFlux(i) + tol)
-
-%             maxMinusMin = maxFlux(i) - minFlux(i);
-%             maxTMinusMinT = maxFluxT(i) - minFluxT(i);
-%             assert(maxMinusMin - tol <= maxTMinusMinT)
-%             assert(maxTMinusMinT <= maxMinusMin + tol)
 
             % print the labels
             printLabeledData(model.rxns(i), [minFlux(i) maxFlux(i) maxFlux(i)-minFlux(i)], true, 3);
