@@ -50,6 +50,8 @@ for k = 1:length(solverPkgs)
 
         % check if each flux value corresponds to a pre-calculated value
         for i = 1:size(rxnID)
+            
+            rxnNames{i}
             % test the components of the minFlux and maxFlux vectors
             assert(abs(minFlux(i) - minFluxT(i)) <= tol)
 
