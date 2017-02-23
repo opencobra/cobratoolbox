@@ -17,7 +17,7 @@ fileDir = fileparts(which('testFVA'));
 cd(fileDir);
 
 % set the tolerance
-tol = 1e-8;
+tol = 1e-6;
 
 % define the solver packages to be used to run this test
 solverPkgs = {'tomlab_cplex', 'glpk'};
