@@ -196,13 +196,13 @@ if ~PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
         LPproblem.osense = -1;
         LPsolution = solveCobraLP(LPproblem);
         %take the maximum flux from the flux vector, not from the obj -Ronan
-        if LPsolution.full(LPproblem.c~=0)<LPproblem.lb(i) %takes out tolerance issues 
-            maxFlux(i) = LPproblem.lb(i);
-        elseif LPsolution.full(LPproblem.c~=0)>LPproblem.ub(i)
-            maxFlux(i) = LPproblem.ub(i);
-        else
+%         if LPsolution.full(LPproblem.c~=0)<LPproblem.lb(i) %takes out tolerance issues 
+%             maxFlux(i) = LPproblem.lb(i);
+%         elseif LPsolution.full(LPproblem.c~=0)>LPproblem.ub(i)
+%             maxFlux(i) = LPproblem.ub(i);
+%         else
             maxFlux(i) = LPsolution.full(LPproblem.c~=0);
-        end
+
         %minimise the Euclidean norm of the optimal flux vector to remove
         %loops -Ronan
         if nargout > 2 && (nargin < 7 || isequal(method,'2-norm'))
@@ -248,13 +248,13 @@ if ~PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
         LPproblem.osense = 1;
         LPsolution = solveCobraLP(LPproblem);
         %take the maximum flux from the flux vector, not from the obj -Ronan
-        if LPsolution.full(LPproblem.c~=0)<LPproblem.lb(i) %takes out tolerance issues 
-            minFlux(i) = LPproblem.lb(i);
-        elseif LPsolution.full(LPproblem.c~=0)>LPproblem.ub(i)
-            minFlux(i) = LPproblem.ub(i);
-        else
+%         if LPsolution.full(LPproblem.c~=0)<LPproblem.lb(i) %takes out tolerance issues 
+%             minFlux(i) = LPproblem.lb(i);
+%         elseif LPsolution.full(LPproblem.c~=0)>LPproblem.ub(i)
+%             minFlux(i) = LPproblem.ub(i);
+%         else
             minFlux(i) = LPsolution.full(LPproblem.c~=0);
-        end
+
         %minimise the Euclidean norm of the optimal flux vector to remove
         %loops
         if nargout > 2 && (nargin < 7 || isequal(method,'2-norm'))
@@ -344,13 +344,13 @@ else % parallel job.  pretty much does the same thing.
             ),'solver',solver);
         
             %take the maximum flux from the flux vector, not from the obj -Ronan           
-            if LPsolution.full(LPproblem.c~=0)<LPproblem.lb(i) %takes out tolerance issues 
-                maxFlux(i) = LPproblem.lb(i);
-            elseif LPsolution.full(LPproblem.c~=0)>LPproblem.ub(i)
-                maxFlux(i) = LPproblem.ub(i);
-            else
+%             if LPsolution.full(LPproblem.c~=0)<LPproblem.lb(i) %takes out tolerance issues 
+%                 maxFlux(i) = LPproblem.lb(i);
+%             elseif LPsolution.full(LPproblem.c~=0)>LPproblem.ub(i)
+%                 maxFlux(i) = LPproblem.ub(i);
+%             else
                 maxFlux(i) = LPsolution.full(LPproblem.c~=0);
-            end
+
             %LPproblemb.osense = 1;
             LPsolution = solveCobraLP(struct(...
                 'A', LPproblem.A,...
@@ -363,13 +363,13 @@ else % parallel job.  pretty much does the same thing.
                 'basis', LPproblem.basis ...
             ),'solver',solver);
         
-            if LPsolution.full(LPproblem.c~=0)<LPproblem.lb(i) %takes out tolerance issues 
-                minFlux(i) = LPproblem.lb(i);
-            elseif LPsolution.full(LPproblem.c~=0)>LPproblem.ub(i)
-                minFlux(i) = LPproblem.ub(i);
-            else
+%             if LPsolution.full(LPproblem.c~=0)<LPproblem.lb(i) %takes out tolerance issues 
+%                 minFlux(i) = LPproblem.lb(i);
+%             elseif LPsolution.full(LPproblem.c~=0)>LPproblem.ub(i)
+%                 minFlux(i) = LPproblem.ub(i);
+%             else
                 minFlux(i) = LPsolution.full(LPproblem.c~=0);
-            end
+%             end
         else
             LPsolution = solveCobraMILP(addLoopLawConstraints(struct(...
                 'A', LPproblem.A,...
