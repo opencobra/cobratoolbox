@@ -49,7 +49,7 @@ for k = 1:length(solverPkgs)
 
         for m={'parallel','sequential'}
             %test in parallel (default) and sequential mode
-            if isequal(m,'sequential')
+            if isequal(m{1},'sequential')
                 poolobj = gcp('nocreate');
                 delete(poolobj);
             end
