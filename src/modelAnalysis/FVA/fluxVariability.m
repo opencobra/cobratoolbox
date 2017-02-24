@@ -64,6 +64,9 @@ end
 if (nargin < 6)
     allowLoops = true;
 end
+if (nargin < 7)
+    method = '2-norm';
+end
 if (isempty(optPercentage))
     optPercentage = 100;
 end
@@ -78,6 +81,9 @@ end
 if nargout > 2
     Vmin=zeros(nRxns,nRxns);
     Vmax=zeros(nRxns,nRxns);
+    OutputMatrix = 1;
+else
+    OutputMatrix = 0;
 end
 
 % LP solution tolerance
@@ -158,12 +164,10 @@ maxFlux = zeros(length(rxnNameList), 1);
 minFlux = zeros(length(rxnNameList), 1);
 
 if length(minNorm)> 1 || minNorm > 0
-    Vmin=zeros(nRxns,nRxns);
-    Vmax=zeros(nRxns,nRxns);
     %minimizing the Euclidean norm gets rid of the loops, so there
     %is no need for a second slower MILP approach
     allowLoops=1;
-elseif nargout>2 && (nargin<7 || (nargin==7 && isequal(method,'2-norm')))
+elseif OutputMatrix && isequal(method,'2-norm') && ~(length(minNorm)> 1 || minNorm > 0)
     fprintf('\n Vmin and Vmax will not be computed, please set the solver minNorm property \n');
     Vmin=[];
     Vmax=[];
@@ -206,7 +210,7 @@ if ~PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
         
         %minimise the Euclidean norm of the optimal flux vector to remove
         %loops -Ronan
-        if nargout > 2 && (nargin < 7 || isequal(method,'2-norm'))
+        if OutputMatrix && isequal(method,'2-norm')
             if length(minNorm)> 1 || minNorm > 0 
                 QPproblem=LPproblem;
                 QPproblem.lb(LPproblem.c~=0)=maxFlux(i)-1e-12;
@@ -224,21 +228,21 @@ if ~PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
                 end
                 Vmax(:,rxnBool)=solution.full(1:nRxns,1);
             end
-        elseif (nargout > 2 && isequal(method,'1-norm'))
+        elseif (OutputMatrix && isequal(method,'1-norm'))
             vSparse = sparseFBA(LPproblem,'max',0,0,'l1');
             Vmax(:,rxnBool) = vSparse;
-        elseif (nargout > 2 && isequal(method,'0-norm'))
+        elseif (OutputMatrix && isequal(method,'0-norm'))
             vSparse = sparseFBA(LPproblem,'max',0,0,'all');
             Vmax(:,rxnBool) = vSparse;
-        elseif (nargout > 2 && isequal(method,'FBA'))
+        elseif (OutputMatrix && isequal(method,'FBA'))
             Vmax(:,rxnBool) = LPsolution.full;
-        elseif (nargout > 2 && isequal(method,'minOrigSol'))
+        elseif (OutputMatrix && isequal(method,'minOrigSol'))
                 LPproblemMOMA = LPproblem;
-                rmfield(LPproblemMOMA,'csense');
+                LPproblemMOMA=rmfield(LPproblemMOMA,'csense');
                 LPproblemMOMA.A = model.S;
                 LPproblemMOMA.S = LPproblemMOMA.A;
                 LPproblemMOMA.b = model.b;
-                LPproblemMOMA.lb(find(model.c)) = objValue;
+                LPproblemMOMA.lb(model.c) = objValue;
                 LPproblemMOMA.lb(i) = maxFlux(i);
                 LPproblemMOMA.ub(i) = maxFlux(i);
                 LPproblemMOMA.rxns = model.rxns;
@@ -260,7 +264,7 @@ if ~PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
 
         %minimise the Euclidean norm of the optimal flux vector to remove
         %loops
-        if nargout > 2 && (nargin < 7 || isequal(method,'2-norm'))
+        if OutputMatrix && isequal(method,'2-norm')
             if length(minNorm)> 1 || minNorm > 0
                 QPproblem=LPproblem;
                 QPproblem.lb(LPproblem.c~=0)=maxFlux(i)-1e-12;
@@ -276,28 +280,27 @@ if ~PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
                 solution = solveCobraQP(QPproblem);
                 Vmin(:,rxnBool)=solution.full(1:nRxns,1);
             end
-        elseif (nargout > 2 && isequal(method,'1-norm'))
-            vSparse = sparseFBA(LPproblem,'max',0,0,'l1');
+        elseif (OutputMatrix && isequal(method,'1-norm'))
+            vSparse = sparseFBA(LPproblem,'min',0,0,'l1');
             Vmin(:,rxnBool) = vSparse;
-        elseif (nargout > 2 && isequal(method,'0-norm'))
-            vSparse = sparseFBA(LPproblem,'max',0,0,'all');
+        elseif (OutputMatrix && isequal(method,'0-norm'))
+            vSparse = sparseFBA(LPproblem,'min',0,0,'all');
             Vmin(:,rxnBool) = vSparse;
-        elseif (nargout > 2 && isequal(method,'FBA'))
+        elseif (OutputMatrix && isequal(method,'FBA'))
             Vmin(:,rxnBool)=LPsolution.full;
-        elseif (nargout > 2 && isequal(method,'minOrigSol'))
+        elseif (OutputMatrix && isequal(method,'minOrigSol'))
                 LPproblemMOMA = LPproblem;
-                rmfield(LPproblemMOMA,'csense');
+                LPproblemMOMA=rmfield(LPproblemMOMA,'csense');
                 LPproblemMOMA.A = model.S;
                 LPproblemMOMA.S = LPproblemMOMA.A;
                 LPproblemMOMA.b = model.b;
-                LPproblemMOMA.lb(find(model.c)) = objValue;
+                LPproblemMOMA.lb(model.c) = objValue;
                 LPproblemMOMA.lb(i) = minFlux(i);
                 LPproblemMOMA.ub(i) = minFlux(i);
                 LPproblemMOMA.rxns = model.rxns;
                 momaSolution = linearMOMA(model,LPproblemMOMA);
                 Vmin(:,rxnBool)=momaSolution.x;
         end
-
 
         if ~allowLoops
             if any( abs(LPproblem.c'*solutionPool - maxFlux(i)) < tol) % if any previous solutions are good enough.
@@ -329,7 +332,17 @@ else % parallel job.  pretty much does the same thing.
     global CBT_LP_SOLVER
     solver = CBT_LP_SOLVER;
 
+    if OutputMatrix && isequal(method,'2-norm') && length(minNorm)==1
+        minNorm=ones(nRxns,1)*minNorm;
+    end
+                        
     parfor i = 1:length(rxnNameList)
+        %redefine solver in each worker
+        if OutputMatrix && isequal(method,'2-norm')
+            changeCobraSolver(solver,'QP');
+        else
+            changeCobraSolver(solver,'LP');
+        end
         %if mod(i,10) == 0, clear mex, end
         %if (verbFlag == 1),fprintf('iteration %d.  skipped %d\n', i, round(m));end
         c = zeros(nRxns,1);
@@ -354,6 +367,46 @@ else % parallel job.  pretty much does the same thing.
             else
                 maxFlux(i) = LPsolution.full(c~=0);
             end
+            
+            %copies of the original model for each worker
+            parModel = model;
+            
+            if OutputMatrix && isequal(method,'2-norm')
+                    if length(minNorm)> 1 || minNorm > 0 
+                        QPproblem=LPproblem;
+                        QPproblem.lb(LPproblem.c~=0)=maxFlux(i)-1e-12;
+                        QPproblem.ub(LPproblem.c~=0)=maxFlux(i)+1e12;
+                        QPproblem.c(:)=0;
+                        %Minimise Euclidean norm using quadratic programming
+                        QPproblem.F = spdiags(minNorm,0,nRxns,nRxns);
+                        %quadratic optimization
+                        solution = solveCobraQP(QPproblem);
+                        if isempty(solution.full)
+                            %pause(eps)
+                        end
+                        Vmax(:,i)=solution.full(1:nRxns,1);
+                    end
+                elseif (OutputMatrix && isequal(method,'1-norm'))
+                    vSparse = sparseFBA(LPproblem,'max',0,0,'l1');
+                    Vmax(:,i) = vSparse;
+                elseif (OutputMatrix && isequal(method,'0-norm'))
+                    vSparse = sparseFBA(LPproblem,'max',0,0,'all');
+                    Vmax(:,i) = vSparse;
+                elseif (OutputMatrix && isequal(method,'FBA'))
+                    Vmax(:,i) = LPsolution.full;
+                elseif (OutputMatrix && isequal(method,'minOrigSol'))
+                        LPproblemMOMA = LPproblem;
+                        LPproblemMOMA = rmfield(LPproblemMOMA,'csense');
+                        LPproblemMOMA.A = parModel.S;
+                        LPproblemMOMA.S = LPproblemMOMA.A;
+                        LPproblemMOMA.b = parModel.b;
+                        LPproblemMOMA.lb(parModel.c) = objValue;
+                        LPproblemMOMA.lb(i) = maxFlux(i);
+                        LPproblemMOMA.ub(i) = maxFlux(i);
+                        LPproblemMOMA.rxns = parModel.rxns;
+                        momaSolution = linearMOMA(parModel,LPproblemMOMA);
+                        Vmax(:,i)=momaSolution.x;
+            end
                         
             %LPproblemb.osense = 1;
             LPsolution = solveCobraLP(struct(...
@@ -374,6 +427,44 @@ else % parallel job.  pretty much does the same thing.
             else
                 minFlux(i) = LPsolution.full(c~=0);
             end
+            
+            %minimise the Euclidean norm of the optimal flux vector to remove
+            %loops
+            if OutputMatrix && isequal(method,'2-norm')
+                if length(minNorm)> 1 || minNorm > 0
+                    QPproblem=LPproblem;
+                    QPproblem.lb(LPproblem.c~=0)=maxFlux(i)-1e-12;
+                    QPproblem.ub(LPproblem.c~=0)=maxFlux(i)+1e12;
+                    QPproblem.c(:)=0;
+                    QPproblem.F = spdiags(minNorm,0,nRxns,nRxns);
+                    %Minimise Euclidean norm using quadratic programming
+                    QPproblem.F = spdiags(minNorm,0,nRxns,nRxns);
+                    %quadratic optimization
+                    solution = solveCobraQP(QPproblem);
+                    Vmin(:,i)=solution.full(1:nRxns,1);
+                end
+            elseif (OutputMatrix && isequal(method,'1-norm'))
+                vSparse = sparseFBA(LPproblem,'min',0,0,'l1');
+                Vmin(:,i) = vSparse;
+            elseif (OutputMatrix && isequal(method,'0-norm'))
+                vSparse = sparseFBA(LPproblem,'min',0,0,'all');
+                Vmin(:,i) = vSparse;
+            elseif (OutputMatrix && isequal(method,'FBA'))
+                Vmin(:,i)=LPsolution.full;
+            elseif (OutputMatrix && isequal(method,'minOrigSol'))
+                    LPproblemMOMA = LPproblem;
+                    LPproblemMOMA=rmfield(LPproblemMOMA,'csense');
+                    LPproblemMOMA.A = model.S;
+                    LPproblemMOMA.S = LPproblemMOMA.A;
+                    LPproblemMOMA.b = model.b;
+                    LPproblemMOMA.lb(model.c) = objValue;
+                    LPproblemMOMA.lb(i) = minFlux(i);
+                    LPproblemMOMA.ub(i) = minFlux(i);
+                    LPproblemMOMA.rxns = model.rxns;
+                    momaSolution = linearMOMA(model,LPproblemMOMA);
+                    Vmin(:,i)=momaSolution.x;
+            end
+        
         else
             LPsolution = solveCobraMILP(addLoopLawConstraints(struct(...
                 'A', LPproblem.A,...
