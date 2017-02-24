@@ -8,30 +8,30 @@ function [SConsistentMetBool,SConsistentRxnBool,SInConsistentMetBool,SInConsiste
 %    .S             m x n stoichiometric matrix
 %
 %OPTIONAL INPUT
-% massBalanceCheck  {(0),1} 
+% massBalanceCheck  {(0),1}
 %                   0 = heuristic detection of exchange reactions (using
 %                   findSExRxnInd) will be use to warm start algorithmic
 %                   part
 %                   1 = reactions that seem mass imbalanced will be used to
-%                   warm start the algorithmic steps to find the 
+%                   warm start the algorithmic steps to find the
 %                   stoichiometrically consistent part.
 %                   model.metFormulas must exist for mass balance check
 % printLevel
-% fileName          char, used when writing inconsistent metabolites and 
-%                   reactions to a file 
-% epsilon           (feasTol*100) min nonzero mass, 1/epsilon = max mass 
+% fileName          char, used when writing inconsistent metabolites and
+%                   reactions to a file
+% epsilon           (feasTol*100) min nonzero mass, 1/epsilon = max mass
 %
 %OUTPUT
 % SConsistentMetBool            m x 1 boolean vector indicating consistent mets
 % SConsistentRxnBool            n x 1 boolean vector indicating consistent rxns
-% SInConsistentMetBool          m x 1 boolean vector indicating inconsistent mets  
+% SInConsistentMetBool          m x 1 boolean vector indicating inconsistent mets
 % SInConsistentRxnBool          n x 1 boolean vector indicating inconsistent rxns
 % unknownSConsistencyMetBool    m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)
 % unknownSConsistencyRxnBool    n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
 % model
 %   .SConsistentMetBool            m x 1 boolean vector indicating consistent mets
 %   .SConsistentRxnBool            n x 1 boolean vector indicating consistent rxns
-%   .SInConsistentMetBool          m x 1 boolean vector indicating inconsistent mets  
+%   .SInConsistentMetBool          m x 1 boolean vector indicating inconsistent mets
 %   .SInConsistentRxnBool          n x 1 boolean vector indicating inconsistent rxns
 %   .unknownSConsistencyMetBool    m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)
 %   .unknownSConsistencyRxnBool    n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
@@ -43,7 +43,7 @@ function [SConsistentMetBool,SConsistentRxnBool,SInConsistentMetBool,SInConsiste
 if ~exist('printLevel','var')
     printLevel=1;
 end
-        
+
 if ~exist('massBalanceCheck','var')
     massBalanceCheck=0;
 end
@@ -119,11 +119,8 @@ end
 
 if massBalanceCheck
     if ~isfield(model,'balancedMetBool') || ~isfield(model,'balancedRxnBool')
-        if 1
-            printLevelcheckMassChargeBalance=0;
-        else
-            printLevelcheckMassChargeBalance=-1;%print problem reactions to a file
-        end
+        printLevelcheckMassChargeBalance=0;  % -1; % print problem reactions to a file
+
         if exist('fileName','var')
             fileNameBase=[fileName datestr(now,30) '_'];
             %mass and charge balance can be checked by looking at formulas
@@ -132,7 +129,7 @@ if massBalanceCheck
                     = checkMassChargeBalance(model,printLevelcheckMassChargeBalance,fileNameBase);
                 model.balancedRxnBool=~imBalancedRxnBool;
                 model.balancedMetBool=balancedMetBool;
-                
+
                 model.Elements=Elements;
                 model.missingFormulaeBool=missingFormulaeBool;
             else
@@ -151,70 +148,59 @@ if massBalanceCheck
             end
         end
     end
-    
+
     %% minimum cardinality of conservation relaxation vector
     [relaxRxnBool,solutionRelax] = minCardinalityConservationRelaxationVector(model.S(:,model.balancedRxnBool),minCardRelaxParams,printLevel-1);
     minConservationNonRelaxRxnBool=false(nRxn,1);
     minConservationNonRelaxRxnBool(model.balancedRxnBool)=~relaxRxnBool;
     minConservationNonRelaxMetBool = getCorrespondingRows(model.S,true(nMet,1),minConservationNonRelaxRxnBool,'exclusive');
-    
+
     %keeps the mass balanced reactions as part of the non-relaxed reaction
     %set when testing for the minimal number of relaxed reactions
-    if nnz(model.balancedRxnBool)==nnz(minConservationNonRelaxRxnBool) && 0
-        minCardRelaxParams.nonRelaxBool=model.balancedRxnBool;
-    end
-    
-    %         %check to see if the mass balanced part is leaking
-    %         [leakMetBool,leakRxnBool,siphonMetBool,siphonRxnBool,statpRelax,statnRelax]= findMassLeaksAndSiphons(model,model.balancedMetBool,model.balancedRxnBool,modelBoundsFlag,leakParams,printLevel-2);
-    %         leakSiphonMetBool=leakMetBool | siphonMetBool;
-    %         if any(leakMetBool | siphonMetBool)
-    %             %omit leaking metabolites
-    %             minConservationNonRelaxMetBool(leakMetBool | siphonMetBool)=0;
-    %             %columns exclusively involved in stoichiometrically consistent rows
-    %             if iterateCardinalityOpt==1
-    %                 minConservationNonRelaxRxnBool = getCorrespondingCols(model.S,minConservationNonRelaxMetBool,model.SConsistentRxnBool | minConservationNonRelaxRxnBool,'inclusive');
-    %             else
-    %                 minConservationNonRelaxRxnBool = getCorrespondingCols(model.S,minConservationNonRelaxMetBool,model.SConsistentRxnBool | minConservationNonRelaxRxnBool,'inclusive');
-    %             end
-    %         end
-    
+    % if nnz(model.balancedRxnBool)==nnz(minConservationNonRelaxRxnBool)
+    %     minCardRelaxParams.nonRelaxBool=model.balancedRxnBool;
+    % end
+
+    % %check to see if the mass balanced part is leaking
+    % [leakMetBool,leakRxnBool,siphonMetBool,siphonRxnBool,statpRelax,statnRelax]= findMassLeaksAndSiphons(model,model.balancedMetBool,model.balancedRxnBool,modelBoundsFlag,leakParams,printLevel-2);
+    % leakSiphonMetBool=leakMetBool | siphonMetBool;
+    % if any(leakMetBool | siphonMetBool)
+    %     %omit leaking metabolites
+    %     minConservationNonRelaxMetBool(leakMetBool | siphonMetBool)=0;
+    %     %columns exclusively involved in stoichiometrically consistent rows
+    %     if iterateCardinalityOpt==1
+    %         minConservationNonRelaxRxnBool = getCorrespondingCols(model.S,minConservationNonRelaxMetBool,model.SConsistentRxnBool | minConservationNonRelaxRxnBool,'inclusive');
+    %     else
+    %         minConservationNonRelaxRxnBool = getCorrespondingCols(model.S,minConservationNonRelaxMetBool,model.SConsistentRxnBool | minConservationNonRelaxRxnBool,'inclusive');
+    %     end
+    % end
+
     if printLevel>1
         fprintf('%6u\t%6u\t%s\n',nnz(model.balancedMetBool),nnz(model.balancedRxnBool),' seemingly elementally balanced.')
         fprintf('%6u\t%6u\t%s\n',nnz(minConservationNonRelaxMetBool),nnz(minConservationNonRelaxRxnBool),' seemingly elementally balanced and stoichiometrically consistent.')
-    end
-    if printLevel>1
         fprintf('%6u\t%6u\t%s\n',nnz(~model.balancedMetBool),nnz(~model.balancedRxnBool),' seemingly elementally imbalanced.')
-    end
-    if printLevel>1
         fprintf('%s\n','-------')
-    end
-    if printLevel>1
         fprintf('%6u\t%6u\t%s\n',nnz(model.balancedMetBool & model.SIntMetBool),nnz(model.balancedRxnBool & model.SIntRxnBool),' heuristically non-exchange and seemingly elementally balanced.')
         fprintf('%6u\t%6u\t%s\n',nnz(minConservationNonRelaxMetBool  & model.SIntMetBool),nnz(minConservationNonRelaxRxnBool & model.SIntRxnBool),' seemingly elementally balanced and stoichiometrically consistent.')
-    end
-    if printLevel>1
         fprintf('%6u\t%6u\t%s\n',nnz(~model.balancedMetBool & model.SIntMetBool),nnz(~model.balancedRxnBool & model.SIntRxnBool),' heuristically non-exchange and seemingly elementally imbalanced.')
-    end    
-   
+    end
+
 end
 
-if 0
-    %assumes that all mass imbalanced reactions are exchange reactions
-    model.SIntMetBool = model.SIntMetBool & model.balancedMetBool;
-    model.SIntRxnBool = model.SIntRxnBool & model.balancedRxnBool;
-end
+% assumes that all mass imbalanced reactions are exchange reactions
+% model.SIntMetBool = model.SIntMetBool & model.balancedMetBool;
+% model.SIntRxnBool = model.SIntRxnBool & model.balancedRxnBool;
 
 %%
 %iteratively try to identify largest consistent subset of metabolites and reactions
-if 1
-    %heuristically identified exchange reactions and metabolites
-    model.SInConsistentMetBool=~model.SIntMetBool;% metabolites involved in exchange reactions
-    model.SInConsistentRxnBool=~model.SIntRxnBool;
-else
-    %dont provide any starting information
-    model.SInConsistentMetBool=false(nMet,1);
-    model.SInConsistentRxnBool=false(nRxn,1);
-end
+
+%heuristically identified exchange reactions and metabolites
+model.SInConsistentMetBool = ~model.SIntMetBool;% metabolites involved in exchange reactions
+model.SInConsistentRxnBool = ~model.SIntRxnBool;
+
+% dont provide any starting information
+% model.SInConsistentMetBool=false(nMet,1);
+% model.SInConsistentRxnBool=false(nRxn,1);
 
 %any zero rows or columns are considered inconsistent
 zeroRowBool=~any(model.S,2);
@@ -233,7 +219,7 @@ model.SConsistentRxnBool=false(nRxn,1);
 %consistency
 model.unknownSConsistencyMetBool=~model.SConsistentMetBool & ~model.SInConsistentMetBool;
 model.unknownSConsistencyRxnBool=~model.SConsistentRxnBool & ~model.SInConsistentRxnBool;
-    
+
 %number of metabolites involved in each reaction, used to kick out
 %inconsistent reactions
 nMetsPerRxn=sum(model.S~=0,1)';
@@ -250,7 +236,7 @@ while iterateCardinalityOpt>0
         fprintf('%s%u%s\n','Iteration #',iterateCardinalityOpt,' minimum cardinality of conservation relaxation vector.')
         fprintf('%6u\t%6u\t%s\n',nnz(model.unknownSConsistencyMetBool),nnz(model.unknownSConsistencyRxnBool),' unknown consistency.')
     end
-    
+
     %decide subset to be tested during this iteration
     boolMet=model.SConsistentMetBool | model.unknownSConsistencyMetBool;
     boolRxn=model.SConsistentRxnBool | model.unknownSConsistencyRxnBool;
@@ -265,20 +251,18 @@ while iterateCardinalityOpt>0
         minConservationNonRelaxRxnBool(boolRxn)=~relaxRxnBool;
 
         %corresponding rows matching non-relaxed reactions
-        if 1
-            minConservationNonRelaxMetBool = getCorrespondingRows(model.S,boolMet,minConservationNonRelaxRxnBool,'inclusive');
-        else
-            minConservationNonRelaxMetBool = getCorrespondingRows(model.S,boolMet,minConservationNonRelaxRxnBool,'exclusive');
-        end
+        minConservationNonRelaxMetBool = getCorrespondingRows(model.S,boolMet,minConservationNonRelaxRxnBool,'inclusive');
+        %minConservationNonRelaxMetBool = getCorrespondingRows(model.S,boolMet,minConservationNonRelaxRxnBool,'exclusive');
+
         %reactions matching consistent metabolites
         %minConservationNonRelaxRxnBool = getCorrespondingCols(model.S,minConservationNonRelaxMetBool,minConservationNonRelaxRxnBool,'inclusive');
-                
+
         if printLevel>1
             if nnz(minConservationNonRelaxMetBool)~=0 || nnz(minConservationNonRelaxRxnBool)~=0
                 fprintf('%6u\t%6u\t%s\n',nnz(minConservationNonRelaxMetBool),nnz(minConservationNonRelaxRxnBool),' ... of which are stoichiometrically consistent by min cardinality of stoich consistency relaxation.')
             end
         end
-        
+
         if doubleCheckConsistency && any(minConservationNonRelaxMetBool)
             %leakParams.method='quasiConcave';
             %check to see if the stoichiometrically consistent part is leaking
@@ -328,15 +312,15 @@ while iterateCardinalityOpt>0
             end
         end
     end
-    
+
     %update consistent part
     model.SConsistentMetBool=minConservationNonRelaxMetBool;
     model.SConsistentRxnBool=minConservationNonRelaxRxnBool;
-    
+
     %update inconsistent part
     model.SInConsistentMetBool(model.SConsistentMetBool)=0;
     model.SInConsistentRxnBool(model.SConsistentRxnBool)=0;
-    
+
     %reduce unknown part
     model.unknownSConsistencyMetBool=~model.SConsistentMetBool & ~model.SInConsistentMetBool;
     model.unknownSConsistencyRxnBool=~model.SConsistentRxnBool & ~model.SInConsistentRxnBool;
@@ -344,7 +328,7 @@ while iterateCardinalityOpt>0
     if printLevel>1
         fprintf('%6u\t%6u\t%s\n',nnz(model.unknownSConsistencyMetBool),nnz(model.unknownSConsistencyRxnBool),' ... of which are of unknown consistency.')
     end
-    
+
     if nnz(model.unknownSConsistencyMetBool)==0 && nnz(model.unknownSConsistencyRxnBool)==0
         break
     else
@@ -353,14 +337,14 @@ while iterateCardinalityOpt>0
             break;
         end
      end
-    
+
     if nnz(model.unknownSConsistencyRxnBool)==0
         pause(eps)
     end
-    
+
     metRemoveBool=0;
     rxnRemoveBool=0;
-            
+
     switch removalStrategy
         case 'highCardinalityReactions'
             %%remove reactions with unknown consistency of maximal cardinality
@@ -371,7 +355,7 @@ while iterateCardinalityOpt>0
                 %find the reaction(s) with unknown consistency involving maximum
                 %number of metabolites
                 maxMetsPerRxn=full(max(nMetsPerRxnTmp(model.unknownSConsistencyRxnBool)));
-                
+
                 if maxMetsPerRxn>=8
                     %check in case any(model.unknownSConsistencyRxnBool)==0
                     if isempty(maxMetsPerRxn)
@@ -379,15 +363,15 @@ while iterateCardinalityOpt>0
                     end
                     %boolean reactions to be consisdered inconsistent and removed
                     rxnRemoveBool=nMetsPerRxnTmp==maxMetsPerRxn;
-                    
+
                     %metabolites exclusively involved in inconsistent reactions are
                     %deemed inconsistent also
                     metRemoveBool = getCorrespondingRows(model.S,true(nMet,1),rxnRemoveBool,'exclusive');
-                    
+
                     %extend inconsistent reaction boolean vector
                     model.SInConsistentRxnBool = model.SInConsistentRxnBool | rxnRemoveBool;
                     model.SInConsistentMetBool = model.SInConsistentMetBool | metRemoveBool;
-                    
+
                     %reduce unknown part
                     model.unknownSConsistencyMetBool=~model.SConsistentMetBool & ~model.SInConsistentMetBool;
                     model.unknownSConsistencyRxnBool=~model.SConsistentRxnBool & ~model.SInConsistentRxnBool;
@@ -407,14 +391,14 @@ while iterateCardinalityOpt>0
             %%decide subset to be tested during this iteration
             boolRxn=model.unknownSConsistencyRxnBool;
             boolMet = getCorrespondingRows(model.S,true(nMet,1),boolRxn,'inclusive');
-            
+
             if printLevel>1
                 fprintf('%s\n','------')
                 fprintf('%6u\t%6u\t%s\n',nnz(boolMet),nnz(boolRxn),' subset of unknown consistency being tested in isolation.')
             end
             %% minimum cardinality of conservation relaxation vector
             solutionRelax = minCardinalityConservationRelaxationVector(model.S(boolMet,boolRxn),epsilon);
-            
+
             %check optimality
             if printLevel>2
                 fprintf('%g%s\n',norm(solutionRelax.x + model.S(boolMet,boolRxn)'*solutionRelax.z),' = ||x + S''*z||')
@@ -423,7 +407,7 @@ while iterateCardinalityOpt>0
                 fprintf('%g%s\n',min(solutionRelax.x),' = min(x_i)')
                 fprintf('%g%s\n',max(solutionRelax.x),' = max(x_i)')
             end
-            
+
             minConservationNonRelaxRxnBool=false(nRxn,1);
             if solutionRelax.stat==1
                 %conserved if relaxation is below epsilon
@@ -438,21 +422,21 @@ while iterateCardinalityOpt>0
                 error('solve for maximal conservation vector failed')
             end
             minConservationNonRelaxMetBool = getCorrespondingRows(model.S,boolMet,minConservationNonRelaxRxnBool,'inclusive');
-            
+
             if printLevel>2
                 fprintf('%6u\t%6u\t%s\n',nnz(minConservationNonRelaxMetBool),nnz(minConservationNonRelaxRxnBool),' subset confirmed stoichiometrically consistent by min cardinality of stoich consistency relaxation (after leak testing).')
                 pause(eps)
             end
             rxnRemoveBool=model.unknownSConsistencyRxnBool & ~minConservationNonRelaxRxnBool;
-            
+
             %metabolites exclusively involved in inconsistent reactions are
             %deemed inconsistent also
             metRemoveBool = getCorrespondingRows(model.S,true(nMet,1),rxnRemoveBool,'exclusive');
-            
+
             %extend inconsistent reaction boolean vector
             model.SInConsistentRxnBool = model.SInConsistentRxnBool | rxnRemoveBool;
             model.SInConsistentMetBool = model.SInConsistentMetBool | metRemoveBool;
-            
+
             %reduce unknown part
             model.unknownSConsistencyMetBool=~model.SConsistentMetBool & ~model.SInConsistentMetBool;
             model.unknownSConsistencyRxnBool=~model.SConsistentRxnBool & ~model.SInConsistentRxnBool;
@@ -460,16 +444,16 @@ while iterateCardinalityOpt>0
             rxnRemoveBool=model.unknownSConsistencyRxnBool & model.SIntRxnBool & imBalancedRxnBool;
             %metabolites exclusively involved in imbalanced reactions
             metRemoveBool = getCorrespondingRows(model.S,true(nMet,1),rxnRemoveBool,'exclusive');
-            
+
             %extend inconsistent reaction boolean vector
             model.SInConsistentRxnBool = model.SInConsistentRxnBool | rxnRemoveBool;
             model.SInConsistentMetBool = model.SInConsistentMetBool | metRemoveBool;
-            
+
             %reduce unknown part
             model.unknownSConsistencyMetBool=~model.SConsistentMetBool & ~model.SInConsistentMetBool;
             model.unknownSConsistencyRxnBool=~model.SConsistentRxnBool & ~model.SInConsistentRxnBool;
     end
-    
+
     if any(metRemoveBool) | any(rxnRemoveBool)
         %print out reactions and metabolites being removed
         if printLevel>1
@@ -496,7 +480,7 @@ while iterateCardinalityOpt>0
             end
         end
     end
-    
+
     %check if there has been any progress
     if lastUnkownConsistencyMetBool==nnz(model.unknownSConsistencyMetBool) && lastUnkownConsistencyRxnBool==nnz(model.unknownSConsistencyRxnBool)
         break
@@ -504,13 +488,13 @@ while iterateCardinalityOpt>0
         lastUnkownConsistencyMetBool=nnz(model.unknownSConsistencyMetBool);
         lastUnkownConsistencyRxnBool=nnz(model.unknownSConsistencyRxnBool);
     end
-    
+
     iterateCardinalityOpt=iterateCardinalityOpt+1;
     if printLevel>1
         fprintf('%s\n','-------')
     end
 end
-    
+
 %check to confirm the stoichiometrically consistent part
 switch finalCheckMethod
     case 'findMassLeaksAndSiphons'
@@ -539,7 +523,7 @@ switch finalCheckMethod
             maxConservationRxnBoolFinal_inclusive=false(nRxn,1);
         end
 end
-          
+
 if printLevel>0
     fprintf('%s\n','--- Summary of stoichiometric consistency ----')
     fprintf('%6u\t%6u\t%s\n',nMet,nRxn,' totals.')
@@ -556,7 +540,7 @@ if printLevel>0
         bool = getCorrespondingRows(model.S,true(nMet,1), (model.SInConsistentRxnBool | model.unknownSConsistencyRxnBool) & model.SIntRxnBool & imBalancedRxnBool,'exclusive');
         fprintf('%6u\t%6u\t%s\n',nnz(bool),nnz((model.SInConsistentRxnBool | model.unknownSConsistencyRxnBool) & model.SIntRxnBool & imBalancedRxnBool),' ... of which are elementally imbalanced (exclusively involved metabolite).')
     end
-    
+
     switch finalCheckMethod
         case 'findMassLeaksAndSiphons'
             if nnz(leakMetBool)==0 && nnz(siphonMetBool)==0
@@ -591,7 +575,7 @@ if exist('fileName','var') && ~isempty(fileName)
     directionFlag=0;
     % gprFlag           print gene protein reaction association
     gprFlag=0;
-    
+
     %% print the list of metabolites and reactions of unknown consistency
     fid=fopen([fileName '_Unknown_Consistency_' datestr(now,30) '.tab'],'w');
     fprintf(fid,'%u%s\n',nnz(model.unknownSConsistencyMetBool),' metabolites exclusively involved in reactions with unknown consistency.');
@@ -609,7 +593,7 @@ if exist('fileName','var') && ~isempty(fileName)
     end
     rxnAbbrList=model.rxns(model.unknownSConsistencyRxnBool);
     formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag,gprFlag);
-    
+
     fileNameBase=[fileName '_Unknown_Consistency_' datestr(now,30) '_'];
     if isfield(model,'metFormulas')
         modelTmp=model;
@@ -622,7 +606,7 @@ if exist('fileName','var') && ~isempty(fileName)
     else
         error('No model.metFormulas');
     end
-    
+
     %% print the list of inconsistent metabolites and reactions
     fid=fopen([fileName '_Heuristically_internal_inconsistent_' datestr(now,30) '.tab'],'w');
     fprintf(fid,'%u%s\n',nnz(model.SInConsistentMetBool & model.SIntMetBool),' metabolites exclusively involved in inconsistent reactions.');
@@ -630,7 +614,7 @@ if exist('fileName','var') && ~isempty(fileName)
         if model.SInConsistentMetBool(m) && model.SIntMetBool(m)
             fprintf(fid,'%s\n',model.mets{m});
         end
-    end   
+    end
     %print the list of reactions involved in reactions with unknown consistency
     fprintf(fid,'%u%s\n',nnz(model.SInConsistentRxnBool & model.SIntRxnBool),' inconsistent reactions.');
     for n=1:nRxn
@@ -640,7 +624,7 @@ if exist('fileName','var') && ~isempty(fileName)
     end
     rxnAbbrList=model.rxns(model.SInConsistentRxnBool & model.SIntRxnBool);
     formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag,gprFlag);
-    
+
     fileNameBase=[fileName '_Heuristically_internal_inconsistent_' datestr(now,30) '_'];
     if isfield(model,'metFormulas')
         modelTmp=model;
@@ -650,7 +634,7 @@ if exist('fileName','var') && ~isempty(fileName)
     else
         error('No model.metFormulas');
     end
-    
+
     %% print list of internal, unknown consistency, imbalanced reactions
     if massBalanceCheck && nnz(model.unknownSConsistencyRxnBool & model.SIntRxnBool & imBalancedRxnBool)>0
         fid=fopen([fileName '_Heuristically_internal_unknown_consistent_imbalanced_rxns_' datestr(now,30) '.tab'],'w');
@@ -658,7 +642,7 @@ if exist('fileName','var') && ~isempty(fileName)
         rxnAbbrList=model.rxns(model.unknownSConsistencyRxnBool & model.SIntRxnBool & imBalancedRxnBool);
         formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag,gprFlag);
     end
-    % mass and charge balance 
+    % mass and charge balance
     fileNameBase=[fileName '_Heuristically_internal_unknown_consistent_imbalanced_rxns_' datestr(now,30) '_'];
     %mass and charge balance can be checked by looking at formulas
     if isfield(model,'metFormulas')
@@ -669,7 +653,7 @@ if exist('fileName','var') && ~isempty(fileName)
     else
         error('No model.metFormulas');
     end
-    
+
     %% print list of internal inconsistent and imbalanced reactions
     if massBalanceCheck && nnz(model.SInConsistentRxnBool & model.SIntRxnBool & imBalancedRxnBool)>0
         fid=fopen([fileName '_Heuristically_internal_stoich_inconsistent_imbalanced_Rxns_' datestr(now,30) '.tab'],'w');
@@ -677,7 +661,7 @@ if exist('fileName','var') && ~isempty(fileName)
         rxnAbbrList=model.rxns(model.SInConsistentRxnBool & model.SIntRxnBool & imBalancedRxnBool);
         formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag,gprFlag);
     end
-    % mass and charge balance 
+    % mass and charge balance
     fileNameBase=[fileName '_Heuristically_internal_stoich_inconsistent_imbalanced_Rxns_' datestr(now,30) '_'];
     %mass and charge balance can be checked by looking at formulas
     if isfield(model,'metFormulas')
@@ -698,124 +682,3 @@ SInConsistentMetBool=model.SInConsistentMetBool;
 SInConsistentRxnBool=model.SInConsistentRxnBool;
 unknownSConsistencyMetBool=model.unknownSConsistencyMetBool;
 unknownSConsistencyRxnBool=model.unknownSConsistencyRxnBool;
-
-%   if 0
-%         %% start of step 3: maximum cardinality conservation vector
-%         if printLevel>2
-%             fprintf('%s%u%s\n','Iteration #',iterateCardinalityOpt,'a maximum cardinality conservation vector:')
-%         end
-%         
-%         if globalApproachA
-%             boolMetA=model.SConsistentMetBool | model.unknownSConsistencyMetBool;
-%             boolRxnA=model.SConsistentRxnBool | model.unknownSConsistencyRxnBool;
-%         else
-%             boolMetA= model.unknownSConsistencyMetBool;
-%             boolRxnA= model.unknownSConsistencyRxnBool;
-%         end
-%         
-%         %%%%%%%%% compute maximum cardinality conservation vector %%%%%%%%%%%%%
-%         
-%         if nnz(boolMetA)==0
-%             pause(eps)
-%         end
-%         if nnz(boolRxnA)==0
-%             pause(eps)
-%         end
-%         
-%         %dont test if the selected part of the stoichiometric matrix is all zeros
-%         if nnz(model.S(boolMetA,boolRxnA))~=0
-%             if printLevel>2
-%                 fprintf('\n%6u\t%6u\t%s\n',nnz(boolMetA),nnz(boolRxnA),' being tested.')
-%             end
-%             solutionMaxCons=maxCardinalityConservationVector(model.S(boolMetA,boolRxnA),maxCardConsParams);
-%             
-%             maxConservationMetBool=false(nMet,1);
-%             if solutionMaxCons.stat==1
-%                 %conserved if molecular mass is above epsilon
-%                 maxConservationMetBool(boolMetA)=solutionMaxCons.l>=epsilon;
-%             else
-%                 disp(solutionMaxCons)
-%                 error('solve for maximal conservation vector failed')
-%             end
-%             
-%             if removeInconsistentFlag
-%                 pause(eps)
-%             end
-%             %columns matching stoichiometrically consistent rows
-%             maxConservationRxnBool = getCorrespondingCols(model.S,maxConservationMetBool,boolRxnA,'inclusive');
-%             
-%             if printLevel>2
-%                 fprintf('%6u\t%6u\t%s%s%s\n',nnz(maxConservationMetBool),nnz(maxConservationRxnBool),' stoichiometrically consistent by max cardinality of conservation vector. (',maxCardConsParams.method, ' method)')
-%             end
-%             
-%             if doubleCheckConsistency && any(maxConservationMetBool)
-%                 %check to see if the new stoichiometrically consistent part is leaking
-%                 
-%                 printLevel=1;
-%                 [VpMaxCons,YpMaxCons,statpMaxCons,VnMaxCons,YnMaxCons,statnMaxCons] = findMassLeaksAndSiphons(model,maxConservationMetBool,maxConservationRxnBool,modelBoundsFlag,leakParams,printLevel);
-%                 leakSiphonMetBool=YpMaxCons>=leakParams.eta | YnMaxCons>=leakParams.eta;
-%                 if any(leakSiphonMetBool)
-%                     %omit leaking metabolites before extending consistent part
-%                     maxConservationMetBool(leakSiphonMetBool)=0;
-%                     %columns exclusively matching stoichiometrically consistent rows
-%                     if iterateCardinalityOpt==1
-%                         maxConservationRxnBool = getCorrespondingCols(model.S,maxConservationMetBool,maxConservationRxnBool,'inclusive');
-%                     else
-%                         maxConservationRxnBool = getCorrespondingCols(model.S,maxConservationMetBool,maxConservationRxnBool,'inclusive');
-%                     end
-%                 end
-%             end
-%             
-%             if printLevel>2 && any(maxConservationMetBool)
-%                 fprintf('%6u\t%6u\t%s%s%s\n',nnz(maxConservationMetBool),nnz(maxConservationRxnBool),' confirmed stoichiometrically consistent by max cardinality of conservation vector. (',maxCardConsParams.method, ' method)')
-%             end
-%             
-%             if doubleCheckConsistency && any(maxConservationMetBool)
-%                 %check to see if the total stoichiometrically consistent part is leaking
-%                 printLevel=1;
-%                 [VpMaxCons,YpMaxCons,statpMaxCons,VnMaxCons,YnMaxCons,statnMaxCons] = findMassLeaksAndSiphons(model,model.SConsistentMetBool | maxConservationMetBool,...
-%                     model.SConsistentRxnBool | maxConservationRxnBool,modelBoundsFlag,leakParams,printLevel);
-%                 
-%                 leakSiphonMetBool=YpMaxCons>=leakParams.eta | YnMaxCons>=leakParams.eta;
-%                 if any(leakSiphonMetBool)
-%                     %omit leaking metabolites before extending consistent part
-%                     maxConservationMetBool(leakSiphonMetBool)=0;
-%                     %columns exclusively matching stoichiometrically consistent rows
-%                     if iterateCardinalityOpt==1
-%                         maxConservationRxnBool = getCorrespondingCols(model.S,maxConservationMetBool,maxConservationRxnBool,'inclusive');
-%                     else
-%                         maxConservationRxnBool = getCorrespondingCols(model.S,maxConservationMetBool,maxConservationRxnBool,'inclusive');
-%                     end
-%                 end
-%             end
-%         else
-%             if printLevel>2
-%                 %fprintf('%s\n',' No nonzero stoichiometry to be tested.')
-%             end
-%             %if nothing is tested because that part of the stochiometric matrix
-%             %is all zero then set it inconsistent by default
-%             maxConservationMetBool=false(nMet,1);
-%             %maxConservationMetBool(boolMetA)=1;
-%             maxConservationRxnBool=false(nRxn,1);
-%             %maxConservationRxnBool(boolRxnA)=1;
-%         end
-%         
-%         %now extend consistent part
-%         if globalApproachA
-%             model.SConsistentMetBool=maxConservationMetBool;
-%             model.SConsistentRxnBool=maxConservationRxnBool;
-%         else
-%             model.SConsistentMetBool=model.SConsistentMetBool | maxConservationMetBool;
-%             model.SConsistentRxnBool=model.SConsistentRxnBool | maxConservationRxnBool;
-%         end
-%         %reduce unknown part
-%         model.unknownSConsistencyMetBool=~model.SConsistentMetBool & ~model.SInConsistentMetBool;
-%         model.unknownSConsistencyRxnBool=~model.SConsistentRxnBool & ~model.SInConsistentRxnBool;
-%         
-%         if printLevel>2
-%             fprintf('%6u\t%6u\t%s\n',nnz(model.SConsistentMetBool),nnz(model.SConsistentRxnBool),' total stoichiometrically consistent.')
-%         end
-%         if printLevel>2
-%             fprintf('%6u\t%6u\t%s\n',nnz(model.unknownSConsistencyMetBool),nnz(model.unknownSConsistencyRxnBool),' unknown consistency.')
-%         end
-%     end
