@@ -456,7 +456,7 @@ else % parallel job.  pretty much does the same thing.
                     LPproblemMOMA.A = model.S;
                     LPproblemMOMA.S = LPproblemMOMA.A;
                     LPproblemMOMA.b = model.b;
-                    LPproblemMOMA.lb(model.c) = objValue;
+                    LPproblemMOMA.lb(find(parModel.c)) = objValue;
                     LPproblemMOMA.lb(i) = minFlux(i);
                     LPproblemMOMA.ub(i) = minFlux(i);
                     LPproblemMOMA.rxns = model.rxns;

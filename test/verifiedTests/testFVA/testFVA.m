@@ -21,7 +21,7 @@ cd(fileDir);
 tol = 1e-8;
 
 % define the solver packages to be used to run this test
-solverPkgs = {'tomlab_cplex', 'glpk'};
+solverPkgs = {'tomlab_cplex'};
 
 % load the model
 load('Ec_iJR904.mat', 'model');
