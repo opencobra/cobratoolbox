@@ -168,7 +168,6 @@ if length(minNorm)> 1 || minNorm > 0
     %is no need for a second slower MILP approach
     allowLoops=1;
 elseif OutputMatrix && isequal(method,'2-norm') && ~(length(minNorm)> 1 || minNorm > 0)
-    fprintf('\n Vmin and Vmax will not be computed, please set the solver minNorm property \n');
     Vmin=[];
     Vmax=[];
 end
@@ -400,7 +399,7 @@ else % parallel job.  pretty much does the same thing.
                         LPproblemMOMA.A = parModel.S;
                         LPproblemMOMA.S = LPproblemMOMA.A;
                         LPproblemMOMA.b = parModel.b;
-                        LPproblemMOMA.lb(parModel.c) = objValue;
+                        LPproblemMOMA.lb(find(parModel.c)) = objValue;
                         LPproblemMOMA.lb(i) = maxFlux(i);
                         LPproblemMOMA.ub(i) = maxFlux(i);
                         LPproblemMOMA.rxns = parModel.rxns;

@@ -7,6 +7,7 @@
 % Authors:
 %     - Original file: Joseph Kang 04/27/09
 %     - CI integration: Laurent Heirendt January 2017
+%     - Vmin, Vmax test: Marouen Ben Guebila 24/02/17
 %
 
 % save the current path
@@ -65,6 +66,46 @@ for k = 1:length(solverPkgs)
             % print the labels
             printLabeledData(model.rxns(i), [minFlux(i) maxFlux(i) maxFlux(i)-minFlux(i)], true, 3);
         end
+        
+        %Vmin and Vmax test
+        %Since the solution are dependant on solvers and cpus, the test
+        %will check the existence of nargout (weak test)
+        %default (2-norm)
+        [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
+            model.rxns,1, 1);
+        assert(~isequal(Vmin,[]));
+        assert(~isequal(Vmax,[]));
+        %default (2-norm) in silent mode
+        [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
+            model.rxns,0, 1);
+        assert(~isequal(Vmin,[]));
+        assert(~isequal(Vmax,[]));
+        %FBA
+        [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
+            model.rxns,1, 1, 'FBA');
+        assert(~isequal(Vmin,[]));
+        assert(~isequal(Vmax,[]));
+        %0-norm
+        [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
+            model.rxns,1, 1, '0-norm');
+        assert(~isequal(Vmin,[]));
+        assert(~isequal(Vmax,[]));
+        %1-norm
+        [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
+            model.rxns,1, 1, '1-norm');
+        assert(~isequal(Vmin,[]));
+        assert(~isequal(Vmax,[]));
+        %2-norm
+        [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
+            model.rxns,1, 1, '2-norm');
+        assert(~isequal(Vmin,[]));
+        assert(~isequal(Vmax,[]));
+        %minOrigSol
+        [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
+            model.rxns,1, 1, 'minOrigSol');
+        assert(~isequal(Vmin,[]));
+        assert(~isequal(Vmax,[]));
+        
 
         % output a success message
         fprintf('Done.\n');
