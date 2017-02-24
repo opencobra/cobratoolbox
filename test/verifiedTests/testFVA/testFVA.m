@@ -41,72 +41,85 @@ for k = 1:length(solverPkgs)
     if solverOK == 1
         fprintf('   Testing flux variability analysis using %s ... ', solverPkgs{k});
 
-        % launch the flux variability analysis
-        [minFluxT, maxFluxT] = fluxVariability(model, 90, 'max', model.rxns, 1);
-
-        rxnNames = {'PGI', 'PFK', 'FBP', 'FBA', 'TPI', 'GAPD', 'PGK', 'PGM', 'ENO', 'PYK', 'PPS', 'G6PDH2r', 'PGL', 'GND', 'RPI', 'RPE', 'TKT1', 'TKT2', 'TALA'};
-
-        % retrieve the IDs of each reaction
-        rxnID = findRxnIDs(model, rxnNames);
-
-        % check if each flux value corresponds to a pre-calculated value
-        for i = 1:size(rxnID)
-            % test the components of the minFlux and maxFlux vectors
-            assert(minFlux(i) - tol <= minFluxT(i))
-            assert(minFluxT(i) <= minFlux(i) + tol)
-
-            assert(maxFlux(i) - tol <= maxFluxT(i))
-            assert(maxFluxT(i) <= maxFlux(i) + tol)
-
-            maxMinusMin = maxFlux(i) - minFlux(i);
-            maxTMinusMinT = maxFluxT(i) - minFluxT(i);
-            assert(maxMinusMin - tol <= maxTMinusMinT)
-            assert(maxTMinusMinT <= maxMinusMin + tol)
-
-            % print the labels
-            printLabeledData(model.rxns(i), [minFlux(i) maxFlux(i) maxFlux(i)-minFlux(i)], true, 3);
+        poolobj = gcp('nocreate'); % If no pool, do not create new one.
+        if isempty(poolobj)
+            % launch 2 workers
+            parpool(2);
         end
-        
-        %Vmin and Vmax test
-        %Since the solution are dependant on solvers and cpus, the test
-        %will check the existence of nargout (weak test)
-        %default (2-norm)
-        [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
-            model.rxns,1, 1);
-        assert(~isequal(Vmin,[]));
-        assert(~isequal(Vmax,[]));
-        %default (2-norm) in silent mode
-        [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
-            model.rxns,0, 1);
-        assert(~isequal(Vmin,[]));
-        assert(~isequal(Vmax,[]));
-        %FBA
-        [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
-            model.rxns,1, 1, 'FBA');
-        assert(~isequal(Vmin,[]));
-        assert(~isequal(Vmax,[]));
-        %0-norm
-        [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
-            model.rxns,1, 1, '0-norm');
-        assert(~isequal(Vmin,[]));
-        assert(~isequal(Vmax,[]));
-        %1-norm
-        [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
-            model.rxns,1, 1, '1-norm');
-        assert(~isequal(Vmin,[]));
-        assert(~isequal(Vmax,[]));
-        %2-norm
-        [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
-            model.rxns,1, 1, '2-norm');
-        assert(~isequal(Vmin,[]));
-        assert(~isequal(Vmax,[]));
-        %minOrigSol
-        [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
-            model.rxns,1, 1, 'minOrigSol');
-        assert(~isequal(Vmin,[]));
-        assert(~isequal(Vmax,[]));
-        
 
+        for m={'parallel','sequential'}
+            %test in parallel (default) and sequential mode
+            if isequal(m,'sequential')
+                poolobj = gcp('nocreate');
+                delete(poolobj);
+            end
+            
+            % launch the flux variability analysis
+            [minFluxT, maxFluxT] = fluxVariability(model, 90);
+
+            rxnNames = {'PGI', 'PFK', 'FBP', 'FBA', 'TPI', 'GAPD', 'PGK', 'PGM', 'ENO', 'PYK', 'PPS', 'G6PDH2r', 'PGL', 'GND', 'RPI', 'RPE', 'TKT1', 'TKT2', 'TALA'};
+
+            % retrieve the IDs of each reaction
+            rxnID = findRxnIDs(model, rxnNames);
+
+            % check if each flux value corresponds to a pre-calculated value
+            for i = 1:size(rxnID)
+                % test the components of the minFlux and maxFlux vectors
+                assert(minFlux(i) - tol <= minFluxT(i))
+                assert(minFluxT(i) <= minFlux(i) + tol)
+
+                assert(maxFlux(i) - tol <= maxFluxT(i))
+                assert(maxFluxT(i) <= maxFlux(i) + tol)
+
+                maxMinusMin = maxFlux(i) - minFlux(i);
+                maxTMinusMinT = maxFluxT(i) - minFluxT(i);
+                assert(maxMinusMin - tol <= maxTMinusMinT)
+                assert(maxTMinusMinT <= maxMinusMin + tol)
+
+                % print the labels
+                printLabeledData(model.rxns(i), [minFlux(i) maxFlux(i) maxFlux(i)-minFlux(i)], true, 3);
+            end
+
+            %Vmin and Vmax test
+            %Since the solution are dependant on solvers and cpus, the test
+            %will check the existence of nargout (weak test)
+            %default (2-norm)
+            [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
+                model.rxns,1, 1);
+            assert(~isequal(Vmin,[]));
+            assert(~isequal(Vmax,[]));
+            %default (2-norm) in silent mode
+            [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
+                model.rxns,0, 1);
+            assert(~isequal(Vmin,[]));
+            assert(~isequal(Vmax,[]));
+            %FBA
+            [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
+                model.rxns,1, 1, 'FBA');
+            assert(~isequal(Vmin,[]));
+            assert(~isequal(Vmax,[]));
+            %0-norm
+            [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
+                model.rxns,1, 1, '0-norm');
+            assert(~isequal(Vmin,[]));
+            assert(~isequal(Vmax,[]));
+            %1-norm
+            [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
+                model.rxns,1, 1, '1-norm');
+            assert(~isequal(Vmin,[]));
+            assert(~isequal(Vmax,[]));
+            %2-norm
+            [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
+                model.rxns,1, 1, '2-norm');
+            assert(~isequal(Vmin,[]));
+            assert(~isequal(Vmax,[]));
+            %minOrigSol
+            [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
+                model.rxns,1, 1, 'minOrigSol');
+            assert(~isequal(Vmin,[]));
+            assert(~isequal(Vmax,[]));
+
+        end
         % output a success message
         fprintf('Done.\n');
     end
