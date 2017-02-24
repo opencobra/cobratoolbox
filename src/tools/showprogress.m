@@ -13,6 +13,7 @@ function fout = showprogress(x, whichbar, varargin)
 %        - Lemmer El Assal (Feb 2017)
 %
     global WAITBAR_TYPE;
+    fout = [];
     if ~isempty(WAITBAR_TYPE)
         switch WAITBAR_TYPE
             case 0 % silent mode
