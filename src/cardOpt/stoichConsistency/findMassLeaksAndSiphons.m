@@ -1,5 +1,5 @@
 function [leakMetBool,leakRxnBool,siphonMetBool,siphonRxnBool,leakY,siphonY,statp,statn] = findMassLeaksAndSiphons(model,metBool,rxnBool,modelBoundsFlag,params,printLevel)
-% Find the metabolites in a network that either leak mass or act as a 
+% Find the metabolites in a network that either leak mass or act as a
 % siphon for mass, with (default) or without the bounds on a model.
 % The approach is to solve the problem
 % max   ||y||_0
@@ -10,10 +10,10 @@ function [leakMetBool,leakRxnBool,siphonMetBool,siphonRxnBool,leakY,siphonY,stat
 %      -inf <= v <= inf
 % and with either
 %       0 <= y <= inf   (semipositive net stoichiometry = leak)
-% or 
+% or
 %       -inf <= y <= 0  (seminegative net stoichiometry = siphon)
 %
-% If there are any zero rows of S, then the corresponding entry in y is 
+% If there are any zero rows of S, then the corresponding entry in y is
 % then set to zero.
 %
 % INPUT
@@ -28,15 +28,15 @@ function [leakMetBool,leakRxnBool,siphonMetBool,siphonRxnBool,leakY,siphonY,stat
 %   .SConsistentRxnBool
 % metBool               m x 1 boolean vector of metabolites to test for leakage
 % rxnBool               n x 1 boolean vector of reactions to test for leakage
-% modelBoundsFlag       {0,(1)} 
+% modelBoundsFlag       {0,(1)}
 %                       0 = set all reaction bounds to -inf, inf
 %                       1 = use reaction bounds provided by model.lb and .ub
 % params.epsilon        (1e-4)
-% params.eta            (feasTol*100), smallest nonzero mass leak/siphon  
+% params.eta            (feasTol*100), smallest nonzero mass leak/siphon
 % params.theta          (0.5) parameter of capped l1 approximation
 % params.method         {('quasiConcave'),'dc'} method of approximation
 % printLevel            {(0),1, 2 = debug}
-% 
+%
 % OUTPUT
 % leakRxnBool       m x 1 boolean of metabolites in a positive leakage mode
 % leakRxnBool       n x 1 boolean of reactions exclusively involved in a positive leakage mode
@@ -146,18 +146,18 @@ switch method
         %           0 <= z <= epsilon
         LPproblem.A=[S              , speye(mlt), sparse(mlt,mlt);
                      sparse(mlt,nlt),-speye(mlt),      speye(mlt)];
-        
+
         LPproblem.b=zeros(size(LPproblem.A,1),1);
-        
+
         LPproblem.lb=[lb;            zeros(mlt,1); zeros(mlt,1)];
         LPproblem.ub=[ub; inf*ones(mlt,1);  epsilon*ones(mlt,1)];
-        
+
         LPproblem.c=zeros(size(LPproblem.A,2),1);
         LPproblem.c(nlt+mlt+1:nlt+2*mlt,1)=1;%maximise z
         LPproblem.osense=-1;%maximisation
         LPproblem.csense(1:mlt,1)='E';
         LPproblem.csense(mlt+1:mlt+mlt,1)='L';
-        
+
         solp = solveCobraLP(LPproblem,'printLevel',printLevel);
         if solp.stat == 1
             statp   = 1;
@@ -166,14 +166,14 @@ switch method
             leakY=sparse(nMet,1);
             tmp = solp.full(nlt+1:nlt+mlt);
             tmp(zeroRows)=0;%ignore zero rows
-            leakY(metBool) = tmp;           
+            leakY(metBool) = tmp;
         else
             fprintf('%s\n','Infeasibility while detecting semipositive leaking metabolites.');
             Vp=[];
             leakY=[];
             statp=[];
         end
-        
+
         % Solve the linear problem
         %   max sum(z_i)
         %       s.t S*v - p      = 0
@@ -181,13 +181,13 @@ switch method
         %          lb <= v <= ub
         %           0 <= p <= inf %inf seems to help keep the problem feasible
         %           0 <= z <= epsilon
-        
+
         LPproblem_neg=LPproblem;
         LPproblem_neg.A=[S              , -speye(mlt), sparse(mlt,mlt);
                          sparse(mlt,nlt), -speye(mlt),      speye(mlt)];
-                     
+
         soln = solveCobraLP(LPproblem_neg,'printLevel',printLevel-1);
-        
+
         if soln.stat == 1
             statn   = 1;
             Vn=sparse(nRxn,1);
@@ -201,7 +201,7 @@ switch method
             Vn=[];
             siphonY=sparse(nMet,1);
             statn=[];
-        end             
+        end
     case 'dc'
         % min       c'(x,y,z) + lambda*||x||_0 - delta*||y||_0
         % s.t.      A*(x,y,z) <= b
@@ -223,7 +223,7 @@ switch method
         %                           each row in A ('E', equality, 'G' greater than, 'L' less than).
         %       lb                  (p+q+r) x 1 Lower bound vector
         %       ub                  (p+q+r) x 1 Upper bound vector
-        
+
         %Define the optimisation problem
         % [-I,S]*[y;z]=0
         cardPrb.p       = 0; %size of vector x
@@ -235,8 +235,7 @@ switch method
         cardPrb.A       = [-speye(mlt) S];
         cardPrb.b       = zeros(mlt,1);
         cardPrb.csense  = repmat('E',mlt, 1);
-        cardPrb.lb      = [zeros(mlt,1);lb];             
-        %cardPrb.lb      = [zeros(mlt,1)-feasTol;lb];%helps keep the problem feasible
+        cardPrb.lb      = [zeros(mlt,1);lb];
         cardPrb.ub      = [(1/epsilon)*ones(mlt,1);ub];
 
         %Call the cardinality optimisation solver for semipositive
@@ -258,12 +257,12 @@ switch method
             leakY=sparse(nMet,1);
             statp=[];
         end
-        
+
         %seminegative change matrix rather than bounds
         cardPrb.A       = [speye(mlt) S];
         %Call the cardinality optimisation solver
         solutionCardn = optimizeCardinality(cardPrb);
-        
+
         if solutionCardn.stat == 1
             statn   = 1;
             Vn=sparse(nRxn,1);
