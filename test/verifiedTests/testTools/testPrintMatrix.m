@@ -10,6 +10,9 @@
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
 
+% change to
+cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools'])
+
 fileName = 'testPrintMatrix.txt';
 nbFormat = '%3.2f\t';
 
@@ -35,24 +38,33 @@ assert(printMatrix(A, nbFormat) == 1);
 assert(printMatrix(A, nbFormat, fileName) == 1);
 
 % remove the generated file
-system(['rm ', CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools', filesep, fileName]);
+fullFileNamePath = [CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools', filesep, fileName];
+if exist(fullFileNamePath, 'file') == 2
+    system(['rm ', fullFileNamePath]);
+else
+    warning(['The file', fullFileNamePath, ' does not exist and could not be deleted.']);
+end
 
 % test to print to a file and read the data from that same file
 A = ones(6) * 6;
 A = A + (A / 10) + (A / 100);
 nbFormat = '%6.2f\t';
-fileName = 'testFile_printMatrix.txt';
 
 retStatus = printMatrix(A, nbFormat, fileName);
 assert(retStatus == 1);
 
 % read in the data from the newly generated file and test against reference data
 [~, data1, ~] = readMixedData(fileName, 0, 0)
-[~, data2, ~] = readMixedData('ref_test.txt', 0, 0)
+[~, data2, ~] = readMixedData('refData_printMatrix.txt', 0, 0)
 assert(isequal(data1, data2))
 
 % remove the generated file
-system(['rm ', CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools', filesep, fileName]);
+fullFileNamePath = [CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools', filesep, fileName];
+if exist(fullFileNamePath, 'file') == 2
+    system(['rm ', fullFileNamePath]);
+else
+    warning(['The file', fullFileNamePath, ' does not exist and could not be deleted.']);
+end
 
 % change the directory
 cd(CBTDIR)
