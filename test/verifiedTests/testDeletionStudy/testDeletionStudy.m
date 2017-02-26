@@ -15,18 +15,19 @@ global path_GUROBI
 % define the path to The COBRAToolbox
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
-initTest([CBTDIR '/test' filesep 'verifiedTests' filesep 'testDeletionStudy'])
 
-tol = 0.00001;
+initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testDeletionStudy']);
+
+tol = 1e-6;
 
 %load model
 load('ecoli_core_model', 'model');
 
 % list of solver packages
-solverPkgs = {'tomlab_cplex'};
+solverPkgs = {'tomlab_cplex', 'gurobi6', 'glpk'};
 
 for k = 1:length(solverPkgs)
-    
+
     fprintf(' -- Running testfindBlockedReaction using the solver interface: %s ... ', solverPkgs{k});
 
     % add the solver paths (temporary addition for CI)
@@ -39,101 +40,65 @@ for k = 1:length(solverPkgs)
     solverLPOK = changeCobraSolver(solverPkgs{k});
 
     if solverLPOK
-        
+
         fprintf('\n*** Test basic single gene deletion: ***\n\n');
         fprintf('\n*** Deleting gene for ENO: ***\n\n');
+
         %deleting gene for 'ENO')
-        [grRatio,grRateKO,grRateWT,hasEffect,delRxns,fluxSolution] = singleGeneDeletion(model,'FBA',{'b2779'});
+        [grRatio, grRateKO, grRateWT, hasEffect, delRxns, fluxSolution] = singleGeneDeletion(model, 'FBA', {'b2779'});
 
-        pts = 0;
-        if(hasEffect==1)
-            display('Correct hasEffect value');
-            pts = pts +1;
-        else
-            display('Incorrect hasEffect value');
-        end
-        if(strcmp(delRxns{1}, 'ENO'))
-            display('Correct deleted reactions');
-            pts = pts +1;
-        else
-            display('Incorrect deleted reactions');
-        end
-        if(abs(grRateKO) < tol)
-            display('Correct grRateKO value');
-            pts = pts +1;
-        else
-            display('Incorrect grRateKO value');
-        end
-        if(abs(grRateWT) > tol)
-            display('Correct grRateWT value');
-            pts = pts +1;
-        else
-            display('Incorrect grRateWT value');
-        end
+        % check if correct hasEffect value
+        assert(hasEffect == 1)
 
+        % check if correctly deleted reactions
+        assert(strcmp(delRxns{1}, 'ENO'))
 
-        [grRatioDble,grRateKO,grRateWT] = doubleGeneDeletion(model,'FBA',{'b2779'},{'b2287'});
-        if(abs(grRatioDble) < tol)
-            display('Correct grRateDble value');
-            pts = pts +1;
-        else
-            display('Incorrect grRateDble value');
-        end
-        if(abs(grRateKO) < tol)
-            display('Correct grRateKO value');
-            pts = pts +1;
-        else
-            display('Incorrect grRateKO value');
-        end
-        if(abs(grRateWT) > tol)
-            display('Correct grRateWT value');
-            pts = pts +1;
-        else
-            display('Incorrect grRateWT value');
-        end
+        % check if correct grRateKO value
+        assert(abs(grRateKO) < tol)
+
+        % check if correct grRateWT value
+        assert(abs(grRateWT) > tol)
+
+        [grRatioDble, grRateKO, grRateWT] = doubleGeneDeletion(model, 'FBA', {'b2779'}, {'b2287'});
+
+        % check if correct grRateDble value
+        assert(abs(grRatioDble) < tol)
+
+        % check if correct grRateKO value
+        assert(abs(grRateKO) < tol)
+
+        % check if correct grRateWT value
+        assert(abs(grRateWT) > tol)
 
         %% singleRxnDeletion Test
         fprintf('\n\nStarting singleRxnDeletion test:\n');
 
-        [test_grRatio,test_grRateKO,test_grRateWT,test_hasEffect,test_delRxn]= singleRxnDeletion(model, 'FBA');
+        [test_grRatio, test_grRateKO, test_grRateWT, test_hasEffect, test_delRxn]= singleRxnDeletion(model, 'FBA');
         load('rxnDeletionData.mat');
 
-        % if(~isequal(isnan(grRatio), isnan(test_grRatio)))
-        grRatio(isnan(grRatio))=-1;
-        test_grRatio(isnan(test_grRatio))=-1;
-        if(abs(grRatio-test_grRatio)<tol)
-            display('Correct grRatio values');
-            pts = pts+1;
-        else
-            disp('Incorrect grRatio values');
+        grRatio(isnan(grRatio)) = -1;
+        test_grRatio(isnan(test_grRatio)) = -1;
+
+        % check if correct grRatio values
+        for i = 1:length(grRatio)
+            assert(abs(grRatio(i) - test_grRatio(i)) < tol)
         end
 
-        grRateKO(isnan(grRateKO))=-1;
-        test_grRateKO(isnan(test_grRateKO))=-1;
-        if(abs(grRateKO-test_grRateKO)<tol)
-            display('Correct grRateKO values');
-            pts = pts +1;
-        else
-            disp('Incorrect grRateKO values');
+        grRateKO(isnan(grRateKO)) = -1;
+        test_grRateKO(isnan(test_grRateKO)) = -1;
+
+        % check if correct grRateKO values
+        for i = 1:length(grRateKO)
+            assert(abs(grRateKO(i) - test_grRateKO(i)) < tol)
         end
 
-        if(abs(grRateWT-test_grRateWT)<tol)
-            display('Correct grRateWT values');
-            pts = pts +1;
-        else
-            disp('Incorrect grRateWT values');
-        end
+        % check if correct grRateWT values
+        assert(abs(grRateWT - test_grRateWT) < tol)
 
-        if(isequal(delRxn, test_delRxn))
-            display('Correct delRxn values');
-            pts = pts +1;
-        else
-            disp('Incorrect delRxn values');
-        end
-
-        assert(pts==11);
+        % check if correct delRxn values
+        assert(isequal(delRxn, test_delRxn))
     end
-    
+
     % remove the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
         rmpath(genpath(path_TOMLAB));
@@ -145,5 +110,5 @@ for k = 1:length(solverPkgs)
     fprintf('Done.\n');
 end
 
+% change back to root folder
 cd(CBTDIR);
-
