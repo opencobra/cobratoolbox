@@ -122,7 +122,7 @@ preTxt(9).str='</notes>';
 
 % rem=fgets(f_id);
 
-h = waitbar(0,'The annotation of the file using free-text types of data is progressing');
+h = showprogress(0,'The annotation of the file using free-text types of data is progressing');
 
 MainTxt={};
 
@@ -188,7 +188,7 @@ for t=1:total_length   % go through each line of the SBML file.
     if ismember(t, ct)~=0||t==total_length;
         
         disp(t)
-        waitbar(t/total_length,h);
+        showprogress(t/total_length,h);
     end
     n=n+1;
     

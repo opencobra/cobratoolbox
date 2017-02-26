@@ -51,10 +51,10 @@ delRxn = columnVector(rxnList);
 if (verbFlag)  
     fprintf('%4s\t%4s\t%10s\t%9s\t%9s\n','No','Perc','Name','Growth rate','Rel. GR');
 end
-h = waitbar(0,'Single reaction deletion analysis in progress ...');
+h = showprogress(0,'Single reaction deletion analysis in progress ...');
 for i = 1:nDelRxns
     if mod(i,10) == 0
-        waitbar(i/nDelRxns,h);
+        showprogress(i/nDelRxns,h);
     end
     modelDel = changeRxnBounds(model,rxnList{i},0,'b');
     switch method

@@ -131,12 +131,12 @@ end
 reactions = {}; %balane abbreviation listbox
 balance_charge = {};
 reaction_line = []; %lines unblance originate from
-h = waitbar(1/S_nrxns(1),'Balance checking reaction ');
+h = showprogress(1/S_nrxns(1),'Balance checking reaction ');
 fails = cell(0,1);
 thei = [];
 fullRCO = [];
 for i = 1:S_nrxns(1)
-    waitbar(i/S_nrxns(1))
+    showprogress(i/S_nrxns(1))
     meta_meta = LoadReaction(newrxns(i,:),metab,meta_compartment,i);
     if isempty(meta_meta{1})
         thei = [thei i]; %corresponding line to fails.
@@ -228,12 +228,8 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % cnt = 1;
 % sims = sparse(1,1);
-% h = waitbar(0,['Unique checking textfile ' num2str(i) ' of ' ...
 %     num2str(S_nrxns(1)) '. This may take a while.']);
 % for i = 1:S_nrxns(1)-1
-%     waitbar(i/S_nrxns(1),h,['Unique checking textfile '...
-%         num2str(i) ' of ' num2str(S_nrxns(1)) '.']);
-% 
 %     similar = similarity(newrxns{i,3},newrxns(i+1:end,3),0); %similarity test
 %     
 %     if ~isempty(similar)
@@ -286,10 +282,10 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 cnt = 1;
 sims = sparse(1,1);
-h = waitbar(0,['Similarity checking reaction to database ' num2str(i) ' of ' ...
+h = showprogress(0,['Similarity checking reaction to database ' num2str(i) ' of ' ...
     num2str(S_nrxns(1)) '. This may take a while.']);
 for i = 1:S_nrxns(1)
-    waitbar(i/S_nrxns(1),h,['Similarity checking reaction to database '...
+    showprogress(i/S_nrxns(1),h,['Similarity checking reaction to database '...
         num2str(i) ' of ' num2str(S_nrxns(1)) '.']);
 
     similar = similarity(newrxns{i,3},rxn(:,3),0); %similarity test

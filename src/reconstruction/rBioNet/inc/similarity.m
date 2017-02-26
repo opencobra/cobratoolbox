@@ -35,12 +35,12 @@ end
 Sdata = length(data);
 
 if bar == 1
-    h = waitbar(0/Sdata,'This may take a while. Checking reaction');
+    h = showprogress(0/Sdata,'This may take a while. Checking reaction');
 end
 
 for i = 1:Sdata
     if bar == 1
-        waitbar(i/Sdata);
+        showprogress(i/Sdata);
     end
     
     [metd,coed,revd] = parseRxnFormula(data{i});

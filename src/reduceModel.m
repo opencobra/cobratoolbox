@@ -78,10 +78,10 @@ mins = [];
 
 %obtain maxes and mins for the fluxes
 rxnID = 1;
-h = waitbar(0,'Model reduction in progress ...');
+h = showprogress(0,'Model reduction in progress ...');
 while rxnID <= nRxns
     if mod(rxnID,10) == 0
-        waitbar(rxnID/nRxns,h);
+        showprogress(rxnID/nRxns,h);
     end
     rxnName = model.rxns{rxnID};
     if (verbFlag)
