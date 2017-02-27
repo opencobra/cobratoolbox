@@ -1,3 +1,13 @@
+% The COBRAToolbox: testParseBoolean.m
+%
+% Purpose:
+%     - testParseBoolean tests the functionality of boolean parsing
+%       and checks solution against known solution.
+%
+% Authors:
+%     - Lemmer El Assal February 2017
+%
+
 % tests the functionality of parseBoolean
 
 %save original directory
