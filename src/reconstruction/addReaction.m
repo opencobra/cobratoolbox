@@ -1,4 +1,4 @@
-function [model,rxnIDexists] = addReaction(model,rxnName,metaboliteList,stoichCoeffList,revFlag,lowerBound,upperBound,objCoeff,subSystem,grRule,geneNameList,systNameList,checkDuplicate)
+function [model, rxnIDexists] = addReaction(model, rxnName, metaboliteList, stoichCoeffList, revFlag, lowerBound, upperBound, objCoeff, subSystem, grRule, geneNameList, systNameList, checkDuplicate, printLevel)
 %addReaction Add a reaction to the model or modify an existing reaction
 %
 % model = addReaction(model,rxnName,metaboliteList,stoichCoeffList,revFlag,lowerBound,upperBound,objCoeff,subSystem,grRule,geneNameList,systNameList,checkDuplicate)
@@ -26,7 +26,7 @@ function [model,rxnIDexists] = addReaction(model,rxnName,metaboliteList,stoichCo
 % systNameList      List of systematic names
 % checkDuplicate    Check S matrix too see if a duplicate reaction is
 %                   already in the model (Deafult false)
-% addRxnGeneMat     adds rxnGeneMat to model structure (default = true)
+% printLevel        default = 1
 %
 %OUTPUTS
 % model             COBRA model structure with new reaction
@@ -51,8 +51,8 @@ function [model,rxnIDexists] = addReaction(model,rxnName,metaboliteList,stoichCo
 % Richard Que 11/13/2008
 % Ines Thiele 08/03/2015, made rxnGeneMat optional
 
-if ~exist('addRxnGeneMat','var')
-    addRxnGeneMat = 1;
+if ~exist('printLevel','var')
+    printLevel = 1;
 end
 
 parseFormulaFlag = false;
@@ -376,5 +376,7 @@ else
     else
         model.S = [Stmp Scolumn];
     end
-    printRxnFormula(model,rxnName);
+    if printLevel>0
+        printRxnFormula(model,rxnName);
+    end
 end

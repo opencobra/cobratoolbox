@@ -18,7 +18,10 @@ function model=findSExRxnInd(model,nRealMet,printLevel)
 %                           correspond to metabolties
 %OUTPUT
 % model.SIntRxnBool         Boolean of reactions heuristically though to be mass balanced.
-% model.SIntMetBool         Boolean of metabolites though only to be involved in mass balanced reactions.
+% model.SIntMetBool         Boolean of metabolites heuristically though to be involved in mass balanced reactions.
+% model.SOnlyIntMetBool     Boolean of metabolites heuristically though only to be involved in mass balanced reactions.
+% model.SExMetBool          Boolean of metabolites heuristically though to be involved in mass imbalanced reactions.
+% model.SOnlyExMetBool      Boolean of metabolites heuristically though only to be involved in mass imbalanced reactions.
 % model.biomassBool         Boolean of biomass reaction
 % 
 % OPTIONAL OUTPUT
@@ -132,6 +135,9 @@ model.DMRxnBool=strncmp('DM_', model.rxns, 3)==1;
 %sink reactions going into or out of model
 model.SinkRxnBool=strncmp('sink_', model.rxns, 5)==1;
 
+% %HMR
+%model.SinkRxnBool=strncmp('HMR_', model.rxns, 4)==1;
+
 %remove ATP demand as it is usually mass balanced
 bool=strcmp('ATPM',model.rxns);
 if any(bool)
@@ -218,7 +224,19 @@ end
 SExRxnBool= SExRxnBoolHeuristic | SExRxnBoolOneCoefficient;
 model.SIntRxnBool=~SExRxnBool;
 %rows corresponding to internal reactions
-model.SIntMetBool = sum(model.S(:,model.SIntRxnBool)~=0,2)~=0;
+boolMet=true(nMet,1);
+%first pair
+model.SIntMetBool = getCorrespondingRows(model.S,boolMet,model.SIntRxnBool,'inclusive');
+model.SOnlyExMetBool = getCorrespondingRows(model.S,boolMet,~model.SIntRxnBool,'exclusive');
+%second pair
+model.SOnlyIntMetBool = getCorrespondingRows(model.S,boolMet,model.SIntRxnBool,'exclusive');
+model.SExMetBool = getCorrespondingRows(model.S,boolMet,~model.SIntRxnBool,'inclusive');
+%sanity check
+if nnz(model.SIntMetBool)+nnz(model.SOnlyExMetBool) ~= nnz(model.SIntMetBool)+nnz(model.SOnlyExMetBool)
+    error('Inconsistency in metabolite counts')
+end
+
+
 
 
 

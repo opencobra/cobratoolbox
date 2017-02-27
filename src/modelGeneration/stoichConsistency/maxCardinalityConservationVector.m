@@ -1,4 +1,4 @@
-function  [solution]=maxCardinalityConservationVector(S, params)
+function  [maxConservationMetBool,maxConservationRxnBool,solution]=maxCardinalityConservationVector(S, params)
 % Maximise the cardinality of the conservation vector:
 % max   ||l||_0
 % st.   S'l = 0
@@ -16,10 +16,10 @@ function  [solution]=maxCardinalityConservationVector(S, params)
 % params.zeta               Stopping criteria - threshold (Default value 1e-6)
 % params.theta              Parameter of capped l1 approximation (Default value 0.5)
 %
-% consistBool               m x 1 boolean vector with true for metabolites 
-%                           already known to be consistent 
-%
-%OUTPUT
+% OUTPUT
+% maxConservationMetBool    m x 1 boolean for consistent metabolites
+% maxConservationRxnBool    n x 1 boolean for reactions exclusively
+%                                 involving consistent metabolites
 % solution                  Structure containing the following fields
 %       l                   m x 1 molecular mass vector
 %       stat                status
@@ -27,13 +27,15 @@ function  [solution]=maxCardinalityConservationVector(S, params)
 %                           2 =  Unbounded
 %                           0 =  Infeasible
 %                           -1=  Invalid input
-%
-% Hoai Minh Le	18/02/2016
+
+% Ronan Fleming Feb 14th 2017
 
 
+feasTol = getCobraSolverParams('LP', 'feasTol');
 % Format inputs
 if ~exist('params','var')
     params.nbMaxIteration = 1000;
+    params.eta = feasTol*100;
     params.zeta = 1e-6;
     params.theta   = 0.5;    %parameter of capped l1 approximation
     params.epsilon = 1e-4;
@@ -41,6 +43,10 @@ if ~exist('params','var')
 else
     if isfield(params,'nbMaxIteration') == 0
         params.nbMaxIteration = 1000;
+    end
+    
+    if isfield(params,'eta') == 0
+        params.eta = feasTol*100;
     end
     
     if isfield(params,'epsilon') == 0
@@ -54,7 +60,6 @@ else
     if isfield(params,'theta') == 0
         params.theta   = 0.5;    %parameter of capped l1 approximation
     end
-    
     if isfield(params,'method') == 0
         params.method   = 'quasiConcave';
     end
@@ -62,10 +67,6 @@ end
 
 % Get data from the model
 [mlt,nlt] = size(S);
-
-if ~exist('SConsistentMetBool','var')
-    SConsistentMetBool=false(mlt,1);
-end
 
 
 [nbMaxIteration,zeta,theta,epsilon,method] = deal(params.nbMaxIteration,params.zeta,params.theta,params.epsilon,params.method);
@@ -256,6 +257,21 @@ switch method
     otherwise
         error('incorrect method selected')
         
+end
+
+if solution.stat==1
+    %conserved if molecular mass is above epsilon
+    maxConservationMetBool=solution.l>=params.eta;
+    %columns matching stoichiometrically consistent rows
+    maxConservationRxnBool = getCorrespondingCols(S,maxConservationMetBool,true(nlt,1),'exclusive');
+    if printLevel>1
+        fprintf('%6u\t%6u\t%s%s%s\n',nnz(maxConservationMetBool),nnz(maxConservationRxnBool),' stoichiometrically consistent by max cardinality of conservation vector. (',maxCardConsParams.method, ' method)')
+    end
+else
+    maxConservationMetBool=[];
+    maxConservationRxnBool=[];
+    disp(solution)
+    error('solve for maximal conservation vector failed')
 end
 
 end
