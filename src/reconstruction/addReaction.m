@@ -285,8 +285,8 @@ for i = 1:length(metaboliteList)
         if isfield(model,'metChEBIID')
             model.metChEBIID{end+1,1} = '';
         end
-        if isfield(model,'metCHEBIID')
-            model.metCHEBIID{end+1,1} = ''; %changed to match Recon 2 nomenclature
+        if isfield(model,'metChEBIID')
+            model.metChEBIID{end+1,1} = ''; %changed to match Recon 2 nomenclature
         end
         if isfield(model,'metKEGGID')
             model.metKEGGID{end+1,1} = '';

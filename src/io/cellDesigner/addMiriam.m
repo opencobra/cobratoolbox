@@ -705,11 +705,11 @@ end
 %         %%
 %     end
 %
-%     m{1}=model.metCHEBIID(num);
+%     m{1}=model.metChEBIID(num);
 %     m{2}=model.metHMDB(num);
 %     m{3}=model.metPubChemID(num);
 %
-%     % CHEBI=model.metCHEBIID;
+%     % CHEBI=model.metChEBIID;
 %     % HMDB=model.metHMDB;
 %     % PubChemID=model.metPubChemID;
 %
