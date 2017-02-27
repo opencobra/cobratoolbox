@@ -282,11 +282,11 @@ for i = 1:length(metaboliteList)
             warning(['Metabolite formula for ' metaboliteList{i} ' set to ''''']);
             %             model.metFormulas(end) = cellstr(input('Enter metabolite chemical formula, if available:', 's'));
         end
-        if isfield(model,'metCHEBIID')
-            model.metCHEBIID{end+1,1} = '';
+        if isfield(model,'metChEBIID')
+            model.metChEBIID{end+1,1} = '';
         end
-        if isfield(model,'metCHEBIID')
-            model.metCHEBIID{end+1,1} = ''; %changed to match Recon 2 nomenclature
+        if isfield(model,'metChEBIID')
+            model.metChEBIID{end+1,1} = ''; %changed to match Recon 2 nomenclature
         end
         if isfield(model,'metKEGGID')
             model.metKEGGID{end+1,1} = '';

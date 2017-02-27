@@ -230,9 +230,9 @@ switch format
                 else
                     tmpMetData{i+1,8} = '';
                 end
-                if isfield(model,'metCHEBIID')
+                if isfield(model,'metChEBIID')
                  
-                    tmpMetData{i+1,9} = chopForExcel(model.metCHEBIID(i));
+                    tmpMetData{i+1,9} = chopForExcel(model.metChEBIID(i));
                 else
                     tmpMetData{i+1,9} = '';
                 end

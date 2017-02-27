@@ -125,8 +125,8 @@ if isfield(model1,'rxnNotes') && isfield(model2,'rxnNotes')
 end
 
 
-% modelNew.metCHEBIID = model1.metCHEBIID;
-% modelNew.metCHEBIID(size(model1.metCHEBIID,1)+1:size(model1.metCHEBIID,1)+size(model2.metCHEBIID)) = model2.metCHEBIID;
+% modelNew.metChEBIID = model1.metChEBIID;
+% modelNew.metChEBIID(size(model1.metChEBIID,1)+1:size(model1.metChEBIID,1)+size(model2.metChEBIID)) = model2.metChEBIID;
 % modelNew.metKeggID = model1.metKeggID;
 % modelNew.metKeggID(size(model1.metKeggID,1)+1:size(model1.metKeggID,1)+size(model2.metKeggID)) = model2.metKeggID;
 % modelNew.metPubChemID = model1.metPubChemID;

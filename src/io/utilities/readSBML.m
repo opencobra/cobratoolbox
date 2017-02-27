@@ -581,7 +581,7 @@ for i = 1:nMets
         
         if exist('parseSBMLAnnotationField','file')
             [metCHEBI,metHMDBparsed,metKEGG,metPubChem,metInChI] = parseSBMLAnnotationField(modelSBML.species(i).annotation); %% replace the older version of the function with the newer version
-            metCHEBIID{i} = metCHEBI;
+            metChEBIID{i} = metCHEBI;
             metHMDB{i}=metHMDBparsed;
             metKEGGID{i} = metKEGG;
             metPubChemID{i} = metPubChem;
@@ -704,7 +704,7 @@ end
 % the "formulas" are probably just parts of metabolite names)
 
 if (hasAnnotationField)
-    model.metCHEBIID = columnVector(metCHEBIID);
+    model.metChEBIID = columnVector(metChEBIID);
     model.metKEGGID = columnVector(metKEGGID);
     model.metPubChemID = columnVector(metPubChemID);
     model.metInChIString = columnVector(metInChIString);

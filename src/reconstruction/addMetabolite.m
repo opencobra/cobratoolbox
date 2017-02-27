@@ -1,7 +1,7 @@
-function [ newmodel ] = addMetabolite(model,metID,metName,formula,CHEBIID,KEGGId,PubChemID, InChi,Charge, b )
+function [ newmodel ] = addMetabolite(model,metID,metName,formula,ChEBIID,KEGGId,PubChemID, InChi,Charge, b )
 %addMetabolite adds a Metabolite to the Current Reconstruction
 %
-% newModel = addMetabolite(model,metID,metName,formula,CHEBIID,KEGGId,PubChemID, InChi,Charge, b )
+% newModel = addMetabolite(model,metID,metName,formula,ChEBIID,KEGGId,PubChemID, InChi,Charge, b )
 %
 % metID and all optional string arguments either have to be a single value or Cell
 % Arrays. Charge and b have to be double arrays
@@ -14,7 +14,7 @@ function [ newmodel ] = addMetabolite(model,metID,metName,formula,CHEBIID,KEGGId
 %
 % metName       Human readable name(s) (String)
 % formula       The chemical formula(s) (String)
-% CHEBIID       The CHEBI Id(s) (String)
+% ChEBIID       The CHEBI Id(s) (String)
 % KEGGId        The KEGG Compound ID(s) (String)
 % PubChemID     The PubChemID(s) (String)
 % InChi         The InChi description(s) (String)
@@ -136,19 +136,19 @@ else
 end
 
 if nargin < 5
-    CHEBIID = cell(1,numel(metID))
-    CHEBIID(:) = {''};
+    ChEBIID = cell(1,numel(metID))
+    ChEBIID(:) = {''};
 else
-    if ~isa(CHEBIID,'cell')
-        if ~isa(CHEBIID,'char')
-            fprintf('Wrong Argument class for CHEBIID: %s ; should be char or cell\n',class(CHEBIID));
+    if ~isa(ChEBIID,'cell')
+        if ~isa(ChEBIID,'char')
+            fprintf('Wrong Argument class for ChEBIID: %s ; should be char or cell\n',class(ChEBIID));
             return
         else
-            CHEBIID = {CHEBIID};
+            ChEBIID = {ChEBIID};
         end
     end
-    if numel(metID) ~= numel(CHEBIID)
-        fprintf('Inconsistent Argument length metID (%i) and CHEBIID(%i)\n',numel(metID),numel(CHEBIID));
+    if numel(metID) ~= numel(ChEBIID)
+        fprintf('Inconsistent Argument length metID (%i) and ChEBIID(%i)\n',numel(metID),numel(ChEBIID));
         return
     end    
 end
@@ -211,8 +211,8 @@ for i = 1:numel(metID)
             warning(['Metabolite formula for ' metID{i} ' set to ''''']);
         %             model.metFormulas(end) = cellstr(input('Enter metabolite chemical formula, if available:', 's'));
         end
-        if isfield(model,'metCHEBIID')
-            model.metCHEBIID{end+1,1} = CHEBIID{i};
+        if isfield(model,'metChEBIID')
+            model.metChEBIID{end+1,1} = ChEBIID{i};
         end
         if isfield(model,'metKEGGID')
             model.metKEGGID{end+1,1} = KEGGId{i};

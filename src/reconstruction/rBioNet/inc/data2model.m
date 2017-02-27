@@ -154,7 +154,7 @@ for k = 1:S(1) % Check all metabolites in model
         met_k{k,1} = metabolites{line,2};   %metNames
         met_k{k,2} = metabolites{line,4};   %metFormulas
         met_k{k,3} = metabolites{line,5};   %metCharge
-        met_k{k,4} = metabolites{line,8};   %metCHEBIID
+        met_k{k,4} = metabolites{line,8};   %metChEBIID
         met_k{k,5} = metabolites{line,6};   %metKeggID
         met_k{k,6} = metabolites{line,7};   %metPubChemID
         met_k{k,7} = metabolites{line,9};   %metInchiString
@@ -231,7 +231,7 @@ end
 model.metNames = met_k(:,1);
 model.metFormulas = met_k(:,2);
 model.metCharge = str2double(met_k(:,3));
-model.metCHEBIID = met_k(:,4);
+model.metChEBIID = met_k(:,4);
 model.metKeggID = met_k(:,5);
 model.metPubChemID = met_k(:,6);
 model.metInchiString = met_k(:,7);
