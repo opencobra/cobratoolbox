@@ -26,7 +26,7 @@ end
 
 samples = [];
 
-h = waitbar(0,'Loading samples ...');
+h = showprogress(0,'Loading samples ...');
 %load points from the files into pset
 for i = 1:numFiles
     if (i > numSkipped)
@@ -48,7 +48,7 @@ for i = 1:numFiles
             pSkip = max([floor(numPoints/pointsPerFile) 1]);
             samples = [samples data.points(:,1:pSkip:numPoints)];
         end
-        waitbar((i-numSkipped)/(numFiles-numSkipped),h);
+        showprogress((i-numSkipped)/(numFiles-numSkipped),h);
     end
 end
 close(h);

@@ -54,7 +54,7 @@ fidErr = fopen('ACHRerror.txt','w');
 
 totalStepCount = 0;
 
-h = waitbar(0,'ACHR sampling in progress ...');
+h = showprogress(0,'ACHR sampling in progress ...');
 totalCount = nFiles*pointsPerFile*stepsPerPoint;
 
 t0 = cputime;
@@ -161,7 +161,7 @@ for i = 1:nFiles
             % Count the total number of steps
             totalStepCount = totalStepCount + 1;
             if mod(totalStepCount,50) == 0
-                waitbar(totalStepCount/totalCount,h);
+                showprogress(totalStepCount/totalCount,h);
             end        
             %recalculate the center point
             centerPoint = ((nWrmup+totalStepCount)*centerPoint + curPoint)/(nWrmup+totalStepCount+1);

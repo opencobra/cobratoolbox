@@ -379,12 +379,12 @@ nRxns = length(model.rxns);
 
 % Construct gene to rxn mapping
 rxnGeneMat = sparse(nRxns,length(allGenes));
-h = waitbar(0,'Constructing GPR mapping ...');
+h = showprogress(0,'Constructing GPR mapping ...');
 for i = 1:nRxns
     rxnID = find(ismember(rxns,model.rxns{i}));
     if (~isempty(rxnID))
         if mod(i,10) == 0
-            waitbar(i/nRxns,h);
+            showprogress(i/nRxns,h);
         end
         [tmp,geneInd] = ismember(rxnInfo(rxnID).genes,allGenes);
         rxnGeneMat(i,geneInd) = 1;
@@ -414,10 +414,10 @@ end
 
 baseMets = parseMetNames(model.mets);
 nMets = length(model.mets);
-h = waitbar(0,'Constructing metabolite lists ...');
+h = showprogress(0,'Constructing metabolite lists ...');
 for i = 1:nMets
     if mod(i,10) == 0
-        waitbar(i/nMets,h);
+        showprogress(i/nMets,h);
     end
     metID = find(ismember(mets,baseMets{i}));
     if (~isempty(metID))

@@ -245,10 +245,10 @@ metab = rBioNetSaveLoad('load','met');
 
  
 
-h = waitbar(0,'Please wait...');
+h = showprogress(0,'Please wait...');
 
 for i = 1:S(1)
-    waitbar(i / S(1))
+    showprogress(i / S(1))
     newmet = data(i,:);
     match = strcmp(newmet{1},metab(:,1));
     

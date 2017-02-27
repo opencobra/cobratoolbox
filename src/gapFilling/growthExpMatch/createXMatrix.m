@@ -21,7 +21,7 @@ end
 if nargin < 2
     transport = 0;
 end
-h=waitbar(0,'Exchange reaction list ...');
+h=showprogress(0,'Exchange reaction list ...');
 ExchangeRxnMatrix = createModel;
 
 
@@ -124,6 +124,8 @@ for i=1:length(compounds)
             end
         end
     end
-    if(mod(i, 40) ==0),waitbar(i/length(compounds),h);end
+    if mod(i, 40) == 0
+        showprogress(i/length(compounds),h);
+    end
 end
 close(h);

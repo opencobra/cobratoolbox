@@ -105,7 +105,6 @@ rxns = cell(nRxns,1);
 rules = cell(nRxns,1);
 genes = cell(nRxns,1);
 allGenes = {};
-%h = waitbar(0,'Reading SBML file ...');
 hasNotesField = false;
 
 fbc_lb = zeros(nRxns,1);
@@ -175,9 +174,6 @@ modelVersion=struct();
 noObjective=0; % by default there is an objective function.
 
 for i = 1:nRxns
-    %if mod(i,10) == 0
-    %    waitbar(i/nRxns,h);
-    %end
     % Read the gpra from the notes field; compliant with the previous
     % version of the SBML files
     notesField = modelSBML.reaction(i).notes;
@@ -467,11 +463,7 @@ allGenes = unique(allGenes);
 
 if (hasNotesField)||(isfield(modelSBML,'fbc_version')&&(modelSBML.fbc_version==2))
     rxnGeneMat = sparse(nRxns,length(allGenes));
-    %h = waitbar(0,'Constructing GPR mapping ...');
     for i = 1:nRxns
-        %if mod(i,10) == 0
-        %     waitbar(i/nRxns,h);
-        % end
         if iscell(genes{i})
             [tmp,geneInd] = ismember(genes{i},allGenes);
         else
@@ -502,15 +494,11 @@ for i=1:length(modelSBML.compartment)
     compartmentList{i} = modelSBML.compartment(i).id;
 end
 
-%h = waitbar(0,'Constructing metabolite lists ...');
 hasAnnotationField = 0;
 
 listSpeciesField={'fbc_charge';'fbc_chemicalFormula';'isSetfbc_charge';'fbc_version'};
 
 for i = 1:nMets
-    %if mod(i,10) == 0
-    %    waitbar(i/nMets,h);
-    %end
     % Parse metabolite id's
     % Get rid of the M_ in the beginning of metabolite id's
     metID = regexprep(speciesList{i},'^M_','');

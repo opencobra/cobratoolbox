@@ -51,7 +51,7 @@ shadowPrices1 = zeros(nPts);
 shadowPrices2 = zeros(nPts);
 
 % calulate points
-h = waitbar(0,'generating PhPP');
+h = showprogress(0,'generating PhPP');
 global CBT_LP_PARAMS  % save the state of the primal only flag.  
 if isfield( CBT_LP_PARAMS, 'primalOnly')
     primalOnlySave = CBT_LP_PARAMS.primalOnly;
@@ -59,7 +59,7 @@ end
 changeCobraSolverParams('LP', 'primalOnly', false);
 for i = 1:nPts %ind1
     for j = 1:nPts %ind2
-        waitbar((nPts*(i-1)+j)/(nPts^2),h);
+        showprogress((nPts*(i-1)+j)/(nPts^2),h);
         model1 = changeRxnBounds(model,controlRxn1,-1*ind1(i),'b');
         model1 = changeRxnBounds(model1,controlRxn2,-1*ind2(j),'b');
                 

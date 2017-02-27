@@ -72,11 +72,11 @@ height = 0.8/nRxns;
 width = 0.8/nRxns2;
 
 clf
-h = waitbar(0,'Drawing scatterplots ...');
+h = showprogress(0,'Drawing scatterplots ...');
 for i = 1:nRxns
     
     for j = 1:nRxns2
-        waitbar(((i-1)*nRxns+j)/(nRxns*nRxns2),h);
+        showprogress(((i-1)*nRxns+j)/(nRxns*nRxns2),h);
         left = 0.1+(j-1)*width;
         bottom = 0.9-i*height;
         if (twoSetsFlag)
