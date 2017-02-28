@@ -1,14 +1,20 @@
-% Tests functionality of splitString.
+% The COBRAToolbox: testSplitString.m
+%
+% Purpose:
+%     - testSplitString tests the functionality of splitString()
+%       and checks solution against a known solution.
+%
+% Authors:
+%     - Lemmer El Assal February 2017
+%
 
-%save original directory
-oriDir = pwd;
+% define the path to The COBRAToolbox
+pth = which('initCobraToolbox.m');
+CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
 
-%change to test folder
-mFilePath = mfilename('fullpath');
-cd(mFilePath(1:end-length(mfilename)));
+initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools']);
 
-load ref.mat;
-
+ref_fields = {'Some';'Strings';'Delimited'};
 
 testString1 = 'Some Strings Delimited';
 testString2 = 'Some|Strings|Delimited';
@@ -18,5 +24,5 @@ fields2 = splitString(testString2,'\|');
 assert(isequal(ref_fields,fields1))
 assert(isequal(ref_fields,fields2))
 
-%return to original directory
-cd(oriDir);
+% change the directory
+cd(CBTDIR)
