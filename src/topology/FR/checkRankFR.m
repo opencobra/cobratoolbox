@@ -196,7 +196,7 @@ if any(~model.FRnonZeroColBool1 & rxnBool1) && 0
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-A=[F,R];
+A=[F,R];%depends on the direction of reaction
 
 %detect the rows of A that are identical upto scalar multiplication
 %divide each row by the sum of each row.

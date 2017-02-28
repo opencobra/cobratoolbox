@@ -96,7 +96,7 @@ else
 end
 
 if (verbFlag == 1)  
-    h = waitbar(0,'Flux variability analysis in progress ...');
+    h = showprogress(0,'Flux variability analysis in progress ...');
 end
 if (verbFlag > 1)
     fprintf('%4s\t%4s\t%10s\t%9s\t%9s\n','No','Perc','Name','Min','Max');
@@ -244,7 +244,7 @@ if PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
             end
         end
         if (verbFlag == 1)
-            waitbar(i/length(rxnNameList),h);
+            showprogress(i/length(rxnNameList),h);
         end
         if (verbFlag > 1)
             fprintf('%4d\t%4.0f\t%10s\t%9.3f\t%9.3f\n',i,100*i/length(rxnNameList),rxnNameList{i},minFlux(i),maxFlux(i));

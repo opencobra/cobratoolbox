@@ -107,7 +107,7 @@ for m=1:ID_row;
 end
 
 
-h = waitbar(0,'progressing')
+h = showprogress(0,'progressing')
 
 num=[];
 
@@ -336,7 +336,7 @@ found=0;
 
 
 
-waitbar(1/4,h);
+showprogress(1/4,h);
 
 
 numL=0;
@@ -504,7 +504,7 @@ end
 writeCD(parsed_test,fname_out)
 
 
-waitbar(4/4,h);
+showprogress(4/4,h);
 
 close(h)
 

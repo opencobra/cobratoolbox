@@ -34,7 +34,7 @@ KEGGReactionList = importdata(KEGGFilename);
 KEGG = createModel;
 cnt=1;
 cnti=1;
-h=waitbar(0,'KEGG reaction list ...');
+h=showprogress(0,'KEGG reaction list ...');
 HTABLE = java.util.Hashtable; % hashes Kegg.mets
 
 %Create reversibility vector, default=1 (reversible)
@@ -136,7 +136,9 @@ for i = 1: length(KEGGReactionList)
         end
         
     end
-    if (mod(i,40) ==0), waitbar(i/length(KEGGReactionList),h), end
+    if mod(i,40) == 0
+        showprogress(i/length(KEGGReactionList),h);
+    end
 end
 close(h);
 KEGG.S=spalloc(length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets) );
