@@ -1,19 +1,27 @@
-% Tests functionality of countUnique.
+% The COBRAToolbox: testCountUnique.m
+%
+% Purpose:
+%     - testCountUnique tests the functionality of countUnique()
+%       and checks solution against a known solution.
+%
+% Authors:
+%     - Lemmer El Assal February 2017
+%
 
-%save original directory
-oriDir = pwd;
+% define the path to The COBRAToolbox
+pth = which('initCobraToolbox.m');
+CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
 
-%change to test folder
-mFilePath = mfilename('fullpath');
-cd(mFilePath(1:end-length(mfilename)));
+initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools']);
 
-load ref.mat;
+ref_sortedCount = [2; 2; 2; 1; 1];
+ref_sortedList = [1, 2, 4, 5, 6];
 
-vec = [1,2,4,5,6,1,2,4];
+vec = [1, 2, 4, 5, 6, 1, 2, 4];
 [sortedList, sortedCount] = countUnique(vec);
 
-assert(isequal(ref_sortedList,sortedList));
-assert(isequal(ref_sortedCount,sortedCount));
+assert(isequal(ref_sortedList, sortedList));
+assert(isequal(ref_sortedCount, sortedCount));
 
-%return to original directory
-cd(oriDir);
+% change the directory
+cd(CBTDIR)
