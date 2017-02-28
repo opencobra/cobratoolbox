@@ -16,8 +16,8 @@ initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools
 
 load testUnionCell.mat;
 
-A = {'String1','String2'};
-B = {'String2','String1'};
+A = {'String1', 'String2'};
+B = {'String2', 'String1'};
 
 AB{1} = unioncell(A, 1, B, 1);
 AB{2} = unioncell(A, 1, B, 2);
