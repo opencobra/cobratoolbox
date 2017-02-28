@@ -1,11 +1,18 @@
-% test function for unioncell
+% The COBRAToolbox: testUnionCell.m
+%
+% Purpose:
+%     - testUnionCell tests the functionality of unioncell()
+%       and checks solution against a known solution.
+%
+% Authors:
+%     - Lemmer El Assal February 2017
+%
 
-% save original directory
-oriDir = pwd;
+% define the path to The COBRAToolbox
+pth = which('initCobraToolbox.m');
+CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
 
-%change to test folder
-mFilePath = mfilename('fullpath');
-cd(mFilePath(1:end-length(mfilename)));
+initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools']);
 
 load ref.mat;
 
@@ -19,5 +26,5 @@ AB{4} = unioncell(A,2,B,2);
 
 assert(isequal(ref_AB,AB))
 
-%return to original directory
-cd(oriDir);
+% change the directory
+cd(CBTDIR)
