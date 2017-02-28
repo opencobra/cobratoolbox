@@ -1,11 +1,18 @@
-% Tests functionality of translateList.
+% The COBRAToolbox: testTranslateList.m
+%
+% Purpose:
+%     - testTranslateList tests the functionality of translateList()
+%       and checks solution against a known solution.
+%
+% Authors:
+%     - Lemmer El Assal February 2017
+%
 
-%save original directory
-oriDir = pwd;
+% define the path to The COBRAToolbox
+pth = which('initCobraToolbox.m');
+CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
 
-%change to test folder
-mFilePath = mfilename('fullpath');
-cd(mFilePath(1:end-length(mfilename)));
+initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools']);
 
 list = {'a','b','c'};
 trList1 = {'b','c'};
@@ -13,6 +20,5 @@ trList2 = {'B','C'};
 newList = translateList(list,trList1,trList2);
 assert(isequal(newList,{'a','B','C'}))
 
-
-%return to original directory
-cd(oriDir);
+% change the directory
+cd(CBTDIR)
