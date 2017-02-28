@@ -14,7 +14,7 @@ CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
 
 initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools']);
 
-load ref.mat;
+load testUnionCell.mat;
 
 A = {'String1','String2'};
 B = {'String2','String1'};
