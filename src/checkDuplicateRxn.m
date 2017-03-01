@@ -144,9 +144,12 @@ if length(removedRxnInd) == 0
     if printLevel > 0
         fprintf('%s\n', ' no duplicates found.');
     end
+    modelOut=model;
 else
     if removeFlag
         %remove the reactions
         modelOut = removeRxns(model, model.rxns(removedRxnInd));
+    else
+        modelOut=model;
     end
 end
