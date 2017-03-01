@@ -13,7 +13,7 @@ CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
 
 cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools']);
 
-file = 'testData_ReadMixedData.txt';
+file = 'testData_readMixedData.txt';
 n_header = 1;
 n_labels = 3;
 delimiter = ',';
@@ -29,5 +29,5 @@ assert(isequal(ref_data, data))
 assert(isequal(ref_header, header))
 assert(isequal(ref_id, id))
 
-%return to original directory
+% return to original directory
 cd(CBTDIR);
