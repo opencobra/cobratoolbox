@@ -137,6 +137,9 @@ if (strcmp(solverType,'LP'))
         case 'ibm_cplex'
             try
                 ILOGcplex = Cplex('fba');% Initialize the CPLEX object
+                if ~verLessThan('matlab','8.2')%2013b
+                    fprintf('\n IBM ILOG CPLEX is incompatible with this version of MATALB, please downgrade to 2013b latest or change solver\n')
+                end
             catch ME
                 solverOK = false;
                 warning('LP solver CPLEX from IBM not usable: IBM CPLEX not installed or licence server not up');
@@ -221,6 +224,9 @@ elseif (strcmp(solverType,'MILP'))
         case 'ibm_cplex'
             try
                 ILOGcplex = Cplex('fba');% Initialize the CPLEX object
+                if ~verLessThan('matlab','8.2')%2013b
+                    fprintf('\n IBM ILOG CPLEX is incompatible with this version of MATALB, please downgrade to 2013b latest or change solver\n')
+                end
             catch ME
                 solverOK = false;
                 warning('MILP solver CPLEX from IBM not usable: IBM CPLEX not installed or licence server not up');
