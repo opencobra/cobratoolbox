@@ -1,5 +1,6 @@
 # Windows default autosave extension
 *.asv
+Thumbs.db
 
 # OSX / *nix default autosave extension
 *.*~
