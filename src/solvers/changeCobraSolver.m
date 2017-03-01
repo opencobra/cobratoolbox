@@ -137,8 +137,10 @@ if (strcmp(solverType,'LP'))
         case 'ibm_cplex'
             try
                 ILOGcplex = Cplex('fba');% Initialize the CPLEX object
-                if ~verLessThan('matlab','8.1')%2013a
-                    fprintf('\n IBM ILOG CPLEX is incompatible with this version of MATLAB, please downgrade to 2013a latest or change solver\n')
+                if ~verLessThan('matlab','9')%2016b
+                    fprintf('\n IBM ILOG CPLEX is incompatible with this version of MATLAB, please downgrade or change solver\n')
+                elseif verLessThan('matlab','9') && ~verLessThan('matlab','8.6')%>2015b
+                    warning( 'off', 'MATLAB:lang:badlyScopedReturnValue' );%take out warning message
                 end
             catch ME
                 solverOK = false;
@@ -224,8 +226,10 @@ elseif (strcmp(solverType,'MILP'))
         case 'ibm_cplex'
             try
                 ILOGcplex = Cplex('fba');% Initialize the CPLEX object
-                if ~verLessThan('matlab','8.1')%2013b
-                    fprintf('\n IBM ILOG CPLEX is incompatible with this version of MATLAB, please downgrade to 2013a latest or change solver\n')
+                if ~verLessThan('matlab','9')%2016b
+                    fprintf('\n IBM ILOG CPLEX is incompatible with this version of MATLAB, please downgrade or change solver\n')
+                elseif verLessThan('matlab','9') && ~verLessThan('matlab','8.6')%>2015b
+                    warning( 'off', 'MATLAB:lang:badlyScopedReturnValue' );%take out warning message
                 end
             catch ME
                 solverOK = false;
