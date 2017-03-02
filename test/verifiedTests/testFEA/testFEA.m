@@ -7,34 +7,41 @@
 % Author:
 %     - Marouen BEN GUEBILA 09/02/2017
 
-% define global paths
-global path_TOMLAB
-
 % define the path to The COBRAToolbox
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testFEA']);
+cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testFEA']);
 
+% load the model and reference data
 load testDataFEA;
 load('ecoli_core_model', 'model');
 
-%test solver packages
-solverPkgs = {'tomlab_cplex'};%,'ILOGcomplex'};
+% run FEA
+resultCellFtest = FEA(model, 1:10, 'subSystems');
 
-for k = 1:length(solverPkgs)
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(path_TOMLAB));
-    end
+% assert equality of test results and reference data
+assert(isequal(resultCellFtest, resultCellF));
 
-    resultCellFtest=FEA(model,1:10,'subSystems');
-    assert(isequal(resultCellFtest,resultCellF));
-    
-    % remove the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        rmpath(genpath(path_TOMLAB));
-    end
+% check when the groups argument is not a string
+try
+    resultCellFtest = FEA(1:10, model, 0);
+catch ME
+    assert(length(ME.message) > 0)
+end
+
+% check less than 3 input arguments
+try
+    resultCellFtest = FEA(model, 1:10);
+catch ME
+    assert(length(ME.message) > 0)
+end
+
+% check when the rxnSet is not a vector
+try
+    resultCellFtest = FEA(model, [1:10; 1:10], 'subSystems');
+catch ME
+    assert(length(ME.message) > 0)
 end
 
 % change the directory
