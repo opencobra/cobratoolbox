@@ -873,13 +873,22 @@ if isfield(model,'genes')
         end
     end
 end
+
+%Set the objective sense of the FBC objective according to the osenseStr in
+%the model.
+objectiveSense = 'maximize';
+
+if isfield(model,'osenseStr') && strcmp('min',model.osenseStr)
+    objectiveSense = 'minimize'
+end
+
 tmp_fbc_objective=struct('typecode','SBML_FBC_OBJECTIVE',...   % Create templates of new structures defined in the FBCv2 scheme (i.e., field names and default values are initilised)
     'metaid',emptyChar,...
     'notes',emptyChar,...
     'annotation',emptyChar,...
     'sboTerm',defaultSboTerm,...
     'fbc_id','obj',... % define a term (No. 6)
-    'fbc_type', 'maximize',... % define the type (No.7)
+    'fbc_type', objectiveSense,... % define the type (No.7)
     'fbc_fluxObjective',emptyChar,... % is acturally a structure (No.8)
     'level', defaultLevel,...
     'version', defaultVersion,...

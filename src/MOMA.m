@@ -83,6 +83,9 @@ function [solutionDel,solutionWT,totalFluxDiff,solStatus] = ...
 
 if (nargin <3 || isempty(osenseStr))
     osenseStr = 'max';
+    if isfield(model,'osenseStr')
+        osenseStr = model.osenseStr;
+    end
 end
 if (nargin < 4)
     verbFlag = false;
