@@ -28,9 +28,9 @@ tol = 1e-8;
 
 % load models and expected results
 load('testpFBAData.mat', 'model_glc', 'model_lac');
-og_ = load('testpFBAData.mat', 'GeneClasses_glc1', 'GeneClasses_glc0', 'GeneClasses_lac1', 'GeneClasses_lac0');
-or_ = load('testpFBAData.mat', 'RxnClasses_glc1', 'RxnClasses_glc0', 'RxnClasses_lac1', 'RxnClasses_lac0');
-om_ = load('testpFBAData.mat', 'modelIrrev_glc1', 'modelIrrev_glc0', 'modelIrrev_lac1', 'modelIrrev_lac0');
+objGenes = load('testpFBAData.mat', 'GeneClasses_glc1', 'GeneClasses_glc0', 'GeneClasses_lac1', 'GeneClasses_lac0');
+objRxns = load('testpFBAData.mat', 'RxnClasses_glc1', 'RxnClasses_glc0', 'RxnClasses_lac1', 'RxnClasses_lac0');
+objModel = load('testpFBAData.mat', 'modelIrrev_glc1', 'modelIrrev_glc0', 'modelIrrev_lac1', 'modelIrrev_lac0');
 
 % list of solver packages
 solverPkgs = {'tomlab_cplex', 'gurobi6', 'glpk'};
@@ -59,29 +59,29 @@ for k = 1:length(solverPkgs)
         % run pFBA
         fprintf('\n*** Test basic pFBA calculations ***\n\n');
         fprintf('\n** Optimal solution - minimize gene-associated flux: glucose\n');
-        [t_og.GeneClasses_glc1 t_or.RxnClasses_glc1 t_om.modelIrrev_glc1] = pFBA(model_glc, 'geneoption', 1);
+        [t_objGenes.GeneClasses_glc1 t_objRxns.RxnClasses_glc1 t_objModel.modelIrrev_glc1] = pFBA(model_glc, 'geneoption', 1);
 
         fprintf('\n** Optimal solution - minimize gene-associated flux: lactate\n');
-        [t_og.GeneClasses_lac1 t_or.RxnClasses_lac1 t_om.modelIrrev_lac1] = pFBA(model_lac, 'geneoption', 1);
+        [t_objGenes.GeneClasses_lac1 t_objRxns.RxnClasses_lac1 t_objModel.modelIrrev_lac1] = pFBA(model_lac, 'geneoption', 1);
 
         fprintf('\n** Optimal solution - minimize all flux: glucose **\n');
-        [t_og.GeneClasses_glc0 t_or.RxnClasses_glc0 t_om.modelIrrev_glc0] = pFBA(model_glc, 'geneoption', 0);
+        [t_objGenes.GeneClasses_glc0 t_objRxns.RxnClasses_glc0 t_objModel.modelIrrev_glc0] = pFBA(model_glc, 'geneoption', 0);
 
         fprintf('\n** Optimal solution - minimize all flux: lactate **\n');
-        [t_og.GeneClasses_lac0 t_or.RxnClasses_lac0 t_om.modelIrrev_lac0] = pFBA(model_lac, 'geneoption', 0);
+        [t_objGenes.GeneClasses_lac0 t_objRxns.RxnClasses_lac0 t_objModel.modelIrrev_lac0] = pFBA(model_lac, 'geneoption', 0);
 
-        t_og_f = fieldnames(t_og);
-        t_or_f = fieldnames(t_or);
-        t_om_f = fieldnames(t_om);
+        t_objGenesf = fieldnames(t_objGenes);
+        t_objRxnsf = fieldnames(t_objRxns);
+        t_objModelf = fieldnames(t_objModel);
 
         % testing if gene lists are consistent with expected lists
         t_fg = zeros(40, 1);
         cnt = 0;
-        for i = 1:length(t_og_f)
-            tmp_lists = fieldnames(t_og.(t_og_f{i}));
+        for i = 1:length(t_objGenesf)
+            tmp_lists = fieldnames(t_objGenes.(t_objGenesf{i}));
             for j = 1:length(tmp_lists)
-                t1 = find(~ismember(t_og.(t_og_f{i}).(tmp_lists{j}), og_.(t_og_f{i}).(tmp_lists{j})));
-                t2 = find(~ismember(og_.(t_og_f{i}).(tmp_lists{j}), t_og.(t_og_f{i}).(tmp_lists{j})));
+                t1 = find(~ismember(t_objGenes.(t_objGenesf{i}).(tmp_lists{j}), objGenes.(t_objGenesf{i}).(tmp_lists{j})));
+                t2 = find(~ismember(objGenes.(t_objGenesf{i}).(tmp_lists{j}), t_objGenes.(t_objGenesf{i}).(tmp_lists{j})));
                 cnt = cnt + 1;
                 if isempty(t1)
                     t_fg(cnt) = 1;
@@ -98,11 +98,11 @@ for k = 1:length(solverPkgs)
         % testing if rxn lists are consistent with expected lists
         t_fr = zeros(40, 1);
         cnt = 0;
-        for i = 1:length(t_or_f)
-            tmp_lists = fieldnames(t_or.(t_or_f{i}));
+        for i = 1:length(t_objRxnsf)
+            tmp_lists = fieldnames(t_objRxns.(t_objRxnsf{i}));
             for j = 1:length(tmp_lists)
-                t1 = find(~ismember(t_or.(t_or_f{i}).(tmp_lists{j}), or_.(t_or_f{i}).(tmp_lists{j})));
-                t2 = find(~ismember(or_.(t_or_f{i}).(tmp_lists{j}), t_or.(t_or_f{i}).(tmp_lists{j})));
+                t1 = find(~ismember(t_objRxns.(t_objRxnsf{i}).(tmp_lists{j}), objRxns.(t_objRxnsf{i}).(tmp_lists{j})));
+                t2 = find(~ismember(objRxns.(t_objRxnsf{i}).(tmp_lists{j}), t_objRxns.(t_objRxnsf{i}).(tmp_lists{j})));
                 cnt = cnt + 1;
                 if isempty(t1)
                     t_fr(cnt) = 1;
@@ -119,9 +119,9 @@ for k = 1:length(solverPkgs)
         % testing if flux minima are consistent with expected values
         t_fm = zeros(8, 1);
         cnt = 0;
-        for i = 1:length(t_om_f)
-            t1 = t_om.(t_om_f{i}).lb(findRxnIDs(t_om.(t_om_f{i}), 'netFlux')) - om_.(t_om_f{i}).lb(findRxnIDs(om_.(t_om_f{i}), 'netFlux'));
-            t2 = t_om.(t_om_f{i}).ub(findRxnIDs(t_om.(t_om_f{i}), 'netFlux')) - om_.(t_om_f{i}).ub(findRxnIDs(om_.(t_om_f{i}), 'netFlux'));
+        for i = 1:length(t_objModelf)
+            t1 = t_objModel.(t_objModelf{i}).lb(findRxnIDs(t_objModel.(t_objModelf{i}), 'netFlux')) - objModel.(t_objModelf{i}).lb(findRxnIDs(objModel.(t_objModelf{i}), 'netFlux'));
+            t2 = t_objModel.(t_objModelf{i}).ub(findRxnIDs(t_objModel.(t_objModelf{i}), 'netFlux')) - objModel.(t_objModelf{i}).ub(findRxnIDs(objModel.(t_objModelf{i}), 'netFlux'));
             cnt = cnt + 1;
             if t1 < tol
                 t_fm(cnt) = 1;
