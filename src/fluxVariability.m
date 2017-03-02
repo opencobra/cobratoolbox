@@ -38,7 +38,7 @@ if (nargin < 2)
     optPercentage = 100;
 end
 if (nargin < 3)
-    if isfield(model.osenseStr)
+    if isfield(model,'osenseStr')
         osenseStr = model.osenseStr
     else
         osenseStr = 'max';
