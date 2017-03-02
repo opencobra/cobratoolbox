@@ -104,8 +104,8 @@ cd([CBTDIR filesep 'testing' filesep 'testVonBertalanffy'])
 %% Configure inputs
 
 load iAF1260
-if model.S(952, 350)==0
-    model.S(952, 350)=1; % One reaction needing mass balancing in iAF1260
+if model.S(952, 350) == 0
+    model.S(952, 350) = 1; % One reaction needing mass balancing in iAF1260
 end
 model.metCharges(strcmp('asntrna[c]', model.mets))=0; % One reaction needing
                                                       % charge balancing
