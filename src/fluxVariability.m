@@ -38,7 +38,11 @@ if (nargin < 2)
     optPercentage = 100;
 end
 if (nargin < 3)
-    osenseStr = 'max';
+    if isfield(model.osenseStr)
+        osenseStr = model.osenseStr
+    else
+        osenseStr = 'max';
+    end
 end
 if (nargin < 4)
     rxnNameList = model.rxns;
