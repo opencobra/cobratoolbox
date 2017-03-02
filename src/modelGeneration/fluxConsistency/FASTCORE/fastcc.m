@@ -480,7 +480,29 @@ end
 end
 
 
-
+%code to test nullspace acceleration
+% tic
+% if 1 || ~isfield(model,'fluxConsistentMetBool') || ~isfield(model,'fluxConsistentRxnBool')
+%     param.epsilon=1e-4;
+%     param.modeFlag=1;
+%     param.method='null_fastcc';
+%     printLevel = 2;
+%     [fluxConsistentMetBool2,fluxConsistentRxnBool2,fluxInConsistentMetBool2,fluxInConsistentRxnBool2,modelOpen] = findFluxConsistentSubset(modelOpen,param,printLevel);
+% end
+% fprintf('%6u\t%6u\t%s\n',nnz(fluxInConsistentMetBool2),nnz(fluxInConsistentRxnBool2),' flux inconsistent.')
+% toc
+% 
+% tic
+% if 1 || ~isfield(model,'fluxConsistentMetBool') || ~isfield(model,'fluxConsistentRxnBool')
+%     param.epsilon=1e-4;
+%     param.modeFlag=1;
+%     param.method='fastcc';
+%     %param.method='nonconvex';
+%     printLevel = 2;
+%     [fluxConsistentMetBool,fluxConsistentRxnBool,fluxInConsistentMetBool,fluxInConsistentRxnBool,modelOpen] = findFluxConsistentSubset(modelOpen,param,printLevel);
+% end
+% fprintf('%6u\t%6u\t%s\n',nnz(fluxInConsistentMetBool),nnz(fluxInConsistentRxnBool),' flux inconsistent.')
+% toc
 
 
 

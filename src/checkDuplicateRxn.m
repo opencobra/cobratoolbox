@@ -3,9 +3,9 @@ function [modelOut, removedRxnInd, keptRxnInd] = checkDuplicateRxn(model, method
 %
 % INPUTS:
 % model         Cobra model structure
-% method        1 --> checks rxn abbreviations
-%               2 --> checks rxn S matrix
-%               3 --> checks rxn S matrix ignoring reaction direction
+% method        rxnAbbr --> checks rxn abbreviations
+%               S --> checks rxn S matrix
+%               FR --> checks rxn S matrix ignoring reaction direction
 %
 % OPTIONAL INPUTS:
 % removeFlag    {(1),0} boolean to remove duplicates
@@ -35,7 +35,7 @@ oneToN = 1:nRxn;
 cnt = 0;
 
 switch method
-    case 1
+    case {1,'rxnAbbr'}
         if printLevel > 0
             fprintf('%s\n', 'Checking for reaction duplicates by reaction abbreviation ...');
         end
@@ -44,7 +44,7 @@ switch method
         %C = setdiff(A,B) for vectors A and B, returns the values in A that 
         %are not in B with no repetitions.
         keptRxnInd=setdiff(oneToN,removedRxnInd);
-    case 2
+    case {2,'S'}
         if printLevel > 0
             fprintf('%s\n', 'Checking for reaction duplicates by stoichiometry ...');
         end
@@ -89,7 +89,7 @@ switch method
             end
         end
 
-    case 3
+    case {'FR'}
         if printLevel > 0
             fprintf('%s\n', 'Checking for reaction duplicates by stoichiometry (up to orientation) ...');
         end
