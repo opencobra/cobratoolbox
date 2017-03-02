@@ -18,9 +18,9 @@ global path_GUROBI
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-initTest([CBTDIR '/test/verifiedTests/testFindBlockedReaction'])
+initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testFindBlockedReaction'])
 
-load ecoli_core_model.mat;
+load('ecoli_core_model.mat', 'model');
 
 ecoli_blckd_rxn = {'EX_fru(e)', 'EX_fum(e)', 'EX_gln_L(e)', 'EX_mal_L(e)', ...
                    'FRUpts2', 'FUMt2_2', 'GLNabc', 'MALt2_2'};
@@ -78,3 +78,6 @@ for k = 1:length(solverPkgs)
     % output a success message
     fprintf('Done.\n');
 end
+
+% change the directory
+cd(CBTDIR)

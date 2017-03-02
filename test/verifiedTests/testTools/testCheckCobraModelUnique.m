@@ -9,32 +9,32 @@
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-cd([CBTDIR '/test/verifiedTests/testTools'])
+cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools'])
 
 % define the test model
-toyModel=struct;
-toyModel.rxns={'Rxn1';'Rxn2';'Rxn2'};
-toyModel.mets={'Met1';'Met2';'Met2'};
+toyModel = struct;
+toyModel.rxns = {'Rxn1'; 'Rxn2'; 'Rxn2'};
+toyModel.mets = {'Met1'; 'Met2'; 'Met2'};
 
 % define output mets when replacing duplicate met names
-metsReplaced={'Met1';'Met2_1';'Met2_2'};
+metsReplaced = {'Met1'; 'Met2_1'; 'Met2_2'};
 
 % define output mets when replacing duplicate met names
-rxnsReplaced={'Rxn1';'Rxn2_1';'Rxn2_2'};
+rxnsReplaced = {'Rxn1'; 'Rxn2_1'; 'Rxn2_2'};
 
 % run function without replacing rxn/met names
-modelTest=checkCobraModelUnique(toyModel);
+modelTest = checkCobraModelUnique(toyModel);
 
 % check if met and rxn outputs are identical
-assert(isequal(toyModel.mets,modelTest.mets));
-assert(isequal(toyModel.rxns,modelTest.rxns));
+assert(isequal(toyModel.mets, modelTest.mets));
+assert(isequal(toyModel.rxns, modelTest.rxns));
 
 % run function and replace duplicate rxn/met names
-modelTest=checkCobraModelUnique(toyModel,1);
+modelTest=checkCobraModelUnique(toyModel, 1);
 
 % check if duplicate met and rxn names have been changed correctly
-assert(isequal(metsReplaced,modelTest.mets));
-assert(isequal(rxnsReplaced,modelTest.rxns));
+assert(isequal(metsReplaced, modelTest.mets));
+assert(isequal(rxnsReplaced, modelTest.rxns));
 
 % change the directory
 cd(CBTDIR)

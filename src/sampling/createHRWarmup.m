@@ -88,11 +88,11 @@ if ~isempty(bias)
 end
 
 i = 1;
-h = waitbar(0,'Creating warmup points ...');
+h = showprogress(0,'Creating warmup points ...');
 %Generate the points
 while i <= nPoints/2
     if mod(i,10) == 0
-        waitbar(2*i/nPoints,h);
+        showprogress(2*i/nPoints,h);
     end
     if ~isempty(bias)
         for k = 1:size(bias.index)

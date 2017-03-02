@@ -17,7 +17,7 @@
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
 
-cd([CBTDIR '/test/verifiedTests/testModelManipulation']);
+cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep,'testModelManipulation']);
 
 % Test with non-empty model
 fprintf('>> Starting non-empty model tests:\n');
@@ -65,37 +65,7 @@ model = removeRxns(model, {'ABC_def'});
 addExchangeRxn(model, {'glc-D[e]'; 'glc-D';})
 
 %check if rxns length was decremented by 1
-assert(length(model.rxns) == rxns_length);v2irrev, irrev2rev] = convertToIrreversible(model);
-
-% test if both models are the same
-assert(isSameCobraModel(modelIrrev, testModelIrrev));
-
-% Convert to reversible
-fprintf('>> Testing convertToReversible\n');
-testModelRev = convertToReversible(testModelIrrev);
-load('testModelManipulation.mat','modelRev');
-
-% test if both models are the same
-assert(isSameCobraModel(modelRev,testModelRev));
-
-% test irreversibility of model
-fprintf('>> Testing convertToIrreversible (2)\n');
-load('testModelManipulation.mat','model','modelIrrev');
-
-% set a lower bound to positive (faulty model)
-modelRev.lb(1) = 10;
-[testModelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model);
-
-% test if both models are the same
-assert(isSameCobraModel(modelIrrev, testModelIrrev));
-
-% test irreversibility of model
-fprintf('>> Testing convertToIrreversible (3)\n');
-load('testModelManipulation.mat','model','modelIrrev');
-
-% set a reaction as not reversible although the reaction is reversible as suggested by the bounds
-model.rev(1) = 0;
-[testModelIrrev, matchRev, rev2irrev, irrev2r
+assert(length(model.rxns) == rxns_length);
 
 % add a new reaction to the model
 model = addReaction(model,'newRxn1','A -> B + 2 C');
@@ -137,7 +107,7 @@ model = addReaction(model,'newRxn1','A -> B + 2 C');
 assert(length(model.rxns) == rxns_length + 1);
 
 % check if the number of metabolites was incremented by 3
-assert(length(model.mets) == mets_length+3);
+assert(length(model.mets) == mets_length + 3);
 
 % change the reaction bounds
 model = changeRxnBounds(model, model.rxns, 2, 'u');
@@ -181,9 +151,20 @@ assert(isSameCobraModel(modelIrrev, testModelIrrev));
 % test irreversibility of model
 fprintf('>> Testing convertToIrreversible (3)\n');
 load('testModelManipulation.mat','model','modelIrrev');
+modelSave=model;
 
-% set a reaction as not reversible although the reaction is reversible as suggested by the bounds
+% set a reaction as not reversible although the reaction is reversible as
+% suggested by the bounds (case1)
 model.rev(1) = 0;
+[testModelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model);
+
+% test if both models are the same
+assert(isSameCobraModel(modelIrrev, testModelIrrev));
+
+% set a reaction as not reversible although the reaction is reversible as
+% suggested by the bounds (case2)
+model=modelSave;
+model.rev(20) = 1;
 [testModelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model);
 
 % test if both models are the same

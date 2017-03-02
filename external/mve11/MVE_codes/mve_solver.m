@@ -10,18 +10,18 @@ function [x,E2,msg,y,z,iter] = mve_solver(A,b,x0,maxiter,tol)
 
 %--------------------------------------
 % Yin Zhang, Rice University, 07/29/02
+% Last modified: 09/29/16
 %--------------------------------------
 
-t0 = cputime; 
 [m, n] = size(A);
 bnrm = norm(b); 
 
-if ~exist('maxiter') maxiter = 50; end;
-if ~exist('tol') tol = 1.e-4; end;
+if ~exist('maxiter','var'), maxiter = 50; end;
+if ~exist('tol','var'), tol = 1.e-4; end;
 minmu = 1.e-8; tau0 = .75;
 
 bmAx0 = b - A*x0;
-if any(bmAx0<=0) error('x0 not interior'); end
+if any(bmAx0<=0), error('x0 not interior'); end
 
 A = sparse(1:m,1:m,1./bmAx0)*A; b = ones(m,1); 
 x = zeros(n,1); y = ones(m,1); bmAx = b;
@@ -29,15 +29,15 @@ x = zeros(n,1); y = ones(m,1); bmAx = b;
 fprintf('\n  Residuals:   Primal     Dual    Duality  logdet(E)\n');
 fprintf('  --------------------------------------------------\n');
 
-res = 1; msg = 0;
-prev_obj = -Inf;
+%res = 1; 
+msg = 0;
 for iter=1:maxiter %----- loop starts -----
 
-if iter > 1 bmAx = bmAx - astep*Adx; end
+if iter > 1, bmAx = bmAx - astep*Adx; end
 
 Y = sparse(1:m,1:m,y);
 E2 = inv(full(A'*Y*A));
-Q = A*E2*A';
+Q = A*E2*A'; %#ok<MINV>
 h = sqrt(diag(Q));
 if iter==1
    t = min(bmAx./h); 
@@ -61,16 +61,12 @@ r3 = norm(R3,'inf');
 res = max([r1 r2 r3]);
 objval = log(det(E2))/2;
 
-if mod(iter,10)==0
-    fprintf('  iter %3i  ', iter);
-    fprintf('%9.1e %9.1e %9.1e  %9.3e\n', r2,r1,r3,objval);
-end
-if (res < tol*(1+bnrm) && rmu <= minmu ) || (iter>100 && prev_obj ~= -Inf && (prev_obj >= (1-tol)*objval  || prev_obj <=(1-tol)*objval))
-% if prev_obj ~= -Inf && (prev_obj >= (1-tol)*objval  || prev_obj <=(1-tol)*objval) && iter>10
+fprintf('  iter %3i  ', iter);
+fprintf('%9.1e %9.1e %9.1e  %9.3e\n', r2,r1,r3,objval);
+if res < tol*(1+bnrm) && rmu <= minmu 
    fprintf('  Converged!\n'); 
    x = x + x0; msg=1; break; 
 end
-prev_obj = objval;
 
 YQ = Y*Q; YQQY = YQ.*YQ'; y2h = 2*yh; YA = Y*A;
 G  = YQQY + sparse(1:m,1:m,max(1.e-12,y2h.*z));
@@ -94,4 +90,3 @@ y = y + astep*dy;
 z = z + astep*dz;
 
 end
-%fprintf('  CPU time: %g seconds\n', cputime-t0);

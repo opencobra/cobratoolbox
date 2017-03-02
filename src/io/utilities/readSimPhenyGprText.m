@@ -24,10 +24,10 @@ subSystems = subSystems(sel);
 nRxns = length(rxnNames);
 allGenes = {};
 % Parse GPRA's
-h = waitbar(0,'Reading GPRA text file ...');
+h = showprogress(0,'Reading GPRA text file ...');
 for i = 1:nRxns
     if mod(i,10) == 0
-        waitbar(i/nRxns,h);
+        showprogress(i/nRxns,h);
     end
     thisGpra = gpraStrings{i};
     thisGpra = regexprep(thisGpra,'+',' and ');
@@ -46,10 +46,10 @@ allGenes = unique(allGenes);
 
 % Construct gene to rxn mapping
 rxnGeneMat = sparse(nRxns,length(allGenes));
-h = waitbar(0,'Constructing GPR mapping ...');
+h = showprogress(0,'Constructing GPR mapping ...');
 for i = 1:nRxns
     if mod(i,10) == 0
-        waitbar(i/nRxns,h);
+        showprogress(i/nRxns,h);
     end
     [tmp,geneInd] = ismember(genes{i},allGenes);
     rxnGeneMat(i,geneInd) = 1;

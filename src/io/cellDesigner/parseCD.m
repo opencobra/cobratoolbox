@@ -150,16 +150,6 @@ rem=fgets(f_id);
 numOfLine=numOfLine+1;
 
 while ischar(rem) % &&r_num<10;
-    
-
-    %%%%%%%%%%%%%%%%
-    %     if ismember(numOfLine/numlines,[0.25 0.5 0.75 1]);
-    %          waitbar(numOfLine/numlines ,h)
-    %     end
-    %%%%%%%%%%%%%%%%
-    
-    
-    
     line_st=strfind(rem,toFD(1).str);
     
     

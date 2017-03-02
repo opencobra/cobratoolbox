@@ -94,7 +94,7 @@ biomassVec = biomass;
 timeVec(1) = 0;
 
 fprintf('Step number\tBiomass\n');
-h = waitbar(0,'Dynamic FBA analysis in progress ...');
+h = showprogress(0,'Dynamic FBA analysis in progress ...');
 for stepNo = 1:nSteps
     % Run FBA
     sol = optimizeCbModel(model,'max','one');
@@ -127,7 +127,7 @@ for stepNo = 1:nSteps
     model.lb(excInd) = -uptakeBound;  
     
     fprintf('%d\t%f\n',stepNo,biomass);
-    waitbar(stepNo/nSteps,h);
+    showprogress(stepNo/nSteps,h);
     timeVec(stepNo+1) = stepNo*timeStep;
 end
 if ( regexp( version, 'R20') )

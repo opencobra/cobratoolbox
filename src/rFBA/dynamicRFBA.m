@@ -112,7 +112,7 @@ states{1} = iniState;
 
 noGrowthCount = 0;
 %fprintf('Step number\tBiomass\n');
-h = waitbar(0,'Dynamic regulatory FBA analysis in progress ...');
+h = showprogress(0,'Dynamic regulatory FBA analysis in progress ...');
 for stepNo = 1:nSteps  
     % Run FBA
     sol = optimizeCbModel(modelDR,'max',true);
@@ -167,7 +167,7 @@ for stepNo = 1:nSteps
     states{end+1} = finalState;
     
     fprintf('%d\t%f\n',stepNo,biomass);
-    waitbar(stepNo/nSteps,h);
+    showprogress(stepNo/nSteps,h);
     timeVec(stepNo+1) = stepNo*timeStep;
 end
 close(h);

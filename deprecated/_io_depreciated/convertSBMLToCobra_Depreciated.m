@@ -317,7 +317,7 @@ for i = 1:nMets
     if isfield(modelSBML.species(i),'annotation')
         hasAnnotationField = 1;
         [metCHEBI,metKEGG,metPubChem,metInChI] = parseSBMLAnnotationField(modelSBML.species(i).annotation);
-        metCHEBIID{i} = metCHEBI;
+        metChEBIID{i} = metCHEBI;
         metKEGGID{i} = metKEGG;
         metPubChemID{i} = metPubChem;
         metInChIString{i} = metInChI;
@@ -420,7 +420,7 @@ model.rxnNames = columnVector(rxnNames);
 
 
 if (hasAnnotationField)
-    model.metChEBIID = columnVector(metCHEBIID);
+    model.metChEBIID = columnVector(metChEBIID);
     model.metKEGGID = columnVector(metKEGGID);
     model.metPubChemID = columnVector(metPubChemID);
     model.metInChIString = columnVector(metInChIString);
