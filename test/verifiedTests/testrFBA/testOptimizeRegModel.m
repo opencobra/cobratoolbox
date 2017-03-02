@@ -13,7 +13,8 @@ global path_TOMLAB
 % define the path to The COBRAToolbox
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
-
+ 
+cd([CBTDIR filesep 'test' filesep 'verifiedTests' filesep 'testrFBA'])
 initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testrFBA']);
 
 %load model and test data
