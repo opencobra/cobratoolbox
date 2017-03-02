@@ -83,7 +83,7 @@ function [solutionDel,solutionWT,totalFluxDiff,solStatus] = ...
 
 if (nargin <3 || isempty(osenseStr))
     osenseStr = 'max';
-    if isfield(model,'osenseStr')
+    if isfield(modelWT,'osenseStr')
         osenseStr = model.osenseStr;
     end
 end
