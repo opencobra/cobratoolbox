@@ -18,10 +18,10 @@ initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools
 load ref.mat;
 
 data = ones(5)*6;
-statname = {'mean','std','median','count'};
-groups = {'test1','test2','test3','test4','test1'};
+statname = {'mean', 'std', 'median', 'count'};
+groups = {'test1', 'test2', 'test3', 'test4', 'test1'};
 
-ref_groupCnt = [2;1;1;1];
+ref_groupCnt = [2; 1; 1; 1];
 
 for i = 1:4 
     [groupStat(:,:,i), groupList, groupCnt] = calcGroupStats(data, groups, statname{i}, ref_groupList, 1, 10);
