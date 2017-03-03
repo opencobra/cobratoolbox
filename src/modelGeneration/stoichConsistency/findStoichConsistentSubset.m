@@ -61,7 +61,7 @@ finalCheckMethod='findMassLeaksAndSiphons'; %works with smaller leakParams.epsil
 
 removalStrategy='imBalanced';
 %removalStrategy='isolatedInconsistent';
-%removalStrategy='highCardinalityReactions';
+removalStrategy='highCardinalityReactions';
 
 minCardRelaxParams.epsilon=epsilon;
 minCardRelaxParams.eta=feasTol*100;
@@ -184,7 +184,6 @@ if massBalanceCheck
         fprintf('%6u\t%6u\t%s\n',nnz(minConservationNonRelaxMetBool  & model.SIntMetBool),nnz(minConservationNonRelaxRxnBool & model.SIntRxnBool),' seemingly elementally balanced and stoichiometrically consistent.')
         fprintf('%6u\t%6u\t%s\n',nnz(~model.balancedMetBool & model.SIntMetBool),nnz(~model.balancedRxnBool & model.SIntRxnBool),' heuristically non-exchange and seemingly elementally imbalanced.')
     end
-
 end
 
 % assumes that all mass imbalanced reactions are exchange reactions
@@ -278,7 +277,7 @@ while iterateCardinalityOpt>0
                 end
             end
             if printLevel>1
-                fprintf('%6u\t%6u\t%s\n',nnz(minConservationNonRelaxMetBool),nnz(minConservationNonRelaxRxnBool),' ... of which are confirmed stoichiometrically consistent by leak/siphon testing.')
+                fprintf('%6u\t%6u\t%s\n',nnz(minConservationNonRelaxMetBool),nnz(minConservationNonRelaxRxnBool),'Confirmed stoichiometrically consistent by leak/siphon testing.')
             end
         end
        if tripleCheckConsistencey && any(minConservationNonRelaxMetBool)
@@ -345,6 +344,10 @@ while iterateCardinalityOpt>0
     metRemoveBool=0;
     rxnRemoveBool=0;
 
+    %hack for HMR
+    if ~exist('imBalancedRxnBool','var')
+        removalStrategy='highCardinalityReactions';
+    end
     switch removalStrategy
         case 'highCardinalityReactions'
             %%remove reactions with unknown consistency of maximal cardinality
@@ -544,7 +547,7 @@ if printLevel>0
     switch finalCheckMethod
         case 'findMassLeaksAndSiphons'
             if nnz(leakMetBool)==0 && nnz(siphonMetBool)==0
-                fprintf('%6u\t%6u\t%s\n',nnz(model.SConsistentMetBool),nnz(model.SConsistentRxnBool),' ... of which are confirmed stoichiometrically consistent by leak/siphon testing.')
+                fprintf('%6u\t%6u\t%s\n',nnz(model.SConsistentMetBool),nnz(model.SConsistentRxnBool),' Confirmed stoichiometrically consistent by leak/siphon testing.')
             else
                 fprintf('%6u\t%6u\t%s%s%s\n',nnz(leakMetBool),NaN,' semipositive leak metabolites. (',leakParams.method, ' method)');
                 fprintf('%6u\t%6u\t%s%s%s\n',nnz(siphonMetBool),NaN,' seminegative siphon metabolites. (',leakParams.method, ' method)');
@@ -563,7 +566,7 @@ if printLevel>0
 end
 
 
-if exist('fileName','var') && ~isempty(fileName)
+if exist('fileName','var') && ~isempty(fileName) && massBalanceCheck
     % printFlag         Print formulas or just return them (Default = true)
     printFlag=1;
     % lineChangeFlag    Append a line change at the end of each line
@@ -601,7 +604,9 @@ if exist('fileName','var') && ~isempty(fileName)
         [massImbalance,imBalancedMass,imBalancedCharge,imBalancedRxnBool,Elements,missingFormulaeBool,balancedMetBool]...
             = checkMassChargeBalance(modelTmp,-1,fileNameBase);
         if nnz(imBalancedRxnBool & model.unknownSConsistencyRxnBool)==0
-            fprintf('%s\n','All reactions with unknown stoichiometric consistency appear elementally balanced')
+            if printLevel>2
+                fprintf('%s\n','All reactions with unknown stoichiometric consistency appear elementally balanced.')
+            end
         end
     else
         error('No model.metFormulas');
