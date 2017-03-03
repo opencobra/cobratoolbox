@@ -111,9 +111,9 @@ function [definitions,success] = tabcomplete(askAboutBackup,funcName, varargin)
         bakFilename = strrep(tcXmlFilename,'.xml','.bak');
         if ~exist(bakFilename,'file') && ~ispref(mfilename,'dontBackup')
             % Ask the user whether to save a backup copy (YES, no, no & don't ask again)
-            msg = {['The COBRA Toolbox would like to make some modifications to the autocompletion definitions of MATLAB.' ... 
-                    '\nThese modifications will take effect after the next Matlab restart.\n'...
-                    'It is suggested to create a backup of the original config file at:\n ' tcXmlFilename], '', ['Save ' bakFilename '?']};
+            msg = {'The COBRA Toolbox would like to make some modifications to the autocompletion definitions of MATLAB.',...
+                    'These modifications will take effect after the next Matlab restart.',...
+                    'It is suggested to create a backup of the original config file at: ', tcXmlFilename , '', ['Save ' bakFilename '?']};
             switch getQuestDlg(msg)
                 case 'Yes, and create Backup'   % => Yes: backup file
                     [status,msg] = copyfile(tcXmlFilename,bakFilename,'f');
@@ -163,7 +163,7 @@ end  % tabcomplete
 function answer = getQuestDlg(msg)
     createStruct.Interpreter = 'none';
     createStruct.Default = 'Yes, and create Backup';
-    answer = questdlg(msg,mfilename,'Yes, and create Backup','Yes, without Backup','No',createStruct);
+    answer = questdlg(msg,mfilename,'Yes, and create Backup','Yes, without Backup','Dont add autocompletion',createStruct);
     drawnow;
 end  % getQuestDlg
 
