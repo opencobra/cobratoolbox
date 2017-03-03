@@ -719,7 +719,7 @@ for i=1:size(model.rxns, 1)
         tmp_note = [ tmp_note ' <p>AUTHORS: ' model.rxnReferences{i} '</p>'];
     end
     if isfield(model, 'rxnNotes')&&i<=length(model.rxnNotes)%&&~isempty(model.rxnNotes{i})
-        tmp_note = [ tmp_note ' <p>' model.rxnNotes{i} '</p>'];
+        tmp_note = [ tmp_note ' <p>NOTES: ' model.rxnNotes{i} '</p>'];
     end
     if ~isempty(tmp_note)
         tmp_note = ['<body xmlns="http://www.w3.org/1999/xhtml">' tmp_note '</body>'];
