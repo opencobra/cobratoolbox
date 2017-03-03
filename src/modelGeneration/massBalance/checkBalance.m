@@ -1,4 +1,4 @@
-function [dE,E,missingFormulaeBool]=checkBalance(model,element,printLevel)
+function [dE,E,missingFormulaeBool]=checkBalance(model,element,printLevel,fileName)
 % [dE,E]=checkBalance(model,element,printLevel)
 % Checks whether a set of reactions is elementally balanced.
 %
@@ -29,8 +29,11 @@ function [dE,E,missingFormulaeBool]=checkBalance(model,element,printLevel)
 if ~isfield(model,'metFormulas')
     error('model structure must contain model.metForumlas field')
 end
-if ~exist('printLevel')
+if ~exist('printLevel','var')
     printLevel=1;
+end
+if ~exist('fileName','var')
+    fileName='';
 end
 
 [nMet,nRxn]=size(model.S);
@@ -47,7 +50,7 @@ for m=1:nMet
         end
         if printLevel==-1
             if ~firstMissing
-                fid=fopen('metabolites_without_formulae.txt','w');
+                fid=fopen([fileName 'metabolites_without_formulae.txt'],'w');
             end
             firstMissing=1;
             fprintf(fid,'%s\t%s\n',int2str(m),model.mets{m});
