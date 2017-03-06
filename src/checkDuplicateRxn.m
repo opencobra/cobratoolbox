@@ -1,19 +1,29 @@
-function [model, removedRxnInd, keptRxnInd] = checkDuplicateRxn(model, method, removeFlag, printLevel)
+function [modelOut, removedRxnInd, keptRxnInd] = checkDuplicateRxn(model, method, removeFlag, printLevel)
 %checkDuplicateRxn Checks model for duplicate reactions and removes them
 %
-% INPUTS
-% model     Cobra model structure
-% method    1 --> checks rxn abbreviations
-%           2 --> checks rxn S matrix
+% INPUTS:
+% model         Cobra model structure
+% method        rxnAbbr --> checks rxn abbreviations
+%               S --> checks rxn S matrix
+%               FR --> checks rxn S matrix ignoring reaction direction
 %
-% OUTPUTS
-% model     Cobra model structure with duplicate reactions removedRxnInd
-% removedRxnInd   reaction numbers that were removedRxnInd
+% OPTIONAL INPUTS:
+% removeFlag    {(1),0} boolean to remove duplicates
+% printLevel
+%
+% OUTPUTS:
+% modelOut          COBRA model structure without (with) duplicate reactions
+% removedRxnInd     Reaction numbers in model that were (should be) removed
+% keptRxnInd        Reaction numbers in model that were (should be) kept
 
 % Ronan Fleming rewritten 2017
 
 if ~exist('printLevel', 'var')
     printLevel = 0;
+end
+
+if ~exist('removeFlag', 'var')
+    removeFlag = 1;
 end
 
 [~, nRxn] = size(model.S);
@@ -25,7 +35,16 @@ oneToN = 1:nRxn;
 cnt = 0;
 
 switch method
-    case 1
+    case {1,'rxnAbbr'}
+        if printLevel > 0
+            fprintf('%s\n', 'Checking for reaction duplicates by reaction abbreviation ...');
+        end
+        [~, ia, ic] = unique(model.rxns,'stable');
+        removedRxnInd=oneToN(ia);
+        %C = setdiff(A,B) for vectors A and B, returns the values in A that 
+        %are not in B with no repetitions.
+        keptRxnInd=setdiff(oneToN,removedRxnInd);
+    case {2,'S'}
         if printLevel > 0
             fprintf('%s\n', 'Checking for reaction duplicates by stoichiometry ...');
         end
@@ -70,7 +89,7 @@ switch method
             end
         end
 
-    case 2
+    case {'FR'}
         if printLevel > 0
             fprintf('%s\n', 'Checking for reaction duplicates by stoichiometry (up to orientation) ...');
         end
@@ -125,9 +144,12 @@ if length(removedRxnInd) == 0
     if printLevel > 0
         fprintf('%s\n', ' no duplicates found.');
     end
+    modelOut=model;
 else
     if removeFlag
         %remove the reactions
-        model = removeRxns(model, model.rxns(removedRxnInd));
+        modelOut = removeRxns(model, model.rxns(removedRxnInd));
+    else
+        modelOut=model;
     end
 end

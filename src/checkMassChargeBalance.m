@@ -111,8 +111,11 @@ if printLevel==-1
                 if ~firstMissing
                     fid=fopen([fileName 'mass_imbalanced_reactions.txt'],'w');
                     fprintf(fid,'%s;%s;%s;%s\n','#Rxn','rxnAbbr','imbalance','equation');
-
-                    warning(['There are mass imbalanced reactions, see ' fileName 'mass_imbalanced_reactions.txt'])
+                    if 0
+                        warning(['There are mass imbalanced reactions, see ' fileName 'mass_imbalanced_reactions.txt'])
+                    else
+                        fprintf('%s\n',['There are mass imbalanced reactions, see ' fileName 'mass_imbalanced_reactions.txt'])
+                    end
                     firstMissing=1;
                 end
                 equation=printRxnFormula(model,model.rxns(p),0);
@@ -188,7 +191,11 @@ if printLevel==-1
             if model.SIntRxnBool(q) && dC(q)~=0 && strcmp(imBalancedMass{p,1},'')
                 if ~firstMissing
                     fid=fopen([fileName 'charge_imbalanced_reactions.txt'],'w');
-                    warning('There are charged imbalanced reactions (that are mass balanced), see charge_imbalanced_reactions.txt')
+                    if 0
+                        warning(['There are charge imbalanced reactions, see ' fileName 'charge_imbalanced_reactions.txt'])
+                    else
+                        fprintf('%s\n',['There are charge imbalanced reactions, see ' fileName 'charge_imbalanced_reactions.txt'])
+                    end
                     firstMissing=1;
                 end
                 equation=printRxnFormula(model,model.rxns(q),0);

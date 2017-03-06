@@ -984,8 +984,8 @@ switch solver
            stat = -1; % Solution not optimal or solver problem
         end
 
-    case {'gurobi5','gurobi6'}
-        %% gurobi 5 or 6 or 6.5
+    case {'gurobi5','gurobi6','gurobi7'}
+        %% gurobi 5 or 6 or 6.5 or 7
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
         %resultgurobi = struct('x',[],'objval',[],'pi',[]);

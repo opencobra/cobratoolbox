@@ -161,12 +161,7 @@ if (strcmp(solverType,'LP'))
                 warning('LP solver Gurobi not useable: gurobi_mex not in Matlab path');
                 solverOK=false;
             end
-        case 'gurobi5'
-            if (~exist('gurobi','file'))
-                warning('LP solver Gurobi not useable: gurobi.m not in Matlab path');
-                solverOK=false;
-            end
-        case 'gurobi6'
+        case {'gurobi5','gurobi6','gurobi7'}
             if (~exist('gurobi','file'))
                 warning('LP solver Gurobi not useable: gurobi.m not in Matlab path');
                 solverOK=false;
@@ -245,12 +240,7 @@ elseif (strcmp(solverType,'MILP'))
                 warning('MILP solver Gurobi not useable: gurobi_mex not in Matlab path');
                 solverOK=false;
             end
-        case 'gurobi5'
-            if (~exist('gurobi'))
-                warning('MILP solver Gurobi not useable: gurobi.m not in Matlab path');
-                solverOK=false;
-            end
-        case 'gurobi6'
+        case {'gurobi5','gurobi6','gurobi7'}
             if (~exist('gurobi'))
                 warning('MILP solver Gurobi not useable: gurobi.m not in Matlab path');
                 solverOK=false;
@@ -306,14 +296,7 @@ elseif (strcmp(solverType,'QP'))
             else
                 solverOK=true;
             end
-        case 'gurobi5'
-            if (~exist('gurobi'))
-                warning('QP solver Gurobi not useable: gurobi.m not in Matlab path');
-                solverOK=false;
-            else
-                solverOK=true;
-            end
-        case 'gurobi6'
+        case {'gurobi5','gurobi6','gurobi7'}
             if (~exist('gurobi'))
                 warning('QP solver Gurobi not useable: gurobi.m not in Matlab path');
                 solverOK=false;
@@ -344,19 +327,12 @@ elseif (strcmp(solverType, 'MIQP'))
             else
                 solverOK = true;
             end
-        case 'gurobi5'
-            if(~exist('gurobi'))
+        case {'gurobi5','gurobi6','gurobi7'}
+            if (~exist('gurobi'))
                 warning('MIQP solver gurobi not usable: gurobi.m not in Matlab path');
-                solverOK = false;
+                solverOK=false;
             else
-                solverOK = true;
-            end
-        case 'gurobi6'
-            if(~exist('gurobi'))
-                warning('MIQP solver gurobi not usable: gurobi.m not in Matlab path');
-                solverOK = false;
-            else
-                solverOK = true;
+                solverOK=true;
             end
         otherwise
             warning(['MIQP solver ' solverName ' not supported by COBRA Toolbox']);
