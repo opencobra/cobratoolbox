@@ -1,0 +1,20 @@
+{
+"readCbModel":
+{
+  "inputs":
+  [
+    {"name":"fileName", "kind":"optional", "type":"filepath" }
+  ]
+},
+"readCbModel":
+{
+  "inputs":
+  [
+    {"name":"fileName", "kind":"optional", "type":"filepath" },
+    {"name":"defaultBound", "kind":"optional", "type":"numeric" },
+    {"name":"fileName", "kind":"optional", "type":"char" },
+    {"name":"fileName", "kind":"optional", "type":"cell" },
+    {"name":"fileName", "kind":"optional", "type":"cell" }
+  ]
+}
+}

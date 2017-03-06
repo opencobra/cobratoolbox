@@ -163,9 +163,26 @@ end
 %saves the current paths
 savepath
 
-%Add tab completion updates to cobra Functions
-%Temporarily add the tabcomplete path to the path.
-addTabcompletion();
+
+%Add tab completion updates to cobra Functions for MATLAB prior to 2016
+MatlabRevision = version('-release')
+MatlabYear = str2num(MatlabRevision(1:4));
+
+%If the Matlab version is prior to Matlab 2016a, we have to use the TC.xml
+%structure to provide autocompletion, otherwise we can use the json
+%definition.
+if MatlabYear < 2015
+    %Temporarily add the tabcomplete path to the path.
+    addpath([CBTDIR filesep 'external' filesep 'tabcomplete'])
+    cleanpath = onCleanup(@() rmpath([CBTDIR filesep 'external' filesep 'tabcomplete']));
+    
+    tcXmlFilename = fullfile(matlabroot,'/toolbox/local/TC.xml');
+    [~,values] = fileattrib(tcXmlFilename);
+    %%Only add tab completion if we have write access, otherwise ignore it.
+    if(values.UserWrite)
+            addTabcompletion();
+    end
+end
 
 
 % print out a summary table
@@ -194,21 +211,3 @@ end
 fprintf('\n')
 
 
-function addTabcompletion()
-global CBTDIR
-
-addpath([CBTDIR filesep 'external' filesep 'tabcomplete'])
-cleanpath = onCleanup(@() rmpath([CBTDIR filesep 'external' filesep 'tabcomplete']));
-try
-    [~,success] = tabcomplete(1,'readSBML','FILE');
-    if success
-        tabcomplete(0,'readCbModel','FILE');
-        tabcomplete(0,'readBooleanRegModel','VAR','FILE');
-        tabcomplete(0,'xls2model','FILE');
-        tabcomplete(0,'readAtomMappingFromRxnFile','FILE');
-    end
-    
-catch ME
-    disp('A Problem occured while trying to add tabcompletion properties for the Toolbox');
-    warning(ME)
-end
