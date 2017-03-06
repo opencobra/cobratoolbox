@@ -25,7 +25,8 @@ function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel,modeFlag,method)
 % (c) Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013
 %     LCSB / LSRU, University of Luxembourg
 %
-% Ronan Fleming      17/10/14 Commenting of inputs/outputs/code
+% Ronan Fleming      2014 Commenting of inputs/outputs/code
+% Ronan Fleming      2017 Added non-convex cardinality optimisation
 
 if ~exist('printLevel','var')
     printLevel = 2;
@@ -230,8 +231,10 @@ if modeFlag
     
     %sanity check
     if norm(veryOrigModel.S*V,inf)>epsilon/100
-        fprintf('%g%s\n',epsilon/100, '= epsilon/100')
-        fprintf('%g%s\n',norm(veryOrigModel.S*V,inf),' = ||S*V||.')
+        if printLevel>0
+            fprintf('%g%s\n',epsilon/100, '= epsilon/100')
+            fprintf('%g%s\n',norm(veryOrigModel.S*V,inf),' = ||S*V||.')
+        end
         if 0
             error('Flux consistency check failed')
         else
@@ -248,7 +251,7 @@ end
 origModel=veryOrigModel;
 if numel(A) == numel(N)
     if printLevel>0
-        fprintf('\n fastcc.m: The input model is entirely flux consistent.\n');
+        fprintf('%s\n','fastcc.m: The input model is entirely flux consistent.\n');
     end
 end
 if printLevel>2
@@ -480,7 +483,29 @@ end
 end
 
 
-
+%code to test nullspace acceleration
+% tic
+% if 1 || ~isfield(model,'fluxConsistentMetBool') || ~isfield(model,'fluxConsistentRxnBool')
+%     param.epsilon=1e-4;
+%     param.modeFlag=1;
+%     param.method='null_fastcc';
+%     printLevel = 2;
+%     [fluxConsistentMetBool2,fluxConsistentRxnBool2,fluxInConsistentMetBool2,fluxInConsistentRxnBool2,modelOpen] = findFluxConsistentSubset(modelOpen,param,printLevel);
+% end
+% fprintf('%6u\t%6u\t%s\n',nnz(fluxInConsistentMetBool2),nnz(fluxInConsistentRxnBool2),' flux inconsistent.')
+% toc
+% 
+% tic
+% if 1 || ~isfield(model,'fluxConsistentMetBool') || ~isfield(model,'fluxConsistentRxnBool')
+%     param.epsilon=1e-4;
+%     param.modeFlag=1;
+%     param.method='fastcc';
+%     %param.method='nonconvex';
+%     printLevel = 2;
+%     [fluxConsistentMetBool,fluxConsistentRxnBool,fluxInConsistentMetBool,fluxInConsistentRxnBool,modelOpen] = findFluxConsistentSubset(modelOpen,param,printLevel);
+% end
+% fprintf('%6u\t%6u\t%s\n',nnz(fluxInConsistentMetBool),nnz(fluxInConsistentRxnBool),' flux inconsistent.')
+% toc
 
 
 
