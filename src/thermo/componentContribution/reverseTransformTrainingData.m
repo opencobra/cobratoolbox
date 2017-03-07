@@ -53,7 +53,7 @@ for i = 1:size(training_data.S, 2) % for each reaction in S
         
         dG0s = cumsum(-[0, diag(diss.pKas, 1)'] * R * training_data.T(i) * log(10));
         dG0s = dG0s - dG0s(diss.majorMSpH7);
-        pseudoisomers = [dG0s(:), diss.nHs(:), diss.zs(:)];
+        pseudoisomers = [dG0s(:), diss.nHs(:), double(diss.zs(:))];
         reaction_ddG0s(j) = Transform(pseudoisomers, training_data.pH(i), training_data.I(i), training_data.T(i));
         
     end

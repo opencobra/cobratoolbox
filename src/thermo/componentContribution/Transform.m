@@ -30,4 +30,9 @@ dG0_prime_vector = pseudoisomers(:, 1) + ...
                    pseudoisomers(:, 2) * (R*T*log(10)*pH + DH) - ...
                    pseudoisomers(:, 3).^2 * DH;
 
-dG0_prime = -R * T * maxstar(dG0_prime_vector / (-R * T));
+               try
+                   dG0_prime = -R * T * maxstar(double(dG0_prime_vector / (-R * T)));
+               catch
+                   disp(dG0_prime_vector)
+                   return
+               end
