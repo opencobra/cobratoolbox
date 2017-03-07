@@ -271,19 +271,22 @@ for i = 1:nRxns
 
             if ismember(fbc_list(f),existed_fbc_list);
                 if f==1 % In the case of fbc_objective
-                    if ~isempty(modelSBML.(fbc_list{f}).fbc_fluxObjective)
-                        fbc_obj=modelSBML.(fbc_list{f}).fbc_fluxObjective.fbc_reaction; % the variable stores the objective reaction ID
+                    %TODO: Adapt this to properly import multiple
+                    %objectives. This will need to be also addressed in the
+                    %model structure (multiple c vectors and osense values)
+                    %For now, we only import the first objective!
+                    if ~isempty(modelSBML.(fbc_list{f}))
+                        fbc_obj=modelSBML.(fbc_list{f})(1).fbc_fluxObjective.fbc_reaction; % the variable stores the objective reaction ID
                         fbc_obj=regexprep(fbc_obj,'^R_','');
-                        if isfield(modelSBML.(fbc_list{f}).fbc_fluxObjective,'fbc_coefficient')
-                            fbc_obj_value=modelSBML.(fbc_list{f}).fbc_fluxObjective.fbc_coefficient;
+                        if isfield(modelSBML.(fbc_list{f})(1).fbc_fluxObjective,'fbc_coefficient')
+                            fbc_obj_value=modelSBML.(fbc_list{f})(1).fbc_fluxObjective.fbc_coefficient;
                         else
-                            ind_obj=find(strcmp(listOffbc_type,modelSBML.(fbc_list{f}).fbc_type));
-                            switch ind_obj
-                                case 1 % maximise
-                                    fbc_obj_value=-1;
-                                case 2 % minimise
-                                    fbc_obj_value=1;
-                            end
+                            %By FBC definition the fbc_type of an objective
+                            %has to be either "minimize" or maximize"
+                            %As such, we use the first 3 lettters of the
+                            %objective type to define the osenseStr of the
+                            %model.
+                            fbc_obj_value = modelSBML.(fbc_list{f})(1).fbc_type(1:3);                            
                         end
                     else % if the objective function is not specified according to the FBCv2 rules.
                         noObjective=1; % no objective function is defined for the COBRA model.
@@ -620,8 +623,8 @@ else    % in the case of fbc file
     if noObjective==0; % when there is an objective function
         indexObj=findRxnIDs(model,fbc_obj);
         % indexObj=find(strcmp(fbc_obj,model.rxns))
-        model.c(indexObj)=1;
-        model.osense = - sign(fbc_obj_value);
+        model.c(indexObj)=1;        
+        model.osenseStr=fbc_obj_value;
     end
 
     if all(cellfun('isempty',fbcMet.fbc_chemicalFormula))~=1  % if all formulas are empty

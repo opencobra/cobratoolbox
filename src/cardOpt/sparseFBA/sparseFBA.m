@@ -52,7 +52,11 @@ if exist('osenseStr', 'var')
         osenseStr = 'max';
     end
 else
-    osenseStr = 'max';
+    if isfield(model,'osenseStr')
+        osenseStr = model.osenseStr;
+    else
+        osenseStr = 'max';
+    end
 end
 
 if ~exist('checkMinimalSet', 'var')

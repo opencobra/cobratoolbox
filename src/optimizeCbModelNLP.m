@@ -30,6 +30,9 @@ function [currentSol,allObjValues,allSolutions] = ...
 
 if (nargin < 2)
     osenseStr = 'max';
+    if isfield(model,'osenseStr')
+        osenseStr = model.osenseStr;
+    end
 end
 if strcmp(osenseStr,'max')
     osense = -1;
