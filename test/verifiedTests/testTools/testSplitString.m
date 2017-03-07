@@ -12,6 +12,8 @@
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
 
+cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools']);
+
 ref_fields = {'Some'; 'Strings'; 'Delimited'};
 
 testString1 = 'Some Strings Delimited';
