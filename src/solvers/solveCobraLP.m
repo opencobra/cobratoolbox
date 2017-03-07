@@ -222,7 +222,7 @@ end
 if ~isfield(LPproblem,'csense')
     % If csense is not declared in the model, assume that all
     % constraints are equalities.
-    LPproblem.csense(:,1) = 'E';
+    LPproblem.csense(1:length(LPproblem.mets), 1) = 'E';
 end
 
 % Assume constraint S*v = 0 if b not provided
