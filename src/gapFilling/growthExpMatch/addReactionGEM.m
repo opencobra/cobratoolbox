@@ -81,7 +81,6 @@ end
 
 
 
-%h = waitbar(0, 'Adding Rxns ...');
 for i = 1:length(rev)
     %IO indicates whether it is part of the reactants or part of the
     %product (ie. IO = -1 is reactant, IO = 1 products)
@@ -211,7 +210,6 @@ for i = 1:length(rev)
     end
     nRxn = nRxn + 1;
     clear parsing
-    %    waitbar(i/length(rev),h);
 end
 %close(h);
 

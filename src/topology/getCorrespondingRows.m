@@ -50,6 +50,13 @@ function restricedRowBool = getCorrespondingRows(S,rowBool,colBool,mode)
 %Ronan Fleming July 2016
 
 
+if ~islogical(rowBool)
+    error('rowBool must be a logical vector')
+end
+if ~islogical(colBool)
+    error('colBool must be a logical vector')
+end
+
 [mlt,~]=size(S);
 restricedRowBool=false(mlt,1);
 switch mode

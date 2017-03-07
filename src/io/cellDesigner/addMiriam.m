@@ -186,7 +186,7 @@ postfix(3).str='</rdf:Description>';
 postfix(4).str='</rdf:RDF>';
 % rem=fgets(f_id);
 
-h = waitbar(0,'The annotation of the file using MIRIAM registry datasets is progressing');
+h = showprogress(0,'The annotation of the file using MIRIAM registry datasets is progressing');
 MainTxt={};
 
 while ~feof(f_id);
@@ -233,7 +233,7 @@ for t=1:total_length   % go through each line of the SBML file.
     if ismember(t, ct)~=0||t==total_length; % estimiate the time interval.
         
         disp(t);
-        waitbar(t/total_length,h);
+        showprogress(t/total_length,h);
         
     end
     n=n+1;
@@ -705,11 +705,11 @@ end
 %         %%
 %     end
 %
-%     m{1}=model.metCHEBIID(num);
+%     m{1}=model.metChEBIID(num);
 %     m{2}=model.metHMDB(num);
 %     m{3}=model.metPubChemID(num);
 %
-%     % CHEBI=model.metCHEBIID;
+%     % CHEBI=model.metChEBIID;
 %     % HMDB=model.metHMDB;
 %     % PubChemID=model.metPubChemID;
 %

@@ -1,6 +1,5 @@
-function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, Elements, missingFormulaeBool, balancedMetBool]...
-    = checkMassChargeBalance(model, printLevel)
-%[massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, Elements] = checkMassChargeBalance(model, rxnBool, printLevel)
+function [massImbalance,imBalancedMass,imBalancedCharge,imBalancedRxnBool,Elements,missingFormulaeBool,balancedMetBool]...
+    = checkMassChargeBalance(model,printLevel,fileName)
 %checkMassChargeBalance tests for a list of reactions if these reactions are
 %mass-balanced by adding all elements on left hand side and comparing them
 %with the sums of elements on the right hand side of the reaction.
@@ -10,13 +9,13 @@ function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, El
 % model                         COBRA model structure
 %
 %OPTIONAL INPUT
-% printLevel    {-1, (0), 1}
-%               -1 = print out diagnostics on problem reactions to a file
-%                0 = silent
-%                1 = print elements as they are checked (display progress)
-%                2 = also print out diagnostics on problem reactions to screen
-% model.SIntRxnBool    Boolean of reactions heuristically though to be mass balanced.
-%
+% printLevel        {-1, (0), 1}
+%                   -1 = print out diagnostics on problem reactions to a file
+%                    0 = silent
+%                    1 = print elements as they are checked (display progress)
+%                    2 = also print out diagnostics on problem reactions to screen
+% model.SIntRxnBool  Boolean of reactions heuristically though to be mass balanced.
+% fileName           name of the file to print imbalances to  
 %OUTPUTS
 % massImbalance                 nRxn x nElement matrix with mass imblance
 %                               for each element checked. 0 if balanced.
@@ -48,8 +47,17 @@ if ~exist('printLevel', 'var')
     printLevel=0;
 end
 
-% List of Elements
-Elements = {'H', 'C', 'O', 'P', 'S', 'N', 'Mg', 'X', 'Fe', 'Zn', 'Co', 'R', 'Ca', 'Y', 'I', 'Na', 'Cl', 'K'};
+if ~isfield(model,'SIntRxnBool')
+    model.SIntRxnBool=true(nRxn,1);%assume all reactions are supposed to be internal if no other info provided
+end
+
+if ~exist('fileName','var')
+    fileName='';
+else
+  printLevel=-1;
+end
+
+Elements = {'H','C', 'O', 'P', 'S', 'N', 'Mg','X','Fe','Zn','Co','R','Ca','Y','I','Na','Cl','K','R','FULLR'};
 
 E=sparse(nMet, length(Elements));
 massImbalance=sparse(nRxn, length(Elements));
@@ -87,7 +95,6 @@ for i = 1 : nRxn
                     imBalancedMass{i, 1} = [int2str(massImbalance(i, j)) ' ' Elements{j}];
                 end
             end
-            
         end
         if strfind(imBalancedMass{i, 1}, 'NaN')
             imBalancedMass{i, 1}='NaN';
@@ -100,15 +107,19 @@ end
 if printLevel==-1
     firstMissing=0;
     for p=1:nRxn
-        if ~strcmp(imBalancedMass{p, 1}, '')
+        %only print out for reactions supposed to be mass balanced
+        if model.SIntRxnBool(p) && ~strcmp(imBalancedMass{p,1},'')
             %at the moment, ignore reactions with a metabolite that have
             %no formula
             if ~strcmp(imBalancedMass{p, 1}, 'NaN')
                 if ~firstMissing
-                    fid=fopen('mass_imbalanced_reactions.txt', 'w');
-                    fprintf(fid, '%s;%s;%s;%s\n', '#Rxn', 'rxnAbbr', 'imbalance', 'equation');
-                    
-                    warning('There are mass imbalanced reactions, see mass_imbalanced_reactions.txt')
+                    fid=fopen([fileName 'mass_imbalanced_reactions.txt'],'w');
+                    fprintf(fid,'%s;%s;%s;%s\n','#Rxn','rxnAbbr','imbalance','equation');
+                    if 0
+                        warning(['There are mass imbalanced reactions, see ' fileName 'mass_imbalanced_reactions.txt'])
+                    else
+                        fprintf('%s\n',['There are mass imbalanced reactions, see ' fileName 'mass_imbalanced_reactions.txt'])
+                    end
                     firstMissing=1;
                 end
                 equation=printRxnFormula(model, model.rxns(p), 0);
@@ -127,7 +138,8 @@ if printLevel==-1
 end
 if printLevel==2
     for p=1:nRxn
-        if ~strcmp(imBalancedMass{p, 1}, '')
+        %only print out for reactions supposed to be mass balanced
+        if model.SIntRxnBool(q) && ~strcmp(imBalancedMass{p,1},'')
             %at the moment, ignore reactions with a metabolite that have
             %no formula
             if ~strcmp(imBalancedMass{p, 1}, 'NaN')
@@ -166,7 +178,7 @@ if isfield(model, 'metCharges')
             end
             if printLevel==-1
                 if ~firstMissing
-                    fid=fopen('metabolites_without_charge.txt', 'w');
+                    fid=fopen([fileName 'metabolites_without_charge.txt'],'w');
                 end
                 firstMissing=1;
                 fprintf(fid, '%s\t%s\n', int2str(m), model.mets{m})
@@ -183,8 +195,12 @@ if printLevel==-1 && isfield(model, 'SIntRxnBool')
         for q=1:nRxn
             if model.SIntRxnBool(q) && dC(q) ~= 0 && strcmp(imBalancedMass{p, 1}, '')
                 if ~firstMissing
-                    fid=fopen('charge_imbalanced_reactions.txt', 'w');
-                    warning('There are charged imbalanced reactions (that are mass balanced), see charge_imbalanced_reactions.txt')
+                    fid=fopen([fileName 'charge_imbalanced_reactions.txt'],'w');
+                    if 0
+                        warning(['There are charge imbalanced reactions, see ' fileName 'charge_imbalanced_reactions.txt'])
+                    else
+                        fprintf('%s\n',['There are charge imbalanced reactions, see ' fileName 'charge_imbalanced_reactions.txt'])
+                    end
                     firstMissing=1;
                 end
                 equation=printRxnFormula(model, model.rxns(q), 0);
@@ -229,10 +245,6 @@ if isfield(model, 'metCharges')
 end
 
 %nonzero rows corresponding to completely mass balanced reactions
-balancedMetBool = (sum(abs(model.S(:, ~imBalancedRxnBool)), 2) ~= 0);
-
-
-
-
-
+%balancedMetBool = (sum(abs(model.S(:,~imBalancedRxnBool)),2)~=0);
+balancedMetBool = getCorrespondingRows(model.S,true(nMet,1),~imBalancedRxnBool,'exclusive');
 

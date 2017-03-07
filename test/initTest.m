@@ -8,7 +8,7 @@ global path_TOMLAB
 
 % define the solver paths
 path_GUROBI = '/opt/gurobi650';
-path_ILOG_CPLEX = '/opt/ibm/ILOG/CPLEX_Studio1263';
+path_ILOG_CPLEX = '/opt/ibm/ILOG/CPLEX_Studio127';
 path_TOMLAB = '/opt/tomlab';
 
 if length(pathToTest) > 0
