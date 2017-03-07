@@ -44,14 +44,5 @@ else
     fprintf('%s\n', 'STM_v1.0.xml already exists.');
 end
 
-% iSS1393.mat
-if exist('iSS1393.mat', 'file') ~= 2
-    urlwrite('http://wwwde.uni.lu/content/download/72950/917509/file/Mus%20musculus_iSS1393.mat.zip', 'Mus_musculus_iSS1393.zip');
-    system('unzip -qq Mus_musculus_iSS1393.zip');
-    system('rm Mus_musculus_iSS1393.zip');
-else
-    fprintf('%s\n', 'iSS1393.mat already exists.');
-end
-
 % change back to the root directory
 cd('../../')
