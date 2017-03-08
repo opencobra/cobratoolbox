@@ -5,7 +5,7 @@
 %
 % Author:
 %     - Marouen BEN GUEBILA - 31/01/2017
- 
+
 % define global paths
 global path_TOMLAB
 
@@ -13,11 +13,11 @@ global path_TOMLAB
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-cd([CBTDIR filesep 'test' filesep 'verifiedTests' filesep 'testrFBA'])
 initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testrFBA']);
- 
-load modelReg;
-load testDatadynamicRFBA;
+
+%load model and test data
+load('modelReg.mat');
+load('refData_dynamicRFBA.mat');
 
 %Solver packages
 solverPkgs = {'tomlab_cplex'};
@@ -29,7 +29,7 @@ for k =1:length(solverPkgs)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
         addpath(genpath(path_TOMLAB));
     end
-        
+
     solverLPOK = changeCobraSolver(solverPkgs{k},'LP');
     for j=1:length(QPsolverPkgs)%QP solvers
         solverQPOK = changeCobraSolver(QPsolverPkgs{j},'QP');
@@ -55,14 +55,14 @@ for k =1:length(solverPkgs)
             assert(isequal(statestest,states))
         end
     end
-    
+
     % remove the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
         rmpath(genpath(path_TOMLAB));
     end
-    
+
     fprintf('Done.\n');
 end
 
  % change the directory
- cd(CBTDIR) 
+ cd(CBTDIR)
