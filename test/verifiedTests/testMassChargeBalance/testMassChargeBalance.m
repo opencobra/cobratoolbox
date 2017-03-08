@@ -19,7 +19,7 @@ cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testMassChargeB
 options = logical([0 0 0; 0 0 1; 0 1 0; 0 1 1; 1 0 0; 1 0 1; 1 1 0; 1 1 1]);
 
 for i= 1:size(options, 1)
-    for printLevel = 1:1 %-1:2
+    for printLevel = -1:2
         model = createToyModel(options(i, 1), options(i, 2), options(i, 3));
         [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, ~, missingFormulaeBool, balancedMetBool] = checkMassChargeBalance(model, printLevel);
 
