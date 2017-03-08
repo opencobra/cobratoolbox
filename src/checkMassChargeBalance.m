@@ -23,7 +23,7 @@ function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, El
 % imBalancedMass                nRxn x 1 cell with charge imbalance
 %                               e.g. -3 H means three hydrogens disappear
 %                               in the reaction.
-% imBalancedCharge              nRxn x 1 vector with charge imbalance, 
+% imBalancedCharge              nRxn x 1 vector with charge imbalance,
 %                               empty if no imbalanced reactions
 %
 % imBalancedRxnBool             boolean vector indicating imbalanced
@@ -138,7 +138,7 @@ end
 if printLevel==2
     for p=1:nRxn
         %only print out for reactions supposed to be mass balanced
-        if model.SIntRxnBool(q) && ~strcmp(imBalancedMass{p,1},'')
+        if model.SIntRxnBool(p) && ~strcmp(imBalancedMass{p,1},'')
             %at the moment, ignore reactions with a metabolite that have
             %no formula
             if ~strcmp(imBalancedMass{p, 1}, 'NaN')
@@ -184,7 +184,7 @@ if isfield(model, 'metCharges')
             end
         end
     end
-    
+
     imBalancedCharge=model.S'*model.metCharges;
 end
 
@@ -192,7 +192,7 @@ if printLevel==-1 && isfield(model,'SIntRxnBool')
     firstMissing=0;
     if any(imBalancedCharge)
         for q=1:nRxn
-            if model.SIntRxnBool(q) && dC(q) ~= 0 && strcmp(imBalancedMass{p, 1}, '')
+            if model.SIntRxnBool(q) && strcmp(imBalancedMass{q, 1}, '') %&& dC(q) ~= 0
                 if ~firstMissing
                     fid=fopen([fileName 'charge_imbalanced_reactions.txt'],'w');
                     if 0
@@ -223,7 +223,7 @@ if printLevel==2 && isfield(model,'SIntRxnBool')
     if any(imBalancedCharge)
         fprintf('%s\n', 'Mass balanced, but charged imbalanced reactions:')
         for q=1:nRxn
-            if model.SIntRxnBool(q) && dC(q) ~= 0 && strcmp(imBalancedMass{p, 1}, '')
+            if model.SIntRxnBool(q) && strcmp(imBalancedMass{p, 1}, '') %&& dC(q) ~= 0
                 equation=printRxnFormula(model, model.rxns(q), 0);
                 fprintf('%s\t%s\t%s\n', int2str(q), model.rxns{q}, equation{1});
                 if 1
@@ -244,11 +244,5 @@ if isfield(model, 'metCharges')
 end
 
 %nonzero rows corresponding to completely mass balanced reactions
-%balancedMetBool = (sum(abs(model.S(:,~imBalancedRxnBool)),2)~=0);
-balancedMetBool = getCorrespondingRows(model.S,true(nMet,1),~imBalancedRxnBool,'exclusive');
-
-
-
-
-
-
+%balancedMetBool = (sum(abs(model.S(:,~imBalancedRxnBool)),2)~=0)
+balancedMetBool = getCorrespondingCols(model.S,true(nMet,1),~imBalancedRxnBool,'exclusive');
