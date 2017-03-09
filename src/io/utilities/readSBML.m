@@ -82,7 +82,7 @@ for i = 1:nMetsTmp
             % a bug in libSBML, perhaps?
             % Keeping it for compatibility, but adding an if statement
             % around it. Can it be reomved?
-            if (isfield(modelSBML.species(i), 'isSetCharge') && modelSBML.species(i).isSetCharge && isempty(charge))
+            if (isfield(modelSBML.species(i), 'isSetCharge') && modelSBML.species(i).isSetCharge && (~exist('charge','var') || isempty(charge)))
                 try
                     chargeList(end) = modelSBML.species(i).charge; % for compatibility with the old version
                 catch ME
@@ -207,7 +207,7 @@ for i = 1:nRxns
     if (~isempty(annotationField))
         [ecNumber, citation] = parseSBMLAnnotationFieldRxn(annotationField);
         tmpStr = '';
-        if (~isempty(ecNumbers{i})); tmpStr = ','; end
+        if (~isempty(citations{i})); tmpStr = ','; end
         citations{i} = strcat(citations{i}, tmpStr, citation);
         tmpStr = '';
         if (~isempty(ecNumbers{i})); tmpStr = ','; end
