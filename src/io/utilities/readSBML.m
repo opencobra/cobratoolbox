@@ -308,7 +308,7 @@ for i = 1:nRxns
                             %As such, we use the first 3 lettters of the
                             %objective type to define the osenseStr of the
                             %model.
-                            fbc_obj_value = modelSBML.(fbc_list{f})(1).fbc_type(1:3);                            
+                            fbc_obj_value = modelSBML.(fbc_list{f})(1).fbc_type(1:3);
                         end
                     else % if the objective function is not specified according to the FBCv2 rules.
                         noObjective=1; % no objective function is defined for the COBRA model.
@@ -645,7 +645,7 @@ else    % in the case of fbc file
     if noObjective==0; % when there is an objective function
         indexObj=findRxnIDs(model,fbc_obj);
         % indexObj=find(strcmp(fbc_obj,model.rxns))
-        model.c(indexObj)=1;        
+        model.c(indexObj)=1;
         model.osense = - sign(fbc_obj_value);
     end
 
@@ -690,7 +690,7 @@ if (hasNotesField)
     model.rxnGeneMat = rxnGeneMat;
     model.grRules = columnVector(grRules);
     model.subSystems = columnVector(subSystems);
-    model.rxnConfidenceScores = columnVector(confidenceScores);
+    model.confidenceScores = columnVector(confidenceScores);
     model.rxnReferences = columnVector(citations);
     model.rxnECNumbers = columnVector(ecNumbers);
     model.rxnNotes = columnVector(comments);
