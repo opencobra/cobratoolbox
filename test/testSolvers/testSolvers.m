@@ -10,46 +10,16 @@ tol = 0.001;
 oriFolder = pwd;
 
 x=1;
-%LP Solver test.
-%http://www2.isye.gatech.edu/~spyros/LP/node2.html
 
-% 1. Set up LP problem.
-LPproblem.c = [200; 400];
-LPproblem.A = [1/40, 1/60; 1/50, 1/50];
-LPproblem.b = [1; 1];
-LPproblem.lb = [0; 0];
-LPproblem.ub = [1; 1];
-LPproblem.osense = -1;
-LPproblem.csense = ['L'; 'L'];
-pass = 1;
+%[solverOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(LPproblem, LPsolution.full);
 
-% 2. Solve LP problem.
-try
-    %solve LP problem printing summary information
-    LPsolution = solveCobraLP(LPproblem, 'printLevel', 2);
-    %[solverOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(LPproblem, LPsolution.full);
-catch 
-    disp('Error in LP test');
-    x=0;
-    pass = 0;
-end
-
-% 3. Check results with expected answer.
-if pass == 1
-    if all(abs(LPsolution.full - [1;1]) < tol) && abs(LPsolution.obj - 600 < tol)
-        display('LP Test Passed');
-    else
-        display('LP Test Not Passed');
-        x=0;
-    end
-end
 
 %MILP Solver test.
 %http://www.chemeng.ed.ac.uk/~jwp/MSO/section5/milp.html
 
 % 1. Set up MILP problem.
 MILPproblem.c = [20; 6; 8];
-MILPproblem.A = [0.8, 0.2, 0.3; 
+MILPproblem.A = [0.8, 0.2, 0.3;
     0.4, 0.3, 0;
     0.2, 0, 0.1];
 MILPproblem.b = [20; 10; 5];
@@ -67,7 +37,7 @@ try
     %integrality tolerance to 1e-12 using parameters structure.
     parameters.relMipGapTol = 1e-12;
     parameters.intTol = 1e-12;
-    MILPsolution = solveCobraMILP(MILPproblem, parameters); 
+    MILPsolution = solveCobraMILP(MILPproblem, parameters);
     %[solverOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(MILPproblem, MILPsolution.full);
 catch
     disp('Error in MILP test');
@@ -95,8 +65,8 @@ QPproblem.F     = [ 8   1; 1   8 ];       % Matrix F in 1/2 * x' * F * x + c' * 
 QPproblem.c     = [ 3  -4 ]';    % Vector c in 1/2 * x' * F * x + c' * x
 QPproblem.A     = [ 1   1; 1  -1 ];       % Constraint matrix
 QPproblem.b = [ 5   0]';
-QPproblem.lb   = [ 0  0  ]';  
-QPproblem.ub   = [  inf   inf  ]';  
+QPproblem.lb   = [ 0  0  ]';
+QPproblem.ub   = [  inf   inf  ]';
 QPproblem.x0   = [  0   1  ]';  % Starting point
 QPproblem.osense = 1;
 QPproblem.csense = ['L'; 'E'];
