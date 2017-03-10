@@ -72,6 +72,9 @@ for i = 1:length(fieldList)
         end
     elseif (regexp(fieldStr,'^Confidence Level'))
         [matches, tmpTokens] = regexpi(fieldStr, 'Confidence[ _]Level: (\w+)', 'match', 'tokens');
+        if (~isempty(matches))
+            confidenceScore = tmpTokens{1}{1};
+        end
     elseif (regexp(fieldStr,'^NOTES'))
 	comment = strcat(comment,';',regexprep(strrep(fieldStr,'AUTHORS:',''),'^(\s)+',''));
     else 
