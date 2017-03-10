@@ -17,29 +17,32 @@ function fout = showprogress(x, whichbar)
 
     fout = [];
 
-    if ~isempty(WAITBAR_TYPE)
-        switch WAITBAR_TYPE
-            case 0 % silent mode
+    if isempty(WAITBAR_TYPE)
+        WAITBAR_TYPE = 1;
+    end
 
-            case 1 % text
-                if x > 0 && (length(WAITBAR_HANDLE) ~= 0)
-                    textprogressbar(x*100);
-                else
-                    if nargin < 2
-                        whichbar = '';
-                    end
-                    textprogressbar(whichbar);
-                end
+    switch WAITBAR_TYPE
+        case 0 % silent mode
 
-            case 2 % graphic waitbar
-                if nargin > 1
-                    fout = waitbar(x*100, whichbar);
-                else
-                    fout = waitbar(x);
+        case 1 % text
+            if x > 0 && (length(WAITBAR_HANDLE) ~= 0)
+                textprogressbar(x*100);
+            else
+                if nargin < 2
+                    whichbar = '';
                 end
-                if x == 1
-                    close(fout)
-                end
+                textprogressbar(whichbar);
+            end
+
+        case 2 % graphic waitbar
+            if nargin > 1
+                fout = waitbar(x*100, whichbar);
+            else
+                fout = waitbar(x);
+            end
+            if x == 1
+                close(fout)
+            end
         end
     end
 end
