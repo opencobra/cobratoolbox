@@ -7,7 +7,10 @@ function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, El
 %
 %
 %INPUT
-% model                         COBRA model structure
+% model            COBRA model structure
+% .S               m x n stoichiometric matrix
+% .metForumlas     m x 1 cell array of metabolite formulas
+% .metCharges      m x 1 double array of charges
 %
 %OPTIONAL INPUT
 % printLevel    {-1, (0), 1}
@@ -18,7 +21,7 @@ function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, El
 % model.SIntRxnBool    Boolean of reactions heuristically though to be mass balanced.
 %
 %OUTPUTS
-% massImbalance                 nRxn x nElement matrix with mass imblance
+% massImbalance                 nRxn x nElement matrix with mass imbalance
 %                               for each element checked. 0 if balanced.
 % imBalancedMass                nRxn x 1 cell with charge imbalance
 %                               e.g. -3 H means three hydrogens disappear
@@ -76,6 +79,12 @@ for j = 1 : length(Elements)
             fprintf('%s\n', ['Checking element ' Elements{j}]);
         end
     end
+end
+
+%ignore mass imbalance of exchange reactions if the internal reactions have
+%been identified at the input
+if any(~model.SIntRxnBool)
+    massImbalance(~model.SIntRxnBool,:)=0;
 end
 
 %Add everything that either has mass imbalances or where metabolites with

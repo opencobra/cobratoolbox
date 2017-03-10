@@ -1,4 +1,4 @@
-function [compartments,uniqueCompartments]=getCompartment(mets)
+function [metCompartments,uniqueCompartments]=getCompartment(mets)
 % Gets the compartment for each metabolite, and the unique compartments
 % 
 % [compartments,uniqueCompartments]=getCompartment(mets)
@@ -17,6 +17,6 @@ function [compartments,uniqueCompartments]=getCompartment(mets)
 pat = '(?<abbr>[^\[]+)\[(?<compartment>[^\]]+)\]';
 metStruct = regexp(mets,pat,'names'); % m x 1 cell array with fields abbr and compartment in each cell
 metStruct = [metStruct{:}]'; % Convert from cell array to double
-compartments = {metStruct.compartment}; % Concatenate compartment fields
-compartments = reshape(compartments,length(compartments),1);
-uniqueCompartments = unique(compartments);
+metCompartments = {metStruct.compartment}; % Concatenate compartment fields
+metCompartments = reshape(metCompartments,length(metCompartments),1);
+uniqueCompartments = unique(metCompartments);

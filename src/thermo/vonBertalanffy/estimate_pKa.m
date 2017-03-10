@@ -206,11 +206,17 @@ for n = 1:length(uinchi)
     
     upKa(n).met = met;
     upKa(n).pKas = pkas;
-    upKa(n).zs = zs;
+    upKa(n).zs = double(zs);
     upKa(n).nHs = nHs;
     upKa(n).majorMSpH7 = mmsbool;
+    
+    if isa(upKa(n).zs,'int64') || isa(upKa(n).pKas,'int64') || isa(upKa(n).nHs,'int64')
+        error('pKa data should not be returned as int64')
+    end
 end
 
+
+    
 if ~isempty(errorMets)
     fprintf(['\nChemAxon''s pKa calculator plugin returned an error for metabolites:\n' sprintf('%s\n',errorMets{:})]);
 end

@@ -1,4 +1,4 @@
-function metList = mol2sdf(mets,molfileDir,sdfFileName,includeRs)
+function [metList,noMolMetList] = mol2sdf(mets,molfileDir,sdfFileName,includeRs)
 % Concatenates molfiles in molfileDir into one SDF file.
 % 
 % metList = mol2sdf(mets,molfileDir,sdfFileName)
@@ -17,6 +17,7 @@ function metList = mol2sdf(mets,molfileDir,sdfFileName,includeRs)
 %
 % OUTPUTS
 % metList           Cell array listing metabolites in SDF.
+% noMolMetList      Cell array listing metabolites without mol file.
 %
 % WRITTEN OUTPUTS
 % sdfFileName.sdf   SDF with metabolite structures in same order as in
@@ -64,6 +65,9 @@ molfileNames = {d.name};
 molfileNames = regexprep(molfileNames,'(\.mol)$','');
 
 molfileNames = molfileNames(ismember(molfileNames,mets)); % Only include molfiles for metabolites in mets
+
+noMolMetList = unique(mets(ismember(mets,molfileNames)));
+noMolMetList = reshape(noMolMetList,length(noMolMetList),1);
 
 metList = molfileNames;
 

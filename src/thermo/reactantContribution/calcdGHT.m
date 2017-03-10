@@ -1,4 +1,4 @@
-function [dGf0,dHf0,mf,aveHbound,aveZi,lambda,gpfnsp]=calcdGHT(dGzero,dHzero,zi,nH,pHr,is,temp,chi,Legendre,LegendreCHI)
+function [dGf0,dHf0,mf,aveHbound,aveZi,lambda,gpfnsp]=calcdGHT(dGzero,dHzero,zi,nH,pHr,is,temp,chi,Legendre,LegendreCHI,printLevel)
 % calculates the standard transformed Gibbs energy of a reactant
 %
 % reproduces the function of T (in Kelvin), pHa (electrode pH), and ionic strength (is) that
@@ -6,16 +6,17 @@ function [dGf0,dHf0,mf,aveHbound,aveZi,lambda,gpfnsp]=calcdGHT(dGzero,dHzero,zi,
 % (sum of species) and the standard transformed enthalpy of a reactant.
 %
 %INPUT
-% One row for each species of the reactant
-%  dGzero      standard Gibbs energy of formation at 298.15 K
-%  zi          electric charge
-%  nH          number of hydrogen atoms in each species
+% Assuming p pseudoisomer species corresponding to one reactant
+%  dGzero      p x 1 standard Gibbs energy of formation at 298.15 K
+%  zi          p x 1 electric charge
+%  nH          p x 1 number of hydrogen atoms in each species
+%
 %  pHr         real pH of 5 to 9 (see realpH.m)
 %  is          ionic strength 0 to 0.35 M
 %  temp        temperature 273.15 K to 313.15 K
 %
 %OPTIONAL INPUT
-% dHzero      standard enthalpy of formation at 298.15 K
+% dHzero      p x 1 standard enthalpy of formation at 298.15 K
 % chi         electrical potential
 % Legendre    {(1),0} Legendre Transformation for specifc pHr?
 % LegendreCHI {(1),0} Legendre Transformation for specifc electrical potential?
@@ -49,6 +50,10 @@ function [dGf0,dHf0,mf,aveHbound,aveZi,lambda,gpfnsp]=calcdGHT(dGzero,dHzero,zi,
 %
 % Ronan M.T. Fleming
 
+if ~exist('printLevel','var')
+    printLevel=0;
+end
+
 electricalTerm = 0; % initialize electricalTerm
 
 if pHr<5 || pHr>9
@@ -73,8 +78,10 @@ if ~exist('LegendreCHI','var')
 end
 
 %check if multiple precision toolbox is properly installed
-if strcmp(which('mp'),'')
-    fprintf('%s\n','No multiple precision toolbox: NaN returned if exp(x) gets too large');
+if strcmp(which('mp'),'') || 1 %TODO install
+    if printLevel>0
+        fprintf('%s\n','No multiple precision toolbox: NaN returned if exp(x) gets too large');
+    end
     R=8.31451;
     %Energies are expressed in kJ mol^-1.*)
     R=R/1000;

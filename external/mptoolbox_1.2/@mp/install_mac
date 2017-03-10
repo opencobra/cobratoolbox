@@ -1,0 +1,124 @@
+Thanks go to Bill Banas William Banas <bill@banasclan.com> for the following.
+
+
+
+
+
+Installation and use of the MP Toolbox on an Apple Macintosh was successful on the following platform:
+
+PowerBook G4 (12" PowerBook6,1 867 MHz PowerPC G4 3.3)
+Mac OS X 10.4.8
+MATLAB 7.0.1.24704 (R14, Student Version)
+GCC 3.3 20030304 (Apple Computer, Inc. build 1819) installed with Apple Xcode 2.4.1
+
+
+Step-by-step instructions:
+
+1. After installing Xcode 2.4.1, in a Terminal window, type:
+
+sudo /usr/sbin/gcc_select 3.3
+
+This is necessary because GCC 4.0.1 is the default compiler for Xcode 2.4.1, and the MATLAB "mex" command supports only the GCC 3.3 compiler (generally, it's not a good idea to mix code from different compilers).
+
+Note that typing:
+
+gcc -v
+
+should now display:
+
+Reading specs from /usr/libexec/gcc/darwin/ppc/3.3/specs
+Thread model: posix
+gcc version 3.3 20030304 (Apple Computer, Inc. build 1819)
+
+2. Install the "ports" for GMP and MPFR by following instructions at these web pages:
+
+http://gmp.darwinports.com/
+http://mpfr.darwinports.com/
+
+Note that, in a Terminal window, I had to type:
+
+sudo /opt/local/bin/port install gmp
+sudo /opt/local/bin/port install mpfr
+
+because the "port" executable was not on my path.
+
+More info on Darwin ports can be found at:
+http://darwinports.opendarwin.org/docs/ch01s04.html#upgrade_dports
+
+Note that the regular installation procedures for GMP and MPFR may also work, but I have not had the opportunity to formally test this. Go to the following sites for more information:
+http://www.swox.com/gmp/
+http://www.mpfr.org/
+
+3. Copy all files from the gmp and mpfr "include" and "lib" folders to "/usr/local/include/" and "/usr/local/lib/", respectively. You will likely need to enter an Admin password to do this. More specifically:
+
+Copy all files from "/opt/local/var/db/dports/software/gmp/4.2.1_4+test/opt/local/include/" to "/usr/local/include/".
+Copy all files from "/opt/local/var/db/dports/software/gmp/4.2.1_4+test/opt/local/lib/" to "/usr/local/lib/".
+Copy all files from "/opt/local/var/db/dports/software/mpfr/2.2.0_3+darwin_8/opt/local/include/" to "/usr/local/include/".
+Copy all files from "/opt/local/var/db/dports/software/mpfr/2.2.0_3+darwin_8/opt/local/lib/" to "/usr/local/lib/".
+
+4. Install MP Toolbox 0.87:
+
+Download and double-click on the "mptoolbox_0.87.zip" file. This should decompress the file and create a folder named "mptoolbox_0.87" in the same folder as the "zip" file.
+Copy contents of "mptoolbox_0.87" folder to the MATLAB root folder (to get the location for this folder, type "matlabroot" at the MATLAB prompt). (By default, the MATLAB root folder is "/Applications/MATLAB_SV701/" for this version of MATLAB.)
+
+5. Edit the "mp_compile_all.m" file (in the MATLAB root folder) so it looks like this:
+
+dd=dir;
+
+for ii=1:length(dd)
+ if length(dd(ii).name)>2
+  if strcmpi(dd(ii).name(end-1:end),'.c') & isempty(strfind(dd(ii).name,'atan2'))
+   disp(['compiling:  mex ',dd(ii).name,' -lmpfr -lgmp -I/usr/local/include/ -L/usr/local/lib/'])
+   mex([dd(ii).name],'-lmpfr -lgmp -I/usr/local/include/ -L/usr/local/lib/')
+  end % if strcmpi(dd(ii).
+ end % if length(dd(ii).
+end % for ii=1:length(dd)
+
+Specifically, on line 7 (the "mex" command), simply remove ",' mpfr_atan2.c'" and insert the -I and -L options to ensure that the proper "include" and "lib" files are on the path (see step 3 above). The "disp" command on line 6 should also be changed accordingly.
+
+6. In MATLAB, type
+
+mex -setup
+
+and choose option 2 (for building gcc MEX-files).
+
+In MATLAB, change the Current Directory to the "@mp/private/" folder within the MATLAB root folder ("/Applications/MATLAB_SV701/@mp/private/" by default for this MATLAB version) and type:
+
+mp_compile_all
+
+After compilation, an easy test can be run by setting the MATLAB Current Directory to the MATLAB root folder (or by putting the MATLAB root folder on the MATLAB path) and typing:
+
+mp_pi
+
+at the MATLAB prompt. The output should be:
+
+ans{1} =
+
++.31415926535897932384626433832795028841971693993751058209749445923078164062872e1+0i
+
+
+
+
+
+
+
+
+
+A few more comments regarding GCC and Xcode...
+
+Older builds of the GCC 3.3 compiler (installed by earlier versions of Xcode) seem to have trouble compiling one or more of these packages.
+
+Information about Xcode can be found at:
+http://developer.apple.com/tools/xcode/
+
+The free Xcode download can be found at:
+https://connect.apple.com/cgi-bin/WebObjects/MemberSite.woa/wa/getSoftware?bundleID=19681
+
+Note that you have to have an ADC membership to get the free download. An ADC "Online membership" is free:
+http://developer.apple.com/Membership/online.html
+https://connect.apple.com/cgi-bin/WebObjects/MemberSite.woa/102/wo/5Q3CYiHlgeGO3CynCoYAVCzc6QW/1.0.1.17.2.23
+
+
+
+
+

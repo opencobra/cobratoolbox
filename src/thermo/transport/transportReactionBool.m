@@ -1,4 +1,4 @@
-function [transportRxnBool]=transportReactionBool(model,numChar)
+function [transportRxnBool]=transportReactionBool(model)
 %Return a boolean vector indicating which reactions transport between compartments.
 %
 % INPUT
@@ -13,15 +13,12 @@ function [transportRxnBool]=transportReactionBool(model,numChar)
 % 
 %Ronan M.T. Fleming
 
-if ~exist('numChar','var')
-    numChar=1;
-end
 
 [nMet,nRxn]=size(model.S);
 
 transportRxnBool=false(nRxn,1);
 
-[compartments,uniqueCompartments]=getCompartment(model.mets,numChar);  
+[compartments,uniqueCompartments]=getCompartment(model.mets);  
 
 for n=1:nRxn
     rxnCompartments=compartments(model.S(:,n)~=0);

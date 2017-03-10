@@ -1,10 +1,11 @@
+function training_data = loadTrainingData(formation_weight)
 % Generates the structure that contains all the training data needed for
 % Component Contribution.
 %
 % Input:
 %   formation_weight - the relative weight to give the formation energies (Alberty's data)
 %                      compared to the reaction measurements (TECRDB)
-function training_data = loadTrainingData(formation_weight)
+
 if nargin < 1
     formation_weight = 1;
 end
