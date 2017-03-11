@@ -1,7 +1,9 @@
 %% Uniform sampling
-% In this tutorial we will use Coordinate Hit-and-Run with Rounding (CHRR) [1] 
-% to uniformly sample a constraint-based model of the core metabolic network of 
-% _E. coli_ [2].
+% *Hulda S. Haraldsdóttir*
+% 
+% In this tutorial we will use Coordinate Hit-and-Run with Rounding (CHRR) 
+% [1] to uniformly sample a constraint-based model of the core metabolic network 
+% of _E. coli_ [2].
 % 
 % A constraint-based metabolic model consists of a set of equalities and 
 % inequalities that define a convex polytope $<math xmlns="http://www.w3.org/1998/Math/MathML" 
