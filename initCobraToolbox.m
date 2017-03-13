@@ -21,6 +21,7 @@ global CBTDIR
 global MINOSPATH
 global DQQMINOSPATH
 global WAITBAR_TYPE
+global WAITBAR_HANDLE
 
 WAITBAR_TYPE = 1;
 

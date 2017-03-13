@@ -59,6 +59,9 @@ elseif isnumeric(c)
     % Update carriage return
     WAITBAR_HANDLE = repmat('\b',1,length(strOut)-1);
 
+    if c == 100
+        fprintf('\n');
+    end
 else
     % Any other unexpected input
     error('Unsupported argument type');
