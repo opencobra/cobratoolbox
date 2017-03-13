@@ -286,7 +286,7 @@ for i = 1:nRxns
                             %As such, we use the first 3 lettters of the
                             %objective type to define the osenseStr of the
                             %model.
-                            fbc_obj_value = modelSBML.(fbc_list{f})(1).fbc_type(1:3);                            
+                            fbc_obj_value = modelSBML.(fbc_list{f})(1).fbc_type(1:3);
                         end
                     else % if the objective function is not specified according to the FBCv2 rules.
                         noObjective=1; % no objective function is defined for the COBRA model.
@@ -444,11 +444,6 @@ for i = 1:nRxns
 
 end
 
-%close the waitbar if this is matlab
-% if (regexp(version, 'R20'))
-%     close(h);
-% end
-
 %% gene
 
 
@@ -478,10 +473,6 @@ if (hasNotesField)||(isfield(modelSBML,'fbc_version')&&(modelSBML.fbc_version==2
         end
         rules{i} = strrep(rules{i},'_TMP_','');
     end
-    %     %close the waitbar if this is matlab
-    %     if (regexp(version, 'R20'))
-    %         close(h);
-    %     end
 end
 %% Construct metabolite list
 mets = cell(nMets,1);
@@ -623,7 +614,7 @@ else    % in the case of fbc file
     if noObjective==0; % when there is an objective function
         indexObj=findRxnIDs(model,fbc_obj);
         % indexObj=find(strcmp(fbc_obj,model.rxns))
-        model.c(indexObj)=1;        
+        model.c(indexObj)=1;
         model.osense = - sign(fbc_obj_value);
     end
 

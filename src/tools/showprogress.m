@@ -11,7 +11,8 @@ function fout = showprogress(x, whichbar)
 %
 % .. Author:
 %        - Lemmer El Assal (Feb 2017)
-%
+%        - CI adaptations: Laurent Heirendt (March 2017)
+
     global WAITBAR_TYPE;
     global WAITBAR_HANDLE;
 
@@ -19,6 +20,9 @@ function fout = showprogress(x, whichbar)
 
     if isempty(WAITBAR_TYPE)
         WAITBAR_TYPE = 1;
+    end
+    if isempty(WAITBAR_HANDLE)
+        WAITBAR_HANDLE = -1;
     end
 
     switch WAITBAR_TYPE
@@ -41,8 +45,7 @@ function fout = showprogress(x, whichbar)
                 fout = waitbar(x);
             end
             if x == 1
-                close(fout)
+                close(fout);
             end
-        end
     end
 end

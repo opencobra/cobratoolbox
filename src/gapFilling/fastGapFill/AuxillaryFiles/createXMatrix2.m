@@ -25,7 +25,7 @@ function ExchangeRxnMatrix = createXMatrix2(compoundsIn, transport, compartment,
 %               as well as exchange reactions for all extracellular
 %               metabolites.
 %
-% Ines Thiele, http://thielelab.eu. 
+% Ines Thiele, http://thielelab.eu.
 %
 
 if nargin < 3
@@ -34,7 +34,7 @@ end
 if nargin < 2
     transport = 0;
 end
-h=showprogress(0,'Exchange reaction list ...');
+showprogress(0,'Exchange reaction list ...');
 ExchangeRxnMatrix = createModel;
 
 
@@ -86,9 +86,9 @@ for i=1:length(compounds)
             %   ExchangeRxnMatrix.grRules{cnt}='';
             [ExchangeRxnMatrix] = addReactionGEM(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000);
             cnt = cnt + 1;
-            
+
         elseif transport == 1 %currently only this branch is taken.
-            
+
             if (strcmp(compartment,'[c]')==1)
                 tmp = ['Ex_' compounds(i) '[e]'];
                 ExchangeRxnMatrix.rxns(cnt,1) = strcat(tmp(1),tmp(2),tmp(3));
@@ -100,7 +100,7 @@ for i=1:length(compounds)
                 % ExchangeRxnMatrix.mets(length() = strcat(tmp(1),tmp(2));
                 % HTABLE.put(ExchangeRxnMatrix.mets{i}, i);
                 %   ExchangeRxnMatrix.grRules{cnt}='';
-                
+
                 [ExchangeRxnMatrix] = addReactionGEM(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000,[],[],[],[],[]);
                 cnt = cnt + 1;
                 % creates transport reaction from [c] to [e]
@@ -116,7 +116,7 @@ for i=1:length(compounds)
                 %  ExchangeRxnMatrix.grRules{cnt}='';
                 [ExchangeRxnMatrix, HTABLE] = addReactionGEM(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000,[],[],[],[],[], HTABLE);
                 cnt = cnt + 1;
-                
+
             elseif (strcmp(compartment,'[p]')==1) % keep this branch the same for now.
                 tmp = ['Ex_' compounds(i) '[e]'];
                 ExchangeRxnMatrix.rxns(cnt,1) = strcat(tmp(1),tmp(2),tmp(3));
@@ -128,7 +128,7 @@ for i=1:length(compounds)
                 % ExchangeRxnMatrix.mets(length() = strcat(tmp(1),tmp(2));
                 % HTABLE.put(ExchangeRxnMatrix.mets{i}, i);
                 %   ExchangeRxnMatrix.grRules{cnt}='';
-                
+
                 [ExchangeRxnMatrix] = addReactionGEM(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000,[],[],[],[],[]);
                 cnt = cnt + 1;
                 % creates transport reaction from [c] to [p]
@@ -145,7 +145,7 @@ for i=1:length(compounds)
                 %  ExchangeRxnMatrix.grRules{cnt}='';
                 [ExchangeRxnMatrix] = addReactionGEM(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000);
                 cnt = cnt + 1;
-                
+
                 % creates transport reaction from [p] to [e]
                 tmp = [compounds(i) 'tr'];
                 ExchangeRxnMatrix.rxns(cnt,1) = strcat(tmp(1),tmp(2));
@@ -202,7 +202,7 @@ for i=1:length(compounds)
                         [ExchangeRxnMatrix] = addReactionGEM(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000);
                         cnt = cnt + 1;
                     end
-                    
+
                     for j = 1 : length(remain)
                         if strcmp(remain(j),'[c]')==0 && strcmp(remain(j),'[e]')==0 && ~isempty(char(remain(j))) % is not cytosolic
                             % creates transport reaction from [c] to the compartment
@@ -221,14 +221,13 @@ for i=1:length(compounds)
                     end
                 end
                 clear tmp remain token;
-                
+
             end
         end
     end
     if mod(i, 40) == 0
-        showprogress(i/length(compounds),h);
+        showprogress(i/length(compounds));
     end
 end
 
 ExchangeRxnMatrix.mets = ExchangeRxnMatrix.mets';
-close(h);

@@ -24,10 +24,10 @@ subSystems = subSystems(sel);
 nRxns = length(rxnNames);
 allGenes = {};
 % Parse GPRA's
-h = showprogress(0,'Reading GPRA text file ...');
+showprogress(0,'Reading GPRA text file ...');
 for i = 1:nRxns
     if mod(i,10) == 0
-        showprogress(i/nRxns,h);
+        showprogress(i/nRxns);
     end
     thisGpra = gpraStrings{i};
     thisGpra = regexprep(thisGpra,'+',' and ');
@@ -38,27 +38,21 @@ for i = 1:nRxns
     rules{i} = rule;
     grRules{i} = thisGpra;
 end
-if ( regexp( version, 'R20') )
-        close(h);
-end
 
 allGenes = unique(allGenes);
 
 % Construct gene to rxn mapping
 rxnGeneMat = sparse(nRxns,length(allGenes));
-h = showprogress(0,'Constructing GPR mapping ...');
+showprogress(0,'Constructing GPR mapping ...');
 for i = 1:nRxns
     if mod(i,10) == 0
-        showprogress(i/nRxns,h);
+        showprogress(i/nRxns);
     end
     [tmp,geneInd] = ismember(genes{i},allGenes);
     rxnGeneMat(i,geneInd) = 1;
     for j = 1:length(geneInd)
         rules{i} = strrep(rules{i},['x(' num2str(j) ')'],['x(' num2str(geneInd(j)) ')']);
     end
-end
-if ( regexp( version, 'R20') )
-        close(h);
 end
 
 gpraModel.rxns = rxnNames;
@@ -67,7 +61,7 @@ gpraModel.rules = columnVector(rules);
 gpraModel.grRules = grRules;
 gpraModel.subSystems = subSystems;
 gpraModel.rxnGeneMat = rxnGeneMat;
-    
+
 if (nargin > 1)
     [hasGpra,gpraMap] = ismember(model.rxns,gpraModel.rxns);
     model.genes = columnVector(gpraModel.genes);
@@ -80,7 +74,7 @@ if (nargin > 1)
           model.rules{i} = gpraModel.rules{gpraID};
           model.rxnGeneMat(i,:) = gpraModel.rxnGeneMat(gpraID,:);
           model.subSystems{i} = gpraModel.subSystems{gpraID};
-          model.grRules{i} = gpraModel.grRules{gpraID}; 
+          model.grRules{i} = gpraModel.grRules{gpraID};
        else
           model.rules{i} = '';
           model.subSystems{i} = '';
@@ -107,12 +101,12 @@ end
 %                             geneList{end+1} = geneListTmp{k};
 %                         end
 %                     else
-%                         geneList{end+1} = geneStrTmp{j};       
+%                         geneList{end+1} = geneStrTmp{j};
 %                     end
 %                 end
 %             else
 %                 % Only isozymes
-%                 geneList = splitString(geneString,',');   
+%                 geneList = splitString(geneString,',');
 %             end
 %         elseif (~isempty(regexp(geneString,'+')))
 %             % Only complexes
@@ -128,13 +122,12 @@ end
 %     geneLists{i} = unique(geneList);
 %     allGenes = union(allGenes,geneList);
 % end
-% 
+%
 % % Create rxn to gene association matrix
 % rxnGeneMat = sparse(length(rxnNames),length(allGenes));
 % for i = 1:length(rxnNames)
 %     [tmp,geneInd] = ismember(geneLists{i},allGenes);
-%     rxnGeneMat(i,geneInd) = 1;     
+%     rxnGeneMat(i,geneInd) = 1;
 % end
-% 
+%
 % genes = allGenes';
-    

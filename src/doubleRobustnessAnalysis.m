@@ -8,18 +8,18 @@ function [controlFlux1, controlFlux2, objFlux] = doubleRobustnessAnalysis(model,
 % model         COBRA model structure
 % controlRxn1   Reaction of interest whose value is to be controlled
 % controlRxn2   Reaction of interest whose value is to be controlled
-% 
+%
 %OPTIONAL INPUTS
 % nPoints       Number of flux values per dimension (Default = 20)
 % plotResFlag   Plot results (Default = true)
 % objRxn        Objective reaction to be maximized (Default = whatever
 %               is defined in model)
-% objType       Maximize ('max') or minimize ('min') objective 
+% objType       Maximize ('max') or minimize ('min') objective
 %               (Default = 'max')
 %
 %OUTPUTS
 % controlFlux   Flux values within the range of the maximum and minimum for
-%               reaction of interest  
+%               reaction of interest
 % objFlux       Optimal values of objective reaction at each control
 %               reaction flux value
 %
@@ -59,18 +59,15 @@ objFlux = [];
 controlFlux1 = linspace(solMin1.f,solMax1.f,nPoints)';
 controlFlux2 = linspace(solMin2.f,solMax2.f,nPoints)';
 
-h = showprogress(0,'Double robustness analysis in progress ...');
+showprogress(0,'Double robustness analysis in progress ...');
 for i=1:nPoints
     for j = 1:nPoints
-        showprogress(((i-1)*nPoints+j)/nPoints^2,h);
+        showprogress(((i-1)*nPoints+j)/nPoints^2);
         modelControlled = changeRxnBounds(baseModel,controlRxn1,controlFlux1(i),'b');
         modelControlled = changeRxnBounds(modelControlled,controlRxn2,controlFlux2(j),'b');
         solControlled = optimizeCbModel(modelControlled,objType);
         objFlux(i,j) = solControlled.f;
     end
-end
-if ( regexp( version, 'R20') )
-        close(h);
 end
 
 if (plotResFlag)
@@ -81,9 +78,3 @@ if (plotResFlag)
     ylabel(strrep(controlRxn2,'_','-'));
     axis tight
 end
-
-
-
-
-
-
