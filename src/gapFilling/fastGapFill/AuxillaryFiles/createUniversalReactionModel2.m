@@ -1,5 +1,5 @@
-function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList,hideWaitbar)
-%% function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList,hideWaitbar)
+function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList)
+%% function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList)
 %
 % createUMatrix creates the U matrix using the universal data from the KEGG
 % database
@@ -15,8 +15,6 @@ function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList,hideWa
 % KEGGblackList         List of excluded reactions from the universal database
 %                       (e.g., KEGG) (optional input, default: no
 %                       blacklist)
-% hideWaitbar           [optional] if set, suppress waitbars during execution
-% 
 % OUTPUT
 % KEGG              Contains universal database (U Matrix) in matrix format
 %
@@ -34,11 +32,6 @@ end
 if ~exist('KEGGBlackList','var') || isempty(KEGGBlackList)
     KEGGBlackList = {};
 end
-if ~exist('hideWaitbar','var') || isempty(hideWaitbar)
-    hideWaitbar = false;
-else
-    hideWaitbar = true;
-end
 
 KEGGReactionList = importdata(KEGGFilename);
 KEGG = createModel;
@@ -51,7 +44,7 @@ HTABLE = java.util.Hashtable; % hashes Kegg.mets
 %Create reversibility vector, default=1 (reversible)
 KEGG.rev = [];
 
-for i = 1: length(KEGGReactionList)
+for i = 1:length(KEGGReactionList)
     clear rxnID rxnFormula;
     [rxnID, rxnFormula] = strtok(KEGGReactionList(i),':');
     %continue if reaction is not in KEGGBlacklist
@@ -150,10 +143,8 @@ for i = 1: length(KEGGReactionList)
 
     end
     showprogress(i/length(KEGGReactionList));
-    end
-
-if not(hideWaitbar)
 end
+
 KEGG.S=spalloc(length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets) );
 
 [KEGG] = addReactionGEM(KEGG,KEGG.rxns,KEGG.rxns,KEGG.rxnFormulas,KEGG.rev,-10000*ones(length(KEGG.rxns),1),10000*ones(length(KEGG.rxns),1),1);

@@ -1,4 +1,4 @@
-function ExchangeRxnMatrix = createXMatrix2(compoundsIn, transport, compartment, model,hideWaitbar)
+function ExchangeRxnMatrix = createXMatrix2(compoundsIn, transport, compartment, model)
 %% ExchangeRxnMatrix = createXMatrix2(compoundsIn, transport, compartment, model)
 % createXMatrix creates a matrix full of exchange reactions based
 % on the input list (creates an exchange reaction for each of the
@@ -12,7 +12,6 @@ function ExchangeRxnMatrix = createXMatrix2(compoundsIn, transport, compartment,
 %                       [e] (default), [p] creates transport from [c] to [p] and from [p] to [c]
 % model                 model structure - used to check if exchange reaction exists
 %                       already before adding it to ExchangeRxnMatrix
-% hideWaitbar           [optional] if set, suppress waitbars during execution
 %
 % OUTPUT
 % ExchangeRxnMatrix     Model structure containing all exchange and
@@ -35,23 +34,16 @@ end
 if ~exist('compartment','var') || isempty(compartment)
     compartment = '[c]';
 end
-if ~exist('hideWaitbar','var') || isempty(hideWaitbar)
-    hideWaitbar = false;
-else
-    hideWaitbar = true;
-end
-showprogress(0,'Exchange reaction list ...');
-if not(hideWaitbar)
-end
-ExchangeRxnMatrix = createModel;
 
+showprogress(0,'Exchange reaction list ...');
+
+ExchangeRxnMatrix = createModel;
 
 cnt=1;
 HTABLE = java.util.Hashtable;
 
 compoundsInOri=compoundsIn;
 [compoundsInOri2, remain] = strtok(compoundsInOri, '[');
-
 
 %removes the compartment from compound name
 compoundsIn=regexprep(compoundsIn,'(\w*)]','');
@@ -60,8 +52,6 @@ compoundsIn=regexprep(compoundsIn,']','');
 compoundsIn=regexprep(compoundsIn,' ','');
 
 compounds=unique(compoundsIn);
-
-
 
 %creates sparse matrix with corresponding dimensions
 if  transport==0
@@ -234,9 +224,6 @@ for i=1:length(compounds)
         end
     end
     showprogress(i/length(compounds));
-    end
-    end
 end
 
 ExchangeRxnMatrix.mets = ExchangeRxnMatrix.mets';
-

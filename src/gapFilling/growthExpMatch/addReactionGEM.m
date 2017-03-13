@@ -1,7 +1,7 @@
-function [newmodel, HTABLE] = addReactionGEM(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,nRxn,subSystems,grRules,rules,genes, HTABLE,hideWaitbar)
+function [newmodel, HTABLE] = addReactionGEM(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,nRxn,subSystems,grRules,rules,genes, HTABLE)
 %addReactionGEM manually adds reactions to a specified model, may add one or more reactions at a time
 %
-%   [newmodel] = addReactionSmiley(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,subSystems,grRules,rules,genes,HTABLE,hideWaitbar)
+%   [newmodel] = addReactionSmiley(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,subSystems,grRules,rules,genes,HTABLE)
 %
 % - Manually add reactions to a specified model, can either add one or
 %   multiple reactions at a time
@@ -22,7 +22,7 @@ function [newmodel, HTABLE] = addReactionGEM(model,rxns,rxnNames,rxnFormulas,rev
 %     rules           default = ''
 %     genes           default = ''
 %     HTABLE
-%     hideWaitbar     [optional, default: true] if set, suppress waitbars during execution
+%
 % Output
 %     newmodel
 %
@@ -80,15 +80,7 @@ else
     useHashTable = false;
 end
 
-if ~exist('hideWaitbar','var') || isempty(hideWaitbar)
-    hideWaitbar = true;
-else
-    hideWaitbar = false;
-end
-
-
 showprogress(0, 'Adding Rxns ...');
-
 for i = 1:length(rev)
     %IO indicates whether it is part of the reactants or part of the
     %product (ie. IO = -1 is reactant, IO = 1 products)
@@ -102,8 +94,6 @@ for i = 1:length(rev)
     newmodel.rules(nRxn,1) = rules(i,1);
     newmodel.c(nRxn,1) = 0;
     newmodel.rxnNames{nRxn,1} = char(rxnNames(i,1));
-
-
     %newmodel.S(:, i) = zeros(length(newmodel.mets), 1);
 
     %parses reaction formula into components of string
@@ -147,34 +137,13 @@ for i = 1:length(rev)
                 c = strmatch(parsing{j},newmodel.mets,'exact');
                 %display('slow method')
             end
-%             c2 = strmatch(parsing{j},newmodel.mets,'exact');
-%
-%             %c = HTABLE.get(parsing{j});
-%             if any(c2 ~= c)
-%                 c
-%                 c2
-%                 newmodel.mets
-%                 pause;
-%             end
 
-            %c
-%             c = zeros(1,0);
-%             ptemp = parsing{j};
-%             for k2 = 1:length(newmodel.mets)
-%                if strcmp(newmodel.mets{k2}, ptemp)
-%                    c = k2;
-%                    break;
-%                end
-%             end
-            %c
-            %pause;
             %c = strcmp(parsing{j},newmodel.mets);
             if ~isempty(c)
                 metLoc = c;
                 parsing(j);
 
-            %if met doesn't exist then metLoc is set at nMet (the end of
-            %list)
+            %if met doesn't exist then metLoc is set at nMet (the end of list)
             else
                 metLoc = nMet;
                 newmodel.mets{metLoc} = parsing{j};
@@ -202,13 +171,11 @@ for i = 1:length(rev)
             end
             newmodel.S(metLoc,nRxn) = rxnCoeff*IO + origCoeff;
 
-
             j=j+1;
         end
     end
 
     clear parsing
-
 
     [parsing{1,1},parsing{2,1}] = strtok(grRules{i});
     if ~isempty(parsing{2,1}) %length(parsing{2,1}) ~= 0
@@ -220,11 +187,10 @@ for i = 1:length(rev)
         end
     end
     nRxn = nRxn + 1;
+
     clear parsing
+
     showprogress(i/length(rev));
-end
-if not(hideWaitbar)
-    close(h);
 end
 
 for i = 1:length(genes)

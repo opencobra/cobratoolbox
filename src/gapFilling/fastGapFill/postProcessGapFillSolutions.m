@@ -1,11 +1,11 @@
 function [AddedRxnsExtended] = postProcessGapFillSolutions(AddedRxns,model,BlockedRxns,IdentifyPW)
 %%[AddedRxnsExtended] = postProcessGapFillSolutions(AddedRxns,model,BlockedRxns,IdentifyPW)
-% 
+%
 % This function uses the output from fastGapFill and signs generalized
 % function to the identified solutions from the universal database (e.g.,
 % 'Metabolic reaction', 'Transport reaction', 'Exchange reaction'). It also
 % provides basic statistics for the solution. One can use the option
-% 'IdentifyPW' to compute for each solved blocked reaction a flux vector, 
+% 'IdentifyPW' to compute for each solved blocked reaction a flux vector,
 % such that the flux through this reaction is maximized while the sum of
 % all fluxes is minimized. This analysis can be helpful to put the solution
 % reactions into the network context.

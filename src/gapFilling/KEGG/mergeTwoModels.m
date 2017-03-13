@@ -1,5 +1,5 @@
-function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel,mergeRxnGeneMat,hideWaitbar)
-%% function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel,mergeRxnGeneMat,hideWaitbar)
+function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel,mergeRxnGeneMat)
+%% function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel,mergeRxnGeneMat)
 %
 % Inputs
 %
@@ -8,7 +8,6 @@ function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel,mergeRxnGeneMat,h
 % objrxnmodel     - Set as 1 or 2 to set objective reaction from
 %                 desired model
 % mergeRxnGeneMat - if false, do not merge rxnGeneMat
-% hideWaitbar     - [optional] if set, suppress waitbars during execution%
 %
 % Outputs
 %
@@ -23,11 +22,6 @@ if ~exist('objrxnmodel','var') || isempty(objrxnmodel)
 end
 if ~exist('mergeRxnGeneMat','var') || isempty(mergeRxnGeneMat)
     mergeRxnGeneMat = true;
-end
-if ~exist('hideWaitbar','var') || isempty(hideWaitbar)
-    hideWaitbar = false;
-else
-    hideWaitbar = true;
 end
 
 % Creating Universal Metabolite Names
@@ -80,7 +74,6 @@ for i = 1:size(model2.mets,1)
         sizemets = sizemets+1;
     end
     showprogress(i/size(model2.mets,1));
-    end
 end
 
 lengthmet = size(modelNew.mets,1);
@@ -157,37 +150,26 @@ model2_num = length(a2);
 modelNew.S = spalloc(size(modelNew.mets,1),size(modelNew.rxns,1),model1_num+model2_num);
 
 showprogress(0, 'Adding Matrix 1 in Progress ...');
-end
 for i = 1:size(a1,1)
     modelNew.S(a1(i),b1(i)) = model1.S(a1(i),b1(i));
     showprogress(i/size(a1,1));
-    end
 end
-
-
-
 
 HTABLE = java.util.Hashtable;
 for i = 1:length(modelNew.mets)
     HTABLE.put(modelNew.mets{i}, i);
 end
+
 showprogress(0, 'Adding Matrix 2 in Progress ...');
-end
 for i = 1:size(model2.S,2)
     compounds = find(model2.S(:,i));
     for j = 1:size(compounds,1)
         metnames(j,1) = model2.mets(compounds(j));
-
-        %tmp2 = strmatch(metnames(j,1),modelNew.mets,'exact');
-        %metnames(j,1)
         tmp = HTABLE.get(metnames{j,1});
-        %if any(tmp2 ~= tmp)
-        %    pause;
-        %end
         modelNew.S(tmp,i+size(model1.S,2)) = model2.S(compounds(j),i);
     end
     showprogress(i/size(model2.S,2));
-    end
+end
 
 
 fprintf('Finished\n');
@@ -234,7 +216,9 @@ if mergeRxnGeneMat
 fprintf('Combining Remaining Genetic Information: ');
 showprogress(0, 'Combining Genetic Info ...');
 end
+
 modelNew.rxnGeneMat = model1.rxnGeneMat;
+
 for i = 1:size(model2.rxnGeneMat,1)
     R = find(model2.rxnGeneMat(i,:));
     if ~isempty(R)
@@ -248,10 +232,6 @@ for i = 1:size(model2.rxnGeneMat,1)
         modelNew.rxnGeneMat(T,:) = 0;
     end
     showprogress(i/size(model2.rxnGeneMat,1));
-    end
-end
-
-
 end
 
 modelNew.grRules = model1.grRules;
