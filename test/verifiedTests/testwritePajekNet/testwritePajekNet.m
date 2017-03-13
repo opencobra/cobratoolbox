@@ -30,24 +30,29 @@ for k = 1:length(solverPkgs)
         addpath(genpath(path_TOMLAB));
     end
 
-    %load test data
-    fileID = fopen('COBRAmodeltest.net', 'r');
-    testData = fscanf(fileID, '%s');
-    fclose(fileID);
+    % change the COBRA solver (LP)
+    solverOK = changeCobraSolver(solverPkgs{k});
 
-    %call fucntion
-    writePajekNet(model);
+    if solverOK == 1
+        %load test data
+        fileID = fopen('COBRAmodeltest.net', 'r');
+        testData = fscanf(fileID, '%s');
+        fclose(fileID);
 
-    %save produced data
-    fileID = fopen('COBRAmodel.net', 'r');
-    Data = fscanf(fileID, '%s');
-    fclose(fileID);
+        %call fucntion
+        writePajekNet(model);
 
-    %compare with produced data
-    assert(isequal(testData, Data));
+        %save produced data
+        fileID = fopen('COBRAmodel.net', 'r');
+        Data = fscanf(fileID, '%s');
+        fclose(fileID);
 
-    %delete data
-    delete COBRAmodel.net
+        %compare with produced data
+        assert(isequal(testData, Data));
+
+        %delete data
+        delete COBRAmodel.net
+    end
 
     % remove the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')

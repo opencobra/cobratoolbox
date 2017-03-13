@@ -44,21 +44,27 @@ for k = 1:length(solverPkgs)
     else
         fprintf('   Running solveCobraLPCPLEX using %s ... ', solverPkgs{k});
 
-        solTest = solveCobraLPCPLEX(model, 0, 0, 0, [], 0, solverPkgs{k});
-        assert(any(abs(solTest.obj - sol.obj) < tol))
+        % change the COBRA solver (LP)
+        solverOK = changeCobraSolver(solverPkgs{k});
 
-        %test minNorm
-        solTest = solveCobraLPCPLEX(model, 0, 0, 0, [], 1e-6, solverPkgs{k});
-        assert(isequal(ecoli_blckd_rxn, model.rxns(find(~solTest.full))'));
-        assert(any(abs(solTest.obj - sol.obj) < tol));
+        if solverOK == 1
 
-        %test basis generation
-        [solTest, basisTest] = solveCobraLPCPLEX(model, 0, 1, 0, [], 0, solverPkgs{k});
-        assert(any(abs(solTest.obj - sol.obj) < tol));
+            solTest = solveCobraLPCPLEX(model, 0, 0, 0, [], 0, solverPkgs{k});
+            assert(any(abs(solTest.obj - sol.obj) < tol))
 
-        %test basis reuse
-        [solTest] = solveCobraLPCPLEX(basis, 0, 1, 0, [], 0, solverPkgs{k});
-        assert(any(abs(solTest.obj - sol.obj) < tol));
+            %test minNorm
+            solTest = solveCobraLPCPLEX(model, 0, 0, 0, [], 1e-6, solverPkgs{k});
+            assert(isequal(ecoli_blckd_rxn, model.rxns(find(~solTest.full))'));
+            assert(any(abs(solTest.obj - sol.obj) < tol));
+
+            %test basis generation
+            [solTest, basisTest] = solveCobraLPCPLEX(model, 0, 1, 0, [], 0, solverPkgs{k});
+            assert(any(abs(solTest.obj - sol.obj) < tol));
+
+            %test basis reuse
+            [solTest] = solveCobraLPCPLEX(basis, 0, 1, 0, [], 0, solverPkgs{k});
+            assert(any(abs(solTest.obj - sol.obj) < tol));
+        end
     end
 
     % remove the solver paths (temporary addition for CI)

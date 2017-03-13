@@ -49,7 +49,7 @@ for k = 1:length(solverPkgs)
         end
 
         % launch the flux variability analysis
-        [minFluxT, maxFluxT] = fluxVariability(model, 90);
+        [minFluxT, maxFluxT] = fluxVariability(model, 90, 'max', model.rxns, 1);
 
         rxnNames = {'PGI', 'PFK', 'FBP', 'FBA', 'TPI', 'GAPD', 'PGK', 'PGM', 'ENO', 'PYK', 'PPS', 'G6PDH2r', 'PGL', 'GND', 'RPI', 'RPE', 'TKT1', 'TKT2', 'TALA'};
 
