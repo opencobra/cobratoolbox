@@ -43,10 +43,10 @@ for k = 1:length(solverPkgs)
     if solverOK == 1
         fprintf('   Testing sparseLP using %s ... \n', solverPkgs{k});
 
-        %Define the parameters
+        % define the parameters
         params.nbMaxIteration = 1000;
         params.epsilon = 1e-6;
-        params.theta   = 2;    %parameter of l0 approximation
+        params.theta = 2; %parameter of l0 approximation
         params.p = 0.5;
 
         for testCase = 1:2
