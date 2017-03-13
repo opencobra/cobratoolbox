@@ -1,4 +1,3 @@
-function initCobraToolbox()
 %initCobraToolbox Initialize COnstraint-Based Reconstruction and Analysis Toolbox
 %
 % Defines default solvers and paths, tests SBML io functionality.
