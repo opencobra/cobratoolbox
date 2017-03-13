@@ -136,9 +136,7 @@ for i = 1: length(KEGGReactionList)
         end
 
     end
-    if mod(i,40) == 0
-        showprogress(i/length(KEGGReactionList));
-    end
+    showprogress(i/length(KEGGReactionList));
 end
 
 KEGG.S=spalloc(length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets) );
