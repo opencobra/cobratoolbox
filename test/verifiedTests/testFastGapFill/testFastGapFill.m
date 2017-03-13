@@ -77,5 +77,7 @@ assert(sum(cellfun(@(s) ~isempty(strfind('RXN1013', s)), AddedRxns.rxns)) == 1)
 
 delete KEGGMatrix.mat;
 
+rmpath(genpath(path_ILOG_CPLEX))
+
 % change the directory
 cd(CBTDIR)

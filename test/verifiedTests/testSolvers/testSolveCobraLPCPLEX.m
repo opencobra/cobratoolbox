@@ -39,8 +39,10 @@ for k = 1:length(solverPkgs)
         addpath(genpath(path_ILOG_CPLEX));
     end
 
-    if ~verLessThan('matlab','8') && ( strcmp(solverPkgs{k}, 'ILOGcomplex')) %2016b %strcmp(solverPkgs{k}, 'ILOGsimple') ||
+    if ~verLessThan('matlab','8') && ( strcmp(solverPkgs{k}, 'ILOGcomplex') || strcmp(solverPkgs{k}, 'ILOGsimple')) %2016b
         fprintf(['\n IBM ILOG CPLEX - ', solverPkgs{k}, ' - is incompatible with this version of MATLAB, please downgrade or change solver\n'])
+    elseif (~exist('tomRun')) && strcmp(solverPkgs{k}, 'tomlab_cplex')
+        fprintf(['TOMLAB CPLEX is not installed.\n']);
     else
         fprintf('   Running solveCobraLPCPLEX using %s ... ', solverPkgs{k});
 
