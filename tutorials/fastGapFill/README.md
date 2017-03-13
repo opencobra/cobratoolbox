@@ -1,4 +1,4 @@
->> To perform the fastGapFill analysis the following tools are needed.
+# To perform the fastGapFill analysis the following tools are needed.
 
 1. Matlab: http://www.mathworks.nl/products/matlab/
 
@@ -10,7 +10,7 @@ and follow the installation instructions given in Schellenberger et al.: http://
 4. fastGapFill: http://thielelab.eu/software/fastGapFill.html
 
 
->> Utilization of fastGapFill:
+# Utilization of fastGapFill:
 
 1. Set path to COBRA toolbox (follow instruction given in Schellenberger et al.), fastCore, and fastGapFill.
 
@@ -18,26 +18,26 @@ and follow the installation instructions given in Schellenberger et al.: http://
 
 3. Type into the 'Command Window': runGapFill_example
 
-4. Re-run gapFill on the same model but with different weightings: 
+4. Re-run gapFill on the same model but with different weightings:
 	- define weights for reactions to be added - the lower the weight the higher the priority by typing into the 'Command Window':
 	- e.g.:
 		weights.MetabolicRxns = 0.1; % Kegg metabolic reactions
 		weights.ExchangeRxns = 0.5; % Exchange reactions
 		weights.TransportRxns = 1; % Transport reactions
-	- Type into the 'Command Window': 
+	- Type into the 'Command Window':
 		[AddedRxns] = fastGapFill(consistMatricesSUX,epsilon, weights);
 	- The newly added reactions contained in the variable 'AddedRxns' are consistent with updated weights
 
->> Utilization of the stoichiometric consistency check:
+# Utilization of the stoichiometric consistency check:
 
 1. Type into the 'Command Window': runConsistencyCheck_example
 
 2. If there are stoichiometrically inconsistent metabolites, MetIncons lists their abbreviations as used in the model.
 
 
->> Using another reaction database than the default database
+# Using another reaction database than the default database
 1. Create an input file that has the same format as the file given in AuxillaryFiles/reaction.lst
-	- e.g.: 
+	- e.g.:
 		ReactionAbbr: ReactionFormula
 		R00001: C00890 + n C00001 <=> (n+1) C02174
 		R00002: 16 C00002 + 16 C00001 + 8 C00138 <=> 8 C05359 + 16 C00009 + 16 C00008 + 8 C00139

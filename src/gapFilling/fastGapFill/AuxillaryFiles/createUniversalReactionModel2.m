@@ -38,7 +38,7 @@ KEGG = createModel;
 cnt=1;
 cnti=1;
 showprogress(0,'KEGG reaction list ...');
-end
+
 HTABLE = java.util.Hashtable; % hashes Kegg.mets
 
 %Create reversibility vector, default=1 (reversible)
