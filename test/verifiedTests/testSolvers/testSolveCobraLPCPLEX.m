@@ -44,6 +44,7 @@ for k = 1:length(solverPkgs)
     else
         fprintf('   Running solveCobraLPCPLEX using %s ... ', solverPkgs{k});
 
+        % Note: Do not change the solver using changeCobraSolver()
         solTest = solveCobraLPCPLEX(model, 0, 0, 0, [], 0, solverPkgs{k});
         assert(any(abs(solTest.obj - sol.obj) < tol))
 

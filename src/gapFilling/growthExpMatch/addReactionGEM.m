@@ -1,5 +1,5 @@
 function [newmodel, HTABLE] = addReactionGEM(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,nRxn,subSystems,grRules,rules,genes, HTABLE)
-%addReactionGEM manually adds reactions to a specified model, may add one or more reactions at a time 
+%addReactionGEM manually adds reactions to a specified model, may add one or more reactions at a time
 %
 %   [newmodel] = addReactionSmiley(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,subSystems,grRules,rules,genes)
 %
@@ -94,10 +94,10 @@ for i = 1:length(rev)
     newmodel.rules(nRxn,1) = rules(i,1);
     newmodel.c(nRxn,1) = 0;
     newmodel.rxnNames{nRxn,1} = char(rxnNames(i,1));
-    
-    
+
+
     %newmodel.S(:, i) = zeros(length(newmodel.mets), 1);
-    
+
     %parses reaction formula into components of string
     [parsing{1,1},parsing{2,1}] = strtok(rxnFormulas{i});
     for j = 2:100
@@ -114,7 +114,7 @@ for i = 1:length(rev)
             j = j+1;
         elseif strcmp(parsing{j},' ') == 1
             j = j+1;
-        
+
         %if its '-->' or '<==>' then switches IO to 1 which indicates the
         %next compounds are part of the product
         elseif strcmp(parsing{j},'<==>') == 1
@@ -129,7 +129,7 @@ for i = 1:length(rev)
         else
             %if met already exists in newmodel then sets metLoc to
             %corresponding met location
-            
+
             if useHashTable
                 c = HTABLE.get(parsing{j});
             else
@@ -137,7 +137,7 @@ for i = 1:length(rev)
                 %display('slow method')
             end
 %             c2 = strmatch(parsing{j},newmodel.mets,'exact');
-%             
+%
 %             %c = HTABLE.get(parsing{j});
 %             if any(c2 ~= c)
 %                 c
@@ -145,7 +145,7 @@ for i = 1:length(rev)
 %                 newmodel.mets
 %                 pause;
 %             end
-            
+
             %c
 %             c = zeros(1,0);
 %             ptemp = parsing{j};
@@ -161,7 +161,7 @@ for i = 1:length(rev)
             if ~isempty(c)
                 metLoc = c;
                 parsing(j);
-                
+
             %if met doesn't exist then metLoc is set at nMet (the end of
             %list)
             else
@@ -190,15 +190,15 @@ for i = 1:length(rev)
                 origCoeff = 0;
             end
             newmodel.S(metLoc,nRxn) = rxnCoeff*IO + origCoeff;
-            
-            
+
+
             j=j+1;
         end
     end
 
     clear parsing
 
-    
+
     [parsing{1,1},parsing{2,1}] = strtok(grRules{i});
     if ~isempty(parsing{2,1}) %length(parsing{2,1}) ~= 0
         for j = 2:100
@@ -211,7 +211,6 @@ for i = 1:length(rev)
     nRxn = nRxn + 1;
     clear parsing
 end
-%close(h);
 
 for i = 1:length(genes)
     if ~isempty(genes{i}) %length(genes{i}) ~= 0

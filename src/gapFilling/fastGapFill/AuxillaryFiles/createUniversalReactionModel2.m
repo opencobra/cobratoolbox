@@ -5,7 +5,7 @@ function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList)
 % database
 % % Requires the openCOBRA toolbox
 % http://opencobra.sourceforge.net/openCOBRA/Welcome.html
-% 
+%
 % Getting the Latest Code From the Subversion Repository:
 % Linux:
 % svn co https://opencobra.svn.sourceforge.net/svnroot/opencobra/cobra-devel
@@ -20,7 +20,7 @@ function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList)
 % KEGG              Contains universal database (U Matrix) in matrix format
 %
 % 11-10-07 Ines Thiele
-% Expanded June 2013, , http://thielelab.eu. 
+% Expanded June 2013, , http://thielelab.eu.
 %
 
 if nargin < 2
@@ -34,7 +34,7 @@ KEGGReactionList = importdata(KEGGFilename);
 KEGG = createModel;
 cnt=1;
 cnti=1;
-h=showprogress(0,'KEGG reaction list ...');
+showprogress(0,'KEGG reaction list ...');
 HTABLE = java.util.Hashtable; % hashes Kegg.mets
 
 %Create reversibility vector, default=1 (reversible)
@@ -44,11 +44,11 @@ for i = 1: length(KEGGReactionList)
     clear rxnID rxnFormula;
     [rxnID, rxnFormula] = strtok(KEGGReactionList(i),':');
     %continue if reaction is not in KEGGBlacklist
-    
+
     if isempty(strmatch(rxnID, KEGGBlackList, 'exact')) || isempty(strfind(rxnFormula,'(n\+m)'))%length(strmatch(rxnID,KEGGBlackList,'exact'))==0
-        
+
         KEGG.rxns(cnti,1)=rxnID;
-        
+
         %reformats syntax of reaction
         rxnFormula= regexprep(rxnFormula,': ','');
         rxnFormula= regexprep(rxnFormula,'\+ C','\+ 1 C');
@@ -77,21 +77,21 @@ for i = 1: length(KEGGReactionList)
         rxnFormula= regexprep(rxnFormula,' 3C',' 3 C');
         rxnFormula= regexprep(rxnFormula,' 2C',' 2 C');
         rxnFormula= regexprep(rxnFormula,' 4C',' 4 C');
-        
+
         rxnFormula = strcat(rxnFormula,'[c]');
         rxnFormula= regexprep(rxnFormula,'<=>','<==>');
         rxnFormula= regexprep(rxnFormula,'\=>>','=>');
         rxnFormula= regexprep(rxnFormula,'\s<=+>\s',' <==> ');
         rxnFormula= regexprep(rxnFormula,'\s=+>\s',' => ');
-        
-        
+
+
         %If reaction is irreversible backwards, flip around formula
         irrevBackwards = regexp(rxnFormula,'\s<=+[^>]*\s','ONCE');
         if ~isempty(irrevBackwards{1})
             [~,rxnSides] = regexp(rxnFormula,'(.+)<=+(.+)','match','tokens');
             rxnFormula = strcat(strtrim(rxnSides{1}{1}{2}),{' => '},strtrim(rxnSides{1}{1}{1}));
         end
-        
+
         %Assign reversibility
         revResult = regexp(rxnFormula,'<=+>','ONCE');
         if isempty(revResult{1})
@@ -99,7 +99,7 @@ for i = 1: length(KEGGReactionList)
         else
             KEGG.rev(cnti,1) = 1;
         end
-        
+
         KEGG.rxnFormulas(cnti,1)=rxnFormula;
         cnti=cnti+1;
         %compounds is a list of each of metabolites involved in the
@@ -118,7 +118,7 @@ for i = 1: length(KEGGReactionList)
             end
         end
         clear  compounds
-        
+
         %compounds is a list of each of metabolites involved in the
         %reaction that has a KEGGID starting with 'G'
         [compounds, ~, ~] = regexp(char(rxnFormula),'G\w+\[c]','match','start','end');
@@ -134,13 +134,11 @@ for i = 1: length(KEGGReactionList)
                 end
             end
         end
-        
+
     end
-    if mod(i,40) == 0
-        showprogress(i/length(KEGGReactionList),h);
-    end
+    showprogress(i/length(KEGGReactionList));
 end
-close(h);
+
 KEGG.S=spalloc(length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets) );
 
 [KEGG] = addReactionGEM(KEGG,KEGG.rxns,KEGG.rxns,KEGG.rxnFormulas,KEGG.rev,-10000*ones(length(KEGG.rxns),1),10000*ones(length(KEGG.rxns),1),1);

@@ -22,7 +22,7 @@ function [mainText_new,keyText,numText] = colourAll(fname,parsed,fname_out,new_c
 %
 % mainText_new    Lines of the XML file
 % keyText         Lists of retrieved alias and species IDs
-% numText         Lists of the corresponding line numbers for each alias 
+% numText         Lists of the corresponding line numbers for each alias
 %                 and species ID
 %
 %
@@ -47,7 +47,7 @@ function [mainText_new,keyText,numText] = colourAll(fname,parsed,fname_out,new_c
 
 
 if nargin<2 || isempty(fname_out)
-    
+
     [fname_out, fpath]=uiputfile('*.xml','CellDesigner SBML Source File');
     if(fname_out==0)
         return;
@@ -65,7 +65,7 @@ if nargin<1 || isempty(fname)
     f_id=fopen([fpath,fname],'r');
 else
     f_id=fopen(fname,'r');
-    
+
 end
 
 
@@ -107,7 +107,7 @@ for m=1:ID_row;
 end
 
 
-h = showprogress(0,'progressing')
+showprogress(0,'progressing')
 
 num=[];
 
@@ -336,7 +336,7 @@ found=0;
 
 
 
-showprogress(1/4,h);
+showprogress(1/4);
 
 
 numL=0;
@@ -356,31 +356,31 @@ second=0;
 t=0;
 
 while ~feof(f_id);
-    
+
     t=t+1;
     rem=fgets(f_id);
     %     try
     MainTxt(t,1)=cellstr(rem);
-    
+
     %     catch
     %         disp(rem);
     %     end
-    
+
     % end
     %
     % for t=1:length(MainTxt);
-    
+
     %     if ismember(t, progress)~=0||t==total_length;
     %         waitbar((t/total_length*2/4+1)/4,h);
     %     end
-    
+
     new=new+1;
-    
+
     MainTxt_new(new,1)=MainTxt(t);
     section_1=strfind(MainTxt(t),sectionKey(1).str);
     section_2=strfind(MainTxt(t),sectionKey(2).str);
-    
-    
+
+
     if (~isempty(section_1{1,1}))
         secKey=1;
         fprintf('found the metKeyword: %s',MainTxt{t});
@@ -388,59 +388,59 @@ while ~feof(f_id);
         secKey=0;
         fprintf('Cannot found the metKeyword:  %s',MainTxt{t});
     end
-    
-    
+
+
     if secKey==0
         continue;
     end
-    
-    
-    
-    
-    
+
+
+
+
+
     result=strfind(MainTxt(t),toFD(1).str)
-    
+
     if ~isempty(result{1,1})&&(secKey==1)
-        
+
         numL=numL+1;
-        
+
         [st,ed]=position(MainTxt{t},listID{1})
-        
+
         str=MainTxt{t}
-        
-        
-        
+
+
+
         keyText(numL,1)={str(st:ed)};
-        
-        
+
+
         [st,ed]=position(MainTxt{t},listID{2})
-        
+
         str=MainTxt{t}
-        
+
         keyText(numL,2)={str(st:ed)};
-        
-        
-        
-        
-        
+
+
+
+
+
         first=first+1;
-        
-        
+
+
         numText(numL,first)=t;
         first=0;
         second=1;
-        
+
     end
-    
+
     res=strfind(MainTxt(t),toFD(2).str)
-    
+
     if ~isempty(res{1,1})&&(secKey==1)
         second=second+1;
-        
+
         numText(numL,second)=t;
-        
+
     end
-    
+
     %for c=1:length(listColour);
     %         if strcmp(listColour(1),'color')
     %             [st,ed]=position(MainTxt_new{new},listColour{1})
@@ -450,14 +450,14 @@ while ~feof(f_id);
     %
     %         end
     %end
-    
+
     res_end=strfind(MainTxt(t),toFD(3).str);
     if ~isempty(res_end{1,1})
         found=0;
         break;
     end
-    
-    
+
+
 end
 
 %% old version of the "write" funciton
@@ -490,7 +490,7 @@ str_colour='<celldesigner:paint color="fff5f8fa" scheme="Color"/>';
 
 new_colour=strrep(new_colour,'#',''); % remove the '#' sign from the hex codes.
 if length(new_colour)<8;
-    
+
     new_colour=['FF',new_colour];  % add the compatibility with six-digit code
 end
 
@@ -504,9 +504,7 @@ end
 writeCD(parsed_test,fname_out)
 
 
-showprogress(4/4,h);
-
-close(h)
+showprogress(4/4);
 
 end
 

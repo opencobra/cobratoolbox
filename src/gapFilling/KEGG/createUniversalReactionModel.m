@@ -1,9 +1,9 @@
 function KEGG = createUniversalReactionModel(KEGGFilename, KEGGBlackList)
 %createUMatrix creates the U matrix using the universal data from the KEGG
 % database
-% 
+%
 % KEGG = createUMatrix(KEGGFilename)
-% 
+%
 % KEGG              U Matrix
 % KEGGFilename      downloaded from KEGG database (ie. 'reaction.lst')
 %
@@ -20,16 +20,16 @@ KEGGReactionList = importdata(KEGGFilename);
 KEGG = createModel;
 cnt=1;
 cnti=1;
-h=showprogress(0,'KEGG reaction list ...');
+showprogress(0,'KEGG reaction list ...');
 HTABLE = java.util.Hashtable; % hashes Kegg.mets
 
 for i = 1: length(KEGGReactionList)
     clear Rxn rxnFormulas;
     [Rxn, rxnFormulas] = strtok(KEGGReactionList(i),':');
      %continue if reaction is not in KEGGBlacklist
-     
+
      if isempty(strmatch(Rxn, KEGGBlackList, 'exact'))%length(strmatch(Rxn,KEGGBlackList,'exact'))==0
-         
+
     KEGG.rxns(cnti,1)=Rxn;
 
     %reformats syntax of reaction
@@ -60,7 +60,7 @@ for i = 1: length(KEGGReactionList)
     rxnFormulas = strcat(rxnFormulas,'[c]');
     rxnFormulas= regexprep(rxnFormulas,'<=>','<==>');
     rxnFormulas= regexprep(rxnFormulas,'\=>>','=>');
-    
+
     KEGG.rxnFormulas(cnti,1)=rxnFormulas;
     cnti=cnti+1;
     %compounds is a list of each of metabolites involved in the
@@ -96,13 +96,11 @@ for i = 1: length(KEGGReactionList)
             end
         end
     end
-        
+
      end
-    if mod(i,40) == 0
-        showprogress(i/length(KEGGReactionList),h)
-    end
+    showprogress(i/length(KEGGReactionList))
 end
-close(h);
+
 KEGG.S=spalloc(length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets) );
 
 [KEGG] = addReactionGEM(KEGG,KEGG.rxns,KEGG.rxns,KEGG.rxnFormulas,ones(length(KEGG.rxns),1),-10000*ones(length(KEGG.rxns),1),10000*ones(length(KEGG.rxns),1),1);

@@ -37,7 +37,7 @@ fprintf('Finished, %i Distinct Reactions\n',lengthreaction);
 
 % Combining Metabolite List
 fprintf('Combining metabolite lists: ');
-h = showprogress(0, 'Combining Metabolites in Progress ...');
+showprogress(0, 'Combining Metabolites in Progress ...');
 modelNew.mets = model1.mets;
 
 sizemets = size(modelNew.mets,1)+1;
@@ -67,13 +67,10 @@ for i = 1:size(model2.mets,1)
          end
         sizemets = sizemets+1;
     end
-    if mod(i,40) == 0
-        showprogress(i/size(model2.mets,1),h);
-    end
+    showprogress(i/size(model2.mets,1));
 end
 
 lengthmet = size(modelNew.mets,1);
-close(h);
 fprintf('Finished, %i Distinct Metabolites\n',lengthmet);
 
 
@@ -146,27 +143,23 @@ model1_num = length(a1);
 model2_num = length(a2);
 modelNew.S = spalloc(size(modelNew.mets,1),size(modelNew.rxns,1),model1_num+model2_num);
 
-h = showprogress(0, 'Adding Matrix 1 in Progress ...');
+showprogress(0, 'Adding Matrix 1 in Progress ...');
 for i = 1:size(a1,1)
     modelNew.S(a1(i),b1(i)) = model1.S(a1(i),b1(i));
-    if mod(i,40) == 0
-        showprogress(i/size(a1,1),h);
-    end
+    showprogress(i/size(a1,1));
 end
-close(h);
-
 
 
 HTABLE = java.util.Hashtable;
 for i = 1:length(modelNew.mets)
     HTABLE.put(modelNew.mets{i}, i);
 end
-h = showprogress(0, 'Adding Matrix 2 in Progress ...');
+showprogress(0, 'Adding Matrix 2 in Progress ...');
 for i = 1:size(model2.S,2)
     compounds = find(model2.S(:,i));
     for j = 1:size(compounds,1)
         metnames(j,1) = model2.mets(compounds(j));
-        
+
         %tmp2 = strmatch(metnames(j,1),modelNew.mets,'exact');
         %metnames(j,1)
         tmp = HTABLE.get(metnames{j,1});
@@ -175,11 +168,9 @@ for i = 1:size(model2.S,2)
         %end
         modelNew.S(tmp,i+size(model1.S,2)) = model2.S(compounds(j),i);
     end
-    if mod(i,40) == 0
-        showprogress(i/size(model2.S,2),h);
-    end
+    showprogress(i/size(model2.S,2));
 end
-delete(h);
+
 fprintf('Finished\n');
 
 % Creating b
@@ -222,7 +213,7 @@ fprintf('Finished\n');
 
 if mergeRxnGeneMat == 1
 fprintf('Combining Remaining Genetic Information: ');
-h = showprogress(0, 'Combining Genetic Info ...');
+showprogress(0, 'Combining Genetic Info ...');
 modelNew.rxnGeneMat = model1.rxnGeneMat;
 for i = 1:size(model2.rxnGeneMat,1)
     R = find(model2.rxnGeneMat(i,:));
@@ -236,11 +227,8 @@ for i = 1:size(model2.rxnGeneMat,1)
         T = find(ismember(modelNew.rxns,model2.rxns(i)));
         modelNew.rxnGeneMat(T,:) = 0;
     end
-    if(mod(i, 40) == 0)
-        showprogress(i/size(model2.rxnGeneMat,1),h);
-    end
+    showprogress(i/size(model2.rxnGeneMat,1));
 end
-close(h);
 end
 
 modelNew.grRules = model1.grRules;

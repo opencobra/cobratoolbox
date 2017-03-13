@@ -5,7 +5,7 @@ function ExchangeRxnMatrix = createXMatrix(compoundsIn, transport, compartment)
 %
 % ExchangeRxnMatrix = createXMatrix(compoundsIn, transport, compartment)
 %
-% compoundsIn - SU matrix 
+% compoundsIn - SU matrix
 %
 % transport     if 1, transport reactions will be defined as well for every
 % compounds (default: 0, which corresponds to only exchange reactions)
@@ -21,7 +21,7 @@ end
 if nargin < 2
     transport = 0;
 end
-h=showprogress(0,'Exchange reaction list ...');
+showprogress(0,'Exchange reaction list ...');
 ExchangeRxnMatrix = createModel;
 
 
@@ -65,7 +65,7 @@ for i=1:length(compounds)
             %   ExchangeRxnMatrix.grRules{cnt}='';
             [ExchangeRxnMatrix] = addReactionGEM(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000);
             cnt = cnt + 1;
-            
+
         elseif transport == 1 %currently only this branch is taken.
             tmp = ['Ex_' compounds(i) '[e]'];
             ExchangeRxnMatrix.rxns(cnt,1) = strcat(tmp(1),tmp(2),tmp(3));
@@ -79,7 +79,7 @@ for i=1:length(compounds)
             %   ExchangeRxnMatrix.grRules{cnt}='';
             [ExchangeRxnMatrix, HTABLE] = addReactionGEM(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000,[],[],[],[],[], HTABLE);
             cnt = cnt + 1;
-            
+
             if (strcmp(compartment,'[c]')==1)
                 % creates transport reaction from [c] to [e]
                 tmp = [compounds(i) 'tr'];
@@ -94,8 +94,8 @@ for i=1:length(compounds)
                 %  ExchangeRxnMatrix.grRules{cnt}='';
                 [ExchangeRxnMatrix, HTABLE] = addReactionGEM(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000,[],[],[],[],[], HTABLE);
                 cnt = cnt + 1;
-                
-            elseif (strcmp(compartment,'[p]')==1) % keep this branch the same for now.  
+
+            elseif (strcmp(compartment,'[p]')==1) % keep this branch the same for now.
                 % creates transport reaction from [c] to [p]
                 tmp = [compounds(i) 'tpr'];
                 ExchangeRxnMatrix.rxns(cnt,1) = strcat(tmp(1),tmp(2));
@@ -125,7 +125,6 @@ for i=1:length(compounds)
         end
     end
     if mod(i, 40) == 0
-        showprogress(i/length(compounds),h);
+        showprogress(i/length(compounds));
     end
 end
-close(h);

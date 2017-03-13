@@ -23,7 +23,7 @@ function [concentrationMatrix,excRxnNames,timeVec,biomassVec] = ...
 % exclUptakeRxns        List of uptake reactions whose substrate
 %                       concentrations do not change (Default =
 %                       {'EX_co2(e)','EX_o2(e)','EX_h2o(e)','EX_h(e)'})
-% 
+%
 %OUTPUTS
 % concentrationMatrix   Matrix of extracellular metabolite concentrations
 % excRxnNames           Names of exchange reactions for the EC metabolites
@@ -34,17 +34,19 @@ function [concentrationMatrix,excRxnNames,timeVec,biomassVec] = ...
 % uptake in the model (i.e. model.lb < 0) the concentration is assumed to
 % be high enough to not be limiting. If the uptake rate for a nutrient is
 % calculated to exceed the maximum uptake rate for that nutrient specified
-% in the model and the max uptake rate specified is > 0, the maximum uptake 
+% in the model and the max uptake rate specified is > 0, the maximum uptake
 % rate specified in the model is used instead of the calculated uptake
 % rate.
 %
-% NOTE: The dynamic FBA method implemented in this function is essentially 
+% NOTE: The dynamic FBA method implemented in this function is essentially
 % the same as the method described in
 % [Varma, A., and B. O. Palsson. Appl. Environ. Microbiol. 60:3724 (1994)].
 % This function does not implement the dynamic FBA using dynamic optimization approach
 % described in [Mahadevan, R. et al. Biophys J, 83:1331-1340 (2003)].
 %
 % Markus Herrgard 8/22/06
+
+global WAITBAR_TYPE
 
 if (nargin < 7)
     plotRxns = {'EX_glc(e)','EX_ac(e)','EX_for(e)'};
@@ -94,26 +96,26 @@ biomassVec = biomass;
 timeVec(1) = 0;
 
 fprintf('Step number\tBiomass\n');
-h = showprogress(0,'Dynamic FBA analysis in progress ...');
+showprogress(0,'Dynamic FBA analysis in progress ...');
 for stepNo = 1:nSteps
     % Run FBA
     sol = optimizeCbModel(model,'max','one');
     mu = sol.f;
     if (sol.stat ~= 1 || mu == 0)
-        fprintf('No feasible solution - nutrients exhausted\n');
+        fprintf('\nNo feasible solution - nutrients exhausted. Biomass:\t %f\n', biomass);
         break;
     end
     uptakeFlux = sol.x(excInd);
     biomass = biomass*exp(mu*timeStep);
     %biomass = biomass*(1+mu*timeStep);
     biomassVec(end+1) = biomass;
-    
+
     % Update concentrations
     concentrations = concentrations - uptakeFlux/mu*biomass*(1-exp(mu*timeStep));
     %concentrations = concentrations + uptakeFlux*biomass*timeStep;
     concentrations(concentrations <= 0) = 0;
     concentrationMatrix(:,end+1) = sparse(concentrations);
-    
+
     % Update bounds for uptake reactions
     uptakeBound =  concentrations/(biomass*timeStep);
     % This is to avoid any numerical issues
@@ -124,14 +126,13 @@ for stepNo = 1:nSteps
     uptakeBound(aboveOriginal) = originalBound(aboveOriginal);
     uptakeBound(abs(uptakeBound) < 1e-9) = 0;
 
-    model.lb(excInd) = -uptakeBound;  
-    
-    fprintf('%d\t%f\n',stepNo,biomass);
-    showprogress(stepNo/nSteps,h);
+    model.lb(excInd) = -uptakeBound;
+
+    if WAITBAR_TYPE ~= 1
+        fprintf('%d\t%f\n',stepNo,biomass);
+    end
+    showprogress(stepNo/nSteps);
     timeVec(stepNo+1) = stepNo*timeStep;
-end
-if ( regexp( version, 'R20') )
-        close(h);
 end
 
 selNonZero = any(concentrationMatrix>0,2);
