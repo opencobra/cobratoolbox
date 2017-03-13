@@ -4,7 +4,7 @@ global path_ILOG_CPLEX
 global path_TOMLAB
 
 % do not change the paths below
-if strcmpi(getenv('CI'), 'jenkins')
+if ~isempty(strfind(getenv('HOME'), 'jenkins'))
     addpath(genpath('/var/lib/jenkins/MOcov'));
     addpath(genpath('/var/lib/jenkins/jsonlab'));
 end
@@ -27,7 +27,7 @@ end
 % run the official initialisation script
 initCobraToolbox
 
-if strcmpi(getenv('CI'), 'jenkins')
+if ~isempty(strfind(getenv('HOME'), 'jenkins'))
     WAITBAR_TYPE = 0;
 end
 
@@ -49,7 +49,7 @@ try
     sumFailed = 0;
     sumIncomplete = 0;
 
-    if strcmpi(getenv('CI'), 'jenkins')
+    if ~isempty(strfind(getenv('HOME'), 'jenkins'))
         % write coverage based on profile('info')
         mocov('-cover','src',...
               '-profile_info',...
