@@ -38,7 +38,11 @@ for m = 0:2
 end
 
 % reset the default WAITBAR_TYPE
-WAITBAR_TYPE = 1;
+if ~isempty(strfind(getenv('HOME'), 'jenkins'))
+    WAITBAR_TYPE = 0;
+else
+    WAITBAR_TYPE = 1;
+end
 
 %return to original directory
 cd(CBTDIR);

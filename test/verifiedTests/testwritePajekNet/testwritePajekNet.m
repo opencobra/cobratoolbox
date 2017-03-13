@@ -19,7 +19,7 @@ initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testwrite
 load('ecoli_core_model', 'model');
 
 %test solver packages
-solverPkgs = {'tomlab_cplex'};  %,'ILOGcomplex'};
+solverPkgs = {'tomlab_cplex'};
 
 for k = 1:length(solverPkgs)
 

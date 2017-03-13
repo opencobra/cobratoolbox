@@ -19,7 +19,11 @@ function fout = showprogress(x, whichbar)
     fout = [];
 
     if isempty(WAITBAR_TYPE)
-        WAITBAR_TYPE = 1;
+        if ~isempty(strfind(getenv('HOME'), 'jenkins'))
+            WAITBAR_TYPE = 0;
+        else
+            WAITBAR_TYPE = 1;
+        end
     end
     if isempty(WAITBAR_HANDLE)
         WAITBAR_HANDLE = -1;
