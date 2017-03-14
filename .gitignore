@@ -71,7 +71,5 @@ docs/build
 src/gapFilling/fastGapFill/examples
 
 # generated .mat files in tutorials
-tutorials/fastGapFill/results_hw.mat
-tutorials/fastGapFill/results_vhw.mat
-tutorials/fastGapFill/results_initial.mat
+tutorials/fastGapFill/results_*.mat
 tutorials/fastGapFill/prepareFGFResultsDefault.mat

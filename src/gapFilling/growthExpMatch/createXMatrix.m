@@ -1,21 +1,19 @@
-function ExchangeRxnMatrix = createXMatrix(compoundsIn, transport, compartment,hideWaitbar)
+function ExchangeRxnMatrix = createXMatrix(compoundsIn, transport, compartment)
 %createXMatrix creates a matrix full of exchange reactions based
 % on the input list (creates an exchange reaction for each of the
 % metabolites present in the model)
 %
-% ExchangeRxnMatrix = createXMatrix(compoundsIn,transport,compartment,hideWaitbar)
-% 
+% ExchangeRxnMatrix = createXMatrix(compoundsIn,transport,compartment)
+%
 % INPUTS
 %
-% compoundsIn   - SU matrix 
-% transport     - if 1, transport reactions will be defined as well for 
+% compoundsIn   - SU matrix
+% transport     - if 1, transport reactions will be defined as well for
 %               every compound (default: 0, which corresponds to only
 %               exchange reactions)
-% compartment   - (default = [c]) --> transport from cytoplasm [c] to 
-%               extracellulat space [e], [p] creates transport from [c] to 
+% compartment   - (default = [c]) --> transport from cytoplasm [c] to
+%               extracellulat space [e], [p] creates transport from [c] to
 %               [p] and from [p] to [c]
-% hideWaitbar   - [optional] if set, suppress waitbars during execution
-% 
 % OUTPUT
 %
 % ExchangeRxnMatrix - model containing all exchange reactions for all
@@ -30,17 +28,10 @@ end
 if ~exist('compartment','var') || isempty(compartment)
     compartment = '[c]';
 end
-if ~exist('hideWaitbar','var') || isempty(hideWaitbar)
-    hideWaitbar = false;
-else
-    hideWaitbar = true;
-end
+
 showprogress(0,'Exchange reaction list ...');
 
-
-
 ExchangeRxnMatrix = createModel;
-
 
 cnt=1;
 HTABLE = java.util.Hashtable;
@@ -144,5 +135,3 @@ for i=1:length(compounds)
 
     showprogress(i/length(compounds));
 end
-
-
