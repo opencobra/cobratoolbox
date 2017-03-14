@@ -170,7 +170,7 @@ MatlabYear = str2num(MatlabRevision(1:4));
 % if the Matlab version is prior to Matlab 2016a, we have to use the TC.xml
 % structure to provide autocompletion, otherwise we can use the json definition.
 if MatlabYear <= 2015
-    % temporarily add the tabcomplete path to the path.
+if MatlabYear < 2016
     addpath([CBTDIR filesep 'external' filesep 'tabcomplete'])
     cleanpath = onCleanup(@() rmpath([CBTDIR filesep 'external' filesep 'tabcomplete']));
 
