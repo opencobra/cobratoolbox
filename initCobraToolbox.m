@@ -163,24 +163,6 @@ end
 % save the current paths
 savepath
 
-% add tab completion updates to cobra Functions for MATLAB prior to 2016
-MatlabRevision = version('-release');
-MatlabYear = str2num(MatlabRevision(1:4));
-
-% if the Matlab version is prior to Matlab 2016a, we have to use the TC.xml
-% structure to provide autocompletion, otherwise we can use the json definition.
-if MatlabYear < 2016
-    addpath([CBTDIR filesep 'external' filesep 'tabcomplete'])
-    cleanpath = onCleanup(@() rmpath([CBTDIR filesep 'external' filesep 'tabcomplete']));
-
-    tcXmlFilename = fullfile(matlabroot,'/toolbox/local/TC.xml');
-    [~,values] = fileattrib(tcXmlFilename);
-    % only add tab completion if we have write access, otherwise ignore it.
-    if(values.UserWrite)
-            addTabcompletion();
-    end
-end
-
 % print out a summary table
 solverSummary = table(solverStatus(:,1),solverStatus(:,2),solverStatus(:,3),solverStatus(:,4),solverStatus(:,5),'RowNames',allSolverNames, 'VariableNames', solverTypes)
 fprintf(' + Legend: -1 = not applicable, 0 = solver not installed, 1 = solver installed.\n\n')
