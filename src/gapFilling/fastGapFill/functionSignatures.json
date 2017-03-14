@@ -16,7 +16,7 @@
   [
     {"name":"modelFile", "kind":"required", "type":"filepath" },
     {"name":"dbFile", "kind":"optional", "type":"filepath" },
-    {"name":"dictionaryFile", "kind":"optional", "type":"filepath" }
+    {"name":"dictionaryFile", "kind":"optional", "type":"filepath" },
     {"name":"weightsPerReactionFile", "kind":"optional", "type":"filepath" }
   ]
 }
