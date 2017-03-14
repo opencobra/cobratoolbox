@@ -32,7 +32,7 @@ function [samples,roundedPolytope] = chrrSampler(model,numSkip,numSamples,toRoun
 % roundedPolytope ... The rounded polytope. Save for use in subsequent
 %                     rounds of sampling.
 %
-% October 2016, Ben Cousins and Hulda S. Haraldsdóttir
+% March 2017, Ben Cousins and Hulda S. Haraldsdóttir
 
 % Define defaults
 if nargin>=5 && isempty(numSkip)
@@ -124,6 +124,7 @@ if toPreprocess
     [roundedPolytope] = preprocess(P, toRound);
 end
 
+fprintf('Generating samples...\n');
 
 %now we're ready to sample
 samples = genSamples(roundedPolytope, numSkip, numSamples);

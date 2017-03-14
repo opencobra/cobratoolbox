@@ -1,4 +1,4 @@
-function [x,E,converged] = mve_run(A,b,x0,reg)
+function [x,E] = mve_run(A,b,x0)
 
 %  Find the maximum volume ellipsoid
 %     Ell = {v:  v = x + Es, ||s|| <= 1}
@@ -15,23 +15,20 @@ function [x,E,converged] = mve_run(A,b,x0,reg)
 % Last modified: 09/29/16
 %--------------------------------------
 
-%lines modified by me (Ben Cousins) have a %Ben after them
-
-maxiter = 150; tol1 = 1.e-8; tol2 = 1.E-6;
-[m, n] = size(A);
+maxiter = 80; tol1 = 1.e-8; tol2 = 1.E-6;
+[m, n] = size(A); 
 t0 = tic;
 
 if nargin < 3
-    mve_chkdata(A,b);
-    [msg,x0] = mve_presolve(A,b,maxiter,tol1);
-    fprintf('  End of Presolve ......\n');
-    if msg(1) ~= 's', disp(msg); return; end
-    [x,E2] = mve_solver(A,b,x0,maxiter,tol2,reg); %Ben
+  mve_chkdata(A,b);
+  [msg,x0] = mve_presolve(A,b,maxiter,tol1);
+  fprintf('  End of Presolve ......\n');
+  if msg(1) ~= 's', disp(msg); return; end
+  [x,E2] = mve_solver(A,b,x0,maxiter,tol2);
 else
-    mve_chkdata(A,b,x0);
-    [x,E2,converged] = mve_solver(A,b,x0,maxiter,tol2,reg); %Ben
+  mve_chkdata(A,b,x0);
+  [x,E2] = mve_solver(A,b,x0,maxiter,tol2);
 end
-E = chol(nearestSPD(E2)); %Ben
-E = E';
-% fprintf('  [m, n] = [%i, %i]\n', m, n);
-% fprintf('  Elapsed time: %g seconds\n', toc(t0));
+E = chol(E2); E = E';
+fprintf('  [m, n] = [%i, %i]\n', m, n);
+fprintf('  Elapsed time: %g seconds\n', toc(t0));

@@ -88,7 +88,7 @@ if to_round==1
         its = its+1;
         [x0,dist] = getCCcenter(P.A,P.b);
         reg = max(reg/10,1e-10);
-        [T_shift, Tmve,converged] = mve_run(P.A,P.b, x0,reg);
+        [T_shift, Tmve,converged] = mve_run_cobra(P.A,P.b, x0,reg);
         
         [P,N_total, p_shift, T] = shiftPolytope(P, N_total, p_shift, T, Tmve, T_shift);
         row_norms = sqrt(sum(P.A.^2,2));
