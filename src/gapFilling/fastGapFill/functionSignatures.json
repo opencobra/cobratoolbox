@@ -1,23 +1,23 @@
 {
 "prepareFastGapFill":
 {
-    "inputs":
-    [
-        {"name":"model", "kind":"required", "type":"struct" },
-        {"name":"listCompartments", "kind":"optional", "type":"cell" },
-        {"name":"epsilon", "kind":"optional", "type":"numeric" },        
-        {"name":"filename", "kind":"optional", "type":"filepath" }, 
-        {"name":"blackList", "kind":"optional", "type":"cell" }
-    ]
+  "inputs":  
+  [
+    {"name":"model", "kind":"required", "type":"struct" },
+    {"name":"listCompartments", "kind":"optional", "type":"cell" },
+    {"name":"epsilon", "kind":"optional", "type":"numeric" },    
+    {"name":"filename", "kind":"optional", "type":"filepath" }, 
+    {"name":"blackList", "kind":"optional", "type":"cell" }
+  ]
 },
 "submitFastGapFill":
 {
-    "inputs":
-    [
-        {"name":"modelFile", "kind":"required", "type":"filepath" },
-        {"name":"dbFile", "kind":"optional", "type":"filepath" },
-        {"name":"dictionaryFile", "kind":"optional", "type":"filepath" },
-        {"name":"weightsPerReactionFile", "kind":"optional", "type":"filepath" }
-    ]
+  "inputs":  
+  [
+    {"name":"modelFile", "kind":"required", "type":"filepath" },
+    {"name":"dbFile", "kind":"optional", "type":"filepath" },
+    {"name":"dictionaryFile", "kind":"optional", "type":"filepath" },
+    {"name":"weightsPerReactionFile", "kind":"optional", "type":"filepath" }
+  ]
 }
 }
