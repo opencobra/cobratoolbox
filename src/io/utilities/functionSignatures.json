@@ -6,7 +6,7 @@
     {"name":"metModel", "kind":"required", "type":"struct" }, 
     {"name":"fileName", "kind":"required", "type":"filepath" }
   ]
-}
+},
 
 "xls2model":
 {
