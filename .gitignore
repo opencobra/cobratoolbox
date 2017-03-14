@@ -72,4 +72,5 @@ src/gapFilling/fastGapFill/examples
 
 # generated .mat files in tutorials
 tutorials/fastGapFill/results_*.mat
+tutorials/fastGapFill/KEGGMatrix.mat
 tutorials/fastGapFill/prepareFGFResultsDefault.mat
