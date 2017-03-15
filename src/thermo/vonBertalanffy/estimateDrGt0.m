@@ -129,7 +129,7 @@ if 1
     metdGfH=zeros(nMet,1);
     metCHI=zeros(nMet,1);
     for i=1:nMet
-        bool=strcmp(model.metCompartments{i},model.cellCompartments);
+        bool=strcmp(model.metCompartments{i},model.compartments);
         if ~any(bool) || nnz(bool)>1
             disp(model.mets{i})
             disp(model.metCompartments{i})
@@ -171,7 +171,7 @@ else
     % Adjust DrGt0 for transport across membranes
     fprintf('Assuming that only metabolite species in model.metFormulas are transported across membranes.\n');
     
-    metCompartmentBool = strcmp(repmat(model.metCompartments,1,length(model.cellCompartments)),repmat(model.cellCompartments',length(model.metCompartments),1));
+    metCompartmentBool = strcmp(repmat(model.metCompartments,1,length(model.compartments)),repmat(model.compartments',length(model.metCompartments),1));
     
     model_nHs = zeros(size(model.mets));
     for i = 1:length(model.mets)

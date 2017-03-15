@@ -24,27 +24,72 @@ if (nargin < 3)
     removeRxnFlag = true;
 end
 
+[nMets, nRxns] = size(model.S);
+if isfield(model, 'genes')
+    nGenes = length(model.genes);
+else
+    nGenes = 0;
+end
+
 selMets = ~ismember(model.mets,metaboliteList);
 
-model.S = model.S(selMets,:);
-% Identify metabolite fields (that start with 'met')
-foo = strncmp('met', fields(model), 3);
-metabolicFields = fieldnames(model);
-metabolicFields = metabolicFields(foo);
-clear foo;
+% Construct new model
+modelOut = model;
 
-for i = 1:length(metabolicFields)
-    if length(model.(metabolicFields{i})) == length(selMets)
-        model.(metabolicFields{i}) = model.(metabolicFields{i})(selMets);
-    else
-        warning('There are metabolic fields with different dimensions')
+modelfields = fieldnames(model);
+metfields = [];
+
+if ~any([nMets nGenes] == nRxns)
+    for i = 1:length(modelfields)
+        if any(size(model.(modelfields{i})) == nMets) && ~strncmp('rxn',modelfields{i},3)
+            metfields = [metfields; modelfields(i)];
+        end
     end
-end
-if (isfield(model,'b'))
-    model.b = model.b(selMets);
 else
-    model.b = zeros(length(model.mets),1);
+    % Identify metabolite fields (that start with 'met')
+    metfields = fieldnames(model);
+    metfields = metfields(strncmp('met', fields(model), 3));
+    %error('TODO: metfields')
+%         'S'
+%     'mets'
+%     'metFormulas'
+%     'metCharge'
+%     'b'
+%     'SIntMetBool'
+%     'SOnlyExMetBool'
+%     'SOnlyIntMetBool'
+%     'SExMetBool'
+%     'fluxConsistentMetBool'
+%     'fluxInConsistentMetBool'
+%     rxnfields = {'S', 'c', 'lb', 'ub', 'rxns', 'rules', 'grRules', 'rev', 'subSystems'}';
+%     rxnfields = [rxnfields; modelfields(strncmp('rxn', modelfields, 3))];
+%     rxnfields = intersect(rxnfields, modelfields);
 end
+
+%remove selected metabolites from metabolite fields
+for i = 1:length(metfields)
+   if size(model.(metfields{i}), 1) == nMets
+       modelOut.(metfields{i}) = model.(metfields{i})(selMets, :);
+   elseif size(model.(metfields{i}), 2) == nMets
+       modelOut.(metfields{i}) = model.(metfields{i})(selMets, :);
+   end
+end
+
+%model.S = model.S(selMets,:);
+% clear foo;
+% 
+% for i = 1:length(metfields)
+%     if length(model.(metfields{i})) == length(selMets)
+%         model.(metfields{i}) = model.(metfields{i})(selMets);
+%     else
+%         warning('There are metabolic fields with different dimensions')
+%     end
+% end
+% if (isfield(model,'b'))
+%     model.b = model.b(selMets);
+% else
+%     model.b = zeros(length(model.mets),1);
+% end
 
 if removeRxnFlag
     %if S is empty..

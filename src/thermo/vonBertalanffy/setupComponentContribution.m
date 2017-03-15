@@ -148,23 +148,23 @@ model.inchi.nonstandard(compositeBool) = cell(sum(compositeBool),1);
 fprintf('\nEstimating metabolite pKa values.\n');
 npKas = 20; % Number of acidic and basic pKa values to estimate
 takeMajorTaut = false; % Estimate pKa for input tautomer. Input tautomer is assumed to be the major tautomer for the major microspecies at pH 7.
-model.pKa = estimate_pKa(model.mets,model.inchi.nonstandard,npKas,takeMajorTaut); % Estimate pKa and determine pseudoisomers
-model.pKa = rmfield(model.pKa,'met');
+model.pseudoisomers = estimate_pKa(model.mets,model.inchi.nonstandard,npKas,takeMajorTaut); % Estimate pKa and determine pseudoisomers
+model.pseudoisomers = rmfield(model.pseudoisomers,'met');
 
 % Add number of hydrogens and charge for metabolites with no InChI
-if any(~[model.pKa.success])
+if any(~[model.pseudoisomers.success])
     fprintf('\nAssuming that metabolite species in model.metFormulas are representative for metabolites where pKa could not be estimated.\n');
 end
 nonphysicalMetSpecies = {};
 for i = 1:length(model.mets)
     model_z = model.metCharges(i); % Get charge from model
     model_nH = numAtomsOfElementInFormula(model.metFormulas{i},'H'); % Get number of hydrogens from metabolite formula in model
-    if ~model.pKa(i).success
-        model.pKa(i).zs = model_z;
-        model.pKa(i).nHs = model_nH;
-        model.pKa(i).majorMSpH7 = true; % Assume species in model is the major (and only) metabolite species %RF: this seems dubious
+    if ~model.pseudoisomers(i).success
+        model.pseudoisomers(i).zs = model_z;
+        model.pseudoisomers(i).nHs = model_nH;
+        model.pseudoisomers(i).majorMSpH7 = true; % Assume species in model is the major (and only) metabolite species %RF: this seems dubious
     end
-    if ~any(model.pKa(i).nHs == model_nH)
+    if ~any(model.pseudoisomers(i).nHs == model_nH)
         nonphysicalMetSpecies = [nonphysicalMetSpecies; model.mets(i)];
     end
 end

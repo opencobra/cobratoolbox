@@ -129,7 +129,6 @@ if massBalanceCheck
                     = checkMassChargeBalance(model,printLevelcheckMassChargeBalance,fileNameBase);
                 model.balancedRxnBool=~imBalancedRxnBool;
                 model.balancedMetBool=balancedMetBool;
-
                 model.Elements=Elements;
                 model.missingFormulaeBool=missingFormulaeBool;
             else

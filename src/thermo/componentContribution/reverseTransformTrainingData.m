@@ -28,7 +28,7 @@ for i = 1:size(training_data.S, 2) % for each reaction in S
         
         model_id = find(training_data.Model2TrainingMap == inds(j), 1);
         if ~isempty(model_id)
-            model_diss = model.pKa(model_id);
+            model_diss = model.pseudoisomers(model_id);
         else
             model_diss.success = false;
         end

@@ -1,8 +1,8 @@
-function pKa = estimate_pKa(mets,inchi,npKas,takeMajorTaut)
+function pseudoisomers = estimate_pKa(mets,inchi,npKas,takeMajorTaut)
 % Estimates pKa values with ChemAxon's Calculator plugins and determines
 % all physiologically relevant pseudoisomers.
 %
-% pKa = estimate_pKa(mets,inchi,npKas,takeMajorTaut)
+% pseudoisomers = estimate_pKa(mets,inchi,npKas,takeMajorTaut)
 %
 % INPUTS
 % mets              m x 1 array of metabolite identifiers.
@@ -16,7 +16,7 @@ function pKa = estimate_pKa(mets,inchi,npKas,takeMajorTaut)
 %                   for the given tautomer.
 %
 % OUTPUTS
-% pKa               m x 1 structure array where each element has the fields
+% pseudoisomers     m x 1 structure array where each element has the fields
 %                   listed below. All fields are empty for metabolites
 %                   where no InChI is given. Fields:
 % .success          Logical one (true) for metabolites where an InChI was
@@ -222,15 +222,15 @@ if ~isempty(errorMets)
 end
 
 % Create final output structure
-pKa.success = false;
-pKa.met = [];
-pKa.pKas = [];
-pKa.zs = [];
-pKa.nHs = [];
-pKa.majorMSpH7 = [];
-pKa = repmat(pKa,length(inchi),1);
+pseudoisomers.success = false;
+pseudoisomers.met = [];
+pseudoisomers.pKas = [];
+pseudoisomers.zs = [];
+pseudoisomers.nHs = [];
+pseudoisomers.majorMSpH7 = [];
+pseudoisomers = repmat(pseudoisomers,length(inchi),1);
 
 % Map pKa to input cell array
-pKa(bool) = upKa(crossj);
+pseudoisomers(bool) = upKa(crossj);
 
 

@@ -92,7 +92,11 @@ for m = 1:length(molfileNames)
     if includeRs == 0
         % Get atom list
         lines = regexp(molfile,'\n','split');
-        atomCount = str2double(lines{4}(1:3));
+        try
+            atomCount = str2double(lines{4}(1:3));
+        catch
+            disp(lines)
+        end
         if atomCount > 0
             atomBlock = lines(5:5 + atomCount - 1);
             pat = '[^a-z_A-z\*]+(?<atom>[a-z_A-Z\*]+)[^a-z_A-z\*]+';

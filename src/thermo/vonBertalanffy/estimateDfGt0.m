@@ -19,7 +19,7 @@ function model = estimateDfGt0(model)
 %                       potential values in mV.
 % .metCompartments      m x 1 cell array of compartment assignments for
 %                       metabolites in model.mets. Compartment identifiers
-%                       should be the same as in model.cellCompartments.
+%                       should be the same as in model.compartments.
 % .DfG0                 m x 1 array of standard Gibbs energies of
 %                       formation.
 % .pKa                  m x 1 structure array with metabolite pKa values.
@@ -55,13 +55,13 @@ else
     T = model.T; % Temperature in K
 end
 
-% Configure model.cellCompartments
-model.cellCompartments = reshape(model.cellCompartments,length(model.cellCompartments),1);
-if ischar(model.cellCompartments)
-    model.cellCompartments = strtrim(cellstr(model.cellCompartments));
+% Configure model.compartments
+model.compartments = reshape(model.compartments,length(model.compartments),1);
+if ischar(model.compartments)
+    model.compartments = strtrim(cellstr(model.compartments));
 end
-if isnumeric(model.cellCompartments)
-    model.cellCompartments = strtrim(cellstr(num2str(model.cellCompartments)));
+if isnumeric(model.compartments)
+    model.compartments = strtrim(cellstr(num2str(model.compartments)));
 end
 
 hBool = strcmp(model.metFormulas,'H');
@@ -70,18 +70,18 @@ hBool = strcmp(model.metFormulas,'H');
 model.DfG0_pseudoisomers = [];
 model.DfGt0 = zeros(length(model.mets), 1);
 for i = 1:length(model.mets)
-    if hBool(i)
+    if hBool(i) && 0
         disp(model.mets{i})
     end
-    pH  = model.ph(strcmp(model.cellCompartments,model.metCompartments{i}));
-    I   = model.is(strcmp(model.cellCompartments,model.metCompartments{i}));
-    chi = model.chi(strcmp(model.cellCompartments,model.metCompartments{i}));
-    diss = model.pKa(i);
-    diss.zs=double(diss.zs);%TODO fix the propagation of int64
+    pH  = model.ph(strcmp(model.compartments,model.metCompartments{i}));
+    I   = model.is(strcmp(model.compartments,model.metCompartments{i}));
+    chi = model.chi(strcmp(model.compartments,model.metCompartments{i}));
+    pseudoisomer = model.pseudoisomers(i);
+    pseudoisomer.zs=double(pseudoisomer.zs);%TODO fix the propagation of int64
     
     %TODO - not sure about this code
-    dG0s = cumsum(-[0, diag(diss.pKas, 1)'] * R * T * log(10));
-    dG0s = dG0s - dG0s(diss.majorMSpH7) + model.DfG0(i);
+    dG0s = cumsum(-[0, diag(pseudoisomer.pKas, 1)'] * R * T * log(10));
+    dG0s = dG0s - dG0s(pseudoisomer.majorMSpH7) + model.DfG0(i);
     
     if 0
         %Elad and Hulda's Legendre transform
@@ -91,15 +91,7 @@ for i = 1:length(model.mets)
         %                   1. Standard Gibbs energy of formation,
         %                   2. Number of hydrogen atoms,
         %                   3. Charge.
-        pseudoisomers = [dG0s(:), diss.nHs(:), double(diss.zs(:))];
-        if any(isa(pseudoisomers,'int64'))
-            model.pKa(i)
-            disp(pseudoisomers)
-            pseudoisomers=double(pseudoisomers);
-            error([model.mets{i} 'pKa data should not be in int64 format, converting to double.'])
-        else
-            pseudoisomers=double(pseudoisomers);
-        end
+        pseudoisomers = [dG0s(:), pseudoisomer.nHs(:), pseudoisomer.zs(:)];
         model.DfG0_pseudoisomers = [model.DfG0_pseudoisomers; ...
             i * ones(size(pseudoisomers, 1), 1), ...
             pseudoisomers];
@@ -115,8 +107,8 @@ for i = 1:length(model.mets)
             dfH0=[];
         end
         dfG0=double(dG0s(:));
-        zi=double(diss.zs(:));
-        nH=double(diss.nHs(:));
+        zi=double(pseudoisomer.zs(:));
+        nH=double(pseudoisomer.nHs(:));
         Legendre=1;
         LegendreCHI=1;
         
@@ -133,16 +125,15 @@ for i = 1:length(model.mets)
         end
         [DfGt0(i,1),DfHt0(i,1),mf,aveHbound(i,1),aveZi(i,1),lambda,gpfnsp]=calcdGHT(dfG0,dfH0,zi,nH,pHr,I,T,chi,Legendre,LegendreCHI,printLevel);
         
-        pseudoisomers(i).mf=mf;
-        pseudoisomers(i).lambda=lambda;
-        pseudoisomers(i).gpfnsp=gpfnsp;
+        model.pseudoisomers(i).mf=mf;
+        model.pseudoisomers(i).lambda=lambda;
+        model.pseudoisomers(i).gpfnsp=gpfnsp;
         
         if i==nMet
             model.DfGt0=DfGt0;
             model.DfHt0=DfHt0;
             model.aveHbound=aveHbound;
             model.aveZi=aveZi;
-            model.pseudoisomer=pseudoisomers';
         end
     end
 end
@@ -156,7 +147,7 @@ end
 % % Adjust DrGt0 for transport across membranes
 % fprintf('Assuming that only metabolite species in model.metFormulas are transported across membranes.\n');
 % 
-% metCompartmentBool = strcmp(repmat(model.metCompartments,1,length(model.cellCompartments)),repmat(model.cellCompartments',length(model.metCompartments),1));
+% metCompartmentBool = strcmp(repmat(model.metCompartments,1,length(model.compartments)),repmat(model.compartments',length(model.metCompartments),1));
 % 
 % model_nHs = zeros(size(model.mets));
 % for i = 1:length(model.mets)

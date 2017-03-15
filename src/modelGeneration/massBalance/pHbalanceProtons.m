@@ -46,8 +46,6 @@ else
     massBalancedBool=~any(massImbalance(:,2:end),2);
 end
 
-model.compartments=model.cellCompartments;
-
 if any(any(isnan(model.S)))
     error('NaN in S matrix before proton balancing.')
 end
@@ -64,7 +62,7 @@ else
     model.Srecon = model.S;
 end
 
-A=sparse(nMet,length(model.cellCompartments));
+A=sparse(nMet,length(model.compartments));
 for m=1:nMet
     A(m,strcmp(model.metCompartments{m},model.compartments))=1;
 end
@@ -133,13 +131,7 @@ for n=1:nRxn
     %no change for biomass reaction or exchange reactions or imbalanced
     %reactions
     if model.SIntRxnBool(n)
-        if ~massBalancedBool(n)
-            if massImbalance(n,1)~=0
-                warning(['vonBertalanffy:pHbalanceProtons ' model.rxns{n} ' reconstruction reaction not balanced for H to begin with']);
-            else
-                warning(['vonBertalanffy:pHbalanceProtons ' model.rxns{n} ' reconstruction reaction not balanced to begin with']);
-            end
-        else
+        if massBalancedBool(n)
             %model.compartments of all metabolites involved in reactions
             metCompartments = model.metCompartments(model.S(:,n)~=0);
             rxnUniqueMetCompartments=unique(metCompartments);
@@ -300,27 +292,35 @@ for n=1:nRxn
                     end
                 end
             end
-        end
-        if abs(aveHbound*model.S(:,n))>1e-6
-            %if the initial reconstruction reaction unbalanced for protons
-            %then the pHbalanced reaction will not
             
-            if printLevel>0
-                if length(rxnUniqueMetCompartments)==1
-                    fprintf('%u\t%15g\t%20s\t%s\t%s\t%s\n',unbalancedInternalBool(n),abs(aveHbound*model.S(:,n)),model.rxns{n}, rxnUniqueMetCompartments{1},'','Not proton balanced.')
-                else
-                    fprintf('%u\t%15g\t%20s\t%s\t%s\t%s\n',unbalancedInternalBool(n),abs(aveHbound*model.S(:,n)),model.rxns{n}, rxnUniqueMetCompartments{1},rxnUniqueMetCompartments{2},'Not proton balanced.')
+            if abs(aveHbound*model.S(:,n))>1e-6
+                %if the initial reconstruction reaction unbalanced for protons
+                %then the pHbalanced reaction will not
+                
+                if printLevel>0
+                    if length(rxnUniqueMetCompartments)==1
+                        fprintf('%u\t%15g\t%20s\t%s\t%s\t%s\n',unbalancedInternalBool(n),abs(aveHbound*model.S(:,n)),model.rxns{n}, rxnUniqueMetCompartments{1},'','Not proton balanced.')
+                    else
+                        fprintf('%u\t%15g\t%20s\t%s\t%s\t%s\n',unbalancedInternalBool(n),abs(aveHbound*model.S(:,n)),model.rxns{n}, rxnUniqueMetCompartments{1},rxnUniqueMetCompartments{2},'Not proton balanced.')
+                    end
+                end
+                if printLevel>1 || ~unbalancedInternalBool(n)
+                    rxnFormula=printRxnFormula(model,model.rxns{n},0);
+                    fprintf('%s\n',rxnFormula{1});
+                end
+                if printLevel>2 || ~unbalancedInternalBool(n)
+                    disp(model.mets(model.S(:,n)~=0)')
+                    disp(aveHbound(model.S(:,n)~=0))
                 end
             end
-            if printLevel>1 || ~unbalancedInternalBool(n)
-                rxnFormula=printRxnFormula(model,model.rxns{n},0);
-                fprintf('%s\n',rxnFormula{1});
-            end
-            if printLevel>2 || ~unbalancedInternalBool(n)
-                disp(model.mets(model.S(:,n)~=0)')
-                disp(aveHbound(model.S(:,n)~=0))
+        else
+            if massImbalance(n,1)~=0
+                fprintf('%s\n',[ 'vonBertalanffy:pHbalanceProtons ' model.rxns{n} ' reconstruction reaction not balanced for H to begin with']);
+            else
+                fprintf('%s\n',['vonBertalanffy:pHbalanceProtons ' model.rxns{n} ' reconstruction reaction not balanced to begin with']);
             end
         end
+
 %         if aveHbound*model.S(:,n)>(eps*1e4)
 %             if printLevel>1 %debugging
 %                 disp(n)

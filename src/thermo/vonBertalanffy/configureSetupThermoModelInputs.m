@@ -1,9 +1,36 @@
-function model = configureSetupThermoModelInputs(model,T,cellCompartments,ph,is,chi,xmin,xmax,confidenceLevel)
+function model = configureSetupThermoModelInputs(model,T,compartments,ph,is,chi,xmin,xmax,confidenceLevel)
 % Configures inputs to setupThermoModel (sets defaults etc.).
 % INPUTS
 %
 % OUTPUTS
 %
+if ~isfield(model,'metCompartments')
+    model.metCompartments = [];
+end
+if ~exist('T','var')
+    T = [];
+end
+if ~exist('compartments','var')
+    compartments = [];
+end
+if ~exist('ph','var')
+    ph = [];
+end
+if ~exist('is','var')
+    is = [];
+end
+if ~exist('chi','var')
+    chi = [];
+end
+if ~exist('xmin','var')
+    xmin = [];
+end
+if ~exist('xmax','var')
+    xmax = [];
+end
+if ~exist('confidenceLevel','var')
+    confidenceLevel = [];
+end
 
 % Configure metabolite identifiers
 model.mets = reshape(model.mets,length(model.mets),1);
@@ -64,16 +91,16 @@ end
 model.T = T;
 
 % Configure compartment specific parameters
-if size(cellCompartments,2) > size(cellCompartments,1)
-    cellCompartments = cellCompartments';
+if size(compartments,2) > size(compartments,1)
+    compartments = compartments';
 end
-if ischar(cellCompartments)
-    cellCompartments = strtrim(cellstr(cellCompartments));
+if ischar(compartments)
+    compartments = strtrim(cellstr(compartments));
 end
-if isnumeric(cellCompartments)
-    cellCompartments = strtrim(cellstr(num2str(cellCompartments)));
+if isnumeric(compartments)
+    compartments = strtrim(cellstr(num2str(compartments)));
 end
-cellCompartments = cellCompartments(~cellfun('isempty',cellCompartments));
+compartments = compartments(~cellfun('isempty',compartments));
 
 if size(ph,2) > size(ph,1)
     ph = ph';
@@ -85,12 +112,12 @@ if size(chi,2) > size(chi,1)
     chi = chi';
 end
 
-nCompartments = length(cellCompartments);
+nCompartments = length(compartments);
 if length(ph) ~= nCompartments || length(is) ~= nCompartments || length(chi) ~= nCompartments
-   error('The variables cellCompartments, ph, is, and chi should have equal length.') 
+   error('The variables compartments, ph, is, and chi should have equal length.') 
 end
 
-missingCompartments = setdiff(unique(model.metCompartments),cellCompartments);
+missingCompartments = setdiff(unique(model.metCompartments),compartments);
 if ~isempty(missingCompartments)
     default_ph = 7; % Default pH
     default_is = 0; % Default ionic strength in mol/L
@@ -99,20 +126,20 @@ if ~isempty(missingCompartments)
     fprintf(['\nph, is and chi not specified for compartments: ' regexprep(sprintf('%s, ',missingCompartments{:}),'(,\s)$','.') '\n']);
     fprintf('Setting ph = %.2f, is = %.2f M and chi = %.2f mV in these compartments.\n',default_ph,default_is,default_chi);
     
-    cellCompartments = [cellCompartments; missingCompartments];
+    compartments = [compartments; missingCompartments];
     ph = [ph; default_ph*ones(length(missingCompartments),1)];
     is = [is; default_is*ones(length(missingCompartments),1)];
     chi = [chi; default_chi*ones(length(missingCompartments),1)];
 end
 
 if any(ph < 4.7 | ph > 9.3)
-   error(['pH in compartments: ' regexprep(sprintf('%s, ',cellCompartments{ph < 4.7 | ph > 9.3}),'(,\s)$','.') ' out of applicable range (4.7 - 9.3).']); 
+   error(['pH in compartments: ' regexprep(sprintf('%s, ',compartments{ph < 4.7 | ph > 9.3}),'(,\s)$','.') ' out of applicable range (4.7 - 9.3).']); 
 end
 if any(is < 0 | is > 0.35)
-   error(['Ionic strength in compartments: ' regexprep(sprintf('%s, ',cellCompartments{is < 0 | is > 0.35}),'(,\s)$','.') ' out of applicable range (0 - 0.35 M).']); 
+   error(['Ionic strength in compartments: ' regexprep(sprintf('%s, ',compartments{is < 0 | is > 0.35}),'(,\s)$','.') ' out of applicable range (0 - 0.35 M).']); 
 end
 
-model.cellCompartments = cellCompartments;
+model.compartments = compartments;
 model.ph = ph;
 model.is = is;
 model.chi = chi;
@@ -136,8 +163,8 @@ model.xmax = xmax;
 
 hi = find(strcmp(model.metFormulas,'H')); % Indices of protons
 for i = 1:length(hi)
-   model.xmin(hi(i)) = 10^(-model.ph(strcmp(model.cellCompartments,model.metCompartments{hi(i)}))); % Set concentrations of protons according to pH
-   model.xmax(hi(i)) = 10^(-model.ph(strcmp(model.cellCompartments,model.metCompartments{hi(i)})));
+   model.xmin(hi(i)) = 10^(-model.ph(strcmp(model.compartments,model.metCompartments{hi(i)}))); % Set concentrations of protons according to pH
+   model.xmax(hi(i)) = 10^(-model.ph(strcmp(model.compartments,model.metCompartments{hi(i)})));
 end
 
 h2oi = find(strcmp(model.metFormulas,'H2O')); % Indices of water

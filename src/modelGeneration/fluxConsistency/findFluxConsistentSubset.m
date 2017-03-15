@@ -17,6 +17,11 @@ function [fluxConsistentMetBool,fluxConsistentRxnBool,fluxInConsistentMetBool,fl
 % fluxConsistentRxnBool            n x 1 boolean vector indicating flux consistent rxns
 % fluxInConsistentMetBool          m x 1 boolean vector indicating flux inconsistent mets  
 % fluxInConsistentRxnBool          n x 1 boolean vector indicating flux inconsistent rxns
+% model
+% .fluxConsistentMetBool
+% .fluxConsistentRxnBool
+% .fluxInConsistentMetBool
+% .fluxInConsistentRxnBool
 
 % Ronan Fleming 2017
 
