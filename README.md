@@ -53,7 +53,7 @@ The documentation is available on [opencobra.github.io/cobratoolbox](http://open
 Frequently Asked Questions (FAQ)
 --------------------------------
 
-Before opening a new issue, please read first the section of Frequently Asked Questions [FAQ](https://github.com/opencobra/cobratoolbox/blob/master/.github/FAQ.md).
+Before opening a new issue, please read first the section of [Frequently Asked Questions](https://github.com/opencobra/cobratoolbox/blob/master/.github/FAQ.md).
 
 How to contribute
 ------------
@@ -78,4 +78,4 @@ When citing `The COBRA Toolbox`, it is important to cite the original paper wher
 Compatibility
 ---------------
 
-[Read more on the compatibility with SBML-FBCv2](NOTES.md)
+[Read more on the compatibility with SBML-FBCv2](https://github.com/opencobra/cobratoolbox/blob/master/.github/NOTES.md)
