@@ -23,7 +23,7 @@ CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testSolvers']);
 
 %test solver packages
-solverPkgs = {'cplex_direct', 'tomlab_cplex', 'gurobi6', 'glpk'};
+solverPkgs = {'cplex_direct', 'ibm_cplex', 'tomlab_cplex', 'gurobi6', 'glpk'};
 
 % set the tolerance
 tol = 1e-8;
@@ -33,13 +33,13 @@ for k = 1:length(solverPkgs)
     % add the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
         addpath(genpath(path_TOMLAB));
-    elseif strcmp(solverPkgs{k}, 'cplex_direct')
+    elseif strcmp(solverPkgs{k}, 'cplex_direct') || strcmp(solverPkgs{k}, 'ibm_cplex')
         addpath(genpath(path_ILOG_CPLEX));
     elseif strcmp(solverPkgs{k}, 'gurobi6')
         addpath(genpath(path_GUROBI));
     end
 
-    if ~verLessThan('matlab', '8') && strcmp(solverPkgs{k}, 'cplex_direct') %2015
+    if (~verLessThan('matlab', '8.4') && strcmp(solverPkgs{k}, 'cplex_direct')) || (~verLessThan('matlab', '9') && strcmp(solverPkgs{k}, 'ibm_cplex'))
         fprintf(['\n IBM ILOG CPLEX - ', solverPkgs{k},' - is incompatible with this version of MATLAB, please downgrade or change solver\n'])
     else
         fprintf('   Running solveCobraLPCPLEX using %s ... ', solverPkgs{k});
@@ -88,11 +88,17 @@ for k = 1:length(solverPkgs)
     % remove the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
         rmpath(genpath(path_TOMLAB));
-    elseif strcmp(solverPkgs{k}, 'cplex_direct')
+    elseif strcmp(solverPkgs{k}, 'cplex_direct') || strcmp(solverPkgs{k}, 'ibm_cplex')
         rmpath(genpath(path_ILOG_CPLEX));
     elseif strcmp(solverPkgs{k}, 'gurobi6')
         rmpath(genpath(path_GUROBI));
     end
+end
+
+% remove the generated file
+fullFileNamePath = [CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testSolvers', filesep, 'MILPProblem.mat'];
+if exist(fullFileNamePath, 'file') == 2
+    system(['rm ', fullFileNamePath]);
 end
 
 % change the directory
