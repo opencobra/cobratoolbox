@@ -61,8 +61,7 @@ for k = 1:length(solverPkgs)
                 fprintf('   Running %s with solveCobraLP using %s ... ', testSuite{p}, solverPkgs{k});
 
                 if p == 1
-                    % 2. Solve LP problem.
-                    %solve LP problem printing summary information
+                    % solve LP problem printing summary information
                     for printLevel = 0:3
                         LPsolution = solveCobraLP(LPproblem, 'printLevel', printLevel);
                     end
@@ -89,6 +88,7 @@ for k = 1:length(solverPkgs)
                     assert(isequal(solution_solveCobraLP.dual, solution_optimizeCbModel.y))
                     assert(solution_solveCobraLP.stat == solution_optimizeCbModel.stat)
                 end
+
                 % output a success message
                 fprintf('Done.\n');
             end
@@ -104,3 +104,6 @@ for k = 1:length(solverPkgs)
         rmpath(genpath(path_GUROBI));
     end
 end
+
+% change the directory
+cd(CBTDIR)
