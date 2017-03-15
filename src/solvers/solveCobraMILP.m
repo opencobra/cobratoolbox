@@ -380,7 +380,7 @@ switch solver
         if size(vartype,1) > size(vartype,2)
             vartype = vartype';
         end
-        cplexlp.Model.ctype = vartype';
+        cplexlp.Model.ctype = vartype;
         cplexlp.Start.x = x0;
         cplexlp.Param.mip.tolerances.mipgap.Cur =  solverParams.relMipGapTol;
         cplexlp.Param.mip.tolerances.integrality.Cur =  solverParams.intTol;
