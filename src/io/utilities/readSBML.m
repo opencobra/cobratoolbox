@@ -298,7 +298,8 @@ for i = 1:nRxns
                     %objectives. This will need to be also addressed in the
                     %model structure (multiple c vectors and osense values)
                     %For now, we only import the first objective!
-                    if ~isempty(modelSBML.(fbc_list{f}))
+
+                    if ~isempty(modelSBML.(fbc_list{f})) && ~isempty({modelSBML.(fbc_list{f})(1).fbc_fluxObjective.fbc_reaction})
                         fbc_obj=modelSBML.(fbc_list{f})(1).fbc_fluxObjective.fbc_reaction; % the variable stores the objective reaction ID
                         fbc_obj=regexprep(fbc_obj,'^R_','');
                         if isfield(modelSBML.(fbc_list{f})(1).fbc_fluxObjective,'fbc_coefficient')
@@ -545,6 +546,7 @@ for i = 1:nMets
     else
         metTmp = metID;
         if ~isempty(modelSBML.species(i).compartment)
+            metTmp=regexprep(metTmp,'(\[[a-z]{1,2}\])$','');
             metTmp=[metTmp,'[',modelSBML.species(i).compartment,']'];
         end
     end

@@ -28,22 +28,22 @@ function ExchangeRxnMatrix = createXMatrix2(compoundsIn, transport, compartment,
 % Ines Thiele, http://thielelab.eu.
 %
 
-if nargin < 3
-    compartment = '[c]';
-end
-if nargin < 2
+if ~exist('transport','var') || isempty(transport)
     transport = 0;
 end
-showprogress(0,'Exchange reaction list ...');
-ExchangeRxnMatrix = createModel;
+if ~exist('compartment','var') || isempty(compartment)
+    compartment = '[c]';
+end
 
+showprogress(0,'Exchange reaction list ...');
+
+ExchangeRxnMatrix = createModel;
 
 cnt=1;
 HTABLE = java.util.Hashtable;
 
 compoundsInOri=compoundsIn;
 [compoundsInOri2, remain] = strtok(compoundsInOri, '[');
-
 
 %removes the compartment from compound name
 compoundsIn=regexprep(compoundsIn,'(\w*)]','');
@@ -52,8 +52,6 @@ compoundsIn=regexprep(compoundsIn,']','');
 compoundsIn=regexprep(compoundsIn,' ','');
 
 compounds=unique(compoundsIn);
-
-
 
 %creates sparse matrix with corresponding dimensions
 if  transport==0
@@ -225,9 +223,7 @@ for i=1:length(compounds)
             end
         end
     end
-    if mod(i, 40) == 0
-        showprogress(i/length(compounds));
-    end
+    showprogress(i/length(compounds));
 end
 
 ExchangeRxnMatrix.mets = ExchangeRxnMatrix.mets';
