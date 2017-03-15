@@ -1,6 +1,6 @@
 % rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
 % Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
+% reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
 %
 % rbionet@systemsbiology.is
 % Stefan G. Thorleifsson
@@ -15,12 +15,12 @@
 %   handles.metab
 %   handles.meta_compartment
 %   newrxns
-%   
+%
 %
 %What will be in the output?
 %If everything is okay
 %   newrxns (reactions can be removed) set table
-%   handles.data - all similarity info including dispdata.  
+%   handles.data - all similarity info including dispdata.
 %   handles.check
 %If we return,
 %   Empty is a good choise .
@@ -47,7 +47,7 @@ names_numb = []; %there numbners
 for i = 1:S_nrxns(1)
     Own_match = strmatch(newrxns{i,1},newrxns(:,1),'exact');
     S_O = size(Own_match);
-    
+
     if isempty(newrxns{i,1}) || ~isempty(strmatch(newrxns{i,1},'','exact')) %Empty
         msgbox('No rxn name specified. Make sure all reaction have specified abbreviations.',...
             'Specify name.','help');
@@ -57,41 +57,41 @@ for i = 1:S_nrxns(1)
         names_numb = [names_numb i];
     elseif S_O(1) > 1
         msgbox(['New reactions cannot have the same name (' newrxns{i,1}...
-            ').'],'Change names','error'); 
-        return  
+            ').'],'Change names','error');
+        return
     end
 end
 
 if ~isempty(names)
-    
+
     if length(names) > 30
         str = [ 'exist in datbase (30 of ' num2str(length(names)) ' shown).'];
-        
+
         abbreviations = questdlg([names(1:30) str ['Either your reactions already exist'...
             ' in database or abbreviation is taken. Do you want to continue'...
             ' without them?']],'Abbrevitions already in database','Yes','No',...
             'No');
     else
-        
+
         abbreviations = questdlg([names ' exist in datbase. Either your reactions already exist'...
             ' in database or abbreviation is taken. Do you want to continue'...
             ' without them?'],'Abbrevitions already in database','Yes','No',...
             'No');
     end
-    
+
     switch abbreviations
         case 'Yes'
-            
+
             S_names = size(names_numb);
             if S_names(1) == S_nrxns(1)
                 msgbox('All reaction abbreviations are in database.',...
                     'No new reactions','error');
                 return
             else
-                
+
                 cnt_k = 0;
                 for k = 1:S_names(2)
-                    
+
                     newrxns(names_numb(k)-cnt_k,:) = '';
                     cnt_k = cnt_k + 1;
                 end
@@ -131,7 +131,7 @@ end
 reactions = {}; %balane abbreviation listbox
 balance_charge = {};
 reaction_line = []; %lines unblance originate from
-h = showprogress(1/S_nrxns(1),'Balance checking reaction ');
+showprogress(1/S_nrxns(1),'Balance checking reaction ');
 fails = cell(0,1);
 thei = [];
 fullRCO = [];
@@ -147,7 +147,7 @@ for i = 1:S_nrxns(1)
         charge_l = output{3};
         charge_r = output{4};
     end
-    
+
     match = regexpi(meta_meta(:,6),'FULLRCO');%this might be okay today, needs to bee loked into
     if ~isempty(match{1})
         fullRCO = [fullRCO i];
@@ -156,7 +156,7 @@ for i = 1:S_nrxns(1)
     balance = balancecheck(meta_meta,1); %Verify that reaction is balanced.
     if any(~(cell2mat(balance(2,:)) == cell2mat(balance(3,:)))) || ~(charge_l == charge_r) %reaction is unbalance
         if isempty(balance)
-            balance = cell(3,12); %quick fix, needs to be fixed someday. 
+            balance = cell(3,12); %quick fix, needs to be fixed someday.
         end
         charge = cell(3,1);
         charge(1:3,1)= {'Charge', charge_l, charge_r};
@@ -167,8 +167,7 @@ for i = 1:S_nrxns(1)
     end
 end
 
-close(h)
-if ~isempty(fullRCO) %FULLRCO can not be balanced check for the moment. 
+if ~isempty(fullRCO) %FULLRCO can not be balanced check for the moment.
     answear = questdlg({['Reactions with FULLRCO can not be balanced'...
         ' checked. Do you still want to continue?'],['Reactions in the '...
         'following lines contain FULLRCO:'], num2str(fullRCO)},'FULLRCO','Yes',...
@@ -190,9 +189,9 @@ if ~isempty(fails)
              ' remove the following reactions to continue? Note: 30 of '...
              num2str(size(fails,2)) ' shown.' fails(1:30)];
     end
-    
+
     answer = questdlg(msg,'Metabolites not in database','Yes','No','Yes');
-    
+
     switch answer
         case 'Yes'
             cnt = 0;
@@ -207,7 +206,7 @@ if ~isempty(fails)
                 end
                 cnt = cnt + 1;
             end
-            
+
         case 'No'
             for i = 1:length(fails)
                 disp(fails{i});
@@ -218,7 +217,7 @@ end
 S_nrxns = size(newrxns);
 % Initiate unbalanced window
 if ~isempty(reactions)
-    con = unbalanced(balance_charge,reactions); 
+    con = unbalanced(balance_charge,reactions);
     if con == 0
         return;
     end
@@ -231,20 +230,19 @@ end
 %     num2str(S_nrxns(1)) '. This may take a while.']);
 % for i = 1:S_nrxns(1)-1
 %     similar = similarity(newrxns{i,3},newrxns(i+1:end,3),0); %similarity test
-%     
+%
 %     if ~isempty(similar)
 %         sim_l = length(similar);
 %         %First column has line of reaction in newrxns
 %         %Other columns have lines in rxn that er similar to the new
 %         %reaction.
-%         
+%
 %         sims(cnt,1:sim_l+1) = [i similar+i];
-% 
+%
 %         cnt = cnt + 1;
 %     end
-%     
-% end 
-% close(h);
+%
+% end
 % S = size(sims);
 % %handles.data....similarity display
 % equality = cell(0,3);
@@ -254,18 +252,18 @@ end
 %             break
 %         end
 %         eq = ReactionEq(newrxns{sims(i,1),3},newrxns(sims(i,k+1),:));
-%         
+%
 %         if ~isempty(eq)
 %             equality(end+1,:) = {newrxns{sims(i,1),1}, eq, sims(i,1)};
-% 
+%
 %         else
 % %             data{i,1} = newrxns{sims(i,1),1}; %line one is listbox
 % %             data{i,k+1} = rxn(sims(i,k+1),:);
 %         end
-%         
+%
 %     end
 % end
-% 
+%
 % if ~isempty(equality)
 %     cnt = 0;
 %     for i = 1:size(equality,1)
@@ -282,14 +280,12 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 cnt = 1;
 sims = sparse(1,1);
-h = showprogress(0,['Similarity checking reaction to database ' num2str(i) ' of ' ...
-    num2str(S_nrxns(1)) '. This may take a while.']);
+showprogress(0,['Similarity checking. Number of reaction databases: ', num2str(S_nrxns(1))]);
 for i = 1:S_nrxns(1)
-    showprogress(i/S_nrxns(1),h,['Similarity checking reaction to database '...
-        num2str(i) ' of ' num2str(S_nrxns(1)) '.']);
+    showprogress(i/S_nrxns(1)); %['Similarity checking reaction to database ' num2str(i) ' of ' num2str(S_nrxns(1)) '.']
 
     similar = similarity(newrxns{i,3},rxn(:,3),0); %similarity test
-    
+
     if ~isempty(similar)
         sim_l = length(similar);
         %First column has line of reaction in newrxns
@@ -300,9 +296,8 @@ for i = 1:S_nrxns(1)
 
         cnt = cnt + 1;
     end
-    
-end 
-close(h);
+
+end
 
 S = size(sims);
 %handles.data....similarity display
@@ -319,9 +314,9 @@ for i = 1:S(1)
         else
             data{i,1} = newrxns{sims(i,1),1}; %line one is listbox
             data{i,k+1} = rxn(sims(i,k+1),:);
-            
+
         end
-        
+
     end
 end
 
@@ -341,7 +336,7 @@ data_output = {newrxns,data,check};
 % if isempty(handles.data)
 %     set(handles.listbox1,'string','No similarities');
 % else
-%     set(handles.listbox1,'string',handles.data(:,1));  
+%     set(handles.listbox1,'string',handles.data(:,1));
 % end
 
 % dispdata = []; % display data

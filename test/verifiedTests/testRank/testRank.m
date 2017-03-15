@@ -8,9 +8,15 @@
 %     - original test file: Ronan Fleming
 %     - CI integration: Laurent Heirendt
 
+% define the path to The COBRAToolbox
+pth = which('initCobraToolbox.m');
+CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
+
+initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testRank'])
+
 % load the model
 load('iAF1260.mat')
-A = Ecoli.S;
+A = iAF1260.S;
 printLevel = 1;
 
 % calculate the rank with minimum i/o arguments
@@ -30,3 +36,6 @@ for printLevel = 0:1
     assert(abs(norm(p) - 3.934854424244942e+04) < 1e-6);
     assert(abs(norm(q) - 6.714114249102409e+04) < 1e-6);
 end
+
+% change the directory
+cd(CBTDIR)

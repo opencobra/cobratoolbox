@@ -24,40 +24,38 @@ A = model.N;
 % pause;
 
 %marked = zeros(size(A,1), 1);
-% for  i = 1:length(model.lb)
-%     if mod(i,40) == 0, i, end
-%     
+% for  i = 1:length(model.lb)     
 %     tmarked = marked;
 %     tmarked(i) = 1;
-% 
+%
 %     LPproblem.A = model.S;
-% 
+%
 %     LPproblem.b = zeros(length(model.mets),1);
 %     LPproblem.csense = ['E' * ones(length(model.mets), 1)];
 %     LPproblem.ub = model.ub;
 %     LPproblem.ub(tmarked ~= 0) = 1e6;
 %     LPproblem.lb = model.lb;
 %     LPproblem.lb(tmarked ~= 0) = -1e6;
-%     
+%
 %     LPproblem.osense = 1;
-%     
+%
 %     %minimize
 %     LPproblem.c = zeros(length(model.lb),1);
 %     LPproblem.c(i) = 1;
 %     soln = solveCobraLP(LPproblem);
 %     vmin = soln.obj;
-% 
+%
 %     %maximize
 %     LPproblem.c = -LPproblem.c;
 %     soln = solveCobraLP(LPproblem);
 %     vmax = -soln.obj;
-% 
+%
 %     %[i b_L(i) vmin vmax b_U(i)]
 %     if (vmin > b_L(i) + 1e-2 && vmax < b_U(i) - 1e-2)
 %         %[i b_L(i) vmin vmax b_U(i)]
 %         marked(i) = 1;
 %     end
-% 
+%
 % end
 % display ('done1');
 
@@ -78,7 +76,7 @@ for i = 1:n
     if mod(i,10) == 0
         i;
     end
-    
+
     LPproblem.A = model.S;
 
     LPproblem.b = zeros(length(model.mets),1);
@@ -88,7 +86,7 @@ for i = 1:n
     LPproblem.lb = model.lb;
     LPproblem.lb(marked > 0) = fOffset;
     LPproblem.ub(marked < 0) = -fOffset;
-    
+
     LPproblem.osense = 1;
 
     %maximize
@@ -96,19 +94,19 @@ for i = 1:n
     LPproblem.c(marked == 0 ) = 0;
     soln = solveCobraLP(LPproblem);
     vm = soln.full;
-    
+
     if soln.stat ~= 1
         soln
         i
         pause;
     end
-    
+
     [model.lb model.ub dirs vm];
 
     indexes = (vm.*dirs > fOffset) & marked == 0 & dirs ~= 0;
     markednew = marked;
     markednew(indexes) = dirs(indexes);
-    
+
     [model.lb model.ub dirs vm markednew];
 
     if markednew == marked
@@ -131,7 +129,7 @@ if method == 1
     else
         A = null(model.S);
     end
-elseif method ==2 
+elseif method ==2
     A = model.S;
 end
 b_L(marked > 0) = fOffset;

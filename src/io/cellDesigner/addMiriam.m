@@ -17,8 +17,8 @@ function [fname_out,var] = addMiriam(fname,fname_out,infix,model,infix_type,list
 % list        Column 1 stores a list of the fieldnames of the COBRA model
 %             strucutres that contains MIRIAM information; Column 2 stores
 %             a list of MIRIAM types corresponding to each field; column 3
-%             stores a list of relations 
-%              
+%             stores a list of relations
+%
 %
 %
 %
@@ -54,12 +54,12 @@ if nargin<7;
     if exist('MIRIAM','var')==1
         miriam=MIRIAM;
     else
-    
+
     miriam_path='MIRIAM.mat';
     miriam=load(miriam_path);
     miriam=miriam.MIRIAM;
     end
-    
+
 end
 
 
@@ -69,10 +69,10 @@ end
 
 if nargin<5||isempty(infix_type)
     prefix='name="';  % for metabolites in recon2
-    
+
 else
     if strcmp(infix_type, 'id');
-        
+
         prefix='id="';
     elseif strcmp(infix_type,'name');
         prefix='name="';
@@ -110,7 +110,7 @@ end
 
 
 if nargin<2 || isempty(fname_out)
-    
+
     [fname_out, fpath]=uiputfile('*.xml','CellDesigner SBML Source File');
     if(fname_out==0)
         return;
@@ -128,7 +128,7 @@ if nargin<1 || isempty(fname)
     f_id=fopen([fpath,fname],'r');
 else
     f_id=fopen(fname,'r');
-    
+
 end
 
 numOfLine=0;
@@ -186,11 +186,11 @@ postfix(3).str='</rdf:Description>';
 postfix(4).str='</rdf:RDF>';
 % rem=fgets(f_id);
 
-h = showprogress(0,'The annotation of the file using MIRIAM registry datasets is progressing');
+showprogress(0,'The annotation of the file using MIRIAM registry datasets is progressing');
 MainTxt={};
 
 while ~feof(f_id);
-    
+
     numOfLine=numOfLine+1;
     rem=fgets(f_id);
     %     try
@@ -229,19 +229,19 @@ metKeyword=0; % the variable that stores a value determining whether the metabol
 rxnKeyword=0; % a value of zero indictates that by default the reaction annotations will not be added.
 
 for t=1:total_length   % go through each line of the SBML file.
-    
+
     if ismember(t, ct)~=0||t==total_length; % estimiate the time interval.
-        
+
         disp(t);
-        showprogress(t/total_length,h);
-        
+        showprogress(t/total_length);
+
     end
     n=n+1;
     %if t==1;
     MainTxt_new(n,1)=MainTxt(t);
-    
+
     % t=t+1;
-    
+
     %     try
     %         (~isempty(strfind(MainTxt(t),met_str)))
     %     catch
@@ -259,81 +259,81 @@ for t=1:total_length   % go through each line of the SBML file.
     if (~isempty(metKey_1{1,1}))
         metKeyword=1;
         fprintf('found the metKeyword: %s',MainTxt{t});
-        
+
     elseif (~isempty(metKey_2{1,1}))
         metKeyword=0;
         fprintf('found the metKeyword:  %s',MainTxt{t});
     end
     if (~isempty(rxnKey_1{1,1}))
         rxnKeyword=1;
-        
+
     elseif (~isempty(rxnKey_2{1,1}))
         rxnKeyword=0;
     end
-    
+
     if metKeyword==0&&rxnKeyword==0;
         continue;
     end
-    
+
     if (~isempty(strfind(MainTxt(t),met_str))||~isempty(strfind(MainTxt(t),rxn_str)))&&(metKeyword==1||rxnKeyword==1) %||(~isempty(strfind(MainTxt(t),met_str))));
-        
+
         disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
         disp('met_str found');
-        
+
         for in=1:length(rxnName);% for in=1:length(infix); go though each line of the Rxn List.
-            
+
             % disp(length(rxnName));
-            
+
             line_st=strfind(MainTxt(t),rxnName{in});
-            
+
             if ~isempty(line_st{1})  %isempty(line_st)~=0; % the line contains the rxn keywords
                 disp('%%%%%%%%%%%%%%%%% dddd%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-                
+
                 str=[infix{in},'">'];
-                
+
                 %%%%%%%%%%%%%%%%%%%%%%%%%%
                 prefix_txt(2).str='<rdf:Description rdf:about="#'; % s1">'
                 %%%%%%%%%%%%%%%%%%%%%%%%%%
-                
-                
+
+
                 prefix_txt(2).str=strcat(prefix_txt(2).str,str);
-                
+
                 found=1
-                
-                
+
+
                 %
             end
         end
     end
     line_st_2=strfind(MainTxt(t),SecKeyStr)
-    
+
     if ~isempty(line_st_2{1})&&found==1
-        
-        
+
+
         %                         break
         %
-        
+
         %%% new line
         %  n=n+1;
         %  MainTxt_new(n,1)=MainTxt(t);
-        
-        
+
+
         % msgbox('reaction found');
         disp(line_st)
-        
+
         %%%%%% preTxt (1:4)
         for p=1:2;  % two lines of codes before the main content
             MainTxt_new(n+p,1)=cellstr(prefix_txt(p).str);
         end
         n=n+p;
         total_length=total_length+p;
-        [rxnItems,rxnContent,relation]=constructItems(infix(in),model,list,miriam,listRelations); %% retrieve the lines of codes 
+        [rxnItems,rxnContent,relation]=constructItems(infix(in),model,list,miriam,listRelations); %% retrieve the lines of codes
         if isempty(relation)
             if time==0;
             warndlg('No Miriam relations are defined. No Miriam information will be added to the XML file. Please check whether the correct fieldnames refering to MIRIAM information are present in the COBRA model strcuture');
             time=1;
             end
-            
+
         continue;
         end
         %% relation: there are 12 types of relations
@@ -343,43 +343,43 @@ for t=1:total_length   % go through each line of the SBML file.
             for p=1:2;  % two another lines of codes before the main contents
                 prefix_txt(3).str=relation{k,1};
                 MainTxt_new(n+p,1)=cellstr(prefix_txt(p+2).str);
-                
+
             end
             n=n+p;
             total_length=total_length+p;
-            
-            
+
+
             %             rxnContent(k)
             %             disp(n);
             %             disp(k);
-            
+
             disp(MainTxt_new(n,1));
             disp('%%%%%%%%%%%%');
             disp(rxnItems(k));
-            
+
             MainTxt_new(n+1,1)=rxnItems(k); % the main content
-            
+
             n=n+1;
             total_length=total_length+k;
-            
+
             for p_e=1:2 % two another lines of codes after the main contents
                 postfix(2).str=relation{k,2};
                 MainTxt_new(n+p_e,1)=cellstr(postfix(p_e).str);
-                
+
             end
             n=n+p_e;
             total_length=total_length+p_e;
-            
+
         end
-        
-        
-        
-        
-        
+
+
+
+
+
         for p_e=1:2   % two lines of codes after the main content
-            
+
             MainTxt_new(n+p_e,1)=cellstr(postfix(p_e+2).str);
-            
+
         end
         n=n+p_e;
         total_length=total_length+p_e;
@@ -393,16 +393,13 @@ var=MainTxt_new;
 
 
 for ww=1:length(MainTxt_new);
-    
-    
+
+
     %fprintf(f_out,'%s\n',char(MainTxt_new(ww)));
     fprintf(f_out,'%s\n',char(MainTxt_new{ww}));
-    
-    
+
+
 end
-
-
-close(h);
 
 fclose(f_out);
 
@@ -520,48 +517,48 @@ ClassName={'numeric','char','cell','logical'}; % set the data types that will be
 
 
 if strcmp(para,'met')
-    
-    
+
+
     % produce the prefix
     % for i=1:length(list);
     %     listKey(i,1)=strcat(list(i),and);
     % end
-    
+
     % check if the field exist
     % % isfield(recon2,lower(list(8)));
-    
-    
+
+
     new_l=0;
     for l=1:size(list,1)  % the total list
-        
+
         for i=1:length(ClassName)
-            
-            
+
+
             if m==size(model.(list{l,1}),1);
                 if isfield(model,list{l,1})&&~strcmp(list{l,1},'S');
-                    
+
                     type=isa(model.(list{l,1}),ClassName{i});
-                    
-                    
+
+
                     if type~=0;
                         new_l=new_l+1;
-                        
+
                         listClass(new_l)=ClassName(i);
-                        
+
                         % try
                         finalContent.(list{l,1})=model.(list{l,1})(num); % intialise the variables.
                         % listKey(new_l,1)=strcat(list(l,1),{and});
-                        
+
                         %% extract the URNs from the MIRIAM registry's dataset
                         ind_Mi =find(strcmp(list{l,2},miriam(:,4))) % column 2 stores namespaces of Miriam information, whereas column 4 stores the names.
                         entry=miriam{ind_Mi(1),7};   % column 7 stores the URNs of Miriam information
                         entry=[entry,':'];
                         listKey{new_l,1}=strcat(keyStr,entry); % <rdf:li rdf:resource=" + urn:miriam:chebi =<rdf:li rdf:resource="urn:miriam:chebi
-                        
+
                         Index_Relation=find(ismember(listRelations,list(l,3)));
-                        
+
                         prefix_key_2=listRelations(Index_Relation);
-                        
+
                         prefix_key_2_new=strcat(prefix_key_2,prefix_key_3);
                         relation{new_l,1}=strcat(prefix_key_1,prefix_key_2_new);
                         relation{new_l,2}=strcat(postfix_key_1,prefix_key_2_new);
@@ -575,61 +572,61 @@ if strcmp(para,'met')
                         %                        disp(listKey(l,1));
                         %                    end
                         % end
-                        
+
                     end
                 else
                     % relation(new_l)=strcat(infix,' not found in both met and rxn lists');
                     finalContent.(list{l,1})='no data found in the COBRA model structure';
                     finalItems(1)=strcat(infix,' not found in both met and rxn lists');
                 end
-                
+
             else
-               
+
                 finalContent.(list{l,1})='no suitalbe types of annotations found in the COBRA model structure';
-                finalItems(1)=strcat(infix,'no suitalbe types of annotations found in the COBRA model structure'); 
-                                     
+                finalItems(1)=strcat(infix,'no suitalbe types of annotations found in the COBRA model structure');
+
             end
         end
     end
-    
+
     postfix_key='"/>';
-    
+
     for i=1:length(finalItems);
         finalItems{i}=strcat(finalItems{i},postfix_key)
     end
-    
+
 elseif strcmp(para,'rxn');
-    
+
     new_l=0;
     for l=1:length(list)
-        
+
         for i=1:length(ClassName)
-            
-            
+
+
             if r==size(model.(list{l,1}),1);  %% number of elements in the array !!!
                 if isfield(model,list{l,1})&&~strcmp(list{l,1},'S');
-                    
+
                     type=isa(model.(list{l,1}),ClassName{i});
-                    
-                    
+
+
                     if type~=0;
                         new_l=new_l+1;
-                        
+
                         listClass(new_l)=ClassName(i)
-                        
+
                         % try
                         finalContent.(list{l,1})=model.(list{l,1})(num); % intialise the variables.
-                        
+
                         %% extract the URNs from the MIRIAM registry's dataset
                         ind_Mi =find(strcmp(list{l,2},miriam(:,4))) % column 4 stores the names of Miriam information.
                         entry=miriam{ind_Mi(1),7};   % column 7 stores the URNs of Miriam information
                         entry=[entry,':'];
                         listKey{new_l,1}=strcat(keyStr,entry); % <rdf:li rdf:resource=" + urn:miriam:chebi =<rdf:li rdf:resource="urn:miriam:chebi
-                        
+
                         Index_Relation=find(ismember(listRelations,list(l,3)));
-                        
+
                         prefix_key_2=listRelations(Index_Relation);
-                        
+
                         prefix_key_2_new=strcat(prefix_key_2,prefix_key_3);
                         relation{new_l,1}=strcat(prefix_key_1,prefix_key_2_new);
                         relation{new_l,2}=strcat(postfix_key_1,prefix_key_2_new);
@@ -648,7 +645,7 @@ elseif strcmp(para,'rxn');
                         %                        disp(listKey(l,1));
                         %                    end
                         % end
-                        
+
                     end
                 else
                     finalContent.(list{l,1})=' no data found in the COBRA model structure';
@@ -656,19 +653,19 @@ elseif strcmp(para,'rxn');
                 end
                 %             else
                 %                 error('The COBRA model structure doesn''t contain the sthoichometric matrix');
-            else                
+            else
                 finalContent.(list{l,1})=' no suitalbe types of annotations found in the COBRA model structure';
-                finalItems(1)=strcat(infix,' no suitalbe types of annotations found in the COBRA model structure');                
+                finalItems(1)=strcat(infix,' no suitalbe types of annotations found in the COBRA model structure');
             end
-            
+
         end
     end
     postfix_key='"/>';
-    
+
     for i=1:length(finalItems);
         finalItems{i}=strcat(finalItems{i},postfix_key)
     end
-    
+
 elseif strcmp(para,'not_found');
     finalItems(1)=strcat(infix,' not found in both met and rxn lists');
     finalContent(1)=strcat(infix, ' not found in both met and rxn lists');
@@ -729,7 +726,3 @@ end
 %
 % end
 % end
-
-
-
-

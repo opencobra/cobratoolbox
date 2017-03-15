@@ -1,4 +1,4 @@
-function fout = showprogress(x, whichbar, varargin)
+function fout = showprogress(x, whichbar)
 % showprogress shows waitbars
 %
 % Inputs:
@@ -11,26 +11,45 @@ function fout = showprogress(x, whichbar, varargin)
 %
 % .. Author:
 %        - Lemmer El Assal (Feb 2017)
-%
+%        - CI adaptations: Laurent Heirendt (March 2017)
+
     global WAITBAR_TYPE;
+    global WAITBAR_HANDLE;
+
     fout = [];
-    if ~isempty(WAITBAR_TYPE)
-        switch WAITBAR_TYPE
-            case 0 % silent mode
 
-            case 1 % text
-                if x > 0
-                    textprogressbar(num2str(x*100));
-                else
-                    textprogressbar(whichbar);
-                end
-
-            case 2 % graphic waitbar
-                if nargin > 2
-                    fout = waitbar(x, whichbar, varargin);
-                else
-                    fout = waitbar(x, whichbar);
-                end
+    if isempty(WAITBAR_TYPE)
+        if ~isempty(strfind(getenv('HOME'), 'jenkins'))
+            WAITBAR_TYPE = 0;
+        else
+            WAITBAR_TYPE = 1;
         end
+    end
+    if isempty(WAITBAR_HANDLE)
+        WAITBAR_HANDLE = -1;
+    end
+
+    switch WAITBAR_TYPE
+        case 0 % silent mode
+
+        case 1 % text
+            if x > 0 && (length(WAITBAR_HANDLE) ~= 0)
+                textprogressbar(x*100);
+            else
+                if nargin < 2
+                    whichbar = '';
+                end
+                textprogressbar(whichbar);
+            end
+
+        case 2 % graphic waitbar
+            if nargin > 1
+                fout = waitbar(x*100, whichbar);
+            else
+                fout = waitbar(x);
+            end
+            if x == 1
+                close(fout);
+            end
     end
 end

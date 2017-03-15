@@ -11,7 +11,7 @@ function [modelRed,hasFlux,maxes,mins] = reduceModel(model,tol,irrevFlag,verbFla
 %OPTIONAL INPUTS
 % tol                   Tolerance for non-zero bounds - bounds smaller in absolute
 %                       value than this value will be set to zero (Default = 1e-6)
-% irrevFlag             Determines if the models should be treated using 
+% irrevFlag             Determines if the models should be treated using
 %                       the irreversible form. (Default = false)
 % verbFlag              Verbose output (Default = false)
 % negFluxAllowedFlag    Allow negative fluxes through irrev reactions
@@ -23,7 +23,7 @@ function [modelRed,hasFlux,maxes,mins] = reduceModel(model,tol,irrevFlag,verbFla
 %
 %OUTPUTS
 % modelRed              Reduced model
-% hasFlux               The indexes of the reactions that are not blocked 
+% hasFlux               The indexes of the reactions that are not blocked
 %                       in the model
 % maxes                 Maximum fluxes
 % mins                  Minimum fluxes
@@ -78,10 +78,10 @@ mins = [];
 
 %obtain maxes and mins for the fluxes
 rxnID = 1;
-h = showprogress(0,'Model reduction in progress ...');
+showprogress(0,'Model reduction in progress ...');
 while rxnID <= nRxns
     if mod(rxnID,10) == 0
-        showprogress(rxnID/nRxns,h);
+        showprogress(rxnID/nRxns);
     end
     rxnName = model.rxns{rxnID};
     if (verbFlag)
@@ -156,9 +156,6 @@ while rxnID <= nRxns
     end
 
     rxnID = rxnID + 1;
-end
-if ( regexp( version, 'R20') )
-        close(h);
 end
 
 if (verbFlag)

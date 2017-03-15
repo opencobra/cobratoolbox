@@ -26,11 +26,11 @@ end
 
 samples = [];
 
-h = showprogress(0,'Loading samples ...');
+showprogress(0,'Loading samples ...');
 %load points from the files into pset
 for i = 1:numFiles
     if (i > numSkipped)
-        
+
         try
             data = load([filename '_' num2str(i) '.mat']);
         catch
@@ -38,7 +38,7 @@ for i = 1:numFiles
             break;
         end
         selPoints = any(data.points ~= 0);
-        numPoints = sum(selPoints);        
+        numPoints = sum(selPoints);
         if (randPts)
           % Pick a random set of points
             pointInd = randperm(numPoints);
@@ -48,7 +48,6 @@ for i = 1:numFiles
             pSkip = max([floor(numPoints/pointsPerFile) 1]);
             samples = [samples data.points(:,1:pSkip:numPoints)];
         end
-        showprogress((i-numSkipped)/(numFiles-numSkipped),h);
+        showprogress((i-numSkipped)/(numFiles-numSkipped));
     end
 end
-close(h);

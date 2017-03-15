@@ -23,7 +23,7 @@ initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testMulti
 % define the solver packages to be used to run this test
 solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
 
-%% test coupling constraints
+% test coupling constraints
 load('ecoli_core_model.mat', 'model');
 
 % remove ATPM constraint so no infeasible model is generated

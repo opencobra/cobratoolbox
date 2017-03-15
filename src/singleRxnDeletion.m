@@ -1,5 +1,5 @@
 function [grRatio,grRateKO,grRateWT,hasEffect,delRxn,fluxSolution] = singleRxnDeletion(model,method,rxnList,verbFlag)
-%singleRxnDeletion Performs single reaction deletion analysis using FBA, 
+%singleRxnDeletion Performs single reaction deletion analysis using FBA,
 %MOMA or linearMOMA
 %
 % [grRatio,grRateKO,grRateWT,hasEffect,delRxns,hasEffect] = singleGeneDeletion(model,method,rxnList,verbFlag)
@@ -48,14 +48,12 @@ grRatio = ones(nDelRxns,1);
 hasEffect = true(nDelRxns,1);
 fluxSolution = zeros(length(model.rxns),nDelRxns);
 delRxn = columnVector(rxnList);
-if (verbFlag)  
+if (verbFlag)
     fprintf('%4s\t%4s\t%10s\t%9s\t%9s\n','No','Perc','Name','Growth rate','Rel. GR');
 end
-h = showprogress(0,'Single reaction deletion analysis in progress ...');
+showprogress(0,'Single reaction deletion analysis in progress ...');
 for i = 1:nDelRxns
-    if mod(i,10) == 0
-        showprogress(i/nDelRxns,h);
-    end
+    showprogress(i/nDelRxns);
     modelDel = changeRxnBounds(model,rxnList{i},0,'b');
     switch method
         case 'lMOMA'
@@ -74,9 +72,6 @@ for i = 1:nDelRxns
     if (verbFlag)
         fprintf('%4d\t%4.0f\t%10s\t%9.3f\t%9.3f\n',i,100*i/nDelRxns,rnxList{i},grRateKO(i),grRateKO(i)/grRateWT*100);
     end
-end
-if ( regexp( version, 'R20') )
-        close(h);
 end
 
 grRatio = grRateKO/grRateWT;

@@ -1,4 +1,3 @@
-function initCobraToolbox()
 %initCobraToolbox Initialize COnstraint-Based Reconstruction and Analysis Toolbox
 %
 % Defines default solvers and paths, tests SBML io functionality.
@@ -21,6 +20,7 @@ global CBTDIR
 global MINOSPATH
 global DQQMINOSPATH
 global WAITBAR_TYPE
+global WAITBAR_HANDLE
 
 WAITBAR_TYPE = 1;
 

@@ -1,23 +1,29 @@
 function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel,mergeRxnGeneMat)
-% function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel)
+%% function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel,mergeRxnGeneMat)
 %
 % Inputs
-%   model1          model 1
-%   model2          model 2
-%   objrxnmodel     Set as 1 or 2 to set objective reaction from
-%                   desired model
+%
+% model1          - model 1
+% model2          - model 2
+% objrxnmodel     - Set as 1 or 2 to set objective reaction from
+%                 desired model
+% mergeRxnGeneMat - if false, do not merge rxnGeneMat
+%
+% Outputs
+%
+% modelNew        - merged model
 %
 % based on[model_metE] = CreateMetE(model_E,model_M)) (Aarash Bordbar,
 % 07/06/07);
 % 11/10/2007 IT
 
-if nargin < 3
-    objrxnmodel =1;
+if ~exist('objrxnmodel','var') || isempty(objrxnmodel)
+    objrxnmodel = 1;
+end
+if ~exist('mergeRxnGeneMat','var') || isempty(mergeRxnGeneMat)
+    mergeRxnGeneMat = true;
 end
 
-if nargin < 4
-    mergeRxnGeneMat =1; % merge this part
-end
 % Creating Universal Metabolite Names
 
 % Only needed if metabolite names vary, in the specific instance of iAF1260
@@ -37,7 +43,7 @@ fprintf('Finished, %i Distinct Reactions\n',lengthreaction);
 
 % Combining Metabolite List
 fprintf('Combining metabolite lists: ');
-h = showprogress(0, 'Combining Metabolites in Progress ...');
+showprogress(0, 'Combining Metabolites in Progress ...');
 modelNew.mets = model1.mets;
 
 sizemets = size(modelNew.mets,1)+1;
@@ -67,13 +73,10 @@ for i = 1:size(model2.mets,1)
          end
         sizemets = sizemets+1;
     end
-    if mod(i,40) == 0
-        showprogress(i/size(model2.mets,1),h);
-    end
+    showprogress(i/size(model2.mets,1));
 end
 
 lengthmet = size(modelNew.mets,1);
-close(h);
 fprintf('Finished, %i Distinct Metabolites\n',lengthmet);
 
 
@@ -146,40 +149,29 @@ model1_num = length(a1);
 model2_num = length(a2);
 modelNew.S = spalloc(size(modelNew.mets,1),size(modelNew.rxns,1),model1_num+model2_num);
 
-h = showprogress(0, 'Adding Matrix 1 in Progress ...');
+showprogress(0, 'Adding Matrix 1 in Progress ...');
 for i = 1:size(a1,1)
     modelNew.S(a1(i),b1(i)) = model1.S(a1(i),b1(i));
-    if mod(i,40) == 0
-        showprogress(i/size(a1,1),h);
-    end
+    showprogress(i/size(a1,1));
 end
-close(h);
-
-
 
 HTABLE = java.util.Hashtable;
 for i = 1:length(modelNew.mets)
     HTABLE.put(modelNew.mets{i}, i);
 end
-h = showprogress(0, 'Adding Matrix 2 in Progress ...');
+
+showprogress(0, 'Adding Matrix 2 in Progress ...');
 for i = 1:size(model2.S,2)
     compounds = find(model2.S(:,i));
     for j = 1:size(compounds,1)
         metnames(j,1) = model2.mets(compounds(j));
-        
-        %tmp2 = strmatch(metnames(j,1),modelNew.mets,'exact');
-        %metnames(j,1)
         tmp = HTABLE.get(metnames{j,1});
-        %if any(tmp2 ~= tmp)
-        %    pause;
-        %end
         modelNew.S(tmp,i+size(model1.S,2)) = model2.S(compounds(j),i);
     end
-    if mod(i,40) == 0
-        showprogress(i/size(model2.S,2),h);
-    end
+    showprogress(i/size(model2.S,2));
 end
-delete(h);
+
+
 fprintf('Finished\n');
 
 % Creating b
@@ -220,10 +212,13 @@ for i = 1:length(model2.genes)
 end
 fprintf('Finished\n');
 
-if mergeRxnGeneMat == 1
+if mergeRxnGeneMat
 fprintf('Combining Remaining Genetic Information: ');
-h = showprogress(0, 'Combining Genetic Info ...');
+showprogress(0, 'Combining Genetic Info ...');
+end
+
 modelNew.rxnGeneMat = model1.rxnGeneMat;
+
 for i = 1:size(model2.rxnGeneMat,1)
     R = find(model2.rxnGeneMat(i,:));
     if ~isempty(R)
@@ -236,11 +231,7 @@ for i = 1:size(model2.rxnGeneMat,1)
         T = find(ismember(modelNew.rxns,model2.rxns(i)));
         modelNew.rxnGeneMat(T,:) = 0;
     end
-    if(mod(i, 40) == 0)
-        showprogress(i/size(model2.rxnGeneMat,1),h);
-    end
-end
-close(h);
+    showprogress(i/size(model2.rxnGeneMat,1));
 end
 
 modelNew.grRules = model1.grRules;

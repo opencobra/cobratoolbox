@@ -30,10 +30,10 @@ if size(u_data,1) ~= size(data,1)
         if sum(strcmp(u_data{i}, data(:,2))) > 1
             % It's a short vector so the growing issue doesn't matter
             d_entry = [d_entry i];
-            
+
         end
     end
-    
+
     if isempty(d_entry)
         msgbox(['Reactions are non-unique but the script was unable to locate'...
             ' the duplicate entries.'],'Warning','warn');
@@ -78,7 +78,7 @@ if isempty(data)
     msgbox('There are no reactions to save.','No reactions.','error');
     return
 end
-h = showprogress(0,'Creating model...');
+
 %createModel has been altered from the cobra toolbox version.
 UB = [];
 LB = [];
@@ -116,7 +116,6 @@ model.rxnKeggID = data(:,14);
 
 %----createModel.m is missing some things, fix...
 
-close(h);
 model.metCharge = {};
 
 
@@ -172,21 +171,21 @@ for k = 1:S(1) % Check all reactions in model
     rxn = rxns{k};
     line = any(strcmp(rxn,reactions(:,1)),1);
     if line == 0
-        
+
         cnt_r = cnt_r + 1;
         missing_rxn(cnt_r,:) = data(k,:);
-        
+
     end
-end 
+end
 answer = [];
 
 %There are reactions and metabolites in model that are not in database.
 if cnt_r ~=0 || cnt_m ~=0
-    
+
     if cnt_r ~=0 && cnt_m ~=0
         m_mets = ['Metabolites: ' mets2str(missing_met) '.'];
         m_rxns = ['Reactions: ' mets2str(missing_rxn(:,2)) '.'];
-        
+
         answer = questdlg(char(m_mets,m_rxns,'',['Are missing from database.'...
             'The reconstruction cannot be completed without them. Do you want',...
             ' to add them now?']),'Missing metabolites/reactions','Yes',...
@@ -204,7 +203,7 @@ if cnt_r ~=0 || cnt_m ~=0
             ' to add them now?']),'Missing metabolites/reactions','Yes',...
             'No','Yes');
     end
-    
+
     if isempty(answer)
         answer = 'No';
     end
@@ -245,7 +244,7 @@ for i = 1:length(time)-3
     if isempty(date)
         date = [num2str(round(time(i)))];
     else
-        
+
         date = [date '/' num2str(round(time(i)))];
     end
 end
