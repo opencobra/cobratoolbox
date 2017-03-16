@@ -1,7 +1,7 @@
 % retrieve models required for testing the CI that are published, but released as part of the COBRA Toolbox
 % eventual enhancement with rsync possible
 
-cwd = pwd;
+currentDir = pwd;
 MODELDIR = fileparts(which('retrieveModels.m'));
 cd(MODELDIR);
 
@@ -47,5 +47,5 @@ else
 end
 
 % change back to the root directory
-cd(cwd)
+cd(currentDir)
 
