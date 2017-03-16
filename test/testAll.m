@@ -43,8 +43,13 @@ try
     % retrieve the models first
     retrieveModels;
 
-    % run the tests in the subfolder verifiedTests/ recursively
-    result = runtests('./test/', 'Recursively', true, 'BaseFolder', '*verified*');
+    % run the tests in the subfolder serialTests/ recursively and in parallel
+    resultSerial = runtests('./test/', 'Recursively', true, 'BaseFolder', '*serial*', 'UseParallel', true);
+
+    % run the tests in the subfolder parallelTests/ recursively and in series
+    resultParallel = runtests('./test/', 'Recursively', true, 'BaseFolder', '*parallel*');
+
+    result = [resultSerial, resultParallel];
 
     sumFailed = 0;
     sumIncomplete = 0;
