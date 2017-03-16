@@ -1,9 +1,9 @@
 The COBRA Toolbox - COnstraint-Based Reconstruction and Analysis Toolbox
 =======================================================================
 
-|  MATLAB R2016b | MATLAB R2015b | MATLAB R2014b | Code Coverage | Statistics |
+|  MATLAB R2016b | MATLAB R2015b | MATLAB R2014b | Code Coverage | Code Grade |
 |--------|--------|--------|--------|--------|
-| [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2016b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2016b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2015b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2015b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2014b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2014b/) | [![codecov](https://codecov.io/gh/opencobra/cobratoolbox/branch/master/graph/badge.svg)](https://codecov.io/gh/opencobra/cobratoolbox/branch/master) | [![GitHub Stats](https://img.shields.io/badge/github-stats-ff5500.svg)](http://githubstats.com/opencobra/cobratoolbox)
+| [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2016b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2016b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2015b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2015b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2014b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2014b/) | [![codecov](https://codecov.io/gh/opencobra/cobratoolbox/branch/master/graph/badge.svg)](https://codecov.io/gh/opencobra/cobratoolbox/branch/master) | ![Code Grade](https://prince.lcsb.uni.lu/jenkins/userContent/codegrade.svg)
 
 Installation
 ------------
