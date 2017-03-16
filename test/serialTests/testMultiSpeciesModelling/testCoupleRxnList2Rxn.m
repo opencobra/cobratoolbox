@@ -18,7 +18,7 @@ global path_GUROBI
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testMultiSpeciesModelling']);
+initTest([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testMultiSpeciesModelling']);
 
 % define the solver packages to be used to run this test
 solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};

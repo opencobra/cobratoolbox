@@ -9,11 +9,17 @@
 %     - Original test file: Ronan Fleming
 %     - CI integration: Laurent Heirendt January 2017
 
+% define the path to The COBRAToolbox
+pth = which('initCobraToolbox.m');
+CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
+
+cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testSolvers']);
+
 % define the tolerance
 tol = 1e-6;
 
 % load the model
-load ecoli_core_model.mat
+load('ecoli_core_model.mat', 'model');
 
 % find the internal vs exchange/demand/sink reactions.
 model = findSExRxnInd(model);

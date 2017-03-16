@@ -21,7 +21,7 @@ global path_GUROBI
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
 
-cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testSBML'])
+cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testSBML'])
 
 % load the test models
 testModel = readCbModel('Ec_iJR904.xml');

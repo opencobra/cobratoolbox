@@ -11,7 +11,7 @@ pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
 
 % change to
-cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools'])
+cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testTools'])
 
 fileName = 'testPrintMatrix.txt';
 nbFormat = '%3.2f\t';

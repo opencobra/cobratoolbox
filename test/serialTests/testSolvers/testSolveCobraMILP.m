@@ -20,7 +20,7 @@ global CBT_MILP_SOLVER
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testSolvers']);
+initTest([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testSolvers']);
 
 % test solver packages
 solverPkgs = {'cplex_direct', 'ibm_cplex', 'tomlab_cplex', 'gurobi6', 'glpk'};

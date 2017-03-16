@@ -1,3 +1,17 @@
+% The COBRAToolbox: testRemoveDuplicateRxn.m
+%
+% Purpose:
+%     - testRemoveDuplicateRxn tests removeDuplicateRxn
+%
+% Authors:
+%     - CI integration: Laurent Heirendt January 2017
+
+% define the path to The COBRAToolbox
+pth = which('initCobraToolbox.m');
+CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
+
+cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep,'testModelManipulation']);
+
 % test detection and removal of duplicate reactions
 
 model.S = [-1, 0, 0 ,0 , 0, 0, 0;
@@ -41,4 +55,3 @@ removeFlag=1;
 [model,removedRxn, rxnRelationship] = checkDuplicateRxn(model,method,removeFlag,printLevel);
 
 assert(rxns_length+1==length(model.rxns));
-

@@ -13,7 +13,7 @@ pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
 
 % read in the .xml model first
-cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testSBML'])
+cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testSBML'])
 
 testModelXML = readCbModel('Ec_iJR904.xml');
 
@@ -30,7 +30,7 @@ testModelSBML = readCbModel('testModelSBML.sbml');
 assert(~any(numDiff))
 
 % remove the written file to clean up
-cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testSBML'])
+cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testSBML'])
 system('rm testModelSBML.sbml.xml')
 
 % change the directory

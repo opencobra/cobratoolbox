@@ -16,7 +16,7 @@
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testConvertHypergraphToBipartiteGraph']);
+initTest([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testConvertHypergraphToBipartiteGraph']);
 
 for flag = 1:2
     if flag == 1

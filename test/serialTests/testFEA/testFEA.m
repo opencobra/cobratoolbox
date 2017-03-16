@@ -11,7 +11,7 @@
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testFEA']);
+cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testFEA']);
 
 % load the model and reference data
 load testDataFEA;

@@ -12,7 +12,7 @@
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
 
-cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools']);
+cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testTools']);
 
 % load reference data - too complex to embed
 load('refData_calcGroupStats.mat');

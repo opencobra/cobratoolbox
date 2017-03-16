@@ -13,7 +13,7 @@ global path_TOMLAB
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testrFBA']);
+initTest([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testrFBA']);
 
 %load model and test data
 load('modelReg.mat');

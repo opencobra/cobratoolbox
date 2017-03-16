@@ -17,7 +17,7 @@ global path_GUROBI
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testCardOpt']);
+initTest([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testCardOpt']);
 
 % set the tolerance
 tol = 1e-8;

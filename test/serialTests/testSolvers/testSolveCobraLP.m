@@ -18,7 +18,7 @@ global path_GUROBI
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testSolvers']);
+initTest([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testSolvers']);
 
 % Dummy Model
 % http://www2.isye.gatech.edu/~spyros/LP/node2.html

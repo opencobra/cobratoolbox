@@ -17,7 +17,7 @@
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
 
-cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep,'testModelManipulation']);
+cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep,'testModelManipulation']);
 
 % Test with non-empty model
 fprintf('>> Starting non-empty model tests:\n');

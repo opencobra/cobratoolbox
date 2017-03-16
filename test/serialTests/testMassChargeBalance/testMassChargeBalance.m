@@ -14,7 +14,7 @@
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testMassChargeBalance'])
+cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testMassChargeBalance'])
 
 options = logical([0 0 0; 0 0 1; 0 1 0; 0 1 1; 1 0 0; 1 0 1; 1 1 0; 1 1 1]);
 

@@ -10,7 +10,7 @@
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools'])
+cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testTools'])
 
 labels = {'row1', 'row2', 'row3'};
 data = ones(3);

@@ -14,7 +14,7 @@ global path_TOMLAB
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testwritePajekNet']);
+initTest([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testwritePajekNet']);
 
 load('ecoli_core_model', 'model');
 

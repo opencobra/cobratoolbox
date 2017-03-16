@@ -6,6 +6,12 @@
 %     - Original file: Laurent Heirendt
 %     - CI integration: Laurent Heirendt
 
+% define the path to The COBRA Toolbox
+pth = which('initCobraToolbox.m');
+CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
+
+cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testTools'])
+
 % define the vector vec
 vec = [1, 2, 3, 4, 5, 6];
 

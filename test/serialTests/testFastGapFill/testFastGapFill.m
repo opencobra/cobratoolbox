@@ -13,7 +13,7 @@ global path_TOMLAB
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-initTest([CBTDIR filesep 'test' filesep 'verifiedTests' filesep 'testFastGapFill'])
+initTest([CBTDIR filesep 'test' filesep 'serialTests' filesep 'testFastGapFill'])
 
 %Specify test files
 modelFile = 'fgf_test_model.xml';
