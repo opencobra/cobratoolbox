@@ -1,4 +1,4 @@
-## Labels
+# Labels
 
 This section lists the labels we use to help us track and manage issues and pull requests. The labels are loosely grouped by their purpose, but it's not required that every issue have a label from every group or that an issue can't have more than one label from the same group.
 
