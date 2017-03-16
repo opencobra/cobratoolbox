@@ -14,46 +14,6 @@ x=1;
 %[solverOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(LPproblem, LPsolution.full);
 
 
-%MILP Solver test.
-%http://www.chemeng.ed.ac.uk/~jwp/MSO/section5/milp.html
-
-% 1. Set up MILP problem.
-MILPproblem.c = [20; 6; 8];
-MILPproblem.A = [0.8, 0.2, 0.3;
-    0.4, 0.3, 0;
-    0.2, 0, 0.1];
-MILPproblem.b = [20; 10; 5];
-MILPproblem.lb = [0; 0; 0];
-MILPproblem.ub = [1000; 1000; 1000];
-MILPproblem.osense = -1;
-MILPproblem.csense = ['L'; 'L'; 'L'];
-MILPproblem.vartype = ['I'; 'I'; 'I'];
-MILPproblem.x0 = [0, 0, 0];
-pass = 1;
-
-% 2. Solve MILP problem.
-try
-    %Solve MILP problem setting the relative MIP gap tolerance and
-    %integrality tolerance to 1e-12 using parameters structure.
-    parameters.relMipGapTol = 1e-12;
-    parameters.intTol = 1e-12;
-    MILPsolution = solveCobraMILP(MILPproblem, parameters);
-    %[solverOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(MILPproblem, MILPsolution.full);
-catch
-    disp('Error in MILP test');
-    x=0;
-    pass = 0;
-end
-
-% 3. Check results with expected answer.
-if pass == 1
-    if all(abs(MILPsolution.int - [0;31;46]) < tol) && abs(MILPsolution.obj - 554) < tol
-        display('MILP Test Passed');
-    else
-        display('MILP Test Not Passed');
-        x=0;
-    end
-end
 %QP Solver test.
 % http://tomopt.com/docs/quickguide/quickguide005.php
 
