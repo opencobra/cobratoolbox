@@ -93,7 +93,7 @@ if ~isempty(strfind(getenv('HOME'), 'jenkins'))
     end
 
     % remove the old badge
-    system('rm /var/lib/jenkins/userContent/codegrade.svg']);
+    system('rm /var/lib/jenkins/userContent/codegrade.svg');
 
     % set the new badge
     system(['cp /var/lib/jenkins/userContent/codegrade-', grade, '.svg /var/lib/jenkins/userContent/codegrade.svg']);
