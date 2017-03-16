@@ -18,7 +18,7 @@ global path_GUROBI
 pth = which('initCobraToolbox.m');
 CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
-initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testFindBlockedReaction'])
+initTest([CBTDIR, filesep, 'test', filesep, 'parallelTests', filesep, 'testFindBlockedReaction'])
 
 load('ecoli_core_model.mat', 'model');
 
