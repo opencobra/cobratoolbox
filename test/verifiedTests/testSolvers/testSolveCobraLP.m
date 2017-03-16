@@ -21,9 +21,9 @@ CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testSolvers']);
 
 % Dummy Model
-%http://www2.isye.gatech.edu/~spyros/LP/node2.html
+% http://www2.isye.gatech.edu/~spyros/LP/node2.html
 LPproblem.c = [200; 400];
-LPproblem.A = [1/40, 1/60; 1/50, 1/50];
+LPproblem.A = [1 / 40, 1 / 60; 1 / 50, 1 / 50];
 LPproblem.b = [1; 1];
 LPproblem.lb = [0; 0];
 LPproblem.ub = [1; 1];
@@ -33,7 +33,7 @@ LPproblem.csense = ['L'; 'L'];
 % set the tolerance
 tol = 1e-4;
 
-%test solver packages
+% test solver packages
 solverPkgs = {'cplex_direct', 'tomlab_cplex', 'gurobi6', 'glpk'};
 
 % list of tests
@@ -50,8 +50,8 @@ for k = 1:length(solverPkgs)
         addpath(genpath(path_GUROBI));
     end
 
-    if ~verLessThan('matlab', '8') && strcmp(solverPkgs{k}, 'cplex_direct') %2015
-        fprintf(['\n IBM ILOG CPLEX - ', solverPkgs{k},' - is incompatible with this version of MATLAB, please downgrade or change solver\n'])
+    if ~verLessThan('matlab', '8') && strcmp(solverPkgs{k}, 'cplex_direct')  % 2015
+        fprintf(['\n IBM ILOG CPLEX - ', solverPkgs{k}, ' - is incompatible with this version of MATLAB, please downgrade or change solver\n'])
     else
         % change the COBRA solver (LP)
         solverOK = changeCobraSolver(solverPkgs{k});
@@ -78,7 +78,7 @@ for k = 1:length(solverPkgs)
                     % solveCobraLP
                     solution_solveCobraLP = solveCobraLP(model);
 
-                    %optimizeCbModel
+                    % optimizeCbModel
                     solution_optimizeCbModel = optimizeCbModel(model);
 
                     % compare both solution objects

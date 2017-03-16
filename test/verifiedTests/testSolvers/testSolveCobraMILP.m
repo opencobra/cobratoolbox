@@ -22,7 +22,7 @@ CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
 
 initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testSolvers']);
 
-%test solver packages
+% test solver packages
 solverPkgs = {'cplex_direct', 'ibm_cplex', 'tomlab_cplex', 'gurobi6', 'glpk'};
 
 % set the tolerance
@@ -40,7 +40,7 @@ for k = 1:length(solverPkgs)
     end
 
     if (~verLessThan('matlab', '8.4') && strcmp(solverPkgs{k}, 'cplex_direct')) || (~verLessThan('matlab', '9') && strcmp(solverPkgs{k}, 'ibm_cplex'))
-        fprintf(['\n IBM ILOG CPLEX - ', solverPkgs{k},' - is incompatible with this version of MATLAB, please downgrade or change solver\n'])
+        fprintf(['\n IBM ILOG CPLEX - ', solverPkgs{k}, ' - is incompatible with this version of MATLAB, please downgrade or change solver\n'])
     else
         fprintf('   Running solveCobraLPCPLEX using %s ... ', solverPkgs{k});
 
@@ -51,7 +51,7 @@ for k = 1:length(solverPkgs)
         CBT_MILP_SOLVER = solverPkgs{k};
 
         if solverOK
-            %MILP Solver test: chemeng.ed.ac.uk/~jwp/MSO/section5/milp.html
+            % MILP Solver test: chemeng.ed.ac.uk/~jwp/MSO/section5/milp.html
 
             % set up MILP problem.
             MILPproblem.c = [20; 6; 8];
