@@ -15,10 +15,11 @@
 global path_GUROBI
 global path_TOMLAB
 
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testMetaboTools']);
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 % define a toy model with single internal loop
 model.mets = {'A'; 'B'; 'C'};
@@ -92,4 +93,4 @@ for k = 1:length(solverPkgs)
 end
 
 % change the directory
-cd(CBTDIR)
+cd(currentDir)

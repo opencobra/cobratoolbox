@@ -26,6 +26,7 @@ function model = createToyModel(unknownMetabolite, unbalancedCharge,imbalancedRe
 %                       and a charge of -2
 %
 % v1  Thomas Pfau 09/02/2017
+
 model.S = sparse([-1 -1 -1 0 0; 0 1 0 -1 0; 0 0 1 -1 0; 0 0 0 1 -1]);
 
 model.mets = {'A[c]', 'B[c]', 'C[c]', 'D[c]'}';

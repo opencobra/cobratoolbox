@@ -9,11 +9,17 @@
 %     - Original test file: Ronan Fleming
 %     - CI integration: Laurent Heirendt January 2017
 
+% save the current path
+currentDir = pwd;
+
+% initialize the test
+initTest(fileparts(which(mfilename)));
+
 % define the tolerance
 tol = 1e-6;
 
 % load the model
-load ecoli_core_model.mat
+load('ecoli_core_model.mat', 'model');
 
 % find the internal vs exchange/demand/sink reactions.
 model = findSExRxnInd(model);
@@ -65,3 +71,6 @@ u_L = PL * u;
 % perform the test
 assert(norm(v - v_R - v_N) < tol)
 assert(norm(u - u_C - u_L) < tol)
+
+% change the directory
+cd(currentDir)

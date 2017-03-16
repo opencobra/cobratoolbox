@@ -6,12 +6,11 @@
 % Authors:
 %     - CI integration: Laurent Heirendt
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-% change to the test folder
-initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testElementalBalance']);
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 % load the model and data
 load('testElementalBalanceData.mat');
@@ -35,4 +34,4 @@ assert(isequal(MW, stdMW2))
 assert(isequal(Ematrix, stdEmatrix2))
 
 % change the directory
-cd(CBTDIR)
+cd(currentDir)

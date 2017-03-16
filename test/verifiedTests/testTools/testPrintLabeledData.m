@@ -6,11 +6,11 @@
 % Author:
 %     - Original file: Lemmer El Assal
 
-% define the path to The COBRA Toolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools'])
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 labels = {'row1', 'row2', 'row3'};
 data = ones(3);
@@ -28,7 +28,7 @@ text2 = fileread(fileName);
 assert(strcmp(text1, text2));
 
 % remove the generated file
-fullFileNamePath = [CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools', filesep, fileName];
+fullFileNamePath = [fileparts(which(mfilename)), filesep, fileName];
 if exist(fullFileNamePath, 'file') == 2
     system(['rm ', fullFileNamePath]);
 else
@@ -36,4 +36,4 @@ else
 end
 
 % change the directory
-cd(CBTDIR)
+cd(currentDir)

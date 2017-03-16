@@ -6,6 +6,12 @@
 %     - Original file: Laurent Heirendt
 %     - CI integration: Laurent Heirendt
 
+% save the current path
+currentDir = pwd;
+
+% initialize the test
+initTest(fileparts(which(mfilename)));
+
 % define the vector vec
 vec = [1, 2, 3, 4, 5, 6];
 
@@ -39,3 +45,6 @@ end
 % check if the size is flipped
 assert(size(vec1, 1) == size(vec, 2))
 assert(size(vec1, 2) == size(vec, 1))
+
+% change the directory
+cd(currentDir)
