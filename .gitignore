@@ -52,9 +52,14 @@ test/testSampling/modelRedTmp.mat
 test/testSampling/sampleCbModelTmp.mat
 test/testSampling/sampleStructTmp.mat
 
-# verified tests
-test/verifiedTests/testSBML/*.sbml.xml
-test/verifiedTests/testFastGapFill/KEGGMatrix.mat
+# serial tests
+test/serialTests/testSBML/*.sbml.xml
+test/serialTests/testFastGapFill/KEGGMatrix.mat
+test/serialTests/testTools/testPrintMatrix.txt
+test/serialTests/testMassChargeBalance/*.txt
+test/serialTests/testFastGapFill/*.mat
+test/serialTests/testTools/testData_printLabeledData.txt
+test/serialTests/testSolvers/MILPProblem.mat
 
 # shared libraries
 *.so
