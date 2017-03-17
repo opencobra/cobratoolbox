@@ -29,8 +29,12 @@ testModelSBML = readCbModel('testModelSBML.sbml');
 assert(~any(numDiff))
 
 % remove the written file to clean up
-cd(fileparts(which(mfilename)))
-system('rm testModelSBML.sbml.xml')
+fullFileNamePath = [fileparts(which(mfilename)), filesep, 'testModelSBML.sbml.xml'];
+if exist(fullFileNamePath, 'file') == 2
+    system(['rm ', fullFileNamePath]);
+else
+    warning(['The file', fullFileNamePath, ' does not exist and could not be deleted.']);
+end
 
 % change the directory
 cd(currentDir)

@@ -40,12 +40,17 @@ try
     retrieveModels;
 
     % run the tests in the subfolder serialTests/ recursively and in parallel
-    resultSerial = runtests('./test/', 'Recursively', true, 'BaseFolder', '*serial*', 'UseParallel', true);
+    if verLessThan('matlab', '8.5') % < 2015
+        resultSerial = runtests('./test/', 'Recursively', true, 'BaseFolder', '*serial*');
+    else
+        resultSerial = runtests('./test/', 'Recursively', true, 'BaseFolder', '*serial*', 'UseParallel', true);
+    end
 
     % run the tests in the subfolder parallelTests/ recursively and in series
     resultParallel = runtests('./test/', 'Recursively', true, 'BaseFolder', '*parallel*');
 
-    result = [resultSerial, resultParallel];
+    % close all open figures
+    close all
 
     sumFailed = 0;
     sumIncomplete = 0;
@@ -57,9 +62,14 @@ try
               '-cover_json_file','coverage.json',...
               '-cover_method', 'profile');
 
-        for i = 1:size(result,2)
-            sumFailed = sumFailed + result(i).Failed;
-            sumIncomplete = sumIncomplete + result(i).Incomplete;
+        for i = 1:size(resultSerial,2)
+            sumFailed = sumFailed + resultSerial(i).Failed;
+            sumIncomplete = sumIncomplete + resultSerial(i).Incomplete;
+        end
+
+        for i = 1:size(resultParallel,2)
+            sumFailed = sumFailed + resultParallel(i).Failed;
+            sumIncomplete = sumIncomplete + resultParallel(i).Incomplete;
         end
 
         % load the coverage file
@@ -82,8 +92,13 @@ try
         fprintf('Covered Lines: %i, Total Lines: %i, Coverage: %f%%.\n', cl, tl, cl/tl * 100);
     end
 
-    % print out a summary table
-    table(result)
+    % print out a summary table (serial)
+    fprintf('Summary table of tests run sequentially.\n')
+    table(resultSerial)
+
+    % print out a summary table (parallel)
+    fprintf('Summary table of tests run in parallel.\n')
+    table(resultParallel)
 
     if sumFailed > 0 || sumIncomplete > 0
         exit_code = 1;
