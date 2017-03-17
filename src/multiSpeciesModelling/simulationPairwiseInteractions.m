@@ -45,12 +45,10 @@ for k=1:length(conditions)
     for i=2:size(pairedModelsList,1)
         % load each paired model
         load(pairedModelsList{i,1});
-        % Western diet, anaerobic
-        pairedModel=useHighFiberDiet_AGORA_pairedModels(pairedModel);
         % for each paired model, set both biomass objective functions as
         % objectives
-        biomass1=strcat(pairedModelsList{i,2},pairedModelsList{i,4});
-        biomass2=strcat(pairedModelsList{i,5},pairedModelsList{i,7});
+        biomass1=strcat(pairedModelsList{i,2},'_',pairedModelsList{i,4});
+        biomass2=strcat(pairedModelsList{i,5},'_',pairedModelsList{i,7});
         model1biomass=find(ismember(pairedModel.rxns,biomass1));
         pairedModel.c(model1biomass,1)=1;
         model2biomass=find(ismember(pairedModel.rxns,biomass2));
@@ -93,7 +91,7 @@ for k=1:length(conditions)
         load(pairedModelsList{i,1});
         pairedModel=changeObjective(pairedModel,biomass1);
         % disable flux through the second model
-        pairedModel=changeRxnBounds(pairedModel,pairedModel.rxns(strmatch(pairedModelsList{i,5},pairedModel.rxns)),0,'b');
+        pairedModel=changeRxnBounds(pairedModel,pairedModel.rxns(strmatch(strcat(pairedModelsList{i,5},'_'),pairedModel.rxns)),0,'b');
         % assign medium
         if k==1
             % Western diet without oxygen
@@ -118,6 +116,8 @@ for k=1:length(conditions)
         % load the model again to avoid errors
         load(pairedModelsList{i,1});
         pairedModel=changeObjective(pairedModel,biomass2);
+        % disable flux through the first model
+        pairedModel=changeRxnBounds(pairedModel,pairedModel.rxns(strmatch(strcat(pairedModelsList{i,2},'_'),pairedModel.rxns)),0,'b');
         % assign medium
         if k==1
             % Western diet without oxygen
@@ -134,10 +134,6 @@ for k=1:length(conditions)
             pairedModel=useHighFiberDiet_AGORA_pairedModels(pairedModel);
             pairedModel=changeRxnBounds(pairedModel,'EX_o2[u]',-10,'l');
         end
-        % disable flux through the first model
-        pairedModel=changeRxnBounds(pairedModel,pairedModel.rxns(strmatch(pairedModelsList{i,2},pairedModel.rxns)),0,'b');
-        % assign medium
-        pairedModel=changeRxnBounds(pairedModel,'EX_o2[u]',-10,'l');
         % calculate single biomass
         solutionSingle2=solveCobraLPCPLEX(pairedModel,2,0,0,[],1e-6);
         pairedGrowthResults{i,9}=solutionSingle2.full(model2biomass);

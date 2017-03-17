@@ -64,8 +64,8 @@ for i=2:size(InfoFile,1)
         % function. The coupling factor c here is 400 with a threshold u of
         % 0, this may be edited as convenient.
         
-        [pairedModel]=coupleRxnList2Rxn(pairedModel,pairedModel.rxns(strmatch(strcat(InfoFile{i,1},'_'),pairedModel.rxns,'exact')),strcat(InfoFile{i,1},'_',InfoFile{i,3}),400,0);
-        [pairedModel]=coupleRxnList2Rxn(pairedModel,pairedModel.rxns(strmatch(strcat(InfoFile{j,1},'_'),pairedModel.rxns,'exact')),strcat(InfoFile{j,1},'_',InfoFile{j,3}),400,0);
+        [pairedModel]=coupleRxnList2Rxn(pairedModel,pairedModel.rxns(strmatch(strcat(InfoFile{i,1},'_'),pairedModel.rxns)),strcat(InfoFile{i,1},'_',InfoFile{i,3}),400,0);
+        [pairedModel]=coupleRxnList2Rxn(pairedModel,pairedModel.rxns(strmatch(strcat(InfoFile{j,1},'_'),pairedModel.rxns)),strcat(InfoFile{j,1},'_',InfoFile{j,3}),400,0);
         
         save(strcat('pairedModel','_',InfoFile{i,1},'_',InfoFile{j,1},'.mat'),'pairedModel');
         
