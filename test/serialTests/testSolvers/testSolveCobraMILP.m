@@ -16,11 +16,11 @@ global path_ILOG_CPLEX
 global path_GUROBI
 global CBT_MILP_SOLVER
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-initTest([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testSolvers']);
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 % test solver packages
 solverPkgs = {'cplex_direct', 'ibm_cplex', 'tomlab_cplex', 'gurobi6', 'glpk'};
@@ -96,10 +96,10 @@ for k = 1:length(solverPkgs)
 end
 
 % remove the generated file
-fullFileNamePath = [CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testSolvers', filesep, 'MILPProblem.mat'];
+fullFileNamePath = [fileparts(which(mfilename)), filesep, 'MILPProblem.mat'];
 if exist(fullFileNamePath, 'file') == 2
     system(['rm ', fullFileNamePath]);
 end
 
 % change the directory
-cd(CBTDIR)
+cd(currentDir)

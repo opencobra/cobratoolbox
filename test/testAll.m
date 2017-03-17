@@ -13,12 +13,8 @@ end
 addpath(genpath(pwd))
 
 if length(which('initCobraToolbox.m')) == 0
-    % define the path to The COBRA Toolbox
-    pth = which('testAll.m');
-    CBTDIR = pth(1:end-(length('testAll.m') + 1));
-
     % change the directory to the root
-    cd([CBTDIR, filesep, '..', filesep]);
+    cd([fileparts(which(mfilename)), filesep, '..', filesep]);
 
     % include the root folder and all subfolders
     addpath(genpath(pwd));

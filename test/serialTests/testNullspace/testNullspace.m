@@ -11,11 +11,11 @@
 % Note:
 %     - LUSOL must have been installed, ususally this is done by initCobraToolbox.
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testOptimizeCbModel']);
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 %test lusol_mex with stoichiometric matrix from iAF120
 %{
@@ -26,10 +26,10 @@ else
 end
 A=model.S;
 %}
-if ~exist('modelLargeA.mat','file')
-    warning('testNullspace could not complete because modelLargeA.mat could not be found')
+if ~exist('modelLargeA.mat', 'file')
+    error('testNullspace could not complete because modelLargeA.mat could not be found');
 else
-    load modelLargeA
+    load('modelLargeA.mat');
 end
 
 
@@ -43,22 +43,25 @@ w     = nullSpaceOperatorApply(nullA,v); % is in the nullspace of S.
 Z     = nullspaceLUSOLtest(A,0);        % computes all cols of Z explicitly (as a quick test).
 % Then w2 = Z*v should be the same as w.
 %}
-[Z,rankS]=getNullSpace(A,0);
+[Z, rankS] = getNullSpace(A, 0);
 
 % Check if A*Z = 0.
-AZ    = A*Z;
-normAZ= norm(AZ,inf);
+AZ    = A * Z;
+normAZ= norm(AZ, inf);
 
 tol = 1e-9;
 
-if normAZ<tol
-    fprintf('%s%8.1e%s%8.1e\n','testNullspace passed: norm(S*Z,inf) =', normAZ, ', while tolerance is = ',tol)
+% give an explicit error message
+if normAZ < tol
+    fprintf('%s%8.1e%s%8.1e\n','testNullspace passed: norm(S*Z,inf) =', normAZ, ', while tolerance is = ', tol);
 else
-    fprintf('%s%8.1e%s%8.1e\n','testNullspace failed: norm(S*Z,inf) =', normAZ, ', while tolerance is = ',tol)
+    fprintf('%s%8.1e%s%8.1e\n','testNullspace failed: norm(S*Z,inf) =', normAZ, ', while tolerance is = ', tol);
 end
 
 assert(normAZ < tol)
 
+% change the directory
+cd(currentDir)
 
 % function [Z,nullS,rankS] = nullspaceLUSOLtest(S,printLevel)
 % %[Z,nullS,rankS] = nullspaceLUSOLtest(S,printLevel)

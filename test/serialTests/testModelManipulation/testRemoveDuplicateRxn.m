@@ -6,14 +6,13 @@
 % Authors:
 %     - CI integration: Laurent Heirendt January 2017
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep,'testModelManipulation']);
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 % test detection and removal of duplicate reactions
-
 model.S = [-1, 0, 0 ,0 , 0, 0, 0;
             1, -1, 0, 0, 0, 0, 0;
             0, -1, 0,-1, 0, 0, 0;
@@ -37,21 +36,24 @@ sc =  [1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 % adding a reaction to the model
 %[model,rxnIDexists] = addReaction(model,rxnName,metaboliteList,stoichCoeffList,revFlag,lowerBound,upperBound,objCoeff,subSystem,grRule,geneNameList,systNameList,checkDuplicate,printLevel)
-model = addReaction(model, 'GLCt1_duplicate_reverse', model.mets, sc, 0, 0, 20,0,'temp',[],[],[],1,0);
+model = addReaction(model, 'GLCt1_duplicate_reverse', model.mets, sc, 0, 0, 20,0,'temp', [], [], [], 1, 0);
 
-method='FR';%will be removed as detects reverse reaction
-printLevel=1;
-removeFlag=1;
-[model,removedRxn, rxnRelationship] = checkDuplicateRxn(model,method,removeFlag,printLevel);
+method = 'FR'; %will be removed as detects reverse reaction
+printLevel = 1;
+removeFlag = 1;
+[model, removedRxn, rxnRelationship] = checkDuplicateRxn(model, method, removeFlag, printLevel);
 
-assert(rxns_length==length(model.rxns));
+assert(rxns_length == length(model.rxns));
 
 % adding a reaction to the model
-model = addReaction(model, 'GLCt1_duplicate_reverse', model.mets, sc, 0, 0, 20,0,'temp',[],[],[],1,0);
+model = addReaction(model, 'GLCt1_duplicate_reverse', model.mets, sc, 0, 0, 20,0,'temp', [], [], [], 1, 0);
 
-method='S';%will not be removed as does not detect reverse reaction
-printLevel=1;
-removeFlag=1;
-[model,removedRxn, rxnRelationship] = checkDuplicateRxn(model,method,removeFlag,printLevel);
+method = 'S';%will not be removed as does not detect reverse reaction
+printLevel = 1;
+removeFlag = 1;
+[model, removedRxn, rxnRelationship] = checkDuplicateRxn(model, method, removeFlag, printLevel);
 
 assert(rxns_length+1==length(model.rxns));
+
+%return to original directory
+cd(currentDir)

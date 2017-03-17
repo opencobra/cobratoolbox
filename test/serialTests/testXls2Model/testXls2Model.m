@@ -12,12 +12,11 @@
 % Authors:
 %     - CI integration: Laurent Heirendt
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-% remove the generated file
-cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testXls2Model']);
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 % convert the model
 model = xls2model('cobra_import_toy_model.xlsx');
@@ -32,4 +31,4 @@ assert(length(model.mets) == 5)
 assert(length(fields(model)) == 27)
 
 % change the directory
-cd(CBTDIR)
+cd(currentDir)

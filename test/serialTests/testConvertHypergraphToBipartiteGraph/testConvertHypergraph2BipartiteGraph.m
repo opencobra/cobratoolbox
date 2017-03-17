@@ -12,11 +12,11 @@
 %     - original file: Marouen BEN GUEBILA - 10/02/2017
 %     - integration of test to CI: Laurent Heirendt - February 2017
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-initTest([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testConvertHypergraphToBipartiteGraph']);
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 for flag = 1:2
     if flag == 1
@@ -59,4 +59,4 @@ for printLevel = 0:1
 end
 
 % change the directory
-cd(CBTDIR)
+cd(currentDir)

@@ -55,7 +55,6 @@ test/testSampling/sampleStructTmp.mat
 # serial tests
 test/serialTests/testSBML/*.sbml.xml
 test/serialTests/testFastGapFill/KEGGMatrix.mat
-test/serialTests/testTools/testData_printLabeledData.txt
 test/serialTests/testTools/testPrintMatrix.txt
 test/serialTests/testMassChargeBalance/*.txt
 test/serialTests/testFastGapFill/*.mat

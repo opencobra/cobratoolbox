@@ -17,11 +17,11 @@
 global path_TOMLAB
 global path_GUROBI
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-initTest([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testFBA']);
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 % set the tolerance
 tol = 1e-8;
@@ -111,4 +111,4 @@ for k = 1:length(solverPkgs)
 end
 
 % change the directory
-cd(CBTDIR)
+cd(currentDir)

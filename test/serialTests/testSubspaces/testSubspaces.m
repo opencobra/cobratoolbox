@@ -9,11 +9,11 @@
 %     - Original test file: Ronan Fleming
 %     - CI integration: Laurent Heirendt January 2017
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testSolvers']);
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 % define the tolerance
 tol = 1e-6;
@@ -71,3 +71,6 @@ u_L = PL * u;
 % perform the test
 assert(norm(v - v_R - v_N) < tol)
 assert(norm(u - u_C - u_L) < tol)
+
+% change the directory
+cd(currentDir)

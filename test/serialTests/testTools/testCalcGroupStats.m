@@ -8,11 +8,11 @@
 %     - Lemmer El Assal February 2017
 %
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testTools']);
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 % load reference data - too complex to embed
 load('refData_calcGroupStats.mat');
@@ -32,4 +32,4 @@ end
 assert(isequal(ref_groupStat, groupStat))
 
 % change the directory
-cd(CBTDIR)
+cd(currentDir)

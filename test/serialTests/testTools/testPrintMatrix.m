@@ -6,12 +6,11 @@
 %     - Original file: Laurent Heirendt
 %     - CI integration: Laurent Heirendt
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-% change to
-cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testTools'])
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 fileName = 'testPrintMatrix.txt';
 nbFormat = '%3.2f\t';
@@ -38,7 +37,7 @@ assert(printMatrix(A, nbFormat) == 1);
 assert(printMatrix(A, nbFormat, fileName) == 1);
 
 % remove the generated file
-fullFileNamePath = [CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools', filesep, fileName];
+fullFileNamePath = [fileparts(which(mfilename)), filesep, fileName];
 if exist(fullFileNamePath, 'file') == 2
     system(['rm ', fullFileNamePath]);
 else
@@ -59,7 +58,7 @@ assert(retStatus == 1);
 assert(isequal(data1, data2))
 
 % remove the generated file
-fullFileNamePath = [CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools', filesep, fileName];
+fullFileNamePath = [fileparts(which(mfilename)), filesep, fileName];
 if exist(fullFileNamePath, 'file') == 2
     system(['rm ', fullFileNamePath]);
 else
@@ -67,4 +66,4 @@ else
 end
 
 % change the directory
-cd(CBTDIR)
+cd(currentDir)

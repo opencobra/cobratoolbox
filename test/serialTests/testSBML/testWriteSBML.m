@@ -8,12 +8,11 @@
 %     - Partial original file: Joseph Kang 04/07/09
 %     - CI integration: Laurent Heirendt
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-% read in the .xml model first
-cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testSBML'])
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 testModelXML = readCbModel('Ec_iJR904.xml');
 
@@ -30,8 +29,8 @@ testModelSBML = readCbModel('testModelSBML.sbml');
 assert(~any(numDiff))
 
 % remove the written file to clean up
-cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testSBML'])
+cd(fileparts(which(mfilename)))
 system('rm testModelSBML.sbml.xml')
 
 % change the directory
-cd(CBTDIR)
+cd(currentDir)

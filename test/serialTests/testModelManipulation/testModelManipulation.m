@@ -13,11 +13,11 @@
 %     - Richard Que (12/16/09) Added testing of convertToIrrevsible/Reversible
 %     - CI integration: Laurent Heirendt January 2017
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep,'testModelManipulation']);
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 % Test with non-empty model
 fprintf('>> Starting non-empty model tests:\n');
@@ -171,4 +171,4 @@ model.rev(20) = 1;
 assert(isSameCobraModel(modelIrrev, testModelIrrev));
 
 % change the directory
-cd(CBTDIR)
+cd(currentDir)

@@ -17,11 +17,11 @@
 global path_TOMLAB
 global path_GUROBI
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-cd([CBTDIR, filesep, 'test', filesep, 'serialTests', filesep, 'testSBML'])
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 % load the test models
 testModel = readCbModel('Ec_iJR904.xml');
@@ -47,7 +47,7 @@ assert(length(model.metFormulas) == length(testModel.metFormulas))
 assert(length(model.b) == length(testModel.b))
 
 % initialize the test
-initTest([CBTDIR, filesep, 'test', filesep, 'models']);
+initTest([fileparts(which('initCobraToolbox.m')), filesep, 'test', filesep, 'models']);
 
 % define the solver packages to be used to run this test
 solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
@@ -118,4 +118,4 @@ for k = 1:length(solverPkgs)
 end
 
 % change the directory
-cd(CBTDIR)
+cd(currentDir)
