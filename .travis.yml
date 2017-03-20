@@ -14,6 +14,13 @@ script:
     # launch the tests
     - sh ./runtests.sh
 
+    # launch tutorials
+    - if [ "$MATLAB_VER" == "R2016b" ]; then
+          if [ "$CI_PROJECT_NAME" == "COBRAToolbox-branches-auto" ] || [ "$CI_PROJECT_NAME" == "COBRAToolbox-branches-manual" ]; then
+              sh ./tutorials/runtutorials.sh;
+          fi;
+      fi;
+
 after_success:
     - if [ "$MATLAB_VER" == "R2016b" ]; then
       bash <(curl -s https://codecov.io/bash) -f "!*.lst";
