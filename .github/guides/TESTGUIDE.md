@@ -187,7 +187,7 @@ Common errors include:
 - Double percentage sign `%%` in your test file to separate code blocks. Replace `%%` with `%`.
 - Compatibility issues (`ILOG Cplex` is not compatible with `R2015b+`). Add an additional test on the version of matlab using `verLessThan('matlab', '<version>')`.
 
-## How can I find out how many tests have failed?
+## Can I find out how many tests have failed?
 
 The idea of continuous integration and unit testing is to have all tests passing. The logical conditions, when tested using `assert()`, will throw an error when not satisfied. It is bad practice to test the sum of tests passed and failed. Please only test using `assert(logicalCondition)`.
 
@@ -197,14 +197,14 @@ For instance, the following test script:
 testPassed = 0;
 testFailed = 0;
 
-% test on logical condition 1
+% test on logical condition 1 - do not do this: bad practice!
 if (logicalCondition1)
     testPassed = testPassed + 1;
 else
     testFailed = testFailed + 1;
 end
 
-% test on logical condition 2
+% test on logical condition 2 - do not do this: bad practice!
 if (logicalCondition2)
     testPassed = testPassed + 1;
 else
@@ -215,6 +215,8 @@ assert(testPassed == 2 && testFailed == 0);
 ````
 shall be rewritten as follows:
 ````Matlab
+% good practice
 assert(logicalCondition1);
 assert(logicalCondition2);
 ````
+Eventhough a test may fail using `assert()`, a summary table with comprehensive information is provided at the end of the test run.

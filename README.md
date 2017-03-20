@@ -44,7 +44,7 @@ How to contribute
 -----------------
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/laurentheirendt/devTools/master/assets/devTools_logo.png" height="120px"/>
+<img src="https://raw.githubusercontent.com/opencobra/MATLAB.devTools/develop/assets/devTools_logo.png" height="120px"/>
 </p>
 
 ![#ff0000](https://placehold.it/15/ff0000/000000?text=+) **Check out the [MATLAB.devTools](https://github.com/opencobra/MATLAB.devTools) - and contribute the smart way!**
