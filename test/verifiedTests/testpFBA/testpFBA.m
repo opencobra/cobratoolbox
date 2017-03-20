@@ -17,11 +17,11 @@
 global path_TOMLAB
 global path_GUROBI
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testpFBA']);
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 %tolerance
 tol = 1e-8;
@@ -34,6 +34,12 @@ objModel = load('testpFBAData.mat', 'modelIrrev_glc1', 'modelIrrev_glc0', 'model
 
 % list of solver packages
 solverPkgs = {'tomlab_cplex', 'gurobi6', 'glpk'};
+
+% create a parallel pool
+poolobj = gcp('nocreate'); % if no pool, do not create new one.
+if isempty(poolobj)
+    parpool(2); % launch 2 workers
+end
 
 for k = 1:length(solverPkgs)
     fprintf(' -- Running testfindBlockedReaction using the solver interface: %s ... ', solverPkgs{k});
@@ -48,13 +54,6 @@ for k = 1:length(solverPkgs)
     solverLPOK = changeCobraSolver(solverPkgs{k});
 
     if solverLPOK
-
-        % create a parallel pool with 2 workers
-        poolobj = gcp('nocreate'); % if no pool, do not create new one.
-        if isempty(poolobj)
-            % launch 2 workers
-            parpool(2);
-        end
 
         % run pFBA
         fprintf('\n*** Test basic pFBA calculations ***\n\n');
@@ -149,4 +148,4 @@ for k = 1:length(solverPkgs)
 end
 
 % change back to the root directory
-cd(CBTDIR);
+cd(currentDir)

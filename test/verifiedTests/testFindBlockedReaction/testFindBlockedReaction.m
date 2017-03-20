@@ -14,11 +14,11 @@
 global path_TOMLAB
 global path_GUROBI
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testFindBlockedReaction'])
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 load('ecoli_core_model.mat', 'model');
 
@@ -28,10 +28,10 @@ ecoli_blckd_rxn = {'EX_fru(e)', 'EX_fum(e)', 'EX_gln_L(e)', 'EX_mal_L(e)', ...
 % list of solver packages
 solverPkgs = {'tomlab_cplex', 'gurobi', 'glpk'};
 
-poolobj = gcp('nocreate'); % If no pool, do not create new one.
+% create a parallel pool
+poolobj = gcp('nocreate'); % if no pool, do not create new one.
 if isempty(poolobj)
-    % launch 2 workers
-    parpool(2);
+    parpool(2); % launch 2 workers
 end
 
 for k = 1:length(solverPkgs)
@@ -80,4 +80,4 @@ for k = 1:length(solverPkgs)
 end
 
 % change the directory
-cd(CBTDIR)
+cd(currentDir)
