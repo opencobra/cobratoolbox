@@ -9,13 +9,13 @@
 % This script requires the COBRA Toolbox function solceCobraLPCPLEX and the
 % TOMLAB Cplex solver. Due to the coupling constraints on the pairwise
 % models, the simulations cannot currently be run with optimizeCbModel.
-% Please cite "Magnúsdóttir, Heinken et al., Nat Biotechnol. 2017 35(1):81-89"
+% Please cite "Magnï¿½sdï¿½ttir, Heinken et al., Nat Biotechnol. 2017 35(1):81-89"
 % if you use this script for your own analysis.
 
 % Almut Heinken 15.03.2017
 
 % four simulation conditions-set
-% diets require the scripts useWesternDiet_AGORA_pairedModels and 
+% diets require the scripts useWesternDiet_AGORA_pairedModels and
 % useHighFiberDiet_AGORA_pairedModels
 conditions={
     'WesternDiet_NoOxygen'
@@ -80,11 +80,11 @@ for k=1:length(conditions)
         pairedGrowthResults{i,3}=pairedModelsList{i,3};
         pairedGrowthResults{i,4}=pairedModelsList{i,5};
         pairedGrowthResults{i,5}=pairedModelsList{i,6};
-        
+
         % combined growth
         pairedGrowthResults{i,6}=solutionPaired.full(model1biomass);
         pairedGrowthResults{i,7}=solutionPaired.full(model2biomass);
-        
+
         % separate growth
         % silence model 2 and optimize model 1
         % load the model again to avoid errors
@@ -111,7 +111,7 @@ for k=1:length(conditions)
         % calculate single biomass
         solutionSingle1=solveCobraLPCPLEX(pairedModel,2,0,0,[],1e-6);
         pairedGrowthResults{i,8}=solutionSingle1.full(model1biomass);
-        
+
         % silence model 1 and optimize model 2
         % load the model again to avoid errors
         load(pairedModelsList{i,1});
@@ -137,13 +137,13 @@ for k=1:length(conditions)
         % calculate single biomass
         solutionSingle2=solveCobraLPCPLEX(pairedModel,2,0,0,[],1e-6);
         pairedGrowthResults{i,9}=solutionSingle2.full(model2biomass);
-        
+
         % Analysis of the results
-        
+
         % define what counts as significant difference-here 10% (may be
         % changed if desired)
         sigD= 0.1;
-        
+
         % first make sure that infeasible solutions are flagged
         if solutionPaired.stat==0 || solutionSingle1.stat==0 || solutionSingle2.stat==0
             pairedGrowthResults{i,10} = 'Infeasible';
