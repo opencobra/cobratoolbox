@@ -62,6 +62,9 @@ for k = 1:length(solverPkgs)
         %test basis reuse
         [solTest] = solveCobraLPCPLEX(basis, 0, 1, 0, [], 0, solverPkgs{k});
         assert(any(abs(solTest.obj - sol.obj) < tol));
+
+        % output a success message
+        fprintf('Done.\n');
     end
 
     % remove the solver paths (temporary addition for CI)
