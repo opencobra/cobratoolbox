@@ -21,7 +21,7 @@ function [iAFirstOrg,iASecondOrg,iATotal]=analyzePairwiseInteractions(pairedGrow
 % CommensalismTaker
 % Mutualism: both organisms growth faster in co-growth than separately
 % (same outcome for both)
-% Please cite "Magnúsdóttir, Heinken et al., Nat Biotechnol. 2017 35(1):81-89"
+% Please cite "Magnï¿½sdï¿½ttir, Heinken et al., Nat Biotechnol. 2017 35(1):81-89"
 % if you use this script for your own analysis.
 % Almut Heinken 16.03.2017
 % REQUIRED INPUTS:

@@ -1,6 +1,6 @@
 function [modelOut]=useWesternDiet_AGORA_pairedModels(modelIn)
 % assigns a "Western" diet for the 773 AGORA microbes
-% Please cite "Magnúsdóttir, Heinken et al., Nat Biotechnol. 2017 35(1):81-89"
+% Please cite "Magnï¿½sdï¿½ttir, Heinken et al., Nat Biotechnol. 2017 35(1):81-89"
 % if you use this script for your own analysis.
 % Almut Heinken 16.03.2017
 
@@ -8,7 +8,7 @@ model=modelIn;
 model=changeRxnBounds(model,model.rxns(strmatch('EX_',model.rxns)),0,'l');
 
 DietConstraints={
-% simple sugars and starch	
+% simple sugars and starch
 'EX_fru[u]'	,-0.148986
 'EX_glc_D[u]'	,-0.148986
 'EX_gal[u]'	,-0.148986
@@ -29,7 +29,7 @@ DietConstraints={
 'EX_cellb[u]'	,-0.074493
 'EX_tre[u]'	,-0.074493
 'EX_strch1[u]'	,-0.257339
-% fiber	
+% fiber
 'EX_amylopect900[u]'	,-0.0000156731
 'EX_amylose300[u]'	,-0.0000470194
 'EX_arabinan101[u]'	,-0.000166277
@@ -54,7 +54,7 @@ DietConstraints={
 'EX_starch1200[u]'	,-0.0000117549
 'EX_xylan[u]'	,-0.0000320587
 'EX_xyluglc[u]'	,-0.0000131462
-% fat	
+% fat
 'EX_arachd[u]'	,-0.003328
 'EX_chsterol[u]'	,-0.004958
 'EX_glyc[u]'	,-1.799655
@@ -67,7 +67,7 @@ DietConstraints={
 'EX_ocdcea[u]'	,-0.681445
 'EX_octa[u]'	,-0.012943
 'EX_ttdca[u]'	,-0.068676
-% protein	
+% protein
 'EX_ala_L[u]'	,-1
 'EX_cys_L[u]'	,-1
 'EX_ser_L[u]'	,-1
@@ -88,7 +88,7 @@ DietConstraints={
 'EX_tyr_L[u]'	,-1
 'EX_gly[u]'	,-0.45
 'EX_trp_L[u]'	,-0.08182
-% minerals, vitamins, cofactors, other	
+% minerals, vitamins, cofactors, other
 'EX_12dgr180[u]'	,-1
 'EX_26dap_M[u]'	,-1
 'EX_2dmmq8[u]'	,-1
@@ -194,9 +194,9 @@ DietConstraints={
 'EX_vitd3[u]'	,-1
 'EX_xan[u]'	,-1
 'EX_zn2[u]'	,-1
-% only for methanogens	
+% only for methanogens
 'EX_meoh[u]'	,-10
-% other compounds	
+% other compounds
 'EX_h2o[u]'	,-10
     };
 

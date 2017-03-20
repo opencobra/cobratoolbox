@@ -1,6 +1,6 @@
 function [modelOut]=useHighFiberDiet_AGORA_pairedModels(modelIn)
 % assigns a high fiber diet for the 773 AGORA microbes
-% Please cite "Magnúsdóttir, Heinken et al., Nat Biotechnol. 2017 35(1):81-89"
+% Please cite "Magnï¿½sdï¿½ttir, Heinken et al., Nat Biotechnol. 2017 35(1):81-89"
 % if you use this script for your own analysis.
 % Almut Heinken 16.03.2017
 
@@ -8,7 +8,7 @@ model=modelIn;
 model=changeRxnBounds(model,model.rxns(strmatch('EX_',model.rxns)),0,'l');
 
 DietConstraints={
-% simple sugars and starch	
+% simple sugars and starch
 'EX_fru[u]'	,-0.03947
 'EX_glc_D[u]'	,-0.03947
 'EX_gal[u]'	,-0.03947
@@ -29,7 +29,7 @@ DietConstraints={
 'EX_cellb[u]'	,-0.01974
 'EX_tre[u]'	,-0.01974
 'EX_strch1[u]'	,-0.06818
-% fiber	
+% fiber
 'EX_amylopect900[u]'	,-0.0003472222
 'EX_amylose300[u]'	,-0.0010416667
 'EX_arabinan101[u]'	,-0.0036836935
@@ -54,7 +54,7 @@ DietConstraints={
 'EX_starch1200[u]'	,-0.0002604167
 'EX_xylan[u]'	,-0.0007102273
 'EX_xyluglc[u]'	,-0.0002912395
-% fat	
+% fat
 'EX_arachd[u]'	,-0.001664
 'EX_chsterol[u]'	,-0.002479
 'EX_glyc[u]'	,-0.899827
@@ -67,7 +67,7 @@ DietConstraints={
 'EX_ocdcea[u]'	,-0.340722
 'EX_octa[u]'	,-0.006471
 'EX_ttdca[u]'	,-0.034338
-% protein	
+% protein
 'EX_ala_L[u]'	,-1
 'EX_cys_L[u]'	,-1
 'EX_ser_L[u]'	,-1
@@ -88,7 +88,7 @@ DietConstraints={
 'EX_tyr_L[u]'	,-1
 'EX_gly[u]'	,-0.45
 'EX_trp_L[u]'	,-0.08182
-% minerals, vitamins, cofactors, other	
+% minerals, vitamins, cofactors, other
 'EX_12dgr180[u]'	,-1
 'EX_26dap_M[u]'	,-1
 'EX_2dmmq8[u]'	,-1
@@ -195,9 +195,9 @@ DietConstraints={
 'EX_vitd3[u]'	,-1
 'EX_xan[u]'	,-1
 'EX_zn2[u]'	,-1
-% only for methanogens	
+% only for methanogens
 'EX_meoh[u]'	,-10
-% other compounds	
+% other compounds
 'EX_h2o[u]'	,-10
 };
 
