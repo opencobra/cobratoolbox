@@ -1,5 +1,7 @@
-% test that the pairwise models created by script BuildPairwiseModels have 
+% test that the pairwise models created by script BuildPairwiseModels have
 % all reactions of the respective microbe reconstructions that were joined.
+
+buildPairwiseModels
 
 load pairedModelsList;
 for i=2:size(pairedModelsList,1)

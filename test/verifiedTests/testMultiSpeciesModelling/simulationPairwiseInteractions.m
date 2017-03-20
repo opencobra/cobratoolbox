@@ -18,9 +18,9 @@
 % diets require the scripts useWesternDiet_AGORA_pairedModels and
 % useHighFiberDiet_AGORA_pairedModels
 conditions={
-    'WesternDiet_NoOxygen'
+    %'WesternDiet_NoOxygen'
     'WesternDiet_WithOxygen'
-    'HighFiberDiet_NoOxygen'
+    %'HighFiberDiet_NoOxygen'
     'HighFiberDiet_WithOxygen'
     };
 
@@ -73,7 +73,7 @@ for k=1:length(conditions)
             pairedModel=changeRxnBounds(pairedModel,'EX_o2[u]',-10,'l');
         end
         % calculate joint biomass
-        solutionPaired=solveCobraLPCPLEX(pairedModel,2,0,0,[],1e-6);
+        solutionPaired = solveCobraLP(pairedModel); %solveCobraLPCPLEX(pairedModel,2,0,0,[],1e-6);
         % fill out the results table with the model information
         pairedGrowthResults{i,1}=pairedModelsList{i,1};
         pairedGrowthResults{i,2}=pairedModelsList{i,2};
@@ -109,7 +109,7 @@ for k=1:length(conditions)
             pairedModel=changeRxnBounds(pairedModel,'EX_o2[u]',-10,'l');
         end
         % calculate single biomass
-        solutionSingle1=solveCobraLPCPLEX(pairedModel,2,0,0,[],1e-6);
+        solutionSingle1= solveCobraLP(pairedModel); %solveCobraLPCPLEX(pairedModel,2,0,0,[],1e-6);
         pairedGrowthResults{i,8}=solutionSingle1.full(model1biomass);
 
         % silence model 1 and optimize model 2
@@ -135,7 +135,7 @@ for k=1:length(conditions)
             pairedModel=changeRxnBounds(pairedModel,'EX_o2[u]',-10,'l');
         end
         % calculate single biomass
-        solutionSingle2=solveCobraLPCPLEX(pairedModel,2,0,0,[],1e-6);
+        solutionSingle2 = solveCobraLP(pairedModel); %solveCobraLPCPLEX(pairedModel,2,0,0,[],1e-6);
         pairedGrowthResults{i,9}=solutionSingle2.full(model2biomass);
 
         % Analysis of the results

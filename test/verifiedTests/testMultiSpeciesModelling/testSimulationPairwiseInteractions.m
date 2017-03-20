@@ -11,6 +11,16 @@
 % interaction was considered neutral for one species, the growth rate has
 % to differ by less than 10% in co-growth compared with single growth.
 
+%global path_ILOG_CPLEX
+
+initTest('.')
+
+%addpath(genpath(path_ILOG_CPLEX))
+
+changeCobraSolver('glpk')
+simulationPairwiseInteractions
+
+
 sigD=0.1;
 for k=1:length(conditions)
     load(strcat('pairedGrowthResults_',conditions{k}));
