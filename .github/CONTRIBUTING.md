@@ -12,9 +12,9 @@
 
 If you want to use `git` via the command line interface and need help, these [training slides](https://uni-lu.github.io/slides/) will get you started. This [guide](https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github) or the official [GitHub guide](https://help.github.com/articles/creating-a-pull-request/) also come in handy.
 
-- More information on writing a **test** is [here](TESTGUIDE.md).
-- A guide on reporting an **issue** is [here](ISSUEGUIDE.md).
-- Answers to Frequently Asked Questions (**FAQ**) are [here](FAQ.md)
-- The **style guide** is given [here](STYLEGUIDE.md).
+- More information on writing a **test** is [here](guides/TESTGUIDE.md).
+- A guide on reporting an **issue** is [here](guides/ISSUEGUIDE.md).
+- Answers to Frequently Asked Questions (**FAQ**) are [here](guides/FAQ.md)
+- The **style guide** is given [here](guides/STYLEGUIDE.md).
 
 *This guide is inspired by [ATOM's contributing guide](https://github.com/atom/atom/blob/master/CONTRIBUTING.md). Feel free to propose changes to this document in a pull request.*
