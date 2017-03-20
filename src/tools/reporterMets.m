@@ -58,7 +58,7 @@ if (pValFlag)
     %error('Not implemented yet')
     minP = min(min(data(data ~= 0)));
     data(data == 0) = minP;
-    data = -norminv(data,0,1);;
+    data = -norminv(data,0,1);
 end
 
 [nRxnsTot,nData] = size(data);
@@ -141,7 +141,7 @@ if (~isempty(nRand))
             randScore = [];
             for j = 1:nRand
                 % Sample with replacement
-                randInd = randint(nRxns,1,[1 nRxnsTot]);
+                randInd = randi([1 nRxnsTot],nRxns,1); % randint no longer exists
                 if (length(randInd) == 1)
                     switch metric
                         case {'default','std','mean','median'}
