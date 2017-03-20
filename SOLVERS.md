@@ -48,12 +48,13 @@ $ ./grbgetkey YOUR-LICENCE-KEY-FROM-SITE
 ````
 
 5) Use default directory for licence file (/home/<userid>).
-6) ````sh
+6) Edit the bash settings to include paths:
+````sh
 $ sudo nano ~/.bashrc
 ````
 
 7) Append these lines, save and exit:
-`export GUROBI_HOME=/usr/local/bin/gurobi<ver>/linux64
+export GUROBI_HOME=/usr/local/bin/gurobi<ver>/linux64
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/bin/gurobi<ver>/linux64/lib
 export GRB_LICENSE_FILE=/home/<userid>/gurobi.lic
 
@@ -75,10 +76,12 @@ CPU=...
 IBM CPLEX
 ----------
 1) Acquire CPLEX installation binary from [here](https://www-01.ibm.com/software/websphere/products/optimization/cplex-studio-community-edition/)
-2) ````sh
+2) Add execute permission to binary:
+````sh 
 $ chmod +x <cplexbinary>.bin
 ````
-3) ````sh
+3) Execute the installer binary as superuser:
+````sh
 $ sudo ./<cplexbinary>.bin
 ````
 4) Follow the installation procedure. Accept the default installation path.
@@ -105,5 +108,3 @@ $ sudo apt-get install g++-4.9
 $ sudo mv /usr/bin/g++ /usr/bin/g++-5.4
 $ sudo mv /usr/bin/g++-4.9 /usr/bin/g++
 ```` 
-
-
