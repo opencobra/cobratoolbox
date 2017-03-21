@@ -20,7 +20,7 @@
 conditions = {
     %'WesternDiet_NoOxygen'
     'WesternDiet_WithOxygen'
-    %'HighFiberDiet_NoOxygen'
+    'HighFiberDiet_NoOxygen'
     'HighFiberDiet_WithOxygen'
 };
 
