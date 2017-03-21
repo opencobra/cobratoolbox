@@ -20,9 +20,6 @@ currentDir = pwd;
 % initialize the test
 initTest(fileparts(which(mfilename)));
 
-% define the solver packages to be used to run this test
-solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
-
 % test coupling constraints
 load('ecoli_core_model.mat', 'model');
 

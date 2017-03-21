@@ -53,6 +53,7 @@ test/testSampling/sampleCbModelTmp.mat
 test/testSampling/sampleStructTmp.mat
 
 # verified tests
+test/verifiedTests/testMultiSpeciesModelling/*.mat
 test/verifiedTests/testSBML/*.sbml.xml
 test/verifiedTests/testFastGapFill/KEGGMatrix.mat
 test/verifiedTests/testTools/testPrintMatrix.txt
