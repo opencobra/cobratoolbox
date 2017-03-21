@@ -8,11 +8,11 @@
 %     - Lemmer El Assal February 2017
 %
 
-% save the current path
-currentDir = pwd;
+% define the path to The COBRAToolbox
+pth = which('initCobraToolbox.m');
+CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
 
-% initialize the test
-initTest(fileparts(which(mfilename)));
+cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools']);
 
 % load reference data - too complex to embed
 load('refData_calcGroupStats.mat');
@@ -29,7 +29,13 @@ for i = 1:4
     assert(isequal(ref_groupCnt, groupCnt));
 end
 
-assert(isequal(ref_groupStat, groupStat))
+assert(isequal(ref_groupStat, groupStat));
+
+[groupStat(:,:,1), groupList, groupCnt] = calcGroupStats(data, groups); % nargin < 3 sets statname to 'mean' and nRand to 1000
+assert(isequal(ref_groupList, groupList));
+assert(isequal(ref_groupCnt, groupCnt));
+assert(isequal(ref_groupStat, groupStat));
+
 
 % change the directory
-cd(currentDir)
+cd(CBTDIR)

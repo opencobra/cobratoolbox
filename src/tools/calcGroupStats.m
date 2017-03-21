@@ -27,19 +27,19 @@ function [groupStat,groupList,groupCnt,zScore] = calcGroupStats(data,groups,stat
 
 [nItems,nSets] = size(data);
 
-if (nargin < 3)
+if nargin < 3
     statName = 'mean';
 end
-if (nargin < 4)
+if nargin < 4
     groupList = unique(groups);
 end
-if (isempty(groupList))
+if isempty(groupList)
     groupList = unique(groups);
 end
-if (nargin < 5)
+if nargin < 5
     randStat = false;
 end
-if (nargin < 6)
+if nargin < 6
     nRand = 1000;
 end
 
@@ -50,7 +50,7 @@ else
 end
 
 for i = 1:length(groupList)
-    if (cellFlag)
+    if cellFlag
         selGroup = strcmp(groups,groupList{i});
     else
         selGroup = (groups == groupList(i));
@@ -62,7 +62,7 @@ end
 
 groupCnt = groupCnt';
 
-if (randStat)
+if randStat
     groupCntList = unique(groupCnt);
 
     zScore = zeros(length(groupList),nSets);
@@ -70,7 +70,7 @@ if (randStat)
     for i = 1:length(groupCntList)
         thisGroupCnt = groupCntList(i);
         selGroups = find(groupCnt == thisGroupCnt);
-        if (thisGroupCnt > 0)
+        if thisGroupCnt > 0
             for j = 1:nRand
                 randInd = randperm(nItems);
                 randData = data(randInd(1:thisGroupCnt),:);
@@ -86,28 +86,28 @@ end
 
 function groupStat = calcStatInternal(groupCnt,data,statName,nSets)
 
-if (groupCnt > 0)
+if groupCnt > 0
     switch lower(statName)
         case 'mean'
-            if (groupCnt > 1)
+            if groupCnt > 1
                 groupStat = nanmean(data);
             else
                 groupStat = data;
             end
         case 'std'
-            if (groupCnt > 1)
+            if groupCnt > 1
                 groupStat = nanstd(data);
             else
                 groupStat = zeros(1,nSets);
             end
         case 'median'
-            if (groupCnt > 1)
+            if groupCnt > 1
                 groupStat = nanmedian(data);
             else
                 groupStat = data;
             end
         case 'count'
-            if (groupCnt > 1)
+            if groupCnt > 1
                 groupStat = nansum(data);
             else
                 groupStat = data;
