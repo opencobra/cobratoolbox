@@ -37,9 +37,9 @@ solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
 for p = 1:length(solverPkgs)
 
     % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
+    if strcmp(solverPkgs{p}, 'tomlab_cplex')
         addpath(genpath(path_TOMLAB));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
+    elseif strcmp(solverPkgs{p}, 'gurobi6')
         addpath(genpath(path_GUROBI));
     end
 
