@@ -1,6 +1,9 @@
 Solver Installation Guide (Linux)
 ---------------------------------
 
+Most steps require superuser rights (sudo).
+
+
 Tomlab
 ------
 1) Download `TOMLAB /SNOPT` and `TOMLAB /CPLEX` from [here](http://tomopt.com/scripts/register.php)
