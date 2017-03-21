@@ -18,81 +18,109 @@
 %     - CI integration - Laurent Heirendt - March 2017
 %
 
+% define global paths
+global path_TOMLAB
+global path_GUROBI
+
 currentDir = pwd;
 
-% global path_ILOG_CPLEX
-
 initTest(fileparts(which(mfilename)));
-
-% addpath(genpath(path_ILOG_CPLEX))
-
-changeCobraSolver('glpk')
 
 % if the pairedModelsList file does not exist yet, build the models first
 if exist('pairedModelsList.mat', 'file') ~= 2
     buildPairwiseModels;
 end
 
-% launch the simulation for pairwise interactions
-simulationPairwiseInteractions
+% define the solver packages to be used to run this test
+solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
 
-sigD = 0.1;
-for k = 1:length(conditions)
-    load(strcat('pairedGrowthResults_', conditions{k}));
-    for i = 2:size(pairedGrowthResults, 1)
-        if strcmp(pairedGrowthResults{i, 10}, 'Competition')
-            assert((abs(pairedGrowthResults{i, 8} / pairedGrowthResults{i, 6})) - 1 > sigD)
-            assert((abs(pairedGrowthResults{i, 9} / pairedGrowthResults{i, 7})) - 1 > sigD)
-            assert(strcmp(pairedGrowthResults{i, 11}, 'Competition'))
-            assert(strcmp(pairedGrowthResults{i, 12}, 'Competition'))
+for p = 1:length(solverPkgs)
+
+    % add the solver paths (temporary addition for CI)
+    if strcmp(solverPkgs{k}, 'tomlab_cplex')
+        addpath(genpath(path_TOMLAB));
+    elseif strcmp(solverPkgs{k}, 'gurobi6')
+        addpath(genpath(path_GUROBI));
+    end
+
+    solverOK = changeCobraSolver(solverPkgs{p});
+
+    if solverOK == 1
+
+        fprintf('   Testing simulation pairwise interactions using %s ... ', solverPkgs{p});
+
+        % launch the simulation for pairwise interactions
+        simulationPairwiseInteractions;
+
+        sigD = 0.1;
+        for k = 1:length(conditions)
+            load(strcat('pairedGrowthResults_', conditions{k}));
+            for i = 2:size(pairedGrowthResults, 1)
+                if strcmp(pairedGrowthResults{i, 10}, 'Competition')
+                    assert((abs(pairedGrowthResults{i, 8} / pairedGrowthResults{i, 6})) - 1 > sigD)
+                    assert((abs(pairedGrowthResults{i, 9} / pairedGrowthResults{i, 7})) - 1 > sigD)
+                    assert(strcmp(pairedGrowthResults{i, 11}, 'Competition'))
+                    assert(strcmp(pairedGrowthResults{i, 12}, 'Competition'))
+                end
+                if strcmp(pairedGrowthResults{i, 10}, 'ParasitismGiver')
+                    assert((abs(pairedGrowthResults{i, 8} / pairedGrowthResults{i, 6})) - 1 > sigD)
+                    assert((abs(pairedGrowthResults{i, 7} / pairedGrowthResults{i, 9})) - 1 > sigD)
+                    assert(strcmp(pairedGrowthResults{i, 11}, 'ParasitismTaker'))
+                    assert(strcmp(pairedGrowthResults{i, 12}, 'Parasitism'))
+                end
+                if strcmp(pairedGrowthResults{i, 10}, 'ParasitismTaker')
+                    assert((abs(pairedGrowthResults{i, 6} / pairedGrowthResults{i, 8})) - 1 > sigD)
+                    assert((abs(pairedGrowthResults{i, 9} / pairedGrowthResults{i, 7})) - 1 > sigD)
+                    assert(strcmp(pairedGrowthResults{i, 11}, 'ParasitismGiver'))
+                    assert(strcmp(pairedGrowthResults{i, 12}, 'Parasitism'))
+                end
+                if strcmp(pairedGrowthResults{i, 10}, 'AmensalismNegAff')
+                    assert((abs(pairedGrowthResults{i, 8} / pairedGrowthResults{i, 6})) - 1 > sigD)
+                    assert(1 - (abs(pairedGrowthResults{i, 7} / pairedGrowthResults{i, 9})) < sigD)
+                    assert(strcmp(pairedGrowthResults{i, 11}, 'AmensalismUnaff'))
+                    assert(strcmp(pairedGrowthResults{i, 12}, 'Amensalism'))
+                end
+                if strcmp(pairedGrowthResults{i, 10}, 'AmensalismUnaff')
+                    assert(abs(1 - (pairedGrowthResults{i, 6} / pairedGrowthResults{i, 8})) < sigD)
+                    assert((abs(pairedGrowthResults{i, 9} / pairedGrowthResults{i, 7})) - 1 > sigD)
+                    assert(strcmp(pairedGrowthResults{i, 11}, 'AmensalismNegAff'))
+                    assert(strcmp(pairedGrowthResults{i, 12}, 'Amensalism'))
+                end
+                if strcmp(pairedGrowthResults{i, 10}, 'Neutralism')
+                    assert(abs(1 - (pairedGrowthResults{i, 6} / pairedGrowthResults{i, 8})) < sigD)
+                    assert(abs(1 - (pairedGrowthResults{i, 7} / pairedGrowthResults{i, 9})) < sigD)
+                    assert(strcmp(pairedGrowthResults{i, 11}, 'Neutralism'))
+                    assert(strcmp(pairedGrowthResults{i, 12}, 'Neutralism'))
+                end
+                if strcmp(pairedGrowthResults{i, 10}, 'CommensalismTaker')
+                    assert((abs(pairedGrowthResults{i, 6} / pairedGrowthResults{i, 8})) - 1 > sigD)
+                    assert(abs(1 - (pairedGrowthResults{i, 7} / pairedGrowthResults{i, 9})) < sigD)
+                    assert(strcmp(pairedGrowthResults{i, 11}, 'CommensalismGiver'))
+                    assert(strcmp(pairedGrowthResults{i, 12}, 'Commensalism'))
+                end
+                if strcmp(pairedGrowthResults{i, 10}, 'CommensalismGiver')
+                    assert(abs(1 - (pairedGrowthResults{i, 6} / pairedGrowthResults{i, 8})) < sigD)
+                    assert((abs(pairedGrowthResults{i, 7} / pairedGrowthResults{i, 9})) - 1 > sigD)
+                    assert(strcmp(pairedGrowthResults{i, 11}, 'CommensalismTaker'))
+                    assert(strcmp(pairedGrowthResults{i, 12}, 'Commensalism'))
+                end
+                if strcmp(pairedGrowthResults{i, 10}, 'Mutualism')
+                    assert((abs(pairedGrowthResults{i, 6} / pairedGrowthResults{i, 8})) - 1 > sigD)
+                    assert((abs(pairedGrowthResults{i, 7} / pairedGrowthResults{i, 9})) - 1 > sigD)
+                    assert(strcmp(pairedGrowthResults{i, 11}, 'Mutualism'))
+                    assert(strcmp(pairedGrowthResults{i, 12}, 'Mutualism'))
+                end
+            end
         end
-        if strcmp(pairedGrowthResults{i, 10}, 'ParasitismGiver')
-            assert((abs(pairedGrowthResults{i, 8} / pairedGrowthResults{i, 6})) - 1 > sigD)
-            assert((abs(pairedGrowthResults{i, 7} / pairedGrowthResults{i, 9})) - 1 > sigD)
-            assert(strcmp(pairedGrowthResults{i, 11}, 'ParasitismTaker'))
-            assert(strcmp(pairedGrowthResults{i, 12}, 'Parasitism'))
-        end
-        if strcmp(pairedGrowthResults{i, 10}, 'ParasitismTaker')
-            assert((abs(pairedGrowthResults{i, 6} / pairedGrowthResults{i, 8})) - 1 > sigD)
-            assert((abs(pairedGrowthResults{i, 9} / pairedGrowthResults{i, 7})) - 1 > sigD)
-            assert(strcmp(pairedGrowthResults{i, 11}, 'ParasitismGiver'))
-            assert(strcmp(pairedGrowthResults{i, 12}, 'Parasitism'))
-        end
-        if strcmp(pairedGrowthResults{i, 10}, 'AmensalismNegAff')
-            assert((abs(pairedGrowthResults{i, 8} / pairedGrowthResults{i, 6})) - 1 > sigD)
-            assert(1 - (abs(pairedGrowthResults{i, 7} / pairedGrowthResults{i, 9})) < sigD)
-            assert(strcmp(pairedGrowthResults{i, 11}, 'AmensalismUnaff'))
-            assert(strcmp(pairedGrowthResults{i, 12}, 'Amensalism'))
-        end
-        if strcmp(pairedGrowthResults{i, 10}, 'AmensalismUnaff')
-            assert(abs(1 - (pairedGrowthResults{i, 6} / pairedGrowthResults{i, 8})) < sigD)
-            assert((abs(pairedGrowthResults{i, 9} / pairedGrowthResults{i, 7})) - 1 > sigD)
-            assert(strcmp(pairedGrowthResults{i, 11}, 'AmensalismNegAff'))
-            assert(strcmp(pairedGrowthResults{i, 12}, 'Amensalism'))
-        end
-        if strcmp(pairedGrowthResults{i, 10}, 'Neutralism')
-            assert(abs(1 - (pairedGrowthResults{i, 6} / pairedGrowthResults{i, 8})) < sigD)
-            assert(abs(1 - (pairedGrowthResults{i, 7} / pairedGrowthResults{i, 9})) < sigD)
-            assert(strcmp(pairedGrowthResults{i, 11}, 'Neutralism'))
-            assert(strcmp(pairedGrowthResults{i, 12}, 'Neutralism'))
-        end
-        if strcmp(pairedGrowthResults{i, 10}, 'CommensalismTaker')
-            assert((abs(pairedGrowthResults{i, 6} / pairedGrowthResults{i, 8})) - 1 > sigD)
-            assert(abs(1 - (pairedGrowthResults{i, 7} / pairedGrowthResults{i, 9})) < sigD)
-            assert(strcmp(pairedGrowthResults{i, 11}, 'CommensalismGiver'))
-            assert(strcmp(pairedGrowthResults{i, 12}, 'Commensalism'))
-        end
-        if strcmp(pairedGrowthResults{i, 10}, 'CommensalismGiver')
-            assert(abs(1 - (pairedGrowthResults{i, 6} / pairedGrowthResults{i, 8})) < sigD)
-            assert((abs(pairedGrowthResults{i, 7} / pairedGrowthResults{i, 9})) - 1 > sigD)
-            assert(strcmp(pairedGrowthResults{i, 11}, 'CommensalismTaker'))
-            assert(strcmp(pairedGrowthResults{i, 12}, 'Commensalism'))
-        end
-        if strcmp(pairedGrowthResults{i, 10}, 'Mutualism')
-            assert((abs(pairedGrowthResults{i, 6} / pairedGrowthResults{i, 8})) - 1 > sigD)
-            assert((abs(pairedGrowthResults{i, 7} / pairedGrowthResults{i, 9})) - 1 > sigD)
-            assert(strcmp(pairedGrowthResults{i, 11}, 'Mutualism'))
-            assert(strcmp(pairedGrowthResults{i, 12}, 'Mutualism'))
+
+        % output a success message
+        fprintf('Done.\n');
+
+        % remove the solver paths (temporary addition for CI)
+        if strcmp(solverPkgs{p}, 'tomlab_cplex')
+            rmpath(genpath(path_TOMLAB));
+        elseif strcmp(solverPkgs{p}, 'gurobi6')
+            rmpath(genpath(path_GUROBI));
         end
     end
 end

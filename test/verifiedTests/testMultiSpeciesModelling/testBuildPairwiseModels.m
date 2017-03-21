@@ -21,13 +21,12 @@ load pairedModelsList;
 
 for i = 2:size(pairedModelsList, 1)
     load(pairedModelsList{i, 1});
-    load(pairedModelsList{i, 2});
-    assert(length(model.mets) == length(strmatch(strcat(pairedModelsList{i, 2}, '_'), pairedModel.mets)))
-    assert(length(model.rxns) == length(strmatch(strcat(pairedModelsList{i, 2}, '_'), pairedModel.rxns)))
-
-    load(pairedModelsList{i, 5});
-    assert(length(model.mets) == length(strmatch(strcat(pairedModelsList{i, 5}, '_'), pairedModel.mets)))
-    assert(length(model.rxns) == length(strmatch(strcat(pairedModelsList{i, 5}, '_'), pairedModel.rxns)))
+    for p = [2, 5]
+        load(pairedModelsList{i, p});
+        tmpStr = [pairedModelsList{i, p}, '_'];
+        assert(length(model.mets) == length(find(strncmp(tmpStr, pairedModel.mets, length(tmpStr)))));
+        assert(length(model.rxns) == length(find(strncmp(tmpStr, pairedModel.rxns, length(tmpStr)))));
+    end
 end
 
 % change to the current directory
