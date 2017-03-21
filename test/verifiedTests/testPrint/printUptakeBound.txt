@@ -1,0 +1,7 @@
+EX_co2(e)	-1000	
+EX_glc(e)	-10	
+EX_h(e)	-1000	
+EX_h2o(e)	-1000	
+EX_nh4(e)	-1000	
+EX_o2(e)	-1000	
+EX_pi(e)	-1000	
