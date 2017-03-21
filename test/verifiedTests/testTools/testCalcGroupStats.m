@@ -8,11 +8,11 @@
 %     - Lemmer El Assal February 2017
 %
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end-(length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testTools']);
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 % load reference data - too complex to embed
 load('refData_calcGroupStats.mat');
@@ -24,18 +24,18 @@ groups = {'test1', 'test2', 'test3', 'test4', 'test1'};
 ref_groupCnt = [2; 1; 1; 1];
 
 for i = 1:4
-    [groupStat(:,:,i), groupList, groupCnt] = calcGroupStats(data, groups, statname{i}, ref_groupList, 1, 10);
+    [groupStat(:, :, i), groupList, groupCnt] = calcGroupStats(data, groups, statname{i}, ref_groupList, 1, 10);
     assert(isequal(ref_groupList, groupList));
     assert(isequal(ref_groupCnt, groupCnt));
 end
 
 assert(isequal(ref_groupStat, groupStat));
 
-[groupStat(:,:,1), groupList, groupCnt] = calcGroupStats(data, groups); % nargin < 3 sets statname to 'mean' and nRand to 1000
+[groupStat(:, :, 1), groupList, groupCnt] = calcGroupStats(data, groups);  % nargin < 3 sets statname to 'mean' and nRand to 1000
 assert(isequal(ref_groupList, groupList));
 assert(isequal(ref_groupCnt, groupCnt));
 assert(isequal(ref_groupStat, groupStat));
 
 
 % change the directory
-cd(CBTDIR)
+cd(currentDir)
