@@ -1,4 +1,4 @@
-function [iAFirstOrg,iASecondOrg,iATotal]=analyzePairwiseInteractions(pairedGrowthOrg1,pairedGrowthOrg2,singleGrowthOrg1,singleGrowthOrg2,sigD)
+function [iAFirstOrg, iASecondOrg, iATotal] = analyzePairwiseInteractions(pairedGrowthOrg1, pairedGrowthOrg2, singleGrowthOrg1, singleGrowthOrg2, sigD)
 % This function evaluates the outcome of pairwise growth of two organisms
 % compared with the two organisms separately. There are six possible
 % outcomes of theinteraction, and nine possible outcomes from the
@@ -21,7 +21,7 @@ function [iAFirstOrg,iASecondOrg,iATotal]=analyzePairwiseInteractions(pairedGrow
 % CommensalismTaker
 % Mutualism: both organisms growth faster in co-growth than separately
 % (same outcome for both)
-% Please cite "Magn�sd�ttir, Heinken et al., Nat Biotechnol. 2017 35(1):81-89"
+% Please cite "Magnusdottir, Heinken et al., Nat Biotechnol. 2017 35(1):81-89"
 % if you use this script for your own analysis.
 % Almut Heinken 16.03.2017
 % REQUIRED INPUTS:
@@ -33,28 +33,28 @@ function [iAFirstOrg,iASecondOrg,iATotal]=analyzePairwiseInteractions(pairedGrow
 % sigD the difference between co-growth and single growth that is
 % considered significant (10% =0.1 by default)
 
-if nargin <4
+if nargin < 4
     error('Four growth rates are required as input!')
 end
-if nargin <5
+if nargin < 5
     % use default significant difference
-    sigD=0.1;
+    sigD = 0.1;
 end
 
-if abs(1 - (pairedGrowthOrg1/singleGrowthOrg1)) < sigD
+if abs(1 - (pairedGrowthOrg1 / singleGrowthOrg1)) < sigD
     % first microbe unaffected - all possible cases resulting froms
     % second microbe's growth
-    if abs(1 - (pairedGrowthOrg2/singleGrowthOrg2)) < sigD
+    if abs(1 - (pairedGrowthOrg2 / singleGrowthOrg2)) < sigD
         % second microbe unaffected
         iAFirstOrg = 'Neutralism';
         iASecondOrg = 'Neutralism';
         iATotal = 'Neutralism';
-    elseif abs((pairedGrowthOrg2/singleGrowthOrg2)) > 1+sigD
+    elseif abs((pairedGrowthOrg2 / singleGrowthOrg2)) > 1 + sigD
         % second microbe grows better
         iAFirstOrg = 'CommensalismGiver';
         iASecondOrg = 'CommensalismTaker';
         iATotal = 'Commensalism';
-    elseif abs((singleGrowthOrg2/pairedGrowthOrg2)) > 1+sigD
+    elseif abs((singleGrowthOrg2 / pairedGrowthOrg2)) > 1 + sigD
         % second microbe grows slower
         iAFirstOrg = 'AmensalismUnaff';
         iASecondOrg = 'AmensalismNegAff';
@@ -65,20 +65,20 @@ if abs(1 - (pairedGrowthOrg1/singleGrowthOrg1)) < sigD
         iASecondOrg = 'No_Result';
         iATotal = 'No_Result';
     end
-elseif abs((pairedGrowthOrg1/singleGrowthOrg1)) > 1+sigD
+elseif abs((pairedGrowthOrg1 / singleGrowthOrg1)) > 1 + sigD
     % first microbe grows better - all possible cases resulting froms
     % second microbe's growth
-    if abs(1- (pairedGrowthOrg2/singleGrowthOrg2)) < sigD
+    if abs(1 - (pairedGrowthOrg2 / singleGrowthOrg2)) < sigD
         % second microbe unaffected
         iAFirstOrg = 'CommensalismTaker';
         iASecondOrg = 'CommensalismGiver';
         iATotal = 'Commensalism';
-    elseif abs((pairedGrowthOrg2/singleGrowthOrg2)) > 1+sigD
+    elseif abs((pairedGrowthOrg2 / singleGrowthOrg2)) > 1 + sigD
         % second microbe grows better
         iAFirstOrg = 'Mutualism';
         iASecondOrg = 'Mutualism';
         iATotal = 'Mutualism';
-    elseif abs((singleGrowthOrg2/pairedGrowthOrg2)) > 1+sigD
+    elseif abs((singleGrowthOrg2 / pairedGrowthOrg2)) > 1 + sigD
         % second microbe grows slower
         iAFirstOrg = 'ParasitismTaker';
         iASecondOrg = 'ParasitismGiver';
@@ -89,20 +89,20 @@ elseif abs((pairedGrowthOrg1/singleGrowthOrg1)) > 1+sigD
         iASecondOrg = 'No_Result';
         iATotal = 'No_Result';
     end
-elseif abs((singleGrowthOrg1/pairedGrowthOrg1)) > 1+sigD
+elseif abs((singleGrowthOrg1 / pairedGrowthOrg1)) > 1 + sigD
     % first microbe grows slower - all possible cases resulting froms
     % second microbe's growth
-    if abs(1- (pairedGrowthOrg2/singleGrowthOrg2)) < sigD
+    if abs(1 - (pairedGrowthOrg2 / singleGrowthOrg2)) < sigD
         % second microbe unaffected
         iAFirstOrg = 'AmensalismNegAff';
         iASecondOrg = 'AmensalismUnaff';
         iATotal = 'Amensalism';
-    elseif abs((pairedGrowthOrg2/singleGrowthOrg2)) > 1+sigD
+    elseif abs((pairedGrowthOrg2 / singleGrowthOrg2)) > 1 + sigD
         % second microbe grows better
         iAFirstOrg = 'ParasitismGiver';
         iASecondOrg = 'ParasitismTaker';
         iATotal = 'Parasitism';
-    elseif abs((singleGrowthOrg2/pairedGrowthOrg2)) > 1+sigD
+    elseif abs((singleGrowthOrg2 / pairedGrowthOrg2)) > 1 + sigD
         % second microbe grows slower
         iAFirstOrg = 'Competition';
         iASecondOrg = 'Competition';
