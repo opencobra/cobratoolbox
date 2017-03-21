@@ -9,7 +9,7 @@
 % This script requires the COBRA Toolbox function solceCobraLPCPLEX and the
 % TOMLAB Cplex solver. Due to the coupling constraints on the pairwise
 % models, the simulations cannot currently be run with optimizeCbModel.
-% Please cite "Magn�sd�ttir, Heinken et al., Nat Biotechnol. 2017 35(1):81-89"
+% Please cite "Magnusdottir, Heinken et al., Nat Biotechnol. 2017 35(1):81-89"
 % if you use this script for your own analysis.
 
 % Almut Heinken 15.03.2017
