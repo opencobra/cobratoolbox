@@ -15,8 +15,7 @@
 % Almut Heinken 15.03.2017
 
 % four simulation conditions-set
-% diets require the scripts useWesternDiet_AGORA_pairedModels and
-% useHighFiberDiet_AGORA_pairedModels
+
 conditions = {
     %'WesternDiet_NoOxygen'
     'WesternDiet_WithOxygen'
@@ -59,17 +58,17 @@ for k = 1:length(conditions)
         % assign medium
         if k == 1
             % Western diet without oxygen
-            pairedModel = useWesternDiet_AGORA_pairedModels(pairedModel);
+            pairedModel = useDiet_AGORA_pairedModels(pairedModel, 'Western');
         elseif k == 2
             % Western diet with oxygen
-            pairedModel = useWesternDiet_AGORA_pairedModels(pairedModel);
+            pairedModel = useDiet_AGORA_pairedModels(pairedModel, 'Western');
             pairedModel = changeRxnBounds(pairedModel, 'EX_o2[u]', -10, 'l');
         elseif k == 3
             % High fiber diet without oxygen
-            pairedModel = useHighFiberDiet_AGORA_pairedModels(pairedModel);
+            pairedModel = useDiet_AGORA_pairedModels(pairedModel, 'HighFiber');
         elseif k == 4
             % High fiber diet with oxygen
-            pairedModel = useHighFiberDiet_AGORA_pairedModels(pairedModel);
+            pairedModel = useDiet_AGORA_pairedModels(pairedModel, 'HighFiber');
             pairedModel = changeRxnBounds(pairedModel, 'EX_o2[u]', -10, 'l');
         end
         % calculate joint biomass
@@ -95,17 +94,17 @@ for k = 1:length(conditions)
         % assign medium
         if k == 1
             % Western diet without oxygen
-            pairedModel = useWesternDiet_AGORA_pairedModels(pairedModel);
+            pairedModel = useDiet_AGORA_pairedModels(pairedModel, 'Western');
         elseif k == 2
             % Western diet with oxygen
-            pairedModel = useWesternDiet_AGORA_pairedModels(pairedModel);
+            pairedModel = useDiet_AGORA_pairedModels(pairedModel, 'Western');
             pairedModel = changeRxnBounds(pairedModel, 'EX_o2[u]', -10, 'l');
         elseif k == 3
             % High fiber diet without oxygen
-            pairedModel = useHighFiberDiet_AGORA_pairedModels(pairedModel);
+            pairedModel = useDiet_AGORA_pairedModels(pairedModel, 'HighFiber');
         elseif k == 4
             % High fiber diet with oxygen
-            pairedModel = useHighFiberDiet_AGORA_pairedModels(pairedModel);
+            pairedModel = useDiet_AGORA_pairedModels(pairedModel, 'HighFiber');
             pairedModel = changeRxnBounds(pairedModel, 'EX_o2[u]', -10, 'l');
         end
         % calculate single biomass
@@ -121,17 +120,17 @@ for k = 1:length(conditions)
         % assign medium
         if k == 1
             % Western diet without oxygen
-            pairedModel = useWesternDiet_AGORA_pairedModels(pairedModel);
+            pairedModel = useDiet_AGORA_pairedModels(pairedModel, 'Western');
         elseif k == 2
             % Western diet with oxygen
-            pairedModel = useWesternDiet_AGORA_pairedModels(pairedModel);
+            pairedModel = useDiet_AGORA_pairedModels(pairedModel, 'Western');
             pairedModel = changeRxnBounds(pairedModel, 'EX_o2[u]', -10, 'l');
         elseif k == 3
             % High fiber diet without oxygen
-            pairedModel = useHighFiberDiet_AGORA_pairedModels(pairedModel);
+            pairedModel = useDiet_AGORA_pairedModels(pairedModel, 'HighFiber');
         elseif k == 4
             % High fiber diet with oxygen
-            pairedModel = useHighFiberDiet_AGORA_pairedModels(pairedModel);
+            pairedModel = useDiet_AGORA_pairedModels(pairedModel, 'HighFiber');
             pairedModel = changeRxnBounds(pairedModel, 'EX_o2[u]', -10, 'l');
         end
         % calculate single biomass

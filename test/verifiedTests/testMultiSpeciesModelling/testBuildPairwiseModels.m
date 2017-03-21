@@ -29,5 +29,12 @@ for i = 2:size(pairedModelsList, 1)
     end
 end
 
+% test the diet call with an unknown diet
+try
+    useDiet_AGORA_pairedModels(pairedModel, 'unknownDiet')
+catch ME
+    assert(length(ME.message) > 0)
+end
+
 % change to the current directory
 cd(currentDir)
