@@ -1,23 +1,33 @@
-%function x = testC13Fitting()
-%testC13Fitting tests the basic functionality of
-%fitC13Data
-%   Jan Schellenberger
+% The COBRAToolbox: testC13Fitting.m
+%
+% Purpose:
+%     - testC13Fitting tests the basic functionality of fitC13Data
+%
+% Authors:
+%     - Original file: Jan Schellenberger
+%     - CI integration: Laurent Heirendt March 2017
+%
+% Note:
+%     - The solver libraries must be included separately
+%     - The tomlab_snopt solver must be tested with a valid license
 
-%oriFolder = pwd; % save working directory
+% save the current path
+currentDir = pwd;
 
-%test_folder = what('testC13Fitting');
-%cd(test_folder.path);
-%display('the fluxomics toolbox requires a Non Linear Programming (NLP) solver.  Currently the only supported solver is Tomlab/SNOPT.  This test will not complete if this solver is not installed');
-
-
-changeCobraSolver('glpk');
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 majorIterationLimit = 10000; % fitting length
 load('model.mat', 'model'); % loads modelWT
 load('expdata.mat', 'expdata'); % load data
 load('point.mat', 'v0'); % load initial point
 
-%generateIsotopomerSolver(model, 'xglcDe', expdata, 'true');
+% Note: the glpk solver is sufficient, no need to run multiple solvers
+fprintf('   Preparing the model using glpk ... ');
+
+changeCobraSolver('glpk');
+
+generateIsotopomerSolver(model, 'xglcDe', expdata, 'true');
 expdata.inputfrag = convertCarbonInput(expdata.input); % generate inputFragments (required for EMU solver)
 
 % start from a different point
@@ -25,21 +35,37 @@ output = scoreC13Fit(v0.^2,expdata,model);
 
 initial_score = output.error;
 
+% output a success message
+fprintf('Done.\n');
 
-% matlabpool local 3 % starts 3 local workers.  This task can be
-% parallelized.  See Parallel toolbox for description
-%parpool(2)
-changeCobraSolver('matlab', 'NLP');
+% create a parallel pool
+poolobj = gcp('nocreate'); % if no pool, do not create new one.
+if isempty(poolobj)
+    parpool(2); % launch 2 workers
+end
 
-[vout, rout] = fitC13Data(v0,expdata,model, majorIterationLimit);
-% matlabpool close % end parallel task.
+% define the solver packages to be used to run this test
+solverPkgs = {'matlab'}; % tomlab_snopt
 
+for k = 1:length(solverPkgs)
 
-output = scoreC13Fit(vout,expdata,model);
-final_score = output.error;
+    % change the COBRA solver (NLP)
+    solverOK = changeCobraSolver(solverPkgs{k}, 'NLP');
 
-assert(final_score < initial_score)
+    if solverOK == 1
+        fprintf('   Testing fitC13Data using %s ... ', solverPkgs{k});
 
-%cd(oriFolder); % restore working directory
+        [vout, rout] = fitC13Data(v0, expdata, model, majorIterationLimit);
 
-%return;
+        output = scoreC13Fit(vout, expdata, model);
+        final_score = output.error;
+
+        assert(final_score < initial_score)
+
+        % output a success message
+        fprintf('Done.\n');
+    end
+end
+
+% change the directory
+cd(currentDir)
