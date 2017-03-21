@@ -10,7 +10,7 @@ function solution = solveCobraNLP(NLPproblem,varargin)
 %        and    d_L < d(x) < d_U
 %     where A is a matrix, d(x) is an optional function and the objective
 %     is either a general function or a linear function.
-% 
+%
 %INPUT
 % NLPproblem  Non-linear optimization problem
 %  Required Fields
@@ -30,15 +30,15 @@ function solution = solveCobraNLP(NLPproblem,varargin)
 %                   vector (ignored if 'd' is set).
 %   H               Name of the function that computes the n x n Hessian
 %                   matrix
-%   fLowBnd         A lower bound on the function value at optimum. 
-%   d               Name of function that computes the mN nonlinear 
+%   fLowBnd         A lower bound on the function value at optimum.
+%   d               Name of function that computes the mN nonlinear
 %                   constraints
-%   dd              Name of function that computes the constraint Jacobian 
+%   dd              Name of function that computes the constraint Jacobian
 %                   mN x n
 %   d2d             Name of function that computes the second part of the
 %                   Lagrangian function (only needed for some solvers)
-%   d_L             Lower bound vector in nonlinear constraints 
-%   d_U             Upper bound vector in nonlinear constraints                  
+%   d_L             Lower bound vector in nonlinear constraints
+%   d_U             Upper bound vector in nonlinear constraints
 %   userParams      Solver specific user parameters structure
 %   optParams       Solver specific optional parameters structure
 %
@@ -118,6 +118,19 @@ end
 
 %deal variables
 [A,lb,ub] = deal(NLPproblem.A,NLPproblem.lb,NLPproblem.ub);
+
+% Assume constraint S*v = b if csense not provided
+if ~isfield(NLPproblem, 'csense')
+    % If csense is not declared in the model, assume that all
+    % constraints are equalities.
+    NLPproblem.csense(1:size(A,1), 1) = 'E';
+end
+
+% Assume constraint S*v = 0 if b not provided
+if ~isfield(NLPproblem, 'b')
+    NLPproblem.b = zeros(size(A, 1), 1);
+end
+
 if isfield(NLPproblem,'csense')
     [b, csense] = deal(NLPproblem.b, NLPproblem.csense);
 elseif isfield(NLPproblem,'b_U')
@@ -147,18 +160,22 @@ switch solver
         %% fmincon
         A1 = [A(csense == 'L',:);-A(csense == 'G',:)];
         b1 = [b(csense == 'L'),-b(csense == 'G')];
-        
+
         A2 = A(csense == 'E',:);
         b2 = b(csense == 'E');
-        
+
         options.nIter = 100000;
-        
-        [x,f,origStat,output,lambda] = fmincon(objFunction,x0,A1,b1,A2,b2,lb,ub,[],options,varargin);
-        
+
+        % define the objective function with 2 input arguments
+        func = eval(['@(x)', objFunction, '(x, NLPproblem)']);
+
+        [x, f, origStat, output, lambda] = fmincon(func, x0, A1, b1, A2, b2, lb, ub, [], options);
+
         %Assign Results
         if (origStat > 0)
             stat = 1; % Optimal solution found
             y = lambda.eqlin;
+            w = zeros(length(lb), 1); % set zero Lagrangian multipliers (N/A)
         elseif (origStat < 0)
             stat = 0; % Infeasible
         else
@@ -166,10 +183,10 @@ switch solver
         end
     case 'tomlab_snopt'
         %% tomlab_snopt
-        
+
         %get settings
         [checkNaN, PbName, iterationLimit, logFile] =  ...
-            getCobraSolverParams('NLP',{'checkNaN','PbName', 'iterationLimit', 'logFile'},parameters);     
+            getCobraSolverParams('NLP',{'checkNaN','PbName', 'iterationLimit', 'logFile'},parameters);
         if isfield(NLPproblem,'gradFunction')
             gradFunction = NLPproblem.gradFunction;
         else
@@ -221,7 +238,7 @@ switch solver
             optParams = [];
         end
         if isfield(NLPproblem,'SOL'), Prob.SOL = NLPproblem.SOL; end
-        
+
         x_L = lb;
         x_U = ub;
         if ~exist('b_L','var')
@@ -237,19 +254,19 @@ switch solver
                 b_U = b;
             end
         end
-        
+
         %settings
-        HessPattern = []; 
+        HessPattern = [];
         pSepFunc = [];
         ConsPattern = [];
         x_min = []; x_max = [];
         f_opt = [];  x_opt = [];
-        
+
         if exist('c', 'var') % linear objective function
             Prob  = lpconAssign(c, x_L, x_U, PbName, x0,...
                A, b_L, b_U,...
                d, dd, d2d, ConsPattern, d_L, d_U,...
-               fLowBnd, x_min, x_max, f_opt, x_opt); 
+               fLowBnd, x_min, x_max, f_opt, x_opt);
         else % general objective function
             f = objFunction;
             g = gradFunction;
@@ -264,25 +281,25 @@ switch solver
         Prob.SOL.optPar(35) = iterationLimit; %This is major iteration limit.
         Prob.SOL.optPar(30) = 1e9; %this is the minor iteration limit.  Essentially unlimited
         Prob.CheckNaN = checkNaN;
-        
+
         Prob.SOL.PrintFile = strcat(logFile, '_iterations.txt');
         Prob.SOL.SummFile = strcat(logFile, '_summary.txt');
-        
+
         if printLevel >= 1
             Prob.optParam.IterPrint = 1;
         end
         if printLevel >=3
             Prob.PriLevOpt = 1;
-            
+
         end
-        
+
         %Call Solver
         Result = tomRun('snopt', Prob, printLevel);
-        
+
         % Assign results
         x = Result.x_k;
         f = Result.f_k;
-        
+
         origStat = Result.Inform;
         w = Result.v_k(1:length(lb));
         y = Result.v_k((length(lb)+1):end);

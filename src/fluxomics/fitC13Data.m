@@ -18,7 +18,7 @@ printLevel = 3; %3 prints every iteration.  1 does a summary.  0 = silent.
 
 if method == 1
     if ~isfield(model, 'N')
-       model.N = null(model.S); 
+       model.N = null(full(model.S));
        display('model.N should be defined');
        pause;
     end
@@ -49,7 +49,7 @@ elseif method == 2
 else
     display('error'); pause;
 end
- 
+
 numpoints = size(x0,2);
 vout = zeros(size(v0));
 rout = cell(numpoints, 1);
@@ -65,26 +65,21 @@ for k = 1:numpoints
     NLPproblem.A = A;
     NLPproblem.b_L = b_L;
     NLPproblem.b_U = b_U;
-    NLPproblem.userParams.expdata = expdata;
-    NLPproblem.userParams.model = model;
-    NLPproblem.userParams.useparfor = true;
-    NLPproblem.userParams.diff_interval = diffInterval;
-    
+    NLPproblem.user.expdata = expdata;
+    NLPproblem.user.model = model;
+    NLPproblem.user.useparfor = true;
+    NLPproblem.user.diff_interval = diffInterval;
+
     NLPproblem.PriLevOpt = 1;
     cnan = ( method == 2);
 
     NLPsolution = solveCobraNLP(NLPproblem, 'checkNaN', cnan, 'printLevel', printLevel, 'iterationLimit', majorIterationLimit, 'logFile', 'minimize_SNOPT.txt');
-    
-    if exist('ttt.txt', 'file')
-       fprintf('quitting due to file found\n');
-       continue;
-    end
+
     if method == 1
-        vout(:,k) = model.N*NLPsolution.full;        
+        vout(:,k) = model.N*NLPsolution.full;
     else
         vout(:,k) = NLPsolution.full;
     end
     rout{k} = NLPsolution;
 end
 return
-
