@@ -25,9 +25,9 @@ VarNameFun = @(m) (char('x'+(m-1)));      %Function used to name variables
 EqtNames = {'Equality'};
 
 %save original solver
-global CBTLPSOLVER;
+global CBT_LP_SOLVER;
 global CBT_MILP_SOLVER;
-origSolverLP = CBTLPSOLVER;
+origSolverLP = CBT_LP_SOLVER;
 origSolverMILP = CBT_MILP_SOLVER;
 
 %change LP and MILP solvers to MPS

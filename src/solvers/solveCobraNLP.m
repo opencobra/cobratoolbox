@@ -77,14 +77,14 @@ function solution = solveCobraNLP(NLPproblem,varargin)
 % Richard Que (02/10/10) Added tomlab_snopt support.
 
 global CBT_NLP_SOLVER
-if (~isempty(CBT_NLP_SOLVER))
+if ~isempty(CBT_NLP_SOLVER)
     solver = CBT_NLP_SOLVER;
 else
     error('No solver found.  call changeCobraSolver(solverName)');
 end
 
 optParamNames = {'printLevel','warning','checkNaN','PbName', ...
-    'iterationLimit', 'logFile'};
+                 'iterationLimit', 'logFile'};
 parameters = '';
 
 [printLevel ~] = getCobraSolverParams('NLP',{'printLevel','warning'},parameters);
@@ -161,11 +161,11 @@ switch solver
 
         A2 = A(csense == 'E',:);
         b2 = b(csense == 'E');
-        
+
         %Get fminCon Options, and set the options supplied by the user.
         [iterationLimit,timeLimit] = getCobraSolverParams('NLP',{'iterationLimit','timeLimit'},parameters);        
         options = optimoptions('fmincon','maxIter',iterationLimit,'maxFunEvals',iterationLimit);
-        
+
         if isstruct(parameters)
             paramFields = fieldnames(parameters);
             for field = 1:numel(paramFields)

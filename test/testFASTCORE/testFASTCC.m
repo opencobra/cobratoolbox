@@ -41,7 +41,7 @@ A = fastcc(model, epsilon, printLevel,modeFlag);
 
 if numel(A)==5317
     %|J|=0  |A|=6975
-    %CBTLPSOLVER = quadMinos
+    %CBT_LP_SOLVER = quadMinos
     x=1;
 else
     x=0;

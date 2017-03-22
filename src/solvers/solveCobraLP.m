@@ -97,12 +97,12 @@ function solution = solveCobraLP(LPproblem,varargin)
 
 %% Process arguments etc
 
-global CBTLPSOLVER
+global CBT_LP_SOLVER
 global MINOSPATH
 global DQQMINOSPATH
 
-if (~isempty(CBTLPSOLVER))
-    solver = CBTLPSOLVER;
+if ~isempty(CBT_LP_SOLVER)
+    solver = CBT_LP_SOLVER;
 elseif nargin==1
     error('No solver found.  call changeCobraSolver(solverName)');
 end
@@ -1213,7 +1213,7 @@ switch solver
         [solution,LPprob] = solveCobraLPCPLEX(LPproblem,printLevel,1,[],[],minNorm);
         solution.basis = LPprob.LPBasis;
         solution.solver = solver;
-        solution.algorithm = algorithm; %dummy
+        solution.algorithm = algorithm; % dummy
         if exist([pwd filesep 'clone1.log'],'file')
             delete('clone1.log')
         end
