@@ -15,8 +15,7 @@ Solver Installation Guide (Linux)
 
 1) Download `TOMLAB/CPLEX` from [here](http://tomopt.com/scripts/register.php), where you can also download `TOMLAB/SNOPT`.
 
-2) In a terminal window, navigate to the download directory of tomlab and 
-do the following
+2) In a terminal window, navigate to the download directory of tomlab and do the following
 
     ````bash
     $ chmod +x <filename>.bin
@@ -73,7 +72,13 @@ $ sudo apt-get install glpk-utils
 
 4) Copy the license file `mosek.lic` to `/opt/mosek`
 
-5) Configure the `PATH` environment variable in `~/.bashrc` by editing your `bashrc` file
+5) Navigate to the directory where the `tar.bz2` was downloaded (`/opt/`) and enter in a shell to extract the archive
+
+    ````bash
+    $ tar xvjf <filename>.tar.bz2
+    ````
+
+6) Configure the `PATH` environment variable in `~/.bashrc` by editing your `bashrc` file
 
     ````bash
     $ nano ~/.bashrc
@@ -84,33 +89,49 @@ $ sudo apt-get install glpk-utils
     export PATH="/opt/mosek/<ver>/tools/platform/linux64x86/bin/:{$PATH}"
     ````
 
-6) Navigate to the directory where the `tar.bz2` was downloaded (`/opt/`) and enter in a shell to extract the archive
+7) Reload your `bashrc`
 
     ````bash
-    $ tar xvjf <filename>.tar.bz2
+    $ source ~/.bashrc
     ````
 
-7) Verify that `MOSEK` is correctly installed by using the following command in Matlab:
-    ````matlab
-    >> mosekdiag
+8) Verify that `MOSEK` is correctly installed by using the following command in your terminal
+
+    ````sh
+    $ msktestlic
     ````
 
     It should give an output similar to this:
-    ````matlab
-    Matlab version: 9.2.0.538062 (R2017a)
-    Architecture  : GLNXA64
-    Warning: The mosek optimizer could not be invoked from the command line. Most likely the path has not been configured
-    correctly. The mosek optimizer can still be invoked from the MATLAB environment. 
-    > In mosekdiag (line 23) 
-    mosekopt: /opt/mosek/8/toolbox/r2014a/mosekopt.mexa64
+    ````
+    Problem
+      Name                   :
+      Objective sense        : min
+      Type                   : LO (linear optimization problem)
+      Constraints            : 1
+      Cones                  : 0
+      Scalar variables       : 5000
+      Matrix variables       : 0
+      Integer variables      : 0
 
-    MOSEK Version 8.0.0.57 (Build date: 2017-2-20 11:19:46)
-    Copyright (c) MOSEK ApS, Denmark. WWW: mosek.com
-    Platform: Linux/64-X86
+    Optimizer started.
+    Mosek license manager: License path: /opt/mosek/mosek.lic
+    Mosek license manager:  Checkout license feature 'PTS' from flexlm.
+    Mosek license manager:  Checkout time 0.01. r: 0 status: 0
+    Interior-point optimizer started.
+    Presolve started.
+    Eliminator started.
+    Freed constraints in eliminator : 0
+    Eliminator terminated.
+    Eliminator - tries                  : 1                 time                   : 0.00
+    Lin. dep.  - tries                  : 0                 time                   : 0.00
+    Lin. dep.  - number                 : 0
+    Presolve terminated. Time: 0.00
+    Interior-point optimizer terminated. Time: 0.00.
 
-    mosekopt is working correctly.
-    Warning: MOSEK Fusion is not configured correctly; check that mosek.jar is added to the javaclasspath. 
-    > In mosekdiag (line 72) 
+    Optimizer terminated. Time: 0.02
+    ************************************
+    A license was checked out correctly.
+    ************************************
     ````
 
 
