@@ -8,7 +8,7 @@
 
 
 % define global paths
-global path_TOMLAB
+global TOMLAB_PATH
 
 % save the current path
 currentDir = pwd;
@@ -31,7 +31,7 @@ QPsolverPkgs = {'tomlab_cplex'};
 for k =1:length(solverPkgs)
     % add the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(path_TOMLAB));
+        addpath(genpath(TOMLAB_PATH));
     end
 
     for j=1:length(QPsolverPkgs)%QP solvers
@@ -61,7 +61,7 @@ for k =1:length(solverPkgs)
 
     % remove the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        rmpath(genpath(path_TOMLAB));
+        rmpath(genpath(TOMLAB_PATH));
     end
 
     fprintf('Done.\n');

@@ -62,8 +62,8 @@ fprintf(' Done.\n')
 fprintf(' > Checking available solvers\n')
 GUROBI_PATH = getenv('GUROBI_PATH');
 addpath(genpath(GUROBI_PATH));
-CPLEX_PATH = getenv('CPLEX_PATH');
-addpath(genpath(CPLEX_PATH));
+ILOG_CPLEX_PATH = getenv('ILOG_CPLEX_PATH');
+addpath(genpath(ILOG_CPLEX_PATH));
 TOMLAB_PATH = getenv('TOMLAB_PATH');
 addpath(genpath(TOMLAB_PATH));
 TOMLAB_PATH = getenv('MOSEK_PATH');

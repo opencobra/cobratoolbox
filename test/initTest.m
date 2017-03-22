@@ -2,14 +2,14 @@ function initTest(pathToTest)
 % initTest function initializes global paths of the
 % solvers and changes the directory to the respective test folder
 
-global path_GUROBI
-global path_ILOG_CPLEX
-global path_TOMLAB
+global GUROBI_PATH
+global ILOG_CPLEX_PATH
+global TOMLAB_PATH
 
 % define the solver paths
-path_GUROBI = '/opt/gurobi650';
-path_ILOG_CPLEX = '/opt/ibm/ILOG/CPLEX_Studio127';
-path_TOMLAB = '/opt/tomlab';
+GUROBI_PATH = '/opt/gurobi650';
+ILOG_CPLEX_PATH = '/opt/ibm/ILOG/CPLEX_Studio127';
+TOMLAB_PATH = '/opt/tomlab';
 
 if length(pathToTest) > 0
     cd(pathToTest);

@@ -11,8 +11,8 @@
 % Note: ibm_cplex is not (yet) compatible with R2016b
 
 % define global paths
-global path_TOMLAB
-global path_GUROBI
+global TOMLAB_PATH
+global GUROBI_PATH
 
 % save the current path
 currentDir = pwd;
@@ -40,9 +40,9 @@ for k = 1:length(solverPkgs)
 
     % add the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(path_TOMLAB));
+        addpath(genpath(TOMLAB_PATH));
     elseif strcmp(solverPkgs{k}, 'gurobi6')
-        addpath(genpath(path_GUROBI));
+        addpath(genpath(GUROBI_PATH));
     end
 
     solverLPOK = changeCobraSolver(solverPkgs{k});
@@ -70,9 +70,9 @@ for k = 1:length(solverPkgs)
 
     % remove the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        rmpath(genpath(path_TOMLAB));
+        rmpath(genpath(TOMLAB_PATH));
     elseif strcmp(solverPkgs{k}, 'gurobi6')
-        rmpath(genpath(path_GUROBI));
+        rmpath(genpath(GUROBI_PATH));
     end
 
     % output a success message
