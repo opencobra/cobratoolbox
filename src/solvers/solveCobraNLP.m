@@ -95,16 +95,20 @@ end
 optParamNames = {'printLevel','warning','checkNaN','PbName', ...
     'iterationLimit', 'logFile'};
 parameters = '';
+
+[printLevel ~] = getCobraSolverParams('NLP',{'printLevel','warning'},parameters);
+
 if nargin ~=1
     if mod(length(varargin),2)==0
         for i=1:2:length(varargin)-1
             if ismember(varargin{i},optParamNames)
                 parameters.(varargin{i}) = varargin{i+1};
             else
-                %Changed to highlight non COBRA parameters (which might eb
-                %used for e.g. fmincon.
+                %Changed to highlight non COBRA parameters (which might be used for e.g. fmincon.
                 parameters.(varargin{i}) = varargin{i+1};
-                warning([varargin{i} ' is not a COBRA parameter']);
+                if printLevel > 0
+                    warning([varargin{i} ' is not a COBRA parameter']);
+                end
             end
         end
     elseif strcmp(varargin{1},'default')
@@ -112,12 +116,12 @@ if nargin ~=1
     elseif isstruct(varargin{1})
         parameters = varargin{1};
     else
-        display('Warning: Invalid number of parameters/values')
+        error('Invalid number of parameters/values')
         solution=[];
         return;
     end
 end
-[printLevel ~] = getCobraSolverParams('NLP',{'printLevel','warning'},parameters);
+
 
 %deal variables
 [A,lb,ub] = deal(NLPproblem.A,NLPproblem.lb,NLPproblem.ub);
