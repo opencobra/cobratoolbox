@@ -89,6 +89,30 @@ MOSEK
     $ tar xvjf <filename>.tar.bz2
     ````
 
+5) Verify that `MOSEK` is correctly installed by using the following command in Matlab:
+````matlab
+>> mosekdiag
+````
+
+It should give an output similar to this:
+````matlab
+Matlab version: 9.2.0.538062 (R2017a)
+Architecture  : GLNXA64
+Warning: The mosek optimizer could not be invoked from the command line. Most likely the path has not been configured
+correctly. The mosek optimizer can still be invoked from the MATLAB environment. 
+> In mosekdiag (line 23) 
+mosekopt: /opt/mosek/8/toolbox/r2014a/mosekopt.mexa64
+
+MOSEK Version 8.0.0.57 (Build date: 2017-2-20 11:19:46)
+Copyright (c) MOSEK ApS, Denmark. WWW: mosek.com
+Platform: Linux/64-X86
+
+mosekopt is working correctly.
+Warning: MOSEK Fusion is not configured correctly; check that mosek.jar is added to the javaclasspath. 
+> In mosekdiag (line 72) 
+````
+
+
 Gurobi
 ------
 1) Register and log in [here](http://www.gurobi.com/)
