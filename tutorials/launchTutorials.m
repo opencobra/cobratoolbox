@@ -1,7 +1,7 @@
 % define global paths
-global path_GUROBI
-global path_ILOG_CPLEX
-global path_TOMLAB
+global GUROBI_PATH
+global ILOG_CPLEX_PATH
+global TOMLAB_PATH
 
 % include the root folder and all subfolders
 addpath(genpath(pwd))

@@ -11,9 +11,9 @@
 %       test is performed on objective as solution can vary between machines, solver version etc..
 
 % define global paths
-global path_TOMLAB
-global path_ILOG_CPLEX
-global path_GUROBI
+global TOMLAB_PATH
+global ILOG_CPLEX_PATH
+global GUROBI_PATH
 global CBT_MILP_SOLVER
 
 % save the current path
@@ -32,11 +32,11 @@ for k = 1:length(solverPkgs)
 
     % add the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(path_TOMLAB));
+        addpath(genpath(TOMLAB_PATH));
     elseif strcmp(solverPkgs{k}, 'cplex_direct') || strcmp(solverPkgs{k}, 'ibm_cplex')
-        addpath(genpath(path_ILOG_CPLEX));
+        addpath(genpath(ILOG_CPLEX_PATH));
     elseif strcmp(solverPkgs{k}, 'gurobi6')
-        addpath(genpath(path_GUROBI));
+        addpath(genpath(GUROBI_PATH));
     end
 
     if (~verLessThan('matlab', '8.4') && strcmp(solverPkgs{k}, 'cplex_direct')) || (~verLessThan('matlab', '9') && strcmp(solverPkgs{k}, 'ibm_cplex'))
@@ -87,11 +87,11 @@ for k = 1:length(solverPkgs)
 
     % remove the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        rmpath(genpath(path_TOMLAB));
+        rmpath(genpath(TOMLAB_PATH));
     elseif strcmp(solverPkgs{k}, 'cplex_direct') || strcmp(solverPkgs{k}, 'ibm_cplex')
-        rmpath(genpath(path_ILOG_CPLEX));
+        rmpath(genpath(ILOG_CPLEX_PATH));
     elseif strcmp(solverPkgs{k}, 'gurobi6')
-        rmpath(genpath(path_GUROBI));
+        rmpath(genpath(GUROBI_PATH));
     end
 end
 
