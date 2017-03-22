@@ -2,7 +2,7 @@ function f = testNLP_objFunction(x, Prob)
 % f = testNLP_objFunction(x, Prob)
 % From tomlab quickguide
 
-if isempty(Prob.uP)
+if ~isfield(Prob, 'uP')
    alpha = 100;
 else
    alpha = Prob.uP(1);
