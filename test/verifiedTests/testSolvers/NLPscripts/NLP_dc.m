@@ -4,4 +4,4 @@ function dc = NLP_dc(x, Prob)
 
 % One row for each constraint, one column for each variable.
 
-dc = [-2*x(1),-1];
+dc = [-2 * x(1), -1];

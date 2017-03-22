@@ -21,7 +21,7 @@ initTest(fileparts(which(mfilename)));
 tol = 1e-4;
 
 % define the solver packages to be used to run this test
-solverPkgs = {'matlab'}; % tomlab_snopt
+solverPkgs = {'matlab'};  % tomlab_snopt
 
 for k = 1:length(solverPkgs)
 
@@ -49,7 +49,7 @@ for k = 1:length(solverPkgs)
         NLPproblem.c_L = -1000;
         NLPproblem.c_U = 0;
 
-        %Solve, silent printing, problem name = 'RBB Problem' and warnings off.
+        % Solve, silent printing, problem name = 'RBB Problem' and warnings off.
         NLPsolution = solveCobraNLP(NLPproblem, 'printLevel', 0, 'PbName', Name, 'warning', 0);
 
         % check the results
