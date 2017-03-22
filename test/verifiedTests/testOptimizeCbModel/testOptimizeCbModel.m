@@ -10,7 +10,7 @@
 %     - The solver libraries must be included separately
 
 % define global paths
-global path_TOMLAB
+global TOMLAB_PATH
 
 % save the current path
 currentDir = pwd;
@@ -34,7 +34,7 @@ for k = 1:length(solverPkgs)
 
     % add the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
-      addpath(genpath(path_TOMLAB));
+      addpath(genpath(TOMLAB_PATH));
     end
 
     % change the COBRA solver (LP)

@@ -8,7 +8,7 @@
 
 
 % define global paths
-global path_TOMLAB
+global TOMLAB_PATH
 
 % save the current path
 currentDir = pwd;
@@ -26,7 +26,7 @@ load('refData_solveBooleanRegModel.mat');
  for k = 1:length(solverPkgs)
     % add the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(path_TOMLAB));
+        addpath(genpath(TOMLAB_PATH));
     end
 
     solverLPOK = changeCobraSolver(solverPkgs{k});
@@ -40,7 +40,7 @@ load('refData_solveBooleanRegModel.mat');
 
     % remove the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        rmpath(genpath(path_TOMLAB));
+        rmpath(genpath(TOMLAB_PATH));
     end
 
     fprintf('Done.\n');
