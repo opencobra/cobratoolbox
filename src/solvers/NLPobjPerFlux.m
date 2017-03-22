@@ -1,5 +1,5 @@
 function value = NLPobjPerFlux(fluxVector,Prob)
-%NLPobjPerFlux Calculates the value of the objective v_obj/sum(v.^2) based on
+%NLPobjPerFlux Calculates the value of the objective v_obj/sum(v.^2)^(1/4) based on
 %a flux distribution
 %  
 %  value = NLPobjPerFlux(fluxVector,Prob)
@@ -11,7 +11,7 @@ function value = NLPobjPerFlux(fluxVector,Prob)
 % Prob          NLP problem structure
 %
 %OUTPUT
-% value         Objective flux / v.^2
+% value         Objective flux / sum(v.^2)^
 %
 % Markus Herrgard 12/7/07
 %
@@ -20,5 +20,4 @@ function value = NLPobjPerFlux(fluxVector,Prob)
 
 c = Prob.objArguments{1};
 
-%The factor of 10000 is due to the tolerance limits used by fmincon. 
-value = 10000*sum(c.*fluxVector)/sum(fluxVector.^2);
+value = sum(c.*fluxVector)/sum(fluxVector.^2);

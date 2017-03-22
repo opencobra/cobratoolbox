@@ -163,9 +163,17 @@ switch solver
 
         A2 = A(csense == 'E',:);
         b2 = b(csense == 'E');
-
-        options.nIter = 100000;
-
+        
+        %Get fminCon Options, and set the options supplied by the user.
+        [checkNaN, PbName, iterationLimit, logFile] =  ...
+            getCobraSolverParams('NLP',{'checkNaN','PbName', 'iterationLimit', 'logFile'},parameters);
+        options = optimoptions('fmincon','maxIter',iterationLimit,'maxFunEvals',iterationLimit);
+        optParams = NLPproblem.optParams;
+        paramFields = fieldnames(optParams);
+        for field = 1:numel(paramFields)
+            options.(paramFields{field}) = optParams.(paramFields{field});
+        end
+            
         % define the objective function with 2 input arguments
         func = eval(['@(x)', objFunction, '(x, NLPproblem)']);
 
