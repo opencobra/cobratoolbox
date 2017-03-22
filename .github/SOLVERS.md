@@ -83,13 +83,13 @@ MOSEK
     export PATH="/opt/mosek/<ver>/tools/platform/linux64x86/bin/:{$PATH}"
     ````
 
-4) Navigate to the directory where the `tar.bz2` was downloaded (`/opt/`) and enter in a shell to extract the archive
+6) Navigate to the directory where the `tar.bz2` was downloaded (`/opt/`) and enter in a shell to extract the archive
 
     ````sh
     $ tar xvjf <filename>.tar.bz2
     ````
 
-5) Verify that `MOSEK` is correctly installed by using the following command in Matlab:
+7) Verify that `MOSEK` is correctly installed by using the following command in Matlab:
 ````matlab
 >> mosekdiag
 ````
