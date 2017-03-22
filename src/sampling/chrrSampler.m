@@ -1,16 +1,16 @@
 function [samples,roundedPolytope] = chrrSampler(model,numSkip,numSamples,toRound,roundedPolytope,minFlux,maxFlux)
 % CHRRSAMPLER Generate uniform random flux samples with CHRR
 %   Coordinate Hit-and-Run with Rounding
-% 
+%
 % [samples,roundedPolytope,minFlux,maxFlux] = chrrSampler(model,numSkip,numSamples,toRound,roundedPolytope,minFlux,maxFlux);
-% 
+%
 %   chrrSampler will generate numSamples samples from model, taking
 %   numSkip steps of a random walk between each sample
 %
 %   Rounding the polytope is a potentially expensive step. If you generate multiple rounds
 %   of samples from a single model, you can save roundedPolytope from the first round and
 %   input it for subsequent rounds.
-% 
+%
 % INPUTS:
 % model ... COBRA model structure with fields:
 % .S ... The m x n stoichiometric matrix
@@ -19,27 +19,27 @@ function [samples,roundedPolytope] = chrrSampler(model,numSkip,numSamples,toRoun
 % .c ... n x 1 linear objective
 % numSkip ... Number of steps of coordinate hit-and-run between samples
 % numSamples ... Number of samples
-% 
+%
 % OPTIONAL INPUTS:
 % toRound ... {0,(1)} Option to round the polytope before sampling.
 % roundedPolytope ... The rounded polytope from a previous round of
 %                     sampling the same model.
 % minFlux,maxFlux ... n x 1 flux minima and maxima from flux variability
 %                     analysis of the same model.
-% 
+%
 % OUTPUTS:
 % samples ... n x numSamples matrix of random flux samples
 % roundedPolytope ... The rounded polytope. Save for use in subsequent
 %                     rounds of sampling.
-% 
+%
 % October 2016, Ben Cousins and Hulda S. Haraldsdóttir
 
 % Define defaults
-if nargin<3 || isempty(numSkip)
+if nargin>=5 && isempty(numSkip)
     numSkip = 8*size(roundedPolytope.A,2)^2;
 end
 
-if nargin<2 || isempty(numSamples)
+if nargin<3 || isempty(numSamples)
     numSamples = 1000;
 end
 
@@ -70,7 +70,19 @@ if toPreprocess
     fprintf('Checking for width 0 facets...\n');
     
     if toGetWidths
-        [minFlux, maxFlux] = fluxVariability(model);
+        %check if we can use fastFVA
+        if exist('fastFVA')==2
+            %check if we can do parallel for fastFVA
+            v=ver;
+            PCT='Parallel Computing Toolbox';
+            if  any(strcmp(PCT,{v.Name}))
+                p = parcluster('local');
+                SetWorkerCount(p.NumWorkers);
+            end
+            [minFlux, maxFlux] = fastFVA(model,100);
+        else
+            [minFlux, maxFlux] = fluxVariability(model);
+        end
     end
     
     eps_cutoff = 1e-7;
@@ -89,6 +101,10 @@ if toPreprocess
     end
     
     [num_constraints,dim] = size(P.A);
+    
+    if exist('numSkip')~=1 || isempty(numSkip)
+        numSkip=8*dim^2;
+    end
     
     fprintf('Currently (P.A, P.b) are in %d dimensions\n', dim);
     
@@ -111,6 +127,8 @@ end
 
 %now we're ready to sample
 samples = genSamples(roundedPolytope, numSkip, numSamples);
+
+% samples = genSamplesGaussian(roundedPolytope,numSkip,numSamples,100*ones(size(roundedPolytope.N,1),1),eye(size(roundedPolytope.N,1)));
 
 end
 
