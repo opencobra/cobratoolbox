@@ -1,5 +1,5 @@
-function f = testNLP_objFunction(x, Prob)
-% f = testNLP_objFunction(x, Prob)
+function f = NLP_objFunction(x, Prob)
+% f = NLP_objFunction(x, Prob)
 % From tomlab quickguide
 
 if ~isfield(Prob, 'uP')

@@ -1,5 +1,5 @@
-function dc = testNLP_dc(x, Prob)
-% dc = testNLP_dc(x, Prob)
+function dc = NLP_dc(x, Prob)
+% dc = NLP_dc(x, Prob)
 % From tomlab quickguide
 
 % One row for each constraint, one column for each variable.

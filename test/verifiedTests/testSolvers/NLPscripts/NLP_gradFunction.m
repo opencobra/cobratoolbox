@@ -1,5 +1,5 @@
-function g = testNLP_gradFunction(x, Prob)
-% g = testNLP_gradFunction(x, Prob)
+function g = NLP_gradFunction(x, Prob)
+% g = NLP_gradFunction(x, Prob)
 % From tomlab quickguide
 
 if isempty(Prob.uP)

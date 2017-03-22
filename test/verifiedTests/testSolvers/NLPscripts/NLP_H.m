@@ -1,5 +1,5 @@
-function H = testNLP_H(x, Prob)
-% H = testNLP_H(x, Prob)
+function H = NLP_H(x, Prob)
+% H = NLP_H(x, Prob)
 % From tomlab quickguide
 
 if isempty(Prob.uP)

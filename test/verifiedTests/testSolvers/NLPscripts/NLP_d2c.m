@@ -1,5 +1,5 @@
-function d2c=testNLP_d2c(x, lam, Prob)
-% d2c=testNLP_d2c(x, lam, Prob)
+function d2c=NLP_d2c(x, lam, Prob)
+% d2c=NLP_d2c(x, lam, Prob)
 % From tomlab quickguide
 
 % The only nonzero element in the second derivative matrix for the single
