@@ -1,8 +1,7 @@
-function testOptimizeCbModelNLP( input_args )
 %TESTOPTIMIZECBMODELNLP tests the optimizeCbModelNLP function, and some of
 %its parameters.
 
-toymodel = createToyModel(0,0,0) % create a toy model 
+toymodel = createToyModel(0,0,0); % create a toy model 
 toymodel.ub(1) = -1; %force uptake, otherwise the default Objective will try to minimize all fluxes...
 
 %optimize
@@ -24,5 +23,5 @@ model.c(:) = 0;
 sol2 = optimizeCbModelNLP(model,'objFunction','SimpleQPObjective','objArgs',objArg,'nOpt',5);
 assert(abs(sol2.f-100) < tolerance);
 
-end
+
 

@@ -101,7 +101,10 @@ if nargin ~=1
             if ismember(varargin{i},optParamNames)
                 parameters.(varargin{i}) = varargin{i+1};
             else
-                error([varargin{i} ' is not a valid optional parameter']);
+                %Changed to highlight non COBRA parameters (which might eb
+                %used for e.g. fmincon.
+                parameters.(varargin{i}) = varargin{i+1};
+                warning([varargin{i} ' is not a COBRA parameter']);
             end
         end
     elseif strcmp(varargin{1},'default')
@@ -114,7 +117,7 @@ if nargin ~=1
         return;
     end
 end
-[printLevel warning] = getCobraSolverParams('NLP',{'printLevel','warning'},parameters);
+[printLevel ~] = getCobraSolverParams('NLP',{'printLevel','warning'},parameters);
 
 %deal variables
 [A,lb,ub] = deal(NLPproblem.A,NLPproblem.lb,NLPproblem.ub);
@@ -168,12 +171,14 @@ switch solver
         [checkNaN, PbName, iterationLimit, logFile] =  ...
             getCobraSolverParams('NLP',{'checkNaN','PbName', 'iterationLimit', 'logFile'},parameters);
         options = optimoptions('fmincon','maxIter',iterationLimit,'maxFunEvals',iterationLimit);
-        if isfield(NLPproblem, 'optParams')
-            optParams = NLPproblem.optParams;
-            paramFields = fieldnames(optParams);
+        
+        if isstruct(parameters)
+            paramFields = fieldnames(parameters);
             for field = 1:numel(paramFields)
-                options.(paramFields{field}) = optParams.(paramFields{field});
-            end
+                if any(ismember(fieldnames(options),paramFields{field}))
+                    options.(paramFields{field}) = parameters.(paramFields{field});
+                end
+            end        
         end
             
         % define the objective function with 2 input arguments
