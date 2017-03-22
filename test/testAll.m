@@ -12,6 +12,7 @@ end
 % include the root folder and all subfolders
 addpath(genpath(pwd))
 
+% if the location of initCobraToolbox is not yet known
 if length(which('initCobraToolbox.m')) == 0
     % define the path to The COBRA Toolbox
     pth = which('testAll.m');
@@ -24,8 +25,13 @@ if length(which('initCobraToolbox.m')) == 0
     addpath(genpath(pwd));
 end
 
+CBTDIR = fileparts(which('initCobraToolbox.m'));
+
+% change to the root folder of The COBRA TOolbox
+cd(CBTDIR);
+
 % run the official initialisation script
-initCobraToolbox
+initCobraToolbox;
 
 if ~isempty(strfind(getenv('HOME'), 'jenkins'))
     WAITBAR_TYPE = 0;
