@@ -175,10 +175,16 @@ switch solver
         if (origStat > 0)
             stat = 1; % Optimal solution found
             y = lambda.eqlin;
-            w = zeros(length(lb), 1); % set zero Lagrangian multipliers (N/A)
+            w = zeros(length(lb), 1); % set zero Lagrangian multipliers (N/A)            
         elseif (origStat < 0)
+            %We supply empty fields, but we need to assign them as
+            %otherwise 
+            y = [];
+            w = [];
             stat = 0; % Infeasible
-        else
+        else            
+            y = [];
+            w = [];
             stat = -1; % Solution did not converge
         end
     case 'tomlab_snopt'

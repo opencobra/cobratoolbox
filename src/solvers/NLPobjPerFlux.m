@@ -18,8 +18,7 @@ function value = NLPobjPerFlux(fluxVector,Prob)
 % c wasn't defined as written so added Prob as input to define c from the
 % model by Daniel Zielinski 3/19/10
 
-model = Prob.user.model;
+c = Prob.objArguments{1};
 
-c = model.c == 1;
-
-value = -sum(c.*fluxVector)/sum(fluxVector.^2);
+%The factor of 10000 is due to the tolerance limits used by fmincon. 
+value = 10000*sum(c.*fluxVector)/sum(fluxVector.^2);

@@ -13,12 +13,20 @@ function [currentSol,allObjValues,allSolutions] = ...
 % Parameter Name
 % objFunction     Name of the non-linear matlab function to be optimized (the
 %                 corresponding m-file must be in the current matlab path)
+%                 The function receives two arguments, the current flux
+%                 vector, and the NLPProblem structure.
 % initFunction    Name of the matlab function used to generate random initial
-%                 starting points
+%                 starting points. The function will be supplied with two
+%                 arguments: the model and a cell array of input arguments
+%                 (specified in the initArgs parameter)
 % osenseStr       Optimization direction ('max' or 'min')
 % nOpt            Number of independent optimization runs performed
-% objArgs         Cell array of arguments to the 'objFunction'
-% initArgs        Cell array of arguments to the 'initFunction'
+% objArgs         Cell array of arguments that are supplied to the
+%                 objective function as objArguments in the NLPProblem
+%                 structure (i.e. the second element, will have a field
+%                 objArguments.)
+% initArgs        Cell array of arguments to the 'initFunction', will be
+%                 provided as second input Argument to the initFunction
 %
 %OUTPUT
 % currentSol    Solution structure
@@ -56,13 +64,21 @@ if strcmp(osenseStr,'max')
 else
     osense = 1;
 end
+
+%If this is the default, and no objArgs are supplied, we set them to default
+%values.
 if strcmp(objFunction,defaultObjFunction) && isnumeric(objArgs)    
     objArgs = {osense*model.c};
 else
+    %Otherwise, we only adapt them if they are at the default value.
+    %since we require them to be cells if not default we can simply check
+    %this.
     if isnumeric(objArgs)
         objArgs = {};
     end
 end
+
+%The same as above for the objective Function
 if strcmp(initFunction,defaultInitFunction) && isnumeric(initArgs)        
     solOpt = optimizeCbModel(model,osenseStr);
     %Minimum fraction of the objective function to select start points from
@@ -81,6 +97,7 @@ NLPproblem.b = model.b;
 NLPproblem.lb = model.lb;
 NLPproblem.ub = model.ub;
 NLPproblem.objFunction = objFunction;
+NLPproblem.objArguments = objArgs;
 NLPproblem.csense(1:nMets) = 'E';
 
 % Current best solution
