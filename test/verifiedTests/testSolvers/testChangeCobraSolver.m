@@ -5,8 +5,8 @@
 
 
 % define global paths
-global solvers;
-global optimizationProblemTypes;
+global SOLVERS;
+global OPTIMIZATIONPROBLEMTYPES;
 
 % save the current path
 currentDir = pwd;
@@ -54,6 +54,18 @@ catch ME
     assert(length(ME.message) > 0)
 end
 
+for i = 1:length(OPTIMIZATIONPROBLEMTYPES)
+    varName = horzcat(['CBT_', OPTIMIZATIONPROBLEMTYPES{i}, '_SOLVER']);
+    eval(['global ' varName])
+    eval(['clear ' varName]);
+end
+changeCobraSolver('pdco', 'all')
+for i = 1:length(SOLVERS.pdco.type)
+    varName = horzcat(['CBT_', SOLVERS.pdco.type{i}, '_SOLVER']);
+    eval(['global ' varName])
+    assert(strcmp(eval(varName), 'pdco'))
+end
+
 % One argument
 try
     ok = changeCobraSolver('matlab');
@@ -63,4 +75,3 @@ end
 
 % Zero argument
 changeCobraSolver();
-
