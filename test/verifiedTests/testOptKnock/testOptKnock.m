@@ -10,8 +10,8 @@
 %     - The solver libraries must be included separately
 
 % define global paths
-global path_GUROBI
-global path_TOMLAB
+global GUROBI_PATH
+global TOMLAB_PATH
 global CBT_MILP_SOLVER
 
 %save original directory
@@ -69,9 +69,9 @@ for k = 1:length(solverPkgs)
 
     % add the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(path_TOMLAB));
+        addpath(genpath(TOMLAB_PATH));
     elseif strcmp(solverPkgs{k}, 'gurobi6')
-        addpath(genpath(path_GUROBI));
+        addpath(genpath(GUROBI_PATH));
     end
 
     % define the global variable
@@ -114,9 +114,9 @@ for k = 1:length(solverPkgs)
 
         % remove the solver paths (temporary addition for CI)
         if strcmp(solverPkgs{k}, 'tomlab_cplex')
-            rmpath(genpath(path_TOMLAB));
+            rmpath(genpath(TOMLAB_PATH));
         elseif strcmp(solverPkgs{k}, 'gurobi6')
-            rmpath(genpath(path_GUROBI));
+            rmpath(genpath(GUROBI_PATH));
         end
     end
 end
