@@ -168,10 +168,12 @@ switch solver
         [checkNaN, PbName, iterationLimit, logFile] =  ...
             getCobraSolverParams('NLP',{'checkNaN','PbName', 'iterationLimit', 'logFile'},parameters);
         options = optimoptions('fmincon','maxIter',iterationLimit,'maxFunEvals',iterationLimit);
-        optParams = NLPproblem.optParams;
-        paramFields = fieldnames(optParams);
-        for field = 1:numel(paramFields)
-            options.(paramFields{field}) = optParams.(paramFields{field});
+        if isfield(NLPProblem, 'optParams')
+            optParams = NLPproblem.optParams;
+            paramFields = fieldnames(optParams);
+            for field = 1:numel(paramFields)
+                options.(paramFields{field}) = optParams.(paramFields{field});
+            end
         end
             
         % define the objective function with 2 input arguments
