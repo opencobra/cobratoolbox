@@ -39,7 +39,7 @@ function solution = solveCobraNLP(NLPproblem,varargin)
 %                   Lagrangian function (only needed for some solvers)
 %   d_L             Lower bound vector in nonlinear constraints
 %   d_U             Upper bound vector in nonlinear constraints
-%   userParams      Solver specific user parameters structure
+%   user            Solver specific user parameters structure
 %   optParams       Solver specific optional parameters structure
 %
 %OPTIONAL INPUTS
@@ -227,8 +227,8 @@ switch solver
         else
             d_U = [];
         end
-        if isfield(NLPproblem,'userParams')
-            userParams = NLPproblem.userParams;
+        if isfield(NLPproblem,'user')
+            userParams = NLPproblem.user;
         else
             userParams = [];
         end
