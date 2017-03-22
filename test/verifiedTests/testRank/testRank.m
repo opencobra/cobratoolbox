@@ -8,11 +8,11 @@
 %     - original test file: Ronan Fleming
 %     - CI integration: Laurent Heirendt
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testRank'])
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 % load the model
 load('iAF1260.mat')
@@ -38,4 +38,4 @@ for printLevel = 0:1
 end
 
 % change the directory
-cd(CBTDIR)
+cd(currentDir)

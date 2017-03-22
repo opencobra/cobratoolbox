@@ -9,11 +9,11 @@
 global path_ILOG_CPLEX
 global path_TOMLAB
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-initTest([CBTDIR filesep 'test' filesep 'verifiedTests' filesep 'testFastGapFill'])
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 %Specify test files
 modelFile = 'fgf_test_model.xml';
@@ -118,4 +118,4 @@ for k = 1:length(solverPkgs)
 end
 
 % change the directory
-cd(CBTDIR)
+cd(currentDir)

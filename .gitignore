@@ -53,8 +53,14 @@ test/testSampling/sampleCbModelTmp.mat
 test/testSampling/sampleStructTmp.mat
 
 # verified tests
+test/verifiedTests/testMultiSpeciesModelling/*.mat
 test/verifiedTests/testSBML/*.sbml.xml
 test/verifiedTests/testFastGapFill/KEGGMatrix.mat
+test/verifiedTests/testTools/testPrintMatrix.txt
+test/verifiedTests/testMassChargeBalance/*.txt
+test/verifiedTests/testFastGapFill/*.mat
+test/verifiedTests/testTools/testData_printLabeledData.txt
+test/verifiedTests/testSolvers/MILPProblem.mat
 
 # shared libraries
 *.so

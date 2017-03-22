@@ -14,6 +14,11 @@ script:
     # launch the tests
     - sh ./runtests.sh
 
+    # launch tutorial
+    - if [ "$MATLAB_VER" == "R2016b" ]; then 
+          sh ./tutorials/runtutorials.sh;
+      fi;
+
 after_success:
     - if [ "$MATLAB_VER" == "R2016b" ]; then
       bash <(curl -s https://codecov.io/bash) -f "!*.lst";
