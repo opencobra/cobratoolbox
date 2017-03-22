@@ -222,8 +222,8 @@ else
     solution = solveCobraMILP(MILPproblem);
 end
 
-global CBTLPSOLVER
-if strcmp(CBTLPSOLVER,'mps')
+global CBT_LP_SOLVER
+if strcmp(CBT_LP_SOLVER,'mps')
     FBAsolution=solution;
     return;
 else

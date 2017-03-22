@@ -12,17 +12,17 @@ function changeOK = changeCobraSolverParams(solverType,paramName,paramValue)
 % Allowed LP parameter names:
 % optTol        Optimal objective accuracy tolerance
 % teasTol       Constraint feasibilty tolerance
-% 
-% minNorm       {(0), scalar , n x 1 vector}, where [m,n]=size(S); 
-%               If not zero then, minimise the Euclidean length 
+%
+% minNorm       {(0), scalar , n x 1 vector}, where [m,n]=size(S);
+%               If not zero then, minimise the Euclidean length
 %               of the solution to the LP problem. minNorm ~1e-6 should be
-%               high enough for regularisation yet maintain the same value for 
+%               high enough for regularisation yet maintain the same value for
 %               the linear part of the objective. However, this should be
 %               checked on a case by case basis, by optimization with and
 %               without regularisation.
 %
 % printLevel    Printing level
-%               = 0    Silent 
+%               = 0    Silent
 %               = 1    Warnings and Errors
 %               = 2    Summary information (Default)
 %               = 3    More detailed information
@@ -56,9 +56,9 @@ allowedLPparams = {'optTol', 'primalOnly', 'minNorm', 'printLevel','feasTol'};
 allowedQPparams = {'minNorm', 'printLevel'};
 allowedMILPparams = {'intTol','relMipGapTol','timeLimit','logFile','printLevel'};
 
-% Only LP is currently included
+% Only LP, QP and MILP are currently included
 switch solverType
-    case 'LP'  
+    case 'LP'
         if (ismember(paramName,allowedLPparams))
             global CBT_LP_PARAMS;
             CBT_LP_PARAMS.(paramName) = paramValue;

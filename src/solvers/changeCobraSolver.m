@@ -1,16 +1,16 @@
-function solverOK = changeCobraSolver(solverName,solverType)
-%changeCobraSolver Changes the Cobra Toolbox optimization solver(s)
+function solverOK = changeCobraSolver(solverName, solverType, printLevel)
+% changeCobraSolver Changes the Cobra Toolbox optimization solver(s)
 %
 % solverOK = changeCobraSolver(solverName,solverType)
 %
-%INPUTS
+% INPUTS
 % solverName    Solver name
 % solverType    Solver type, 'LP', 'MILP', 'QP', 'MIQP' (opt, default
 %               'LP', 'all').  'all' attempts to change all applicable
 %               solvers to solverName.  This is purely a shorthand
 %               convenience.
 %
-%OUTPUT
+% OUTPUT
 % solverOK      true if solver can be accessed, false if not
 %
 % Currently allowed LP solvers:
@@ -67,299 +67,207 @@ function solverOK = changeCobraSolver(solverName,solverType)
 % (usually matlabinstall/toolboxes/local/startup.m)
 % Markus Herrgard 1/19/07
 
-global CBTLPSOLVER;
+global SOLVERS;
+global OPTIMIZATIONPROBLEMTYPES;
+global CBT_LP_SOLVER;
 global CBT_MILP_SOLVER;
 global CBT_QP_SOLVER;
 global CBT_MIQP_SOLVER;
 global CBT_NLP_SOLVER;
 
-if (nargin < 1)
-    display('The solvers defined are: ');
-    display(CBTLPSOLVER);
-    if ~isempty(CBT_MILP_SOLVER), display(CBT_MILP_SOLVER); end
-    if ~isempty(CBT_QP_SOLVER), display(CBT_QP_SOLVER); end
-    if ~isempty(CBT_MIQP_SOLVER), display(CBT_MIQP_SOLVER); end
-    if ~isempty(CBT_NLP_SOLVER), display(CBT_NLP_SOLVER); end
-    solverOK = false;
+if isempty(SOLVERS) || isempty(OPTIMIZATIONPROBLEMTYPES)
+    initCobraToolbox;
+end
+
+if nargin < 1
+    definedSolvers = [CBT_LP_SOLVER, CBT_MILP_SOLVER, CBT_QP_SOLVER, CBT_MIQP_SOLVER, CBT_NLP_SOLVER];
+    if isempty(definedSolvers)
+        fprintf('No solvers are defined!\n');
+    else
+        fprintf('Defined solvers are:\n');
+        for i = 1:length(OPTIMIZATIONPROBLEMTYPES)
+            varName = horzcat(['CBT_', OPTIMIZATIONPROBLEMTYPES{i}, '_SOLVER']);
+            if ~isempty(eval(varName))
+                fprintf('    %s: %s\n', varName, eval(varName));
+            end
+        end
+    end
     return;
 end
 
-if (nargin < 2)
+if nargin < 2
     solverType = 'LP';
+else
+    solverType = upper(solverType);
+end
+
+if nargin < 3
+    printLevel = 1;
+end
+
+% check if the given solver is able to solve the given problem type.
+solverOK = false;
+if isempty(strmatch(solverType, OPTIMIZATIONPROBLEMTYPES))
+    if printLevel > 0
+        error('%s problems cannot be solved in The COBRA Toolbox', solverType);
+    else
+        return
+    end
+end
+
+% check if the given solver is able to solve the given problem type.
+if isempty(strmatch(solverType, SOLVERS.(solverName).type))
+    if printLevel > 0
+        error('Solver %s cannot solve %s problems', solverName, solverType);
+    else
+        return
+    end
 end
 
 solverOK = false;
-solverType = upper(solverType);
 
-if (strcmp(solverType, 'ALL'))
-    changeCobraSolver(solverName,'LP');
-    changeCobraSolver(solverName,'MILP');
-    changeCobraSolver(solverName,'QP');
-    changeCobraSolver(solverName,'MIQP');
+switch solverName
+    case {'lindo_old', 'lindo_legacy'}
+        solverOK = checkSolverInstallationFile(solverName, 'mxlindo', printLevel);
+    case 'glpk'
+        solverOK = checkSolverInstallationFile(solverName, 'glpkmex', printLevel);
+    case 'mosek'
+        solverOK = checkSolverInstallationFile(solverName, 'mosekopt', printLevel);
+    case {'tomlab_cplex', 'tomlab_snopt'}
+        solverOK = checkSolverInstallationFile(solverName, 'tomRun', printLevel);
+    case 'cplex_direct'
+        solverOK = checkSolverInstallationFile(solverName, 'tomRun', printLevel);
+    case 'ibm_cplex'
+        try
+            ILOGcplex = Cplex('fba');  % Initialize the CPLEX object
+            if ~verLessThan('matlab', '9')  % 2016b
+                if printLevel > 0
+                    fprintf('IBM ILOG CPLEX is incompatible with this version of MATLAB, please downgrade or change solver\n');
+                end
+            else
+                solverOK = true;
+            end
+            if verLessThan('matlab', '9') && ~verLessThan('matlab', '8.6')  % >2015b
+                warning('off', 'MATLAB:lang:badlyScopedReturnValue');  % take out warning message
+            end
+        catch ME
+            solverOK = false;
+        end
+    case 'lp_solve'
+        solverOK = checkSolverInstallationFile(solverName, 'lp_solve', printLevel);
+    case 'qpng'
+        solverOK = checkSolverInstallationFile(solverName, 'qpng', printLevel);
+    case 'pdco'
+        solverOK = checkSolverInstallationFile(solverName, 'pdco', printLevel);
+    case 'gurobi_mex'
+        solverOK = checkSolverInstallationFile(solverName, 'gurobi_mex', printLevel);
+    case {'gurobi5', 'gurobi6', 'gurobi7'}
+        solverOK = checkGurobiInstallation(solverName, 'gurobi', printLevel);
+    case 'mps'
+        solverOK = checkSolverInstallationFile(solverName, 'BuildMPS', printLevel);
+    case 'quadMinos'
+        solverOK = checkSolverInstallationExecutable(solverName, 'minos', true, printLevel);
+    case 'dqqMinos'
+        solverOK = checkSolverInstallationExecutable(solverName, 'run1DQQ', true, printLevel);
+    case 'opti'
+        optiSolvers = {'CLP', 'CSDP', 'DSDP', 'OOQP', 'SCIP'};
+        if ~isempty(which('checkSolver'))
+            availableSolvers = cellfun(@(x)checkSolver(lower(x)), optiSolvers);
+            fprintf('OPTI solvers installed currently: ');
+            fprintf(char(allLPsolvers(logical(availableSolvers))));
+            if ~any(logical(availableSolvers))
+                return;
+            end
+        end
+    case 'matlab'
+        solverOK = true;
+    otherwise
+        error(['Solver ' solverName ' not supported by COBRA Toolbox']);
 end
 
-% Only LP is currently included
-if (strcmp(solverType,'LP'))
-    %% LP solver
-    solverOK = true;
-    % Check that the LP solver is installed and accessible
-    switch solverName
-        case {'lindo_old','lindo_new'}
-            if (~exist('mxlindo'))
-                warning('LP solver Lindo not usable: mxlindo.dll not in Matlab path');
-                solverOK = false;
-            end
-        case 'glpk'
-            if (~exist('glpkmex'))
-                warning('LP solver glpk not usable: glpkmex not in Matlab path');
-                solverOK = false;
-            end
-        case 'mosek'
-            if (~exist('mosekopt'))
-                warning('LP solver Mosek not usable: mosekopt.m not in Matlab path');
-                solverOK = false;
-            end
-        case 'mosek_linprog'
-            if (~exist('mosekopt'))
-                warning('LP solver Mosek not usable: mosekopt.m not in Matlab path');
-                solverOK = false;
-            end
-        case 'tomlab_cplex'
-            if (~exist('tomRun'))
-                warning('LP solver CPLEX through Tomlab not usable: tomRun.m not in Matlab path');
-                solverOK = false;
-            end
-        case 'cplex_direct'
-            if (~exist('solveCobraLPCPLEX'))
-                warning('LP solver CPLEX through Tomlab not usable: tomRun.m not in Matlab path');
-                solverOK = false;
-            end
-        case 'ibm_cplex'
-            try
-                ILOGcplex = Cplex('fba');% Initialize the CPLEX object
-                if ~verLessThan('matlab','9')%2016b
-                    fprintf('\n IBM ILOG CPLEX is incompatible with this version of MATLAB, please downgrade or change solver\n')
-                elseif verLessThan('matlab','9') && ~verLessThan('matlab','8.6')%>2015b
-                    warning( 'off', 'MATLAB:lang:badlyScopedReturnValue' );%take out warning message
-                end
-            catch ME
-                solverOK = false;
-                warning('LP solver CPLEX from IBM not usable: IBM CPLEX not installed or licence server not up');
-            end
-        case 'lp_solve'
-            if (~exist('lp_solve'))
-                warning('LP solver lp_solve not usable: lp_solve.m not in Matlab path');
-                solverOK = false;
-            end
-        case 'pdco'
-            if (~exist('pdco'))
-                warning('LP solver pdco not usable: pdco.m not in Matlab path');
-                solverOK = false;
-            end
-        case 'gurobi'
-            if (~exist('gurobi_mex'))
-                warning('LP solver Gurobi not useable: gurobi_mex not in Matlab path');
-                solverOK=false;
-            end
-        case {'gurobi5','gurobi6','gurobi7'}
-            if (~exist('gurobi','file'))
-                warning('LP solver Gurobi not useable: gurobi.m not in Matlab path');
-                solverOK=false;
-            end
-            %TODO - test that gurobi binaries are installed and licence etc
-            %is working
-        case 'mps'
-            if (~exist('BuildMPS'))
-                warning('MPS not usable: BuildMPS.m not in Matlab path');
-                solverOK = false;
-            end
-        case 'quadMinos'
-            if ~isunix
-                error('Minos interface not implemented for non unix OS')
-            end
-            [status,cmdout]=system('which minos');
-            if isempty(cmdout)
-                [status,cmdout]=system('echo $PATH');
-                disp(cmdout);
-                warning('Minos not installed or not on system path.');
-                solverOK = false;
-            end
-        case 'dqqMinos'
-            if ~isunix
-                error('dqqMinos interface not implemented for non unix OS')
-            end
-            [status,cmdout]=system('which run1DQQ');
-            if isempty(cmdout)
-                [status,cmdout]=system('echo $PATH');
-                disp(cmdout);
-                warning('Minos not installed or not on system path.');
-                solverOK = false;
-            end
-        case 'opti'
-            allLPsolvers = {'CLP','CSDP','DSDP','OOQP','SCIP'};
-            availableSolvers = cellfun(@(x)checkSolver(lower(x)),allLPsolvers);            
-            display('Available OPTI solvers that are installed currently');
-            display(char(allLPsolvers(logical(availableSolvers))));
-            if ~any(logical(availableSolvers))
-                solverOK = false;
-            end
-        otherwise
-            warning(['LP solver ' solverName ' not supported by COBRA Toolbox']);
-            solverOK = false;
-    end
-    if solverOK
-        CBTLPSOLVER = solverName;
-    end
-elseif (strcmp(solverType,'MILP'))
-    %% MILP solver
-    solverOK = true;  
-    % Check that the LP solver is installed and accessible
-    switch solverName
-        case 'tomlab_cplex'
-            if (~exist('tomRun'))
-                warning('MILP solver CPLEX through Tomlab not usable: tomRun.m not in Matlab path');
-                solverOK = false;
-            end
-        case 'ibm_cplex'
-            try
-                ILOGcplex = Cplex('fba');% Initialize the CPLEX object
-                if ~verLessThan('matlab','9')%2016b
-                    fprintf('\n IBM ILOG CPLEX is incompatible with this version of MATLAB, please downgrade or change solver\n')
-                elseif verLessThan('matlab','9') && ~verLessThan('matlab','8.6')%>2015b
-                    warning( 'off', 'MATLAB:lang:badlyScopedReturnValue' );%take out warning message
-                end
-            catch ME
-                solverOK = false;
-                warning('MILP solver CPLEX from IBM not usable: IBM CPLEX not installed or licence server not up');
-            end
-        case 'glpk'
-            if (~exist('glpkmex'))
-                warning('MILP solver glpk not usable: glpkmex not in Matlab path');
-                solverOK = false;
-            end
-        case 'gurobi'
-            if (~exist('gurobi_mex'))
-                warning('MILP solver Gurobi not useable: gurobi_mex not in Matlab path');
-                solverOK=false;
-            end
-        case {'gurobi5','gurobi6','gurobi7'}
-            if (~exist('gurobi'))
-                warning('MILP solver Gurobi not useable: gurobi.m not in Matlab path');
-                solverOK=false;
-            end
-        case 'mps'
-            if (~exist('BuildMPS'))
-                warning('MPS not usable: BuildMPS.m not in Matlab path');
-                solverOK = false;
-            end
-        otherwise
-            warning(['MILP solver ' solverName ' not supported by COBRA Toolbox']);
-            solverOK = false;
-    end
-    if solverOK
-        CBT_MILP_SOLVER = solverName;
-    end
-elseif (strcmp(solverType,'QP'))
-    %% QP solver
-    switch solverName
-        case 'tomlab_cplex'
-            if (~exist('tomRun'))
-                warning('QP solver CPLEX through Tomlab not usable: tomRun.m not in Matlab path');
-                solverOK = false;
-            else
-                solverOK = true;
-            end
-        case 'qpng'
-            if (~exist('qpng'))
-                warning('QP solver qpng not usable: qpng.m not in Matlab path');
-                solverOK = false;
-            else
-                warning('qpng solver has not been fully tested - results may not be correct');
-                solverOK = true;
-            end
-        case 'mosek'
-            if (~exist('mskqpopt'))
-                warning('QP solver mskqpopt not usable: mskqpopt.m not in Matlab path');
-                solverOK = false;
-            else
-                solverOK = true;
-            end
-        case 'pdco'
-            if (~exist('pdco'))
-                warning('QP solver pdco not usable: pdco.m not in Matlab path');
-                solverOK = false;
-            else
-                solverOK = true;
-            end
-        case 'gurobi'
-            if (~exist('gurobi_mex'))
-                warning('QP solver Gurobi not useable: gurobi_mex not in Matlab path');
-                solverOK=false;
-            else
-                solverOK=true;
-            end
-        case {'gurobi5','gurobi6','gurobi7'}
-            if (~exist('gurobi'))
-                warning('QP solver Gurobi not useable: gurobi.m not in Matlab path');
-                solverOK=false;
-            else
-                solverOK=true;
-            end
-        otherwise
-            warning(['QP solver ' solverName ' not supported by COBRA Toolbox']);
-            solverOK = false;
-    end
-    if solverOK
-        CBT_QP_SOLVER = solverName;
-    end
-elseif (strcmp(solverType, 'MIQP'))
-    %MIQP solver
-    switch solverName
-        case 'tomlab_cplex'
-            if(~exist('tomRun'))
-                warning('MIQP solver CPLEX through Tomlab not usable: tomRun.m not in Matlab path');
-                solverOK = false;
-            else
-                solverOK = true;
-            end
-        case 'gurobi'
-            if(~exist('gurobi_mex'))
-                warning('MIQP solver gurobi not usable: gurobi_mex not in Matlab path');
-                solverOK = false;
-            else
-                solverOK = true;
-            end
-        case {'gurobi5','gurobi6','gurobi7'}
-            if (~exist('gurobi'))
-                warning('MIQP solver gurobi not usable: gurobi.m not in Matlab path');
-                solverOK=false;
-            else
-                solverOK=true;
-            end
-        otherwise
-            warning(['MIQP solver ' solverName ' not supported by COBRA Toolbox']);
-            solverOK = false;
-    end
-    if solverOK
-        CBT_MIQP_SOLVER = solverName;
-    end
-elseif (strcmp(solverType, 'NLP'))
-    %NLP solver
-    switch solverName
-        case 'matlab'
+% set solver related global variables
+if solverOK
+    varName = horzcat(['CBT_', solverType, '_SOLVER']);
+    eval([varName ' =  solverName;']);
+end
+
+end
+
+
+function solverOK = checkGurobiInstallation(solverName, fileName, printLevel)
+% Check Gurobi installation.
+%
+% Usage:
+%     solverOK = checkGurobiInstallation(solverName, fileName)
+%
+% Inputs:
+%     solverName: string with the name of the solver
+%     fileName:   string with the name of the file to look for
+%
+% Output:
+%     solverOK: true if filename exists, false otherwise.
+%
+
+    global GUROBI_PATH
+    solverOK = false;
+    if ~isempty(findstr(GUROBI_PATH, solverName))
+        if exist(fileName)
             solverOK = true;
-        case 'tomlab_snopt'
-            if(~exist('tomRun'))
-                warning('MIQP solver CPLEX through Tomlab not usable: tomRun.m not in Matlab path');
-                solverOK = false;
-            else
-                solverOK = true;
-            end
-        otherwise
-            warning(['NLP solver ' solverName ' not supported by COBRA Toolbox']);
-            solverOK = false;
+        elseif printLevel > 0
+            error('Solver %s is not installed!', solverName)
+        end
+    elseif printLevel > 0
+        error('Solver %s is not installed!', solverName)
     end
-    if solverOK
-        CBT_NLP_SOLVER = solverName;
+end
+
+
+function solverOK = checkSolverInstallationFile(solverName, fileName, printLevel)
+% Check solver installation by existence of a file in the Matlab path.
+%
+% Usage:
+%     solverOK = checkSolverInstallation(solverName, fileName)
+%
+% Inputs:
+%     solverName: string with the name of the solver
+%     fileName:   string with the name of the file to look for
+%
+% Output:
+%     solverOK: true if filename exists, false otherwise.
+%
+    solverOK = false;
+    if exist(fileName)
+        solverOK = true;
+    elseif printLevel > 0
+        error('Solver %s is not installed!', solverName)
+    end
+end
+
+
+function solverOK = checkSolverInstallationExecutable(solverName, executableName, unix, printLevel)
+% Check Gurobi installation.
+%
+% Usage:
+%     solverOK = checkGurobiInstallation(solverName, fileName)
+%
+% Inputs:
+%     solverName: string with the name of the solver
+%     executableName:   string with the name of the executable to look for
+%     unix:
+%
+% Output:
+%     solverOK: true if executableName exists, false otherwise.
+%
+    solverOK = false;
+    if unix
+        if ~isunix && printLevel > 0
+            error('%s interface not implemented for non unix OS', solverName);
+        end
+    end
+    [status, cmdout] = system(['which ' executableName]);
+    if isempty(cmdout) && printLevel > 0
+        error('Solver %s is not installed. %s could not be found in your path. Check your PATH environement variable.', solverName, executableName);
+    else
+        solverOk = true;
     end
 end
