@@ -1,69 +1,71 @@
 function solverOK = changeCobraSolver(solverName, solverType, printLevel)
 % changeCobraSolver Changes the Cobra Toolbox optimization solver(s)
 %
-% solverOK = changeCobraSolver(solverName,solverType)
+% USAGE:
+%     solverOK = changeCobraSolver(solverName,solverType)
 %
-% INPUTS
-% solverName    Solver name
-% solverType    Solver type, 'LP', 'MILP', 'QP', 'MIQP' (opt, default
-%               'LP', 'all').  'all' attempts to change all applicable
-%               solvers to solverName.  This is purely a shorthand
-%               convenience.
+% INPUTS:
+%     solverName    Solver name
+%     solverType    Solver type, 'LP', 'MILP', 'QP', 'MIQP' (opt, default
+%                   'LP', 'all').  'all' attempts to change all applicable
+%                   solvers to solverName.  This is purely a shorthand
+%                   convenience.
+%     printLevel    if 0, warnings and errors are silenced and if > 0, they are
+%                   thrown. (default: 1)
 %
-% OUTPUT
-% solverOK      true if solver can be accessed, false if not
+% OUTPUT:
+%     solverOK      true if solver can be accessed, false if not
 %
 % Currently allowed LP solvers:
-%   lindo_new       Lindo API >v2.0
-%   lindo_old       Lindo API <v2.0
-%   glpk            GLPK solver with Matlab mex interface (glpkmex)
-%   lp_solve        lp_solve with Matlab API
-%   tomlab_cplex    CPLEX accessed through Tomlab environment (default)
-%   cplex_direct    CPLEX accessed direct to Tomlab cplex.m. This gives
-%                   the user more control of solver parameters. e.g.
-%                   minimising the Euclidean norm of the internal flux to
-%                   get rid of net flux around loops
-%   mosek           Mosek LP solver with Matlab API (using linprog.m included in Mosek
-%                   package)
-%   gurobi          Gurobi accessed through Matlab mex interface (Gurobi mex)
-%   gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
-%   gurobi6         Gurobi 6.*  accessed through built-in Matlab mex interface
-%   matlab          Matlab's own linprog.m (currently unsupported, may not
-%                   work on COBRA-type LP problems)
-%   mps             Outputs a MPS matrix string. Does not solve LP problem
-%   ibm_cplex       The IBM API for CPLEX using the CPLEX class
-%   opti            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
-%                   solver installed and called with OPTI TB wrapper
-%                   Lower level calls with installed mex files are possible
-%                   but best avoided for all solvers
+%     lindo_new       Lindo API >v2.0
+%     lindo_legacy       Lindo API <v2.0
+%     glpk            GLPK solver with Matlab mex interface (glpkmex)
+%     lp_solve        lp_solve with Matlab API
+%     tomlab_cplex    CPLEX accessed through Tomlab environment (default)
+%     cplex_direct    CPLEX accessed direct to Tomlab cplex.m. This gives
+%                     the user more control of solver parameters. e.g.
+%                     minimising the Euclidean norm of the internal flux to
+%                     get rid of net flux around loops
+%     mosek           Mosek LP solver with Matlab API (using linprog.m included in Mosek
+%                     package)
+%     gurobi_mex          Gurobi accessed through Matlab mex interface (Gurobi mex)
+%     gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
+%     gurobi6         Gurobi 6.*  accessed through built-in Matlab mex interface
+%     gurobi7         Gurobi 7.*  accessed through built-in Matlab mex interface
+%     ibm_cplex       The IBM API for CPLEX using the CPLEX class
+%     opti            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
+%                     solver installed and called with OPTI TB wrapper
+%                     Lower level calls with installed mex files are possible
+%                     but best avoided for all solvers
 %
 % Currently allowed MILP solvers:
-%   tomlab_cplex    CPLEX MILP solver accessed through Tomlab environment
-%   glpk            glpk MILP solver with Matlab mex interface (glpkmex)
-%   gurobi          Gurobi accessed through Matlab mex interface (Gurobi mex)
-%   gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
-%   gurobi6         Gurobi 6.* accessed through built-in Matlab mex interface
-%   mps             Outputs a MPS matrix string. Does not solve MILP
-%                   problem
-%   ibm_cplex       The IBM API for CPLEX using the CPLEX class
+%     tomlab_cplex    CPLEX MILP solver accessed through Tomlab environment
+%     glpk            glpk MILP solver with Matlab mex interface (glpkmex)
+%     gurobi          Gurobi accessed through Matlab mex interface (Gurobi mex)
+%     gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
+%     gurobi6         Gurobi 6.* accessed through built-in Matlab mex interface
+%     gurobi7         Gurobi 7.* accessed through built-in Matlab mex interface
+%     ibm_cplex       The IBM API for CPLEX using the CPLEX class
 %
 % Currently allowed QP solvers:
-%   tomlab_cplex    CPLEX QP solver accessed through Tomlab environment
-%   qpng            qpng QP solver with Matlab mex interface (in glpkmex
-%                   package, only limited support for small problems)
-%   gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
-%   gurobi6         Gurobi 6.* accessed through built-in Matlab mex interface
+%     tomlab_cplex    CPLEX QP solver accessed through Tomlab environment
+%     qpng            qpng QP solver with Matlab mex interface (in glpkmex
+%                     package, only limited support for small problems)
+%     gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
+%     gurobi6         Gurobi 6.* accessed through built-in Matlab mex interface
+%     gurobi7         Gurobi 7.* accessed through built-in Matlab mex interface
 %
 % Currently allowed MIQP solvers:
-%   tomlab_cplex    CPLEX MIQP solver accessed through Tomlab environment
-%   gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
-%   gurobi6         Gurobi 6.* accessed through built-in Matlab mex interface
+%     tomlab_cplex    CPLEX MIQP solver accessed through Tomlab environment
+%     gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
+%     gurobi6         Gurobi 6.* accessed through built-in Matlab mex interface
+%     gurobi7         Gurobi 7.* accessed through built-in Matlab mex interface
 %
 % Currently allowed NLP solvers
-%   matlab          MATLAB's fmincon.m
-%   tomlab_snopt    SNOPT solver accessed through Tomlab environment
+%     matlab          MATLAB's fmincon.m
+%     tomlab_snopt    SNOPT solver accessed through Tomlab environment
 %
-% it is a good idea to put this function call into your startup.m file
+% It is a good idea to put this function call into your startup.m file
 % (usually matlabinstall/toolboxes/local/startup.m)
 % Markus Herrgard 1/19/07
 
@@ -79,6 +81,7 @@ if isempty(SOLVERS) || isempty(OPTIMIZATIONPROBLEMTYPES)
     initCobraToolbox;
 end
 
+% Print out all solvers defined in global variables CBT_*_SOLVER
 if nargin < 1
     definedSolvers = [CBT_LP_SOLVER, CBT_MILP_SOLVER, CBT_QP_SOLVER, CBT_MIQP_SOLVER, CBT_NLP_SOLVER];
     if isempty(definedSolvers)
@@ -95,6 +98,7 @@ if nargin < 1
     return;
 end
 
+
 if nargin < 2
     solverType = 'LP';
 else
@@ -103,6 +107,14 @@ end
 
 if nargin < 3
     printLevel = 1;
+end
+
+% Attempt to set the user provided solver for all optimization problem types
+if (strcmp(solverType, 'ALL'))
+    for i = 1:length(OPTIMIZATIONPROBLEMTYPES)
+        changeCobraSolver(solverName, OPTIMIZATIONPROBLEMTYPES{i}, 0);
+    end
+    return
 end
 
 % check if the given solver is able to solve the given problem type.
