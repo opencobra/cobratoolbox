@@ -40,27 +40,14 @@ function solution = solveCobraNLP(NLPproblem,varargin)
 %   d_L             Lower bound vector in nonlinear constraints
 %   d_U             Upper bound vector in nonlinear constraints
 %   user            Solver specific user parameters structure
-%   optParams       Solver specific optional parameters structure
 %
 %OPTIONAL INPUTS
-%(If using matlab solver)
-%   varargin Any additional arguments to the 'objFunction' function
-%
-%(for other solvers)
-% Optional parameters can be entered using parameters structure or as
-% parameter followed by parameter value: i.e. ,'printLevel',3)
+% Optional parameters for the solver can be entered using parameters structure or as
+% parameter followed by parameter value: e.g. ,'printLevel',3)
 %
 % parameters    Structure containing optional parameters as fields.
 %               Setting parameters = 'default' uses default setting set in
 %               getCobraSolverParameters.
-% printLevel    Printing level
-%               = 0    Silent (Default)
-%               = 1    Warnings and Errors
-%               = 2    Summary information
-%               = 3    More detailed information
-%               > 10   Pause statements, and maximal printing (debug mode)
-% checkNaN      Check for NaN elements (Default = false)
-% PbName        NLP problem name (Default = NLP problem)
 %
 %OUTPUT
 % solution Structure containing the following fields describing an NLP
@@ -172,8 +159,7 @@ switch solver
         b2 = b(csense == 'E');
         
         %Get fminCon Options, and set the options supplied by the user.
-        [checkNaN, PbName, iterationLimit, logFile] =  ...
-            getCobraSolverParams('NLP',{'checkNaN','PbName', 'iterationLimit', 'logFile'},parameters);
+        [iterationLimit,timeLimit] = getCobraSolverParams('NLP',{'iterationLimit','timeLimit'},parameters);        
         options = optimoptions('fmincon','maxIter',iterationLimit,'maxFunEvals',iterationLimit);
         
         if isstruct(parameters)
@@ -184,10 +170,15 @@ switch solver
                 end
             end        
         end
-            
+                
         % define the objective function with 2 input arguments
         func = eval(['@(x)', objFunction, '(x, NLPproblem)']);
-
+        
+        %Now, define the maximum timer        
+        options.OutputFcn = @stopTimer;        
+        %and start it.
+        stopTimer(timeLimit,1);
+        
         [x, f, origStat, output, lambda] = fmincon(func, x0, A1, b1, A2, b2, lb, ub, [], options);
 
         %Assign Results
@@ -257,11 +248,6 @@ switch solver
         else
             userParams = [];
         end
-        if isfield(NLPproblem,'optParams')
-            optParams = NLPproblem.optParams;
-        else
-            optParams = [];
-        end
         if isfield(NLPproblem,'SOL'), Prob.SOL = NLPproblem.SOL; end
 
         x_L = lb;
@@ -301,7 +287,6 @@ switch solver
                 x_min, x_max, f_opt, x_opt);
         end
         Prob.user = userParams;
-        Prob.optParam = optParams;
         Prob.Warning = warning;
         Prob.SOL.optPar(35) = iterationLimit; %This is major iteration limit.
         Prob.SOL.optPar(30) = 1e9; %this is the minor iteration limit.  Essentially unlimited
@@ -350,3 +335,31 @@ t = etime(clock, t_start);
 if strcmp(solver,'tomlab_snopt')
     solution.origSolStruct = Result;
 end
+end
+
+function overtimelimit = stopTimer(maxtime,init, varargin)
+persistent STARTTIME;
+persistent MAXTIME;
+%OutputFunction will be called with 3 arguments during fmincon, so we can
+%savely set this up with 2 arguments.
+if nargin < 3
+    if isempty(STARTTIME)
+        %If the STARTTIME is not set, we can definitely set the new time.
+        STARTTIME = clock;
+        MAXTIME = maxtime;
+    else
+        if init
+            %if we call for an initialisation, also reset the timer
+            STARTTIME = clock;
+            MAXTIME = maxtime;
+        end
+    end
+else    
+    if etime(clock,STARTTIME) > MAXTIME
+        disp('Time limit reached, stopping optimization')
+        overtimelimit = 1;
+    else
+        overtimelimit = 0;
+    end
+end
+end     

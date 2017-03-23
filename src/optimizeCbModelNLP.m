@@ -143,23 +143,10 @@ allSolutions = zeros(nRxns,nOpt);
 
 NLPproblem.user.model = model; %pass the model into the problem for access by the nonlinear objective function
 
-%Convert the solverOptions struct into Param/Value pairs.
-optionnames = fieldnames(solverOptions);
-varopt = cell(2*numel(optionnames),1);
-
-
-
-for i = 1:numel(optionnames)
-    optionName = optionnames{i};
-    optionValue = solverOptions.(optionName);
-    varopt{2*i-1} = optionName;
-    varopt{2*i} = optionValue;
-end
-
 for i = 1:nOpt
     x0 = feval(initFunction,model,initArgs);
     NLPproblem.x0 = x0; %x0 now a cell within the NLP problem structure
-    solNLP = solveCobraNLP(NLPproblem,varopt{:}); %New function call
+    solNLP = solveCobraNLP(NLPproblem,solverOptions); %New function call
     %solNLP = solveCobraNLP(NLPproblem,[],objArgs); Old Code
     fprintf('%d\t%f\n',i,osense*solNLP.obj);
     allObjValues(i) = osense*solNLP.obj;
