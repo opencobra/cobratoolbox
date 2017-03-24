@@ -40,7 +40,7 @@ for k = 1:length(solverPkgs)
     end
 
     % change the COBRA solver (LP)
-    solverLPOK = changeCobraSolver(solverPkgs{k});
+    solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
     if solverLPOK == 1
         fprintf('   Testing dynamicFBA using %s ... ', solverPkgs{k});

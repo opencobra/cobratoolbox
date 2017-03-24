@@ -26,7 +26,7 @@ ecoli_blckd_rxn = {'EX_fru(e)', 'EX_fum(e)', 'EX_gln_L(e)', 'EX_mal_L(e)', ...
                    'FRUpts2', 'FUMt2_2', 'GLNabc', 'MALt2_2'};
 
 % list of solver packages
-solverPkgs = {'tomlab_cplex', 'gurobi', 'glpk'};
+solverPkgs = {'tomlab_cplex', 'gurobi6', 'glpk'};
 
 % create a parallel pool
 poolobj = gcp('nocreate'); % if no pool, do not create new one.
@@ -45,7 +45,7 @@ for k = 1:length(solverPkgs)
         addpath(genpath(GUROBI_PATH));
     end
 
-    solverLPOK = changeCobraSolver(solverPkgs{k});
+    solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
     if solverLPOK
 

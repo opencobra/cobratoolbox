@@ -56,8 +56,8 @@ for k = 1:length(solverPkgs)
         addpath(genpath(GUROBI_PATH));
     end
 
-    s1 = changeCobraSolver(solverPkgs{k}, 'lp');
-    s2 = changeCobraSolver(solverPkgs{k}, 'qp');
+    s1 = changeCobraSolver(solverPkgs{k}, 'LP', 0);
+    s2 = changeCobraSolver(solverPkgs{k}, 'QP', 0);
 
     if s1 == 1 && s2 == 1
         % Test of production

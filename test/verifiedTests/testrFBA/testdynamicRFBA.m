@@ -30,9 +30,12 @@ for k =1:length(solverPkgs)
         addpath(genpath(TOMLAB_PATH));
     end
 
-    solverLPOK = changeCobraSolver(solverPkgs{k},'LP');
+    solverLPOK = changeCobraSolver(solverPkgs{k},'LP', 0);
+
     for j=1:length(QPsolverPkgs)%QP solvers
-        solverQPOK = changeCobraSolver(QPsolverPkgs{j},'QP');
+        
+        solverQPOK = changeCobraSolver(QPsolverPkgs{j}, 'QP', 0);
+
         if solverLPOK && solverQPOK
             substrateRxns ={'EX_glc(e)' 'EX_ac(e)'};
             initConcentrations = [10.8; 1];

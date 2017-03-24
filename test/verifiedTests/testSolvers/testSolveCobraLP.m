@@ -54,7 +54,7 @@ for k = 1:length(solverPkgs)
         fprintf(['\n IBM ILOG CPLEX - ', solverPkgs{k}, ' - is incompatible with this version of MATLAB, please downgrade or change solver\n'])
     else
         % change the COBRA solver (LP)
-        solverOK = changeCobraSolver(solverPkgs{k});
+        solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
         if solverOK == 1
             for p = 1:length(testSuite)
