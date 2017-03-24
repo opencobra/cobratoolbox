@@ -72,7 +72,7 @@ if (~isempty(missingInd))
 end
 
 % Initialize concentrations
-substrateMatchInd = ismember(excRxnNames,substrateRxns);
+[~, substrateMatchInd] = ismember(substrateRxns,excRxnNames); 
 concentrations = zeros(length(excRxnNames),1);
 concentrations(substrateMatchInd) = initConcentrations;
 
