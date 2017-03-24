@@ -5,7 +5,7 @@ currentDir = pwd;
 MODELDIR = fileparts(which('retrieveModels.m'));
 cd(MODELDIR);
 
-fprintf('\nDownloading models ...\n');
+fprintf(['\n   Downloading models to ', MODELDIR, ' ...\n']);
 
 modelArr = {
     'iIT341.xml', 'http://bigg.ucsd.edu/static/models/iIT341.xml';
@@ -24,9 +24,9 @@ modelArr = {
 for i = 1:length(modelArr)
     if exist([MODELDIR, filesep, modelArr{i,1}], 'file') ~= 2
         urlwrite(modelArr{i,2}, modelArr{i, 1});
-        fprintf('Model %s saved.\n', modelArr{i, 1});
+        fprintf(' + Downloaded:      %s\n', modelArr{i, 1});
     else
-        fprintf('%s %s\n', modelArr{i, 1}, ' already exists.');
+        fprintf(' > Already exists:  %s\n', modelArr{i, 1});
     end
 end
 
@@ -38,8 +38,9 @@ if exist('Ec_iAF1260_flux1.xml', 'file') ~= 2
     system('rm read_me.txt');
     system('rm msb4100155-s6.zip');
     system('mv Ec_iAF1260_flux1.txt Ec_iAF1260_flux1.xml');
+    fprintf(' + Downloaded:      %s\n', 'Ec_iAF1260_flux1.xml');
 else
-    fprintf('%s\n', 'Ec_iAF1260_flux1.xml already exists.');
+    fprintf(' > Already exists:  %s\n', 'Ec_iAF1260_flux1.xml');
 end
 
 % STM_v1.0.xml
@@ -47,8 +48,9 @@ if exist('STM_v1.0.xml', 'file') ~= 2
     urlwrite('https://static-content.springer.com/esm/art%3A10.1186%2F1752-0509-5-8/MediaObjects/12918_2010_598_MOESM2_ESM.ZIP', '12918_2010_598_MOESM2_ESM.zip');
     system('unzip -qq 12918_2010_598_MOESM2_ESM.zip');
     system('rm 12918_2010_598_MOESM2_ESM.zip');
+    fprintf(' + Downloaded:      %s\n', 'STM_v1.0.xml');
 else
-    fprintf('%s\n', 'STM_v1.0.xml already exists.');
+    fprintf(' > Already exists:  %s\n', 'STM_v1.0.xml');
 end
 
 % change back to the root directory
