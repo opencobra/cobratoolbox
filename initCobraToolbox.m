@@ -47,16 +47,16 @@ else
     error('The submodules could not be initialized.');
 end
 
+fprintf(' > Fetching model files ... ')
+retrieveModels
+fprintf('   Done.\n')
+
 fprintf(' > Adding all the COBRA Toolbox files ... ')
 
 addpath(genpath(CBTDIR))
 rmpath([CBTDIR, filesep, '.git'])
 rmpath([CBTDIR, filesep, 'deprecated'])
 rmpath([CBTDIR, filesep, 'external/SBMLToolbox'])
-fprintf(' Done.\n')
-
-fprintf(' > Fetching model files ... ')
-retrieveModels
 fprintf(' Done.\n')
 
 fprintf(' > Checking available solvers\n')
@@ -183,9 +183,9 @@ fprintf('\n');
 % provide clear instructions and summary
 for i = 1:length(OPTIMIZATIONPROBLEMTYPES)
     if sum(solverStatus(:, i) == 1) == 0
-        fprintf(' >> You cannot solve %s problems on this system. Consider installing a %s solver.\n', char(OPTIMIZATIONPROBLEMTYPES(i)), char(OPTIMIZATIONPROBLEMTYPES(i)));
+        fprintf(' > You cannot solve %s problems on this system. Consider installing a %s solver.\n', char(OPTIMIZATIONPROBLEMTYPES(i)), char(OPTIMIZATIONPROBLEMTYPES(i)));
     else
-        fprintf(' >> You can solve %s problems on this system with: ', char(OPTIMIZATIONPROBLEMTYPES(i)));
+        fprintf(' > You can solve %s problems on this system with: ', char(OPTIMIZATIONPROBLEMTYPES(i)));
         k = 1;
         for j = 1:length(catSolverNames.(OPTIMIZATIONPROBLEMTYPES{i}))
             if SOLVERS.(catSolverNames.(OPTIMIZATIONPROBLEMTYPES{i}){j}).installed
