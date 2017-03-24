@@ -42,7 +42,7 @@ for k = 1:length(solverPkgs)
     end
 
     % change the COBRA solver (LP)
-    solverOK = changeCobraSolver(solverPkgs{k});
+    solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
     if solverOK == 1
         fprintf('   Testing flux balance analysis using %s ... ', solverPkgs{k});

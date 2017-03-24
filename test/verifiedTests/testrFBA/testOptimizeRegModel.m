@@ -35,8 +35,10 @@ for k =1:length(solverPkgs)
     end
 
     for j=1:length(QPsolverPkgs)%QP solvers
-        solverLPOK = changeCobraSolver(solverPkgs{k},'LP');
-        solverQPOK = changeCobraSolver(QPsolverPkgs{j},'QP');
+        
+        solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
+        solverQPOK = changeCobraSolver(QPsolverPkgs{j}, 'QP', 0);
+
         if solverLPOK && solverQPOK
              %Without initial state
             [FBAsolstest,DRgenestest,constrainedRxnstest,cycleStarttest,statestest] = optimizeRegModel(modelReg);

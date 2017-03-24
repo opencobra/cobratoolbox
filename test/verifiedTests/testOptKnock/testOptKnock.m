@@ -78,7 +78,7 @@ for k = 1:length(solverPkgs)
     CBT_MILP_SOLVER = solverPkgs{k};
 
     % change the COBRA solver
-    solverOK = changeCobraSolver(CBT_MILP_SOLVER);
+    solverOK = changeCobraSolver(CBT_MILP_SOLVER, 'MILP', 0);
 
     if solverOK == 1
 

@@ -29,7 +29,8 @@ load('refData_solveBooleanRegModel.mat');
         addpath(genpath(TOMLAB_PATH));
     end
 
-    solverLPOK = changeCobraSolver(solverPkgs{k});
+    solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
+    
     if solverLPOK
          %Assert
         [rFBAsol2test,finalInputs1Statestest,finalInputs2Statestest] = solveBooleanRegModel(modelReg,rFBAsol1,inputs1state,inputs2state);

@@ -67,28 +67,28 @@ metCount = length(MatricesSUX.mets);
 assert(rxnCount == 23 && metCount == 14);
 
 %test solver packages
-solverPkgs = {'tomlab_cplex', 'ILOGsimple', 'ILOGcomplex'};
+solverPkgs = {'tomlab_cplex', 'ibm_cplex'};
 
 for k = 1:length(solverPkgs)
 
     % add the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
         addpath(genpath(TOMLAB_PATH));
-    elseif strcmp(solverPkgs{k}, 'ILOGsimple') || strcmp(solverPkgs{k}, 'ILOGcomplex')
+    elseif strcmp(solverPkgs{k}, 'ibm_cplex')
         addpath(genpath(ILOG_CPLEX_PATH));
     end
 
-    if ~verLessThan('matlab','8') && ( strcmp(solverPkgs{k}, 'ILOGcomplex')) %2016b %strcmp(solverPkgs{k}, 'ILOGsimple') ||
+    if ~verLessThan('matlab','8') && ( strcmp(solverPkgs{k}, 'ibm_cplex')) %2016b %strcmp(solverPkgs{k}, 'ILOGsimple') ||
         fprintf(['\n IBM ILOG CPLEX - ', solverPkgs{k}, ' - is incompatible with this version of MATLAB, please downgrade or change solver\n'])
     else
         fprintf('   Running testFastGapFill using %s ... ', solverPkgs{k});
 
-        solverOK  = changeCobraSolver(solverPkgs{k});
+        solverOK  = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
         if solverOK
 
             % FASTCORE functions must have the CPLEX library included in order to run
-            if ~strcmp(solverPkgs{k}, 'ILOGsimple') && ~strcmp(solverPkgs{k}, 'ILOGcomplex')
+            if ~strcmp(solverPkgs{k}, 'ibm_cplex')
                 addpath(genpath(ILOG_CPLEX_PATH));
             end
 
@@ -100,7 +100,7 @@ for k = 1:length(solverPkgs)
             delete KEGGMatrix.mat;
 
             % FASTCORE functions must have the CPLEX library included in order to run
-            if ~strcmp(solverPkgs{k}, 'ILOGsimple') && ~strcmp(solverPkgs{k}, 'ILOGcomplex')
+            if ~strcmp(solverPkgs{k}, 'ibm_cplex')
                 rmpath(genpath(ILOG_CPLEX_PATH));
             end
         end
@@ -112,7 +112,7 @@ for k = 1:length(solverPkgs)
     % remove the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
         rmpath(genpath(TOMLAB_PATH));
-    elseif strcmp(solverPkgs{k}, 'ILOGsimple') || strcmp(solverPkgs{k}, 'ILOGcomplex')
+    elseif strcmp(solverPkgs{k}, 'ibm_cplex')
         rmpath(genpath(ILOG_CPLEX_PATH));
     end
 end

@@ -43,7 +43,7 @@ for p = 1:length(solverPkgs)
         addpath(genpath(GUROBI_PATH));
     end
 
-    solverOK = changeCobraSolver(solverPkgs{p});
+    solverOK = changeCobraSolver(solverPkgs{p}, 'LP', 0);
 
     if solverOK == 1
 

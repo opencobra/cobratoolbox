@@ -51,7 +51,7 @@ for k = 1:length(solverPkgs)
         addpath(genpath(GUROBI_PATH));
     end
 
-    solverLPOK = changeCobraSolver(solverPkgs{k});
+    solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
     if solverLPOK
 

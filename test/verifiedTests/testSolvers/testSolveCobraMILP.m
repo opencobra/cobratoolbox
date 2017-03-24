@@ -45,7 +45,7 @@ for k = 1:length(solverPkgs)
         fprintf('   Running solveCobraLPCPLEX using %s ... ', solverPkgs{k});
 
         % change the COBRA solver (LP)
-        solverOK = changeCobraSolver(solverPkgs{k});
+        solverOK = changeCobraSolver(solverPkgs{k}, 'MILP', 0);
 
         % set the global solver name
         CBT_MILP_SOLVER = solverPkgs{k};

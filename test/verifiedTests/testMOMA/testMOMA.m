@@ -47,8 +47,8 @@ for k = 1:length(solverPkgs)
         addpath(genpath(GUROBI_PATH));
     end
 
-    solverQPOK = changeCobraSolver(solverPkgs{k}, 'QP');
-    solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP');
+    solverQPOK = changeCobraSolver(solverPkgs{k}, 'QP', 0);
+    solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
     if solverLPOK && solverQPOK
         % test deleteModelGenes
