@@ -57,7 +57,7 @@ addParameter(p,'objFunction',defaultObjFunction,@ischar)
 addParameter(p,'initFunction',defaultInitFunction,@ischar)
 addParameter(p,'osenseStr',defaultosenseStr,@(x) strcmp(x,'min') | strcmp(x,'max'));
 addParameter(p,'nOpt',100,@(x) rem(x,1) == 0);
-addParameter(p,'objArgs',[],@iscell)
+addParameter(p,'objArgs',{},@iscell)
 addParameter(p,'initArgs',[],@iscell)
 addParameter(p,'solverOptions',[],@isstruct)
 
@@ -98,21 +98,6 @@ if ~isfield(solverOptions,'printLevel')
     solverOptions.printLevel = 3; %3 prints every iteration.  1 does a summary.  0 = silent.
 end
 
-
-
-%If this is the default, and no objArgs are supplied, we set them to default
-%values.
-if strcmp(objFunction,defaultObjFunction) && isnumeric(objArgs)    
-    objArgs = {osense*model.c};    
-else
-    %Otherwise, we only adapt them if they are at the default value.
-    %since we require them to be cells if not default we can simply check
-    %this.
-    if isnumeric(objArgs)
-        objArgs = {};
-    end
-end
-
 %The same as above for the objective Function
 if strcmp(initFunction,defaultInitFunction) && isnumeric(initArgs)        
     solOpt = optimizeCbModel(model,osenseStr);
@@ -127,6 +112,7 @@ end
 
 [nMets,nRxns] = size(model.S);
 
+NLPproblem.osense = osense;
 NLPproblem.A = model.S;
 NLPproblem.b = model.b;
 NLPproblem.lb = model.lb;

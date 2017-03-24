@@ -5,7 +5,7 @@ function solution = solveCobraNLP(NLPproblem,varargin)
 % solution = solveCobraNLP(NLPproblem,varargin)
 
 % Solves a problem of the following form:
-%     min objFunction(x) or c'*x
+%     optimize objFunction(x) or c'*x
 %     st.       A*x  <=> b   or b_L < A*x < b_U
 %        and    d_L < d(x) < d_U
 %     where A is a matrix, d(x) is an optional function and the objective
@@ -19,9 +19,13 @@ function solution = solveCobraNLP(NLPproblem,varargin)
 %   lb              Lower bounds
 %   ub              Upper bounds
 %   csense          Constraint senses ('L','E','G')
-%   objFunction     Function to evaluate as the objective.  Input as string
+%   osense          Objective sense (-1 for maximisation, 1 for minimisation)
+%   objFunction     Function to evaluate as the objective (The function
+%                   will receive two inputs, First the flux vector to
+%                   evaluate and second the NLPproblem struct. The function 
+%                   should be provided as a string
 %       or
-%   c               linear objective such that c*x is minimized.
+%   c               linear objective such that c*x is optimized.
 %  Note: 'b_L' and 'b_U' can be used in place of 'b' and 'csense'
 %
 %  Optional Fields
@@ -172,8 +176,11 @@ switch solver
         end
                 
         % define the objective function with 2 input arguments
-        func = eval(['@(x)', objFunction, '(x, NLPproblem)']);
-        
+        if exist('objFunction','var')
+            func = eval(['@(x) ', num2str(NLPproblem.osense), '*' , objFunction, '(x, NLPproblem)']);
+        else
+            func = @(x) NLPproblem.osense*sum(c.*x);
+        end
         %Now, define the maximum timer        
         options.OutputFcn = @stopTimer;        
         %and start it.

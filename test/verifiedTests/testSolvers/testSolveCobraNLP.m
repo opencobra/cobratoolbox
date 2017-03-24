@@ -48,6 +48,7 @@ for k = 1:length(solverPkgs)
         NLPproblem.d2c = 'NLP_d2c';
         NLPproblem.c_L = -1000;
         NLPproblem.c_U = 0;
+        NLPproblem.osense = 1;
 
         % Solve, silent printing, problem name = 'RBB Problem' and warnings off.
         NLPsolution = solveCobraNLP(NLPproblem, 'printLevel', 0, 'PbName', Name, 'warning', 0);

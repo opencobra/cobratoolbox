@@ -69,7 +69,8 @@ for k = 1:numpoints
     NLPproblem.user.model = model;
     NLPproblem.user.useparfor = true;
     NLPproblem.user.diff_interval = diffInterval;
-
+    NLPproblem.osense = 1;
+    
     NLPproblem.PriLevOpt = 1;
     cnan = ( method == 2);
 
