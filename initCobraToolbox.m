@@ -60,37 +60,43 @@ retrieveModels
 fprintf('   Done.\n')
 
 fprintf(' > Checking solver environment variables ...\n')
-GUROBI_PATH = getenv('GUROBI_PATH');
-addpath(genpath(GUROBI_PATH));
 
-paths_CPLEX_macOS = {'/Applications/IBM/ILOG/CPLEX_Studio1262', '/Applications/IBM/ILOG/CPLEX_Studio1263', '/Applications/IBM/ILOG/CPLEX_Studio127', ...
-                     '/opt/ibm/ILOG/CPLEX_Studio1262', '/opt/ibm/ILOG/CPLEX_Studio1263', '/opt/ibm/ILOG/CPLEX_Studio127'};
+solverPaths = {};
+solverPaths{1,1} = 'ILOG_CPLEX_PATH';
+solverPaths{1,2} = {'/Applications/IBM/ILOG/CPLEX_Studio1262', '/Applications/IBM/ILOG/CPLEX_Studio1263', '/Applications/IBM/ILOG/CPLEX_Studio127', ...
+                    '/opt/ibm/ILOG/CPLEX_Studio1262', '/opt/ibm/ILOG/CPLEX_Studio1263', '/opt/ibm/ILOG/CPLEX_Studio127'};
+solverPaths{2,1} = 'GUROBI_PATH';
+solverPaths{2,2} = {'/opt/gurobi650', '/opt/gurobi70'};
+solverPaths{3,1} = 'TOMLAB_PATH';
+solverPaths{3,2} = {'/opt/tomlab'};
+solverPaths{4,1} = 'MOSEK_PATH';
+solverPaths{4,2} = {};
 
-ILOG_CPLEX_PATH = getenv('ILOG_CPLEX_PATH');
-possibleDir = '';
-if isempty(ILOG_CPLEX_PATH) && isunix
-    for i = 1:length(paths_CPLEX_macOS)
-        if exist(paths_CPLEX_macOS{i}, 'dir') == 7
-            possibleDir = paths_CPLEX_macOS{i};
-        end;
-    end
-    if ~isempty(possibleDir)
-        reply = input(['The environment variable ILOG_CPLEX_PATH is not set, but ILOG CPLEX seems to be installed in ', possibleDir, '. Do you want to set this path temporarily? Y/N [N]: '], 's');
-        if ~isempty(reply) && (strcmpi(reply, 'yes') || strcmpi(reply, 'y'))
-            setenv('ILOG_CPLEX_PATH', possibleDir);
-            ILOG_CPLEX_PATH = getenv('ILOG_CPLEX_PATH');
+for k = 1:length(solverPaths)
+    eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1} ,''');'])
+    possibleDir = '';
+    if isempty(eval(solverPaths{k, 1})) && isunix
+        tmpSolverPath = solverPaths{k, 2};
+        for i = 1:length(solverPaths{k, 2})
+            if exist(tmpSolverPath{i}, 'dir') == 7
+                possibleDir = tmpSolverPath{i};
+            end;
+        end
+        if ~isempty(possibleDir)
+            reply = input(['The environment variable ', solverPaths{k, 1}, ' is not set, but the solver seems to be installed in ', possibleDir, '. Do you want to set this path temporarily? Y/N [N]: '], 's');
+            if ~isempty(reply) && (strcmpi(reply, 'yes') || strcmpi(reply, 'y'))
+                setenv(solverPaths{k, 1}, possibleDir);
+                eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1} ,''');']);
+            end
         end
     end
-end
 
-if ~isempty(ILOG_CPLEX_PATH)
-    addpath(genpath(ILOG_CPLEX_PATH));
+    % add the solver path
+    if ~isempty(eval(solverPaths{k, 1}))
+        addpath(genpath(eval(solverPaths{k, 1})));
+        fprintf([' > Contents of ', eval(solverPaths{k, 1}), ' added to PATH.\n']);
+    end
 end
-
-TOMLAB_PATH = getenv('TOMLAB_PATH');
-addpath(genpath(TOMLAB_PATH));
-MOSEK_PATH = getenv('MOSEK_PATH');
-addpath(genpath(MOSEK_PATH));
 
 fprintf(' > Checking available solvers\n')
 % define categories of solvers: LP, MILP, QP, MIQP, NLP
