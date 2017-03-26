@@ -47,10 +47,6 @@ else
     error('The submodules could not be initialized.');
 end
 
-fprintf(' > Fetching model files ... ')
-retrieveModels
-fprintf('   Done.\n')
-
 fprintf(' > Adding all the COBRA Toolbox files ... ')
 
 addpath(genpath(CBTDIR))
@@ -59,16 +55,44 @@ rmpath([CBTDIR, filesep, 'deprecated'])
 rmpath([CBTDIR, filesep, 'external/SBMLToolbox'])
 fprintf(' Done.\n')
 
-fprintf(' > Checking available solvers\n')
+fprintf(' > Fetching model files ... ')
+retrieveModels
+fprintf('   Done.\n')
+
+fprintf(' > Checking solver environment variables ...\n')
 GUROBI_PATH = getenv('GUROBI_PATH');
 addpath(genpath(GUROBI_PATH));
+
+paths_CPLEX_macOS = {'/Applications/IBM/ILOG/CPLEX_Studio1262', '/Applications/IBM/ILOG/CPLEX_Studio1263', '/Applications/IBM/ILOG/CPLEX_Studio127', ...
+                     '/opt/ibm/ILOG/CPLEX_Studio1262', '/opt/ibm/ILOG/CPLEX_Studio1263', '/opt/ibm/ILOG/CPLEX_Studio127'};
+
 ILOG_CPLEX_PATH = getenv('ILOG_CPLEX_PATH');
-addpath(genpath(ILOG_CPLEX_PATH));
+possibleDir = '';
+if isempty(ILOG_CPLEX_PATH) && isunix
+    for i = 1:length(paths_CPLEX_macOS)
+        if exist(paths_CPLEX_macOS{i}, 'dir') == 7
+            possibleDir = paths_CPLEX_macOS{i};
+        end;
+    end
+    if ~isempty(possibleDir)
+        reply = input(['The environment variable ILOG_CPLEX_PATH is not set, but ILOG CPLEX seems to be installed in ', possibleDir, '. Do you want to set this path temporarily? Y/N [N]: '], 's');
+        if ~isempty(reply) && (strcmpi(reply, 'yes') || strcmpi(reply, 'y'))
+            setenv('ILOG_CPLEX_PATH', possibleDir);
+            ILOG_CPLEX_PATH = getenv('ILOG_CPLEX_PATH');
+        end
+    end
+end
+
+if ~isempty(ILOG_CPLEX_PATH)
+    addpath(genpath(ILOG_CPLEX_PATH));
+end
+
 TOMLAB_PATH = getenv('TOMLAB_PATH');
 addpath(genpath(TOMLAB_PATH));
-TOMLAB_PATH = getenv('MOSEK_PATH');
-addpath(genpath(TOMLAB_PATH));
+MOSEK_PATH = getenv('MOSEK_PATH');
+addpath(genpath(MOSEK_PATH));
 
+fprintf(' > Checking available solvers\n')
 % define categories of solvers: LP, MILP, QP, MIQP, NLP
 OPTIMIZATIONPROBLEMTYPES = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
 SOLVERS = {};
