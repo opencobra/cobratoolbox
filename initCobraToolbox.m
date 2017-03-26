@@ -20,7 +20,7 @@ global CBTDIR;
 global SOLVERS;
 global OPTIMIZATIONPROBLEMTYPES;
 global GUROBI_PATH;
-global CPLEX_PATH;
+global ILOG_CPLEX_PATH;
 global TOMLAB_PATH;
 global MOSEK_PATH;
 global WAITBAR_TYPE;
@@ -94,7 +94,7 @@ for k = 1:length(solverPaths)
     % add the solver path
     if ~isempty(eval(solverPaths{k, 1}))
         addpath(genpath(eval(solverPaths{k, 1})));
-        fprintf([' > Contents of ', eval(solverPaths{k, 1}), ' added to PATH.\n']);
+        fprintf([' > Contents of ', solverPaths{k, 1}, ': ', eval(solverPaths{k, 1}), ' added to PATH.\n']);
     end
 end
 
