@@ -174,7 +174,7 @@ switch solverName
     case 'gurobi_mex'
         solverOK = checkSolverInstallationFile(solverName, 'gurobi_mex', printLevel);
     case {'gurobi5', 'gurobi6', 'gurobi7'}
-        solverOK = checkGurobiInstallation(solverName, 'gurobi', printLevel);
+        solverOK = checkGurobiInstallation(solverName, 'gurobi.sh', printLevel);
     case 'mps'
         solverOK = checkSolverInstallationFile(solverName, 'BuildMPS', printLevel);
     case 'quadMinos'
@@ -223,7 +223,7 @@ function solverOK = checkGurobiInstallation(solverName, fileName, printLevel)
     global GUROBI_PATH
     solverOK = false;
     if ~isempty(findstr(GUROBI_PATH, solverName))
-        if exist(fileName)
+        if exist(fileName) == 2
             solverOK = true;
         elseif printLevel > 0
             error('Solver %s is not installed!', solverName)
@@ -248,7 +248,7 @@ function solverOK = checkSolverInstallationFile(solverName, fileName, printLevel
 %     solverOK: true if filename exists, false otherwise.
 %
     solverOK = false;
-    if exist(fileName)
+    if exist(fileName, 'file') == 2
         solverOK = true;
     elseif printLevel > 0
         error('Solver %s is not installed!', solverName)
