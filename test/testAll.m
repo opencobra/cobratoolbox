@@ -1,135 +1,155 @@
-function x = testAll()
-%testAll calls upon all tests in the subfolders of testing
-%   returns "X of Y tests completed successfully"
-%   X = #tests passed
-%   Y = #tests completed
-%   Make sure that each test returns a 1 if passed, 0 otherwise.
-%
-%
-% Joseph Kang 04/16/09
-tests_completed = 0;
-tests_passed = 0;
-oriDir = pwd;
+% define global paths
+global path_GUROBI
+global path_ILOG_CPLEX
+global path_TOMLAB
 
-mFilePath = mfilename('fullpath');
-test_path = (mFilePath(1:end-length(mfilename)));
-test_directory = dir(test_path);
-f = filesep;
+% do not change the paths below
+if ~isempty(strfind(getenv('HOME'), 'jenkins'))
+    addpath(genpath('/var/lib/jenkins/MOcov'));
+    addpath(genpath('/var/lib/jenkins/jsonlab'));
+end
 
-%make sure the solvers are the predefined ones for each test as if a test
-%fails it can fail to switch back the solver
-global CBTLPSOLVER;
-CBTLPSOLVERx=CBTLPSOLVER;
-global CBT_MILP_SOLVER;
-CBT_MILP_SOLVERx=CBT_MILP_SOLVER;
-global CBT_QP_SOLVER;
-CBT_QP_SOLVERx=CBT_QP_SOLVER;
-global CBT_MIQP_SOLVER;
-CBT_MIQP_SOLVERx=CBT_MIQP_SOLVER;
-global CBT_NLP_SOLVER;
-CBT_NLP_SOLVERx=CBT_NLP_SOLVER;
+% include the root folder and all subfolders
+addpath(genpath(pwd))
 
-listPassed = {};
-listNotPassed = {};
-passedCnt = 0;
-notPassedCnt = 0;
-%search through the test folders in testing and run the test inside
-for i=1:size(dir(test_path))
-    test_folder = strcat(test_path, test_directory(i).name, f);
-    if(isdir(test_folder) && (strcmp(test_directory(i).name,'.')==0) && (strcmp(test_directory(i).name,'..')==0))
-        test_folder_directory = what(test_folder);
-        
-        %stores all the functions in the test folder in folder_functions
-        folder_functions = test_folder_directory.m;
-        
-        %runs the functions in test_folder
-        for j = 1: size(folder_functions)
-              cd(test_folder);
-              func =folder_functions{j};
-              %parse func so that it doesn't include '.m' (stores in p)
-              p = strtok(func, '.');
-              
-              try
-                 pass = eval(p);
-                 if pass==1||iscellstr(pass)||iscell(pass)
-                     fprintf('%s successfully passed\n',p);
-                     pass=1;
-                     passedCnt = passedCnt +1;
-                     listPassed{passedCnt} = p;
-                 elseif pass==0
-                      fprintf('Error in %s\n', p);
-                      pass = 0;
-                      notPassedCnt = notPassedCnt +1;
-                      listNotPassed{notPassedCnt} = p;                     
-                 end                 
-              catch
-                  fprintf('Error in %s\n', p);
-                  pass = 0;
-                  notPassedCnt = notPassedCnt +1;
-                  listNotPassed{notPassedCnt} = p;
-              end
-%               try
-                  
-%               if(pass == 0)
-%                     fprintf('%s did not pass\n',p);
-%                     notPassedCnt = notPassedCnt +1;
-%                     listNotPassed{notPassedCnt} = p;
-%               else
-%                   
-%                     passedCnt = passedCnt +1;
-%                     listPassed{passedCnt} = p;
-%               end
-%               catch
-%                   disp('good')
-%               end
-              
-             %if test was passed, would increment tests_passed
-             %test_completed is incremented every iteration
+if length(which('initCobraToolbox.m')) == 0
+    % define the path to The COBRA Toolbox
+    pth = which('testAll.m');
+    CBTDIR = pth(1:end-(length('testAll.m') + 1));
 
-             tests_passed = tests_passed + pass;
+    % change the directory to the root
+    cd([CBTDIR, filesep, '..', filesep]);
 
-             tests_completed = tests_completed + 1;
-             
-             %change back the solvers after each test
-             if ~isempty(CBTLPSOLVERx)
-                changeCobraSolver(CBTLPSOLVERx,'LP');
-             end
-             if ~isempty(CBT_MILP_SOLVERx)
-                changeCobraSolver(CBT_MILP_SOLVERx,'MILP');
-             end
-             if ~isempty(CBT_QP_SOLVERx)
-                changeCobraSolver(CBT_QP_SOLVERx,'QP');
-             end
-             if ~isempty(CBT_MIQP_SOLVERx)
-                changeCobraSolver(CBT_MIQP_SOLVERx,'MIQP');
-             end
-             if ~isempty(CBT_NLP_SOLVERx)
-                changeCobraSolver(CBT_NLP_SOLVERx,'NLP');
-             end             
+    % include the root folder and all subfolders
+    addpath(genpath(pwd));
+end
+
+% run the official initialisation script
+initCobraToolbox
+
+if ~isempty(strfind(getenv('HOME'), 'jenkins'))
+    WAITBAR_TYPE = 0;
+else
+    WAITBAR_TYPE = 1;
+end
+
+% define a success exit code
+exit_code = 0;
+
+% enable profiler
+profile on;
+
+if ~isempty(strfind(getenv('HOME'), 'jenkins'))
+    % check the code quality
+    listFiles = rdir(['./src', '/**/*.m']);
+
+    % count the number of failed code quality checks per file
+    nMsgs = 0;
+    nCodeLines = 0;
+    nEmptyLines = 0;
+    nCommentLines = 0;
+
+    for i = 1:length(listFiles)
+        nMsgs = nMsgs + length(checkcode(listFiles(i).name));
+
+        fid = fopen(listFiles(i).name);
+        res = {};
+        while ~feof(fid)
+            lineOfFile = strtrim(fgetl(fid));
+            if length(lineOfFile) > 0 && length(strfind(lineOfFile(1), '%')) ~= 1  ...
+               && length(strfind(lineOfFile, 'end')) ~= 1 && length(strfind(lineOfFile, 'otherwise')) ~= 1 ...
+               && length(strfind(lineOfFile, 'switch')) ~= 1 && length(strfind(lineOfFile, 'else')) ~= 1  ...
+               && length(strfind(lineOfFile, 'case')) ~= 1 && length(strfind(lineOfFile, 'function')) ~= 1
+
+                res{end+1, 1} = lineOfFile;
+
+            elseif length(lineOfFile) == 0
+                nEmptyLines = nEmptyLines + 1;
+
+            elseif length(strfind(lineOfFile(1), '%')) == 1
+                nCommentLines = nCommentLines + 1;
+            end
+        end
+        fclose(fid);
+        nCodeLines = nCodeLines + numel(res);
+    end
+
+    % average number of messages per codeLines
+    avMsgsPerc = floor(nMsgs / nCodeLines * 100 );
+
+    grades = {'A', 'B', 'C', 'D', 'E', 'F'};
+    intervals = [0, 3;
+                 3, 6;
+                 6, 9;
+                 9, 12;
+                 12, 15;
+                 15, 100];
+
+    grade = 'F';
+    for i = 1:length(intervals)
+        if avMsgsPerc >= intervals(i, 1) && avMsgsPerc < intervals(i, 2)
+            grade = grades{i};
         end
     end
-end
-disp('Tests passed: ');
-for b = 1: size(listPassed,2)
-    disp(listPassed{b});
-end
-fprintf('\n\n');
-disp('Tests not passed: ');
-for c = 1: size(listNotPassed,2)
-    disp(listNotPassed{c});
+
+    % remove the old badge
+    system('rm /var/lib/jenkins/userContent/codegrade.svg');
+
+    % set the new badge
+    system(['cp /var/lib/jenkins/userContent/codegrade-', grade, '.svg /var/lib/jenkins/userContent/codegrade.svg']);
 end
 
-x = [num2str(tests_passed), ' of ', num2str(tests_completed), ' tests completed successfully.'];
-if(tests_passed ~= tests_completed)
-    display('IT IS NOT NECESSARY FOR THE COBRA TOOLBOX TO PASS ALL TESTS TO FUNCTION; HOWEVER, IT MUST PASS THE TESTS THAT ARE RELEVANT TO YOUR PARTICULAR PROBLEM!!!');
-    display('Tests may not pass for several reasons.  Some of the most common issues:');
-    display('1.  The correct solver is not installed.  Certain tests require LP, MILP, QP or NLP solvers.  See changeCobraSolvers.m for a complete list of supported solvers.');
-    display('These tests will fail when running testAll unless one has the tomlab suite installed.  If all of the functions that you require for your use function then do not worry about them: testC13Fitting, testGDLS, testMOMA, testOptKnock, testSolvers');
-    %Removed because this line confuses people into believing there is a problem
-    %display('2.  The SBMLtoolbox and libSBML libraries are not installed correctly.  This will affect reading/writing of models.');
-    display('If a particular test fails, you can run that test individually for more information');
-end
-%return to original directory
-cd(oriDir);
+try
+    % retrieve the models first
+    retrieveModels;
 
+    % run the tests in the subfolder verifiedTests/ recursively
+    result = runtests('./test/', 'Recursively', true, 'BaseFolder', '*verified*');
+
+    sumFailed = 0;
+    sumIncomplete = 0;
+
+    if ~isempty(strfind(getenv('HOME'), 'jenkins'))
+        % write coverage based on profile('info')
+        mocov('-cover','src',...
+              '-profile_info',...
+              '-cover_json_file','coverage.json',...
+              '-cover_method', 'profile');
+
+        for i = 1:size(result,2)
+            sumFailed = sumFailed + result(i).Failed;
+            sumIncomplete = sumIncomplete + result(i).Incomplete;
+        end
+
+        % load the coverage file
+        data = loadjson('coverage.json', 'SimplifyCell', 1);
+
+        sf = data.source_files;
+        clFiles = zeros(length(sf), 1);
+        tlFiles = zeros(length(sf), 1);
+
+        for i = 1:length(sf)
+            clFiles(i) = nnz(sf(i).coverage);
+            tlFiles(i) = length(sf(i).coverage);
+        end
+
+        % average the values for each file
+        cl = sum(clFiles);
+        tl = sum(tlFiles);
+
+        % print out the coverage
+        fprintf('Covered Lines: %i, Total Lines: %i, Coverage: %f%%.\n', cl, tl, cl/tl * 100);
+    end
+
+    % print out a summary table
+    table(result)
+
+    if sumFailed > 0 || sumIncomplete > 0
+        exit_code = 1;
+    end
+
+    % ensure that we ALWAYS call exit
+    exit(exit_code);
+catch
+    exit(1);
 end

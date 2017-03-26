@@ -96,7 +96,7 @@ if FBAsol1.stat>0
     growth = FBAsol1.f;
     maxRate = FBAsol2.f;
     numDels = length(rxns);
-    
+
     if hasSlope %only calculate these if the obj function includes slope
         modelTarget = changeObjective(modelKO,target); %set target as the objective
         FBAsol4 = optimizeCbModel(modelTarget,'min',true); %find min production rate
@@ -104,16 +104,16 @@ if FBAsol1.stat>0
         FBAsol5 = optimizeCbModel(modelTargetFixed,'max',true); %find max growth at min production
         minProdRate = FBAsol4.f;
         maxGrowthMinRate = FBAsol5.f;
-        
+
         if growth ~= maxGrowthMinRate
             slope = (maxRate-minProdRate)/(growth-maxGrowthMinRate);
         else
             slope = 1; %don't consider slope if div by 0
         end
     end
-    
+
     objective = eval(objectiveFunction);
-    
+
     bestObjective = objective
     bestRxns = rxns;
     % if the initial reactions are lethal
@@ -124,12 +124,12 @@ end
 
 % loop through each KO rxn and replace with every rxn from selectedRxns to
 % search for a possible improvement
-h = showprogress(0,'improving knockout design');
+showprogress(0, 'improving knockout design');
 for i = 1:length(rxns)+1
     bestObjective2 = bestObjective;
     bestRxns2 = bestRxns;
     for j = 1:length(selectedRxns)+1
-        showprogress((j+(i-1)*length(selectedRxns))/((length(rxns)+1)*(length(selectedRxns)+1)),h);
+        showprogress((j+(i-1)*length(selectedRxns))/((length(rxns)+1)*(length(selectedRxns)+1)));
         newRxns = rxns;
         if (i==length(rxns)+1)&&(j==length(selectedRxns)+1)
             %don't do anything at the very end
@@ -142,9 +142,9 @@ for i = 1:length(rxns)+1
         else
             newRxns = cat(2,rxns(1:i-1),rxns(i+1:length(rxns)));
         end
-        
+
         if length(newRxns) <= maxKOs %limit the total number of knockouts
-            
+
             modelKO = changeRxnBounds(modelRed,newRxns,0,'b');
             FBAsol1 = optimizeCbModel(modelKO,'max',true); %find max growth rate of strain
             if FBAsol1.stat>0
@@ -155,7 +155,7 @@ for i = 1:length(rxns)+1
                 growth = FBAsol1.f;
                 maxRate = FBAsol2.f;
                 numDels = length(newRxns);
-                
+
                 if hasSlope %only calculate these if the obj function includes slope
                     modelTarget = changeObjective(modelKO,target); %set target as the objective
                     FBAsol4 = optimizeCbModel(modelTarget,'min',true); %find min production rate
@@ -163,16 +163,16 @@ for i = 1:length(rxns)+1
                     FBAsol5 = optimizeCbModel(modelTargetFixed,'max',true); %find max growth at min production
                     minProdRate = FBAsol4.f;
                     maxGrowthMinRate = FBAsol5.f;
-                    
+
                     if growth ~= maxGrowthMinRate
                         slope = (maxRate-minProdRate)/(growth-maxGrowthMinRate);
                     else
                         slope = 1; %don't consider slope if div by 0
                     end
                 end
-                
+
                 newObjective = eval(objectiveFunction);
-                
+
                 %see if objective is increased by this new gene
                 if newObjective > bestObjective2
                     bestObjective2 = newObjective
@@ -182,13 +182,12 @@ for i = 1:length(rxns)+1
             end
         end
     end
-    
+
     if bestObjective2 > bestObjective
         bestObjective = bestObjective2
         bestRxns = bestRxns2
     end
 end
-close(h);
 
 bestObjective
 bestRxns
@@ -202,7 +201,3 @@ end
 
 % print final results
 improvedRxns = sort(bestRxns)
-
-
-
-

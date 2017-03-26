@@ -54,7 +54,7 @@ if ~exist('listCompartments','var') || isempty(listCompartments)
     listCompartments = unique(rem);
 end
 
-if ~exist('Filename','var') || isempty(Filename)
+if ~exist('filename','var') || isempty(filename)
     % KEGG reaction list
     filename = 'reaction.lst';
 end
@@ -68,7 +68,7 @@ end
 
 if regexp(dictionary_file,'.xls$')
     [~,dictionary,~] = xlsread(dictionary_file);
-elseif regexp(dictionary_file,'.tsv$')
+elseif regexp(dictionary_file,'(.tsv)|(.txt)$')
     file_handle = fopen(dictionary_file);
     u = textscan(file_handle,'%s\t%s');
     dictionary = {};

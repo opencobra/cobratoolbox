@@ -14,16 +14,13 @@
 global path_TOMLAB
 global path_GUROBI
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testMultiSpeciesModelling']);
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
-% define the solver packages to be used to run this test
-solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
-
-%% test coupling constraints
+% test coupling constraints
 load('ecoli_core_model.mat', 'model');
 
 % remove ATPM constraint so no infeasible model is generated
@@ -94,3 +91,6 @@ for k = 1:length(solverPkgs)
         rmpath(genpath(path_GUROBI));
     end
 end
+
+% change the directory
+cd(currentDir)

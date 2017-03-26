@@ -10,16 +10,16 @@
 % define global paths
 global path_TOMLAB
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testwritePajekNet']);
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 load('ecoli_core_model', 'model');
 
 %test solver packages
-solverPkgs = {'tomlab_cplex'};  %,'ILOGcomplex'};
+solverPkgs = {'tomlab_cplex'};
 
 for k = 1:length(solverPkgs)
 
@@ -30,24 +30,29 @@ for k = 1:length(solverPkgs)
         addpath(genpath(path_TOMLAB));
     end
 
-    %load test data
-    fileID = fopen('COBRAmodeltest.net', 'r');
-    testData = fscanf(fileID, '%s');
-    fclose(fileID);
+    % change the COBRA solver (LP)
+    solverOK = changeCobraSolver(solverPkgs{k});
 
-    %call fucntion
-    writePajekNet(model);
+    if solverOK == 1
+        %load test data
+        fileID = fopen('COBRAmodeltest.net', 'r');
+        testData = fscanf(fileID, '%s');
+        fclose(fileID);
 
-    %save produced data
-    fileID = fopen('COBRAmodel.net', 'r');
-    Data = fscanf(fileID, '%s');
-    fclose(fileID);
+        %call fucntion
+        writePajekNet(model);
 
-    %compare with produced data
-    assert(isequal(testData, Data));
+        %save produced data
+        fileID = fopen('COBRAmodel.net', 'r');
+        Data = fscanf(fileID, '%s');
+        fclose(fileID);
 
-    %delete data
-    delete COBRAmodel.net
+        %compare with produced data
+        assert(isequal(testData, Data));
+
+        %delete data
+        delete COBRAmodel.net
+    end
 
     % remove the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
@@ -56,4 +61,4 @@ for k = 1:length(solverPkgs)
 end
 
 % change the directory
-cd(CBTDIR)
+cd(currentDir)

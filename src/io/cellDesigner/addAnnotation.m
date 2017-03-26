@@ -37,10 +37,10 @@ end
 
 if nargin<5
     prefix='name="';  % for metabolites in recon2
-    
+
 else
     if strcmp(infix_type, 'id');
-        
+
         prefix='id="';
     elseif strcmp(infix_type,'name');
         prefix='name="';
@@ -52,18 +52,18 @@ end
 
 %
 if nargin<4
-    
+
     model=recon2;
 end
 
 
 if nargin<3
-    
+
     prefix='id="';
     infix='r1922';
     suffix='"';
     rxnName=[prefix,infix,suffix];
-    
+
 end
 
 
@@ -81,7 +81,7 @@ end
 
 
 if nargin<2 || isempty(fname_out)
-    
+
     [fname_out, fpath]=uiputfile('*.xml','CellDesigner SBML Source File');
     if(fname_out==0)
         return;
@@ -99,7 +99,7 @@ if nargin<1 || isempty(fname)
     f_id=fopen([fpath,fname],'r');
 else
     f_id=fopen(fname,'r');
-    
+
 end
 
 
@@ -122,22 +122,22 @@ preTxt(9).str='</notes>';
 
 % rem=fgets(f_id);
 
-h = showprogress(0,'The annotation of the file using free-text types of data is progressing');
+showprogress(0,'The annotation of the file using free-text types of data is progressing');
 
 MainTxt={};
 
 
 while ~feof(f_id);
-    
+
     numOfLine=numOfLine+1;
     rem=fgets(f_id);
     %     try
     MainTxt(numOfLine,1)=cellstr(rem);
-    
+
     %     catch
     %         disp(rem);
     %     end
-    
+
 end
 
 
@@ -186,14 +186,14 @@ rxn_str='<reaction metaid="'
 
 for t=1:total_length   % go through each line of the SBML file.
     if ismember(t, ct)~=0||t==total_length;
-        
+
         disp(t)
-        showprogress(t/total_length,h);
+        showprogress(t/total_length);
     end
     n=n+1;
-    
+
     MainTxt_new(n,1)=MainTxt(t);
-    
+
     metKey_1=strfind(MainTxt(t),met_ind(1).str);
     metKey_2=strfind(MainTxt(t),met_ind(2).str);
     rxnKey_1=strfind(MainTxt(t),rxn_ind(1).str);
@@ -207,42 +207,42 @@ for t=1:total_length   % go through each line of the SBML file.
     end
     if (~isempty(rxnKey_1{1,1}))
         rxnKeyword=1;
-        
+
     elseif (~isempty(rxnKey_2{1,1}))
         rxnKeyword=0;
     end
-    
+
     if metKeyword==0&&rxnKeyword==0;
         continue;
     end
-    
+
     % line_st_2=strfind(MainTxt(t),SecKeyStr)
-    
+
    % if ~isempty(line_st_2{1})
-        
+
         if ((~isempty(strfind(MainTxt(t),met_str)))||(~isempty(strfind(MainTxt(t),rxn_str))))&&(metKeyword==1||rxnKeyword==1);
             for in=1:length(rxnName);% for in=1:length(infix); go though each line of the Rxn List.
-                
+
                 % disp(length(rxnName));
                 line_st=strfind(MainTxt(t),rxnName{in});
                 if ~isempty(line_st{1})  %isempty(line_st)~=0; % the line contains the rxn keywords
-                    
+
                     % msgbox('reaction found');
                     disp(line_st)
                     %%%%%% preTxt (1:6)
                     for p=1:6;
-                        
+
                         MainTxt_new(n+p,1)=cellstr(preTxt(p).str);
-                        
+
                     end
                     n=n+p;
                     total_length=total_length+p;
-                    
+
                     %                 try
                     %                                  try
-                    
+
                     [rxnItems,rxnContent]=contructItems(infix(in),model,list);
-                    
+
                     %                                  catch
                     %
                     %                                      disp(infix(in));
@@ -257,39 +257,39 @@ for t=1:total_length   % go through each line of the SBML file.
                     %                 if strcmp(infix(in),'3ohodcoa[r]');
                     %                     disp('nice');
                     %                 end
-                    
+
                     for k=1:length(rxnItems);  %
                         %                    rxnContent is a strcuture
-                        
+
                         %                    rxnContent.(k)
                         %disp(n);
                         %disp(k);
-                        
+
                         disp(MainTxt_new(n,1));
                         disp('%%%%%%%%%%%%');
                         disp(rxnItems(k));
                         MainTxt_new(n+k,1)=rxnItems(k);
-                        
+
                     end
                     n=n+k;
                     total_length=total_length+k;
-                    
-                    
+
+
                     for p_e=1:3    % text after the main text
-                        
+
                         MainTxt_new(n+p_e,1)=cellstr(preTxt(p_e+6).str);
-                        
+
                     end
                     n=n+p_e;
                     total_length=total_length+p_e;
-                    
+
                 end
-                
+
             end
-            
+
         end
     end
-    
+
 %end
 
 
@@ -297,12 +297,11 @@ var=MainTxt_new;
 
 
 for ww=1:length(MainTxt_new);
-    
+
     fprintf(f_out,'%s\n',char(MainTxt_new(ww)));
-    
+
 end
 
-close(h);
 fclose(f_out);
 
 end
@@ -382,32 +381,32 @@ and=': ';
 ClassName={'numeric','char','cell','logical'}; % set the data types that will be recongised by the annotation function.
 
 if strcmp(para,'met')
-    
-    
+
+
     % produce the prefix
     % for i=1:length(list);
     %     listKey(i,1)=strcat(list(i),and);
     % end
-    
+
     % check if the field exist
     % % isfield(recon2,lower(list(8)));
-    
-    
+
+
     new_l=0;
     for l=1:length(list)
-        
+
         for i=1:length(ClassName)
-            
-            
+
+
             if m==size(model.(list{l}),1);
                 if isfield(model,list{l})&&~strcmp(list{l},'S');
-                    
+
                     type=isa(model.(list{l}),ClassName{i});
-                    
-                    
+
+
                     if type~=0;
                         new_l=new_l+1;
-                        
+
                         listClass(new_l)=ClassName(i)
                         % try
                         finalContent.(list{l})=model.(list{l})(num); % intialise the variables.
@@ -422,11 +421,11 @@ if strcmp(para,'met')
                             %                        disp(listKey(l,1));
                             %                    end
                         end
-                        
+
                         % catch
                         %   disp(list{l})
                         % end
-                        
+
                     end
                 else
                     finalContent.(list{l})='no data found in the COBRA model structure';
@@ -435,33 +434,33 @@ if strcmp(para,'met')
             end
         end
     end
-    
+
 elseif strcmp(para,'rxn');
-    
+
     new_l=0;
     for l=1:length(list)
-        
+
         for i=1:length(ClassName)
-            
-            
+
+
             if r==size(model.(list{l}),1);  %% number of elements in the array !!!
                 if isfield(model,list{l})&&~strcmp(list{l},'S');
-                    
+
                     type=isa(model.(list{l}),ClassName{i});
-                    
-                    
+
+
                     if type~=0;
                         new_l=new_l+1;
-                        
+
                         listClass(new_l)=ClassName(i)
-                        
+
                         % try
                         finalContent.(list{l})=model.(list{l})(num); % intialise the variables.
-                        
+
                         finalContent.(list{l})=strrep(finalContent.(list{l}),'&',' and '); % XML these special characters in
                         finalContent.(list{l})=strrep(finalContent.(list{l}),'<','(;');
                         finalContent.(list{l})=strrep(finalContent.(list{l}),'>',')');
-                        
+
                         listKey(new_l,1)=strcat(list(l),{and});
                         if strcmp(ClassName{i},'numeric')||strcmp(ClassName{i},'logical')
                             finalItems(new_l)=strcat(listKey(new_l,1),num2str(finalContent.(list{l}))); % Convert the numbers into strings.
@@ -473,11 +472,11 @@ elseif strcmp(para,'rxn');
                             %                        disp(listKey(l,1));
                             %                    end
                         end
-                        
+
                         % catch
                         %   disp(list{l})
                         % end
-                        
+
                     end
                 else
                     finalContent.(list{l})='no data found in the COBRA model structure';
@@ -488,7 +487,7 @@ elseif strcmp(para,'rxn');
             end
         end
     end
-    
+
 elseif strcmp(para,'not_found');
     finalItems(1)=strcat(infix,' not found in both met and rxn lists');
     finalContent(1)=strcat(infix, ' not found in both met and rxn lists');
@@ -718,6 +717,3 @@ end
 % end
 %
 % end
-
-
-

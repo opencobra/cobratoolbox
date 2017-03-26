@@ -14,16 +14,16 @@ global path_TOMLAB
 global path_ILOG_CPLEX
 global path_GUROBI
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testSolvers']);
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 % Dummy Model
-%http://www2.isye.gatech.edu/~spyros/LP/node2.html
+% http://www2.isye.gatech.edu/~spyros/LP/node2.html
 LPproblem.c = [200; 400];
-LPproblem.A = [1/40, 1/60; 1/50, 1/50];
+LPproblem.A = [1 / 40, 1 / 60; 1 / 50, 1 / 50];
 LPproblem.b = [1; 1];
 LPproblem.lb = [0; 0];
 LPproblem.ub = [1; 1];
@@ -33,7 +33,7 @@ LPproblem.csense = ['L'; 'L'];
 % set the tolerance
 tol = 1e-4;
 
-%test solver packages
+% test solver packages
 solverPkgs = {'cplex_direct', 'tomlab_cplex', 'gurobi6', 'glpk'};
 
 % list of tests
@@ -50,8 +50,8 @@ for k = 1:length(solverPkgs)
         addpath(genpath(path_GUROBI));
     end
 
-    if ~verLessThan('matlab', '8') && strcmp(solverPkgs{k}, 'cplex_direct') %2015
-        fprintf(['\n IBM ILOG CPLEX - ', solverPkgs{k},' - is incompatible with this version of MATLAB, please downgrade or change solver\n'])
+    if ~verLessThan('matlab', '8') && strcmp(solverPkgs{k}, 'cplex_direct')  % 2015
+        fprintf(['\n IBM ILOG CPLEX - ', solverPkgs{k}, ' - is incompatible with this version of MATLAB, please downgrade or change solver\n'])
     else
         % change the COBRA solver (LP)
         solverOK = changeCobraSolver(solverPkgs{k});
@@ -61,8 +61,7 @@ for k = 1:length(solverPkgs)
                 fprintf('   Running %s with solveCobraLP using %s ... ', testSuite{p}, solverPkgs{k});
 
                 if p == 1
-                    % 2. Solve LP problem.
-                    %solve LP problem printing summary information
+                    % solve LP problem printing summary information
                     for printLevel = 0:3
                         LPsolution = solveCobraLP(LPproblem, 'printLevel', printLevel);
                     end
@@ -79,7 +78,7 @@ for k = 1:length(solverPkgs)
                     % solveCobraLP
                     solution_solveCobraLP = solveCobraLP(model);
 
-                    %optimizeCbModel
+                    % optimizeCbModel
                     solution_optimizeCbModel = optimizeCbModel(model);
 
                     % compare both solution objects
@@ -89,6 +88,7 @@ for k = 1:length(solverPkgs)
                     assert(isequal(solution_solveCobraLP.dual, solution_optimizeCbModel.y))
                     assert(solution_solveCobraLP.stat == solution_optimizeCbModel.stat)
                 end
+
                 % output a success message
                 fprintf('Done.\n');
             end
@@ -104,3 +104,6 @@ for k = 1:length(solverPkgs)
         rmpath(genpath(path_GUROBI));
     end
 end
+
+% change the directory
+cd(currentDir)

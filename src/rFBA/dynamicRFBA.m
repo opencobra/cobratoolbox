@@ -19,7 +19,7 @@ function [concentrationMatrix,excRxnNames,timeVec,biomassVec,drGenes,constrained
 % exclUptakeRxns        list of uptake reactions whose substrate
 %                       concentrations do not change (opt, default
 %                       {'EX_co2(e)','EX_o2(e)','EX_h2o(e)','EX_h(e)'})
-% 
+%
 % concentrationMatrix   matrix of extracellular metabolite concentrations
 % excRxnNames           names of exchange reactions for the EC metabolites
 % timeVec               vector of time points
@@ -32,16 +32,18 @@ function [concentrationMatrix,excRxnNames,timeVec,biomassVec,drGenes,constrained
 % uptake in the model (i.e. model.lb < 0) the concentration is assumed to
 % be high enough to not be limiting. If the uptake rate for a nutrient is
 % calculated to exceed the maximum uptake rate for that nutrient specified
-% in the model and the max uptake rate specified is > 0, the maximum uptake 
+% in the model and the max uptake rate specified is > 0, the maximum uptake
 % rate specified in the model is used instead of the calculated uptake rate.
 %
-% NOTE: The dynamic FBA method implemented in this function is essentially 
+% NOTE: The dynamic FBA method implemented in this function is essentially
 % the same as the method described in
 % [Varma, A., and B. O. Palsson. Appl. Environ. Microbiol. 60:3724 (1994)].
 % This function does not implement the dynamic FBA using dynamic optimization approach
 % described in [Mahadevan, R. et al. Biophys J, 83:1331-1340 (2003)].
 %
 % Jeff Orth 9/15/08  (modified dynamicFBA by Markus Herrgard 8/22/06)
+
+global WAITBAR_TYPE
 
 if (nargin < 7)
     plotRxns = {'EX_glc(e)','EX_ac(e)','EX_for(e)'};
@@ -111,13 +113,13 @@ constrainedRxns{1} = rxns;
 states{1} = iniState;
 
 noGrowthCount = 0;
-%fprintf('Step number\tBiomass\n');
-h = showprogress(0,'Dynamic regulatory FBA analysis in progress ...');
-for stepNo = 1:nSteps  
+
+showprogress(0,'Dynamic regulatory FBA analysis in progress ...');
+for stepNo = 1:nSteps
     % Run FBA
     sol = optimizeCbModel(modelDR,'max',true);
     mu = sol.f;
-    
+
     if (sol.stat ~= 1 | mu == 0) % end if no growth for 10 steps
         noGrowthCount = noGrowthCount+1;
         biomass = biomassVec(end); % no growth
@@ -136,7 +138,7 @@ for stepNo = 1:nSteps
 
     biomassVec(end+1) = biomass;
     concentrationMatrix(:,end+1) = sparse(concentrations);
-    
+
     % Update bounds for uptake reactions
     uptakeBound =  concentrations/(biomass*timeStep);
     % This is to avoid any numerical issues
@@ -148,12 +150,12 @@ for stepNo = 1:nSteps
     uptakeBound(abs(uptakeBound) < 1e-9) = 0;
 
     model.lb(excInd) = -uptakeBound;
-    
+
     % get current regulatory state and downregulate reactions
     [finalState,finalInputs1States,finalInputs2States] = solveBooleanRegModel(model,states{end},inputs1state,inputs2state);
     KOgenes = {};
         for i = 1:length(model.regulatoryGenes)
-            if finalState(i) == false 
+            if finalState(i) == false
                 KOgenes{end+1,1} = model.regulatoryGenes{i};
             end
         end
@@ -165,12 +167,13 @@ for stepNo = 1:nSteps
     drGenes{end+1} = genes;
     constrainedRxns{end+1} = rxns;
     states{end+1} = finalState;
-    
-    fprintf('%d\t%f\n',stepNo,biomass);
-    showprogress(stepNo/nSteps,h);
+
+    if WAITBAR_TYPE ~= 1
+        fprintf('%d\t%f\n',stepNo,biomass);
+    end
+    showprogress(stepNo/nSteps);
     timeVec(stepNo+1) = stepNo*timeStep;
 end
-close(h);
 
 selNonZero = any(concentrationMatrix>0,2);
 concentrationMatrix = concentrationMatrix(selNonZero,:);
@@ -187,7 +190,3 @@ subplot(1,2,2);
 plot(timeVec,concentrationMatrix(selPlot,:),'LineWidth',2);
 axis tight
 legend(strrep(excRxnNames(selPlot),'EX_',''));
-
-
-
-

@@ -15,11 +15,11 @@
 global path_TOMLAB
 global path_ILOG_CPLEX
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testSolvers']);
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 load testDataSolveCobraLPCPLEX;
 load('ecoli_core_model', 'model');
@@ -39,11 +39,14 @@ for k = 1:length(solverPkgs)
         addpath(genpath(path_ILOG_CPLEX));
     end
 
-    if ~verLessThan('matlab','8') && ( strcmp(solverPkgs{k}, 'ILOGcomplex')) %2016b %strcmp(solverPkgs{k}, 'ILOGsimple') ||
+    if ~verLessThan('matlab','8') && ( strcmp(solverPkgs{k}, 'ILOGcomplex') || strcmp(solverPkgs{k}, 'ILOGsimple')) %2016b
         fprintf(['\n IBM ILOG CPLEX - ', solverPkgs{k}, ' - is incompatible with this version of MATLAB, please downgrade or change solver\n'])
+    elseif (~exist('tomRun')) && strcmp(solverPkgs{k}, 'tomlab_cplex')
+        fprintf(['TOMLAB CPLEX is not installed.\n']);
     else
         fprintf('   Running solveCobraLPCPLEX using %s ... ', solverPkgs{k});
 
+        % Note: Do not change the solver using changeCobraSolver()
         solTest = solveCobraLPCPLEX(model, 0, 0, 0, [], 0, solverPkgs{k});
         assert(any(abs(solTest.obj - sol.obj) < tol))
 
@@ -59,6 +62,9 @@ for k = 1:length(solverPkgs)
         %test basis reuse
         [solTest] = solveCobraLPCPLEX(basis, 0, 1, 0, [], 0, solverPkgs{k});
         assert(any(abs(solTest.obj - sol.obj) < tol));
+
+        % output a success message
+        fprintf('Done.\n');
     end
 
     % remove the solver paths (temporary addition for CI)
@@ -70,4 +76,4 @@ for k = 1:length(solverPkgs)
 end
 
 % change the directory
-cd(CBTDIR)
+cd(currentDir)

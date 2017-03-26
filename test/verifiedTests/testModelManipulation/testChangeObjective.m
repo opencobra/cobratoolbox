@@ -5,11 +5,11 @@
 % Author:
 %     - Original file: Stefania Magnusdottir
 
-% define the path to The COBRA Toolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-cd([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testModelManipulation'])
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 % define the test model
 toyModel = struct;
@@ -36,4 +36,4 @@ modelNew = changeObjective(toyModel,{'Rxn1'; 'Rxn2'},[0.3 ; 0.7]);
 assert(modelNew.c(1) == 0.3 && modelNew.c(2) == 0.7 && modelNew.c(3) == 0)
 
 % change the directory
-cd(CBTDIR)
+cd(currentDir)

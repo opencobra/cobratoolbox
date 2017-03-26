@@ -28,159 +28,94 @@ function [P] = preprocess( P , to_round)
 
 
 %restrict to the degenerate subspace
-%     N = null(eq_constraints);
-% eq_constraints = [eq_constraints; P.A_eq];
-% eq_rhs = [eq_rhs; P.b_eq];
+
 N = getNullSpace(P.A_eq,0);
-% N = null(full(P.A_eq));
-[U,S,V] = svd(full(N));
-%make all singular values =1
-S = [eye(size(V,1)); zeros(size(S,1)-size(S,2),size(S,2))];
-N = U*S*V';
-% prod(svd(N))
-%     z = linsolve(eq_constraints, eq_rhs);
+
+%in case we want the volume dilation factor when restricting to the null space, uncomment
+%the below line (e.g. if the product of all the singular values of N = 1, then there is no
+%volume change)
+
+%vol_change = prod(svd(N));
+
+
+%find a point in the null space to define the shift
 z = P.A_eq \ P.b_eq;
 N_total = N;
 p_shift = z;
 P.b = P.b - P.A * z;
 P.A = P.A*N;
 dim = size(P.A,2);
-% else % Please check this Ben. I added it to prevent an error in line 125: "Undefined function or variable "N_total"."
-%     N_total = null(P.A_eq);
-%     p_shift = zeros(size(N_total,1),1);
-% end
 
 fprintf('Now in %d dimensions after restricting\n', dim);
 
 %remove zero rows
-new_A = [];
-new_b = [];
-for i=1:size(P.A,1)
-    if norm(P.A(i,:))>1e-6
-        new_A = [new_A; P.A(i,:)];
-        new_b = [new_b; P.b(i)];
-    end
-end
-fprintf('Removed %d zero rows\n', size(P.A,1)-size(new_A,1));
-P.A = new_A;
-P.b = new_b;
+row_norms = sqrt(sum(P.A.^2,2));
+P.A = P.A(row_norms>1e-6,:);
+P.b = P.b(row_norms>1e-6,:);
+
+%maybe add LP presolve here
+
+fprintf('Removed %d zero rows\n', sum(row_norms>1e-6));
+
+%scale the matrix to help with numerical precision
 dim = size(P.A,2);
+[cs,rs] = gmscale(P.A,0,0.99);
+P.A = diag(1./rs)*P.A*diag(1./cs);
+P.b = diag(1./rs)*P.b;
+N_total = N_total*diag(1./cs);
+
+row_norms = sqrt(sum(P.A.^2,2));
+P.A = diag(1./row_norms)*P.A;
+P.b = diag(1./row_norms)*P.b;
 
 fprintf('Rounding...\n');
 
 if to_round==1
     T = eye(dim);
-    LP.A = P.A;
-%     LP.b = P.b-1e-6*sqrt(sum((P.A').^2,1))';
-    LP.b = P.b;
-    LP.c = zeros(dim,1);
-    LP.lb = -Inf * ones(dim,1);
-    LP.ub = Inf*ones(dim,1);
-    LP.osense = 1;
-    LP.csense = repmat('L',size(LP.A,1),1);
-    solution = solveCobraLP(LP);
-    if solution.stat == 1
-        x0 = solution.full;
-    else
-        error('Could not find a point inside the polytope.');
-    end
-    [T_shift, Tmve] = mve_run(P.A,P.b+sqrt(sum((P.A').^2,1))'/sqrt(dim), x0);
     
-    while(abs(det(Tmve))>20 || abs(det(Tmve))<1/20) 
-        det(Tmve)
-        p_shift = p_shift + N_total*T_shift;
-        N_total = N_total * Tmve;
-        T = T * Tmve;
-        P.b = P.b - P.A*T_shift;
-        P.A = P.A*Tmve;
+    %the below loop looks silly for an interior point method, but is actually
+    %quite important for numerical stability. while normally you'd only call an optimization routine
+    %once, we call it iteratively--where in each iteration, we map a large
+    %ellipsoid to the unit ball. the idea is that the "iterative roundings"
+    %will make each subsequent problem easier to solve numerically.
+    max_its = 20;
+    its = 0;
+    reg=1e-3;
+    Tmve = eye(dim);
+    converged = 0;
+    while (max(eig(Tmve))>6*min(eig(Tmve)) && converged~=1) || reg>1e-6 || converged==2
+        tic;
+        its = its+1;
+        [x0,dist] = getCCcenter(P.A,P.b);
+        reg = max(reg/10,1e-10);
+        [T_shift, Tmve,converged] = mve_run_cobra(P.A,P.b, x0,reg);
         
-        if min(P.A*(0*x0)<=P.b)==0
-            
-            LP.A = P.A;
-            LP.b = P.b-1e-6*sqrt(sum((P.A').^2,1))';
-            LP.c = zeros(dim,1);
-            LP.lb = -Inf * ones(dim,1);
-            LP.ub = Inf*ones(dim,1);
-            LP.osense = 1;
-            LP.csense = repmat('L',size(LP.A,1),1);
-            solution = solveCobraLP(LP);
-            if solution.stat == 1
-                x0 = solution.full;
-            else
-                error('Could not find a point inside the polytope.');
-            end
-        else
-            x0 = 0*x0;
+        [P,N_total, p_shift, T] = shiftPolytope(P, N_total, p_shift, T, Tmve, T_shift);
+        row_norms = sqrt(sum(P.A.^2,2));
+        P.A = diag(1./row_norms)*P.A;
+        P.b = diag(1./row_norms)*P.b;
+        if its==max_its
+            break;
         end
         
-        
-        [T_shift, Tmve] = mve_run(P.A,P.b, x0);
+        fprintf('Iteration %d: reg=%.1e, ellipsoid vol=%.1e, longest axis=%.1e, shortest axis=%.1e, x0 dist to bdry=%.1e, time=%.1e seconds\n', its, reg, det(Tmve), max(eig(Tmve)), min(eig(Tmve)), dist, toc);
     end
     
+    if its==max_its
+        fprintf('Reached the maximum number of iterations, rounding may not be ideal.\n');
+    end
     
-%     Volume(Q);
-    
-%     [T,T_shift]=max_Ellipsoid(P.A, P.b);
-%     P.b = P.b - P.A*T_shift;
-%     P.A = P.A*T;
-%     p_shift = p_shift + N_total*T_shift;
-%     N_total = N_total * T;
-%     Volume(P)
-%     Volume(Q)
-%     fprintf('hi\n');
 else
     T = eye(size(N_total,2));
 end
 
-fprintf('Trying to find a point inside the convex body...\n');
-
-% if isfield(P,'p')==0 || isempty(P.p)
-% p=zeros(dim,1);
-% options = optimset('Display','none');
-% 
-% LP.lb = -Inf*ones(size(P.A,2),1);
-% LP.ub = -LP.lb;
-% LP.osense = 1;
-% LP.csense = 'L';
-% LP.A = P.A;
-% LP.b = P.b;
-% 
-% for i=1:2*size(P.A,2)
-%     %     f = randn(dim,1);
-%     if i<=size(P.A,2)
-%         LP.c = randn(dim,1);
-%     else
-%         [~,f_index]=min(P.b-P.A*p);
-%         %optimize in this direction with some small noise
-%         LP.c = P.A(f_index,:)+randn(1,dim)*max(P.A(f_index,:))/100;
-%     end
-%     %     [y]=linprog(f,P.A, P.b,[],[],[],[],[],options);
-%     [solution] = solveCobraLP(LP);
-%     y = solution.full;
-%     p = ((i-1)*p+y)/i;
-%     if mod(i,10)==0
-%         fprintf('%d its, %f frac of equations satisfied (this one has %f)\n', i, sum(P.A*p<=(P.b))/length(P.b),sum(P.A*y<=(P.b))/length(P.b));
-%     end
-%     %     fprintf('Number of low rows: %d\n', sum(P.b - P.A*p < eps_cutoff));
-% end
-% 
-% %hopefully found a point reasonably inside the polytope
-% %shift so that this point is the origin
-% P.b = P.b - P.A*p;
-% p_shift = p_shift + N_total*p;
-% 
-% if min(P.b) < -eps_cutoff
-%     error('We tried to find a point inside the polytope but failed.');
-% elseif min(P.b) < 0
-%     fprintf('The point is very close to inside, so we slightly perturb P.b to make it be so.\n');
-%     P.b = P.b + eps_cutoff;
-% else
-%     fprintf('We found a point inside the polytope!\n');
-% end
-
-fprintf('Final polytope is in %d dimensions.\n', dim);
-
-
+if min(P.b)<=0
+    [x,~] = getCCcenter(P.A,P.b);
+    [P,N_total,p_shift,T] = shiftPolytope(P,N_total,p_shift,T,eye(dim),x);
+    fprintf('Shifting so the origin is inside the polytope...rounding may not be ideal.\n');
+else
+    fprintf('Maximum volume ellipsoid found, and the origin is inside the transformed polytope.\n');
+end
 
 P.N = N_total;
 P.p_shift = p_shift;
@@ -188,11 +123,48 @@ P.T = T;
 
 end
 
-function [min_dist]=minDist(P)
-dists = zeros(size(P.A,1),1);
-for i=1:size(dists,1)
-    dists(i) = P.b(i)/norm(P.A(i,:));
+%compute the center of the Chebyshev ball in the polytope Ax<=b
+function [CC_center,radius] = getCCcenter(A,b)
+dim = size(A,2);
+a_norms = sqrt(sum(A.^2,2));
+
+LP.A = [A a_norms];
+LP.b = b;
+LP.c = [zeros(dim,1); 1];
+LP.lb = -Inf * ones(dim+1,1);
+LP.ub = Inf*ones(dim+1,1);
+LP.osense = -1;
+LP.csense = repmat('L',size(LP.A,1),1);
+solution = solveCobraLP(LP);
+if solution.stat == 1
+    CC_center = solution.full(1:dim);
+    radius = solution.obj;
+else
+    solution
+    error('Could not solve the LP, consult the information above.');
+end
 end
 
-min_dist = min(abs(dists));
+%shift the polytope by a point and apply a transformation, while retaining
+%the information to undo the transformation later (to recover the samples)
+
+%let x denote the original space, y the current space, and z the new space
+%we have
+%
+%   P.A y <= P.b   and x = N*y+p
+%
+%  applying the transformation
+%
+%   trans * z + shift = y
+%
+% yields the system
+%
+%  x = (N * trans) * z + N*shift + p
+%  (P.A * trans) * z <= P.b - P.A * shift
+function [P,N,p,T] = shiftPolytope(P,N,p,T,trans, shift)
+p = p + N*shift;
+N = N * trans;
+T = T * trans;
+P.b = P.b - P.A*shift;
+P.A = P.A*trans;
 end

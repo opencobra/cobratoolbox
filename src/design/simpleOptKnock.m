@@ -6,10 +6,10 @@ function [wtRes,delRes] = simpleOptKnock(model,targetRxn,deletions,geneDelFlag,m
 %
 %INPUTS
 % model         COBRA model structure
-% targetRxn     Target metabolite production reaction      
+% targetRxn     Target metabolite production reaction
 %
 %OPTIONAL INPUTS
-% deletions     Set of gene or reaction deletions to consider for KO 
+% deletions     Set of gene or reaction deletions to consider for KO
 %               (Default = all reactions)
 % geneDelFlag   Gene deletion flag (Default = false)
 % minGrowth     Minimum KO growth rate (Default = 0.05)
@@ -19,7 +19,7 @@ function [wtRes,delRes] = simpleOptKnock(model,targetRxn,deletions,geneDelFlag,m
 % wtRes         Wild type results
 % delRes        Deletion strain results
 %
-% The results structures have fields: 
+% The results structures have fields:
 %    growth     Growth rate of strain
 %    minProd    Minimum prod rate of target metabolite
 %    maxProd    Maximum prod rate of target metabolite
@@ -59,7 +59,7 @@ wtRes.minProd = solMin.f;
 if (doubleDelFlag)
     growthRate = sparse(nDel,nDel);
     maxProd = sparse(nDel,nDel);
-    minProd = sparse(nDel,nDel);  
+    minProd = sparse(nDel,nDel);
 else
     growthRate = zeros(nDel,1);
     maxProd = zeros(nDel,1);
@@ -68,14 +68,14 @@ end
 
 
 if (~doubleDelFlag)
-    h = showprogress(0,'Simple OptKnock in progress ...');
+    showprogress(0,'Simple OptKnock in progress ...');
 end
 t0 = cputime;
 delCounter = 0;
 for i = 1:nDel
     if (~doubleDelFlag)
         if mod(i,10) == 0
-            showprogress(i/nDel,h);
+            showprogress(i/nDel);
         end
     end
     if (geneDelFlag)
@@ -88,7 +88,7 @@ for i = 1:nDel
     % Calculate optimal growth rate
     solKO = optimizeCbModel(modelKO);
     %fprintf('Single %s %f\n',deletions{i},solKO.f);
-    growthRate(i,1) = solKO.f;    
+    growthRate(i,1) = solKO.f;
     if (solKO.f > minGrowth && solKO.stat == 1)
         % Max & min production of the metabolite at the optimal growth rate
         grRounded = floor(solKO.f/tol)*tol;
@@ -102,7 +102,7 @@ for i = 1:nDel
         %fprintf('%f %f\n',solMax.f,solMin.f);
         else
             maxProd(i,i) = solMax.f;
-            minProd(i,i) = solMin.f;            
+            minProd(i,i) = solMin.f;
             for j = i+1:nDel
                 delCounter = delCounter+1;
                 if mod(j,50) == 0
@@ -136,9 +136,6 @@ for i = 1:nDel
             end
         end
     end
-end
-if (~doubleDelFlag) 
-    close(h);
 end
 
 % Store results
