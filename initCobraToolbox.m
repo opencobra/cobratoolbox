@@ -29,7 +29,7 @@ WAITBAR_TYPE = 1;
 
 fprintf('\n\n      _____   _____   _____   _____     _____     |\n     /  ___| /  _  \\ |  _  \\ |  _  \\   / ___ \\    |   COnstraint-Based Reconstruction and Analysis\n     | |     | | | | | |_| | | |_| |  | |___| |   |   COBRA Toolbox 2.0 - 2017\n     | |     | | | | |  _  { |  _  /  |  ___  |   |\n     | |___  | |_| | | |_| | | | \\ \\  | |   | |   |   Documentation:\n     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |   http://opencobra.github.io/cobratoolbox\n                                                  | \n\n');
 
-fprintf('\n\n > Initializing submodules ... ')
+fprintf('\n\n > Initializing and updating submodules ... ')
 % Throw an error if the user has a bare repository or a copy of The COBRA Toolbox
 % that is not a git repository.
 currentDir = pwd;
@@ -47,22 +47,73 @@ else
     error('The submodules could not be initialized.');
 end
 
-fprintf(' > Adding all the COBRA Toolbox files ... ')
+% add the folders of The COBRA Toolbox
+if ispc  % Windows is not case-sensitive
+    onPath = ~isempty(strfind(lower(path), lower(CBTDIR)));
+else
+    onPath = ~isempty(strfind(path, CBTDIR));
+end
 
-addpath(genpath(CBTDIR))
-rmpath([CBTDIR, filesep, '.git'])
-rmpath([CBTDIR, filesep, 'deprecated'])
-rmpath([CBTDIR, filesep, 'external/SBMLToolbox'])
-fprintf(' Done.\n')
+folders = {'external', 'src', 'test', 'tutorials', 'papers', 'binary', 'deprecated'};
 
-fprintf(' > Checking solver environment variables ...\n')
+if ~onPath
+    fprintf(' > Adding all the files of The COBRA Toolbox ... ')
+
+    % add the root folder
+    addpath(CBTDIR);
+
+    % add specific subfolders
+    for k = 1:length(folders)
+        addpath(genpath([CBTDIR, filesep, folders{k}]));
+    end
+
+    % remove the SBML Toolbox
+    rmpath(genpath([CBTDIR, filesep, 'external', filesep, 'SBMLToolbox']));
+
+    % print a success message
+    fprintf(' Done.\n');
+end
+clear folders;
+
+% Define default CB map output
+fprintf(' > Define CB map output...');
+for CbMapOutput = {'svg', 'matlab'}
+    CbMapOutputOK = changeCbMapOutput(char(CbMapOutput));
+    if CbMapOutputOK
+      break
+    end
+end
+if CbMapOutputOK
+    fprintf(' set to %s.\n', char(CbMapOutput));
+else
+    fprintf('FAILED.\n');
+end
+
+% Set global LP solution accuracy tolerance
+changeCobraSolverParams('LP', 'optTol', 1e-6);
+
+% Check that SBML toolbox is installed and accessible
+if ~exist('TranslateSBML', 'file')
+    warning('SBML Toolbox not in Matlab path: COBRA Toolbox will be unable to read SBML files');
+else
+    % Test the installation with:
+    xmlTestFile = strcat([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testSBML', filesep, 'Ecoli_core_ECOSAL.xml']);
+    try
+        TranslateSBML(xmlTestFile);
+        fprintf(' > TranslateSBML is installed and working.\n')
+    catch
+        warning('TranslateSBML did not work with the file: Ecoli_core_ECOSAL.xml')
+    end
+end
+
+fprintf(' > Configuring solver environment variables ...\n')
 
 solverPaths = {};
 solverPaths{1,1} = 'ILOG_CPLEX_PATH';
 solverPaths{1,2} = {'/Applications/IBM/ILOG/CPLEX_Studio1262', '/Applications/IBM/ILOG/CPLEX_Studio1263', '/Applications/IBM/ILOG/CPLEX_Studio127', ...
                     '/opt/ibm/ILOG/CPLEX_Studio1262', '/opt/ibm/ILOG/CPLEX_Studio1263', '/opt/ibm/ILOG/CPLEX_Studio127'};
 solverPaths{2,1} = 'GUROBI_PATH';
-solverPaths{2,2} = {'/opt/gurobi650', '/opt/gurobi70'};
+solverPaths{2,2} = {'/Library/gurobi600', '/Library/gurobi650', '/Library/gurobi702', '/opt/gurobi650', '/opt/gurobi70'};
 solverPaths{3,1} = 'TOMLAB_PATH';
 solverPaths{3,2} = {'/opt/tomlab'};
 solverPaths{4,1} = 'MOSEK_PATH';
@@ -90,11 +141,13 @@ for k = 1:length(solverPaths)
     % add the solver path
     if ~isempty(eval(solverPaths{k, 1}))
         addpath(genpath(eval(solverPaths{k, 1})));
-        fprintf([' > Contents of ', solverPaths{k, 1}, ': ', eval(solverPaths{k, 1}), ' added to PATH.\n']);
+        fprintf(['   - ', solverPaths{k, 1}, ': ', eval(solverPaths{k, 1}), '\n']);
     end
 end
+% print a success message
+fprintf('   Done.\n');
 
-fprintf(' > Checking available solvers\n')
+fprintf(' > Checking available solvers ...')
 % define categories of solvers: LP, MILP, QP, MIQP, NLP
 OPTIMIZATIONPROBLEMTYPES = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
 SOLVERS = {};
@@ -130,50 +183,20 @@ end
 
 % check the installation of the solver
 for i = 1:length(supportedSolversNames)
-    fprintf('    %15s: ', supportedSolversNames{i});
     solverOK = changeCobraSolver(supportedSolversNames{i}, SOLVERS.(supportedSolversNames{i}).type{1}, 0);
     if solverOK
-        fprintf(' Installed.\n')
         SOLVERS.(supportedSolversNames{i}).installed = 1;
-    else
-        fprintf(' Not installed.\n')
     end
 end
 
-% Define default CB map output
-fprintf(' > Define CB map output...');
-for CbMapOutput = {'svg', 'matlab'}
-    CbMapOutputOK = changeCbMapOutput(char(CbMapOutput));
-    if CbMapOutputOK
-      break
-    end
-end
-if CbMapOutputOK
-    fprintf(' set to %s.\n', char(CbMapOutput));
-else
-    fprintf('FAILED.\n');
-end
-
-% Set global LP solution accuracy tolerance
-changeCobraSolverParams('LP', 'optTol', 1e-6);
-
-% Check that SBML toolbox is installed and accessible
-if ~exist('TranslateSBML', 'file')
-    warning('SBML Toolbox not in Matlab path: COBRA Toolbox will be unable to read SBML files');
-else
-    % Test the installation with:
-    xmlTestFile = strcat([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testSBML', filesep, 'Ecoli_core_ECOSAL.xml']);
-    try
-        TranslateSBML(xmlTestFile);
-        fprintf(' > TranslateSBML is installed and working.\n')
-    catch
-        warning('TranslateSBML did not work with the file: Ecoli_core_ECOSAL.xml')
-    end
-end
+% print a success message
+fprintf(' Done.\n');
 
 % saves the current paths
 try
+    fprintf(' > Saving the MATLAB path ...');
     savepath;
+    fprintf(' Done.\n');
 catch
     fprintf(' > The MATLAB path could not be saved.\n');
 end
@@ -201,8 +224,12 @@ solverStatuss(end+1, :) =  num2str(solverTypeInstalled)';
 solverStatuss = char(solverStatuss);
 rowNames = [supportedSolversNames; '----------'; 'Total'];
 
-solverSummary = table(solverStatuss(:, 1), solverStatuss(:, 2), solverStatuss(:, 3), solverStatuss(:, 4), solverStatuss(:, 5), 'RowNames', rowNames, 'VariableNames', OPTIMIZATIONPROBLEMTYPES)
-fprintf(' + Legend: - = not applicable, 0 = solver not installed, 1 = solver installed.\n\n')
+solverSummary = table(solverStatuss(:, 1), solverStatuss(:, 2), solverStatuss(:, 3), solverStatuss(:, 4), solverStatuss(:, 5), 'RowNames', rowNames, 'VariableNames', OPTIMIZATIONPROBLEMTYPES);
+
+fprintf('\n > Summary of available solvers\n\n')
+disp(solverSummary);
+
+fprintf(' + Legend: - = not applicable, 0 = solver not compatible or not installed, 1 = solver installed.\n\n')
 
 fprintf('\n');
 
