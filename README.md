@@ -16,6 +16,7 @@ Installation
   ```sh
   $ git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
   ```
+  **Note**: Do **not** download the repository as a `.zip` file. You would be missing essential submodules!
 
 2. Change to the folder `cobratoolbox` and from `MATLAB`, run
   ```Matlab
@@ -41,7 +42,7 @@ Support and Documentation
 
 - Answers to Frequently Asked Questions (**FAQ**) are [here](FAQ.md).
 
-- If you need support, please feel free to post your question in the [here](https://groups.google.com/forum/#!forum/cobra-toolbox).
+- If you need support, please feel free to post your question [here](https://groups.google.com/forum/#!forum/cobra-toolbox).
 
 How to contribute
 -----------------
