@@ -96,49 +96,8 @@ if pass == 1
     end
 end
 
-%NLP Solver test
-% http://tomopt.com/docs/quickguide/quickguide008.php
 
-% setup NLP problem
-Name = 'RBB Problem';
-NLPproblem.A = [];
-NLPproblem.b = [];
-NLPproblem.csense = [];
-NLPproblem.lb = [-10; -10];
-NLPproblem.ub = [2; 2];
-NLPproblem.objFunction = 'testNLP_objFunction';
-NLPproblem.x0 = [-1.2 1];
-NLPproblem.fLowBnd = 0;
-NLPproblem.gradFunction = 'testNLP_gradFunction';
-NLPproblem.H = 'testNLP_H';
-NLPproblem.c = 'testNLP_c';
-NLPproblem.dc = 'testNLP_dc';
-NLPproblem.d2c = 'testNLP_d2c';
-NLPproblem.c_L = -1000;
-NLPproblem.c_U = 0;
-
-pass = 1;
-
-%Solve
-try
-    %Solve, silent printing, problem name = 'RBB Problem' and warnings off.
-    NLPsolution = solveCobraNLP(NLPproblem,'printLevel',0,'PbName',Name,'warning',0);
-catch
-    disp('Error in NLP test 1');
-    x=0;
-    pass = 0;
-end
-
-%Check results
-if pass == 1
-    if abs(NLPsolution.obj + 0) < tol & all(abs(NLPsolution.full - [1;1]) < tol)
-        display('NLP Test 1 Passed');
-    else
-        display('NLP Test 1 Not Passed');
-        x=0;
-    end
-end
-
+% this test is only available with tomlab_snopt
 %run sampleNLP script
 try
     sampleNLP;

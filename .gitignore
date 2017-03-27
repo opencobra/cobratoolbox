@@ -26,12 +26,12 @@ octave-workspace
 *.zip
 
 # specific folders
-fluxomics/c13solver/IsotopomerModel.txt
-fluxomics/c13solver/convertCarbonInput.m
-fluxomics/c13solver/slvrCumomer.m
-fluxomics/c13solver/slvrCumomer_fast.m
-fluxomics/c13solver/slvrEMU.m
-fluxomics/c13solver/slvrEMU_fast.m
+src/fluxomics/c13solver/IsotopomerModel.txt
+src/fluxomics/c13solver/convertCarbonInput.m
+src/fluxomics/c13solver/slvrCumomer.m
+src/fluxomics/c13solver/slvrCumomer_fast.m
+src/fluxomics/c13solver/slvrEMU.m
+src/fluxomics/c13solver/slvrEMU_fast.m
 
 # model files for testing
 test/models/*.xml
@@ -81,3 +81,6 @@ src/gapFilling/fastGapFill/examples
 tutorials/fastGapFill/results_*.mat
 tutorials/fastGapFill/KEGGMatrix.mat
 tutorials/fastGapFill/prepareFGFResultsDefault.mat
+
+# hidden folders
+.vscode/
