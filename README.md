@@ -5,9 +5,9 @@
 The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox
 =======================================================================
 
-|  MATLAB R2016b | MATLAB R2015b | MATLAB R2014b | Code Coverage | Code Grade |
-|--------|--------|--------|--------|--------|
-| [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2016b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2016b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2015b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2015b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2014b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2014b/) | [![codecov](https://codecov.io/gh/opencobra/cobratoolbox/branch/master/graph/badge.svg)](https://codecov.io/gh/opencobra/cobratoolbox/branch/master) | ![Code grade](https://prince.lcsb.uni.lu/jenkins/userContent/codegrade.svg?maxAge=0 "Ratio of the number of inefficient code lines and the total number of lines of code (in percent). A: 0-3%, B: 3-6%, C: 6-9%, D: 9-12%, E: 12-15%, F: > 15%.")
+|  MATLAB R2016b | MATLAB R2015b | MATLAB R2014b | Code Coverage | Code Grade | Support |
+|--------|--------|--------|--------|--------|--------|
+| [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2016b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2016b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2015b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2015b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2014b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2014b/) | [![codecov](https://codecov.io/gh/opencobra/cobratoolbox/branch/master/graph/badge.svg)](https://codecov.io/gh/opencobra/cobratoolbox/branch/master) | ![Code grade](https://prince.lcsb.uni.lu/jenkins/userContent/codegrade.svg "Ratio of the number of inefficient code lines and the total number of lines of code (in percent). A: 0-3%, B: 3-6%, C: 6-9%, D: 9-12%, E: 12-15%, F: > 15%.") |  [![COBRAforum](https://img.shields.io/badge/COBRA-forum-blue.svg)](https://groups.google.com/forum/#!forum/cobra-toolbox) |
 
 Installation
 ------------
@@ -34,11 +34,14 @@ Tutorials
 
 All tutorials are included in the folder [tutorials](https://github.com/opencobra/cobratoolbox/tree/master/tutorials). More tutorials are currently being prepared.
 
-Documentation
+Support and Documentation
 --------------
 
-The documentation is available on [opencobra.github.io/cobratoolbox](http://opencobra.github.io/cobratoolbox). As this version is in development, you may find the legacy version of the documentation [here](http://opencobra.github.io/cobratoolbox/deprecated/docs/index.html).
-Answers to Frequently Asked Questions (**FAQ**) are [here](FAQ.md).
+- The documentation is available on [opencobra.github.io/cobratoolbox](http://opencobra.github.io/cobratoolbox). As this version is in development, you may find the legacy version of the documentation [here](http://opencobra.github.io/cobratoolbox/deprecated/docs/index.html).
+
+- Answers to Frequently Asked Questions (**FAQ**) are [here](FAQ.md).
+
+- If you need support, please feel free to post your question in the [here](https://groups.google.com/forum/#!forum/cobra-toolbox).
 
 How to contribute
 -----------------
