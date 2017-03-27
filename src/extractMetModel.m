@@ -48,6 +48,7 @@ else
     allMetNames = model.mets;
 end
 
+metabNames = intersect(metabNames, allMetNames(selLowDegMet));
 selMets = find(ismember(allMetNames,metabNames));
 
 metS = model.S(selMets,:);
