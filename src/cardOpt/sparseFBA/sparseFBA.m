@@ -167,13 +167,13 @@ end
 switch FBAsolution.stat
     case 2
         v = [];
-        fprintf('%s\n','FBA problem error: Unbounded !!!!')
+        error('%s\n','FBA problem unbounded !')
     case 0
         v = [];
-        fprintf('%s\n','FBA problem error: Infeasible !!!!')
+        error('%s\n','FBA problem infeasible !')
     case -1
         v = [];
-        warning('%s\n','FBA problem error: Invalid input !!!!')
+        error('%s\n','FBA problem error: Invalid input !')
     case 1
         vFBA = FBAsolution.full(1:n);
         objFBA = c'*vFBA;
@@ -241,7 +241,7 @@ switch FBAsolution.stat
                 disp(solutionL0.x(activeRxnBoolOld & ~activeRxnBool))
             end
         else
-            error('Cannot achieve the objective value. Tolerance for non-zero flux is probably too large!!!!')
+            error('Cannot achieve the objective value. Tolerance for non-zero flux is probably too large!')
         end
 end
 %identify active reactions
