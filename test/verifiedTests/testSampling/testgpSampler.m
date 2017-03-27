@@ -1,17 +1,34 @@
-function status = testSampler()
-%tests the newSamppler function using the E. coli Core Model
+% The COBRAToolbox: testgpSampler.m
+%
+% Purpose:
+%     - tests the newSampler function using the E. coli Core Model
+%
 
+% save the current path
+currentDir = pwd;
 
-%Load required variables
-load([regexprep(mfilename('fullpath'),mfilename,'') 'Ecoli_core_model.mat']);
+% initialize the test
+cd(fileparts(which(mfilename)));
 
-%Call sampler
-[sampleStructOut, mixedFrac] = gpSampler(model, 200, [], 60);
+changeCobraSolver('glpk');
 
-%check
-[errorsA, errorsLUB, stuckPoints] = verifyPoints(sampleStructOut);
-if any(errorsA)|any(errorsLUB)|any(stuckPoints)
-    status=0;
-else
-    status = 1;
+load('ecoli_core_model.mat', 'model');
+
+samplePoints = [5, 190];
+
+for i = 1:length(samplePoints)
+    % call sampler
+    [sampleStructOut, mixedFrac] = gpSampler(model, samplePoints(i), [], 2);
+
+    % check
+    [errorsA, errorsLUB, stuckPoints] = verifyPoints(sampleStructOut);
+
+    tmpErrorsA = ~any(errorsA);
+
+    assert(tmpErrorsA(1) && tmpErrorsA(2))
+    assert(~any(errorsLUB))
+    assert(~any(stuckPoints))
 end
+
+% change the directory
+cd(currentDir)
