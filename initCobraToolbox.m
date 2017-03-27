@@ -55,10 +55,6 @@ rmpath([CBTDIR, filesep, 'deprecated'])
 rmpath([CBTDIR, filesep, 'external/SBMLToolbox'])
 fprintf(' Done.\n')
 
-fprintf(' > Fetching model files ... ')
-retrieveModels
-fprintf('   Done.\n')
-
 fprintf(' > Checking solver environment variables ...\n')
 
 solverPaths = {};
