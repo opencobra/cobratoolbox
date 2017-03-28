@@ -29,23 +29,70 @@ WAITBAR_TYPE = 1;
 
 fprintf('\n\n      _____   _____   _____   _____     _____     |\n     /  ___| /  _  \\ |  _  \\ |  _  \\   / ___ \\    |   COnstraint-Based Reconstruction and Analysis\n     | |     | | | | | |_| | | |_| |  | |___| |   |   COBRA Toolbox 2.0 - 2017\n     | |     | | | | |  _  { |  _  /  |  ___  |   |\n     | |___  | |_| | | |_| | | | \\ \\  | |   | |   |   Documentation:\n     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |   http://opencobra.github.io/cobratoolbox\n                                                  | \n\n');
 
-fprintf('\n\n > Initializing and updating submodules ... ')
 % Throw an error if the user has a bare repository or a copy of The COBRA Toolbox
 % that is not a git repository.
 currentDir = pwd;
 CBTDIR = fileparts(which('initCobraToolbox'));
-if ~(exist([CBTDIR filesep '.git'], 'dir') == 7)
-    error('This directory is not a git repository.\nSumodules cannot be initialized.');
-end
-cd(CBTDIR);
-[status_submodule, result_submodule] = system(['git submodule update --init']);
 
-if status_submodule == 0
-    fprintf('Done.\n');
+% check if git is properly installed
+[status_gitVersion, result_gitVersion] = system('git --version');
+
+fprintf('\n\n > Checking if git is installed ... ')
+
+if status_gitVersion == 0 && ~isempty(strfind(result_gitVersion, 'git version'))
+    fprintf(' Done.\n');
 else
+    fprintf(result_gitVersion);
+    error(' > git is not installed. Please follow the guidelines to learn more on how to install git.');
+end
+
+% change to the directory of The COBRA Tooolbox
+cd(CBTDIR);
+
+% configure a remote tracking repository
+fprintf(' > Checking if the repository is git-tracked ... ')
+% check if the directory is a git-tracked folder
+if exist('.git', 'dir') ~= 7
+    % initialize the directory
+    [status_gitInit, result_gitInit] = system(['git init']);
+
+    if status_gitInit ~= 0
+        fprintf(result_gitInit);
+        error(' > This directory is not a git repository.\n');
+    end
+
+    % set the remote origin
+    [status_setOrigin, result_setOrigin] = system(['git remote add origin https://github.com/opencobra/cobratoolbox.git']);
+
+    if status_setOrigin ~= 0
+        fprintf(result_setOrigin);
+        error(' > The remote tracking origin could not be set.');
+    end
+
+    % set the remote origin
+    [status_fetch, result_fetch] = system('git fetch origin master --depth=1');
+    if status_fetch ~= 0
+        fprintf(result_fetch);
+        error(' > The files could not be fetched.');
+    end
+
+    [status_resetHard, result_resetHard] = system('git reset --mixed origin/master');
+
+    if status_resetHard ~= 0
+        fprintf(result_resetHard);
+        error(' > The remote tracking origin could not be set.');
+    end
+end
+fprintf(' Done.\n');
+
+% initialize and update the submodules
+fprintf(' > Initializing and updating submodules ... ')
+[status_submodule, result_submodule] = system(['git submodule update --init --jobs=5']);
+if status_submodule ~= 0
     result_submodule
     error('The submodules could not be initialized.');
 end
+fprintf('Done.\n');
 
 % add the folders of The COBRA Toolbox
 if ispc  % Windows is not case-sensitive
