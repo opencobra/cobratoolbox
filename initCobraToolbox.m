@@ -1,9 +1,17 @@
-% initCobraToolbox Initialize COnstraint-Based Reconstruction and Analysis Toolbox
+%      _____   _____   _____   _____     _____     |
+%     /  ___| /  _  \ |  _  \ |  _  \   / ___ \    |   COnstraint-Based Reconstruction and Analysis
+%     | |     | | | | | |_| | | |_| |  | |___| |   |   COBRA Toolbox 2.0 - 2017
+%     | |     | | | | |  _  { |  _  /  |  ___  |   |
+%     | |___  | |_| | | |_| | | | \ \  | |   | |   |   Documentation:
+%     \_____| \_____/ |_____/ |_|  \_\ |_|   |_|   |   http://opencobra.github.io/cobratoolbox
+%                                                  |
 %
-% Defines default solvers and paths, tests SBML io functionality.
-% Function only needs to be called once per installation. Saves paths afer script terminates.
+%     initCobraToolbox Initialize COnstraint-Based Reconstruction and Analysis Toolbox
 %
-% In addition add either of the following into startup.m (generally in MATLAB_DIRECTORY/toolbox/local/startup.m)
+%     Defines default solvers and paths, tests SBML io functionality.
+%     Function only needs to be called once per installation. Saves paths afer script terminates.
+%
+%     In addition add either of the following into startup.m (generally in MATLAB_DIRECTORY/toolbox/local/startup.m)
 %     initCobraToolbox
 %           -or-
 %     changeCobraSolver('gurobi');
@@ -12,10 +20,9 @@
 %     changeCobraSolver('tomlab_cplex', 'MIQP');
 %     changeCbMapOutput('svg');
 %
+% Maintained by Ronan M.T. Fleming, Sylvain Arreckx, Laurent Heirendt
 
-% Maintained by Ronan M.T. Fleming
-
-%% Add cobra toolbox paths
+% Add cobra toolbox paths
 global CBTDIR;
 global SOLVERS;
 global OPTIMIZATIONPROBLEMTYPES;
@@ -86,13 +93,13 @@ end
 fprintf(' Done.\n');
 
 % initialize and update the submodules
-fprintf(' > Initializing and updating submodules ... ')
-[status_submodule, result_submodule] = system(['git submodule update --init --jobs=5']);
-if status_submodule ~= 0
+fprintf(' > Initializing and updating submodules ... ');
+[status_submodule, result_submodule] = system('git submodule update --init --jobs=5');
+
+if status_submodule ~= 0
     result_submodule
     error('The submodules could not be initialized.');
 end
-fprintf('Done.\n');
 
 % add the folders of The COBRA Toolbox
 if ispc  % Windows is not case-sensitive
