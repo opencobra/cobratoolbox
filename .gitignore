@@ -41,16 +41,16 @@ test/models/*.mat
 test/testGrowthExpMatch/GEMLog.txt
 test/testGrowthExpMatch/GEMLog_solution_1.mat
 test/testMaps/target.svg
-test/testSampling/ACHRParallelError.txt
-test/testSampling/ACHR_last_point.mat
-test/testSampling/ACHRerror.txt
-test/testSampling/EcoliModelSamples_1.mat
-test/testSampling/EcoliModelSamples_2.mat
-test/testSampling/EcoliModelSamples_3.mat
-test/testSampling/EcoliModelSamples_4.mat
-test/testSampling/modelRedTmp.mat
-test/testSampling/sampleCbModelTmp.mat
-test/testSampling/sampleStructTmp.mat
+test/verifiedTests/testSampling/ACHRParallelError.txt
+test/verifiedTests/testSampling/ACHR_last_point.mat
+test/verifiedTests/testSampling/ACHRerror.txt
+test/verifiedTests/testSampling/EcoliModelSamples_1.mat
+test/verifiedTests/testSampling/EcoliModelSamples_2.mat
+test/verifiedTests/testSampling/EcoliModelSamples_3.mat
+test/verifiedTests/testSampling/EcoliModelSamples_4.mat
+test/verifiedTests/testSampling/modelRedTmp.mat
+test/verifiedTests/testSampling/sampleCbModelTmp.mat
+test/verifiedTests/testSampling/sampleStructTmp.mat
 
 # verified tests
 test/verifiedTests/testMultiSpeciesModelling/*.mat
