@@ -49,11 +49,10 @@ N = model.S(mbool, rbool);
 
 % Add the solver path (temporary addition for CI)
 addpath(genpath(path_GUROBI));
-path_GUROBI
 
 solverOK = changeCobraSolver('gurobi6', 'MILP');
 if solverOK
-    fprintf(' -- Running testfindBlockedReaction using the solver interface: gurobi6 ... ');
+    fprintf(' -- Running testMoieties using the solver interface: gurobi6 ... ');
 
     D = decomposeMoietyVectors(L, N);
     assert(all(all(D == D0)), 'Decomposed moiety matrix does not match reference.')
