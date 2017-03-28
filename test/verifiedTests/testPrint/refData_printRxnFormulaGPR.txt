@@ -1,0 +1,95 @@
+ACALD	Acetaldehyde + Coenzyme-A + Nicotinamide-adenine-dinucleotide 	<=>	Acetyl-CoA + H + Nicotinamide-adenine-dinucleotide-reduced 	(b0351 or b1241)
+ACALDt	Acetaldehyde 	<=>	Acetaldehyde 	s0001
+ACKr	Acetate + ATP 	<=>	Acetyl-phosphate + ADP 	(b3115 or b2296 or b1849)
+ACONTa	Citrate 	<=>	cis-Aconitate + H2O 	(b0118 or b1276)
+ACONTb	cis-Aconitate + H2O 	<=>	Isocitrate 	(b0118 or b1276)
+ACt2r	Acetate + H 	<=>	Acetate + H 	
+ADK1	AMP + ATP 	<=>	2 ADP 	b0474
+AKGDH	2-Oxoglutarate + Coenzyme-A + Nicotinamide-adenine-dinucleotide 	->	CO2 + Nicotinamide-adenine-dinucleotide-reduced + Succinyl-CoA 	( b0116  and  b0726  and  b0727 )
+AKGt2r	2-Oxoglutarate + H 	<=>	2-Oxoglutarate + H 	b2587
+ALCD2x	Ethanol + Nicotinamide-adenine-dinucleotide 	<=>	Acetaldehyde + H + Nicotinamide-adenine-dinucleotide-reduced 	(b0356 or b1478 or b1241)
+ATPM	ATP + H2O 	->	ADP + H + Phosphate 	
+ATPS4r	ADP + 4 H + Phosphate 	<=>	ATP + H2O + 3 H 	(((b3736 and b3737 and b3738) and (b3731 and b3732 and b3733 and b3734 and b3735)) or ((b3736 and b3737 and b3738) and (b3731 and b3732 and b3733 and b3734 and b3735) and b3739))
+Biomass_Ecoli_core_w_GAM	1.496 3-Phospho-D-glycerate + 3.7478 Acetyl-CoA + 59.81 ATP + 0.361 D-Erythrose-4-phosphate + 0.0709 D-Fructose-6-phosphate + 0.129 Glyceraldehyde-3-phosphate + 0.205 D-Glucose-6-phosphate + 0.2557 L-Glutamine + 4.9414 L-Glutamate + 59.81 H2O + 3.547 Nicotinamide-adenine-dinucleotide + 13.0279 Nicotinamide-adenine-dinucleotide-phosphate-reduced + 1.7867 Oxaloacetate + 0.5191 Phosphoenolpyruvate + 2.8328 Pyruvate + 0.8977 alpha-D-Ribose-5-phosphate 	->	59.81 ADP + 4.1182 2-Oxoglutarate + 3.7478 Coenzyme-A + 59.81 H + 3.547 Nicotinamide-adenine-dinucleotide-reduced + 13.0279 Nicotinamide-adenine-dinucleotide-phosphate + 59.81 Phosphate 	
+CO2t	CO2 	<=>	CO2 	s0001
+CS	Acetyl-CoA + H2O + Oxaloacetate 	->	Citrate + Coenzyme-A + H 	b0720
+CYTBD	2 H + 0.5 O2 + Ubiquinol-8 	->	H2O + 2 H + Ubiquinone-8 	((b0978 and b0979) or (b0733 and b0734))
+D_LACt2	H + D-Lactate 	<=>	H + D-Lactate 	( b2975  or  b3603 )
+ENO	D-Glycerate-2-phosphate 	<=>	H2O + Phosphoenolpyruvate 	b2779
+ETOHt2r	Ethanol + H 	<=>	Ethanol + H 	
+EX_ac(e)	Acetate 	->		
+EX_acald(e)	Acetaldehyde 	->		
+EX_akg(e)	2-Oxoglutarate 	->		
+EX_co2(e)	CO2 	<=>		
+EX_etoh(e)	Ethanol 	->		
+EX_for(e)	Formate 	->		
+EX_fru(e)	D-Fructose 	->		
+EX_fum(e)	Fumarate 	->		
+EX_glc(e)	D-Glucose 	<=>		
+EX_gln_L(e)	L-Glutamine 	->		
+EX_glu_L(e)	L-Glutamate 	->		
+EX_h(e)	H 	<=>		
+EX_h2o(e)	H2O 	<=>		
+EX_lac_D(e)	D-Lactate 	->		
+EX_mal_L(e)	L-Malate 	->		
+EX_nh4(e)	Ammonium 	<=>		
+EX_o2(e)	O2 	<=>		
+EX_pi(e)	Phosphate 	<=>		
+EX_pyr(e)	Pyruvate 	->		
+EX_succ(e)	Succinate 	->		
+FBA	D-Fructose-1-6-bisphosphate 	<=>	Dihydroxyacetone-phosphate + Glyceraldehyde-3-phosphate 	(b2097 or b1773 or b2925)
+FBP	D-Fructose-1-6-bisphosphate + H2O 	->	D-Fructose-6-phosphate + Phosphate 	(b3925 or b4232)
+FORt2	Formate + H 	->	Formate + H 	(b0904 or b2492)
+FORti	Formate 	->	Formate 	(b0904 or b2492)
+FRD7	Fumarate + Ubiquinol-8 	->	Ubiquinone-8 + Succinate 	(b4151 and b4152 and b4153 and b4154)
+FRUpts2	D-Fructose + Phosphoenolpyruvate 	->	D-Fructose-6-phosphate + Pyruvate 	(b1817 and b1818 and b1819 and b2415 and b2416)
+FUM	Fumarate + H2O 	<=>	L-Malate 	( b1612  or  b4122  or  b1611 )
+FUMt2_2	Fumarate + 2 H 	->	Fumarate + 2 H 	b3528
+G6PDH2r	D-Glucose-6-phosphate + Nicotinamide-adenine-dinucleotide-phosphate 	<=>	6-phospho-D-glucono-1-5-lactone + H + Nicotinamide-adenine-dinucleotide-phosphate-reduced 	b1852
+GAPD	Glyceraldehyde-3-phosphate + Nicotinamide-adenine-dinucleotide + Phosphate 	<=>	3-Phospho-D-glyceroyl-phosphate + H + Nicotinamide-adenine-dinucleotide-reduced 	b1779
+GLCpts	D-Glucose + Phosphoenolpyruvate 	->	D-Glucose-6-phosphate + Pyruvate 	((b2417 and b1101 and b2415 and b2416) or (b1817 and b1818 and b1819 and b2415 and b2416) or (b2417 and b1621 and b2415 and b2416))
+GLNS	ATP + L-Glutamate + Ammonium 	->	ADP + L-Glutamine + H + Phosphate 	(b3870 or b1297)
+GLNabc	ATP + L-Glutamine + H2O 	->	ADP + L-Glutamine + H + Phosphate 	(b0811 and b0810 and b0809)
+GLUDy	L-Glutamate + H2O + Nicotinamide-adenine-dinucleotide-phosphate 	<=>	2-Oxoglutarate + H + Nicotinamide-adenine-dinucleotide-phosphate-reduced + Ammonium 	b1761
+GLUN	L-Glutamine + H2O 	->	L-Glutamate + Ammonium 	(b1812 or b0485 or b1524)
+GLUSy	2-Oxoglutarate + L-Glutamine + H + Nicotinamide-adenine-dinucleotide-phosphate-reduced 	->	2 L-Glutamate + Nicotinamide-adenine-dinucleotide-phosphate 	(b3212 and b3213)
+GLUt2r	L-Glutamate + H 	<=>	L-Glutamate + H 	b4077
+GND	6-Phospho-D-gluconate + Nicotinamide-adenine-dinucleotide-phosphate 	->	CO2 + Nicotinamide-adenine-dinucleotide-phosphate-reduced + D-Ribulose-5-phosphate 	b2029
+H2Ot	H2O 	<=>	H2O 	(b0875 or s0001)
+ICDHyr	Isocitrate + Nicotinamide-adenine-dinucleotide-phosphate 	<=>	2-Oxoglutarate + CO2 + Nicotinamide-adenine-dinucleotide-phosphate-reduced 	b1136
+ICL	Isocitrate 	->	Glyoxylate + Succinate 	b4015
+LDH_D	D-Lactate + Nicotinamide-adenine-dinucleotide 	<=>	H + Nicotinamide-adenine-dinucleotide-reduced + Pyruvate 	(b2133 or b1380)
+MALS	Acetyl-CoA + Glyoxylate + H2O 	->	Coenzyme-A + H + L-Malate 	( b4014  or  b2976 )
+MALt2_2	2 H + L-Malate 	->	2 H + L-Malate 	b3528
+MDH	L-Malate + Nicotinamide-adenine-dinucleotide 	<=>	H + Nicotinamide-adenine-dinucleotide-reduced + Oxaloacetate 	b3236
+ME1	L-Malate + Nicotinamide-adenine-dinucleotide 	->	CO2 + Nicotinamide-adenine-dinucleotide-reduced + Pyruvate 	b1479
+ME2	L-Malate + Nicotinamide-adenine-dinucleotide-phosphate 	->	CO2 + Nicotinamide-adenine-dinucleotide-phosphate-reduced + Pyruvate 	b2463
+NADH16	4 H + Nicotinamide-adenine-dinucleotide-reduced + Ubiquinone-8 	->	3 H + Nicotinamide-adenine-dinucleotide + Ubiquinol-8 	(b2276 and b2277 and b2278 and b2279 and b2280 and b2281 and b2282 and b2283 and b2284 and b2285 and b2286 and b2287 and b2288)
+NADTRHD	Nicotinamide-adenine-dinucleotide + Nicotinamide-adenine-dinucleotide-phosphate-reduced 	->	Nicotinamide-adenine-dinucleotide-reduced + Nicotinamide-adenine-dinucleotide-phosphate 	(b3962 or (b1602 and b1603))
+NH4t	Ammonium 	<=>	Ammonium 	(s0001 or b0451)
+O2t	O2 	<=>	O2 	s0001
+PDH	Coenzyme-A + Nicotinamide-adenine-dinucleotide + Pyruvate 	->	Acetyl-CoA + CO2 + Nicotinamide-adenine-dinucleotide-reduced 	( b0114  and  b0115  and  b0116 )
+PFK	ATP + D-Fructose-6-phosphate 	->	ADP + D-Fructose-1-6-bisphosphate + H 	( b3916  or  b1723 )
+PFL	Coenzyme-A + Pyruvate 	->	Acetyl-CoA + Formate 	(((b0902 and b0903) and b2579) or (b0902 and b0903) or (b0902 and b3114) or (b3951 and b3952))
+PGI	D-Glucose-6-phosphate 	<=>	D-Fructose-6-phosphate 	b4025
+PGK	3-Phospho-D-glycerate + ATP 	<=>	3-Phospho-D-glyceroyl-phosphate + ADP 	b2926
+PGL	6-phospho-D-glucono-1-5-lactone + H2O 	->	6-Phospho-D-gluconate + H 	b0767
+PGM	D-Glycerate-2-phosphate 	<=>	3-Phospho-D-glycerate 	(b3612 or b4395 or b0755)
+PIt2r	H + Phosphate 	<=>	H + Phosphate 	(b2987 or b3493)
+PPC	CO2 + H2O + Phosphoenolpyruvate 	->	H + Oxaloacetate + Phosphate 	b3956
+PPCK	ATP + Oxaloacetate 	->	ADP + CO2 + Phosphoenolpyruvate 	b3403
+PPS	ATP + H2O + Pyruvate 	->	AMP + 2 H + Phosphoenolpyruvate + Phosphate 	b1702
+PTAr	Acetyl-CoA + Phosphate 	<=>	Acetyl-phosphate + Coenzyme-A 	(b2297 or b2458)
+PYK	ADP + H + Phosphoenolpyruvate 	->	ATP + Pyruvate 	(b1854 or b1676)
+PYRt2r	H + Pyruvate 	<=>	H + Pyruvate 	
+RPE	D-Ribulose-5-phosphate 	<=>	D-Xylulose-5-phosphate 	(b3386 or b4301)
+RPI	alpha-D-Ribose-5-phosphate 	<=>	D-Ribulose-5-phosphate 	( b2914  or  b4090 )
+SUCCt2_2	2 H + Succinate 	->	2 H + Succinate 	b3528
+SUCCt3	H + Succinate 	->	H + Succinate 	
+SUCDi	Ubiquinone-8 + Succinate 	->	Fumarate + Ubiquinol-8 	(b0721 and b0722 and b0723 and b0724)
+SUCOAS	ATP + Coenzyme-A + Succinate 	<=>	ADP + Phosphate + Succinyl-CoA 	( b0728  and  b0729 )
+TALA	Glyceraldehyde-3-phosphate + Sedoheptulose-7-phosphate 	<=>	D-Erythrose-4-phosphate + D-Fructose-6-phosphate 	(b2464 or b0008)
+THD2	2 H + Nicotinamide-adenine-dinucleotide-reduced + Nicotinamide-adenine-dinucleotide-phosphate 	->	2 H + Nicotinamide-adenine-dinucleotide + Nicotinamide-adenine-dinucleotide-phosphate-reduced 	( b1602  and  b1603 )
+TKT1	alpha-D-Ribose-5-phosphate + D-Xylulose-5-phosphate 	<=>	Glyceraldehyde-3-phosphate + Sedoheptulose-7-phosphate 	( b2935  or  b2465 )
+TKT2	D-Erythrose-4-phosphate + D-Xylulose-5-phosphate 	<=>	D-Fructose-6-phosphate + Glyceraldehyde-3-phosphate 	( b2935  or  b2465 )
+TPI	Dihydroxyacetone-phosphate 	<=>	Glyceraldehyde-3-phosphate 	b3919
