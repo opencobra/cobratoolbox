@@ -10,6 +10,10 @@
 %     - Sylvain Arreckx March 2017
 %
 
+% define global paths
+global path_GUROBI
+global CBTDIR
+
 % save the current path
 currentDir = pwd;
 
@@ -23,7 +27,7 @@ load('refData_moieties.mat')
 load('DAS.mat')
 
 % Predicted atom mappings from DREAM (http://selene.princeton.edu/dream/)
-rxnfileDir = ['..' filesep '..' filesep '..' filesep 'tutorials' filesep 'moieties' filesep 'Data' filesep 'AlternativeAtomMappingFiles'];
+rxnfileDir = [CBTDIR filesep 'tutorials' filesep 'moieties' filesep 'Data' filesep 'AlternativeAtomMappingFiles'];
 
 % Generate atom transition network
 ATN = buildAtomTransitionNetwork(model, rxnfileDir);
@@ -43,8 +47,14 @@ rbool = ismember(model.rxns, ATN.rxns);  % True for reactions included in ATN
 mbool = any(model.S(:, rbool), 2);  % True for metabolites in ATN reactions
 N = model.S(mbool, rbool);
 
+% Add the solver path (temporary addition for CI)
+addpath(genpath(path_GUROBI));
+path_GUROBI
+
 solverOK = changeCobraSolver('gurobi6', 'MILP');
 if solverOK
+    fprintf(' -- Running testfindBlockedReaction using the solver interface: gurobi6 ... ');
+
     D = decomposeMoietyVectors(L, N);
     assert(all(all(D == D0)), 'Decomposed moiety matrix does not match reference.')
 
@@ -54,6 +64,11 @@ if solverOK
     % Estimate chemical formulas of decomposed moieties
     [decomposedMoietyFormulas, M] = estimateMoietyFormulas(D, E, elements);
     assert(all(strcmp(decomposedMoietyFormulas, decomposedMoietyFormulas0)), 'Estimated formulas of decomposed moieties do not match reference.')
+
+    fprintf('Done\n');
 end
+
+% Remove solver path
+rmpath(genpath(path_GUROBI));
 
 cd(currentDir)
