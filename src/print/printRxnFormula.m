@@ -143,15 +143,6 @@ for i = 1:length(rxnAbbrList);
             formulaStr = [formulaStr ' -> '];
         end
         
-        if 0
-            if length(formulaStr)>200
-                %most probably this is the biomass reaction 
-                if (printFlag)
-                    fprintf(fid,'\n');
-                end
-            end
-        end
-        
         for j = 1:length(prodMets)
             if (j > 1)
                 if (printFlag)
@@ -171,10 +162,6 @@ for i = 1:length(rxnAbbrList);
                 formulaStr = [formulaStr prodMets{j} ' '];
             end
         end
-        if (printFlag) && 0
-            fprintf('\t.');
-        end
-        
     else
         if (printFlag)
             fprintf(fid,'not in model');
@@ -184,9 +171,9 @@ for i = 1:length(rxnAbbrList);
     if printFlag && gprFlag
         if (rxnID > 0) && (isfield(model,'grRules'))
             if (isempty(model.grRules{rxnID}))
-                fprintf('\t');
+                fprintf(fid, '\t');
             else
-                fprintf('\t%s',model.grRules{rxnID});
+                fprintf(fid, '\t%s', model.grRules{rxnID});
             end
         end
 
