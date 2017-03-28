@@ -13,7 +13,7 @@ if isempty(poolobj)
     parpool(2);  % launch 2 workers
 end
 
-samplers = {'ACHR', 'CHRR', 'MFE'};
+samplers = {'ACHR', 'CHRR'}; %'MFE'
 
 for i = 1:length(samplers)
 
@@ -28,6 +28,7 @@ for i = 1:length(samplers)
             options.nPointsReturned = 20;
             options.nPointsPerFile = 5;
             options.nFilesSkipped = 0;
+            options.nWarmupPoints = 200;
 
             [modelSampling, samples, volume] = sampleCbModel(model, 'EcoliModelSamples', 'ACHR', options);
 
