@@ -44,11 +44,9 @@ for k = 1:length(solverPkgs)
             % check
             [errorsA, errorsLUB, stuckPoints] = verifyPoints(sampleStructOut);
 
-            tmpErrorsA = ~any(errorsA);
-
-            assert(tmpErrorsA(1) && tmpErrorsA(2))
-            assert(~any(errorsLUB))
-            assert(~any(stuckPoints))
+            assert(all(~any(errorsA)));
+            assert(~any(errorsLUB));
+            assert(~any(stuckPoints));
         end
 
         % print a line for success of loop i
