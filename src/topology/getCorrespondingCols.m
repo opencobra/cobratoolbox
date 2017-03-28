@@ -36,7 +36,7 @@ function restrictedColBool = getCorrespondingCols(S,rowBool,colBool,mode)
 %
 %INPUT
 % S         m x n stoichiometric matrix
-% rowBool   m x 1 boolean vector 
+% rowBool   m x 1 boolean vector
 % colBool   n x 1 boolean vector
 % mode      'exclusive' or 'inclusive' or 'partial'
 %
@@ -44,6 +44,13 @@ function restrictedColBool = getCorrespondingCols(S,rowBool,colBool,mode)
 % restrictedColBool     n x 1 boolean vector
 
 %Ronan Fleming July 2016
+
+if ~islogical(rowBool)
+    error('rowBool must be a logical vector')
+end
+if ~islogical(colBool)
+    error('colBool must be a logical vector')
+end
 
 [~,nlt]=size(S);
 restrictedColBool=false(nlt,1);
@@ -55,12 +62,12 @@ switch mode
     case 'inclusive'
         %corresponding reactions involving certain metabolites
         restrictedColBool(colBool)=any(S( rowBool,colBool),1)';
-        
+
     case 'partial'
         %metatbolites exclusively involved in certain reactions
         restrictedColBool(colBool)=    any(S( rowBool,colBool),1)'...
                                     & ~any(S(~rowBool,colBool),1)';
-        
+
         %corresponding reactions involving certain metabolites
         restricedColBool2=false(nlt,1);
         restricedColBool2(colBool)=any(S( rowBool,colBool),1)';

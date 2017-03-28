@@ -104,5 +104,33 @@ ref_cols_partial = [0;
                    -5];
 assert(isequal(S(rowBool, restrictedColBool), ref_cols_partial));
 
+% testing input of functions
+testrowBool(1:5) = '1';
+try
+  getCorrespondingRows(S, testrowBool, colBool);
+catch ME
+    assert(length(ME.message) > 0)
+end
+
+testrowBool(1:5) = '1';
+try
+  getCorrespondingCols(S, testrowBool, colBool);
+catch ME
+    assert(length(ME.message) > 0)
+end
+
+testcolBool(1:5) = '1';
+try
+  getCorrespondingRows(S, rowBool, testcolBool);
+catch ME
+    assert(length(ME.message) > 0)
+end
+
+testcolBool(1:5) = '1';
+try
+  getCorrespondingCols(S, rowBool, testcolBool);
+catch ME
+    assert(length(ME.message) > 0)
+end
 % change the directory
 cd(currentDir)
