@@ -17,8 +17,7 @@ initTest(fileparts(which(mfilename)));
 load('ecoli_core_model', 'model');
 
 % remove old generated file
-delete('printFluxVectors.txt');
-
+delete('printFluxVector.txt');
 
 % initialize the random number generator to make the results in this test repeatable.
 rng('default');
