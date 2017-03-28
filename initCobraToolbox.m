@@ -57,48 +57,50 @@ end
 cd(CBTDIR);
 
 % configure a remote tracking repository
-fprintf(' > Checking if the repository is git-tracked ... ')
-% check if the directory is a git-tracked folder
-if exist('.git', 'dir') ~= 7
-    % initialize the directory
-    [status_gitInit, result_gitInit] = system(['git init']);
+if isempty(strfind(getenv('HOME'), 'jenkins'))
+    fprintf(' > Checking if the repository is git-tracked ... ')
+    % check if the directory is a git-tracked folder
+    if exist('.git', 'dir') ~= 7
+        % initialize the directory
+        [status_gitInit, result_gitInit] = system(['git init']);
 
-    if status_gitInit ~= 0
-        fprintf(result_gitInit);
-        error(' > This directory is not a git repository.\n');
+        if status_gitInit ~= 0
+            fprintf(result_gitInit);
+            error(' > This directory is not a git repository.\n');
+        end
+
+        % set the remote origin
+        [status_setOrigin, result_setOrigin] = system(['git remote add origin https://github.com/opencobra/cobratoolbox.git']);
+
+        if status_setOrigin ~= 0
+            fprintf(result_setOrigin);
+            error(' > The remote tracking origin could not be set.');
+        end
+
+        % set the remote origin
+        [status_fetch, result_fetch] = system('git fetch origin master --depth=1');
+        if status_fetch ~= 0
+            fprintf(result_fetch);
+            error(' > The files could not be fetched.');
+        end
+
+        [status_resetHard, result_resetHard] = system('git reset --mixed origin/master');
+
+        if status_resetHard ~= 0
+            fprintf(result_resetHard);
+            error(' > The remote tracking origin could not be set.');
+        end
     end
+    fprintf(' Done.\n');
 
-    % set the remote origin
-    [status_setOrigin, result_setOrigin] = system(['git remote add origin https://github.com/opencobra/cobratoolbox.git']);
+    % initialize and update the submodules
+    fprintf(' > Initializing and updating submodules ... ');
+    [status_submodule, result_submodule] = system('git submodule update --init --jobs=5');
 
-    if status_setOrigin ~= 0
-        fprintf(result_setOrigin);
-        error(' > The remote tracking origin could not be set.');
+    if status_submodule ~= 0
+        result_submodule
+        error('The submodules could not be initialized.');
     end
-
-    % set the remote origin
-    [status_fetch, result_fetch] = system('git fetch origin master --depth=1');
-    if status_fetch ~= 0
-        fprintf(result_fetch);
-        error(' > The files could not be fetched.');
-    end
-
-    [status_resetHard, result_resetHard] = system('git reset --mixed origin/master');
-
-    if status_resetHard ~= 0
-        fprintf(result_resetHard);
-        error(' > The remote tracking origin could not be set.');
-    end
-end
-fprintf(' Done.\n');
-
-% initialize and update the submodules
-fprintf(' > Initializing and updating submodules ... ');
-[status_submodule, result_submodule] = system('git submodule update --init --jobs=5');
-
-if status_submodule ~= 0
-    result_submodule
-    error('The submodules could not be initialized.');
 end
 
 % add the folders of The COBRA Toolbox
