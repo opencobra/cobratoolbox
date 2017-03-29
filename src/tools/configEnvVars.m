@@ -4,13 +4,13 @@ function configEnvVars(printLevel)
     global ILOG_CPLEX_PATH;
     global TOMLAB_PATH;
     global MOSEK_PATH;
-    global ENV_VARS_STATUS
+    global ENV_VARS;
 
     if nargin < 1
         printLevel = 0;
     end
 
-    if ENV_VARS_STATUS == 0
+    if ENV_VARS.STATUS == 0
         solverPaths = {};
         solverPaths{1,1} = 'ILOG_CPLEX_PATH';
         solverPaths{1,2} = {'/Applications/IBM/ILOG/CPLEX_Studio1262', '/Applications/IBM/ILOG/CPLEX_Studio1263', '/Applications/IBM/ILOG/CPLEX_Studio127', ...
@@ -49,7 +49,7 @@ function configEnvVars(printLevel)
                 if printLevel > 0
                     fprintf(['   - ', solverPaths{k, 1}, ': ', eval(['getenv(''', solverPaths{k, 1} , ''');']) , '\n']);
                 end
-                ENV_VARS_STATUS = 1;
+                ENV_VARS.STATUS = 1;
             end
         end
     end
