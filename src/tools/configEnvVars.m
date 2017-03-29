@@ -1,5 +1,9 @@
 function configEnvVars(printLevel)
 
+    global GUROBI_PATH;
+    global ILOG_CPLEX_PATH;
+    global TOMLAB_PATH;
+    global MOSEK_PATH;
     global ENV_VARS_STATUS
 
     if nargin < 1
