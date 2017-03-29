@@ -177,7 +177,11 @@ switch solverName
     case 'gurobi_mex'
         solverOK = checkSolverInstallationFile(solverName, 'gurobi_mex', printLevel);
     case {'gurobi5', 'gurobi6', 'gurobi7'}
-        solverOK = checkGurobiInstallation(solverName, 'gurobi.m', printLevel);
+        if isunix
+            solverOK = checkGurobiInstallation(solverName, 'gurobi.sh', printLevel);
+        else
+            solverOK = checkGurobiInstallation(solverName, 'gurobi.bat', printLevel);
+        end
     case 'mps'
         solverOK = checkSolverInstallationFile(solverName, 'BuildMPS', printLevel);
     case 'quadMinos'
