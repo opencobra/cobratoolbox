@@ -81,6 +81,9 @@ if isempty(SOLVERS) || isempty(OPTIMIZATIONPROBLEMTYPES)
     initCobraToolbox;
 end
 
+% configure the environment variables
+configEnvVars()
+
 % Print out all solvers defined in global variables CBT_*_SOLVER
 if nargin < 1
     definedSolvers = [CBT_LP_SOLVER, CBT_MILP_SOLVER, CBT_QP_SOLVER, CBT_MIQP_SOLVER, CBT_NLP_SOLVER];

@@ -1,6 +1,6 @@
 %      _____   _____   _____   _____     _____     |
 %     /  ___| /  _  \ |  _  \ |  _  \   / ___ \    |   COnstraint-Based Reconstruction and Analysis
-%     | |     | | | | | |_| | | |_| |  | |___| |   |   COBRA Toolbox 2.0 - 2017
+%     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2017
 %     | |     | | | | |  _  { |  _  /  |  ___  |   |
 %     | |___  | |_| | | |_| | | | \ \  | |   | |   |   Documentation:
 %     \_____| \_____/ |_____/ |_|  \_\ |_|   |_|   |   http://opencobra.github.io/cobratoolbox
@@ -28,16 +28,18 @@
 % Add cobra toolbox paths
 global CBTDIR;
 global SOLVERS;
-global OPTIMIZATIONPROBLEMTYPES;
+global OPT_PROB_TYPES;
 global GUROBI_PATH;
 global ILOG_CPLEX_PATH;
 global TOMLAB_PATH;
 global MOSEK_PATH;
 global WAITBAR_TYPE;
+global ENV_VARS_STATUS;
 
+ENV_VARS_STATUS = 0;
 WAITBAR_TYPE = 1;
 
-fprintf('\n\n      _____   _____   _____   _____     _____     |\n     /  ___| /  _  \\ |  _  \\ |  _  \\   / ___ \\    |   COnstraint-Based Reconstruction and Analysis\n     | |     | | | | | |_| | | |_| |  | |___| |   |   COBRA Toolbox 2.0 - 2017\n     | |     | | | | |  _  { |  _  /  |  ___  |   |\n     | |___  | |_| | | |_| | | | \\ \\  | |   | |   |   Documentation:\n     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |   http://opencobra.github.io/cobratoolbox\n                                                  | \n\n');
+fprintf('\n\n      _____   _____   _____   _____     _____     |\n     /  ___| /  _  \\ |  _  \\ |  _  \\   / ___ \\    |   COnstraint-Based Reconstruction and Analysis\n     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2017\n     | |     | | | | |  _  { |  _  /  |  ___  |   |\n     | |___  | |_| | | |_| | | | \\ \\  | |   | |   |   Documentation:\n     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |   http://opencobra.github.io/cobratoolbox\n                                                  | \n\n');
 
 % Throw an error if the user has a bare repository or a copy of The COBRA Toolbox
 % that is not a git repository.
@@ -167,50 +169,12 @@ else
 end
 
 fprintf(' > Configuring solver environment variables ...\n')
-
-solverPaths = {};
-solverPaths{1,1} = 'ILOG_CPLEX_PATH';
-solverPaths{1,2} = {'/Applications/IBM/ILOG/CPLEX_Studio1262', '/Applications/IBM/ILOG/CPLEX_Studio1263', '/Applications/IBM/ILOG/CPLEX_Studio127', ...
-                    '/opt/ibm/ILOG/CPLEX_Studio1262', '/opt/ibm/ILOG/CPLEX_Studio1263', '/opt/ibm/ILOG/CPLEX_Studio127', ...
-                    'C:\Program Files\IBM\ILOG\CPLEX_Studio1262', 'C:\Program Files\IBM\ILOG\CPLEX_Studio1263', 'C:\Program Files\IBM\ILOG\CPLEX_Studio127'};
-solverPaths{2,1} = 'GUROBI_PATH';
-solverPaths{2,2} = {'/Library/gurobi600', '/Library/gurobi650', '/Library/gurobi702', '/opt/gurobi650', '/opt/gurobi70', 'C:\gurobi600', 'C:\gurobi650', 'C:\gurobi70'};
-solverPaths{3,1} = 'TOMLAB_PATH';
-solverPaths{3,2} = {'/opt/tomlab', 'C:\tomlab'};
-solverPaths{4,1} = 'MOSEK_PATH';
-solverPaths{4,2} = {};
-
-for k = 1:length(solverPaths)
-    eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1} , ''');'])
-    possibleDir = '';
-    if isempty(eval(solverPaths{k, 1}))
-        tmpSolverPath = solverPaths{k, 2};
-        for i = 1:length(solverPaths{k, 2})
-            if exist(tmpSolverPath{i}, 'dir') == 7
-                possibleDir = tmpSolverPath{i};
-            end;
-        end
-        if ~isempty(possibleDir)
-            reply = input(['\n   Environment variable ', solverPaths{k, 1}, ' is not set.\n   Do you want to set ', strrep(possibleDir, '\', '\\') , ' temporarily? Y/N [N]: '], 's');
-            if ~isempty(reply) && (strcmpi(reply, 'yes') || strcmpi(reply, 'y'))
-                setenv(solverPaths{k, 1}, strrep(possibleDir, '\', '\\'));
-                eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1} , ''');']);
-            end
-        end
-    end
-
-    % add the solver path
-    if ~isempty(eval(solverPaths{k, 1}))
-        addpath(genpath(eval(solverPaths{k, 1})));
-        fprintf(['   - ', solverPaths{k, 1}, ': ', eval(['getenv(''', solverPaths{k, 1} , ''');']) , '\n']);
-    end
-end
-% print a success message
+configEnvVars(1);
 fprintf('   Done.\n');
 
 fprintf(' > Checking available solvers ...')
 % define categories of solvers: LP, MILP, QP, MIQP, NLP
-OPTIMIZATIONPROBLEMTYPES = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
+OPT_PROB_TYPES = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
 SOLVERS = {};
 SOLVERS.gurobi7.type = {'LP', 'MILP', 'QP', 'MIQP'};
 SOLVERS.gurobi6.type = {'LP', 'MILP', 'QP', 'MIQP'};
@@ -256,20 +220,24 @@ fprintf(' Done.\n');
 % saves the current paths
 try
     fprintf(' > Saving the MATLAB path ...');
-    savepath;
+    if ispc
+        savepath;
+    else
+        savepath('~/pathdef.m');
+    end
     fprintf(' Done.\n');
 catch
     fprintf(' > The MATLAB path could not be saved.\n');
 end
 
 % print out a summary table
-solverTypeInstalled = zeros(length(OPTIMIZATIONPROBLEMTYPES), 1);
-solverStatuss = '-' * ones(length(supportedSolversNames), length(OPTIMIZATIONPROBLEMTYPES));
-solverStatus = -1 * ones(length(supportedSolversNames), length(OPTIMIZATIONPROBLEMTYPES));
+solverTypeInstalled = zeros(length(OPT_PROB_TYPES), 1);
+solverStatuss = '-' * ones(length(supportedSolversNames), length(OPT_PROB_TYPES));
+solverStatus = -1 * ones(length(supportedSolversNames), length(OPT_PROB_TYPES));
 for i = 1:length(supportedSolversNames)
     types = SOLVERS.(supportedSolversNames{i}).type;
     for j = 1:length(types)
-        k = find(ismember(OPTIMIZATIONPROBLEMTYPES, types{j}));
+        k = find(ismember(OPT_PROB_TYPES, types{j}));
         if SOLVERS.(supportedSolversNames{i}).installed
             solverStatus(i, k) = 1;
             solverStatuss(i, k) = '1';
@@ -280,12 +248,12 @@ for i = 1:length(supportedSolversNames)
         end
     end
 end
-solverStatuss(end+1, :) = ' '* ones(1, length(OPTIMIZATIONPROBLEMTYPES));
+solverStatuss(end+1, :) = ' '* ones(1, length(OPT_PROB_TYPES));
 solverStatuss(end+1, :) =  num2str(solverTypeInstalled)';
 solverStatuss = char(solverStatuss);
 rowNames = [supportedSolversNames; '----------'; 'Total'];
 
-solverSummary = table(solverStatuss(:, 1), solverStatuss(:, 2), solverStatuss(:, 3), solverStatuss(:, 4), solverStatuss(:, 5), 'RowNames', rowNames, 'VariableNames', OPTIMIZATIONPROBLEMTYPES);
+solverSummary = table(solverStatuss(:, 1), solverStatuss(:, 2), solverStatuss(:, 3), solverStatuss(:, 4), solverStatuss(:, 5), 'RowNames', rowNames, 'VariableNames', OPT_PROB_TYPES);
 
 fprintf('\n > Summary of available solvers\n\n')
 disp(solverSummary);
@@ -295,16 +263,16 @@ fprintf(' + Legend: - = not applicable, 0 = solver not compatible or not install
 fprintf('\n');
 
 % provide clear instructions and summary
-for i = 1:length(OPTIMIZATIONPROBLEMTYPES)
+for i = 1:length(OPT_PROB_TYPES)
     if sum(solverStatus(:, i) == 1) == 0
-        fprintf(' > You cannot solve %s problems on this system. Consider installing a %s solver.\n', char(OPTIMIZATIONPROBLEMTYPES(i)), char(OPTIMIZATIONPROBLEMTYPES(i)));
+        fprintf(' > You cannot solve %s problems. Consider installing a %s solver.\n', char(OPT_PROB_TYPES(i)), char(OPT_PROB_TYPES(i)));
     else
-        fprintf(' > You can solve %s problems on this system with: ', char(OPTIMIZATIONPROBLEMTYPES(i)));
+        fprintf(' > You can solve %s problems with: ', char(OPT_PROB_TYPES(i)));
         k = 1;
-        for j = 1:length(catSolverNames.(OPTIMIZATIONPROBLEMTYPES{i}))
-            if SOLVERS.(catSolverNames.(OPTIMIZATIONPROBLEMTYPES{i}){j}).installed
+        for j = 1:length(catSolverNames.(OPT_PROB_TYPES{i}))
+            if SOLVERS.(catSolverNames.(OPT_PROB_TYPES{i}){j}).installed
                 if k == 1 msg = '''%s'' '; else msg = '- ''%s'' '; end
-                fprintf(msg, catSolverNames.(OPTIMIZATIONPROBLEMTYPES{i}){j});
+                fprintf(msg, catSolverNames.(OPT_PROB_TYPES{i}){j});
                 k = k + 1;
             end
         end
