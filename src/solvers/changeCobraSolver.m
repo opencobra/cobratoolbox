@@ -150,20 +150,20 @@ switch solverName
     case 'cplex_direct'
         solverOK = checkSolverInstallationFile(solverName, 'tomRun', printLevel);
     case 'ibm_cplex'
-        try
-            ILOGcplex = Cplex('fba');  % Initialize the CPLEX object
-            if ~verLessThan('matlab', '9')  % 2016b
-                if printLevel > 0
-                    fprintf('IBM ILOG CPLEX is incompatible with this version of MATLAB, please downgrade or change solver\n');
-                end
-            else
+        if ~verLessThan('matlab', '9')  % 2016b
+            if printLevel > 0
+                fprintf('IBM ILOG CPLEX is incompatible with this version of MATLAB, please downgrade or change solver\n');
+            end
+        else
+            try
+                ILOGcplex = Cplex('fba');  % Initialize the CPLEX object
                 solverOK = true;
+            catch ME
+                solverOK = false;
             end
-            if verLessThan('matlab', '9') && ~verLessThan('matlab', '8.6')  % >2015b
-                warning('off', 'MATLAB:lang:badlyScopedReturnValue');  % take out warning message
-            end
-        catch ME
-            solverOK = false;
+        end
+        if verLessThan('matlab', '9') && ~verLessThan('matlab', '8.6')  % >2015b
+            warning('off', 'MATLAB:lang:badlyScopedReturnValue');  % take out warning message
         end
     case 'lp_solve'
         solverOK = checkSolverInstallationFile(solverName, 'lp_solve', printLevel);
@@ -174,7 +174,7 @@ switch solverName
     case 'gurobi_mex'
         solverOK = checkSolverInstallationFile(solverName, 'gurobi_mex', printLevel);
     case {'gurobi5', 'gurobi6', 'gurobi7'}
-        solverOK = checkGurobiInstallation(solverName, 'gurobi.sh', printLevel);
+        solverOK = checkGurobiInstallation(solverName, 'gurobi.m', printLevel);
     case 'mps'
         solverOK = checkSolverInstallationFile(solverName, 'BuildMPS', printLevel);
     case 'quadMinos'

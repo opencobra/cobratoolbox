@@ -22,6 +22,9 @@
 %
 % Maintained by Ronan M.T. Fleming, Sylvain Arreckx, Laurent Heirendt
 
+%- check if the folder is already with addpath, then unload the path if uing tomlab
+%- do not ask the user for the path, but set it in changecobrasolver if not in the path
+
 % Add cobra toolbox paths
 global CBTDIR;
 global SOLVERS;
@@ -95,12 +98,13 @@ if isempty(strfind(getenv('HOME'), 'jenkins'))
 
     % initialize and update the submodules
     fprintf(' > Initializing and updating submodules ... ');
-    [status_submodule, result_submodule] = system('git submodule update --init --jobs=5');
+    [status_submodule, result_submodule] = system('git submodule update --init');
 
     if status_submodule ~= 0
         result_submodule
         error('The submodules could not be initialized.');
     end
+    fprintf(' Done.\n');
 end
 
 % add the folders of The COBRA Toolbox
@@ -167,18 +171,19 @@ fprintf(' > Configuring solver environment variables ...\n')
 solverPaths = {};
 solverPaths{1,1} = 'ILOG_CPLEX_PATH';
 solverPaths{1,2} = {'/Applications/IBM/ILOG/CPLEX_Studio1262', '/Applications/IBM/ILOG/CPLEX_Studio1263', '/Applications/IBM/ILOG/CPLEX_Studio127', ...
-                    '/opt/ibm/ILOG/CPLEX_Studio1262', '/opt/ibm/ILOG/CPLEX_Studio1263', '/opt/ibm/ILOG/CPLEX_Studio127'};
+                    '/opt/ibm/ILOG/CPLEX_Studio1262', '/opt/ibm/ILOG/CPLEX_Studio1263', '/opt/ibm/ILOG/CPLEX_Studio127', ...
+                    'C:\Program Files\IBM\ILOG\CPLEX_Studio1262', 'C:\Program Files\IBM\ILOG\CPLEX_Studio1263', 'C:\Program Files\IBM\ILOG\CPLEX_Studio127'};
 solverPaths{2,1} = 'GUROBI_PATH';
-solverPaths{2,2} = {'/Library/gurobi600', '/Library/gurobi650', '/Library/gurobi702', '/opt/gurobi650', '/opt/gurobi70'};
+solverPaths{2,2} = {'/Library/gurobi600', '/Library/gurobi650', '/Library/gurobi702', '/opt/gurobi650', '/opt/gurobi70', 'C:\gurobi600', 'C:\gurobi650', 'C:\gurobi70'};
 solverPaths{3,1} = 'TOMLAB_PATH';
-solverPaths{3,2} = {'/opt/tomlab'};
+solverPaths{3,2} = {'/opt/tomlab', 'C:\tomlab'};
 solverPaths{4,1} = 'MOSEK_PATH';
 solverPaths{4,2} = {};
 
 for k = 1:length(solverPaths)
-    eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1} ,''');'])
+    eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1} , ''');'])
     possibleDir = '';
-    if isempty(eval(solverPaths{k, 1})) && isunix
+    if isempty(eval(solverPaths{k, 1}))
         tmpSolverPath = solverPaths{k, 2};
         for i = 1:length(solverPaths{k, 2})
             if exist(tmpSolverPath{i}, 'dir') == 7
@@ -186,10 +191,10 @@ for k = 1:length(solverPaths)
             end;
         end
         if ~isempty(possibleDir)
-            reply = input(['The environment variable ', solverPaths{k, 1}, ' is not set, but the solver seems to be installed in ', possibleDir, '. Do you want to set this path temporarily? Y/N [N]: '], 's');
+            reply = input(['\n   Environment variable ', solverPaths{k, 1}, ' is not set.\n   Do you want to set ', strrep(possibleDir, '\', '\\') , ' temporarily? Y/N [N]: '], 's');
             if ~isempty(reply) && (strcmpi(reply, 'yes') || strcmpi(reply, 'y'))
-                setenv(solverPaths{k, 1}, possibleDir);
-                eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1} ,''');']);
+                setenv(solverPaths{k, 1}, strrep(possibleDir, '\', '\\'));
+                eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1} , ''');']);
             end
         end
     end
@@ -197,7 +202,7 @@ for k = 1:length(solverPaths)
     % add the solver path
     if ~isempty(eval(solverPaths{k, 1}))
         addpath(genpath(eval(solverPaths{k, 1})));
-        fprintf(['   - ', solverPaths{k, 1}, ': ', eval(solverPaths{k, 1}), '\n']);
+        fprintf(['   - ', solverPaths{k, 1}, ': ', eval(['getenv(''', solverPaths{k, 1} , ''');']) , '\n']);
     end
 end
 % print a success message
