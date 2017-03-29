@@ -22,7 +22,6 @@ function textprogressbar(c)
 
 %% Initialization
 global WAITBAR_HANDLE;           %   Carriage return pesistent variable
-persistent WAITBAR_PROGRESS;
 persistent WAITBAR_STRING;
 % Vizualization parameters
 strPercentageLength = 10;   %   Length of percentage string (must be >5)
@@ -39,6 +38,7 @@ elseif isempty(WAITBAR_HANDLE) && ischar(c)
 elseif ~isempty(WAITBAR_HANDLE) && ischar(c)
     % Progress bar  - termination
     WAITBAR_HANDLE = [];
+    WAITBAR_STRING = [];
     fprintf([c '\n']);
 elseif isnumeric(c)
     % Progress bar - normal progress
