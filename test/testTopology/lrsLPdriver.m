@@ -1,6 +1,6 @@
 modelToUse = 'loopToy';
 %modelToUse  = 'iCoreED';
-%modelToUse = 'iAF1260';
+modelToUse = 'iAF1260';
 
 switch modelToUse
     case 'loopToy'
@@ -40,8 +40,17 @@ switch modelToUse
         model.c(:)=0;
         % formate
         model.c(strcmp('EX_for(e)',model.rxns))=1;
+    otherwise
+        model = load([modelToUse, '.mat']);
+        model = model.(modelToUse)
+
 end
-    
+
+load('ecoli_core_model.mat', 'model')
+load('DAS.mat');
+model.c = ones(11,1);
+model
+[nMet,nRxn] = size(model.S);
 %assume only trivial inequalities for now
 A = model.S;
 %assume steady state
@@ -61,12 +70,16 @@ sh=0;
 %call lrs
 filename=[modelToUse 'LP'];
 lrsInputHalfspace(A,D,filename,positivity,inequality,a,d,f,sh);
+suffix = 'neg_eq';
 
 if isunix
-    %call lrs and wait until extreme pathways have been calculated 
-    systemCallText=['/usr/local/bin/lrslib-042c/lrs ' pwd '/' filename '_neg_eq.ine > ' pwd '/' filename '_neg_eq.ext'];
-    [status, result] = unix(systemCallText);
+    [status, result] = system('which lrs');
+    if ~isempty(result)
+        % call lrs and wait until extreme pathways have been calculated
+        systemCallText = ['lrs ' pwd filesep filename '_' suffix '.ine > ' pwd filesep filename '_' suffix '.ext']
+        [status, result] = system(systemCallText);
+    end
 end
-% % reads in P0 which is an nDim by nRay matrix of extreme rays
-P1=lrsOutputReadRay([pwd '/' filename '_neg_eq.ext']);
+% reads in P0 which is an nDim by nRay matrix of extreme rays
+P1=lrsOutputReadRay([filename '_' suffix '.ext']);
 % [nDim,nRay]=size(P1);

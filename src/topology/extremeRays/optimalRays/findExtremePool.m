@@ -11,7 +11,7 @@ if nargin < 3
     printLevel = 0;
 end
 
-if 0
+if 1
     %gurobi
     % Set required model components
     model.A     = sparse([A; ones(1,m)]);
