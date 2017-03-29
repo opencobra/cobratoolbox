@@ -76,13 +76,15 @@ global CBT_MILP_SOLVER;
 global CBT_QP_SOLVER;
 global CBT_MIQP_SOLVER;
 global CBT_NLP_SOLVER;
+global ENV_VARS;
 
 if isempty(SOLVERS) || isempty(OPT_PROB_TYPES)
+    ENV_VARS.printLevel = false;
     initCobraToolbox;
 end
 
 % configure the environment variables
-configEnvVars()
+configEnvVars();
 
 % Print out all solvers defined in global variables CBT_*_SOLVER
 if nargin < 1
