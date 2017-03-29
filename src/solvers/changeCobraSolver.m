@@ -70,14 +70,14 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel)
 % Markus Herrgard 1/19/07
 
 global SOLVERS;
-global OPTIMIZATIONPROBLEMTYPES;
+global OPT_PROB_TYPES;
 global CBT_LP_SOLVER;
 global CBT_MILP_SOLVER;
 global CBT_QP_SOLVER;
 global CBT_MIQP_SOLVER;
 global CBT_NLP_SOLVER;
 
-if isempty(SOLVERS) || isempty(OPTIMIZATIONPROBLEMTYPES)
+if isempty(SOLVERS) || isempty(OPT_PROB_TYPES)
     initCobraToolbox;
 end
 
@@ -91,8 +91,8 @@ if nargin < 1
         fprintf('No solvers are defined!\n');
     else
         fprintf('Defined solvers are:\n');
-        for i = 1:length(OPTIMIZATIONPROBLEMTYPES)
-            varName = horzcat(['CBT_', OPTIMIZATIONPROBLEMTYPES{i}, '_SOLVER']);
+        for i = 1:length(OPT_PROB_TYPES)
+            varName = horzcat(['CBT_', OPT_PROB_TYPES{i}, '_SOLVER']);
             if ~isempty(eval(varName))
                 fprintf('    %s: %s\n', varName, eval(varName));
             end
@@ -114,15 +114,15 @@ end
 
 % Attempt to set the user provided solver for all optimization problem types
 if (strcmp(solverType, 'ALL'))
-    for i = 1:length(OPTIMIZATIONPROBLEMTYPES)
-        changeCobraSolver(solverName, OPTIMIZATIONPROBLEMTYPES{i}, 0);
+    for i = 1:length(OPT_PROB_TYPES)
+        changeCobraSolver(solverName, OPT_PROB_TYPES{i}, 0);
     end
     return
 end
 
 % check if the given solver is able to solve the given problem type.
 solverOK = false;
-if isempty(strmatch(solverType, OPTIMIZATIONPROBLEMTYPES))
+if isempty(strmatch(solverType, OPT_PROB_TYPES))
     if printLevel > 0
         error('%s problems cannot be solved in The COBRA Toolbox', solverType);
     else
