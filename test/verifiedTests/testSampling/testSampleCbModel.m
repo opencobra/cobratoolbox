@@ -54,9 +54,9 @@ for k = 1:length(solverPkgs)
                     fprintf('\nTesting the artificial centering hit-and-run (ACHR) sampler\n.');
 
                     options.nFiles = 4;
-                    options.nStepsPerPoint = 5;
+                    options.nStepsPerPoint = 500;
                     options.nPointsReturned = 20;
-                    options.nPointsPerFile = 5;
+                    options.nPointsPerFile = 100;
                     options.nFilesSkipped = 0;
                     options.nWarmupPoints = 200;
 

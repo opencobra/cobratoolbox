@@ -67,6 +67,8 @@ elseif isnumeric(c)
 elseif islogical(c)
     if c %remove the current progress
         fprintf(WAITBAR_HANDLE);
+        fprintf(repmat(' ',1,numel(WAITBAR_STRING)-1));
+        fprintf(WAITBAR_HANDLE);
     else
         fprintf(WAITBAR_STRING);
     end
