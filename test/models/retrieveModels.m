@@ -5,7 +5,7 @@ currentDir = pwd;
 MODELDIR = fileparts(which('retrieveModels.m'));
 cd(MODELDIR);
 
-fprintf(['\n   Downloading models to ', MODELDIR, ' ...\n']);
+fprintf(['\n   Downloading models to ', strrep(MODELDIR, '\', '\\'), ' ...\n']);
 
 modelArr = {
     'iIT341.xml', 'http://bigg.ucsd.edu/static/models/iIT341.xml';
