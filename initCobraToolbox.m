@@ -24,7 +24,7 @@
 
 %- check if the folder is already with addpath, then unload the path if uing tomlab
 
-% Add cobra toolbox paths
+% define GLOBAL variables
 global CBTDIR;
 global SOLVERS;
 global OPT_PROB_TYPES;
@@ -49,21 +49,23 @@ if ~isfield(ENV_VARS, 'printLevel') || ENV_VARS.printLevel
     fprintf('\n\n      _____   _____   _____   _____     _____     |\n     /  ___| /  _  \\ |  _  \\ |  _  \\   / ___ \\    |   COnstraint-Based Reconstruction and Analysis\n     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2017\n     | |     | | | | |  _  { |  _  /  |  ___  |   |\n     | |___  | |_| | | |_| | | | \\ \\  | |   | |   |   Documentation:\n     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |   http://opencobra.github.io/cobratoolbox\n                                                  | \n\n');
     ENV_VARS.printLevel = true;
 end
-% Throw an error if the user has a bare repository or a copy of The COBRA Toolbox
-% that is not a git repository.
+
+% retrieve the current directory
 currentDir = pwd;
+
+% define the root path of The COBRA Toolbox
 CBTDIR = fileparts(which('initCobraToolbox'));
 
 % check if git is installed
 checkGit();
 
-% change to the directory of The COBRA Tooolbox
+% change to the root of The COBRA Tooolbox
 cd(CBTDIR);
 
 % configure a remote tracking repository
 if isempty(strfind(getenv('HOME'), 'jenkins'))
     if ENV_VARS.printLevel
-        fprintf(' > Checking if the repository is git-tracked ... ');
+        fprintf(' > Checking if the repository is tracked ... ');
     end
 
     % check if the directory is a git-tracked folder
@@ -117,7 +119,7 @@ if isempty(strfind(getenv('HOME'), 'jenkins'))
     elseif status_curl == 0
         % initialize and update the submodules
         if ENV_VARS.printLevel
-            fprintf(' > Initializing and updating submodules ... \n');
+            fprintf(' > Initializing and updating submodules ...');
         end
 
         % initialize and update the submodules
@@ -168,7 +170,7 @@ end
 for CbMapOutput = {'svg', 'matlab'}
     CbMapOutputOK = changeCbMapOutput(char(CbMapOutput));
     if CbMapOutputOK
-      break
+        break
     end
 end
 if CbMapOutputOK
@@ -181,6 +183,18 @@ else
     end
 end
 
+% retrieve the models
+xmlTestFile = strcat([CBTDIR, filesep, 'test', filesep, 'models', filesep, 'Ec_iAF1260_flux1.xml']);
+if ENV_VARS.printLevel
+    fprintf(' > Retrieving models ...');
+end
+if ~exist(xmlTestFile, 'file')
+    retrieveModels(1);
+end
+if ENV_VARS.printLevel
+    fprintf('   Done.\n');
+end
+
 % Set global LP solution accuracy tolerance
 changeCobraSolverParams('LP', 'optTol', 1e-6);
 
@@ -191,14 +205,15 @@ if ~exist('TranslateSBML', 'file')
     end
 else
     % Test the installation with:
-    xmlTestFile = strcat([CBTDIR, filesep, 'test', filesep, 'models', filesep, 'Ecoli_core_ECOSAL.xml']);
     try
         TranslateSBML(xmlTestFile);
         if ENV_VARS.printLevel
-            fprintf(' > TranslateSBML is installed and working.\n');
+            fprintf(' > TranslateSBML is installed and working properly.\n');
         end
     catch
-        warning('TranslateSBML did not work with the file: Ecoli_core_ECOSAL.xml')
+        if ENV_VARS.printLevel
+            warning('TranslateSBML did not work with Ec_iAF1260_flux1.xml')
+        end
     end
 end
 
@@ -206,9 +221,6 @@ if ENV_VARS.printLevel
     fprintf(' > Configuring solver environment variables ...\n');
     configEnvVars(1);
     fprintf('   Done.\n');
-end
-
-if ENV_VARS.printLevel
     fprintf(' > Checking available solvers and solver interfaces ...');
 end
 
@@ -375,7 +387,6 @@ for i = 1:length(OPT_PROB_TYPES)
     end
 end
 
-
 if ENV_VARS.printLevel
     fprintf('\n')
 end
@@ -388,7 +399,13 @@ cd(currentDir);
 clearvars
 
 function checkGit()
-    global ENV_VARS
+% Checks if git is installed on the system and throws an error if not
+%
+% USAGE:
+%     checkGit();
+%
+
+      global ENV_VARS
 
     if ENV_VARS.printLevel
         fprintf(' > Checking if git is installed ... ')
@@ -408,6 +425,14 @@ function checkGit()
 end
 
 function status_curl = checkCurlAndRemote(throwError)
+% Checks if curl is installed on the system, can connect to the opencobra URL, and throws an error if not
+%
+% USAGE:
+%     status_curl = checkCurlAndRemote(throwError)
+%
+% INPUT:
+%     throwError:   boolean variable that specifies if an error is thrown or a message is displayed
+%
 
     global ENV_VARS
 
@@ -416,7 +441,7 @@ function status_curl = checkCurlAndRemote(throwError)
     end
 
     if ENV_VARS.printLevel
-        fprintf(' > Checking if curl is installed ... ')
+        fprintf('\n > Checking if curl is installed ... ')
     end
 
     % check if curl is properly installed
