@@ -86,7 +86,7 @@ $ sudo apt-get install glpk-utils
     Append the following lines (type `i` to insert text), hit the `ESC` key, then save and exit by typing `wq` and hitting ENTER:
 
     ````
-    export PATH="/opt/mosek/<ver>/tools/platform/linux64x86/bin/:{$PATH}"
+    export PATH="/opt/mosek/<ver>/:{$PATH}"
     export MOSEKLM_LICENSE_FILE="/opt/mosek/"
     ````
 
