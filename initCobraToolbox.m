@@ -23,7 +23,6 @@
 % Maintained by Ronan M.T. Fleming, Sylvain Arreckx, Laurent Heirendt
 
 %- check if the folder is already with addpath, then unload the path if uing tomlab
-% legacy & alphabetical order
 
 % Add cobra toolbox paths
 global CBTDIR;
@@ -211,6 +210,7 @@ end
 OPT_PROB_TYPES = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
 
 % supported solvers
+SOLVERS.cplex_direct.type = {'LP', 'MILP', 'QP', 'MIQP'};
 SOLVERS.dqqMinos.type = {'LP'};
 SOLVERS.glpk.type = {'LP', 'MILP'};
 SOLVERS.gurobi6.type = {'LP', 'MILP', 'QP', 'MIQP'};
@@ -219,23 +219,24 @@ SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
 SOLVERS.lp_solve.type = {'LP'};
 SOLVERS.matlab.type = {'NLP'};
 SOLVERS.mosek.type = {'LP', 'QP', 'MILP'};
-SOLVERS.pdco.type = {'LP', 'NLP'};
+SOLVERS.pdco.type = {'LP', 'QP', 'NLP'};
+SOLVERS.quadMinos.type = {'LP', 'NLP'};
 SOLVERS.tomlab_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
 
 % experimental solver interfaces
 SOLVERS.opti.type = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
 SOLVERS.qpng.type = {'QP'};
-SOLVERS.quadMinos.type = {'LP', 'NLP'};
 SOLVERS.tomlab_snopt.type = {'NLP'};
 
 % legacy solvers
-SOLVERS.cplex_direct.type = {'LP', 'MILP', 'QP', 'MIQP'};
+
 SOLVERS.gurobi5.type = {'LP', 'MILP', 'QP', 'MIQP'};
 SOLVERS.gurobi_mex.type = {'LP', 'MILP', 'QP', 'MIQP'};
 SOLVERS.lindo_old.type = {'LP'};
 SOLVERS.lindo_legacy.type = {'LP'};
 
 % definition of category
+SOLVERS.cplex_direct.categ = 'full';
 SOLVERS.dqqMinos.categ = 'full';
 SOLVERS.glpk.categ = 'full';
 SOLVERS.gurobi6.categ = 'full';
@@ -245,14 +246,14 @@ SOLVERS.lp_solve.categ = 'full';
 SOLVERS.matlab.categ = 'full';
 SOLVERS.mosek.categ = 'full';
 SOLVERS.pdco.categ = 'full';
+SOLVERS.quadMinos.categ = 'full';
 SOLVERS.tomlab_cplex.categ = 'full';
 
 SOLVERS.opti.categ = 'experimental';
 SOLVERS.qpng.categ = 'experimental';
-SOLVERS.quadMinos.categ = 'experimental';
 SOLVERS.tomlab_snopt.categ = 'experimental';
 
-SOLVERS.cplex_direct.categ = 'legacy';
+
 SOLVERS.gurobi5.categ = 'legacy';
 SOLVERS.gurobi_mex.categ = 'legacy';
 SOLVERS.lindo_old.categ = 'legacy';

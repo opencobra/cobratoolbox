@@ -257,7 +257,7 @@ function solverOK = checkSolverInstallationFile(solverName, fileName, printLevel
 %     solverOK: true if filename exists, false otherwise.
 %
     solverOK = false;
-    if exist(fileName, 'file') == 2
+    if exist(fileName, 'file') == 2 || exist(fileName, 'file') == 3
         solverOK = true;
     elseif printLevel > 0
         error('Solver %s is not installed!', solverName)
