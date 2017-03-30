@@ -441,7 +441,7 @@ function status_curl = checkCurlAndRemote(throwError)
     end
 
     if ENV_VARS.printLevel
-        fprintf('\n > Checking if curl is installed ... ')
+        fprintf(' > Checking if curl is installed ... ')
     end
 
     % check if curl is properly installed
