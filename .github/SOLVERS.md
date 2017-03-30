@@ -31,7 +31,7 @@ Solver Installation Guide (Linux)
     ````
 
     If you want to confirm the correct permissions
-    ````
+    ````bash
     $ stat --format '%a' <file>
     ````
 
@@ -66,11 +66,11 @@ $ sudo apt-get install glpk-utils
 
 1) Download `MOSEK` as an archive [here](https://mosek.com/resources/downloads) and save to `/opt/.`
 
-2) Apply for a license [here](https://mosek.com/resources/trial-license)
+2) Apply for a license [here](https://mosek.com/resources/trial-license). A free academic license is [here](https://license.mosek.com/academic/).
 
-3) You will receive an email containing your `mosek.lic` file
+3) You will receive an email with your `mosek.lic` file.
 
-4) Copy the license file `mosek.lic` to `/opt/mosek`
+4) Copy the license file `mosek.lic` to `/opt/mosek/`
 
 5) Navigate to the directory where the `tar.bz2` was downloaded (`/opt/`) and enter in a shell to extract the archive
 
@@ -78,15 +78,16 @@ $ sudo apt-get install glpk-utils
     $ tar xvjf <filename>.tar.bz2
     ````
 
-6) Configure the `PATH` environment variable in `~/.bashrc` by editing your `bashrc` file
+6) Configure the `PATH` and `MOSEKLM_LICENSE_FILE` environment variables in `~/.bashrc` by editing your `bashrc` file
 
     ````bash
     $ nano ~/.bashrc
     ````
-    Append the following lines, save and exit
+    Append the following lines (type `i` to insert text), hit the `ESC` key, then save and exit by typing `wq` and hitting ENTER:
 
     ````
     export PATH="/opt/mosek/<ver>/tools/platform/linux64x86/bin/:{$PATH}"
+    export MOSEKLM_LICENSE_FILE="/opt/mosek/"
     ````
 
 7) Reload your `bashrc`
@@ -157,7 +158,7 @@ $ sudo apt-get install glpk-utils
     $ nano ~/.bashrc
     ````
 
-6) Append these lines, save and exit
+6) Append the following lines (type `i` to insert text), hit the `ESC` key, then save and exit by typing `wq` and hitting ENTER:
 
     ````
     export GUROBI_HOME="/opt/gurobi<ver>/linux64"
@@ -184,7 +185,7 @@ $ sudo apt-get install glpk-utils
     ````
     Hit enter.
 
-9)  Verify that `Gurobi` is successfully installed by launching the `Gurobi` prompt
+9) Verify that `Gurobi` is successfully installed by launching the `Gurobi` prompt
 
     ````bash
     $ gurobi.sh
