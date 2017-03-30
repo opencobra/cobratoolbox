@@ -39,6 +39,11 @@ SOLVERS = {};
 ENV_VARS.STATUS = 0;
 WAITBAR_TYPE = 1;
 
+% initialize the paths
+GUROBI_PATH = '';
+ILOG_CPLEX_PATH = '';
+TOMLAB_PATH = '';
+MOSEK_PATH = '';
 
 if ~isfield(ENV_VARS, 'printLevel') || ENV_VARS.printLevel
     fprintf('\n\n      _____   _____   _____   _____     _____     |\n     /  ___| /  _  \\ |  _  \\ |  _  \\   / ___ \\    |   COnstraint-Based Reconstruction and Analysis\n     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2017\n     | |     | | | | |  _  { |  _  /  |  ___  |   |\n     | |___  | |_| | | |_| | | | \\ \\  | |   | |   |   Documentation:\n     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |   http://opencobra.github.io/cobratoolbox\n                                                  | \n\n');
@@ -64,7 +69,7 @@ if isempty(strfind(getenv('HOME'), 'jenkins'))
     % check if the directory is a git-tracked folder
     if exist('.git', 'dir') ~= 7
         % initialize the directory
-        [status_gitInit, result_gitInit] = system(['git init']);
+        [status_gitInit, result_gitInit] = system('git init');
 
         if status_gitInit ~= 0
             fprintf(result_gitInit);
@@ -79,7 +84,7 @@ if isempty(strfind(getenv('HOME'), 'jenkins'))
             error(' > The remote tracking origin could not be set.');
         end
 
-        %check curl
+        % check curl
         status_curl = checkCurlAndRemote();
 
         if status_curl == 0
@@ -107,7 +112,7 @@ if isempty(strfind(getenv('HOME'), 'jenkins'))
     status_curl = checkCurlAndRemote(false);
 
     % check if the URL exists
-    if exist([CBTDIR filesep 'binary' filesep 'README.md']) && status_curl ~= 0
+    if exist([CBTDIR filesep 'binary' filesep 'README.md'], 'file') && status_curl ~= 0
         fprintf(' > Submodules exist but cannot be updated (remote cannot be reached).\n');
     elseif status_curl == 0
         % initialize and update the submodules
@@ -119,7 +124,7 @@ if isempty(strfind(getenv('HOME'), 'jenkins'))
         [status_submodule, result_submodule] = system('git submodule update --init');
 
         if status_submodule ~= 0
-            result_submodule
+            fprintf(result_submodule);
             error('The submodules could not be initialized.');
         end
 
@@ -308,10 +313,10 @@ end
 solverTypeInstalled = zeros(length(OPT_PROB_TYPES), 1);
 solverStatuss = '-' * ones(length(supportedSolversNames), length(OPT_PROB_TYPES) + 1);
 solverStatus = -1 * ones(length(supportedSolversNames), length(OPT_PROB_TYPES) + 1);
-catList = {};
+catList = cell(length(supportedSolversNames), 1);
 for i = 1:length(supportedSolversNames)
     types = SOLVERS.(supportedSolversNames{i}).type;
-    catList{end+1} = SOLVERS.(supportedSolversNames{i}).categ;
+    catList{i} = SOLVERS.(supportedSolversNames{i}).categ;
     for j = 1:length(types)
         k = find(ismember(OPT_PROB_TYPES, types{j}));
         if SOLVERS.(supportedSolversNames{i}).installed
@@ -324,15 +329,15 @@ for i = 1:length(supportedSolversNames)
         end
     end
 end
-catList{end+1} = '----------';
-catList{end+1} = '-';
+catList{end + 1} = '----------';
+catList{end + 1} = '-';
 
-solverStatuss(end+1, :) = ' ' * ones(1, length(OPT_PROB_TYPES)+1);
-solverStatuss(end+1, 2:end) = num2str(solverTypeInstalled)';
+solverStatuss(end + 1, :) = ' ' * ones(1, length(OPT_PROB_TYPES) + 1);
+solverStatuss(end + 1, 2:end) = num2str(solverTypeInstalled)';
 solverStatuss = char(solverStatuss);
 rowNames = [supportedSolversNames; '----------'; 'Total'];
 
-solverSummary = table(categorical(catList'), solverStatuss(:, 2), solverStatuss(:, 3), solverStatuss(:, 4), solverStatuss(:, 5), solverStatuss(:, 6), 'RowNames', rowNames, 'VariableNames', ['Support', OPT_PROB_TYPES]);
+solverSummary = table(categorical(catList), solverStatuss(:, 2), solverStatuss(:, 3), solverStatuss(:, 4), solverStatuss(:, 5), solverStatuss(:, 6), 'RowNames', rowNames, 'VariableNames', ['Support', OPT_PROB_TYPES]);
 
 if ENV_VARS.printLevel
     fprintf('\n > Summary of available solvers and solver interfaces\n\n');
@@ -353,7 +358,11 @@ for i = 1:length(OPT_PROB_TYPES)
         k = 1;
         for j = 1:length(catSolverNames.(OPT_PROB_TYPES{i}))
             if SOLVERS.(catSolverNames.(OPT_PROB_TYPES{i}){j}).installed
-                if k == 1 msg = '''%s'' '; else msg = '- ''%s'' '; end
+                if k == 1
+                    msg = '''%s'' ';
+                else
+                    msg = '- ''%s'' ';
+                end
                 if ENV_VARS.printLevel
                     fprintf(msg, catSolverNames.(OPT_PROB_TYPES{i}){j});
                 end
@@ -421,11 +430,11 @@ function status_curl = checkCurlAndRemote(throwError)
         if throwError
             fprintf(result_curl);
             error(' > curl is not installed. Please follow the guidelines on how to install curl.');
-          else
-              if ENV_VARS.printLevel
-                  fprintf(' (not installed).\n');
-              end
-          end
+        else
+            if ENV_VARS.printLevel
+                fprintf(' (not installed).\n');
+            end
+        end
     end
 
     if ENV_VARS.printLevel
