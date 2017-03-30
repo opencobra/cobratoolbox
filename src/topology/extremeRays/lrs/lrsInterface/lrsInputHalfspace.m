@@ -20,12 +20,17 @@ function lrsInput(A, D, filename, positivity, inequality, a, d, f, sh)
 
 if ~isempty(A)
     [rlt, clt] = size(A);
+else
+    rlt = 0;
+    clt = 0;
 end
 
 % OPTION
 % if a does not exist we assume A*x=0;
 if exist('a') ~= 1
     a = zeros(rlt, 1);
+elseif ~all(size(a) == [rlt, 1])
+    error('Matrix A and vector a should have the same number of rows');
 end
 if ~isempty(D)
     [Drlt, Dclt] = size(D);
