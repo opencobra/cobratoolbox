@@ -35,7 +35,7 @@ end
 if ~isempty(D)
     [Drlt, Dclt] = size(D);
     % if d does not exist we assume D*x>=0;
-    if exist('d') == 0
+    if exist('d') ~= 1
         d = zeros(Drlt, 1);
     end
 end

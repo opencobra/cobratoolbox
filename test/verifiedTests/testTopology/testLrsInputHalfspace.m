@@ -35,12 +35,25 @@ runLrs(filename, positivity, inequality);
 lrsInputHalfspace(S, [], filename);
 runLrs(filename, positivity, inequality);
 
+lrsInputHalfspace(S, S, filename);
+runLrs(filename, positivity, inequality);
+
+lrsInputHalfspace([], S, filename);
+runLrs(filename, positivity, inequality);
+
 positivity = 0;
 lrsInputHalfspace(S, [], filename, positivity);
 runLrs(filename, positivity, inequality);
 
+inquality = 0;
+lrsInputHalfspace(S, [], filename, positivity, inequality);
+runLrs(filename, positivity, inequality);
+
+lrsInputHalfspace(S, [], filename, positivity, inequality, zeros(size(S, 1), 1), zeros(size(S, 2), 1), []);
+runLrs(filename, positivity, inequality);
+
 try
-    lrsInputHalfspace(S, [], filename, positivity, inequality, [], [], [], sh);
+    lrsInputHalfspace(S, [], filename, positivity, inequality, [], [], [], 0);
 catch ME
     assert(length(ME.message) > 0)
 end
