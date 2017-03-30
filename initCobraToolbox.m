@@ -126,11 +126,7 @@ if isempty(strfind(getenv('HOME'), 'jenkins'))
 end
 
 % add the folders of The COBRA Toolbox
-if ispc  % Windows is not case-sensitive
-    onPath = ~isempty(strfind(lower(path), lower(CBTDIR)));
-else
-    onPath = ~isempty(strfind(path, CBTDIR));
-end
+onPath = ~isempty(strfind(lower(path), lower(CBTDIR)));
 
 folders = {'external', 'src', 'test', 'tutorials', 'papers', 'binary', 'deprecated'};
 
@@ -206,6 +202,7 @@ end
 if ENV_VARS.printLevel
     fprintf(' > Checking available solvers and solver interfaces ...');
 end
+
 % define categories of solvers: LP, MILP, QP, MIQP, NLP
 OPT_PROB_TYPES = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
 
