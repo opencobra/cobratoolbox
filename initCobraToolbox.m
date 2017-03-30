@@ -191,7 +191,7 @@ if ~exist('TranslateSBML', 'file')
     end
 else
     % Test the installation with:
-    xmlTestFile = strcat([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testSBML', filesep, 'Ecoli_core_ECOSAL.xml']);
+    xmlTestFile = strcat([CBTDIR, filesep, 'test', filesep, 'models', filesep, 'Ecoli_core_ECOSAL.xml']);
     try
         TranslateSBML(xmlTestFile);
         if ENV_VARS.printLevel
