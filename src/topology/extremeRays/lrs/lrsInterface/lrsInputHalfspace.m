@@ -38,6 +38,9 @@ if ~isempty(D)
     if exist('d') ~= 1
         d = zeros(Drlt, 1);
     end
+else
+    Drlt = 0;
+    Dclt = 0;
 end
 
 if exist('positivity') ~= 1

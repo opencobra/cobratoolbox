@@ -41,12 +41,30 @@ runLrs(filename, positivity, inequality);
 lrsInputHalfspace([], S, filename);
 runLrs(filename, positivity, inequality);
 
+lrsInputHalfspace(S, [], filename, positivity, inequality, zeros(size(S, 1), 1), zeros(size(S, 2), 1), []);
+runLrs(filename, positivity, inequality);
+
 positivity = 0;
 lrsInputHalfspace(S, [], filename, positivity);
 runLrs(filename, positivity, inequality);
 
-inquality = 0;
+inequality = 0;
 lrsInputHalfspace(S, [], filename, positivity, inequality);
+runLrs(filename, positivity, inequality);
+
+lrsInputHalfspace([], [], filename, positivity, inequality);
+runLrs(filename, positivity, inequality);
+
+lrsInputHalfspace(S, [], filename, positivity, inequality);
+runLrs(filename, positivity, inequality);
+
+lrsInputHalfspace(S, S, filename, positivity, inequality);
+runLrs(filename, positivity, inequality);
+
+lrsInputHalfspace(S, S, filename, 1, inequality);
+runLrs(filename, positivity, inequality);
+
+lrsInputHalfspace([], S, filename, positivity, inequality);
 runLrs(filename, positivity, inequality);
 
 lrsInputHalfspace(S, [], filename, positivity, inequality, zeros(size(S, 1), 1), zeros(size(S, 2), 1), []);
