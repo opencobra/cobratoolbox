@@ -18,13 +18,9 @@
 %     - CI integration - Laurent Heirendt - March 2017
 %
 
-% define global paths
-global TOMLAB_PATH
-global GUROBI_PATH
-
 currentDir = pwd;
 
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 % if the pairedModelsList file does not exist yet, build the models first
 if exist('pairedModelsList.mat', 'file') ~= 2
@@ -35,13 +31,6 @@ end
 solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
 
 for p = 1:length(solverPkgs)
-
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{p}, 'tomlab_cplex')
-        addpath(genpath(TOMLAB_PATH));
-    elseif strcmp(solverPkgs{p}, 'gurobi6')
-        addpath(genpath(GUROBI_PATH));
-    end
 
     solverOK = changeCobraSolver(solverPkgs{p}, 'LP', 0);
 
@@ -115,13 +104,6 @@ for p = 1:length(solverPkgs)
 
         % output a success message
         fprintf('Done.\n');
-
-        % remove the solver paths (temporary addition for CI)
-        if strcmp(solverPkgs{p}, 'tomlab_cplex')
-            rmpath(genpath(TOMLAB_PATH));
-        elseif strcmp(solverPkgs{p}, 'gurobi6')
-            rmpath(genpath(GUROBI_PATH));
-        end
     end
 end
 

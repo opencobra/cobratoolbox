@@ -10,15 +10,11 @@
 % Note:
 %     - The solver libraries must be included separately
 
-% define global paths
-global TOMLAB_PATH
-global GUROBI_PATH
-
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 % load the model
 load('ecoli_core_model.mat', 'model');
@@ -33,13 +29,6 @@ host = model;
 solverPkgs = {'glpk', 'gurobi6', 'tomlab_cplex'};
 
 for k = 1:length(solverPkgs)
-
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(TOMLAB_PATH));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        addpath(genpath(GUROBI_PATH));
-    end
 
     % change the COBRA solver (LP)
     solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
@@ -156,13 +145,6 @@ for k = 1:length(solverPkgs)
 
     % output a success message
     fprintf('Done.\n');
-
-    % remove the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        rmpath(genpath(TOMLAB_PATH));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        rmpath(genpath(GUROBI_PATH));
-    end
 end
 
 % change the directory

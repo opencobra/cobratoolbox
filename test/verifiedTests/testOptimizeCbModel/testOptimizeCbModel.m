@@ -6,17 +6,12 @@
 % Authors:
 %     - CI integration: Laurent Heirendt
 %
-% Note:
-%     - The solver libraries must be included separately
-
-% define global paths
-global TOMLAB_PATH
 
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 % set the tolerance
 tol = 1e-6;
@@ -31,11 +26,6 @@ osenseStr = 'max';
 allowLoops = true;
 
 for k = 1:length(solverPkgs)
-
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-      addpath(genpath(TOMLAB_PATH));
-    end
 
     % change the COBRA solver (LP)
     solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);

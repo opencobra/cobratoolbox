@@ -9,16 +9,11 @@
 % Note:
 %       test is performed on objective as solution can vary between machines, solver version etc..
 
-% define global paths
-global TOMLAB_PATH
-global ILOG_CPLEX_PATH
-global GUROBI_PATH
-
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 % Dummy Model
 % http://www2.isye.gatech.edu/~spyros/LP/node2.html
@@ -40,15 +35,6 @@ solverPkgs = {'cplex_direct', 'tomlab_cplex', 'gurobi6', 'glpk'};
 testSuite = {'dummyModel', 'ecoli'};
 
 for k = 1:length(solverPkgs)
-
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(TOMLAB_PATH));
-    elseif strcmp(solverPkgs{k}, 'cplex_direct')
-        addpath(genpath(ILOG_CPLEX_PATH));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        addpath(genpath(GUROBI_PATH));
-    end
 
     if ~verLessThan('matlab', '8') && strcmp(solverPkgs{k}, 'cplex_direct')  % 2015
         fprintf(['\n IBM ILOG CPLEX - ', solverPkgs{k}, ' - is incompatible with this version of MATLAB, please downgrade or change solver\n'])
@@ -93,15 +79,6 @@ for k = 1:length(solverPkgs)
                 fprintf('Done.\n');
             end
         end
-    end
-
-    % remove the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        rmpath(genpath(TOMLAB_PATH));
-    elseif strcmp(solverPkgs{k}, 'cplex_direct')
-        rmpath(genpath(ILOG_CPLEX_PATH));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        rmpath(genpath(GUROBI_PATH));
     end
 end
 

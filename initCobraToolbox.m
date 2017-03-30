@@ -128,7 +128,7 @@ end
 % add the folders of The COBRA Toolbox
 onPath = ~isempty(strfind(lower(path), lower(CBTDIR)));
 
-folders = {'external', 'src', 'test', 'tutorials', 'papers', 'binary', 'deprecated'};
+folders = {'external', 'tutorials', 'papers', 'binary', 'deprecated', 'src', 'test'};
 
 if ~onPath
     if ENV_VARS.printLevel
@@ -213,7 +213,6 @@ SOLVERS.glpk.type = {'LP', 'MILP'};
 SOLVERS.gurobi6.type = {'LP', 'MILP', 'QP', 'MIQP'};
 SOLVERS.gurobi7.type = {'LP', 'MILP', 'QP', 'MIQP'};
 SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
-SOLVERS.lp_solve.type = {'LP'};
 SOLVERS.matlab.type = {'NLP'};
 SOLVERS.mosek.type = {'LP', 'QP', 'MILP'};
 SOLVERS.pdco.type = {'LP', 'QP', 'NLP'};
@@ -226,11 +225,11 @@ SOLVERS.qpng.type = {'QP'};
 SOLVERS.tomlab_snopt.type = {'NLP'};
 
 % legacy solvers
-
 SOLVERS.gurobi5.type = {'LP', 'MILP', 'QP', 'MIQP'};
 SOLVERS.gurobi_mex.type = {'LP', 'MILP', 'QP', 'MIQP'};
 SOLVERS.lindo_old.type = {'LP'};
 SOLVERS.lindo_legacy.type = {'LP'};
+SOLVERS.lp_solve.type = {'LP'};
 
 % definition of category
 SOLVERS.cplex_direct.categ = 'full';
@@ -239,7 +238,6 @@ SOLVERS.glpk.categ = 'full';
 SOLVERS.gurobi6.categ = 'full';
 SOLVERS.gurobi7.categ = 'full';
 SOLVERS.ibm_cplex.categ = 'full';
-SOLVERS.lp_solve.categ = 'full';
 SOLVERS.matlab.categ = 'full';
 SOLVERS.mosek.categ = 'full';
 SOLVERS.pdco.categ = 'full';
@@ -254,6 +252,7 @@ SOLVERS.gurobi5.categ = 'legacy';
 SOLVERS.gurobi_mex.categ = 'legacy';
 SOLVERS.lindo_old.categ = 'legacy';
 SOLVERS.lindo_legacy.categ = 'legacy';
+SOLVERS.lp_solve.categ = 'legacy';
 
 supportedSolversNames = fieldnames(SOLVERS);
 catSolverNames.LP = {}; catSolverNames.MILP = {}; catSolverNames.QP = {}; catSolverNames.MIQP = {}; catSolverNames.NLP = {};

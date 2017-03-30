@@ -10,7 +10,7 @@
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 % load the model and data
 load('testElementalBalanceData.mat');
