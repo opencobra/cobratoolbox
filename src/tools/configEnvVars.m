@@ -38,7 +38,7 @@ function configEnvVars(printLevel)
                     eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1}, ''');']);
                 else
                     if printLevel > 0
-                        fprintf(['   - ', solverPaths{k, 1}, ': (please set this path manually)\n' ]);
+                        fprintf(['   - ', solverPaths{k, 1}, ':  --> set this path manually after installing the solver\n' ]);
                     end
                 end
             end
