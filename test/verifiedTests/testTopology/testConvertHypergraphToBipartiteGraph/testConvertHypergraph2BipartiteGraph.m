@@ -12,6 +12,8 @@
 %     - original file: Marouen BEN GUEBILA - 10/02/2017
 %     - integration of test to CI: Laurent Heirendt - February 2017
 
+global CBTDIR
+
 % save the current path
 currentDir = pwd;
 
@@ -47,8 +49,8 @@ for flag = 1:2
 end
 
 % test with ecoli_core_model
-load testDataGraph2Hypergraph.mat;
-load('ecoli_core_model', 'model');
+load('testDataGraph2Hypergraph.mat');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 for printLevel = 0:1
     [A, B] = convertHypergraphToBipartiteGraph(model.S, printLevel);
