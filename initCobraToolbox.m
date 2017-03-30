@@ -367,8 +367,16 @@ for i = 1:length(OPT_PROB_TYPES)
     end
 end
 
-clear solverStatus solverSummary solverStatuss folders
+
 if ENV_VARS.printLevel
     fprintf('\n')
 end
+
+% change back to the current directory
 cd(currentDir);
+
+% clear all temporary variables
+clear solverStatus solverSummary solverStatuss folders ans catList catSolverNames
+clear CbMapOutput CbMapOutputOK i j k msg onPath result_gitVersion result_submodule
+clear rowNames solverOK solverTypeInstalled status_gitVersion status_submodule
+clear supportedSolversNames types xmlTestFile currentDir
