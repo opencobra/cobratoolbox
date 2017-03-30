@@ -253,7 +253,6 @@ SOLVERS.opti.categ = 'experimental';
 SOLVERS.qpng.categ = 'experimental';
 SOLVERS.tomlab_snopt.categ = 'experimental';
 
-
 SOLVERS.gurobi5.categ = 'legacy';
 SOLVERS.gurobi_mex.categ = 'legacy';
 SOLVERS.lindo_old.categ = 'legacy';
@@ -376,7 +375,5 @@ end
 cd(currentDir);
 
 % clear all temporary variables
-clear solverStatus solverSummary solverStatuss folders ans catList catSolverNames
-clear CbMapOutput CbMapOutputOK i j k msg onPath result_gitVersion result_submodule
-clear rowNames solverOK solverTypeInstalled status_gitVersion status_submodule
-clear supportedSolversNames types xmlTestFile currentDir
+% Note: global variables are kept in memory - DO NOT clear all the variables!
+clearvars
