@@ -205,29 +205,58 @@ if ENV_VARS.printLevel
 end
 
 if ENV_VARS.printLevel
-    fprintf(' > Checking available solvers ...');
+    fprintf(' > Checking available solvers and solver interfaces ...');
 end
 % define categories of solvers: LP, MILP, QP, MIQP, NLP
 OPT_PROB_TYPES = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
-SOLVERS.gurobi7.type = {'LP', 'MILP', 'QP', 'MIQP'};
+
+% supported solvers
+SOLVERS.glpk.type = {'LP', 'MILP'};
 SOLVERS.gurobi6.type = {'LP', 'MILP', 'QP', 'MIQP'};
+SOLVERS.gurobi7.type = {'LP', 'MILP', 'QP', 'MIQP'};
+SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
+SOLVERS.lp_solve.type = {'LP'};
+SOLVERS.matlab.type = {'NLP'};
+SOLVERS.mosek.type = {'LP', 'QP', 'MILP'};
+SOLVERS.pdco.type = {'LP', 'NLP'};
+SOLVERS.tomlab_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
+
+% experimental solver interfaces
+SOLVERS.dqqMinos.type = {'LP'};
+SOLVERS.opti.type = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
+SOLVERS.qpng.type = {'QP'};
+SOLVERS.quadMinos.type = {'LP', 'NLP'};
+SOLVERS.tomlab_snopt.type = {'NLP'};
+
+% legacy solvers
+SOLVERS.cplex_direct.type = {'LP', 'MILP', 'QP', 'MIQP'};
 SOLVERS.gurobi5.type = {'LP', 'MILP', 'QP', 'MIQP'};
 SOLVERS.gurobi_mex.type = {'LP', 'MILP', 'QP', 'MIQP'};
-SOLVERS.tomlab_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
-SOLVERS.tomlab_snopt.type = {'NLP'};
-SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
-SOLVERS.cplex_direct.type = {'LP', 'MILP', 'QP', 'MIQP'};
-SOLVERS.glpk.type = {'LP', 'MILP'};
-SOLVERS.qpng.type = {'QP'};
 SOLVERS.lindo_old.type = {'LP'};
 SOLVERS.lindo_legacy.type = {'LP'};
-SOLVERS.lp_solve.type = {'LP'};
-SOLVERS.pdco.type = {'LP', 'NLP'};
-SOLVERS.mosek.type = {'LP', 'QP', 'MILP'};
-SOLVERS.opti.type = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
-SOLVERS.quadMinos.type = {'LP', 'NLP'};
-SOLVERS.dqqMinos.type = {'LP'};
-SOLVERS.matlab.type = {'NLP'};
+
+% definition of category
+SOLVERS.glpk.categ = 'supported';
+SOLVERS.gurobi6.categ = 'supported';
+SOLVERS.gurobi7.categ = 'supported';
+SOLVERS.ibm_cplex.categ = 'supported';
+SOLVERS.lp_solve.categ = 'supported';
+SOLVERS.matlab.categ = 'supported';
+SOLVERS.mosek.categ = 'supported';
+SOLVERS.pdco.categ = 'supported';
+SOLVERS.tomlab_cplex.categ = 'supported';
+
+SOLVERS.dqqMinos.categ = 'experimental';
+SOLVERS.opti.categ = 'experimental';
+SOLVERS.qpng.categ = 'experimental';
+SOLVERS.quadMinos.categ = 'experimental';
+SOLVERS.tomlab_snopt.categ = 'experimental';
+
+SOLVERS.cplex_direct.categ = 'legacy';
+SOLVERS.gurobi5.categ = 'legacy';
+SOLVERS.gurobi_mex.categ = 'legacy';
+SOLVERS.lindo_old.categ = 'legacy';
+SOLVERS.lindo_legacy.categ = 'legacy';
 
 supportedSolversNames = fieldnames(SOLVERS);
 catSolverNames.LP = {}; catSolverNames.MILP = {}; catSolverNames.QP = {}; catSolverNames.MIQP = {}; catSolverNames.NLP = {};
@@ -256,13 +285,18 @@ try
     if ENV_VARS.printLevel
         fprintf(' > Saving the MATLAB path ...');
     end
-    if ispc
+    if ispc || ismac
         savepath;
+        if ENV_VARS.printLevel
+            fprintf(' Done.\n');
+            fprintf('   - The MATLAB path was saved in the default location.\n');
+        end
     else
         savepath('~/pathdef.m');
-    end
-    if ENV_VARS.printLevel
-        fprintf(' Done.\n');
+        if ENV_VARS.printLevel
+            fprintf(' Done.\n');
+            fprintf('   - The MATLAB path was saved as ~/pathdef.m.\n');
+        end
     end
 catch
     if ENV_VARS.printLevel
@@ -278,6 +312,8 @@ for i = 1:length(supportedSolversNames)
     types = SOLVERS.(supportedSolversNames{i}).type;
     for j = 1:length(types)
         k = find(ismember(OPT_PROB_TYPES, types{j}));
+        %solverStatuss(i, 1) = SOLVERS.(supportedSolversNames{i}).categ;
+
         if SOLVERS.(supportedSolversNames{i}).installed
             solverStatus(i, k) = 1;
             solverStatuss(i, k) = '1';
@@ -288,17 +324,17 @@ for i = 1:length(supportedSolversNames)
         end
     end
 end
-solverStatuss(end+1, :) = ' '* ones(1, length(OPT_PROB_TYPES));
-solverStatuss(end+1, :) =  num2str(solverTypeInstalled)';
+solverStatuss(end+1, :) = ' ' * ones(1, length(OPT_PROB_TYPES));
+solverStatuss(end+1, :) = num2str(solverTypeInstalled)';
 solverStatuss = char(solverStatuss);
 rowNames = [supportedSolversNames; '----------'; 'Total'];
 
 solverSummary = table(solverStatuss(:, 1), solverStatuss(:, 2), solverStatuss(:, 3), solverStatuss(:, 4), solverStatuss(:, 5), 'RowNames', rowNames, 'VariableNames', OPT_PROB_TYPES);
 
 if ENV_VARS.printLevel
-    fprintf('\n > Summary of available solvers\n\n');
+    fprintf('\n > Summary of available solvers and solver interfaces\n\n');
     disp(solverSummary);
-    fprintf(' + Legend: - = not applicable, 0 = solver not compatible or not installed, 1 = solver installed.\n\n\n')
+    fprintf(' + Legend: - = not applicable, 0 = solver not compatible or not installed, 1 = solver installed.\n\n')
 end
 
 % provide clear instructions and summary
@@ -309,7 +345,7 @@ for i = 1:length(OPT_PROB_TYPES)
         end
     else
         if ENV_VARS.printLevel
-            fprintf(' > You can solve %s problems with: ', char(OPT_PROB_TYPES(i)));
+            fprintf(' > You can solve %s problems using: ', char(OPT_PROB_TYPES(i)));
         end
         k = 1;
         for j = 1:length(catSolverNames.(OPT_PROB_TYPES{i}))
