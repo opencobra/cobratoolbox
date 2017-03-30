@@ -49,21 +49,8 @@ end
 currentDir = pwd;
 CBTDIR = fileparts(which('initCobraToolbox'));
 
-% check if git is properly installed
-[status_gitVersion, result_gitVersion] = system('git --version');
-
-if ENV_VARS.printLevel
-    fprintf('\n\n > Checking if git is installed ... ')
-end
-
-if status_gitVersion == 0 && ~isempty(strfind(result_gitVersion, 'git version'))
-    if ENV_VARS.printLevel
-        fprintf(' Done.\n');
-    end
-else
-    fprintf(result_gitVersion);
-    error(' > git is not installed. Please follow the guidelines to learn more on how to install git.');
-end
+% check if git is installed
+checkGit();
 
 % change to the directory of The COBRA Tooolbox
 cd(CBTDIR);
@@ -73,6 +60,7 @@ if isempty(strfind(getenv('HOME'), 'jenkins'))
     if ENV_VARS.printLevel
         fprintf(' > Checking if the repository is git-tracked ... ');
     end
+
     % check if the directory is a git-tracked folder
     if exist('.git', 'dir') ~= 7
         % initialize the directory
@@ -84,25 +72,30 @@ if isempty(strfind(getenv('HOME'), 'jenkins'))
         end
 
         % set the remote origin
-        [status_setOrigin, result_setOrigin] = system(['git remote add origin https://github.com/opencobra/cobratoolbox.git']);
+        [status_setOrigin, result_setOrigin] = system('git remote add origin https://github.com/opencobra/cobratoolbox.git');
 
         if status_setOrigin ~= 0
             fprintf(result_setOrigin);
             error(' > The remote tracking origin could not be set.');
         end
 
-        % set the remote origin
-        [status_fetch, result_fetch] = system('git fetch origin master --depth=1');
-        if status_fetch ~= 0
-            fprintf(result_fetch);
-            error(' > The files could not be fetched.');
-        end
+        %check curl
+        status_curl = checkCurlAndRemote();
 
-        [status_resetHard, result_resetHard] = system('git reset --mixed origin/master');
+        if status_curl == 0
+            % set the remote origin
+            [status_fetch, result_fetch] = system('git fetch origin master --depth=1');
+            if status_fetch ~= 0
+                fprintf(result_fetch);
+                error(' > The files could not be fetched.');
+            end
 
-        if status_resetHard ~= 0
-            fprintf(result_resetHard);
-            error(' > The remote tracking origin could not be set.');
+            [status_resetMixed, result_resetMixed] = system('git reset --mixed origin/master');
+
+            if status_resetMixed ~= 0
+                fprintf(result_resetMixed);
+                error(' > The remote tracking origin could not be set.');
+            end
         end
     end
 
@@ -110,18 +103,29 @@ if isempty(strfind(getenv('HOME'), 'jenkins'))
         fprintf(' Done.\n');
     end
 
-    % initialize and update the submodules
-    if ENV_VARS.printLevel
-        fprintf(' > Initializing and updating submodules ... ');
-    end
-    [status_submodule, result_submodule] = system('git submodule update --init');
+    % check curl
+    status_curl = checkCurlAndRemote(false);
 
-    if status_submodule ~= 0
-        result_submodule
-        error('The submodules could not be initialized.');
-    end
-    if ENV_VARS.printLevel
-        fprintf(' Done.\n');
+    % check if the URL exists
+    if exist([CBTDIR filesep 'binary' filesep 'README.md']) && status_curl ~= 0
+        fprintf(' > Submodules exist but cannot be updated (remote cannot be reached).\n');
+    elseif status_curl == 0
+        % initialize and update the submodules
+        if ENV_VARS.printLevel
+            fprintf(' > Initializing and updating submodules ... \n');
+        end
+
+        % initialize and update the submodules
+        [status_submodule, result_submodule] = system('git submodule update --init');
+
+        if status_submodule ~= 0
+            result_submodule
+            error('The submodules could not be initialized.');
+        end
+
+        if ENV_VARS.printLevel
+            fprintf('   Done.\n');
+        end
     end
 end
 
@@ -373,3 +377,77 @@ cd(currentDir);
 % clear all temporary variables
 % Note: global variables are kept in memory - DO NOT clear all the variables!
 clearvars
+
+function checkGit()
+    global ENV_VARS
+
+    if ENV_VARS.printLevel
+        fprintf(' > Checking if git is installed ... ')
+    end
+
+    % check if git is properly installed
+    [status_gitVersion, result_gitVersion] = system('git --version');
+
+    if status_gitVersion == 0 && ~isempty(strfind(result_gitVersion, 'git version'))
+        if ENV_VARS.printLevel
+            fprintf(' Done.\n');
+        end
+    else
+        fprintf(result_gitVersion);
+        error(' > git is not installed. Please follow the guidelines to learn more on how to install git.');
+    end
+end
+
+function status_curl = checkCurlAndRemote(throwError)
+
+    global ENV_VARS
+
+    if nargin < 1
+        throwError = true;
+    end
+
+    if ENV_VARS.printLevel
+        fprintf(' > Checking if curl is installed ... ')
+    end
+
+    % check if curl is properly installed
+    [status_curl, result_curl] = system('curl --version');
+
+    if status_curl == 0 && ~isempty(strfind(result_curl, 'curl')) && ~isempty(strfind(result_curl, 'http'))
+        if ENV_VARS.printLevel
+            fprintf(' Done.\n');
+        end
+    else
+        if throwError
+            fprintf(result_curl);
+            error(' > curl is not installed. Please follow the guidelines on how to install curl.');
+          else
+              if ENV_VARS.printLevel
+                  fprintf(' (not installed).\n');
+              end
+          end
+    end
+
+    if ENV_VARS.printLevel
+        fprintf(' > Checking if remote can be reached ... ')
+    end
+
+    % check if the remote repository can be reached
+    [status_curl, result_curl] = system('curl -s -k --head https://github.com/opencobra/cobratoolbox');
+
+    % check if the URL exists
+    if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
+        if ENV_VARS.printLevel
+            fprintf(' Done.\n');
+        end
+    else
+        if throwError
+            fprintf(result_curl);
+            error('The remote repository cannot be reached. Please check your internet connection.');
+        else
+            if ENV_VARS.printLevel
+                fprintf(' (unsuccessful - no internet connection).\n');
+            end
+        end
+    end
+end
