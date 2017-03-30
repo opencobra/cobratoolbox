@@ -211,6 +211,7 @@ end
 OPT_PROB_TYPES = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
 
 % supported solvers
+SOLVERS.dqqMinos.type = {'LP'};
 SOLVERS.glpk.type = {'LP', 'MILP'};
 SOLVERS.gurobi6.type = {'LP', 'MILP', 'QP', 'MIQP'};
 SOLVERS.gurobi7.type = {'LP', 'MILP', 'QP', 'MIQP'};
@@ -222,7 +223,6 @@ SOLVERS.pdco.type = {'LP', 'NLP'};
 SOLVERS.tomlab_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
 
 % experimental solver interfaces
-SOLVERS.dqqMinos.type = {'LP'};
 SOLVERS.opti.type = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
 SOLVERS.qpng.type = {'QP'};
 SOLVERS.quadMinos.type = {'LP', 'NLP'};
@@ -236,17 +236,17 @@ SOLVERS.lindo_old.type = {'LP'};
 SOLVERS.lindo_legacy.type = {'LP'};
 
 % definition of category
-SOLVERS.glpk.categ = 'supported';
-SOLVERS.gurobi6.categ = 'supported';
-SOLVERS.gurobi7.categ = 'supported';
-SOLVERS.ibm_cplex.categ = 'supported';
-SOLVERS.lp_solve.categ = 'supported';
-SOLVERS.matlab.categ = 'supported';
-SOLVERS.mosek.categ = 'supported';
-SOLVERS.pdco.categ = 'supported';
-SOLVERS.tomlab_cplex.categ = 'supported';
+SOLVERS.dqqMinos.categ = 'full';
+SOLVERS.glpk.categ = 'full';
+SOLVERS.gurobi6.categ = 'full';
+SOLVERS.gurobi7.categ = 'full';
+SOLVERS.ibm_cplex.categ = 'full';
+SOLVERS.lp_solve.categ = 'full';
+SOLVERS.matlab.categ = 'full';
+SOLVERS.mosek.categ = 'full';
+SOLVERS.pdco.categ = 'full';
+SOLVERS.tomlab_cplex.categ = 'full';
 
-SOLVERS.dqqMinos.categ = 'experimental';
 SOLVERS.opti.categ = 'experimental';
 SOLVERS.qpng.categ = 'experimental';
 SOLVERS.quadMinos.categ = 'experimental';
@@ -306,30 +306,33 @@ end
 
 % print out a summary table
 solverTypeInstalled = zeros(length(OPT_PROB_TYPES), 1);
-solverStatuss = '-' * ones(length(supportedSolversNames), length(OPT_PROB_TYPES));
-solverStatus = -1 * ones(length(supportedSolversNames), length(OPT_PROB_TYPES));
+solverStatuss = '-' * ones(length(supportedSolversNames), length(OPT_PROB_TYPES) + 1);
+solverStatus = -1 * ones(length(supportedSolversNames), length(OPT_PROB_TYPES) + 1);
+catList = {};
 for i = 1:length(supportedSolversNames)
     types = SOLVERS.(supportedSolversNames{i}).type;
+    catList{end+1} = SOLVERS.(supportedSolversNames{i}).categ;
     for j = 1:length(types)
         k = find(ismember(OPT_PROB_TYPES, types{j}));
-        %solverStatuss(i, 1) = SOLVERS.(supportedSolversNames{i}).categ;
-
         if SOLVERS.(supportedSolversNames{i}).installed
-            solverStatus(i, k) = 1;
-            solverStatuss(i, k) = '1';
+            solverStatus(i, k + 1) = 1;
+            solverStatuss(i, k + 1) = '1';
             solverTypeInstalled(k) = solverTypeInstalled(k) + 1;
         else
-            solverStatus(i, k) = 0;
-            solverStatuss(i, k) = '0';
+            solverStatus(i, k + 1) = 0;
+            solverStatuss(i, k + 1) = '0';
         end
     end
 end
-solverStatuss(end+1, :) = ' ' * ones(1, length(OPT_PROB_TYPES));
-solverStatuss(end+1, :) = num2str(solverTypeInstalled)';
+catList{end+1} = '----------';
+catList{end+1} = '-';
+
+solverStatuss(end+1, :) = ' ' * ones(1, length(OPT_PROB_TYPES)+1);
+solverStatuss(end+1, 2:end) = num2str(solverTypeInstalled)';
 solverStatuss = char(solverStatuss);
 rowNames = [supportedSolversNames; '----------'; 'Total'];
 
-solverSummary = table(solverStatuss(:, 1), solverStatuss(:, 2), solverStatuss(:, 3), solverStatuss(:, 4), solverStatuss(:, 5), 'RowNames', rowNames, 'VariableNames', OPT_PROB_TYPES);
+solverSummary = table(categorical(catList'), solverStatuss(:, 2), solverStatuss(:, 3), solverStatuss(:, 4), solverStatuss(:, 5), solverStatuss(:, 6), 'RowNames', rowNames, 'VariableNames', ['Support', OPT_PROB_TYPES]);
 
 if ENV_VARS.printLevel
     fprintf('\n > Summary of available solvers and solver interfaces\n\n');
@@ -339,9 +342,9 @@ end
 
 % provide clear instructions and summary
 for i = 1:length(OPT_PROB_TYPES)
-    if sum(solverStatus(:, i) == 1) == 0
+    if sum(solverStatus(:, i + 1) == 1) == 0
         if ENV_VARS.printLevel
-            fprintf(' > You cannot solve %s problems. Consider installing a %s solver.\n', char(OPT_PROB_TYPES(i)), char(OPT_PROB_TYPES(i)));
+            fprintf(' > You cannot solve %s problems. Consider installing an %s solver.\n', char(OPT_PROB_TYPES(i)), char(OPT_PROB_TYPES(i)));
         end
     else
         if ENV_VARS.printLevel
