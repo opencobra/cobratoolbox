@@ -16,7 +16,7 @@
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 for flag = 1:2
     if flag == 1

@@ -7,14 +7,12 @@
 %     - Original file: Thomas Pfau 09/02/2017
 %     - CI integration: Laurent Heirendt Feburary 2017
 %
-% Note:
-%     - The solver libraries must be included separately
 
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 options = logical([0 0 0; 0 0 1; 0 1 0; 0 1 1; 1 0 0; 1 0 1; 1 1 0; 1 1 1]);
 

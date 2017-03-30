@@ -12,7 +12,7 @@
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 list = {'a', 'b', 'c'};
 trList1 = {'b', 'c'};

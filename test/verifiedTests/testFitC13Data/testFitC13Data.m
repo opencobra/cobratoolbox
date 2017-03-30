@@ -8,14 +8,13 @@
 %     - CI integration: Laurent Heirendt March 2017
 %
 % Note:
-%     - The solver libraries must be included separately
 %     - The tomlab_snopt solver must be tested with a valid license
 
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 majorIterationLimit = 10000; % fitting length
 load('model.mat', 'model'); % loads modelWT

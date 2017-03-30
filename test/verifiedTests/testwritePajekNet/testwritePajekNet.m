@@ -7,14 +7,11 @@
 % Author:
 %     - Marouen BEN GUEBILA 09/02/2017
 
-% define global paths
-global TOMLAB_PATH
-
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 load('ecoli_core_model', 'model');
 
@@ -24,11 +21,6 @@ solverPkgs = {'tomlab_cplex'};
 for k = 1:length(solverPkgs)
 
     fprintf('   Testing writePajekNet using %s ... ', solverPkgs{k});
-
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(TOMLAB_PATH));
-    end
 
     % change the COBRA solver (LP)
     solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
@@ -52,11 +44,6 @@ for k = 1:length(solverPkgs)
 
         %delete data
         delete COBRAmodel.net
-    end
-
-    % remove the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        rmpath(genpath(TOMLAB_PATH));
     end
 end
 

@@ -10,7 +10,7 @@
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 fileName = 'testPrintMatrix.txt';
 nbFormat = '%3.2f\t';
@@ -60,9 +60,7 @@ assert(isequal(data1, data2))
 % remove the generated file
 fullFileNamePath = [fileparts(which(mfilename)), filesep, fileName];
 if exist(fullFileNamePath, 'file') == 2
-    system(['rm ', fullFileNamePath]);
-else
-    warning(['The file', fullFileNamePath, ' does not exist and could not be deleted.']);
+    delete(fullFileNamePath);
 end
 
 % change the directory

@@ -10,7 +10,7 @@
 
 currentDir = pwd;
 
-initTest(fileparts(which(mfilename)))
+cd(fileparts(which(mfilename)))
 
 % run the script to build the pairwisemodels
 if exist('pairedModelsList.mat', 'file') ~= 2

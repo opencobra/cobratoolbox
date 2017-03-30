@@ -11,6 +11,7 @@
 
 % Get the ecoli core model
 load('ecoli_core_model.mat');
+
 % Get the minerva structure
 load('minerva.mat');
 

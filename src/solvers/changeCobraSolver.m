@@ -168,11 +168,17 @@ switch solverName
     case {'tomlab_cplex', 'tomlab_snopt'}
         solverOK = checkSolverInstallationFile(solverName, 'tomRun', printLevel);
     case 'cplex_direct'
-        solverOK = checkSolverInstallationFile(solverName, 'tomRun', printLevel);
+        if ~verLessThan('matlab', '8.4')
+            if printLevel > 0
+                fprintf(' > The cplex_direct is incompatible with this version of MATLAB, please downgrade or change solver.\n');
+            end
+        else
+            solverOK = checkSolverInstallationFile(solverName, 'tomRun', printLevel);
+        end
     case 'ibm_cplex'
         if ~verLessThan('matlab', '9')  % 2016b
             if printLevel > 0
-                fprintf(' > IBM ILOG CPLEX is incompatible with this version of MATLAB, please downgrade or change solver.\n');
+                fprintf(' > ibm_cplex (IBM ILOG CPLEX) is incompatible with this version of MATLAB, please downgrade or change solver.\n');
             end
         else
             try

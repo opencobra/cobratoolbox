@@ -6,14 +6,14 @@
 % Author:
 %     - CI: integration: Laurent Heirendt - March 2017
 
+% FASTCORE functions must have the CPLEX library included in order to run
 global ILOG_CPLEX_PATH
-global TOMLAB_PATH
 
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 %Specify test files
 modelFile = 'fgf_test_model.xml';
@@ -71,13 +71,6 @@ solverPkgs = {'tomlab_cplex', 'ibm_cplex'};
 
 for k = 1:length(solverPkgs)
 
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(TOMLAB_PATH));
-    elseif strcmp(solverPkgs{k}, 'ibm_cplex')
-        addpath(genpath(ILOG_CPLEX_PATH));
-    end
-
     if ~verLessThan('matlab','8') && ( strcmp(solverPkgs{k}, 'ibm_cplex')) %2016b %strcmp(solverPkgs{k}, 'ILOGsimple') ||
         fprintf(['\n IBM ILOG CPLEX - ', solverPkgs{k}, ' - is incompatible with this version of MATLAB, please downgrade or change solver\n'])
     else
@@ -107,13 +100,6 @@ for k = 1:length(solverPkgs)
 
         % print a success message
         fprintf('Done.\n')
-    end
-
-    % remove the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        rmpath(genpath(TOMLAB_PATH));
-    elseif strcmp(solverPkgs{k}, 'ibm_cplex')
-        rmpath(genpath(ILOG_CPLEX_PATH));
     end
 end
 

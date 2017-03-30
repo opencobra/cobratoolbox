@@ -6,13 +6,13 @@
 
 % define global paths
 global SOLVERS;
-global OPTIMIZATIONPROBLEMTYPES;
+global OPT_PROB_TYPES;
 
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 % Three arguments
 ok = changeCobraSolver('pdco', 'MINLP', 0);
@@ -54,8 +54,8 @@ catch ME
     assert(length(ME.message) > 0)
 end
 
-for i = 1:length(OPTIMIZATIONPROBLEMTYPES)
-    varName = horzcat(['CBT_', OPTIMIZATIONPROBLEMTYPES{i}, '_SOLVER']);
+for i = 1:length(OPT_PROB_TYPES)
+    varName = horzcat(['CBT_', OPT_PROB_TYPES{i}, '_SOLVER']);
     eval(['global ' varName])
     eval(['clear ' varName]);
 end

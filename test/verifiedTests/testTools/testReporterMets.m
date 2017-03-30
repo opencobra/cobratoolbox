@@ -12,7 +12,7 @@
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 % load reference data and model
 load('e_coli_core.mat', 'model');

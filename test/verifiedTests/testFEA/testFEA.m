@@ -11,7 +11,7 @@
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 % load the model and reference data
 load('testDataFEA.mat');

@@ -10,15 +10,11 @@
 %
 % Note: ibm_cplex is not (yet) compatible with R2016b
 
-% define global paths
-global TOMLAB_PATH
-global GUROBI_PATH
-
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 load('ecoli_core_model.mat', 'model');
 
@@ -37,13 +33,6 @@ end
 for k = 1:length(solverPkgs)
 
     fprintf(' -- Running testfindBlockedReaction using the solver interface: %s ... ', solverPkgs{k});
-
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(TOMLAB_PATH));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        addpath(genpath(GUROBI_PATH));
-    end
 
     solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
@@ -66,13 +55,6 @@ for k = 1:length(solverPkgs)
                 assert(strcmp(ecoli_blckd_rxn{i}, blockedReactions{i}));
             end
         end
-    end
-
-    % remove the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        rmpath(genpath(TOMLAB_PATH));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        rmpath(genpath(GUROBI_PATH));
     end
 
     % output a success message

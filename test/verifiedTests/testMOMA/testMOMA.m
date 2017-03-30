@@ -25,7 +25,7 @@ global GUROBI_PATH
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 % load model
 load('ecoli_core_model', 'model');
@@ -39,13 +39,6 @@ LPtol = 0.0001;
 
 for k = 1:length(solverPkgs)
     fprintf(' -- Running testfindBlockedReaction using the solver interface: %s ... ', solverPkgs{k});
-
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(TOMLAB_PATH));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        addpath(genpath(GUROBI_PATH));
-    end
 
     solverQPOK = changeCobraSolver(solverPkgs{k}, 'QP', 0);
     solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
@@ -65,13 +58,6 @@ for k = 1:length(solverPkgs)
         assert(abs(0.8608 - sol.f) < LPtol)
     else
         fprintf('MOMA requires a QP solver to be installed. QPNG does not work.');
-    end
-
-    % remove the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        rmpath(genpath(TOMLAB_PATH));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        rmpath(genpath(GUROBI_PATH));
     end
 
     % output a success message

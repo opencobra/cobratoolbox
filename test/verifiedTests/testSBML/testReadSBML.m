@@ -13,15 +13,13 @@
 % Note:
 %     - The solver libraries must be included separately
 
-% define global paths
-global TOMLAB_PATH
-global GUROBI_PATH
+global CBTDIR
 
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 % load the test models
 testModel = readCbModel('Ec_iJR904.xml');
@@ -47,19 +45,12 @@ assert(length(model.metFormulas) == length(testModel.metFormulas))
 assert(length(model.b) == length(testModel.b))
 
 % initialize the test
-initTest([fileparts(which('initCobraToolbox.m')), filesep, 'test', filesep, 'models']);
+cd([CBTDIR, filesep, 'test', filesep, 'models']);
 
 % define the solver packages to be used to run this test
 solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
 
 for k = 1:length(solverPkgs)
-
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(TOMLAB_PATH));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        addpath(genpath(GUROBI_PATH));
-    end
 
     % set the solver
     solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
@@ -106,13 +97,6 @@ for k = 1:length(solverPkgs)
 
             % print a line for success of loop i
             fprintf(' Done.\n');
-        end
-
-        % remove the solver paths (temporary addition for CI)
-        if strcmp(solverPkgs{k}, 'tomlab_cplex')
-            rmpath(genpath(TOMLAB_PATH));
-        elseif strcmp(solverPkgs{k}, 'gurobi6')
-            rmpath(genpath(GUROBI_PATH));
         end
     end
 end

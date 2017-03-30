@@ -4,15 +4,11 @@
 %     - tests the sampleCbModel function using the E. coli Core Model
 %
 
-% define global paths
-global path_TOMLAB
-global path_GUROBI
-
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 % define the samplers
 samplers = {'ACHR', 'CHRR'}; %'MFE'
@@ -28,14 +24,6 @@ solverPkgs = {'gurobi6', 'tomlab_cplex'};
 
 for k = 1:length(solverPkgs)
     fprintf('   Testing sampleCbModel using %s ... \n', solverPkgs{k});
-
-
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(path_TOMLAB));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        addpath(genpath(path_GUROBI));
-    end
 
     % set the solver
     solverOK = changeCobraSolver(solverPkgs{k});
@@ -90,13 +78,6 @@ for k = 1:length(solverPkgs)
                     assert(volume > 0);
                 %}
             end
-        end
-
-        % remove the solver paths (temporary addition for CI)
-        if strcmp(solverPkgs{k}, 'tomlab_cplex')
-            rmpath(genpath(path_TOMLAB));
-        elseif strcmp(solverPkgs{k}, 'gurobi6')
-            rmpath(genpath(path_GUROBI));
         end
 
         % print a line for success of loop i

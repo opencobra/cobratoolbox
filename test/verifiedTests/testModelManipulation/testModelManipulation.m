@@ -17,7 +17,7 @@
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 % Test with non-empty model
 fprintf('>> Starting non-empty model tests:\n');

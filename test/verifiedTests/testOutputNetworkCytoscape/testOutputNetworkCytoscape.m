@@ -8,59 +8,39 @@
 % Author:
 %     - Marouen BEN GUEBILA 09/02/2017
 
-% define global paths
-global TOMLAB_PATH
-
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 load('ecoli_core_model', 'model');
 
-%test solver packages
-solverPkgs = {'tomlab_cplex'};%,'ILOGcomplex'};
+%call function
+notShownMets = outputNetworkCytoscape(model, 'data', model.rxns, [], model.mets, [], 100);
 
-for k = 1:length(solverPkgs)
-    fprintf('   Testing outputNetworkCytoscape using %s ... ', solverPkgs{k});
+testFiles = {'test.sif', 'test_edgeType.noa', 'test_nodeComp.noa', 'test_nodeType.noa', 'test_subSys.noa'};
 
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(TOMLAB_PATH));
-    end
+%call test
+for j = 1:length(testFiles)
+    str = testFiles{j};
 
-    %call function
-    notShownMets = outputNetworkCytoscape(model, 'data', model.rxns, [], model.mets, [], 100);
+    %load test data
+    fileID = fopen(str, 'r');
+    testData = fscanf(fileID, '%s');
+    fclose(fileID);
 
-    testFiles = {'test.sif', 'test_edgeType.noa', 'test_nodeComp.noa', 'test_nodeType.noa', 'test_subSys.noa'};
+    %save produced data
+    str2 = strrep(str, 'test', 'data');
+    fileID = fopen(str2, 'r');
+    Data = fscanf(fileID, '%s');
+    fclose(fileID);
 
-    %call test
-    for j = 1:length(testFiles)
-        str = testFiles{j};
+    %compare with produced data
+    assert(isequal(testData,Data));
 
-        %load test data
-        fileID = fopen(str, 'r');
-        testData = fscanf(fileID, '%s');
-        fclose(fileID);
-
-        %save produced data
-        str2 = strrep(str, 'test', 'data');
-        fileID = fopen(str2, 'r');
-        Data = fscanf(fileID, '%s');
-        fclose(fileID);
-
-        %compare with produced data
-        assert(isequal(testData,Data));
-
-        %delete file
-        delete(str2);
-    end
-
-    % remove the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        rmpath(genpath(TOMLAB_PATH));
-    end
+    %delete file
+    delete(str2);
 end
 
 % change the directory
