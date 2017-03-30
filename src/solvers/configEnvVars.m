@@ -21,7 +21,7 @@ function configEnvVars(printLevel)
         solverPaths{3,1} = 'TOMLAB_PATH';
         solverPaths{3,2} = {'/opt/tomlab', 'C:\tomlab'};
         solverPaths{4,1} = 'MOSEK_PATH';
-        solverPaths{4,2} = {'/opt/mosek/7/', '/opt/mosek/8/', 'C:\Program Files\Mosek\7', 'C:\Program Files\Mosek\8'};
+        solverPaths{4,2} = {'/opt/mosek/7/', '/opt/mosek/8/', '/Applications/mosek/7', '/Applications/mosek/8', 'C:\Program Files\Mosek\7', 'C:\Program Files\Mosek\8'};
 
         for k = 1:length(solverPaths)
             eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1} , ''');'])
