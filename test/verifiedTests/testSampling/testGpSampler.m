@@ -24,7 +24,7 @@ solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
 for k = 1:length(solverPkgs)
 
     % set the solver
-    solverOK = changeCobraSolver(solverPkgs{k});
+    solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
     if solverOK == 1
         fprintf('   Testing readSBML using %s ... \n', solverPkgs{k});

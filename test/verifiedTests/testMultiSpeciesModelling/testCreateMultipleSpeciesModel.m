@@ -10,6 +10,8 @@
 % Note:
 %     - The solver libraries must be included separately
 
+global CBTDIR
+
 % save the current path
 currentDir = pwd;
 
