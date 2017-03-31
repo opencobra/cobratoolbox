@@ -9,6 +9,8 @@
 %     - Original test file: Ronan Fleming
 %     - CI integration: Laurent Heirendt January 2017
 
+global CBTDIR
+
 % save the current path
 currentDir = pwd;
 
