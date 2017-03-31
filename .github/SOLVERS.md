@@ -25,11 +25,11 @@ Platform-specific instructions are marked with
     $ chmod +x <filename>.bin
     $ sudo ./<filename>.bin
     ````
-<img src="https://winblogs.azureedge.net/win/2016/12/cropped-cropped-Windows-logo1-192x192.png" height="20px"> Run the `tomlab-win64-setup_<ver>.exe` as an administrator.
+    <img src="https://winblogs.azureedge.net/win/2016/12/cropped-cropped-Windows-logo1-192x192.png" height="20px"> Run the `tomlab-win64-setup_<ver>.exe` as an administrator.
 
 3) Follow the installation instructions and install `tomlab` in:
-- <img src="https://winblogs.azureedge.net/win/2016/12/cropped-cropped-Windows-logo1-192x192.png" height="20px"> : `C:\` such that you will have a folder `C:\tomlab`
-- <img src="http://geeknrush.fr/wp-content/uploads/2015/10/Apple-Logo-Black.png" height="20px">  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/652px-Tux.svg.png" height="20px">: `/opt` such that you will have a folder `/opt/tomlab`.
+    - <img src="https://winblogs.azureedge.net/win/2016/12/cropped-cropped-Windows-logo1-192x192.png" height="20px"> : `C:\` such that you will have a folder `C:\tomlab`
+    - <img src="http://geeknrush.fr/wp-content/uploads/2015/10/Apple-Logo-Black.png" height="20px">  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/652px-Tux.svg.png" height="20px">: `/opt` such that you will have a folder `/opt/tomlab`.
 
 4) <img src="http://geeknrush.fr/wp-content/uploads/2015/10/Apple-Logo-Black.png" height="20px">  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/652px-Tux.svg.png" height="20px"> Copy the `tomlab.lic` license to the folder `/opt/tomlab` and change its permissions
 
@@ -41,7 +41,7 @@ Platform-specific instructions are marked with
     ````bash
     $ stat --format '%a' <file>
     ````
-<img src="https://winblogs.azureedge.net/win/2016/12/cropped-cropped-Windows-logo1-192x192.png" height="20px"> Copy the `tomlab.lic` license to the folder `C:\tomlab`.
+    <img src="https://winblogs.azureedge.net/win/2016/12/cropped-cropped-Windows-logo1-192x192.png" height="20px"> Copy the `tomlab.lic` license to the folder `C:\tomlab`.
 
 ## IBM ILOG CPLEX
 
