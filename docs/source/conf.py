@@ -159,7 +159,8 @@ html_context = {'conf_py_path': os.path.join(os.sep, 'docs', 'source', ''),
                 'github_user': 'opencobra',
                 'github_repo': 'cobratoolbox',
                 'github_version': 'master',
-                'display_github': True}
+                'show_source': False}
+#                'display_github': True}
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []
 
