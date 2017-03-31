@@ -17,57 +17,127 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel)
 %     solverOK      true if solver can be accessed, false if not
 %
 % Currently allowed LP solvers:
-%     lindo_new       Lindo API >v2.0
-%     lindo_legacy       Lindo API <v2.0
-%     glpk            GLPK solver with Matlab mex interface (glpkmex)
-%     lp_solve        lp_solve with Matlab API
-%     tomlab_cplex    CPLEX accessed through Tomlab environment (default)
-%     cplex_direct    CPLEX accessed direct to Tomlab cplex.m. This gives
+%
+%     fully supported solvers:
+%
+%     cplex_direct    CPLEX accessed directly through Tomlab cplex.m. This gives
 %                     the user more control of solver parameters. e.g.
 %                     minimising the Euclidean norm of the internal flux to
 %                     get rid of net flux around loops
-%     mosek           Mosek LP solver with Matlab API (using linprog.m included in Mosek
-%                     package)
-%     gurobi_mex          Gurobi accessed through Matlab mex interface (Gurobi mex)
-%     gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
+%     dqqMinos        DQQ solver
+%     glpk            GLPK solver with Matlab mex interface (glpkmex)
 %     gurobi6         Gurobi 6.*  accessed through built-in Matlab mex interface
 %     gurobi7         Gurobi 7.*  accessed through built-in Matlab mex interface
 %     ibm_cplex       The IBM API for CPLEX using the CPLEX class
+%     mosek           Mosek LP solver with Matlab API (using linprog.m from Mosek)
+%     pdco            PDCO solver
+%     quadMinos       quad LP solver
+%     tomlab_cplex    CPLEX accessed through Tomlab environment (default)
+%
+%     experimental support:
+%
 %     opti            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
 %                     solver installed and called with OPTI TB wrapper
 %                     Lower level calls with installed mex files are possible
 %                     but best avoided for all solvers
 %
-% Currently allowed MILP solvers:
-%     tomlab_cplex    CPLEX MILP solver accessed through Tomlab environment
-%     glpk            glpk MILP solver with Matlab mex interface (glpkmex)
-%     gurobi          Gurobi accessed through Matlab mex interface (Gurobi mex)
+%     legacy solvers:
+%
+%     lindo_new       Lindo API >v2.0
+%     lindo_legacy    Lindo API <v2.0
+%     lp_solve        lp_solve with Matlab API
 %     gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
+%     gurobi_mex      Gurobi accessed through Matlab mex interface (Gurobi mex)
+%
+% Currently allowed MILP solvers:
+%
+%     fully supported solvers:
+%
+%     cplex_direct    CPLEX accessed directly through Tomlab cplex.m. This gives
+%                     the user more control of solver parameters. e.g.
+%                     minimising the Euclidean norm of the internal flux to
+%                     get rid of net flux around loops
+%     glpk            glpk MILP solver with Matlab mex interface (glpkmex)
+%     gurobi6         Gurobi 6.*  accessed through built-in Matlab mex interface
+%     gurobi7         Gurobi 7.*  accessed through built-in Matlab mex interface
+%     ibm_cplex       The IBM API for CPLEX using the CPLEX class
+%     mosek           Mosek LP solver with Matlab API (using linprog.m from Mosek)
+%     pdco            PDCO solver
+%     tomlab_cplex    CPLEX MILP solver accessed through Tomlab environment
+%
+%     experimental support:
+%
+%     opti            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
+%                     solver installed and called with OPTI TB wrapper
+%                     Lower level calls with installed mex files are possible
+%                     but best avoided for all solvers
+%
+%     legacy solvers:
+%
+%     gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
+%     gurobi_mex      Gurobi accessed through Matlab mex interface (Gurobi mex)
+%
+% Currently allowed QP solvers:
+%
+%     fully supported solvers:
+%
+%     cplex_direct    CPLEX accessed directly through Tomlab cplex.m. This gives
+%                     the user more control of solver parameters. e.g.
+%                     minimising the Euclidean norm of the internal flux to
+%                     get rid of net flux around loops
 %     gurobi6         Gurobi 6.* accessed through built-in Matlab mex interface
 %     gurobi7         Gurobi 7.* accessed through built-in Matlab mex interface
 %     ibm_cplex       The IBM API for CPLEX using the CPLEX class
-%
-% Currently allowed QP solvers:
+%     mosek           Mosek LP solver with Matlab API (using linprog.m from Mosek)
+%     pdco            PDCO solver
 %     tomlab_cplex    CPLEX QP solver accessed through Tomlab environment
+%
+%     experimental support:
+%
+%     opti            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
+%                     solver installed and called with OPTI TB wrapper
+%                     Lower level calls with installed mex files are possible
+%                     but best avoided for all solvers
 %     qpng            qpng QP solver with Matlab mex interface (in glpkmex
 %                     package, only limited support for small problems)
+%
+%     legacy solvers:
+%
 %     gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
-%     gurobi6         Gurobi 6.* accessed through built-in Matlab mex interface
-%     gurobi7         Gurobi 7.* accessed through built-in Matlab mex interface
+%     gurobi_mex      Gurobi accessed through Matlab mex interface (Gurobi mex)
 %
 % Currently allowed MIQP solvers:
-%     tomlab_cplex    CPLEX MIQP solver accessed through Tomlab environment
-%     gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
+%
+%     fully supported solvers:
+%
+%     cplex_direct    CPLEX accessed directly through Tomlab cplex.m. This gives
+%                     the user more control of solver parameters. e.g.
+%                     minimising the Euclidean norm of the internal flux to
+%                     get rid of net flux around loops
 %     gurobi6         Gurobi 6.* accessed through built-in Matlab mex interface
 %     gurobi7         Gurobi 7.* accessed through built-in Matlab mex interface
+%     ibm_cplex       The IBM API for CPLEX using the CPLEX class
+%     tomlab_cplex    CPLEX MIQP solver accessed through Tomlab environment
 %
-% Currently allowed NLP solvers
+%     legacy solvers:
+%
+%     gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
+%     gurobi_mex      Gurobi accessed through Matlab mex interface (Gurobi mex)
+%
+% Currently allowed NLP solvers:
+%
+%     fully supported solvers:
+%
 %     matlab          MATLAB's fmincon.m
+%
+%     experimental support:
+%
 %     tomlab_snopt    SNOPT solver accessed through Tomlab environment
 %
 % It is a good idea to put this function call into your startup.m file
 % (usually matlabinstall/toolboxes/local/startup.m)
-% Markus Herrgard 1/19/07
+%
+% Original file: Markus Herrgard 1/19/07
 
 global SOLVERS;
 global OPT_PROB_TYPES;
