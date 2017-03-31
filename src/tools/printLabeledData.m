@@ -1,18 +1,20 @@
 function printLabeledData(labels, data, nonzeroFlag, sortCol, fileName, headerRow, sortMode)
-% printLabeledData Print a matrix of data with labels
+% Print a matrix of data with labels
 %
-% printLabeledData(labels,data,nonzeroFlag,sortCol,fileName,headerRow,sortMode)
+% USAGE:
+% 
+%    printLabeledData(labels, data, nonzeroFlag, sortCol, fileName, headerRow, sortMode)
 %
-% labels        Row labels
-% data          Data matrix/vector
-% nonzeroFlag   Only print nonzero rows (opt)
-% sortCol       Column used for sorting (-1, none; 0, labels; >0, data
-% columns; opt)
-% fileName      Name of output file (opt)
-% headerRow     Header (opt)
-% sortMode      Sort mode, 'ascend' or 'descend' (opt, default 'ascend')
+% INPUTS:
+%    labels:        Row labels
+%    data:          Data matrix/vector
+%    nonzeroFlag:   Only print nonzero rows (opt)
+%    sortCol:       Column used for sorting (-1, none; 0, labels; >0, data columns; opt)
+%    fileName:      Name of output file (opt)
+%    headerRow:     Header (opt)
+%    sortMode:      Sort mode, 'ascend' or 'descend' (opt, default 'ascend')
 %
-% Markus Herrgard 6/9/06
+% .. Authors: Markus Herrgard 6/9/06
 
 tol = 1e-9;
 format = '%g\t';

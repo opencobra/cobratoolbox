@@ -1,20 +1,24 @@
 function fields = splitString(string, delimiter)
-% splitString Splits a string Perl style
+% Splits a string Perl style
 %
-% fields = splitString(string, delimiter)
+% USAGE:
 %
-% string      Either a single string or a cell array of strings
-% delimiter   Splitting delimiter
+%     fields = splitString(string, delimiter)
 %
-% fields      Either a single cell array of fields or a cell array of cell
-%             arrays of fields
+% INPUTS:
+%    string:      Either a single string or a cell array of strings
+%    delimiter:   Splitting delimiter
+%
+% OUTPUT:
+%    fields:      Either a single cell array of fields or a cell array of cell
+%                 arrays of fields
 %
 % Default delimiter is '\s' (whitespace)
 % Delimiters are perl regular expression style, e.g. '|' has to be expressed
 % as '\|'
 % Results are returned in the cell array fields
 %
-% 07/14/04 Markus Herrgard
+% .. Authors:  Markus Herrgard 07/14/04
 
 if nargin < 2
     delimiter = '\s';

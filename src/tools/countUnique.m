@@ -2,9 +2,11 @@ function [sortedList, sortedCount] = countUnique(list)
 % Count unique elements in a vector (cell array or numerical)
 % Also sorts the unique elements in descending order
 %
-% [sortedList, sortedCount] = countUnique(list)
+% USAGE:
 %
-% Markus Herrgard 3/17/07
+%     [sortedList, sortedCount] = countUnique(list)
+%
+% .. Authors: Markus Herrgard 3/17/07
 
 [uniqList, tmp, index] = unique(list);
 

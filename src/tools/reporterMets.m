@@ -1,26 +1,30 @@
 function [normScore, nRxnsMet, nRxnsMetUni, rawScore] = reporterMets(model, data, nRand, pValFlag, nLayers, metric, dataRxns, inclExchFlag)
-% reporterMets Implements the reporter metabolites algorithm by Patil &
+% Implements the reporter metabolites algorithm by Patil &
 % Nielsen
 %
-% [normScore,nRxnsMet,nRxnsMetUni,rawScore] = reporterMets(model,data,nRand,pValFlag,nLayers,metric,dataRxns)
+% USAGE:
 %
-% model         Metabolic network reconstruction structure
-% data          Data matrix/vector
-% nRand         Number of randomizations
-% pValFlag      The data are p-values and should be converted to z-scores
-% nLayers       Number of reaction layers around each metabolite considered (default = 1)
-% metric        Metric used to evaluate score
-%               ('default','mean','median','std','count')
-% dataRxns      Reaction list for the data file (if different from the
-% model reactions)
-% inclExchFlag
+%    [normScore, nRxnsMet, nRxnsMetUni, rawScore] = reporterMets(model, data, nRand, pValFlag, nLayers, metric, dataRxns)
 %
-% normScore     Normalized scores for each metabolite
-% nRxnsMet      Number of reactions connected to each metabolite
-% nRxnsMetUni
-% rawScore      Raw unnormalized scores
+% INPUTS:
+%    model:          Metabolic network reconstruction structure
+%    data:           Data matrix/vector
+%    nRand:          Number of randomizations
+%    pValFlag:       The data are p-values and should be converted to z-scores
+%    nLayers:        Number of reaction layers around each metabolite considered (default = 1)
+%    metric:         Metric used to evaluate score
+%                    ('default','mean', 'median', 'std', 'count')
+%    dataRxns:       Reaction list for the data file (if different from the
+%                    model reactions)
+%    inclExchFlag:   Flag for exchange reactions
 %
-% Markus Herrgard 7/20/06
+% OUTPUTS:
+%    normScore:      Normalized scores for each metabolite
+%    nRxnsMet:       Number of reactions connected to each metabolite
+%    nRxnsMetUni:
+%    rawScore:       Raw unnormalized scores
+%
+% .. Authors: Markus Herrgard 7/20/06
 
 if (nargin < 3)
     nRand = 1000;

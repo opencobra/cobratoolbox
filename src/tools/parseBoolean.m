@@ -1,23 +1,26 @@
 function [elements, newRule, rxnGeneMat] = parseBoolean(str, tokens, allowedElementChars)
-% parseBoolean Parses a Boolean logic statement
+% Parses a Boolean logic statement
 %
-% [elements,newRule] = parseBoolean(str,tokens,allowedElementChars)
+% USAGE:
 %
-% str                   Input string or cell array of boolean statements
-% tokens                Allowed operators in boolean statements (optional,
-%                         default '()&|~')
-% allowedElementChars   Allowed characters in elements of the statement
+%     [elements, newRule] = parseBoolean(str, tokens, allowedElementChars)
 %
-% elements              Non-operator elements
-% newRule               New rule translated to element numbers
-% rxnGeneMat            If str is a cell array, rxnGeneMat is the normal
-%                       COBRA rxnGeneMat: a matrix with rows corresponding
-%                       to reactions, and columns corresponding to genes.
+% INPUTS:
+%    str:                   Input string or cell array of boolean statements
+%    tokens:                Allowed operators in boolean statements (optional,
+%                           default '()&|~')
+%    allowedElementChars:   Allowed characters in elements of the statement
 %
-% Markus Herrgard 5/11/04
+% OUTPUTS:
+%    elements:     Non-operator elements
+%    newRule:      New rule translated to element numbers
+%    rxnGeneMat:   If str is a cell array, rxnGeneMat is the normal
+%                  COBRA rxnGeneMat (a matrix with rows corresponding
+%                  to reactions, and columns corresponding to genes).
 %
-% changes:
-% 5/20/13 Ben Heavner - add cell array and rxnGeneMat functionality.
+% .. Authors: 
+%       - Markus Herrgard 5/11/04
+%       - Ben Heavner 5/20/13  (add cell array and rxnGeneMat functionality.)
 
 if (nargin < 2)
     % Allowed separators for tokenizer

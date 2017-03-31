@@ -1,21 +1,24 @@
 function selMat = selMatrix(selVec)
-% selMatrix Create selection matrix from a selection vector
+% Create selection matrix from a selection vector
 %
-% selMat = selMatrix(selVec)
+% USAGE:
 %
-% If selVec = [1 0 0 1 0 0]
+%    selMat = selMatrix(selVec)
 %
-% selMat = [1 0 0 0 0 0
-%           0 0 0 1 0 0]
+% EXAMPLE:
+%  
+%   selVec = [1 0 0 1 0 0]
+%   % returns
+%   selMat = [1 0 0 0 0 0
+%             0 0 0 1 0 0]
 %
-% For reversible selections
+%   % For reversible selections
+%   selVec = [1 0 0 1 -1 0]
+%   % returns
+%   selMat = [1 0 0 0  0 0
+%             0 0 0 1 -1 0]
 %
-% If selVec = [1 0 0 1 -1 0]
-%
-% selMat = [1 0 0 0  0 0
-%           0 0 0 1 -1 0]
-%
-% Markus Herrgard 3/28/03
+% .. Authors: Markus Herrgard 3/28/03
 
 nVar = length(selVec);
 if (sum(selVec == -1) == 0)

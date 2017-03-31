@@ -1,8 +1,12 @@
 function A = createDeltaMatchMatrix(set1, set2)
-% createDeltaMatchMatrix Create a flux difference constraint matrix for MOMA
+% Create a flux difference constraint matrix for MOMA
 % type calculations
 %
-% Markus Herrgard 1/4/07
+% USAGE:
+%
+%    A = createDeltaMatchMatrix(set1, set2)
+%
+% .. Authors: Markus Herrgard 1/4/07
 
 nRxns1 = length(set1);
 nRxns2 = length(set2);
