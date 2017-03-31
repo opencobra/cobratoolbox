@@ -1,13 +1,16 @@
 function retStatus = printMatrix(A, format, file)
 % printMatrix Prints matrix into a file or screen
 %
-% printMatrix(A, format, file)
+% USAGE:
 %
-% A         Matrix
-% format    Format string (opt, default '%6.4f\t')
-% file      File name (opt)
+%     printMatrix(A, format, file)
 %
-% Authors:
+% INPUTS:
+%    A:         Matrix
+%    format:    Format string (opt, default '%6.4f\t')
+%    file:      File name (opt)
+%
+% .. Authors:
 %     - Original file: Markus Herrgard
 %     - Minor changes: Laurent Heirendt January 2017
 

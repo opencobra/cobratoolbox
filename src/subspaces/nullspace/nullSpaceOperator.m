@@ -92,6 +92,8 @@ tic
 archstr = computer('arch');
 archstr = lower(archstr);
 switch archstr
+    case {'win32', 'win64'}
+         error('%s\n','Chrr sampler not compatible with windows OS.')
     case {'glnxa86'}
         % REQUIRED: lusolSet.m and lusolFactor.m (which calls the LUSOL mex-file).
         % 02 May 2008: (MAS) First version of nullspaceLUSOLform.m.

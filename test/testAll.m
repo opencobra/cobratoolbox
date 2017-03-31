@@ -46,6 +46,15 @@ exit_code = 0;
 profile on;
 
 if ~isempty(strfind(getenv('HOME'), 'jenkins'))
+
+    % ignore list of files
+    ignoreFiles = {'./src/fluxomics/c13solver/IsotopomerModel.txt',
+                   './src/fluxomics/c13solver/convertCarbonInput.m',
+                   './src/fluxomics/c13solver/slvrCumomer.m',
+                   './src/fluxomics/c13solver/slvrCumomer_fast.m',
+                   './src/fluxomics/c13solver/slvrEMU.m',
+                   './src/fluxomics/c13solver/slvrEMU_fast.m'};
+
     % check the code quality
     listFiles = rdir(['./src', '/**/*.m']);
 
@@ -59,15 +68,22 @@ if ~isempty(strfind(getenv('HOME'), 'jenkins'))
         nMsgs = nMsgs + length(checkcode(listFiles(i).name));
 
         fid = fopen(listFiles(i).name);
-        res = {};
-        while ~feof(fid)
+
+        % check if the file is on the ignored list
+        countFlag = true;
+        for k = 1:length(ignoreFiles)
+            if strcmp(listFiles(i).name, ignoreFiles{k})
+                countFlag = false;
+            end
+        end
+
+        while ~feof(fid) && countFlag
             lineOfFile = strtrim(fgetl(fid));
             if length(lineOfFile) > 0 && length(strfind(lineOfFile(1), '%')) ~= 1  ...
                && length(strfind(lineOfFile, 'end')) ~= 1 && length(strfind(lineOfFile, 'otherwise')) ~= 1 ...
                && length(strfind(lineOfFile, 'switch')) ~= 1 && length(strfind(lineOfFile, 'else')) ~= 1  ...
                && length(strfind(lineOfFile, 'case')) ~= 1 && length(strfind(lineOfFile, 'function')) ~= 1
-
-                res{end+1, 1} = lineOfFile;
+                nCodeLines = nCodeLines + 1;
 
             elseif length(lineOfFile) == 0
                 nEmptyLines = nEmptyLines + 1;
@@ -77,7 +93,6 @@ if ~isempty(strfind(getenv('HOME'), 'jenkins'))
             end
         end
         fclose(fid);
-        nCodeLines = nCodeLines + numel(res);
     end
 
     % average number of messages per codeLines

@@ -27,7 +27,7 @@ for flag = 1:2
         S = [-1; 1; 1; 0];
     end
 
-    [A, B1] = convertHypergraphToBipartiteGraph(S, 0);
+    [A, B1] = convertHypergraphToBipartiteGraph(S);
 
     fprintf('\nB1\n');
     disp(full(B1));
