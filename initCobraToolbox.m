@@ -406,7 +406,9 @@ cd(currentDir);
 
 % clear all temporary variables
 % Note: global variables are kept in memory - DO NOT clear all the variables!
-clearvars
+if ENV_VARS.printLevel
+    clearvars
+end
 
 function checkGit()
 % Checks if git is installed on the system and throws an error if not
