@@ -1,24 +1,24 @@
 function [out1, out2] = templateFunction(arg1, arg2, arg3)
 % This function does this and that
 %
-% Usage:
+% USAGE:
 %
 %   [out1, out2] = templateFunction(arg1, arg2, arg3)
 %
-% Inputs:
+% INPUTS:
 %    arg1: a short description for this argument
 %    arg2: another argument
 %
-% Optional input:
+% OPTIONAL INPUT:
 %    arg3: optional argument
 %
-% Output:
+% OUTPUT:
 %    out1: the product of arg1 and arg2
 %
-% Optional output:
+% OPTIONAL OUTPUT:
 %    out2: the product of arg1, arg2 and arg3
 %
-% Example:
+% EXAMPLE:
 %
 %   [out1, out2] = templateFunction(1, 2, 3);
 %   >> out1 = 2

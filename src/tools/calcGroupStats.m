@@ -5,25 +5,25 @@ function [groupStat, groupList, groupCnt, zScore] = calcGroupStats(data, groups,
 % [groupStat, groupList, groupCnt, zScore] =
 % calcGroupStats(data, groups, statName, groupList, randStat, nRand)
 %
-% Inputs:
-%   data:      Matrix of data (individuals x variables)
-%   groups:    Group identifier for each individual
-%   statName:  Name of the statistic to be computed for each group:
-%               'mean': mean value for group (default)
-%               'std': standard deviation for group
-%               'median': median for group
-%               'count': sum total of variable values for group
-%   groupList: List of group identifiers to be considered (optional, default
-%              all values occurring in groups)
-%   randStat:  Perform randomization analysis
-%   nRand:     # of randomizations
+% INPUTS:
+%    data:      Matrix of data (individuals x variables)
+%    groups:    Group identifier for each individual
+%    statName:  Name of the statistic to be computed for each group:
+%                'mean': mean value for group (default)
+%                'std': standard deviation for group
+%                'median': median for group
+%                'count': sum total of variable values for group
+%    groupList: List of group identifiers to be considered (optional, default
+%               all values occurring in groups)
+%    randStat:  Perform randomization analysis
+%    nRand:     # of randomizations
 %
 % Group identifier can be either strings or numerical values
 %
-% Ouputs:
-%   groupStat:     Matrix of group statistic values for each group and variable
-%   groupList:     List of group identifiers considered
-%   groupCount:    Number of individuals in a group
+% OUTPUTS:
+%    groupStat:     Matrix of group statistic values for each group and variable
+%    groupList:     List of group identifiers considered
+%    groupCount:    Number of individuals in a group
 
 [nItems, nSets] = size(data);
 
