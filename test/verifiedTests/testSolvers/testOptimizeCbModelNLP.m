@@ -7,6 +7,8 @@
 %     - Thomas Pfau, March 2017
 %
 
+global CBTDIR
+
 % save the current path
 currentDir = pwd;
 
@@ -23,7 +25,7 @@ changeCobraSolver('matlab', 'NLP');
 tol = 1e-6;
 
 % load the model
-load('ecoli_core_model', 'model')
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 toymodel = createToyModel(0, 0, 0); % create a toy model
 toymodel.ub(1) = -1; % force uptake, otherwise the default Objective will try to minimize all fluxes...

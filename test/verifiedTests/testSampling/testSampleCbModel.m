@@ -4,6 +4,8 @@
 %     - tests the sampleCbModel function using the E. coli Core Model
 %
 
+global CBTDIR
+
 % save the current path
 currentDir = pwd;
 
@@ -31,7 +33,7 @@ for k = 1:length(solverPkgs)
     if solverOK == 1
 
         % Load model
-        load('ecoli_core_model.mat', 'model');
+        load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
         for i = 1:length(samplers)
 

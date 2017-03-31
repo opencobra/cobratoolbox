@@ -11,6 +11,8 @@
 % Note:
 %       test is performed on objective as solution can vary between machines, solver version etc..
 
+global CBTDIR
+
 % define global paths
 global TOMLAB_PATH
 global ILOG_CPLEX_PATH

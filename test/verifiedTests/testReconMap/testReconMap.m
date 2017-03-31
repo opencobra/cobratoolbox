@@ -9,8 +9,10 @@
 %     - Original file: Alberto Noronha 21/03/2017
 %
 
-% Get the ecoli core model
-load('ecoli_core_model.mat');
+global CBTDIR
+
+% load the ecoli core model
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 % Get the minerva structure
 load('minerva.mat');

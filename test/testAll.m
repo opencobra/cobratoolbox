@@ -1,4 +1,5 @@
 % define global paths
+global CBTDIR
 global GUROBI_PATH
 global ILOG_CPLEX_PATH
 global TOMLAB_PATH

@@ -36,6 +36,5 @@ assert(isequal(ref_groupList, groupList));
 assert(isequal(ref_groupCnt, groupCnt));
 assert(isequal(ref_groupStat, groupStat));
 
-
 % change the directory
 cd(currentDir)

@@ -39,9 +39,7 @@ assert(printMatrix(A, nbFormat, fileName) == 1);
 % remove the generated file
 fullFileNamePath = [fileparts(which(mfilename)), filesep, fileName];
 if exist(fullFileNamePath, 'file') == 2
-    system(['rm ', fullFileNamePath]);
-else
-    warning(['The file', fullFileNamePath, ' does not exist and could not be deleted.']);
+    delete(fullFileNamePath);
 end
 
 % test to print to a file and read the data from that same file

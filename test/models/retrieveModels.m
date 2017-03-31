@@ -20,7 +20,7 @@ MODELDIR = fileparts(which('retrieveModels.m'));
 cd(MODELDIR);
 
 if printLevel > 0
-    fprintf(['\n   Downloading models to ', MODELDIR, ' ...\n']);
+    fprintf(['\n   Downloading models to ', strrep(MODELDIR, '\', '\\'), ' ...\n']);
 end
 
 % define the array of models to be downloaded (name of the file and URL)

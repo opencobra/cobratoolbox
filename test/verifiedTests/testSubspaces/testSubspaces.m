@@ -19,7 +19,7 @@ cd(fileparts(which(mfilename)));
 tol = 1e-6;
 
 % load the model
-load('ecoli_core_model.mat', 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 % find the internal vs exchange/demand/sink reactions.
 model = findSExRxnInd(model);
