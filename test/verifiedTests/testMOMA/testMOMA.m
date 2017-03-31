@@ -17,9 +17,7 @@
 % Note:
 %     - A valid QP solver must be available
 
-% define global paths
-global TOMLAB_PATH
-global GUROBI_PATH
+global CBTDIR
 
 % save the current path
 currentDir = pwd;

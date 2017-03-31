@@ -10,13 +10,15 @@
 %
 % Note: ibm_cplex is not (yet) compatible with R2016b
 
+global CBTDIR
+
 % save the current path
 currentDir = pwd;
 
 % initialize the test
 cd(fileparts(which(mfilename)));
 
-load('ecoli_core_model.mat', 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 ecoli_blckd_rxn = {'EX_fru(e)', 'EX_fum(e)', 'EX_gln_L(e)', 'EX_mal_L(e)', ...
                    'FRUpts2', 'FUMt2_2', 'GLNabc', 'MALt2_2'};
