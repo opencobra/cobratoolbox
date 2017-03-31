@@ -53,7 +53,7 @@ if ~isempty(startIndex)
             end
         else
             cnt = cnt + 1;
-            fields{cnt} = string(1:endIndex(i) - 1);
+            fields{cnt} = string(startIndex(i - 1) + 1:endIndex(i) - 1);
         end
     end
 else

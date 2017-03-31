@@ -6,7 +6,7 @@ function selMat = selMatrix(selVec)
 % If selVec = [1 0 0 1 0 0]
 %
 % selMat = [1 0 0 0 0 0
-            0 0 0 1 0 0]
+%           0 0 0 1 0 0]
 %
 % For reversible selections
 %
