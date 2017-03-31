@@ -34,10 +34,6 @@ Platform-specific instructions are marked with
     ````bash
     $ sudo chmod 644 tomlab.lic
     ````
-    If you want to confirm the correct permissions
-    ````bash
-    $ stat --format '%a' <file>
-    ````
     <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> Copy the `tomlab.lic` license to the folder `C:\tomlab`.
 
 5) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Set the environment variable by editing your '~/.bashrc' file:
@@ -48,7 +44,7 @@ Platform-specific instructions are marked with
     ````
     export TOMLAB_PATH="/opt/tomlab"
     ````
-    Reload your `bashrc`
+    Reload your `~/.bashrc`:
     ````bash
     $ source ~/.bashrc
     ````
@@ -68,7 +64,7 @@ Platform-specific instructions are marked with
     ````
     <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> Run `cplex_studio<ver>.win-x86-64.exe` as an administrator. Follow the installation instructions and install `CPLEX` in `C:\Program Files\IBM\ILOG\CPLEX_Studio<ver>`.
 
-4) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Set the environment variable by editing your '~/.bashrc' file:
+4) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Set the environment variable by editing your `~/.bashrc` file:
     ````bash
     $ nano ~/.bashrc
     ````
@@ -76,7 +72,7 @@ Platform-specific instructions are marked with
     ````
     export ILOG_CPLEX_PATH="/opt/ibm/ILOG/CPLEX_Studio<ver>"
     ````
-    Reload your `bashrc`
+    Reload your `~/.bashrc`:
     ````bash
     $ source ~/.bashrc
     ````
@@ -107,7 +103,7 @@ Platform-specific instructions are marked with
     export PATH="/opt/mosek/<ver>/":${PATH}
     export MOSEKLM_LICENSE_FILE="/opt/mosek/"
     ````
-    Reload your `bashrc`
+    Reload your `~/.bashrc`:
     ````bash
     $ source ~/.bashrc
     ````
@@ -180,7 +176,7 @@ Platform-specific instructions are marked with
     export PATH="${PATH}:${GUROBI_HOME}/bin"
     export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib"
     ````
-    Reload your `bashrc`
+    Reload your `~/.bashrc`:
     ````bash
     $ source ~/.bashrc
     ````
@@ -195,11 +191,13 @@ Platform-specific instructions are marked with
     [hit Enter to store it in /home/<userid>]:
     ````
     Hit `ENTER`.
+    
     <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> Browse to `Start > All Programs > Gurobi < VER> > Gurobi Interactive Shell (<ver>)`. This should prompt to enter the license key `YOUR-LICENSE-KEY-FROM-SITE`. Enter this key and hiter `ENTER`.
 
 7)  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Verify that `Gurobi` is successfully installed by launching the `Gurobi` prompt:
     ````bash
     $ gurobi.sh
     ````
+    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> Browse to `Start > All Programs > Gurobi < VER> > Gurobi Interactive Shell (<ver>)`.
+
     This command should give you the prompt for `Gurobi`. Exit by entering `exit()` or hitting `CTRL-D` on your keyboard.
-    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> Browse to `Start > All Programs > Gurobi < VER> > Gurobi Interactive Shell (<ver>)`. This command should give you the prompt for `Gurobi`. Exit by entering `exit()` or hitting `CTRL-D` on your keyboard.
