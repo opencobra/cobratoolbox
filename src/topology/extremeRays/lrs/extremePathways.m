@@ -1,13 +1,13 @@
-function [R,V]=extremePathways(model,positivity,inequality)
-%calculate the extreme pathways of a stoichiometric model using the vertex/facet enumeration package
-%lrs by David Avis, McGill University
+function [R, V] = extremePathways(model, positivity, inequality)
+% calculate the extreme pathways of a stoichiometric model using the vertex/facet enumeration package
+% lrs by David Avis, McGill University
 %
-%INPUT
+% INPUT
 % model.S   m x n Stoichiometric matrix with integer coefficients. If no
 %           other inputs are specified it is assumed that all reactions are
 %           reversible and S.v = 0
-% 
-%OPTIONAL INPUT
+%
+% OPTIONAL INPUT
 % model.description     string used to name files
 % model.directionality  n x 1 vector:
 %   model.directionality(j)=0 reaction is reversible
@@ -16,69 +16,69 @@ function [R,V]=extremePathways(model,positivity,inequality)
 %
 % model.b    dxdt
 % positivity {0,(1)} if positivity==1, then positive orthant base
-% inequality {(0),1} if inequality==1, then use two inequalities rather than a single equaltiy
+% inequality {(0),1} if inequality==1, then use two inequalities rather than a single equality
 
-[nMet,nRxn]=size(model.S);
+[nMet, nRxn] = size(model.S);
 
-A=model.S;
+A = model.S;
 
-if nnz(A-round(A))
+if nnz(A - round(A))
     figure
-    spy(A-round(A))
+    spy(A - round(A))
     title('S-round(S)')
     error('Stoichiometric coefficients must be all integers')
 end
 
-if isfield(model,'directionality')
-    D=diag(model.directionality);
-    d=zeros(nRxn,1);
+if isfield(model, 'directionality')
+    D = diag(model.directionality);
+    d = zeros(nRxn, 1);
 else
-    D=[];
-    d=[];
+    D = [];
+    d = [];
 end
 
-if ~exist('description','var')
-    filename='model';
+if isfield(model, 'description')
+    filename = model.description;
 else
-    filename=model.description;
+    filename = 'model';
 end
 
-if ~exist('positivity','var')
-    positivity=1;
+if ~exist('positivity', 'var')
+    positivity = 1;
 end
-if ~exist('inequality','var')
-    inequality=0;
+if ~exist('inequality', 'var')
+    inequality = 0;
 end
 
-suffix='';
+suffix = '';
 if positivity
-    suffix=[suffix 'pos_'];
+    suffix = [suffix 'pos_'];
 else
-    suffix=[suffix 'neg_'];
+    suffix = [suffix 'neg_'];
 end
 if inequality
-    suffix=[suffix 'ineq'];
+    suffix = [suffix 'ineq'];
 else
-    suffix=[suffix 'eq'];
+    suffix = [suffix 'eq'];
 end
 
-if isfield(model,'b')
-    a=model.b;
+if isfield(model, 'b')
+    a = model.b;
 else
-    a=zeros(nMet,1);
+    a = zeros(nMet, 1);
 end
 
-%no linear objective
-f=[];
+% no linear objective
+f = [];
 
-sh=0;
+sh = 0;
 
-%INPUT
+% INPUT
 % A          matrix of linear equalities A*x=(a)
 % D          matrix of linear inequalities D*x>=(d)
 % filename   base name of output file
 %
-%OPTIONAL INPUT
+% OPTIONAL INPUT
 % positivity {0,(1)} if positivity==1, then positive orthant base
 % inequality {0,(1)} if inequality==1, then use two inequalities rather than a single equaltiy
 % a          boundry values for matrix of linear equalities A*x=a
@@ -87,14 +87,18 @@ sh=0;
 %            minimise     f'*x
 %            subject to   A*x=(a)
 %                         D*x>=(d)
-lrsInputHalfspace(A,D,filename,positivity,inequality,a,d,f,sh);
+lrsInputHalfspace(A, D, filename, positivity, inequality, a, d, f, sh);
 
-%pause(eps)
+% pause(eps)
 if isunix
-    if ~isempty(unix('which lrs'))
-        %call lrs and wait until extreme pathways have been calculated
-        systemCallText=['lrs ' pwd '/' filename '_' suffix '.ine > ' pwd '/' filename '_' suffix '.ext'];
-        [status, result] = unix(systemCallText);
+    [status, result] = system('which lrs');
+    if ~isempty(result)
+        % call lrs and wait until extreme pathways have been calculated
+        systemCallText = ['lrs ' pwd filesep filename '_' suffix '.ine > ' pwd filesep filename '_' suffix '.ext'];
+        [status, result] = system(systemCallText)
+        if status == 1
+            error(['lsr failed on file ', pwd filesep filename '_' suffix '.ine']);
+        end
     else
         error('lrs not installed or not in path')
     end
@@ -102,8 +106,8 @@ else
     error('non unix machines not yet supported')
 end
 
-[R,V]=lrsOutputReadRay([filename '_' suffix '.ext']);
+[R, V] = lrsOutputReadRay([filename '_' suffix '.ext']);
 
-if any((A*R)~=0)
+if any((A * R) ~= 0)
     warning('pathway not in nullspace of stoichiometric matrix')
 end
