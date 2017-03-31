@@ -1,0 +1,8 @@
+sphinx
+recommonmark
+sphinxcontrib-matlabdomain
+sphinxcontrib-fulltoc
+git+https://github.com/uni-lu/sphinx_julia_theme.git@develop#egg=sphinx_julia_theme
+git+https://github.com/syarra/Documenter.py@develop#egg=documenter
+git+https://github.com/uni-lu/sphinxcontrib-napoleon.git@develop#egg=sphinxcontrib_napoleon
+pyGithub

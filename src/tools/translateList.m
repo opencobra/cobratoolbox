@@ -1,28 +1,33 @@
-function list = translateList(list,trList1,trList2)
-%translateList Translate a list of identifiers (either numerical or cell
-%array) using a dictionary
+function list = translateList(list, trList1, trList2)
+% Translate a list of identifiers (either numerical or cell array) using a dictionary
 %
-% list = translateList(list,trList1,trList2)
+% USAGE:
 %
-% Usage:
+%     list = translateList(list, trList1, trList2)
 %
-% Define original list
+% INPUTS:
+%   list:
+%   trList1:
+%   trList2:
 %
-% list = {'a','b','c'}
+% OUTPUTS:
+%   list:
 %
-% Define dictionary
+% EXAMPLE:
 %
-% trList1 = {'b','c'} 
-% trList2 = {'B','C'}
+%   % Define original list
+%   list = {'a', 'b', 'c'}
 %
-% newList = translateList(list,trList1,trList2);
-% 
-% returns
+%   % Define dictionary
+%   trList1 = {'b', 'c'}
+%   trList2 = {'B', 'C'}
 %
-% newList = {'a','B','C'};
+%   newList = translateList(list, trList1, trList2);
 %
-% Markus Herrgard 8/17/06
+%   % returns
+%   newList = {'a', 'B', 'C'};
 
-[isInList,listInd] = ismember(list,trList1);
+
+[isInList, listInd] = ismember(list, trList1);
 
 list(isInList) = trList2(listInd(listInd ~= 0));
