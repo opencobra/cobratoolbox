@@ -9,6 +9,8 @@
 % Note:
 %     - The solver libraries must be included separately
 
+global CBTDIR
+
 %save original directory
 currentDir = pwd;
 
@@ -19,7 +21,7 @@ cd(fileparts(which(mfilename)));
 tol = 1e-3;
 
 % load model
-load('ecoli_core_model.mat', 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 model = changeRxnBounds(model, 'EX_o2(e)', 0, 'l'); % anaerobic
 model = changeRxnBounds(model, 'EX_glc(e)', -20, 'l'); % set glucose uptake to 20
 

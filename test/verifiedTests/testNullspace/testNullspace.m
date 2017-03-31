@@ -26,39 +26,42 @@ else
 end
 A=model.S;
 %}
-if ~exist('modelLargeA.mat', 'file')
-    error('testNullspace could not complete because modelLargeA.mat could not be found');
+if isunix
+    if ~exist('modelLargeA.mat', 'file')
+        error('testNullspace could not complete because modelLargeA.mat could not be found');
+    else
+        load('modelLargeA.mat');
+    end
+
+    %{
+    nullA = nullSpaceOperator(A,1,0);        % gives a structure nullS.* that represents
+    % Z in operator form.
+    [m,n] = size(A);                      % gives the dimensions of S.
+    rankA = nullA.rank;                   % is rank(S).
+    v     = rand(n-rankA,1);              % is a random vector with the no. of cols of Z.
+    w     = nullSpaceOperatorApply(nullA,v); % is in the nullspace of S.
+    Z     = nullspaceLUSOLtest(A,0);        % computes all cols of Z explicitly (as a quick test).
+    % Then w2 = Z*v should be the same as w.
+    %}
+    [Z, rankS] = getNullSpace(A, 0);
+
+    % Check if A*Z = 0.
+    AZ    = A * Z;
+    normAZ= norm(AZ, inf);
+
+    tol = 1e-9;
+
+    % give an explicit error message
+    if normAZ < tol
+        fprintf('%s%8.1e%s%8.1e\n','testNullspace passed: norm(S*Z,inf) =', normAZ, ', while tolerance is = ', tol);
+    else
+        fprintf('%s%8.1e%s%8.1e\n','testNullspace failed: norm(S*Z,inf) =', normAZ, ', while tolerance is = ', tol);
+    end
+
+    assert(normAZ < tol)
 else
-    load('modelLargeA.mat');
+    fprintf(' > Skipping testNullspace (incompatible operating system).\n');
 end
-
-
-%{
-nullA = nullSpaceOperator(A,1,0);        % gives a structure nullS.* that represents
-% Z in operator form.
-[m,n] = size(A);                      % gives the dimensions of S.
-rankA = nullA.rank;                   % is rank(S).
-v     = rand(n-rankA,1);              % is a random vector with the no. of cols of Z.
-w     = nullSpaceOperatorApply(nullA,v); % is in the nullspace of S.
-Z     = nullspaceLUSOLtest(A,0);        % computes all cols of Z explicitly (as a quick test).
-% Then w2 = Z*v should be the same as w.
-%}
-[Z, rankS] = getNullSpace(A, 0);
-
-% Check if A*Z = 0.
-AZ    = A * Z;
-normAZ= norm(AZ, inf);
-
-tol = 1e-9;
-
-% give an explicit error message
-if normAZ < tol
-    fprintf('%s%8.1e%s%8.1e\n','testNullspace passed: norm(S*Z,inf) =', normAZ, ', while tolerance is = ', tol);
-else
-    fprintf('%s%8.1e%s%8.1e\n','testNullspace failed: norm(S*Z,inf) =', normAZ, ', while tolerance is = ', tol);
-end
-
-assert(normAZ < tol)
 
 % change the directory
 cd(currentDir)
