@@ -16,6 +16,8 @@ global CBTDIR
 % save the current path
 currentDir = pwd;
 
+addpath(genpath(path_GUROBI));
+
 solverOK = changeCobraSolver('gurobi6', 'LP');
 
 if solverOK
