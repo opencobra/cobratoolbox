@@ -12,7 +12,7 @@ currentDir = pwd;
 % initialize the test
 cd(fileparts(which(mfilename)));
 
-load('ecoli_core_model', 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 load('testData_dynamicFBA.mat');
 
 smi = {'EX_glc(e)' 'EX_ac(e)'}; % exchange reaction for substrate in environment

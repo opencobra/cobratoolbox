@@ -28,7 +28,7 @@ currentDir = pwd;
 cd(fileparts(which(mfilename)));
 
 % load model
-load('ecoli_core_model', 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 % test solver packages
 solverPkgs = {'tomlab_cplex', 'gurobi6'};  %,'ILOGcomplex'};

@@ -22,7 +22,7 @@ currentDir = pwd;
 cd(fileparts(which(mfilename)));
 
 load testDataSolveCobraLPCPLEX;
-load('ecoli_core_model', 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 tol = 1e-2;%set tolerance
 ecoli_blckd_rxn = {'EX_fru(e)', 'EX_fum(e)', 'EX_gln_L(e)', 'EX_mal_L(e)',...
