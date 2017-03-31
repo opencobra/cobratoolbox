@@ -12,7 +12,7 @@ script:
     - cd $CURRENT_DIR
 
     # launch the tests
-    # - sh ./runtests.sh
+    - sh ./runtests.sh
 
     # launch tutorial
     - if [ "$MATLAB_VER" == "R2016b" ]; then 
