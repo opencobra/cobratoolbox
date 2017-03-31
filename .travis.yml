@@ -20,7 +20,7 @@ script:
       fi;
 
 after_success:
-    - if [ "$MATLAB_VER" == "R2016b" ]; then
+    - if [ "$MATLAB_VER" == "R2014b" ]; then
       bash <(curl -s https://codecov.io/bash) -f "!*.lst";
       export PATH="/var/lib/jenkins/.local/bin":$PATH;
       pip install --user sphinx;
