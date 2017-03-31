@@ -2,7 +2,7 @@ function [grRatio,grRateKO,grRateWT,hasEffect,delRxn,fluxSolution] = singleRxnDe
 %singleRxnDeletion Performs single reaction deletion analysis using FBA, 
 %MOMA or linearMOMA
 %
-% [grRatio,grRateKO,grRateWT,hasEffect,delRxns,hasEffect] = singleGeneDeletion(model,method,rxnList,verbFlag)
+% [grRatio,grRateKO,grRateWT,hasEffect,delRxns,hasEffect] = singleRxnDeletion(model,method,rxnList,verbFlag)
 %
 %INPUT
 % model         COBRA model structure including reaction names
