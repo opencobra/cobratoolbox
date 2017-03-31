@@ -26,8 +26,8 @@ minInf = -Inf;
 maxInf = +Inf;
 printConstraints(model, minInf, maxInf);
 diary off
-text1 = fileread('refData_printConstraints.txt');
-text2 = fileread('printConstraints.txt');
+text1 = readMixedData('refData_printConstraints.txt');
+text2 = readMixedData('printConstraints.txt');
 assert(isequal(text1, text2));
 
 % remove the generated file

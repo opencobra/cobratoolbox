@@ -26,8 +26,8 @@ metrxn = '13dpg[c]';
 surfNet(model, metrxn);
 diary off;
 
-text1 = fileread('surfNet.txt');
-text2 = fileread('refData_surfNet.txt');
+text1 = importdata('surfNet.txt');
+text2 = importdata('refData_surfNet.txt');
 assert(isequal(text1, text2));
 
 % remove the generated file

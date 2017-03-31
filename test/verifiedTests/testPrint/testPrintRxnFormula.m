@@ -27,8 +27,9 @@ diary off
 
 load('refData_printRxnFormula.mat');
 assert(isequal(formulas, formulas_ref));
-text1 = fileread('refData_printRxnFormula.txt');
-text2 = fileread('printRxnFormula.txt');
+text1 = importdata('refData_printRxnFormula.txt');
+text2 = importdata('printRxnFormula.txt');
+
 assert(isequal(text1, text2));
 
 % remove the generated file
@@ -39,8 +40,8 @@ diary('printRxnFormula.txt');
 formulas = printRxnFormula(model, model.rxns, true, true, true, 1, true, true);
 diary off
 
-text1 = fileread('refData_printRxnFormulaGPR.txt');
-text2 = fileread('printRxnFormula.txt');
+text1 = importdata('refData_printRxnFormulaGPR.txt');
+text2 = importdata('printRxnFormula.txt');
 assert(isequal(text1, text2));
 
 % remove the generated file

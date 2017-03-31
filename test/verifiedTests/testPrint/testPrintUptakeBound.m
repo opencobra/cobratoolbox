@@ -27,8 +27,8 @@ upInd = printUptakeBound(model);
 diary off;
 
 assert(isequal(ref_upInd, upInd));
-text1 = fileread('printUptakeBound.txt');
-text2 = fileread('refData_printUptakeBound.txt');
+text1 = importdata('printUptakeBound.txt');
+text2 = importdata('refData_printUptakeBound.txt');
 assert(isequal(text1, text2));
 
 % remove the generated file

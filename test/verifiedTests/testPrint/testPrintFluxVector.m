@@ -29,13 +29,13 @@ diary('printFluxVector.txt');
 printFluxVector(model, flux);
 diary off
 
-text1 = fileread('refData_printFluxVector.txt');
-text2 = fileread('printFluxVector.txt');
+text1 = importdata('refData_printFluxVector.txt');
+text2 = importdata('printFluxVector.txt');
 assert(isequal(text1, text2));
 
 printFluxVector(model, flux, true, false, 1, 'printFluxVector.txt', [], true);
-text1 = fileread('refData_printFluxVectorFormula.txt');
-text2 = fileread('printFluxVector.txt');
+text1 = importdata('refData_printFluxVectorFormula.txt');
+text2 = importdata('printFluxVector.txt');
 assert(isequal(text1, text2));
 
 % remove the generated file
