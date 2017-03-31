@@ -4,9 +4,8 @@ Solver Installation Guide
 
 - [TOMLAB](#tomlab)
 - [IBM ILOG CPLEX](#ibm-ilog-cplex)
-- [MOSEK](#mosek)
 - [GUROBI](#gurobi)
-
+- [MOSEK](#mosek)
 <!-- /TOC -->
 Platform-specific instructions are marked with
 - **Windows** - <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px">
@@ -78,78 +77,6 @@ Platform-specific instructions are marked with
     ````
     <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> ![#ff0000](https://placehold.it/15/ff0000/000000?text=+) Make sure that you select `Yes, update the PATH variable.`. You can also follow the instructions [here](https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/GettingStarted/topics/set_up/Windows.html).
 
-## MOSEK
-
-1) Download `MOSEK` as an archive [here](https://mosek.com/resources/downloads)
-
-2) Apply for a license [here](https://mosek.com/resources/trial-license). A free academic license is [here](https://license.mosek.com/academic/). You will receive an email with your `mosek.lic` file.
-
-3) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Save (or move) the downloaded archive `tar.bz2` to `/opt/.`
-
-4) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Navigate to `/opt` and extract the archive
-    ````bash
-    $ cd /opt
-    $ tar xvjf <filename>.tar.bz2
-    ````
-    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> Run `moseksetupwin64x86.msi` and select `Typical` installation. This will install `mosek` in `C:\Program Files\Mosek`.
-
-5) Configure the `PATH` and `MOSEKLM_LICENSE_FILE` environment variables in `~/.bashrc` by editing your `bashrc` file
-
-    ````bash
-    $ nano ~/.bashrc
-    ````
-    Append the following lines (type `i` to insert text), hit the `ESC` key, then save and exit by typing `wq` and hitting ENTER:
-    ````
-    export PATH="/opt/mosek/<ver>/":${PATH}
-    export MOSEKLM_LICENSE_FILE="/opt/mosek/"
-    ````
-    Reload your `~/.bashrc`:
-    ````bash
-    $ source ~/.bashrc
-    ````
-
-6) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Copy the license file `mosek.lic` to `/opt/mosek/`.
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> Copy the license file `mosek.lic` to `C:\Users\<yourUsername>\mosek\`.
-
-7) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Verify that `MOSEK` is correctly installed by using the following command in your terminal
-
-    ````sh
-    $ msktestlic
-    ````
-    This command should give an output similar to this:
-    ````
-    Problem
-      Name                   :
-      Objective sense        : min
-      Type                   : LO (linear optimization problem)
-      Constraints            : 1
-      Cones                  : 0
-      Scalar variables       : 5000
-      Matrix variables       : 0
-      Integer variables      : 0
-
-    Optimizer started.
-    Mosek license manager: License path: /opt/mosek/mosek.lic
-    Mosek license manager:  Checkout license feature 'PTS' from flexlm.
-    Mosek license manager:  Checkout time 0.01. r: 0 status: 0
-    Interior-point optimizer started.
-    Presolve started.
-    Eliminator started.
-    Freed constraints in eliminator : 0
-    Eliminator terminated.
-    Eliminator - tries                  : 1                 time                   : 0.00
-    Lin. dep.  - tries                  : 0                 time                   : 0.00
-    Lin. dep.  - number                 : 0
-    Presolve terminated. Time: 0.00
-    Interior-point optimizer terminated. Time: 0.00.
-
-    Optimizer terminated. Time: 0.02
-    ************************************
-    A license was checked out correctly.
-    ************************************
-    ````
-    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> By browsing to `Start > All Programs > Mosek Optimization Tools`, you can run `Test license system`. This should open a window and display the output as shown above.
-
 ## GUROBI
 
 1) Register and log in [here](http://www.gurobi.com/)
@@ -191,7 +118,7 @@ Platform-specific instructions are marked with
     [hit Enter to store it in /home/<userid>]:
     ````
     Hit `ENTER`.
-    
+
     <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> Browse to `Start > All Programs > Gurobi < VER> > Gurobi Interactive Shell (<ver>)`. This should prompt to enter the license key `YOUR-LICENSE-KEY-FROM-SITE`. Enter this key and hiter `ENTER`.
 
 7)  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Verify that `Gurobi` is successfully installed by launching the `Gurobi` prompt:
@@ -201,3 +128,73 @@ Platform-specific instructions are marked with
     <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> Browse to `Start > All Programs > Gurobi < VER> > Gurobi Interactive Shell (<ver>)`.
 
     This command should give you the prompt for `Gurobi`. Exit by entering `exit()` or hitting `CTRL-D` on your keyboard.
+
+## MOSEK
+
+1) Download `MOSEK` as an archive [here](https://mosek.com/resources/downloads)
+
+2) Apply for a license [here](https://mosek.com/resources/trial-license). A free academic license is [here](https://license.mosek.com/academic/). You will receive an email with your `mosek.lic` file.
+
+3) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Save (or move) the downloaded archive `tar.bz2` to `/opt/.`
+
+4) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Navigate to `/opt` and extract the archive
+    ````bash
+    $ cd /opt
+    $ tar xvjf <filename>.tar.bz2
+    ````
+    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> Run `moseksetupwin64x86.msi` and select `Typical` installation. This will install `mosek` in `C:\Program Files\Mosek`.
+
+5) Configure the `PATH` and `MOSEKLM_LICENSE_FILE` environment variables in `~/.bashrc` by editing your `bashrc` file
+    ````bash
+    $ nano ~/.bashrc
+    ````
+    Append the following lines (type `i` to insert text), hit the `ESC` key, then save and exit by typing `wq` and hitting ENTER:
+    ````
+    export PATH="/opt/mosek/<ver>/":${PATH}
+    export MOSEKLM_LICENSE_FILE="/opt/mosek/"
+    ````
+    Reload your `~/.bashrc`:
+    ````bash
+    $ source ~/.bashrc
+    ````
+
+6) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Copy the license file `mosek.lic` to `/opt/mosek/`.
+   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> Copy the license file `mosek.lic` to `C:\Users\<yourUsername>\mosek\`.
+
+7) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Verify that `MOSEK` is correctly installed by using the following command in your terminal
+    ````sh
+    $ msktestlic
+    ````
+    This command should give an output similar to this:
+    ````
+    Problem
+      Name                   :
+      Objective sense        : min
+      Type                   : LO (linear optimization problem)
+      Constraints            : 1
+      Cones                  : 0
+      Scalar variables       : 5000
+      Matrix variables       : 0
+      Integer variables      : 0
+
+    Optimizer started.
+    Mosek license manager: License path: /opt/mosek/mosek.lic
+    Mosek license manager:  Checkout license feature 'PTS' from flexlm.
+    Mosek license manager:  Checkout time 0.01. r: 0 status: 0
+    Interior-point optimizer started.
+    Presolve started.
+    Eliminator started.
+    Freed constraints in eliminator : 0
+    Eliminator terminated.
+    Eliminator - tries                  : 1                 time                   : 0.00
+    Lin. dep.  - tries                  : 0                 time                   : 0.00
+    Lin. dep.  - number                 : 0
+    Presolve terminated. Time: 0.00
+    Interior-point optimizer terminated. Time: 0.00.
+
+    Optimizer terminated. Time: 0.02
+    ************************************
+    A license was checked out correctly.
+    ************************************
+    ````
+    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> By browsing to `Start > All Programs > Mosek Optimization Tools`, you can run `Test license system`. This should open a window and display the output as shown above.
