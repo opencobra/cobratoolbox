@@ -4,7 +4,6 @@ Solver Installation Guide
 
 - [Tomlab](#tomlab)
 - [IBM ILOG CPLEX](#ibm-ilog-cplex)
-- [GLPK](#glpk)
 - [MOSEK](#mosek)
 - [Gurobi](#gurobi)
 
@@ -28,8 +27,9 @@ Platform-specific instructions are marked with
     <img src="https://winblogs.azureedge.net/win/2016/12/cropped-cropped-Windows-logo1-192x192.png" height="20px"> Run the `tomlab-win64-setup_<ver>.exe` as an administrator.
 
 3) Follow the installation instructions and install `tomlab` in:
-    - <img src="https://winblogs.azureedge.net/win/2016/12/cropped-cropped-Windows-logo1-192x192.png" height="20px"> : `C:\` such that you will have a folder `C:\tomlab`
     - <img src="http://geeknrush.fr/wp-content/uploads/2015/10/Apple-Logo-Black.png" height="20px">  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/652px-Tux.svg.png" height="20px">: `/opt` such that you will have a folder `/opt/tomlab`.
+    - <img src="https://winblogs.azureedge.net/win/2016/12/cropped-cropped-Windows-logo1-192x192.png" height="20px"> : `C:\` such that you will have a folder `C:\tomlab`
+
 
 4) <img src="http://geeknrush.fr/wp-content/uploads/2015/10/Apple-Logo-Black.png" height="20px">  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/652px-Tux.svg.png" height="20px"> Copy the `tomlab.lic` license to the folder `/opt/tomlab` and change its permissions
 
@@ -47,27 +47,22 @@ Platform-specific instructions are marked with
 
 1) Download the `CPLEX` installation binary from [here](https://www-01.ibm.com/software/websphere/products/optimization/cplex-studio-community-edition/)
 
-2) Add `execute` permission to binary
+2) <img src="http://geeknrush.fr/wp-content/uploads/2015/10/Apple-Logo-Black.png" height="20px">  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/652px-Tux.svg.png" height="20px"> Add `execute` permission to binary
 
     ````bash
     $ chmod +x <cplexbinary>.bin
     ````
 
-3) Run the installer binary as superuser
+3) <img src="http://geeknrush.fr/wp-content/uploads/2015/10/Apple-Logo-Black.png" height="20px">  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/652px-Tux.svg.png" height="20px"> Run the installer binary as superuser, follow the installation procedure, and accept the default installation path.
 
     ````bash
     $ sudo ./<cplexbinary>.bin
     ````
 
-4) Follow the installation procedure. Accept the default installation path.
+    <img src="https://winblogs.azureedge.net/win/2016/12/cropped-cropped-Windows-logo1-192x192.png" height="20px"> Run `cplex_studio<ver>.win-x86-64.exe` as an administrator. Follow the installation instructions and install `CPLEX` in `C:\Program Files\IBM\ILOG\CPLEX_Studio<ver>`.
 
-## GLPK
+    ![#ff0000](https://placehold.it/15/ff0000/000000?text=+) Make sure that you select `Yes, update the PATH variable.`. You can also follow the instructions [here](https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/GettingStarted/topics/set_up/Windows.html).
 
-In the terminal, enter
-````bash
-$ sudo apt-get install python-glpk
-$ sudo apt-get install glpk-utils
-````
 
 ## MOSEK
 
