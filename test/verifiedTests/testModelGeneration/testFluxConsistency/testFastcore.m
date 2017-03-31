@@ -16,9 +16,6 @@ global CBTDIR
 % save the current path
 currentDir = pwd;
 
-% initialize the test
-cd(fileparts(which(mfilename)));
-
 solverOK = changeCobraSolver('gurobi6', 'LP');
 
 if solverOK
@@ -28,7 +25,8 @@ if solverOK
 
     % randomly pick some reactions
     epsilon = 1e-4;
-    for printLevel = [0, 1]
+    for printLevel = [0:2]
+        fprintf(' Running Fastcore with printLevel=%d\n', printLevel);
         A = fastcore(coreInd, model, epsilon, printLevel);
     end
 
