@@ -17,7 +17,7 @@ cd(fileparts(which(mfilename)));
 tol = 1e-6;
 
 %load model
-load('ecoli_core_model', 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 % list of solver packages
 solverPkgs = {'tomlab_cplex', 'gurobi6', 'glpk'};

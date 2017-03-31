@@ -14,7 +14,7 @@ currentDir = pwd;
 % initialize the test
 cd(fileparts(which(mfilename)));
 
-load('ecoli_core_model', 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 % remove old generated file
 delete('printRxnFormula.txt');
