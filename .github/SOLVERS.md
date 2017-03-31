@@ -2,10 +2,10 @@ Solver Installation Guide
 ---------------------------------
 <!-- TOC -->
 
-- [Tomlab](#tomlab)
+- [TOMLAB](#tomlab)
 - [IBM ILOG CPLEX](#ibm-ilog-cplex)
 - [MOSEK](#mosek)
-- [Gurobi](#gurobi)
+- [GUROBI](#gurobi)
 
 <!-- /TOC -->
 Platform-specific instructions are marked with
@@ -15,7 +15,7 @@ Platform-specific instructions are marked with
 
 *Note: Most steps require superuser or administrator rights (`sudo`).*
 
-## Tomlab
+## TOMLAB
 
 1) Download `TOMLAB/CPLEX` from [here](http://tomopt.com/scripts/register.php), where you can also download `TOMLAB/SNOPT`.
 
@@ -154,73 +154,52 @@ Platform-specific instructions are marked with
     ````
     <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> By browsing to `Start > All Programs > Mosek Optimization Tools`, you can run `Test license system`. This should open a window and display the output as shown above.
 
-## Gurobi
+## GUROBI
 
 1) Register and log in [here](http://www.gurobi.com/)
 
 2) Request license from the [download center](http://www.gurobi.com/downloads/download-center) and retrieve `YOUR-LICENSE-KEY-FROM-SITE`
 
-3) Download `Gurobi` optimizer from [here](http://www.gurobi.com/downloads/gurobi-optimizer)
+3) Download the `Gurobi` optimizer from [here](http://www.gurobi.com/downloads/gurobi-optimizer)
 
-4) In a shell, navigate to the directory where `Gurobi` was downloaded and enter
-
+4) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Navigate to the directory where `Gurobi` was downloaded and enter
     ````bash
     $ tar xvzf <archive>.tar.gz
     $ sudo mv gurobi<ver> /opt/.
     $ cd /opt/gurobi<ver>/linux64/bin/
     ````
+    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> Run `Gurobi-<ver>-win64.msi` and follow the installation instructions. Accept the default path `C:\gurobi<ver>\`.
 
-5) Edit the `bash` settings to include paths
-
+5) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Edit the `bash` settings to include paths
     ````bash
     $ nano ~/.bashrc
     ````
-
-6) Append the following lines (type `i` to insert text), hit the `ESC` key, then save and exit by typing `wq` and hitting ENTER:
-
+    Append the following lines (type `i` to insert text), hit the `ESC` key, then save and exit by typing `wq` and hitting ENTER:
     ````
     export GUROBI_HOME="/opt/gurobi<ver>/linux64"
     export PATH="${PATH}:${GUROBI_HOME}/bin"
     export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib"
     ````
-
-7) Reload your `bashrc`
-
+    Reload your `bashrc`
     ````bash
     $ source ~/.bashrc
     ````
 
-8) Verify that `Gurobi` is successfully installed by activating your license
-
+6)  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Activate your license by running:
     ````
     $ grbgetkey YOUR-LICENSE-KEY-FROM-SITE
     ````
-
     You will be prompted
     ````
     In which directory would you like to store the Gurobi license key file?
     [hit Enter to store it in /home/<userid>]:
     ````
-    Hit enter.
+    Hit `ENTER`.
+    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> Browse to `Start > All Programs > Gurobi < VER> > Gurobi Interactive Shell (<ver>)`. This should prompt to enter the license key `YOUR-LICENSE-KEY-FROM-SITE`. Enter this key and hiter `ENTER`.
 
-9) Verify that `Gurobi` is successfully installed by launching the `Gurobi` prompt
-
+7)  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Verify that `Gurobi` is successfully installed by launching the `Gurobi` prompt:
     ````bash
     $ gurobi.sh
     ````
     This command should give you the prompt for `Gurobi`. Exit by entering `exit()` or hitting `CTRL-D` on your keyboard.
-
-    One more test that can be done to ensure it's properly installed is
-    ````bash
-    $ grbprobe
-    ````
-
-    should give something similar to
-    ````
-    HOSTNAME=...
-    HOSTID=...
-    PLATFORM=linux64
-    USERNAME=...
-    SOCKETS=...
-    CPU=...
-    ````
+    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> Browse to `Start > All Programs > Gurobi < VER> > Gurobi Interactive Shell (<ver>)`. This command should give you the prompt for `Gurobi`. Exit by entering `exit()` or hitting `CTRL-D` on your keyboard.
