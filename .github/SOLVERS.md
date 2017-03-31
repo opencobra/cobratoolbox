@@ -1,4 +1,4 @@
-Solver Installation Guide (Linux)
+Solver Installation Guide
 ---------------------------------
 <!-- TOC -->
 
@@ -9,22 +9,29 @@ Solver Installation Guide (Linux)
 - [Gurobi](#gurobi)
 
 <!-- /TOC -->
-*Note: Most steps require superuser rights (`sudo`).*
+Platform-specific instructions are marked with
+- **Windows** - <img src="https://winblogs.azureedge.net/win/2016/12/cropped-cropped-Windows-logo1-192x192.png" height="20px">
+- **macOS** - <img src="http://geeknrush.fr/wp-content/uploads/2015/10/Apple-Logo-Black.png" height="20px">
+- **linux** - <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/652px-Tux.svg.png" height="20px">
+
+*Note: Most steps require superuser or administrator rights (`sudo`).*
 
 ## Tomlab
 
 1) Download `TOMLAB/CPLEX` from [here](http://tomopt.com/scripts/register.php), where you can also download `TOMLAB/SNOPT`.
 
-2) In a terminal window, navigate to the download directory of tomlab and do the following
-
+2)  <img src="http://geeknrush.fr/wp-content/uploads/2015/10/Apple-Logo-Black.png" height="20px">  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/652px-Tux.svg.png" height="20px"> In a terminal window, navigate to the download directory of tomlab and do the following
     ````bash
     $ chmod +x <filename>.bin
     $ sudo ./<filename>.bin
     ````
+<img src="https://winblogs.azureedge.net/win/2016/12/cropped-cropped-Windows-logo1-192x192.png" height="20px"> Run the `tomlab-win64-setup_<ver>.exe` as an administrator.
 
-3) Follow the installation instructions
+3) Follow the installation instructions and install `tomlab` in:
+- <img src="https://winblogs.azureedge.net/win/2016/12/cropped-cropped-Windows-logo1-192x192.png" height="20px"> : `C:\` such that you will have a folder `C:\tomlab`
+- <img src="http://geeknrush.fr/wp-content/uploads/2015/10/Apple-Logo-Black.png" height="20px">  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/652px-Tux.svg.png" height="20px">: `/opt` such that you will have a folder `/opt/tomlab`.
 
-4) Copy the `tomlab.lic` license to the folder `/opt/tomlab` and change its permissions
+4) <img src="http://geeknrush.fr/wp-content/uploads/2015/10/Apple-Logo-Black.png" height="20px">  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/652px-Tux.svg.png" height="20px"> Copy the `tomlab.lic` license to the folder `/opt/tomlab` and change its permissions
 
     ````bash
     $ sudo chmod 644 tomlab.lic
@@ -34,7 +41,7 @@ Solver Installation Guide (Linux)
     ````bash
     $ stat --format '%a' <file>
     ````
-
+<img src="https://winblogs.azureedge.net/win/2016/12/cropped-cropped-Windows-logo1-192x192.png" height="20px"> Copy the `tomlab.lic` license to the folder `C:\tomlab`.
 
 ## IBM ILOG CPLEX
 
