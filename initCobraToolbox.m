@@ -12,6 +12,7 @@
 %     Function only needs to be called once per installation. Saves paths afer script terminates.
 %
 %     In addition add either of the following into startup.m (generally in MATLAB_DIRECTORY/toolbox/local/startup.m)
+%
 %     initCobraToolbox
 %           -or-
 %     changeCobraSolver('gurobi');
@@ -21,8 +22,6 @@
 %     changeCbMapOutput('svg');
 %
 % Maintained by Ronan M.T. Fleming, Sylvain Arreckx, Laurent Heirendt
-
-%- check if the folder is already with addpath, then unload the path if uing tomlab
 
 % define GLOBAL variables
 global CBTDIR;
@@ -35,9 +34,17 @@ global MOSEK_PATH;
 global WAITBAR_TYPE;
 global ENV_VARS;
 
-SOLVERS = {};
-ENV_VARS.STATUS = 0;
+% default waitbar is of type text
 WAITBAR_TYPE = 1;
+
+% Linux only - default save path location
+defaultSavePathLocation = '~/pathdef.m';
+
+% initialize the cell of solvers
+SOLVERS = {};
+
+% declare that the environment variables have not yet been configured
+ENV_VARS.STATUS = 0;
 
 % initialize the paths
 GUROBI_PATH = '';
@@ -45,6 +52,7 @@ ILOG_CPLEX_PATH = '';
 TOMLAB_PATH = '';
 MOSEK_PATH = '';
 
+% print header
 if ~isfield(ENV_VARS, 'printLevel') || ENV_VARS.printLevel
     fprintf('\n\n      _____   _____   _____   _____     _____     |\n     /  ___| /  _  \\ |  _  \\ |  _  \\   / ___ \\    |   COnstraint-Based Reconstruction and Analysis\n     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2017\n     | |     | | | | |  _  { |  _  /  |  ___  |   |\n     | |___  | |_| | | |_| | | | \\ \\  | |   | |   |   Documentation:\n     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |   http://opencobra.github.io/cobratoolbox\n                                                  | \n\n');
     ENV_VARS.printLevel = true;
@@ -65,7 +73,7 @@ cd(CBTDIR);
 % configure a remote tracking repository
 if isempty(strfind(getenv('HOME'), 'jenkins'))
     if ENV_VARS.printLevel
-        fprintf(' > Checking if the repository is tracked ... ');
+        fprintf(' > Checking if the repository is tracked using git ... ');
     end
 
     % check if the directory is a git-tracked folder
@@ -117,7 +125,6 @@ if isempty(strfind(getenv('HOME'), 'jenkins'))
     if exist([CBTDIR filesep 'binary' filesep 'README.md'], 'file') && status_curl ~= 0
         fprintf(' > Submodules exist but cannot be updated (remote cannot be reached).\n');
     elseif status_curl == 0
-        % initialize and update the submodules
         if ENV_VARS.printLevel
             fprintf(' > Initializing and updating submodules ...');
         end
@@ -170,7 +177,7 @@ end
 for CbMapOutput = {'svg', 'matlab'}
     CbMapOutputOK = changeCbMapOutput(char(CbMapOutput));
     if CbMapOutputOK
-        break
+        break;
     end
 end
 if CbMapOutputOK
@@ -252,7 +259,7 @@ SOLVERS.lindo_old.type = {'LP'};
 SOLVERS.lindo_legacy.type = {'LP'};
 SOLVERS.lp_solve.type = {'LP'};
 
-% definition of category
+% definition of category of solvers with full support
 SOLVERS.cplex_direct.categ = 'full';
 SOLVERS.dqqMinos.categ = 'full';
 SOLVERS.glpk.categ = 'full';
@@ -265,16 +272,19 @@ SOLVERS.pdco.categ = 'full';
 SOLVERS.quadMinos.categ = 'full';
 SOLVERS.tomlab_cplex.categ = 'full';
 
+% definition of category of solvers with experimental support
 SOLVERS.opti.categ = 'experimental';
 SOLVERS.qpng.categ = 'experimental';
 SOLVERS.tomlab_snopt.categ = 'experimental';
 
+% definition of category of solvers with legacy support
 SOLVERS.gurobi5.categ = 'legacy';
 SOLVERS.gurobi_mex.categ = 'legacy';
 SOLVERS.lindo_old.categ = 'legacy';
 SOLVERS.lindo_legacy.categ = 'legacy';
 SOLVERS.lp_solve.categ = 'legacy';
 
+% definition of categories of solvers
 supportedSolversNames = fieldnames(SOLVERS);
 catSolverNames.LP = {}; catSolverNames.MILP = {}; catSolverNames.QP = {}; catSolverNames.MIQP = {}; catSolverNames.NLP = {};
 for i = 1:length(supportedSolversNames)
@@ -297,7 +307,7 @@ if ENV_VARS.printLevel
     fprintf(' Done.\n');
 end
 
-% saves the current paths
+% saves the current path
 try
     if ENV_VARS.printLevel
         fprintf(' > Saving the MATLAB path ...');
@@ -309,10 +319,10 @@ try
             fprintf('   - The MATLAB path was saved in the default location.\n');
         end
     else
-        savepath('~/pathdef.m');
+        savepath(defaultSavePathLocation);
         if ENV_VARS.printLevel
             fprintf(' Done.\n');
-            fprintf('   - The MATLAB path was saved as ~/pathdef.m.\n');
+            fprintf(['   - The MATLAB path was saved as ', defaultSavePathLocation, '.\n']);
         end
     end
 catch
