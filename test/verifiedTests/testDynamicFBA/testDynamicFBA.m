@@ -6,6 +6,8 @@
 % Author:
 %     - Marouen BEN GUEBILA - 31/01/2017
 
+global CBTDIR
+
 % save the current path
 currentDir = pwd;
 

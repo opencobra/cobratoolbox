@@ -8,6 +8,8 @@
 %
 %   Joseph Kang 11/16/09
 
+global CBTDIR
+
 % save the current path
 currentDir = pwd;
 

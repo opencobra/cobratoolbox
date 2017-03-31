@@ -9,6 +9,8 @@
 % Note:
 %       test is performed on objective as solution can vary between machines, solver version etc..
 
+global CBTDIR
+
 % save the current path
 currentDir = pwd;
 

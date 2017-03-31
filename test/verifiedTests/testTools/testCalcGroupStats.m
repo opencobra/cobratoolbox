@@ -47,7 +47,6 @@ ref_groupCnt = [0; 0; 0; 0];
 assert(isequal(ref_groupList, groupList));
 assert(isequal(ref_groupCnt, groupCnt));
 assert(any(any(isnan(groupStat))));
-
 [groupStat, groupList, groupCnt] = calcGroupStats(data, 'test');  % nargin < 3 sets statname to 'mean' and nRand to 1000
 assert(isequal({'test'}, groupList));
 assert(isequal(1, groupCnt));

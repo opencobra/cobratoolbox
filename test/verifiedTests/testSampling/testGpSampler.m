@@ -4,6 +4,8 @@
 %     - tests the gpSampler function using the E. coli Core Model
 %
 
+global CBTDIR
+
 % save the current path
 currentDir = pwd;
 
@@ -11,7 +13,7 @@ currentDir = pwd;
 cd(fileparts(which(mfilename)));
 
 % load the model
-load('ecoli_core_model.mat', 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 % define the number of sample points
 samplePoints = [5, 190];

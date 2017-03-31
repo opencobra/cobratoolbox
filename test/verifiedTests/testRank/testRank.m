@@ -8,6 +8,8 @@
 %     - original test file: Ronan Fleming
 %     - CI integration: Laurent Heirendt
 
+global CBTDIR
+
 % save the current path
 currentDir = pwd;
 
@@ -15,7 +17,7 @@ currentDir = pwd;
 cd(fileparts(which(mfilename)));
 
 % load the model
-load('iAF1260.mat')
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'iAF1260.mat']);
 A = iAF1260.S;
 printLevel = 1;
 
