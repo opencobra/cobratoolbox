@@ -34,7 +34,10 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="The COBRA Toolbox v3.0" href="../index.html"/> 
+    <link rel="top" title="The COBRA Toolbox v3.0" href="../index.html"/>
+        <link rel="up" title="Modules" href="index.html"/>
+        <link rel="next" title="Tutorials" href="../tutorials/index.html"/>
+        <link rel="prev" title="Modules" href="index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -79,8 +82,11 @@
 
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="index.html">Modules</a></li>
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Modules</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tools</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 </ul>
 
@@ -113,11 +119,11 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
+          <li><a href="index.html">Modules</a> &raquo;</li>
+      
     <li>Tools</li>
       <li class="wy-breadcrumbs-aside">
         
-          
-            <a href="https://github.com/opencobra/cobratoolbox/blob/master/docs/source/modules/tools.rst" class="fa fa-github"> Edit on GitHub</a>
           
         
       </li>
@@ -128,7 +134,410 @@
            <div itemprop="articleBody">
             
   <div class="section" id="tools">
-<span id="tools-functions"></span><h1>Tools<a class="headerlink" href="#tools" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Tools<a class="headerlink" href="#tools" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.tools"></span><dl class="function">
+<dt id="src.tools.FEA">
+<code class="descname">FEA</code><span class="sig-paren">(</span><em>model</em>, <em>rxnSet</em>, <em>group</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.FEA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Significane analysis - Flux enrichment analysis using hypergeometric
+1-sided test and FDR correction for multiple testing</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>resultCellF = FEA(modelEcore, 1:10, &#8216;subSystems&#8217;)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA structure model</li>
+<li><strong>rxnSet</strong> &#8211;
+reaction set to be enriched (vector of reaction indices)</li>
+<li><strong>group</strong> &#8211;
+model.group structure e.g.
+&#8216;subSystems&#8217; look for significantly enriched subsystem in rxnSet</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>resultCellF</strong> &#8211;
+cell structure of enriched groups</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.tools.calcGroupStats">
+<code class="descname">calcGroupStats</code><span class="sig-paren">(</span><em>data</em>, <em>groups</em>, <em>statName</em>, <em>groupList</em>, <em>randStat</em>, <em>nRand</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.calcGroupStats" title="Permalink to this definition">¶</a></dt>
+<dd><p>calcGroupStats Calculate statistics such as mean or standard deviation for
+subgroups of a population</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[groupStat, groupList, groupCnt, zScore] = calcGroupStats(data, groups, statName, groupList, randStat, nRand)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>data</strong> &#8211;
+Matrix of data (individuals x variables)</li>
+<li><strong>groups</strong> &#8211;
+Group identifier for each individual</li>
+<li><strong>statName</strong> &#8211;
+Name of the statistic to be computed for each group:
+&#8216;mean&#8217;: mean value for group (default)
+&#8216;std&#8217;: standard deviation for group
+&#8216;median&#8217;: median for group
+&#8216;count&#8217;: sum total of variable values for group</li>
+<li><strong>groupList</strong> &#8211;
+List of group identifiers to be considered (optional, default
+all values occurring in groups)</li>
+<li><strong>randStat</strong> &#8211;
+Perform randomization analysis</li>
+<li><strong>nRand</strong> &#8211;
+# of randomizations</li>
+</ul>
+</div></blockquote>
+<p>Group identifier can be either strings or numerical values</p>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>groupStat</strong> &#8211;
+Matrix of group statistic values for each group and variable</li>
+<li><strong>groupList</strong> &#8211;
+List of group identifiers considered</li>
+<li><strong>groupCount</strong> &#8211;
+Number of individuals in a group</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.tools.columnVector">
+<code class="descname">columnVector</code><span class="sig-paren">(</span><em>vec</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.columnVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a vector to a column vector</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>vecT = columnVector(vec)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>vec</strong> &#8211;
+a vector</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>vecT</strong> &#8211;
+a column vector</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.tools.countUnique">
+<code class="descname">countUnique</code><span class="sig-paren">(</span><em>list</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.countUnique" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count unique elements in a vector (cell array or numerical)
+Also sorts the unique elements in descending order</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[sortedList, sortedCount] = countUnique(list)</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.tools.createDeltaMatchMatrix">
+<code class="descname">createDeltaMatchMatrix</code><span class="sig-paren">(</span><em>set1</em>, <em>set2</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.createDeltaMatchMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a flux difference constraint matrix for MOMA
+type calculations</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>A = createDeltaMatchMatrix(set1, set2)</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.tools.fvaJaccardIndex">
+<code class="descname">fvaJaccardIndex</code><span class="sig-paren">(</span><em>minFlux</em>, <em>maxFlux</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.fvaJaccardIndex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare flux ranges by computing the Jaccard index</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>J = fvaJaccardIndex(minFlux, maxFlux);</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>minFlux</strong> &#8211;
+An n x k matrix of minimum fluxes through n reactions in k
+different constraint-based models (k &gt; 1).</li>
+<li><strong>maxFlux</strong> &#8211;
+An n x k matrix of maximum fluxes through n reactions in k
+different constraint-based models (k &gt; 1).</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>J</strong> &#8211;
+An n x 1 vector of Jaccard indices, defined as the
+intersection divided by the union of all k flux ranges</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.tools.parseBoolean">
+<code class="descname">parseBoolean</code><span class="sig-paren">(</span><em>str</em>, <em>tokens</em>, <em>allowedElementChars</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.parseBoolean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a Boolean logic statement</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[elements, newRule] = parseBoolean(str, tokens, allowedElementChars)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>str</strong> &#8211;
+Input string or cell array of boolean statements</li>
+<li><strong>tokens</strong> &#8211;
+Allowed operators in boolean statements (optional,
+default &#8216;()&amp;|~&#8217;)</li>
+<li><strong>allowedElementChars</strong> &#8211;
+Allowed characters in elements of the statement</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>elements</strong> &#8211;
+Non-operator elements</li>
+<li><strong>newRule</strong> &#8211;
+New rule translated to element numbers</li>
+<li><strong>rxnGeneMat</strong> &#8211;
+If str is a cell array, rxnGeneMat is the normal
+COBRA rxnGeneMat (a matrix with rows corresponding
+to reactions, and columns corresponding to genes).</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.tools.printLabeledData">
+<code class="descname">printLabeledData</code><span class="sig-paren">(</span><em>labels</em>, <em>data</em>, <em>nonzeroFlag</em>, <em>sortCol</em>, <em>fileName</em>, <em>headerRow</em>, <em>sortMode</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.printLabeledData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print a matrix of data with labels</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>printLabeledData(labels, data, nonzeroFlag, sortCol, fileName, headerRow, sortMode)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>labels</strong> &#8211;
+Row labels</li>
+<li><strong>data</strong> &#8211;
+Data matrix/vector</li>
+<li><strong>nonzeroFlag</strong> &#8211;
+Only print nonzero rows (opt)</li>
+<li><strong>sortCol</strong> &#8211;
+Column used for sorting (-1, none; 0, labels; &gt;0, data columns; opt)</li>
+<li><strong>fileName</strong> &#8211;
+Name of output file (opt)</li>
+<li><strong>headerRow</strong> &#8211;
+Header (opt)</li>
+<li><strong>sortMode</strong> &#8211;
+Sort mode, &#8216;ascend&#8217; or &#8216;descend&#8217; (opt, default &#8216;ascend&#8217;)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.tools.printMatrix">
+<code class="descname">printMatrix</code><span class="sig-paren">(</span><em>A</em>, <em>format</em>, <em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.printMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>printMatrix Prints matrix into a file or screen</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>printMatrix(A, format, file)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>A</strong> &#8211;
+Matrix</li>
+<li><strong>format</strong> &#8211;
+Format string (opt, default &#8216;%6.4ft&#8217;)</li>
+<li><strong>file</strong> &#8211;
+File name (opt)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.tools.readMixedData">
+<code class="descname">readMixedData</code><span class="sig-paren">(</span><em>file</em>, <em>n_header</em>, <em>n_labels</em>, <em>delimiter</em>, <em>verbose</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.readMixedData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read floating point data with row identifiers (text) in the first n columns
+and m headerlines (text)</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[id, data, header] = readMixedData(file, n_header, n_labels, delimiter, verbose)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>file</strong> &#8211;
+Filename</li>
+<li><strong>n_header</strong> &#8211;
+Number of header lines (default 0)</li>
+<li><strong>n_labels</strong> &#8211;
+Number of label columns (default 1)</li>
+<li><strong>delimiter</strong> &#8211;
+Delimiter character (default tab)</li>
+<li><strong>verbose</strong> &#8211;
+Print out the string to be evaluated for debugging (default 0)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.tools.reporterMets">
+<code class="descname">reporterMets</code><span class="sig-paren">(</span><em>model</em>, <em>data</em>, <em>nRand</em>, <em>pValFlag</em>, <em>nLayers</em>, <em>metric</em>, <em>dataRxns</em>, <em>inclExchFlag</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.reporterMets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements the reporter metabolites algorithm by Patil &amp;
+Nielsen</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[normScore, nRxnsMet, nRxnsMetUni, rawScore] = reporterMets(model, data, nRand, pValFlag, nLayers, metric, dataRxns)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+Metabolic network reconstruction structure</li>
+<li><strong>data</strong> &#8211;
+Data matrix/vector</li>
+<li><strong>nRand</strong> &#8211;
+Number of randomizations</li>
+<li><strong>pValFlag</strong> &#8211;
+The data are p-values and should be converted to z-scores</li>
+<li><strong>nLayers</strong> &#8211;
+Number of reaction layers around each metabolite considered (default = 1)</li>
+<li><strong>metric</strong> &#8211;
+Metric used to evaluate score
+(&#8216;default&#8217;,&#8217;mean&#8217;, &#8216;median&#8217;, &#8216;std&#8217;, &#8216;count&#8217;)</li>
+<li><strong>dataRxns</strong> &#8211;
+Reaction list for the data file (if different from the
+model reactions)</li>
+<li><strong>inclExchFlag</strong> &#8211;
+Flag for exchange reactions</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>normScore</strong> &#8211;
+Normalized scores for each metabolite</li>
+<li><strong>nRxnsMet</strong> &#8211;
+Number of reactions connected to each metabolite</li>
+<li><strong>nRxnsMetUni</strong></li>
+<li><strong>rawScore</strong> &#8211;
+Raw unnormalized scores</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.tools.selMatrix">
+<code class="descname">selMatrix</code><span class="sig-paren">(</span><em>selVec</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.selMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create selection matrix from a selection vector</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>selMat = selMatrix(selVec)</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">selVec</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
+<span class="o">%</span> <span class="n">returns</span>
+<span class="n">selMat</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span>
+<span class="o">%</span> <span class="n">For</span> <span class="n">reversible</span> <span class="n">selections</span>
+<span class="n">selVec</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mi">0</span><span class="p">]</span>
+<span class="o">%</span> <span class="n">returns</span>
+<span class="n">selMat</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span>  <span class="mi">0</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.tools.showprogress">
+<code class="descname">showprogress</code><span class="sig-paren">(</span><em>x</em>, <em>whichbar</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.showprogress" title="Permalink to this definition">¶</a></dt>
+<dd><p>showprogress shows waitbars</p>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>x</strong> &#8211;
+percentage in integer (e.g.: 1 = 1%, 40 = 40%, etc.)</li>
+<li><strong>whichbar</strong> &#8211;
+caption</li>
+<li><strong>varagin</strong> &#8211;
+see waitbar header for explanation</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>fout</strong> &#8211;
+handle output from waitbar() (WAITBAR_TYPE = 1)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.tools.splitString">
+<code class="descname">splitString</code><span class="sig-paren">(</span><em>string</em>, <em>delimiter</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.splitString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Splits a string Perl style</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>fields = splitString(string, delimiter)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>string</strong> &#8211;
+Either a single string or a cell array of strings</li>
+<li><strong>delimiter</strong> &#8211;
+Splitting delimiter</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>fields</strong> &#8211;
+Either a single cell array of fields or a cell array of cell
+arrays of fields</li>
+</ul>
+</div></blockquote>
+<p>Default delimiter is &#8216;s&#8217; (whitespace)
+Delimiters are perl regular expression style, e.g. &#8216;|&#8217; has to be expressed
+as &#8216;|&#8217;
+Results are returned in the cell array fields</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.tools.translateList">
+<code class="descname">translateList</code><span class="sig-paren">(</span><em>list</em>, <em>trList1</em>, <em>trList2</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.translateList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate a list of identifiers (either numerical or cell array) using a dictionary</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>list = translateList(list, trList1, trList2)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>list</strong></li>
+<li><strong>trList1</strong></li>
+<li><strong>trList2</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>list</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">Define</span> <span class="n">original</span> <span class="nb">list</span>
+<span class="nb">list</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">}</span>
+<span class="o">%</span> <span class="n">Define</span> <span class="n">dictionary</span>
+<span class="n">trList1</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">}</span>
+<span class="n">trList2</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">}</span>
+<span class="n">newList</span> <span class="o">=</span> <span class="n">translateList</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">trList1</span><span class="p">,</span> <span class="n">trList2</span><span class="p">);</span>
+<span class="o">%</span> <span class="n">returns</span>
+<span class="n">newList</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">};</span>
+</pre></div>
+</div>
+</dd></dl>
+
 <dl class="function">
 <dt id="src.tools.unioncell">
 <code class="descname">unioncell</code><span class="sig-paren">(</span><em>A</em>, <em>colA</em>, <em>B</em>, <em>colB</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.unioncell" title="Permalink to this definition">¶</a></dt>
@@ -149,7 +558,7 @@ column of B for comparison</li>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><em>AB</em> &#8211;
+<li><strong>AB</strong> &#8211;
 cell which is the union of cell B to cell A</li>
 </ul>
 </div></blockquote>
@@ -164,6 +573,15 @@ cell which is the union of cell B to cell A</li>
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../tutorials/index.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Modules" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -191,7 +609,7 @@ cell which is the union of cell B to cell A</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.0.0',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

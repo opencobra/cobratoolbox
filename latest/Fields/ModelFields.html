@@ -1,0 +1,276 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Current Fields in the model structure &mdash; The COBRA Toolbox v3.0</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/julia.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="The COBRA Toolbox v3.0" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" />
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/index.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>Current Fields in the model structure</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="current-fields-in-the-model-structure">
+<span id="current-fields-in-the-model-structure"></span><h1>Current Fields in the model structure<a class="headerlink" href="#current-fields-in-the-model-structure" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="official-definition-from-schellenberger-et-al-2011-supplementary-file-1">
+<span id="official-definition-from-schellenberger-et-al-2011-supplementary-file-1"></span><h2>Official definition from Schellenberger et al 2011 (Supplementary File 1)<a class="headerlink" href="#official-definition-from-schellenberger-et-al-2011-supplementary-file-1" title="Permalink to this headline">¶</a></h2>
+<p><span style="color:red">The following field definitions are those used currently in the COBRA toolbox.
+Except for the required fields, they are subject to changes and should not be relied on</span>.</p>
+<div class="section" id="required">
+<span id="required"></span><h3>Required:<a class="headerlink" href="#required" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>mets: metabolite name abbreviation; metabolite ID; order corresponds to S matrix. S: Stoichiometric matrix in sparse format.</li>
+<li>rev: logical array; true for reversible reactions, otherwise false</li>
+<li>lb: lower flux bound for corresponding reactions</li>
+<li>ub: upper flux bound for corresponding reactions</li>
+<li>c: objective coefficient for corresponding reactions</li>
+<li>metCharge: value of charge for corresponding metabolite</li>
+<li>metFormulas: Elemental formula for each metabolite</li>
+<li>rules: Boolean rule for the corresponding reaction which defines gene-reaction relationship.</li>
+<li>genes: List of all genes within the model.</li>
+<li>rxnGeneMat: matrix with rows corresponding to reactions and columns corresponding to genes</li>
+<li>grRules: cell list of gene-protein-reaction strings for each reaction</li>
+<li>subSystems: subSystem assignment for each reaction</li>
+<li>description: string describing the model (i.e. model name)</li>
+</ul>
+</div>
+<div class="section" id="optional">
+<span id="optional"></span><h3>Optional:<a class="headerlink" href="#optional" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>rxnNames: Full name of each corresponding reaction</li>
+<li>rxnReferences: Cell array of strings which can contain optional information on references for
+each specific reaction.</li>
+<li>rxnECNumbers: E. C. number for each reaction</li>
+<li>rxnNotes: Cell array of strings which can contain optional information for each specific reaction.</li>
+<li>confidenceScores: Confidence score for each reaction</li>
+<li>proteins: proteins associated with each reaction</li>
+<li>metNames: Full name of each corresponding metabolite</li>
+<li>metChEBIID: ChEBI ID for each corresponding metabolite</li>
+<li>metKeggID: KEGG ID for each corresponding metabolite</li>
+<li>metPubChemID: Pub Chem ID for each corresponding metabolite</li>
+<li>metInChIString: InChI String for each corresponding metabolite</li>
+</ul>
+</div>
+</div>
+<div class="section" id="recent-required-additions">
+<span id="recent-required-additions"></span><h2>Recent <em>required</em> additions<a class="headerlink" href="#recent-required-additions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>model.modelVersion - the Version of the model</li>
+<li>model.osenseStr - The String representation of the objective sense (either &#8216;min&#8217; or &#8216;max&#8217;)</li>
+<li>model.b - the b matrix</li>
+<li>model.csense - a Char Array to indicate whether the b vector is supposed to be used as an equality (E), lower then (L) or greater then (G)</li>
+</ul>
+</div>
+<div class="section" id="recent-optional-fields">
+<span id="recent-optional-fields"></span><h2>Recent optional fields<a class="headerlink" href="#recent-optional-fields" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>model.metInchiString <p>→</p>
+ model.annotation.metabolite.inchi</li>
+<li>model.rxnKeggID <p>→</p>
+ model.annotation.metabolite.kegg__46__reaction</li>
+<li>model.metHMDB <p>→</p>
+ model.annotation.metabolite.hmdb</li>
+<li>model.metEHMNID - Metabolite identifier from the Edinburgh Human Metabolic Network</li>
+<li>model.rxnConfidenceEcoIDA - I&#8217;m not entirely sure what this field (again recon2) is supposed to indicate.</li>
+<li>model.ExchRxnBool - logic array indicating exchange reactions</li>
+<li>model.EXRxnBool - see model.ExchRxnBool</li>
+<li>model.DMRxnBool - logic array indicating Demand Reactions</li>
+<li>model.SinkRxnBool - (see model.DMRxnBool)</li>
+<li>model.SIntRxnBool - (see model.ExchRxnBool) anything thats not an exchange reaction should be internal...</li>
+</ul>
+</div>
+</div>
+<div class="section" id="possible-future-changes">
+<span id="possible-future-changes"></span><h1>Possible future changes<a class="headerlink" href="#possible-future-changes" title="Permalink to this headline">¶</a></h1>
+<p>The annotation fields linking to databases are currently under discussion, and could be reordered as follows. This includes in particular: metChEBIID,
+metKeggID, metPubChemID, metInChIString</p>
+<ul class="simple">
+<li>model.annotation</li>
+<li>model.annotation.reaction - contains reaction database annotations (with identifiers.org IDs and dots in these replaced by __46__ )</li>
+<li>model.annotation.metabolite - contains metabolite database annotations (with identifiers.org IDs and dots in these replaced by __46__ )</li>
+<li>model.annotation.genes - contains gene database annotations (with identifiers.org IDs and dots in these replaced by __46__ )</li>
+<li>model.annotation.compartments - contains compartment database annotations (with identifiers.org IDs and dots in these replaced by __46__ )</li>
+</ul>
+<p>Each field under annotation can have subfields defined by bioql qualifiers (e.g. is, isDerivedFrom, isDescribedBy, isInstanceOf, hasPart etc...)
+These can directly be parsed to SBML Annotations. Would require to add functions that can manage this data during model curation (e.g. addGeneAnnotation(gene,databaseidentifier,database,varargin),
+with varargin providing for example the option to set the relation)</p>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

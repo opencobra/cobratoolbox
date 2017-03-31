@@ -1,8 +1,9 @@
 
-.. _tools_functions:
+.. _tools:
 
 
 Tools
 -----
+.. automodule:: src.tools
+   :members:
 
-.. autofunction:: src.tools.unioncell
