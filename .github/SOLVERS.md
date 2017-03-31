@@ -9,9 +9,9 @@ Solver Installation Guide
 
 <!-- /TOC -->
 Platform-specific instructions are marked with
-- **Windows** - <img src="https://winblogs.azureedge.net/win/2016/12/cropped-cropped-Windows-logo1-192x192.png" height="20px">
-- **macOS** - <img src="http://geeknrush.fr/wp-content/uploads/2015/10/Apple-Logo-Black.png" height="20px">
-- **linux** - <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/652px-Tux.svg.png" height="20px">
+- **Windows** - <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px">
+- **macOS** - <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">
+- **linux** - <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px">
 
 *Note: Most steps require superuser or administrator rights (`sudo`).*
 
@@ -19,92 +19,108 @@ Platform-specific instructions are marked with
 
 1) Download `TOMLAB/CPLEX` from [here](http://tomopt.com/scripts/register.php), where you can also download `TOMLAB/SNOPT`.
 
-2)  <img src="http://geeknrush.fr/wp-content/uploads/2015/10/Apple-Logo-Black.png" height="20px">  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/652px-Tux.svg.png" height="20px"> In a terminal window, navigate to the download directory of tomlab and do the following
+2)  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> In a terminal window, navigate to the download directory of tomlab and do the following
     ````bash
     $ chmod +x <filename>.bin
     $ sudo ./<filename>.bin
     ````
-    <img src="https://winblogs.azureedge.net/win/2016/12/cropped-cropped-Windows-logo1-192x192.png" height="20px"> Run the `tomlab-win64-setup_<ver>.exe` as an administrator.
+    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> Run the `tomlab-win64-setup_<ver>.exe` as an administrator.
 
 3) Follow the installation instructions and install `tomlab` in:
-    - <img src="http://geeknrush.fr/wp-content/uploads/2015/10/Apple-Logo-Black.png" height="20px">  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/652px-Tux.svg.png" height="20px">: `/opt` such that you will have a folder `/opt/tomlab`.
-    - <img src="https://winblogs.azureedge.net/win/2016/12/cropped-cropped-Windows-logo1-192x192.png" height="20px"> : `C:\` such that you will have a folder `C:\tomlab`
+    - <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px">: `/opt` such that you will have a folder `/opt/tomlab`.
+    - <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> : `C:\` such that you will have a folder `C:\tomlab`
 
-
-4) <img src="http://geeknrush.fr/wp-content/uploads/2015/10/Apple-Logo-Black.png" height="20px">  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/652px-Tux.svg.png" height="20px"> Copy the `tomlab.lic` license to the folder `/opt/tomlab` and change its permissions
-
+4) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Copy the `tomlab.lic` license to the folder `/opt/tomlab` and change its permissions
     ````bash
     $ sudo chmod 644 tomlab.lic
     ````
-
     If you want to confirm the correct permissions
     ````bash
     $ stat --format '%a' <file>
     ````
-    <img src="https://winblogs.azureedge.net/win/2016/12/cropped-cropped-Windows-logo1-192x192.png" height="20px"> Copy the `tomlab.lic` license to the folder `C:\tomlab`.
+    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> Copy the `tomlab.lic` license to the folder `C:\tomlab`.
+
+5) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Set the environment variable by editing your '~/.bashrc' file:
+    ````bash
+    $ nano ~/.bashrc
+    ````
+    Append the following lines (type `i` to insert text), hit the `ESC` key, then save and exit by typing `wq` and hitting ENTER:
+    ````
+    export TOMLAB_PATH="/opt/tomlab"
+    ````
+    Reload your `bashrc`
+    ````bash
+    $ source ~/.bashrc
+    ````
 
 ## IBM ILOG CPLEX
 
 1) Download the `CPLEX` installation binary from [here](https://www-01.ibm.com/software/websphere/products/optimization/cplex-studio-community-edition/)
 
-2) <img src="http://geeknrush.fr/wp-content/uploads/2015/10/Apple-Logo-Black.png" height="20px">  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/652px-Tux.svg.png" height="20px"> Add `execute` permission to binary
-
+2) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Add `execute` permission to binary
     ````bash
     $ chmod +x <cplexbinary>.bin
     ````
 
-3) <img src="http://geeknrush.fr/wp-content/uploads/2015/10/Apple-Logo-Black.png" height="20px">  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/652px-Tux.svg.png" height="20px"> Run the installer binary as superuser, follow the installation procedure, and accept the default installation path.
-
+3) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Run the installer binary as superuser, follow the installation procedure, and accept the default installation path.
     ````bash
     $ sudo ./<cplexbinary>.bin
     ````
+    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> Run `cplex_studio<ver>.win-x86-64.exe` as an administrator. Follow the installation instructions and install `CPLEX` in `C:\Program Files\IBM\ILOG\CPLEX_Studio<ver>`.
 
-    <img src="https://winblogs.azureedge.net/win/2016/12/cropped-cropped-Windows-logo1-192x192.png" height="20px"> Run `cplex_studio<ver>.win-x86-64.exe` as an administrator. Follow the installation instructions and install `CPLEX` in `C:\Program Files\IBM\ILOG\CPLEX_Studio<ver>`.
-
-    ![#ff0000](https://placehold.it/15/ff0000/000000?text=+) Make sure that you select `Yes, update the PATH variable.`. You can also follow the instructions [here](https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/GettingStarted/topics/set_up/Windows.html).
-
+4) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Set the environment variable by editing your '~/.bashrc' file:
+    ````bash
+    $ nano ~/.bashrc
+    ````
+    Append the following lines (type `i` to insert text), hit the `ESC` key, then save and exit by typing `wq` and hitting ENTER:
+    ````
+    export ILOG_CPLEX_PATH="/opt/ibm/ILOG/CPLEX_Studio<ver>"
+    ````
+    Reload your `bashrc`
+    ````bash
+    $ source ~/.bashrc
+    ````
+    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> ![#ff0000](https://placehold.it/15/ff0000/000000?text=+) Make sure that you select `Yes, update the PATH variable.`. You can also follow the instructions [here](https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/GettingStarted/topics/set_up/Windows.html).
 
 ## MOSEK
 
-1) Download `MOSEK` as an archive [here](https://mosek.com/resources/downloads) and save to `/opt/.`
+1) Download `MOSEK` as an archive [here](https://mosek.com/resources/downloads)
 
-2) Apply for a license [here](https://mosek.com/resources/trial-license). A free academic license is [here](https://license.mosek.com/academic/).
+2) Apply for a license [here](https://mosek.com/resources/trial-license). A free academic license is [here](https://license.mosek.com/academic/). You will receive an email with your `mosek.lic` file.
 
-3) You will receive an email with your `mosek.lic` file.
+3) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Save (or move) the downloaded archive `tar.bz2` to `/opt/.`
 
-4) Copy the license file `mosek.lic` to `/opt/mosek/`
-
-5) Navigate to the directory where the `tar.bz2` was downloaded (`/opt/`) and enter in a shell to extract the archive
-
+4) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Navigate to `/opt` and extract the archive
     ````bash
+    $ cd /opt
     $ tar xvjf <filename>.tar.bz2
     ````
+    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> Run `moseksetupwin64x86.msi` and select `Typical` installation. This will install `mosek` in `C:\Program Files\Mosek`.
 
-6) Configure the `PATH` and `MOSEKLM_LICENSE_FILE` environment variables in `~/.bashrc` by editing your `bashrc` file
+5) Configure the `PATH` and `MOSEKLM_LICENSE_FILE` environment variables in `~/.bashrc` by editing your `bashrc` file
 
     ````bash
     $ nano ~/.bashrc
     ````
     Append the following lines (type `i` to insert text), hit the `ESC` key, then save and exit by typing `wq` and hitting ENTER:
-
     ````
     export PATH="/opt/mosek/<ver>/":${PATH}
     export MOSEKLM_LICENSE_FILE="/opt/mosek/"
     ````
-
-7) Reload your `bashrc`
-
+    Reload your `bashrc`
     ````bash
     $ source ~/.bashrc
     ````
 
-8) Verify that `MOSEK` is correctly installed by using the following command in your terminal
+6) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Copy the license file `mosek.lic` to `/opt/mosek/`.
+   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> Copy the license file `mosek.lic` to `C:\Users\<yourUsername>\mosek\`.
+
+7) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px"> Verify that `MOSEK` is correctly installed by using the following command in your terminal
 
     ````sh
     $ msktestlic
     ````
-
-    It should give an output similar to this:
+    This command should give an output similar to this:
     ````
     Problem
       Name                   :
@@ -136,7 +152,7 @@ Platform-specific instructions are marked with
     A license was checked out correctly.
     ************************************
     ````
-
+    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px"> By browsing to `Start > All Programs > Mosek Optimization Tools`, you can run `Test license system`. This should open a window and display the output as shown above.
 
 ## Gurobi
 
