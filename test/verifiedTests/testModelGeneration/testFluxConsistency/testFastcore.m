@@ -28,8 +28,9 @@ if solverOK
 
     % randomly pick some reactions
     epsilon = 1e-4;
-    printLevel = 0;
-    A = fastcore(coreInd, model, epsilon, printLevel);
+    for printLevel = [0, 1]
+        A = fastcore(coreInd, model, epsilon, printLevel);
+    end
 
     % test, whether all of the core fluxes can carry flux
     reducedmodel = removeRxns(model, setdiff(model.rxns, model.rxns(A)));
