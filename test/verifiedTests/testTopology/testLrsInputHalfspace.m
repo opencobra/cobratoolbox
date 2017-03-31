@@ -29,52 +29,53 @@ f = [];
 positivity = 1;
 inequality = 1;
 filename = 'test';
+shellScript = 0;
 lrsInputHalfspace([], [], filename);
-runLrs(filename, positivity, inequality);
+runLrs(filename, positivity, inequality, shellScript);
 
 lrsInputHalfspace(S, [], filename);
-runLrs(filename, positivity, inequality);
+runLrs(filename, positivity, inequality, shellScript);
 
 lrsInputHalfspace(S, S, filename);
-runLrs(filename, positivity, inequality);
+runLrs(filename, positivity, inequality, shellScript);
 
 lrsInputHalfspace([], S, filename);
-runLrs(filename, positivity, inequality);
+runLrs(filename, positivity, inequality, shellScript);
 
 lrsInputHalfspace(S, [], filename, positivity, inequality, zeros(size(S, 1), 1), zeros(size(S, 2), 1), zeros(size(S, 2), 1));
-runLrs(filename, positivity, inequality);
+runLrs(filename, positivity, inequality, shellScript);
 
 positivity = 0;
 lrsInputHalfspace([], [], filename, positivity);
-runLrs(filename, positivity, inequality);
+runLrs(filename, positivity, inequality, shellScript);
 
 lrsInputHalfspace(S, [], filename, positivity);
-runLrs(filename, positivity, inequality);
+runLrs(filename, positivity, inequality, shellScript);
 
 inequality = 0;
 lrsInputHalfspace(S, [], filename, positivity, inequality);
-runLrs(filename, positivity, inequality);
+runLrs(filename, positivity, inequality, shellScript);
 
 lrsInputHalfspace([], [], filename, positivity, inequality);
-runLrs(filename, positivity, inequality);
+runLrs(filename, positivity, inequality, shellScript);
 
 lrsInputHalfspace(S, [], filename, positivity, inequality);
-runLrs(filename, positivity, inequality);
+runLrs(filename, positivity, inequality, shellScript);
 
 lrsInputHalfspace(S, S, filename, positivity, inequality);
-runLrs(filename, positivity, inequality);
+runLrs(filename, positivity, inequality, shellScript);
 
 lrsInputHalfspace([], S, filename, 1, inequality);
-runLrs(filename, positivity, inequality);
+runLrs(filename, positivity, inequality, shellScript);
 
 lrsInputHalfspace(S, S, filename, 1, inequality);
-runLrs(filename, positivity, inequality);
+runLrs(filename, positivity, inequality, shellScript);
 
 lrsInputHalfspace([], S, filename, positivity, inequality);
-runLrs(filename, positivity, inequality);
+runLrs(filename, positivity, inequality, shellScript);
 
 lrsInputHalfspace(S, [], filename, positivity, inequality, zeros(size(S, 1), 1), zeros(size(S, 2), 1), zeros(size(S, 2), 1));
-runLrs(filename, positivity, inequality);
+runLrs(filename, positivity, inequality, shellScript);
 
 try
     lrsInputHalfspace(S, [], filename, positivity, inequality, [], [], [], 0);
@@ -83,9 +84,9 @@ catch ME
 end
 
 % produce a bash script and run it
-sh = 1;
-lrsInputHalfspace(S, [], filename, positivity, inequality, zeros(size(S, 1), 1), [], [], sh);
-runLrsBash(filename, positivity, inequality);
+shellScript = 1;
+lrsInputHalfspace(S, [], filename, positivity, inequality, zeros(size(S, 1), 1), [], [], shellScript);
+runLrs(filename, positivity, inequality, shellScript);
 
 % delete generated files
 delete('*.ine');
