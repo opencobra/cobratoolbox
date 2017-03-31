@@ -9,28 +9,29 @@ The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox
 |--------|--------|--------|--------|--------|--------|
 | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2016b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2016b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2015b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2015b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2014b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2014b/) | [![codecov](https://codecov.io/gh/opencobra/cobratoolbox/branch/master/graph/badge.svg)](https://codecov.io/gh/opencobra/cobratoolbox/branch/master) | ![Code grade](https://prince.lcsb.uni.lu/jenkins/userContent/codegrade.svg "Ratio of the number of inefficient code lines and the total number of lines of code (in percent). A: 0-3%, B: 3-6%, C: 6-9%, D: 9-12%, E: 12-15%, F: > 15%.") |  [![COBRAforum](https://img.shields.io/badge/COBRA-forum-blue.svg)](https://groups.google.com/forum/#!forum/cobra-toolbox) |
 
-Pre-requisites
+Requirements
 --------------
 
-Please follow [this guide](https://github.com/opencobra/MATLAB.devTools/blob/master/PREREQUISITES.md) in order to configure your system properly.
+![#ff0000](https://placehold.it/15/ff0000/000000?text=+) Please follow [this guide](https://github.com/opencobra/cobratoolbox/blob/master/.github/REQUIREMENTS.md) in order to configure your system properly.
 
 Installation
 ------------
 
-1. Clone this repository (the folder `cobratoolbox` will be created). Do **not** download the repository as a `.zip` file.:
-  ```sh
+1. Download this repository (the folder `cobratoolbox` will be created). It is not recommended to download the repository as a `.zip` file. You can clone the repository using:
+  ````bash
   $ git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
-  ```
+  ````
+  ![#ff0000](https://placehold.it/15/ff0000/000000?text=+) This command must be run in the `Terminal` (on `linux` and `macOS`) or your `Git Bash` (on `Windows`), and **not** in `MATLAB`.
 
 2. Change to the folder `cobratoolbox` and from `MATLAB`, run
-  ```Matlab
+  ````Matlab
   >> initCobraToolbox
-  ```
+  ````
 
-3. You can test your installation by running:
-  ```Matlab
+3. You can test your installation by running from `MATLAB`:
+  ````Matlab
   >> testAll
-  ```
+  ````
 
 Tutorials
 ---------
