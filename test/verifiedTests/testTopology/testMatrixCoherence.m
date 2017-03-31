@@ -11,14 +11,14 @@
 % save the current path
 currentDir = pwd;
 
-% initialize the test
-initTest(fileparts(which(mfilename)));
+% define the tolerance
+tol = 1e-5;
 
 A = [1, -1, 1;
      1,  2, 4];
 
 [mu, Q] = matrixCoherence(A);
 
-assert(abs(mu - 0.8575) < 1e-5);
+assert(abs(mu - 0.8575) < tol);
 
 cd(currentDir)
