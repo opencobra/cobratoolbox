@@ -1,18 +1,18 @@
 Solver Installation Guide
 ---------------------------------
 <!-- TOC -->
-
 - [TOMLAB](#tomlab)
 - [IBM ILOG CPLEX](#ibm-ilog-cplex)
 - [GUROBI](#gurobi)
 - [MOSEK](#mosek)
 <!-- /TOC -->
+
 Platform-specific instructions are marked with
 - **Windows** - <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px">
 - **macOS** - <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px">
 - **linux** - <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px">
 
-*Note: Most steps require superuser or administrator rights (`sudo`).*
+![#ff0000](https://placehold.it/15/ff0000/000000?text=+) Most steps require superuser or administrator rights (`sudo`).
 
 ## TOMLAB
 
