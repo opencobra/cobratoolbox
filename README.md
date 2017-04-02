@@ -28,26 +28,28 @@ The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox
   </tr>
 </table>
 
-Requirements
---------------
+System Requirements and Solver Installation
+-------------------------------------------
 
 ![#ff0000](https://placehold.it/15/ff0000/000000?text=+) Please follow [this guide](https://github.com/opencobra/cobratoolbox/blob/master/.github/REQUIREMENTS.md) in order to configure your system properly.
+
+The default solver is `glpk`. You can install `TOMLAB`, `IBM ILOG CPLEX`, `GUROBI`, or `MOSEK` by following these [detailed instructions](https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md).
 
 Installation
 ------------
 
-1. Download this repository (the folder `cobratoolbox` will be created). It is not recommended to download the repository as a `.zip` file. You can clone the repository using:
+1. Download this repository (the folder `./cobratoolbox/` will be created). You can clone the repository using:
     ````bash
     $ git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
     ````
-    ![#ff0000](https://placehold.it/15/ff0000/000000?text=+) Run this command in `Terminal` (on `linux`/`macOS`) or in `Git Bash` (on `Windows`), and **not** in `MATLAB`.
+    ![#ff0000](https://placehold.it/15/ff0000/000000?text=+) Run this command in `Terminal` (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS"> and <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux">) or in `Git Bash` (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" alt="Windows">) - **not** in <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" alt="Matlab">. Although not recommended, you can download the repository as a [compressed archive](https://github.com/opencobra/cobratoolbox/archive/master.zip).
 
-2. Change to the folder `cobratoolbox` and from `MATLAB`, run
+2. Change to the folder `cobratoolbox/` and run from <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" alt="Matlab">:
     ````Matlab
     >> initCobraToolbox
     ````
 
-3. You can test your installation by running from `MATLAB`:
+3. You can test your installation by running from <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" alt="Matlab">:
     ````Matlab
     >> testAll
     ````
@@ -69,15 +71,19 @@ Support and Documentation
 How to contribute
 -----------------
 
+:+1::tada: First off, thanks for taking the time to contribute to [The COBRA Toolbox](https://github.com/opencobra/cobratoolbox)! :tada::+1:
+
 <p align="center">
 <img src="https://raw.githubusercontent.com/opencobra/MATLAB.devTools/develop/assets/devTools_logo.png" height="120px"/>
 </p>
 
 ![#ff0000](https://placehold.it/15/ff0000/000000?text=+) **Check out the [MATLAB.devTools](https://github.com/opencobra/MATLAB.devTools) - and contribute the smart way!**
 
-- Please follow the [Contributing Guide](https://github.com/opencobra/cobratoolbox/blob/master/.github/CONTRIBUTING.md).
-- More information on writing a **test** is [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/TESTGUIDE.md).
-- A guide on reporting an **issue** is [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/ISSUEGUIDE.md).
+- Please follow the [Style Guide](https://github.com/opencobra/cobratoolbox/blob/master/.github/STYLEGUIDE.md).
+- More information on writing a **test** is [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/TESTGUIDE.md) and a template is [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/testTemplate.m).
+- A guide for reporting an **issue** or submitting a **pull request (PR)** is [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/ISSUEGUIDE.md).
+
+If you want to use `git` via the command line interface and need help, these [training slides](https://uni-lu.github.io/slides/) will get you started. This [guide](https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github) or the official [GitHub guide](https://help.github.com/articles/creating-a-pull-request/) also come in handy.
 
 How to cite `The COBRA Toolbox`
 ---------------
@@ -92,12 +98,12 @@ When citing `The COBRA Toolbox`, it is important to cite the original paper wher
 >[2] = Schellenberger J, Que R, Fleming RMT, Thiele I, Orth JD, Feist AM, Zielinski DC, Bordbar A, Lewis NE, Rahmanian S, Kang J, Hyduke DR, Palsson BØ. 2011 Quantitative prediction of cellular metabolism with constraint-based models: The COBRA Toolbox v2.0. Nature Protocols 6:1290-1307.
 >
 
-Compatibility and Binaries
+Binaries and Compatibility
 ---------------------------
-
-Read more on the compatibility with SBML-FBCv2 [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/NOTES.md).
 
 For convenience, we provide the [`SBMLToolbox 4.1.0`](http://sbml.org/Software/SBMLToolbox), and [`glpk_mex`](https://github.com/blegat/glpkmex) in `external/toolboxes`, [`libSBML-5.13.0-matlab`](http://sbml.org/Software/libSBML) in `src/io/utilities`.
 
 [Binaries](https://github.com/opencobra/COBRA.binary) for these libraries are provided in a submodule for Mac OS X 10.6 or later (64-bit), GNU/Linux Ubuntu 10.0 (64-bit), and Microsoft Windows 7 (64-bit).
 For unsupported OS, please refer to their respective building instructions ([`glpk_mex`](https://github.com/blegat/glpkmex#instructions-for-compiling-from-source), [`libSBML`](http://sbml.org/Software/libSBML/5.13.0/docs//cpp-api/libsbml-installation.html)).
+
+Read more on the compatibility with SBML-FBCv2 [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/NOTES.md).

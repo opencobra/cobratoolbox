@@ -1,23 +1,5 @@
 # Styleguide
 
-### Git commit messages
-
-* Use the present tense ("Add feature" not "Added feature")
-* Limit the first line to 72 characters or less
-* Reference issues and pull requests liberally
-* When only changing documentation, include `[ci skip]` in the commit description
-* Consider starting the commit message with an applicable emoji:
-    * :bug: `:bug:` when fixing a bug
-    * :art: `:art:` when improving the format/structure of the code
-    * :racehorse: `:racehorse:` when improving performance
-    * :memo: `:memo:` when writing docs
-    * :fire: `:fire:` when removing code or files
-    * :white_check_mark: `:white_check_mark:` when adding tests
-    * :penguin: `:penguin:` when fixing something on Linux
-    * :apple: `:apple:` when fixing something on macOS
-    * :computer: `:computer:` when fixing something on Windows
-    * :green_heart: `:green_heart:` when fixing the CI build
-
 ### Code
 
 1. **Spacing**
@@ -52,8 +34,8 @@
 
 4. **Platform independent code**
 
-- [ ] Used `pwd` to get the current directory
-- [ ] Used `filesep` for paths (e.g., `['myPath' filesep 'myFile.m']`)
+- Use `pwd` to get the current directory
+- Use `filesep` for paths (e.g., `['myPath' filesep 'myFile.m']`)
 
 ### Documentation and comments
 
@@ -74,14 +56,31 @@
 
 ### Tests
 
-* Make sure not to include `%%` in your test file to separate code blocks
 * Annotate the individual tests extensively for review
 * Use `assert(computedResult == expectedResult)` to logically test the `computedResult` and the `expectedResult` (you may also use `<` or `>`)
 * Write loops for testing multiple models and/or solvers
 * Try to make your tests compatible with as many solvers as possible
 * Test, if possible, your contribution on `Linux`
 * Make sure to limit the output of the function to a minimum - only print the necessary information
-* Use `verbose` to switch the verbose mode
+* Use `verbose` or `printLevel` to switch the verbose mode
 * Ensure that the solution of optimization problems is actually a solution (test that the solution vector satisfies the imposed constraints)
 * Make sure that equality `assert` tests within a given tolerance, e.g., `tol = 1e-9; assert(condition < tol);`
 * Only use equality `assert` tests for integer values
+
+### Git commit messages
+
+* Use the present tense ("Add feature" not "Added feature")
+* Limit the first line to 72 characters or less
+* Reference issues and pull requests liberally
+* When only changing documentation, include `[CI skip]` in the commit description
+* Consider starting the commit message (not the title of the PR) with an applicable emoji:
+    * :bug: `:bug:` when fixing a bug
+    * :art: `:art:` when improving the format/structure of the code
+    * :racehorse: `:racehorse:` when improving performance
+    * :memo: `:memo:` when writing docs
+    * :fire: `:fire:` when removing code or files
+    * :white_check_mark: `:white_check_mark:` when adding tests
+    * :penguin: `:penguin:` when fixing something on Linux
+    * :apple: `:apple:` when fixing something on macOS
+    * :computer: `:computer:` when fixing something on Windows
+    * :green_heart: `:green_heart:` when fixing the CI build

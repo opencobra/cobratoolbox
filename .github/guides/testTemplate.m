@@ -7,16 +7,11 @@
 %     - <major change>: <your name> <date>
 %
 
-% define global paths
-global path_TOMLAB
-global path_ILOG_CPLEX
-global path_GUROBI
-
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 
 % set the tolerance
 tol = 1e-8;
@@ -41,24 +36,10 @@ end
 for k = 1:length(solverPkgs)
     fprintf(' -- Running <testFile> using the solver interface: %s ... ', solverPkgs{k});
 
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(path_TOMLAB));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        addpath(genpath(path_GUROBI));
-    end
-
     solverLPOK = changeCobraSolver(solverPkgs{k});
 
     if solverLPOK
         % <your test goes here>
-    end
-
-    % remove the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        rmpath(genpath(path_TOMLAB));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        rmpath(genpath(path_GUROBI));
     end
 
     % output a success message

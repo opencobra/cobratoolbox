@@ -3,5 +3,5 @@
 **I hereby confirm that I have:**
 
 - [ ] Tried to solve the issue on my own
-- [ ] Run `git pull` and retried to run my code
-- [ ] Checked that a similar issue hasn't already been filed
+- [ ] Retried to run my code with the latest version of The COBRA Toolbox
+- [ ] Checked that a similar issue has not already been opened

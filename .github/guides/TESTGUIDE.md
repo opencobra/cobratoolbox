@@ -61,27 +61,17 @@ A test template is readily available [here](testTemplate.m). The following secti
 %
 ````
 
-#### 2. Solver paths
-
-````Matlab
-% define global paths
-global path_TOMLAB
-global path_ILOG_CPLEX
-global path_GUROBI
-````
-*Note: `glpk` does not need to have an explicit path.*
-
-#### 3. Test initialization
+#### 2. Test initialization
 
 ````Matlab
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+cd(fileparts(which(mfilename)));
 ````
 
-#### 4. Define the solver packages to be tested and the tolerance
+#### 3. Define the solver packages to be tested and the tolerance
 
 ```Matlab
 % set the tolerance
@@ -91,7 +81,7 @@ tol = 1e-8;
 solverPkgs = {'tomlab_cplex', 'glpk', 'gurobi6'};
 ```
 
-#### 5. Load the model and reference data
+#### 4. Load the model and reference data
 
 ```Matlab
 % load the model
@@ -101,7 +91,7 @@ load('testData_functionToBeTested.mat');
 
 Please only load *small* models, i.e. less than `100` reactions.
 
-#### 6. Create a parallel pool
+#### 5. Create a parallel pool
 
 This is only necessary for tests that test a function that runs in parallel.
 
@@ -114,7 +104,7 @@ end
 ```
 Please only launch a pool of `2` workers - more workers should not be needed to test a parallel function efficiently.
 
-#### 7. Body of test
+#### 6. Body of test
 
 Loop through the solver packages
 
@@ -122,24 +112,10 @@ Loop through the solver packages
 for k = 1:length(solverPkgs)
     fprintf(' -- Running <testFile> using the solver interface: %s ... ', solverPkgs{k});
 
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(path_TOMLAB));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        addpath(genpath(path_GUROBI));
-    end
-
     solverLPOK = changeCobraSolver(solverPkgs{k});
 
     if solverLPOK
         % <your test goes here>
-    end
-
-    % remove the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        rmpath(genpath(path_TOMLAB));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        rmpath(genpath(path_GUROBI));
     end
 
     % output a success message
@@ -147,7 +123,7 @@ for k = 1:length(solverPkgs)
 end    
 ````
 
-#### 8. Change to the current directory
+#### 7. Change to the current directory
 
 ````Matlab
 % change the directory
@@ -189,29 +165,29 @@ Common errors include:
 
 ## Can I find out how many tests have failed?
 
-The idea of continuous integration and unit testing is to have all tests passing. The logical conditions, when tested using `assert()`, will throw an error when not satisfied. It is bad practice to test the sum of tests passed and failed. Please only test using `assert(logicalCondition)`.
+The idea of continuous integration and unit testing is to have all tests passing. The logical conditions, when tested using `assert()`, will throw an error when not satisfied. It is bad practice to test the sum of tests passed and failed. Please only test using `assert(logicalCondition)`. Even though a test may fail using `assert()`, a summary table with comprehensive information is provided at the end of the test run.
 
-For instance, the following test script:
+For instance, the following test script **do not do this - bad practice!**:
 ````Matlab
 % do not do this: bad practice!
 testPassed = 0;
 testFailed = 0;
 
 % test on logical condition 1 - do not do this: bad practice!
-if (logicalCondition1)
+if logicalCondition1
     testPassed = testPassed + 1;
 else
     testFailed = testFailed + 1;
 end
 
 % test on logical condition 2 - do not do this: bad practice!
-if (logicalCondition2)
+if logicalCondition2
     testPassed = testPassed + 1;
 else
     testFailed = testFailed + 1;
 end
 
-assert(testPassed == 2 && testFailed == 0);
+assert(testPassed == 2 && testFailed == 0); % do not do this: bad practice!
 ````
 shall be rewritten as follows:
 ````Matlab
@@ -219,4 +195,3 @@ shall be rewritten as follows:
 assert(logicalCondition1);
 assert(logicalCondition2);
 ````
-Eventhough a test may fail using `assert()`, a summary table with comprehensive information is provided at the end of the test run.
