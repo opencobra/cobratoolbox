@@ -288,19 +288,17 @@ while nbIteration < nbMaxIteration && stop ~= true,
     
     switch LPsolution.stat
         case 0
-            warning('Problem infeasible !!!!!');
             solution.x = [];
             solution.y = [];
             solution.z = [];
             solution.stat = 0;
-            stop = true;
+            error('Problem infeasible !');
         case 2
-            warning('Problem unbounded !!!!!');
             solution.x = [];
             solution.y = [];
             solution.z = [];
             solution.stat = 2;
-            stop = true;
+            error('Problem unbounded !');
         case 1
             %Check stopping criterion 
             error_x = norm([x;y;z] - [x_old;y_old;z_old]);

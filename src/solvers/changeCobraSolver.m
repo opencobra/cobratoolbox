@@ -166,6 +166,8 @@ if (strcmp(solverType,'LP'))
                 warning('LP solver Gurobi not useable: gurobi.m not in Matlab path');
                 solverOK=false;
             end
+            %TODO - test that gurobi binaries are installed and licence etc
+            %is working
         case 'mps'
             if (~exist('BuildMPS'))
                 warning('MPS not usable: BuildMPS.m not in Matlab path');

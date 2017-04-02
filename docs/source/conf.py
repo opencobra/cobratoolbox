@@ -36,10 +36,16 @@ matlab_src_dir = os.path.abspath(os.path.join('..', '..'))
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinxcontrib.matlab']
+    'sphinxcontrib.napoleon',
+    'sphinxcontrib.matlab',
+    'sphinxcontrib.fulltoc']
+
 
 # autodoc_member_order='groupwise'
 primary_domain = 'mat'
+
+# remove path in function names
+add_module_names = False
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -153,7 +159,8 @@ html_context = {'conf_py_path': os.path.join(os.sep, 'docs', 'source', ''),
                 'github_user': 'opencobra',
                 'github_repo': 'cobratoolbox',
                 'github_version': 'master',
-                'display_github': True}
+                'show_source': False}
+#                'display_github': True}
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []
 

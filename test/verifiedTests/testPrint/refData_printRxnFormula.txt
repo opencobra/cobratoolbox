@@ -1,0 +1,95 @@
+ACALD	acald[c] + coa[c] + nad[c] 	<=>	accoa[c] + h[c] + nadh[c] 
+ACALDt	acald[e] 	<=>	acald[c] 
+ACKr	ac[c] + atp[c] 	<=>	actp[c] + adp[c] 
+ACONTa	cit[c] 	<=>	acon-C[c] + h2o[c] 
+ACONTb	acon-C[c] + h2o[c] 	<=>	icit[c] 
+ACt2r	ac[e] + h[e] 	<=>	ac[c] + h[c] 
+ADK1	amp[c] + atp[c] 	<=>	2 adp[c] 
+AKGDH	akg[c] + coa[c] + nad[c] 	->	co2[c] + nadh[c] + succoa[c] 
+AKGt2r	akg[e] + h[e] 	<=>	akg[c] + h[c] 
+ALCD2x	etoh[c] + nad[c] 	<=>	acald[c] + h[c] + nadh[c] 
+ATPM	atp[c] + h2o[c] 	->	adp[c] + h[c] + pi[c] 
+ATPS4r	adp[c] + 4 h[e] + pi[c] 	<=>	atp[c] + h2o[c] + 3 h[c] 
+Biomass_Ecoli_core_w_GAM	1.496 3pg[c] + 3.7478 accoa[c] + 59.81 atp[c] + 0.361 e4p[c] + 0.0709 f6p[c] + 0.129 g3p[c] + 0.205 g6p[c] + 0.2557 gln-L[c] + 4.9414 glu-L[c] + 59.81 h2o[c] + 3.547 nad[c] + 13.0279 nadph[c] + 1.7867 oaa[c] + 0.5191 pep[c] + 2.8328 pyr[c] + 0.8977 r5p[c] 	->	59.81 adp[c] + 4.1182 akg[c] + 3.7478 coa[c] + 59.81 h[c] + 3.547 nadh[c] + 13.0279 nadp[c] + 59.81 pi[c] 
+CO2t	co2[e] 	<=>	co2[c] 
+CS	accoa[c] + h2o[c] + oaa[c] 	->	cit[c] + coa[c] + h[c] 
+CYTBD	2 h[c] + 0.5 o2[c] + q8h2[c] 	->	h2o[c] + 2 h[e] + q8[c] 
+D_LACt2	h[e] + lac-D[e] 	<=>	h[c] + lac-D[c] 
+ENO	2pg[c] 	<=>	h2o[c] + pep[c] 
+ETOHt2r	etoh[e] + h[e] 	<=>	etoh[c] + h[c] 
+EX_ac(e)	ac[e] 	<=>	
+EX_acald(e)	acald[e] 	<=>	
+EX_akg(e)	akg[e] 	<=>	
+EX_co2(e)	co2[e] 	<=>	
+EX_etoh(e)	etoh[e] 	<=>	
+EX_for(e)	for[e] 	<=>	
+EX_fru(e)	fru[e] 	<=>	
+EX_fum(e)	fum[e] 	<=>	
+EX_glc(e)	glc-D[e] 	<=>	
+EX_gln_L(e)	gln-L[e] 	<=>	
+EX_glu_L(e)	glu-L[e] 	<=>	
+EX_h(e)	h[e] 	<=>	
+EX_h2o(e)	h2o[e] 	<=>	
+EX_lac_D(e)	lac-D[e] 	<=>	
+EX_mal_L(e)	mal-L[e] 	<=>	
+EX_nh4(e)	nh4[e] 	<=>	
+EX_o2(e)	o2[e] 	<=>	
+EX_pi(e)	pi[e] 	<=>	
+EX_pyr(e)	pyr[e] 	<=>	
+EX_succ(e)	succ[e] 	<=>	
+FBA	fdp[c] 	<=>	dhap[c] + g3p[c] 
+FBP	fdp[c] + h2o[c] 	->	f6p[c] + pi[c] 
+FORt2	for[e] + h[e] 	->	for[c] + h[c] 
+FORti	for[c] 	->	for[e] 
+FRD7	fum[c] + q8h2[c] 	->	q8[c] + succ[c] 
+FRUpts2	fru[e] + pep[c] 	->	f6p[c] + pyr[c] 
+FUM	fum[c] + h2o[c] 	<=>	mal-L[c] 
+FUMt2_2	fum[e] + 2 h[e] 	->	fum[c] + 2 h[c] 
+G6PDH2r	g6p[c] + nadp[c] 	<=>	6pgl[c] + h[c] + nadph[c] 
+GAPD	g3p[c] + nad[c] + pi[c] 	<=>	13dpg[c] + h[c] + nadh[c] 
+GLCpts	glc-D[e] + pep[c] 	->	g6p[c] + pyr[c] 
+GLNS	atp[c] + glu-L[c] + nh4[c] 	->	adp[c] + gln-L[c] + h[c] + pi[c] 
+GLNabc	atp[c] + gln-L[e] + h2o[c] 	->	adp[c] + gln-L[c] + h[c] + pi[c] 
+GLUDy	glu-L[c] + h2o[c] + nadp[c] 	<=>	akg[c] + h[c] + nadph[c] + nh4[c] 
+GLUN	gln-L[c] + h2o[c] 	->	glu-L[c] + nh4[c] 
+GLUSy	akg[c] + gln-L[c] + h[c] + nadph[c] 	->	2 glu-L[c] + nadp[c] 
+GLUt2r	glu-L[e] + h[e] 	<=>	glu-L[c] + h[c] 
+GND	6pgc[c] + nadp[c] 	->	co2[c] + nadph[c] + ru5p-D[c] 
+H2Ot	h2o[e] 	<=>	h2o[c] 
+ICDHyr	icit[c] + nadp[c] 	<=>	akg[c] + co2[c] + nadph[c] 
+ICL	icit[c] 	->	glx[c] + succ[c] 
+LDH_D	lac-D[c] + nad[c] 	<=>	h[c] + nadh[c] + pyr[c] 
+MALS	accoa[c] + glx[c] + h2o[c] 	->	coa[c] + h[c] + mal-L[c] 
+MALt2_2	2 h[e] + mal-L[e] 	->	2 h[c] + mal-L[c] 
+MDH	mal-L[c] + nad[c] 	<=>	h[c] + nadh[c] + oaa[c] 
+ME1	mal-L[c] + nad[c] 	->	co2[c] + nadh[c] + pyr[c] 
+ME2	mal-L[c] + nadp[c] 	->	co2[c] + nadph[c] + pyr[c] 
+NADH16	4 h[c] + nadh[c] + q8[c] 	->	3 h[e] + nad[c] + q8h2[c] 
+NADTRHD	nad[c] + nadph[c] 	->	nadh[c] + nadp[c] 
+NH4t	nh4[e] 	<=>	nh4[c] 
+O2t	o2[e] 	<=>	o2[c] 
+PDH	coa[c] + nad[c] + pyr[c] 	->	accoa[c] + co2[c] + nadh[c] 
+PFK	atp[c] + f6p[c] 	->	adp[c] + fdp[c] + h[c] 
+PFL	coa[c] + pyr[c] 	->	accoa[c] + for[c] 
+PGI	g6p[c] 	<=>	f6p[c] 
+PGK	3pg[c] + atp[c] 	<=>	13dpg[c] + adp[c] 
+PGL	6pgl[c] + h2o[c] 	->	6pgc[c] + h[c] 
+PGM	2pg[c] 	<=>	3pg[c] 
+PIt2r	h[e] + pi[e] 	<=>	h[c] + pi[c] 
+PPC	co2[c] + h2o[c] + pep[c] 	->	h[c] + oaa[c] + pi[c] 
+PPCK	atp[c] + oaa[c] 	->	adp[c] + co2[c] + pep[c] 
+PPS	atp[c] + h2o[c] + pyr[c] 	->	amp[c] + 2 h[c] + pep[c] + pi[c] 
+PTAr	accoa[c] + pi[c] 	<=>	actp[c] + coa[c] 
+PYK	adp[c] + h[c] + pep[c] 	->	atp[c] + pyr[c] 
+PYRt2r	h[e] + pyr[e] 	<=>	h[c] + pyr[c] 
+RPE	ru5p-D[c] 	<=>	xu5p-D[c] 
+RPI	r5p[c] 	<=>	ru5p-D[c] 
+SUCCt2_2	2 h[e] + succ[e] 	->	2 h[c] + succ[c] 
+SUCCt3	h[e] + succ[c] 	->	h[c] + succ[e] 
+SUCDi	q8[c] + succ[c] 	->	fum[c] + q8h2[c] 
+SUCOAS	atp[c] + coa[c] + succ[c] 	<=>	adp[c] + pi[c] + succoa[c] 
+TALA	g3p[c] + s7p[c] 	<=>	e4p[c] + f6p[c] 
+THD2	2 h[e] + nadh[c] + nadp[c] 	->	2 h[c] + nad[c] + nadph[c] 
+TKT1	r5p[c] + xu5p-D[c] 	<=>	g3p[c] + s7p[c] 
+TKT2	e4p[c] + xu5p-D[c] 	<=>	f6p[c] + g3p[c] 
+TPI	dhap[c] 	<=>	g3p[c] 

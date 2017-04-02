@@ -1,0 +1,10 @@
+
+Met #1  13dpg[c], 3-Phospho-D-glyceroyl-phosphate, C3H4O10P2
+Consuming reactions: none
+Producing reactions:
+#49  <a href="matlab: surfNet([],'GAPD',0, 'none', 0, 1, 65);">GAPD</a>  glyceraldehyde-3-phosphate dehydrogenase  
+  <a href="matlab: surfNet([],'g3p[c]',0, 'none', 0, 1, 65);">g3p[c]</a> + <a href="matlab: surfNet([],'nad[c]',0, 'none', 0, 1, 65);">nad[c]</a> + <a href="matlab: surfNet([],'pi[c]',0, 'none', 0, 1, 65);">pi[c]</a> <=> <a href="matlab: surfNet([],'13dpg[c]',0, 'none', 0, 1, 65);">13dpg[c]</a> + <a href="matlab: surfNet([],'h[c]',0, 'none', 0, 1, 65);">h[c]</a> + <a href="matlab: surfNet([],'nadh[c]',0, 'none', 0, 1, 65);">nadh[c]</a>  
+#75  <a href="matlab: surfNet([],'PGK',0, 'none', 0, 1, 65);">PGK</a>  phosphoglycerate kinase  
+  <a href="matlab: surfNet([],'3pg[c]',0, 'none', 0, 1, 65);">3pg[c]</a> + <a href="matlab: surfNet([],'atp[c]',0, 'none', 0, 1, 65);">atp[c]</a> <=> <a href="matlab: surfNet([],'13dpg[c]',0, 'none', 0, 1, 65);">13dpg[c]</a> + <a href="matlab: surfNet([],'adp[c]',0, 'none', 0, 1, 65);">adp[c]</a>  
+
+<a href="matlab: surfNet([],[],0, 'none', 0, 1, 65, struct('showPrev',true));">Show previous steps...</a>
