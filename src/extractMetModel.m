@@ -31,7 +31,7 @@ for i = 1:length(baseMetNames)
 end
 nRxnsMetComp = nRxnsMetComp';
 selLowDegMet = nRxnsMetComp < nRxnsMetThr;
-model.S(selLowDegMet,:) = 0;
+model.S(~selLowDegMet,:) = 0;
 %model.mets = model.mets(selLowDegMet); Commented out, because other fields
 %aren't shrunk, which can lead to mismatch
 
