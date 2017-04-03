@@ -154,7 +154,7 @@ end
 rxnExpression = getRxnExpressionFromGPR(model.rxns, parsedGPR,corrRxn,locus,geneExpression,match_strings);
 ExpressedRxns = model.rxns(rxnExpression >= cutoff);
 UnExpressedRxns = model.rxns(rxnExpression < cutoff & rxnExpression > -1);
-unknown = model.rxns(rxnExpression == -1) && ~cellfun(@isempty, Mouse2_2Model.grRules);
+unknown = model.rxns(rxnExpression == -1 & ~cellfun(@isempty, model.grRules));
 
 if ~exist('options','var') || isempty(options)
     loc = find(model.c);
@@ -169,7 +169,7 @@ remove = model.rxns(reactionActivity == 0);
 tissueModel = removeRxns(model,remove);
 rxnFluxRev = rxnFluxRev(reactionActivity ~= 0);
 
-if funcModel ==1
+if funcModel == 1
     [minFlux, maxFlux] = fluxVariability(tissueModel, 90, 'max', tissueModel.rxns, 1);
     remove = minFlux == 0 & maxFlux == 0;
     rxnFluxRev = rxnFluxRev(~remove);
