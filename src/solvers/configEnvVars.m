@@ -19,7 +19,7 @@ function configEnvVars(printLevel)
         solverPaths{2,1} = 'GUROBI_PATH';
         solverPaths{2,2} = {'/Library/gurobi600', '/Library/gurobi650', '/Library/gurobi702', '/opt/gurobi650', '/opt/gurobi70', 'C:\gurobi600', 'C:\gurobi650', 'C:\gurobi70'};
         solverPaths{3,1} = 'TOMLAB_PATH';
-        solverPaths{3,2} = {'/opt/tomlab', 'C:\tomlab'};
+        solverPaths{3,2} = {'/opt/tomlab', 'C:\tomlab', '/Applications/tomlab'};
         solverPaths{4,1} = 'MOSEK_PATH';
         solverPaths{4,2} = {'/opt/mosek/7/', '/opt/mosek/8/', '/Applications/mosek/7', '/Applications/mosek/8', 'C:\Program Files\Mosek\7', 'C:\Program Files\Mosek\8'};
 
