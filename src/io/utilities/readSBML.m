@@ -50,7 +50,7 @@ nRxns = length(modelSBML.reaction);
 
 if ~isfield(modelSBML,'fbc_version')
     warning('The current version of the COBRA toolbox only supports SBML-FBCv2 files');
-    
+
 end
 
 %% Construct initial metabolite list
@@ -60,8 +60,6 @@ chargeList = [];
 metFormulas = {};
 haveFormulasFlag = false;
 tmpSpecies = [];
-%mark the order of non-boundary metabolites
-metNB = false(nMetsTmp,1);
 
 for i = 1:nMetsTmp
     % Ignore boundary metabolites
@@ -71,18 +69,23 @@ for i = 1:nMetsTmp
             tmpSpecies = [ tmpSpecies  modelSBML.species(i)];
             speciesList{end+1} = modelSBML.species(i).id;
             notesField = modelSBML.species(i).notes;
-            metNB(i) = true;
             % Get formula if in notes field
             if (~isempty(notesField))
                 [tmp,tmp,tmp,tmp,formula,tmp,tmp,tmp,tmp,charge] = parseSBMLNotesField(notesField);
-                tmpCharge = charge;
+                chargeList = [chargeList; charge];
                 metFormulas {end+1} = formula;
                 formulaCount = formulaCount + 1;
                 haveFormulasFlag = true;
             end
-            try
-                chargeList= [chargeList modelSBML.species(i).charge]; % for compatibility with the old version
-            catch ME
+            % This is a really bad idea, since charge is initialized
+            % as zero even if it is undefined in the SBML file. Seems like
+            % a bug in libSBML, perhaps?
+            % Keeping it for compatibility, but adding an if statement
+            % around it. Can it be reomved?
+            if (isfield(modelSBML.species(i), 'isSetCharge') && modelSBML.species(i).isSetCharge && (~exist('charge','var') || isempty(charge)))
+                try
+                    chargeList(end) = modelSBML.species(i).charge; % for compatibility with the old version
+                catch ME
                 %                 try
                 %                     chargeList= [chargeList modelSBML.species(i).fbc_charge];
                 %                 catch
@@ -90,14 +93,12 @@ for i = 1:nMetsTmp
                 %                     case where the code above fails to retrieve the
                 %                     charge information from the species(i).charge
                 %                 end
+                end
             end
-            
         end
     end
 end
 
-%get the indices of non-boundary metabolites
-metNB = find(metNB);
 nMets = length(speciesList);
 
 %% Construct stoichiometric matrix and reaction list
@@ -110,7 +111,6 @@ rxns = cell(nRxns,1);
 rules = cell(nRxns,1);
 genes = cell(nRxns,1);
 allGenes = {};
-%h = waitbar(0,'Reading SBML file ...');
 hasNotesField = false;
 
 fbc_lb = zeros(nRxns,1);
@@ -119,37 +119,37 @@ fbc_ub = zeros(nRxns,1);
 if isfield(modelSBML,'parameter')&&~isempty(modelSBML.parameter)
     listKey={'parameter'};
     for d=1:length(listKey) % listKey
-        
+
         fieldNameList=fieldnames(modelSBML.(listKey{d}));
-        
+
         for f=1:length(fieldNameList) % fieldname in each substructure
-            
+
             numValues=length(modelSBML.(listKey{d})); % number of structures in one array
-            
+
             for i=1:numValues
-                
+
                 converted.(listKey{d}).(fieldNameList{f})(i,1)={modelSBML.(listKey{d})(i).(fieldNameList{f})};
-                
+
                 % for each reactions there are two fields "reactant" and
                 % "product"; they are two indepedent sub-structures.
                 % {'reactant', 'product', 'modifier', 'kineticLaw'} are are structures.
             end
-            
+
         end
         converted.name.(listKey{d})=fieldnames(converted.(listKey{d}));
     end
-    
+
 end
 
 if isfield(modelSBML,'fbc_version')&&modelSBML.fbc_version==1;
     if isfield(modelSBML,'fbc_fluxBound')&&~isempty(modelSBML.fbc_fluxBound)
         listKey={'fbc_fluxBound'};
         for d=1:length(listKey) % listKey
-            
+
             fieldNameList=fieldnames(modelSBML.(listKey{d}));
-            
+
             for f=1:length(fieldNameList) % fieldname in each substructure
-                
+
                 numValues=length(modelSBML.(listKey{d})); % number of structures in one array
                 for i=1:numValues
                     convertedFluxbounds.(listKey{d}).(fieldNameList{f})(i,1)={modelSBML.(listKey{d})(i).(fieldNameList{f})};
@@ -157,11 +157,11 @@ if isfield(modelSBML,'fbc_version')&&modelSBML.fbc_version==1;
                     % "product"; they are two indepedent substructures.
                     % {'reactant', 'product', 'modifier', 'kineticLaw'}; they are structures.
                 end
-                
+
             end
             convertedFluxbounds.name.(listKey{d})=fieldnames(convertedFluxbounds.(listKey{d}));
         end
-        
+
     end
 end
 
@@ -179,10 +179,14 @@ listOffbc_type={'maximize','minimize'};
 modelVersion=struct();
 noObjective=0; % by default there is an objective function.
 
+subSystems = cell(nRxns, 1);
+grRules = cell(nRxns, 1);
+confidenceScores = cell(nRxns, 1);
+citations = cell(nRxns, 1);
+comments = cell(nRxns, 1);
+ecNumbers = cell(nRxns, 1);
+
 for i = 1:nRxns
-    %if mod(i,10) == 0
-    %    waitbar(i/nRxns,h);
-    %end
     % Read the gpra from the notes field; compliant with the previous
     % version of the SBML files
     notesField = modelSBML.reaction(i).notes;
@@ -199,16 +203,26 @@ for i = 1:nRxns
         comments{i} = comment;
         ecNumbers{i} = ecNumber;
     end
-    
+    annotationField = modelSBML.reaction(i).annotation;
+    if (~isempty(annotationField))
+        [ecNumber, citation] = parseSBMLAnnotationFieldRxn(annotationField);
+        tmpStr = '';
+        if (~isempty(citations{i})); tmpStr = ','; end
+        citations{i} = strcat(citations{i}, tmpStr, citation);
+        tmpStr = '';
+        if (~isempty(ecNumbers{i})); tmpStr = ','; end
+        ecNumbers{i} = strcat(ecNumbers{i}, tmpStr, ecNumber);
+    end
+
     %if isfield(model, 'grRules')
     %         sbml_tmp_grRules= model.grRules(i);
     %% need to be improved since the fbc_id for the gene association is not provided.
-    
+
     % tmp_fbc_id=['gene',num2str(i)];
     %     tmp_Rxn.tmp_fbc_geneProductAssociation=[];
     %         if i==1;
     % modelSBML.reaction.fbc_geneProductAssociation.fbc_id       % a COBRA model doesn't need the information of this field
-    
+
     if isfield(modelSBML.reaction,'fbc_geneProductAssociation')
         if size(modelSBML.reaction(i).fbc_geneProductAssociation,2)~=0 % the Matlab structure of the "geneAssociation" is defined.
             grRules{i}= modelSBML.reaction(i).fbc_geneProductAssociation.fbc_association.fbc_association; % sbml_tmp_grRules;  % (8639.1) or (26.1) or (314.2) or (314.1)
@@ -226,7 +240,7 @@ for i = 1:nRxns
     %     sbmlModel.reaction=[sbmlModel.reaction,sbml_tmp_grRules];
     %         end
     % end
-    
+
     rev(i) = modelSBML.reaction(i).reversible;
     rxnNameTmp = regexprep(modelSBML.reaction(i).name,'^R_','');
     rxnNames{i} = regexprep(rxnNameTmp,'_+',' ');
@@ -257,42 +271,45 @@ for i = 1:nRxns
             S(speciesID,i) = stoichCoeff;
         end
     end
-    
+
     % Convert conventional bounds to FBC bounds
-    
+
     if isfield(modelSBML,'fbc_version')
         fieldnameList=fieldnames(modelSBML);
         regMatch='(fbc_).+';
         result=regexpi(fieldnameList,regMatch); % Regular expression used to identify new FBC fields
         values=~cellfun('isempty',result);
         existed_fbc_list=fieldnameList(values);
-        
+
         for v=1:length(verList);
             if ismember(verList(v),fieldnameList);
                 modelVersion.(verList{v})=modelSBML.(verList{v}); % Store FBC versions in the COBRA structure
             end
         end
-        
+
         for f=1:length(fbc_list)
             %             if f==2
             %                 disp('good');
             %             end
-            
+
             if ismember(fbc_list(f),existed_fbc_list);
                 if f==1 % In the case of fbc_objective
-                    if ~isempty(modelSBML.(fbc_list{f}).fbc_fluxObjective)
-                        fbc_obj=modelSBML.(fbc_list{f}).fbc_fluxObjective.fbc_reaction; % the variable stores the objective reaction ID
+                    %TODO: Adapt this to properly import multiple
+                    %objectives. This will need to be also addressed in the
+                    %model structure (multiple c vectors and osense values)
+                    %For now, we only import the first objective!
+
+                    if ~isempty(modelSBML.(fbc_list{f})) && ~isempty({modelSBML.(fbc_list{f})(1).fbc_fluxObjective.fbc_reaction})
+                        fbc_obj=modelSBML.(fbc_list{f})(1).fbc_fluxObjective.fbc_reaction; % the variable stores the objective reaction ID
                         fbc_obj=regexprep(fbc_obj,'^R_','');
-                        if isfield(modelSBML.(fbc_list{f}).fbc_fluxObjective,'fbc_coefficient')
-                            fbc_obj_value=modelSBML.(fbc_list{f}).fbc_fluxObjective.fbc_coefficient;
-                        else
-                            ind_obj=find(strcmp(listOffbc_type,modelSBML.(fbc_list{f}).fbc_type));
-                            switch ind_obj
-                                case 1 % maximise
-                                    fbc_obj_value=-1;
-                                case 2 % minimise
-                                    fbc_obj_value=1;
-                            end
+                        if isfield(modelSBML.(fbc_list{f})(1).fbc_fluxObjective,'fbc_coefficient')
+                            fbc_obj_value=modelSBML.(fbc_list{f})(1).fbc_fluxObjective.fbc_coefficient;
+                            %By FBC definition the fbc_type of an objective
+                            %has to be either "minimize" or maximize"
+                            %As such, we use the first 3 lettters of the
+                            %objective type to define the osenseStr of the
+                            %model.
+                            fbc_obj_value = modelSBML.(fbc_list{f})(1).fbc_type(1:3);
                         end
                     else % if the objective function is not specified according to the FBCv2 rules.
                         noObjective=1; % no objective function is defined for the COBRA model.
@@ -300,12 +317,12 @@ for i = 1:nRxns
                         % % % %                         fbc_obj=modelSBML.reaction(ind_obj).id;
                         % % % %                         fbc_obj=regexprep(fbc_obj,'^R_','');
                         % % % %                         fbc_obj_value=-1;
-                        
+
                     end
-                    
+
                 elseif f==2 % In the case of fbc_bound
                     if modelSBML.fbc_version==1;
-                        
+
                         if rev(i)==0
                             fbc_lb(i)=0;
                             fbc_ub(i)=defaultBound;
@@ -313,9 +330,9 @@ for i = 1:nRxns
                             fbc_lb(i)=-defaultBound;
                             fbc_ub(i)=defaultBound;
                         end
-                        
+
                         if size(modelSBML.fbc_fluxBound,2)>0 % not an empty structure;
-                            
+
                             indBds=find(strcmp(modelSBML.reaction(i).id,convertedFluxbounds.fbc_fluxBound.fbc_reaction));
                             if ~isempty(indBds)
                                 for b=1:length(indBds)
@@ -324,17 +341,17 @@ for i = 1:nRxns
                                         case 1
                                             % In the first case, the first row contains a lower bound, wheresas the second contains a upper bound
                                             fbc_lb(i)=convertedFluxbounds.(fbc_list{f}).fbc_value{indBds(b)};
-                                            
+
                                         case 2
-                                            
+
                                             fbc_ub(i)=convertedFluxbounds.(fbc_list{f}).fbc_value{indBds(b)};
                                         case 3
                                             fbc_lb(i)=convertedFluxbounds.(fbc_list{f}).fbc_value{indBds(b)};
                                             fbc_ub(i)=convertedFluxbounds.(fbc_list{f}).fbc_value{indBds(b)};
-                                            
+
                                     end
                                 end
-                                
+
                             end
                             %%% start of the depreicated code chunk %%%
                             %                             try
@@ -348,7 +365,7 @@ for i = 1:nRxns
                             %                                 indUpper=find(strcmp(modelSBML.reaction(i).id,fbc_upperFluxBound,convertedFluxbounds.fbc_fluxBound.id)); % index text
                             %                             end
                             %
-                            
+
                             %
                             %                             if ind==1 % In the first case, the first row contains a lower bound, wheresas the second contains a upper bound
                             %                                 fbc_lb(i)=modelSBML.(fbc_list{f})(2*i-1).fbc_value;
@@ -409,7 +426,7 @@ for i = 1:nRxns
                         fbc_ub(i)=defaultBound;
                     end
                 end
-                
+
                 % model.(fbc_list{fbc_i})=modelSBML.(fbc_list{fbc_i});
             end
         end
@@ -447,13 +464,8 @@ for i = 1:nRxns
             end
         end
     end
-    
-end
 
-%close the waitbar if this is matlab
-% if (regexp(version, 'R20'))
-%     close(h);
-% end
+end
 
 %% gene
 
@@ -472,11 +484,7 @@ allGenes = unique(allGenes);
 
 if (hasNotesField)||(isfield(modelSBML,'fbc_version')&&(modelSBML.fbc_version==2))
     rxnGeneMat = sparse(nRxns,length(allGenes));
-    %h = waitbar(0,'Constructing GPR mapping ...');
     for i = 1:nRxns
-        %if mod(i,10) == 0
-        %     waitbar(i/nRxns,h);
-        % end
         if iscell(genes{i})
             [tmp,geneInd] = ismember(genes{i},allGenes);
         else
@@ -488,10 +496,6 @@ if (hasNotesField)||(isfield(modelSBML,'fbc_version')&&(modelSBML.fbc_version==2
         end
         rules{i} = strrep(rules{i},'_TMP_','');
     end
-    %     %close the waitbar if this is matlab
-    %     if (regexp(version, 'R20'))
-    %         close(h);
-    %     end
 end
 %% Construct metabolite list
 mets = cell(nMets,1);
@@ -507,15 +511,11 @@ for i=1:length(modelSBML.compartment)
     compartmentList{i} = modelSBML.compartment(i).id;
 end
 
-%h = waitbar(0,'Constructing metabolite lists ...');
 hasAnnotationField = 0;
 
 listSpeciesField={'fbc_charge';'fbc_chemicalFormula';'isSetfbc_charge';'fbc_version'};
 
 for i = 1:nMets
-    %if mod(i,10) == 0
-    %    waitbar(i/nMets,h);
-    %end
     % Parse metabolite id's
     % Get rid of the M_ in the beginning of metabolite id's
     metID = regexprep(speciesList{i},'^M_','');
@@ -536,17 +536,18 @@ for i = 1:nMets
         %     else
         %         modelSBML.species(1).compartment;
     end
-    
+
     % 31/03/2016
     %     if isempty(tmpCell), tmpCell = regexp(metID,'_(.)$','tokens'); end
-    
+
     if ~isempty(tmpCell)
         compID = tmpCell{1};
         metTmp = [regexprep(metID,['_' compID{1} '$'],'') '[' compID{1} ']'];
     else
         metTmp = metID;
-        if ~isempty(modelSBML.species(metNB(i)).compartment)
-            metTmp=[metTmp,'[',modelSBML.species(metNB(i)).compartment,']'];
+        if ~isempty(modelSBML.species(i).compartment)
+            metTmp=regexprep(metTmp,'(\[[a-z]{1,2}\])$','');
+            metTmp=[metTmp,'[',modelSBML.species(i).compartment,']'];
         end
     end
     %Clean up met ID
@@ -578,30 +579,30 @@ for i = 1:nMets
         metNames{i} = metNamesTmp;
     end
     % parse the anotation fields of the species structures
-    if isfield(modelSBML.species(metNB(i)),'annotation')
+    if isfield(modelSBML.species(i),'annotation')
         hasAnnotationField = 1;
         % %         if i==2 % for debugging
         % %             disp('good');
         % %         end
-        
+
         if exist('parseSBMLAnnotationField','file')
-            [metCHEBI,metHMDBparsed,metKEGG,metPubChem,metInChI] = parseSBMLAnnotationField(modelSBML.species(metNB(i)).annotation); %% replace the older version of the function with the newer version
-            metCHEBIID{i} = metCHEBI;
+            [metCHEBI,metHMDBparsed,metKEGG,metPubChem,metInChI] = parseSBMLAnnotationField(modelSBML.species(i).annotation); %% replace the older version of the function with the newer version
+            metChEBIID{i} = metCHEBI;
             metHMDB{i}=metHMDBparsed;
             metKEGGID{i} = metKEGG;
             metPubChemID{i} = metPubChem;
             metInChIString{i} = metInChI;
         else
             warning('parseSBMLAnnotationField is not on the Matlab path');
-            
+
         end
-        
+
     end
     %%%%%%%%%%%% charge and formula %%%%%%%%%%%%
     if isfield(modelSBML,'fbc_version')
         for s=1:length(listSpeciesField);
-            fbcMet.(listSpeciesField{s}){i,1}=modelSBML.species(metNB(i)).(listSpeciesField{s});
-            
+            fbcMet.(listSpeciesField{s}){i,1}=modelSBML.species(i).(listSpeciesField{s});
+
         end
     end
 end
@@ -618,7 +619,7 @@ if nMets~=0
     if (formulaCount < 0.9*nMets)
         model.metNames = columnVector(metNamesAlt);
     else
-        
+
         model.metNames = columnVector(metNames);
         model.metFormulas = columnVector(metFormulas);
     end
@@ -638,20 +639,20 @@ else    % in the case of fbc file
         indexObj=findRxnIDs(model,fbc_obj);
         % indexObj=find(strcmp(fbc_obj,model.rxns))
         model.c(indexObj)=1;
-        model.osense=fbc_obj_value;
+        model.osense = - sign(fbc_obj_value);
     end
-    
+
     if all(cellfun('isempty',fbcMet.fbc_chemicalFormula))~=1  % if all formulas are empty
         % model.objFunction=fbc_obj;
         model.metFormulas=fbcMet.fbc_chemicalFormula;
     end
-    
+
     for num=1:length(fbcMet.fbc_chemicalFormula);
         model.metCharge(num,1)=double(fbcMet.fbc_charge{num});
         %         model.isSetfbc_charge(num,1)=double(fbcMet.isSetfbc_charge{num});
     end
     % model.fbc_version=modelSBML.fbc_version;
-    
+
     % % % %     str={'fbc_activeObjective';
     % % % %         'fbc_objective';
     % % % %         'fbc_version';}
@@ -661,7 +662,7 @@ else    % in the case of fbc file
     %
     % 1.identify new fields that appear in the FBCv2 structure
     % but not in the COBRA structure.
-    
+
     % % % % Ensure all the information stored in the new FBCv2 fields is passed to the COBRA structure.
     % % %     listCOBRA=fieldnames(model);
     % % %     listSBML=fieldnames(modelSBML);
@@ -669,11 +670,11 @@ else    % in the case of fbc file
     % % %     for i=transpose(ind)
     % % %         model.(listSBML{i})=modelSBML.(listSBML{i});
     % % %     end
-    
+
     % model.fbc2=modelSBML;
     % model=changeObjective(model,modelSBML.fbc_objective.fbc_id,-1) % be default set the objective function to maximisation
     %     modelSBML.fbc_objective.fbc_fluxObjective.fbc_reaction
-    
+
 end
 
 if (hasNotesField)
@@ -688,7 +689,7 @@ if (hasNotesField)
     model.rxnNotes = columnVector(comments);
 end
 if isfield(modelSBML,'fbc_version')
-    
+
     if modelSBML.fbc_version==2
         model.rules = rules;
         model.genes = columnVector(allGenes);
@@ -709,7 +710,8 @@ end
 % the "formulas" are probably just parts of metabolite names)
 
 if (hasAnnotationField)
-    model.metCHEBIID = columnVector(metCHEBIID);
+    model.metChEBIID = columnVector(metChEBIID);
+    model.metHMDB = columnVector(metHMDB);
     model.metKEGGID = columnVector(metKEGGID);
     model.metPubChemID = columnVector(metPubChemID);
     model.metInChIString = columnVector(metInChIString);

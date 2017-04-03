@@ -64,6 +64,7 @@ else
     tol = 1e-6;
 end
 
+%TODO: Have a look how the model.osenseStr can be incorporated here.
 if (nargin < 3)
     osenseStr = 'max';
 end

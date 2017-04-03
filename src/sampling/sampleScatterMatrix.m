@@ -50,10 +50,10 @@ else%some optional inputs specified
     end
     if nargin == 7
         [isInModel2,rxnInd2] = ismember(rxnNames2,model.rxns);
-        
+
         rxnNames2 = rxnNames2(isInModel2);
         rxnInd2 = rxnInd2(isInModel2);
-        
+
         nRxns2 = length(rxnNames2);
         twoSetsFlag = true;
         nRxns = nRxns+1;
@@ -72,11 +72,11 @@ height = 0.8/nRxns;
 width = 0.8/nRxns2;
 
 clf
-h = waitbar(0,'Drawing scatterplots ...');
+showprogress(0,'Drawing scatterplots ...');
 for i = 1:nRxns
-    
+
     for j = 1:nRxns2
-        waitbar(((i-1)*nRxns+j)/(nRxns*nRxns2),h);
+        showprogress(((i-1)*nRxns+j)/(nRxns*nRxns2));
         left = 0.1+(j-1)*width;
         bottom = 0.9-i*height;
         if (twoSetsFlag)
@@ -104,7 +104,7 @@ for i = 1:nRxns
                 %subplot(nRxns,nRxns2,(i-1)*nRxns2+j);
                 subplot('position',[left bottom width height]);
                 sampleHistInternal(sample,rxnInd(i),fontSize);
-                
+
             elseif (j > i)
                 %subplot(nRxns,nRxns2,(i-1)*nRxns2+j);
                 subplot('position',[left bottom width height]);
@@ -120,9 +120,9 @@ for i = 1:nRxns
             end
         end
     end
-    
+
 end
-close(h);
+
 
 function sampleScatterPlot(sample,id1,id2,nPoints,fontSize,dispRFlag)
 

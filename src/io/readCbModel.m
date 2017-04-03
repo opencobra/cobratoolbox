@@ -22,23 +22,23 @@ function model = readCbModel(fileName,defaultBound,fileType,modelDescription,com
 % fileType          File type for input files: 'SBML', 'SimPheny', or
 %                   'SimPhenyPlus', 'SimPhenyText' (Default = 'SBML')
 %                   * SBML indicates a file in SBML format
-%                   * SimPheny is a set of three files in SimPheny 
+%                   * SimPheny is a set of three files in SimPheny
 %                     simulation output format
-%                   * SimPhenyPlus is the same as SimPheny except with 
-%                     additionalfiles containing gene-protein-reaction 
+%                   * SimPhenyPlus is the same as SimPheny except with
+%                     additionalfiles containing gene-protein-reaction
 %                     associations andcompound information
-%                   * SimPhenyText is the same as SimPheny except with 
+%                   * SimPhenyText is the same as SimPheny except with
 %                     additionaltext file containing gene-protein-reaction
 %                     associations
-% modelDescription  Description of model contents 
+% modelDescription  Description of model contents
 % compSymbolList    Compartment Symbol List
 % compNameList      Name of compartments corresponding to compartment
-%                   symbol list 
+%                   symbol list
 %
 %OUTPUT
 % Returns a model in the COBRA format:
 %
-% model         
+% model
 %  description      Description of model contents
 %  rxns             Reaction names
 %  mets             Metabolite names
@@ -96,7 +96,7 @@ end
 if (nargin < 3)
     fileType = 'SBML';
     if (isempty(fileType))
-       fileType = 'SBML'; 
+       fileType = 'SBML';
     end
 end
 
@@ -178,21 +178,21 @@ model.rev(selRev) = 1;
 
 % readSBMLCbModel Read SBML format constraint-based model
 % function model =  readSBMLCbModel(fileName,defaultBound,compSymbolList,compNameList)
-% 
+%
 % if ~(exist(fileName,'file'))
 %     error(['Input file ' fileName ' not found']);
 % end
-% 
+%
 % if isempty(compSymbolList)
 %     compSymbolList = {'c','m','v','x','e','t','g','r','n','p'};
 %     compNameList = {'Cytosol','Mitochondria','Vacuole','Peroxisome','Extra-organism','Pool','Golgi Apparatus','Endoplasmic Reticulum','Nucleus','Periplasm'};
 % end
-% 
+%
 % % Read SBML
 % validate=0;
 % verbose=0;% Ronan Nov 24th 2014
 % modelSBML = TranslateSBML(fileName,validate,verbose);
-% 
+%
 % % Convert
 % model = convertSBMLToCobra(modelSBML,defaultBound,compSymbolList,compNameList);
 
@@ -238,10 +238,10 @@ while 1
         cnt = cnt + 1;
         fields = splitString(tline,'\t');
         mets{cnt} = fields{2};
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%        
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %        mets{cnt} = strrep(mets{cnt}, '(', '[');
 %        mets{cnt} = strrep(mets{cnt}, ')', ']');
-        
+
         comp{cnt,1} = fields{4};
 %        compSymb = compSymbolList{strcmp(compNameList,comp{cnt})};
         compSymb = 0;
@@ -327,7 +327,7 @@ S = load('load_simpheny.tmp');
 %         sel_rxn(i) = 0;
 %     end
 % end
-% 
+%
 % tmp = regexp(mets,'deleted');
 % sel_met = ones(length(mets),1);
 % for i = 1:length(tmp)
@@ -365,7 +365,7 @@ for i = 1:length(list)
     item = list{i};
     ind = strfind(item,' [deleted');
     if (~isempty(ind))
-        list{i} = item(1:(ind-1));        
+        list{i} = item(1:(ind-1));
     end
 end
 
@@ -379,13 +379,11 @@ nRxns = length(model.rxns);
 
 % Construct gene to rxn mapping
 rxnGeneMat = sparse(nRxns,length(allGenes));
-h = waitbar(0,'Constructing GPR mapping ...');
+showprogress(0,'Constructing GPR mapping ...');
 for i = 1:nRxns
     rxnID = find(ismember(rxns,model.rxns{i}));
     if (~isempty(rxnID))
-        if mod(i,10) == 0
-            waitbar(i/nRxns,h);
-        end
+        showprogress(i/nRxns);
         [tmp,geneInd] = ismember(rxnInfo(rxnID).genes,allGenes);
         rxnGeneMat(i,geneInd) = 1;
         rules{i} = rxnInfo(rxnID).rule;
@@ -405,29 +403,23 @@ for i = 1:nRxns
         subSystems{i} = '';
     end
 end
-if ( regexp( version, 'R20') )
-        close(h);
-end
 
 %% Read SimPheny cmpd output file
 [metInfo,mets] = readSimPhenyCMPD([baseName '_cmpd.txt']);
 
 baseMets = parseMetNames(model.mets);
 nMets = length(model.mets);
-h = waitbar(0,'Constructing metabolite lists ...');
+showprogress(0,'Constructing metabolite lists ...');
 for i = 1:nMets
     if mod(i,10) == 0
-        waitbar(i/nMets,h);
+        showprogress(i/nMets);
     end
     metID = find(ismember(mets,baseMets{i}));
     if (~isempty(metID))
-       metFormulas{i} = metInfo(metID).formula; 
+       metFormulas{i} = metInfo(metID).formula;
     else
        metFormulas{i} = '';
     end
-end
-if ( regexp( version, 'R20') )
-        close(h);
 end
 
 model.rxnGeneMat = rxnGeneMat;
@@ -436,5 +428,3 @@ model.grRules = columnVector(grRules);
 model.genes = columnVector(allGenes);
 model.metFormulas = columnVector(metFormulas);
 model.subSystems = columnVector(subSystems);
-
-

@@ -145,12 +145,12 @@ while nbIteration < nbMaxIteration && stop ~= true,
     
     switch LPsolution.stat
         case 0
-            error('Problem infeasible !!!!!');
+            error('Problem infeasible !');
             solution.x = [];
             solution.stat = 0;
             stop = true;
         case 2
-            error('Problem unbounded !!!!!');
+            error('Problem unbounded !');
             solution.x = [];
             solution.stat = 2;
             stop = true;

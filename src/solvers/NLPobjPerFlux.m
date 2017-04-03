@@ -1,5 +1,5 @@
 function value = NLPobjPerFlux(fluxVector,Prob)
-%NLPobjPerFlux Calculates the value of the objective v_obj/sum(v.^2) based on
+%NLPobjPerFlux Calculates the value of the objective -(Prob.osense * Prob.user.model.c)/sum(v.^2) based on
 %a flux distribution
 %  
 %  value = NLPobjPerFlux(fluxVector,Prob)
@@ -11,15 +11,13 @@ function value = NLPobjPerFlux(fluxVector,Prob)
 % Prob          NLP problem structure
 %
 %OUTPUT
-% value         Objective flux / v.^2
+% value         -Objective flux / sum(v.^2) 
 %
 % Markus Herrgard 12/7/07
 %
 % c wasn't defined as written so added Prob as input to define c from the
 % model by Daniel Zielinski 3/19/10
 
-model = Prob.user.model;
+c = Prob.user.model.c;
 
-c = model.c == 1;
-
-value = -sum(c.*fluxVector)/sum(fluxVector.^2);
+value = sum(c.*fluxVector)/sum(fluxVector.^2);

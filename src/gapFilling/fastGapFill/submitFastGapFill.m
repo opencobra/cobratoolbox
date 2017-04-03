@@ -123,6 +123,19 @@ else
         model = readMlModel(modelFile);
     elseif regexp(modelFile,'.xml$')
         model = readCbModel(modelFile);
+        % If subSystems is empty, create a dummy subSystems for mergeTwoModels
+        if ~exist('model.subSystems') || length(model.subSystems) ~= length(model.rxnNames)
+            model.subSystems = repmat({''},length(model.rxnNames));
+        end
+        if ~exist('model.genes')
+            model.genes = repmat({'no_gene'},1);
+        end
+        if ~exist('model.rxnGeneMat')
+            model.rxnGeneMat = zeros(length(model.rxnNames),1);
+        end
+        if ~exist('model.grRules')
+            model.grRules = repmat({''},length(model.rxnNames));
+        end
     end
     
     % remove constraints from exchange reactions
@@ -206,15 +219,15 @@ run.weightsPerReactionFile = weightsPerRxnFile;
 run.weights.MetabolicRxns = 0.1; % Kegg metabolic reactions
 run.weights.ExchangeRxns = 0.9; % Exchange reactions
 run.weights.TransportRxns = 40; % Transport reactions
-run.name = 'high_weight';
+run.name = 'hw';
 runs = [runs; run];
 
 % RUN 3
 run.weightsPerReactionFile = '';
-run.weights.MetabolicRxns = 0.1; % Kegg metabolic reactions
-run.weights.ExchangeRxns = 0.5; % Exchange reactions
-run.weights.TransportRxns = 10; % Transport reactions
-run.name = 'no_weight_file';
+run.weights.MetabolicRxns = 0.01; % Kegg metabolic reactions
+run.weights.ExchangeRxns = 2.1; % Exchange reactions
+run.weights.TransportRxns = 20; % Transport reactions
+run.name = 'vhw';
 runs = [runs; run];
 
 
@@ -290,9 +303,15 @@ for i = 1:length(runs)
     % Postprocessing
     [AddedRxnsExtended] = postProcessGapFillSolutions(AddedRxns,model,BlockedRxns,0);
     
-    Stats{cnt,run_idx} = num2str(AddedRxnsExtended.Stats.metabolicSol);cnt = cnt+1;
-    Stats{cnt,run_idx} = num2str(AddedRxnsExtended.Stats.transportSol);cnt = cnt+1;
-    Stats{cnt,run_idx} = num2str(AddedRxnsExtended.Stats.exchangeSol);cnt = cnt+1;
+    try
+        Stats{cnt,run_idx} = num2str(AddedRxnsExtended.Stats.metabolicSol);cnt = cnt+1;
+        Stats{cnt,run_idx} = num2str(AddedRxnsExtended.Stats.transportSol);cnt = cnt+1;
+        Stats{cnt,run_idx} = num2str(AddedRxnsExtended.Stats.exchangeSol);cnt = cnt+1;
+    catch
+        Stats{cnt,run_idx} = num2str(0);cnt = cnt+1;
+        Stats{cnt,run_idx} = num2str(0);cnt = cnt+1;
+        Stats{cnt,run_idx} = num2str(0);cnt = cnt+1;
+    end
     Stats{cnt,run_idx} = num2str(tgap);cnt = cnt+1;
     Stats{cnt,run_idx} = resultsFile;cnt = cnt+1;
     clear a b
@@ -300,9 +319,15 @@ for i = 1:length(runs)
     % Reaction List
     col = 1;
     RxnList={};
-    RxnList{1,col}=resultsFile;RxnList(2:length(AddedRxnsExtended.rxns)+1,col) = AddedRxnsExtended.rxns; col = col + 1;
-    RxnList{1,col}=resultsFile;RxnList(2:length(AddedRxnsExtended.rxns)+1,col) = AddedRxnsExtended.rxnFormula; col = col + 1;
-    RxnList{1,col}=resultsFile;RxnList(2:length(AddedRxnsExtended.rxns)+1,col) = AddedRxnsExtended.subSystem; col = col + 1;
+    try
+        RxnList{1,col}=resultsFile;RxnList(2:length(AddedRxnsExtended.rxns)+1,col) = AddedRxnsExtended.rxns; col = col + 1;
+        RxnList{1,col}=resultsFile;RxnList(2:length(AddedRxnsExtended.rxns)+1,col) = AddedRxnsExtended.rxnFormula; col = col + 1;
+        RxnList{1,col}=resultsFile;RxnList(2:length(AddedRxnsExtended.rxns)+1,col) = AddedRxnsExtended.subSystem; col = col + 1;
+    catch
+        RxnList{1,col}=resultsFile; col = col + 1;
+        RxnList{1,col}=resultsFile; col = col + 1;
+        RxnList{1,col}=resultsFile; col = col + 1;
+    end
 
     save(resultsFile);
 end

@@ -5,12 +5,12 @@ function solution = solveCobraNLP(NLPproblem,varargin)
 % solution = solveCobraNLP(NLPproblem,varargin)
 
 % Solves a problem of the following form:
-%     min objFunction(x) or c'*x
+%     optimize objFunction(x) or c'*x
 %     st.       A*x  <=> b   or b_L < A*x < b_U
 %        and    d_L < d(x) < d_U
 %     where A is a matrix, d(x) is an optional function and the objective
 %     is either a general function or a linear function.
-% 
+%
 %INPUT
 % NLPproblem  Non-linear optimization problem
 %  Required Fields
@@ -19,9 +19,13 @@ function solution = solveCobraNLP(NLPproblem,varargin)
 %   lb              Lower bounds
 %   ub              Upper bounds
 %   csense          Constraint senses ('L','E','G')
-%   objFunction     Function to evaluate as the objective.  Input as string
+%   osense          Objective sense (-1 for maximisation, 1 for minimisation)
+%   objFunction     Function to evaluate as the objective (The function
+%                   will receive two inputs, First the flux vector to
+%                   evaluate and second the NLPproblem struct. The function 
+%                   should be provided as a string
 %       or
-%   c               linear objective such that c*x is minimized.
+%   c               linear objective such that c*x is optimized.
 %  Note: 'b_L' and 'b_U' can be used in place of 'b' and 'csense'
 %
 %  Optional Fields
@@ -30,37 +34,24 @@ function solution = solveCobraNLP(NLPproblem,varargin)
 %                   vector (ignored if 'd' is set).
 %   H               Name of the function that computes the n x n Hessian
 %                   matrix
-%   fLowBnd         A lower bound on the function value at optimum. 
-%   d               Name of function that computes the mN nonlinear 
+%   fLowBnd         A lower bound on the function value at optimum.
+%   d               Name of function that computes the mN nonlinear
 %                   constraints
-%   dd              Name of function that computes the constraint Jacobian 
+%   dd              Name of function that computes the constraint Jacobian
 %                   mN x n
 %   d2d             Name of function that computes the second part of the
 %                   Lagrangian function (only needed for some solvers)
-%   d_L             Lower bound vector in nonlinear constraints 
-%   d_U             Upper bound vector in nonlinear constraints                  
-%   userParams      Solver specific user parameters structure
-%   optParams       Solver specific optional parameters structure
+%   d_L             Lower bound vector in nonlinear constraints
+%   d_U             Upper bound vector in nonlinear constraints
+%   user            Solver specific user parameters structure
 %
 %OPTIONAL INPUTS
-%(If using matlab solver)
-%   varargin Any additional arguments to the 'objFunction' function
-%
-%(for other solvers)
-% Optional parameters can be entered using parameters structure or as
-% parameter followed by parameter value: i.e. ,'printLevel',3)
+% Optional parameters for the solver can be entered using parameters structure or as
+% parameter followed by parameter value: e.g. ,'printLevel',3)
 %
 % parameters    Structure containing optional parameters as fields.
 %               Setting parameters = 'default' uses default setting set in
 %               getCobraSolverParameters.
-% printLevel    Printing level
-%               = 0    Silent (Default)
-%               = 1    Warnings and Errors
-%               = 2    Summary information
-%               = 3    More detailed information
-%               > 10   Pause statements, and maximal printing (debug mode)
-% checkNaN      Check for NaN elements (Default = false)
-% PbName        NLP problem name (Default = NLP problem)
 %
 %OUTPUT
 % solution Structure containing the following fields describing an NLP
@@ -95,13 +86,20 @@ end
 optParamNames = {'printLevel','warning','checkNaN','PbName', ...
     'iterationLimit', 'logFile'};
 parameters = '';
+
+[printLevel ~] = getCobraSolverParams('NLP',{'printLevel','warning'},parameters);
+
 if nargin ~=1
     if mod(length(varargin),2)==0
         for i=1:2:length(varargin)-1
             if ismember(varargin{i},optParamNames)
                 parameters.(varargin{i}) = varargin{i+1};
             else
-                error([varargin{i} ' is not a valid optional parameter']);
+                %Changed to highlight non COBRA parameters (which might be used for e.g. fmincon.
+                parameters.(varargin{i}) = varargin{i+1};
+                if printLevel > 0
+                    warning([varargin{i} ' is not a COBRA parameter']);
+                end
             end
         end
     elseif strcmp(varargin{1},'default')
@@ -109,15 +107,28 @@ if nargin ~=1
     elseif isstruct(varargin{1})
         parameters = varargin{1};
     else
-        display('Warning: Invalid number of parameters/values')
+        error('Invalid number of parameters/values')
         solution=[];
         return;
     end
 end
-[printLevel warning] = getCobraSolverParams('NLP',{'printLevel','warning'},parameters);
+
 
 %deal variables
 [A,lb,ub] = deal(NLPproblem.A,NLPproblem.lb,NLPproblem.ub);
+
+% Assume constraint S*v = b if csense not provided
+if ~isfield(NLPproblem, 'csense')
+    % If csense is not declared in the model, assume that all
+    % constraints are equalities.
+    NLPproblem.csense(1:size(A,1), 1) = 'E';
+end
+
+% Assume constraint S*v = 0 if b not provided
+if ~isfield(NLPproblem, 'b')
+    NLPproblem.b = zeros(size(A, 1), 1);
+end
+
 if isfield(NLPproblem,'csense')
     [b, csense] = deal(NLPproblem.b, NLPproblem.csense);
 elseif isfield(NLPproblem,'b_U')
@@ -147,29 +158,58 @@ switch solver
         %% fmincon
         A1 = [A(csense == 'L',:);-A(csense == 'G',:)];
         b1 = [b(csense == 'L'),-b(csense == 'G')];
-        
+
         A2 = A(csense == 'E',:);
         b2 = b(csense == 'E');
         
-        options.nIter = 100000;
+        %Get fminCon Options, and set the options supplied by the user.
+        [iterationLimit,timeLimit] = getCobraSolverParams('NLP',{'iterationLimit','timeLimit'},parameters);        
+        options = optimoptions('fmincon','maxIter',iterationLimit,'maxFunEvals',iterationLimit);
         
-        [x,f,origStat,output,lambda] = fmincon(objFunction,x0,A1,b1,A2,b2,lb,ub,[],options,varargin);
+        if isstruct(parameters)
+            paramFields = fieldnames(parameters);
+            for field = 1:numel(paramFields)
+                if any(ismember(fieldnames(options),paramFields{field}))
+                    options.(paramFields{field}) = parameters.(paramFields{field});
+                end
+            end        
+        end
+                
+        % define the objective function with 2 input arguments
+        if exist('objFunction','var')
+            func = eval(['@(x) ', num2str(NLPproblem.osense), '*' , objFunction, '(x, NLPproblem)']);
+        else
+            func = @(x) NLPproblem.osense*sum(c.*x);
+        end
+        %Now, define the maximum timer        
+        options.OutputFcn = @stopTimer;        
+        %and start it.
+        stopTimer(timeLimit,1);
         
+        [x, f, origStat, output, lambda] = fmincon(func, x0, A1, b1, A2, b2, lb, ub, [], options);
+
         %Assign Results
         if (origStat > 0)
             stat = 1; % Optimal solution found
             y = lambda.eqlin;
+            w = zeros(length(lb), 1); % set zero Lagrangian multipliers (N/A)            
         elseif (origStat < 0)
+            %We supply empty fields, but we need to assign them as
+            %otherwise 
+            y = [];
+            w = [];
             stat = 0; % Infeasible
-        else
+        else            
+            y = [];
+            w = [];
             stat = -1; % Solution did not converge
         end
     case 'tomlab_snopt'
         %% tomlab_snopt
-        
+
         %get settings
         [checkNaN, PbName, iterationLimit, logFile] =  ...
-            getCobraSolverParams('NLP',{'checkNaN','PbName', 'iterationLimit', 'logFile'},parameters);     
+            getCobraSolverParams('NLP',{'checkNaN','PbName', 'iterationLimit', 'logFile'},parameters);
         if isfield(NLPproblem,'gradFunction')
             gradFunction = NLPproblem.gradFunction;
         else
@@ -210,18 +250,13 @@ switch solver
         else
             d_U = [];
         end
-        if isfield(NLPproblem,'userParams')
-            userParams = NLPproblem.userParams;
+        if isfield(NLPproblem,'user')
+            userParams = NLPproblem.user;
         else
             userParams = [];
         end
-        if isfield(NLPproblem,'optParams')
-            optParams = NLPproblem.optParams;
-        else
-            optParams = [];
-        end
         if isfield(NLPproblem,'SOL'), Prob.SOL = NLPproblem.SOL; end
-        
+
         x_L = lb;
         x_U = ub;
         if ~exist('b_L','var')
@@ -237,19 +272,19 @@ switch solver
                 b_U = b;
             end
         end
-        
+
         %settings
-        HessPattern = []; 
+        HessPattern = [];
         pSepFunc = [];
         ConsPattern = [];
         x_min = []; x_max = [];
         f_opt = [];  x_opt = [];
-        
+
         if exist('c', 'var') % linear objective function
             Prob  = lpconAssign(c, x_L, x_U, PbName, x0,...
                A, b_L, b_U,...
                d, dd, d2d, ConsPattern, d_L, d_U,...
-               fLowBnd, x_min, x_max, f_opt, x_opt); 
+               fLowBnd, x_min, x_max, f_opt, x_opt);
         else % general objective function
             f = objFunction;
             g = gradFunction;
@@ -259,30 +294,29 @@ switch solver
                 x_min, x_max, f_opt, x_opt);
         end
         Prob.user = userParams;
-        Prob.optParam = optParams;
         Prob.Warning = warning;
         Prob.SOL.optPar(35) = iterationLimit; %This is major iteration limit.
         Prob.SOL.optPar(30) = 1e9; %this is the minor iteration limit.  Essentially unlimited
         Prob.CheckNaN = checkNaN;
-        
+
         Prob.SOL.PrintFile = strcat(logFile, '_iterations.txt');
         Prob.SOL.SummFile = strcat(logFile, '_summary.txt');
-        
+
         if printLevel >= 1
             Prob.optParam.IterPrint = 1;
         end
         if printLevel >=3
             Prob.PriLevOpt = 1;
-            
+
         end
-        
+
         %Call Solver
         Result = tomRun('snopt', Prob, printLevel);
-        
+
         % Assign results
         x = Result.x_k;
         f = Result.f_k;
-        
+
         origStat = Result.Inform;
         w = Result.v_k(1:length(lb));
         y = Result.v_k((length(lb)+1):end);
@@ -308,3 +342,31 @@ t = etime(clock, t_start);
 if strcmp(solver,'tomlab_snopt')
     solution.origSolStruct = Result;
 end
+end
+
+function overtimelimit = stopTimer(maxtime,init, varargin)
+persistent STARTTIME;
+persistent MAXTIME;
+%OutputFunction will be called with 3 arguments during fmincon, so we can
+%savely set this up with 2 arguments.
+if nargin < 3
+    if isempty(STARTTIME)
+        %If the STARTTIME is not set, we can definitely set the new time.
+        STARTTIME = clock;
+        MAXTIME = maxtime;
+    else
+        if init
+            %if we call for an initialisation, also reset the timer
+            STARTTIME = clock;
+            MAXTIME = maxtime;
+        end
+    end
+else    
+    if etime(clock,STARTTIME) > MAXTIME
+        disp('Time limit reached, stopping optimization')
+        overtimelimit = 1;
+    else
+        overtimelimit = 0;
+    end
+end
+end     

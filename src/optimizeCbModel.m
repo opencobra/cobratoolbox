@@ -80,7 +80,7 @@ function FBAsolution = optimizeCbModel(model,osenseStr, minNorm, allowLoops, zer
 %                           'lp-'      : L_p norm with p<0
 %                           'lp+'      : L_p norm with 0<p<1
 %                           'all'      : try all approximations and return the best result
-
+%
 %OUTPUT
 % FBAsolution
 %   f         Objective value
@@ -124,7 +124,11 @@ if exist('osenseStr', 'var')
         osenseStr = 'max';
     end
 else
-    osenseStr = 'max';
+    if isfield(model, 'osenseStr')
+        osenseStr = model.osenseStr;
+    else        
+        osenseStr = 'max';
+    end
 end
 % Figure out objective sense
 if strcmpi(osenseStr,'max')

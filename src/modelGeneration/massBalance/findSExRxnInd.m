@@ -1,6 +1,6 @@
 function model=findSExRxnInd(model,nRealMet,printLevel)
 %  model=findSExRxnInd(model,nRealMet,printLevel)
-%Returns a model with boolean vectors indicating internal vs exchange/demand/sink reactions.
+%Returns a model with boolean vectors indicating internal vs external (exchange/demand/sink) reactions.
 %
 %finds the reactions in the model which export/import from the model
 %boundary
@@ -18,20 +18,21 @@ function model=findSExRxnInd(model,nRealMet,printLevel)
 %                           correspond to metabolties
 %OUTPUT
 % model.SIntRxnBool         Boolean of reactions heuristically though to be mass balanced.
-% model.SIntMetBool         Boolean of metabolites though only to be involved in mass balanced reactions.
+% model.SIntMetBool         Boolean of metabolites heuristically though to be involved in mass balanced reactions.
+% model.SOnlyIntMetBool     Boolean of metabolites heuristically though only to be involved in mass balanced reactions.
+% model.SExMetBool          Boolean of metabolites heuristically though to be involved in mass imbalanced reactions.
+% model.SOnlyExMetBool      Boolean of metabolites heuristically though only to be involved in mass imbalanced reactions.
 % model.biomassBool         Boolean of biomass reaction
 % 
 % OPTIONAL OUTPUT
 % model.DMRxnBool           Boolean of demand reactions. Prefix 'DM_'
 % model.SinkRxnBool         Boolean of sink reactions. Prefix 'sink_'
-% model.ExchRxnBool         Boolean of exchange reactions. Prefix 'Exch_' or 'EX_'
+% model.ExchRxnBool         Boolean of exchange reactions. Prefix 'EX_' or 'Exch_' or Ex_
 
-% Ronan Fleming	11/05/2014  commit to git	              
+% Ronan Fleming	            
 
 
 [nMet,nRxn]=size(model.S);
-
-
 
 if ~exist('nRealMet','var')
     nRealMet=length(model.mets);
@@ -125,18 +126,18 @@ for n=1:nRxn
 end
 
 % models with typical COBRA abbreviations - heuristic
-model.ExchRxnBool=strncmp('Exch_', model.rxns, 5)==1;
-model.EXRxnBool=strncmp('EX_', model.rxns, 3)==1;
+model.ExchRxnBool=strncmp('EX_', model.rxns, 3)==1 | strncmp('Exch_', model.rxns, 5)==1 | strncmp('Ex_', model.rxns, 5)==1 | biomassBool;
 %demand reactions going out of model
 model.DMRxnBool=strncmp('DM_', model.rxns, 3)==1;
 %sink reactions going into or out of model
 model.SinkRxnBool=strncmp('sink_', model.rxns, 5)==1;
 
+
 %remove ATP demand as it is usually mass balanced
 bool=strcmp('ATPM',model.rxns);
 if any(bool)
     if printLevel>0
-        fprintf('%s\n','ATP maintenance reaction is not considered an exchange reaction by default. Should be mass balanced:')
+        fprintf('%s\n','ATP maintenance reaction is not considered an exchange reaction by default. It should be mass balanced:')
         formulas = printRxnFormula(model,{'ATPM'});
     end
     model.DMRxnBool(bool)=0;
@@ -144,7 +145,7 @@ end
 bool=strcmp('DM_atp(c)',model.rxns);
 if any(bool)
     if printLevel>0
-        fprintf('%s\n','ATP demand reaction is not considered an exchange reaction by default. Should be mass balanced:')
+        fprintf('%s\n','ATP demand reaction is not considered an exchange reaction by default. It should be mass balanced')
         formulas = printRxnFormula(model,{'DM_atp(c)'});
     end
     model.DMRxnBool(bool)=0;
@@ -152,14 +153,14 @@ end
 bool=strcmp('DM_atp_c_',model.rxns);
 if any(bool)
     if printLevel>0
-        fprintf('%s\n','ATP demand reaction is not considered an exchange reaction by default. Should be mass balanced:')
+        fprintf('%s\n','ATP demand reaction is not considered an exchange reaction by default. It should be mass balanced:')
         formulas = printRxnFormula(model,{'DM_atp_c_'});
     end
     model.DMRxnBool(bool)=0;
 end
 
 %input/output
-SExRxnBoolHeuristic = model.ExchRxnBool | model.EXRxnBool | model.DMRxnBool | model.SinkRxnBool | biomassBool;
+SExRxnBoolHeuristic = model.ExchRxnBool | model.DMRxnBool | model.SinkRxnBool;
 
 diffBool= ~SExRxnBoolHeuristic & SExRxnBoolOneCoefficient;
 if any(diffBool)
@@ -194,31 +195,43 @@ if any(diffBool)
     end
 end
     
-%dont check if there are coupling constraints
-%(E. coli E matrix specific)
-if ~isfield(model,'A')
-    diffBool= SExRxnBoolHeuristic & ~SExRxnBoolOneCoefficient;
-    if any(diffBool)
-        if printLevel>0
-            fprintf('%s\n','Exchanges missed by prefix search:')
-            fprintf('%s\t%s\n','#', 'Exchange')
-        end
-        for n=1:length(diffBool)
-            if diffBool(n)
-                equation=printRxnFormula(model,model.rxns(n),0);
-                if printLevel>0
-                    fprintf('%i\t%s\t%s\n',n,model.rxns{n},equation{1});
-                end
-            end
-        end
-    end
-end
+% %dont check if there are coupling constraints
+% %(E. coli E matrix specific)
+% if ~isfield(model,'A')
+%     diffBool= SExRxnBoolHeuristic & ~SExRxnBoolOneCoefficient;
+%     if any(diffBool)
+%         if printLevel>0
+%             fprintf('%s\n','Exchanges missed by prefix search:')
+%             fprintf('%s\t%s\n','#', 'Exchange')
+%         end
+%         for n=1:length(diffBool)
+%             if diffBool(n)
+%                 equation=printRxnFormula(model,model.rxns(n),0);
+%                 if printLevel>0
+%                     fprintf('%i\t%s\t%s\n',n,model.rxns{n},equation{1});
+%                 end
+%             end
+%         end
+%     end
+% end
     
 %amalagamate all exchanges
 SExRxnBool= SExRxnBoolHeuristic | SExRxnBoolOneCoefficient;
 model.SIntRxnBool=~SExRxnBool;
 %rows corresponding to internal reactions
-model.SIntMetBool = sum(model.S(:,model.SIntRxnBool)~=0,2)~=0;
+boolMet=true(nMet,1);
+%first pair
+model.SIntMetBool = getCorrespondingRows(model.S,boolMet,model.SIntRxnBool,'inclusive');
+model.SOnlyExMetBool = getCorrespondingRows(model.S,boolMet,~model.SIntRxnBool,'exclusive');
+%second pair
+model.SOnlyIntMetBool = getCorrespondingRows(model.S,boolMet,model.SIntRxnBool,'exclusive');
+model.SExMetBool = getCorrespondingRows(model.S,boolMet,~model.SIntRxnBool,'inclusive');
+%sanity check
+if nnz(model.SIntMetBool)+nnz(model.SOnlyExMetBool) ~= nnz(model.SIntMetBool)+nnz(model.SOnlyExMetBool)
+    error('Inconsistency in metabolite counts')
+end
+
+
 
 
 

@@ -22,14 +22,14 @@ function [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,optPercentage,osens
 % maxFlux           Maximum flux for each reaction
 %
 %OPTIONAL OUTPUT
-% Vmin          Matrix of column flux vectors, where each column is a 
+% Vmin          Matrix of column flux vectors, where each column is a
 %               separate minimization.
-% Vmax          Matrix of column flux vectors, where each column is a 
+% Vmax          Matrix of column flux vectors, where each column is a
 %               separate maximization.
 %
 
 % Markus Herrgard  8/21/06 Original code.
-% Ronan Fleming   01/20/10 Take the extremal flux from the flux vector, 
+% Ronan Fleming   01/20/10 Take the extremal flux from the flux vector,
 %                          not from the objective since this is invariant
 %                          to the value and sign of the coefficient
 % Ronan Fleming   27/09/10 Vmin,Vmax
@@ -38,7 +38,11 @@ if (nargin < 2)
     optPercentage = 100;
 end
 if (nargin < 3)
-    osenseStr = 'max';
+    if isfield(model,'osenseStr')
+        osenseStr = model.osenseStr
+    else
+        osenseStr = 'max';
+    end
 end
 if (nargin < 4)
     rxnNameList = model.rxns;
@@ -95,8 +99,8 @@ else
     hasObjective = false;
 end
 
-if (verbFlag == 1)  
-    h = waitbar(0,'Flux variability analysis in progress ...');
+if (verbFlag == 1)
+    showprogress(0,'Flux variability analysis in progress ...');
 end
 if (verbFlag > 1)
     fprintf('%4s\t%4s\t%10s\t%9s\t%9s\n','No','Perc','Name','Min','Max');
@@ -147,11 +151,11 @@ else
     Vmax=[];
 end
 
-solutionPool = zeros(length(model.lb), 0); 
+solutionPool = zeros(length(model.lb), 0);
 
 v=ver;
 PCT='Parallel Computing Toolbox';
-if  any(strcmp(PCT,{v.Name}))&&license('test',PCT)    
+if  any(strcmp(PCT,{v.Name}))&&license('test',PCT)
     p = gcp('nocreate');
     if isempty(p)
         poolsize = 0;
@@ -160,7 +164,7 @@ if  any(strcmp(PCT,{v.Name}))&&license('test',PCT)
     end
     PCT_status=1;
 else
-     PCT_status=0;  % Parallel Computing Toolbox not found.    
+     PCT_status=0;  % Parallel Computing Toolbox not found.
 end
 
 
@@ -178,7 +182,7 @@ if PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
         LPsolution = solveCobraLP(LPproblem);
         %take the maximum flux from the flux vector, not from the obj -Ronan
         maxFlux(i) = LPsolution.full(LPproblem.c~=0);
-        
+
         %minimise the Euclidean norm of the optimal flux vector to remove
         %loops -Ronan
         if length(minNorm)> 1 || minNorm > 0
@@ -198,12 +202,12 @@ if PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
             end
             Vmax(:,rxnBool)=solution.full(1:nRxns,1);
         end
-        
+
         LPproblem.osense = 1;
         LPsolution = solveCobraLP(LPproblem);
         %take the maximum flux from the flux vector, not from the obj -Ronan
         minFlux(i) = LPsolution.full(LPproblem.c~=0);
-        
+
         %minimise the Euclidean norm of the optimal flux vector to remove
         %loops
         %minimise the Euclidean norm of the optimal flux vector to remove
@@ -224,7 +228,7 @@ if PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
             Vmin(:,rxnBool)=solution.full(1:nRxns,1);
         end
 
-        
+
         if ~allowLoops
             if any( abs(LPproblem.c'*solutionPool - maxFlux(i)) < tol) % if any previous solutions are good enough.
                 % no need to do anything.
@@ -244,18 +248,18 @@ if PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
             end
         end
         if (verbFlag == 1)
-            waitbar(i/length(rxnNameList),h);
+            showprogress(i/length(rxnNameList));
         end
         if (verbFlag > 1)
             fprintf('%4d\t%4.0f\t%10s\t%9.3f\t%9.3f\n',i,100*i/length(rxnNameList),rxnNameList{i},minFlux(i),maxFlux(i));
         end
     end
 else % parallel job.  pretty much does the same thing.
-    
+
 
     global CBTLPSOLVER
     solver = CBTLPSOLVER;
-    
+
     parfor i = 1:length(rxnNameList)
         %if mod(i,10) == 0, clear mex, end
         %if (verbFlag == 1),fprintf('iteration %d.  skipped %d\n', i, round(m));end
@@ -272,7 +276,7 @@ else % parallel job.  pretty much does the same thing.
                 'osense',-1, ...
                 'basis', LPproblem.basis ...
             ),'solver',solver);
-        
+
             %take the maximum flux from the flux vector, not from the obj -Ronan
             maxFlux(i) = LPsolution.full(c~=0);
             %LPproblemb.osense = 1;
@@ -298,7 +302,7 @@ else % parallel job.  pretty much does the same thing.
                 'osense',-1 ...
             ), model));
             maxFlux(i) = LPsolution.obj/1000;
-            
+
             LPsolution = solveCobraMILP(addLoopLawConstraints(struct(...
                 'A', LPproblem.A,...
                 'b', LPproblem.b,...
@@ -307,17 +311,10 @@ else % parallel job.  pretty much does the same thing.
                 'csense', LPproblem.csense,...
                 'c',c,...
                 'osense',1 ...
-            ), model));%  
+            ), model));%
             minFlux(i) = LPsolution.obj/1000;
         end
     end
-end
-    
-    
-if (verbFlag == 1)
-	if ( regexp( version, 'R20') )
-        	close(h);
-	end
 end
 
 maxFlux = columnVector(maxFlux);

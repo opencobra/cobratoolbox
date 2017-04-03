@@ -1,6 +1,6 @@
 % rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
 % Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
+% reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
 %
 % rbionet@systemsbiology.is
 % Stefan G. Thorleifsson
@@ -100,7 +100,7 @@ if ~isempty(varargin{1})
         if s_break == i
             break
         end
-        
+
         while strcmp(data{i,1},data{i+1,1}) %remove the duplicate metabolites.
             data(i+1,:) = '';
             s_break = size(data,1);
@@ -108,22 +108,22 @@ if ~isempty(varargin{1})
                 break
             end
         end
-        
+
         if s_break == i
             break
         end
-        
-        
+
+
     end
-    
+
     %------
     set(handles.uitable1,'data',data);
 end
 
-if ~isempty(varargin{2}) 
+if ~isempty(varargin{2})
     %continues mode. Reaction list follows and is put through to
     %addreactions if addmetabolites is succesfull. This option is called
-    %from Add reconstruction to db. 
+    %from Add reconstruction to db.
     handles.reactions = varargin{2};
 else
     handles.reactions = [];
@@ -131,10 +131,10 @@ end
 guidata(hObject, handles);
 
 
- 
+
 
 % --- Outputs from this function are returned to the command line.
-function varargout = addmetabolites_OutputFcn(hObject, eventdata, handles) 
+function varargout = addmetabolites_OutputFcn(hObject, eventdata, handles)
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -190,7 +190,7 @@ for i = 1:length(time)-3;
         colmn = [colmn '/' num2str(round(time(i)))];
     end
 end
-S = size(data); 
+S = size(data);
 for i = 1:S(1) % Add time and remove compartment
     data{i,12} = colmn;
     abb = regexpi(data{i,1},'[','split');
@@ -223,7 +223,7 @@ for i = 1:S(1)
         %    ' are mandatory.'],'Data missing','error');
        % return
     end
-end 
+end
 
 if ~isempty(empty_lines)
     msgbox({'Abbreviation, description, charged formula and charge are mandatory.',...
@@ -243,15 +243,15 @@ charge_formula1 = {}; charge_formula2 = {};charge_formula3 = {};
 
 metab = rBioNetSaveLoad('load','met');
 
- 
 
-h = waitbar(0,'Please wait...');
+
+showprogress(0,'Please wait...');
 
 for i = 1:S(1)
-    waitbar(i / S(1))
+    showprogress(i / S(1))
     newmet = data(i,:);
     match = strcmp(newmet{1},metab(:,1));
-    
+
     if any(match)
 
         exist_d = [exist_d; metab(match,:)];
@@ -271,11 +271,9 @@ for i = 1:S(1)
             end
             charge_formula2 = [charge_formula2; same_charge];
         end
-        
+
     end
 end
-
-close(h)
 
 S1 = size(exist);
 if S1(1) == S(1)
@@ -300,7 +298,7 @@ if ~isempty(exist)
     exist_b = cell(1,20);
     S = size(exist);
     Sd = size(exist_d);
-    
+
     for i = 1:S(1)
         exist_b(2*i-1,1:Sd(2)) = exist_d(i,1:Sd(2));
         exist_b(2*i,1:S(2)) = exist(i,1:S(2));
@@ -312,16 +310,16 @@ if ~isempty(exist)
         %Cut out existing metabolites
         data(lines,:) = '';
     end
-    
+
 end
 
 if ~isempty(charge_formula1)
-    
+
     answer = met_charge_formula([charge_formula1,charge_formula2, charge_formula3]);
 %     ButtonName = questdlg({'In same order: ', charge_formula2, '(has / have) the same charge formula as ', charge_formula}, ...
 %         'Same charge formula', ...
 %         'Continue', 'Cancel', 'Continue');
-    
+
     %perform the following operation depending on the option chosen
     switch answer,
         case 'Continue',
@@ -329,7 +327,7 @@ if ~isempty(charge_formula1)
         otherwise
             return
     end % switch
-    
+
 end
 
 

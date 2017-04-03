@@ -40,7 +40,7 @@ solution.stat = 1;
 % Check inputs
 if nargin < 2
     params.nbMaxIteration = 1000;
-    params.epsilon = 10e-6;
+    params.epsilon = 1e-6;
     params.theta   = 0.5;
 else
     if isfield(params,'nbMaxIteration') == 0
@@ -53,6 +53,14 @@ else
 
     if isfield(params,'theta') == 0
         params.theta   = 0.5;
+    end
+    
+        if isfield(params,'feasTol') == 0
+        params.feasTol = 1e-9;
+    end
+
+    if isfield(params,'optTol') == 0
+        params.optTol   = 1e-9;
     end
 end
 
@@ -82,7 +90,7 @@ if isfield(constraint,'csense') == 0
     return;
 end
 
-[nbMaxIteration,epsilon,theta] = deal(params.nbMaxIteration,params.epsilon,params.theta);
+[nbMaxIteration,epsilon,theta,optTol,feasTol] = deal(params.nbMaxIteration,params.epsilon,params.theta,params.optTol,params.feasTol);
 [A,b,lb,ub,csense] = deal(constraint.A,constraint.b,constraint.lb,constraint.ub,constraint.csense);
 
 %Parameters
@@ -128,19 +136,17 @@ while nbIteration < nbMaxIteration && stop ~= true,
     x_bar = sign(x)*theta;
 
     %Solve the linear sub-program to obtain new x
-    [x,LPsolution] = sparseLP_cappedL1_solveSubProblem(subLPproblem,x_bar,theta);
+    [x,LPsolution] = sparseLP_cappedL1_solveSubProblem(subLPproblem,x_bar,theta,optTol,feasTol);
 
     switch LPsolution.stat
         case 0
-            error('Problem infeasible !!!!!');
             solution.x = [];
             solution.stat = 0;
-            stop = true;
+            error('Problem infeasible !');
         case 2
-            error('Problem unbounded !!!!!');
             solution.x = [];
             solution.stat = 2;
-            stop = true;
+            error('Problem unbounded !');
         case 1
             %Check stopping criterion
             error_x = norm(x - x_old);
@@ -170,7 +176,7 @@ end
 end
 
 %Solve the linear sub-program to obtain new x
-function [x,LPsolution] = sparseLP_cappedL1_solveSubProblem(subLPproblem,x_bar,theta)
+function [x,LPsolution] = sparseLP_cappedL1_solveSubProblem(subLPproblem,x_bar,theta,optTol,feasTol)
 
     n = length(x_bar);
 
@@ -178,7 +184,7 @@ function [x,LPsolution] = sparseLP_cappedL1_solveSubProblem(subLPproblem,x_bar,t
     subLPproblem.obj = [-x_bar;theta*ones(n,1)];
 
     %Solve the linear problem
-    LPsolution = solveCobraLP(subLPproblem);
+    LPsolution = solveCobraLP(subLPproblem,'optTol',optTol,'feasTol',feasTol);
 
     if LPsolution.stat == 1
         x = LPsolution.full(1:n);

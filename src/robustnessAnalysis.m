@@ -11,14 +11,14 @@ function [controlFlux, objFlux] = robustnessAnalysis(model, controlRxn, nPoints,
 %OPTIONAL INPUTS
 % nPoints       Number of points to show on plot (Default = 20)
 % plotResFlag   Plot results (Default true)
-% objRxn        Objective reaction to be maximized 
+% objRxn        Objective reaction to be maximized
 %               (Default = whatever is defined in model)
 % objType       Maximize ('max') or minimize ('min') objective
 %               (Default = 'max')
 %
 %OUTPUTS
 % controlFlux   Flux values within the range of the maximum and minimum for
-%               reaction of interest  
+%               reaction of interest
 % objFlux       Optimal values of objective reaction at each control
 %               reaction flux value
 %
@@ -46,19 +46,16 @@ if (findRxnIDs(model,controlRxn))
 else
     error('Control reaction does not exist!');
 end
-    
+
 objFlux = [];
 controlFlux = linspace(solMin.f,solMax.f,nPoints)';
 
-h = waitbar(0,'Robustness analysis in progress ...');
+showprogress(0,'Robustness analysis in progress ...');
 for i=1:length(controlFlux)
-    waitbar(i/length(controlFlux),h);
+    showprogress(i/length(controlFlux));
     modelControlled = changeRxnBounds(baseModel,controlRxn,controlFlux(i),'b');
     solControlled = optimizeCbModel(modelControlled,objType);
     objFlux(i) = solControlled.f;
-end
-if ( regexp( version, 'R20') )
-        close(h);
 end
 
 objFlux = objFlux';
@@ -69,9 +66,3 @@ if (plotResFlag)
     ylabel('Objective');
     axis tight;
 end
-
-
-
-
-
-

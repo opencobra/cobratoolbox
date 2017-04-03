@@ -11,7 +11,7 @@ function [grRatio,grRateKO,grRateWT,hasEffect,delRxns,fluxSolution] = singleGene
 % method        Either 'FBA', 'MOMA', or 'lMOMA' (Default = 'FBA')
 % geneList      List of genes to be deleted (default = all genes)
 % verbFlag      Verbose output (Default false)
-% uniqueGene    Run unique gene deletion (default = 0). 
+% uniqueGene    Run unique gene deletion (default = 0).
 %
 %
 %OUTPUTS
@@ -48,7 +48,7 @@ end
 
 
 if (uniqueGene == 1)
-    
+
     % detect whether there are alternate transcripts
     if ~isempty(strfind(model.genes{1},'.'))
         [geneList,rem] = strtok(model.genes,'.');
@@ -62,7 +62,7 @@ if (uniqueGene == 1)
     %solWT = optimizeCbModel(model,'max','one'); % by default uses the min manhattan distance norm FBA solution.
     solWT = optimizeCbModel(model,'max');
     grRateWT = solWT.f
-    
+
     grRateKO = ones(nDelGenes,1)*grRateWT;
     grRatio = ones(nDelGenes,1);
     hasEffect = true(nDelGenes,1);
@@ -71,11 +71,9 @@ if (uniqueGene == 1)
     if (verbFlag)
         fprintf('%4s\t%4s\t%10s\t%9s\t%9s\n','No','Perc','Name','Growth rate','Rel. GR');
     end
-    h = waitbar(0,'Single gene deletion analysis in progress ...');
+    showprogress(0,'Single gene deletion analysis in progress ...');
     for i = 1:nDelGenes
-        if mod(i,10) == 0
-            waitbar(i/nDelGenes,h);
-        end
+        showprogress(i/nDelGenes);
         if ~isempty(strfind(model.genes{1},'.'))
             % delete all alternate transcripts
             delGenes = model.genes(strmatch(geneList{i},model.genes));
@@ -104,15 +102,15 @@ if (uniqueGene == 1)
             fprintf('%4d\t%4.0f\t%10s\t%9.3f\t%9.3f\n',i,100*i/nDelGenes,geneList{i},grRateKO(i),grRateKO(i)/grRateWT*100);
         end
     end
-    
-    
+
+
 else
     nGenes = length(model.genes);
     nDelGenes = length(geneList);
-    
+
     solWT = optimizeCbModel(model,'max','one'); % by default uses the min manhattan distance norm FBA solution.
     grRateWT = solWT.f;
-    
+
     grRateKO = ones(nDelGenes,1)*grRateWT;
     grRatio = ones(nDelGenes,1);
     hasEffect = true(nDelGenes,1);
@@ -121,11 +119,9 @@ else
     if (verbFlag)
         fprintf('%4s\t%4s\t%10s\t%9s\t%9s\n','No','Perc','Name','Growth rate','Rel. GR');
     end
-    h = waitbar(0,'Single gene deletion analysis in progress ...');
+    showprogress(0,'Single gene deletion analysis in progress ...');
     for i = 1:nDelGenes
-        if mod(i,10) == 0
-            waitbar(i/nDelGenes,h);
-        end
+        showprogress(i/nDelGenes);
         [modelDel,hasEffect(i),constrRxnNames] = deleteModelGenes(model,geneList{i});
         delRxns{i} = constrRxnNames;
         if (hasEffect(i))
@@ -148,10 +144,6 @@ else
             fprintf('%4d\t%4.0f\t%10s\t%9.3f\t%9.3f\n',i,100*i/nDelGenes,geneList{i},grRateKO(i),grRateKO(i)/grRateWT*100);
         end
     end
-end
-
-if ( regexp( version, 'R20') )
-        close(h);
 end
 
 grRatio = grRateKO/grRateWT;

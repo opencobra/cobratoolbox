@@ -222,7 +222,7 @@ end
 if ~isfield(LPproblem,'csense')
     % If csense is not declared in the model, assume that all
     % constraints are equalities.
-    LPproblem.csense(:,1) = 'E';
+    LPproblem.csense(1:length(LPproblem.mets), 1) = 'E';
 end
 
 % Assume constraint S*v = 0 if b not provided
@@ -984,8 +984,8 @@ switch solver
            stat = -1; % Solution not optimal or solver problem
         end
 
-    case {'gurobi5','gurobi6'}
-        %% gurobi 5 or 6 or 6.5
+    case {'gurobi5','gurobi6','gurobi7'}
+        %% gurobi 5 or 6 or 6.5 or 7
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
         %resultgurobi = struct('x',[],'objval',[],'pi',[]);

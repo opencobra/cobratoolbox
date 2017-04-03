@@ -36,8 +36,8 @@ function [parsed_updated,mainText_new, final_list] = colourNode(parsed,fname_out
 
 %%
         defRxnColour='FFCDE2BD'; % remove the prefix "#"
-        defMetColour='ffe7a45d'; 
-%%    
+        defMetColour='ffe7a45d';
+%%
 
 
 if strcmp(list_Met,'false')
@@ -47,7 +47,7 @@ else
     if nargin<5
         list_Colour_Met(1:size(list_Met,1),1:size(list_Met,2))=strrep({defMetColour},'#',''); % the default colour is red
     end
-    
+
 end
 
 if (nargin<4||isempty(list_Met))&&(metMode~=0)
@@ -57,7 +57,7 @@ end
 
 
 if nargin<2 || isempty(fname_out)
-    
+
     [fname_out, fpath]=uiputfile('*.xml','CellDesigner SBML Source File');
     if(fname_out==0)
         return;
@@ -84,8 +84,8 @@ if isfield(parsed.r_info,'XMLtext');
     for n=1:length({parsed.r_info.XMLtext(:).str}')
         MainTxt(n,1)=cellstr(parsed.r_info.XMLtext(n).str);
     end
-    
-    
+
+
 else
     errordlg('The XMLtext doesn''t exit in the parsed model structure');
 end
@@ -116,7 +116,7 @@ for m=1:ID_row;
 end
 
 
-h = waitbar(0,'progressing')
+showprogress(0,'progressing')
 
 num=[];
 
@@ -140,16 +140,13 @@ num=[];
 % num=num_1;
 
 for i=1:length(list_nodes);
-    
-    %  waitbar(((i/length(list_nodes))*1/4)/4,h);
-    
     %if ~isempty(list_nodes{i,2})
     re=find(~cellfun('isempty',strfind(r_info.ID(:,3),list_nodes{i,1})))
     if isempty(re)
         re=find(~cellfun('isempty',strfind(r_info.ID(:,2),list_nodes{i,1})))
         if isempty(re)
             re=find(~cellfun('isempty',strfind(r_info.ID(:,1),list_nodes{i,1})))
-            
+
             if isempty(re)
                 errordlg('The provided reaction cannot be found in the parsed model structure');
             else
@@ -162,7 +159,7 @@ for i=1:length(list_nodes);
         num(i)=re(1);  % obtain the number of reaction whose corresponding nodes on the layout will be highlighted.
     end
     % end
-    
+
 end
 
 
@@ -189,117 +186,117 @@ baseC_P={};
 total_length=length(num);
 progress=zeros(10,1);
 for ii=1:10;
-    
+
     progress(ii,1)=ii*floor(total_length/10)
-    
+
 end
 
-    
-        
+
+
 
 for i=1:length(num)  % "num" contains number of reaction nodes
     if ismember(i, progress)~=0||i==total_length;
-        waitbar((i/total_length*2/4)/4,h);
+        showprogress((i/total_length*2/4)/4);
     end
-    
-    
+
+
     baseR.(list_nodes{i})=r_info.baseReactant(num(i),:)
-    
+
     % add other reactants
     len_r_st=length(baseR.(list_nodes{i}))
     len_r_ed=length(r_info.reactant(num(i),:))
     baseR.(list_nodes{i})(len_r_st+1:len_r_st+len_r_ed)=r_info.reactant(num(i),:);
-    
+
     % include all the baseProducts
     baseP.(list_nodes{i})=r_info.baseProduct(num(i),:)
-    
+
     % add other products.
     len_r_st=length(baseP.(list_nodes{i}))
     len_r_ed=length(r_info.product(num(i),:))
     baseP.(list_nodes{i})(len_r_st+1:len_r_st+len_r_ed)=r_info.product(num(i),:);
-    
+
     %% by default
     if size(list_nodes,2)<2||isempty(list_nodes{i,2});
-        
+
 
         list_nodes(i,2)={defRxnColour}; % a default color is set.
     end
-    
-    
+
+
     %% highlight reactions
-    
-    
+
+
     for c=1:size(baseR.(list_nodes{i}),2);
         if ~isempty(baseR.(list_nodes{i}){c})
             baseC_R.(list_nodes{i})(c)=list_nodes(i,2)
-            
+
 %            baseC_R.(list_nodes{i})(c)=strrep(list_nodes(i,2),'#',''); % remove the '#' sign from the hex codes.
 %             if length(list_nodes{i,2})<8;
-%                 
+%
 %                 list_nodes{i,2}=['FF',list_nodes{i,2}];  % add the compatibility with six-digit code
 %             end
         end
     end
-    
-    
+
+
     for c=1:size(baseP.(list_nodes{i}),2);
         if ~isempty(baseP.(list_nodes{i}){c})
-            
-            
+
+
             baseC_P.(list_nodes{i})(c)=list_nodes(i,2)
 %            baseC_P.(list_nodes{i})(c)=strrep(list_nodes(i,2),'#',''); % remove the '#' sign from the hex codes.
 %             if length(list_nodes{i,2})<8;
-%                 
+%
 %                 list_nodes{i,2}=['FF',list_nodes{i,2}];  % add the compatibility with six-digit code
 %             end
         end
     end
-    
+
     if metMode~=0;  % check if the mets are needed to be highlighted
         numMet=size(list_Met,1)
-        
+
         if i<=numMet  % the number of lines of metaoblites may be less than that of reactions
             for t=1:size(list_Met(i,:),2) % number of metabolites
                 if ~isempty(list_Met{i,t})
                     met(i,t)=retrieveMet(parsed,list_Met(i,t))
                     list_M_species(i,2*t-1)={met(i,t).speciesAlliens}
-                    
+
                 end
             end
-            
+
         end
     end
-    
-    
+
+
     for r=2:2:length(baseR.(list_nodes{i}))
-        
+
         list_R(i,r/2)=baseR.(list_nodes{i})(r);
     end
     for d=1:2:length(baseR.(list_nodes{i}))-1
         list_R_M(i,(d+1)/2)=baseR.(list_nodes{i})(d)
     end
-    
+
     for r=2:2:length(baseP.(list_nodes{i}))
-        
+
         list_P(i,r/2)=baseP.(list_nodes{i})(r);
     end
-    
-    
+
+
     for d=1:2:length(baseP.(list_nodes{i}))-1
         list_P_M(i,(d+1)/2)=baseP.(list_nodes{i})(d)
     end
-    
-    
-    
+
+
+
     for r=2:2:length(baseC_R.(list_nodes{i}))
         list_C_R(i,r/2)=baseC_R.(list_nodes{i})(r); % each reaction has the same color
     end
-    
+
     for r=2:2:length(baseC_P.(list_nodes{i}))
         list_C_P(i,r/2)=baseC_P.(list_nodes{i})(r); % each reaction has the same color
     end
-    
-    
+
+
 end
 
 
@@ -375,20 +372,20 @@ found=0;
 
 
 
-waitbar(3/4,h);
+showprogress(3/4);
 
 for t=1:length(MainTxt);
-    
-    
-    
+
+
+
     new=new+1;
-    
+
     MainTxt_new(new,1)=MainTxt(t);
-    
+
     section_1=strfind(MainTxt(t),sectionKey(1).str);
     section_2=strfind(MainTxt(t),sectionKey(2).str);
-    
-    
+
+
     if (~isempty(section_1{1,1}))
         secKey=1;
         fprintf('found the metKeyword: %s',MainTxt{t});
@@ -396,39 +393,39 @@ for t=1:length(MainTxt);
         secKey=0;
         fprintf('Cannot found the metKeyword:  %s',MainTxt{t});
     end
-    
-    
+
+
     result=strfind(MainTxt(t),toFD(1).str)
-    
+
     if ~isempty(result{1,1})&&(secKey==1)
-        
-        
+
+
         [st,ed]=position(MainTxt{t},listID{1})  % retrieve 'ID' from the line
-        
+
         str=MainTxt{t}
-        
+
         if found==0;
             for m=1:size(list_R,1);
-                
+
                 for n=1:size(list_R,2);
-                    
+
                     if strcmp(list_R(m,n),str(st:ed))
-                        
+
 %                         if m==9
 %                             disp('good')
 %                         end
-%                         
+%
                         if metMode~=0&&m<=numMet;
-                            
+
                             for dd=1:length(list_Met(m,:)) % list_Met contains one ID for each metabolite, rather than a pair (two IDs) for each metabolite.
-                                 
+
                                 if strcmp(list_R_M(m,n),list_M_species(m,dd*2-1)); %% Highlighting metabolites
-                                    
+
                                     a=a+1;
                                     final_list(a,1)={str(st:ed)};
-                                    
+
 %                                     list_Colour_Met{m,dd}=colourCode(list_Colour_Met{m,dd})
-                                    
+
                                     new_colour=list_Colour_Met(m,dd)
                                     % new_colour=list_C_R(m,n)
                                     %                     if strcmp({str(st:end)},'sa6');
@@ -436,51 +433,51 @@ for t=1:length(MainTxt);
                                     %                     end
                                     found=1;
                                     break
-                                    
+
                                 else
                                     a=a+1;
                                     final_list(a,1)={str(st:ed)};
                                     new_colour=list_C_R(m,n)
                                     found=1;
-                                    
+
                                 end
                             end
-                            
+
                         else
-                            
+
                             a=a+1;
                             final_list(a,1)={str(st:ed)};
                             new_colour=list_C_R(m,n)
                             found=1;
-                            
-                            
+
+
                         end
-                        
-                        
+
+
                     end
                 end
             end
-            
+
             %          if found==0
-            
+
             for p=1:size(list_P,1);
-                
+
                 for q=1:size(list_P,2);
-                    
+
                     %                     if p==31&&q==1;
                     %                         disp('good');
                     %                     end
-                    
+
 %                     if strcmp(str(st:ed),'sa148');
 %                         disp('good');
 %                     end
                     if strcmp(list_P(p,q),str(st:ed))
-                        
-                        
-                        
+
+
+
                         if metMode~=0&&p<=numMet
                             for ddP=1:length(list_Met(p,:))
-                                
+
                                 if strcmp(list_P_M(p,q),list_M_species(p,ddP*2-1)); %% Highlighting metabolites
                                     %                                     if strcmp(list_P_M(p,q),'s5962')
                                     %
@@ -491,54 +488,54 @@ for t=1:length(MainTxt);
 %                                     list_Colour_Met{m,ddP}=colourCode(list_Colour_Met{p,ddP})
                                     new_colour=list_Colour_Met(p,ddP)
                                     %new_colour=list_C_P(p,q)
-                                    
+
                                     found=1;
-                                    
+
                                     % disp(list_M_species(p,dd))
                                     break
                                 else
-                                    
+
                                     a=a+1;
                                     final_list(a,2)={str(st:ed)};
                                     new_colour=list_C_P(p,q)
-                                    
+
                                     found=1;
                                 end
                             end
                         else
-                            
+
                             a=a+1;
                             final_list(a,2)={str(st:ed)};
                             new_colour=list_C_P(p,q)
-                            
+
                             found=1;
-                            
-                            
+
+
                         end
                     end
                 end
             end
-            
-            
+
+
         end
-        
+
         %find(cellfun('isempty',strcmp(str,MainTxt(t)(st:ed),)))
-        
+
     end
-    
-    
+
+
     res=strfind(MainTxt(t),toFD(2).str)
-    
+
     if ~isempty(res{1,1})&&(secKey==1)&&found==1;
-        
+
         %for c=1:length(listColour);
         if strcmp(listColour(1),'color')
             [st,ed]=position(MainTxt_new{new},listColour{1})
             str_colour=MainTxt_new{new};
-            
+
 %             if strcmp(str_colour(st:ed),str_colour)
             new_colour=colourCode(char(new_colour))
-% try 
+% try
             str_colour(st:ed)=new_colour;
 % catch
 %     disp('good');
@@ -546,24 +543,24 @@ for t=1:length(MainTxt);
 
             MainTxt_new{new}=str_colour;
 %             end
-            
-            
+
+
         end
         %end
-        
+
     end
-    
-    
+
+
     res_end=strfind(MainTxt(t),toFD(3).str);
     if ~isempty(res_end{1,1})
         found=0;
         %break;
-        
+
     end
-    
+
 end
 
-waitbar(3.5/4,h);
+showprogress(3.5/4);
 
 %% old version of the "write" funciton
 
@@ -587,9 +584,7 @@ parsed_updated=parsed;
 
 writeCD(parsed_updated,fname_out)
 
-waitbar(4/4,h);
-
-close(h)
+showprogress(4/4);
 
 end
 
@@ -617,9 +612,8 @@ function [new_code]=colourCode(code)
 
 code=strrep(code,'#',''); % remove the '#' sign from the hex codes.
 if length(code)<8;
-    
+
     code=['FF',code];  % add the compatibility with six-digit code
 end
 new_code=code;
 end
-

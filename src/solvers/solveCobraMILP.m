@@ -375,7 +375,12 @@ switch solver
         cplexlp.Model.lb = lb;
         cplexlp.Model.obj = osense * c;
         cplexlp.Model.name = 'CobraMILP';
-        cplexlp.Model.ctype = vartype';
+        %Make sure, that the vartype is in the correct orientation, cplex
+        %is quite picky here..
+        if size(vartype,1) > size(vartype,2)
+            vartype = vartype';
+        end
+        cplexlp.Model.ctype = vartype;
         cplexlp.Start.x = x0;
         cplexlp.Param.mip.tolerances.mipgap.Cur =  solverParams.relMipGapTol;
         cplexlp.Param.mip.tolerances.integrality.Cur =  solverParams.intTol;

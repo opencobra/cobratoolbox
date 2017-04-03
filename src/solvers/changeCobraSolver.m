@@ -137,6 +137,11 @@ if (strcmp(solverType,'LP'))
         case 'ibm_cplex'
             try
                 ILOGcplex = Cplex('fba');% Initialize the CPLEX object
+                if ~verLessThan('matlab','9')%2016b
+                    fprintf('\n IBM ILOG CPLEX is incompatible with this version of MATLAB, please downgrade or change solver\n')
+                elseif verLessThan('matlab','9') && ~verLessThan('matlab','8.6')%>2015b
+                    warning( 'off', 'MATLAB:lang:badlyScopedReturnValue' );%take out warning message
+                end
             catch ME
                 solverOK = false;
                 warning('LP solver CPLEX from IBM not usable: IBM CPLEX not installed or licence server not up');
@@ -156,16 +161,13 @@ if (strcmp(solverType,'LP'))
                 warning('LP solver Gurobi not useable: gurobi_mex not in Matlab path');
                 solverOK=false;
             end
-        case 'gurobi5'
+        case {'gurobi5','gurobi6','gurobi7'}
             if (~exist('gurobi','file'))
                 warning('LP solver Gurobi not useable: gurobi.m not in Matlab path');
                 solverOK=false;
             end
-        case 'gurobi6'
-            if (~exist('gurobi','file'))
-                warning('LP solver Gurobi not useable: gurobi.m not in Matlab path');
-                solverOK=false;
-            end
+            %TODO - test that gurobi binaries are installed and licence etc
+            %is working
         case 'mps'
             if (~exist('BuildMPS'))
                 warning('MPS not usable: BuildMPS.m not in Matlab path');
@@ -221,6 +223,11 @@ elseif (strcmp(solverType,'MILP'))
         case 'ibm_cplex'
             try
                 ILOGcplex = Cplex('fba');% Initialize the CPLEX object
+                if ~verLessThan('matlab','9')%2016b
+                    fprintf('\n IBM ILOG CPLEX is incompatible with this version of MATLAB, please downgrade or change solver\n')
+                elseif verLessThan('matlab','9') && ~verLessThan('matlab','8.6')%>2015b
+                    warning( 'off', 'MATLAB:lang:badlyScopedReturnValue' );%take out warning message
+                end
             catch ME
                 solverOK = false;
                 warning('MILP solver CPLEX from IBM not usable: IBM CPLEX not installed or licence server not up');
@@ -235,12 +242,7 @@ elseif (strcmp(solverType,'MILP'))
                 warning('MILP solver Gurobi not useable: gurobi_mex not in Matlab path');
                 solverOK=false;
             end
-        case 'gurobi5'
-            if (~exist('gurobi'))
-                warning('MILP solver Gurobi not useable: gurobi.m not in Matlab path');
-                solverOK=false;
-            end
-        case 'gurobi6'
+        case {'gurobi5','gurobi6','gurobi7'}
             if (~exist('gurobi'))
                 warning('MILP solver Gurobi not useable: gurobi.m not in Matlab path');
                 solverOK=false;
@@ -296,14 +298,7 @@ elseif (strcmp(solverType,'QP'))
             else
                 solverOK=true;
             end
-        case 'gurobi5'
-            if (~exist('gurobi'))
-                warning('QP solver Gurobi not useable: gurobi.m not in Matlab path');
-                solverOK=false;
-            else
-                solverOK=true;
-            end
-        case 'gurobi6'
+        case {'gurobi5','gurobi6','gurobi7'}
             if (~exist('gurobi'))
                 warning('QP solver Gurobi not useable: gurobi.m not in Matlab path');
                 solverOK=false;
@@ -334,19 +329,12 @@ elseif (strcmp(solverType, 'MIQP'))
             else
                 solverOK = true;
             end
-        case 'gurobi5'
-            if(~exist('gurobi'))
+        case {'gurobi5','gurobi6','gurobi7'}
+            if (~exist('gurobi'))
                 warning('MIQP solver gurobi not usable: gurobi.m not in Matlab path');
-                solverOK = false;
+                solverOK=false;
             else
-                solverOK = true;
-            end
-        case 'gurobi6'
-            if(~exist('gurobi'))
-                warning('MIQP solver gurobi not usable: gurobi.m not in Matlab path');
-                solverOK = false;
-            else
-                solverOK = true;
+                solverOK=true;
             end
         otherwise
             warning(['MIQP solver ' solverName ' not supported by COBRA Toolbox']);

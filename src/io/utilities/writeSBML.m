@@ -378,8 +378,8 @@ for i=1:size(model.mets, 1)
     tmp_note = '<annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">';
     tmp_note=[tmp_note,' <rdf:Description rdf:about="#',tmp_species.id,'">','<bqbiol:is>','<rdf:Bag>'];
     
-    if isfield(model, 'metCHEBIID')&&~isempty(model.metCHEBIID{i})
-        tmp_note = [tmp_note ' <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:' model.metCHEBIID{i} '"/>' ];
+    if isfield(model, 'metChEBIID')&&~isempty(model.metChEBIID{i})
+        tmp_note = [tmp_note ' <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:' model.metChEBIID{i} '"/>' ];
     end
     if isfield(model, 'metPubChemID')&&~isempty(model.metPubChemID{i})
         tmp_note = [ tmp_note ' <rdf:li rdf:resource="http://identifiers.org/pubchem.substance/' model.metPubChemID{i} '"/>'];
@@ -719,7 +719,7 @@ for i=1:size(model.rxns, 1)
         tmp_note = [ tmp_note ' <p>AUTHORS: ' model.rxnReferences{i} '</p>'];
     end
     if isfield(model, 'rxnNotes')&&i<=length(model.rxnNotes)%&&~isempty(model.rxnNotes{i})
-        tmp_note = [ tmp_note ' <p>' model.rxnNotes{i} '</p>'];
+        tmp_note = [ tmp_note ' <p>NOTES: ' model.rxnNotes{i} '</p>'];
     end
     if ~isempty(tmp_note)
         tmp_note = ['<body xmlns="http://www.w3.org/1999/xhtml">' tmp_note '</body>'];
@@ -873,13 +873,22 @@ if isfield(model,'genes')
         end
     end
 end
+
+%Set the objective sense of the FBC objective according to the osenseStr in
+%the model.
+objectiveSense = 'maximize';
+
+if isfield(model,'osenseStr') && strcmp('min',model.osenseStr)
+    objectiveSense = 'minimize'
+end
+
 tmp_fbc_objective=struct('typecode','SBML_FBC_OBJECTIVE',...   % Create templates of new structures defined in the FBCv2 scheme (i.e., field names and default values are initilised)
     'metaid',emptyChar,...
     'notes',emptyChar,...
     'annotation',emptyChar,...
     'sboTerm',defaultSboTerm,...
     'fbc_id','obj',... % define a term (No. 6)
-    'fbc_type', 'maximize',... % define the type (No.7)
+    'fbc_type', objectiveSense,... % define the type (No.7)
     'fbc_fluxObjective',emptyChar,... % is acturally a structure (No.8)
     'level', defaultLevel,...
     'version', defaultVersion,...

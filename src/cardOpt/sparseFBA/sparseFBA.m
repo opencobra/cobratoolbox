@@ -52,7 +52,11 @@ if exist('osenseStr', 'var')
         osenseStr = 'max';
     end
 else
-    osenseStr = 'max';
+    if isfield(model,'osenseStr')
+        osenseStr = model.osenseStr;
+    else
+        osenseStr = 'max';
+    end
 end
 
 if ~exist('checkMinimalSet', 'var')
@@ -163,13 +167,13 @@ end
 switch FBAsolution.stat
     case 2
         v = [];
-        fprintf('%s\n','FBA problem error: Unbounded !!!!')
+        error('%s\n','FBA problem unbounded !')
     case 0
         v = [];
-        fprintf('%s\n','FBA problem error: Infeasible !!!!')
+        error('%s\n','FBA problem infeasible !')
     case -1
         v = [];
-        warning('%s\n','FBA problem error: Invalid input !!!!')
+        error('%s\n','FBA problem error: Invalid input !')
     case 1
         vFBA = FBAsolution.full(1:n);
         objFBA = c'*vFBA;
@@ -237,7 +241,7 @@ switch FBAsolution.stat
                 disp(solutionL0.x(activeRxnBoolOld & ~activeRxnBool))
             end
         else
-            error('Cannot achieve the objective value. Tolerance for non-zero flux is probably too large!!!!')
+            error('Cannot achieve the objective value. Tolerance for non-zero flux is probably too large!')
         end
 end
 %identify active reactions

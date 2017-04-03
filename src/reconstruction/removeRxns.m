@@ -88,6 +88,8 @@ end
 
 % Remove metabolites that are not used anymore
 if metFlag
+    %restricedRowBool = getCorrespondingRows(modelOut.S,true(size(modelOut.S,1),1),true(size(modelOut.S,2),1),'inclusive');
+    %selMets=find(restricedRowBool);
     selMets = modelOut.mets(any(sum(abs(modelOut.S), 2) == 0, 2));
     if ~isempty(selMets)
         modelOut = removeMetabolites(modelOut, selMets, false);

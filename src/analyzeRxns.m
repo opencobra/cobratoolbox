@@ -1,5 +1,5 @@
-function [allRxns,rxnCount] = analyzeRxns(product,listProducts,listRxns) 
-%analyzeRxns       determines which knockout reactions occur most often 
+function [allRxns,rxnCount] = analyzeRxns(product,listProducts,listRxns)
+%analyzeRxns       determines which knockout reactions occur most often
 %                  when a specified product is produced
 %
 % [allRxns, rxnCount] = analyzeRxns(product,listProducts,listRxns)
@@ -18,16 +18,13 @@ function [allRxns,rxnCount] = analyzeRxns(product,listProducts,listRxns)
 
 %find all product producers
 makesProd = [];
-h = waitbar(0,['finding ',product,' producing strains']);
+showprogress(0,['finding ',product,' producing strains']);
 for i = 1:length(listProducts)
-    waitbar(i/length(listProducts),h);
+    showprogress(i/length(listProducts));
     pos = strmatch(product,listProducts{i});
     if pos ~= 0
         makesProd = [makesProd,i];
     end
-end
-if ( regexp( version, 'R20') )
-        close(h);
 end
 
 %determine which reactions are knocked out in each strain, return the
@@ -49,6 +46,3 @@ for i = 1:length(makesProd)
         end
     end
 end
-
-
-

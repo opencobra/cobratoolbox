@@ -31,7 +31,9 @@ function solution = sparseLP(approximation,constraint,params)
 %       nbMaxIteration      stopping criteria - number maximal of iteration (Defaut value = 1000)
 %       epsilon             stopping criteria - (Defaut value = 10e-6)
 %       theta               parameter of the approximation (Defaut value = 0.5)
-
+%       optTol              optimality tolerance
+%       feasTol             feasibilty tolerance
+% 
 %OUTPUT
 % solution                  Structure containing the following fields
 %       x                   n x 1 solution vector
@@ -51,7 +53,7 @@ availableApprox = {'cappedL1','exp','log','SCAD','lp-','lp+','l1','all'};
 % Check inputs
 if nargin < 3
     params.nbMaxIteration = 1000;
-    params.epsilon = 10e-6;
+    params.epsilon = 1e-6;
     params.theta   = 0.5;
     if strcmp(approximation,'lp-') == 1
         params.p = -1;
@@ -65,13 +67,21 @@ else
     end
 
     if isfield(params,'epsilon') == 0
-        params.epsilon = 10e-6;
+        params.epsilon = 1e-6;
     end
 
     if isfield(params,'theta') == 0
         params.theta   = 0.5;
     end
+    
+    if isfield(params,'feasTol') == 0
+        params.feasTol = 1e-9;
+    end
 
+    if isfield(params,'optTol') == 0
+        params.optTol   = 1e-9;
+    end
+    
     if isfield(params,'p') == 0
         if strcmp(approximation,'lp-') == 1
             params.p = -1;
@@ -136,7 +146,8 @@ switch approximation
         bestResult = size(constraint.A,2);
         bestAprox = '';
         for i=1:length(approximations)
-            solutionL0 = sparseLP(char(approximations(i)),constraint);
+            %disp(approximations(i))
+            solutionL0 = sparseLP(char(approximations(i)),constraint,params);
             if solutionL0.stat == 1
                 if bestResult > nnz(solutionL0.x)
                     bestResult = nnz(solutionL0.x);

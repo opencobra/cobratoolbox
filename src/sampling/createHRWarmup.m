@@ -38,7 +38,7 @@ if ~isfield(model,'csense')
     model.csense(1:size(model.S,1)) = 'E';
 end
 
-if nPointsCheck && (nPoints < nRxns*2) 
+if nPointsCheck && (nPoints < nRxns*2)
     warning(['Need a minimum of ' num2str(nRxns*2) ' warmup points']);
     nPoints = nRxns*2;
 end
@@ -68,7 +68,7 @@ if ~isempty(bias)
             if (upperBias > maxFlux || upperBias < minFlux)
                 upperBias = maxFlux;
                 disp('Invalid bias bounds - using default bounds instead');
-            end             
+            end
             if (lowerBias < minFlux || lowerBias > maxFlux)
                 lowerBias = minFlux;
                 disp('Invalid bias bounds - using default bounds instead');
@@ -88,11 +88,11 @@ if ~isempty(bias)
 end
 
 i = 1;
-h = waitbar(0,'Creating warmup points ...');
+showprogress(0, 'Creating warmup points ...');
 %Generate the points
 while i <= nPoints/2
     if mod(i,10) == 0
-        waitbar(2*i/nPoints,h);
+        showprogress(2*i/nPoints);
     end
     if ~isempty(bias)
         for k = 1:size(bias.index)
@@ -116,7 +116,7 @@ while i <= nPoints/2
     end
     % Create random objective function
     model.c = rand(nRxns,1)-0.5;
-    
+
     for maxMin = [1, -1]
         % Set the objective function
         if i <= nRxns
@@ -124,7 +124,7 @@ while i <= nPoints/2
             model.c(i) = 1;
         end
         model.osense = maxMin;
-        
+
         % Determine the max or min for the rxn
         sol = solveCobraLP(model);
         x = sol.full;
@@ -137,31 +137,31 @@ while i <= nPoints/2
             display(status)
             pause;
         end
-        
+
         % Continue if optimal solution is found
-        
+
         % Move points to within bounds
         x(x > model.ub) = model.ub(x > model.ub);
         x(x < model.lb) = model.lb(x < model.lb);
-        
+
         % Store point
         if (maxMin == 1)
             warmupPts(:,2*i-1) = x;
         else
             warmupPts(:,2*i) = x;
         end
-        
+
         if (verbFlag)
             if mod(i,100)==0
                 fprintf('%4.1f\n',i/nPoints*100);
             end
         end
-        
-        
+
+
     end
     if validFlag
         i = i+1;
-    end 
+    end
 end
 centerPoint = mean(warmupPts,2);
 % Move points in
@@ -170,25 +170,24 @@ if isempty(bias)
 else
     warmupPts = warmupPts*.99 + .01*centerPoint*ones(1,nPoints);
 end
-close(h);
 
 % % Create orthogonal warmup points
 % warmupPts1= createHRWarmupOrth(model,true,verbFlag);
-% 
+%
 % % Create warmup points using random directions
 % warmupPts2 = createHRWarmupRand(model,1000,verbFlag);
-% 
+%
 % [nRxns,nPts1] = size(warmupPts1);
 % [nRxns,nPts2] = size(warmupPts2);
 % warmupPts = zeros(nRxns,nPoints);
-% 
+%
 % pointOrder = randperm(nPts1);
-% 
+%
 % if (nPoints < nPts1)
 %     warning(['Need a minimum of ' num2str(nPts1) ' warmup points']);
 %     nPoints = nPts1;
 % end
-% 
+%
 % % Combine point sets
 % for i = 1:nPoints
 %   if (i <= nPts1)
@@ -208,6 +207,5 @@ close(h);
 %   thisPoint(thisPoint < model.lb) = model.lb(thisPoint ...
 %                                              < model.lb);
 %   warmupPts(:,i) = thisPoint;
-%   
+%
 % end
-

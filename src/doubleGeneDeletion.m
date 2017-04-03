@@ -15,7 +15,7 @@ function [grRatioDble,grRateKO,grRateWT] = doubleGeneDeletion(model,method,geneL
 % verbFlag      Verbose output (default = false)
 %
 %OUTPUTS
-% grRatioDble   Computed growth rate ratio between double deletion strain 
+% grRatioDble   Computed growth rate ratio between double deletion strain
 %               and wild type
 % grRateKO      Double deletion strain growth rates (1/h)
 % grRateWT      Wild type growth rate (1/h)
@@ -92,11 +92,11 @@ end
 delCounter = 0;
 fprintf('Double gene deletion analysis\n');
 fprintf('Total of %d pairs to analyze\n',nTotalPairs);
-h = waitbar(0,'Double gene deletion analysis in progress ...');
+showprogress(0,'Double gene deletion analysis in progress ...');
 t = cputime;
 fprintf('Perc complete\tCPU time\n');
 for geneNo1 = 1:nDelGenes1
-   
+
     % Find gene index
     [isInModel,geneID1] = ismember(geneList1{geneNo1},model.genes);
     if (~differentSetsFlag)
@@ -108,7 +108,7 @@ for geneNo1 = 1:nDelGenes1
     for geneNo2 = initID:nDelGenes2
         delCounter = delCounter + 1;
         if (mod(delCounter,10) == 0)
-            waitbar(delCounter/nTotalPairs,h);
+            showprogress(delCounter/nTotalPairs);
         end
         if (mod(delCounter,100) == 0)
             fprintf('%5.2f\t%8.1f\n',100*delCounter/nTotalPairs,cputime-t);
@@ -150,7 +150,7 @@ for geneNo1 = 1:nDelGenes1
                 %solKO = optimizeCbModel(modelTmp,'max');
                 if (solKO.stat > 0)
                     grRateKO(geneNo1,geneNo2) = solKO.f;
-                    grRateKO(geneNo2,geneNo1) = solKO.f; 
+                    grRateKO(geneNo2,geneNo1) = solKO.f;
                 else
                     grRateKO(geneNo1,geneNo2) = 0;
                     grRateKO(geneNo2,geneNo1) = 0;
@@ -165,9 +165,6 @@ for geneNo1 = 1:nDelGenes1
             grRateKO(geneNo2,geneNo1) = grRateKO(geneNo1,geneNo2);
         end
     end
-end
-if ( regexp( version, 'R20') )
-        close(h);
 end
 
 % Reconstruct the entire matrix

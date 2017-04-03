@@ -14,11 +14,11 @@
 % define global paths
 global path_TOMLAB
 
-% define the path to The COBRAToolbox
-pth = which('initCobraToolbox.m');
-CBTDIR = pth(1:end - (length('initCobraToolbox.m') + 1));
+% save the current path
+currentDir = pwd;
 
-initTest([CBTDIR, filesep, 'test', filesep, 'verifiedTests', filesep, 'testFVA'])
+% initialize the test
+initTest(fileparts(which(mfilename)));
 
 % set the tolerance
 tol = 1e-8;
@@ -29,6 +29,12 @@ solverPkgs = {'tomlab_cplex', 'glpk'};
 % load the model
 load('Ec_iJR904.mat', 'model');
 load('testFVAData.mat');
+
+% create a parallel pool
+poolobj = gcp('nocreate'); % if no pool, do not create new one.
+if isempty(poolobj)
+    parpool(2); % launch 2 workers
+end
 
 for k = 1:length(solverPkgs)
     % add the solver paths (temporary addition for CI)
@@ -42,14 +48,8 @@ for k = 1:length(solverPkgs)
     if solverOK == 1
         fprintf('   Testing flux variability analysis using %s ... ', solverPkgs{k});
 
-        poolobj = gcp('nocreate'); % If no pool, do not create new one.
-        if isempty(poolobj)
-            % launch 2 workers
-            parpool(2);
-        end
-
         % launch the flux variability analysis
-        [minFluxT, maxFluxT] = fluxVariability(model, 90);
+        [minFluxT, maxFluxT] = fluxVariability(model, 90, 'max', model.rxns, 1);
 
         rxnNames = {'PGI', 'PFK', 'FBP', 'FBA', 'TPI', 'GAPD', 'PGK', 'PGM', 'ENO', 'PYK', 'PPS', 'G6PDH2r', 'PGL', 'GND', 'RPI', 'RPE', 'TKT1', 'TKT2', 'TALA'};
 
@@ -80,4 +80,4 @@ for k = 1:length(solverPkgs)
 end
 
 % change the directory
-cd(CBTDIR)
+cd(currentDir)
