@@ -1,5 +1,5 @@
-function [tissueModel,Rxns] = createTissueSpecificModel(model, ...
-                                                  expressionData,proceedExp,orphan,exRxnRemove,solver,options,funcModel)
+function [tissueModel,Rxns, SolutionFlux] = createTissueSpecificModelGIMMEContinuous(model, ...
+                                                  expressionData,proceedExp,orphan,exRxnRemove,solver,options,funcModel, cutoff)
 %createTissueSpecificModel Create draft tissue specific model from mRNA expression data
 %
 % [tissueModel,Rxns] =
@@ -9,10 +9,7 @@ function [tissueModel,Rxns] = createTissueSpecificModel(model, ...
 %   model               global recon1 model
 %   expressionData      mRNA expression Data structure
 %       Locus           Vector containing GeneIDs
-%       Data            Presence/Absence Calls
-%                             Use: (1 - Present, 0 - Absent) when proceedExp = 1
-%                             Use: (2 - Present, 1 - Marginal, 0 - Absent)
-%                               when proceedExp = 0
+%       Data            Continuous expression data, double
 %       Transcript      RefSeq Accession (only required if proceedExp = 0)
 % 
 %OPTINAL INPUTS
@@ -33,6 +30,7 @@ function [tissueModel,Rxns] = createTissueSpecificModel(model, ...
 %   funcModel           1 - Build a functional model having only reactions
 %                       that can carry a flux (using FVA), 0 - skip this
 %                       step (Default = 0)
+%   cutoff              Need to provide a cutoff for continuous GIMME
 %
 %
 %OUTPUTS
@@ -88,11 +86,18 @@ if ~exist('funcModel','var') || isempty(funcModel)
     funcModel = 0;
 end
 
+if ~exist('cutoff', 'var') || isempty(cutoff)
+    cutoff = 1;
+end
+
 
 % Extracting GPR data from model
 [parsedGPR,corrRxn] = extractGPRs(model);
 
 if proceedExp == 0
+    if strcmp(solver, 'GIMMEContinuous')
+        error 'Continuous GIMME assumes expression has already been proceded! Exiting\n'
+    end
     % Making presence/absence calls on mRNA expression data
     [Results,Transcripts] = charExpData(expressionData);
     
@@ -133,15 +138,11 @@ if proceedExp == 0
     genePresenceNP = zeros(length(locusNP),1);
     
     locus = [locusP;locusNP];
-    genePresence = [genePresenceP;genePresenceNP];
+    geneExpression = [genePresenceP;genePresenceNP];
 else
     locus = expressionData.Locus;
-    genePresence = zeros(length(locus),1);
-    genePresence(find(expressionData.Data(:,1))) = 1;
+    geneExpression = expressionData.Data;
 end
-
-% Mapping probes to reactions in model
-[ExpressedRxns,UnExpressedRxns,unknown] = mapProbes(parsedGPR,corrRxn,locus,genePresence,match_strings);
 
 % Removing exchange reactions that are not in this specific tissue
 % metabolome
@@ -149,203 +150,74 @@ if ~isempty(exRxnRemove)
     model = removeRxns(model,exRxnRemove);
 end
 
-nRxns = length(model.lb);
+% Mapping probes to reactions in model
+rxnExpression = getRxnExpressionFromGPR(model.rxns, parsedGPR,corrRxn,locus,geneExpression,match_strings);
+ExpressedRxns = model.rxns(rxnExpression >= cutoff);
+UnExpressedRxns = model.rxns(rxnExpression < cutoff & rxnExpression > -1);
+unknown = model.rxns(rxnExpression == -1) && ~cellfun(@isempty, Mouse2_2Model.grRules);
 
-% Determine reaction indices of expressed and unexpressed reactions
-RHindex = findRxnIDs(model,ExpressedRxns);
-RLindex = findRxnIDs(model,UnExpressedRxns);
-if (strcmp(solver, 'iMAT'))
-  solver = 'Shlomi';
+if ~exist('options','var') || isempty(options)
+    loc = find(model.c);
+    
+    sol = optimizeCbModel(model);
+    
+    options = [loc 0.9];
 end
-switch solver
-    case 'Shlomi'
-        
-        S = model.S;
-        lb = model.lb;
-        ub = model.ub;
-        eps = 1;
-        
-        % Creating A matrix
-        A = sparse(size(S,1)+2*length(RHindex)+2*length(RLindex),size(S,2)+2*length(RHindex)+length(RLindex));
-        [nConstr,nVar] = size(S);
-        [m,n,s] = find(S);
-        for i = 1:length(m)
-            A(m(i),n(i)) = s(i);
-        end
-        
-        for i = 1:length(RHindex)
-            A(i+size(S,1),RHindex(i)) = 1;
-            A(i+size(S,1),i+size(S,2)) = lb(RHindex(i)) - eps;
-            A(i+size(S,1)+length(RHindex),RHindex(i)) = 1;
-            A(i+size(S,1)+length(RHindex),i+size(S,2)+length(RHindex)+length(RLindex)) = ub(RHindex(i)) + eps;
-        end
-        
-        for i = 1:length(RLindex)
-            A(i+size(S,1)+2*length(RHindex),RLindex(i)) = 1;
-            A(i+size(S,1)+2*length(RHindex),i+size(S,2)+length(RHindex)) = lb(RLindex(i));
-            A(i+size(S,1)+2*length(RHindex)+length(RLindex),RLindex(i)) = 1;
-            A(i+size(S,1)+2*length(RHindex)+length(RLindex),i+size(S,2)+length(RHindex)) = ub(RLindex(i));
-        end
-        
-        % Creating csense
-        csense1(1:size(S,1)) = 'E';
-        csense2(1:length(RHindex)) = 'G';
-        csense3(1:length(RHindex)) = 'L';
-        csense4(1:length(RLindex)) = 'G';
-        csense5(1:length(RLindex)) = 'L';
-        csense = [csense1 csense2 csense3 csense4 csense5];
-        
-        % Creating lb and ub
-        lb_y = zeros(2*length(RHindex)+length(RLindex),1);
-        ub_y = ones(2*length(RHindex)+length(RLindex),1);
-        lb = [lb;lb_y];
-        ub = [ub;ub_y];
-        
-        % Creating c
-        c_v = zeros(size(S,2),1);
-        c_y = ones(2*length(RHindex)+length(RLindex),1);
-        c = [c_v;c_y];
-        
-        % Creating b
-        b_s = zeros(size(S,1),1);
-        lb_rh = lb(RHindex);
-        ub_rh = ub(RHindex);
-        lb_rl = lb(RLindex);
-        ub_rl = ub(RLindex);
-        b = [b_s;lb_rh;ub_rh;lb_rl;ub_rl];
-        
-        % Creating vartype
-        vartype1(1:size(S,2),1) = 'C';
-        vartype2(1:2*length(RHindex)+length(RLindex),1) = 'B';
-        vartype = [vartype1;vartype2];
-        n_int = length(vartype2);
-        
-        MILPproblem.A = A;
-        MILPproblem.b = b;
-        MILPproblem.c = c;
-        MILPproblem.lb = lb;
-        MILPproblem.ub = ub;
-        MILPproblem.csense = csense;
-        MILPproblem.vartype = vartype;
-        MILPproblem.osense = -1;
-        MILPproblem.x0 = [];
+[reactionActivity,reactionActivityIrrev,model2gimme,gimmeSolution, rxnFluxRev] = solveGimme(model,options,rxnExpression,cutoff);
 
-        verboseFlag = true;
-        
-        solution = solveCobraMILP(MILPproblem);
-        
-        Rxns.solution = solution;
-        
-        x = solution.cont;
-        for i = 1:length(x)
-            if abs(x(i)) < 1e-6
-                x(i,1) = 0;
-            end
-        end
-        
-        removed = find(x==0);
-        % option to leave orphan reactions
-        if orphan == 1
-            orphans = findOrphanRxns(model);
-            removed(find(ismember(model.rxns(removed),orphans)))=[]; 
-        end
-        rxnRemList = model.rxns(removed);
-        tissueModel = removeRxns(model,rxnRemList);
-        
-        Rxns.Expressed = ExpressedRxns;
-        Rxns.UnExpressed = UnExpressedRxns;
-        Rxns.unknown = unknown;
-        
-        x = ismember(UnExpressedRxns,tissueModel.rxns);
-        loc = find(x);
-        Rxns.UpRegulated = UnExpressedRxns(loc);
-        
-        x = ismember(ExpressedRxns,tissueModel.rxns);
-        loc = find(x==0);
-        Rxns.DownRegulated = ExpressedRxns(loc);
-        
-        x = ismember(model.rxns,[ExpressedRxns;UnExpressedRxns]);
-        loc = find(x==0);
-        x = ismember(tissueModel.rxns,model.rxns(loc));
-        loc = find(x);
-        Rxns.UnknownIncluded = tissueModel.rxns(loc);
-        
-    case 'GIMME'
-        x = ismember(model.rxns,[ExpressedRxns;UnExpressedRxns]);
-        unk = find(x==0);
-        
-        expressionCol = zeros(length(model.rxns),1);
-        for i = 1:length(unk)
-            expressionCol(unk(i)) = -1;
-        end
-        
-        for i = 1:length(RHindex)
-            expressionCol(RHindex(i)) = 2;
-        end
-        if ~exist('options','var') || isempty(options)
-            loc = find(model.c);
-            
-            sol = optimizeCbModel(model);
-            
-            options = [loc 0.9];
-        end
-        cutoff = 1;
-        [reactionActivity,reactionActivityIrrev,model2gimme,gimmeSolution] = solveGimme(model,options,expressionCol,cutoff);
-        
-        remove = model.rxns(find(reactionActivity == 0));
-        tissueModel = removeRxns(model,remove);
-        
-        if funcModel ==1
-            c = tissueModel.c;
-            
-            remove = [];
-            tissueModel.c = zeros(length(tissueModel.c),1);
-            for i = 1:length(tissueModel.rxns)
-                tissueModel.c(i) = 1;
-                sol1 = optimizeCbModel(tissueModel,'max');
-                sol2 = optimizeCbModel(tissueModel,'min');
-                if sol1.f == 0 & sol2.f == 0
-                    remove = [remove tissueModel.rxns(i)];
-                end
-                tissueModel.c(i) = 0;
-            end
-            
-            tissueModel.c = c;
-            tissueModel = removeRxns(tissueModel,remove);
-        end
-        
-        Rxns.Expressed = ExpressedRxns;
-        Rxns.UnExpressed = UnExpressedRxns;
-        Rxns.unknown = unknown;
-        
-        x = ismember(UnExpressedRxns,tissueModel.rxns);
-        loc = find(x);
-        Rxns.UpRegulated = UnExpressedRxns(loc);
-        
-        x = ismember(ExpressedRxns,tissueModel.rxns);
-        loc = find(x==0);
-        Rxns.DownRegulated = ExpressedRxns(loc);
-        
-        x = ismember(model.rxns,[ExpressedRxns;UnExpressedRxns]);
-        loc = find(x==0);
-        x = ismember(tissueModel.rxns,model.rxns(loc));
-        loc = find(x);
-        Rxns.UnknownIncluded = tissueModel.rxns(loc);
-        
+remove = model.rxns(reactionActivity == 0);
+tissueModel = removeRxns(model,remove);
+rxnFluxRev = rxnFluxRev(reactionActivity ~= 0);
+
+if funcModel ==1
+    [minFlux, maxFlux] = fluxVariability(tissueModel, 90, 'max', tissueModel.rxns, 1);
+    remove = minFlux == 0 & maxFlux == 0;
+    rxnFluxRev = rxnFluxRev(~remove);
+    tissueModel = removeRxns(tissueModel, tissueModel.rxns(remove));
 end
+
+SolutionFlux.Rev = rxnFluxRev;
+SolutionFlux.Irrev = gimmeSolution.x;
+
+Rxns.Expressed = ExpressedRxns;
+Rxns.UnExpressed = UnExpressedRxns;
+Rxns.unknown = unknown;
+% These lines are faster and neater, but will give different order for the
+% rxns. If we want to, we can change the code to include them.
+%Rxns.UpRegulated = intersect(UnExpressedRxns, tissueModel.rxns);
+%Rxns.DownRegulated = setdiff(ExpressedRxns, tissueModel.rxns);
+%Rxns.UnknownIncluded = setdiff(tissueModel.rxns, [ExpresedRxns, UnExpressedRxns]);
+
+x = ismember(UnExpressedRxns,tissueModel.rxns);
+loc = find(x);
+Rxns.UpRegulated = UnExpressedRxns(loc);
+
+x = ismember(ExpressedRxns,tissueModel.rxns);
+loc = find(x==0);
+Rxns.DownRegulated = ExpressedRxns(loc);
+
+x = ismember(model.rxns,[ExpressedRxns;UnExpressedRxns]);
+loc = find(x==0);
+x = ismember(tissueModel.rxns,model.rxns(loc));
+loc = find(x);
+Rxns.UnknownIncluded = tissueModel.rxns(loc);
 
 %% Internal Functions
-function [reactionActivity,reactionActivityIrrev,model2gimme,gimmeSolution] = solveGimme(model,objectiveCol,expressionCol,cutoff)
+function [reactionActivity,reactionActivityIrrev,model2gimme,gimmeSolution,rxnFluxRev] = solveGimme(model,objectiveCol,expressionCol,cutoff)
 
 nRxns = size(model.S,2);
 
 %first make model irreversible
 [modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model);
 
+% check to make sure that the correct number of reaction expression values
+% are provided
 nExpressionCol = size(expressionCol,1);
 if (nExpressionCol < nRxns)
-    display('Warning: Fewer expression data inputs than reactions');
+    warning('Warning: Fewer expression data inputs than reactions');
     expressionCol(nExpressionCol+1:nRxns,:) = zeros(nRxns-nExpressionCol, size(expressionCol,2));
+elseif (nExpressionCol > nRxns)
+    error('More expression values than reactions! Stopping');
 end
 
 nIrrevRxns = size(irrev2rev,1);
@@ -371,6 +243,7 @@ for i=1:size(objectiveCol)
     if (FBAsolution.stat ~= 1)
         not_solved=1;
         display('Failed to solve initial FBA problem');
+        rxnFluxRev = zeros(size(model.rxns));
         return
     end
     maxObjective(i)=FBAsolution.f;
@@ -379,7 +252,14 @@ end
 model2gimme = modelIrrev;
 model2gimme.c = zeros(nIrrevRxns,1);
 
-
+% go through each irreversible reaction and check to see if its expression
+% level is greater than -1. If it is greater than -1, but less than the
+% cutoff, assign a penalty to it. -1 suggests that the reaction doesn't
+% have an expression value or is not gene associated.
+% Concerns: if i don't penalize rxns with no genes (or data) then it will
+% prefer the use of these reactions, but if i penalize rxns with no genes
+% (or data) then it will prefer the use of rxns with known
+% gene-associations. Thus I chose to not penalize rxns without data or GPRs
 for i=1:nIrrevRxns
     if (expressionColIrrev(i,1) > -1)   %if not absent reaction
         if (expressionColIrrev(i,1) < cutoff)
@@ -395,14 +275,17 @@ end
 gimmeSolution = optimizeCbModel(model2gimme,'min');
 
 if (gimmeSolution.stat ~= 1)
-%%        gimme_not_solved=1;
-%        display('Failed to solve GIMME problem'); 
-%        return
-gimmeSolution.x = zeros(nIrrevRxns,1);
+    warning('Failed to solve GIMME problem');
+    gimmeSolution.x = zeros(nIrrevRxns,1);
 end
 
 reactionActivityIrrev = zeros(nIrrevRxns,1);
 for i=1:nIrrevRxns
+    % assign a value of 1 to a reaction if its expression level greater
+    % than the cutoff or if the reactino doesn't have data or a GPR.
+    % Otherwise, if the reaction returned a penalty value in the optimal
+    % solution (i.e., its expression level was below threshold, but it was
+    % needed) then give it a 2
     if ((expressionColIrrev(i,1) > cutoff) | (expressionColIrrev(i,1) == -1))
         reactionActivityIrrev(i,1)=1;
     elseif (gimmeSolution.x(i,1) > 0)
@@ -418,6 +301,52 @@ for i=1:nRxns
             reactionActivity(i,1) = reactionActivityIrrev(rev2irrev{i,1}(1,j));
         end
     end
+end
+
+rxnFluxIrrev = gimmeSolution.x;
+rxnFluxIrrevFlipped  = rxnFluxIrrev;
+rxnFluxIrrevFlipped(~cellfun(@isempty, regexp(model2gimme.rxns, '_b$'))) = rxnFluxIrrev(~cellfun(@isempty, regexp(model2gimme.rxns, '_b$'))) * -1;
+rxnFluxRev = zeros(size(model2gimme.rxns));
+for i=1:length(rxnFluxRev)
+    rxnFluxRev(i) = sum(rxnFluxIrrevFlipped(irrev2rev == i));
+end
+
+function rxnExpression = getRxnExpressionFromGPR(rxns, parsedGPR, corrRxn, geneIDs, geneExpression, match_strings)
+% getRxnExpressionFromGPR returns a double value summarizing gene expression for each reaction
+% The function returns -1 if the reaction gene(s) were not measured
+% rxns - all reactions in the COBRA model (model.rxns)
+% geneIDs - one cell vector of gene IDs, each as string
+% corrRxns  - shows which rows in parsedGPR refer to the same reaction
+% parsedGPR - structure of genes for each reaction, genes in the same row
+%             have AND relationship, genes in different rows have OR
+%             relationship
+% geneIDs - vector of gene IDs
+% geneExpression - one vector of expression (as a double)
+% match_strings - optional parameter, whether to match exactly (1)
+%                 or to match to the locus while ignoring isoforms (0)
+%                 default - ignore isoforms, 0
+
+if ~match_strings
+    loc = str2double(parsedGPR);
+    loc = floor(loc);
+    parsedGPR = arrayfun(@num2str, loc, 'UniformOutput', 0);
+    geneIDs = arrayfun(@num2str, geneIDs, 'UniformOutput', 0);
+end
+
+rxnGeneExpression = NaN(size(parsedGPR));
+[expressedGenes, indExp] = intersect(geneIDs, unique(parsedGPR));
+geneExpression = geneExpression(indExp);
+
+for i=1:length(expressedGenes)
+    rxnGeneExpression(strcmp(parsedGPR, expressedGenes{i})) = geneExpression(i);
+end
+
+rxnGeneExpression = min(rxnGeneExpression, [], 2);
+
+rxnExpression = -ones(size(rxns));
+[uniqueRxns, indRxns] = intersect(rxns, corrRxn);
+for i=1:length(uniqueRxns)
+    rxnExpression(indRxns(i)) = max([rxnGeneExpression(strcmp(uniqueRxns(i), corrRxn)); -1]);
 end
 
 function [rxnExpressed,unExpressed,unknown] = mapProbes(parsedGPR,corrRxn,locus,genePresence,match_strings)
