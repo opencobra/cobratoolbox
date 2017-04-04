@@ -46,7 +46,7 @@ rbool = ismember(model.rxns, ATN.rxns);  % True for reactions included in ATN
 mbool = any(model.S(:, rbool), 2);  % True for metabolites in ATN reactions
 N = model.S(mbool, rbool);
 
-solverOK = changeCobraSolver('gurobi6', 'MILP');
+solverOK = changeCobraSolver('gurobi6', 'MILP', 0);
 if solverOK
     fprintf(' -- Running testMoieties using the solver interface: gurobi6 ... ');
 
