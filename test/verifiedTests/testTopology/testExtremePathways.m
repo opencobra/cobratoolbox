@@ -17,7 +17,7 @@ if isunix
         currentDir = pwd;
 
         % initialize the test
-        cd(fileparts(which(mfilename)));
+        cd(fileparts(mfilename('fullpath')));
 
         S = [-1,  0,  0,  0,  0,  0, 1,  0,  0;
               1, -2, -2,  0,  0,  0, 0,  0,  0;
