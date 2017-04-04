@@ -7,7 +7,7 @@
   * Use spaces around operators, e.g., `i + 1` instead of `i+1`
   * Use spaces after commas (unless separated by newlines)
   * Avoid spaces inside the curly-braces of cells: `{a, b}` instead of `{ a, b }`
-  * Use spaces after commas in lists, after operands, after names, etc. This also improves readability. e.g. `a = [ 1, 2, 3; 4, 5, 6 ];` instead of `a=[1,2,3;4,5,6]`;
+  * Use spaces after commas in lists, after operands, after names, etc. This also improves readability. e.g. `a = [1, 2, 3; 4, 5, 6];` instead of `a=[1,2,3;4,5,6]`;
   * Include a single line of whitespace between blocks of code
 
 2. **Variable names**
@@ -16,19 +16,19 @@
   * All variable names must be written in English
   * Use verb-noun structure for functions: allows to explain the operations performed
   * Append meaningful prefixes when possible, e.g. `Av`, `Sum`, `Min`, `Max`, etc
-  * Boolean type variables, i.e. with only True/False values, with `Is` or `is` to stress this fact, e.g. `if dataIsLoaded`
+  * Boolean type variables, i.e. with only `true/false` values, with `Is` or `is` to stress this fact, e.g. `if dataIsLoaded`
   * Reuse names for short-life and variables with local scope, such as indexes of loops
   * Only use `i`, `j`, etc., as indexes for very short loops
 
 3. **Miscellaneous**
-  * Add sanity checks to the code, e.g., if something does not work as expected, there should be code to check for this and either issue a warning or an error if there is a problem.
+  * Add sanity checks to the code, e.g., if something does not work as expected, there should be code to check for this and either issue a `warning` or an `error` if there is a problem.
   * Do not encode the absolute position of any files within any function: use relative paths, where possible
   * Indent the code: really improves readability.
   * Fix a maximum line length: break large ones if needed. Ensure that it is clear that the sentence is separated through different lines, e.g.:
-  ```
-  function [ parameter1, parameter2, parameter3, parameter4 ] = FunctionManyParameters…
-      …( InputParameter1, InputParameter2, InputParameter3, InputParameter3,...
-  ...InputParameter4, InputParameter5 )
+  ```Matlab
+  function [parameter1, parameter2, parameter3, parameter4] = FunctionManyParameters...
+            (InputParameter1, InputParameter2, InputParameter3, InputParameter3,...
+             InputParameter4, InputParameter5)
   ```
   * Divide the code in separate functional files whenever it is possible (and logical)
 
@@ -58,14 +58,15 @@
 
 * Annotate the individual tests extensively for review
 * Use `assert(computedResult == expectedResult)` to logically test the `computedResult` and the `expectedResult` (you may also use `<` or `>`)
+* For testing all entries of a vector, use `assert(all(vector1 == vector2))`
+* Only use equality `assert` tests for integer values
+* Make sure that equality `assert` tests within a given tolerance, e.g., `tol = 1e-9; assert(condition < tol);`
 * Write loops for testing multiple models and/or solvers
 * Try to make your tests compatible with as many solvers as possible
 * Test, if possible, your contribution on `Linux`
 * Make sure to limit the output of the function to a minimum - only print the necessary information
 * Use `verbose` or `printLevel` to switch the verbose mode
 * Ensure that the solution of optimization problems is actually a solution (test that the solution vector satisfies the imposed constraints)
-* Make sure that equality `assert` tests within a given tolerance, e.g., `tol = 1e-9; assert(condition < tol);`
-* Only use equality `assert` tests for integer values
 
 ### Git commit messages
 
