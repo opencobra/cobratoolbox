@@ -112,7 +112,7 @@ Loop through the solver packages
 for k = 1:length(solverPkgs)
     fprintf(' -- Running <testFile> using the solver interface: %s ... ', solverPkgs{k});
 
-    solverLPOK = changeCobraSolver(solverPkgs{k});
+    solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
     if solverLPOK
         % <your test goes here>
