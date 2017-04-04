@@ -5,7 +5,7 @@ function printConstraints(model, minInf, maxInf)
 %
 %    printConstraints(model, minInf, maxInf)
 %
-% INPUTS
+% INPUTS:
 %    model:     COBRA model structure
 %    minInf:    value that is considered as -Inf (or desired minimum cutoff value)
 %    maxInf:    value that is considered as +Inf (or desired maximum cutoff value)
