@@ -29,7 +29,7 @@ if isunix
         fprintf('   Testing sampleCbModel using %s ... \n', solverPkgs{k});
 
         % set the solver
-        solverOK = changeCobraSolver(solverPkgs{k});
+        solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
         if solverOK == 1
 
