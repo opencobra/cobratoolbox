@@ -1,33 +1,36 @@
 function surfNet(model, metrxn, metNameFlag, flux, NonzeroFluxFlag, showMets, nCharBreak, iterOptions)
-%surfNet(model, metrxn, metNameFlag, flux, NonzeroFluxFlag, nCharBreak)
-%   A simple and convenient tool to navigate through the metabolic network 
-%   interactively, possibly with a given flux vector, in the Matlab command 
-%   window using mouse once the starting point is called by command.
+% A simple and convenient tool to navigate through the metabolic network 
+% interactively, possibly with a given flux vector, in the Matlab command 
+% window using mouse once the starting point is called by command.
 %
-%Input:
-%   model:              COBRA model
-%   metrxn:             mets or rxns names, can be a cell array of multiple 
+% USAGE:
+%
+%    surfNet(model, metrxn, metNameFlag, flux, NonzeroFluxFlag, nCharBreak)
+%
+% INPUTS:
+%    model:              COBRA model
+%    metrxn:             mets or rxns names, can be a cell array of multiple 
 %                       rxns and mets, or simply a string
-%Optional input (default value):
-%   metNameFlag:        print model.metNames in reaction formulas. (false)
-%   flux:               flux vector for the model. Show fluxes if given.([])
-%                       If given, the producing and consuming reactions displayed
-%                       are in accordance with the flux direction.
-%   NonzeroFluxFlag:    show only reactions with nonzero flux if flux is given (true)
-%   showMets:           show metabolites in a list when printing reactions (true)
-%   nCharBreak:         max. no. of characters per line for reaction formulas (65)
-%   iterOptions:        Not used for calling, for interactive calling only.
-%                       Display the path of the previous navigation. (false)
-%Example calls:
-% surfNet(model, 'glc-D[c]') for starting the navigation at D-glucose
-% surfNet(model, 'EX_glc-D(e)') for starting the navigation at the glucose
-%   exchange reaction
-% surfNet(model, 'glc-D[c]', 1) for printing model.metNames in reaction formulas
-% surfNet(model, 'glc-D[c]', 0, flux, 1) for starting at glucose and show
-%   reactions with non-zero flux in 'flux' only
-% surfNet(model, 'EX_glc-D(e)', 0, [], [], 0) to show the reaction formulas
-%   only but not the details of metabolites during navigation
-% surfNet(model, {'glc-D[c]';'fru[c]'}) to view several mets and rxns
+% OPTIONAL INPUTS:
+%    metNameFlag:        print model.metNames in reaction formulas. (false)
+%    flux:               flux vector for the model. Show fluxes if given.([])
+%                        If given, the producing and consuming reactions displayed
+%                        are in accordance with the flux direction.
+%    NonzeroFluxFlag:    show only reactions with nonzero flux if flux is given (true)
+%    showMets:           show metabolites in a list when printing reactions (true)
+%    nCharBreak:         max. no. of characters per line for reaction formulas (65)
+%    iterOptions:        Not used for calling, for interactive calling only.
+%                        Display the path of the previous navigation. (false)
+% EXAMPLES:
+%    surfNet(model, 'glc-D[c]') for starting the navigation at D-glucose
+%    surfNet(model, 'EX_glc-D(e)') for starting the navigation at the glucose
+%    exchange reaction
+%    surfNet(model, 'glc-D[c]', 1) for printing model.metNames in reaction formulas
+%    surfNet(model, 'glc-D[c]', 0, flux, 1) for starting at glucose and show
+%    reactions with non-zero flux in 'flux' only
+%    surfNet(model, 'EX_glc-D(e)', 0, [], [], 0) to show the reaction formulas
+%    only but not the details of metabolites during navigation
+%    surfNet(model, {'glc-D[c]';'fru[c]'}) to view several mets and rxns
 
 %(feel free to change the following parameters not set as input)
 %tolerance for non-zero fluxes 

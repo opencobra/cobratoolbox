@@ -1,22 +1,24 @@
 function printFluxVector(model,fluxData,nonZeroFlag,excFlag,sortCol,fileName,headerRow,formulaFlag)
-%printFluxVector Print a flux vector with reaction labels
+% Prints a flux vector with reaction labels
 %
-% printFluxVector(model,fluxData,nonZeroFlag,excFlag,sortCol,fileName,headerRow,formulaFlag)
+% USAGE:
+%    printFluxVector(model,fluxData,nonZeroFlag,excFlag,sortCol,fileName,headerRow,formulaFlag)
 %
-%INPUTS
-% model         COBRA model structure
-% fluxData      Data matrix/vector (for example, solution.x)
+% INPUTS:
+%    model         COBRA model structure
+%    fluxData      Data matrix/vector (for example, solution.x)
 %
-%OPTIONAL INPUTS
-% nonZeroFlag   Only print nonzero rows (Default = false)
-% excFlag       Only print exchange fluxes (Default = false)
-% sortCol       Column used for sorting (-1, none; 0, labels; >0, data
-%               columns;) (Default = -1)
-% fileName      Name of output file (Default = [])
-% headerRow     Header (Default = [])
-% formulaFlag   Print reaction formulas (Default = false)
+% OPTIONAL INPUTS:
+%    nonZeroFlag   Only print nonzero rows (Default = false)
+%    excFlag       Only print exchange fluxes (Default = false)
+%    sortCol       Column used for sorting (-1, none; 0, labels; >0, data
+%                  columns;) (Default = -1)
+%    fileName      Name of output file (Default = [])
+%    headerRow     Header (Default = [])
+%    formulaFlag   Print reaction formulas (Default = false)
 %
-% Markus Herrgard 6/9/06 
+% .. Authors:
+%       - Markus Herrgard 6/9/06 
 
 if (nargin < 3)
     nonZeroFlag = false;
