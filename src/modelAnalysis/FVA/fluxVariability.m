@@ -231,7 +231,7 @@ if ~PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
             vSparse = sparseFBA(LPproblem,'max',0,0,'l1');
             Vmax(:,rxnBool) = vSparse;
         elseif (OutputMatrix && isequal(method,'0-norm'))
-            vSparse = sparseFBA(LPproblem,'max',0,0,'all');
+            vSparse = sparseFBA(LPproblem,'max',0,0);
             Vmax(:,rxnBool) = vSparse;
         elseif (OutputMatrix && isequal(method,'FBA'))
             Vmax(:,rxnBool) = LPsolution.full;
@@ -283,7 +283,7 @@ if ~PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
             vSparse = sparseFBA(LPproblem,'min',0,0,'l1');
             Vmin(:,rxnBool) = vSparse;
         elseif (OutputMatrix && isequal(method,'0-norm'))
-            vSparse = sparseFBA(LPproblem,'min',0,0,'all');
+            vSparse = sparseFBA(LPproblem,'min',0,0);
             Vmin(:,rxnBool) = vSparse;
         elseif (OutputMatrix && isequal(method,'FBA'))
             Vmin(:,rxnBool)=LPsolution.full;
@@ -389,7 +389,7 @@ else % parallel job.  pretty much does the same thing.
                     vSparse = sparseFBA(LPproblem,'max',0,0,'l1');
                     Vmax(:,i) = vSparse;
                 elseif (OutputMatrix && isequal(method,'0-norm'))
-                    vSparse = sparseFBA(LPproblem,'max',0,0,'all');
+                    vSparse = sparseFBA(LPproblem,'max',0,0);
                     Vmax(:,i) = vSparse;
                 elseif (OutputMatrix && isequal(method,'FBA'))
                     Vmax(:,i) = LPsolution.full;
@@ -446,7 +446,7 @@ else % parallel job.  pretty much does the same thing.
                 vSparse = sparseFBA(LPproblem,'min',0,0,'l1');
                 Vmin(:,i) = vSparse;
             elseif (OutputMatrix && isequal(method,'0-norm'))
-                vSparse = sparseFBA(LPproblem,'min',0,0,'all');
+                vSparse = sparseFBA(LPproblem,'min',0,0);
                 Vmin(:,i) = vSparse;
             elseif (OutputMatrix && isequal(method,'FBA'))
                 Vmin(:,i)=LPsolution.full;
