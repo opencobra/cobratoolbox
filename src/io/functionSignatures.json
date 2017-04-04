@@ -1,0 +1,9 @@
+{
+"readCbModel":
+{
+    "inputs":
+    [
+        {"name":"fileName", "kind":"optional", "type":"filepath" }
+    ]
+}
+}

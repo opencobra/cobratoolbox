@@ -1,0 +1,18 @@
+{
+"readBooleanRegModel":
+{
+    "inputs":
+    [
+        {"name":"metModel", "kind":"required", "type":"struct" }, 
+        {"name":"fileName", "kind":"required", "type":"filepath" }
+    ]
+},
+"xls2model":
+{
+    "inputs":
+    [
+        {"name":"fileName", "kind":"required", "type":"filepath" },
+        {"name":"biomassRxnEquation", "kind":"optional", "type":"char" }
+    ]
+}
+}

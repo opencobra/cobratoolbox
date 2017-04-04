@@ -160,7 +160,7 @@ if ~isempty(cmdout)
     DQQMINOSPATH=str(1:end-length('/run1DQQ')-1);
 end
 
-%saves the current paths
+% save the current paths
 savepath
 
 % print out a summary table
