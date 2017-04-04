@@ -10,7 +10,7 @@
 currentDir = pwd;
 
 % initialize the test
-cd(fileparts(which(mfilename)));
+cd(fileparts(mfilename('fullpath')));
 
 labels = {'row1', 'row2', 'row3'};
 data = ones(3);

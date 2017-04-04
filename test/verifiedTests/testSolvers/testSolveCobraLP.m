@@ -15,7 +15,7 @@ global CBTDIR
 currentDir = pwd;
 
 % initialize the test
-cd(fileparts(which(mfilename)));
+cd(fileparts(mfilename('fullpath')));
 
 % Dummy Model
 % http://www2.isye.gatech.edu/~spyros/LP/node2.html

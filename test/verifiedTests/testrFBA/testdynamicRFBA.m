@@ -10,7 +10,7 @@
 currentDir = pwd;
 
 % initialize the test
-cd(fileparts(which(mfilename)));
+cd(fileparts(mfilename('fullpath')));
 
 %load model and test data
 load('modelReg.mat');

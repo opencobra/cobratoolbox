@@ -12,7 +12,7 @@
 currentDir = pwd;
 
 % initialize the test
-cd(fileparts(which(mfilename)));
+cd(fileparts(mfilename('fullpath')));
 
 % load reference data - too complex to embed
 load('refData_calcGroupStats.mat');

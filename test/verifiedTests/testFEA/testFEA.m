@@ -13,7 +13,7 @@ global CBTDIR
 currentDir = pwd;
 
 % initialize the test
-cd(fileparts(which(mfilename)));
+cd(fileparts(mfilename('fullpath')));
 
 % load the model and reference data
 load('testDataFEA.mat');

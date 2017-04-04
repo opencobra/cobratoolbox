@@ -12,7 +12,7 @@ global OPT_PROB_TYPES;
 currentDir = pwd;
 
 % initialize the test
-cd(fileparts(which(mfilename)));
+cd(fileparts(mfilename('fullpath')));
 
 % Three arguments
 ok = changeCobraSolver('pdco', 'MINLP', 0);

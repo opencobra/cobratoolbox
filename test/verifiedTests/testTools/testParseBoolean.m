@@ -12,7 +12,7 @@
 currentDir = pwd;
 
 % initialize the test
-cd(fileparts(which(mfilename)));
+cd(fileparts(mfilename('fullpath')));
 
 str = '((A&B)|(B&C))&(~D)';
 tokens = '&!()';

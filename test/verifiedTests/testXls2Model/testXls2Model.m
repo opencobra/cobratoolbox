@@ -16,7 +16,7 @@
 currentDir = pwd;
 
 % initialize the test
-cd(fileparts(which(mfilename)));
+cd(fileparts(mfilename('fullpath')));
 
 % convert the model
 model = xls2model('cobra_import_toy_model.xlsx');

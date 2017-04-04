@@ -13,7 +13,7 @@ global ILOG_CPLEX_PATH
 currentDir = pwd;
 
 % initialize the test
-cd(fileparts(which(mfilename)));
+cd(fileparts(mfilename('fullpath')));
 
 %Specify test files
 modelFile = 'fgf_test_model.xml';
