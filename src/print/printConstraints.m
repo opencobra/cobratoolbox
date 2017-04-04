@@ -1,15 +1,17 @@
-function printConstraints(model,minInf, maxInf)
-%printConstraints Print all network constraints that are not -Inf (minInf)
-%or +Inf (maxInf)
+function printConstraints(model, minInf, maxInf)
+% Print all network constraints that are not -Inf (minInf)or +Inf (maxInf)
 %
-% printConstraints(model,minInf, maxInf)
+% USAGE:
 %
-%INPUTS
-% model     COBRA model structure
-% minInf    value that is considered as -Inf (or desired minimum cutoff value)
-% maxInf    value that is considered as +Inf (or desired maximum cutoff value)
+%    printConstraints(model, minInf, maxInf)
 %
-% Ines Thiele 02/09 
+% INPUTS
+%    model:     COBRA model structure
+%    minInf:    value that is considered as -Inf (or desired minimum cutoff value)
+%    maxInf:    value that is considered as +Inf (or desired maximum cutoff value)
+%
+% .. Authors:
+%       - Ines Thiele 02/09 
 
 minConstraints = intersect(find(model.lb>minInf),find(model.lb));
     fprintf('MinConstraitns:');
