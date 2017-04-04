@@ -13,3 +13,6 @@
 [submodule "binary"]
 	path = binary
 	url = https://github.com/opencobra/COBRA.binary.git
+[submodule "external/gaimc"]
+	path = external/gaimc
+	url = https://github.com/dgleich/gaimc.git

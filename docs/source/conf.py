@@ -167,7 +167,7 @@ html_context = {'conf_py_path': os.path.join(os.sep, 'docs', 'source', ''),
 # The name for this set of Sphinx documents.
 # "<project> v<release> documentation" by default.
 #
-html_title = u'The COBRA Toolbox v3.0'
+html_title = u'The COBRA Toolbox'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #
