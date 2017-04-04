@@ -1,38 +1,44 @@
 function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag,gprFlag)
-%formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)
-%printRxnFormula Print the reaction formulas for a list of reactions
+% Prints the reaction formulas for a list of reactions
 %
+% USAGE:
 %
-%INPUTS
-% model             COBRA model structure
+%    formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)
 %
-%OPTIONAL INPUTS
-% rxnAbbrList       Abbrs of reactions whose formulas are to be printed
-% printFlag         Print formulas or just return them (Default = true)
-% lineChangeFlag    Append a line change at the end of each line
-%                   (Default = true)
-% metNameFlag       print full met names instead of abbreviations 
-%                   (Default = false)
-% fid               Optional file identifier for printing in files
-% directionFlag     Checks directionality of reaction. See Note.
-%                   (Default = false)
-% gprFlag           print gene protein reaction association
-%                   (Default = false)
+% INPUTS:
+%    model             COBRA model structure
 %
-%OUTPUT
-% formulas          Cell array containing formulas of specified reactions
+% OPTIONAL INPUTS:
+%    rxnAbbrList       Abbrs of reactions whose formulas are to be printed
+%    printFlag         Print formulas or just return them (Default = true)
+%    lineChangeFlag    Append a line change at the end of each line
+%                      (Default = true)
+%    metNameFlag       print full met names instead of abbreviations 
+%                      (Default = false)
+%    fid               Optional file identifier for printing in files
+%    directionFlag     Checks directionality of reaction. See Note.
+%                      (Default = false)
+%    gprFlag           print gene protein reaction association
+%                      (Default = false)
 %
-% NOTE: Reactions that have an upperbound <= 0 and lowerbound < 0 will have
-% its directionality reversed unless directionFlag = false.
+% OUTPUT:
+%    formulas          Cell array containing formulas of specified reactions
 %
-
-% 11/17/05 Markus Herrgard 
-% 04/30/08 Ronan Fleming  altered code since findRxnIDs used abbreviations not names of reactions
-% 10/11/09 Jeff Ortn      added metNameFlag option
-% 03/10/10 Richard Que    added lb < 0 requirement for reversing directionality
-% 21/11/14 Ronan Fleming  printing gpr optional
-% 15/12/14 Thomas Pfau  corrected line end
-% 16/07/16 Ronan Fleming directionality not flipped by default anymore
+% NOTE: 
+%    Reactions that have an upperbound <= 0 and lowerbound < 0 will have
+%    its directionality reversed unless directionFlag = false.
+%
+% .. Authors:
+%       - Markus Herrgard 11/17/05 
+%       - Ronan Fleming 04/30/08 (altered code since findRxnIDs used
+%                                abbreviations not names of reactions)
+%       - Jeff Ortn 10/11/09 (added metNameFlag option)
+%       - Richard Que 03/10/10 (added lb < 0 requirement for reversing
+%                              directionality)
+%       - Ronan Fleming 21/11/14 (printing gpr optional)
+%       - Thomas Pfau 15/12/14 (corrected line end)
+%       - Ronan Fleming 16/07/16 (directionality not flipped by default
+%                                anymore)
 
 if (nargin < 2)
     rxnAbbrList = model.rxns;

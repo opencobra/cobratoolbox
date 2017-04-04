@@ -26,5 +26,5 @@ after_success:
       pip install --upgrade --user -r docs/requirements.txt;
       here=`pwd`;
       python ~/github_stats.py $here/docs/source/contributors.rst;
-      python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='/var/lib/jenkins/workspace/COBRAToolbox-branches-auto-doc/MATLAB_VER/R2016b'); doc.deploy()";
+      python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='/var/lib/jenkins/workspace/COBRAToolbox-branches-auto-doc/MATLAB_VER/R2016b', host='jenkins'); doc.deploy()";
       fi

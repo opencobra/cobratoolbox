@@ -1,18 +1,22 @@
 function upInd = printUptakeBound(model)
-%printUptakeBound Print substrate uptake bounds
+% Prints substrate uptake bounds
 %
-% uptakeInd = printUptakeBound(model)
+% USAGE:
 %
-%INPUTS
-% model     CORBRA model structure
+%    uptakeInd = printUptakeBound(model)
 %
-%OUTPUTS
-% upInd     Vector containing indecies of uptake reactions
+% INPUTS:
+%    model     CORBRA model structure
 %
-% Returns the indices to the substrate uptake reactions and prints the
-% bounds
+% OUTPUTS:
+%    upInd     Vector containing indecies of uptake reactions
 %
-% Markus Herrgard 6/9/06
+% NOTE:
+%    Returns the indices to the substrate uptake reactions and prints the
+%    bounds
+%
+% .. Authors:
+%       - Markus Herrgard 6/9/06
 
 [selExc,selUptake] = findExcRxns(model,false,false);
 printLabeledData(model.rxns(selUptake),model.lb(selUptake));
