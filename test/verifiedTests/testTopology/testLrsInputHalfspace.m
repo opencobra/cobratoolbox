@@ -14,7 +14,7 @@
 currentDir = pwd;
 
 % initialize the test
-cd(fileparts(mfilename('fullpath')));
+cd(mfilename('fullpath'));
 
 S = [-1,  0,  0,  0,  0,  0, 1,  0,  0;
       1, -2, -2,  0,  0,  0, 0,  0,  0;

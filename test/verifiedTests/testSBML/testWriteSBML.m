@@ -12,7 +12,7 @@
 currentDir = pwd;
 
 % initialize the test
-cd(fileparts(mfilename('fullpath')));
+cd(mfilename('fullpath'));
 
 testModelXML = readCbModel('Ec_iJR904.xml');
 

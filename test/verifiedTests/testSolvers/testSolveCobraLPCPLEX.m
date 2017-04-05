@@ -21,7 +21,7 @@ global ILOG_CPLEX_PATH
 currentDir = pwd;
 
 % initialize the test
-cd(fileparts(mfilename('fullpath')));
+cd(mfilename('fullpath'));
 
 load testDataSolveCobraLPCPLEX;
 load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');

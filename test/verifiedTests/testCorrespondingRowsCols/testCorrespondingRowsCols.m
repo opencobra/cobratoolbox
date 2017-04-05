@@ -11,7 +11,7 @@
 currentDir = pwd;
 
 % initialize the test
-cd(fileparts(mfilename('fullpath')));
+cd(mfilename('fullpath'));
 
 % toy model stoichiometric matrix
 S = [-1,  0,  0,  0,  0;

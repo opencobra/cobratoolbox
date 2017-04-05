@@ -18,7 +18,7 @@ global CBTDIR
 currentDir = pwd;
 
 % initialize the test
-cd(fileparts(mfilename('fullpath')));
+cd(mfilename('fullpath'));
 
 for flag = 1:2
     if flag == 1

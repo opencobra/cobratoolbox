@@ -20,7 +20,7 @@
 
 currentDir = pwd;
 
-cd(fileparts(mfilename('fullpath')));
+cd(mfilename('fullpath'));
 
 % if the pairedModelsList file does not exist yet, build the models first
 if exist('pairedModelsList.mat', 'file') ~= 2

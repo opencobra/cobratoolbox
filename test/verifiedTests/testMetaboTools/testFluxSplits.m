@@ -14,7 +14,7 @@
 currentDir = pwd;
 
 % initialize the test
-cd(fileparts(mfilename('fullpath')));
+cd(mfilename('fullpath'));
 
 % define a toy model with single internal loop
 model.mets = {'A'; 'B'; 'C'};
