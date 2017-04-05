@@ -1,66 +1,89 @@
-The COBRA Toolbox - COnstraint-Based Reconstruction and Analysis Toolbox
+<p align="center">
+  <img src="https://raw.githubusercontent.com/laurentheirendt/cobratoolbox/simplified-doc/docs/source/_static/logo.png" height="160px"/>
+</p>
+
+The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox
 =======================================================================
 
-|  MATLAB R2016b | MATLAB R2015b | MATLAB R2014b | Code Coverage | Code Grade |
-|--------|--------|--------|--------|--------|
-| [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2016b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2016b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2015b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2015b/) | [![Build Status](https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2014b)](https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2014b/) | [![codecov](https://codecov.io/gh/opencobra/cobratoolbox/branch/master/graph/badge.svg)](https://codecov.io/gh/opencobra/cobratoolbox/branch/master) | ![Code grade](https://prince.lcsb.uni.lu/jenkins/userContent/codegrade.svg?maxAge=0 "Ratio of the number of inefficient code lines and the total number of lines of code (in percent). A: 0-3%, B: 3-6%, C: 6-9%, D: 9-12%, E: 12-15%, F: > 15%.")
+<table>
+  <tr>
+    <td><div align="center"><a href="https://opencobra.github.io/cobratoolbox/latest"><img src="https://img.shields.io/badge/COBRA-docs-blue.svg?maxAge=0"></a></div></td>
+    <td><div align="center"><a href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img src="https://img.shields.io/badge/COBRA-forum-blue.svg?maxAge=0"></a></div></td>
+    <td><div align="center"><a href="https://github.com/opencobra/cobratoolbox/tree/master/tutorials"><img src="https://img.shields.io/badge/COBRA-tutorials-blue.svg?maxAge=0"></div></td>
+    <td><div align="center"><img src="https://img.shields.io/badge/Windows-passing-brightgreen.svg?maxAge=0"></div></td>
+    <td><div align="center"><img src="https://img.shields.io/badge/macOS-passing-brightgreen.svg?maxAge=0"></div></td>
+  </tr>
+  <tr>
+    <th style="text-align:center">MATLAB R2016b</th>
+    <th style="text-align:center">MATLAB R2015b</th>
+    <th style="text-align:center">MATLAB R2014b</th>
+    <th style="text-align:center" colspan="2">Code</th>
+  </tr>
+  <tr>
+    <td><div align="center"><a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2016b/"><img src="https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2016b"></a></div></td>
+    <td><div align="center"><a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2015b/"><img src="https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2015b"></a></div></td>
+    <td><div align="center"><a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2014b/"><img src="https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2014b"></a></div></td>
+    <td><div align="center"><a href="https://codecov.io/gh/opencobra/cobratoolbox/branch/master"><img src="https://codecov.io/gh/opencobra/cobratoolbox/branch/master/graph/badge.svg?maxAge=0"></a></div></td>
+    <td><div align="center"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/codegrade.svg?maxAge=0" alt="Ratio of the number of inefficient code lines and the total number of lines of code (in percent). A: 0-3%, B: 3-6%, C: 6-9%, D: 9-12%, E: 12-15%, F: > 15%."></div></td>
+  </tr>
+</table>
+
+System Requirements and Solver Installation
+-------------------------------------------
+
+![#ff0000](https://placehold.it/15/ff0000/000000?text=+) Please follow [this guide](https://github.com/opencobra/cobratoolbox/blob/master/.github/REQUIREMENTS.md) in order to configure your system properly.
+
+The default solver is `glpk`. You can install `TOMLAB`, `IBM ILOG CPLEX`, `GUROBI`, or `MOSEK` by following these [detailed instructions](https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md).
 
 Installation
 ------------
 
-1. Clone this repository
-  ```bash
-  git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
-  ```
+1. Download this repository (the folder `./cobratoolbox/` will be created). You can clone the repository using:
+    ````bash
+    $ git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
+    ````
+    ![#ff0000](https://placehold.it/15/ff0000/000000?text=+) Run this command in `Terminal` (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS"> and <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux">) or in `Git Bash` (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" alt="Windows">) - **not** in <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" alt="Matlab">. Although not recommended, you can download the repository as a [compressed archive](https://github.com/opencobra/cobratoolbox/archive/master.zip).
 
-2. Initialize submodules
+2. Change to the folder `cobratoolbox/` and run from <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" alt="Matlab">:
+    ````Matlab
+    >> initCobraToolbox
+    ````
 
-  For convenience, we provide the [`SBMLToolbox 4.1.0`](http://sbml.org/Software/SBMLToolbox), and [`glpk_mex`](https://github.com/blegat/glpkmex) in `external/toolboxes`, [`libSBML-5.13.0-matlab`](http://sbml.org/Software/libSBML) in `io/utilities`.
-  Binaries for these librairies are provided in a [submodule](https://github.com/opencobra/COBRA.binary) for Mac OS X 10.6 or later (64-bit), GNU/Linux Ubuntu 10.0 (64-bit), and Microsoft Windows 7 (64-bit).
-  For unsupported OS, please refer to their respective building instructions ([`glpk_mex`](https://github.com/blegat/glpkmex#instructions-for-compiling-from-source), [`libSBML`](http://sbml.org/Software/libSBML/5.13.0/docs//cpp-api/libsbml-installation.html)).
-  ```bash
-  git submodule init
-  ```
-
-3. Update submodules
-  ```bash
-  git submodule update
-  ```
-
-4. From MATLAB, run
-  ```Matlab
-  initCobraToolbox
-  ```
-  NOTE: If you do not have `gurobi_mex` and `tomlab` installed on your machine, you will get some warnings and some errors. The `COBRAToolbox` will try to use `glpk` if it cannot find `gurobi` for LP / MILP.  To solve any NLP problems you need `tomlab_snopt`.
-
-5. In order to test your installation, run
-  ```Matlab
-  testAll
-  ```
-  to see what functions will work with your current configuration.
-  It might be that some functions may not work unless you have `tomlab` with `snopt` installed.
+3. You can test your installation by running from <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" alt="Matlab">:
+    ````Matlab
+    >> testAll
+    ````
 
 Tutorials
-------------
+---------
 
-All tutorials are included in the folder [tutorials](https://github.com/opencobra/cobratoolbox/tree/master/tutorials). More tutorial are currently being prepared.
+All tutorials are included in the folder [tutorials](https://github.com/opencobra/cobratoolbox/tree/master/tutorials). More tutorials are currently being prepared.
 
-Documentation
-------------
+Support and Documentation
+--------------
 
-The documentation is available on [opencobra.github.io/cobratoolbox](http://opencobra.github.io/cobratoolbox). As this version is in development, you may find the legacy version of the documentation [here](http://opencobra.github.io/cobratoolbox/deprecated/docs/index.html).
+- The documentation is available [here](http://opencobra.github.io/cobratoolbox). This version is in development, but the legacy version of the documentation is  [here](http://opencobra.github.io/cobratoolbox/deprecated/docs/index.html).
 
-Frequently Asked Questions (FAQ)
---------------------------------
+- Answers to Frequently Asked Questions (**FAQ**) are [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/FAQ.md).
 
-Before opening a new issue, please read first the section of Frequently Asked Questions [FAQ](https://github.com/opencobra/cobratoolbox/blob/master/.github/FAQ.md).
+- If you need support, please feel free to post your question in our <a href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img src="https://img.shields.io/badge/COBRA-forum-blue.svg"></a>.
 
 How to contribute
-------------
+-----------------
 
-- In order to contribute, you may follow the [Contributing Guide](https://github.com/opencobra/cobratoolbox/blob/master/.github/CONTRIBUTING.md).
-- When opening an **issue**, please follow the [Issue template](https://github.com/opencobra/cobratoolbox/blob/master/.github/ISSUE_TEMPLATE.md).
-- When submitting a **Pull Request**, please follow the [PR template](https://github.com/opencobra/cobratoolbox/blob/master/.github/PULL_REQUEST_TEMPLATE.md).
+:+1::tada: First off, thanks for taking the time to contribute to [The COBRA Toolbox](https://github.com/opencobra/cobratoolbox)! :tada::+1:
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/opencobra/MATLAB.devTools/develop/assets/devTools_logo.png" height="120px"/>
+</p>
+
+![#ff0000](https://placehold.it/15/ff0000/000000?text=+) **Check out the [MATLAB.devTools](https://github.com/opencobra/MATLAB.devTools) - and contribute the smart way!**
+
+- Please follow the [Style Guide](https://github.com/opencobra/cobratoolbox/blob/master/.github/STYLEGUIDE.md).
+- More information on writing a **test** is [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/TESTGUIDE.md) and a template is [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/testTemplate.m).
+- A guide for reporting an **issue** or submitting a **pull request (PR)** is [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/ISSUEGUIDE.md).
+
+If you want to use `git` via the command line interface and need help, these [training slides](https://uni-lu.github.io/slides/) will get you started. This [guide](https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github) or the official [GitHub guide](https://help.github.com/articles/creating-a-pull-request/) also come in handy.
 
 How to cite `The COBRA Toolbox`
 ---------------
@@ -75,7 +98,12 @@ When citing `The COBRA Toolbox`, it is important to cite the original paper wher
 >[2] = Schellenberger J, Que R, Fleming RMT, Thiele I, Orth JD, Feist AM, Zielinski DC, Bordbar A, Lewis NE, Rahmanian S, Kang J, Hyduke DR, Palsson BØ. 2011 Quantitative prediction of cellular metabolism with constraint-based models: The COBRA Toolbox v2.0. Nature Protocols 6:1290-1307.
 >
 
-Compatibility
----------------
+Binaries and Compatibility
+---------------------------
 
-[Read more on the compatibility with SBML-FBCv2](NOTES.md)
+For convenience, we provide the [`SBMLToolbox 4.1.0`](http://sbml.org/Software/SBMLToolbox), and [`glpk_mex`](https://github.com/blegat/glpkmex) in `external/toolboxes`, [`libSBML-5.13.0-matlab`](http://sbml.org/Software/libSBML) in `src/io/utilities`.
+
+[Binaries](https://github.com/opencobra/COBRA.binary) for these libraries are provided in a submodule for Mac OS X 10.6 or later (64-bit), GNU/Linux Ubuntu 10.0 (64-bit), and Microsoft Windows 7 (64-bit).
+For unsupported OS, please refer to their respective building instructions ([`glpk_mex`](https://github.com/blegat/glpkmex#instructions-for-compiling-from-source), [`libSBML`](http://sbml.org/Software/libSBML/5.13.0/docs//cpp-api/libsbml-installation.html)).
+
+Read more on the compatibility with SBML-FBCv2 [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/NOTES.md).
