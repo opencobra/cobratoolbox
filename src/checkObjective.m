@@ -1,41 +1,55 @@
-function objectiveAbbr=checkObjective(model)
-%checkObjective print out the Stoichiometric Coefficients for each 
-%Metabolite, with the name of the objective
+function objectiveAbbr = checkObjective(model)
+% checkObjective print out the Stoichiometric Coefficients for each
+% Metabolite, with the name of the objective
 %
 % objectiveAbbr = checkObjective(model)
 %
-%INPUT
-% model             COBRA model structure
+% INPUT:
+%  model:             COBRA model structure
 %
-%OUTPUT
-% objectiveAbbr     Objective reaction abbreviation
+% OUTPUT:
+%  objectiveAbbr     Objective reaction abbreviation
 %
 % Ronan Fleming 22/10/2008
 % Thomas Pfau 15/12/2015 - Made the function compatible with sparse S matrices
+% Laurent Heirendt March 2017 - Compatibility with large models and conversion to table
 
-objRxnInd=find(model.c~=0);
-objectiveAbbr=model.rxns{objRxnInd};
+objRxnInd = find(model.c ~= 0);
+objectiveAbbr = model.rxns(objRxnInd);
+T = cell(length(objRxnInd), 1);
+
 if isempty(objRxnInd)
-    warning('There is no objective!')
+    warning('There is no objective!');
 else
-    fprintf('%s\t%s\t%s\t%s\t\t\t%s\n','Coefficient','Metabolite','#','Reaction','#')
-    for n=1:length(objRxnInd)
-        objMetInd=find(model.S(:,objRxnInd(n)));
-        for m=1:length(objMetInd)
-	    %Since the S Matrix tends to be sparse, and Sij is always a single value, this can easily be converted 
-            Sij=full(model.S(objMetInd(m),objRxnInd(n)));
-            if length(model.mets{objMetInd(m)})<4
-                fprintf('%6.4g\t\t%s\t\t\t%i\t%s\t%i\n',Sij,model.mets{objMetInd(m)},objMetInd(m),model.rxns{objRxnInd(n)},objRxnInd(n))
-            else
-                if length(model.mets{objMetInd(m)})<8
-                    fprintf('%6.4g\t\t%s\t\t%i\t%s\t%i\n',Sij,model.mets{objMetInd(m)},objMetInd(m),model.rxns{objRxnInd(n)},objRxnInd(n))
-                else
-                    if length(model.mets{objMetInd(m)})<12
-                        fprintf('%6.4g\t\t%s\t%i\t%s\t%i\n',Sij,model.mets{objMetInd(m)},objMetInd(m),model.rxns{objRxnInd(n)},objRxnInd(n))
-                    end
-                end
-            end
+    objMetVect = {};
+    objRxnVect = {};
+    objCoeffVect = {};
+    for k = 1:length(objRxnInd)
+        objMetInd = find(model.S(:, objRxnInd(k)));
+        objMetVect{k} = model.mets(objMetInd);
+        rxnName = model.rxns(objRxnInd(k));
+        objCoeffVect{k} = full(model.S(objMetInd, objRxnInd(k)));
+
+        objRxnVect = {};
+        objRxnIDVect = {};
+        % fill the list with the reaction name and ID
+        for m = 1:length(objMetInd)
+            objRxnVect{m} = char(rxnName);
+            objRxnIDVect{m} = objRxnInd(k);
+        end
+
+        % save the table for reaction k
+        T{k} = table(objCoeffVect{k}, categorical(objMetVect{k}), objMetInd, categorical(objRxnVect'), cell2mat(objRxnIDVect'), ...
+                     'VariableNames', {'Coefficient', 'Metabolite', 'metID', 'Reaction', 'RxnID'});
+
+        % concatenate the tables
+        if k == 1
+            summaryT = T{1};
+        else
+            summaryT = vertcat(summaryT, T{k});
         end
     end
-end
 
+    % display a summary
+    display(summaryT);
+end
