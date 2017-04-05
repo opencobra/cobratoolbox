@@ -14,7 +14,8 @@
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testSolveCobraMILP'));
+cd(fileDir);
 
 % test solver packages
 solverPkgs = {'cplex_direct', 'ibm_cplex', 'tomlab_cplex', 'gurobi6', 'glpk'};

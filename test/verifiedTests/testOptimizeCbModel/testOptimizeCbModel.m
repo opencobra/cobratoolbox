@@ -11,7 +11,8 @@
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testOptimizeCbModel'));
+cd(fileDir);
 
 % set the tolerance
 tol = 1e-6;

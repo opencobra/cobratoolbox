@@ -12,7 +12,8 @@
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testParseBoolean'));
+cd(fileDir);
 
 str = '((A&B)|(B&C))&(~D)';
 tokens = '&!()';

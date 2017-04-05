@@ -1,4 +1,4 @@
-% The COBRAToolbox: testoptKnock.m
+% The COBRAToolbox: testOptKnock.m
 %
 % Purpose:
 %     - tests the basic functionality of optKnock
@@ -15,7 +15,8 @@ global CBTDIR
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testOptKnock'));
+cd(fileDir);
 
 % set the tolerance
 tol = 1e-3;

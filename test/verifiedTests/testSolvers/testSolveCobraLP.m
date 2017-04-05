@@ -15,7 +15,8 @@ global CBTDIR
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testSolveCobraLP'));
+cd(fileDir);
 
 % Dummy Model
 % http://www2.isye.gatech.edu/~spyros/LP/node2.html

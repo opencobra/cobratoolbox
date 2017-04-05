@@ -10,7 +10,8 @@ global CBTDIR
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testSampleCbModel'));
+cd(fileDir);
 
 if isunix
     % define the samplers

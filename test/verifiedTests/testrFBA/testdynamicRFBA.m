@@ -10,7 +10,8 @@
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testdynamicRFBA'));
+cd(fileDir);
 
 %load model and test data
 load('modelReg.mat');

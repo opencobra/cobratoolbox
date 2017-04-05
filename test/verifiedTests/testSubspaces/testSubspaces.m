@@ -15,7 +15,8 @@ global CBTDIR
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testSubspaces'));
+cd(fileDir);
 
 % define the tolerance
 tol = 1e-6;

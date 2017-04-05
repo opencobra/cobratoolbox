@@ -19,7 +19,8 @@ global CBTDIR
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testReadSBML'));
+cd(fileDir);
 
 % load the test models
 testModel = readCbModel('Ec_iJR904.xml');

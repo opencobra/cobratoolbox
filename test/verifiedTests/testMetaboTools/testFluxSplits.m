@@ -14,7 +14,8 @@
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testFluxSplits'));
+cd(fileDir);
 
 % define a toy model with single internal loop
 model.mets = {'A'; 'B'; 'C'};

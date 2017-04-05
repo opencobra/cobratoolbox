@@ -1,12 +1,16 @@
-%testDeletionStudy tests the basic functionality of
-%singleGeneDeletion/doubleGeneDeletion/singleRxnDeletion
-%   Makes sure that these resultant values are correct:
+% The COBRAToolbox: testDeletionStudy.m
+%
+% Purpose:
+%     - tests the basic functionality of singleGeneDeletion/doubleGeneDeletion/singleRxnDeletion
+%       Makes sure that these resultant values are correct:
 %       singleGeneDeletion - hasEffect, delRxns, grRateKO, grRateWT
 %       doubleGeneDeletion - grRatioDble, grRateKO, grRateWT
 %       singleRXDeletion - hasEffect, delRxn, grRateKO, grRateWT
-%   returns 1 if all are correct, else 0
+%       returns 1 if all are correct, else 0
 %
-%   Joseph Kang 11/16/09
+% Author:
+%     - Original file: Joseph Kang 11/16/09
+%     - CI integration: Laurent Heirendt
 
 global CBTDIR
 
@@ -14,7 +18,8 @@ global CBTDIR
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testDeletionStudy'));
+cd(fileDir);
 
 tol = 1e-6;
 

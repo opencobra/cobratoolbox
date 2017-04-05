@@ -1,4 +1,4 @@
-% The COBRAToolbox: changeObjective.m
+% The COBRAToolbox: testChangeObjective.m
 %
 % Purpose:
 %     - Tests the changeObjective function
@@ -9,7 +9,8 @@
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testChangeObjective'));
+cd(fileDir);
 
 % define the test model
 toyModel = struct;
@@ -20,7 +21,7 @@ toyModel.c = [0 ; 0 ; 0];
 modelNew = changeObjective(toyModel, 'Rxn1');
 assert(modelNew.c(1) == 1 && modelNew.c(2) == 0 && modelNew.c(3) == 0)
 
-% test that error is thrown if objective rnx not in model
+% test that error is thrown if objective Rxn4 not in model
 try
     modelNew = changeObjective(toyModel, 'Rxn4');
 catch ME

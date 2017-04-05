@@ -10,7 +10,8 @@
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testPrintLabeledData'));
+cd(fileDir);
 
 labels = {'row1', 'row2', 'row3'};
 data = ones(3);

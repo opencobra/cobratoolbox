@@ -10,7 +10,8 @@
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testSolveBooleanRegModel'));
+cd(fileDir);
 
 % solver packages
 solverPkgs = {'tomlab_cplex'};
