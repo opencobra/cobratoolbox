@@ -17,7 +17,8 @@
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testpFBA'));
+cd(fileDir);
 
 %tolerance
 tol = 1e-8;

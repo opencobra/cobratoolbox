@@ -13,7 +13,8 @@ global ILOG_CPLEX_PATH
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testFastGapFill'));
+cd(fileDir);
 
 %Specify test files
 modelFile = 'fgf_test_model.xml';

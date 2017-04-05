@@ -1,4 +1,4 @@
-% The COBRAToolbox: testwritePajekNet.m
+% The COBRAToolbox: testWritePajekNet.m
 %
 % Purpose:
 %     - testwritePajekNet tests the writePajekNet function
@@ -13,7 +13,8 @@ global CBTDIR
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testwritePajekNet'));
+cd(fileDir);
 
 load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 

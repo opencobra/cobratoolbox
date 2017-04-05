@@ -12,7 +12,7 @@
 currentDir = pwd;
 
 % initialize the test
-fileDir = fileparts(which('testParseBoolean'));
+fileDir = fileparts(which('testCalcGroupStats'));
 cd(fileDir);
 
 % load reference data - too complex to embed

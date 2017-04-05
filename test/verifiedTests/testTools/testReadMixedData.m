@@ -11,7 +11,8 @@
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testReadMixedData'));
+cd(fileDir);
 
 file = 'testData_readMixedData.txt';
 n_header = 1;

@@ -332,6 +332,13 @@ function initCobraToolbox()
         end
     end
 
+    % set the default solver
+    if ENV_VARS.printLevel
+        fprintf(' > Setting default LP solver to GLPK ... ');
+        changeCobraSolver('glpk', 'LP');
+        fprintf('Done.\n');
+    end
+
     % print out a summary table
     solverTypeInstalled = zeros(length(OPT_PROB_TYPES), 1);
     solverStatuss = '-' * ones(length(supportedSolversNames), length(OPT_PROB_TYPES) + 1);

@@ -17,7 +17,8 @@ if isunix
         currentDir = pwd;
 
         % initialize the test
-        cd(mfilename('fullpath'));
+        fileDir = fileparts(which('testExtremePathways'));
+        cd(fileDir);
 
         S = [-1,  0,  0,  0,  0,  0, 1,  0,  0;
               1, -2, -2,  0,  0,  0, 0,  0,  0;

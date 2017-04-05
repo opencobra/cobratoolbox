@@ -10,7 +10,8 @@
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testPrintMatrix'));
+cd(fileDir);
 
 fileName = 'testPrintMatrix.txt';
 nbFormat = '%3.2f\t';

@@ -1,4 +1,4 @@
-% The COBRAToolbox: testoptimizeRegModel.m
+% The COBRAToolbox: testOptimizeRegModel.m
 %
 % Purpose:
 %     - testrFBA tests the optimizeRegModel function and its different outputs
@@ -10,7 +10,8 @@
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testOptimizeRegModel'));
+cd(fileDir);
 
 % load model and test data
 load('modelReg.mat');

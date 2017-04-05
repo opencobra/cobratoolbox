@@ -17,7 +17,8 @@ global CBTDIR
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testMoieties'));
+cd(fileDir);
 
 % Load reference data
 load('refData_moieties.mat')

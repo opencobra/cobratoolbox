@@ -11,7 +11,8 @@
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testSparseLP'));
+cd(fileDir);
 
 % set the tolerance
 tol = 1e-8;

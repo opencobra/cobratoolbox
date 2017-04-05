@@ -11,7 +11,8 @@
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testSelMatrix'));
+cd(fileDir);
 
 % load reference data
 load('refData_selMatrix.mat');

@@ -1,7 +1,7 @@
-% The COBRAToolbox: testC13Fitting.m
+% The COBRAToolbox: testFitC13Data.m
 %
 % Purpose:
-%     - testC13Fitting tests the basic functionality of fitC13Data
+%     - testFitC13Data tests the basic functionality of fitC13Data
 %
 % Authors:
 %     - Original file: Jan Schellenberger
@@ -14,7 +14,8 @@
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testFitC13Data'));
+cd(fileDir);
 
 majorIterationLimit = 10000; % fitting length
 load('model.mat', 'model'); % loads modelWT

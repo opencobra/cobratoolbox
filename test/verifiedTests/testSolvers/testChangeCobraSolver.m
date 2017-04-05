@@ -1,4 +1,4 @@
-% The COBRAToolbox: testSolveCobraLP.m
+% The COBRAToolbox: testChangeCobraSolver.m
 %
 % Purpose:
 %     - testChangeCobraSolver tests the changeCobraSolver function
@@ -12,7 +12,8 @@ global OPT_PROB_TYPES;
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testChangeCobraSolver'));
+cd(fileDir);
 
 % Three arguments
 ok = changeCobraSolver('pdco', 'MINLP', 0);

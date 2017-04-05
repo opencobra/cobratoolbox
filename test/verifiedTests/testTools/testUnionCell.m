@@ -12,7 +12,8 @@
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testUnionCell'));
+cd(fileDir);
 
 load testUnionCell.mat;
 

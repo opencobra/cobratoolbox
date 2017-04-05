@@ -1,4 +1,4 @@
-% The COBRAToolbox: testconvertHypergraphToBipartiteGraph.m
+% The COBRAToolbox: testConvertHypergraphToBipartiteGraph.m
 %
 % Purpose:
 %     - testconvertHypergraphToBipartiteGraph tests the convertHypergraphToBipartiteGraph
@@ -18,7 +18,8 @@ global CBTDIR
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testConvertHypergraph2BipartiteGraph'));
+cd(fileDir);
 
 for flag = 1:2
     if flag == 1

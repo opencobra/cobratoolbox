@@ -12,7 +12,8 @@
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testSplitString'));
+cd(fileDir);
 
 ref_fields = {'Some'; 'Strings'; 'Delimited'};
 

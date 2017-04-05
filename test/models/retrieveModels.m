@@ -83,6 +83,9 @@ else
     end
 end
 
+% print sucess message
+fprintf(['   Done downloading models.\n']);
+
 % change back to the root directory
 cd(currentDir)
 

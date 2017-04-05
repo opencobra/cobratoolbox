@@ -11,6 +11,10 @@
 % save the current path
 currentDir = pwd;
 
+% initialize the test
+fileDir = fileparts(which('testMatrixCoherence'));
+cd(fileDir);
+
 % define the tolerance
 tol = 1e-5;
 
@@ -21,4 +25,5 @@ A = [1, -1, 1;
 
 assert(abs(mu - 0.8575) < tol);
 
+% change the directory
 cd(currentDir)

@@ -1,4 +1,4 @@
-% The COBRAToolbox: testBuildPairwiseModels.m
+% The COBRAToolbox: testSimulationPairwiseInteractions.m
 %
 % Purpose:
 %     - ensure that the pairwise and single growth rates predicted in script
@@ -20,7 +20,8 @@
 
 currentDir = pwd;
 
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testSimulationPairwiseInteractions'));
+cd(fileDir);
 
 % if the pairedModelsList file does not exist yet, build the models first
 if exist('pairedModelsList.mat', 'file') ~= 2

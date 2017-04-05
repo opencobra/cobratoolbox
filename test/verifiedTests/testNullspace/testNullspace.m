@@ -15,7 +15,8 @@
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testNullspace'));
+cd(fileDir);
 
 %test lusol_mex with stoichiometric matrix from iAF120
 %{

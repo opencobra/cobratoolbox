@@ -11,6 +11,13 @@
 
 global CBTDIR
 
+% save the current path
+currentDir = pwd;
+
+% initialize the test
+fileDir = fileparts(which('testReconMap'));
+cd(fileDir);
+
 % load the ecoli core model
 load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
@@ -44,3 +51,6 @@ if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
 else
     fprintf([' --> ', minerva.minervaURL, ' cannot be reached.\nPlease check your connection. Skipping test.\n\n']);
 end
+
+% change the directory
+cd(currentDir)

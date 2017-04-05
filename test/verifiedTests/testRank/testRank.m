@@ -14,7 +14,8 @@ global CBTDIR
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testRank'));
+cd(fileDir);
 
 if isunix
     % load the model

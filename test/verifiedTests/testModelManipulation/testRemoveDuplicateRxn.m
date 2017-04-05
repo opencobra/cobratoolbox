@@ -10,7 +10,8 @@
 currentDir = pwd;
 
 % initialize the test
-cd(mfilename('fullpath'));
+fileDir = fileparts(which('testRemoveDuplicateRxn'));
+cd(fileDir);
 
 % test detection and removal of duplicate reactions
 model.S = [-1, 0, 0 ,0 , 0, 0, 0;
