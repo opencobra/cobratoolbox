@@ -11,7 +11,7 @@
 currentDir = pwd;
 
 % initialize the test
-cd(fileparts(mfilename('fullpath')));
+cd(mfilename('fullpath'));
 
 % load reference data
 load('refData_selMatrix.mat');

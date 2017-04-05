@@ -10,7 +10,7 @@
 currentDir = pwd;
 
 % initialize the test
-cd(fileparts(mfilename('fullpath')));
+cd(mfilename('fullpath'));
 
 % test detection and removal of duplicate reactions
 model.S = [-1, 0, 0 ,0 , 0, 0, 0;

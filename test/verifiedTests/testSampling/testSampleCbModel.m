@@ -10,7 +10,7 @@ global CBTDIR
 currentDir = pwd;
 
 % initialize the test
-cd(fileparts(mfilename('fullpath')));
+cd(mfilename('fullpath'));
 
 if isunix
     % define the samplers

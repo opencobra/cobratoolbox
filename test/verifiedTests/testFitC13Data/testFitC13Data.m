@@ -14,7 +14,7 @@
 currentDir = pwd;
 
 % initialize the test
-cd(fileparts(mfilename('fullpath')));
+cd(mfilename('fullpath'));
 
 majorIterationLimit = 10000; % fitting length
 load('model.mat', 'model'); % loads modelWT
