@@ -175,6 +175,7 @@ end
 solutionPool = zeros(length(model.lb), 0);
 
 v=ver;
+PCT = 'Parallel Computing Toolbox';
 if  any(strcmp(PCT,{v.Name}))&&license('test','Distrib_Computing_Toolbox')    
     p = gcp('nocreate');
     if isempty(p)
