@@ -1,27 +1,31 @@
 function [finalState,finalInputs1States,finalInputs2States] = solveBooleanRegModel(model,initialState,inputs1States,inputs2States)
-% solveBooleanRegModel - determines the next state of the regulatory
-% network based on the current state. Called by optimizeRegModel and
-% dynamicRFBA
+% Determines the next state of the regulatory network based on the current state.
+% Called by optimizeRegModel and dynamicRFBA
+% 
+% USAGE:
 %
-% [finalState,finalInputs1States,finalInputs2States] =
-% solveBooleanRegModel(model,initialState,inputs1States,inputs2States)
+%    [finalState, finalInputs1States, finalInputs2States] =
+%    solveBooleanRegModel(model, initialState, inputs1States, inputs2States)
 %
-% model                 a regulatory COBRA model
-% initialState          initial state of regulatory network
-% inputs1States         initial state of type 1 inputs (metabolites)
-% inputs2States         initial state of type 2 inputs (reactions)
+% INPUTS:
+%    model:                 a regulatory COBRA model
+%    initialState:          initial state of regulatory network
+%    inputs1States:         initial state of type 1 inputs (metabolites)
+%    inputs2States:         initial state of type 2 inputs (reactions)
 %
-% finalState            final state of regulatory network
-% finalInputs1States    final state of type 1 inputs
-% finalInputs2States    final state of type 2 inputs
+% OUTPUTS:
+%    finalState:            final state of regulatory network
+%    finalInputs1States:    final state of type 1 inputs
+%    finalInputs2States:    final state of type 2 inputs
 %
-% Jeff Orth  7/24/08
+% .. Authors: - Jeff Orth  7/24/08
 
 
+
+finalInputs1States = [];
 % determine state of inputs
 
 % determine external metabolite levels from exchange rxn bounds (maybe change this later)
-finalInputs1States = [];
 [selExc,selUpt] = findExcRxns(model); %get all exchange rxns 
 for i = 1:length(model.regulatoryInputs1)
     met = model.regulatoryInputs1{i};
