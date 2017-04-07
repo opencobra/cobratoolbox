@@ -11,25 +11,22 @@ function printConstraints(model, minInf, maxInf)
 %    maxInf:    value that is considered as +Inf (or desired maximum cutoff value)
 %
 % .. Authors:
-%       - Ines Thiele 02/09 
+%       - Ines Thiele 02/09
 
-minConstraints = intersect(find(model.lb>minInf),find(model.lb));
-    fprintf('MinConstraitns:');
-    fprintf('\n');
+minConstraints = intersect(find(model.lb > minInf), find(model.lb));
+fprintf('MinConstraitns:\n');
 for i = 1:length(minConstraints)
-    fprintf('%s',model.rxns{minConstraints(i)});
+    fprintf('%s', model.rxns{minConstraints(i)});
     fprintf('\t');
-    fprintf('%e',model.lb(minConstraints(i)));
+    fprintf('%e', model.lb(minConstraints(i)));
     fprintf('\n');
 end
 
-
-maxConstraints =intersect(find(model.ub<maxInf),find(model.ub));
-    fprintf('maxConstraints:');
-    fprintf('\n');
+maxConstraints = intersect(find(model.ub < maxInf), find(model.ub));
+fprintf('maxConstraints:\n');
 for i = 1:length(maxConstraints)
-    fprintf('%s',model.rxns{maxConstraints(i)});
+    fprintf('%s', model.rxns{maxConstraints(i)});
     fprintf('\t');
-    fprintf('%e',model.ub(maxConstraints(i)));
+    fprintf('%e', model.ub(maxConstraints(i)));
     fprintf('\n');
 end
