@@ -10,6 +10,7 @@ Modules
    tools
    print
    rFBA
+   multiSpeciesModelling
 
 Example
 

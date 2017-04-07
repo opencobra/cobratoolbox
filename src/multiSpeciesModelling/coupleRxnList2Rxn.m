@@ -1,34 +1,38 @@
 function [modelCoupled]=coupleRxnList2Rxn(model,rxnList,rxnC,c,u)
-% % coupleRxnList2Rxn
-% This function adds coupling constraints to the fluxes vi of a given list of reactions
-% (RxnList).The constraints are proportional to the flux v of a specified
-% reaction rxnC, so that for all reactions in RxnList
-% vi ~ vrxnC.
-% For all reactions, a threshold u on flux is set (default value:
-% 0.01). To add a coupling constraint to a reaction, a coupling vector c is
-% determined (default value 1000). C is multiplied by vrxnC, so that for
-% all irreversible reactions in RxnList
-% vi - c * vrxnC <= u.
+% 
+% This function adds coupling constraints to the fluxes `vi` of a given list of reactions
+% (`RxnList`).The constraints are proportional to the flux `v` of a specified
+% reaction `rxnC`, so that for all reactions in `RxnList` `vi ~ vrxnC`.
+% For all reactions, a threshold `u` on flux is set (default value: 0.01).
+%
+% To add a coupling constraint to a reaction, a coupling vector `c` is
+% determined (default value 1000). `c` is multiplied by `vrxnC`, so that for
+% all irreversible reactions in `RxnList vi - c * vrxnC <= u`.
+%
 % For all reversible reactions, the following equation holds true for the
-% reverse direction:
-% vi + c * vrxnC >= u.
-% The output is a coupled model (modelCoupled), in which for every new
-% entry in modelCoupled.b a "slack" variable has been added
-% to modelCoupled.mets.
+% reverse direction: `vi + c * vrxnC >= u`.
 %
-% Input:
-% model         model structure
-% rxnList       array of reaction names
-% rxnC          reaction that should be coupled with each reaction in the
-%               reaction list
-% c             vector of coupling factors for each rxn in rxnList (default c = 1000)
-% u             vector of lower bounds one reaction couples (default u = 0.01)
+% The output is a coupled model (`modelCoupled`), in which for every new
+% entry in `modelCoupled.b` a "slack" variable has been added
+% to `modelCoupled.mets`.
 %
-% Output:
-% modelCoupled coupled model
+% USAGE:
 %
-% Sept 2011 AH/IT
-% May 2012: Added a warning if the coupled reaction is not in model. AH
+%    [modelCoupled] = coupleRxnList2Rxn(model, rxnList, rxnC, c, u)
+%
+% INPUTS:
+%    model:         model structure
+%    rxnList:       array of reaction names
+%    rxnC:          reaction that should be coupled with each reaction in the
+%                   reaction list
+%    c:             vector of coupling factors for each rxn in rxnList (default c = 1000)
+%    u:             vector of lower bounds one reaction couples (default u = 0.01)
+%
+% OUTPUT:
+%    modelCoupled:  coupled model
+% .. Authors:
+%    - Sept 2011 AH/IT
+%    - May 2012: Added a warning if the coupled reaction is not in model. AH
 
 if ~exist('rxnList', 'var') || isempty(rxnList)
     rxnList = model.rxns;
