@@ -1,23 +1,27 @@
 function [FBAsols,DRgenes,constrainedRxns,cycleStart,states] = optimizeRegModel(model,initialRegState)
-% optimizeRegModel - finds the steady state solution of a model with
-% Boolean regulatory constraints
+% Finds the steady state solution of a model with Boolean regulatory constraints
+% 
 %
-% [FBAsols,DRgenes,constrainedRxns,cycleStart,states] = optimizeRegModel(model,initialRegState)
+% USAGE:
+%    [FBAsols, DRgenes, constrainedRxns, cycleStart, states] = optimizeRegModel(model, initialRegState)
 %
-% model             a regulatory COBRA model
-% initialRegState   the initial state of the regulatory network as a 
-%                   Boolean vector (opt, default = all false)
+% INPUTS:
+%    model             a regulatory COBRA model
+%    initialRegState   the initial state of the regulatory network as a 
+%                      Boolean vector (opt, default = all false)
 %
-% FBAsols           all of the FBA solutions at the steady state (or stable
-%                   cycle) of the regulatory network 
-% DRgenes           the genes that are OFF for every FBA solution
-% constrainedRxns   the reactions that are OFF for every FBA solution
-% cycleStart        the number of iterations before the regulatory network
-%                   reaches the steady state or cycle
-% states            the state of the regulatory network at every iteration
-%                   calculated
+% OUTPUTS:
+%    FBAsols           all of the FBA solutions at the steady state (or stable
+%                      cycle) of the regulatory network 
+%    DRgenes           the genes that are OFF for every FBA solution
+%    constrainedRxns   the reactions that are OFF for every FBA solution
+%    cycleStart        the number of iterations before the regulatory network
+%                      reaches the steady state or cycle
+%    states            the state of the regulatory network at every iteration
+%                      calculated
 %
-% Jeff Orth 8/19/08
+% .. Authors:
+%       - Jeff Orth 8/19/08
 
 if nargin < 2
     rFBAsol1 = false.*ones(length(model.regulatoryGenes),1); % initial state
