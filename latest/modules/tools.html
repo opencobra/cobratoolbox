@@ -443,10 +443,13 @@ Raw unnormalized scores</li>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">selVec</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
 <span class="o">%</span> <span class="n">returns</span>
 <span class="n">selMat</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span>
+          <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
+
 <span class="o">%</span> <span class="n">For</span> <span class="n">reversible</span> <span class="n">selections</span>
 <span class="n">selVec</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mi">0</span><span class="p">]</span>
 <span class="o">%</span> <span class="n">returns</span>
 <span class="n">selMat</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span>  <span class="mi">0</span> <span class="mi">0</span>
+          <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -529,10 +532,13 @@ Results are returned in the cell array fields</p>
 <p><strong>Example</strong></p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">Define</span> <span class="n">original</span> <span class="nb">list</span>
 <span class="nb">list</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">}</span>
+
 <span class="o">%</span> <span class="n">Define</span> <span class="n">dictionary</span>
 <span class="n">trList1</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">}</span>
 <span class="n">trList2</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">}</span>
+
 <span class="n">newList</span> <span class="o">=</span> <span class="n">translateList</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">trList1</span><span class="p">,</span> <span class="n">trList2</span><span class="p">);</span>
+
 <span class="o">%</span> <span class="n">returns</span>
 <span class="n">newList</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">};</span>
 </pre></div>
