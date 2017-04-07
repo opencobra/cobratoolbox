@@ -8,6 +8,7 @@ Modules
    :maxdepth: 2
 
    tools
+   print
 
 Example
 

@@ -1,0 +1,389 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Print &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/julia.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
+        <link rel="up" title="Modules" href="index.html"/>
+        <link rel="next" title="Tutorials" href="../tutorials/index.html"/>
+        <link rel="prev" title="Tools" href="tools.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" />
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="tools.html">Tools</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Print</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Modules</a> &raquo;</li>
+      
+    <li>Print</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="print">
+<span id="id1"></span><h1>Print<a class="headerlink" href="#print" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.print"></span><dl class="function">
+<dt id="src.print.printConstraints">
+<code class="descname">printConstraints</code><span class="sig-paren">(</span><em>model</em>, <em>minInf</em>, <em>maxInf</em><span class="sig-paren">)</span><a class="headerlink" href="#src.print.printConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print all network constraints that are not -Inf (minInf)or +Inf (maxInf)</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>printConstraints(model, minInf, maxInf)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>minInf</strong> &#8211;
+value that is considered as -Inf (or desired minimum cutoff value)</li>
+<li><strong>maxInf</strong> &#8211;
+value that is considered as +Inf (or desired maximum cutoff value)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.print.printFluxVector">
+<code class="descname">printFluxVector</code><span class="sig-paren">(</span><em>model</em>, <em>fluxData</em>, <em>nonZeroFlag</em>, <em>excFlag</em>, <em>sortCol</em>, <em>fileName</em>, <em>headerRow</em>, <em>formulaFlag</em><span class="sig-paren">)</span><a class="headerlink" href="#src.print.printFluxVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints a flux vector with reaction labels</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>printFluxVector(model, fluxData, nonZeroFlag, excFlag, sortCol, fileName, headerRow, formulaFlag)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>fluxData</strong> &#8211;
+Data matrix/vector (for example, solution.x)</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>nonZeroFlag</strong> &#8211;
+Only print nonzero rows (Default = false)</li>
+<li><strong>excFlag</strong> &#8211;
+Only print exchange fluxes (Default = false)</li>
+<li><strong>sortCol</strong> &#8211;
+Column used for sorting (-1, none; 0, labels; &gt;0, data
+columns;) (Default = -1)</li>
+<li><strong>fileName</strong> &#8211;
+Name of output file (Default = [])</li>
+<li><strong>headerRow</strong> &#8211;
+Header (Default = [])</li>
+<li><strong>formulaFlag</strong> &#8211;
+Print reaction formulas (Default = false)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.print.printRxnFormula">
+<code class="descname">printRxnFormula</code><span class="sig-paren">(</span><em>model</em>, <em>rxnAbbrList</em>, <em>printFlag</em>, <em>lineChangeFlag</em>, <em>metNameFlag</em>, <em>fid</em>, <em>directionFlag</em>, <em>gprFlag</em><span class="sig-paren">)</span><a class="headerlink" href="#src.print.printRxnFormula" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the reaction formulas for a list of reactions</p>
+<p>Reactions that have an upperbound &lt;= 0 and lowerbound &lt; 0 will have
+its directionality reversed unless directionFlag = false.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>formulas = printRxnFormula(model, rxnAbbrList, printFlag, lineChangeFlag, metNameFlag, fid, directionFlag)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>rxnAbbrList</strong> &#8211;
+Abbrs of reactions whose formulas are to be printed</li>
+<li><strong>printFlag</strong> &#8211;
+Print formulas or just return them (Default = true)</li>
+<li><strong>lineChangeFlag</strong> &#8211;
+Append a line change at the end of each line
+(Default = true)</li>
+<li><strong>metNameFlag</strong> &#8211;
+print full met names instead of abbreviations
+(Default = false)</li>
+<li><strong>fid</strong> &#8211;
+Optional file identifier for printing in files</li>
+<li><strong>directionFlag</strong> &#8211;
+Checks directionality of reaction. See Note.
+(Default = false)</li>
+<li><strong>gprFlag</strong> &#8211;
+print gene protein reaction association
+(Default = false)</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>formulas</strong> &#8211;
+Cell array containing formulas of specified reactions</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.print.printUptakeBound">
+<code class="descname">printUptakeBound</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#src.print.printUptakeBound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the indices to the substrate uptake reactions and prints substrate uptake bounds</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>uptakeInd = printUptakeBound(model)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+CORBRA model structure</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>upInd</strong> &#8211;
+Vector containing indecies of uptake reactions</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.print.surfNet">
+<code class="descname">surfNet</code><span class="sig-paren">(</span><em>model</em>, <em>metrxn</em>, <em>metNameFlag</em>, <em>flux</em>, <em>NonzeroFluxFlag</em>, <em>showMets</em>, <em>nCharBreak</em>, <em>iterOptions</em><span class="sig-paren">)</span><a class="headerlink" href="#src.print.surfNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple and convenient tool to navigate through the metabolic network
+interactively, possibly with a given flux vector, in the Matlab command
+window using mouse once the starting point is called by command.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>surfNet(model, metrxn, metNameFlag, flux, NonzeroFluxFlag, nCharBreak)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model</li>
+<li><strong>metrxn</strong> &#8211;
+mets or rxns names, can be a cell array of multiple
+rxns and mets, or simply a string</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>metNameFlag</strong> &#8211;
+print model.metNames in reaction formulas. (false)</li>
+<li><strong>flux</strong> &#8211;
+flux vector for the model. Show fluxes if given.([])
+If given, the producing and consuming reactions displayed
+are in accordance with the flux direction.</li>
+<li><strong>NonzeroFluxFlag</strong> &#8211;
+show only reactions with nonzero flux if flux is given (true)</li>
+<li><strong>showMets</strong> &#8211;
+show metabolites in a list when printing reactions (true)</li>
+<li><strong>nCharBreak</strong> &#8211;
+max. no. of characters per line for reaction formulas (65)</li>
+<li><strong>iterOptions</strong> &#8211;
+Not used for calling, for interactive calling only.
+Display the path of the previous navigation. (false)</li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">surfNet</span>
+<span class="n">surfNet</span>
+<span class="n">surfNet</span>
+<span class="n">surfNet</span>
+<span class="n">surfNet</span>
+<span class="n">surfNet</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../tutorials/index.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tools.html" class="btn btn-neutral" title="Tools" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
