@@ -1,40 +1,49 @@
 function [modelJoint] = createMultipleSpeciesModel(models,nameTagsModels,modelHost,nameTagHost)
-% [modelJoint] =
-% createMultipleSpeciesModel(models,nameTagsModels,modelHost,nameTagHost)
-% Based on the implementation from Klitgord and Segre 2010, PMID 21124952.
-% The present implementation has been used in PMID 23022739, PMID 25841013,
-% PMID 25901891, PMID 27893703.
-
+% Based on the implementation from *Klitgord and Segre 2010, PMID 21124952*.
+% The present implementation has been used in *PMID 23022739*, *PMID 25841013*,
+% *PMID 25901891*, *PMID 27893703*.
+%
 % Joins one or more COBRA models with or without another COBRA model
 % representing the host.
+%
 % Creates a common space u (lumen) through which all cells can feed and exchange metabolites,
 % and separate extracellular spaces for all joined models.
-% If a host model is entered, a separate compartment b (body fluids) which has no
+% If a host model is entered, a separate compartment `b` (body fluids) which has no
 % connection to extracellular space is created for the host. Metabolites can be transported from
-%  the lumen to e, from e to the cytosol and from the cytosol to b,
-%  but not from body fluids to the lumen.
+% the lumen to `e`, from `e` to the cytosol and from the cytosol to `b`,
+% but not from body fluids to the lumen.
 %
-% REQUIRED INPUT
-% models     cell array of COBRA models(at least one).
-% format: models{1,1}=model 1, models{2,1}= model 2...
-% OPTIONAL INPUTS
-% nameTagsModels   cell array of tags for reaction/metabolite abbreviation
-% corresponding to each model
-% format: nameTagsModels{1,1}='name tag 1', models{2,1}= 'name tag 2'...
-% modelHost         COBRA model for host
-% nameTagHost       string of tag for reaction/metabolite abbreviation of host model
-% OUTPUT
-% modelJoint   model structure for joint model
+% USAGE:
 %
-% Ines Thiele and Almut Heinken, 2011-2017
-% Last edited by A.H., 01.03.2017
+%    [modelJoint] = createMultipleSpeciesModel(models, nameTagsModels, modelHost, nameTagHost)
+%
+% INPUTS:
+%    models:     cell array of COBRA models(at least one).
+%                Format
+%                   * models{1,1} = model 1
+%                   * models{2,1} = model 2...
+%
+% OPTIONAL INPUTS:
+%    nameTagsModels:    cell array of tags for reaction/metabolite abbreviation
+%                       corresponding to each model.
+%                       Format
+%                           * nameTagsModels{1,1} = 'name tag 1'
+%                           * nameTagsModels{2,1} = 'name tag 2'...
+%    modelHost:         COBRA model for host
+%    nameTagHost:       string of tag for reaction/metabolite abbreviation of host model
+%
+% OUTPUT:
+%    modelJoint:        model structure for joint model
+%
+% .. Authors:
+%       - Ines Thiele and Almut Heinken, 2011-2017 Last edited by A.H., 01.03.2017
+%
 
 
-%% prepare the model structures and assign name tags for each model structure if not provided
 if isempty(models)
    error('Please enter at least one model!')
 end
-
+% prepare the model structures and assign name tags for each model structure if not provided
 modelNumber = size(models, 1);
 
 if nargin < 2 || isempty(nameTagsModels)

@@ -9,6 +9,7 @@ Modules
 
    tools
    print
+   multiSpeciesModelling
 
 Example
 
