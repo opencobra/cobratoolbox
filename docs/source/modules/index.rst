@@ -9,6 +9,7 @@ Modules
 
    tools
    print
+   metabotools
 
 Example
 

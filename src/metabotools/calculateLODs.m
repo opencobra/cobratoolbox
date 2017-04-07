@@ -1,20 +1,23 @@
 function [lod_mM] = calculateLODs(theo_mass,lod_ngmL)
-%[lod_mM] = calculateLODs(theo_mass,lod_ngmL)
 % This function converts detection limits of the unit ng/mL to mM using the
 % theoretical mass (g/mol) for the metabolites
 %
-% INPUTS
-%   theo_MASS         Vector that specifies the theoretical mass (g/mol)of each metabolite
-%   lod_ngmL          Instrumental limit of detection (ng/mL)
+% USAGE:
 %
-% OUTPUT
+%    [lod_mM] = calculateLODs(theo_mass, lod_ngmL)
 %
-%   lod_mM             Detection limits in mM
+% INPUTS:
+%   theo_MASS:         Vector that specifies the theoretical mass (g/mol)of each metabolite
+%   lod_ngmL:          Instrumental limit of detection (ng/mL)
+%
+% OUTPUT:
+%
+%   lod_mM:            Detection limits in mM
 %
 %
-% Maike K. Aurich 27/05/15
+% .. Author: - Maike K. Aurich 27/05/15
 
-%%
+
 
 
 lod_gL = lod_ngmL* 0.000001;
