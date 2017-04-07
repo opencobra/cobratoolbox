@@ -44,7 +44,7 @@ persistent modelLocal  % local model for next iteration
 % empty model input uses previous modelLocal
 checkModel = false;
 if ~isempty(model)
-% non-empty model input resets modelLocal
+    % non-empty model input resets modelLocal
     modelLocal = model;
     pathLocal = {};
     checkModel = true;
@@ -74,21 +74,21 @@ end
 nzFluxPrint = '';
 persistent fluxLocal  % local flux vector for next iteration
 if nargin < 4
-% calling with no flux arguement empties fluxLocal
+    % calling with no flux arguement empties fluxLocal
     fluxLocal = [];
 else
 % calling with empty flux arguement uses previous fluxLocal
     if strcmp(flux, 'none')
-    % calling with 'none' also empties fluxLocal
+        % calling with 'none' also empties fluxLocal
         fluxLocal = [];
     elseif ~isempty(flux)
-    % calling with non-empty flux arguement resets fluxLocal
+        % calling with non-empty flux arguement resets fluxLocal
         fluxLocal = flux;
     end
 end
 if ~isempty(fluxLocal)
-% reaction direction for determining consumption or production if flux
-% is given
+    % reaction direction for determining consumption or production if flux
+    % is given
     direction = ones(1, size(modelLocal.S, 2));
     if NonzeroFluxFlag
         nzFluxPrint = ' with non-zero fluxes ';
@@ -106,13 +106,13 @@ if showPrev
     fprintf('\n');
     nChar = 0;
     for jPast = 1:size(pathLocal)
-    % print each of the previous metabolites navigated
+        % print each of the previous metabolites navigated
         if ~isempty(pathLocal{jPast, 1})
             if metNameFlag
-            % print the metabolite name
+                % print the metabolite name
                 namePrint = modelLocal.metNames{findMetIDs(modelLocal, pathLocal{jPast, 1})};
             else
-            % or print the metabolite abbreviation
+                % or print the metabolite abbreviation
                 namePrint = pathLocal{jPast, 1};
             end
             % line break if exceeding character per line
@@ -126,7 +126,7 @@ if showPrev
         end
         % print each of the previous reactions navigated
         if ~isempty(pathLocal{jPast, 2})
-        % line break if exceeding character per line
+            % line break if exceeding character per line
             if nChar > 0 && nChar + length(pathLocal{jPast, 2}) > nCharBreak
                 fprintf('\n');
                 nChar = 0;
@@ -143,10 +143,10 @@ end
 % if a reaction or metabolite is not given
 if nargin < 2 || isempty(metrxn)
     if ~isempty(fluxLocal)
-    % pick a random reaction with non-zero flux
+        % pick a random reaction with non-zero flux
         metrxn = model.rxns{randsample(find(abs(fluxLocal) > fluxTol), 1)};
     else
-    % pick a random reaction
+        % pick a random reaction
         metrxn = model.rxns{randsample(numel(model.rxns), 1)};
     end
 end
@@ -223,8 +223,8 @@ if id ~= 0
     p = printRxnFormula(modelLocal, metrxn, 0, 1, 0);
     dirRxn = 1;
     if ~isempty(fluxLocal)
-    % direction of the reaction. If flux is given, non-negative flux
-    % treated as forward direction and -ve flux as reverse direction
+        % direction of the reaction. If flux is given, non-negative flux
+        % treated as forward direction and -ve flux as reverse direction
         dirRxn = sign(direction(id) + 0.1);
     end
     % all the metabolite involved
@@ -243,24 +243,24 @@ if id ~= 0
         f = strcmp(dict(:, 1), formPart{jPart});
         % if the current part is a metabolite
     if any(f), metEqPrint = dict{f, 1 + metNameFlag}; end
-        % have a new line if exceeding character per line
+    % have a new line if exceeding character per line
     if nChar > 0 && nChar + length(metEqPrint) + isempty(metEqPrint) * length(formPart{jPart}) > nCharBreak
             lineBreak = true;
         end
         nChar = nChar + length(metEqPrint) + isempty(metEqPrint) * length(formPart{jPart}) + 1;  % +1 for the space
         if isempty(metEqPrint)
-        % if it is not a metabolite name (stoich/'+'/'->'/'<=>'), print directly
+            % if it is not a metabolite name (stoich/'+'/'->'/'<=>'), print directly
             if lineBreak, fprintf('\n  '); nChar = 0; lineBreak = false; end
             fprintf('%s ', formPart{jPart});
         else
-        % print hyperlink if it is a metabolite name
+            % print hyperlink if it is a metabolite name
             printFcn(formPart{jPart}, metEqPrint, 0);
             fprintf(' ');
         end
     end
     if showMets
-    % print reactants and products in detail
-    % max. met's length
+        % print reactants and products in detail
+        % max. met's length
         dispLen1 = max(cellfun(@length, modelLocal.mets([m{1}; m{2}])));
         dis1 = ['  %-' num2str(dispLen1) 's'];
         % max. met's ID length
@@ -275,9 +275,9 @@ if id ~= 0
                 fprintf('Product:\n');
             end
             for j = 1:numel(m{jRP})
-            % format the printing of the stoichiometric coefficient
+                % format the printing of the stoichiometric coefficient
                 if floor(modelLocal.S(m{jRP}(j), id)) ~= modelLocal.S(m{jRP}(j), id)
-                % at most display 6 decimal places, or use scientific notation
+                    % at most display 6 decimal places, or use scientific notation
                     d = 0;
                     x = modelLocal.S(m{jRP}(j), id);
                     while x ~= round(x, d) && d <= stoichDigit
@@ -296,7 +296,7 @@ if id ~= 0
                 % print metabolite with hyperlink
                 printFcn(modelLocal.mets{m{jRP}(j)}, modelLocal.mets{m{jRP}(j)}, dispLen1);
                 if iscell(modelLocal.metNames{m{jRP}(j)})
-                % handle if metNames{id} is a cell array of strings
+                    % handle if metNames{id} is a cell array of strings
                     metNamePrint = strjoin(modelLocal.metNames{m{jRP}(j)}, '|');
                 else
                     metNamePrint = modelLocal.metNames{m{jRP}(j)};
@@ -316,7 +316,7 @@ else
     end
     pathLocal(end + 1, :) = {metrxn, ''};
     if iscell(modelLocal.metNames{id})
-    % handle if metNames{id} is a cell array of strings
+        % handle if metNames{id} is a cell array of strings
         metNamePrint = strjoin(modelLocal.metNames{id}, '|');
     else
         metNamePrint = modelLocal.metNames{id};
@@ -326,24 +326,24 @@ else
             metNamePrint, modelLocal.metFormulas{id});
     for jCP = 1:2
         if jCP == 1
-        % print consuming reactions (taking into account of flux
-        % direction if given)
+            % print consuming reactions (taking into account of flux
+            % direction if given)
             r = find(modelLocal.S(id, :) .* direction < 0);
             fprintf('Consuming reactions%s:', nzFluxPrint);
         else
-        % print producing reactions (taking into account of flux
-        % direction if given)
+            % print producing reactions (taking into account of flux
+            % direction if given)
             r = find(modelLocal.S(id, :) .* direction > 0);
             fprintf('Producing reactions%s:', nzFluxPrint);
         end
         if isempty(r)
             fprintf(' none\n');
         else
-        % print rxn formulas
+            % print rxn formulas
             fprintf('\n');
             p = printRxnFormula(modelLocal, modelLocal.rxns(r), 0, 1, 0);
             for j = 1:numel(r)
-            % print at most six decimal places of reaction fluxes
+                % print at most six decimal places of reaction fluxes
                 fluxPrint = '';
                 if ~isempty(fluxLocal)
                     fluxPrint = sprintf('(%.6f)', fluxLocal(r(j)));
@@ -358,7 +358,7 @@ else
                 dict = modelLocal.mets(m);
                 if metNameFlag, dict(:, 2) = modelLocal.metNames(m); end
                 % similarly get each part of the formula
-            formPart = strsplit(p{j});
+                formPart = strsplit(p{j});
                 nChar = 0;
                 lineBreak = false;
                 for jPart = 1:numel(formPart)
@@ -366,17 +366,17 @@ else
                     f = strcmp(dict(:, 1), formPart{jPart});
                     % if the current part is a metabolite
                 if any(f), metEqPrint = dict{f, 1 + metNameFlag}; end
-                    % have a new line if exceeding character per line
+                % have a new line if exceeding character per line
                 if nChar > 0 && nChar + length(metEqPrint) + isempty(metEqPrint) * length(formPart{jPart}) > nCharBreak
                         lineBreak = true;
                     end
                     nChar = nChar + length(metEqPrint) + isempty(metEqPrint) * length(formPart{jPart}) + 1;  % +1 for the space
                     if isempty(metEqPrint)
-                    % if it is not a metabolite name (stoich/'+'/'->'/'<=>'), print directly
+                        % if it is not a metabolite name (stoich/'+'/'->'/'<=>'), print directly
                         if lineBreak, fprintf('\n  '); nChar = 0; lineBreak = false; end
                         fprintf('%s ', formPart{jPart});
                     else
-                    % print hyperlink if it is a metabolite name
+                        % print hyperlink if it is a metabolite name
                         printFcn(formPart{jPart}, metEqPrint, 0);
                         fprintf(' ');
                     end
