@@ -1,4 +1,4 @@
- function [cond1_upt_higher, cond2_upt_higher, cond2_secr_higher,cond1_secr_higher, cond1_uptake_LODs,cond2_uptake_LODs,cond1_secretion_LODs, cond2_secretion_LODs] = calculateQuantitativeDiffs(data_RXNS,slope_Ratio,ex_RXNS, lod_mM, cond1_uptake, cond2_uptake, cond1_secretion, cond2_secretion);
+function [cond1_upt_higher, cond2_upt_higher, cond2_secr_higher,cond1_secr_higher, cond1_uptake_LODs,cond2_uptake_LODs,cond1_secretion_LODs, cond2_secretion_LODs] = calculateQuantitativeDiffs(data_RXNS,slope_Ratio,ex_RXNS, lod_mM, cond1_uptake, cond2_uptake, cond1_secretion, cond2_secretion)
 % This function provides sets of exchange reactions with higher uptake and
 % secretion in condition 1 and condition 2.
 %
@@ -18,7 +18,7 @@
 %
 %
 % OUTPUTS:
-%    cond1_upt_higher:  	 Exchange reactions and relative differences with higher uptake in condition 1 compared to condition 2
+%    cond1_upt_higher:       Exchange reactions and relative differences with higher uptake in condition 1 compared to condition 2
 %    cond2_upt_higher:       Exchange reactions and relative differences with higher uptake in condition 2 compared to condition 1
 %    cond2_secr_higher:      Exchange reactions and relative differences with higher secretion in condition 2 compared to condition 1
 %    cond1_secr_higher:      Exchange reactions and relative differences with higher secretion in condition 1 compared to condition 2
@@ -33,13 +33,13 @@
 
 
 
-%% get LODs
+
 cond1_uptake_LODs = [];
 cond2_uptake_LODs = [];
 
 cond1_secretion_LODs = [];
 cond2_secretion_LODs = [];
-
+% get LODs
 for i=1:length(cond1_uptake)
    cond1_uptake_LODs(i,1) = lod_mM(find(ismember(ex_RXNS, cond1_uptake(i))));
 end

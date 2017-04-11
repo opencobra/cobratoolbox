@@ -10,8 +10,9 @@ function [genes,ResultsAllCellLines,OverViewResults] = analyzeSingleGeneDeletion
 %
 % INPUTS:
 %      ResultsAllCellLines:  Structure containing the models (the two models can be the same or pruned and starting model) of the format
-%                                      * ResultsAllCellLines.samples.modelMin
-%                                      * ResultsAllCellLines.samples.modelPruned
+%                               
+%                               * ResultsAllCellLines.samples.modelMin
+%                               * ResultsAllCellLines.samples.modelPruned
 %
 %      path:                 Path where picture of heatmap is to be saved
 %      samples:              Name of samples

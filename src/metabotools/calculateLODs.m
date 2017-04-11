@@ -7,7 +7,7 @@ function [lod_mM] = calculateLODs(theo_mass,lod_ngmL)
 %    [lod_mM] = calculateLODs(theo_mass, lod_ngmL)
 %
 % INPUTS:
-%   theo_MASS:         Vector that specifies the theoretical mass (g/mol)of each metabolite
+%   theo_mass:         Vector that specifies the theoretical mass (g/mol) of each metabolite
 %   lod_ngmL:          Instrumental limit of detection (ng/mL)
 %
 % OUTPUT:

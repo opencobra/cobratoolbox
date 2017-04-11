@@ -1,18 +1,18 @@
 function [MetConn,RxnLength] = networkTopology(model)
-
-% 
-% [MetConn,RxnLength] = NetworkTopology(model)
-%
 % Analysis of the metabolite connectivity of a metabolic model
 %
-% INPUTS 
-%   model       Model structure
+% USAGE:
 %
-% OUTPUTS
-%   MetConn     Vector of metabolite connectivity (how many reactions a metabolite participates in (in same order as model.mets)
-%   RxnLength   Vector of reaction participation, i.e., how many metabolites per reaction (in same order as mode.rxns)
+%    [MetConn,RxnLength] = NetworkTopology(model)
 %
-% IT June 2011
+% INPUTS: 
+%    model:       Model structure
+%
+% OUTPUTS:
+%    MetConn:     Vector of metabolite connectivity (how many reactions a metabolite participates in (in same order as model.mets)
+%    RxnLength:   Vector of reaction participation, i.e., how many metabolites per reaction (in same order as `mode.rxns`)
+%
+% .. Author: - IT June 2011
 
 [r,c]=size(model.S);
 

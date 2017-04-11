@@ -1,26 +1,28 @@
 function [modelA_QUANT,modelB_QUANT] = setSemiQuantConstraints(modelA, modelB, cond1_upt_higher, cond2_upt_higher, cond2_secr_higher,cond1_secr_higher)
-
-% This function establishes constraints for two models (modelA and modelB) based on the relative
+% This function establishes constraints for two models (`modelA` and `modelB`) based on the relative
 % difference of signal intensities obtained from two samples. The prerequisite for the adjustment is that constraints have been applied on which the relative differences can be applied:
-% (A) The uptake rates have been established based on the medium composition and concentrations (i.e.,'setMediumConstraints'), and (B) qualitative constraints have been applied based on know detection limits or small values (i.e.,'setQualitativeConstraints'). 
-%
 % 
+% * (A) The uptake rates have been established based on the medium composition and concentrations (i.e., `setMediumConstraints`), and 
+% * (B) qualitative constraints have been applied based on know detection limits or small values (i.e., `setQualitativeConstraints`). 
 %
-% INPUTS
-%   modelA                      model constrained according to condition 1
-%   modelB                      model constrained according to condition 2
-%   cond1_upt_higher            Exchange reactions and relative differences with higher uptake in condition 1 compared to condition 2
-%   cond2_upt_higher            Exchange reactions and relative differences with higher uptake in condition 2 compared to condition 1
-%   cond2_secr_higher           Exchange reactions and relative differences with higher secretion in condition 2 compared to condition 1
-%   cond1_secr_higher           Exchange reactions and relative differences with higher secretion in condition 1 compared to condition 2
+% USAGE:
+%
+%    [modelA_QUANT,modelB_QUANT] = setSemiQuantConstraints(modelA, modelB, cond1_upt_higher, cond2_upt_higher, cond2_secr_higher, cond1_secr_higher)
+%
+% INPUTS:
+%    modelA:                      model constrained according to condition 1
+%    modelB:                      model constrained according to condition 2
+%    cond1_upt_higher:            Exchange reactions and relative differences with higher uptake in condition 1 compared to condition 2
+%    cond2_upt_higher:            Exchange reactions and relative differences with higher uptake in condition 2 compared to condition 1
+%    cond2_secr_higher:           Exchange reactions and relative differences with higher secretion in condition 2 compared to condition 1
+%    cond1_secr_higher:           Exchange reactions and relative differences with higher secretion in condition 1 compared to condition 2
 %
 %
-% OUTPUTS
-%  modelA_QUANT                model constrained according to condition 1
-%  modelB_QUANT                model constrained according to condition 2
+% OUTPUTS:
+%    modelA_QUANT:                model constrained according to condition 1
+%    modelB_QUANT:                model constrained according to condition 2
 %
-%
-% Maike K. Aurich 13/02/15
+% .. Author: - Maike K. Aurich 13/02/15
 
 
 %%

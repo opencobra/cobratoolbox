@@ -1,18 +1,22 @@
 function [flux] = conc2Rate(metConc, cellConc, t, cellWeight)
-%[flux] = conc2Rate(metConc, cellConc, t, cellWeight)
 % Converts metabolite concentration and (viable) cell concentration into
 % uptake rate.
-% CellConc consumed MetConc in T.
+% CellConc consumed MetConc in t.
 %
-% INPUTS
-%   MetConc       Change in metabolite concentration (mM)
-%   CellConc      Cell concentration (cells per 1 ml)
-%   T             Time in hours
-%   CellWeight    gDW per cell
+% USAGE:
 %
-%   Flux          mmol/gDW/hr
+%    [flux] = conc2Rate(metConc, cellConc, t, cellWeight)
 %
-% Ines Thiele 07/22/09
+% INPUTS:
+%    metConc:       Change in metabolite concentration (mM)
+%    cellConc:      Cell concentration (cells per 1 ml)
+%    t:             Time in hours
+%    cellWeight:    gDW per cell
+%
+% OUTPUT:
+%    flux:          mmol/gDW/hr
+%
+% .. Author: - Ines Thiele 07/22/09
 
 if nargin < 4
     CellWeight = 500 * 1e-12; % g

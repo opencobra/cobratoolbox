@@ -1,45 +1,44 @@
 function [stats, statsR] = summarizeSamplingResults(modelA,modelB,path,nFiles,pointsPerFile,starting_model,dataGenes,show_rxns,fonts,hist_per_page,bin,fileNameA,fileNameB)
-
-% The function summarizes the sampling results of the two models modelA and
-% modelB. Subsequently, it returnes medians from the two models' sampling,
-% FVA results for the respective reaction, simple ttest results (stats).
+% The function summarizes the sampling results of the two models `modelA` and
+% `modelB`. Subsequently, it returnes medians from the two models' sampling,
+% FVA results for the respective reaction, simple test results (`stats`).
 % Finally, histograms are produced, one for each reactions containing the
 % distributions of the two models. The set of analyzed reactions can be
-% limited (show_rxns). Reactions associated with genes of special interest,
+% limited (`show_rxns`). Reactions associated with genes of special interest,
 % e.g. differentially expressed genes, can be marked to facilitate the
 % analysis, and simplify the identification of interesting histograms.
 %
-%%
-% INPUTS
-%   modelA                     Sampled modelA (condition 1)
-%   modelB                     Sampled modelB (condition 2)
-%   path                       Path to sampling output files
-%   nFiles                     Number of files saved, e.g., 20;
-%   pointsPerFilePoints        Points saved per file, e.g., 5000;
-%   starting_model             Original metabolic model (Recon)
-%   dataGenes                  Gene set, whose associated reactions should be emphasized by color, e.g., alternatively spliced or differentially expressed genes
+% USAGE:
 %
-% OPTIONAL INPUT
-%   show_rxns                  Vector of reactions that should be displayed, e.g., certain pathways or non-loop reactions
-%   fonts                      Font size (default = 9)
-%   hist_per_page              Defines the number of histogramms that are printed per page, e.g., 4, 9, or 25 (default = 9)
-%   bin                        Binning for histogramm (default = 30)
-%   fileNameA                  Name of files the sampling points are stored in
-%   fileNameB                  Name of files the sampling points are stored in
+%    [stats, statsR] = summarizeSamplingResults(modelA, modelB, path, nFiles, pointsPerFile, starting_model, dataGenes, show_rxns, fonts, hist_per_page, bin, fileNameA, fileNameB)
 %
-% OUTPUTS
-%   stats                      Statistics from the sampling (Columns:Median modelA, Median modelB, minFlux_A, maxFlux_A, minFlux_B, maxFlux_B )
-%   statsR                     Reaction vector for stats output
+% INPUTS:
+%    modelA:                     Sampled modelA (condition 1)
+%    modelB:                     Sampled modelB (condition 2)
+%    path:                       Path to sampling output files
+%    nFiles:                     Number of files saved, e.g., 20;
+%    pointsPerFilePoints:        Points saved per file, e.g., 5000;
+%    starting_model:             Original metabolic model (Recon)
+%    dataGenes:                  Gene set, whose associated reactions should be emphasized by color, e.g., alternatively spliced or differentially expressed genes
 %
-% Depends on COBRA functions: loadsamples, findRxnsFromGenes, flux variability analysis/fastFVA
+% OPTIONAL INPUTS:
+%    show_rxns:                  Vector of reactions that should be displayed, e.g., certain pathways or non-loop reactions
+%    fonts:                      Font size (default = 9)
+%    hist_per_page:              Defines the number of histogramms that are printed per page, e.g., 4, 9, or 25 (default = 9)
+%    bin:                        Binning for histogramm (default = 30)
+%    fileNameA:                  Name of files the sampling points are stored in
+%    fileNameB:                  Name of files the sampling points are stored in
 %
-% Maike K. Aurich 22/08/15
+% OUTPUTS:
+%    stats:                      Statistics from the sampling (Columns: Median modelA, Median modelB, minFlux_A, maxFlux_A, minFlux_B, maxFlux_B )
+%    statsR:                     Reaction vector for stats output
+%
+% Depends on COBRA functions: `loadsamples`, `findRxnsFromGenes`, flux
+% variability analysis / `fastFVA`
+%
+% .. Author: - Maike K. Aurich 22/08/15
 
-
-%% default settings 
-
-
-if ~exist('hist_per_page','var')
+if ~exist('hist_per_page','var') %% default settings
     hist_per_page=9;
 end
 

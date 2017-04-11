@@ -8,16 +8,15 @@ function [FBA_Rxns_KO,ListResults] = checkEffectRxnKO(samples_to_test,fill,Genes
 %    [FBA_Rxns_KO, ListResults] = checkEffectRxnKO(samples_to_test, fill, Genes_to_test, samples, ResultsAllCellLines)
 %
 % INPUTS:
-%      ResultsAllCellLines:   uses modelMin
-%      staring_model:         Starting model (not pruned, e.g., model for CORE)
-%      sample:                Name of samples
+%      ResultsAllCellLines:   uses `modelMin`
+%      samples:               Name of samples
 %      samples_to_test:       Name of samples that should be tested (can be samples if all should be tested)
-%      fill:                  Identifier if the rxns is not in the model (e.g.,100, num('NAN'))
+%      fill:                  Identifier if the `rxns` is not in the model (e.g.,100, num('NAN'))
 %      Genes_to_test:         Set of genes to be tested
 %      
 % OUTPUTS:
 %      FBA_Rxns_KO:           FBA results for constraining one reaction at a time to zero.
-%      ListResults:           Reactions associated with Genes_to_test, same order as FBA_Rxns_KO.
+%      ListResults:           Reactions associated with `Genes_to_test`, same order as `FBA_Rxns_KO`.
 %
 % .. Authors:
 %       - Maike K. Aurich 02/07/15 (Depends on changeRxnBounds,

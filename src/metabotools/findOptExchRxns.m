@@ -1,23 +1,22 @@
 function [OptExchRxns] = findOptExchRxns(model,Ex_Rxns,parFVA)
+% USAGE:
 %
-%   INPUTS
-%       model         Metabolic model
-%       Ex_Rxns       Vector of exchange reactions for FVA
-%       tol           Limit for calling flux zero
-%       fastFVA       use FastFVA (default=0)
+%    [OptExchRxns] = findOptExchRxns(model, Ex_Rxns, parFVA)
 %
-%   OUTPUTS
-%      OptExchRxns
+% INPUTS:
+%    model:         Metabolic model
+%    Ex_Rxns:       Vector of exchange reactions for FVA
+%    fastFVA:       use FastFVA (default=0)
 %
+% OUTPUTS:
+%    OptExchRxns:
+%
+% .. Authors:
+%       - Ines Thiele 2014
+%       - Maike K. Aurich 27/05/15, remove hidden values 
+tol = -1e-6;
 %   Default parameter
 %       tol           (default: -1e-6)
-%
-%
-% Ines Thiele 2014
-% Maike K. Aurich 27/05/15, remove hidden values 
-%%
-tol = -1e-6;
-
 if ~exist('parFVA','var') || parFVA == 0
    
     matlabpool = 0;
