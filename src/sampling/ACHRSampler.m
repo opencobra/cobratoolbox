@@ -138,7 +138,7 @@ for i = 1:nFiles
             % Print step information
             if (mod(totalStepCount,5000)==0)
               timePerStep = timeElapsed/totalStepCount;
-              fprintf('%d\t%d\t%d\t%8.2f\t%8.2f\n',i,pointCount,totalStepCount,timeElapsed/60,(totalCount-totalStepCount)*timePerStep/60);
+              printDuringWaitBar(sprintf('%d\t%d\t%d\t%8.2f\t%8.2f\n',i,pointCount,totalStepCount,timeElapsed/60,(totalCount-totalStepCount)*timePerStep/60));
             end
 
             overInd = find(curPoint > model.ub);

@@ -158,6 +158,9 @@ while rxnID <= nRxns
     rxnID = rxnID + 1;
 end
 
+%Finished this step
+showprogress(1);
+
 if (verbFlag)
     fprintf('\n');
 end

@@ -17,16 +17,17 @@ function textprogressbar(c)
 %
 %      - renamed strCR to WAITBAR_HANDLE
 %      - changed persistent type of strCR to global type
+%      - Changes To the progressbar text to be consistent (to allow
+%        intermittent output)
 
 %% Initialization
 global WAITBAR_HANDLE;           %   Carriage return pesistent variable
-
+persistent WAITBAR_STRING;
 % Vizualization parameters
 strPercentageLength = 10;   %   Length of percentage string (must be >5)
 strDotsMaximum      = 40;   %   The total number of dots in a progress bar
 
 %% Main
-
 if isempty(WAITBAR_HANDLE) && ~ischar(c)
     % Progress bar must be initialized with a string
     error('The text progress must be initialized with a string');
@@ -37,32 +38,43 @@ elseif isempty(WAITBAR_HANDLE) && ischar(c)
 elseif ~isempty(WAITBAR_HANDLE) && ischar(c)
     % Progress bar  - termination
     WAITBAR_HANDLE = [];
+    WAITBAR_STRING = [];
     fprintf([c '\n']);
 elseif isnumeric(c)
     % Progress bar - normal progress
-    c = floor(c);
-    percentageOut = [num2str(c) '%%'];
+    WAITBAR_PROGRESS = floor(c);    
+    percentageOut = [num2str(WAITBAR_PROGRESS) '%%'];
     percentageOut = [percentageOut repmat(' ',1,strPercentageLength-length(percentageOut)-1)];
-    nDots = floor(c/100*strDotsMaximum);
+    nDots = floor(WAITBAR_PROGRESS/100*strDotsMaximum);
     dotOut = ['[' repmat('.',1,nDots) repmat(' ',1,strDotsMaximum-nDots) ']'];
-    strOut = [percentageOut dotOut];
+    WAITBAR_STRING = [percentageOut dotOut];
 
     % Print it on the screen
     if WAITBAR_HANDLE == -1
         % Don't do carriage return during first run
-        fprintf(strOut);
+        fprintf(WAITBAR_STRING);
     else
         % Do it during all the other runs
-        fprintf([WAITBAR_HANDLE strOut]);
+        fprintf([WAITBAR_HANDLE WAITBAR_STRING]);
     end
 
     % Update carriage return
-    WAITBAR_HANDLE = repmat('\b',1,length(strOut)-1);
+    WAITBAR_HANDLE = repmat('\b',1,length(WAITBAR_STRING)-1);
 
-    if c == 100
+    if WAITBAR_PROGRESS == 100
         fprintf('\n');
     end
+elseif islogical(c)
+    if c %remove the current progress
+        fprintf(WAITBAR_HANDLE);
+        fprintf(repmat(' ',1,numel(WAITBAR_STRING)-1));
+        fprintf(WAITBAR_HANDLE);
+    else
+        fprintf(WAITBAR_STRING);
+    end
 else
+    
     % Any other unexpected input
+    
     error('Unsupported argument type');
 end
