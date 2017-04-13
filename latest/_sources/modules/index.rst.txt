@@ -9,6 +9,7 @@ Modules
 
    tools
    print
+   metabotools
    rFBA
    multiSpeciesModelling
 
