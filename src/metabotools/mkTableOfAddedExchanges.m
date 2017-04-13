@@ -1,18 +1,20 @@
 function [Added_all] = mkTableOfAddedExchanges(ResultsAllCellLines,samples,Ex_added_all_unique)
-%[Added_all] = mkTableOfAddedExchanges(ResultsAllCellLines,samples,Ex_added_all_unique)
-%
 % The function generates a table of the added exchanges defined by the 
-% function generateCompactExchModel called by the function setQuantConstraints.
+% function `generateCompactExchModel` called by the function `setQuantConstraints`.
 %
-%INPUT
-%   ResultsAllCellLines
-%   samples
-%   Ex_added_all_unique    Output of the function statisticsAddedExchanges
+% USAGE:
 %
-%OUTPUT
-%   Added_all              Table overview of all added Exchanges for each sample
+%    [Added_all] = mkTableOfAddedExchanges(ResultsAllCellLines, samples, Ex_added_all_unique)
 %
-% Maike K. Aurich 08/07/15
+% INPUTS:
+%    ResultsAllCellLines:    
+%    samples:
+%    Ex_added_all_unique:    Output of the function `statisticsAddedExchanges`
+%
+% OUTPUT:
+%    Added_all:              Table overview of all added Exchanges for each sample
+%
+% .. Author: - Maike K. Aurich 08/07/15
 
 Added_all{length(Ex_added_all_unique),length(samples)+1}={};
 Added_all(:,1)=Ex_added_all_unique(:,1);

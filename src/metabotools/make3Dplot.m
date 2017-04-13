@@ -1,20 +1,23 @@
 function make3Dplot(PHs, maximum_contributing_flux, fonts, path, diff_view)
 % The function allows illustration on different phenotypes predicted in
-% MetTB onto the 3D illustration plot. The phenotypes are defined as colors
-%, the location of the points is based on the ATP flux predicted by the
-% function predictFluxSplits.
+% MetTB onto the 3D illustration plot. The phenotypes are defined as
+% colors, the location of the points is based on the ATP flux predicted by the
+% function `predictFluxSplits`.
 %
-%INPUTS
-%   PHs                          Phenotypes = [samples PHENOTYPE], is generated from different functions (predictFluxSplits,...)
-%   maximum_contributing_flux    Output of the function predictFluxSplits, option ATP.
-%   fonts                        Font size
-%   path                         Path to save output
-%   diff_view                    Next to the standard view, print graphic from 3 different(2D) viewpoints (default = 0/off)
+% USAGE:
 %
-%OUTPUTS
-%   pdfs are automatically saved to the user-defined path
-%       
-%% Maike K. Aurich 27/08/15
+%    make3Dplot(PHs, maximum_contributing_flux, fonts, path, diff_view)
+%
+% INPUTS:
+%    PHs:                          Phenotypes = [samples PHENOTYPE], is generated from different functions (`predictFluxSplits`,...)
+%    maximum_contributing_flux:    Output of the function `predictFluxSplits`, option ATP.
+%    fonts:                        Font size
+%    path:                         Path to save output
+%    diff_view:                    Next to the standard view, print graphic from 3 different(2D) viewpoints (default = 0/off)
+%
+% PDFs are automatically saved to the user-defined path
+%  
+% .. Author: - Maike K. Aurich 27/08/15
 
 if ~exist('diff_view','var') || isempty(diff_view)
     diff_view = 0;
@@ -60,7 +63,7 @@ hold on
 h = scatter3(x2,y2,z2,'s','filled','userdata',data_sets{2});
 
 
-%% uncomment legend if legend should be produced, however if picture and legend are generated seperately it looks better.
+%uncomment legend if legend should be produced, however if picture and legend are generated seperately it looks better.
  legend(get(gca,'children'),get(get(gca,'children'),'userdata')) % correct
  xlabel('Glycolysis (%)' ,'FontSize', fonts)
  ylabel('ATP synthetase (%)','FontSize', fonts)
@@ -79,22 +82,22 @@ h= title(strvcat(titleString ));
 saveas(gcf, [path 'FS_3D'], 'png');  
 
 if diff_view==1;
-    %% set viewpoint
-    %% ATP-GLY
+    % set viewpoint
+    % ATP-GLY
     Xi = 0;
     Yi = 0;
     Zi =270;
     view([Xi Yi Zi])
     saveas(gcf, [path 'FS_3D_ATP_GLY'], 'pdf');
     
-    %% SUCC-GLY
+    % SUCC-GLY
     Xi = 0;
     Yi = -90;
     
     Zi =0;
     view([Xi Yi Zi])
     saveas(gcf, [path 'FS_3D_Succ_GLY'], 'pdf');
-    %% Succ-ATP
+    % Succ-ATP
     Xi = 90;
     Yi = 0;
     Zi =0;

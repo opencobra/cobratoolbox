@@ -1,26 +1,25 @@
 function illustrate_ppp(ResultsAllCellLines,mets,path,samples,label,fonts,tol)
-%%
-% illustrate_ppp(ResultsAllCellLines,mets,path,samples,label,fonts,tol)
-%
 % This function generates and saves heatmaps for the results of the function
 % performPPP for all sample models. 
 % 
+% USAGE:
 %
-% INPUTS
-%       ResultsAllCellLines     Result structure
-%       mets                    Metabolites that were tested in the phase plane analysis
-%       step_size               Step size of each metabololite tested
-%       path                    Path where output is saved
-%       samples                 Names of conditions
-%       label                   Defining label of X-axis, y-axis and z-axis, e.g., {'Glucose uptake (fmol/cell/hr)'; 'Oxygen uptake
-%                               (fmol/cell/hr)';'Growth rate (hr-1)'} The z-axis is the growth rate which is color coded
-%       fonts                   Font size for labels on heatmap
-%       tol                     Fluxes are considered zero if they are below the tol
+%     illustrate_ppp(ResultsAllCellLines, mets, path, samples, label, fonts, tol)
 %
-% Output (saved to path)
-%       individual pdf files are saved showing the result of the PPP are being saved automatically for each condition.
+% INPUTS:
+%    ResultsAllCellLines:     Result structure
+%    mets:                    Metabolites that were tested in the phase plane analysis
+%    step_size:               Step size of each metabololite tested
+%    path:                    Path where output is saved
+%    samples:                 Names of conditions
+%    label:                   Defining label of X-axis, y-axis and z-axis, e.g., {`Glucose uptake (fmol/cell/hr)`; `Oxygen uptake
+%                             (fmol/cell/hr)`; `Growth rate (hr-1)`} The z-axis is the growth rate which is color coded
+%    fonts:                   Font size for labels on heatmap
+%    tol:                     Fluxes are considered zero if they are below the tol
 %
-% Maike K. Aurich 19/02/15
+% Individual pdf files showing the result of the PPP are being saved automatically for each condition.
+%
+% .. Author: - Maike K. Aurich 19/02/15
 
 k=1;
 

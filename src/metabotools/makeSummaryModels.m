@@ -1,25 +1,26 @@
-function [unionModel,intersectModel, diffRxns, diffExRxns] = makeSummaryModels(ResultsAllCellLines,samples, model, mk_union, mk_intersect, mk_reactionDiff);
-%[unionModel,intersectModel, diffRxns, diffExRxns] = makeSummaryModels(ResultsAllCellLines,samples, model, mk_union, mk_intersect, mk_reactionDiff);
+function [unionModel,intersectModel, diffRxns, diffExRxns] = makeSummaryModels(ResultsAllCellLines,samples, model, mk_union, mk_intersect, mk_reactionDiff)
+% This function generates the union and the intersect model from the `modelPruned` in the `ResultsAllCellLines` structure.
 %
-% This function generates the union and the intersect model from the modelPruned in the ResultsAllCellLines. -structure.
+% USAGE:
 %
-% INPUTS
-%        ResultsAllCellLines                structure containing samples and models for the samples, e.g.,  ResultsAllCellLines.UACC_257.modelPruned
-%        samples                            conditions or cell lines, e.g., UACC_257
+%    [unionModel, intersectModel, diffRxns, diffExRxns] = makeSummaryModels(ResultsAllCellLines, samples, model, mk_union, mk_intersect, mk_reactionDiff)
 %
-% OPTIONAL INPUTS
-%        mk_union                              make union model, yes=1, no=0 (Default = 1)
-%        mk_intersect                          make intersect model, yes=1, no=0 (Default = 1)
-%        mk_reactionDiff                       make reactionDiff, yes=1, no=0 (can only be 1 if union and intersect are 1 or []) (Default = 1).
+% INPUTS:
+%    ResultsAllCellLines:                structure containing samples and models for the samples, e.g.,  `ResultsAllCellLines.UACC_257.modelPruned`
+%    samples:                            conditions or cell lines, e.g., UACC_257
 %
-% OUTPUTS
-%        unionModel                         model containing all reactions appearing at least once in the models in the ResultsAllCellLines.sample.modelPruned
-%        intersectModel                     model containing all reactions shared by all models in the ResultsAllCellLines.sample.modelPruned
-%        diffRxns                           all differential reactions that distingish unionModel and intersect model
-%        diffExRxns                         all differential exchange reactions that distingish unionModel and intersect model
+% OPTIONAL INPUTS:
+%    mk_union:                           make union model, yes=1, no=0 (Default = 1)
+%    mk_intersect:                       make intersect model, yes=1, no=0 (Default = 1)
+%    mk_reactionDiff:                    make reactionDiff, yes=1, no=0 (can only be 1 if union and intersect are 1 or []) (Default = 1).
 %
+% OUTPUTS:
+%    unionModel:                         model containing all reactions appearing at least once in the models in the `ResultsAllCellLines.sample.modelPruned`
+%    intersectModel:                     model containing all reactions shared by all models in the `ResultsAllCellLines.sample.modelPruned`
+%    diffRxns:                           all differential reactions that distinguish `unionModel` and `intersectModel`
+%    diffExRxns:                         all differential exchange reactions that distinguish `unionModel` and `intersectModel`
 %
-%% Maike Aurich 02/07/2015
+% .. Author: - Maike Aurich 02/07/2015
 
 
 if ~exist('mk_union','var') || isempty(mk_union)

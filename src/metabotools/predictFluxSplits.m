@@ -1,44 +1,52 @@
-function[BMall,ResultsAllCellLines,metRsall, maximum_contributing_rxn,maximum_contributing_flux,ATPyield] = predictFluxSplits(model, obj, met2test,samples,ResultsAllCellLines, dir,transportRxns,ATPprod,carbon_source, eucNorm)
-% [BMall,ResultsAllCellLines,metRsall, maximum_contributing_rxn,maximum_contributing_flux,ATPyield] = predictFluxSplits(model, obj, met2test,samples,ResultsAllCellLines, dir,transportRxns,ATPprod,carbon_source, eucNorm)
-%
+function [BMall,ResultsAllCellLines,metRsall, maximum_contributing_rxn,maximum_contributing_flux,ATPyield] = predictFluxSplits(model, obj, met2test,samples,ResultsAllCellLines, dir,transportRxns,ATPprod,carbon_source, eucNorm)
 % This function performs the flux splits analysis for the metabolites of
 % interest, meaning it predicts the fraction of metabolite produced (or
 % consumed) based all reactions producing (or consuming) the metabolite
 %
-% Use [BMall,ResultsAllCellLines,metRsall] = predictFluxSplits(model, solver, obj, met2test,samples,ResultsAllCellLines, dir, eucNorm, transportRxns,ATPprod,carbon_source)
-% if met2test is not atp to reduce number of useless outputs.
+% USAGE:
 %
+%    [BMall,ResultsAllCellLines,metRsall, maximum_contributing_rxn,maximum_contributing_flux,ATPyield] = predictFluxSplits(model, obj, met2test,samples,ResultsAllCellLines, dir,transportRxns,ATPprod,carbon_source, eucNorm)
 %
-% INPUTS
-%   model                       Generic model, e.g., modelMedium
-%   solver                      LP and QP solver, e.g, 'tomlab_cplex'
-%   obj                         objective function, e.g., biomass or ATPM
-%   met2test                    e.g., 'atp[c]'. Mind that the metabolites are produced in multiple compartments.
-%   samples                     Name of conditions as in ResultsAllCellLines
-%   ResultsAllCellLines         Structure containing the pruned submodels of the samples
+% INPUTS:
+%    model:                       Generic model, e.g., `modelMedium`
+%    obj:                         objective function, e.g., biomass or ATPM
+%    met2test:                    e.g., `atp[c]`. Mind that the metabolites are produced in multiple compartments.
+%    samples:                     Name of conditions as in `ResultsAllCellLines`
+%    ResultsAllCellLines:         Structure containing the pruned submodels of the samples
 %
-% OPTIONAL INPUT
-%   dir                         Production = 1 (default = production), else consumption = 0
-%   eucNorm                     Default:1e-6
-%   excludeRxns                 Vector of reactions that do not really produce or consume the metabolite, e.g., reactions that transport ATP from one compartment to the other. This input is optional only to allow the initial prediction of all producing reactions to define the exclude reaction set.
-%   carbon_source               Reference uptake for calculation of ATP yield, e.g.,{'EX_glc(e)'}.
+% OPTIONAL INPUTS:
+%    dir:                         Production = 1 (default = production), else consumption = 0
+%    eucNorm:                     Default: 1e-6
+%    transportRxns:               Vector of reactions that do not really produce or consume the metabolite, e.g., reactions that transport ATP from one compartment to the other. This input is optional only to allow the initial prediction of all producing reactions to define the exclude reaction set.
+%    carbon_source:               Reference uptake for calculation of ATP yield, e.g.,{`EX_glc(e)`}.
+%    ATPprod:
 %
-% OUTPUTS
-%   BMall                       Matrix of flux vectors used for calculations
-%   ResultsAllCellLines         Structure containing results of run analysis
-%   metRsall                    Matrix of flux (producing or consuming) a defined metabolite
-%   maximum_contributing_rxn    Reactions with highest flux (producing or
-%                               consuming) a defined metabolite across analyzed samples (not
-%                               necessarily >50%), if multiple reactions have the same contribution, all will be reported seperated by a back slash.
-%   maximum_contributing_flux   Matrix containing highest flux (column 1), sum of flux
-%                               (producing or consuming) a defined metabolite (column 2), percentage
-%                               (column 3), contriburion of glycolysis (column 4), contriburion of ETC
-%                               (column 5), combined contribution of glycolysis and ETC (column 6),
-%                               contriburion of TCA (column 7), combined contribution of glycolysis,
-%                               ETC, and TCA (column 8).
-%   ATPyield                    ATP yield calculated from the sum of ATP production divided by the predicted uptake flux of the metabolite specified as carbon_source. No extra constraints are applied, thus not only production  flux from the specified carbon source is considered.
+% OUTPUTS:
+%    BMall:                       Matrix of flux vectors used for calculations
+%    ResultsAllCellLines:         Structure containing results of run analysis
+%    metRsall:                    Matrix of flux (producing or consuming) a defined metabolite
+%    maximum_contributing_rxn:    Reactions with highest flux (producing or
+%                                 consuming) a defined metabolite across analyzed samples (not
+%                                 necessarily >50%), if multiple reactions have the same contribution, all will be reported seperated by a back slash.
+%    maximum_contributing_flux:   Matrix containing:
 %
-%% Maike K. Aurich 13/07/15
+%                                 * highest flux (column 1), 
+%                                 * sum of flux (producing or consuming) a defined metabolite (column 2), 
+%                                 * percentage (column 3), 
+%                                 * contribution of glycolysis (column 4), 
+%                                 * contribution of ETC (column 5), 
+%                                 * combined contribution of glycolysis and ETC (column 6),
+%                                 * contribution of TCA (column 7), 
+%                                 * combined contribution of glycolysis, ETC, and TCA (column 8).
+%    ATPyield:                    ATP yield calculated from the sum of ATP production divided by the predicted uptake flux of the metabolite specified as carbon_source. 
+%                                 No extra constraints are applied, thus not only production  flux from the specified carbon source is considered.
+% EXAMPLE:
+%
+%    % if met2test is not atp to reduce number of useless outputs
+%    [BMall, ResultsAllCellLines, metRsall] = predictFluxSplits(model, obj, met2test,samples,ResultsAllCellLines, dir, eucNorm, transportRxns, ATPprod, carbon_source)
+%    
+%
+% .. Author: - Maike K. Aurich 13/07/15
 
 if ~exist('dir','var') || isempty(dir)
     dir = 1;
