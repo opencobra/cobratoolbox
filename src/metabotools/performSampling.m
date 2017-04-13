@@ -23,8 +23,6 @@ function performSampling(model,warmupn,fileName,nFiles,pointsPerFile,stepsPerPoi
 %
 % .. Author: - Maike K. Aurich 22/08/15
 
-
-
 warmupPoints = createHRWarmup(model,warmupn);
 initPoint = (warmupPoints(:,1));
 fileName = [path '\' fileName];

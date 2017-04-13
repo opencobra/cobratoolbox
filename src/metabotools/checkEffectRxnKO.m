@@ -18,10 +18,7 @@ function [FBA_Rxns_KO,ListResults] = checkEffectRxnKO(samples_to_test,fill,Genes
 %      FBA_Rxns_KO:           FBA results for constraining one reaction at a time to zero.
 %      ListResults:           Reactions associated with `Genes_to_test`, same order as `FBA_Rxns_KO`.
 %
-% .. Authors:
-%       - Maike K. Aurich 02/07/15 (Depends on changeRxnBounds,
-%       optimizeCbModel, and findRxnsFromGenes)
-
+% .. Authors: - Maike K. Aurich 02/07/15 (Depends on changeRxnBounds, optimizeCbModel, and findRxnsFromGenes)
 
 n=1;
 

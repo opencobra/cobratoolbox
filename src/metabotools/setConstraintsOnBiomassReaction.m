@@ -11,12 +11,10 @@ function [modelBM] = setConstraintsOnBiomassReaction(model,of,dT,tolerance)
 %    dT:              Doubling time
 %    tolerance:       Upper and lower limit of the growth rate are adjusted according to this tolerance value, e.g., 20 (%).
 %
-%
 % OUTPUTS:
 %    modelBM:         Model constrained with condition-specific growth rates
 %
 % .. Author: - Maike K. Aurich 13/02/15
-
 
 ub = log(2)/dT*(1+(tolerance/100));
 lb = log(2)/dT*(1-(tolerance/100));

@@ -16,9 +16,8 @@ function [modelMin,AddedExchange] = findMinCardModel(model,Ex_Rxns)
 %       - Ines Thiele 2014
 %       - Maike K. Aurich 27/05/15 change tolerance
 
-tol = -1e-6;
-%   Default parameter
-%       tol           (default: -1e-6) limit for callling flux 0
+tol = -1e-6;  % Default tolerance (limit for calling flux 0)
+
 AddedExchange = '';
 % convert to irrev model
 [modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model);

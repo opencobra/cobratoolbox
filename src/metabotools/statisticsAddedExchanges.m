@@ -25,7 +25,6 @@ function [Ex_added_all_unique] = statisticsAddedExchanges(ResultsAllCellLines,sa
 %
 % .. Author: - Maike Aurich 07/2015
 
-
 Ex_added_all = [];
 Ex_added_all_unique{length(samples),6} =[];
 

@@ -3,7 +3,7 @@ function [MetConn,RxnLength] = networkTopology(model)
 %
 % USAGE:
 %
-%    [MetConn,RxnLength] = NetworkTopology(model)
+%    [MetConn, RxnLength] = NetworkTopology(model)
 %
 % INPUTS: 
 %    model:       Model structure

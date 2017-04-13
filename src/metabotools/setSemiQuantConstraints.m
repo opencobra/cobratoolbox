@@ -7,7 +7,7 @@ function [modelA_QUANT,modelB_QUANT] = setSemiQuantConstraints(modelA, modelB, c
 %
 % USAGE:
 %
-%    [modelA_QUANT,modelB_QUANT] = setSemiQuantConstraints(modelA, modelB, cond1_upt_higher, cond2_upt_higher, cond2_secr_higher, cond1_secr_higher)
+%    [modelA_QUANT, modelB_QUANT] = setSemiQuantConstraints(modelA, modelB, cond1_upt_higher, cond2_upt_higher, cond2_secr_higher, cond1_secr_higher)
 %
 % INPUTS:
 %    modelA:                      model constrained according to condition 1
@@ -24,11 +24,8 @@ function [modelA_QUANT,modelB_QUANT] = setSemiQuantConstraints(modelA, modelB, c
 %
 % .. Author: - Maike K. Aurich 13/02/15
 
-
-%%
 modelA2 = modelA;
 modelB2 = modelB;
-
     
 for a=1:length(cond2_upt_higher(:,1))
     M = find(ismember(modelA.rxns, cond2_upt_higher{a,1}));

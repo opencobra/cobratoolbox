@@ -14,8 +14,6 @@ function [modelPruned] = extractConditionSpecificModel(model,theshold)
 %    modelPruned:     submodel without blocked reactions
 %
 % .. Author: - Maike K. Aurich 13/02/15
-%
-
 
 [minFlux,maxFlux] = fluxVariability(model,0);
 %[minFluxMODEL,maxFluxMODEL] = fastFVA(model,0);
@@ -34,7 +32,4 @@ noBlockedrxns(1,2) =length(find(Blockedrxns));
 modelPruned = removeRxns(model,Blocked(:,1));
 
 end
-
-
-
 

@@ -31,7 +31,6 @@ function [ResultsAllCellLines,OverViewResults] = setQuantConstraints(model, samp
 %
 % .. Author: - Maike K. Aurich 18/02/15
 
-
 cntO=1;
 % Set overview variable
 OverViewResults{1,cntO} ='cell line';cntO = cntO+1;

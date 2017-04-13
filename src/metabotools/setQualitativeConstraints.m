@@ -31,7 +31,6 @@ function [modelLOD] = setQualitativeConstraints(model,cond_uptake,cond_uptake_LO
 %
 % .. Author: - Maike K. Aurich 27/05/15
 
-
 A = strfind(model.rxns, 'EX_');
 %Find all exchange reactions
 for i = 1:length(A);

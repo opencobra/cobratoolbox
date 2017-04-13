@@ -35,7 +35,6 @@ function [modelMedium,basisMedium] = setMediumConstraints(model, set_inf, curren
 %       - Ines Thiele
 %       - Maike K. Aurich 26/05/15
 
-%% 
 if ~exist('customizedConstraints','var') || isempty(customizedConstraints)
     customizedConstraints = {};
 end

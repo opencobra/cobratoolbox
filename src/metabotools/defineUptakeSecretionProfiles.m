@@ -22,7 +22,6 @@ function [cond1_uptake, cond2_uptake, cond1_secretion, cond2_secretion, slope_Ra
 %    tol:                 minimal threshold to call uptake or secretion (Default 0.05)=5%
 %
 % OPTIONAL INPUTS:
-%
 %    essAA_excl:          If essential amino acids should be excluded from the secretion profile 1(yes), or 0(no) (Default = 0); 
 %                         `essAAs` = {`EX_his_L(e)`; `EX_ile_L(e)`; `EX_leu_L(e)`; `EX_lys_L(e)`; `EX_met_L(e)`; `EX_phe_L(e)`; `EX_thr_L(e)`; `EX_trp_L(e)`; `EX_val_L(e)`}
 %    exclude_upt:         Exclude uncertain metabolites from uptake (e.g., metabolites from GlutaMax, e.g., `EX_gln_L(e)`, `EX_cys_L(e)`, `EX_ala_L(e)`)
@@ -31,18 +30,13 @@ function [cond1_uptake, cond2_uptake, cond1_secretion, cond2_secretion, slope_Ra
 %    add_upt:             Due to mising data points automatic analysis might do wrong assignment of metabolites to uptake 
 %
 % OUTPUTS:
-%
 %    cond1_uptake:        List of exchanges that specify consumed metabolites in condition 1        
 %    cond2_uptake:        List of exchanges that specify consumed metabolites in condition 2
 %    cond1_secretion:     List of exchanges that specify released metabolites in condition 1
 %    cond2_secretion:     List of exchanges that specify released metabolites in condition 2
 %    slope_Ratio:         For length of inputA/B, relative difference
 %
-%
-%
 % .. Author: - Maike K. Aurich 27/05/15
-
-%%
 
 if ~exist('tol','var') || isempty(tol)
     tol = 0.05;

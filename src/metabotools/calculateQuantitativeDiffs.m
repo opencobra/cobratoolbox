@@ -16,7 +16,6 @@ function [cond1_upt_higher, cond2_upt_higher, cond2_secr_higher,cond1_secr_highe
 %    cond1_secretion:        List of exchanges that specify released metabolites in condition 1
 %    cond2_secretion:        List of exchanges that specify released metabolites in condition 2
 %
-%
 % OUTPUTS:
 %    cond1_upt_higher:       Exchange reactions and relative differences with higher uptake in condition 1 compared to condition 2
 %    cond2_upt_higher:       Exchange reactions and relative differences with higher uptake in condition 2 compared to condition 1
@@ -30,9 +29,6 @@ function [cond1_upt_higher, cond2_upt_higher, cond2_secr_higher,cond1_secr_highe
 % .. Authors:
 %       - Ines Thiele
 %       - Maike K. Aurich 27/05/15
-
-
-
 
 cond1_uptake_LODs = [];
 cond2_uptake_LODs = [];

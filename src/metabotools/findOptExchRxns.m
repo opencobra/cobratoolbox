@@ -14,9 +14,9 @@ function [OptExchRxns] = findOptExchRxns(model,Ex_Rxns,parFVA)
 % .. Authors:
 %       - Ines Thiele 2014
 %       - Maike K. Aurich 27/05/15, remove hidden values 
-tol = -1e-6;
-%   Default parameter
-%       tol           (default: -1e-6)
+
+tol = -1e-6;  % Default tolerance
+
 if ~exist('parFVA','var') || parFVA == 0
    
     matlabpool = 0;

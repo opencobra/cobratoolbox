@@ -4,7 +4,7 @@ function [modelUpdated,modelPruned,Ex_Rxns] = pruneModel(model,minGrowth, biomas
 %
 % USAGE:
 %
-%    [modelUpdated,modelPruned,Ex_Rxns] = pruneModel(model, minGrowth, biomassRxn)
+%    [modelUpdated, modelPruned, Ex_Rxns] = pruneModel(model, minGrowth, biomassRxn)
 %
 % INPUTS:
 %    model:         model structure

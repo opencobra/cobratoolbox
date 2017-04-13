@@ -11,14 +11,9 @@ function [lod_mM] = calculateLODs(theo_mass,lod_ngmL)
 %   lod_ngmL:          Instrumental limit of detection (ng/mL)
 %
 % OUTPUT:
-%
 %   lod_mM:            Detection limits in mM
 %
-%
 % .. Author: - Maike K. Aurich 27/05/15
-
-
-
 
 lod_gL = lod_ngmL* 0.000001;
 
