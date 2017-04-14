@@ -27,18 +27,17 @@ printLabeledData(labels, data, nonzeroFlag, sortCol, fileName, headerRow, sortMo
 text1 = fileread('refData_printLabeledData.txt');
 text2 = fileread(fileName);
 assert(strcmp(text1, text2));
+
+data = [2, NaN, NaN; 2, NaN, NaN; 2, NaN, NaN];
+printLabeledData(labels, data, nonzeroFlag, sortCol, fileName, headerRow, sortMode);
+
 labels = {'row1'; 'row2'};
 sortCol = 0;
 data = [1, 9, 4; 4, 7, 8];
-printLabeledData(string(labels), data, nonzeroFlag, sortCol, fileName, headerRow, sortMode);
-
-data = [2, NaN, NaN; 3, NaN, NaN];
-printLabeledData(string(labels), data, nonzeroFlag, sortCol, fileName, headerRow, sortMode);
+printLabeledData(labels, data, nonzeroFlag, sortCol, fileName, headerRow, sortMode);
 
 % remove the generated file
-if exist(fileName, 'file') == 2
-    delete (fileName)
-end
+delete(fileName)
 
 % change the directory
 cd(currentDir)
