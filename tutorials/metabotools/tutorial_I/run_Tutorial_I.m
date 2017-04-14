@@ -19,9 +19,9 @@ end
 
 %% load and check input is loaded correctly
 
-if isequal(exist([pathToCOBRA '\cobratoolbox\metabotools\tutorial_I\starting_model.mat'],'file'),2)% 2 means it's a file.
+if isequal(exist([pathToCOBRA '\cobratoolbox\tutorials\metabotools\tutorial_I\starting_model.mat'],'file'),2)% 2 means it's a file.
 
-    load([pathToCOBRA '\cobratoolbox\metabotools\tutorial_I\starting_model.mat']);
+    load([pathToCOBRA '\cobratoolbox\tutorials\metabotools\tutorial_I\starting_model.mat']);
     display('The model is loaded.');
    
 else 
