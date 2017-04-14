@@ -54,7 +54,7 @@ Platform-specific instructions are marked with
 
 ## IBM ILOG CPLEX
 
-1) Download the `CPLEX` installation binary from [here](https://www-01.ibm.com/software/websphere/products/optimization/cplex-studio-community-edition/)
+1) Download the `CPLEX` installation binary. The limited community edition is [here](https://www-01.ibm.com/software/websphere/products/optimization/cplex-studio-community-edition/). CPLEX is free for students (and academics) and further information how to register and download is [here](https://www.ibm.com/developerworks/community/blogs/jfp/entry/CPLEX_Is_Free_For_Students?lang=en).
 
 2) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux"> Add `execute` permission to binary
     ````bash

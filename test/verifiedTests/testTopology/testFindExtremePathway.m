@@ -30,7 +30,7 @@ model.stoich = model.S;
 model.reversibilities = model.revRxns;
 
 % define list of solver packages
-solverPkgs = {'gurobi6', 'gurobi7', 'glpk'};
+solverPkgs = {'gurobi', 'glpk'};
 
 obj = [0.5985; 0.4709; 0.6959; 0.6999; 0.6385; 0.0336; 0.0688; 0.3196; 0.5309; 0.6544; 0.4076; 0.8200];
 

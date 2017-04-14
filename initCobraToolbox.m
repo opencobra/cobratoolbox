@@ -239,8 +239,7 @@ function initCobraToolbox()
     SOLVERS.cplex_direct.type = {'LP', 'MILP', 'QP', 'MIQP'};
     SOLVERS.dqqMinos.type = {'LP'};
     SOLVERS.glpk.type = {'LP', 'MILP'};
-    SOLVERS.gurobi6.type = {'LP', 'MILP', 'QP', 'MIQP'};
-    SOLVERS.gurobi7.type = {'LP', 'MILP', 'QP', 'MIQP'};
+    SOLVERS.gurobi.type = {'LP', 'MILP', 'QP', 'MIQP'};
     SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
     SOLVERS.matlab.type = {'NLP'};
     SOLVERS.mosek.type = {'LP', 'QP', 'MILP'};
@@ -254,7 +253,6 @@ function initCobraToolbox()
     SOLVERS.tomlab_snopt.type = {'NLP'};
 
     % legacy solvers
-    SOLVERS.gurobi5.type = {'LP', 'MILP', 'QP', 'MIQP'};
     SOLVERS.gurobi_mex.type = {'LP', 'MILP', 'QP', 'MIQP'};
     SOLVERS.lindo_old.type = {'LP'};
     SOLVERS.lindo_legacy.type = {'LP'};
@@ -264,8 +262,7 @@ function initCobraToolbox()
     SOLVERS.cplex_direct.categ = 'full';
     SOLVERS.dqqMinos.categ = 'full';
     SOLVERS.glpk.categ = 'full';
-    SOLVERS.gurobi6.categ = 'full';
-    SOLVERS.gurobi7.categ = 'full';
+    SOLVERS.gurobi.categ = 'full';
     SOLVERS.ibm_cplex.categ = 'full';
     SOLVERS.matlab.categ = 'full';
     SOLVERS.mosek.categ = 'full';
@@ -279,7 +276,6 @@ function initCobraToolbox()
     SOLVERS.tomlab_snopt.categ = 'experimental';
 
     % definition of category of solvers with legacy support
-    SOLVERS.gurobi5.categ = 'legacy';
     SOLVERS.gurobi_mex.categ = 'legacy';
     SOLVERS.lindo_old.categ = 'legacy';
     SOLVERS.lindo_legacy.categ = 'legacy';

@@ -26,8 +26,7 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel)
 %                     get rid of net flux around loops
 %     dqqMinos        DQQ solver
 %     glpk            GLPK solver with Matlab mex interface (glpkmex)
-%     gurobi6         Gurobi 6.*  accessed through built-in Matlab mex interface
-%     gurobi7         Gurobi 7.*  accessed through built-in Matlab mex interface
+%     gurobi          Gurobi solver
 %     ibm_cplex       The IBM API for CPLEX using the CPLEX class
 %     mosek           Mosek LP solver with Matlab API (using linprog.m from Mosek)
 %     pdco            PDCO solver
@@ -46,7 +45,6 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel)
 %     lindo_new       Lindo API >v2.0
 %     lindo_legacy    Lindo API <v2.0
 %     lp_solve        lp_solve with Matlab API
-%     gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
 %     gurobi_mex      Gurobi accessed through Matlab mex interface (Gurobi mex)
 %
 % Currently allowed MILP solvers:
@@ -58,8 +56,7 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel)
 %                     minimising the Euclidean norm of the internal flux to
 %                     get rid of net flux around loops
 %     glpk            glpk MILP solver with Matlab mex interface (glpkmex)
-%     gurobi6         Gurobi 6.*  accessed through built-in Matlab mex interface
-%     gurobi7         Gurobi 7.*  accessed through built-in Matlab mex interface
+%     gurobi          Gurobi solver
 %     ibm_cplex       The IBM API for CPLEX using the CPLEX class
 %     mosek           Mosek LP solver with Matlab API (using linprog.m from Mosek)
 %     pdco            PDCO solver
@@ -74,7 +71,6 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel)
 %
 %     legacy solvers:
 %
-%     gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
 %     gurobi_mex      Gurobi accessed through Matlab mex interface (Gurobi mex)
 %
 % Currently allowed QP solvers:
@@ -85,8 +81,7 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel)
 %                     the user more control of solver parameters. e.g.
 %                     minimising the Euclidean norm of the internal flux to
 %                     get rid of net flux around loops
-%     gurobi6         Gurobi 6.* accessed through built-in Matlab mex interface
-%     gurobi7         Gurobi 7.* accessed through built-in Matlab mex interface
+%     gurobi          Gurobi solver
 %     ibm_cplex       The IBM API for CPLEX using the CPLEX class
 %     mosek           Mosek LP solver with Matlab API (using linprog.m from Mosek)
 %     pdco            PDCO solver
@@ -103,7 +98,6 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel)
 %
 %     legacy solvers:
 %
-%     gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
 %     gurobi_mex      Gurobi accessed through Matlab mex interface (Gurobi mex)
 %
 % Currently allowed MIQP solvers:
@@ -114,14 +108,12 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel)
 %                     the user more control of solver parameters. e.g.
 %                     minimising the Euclidean norm of the internal flux to
 %                     get rid of net flux around loops
-%     gurobi6         Gurobi 6.* accessed through built-in Matlab mex interface
-%     gurobi7         Gurobi 7.* accessed through built-in Matlab mex interface
+%     gurobi          Gurobi solver
 %     ibm_cplex       The IBM API for CPLEX using the CPLEX class
 %     tomlab_cplex    CPLEX MIQP solver accessed through Tomlab environment
 %
 %     legacy solvers:
 %
-%     gurobi5         Gurobi 5.0 accessed through built-in Matlab mex interface
 %     gurobi_mex      Gurobi accessed through Matlab mex interface (Gurobi mex)
 %
 % Currently allowed NLP solvers:
@@ -172,6 +164,11 @@ if nargin < 1
         end
     end
     return;
+end
+
+% legacy support for other versions of gurobi
+if strcmp(solverName, 'gurobi') || strcmp(solverName, 'gurobi6') ||  strcmp(solverName, 'gurobi7')
+    solverName = 'gurobi';
 end
 
 if nargin < 2
@@ -269,12 +266,9 @@ switch solverName
         solverOK = checkSolverInstallationFile(solverName, 'pdco', printLevel);
     case 'gurobi_mex'
         solverOK = checkSolverInstallationFile(solverName, 'gurobi_mex', printLevel);
-    case {'gurobi5', 'gurobi6', 'gurobi7'}
-        if isunix
-            solverOK = checkGurobiInstallation(solverName, 'gurobi.sh', printLevel);
-        else
-            solverOK = checkGurobiInstallation(solverName, 'gurobi.bat', printLevel);
-        end
+    case 'gurobi'
+        if isunix, tmpGurobi = 'gurobi.sh', else, 'gurobi.bat', end;
+        solverOK = checkGurobiInstallation(solverName, tmpGurobi, printLevel);
     case 'mps'
         solverOK = checkSolverInstallationFile(solverName, 'BuildMPS', printLevel);
     case 'quadMinos'
@@ -371,15 +365,16 @@ function solverOK = checkSolverInstallationExecutable(solverName, executableName
 %     solverOK: true if executableName exists, false otherwise.
 %
     solverOK = false;
-    if unix
-        if ~isunix && printLevel > 0
-            error('%s interface not implemented for non unix OS', solverName);
-        end
+    if ~isunix && printLevel > 0
+        error('%s interface not implemented for non unix OS', solverName);
     end
-    [status, cmdout] = system(['which ' executableName]);
-    if isempty(cmdout) && printLevel > 0
-        error('Solver %s is not installed. %s could not be found in your path. Check your PATH environement variable.', solverName, executableName);
-    else
-        solverOk = true;
+
+    if isunix
+        [status, cmdout] = system(['which ' executableName]);
+        if isempty(cmdout) && printLevel > 0
+            error('Solver %s is not installed. %s could not be found in your path. Check your PATH environement variable.', solverName, executableName);
+        else
+            solverOk = true;
+        end
     end
 end
