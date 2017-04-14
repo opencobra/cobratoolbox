@@ -12,7 +12,8 @@
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testParseBoolean'));
+cd(fileDir);
 
 % load reference data - too complex to embed
 load('refData_calcGroupStats.mat');
@@ -36,6 +37,15 @@ assert(isequal(ref_groupList, groupList));
 assert(isequal(ref_groupCnt, groupCnt));
 assert(isequal(ref_groupStat, groupStat));
 
+[groupStat(:, :, 1), groupList, groupCnt] = calcGroupStats(data, groups, statname{1}, [], 1, 10);
+assert(isequal(ref_groupList, groupList));
+assert(isequal(ref_groupCnt, groupCnt));
+assert(isequal(ref_groupStat, groupStat));
 
+ref_groupCnt = [0; 0; 0; 0];
+[groupStat(:, :, 1), groupList, groupCnt] = calcGroupStats(data, 'test', statname{1}, ref_groupList, 1, 10);
+assert(isequal(ref_groupList, groupList));
+assert(isequal(ref_groupCnt, groupCnt));
+assert(any(any(isnan(groupStat(:, :, 1)))));
 % change the directory
 cd(currentDir)
