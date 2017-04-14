@@ -1,5 +1,5 @@
 %% Uniform sampling
-% *Hulda S. Haraldsdóttir*
+% *Hulda S. Haraldsd??ttir*
 % 
 % In this tutorial we will use Coordinate Hit-and-Run with Rounding (CHRR) 
 % [1] to uniformly sample a constraint-based model of the core metabolic network 
@@ -13,11 +13,11 @@
 % 
 % $$<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>&ohm;</mi><mo 
 % stretchy="false">=</mo><mrow><mo>{</mo><mrow><mi mathvariant="italic">v</mi><mo 
-% stretchy="false">&mid;</mo><mi mathvariant="normal">Sv</mi><mo>=</mo><mn>0</mn><mo>,</mo><mtext> 
+% stretchy="false">&mid;</mo><mi mathvariant="normal">Sv</mi><mo>=</mo><mn>0</mn><mo>,</mo><mtext>???
 % </mtext><mi mathvariant="italic">l</mi><mo stretchy="false">&leq;</mo><mi mathvariant="italic">v</mi><mo 
 % stretchy="false">&leq;</mo><mi mathvariant="italic">u</mi><mo stretchy="false">,</mo><msup><mrow><mi 
 % mathvariant="italic">c</mi></mrow><mrow><mi mathvariant="italic">T</mi></mrow></msup><mi 
-% mathvariant="italic">v</mi><mo stretchy="false">=</mo><mi>&alpha;</mi><mtext> 
+% mathvariant="italic">v</mi><mo stretchy="false">=</mo><mi>&alpha;</mi><mtext>???
 % </mtext></mrow><mo>}</mo></mrow><mo stretchy="false">,</mo></mrow></math>$$
 % 
 % where $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
@@ -44,7 +44,7 @@
 % mathvariant="italic">T</mi></mrow></math>$ to $<math xmlns="http://www.w3.org/1998/Math/MathML" 
 % display="inline"><mrow><mi>&ohm;</mi></mrow></math>$. The transformed set $<math 
 % xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi><mo>&prime;</mo><mo>=</mo><mi 
-% mathvariant="italic">T</mi><mi>&ohm;</mi><mtext> </mtext></mrow></math>$ is 
+% mathvariant="italic">T</mi><mi>&ohm;</mi><mtext>???</mtext></mrow></math>$ is 
 % such that its maximal inscribed ellipsoid (blue) approximates a unit ball. *2)* 
 % Take $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
 % mathvariant="italic">q</mi></mrow></math>$ steps of coordinate hit-and-run. 
@@ -76,7 +76,7 @@
 % mmol/gDW/hr. To explore the entire space of feasible steady state fluxes we 
 % also remove the cellular objective.
 
-load ../testing/testSampling/Ecoli_core_model.mat
+load('ecoli_core_model.mat', 'model');
 [m,n] = size(model.S);
 model = changeRxnBounds(model,'EX_glc(e)',-18.5,'l');
 model.c = 0*model.c; % linear objective
@@ -179,19 +179,19 @@ ylabel('# samples')
 %% 
 % Undersampling results from selecting too small sampling parameters. The 
 % appropriate parameter values depend on the dimension of the polytope $<math 
-% xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi><mtext> 
+% xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi><mtext>???
 % </mtext></mrow></math>$ defined by the model constraints (see intro). One rule 
 % of thumb says to set $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
 % mathvariant="normal">nSkip</mi><mo>=</mo><mn>8</mn><mo>*</mo><msup><mrow><mi 
-% mathvariant="normal">dim</mi><mrow><mo>(</mo><mrow><mi>&ohm;</mi><mtext> </mtext></mrow><mo>)</mo></mrow></mrow><mrow><mn>2</mn></mrow></msup></mrow></math>$ 
+% mathvariant="normal">dim</mi><mrow><mo>(</mo><mrow><mi>&ohm;</mi><mtext>???</mtext></mrow><mo>)</mo></mrow></mrow><mrow><mn>2</mn></mrow></msup></mrow></math>$ 
 % to ensure statistical independence of samples. The random walk should be long 
 % enough to ensure convergence to a stationary sampling distribution [1].
 % 
 % The dimension of the polytope for E. coli core is $<math xmlns="http://www.w3.org/1998/Math/MathML" 
-% display="inline"><mrow><mi mathvariant="normal">dim</mi><mrow><mo>(</mo><mrow><mi>&ohm;</mi><mtext> 
+% display="inline"><mrow><mi mathvariant="normal">dim</mi><mrow><mo>(</mo><mrow><mi>&ohm;</mi><mtext>???
 % </mtext></mrow><mo>)</mo></mrow><mo>=</mo><mn>22</mn></mrow></math>$ for the 
 % aerobic model and $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
-% mathvariant="normal">dim</mi><mrow><mo>(</mo><mrow><mi>&ohm;</mi><mtext> </mtext></mrow><mo>)</mo></mrow><mo 
+% mathvariant="normal">dim</mi><mrow><mo>(</mo><mrow><mi>&ohm;</mi><mtext>???</mtext></mrow><mo>)</mo></mrow><mo 
 % stretchy="false">=</mo><mn>21</mn></mrow></math>$ for the anaerobic model. A 
 % good choice of sampling parameters is,
 
@@ -274,22 +274,22 @@ for i = ridx
     hold off
 end
 %% References
-% [1] Haraldsdóttir, H. S., Cousins, B., Thiele, I., Fleming, R.M.T., and Vempala, 
+% [1] Haraldsd??ttir, H. S., Cousins, B., Thiele, I., Fleming, R.M.T., and Vempala, 
 % S. (2016). CHRR: coordinate hit-and-run with rounding for uniform sampling of 
 % constraint-based metabolic models. Submitted.
 % 
-% [2] Orth, J. D., Palsson, B. Ø., and Fleming, R. M. T. (2010). Reconstruction 
+% [2] Orth, J. D., Palsson, B. ??., and Fleming, R. M. T. (2010). Reconstruction 
 % and use of microbial metabolic networks: the core Escherichia coli metabolic 
 % model as an educational guide. EcoSal Plus, 1(10).
 % 
-% [3] Orth, J. D., Thiele I., and Palsson, B. Ø. (2010). What is flux balance 
-% analysis? Nat. Biotechnol., 28(3), 245–248.
+% [3] Orth, J. D., Thiele I., and Palsson, B. ??. (2010). What is flux balance 
+% analysis? Nat. Biotechnol., 28(3), 245???248.
 % 
 % [4]  Zhang, Y. and Gao, L. (2001). On Numerical Solution of the Maximum 
-% Volume Ellipsoid Problem. SIAM J. Optimiz., 14(1), 53–76.
+% Volume Ellipsoid Problem. SIAM J. Optimiz., 14(1), 53???76.
 % 
 % [5] Berbee, H. C. P., Boender, C. G. E., Rinnooy Ran, A. H. G., Scheffer, 
 % C. L., Smith, R. L., Telgen, J. (1987). Hit-and-run algorithms for the identification 
-% of nonredundant linear inequalities. Math. Programming, 37(2), 184–207.
+% of nonredundant linear inequalities. Math. Programming, 37(2), 184???207.
 % 
 %
