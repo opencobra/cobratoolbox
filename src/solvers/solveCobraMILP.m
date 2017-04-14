@@ -295,7 +295,7 @@ switch solver
             solStat = 3; % Other problem, but integer solution exists
         end
 
-   case 'gurobi'
+   case 'gurobi_mex'
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
         %
@@ -419,7 +419,7 @@ switch solver
             delete('clone1.log')
         end
 
- case {'gurobi5','gurobi6'}
+ case 'gurobi'
         %% gurobi 5
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html

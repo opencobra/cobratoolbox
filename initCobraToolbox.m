@@ -28,6 +28,11 @@ function initCobraToolbox()
     global CBTDIR;
     global SOLVERS;
     global OPT_PROB_TYPES;
+    global CBT_LP_SOLVER;
+    global CBT_MILP_SOLVER;
+    global CBT_QP_SOLVER;
+    global CBT_MIQP_SOLVER;
+    global CBT_NLP_SOLVER;
     global GUROBI_PATH;
     global ILOG_CPLEX_PATH;
     global TOMLAB_PATH;
@@ -328,11 +333,15 @@ function initCobraToolbox()
         end
     end
 
-    % set the default solver
+    % set the default solver and print out the default variables
     if ENV_VARS.printLevel
-        fprintf(' > Setting default LP solver to GLPK ... ');
+        fprintf(' > Setting default solvers ...\n');
         changeCobraSolver('glpk', 'LP');
-        fprintf('Done.\n');
+        for k = 1:length(OPT_PROB_TYPES)
+            varName = horzcat(['CBT_', OPT_PROB_TYPES{k}, '_SOLVER']);
+            fprintf(['   - ', varName, ' = \''', eval(varName), '\'';\n'])
+        end
+        fprintf('   Done.\n');
     end
 
     % print out a summary table
@@ -400,9 +409,8 @@ function initCobraToolbox()
             end
         end
     end
-
     if ENV_VARS.printLevel
-        fprintf('\n')
+        fprintf('\n');
     end
 
     % change back to the current directory

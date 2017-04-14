@@ -167,7 +167,7 @@ if nargin < 1
 end
 
 % legacy support for other versions of gurobi
-if strcmp(solverName, 'gurobi') || strcmp(solverName, 'gurobi6') ||  strcmp(solverName, 'gurobi7')
+if strcmpi(solverName, 'gurobi') || strcmpi(solverName, 'gurobi6') ||  strcmpi(solverName, 'gurobi7')
     solverName = 'gurobi';
 end
 
@@ -182,7 +182,7 @@ if nargin < 3
 end
 
 % Attempt to set the user provided solver for all optimization problem types
-if (strcmp(solverType, 'ALL'))
+if strcmpi(solverType, 'all')
     for i = 1:length(OPT_PROB_TYPES)
         changeCobraSolver(solverName, OPT_PROB_TYPES{i}, 0);
     end
@@ -267,7 +267,8 @@ switch solverName
     case 'gurobi_mex'
         solverOK = checkSolverInstallationFile(solverName, 'gurobi_mex', printLevel);
     case 'gurobi'
-        if isunix, tmpGurobi = 'gurobi.sh', else, 'gurobi.bat', end;
+        tmpGurobi = 'gurobi.sh';
+        if ispc, tmpGurobi = 'gurobi.bat'; end
         solverOK = checkGurobiInstallation(solverName, tmpGurobi, printLevel);
     case 'mps'
         solverOK = checkSolverInstallationFile(solverName, 'BuildMPS', printLevel);
@@ -295,6 +296,9 @@ end
 if solverOK
     varName = horzcat(['CBT_', solverType, '_SOLVER']);
     eval([varName ' =  solverName;']);
+    if strcmpi(solverType, 'all')
+        fprintf([' > ', varName, ' has been set to ', solverName, '.\n']);
+    end
 end
 
 end

@@ -7,7 +7,8 @@
 currentDir = pwd; % save the current path
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testCheckObjective'));
+cd(fileDir);
 
 % load the model
 load('ecoli_core_model.mat', 'model');

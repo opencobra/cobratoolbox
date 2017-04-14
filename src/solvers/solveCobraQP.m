@@ -121,12 +121,12 @@ switch solver
             b_U = b;
         end
         tomlabProblem = qpAssign(F,osense*c,A,b_L,b_U,lb,ub,[],'CobraQP');
-        
+
         %optional parameters
         tomlabProblem.PriLvl=printLevel;
         tomlabProblem.MIP.cpxControl.QPMETHOD = 1;
         tomlabProblem.MIP.cpxControl.THREADS = 1;
-        
+
         %Save Input if selected
         if ~isempty(saveInput)
             fileName = saveInput;
@@ -136,7 +136,7 @@ switch solver
             display(['Saving QPproblem in ' fileName]);
             save(fileName,'QPproblem')
         end
-        
+
         Result = tomRun('cplex', tomlabProblem);
         x = Result.x_k;
         f = osense*Result.f_k;
@@ -161,7 +161,7 @@ switch solver
         %fluxes or not.
         %See solveCobraLPCPLEX.m for more refined control of cplex
         %Ronan Fleming 11/12/2008
-        
+
         solution=solveCobraLPCPLEX(QPproblem,printLevel,[],[],[],minNorm);
         %%
     case 'qpng'
@@ -178,15 +178,15 @@ switch solver
         ctype(('G'==csense))='L';
         ctype(('E'==csense))='E';
         ctype(('L'==csense))='U';
-        
+
         x0=ones(size(QPproblem.A,2),1);
         %equality constraint matrix must be full row rank
         [x, f, y, info] = qpng (QPproblem.F, QPproblem.c*QPproblem.osense, full(QPproblem.A), QPproblem.b, ctype, QPproblem.lb, QPproblem.ub, x0);
-        
+
         f = 0.5*x'*QPproblem.F*x + c'*x;
-        
+
         w=[];
-        
+
         if (info.status == 0)
             stat = 1;
         elseif (info.status == 1)
@@ -208,19 +208,19 @@ switch solver
             b_L = b;
             b_U = b;
         end
-        
+
         if printLevel>0
             cmd='minimize';
         else
             cmd='minimize echo(0)';
         end
-        
+
         % Optimize the problem.
         % min 0.5*x'*F*x + osense*c'*x
         % st. blc <= A*x <= buc
         %     bux <= x   <= bux
         [res] = mskqpopt(F,osense*c,A,b_L,b_U,lb,ub,[],cmd);
-        
+
         if isempty(res)
             stat=3;
         else
@@ -231,10 +231,10 @@ switch solver
                     % x solution.
                     x = res.sol.itr.xx;
                     f = 0.5*x'*F*x + c'*x;
-                    
+
                     %dual to equality
                     y=res.sol.itr.y;
-                    
+
                     %dual to lower and upper bounds
                     w=res.sol.itr.slx - res.sol.itr.sux;
                 else
@@ -265,7 +265,7 @@ switch solver
         d1(c~=0)=0;
         d2=1e-5;
         options = pdcoSet;
-        
+
         x0 = ones(nRxn,1);
         y0 = ones(nMet,1);
         z0 = ones(nRxn,1);
@@ -294,13 +294,13 @@ switch solver
         end
         origStat=inform;
         %%
-    case 'gurobi'
+    case 'gurobi_mex'
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
         %
         % The code below uses Gurobi Mex to interface with Gurobi. It can be downloaded from
         % http://www.convexoptimization.com/wikimization/index.php/Gurobi_Mex:_A_MATLAB_interface_for_Gurobi
-        
+
         clear opts            % Use the default parameter settings
         if printLevel == 0
             % Version v1.10 of Gurobi Mex has a minor bug. For complete silence
@@ -310,9 +310,9 @@ switch solver
         else
             opts.Display = 1;
         end
-        
-        
-        
+
+
+
         if (isempty(csense))
             clear csense
             csense(1:length(b),1) = '=';
@@ -322,16 +322,16 @@ switch solver
             csense(csense == 'E') = '=';
             csense = csense(:);
         end
-        
+
         % Gurobi passes individual terms instead of an F matrix. qrow and
         % qcol specify which variables are multipled to get each term,
         % while qval specifies the coefficients of each term.
-        
+
         [qrow,qcol,qval]=find(F);
         qrow=qrow'-1;   % -1 because gurobi numbers indices from zero, not one.
         qcol=qcol'-1;
         qval=0.5*qval';
-        
+
         opts.QP.qrow = int32(qrow);
         opts.QP.qcol = int32(qcol);
         opts.QP.qval = qval;
@@ -341,7 +341,7 @@ switch solver
         opts.IntFeasTol = 1e-5;
         opts.OptimalityTol = 1e-6;
         %opt.Quad=1;
-        
+
         %gurobi_mex doesn't cast logicals to doubles automatically
         c = double(c);
         [x,f,origStat,output,y] = gurobi_mex(c,osense,sparse(A),b, ...
@@ -357,8 +357,8 @@ switch solver
         else
             stat = -1; % Solution not optimal or solver problem
         end
-        
-    case {'gurobi5','gurobi6'}
+
+    case 'gurobi'
         %% gurobi 5
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
@@ -375,14 +375,14 @@ switch solver
                 params.OutputFlag = 0;
                 params.DisplayInterval = 1;
         end
-        
+
         params.Method = 0;    %-1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent
         params.Presolve = -1; % -1 - auto, 0 - no, 1 - conserv, 2 - aggressive
         params.IntFeasTol = 1e-5;
         params.FeasibilityTol = 1e-6;
         params.OptimalityTol = 1e-6;
         %params.Quad = 1;
-        
+
         if (isempty(QPproblem.csense))
             clear QPproblem.csense
             QPproblem.csense(1:length(b),1) = '=';
@@ -392,13 +392,13 @@ switch solver
             QPproblem.csense(QPproblem.csense == 'E') = '=';
             QPproblem.csense = QPproblem.csense(:);
         end
-        
+
         if QPproblem.osense == -1
             QPproblem.osense = 'max';
         else
             QPproblem.osense = 'min';
         end
-        
+
         QPproblem.Q = 0.5*sparse(QPproblem.F);
         QPproblem.modelsense = QPproblem.osense;
         [QPproblem.A,QPproblem.rhs,QPproblem.obj,QPproblem.sense] = deal(sparse(QPproblem.A),QPproblem.b,double(QPproblem.c),QPproblem.csense);

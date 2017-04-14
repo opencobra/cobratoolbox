@@ -1,6 +1,6 @@
 # Guide for writing a test
 
-Before starting to write a test on your own, it might be instructive to follow common test practices in `/test/verifiedTests`. A style guide on how to write tests is given [here](STYLEGUIDE.md).
+Before starting to write a test on your own, it might be instructive to follow common test practices in `/test/verifiedTests`. A style guide on how to write tests is given [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/guides/STYLEGUIDE.md).
 
 ## Test if an output is correct
 
@@ -34,7 +34,7 @@ The test succeeds if the argument of `assert()` yields a `true` logical conditio
 
 ## Test if a function throws an error or warning message
 
-If you want to test whether your `function1` correctly throws an error/warning message, you can test as follows:
+If you want to test whether your `function1` correctly throws an **error** message, you can test as follows:
 ````Matlab
 % Case 5: test with 2 input and 1 output arguments (2nd input argument is of wrong dimension)
 try
@@ -43,11 +43,19 @@ catch ME
     assert(length(ME.message) > 0)
 end
 ````
+
+If you want to test whether your `function1` correctly throws a **warning** message, you can test as follows:
+````Matlab
+warning('off', 'all')
+    output1 = function1(input1, input2');
+    assert(length(lastwarn()) > 0)
+warning('on', 'all')
+````
 Note that this allows the error message to be thrown without failing the test.
 
 ## Test template
 
-A test template is readily available [here](testTemplate.m). The following sections shall be included in a test file:
+A test template is readily available [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/guides/testTemplate.m). The following sections shall be included in a test file:
 
 #### 1. Header
 ````Matlab

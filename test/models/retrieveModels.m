@@ -56,10 +56,10 @@ end
 if exist('Ec_iAF1260_flux1.xml', 'file') ~= 2
     urlwrite('http://systemsbiology.ucsd.edu/sites/default/files/Attachments/Images/InSilicoOrganisms/Ecoli/Ecoli_SBML/msb4100155-s6.zip', 'msb4100155-s6.zip');
     system('unzip -qq msb4100155-s6.zip');
-    system('rm Ec_iAF1260_flux2.txt');
-    system('rm read_me.txt');
-    system('rm msb4100155-s6.zip');
-    system('mv Ec_iAF1260_flux1.txt Ec_iAF1260_flux1.xml');
+    delete('Ec_iAF1260_flux2.txt');
+    delete('read_me.txt');
+    delete('msb4100155-s6.zip');
+    movefile 'Ec_iAF1260_flux1.txt' 'Ec_iAF1260_flux1.xml';
     if printLevel > 0
         fprintf(' + Downloaded:      %s\n', 'Ec_iAF1260_flux1.xml');
     end
@@ -73,7 +73,7 @@ end
 if exist('STM_v1.0.xml', 'file') ~= 2
     urlwrite('https://static-content.springer.com/esm/art%3A10.1186%2F1752-0509-5-8/MediaObjects/12918_2010_598_MOESM2_ESM.ZIP', '12918_2010_598_MOESM2_ESM.zip');
     system('unzip -qq 12918_2010_598_MOESM2_ESM.zip');
-    system('rm 12918_2010_598_MOESM2_ESM.zip');
+    delete('12918_2010_598_MOESM2_ESM.zip');
     if printLevel > 0
         fprintf(' + Downloaded:      %s\n', 'STM_v1.0.xml');
     end
