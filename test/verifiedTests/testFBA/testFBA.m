@@ -10,18 +10,13 @@
 %     - Original file: Joseph Kang 04/27/09
 %     - CI integration: Laurent Heirendt January 2017
 %
-% Note:
-%     - The solver libraries must be included separately
-
-% define global paths
-global path_TOMLAB
-global path_GUROBI
 
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testFBA'));
+cd(fileDir);
 
 % set the tolerance
 tol = 1e-8;
@@ -34,15 +29,8 @@ load('testFBAData.mat');
 
 for k = 1:length(solverPkgs)
 
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(path_TOMLAB));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        addpath(genpath(path_GUROBI));
-    end
-
     % change the COBRA solver (LP)
-    solverOK = changeCobraSolver(solverPkgs{k});
+    solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
     if solverOK == 1
         fprintf('   Testing flux balance analysis using %s ... ', solverPkgs{k});
@@ -99,14 +87,6 @@ for k = 1:length(solverPkgs)
 
         % output a success message
         fprintf('Done.\n');
-
-        % remove the solver paths (temporary addition for CI)
-        if strcmp(solverPkgs{k}, 'tomlab_cplex')
-            rmpath(genpath(path_TOMLAB));
-        elseif strcmp(solverPkgs{k}, 'gurobi6')
-            rmpath(genpath(path_GUROBI));
-        end
-
     end
 end
 

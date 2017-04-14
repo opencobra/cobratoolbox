@@ -15,7 +15,8 @@
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testSolveCobraNLP'));
+cd(fileDir);
 
 % define the tolerance
 tol = 1e-4;

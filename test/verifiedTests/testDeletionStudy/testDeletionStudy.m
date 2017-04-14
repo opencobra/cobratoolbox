@@ -1,27 +1,30 @@
-%testDeletionStudy tests the basic functionality of
-%singleGeneDeletion/doubleGeneDeletion/singleRxnDeletion
-%   Makes sure that these resultant values are correct:
+% The COBRAToolbox: testDeletionStudy.m
+%
+% Purpose:
+%     - tests the basic functionality of singleGeneDeletion/doubleGeneDeletion/singleRxnDeletion
+%       Makes sure that these resultant values are correct:
 %       singleGeneDeletion - hasEffect, delRxns, grRateKO, grRateWT
 %       doubleGeneDeletion - grRatioDble, grRateKO, grRateWT
 %       singleRXDeletion - hasEffect, delRxn, grRateKO, grRateWT
-%   returns 1 if all are correct, else 0
+%       returns 1 if all are correct, else 0
 %
-%   Joseph Kang 11/16/09
+% Author:
+%     - Original file: Joseph Kang 11/16/09
+%     - CI integration: Laurent Heirendt
 
-% define global paths
-global path_TOMLAB
-global path_GUROBI
+global CBTDIR
 
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testDeletionStudy'));
+cd(fileDir);
 
 tol = 1e-6;
 
 %load model
-load('ecoli_core_model', 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 % list of solver packages
 solverPkgs = {'tomlab_cplex', 'gurobi6', 'glpk'};
@@ -30,14 +33,7 @@ for k = 1:length(solverPkgs)
 
     fprintf(' -- Running testfindBlockedReaction using the solver interface: %s ... ', solverPkgs{k});
 
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(path_TOMLAB));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        addpath(genpath(path_GUROBI));
-    end
-
-    solverLPOK = changeCobraSolver(solverPkgs{k});
+    solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
     if solverLPOK
 
@@ -97,13 +93,6 @@ for k = 1:length(solverPkgs)
 
         % check if correct delRxn values
         assert(isequal(delRxn, test_delRxn))
-    end
-
-    % remove the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        rmpath(genpath(path_TOMLAB));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        rmpath(genpath(path_GUROBI));
     end
 
     % output a success message

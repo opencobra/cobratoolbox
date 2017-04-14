@@ -9,16 +9,14 @@
 % Note:
 %       test is performed on objective as solution can vary between machines, solver version etc..
 
-% define global paths
-global path_TOMLAB
-global path_ILOG_CPLEX
-global path_GUROBI
+global CBTDIR
 
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testSolveCobraLP'));
+cd(fileDir);
 
 % Dummy Model
 % http://www2.isye.gatech.edu/~spyros/LP/node2.html
@@ -41,20 +39,11 @@ testSuite = {'dummyModel', 'ecoli'};
 
 for k = 1:length(solverPkgs)
 
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(path_TOMLAB));
-    elseif strcmp(solverPkgs{k}, 'cplex_direct')
-        addpath(genpath(path_ILOG_CPLEX));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        addpath(genpath(path_GUROBI));
-    end
-
     if ~verLessThan('matlab', '8') && strcmp(solverPkgs{k}, 'cplex_direct')  % 2015
         fprintf(['\n IBM ILOG CPLEX - ', solverPkgs{k}, ' - is incompatible with this version of MATLAB, please downgrade or change solver\n'])
     else
         % change the COBRA solver (LP)
-        solverOK = changeCobraSolver(solverPkgs{k});
+        solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
         if solverOK == 1
             for p = 1:length(testSuite)
@@ -73,7 +62,7 @@ for k = 1:length(solverPkgs)
 
                 elseif p == 2
                     % solve th ecoli_core_model (csense vector is missing)
-                    load('ecoli_core_model', 'model');
+                    load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
                     % solveCobraLP
                     solution_solveCobraLP = solveCobraLP(model);
@@ -93,15 +82,6 @@ for k = 1:length(solverPkgs)
                 fprintf('Done.\n');
             end
         end
-    end
-
-    % remove the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        rmpath(genpath(path_TOMLAB));
-    elseif strcmp(solverPkgs{k}, 'cplex_direct')
-        rmpath(genpath(path_ILOG_CPLEX));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        rmpath(genpath(path_GUROBI));
     end
 end
 

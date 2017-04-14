@@ -7,15 +7,18 @@
 % Author:
 %     - Marouen BEN GUEBILA 09/02/2017
 
+global CBTDIR
+
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testFEA'));
+cd(fileDir);
 
 % load the model and reference data
 load('testDataFEA.mat');
-load('ecoli_core_model', 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 % run FEA
 resultCellFtest = FEA(model, 1:10, 'subSystems');

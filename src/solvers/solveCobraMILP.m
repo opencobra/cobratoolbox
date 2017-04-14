@@ -28,15 +28,15 @@ function solution = solveCobraMILP(MILPproblem,varargin)
 %  printLevel    Printing level
 %               = 0    Silent (Default)
 %               = 1    Warnings and Errors
-%               = 2    Summary information 
+%               = 2    Summary information
 %               = 3    More detailed information
-%  saveInput    Saves LPproblem to filename specified in field. 
+%  saveInput    Saves LPproblem to filename specified in field.
 %               i.e. parameters.saveInput = 'LPproblem.mat';
 %               Setting parameters = 'default' uses default setting set in
 %               getCobraSolverParameters.
 %
 % The solver is defined in the CBT_MILP_SOLVER global variable
-% (set using changeCobraSolver). Solvers currently available are 
+% (set using changeCobraSolver). Solvers currently available are
 % 'tomlab_cplex' and 'glpk'
 %
 %OUTPUT
@@ -53,7 +53,7 @@ function solution = solveCobraMILP(MILPproblem,varargin)
 %            0  Infeasible MILP
 %           -1  No integer solution exists
 %            3  Other problem (time limit etc, but integer solution exists)
-%  origStat Original status returned by the specific solver 
+%  origStat Original status returned by the specific solver
 %  time     Solve time in seconds
 %
 
@@ -69,9 +69,8 @@ function solution = solveCobraMILP(MILPproblem,varargin)
 
 global CBT_MILP_SOLVER
 
-if (~isempty(CBT_MILP_SOLVER))
+if ~isempty(CBT_MILP_SOLVER)
     solver = CBT_MILP_SOLVER;
-
 else
     error('No solver found.  Run changeCobraSolver');
 end
@@ -80,14 +79,11 @@ if ~isstruct(MILPproblem)
     error('MILPproblem needs to be a strcuture array');
 end
 
-
-
-
 optParamNames = {'intTol', 'relMipGapTol', 'timeLimit', ...
-    'logFile', 'printLevel', 'saveInput', 'DATACHECK', 'DEPIND', ...
-    'feasTol', 'optTol', 'absMipGapTol', 'NUMERICALEMPHASIS'};
+                 'logFile', 'printLevel', 'saveInput', 'DATACHECK', 'DEPIND', ...
+                 'feasTol', 'optTol', 'absMipGapTol', 'NUMERICALEMPHASIS'};
 
-%, 'EleNames', ... 
+%, 'EleNames', ...
 %    'EqtNames', 'VarNames', 'EleNameFun', 'EqtNameFun', 'VarNameFun', ...
 %    'PbName', 'MPSfilename'};
 
@@ -130,7 +126,7 @@ if nargin ~=1
         parametersStructureFlag=0;
         parameters = '';
     elseif strcmp(varargin{1},'default')
-        %default cobra parameters 
+        %default cobra parameters
         parameters = 'default';
     elseif isstruct(varargin{1})
         %uses the structure for setting parameters in preference to those
@@ -202,7 +198,7 @@ end
 
 t_start = clock;
 switch solver
-    
+
     case 'glpk'
 %% glpk
 
@@ -218,12 +214,12 @@ switch solver
         end
         params.msglev = solverParams.printLevel;
         params.tmlim = solverParams.timeLimit;
-        
+
         %whos csense vartype
         csense = char(csense);
         vartype = char(vartype);
         %whos csense vartype
-        
+
         % Solve problem
         [x,f,stat,extra] = glpk(c,A,b,lb,ub,csense,vartype,osense,params);
         % Handle solution status reports
@@ -231,9 +227,9 @@ switch solver
             solStat = 1; % optimal
         elseif (stat == 6)
             solStat = 2; % unbounded
-        elseif (stat == 4) 
+        elseif (stat == 4)
             solStat = 0; % infeasible
-        
+
         elseif (stat == 171)
             solStat = 1; % Opt integer within tolerance
         elseif (stat == 173)
@@ -245,13 +241,13 @@ switch solver
         else
             solStat = -1; % No integer solution exists
         end
-        
+
          case 'cplex_direct'
 %% cplex_direct
 
         % Set up problem
         b=full(b);
-        [m_lin,n]=size(MILPproblem.A);    
+        [m_lin,n]=size(MILPproblem.A);
         if ~isempty(csense)
             Aineq = [MILPproblem.A(csense == 'L',:); - MILPproblem.A(csense == 'G',:)];
             bineq = [b(csense == 'L',:); - b(csense == 'G',:)];
@@ -262,7 +258,7 @@ switch solver
             A=MILPproblem.A(csense == 'E',:);
             b=b(csense == 'E',1);
             [x,f,exitflag,output] = cplexmilp(c,Aineq,bineq,A,b,[ ], [ ], [ ], lb, ub, vartype');
-            
+
             %primal
             solution.obj=osense*f;
             solution.full=x;
@@ -284,7 +280,7 @@ switch solver
         solution.nInfeas = [];
         solution.sumInfeas = [];
         solution.origStat = output.cplexstatus;
-        
+
         Inform = solution.origStat;
         stat = Inform;
         if (stat == 101 || stat == 102)
@@ -309,16 +305,16 @@ switch solver
         clear opts % Use the default parameter settings
         if solverParams.printLevel == 0
            % Version v1.10 of Gurobi Mex has a minor bug. For complete silence
-           % Remove Line 736 of gurobi_mex.c: mexPrintf("\n"); 
+           % Remove Line 736 of gurobi_mex.c: mexPrintf("\n");
            opts.Display = 0;
            opts.DisplayInterval = 0;
         else
            opts.Display = 1;
         end
-        
+
         %minimum intTol for gurobi = 1e-9
         if solverParams.intTol<1e-9, solverParams.intTol=1e-9; end
-        
+
         opts.TimeLimit=solverParams.timeLimit;
         opts.MIPGap = solverParams.relMipGapTol;
         opts.IntFeasTol = solverParams.intTol;
@@ -386,24 +382,24 @@ switch solver
         cplexlp.Param.mip.tolerances.integrality.Cur =  solverParams.intTol;
         cplexlp.Param.timelimit.Cur = solverParams.timeLimit;
         cplexlp.Param.output.writelevel.Cur = solverParams.printLevel;
-        
+
         outputfile = fopen(solverParams.logFile,'a');
         cplexlp.DisplayFunc = @redirect;
-        
+
         cplexlp.Param.simplex.tolerances.optimality.Cur = solverParams.optTol;
         cplexlp.Param.mip.tolerances.absmipgap.Cur =  solverParams.absMipGapTol;
         cplexlp.Param.simplex.tolerances.feasibility.Cur = solverParams.feasTol;
         % Strict numerical tolerances
         cplexlp.Param.emphasis.numerical.Cur = solverParams.NUMERICALEMPHASIS;
         save('MILPProblem','cplexlp')
-     
+
         % Set up callback to print out intermediate solutions
         % only set this up if you know that you actually need these
         % results.  Otherwise do not specify intSolInd and contSolInd
-        
+
         % Solve problem
         Result = cplexlp.solve();
-        
+
         % Get results
         x = Result.x;
         f = osense*Result.objval;
@@ -431,8 +427,8 @@ switch solver
         MILPproblem.A = deal(sparse(MILPproblem.A));
 
         clear params            % Use the default parameter settings
-        
-        if solverParams.printLevel == 0 
+
+        if solverParams.printLevel == 0
            params.OutputFlag = 0;
            params.DisplayInterval = 1;
         else
@@ -442,16 +438,16 @@ switch solver
 
         params.TimeLimit = solverParams.timeLimit;
         params.MIPGap = solverParams.relMipGapTol;
-        
+
         if solverParams.intTol <= 1e-09
             params.IntFeasTol = 1e-09;
         else
             params.IntFeasTol = solverParams.intTol;
         end
-        
+
         params.FeasibilityTol = solverParams.feasTol;
         params.OptimalityTol = solverParams.optTol;
-        
+
         if (isempty(csense))
             clear csense
             csense(1:length(b),1) = '=';
@@ -461,7 +457,7 @@ switch solver
             csense(csense == 'E') = '=';
             MILPproblem.csense = csense(:);
         end
-	
+
         if osense == -1
             MILPproblem.osense = 'max';
         else
@@ -475,12 +471,12 @@ switch solver
                 params.(fieldNames{i}) = directParamStruct.(fieldNames{i});
             end
         end
-        
+
         MILPproblem.vtype = vartype;
         MILPproblem.modelsense = MILPproblem.osense;
         [MILPproblem.A,MILPproblem.rhs,MILPproblem.obj,MILPproblem.sense] = deal(sparse(MILPproblem.A),MILPproblem.b,double(MILPproblem.c),MILPproblem.csense);
         resultgurobi = gurobi(MILPproblem,params);
-        
+
         stat = resultgurobi.status;
         if strcmp(resultgurobi.status,'OPTIMAL')
            solStat = 1; % Optimal solution found
@@ -494,7 +490,7 @@ switch solver
         else
            solStat = -1; % Solution not optimal or solver problem
         end
-        
+
     case 'tomlab_cplex'
 %% CPLEX through tomlab
         if (~isempty(csense))
@@ -515,7 +511,7 @@ switch solver
         %intVars
         %pause;
         tomlabProblem = mipAssign(osense*c,A,b_L,b_U,lb,ub,x0,'CobraMILP',[],[],intVars);
-        
+
         % Set parameters for CPLEX
         tomlabProblem.MIP.cpxControl.EPINT = solverParams.intTol;
         tomlabProblem.MIP.cpxControl.EPGAP = solverParams.relMipGapTol;
@@ -523,7 +519,7 @@ switch solver
         tomlabProblem.CPLEX.LogFile = solverParams.logFile;
         tomlabProblem.PriLev = solverParams.printLevel;
         tomlabProblem.MIP.cpxControl.THREADS = 1; % by default use only one thread
-        
+
 
         % Strict numerical tolerances
         tomlabProblem.MIP.cpxControl.DATACHECK = solverParams.DATACHECK;
@@ -534,7 +530,7 @@ switch solver
         tomlabProblem.MIP.cpxControl.NUMERICALEMPHASIS = solverParams.NUMERICALEMPHASIS;
         % Set initial solution
         tomlabProblem.MIP.xIP = x0;
-     
+
         % Set up callback to print out intermediate solutions
         % only set this up if you know that you actually need these
         % results.  Otherwise do not specify intSolInd and contSolInd
@@ -551,12 +547,12 @@ switch solver
         end
         cobraContSolInd = MILPproblem.contSolInd;
         tomlabProblem.MIP.callbacks = [];
-        tomlabProblem.PriLevOpt = 0;        
-        
-        
+        tomlabProblem.PriLevOpt = 0;
+
+
         % Solve problem
         Result = tomRun('cplex', tomlabProblem);
-        
+
         % Get results
         x = Result.x_k;
         f = osense*Result.f_k;
@@ -578,11 +574,11 @@ switch solver
         % problem as the result
         % Build MPS Author: Bruno Luong
         display('Solver set to MPS. This function will output an MPS matrix string for the MILP problem');
-        
+
         %Get optional parameters
         %[EleNames,EqtNames,VarNames,EleNameFun,EqtNameFun,VarNameFun,PbName,MPSfilename] = ...
         %    getCobraSolverParams('LP',{'EleNames','EqtNames','VarNames','EleNameFun','EqtNameFun','VarNameFun','PbName','MPSfilename'},parameters);
-        
+
         %default MPS parameters are no longer global variables, but set
         %here inside this function
         if parametersStructureFlag
@@ -639,7 +635,7 @@ switch solver
         %create index of integer and binary variables
         intIndex = find(vartype=='I');
         binaryIndex = find(vartype=='B');
-        
+
         %%%%Adapted from BuildMPS%%%%%
         [neq nvar]=size(Aeq);
         if strcmp(EqtNames,'')
@@ -650,7 +646,7 @@ switch solver
         %[solution] = BuildMPS(Ale, ble, Aeq, beq, c, lb, ub, PbName,'MPSfilename',MPSfilename,'EleNames',EleNames,'EqtNames',EqtNames,'VarNames',VarNames);
 
         return
-        
+
     otherwise
         error(['Unknown solver: ' solver]);
 end
@@ -664,7 +660,7 @@ if ~strcmp(solver,'mps')
         xInt = x(vartype == 'B' | vartype == 'I');
         xCont = x(vartype == 'C');
     end
-    
+
     solution.cont = xCont;
     solution.int = xInt;
     solution.obj = f;
@@ -685,4 +681,3 @@ function redirect(l)
 end
 
 end
-

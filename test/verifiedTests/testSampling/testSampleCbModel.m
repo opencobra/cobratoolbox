@@ -4,104 +4,92 @@
 %     - tests the sampleCbModel function using the E. coli Core Model
 %
 
-% define global paths
-global path_TOMLAB
-global path_GUROBI
+global CBTDIR
 
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testSampleCbModel'));
+cd(fileDir);
 
-% define the samplers
-samplers = {'ACHR', 'CHRR'}; %'MFE'
+if isunix
+    % define the samplers
+    samplers = {'ACHR', 'CHRR'}; %'MFE'
 
-% create a parallel pool
-poolobj = gcp('nocreate');  % if no pool, do not create new one.
-if isempty(poolobj)
-    parpool(2);  % launch 2 workers
-end
-
-% define the solver packages to be used to run this test
-solverPkgs = {'gurobi6', 'tomlab_cplex'};
-
-for k = 1:length(solverPkgs)
-    fprintf('   Testing sampleCbModel using %s ... \n', solverPkgs{k});
-
-
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(path_TOMLAB));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        addpath(genpath(path_GUROBI));
+    % create a parallel pool
+    poolobj = gcp('nocreate');  % if no pool, do not create new one.
+    if isempty(poolobj)
+        parpool(2);  % launch 2 workers
     end
 
-    % set the solver
-    solverOK = changeCobraSolver(solverPkgs{k});
+    % define the solver packages to be used to run this test
+    solverPkgs = {'gurobi6', 'tomlab_cplex'};
 
-    if solverOK == 1
+    for k = 1:length(solverPkgs)
+        fprintf('   Testing sampleCbModel using %s ... \n', solverPkgs{k});
 
-        % Load model
-        load('ecoli_core_model.mat', 'model');
+        % set the solver
+        solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
-        for i = 1:length(samplers)
+        if solverOK == 1
 
-            samplerName = samplers{i};
+            % Load model
+            load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
-            switch samplerName
-                case 'ACHR'
-                    fprintf('\nTesting the artificial centering hit-and-run (ACHR) sampler\n.');
+            for i = 1:length(samplers)
 
-                    options.nFiles = 4;
-                    options.nStepsPerPoint = 5;
-                    options.nPointsReturned = 20;
-                    options.nPointsPerFile = 5;
-                    options.nFilesSkipped = 0;
-                    options.nWarmupPoints = 200;
+                samplerName = samplers{i};
 
-                    [modelSampling, samples, volume] = sampleCbModel(model, 'EcoliModelSamples', 'ACHR', options);
+                switch samplerName
+                    case 'ACHR'
+                        fprintf('\nTesting the artificial centering hit-and-run (ACHR) sampler\n.');
 
-                    % check if sample files created
-                    if exist('EcoliModelSamples_1.mat', 'file') == 2 && exist('EcoliModelSamples_2.mat', 'file') == 2 && exist('EcoliModelSamples_3.mat', 'file') == 2 && exist('EcoliModelSamples_4.mat', 'file') == 2
-                        display('Sample files generated');
-                        % check if model reduced and rxns removed
-                        removedRxns = find(~ismember(model.rxns, modelSampling.rxns));
-                        assert(all(removedRxns == [26; 27; 29; 34; 45; 47; 52; 63]))
-                    else
-                        display('Sample files not found');
-                    end
+                        options.nFiles = 4;
+                        options.nStepsPerPoint = 5;
+                        options.nPointsReturned = 20;
+                        options.nPointsPerFile = 5;
+                        options.nFilesSkipped = 0;
+                        options.nWarmupPoints = 200;
 
-                case 'CHRR'
-                    fprintf('\nTesting the coordinate hit-and-run with rounding (CHRR) sampler\n.');
+                        [modelSampling, samples, volume] = sampleCbModel(model, 'EcoliModelSamples', 'ACHR', options);
 
-                    options.nStepsPerPoint = 1;
-                    options.nPointsReturned = 10;
+                        % check if sample files created
+                        if exist('EcoliModelSamples_1.mat', 'file') == 2 && exist('EcoliModelSamples_2.mat', 'file') == 2 && exist('EcoliModelSamples_3.mat', 'file') == 2 && exist('EcoliModelSamples_4.mat', 'file') == 2
+                            display('Sample files generated');
+                            % check if model reduced and rxns removed
+                            removedRxns = find(~ismember(model.rxns, modelSampling.rxns));
+                            assert(all(removedRxns == [26; 27; 29; 34; 45; 47; 52; 63]))
+                        else
+                            display('Sample files not found');
+                        end
 
-                    [modelSampling, samples, volume] = sampleCbModel(model, 'EcoliModelSamples', 'CHRR', options);
+                    case 'CHRR'
+                        fprintf('\nTesting the coordinate hit-and-run with rounding (CHRR) sampler\n.');
 
-                    assert(norm(samples) > 0)
+                        options.nStepsPerPoint = 1;
+                        options.nPointsReturned = 10;
 
-                %{
-                case 'MFE'
-                    options.eps = 0.15;
-                    [modelSampling, samples, volume] = sampleCbModel(model, 'EcoliModelSamples', 'MFE', options);
+                        [modelSampling, samples, volume] = sampleCbModel(model, 'EcoliModelSamples', 'CHRR', options);
 
-                    assert(volume > 0);
-                %}
+                        assert(norm(samples) > 0)
+
+                    %{
+                    case 'MFE'
+                        options.eps = 0.15;
+                        [modelSampling, samples, volume] = sampleCbModel(model, 'EcoliModelSamples', 'MFE', options);
+
+                        assert(volume > 0);
+                    %}
+                end
             end
-        end
 
-        % remove the solver paths (temporary addition for CI)
-        if strcmp(solverPkgs{k}, 'tomlab_cplex')
-            rmpath(genpath(path_TOMLAB));
-        elseif strcmp(solverPkgs{k}, 'gurobi6')
-            rmpath(genpath(path_GUROBI));
+            % print a line for success of loop i
+            fprintf(' Done.\n');
         end
-
-        % print a line for success of loop i
-        fprintf(' Done.\n');
     end
+else
+    fprintf(' > Skipping testSampleCbModel (incompatible operating system).\n');
 end
 
 % change the directory

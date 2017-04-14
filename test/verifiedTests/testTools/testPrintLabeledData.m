@@ -10,7 +10,8 @@
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testPrintLabeledData'));
+cd(fileDir);
 
 labels = {'row1', 'row2', 'row3'};
 data = ones(3);
@@ -30,9 +31,7 @@ assert(strcmp(text1, text2));
 % remove the generated file
 fullFileNamePath = [fileparts(which(mfilename)), filesep, fileName];
 if exist(fullFileNamePath, 'file') == 2
-    system(['rm ', fullFileNamePath]);
-else
-    warning(['The file', fullFileNamePath, ' does not exist and could not be deleted.']);
+    delete(fullFileNamePath);
 end
 
 % change the directory

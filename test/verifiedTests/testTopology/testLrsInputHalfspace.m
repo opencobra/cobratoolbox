@@ -6,7 +6,7 @@
 % Authors:
 %     - Sylvain Arreckx March 2017
 %
-% Test problem from 
+% Test problem from
 %     Extreme Pathway Lengths and Reaction Participation in Genome-Scale Metabolic Networks
 %     Jason A. Papin, Nathan D. Price and Bernhard Ø. Palsson
 
@@ -14,7 +14,8 @@
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testLrsInputHalfSpace'));
+cd(fileDir);
 
 S = [-1,  0,  0,  0,  0,  0, 1,  0,  0;
       1, -2, -2,  0,  0,  0, 0,  0,  0;

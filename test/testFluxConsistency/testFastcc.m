@@ -2,8 +2,8 @@ function bool=testFastcc()
 %test fastcc with reconx
 
 %save original solver
-global CBTLPSOLVER;
-origSolverLP = CBTLPSOLVER;
+global CBT_LP_SOLVER;
+origSolverLP = CBT_LP_SOLVER;
 
 changeCobraSolver('gurobi6','LP');
 

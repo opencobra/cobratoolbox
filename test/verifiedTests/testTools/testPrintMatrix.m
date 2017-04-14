@@ -10,7 +10,8 @@
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testPrintMatrix'));
+cd(fileDir);
 
 fileName = 'testPrintMatrix.txt';
 nbFormat = '%3.2f\t';
@@ -39,9 +40,7 @@ assert(printMatrix(A, nbFormat, fileName) == 1);
 % remove the generated file
 fullFileNamePath = [fileparts(which(mfilename)), filesep, fileName];
 if exist(fullFileNamePath, 'file') == 2
-    system(['rm ', fullFileNamePath]);
-else
-    warning(['The file', fullFileNamePath, ' does not exist and could not be deleted.']);
+    delete(fullFileNamePath);
 end
 
 % test to print to a file and read the data from that same file
@@ -60,9 +59,7 @@ assert(isequal(data1, data2))
 % remove the generated file
 fullFileNamePath = [fileparts(which(mfilename)), filesep, fileName];
 if exist(fullFileNamePath, 'file') == 2
-    system(['rm ', fullFileNamePath]);
-else
-    warning(['The file', fullFileNamePath, ' does not exist and could not be deleted.']);
+    delete(fullFileNamePath);
 end
 
 % change the directory

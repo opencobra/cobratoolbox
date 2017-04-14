@@ -6,16 +6,16 @@
 % Author:
 %     - Marouen BEN GUEBILA - 31/01/2017
 
-% define global paths
-global path_TOMLAB
+global CBTDIR
 
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testDynamicFBA'));
+cd(fileDir);
 
-load('ecoli_core_model', 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 load('testData_dynamicFBA.mat');
 
 smi = {'EX_glc(e)' 'EX_ac(e)'}; % exchange reaction for substrate in environment
@@ -34,13 +34,8 @@ tol = 1e-8;
 
 for k = 1:length(solverPkgs)
 
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(path_TOMLAB));
-    end
-
     % change the COBRA solver (LP)
-    solverLPOK = changeCobraSolver(solverPkgs{k});
+    solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
     if solverLPOK == 1
         fprintf('   Testing dynamicFBA using %s ... ', solverPkgs{k});
@@ -51,12 +46,6 @@ for k = 1:length(solverPkgs)
         assert(isequal(timeVectest, timeVec))
         assert(any(abs(biomassVectest - biomassVec) < tol))
     end
-
-    % remove the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        rmpath(genpath(path_TOMLAB));
-    end
-
 end
 
 % close open figure

@@ -1,4 +1,4 @@
-% The COBRAToolbox: testoptKnock.m
+% The COBRAToolbox: testOptKnock.m
 %
 % Purpose:
 %     - tests the basic functionality of optKnock
@@ -9,22 +9,20 @@
 % Note:
 %     - The solver libraries must be included separately
 
-% define global paths
-global path_GUROBI
-global path_TOMLAB
-global CBT_MILP_SOLVER
+global CBTDIR
 
 %save original directory
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testOptKnock'));
+cd(fileDir);
 
 % set the tolerance
 tol = 1e-3;
 
 % load model
-load('ecoli_core_model.mat', 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 model = changeRxnBounds(model, 'EX_o2(e)', 0, 'l'); % anaerobic
 model = changeRxnBounds(model, 'EX_glc(e)', -20, 'l'); % set glucose uptake to 20
 
@@ -67,18 +65,8 @@ solverPkgs = {'gurobi6', 'tomlab_cplex'};
 
 for k = 1:length(solverPkgs)
 
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(path_TOMLAB));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        addpath(genpath(path_GUROBI));
-    end
-
-    % define the global variable
-    CBT_MILP_SOLVER = solverPkgs{k};
-
     % change the COBRA solver
-    solverOK = changeCobraSolver(CBT_MILP_SOLVER);
+    solverOK = changeCobraSolver(solverPkgs{k}, 'MILP', 0);
 
     if solverOK == 1
 
@@ -111,13 +99,6 @@ for k = 1:length(solverPkgs)
 
         % output a success message
         fprintf('Done.\n');
-
-        % remove the solver paths (temporary addition for CI)
-        if strcmp(solverPkgs{k}, 'tomlab_cplex')
-            rmpath(genpath(path_TOMLAB));
-        elseif strcmp(solverPkgs{k}, 'gurobi6')
-            rmpath(genpath(path_GUROBI));
-        end
     end
 end
 

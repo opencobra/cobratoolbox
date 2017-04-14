@@ -68,8 +68,8 @@ if ~exist('printLevel','var')
 end
 if ~exist('method','var')
     method.interface='solveCobraLP';
-    global CBTLPSOLVER
-    method.solver=CBTLPSOLVER;
+    global CBT_LP_SOLVER
+    method.solver=CBT_LP_SOLVER;
 end
 
 [nMet,nRxn]=size(model.S);
@@ -157,8 +157,8 @@ if inform~=1
             model.SConsistentMetBool=m>epsilon & model.SIntMetBool;
         case 'solveCobraLP'
             %set the solver and solver parameters
-            global CBTLPSOLVER
-            oldSolver=CBTLPSOLVER;
+            global CBT_LP_SOLVER
+            oldSolver=CBT_LP_SOLVER;
             solverOK = changeCobraSolver(method.solver,'LP');
             
             [nMet,~]=size(SInt);
@@ -215,8 +215,8 @@ if inform~=1
             solverOK = changeCobraSolver(oldSolver,'LP');
         case 'nonconvex'
             %set the solver and solver parameters
-            global CBTLPSOLVER
-            method.solver=CBTLPSOLVER;
+            global CBT_LP_SOLVER
+            method.solver=CBT_LP_SOLVER;
             tic
             solution=maxCardinalityConservationVector(SInt);
             timetaken=toc;

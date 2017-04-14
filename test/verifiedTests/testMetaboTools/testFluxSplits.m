@@ -8,18 +8,14 @@
 %     - CI integration: Laurent Heirendt January 2017
 %
 % Note:
-%     - The solver libraries must be included separately
 %     - This test only runs with solvers that can solve LP and QP problems
-
-% define global paths
-global path_GUROBI
-global path_TOMLAB
 
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testFluxSplits'));
+cd(fileDir);
 
 % define a toy model with single internal loop
 model.mets = {'A'; 'B'; 'C'};
@@ -49,15 +45,8 @@ for k = 1:length(solverPkgs)
 
     fprintf(' -- Running testFluxSplits using the solver interface: %s ... ', solverPkgs{k});
 
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(path_TOMLAB));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        addpath(genpath(path_GUROBI));
-    end
-
-    s1 = changeCobraSolver(solverPkgs{k}, 'lp');
-    s2 = changeCobraSolver(solverPkgs{k}, 'qp');
+    s1 = changeCobraSolver(solverPkgs{k}, 'LP', 0);
+    s2 = changeCobraSolver(solverPkgs{k}, 'QP', 0);
 
     if s1 == 1 && s2 == 1
         % Test of production
@@ -82,13 +71,6 @@ for k = 1:length(solverPkgs)
         fprintf('Done.\n');
     else
         warning('The test testFluxSplits cannot run using the solver interface: %s. The solver interface is not installed or not configured properly.\n', solverPkgs{k});
-    end
-
-    % remove the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        rmpath(genpath(path_TOMLAB));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        rmpath(genpath(path_GUROBI));
     end
 end
 

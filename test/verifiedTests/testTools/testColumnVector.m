@@ -10,7 +10,8 @@
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testColumnVector'));
+cd(fileDir);
 
 % define the vector vec
 vec = [1, 2, 3, 4, 5, 6];

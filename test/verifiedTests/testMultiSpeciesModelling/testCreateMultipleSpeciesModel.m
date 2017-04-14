@@ -10,18 +10,17 @@
 % Note:
 %     - The solver libraries must be included separately
 
-% define global paths
-global path_TOMLAB
-global path_GUROBI
+global CBTDIR
 
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testCreateMultipleSpeciesModel'));
+cd(fileDir);
 
 % load the model
-load('ecoli_core_model.mat', 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 % set the tolerance
 tol = 1e-6;
@@ -34,15 +33,8 @@ solverPkgs = {'glpk', 'gurobi6', 'tomlab_cplex'};
 
 for k = 1:length(solverPkgs)
 
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(path_TOMLAB));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        addpath(genpath(path_GUROBI));
-    end
-
     % change the COBRA solver (LP)
-    solverOK = changeCobraSolver(solverPkgs{k});
+    solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
     if solverOK == 1
         % loop through the test cases
@@ -156,13 +148,6 @@ for k = 1:length(solverPkgs)
 
     % output a success message
     fprintf('Done.\n');
-
-    % remove the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        rmpath(genpath(path_TOMLAB));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        rmpath(genpath(path_GUROBI));
-    end
 end
 
 % change the directory

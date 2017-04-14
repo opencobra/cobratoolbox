@@ -65,8 +65,8 @@ if printLevel>0
     fprintf('%s\n',['Testing model with linear constraint matrix that has ' num2str(m) ' rows and ' num2str(n) ' columns...'])
 end
 %set the solver and solver parameters
-global CBTLPSOLVER
-oldSolver=CBTLPSOLVER;
+global CBT_LP_SOLVER
+oldSolver=CBT_LP_SOLVER;
 
 if ~exist('solvers','var')
     solvers = {'opti'};

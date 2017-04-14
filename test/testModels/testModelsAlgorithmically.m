@@ -18,14 +18,14 @@ function results = testModelsAlgorithmically(solvers,matFolder,modelNames,printL
 
 % 39 Jan 2016 Ronan M.T. Fleming
 
-global CBTLPSOLVER
+global CBT_LP_SOLVER
 if 1
     %%parameters
     
     %select solver to use
     if ~exist('solvers','var')
         if ~isunix || ismac
-            solvers={CBTLPSOLVER};
+            solvers={CBT_LP_SOLVER};
         else
             [status,cmdout]=system('which minos');
             if isempty(cmdout)
@@ -33,7 +33,7 @@ if 1
                 disp(cmdout);
                 warning('Minos not installed or not on system path.');
             else
-                solvers={CBTLPSOLVER,'dqqMinos'};
+                solvers={CBT_LP_SOLVER,'dqqMinos'};
             end
         end
         

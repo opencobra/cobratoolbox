@@ -12,7 +12,8 @@
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testCalcGroupStats'));
+cd(fileDir);
 
 % load reference data - too complex to embed
 load('refData_calcGroupStats.mat');
@@ -35,7 +36,6 @@ assert(isequal(ref_groupStat, groupStat));
 assert(isequal(ref_groupList, groupList));
 assert(isequal(ref_groupCnt, groupCnt));
 assert(isequal(ref_groupStat, groupStat));
-
 
 % change the directory
 cd(currentDir)
