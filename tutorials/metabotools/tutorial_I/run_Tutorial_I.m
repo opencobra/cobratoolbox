@@ -163,10 +163,10 @@ customizedConstraints = {'EX_o2(e)'; 'EX_strch1(e)'; 'EX_acetone(e)'; 'EX_glc(e)
 customizedConstraints_lb = [-2.3460
                             0
                             0
-                            - 500
-                            - 100
-                            - 100
-                            - 100
+                            -500
+                            -100
+                            -100
+                            -100
                             ];
 
 customizedConstraints_ub = [500
@@ -643,10 +643,10 @@ theshold = 1e-6;
 model = model_A_GE;
 [model_Molt] = extractConditionSpecificModel(model, theshold);
 
-    %%
+%%
 [model_CEM] = extractConditionSpecificModel(model_B_GE, theshold);
 
-    %%
+%%
 [MetConn, RxnLength] = networkTopology(modelMedium);
 [MetConnA, RxnLengthA] = networkTopology(model_Molt);
 [MetConnB, RxnLengthB] = networkTopology(model_CEM);
@@ -680,7 +680,7 @@ performSampling(model_Molt, warmupn, fileName, nFiles, pointsPerFile, stepsPerPo
 fileName = 'modelB';
 performSampling(model_CEM, warmupn, fileName, nFiles, pointsPerFile, stepsPerPoint, fileBaseNo, maxTime, outputPath);
 
-    %% summarize sampling results
+%% summarize sampling results
 
 outputPath = [outputPath filesep];
 fonts = 8;
