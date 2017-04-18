@@ -16,7 +16,7 @@ Platform-specific instructions are marked with
 
 ## TOMLAB
 
-1) Download `TOMLAB/CPLEX` from [here](http://tomopt.com/scripts/register.php), where you can also download `TOMLAB/SNOPT`.
+1) Download `TOMLAB/CPLEX` from [here](http://tomopt.com/scripts/register.php), where you can also download `TOMLAB/SNOPT`. You must purchase the `tomlab.lic` license separately.
 
 2) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux"> In a terminal window, navigate to the download directory of `Tomlab` and do the following
     ````bash
@@ -32,14 +32,14 @@ Platform-specific instructions are marked with
     - <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS">:
     `/Applications` such that you will have a folder `/Applications/tomlab`
 
-4) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux"> Copy the `tomlab.lic` license to the folder `/opt/tomlab` and change its permissions
+4) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux"> Copy the `tomlab.lic` license to the folder `/opt/tomlab` and change its permissions (you must have superuser or `sudo` rights)
     ````bash
     $ sudo chmod 644 tomlab.lic
     ````
     <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" alt="Windows"> Copy the `tomlab.lic` license to the folder `C:\tomlab`.
     <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS"> Copy the `tomlab.lic` license to the folder `/Applications/tomlab`.
 
-5) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux"> Set the environment variable by editing your '~/.bashrc' file:
+5) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux"> Set the environment variable by editing your `~/.bashrc` file:
     ````bash
     $ nano ~/.bashrc
     ````
@@ -147,8 +147,8 @@ Platform-specific instructions are marked with
 
 2) Apply for a license [here](https://mosek.com/resources/trial-license). A free academic license is [here](https://license.mosek.com/academic/). You will receive an email with your `mosek.lic` file.
 
-3) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux"> Save (or move) the downloaded archive `tar.bz2` to `/opt/.`
-    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS">  Save (or move) the downloaded archive `tar.bz2` to `/Applications/.`
+3) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux"> Save (or move) the downloaded archive `tar.bz2` to `/opt/.` (you must have superuser or `sudo` rights).
+    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS">  Save (or move) the downloaded archive `tar.bz2` to `/Applications/.` (you must have superuser or `sudo` rights).
 
 4) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS"> Navigate to `/opt` and extract the archive
     ````bash
