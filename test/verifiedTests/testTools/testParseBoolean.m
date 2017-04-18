@@ -12,7 +12,8 @@
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testParseBoolean'));
+cd(fileDir);
 
 str = '((A&B)|(B&C))&(~D)';
 tokens = '&!()';
@@ -42,6 +43,19 @@ assert(strcmp(ref_newRule1, newRule1) == 1)
 assert(rxnGeneMat(1,2) == 1)
 assert(rxnGeneMat(1,3) == 1)
 assert(rxnGeneMat(1,4) == 1)
+
+% test parseBoolean with str and 3 output arguments - throws a warning message
+warning('off', 'all')
+[elements, newRule, rxnGeneMat] = parseBoolean(str, tokens);
+assert(length(lastwarn()) > 0)
+warning('on', 'all')
+
+% test parseBoolean with a random input argument
+try
+    [elements, newRule] = parseBoolean(0);
+catch ME
+    assert(length(ME.message) > 0)
+end
 
 % change the directory
 cd(currentDir)
