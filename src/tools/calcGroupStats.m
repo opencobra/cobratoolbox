@@ -28,9 +28,12 @@ function [groupStat, groupList, groupCnt, zScore] = calcGroupStats(data, groups,
 
 [nItems, nSets] = size(data);
 
+groups = cellstr(groups);
+
 if nargin < 3
     statName = 'mean';
 end
+
 if nargin < 4 || isempty(groupList)
     groupList = unique(groups);
 end
@@ -38,15 +41,12 @@ end
 if nargin < 5
     randStat = false;
 end
+
 if nargin < 6
     nRand = 1000;
 end
 
-if iscell(groups)
-    cellFlag = true;
-else
-    cellFlag = false;
-end
+groupList = cellstr(groupList);
 
 for i = 1:length(groupList)
     selGroup = strcmp(groups, groupList{i});
