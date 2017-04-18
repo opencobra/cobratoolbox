@@ -52,6 +52,10 @@ assert(any(any(isnan(groupStat))));
 assert(isequal({'test'}, groupList));
 assert(isequal(1, groupCnt));
 assert(isequal(6 * ones(1, 5), groupStat));
-
+%additional test ot check zScore
+[groupStat, groupList, groupCnt, zScore] = calcGroupStats(data, 'test', statname{1}, ref_groupList, 1, 10);
+assert(isequal(zeros(4,5),zScore))
+[groupStat, groupList, groupCnt, zScore] = calcGroupStats(data, groups, statname{4}, ref_groupList, 1, 10);
+assert(isequal(NaN(4,5),zScore))
 % change the directory
 cd(currentDir)
