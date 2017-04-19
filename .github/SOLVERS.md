@@ -43,7 +43,7 @@ Platform-specific instructions are marked with
     ````bash
     $ nano ~/.bashrc
     ````
-    Append the following lines (type `i` to insert text), hit the `ESC` key, then save and exit by typing `wq` and hitting ENTER:
+    Append the following lines, hit the `ESC` key, then save and exit by typing `CTRL-X` and hitting ENTER:
     ````
     export TOMLAB_PATH="/opt/tomlab"
     ````
@@ -71,7 +71,7 @@ Platform-specific instructions are marked with
     ````bash
     $ nano ~/.bashrc
     ````
-    Append the following lines (type `i` to insert text), hit the `ESC` key, then save and exit by typing `wq` and hitting ENTER.
+    Append the following lines, hit the `ESC` key, then save and exit by typing `CTRL-X` and hitting ENTER:
     On <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux">:
     ````
     export ILOG_CPLEX_PATH="/opt/ibm/ILOG/CPLEX_Studio<ver>"
@@ -107,7 +107,7 @@ Platform-specific instructions are marked with
     ````bash
     $ nano ~/.bashrc
     ````
-    Append the following lines (type `i` to insert text), hit the `ESC` key, then save and exit by typing `wq` and hitting ENTER:
+    Append the following lines, hit the `ESC` key, then save and exit by typing `CTRL-X` and hitting ENTER:
     ````
     export GUROBI_HOME="/opt/gurobi<ver>/linux64"
     export PATH="${PATH}:${GUROBI_HOME}/bin"
@@ -150,19 +150,19 @@ Platform-specific instructions are marked with
 3) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux"> Save (or move) the downloaded archive `tar.bz2` to `/opt/.` (you must have superuser or `sudo` rights).
     <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS">  Save (or move) the downloaded archive `tar.bz2` to `/Applications/.` (you must have superuser or `sudo` rights).
 
-4) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS"> Navigate to `/opt` and extract the archive
+4) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="macOS"> Navigate to `/opt` and extract the archive
     ````bash
     $ cd /opt
     $ tar xvjf <filename>.tar.bz2
     ````
     <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" alt="Windows"> Run `moseksetupwin64x86.msi` and select `Typical` installation. This will install `mosek` in `C:\Program Files\Mosek`.
-    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux"> Browse to `/Applications` and double-click the archive to uncompress.
+    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="Linux"> Browse to `/Applications` and double-click the archive to uncompress.
 
 5) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS"> <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux"> Configure the `PATH` and `MOSEKLM_LICENSE_FILE` environment variables in `~/.bashrc` by editing your `bashrc` file
     ````bash
     $ nano ~/.bashrc
     ````
-    Append the following lines (type `i` to insert text), hit the `ESC` key, then save and exit by typing `wq` and hitting ENTER:
+    Append the following lines, hit the `ESC` key, then save and exit by typing `CTRL-X` and hitting ENTER:
     On <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux">
     ````
     export PATH=/opt/mosek/<ver>/:$PATH
@@ -184,7 +184,7 @@ Platform-specific instructions are marked with
 
 7) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux"> Verify that `MOSEK` is correctly installed by using the following command in your terminal
     ````bash
-    $ msktestlic
+    $ /opt/mosek/<ver>/tools/platform/linux64x86/bin/./msktestlic
     ````
     This command should give an output similar to this:
     ````
