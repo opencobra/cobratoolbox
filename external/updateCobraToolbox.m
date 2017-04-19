@@ -40,22 +40,29 @@ function updateCobraToolbox(check)
                         % loop over develop and master
                         for k = 1:length(branches)
                             % checkout the master branch of the devTools
-                            [status_gitCheckoutMaster, result_gitCheckoutMaster] = system(['git checkout ', branches{k}]);
-                            if status_gitCheckoutMaster == 0
-                                fprintf([' > The ', branches{k},' branch of The COBRA Toolbox has been checked out.']);
-                            else
+                            [status_gitCheckoutMaster, result_gitCheckoutMaster] = system(['git checkout -f ', branches{k}]);
+                            if status_gitCheckoutMaster ~= 0
                                 fprintf(result_gitCheckoutMaster);
                                 error(['The ', branches{k},' branch of The COBRA Toolbox could not be checked out.']);
                             end
 
                             % pull the latest changes from the master branch
-                            [status_gitPull, result_gitPull] = system(['git pull origin ', branches{k}]);
+                            [status_gitPull, result_gitPull] = system(['git reset --hard origin/', branches{k}]);
                             if status_gitPull == 0
-                                fprintf(' > The COBRA Toolbox has been updated.');
+                                fprintf([' > The COBRA Toolbox has been updated (<', branches{k}, '> branch).\n']);
                             else
                                 fprintf(result_gitPull);
-                                error('The COBRA Toolbox could not be updated.');
+                                error(['The COBRA Toolbox could not be updated (<', branches{k}, '> branch).']);
                             end
+                        end
+
+                        % reset each submodule
+                        [status_gitReset result_gitReset] = system('git submodule foreach --recursive git reset --hard');
+                        if status_gitReset == 0
+                            fprintf(' > The submodules have been updated (reset).\n');
+                        else
+                            fprintf(result_gitReset);
+                            error('The submodules could not be updated (reset).');
                         end
                     end
                 else
