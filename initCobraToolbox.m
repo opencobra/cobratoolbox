@@ -418,6 +418,9 @@ function initCobraToolbox()
         fprintf('\n');
     end
 
+    % check if a new update exists
+    updateCobraToolbox(true); % only check
+
     % change back to the current directory
     cd(currentDir);
 
@@ -435,7 +438,7 @@ function checkGit()
 %     checkGit();
 %
 
-      global ENV_VARS
+    global ENV_VARS
 
     if ENV_VARS.printLevel
         fprintf(' > Checking if git is installed ... ')
