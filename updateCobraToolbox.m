@@ -1,13 +1,16 @@
-function updateCobraToolbox(check)
+function updateCobraToolbox(fetchAndCheckOnly)
 % Checks new commits exist on the master branch of the openCOBRA repository
-% and asks the user if
+% and asks the user to update The COBRA Toolbox (updates the develop and master branches)
 %
 % USAGE:
 %     updateCobraToolbox();
 %
+% INPUT:
+%     fetchAndCheckOnly: if set to true, the repository is not updated (default: false)
+%
 
     if nargin < 1
-        check = false;
+        fetchAndCheckOnly = false;
     end
 
     % fetch all content from remote
@@ -29,7 +32,7 @@ function updateCobraToolbox(check)
             % retrieve the status
             [status_gitStatus, result_gitStatus] = system('git status -s');
 
-            if ~check
+            if ~fetchAndCheckOnly
                 if status_gitStatus == 0 && isempty(result_gitStatus)
                     reply = input(['   -> Do you want to update The COBRA Toolbox? Y/N [Y]: '], 's');
 
@@ -69,7 +72,7 @@ function updateCobraToolbox(check)
                     fprintf(' > The COBRA Toolbox cannot be updated as you have unstaged files. Commits should only be made in your local and cloned fork.\n');
                 end
             else
-                fprintf(' > You can update The COBRA Toolbox by running >> updateCobraToolbox(); (from within MATLAB).\n');
+                fprintf(' > You can update The COBRA Toolbox by running updateCobraToolbox() (from within MATLAB).\n');
             end
         else
             fprintf(['The COBRA Toolbox is up-to-date.\n']);

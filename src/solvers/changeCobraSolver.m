@@ -212,7 +212,7 @@ solverOK = false;
 
 % if gurobi is selected, unload tomlab if tomlab is on the path
 tomlabOnPath = ~isempty(strfind(lower(path), 'tomlab'));
-if (~isempty(strfind(solverName, 'gurobi')) ||  ~isempty(strfind(solverName, 'ibm_cplex'))) && tomlabOnPath
+if (~isempty(strfind(solverName, 'gurobi')) ||  ~isempty(strfind(solverName, 'ibm_cplex')) ||  ~isempty(strfind(solverName, 'matlab'))) && tomlabOnPath
     rmpath(genpath(TOMLAB_PATH));
     if printLevel > 0
         fprintf('\n > Tomlab interface removed from MATLAB path.\n');

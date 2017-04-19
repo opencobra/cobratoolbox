@@ -171,7 +171,9 @@ try
     end
 
     % ensure that we ALWAYS call exit
-    exit(exit_code);
+    if ~isempty(strfind(getenv('HOME'), 'jenkins'))
+        exit(exit_code);
+    end
 catch
     exit(1);
 end

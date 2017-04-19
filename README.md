@@ -107,3 +107,8 @@ For convenience, we provide the [`SBMLToolbox 4.1.0`](http://sbml.org/Software/S
 For unsupported OS, please refer to their respective building instructions ([`glpk_mex`](https://github.com/blegat/glpkmex#instructions-for-compiling-from-source), [`libSBML`](http://sbml.org/Software/libSBML/5.13.0/docs//cpp-api/libsbml-installation.html)).
 
 Read more on the compatibility with SBML-FBCv2 [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/NOTES.md).
+
+Disclaimer
+----------
+
+*The software provided by the openCOBRA Project is distributed under the GNU GPLv3 or later.  However, this software is designed for scientific research and as such may contain algorithms that are associated with patents in the U.S. and abroad.  If the user so chooses to use the software provided by the openCOBRA project for commercial endeavors then it is solely the user’s responsibility to license any patents that may exist and respond in full to any legal actions taken by the patent holder.*

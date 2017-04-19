@@ -323,30 +323,19 @@ function initCobraToolbox()
             savepath;
             if ENV_VARS.printLevel
                 fprintf(' Done.\n');
-                fprintf('   - The MATLAB path was saved in the default location.\n');
+                fprintf('   - The MATLAB path was saved in the default location.');
             end
         else
             savepath(defaultSavePathLocation);
             if ENV_VARS.printLevel
                 fprintf(' Done.\n');
-                fprintf(['   - The MATLAB path was saved as ', defaultSavePathLocation, '.\n']);
+                fprintf(['   - The MATLAB path was saved as ', defaultSavePathLocation, '.']);
             end
         end
     catch
         if ENV_VARS.printLevel
-            fprintf(' > The MATLAB path could not be saved.\n');
+            fprintf(' > The MATLAB path could not be saved.');
         end
-    end
-
-    % set the default solver and print out the default variables
-    if ENV_VARS.printLevel
-        fprintf(' > Setting default solvers ...\n');
-        changeCobraSolver('glpk', 'LP');
-        for k = 1:length(OPT_PROB_TYPES)
-            varName = horzcat(['CBT_', OPT_PROB_TYPES{k}, '_SOLVER']);
-            fprintf(['   - ', varName, ' = \''', eval(varName), '\'';\n'])
-        end
-        fprintf('   Done.\n');
     end
 
     % print out a summary table
@@ -363,12 +352,31 @@ function initCobraToolbox()
                 solverStatus(i, k + 1) = 1;
                 solverStatuss(i, k + 1) = '1';
                 solverTypeInstalled(k) = solverTypeInstalled(k) + 1;
+
+                % set the default MIQP solver based on the solvers that are installed
+                if strcmpi(types{j}, 'MIQP')
+                    changeCobraSolver(supportedSolversNames{i}, types{j});
+                end
             else
                 solverStatus(i, k + 1) = 0;
                 solverStatuss(i, k + 1) = '0';
             end
         end
     end
+
+    % set the default solver and print out the default variables
+    if ENV_VARS.printLevel
+        fprintf(' > Setting default solvers ...');
+        changeCobraSolver('glpk', 'LP', 0);
+        changeCobraSolver('glpk', 'MILP', 0);
+        changeCobraSolver('qpng', 'QP', 0);
+        changeCobraSolver('matlab', 'NLP', 0);
+        for k = 1:length(OPT_PROB_TYPES)
+            varName = horzcat(['CBT_', OPT_PROB_TYPES{k}, '_SOLVER']);
+        end
+        fprintf(' Done.\n');
+    end
+
     catList{end + 1} = '----------';
     catList{end + 1} = '-';
 
