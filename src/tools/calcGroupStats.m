@@ -28,34 +28,28 @@ function [groupStat, groupList, groupCnt, zScore] = calcGroupStats(data, groups,
 
 [nItems, nSets] = size(data);
 
+groups = cellstr(groups);
+
 if nargin < 3
     statName = 'mean';
 end
-if nargin < 4
+
+if nargin < 4 || isempty(groupList)
     groupList = unique(groups);
 end
-if isempty(groupList)
-    groupList = unique(groups);
-end
+
 if nargin < 5
     randStat = false;
 end
+
 if nargin < 6
     nRand = 1000;
 end
 
-if iscell(groups)
-    cellFlag = true;
-else
-    cellFlag = false;
-end
+groupList = cellstr(groupList);
 
 for i = 1:length(groupList)
-    if cellFlag
-        selGroup = strcmp(groups, groupList{i});
-    else
-        selGroup = (groups == groupList(i));
-    end
+    selGroup = strcmp(groups, groupList{i});
     selData = data(selGroup, :);
     groupCnt(i) = sum(selGroup);
     groupStat(i, :) = calcStatInternal(groupCnt(i), selData, statName, nSets);
