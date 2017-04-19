@@ -77,75 +77,80 @@ function initCobraToolbox()
     cd(CBTDIR);
 
     % configure a remote tracking repository
-    if isempty(strfind(getenv('HOME'), 'jenkins'))
-        if ENV_VARS.printLevel
-            fprintf(' > Checking if the repository is tracked using git ... ');
+    if ENV_VARS.printLevel
+        fprintf(' > Checking if the repository is tracked using git ... ');
+    end
+
+    % check if the directory is a git-tracked folder
+    if exist('.git', 'dir') ~= 7
+        % initialize the directory
+        [status_gitInit, result_gitInit] = system('git init');
+
+        if status_gitInit ~= 0
+            fprintf(result_gitInit);
+            error(' > This directory is not a git repository.\n');
         end
 
-        % check if the directory is a git-tracked folder
-        if exist('.git', 'dir') ~= 7
-            % initialize the directory
-            [status_gitInit, result_gitInit] = system('git init');
+        % set the remote origin
+        [status_setOrigin, result_setOrigin] = system('git remote add origin https://github.com/opencobra/cobratoolbox.git');
 
-            if status_gitInit ~= 0
-                fprintf(result_gitInit);
-                error(' > This directory is not a git repository.\n');
-            end
-
-            % set the remote origin
-            [status_setOrigin, result_setOrigin] = system('git remote add origin https://github.com/opencobra/cobratoolbox.git');
-
-            if status_setOrigin ~= 0
-                fprintf(result_setOrigin);
-                error(' > The remote tracking origin could not be set.');
-            end
-
-            % check curl
-            status_curl = checkCurlAndRemote();
-
-            if status_curl == 0
-                % set the remote origin
-                [status_fetch, result_fetch] = system('git fetch origin master --depth=1');
-                if status_fetch ~= 0
-                    fprintf(result_fetch);
-                    error(' > The files could not be fetched.');
-                end
-
-                [status_resetMixed, result_resetMixed] = system('git reset --mixed origin/master');
-
-                if status_resetMixed ~= 0
-                    fprintf(result_resetMixed);
-                    error(' > The remote tracking origin could not be set.');
-                end
-            end
-        end
-
-        if ENV_VARS.printLevel
-            fprintf(' Done.\n');
+        if status_setOrigin ~= 0
+            fprintf(result_setOrigin);
+            error(' > The remote tracking origin could not be set.');
         end
 
         % check curl
-        status_curl = checkCurlAndRemote(false);
+        status_curl = checkCurlAndRemote();
 
-        % check if the URL exists
-        if exist([CBTDIR filesep 'binary' filesep 'README.md'], 'file') && status_curl ~= 0
-            fprintf(' > Submodules exist but cannot be updated (remote cannot be reached).\n');
-        elseif status_curl == 0
-            if ENV_VARS.printLevel
-                fprintf(' > Initializing and updating submodules ...');
+        if status_curl == 0
+            % set the remote origin
+            [status_fetch, result_fetch] = system('git fetch origin master --depth=1');
+            if status_fetch ~= 0
+                fprintf(result_fetch);
+                error(' > The files could not be fetched.');
             end
 
-            % initialize and update the submodules
-            [status_submodule, result_submodule] = system('git submodule update --init');
+            [status_resetMixed, result_resetMixed] = system('git reset --mixed origin/master');
 
-            if status_submodule ~= 0
-                fprintf(result_submodule);
-                error('The submodules could not be initialized.');
+            if status_resetMixed ~= 0
+                fprintf(result_resetMixed);
+                error(' > The remote tracking origin could not be set.');
             end
+        end
+    end
 
-            if ENV_VARS.printLevel
-                fprintf('   Done.\n');
-            end
+    if ENV_VARS.printLevel
+        fprintf(' Done.\n');
+    end
+
+    % check curl
+    status_curl = checkCurlAndRemote(false);
+
+    % check if the URL exists
+    if exist([CBTDIR filesep 'binary' filesep 'README.md'], 'file') && status_curl ~= 0
+        fprintf(' > Submodules exist but cannot be updated (remote cannot be reached).\n');
+    elseif status_curl == 0
+        if ENV_VARS.printLevel
+            fprintf(' > Initializing and updating submodules ...');
+        end
+
+        % initialize and update the submodules
+        [status_submodule, result_submodule] = system('git submodule update --init');
+
+        if status_submodule ~= 0
+            fprintf(result_submodule);
+            error('The submodules could not be initialized.');
+        end
+
+        % reset each submodule
+        [status_gitReset result_gitReset] = system('git submodule foreach --recursive git reset --hard');
+        if status_gitReset ~= 0
+            fprintf(result_gitReset);
+            error('The submodules could not be reset.');
+        end
+
+        if ENV_VARS.printLevel
+            fprintf('   Done.\n');
         end
     end
 
