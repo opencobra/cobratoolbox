@@ -427,7 +427,9 @@ function initCobraToolbox()
     end
 
     % check if a new update exists
-    updateCobraToolbox(true); % only check
+    if ENV_VARS.printLevel && status_curl == 0
+        updateCobraToolbox(true); % only check
+    end
 
     % change back to the current directory
     cd(currentDir);

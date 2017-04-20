@@ -89,7 +89,7 @@ tol = 1e-8;
 solverPkgs = {'tomlab_cplex', 'glpk', 'gurobi6'};
 ```
 
-#### 4. Load the model and reference data
+#### 4. Load a model and/or reference data
 
 ```Matlab
 % load the model
@@ -97,7 +97,15 @@ load('modelFile.mat', 'model');
 load('testData_functionToBeTested.mat');
 ```
 
-Please only load *small* models, i.e. less than `100` reactions.
+Please only load *small* models, i.e. less than `100` reactions. If you want to use a non-standard test model that is already available online, please add its URL to `test/models/retrieveModels.m`.
+
+:warning: In order to guarantee compatibility across platforms, please use the full path to the model. For instance:
+```Matlab
+global CBTDIR
+
+% load the ecoli core model
+load([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
+```
 
 #### 5. Create a parallel pool
 
@@ -110,7 +118,7 @@ if isempty(poolobj)
     parpool(2); % launch 2 workers
 end
 ```
-Please only launch a pool of `2` workers - more workers should not be needed to test a parallel function efficiently.
+:warning: Please only launch a pool of `2` workers - more workers should not be needed to test a parallel function efficiently.
 
 #### 6. Body of test
 
@@ -173,7 +181,7 @@ Common errors include:
 
 ## Can I find out how many tests have failed?
 
-The idea of continuous integration and unit testing is to have all tests passing. The logical conditions, when tested using `assert()`, will throw an error when not satisfied. It is bad practice to test the sum of tests passed and failed. Please only test using `assert(logicalCondition)`. Even though a test may fail using `assert()`, a summary table with comprehensive information is provided at the end of the test run.
+The logical conditions, when tested using `assert()`, will throw an error when not satisfied. It is bad practice to test the sum of tests passed and failed. Please only test using `assert(logicalCondition)`. Even though a test may fail using `assert()`, a summary table with comprehensive information is provided at the end of the test run.
 
 For instance, the following test script **do not do this - bad practice!**:
 ````Matlab

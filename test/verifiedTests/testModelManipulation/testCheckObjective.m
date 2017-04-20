@@ -4,14 +4,16 @@
 %     - Tests the changeObjective function
 %
 
+global CBTDIR
+
 currentDir = pwd; % save the current path
 
 % initialize the test
 fileDir = fileparts(which('testCheckObjective'));
 cd(fileDir);
 
-% load the model
-load('ecoli_core_model.mat', 'model');
+% load the ecoli core model
+load([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 abbr = checkObjective(model);
 
