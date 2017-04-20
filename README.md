@@ -10,8 +10,8 @@ The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox
     <td><div align="center"><a href="https://opencobra.github.io/cobratoolbox/latest"><img src="https://img.shields.io/badge/COBRA-docs-blue.svg?maxAge=0"></a></div></td>
     <td><div align="center"><a href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img src="https://img.shields.io/badge/COBRA-forum-blue.svg?maxAge=0"></a></div></td>
     <td><div align="center"><a href="https://github.com/opencobra/cobratoolbox/tree/master/tutorials"><img src="https://img.shields.io/badge/COBRA-tutorials-blue.svg?maxAge=0"></div></td>
-    <td><div align="center"><img src="https://img.shields.io/badge/Windows-passing-brightgreen.svg?maxAge=0"></div></td>
-    <td><div align="center"><img src="https://img.shields.io/badge/macOS-passing-brightgreen.svg?maxAge=0"></div></td>
+    <td><div align="center"><a href="https://codecov.io/gh/opencobra/cobratoolbox/branch/master"><img src="https://codecov.io/gh/opencobra/cobratoolbox/branch/master/graph/badge.svg?maxAge=0"></a></div></td>
+    <td><div align="center"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/codegrade.svg?maxAge=0" alt="Ratio of the number of inefficient code lines and the total number of lines of code (in percent). A: 0-3%, B: 3-6%, C: 6-9%, D: 9-12%, E: 12-15%, F: > 15%."></div></td>
   </tr>
   <tr>
     <th style="text-align:center">MATLAB R2016b</th>
@@ -23,17 +23,17 @@ The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox
     <td><div align="center"><a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2016b/"><img src="https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2016b"></a></div></td>
     <td><div align="center"><a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2015b/"><img src="https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2015b"></a></div></td>
     <td><div align="center"><a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2014b/"><img src="https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2014b"></a></div></td>
-    <td><div align="center"><a href="https://codecov.io/gh/opencobra/cobratoolbox/branch/master"><img src="https://codecov.io/gh/opencobra/cobratoolbox/branch/master/graph/badge.svg?maxAge=0"></a></div></td>
-    <td><div align="center"><img src="https://prince.lcsb.uni.lu/jenkins/userContent/codegrade.svg?maxAge=0" alt="Ratio of the number of inefficient code lines and the total number of lines of code (in percent). A: 0-3%, B: 3-6%, C: 6-9%, D: 9-12%, E: 12-15%, F: > 15%."></div></td>
+    <td><div align="center"><img src="https://img.shields.io/badge/Windows-passing-brightgreen.svg?maxAge=0"></div></td>
+    <td><div align="center"><img src="https://img.shields.io/badge/macOS-passing-brightgreen.svg?maxAge=0"></div></td>
   </tr>
 </table>
 
 System Requirements and Solver Installation
 -------------------------------------------
 
-![#ff0000](https://placehold.it/15/ff0000/000000?text=+) Please follow [this guide](https://github.com/opencobra/cobratoolbox/blob/master/.github/REQUIREMENTS.md) in order to configure your system properly.
+:warning: Please follow [this guide](https://github.com/opencobra/cobratoolbox/blob/master/.github/REQUIREMENTS.md) in order to configure your system properly.
 
-The default solver is `glpk`. You can install `TOMLAB`, `IBM ILOG CPLEX`, `GUROBI`, or `MOSEK` by following these [detailed instructions](https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md).
+The default solver is `glpk` (for `LP` and `MILP`). You can install `TOMLAB`, `IBM ILOG CPLEX`, `GUROBI`, or `MOSEK` by following these [detailed instructions](https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md).
 
 Installation
 ------------
@@ -42,14 +42,14 @@ Installation
     ````bash
     $ git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
     ````
-    ![#ff0000](https://placehold.it/15/ff0000/000000?text=+) Run this command in `Terminal` (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS"> and <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux">) or in `Git Bash` (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" alt="Windows">) - **not** in <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" alt="Matlab">. Although not recommended, you can download the repository as a [compressed archive](https://github.com/opencobra/cobratoolbox/archive/master.zip).
+    :warning: Run this command in `Terminal` (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS"> and <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux">) or in `Git Bash` (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" alt="Windows">) - **not** in <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" alt="Matlab">. Although not recommended, you can download the repository as a [compressed archive](https://github.com/opencobra/cobratoolbox/archive/master.zip).
 
-2. Change to the folder `cobratoolbox/` and run from <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" alt="Matlab">:
+2. Change to the folder `cobratoolbox/` and run from <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" alt="Matlab">
     ````Matlab
     >> initCobraToolbox
     ````
 
-3. You can test your installation by running from <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" alt="Matlab">:
+3. You can test your installation by running from <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" alt="Matlab">
     ````Matlab
     >> testAll
     ````
@@ -77,7 +77,7 @@ How to contribute
 <img src="https://raw.githubusercontent.com/opencobra/MATLAB.devTools/develop/assets/devTools_logo.png" height="120px"/>
 </p>
 
-![#ff0000](https://placehold.it/15/ff0000/000000?text=+) **Check out the [MATLAB.devTools](https://github.com/opencobra/MATLAB.devTools) - and contribute the smart way!**
+:bulb: **Check out the [MATLAB.devTools](https://github.com/opencobra/MATLAB.devTools) - and contribute the smart way!**
 
 - Please follow the [Style Guide](https://github.com/opencobra/cobratoolbox/blob/master/.github/STYLEGUIDE.md).
 - More information on writing a **test** is [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/TESTGUIDE.md) and a template is [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/testTemplate.m).
