@@ -1,40 +1,40 @@
 function [groups,orphans,R,C]=connectedComponents(model,type,figures)
-%Assuming two reactions are connected if they share metabolites, calculate the connected components
-%in the stoichiometric matrix, that is, the sets of reactions that share a set of metabolites
+% Assuming two reactions are connected if they share metabolites, calculate the connected components
+% in the stoichiometric matrix, that is, the sets of reactions that share a set of metabolites
 %
-% All components requires:
+% USAGE:
+%
+%    [groups, orphans, R, C]=connectedComponents(model, type, figures)
+%
+% INPUT:
+%    model:
+%
+% OPTIONAL INPUT:
+%    type:      {('allComponents'),'largestComponent'}
+%    figures:   Will generate plots of the grouping algorithm as it creates block diagonal
+%              groups in from top left to bottom right in W.
+%
+% OUTPUT:
+%    groups:                a structure array (the number of distinct groups is length(groups)) with fields:
+%
+%                             * `groups(i).num_els` - number of reactions in group `i`.
+%                             * `groups(i).block` - sub-block identity of group `i`.
+%                             * `groups(i).elements` - reactions of W that are in group `i`.
+%                             * `groups(i).degrees` - degrees of connection for each reaction in group `i`.
+%    orphans:               elements of W that were not in any group, becasue they did not
+%                           meet the constraints.
+%    R:                     reaction adjacency
+%    C:                     compound adjacency
+%
+% .. Author: - Ronan Fleming, 2012
+%
+% All components require:
 % Connected Component Analysis on an Undirected Graph by Tristan Ursell
-% http://www.mathworks.com/matlabcentral/fileexchange/35442-connected-component-analysis-on-an-undirected-graph
-% 
+% http://www.mathworks.com/matlabcentral/fileexchange/35442-connected-component-analysis-on-an-undirected-graph.
+%
 % Largest component requires:
 % gaimc : Graph Algorithms In Matlab Code by David Gleich
-% http://www.mathworks.com/matlabcentral/fileexchange/24134-gaimc-graph-algorithms-in-matlab-code
-%
-%
-%INPUT
-% model.S
-%
-%OPTIONAL INPUT
-% type      {('allComponents'),'largestComponent'}
-%
-% figures   1 will generate plots of the grouping algorithm as it creates block diagonal
-%           groups in from top left to bottom right in W.
-%
-%OUTPUT
-% groups                a structure array (the number of distinct groups is length(groups))
-%                       with fields:
-% groups(i).num_els     number of reactions in group i.
-% groups(i).block       sub-block identity of group i.
-% groups(i).elements    reactions of W that are in group i.
-% groups(i).degrees     degrees of connection for each reaction in group i.
-%
-% orphans               elements of W that were not in any group, becasue they did not
-%                       meet the constraints.
-% R         reaction adjacency
-% C         compound adjacency
-
-% Ronan Fleming, 2012
-
+% http://www.mathworks.com/matlabcentral/fileexchange/24134-gaimc-graph-algorithms-in-matlab-code.
 if ~exist('type','var')
     type='allComponents';
 end
@@ -93,7 +93,7 @@ if 0
                 continue;
             end
         end
-        
+
         if length(metAbbr)>4
             if strcmp(metAbbr(1:4),'na1[')
                 omitMet(i)=1;
@@ -164,7 +164,7 @@ if 0
                 continue;
             end
         end
-        
+
         if length(metAbbr)>5
             if strcmp(metAbbr(1:5),'nadh[')
                 omitMet(i)=1;
@@ -179,7 +179,7 @@ if 0
                 continue;
             end
         end
-        
+
         if length(metAbbr)>6
             if strcmp(metAbbr(1:6),'nadph[')
                 omitMet(i)=1;
@@ -190,9 +190,9 @@ if 0
                 continue;
             end
         end
-        
+
     end
-    
+
     %omit these metabolites
     B(omitMet,:)=0;
 end
@@ -264,7 +264,7 @@ else
     else
         [groups,orphans]=graph_analysis(R);
     end
-    
+
 end
 
 if 1
@@ -287,4 +287,3 @@ if 0
     end
     fclose(fid)
 end
-

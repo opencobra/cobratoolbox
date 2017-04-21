@@ -1,16 +1,18 @@
 function model = assignSubSystems(model,gpraFile)
-%assignSubSystems Assign each reaction a subsystem in the model structure
+% Assigns each reaction a subsystem in the model structure
 %
-% model = assignSubSystems(model,gpraFile)
+% USAGE:
 %
-%INPUTS
-% model         COBRA model structure
-% gpraFile      SimPheny GPRA file
+%    model = assignSubSystems(model, gpraFile)
 %
-%OUTPUT
-% model         COBRA model structure with subsystem assignment
+% INPUTS:
+%    model:         COBRA model structure
+%    gpraFile:      SimPheny GPRA file
 %
-% Markus Herrgard
+% OUTPUT:
+%    model:         COBRA model structure with subsystem assignment
+%
+% .. Author: - Markus Herrgard
 
 gpraModel = parseSimPhenyGPRA(gpraFile);
 

@@ -1,51 +1,50 @@
 function [ newmodel ] = addMetabolite(model,metID,metName,formula,ChEBIID,KEGGId,PubChemID, InChi,Charge, b )
-%addMetabolite adds a Metabolite to the Current Reconstruction
+% Adds a Metabolite to the Current Reconstruction
 %
-% newModel = addMetabolite(model,metID,metName,formula,ChEBIID,KEGGId,PubChemID, InChi,Charge, b )
+% USAGE:
 %
-% metID and all optional string arguments either have to be a single value or Cell
-% Arrays. Charge and b have to be double arrays
+%    newModel = addMetabolite(model, metID, metName, formula, ChEBIID, KEGGId, PubChemID, InChi, Charge, b )
 %
-%INPUTS
-% model         Cobra model structure
-% metID         The ID(s) of the metabolite(s) (will be the identifier in model.mets)
+% INPUTS:
+%    model:         Cobra model structure
+%    metID:         The ID(s) of the metabolite(s) (will be the identifier in model.mets)
 %
-%OPTIONAL INPUTS
+% OPTIONAL INPUTS:
+%    metName:       Human readable name(s) (String)
+%    formula:       The chemical formula(s) (String)
+%    ChEBIID:       The CHEBI Id(s) (String)
+%    KEGGId:        The KEGG Compound ID(s) (String)
+%    PubChemID:     The PubChemID(s) (String)
+%    InChi:         The InChi description(s) (String)
+%    Charge:        The Charge(s) (int)
+%    b:             The accumulation(s) or release(s) (double)
 %
-% metName       Human readable name(s) (String)
-% formula       The chemical formula(s) (String)
-% ChEBIID       The CHEBI Id(s) (String)
-% KEGGId        The KEGG Compound ID(s) (String)
-% PubChemID     The PubChemID(s) (String)
-% InChi         The InChi description(s) (String)
-% Charge        The Charge(s) (int)
-% b             The accumulation(s) or release(s) (double)
+% OUTPUT:
+%    newModel:      COBRA model with added metabolite(s)
 %
-%OUTPUT
-% newModel      COBRA model with added metabolite(s)
+% .. Author: - Thomas Pfau 15/12/2014
 %
-% Thomas Pfau 15/12/2014
-
-%Convert into cell array
+% `metID` and all optional string arguments either have to be a single value or cell
+% arrays. `Charge` and `b` have to be double arrays.
 
 varName={'char','cell','numeric','logical'};
-
+%Convert into cell array
 if ~isempty(metID)
     if ~isa(metID,'cell')
         for i=1:numel(varName);
             if isa(metID,varName{i});
                 type=i;
             end
-            
+
         end
         if type==1;
             metID = {metID};
         else
             %errorMsg=sprintf('The type of the metID should be ''char'',but here the provided metID is ''%d''',varName{type});
             errorMsg=varName{type};
-            
-            errorMsg=['The type of the provided metID should be ''char'' or ''cell'', but here the provided metID is ', errorMsg]; 
-            errordlg(errorMsg);            
+
+            errorMsg=['The type of the provided metID should be ''char'' or ''cell'', but here the provided metID is ', errorMsg];
+            errordlg(errorMsg);
         end
     end
 else
@@ -70,7 +69,7 @@ end
 if nargin < 9
     Charge = zeros(1,numel(metID));
 else
-    
+
     if numel(metID) ~= numel(Charge)
         fprintf('Inconsistent Argument length metID (%i) and Charge(%i)\n',numel(metID),numel(Charge));
         return
@@ -109,7 +108,7 @@ else
             return
          else
             PubChemID = {PubChemID};
-         end        
+         end
     end
     if numel(metID) ~= numel(PubChemID)
         fprintf('Inconsistent Argument length metID (%i) and PubChemID(%i)\n',numel(metID),numel(PubChemID));
@@ -150,7 +149,7 @@ else
     if numel(metID) ~= numel(ChEBIID)
         fprintf('Inconsistent Argument length metID (%i) and ChEBIID(%i)\n',numel(metID),numel(ChEBIID));
         return
-    end    
+    end
 end
 
 if nargin < 4
@@ -197,10 +196,10 @@ for i = 1:numel(metID)
         if (isfield(model,'metNames'))      %Prompts to add missing info if desired
             cmetName = metName{i};
             if strcmp(cmetName,'')
-                model.metNames{end+1,1} = regexprep(cmetID,'(\[.+\]) | (\(.+\))','') ;                
+                model.metNames{end+1,1} = regexprep(cmetID,'(\[.+\]) | (\(.+\))','') ;
                 warning(['Metabolite name for ' metID{i} ' set to ' model.metNames{end}]);
             else
-                model.metNames{end+1,1} = metName{i} ;                
+                model.metNames{end+1,1} = metName{i} ;
         %          model.metNames(end) = cellstr(input('Enter complete metabolite name, if available:', 's'));
         end
         if (isfield(model,'b'))      %Prompts to add missing info if desired
@@ -232,4 +231,3 @@ end
 newmodel = model;
 
 end
-
