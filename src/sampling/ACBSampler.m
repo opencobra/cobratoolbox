@@ -1,26 +1,26 @@
 function ACBSampler(model,warmupPoints,fileName,nFiles,pointsPerFile,nMixPts,nWarmupNeeded,saveMatFlag,biasOpt)
-% ACBSampler Artificial centering boundary sampler
+% Artificial centering boundary sampler
 %
-% ACBSampler(model,warmupPoints,fileName,nFiles,pointsPerFile,nMixPts,nWarmupNeeded,saveMatFlag,biasOpt)
+% USAGE:
 %
-%INPUTS
-% model         Model structure
-% warmupPoints  Warmup points
-% fileName      Base fileName for saving results
-% nFiles        Number of sample point files created
-% pointsPerFile Number of points per file saved
-% nMixPts       Number of steps initially used for mixing (not saved)
+%    ACBSampler(model, warmupPoints, fileName, nFiles, pointsPerFile, nMixPts, nWarmupNeeded, saveMatFlag, biasOpt)
 %
-%OPTIONAL INPUTS
-% nWarmupNeeded Number of warmup points needed (Default = 20000)
-% saveMatFlag   Save points in mat format vs txt format (Default = true)
-% biasOpt       Options for biasing sampler (Default = no bias)
-%   rxns
-%   values
-%   stds
-%   percThr
+% INPUTS:
+%    model:           Model structure
+%    warmupPoints:    Warmup points
+%    fileName:        Base `fileName` for saving results
+%    nFiles:          Number of sample point files created
+%    pointsPerFile:   Number of points per file saved
+%    nMixPts:         Number of steps initially used for mixing (not saved)
 %
-% Christian Barrett and Markus Herrgard 8/24/06
+% OPTIONAL INPUTS:
+%    nWarmupNeeded:   Number of warmup points needed (Default = 20000)
+%    saveMatFlag:     Save points in mat format vs txt format (Default = true)
+%    biasOpt:         Options for biasing sampler (Default = no bias)
+%
+% .. Authors:
+%       - Christian Barrett 8/24/06
+%       - Markus Herrgard 8/24/06
 
 if (nargin < 7)
     % Expands the number of warmup points if the initially provided set is too
@@ -155,7 +155,7 @@ for fileNo = 1:nFiles
                       biasDistThisStep,minBiasDist,maxBiasDist,mean(biasDist),nWarmup);
               fprintf(fidErr,'%d\t%f\t%f\t%f\t%f\t%d\n',totalPointCount, ...
                       biasDistThisStep,minBiasDist,maxBiasDist,mean(biasDist),nWarmup);
-              
+
             end
 
             if (biasDistThisStep < maxBiasDist)
@@ -166,7 +166,7 @@ for fileNo = 1:nFiles
         else
             replaceWarmup = true;
         end
-        
+
         nWarmup = size(warmupPoints,2);
         if (replaceWarmup)
             if (biasFlag)
@@ -189,7 +189,7 @@ for fileNo = 1:nFiles
                 end
             end
         end
-        
+
         % Count the total number of points generated
         totalPointCount = totalPointCount + 1;
 
@@ -226,6 +226,3 @@ for fileNo = 1:nFiles
 end % Files
 
 fclose(fidErr);
-
-
-

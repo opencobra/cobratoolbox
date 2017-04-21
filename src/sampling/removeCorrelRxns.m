@@ -1,22 +1,24 @@
 function [selRxns,rxnSets,rxnList,Rfilt] = removeCorrelRxns(model,R,correlCutoff)
-%removeCorrelRxns Remove fully or almost fully correlated reactions
+% Removes fully or almost fully correlated reactions
 %
-% [selRxns,rxnSets,rxnList,Rfilt] = removeCorrelRxns(model,R,correlCutoff)
+% USAGE:
 %
-%INPUTS
-% model         COBRA model structure
-% R             Correl coefficient matrix
+%    [selRxns, rxnSets, rxnList, Rfilt] = removeCorrelRxns(model, R, correlCutoff)
 %
-%OPTIONAL INPUT
-% correlCutoff  Cutoff level for fully correlated rxns (Default 0.99999)
+% INPUTS:
+%    model:         COBRA model structure
+%    R:             Correl coefficient matrix
 %
-%OUTPUTS
-% selRxns       true/false vector that allow selecting non-redundant data
-% rxnSets       Correlated reaction sets
-% rxnList       Reaction list with correlated reactions concatenated
-% Rfilt         Filtered R
+% OPTIONAL INPUT:
+%    correlCutoff:  Cutoff level for fully correlated `rxns` (Default 0.99999)
 %
-% Markus Herrgard 3/21/07
+% OUTPUTS:
+%    selRxns:       true/false vector that allow selecting non-redundant data
+%    rxnSets:       Correlated reaction sets
+%    rxnList:       Reaction list with correlated reactions concatenated
+%    Rfilt:         Filtered `R`
+%
+% .. Author: - Markus Herrgard 3/21/07
 
 if (nargin < 3)
     correlCutoff = 1-1e-5;
@@ -38,7 +40,7 @@ for rxnID = 1:nRxns
         correlRxns = find(abs(R(rxnID,:)) >= correlCutoff);
         rxnSets{newRxnCnt} = rxns(correlRxns);
         if (~isempty(correlRxns))
-            alreadyIncluded(correlRxns) = true;            
+            alreadyIncluded(correlRxns) = true;
         end
     end
 end
@@ -48,19 +50,19 @@ Rfilt = R(selRxns,selRxns);
 
 for i = 1:length(rxnSets)
     setSize = length(rxnSets{i});
-    if (setSize > 1) 
+    if (setSize > 1)
         tmpString = [];
         for j = 1:setSize
             if (j == 1)
                 divider = '';
-            else 
+            else
                 divider = '/';
             end
             tmpString = [tmpString divider rxnSets{i}{j}];
         end
         rxnList{i} = tmpString;
     else
-        try 
+        try
             rxnList{i} = rxnSets{i}{1};
         catch
            rxnSets{i}

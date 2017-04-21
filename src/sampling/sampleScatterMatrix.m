@@ -1,32 +1,33 @@
 function sampleScatterMatrix(rxnNames,model,sample,nPoints,fontSize,dispRFlag,rxnNames2)
-%sampleScatterMatrix Draws a scatterplot matrix with pairwise scatterplots
-%for multiple reactions
+% Draws a scatterplot matrix with pairwise scatterplots
+% for multiple reactions
 %
-% sampleScatterMatrix(rxnNames,model,sample,nPoints,fontSize,dispRFlag,rxnNames2)
+% USAGE:
 %
-%INPUTS
-% rxnNames      Cell array of reaction names to be plotted
-% model         Model structure
-% sample        Samples to be analyzed (nRxns x nSamples)
+%    sampleScatterMatrix(rxnNames, model, sample, nPoints, fontSize, dispRFlag, rxnNames2)
 %
-%OPTIONAL INPUTS
-% nPoints       How many sample points to plot (Default nSamples)
-% fontSize      Font size for labels (Default calculated based on
-%               number of reactions)
-% dispRFlag     Display correlation coefficients (Default false)
-% rxnNames2     Optional second set of reaction names
+% INPUTS:
+%    rxnNames:      Cell array of reaction names to be plotted
+%    model:         Model structure
+%    sample:        Samples to be analyzed (`nRxns` x `nSamples`)
 %
-% Examples of usage:
+% OPTIONAL INPUTS:
+%    nPoints:       How many sample points to plot (Default `nSamples`)
+%    fontSize:      Font size for labels (Default calculated based on
+%                   number of reactions)
+%    dispRFlag:     Display correlation coefficients (Default false)
+%    rxnNames2:     Optional second set of reaction names
 %
-% 1) sampleScatterMatrix({'PFK','PYK','PGL'},model,sample);
-%    Plots the scatterplots only between the three reactions listed -
-%    histograms for each reaction will be on the diagonal
+% EXAMPLES:
 %
-% 2) sampleScatterMatrix({'PFK','PYK','PGL'},model,sample,100,10,true,{'ENO','TPI');
-%    Plots the scatterplots between each of the first set of reactions and
-%    each of the second set of reactions. No histograms will be shown.
+%    %Plots the scatterplots only between the three reactions listed -
+%    %histograms for each reaction will be on the diagonal
+%    sampleScatterMatrix({'PFK','PYK','PGL'},model,sample);
+%    %Plots the scatterplots between each of the first set of reactions and
+%    %each of the second set of reactions. No histograms will be shown.
+%    sampleScatterMatrix({'PFK','PYK','PGL'},model,sample,100,10,true,{'ENO','TPI');
 %
-% Markus Herrgard 9/14/06
+% .. Author: - Markus Herrgard 9/14/06
 
 [isInModel,rxnInd] = ismember(rxnNames,model.rxns);
 rxnNames = rxnNames(isInModel);

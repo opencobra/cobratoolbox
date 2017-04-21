@@ -1,21 +1,24 @@
 function sampleStats = calcSampleStats(samples)
-%calcSampleStats Calculate sample modes, means, standard devs, and medians
+% Calculate sample modes, means, standard devs, and medians of the sample
 %
-% sampleStats = calcSampleStats(samples)
+% USAGE:
 %
-%INPUT
-% samples       Samples to analyze
+%    sampleStats = calcSampleStats(samples)
 %
-%OUTPUT
-% sampleStats           Structure with the following fields
-%   mean
-%   std
-%   mode
-%   median
-%   skew
-%   kurt
+% INPUT:
+%    samples:       Samples to analyze
 %
-% Markus Herrgard 8/22/06
+% OUTPUT:
+%    sampleStats:           Structure with the following fields:
+%
+%                             * mean
+%                             * std
+%                             * mode
+%                             * median
+%                             * skew
+%                             * kurt
+%
+% .. Author: - Markus Herrgard 8/22/06
 
 if (~iscell(samples))
     samplesTmp = samples;
@@ -32,4 +35,3 @@ for i = 1:length(samples)
     sampleStats.skew(:,i) = skewness(samples{i}')';
     sampleStats.kurt(:,i) = kurtosis(samples{i}')';
 end
-
