@@ -288,13 +288,13 @@ end
 % model as an educational guide. EcoSal Plus, 1(10).
 % 
 % [3] Orth, J. D., Thiele I., and Palsson, B. Ø. (2010). What is flux balance 
-% analysis? Nat. Biotechnol., 28(3), 245?248.
+% analysis? Nat. Biotechnol., 28(3), 245-248.
 % 
 % [4]  Zhang, Y. and Gao, L. (2001). On Numerical Solution of the Maximum 
-% Volume Ellipsoid Problem. SIAM J. Optimiz., 14(1), 53?76.
+% Volume Ellipsoid Problem. SIAM J. Optimiz., 14(1), 53-76.
 % 
 % [5] Berbee, H. C. P., Boender, C. G. E., Rinnooy Ran, A. H. G., Scheffer, 
 % C. L., Smith, R. L., Telgen, J. (1987). Hit-and-run algorithms for the identification 
-% of nonredundant linear inequalities. Math. Programming, 37(2), 184?207.
+% of nonredundant linear inequalities. Math. Programming, 37(2), 184-207.
 % 
 %
