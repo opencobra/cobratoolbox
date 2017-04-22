@@ -54,8 +54,11 @@ if nargin < 8
     inclExchFlag = false;
 end
 
-if (pValFlag)
+if pValFlag
     error('Not implemented yet')
+    % minP = min(min(data(data ~= 0)));
+    % data(data == 0) = minP;
+    % data = -norminv(data, 0, 1);
 end
 
 [nRxnsTot, nData] = size(data);
