@@ -121,7 +121,7 @@ sel_ic = zeros(length(sel_int),1);
 sel_ic(ind_ic) = 1;
 % Number of inner problem primal varibles with no integers associated with
 % them & not part of the special constraint set
-n_nint = n - n_int - sum(sel_ic);
+% n_nint = n - n_int - sum(sel_ic);
 % Number of reversible rxns with integer
 [n_intr,tmp] = size(rev_int);
 % Number of measured fluxes (count only positive directions)
@@ -177,6 +177,7 @@ c_bl(2*n+2*n_int+m+n_ic+n_m+1:2*n+2*n_int+m+n_ic+2*n_m) = wt_m;
 % Create necessary integer matrices (for SF/n_int sets)
 Iint = selMatrix(sel_int);
 Inint = selMatrix(~sel_int & ~sel_ic);
+n_nint = size(Inint, 1);
 Iic = sparse(n_ic,n);
 for i = 1:length(ind_ic)
     idx_ic = ind_ic(i);
