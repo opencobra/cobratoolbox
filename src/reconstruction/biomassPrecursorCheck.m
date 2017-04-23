@@ -1,26 +1,22 @@
 function [missingMets,presentMets] = biomassPrecursorCheck(model)
-%biomassPrecursorCheck   Checks if biomass precursors are able to be
-%synthesized. 
+% Checks if biomass precursors are able to be
+% synthesized.
 %
-% [missingMets,presentMets] = checkBiomassPrecursors(model)
+% [missingMets, presentMets] = checkBiomassPrecursors(model)
 %
-%INPUT
-% model         COBRA model structure
+% INPUT:
+%    model:         COBRA model structure
 %
-%OUTPUTS
-% missingMets   List of biomass precursors that are not able to be synthesized
-% presentMets   List of biomass precursors that are able to be synthesized
+% OUTPUTS:
+%    missingMets:   List of biomass precursors that are not able to be synthesized
+%    presentMets:   List of biomass precursors that are able to be synthesized
 %
-% NOTE: May identify metabolites that are typically recycled within the
+% .. Authors: - Pep Charusanti & Richard Que (July 2010)
+% May identify metabolites that are typically recycled within the
 % network such as ATP, NAD, NADPH, ACCOA.
-%
-%
-% Pep Charusanti & Richard Que (July 2010)
-%--------------------------------------------------------------------------
 
-
-% FIND COLUMN IN S-MATRIX THAT CORRESPONDS TO BIOMASS EQUATION
 colS_biomass = find(model.c);
+% FIND COLUMN IN S-MATRIX THAT CORRESPONDS TO BIOMASS EQUATION
 
 % LIST ALL METABOLITES IN THE BIOMASS FUNCTION
 biomassMetabs = model.mets(model.S(:,colS_biomass)<0);
@@ -32,11 +28,11 @@ biomassMetabs = model.mets(model.S(:,colS_biomass)<0);
 k=1;
 m=1;
 % ADD DEMAND REACTIONS
-[model_newDemand,addedRxns] = addDemandReaction(model,biomassMetabs);   
+[model_newDemand,addedRxns] = addDemandReaction(model,biomassMetabs);
 for i=1:length(biomassMetabs)
 %     [model_newDemand,addedRxn] = addDemandReaction(model,biomassMetabs(i));   % ADD DEMAND REACTION
-    model_newDemand.c = zeros(length(model_newDemand.c),1);                     % CHANGE OBJECTIVE FUNCTION TO NEW DEMAND RXN   
-    model_newDemand.c(strmatch(addedRxns{i},model_newDemand.rxns)) = 1;         
+    model_newDemand.c = zeros(length(model_newDemand.c),1);                     % CHANGE OBJECTIVE FUNCTION TO NEW DEMAND RXN
+    model_newDemand.c(strmatch(addedRxns{i},model_newDemand.rxns)) = 1;
     solution = optimizeCbModel(model_newDemand);                                % OPTIMIZE
     if solution.f == 0                                                          % MAKE LIST OF WHICH BIOMASS PRECURSORS ARE ...
         missingMets(k) = biomassMetabs(i);                                      %  SYNTHESIZED AND WHICH ARE NOT
@@ -48,20 +44,5 @@ for i=1:length(biomassMetabs)
 end
 
 
-missingMets = columnVector(missingMets); 
+missingMets = columnVector(missingMets);
 presentMets = columnVector(presentMets);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

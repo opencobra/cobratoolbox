@@ -1,38 +1,37 @@
 function model = createModel(rxnAbrList,rxnNameList,rxnList,revFlagList,...
     lowerBoundList,upperBoundList,subSystemList,grRuleList,geneNameList,...
     systNameList)
-%createModel Create a COBRA model from inputs or an empty model
-%structure if no inputs are provided.
+% Create a COBRA model from inputs or an empty model
+% structure if no inputs are provided.
 %
-% model = createModel(rxnAbrList,rxnNameList,rxnList,revFlagList,...
-%    lowerBoundList,upperBoundList,subSystemList,grRuleList,geneNameList,...
-%    systNameList)
+% USAGE:
 %
-%INPUTS
-% rxnAbrList            List of names of the new reactions
-% rxnNameList           List of names of the new reactions
-% rxnList               List of reactions: format: {'A -> B + 2 C'}
-%                       If the compartment of a metabolite is not
-%                       specified, it is assumed to be cytoplasmic, i.e. [c]
+%    model = createModel(rxnAbrList, rxnNameList, rxnList, revFlagList, lowerBoundList, upperBoundList, subSystemList, grRuleList, geneNameList, systNameList)
 %
-%OPTIONAL INPUTS
-% revFlagList           List of reversibility flag (opt, default = 1)
-% lowerBoundList        List of lower bound (Default = 0 or -vMax)
-% upperBoundList        List of upper bound (Default = vMax)
-% subSystemList         List of subsystem (Default = '')
-% grRuleList            List of gene-reaction rule in boolean format (and/or allowed)
-%                       (Default = '');
-% geneNameList          List of gene names (used only for translation
-%                       from common gene names to systematic gene names)
-% systNameList          List of systematic names
+% INPUTS:
+%    rxnAbrList:            List of names of the new reactions
+%    rxnNameList:           List of names of the new reactions
+%    rxnList:               List of reactions: format: {`A -> B + 2 C`}
+%                           If the compartment of a metabolite is not
+%                           specified, it is assumed to be cytoplasmic, i.e. [`c`]
 %
-%OUTPUT
-% model                 COBRA model structure
+% OPTIONAL INPUTS:
+%    revFlagList:           List of reversibility flag (opt, default = 1)
+%    lowerBoundList:        List of lower bound (Default = 0 or ``-vMax`)
+%    upperBoundList:        List of upper bound (Default = `vMax`)
+%    subSystemList:         List of subsystem (Default = '')
+%    grRuleList:            List of gene-reaction rule in boolean format (and/or allowed)
+%                           (Default = '');
+%    geneNameList:          List of gene names (used only for translation
+%                           from common gene names to systematic gene names)
+%    systNameList:          List of systematic names
 %
-% Ines Thiele 01/09
+% OUTPUT:
+%    model:                 COBRA model structure
+%
+% .. Author: - Ines Thiele 01/09
 
-%create blank model
-model = struct();
+model = struct(); %create blank model
 model.mets=cell(0,1);model.metNames=cell(0,1);model.metFormulas=cell(0,1);
 model.rxns=cell(0,1);model.rxnNames=cell(0,1);model.subSystems=cell(0,1);
 model.lb=zeros(0,1);model.ub=zeros(0,1);model.rev=zeros(0,1);
@@ -83,7 +82,7 @@ for i = 1 : nRxns
     end
     if ~isempty(grRuleList{i})
         if ~isempty(strfind(grRuleList{i},','))
-          grRuleList{i}= (regexprep(grRuleList{i},',',' or ')); 
+          grRuleList{i}= (regexprep(grRuleList{i},',',' or '));
         end
         if ~isempty(strfind(grRuleList{i},'&'))
            grRuleList{i} = (regexprep(grRuleList{i},'&',' and '));
@@ -95,7 +94,7 @@ for i = 1 : nRxns
     [metaboliteList,stoichCoeffList,revFlag_i] = parseRxnFormula(rxnList{i});
     if ~lbGivenFlag
         if ~revGivenFlag
-            %if both revFlag and lb are not given, update the revFlag 
+            %if both revFlag and lb are not given, update the revFlag
             %implied by the rxn formula
             revFlagList(i) = revFlag_i;
         end

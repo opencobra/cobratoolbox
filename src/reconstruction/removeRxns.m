@@ -1,22 +1,25 @@
 function modelOut = removeRxns(model,rxnRemoveList,irrevFlag,metFlag)
-%removeRxns Remove reactions from a model
+% Removes reactions from a model
 %
-% model = removeRxns(model,rxnRemoveList,irrevFlag,metFlag)
+% USAGE:
 %
-%INPUTS
-% model             COBRA model structure
-% rxnRemoveList     Cell array of reaction names to be removed
+%    model = removeRxns(model, rxnRemoveList, irrevFlag, metFlag)
 %
-%OPTIONAL INPUTS
-% irrevFlag         Irreverseble (true) or reversible (false) reaction
-%                   format (Default = false)
-% metFlag           Remove unused metabolites (Default = true)
+% INPUTS:
+%    model:             COBRA model structure
+%    rxnRemoveList:     Cell array of reaction names to be removed
 %
-%OUTPUT
-% model             COBRA model w/o selected reactions
+% OPTIONAL INPUTS:
+%    irrevFlag:         Irreverseble (true) or reversible (false) reaction
+%                       format (Default = false)
+%    metFlag:           Remove unused metabolites (Default = true)
 %
-% Markus Herrgard 7/22/05
-% Fatima Liliana Monteiro and Hulda Haraldsdóttir, November 2016
+% OUTPUT:
+%    model             COBRA model w/o selected reactions
+%
+% .. Authors:
+%       - Markus Herrgard 7/22/05
+%       - Fatima Liliana Monteiro and Hulda Haraldsdóttir, November 2016
 
 
 if nargin < 3

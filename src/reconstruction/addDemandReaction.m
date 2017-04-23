@@ -1,19 +1,22 @@
 function [model,rxnNames] = addDemandReaction(model,metaboliteNameList)
-% addDemandReaction adds demand reactions for a set of metabolites
-% The reaction names for the demand reactions will be DM_[metaboliteName]
+% Adds demand reactions for a set of metabolites
+% The reaction names for the demand reactions will be `DM_[metaboliteName]``
 %
-% model = addDemandReaction(model,metaboliteNameList)
+% USAGE:
 %
-% INPUTS
-% model                 COBRA model structure
-% metaboliteNameList    List of metabolite names (cell array)
+%    model = addDemandReaction(model, metaboliteNameList)
 %
-% OUTPUTS
-% model                 COBRA model structure with added demand reactions
-% rxnNames              List of added reactions
+% INPUTS:
+%    model:                 COBRA model structure
+%    metaboliteNameList:    List of metabolite names (cell array)
 %
-% Markus Herrgard 5/8/07
-% Ines Thiele 03/09 - Corrected reaction coefficient for demand reaction
+% OUTPUTS:
+%    model:                 COBRA model structure with added demand reactions
+%    rxnNames:              List of added reactions
+%
+% .. Authors:
+%       - Markus Herrgard 5/8/07
+%       - Ines Thiele 03/09 - Corrected reaction coefficient for demand reaction
 
 if (~iscell(metaboliteNameList))
     tmp = metaboliteNameList;

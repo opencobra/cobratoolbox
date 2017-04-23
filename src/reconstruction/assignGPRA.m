@@ -1,16 +1,18 @@
 function model = assignGPRA(model,gpraFile)
-%assignGPRA Assign each reaction a Gene-protein-reaction association
+% Assigns each reaction a Gene-protein-reaction association
 %
-% model = assignGPRA(model,gpraFile)
+% USAGE:
 %
-%INPUTS
-% model         COBRA model structure
-% gpraFile      SimPheny GPRA file
+%    model = assignGPRA(model, gpraFile)
 %
-%OUTPUT
-% model         COBRA model with gene-protein-reaction assoction
+% INPUTS:
+%    model:         COBRA model structure
+%    gpraFile:      SimPheny GPRA file
 %
-% 10/4/06 Markus Herrgard
+% OUTPUT:
+%    model:         COBRA model with gene-protein-reaction assoction
+%
+% .. Author: -  Markus Herrgard 10/4/06
 
 [rxnList,genes,rxnGeneMat,subSystems] = parseSimPhenyGPRA(gpraFile);
 

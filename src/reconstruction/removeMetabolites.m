@@ -1,21 +1,24 @@
 function model = removeMetabolites(model,metaboliteList,removeRxnFlag)
-%removeMetabolites Remove metabolites from a model
+% Removes metabolites from a model
 %
-% model = removeMetabolites(model,metaboliteList,removeRxnFlag)
+% USAGE:
 %
-%INPUTS
-% model             COBRA model structure
-% metaboliteList    List of metabolites to be removed
+%    model = removeMetabolites(model, metaboliteList, removeRxnFlag)
 %
-%OPTIONAL INPUT
-% removeRxnFlag     Remove reactions with no metabolites (Default = true)
+% INPUTS:
+%    model:             COBRA model structure
+%    metaboliteList:    List of metabolites to be removed
 %
-%OUTPUT
-% model             COBRA model with removed metabolites
+% OPTIONAL INPUT:
+%    removeRxnFlag:     Remove reactions with no metabolites (Default = true)
 %
-% Markus Herrgard 6/5/07
-% Uri David Akavia 1/18/14
-% Fatima Liliana Monteiro 17/11/16 add an if condition to remove metabolites just from fields with same length
+% OUTPUT:
+%    model:             COBRA model with removed metabolites
+%
+% .. Authors:
+%       - Markus Herrgard 6/5/07
+%       - Uri David Akavia 1/18/14
+%       - Fatima Liliana Monteiro 17/11/16 add an if condition to remove metabolites just from fields with same length
 
 if (nargin < 3)
     removeRxnFlag = true;
