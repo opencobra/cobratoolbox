@@ -3,7 +3,7 @@ function solution = solveCobraMIQP(MIQPproblem,varargin)
 %
 % solution = solveCobraQP(MIQPproblem,solver,verbFlag,solverParams)
 %
-% % Solves problems of the type 
+% % Solves problems of the type
 %
 %      min   osense * 0.5 x' * F * x + osense * c' * x
 %      s/t   lb <= x <= ub
@@ -20,8 +20,8 @@ function solution = solveCobraMIQP(MIQPproblem,varargin)
 %  lb               Lower bound vector
 %  ub               Upper bound vector
 %  osense           Objective sense (-1 max, +1 min)
-%  csense           Constraint senses, a string containting the constraint 
-%                   sense for each row in A ('E', equality, 'G' greater 
+%  csense           Constraint senses, a string containting the constraint
+%                   sense for each row in A ('E', equality, 'G' greater
 %                   than, 'L' less than).
 %
 %OPTIONAL INPUTS
@@ -30,7 +30,7 @@ function solution = solveCobraMIQP(MIQPproblem,varargin)
 %
 % parameters    Structure containing optional parameters as fields.
 %  printLevel   Print level for solver
-%  saveInput    Saves LPproblem to filename specified in field. 
+%  saveInput    Saves LPproblem to filename specified in field.
 %               Setting parameters = 'default' uses default setting set in
 %               getCobraSolverParameters.
 %
@@ -49,7 +49,7 @@ function solution = solveCobraMIQP(MIQPproblem,varargin)
 %                       0   Infeasible QP
 %                      -1   No optimal solution found (time limit etc)
 %                       3   Solution exists but with problems
-%  origStat         Original status returned by the specific solver 
+%  origStat         Original status returned by the specific solver
 %  time             Solve time in seconds
 %
 %
@@ -107,10 +107,10 @@ switch solver
         tomlabProblem  = miqpAssign(osense*F, osense*c, A, b_L, b_U, lb, ub,[], ...
                              intVars, [],[],[],'CobraMIQP');
         tomlabProblem.CPLEX.LogFile = 'MIQPproblem.log';
-        
+
         %optional parameters
         PriLvl = printLevel;
-        
+
         %Save Input if selected
         if ~isempty(saveInput)
             fileName = parameters.saveInput;
@@ -123,7 +123,7 @@ switch solver
         tomlabProblem.MIP.cpxControl.TILIM = timeLimit; % time limit
         tomlabProblem.MIP.cpxControl.THREADS = 1; % by default use only one thread
         Result = tomRun('cplex', tomlabProblem, PriLvl);
-        
+
         x = Result.x_k;
         f = osense*Result.f_k;
         stat = Result.Inform;
@@ -143,7 +143,7 @@ switch solver
             solStat = 3; % Solution exists, but either scaling problems or not proven to be optimal
         end
             %%
-    case 'gurobi'
+    case 'gurobi_mex'
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
         %
@@ -153,15 +153,15 @@ switch solver
         clear opts            % Use the default parameter settings
         if printLevel == 0
            % Version v1.10 of Gurobi Mex has a minor bug. For complete silence
-           % Remove Line 736 of gurobi_mex.c: mexPrintf("\n"); 
+           % Remove Line 736 of gurobi_mex.c: mexPrintf("\n");
            opts.Display = 0;
            opts.DisplayInterval = 0;
         else
            opts.Display = 1;
         end
 
-        
-        
+
+
         if (isempty(csense))
             clear csense
             csense(1:length(b),1) = '=';
@@ -171,8 +171,8 @@ switch solver
             csense(csense == 'E') = '=';
             csense = csense(:);
         end
-        
-        % Gurobi passes individual terms instead of an F matrix. qrow and 
+
+        % Gurobi passes individual terms instead of an F matrix. qrow and
         % qcol specify which variables are multipled to get each term,
         % while qval specifies the coefficients of each term.
 
@@ -180,9 +180,9 @@ switch solver
         qrow=qrow'-1;   % -1 because gurobi numbers indices from zero, not one.
         qcol=qcol'-1;
         qval=0.5*qval';
-        
-        opts.QP.qrow = int32(qrow); 
-        opts.QP.qcol = int32(qcol); 
+
+        opts.QP.qrow = int32(qrow);
+        opts.QP.qcol = int32(qcol);
         opts.QP.qval = qval;
         opts.Method = 0;    % 0 - primal, 1 - dual
         opts.Presolve = -1; % -1 - auto, 0 - no, 1 - conserv, 2 - aggressive
@@ -190,7 +190,7 @@ switch solver
         opts.IntFeasTol = 1e-5;
         opts.OptimalityTol = 1e-6;
         %opt.Quad=1;
-        
+
         %gurobi_mex doesn't cast logicals to doubles automatically
     	c = double(c);
         [x,f,origStat,output,y] = gurobi_mex(c,osense,sparse(A),b, ...
@@ -207,13 +207,13 @@ switch solver
            stat = -1; % Solution not optimal or solver problem
         end
         solStat = stat;
-    case 'gurobi5'
+    case 'gurobi'
      %% gurobi5
      % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
         resultgurobi = struct('x',[],'objval',[],'pi',[]);
         clear params            % Use the default parameter settings
-        if printLevel == 0 
+        if printLevel == 0
             params.OutputFlag = 0;
             params.DisplayInterval = 1;
         else
@@ -226,7 +226,7 @@ switch solver
         params.IntFeasTol = 1e-5;
         params.FeasibilityTol = 1e-6;
         params.OptimalityTol = 1e-6;
-        
+
         if (isempty(MIQPproblem.csense))
             clear MIQPproblem.csense
             MIQPproblem.csense(1:length(b),1) = '=';
@@ -236,13 +236,13 @@ switch solver
             MIQPproblem.csense(MIQPproblem.csense == 'E') = '=';
             MIQPproblem.csense = MIQPproblem.csense(:);
         end
-	
+
         if MIQPproblem.osense == -1
             MIQPproblem.osense = 'max';
         else
             MIQPproblem.osense = 'min';
         end
-        
+
         MIQPproblem.vtype = vartype;
         MIQPproblem.Q = 0.5*sparse(MIQPproblem.F);
         MIQPproblem.modelsense = MIQPproblem.osense;
@@ -251,7 +251,7 @@ switch solver
         solStat = resultgurobi.status;
         if strcmp(resultgurobi.status,'OPTIMAL')
            stat = 1; % Optimal solution found
-           
+
            if exist('resultgurobi.pi')
                [x,f,y] = deal(resultgurobi.x,resultgurobi.objval,resultgurobi.pi);
            else
@@ -276,6 +276,6 @@ t = etime(clock, t_start);
 solution.obj = f;
 solution.solver = solver;
 solution.stat = solStat;
-solution.origStat = stat; 
+solution.origStat = stat;
 solution.time = t;
 solution.full = x;

@@ -117,7 +117,10 @@ end
 if ~exist('minNorm','var')
     minNorm=0;
 end
-
+if printLevel==0
+    %turn off solver iterations that is on by default in Linux
+    cpxControl.SCRIND = 0;
+end
 if basisReuse
     if isfield(LPProblem,'LPBasis')
         basis=LPProblem.LPBasis;

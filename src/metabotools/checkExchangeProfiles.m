@@ -1,21 +1,23 @@
 function [mapped_exchanges, minMax, mapped_uptake, mapped_secretion] = checkExchangeProfiles(samples, path ,nmets)
-%[mapped_exchanges, minMax, mapped_uptake, mapped_secretion] = checkExchangeProfiles(samples, path ,nmets)
-%
 % The Function generates a summary of the number of uptake exchanges
 % and secretion exchanges per samples.
 %
-% INPUT
-%   samples 
-%   path     path to output of make exchangeprofiles
-%   nmets    number of metabolites in data set (max number of uptake or secreted metabolites)
+% USAGE:
 %
-% OUTPUT
-%   mapped_exchanges    table listing for each sample the number of uptake and secretion that were mapped to the model
-%   minMax              lists minimal and maximal number of uptakes, secretions, and total number of exchanges 
-%   mapped_uptake       table summarizing for each sample the uptake exchange reactions
-%   mapped_secretion    table summarizing for each sample the secretion exchange reactions
+%    [mapped_exchanges, minMax, mapped_uptake, mapped_secretion] = checkExchangeProfiles(samples, path, nmets)
 %
-%% Maike K. Aurich 06/08/15
+% INPUTS:
+%    samples: 
+%    path:     path to output of make exchangeprofiles
+%    nmets:    number of metabolites in data set (max number of uptake or secreted metabolites)
+%
+% OUTPUTS:
+%    mapped_exchanges:    table listing for each sample the number of uptake and secretion that were mapped to the model
+%    minMax:              lists minimal and maximal number of uptakes, secretions, and total number of exchanges 
+%    mapped_uptake:       table summarizing for each sample the uptake exchange reactions
+%    mapped_secretion:    table summarizing for each sample the secretion exchange reactions
+%
+% .. Author: - Maike K. Aurich 06/08/15
 
 mapped_uptake{nmets,length(samples)}=[];
 mapped_secretion{nmets,length(samples)}=[];

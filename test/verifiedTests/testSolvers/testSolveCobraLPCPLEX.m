@@ -11,18 +11,21 @@
 % Note:
 %       test is performed on objective as solution can vary between machines, solver version etc..
 
+global CBTDIR
+
 % define global paths
-global path_TOMLAB
-global path_ILOG_CPLEX
+global TOMLAB_PATH
+global ILOG_CPLEX_PATH
 
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testSolveCobraLPCPLEX'));
+cd(fileDir);
 
 load testDataSolveCobraLPCPLEX;
-load('ecoli_core_model', 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 tol = 1e-2;%set tolerance
 ecoli_blckd_rxn = {'EX_fru(e)', 'EX_fum(e)', 'EX_gln_L(e)', 'EX_mal_L(e)',...
@@ -34,9 +37,9 @@ solverPkgs = {'tomlab_cplex', 'ILOGsimple', 'ILOGcomplex'};
 for k = 1:length(solverPkgs)
     % add the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(path_TOMLAB));
+        addpath(genpath(TOMLAB_PATH));
     elseif strcmp(solverPkgs{k}, 'ILOGsimple') || strcmp(solverPkgs{k}, 'ILOGcomplex')
-        addpath(genpath(path_ILOG_CPLEX));
+        addpath(genpath(ILOG_CPLEX_PATH));
     end
 
     if ~verLessThan('matlab','8') && ( strcmp(solverPkgs{k}, 'ILOGcomplex') || strcmp(solverPkgs{k}, 'ILOGsimple')) %2016b
@@ -69,9 +72,9 @@ for k = 1:length(solverPkgs)
 
     % remove the solver paths (temporary addition for CI)
     if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        rmpath(genpath(path_TOMLAB));
+        rmpath(genpath(TOMLAB_PATH));
     elseif strcmp(solverPkgs{k}, 'ILOGsimple') || strcmp(solverPkgs{k}, 'ILOGcomplex')
-        rmpath(genpath(path_ILOG_CPLEX));
+        rmpath(genpath(ILOG_CPLEX_PATH));
     end
 end
 

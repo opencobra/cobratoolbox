@@ -2,8 +2,8 @@ function bool=testFluxConsistency()
 %test fastcc with toy model
 
 %save original solver
-global CBTLPSOLVER;
-origSolverLP = CBTLPSOLVER;
+global CBT_LP_SOLVER;
+origSolverLP = CBT_LP_SOLVER;
 
 changeCobraSolver('gurobi6','LP');
 

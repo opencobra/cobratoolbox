@@ -1,4 +1,4 @@
-% The COBRAToolbox: testOptimizeCbModel.m
+% The COBRAToolbox: testModelManipulation.m
 %
 % Purpose:
 %     - testModelManipulation tests addReaction, removeReaction, removeMetabolite
@@ -17,7 +17,8 @@
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testModelManipulation'));
+cd(fileDir);
 
 % Test with non-empty model
 fprintf('>> Starting non-empty model tests:\n');

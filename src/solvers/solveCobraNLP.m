@@ -22,7 +22,7 @@ function solution = solveCobraNLP(NLPproblem,varargin)
 %   osense          Objective sense (-1 for maximisation, 1 for minimisation)
 %   objFunction     Function to evaluate as the objective (The function
 %                   will receive two inputs, First the flux vector to
-%                   evaluate and second the NLPproblem struct. The function 
+%                   evaluate and second the NLPproblem struct. The function
 %                   should be provided as a string
 %       or
 %   c               linear objective such that c*x is optimized.
@@ -77,14 +77,15 @@ function solution = solveCobraNLP(NLPproblem,varargin)
 % Richard Que (02/10/10) Added tomlab_snopt support.
 
 global CBT_NLP_SOLVER
-if (~isempty(CBT_NLP_SOLVER))
+
+if ~isempty(CBT_NLP_SOLVER)
     solver = CBT_NLP_SOLVER;
 else
     error('No solver found.  call changeCobraSolver(solverName)');
 end
 
 optParamNames = {'printLevel','warning','checkNaN','PbName', ...
-    'iterationLimit', 'logFile'};
+                 'iterationLimit', 'logFile'};
 parameters = '';
 
 [printLevel ~] = getCobraSolverParams('NLP',{'printLevel','warning'},parameters);
@@ -161,45 +162,45 @@ switch solver
 
         A2 = A(csense == 'E',:);
         b2 = b(csense == 'E');
-        
+
         %Get fminCon Options, and set the options supplied by the user.
-        [iterationLimit,timeLimit] = getCobraSolverParams('NLP',{'iterationLimit','timeLimit'},parameters);        
+        [iterationLimit,timeLimit] = getCobraSolverParams('NLP',{'iterationLimit','timeLimit'},parameters);
         options = optimoptions('fmincon','maxIter',iterationLimit,'maxFunEvals',iterationLimit);
-        
+
         if isstruct(parameters)
             paramFields = fieldnames(parameters);
             for field = 1:numel(paramFields)
                 if any(ismember(fieldnames(options),paramFields{field}))
                     options.(paramFields{field}) = parameters.(paramFields{field});
                 end
-            end        
+            end
         end
-                
+
         % define the objective function with 2 input arguments
         if exist('objFunction','var')
             func = eval(['@(x) ', num2str(NLPproblem.osense), '*' , objFunction, '(x, NLPproblem)']);
         else
             func = @(x) NLPproblem.osense*sum(c.*x);
         end
-        %Now, define the maximum timer        
-        options.OutputFcn = @stopTimer;        
+        %Now, define the maximum timer
+        options.OutputFcn = @stopTimer;
         %and start it.
         stopTimer(timeLimit,1);
-        
+
         [x, f, origStat, output, lambda] = fmincon(func, x0, A1, b1, A2, b2, lb, ub, [], options);
 
         %Assign Results
         if (origStat > 0)
             stat = 1; % Optimal solution found
             y = lambda.eqlin;
-            w = zeros(length(lb), 1); % set zero Lagrangian multipliers (N/A)            
+            w = zeros(length(lb), 1); % set zero Lagrangian multipliers (N/A)
         elseif (origStat < 0)
             %We supply empty fields, but we need to assign them as
-            %otherwise 
+            %otherwise
             y = [];
             w = [];
             stat = 0; % Infeasible
-        else            
+        else
             y = [];
             w = [];
             stat = -1; % Solution did not converge
@@ -361,7 +362,7 @@ if nargin < 3
             MAXTIME = maxtime;
         end
     end
-else    
+else
     if etime(clock,STARTTIME) > MAXTIME
         disp('Time limit reached, stopping optimization')
         overtimelimit = 1;
@@ -369,4 +370,4 @@ else
         overtimelimit = 0;
     end
 end
-end     
+end

@@ -41,6 +41,8 @@ test/models/*.mat
 test/testGrowthExpMatch/GEMLog.txt
 test/testGrowthExpMatch/GEMLog_solution_1.mat
 test/testMaps/target.svg
+
+# verified tests
 test/verifiedTests/testSampling/ACHRParallelError.txt
 test/verifiedTests/testSampling/ACHR_last_point.mat
 test/verifiedTests/testSampling/ACHRerror.txt
@@ -51,8 +53,6 @@ test/verifiedTests/testSampling/EcoliModelSamples_4.mat
 test/verifiedTests/testSampling/modelRedTmp.mat
 test/verifiedTests/testSampling/sampleCbModelTmp.mat
 test/verifiedTests/testSampling/sampleStructTmp.mat
-
-# verified tests
 test/verifiedTests/testMultiSpeciesModelling/*.mat
 test/verifiedTests/testSBML/*.sbml.xml
 test/verifiedTests/testFastGapFill/KEGGMatrix.mat
@@ -61,6 +61,7 @@ test/verifiedTests/testMassChargeBalance/*.txt
 test/verifiedTests/testFastGapFill/*.mat
 test/verifiedTests/testTools/testData_printLabeledData.txt
 test/verifiedTests/testSolvers/MILPProblem.mat
+test/verifiedTests/testOutputNetworkCytoscape/data*
 
 # shared libraries
 *.so

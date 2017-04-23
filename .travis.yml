@@ -2,7 +2,7 @@ language: bash
 
 before_install:
     - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-    - git submodule update --force --init --recursive
+    #- git submodule update --force --init --recursive
 
 script:
     # set the environment variable CURRENT_DIR
@@ -12,10 +12,10 @@ script:
     - cd $CURRENT_DIR
 
     # launch the tests
-    - sh ./runtests.sh
+    - sh ./test/runtests.sh
 
     # launch tutorial
-    - if [ "$MATLAB_VER" == "R2016b" ]; then 
+    - if [ "$MATLAB_VER" == "R2016b" ]; then
           sh ./tutorials/runtutorials.sh;
       fi;
 
@@ -26,5 +26,5 @@ after_success:
       pip install --upgrade --user -r docs/requirements.txt;
       here=`pwd`;
       python ~/github_stats.py $here/docs/source/contributors.rst;
-      python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='/var/lib/jenkins/workspace/COBRAToolbox-branches-auto-doc/MATLAB_VER/R2016b'); doc.deploy()";
+      python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='$here', ci='jenkins'); doc.deploy()";
       fi

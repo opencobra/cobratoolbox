@@ -2,7 +2,7 @@ function printLabeledData(labels, data, nonzeroFlag, sortCol, fileName, headerRo
 % Print a matrix of data with labels
 %
 % USAGE:
-% 
+%
 %    printLabeledData(labels, data, nonzeroFlag, sortCol, fileName, headerRow, sortMode)
 %
 % INPUTS:
@@ -65,7 +65,7 @@ if (printHeaderFlag)
 end
 
 if (sortCol == 0)
-    [tmp, sortInd] = sort(labels(:, 1), 1, sortMode);
+    [tmp, sortInd] = sort(labels);
     labels = labels(sortInd, :);
     data = data(sortInd, :);
 elseif(sortCol > 0)
@@ -85,7 +85,7 @@ for i = 1:n
             if (~isnan(data(i, j)))
                 fprintf(fid, format, data(i, j));
             else
-                fprintf(fid, '%-10s\t', 'NA');
+                fprintf(fid, '%s\t\t', 'NA');
             end
         end
         fprintf(fid, '\n');

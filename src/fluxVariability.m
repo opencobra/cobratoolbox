@@ -256,10 +256,9 @@ if PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
     end
 else % parallel job.  pretty much does the same thing.
 
-
-    global CBTLPSOLVER
-    solver = CBTLPSOLVER;
-
+    global CBT_LP_SOLVER
+    solver = CBT_LP_SOLVER;
+    
     parfor i = 1:length(rxnNameList)
         %if mod(i,10) == 0, clear mex, end
         %if (verbFlag == 1),fprintf('iteration %d.  skipped %d\n', i, round(m));end

@@ -10,7 +10,9 @@
 
 currentDir = pwd;
 
-initTest(fileparts(which(mfilename)))
+% initialize the test
+fileDir = fileparts(which('testBuildPairwiseModels'));
+cd(fileDir);
 
 % run the script to build the pairwisemodels
 if exist('pairedModelsList.mat', 'file') ~= 2

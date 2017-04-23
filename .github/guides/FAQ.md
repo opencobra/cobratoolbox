@@ -1,6 +1,12 @@
 Frequently Asked Questions (FAQ)
 --------------------------------
 
+## Github
+
+**What do all these labels mean?**
+
+A comprehensive list of labels and their description for the issues and pull requests is given [here](https://github.com/opencobra/cobratoolbox/blob/documentation/.github/LABELS.md).
+
 ## Reconstruction
 
 What does `DM_reaction` stand for after running `biomassPrecursorCheck(model)`?

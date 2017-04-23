@@ -97,12 +97,12 @@ function solution = solveCobraLP(LPproblem,varargin)
 
 %% Process arguments etc
 
-global CBTLPSOLVER
+global CBT_LP_SOLVER
 global MINOSPATH
 global DQQMINOSPATH
 
-if (~isempty(CBTLPSOLVER))
-    solver = CBTLPSOLVER;
+if ~isempty(CBT_LP_SOLVER)
+    solver = CBT_LP_SOLVER;
 elseif nargin==1
     error('No solver found.  call changeCobraSolver(solverName)');
 end
@@ -931,7 +931,7 @@ switch solver
             stat = -1; % Solution did not converge
         end
 
-    case 'gurobi'
+    case 'gurobi_mex'
         %% gurobi
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
@@ -984,8 +984,7 @@ switch solver
            stat = -1; % Solution not optimal or solver problem
         end
 
-    case {'gurobi5','gurobi6','gurobi7'}
-        %% gurobi 5 or 6 or 6.5 or 7
+    case 'gurobi'
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
         %resultgurobi = struct('x',[],'objval',[],'pi',[]);
@@ -1213,7 +1212,7 @@ switch solver
         [solution,LPprob] = solveCobraLPCPLEX(LPproblem,printLevel,1,[],[],minNorm);
         solution.basis = LPprob.LPBasis;
         solution.solver = solver;
-        solution.algorithm = algorithm; %dummy
+        solution.algorithm = algorithm; % dummy
         if exist([pwd filesep 'clone1.log'],'file')
             delete('clone1.log')
         end

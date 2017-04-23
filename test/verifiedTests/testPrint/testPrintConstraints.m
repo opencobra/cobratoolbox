@@ -8,13 +8,16 @@
 %     - Lemmer El Assal March 2017
 %
 
+global CBTDIR
+
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testPrintConstraints'));
+cd(fileDir);
 
-load('ecoli_core_model', 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 % remove old generated file
 delete('printConstraints.txt');
@@ -24,8 +27,8 @@ minInf = -Inf;
 maxInf = +Inf;
 printConstraints(model, minInf, maxInf);
 diary off
-text1 = fileread('refData_printConstraints.txt');
-text2 = fileread('printConstraints.txt');
+text1 = readMixedData('refData_printConstraints.txt');
+text2 = readMixedData('printConstraints.txt');
 assert(isequal(text1, text2));
 
 % remove the generated file

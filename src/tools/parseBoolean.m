@@ -18,7 +18,7 @@ function [elements, newRule, rxnGeneMat] = parseBoolean(str, tokens, allowedElem
 %                  COBRA rxnGeneMat (a matrix with rows corresponding
 %                  to reactions, and columns corresponding to genes).
 %
-% .. Authors: 
+% .. Authors:
 %       - Markus Herrgard 5/11/04
 %       - Ben Heavner 5/20/13  (add cell array and rxnGeneMat functionality.)
 
@@ -81,22 +81,18 @@ if ischar(str)  % if it's a string, use MH's code
                     if ((s(i) == 1) && (f(i) == ruleLength))
                         replaceThisFlag = true;
                     elseif(s(i) == 1)  % Token at the beginning
+                        replaceThisFlag = false;
                         if (isempty(regexp(newRule(f(i) + 1), ...
                                            allowedElementChars)))
                             % It's not a part of another token - replace
                             replaceThisFlag = true;
-                        else
-                            % Part of another token - do not replace
-                            replaceThisFlag = false;
                         end
                     elseif(f(i) == ruleLength)  % Token at the end
+                        replaceThisFlag = false;
                         if (isempty(regexp(newRule(s(i) - 1), ...
                                            allowedElementChars)))
                             % It's not a part of another token - replace
                             replaceThisFlag = true;
-                        else
-                            % Part of another token - do not replace
-                            replaceThisFlag = false;
                         end
                     else  % Token in the middle of the string
                         if (isempty(regexp(newRule(f(i) + 1), ...

@@ -10,7 +10,8 @@
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testShowprogress'));
+cd(fileDir);
 
 global WAITBAR_TYPE
 

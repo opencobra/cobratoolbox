@@ -10,7 +10,8 @@
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testRemoveDuplicateRxn'));
+cd(fileDir);
 
 % test detection and removal of duplicate reactions
 model.S = [-1, 0, 0 ,0 , 0, 0, 0;
@@ -53,7 +54,7 @@ printLevel = 1;
 removeFlag = 1;
 [model, removedRxn, rxnRelationship] = checkDuplicateRxn(model, method, removeFlag, printLevel);
 
-assert(rxns_length+1==length(model.rxns));
+assert(rxns_length + 1 == length(model.rxns));
 
 %return to original directory
 cd(currentDir)

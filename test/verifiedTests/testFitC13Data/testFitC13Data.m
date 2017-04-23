@@ -1,21 +1,21 @@
-% The COBRAToolbox: testC13Fitting.m
+% The COBRAToolbox: testFitC13Data.m
 %
 % Purpose:
-%     - testC13Fitting tests the basic functionality of fitC13Data
+%     - testFitC13Data tests the basic functionality of fitC13Data
 %
 % Authors:
 %     - Original file: Jan Schellenberger
 %     - CI integration: Laurent Heirendt March 2017
 %
 % Note:
-%     - The solver libraries must be included separately
 %     - The tomlab_snopt solver must be tested with a valid license
 
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testFitC13Data'));
+cd(fileDir);
 
 majorIterationLimit = 10000; % fitting length
 load('model.mat', 'model'); % loads modelWT

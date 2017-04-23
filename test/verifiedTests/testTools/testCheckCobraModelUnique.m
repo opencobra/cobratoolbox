@@ -1,4 +1,4 @@
-% The COBRAToolbox: checkCobraModelUnique.m
+% The COBRAToolbox: testCheckCobraModelUnique.m
 %
 % Purpose:
 %     - Tests the checkCobraModelUnique function
@@ -9,7 +9,8 @@
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testCheckCobraModelUnique'));
+cd(fileDir);
 
 % define the test model
 toyModel = struct;

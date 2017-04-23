@@ -1,32 +1,42 @@
 function [cond1_uptake, cond2_uptake, cond1_secretion, cond2_secretion, slope_Ratio] = defineUptakeSecretionProfiles(input_A,input_B, data_RXNS, tol,essAA_excl,exclude_upt,exclude_secr,add_secr, add_upt)
-
 % This function calculated the slope ratios and gives out uptake&secretion profiles for condition 1 and condition 2
 %
-% INPUTS
-%   input_A             Matrix, 4 columns: (1)Control TP1, (2)Control TP2, (3)Condition 1 TP1, (4) Condition 1 TP 2
-%   input_B             Matrix, 4 columns: (1)Control2 TP1, (2)Control2 TP2, (3)Condition 2 TP1, (4) Condition 2 TP 2
-%   data_RXNS           Exchange reactions same order as Input_A and Input_B
-%   tol                 minimal threshold to call uptake or secretion (Default 0.05)=5%
-
-% optional Inputs
-%   essAA_excl          If essential amino acids should be excluded from the secretion profile 1(yes), or 0(no) (Default = 0); essAAs = {'EX_his_L(e)'; 'EX_ile_L(e)';'EX_leu_L(e)'; 'EX_lys_L(e)'; 'EX_met_L(e)'; 'EX_phe_L(e)'; 'EX_thr_L(e)'; 'EX_trp_L(e)'; 'EX_val_L(e)'}
-%   exclude_upt         Exclude uncertain metabolites from uptake (e.g., metabolites from GlutaMax, e.g., 'EX_gln_L(e)', 'EX_cys_L(e)', 'EX_ala_L(e)')
-%   exclude_secr        Exclude uncertain metabolites from secretion (e.g., metabolites from GlutaMax, e.g., 'EX_gln_L(e)', 'EX_cys_L(e)', 'EX_ala_L(e)')
-%   add_secr            Due to mising data points automatic analysis might do wrong assignment of metabolites to secretion 
-%   add_upt             Due to mising data points automatic analysis might do wrong assignment of metabolites to uptake 
-
-% OUTPUTS
-%   cond1_uptake        List of exchanges that specify consumed metabolites in condition 1        
-%   cond2_uptake        List of exchanges that specify consumed metabolites in condition 2
-%   cond1_secretion     List of exchanges that specify released metabolites in condition 1
-%   cond2_secretion     List of exchanges that specify released metabolites in condition 2
-%   slope_Ratio         For length of inputA/B, relative difference
+% USAGE:
 %
+%    [cond1_uptake, cond2_uptake, cond1_secretion, cond2_secretion, slope_Ratio] = defineUptakeSecretionProfiles(input_A, input_B, data_RXNS, tol, essAA_excl, exclude_upt, exclude_secr, add_secr, add_upt)
 %
+% INPUTS:
+%    input_A:             Matrix, 4 columns 
 %
-% Maike K. Aurich 27/05/15
-
-%%
+%                           1. Control TP1, 
+%                           2. Control TP2, 
+%                           3. Condition 1 TP1, 
+%                           4. Condition 1 TP 2
+%    input_B:             Matrix, 4 columns
+%
+%                           1. Control2 TP1, 
+%                           2. Control2 TP2, 
+%                           3. Condition 2 TP1, 
+%                           4. Condition 2 TP 2
+%    data_RXNS:           Exchange reactions same order as `input_A` and `input_B`
+%    tol:                 minimal threshold to call uptake or secretion (Default 0.05)=5%
+%
+% OPTIONAL INPUTS:
+%    essAA_excl:          If essential amino acids should be excluded from the secretion profile 1(yes), or 0(no) (Default = 0); 
+%                         `essAAs` = {`EX_his_L(e)`; `EX_ile_L(e)`; `EX_leu_L(e)`; `EX_lys_L(e)`; `EX_met_L(e)`; `EX_phe_L(e)`; `EX_thr_L(e)`; `EX_trp_L(e)`; `EX_val_L(e)`}
+%    exclude_upt:         Exclude uncertain metabolites from uptake (e.g., metabolites from GlutaMax, e.g., `EX_gln_L(e)`, `EX_cys_L(e)`, `EX_ala_L(e)`)
+%    exclude_secr:        Exclude uncertain metabolites from secretion (e.g., metabolites from GlutaMax, e.g., `EX_gln_L(e)`, `EX_cys_L(e)`, `EX_ala_L(e)`)
+%    add_secr:            Due to mising data points automatic analysis might do wrong assignment of metabolites to secretion 
+%    add_upt:             Due to mising data points automatic analysis might do wrong assignment of metabolites to uptake 
+%
+% OUTPUTS:
+%    cond1_uptake:        List of exchanges that specify consumed metabolites in condition 1        
+%    cond2_uptake:        List of exchanges that specify consumed metabolites in condition 2
+%    cond1_secretion:     List of exchanges that specify released metabolites in condition 1
+%    cond2_secretion:     List of exchanges that specify released metabolites in condition 2
+%    slope_Ratio:         For length of inputA/B, relative difference
+%
+% .. Author: - Maike K. Aurich 27/05/15
 
 if ~exist('tol','var') || isempty(tol)
     tol = 0.05;

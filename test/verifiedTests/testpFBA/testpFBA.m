@@ -13,15 +13,12 @@
 % Note:
 %     - The solver libraries must be included separately
 
-% define global paths
-global path_TOMLAB
-global path_GUROBI
-
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testpFBA'));
+cd(fileDir);
 
 %tolerance
 tol = 1e-8;
@@ -44,14 +41,7 @@ end
 for k = 1:length(solverPkgs)
     fprintf(' -- Running testfindBlockedReaction using the solver interface: %s ... ', solverPkgs{k});
 
-    % add the solver paths (temporary addition for CI)
-    if strcmp(solverPkgs{k}, 'tomlab_cplex')
-        addpath(genpath(path_TOMLAB));
-    elseif strcmp(solverPkgs{k}, 'gurobi6')
-        addpath(genpath(path_GUROBI));
-    end
-
-    solverLPOK = changeCobraSolver(solverPkgs{k});
+    solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
     if solverLPOK
 
@@ -134,13 +124,6 @@ for k = 1:length(solverPkgs)
         assert(min(t_fm) == 1)
 
         x = min([t_fm; t_fg; t_fr]);
-
-        % remove the solver paths (temporary addition for CI)
-        if strcmp(solverPkgs{k}, 'tomlab_cplex')
-            rmpath(genpath(path_TOMLAB));
-        elseif strcmp(solverPkgs{k}, 'gurobi6')
-            rmpath(genpath(path_GUROBI));
-        end
 
         % output a success message
         fprintf('Done.\n');

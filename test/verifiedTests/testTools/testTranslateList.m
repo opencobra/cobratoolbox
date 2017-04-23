@@ -12,7 +12,8 @@
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testTranslateList'));
+cd(fileDir);
 
 list = {'a', 'b', 'c'};
 trList1 = {'b', 'c'};

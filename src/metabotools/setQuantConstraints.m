@@ -1,38 +1,38 @@
-function [ResultsAllCellLines,OverViewResults] = setQuantConstraints(model,samples,tol,minGrowth,obj,no_secretion,no_uptake,medium,addExtraExch,addExtraExch_value,path,epsilon)
-%[ResultsAllCellLines,OverViewResults] = setQuantConstraints(model,samples,tol,minGrowth,obj,no_secretion,no_uptake,medium,addExtraExch,addExtraExch_value,path,epsilon)
+function [ResultsAllCellLines,OverViewResults] = setQuantConstraints(model, samples, tol, minGrowth, obj, no_secretion, no_uptake, medium, addExtraExch, addExtraExch_value, path, epsilon)
+% This function takes a model and quantitative extracellular metabolomic
+% data and returns a model in which the data is integrated as constraints.
+% It requires as input the output of the script ... and the output can be
+% the input for the analysis functions in this toolbox.
 %
-%This function takes a model and quantitative extracellular metabolomic
-%data and returns a model in which the data is integrated as constraints.
-%It requires as input the output of the script ... and the output can be
-%the input for the analysis functions in this toolbox.
+% USAGE:
+%
+%    [ResultsAllCellLines, OverViewResults] = setQuantConstraints(model, samples, tol, minGrowth, obj, no_secretion, no_uptake, medium, addExtraExch, addExtraExch_value, path, epsilon)
+%
+% INPUTS:
+%       model:                Global metabolic model (Recon)
+%       samples:              Vector specifying the samples used (there must be an output file of function .... for each sample)
+%       tol:                  Cutoff value for small numbers (e.g., -1e-8). All number smaller than tol will be treated as zero
+%       minGrowth:            Will be the lower bound of the objective function (e.g., 0.008). Forces the output model(s) to be able to produce a minimal objective value
+%       obj:                  Objective function, e.g. `biomass_reaction2`
+%       no_secretion:         Define metabolites that should not be secreted (e.g., {`EX_o2(e)`})
+%       no_uptake:            Define metabolites that should not be consumed (e.g., {`EX_o2s(e)`, `EX_h2o2(e)`})
+%       medium:               Define if certain exchanges should be excluded from minimization of exchanges (e.g., {}, if no medium except the exometabolomic data has been defined)
+%       addExtraExch:         After adding secretions, models are still not growing, this variable allows one to recover exchanges with a defined small value 
+%       addExtraExch_value:   e.g. 1 as arbitrary small flux value / the resulting ub = 1, lb = -1. 
+%       path:                 Location of the .mat files for samples.
+%       epsilon: (not used)
+%
+% OUTPUTS:
+%       ResultsAllCellLines:  Structure that contains pruned and unpruned model, Vector of the Exchange_reactions, the exchange reactions added by `minExCard`, `minFLux` and `maxFlux` of the added reactions, maximal objective value, and the results of the gene deletion
+%       OverViewResults:      Overview of model statistics, e.g., number of reactions, metabolites, genes, number of essential genes, min and max objective values for easy comparison between sets of models
 %
 %
-%INPUTS
-%       model               Global metabolic model (Recon)
-%       samples             Vector specifying the samples used (there must be an output file of function .... for each sample)
-%       tol                 Cutoff value for small numbers (e.g., -1e-8). All number smaller than tol will be treated as zero
-%       minGrowth           Will be the lower bound of the objective function (e.g., 0.008). Forces the output model(s) to be able to produce a minimal objective value
-%       obj                 Objective function, e.g. 'biomass_reaction2'
-%       no_secretion        Define metabolites that should not be secreted (e.g., {'EX_o2(e)'})
-%       no_uptake           Define metabolites that should not be consumed (e.g., {'EX_o2s(e)','EX_h2o2(e)'})
-%       medium              Define if certain exchanges should be excluded from minimization of exchanges (e.g., {}, if no medium except the exometabolomic data has been defined)
-%       addExtraExch        After adding secretions, models are still not growing, this variable allows one to recover exchanges with a defined small value 
-%       addExtraExch_value  e.g., 1 as arbitrary small flux value / the resulting ub = 1, lb = -1. 
-%       path                
+% Depends on `changeRxnBounds`, `fluxVariability`, `optimizeCbModel`, `generateCompactExchModel` as well its dependent functions `pruneModel`, `findMinCardModel`, `findOptExchRxns`
 %
-%OUTPUTS
-%       ResultsAllCellLines Structure that contains pruned and unpruned model, Vector of the Exchange_reactions, the exchange reactions added by minExCard, minFLux and maxFlux of the added reactions, maximal objective value, and the results of the gene deletion
-%       OverViewResults     Overview of model statistics, e.g., number of reactions, metabolites, genes, number of essential genes, min and max objective values for easy comparison between sets of models
-%
-%
-% Depends on changeRxnBounds,fluxVariability,optimizeCbModel,generateCompactExchModel as well its dependent functions pruneModel, findMinCardModel, findOptExchRxns
-%
-%
-% Maike K. Aurich 18/02/15
+% .. Author: - Maike K. Aurich 18/02/15
 
-%%
-% Set overview variable
 cntO=1;
+% Set overview variable
 OverViewResults{1,cntO} ='cell line';cntO = cntO+1;
 OverViewResults{1,cntO} = 'num Added Rxns';cntO = cntO+1;
 OverViewResults{1,cntO} = 'num rxns pruned model';cntO = cntO+1;

@@ -8,6 +8,10 @@ Modules
    :maxdepth: 2
 
    tools
+   print
+   metabotools
+   rFBA
+   multiSpeciesModelling
 
 Example
 

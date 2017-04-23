@@ -1,42 +1,41 @@
- function [cond1_upt_higher, cond2_upt_higher, cond2_secr_higher,cond1_secr_higher, cond1_uptake_LODs,cond2_uptake_LODs,cond1_secretion_LODs, cond2_secretion_LODs] = calculateQuantitativeDiffs(data_RXNS,slope_Ratio,ex_RXNS, lod_mM, cond1_uptake, cond2_uptake, cond1_secretion, cond2_secretion);
-%[cond1_upt_higher, cond2_upt_higher, cond2_secr_higher,cond1_secr_higher, cond1_uptake_LODs,cond2_uptake_LODs,cond1_secretion_LODs, cond2_secretion_LODs] = calculateQuantitativeDiffs(data_RXNS,slope_Ratio,ex_RXNS, lod_mM, cond1_uptake, cond2_uptake, cond1_secretion, cond2_secretion);
-%
+function [cond1_upt_higher, cond2_upt_higher, cond2_secr_higher,cond1_secr_higher, cond1_uptake_LODs,cond2_uptake_LODs,cond1_secretion_LODs, cond2_secretion_LODs] = calculateQuantitativeDiffs(data_RXNS,slope_Ratio,ex_RXNS, lod_mM, cond1_uptake, cond2_uptake, cond1_secretion, cond2_secretion)
 % This function provides sets of exchange reactions with higher uptake and
 % secretion in condition 1 and condition 2.
 %
-% INPUTS
-%   data_RXNS            Exchange reactions same order as Input_A and Input_B
-%   slope_Ratio          For length of inputA/B, relative difference
-%   ex_RXNS              Exchange reactions in the same order as LODs(lod_mM)
-%   lod_mM               Detection limits in mM
-%   cond1_uptake         List of exchanges that specify consumed metabolites in condition 1        
-%   cond2_uptake         List of exchanges that specify consumed metabolites in condition 2
-%   cond1_secretion      List of exchanges that specify released metabolites in condition 1
-%   cond2_secretion      List of exchanges that specify released metabolites in condition 2
+% USAGE:
 %
+%    [cond1_upt_higher, cond2_upt_higher, cond2_secr_higher, cond1_secr_higher, cond1_uptake_LODs, cond2_uptake_LODs, cond1_secretion_LODs, cond2_secretion_LODs] = calculateQuantitativeDiffs(data_RXNS, slope_Ratio, ex_RXNS, lod_mM, cond1_uptake, cond2_uptake, cond1_secretion, cond2_secretion);
 %
-% OUTPUT
-%   cond1_upt_higher  	 Exchange reactions and relative differences with higher uptake in condition 1 compared to condition 2
-%   cond2_upt_higher     Exchange reactions and relative differences with higher uptake in condition 2 compared to condition 1
-%   cond2_secr_higher    Exchange reactions and relative differences with higher secretion in condition 2 compared to condition 1
-%   cond1_secr_higher    Exchange reactions and relative differences with higher secretion in condition 1 compared to condition 2
-%   cond1_uptake_LODs    Detection limits for metabolites with higher uptake in condition 1
-%   cond2_uptake_LODs    Detection limits for metabolites with higher uptake in condition 2
-%   cond1_secretion_LODs Detection limits for metabolites with higher secretion in condition 1
-%   cond2_secretion_LODs Detection limits for metabolites with higher secretion in condition 2
-%   
-% Ines Thiele
-% Maike K. Aurich 27/05/15
+% INPUTS:
+%    data_RXNS:              Exchange reactions same order as Input_A and Input_B
+%    slope_Ratio:            For length of inputA/B, relative difference
+%    ex_RXNS:                Exchange reactions in the same order as LODs(lod_mM)
+%    lod_mM:                 Detection limits in mM
+%    cond1_uptake:           List of exchanges that specify consumed metabolites in condition 1        
+%    cond2_uptake:           List of exchanges that specify consumed metabolites in condition 2
+%    cond1_secretion:        List of exchanges that specify released metabolites in condition 1
+%    cond2_secretion:        List of exchanges that specify released metabolites in condition 2
+%
+% OUTPUTS:
+%    cond1_upt_higher:       Exchange reactions and relative differences with higher uptake in condition 1 compared to condition 2
+%    cond2_upt_higher:       Exchange reactions and relative differences with higher uptake in condition 2 compared to condition 1
+%    cond2_secr_higher:      Exchange reactions and relative differences with higher secretion in condition 2 compared to condition 1
+%    cond1_secr_higher:      Exchange reactions and relative differences with higher secretion in condition 1 compared to condition 2
+%    cond1_uptake_LODs:      Detection limits for metabolites with higher uptake in condition 1
+%    cond2_uptake_LODs:      Detection limits for metabolites with higher uptake in condition 2
+%    cond1_secretion_LODs:   Detection limits for metabolites with higher secretion in condition 1
+%    cond2_secretion_LODs:   Detection limits for metabolites with higher secretion in condition 2
+%  
+% .. Authors:
+%       - Ines Thiele
+%       - Maike K. Aurich 27/05/15
 
-
-
-%% get LODs
 cond1_uptake_LODs = [];
 cond2_uptake_LODs = [];
 
 cond1_secretion_LODs = [];
 cond2_secretion_LODs = [];
-
+% get LODs
 for i=1:length(cond1_uptake)
    cond1_uptake_LODs(i,1) = lod_mM(find(ismember(ex_RXNS, cond1_uptake(i))));
 end

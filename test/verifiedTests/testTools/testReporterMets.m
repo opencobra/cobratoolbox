@@ -8,14 +8,18 @@
 %     - CI integration: Lemmer El Assal, March 2017
 %
 
+global CBTDIR
+
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testReporterMets'));
+cd(fileDir);
 
 % load reference data and model
-load('e_coli_core.mat', 'model');
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
+
 load('ref_testReporterMets.mat');
 nRand = 10;
 pValFlag = 0;

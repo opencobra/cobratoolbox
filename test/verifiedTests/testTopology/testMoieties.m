@@ -11,14 +11,14 @@
 %
 
 % define global paths
-global path_GUROBI
 global CBTDIR
 
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testMoieties'));
+cd(fileDir);
 
 % Load reference data
 load('refData_moieties.mat')
@@ -47,10 +47,7 @@ rbool = ismember(model.rxns, ATN.rxns);  % True for reactions included in ATN
 mbool = any(model.S(:, rbool), 2);  % True for metabolites in ATN reactions
 N = model.S(mbool, rbool);
 
-% Add the solver path (temporary addition for CI)
-addpath(genpath(path_GUROBI));
-
-solverOK = changeCobraSolver('gurobi6', 'MILP');
+solverOK = changeCobraSolver('gurobi6', 'MILP', 0);
 if solverOK
     fprintf(' -- Running testMoieties using the solver interface: gurobi6 ... ');
 
@@ -66,8 +63,5 @@ if solverOK
 
     fprintf('Done\n');
 end
-
-% Remove solver path
-rmpath(genpath(path_GUROBI));
 
 cd(currentDir)

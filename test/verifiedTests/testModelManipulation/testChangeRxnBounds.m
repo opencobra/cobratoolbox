@@ -1,4 +1,4 @@
-% The COBRAToolbox: changeRxnBounds.m
+% The COBRAToolbox: testChangeRxnBounds.m
 %
 % Purpose:
 %     - Tests the changeRxnBounds function
@@ -9,7 +9,8 @@
 currentDir = pwd;
 
 % initialize the test
-initTest(fileparts(which(mfilename)));
+fileDir = fileparts(which('testChangeRxnBounds'));
+cd(fileDir);
 
 % define the test model
 toyModel = struct;

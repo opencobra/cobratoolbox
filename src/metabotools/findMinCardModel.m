@@ -1,20 +1,22 @@
 function [modelMin,AddedExchange] = findMinCardModel(model,Ex_Rxns)
 % Function to find the minimal cardinality model.
 %
-%   INPUTS
-%       model         Metabolic model
-%       Ex_Rxns       Vector of exchange reactions for FVA
-
-%   OUTPUTS
-%      OptExchRxns
+% USAGE:
+%    [modelMin, AddedExchange] = findMinCardModel(model, Ex_Rxns)
 %
-%   Default parameter
-%       tol           (default: -1e-6)
+% INPUTS:
+%     model:         Metabolic model
+%     Ex_Rxns:       Vector of exchange reactions for FVA
 %
-% Ines Thiele 2014
-% Maike K. Aurich 27/05/15 change tolerance
+% OUTPUTS:
+%    modelMin:       Updated model with new reaction bounds
+%    AddedExchange:  Vector of exchanged reactions
+%
+% .. Authors:
+%       - Ines Thiele 2014
+%       - Maike K. Aurich 27/05/15 change tolerance
 
-tol = -1e-6;
+tol = -1e-6;  % Default tolerance (limit for calling flux 0)
 
 AddedExchange = '';
 % convert to irrev model
