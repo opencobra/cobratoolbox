@@ -1,21 +1,23 @@
 function samples = loadSamples(filename, numFiles, pointsPerFile,numSkipped,randPts)
-%loadSamples Load a set of sampled data points
+% Loads a set of sampled data points
 %
-% samples = loadSamples(filename,numFiles,pointsPerFile,numSkipped,randPts)
+% USAGE:
 %
-%INPUTS
-% filename          The name of the files containing the sample points.
-% numFiles          The number of files containing the sample points.
-% pointsPerFile     The number of points to be taken from each file.
+%    samples = loadSamples(filename, numFiles, pointsPerFile, numSkipped, randPts)
 %
-%OPTIONAL INPUTS
-% numSkipped        Number of files skipped (default = 0)
-% randPts           Select random points from each file (true/false, default = false)
+% INPUTS:
+%    filename:          The name of the files containing the sample points.
+%    numFiles:          The number of files containing the sample points.
+%    pointsPerFile:     The number of points to be taken from each file.
 %
-%OUTPUT
-% samples           Sample flux distributions
+% OPTIONAL INPUTS:
+%    numSkipped:        Number of files skipped (default = 0)
+%    randPts:           Select random points from each file (true/false, default = false)
 %
-%Written by Gregory Hannum and Markus Herrgard 8/17/05.
+% OUTPUT:
+%    samples:           Sample flux distributions
+%
+% .. Authors: - Gregory Hannum and Markus Herrgard 8/17/05.
 
 if (nargin < 4)
     numSkipped = 0;

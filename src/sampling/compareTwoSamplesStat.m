@@ -1,30 +1,29 @@
 function [stats,pVals] = compareTwoSamplesStat(sample1,sample2,tests)
-%compareTwoSamplesStat Compare statistically the difference between two
-%samples
+% Compares statistically the difference between two
+% samples. Does the Kolmogorov-Smirnov, rank-sum, chi-square, and T-tests.
 %
-% [stats,pVals] = compareTwoSamplesStat(sample1,sample2,tests)
+% USAGE:
 %
-% Does the Kolmogorov-Smirnov, rank-sum, chi-square, and T-tests
+%    [stats,pVals] = compareTwoSamplesStat(sample1, sample2, tests)
 %
-%INPUTS
-% sample1, sample2          Samples to compare
-% tests                     {'test1', 'test2',...} (Default = all tests)
-%   Test Name                   Input
-%   Kolmogorov-Smirnov test     'ks'
-%   rank-sum test               'rankSum'
-%   chi-squre test              'chiSquare'
-%   T-test                      'tTest
+% INPUTS:
+%    sample1, sample2:          Samples to compare
+%    tests:                     {`test1`, `test2`,...} (Default = all tests)
 %
-%OUTPUTS
+%                                 * 'ks' - Kolmogorov-Smirnov test
+%                                 * 'rankSum' - rank-sum test
+%                                 * 'chiSquare' - chi-squre test
+%                                 * 'tTest' - T-test
+%
+% OUTPUTS:
+%    stats:                     statistics
+%    pVals:                     p values
+%
+% .. Authors:
+%       - Markus Herrgard 8/14/06
+%       - Richard Que 11/20/09, combined test m-files into this m-file.
+%
 % Output will be in order that tests are inputed. i.e. {'ks','rankSum'}
-% stats                     stats
-% pVals                     p values
-%
-% Markus Herrgard 8/14/06
-%
-% Combined test m-files into this m-file. Richard Que 11/20/09.
-
-%Determine which tests to run
 
 if nargin<3
     tests = {'ks', 'rankSum', 'chiSquare', 'tTest'};

@@ -1,27 +1,28 @@
-% function [errorsA, errorsLUB] = verifyPoints(sampleStruct)
 function [errorsA, errorsLUB, stuckPoints] = verifyPoints(sampleStruct)
-%verifyPoints Verify that a set of points are in the solutoin space of sampleStruct.
+% Verify that a set of points are in the solutoin space of `sampleStruct`.
 % Typically, this method would be called to check a set of warmup points or
-% points generated via gpSampler. Also verifies if points moved from
+% points generated via `gpSampler`. Also verifies if points moved from
 % warmup points.
 %
-% function [errorsA, errorsLUB, stuckPoints] = verifyPoints(sampleStruct)
-% 
-%INPUT
-% sampleStruct      LPProblem containing points and warmup points
+% USAGE:
 %
-%OUTPUTS
-% errorsA           Row index of the constraint in sampleStruct that
-%                   is not consistent with the given points
-% errorsLUB         Upper and lower bounds of the constraint + tolerance
-% stuckPoints       Index of points which did not move.
+%    [errorsA, errorsLUB, stuckPoints] = verifyPoints(sampleStruct)
 %
-% Author: Ellen Tsai 2007
-% Richard Que (12/1/09) Combined with checkWP.m
+% INPUT:
+%    sampleStruct:      LPProblem containing points and warmup points
+%
+% OUTPUTS:
+%    errorsA:           Row index of the constraint in `sampleStruct` that
+%                       is not consistent with the given points
+%    errorsLUB:         Upper and lower bounds of the constraint + tolerance
+%    stuckPoints:       Index of points which did not move.
+%
+% .. Authors:
+%       - Ellen Tsai 2007
+%       - Richard Que 12/1/09 Combined with checkWP.m
 
-%check to see if warmup points moved
 [warmupPts, points] = deal(sampleStruct.warmupPts, sampleStruct.points);
-
+%above a check to see if warmup points moved
 n=size(points,2);
 len=size(n,1);
 stuckPoints=zeros(0,1);

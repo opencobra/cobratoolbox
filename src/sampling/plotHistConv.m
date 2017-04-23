@@ -1,15 +1,17 @@
 function plotHistConv(model,samples,rxnNames,nSubSamples)
-%plotHistConv   Plot convergence of sample histograms
+%Plots convergence of sample histograms
 %
-%  plotHistConv(model,samples,rxnNames,nSubSamples)
+% USAGE:
 %
-%INPUTS
-% model         COBRA model structure
-% samples       Sample fluxes
-% rxnNames      List of reactions to plot
-% nSubSamples   Number of sub samples
+%    plotHistConv(model, samples, rxnNames, nSubSamples)
 %
-% Markus Herrgard 8/14/06
+% INPUTS:
+%    model:         COBRA model structure
+%    samples:       Sample fluxes
+%    rxnNames:      List of reactions to plot
+%    nSubSamples:   Number of sub samples
+%
+% .. Author: - Markus Herrgard 8/14/06
 
 nSkip = 10;
 nBin = 20;

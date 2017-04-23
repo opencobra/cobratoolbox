@@ -1,27 +1,29 @@
 function warmupPts= createHRWarmup(model,nPoints,verbFlag,bias,nPointsCheck)
-% createHRWarmup Create a warmup point set for hit-and-run sampling by
+% Creates a warmup point set for hit-and-run sampling by
 % combining orthogonal and random points
 %
-% warmupPts= createHRWarmup(model,nPoints,verbFlag)
+% USAGE:
 %
-%INPUTS
-% model     Model structure
+%    warmupPts= createHRWarmup(model, nPoints, verbFlag, bias, nPointsCheck)
 %
-%OPTIONAL INPUTS
-% nPoints   Number of warmup points (Default = 5000);
-% verbFlag  Verbose flag (Default = false)
-% bias
-%   method          Biasing distribution: 'uniform', 'normal'
-%   index           The reaction indexes which to bias (nBias total)
-%   param           nBias x 2 matrix of parameters (for uniform it's min
-%   max, for normal it's mu, sigma).
+% INPUTS:
+%    model:     Model structure
 %
-%OUTPUT
-% warmupPts Set of warmup points
+% OPTIONAL INPUTS:
+%    nPoints:   Number of warmup points (Default = 5000);
+%    verbFlag:  Verbose flag (Default = false)
+%    bias:      Structure with fields:
 %
-% Markus Herrgard 4/21/06
+%                 * method - Biasing distribution: 'uniform', 'normal'
+%                 * index - The reaction indexes which to bias (`nBias` total)
+%                 * param - nBias x 2 matrix of parameters (for uniform it's min max, for normal it's `mu`, `sigma`).
 %
-% Richard Que (11/23/09) Integrated subfunctions into script.
+% OUTPUT:
+%    warmupPts: Set of warmup points
+%
+% .. Authors:
+%       - Markus Herrgard 4/21/06
+%       - Richard Que 11/23/09 integrated subfunctions into script
 
 if (nargin < 2)||isempty(nPoints), nPoints = 5000; end
 if (nargin < 3)||isempty(verbFlag), verbFlag = false; end

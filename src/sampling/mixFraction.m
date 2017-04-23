@@ -1,19 +1,23 @@
 function mix = mixFraction(sample1, sample2, fixed)
-% mixFraction compares two sets of sampled points and determines how mixed
+% Compares two sets of sampled points and determines how mixed
 % they are.
-
-%INPUTs
-% sample1, sample2      Ordered set of points.  The points must be in
-%                       the same order otherwise it does not make sense.  
 %
-%OPTIONAL INPUT
-% fixed (optional)      The directions which are fixed and are not expected
-%                       to mix.  They are ignored.
+% USAGE:
 %
-%OUTPUT  
-% mix                   the mix fraction.  Goes from 0 to 1 with 1 being
-%                       completely unmixed and .5 being essentially 
-%                       perfectly mixed.  
+%    mix = mixFraction(sample1, sample2, fixed)
+%
+% INPUTS:
+%    sample1, sample2:      Ordered set of points. The points must be in
+%                          the same order otherwise it does not make sense.
+%
+% OPTIONAL INPUT:
+%    fixed:                The directions which are fixed and are not expected
+%                          to mix. They are ignored.
+%
+% OUTPUT:
+%    mix:                  The mix fraction. Goes from 0 to 1 with 1 being
+%                          completely unmixed and .5 being essentially
+%                          perfectly mixed.
 
 if nargin <3
     fixed = [];

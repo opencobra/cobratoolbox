@@ -1,31 +1,32 @@
 function [sampleStruct] = ACHRSamplerParallelGeneral(sampleStruct,nLoops,stepsPerPoint, maxtime, proc, fdirectory)
-% ACHRSamplerParallelGeneral Artificial Centering Hit-and-Run sampler with in place (memory) point
-% managmenet
+% Artificial Centering Hit-and-Run sampler with in place (memory) point
+% management
 %
-% sampleStruct = ACHRSamplerParallelGeneral(sampleStruct,nLoops,stepsPerPoint)
+% USAGE:
 %
-%INPUTS
-% sampleStruct      Sampling structure
-% nLoops            Number of iterations
-% stepsPerPoint     Number of sampler steps per point saved
-% maxtime           Amount of time to spend on calculation (in seconds)
+%    sampleStruct = ACHRSamplerParallelGeneral(sampleStruct, nLoops, stepsPerPoint, maxtime, proc, fdirectory)
 %
-%OPTIONAL INPUTS
-% proc              Number of processes if > 0.  Otherwise, the proces #.
-% fdirectory        Do not use this parameter when calling function directly.  
+% INPUTS:
+%    sampleStruct:      Sampling structure
+%    nLoops:            Number of iterations
+%    stepsPerPoint:     Number of sampler steps per point saved
+%    maxtime:           Amount of time to spend on calculation (in seconds)
 %
-%OUTPUT
-% sampleStruct      Sampling structure with sample points
+% OPTIONAL INPUTS:
+%    proc:              Number of processes if > 0.  Otherwise, the proces #.
+%    fdirectory:        Do not use this parameter when calling function directly.
 %
-% Jan Schellenberger 1/29/07
+% OUTPUT:
+%    sampleStruct:      Sampling structure with sample points
+%
+% .. Author: - Jan Schellenberger 1/29/07
+
+warning off MATLAB:divideByZero;
 % (vaguely) based on code by:
 % Markus Herrgard, Gregory Hannum, Ines Thiele, Nathan Price 4/14/06
 
-warning off MATLAB:divideByZero;
-
-
 %proc == 0 means master
-%proc greater than 1 means slave.  
+%proc greater than 1 means slave.
 if nargin < 5 % not parallel at all.
     parallel = 0;
     proc = 0;
@@ -53,8 +54,8 @@ end
 % Minimum allowed distance to the closest constraint
 maxMinTol = 1e-10;
 % Ignore directions where u is really small
-uTol = 1e-10; 
-safetycheck = false; % checks the direction of u for fixed directions.  
+uTol = 1e-10;
+safetycheck = false; % checks the direction of u for fixed directions.
 
 totalStepCount = 0;
 t0 = clock;
@@ -113,7 +114,7 @@ if proc == 0 % if master thread
     if parallel
         blah = 1;
         display('saving master file.');
-        save('xxMasterfile', 'ub', 'lb', 'A', 'C', 'D', 'fixed', 'N', 'movable', 'Nsmall', 'numproc', 'nPoints' ); 
+        save('xxMasterfile', 'ub', 'lb', 'A', 'C', 'D', 'fixed', 'N', 'movable', 'Nsmall', 'numproc', 'nPoints' );
         display('finished saving master file.  spawning processes');
         for i = 1:(numproc - 1) % goes from 1 to 7 if proc == 8
             command = strcat('matlab -singleCompThread -automation -nojvm -r ACHRSamplerParallelGeneral([],',num2str(nLoops),',',num2str(stepsPerPoint),',0,', num2str(-i) ,',''' ,pwd, ''');exit; &' );
@@ -149,19 +150,19 @@ for i = 1:nLoops
                 pause(.25);
             end
             fprintf(1,'\nloading files four next round.\n');
-            try 
+            try
               load(strcat('xxRound', num2str(i)), 'points', 'centerPoint'); % load actual points
-            catch 
+            catch
               pause(15) % for some reason at round 64 it needs extra time to load
               load(strcat('xxRound', num2str(i)), 'points', 'centerPoint'); % load actual points
             end
             save(strcat('xxRoundAck', num2str(i),'x', num2str(proc) ), 'blah'); % save acknowledgement
             display(strcat('finished reading input and acknowledgment sent ', num2str(i)));
         end
-        % divide up points.  master thread (proc = 0) gets first chunk.  
+        % divide up points.  master thread (proc = 0) gets first chunk.
         pointRange = subparts(nPoints, numproc, proc);
     end
-    
+
     % actual sampling over pointRange
     for pointCount = pointRange
         % Create the random step size vector
@@ -176,10 +177,10 @@ for i = 1:nLoops
             % Pick a random warmup point
             randPointID = ceil(nPoints*rand);
             randPoint = points(:,randPointID);
-            
+
             % Get a direction from the center point to the warmup point
             u = (randPoint-centerPoint);
-            if ~isempty(fixed) % no need to reproject if there are no fixed reactions.  
+            if ~isempty(fixed) % no need to reproject if there are no fixed reactions.
                 %ubefore = u;
                 if safetycheck
                     u(movable) = Nsmall * (Nsmall' * u(movable));
@@ -189,44 +190,44 @@ for i = 1:nLoops
                 u(fixed) = 0; % takes care of biasing.
             end
             u = u/norm(u);
-            
+
             % Figure out the distances to upper and lower bounds
             distUb = (ub - prevPoint);
             distLb = (prevPoint - lb);
             distD = (D-C*prevPoint);
-            
+
             % Figure out positive and negative directions
             posDirn = (u > uTol);
             negDirn = (u < -uTol);
             move = C*u;
             posDirn2 = (move > uTol);
             negDirn2 = (move < -uTol);
-            
+
             % Figure out all the possible maximum and minimum step sizes
             maxStepTemp = distUb./u;
             minStepTemp = -distLb./u;
             StepD = distD./move;
             maxStepVec = [maxStepTemp(posDirn);minStepTemp(negDirn);StepD(posDirn2 )];
             minStepVec = [minStepTemp(posDirn);maxStepTemp(negDirn);StepD(negDirn2 )];
-        
+
             % Figure out the true max & min step sizes
             maxStep = min(maxStepVec);
             minStep = max(minStepVec);
-            
+
             % Find new direction if we're getting too close to a constraint
             if (abs(minStep) < maxMinTol && abs(maxStep) < maxMinTol) || (minStep > maxStep)
                 fprintf('Warning small step: %f %f\n',minStep,maxStep);
                 continue;
             end
-            
+
             % Pick a rand out of list_of_rands and use it to get a random
             % step distance
             stepDist = minStep + randVector(stepCount)*(maxStep-minStep);
-            
+
             %fprintf('%d %d %d %f %f\n',i,pointCount,stepCount,minStep,maxStep);
             % Advance to the next point
             curPoint = prevPoint + stepDist*u;
-            
+
             % Reproject the current point into the null space
             if mod (stepCount, 25) == 0
                 if ~isempty(N)
@@ -239,7 +240,7 @@ for i = 1:nLoops
             if (mod(totalStepCount,1000)==0) && proc == 0 % only do for master thread
               fprintf(fidErr,'%10.8f\t%10.8f\t',max(curPoint-ub),max(lb-curPoint));
             end
-            
+
             % Move points inside the space if reprojection causes problems
             overInd = (curPoint > ub);
             underInd = (curPoint < lb);
@@ -247,30 +248,30 @@ for i = 1:nLoops
               curPoint(overInd) = ub(overInd);
               curPoint(underInd) = lb(underInd);
             end
-            
+
             % Print out amount of constraint violation
             if (mod(totalStepCount,1000) == 0) && proc == 0 % only do for master thread
               fprintf(fidErr,'%10.8f\n',full(max(max(abs(A*curPoint)))));
             end
-            
+
             prevPoint = curPoint;
-            
+
             % Count the total number of steps
             totalStepCount = totalStepCount + 1;
-            
+
         end % Steps per point
-        
+
         % Final reprojection
         if ~isempty(N)
             curPoint = N* (N' * curPoint);
         end
         curPoint(fixed) = saveCoords;
         centerPoint = centerPoint + (curPoint - points(:,pointCount))/nPoints; % only swapping one point... it's trivial.
-        
+
         % Swap current point in set of points.
-        points(:,pointCount) = curPoint;               
+        points(:,pointCount) = curPoint;
     end % Points per cycle
-    
+
     if parallel % do this block if in parallel mode (regather points)
         if proc == 0 % if master
             % look for acknowledgements.
@@ -287,15 +288,15 @@ for i = 1:nLoops
                 fprintf(1, '.');
                 pause(.25)
             end
-            % all other processes have received their information.  delete temporary files.  
+            % all other processes have received their information.  delete temporary files.
             fprintf(1, '\n');
             for k = 1:(numproc-1)
                 delete (strcat('xxRoundAck', num2str(i), 'x', num2str(k), '.mat'));
             end
             delete(strcat('xxRound', num2str(i), '.mat'));
             delete(strcat('xxRoundDonePrint', num2str(i), '.mat'));
-            
-            % look for return values.  
+
+            % look for return values.
             display(strcat ('waiting for return files ', num2str(i)));
             donewaiting = 0;
             while ~donewaiting
@@ -307,7 +308,7 @@ for i = 1:nLoops
                     end
                 end
                 pause(.25)
-                fprintf(1,'.');            
+                fprintf(1,'.');
             end
             fprintf(1, '\nAll processes finished.  reading\n');
             for k = 1:(numproc-1)
@@ -317,7 +318,7 @@ for i = 1:nLoops
                 delete (strcat('xxDoneRound', num2str(i), 'x', num2str(k), '.mat') );
                 delete (strcat('xxDoneP',num2str(i), 'x', num2str(k), '.mat'));
             end
-            centerPoint = mean(points, 2); % recalculate center point after gathering all data.  
+            centerPoint = mean(points, 2); % recalculate center point after gathering all data.
             display(strcat('done with round ', num2str(i)));
         else % if slave
             points2 = points(:, pointRange);
@@ -325,7 +326,7 @@ for i = 1:nLoops
             save (strcat('xxDoneP',num2str(i), 'x', num2str(proc)), 'blah');
         end
     end
-    
+
     t1 = clock();
     fprintf('%10.0f s %d steps\n',etime(t1, t0),i*stepsPerPoint);
     if etime(t1, t0) > maxtime && proc == 0 % only master thread can terminate due to time limits.
