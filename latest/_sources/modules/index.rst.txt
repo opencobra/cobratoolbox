@@ -12,6 +12,7 @@ Modules
    metabotools
    rFBA
    multiSpeciesModelling
+   sampling
 
 Example
 
