@@ -13,6 +13,7 @@ Modules
    rFBA
    multiSpeciesModelling
    reconstruction
+   sampling
 
 Example
 

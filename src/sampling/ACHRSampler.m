@@ -1,23 +1,29 @@
 function ACHRSampler(model,warmupPoints,fileName,nFiles,pointsPerFile,stepsPerPoint,initPoint,fileBaseNo,maxTime)
-% ACHRSampler Artificial Centering Hit-and-Run sampler
+% Artificial Centering Hit-and-Run sampler
 %
-% ACHRSampler(model,warmupPoints,fileName,nFiles,pointsPerFile,stepsPerPoint,initPoint,fileBaseNo,maxTime)
+% USAGE:
 %
-%INPUTS
-% model    Model structure
-% warmupPoints Warmup points
-% fileName Base fileName for saving results
-% nFiles   Number of files created
-% pointsPerFile Number of points per file saved
-% stepsPerPoint Number of sampler steps per point saved
+%    ACHRSampler(model, warmupPoints, fileName, nFiles, pointsPerFile, stepsPerPoint, initPoint, fileBaseNo, maxTime)
 %
-%OPTIONAL INPUTS
-% initPoint     Initial point (Default = centerPoint)
-% fileBaseNo    Base file number for continuing previous sampler run
-%               (Default = 0)
-% maxTime       Maximum time limit (Default = 36000 s)
+% INPUTS:
+%    model:           Model structure
+%    warmupPoints:    Warmup points
+%    fileName:        Base `fileName` for saving results
+%    nFiles:          Number of files created
+%    pointsPerFile:   Number of points per file saved
+%    stepsPerPoint:   Number of sampler steps per point saved
 %
-% Markus Herrgard, Gregory Hannum, Ines Thiele, Nathan Price 4/14/06
+% OPTIONAL INPUTS:
+%    initPoint:       Initial point (Default = centerPoint)
+%    fileBaseNo:      Base file number for continuing previous sampler run
+%                     (Default = 0)
+%    maxTime:         Maximum time limit (Default = 36000 s)
+%
+% .. Authors: -
+%       - Markus Herrgard 4/14/06
+%       - Gregory Hannum 4/14/06
+%       - Ines Thiele 4/14/06
+%       - Nathan Price 4/14/06
 
 warning off MATLAB:divideByZero;
 

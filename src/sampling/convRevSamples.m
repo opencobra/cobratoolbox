@@ -1,21 +1,22 @@
 function [model,samples] = convRevSamples(model,samples)
-% convRevSamples Convert signs for reactions that are only running in
+% Converts signs for reactions that are only running in
 % reverse direction
 %
-% [model,samples] = convRevSamples(model,samples)
+% USAGE:
 %
-%INPUT
-% model      Constraint-based model
+%    [model, samples] = convRevSamples(model, samples)
 %
-%OPTIONAL INPUT
-% samples    Sample set
+% INPUT:
+%    model:      Constraint-based model
 %
-%OUTPUTS
-% model     COBRA model structure with negative-direction fluxes reversed
-% samples   Sample set with negative-direction fluxes reversed
-% 
+% OPTIONAL INPUT:
+%    samples:    Sample set
 %
-% Markus Herrgard 8/22/06
+% OUTPUTS:
+%    model:      COBRA model structure with negative-direction fluxes reversed
+%    samples:    Sample set with negative-direction fluxes reversed
+%
+% .. Author: - Markus Herrgard 8/22/06
 
 for i = 1:length(model.rxns)
   rxnName = model.rxns{i};
@@ -34,4 +35,3 @@ end
 if nargin < 2
     samples = [];
 end
-
