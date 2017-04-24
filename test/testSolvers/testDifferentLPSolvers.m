@@ -1,4 +1,4 @@
-function [out,solution]=testDifferentLPSolvers(model,solvers,printLevel)
+%function [out,solution]=testDifferentLPSolvers(model,solvers,printLevel)
 %tests the output from different LP solvers to see if they are consistent
 %
 %INPUT
@@ -10,6 +10,9 @@ function [out,solution]=testDifferentLPSolvers(model,solvers,printLevel)
 
 % Ronan Fleming 18/11/2014 First version
 
+load('ecoli_core_model.mat', 'model');
+
+%{
 if exist('model','var')
     if ~isempty(model)
         %model.A assumed to be matrix with coupling constraints
@@ -33,9 +36,8 @@ if exist('model','var')
 else
     solveDefaultModel=1;
 end
-if ~exist('printLevel','var')
-    printLevel  = 1;
-end
+%}
+printLevel  = 1;
 
 if solveDefaultModel
     %solve a default model
@@ -61,25 +63,26 @@ try
 catch
     [m,n]=size(model.A);
 end
-if printLevel>0
-    fprintf('%s\n',['Testing model with linear constraint matrix that has ' num2str(m) ' rows and ' num2str(n) ' columns...'])
-end
+
+fprintf('%s\n',['Testing model with linear constraint matrix that has ' num2str(m) ' rows and ' num2str(n) ' columns...\n'])
+
 %set the solver and solver parameters
-global CBT_LP_SOLVER
-oldSolver=CBT_LP_SOLVER;
+%global CBT_LP_SOLVER
+%oldSolver=CBT_LP_SOLVER;
 
-if ~exist('solvers','var')
-    solvers = {'opti'};
+%if ~exist('solvers','var')
+    %solvers = {'opti'};
 %     solvers={'gurobi6','mosek','ibm_cplex','cplex_direct','pdco','glpk','quadMinos','dqqMinos'};
-    %solvers={'gurobi6','mosek_linprog','mosek','ibm_cplex','cplex_direct','pdco','glpk','quadMinos'};
-end
+solverPkgs={'gurobi6', 'pdco', 'glpk'}; % 'mosek' 'ibm_cplex','cplex_direct', ,'quadMinos'
+%end
 
-i=1;
-for j=1:length(solvers)
-    %current solver
-    solver=solvers{j};
+i = 1;
+for k = 1:length(solverPkgs)
+    solver = solverPkgs{k};
+
+    fprintf('   Testing testDifferentLPSolvers using %s ... ', solverPkgs{k});
+
     if strcmp(solver,'opti')
-        if 1   
             % clp
             if exist('opts','var')
                 clear opts
@@ -89,11 +92,10 @@ for j=1:length(solvers)
             opts.tolrfun = 1e-9;
             opts.tolafun = 1e-9;
             opts.display = 'iter';
-            opts.warnings = 'all';            
+            opts.warnings = 'all';
             solution{i} = solveCobraLP(model,opts);
-            i = i+1;            
-        end
-        if 1   
+            i = i+1;
+
             % clp:barrier
             if exist('opts','var')
                 clear opts
@@ -103,24 +105,22 @@ for j=1:length(solvers)
             opts.tolrfun = 1e-9;
             opts.tolafun = 1e-9;
             opts.display = 'iter';
-            opts.warnings = 'all';            
+            opts.warnings = 'all';
             opts.algorithm = 'barrier';
             solution{i} = solveCobraLP(model,opts);
-            i=i+1;            
-        end
-        % note that scip does not return the dual solution        
-        if 1
+            i=i+1;
+
+        % note that scip does not return the dual solution
             if exist('opts','var')
                 clear opts
             end
             solverOK = changeCobraSolver(solver,'LP');
-            opts.solver = 'scip';            
+            opts.solver = 'scip';
             solution{i} = solveCobraLP(model,'printLevel',3,...
                                        'optTol',1e-9,...
                                        opts);
             i = i+1;
-        end
-        if 1
+
             if exist('opts','var')
                 clear opts
             end
@@ -131,80 +131,42 @@ for j=1:length(solvers)
                                        'optTol',1e-9,...
                                        opts);
             i = i+1;
-        end
-        if 1
+
             if exist('opts','var')
                 clear opts
             end
             solverOK = changeCobraSolver(solver,'LP');
-            opts.solver = 'auto';            
+            opts.solver = 'auto';
             solution{i} = solveCobraLP(model,'printLevel',3,...
                                        'optTol',1e-9,...
                                        opts);
             i = i+1;
-        end
     end
     if strcmp(solver,'dqqMinos')
-        if 1
-            solverOK = changeCobraSolver(solver,'LP');
-            param.Method=1;
-            solution{i} = solveCobraLP(model,param);
-            i=i+1;
-            clear param
-        end
-    end
-    
-    if strcmp(solver,'gurobi6')
-        if 1
-            solverOK = changeCobraSolver(solver,'LP');
-            param.Method=1;
-            solution{i} = solveCobraLP(model,param);
-            i=i+1;
-            clear param
-        end
-        
-        if 0
-            %by default, the check for stoichiometric consistency omits the columns
-            %of S corresponding to exchange reactions
-            solverOK = changeCobraSolver(solver,'LP');
-            param.Method=2;
-            solution{i} = solveCobraLP(model,param);
-            i=i+1;
-            clear param
-        end
-        
-        if 0
-            %by default, the check for stoichiometric consistency omits the columns
-            %of S corresponding to exchange reactions
-            solverOK = changeCobraSolver(solver,'LP');
-            param.Method=3;
-            solution{i} = solveCobraLP(model,param);
-            i=i+1;
-            clear param
-        end
-        
-        if 0
-            %by default, the check for stoichiometric consistency omits the columns
-            %of S corresponding to exchange reactions
-            solverOK = changeCobraSolver(solver,'LP');
-            param.Method=4;
-            solution{i} = solveCobraLP(model,param);
-            i=i+1;
-            clear param
-        end
-    end
-
-    if strcmp(solver,'mosek_linprog')
-        %by default, the check for stoichiometric consistency omits the columns
-        %of S corresponding to exchange reactions
         solverOK = changeCobraSolver(solver,'LP');
-        solution{i} = solveCobraLP(model);
+        param.Method=1;
+        solution{i} = solveCobraLP(model,param);
         i=i+1;
         clear param
     end
 
+    if strcmp(solver,'gurobi6') || strcmp(solver,'gurobi')
+
+        % by default, the check for stoichiometric consistency omits the columns of S corresponding to exchange reactions
+        solverOK = changeCobraSolver(solver,'LP');
+
+        if solverOK
+            for method = 1:4
+                param.Method = method;
+                solution{i} = solveCobraLP(model, param);
+                i = i + 1;
+                clear param
+            end
+        end
+    end
+
     if strcmp(solver,'mosek')
-        if 1
+            %{
             %by default, the check for stoichiometric consistency omits the columns
             %of S corresponding to exchange reactions
             solverOK = changeCobraSolver(solver,'LP');
@@ -212,9 +174,7 @@ for j=1:length(solvers)
             solution{i} = solveCobraLP(model,param);
             i=i+1;
             clear param
-        end
-        
-        if 1
+
             %by default, the check for stoichiometric consistency omits the columns
             %of S corresponding to exchange reactions
             solverOK = changeCobraSolver(solver,'LP');
@@ -222,9 +182,10 @@ for j=1:length(solvers)
             solution{i} = solveCobraLP(model,param);
             i=i+1;
             clear param
-        end
-        
-        if 0 %still debugging this solve with Erling @ Mosek
+            %}
+
+        %{
+            %still debugging this solve with Erling @ Mosek
             %by default, the check for stoichiometric consistency omits the columns
             %of S corresponding to exchange reactions
             solver='mosek';
@@ -233,11 +194,11 @@ for j=1:length(solvers)
             solution{i} = solveCobraLP(model,param);
             i=i+1;
             clear param
-        end
+        %}
     end
-    
+
     if strcmp(solver,'ibm_cplex')
-        if 1
+      %{
             % ILOGcplex.param.lpmethod.Cur
             % Determines which algorithm is used. Currently, the behavior of the Automatic setting is that CPLEX almost
             % always invokes the dual simplex method. The one exception is when solving the relaxation of an MILP model
@@ -257,23 +218,18 @@ for j=1:length(solvers)
             solution{i} = solveCobraLP(model,param);
             i=i+1;
             clear param
-        end
-        
-        if 1
+
             solverOK = changeCobraSolver(solver,'LP');
             param.lpmethod.Cur=1; % Primal Simplex
             solution{i} = solveCobraLP(model,param);
             i=i+1;
-        end
-        
-        if 1
+
             solverOK = changeCobraSolver(solver,'LP');
             param.lpmethod.Cur=2; % Dual Simplex
             solution{i} = solveCobraLP(model,param);
             i=i+1;
             clear param
-        end
-        
+
         if 0
             solverOK = changeCobraSolver(solver,'LP');
             param.lpmethod.Cur=3; % Network Simplex
@@ -281,66 +237,67 @@ for j=1:length(solvers)
             i=i+1;
             clear param
         end
-        
-        if 1
+
             solverOK = changeCobraSolver(solver,'LP');
             param.lpmethod.Cur=4; % Barrier
             solution{i} = solveCobraLP(model,param);
             i=i+1;
             clear param
-        end
-        
-        if 1
+
             solverOK = changeCobraSolver(solver,'LP');
             param.lpmethod.Cur=5; % Sifting
             solution{i} = solveCobraLP(model,param);
             i=i+1;
             clear param
-        end
-        
-        if 1
+
             solverOK = changeCobraSolver(solver,'LP');
             param.lpmethod.Cur=6; % Concurrent Dual, Barrier and Primal
             solution{i} = solveCobraLP(model,param);
             i=i+1;
             clear param
-        end
+            %}
     end
-    
-    
+
+
     if strcmp(solver,'cplex_direct')
         solverOK = changeCobraSolver(solver,'LP');
         solution{i} = solveCobraLP(model);
         i=i+1;
         clear param
     end
-    
+
     if strcmp(solver,'pdco')
         solverOK = changeCobraSolver(solver,'LP');
-        solution{i} = solveCobraLP(model);
-        i=i+1;
-        clear param
+        if solverOK
+            solution{i} = solveCobraLP(model);
+            i=i+1;
+            clear param
+        end
     end
-    
+
     if strcmp(solver,'glpk')
         solverOK = changeCobraSolver(solver,'LP');
-        solution{i} = solveCobraLP(model);
-        i=i+1;
-        clear param
+        if solverOK
+            solution{i} = solveCobraLP(model);
+            i=i+1;
+            clear param
+        end
     end
-    
+
     if strcmp(solver,'quadMinos')
         solverOK = changeCobraSolver(solver,'LP');
         solution{i} = solveCobraLP(model);
         i=i+1;
         clear param
     end
+
+    fprintf('Done.\n');
 end
 
 
 %change back to the old solver
-solverOK = changeCobraSolver(oldSolver,'LP');
-
+%solverOK = changeCobraSolver(oldSolver,'LP');
+fprintf('\n Summary:\n');
 %compare solutions
 ilt=i-1;
 if printLevel>0
@@ -349,7 +306,7 @@ end
 
 
 
-testIndex='rand';
+testIndex='max';
 switch testIndex
     case 'max'
         %pick a large entry in each dual vector, to check the signs
@@ -359,7 +316,7 @@ switch testIndex
         randdual=randdual(1);
     case 'min'
         %pick a small entry in each dual vector, to check the signs
-        
+
         randrcost=find(min(solution{1}.rcost)==solution{1}.rcost);
         randrcost=randrcost(1);
         randdual=find(min(solution{1}.dual)==solution{1}.dual);
@@ -371,25 +328,19 @@ switch testIndex
 end
 
 for i=1:ilt
-    if 0
-        disp(i)
-        solution{i}
-    end
     if solution{1}.stat==1
         if printLevel>0
             fprintf('%3d%15f%15f%15f%15f%20s\t%30s\n',i,solution{i}.time,solution{i}.obj,solution{i}.dual(randdual),solution{i}.rcost(randrcost),solution{i}.solver,solution{i}.algorithm)
         end
             all_obj(i)=solution{i}.obj;
     else
-        fprintf('%3d%15f%15f%15f%15f%20s\t%30s\n',i,solution{i}.time,solution{i}.obj,NaN,NaN,solution{i}.solver,solution{i}.algorithm)  
+        fprintf('%3d%15f%15f%15f%15f%20s\t%30s\n',i,solution{i}.time,solution{i}.obj,NaN,NaN,solution{i}.solver,solution{i}.algorithm)
         all_obj(i)=NaN;
     end
 end
 
 if abs(min(all_obj)-max(all_obj))<1e-8
-    out=1;
+    out=1
 else
-    out=0;
+    out=0
 end
-
-
