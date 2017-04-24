@@ -14,46 +14,6 @@ x=1;
 %[solverOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(LPproblem, LPsolution.full);
 
 
-%QP Solver test.
-% http://tomopt.com/docs/quickguide/quickguide005.php
-
-%if an error pops up asking to changeCobraSolver:
-%changeCobraSolver('tomlab_cplex', 'QP')
-
-% 1. Set up QP problem.
-QPproblem.F     = [ 8   1; 1   8 ];       % Matrix F in 1/2 * x' * F * x + c' * x
-QPproblem.c     = [ 3  -4 ]';    % Vector c in 1/2 * x' * F * x + c' * x
-QPproblem.A     = [ 1   1; 1  -1 ];       % Constraint matrix
-QPproblem.b = [ 5   0]';
-QPproblem.lb   = [ 0  0  ]';
-QPproblem.ub   = [  inf   inf  ]';
-QPproblem.x0   = [  0   1  ]';  % Starting point
-QPproblem.osense = 1;
-QPproblem.csense = ['L'; 'E'];
-
-
-
-pass = 1;
-% 2. Solve QP problem.
-try
-    %Solve QP problem printing errors and warnings
-    QPsolution = solveCobraQP(QPproblem, 'printLevel', 0);
-    %[solverOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(QPproblem, QPsolution.full);
-catch
-    disp('Error in QP test');
-    x=0;
-    pass = 0;
-end
-
-% 3. Check QP results with expected answer.
-if pass == 1
-    if abs(QPsolution.obj + 0.0278)  < tol & abs(QPsolution.full - 0.0556) < [tol; tol]
-        display('QP Test Passed');
-    else
-        display('QP Test Not Passed');
-        x=0;
-    end
-end
 %MIQP Solver test.
 % http://tomopt.com/docs/quickguide/quickguide006.php
 
