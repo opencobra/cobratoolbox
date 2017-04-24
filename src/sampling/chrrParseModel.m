@@ -1,30 +1,33 @@
 function P = chrrParseModel(model)
-% CHRRPARSEMODEL Parse a COBRA model into the right format for the CHRR sampler
-% 
-% P = chrrParseModel(model);
-% 
-% We are trying to sample uniformly at random from the points v that satisfy:
-% 
-% min   c'*v
-% s.t.  Sv = b
-%       lb <= v <= ub
-% 
+% Parses a COBRA model into the right format for the CHRR sampler
+%
+% USAGE:
+%
+%    P = chrrParseModel(model);
+%
 % INPUTS:
-% model ... COBRA model structure with fields:
-% .S ... The m x n stoichiometric matrix
-% .lb ... n x 1 lower bounds on fluxes
-% .ub ... n x 1 upper bounds on fluxes
-% .c ... n x 1 linear objective
-% 
-% OUTPUTS:
-% P ... A structure with fields:
-% .A_eq ... Equality constraint matrix (model.S)
-% .b_eq ... Right hand side of equality constraints (model.b)
-% .A ... Inequality constraint matrix ([I_n 0; 0 -I_n])
-% .b ... Right hand side of inequality constraints ([lb; -ub])
-% 
-% October 2016, Ben Cousins and Hulda S. Haraldsdóttir
-
+%    model:      COBRA model structure with fields:
+%
+%                 * `.S` - The `m` x `n` stoichiometric matrix
+%                 * `.lb` - `n` x 1 lower bounds on fluxes
+%                 * `.ub` - `n` x 1 upper bounds on fluxes
+%                 * `.c` - `n` x 1 linear objective
+%
+% OUTPUT:
+%    P:          A structure with fields:
+%
+%                 * `.A_eq` - Equality constraint matrix (`model.S`)
+%                 * `.b_eq` - Right hand side of equality constraints (`model.b`)
+%                 * `.A` - Inequality constraint matrix ([`I_n` 0; 0 ``-I_n`])
+%                 * `.b` - Right hand side of inequality constraints ([`lb`; ``-ub`])
+%
+% .. Authors: - Ben Cousins and Hulda S. Haraldsdóttir, October 2016
+%
+% We are trying to sample uniformly at random from the points `v` that satisfy:
+%
+%    * min   `c*v`
+%    * s.t.  `Sv = b`
+%    * `lb <= v <= ub`
 dim = length(model.lb);
 
 P.A = [eye(dim); -eye(dim)];

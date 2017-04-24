@@ -5,7 +5,7 @@ Frequently Asked Questions (FAQ)
 
 **What do all these labels mean?**
 
-A comprehensive list of labels and their description for the issues and pull requests is given [here](https://github.com/opencobra/cobratoolbox/blob/documentation/.github/LABELS.md).
+A comprehensive list of labels and their description for the issues and pull requests is given [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/guides/LABELS.md).
 
 ## Reconstruction
 

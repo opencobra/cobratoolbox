@@ -1,20 +1,22 @@
 function [newModel,AddedExchRxn] = addExchangeRxn(model,metList,lb,ub)
-%addExchangeRxn adds exchange reactions
+% Adds exchange reactions
 %
-% newModel = addExchangeRxn(model,metList,lb,ub)
+% USAGE:
 %
-%INPUTS
-% model         Cobra model structure
-% metList       List of metabolites
+%    newModel = addExchangeRxn(model, metList, lb, ub)
 %
-%OPTIONAL INPUTS
-% lb            Array of lower bounds
-% ub            Array of upper bounds
+% INPUTS:
+%    model:         Cobra model structure
+%    metList:       List of metabolites
 %
-%OUTPUT
-% newModel      COBRA model with added exchange reactions
+% OPTIONAL INPUTS:
+%    lb:            Array of lower bounds
+%    ub:            Array of upper bounds
 %
-% Ines Thiele 02/2009
+% OUTPUT:
+%    newModel:      COBRA model with added exchange reactions
+%
+% .. Author: - Ines Thiele 02/2009
 
 if nargin < 3
     lb = ones(length(metList),1)*min(model.lb);

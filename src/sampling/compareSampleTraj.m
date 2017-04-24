@@ -1,17 +1,18 @@
 function compareSampleTraj(rxnNames,samples,models,nBins)
-%compareSampleHist Compare flux histogramns for two or more samples
-%for one or more reactions
+% Compares flux histograms for two or more samples
+% for one or more reactions
 %
-% compareSampleTraj(rxnNames,samples,models,nBins)
+% USAGE:
 %
-%INPUTS
-% rxnNames      List of reaction names to compare
-% samples       Samples to compare
-% models        Cell array containing COBRA model structures
+%    compareSampleTraj(rxnNames, samples, models, nBins)
 %
-%OPTIONAL INPUTS
-% nBins         Number of bins (Default = nSamples/25)
+% INPUTS:
+%    rxnNames:      List of reaction names to compare
+%    samples:       Samples to compare
+%    models:        Cell array containing COBRA model structures
 %
+% OPTIONAL INPUTS:
+%    nBins:         Number of bins (Default = `nSamples` / 25)
 
 if (nargin < 4)
   [tmp,nSamples] = size(samples{1});
@@ -47,7 +48,7 @@ for j = 1:nRxns
   end
 
   bins = linspace(currLB,currUB,nBins);
-    
+
   for i = 1:length(models)
     sampleSign = 1;
     id = findRxnIDs(models{i},rxnNameList{j});

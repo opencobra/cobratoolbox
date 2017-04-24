@@ -1,55 +1,50 @@
 function [model, rxnIDexists] = addReaction(model, rxnName, metaboliteList, stoichCoeffList, revFlag, lowerBound, upperBound, objCoeff, subSystem, grRule, geneNameList, systNameList, checkDuplicate, printLevel)
-%addReaction Add a reaction to the model or modify an existing reaction
+% Adds a reaction to the model or modify an existing reaction
 %
-% model = addReaction(model,rxnName,metaboliteList,stoichCoeffList,revFlag,lowerBound,upperBound,objCoeff,subSystem,grRule,geneNameList,systNameList,checkDuplicate)
-% model = addReaction(model,rxnName,rxnFormula)
+% USAGE:
 %
-%INPUTS
-% model             COBRA model structure
-% rxnName           Reaction name abbreviation (i.e. 'ACALD')
-%                   (Note: can also be a cell array {'abbr','name'}
-% metaboliteList    Cell array of metabolite names or alternatively the
-%                   reaction formula for the reaction
-% stoichCoeffList   List of stoichiometric coefficients (reactants -ve,
-%                   products +ve), empty if reaction formula is provided
+%    [model, rxnIDexists] = addReaction(model, rxnName, metaboliteList, stoichCoeffList, revFlag, lowerBound, upperBound, objCoeff, subSystem, grRule, geneNameList, systNameList, checkDuplicate, printLevel)
 %
-%OPTIONAL INPUTS
-% revFlag           Reversibility flag (Default = true)
-% lowerBound        Lower bound (Default = 0 or -vMax)
-% upperBound        Upper bound (Default = vMax)
-% objCoeff          Objective coefficient (Default = 0)
-% subSystem         Subsystem (Default = '')
-% grRule            Gene-reaction rule in boolean format (and/or allowed)
-%                   (Default = '');
-% geneNameList      List of gene names (used only for translation from
-%                   common gene names to systematic gene names)
-% systNameList      List of systematic names
-% checkDuplicate    Check S matrix too see if a duplicate reaction is
-%                   already in the model (Deafult false)
-% printLevel        default = 1
+% INPUTS:
+%    model:             COBRA model structure
+%    rxnName:           Reaction name abbreviation (i.e. 'ACALD')
+%                       (Note: can also be a cell array {'abbr','name'}
+%    metaboliteList:    Cell array of metabolite names or alternatively the
+%                       reaction formula for the reaction
+%    stoichCoeffList:   List of stoichiometric coefficients (reactants -ve,
+%                       products +ve), empty if reaction formula is provided
 %
-%OUTPUTS
-% model             COBRA model structure with new reaction
-% rxnIDexists       Empty if the reaction did not exist previously, or if
-%                   checkDuplicate is false. Otherwise it contains the ID
-%                   of an identical reaction already present in the model.
+% OPTIONAL INPUTS:
+%    revFlag:           Reversibility flag (Default = true)
+%    lowerBound:        Lower bound (Default = 0 or -vMax`)
+%    upperBound:        Upper bound (Default = `vMax`)
+%    objCoeff:          Objective coefficient (Default = 0)
+%    subSystem:         Subsystem (Default = '')
+%    grRule:            Gene-reaction rule in boolean format (and/or allowed)
+%                       (Default = '');
+%    geneNameList:      List of gene names (used only for translation from
+%                       common gene names to systematic gene names)
+%    systNameList:      List of systematic names
+%    checkDuplicate:    Check `S` matrix too see if a duplicate reaction is
+%                       already in the model (Deafult false)
+%    printLevel:        default = 1
 %
-% Examples:
+% OUTPUTS:
+%    model:             COBRA model structure with new reaction
+%    rxnIDexists:       Empty if the reaction did not exist previously, or if
+%                       checkDuplicate is false. Otherwise it contains the ID
+%                       of an identical reaction already present in the model.
 %
-% 1) Add a new irreversible reaction using the formula approach
-%
+% EXAMPLES:
+%    %1) Add a new irreversible reaction using the formula approach
 %    model = addReaction(model,'newRxn1','A -> B + 2 C')
-%
-% 2) Add a the same reaction using the list approach
-%
+%    %2) Add a the same reaction using the list approach
 %    model = addReaction(model,'newRxn1',{'A','B','C'},[-1 1 2],false);
 %
-% Markus Herrgard 1/12/07
-%
-% Modified the check to see if duplicate reaction already is in model by
-% using S matrix coefficients to be able to handle larger matricies
-% Richard Que 11/13/2008
-% Ines Thiele 08/03/2015, made rxnGeneMat optional
+% .. Authors:
+%       - Markus Herrgard 1/12/07
+%       - Richard Que 11/13/2008 Modified the check to see if duplicate reaction already is in model by using S matrix coefficients to be able to handle larger matricies
+%       - Ines Thiele 08/03/2015, made rxnGeneMat optional
 
 if ~exist('printLevel','var')
     printLevel = 1;

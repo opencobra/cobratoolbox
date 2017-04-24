@@ -1,21 +1,23 @@
 function modelNew = addRatioReaction(model, listOfRxns, ratioCoeff)
-%addRatioReaction adds ratio reaction. 
+% Adds ratio reaction.
 %
-% modelNew = addRatioReaction(model, listOfRxns, ratioCoeff)
+% USAGE:
 %
-%INPUTS
-% model         COBRA model structure
-% listOfRxns    List of 2 Reactions
-% ratioCoeff    Array of ratio coefficient between the 2 reactions
+%    modelNew = addRatioReaction(model, listOfRxns, ratioCoeff)
 %
-%OUTPUT
-% modelNew      COBRA model structure containing the ratio
+% INPUTS:
+%    model:         COBRA model structure
+%    listOfRxns:    List of 2 Reactions
+%    ratioCoeff:    Array of ratio coefficient between the 2 reactions
 %
-% Example:      1 v_EX_ac(e) = 2 v_EX_for(e):
-%               modelNew = addRatioReaction(model, {'EX_ac(e)' 'EX_for(e)'}, [1 2])
+% OUTPUT:
+%    modelNew      COBRA model structure containing the ratio
 %
+% EXAMPLE:
+%    %1 v_EX_ac(e) = 2 v_EX_for(e):
+%    modelNew = addRatioReaction(model, {'EX_ac(e)' 'EX_for(e)'}, [1 2])
 %
-% Ines Thiele 02/09
+% .. Author: - Ines Thiele 02/09
 
 modelNew = model;
 
@@ -33,5 +35,3 @@ if isfield(modelNew,'note')
 else
     modelNew.note = strcat(listOfRxns{1},' and ',listOfRxns{2}, 'are set to have a ratio of ',num2str(ratioCoeff(1)),':' ,num2str(ratioCoeff(2)),'.');
 end
-
-

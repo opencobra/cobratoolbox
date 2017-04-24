@@ -1,38 +1,40 @@
 function plotSampleHist(rxnNames,samples,models,nBins,perScreen)
-%plotSampleHist Compare flux histograms for one or more samples
-%for one or more reactions
+% Compares flux histograms for one or more samples
+% for one or more reactions
 %
-% plotSampleHist(rxnNames,samples,models,nBins,perScreen)
+% USAGE:
 %
-%INPUTS
-% rxnNames  Cell array of reaction abbreviations
-% samples   Cell array containing samples
-% models    Cell array containing model structures or common model
-% structure
+%    plotSampleHist(rxnNames, samples, models, nBins, perScreen)
 %
-%OPTIONAL INPUTS
-% nBins     Number of bins to be used
-% perScreen Number of reactions to show per screen.  Either a number or [nY, nX] vector.
-%     (press Enter to advance screens)
+% INPUTS:
+%    rxnNames:      Cell array of reaction abbreviations
+%    samples:       Cell array containing samples
+%    models:        Cell array containing model structures or common model
+%                   structure
 %
-%CONTROLS
-% To advance to next screen hit enter/return or type f and hit enter/return
-% To rewind to previous screen type r or b and hit enter/return
-% To quit script type q and hit enter/return
+% OPTIONAL INPUTS:
+%    nBins:         Number of bins to be used
+%    perScreen:     Number of reactions to show per screen.  Either a number or [nY, nX] vector.
+%                   (press 'enter' to advance screens)
 %
-%EXAMPLE
-% sampleStructOut1 = gpSampler(model1, 2150);
-% sampleStructOut2 = gpSampler(model2, 2150);
-% Plot for model 1
-% plotSampleHist(model1.rxns,{samplePoints1},{model1})
+% EXAMPLE:
+%    sampleStructOut1 = gpSampler(model1, 2150);
+%    sampleStructOut2 = gpSampler(model2, 2150);
+%    %Plot for model 1
+%    plotSampleHist(model1.rxns,{samplePoints1},{model1})
 %
-% Plot reactions reactions in model 1 that also exist in model 2 using 10
-% bins and plotting 12 reactions per screen.
-% plotSampleHist(model1.rxns,{samplePoints1,samplePoints2},{model1,model2},10,12)
+%    %Plot reactions reactions in model 1 that also exist in model 2 using 10
+%    %bins and plotting 12 reactions per screen.
+%    plotSampleHist(model1.rxns,{samplePoints1,samplePoints2},{model1,model2},10,12)
 %
-% Markus Herrgard 7/17/06
+% .. Authors;
+%       - Markus Herrgard 7/17/06
+%       - Richard Que 2/05/10, added ability to move in reverse direction.
 %
-% Added ability to move in reverse direction. Richard Que (2/05/10)
+% CONTROLS:
+% To advance to next screen hit 'enter/return' or type 'f' and hit 'enter/return'
+% To rewind to previous screen type 'r' or 'b' and hit 'enter/return'
+% To quit script type 'q' and hit 'enter/return'
 
 if (nargin < 5)
     perScreen = 1e5;
@@ -116,7 +118,7 @@ while ~flagQuit
         currLB = min(currLB,min(samples{i}(id,:)'));
         currUB = max(currUB,max(samples{i}(id,:)'));
     end
-    
+
     if currUB-currLB < 8*eps*abs(mean([currUB, currLB])) %rescale currUB, LB if they are the same # within numerical precision (8*eps)
         av = abs(mean([currUB, currLB]));
         currUB = currUB+8*eps*av;
@@ -143,13 +145,13 @@ while ~flagQuit
         counts(:,i) = smooth(bins,n');
     end
     freq = counts./repmat(sum(counts),size(counts,1),1);
-    
+
     subplot(nY,nX, mod(j-1, perScreen)+1);
     plot(bins,freq,'-');
     axis([currLB-.0001 currUB+.0001 0 max(max(freq))]);
     h = text((currUB+currLB)/2,max(max(freq))*1.1,strrep(rxnNameList{j},'_','-'));
     set(h,'HorizontalAlignment','center');
-    
+
     user_input = 'f';
     if j>=nRxns
         if nRxns<=perScreen, return; end
@@ -172,4 +174,3 @@ while ~flagQuit
         j=j+1;
     end
 end
-

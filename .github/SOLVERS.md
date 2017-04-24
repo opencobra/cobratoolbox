@@ -12,7 +12,7 @@ Platform-specific instructions are marked with
 - **macOS** - <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS">
 - **linux** - <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux">
 
-![#ff0000](https://placehold.it/15/ff0000/000000?text=+) Most steps require superuser or administrator rights (`sudo`).
+:warning: Most steps require superuser or administrator rights (`sudo`).
 
 ## TOMLAB
 
