@@ -1,7 +1,7 @@
 % The COBRAToolbox: testSolveCobraQP.m
 %
 % Purpose:
-%     - testSolveCobraLP tests the SolveCobraQP function and its different methods
+%     - testSolveCobraQP tests the SolveCobraQP function and its different methods
 %
 % Author:
 %     - CI integration: Laurent Heirendt, April 2017
