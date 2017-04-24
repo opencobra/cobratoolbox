@@ -64,7 +64,7 @@ Support and Documentation
 
 - The documentation is available [here](http://opencobra.github.io/cobratoolbox). This version is in development, but the legacy version of the documentation is  [here](http://opencobra.github.io/cobratoolbox/deprecated/docs/index.html).
 
-- Answers to Frequently Asked Questions (**FAQ**) are [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/FAQ.md).
+- Answers to Frequently Asked Questions (**FAQ**) are [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/guides/FAQ.md).
 
 - If you need support, please feel free to post your question in our <a href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img src="https://img.shields.io/badge/COBRA-forum-blue.svg"></a>.
 
@@ -79,9 +79,9 @@ How to contribute
 
 :bulb: **Check out the [MATLAB.devTools](https://github.com/opencobra/MATLAB.devTools) - and contribute the smart way!**
 
-- Please follow the [Style Guide](https://github.com/opencobra/cobratoolbox/blob/master/.github/STYLEGUIDE.md).
-- More information on writing a **test** is [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/TESTGUIDE.md) and a template is [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/testTemplate.m).
-- A guide for reporting an **issue** or submitting a **pull request (PR)** is [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/ISSUEGUIDE.md).
+- Please follow the [Style Guide](https://github.com/opencobra/cobratoolbox/blob/master/.github/guides/STYLEGUIDE.md).
+- More information on writing a **test** is [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/guides/TESTGUIDE.md) and a template is [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/guides/testTemplate.m).
+- A guide for reporting an **issue** or submitting a **pull request (PR)** is [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/guides/ISSUEGUIDE.md).
 
 If you want to use `git` via the command line interface and need help, these [training slides](https://uni-lu.github.io/slides/) will get you started. This [guide](https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github) or the official [GitHub guide](https://help.github.com/articles/creating-a-pull-request/) also come in handy.
 
@@ -106,7 +106,7 @@ For convenience, we provide the [`SBMLToolbox 4.1.0`](http://sbml.org/Software/S
 [Binaries](https://github.com/opencobra/COBRA.binary) for these libraries are provided in a submodule for Mac OS X 10.6 or later (64-bit), GNU/Linux Ubuntu 10.0 (64-bit), and Microsoft Windows 7 (64-bit).
 For unsupported OS, please refer to their respective building instructions ([`glpk_mex`](https://github.com/blegat/glpkmex#instructions-for-compiling-from-source), [`libSBML`](http://sbml.org/Software/libSBML/5.13.0/docs//cpp-api/libsbml-installation.html)).
 
-Read more on the compatibility with SBML-FBCv2 [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/NOTES.md).
+Read more on the compatibility with SBML-FBCv2 [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/guides/NOTES.md).
 
 Disclaimer
 ----------
