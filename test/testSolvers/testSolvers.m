@@ -14,25 +14,5 @@ x=1;
 %[solverOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(LPproblem, LPsolution.full);
 
 
-% this test is only available with tomlab_snopt
-%run sampleNLP script
-try
-    sampleNLP;
-catch
-    disp('Error in NLP test 2');
-    x=0;
-    pass = 0;
-end
-
-
-%Check results
-if pass == 1
-    if abs(NLPsolution.obj - 0.0117) < tol & all(abs(NLPsolution.full - [2071.06780547;2928.93219453;0.00482843;0.00682843]) < tol)
-        display('NLP Test 2 Passed');
-    else
-        display('NLP Test Not 2 Passed');
-        x=0;
-    end
-end
 
 cd(oriFolder);

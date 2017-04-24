@@ -67,3 +67,10 @@ end
 
 % change the directory
 cd(currentDir)
+
+% this test is only available with tomlab_snopt
+%{
+sampleNLP; % run sampleNLP script
+assert(abs(NLPsolution.obj - 0.0117) < tol)
+assert(all(abs(NLPsolution.full - [2071.06780547;2928.93219453;0.00482843;0.00682843]) < tol))
+%}
