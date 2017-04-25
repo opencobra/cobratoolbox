@@ -28,6 +28,7 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel)
 %     glpk            GLPK solver with Matlab mex interface (glpkmex)
 %     gurobi          Gurobi solver
 %     ibm_cplex       The IBM API for CPLEX using the CPLEX class
+%     matlab          MATLAB's linprog function
 %     mosek           Mosek LP solver with Matlab API (using linprog.m from Mosek)
 %     pdco            PDCO solver
 %     quadMinos       quad LP solver

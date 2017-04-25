@@ -560,7 +560,7 @@ switch solver
         modelName='qFBA';
 
         %TODO: for some reason repeated system call to find minos path does not work, this is a workaround
-        if 0
+        %{
             % directory     the directory where optimization problem file is saved
             [status,cmdout]=system('which minos');
             if isempty(cmdout)
@@ -571,9 +571,9 @@ switch solver
             else
                 quadLPPath=cmdout(1:end-length('/bin/minos')-1);
             end
-        else
-            quadLPPath=MINOSPATH;
-        end
+        %}
+        quadLPPath = MINOSPATH;
+
 
         dataDirectory=[quadLPPath '/data/FBA'];
         %write out flat file to current folder
@@ -1214,7 +1214,6 @@ switch solver
             stat = -1;
         end
     case 'cplex_direct'
-        %%
         %Tomlab cplex.m direct
         %Used with the current script, only some of the control affoarded with
         %this interface is provided. Primarily, this is to change the print
@@ -1233,7 +1232,6 @@ switch solver
             delete('clone1.log')
         end
     case 'ibm_cplex'
-        %%
         %By default use the complex ILOG-CPLEX interface as it seems to be faster
         %IBM(R) ILOG(R) CPLEX(R) Interactive Optimizer 12.5.1.0
         ILOGcomplex=1;

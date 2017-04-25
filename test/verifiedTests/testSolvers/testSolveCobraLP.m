@@ -86,7 +86,7 @@ for k = 1:length(solverPkgs)
 end
 
 % define solver packages
-solverPkgs={'gurobi', 'pdco', 'glpk', 'mosek', 'ibm_cplex', 'cplex_direct', 'quadMinos', 'dqqMinos', 'tomlab_cplex', 'matlab'}; %
+solverPkgs={'cplex_direct', 'dqqMinos', 'glpk', 'gurobi', 'ibm_cplex', 'matlab', 'mosek', 'pdco', 'quadMinos', 'tomlab_cplex'}; %
 
 % load the ecoli_core_model
 load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
