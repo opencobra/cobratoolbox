@@ -37,5 +37,13 @@ else
     warning(['The file', fullFileNamePath, ' does not exist and could not be deleted.']);
 end
 
+% use a different deck to convert a COBRA model to an SBML file
+modelSBML = convertCobraToSBML(model)
+
+[isSame numDiff fieldNames] = isSameCobraModel(modelSBML, testModelSBML);
+
+% assess any potential differences
+assert(~any(numDiff))
+
 % change the directory
 cd(currentDir)
