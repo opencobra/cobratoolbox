@@ -21,6 +21,7 @@ function mets = detectDeadEnds(model,removeExternalMets)
 % April 2017 - Thomas Pfau - massive Speed up and clarification of the
 %                            removeExternalMets option
 
+
 ltz = model.lb < 0;
 gtz = model.ub > 0;
 
@@ -40,7 +41,7 @@ onlyOneReac = sum(SPres,2) == 1;
 
 ExchangedMets = logical(zeros(size(model.S,1),1));
 
-if removeExternalMets
+if (nargin > 1) && removeExternalMets
     Exchangers = sum(SPres) == 1;
     ExchangedMets = sum(SPres(:,Exchangers),2) == 1;
 end
