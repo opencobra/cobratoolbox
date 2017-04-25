@@ -19,6 +19,10 @@
 import os
 import sys
 
+sys.path.append('sphinxext')
+from github_linkcode import github_linkcode_resolve
+
+
 
 sys.path.insert(0, os.path.abspath(os.path.join('..', '..', '..')))
 # sys.path.insert(0, os.path.abspath('.'))
@@ -39,7 +43,20 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinxcontrib.napoleon',
     'sphinxcontrib.matlab',
+    'github',
+    'sphinx.ext.linkcode',
     'sphinxcontrib.fulltoc']
+
+def linkcode_resolve(domain, info):
+    print "allo"
+    return github_linkcode_resolve(
+            domain=domain,
+            info=info,
+            allowed_module_names=['src'],
+            github_org_id='opencobra',
+            github_repo_id='cobratoolbox',
+            branch='master',
+            source_prefix='')
 
 
 # autodoc_member_order='groupwise'
@@ -214,7 +231,8 @@ html_static_path = ['_static']
 # Additional templates that should be rendered to pages, maps page names to
 # template names.
 #
-# html_additional_pages = {}
+html_index = 'index.html'
+html_additional_pages = {'index' : 'index.html'}
 
 # If false, no module index is generated.
 #
