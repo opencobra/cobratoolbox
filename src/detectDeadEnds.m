@@ -42,8 +42,8 @@ onlyOneReac = sum(SPres,2) == 1;
 ExchangedMets = logical(zeros(size(model.S,1),1));
 
 if (nargin > 1) && removeExternalMets    
-    %Exchangers = sum(SPres) == 1;
-    %ExchangedMets = sum(SPres(:,Exchangers),2) == 1;
+    Exchangers = sum(SPres) == 1;
+    ExchangedMets = sum(SPres(:,Exchangers),2) == 1;
     %This could also be done using a heuristic approach to detect external
     %mets, but this would need some additional explanation in the
     %documentation. How are "External" metabolites defined here?

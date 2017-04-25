@@ -30,14 +30,27 @@ cd(fileDir);
 % load the test models
 load('DeadEndTestModel','model')
 
+
 %Determine all dead end metabolites
 [mets] = detectDeadEnds(model);
 assert(all(ismember(model.mets(mets),{'D','L','C'})));
 
-%Only determine those, which are not involved in an exchange reaction
-[mets] = detectDeadEnds(model,1);
-assert(all(ismember(model.mets(mets),{'D','L'})));
+%When detectDeadEnds is changed according to Ronans suggestion, we need to test
+%multiple solvers.
+solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
 
+for k = 1:length(solverPkgs)
+    
+    % set the solver
+    solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
+    
+    if solverOK == 1
+        
+        %Only determine those, which are not involved in an exchange reaction
+        [mets] = detectDeadEnds(model,1);
+        assert(all(ismember(model.mets(mets),{'D','L'})));
+    end
+end
 %Clean up after test
 clear mets
 clear model
