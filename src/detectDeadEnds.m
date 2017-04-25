@@ -9,7 +9,7 @@ function mets = detectDeadEnds(model,removeExternalMets)
 % model                 COBRA model structure
 %
 %OPTIONAL INPUT           
-% removeExternalMets    Remove metabolites that participate in reactions of
+% removeExternalMets    Dont return metabolites that participate in reactions of
 %                       the following type:
 %                       "A <=>/-> " or " <=>/-> A"
 %
