@@ -109,7 +109,9 @@ end
 
 %names_of_parameters that users can specify with values, using option
 % A) as parameter followed by parameter value:
-optParamNames = {'minNorm','printLevel','primalOnly','saveInput','feasTol','optTol','solver'};
+optParamNames = {'minNorm','printLevel','primalOnly','saveInput','feasTol',...
+                 'optTol','solver', 'pdco_method', 'pdco_maxiter', 'pdco_xsize',...
+                 'pdco_zsize'};
 
 % Set default parameter values
 [minNorm, printLevel, primalOnlyFlag, saveInput,feasTol,optTol] = ...
@@ -174,7 +176,22 @@ if ~isempty(varargin)
             solver = parameters.solver;
             parameters = rmfield(parameters,'solver');
         end
-
+        if isfield(parameters,'pdco_method')
+            pdco_method = parameters.pdco_method;
+            parameters = rmfield(parameters,'pdco_method');
+        end
+        if isfield(parameters,'pdco_maxiter')
+            pdco_maxiter = parameters.pdco_maxiter;
+            parameters = rmfield(parameters,'pdco_maxiter');
+        end
+        if isfield(parameters,'pdco_xsize')
+            pdco_xsize = parameters.pdco_xsize;
+            parameters = rmfield(parameters,'pdco_xsize');
+        end
+        if isfield(parameters,'pdco_zsize')
+            pdco_zsize = parameters.pdco_zsize;
+            parameters = rmfield(parameters,'pdco_zsize');
+        end
         % overwrite defaults
         [minNorm, printLevel, primalOnlyFlag, saveInput] = ...
             getCobraSolverParams('LP',optParamNames(1:4),parameters);
@@ -932,7 +949,6 @@ switch solver
         end
 
     case 'gurobi_mex'
-        %% gurobi
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
         %
@@ -1405,23 +1421,19 @@ switch solver
         y0 = zeros(nMet,1);
         z0 = ones(nRxn,1);
 
-        if 0
-            %setting d1 to zero is dangerous numerically, but is necessary to avoid
-            %minimising the Euclidean norm of the optimal flux. A more
-            %numerically stable way is to use pdco via solveCobraQP, which has
-            %a more reasonable d1 and should be more numerically robust. -Ronan
-            d1=0;
-            d2=1e-6;
-        else
-            d1=5e-4;
-            d2=5e-4;
-        end
+
+        %setting d1 to zero is dangerous numerically, but is necessary to avoid
+        %minimising the Euclidean norm of the optimal flux. A more
+        %numerically stable way is to use pdco via solveCobraQP, which has
+        %a more reasonable d1 and should be more numerically robust. -Ronan
+        % d1=0;
+        % d2=1e-6;
+        d1 = 5e-4;
+        d2 = 5e-4;
 
         options = pdcoSet;
-        if 0
-            options.FeaTol    = 1e-12;
-            options.OptTol    = 1e-12;
-        end
+        % options.FeaTol    = 1e-12;
+        % options.OptTol    = 1e-12;
 
         %pdco is a general purpose convex optization solver, not only a
         %linear optimization solver. As such, much control over the optimal
@@ -1429,11 +1441,28 @@ switch solver
         %also means you may have to tune the various parameters here,
         %especially xsize and zsize (see pdco.m) to get the real optimal
         %objective value
-        xsize = 100;
-        zsize = 100;
 
-        options.Method=1; %Cholesky
-        options.MaxIter=200;
+        if ~isempty(pdco_xsize)
+            xsize = pdco_xsize;
+        else
+            xsize = 100;
+        end
+        if ~isempty(pdco_zsize)
+            zsize = pdco_zsize;
+        else
+            zsize = 100;
+        end
+
+        if ~isempty(pdco_method)
+            options.Method = pdco_method;
+        else
+            options.Method = 1; %Cholesky
+        end
+        if ~isempty(pdco_maxiter)
+            options.MaxIter = pdco_maxiter;
+        else
+            options.MaxIter = 200;
+        end
         options.Print=printLevel;
         [x,y,w,inform,PDitns,CGitns,time] = ...
             pdco(osense*c,A,b,lb,ub,d1,d2,options,x0,y0,z0,xsize,zsize);
