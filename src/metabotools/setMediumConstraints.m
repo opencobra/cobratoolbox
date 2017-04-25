@@ -54,7 +54,7 @@ end
 
 % set infinite constraints
 model.lb(find(model.lb==-1*current_inf))=-1*set_inf;
-model.ub(find(model.ub==current_inf))=set_inf; 
+model.ub(find(model.ub==current_inf))=set_inf;
 
 % set basic medium
 
@@ -65,29 +65,29 @@ modelMedium = changeRxnBounds(modelMedium,customizedConstraints,customizedConstr
 %calculate and apply flux rates as constraints if medium composition is
 %supplied
 if ~isempty(medium_composition)
-    
+
     for i = 1 : length(medium_composition)
-        
+
         [flux_Medium(i,1)] = conc2Rate(met_Conc_mM(i), cellConc, t, cellWeight);%
-        
+
     end
-    
-    
+
+
     modelMedium = changeRxnBounds(modelMedium,medium_composition,-1*flux_Medium,'l');
-    
+
     %% make output vector of applied constraints
     basisMedium = [customizedConstraints;mediumCompounds];
 else
     basisMedium = customizedConstraints;
-end 
+end
 %% exchanges not constrained are set to zero
 
 if close_exchanges ==1
     AllExMedium=modelMedium.rxns(strmatch('EX_',model.rxns));
-    
+
     AllExMedium(ismember(AllExMedium,medium_composition))='';
     AllExMedium(ismember(AllExMedium,mediumCompounds))='';
     AllExMedium(ismember(AllExMedium,customizedConstraints))='';
-    
+
     modelMedium.lb(find(ismember(modelMedium.rxns,AllExMedium)))= 0; % all exchanges not specified are set to secretion only
 end

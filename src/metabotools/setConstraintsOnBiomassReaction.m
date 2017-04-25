@@ -22,6 +22,4 @@ lb = log(2)/dT*(1-(tolerance/100));
 model = changeRxnBounds(model,of,lb,'l');
 modelBM = changeRxnBounds(model,of,ub,'u');
 
-
 end
-

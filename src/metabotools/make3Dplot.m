@@ -16,7 +16,7 @@ function make3Dplot(PHs, maximum_contributing_flux, fonts, path, diff_view)
 %    diff_view:                    Next to the standard view, print graphic from 3 different(2D) viewpoints (default = 0/off)
 %
 % PDFs are automatically saved to the user-defined path
-%  
+%
 % .. Author: - Maike K. Aurich 27/08/15
 
 if ~exist('diff_view','var') || isempty(diff_view)
@@ -40,19 +40,19 @@ for i=1:length(data_sets)
     %clear m
 end
 clear x
- 
+
 figure
 
 set(0,'DefaultAxesColorOrder',[0,0.2,0.8;0,0.6,0.0;0.2,0.8,1;0,0.6,0.8;0.8,0,0.2;0.8,0.4,0.8;1,0.8,0.2])
 
 % for i=1:length(data_sets)
-%    
+%
 %    if i==1
 %        hold on
-%    end 
+%    end
 %    rxns =data_sets(i);
-%  eval('h= scatter3(' ['x' num2str(i)],['y' num2str(i)],['z' num2str(i)] [,'s','filled','userdata',rxns] ))   
-% end 
+%  eval('h= scatter3(' ['x' num2str(i)],['y' num2str(i)],['z' num2str(i)] [,'s','filled','userdata',rxns] ))
+% end
 
 
 
@@ -68,18 +68,18 @@ h = scatter3(x2,y2,z2,'s','filled','userdata',data_sets{2});
  xlabel('Glycolysis (%)' ,'FontSize', fonts)
  ylabel('ATP synthetase (%)','FontSize', fonts)
  zlabel('Succinate-CoA ligase (%)','FontSize', fonts)
-%            
+%
 set(gca,'FontSize',fonts,'Linewidth',2,'ZLim',[0,12])
 
- 
+
 
 titleString = 'ATP production strategies across samples';
 h= title(strvcat(titleString ));
              set(h,'fontsize',fonts);
 
 
-    
-saveas(gcf, [path 'FS_3D'], 'png');  
+
+saveas(gcf, [path filesep 'FS_3D'], 'png');
 
 if diff_view==1;
     % set viewpoint
@@ -88,24 +88,24 @@ if diff_view==1;
     Yi = 0;
     Zi =270;
     view([Xi Yi Zi])
-    saveas(gcf, [path 'FS_3D_ATP_GLY'], 'pdf');
-    
+    saveas(gcf, [path filesep 'FS_3D_ATP_GLY'], 'pdf');
+
     % SUCC-GLY
     Xi = 0;
     Yi = -90;
-    
+
     Zi =0;
     view([Xi Yi Zi])
-    saveas(gcf, [path 'FS_3D_Succ_GLY'], 'pdf');
+    saveas(gcf, [path filesep 'FS_3D_Succ_GLY'], 'pdf');
     % Succ-ATP
     Xi = 90;
     Yi = 0;
     Zi =0;
     view([Xi Yi Zi])
-    
-    saveas(gcf, [path 'FS_3D_SUCC_ATP'], 'pdf');
+
+    saveas(gcf, [path filesep 'FS_3D_SUCC_ATP'], 'pdf');
 end
 
 
 
-end 
+end

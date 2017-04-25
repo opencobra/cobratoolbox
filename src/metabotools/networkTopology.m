@@ -1,11 +1,11 @@
-function [MetConn,RxnLength] = networkTopology(model)
+function [MetConn, RxnLength] = networkTopology(model)
 % Analysis of the metabolite connectivity of a metabolic model
 %
 % USAGE:
 %
 %    [MetConn, RxnLength] = NetworkTopology(model)
 %
-% INPUTS: 
+% INPUTS:
 %    model:       Model structure
 %
 % OUTPUTS:
