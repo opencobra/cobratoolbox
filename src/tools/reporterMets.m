@@ -26,27 +26,23 @@ function [normScore, nRxnsMet, nRxnsMetUni, rawScore] = reporterMets(model, data
 %
 % .. Authors: Markus Herrgard 7/20/06
 
-if (nargin < 3)
+if nargin < 3
     nRand = 1000;
 end
 
-if (nargin < 4)
+if nargin < 4
     pValFlag = false;
 end
 
-if (nargin < 5)
+if nargin < 5
     nLayers = 1;
 end
 
-if (nargin < 6)
+if nargin < 6 || isempty(metric)
     metric = 'default';
-else
-    if (isempty(metric))
-        metric = 'default';
-    end
 end
 
-if (nargin < 7)
+if nargin < 7
     dataRxns = model.rxns;
 else
     if isempty(dataRxns)
@@ -54,22 +50,22 @@ else
     end
 end
 
-if (nargin < 8)
+if nargin < 8
     inclExchFlag = false;
 end
 
-if (pValFlag)
-    % error('Not implemented yet')
-    minP = min(min(data(data ~= 0)));
-    data(data == 0) = minP;
-    data = -norminv(data, 0, 1);
+if pValFlag
+    error('Not implemented yet')
+    % minP = min(min(data(data ~= 0)));
+    % data(data == 0) = minP;
+    % data = -norminv(data, 0, 1);
 end
 
 [nRxnsTot, nData] = size(data);
 
 % Handle case where more than one rxn is associated with a
 % data value
-if (iscell(dataRxns{1}))
+if iscell(dataRxns{1})
     for j = 1:length(dataRxns)
         dataRxnTmp = dataRxns{j};
         selModelRxn = ismember(model.rxns, dataRxnTmp);
@@ -103,7 +99,7 @@ for i = 1:length(model.mets)
     end
     nRxnsMet(i) = sum(dataRxnInd);
 
-    if (nRxnsMet(i) == 0)
+    if nRxnsMet(i) == 0
         rawScore(i, :) = zeros(1, nData);
     else
         if (sum(dataRxnInd) == 1)

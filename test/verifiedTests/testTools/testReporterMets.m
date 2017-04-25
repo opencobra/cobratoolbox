@@ -36,5 +36,43 @@ assert(isequal(nRxnsMet, ref_nRxnsMet));
 assert(isequal(nRxnsMetUni, ref_nRxnsMetUni));
 assert(isequal(rawScore, ref_rawScore));
 
+% update with pValFlag=1
+try
+  for i=1:length(metric)
+      [normScore(:, i), nRxnsMet(:, i), nRxnsMetUni(:, i), rawScore(:, i)] = reporterMets(model, data, nRand, 1, nLayers, metric{i}, dataRxns);
+  end
+catch ME
+    assert(length(ME.message) > 0)
+end
+
+% update with dataRxns={} cell
+for i=1:length(metric)
+    [normScore(:, i), nRxnsMet(:, i), nRxnsMetUni(:, i), rawScore(:, i)] = reporterMets(model, data, nRand, pValFlag, nLayers, metric{i}, {});
+end
+assert(isequal(nRxnsMet, ref_nRxnsMet));
+assert(isequal(nRxnsMetUni, ref_nRxnsMetUni));
+assert(isequal(rawScore, ref_rawScore));
+
+% update with nRand=empty
+for i=1:length(metric)
+    [normScore(:, i), nRxnsMet(:, i), nRxnsMetUni(:, i), rawScore(:, i)] = reporterMets(model, data, [], pValFlag, nLayers, metric{i}, dataRxns);
+end
+assert(isequal(nRxnsMet, ref_nRxnsMet));
+assert(isequal(nRxnsMetUni, ref_nRxnsMetUni));
+assert(isequal(rawScore, ref_rawScore));
+
+% update with dataRxns={{'a'}}
+for i=1:length(metric)
+    [normScore(:, i), nRxnsMet(:, i), nRxnsMetUni(:, i), rawScore(:, i)] = reporterMets(model, data, nRand, pValFlag, nLayers, metric{i}, {{'a'}});
+end
+assert(isequal(nRxnsMet, zeros(72,5)));
+assert(isequal(nRxnsMetUni, zeros(72,5)));
+assert(isequal(rawScore, zeros(72,5)));
+
+% update checking with less inputs and checking if sum(data(RxnInd)==1 and length(randInd)==1
+[normScore(:, 1), nRxnsMet(:, 1), nRxnsMetUni(:, 1), rawScore(:, 1)] = reporterMets(model, data);
+[normScore(:, 1), nRxnsMet(:, 1), nRxnsMetUni(:, 1), rawScore(:, 1)] = reporterMets(model, data, 1000, false, 1, 'std');
+[normScore(:, 1), nRxnsMet(:, 1), nRxnsMetUni(:, 1), rawScore(:, 1)] = reporterMets(model, data, 1000, false, 1, 'count');
+
 % change the directory
 cd(currentDir)

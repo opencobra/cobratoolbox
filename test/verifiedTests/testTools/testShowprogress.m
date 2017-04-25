@@ -38,12 +38,19 @@ for m = 0:2
     end
 end
 
+% update with 1 input argument
+WAITBAR_TYPE = 1;
+showprogress(0);
+
+% update with WAITBAR_TYPE=[]
+WAITBAR_TYPE = [];
+showprogress(0,'Testing showprogress ...');
+
 % reset the default WAITBAR_TYPE
+WAITBAR_TYPE = 1;
 if ~isempty(strfind(getenv('HOME'), 'jenkins'))
     WAITBAR_TYPE = 0;
-else
-    WAITBAR_TYPE = 1;
 end
 
-%return to original directory
+% return to original directory
 cd(currentDir);
