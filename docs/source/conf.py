@@ -19,8 +19,6 @@
 import os
 import sys
 
-def setup(app):
-    app.add_stylesheet('css/documenter.css')
 
 sys.path.insert(0, os.path.abspath(os.path.join('..', '..', '..')))
 # sys.path.insert(0, os.path.abspath('.'))
@@ -161,6 +159,7 @@ html_context = {'conf_py_path': os.path.join(os.sep, 'docs', 'source', ''),
                 'github_user': 'opencobra',
                 'github_repo': 'cobratoolbox',
                 'github_version': 'master',
+                'theme_logo_only': True,
                 'show_source': False}
 #                'display_github': True}
 # Add any paths that contain custom themes here, relative to this directory.
