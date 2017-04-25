@@ -6,7 +6,7 @@ function [ExRxns,MaxTheoOut]= theoretMaxProd(model, criterion, inputrxn, normali
 %    [ExRxns, MaxTheoOut]= theoreticalMaxProduction(model, criterion, inputrxn, normalize, rxns)
 %
 % INPUT:
-%    ExRxns:      The exchange reactions in the model
+%    model:
 %
 % OPTIONAL INPUT:
 %    criterion:   One of

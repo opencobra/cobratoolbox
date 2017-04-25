@@ -19,11 +19,11 @@ function [optKnockSol,bilevelMILPproblem] = OptKnock(model,selectedRxnList,optio
 %                       *  `rev` - Reversibility of fluxes
 %
 %    selectedRxnList:  List of reactions that can be knocked-out in OptKnock
-%    targetRxn:        Target flux to be maximized
 %
 % OPTIONAL INPUTS:
 %    options:             `OptKnock` options
 %
+%                           *  `targetRxn` - Target flux to be maximized
 %                           *  `numDel` - # of deletions allowed (Default: 5)
 %                           *  `numDelSense` - Direction of # of deletions constraint (G/E/L)
 %                              (Default: L)

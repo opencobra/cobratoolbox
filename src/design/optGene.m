@@ -8,11 +8,13 @@ function [x, population, scores, optGeneSol] = optGene(model, targetRxn, substra
 % INPUTS:
 %    mode:          Model of reconstruction
 %    targetRxn:     String name of reaction which is to be maximized.
+%    substrateRxn:
 %    generxnList:   List of genes or `rxns` which can be knocked out.  The
 %                   program will guess which of the two it is, based on the
 %                   content in model.
 %
 % OPTIONAL INPUT:
+%    MaxKOs:
 %    population:    population matrix (binary matrix). Use this
 %                   parameter to interrupt simulation and resume afterwards.
 %

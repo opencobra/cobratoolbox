@@ -15,6 +15,7 @@ function [hiCarbonRxns,zeroCarbonRxns,nCarbon] = findHiCarbonRxns(model,nCarbonT
 % OUTPUTS:
 %    hiCarbonRxns:     The list of reactions that act on metabolites with
 %                      greater than the threshold number of carbons
+%    zeroCarbonRxns    Reactions with no carbon
 %    nCarbon:          The number of carbons in each metabolite in the model
 %
 % .. Author: - Markus Herrgard 2/7/07

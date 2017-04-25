@@ -27,6 +27,7 @@ function [gdlsSolution, bilevelMILPProblem, gdlsSolutionStructs] = GDLS(model, t
 % OUTPUTS:
 %    gdlsSolution:          GDLS solution structure (similar to `OptKnock` `sol` struct)
 %    bilevelMILPProblem:    Problem structure used in computation
+%    gdlsSolutionStructs:
 %
 % .. Author: - Richard Que 1/28/2010 Adapted from Desmond S Lun's gdls scripts.
 

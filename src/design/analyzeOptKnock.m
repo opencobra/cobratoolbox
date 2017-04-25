@@ -4,7 +4,7 @@ function [type,maxGrowth,maxProd,minProd] = analyzeOptKnock(model,deletions,targ
 %
 % USAGE:
 %
-%    [type, maxGrowth, maxProd] = analyzeOptKnock(model, deletions, target, biomassRxn, geneDelFlag)
+%    [type, maxGrowth, maxProd, minProd] = analyzeOptKnock(model, deletions, target, biomassRxn, geneDelFlag)
 %
 % INPUTS:
 %    model:         COBRA model structure
