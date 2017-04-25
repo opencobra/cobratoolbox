@@ -157,7 +157,7 @@ function initCobraToolbox()
     % add the folders of The COBRA Toolbox
     onPath = ~isempty(strfind(lower(path), lower(CBTDIR)));
 
-    folders = {'external', 'tutorials', 'papers', 'binary', 'deprecated', 'src', 'test'};
+    folders = {'tutorials', 'papers', 'binary', 'deprecated', 'src', 'test'};
 
     if ~onPath
         if ENV_VARS.printLevel
@@ -167,13 +167,16 @@ function initCobraToolbox()
         % add the root folder
         addpath(CBTDIR);
 
+        % add the external folder first
+        addpath(genpath([CBTDIR, filesep, 'external']));
+
+        % remove the SBML Toolbox
+        rmpath(genpath([CBTDIR, filesep, 'external', filesep, 'SBMLToolbox']));
+
         % add specific subfolders
         for k = 1:length(folders)
             addpath(genpath([CBTDIR, filesep, folders{k}]));
         end
-
-        % remove the SBML Toolbox
-        rmpath(genpath([CBTDIR, filesep, 'external', filesep, 'SBMLToolbox']));
 
         % print a success message
         if ENV_VARS.printLevel
@@ -251,7 +254,7 @@ function initCobraToolbox()
     SOLVERS.glpk.type = {'LP', 'MILP'};
     SOLVERS.gurobi.type = {'LP', 'MILP', 'QP', 'MIQP'};
     SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
-    SOLVERS.matlab.type = {'NLP'};
+    SOLVERS.matlab.type = {'LP', 'NLP'};
     SOLVERS.mosek.type = {'LP', 'QP', 'MILP'};
     SOLVERS.pdco.type = {'LP', 'QP', 'NLP'};
     SOLVERS.quadMinos.type = {'LP', 'NLP'};

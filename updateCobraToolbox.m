@@ -25,11 +25,11 @@ function updateCobraToolbox(fetchAndCheckOnly)
         end
 
         % determine the number of commits that the local master branch is behind
-        [status_gitCountMaster, result_gitCountMaster] = system('git rev-list --count origin/master...HEAD');
+        [status_gitCountMaster, result_gitCountMaster] = system('git rev-list --no-merges --count origin/master...HEAD');
         result_gitCountMaster = char(result_gitCountMaster);
         result_gitCountMaster = result_gitCountMaster(1:end-1);
 
-        [status_gitCountDevelop, result_gitCountDevelop] = system('git rev-list --count origin/develop...HEAD');
+        [status_gitCountDevelop, result_gitCountDevelop] = system('git rev-list --no-merges --count origin/develop...HEAD');
         result_gitCountDevelop = char(result_gitCountDevelop);
         result_gitCountDevelop = result_gitCountDevelop(1:end-1);
 
