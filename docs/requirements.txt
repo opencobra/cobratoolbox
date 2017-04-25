@@ -1,4 +1,4 @@
-sphinx
+git+https://github.com/uni-lu/sphinx.git@develop#egg=sphinx
 recommonmark
 sphinxcontrib-matlabdomain
 sphinxcontrib-fulltoc
