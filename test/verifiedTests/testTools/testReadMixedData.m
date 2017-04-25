@@ -40,7 +40,7 @@ assert(isequal(ref_id, id))
 [id, data, header] = readMixedData(file);
 assert(isequal(ref_data, data))
 ref_header = [];
-ref_id={'col1,col2,col3';'1,2,3';'4,5,6';'7,8,9'};
+ref_id = {'col1,col2,col3'; '1,2,3'; '4,5,6'; '7,8,9'};
 assert(isequal(ref_header, header))
 assert(isequal(ref_id, id))
 
