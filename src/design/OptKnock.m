@@ -46,13 +46,13 @@ function [optKnockSol,bilevelMILPproblem] = OptKnock(model,selectedRxnList,optio
 %    fluxes:              Flux distribution
 %    bilevelMILPproblem:  `optKnock` problem structure
 %
-% OptKnock uses bounds of `-vMax` to `vMax` or 0 to `vMax` for reversible and
-% irreversible reactions. If you wish to constrain a reaction, use
-% `constrOpt`.
-%
 % .. Authors:
 %       - Markus Herrgard 3/28/05
 %       - Richard Que 04/27/10 - Added some default parameters.
+%
+% OptKnock uses bounds of `-vMax` to `vMax` or 0 to `vMax` for reversible and
+% irreversible reactions. If you wish to constrain a reaction, use
+% `constrOpt`.
 
 global MILPproblemType;
 global selectedRxnIndIrrev;

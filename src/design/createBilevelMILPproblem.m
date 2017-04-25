@@ -14,12 +14,12 @@ function bilevelMILPproblem = createBilevelMILPproblem(model,cLinear,cInteger,se
 %    selRxns:       Reactions that participate in the integer part (e.g. ones
 %                   that can be deleted) (in the form [0 0 1 0 0 1 0 1 1 0 1])
 %    selRxnMatch:   Matching of the forward and reverse parts
-%    constrOpt:     Constraint options (optional)
+%    constrOpt:     Constraint options 
 %
 %                     *  rxnInd
 %                     *  values
 %                     *  sense
-%    measOpt:      Measured flux options (optional)
+%    measOpt:      Measured flux options
 %
 %                     *  rxnSel
 %                     *  values

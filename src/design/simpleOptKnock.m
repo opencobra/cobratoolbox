@@ -29,8 +29,6 @@ function [wtRes,delRes] = simpleOptKnock(model,targetRxn,deletions,geneDelFlag,m
 %    * `minProd` - Minimum prod rate of target metabolite
 %    * `maxProd` - Maximum prod rate of target metabolite
 
-
-
 if (nargin < 3)
     deletions = model.rxns;
 end

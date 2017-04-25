@@ -21,14 +21,12 @@ function [hiCarbonRxns,zeroCarbonRxns,nCarbon] = findCarbonRxns(model,nCarbonThr
 %       - Markus Herrgard 2/7/07
 %       - Richard Que 11/16/09 Modified to detect Mets with 1 Carbon.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% currency metabolitees not to be considered
 currencyMets = {'h2o','co2','o2','h2o2','nh4','no2','no3','no','h2s',...
     'so3','so4','h','h2','pi','ppi','coa','accoa','ppcoa','aacoa',...
     'butcoa','succoa','atp','gtp','adp','gdp','amp','gmp','nad',...
     'nadp','nadh','nadph','fad','fadh','na1','ahcys','amet','thf','mlthf',...
     'q8h2','q8','mql8','mqn8','2dmmql8','2dmmq8'};
+% above currency metabolitees not to be considered
 % not sure if L-glutamate, L-glutamine should be included in this list
 
 [baseMetNames,compSymbols,uniqueMetNames,uniqueCompSymbols] = parseMetNames(model.mets);
