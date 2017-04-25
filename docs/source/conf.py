@@ -19,6 +19,9 @@
 import os
 import sys
 
+def setup(app):
+    app.add_stylesheet('css/documenter.css')
+
 sys.path.insert(0, os.path.abspath(os.path.join('..', '..', '..')))
 # sys.path.insert(0, os.path.abspath('.'))
 
@@ -136,16 +139,15 @@ todo_include_todos = True
 
 # -- Options for HTML output ----------------------------------------------
 
-html_theme = "sphinx_julia_theme"
+html_theme = "sphinx_cobra_theme"
 
-import sphinx_julia_theme
+import sphinx_cobra_theme
 import sphinx_rtd_theme
 
-# extensions += ['juliadoc.julia', 'juliadoc.jlhelp']
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path(),
-                   sphinx_julia_theme.get_theme_dir()]
+                   sphinx_cobra_theme.get_theme_dir()]
 print html_theme_path
-html_sidebars = sphinx_julia_theme.default_sidebars()
+html_sidebars = sphinx_cobra_theme.default_sidebars()
 
 # shutil.copy()
 
