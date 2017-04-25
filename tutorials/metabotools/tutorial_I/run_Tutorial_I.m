@@ -1,25 +1,35 @@
-%% Define variables
+%% Metabotools tutorial I
+% *Maike Aurich*
+% 
+% In this tutorial we ...
+
+%%
+% Clear workspace and initialize the COBRA Toolbox
 clear
 initCobraToolbox
 global CBTDIR
 
-% path = 'ADD YOUR PATH TO YOUR OUTPUT FOLDER'; %
+%% Step *0* 
+% Define variables
+
+% ouputPath = 'ADD YOUR PATH TO YOUR OUTPUT FOLDER'; %
 % solver = 'ADD YOUR SOLVER'; %, e.g., 'cplex_direct' for ILOG
 
 outputPath = pwd;
-solver = 'glpk';
+solver = 'gurobi';
 
-%% set and check solver
+%%
+% set and check solver
 solverOK = changeCobraSolver(solver, 'LP');
 
 if solverOK == 1
-    fprintf('The solver %s is set.\n', solver);
+    fprintf('Solver %s is set.\n', solver);
 else
-    error('The solver %s could not be used. Check if the solver is in the matlab path (set path) or check for typos', solver);
+    error('Solver %s could not be used. Check if %s is in the matlab path (set path) or check for typos', solver, solver);
 end
 
-
-%% load and check input is loaded correctly
+%%
+% load and check input is loaded correctly
 tutorialPath = [CBTDIR filesep 'tutorials' filesep 'metabotools' filesep 'tutorial_I'];
 if isequal(exist([tutorialPath filesep 'starting_model.mat'], 'file'), 2)  % 2 means it's a file.
     load([tutorialPath filesep 'starting_model.mat']);
@@ -28,25 +38,22 @@ else
     error('The model ''starting_model'' could not be loaded. Does pathToCOBRA contain typos?');
 end
 
-%% Check output path and writing permission
-if ~exist(outputPath) == 7
+%%
+% Check output path and writing permission
+if ~exist(outputPath, 'dir')
     error(['The provided path: ', outputPath, 'cannot be accessed!']);
 end
 
-% display if writing is not possible
-fprintf('Warning: If a red matlab error message appears after this message, files cannot be saved to your path location! Obtain rights to write into output directory or set path to a different directory.\n');
-
 % make and save dummy file to test writing to output directory
 A = rand(1);
-save([outputPath filesep 'A']);
-
-
-display('Continue with tutorial if solver and paths are set correctly.');
-
-%% begin computations
+try
+    save([outputPath filesep 'A']);
+catch ME
+    error('Files cannot be saved to the provided location: %s\nObtain rights to write into %s directory or set outputPath to a different directory.\n', outputPath, outputPath);
+end
 
 %% Step 1: Shaping the model's environment using setMediumConstraints
-%% RPMI medium composition.
+% RPMI medium composition.
 medium_composition = {'EX_ala_L(e)'
                       'EX_arg_L(e)'
                       'EX_asn_L(e)'
@@ -142,7 +149,6 @@ met_Conc_mM = [0.1
                0.0073
                ];
 
-
 current_inf = 1000;
 set_inf = 500;
 
@@ -150,13 +156,14 @@ cellConc = 2.17 * 1e6;
 t = 48;
 cellWeight = 3.645e-12;
 
-
-%% Definition of basic medium (defines uptake from the medium, not captured by the medium composition, all with same constraints)
+%%
+% Definition of basic medium (defines uptake from the medium, not captured by the medium composition, all with same constraints)
 mediumCompounds = {'EX_co2(e)'; 'EX_h(e)'; 'EX_h2o(e)'; 'EX_hco3(e)'; 'EX_nh4(e)'; 'EX_o2(e)'; 'EX_pi(e)'; 'EX_so4(e)'};
 
 mediumCompounds_lb = -100;
 
-%% Additional constraints to limit the model behaviour, e.g., secretion of oxygen, essAA that need to be taken up (and that have not been measured).
+%%
+% Additional constraints to limit the model behaviour, e.g., secretion of oxygen, essAA that need to be taken up (and that have not been measured).
 
 customizedConstraints = {'EX_o2(e)'; 'EX_strch1(e)'; 'EX_acetone(e)'; 'EX_glc(e)'; 'EX_his_L(e)'; 'EX_val_L(e)'; 'EX_met_L(e)'};
 
@@ -178,10 +185,9 @@ customizedConstraints_ub = [500
                             500
                             ];
 
+[modelMedium, ~] = setMediumConstraints(starting_model, set_inf, current_inf, medium_composition, met_Conc_mM, cellConc, t, cellWeight, mediumCompounds, mediumCompounds_lb, customizedConstraints, customizedConstraints_ub, customizedConstraints_lb);
 
-[modelMedium, basisMedium] = setMediumConstraints(starting_model, set_inf, current_inf, medium_composition, met_Conc_mM, cellConc, t, cellWeight, mediumCompounds, mediumCompounds_lb, customizedConstraints, customizedConstraints_ub, customizedConstraints_lb);
-
-%% **Step 2** calculateLODs
+%% Step *2* calculateLODs
 
 ex_RXNS = {'EX_5mta(e)'
            'EX_uri(e)'
@@ -374,7 +380,7 @@ lod_ngmL = [0.3
 
 [lod_mM] = calculateLODs(theo_mass, lod_ngmL);
 
-%% **Step 3** define Uptake and Secretion Profiles
+%% Step *3* define Uptake and Secretion Profiles
 exclude_upt = {'EX_gln_L(e)'; 'EX_cys_L(e)'; 'EX_ala_L(e)'; 'EX_mal_L(e)'; 'EX_fol(e)'};
 exclude_secr = {'EX_gln_L(e)'; 'EX_cys_L(e)'; 'EX_ala_L(e)'};
 
@@ -419,7 +425,8 @@ data_RXNS = {'EX_orn(e)'
              'EX_fol(e)'
              };
 
-%% Molt-4
+%%
+% Molt-4
 input_A = [
     % control TP 1	control TP 2	Cond TP 1	Cond TP 2
     65245.09667	68680.93	54272.41667	65159.50333
@@ -457,8 +464,8 @@ input_A = [
     95419.73667	105904.7067	97550.78667	102678.49
 ];
 
-
-%% CCRF-CEM
+%%
+% CCRF-CEM
 input_B = [
     % control 2 TP 1	control 2 TP 2	Cond 2 TP 1	Cond 2 TP 2
     65245.09667	68680.93	73850.77	98489.89
@@ -496,11 +503,10 @@ input_B = [
     95419.73667	105904.7067	100629.24	84807.62333
 ];
 
-
 [cond1_uptake, cond2_uptake, cond1_secretion, cond2_secretion, slope_Ratio] = defineUptakeSecretionProfiles(input_A, input_B, data_RXNS, tol, essAA_excl, exclude_upt, exclude_secr, add_secr, add_upt);
 
-
-%% MANIPULATE OUTPUT: Add secretion without data points to secretion condition 2.
+%%
+% MANIPULATE OUTPUT: Add secretion without data points to secretion condition 2.
 
 add_secretion = {'EX_4pyrdx(e)'
                  'EX_34hpp'
@@ -512,51 +518,46 @@ add_secretion = {'EX_4pyrdx(e)'
 
 remove_secretion = {'EX_asp_L(e)'; 'EX_pnto_R(e)'};
 remove_uptake = {'EX_met_L(e)'};
-% folate uptake in CEM
-add_uptake = {'EX_fol(e)'};
-
+add_uptake = {'EX_fol(e)'};  % folate uptake in CEM
 
 cond2_secretion = [cond2_secretion; add_secretion];
 cond2_secretion(find(ismember(cond2_secretion, remove_secretion))) = [];
 cond2_uptake = [cond2_uptake; add_uptake];
 cond2_uptake(find(ismember(cond2_uptake, remove_uptake))) = [];
 
-%% **Step 4** Calculate Quantitative Diffs
-
+%% Step *4* Calculate Quantitative Diffs
 
 [cond1_upt_higher, cond2_upt_higher, cond2_secr_higher, cond1_secr_higher, cond1_uptake_LODs, cond2_uptake_LODs, cond1_secretion_LODs, cond2_secretion_LODs] = calculateQuantitativeDiffs(data_RXNS, slope_Ratio, ex_RXNS, lod_mM, cond1_uptake, cond2_uptake, cond1_secretion, cond2_secretion);
 
-    %% MANIPULATE OUTPUT: Remove the metabolites from the uptake and secretion profiles that you adjusted in the previous steps, e.g. those for which you assume a different directionality as in the data, for metabolites that have inconclusive data (e.g., in case of the anth the metabolite was not detected in the 48 hr samples. It coulod be assumed that all of it (down to the LOD) was consumed, however in the case of the two cell lines, the relative difference between the cell lines based on the slope ratio (of consumption) would have been 1975% higher in Molt-4 compared the CCRF-CEM cells. In order to prevent that this extreme point distorts the results, these metabolites need t be removed from the input for semi-quantitative adjustment unless such large differences are justified, and make biological sense).
+%%
+% MANIPULATE OUTPUT: Remove the metabolites from the uptake and secretion profiles that you adjusted in the previous steps, e.g. those for which you assume a different directionality as in the data, for metabolites that have inconclusive data (e.g., in case of the anth the metabolite was not detected in the 48 hr samples. It coulod be assumed that all of it (down to the LOD) was consumed, however in the case of the two cell lines, the relative difference between the cell lines based on the slope ratio (of consumption) would have been 1975% higher in Molt-4 compared the CCRF-CEM cells. In order to prevent that this extreme point distorts the results, these metabolites need t be removed from the input for semi-quantitative adjustment unless such large differences are justified, and make biological sense).
 
-remove = {'EX_anth(e)';
-          'EX_ile_L(e)'};
-
+remove = {'EX_anth(e)'; 'EX_ile_L(e)'};
 
 A = [];
 for i = 1:length(cond2_upt_higher)
-    if find(ismember(remove, cond2_upt_higher{i, 1})) > 0;
+    if find(ismember(remove, cond2_upt_higher{i, 1})) > 0
         A = [A; i];
     end
 end
 cond2_upt_higher(A, :) = [];
 
-
-%% **5** setQualitativeConstraints
-
+%% Step *5* setQualitativeConstraints
 
 cellConc = 2.17 * 1e6;
 t = 48;
 cellWeight = 3.645e-12;
 
-%% Molt-4 model
+%%
+% Molt-4 model
 ambiguous_metabolites = {'EX_ala_L(e)'; 'EX_gln_L(e)'; 'EX_cys_L(e)'};  % for ala and gln, we do not know if they are taken up or secreted. Small amounts of cysteine are required for proteins, therefore uptake of cys is likely to be small compared to other metabolites.
 
 basisMedium = {'EX_o2(e)'; 'EX_strch1(e)'; 'EX_acetone(e)'; 'EX_glc(e)'; 'EX_his_L(e)'; 'EX_ca2(e)'; 'EX_cl(e)'; 'EX_co(e)'; 'EX_fe2(e)'; 'EX_fe3(e)'; 'EX_k(e)'; 'EX_na1(e)'; 'EX_i(e)'; 'EX_sel(e)'; 'EX_co2(e)'; 'EX_h(e)'; 'EX_h2o(e)'; 'EX_hco3(e)'; 'EX_nh4(e)'; 'EX_o2(e)'; 'EX_pi(e)'; 'EX_so4(e)'};
 
 [model_A] = setQualitativeConstraints(modelMedium, cond1_uptake, cond1_uptake_LODs, cond1_secretion, cond1_secretion_LODs, cellConc, t, cellWeight, ambiguous_metabolites, basisMedium);
 
-
-%% CCRF-CEM model ModelB
+%%
+% CCRF-CEM model ModelB
 
 ambiguous_metabolites = {'EX_ala_L(e)'; 'EX_gln_L(e)'; 'EX_pydxn(e)'; 'EX_cys_L(e)'};
 
@@ -564,36 +565,33 @@ basisMedium = {'EX_ca2(e)'; 'EX_cl(e)'; 'EX_co(e)'; 'EX_fe2(e)'; 'EX_fe3(e)'; 'E
 
 [model_B] = setQualitativeConstraints(modelMedium, cond2_uptake, cond2_uptake_LODs, cond2_secretion, cond2_secretion_LODs, cellConc, t, cellWeight, ambiguous_metabolites, basisMedium);
 
-%%
-%% **5** setSemiQuantConstraints
+%% Step *5* setSemiQuantConstraints
 % This function applies the constraints to the models. It takes two
 % condition specific models into consideration.
 
-
 [modelA_QUANT, modelB_QUANT] = setSemiQuantConstraints(model_A, model_B, cond1_upt_higher, cond2_upt_higher, cond2_secr_higher, cond1_secr_higher);
 
-
-%% **6** Apply growth constraints
+%% Step *6* Apply growth constraints
 
 of = 'biomass_reaction2';
 tolerance = 20;
 
-%% set constraints on MOLT4 model
+%%
+% set constraints on MOLT4 model
+fprintf('Set contraints on MOLT4 model\n');
 
 dT = 19.6;
 
 [model_A_BM] = setConstraintsOnBiomassReaction(modelA_QUANT, of, dT, tolerance);
 
-%% set constraints on CCRF-CEM model
+%%
+% set constraints on CCRF-CEM model
 
 dT = 22;
 
 [model_B_BM] = setConstraintsOnBiomassReaction(modelB_QUANT, of, dT, tolerance);
 
-%%
-
-%% **7** integrateGeneExpressionData
-%%
+%% Step *7* integrateGeneExpressionData
 
 dataGenes = [535
              1548
@@ -611,7 +609,6 @@ dataGenes = [535
              ];
 
 [model_A_GE] = integrateGeneExpressionData(model_A_BM, dataGenes);
-
 
 dataGenes = [239
              443
@@ -633,11 +630,9 @@ dataGenes = [239
              221823
              ];
 
-
 [model_B_GE] = integrateGeneExpressionData(model_B_BM, dataGenes);
 
-%% **8** extractConditionSpecificModel
-%%
+%% Step *8* extractConditionSpecificModel
 
 theshold = 1e-6;
 model = model_A_GE;
@@ -654,6 +649,7 @@ MetConnCompare = sort(MetConn, 'descend');
 MetConnCompareA = sort(MetConnA, 'descend');
 MetConnCompareB = sort(MetConnB, 'descend');
 
+%%
 % Plot metabolite connectivity
 figure
 semilogy(sort(MetConnCompare, 'descend'), 'ro')
@@ -662,13 +658,12 @@ semilogy(sort(MetConnCompareA, 'descend'), 'bo')
 semilogy(sort(MetConnCompareB, 'descend'), 'go')
 title('Metabolite connectivity')
 
+%% Step *9* perform sampling analysis
+fprintf('Perform sampling analysis\n');
 
-%% perform sampling analysis
-fprintf('perform sampling analysis\n');
-
-warmupn = 2000;
-nFiles = 10;
-pointsPerFile = 1000;
+warmupn = 20;
+nFiles = 1;
+pointsPerFile = 10;
 stepsPerPoint = 500;
 fileBaseNo = 0;
 maxTime = 3600000;
@@ -680,12 +675,11 @@ performSampling(model_Molt, warmupn, fileName, nFiles, pointsPerFile, stepsPerPo
 fileName = 'modelB';
 performSampling(model_CEM, warmupn, fileName, nFiles, pointsPerFile, stepsPerPoint, fileBaseNo, maxTime, outputPath);
 
-%% summarize sampling results
-
-outputPath = [outputPath filesep];
+%%
+% summarize sampling results
 fonts = 8;
-nFiles = 10;
-pointsPerFile = 1000;
+nFiles = 1;
+pointsPerFile = 10;
 starting_Model = modelMedium;
 hist_per_page = 4;
 bin = 30;
@@ -709,13 +703,11 @@ dataGenes = [32
              2539
              ];
 
-
 show_rxns = {'PYK'
              'SUCD1m'
              'ATPS4m'
              'ETF'
              };
-
 
 [stats, statsR] = summarizeSamplingResults(modelA, modelB, outputPath, nFiles, pointsPerFile, starting_Model, dataGenes, show_rxns, fonts, hist_per_page, bin, 'modelA', 'modelB');
 
