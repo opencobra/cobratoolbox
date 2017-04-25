@@ -1,30 +1,31 @@
 function [x, population, scores, optGeneSol] = optGene(model, targetRxn, substrateRxn, generxnList, MaxKOs, population)
-%OPTGENE implements the optgene algorithm.
+% Implements the optgene algorithm.
 %
-% [x, population, scores, optGeneSol] = optGene(model, targetRxn, substrateRxn, generxnList, MaxKOs, population)
+% USAGE:
 %
-%INPTUS
-% mode          Model of reconstruction
-% targetRxn     String name of reaction which is to be maximized.
-% generxnList   List of genes or rxns which can be knocked out.  The
-%               program will guess which of the two it is, based on the 
-%               content in model.
+%    [x, population, scores, optGeneSol] = optGene(model, targetRxn, substrateRxn, generxnList, MaxKOs, population)
 %
-%OPTIONAL INPUT
-% population    population matrix (binary matrix).  Use this
-%               parameter to interrupt simulation and resume afterwards.
+% INPUTS:
+%    mode:          Model of reconstruction
+%    targetRxn:     String name of reaction which is to be maximized.
+%    generxnList:   List of genes or `rxns` which can be knocked out.  The
+%                   program will guess which of the two it is, based on the
+%                   content in model.
 %
-%OUTPUTS
-%   x           best optimized value found
-%   population  Population of individuals.  Pass this back into optgene to
-%               continue simulating where you left off.
-%   scores      An array of scores
-%   optGeneSol  optGene solution strcture
+% OPTIONAL INPUT:
+%    population:    population matrix (binary matrix). Use this
+%                   parameter to interrupt simulation and resume afterwards.
 %
-% Jan Schellenberger and Adam Feist 04/08/08
+% OUTPUTS:
+%    x:             best optimized value found
+%    population:    Population of individuals.  Pass this back into optgene to
+%                   continue simulating where you left off.
+%    scores:        An array of scores
+%    optGeneSol:    `optGene` solution strcture
+%
+% .. Authors: - Jan Schellenberger and Adam Feist 04/08/08
 
-% hash table for hashing results... faster than not using it.
-global HTABLE
+global HTABLE % hash table for hashing results... faster than not using it.
 HTABLE = java.util.Hashtable;
 global MaxKnockOuts
 
@@ -226,7 +227,7 @@ function state = gaplotmutationdiversity(options,state,flag,p1)
 %   as the plot function
 %     options = gaoptimset('PlotFcns',@gaplotscorediversity);
 
-%   Copyright 2003-2007 The MathWorks, Inc. 
+%   Copyright 2003-2007 The MathWorks, Inc.
 %   $Revision: 1.6.4.3 $  $Date: 2007/05/23 18:49:53 $
 global MaxKnockOuts
 if nargin < 4
@@ -242,7 +243,7 @@ switch flag
         ylabel('Number of individuals');
     case 'iter'
         % Check if Rank is a field and there are more than one objectives, then plot for Rank == 1
-        if size(state.Score,2) > 1 && isfield(state,'Rank') 
+        if size(state.Score,2) > 1 && isfield(state,'Rank')
             index = (state.Rank == 1);
             % When there is one point hist will treat it like a vector
             % instead of matrix; we need to add one more duplicate row
@@ -267,4 +268,3 @@ switch flag
             hist(sum(state.Population,2),p1);
         end
 end
-

@@ -1,61 +1,59 @@
 function [optKnockSol,bilevelMILPproblem] = OptKnock(model,selectedRxnList,options,constrOpt,prevSolutions,verbFlag,solutionFileNameTmp)
-%OptKnock Run OptKnock in the most general form
+% Runs `OptKnock` in the most general form
 %
-% OptKnock(model,selectedRxnList,options,constrOpt,prevSolutions,verbFlag,solutionFileNameTmp)
+% USAGE:
 %
-%INPUTS
-% model            Structure containing all necessary variables to described a
-%                  stoichiometric model
-%   rxns            Rxns in the model
-%   mets            Metabolites in the model
-%   S               Stoichiometric matrix (sparse)
-%   b               RHS of Sv = b (usually zeros)
-%   c               Objective coefficients
-%   lb              Lower bounds for fluxes
-%   ub              Upper bounds for fluxes
-%   rev             Reversibility of fluxes
+%    OptKnock(model, selectedRxnList, options, constrOpt, prevSolutions, verbFlag, solutionFileNameTmp)
 %
-% selectedRxnList  List of reactions that can be knocked-out in OptKnock
+% INPUTS:
+%    model:           Structure containing all necessary variables to described a
+%                     stoichiometric model
 %
-% options          OptKnock options
-%   targetRxn       Target flux to be maximized
+%                       *  `rxns` - Rxns in the model
+%                       *  `mets` - Metabolites in the model
+%                       *  `S` - Stoichiometric matrix (sparse)
+%                       *  `b` - RHS of Sv = b (usually zeros)
+%                       *  `c` - Objective coefficients
+%                       *  `lb` - Lower bounds for fluxes
+%                       *  `ub` - Upper bounds for fluxes
+%                       *  `rev` - Reversibility of fluxes
 %
-%OPTIONAL INPUTS
-% options             OptKnock options
-%   numDel             # of deletions allowed (Default: 5)
-%   numDelSense        Direction of # of deletions constraint (G/E/L)
-%                      (Default: L)
-%   vMax               Max flux (Default: 1000)
-%   solveOptKnock      Solve problem within Matlab (Default: true)
-%   createGams         Create GAMS input file
-%   gamsFile           GAMS input file name
+%    selectedRxnList:  List of reactions that can be knocked-out in OptKnock
+%    targetRxn:        Target flux to be maximized
 %
-% constrOpt           Explicitly constrained reaction options
-%   rxnList            Reaction list
-%   values             Values for constrained reactions
-%   sense              Constraint senses for constrained reactions (G/E/L)
+% OPTIONAL INPUTS:
+%    options:             `OptKnock` options
 %
-% prevSolutions       Previous solutions
+%                           *  `numDel` - # of deletions allowed (Default: 5)
+%                           *  `numDelSense` - Direction of # of deletions constraint (G/E/L)
+%                              (Default: L)
+%                           *  `vMax` - Max flux (Default: 1000)
+%                           *  `solveOptKnock` - Solve problem within Matlab (Default: true)
+%                           *  `createGams` - Create GAMS input file
+%                           *  `gamsFile` - GAMS input file name
+%    constrOpt:           Explicitly constrained reaction options
 %
-% verbFlag            Verbose flag
+%                           *  `rxnList` - Reaction list
+%                           *  `values` - Values for constrained reactions
+%                           *  `sense` - Constraint senses for constrained reactions (G/E/L)
+%    prevSolutions:       Previous solutions
+%    verbFlag:            Verbose flag
+%    solutionFileNameTmp: File name for storing temporary solutions
 %
-% solutionFileNameTmp File name for storing temporary solutions
+% OUTPUTS:
+%    optKnockSol:         `optKnock` solution structure
+%    rxnList:             Reaction `KO` list
+%    fluxes:              Flux distribution
+%    bilevelMILPproblem:  `optKnock` problem structure
 %
-%OUTPUTS
-% optKnockSol           OptKnock solution structure
-%   rxnList              Reaction KO list
-%   fluxes               Flux distribution
-% bilevelMILPproblem    optKnock problem structure
-%
-%NOTES
-% OptKnock uses bounds of -vMax to vMax or 0 to vMax for reversible and
+% OptKnock uses bounds of `-vMax` to `vMax` or 0 to `vMax` for reversible and
 % irreversible reactions. If you wish to constrain a reaction, use
-% constrOpt.
+% `constrOpt`.
 %
-% Markus Herrgard 3/28/05
-% Richard Que (04/27/10) - Added some default parameters.
+% .. Authors:
+%       - Markus Herrgard 3/28/05
+%       - Richard Que 04/27/10 - Added some default parameters.
 
-% Set these for MILP callbacks
 global MILPproblemType;
 global selectedRxnIndIrrev;
 global rxnList;
@@ -66,9 +64,9 @@ global OptKnockKOrxnList;
 global OptKnockObjective;
 global OptKnockGrowth;
 global solID;
-
+% Set these above for MILP callbacks
 %idefault <= 5 deletions; solve OptKnock
-if (~exist('options','var') || isempty(options) ) 
+if (~exist('options','var') || isempty(options) )
     error('OptKnock: No target reaction specified')
 else
     if ~isfield(options,'vMax'), options.vMax = 1000; end
@@ -110,7 +108,7 @@ end
 
 [nMets,nRxns] = size(modelIrrev.S);
 
-% Create matchings for reversible reactions in the set selected for KOs 
+% Create matchings for reversible reactions in the set selected for KOs
 % This is to ensure that both directions of the reaction are knocked out
 selSelectedRxn = ismember(model.rxns,selectedRxnList);
 selSelectedRxnIrrev = selSelectedRxn(irrev2rev);
@@ -132,7 +130,7 @@ end
 
 % Set inner constraints for the LP
 constrOptIrrev = setConstraintsIrrevModel(constrOpt,model,modelIrrev,rev2irrev);
-    
+
 % Set objectives for linear and integer parts
 cLinear = zeros(nRxns,1);
 cInteger = zeros(sum(selSelectedRxnIrrev),1);
@@ -161,8 +159,8 @@ if isfield(options,'initSolution')
         selInteger = bilevelMILPproblem.vartype == 'B';
         [nConstr,nVar] = size(bilevelMILPproblem.A);
         bilevelMILPproblem.x0 = nan(nVar,1);
-        bilevelMILPproblem.x0(selInteger) = initIntegerSol;    
-        
+        bilevelMILPproblem.x0(selInteger) = initIntegerSol;
+
 %         LPproblem.b = bilevelMILPproblem.b - bilevelMILPproblem.A(:,selInteger)*initIntegerSol;
 %         LPproblem.A = bilevelMILPproblem.A(:,bilevelMILPproblem.vartype == 'C');
 %         LPproblem.c = bilevelMILPproblem.c(bilevelMILPproblem.vartype == 'C');
@@ -171,7 +169,7 @@ if isfield(options,'initSolution')
 %         LPproblem.osense = -1;
 %         LPproblem.csense = bilevelMILPproblem.csense;
 %         LPsol = solveCobraLP(LPproblem);
-%         
+%
 %         bilevelMILPproblem.x0(~selInteger) = LPsol.full;
     end
 else
@@ -181,7 +179,7 @@ end
 % Maximize
 bilevelMILPproblem.osense = -1;
 
-if (verbFlag) 
+if (verbFlag)
     [nConstr,nVar] = size(bilevelMILPproblem.A);
     nInt = length(bilevelMILPproblem.intSolInd);
     fprintf('MILP problem with %d constraints %d integer variables and %d continuous variables\n',...
@@ -210,10 +208,7 @@ if (options.solveOptKnock)
         optKnockRxnInd = selectedRxnIndIrrev(optKnockSol.int < 1e-4);
         optKnockSol.rxnList = model.rxns(unique(irrev2rev(optKnockRxnInd)));
     end
-else 
+else
     optKnockSol.rxnList = {};
     optKnockSol.fluxes = [];
 end
-
-
-

@@ -1,29 +1,31 @@
 function [x1,x2,y] = doubleProductionEnvelope(model,deletions,prod1,prod2,biomassRxn,geneDelFlag,nPts)
-%doubleProductionEnvelope plots maximum growth rate as a function of the
-%output of two specified products
+% Plots maximum growth rate as a function of the
+% output of two specified products
 %
-% [x1,x2,y] = doubleProductionEnvelope(model,deletions,prod1,prod2,biomassRxn,geneDelFlag,nPts)
+% USAGE:
 %
-%INPUTS
-% model         COBRA model structure
-% deletions     The reactions or genes to knockout of the model
-% prod1         One of the two products to investigate
-% prod2         The other product to investigate
+%    [x1, x2, y] = doubleProductionEnvelope(model, deletions, prod1, prod2, biomassRxn, geneDelFlag, nPts)
 %
-%OPTIONAL INPUTS
-% biomassRxn    The biomass objective function rxn name
-%               (Default = 'biomass_SC4_bal')
-% geneDelFlag   Perform gene and not reaction deletions
-%               (Default = false)
-% nPts          Number of points to plot for each product
-%               (Default = 20)
+% INPUTS:
+%    model:         COBRA model structure
+%    deletions:     The reactions or genes to knockout of the model
+%    prod1:         One of the two products to investigate
+%    prod2:         The other product to investigate
 %
-%OUTPUTS
-% x1            The range of rates plotted for prod1
-% x2            The range of rates plotted for prod2
-% y             The plotted growth rates at each (x1,x2)
+% OPTIONAL INPUTS:
+%    biomassRxn:    The biomass objective function rxn name
+%                   (Default = 'biomass_SC4_bal')
+%    geneDelFlag:   Perform gene and not reaction deletions
+%                   (Default = false)
+%    nPts:          Number of points to plot for each product
+%                   (Default = 20)
 %
-% Jeff Orth  9/12/07
+% OUTPUTS:
+%    x1:            The range of rates plotted for `prod1`
+%    x2:            The range of rates plotted for `prod2`
+%    y:             The plotted growth rates at each (`x1`, `x2`)
+%
+% .. Author: - Jeff Orth  9/12/07
 
 if (nargin < 5)
     biomassRxn = 'biomass_SC4_bal';
@@ -69,7 +71,7 @@ for i = 1:nPts
         modelY = changeRxnBounds(modelY,prod2,prod2val,'b');
         fbasol = optimizeCbModel(modelY,'max');
         y(j,i) = fbasol.f; %no, this isn't a mistake (probably)
-    end 
+    end
 end
 
 % plot
@@ -78,5 +80,3 @@ alpha(.4);
 xlabel([strrep(prod1,'_','\_'),' (mmol/gDW h)']);
 ylabel([strrep(prod2,'_','\_'),' (mmol/gDW h)']);
 zlabel('Growth Rate (1/h)');
-
-

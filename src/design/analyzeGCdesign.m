@@ -1,36 +1,39 @@
 function [improvedRxns,intermediateSlns] = analyzeGCdesign(modelRed,selectedRxns,target,deletions,maxKOs,objFunction,delPenalty,intermediateSlns)
-%analyzeGCdesign Analyze results with replacement knockouts
-%should get closer to local maxima.  must have num KOs > 1
+% Analyzes results with replacement knockouts
+% should get closer to local maxima.  must have num `KOs` > 1
 %
-% [improvedRxns,intermediateSlns] = analyzeGCdesign(modelRed,selectedRxns,target,deletions,maxKOs,objFunction,delPenalty,intermediateSlns)
+% USAGE:
 %
-%INPUTS
-% modelRed          reduced model
-% selectedRxns      selected reaction list from the reduced model
-% target            exchange rxn to optimize
-% deletions         initial set of KO rxns (must have at least 1 rxn)
+%    [improvedRxns, intermediateSlns] = analyzeGCdesign(modelRed, selectedRxns, target, deletions, maxKOs, objFunction, delPenalty, intermediateSlns)
 %
-%OPTIONAL INPUTS
-% maxKOs            maximum number of rxn KOs to allow (Default = 10)
-% objFunction       pick an objective function to use (Default = 1):
-%                      1: obj = maxRate (yield)
-%                      2: obj = growth*maxRate (SSP)
-%                      3: obj = maxRate*(delPenalty^numDels) (yield with KO penalty)
-%                      4: obj = growth*maxRate*(delPenalty^numDels)  (SSP with KO penalty)
-%                      5: obj = maxRate*(slope^(-1))  (GC_yield)
-%                      6: obj = growth*maxRate*(slope^(-1))  (GC_SSP)
-%                      7: obj = maxRate*(delPenalty^numDels)*(slope^(-1)) (GC_yield with KO penalty)
-%                      8: obj = growth*maxRate*(delPenalty^numDels)*(slope^(-1))  (GC_SSP with KO penalty)
-% delPenalty        penalty on extra rxn deletions (Default = .99)
-% intermediateSlns  Previous set of solutions (Default = deletions)
+% INPUTS:
+%    modelRed:          reduced model
+%    selectedRxns:      selected reaction list from the reduced model
+%    target:            exchange `rxn` to optimize
+%    deletions:         initial set of `KO` `rxns` (must have at least 1 rxn)
 %
-%OUTPUTS
-% improvedRxns      the KO rxns for an improved strain
-% intermediateSlns  all the sets of best KO rxns that are picked before the
-%                   final set is reached
+% OPTIONAL INPUTS:
+%    maxKOs:            maximum number of `rxn` `KOs` to allow (Default = 10)
+%    objFunction:       pick an objective function to use (Default = 1):
 %
-% Jeff Orth  7/25/07
-% Richard Que 1/19/10       Replaced try/catch blocks
+%                       1.  `obj = maxRate` (yield)
+%                       2.  `obj = growth*maxRate` (SSP)
+%                       3.  `obj = maxRate*(delPenalty^numDels)` (yield with KO penalty)
+%                       4.  `obj = growth*maxRate*(delPenalty^numDels)`  (SSP with KO penalty)
+%                       5.  `obj = maxRate*(slope^(-1))`  (GC_yield)
+%                       6.  `obj = growth*maxRate*(slope^(-1))`  (GC_SSP)
+%                       7.  `obj = maxRate*(delPenalty^numDels)*(slope^(-1))` (GC_yield with KO penalty)
+%                       8.  `obj = growth*maxRate*(delPenalty^numDels)*(slope^(-1))`  (GC_SSP with KO penalty)
+%    delPenalty:        penalty on extra `rxn` deletions (Default = .99)
+%    intermediateSlns:  Previous set of solutions (Default = deletions)
+%
+% OUTPUTS:
+%    improvedRxns:      the `KO` `rxns` for an improved strain
+%    intermediateSlns:  all the sets of best `KO` `rxns` that are picked before the
+%                       final set is reached
+% .. Authors:
+%       - Jeff Orth  7/25/07
+%       - Richard Que 1/19/10       Replaced try/catch blocks
 
 if (nargin < 5)
     maxKOs = 10;

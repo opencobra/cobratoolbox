@@ -1,36 +1,34 @@
 function [gdlsSolution, bilevelMILPProblem, gdlsSolutionStructs] = GDLS(model, targetRxns, varargin)
-%GDLS (Genetic Design through Local Search) attempts to find genetic
+% GDLS (Genetic Design through Local Search) attempts to find genetic
 % designs with greater in silico production of desired metabolites.
 %
-% [gdlsSolution, bilevelMILPProblem, gdlsSolutionStructs] = GDLS(model, varargin)
+% USAGE:
 %
-%INPUTS
-% model             Cobra model structure
-% targetRxn         Reaction(s) to be maximized (Cell array of strings)
+%    [gdlsSolution, bilevelMILPProblem, gdlsSolutionStructs] = GDLS(model, varargin)
 %
-%OPTIONAL INPUTS
-% varargin          parameters entered using either a structure or list of
-%                   parameter, parameter value
-%   List of optional parameters
-%   'nbhdsz'            Neighborhood size (default: 1)
-%   'M'                 Number of search paths (default: 1)
-%   'maxKO'             Maximum number of knockouts (default: 50)
-%   'koCost'            Cost for knocking out a reaction, gene set, or gene
-%                       A different cost can be set for each knockout.
-%                       (default: 1 for each knockout)
-%   'selectedRxns'      List of reactions/geneSets that can be knocked out
-%   'koType'            What to knockout: reactions, gene sets, or genes
-%                       {('rxns'), 'geneSets', 'genes'}
-%   'iterationLimit'    Maximum number of iterations (default: 70)
-%   'timeLimit'         Maximum run time in seconds (default: 252000)
-%   'minGrowth'         Minimum growth rate
+% INPUTS:
+%    model:             Cobra model structure
+%    targetRxn:         Reaction(s) to be maximized (Cell array of strings)
 %
-%OUTPUTS
-% gdlsSolution          GDLS solution structure (similar to OptKnock sol struct)
-% bilevelMILPProblem    Problem structure used in computation
+% OPTIONAL INPUTS:
+%    varargin:          parameters entered using either a structure or list of
+%                       parameter, parameter value. List of optional parameters:
 %
-% Adapted from Desmond S Lun's gdls scripts.
-% Richard Que (1/28/2010)
+%                         *  `nbhdsz` - Neighborhood size (default: 1)
+%                         *  `M` - Number of search paths (default: 1)
+%                         *  `maxKO` - Maximum number of knockouts (default: 50)
+%                         *  `koCost` - Cost for knocking out a reaction, gene set, or gene. A different cost can be set for each knockout (default: 1 for each knockout)
+%                         *  `selectedRxns` - List of reactions/geneSets that can be knocked out
+%                         *  `koType` - What to knockout: reactions, gene sets, or genes {('rxns'), 'geneSets', 'genes'}
+%                         *  `iterationLimit` - Maximum number of iterations (default: 70)
+%                         *  `timeLimit` - Maximum run time in seconds (default: 252000)
+%                         *  `minGrowth` - Minimum growth rate
+%
+% OUTPUTS:
+%    gdlsSolution:          GDLS solution structure (similar to `OptKnock` `sol` struct)
+%    bilevelMILPProblem:    Problem structure used in computation
+%
+% .. Author: - Richard Que 1/28/2010 Adapted from Desmond S Lun's gdls scripts.
 
 MAXFLUX = 1000;
 MAXDUAL = 1000;
@@ -82,7 +80,7 @@ switch lower(options.koType)
         %% Generate selection reaction matrix
         model.selRxnMatrix = selMatrix(selSelectedRxns)';
         possibleKOList = model.rxns(selSelectedRxns);
-        
+
     case 'genesets'
         %% Generate reaction gene set mapping matrix
         %remove biomass reaction from grRules and generate unique gene set list
@@ -91,7 +89,7 @@ switch lower(options.koType)
         for i = 1:length(possibleKOList)
             model.selRxnMatrix(:,i) =  double(strcmp(possibleKOList{i},model.grRules));
         end
-        
+
     case 'genes'
         %% Use rxnGeneMat as selRxnMatrix
         model.selRxnMatrix = model.rxnGeneMat;
@@ -148,12 +146,12 @@ change = true;
 t1 = clock;
 while change
     change = false;
-    
+
     y = false(nInt, 0);
     fmax = zeros(1, 0);
     for istart = 1:size(y0, 2)
         for irun = 1:options.M
-            
+
             c = [selTargetRxns;
                 zeros(nMets, 1);
                 zeros(nMu, 1);
@@ -210,20 +208,20 @@ while change
                 'C' * ones(nRxns, 1);
                 'B' * ones(nInt, 1); ]);
        osense = -1; %maximize
-            
+
             if isfield(options,'minGrowth')
                 A = [A; model.c' sparse(1, nMets + nMu + nNu + nRxns + nInt)];
                 b = [b; options.minGrowth];
                 csense = [csense; 'G'];
-            end     
-       
+            end
+
             [bilevelMILPProblem.c, bilevelMILPProblem.A,...
                 bilevelMILPProblem.b, bilevelMILPProblem.lb,...
                 bilevelMILPProblem.ub, bilevelMILPProblem.csense,...
                 bilevelMILPProblem.vartype, bilevelMILPProblem.osense,...
                 bilevelMILPProblem.x0] = ...
                 deal(c, A, b, lb, ub, csense, vartype, osense, []);
-            
+
             %solve
             solution1 = solveCobraMILP(bilevelMILPProblem);
 
@@ -232,22 +230,22 @@ while change
                 continue; %non optimal solution
             end
             yt = solution1.full((end - nInt + 1):end) > EPS;
-            
+
             model.rxnsPresent = ~(model.selRxnMatrix * yt);
             solution2 = fluxBalance(model,selTargetRxns,false);
             if abs(solution2.obj - solution1.obj) > EPS
                 continue; %inconsistent
             end
-            
+
             fmax(:, end + 1) = solution1.obj;
             y(:, end + 1) = yt;
         end
     end
-    
+
     if size(y, 2) == 0
         continue;
     end
-    
+
     [fmaxsort, ifmaxsort] = sort(fmax);
     y = y(:, ifmaxsort);
     y = y(:, max([1 size(y, 2) - options.M + 1]):end);
@@ -257,7 +255,7 @@ while change
         y0 = y;
         change = true;
     end
-    
+
     fprintf('Iteration %d\n', iiter);
     fprintf('----------%s\n', char('-' * ones(1, floor(log10(iiter)) + 1)));
     for iend = 1:size(y0, 2)
@@ -269,7 +267,7 @@ while change
         end
         printLabeledData(model.rxns(selExc),solSynMax.full(selExc),true);
         fprintf('\n');
-        
+
         %Save Solutions
         gdlsSolutionStructs.(sprintf('Iteration_%d',iiter)).(sprintf('solution_%2',i)).solBiomass = solBiomass;
         gdlsSolutionStructs.(sprintf('Iteration_%d',iiter)).(sprintf('solution_%2',i)).solSynMin = solSynMin;
@@ -299,17 +297,17 @@ function y = shrinkKnockouts(y, model, selTargetRxns)
 
 for iycol = 1:size(y, 2)
     model.rxnsPresent = ~(model.selRxnMatrix * y(:, iycol));
-    solution1 = fluxBalance(model, selTargetRxns, false);              
+    solution1 = fluxBalance(model, selTargetRxns, false);
     for i = find(y(:, iycol))'
         yt = y(:, iycol);
         yt(i) = 0;
-        
+
         model.rxnsPresent = ~(model.selRxnMatrix * yt);
-        solution2 = fluxBalance(model, selTargetRxns, false);   
-        
+        solution2 = fluxBalance(model, selTargetRxns, false);
+
         if solution2.obj >= solution1.obj
             y(:, iycol) = yt;
-            
+
             y(:, iycol) = shrinkKnockouts(y(:, iycol), model, selTargetRxns);
         end
     end
@@ -330,7 +328,7 @@ model_syn = model;
 
 yt = model.rxnsPresent;
 
-modelb.A = [ model.S; 
+modelb.A = [ model.S;
       sparse(1:nnz(~yt), find(~yt), ones(nnz(~yt), 1), nnz(~yt), nRxns) ];
 modelb.b = [ zeros(nMets, 1);
       zeros(nnz(~yt), 1) ];

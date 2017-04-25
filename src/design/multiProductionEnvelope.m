@@ -1,26 +1,28 @@
 function [biomassValues,targetValues] = multiProductionEnvelope(model,deletions,biomassRxn,geneDelFlag,nPts,plotAllFlag)
-%multiProductionEnvelope Calculates the byproduct secretion envelopes for
-%every product (excreted metabolites with 1 or more Carbons)
+% Calculates the byproduct secretion envelopes for
+% every product (excreted metabolites with 1 or more Carbons)
 %
-% [biomassValues,targetValues] = multiProductionEnvelope(model,deletions,biomassRxn,geneDelFlag,nPts,plotAllFlag)
+% USAGE:
 %
-%INPUT
-% model         COBRA model structure
+%    [biomassValues, targetValues] = multiProductionEnvelope(model, deletions, biomassRxn, geneDelFlag, nPts, plotAllFlag)
 %
-%OPTIONAL INPUT
-% deletions     List of reaction or gene deletions (empty if wild type)
-%               (Default = {})
-% biomassRxn    Biomass rxn name (Default = whatever is defined in model)
-% geneDelFlag   Perform gene and not reaction deletions (Default = false)
-% nPts          Number of points in the plot (Default = 20)
-% plotAllFlag   plot all envelopes, even ones that are not growth coupled
-%               (Default = false)
+% INPUT:
+%    model:         COBRA model structure
 %
-%OUTPUT
-% biomassValues Biomass values for plotting
-% targetValues  Target upper and lower bounds for plotting
+% OPTIONAL INPUT:
+%    deletions:     List of reaction or gene deletions (empty if wild type)
+%                   (Default = {})
+%    biomassRxn:    Biomass `rxn` name (Default = whatever is defined in model)
+%    geneDelFlag:   Perform gene and not reaction deletions (Default = false)
+%    nPts:          Number of points in the plot (Default = 20)
+%    plotAllFlag:   plot all envelopes, even ones that are not growth coupled
+%                   (Default = false)
 %
-% Jeff Orth 8/16/07
+% OUTPUT:
+%    biomassValues: Biomass values for plotting
+%    targetValues:  Target upper and lower bounds for plotting
+%
+% .. Author: - Jeff Orth 8/16/07
 
 if (nargin < 2)
     deletions = {};
@@ -95,7 +97,7 @@ for i = 1:length(CExcRxns)
             else
                 targetUpperBound(i,j) = NaN;
             end
-            sol = optimizeCbModel(model,'min');    
+            sol = optimizeCbModel(model,'min');
             if (sol.stat > 0)
                 targetLowerBound(i,j) = sol.f;
             else
@@ -117,9 +119,7 @@ legend(CExcRxns(plottedRxns));
 legend off;
 ylabel('Production Rate (mmol/gDW h)');
 xlabel('Growth Rate (1/h)');
-plottools, plotbrowser('on'), figurepalette('hide'), propertyeditor('off'); 
+plottools, plotbrowser('on'), figurepalette('hide'), propertyeditor('off');
 
 biomassValues = biomassValues';
 targetValues = [targetLowerBound' targetUpperBound'];
-
-

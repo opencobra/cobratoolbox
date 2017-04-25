@@ -1,19 +1,20 @@
 function [val] = optGeneFitnessTilt(rxn_vector_matrix, model, targetRxn, rxnListInput, isGeneList)
-%optGeneFitnessTilt GeneOptFitness the fitness function
+% The fitness function
 %
-% [val] = optGeneFitnessTilt(rxn_vector_matrix, model, targetRxn, rxnListInput, isGeneList)
+% USAGE:
 %
-%INPUTS
-% rxn_vector_matrix     
-% model                 
-% targetRxn             
-% rxnListInput          
-% isGeneList            
+%    [val] = optGeneFitnessTilt(rxn_vector_matrix, model, targetRxn, rxnListInput, isGeneList)
 %
-%OUTPUT
-% val                   fitness value
+% INPUTS:
+%    rxn_vector_matrix:
+%    model:
+%    targetRxn:
+%    rxnListInput:
+%    isGeneList:
 %
-%
+% OUTPUT:
+%    val:   fitness value
+
 global MaxKnockOuts
 %size(rxn_vector_matrix)
 
@@ -24,20 +25,20 @@ for i = 1:popsize
     rxn_vector = rxn_vector_matrix(i,:);
     rxnList = rxnListInput(logical(rxn_vector));
 
-    
+
     %see if we've done this before
     val_temp = memoize(rxn_vector);
     if ~ isempty(val_temp)
         val(i) = val_temp;
         continue;
     end
-   
+
     % check to see if mutations is above the max number allowed
     nummutations = sum(rxn_vector);
     if nummutations > MaxKnockOuts
         continue;
     end
-    
+
 	% generate knockout.
     if isGeneList
         modelKO = deleteModelGenes(model, rxnList);
@@ -48,26 +49,26 @@ for i = 1:popsize
         modelKO.ub(removeInd) = 0;
         modelKO.lb(removeInd) = 0;
     end
- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   
- % augment BOF (tilt) 
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ % augment BOF (tilt)
  [modelKO] = augmentBOF(modelKO, targetRxn, .001);
- 
+
  % find growthrate
     if exist('LPBasis', 'var')
         modelKO.LPBasis = LPBasis;
     end
-    
+
     [slnKO, LPOUT] = solveCobraLPCPLEX(modelKO, 0,1);
     LPBasis = LPOUT.LPBasis;
     growthrate = slnKO.obj;
     [tmp,tar_loc] = ismember(targetRxn,modelKO.rxns);
     minProdAtSetGR = slnKO.full(tar_loc);
-    
+
     % check to ensure that GR is above a certain value
     if growthrate < .10
         continue;
     end
-    
+
 % %    display('second optimization');
 %     % find the lowesest possible production rate (a hopefully high number)
 %     % at the max growth rate minus some set factor gamma (a growth rate slightly
@@ -75,7 +76,7 @@ for i = 1:popsize
 %     % production envelope has a vertical line at the max GR, a "non-unique"
 %     % solution. Set value to zero if "non-unique" solutions are not an issue.
 %     gamma = 0.01; % proportional to Grwoth Rate (hr-1), a value around 0.5 max.
-% 
+%
 %     %find indicies of important vectors
 %     indBOF = find(modelKO.c);
 %     indTar = findRxnIDs(modelKO, targetRxn);
@@ -84,28 +85,28 @@ for i = 1:popsize
 %     modelKOsetGR.lb(indBOF) = growthrate - gamma; % this growth rate is required as lb.
 %     modelKOsetGR.c = zeros(size(modelKO.c));
 %     modelKOsetGR.c(indTar) = -1; % minimize for this variable b/c we want to look at the very minimum production.
-% 
+%
 %     % find the minimum production rate for the targeted reaction.
-% 
+%
 % %     slnKOsetGR = optimizeCbModel(modelKOsetGR);
 % %     minProdAtSetGR1 = -slnKOsetGR.f;  % This should be a negative value b/c of the minimization setup, so -1 is necessary.
-% 
+%
 %     if exist('LPBasis2', 'var')
 %         modelKOsetGR.LPBasis = LPBasis2;
 %     end
-% 
+%
 %     [slnKOsetGR, LPOUT2] = solveCobraLPCPLEX(modelKOsetGR, 0,1);
 %     LPBasis2 = LPOUT2.LPBasis;
 %     minProdAtSetGR = -slnKOsetGR.obj;
 
-    
+
     % objective function for optGene algorithm = val (needs to be a negative value, since it is
     % a minimization)
-    val(i) = -minProdAtSetGR; 
+    val(i) = -minProdAtSetGR;
     % penalty for a greater number of mutations
-    
-    %val(i) = -minProdAtSetGR * (.98^nummutations); 
-    
+
+    %val(i) = -minProdAtSetGR * (.98^nummutations);
+
     % select best substrate-specific productivity
     % val(i) = -minProdAtSetGR * (.98^nummutations) * growthrate;
 
