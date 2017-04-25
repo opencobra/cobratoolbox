@@ -1,7 +1,7 @@
 function mets = detectDeadEnds(model,removeExternalMets)
-%DETECTDEADENDS returns a list(indices) of metabolites which either participate in only
-%one reaction or can only be produced or consumed (all reactions involving
-%the metabolite either only produce or only consume it, respecting the reaction lower and upper bounds. 
+%DETECTDEADENDS returns a list of indices of metabolites which either participate in only
+%one reaction or can only be produced or consumed (i.e. all reactions involving
+%the metabolite either only produce or only consume it, respecting the reaction lower and upper bounds). 
 %
 % outputMets = detectDeadEnds(model, removeExternalMets)
 %
