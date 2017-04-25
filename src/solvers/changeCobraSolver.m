@@ -151,6 +151,12 @@ end
 % configure the environment variables
 configEnvVars();
 
+% legacy support for MPS (will be removed in future release)
+if strcmp(solverName, 'mps')
+    fprintf(' > The interface to ''mps'' from ''changeCobraSolver()'' is no longer supported.');
+    error(' -> Use >> writeCbModel(model, ''mps''); instead.)');
+end
+
 % Print out all solvers defined in global variables CBT_*_SOLVER
 if nargin < 1
     definedSolvers = [CBT_LP_SOLVER, CBT_MILP_SOLVER, CBT_QP_SOLVER, CBT_MIQP_SOLVER, CBT_NLP_SOLVER];

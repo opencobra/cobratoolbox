@@ -378,95 +378,21 @@ switch solver
         end
 
 
-        if 1
-            %use Stanford code to write mps file
-            %fname=writeMINOSMPS(LPproblem,mpsParentFolderPath,printLevel);
-            tempFileName  = MPSfilename(1:min(8,length(MPSfilename)));
-            if exist([mpsParentFolderPath filesep 'MPS' filesep tempFileName '.mps'],'file')
-                MPSfilename=tempFileName;
-            else
-                longMPSfilename=MPSfilename;
-                MPSfilename=writeMINOSMPS(A,b,c,lb,ub,csense,osense,longMPSfilename,mpsParentFolderPath,printLevel);
-            end
+        %use Stanford code to write mps file
+        %fname=writeMINOSMPS(LPproblem,mpsParentFolderPath,printLevel);
+        tempFileName  = MPSfilename(1:min(8,length(MPSfilename)));
+        if exist([mpsParentFolderPath filesep 'MPS' filesep tempFileName '.mps'],'file')
+            MPSfilename=tempFileName;
         else
-            %write out the mps file to the dataDirectory
-            %% BuildMPS
-            % This calls buildMPS and generates a MPS format description of the
-            % problem as the result
-            % Build MPS Author: Bruno Luong
-            % Interfaced with CobraToolbox by Richard Que (12/18/09)
-            display('Solver set to MPS. This function will write out a .MPS file and return a matrix string for the LP problem');
-
-            %default MPS parameters are no longer global variables, but set
-            %here inside this function
-            param=solverParams;
-            if isfield(param,'EleNames')
-                EleNames=param.EleNames;
-            else
-                EleNames='';
-            end
-            if isfield(param,'EqtNames')
-                EqtNames=param.EqtNames;
-            else
-                EqtNames='';
-            end
-            if isfield(param,'VarNames')
-                VarNames=param.VarNames;
-            else
-                VarNames='';
-            end
-            if isfield(param,'EleNameFun')
-                EleNameFun=param.EleNameFun;
-            else
-                EleNameFun = @(m)(['LE' num2str(m)]);
-            end
-            if isfield(param,'EqtNameFun')
-                EqtNameFun=param.EqtNameFun;
-            else
-                EqtNameFun = @(m)(['EQ' num2str(m)]);
-            end
-            if isfield(param,'VarNameFun')
-                VarNameFun=param.VarNameFun;
-            else
-                VarNameFun = @(m)(['X' num2str(m)]);
-            end
-            if isfield(param,'PbName')
-                PbName=param.PbName;
-            else
-                PbName='LPproble';
-            end
-            if isfield(param,'MPSfilename')
-                MPSfilename=param.MPSfilename;
-            else
-                MPSfilename=[dataDirectory '/dqqFBA'];
-            end
-            %split A matrix for L and E csense
-            Ale = A(csense=='L',:);
-            ble = b(csense=='L');
-            Aeq = A(csense=='E',:);
-            beq = b(csense=='E');
-
-            %%%%Adapted from BuildMPS%%%%%
-            [neq nvar]=size(Aeq);
-            nle=size(Ale,1);
-            if isempty(EleNames)
-                EleNames=arrayfun(EleNameFun,(1:nle),'UniformOutput', false);
-            end
-            if isempty(EqtNames)
-                EqtNames=arrayfun(EqtNameFun,(1:neq),'UniformOutput', false);
-            end
-            if isempty(VarNames)
-                VarNames=arrayfun(VarNameFun,(1:nvar),'UniformOutput', false);
-            end
-            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-            % input precision     ('double') or 'single' precision
-            precision='double';
-
-            %http://www.mathworks.com/matlabcentral/fileexchange/19618-mps-format-exporting-tool/content/BuildMPS/BuildMPS.m
-            [solution] = BuildMPS(Ale, ble, Aeq, beq, c, lb, ub, PbName,'MPSfilename',[mpsParentFolderPath filesep MPSfilename '.mps'],'EleNames',EleNames,'EqtNames',EqtNames,'VarNames',VarNames);
+            longMPSfilename=MPSfilename;
+            MPSfilename=writeMINOSMPS(A,b,c,lb,ub,csense,osense,longMPSfilename,mpsParentFolderPath,printLevel);
         end
+        % legacy
+        % input precision     ('double') or 'single' precision
+        %precision='double';
+
+        %write out the mps file to the dataDirectory
+        %writeCbModel(LPproblem, 'mps', [dataDirectory '/dqqFBA'], [], [], [], [], solverParams);
 
         %need to change to DDQ directory, need to improve on this - Ronan
         originalDirectory=pwd;
@@ -524,9 +450,8 @@ switch solver
             stat = -1; % Solution not optimal or solver problem
         end
         %cleanup
-        if 0
-            delete(solfname)
-        end
+        % delete(solfname)
+
         %return to original directory
         cd(originalDirectory);
     case 'quadMinos'
@@ -560,18 +485,17 @@ switch solver
         modelName='qFBA';
 
         %TODO: for some reason repeated system call to find minos path does not work, this is a workaround
-        %{
-            % directory     the directory where optimization problem file is saved
-            [status,cmdout]=system('which minos');
-            if isempty(cmdout)
-                disp(cmdout);
-                [status,cmdout2]=system('echo $PATH');
-                disp(cmdout2);
-                error('Minos not installed or not on system path.')
-            else
-                quadLPPath=cmdout(1:end-length('/bin/minos')-1);
-            end
-        %}
+        %    % directory     the directory where optimization problem file is saved
+        %    [status,cmdout]=system('which minos');
+        %    if isempty(cmdout)
+        %        disp(cmdout);
+        %        [status,cmdout2]=system('echo $PATH');
+        %        disp(cmdout2);
+        %        error('Minos not installed or not on system path.')
+        %    else
+        %        quadLPPath=cmdout(1:end-length('/bin/minos')-1);
+        %    end
+
         quadLPPath = MINOSPATH;
 
 
@@ -1479,79 +1403,9 @@ switch solver
         end
         origStat=inform;
     case 'mps'
-        %% BuildMPS
-        % This calls buildMPS and generates a MPS format description of the
-        % problem as the result
-        % Build MPS Author: Bruno Luong
-        % Interfaced with CobraToolbox by Richard Que (12/18/09)
-        display('Solver set to MPS. This function will write out a .MPS file and return a matrix string for the LP problem');
-
-        %default MPS parameters are no longer global variables, but set
-        %here inside this function
-        param=solverParams;
-        if isfield(param,'EleNames')
-            EleNames=param.EleNames;
-        else
-            EleNames='';
-        end
-        if isfield(param,'EqtNames')
-            EqtNames=param.EqtNames;
-        else
-            EqtNames='';
-        end
-        if isfield(param,'VarNames')
-            VarNames=param.VarNames;
-        else
-            VarNames='';
-        end
-        if isfield(param,'EleNameFun')
-            EleNameFun=param.EleNameFun;
-        else
-            EleNameFun = @(m)(['LE' num2str(m)]);
-        end
-        if isfield(param,'EqtNameFun')
-            EqtNameFun=param.EqtNameFun;
-        else
-            EqtNameFun = @(m)(['EQ' num2str(m)]);
-        end
-        if isfield(param,'VarNameFun')
-            VarNameFun=param.VarNameFun;
-        else
-            VarNameFun = @(m)(['X' num2str(m)]);
-        end
-        if isfield(param,'PbName')
-            PbName=param.PbName;
-        else
-            PbName='LPproble';
-        end
-        if isfield(param,'MPSfilename')
-            MPSfilename=[param.MPSfilename '.mps'];
-        else
-            MPSfilename='LP.mps';
-        end
-        %split A matrix for L and E csense
-        Ale = A(csense=='L',:);
-        ble = b(csense=='L');
-        Aeq = A(csense=='E',:);
-        beq = b(csense=='E');
-
-        %%%%Adapted from BuildMPS%%%%%
-        [neq nvar]=size(Aeq);
-        nle=size(Ale,1);
-        if isempty(EleNames)
-            EleNames=arrayfun(EleNameFun,(1:nle),'UniformOutput', false);
-        end
-        if isempty(EqtNames)
-            EqtNames=arrayfun(EqtNameFun,(1:neq),'UniformOutput', false);
-        end
-        if isempty(VarNames)
-            VarNames=arrayfun(VarNameFun,(1:nvar),'UniformOutput', false);
-        end
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-        %http://www.mathworks.com/matlabcentral/fileexchange/19618-mps-format-exporting-tool/content/BuildMPS/BuildMPS.m
-        %31st Jan 2016, changed c to osense*c as most solvers assume minimisation
-        [solution] = BuildMPS(Ale, ble, Aeq, beq, osense*c, lb, ub, PbName,'MPSfilename',MPSfilename,'EleNames',EleNames,'EqtNames',EqtNames,'VarNames',VarNames);
+        fprintf(' > The interface to ''mps'' from solveCobraLP will not be supported in the future.\n -> Use >> writeCbModel(model, ''mps''); instead.)\n');
+        % temporary legacy support
+        writeCbModel(LPproblem, 'mps', 'LP.mps', [], [], [], [], solverParams);
     otherwise
         error(['Unknown solver: ' solver]);
 

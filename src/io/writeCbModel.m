@@ -4,14 +4,14 @@
 % FBCv2 file. The current version of the "writeSBML.m" does not require the
 % SBML toolbox (http://sbml.org/Software/SBMLToolbox).
 
-function outmodel = writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLevel,sbmlVersion)
+function outmodel = writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLevel,sbmlVersion, solverParams)
 %writeCbModel Write out COBRA models in various formats
 %
 % writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLevel,sbmlVersion)
 %
 %INPUTS
 % model             Standard COBRA model structure
-% format            File format to be used ('text','xls' or 'sbml')
+% format            File format to be used ('text','xls', 'sbml', or 'mps')
 %
 % OPTIONAL OUTPUTS
 % outmodel          Only useable with sbml export. Will return the sbml structure, otherwise the input COBRA model structure is returned.
@@ -35,7 +35,11 @@ if ~exist('compSymbolList','var') || isempty(compSymbolList)
     compSymbolList = {'c','m','v','x','e','t','g','r','n','p','l','y'};
     compNameList = {'Cytoplasm','Mitochondrion','Vacuole','Peroxisome','Extracellular','Pool','Golgi','Endoplasmic_reticulum','Nucleus','Periplasm','Lysosome','Glycosome'};
 end
- 
+
+if nargin < 7
+    solverParams = [];
+end
+
 if nargin < 6
     sbmlLevel = 2;
     sbmlVersion = 1;
@@ -46,7 +50,7 @@ outmodel = model;
 formulas = printRxnFormula(model,model.rxns,false,false,false,1,false);
 
 %% Open a dialog to select file name
-if (nargin < 3 & ~strcmp(format,'sbml'))
+if nargin < 3 & ~strcmp(format,'sbml')
     switch format
         case 'xls'
             [fileNameFull,filePath] = uiputfile({'*.xls'});
@@ -54,6 +58,8 @@ if (nargin < 3 & ~strcmp(format,'sbml'))
             [fileNameFull,filePath] = uiputfile({'*.txt'});
         case 'xml'
             [fileNameFull,filePath] = uiputfile({'*.xml'});
+        case 'mps'
+            [fileNameFull,filePath] = uiputfile({'*.mps'});
         otherwise
             [fileNameFull,filePath] = uiputfile({'*'});
     end
@@ -66,6 +72,9 @@ if (nargin < 3 & ~strcmp(format,'sbml'))
             case 'txt'
                 format = 'text';
                 fileName = [fileName '.txt'];
+            case 'mps'
+                format = 'mps';
+                fileName = [fileName '.mps'];
             case 'xml'
                 format = 'sbml';
 %                 fprintf('Note that you will be asked to supply the file name again (this is a feature, not a bug)');
@@ -78,7 +87,7 @@ if (nargin < 3 & ~strcmp(format,'sbml'))
 end
 switch format
     %% Text file
-    case {'text','txt'}
+    case {'text', 'txt'}
         fid = fopen(fileName,'w');
         fprintf(fid,'Rxn name\t');
         if (isfield(model,'rxnNames'))
@@ -137,7 +146,7 @@ switch format
             else
                 tmpData{i+1,2} =  '';
             end
-            
+
             tmpData{i+1,baseInd} = chopForExcel(formulas{i});
             if (isfield(model,'geneNameRules'))
                 tmpData{i+1,baseInd+1} = chopForExcel(model.geneNameRules{i});
@@ -169,8 +178,8 @@ switch format
             tmpData{i+1,baseInd+6} = model.lb(i);
             tmpData{i+1,baseInd+7} = model.ub(i);
             tmpData{i+1,baseInd+8} = model.c(i);
-            if (isfield(model,'confidenceScores'))                
-                tmpData{i+1,baseInd+9} =  chopForExcel(num2str(model.confidenceScores{i}));           
+            if (isfield(model,'confidenceScores'))
+                tmpData{i+1,baseInd+9} =  chopForExcel(num2str(model.confidenceScores{i}));
             else
                 tmpData{i+1,baseInd+9} = '';
             end
@@ -233,7 +242,7 @@ switch format
                     tmpMetData{i+1,7} = '';
                 end
                 if isfield(model,'metPubChemID')
-                    if iscell(model.metPubChemID(i))                        
+                    if iscell(model.metPubChemID(i))
                     tmpMetData{i+1,8} = chopForExcel(model.metPubChemID{i});
                     else
                     tmpMetData{i+1,8} = chopForExcel(model.metPubChemID(i));
@@ -242,7 +251,7 @@ switch format
                     tmpMetData{i+1,8} = '';
                 end
                 if isfield(model,'metChEBIID')
-                 
+
                     tmpMetData{i+1,9} = chopForExcel(model.metChEBIID(i));
                 else
                     tmpMetData{i+1,9} = '';
@@ -272,6 +281,84 @@ switch format
 %             OutputSBML(sbmlModel);
 %         end
         %% Unknown
+
+    case 'mps'
+        %% BuildMPS
+        % This calls buildMPS and generates a MPS format description of the
+        % problem as the result
+        % Build MPS Author: Bruno Luong
+        % Interfaced with CobraToolbox by Richard Que (12/18/09)
+
+        [A,b,c,lb,ub,csense,osense] = deal(model.A,model.b,model.c,model.lb,model.ub,model.csense,model.osense);
+
+        %default MPS parameters are no longer global variables, but set
+        %here inside this function
+        param=solverParams;
+        if isfield(param,'EleNames')
+            EleNames=param.EleNames;
+        else
+            EleNames='';
+        end
+        if isfield(param,'EqtNames')
+            EqtNames=param.EqtNames;
+        else
+            EqtNames='';
+        end
+        if isfield(param,'VarNames')
+            VarNames=param.VarNames;
+        else
+            VarNames='';
+        end
+        if isfield(param,'EleNameFun')
+            EleNameFun=param.EleNameFun;
+        else
+            EleNameFun = @(m)(['LE' num2str(m)]);
+        end
+        if isfield(param,'EqtNameFun')
+            EqtNameFun=param.EqtNameFun;
+        else
+            EqtNameFun = @(m)(['EQ' num2str(m)]);
+        end
+        if isfield(param,'VarNameFun')
+            VarNameFun=param.VarNameFun;
+        else
+            VarNameFun = @(m)(['X' num2str(m)]);
+        end
+        if isfield(param,'PbName')
+            PbName=param.PbName;
+        else
+            PbName='LPproble';
+        end
+        if isfield(param,'MPSfilename')
+            MPSfilename=[param.MPSfilename '.mps'];
+        else
+            MPSfilename=fileName;
+        end
+        %split A matrix for L and E csense
+        Ale = A(csense=='L',:);
+        ble = b(csense=='L');
+        Aeq = A(csense=='E',:);
+        beq = b(csense=='E');
+
+        %%%%Adapted from BuildMPS%%%%%
+        [neq nvar]=size(Aeq);
+        nle=size(Ale,1);
+        if isempty(EleNames)
+            EleNames=arrayfun(EleNameFun,(1:nle),'UniformOutput', false);
+        end
+        if isempty(EqtNames)
+            EqtNames=arrayfun(EqtNameFun,(1:neq),'UniformOutput', false);
+        end
+        if isempty(VarNames)
+            VarNames=arrayfun(VarNameFun,(1:nvar),'UniformOutput', false);
+        end
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        %http://www.mathworks.com/matlabcentral/fileexchange/19618-mps-format-exporting-tool/content/BuildMPS/BuildMPS.m
+        %31st Jan 2016, changed c to osense*c as most solvers assume minimisation
+        [solution] = BuildMPS(Ale, ble, Aeq, beq, osense*c, lb, ub, PbName,'MPSfilename',MPSfilename,'EleNames',EleNames,'EqtNames',EqtNames,'VarNames',VarNames);
+        display(['The .MPS file <', MPSfilename, '> has been written to ', pwd]);
+
     otherwise
         error('Unknown file format');
 end
