@@ -70,9 +70,16 @@ assert(isequal(nRxnsMetUni, zeros(72,5)));
 assert(isequal(rawScore, zeros(72,5)));
 
 % update checking with less inputs and checking if sum(data(RxnInd)==1 and length(randInd)==1
+load('ref_testReporterMets2.mat');
+nRxnsMet=[];
+nRxnsMetUni=[];
+rawScore=[];
 [normScore(:, 1), nRxnsMet(:, 1), nRxnsMetUni(:, 1), rawScore(:, 1)] = reporterMets(model, data);
-[normScore(:, 1), nRxnsMet(:, 1), nRxnsMetUni(:, 1), rawScore(:, 1)] = reporterMets(model, data, 1000, false, 1, 'std');
-[normScore(:, 1), nRxnsMet(:, 1), nRxnsMetUni(:, 1), rawScore(:, 1)] = reporterMets(model, data, 1000, false, 1, 'count');
+[normScore(:, 2), nRxnsMet(:, 2), nRxnsMetUni(:, 2), rawScore(:, 2)] = reporterMets(model, data, 1000, false, 1, 'std');
+[normScore(:, 3), nRxnsMet(:, 3), nRxnsMetUni(:, 3), rawScore(:, 3)] = reporterMets(model, data, 1000, false, 1, 'count');
+assert(isequal(nRxnsMet, nRxnsMet_ref2));
+assert(isequal(nRxnsMetUni, nRxnsMetUni_ref2));
+assert(isequal(rawScore, rawScore_ref2));
 
 % change the directory
 cd(currentDir)
