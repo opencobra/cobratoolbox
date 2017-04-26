@@ -55,9 +55,36 @@ end
 
 % compare the 4 files: CobraLPProblem.mps, LP1.mps, LP.mps and LP2.mps
 
+%Sample LP Problem
+LPproblem.A = [1 1 0; -1 0 -1; 0 -1 1];             %LHS matrix
+LPproblem.b = [5; -10; 7];                          %RHS vector
+LPproblem.lb = [0; -1; 0];                          %Lower bound vector
+LPproblem.ub = [4; 1; inf];                         %Upper bound vector
+LPproblem.c = [1 4 9];                              %Objective coeff vector
+LPproblem.csense = ['L'; 'L'; 'E'];                 %Constraint sense
+LPproblem.osense = 1;                               %Minimize
+%LPproblem.rxns = ['R1', 'R2', 'R3'];
+%LPproblem.mets = ['a', 'b'];
+VarNameFun = @(m) (char('x'+(m-1)));      %Function used to name variables
+EqtNames = {'Equality'};
+
+%Call solveCobraLP; Name output file 'testMPSLP' .mps suffix added %automatically
+paramStruct.MPSfilename = 'testMPSLP';
+paramStruct.EqtNames = EqtNames;
+paramStruct.VarNameFun = VarNameFun;
+
+%call with parameter structure - Ronan
+solveCobraLP(LPproblem, 'solver', 'mps', paramStruct);
+
+mpsFileLP = readMixedData([paramStruct.MPSfilename, '.mps']);
+
+%Verify mpsFile
+mpsFileLPStd = readMixedData('refData_testLP.txt');
+assert(~any(~strcmp(strtrim(mpsFileLP), strtrim(mpsFileLPStd))));
 
 % cleanup
 delete('CobraLPProblem.mps');
 delete('LP.mps');
 delete('LP1.mps');
 delete('LP2.mps');
+delete('testMPSLP.mps');

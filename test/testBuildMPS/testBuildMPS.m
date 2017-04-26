@@ -1,54 +1,8 @@
-function statusOK = testBuildMPS()
-%Sets cobraLP and cobraMILP solver to MPS, generates test MPS files named 
-%testMPSLP.mps and testMPSMILP.mps by calling solveCobraLP and 
-%solveCobraMILP and resets cobraLP and cobraMILP solver to original 
+%Sets cobraLP and cobraMILP solver to MPS, generates test MPS files named
+%testMPSLP.mps and testMPSMILP.mps by calling solveCobraLP and
+%solveCobraMILP and resets cobraLP and cobraMILP solver to original
 %solver.
 
-statusOK = 1;
-
-%save current directory
-origDir = pwd;
-
-%change to testBuildMPS directory
-mFilePath = mfilename('fullpath');
-cd(mFilePath(1:end-length(mfilename)));
-
-%Sample LP Problem
-LPproblem.A = [1 1 0; -1 0 -1; 0 -1 1];             %LHS matrix
-LPproblem.b = [5; -10; 7];                          %RHS vector
-LPproblem.lb = [0; -1; 0];                          %Lower bound vector
-LPproblem.ub = [4; 1; inf];                         %Upper bound vector
-LPproblem.c = [1 4 9];                              %Objective coeff vector
-LPproblem.csense = ['L'; 'L'; 'E'];                 %Constraint sense
-LPproblem.osense = 1;                               %Minimize
-VarNameFun = @(m) (char('x'+(m-1)));      %Function used to name variables
-EqtNames = {'Equality'};
-
-%save original solver
-global CBT_LP_SOLVER;
-global CBT_MILP_SOLVER;
-origSolverLP = CBT_LP_SOLVER;
-origSolverMILP = CBT_MILP_SOLVER;
-
-%change LP and MILP solvers to MPS
-changeCobraSolver('mps','LP');
-changeCobraSolver('mps','MILP');
-
-%Call solveCobraLP; Name output file 'testMPSLP' .mps suffix added
-%automatically
-paramStruct.MPSfilename='testMPSLP';
-paramStruct.EqtNames=EqtNames;
-paramStruct.VarNameFun=VarNameFun;
-
-%call with parameter structure - Ronan
-mpsFileLP = solveCobraLP(LPproblem,paramStruct);
-
-%Verify mpsFile
-load('mpsFileStd.mat');
-if any(~strcmp(mpsFileLP,mpsFileLPStd))
-    display('LP MPS matrix does not match');
-    statusOK = 0;
-end
 
 %Verify File Exists
 if ~exist('testMPSLP.mps','file')
@@ -109,12 +63,12 @@ delete('testMPSMILP.mps');
 delete('testMPSLP.mps');
 
 %switch solvers back to original
-if ~isempty(origSolverLP)
-    changeCobraSolver(origSolverLP,'LP');
-end
-if ~isempty(origSolverMILP)
-    changeCobraSolver(origSolverMILP,'MILP');
-end
+%if ~isempty(origSolverLP)
+%    changeCobraSolver(origSolverLP,'LP');
+%end
+%if ~isempty(origSolverMILP)
+%    changeCobraSolver(origSolverMILP,'MILP');
+%end
 
 %change to original directory
 cd(origDir);

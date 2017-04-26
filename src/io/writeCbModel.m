@@ -45,9 +45,19 @@ if nargin < 6
     sbmlVersion = 1;
 end
 outmodel = model;
+
+% Assume constraint matrix is S if no A provided.
+if ~isfield(model,'A') && isfield(model,'S')
+    model.A = model.S;
+else
+    model.S = model.A;
+end
+
 [nMets,nRxns] = size(model.S);
 
-formulas = printRxnFormula(model,model.rxns,false,false,false,1,false);
+if ~strcmp(format, 'mps')
+    formulas = printRxnFormula(model,model.rxns,false,false,false,1,false);
+end
 
 %% Open a dialog to select file name
 if nargin < 3 & ~strcmp(format,'sbml')
@@ -288,11 +298,6 @@ switch format
         % problem as the result
         % Build MPS Author: Bruno Luong
         % Interfaced with CobraToolbox by Richard Que (12/18/09)
-
-        % Assume constraint matrix is S if no A provided.
-        if ~isfield(model,'A') && isfield(model,'S')
-            model.A = model.S;
-        end
 
         % Assume constraint S*v = b if csense not provided
         if ~isfield(model,'csense')
