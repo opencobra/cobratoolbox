@@ -1,4 +1,4 @@
-function [unionModel,intersectModel, diffRxns, diffExRxns] = makeSummaryModels(ResultsAllCellLines,samples, model, mk_union, mk_intersect, mk_reactionDiff)
+function [unionModel,intersectModel, diffRxns, diffExRxns] = makeSummaryModels(ResultsAllCellLines, samples, model, mk_union, mk_intersect, mk_reactionDiff)
 % This function generates the union and the intersect model from the `modelPruned` in the `ResultsAllCellLines` structure.
 %
 % USAGE:
@@ -35,16 +35,15 @@ if ~exist('mk_reactionDiff','var') || isempty(mk_reactionDiff)
     mk_reactionDiff = 1;
 end
 
-
-%%make the union model (superCancermodel)
+% make the union model (superCancermodel)
 if mk_union == 1;
     reaction_vector = {};
     for i=1:length(samples)
-        
+
         submodel = eval(['ResultsAllCellLines.' samples{i} '.modelPruned']);
-        
+
         reaction_vector =union(reaction_vector,submodel.rxns);
-        
+
         unionModel = extractSubNetwork(model,reaction_vector);
     end
 else
@@ -57,16 +56,16 @@ clear reaction_vector submodel
 if mk_intersect == 1;
     reaction_vector = {};
     for i=1:length(samples)
-        
+
         submodel = eval(['ResultsAllCellLines.' samples{i} '.modelPruned']);
         if i==1;
             reaction_vector = submodel.rxns;
-            
+
         end
         reaction_vector =intersect(reaction_vector,submodel.rxns);
-        
+
     end
-    
+
     intersectModel = extractSubNetwork(model,reaction_vector);
 else
     intersectModel =[];
@@ -88,5 +87,3 @@ for t=1:length(diffRxns)
     end
 end
 end
-
-

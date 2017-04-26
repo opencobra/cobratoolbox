@@ -93,9 +93,7 @@ i = 1;
 showprogress(0, 'Creating warmup points ...');
 %Generate the points
 while i <= nPoints/2
-    if mod(i,10) == 0
-        showprogress(2*i/nPoints);
-    end
+    showprogress(2*i/nPoints);
     if ~isempty(bias)
         for k = 1:size(bias.index)
             ind = bias.index(k);

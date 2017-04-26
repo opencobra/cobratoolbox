@@ -20,11 +20,9 @@ lod_gL = lod_ngmL* 0.000001;
 lodmM =[];
 
 for i=1:length(lod_gL)
-    
-    lod_mM(i,1)= lod_gL(i,1)/theo_mass(i,1)*1000;
-    
-end 
 
- end
- 
- 
+    lod_mM(i,1)= lod_gL(i,1)/theo_mass(i,1)*1000;
+
+end
+
+end

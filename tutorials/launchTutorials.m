@@ -37,6 +37,7 @@ try
     % run an example of sparseLP
     changeCobraSolver('glpk')
     sparseLP_example;
+    uniformSampling;
 
     % ensure that we ALWAYS call exit
     exit(exit_code);

@@ -16,7 +16,9 @@ function updateCobraToolbox(fetchAndCheckOnly)
     % check if origin is set to the opencobra URL
     [status_gitRetrieveURL, result_gitOriginURL] = system('git config --get remote.origin.url');
 
-    if status_gitRetrieveURL == 0 && ~isempty(strfind(result_gitOriginURL, 'opencobra/cobratoolbox'))
+    [status_gitHEAD, result_gitHEAD] = system('git symbolic-ref --short -q HEAD');
+
+    if status_gitRetrieveURL == 0 && ~isempty(strfind(result_gitOriginURL, 'opencobra/cobratoolbox')) && status_gitHEAD == 0 && length(result_gitHEAD) > 0
         % fetch all content from remote
         [status_gitFetch, result_gitFetch] = system('git fetch origin');
         if status_gitFetch ~= 0
@@ -24,14 +26,31 @@ function updateCobraToolbox(fetchAndCheckOnly)
             fprintf(' > The changes of The COBRA Toolbox could not be fetched.');
         end
 
-        % determine the number of commits that the local master branch is behind
-        [status_gitCountMaster, result_gitCountMaster] = system('git rev-list --no-merges --count origin/master...HEAD');
-        result_gitCountMaster = char(result_gitCountMaster);
-        result_gitCountMaster = result_gitCountMaster(1:end-1);
+        % check if master branch exists
+        [status_gitCheckMaster, result_gitCheckMaster] = system('git show-ref --verify --quiet refs/heads/master');
 
-        [status_gitCountDevelop, result_gitCountDevelop] = system('git rev-list --no-merges --count origin/develop...HEAD');
-        result_gitCountDevelop = char(result_gitCountDevelop);
-        result_gitCountDevelop = result_gitCountDevelop(1:end-1);
+        % determine the number of commits that the local master branch is behind
+        if status_gitCheckMaster == 0
+            [status_gitCountMaster, result_gitCountMaster] = system('git rev-list --no-merges --count HEAD ^origin/master');
+            result_gitCountMaster = char(result_gitCountMaster);
+            result_gitCountMaster = result_gitCountMaster(1:end-1);
+        else
+            status_gitCountMaster == 0;
+            result_gitCountMaster == '';
+        end
+
+        % check if develop branch exists
+        [status_gitCheckDevelop, result_gitCheckDevelop] = system('git show-ref --verify --quiet refs/heads/develop');
+
+        % determine the number of commits that the develop master branch is behind
+        if status_gitCheckDevelop == 0
+            [status_gitCountDevelop, result_gitCountDevelop] = system('git rev-list --no-merges --count HEAD ^origin/develop');
+            result_gitCountDevelop = char(result_gitCountDevelop);
+            result_gitCountDevelop = result_gitCountDevelop(1:end-1);
+        else
+            status_gitCountDevelop == 0;
+            result_gitCountDevelop == '';
+        end
 
         if status_gitCountMaster == 0 && status_gitCountDevelop == 0
             if str2num(result_gitCountMaster) > 0 || str2num(result_gitCountDevelop) > 0
