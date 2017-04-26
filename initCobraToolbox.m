@@ -135,11 +135,11 @@ function initCobraToolbox()
         end
 
         % temporary disable ssl verification
-        [status_setSSLVerify, result_setSSLVerify] = system('git config --global http.sslVerify false');
+        [status_setSSLVerify, result_setSSLVerify] = system('git config http.sslVerify false');
 
         if status_setSSLVerify ~= 0
             fprintf(result_setSSLVerify);
-            error('Your global git configuration could not be changed.');
+            warning('Your global git configuration could not be changed.');
         end
 
         % Update/initialize submodules
@@ -152,17 +152,18 @@ function initCobraToolbox()
 
         % reset each submodule
         [status_gitReset result_gitReset] = system('git submodule foreach --recursive git reset --hard');
+
         if status_gitReset ~= 0
             fprintf(result_gitReset);
-            error('The submodules could not be reset.');
+            warning('The submodules could not be reset.');
         end
 
         % restore global configuration by unsetting http.sslVerify
-        [status_setSSLVerify, result_setSSLVerify] = system('git config --global --unset http.sslVerify');
+        [status_setSSLVerify, result_setSSLVerify] = system('git config --unset http.sslVerify');
 
         if status_setSSLVerify ~= 0
             fprintf(result_setSSLVerify);
-            error('Your global git configuration could not be restored.');
+            warning('Your global git configuration could not be restored.');
         end
 
         if ENV_VARS.printLevel
