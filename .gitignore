@@ -25,6 +25,10 @@ octave-workspace
 *.log
 *.zip
 
+# coverage
+coverage.json
+coverage_html
+
 # specific folders
 src/fluxomics/c13solver/IsotopomerModel.txt
 src/fluxomics/c13solver/convertCarbonInput.m
