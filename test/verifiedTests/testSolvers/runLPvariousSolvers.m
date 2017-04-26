@@ -202,6 +202,24 @@ for k = 1:length(solverPkgs)
         end
     end
 
+
+    % solver with Windows-only compatibility
+    if ispc && strcmp(solver, 'lp_solve')
+        solverOK = changeCobraSolver(solver, 'LP');
+        if solverOK
+            solution{i} = solveCobraLP(model);
+            i = i + 1;
+        end
+    end
+
+    % legacy interfaces
+    if strcmp(solver, 'mosek_linprog')
+        % test if mosek is installed
+        solverOK = changeCobraSolver('mosek', 'LP');
+        solution{i} = solveCobraLP(model, 'solver', 'mosek_linprog');
+        i = i + 1;
+    end
+
     fprintf('Done.\n');
 end
 

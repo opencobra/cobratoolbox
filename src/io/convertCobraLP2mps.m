@@ -1,5 +1,5 @@
 function OK=convertCobraLP2mps(LPProblem,name)
-% create an MPS (Mathematical Programming System) format ascii file 
+% create an MPS (Mathematical Programming System) format ascii file
 % representing the Linear Programming problem given by LPProblem.
 %
 % The MPS (Mathematical Programming System) file format was introduced by
@@ -20,8 +20,8 @@ function OK=convertCobraLP2mps(LPProblem,name)
 %                  each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
 % OPTIONAL INPUT
-% name      string giving name of LP problem     
-% 
+% name      string giving name of LP problem
+%
 % OUTPUT
 % OK      1 if saving is success, 0 otherwise
 %
@@ -31,6 +31,10 @@ function OK=convertCobraLP2mps(LPProblem,name)
 
 if ~exist('name','var')
     name='CobraLPProblem';
+end
+
+if isfield(LPProblem, 'S') && ~isfield(LPProblem, 'A')
+    LPProblem.A = LPProblem.S;
 end
 
 mlt=size(LPProblem.A,1);
@@ -62,12 +66,15 @@ b2(G)=-b2(G);
 A=A2(G | L,:);
 b=b2(G | L,:);
 
+% Assume max c'v s.t. S v = b if osense not provided
+if ~isfield(LPProblem,'osense')
+    LPProblem.osense = -1;
+end
+
 cost=LPProblem.c*LPProblem.osense;
 
 L=LPProblem.lb;
 U=LPProblem.ub;
-
-
 
 % Build ascii fixed-width MPS matrix string that contains linear
 % programming (LP) problem:
@@ -84,4 +91,3 @@ U=LPProblem.ub;
 %        OK == 0 otherwise
 filename=[name '.mps'];
 OK=SaveMPS(filename, Contain);
-

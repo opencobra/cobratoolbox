@@ -289,6 +289,29 @@ switch format
         % Build MPS Author: Bruno Luong
         % Interfaced with CobraToolbox by Richard Que (12/18/09)
 
+        % Assume constraint matrix is S if no A provided.
+        if ~isfield(model,'A') && isfield(model,'S')
+            model.A = model.S;
+        end
+
+        % Assume constraint S*v = b if csense not provided
+        if ~isfield(model,'csense')
+            % If csense is not declared in the model, assume that all
+            % constraints are equalities.
+            model.csense(1:length(model.mets), 1) = 'E';
+        end
+
+        % Assume constraint S*v = 0 if b not provided
+        if ~isfield(model,'b')
+            warning('LP problem has no defined b in S*v=b. b should be defined, for now we assume b=0')
+            model.b=zeros(size(model.A,1),1);
+        end
+
+        % Assume max c'v s.t. S v = b if osense not provided
+        if ~isfield(model,'osense')
+            model.osense = -1;
+        end
+
         [A,b,c,lb,ub,csense,osense] = deal(model.A,model.b,model.c,model.lb,model.ub,model.csense,model.osense);
 
         %default MPS parameters are no longer global variables, but set

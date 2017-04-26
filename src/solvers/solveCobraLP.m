@@ -229,10 +229,8 @@ if isfield(solverParams,'lifting')
 end
 
 % Assume constraint matrix is S if no A provided.
-if ~isfield(LPproblem,'A')
-    if isfield(LPproblem,'S')
-        LPproblem.A = LPproblem.S;
-    end
+if ~isfield(LPproblem,'A') && isfield(LPproblem,'S')
+    LPproblem.A = LPproblem.S;
 end
 
 % Assume constraint S*v = b if csense not provided
@@ -1403,7 +1401,7 @@ switch solver
         end
         origStat=inform;
     case 'mps'
-        fprintf(' > The interface to ''mps'' from solveCobraLP will not be supported in the future.\n -> Use >> writeCbModel(model, ''mps''); instead.)\n');
+        fprintf(' > The interface to ''mps'' from solveCobraLP will not be supported anymore.\n -> Use >> writeCbModel(model, ''mps'');\n');
         % temporary legacy support
         writeCbModel(LPproblem, 'mps', 'LP.mps', [], [], [], [], solverParams);
     otherwise
@@ -1423,6 +1421,8 @@ if ~strcmp(solver,'cplex_direct') && ~strcmp(solver,'mps')
     if ~exist('basis','var'), basis=[]; end
     [solution.full,solution.obj,solution.rcost,solution.dual,solution.solver,solution.algorithm,solution.stat,solution.origStat,solution.time,solution.basis] = ...
         deal(x,f,w,y,solver,algorithm,stat,origStat,t,basis);
+else
+    solution = [];
 end
 
 function [varargout] = setupOPTIproblem(c,A,b,osense,csense,solver)
