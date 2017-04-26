@@ -11,7 +11,9 @@ function mets = detectDeadEnds(model,removeExternalMets)
 %OPTIONAL INPUT           
 % removeExternalMets    Dont return metabolites that participate in reactions of
 %                       the following type:
-%                       "A <=>/-> " or " <=>/-> A"
+%                       "A <=>/-> " or " <=>/-> A" or exclusively present in
+%                       inconsistent reactions as defined in Gevorgyan et
+%                       al, Bioinformatics, 2008
 %
 %OUTPUT
 % outputMets            List of indicies of metabolites which can ether
@@ -42,14 +44,14 @@ onlyOneReac = sum(SPres,2) == 1;
 ExchangedMets = logical(zeros(size(model.S,1),1));
 
 if (nargin > 1) && removeExternalMets    
-    Exchangers = sum(SPres) == 1;
-    ExchangedMets = sum(SPres(:,Exchangers),2) == 1;
+    %Exchangers = sum(SPres) == 1;
+    %ExchangedMets = sum(SPres(:,Exchangers),2) == 1;
     %This could also be done using a heuristic approach to detect external
     %mets, but this would need some additional explanation in the
-    %documentation. How are "External" metabolites defined here?
-    %model = findSExRxnInd(model); % initialises required fields
-    %[~,~,~,~,~,~,model] = findStoichConsistentSubset(model,0,0); % find inconsistent metabolites, assuming they are external   
-    %ExchangedMets = model.SInConsistentMetBool | model.SExMetBool; %all inconsistent reactions, or reactions which are associated with Exchangers.    
+    %documentation. How are "External" metabolites defined here?    
+    [~,~,~,~,~,~,model] = findStoichConsistentSubset(model,0,0); % find inconsistent metabolites, assuming they are external both in Exchange reactions and in inconsistent reactions   
+    InconsistentMetabolites = getCorrespondingRows(model.S,true(size(model.S,1),1),model.SInConsistentRxnBool,'exclusive'); % and select the according rows.
+    ExchangedMets = InconsistentMetabolites | model.SExMetBool; %all inconsistent reactions, or reactions which are associated with Exchangers.    
     
 end
 

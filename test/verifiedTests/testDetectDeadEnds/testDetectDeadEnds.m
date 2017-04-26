@@ -12,17 +12,18 @@
 currentDir = pwd;
 
 % The testmodel used is structured as follows:
-% 
-%   <=> A -> F ---> H <=> J ->
-%        \     /          ^
+%
+%   <=> A -> F ---> H <=> J ->      
+%        \     /          ^         
 %         -> E            |     
-%            | \          L   
+%            | \          L         
 %            v   -> I     |
 %   <=> B -> D       \    v
 %        \             -> K <=>
 %         -> G <=>
 %   <=> C
-% Thus, D, L and C are dead ends, and C is also an exchanged metabolite
+% Thus, C, D, and L are dead ends, and C is also an exchanged metabolite
+% and should thus be detected by removeExternalMets set to true.
 
 fileDir = fileparts(which('testDetectDeadEnds'));
 cd(fileDir);
