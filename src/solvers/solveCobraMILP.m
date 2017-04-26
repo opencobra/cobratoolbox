@@ -546,84 +546,9 @@ switch solver
         end
     case 'mps'
         fprintf(' > The interface to ''mps'' from solveCobraMILP will not be supported anymore.\n -> Use >> writeCbModel(model, ''mps'');\n');
-
-        %% BuildMPS
-        % This calls buildMPS and generates a MPS format description of the
-        % problem as the result
-        % Build MPS Author: Bruno Luong
-
-        %Get optional parameters
-        %[EleNames,EqtNames,VarNames,EleNameFun,EqtNameFun,VarNameFun,PbName,MPSfilename] = ...
-        %    getCobraSolverParams('LP',{'EleNames','EqtNames','VarNames','EleNameFun','EqtNameFun','VarNameFun','PbName','MPSfilename'},parameters);
-
-        %default MPS parameters are no longer global variables, but set
-        %here inside this function
-        if parametersStructureFlag
-            param=directParamStruct;
-        else
-            param=struct();
-        end
-        if isfield(param,'EleNames')
-            EleNames=param.EleNames;
-        else
-            EleNames='';
-        end
-        if isfield(param,'EqtNames')
-            EqtNames=param.EqtNames;
-        else
-            EqtNames='';
-        end
-        if isfield(param,'VarNames')
-            VarNames=param.VarNames;
-        else
-            VarNames='';
-        end
-        if isfield(param,'EleNameFun')
-            EleNameFun=directParamStruct.EleNameFun;
-        else
-            EleNameFun = @(m)(['LE' num2str(m)]);
-        end
-        if isfield(param,'EqtNameFun')
-            EqtNameFun=param.EqtNameFun;
-        else
-            EqtNameFun = @(m)(['EQ' num2str(m)]);
-        end
-        if isfield(param,'VarNameFun')
-            VarNameFun=param.VarNameFun;
-        else
-            VarNameFun = @(m)(['X' num2str(m)]);
-        end
-        if isfield(param,'PbName')
-            PbName=param.PbName;
-        else
-            PbName='LPproble';
-        end
-        if isfield(param,'MPSfilename')
-            MPSfilename=param.MPSfilename;
-        else
-            MPSfilename='test';
-        end
-
-        %split A matrix for L and E csense
-        Ale = A(csense=='L',:);
-        ble = b(csense=='L');
-        Aeq = A(csense=='E',:);
-        beq = b(csense=='E');
-        %create index of integer and binary variables
-        intIndex = find(vartype=='I');
-        binaryIndex = find(vartype=='B');
-
-        %%%%Adapted from BuildMPS%%%%%
-        [neq nvar]=size(Aeq);
-        if strcmp(EqtNames,'')
-            EqtNames=arrayfun(EqtNameFun,(1:neq),'UniformOutput', false);
-        end
-        %31st Jan 2016, changed c to osense*c as most solvers assume minimisation
-        [solution] = BuildMPS(Ale, ble, Aeq, beq, osense*c, lb, ub, PbName,'MPSfilename',[MPSfilename '.mps'],'EqtNames',EqtNames,'VarNameFun',VarNameFun,'Integer',intIndex,'Binary',binaryIndex);
-        %[solution] = BuildMPS(Ale, ble, Aeq, beq, c, lb, ub, PbName,'MPSfilename',MPSfilename,'EleNames',EleNames,'EqtNames',EqtNames,'VarNames',VarNames);
-
+        % temporary legacy support
+        writeCbModel(MILPproblem, 'mps', 'MILP.mps', [], [], [], [], directParamStruct);
         return
-
     otherwise
         error(['Unknown solver: ' solver]);
 end

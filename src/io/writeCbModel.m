@@ -317,7 +317,14 @@ switch format
             model.osense = -1;
         end
 
-        [A,b,c,lb,ub,csense,osense] = deal(model.A,model.b,model.c,model.lb,model.ub,model.csense,model.osense);
+        if ~isfield(model,'vartype')
+            model.vartype = [];
+        end
+        if ~isfield(model,'x0')
+            model.x0 = [];
+        end
+
+        [A,b,c,lb,ub,csense,osense,vartype,x0] = deal(model.A,model.b,model.c,model.lb,model.ub,model.csense,model.osense,model.vartype,model.x0);
 
         %default MPS parameters are no longer global variables, but set
         %here inside this function
@@ -368,6 +375,10 @@ switch format
         Aeq = A(csense=='E',:);
         beq = b(csense=='E');
 
+        %create index of integer and binary variables
+        intIndex = find(vartype=='I');
+        binaryIndex = find(vartype=='B');
+
         %%%%Adapted from BuildMPS%%%%%
         [neq nvar]=size(Aeq);
         nle=size(Ale,1);
@@ -384,8 +395,8 @@ switch format
 
         %http://www.mathworks.com/matlabcentral/fileexchange/19618-mps-format-exporting-tool/content/BuildMPS/BuildMPS.m
         %31st Jan 2016, changed c to osense*c as most solvers assume minimisation
-        [solution] = BuildMPS(Ale, ble, Aeq, beq, osense*c, lb, ub, PbName,'MPSfilename',MPSfilename,'EleNames',EleNames,'EqtNames',EqtNames,'VarNames',VarNames);
-        display(['The .MPS file <', MPSfilename, '> has been written to ', pwd]);
+        [solution] = BuildMPS(Ale, ble, Aeq, beq, osense*c, lb, ub, PbName,'MPSfilename',MPSfilename,'EleNames',EleNames,'EqtNames',EqtNames,'VarNames',VarNames, 'Integer',intIndex,'Binary',binaryIndex);
+        display([' > The .MPS file <', MPSfilename, '> has been written to ', pwd]);
 
     otherwise
         error('Unknown file format');

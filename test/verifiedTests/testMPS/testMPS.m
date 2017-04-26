@@ -1,7 +1,10 @@
 % The COBRAToolbox: testMPS.m
 %
 % Purpose:
-%     - testMPS tests to write an MPS file
+%     - testMPS tests to write an MPS file and generates test MPS files named
+%       testMPSLP.mps and testMPSMILP.mps by calling solveCobraLP and
+%       solveCobraMILP and resets cobraLP and cobraMILP solver to original
+%       solver.
 %
 
 global CBTDIR
@@ -78,6 +81,34 @@ mpsFileLPStd = readMixedData('refData_testLP.txt');
 assert(~any(~strcmp(strtrim(mpsFileLP), strtrim(mpsFileLPStd))));
 
 % run using solveCobraMILP
+
+%Sample MILP Problem
+MILPproblem.A = [1 1 0; -1 0 -1; 0 -1 1];           %LHS matrix
+MILPproblem.b = [5; -10; 7];                        %RHS vector
+MILPproblem.lb = [0; -1; 0];                        %Lower bound vector
+MILPproblem.ub = [4; 1; inf];                       %Upper bound vector
+MILPproblem.c = [1 4 9];                            %Objective coeff vector
+MILPproblem.x0 = [];
+MILPproblem.csense = ['L'; 'L'; 'E'];               %Constraint sense
+MILPproblem.vartype = ['I'; 'C'; 'C'];              %Variable type
+MILPproblem.osense = 1;                             %Minimize
+
+%parameters
+VarNameFun = @(m) (char('x'+(m-1)));    %Function used to name variables
+EqtNames = {'Equality'};
+paramStruct.MPSfilename='testMPSMILP';
+paramStruct.EqtNames=EqtNames;
+paramStruct.VarNameFun=VarNameFun;
+
+%Call solveCobraMILP; name output file 'testMPSMILP.mps'
+%mpsFileMILP = solveCobraMILP(MILPproblem,'MPSfilename','testMPSMILP.mps','EqtNames',EqtNames,'VarNameFun',VarNameFun);
+solveCobraMILP(MILPproblem, 'solver', 'mps', paramStruct); %
+
+mpsFileMILP = readMixedData([paramStruct.MPSfilename, '.mps']);
+
+%Verify mpsFile
+mpsFileMILP_ref = readMixedData('refData_testMILP.txt');
+assert(~any(~strcmp(strtrim(mpsFileLP), strtrim(mpsFileLPStd))));
 
 % cleanup
 delete('CobraLPProblem.mps');
