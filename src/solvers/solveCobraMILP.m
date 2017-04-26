@@ -71,7 +71,7 @@ global CBT_MILP_SOLVER
 
 if ~isempty(CBT_MILP_SOLVER)
     solver = CBT_MILP_SOLVER;
-else
+elseif nargin == 1
     error('No solver found.  Run changeCobraSolver');
 end
 

@@ -79,6 +79,7 @@ mpsFileLP = readMixedData([paramStruct.MPSfilename, '.mps']);
 %Verify mpsFile
 mpsFileLPStd = readMixedData('refData_testLP.txt');
 assert(~any(~strcmp(strtrim(mpsFileLP), strtrim(mpsFileLPStd))));
+clear paramStruct;
 
 % run using solveCobraMILP
 
@@ -96,9 +97,9 @@ MILPproblem.osense = 1;                             %Minimize
 %parameters
 VarNameFun = @(m) (char('x'+(m-1)));    %Function used to name variables
 EqtNames = {'Equality'};
-paramStruct.MPSfilename='testMPSMILP';
-paramStruct.EqtNames=EqtNames;
-paramStruct.VarNameFun=VarNameFun;
+paramStruct.MPSfilename = 'testMPSMILP';
+paramStruct.EqtNames = EqtNames;
+paramStruct.VarNameFun = VarNameFun;
 
 %Call solveCobraMILP; name output file 'testMPSMILP.mps'
 %mpsFileMILP = solveCobraMILP(MILPproblem,'MPSfilename','testMPSMILP.mps','EqtNames',EqtNames,'VarNameFun',VarNameFun);
@@ -108,7 +109,23 @@ mpsFileMILP = readMixedData([paramStruct.MPSfilename, '.mps']);
 
 %Verify mpsFile
 mpsFileMILP_ref = readMixedData('refData_testMILP.txt');
-assert(~any(~strcmp(strtrim(mpsFileLP), strtrim(mpsFileLPStd))));
+assert(~any(~strcmp(strtrim(mpsFileMILP), strtrim(mpsFileMILP_ref))));
+
+clear paramStruct;
+
+% verify another model
+load([CBTDIR, filesep, 'test' filesep 'models' filesep 'iAF1260.mat'], 'model');
+
+paramStruct.EqtNames = model.mets;
+paramStruct.VarNames = model.rxns;
+paramStruct.MPSfilename = 'LP3';
+solveCobraLP(model, 'solver', 'mps', paramStruct);
+mpsFileLP3 = readMixedData('LP3.mps');
+
+mpsFileLP_ref2 = readMixedData('refData_testLP_2.txt');
+assert(~any(~strcmp(strtrim(mpsFileLP3), strtrim(mpsFileLP_ref2))));
+
+clear paramStruct;
 
 % cleanup
 delete('CobraLPProblem.mps');
@@ -117,6 +134,7 @@ delete('LP1.mps');
 delete('LP2.mps');
 delete('testMPSMILP.mps');
 delete('testMPSLP.mps');
+delete('LP3.mps');
 
 % change the directory
 cd(currentDir)
