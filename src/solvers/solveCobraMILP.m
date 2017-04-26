@@ -81,32 +81,8 @@ end
 
 optParamNames = {'intTol', 'relMipGapTol', 'timeLimit', ...
                  'logFile', 'printLevel', 'saveInput', 'DATACHECK', 'DEPIND', ...
-                 'feasTol', 'optTol', 'absMipGapTol', 'NUMERICALEMPHASIS'};
+                 'feasTol', 'optTol', 'absMipGapTol', 'NUMERICALEMPHASIS', 'solver'};
 
-%, 'EleNames', ...
-%    'EqtNames', 'VarNames', 'EleNameFun', 'EqtNameFun', 'VarNameFun', ...
-%    'PbName', 'MPSfilename'};
-
-% parameters = '';
-% if nargin ~=1
-%     if mod(length(varargin),2)==0
-%         for i=1:2:length(varargin)-1
-%             if ismember(varargin{i},optParamNames)
-%                 parameters.(varargin{i}) = varargin{i+1};
-%             else
-%                 error([varargin{i} ' is not a valid optional parameter']);
-%             end
-%         end
-%     elseif strcmp(varargin{1},'default')
-%         parameters = 'default';
-%     elseif isstruct(varargin{1})
-%         parameters = varargin{1};
-%     else
-%         display('Warning: Invalid number of parameters/values')
-%         solution=[];
-%         return;
-%     end
-% end
 parameters=[];
 
 if nargin ~=1
@@ -115,7 +91,7 @@ if nargin ~=1
         for i=1:2:length(varargin)-1
             if ismember(varargin{i},optParamNames)
                 if isstruct(varargin{i+1})
-                    error('solveCobraLP: Invalid number of parameters/values')
+                    error('solveCobraMILP: Invalid number of parameters/values')
                 else
                     parameters.(varargin{i}) = varargin{i+1};
                 end
@@ -148,7 +124,7 @@ if nargin ~=1
         end
         %pause(eps)
     else
-        error('solveCobraLP: Invalid number of parameters/values')
+        error('solveCobraMILP: Invalid number of parameters/values')
     end
     [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
     getCobraSolverParams('LP',optParamNames(1:6),parameters);
@@ -166,8 +142,8 @@ end
     solverParams.logFile, solverParams.printLevel, saveInput, ...
     solverParams.DATACHECK, solverParams.DEPIND, solverParams.feasTol, ...
     solverParams.optTol, solverParams.absMipGapTol, ...
-    solverParams.NUMERICALEMPHASIS] = ...
-    getCobraSolverParams('MILP',optParamNames(1:12), parameters);
+    solverParams.NUMERICALEMPHASIS, solver] = ...
+    getCobraSolverParams('MILP',optParamNames(1:13), parameters);
 
 %Save Input if selected
 if ~isempty(saveInput)
@@ -569,11 +545,12 @@ switch solver
             solStat = 3; % Other problem, but integer solution exists
         end
     case 'mps'
+        fprintf(' > The interface to ''mps'' from solveCobraMILP will not be supported anymore.\n -> Use >> writeCbModel(model, ''mps'');\n');
+
         %% BuildMPS
         % This calls buildMPS and generates a MPS format description of the
         % problem as the result
         % Build MPS Author: Bruno Luong
-        display('Solver set to MPS. This function will output an MPS matrix string for the MILP problem');
 
         %Get optional parameters
         %[EleNames,EqtNames,VarNames,EleNameFun,EqtNameFun,VarNameFun,PbName,MPSfilename] = ...

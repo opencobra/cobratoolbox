@@ -21,13 +21,10 @@ paramStruct.MPSfilename='testMPSMILP';
 paramStruct.EqtNames=EqtNames;
 paramStruct.VarNameFun=VarNameFun;
 
-global CBT_MILP_SOLVER
-CBT_MILP_SOLVER = 'mps'
-
 %Call solveCobraMILP; name output file 'testMPSMILP.mps'
 %mpsFileMILP = solveCobraMILP(MILPproblem,'MPSfilename','testMPSMILP.mps','EqtNames',EqtNames,'VarNameFun',VarNameFun);
-mpsFileMILP = solveCobraMILP(MILPproblem, paramStruct);
-
+mpsFileMILP = solveCobraMILP(MILPproblem, 'solver', 'mps', paramStruct); %
+%{
 %Verify mpsFile
 if any(~strcmp(mpsFileMILP,mpsFileMILPStd))
     display('MILP MPS matrix does not match');
@@ -53,3 +50,4 @@ end
 %    display('iJR904 MPS matrix does not match');
 %    statusOK = 0;
 %end
+%}
