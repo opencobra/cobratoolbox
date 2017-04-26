@@ -50,11 +50,6 @@ for k = 2:length(LP_str)  % title is different
     assert(isequal(LP_str{k}, LP2_str{k}))
 end
 
-% run using solveCobraMILP
-
-
-% compare the 4 files: CobraLPProblem.mps, LP1.mps, LP.mps and LP2.mps
-
 %Sample LP Problem
 LPproblem.A = [1 1 0; -1 0 -1; 0 -1 1];             %LHS matrix
 LPproblem.b = [5; -10; 7];                          %RHS vector
@@ -82,9 +77,15 @@ mpsFileLP = readMixedData([paramStruct.MPSfilename, '.mps']);
 mpsFileLPStd = readMixedData('refData_testLP.txt');
 assert(~any(~strcmp(strtrim(mpsFileLP), strtrim(mpsFileLPStd))));
 
+% run using solveCobraMILP
+
 % cleanup
 delete('CobraLPProblem.mps');
 delete('LP.mps');
 delete('LP1.mps');
 delete('LP2.mps');
+delete('testMPSMILP.mps');
 delete('testMPSLP.mps');
+
+% change the directory
+cd(currentDir)

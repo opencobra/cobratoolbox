@@ -3,13 +3,6 @@
 %solveCobraMILP and resets cobraLP and cobraMILP solver to original
 %solver.
 
-
-%Verify File Exists
-if ~exist('testMPSLP.mps','file')
-    display('testMPSLP file not written');
-    statusOK=0;
-end
-
 %Sample MILP Problem
 MILPproblem.A = [1 1 0; -1 0 -1; 0 -1 1];           %LHS matrix
 MILPproblem.b = [5; -10; 7];                        %RHS vector
@@ -28,9 +21,12 @@ paramStruct.MPSfilename='testMPSMILP';
 paramStruct.EqtNames=EqtNames;
 paramStruct.VarNameFun=VarNameFun;
 
+global CBT_MILP_SOLVER
+CBT_MILP_SOLVER = 'mps'
+
 %Call solveCobraMILP; name output file 'testMPSMILP.mps'
 %mpsFileMILP = solveCobraMILP(MILPproblem,'MPSfilename','testMPSMILP.mps','EqtNames',EqtNames,'VarNameFun',VarNameFun);
-mpsFileMILP = solveCobraMILP(MILPproblem,paramStruct);
+mpsFileMILP = solveCobraMILP(MILPproblem, paramStruct);
 
 %Verify mpsFile
 if any(~strcmp(mpsFileMILP,mpsFileMILPStd))
@@ -57,18 +53,3 @@ end
 %    display('iJR904 MPS matrix does not match');
 %    statusOK = 0;
 %end
-
-%cleanup;
-delete('testMPSMILP.mps');
-delete('testMPSLP.mps');
-
-%switch solvers back to original
-%if ~isempty(origSolverLP)
-%    changeCobraSolver(origSolverLP,'LP');
-%end
-%if ~isempty(origSolverMILP)
-%    changeCobraSolver(origSolverMILP,'MILP');
-%end
-
-%change to original directory
-cd(origDir);
