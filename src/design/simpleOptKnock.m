@@ -1,30 +1,33 @@
 function [wtRes,delRes] = simpleOptKnock(model,targetRxn,deletions,geneDelFlag,minGrowth,doubleDelFlag)
-%simpleOptKnock Simple OptKnock to check all one gene or reaction deletions for
-%growth-coupled metabolite production
+% Simple `OptKnock` is used to check all one gene or reaction deletions for
+% growth-coupled metabolite production
 %
-% [wtRes,delRes] = simpleOptKnock(model,targetRxn,deletions,geneDelFlag,minGrowth,doubleDelFlag)
+% USAGE:
 %
-%INPUTS
-% model         COBRA model structure
-% targetRxn     Target metabolite production reaction
+%    [wtRes, delRes] = simpleOptKnock(model, targetRxn, deletions, geneDelFlag, minGrowth, doubleDelFlag)
 %
-%OPTIONAL INPUTS
-% deletions     Set of gene or reaction deletions to consider for KO
-%               (Default = all reactions)
-% geneDelFlag   Gene deletion flag (Default = false)
-% minGrowth     Minimum KO growth rate (Default = 0.05)
-% doubleDelFlag Double deletions (Default = false)
+% INPUTS:
+%    model:           COBRA model structure
+%    targetRxn:       Target metabolite production reaction
 %
-%OUTPUTS
-% wtRes         Wild type results
-% delRes        Deletion strain results
+% OPTIONAL INPUTS:
+%    deletions:       Set of gene or reaction deletions to consider for `KO`
+%                     (Default = all reactions)
+%    geneDelFlag:     Gene deletion flag (Default = false)
+%    minGrowth:       Minimum `KO` growth rate (Default = 0.05)
+%    doubleDelFlag:   Double deletions (Default = false)
+%
+% OUTPUTS:
+%    wtRes:           Wild type results
+%    delRes:          Deletion strain results
+%
+% .. Author: - Markus Herrgard 2/14/07
 %
 % The results structures have fields:
-%    growth     Growth rate of strain
-%    minProd    Minimum prod rate of target metabolite
-%    maxProd    Maximum prod rate of target metabolite
 %
-% Markus Herrgard 2/14/07
+%    * `growth` - Growth rate of strain
+%    * `minProd` - Minimum prod rate of target metabolite
+%    * `maxProd` - Maximum prod rate of target metabolite
 
 if (nargin < 3)
     deletions = model.rxns;

@@ -1,36 +1,34 @@
 function constrOptIrrev = setConstraintsIrrevModel(constrOpt,model,modelIrrev,rev2irrev)
-%setConstraintsIrrevModel Set constraints for a subset of rxns while
-%converting reversible to irreversible reaction names and handling the
-%constraint directions correctly
+% Sets constraints for a subset of `rxns` while
+% converting reversible to irreversible reaction names and handling the
+% constraint directions correctly
 %
-% [constrIndIrrev,constrValIrrev,constrSenseIrrev] = ...
-%           setConstraintsIrrevModel(rxnNameList,constrValue,constrSense,model,modelIrrev)
-% 
-%INPUTS
-% constrOpt    Constraint options
-%   rxnList     Reaction selection cell array (for reversible
-%               representation)
-%   values      Constraint values
-%   sense       Constraint senses ordered as rxnNameList
+% USAGE:
 %
-% model         Model in reversible format
-% modelIrrev    Model in irreversible format
-% rev2irrev     Reversible to irreversible reaction index conversion
-%               obtained from convertToIrreversible
+%    constrOptIrrev = setConstraintsIrrevModel(rxnNameList, constrValue, constrSense, model, modelIrrev)
 %
-%OUTPUT
-% constrOptIrrev   Constraint options in irrev model
-%   rxnList         Reaction selection cell array
-% 	rxnInd          Selection index for constraints in irreversible model (e.g. [2 4 5 9 10])
-%   values          Correctly ordered constraint values
-% 	sense           Correctly ordered constraint senses
+% INPUTS:
+%    constrOpt:       Constraint options
 %
-% 6/9/05 Changed this so that it allows multiple occurences of the same
-% rxn
+%                       * rxnList - Reaction selection cell array (for reversible
+%                         representation)
+%                       * values - Constraint values
+%                       * sense - Constraint senses ordered as `rxnNameList`
 %
-% Markus Herrgard 10/14/03
+%    model:            Model in reversible format
+%    modelIrrev:       Model in irreversible format
+%    rev2irrev:        Reversible to irreversible reaction index conversion
+%                      obtained from `convertToIrreversible`
 %
-% Completely rewritten 1/22/07
+% OUTPUTS:
+%    constrOpt:       Constraint options in irrev model
+%
+%                       * rxnList - Reaction selection cell array
+%                       * rxnInd - Selection index for constraints in irreversible model (e.g. [2 4 5 9 10])
+%                       * values - Correctly ordered constraint values
+%                       * sense - Correctly ordered constraint senses
+%
+% .. Author: - Markus Herrgard 10/14/03, 6/9/05 Changed this so that it allows multiple occurences of the same rxn, 1/22/07 Completely rewritten
 
 constrIndIrrev = [];
 constrValIrrev = [];
@@ -40,31 +38,31 @@ constrSenseIrrev = '';
 constrProcessed = false*ones(length(constrOpt.rxnList),1);
 
 for i = 1:length(constrOpt.rxnList)
-    
+
     % Has this rxn already been processed?
     if (~constrProcessed(i))
-        
+
         % Get reaction name
         rxnName = constrOpt.rxnList{i};
         % Find reaction index in reversible reaction set
         rxnID = find(ismember(model.rxns,rxnName));
-        
+
         % Find out if there are more than one constraint for this rxn
         thisConstrInd = find(strcmp(constrOpt.rxnList,rxnName));
         % How many matching rxns
         nThisConstr = length(thisConstrInd);
         % Mark as processed
         constrProcessed(thisConstrInd) = true;
-        
+
         % Get constraint values
         thisConstrValue = constrOpt.values(thisConstrInd);
         % Get constraint directions
         thisConstrSense = constrOpt.sense(thisConstrInd);
-        
+
         if (~isempty(rxnID))
             % Find reaction index in irreversible reaction set
             irrevRxnID = rev2irrev{rxnID};
-            
+
             % Add reaction indices and constraint values into the list
             if (length(irrevRxnID) == 1) % Irreversible
                 irrevRxnName = modelIrrev.rxns{irrevRxnID};
@@ -124,9 +122,9 @@ for i = 1:length(constrOpt.rxnList)
                         end
                     end
                 else % More than one constraint (the only case that makes sense is a <= v <= b)
-                    lowestConstrVal = min(thisConstrValue);        
+                    lowestConstrVal = min(thisConstrValue);
                     highestConstrVal = max(thisConstrValue);
-                    
+
                     if ((lowestConstrVal > 0) & (highestConstrVal > 0))  % Both positive
                         constrIndIrrev(end+1:end+3) = irrevRxnID([1 1 2]);
                         constrValIrrev(end+1:end+3) = [lowestConstrVal highestConstrVal 0];

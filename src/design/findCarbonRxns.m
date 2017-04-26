@@ -1,40 +1,40 @@
 function [hiCarbonRxns,zeroCarbonRxns,nCarbon] = findCarbonRxns(model,nCarbonThr)
-%findHiCarbonRxns returns the list of reactions that act of compounds which
-%contain cabons greater than the thershhold set.
+% Returns the list of reactions that act of compounds which
+% contain cabons greater than the thershhold set.
 %
-% [hiCarbonRxns,zeroCarbonRxns,nCarbon] = findCarbonRxns(model,nCarbonThr)
+% USAGE:
 %
-%INPUTS
-% model            Structure containing all necessary variables to described a
-%                  stoichiometric model
-% nCarbonThr       defines the min # of carbons that a metabolite, that is
-%                  acted on in a reaction, can have in the final list of reactions
+%    [hiCarbonRxns, zeroCarbonRxns, nCarbon] = findCarbonRxns(model, nCarbonThr)
 %
-%OUTPUTS
-% hiCarbonRxns     The list of reactions that act on metabolites with
-%                  greater than the thershhold number of carbons
-% nCarbon          The number of carbons in each metabolite in the model
+% INPUTS:
+%    model:            Structure containing all necessary variables to described a
+%                      stoichiometric model
+%    nCarbonThr:       defines the min # of carbons that a metabolite, that is
+%                      acted on in a reaction, can have in the final list of reactions
 %
+% OUTPUTS:
+%    hiCarbonRxns:     The list of reactions that act on metabolites with
+%                      greater than the threshold number of carbons
+%    zeroCarbonRxns:   Reactions with no carbon
+%    nCarbon:          The number of carbons in each metabolite in the model
 %
-% Markus Herrgard 2/7/07
-%
-% Modified to detect Mets with 1 Carbon. Richard Que (11/16/09)
+% .. Authors:
+%       - Markus Herrgard 2/7/07
+%       - Richard Que 11/16/09 Modified to detect Mets with 1 Carbon.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% currency metabolitees not to be considered
 currencyMets = {'h2o','co2','o2','h2o2','nh4','no2','no3','no','h2s',...
     'so3','so4','h','h2','pi','ppi','coa','accoa','ppcoa','aacoa',...
     'butcoa','succoa','atp','gtp','adp','gdp','amp','gmp','nad',...
     'nadp','nadh','nadph','fad','fadh','na1','ahcys','amet','thf','mlthf',...
     'q8h2','q8','mql8','mqn8','2dmmql8','2dmmq8'};
+% above currency metabolitees not to be considered
 % not sure if L-glutamate, L-glutamine should be included in this list
 
 [baseMetNames,compSymbols,uniqueMetNames,uniqueCompSymbols] = parseMetNames(model.mets);
 
-%[carbons,tmp] = regexp(model.metFormulas,'^C(\d+)','tokens','match'); 
+%[carbons,tmp] = regexp(model.metFormulas,'^C(\d+)','tokens','match');
 %changed ^C(\d+) to C(\d*) to detect mets with 1 C and that do not start with C. R. Que (11/16/09)
-[carbons,tmp] = regexp(model.metFormulas,'C(\d*)','tokens','match'); 
+[carbons,tmp] = regexp(model.metFormulas,'C(\d*)','tokens','match');
 
 nCarbon = [];
 for i = 1:length(carbons)

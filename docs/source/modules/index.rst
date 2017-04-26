@@ -14,6 +14,7 @@ Modules
    multiSpeciesModelling
    reconstruction
    sampling
+   design
 
 Example
 

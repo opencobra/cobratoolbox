@@ -1,28 +1,29 @@
 function [type,maxGrowth,maxProd,minProd] = analyzeOptKnock(model,deletions,target,biomassRxn,geneDelFlag)
-% analyzeOptKnock determines whether an optknock solution is growth coupled
+% Determines whether an optknock solution is growth coupled
 % or not and what the maximum growth and production rates are
 %
-% [type,maxGrowth,maxProd] = analyzeOptKnock(model,deletions,target,biomassRxn,geneDelFlag)
+% USAGE:
 %
-%INPUTS 
-% model         COBRA model structure
-% deletions     list of reaction or gene deletions (empty if wild type)
-% target        the exchange reaction for the OptKnock target metabolite
+%    [type, maxGrowth, maxProd, minProd] = analyzeOptKnock(model, deletions, target, biomassRxn, geneDelFlag)
 %
-%OPTIONAL INPUTS
-% biomassRxn    the biomass reaction name (Default = whatever is defined in
-%               the model)
-% geneDelFlag   perform gene and not reaction deletions (Default = false)
+% INPUTS:
+%    model:         COBRA model structure
+%    deletions:     list of reaction or gene deletions (empty if wild type)
+%    target:        the exchange reaction for the `OptKnock` target metabolite
 %
-%OUTPUTS
-% type          the type of OptKnock solution (growth coupled or not)
-% maxGrowth     the maximum growth rate of the knockout strain
-% maxProd       the maximum production rate of the target compound at the
-%               maximum growth rate
-% minProd       the minimum production rate of the target compound at the
-%               maximum growth rate
+% OPTIONAL INPUTS:
+%    biomassRxn:    the biomass reaction name (Default = whatever is defined in
+%                   the model)
+%    geneDelFlag:   perform gene and not reaction deletions (Default = false)
 %
-% Jeff Orth  6/25/08
+% OUTPUTS:
+%    type:          the type of `OptKnock` solution (growth coupled or not)
+%    maxGrowth:     the maximum growth rate of the knockout strain
+%    maxProd:       the maximum production rate of the target compound at the
+%                   maximum growth rate
+%    minProd:       the minimum production rate of the target compound at the
+%                   maximum growth rate
+% .. Author: - Jeff Orth  6/25/08
 
 if (nargin < 4)
     biomassRxn = model.rxns(model.c==1);
@@ -62,9 +63,3 @@ elseif (maxProd - minProd) > .1 %growth coupled non unique
 else %growth coupled
     type = 'growth coupled';
 end
-
-
-
-
-
-

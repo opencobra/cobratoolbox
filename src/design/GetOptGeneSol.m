@@ -1,25 +1,25 @@
 function [optGeneSol] = GetOptGeneSol(model, targetRxn, substrateRxn, generxnList, population, x, scores, isGeneList)
-%GetOptGeneSol save the solution from optGene and optGeneR in same format as OptKnock
+% Saves the solution from optGene and `optGeneR` in same format as `OptKnock`
 %
-% [optGeneSol] = GetOptGeneSol(model, targetRxn, substrateRxn, generxnList, population, x, scores, isGeneList)
+% USAGE:
 %
-%INPUTS
-% model
-% targetRxn
-% substrateRxn
-% generxnList
-% population
-% x                 the best solution
-% scores
-% isGeneList
+%    [optGeneSol] = GetOptGeneSol(model, targetRxn, substrateRxn, generxnList, population, x, scores, isGeneList)
 %
-%OUTPUT
-% optGeneSol
+% INPUTS:
+%    model:
+%    targetRxn:
+%    substrateRxn:
+%    generxnList:
+%    population:
+%    x:                 The best solution
+%    scores:
+%    isGeneList:
+%
+% OUTPUT:
+%    optGeneSol:        Solution in the desired format
 
-
-% writeDirect where the files should be saved
 writeDirect = 'C:\';
-
+% writeDirect where the files should be saved
 optGeneSol = struct();
 % from user input
 optGeneSol.substrateRxn = substrateRxn;
@@ -58,7 +58,7 @@ else slnType = 'non_unique';
 end
 
 % storage
-if isGeneList    
+if isGeneList
     save (strcat(writeDirect, 'optGeneSol--genes--target-', optGeneSol.targetRxn,...
         '--sub-',optGeneSol.substrateRxn,'--KOs-',num2str(optGeneSol.numDel),...
         '--yield-',num2str(optGeneSol.obj),...

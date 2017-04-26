@@ -1,19 +1,20 @@
 function [val] = optGeneFitness(rxn_vector_matrix, model, targetRxn, rxnListInput, isGeneList)
-%optGeneFitness GeneOptFitness the fitness function
+% The fitness function
 %
-% [val] = optGeneFitness(rxn_vector_matrix, model, targetRxn, rxnListInput, isGeneList)
+% USAGE:
 %
-%INPUTS
-% rxn_vector_matrix
-% model
-% targetRxn
-% rxnListInput
-% isGeneList
+%    [val] = optGeneFitness(rxn_vector_matrix, model, targetRxn, rxnListInput, isGeneList)
 %
-%OUTPUT
-% val
+% INPUTS:
+%    rxn_vector_matrix:
+%    model:
+%    targetRxn:
+%    rxnListInput:
+%    isGeneList:
 %
-%
+% OUTPUT:
+%    val:                 fitness value
+
 global MaxKnockOuts
 %size(rxn_vector_matrix)
 
@@ -24,20 +25,20 @@ for i = 1:popsize
     rxn_vector = rxn_vector_matrix(i,:);
     rxnList = rxnListInput(logical(rxn_vector));
 
-    
+
     %see if we've done this before
     val_temp = memoize(rxn_vector);
     if ~ isempty(val_temp)
         val(i) = val_temp;
         continue;
     end
-   
+
     % check to see if mutations is above the max number allowed
     nummutations = sum(rxn_vector);
     if nummutations > MaxKnockOuts
         continue;
     end
-    
+
 	% generate knockout.
     if isGeneList
         modelKO = deleteModelGenes(model, rxnList);
@@ -48,7 +49,7 @@ for i = 1:popsize
         modelKO.ub(removeInd) = 0;
         modelKO.lb(removeInd) = 0;
     end
-    
+
     % find growthrate;
 %     slnKO = optimizeCbModel(modelKO);
 %     growthrate1 = slnKO.f; %max growth rate.
@@ -59,13 +60,13 @@ for i = 1:popsize
     [slnKO, LPOUT] = solveCobraLPCPLEX(modelKO, 0,1);
     LPBasis = LPOUT.LPBasis;
     growthrate = slnKO.obj;
-    
-    
+
+
     % check to ensure that GR is above a certain value
     if growthrate < .10
         continue;
     end
-    
+
 %    display('second optimization');
     % find the lowesest possible production rate (a hopefully high number)
     % at the max growth rate minus some set factor gamma (a growth rate slightly
@@ -96,12 +97,12 @@ for i = 1:popsize
     LPBasis2 = LPOUT2.LPBasis;
     minProdAtSetGR = -slnKOsetGR.obj;
 
-    
+
     % objective function for optGene algorithm = val (needs to be a negative value, since it is
     % a minimization)
-    val(i) = -minProdAtSetGR; 
+    val(i) = -minProdAtSetGR;
     % penalty for a greater number of mutations
-    % val(i) = -minProdAtSetGR * (.98^nummutations); 
+    % val(i) = -minProdAtSetGR * (.98^nummutations);
     % select best substrate-specific productivity
     % val(i) = -minProdAtSetGR * (.98^nummutations) * growthrate;
 

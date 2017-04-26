@@ -1,29 +1,31 @@
 function [model, rxn_name] = augmentBOF(model,targetRxn,epsilon)
-%augmentObjectiveFunction adjusts the objective function to eliminate
-%"non-unique" optknock solutions by favoring the lowest production rate at
-%a given predicted max growth-rate.
-%NOTE: this funtion uses the outermembrane transport reaction, therefore:
-% 1. the model must have an extracellular compartment and a periplasm (eg, iAF1260)
-% 2. there should not be an extracellular reaction acting on the metabolite
-% besides the exchange reaction and the OM transport reaction
+% Adjusts the objective function to eliminate
+% "non-unique" optknock solutions by favoring the lowest production rate at
+% a given predicted max growth-rate.
 %
-% [model, rxn_name] = augmentBOF(model,targetRxn,epsilon)
+% USAGE:
 %
-%INPUTS
-% model             Structure containing all necessary variables to described a
-%                   stoichiometric model%
-% targetRxn         objective of the optimization
+%    [model, rxn_name] = augmentBOF(model, targetRxn, epsilon)
 %
-%OPTIONAL INPUT
-% epsilon           degree of augmentation considering the biochemical objective
+% INPUTS:
+%    model:             Structure containing all necessary variables to described a
+%                       stoichiometric model
+%    targetRxn:         objective of the optimization
 %
-%OUTPUTS
-% model             Augmented model structure
-% rxn_name          reaction that carries the augmented value
+% OPTIONAL INPUT:
+%    epsilon:           degree of augmentation considering the biochemical objective
 %
-% Adam Feist 10/16/08
+% OUTPUTS:
+%    model:             Augmented model structure
+%    rxn_name:          reaction that carries the augmented value
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% .. Author: - Adam Feist 10/16/08
+%
+% This funtion uses the outermembrane transport reaction, therefore:
+%
+%   1. the model must have an extracellular compartment and a periplasm (e.g. `iAF1260`)
+%   2. there should not be an extracellular reaction acting on the metabolite
+%   besides the exchange reaction and the OM transport reaction
 
 if (nargin < 3)
     % Biomass flux
