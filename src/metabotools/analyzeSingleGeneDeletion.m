@@ -1,4 +1,4 @@
-function [genes,ResultsAllCellLines,OverViewResults] = analyzeSingleGeneDeletion(ResultsAllCellLines, path, samples, cutoff, OverViewResults)
+function [genes, ResultsAllCellLines, OverViewResults] = analyzeSingleGeneDeletion(ResultsAllCellLines, path, samples, cutoff, OverViewResults)
 % This function conducts a single gene deletion analysis and provides
 % statistcs about the frequency of essential genes, and partial effects and
 % no effects across the unique set of genes and across the models in
@@ -10,7 +10,7 @@ function [genes,ResultsAllCellLines,OverViewResults] = analyzeSingleGeneDeletion
 %
 % INPUTS:
 %      ResultsAllCellLines:  Structure containing the models (the two models can be the same or pruned and starting model) of the format
-%                               
+%
 %                               * ResultsAllCellLines.samples.modelMin
 %                               * ResultsAllCellLines.samples.modelPruned
 %
@@ -35,9 +35,9 @@ function [genes,ResultsAllCellLines,OverViewResults] = analyzeSingleGeneDeletion
 % .. Author: - Maike Aurich 01/07/2015
 
 for i=1:length(samples)
-   
+
     modelMin = eval(['ResultsAllCellLines.' samples{i} '.modelMin']);
-    
+
     if ~isempty(strfind(modelMin.genes{1},'.'))
         [geneList,rem] = strtok(modelMin.genes,'.');
         geneList = unique(geneList);
@@ -46,19 +46,19 @@ for i=1:length(samples)
         geneList_pruned = modelMin.genes;
         nDelGenes = length(geneList);
     end
-    
+
     % run gene deletion with unpruned model (output of all models of same length)
    [grRatio,grRateKO,grRateWT,hasEffect,delRxns,fluxSolution] = singleGeneDeletion(modelMin,'FBA',modelMin.genes,false,1);
-   
+
     ResultsAllCellLines.(samples{i}).singleGeneDeletion.grRatio = grRatio;
     ResultsAllCellLines.(samples{i}).singleGeneDeletion.grRateKO = grRateKO;
     ResultsAllCellLines.(samples{i}).singleGeneDeletion.grRateWT = grRateWT;
     ResultsAllCellLines.(samples{i}).singleGeneDeletion.hasEffect = hasEffect;
-    
-    
+
+
     % find which genes are missing in individual pruned model
     model1 = eval(['ResultsAllCellLines.' samples{i} '.modelPruned']);
-    
+
     %get rid of alternative transcripts as in the function singleGeneDeletion
     if ~isempty(strfind(model1.genes{1},'.'))
         [geneList_pruned,rem] = strtok(model1.genes,'.');
@@ -68,17 +68,17 @@ for i=1:length(samples)
         geneList_pruned = model1.genes;
         nDelGenes_pruned = length(geneList_pruned);
     end
-    
+
     % grRatio is of same length for all samples because minModel was used
     GeneKO_Matrix(1:nDelGenes,i) = grRatio;
-    
+
     % find and replace entry by -1 so its not counted later on
     A = find(~ismember(geneList, geneList_pruned));
-    GeneKO_Matrix(A,i)= -1; 
-    
+    GeneKO_Matrix(A,i)= -1;
+
     %find number of essential genes
     essGenes = length(find(isnan(GeneKO_Matrix(:,i))));
-    
+
     %update overview variable
     if exist('OverViewResults')
         % B = find(ismember(OverViewResults(1,:),'num ess genes pruned model'));
@@ -89,7 +89,7 @@ for i=1:length(samples)
         end
         OverViewResults{i+1,B+1}=essGenes;
     end
-    
+
 end
 
 
@@ -114,23 +114,23 @@ for j=1:size(S,1)
 %     if isnan(unique(S(j,1)))% <= cutoff; %% allows a little diversion fom zero, otherwise i miss some.
 %         genes{j,2} = 'all KO';
 %     end
-    
+
     % count frequency of categories
     GeneKO_Matrix(find(isnan(GeneKO_Matrix)))=0; %set NAN to zero
     genes{j,3} = length(find(GeneKO_Matrix(j,:)>= 1-cutoff)); %% no effect sum of one entries
     genes{j,4} = length(find(GeneKO_Matrix(j,:)<=cutoff))- length(find(GeneKO_Matrix(j,:)==-1)); %%all KO sum of zero entries
     genes{j,5} = length(find(GeneKO_Matrix(j,:)>=cutoff & GeneKO_Matrix(j,:)<= 1-cutoff)); %sum of reduced entries
     genes{j,6} = length(find(GeneKO_Matrix(j,:)==-1));
-    
+
     %% I am mising the partial ones that are partly absent
     if genes{j,6} > 0 && genes{j,6} < length(samples);
         genes{i,2} = 'partial effects';
     end
-    
+
     if genes{j,3} + genes{j,6} == length(samples); %% change again all that are either no effect or absent to no effect
         genes{j,2} = 'no effect';
     end
-    
+
     if genes{j,4} + genes{j,6} == length(samples); %% change again all that are either KO or absent to KO
         genes{j,2} = 'all KO';
     end
@@ -138,5 +138,5 @@ end
 names = {'unique gene', 'category', 'no effect', 'KO', 'partial effects', ' gene absent'};
 genes = [names;genes]; % add names to table
 
-save([path 'GeneDeletion'], '-v7.3');
+save([path filesep 'GeneDeletion'], '-v7.3');
 end

@@ -1,83 +1,61 @@
 function bilevelMILPproblem = createBilevelMILPproblem(model,cLinear,cInteger,selRxns,...
     selRxnMatch,constrOpt,measOpt,options,selPrevSol)
-%createBilevelMILPProblem Creates the necessary matrices and vectors to solve a bilevel MILP with designated inner
-%and outer problem objective functions
+% Creates the necessary matrices and vectors to solve a bilevel MILP with designated inner
+% and outer problem objective functions
 %
-% bilevelMILPproblem = createBilevelMILPProblem(model,cLinear,cInteger,selRxns,...
-%                                               selRxnMatch,constrOpt,measOpt,options,selPrevSol);
+% USAGE:
 %
-%INPUTS
-% model        Model in irreversible format
-% cLinear       Objective for linear part of the MILP problem (i.e. for fluxes)
-% cInteger      Objective for integer part of the MILP problem
-% selRxns       Reactions that participate in the integer part (e.g. ones
-%               that can be deleted) (in the form [0 0 1 0 0 1 0 1 1 0 1])
-% selRxnMatch  Matching of the forward and reverse parts
-% constrOpt    Constraint options (optional)
-%  rxnInd
-%  values
-%  sense
-% measOpt      Measured flux options (optional)
-%  rxnSel
-%  values
-%  weights
-% options      General options
-%  vMax         Maximal/minimal value for cont variables
-%  numDel       Number of deletions
-%  numDelSense  # of ko <=/=/>= K (L/E/G)
-% selPrevSol   Previous solutions (optional)
+%    bilevelMILPproblem = createBilevelMILPProblem(model, cLinear, cInteger, selRxns, selRxnMatch, constrOpt, measOpt, options, selPrevSol);
 %
-%OUTPUT
-% bilevelMILPproblem
-%   A             LHS matrix 
-%   b             RHS
-%   c             Objective
-%   csense        Constraint types
-%   lb            Lower bounds
-%   ub            Upper bounds
-%   vartype       Variable types
-%   contSolInd    Allows selecting the continuous solution (i.e. fluxes)
-%   intsSolInd    Allows selecting the integer solution (i.e. what
-%                 reactions are used)
+% INPUTS:
+%    model:         Model in irreversible format
+%    cLinear:       Objective for linear part of the MILP problem (i.e. for fluxes)
+%    cInteger:      Objective for integer part of the MILP problem
+%    selRxns:       Reactions that participate in the integer part (e.g. ones
+%                   that can be deleted) (in the form [0 0 1 0 0 1 0 1 1 0 1])
+%    selRxnMatch:   Matching of the forward and reverse parts
+%    constrOpt:     Constraint options 
 %
-% Outputs suitable for feeding to feeding into a MILP solver
+%                     *  rxnInd
+%                     *  values
+%                     *  sense
+%    measOpt:      Measured flux options
 %
-% Variables are in order: v(n), y(n_int), u_eq(m), u_u(n), u_z(n_int) u_b(n_ic) s_mm(n_m) s_mp(n_m)
+%                     *  rxnSel
+%                     *  values
+%                     *  weights
+%    options:      General options
 %
-% 1/22/07 Add new interface to allow inclusion in the COBRA Toolbox
-% 
-% 5/24/05 Fixed problem with reversible measured fluxes - requires changing
-% the interpretation of the sel_m input vector (can now have both positive
-% & negative entries) MH
+%                     *  vMax - Maximal/minimal value for cont variables
+%                     *  numDel - Number of deletions
+%                     *  numDelSense - # of `ko` <=/=/>= K (L/E/G)
+%    selPrevSol:   Previous solutions (optional)
 %
-% 5/27/05 Added ability to rule out particular integer solutions (i.e.
-% existing solutions) MH
+% OUTPUTS:
+%    bilevelMILPproblem:
 %
-% 6/10/05 Added ability to delimit fluxes to a certain range
+%                          *  A - LHS matrix
+%                          *  b - RHS
+%                          *  c - Objective
+%                          *  csense - Constraint types
+%                          *  lb - Lower bounds
+%                          *  ub - Upper bounds
+%                          *  vartype - Variable types
+%                          *  contSolInd - Allows selecting the continuous solution (i.e. fluxes)
+%                          *  intsSolInd - Allows selecting the integer solution (i.e. what reactions are used)
 %
-% Markus Herrgard 5/27/05
+% .. Author: - Markus Herrgard 5/27/05
+%
+% .. Outputs suitable for feeding to feeding into a MILP solver
+% .. Variables are in order: v(n), y(n_int), u_eq(m), u_u(n), u_z(n_int) u_b(n_ic) s_mm(n_m) s_mp(n_m)
+% .. 1/22/07 Add new interface to allow inclusion in the COBRA Toolbox
+% .. 5/24/05 Fixed problem with reversible measured fluxes - requires changing
+% .. the interpretation of the sel_m input vector (can now have both positive
+% .. & negative entries) MH
+% .. 5/27/05 Added ability to rule out particular integer solutions (i.e.
+% .. existing solutions) MH
+% .. 6/10/05 Added ability to delimit fluxes to a certain range
 
-% Convert inputs
-
-% clp           Objective for continuous variables in the outer problem
-% cip           Objective for integer variables in the outer problem
-% S             Stoichiometric matrix (or equality constraint matrix)
-% ub            Upper bounds for inner problem
-% c             Objective for inner problem
-% sel_int       Varibles (inner) corresponding to the integers (in the form [0 0 1 0 0 1 0 0 0 1 1 0 1 1])
-% rev_int       Matchings for reversible varibles corresponding to integers (in the form [1 2;4 5])
-% ind_ic        Varibles for which there are additional constraints (in the
-% form [1 4 4 5 9]);
-% b_ic          Additional constraints (in the form [1.5 2.3 3.2 3.3 1.1])
-% csense_ic     Directions of additional constraints (in the form 'EGLLG')
-% sel_m         Select measured fluxes (in the form [1 0 0 1 -1 0 0 0 0 0 0 0 0])
-% b_m           Values for measured fluxes (in the form [2.9 3.0])
-% wt_m          Weights for measured fluxes (in the form [0.1 0.9])
-% H             Maximal/minimal value for cont variables
-% K             Desired number of reaction knockouts
-% ksense        # of ko <=/=/>= K (L/E/G)
-% sel_int_prev  Varibles corresponding to the previously selected integers
-%               (optional). Same form/dimension as sel_int;
 
 S = model.S;
 ub = model.ub;
@@ -112,6 +90,26 @@ if (nargin < 9)
 else
     sel_int_prev = selPrevSol;
 end
+% Convert inputs above
+% clp           Objective for continuous variables in the outer problem
+% cip           Objective for integer variables in the outer problem
+% S             Stoichiometric matrix (or equality constraint matrix)
+% ub            Upper bounds for inner problem
+% c             Objective for inner problem
+% sel_int       Varibles (inner) corresponding to the integers (in the form [0 0 1 0 0 1 0 0 0 1 1 0 1 1])
+% rev_int       Matchings for reversible varibles corresponding to integers (in the form [1 2;4 5])
+% ind_ic        Varibles for which there are additional constraints (in the
+% form [1 4 4 5 9]);
+% b_ic          Additional constraints (in the form [1.5 2.3 3.2 3.3 1.1])
+% csense_ic     Directions of additional constraints (in the form 'EGLLG')
+% sel_m         Select measured fluxes (in the form [1 0 0 1 -1 0 0 0 0 0 0 0 0])
+% b_m           Values for measured fluxes (in the form [2.9 3.0])
+% wt_m          Weights for measured fluxes (in the form [0.1 0.9])
+% H             Maximal/minimal value for cont variables
+% K             Desired number of reaction knockouts
+% ksense        # of ko <=/=/>= K (L/E/G)
+% sel_int_prev  Varibles corresponding to the previously selected integers
+%               (optional). Same form/dimension as sel_int;
 
 % Dimensions of the primal problem
 [m,n] = size(S);
@@ -142,7 +140,7 @@ lb_bl = [zeros(n+n_int,1); -H*ones(m,1); zeros(n,1); -H*ones(n_int,1)];
 ub_bl = [H*ones(2*n+2*n_int+m,1)];
 % Handle inner problem constraints
 for i = 1:n_ic
-    % Don't constraint equality constrained ones or 
+    % Don't constraint equality constrained ones or
     if  (strcmp(csense_ic(i),'E'))
         lb_bl = [lb_bl; -H];
         ub_bl = [ub_bl; H];

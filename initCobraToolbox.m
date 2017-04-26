@@ -134,30 +134,47 @@ function initCobraToolbox()
             fprintf(' > Initializing and updating submodules ...');
         end
 
-        % initialize and update the submodules
-        [status_submodule, result_submodule] = system('git submodule update --init');
+        % temporary disable ssl verification
+        [status_setSSLVerify, result_setSSLVerify] = system('git config http.sslVerify false');
 
-        if status_submodule ~= 0
-            fprintf(result_submodule);
+        if status_setSSLVerify ~= 0
+            fprintf(result_setSSLVerify);
+            warning('Your global git configuration could not be changed.');
+        end
+
+        % Update/initialize submodules
+        [status_gitSubmodule, result_gitSubmodule] = system('git submodule update --init');
+
+        if status_gitSubmodule ~= 0
+            fprintf(result_gitSubmodule);
             error('The submodules could not be initialized.');
         end
 
         % reset each submodule
         [status_gitReset result_gitReset] = system('git submodule foreach --recursive git reset --hard');
+
         if status_gitReset ~= 0
             fprintf(result_gitReset);
-            error('The submodules could not be reset.');
+            warning('The submodules could not be reset.');
+        end
+
+        % restore global configuration by unsetting http.sslVerify
+        [status_setSSLVerify, result_setSSLVerify] = system('git config --unset http.sslVerify');
+
+        if status_setSSLVerify ~= 0
+            fprintf(result_setSSLVerify);
+            warning('Your global git configuration could not be restored.');
         end
 
         if ENV_VARS.printLevel
-            fprintf('   Done.\n');
+            fprintf(' Done.\n');
         end
     end
 
     % add the folders of The COBRA Toolbox
     onPath = ~isempty(strfind(lower(path), lower(CBTDIR)));
 
-    folders = {'external', 'tutorials', 'papers', 'binary', 'deprecated', 'src', 'test'};
+    folders = {'tutorials', 'papers', 'binary', 'deprecated', 'src', 'test'};
 
     if ~onPath
         if ENV_VARS.printLevel
@@ -167,13 +184,16 @@ function initCobraToolbox()
         % add the root folder
         addpath(CBTDIR);
 
+        % add the external folder first
+        addpath(genpath([CBTDIR, filesep, 'external']));
+
+        % remove the SBML Toolbox
+        rmpath(genpath([CBTDIR, filesep, 'external', filesep, 'SBMLToolbox']));
+
         % add specific subfolders
         for k = 1:length(folders)
             addpath(genpath([CBTDIR, filesep, folders{k}]));
         end
-
-        % remove the SBML Toolbox
-        rmpath(genpath([CBTDIR, filesep, 'external', filesep, 'SBMLToolbox']));
 
         % print a success message
         if ENV_VARS.printLevel
@@ -251,7 +271,7 @@ function initCobraToolbox()
     SOLVERS.glpk.type = {'LP', 'MILP'};
     SOLVERS.gurobi.type = {'LP', 'MILP', 'QP', 'MIQP'};
     SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
-    SOLVERS.matlab.type = {'NLP'};
+    SOLVERS.matlab.type = {'LP', 'NLP'};
     SOLVERS.mosek.type = {'LP', 'QP', 'MILP'};
     SOLVERS.pdco.type = {'LP', 'QP', 'NLP'};
     SOLVERS.quadMinos.type = {'LP', 'NLP'};

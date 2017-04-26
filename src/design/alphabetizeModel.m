@@ -1,19 +1,22 @@
 function abcModel = alphabetizeModel(model)
-%alphabetizeModel Sort the rxns, metabolites, and genes in a model into alphabetical
-%order, useful after adding new reactions to a model. This function needs
-%to be modified to work on models with different fields than these
-%(currently set for iAF1260c)
+% Sorts the rxns, metabolites, and genes in a model into alphabetical
+% order, useful after adding new reactions to a model. This function needs
+% to be modified to work on models with different fields than these
+% (currently set for `iAF1260c`)
 %
-% abcModel = alphabetizeModel(model)
+% USAGE:
 %
-%INPUT
-% model         COBRA model structure
+%    abcModel = alphabetizeModel(model)
 %
-%OUTPUT
-% abcModel      the alphabetized model
+% INPUT:
+%     model:         COBRA model structure
 %
-% Jeff Orth  11/21/07
-% Modified to work on basic COBRA model. Richard Que (2/1/10)
+% OUTPUT:
+%    abcModel:       the alphabetized model
+%
+% .. Authors:
+%       - Jeff Orth  11/21/07
+%       - Modified to work on basic COBRA model. Richard Que (2/1/10)
 
 abcModel = model;
 

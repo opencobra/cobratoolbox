@@ -48,7 +48,7 @@ end
 
 if ~exist('bin','var')
     bin = 30;
-end 
+end
 
 if ~exist('fileNameA','var')
     fileNameA = modelA;
@@ -61,8 +61,8 @@ end
 %% Summarize sampling results
 
 
-samples_A = loadSamples([path fileNameA], nFiles, pointsPerFile);
-samples_B = loadSamples([path fileNameB], nFiles, pointsPerFile);
+samples_A = loadSamples([path filesep fileNameA], nFiles, pointsPerFile);
+samples_B = loadSamples([path filesep fileNameB], nFiles, pointsPerFile);
 
 
 %% Find the reactions associated, e.g., with the alternatively spliced or differentially expressed genes
@@ -80,15 +80,15 @@ for i = 1 : length(Transcript); % 1905
             ExpressionData.Transcript{cnt,1} = Transcript{i,1};
             ExpressionData.Locus(cnt,1) = dataGenes(j(1));
             cnt = cnt +1;
-                   
+
         end
-        
+
     end
 end
 
 if ~exist('ExpressionData')
      Rxns_List_reg={};
-   
+
 else
     [results ListResults] = findRxnsFromGenes(starting_model, ExpressionData.Transcript,1,1);
     Rxns_List_reg = unique(ListResults(:,1));
@@ -137,32 +137,32 @@ Reactions_modelB = (find(ismember(modelB.rxns,Reactions_show_rxns )));
 
 %% make figure (automatically saved to pdf)
 pages = length(show_rxns)/hist_per_page;
-figure;
 v=0;
 for g=1:pages % see if pages works
     figure;
     for i = 1:hist_per_page
-        
+
         % save the last page even if page is not full
         if i+v>length(Reactions_modelA_Names);
-            saveas(gcf, [path 'sampling_page' num2str(g)], 'pdf');
+            fprintf('Saving results to %s.png.\n', [path filesep 'sampling_page' num2str(g)]);
+            saveas(gcf, [path filesep 'sampling_page' num2str(g)], 'pdf');
             break
         end
-        
+
         %define size of subplot
         if hist_per_page==4
-            
+
             subplot (2,2,i)
-            
+
         elseif hist_per_page==9
-            
+
             subplot (3,3,i)
-            
+
         elseif hist_per_page==5
-            
+
             subplot (5,5,i);
         end
-        
+
         % position of rxns in modelA
         %j=find(ismember(modelA.rxns,(Reactions_modelA_Names(i+v))));
         j=Reactions(i+v);
@@ -172,18 +172,18 @@ for g=1:pages % see if pages works
         MM = median(samples_B(k,:));
         [N,X] = hist(samples_A(j,:),bin);
         plot(X,N, 'b');set(gca,'FontSize',fonts)
-        
+
         hold on
-        
+
         [N,X] = hist(samples_B(k,:),bin);
         plot(X,N, 'r');set(gca,'FontSize',fonts)
-        
+
         minFlux_A = FVA_results.minFlux_modelA(j,1);
         maxFlux_A = FVA_results.maxFlux_modelA(j,1);
-        
+
         minFlux_B = FVA_results.minFlux_modelB(k,1);
         maxFlux_B = FVA_results.maxFlux_modelB(k,1);
-        
+
         % collect statistics for output and illustrations
         stats(i+v,1)= MC;
         stats(i+v,2)= MM;
@@ -192,13 +192,13 @@ for g=1:pages % see if pages works
         stats(i+v,5)= minFlux_B;
         stats(i+v,6)= maxFlux_B;
         statsR(i+v,1) = modelA.rxns(j);
-        
-        
+
+
         %% color if is Data-gene associated reaction
         if ismember(modelA.rxns{j},Reg_modelA_rxnsNames)
-            
+
             titleString = [title_modelA{j}];
-            
+
             titleString2 =['FVA(modelA): ' num2str(minFlux_A) ',' num2str(maxFlux_A)];
             titleString3 =['FVA(modelB): ' num2str(minFlux_B) ',' num2str(maxFlux_B)];
             titleString4 = ['Median(modelA): ' num2str(MC)];
@@ -206,22 +206,22 @@ for g=1:pages % see if pages works
             title(titleString, 'Color','r');
             h=  title(strvcat(titleString , titleString2 ,titleString3, titleString4 ,titleString5),'Color','r' );
             set(h,'fontsize',fonts)
-            
+
         else
             titleString = [title_modelA{j}];
             titleString2 =['FVA(modelA): ' num2str(minFlux_A) ',' num2str(maxFlux_A)];
             titleString3 =['FVA(modelB): ' num2str(minFlux_B) ',' num2str(maxFlux_B)];
             titleString4 =['Median(modelA): ' num2str(MC)];
             titleString5 =['Median(modelB): ' num2str(MM)];
-            
+
             h= title(strvcat(titleString , titleString2,titleString3, titleString4 ,titleString5));
             set(h,'fontsize',fonts);
         end
-        
+
     end
-    saveas(gcf, [path 'sampling_page' num2str(g)], 'pdf');
+    fprintf('Saving results to %s.png.\n', [path filesep 'sampling_page' num2str(g)]);
+    saveas(gcf, [path filesep 'sampling_page' num2str(g)], 'pdf');
     close
     v=v+hist_per_page;
-end  
 end
-
+end

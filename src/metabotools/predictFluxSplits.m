@@ -30,21 +30,21 @@ function [BMall,ResultsAllCellLines,metRsall, maximum_contributing_rxn,maximum_c
 %                                 necessarily >50%), if multiple reactions have the same contribution, all will be reported seperated by a back slash.
 %    maximum_contributing_flux:   Matrix containing:
 %
-%                                 * highest flux (column 1), 
-%                                 * sum of flux (producing or consuming) a defined metabolite (column 2), 
-%                                 * percentage (column 3), 
-%                                 * contribution of glycolysis (column 4), 
-%                                 * contribution of ETC (column 5), 
+%                                 * highest flux (column 1),
+%                                 * sum of flux (producing or consuming) a defined metabolite (column 2),
+%                                 * percentage (column 3),
+%                                 * contribution of glycolysis (column 4),
+%                                 * contribution of ETC (column 5),
 %                                 * combined contribution of glycolysis and ETC (column 6),
-%                                 * contribution of TCA (column 7), 
+%                                 * contribution of TCA (column 7),
 %                                 * combined contribution of glycolysis, ETC, and TCA (column 8).
-%    ATPyield:                    ATP yield calculated from the sum of ATP production divided by the predicted uptake flux of the metabolite specified as carbon_source. 
+%    ATPyield:                    ATP yield calculated from the sum of ATP production divided by the predicted uptake flux of the metabolite specified as carbon_source.
 %                                 No extra constraints are applied, thus not only production  flux from the specified carbon source is considered.
 % EXAMPLE:
 %
 %    % if met2test is not atp to reduce number of useless outputs
 %    [BMall, ResultsAllCellLines, metRsall] = predictFluxSplits(model, obj, met2test,samples,ResultsAllCellLines, dir, eucNorm, transportRxns, ATPprod, carbon_source)
-%    
+%
 %
 % .. Author: - Maike K. Aurich 13/07/15
 
@@ -68,7 +68,6 @@ end
 if exist('carbon_source','var')
     ATPyield = 1;
 end
-
 
 if ~exist('ATPprod','var') || isempty(ATPprod)
     ATPproducer = 0;

@@ -4,10 +4,12 @@ global GUROBI_PATH
 global ILOG_CPLEX_PATH
 global TOMLAB_PATH
 
-% do not change the paths below
-if ~isempty(strfind(getenv('HOME'), 'jenkins'))
-    addpath(genpath('/var/lib/jenkins/MOcov'));
-    addpath(genpath('/var/lib/jenkins/jsonlab'));
+if ~isempty(getenv('MOCOV_PATH')) && ~isempty(getenv('JSONLAB_PATH'))
+    addpath(genpath(getenv('MOCOV_PATH')))
+    addpath(genpath(getenv('JSONLAB_PATH')))
+    COVERAGE = true;
+else
+    COVERAGE = false;
 end
 
 % include the root folder and all subfolders
@@ -46,7 +48,7 @@ exit_code = 0;
 % enable profiler
 profile on;
 
-if ~isempty(strfind(getenv('HOME'), 'jenkins'))
+if COVERAGE
 
     % ignore list of files
     ignoreFiles = {'./src/fluxomics/c13solver/IsotopomerModel.txt',
@@ -114,11 +116,13 @@ if ~isempty(strfind(getenv('HOME'), 'jenkins'))
         end
     end
 
-    % remove the old badge
-    system('rm /var/lib/jenkins/userContent/codegrade.svg');
+    if ~isempty(strfind(getenv('HOME'), 'jenkins'))
+        % remove the old badge
+        system('rm /var/lib/jenkins/userContent/codegrade.svg');
 
-    % set the new badge
-    system(['cp /var/lib/jenkins/userContent/codegrade-', grade, '.svg /var/lib/jenkins/userContent/codegrade.svg']);
+        % set the new badge
+        system(['cp /var/lib/jenkins/userContent/codegrade-', grade, '.svg /var/lib/jenkins/userContent/codegrade.svg']);
+    end
 end
 
 try
@@ -131,11 +135,12 @@ try
     sumFailed = 0;
     sumIncomplete = 0;
 
-    if ~isempty(strfind(getenv('HOME'), 'jenkins'))
+    if COVERAGE
         % write coverage based on profile('info')
         mocov('-cover','src',...
               '-profile_info',...
               '-cover_json_file','coverage.json',...
+              '-cover_html_dir','coverage_html',...
               '-cover_method', 'profile');
 
         for i = 1:size(result,2)

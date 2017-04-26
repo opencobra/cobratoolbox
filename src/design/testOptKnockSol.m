@@ -1,23 +1,25 @@
 function [growthRate,minProd,maxProd] = testOptKnockSol(model,targetRxn,deletions)
-%testOptKnockSol Test an OptKnock knockout strain
+% Tests an `OptKnock` knockout strain
 %
-% [growthRate,minProd,maxProd] = testOptKnockSol(model,targetRxn,deletions)
+% USAGE:
 %
-%INPUTS
-% model         COBRA model structure
-% targetRxn     Target reaction (e.g. 'EX_etoh(e)')
+%    [growthRate, minProd, maxProd] = testOptKnockSol(model, targetRxn, deletions)
 %
-%OPTIONAL INPUT
-% deletions     Set of reaction deletions (e.g. {'PGI','TPI'})
-%               (Default = [])
+% INPUTS:
+%    model:         COBRA model structure
+%    targetRxn:     Target reaction (e.g. 'EX_etoh(e)')
 %
-%OUTPUTS
-% growthRate    Maximim growth rate of the strain
-% minProd       Minimum production rate at max growth rate
-% maxProd       Maximum production rate at max growth rate
+% OPTIONAL INPUT:
+%    deletions:     Set of reaction deletions (e.g. {'PGI','TPI'})
+%                   (Default = [])
 %
-% Markus Herrgard 5/23/07
- 
+% OUTPUTS:
+%    growthRate:    Maximim growth rate of the strain
+%    minProd:       Minimum production rate at max growth rate
+%    maxProd:       Maximum production rate at max growth rate
+%
+% .. Author - Markus Herrgard 5/23/07
+
 if (nargin < 3)
     deletions = [];
 end

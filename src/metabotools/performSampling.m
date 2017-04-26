@@ -25,7 +25,7 @@ function performSampling(model,warmupn,fileName,nFiles,pointsPerFile,stepsPerPoi
 
 warmupPoints = createHRWarmup(model,warmupn);
 initPoint = (warmupPoints(:,1));
-fileName = [path '\' fileName];
+fileName = [path filesep fileName];
 ACHRSampler(model,warmupPoints,fileName,nFiles,pointsPerFile,stepsPerPoint,initPoint,fileBaseNo,maxTime);
 
 end

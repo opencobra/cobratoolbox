@@ -1,31 +1,33 @@
 function [ExRxns,MaxTheoOut]= theoretMaxProd(model, criterion, inputrxn, normalize, rxns)
-% determines the max theoretical output for each exchange reaction
-% 
-% [ExRxns,MaxTheoOut]= theoreticalMaxProduction(model,criterion,inputrxn,normalize,rxns)
-% 
-%INPUT
-% ExRxns        The Exchagne reactions in the model
+% Determines the max theoretical output for each exchange reaction
 %
-%OPTIONAL INPUT
-% criterion   
-%               'pr_mol' (default) 
-%               'pr_mw'  (same thing in molecular weight)
-%               'pr_other_mol' (other carbon compounds secretion rate) 
-%               'pr_other_mw'  (same thing in molecular weight)
-%               weight yield)
-% inputrxn      the input reaction ('EX_glu(e)', etc.)
-% normalize     normalize by input flux.  Either the flux rate in mol or 
-%               in molecular weight (Default = false)
-% rxns          Selection Vector (1 for selected, 0 otherwise)
+% USAGE:
 %
-%OUTPUTS
-% ExRxns        Vector of exchange reactions
-% MaxThroOut    The max theoretical output for each exchange reaction
-% 
-% Jan Schellenberger 11/7/08
+%    [ExRxns, MaxTheoOut]= theoreticalMaxProduction(model, criterion, inputrxn, normalize, rxns)
+%
+% INPUT:
+%    model:
+%
+% OPTIONAL INPUT:
+%    criterion:   One of
+%
+%                   * 'pr_mol' (default)
+%                   * 'pr_mw'  (same thing in molecular weight)
+%                   * 'pr_other_mol' (other carbon compounds secretion rate)
+%                   * 'pr_other_mw'  (same thing in molecular weight)
+%                     weight yield)
+%    inputrxn:    the input reaction ('EX_glu(e)', etc.)
+%    normalize:   normalize by input flux.  Either the flux rate in mol or
+%                 in molecular weight (Default = false)
+%    rxns:        Selection Vector (1 for selected, 0 otherwise)
+%
+% OUTPUTS:
+%    ExRxns:      Vector of exchange reactions
+%    MaxThroOut:  The max theoretical output for each exchange reaction
+%
+% .. Author: - Jan Schellenberger 11/7/08
 
-% find the exchange reactions
-if nargin < 2 
+if nargin < 2 % find the exchange reactions
     criterion = 'pr_mol';
 end
 if isempty(criterion)
