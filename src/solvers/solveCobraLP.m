@@ -104,7 +104,7 @@ global DQQMINOSPATH
 if ~isempty(CBT_LP_SOLVER)
     solver = CBT_LP_SOLVER;
 elseif nargin == 1
-    error('No solver found.  call changeCobraSolver(solverName)');
+    error('No LP solver found. Run >> changeCobraSolver(solverName)');
 end
 
 % names_of_parameters that users can specify with values, using option

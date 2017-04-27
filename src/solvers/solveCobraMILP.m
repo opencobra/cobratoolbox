@@ -72,7 +72,7 @@ global CBT_MILP_SOLVER
 if ~isempty(CBT_MILP_SOLVER)
     solver = CBT_MILP_SOLVER;
 elseif nargin == 1
-    error('No solver found.  Run changeCobraSolver');
+    error('No MILP solver found. Run >> changeCobraSolver(solverName);');
 end
 
 if ~isstruct(MILPproblem)
@@ -85,8 +85,50 @@ optParamNames = {'intTol', 'relMipGapTol', 'timeLimit', ...
 
 parameters = [];
 
+% First input can be 'default' or a solver-specific parameter structure
+if ~isempty(varargin)
+    isdone = false(size(varargin));
+
+    if strcmp(varargin{1}, 'default')  % Set tolerances to COBRA toolbox defaults
+        [feasTol, optTol] = getCobraSolverParams('LP', optParamNames(5:6), 'default');
+        isdone(1) = true;
+        varargin = varargin(~isdone);
+
+    elseif isstruct(varargin{1})  % solver-specific parameter structure
+        if isstruct(varargin{1})
+            solverParams = varargin{1};
+
+            isdone(1) = true;
+            varargin = varargin(~isdone);
+        end
+    end
+end
+
+% Last input can be a solver specific parameter structure
+if ~isempty(varargin)
+    isdone = false(size(varargin));
+
+    if isstruct(varargin{end})
+        solverParams = varargin{end};
+
+        isdone(end) = true;
+        varargin = varargin(~isdone);
+    end
+end
+
 if nargin ~= 1
     if mod(length(varargin), 2) == 0
+        try
+            parameters = struct(varargin{:});
+        catch
+            error('solveCobraLP: Invalid parameter name-value pairs.')
+        end
+
+        if isfield(parameters, 'solver')
+            solver = parameters.solver;
+            parameters = rmfield(parameters, 'solver');
+        end
+
         % expecting pairs of parameter names and parameter values
         for i = 1:2:length(varargin) - 1
             if ismember(varargin{i}, optParamNames)
@@ -136,13 +178,12 @@ else
     parameters = '';
 end
 
-
 % optional parameters
 [solverParams.intTol, solverParams.relMipGapTol, solverParams.timeLimit, ...
     solverParams.logFile, solverParams.printLevel, saveInput, ...
     solverParams.DATACHECK, solverParams.DEPIND, solverParams.feasTol, ...
     solverParams.optTol, solverParams.absMipGapTol, ...
-    solverParams.NUMERICALEMPHASIS, solver] = ...
+    solverParams.NUMERICALEMPHASIS] = ...
     getCobraSolverParams('MILP', optParamNames(1:13), parameters);
 
 % Save Input if selected
@@ -547,7 +588,7 @@ switch solver
     case 'mps'
         fprintf(' > The interface to ''mps'' from solveCobraMILP will not be supported anymore.\n -> Use >> writeCbModel(model, ''mps'');\n');
         % temporary legacy support
-        writeCbModel(MILPproblem, 'mps', 'MILP.mps', [], [], [], [], directParamStruct);
+        writeCbModel(MILPproblem, 'mps', 'MILP.mps', [], [], [], [], solverParams);
         return
     otherwise
         error(['Unknown solver: ' solver]);
