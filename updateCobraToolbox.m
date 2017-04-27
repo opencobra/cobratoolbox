@@ -35,8 +35,8 @@ function updateCobraToolbox(fetchAndCheckOnly)
             result_gitCountMaster = char(result_gitCountMaster);
             result_gitCountMaster = result_gitCountMaster(1:end-1);
         else
-            status_gitCountMaster == 0;
-            result_gitCountMaster == '';
+            status_gitCountMaster = 0;
+            result_gitCountMaster = '0';
         end
 
         % check if develop branch exists
@@ -48,8 +48,8 @@ function updateCobraToolbox(fetchAndCheckOnly)
             result_gitCountDevelop = char(result_gitCountDevelop);
             result_gitCountDevelop = result_gitCountDevelop(1:end-1);
         else
-            status_gitCountDevelop == 0;
-            result_gitCountDevelop == '';
+            status_gitCountDevelop = 0;
+            result_gitCountDevelop = '0';
         end
 
         if status_gitCountMaster == 0 && status_gitCountDevelop == 0
