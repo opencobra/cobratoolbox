@@ -74,5 +74,12 @@ catch ME
     assert(length(ME.message) > 0)
 end
 
+% legacy MPS support
+try
+    ok = changeCobraSolver('mps');
+catch ME
+    assert(length(ME.message) > 0)
+end
+
 % Zero argument
 changeCobraSolver();

@@ -1,9 +1,9 @@
-function solution = solveCobraMILP(MILPproblem,varargin)
-%solveCobraMILP Solve constraint-based MILP problems
+function solution = solveCobraMILP(MILPproblem, varargin)
+% solveCobraMILP Solve constraint-based MILP problems
 %
 % solution = solveCobraMILP(MILPproblem,parameters)
 %
-%INPUT
+% INPUT
 % MILPproblem
 %  A      LHS matrix
 %  b      RHS vector
@@ -16,7 +16,7 @@ function solution = solveCobraMILP(MILPproblem,varargin)
 %  vartype Variable types ('C' continuous, 'I' integer, 'B' binary)
 %  x0      Initial solution
 %
-%OPTIONAL INPUTS
+% OPTIONAL INPUTS
 % Optional parameters can be entered using parameters structure or as
 % parameter followed by parameter value: i.e. ,'printLevel',3)
 %
@@ -39,7 +39,7 @@ function solution = solveCobraMILP(MILPproblem,varargin)
 % (set using changeCobraSolver). Solvers currently available are
 % 'tomlab_cplex' and 'glpk'
 %
-%OUTPUT
+% OUTPUT
 % solution Structure containing the following fields describing a MILP
 %          solution
 %  cont     Continuous solution
@@ -83,76 +83,76 @@ optParamNames = {'intTol', 'relMipGapTol', 'timeLimit', ...
                  'logFile', 'printLevel', 'saveInput', 'DATACHECK', 'DEPIND', ...
                  'feasTol', 'optTol', 'absMipGapTol', 'NUMERICALEMPHASIS', 'solver'};
 
-parameters=[];
+parameters = [];
 
-if nargin ~=1
-    if mod(length(varargin),2)==0
-        %expecting pairs of parameter names and parameter values
-        for i=1:2:length(varargin)-1
-            if ismember(varargin{i},optParamNames)
-                if isstruct(varargin{i+1})
+if nargin ~= 1
+    if mod(length(varargin), 2) == 0
+        % expecting pairs of parameter names and parameter values
+        for i = 1:2:length(varargin) - 1
+            if ismember(varargin{i}, optParamNames)
+                if isstruct(varargin{i + 1})
                     error('solveCobraMILP: Invalid number of parameters/values')
                 else
-                    parameters.(varargin{i}) = varargin{i+1};
+                    parameters.(varargin{i}) = varargin{i + 1};
                 end
             else
                 error([varargin{i} ' is not a valid optional parameter']);
             end
         end
-        parametersStructureFlag=0;
+        parametersStructureFlag = 0;
         parameters = '';
-    elseif strcmp(varargin{1},'default')
-        %default cobra parameters
+    elseif strcmp(varargin{1}, 'default')
+        % default cobra parameters
         parameters = 'default';
     elseif isstruct(varargin{1})
-        %uses the structure for setting parameters in preference to those
-        %of the optParamNames, where appropriate
-        parametersStructureFlag=1;
+        % uses the structure for setting parameters in preference to those
+        % of the optParamNames, where appropriate
+        parametersStructureFlag = 1;
         directParamStruct = varargin{1};
-        parameters='';
+        parameters = '';
     elseif isstruct(varargin{length(varargin)})
-        %expecting pairs of parameter names and parameter values, then a
-        %parameter structure at the end
-        parametersStructureFlag=1;
-        directParamStruct=varargin{length(varargin)};
-        for i=1:2:length(varargin)-2
-            if ismember(varargin{i},optParamNames)
-                parameters.(varargin{i}) = varargin{i+1};
+        % expecting pairs of parameter names and parameter values, then a
+        % parameter structure at the end
+        parametersStructureFlag = 1;
+        directParamStruct = varargin{length(varargin)};
+        for i = 1:2:length(varargin) - 2
+            if ismember(varargin{i}, optParamNames)
+                parameters.(varargin{i}) = varargin{i + 1};
             else
                 error([varargin{i} ' is not a valid optional parameter']);
             end
         end
-        %pause(eps)
+        % pause(eps)
     else
         error('solveCobraMILP: Invalid number of parameters/values')
     end
     [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
-    getCobraSolverParams('LP',optParamNames(1:6),parameters);
+    getCobraSolverParams('LP', optParamNames(1:6), parameters);
 else
-    parametersStructureFlag=0;
+    parametersStructureFlag = 0;
     [minNorm, printLevel, primalOnlyFlag, saveInput, feasTol, optTol] = ...
-    getCobraSolverParams('LP',optParamNames(1:6));
-    %parameters will later be accessed and should be initialized.
+    getCobraSolverParams('LP', optParamNames(1:6));
+    % parameters will later be accessed and should be initialized.
     parameters = '';
 end
 
 
-%optional parameters
+% optional parameters
 [solverParams.intTol, solverParams.relMipGapTol, solverParams.timeLimit, ...
     solverParams.logFile, solverParams.printLevel, saveInput, ...
     solverParams.DATACHECK, solverParams.DEPIND, solverParams.feasTol, ...
     solverParams.optTol, solverParams.absMipGapTol, ...
     solverParams.NUMERICALEMPHASIS, solver] = ...
-    getCobraSolverParams('MILP',optParamNames(1:13), parameters);
+    getCobraSolverParams('MILP', optParamNames(1:13), parameters);
 
-%Save Input if selected
+% Save Input if selected
 if ~isempty(saveInput)
     fileName = parameters.saveInput;
-    if ~find(regexp(fileName,'.mat'))
+    if ~find(regexp(fileName, '.mat'))
         fileName = [fileName '.mat'];
     end
     display(['Saving MILPproblem in ' fileName]);
-    save(fileName,'MILPproblem')
+    save(fileName, 'MILPproblem')
 end
 
 % Defaults in case the solver does not return anything
@@ -160,15 +160,15 @@ x = [];
 xInt = [];
 xCont = [];
 f = [];
-%stat = -99;
-%solStat = -99;
+% stat = -99;
+% solStat = -99;
 
-[A,b,c,lb,ub,csense,osense,vartype,x0] = ...
-    deal(MILPproblem.A,MILPproblem.b,MILPproblem.c,MILPproblem.lb,MILPproblem.ub,...
-    MILPproblem.csense,MILPproblem.osense,MILPproblem.vartype,MILPproblem.x0);
+[A, b, c, lb, ub, csense, osense, vartype, x0] = ...
+    deal(MILPproblem.A, MILPproblem.b, MILPproblem.c, MILPproblem.lb, MILPproblem.ub, ...
+    MILPproblem.csense, MILPproblem.osense, MILPproblem.vartype, MILPproblem.x0);
 
 if any(~(vartype == 'C' | vartype == 'B' | vartype == 'I'))
-    display ('vartype not C or B or I:  Assuming C');
+    display('vartype not C or B or I:  Assuming C');
     vartype(vartype ~= 'C' & vartype ~= 'I'& vartype ~= 'B') = 'C';
 end
 
@@ -181,7 +181,7 @@ switch solver
         % Set up problem
         if (isempty(csense))
             clear csense
-            csense(1:length(b),1) = 'S';
+            csense(1:length(b), 1) = 'S';
         else
             csense(csense == 'L') = 'U';
             csense(csense == 'G') = 'L';
@@ -191,65 +191,65 @@ switch solver
         params.msglev = solverParams.printLevel;
         params.tmlim = solverParams.timeLimit;
 
-        %whos csense vartype
+        % whos csense vartype
         csense = char(csense);
         vartype = char(vartype);
-        %whos csense vartype
+        % whos csense vartype
 
         % Solve problem
-        [x,f,stat,extra] = glpk(c,A,b,lb,ub,csense,vartype,osense,params);
+        [x, f, stat, extra] = glpk(c, A, b, lb, ub, csense, vartype, osense, params);
         % Handle solution status reports
         if (stat == 5)
-            solStat = 1; % optimal
-        elseif (stat == 6)
-            solStat = 2; % unbounded
-        elseif (stat == 4)
-            solStat = 0; % infeasible
+            solStat = 1;  % optimal
+        elseif(stat == 6)
+            solStat = 2;  % unbounded
+        elseif(stat == 4)
+            solStat = 0;  % infeasible
 
-        elseif (stat == 171)
-            solStat = 1; % Opt integer within tolerance
-        elseif (stat == 173)
-            solStat = 0; % Integer infeas
-        elseif (stat == 184)
-            solStat = 2; % Unbounded
-        elseif (stat == 172)
-            solStat = 3; % Other problem, but integer solution exists
+        elseif(stat == 171)
+            solStat = 1;  % Opt integer within tolerance
+        elseif(stat == 173)
+            solStat = 0;  % Integer infeas
+        elseif(stat == 184)
+            solStat = 2;  % Unbounded
+        elseif(stat == 172)
+            solStat = 3;  % Other problem, but integer solution exists
         else
-            solStat = -1; % No integer solution exists
+            solStat = -1;  % No integer solution exists
         end
 
          case 'cplex_direct'
 %% cplex_direct
 
         % Set up problem
-        b=full(b);
-        [m_lin,n]=size(MILPproblem.A);
+        b = full(b);
+        [m_lin, n] = size(MILPproblem.A);
         if ~isempty(csense)
-            Aineq = [MILPproblem.A(csense == 'L',:); - MILPproblem.A(csense == 'G',:)];
-            bineq = [b(csense == 'L',:); - b(csense == 'G',:)];
+            Aineq = [MILPproblem.A(csense == 'L', :); - MILPproblem.A(csense == 'G', :)];
+            bineq = [b(csense == 'L', :); - b(csense == 'G', :)];
             %        min      c*x
             %        st.      Aineq*x <= bineq
             %                 Aeq*x    = beq
             %                 lb <= x <= ub
-            A=MILPproblem.A(csense == 'E',:);
-            b=b(csense == 'E',1);
-            [x,f,exitflag,output] = cplexmilp(c,Aineq,bineq,A,b,[ ], [ ], [ ], lb, ub, vartype');
+            A = MILPproblem.A(csense == 'E', :);
+            b = b(csense == 'E', 1);
+            [x, f, exitflag, output] = cplexmilp(c, Aineq, bineq, A, b, [], [], [], lb, ub, vartype');
 
-            %primal
-            solution.obj=osense*f;
-            solution.full=x;
-            %this is the dual to the equality constraints but it's not the chemical potential
+            % primal
+            solution.obj = osense * f;
+            solution.full = x;
+            % this is the dual to the equality constraints but it's not the chemical potential
 %             solution.dual=lambda.eqlin;
         else
-            Aineq=[];
-            bineq=[];
-            [x,f,exitflag,output] = cplexmilp(c,Aineq,bineq,MILPproblem.A,b,lb,ub,vartype);
-            solution.obj=osense*f;
-            solution.full=x;
-            %this is the dual to the equality constraints but it's not the chemical potential
-            solution.dual=sparse(size(MILPproblem.A,1),1);
+            Aineq = [];
+            bineq = [];
+            [x, f, exitflag, output] = cplexmilp(c, Aineq, bineq, MILPproblem.A, b, lb, ub, vartype);
+            solution.obj = osense * f;
+            solution.full = x;
+            % this is the dual to the equality constraints but it's not the chemical potential
+            solution.dual = sparse(size(MILPproblem.A, 1), 1);
 %             solution.dual(csense == 'E')=lambda.eqlin;
-            %this is the dual to the inequality constraints but it's not the chemical potential
+            % this is the dual to the inequality constraints but it's not the chemical potential
 %             solution.dual(csense == 'L')=lambda.ineqlin(1:nnz(csense == 'L'),1);
 %             solution.dual(csense == 'G')=lambda.ineqlin(nnz(csense == 'L')+1:end,1);
         end
@@ -260,15 +260,15 @@ switch solver
         Inform = solution.origStat;
         stat = Inform;
         if (stat == 101 || stat == 102)
-            solStat = 1; % Opt integer within tolerance
-        elseif (stat == 103)
-            solStat = 0; % Integer infeas
-        elseif (stat == 118 || stat == 119)
-            solStat = 2; % Unbounded
-        elseif (stat == 106 || stat == 106 || stat == 108 || stat == 110 || stat == 112 || stat == 114 || stat == 117)
-            solStat = -1; % No integer solution exists
+            solStat = 1;  % Opt integer within tolerance
+        elseif(stat == 103)
+            solStat = 0;  % Integer infeas
+        elseif(stat == 118 || stat == 119)
+            solStat = 2;  % Unbounded
+        elseif(stat == 106 || stat == 106 || stat == 108 || stat == 110 || stat == 112 || stat == 114 || stat == 117)
+            solStat = -1;  % No integer solution exists
         else
-            solStat = 3; % Other problem, but integer solution exists
+            solStat = 3;  % Other problem, but integer solution exists
         end
 
    case 'gurobi_mex'
@@ -288,7 +288,7 @@ switch solver
            opts.Display = 1;
         end
 
-        %minimum intTol for gurobi = 1e-9
+        % minimum intTol for gurobi = 1e-9
         if solverParams.intTol<1e-9, solverParams.intTol=1e-9; end
 
         opts.TimeLimit=solverParams.timeLimit;
@@ -306,7 +306,7 @@ switch solver
             csense(csense == 'E') = '=';
             csense = csense(:);
         end
-        %gurobi_mex doesn't automatically cast logicals to doubles
+        % gurobi_mex doesn't automatically cast logicals to doubles
 	c = double(c);
         [x,f,stat,output] = gurobi_mex(c,osense,sparse(A),b, ...
                                              csense,lb,ub,vartype,opts);
@@ -338,8 +338,8 @@ switch solver
             b_U = b;
         end
         intVars = (vartype == 'B') | (vartype == 'I');
-        %intVars
-        %pause;
+        % intVars
+        % pause;
         cplexlp.Model.A = A;
         cplexlp.Model.rhs = b_U;
         cplexlp.Model.lhs = b_L;
@@ -347,8 +347,8 @@ switch solver
         cplexlp.Model.lb = lb;
         cplexlp.Model.obj = osense * c;
         cplexlp.Model.name = 'CobraMILP';
-        %Make sure, that the vartype is in the correct orientation, cplex
-        %is quite picky here..
+        % Make sure, that the vartype is in the correct orientation, cplex
+        % is quite picky here..
         if size(vartype,1) > size(vartype,2)
             vartype = vartype';
         end
@@ -440,7 +440,7 @@ switch solver
             MILPproblem.osense = 'min';
         end
 
-        %overwrite default params with directParams
+        % overwrite default params with directParams
         if parametersStructureFlag
             fieldNames = fieldnames(directParamStruct);
             for i = 1:size(fieldNames,1)
@@ -484,8 +484,8 @@ switch solver
             b_U = b;
         end
         intVars = (vartype == 'B') | (vartype == 'I');
-        %intVars
-        %pause;
+        % intVars
+        % pause;
         tomlabProblem = mipAssign(osense*c,A,b_L,b_U,lb,ub,x0,'CobraMILP',[],[],intVars);
 
         % Set parameters for CPLEX
@@ -557,8 +557,8 @@ t = etime(clock, t_start);
 %% Store results
 if ~strcmp(solver,'mps')
     if (~isempty(x))
-        %xInt = x(MILPproblem.intSolInd);
-        %xCont = x(MILPproblem.contSolInd);
+        % xInt = x(MILPproblem.intSolInd);
+        % xCont = x(MILPproblem.contSolInd);
         xInt = x(vartype == 'B' | vartype == 'I');
         xCont = x(vartype == 'C');
     end

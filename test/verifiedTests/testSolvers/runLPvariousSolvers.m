@@ -202,7 +202,6 @@ for k = 1:length(solverPkgs)
         end
     end
 
-
     % solver with Windows-only compatibility
     if ispc && strcmp(solver, 'lp_solve')
         solverOK = changeCobraSolver(solver, 'LP');
