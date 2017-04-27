@@ -14,6 +14,8 @@ Platform-specific instructions are marked with
 
 :warning: Most steps require superuser or administrator rights (`sudo`).
 
+:pencil: Make sure that you replace `<ver>` with the respective `version` of the installed solver when setting the environment variables.
+
 ## TOMLAB
 
 1) Download `TOMLAB/CPLEX` from [here](http://tomopt.com/scripts/register.php), where you can also download `TOMLAB/SNOPT`. You must purchase the `tomlab.lic` license separately.
@@ -157,7 +159,7 @@ Platform-specific instructions are marked with
     ````
     <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" alt="Windows"> Run `moseksetupwin64x86.msi` and select `Typical` installation. This will install `mosek` in `C:\Program Files\Mosek`.
     <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="Linux"> Browse to `/Applications` and double-click the archive to uncompress.
-    :warning: It is important to run the script `python /Applications/mosek/<ver>/tools/platform/osx64x86/bin/install.py`, which makes important updates to the installation. 
+    :warning: It is important to run the script `python /Applications/mosek/<ver>/tools/platform/osx64x86/bin/install.py`, which makes important updates to the installation.
 
 5) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS"> <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux"> Configure the `PATH` and `MOSEKLM_LICENSE_FILE` environment variables in `~/.bashrc` by editing your `bashrc` file
     ````bash
