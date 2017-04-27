@@ -37,6 +37,8 @@ else
     warning(['The file', fullFileNamePath, ' does not exist and could not be deleted.']);
 end
 
+load('Ec_iJR904.mat')
+
 % use a different deck to convert a COBRA model to an SBML file
 modelSBML = convertCobraToSBML(model)
 
