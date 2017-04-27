@@ -17,7 +17,9 @@ function configEnvVars(printLevel)
                             '/opt/ibm/ILOG/CPLEX_Studio1262', '/opt/ibm/ILOG/CPLEX_Studio1263', '/opt/ibm/ILOG/CPLEX_Studio127', ...
                             'C:\Program Files\IBM\ILOG\CPLEX_Studio1262', 'C:\Program Files\IBM\ILOG\CPLEX_Studio1263', 'C:\Program Files\IBM\ILOG\CPLEX_Studio127'};
         solverPaths{2,1} = 'GUROBI_PATH';
-        solverPaths{2,2} = {'/Library/gurobi600', '/Library/gurobi650', '/Library/gurobi702', '/opt/gurobi650', '/opt/gurobi70', 'C:\gurobi600', 'C:\gurobi650', 'C:\gurobi70'};
+        solverPaths{2,2} = {'/Library/gurobi600', '/Library/gurobi650', '/Library/gurobi70', '/Library/gurobi700', '/Library/gurobi701', '/Library/gurobi702', ...
+                            '/opt/gurobi600', '/opt/gurobi650', '/opt/gurobi70', '/opt/gurobi700', '/opt/gurobi701', '/opt/gurobi702', ...
+                            'C:\gurobi600', 'C:\gurobi650', 'C:\gurobi70', 'C:\gurobi700', 'C:\gurobi701', 'C:\gurobi702'};
         solverPaths{3,1} = 'TOMLAB_PATH';
         solverPaths{3,2} = {'/opt/tomlab', 'C:\tomlab', '/Applications/tomlab'};
         solverPaths{4,1} = 'MOSEK_PATH';
