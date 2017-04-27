@@ -172,33 +172,29 @@ function initCobraToolbox()
     end
 
     % add the folders of The COBRA Toolbox
-    onPath = ~isempty(strfind(lower(path), lower(CBTDIR)));
-
     folders = {'tutorials', 'papers', 'binary', 'deprecated', 'src', 'test'};
 
-    if ~onPath
-        if ENV_VARS.printLevel
-            fprintf(' > Adding all the files of The COBRA Toolbox ... ')
-        end
+    if ENV_VARS.printLevel
+        fprintf(' > Adding all the files of The COBRA Toolbox ... ')
+    end
 
-        % add the root folder
-        addpath(CBTDIR);
+    % add the root folder
+    addpath(CBTDIR);
 
-        % add the external folder first
-        addpath(genpath([CBTDIR, filesep, 'external']));
+    % add the external folder first
+    addpath(genpath([CBTDIR, filesep, 'external']));
 
-        % remove the SBML Toolbox
-        rmpath(genpath([CBTDIR, filesep, 'external', filesep, 'SBMLToolbox']));
+    % remove the SBML Toolbox
+    rmpath(genpath([CBTDIR, filesep, 'external', filesep, 'SBMLToolbox']));
 
-        % add specific subfolders
-        for k = 1:length(folders)
-            addpath(genpath([CBTDIR, filesep, folders{k}]));
-        end
+    % add specific subfolders
+    for k = 1:length(folders)
+        addpath(genpath([CBTDIR, filesep, folders{k}]));
+    end
 
-        % print a success message
-        if ENV_VARS.printLevel
-            fprintf(' Done.\n');
-        end
+    % print a success message
+    if ENV_VARS.printLevel
+        fprintf(' Done.\n');
     end
 
     % Define default CB map output
