@@ -16,13 +16,14 @@ fileDir = fileparts(which('testModel2data'));
 cd(fileDir);
 
 % set paths to rBioNet database
-comp_path = [fileDir, '\compartments.mat'];
-met_path = [fileDir, '\metab.mat'];
-rxn_path = [fileDir, '\rxn.mat'];
-save([fileDir, '\rBioNetSettingsDB.mat'], 'comp_path', 'met_path', 'rxn_path')
+comp_path = [fileDir, filesep 'compartments.mat'];
+met_path = [fileDir, filesep 'metab.mat'];
+rxn_path = [fileDir, filesep 'rxn.mat'];
+save([fileDir, filesep 'rBioNetSettingsDB.mat'], 'comp_path', 'met_path', 'rxn_path')
 
 % load E. coli model
-load('Ecoli_core_model.mat')
+load('ecoli_core_model.mat', 'model');
+modelEcore = model;
 
 % model to data
 modelData = model2data(modelEcore, 1);
@@ -42,6 +43,9 @@ assert(length(cM) == length(modelEcore.mets))
 
 % test that the S matrices are identical
 assert(isequal(modelTest.S(tM, tR), modelEcore.S(eM, eR)))
+
+% delete the file
+delete('rBioNetSettingsDB.mat');
 
 % change the directory
 cd(currentDir)
