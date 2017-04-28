@@ -1,7 +1,7 @@
-% The COBRAToolbox: test_model2data.m
+% The COBRAToolbox: testModel2data.m
 %
 % Purpose:
-%     - test_rBioNet tests the functionality of the rBioNet functions
+%     - testModel2data tests the functionality of the rBioNet functions
 %     model2data and data2model
 %
 % Authors:
@@ -12,7 +12,7 @@
 currentDir = pwd;
 
 % initialize the test
-fileDir = fileparts(which('test_rBioNet.m'));
+fileDir = fileparts(which('testModel2data'));
 cd(fileDir);
 
 % set paths to rBioNet database
