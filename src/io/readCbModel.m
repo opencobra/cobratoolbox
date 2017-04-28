@@ -93,36 +93,68 @@ else
         defaultBound = 1000;
     end
 end
-if (nargin < 3)
-    fileType = 'SBML';
-    if (isempty(fileType))
-       fileType = 'SBML';
-    end
-end
 
-
+supportedFileExtensions = {'*.xml;*.sto;*.xls;*.xlsx;*.mat'};
 
 % Open a dialog to select file
-if (nargin < 1)
-    [fileNameFull,filePath] = uigetfile({'*.xml';'*.sto'});
-    if (fileNameFull)
-        [t1,t2,t3,t4,tokens] = regexp(fileNameFull,'(.*)\.(\w*)');
-        noPathName = tokens{1}{1};
-        fileTypeTmp = tokens{1}{2};
-        fileName = [filePath noPathName];
-    else
-        model = 0;
-        return;
+if ~exist('fileType','var') || isempty(fileType)
+    %if no filename was provided, we open a UI window.
+    if ~exist('fileName','var')
+        [fileName] = uigetfile([supportedFileExtensions,{'Model Files'}],'Please select the model file');
+    end    
+    [~,~,FileExtension] = fileparts(fileName);
+    if isempty(FileExtension)
+        %if we don't have a file extension, we try to see, which files
+        %could match.
+        cfiles = dir(pwd);
+        filenames = extractfield(cfiles,'name');
+        matchingFiles = filenames(~cellfun(@isempty, strfind(filenames,fileName)));
+        %Check, whether one of those files matches any of the available
+        %options
+        filesToSelect = matchingFiles(~cellfun(@isempty, regexp(matchingFiles,[fileName,'\.[(?:' strjoin(strrep(supportedFileExtensions,'*.',''), ')|(?:') ')]'])));
+        %If we have more than one valid match, we will have to ask for a
+        %selection via the gui.
+        if numel(filesToSelect) > 1
+            [fileName] = uigetfile([strrep(supportedFileExtensions,'*',fileName),{'Matching Models'}],'Please select the model file');        
+        end
+        if numel(filesToSelect) == 0
+            
+            [fileName] = uigetfile([strrep(supportedFileExtensions,'*',[fileName '*']),{'Matching Model Files'}],'Please select the model file');
+        end
+        if numel(filesToSelect) == 1
+            fileName = filesToSelect{1};
+        end
+        fileName
+        [~,~,FileExtension] = fileparts(fileName);        
     end
-    switch fileTypeTmp
-        case 'xml'
+    switch FileExtension
+        case '.xml'
             fileType = 'SBML';
-        case 'sto'
-            fileType = 'SimPheny';
+        case '.sto'
+            %Determine which SimPheny Fiels are present...  
+            [folder,fileBase,~] = fileparts(fileName);
+            if exist([folder filesep fileBase '_gpra.txt'],'file')
+                fileType = 'SimPhenyText';
+            else
+                if exist([folder filesep fileBase '_gpr.txt'],'file')
+                    fileType = 'SimPhenyPlus'
+                else
+                    fileType = 'SimPheny';
+                end
+            end
+        case '.xls'
+            fileType = 'Excel';
+        case '.xlsx'
+            fileType = 'Excel';
+        case '.mat'
+            fileType = 'Matlab';
         otherwise
-            error('Cannot process this file type');
+            error(['Cannot process files of type ' FileExtension]);
     end
+        
 end
+
+
 
 if (nargin < 4)
     if (exist('filePath'))
@@ -139,11 +171,7 @@ end
 
 switch fileType
     case 'SBML',
-        if isempty(regexp(fileName,'\.xml$', 'once'))
-            model = readSBML([fileName '.xml'],defaultBound,compSymbolList,compNameList);
-        else
-            model = readSBML(fileName,defaultBound,compSymbolList,compNameList);
-        end
+         model = readSBML(fileName,defaultBound,compSymbolList,compNameList);        
     case 'SimPheny',
         model = readSimPhenyCbModel(fileName,defaultBound,compSymbolList,compNameList);
     case 'SimPhenyPlus',
@@ -152,7 +180,22 @@ switch fileType
     case 'SimPhenyText',
         model = readSimPhenyCbModel(fileName,defaultBound,compSymbolList,compNameList);
         model = readSimPhenyGprText([fileName '_gpra.txt'],model);
-    otherwise,
+    case 'Excel'
+        model = xls2model(filename,[],defaultbound);
+    case 'Matlab'
+        S = load(fileName);
+        modeloptions = getModelOptions(S);        
+        if size(modeloptions,1) > 1
+            fprintf('There were multiple models in the mat file. Please select the model to load from the variables below\n')
+            disp(modeloptions(:,2));
+            varname = input('Type a variable name to select the model:','s');
+            modeloptions = {S.(varname),varname};
+        end
+        if size(modeloptions,1) == 0
+            error(['There were no valid models in the mat file.\n Please load the model manually via '' load ' fileName ''' and check it with checkModel() to validate it']);
+        end
+        model = modeloptions{1,1}; 
+    otherwise
         error('Unknown file type');
 end
 
@@ -167,6 +210,26 @@ model.b = zeros(length(model.mets),1);
 model.description = modelDescription;
 
 % End main function
+
+%% Extract potential models from the given loaded mat file (i.e. a struct of matlab elements)
+function models = getModelOptions(S)
+structFields = fieldnames(S);
+models = cell(0,2);
+for i=1:numel(structFields)
+    cfield = S.(structFields{i});
+    if isstruct(cfield)
+        try
+            res = checkModel(cfield);
+            if ~isfield(res,'Errors')
+                models{end+1,1} = cfield;
+                models{end,2} = structFields{i};
+            end
+        catch
+            %IF we are here, there was a problem in checkModel, so this is
+            %not a model.
+        end
+    end
+end
 
 %% Make sure reversibilities are correctly indicated in the model
 function model = checkReversibility(model)
