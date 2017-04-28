@@ -144,6 +144,7 @@ global TOMLAB_PATH;
 if isempty(SOLVERS) || isempty(OPT_PROB_TYPES)
     ENV_VARS.printLevel = false;
     initCobraToolbox;
+    ENV_VARS.printLevel = true;
 end
 
 % configure the environment variables
@@ -185,6 +186,7 @@ end
 if strcmpi(solverType, 'all')
     for i = 1:length(OPT_PROB_TYPES)
         changeCobraSolver(solverName, OPT_PROB_TYPES{i}, 0);
+        fprintf([' > CBT_', OPT_PROB_TYPES{i}, '_SOLVER has been set to ', solverName, '.\n']);
     end
     return
 end
@@ -294,11 +296,7 @@ end
 
 % set solver related global variables
 if solverOK
-    varName = horzcat(['CBT_', solverType, '_SOLVER']);
-    eval([varName ' =  solverName;']);
-    if strcmpi(solverType, 'all')
-        fprintf([' > ', varName, ' has been set to ', solverName, '.\n']);
-    end
+    eval(['CBT_', solverType, '_SOLVER = solverName;']);
 end
 
 end
