@@ -1,4 +1,4 @@
-function model = xls2model(fileName,biomassRxnEquation)
+function model = xls2model(fileName,biomassRxnEquation, defaultbound)
 % xls2model Writes a model from Excel spreadsheet.
 %
 % model = xls2model(fileName,biomassRxnEquation)
@@ -41,6 +41,8 @@ function model = xls2model(fileName,biomassRxnEquation)
 % biomassRxnEquation        .xls may have a 255 character limit on each cell,
 %                           so pass the biomass reaction separately if it hits this maximum.
 %
+% defaultbound              the deault bound for lower and upper bounds, if
+%                           no bounds are specified in the Excel sheet
 % OUTPUT
 % model         COBRA Toolbox model
 %
@@ -54,6 +56,10 @@ function model = xls2model(fileName,biomassRxnEquation)
 %                           HMDB ID.
 %
 warning off
+
+if ~exist('defaultbound','var')
+    defaultbound = 1000;
+end
 
 if isunix
     %assumes that one has an xls file with two tabs
@@ -116,12 +122,12 @@ end
 if ~isempty(strmatch('Lower bound',rxnHeaders,'exact'))
     lowerBoundList = cell2mat(rxnInfo(2:end,strmatch('Lower bound',rxnHeaders,'exact')));
 else
-    lowerBoundList = 1000*ones(length(rxnAbrList),1);
+    lowerBoundList = -defaultbound*ones(length(rxnAbrList),1);
 end
 if ~isempty(strmatch('Upper bound',rxnHeaders,'exact'))
     upperBoundList = cell2mat(rxnInfo(2:end,strmatch('Upper bound',rxnHeaders,'exact')));
 else
-    upperBoundList = 1000*ones(length(rxnAbrList),1);
+    upperBoundList = defaultbound*ones(length(rxnAbrList),1);
 end
 if ~isempty(strmatch('Objective',rxnHeaders,'exact'))
     Objective = cell2mat(rxnInfo(2:end,strmatch('Objective',rxnHeaders,'exact')));
