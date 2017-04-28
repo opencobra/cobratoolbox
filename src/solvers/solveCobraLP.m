@@ -100,6 +100,7 @@ function solution = solveCobraLP(LPproblem, varargin)
 global CBT_LP_SOLVER
 global MINOSPATH
 global DQQMINOSPATH
+global MINOS_PATH
 
 if ~isempty(CBT_LP_SOLVER)
     solver = CBT_LP_SOLVER;
@@ -452,81 +453,46 @@ switch solver
         % return to original directory
         cd(originalDirectory);
     case 'quadMinos'
-%         It is a prerequisite to have installed and compiled minos, qminos
-%         and the testFBA interface to minos and qminos, then don't alter
-%         the directory structure.
-%         cd quadLP  # top directory
-%         0. Check Makefile.defs (in top directory) and edit if necessary
-%         to select your Fortran compiler.
-%         The same file exists in the top directory of minos56 and qminos56.
-%         If necessary:
-%         cp Makefile.defs  minos56
-%         cp Makefile.defs qminos56
-%         cd minos56
-%         make       # makes lib/libminos.a and lib/minosdbg.a
-%         cd ../qminos56
-%         make       # makes lib/libquadminos.a and lib/libquadminosdbg.a
-%         cd ../testFBA
-%         make       # makes ../bin/solveLP and ../bin/qsolveLP
-%         Test the installation:
-%         ./runfba   solveLP TMA_ME lp1   # runs  solveLP with TMA_ME.txt, lp1.spc
-%         ./qrunfba qsolveLP TMA_ME lp2   # runs qsolveLP with TMA_ME.txt, lp2.spc
-
         if ~isunix
             error('Minos interface not yet implemented for non unix OS.')
         end
+
         % input precision     ('double') or 'single' precision
         precision = 'double';
-        % modelName     name is the problem name (a character string)
-        % modelName=['minosFBAprob-' date];
+
         modelName = 'qFBA';
 
-        % TODO: for some reason repeated system call to find minos path does not work, this is a workaround
-        %    % directory     the directory where optimization problem file is saved
-        %    [status,cmdout]=system('which minos');
-        %    if isempty(cmdout)
-        %        disp(cmdout);
-        %        [status,cmdout2]=system('echo $PATH');
-        %        disp(cmdout2);
-        %        error('Minos not installed or not on system path.')
-        %    else
-        %        quadLPPath=cmdout(1:end-length('/bin/minos')-1);
-        %    end
+        dataDirectory = [MINOS_PATH filesep 'data' filesep 'FBA'];
+        mkdir(dataDirectory);
 
-        quadLPPath = MINOSPATH;
-
-        dataDirectory = [quadLPPath '/data/FBA'];
         % write out flat file to current folder
-        % printLevel=2;
         [dataDirectory, fname] = writeMinosProblem(LPproblem, precision, modelName, dataDirectory, printLevel);
+
         % change system to testFBA directory
         originalDirectory = pwd;
-        cd([quadLPPath '/testFBA'])
-        %[status,cmdout]=system(['cd ' quadLPPath '/testFBA']);
+        cd([MINOS_PATH filesep 'testFBA']);
+
         % call minos
-        sysCall = [quadLPPath '/testFBA/runfba solveLP ' fname ' lp1'];
+        sysCall = [MINOS_PATH filesep 'testFBA' filesep 'runfba solveLP ' fname ' lp1'];
         [status, cmdout] = system(sysCall);
-        if status ~= 0
-           disp(sysCall)
-           disp(cmdout)
-           disp('Error. if the error is /bin/tcsh: bad interpreter: No such file or directory, then install tsch on your system')
-           error('Call to minos failed');
+
+        if status ~= 0 && status ~= 1
+           disp(sysCall);
+           disp(cmdout);
+           error('Call to minos failed.');
         end
+
         % call qminos
-        [status, cmdout] = system([quadLPPath '/testFBA/qrunfba qsolveLP ' fname ' lp2']);
-        % why is status returned 1 here?
-%         if status~=0
-%             disp(cmdout)
-%             error('Call to qminos failed');
-%         end
+        sysCall = [MINOS_PATH filesep 'testFBA' filesep 'qrunfba qsolveLP ' fname ' lp2'];
+        [status, cmdout] = system(sysCall);
+
         % read the solution
-        sol = readMinosSolution([quadLPPath '/testFBA/' fname '.sol']);
-        % disp(sol)
+        sol = readMinosSolution([MINOS_PATH filesep 'testFBA' filesep 'q' fname '.sol']);
+
         % The optimization problem solved by MINOS is assumed to be
         %        min   osense*s(iobj)
         %        st    Ax - s = 0    + bounds on x and s,
-        % where A has m rows and n columns.  The output structure "sol"
-        % contains the following data:
+        % where A has m rows and n columns.  The output structure "sol" contains the following data:
         %
         %        sol.inform          MINOS exit condition
         %        sol.m               Number of rows in A
@@ -543,7 +509,7 @@ switch solver
         %        sol.rc              n vector: reduced gradients for x.
         %        sol.y               m vector: dual variables for Ax - s = 0.
         x = sol.x;
-        f = c'* x;
+        f = c' * x;
         y = sol.y;
         w = sol.rc;
         origStat = sol.inform;
@@ -560,11 +526,28 @@ switch solver
         else
             stat = -1;  % Solution not optimal or solver problem
         end
+
         % cleanup
-        delete([dataDirectory '/' fname '.txt'])
-        delete([quadLPPath '/testFBA/' fname '.sol'])
+        fileEnding = {'.sol', '.out', '.newbasis', '.basis', '.finalbasis'};
+        addFileName = {'', 'q'};
+
+        % remove temporary data directories
+        rmdir(dataDirectory, 's');
+        rmdir([MINOS_PATH filesep 'data'], 's');
+
+        % remove temporary solver files
+        for k = 1:length(fileEnding)
+            for q = 1:length(addFileName)
+                tmpFileName = [MINOS_PATH filesep 'testFBA' filesep addFileName{q} fname fileEnding{k}];
+                if exist(tmpFileName, 'file') == 2
+                    delete(tmpFileName);
+                end
+            end
+        end
+
         % return to original directory
         cd(originalDirectory);
+
     case 'glpk'
         %% GLPK
         param.msglev = printLevel;  % level of verbosity

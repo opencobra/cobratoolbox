@@ -133,6 +133,7 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel)
 % Original file: Markus Herrgard 1/19/07
 
 global SOLVERS;
+global CBTDIR;
 global OPT_PROB_TYPES;
 global CBT_LP_SOLVER;
 global CBT_MILP_SOLVER;
@@ -141,6 +142,7 @@ global CBT_MIQP_SOLVER;
 global CBT_NLP_SOLVER;
 global ENV_VARS;
 global TOMLAB_PATH;
+global MINOS_PATH;
 
 if isempty(SOLVERS) || isempty(OPT_PROB_TYPES)
     ENV_VARS.printLevel = false;
@@ -282,7 +284,13 @@ switch solverName
     case 'mps'
         solverOK = checkSolverInstallationFile(solverName, 'BuildMPS', printLevel);
     case 'quadMinos'
-        solverOK = checkSolverInstallationExecutable(solverName, 'minos', true, printLevel);
+        if isunix
+            os = 'linux';
+            if ismac, os = 'mac'; end
+            MINOS_PATH = [CBTDIR filesep 'binary' filesep 'bin' filesep os filesep 'minos'];
+
+            solverOK = checkSolverInstallationFile(solverName, 'minos', printLevel);
+        end
     case 'dqqMinos'
         solverOK = checkSolverInstallationExecutable(solverName, 'run1DQQ', true, printLevel);
     case 'opti'
@@ -351,7 +359,7 @@ function solverOK = checkSolverInstallationFile(solverName, fileName, printLevel
 %     solverOK: true if filename exists, false otherwise.
 %
     solverOK = false;
-    if exist(fileName, 'file') == 2 || exist(fileName, 'file') == 3
+    if exist(fileName, 'file') >= 2
         solverOK = true;
     elseif printLevel > 0
         error('Solver %s is not installed!', solverName)
@@ -383,7 +391,7 @@ function solverOK = checkSolverInstallationExecutable(solverName, executableName
         if isempty(cmdout) && printLevel > 0
             error('Solver %s is not installed. %s could not be found in your path. Check your PATH environement variable.', solverName, executableName);
         else
-            solverOk = true;
+            solverOK = true;
         end
     end
 end
