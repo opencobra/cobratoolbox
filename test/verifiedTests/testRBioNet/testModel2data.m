@@ -22,7 +22,7 @@ rxn_path = [fileDir, '\rxn.mat'];
 save([fileDir, '\rBioNetSettingsDB.mat'], 'comp_path', 'met_path', 'rxn_path')
 
 % load E. coli model
-load('E_coli_core.mat')
+load('Ecoli_core_model.mat')
 
 % model to data
 modelData = model2data(modelEcore, 1);
