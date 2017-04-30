@@ -40,6 +40,7 @@ for i = 1:length(features)
         fileSave = rBioNetSaveLoad('save', features{i}, fileLoad);
     elseif strcmp(features{i}, 'met')
         fileSave = rBioNetSaveLoad('save', features{i}, fileLoad);
+        metab = fileLoad; % need metab data for rBioNet_search test
     elseif strcmp(features{i}, 'rxn')
         fileSave = rBioNetSaveLoad('save', features{i}, fileLoad);
     end
