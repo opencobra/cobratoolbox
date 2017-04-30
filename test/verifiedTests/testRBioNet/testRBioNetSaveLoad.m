@@ -37,11 +37,11 @@ for i = 1:length(features)
 
     % save file
     if strcmp(features{i}, 'comp')
-        fileSave = rBioNetSaveLoad('save', features{i}, compartments);
+        fileSave = rBioNetSaveLoad('save', features{i}, fileLoad);
     elseif strcmp(features{i}, 'met')
-        fileSave = rBioNetSaveLoad('save', features{i}, metab);
+        fileSave = rBioNetSaveLoad('save', features{i}, fileLoad);
     elseif strcmp(features{i}, 'rxn')
-        fileSave = rBioNetSaveLoad('save', features{i}, rxn);
+        fileSave = rBioNetSaveLoad('save', features{i}, fileLoad);
     end
     
     % test if saved file
