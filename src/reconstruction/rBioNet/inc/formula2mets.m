@@ -16,13 +16,4 @@
 function metabolites = formula2mets(formula)
 
 mets = parseRxnFormula(formula);
-mets = mets{1};
-metabs = {};
-for i = 1:length(mets)
-    met_i = mets{i};
-    brack = regexpi(met_i,'[');
-    if ~isempty(brack)
-        metabs = [metabs met_i(1:brack-1)];
-    end
-end
-metabolites = metabs;
+metabolites = regexprep(mets, '\[.+\]', '');
