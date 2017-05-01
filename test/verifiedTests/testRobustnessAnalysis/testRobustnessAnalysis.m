@@ -1,33 +1,41 @@
-function x = testRobustnessAnalysis()
-%testRobustnessAnalysis tests the basic functionality of robustnessAnalysis
-%   and doubleRobustnessAnalysis
+% The COBRAToolbox: testRobustnessAnalysis.m
+%
+% Purpose:
+%     - %testRobustnessAnalysis tests the basic functionality of robustnessAnalysis
+%       and doubleRobustnessAnalysis
+%       robustnessAnalysis Performs robustness analysis for a reaction of
+%       interest and an objective of interest
+%
+%       [controlFlux, objFlux] = robustnessAnalysis(model, controlRxn, nPoints,
+%       plotResFlag, objRxn, objType)
+%       This function is used to compute and plot the value of the model objective
+%       function as a function of flux values for a reaction of interest (controlRxn)
+%       as a means to analyze the network robustness with respect to that reaction.
+%
+%       doubleRobustnessAnalysis Performs robustness analysis for a pair of reactions of
+%       interest and an objective of interest
+%
+%       [controlFlux1, controlFlux2, objFlux] = doubleRobustnessAnalysis(model,
+%       controlRxn1, controlRxn2, nPoints, plotResFlag, objRxn, objType)
+%
 
-%robustnessAnalysis Performs robustness analysis for a reaction of
-%   interest and an objective of interest
-%
-%   [controlFlux, objFlux] = robustnessAnalysis(model, controlRxn, nPoints,
-%   plotResFlag, objRxn, objType)
-%   This function is used to compute and plot the value of the model objective
-%   function as a function of flux values for a reaction of interest (controlRxn) 
-%   as a means to analyze the network robustness with respect to that reaction.
-%
-%%doubleRobustnessAnalysis Performs robustness analysis for a pair of reactions of
-%   interest and an objective of interest
-%
-%   [controlFlux1, controlFlux2, objFlux] = doubleRobustnessAnalysis(model,
-%   controlRxn1, controlRxn2, nPoints, plotResFlag, objRxn, objType)
-%
+global CBTDIR
 
-x=1;
-tol = 0.001;
+% save the current path
+currentDir = pwd;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Testing robustnessAnalysis %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% initialize the test
+fileDir = fileparts(which('testGpSampler'));
+cd(fileDir);
+
+% set the tolerance
+tol = 1e-3;
+
+% Testing robustnessAnalysis
 
 % 1. Set input parameters.
-load('ecoli_core_model.mat');
-controlRxn = 'PFK'
+load('ecoli_core_model.mat', 'model');
+controlRxn = 'PFK';
 
 % 2. Run robustnessAnalysis.
 figure(1);
@@ -50,16 +58,10 @@ objExpected = [0.7040;0.8650;0.8194;
         0.0491;0;];
 
 %4. Check if obtained values match with expected ones within tolerance.
-if all(abs(controlFlux - controlExpected) < tol) && all(abs(objFlux - objExpected) < tol)
-    disp('robustnessAnalysis returned the correct solution')
-else
-    disp('robustnessAnalysis returned the incorrect solution')
-    x= 0;
-end
+assert(all(abs(controlFlux - controlExpected) < tol))
+assert(all(abs(objFlux - objExpected) < tol))
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Testing doubleRobustnessAnalysis %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Testing doubleRobustnessAnalysis
 
 % 1. Set input parameters.
 controlRxn1 = 'PGI';
@@ -79,14 +81,12 @@ objExpected = [0,0,0,0,0;
     0,0,0,0,0;];
 
 %4. Check if obtained values match with expected ones within tolerance.
-if all(abs(controlFlux1 - controlExpected1) < tol) && all(abs(controlFlux2 - controlExpected2) < tol) && all(all(abs(objFlux - objExpected) < tol))
-    disp('doubleRobustnessAnalysis returned the correct solution')
-else
-    disp('doubleRobustnessAnalysis returned the incorrect solution')
-    x= 0;
-end
-%close figures
-close;
-close;
-end
+assert(all(abs(controlFlux1 - controlExpected1) < tol))
+assert(all(abs(controlFlux2 - controlExpected2) < tol))
+assert(all(all(abs(objFlux - objExpected) < tol)))
 
+% close figures
+close all;
+
+% change the directory
+cd(currentDir)
