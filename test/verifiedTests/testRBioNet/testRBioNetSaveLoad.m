@@ -31,8 +31,8 @@ features = {'comp', 'met', 'rxn'};
 for i = 1:length(features)
     % load file
     fileLoad = rBioNetSaveLoad('load', features{i});
-    
-    % test if loaded file 
+
+    % test if loaded file
     assert(~isempty(fileLoad))
 
     % save file
@@ -44,7 +44,7 @@ for i = 1:length(features)
     elseif strcmp(features{i}, 'rxn')
         fileSave = rBioNetSaveLoad('save', features{i}, fileLoad);
     end
-    
+
     % test if saved file
     assert(logical(fileSave))
 end
@@ -60,6 +60,11 @@ end
 
 % delete rBioNet settings file
 delete([fileDir, filesep 'rBioNetSettingsDB.mat'])
+
+% remove git tracking
+system('git checkout -- compartments.mat')
+system('git checkout -- metab.mat')
+system('git checkout -- rxn.mat')
 
 % change the directory
 cd(currentDir)
