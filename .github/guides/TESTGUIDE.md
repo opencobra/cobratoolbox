@@ -72,11 +72,13 @@ A test template is readily available [here](https://github.com/opencobra/cobrato
 #### 2. Test initialization
 
 ````Matlab
+global CBTDIR
+
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-cd(fileparts(which(mfilename)));
+cd(fileparts(which('fileName')));
 ````
 
 #### 3. Define the solver packages to be tested and the tolerance
@@ -93,7 +95,7 @@ solverPkgs = {'tomlab_cplex', 'glpk', 'gurobi6'};
 
 ```Matlab
 % load the model
-load('modelFile.mat', 'model');
+load([CBTDIR filesep 'test' filesep 'models' filesep 'testModel.mat'], 'model');
 load('testData_functionToBeTested.mat');
 ```
 

@@ -1,12 +1,14 @@
 % The COBRAToolbox: testNeighborRxn2data.m
 %
 % Purpose:
-%     - testNeighborRxn2data tests the functionality of neighborRxn2data in 
+%     - testNeighborRxn2data tests the functionality of neighborRxn2data in
 %       the rBioNet extension
 %
 % Authors:
 %     - Stefania Magnusdottir April 2017
 %
+
+global CBTDIR
 
 % save the current path
 currentDir = pwd;
@@ -16,7 +18,7 @@ fileDir = fileparts(which('testNeighborRxn2data'));
 cd(fileDir);
 
 % load E. coli model
-load('ecoli_core_model.mat', 'model')
+load([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 % equires EC number field
 model.ecNumbers = cell(size(model.rxns));%requires EC number field
