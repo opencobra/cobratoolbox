@@ -8,6 +8,8 @@
 %     - Stefania Magnusdottir April 2017
 %
 
+global CBTDIR
+
 % save the current path
 currentDir = pwd;
 
@@ -22,7 +24,7 @@ rxn_path = [fileDir, filesep 'rxn.mat'];
 save([fileDir, filesep 'rBioNetSettingsDB.mat'], 'comp_path', 'met_path', 'rxn_path')
 
 % load E. coli model
-load('ecoli_core_model.mat', 'model');
+load([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 modelEcore = model;
 
 % model to data

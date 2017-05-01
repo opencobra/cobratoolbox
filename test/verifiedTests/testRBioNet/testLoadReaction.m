@@ -8,6 +8,8 @@
 %     - Stefania Magnusdottir April 2017
 %
 
+global CBTDIR
+
 % save the current path
 currentDir = pwd;
 
@@ -16,7 +18,7 @@ fileDir = fileparts(which('testLoadReaction'));
 cd(fileDir);
 
 % load E. coli model
-load('ecoli_core_model.mat', 'model')
+load([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 % load reaction and metabolite databases
 load([fileDir, filesep 'metab.mat'])

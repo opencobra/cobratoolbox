@@ -7,6 +7,8 @@
 %     - <major change>: <your name> <date>
 %
 
+global CBTDIR
+
 % save the current path
 currentDir = pwd;
 
@@ -20,7 +22,7 @@ tol = 1e-8;
 solverPkgs = {'tomlab_cplex', 'glpk', 'gurobi6'};
 
 % load the model
-load('modelFile.mat', 'model');
+load([CBTDIR filesep 'test' filesep 'models' filesep 'testModel.mat'], 'model');
 load('testData_functionToBeTested.mat');
 
 %{
