@@ -356,7 +356,6 @@ function initCobraToolbox()
 
     % print out a summary table
     solverTypeInstalled = zeros(length(OPT_PROB_TYPES), 1);
-    solverStatuss = '-' * ones(length(supportedSolversNames), length(OPT_PROB_TYPES) + 1);
     solverStatus = -1 * ones(length(supportedSolversNames), length(OPT_PROB_TYPES) + 1);
     catList = cell(length(supportedSolversNames), 1);
     for i = 1:length(supportedSolversNames)
@@ -366,7 +365,6 @@ function initCobraToolbox()
             k = find(ismember(OPT_PROB_TYPES, types{j}));
             if SOLVERS.(supportedSolversNames{i}).installed
                 solverStatus(i, k + 1) = 1;
-                solverStatuss(i, k + 1) = '1';
                 solverTypeInstalled(k) = solverTypeInstalled(k) + 1;
 
                 % set the default MIQP solver based on the solvers that are installed
@@ -375,7 +373,6 @@ function initCobraToolbox()
                 end
             else
                 solverStatus(i, k + 1) = 0;
-                solverStatuss(i, k + 1) = '0';
             end
         end
     end
@@ -396,12 +393,23 @@ function initCobraToolbox()
     catList{end + 1} = '----------';
     catList{end + 1} = '-';
 
-    solverStatuss(end + 1, :) = ' ' * ones(1, length(OPT_PROB_TYPES) + 1);
-    solverStatuss(end + 1, 2:end) = num2str(solverTypeInstalled)';
-    solverStatuss = char(solverStatuss);
     rowNames = [supportedSolversNames; '----------'; 'Total'];
 
-    solverSummary = table(categorical(catList), solverStatuss(:, 2), solverStatuss(:, 3), solverStatuss(:, 4), solverStatuss(:, 5), solverStatuss(:, 6), 'RowNames', rowNames, 'VariableNames', ['Support', OPT_PROB_TYPES]);
+    solverStatus(end + 1, :) = ones(1, length(OPT_PROB_TYPES) + 1);
+    solverStatus(end + 1, 2:end) = solverTypeInstalled';
+
+    statusTable = {};
+    for k = 1:5
+        statusTable{k} = cellstr(num2str(solverStatus(:, k+1)));
+        for p = 1:length(solverStatus(:, k+1))
+            if strcmp(statusTable{k}(p), '-1')
+                statusTable{k}(p) = {'-'};
+            end
+        end
+        statusTable{k}(end-1) = {'----'};
+    end
+
+    solverSummary = table(categorical(catList), categorical(statusTable{1}), categorical(statusTable{2}), categorical(statusTable{3}), categorical(statusTable{4}), categorical(statusTable{5}), 'RowNames', rowNames, 'VariableNames', ['Support', OPT_PROB_TYPES]);
 
     if ENV_VARS.printLevel
         fprintf('\n > Summary of available solvers and solver interfaces\n\n');

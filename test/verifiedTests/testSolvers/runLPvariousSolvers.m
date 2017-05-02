@@ -50,7 +50,7 @@ for k = 1:length(solverPkgs)
         if exist('opts', 'var')
             clear opts
         end
-        solverOK = changeCobraSolver(solver, 'LP');
+        solverOK = changeCobraSolver(solver, 'LP', 0);
         opts.solver = 'clp';
         opts.tolrfun = 1e-9;
         opts.tolafun = 1e-9;
@@ -63,7 +63,7 @@ for k = 1:length(solverPkgs)
         if exist('opts', 'var')
             clear opts
         end
-        solverOK = changeCobraSolver(solver, 'LP');
+        solverOK = changeCobraSolver(solver, 'LP', 0);
         opts.solver = 'clp';
         opts.tolrfun = 1e-9;
         opts.tolafun = 1e-9;
@@ -74,10 +74,10 @@ for k = 1:length(solverPkgs)
         i = i + 1;
 
         % note that scip does not return the dual solution
-            if exist('opts', 'var')
+        if exist('opts', 'var')
             clear opts
         end
-        solverOK = changeCobraSolver(solver, 'LP');
+        solverOK = changeCobraSolver(solver, 'LP', 0);
         opts.solver = 'scip';
         solution{i} = solveCobraLP(model, 'printLevel', 3, ...
                                    'optTol', 1e-9, ...
@@ -87,7 +87,7 @@ for k = 1:length(solverPkgs)
         if exist('opts', 'var')
             clear opts
         end
-        solverOK = changeCobraSolver(solver, 'LP');
+        solverOK = changeCobraSolver(solver, 'LP', 0);
         opts.solver = 'auto';
         opts.algorithm = 'automatic';
         solution{i} = solveCobraLP(model, 'printLevel', 3, ...
@@ -98,7 +98,7 @@ for k = 1:length(solverPkgs)
         if exist('opts', 'var')
             clear opts
         end
-        solverOK = changeCobraSolver(solver, 'LP');
+        solverOK = changeCobraSolver(solver, 'LP', 0);
         opts.solver = 'auto';
         solution{i} = solveCobraLP(model, 'printLevel', 3, ...
                                    'optTol', 1e-9, ...
@@ -106,20 +106,29 @@ for k = 1:length(solverPkgs)
         i = i + 1;
     end
 
-    if strcmp(solver, 'dqqMinos')
-        solverOK = changeCobraSolver(solver, 'LP');
-        if solverOK
-            param.Method = 1;
-            solution{i} = solveCobraLP(model, param);
-            i = i + 1;
-            clear param
+    if strcmp(solver, 'dqqMinos') || strcmp(solver, 'quadMinos')
+        [stat, res] = system('which csh');
+        if ~isempty(res) && stat == 0
+            solverOK = changeCobraSolver(solver, 'LP', 0);
+            if solverOK
+                if strcmp(solver, 'dqqMinos')
+                    param.Method = 1;
+                    solution{i} = solveCobraLP(model, param);
+                    clear param
+                elseif strcmp(solver, 'quadMinos')
+                    solution{i} = solveCobraLP(model);
+                end
+                i = i + 1;
+            end
+        else
+            warning(['You must have `csh` installed. Solver ', solver, ' cannot be tested.']);
         end
     end
 
     if strcmp(solver, 'gurobi')
 
         % by default, the check for stoichiometric consistency omits the columns of S corresponding to exchange reactions
-        solverOK = changeCobraSolver(solver, 'LP');
+        solverOK = changeCobraSolver(solver, 'LP', 0);
 
         if solverOK
             for method = 1:4
@@ -134,7 +143,7 @@ for k = 1:length(solverPkgs)
     if strcmp(solver, 'mosek')
 
         % by default, the check for stoichiometric consistency omits the columns of S corresponding to exchange reactions
-        solverOK = changeCobraSolver(solver, 'LP');
+        solverOK = changeCobraSolver(solver, 'LP', 0);
 
         mskIPARoptimizers = {'MSK_OPTIMIZER_PRIMAL_SIMPLEX', 'MSK_OPTIMIZER_DUAL_SIMPLEX', 'MSK_OPTIMIZER_INTPNT'};
 
@@ -163,11 +172,13 @@ for k = 1:length(solverPkgs)
         % 4 Barrier (Interior point method)
         % 5 Sifting
         % 6 Concurrent Dual, Barrier and Primal
-        solverOK = changeCobraSolver(solver, 'LP');
+        solverOK = changeCobraSolver(solver, 'LP', 0);
 
         if solverOK
             % test solveCobraLPCPLEX
             solution{i} = solveCobraLPCPLEX(model);
+            solution{i}.solver = solver;
+            solution{i}.algorithm = 'default';
             i = i + 1;
 
             % test solveCobraLP
@@ -183,7 +194,7 @@ for k = 1:length(solverPkgs)
     end
 
     if strcmp(solver, 'pdco')
-        solverOK = changeCobraSolver(solver, 'LP');
+        solverOK = changeCobraSolver(solver, 'LP', 0);
         if solverOK
             solution{i} = solveCobraLP(model, 'feasTol', params.feasTol, ...
                                        'pdco_method', params.pdco_method, ...
@@ -194,8 +205,8 @@ for k = 1:length(solverPkgs)
         end
     end
 
-    if strcmp(solver, 'cplex_direct') || strcmp(solver, 'glpk') || strcmp(solver, 'quadMinos') || strcmp(solver, 'matlab')
-        solverOK = changeCobraSolver(solver, 'LP');
+    if strcmp(solver, 'cplex_direct') || strcmp(solver, 'glpk') || strcmp(solver, 'matlab') || strcmp(solver, 'tomlab_cplex')
+        solverOK = changeCobraSolver(solver, 'LP', 0);
         if solverOK
             solution{i} = solveCobraLP(model);
             i = i + 1;
@@ -204,7 +215,7 @@ for k = 1:length(solverPkgs)
 
     % solver with Windows-only compatibility
     if ispc && strcmp(solver, 'lp_solve')
-        solverOK = changeCobraSolver(solver, 'LP');
+        solverOK = changeCobraSolver(solver, 'LP', 0);
         if solverOK
             solution{i} = solveCobraLP(model);
             i = i + 1;
@@ -214,9 +225,11 @@ for k = 1:length(solverPkgs)
     % legacy interfaces
     if strcmp(solver, 'mosek_linprog')
         % test if mosek is installed
-        solverOK = changeCobraSolver('mosek', 'LP');
-        solution{i} = solveCobraLP(model, 'solver', 'mosek_linprog');
-        i = i + 1;
+        solverOK = changeCobraSolver('mosek', 'LP', 0);
+        if solverOK
+            solution{i} = solveCobraLP(model, 'solver', 'mosek_linprog');
+            i = i + 1;
+        end
     end
 
     fprintf('Done.\n');

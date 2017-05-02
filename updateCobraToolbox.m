@@ -32,9 +32,11 @@ function updateCobraToolbox(fetchAndCheckOnly)
         % determine the number of commits that the local master branch is behind
         if status_gitCheckMaster == 0
             [status_gitCountMaster, result_gitCountMaster] = system('git rev-list --left-right --count master...origin/master');
-            commitsAheadBehindMaster = str2num(char(split(result_gitCountMaster)));
-            if commitsAheadBehindMaster(1) > 0
-                fprintf(' > Your branch <master> is ahead by %d commit(s).\n', commitsAheadBehindMaster(1));
+            if status_gitCountMaster == 0
+                commitsAheadBehindMaster = str2num(char(strsplit(result_gitCountMaster)));
+                if commitsAheadBehindMaster(1) > 0
+                    fprintf(' > Your branch <master> is ahead by %d commit(s).\n', commitsAheadBehindMaster(1));
+                end
             end
         else
             status_gitCountMaster = 0;
@@ -47,9 +49,11 @@ function updateCobraToolbox(fetchAndCheckOnly)
         % determine the number of commits that the local develop branch is behind
         if status_gitCheckDevelop == 0
             [status_gitCountDevelop, result_gitCountDevelop] = system('git rev-list --left-right --count develop...origin/develop');
-            commitsAheadBehindDevelop = str2num(char(split(result_gitCountDevelop)));
-            if commitsAheadBehindDevelop(1) > 0
-                fprintf(' > Your branch <develop> is ahead by %d commit(s).\n', commitsAheadBehindDevelop(1));
+            if status_gitCountDevelop == 0
+                commitsAheadBehindDevelop = str2num(char(strsplit(result_gitCountDevelop)));
+                if commitsAheadBehindDevelop(1) > 0
+                    fprintf(' > Your branch <develop> is ahead by %d commit(s).\n', commitsAheadBehindDevelop(1));
+                end
             end
         else
             status_gitCountDevelop = 0;
