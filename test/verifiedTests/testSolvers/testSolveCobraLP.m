@@ -87,7 +87,7 @@ end
 
 % define solver packages
 solverPkgs={'cplex_direct', 'glpk', 'gurobi', 'ibm_cplex', 'matlab', 'mosek', ...
-            'pdco', 'quadMinos', 'tomlab_cplex', 'lp_solve', 'mosek_linprog'}; %'dqqMinos'
+            'pdco', 'quadMinos', 'tomlab_cplex', 'lp_solve', 'mosek_linprog', 'dqqMinos'}; %
 
 % load the ecoli_core_model
 load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
@@ -108,8 +108,9 @@ params.pdco_zsize = 1e-1;
 % test here the output
 assert(abs(min(all_obj) - max(all_obj)) < tol)
 
+clear model
 model.c = [200; 400];
-model.A = [1/40, 1/60; 1/50, 1/50];
+model.S = [1/40, 1/60; 1/50, 1/50];
 model.b = [1; 1];
 model.lb = [0; 0];
 model.ub = [1; 1];

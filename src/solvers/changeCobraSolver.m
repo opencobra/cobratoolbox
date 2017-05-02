@@ -153,6 +153,9 @@ end
 % configure the environment variables
 configEnvVars();
 
+% set path to MINOS and DQQ
+MINOS_PATH = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'minos' filesep];
+
 % legacy support for MPS (will be removed in future release)
 if nargin > 0 && strcmpi(solverName, 'mps')
     fprintf(' > The interface to ''mps'' from ''changeCobraSolver()'' is no longer supported.');
@@ -285,14 +288,12 @@ switch solverName
         solverOK = checkSolverInstallationFile(solverName, 'BuildMPS', printLevel);
     case 'quadMinos'
         if isunix
-            os = 'linux';
-            if ismac, os = 'mac'; end
-            MINOS_PATH = [CBTDIR filesep 'binary' filesep 'bin' filesep os filesep 'minos'];
-
             solverOK = checkSolverInstallationFile(solverName, 'minos', printLevel);
         end
     case 'dqqMinos'
-        solverOK = checkSolverInstallationExecutable(solverName, 'run1DQQ', true, printLevel);
+        if isunix
+            solverOK = checkSolverInstallationExecutable(solverName, 'run1DQQ', true, printLevel);
+        end
     case 'opti'
         optiSolvers = {'CLP', 'CSDP', 'DSDP', 'OOQP', 'SCIP'};
         if ~isempty(which('checkSolver'))

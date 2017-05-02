@@ -297,11 +297,11 @@ function initCobraToolbox()
     SOLVERS.tomlab_cplex.categ = 'full';
 
     % definition of category of solvers with experimental support
-    SOLVERS.opti.categ = 'experimental';
     SOLVERS.qpng.categ = 'experimental';
     SOLVERS.tomlab_snopt.categ = 'experimental';
 
     % definition of category of solvers with legacy support
+    SOLVERS.opti.categ = 'legacy';
     SOLVERS.gurobi_mex.categ = 'legacy';
     SOLVERS.lindo_old.categ = 'legacy';
     SOLVERS.lindo_legacy.categ = 'legacy';

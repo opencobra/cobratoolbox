@@ -97,6 +97,7 @@ function solution = solveCobraLP(LPproblem, varargin)
 
 %% Process arguments etc
 
+global CBTDIR
 global CBT_LP_SOLVER
 global MINOSPATH
 global DQQMINOSPATH
@@ -268,6 +269,13 @@ algorithm = 'default';
 t_start = clock;
 switch solver
     case 'opti'
+        if isunix
+            error('OPTI is not compatible with UNIX systems (macOS or Linux).')
+        end
+
+        if verLessThan('matlab', '8.4')
+            error('OPTI is not compatible with a version of MATLAB later than 2014b.');
+        end
         % J. Currie and D. I. Wilson, "OPTI: Lowering the Barrier Between Open
         % Source Optimizers and the Industrial MATLAB User," Foundations of
         % Computer-Aided Process Operations, Georgia, USA, 2012
@@ -277,12 +285,12 @@ switch solver
         % since solveCobraLP already includes calls to LP_SOLVE and GLPK, they
         % will not be included. In case the solver is not specified by user,
         % opti auto selects the solver depending on problem type
-%         if parametersStructureFlag
-%             opts = setupOPTIoptions(parametersStructureFlag,directParamStruct);
-%         else
-%             opts = setupOPTIoptions(printLevel,optTol,...
-%                          OPTIsolver,OPTIalgorithm);
-%         end
+        % if parametersStructureFlag
+        %     opts = setupOPTIoptions(parametersStructureFlag,directParamStruct);
+        % else
+        %     opts = setupOPTIoptions(printLevel,optTol,...
+        %     OPTIsolver,OPTIalgorithm);
+        % end
         if ~isempty(fieldnames(solverParams))
             opts = setupOPTIoptions(solverParams, 'printLevel', printLevel, ...
                                              'optTol', optTol);
@@ -351,21 +359,25 @@ switch solver
             f = obj;
         end
         [w, y, algorithm, stat, origStat, t] = parseOPTIresult(exitflag, info);
+
     case 'dqqMinos'
         if ~isunix
-            error('dqqMinos interface not yet implemented for non unix OS.')
+            error('dqqMinos can only be used on UNIX systems (macOS or Linux).')
         end
 
-        if isfield(solverParams, 'mpsParentFolderPath')
-            mpsParentFolderPath = solverParams.mpsParentFolderPath;
-        else
-            % use current path for MPS folder
-            mpsParentFolderPath = pwd;
-        end
-        if ~exist(mpsParentFolderPath, 'dir')
-            mkdir([mpsParentFolderPath filesep 'MPS'])
+        % save the original directory
+        originalDirectory = pwd;
+
+        % set the temporary path to the DQQ solver
+        tmpPath = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'DQQ'];
+        cd(tmpPath);
+
+        % create the
+        if ~exist([tmpPath filesep 'MPS'], 'dir')
+            mkdir([tmpPath filesep 'MPS'])
         end
 
+        % set the name of the MPS file
         if isfield(solverParams, 'MPSfilename')
             MPSfilename = solverParams.MPSfilename;
         else
@@ -376,39 +388,26 @@ switch solver
             end
         end
 
-        % use Stanford code to write mps file
-        % fname=writeMINOSMPS(LPproblem,mpsParentFolderPath,printLevel);
-        tempFileName = MPSfilename(1:min(8, length(MPSfilename)));
-        if exist([mpsParentFolderPath filesep 'MPS' filesep tempFileName '.mps'], 'file')
-            MPSfilename = tempFileName;
-        else
-            longMPSfilename = MPSfilename;
-            MPSfilename = writeMINOSMPS(A, b, c, lb, ub, csense, osense, longMPSfilename, mpsParentFolderPath, printLevel);
+        % write out an .MPS file
+        MPSfilename = MPSfilename(1:min(8, length(MPSfilename)));
+        if ~exist([tmpPath filesep 'MPS' filesep MPSfilename '.mps'], 'file')
+            cd('MPS');
+            convertCobraLP2mps(LPproblem, MPSfilename);
+            cd('..');
         end
-        % legacy
-        % input precision     ('double') or 'single' precision
-        % precision='double';
 
-        % write out the mps file to the dataDirectory
-        % writeCbModel(LPproblem, 'mps', [dataDirectory '/dqqFBA'], [], [], [], [], solverParams);
-
-        % need to change to DDQ directory, need to improve on this - Ronan
-        originalDirectory = pwd;
-        cd(DQQMINOSPATH)
-        sysCall = ['run1DQQ ' MPSfilename ' ' mpsParentFolderPath];
+        % run the DQQ procedure
+        sysCall = ['./run1DQQ ' MPSfilename ' ' tmpPath];
         [status, cmdout] = system(sysCall);
-        % why is status returned 1 here?
         if status ~= 0
-            disp('\n')
-            disp(sysCall)
+            fprintf(['\n', sysCall]);
             disp(cmdout)
             error('Call to dqq failed');
         end
 
         % read the solution
-        solfname = [mpsParentFolderPath filesep 'results' filesep MPSfilename '.sol'];
+        solfname = [tmpPath filesep 'results' filesep MPSfilename '.sol'];
         sol = readMinosSolution(solfname);
-        % disp(sol)
         % The optimization problem solved by MINOS is assumed to be
         %        min   osense*s(iobj)
         %        st    Ax - s = 0    + bounds on x and s,
@@ -440,28 +439,38 @@ switch solver
         % Note that status handling may change (see lp_lib.h)
         if (origStat == 0)
             stat = 1;  % Optimal solution found
-%         elseif (origStat == 3)
-%             stat = 2; % Unbounded
-%         elseif (origStat == 2)
-%             stat = 0; % Infeasible
+        % elseif (origStat == 3)
+        %     stat = 2; % Unbounded
+        % elseif (origStat == 2)
+        %     stat = 0; % Infeasible
         else
             stat = -1;  % Solution not optimal or solver problem
         end
         % cleanup
-        % delete(solfname)
+        rmdir([tmpPath filesep 'results'], 's');
+        fortFiles = [4, 9, 10, 11, 12, 13, 60, 81];
+        for k = 1:length(fortFiles)
+            delete(['fort.', num2str(fortFiles(k))]);
+        end
+
+        % remove the temporary .mps model file
+        rmdir([tmpPath filesep 'MPS'], 's')
 
         % return to original directory
         cd(originalDirectory);
+
     case 'quadMinos'
         if ~isunix
-            error('Minos interface not yet implemented for non unix OS.')
+            error('Minos and quadMinos can only be used on UNIX systems (macOS or Linux).')
         end
 
-        % input precision     ('double') or 'single' precision
-        precision = 'double';
+        % input precision
+        precision = 'double';  % 'single'
 
+        % set the name of the model
         modelName = 'qFBA';
 
+        % define the data directory
         dataDirectory = [MINOS_PATH filesep 'data' filesep 'FBA'];
         mkdir(dataDirectory);
 
@@ -470,10 +479,10 @@ switch solver
 
         % change system to testFBA directory
         originalDirectory = pwd;
-        cd([MINOS_PATH filesep 'testFBA']);
+        cd([MINOS_PATH]);
 
         % call minos
-        sysCall = [MINOS_PATH filesep 'testFBA' filesep 'runfba solveLP ' fname ' lp1'];
+        sysCall = [MINOS_PATH filesep 'runfba solveLP ' fname ' lp1'];
         [status, cmdout] = system(sysCall);
 
         if status ~= 0 && status ~= 1
@@ -483,11 +492,11 @@ switch solver
         end
 
         % call qminos
-        sysCall = [MINOS_PATH filesep 'testFBA' filesep 'qrunfba qsolveLP ' fname ' lp2'];
+        sysCall = [MINOS_PATH filesep 'qrunfba qsolveLP ' fname ' lp2'];
         [status, cmdout] = system(sysCall);
 
         % read the solution
-        sol = readMinosSolution([MINOS_PATH filesep 'testFBA' filesep 'q' fname '.sol']);
+        sol = readMinosSolution([MINOS_PATH filesep 'q' fname '.sol']);
 
         % The optimization problem solved by MINOS is assumed to be
         %        min   osense*s(iobj)
@@ -509,6 +518,7 @@ switch solver
         %        sol.rc              n vector: reduced gradients for x.
         %        sol.y               m vector: dual variables for Ax - s = 0.
         x = sol.x;
+
         f = c' * x;
         y = sol.y;
         w = sol.rc;
@@ -519,10 +529,10 @@ switch solver
         % Note that status handling may change (see lp_lib.h)
         if (origStat == 0)
             stat = 1;  % Optimal solution found
-%         elseif (origStat == 3)
-%             stat = 2; % Unbounded
-%         elseif (origStat == 2)
-%             stat = 0; % Infeasible
+        % elseif (origStat == 3)
+        %     stat = 2; % Unbounded
+        % elseif (origStat == 2)
+        %     stat = 0; % Infeasible
         else
             stat = -1;  % Solution not optimal or solver problem
         end
@@ -538,7 +548,7 @@ switch solver
         % remove temporary solver files
         for k = 1:length(fileEnding)
             for q = 1:length(addFileName)
-                tmpFileName = [MINOS_PATH filesep 'testFBA' filesep addFileName{q} fname fileEnding{k}];
+                tmpFileName = [MINOS_PATH filesep addFileName{q} fname fileEnding{k}];
                 if exist(tmpFileName, 'file') == 2
                     delete(tmpFileName);
                 end
