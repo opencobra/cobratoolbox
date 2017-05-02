@@ -84,7 +84,6 @@ for k = 1:length(solverPkgs)
             %Since the solution are dependant on solvers and cpus, the test
             %will check the existence of nargout (weak test) over the 10
             %first reactions
-            rxnList=1:10;
             %default (2-norm)
             [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
                 rxnNames,1, 1);

@@ -329,14 +329,15 @@ if ~PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
     end
 else % parallel job.  pretty much does the same thing.
 
-    global CBT_LP_SOLVER
-    solver = CBT_LP_SOLVER;
+    global CBTLPSOLVER
+    solver = CBTLPSOLVER;
 
     if OutputMatrix && isequal(method,'2-norm') && length(minNorm)==1
         minNorm=ones(nRxns,1)*minNorm;
     end
                         
     parfor i = 1:length(rxnNameList)
+        solver
         %redefine solver in each worker
         if OutputMatrix && isequal(method,'2-norm')
             changeCobraSolver(solver,'QP');
