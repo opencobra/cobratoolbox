@@ -337,13 +337,6 @@ else % parallel job.  pretty much does the same thing.
     end
                         
     parfor i = 1:length(rxnNameList)
-        solver
-        %redefine solver in each worker
-        if OutputMatrix && isequal(method,'2-norm')
-            changeCobraSolver(solver,'QP');
-        else
-            changeCobraSolver(solver,'LP');
-        end
         %if mod(i,10) == 0, clear mex, end
         %if (verbFlag == 1),fprintf('iteration %d.  skipped %d\n', i, round(m));end
         c = zeros(nRxns,1);
