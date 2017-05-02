@@ -2,10 +2,12 @@ function [charge,chargeWithoutProtons]=getChargeFromInChI(InChI)
 %return the charge from a given InChI string
 %
 %INPUT
-% InChI string
+% InChI string - The Inchi Identifier
 %
 % OUTPUT
-% charge
+% charge                 The charge encoded in the inchi string (including protonation)
+% chargeWithoutProtons   The charge encoded in the InChi ignoring the
+%                        protonation state
 %
 % Ronan Fleming 23 Sept 09
 % Updated May 2017 Thomas Pfau
