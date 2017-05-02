@@ -1,4 +1,4 @@
-function charge=getChargeFromInChI(InChI)
+function [charge,chargeWithoutProtons]=getChargeFromInChI(InChI)
 %return the charge from a given InChI string
 %
 %INPUT
@@ -22,13 +22,13 @@ q_layer = regexp(InChI,'/q(.*?)/|/q(.*?)$','tokens');
 %proton layer
 p_layer = regexp(InChI,'/p(.*?)/|/p(.*?)$','tokens');
 
-charge = 0;
+chargeWithoutProtons = 0;
 
 if ~isempty(q_layer)
     %Get individual charges from splitted reactions. 
     individualCharges = cellfun(@(x) {strsplit(x{1},';')},q_layer);
     %And calculate the charge by evaluating the individual components.
-    charge = cellfun(@(x) sum(cellfun(@(y) eval(y) , x)), individualCharges);    
+    chargeWithoutProtons = cellfun(@(x) sum(cellfun(@(y) eval(y) , x)), individualCharges);    
 end
 
 proton_charges = 0;
@@ -36,7 +36,7 @@ if ~isempty(p_layer)
     individualProtons = cellfun(@(x) {strsplit(x{1},';')},p_layer);
     proton_charges = cellfun(@(x) sum(cellfun(@(y) eval(y) , x)), individualProtons);
 end
-charge = proton_charges + sum(charge);
+charge = proton_charges + chargeWithoutProtons;
 
 
 % k = strfind(InChI, '/q');

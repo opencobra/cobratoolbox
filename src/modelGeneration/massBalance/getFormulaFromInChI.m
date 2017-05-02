@@ -1,7 +1,21 @@
-function formula=getFormulaFromInChI(InChI)
-% extract formula from InChI
+function [formula,protons]=getFormulaFromInChI(InChI)
+%GETFORMULAFROMINCHI extracts the chemical formula of a given compound from
+% the InChI string provided
+%
+% INPUT
+%   InChI       The Inchi String of the chemical formula (e.g. InChI=
+%               extract formula from 'InChI=1S/C3H4O3/c1-2(4)3(5)6/h1H3,(H,5,6)/p-1' for
+%               pyruvate
+%
+% OUTPUT
+%
+%   formula      The chemical formula (including the protonation state
+%   protons      The total number of protons
+%
+
 [token,rem] = strtok(InChI, '/');
 formula=strtok(rem, '/');
+
 %This could be a composite formula, so combine it.
 tokens = strsplit(formula,'.');
 
@@ -9,18 +23,18 @@ tokens = strsplit(formula,'.');
 %any reconstruction fields, as they do not influence it.
 InChI = regexprep(InChI,'/r.*','');
 p_layer = regexp(InChI,'/p(.*?)/|/p(.*?)$','tokens');
-
+protonationProtons = 0;
 if ~isempty(p_layer)
     individualProtons = cellfun(@(x) {strsplit(x{1},';')},p_layer);
-    addedProtons = cellfun(@(x) sum(cellfun(@(y) eval(y) , x)), individualProtons);
+    protonationProtons = cellfun(@(x) sum(cellfun(@(y) eval(y) , x)), individualProtons);    
 end
 
 
 %Calc the coefs for all formulas
 if (numel(tokens) > 1) || (~isempty(regexp(formula,'(^[0-9]+)'))) || (~isempty(p_layer))
     CoefLists = cellfun(@(x) calcFormula(x), tokens,'UniformOutput',0);
-    if exist('addedProtons','var')
-        CoefLists = [CoefLists;{{'H';addedProtons}}];
+    if ~isempty(p_layer)
+        CoefLists = [CoefLists;{{'H';protonationProtons}}];
     end
     %and now, combine them.
     Elements = {};
@@ -38,6 +52,9 @@ if (numel(tokens) > 1) || (~isempty(regexp(formula,'(^[0-9]+)'))) || (~isempty(p
     Coefs = num2cell(Coefficients);
     Coefs(cellfun(@(x) x == 1, Coefs)) = {[]};
     Coefs = cellfun(@(x) num2str(x) , Coefs,'UniformOutput',0);
+    if nargout > 1
+        protons = Coefficients(ismember(Elements,'H'));
+    end
     formula = strjoin([Elements , {''}],Coefs);    
 end
 
