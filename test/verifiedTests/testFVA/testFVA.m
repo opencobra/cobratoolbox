@@ -82,40 +82,42 @@ for k = 1:length(solverPkgs)
 
             %Vmin and Vmax test
             %Since the solution are dependant on solvers and cpus, the test
-            %will check the existence of nargout (weak test)
+            %will check the existence of nargout (weak test) over the 10
+            %first reactions
+            rxnList=1:10;
             %default (2-norm)
             [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
-                model.rxns,1, 1);
+                rxnNames,1, 1);
             assert(~isequal(Vmin,[]));
             assert(~isequal(Vmax,[]));
             %default (2-norm) in silent mode
             [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
-                model.rxns,0, 1);
+                rxnNames,0, 1);
             assert(~isequal(Vmin,[]));
             assert(~isequal(Vmax,[]));
             %FBA
             [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
-                model.rxns,1, 1, 'FBA');
+                rxnNames,1, 1, 'FBA');
             assert(~isequal(Vmin,[]));
             assert(~isequal(Vmax,[]));
             %0-norm
             [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
-                model.rxns,1, 1, '0-norm');
+                rxnNames,1, 1, '0-norm');
             assert(~isequal(Vmin,[]));
             assert(~isequal(Vmax,[]));
             %1-norm
             [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
-                model.rxns,1, 1, '1-norm');
+                rxnNames,1, 1, '1-norm');
             assert(~isequal(Vmin,[]));
             assert(~isequal(Vmax,[]));
             %2-norm
             [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
-                model.rxns,1, 1, '2-norm');
+                rxnNames,1, 1, '2-norm');
             assert(~isequal(Vmin,[]));
             assert(~isequal(Vmax,[]));
             %minOrigSol
             [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
-                model.rxns,1, 1, 'minOrigSol');
+                rxnNames,1, 1, 'minOrigSol');
             assert(~isequal(Vmin,[]));
             assert(~isequal(Vmax,[]));
 
