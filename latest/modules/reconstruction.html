@@ -470,7 +470,7 @@ network such as ATP, NAD, NADPH, ACCOA.</p>
 
 <dl class="function">
 <dt id="src.reconstruction.connectedComponents">
-<code class="descname">connectedComponents</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>figures</em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.connectedComponents" title="Permalink to this definition">¶</a></dt>
+<code class="descname">connectedComponents</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>figures</em>, <em>files</em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.connectedComponents" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assuming two reactions are connected if they share metabolites, calculate the connected components
 in the stoichiometric matrix, that is, the sets of reactions that share a set of metabolites</p>
 <p><strong>Usage</strong></p>
@@ -490,6 +490,9 @@ in the stoichiometric matrix, that is, the sets of reactions that share a set of
 <li><strong>figures</strong> &#8211;
 Will generate plots of the grouping algorithm as it creates block diagonal
 groups in from top left to bottom right in W.</li>
+<li><strong>files</strong> &#8211;
+Indicator, whether several files containing indicator
+matrices are generated.</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
@@ -517,7 +520,8 @@ Connected Component Analysis on an Undirected Graph by Tristan Ursell
 <a class="reference external" href="http://www.mathworks.com/matlabcentral/fileexchange/35442-connected-component-analysis-on-an-undirected-graph">http://www.mathworks.com/matlabcentral/fileexchange/35442-connected-component-analysis-on-an-undirected-graph</a>.</p>
 <p>Largest component requires:
 gaimc : Graph Algorithms In Matlab Code by David Gleich
-<a class="reference external" href="http://www.mathworks.com/matlabcentral/fileexchange/24134-gaimc-graph-algorithms-in-matlab-code">http://www.mathworks.com/matlabcentral/fileexchange/24134-gaimc-graph-algorithms-in-matlab-code</a>.</p>
+<a class="reference external" href="http://www.mathworks.com/matlabcentral/fileexchange/24134-gaimc-graph-algorithms-in-matlab-code">http://www.mathworks.com/matlabcentral/fileexchange/24134-gaimc-graph-algorithms-in-matlab-code</a>.
+Speedup and addition of files indicator - Thomas Pfau May 2017</p>
 </dd></dl>
 
 <dl class="function">
