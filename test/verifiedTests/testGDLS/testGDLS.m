@@ -16,12 +16,11 @@ currentDir = pwd;
 fileDir = fileparts(which('testGDLS'));
 cd(fileDir);
 
-%load model
-%load('ecoli_core_model.mat');%, 'model');
+% load model
 load([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
-%Set conditions to anaerobic and glucose uptake of 20
-model = changeRxnBounds(model, {'EX_o2(e)', 'EX_glc(e)'}, [0 -20], 'l');
+% Set conditions to anaerobic and glucose uptake of 20
+model = changeRxnBounds(model, {'EX_o2(e)', 'EX_glc(e)'}, [0 - 20], 'l');
 
 % Select reactions that can be knocked out
 selectedRxns = {model.rxns{1}, model.rxns{3:5}, model.rxns{7:8}, ...
@@ -33,18 +32,18 @@ selectedRxns = {model.rxns{1}, model.rxns{3:5}, model.rxns{7:8}, ...
 
 solverPkgs = {'gurobi'};
 
-for k= 1: length(solverPkgs)
+for k = 1: length(solverPkgs)
 
     solverOK = changeCobraSolver(solverPkgs{k}, 'MILP', 0);
 
     if solverOK
         fprintf(['Running testGDLS using ', solverPkgs{k}, ' ... '])
-        %run GDLS
+        % run GDLS
         [gdlsSolution] = GDLS(model, 'EX_succ(e)', 'minGrowth', 0.05, 'selectedRxns', selectedRxns, 'maxKO', 5, 'nbhdsz', 3);
 
-        %check solution
-        assert(length(gdlsSolution.KOs)==5)
-        assert(all(ismember(gdlsSolution.KOs,{'ACALD';'ALCD2x';'GLUDy';'LDH_D';'PFL';'THD2'})))
+        % check solution
+        assert(length(gdlsSolution.KOs) == 5)
+        assert(all(ismember(gdlsSolution.KOs, {'ACALD'; 'ALCD2x'; 'GLUDy'; 'LDH_D'; 'PFL'; 'THD2'})))
 
         % print a success message
         fprintf('Done.\n');
