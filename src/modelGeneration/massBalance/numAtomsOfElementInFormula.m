@@ -1,4 +1,4 @@
-function N=numAtomsOfElementInFormula(formula,element)
+function N=numAtomsOfElementInFormula(formula,element,printLevel)
 % returns the number of atoms of a single element in a formula
 %
 % INPUT
@@ -29,7 +29,9 @@ end
 
 if ~isletter(formula(1))
     disp(formula)
-    error('Formula format expected is element then number of elements, not the other way around')
+    if printLevel>0
+        warning('Formula format expected is element then number of elements, not the other way around')
+    end
 end
 
 zero='0';

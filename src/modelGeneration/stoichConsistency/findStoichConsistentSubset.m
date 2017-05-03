@@ -117,6 +117,13 @@ if printLevel>1
     fprintf('%6u\t%6u\t%s\n',nnz(model.SIntMetBool),nnz(model.SIntRxnBool),' heuristically non-exchange.')
 end
 
+if isfield(model,'SInConsistentRxnBool')
+    model=rmfield(model,'SInConsistentRxnBool');
+end
+if isfield(model,'SInConsistentMetBool')
+    model=rmfield(model,'SInConsistentMetBool');
+end
+
 if massBalanceCheck
     if ~isfield(model,'balancedMetBool') || ~isfield(model,'balancedRxnBool')
         printLevelcheckMassChargeBalance=0;  % -1; % print problem reactions to a file
