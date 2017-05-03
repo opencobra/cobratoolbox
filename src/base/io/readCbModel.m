@@ -117,12 +117,13 @@ if ~exist('fileType','var') || isempty(fileType)
         end
         if numel(filesToSelect) == 1
             fileName = filesToSelect{1};
-        end
-        fileName
-        [~,~,FileExtension] = fileparts(fileName);        
+        end        
+        [~,~,FileExtension] = fileparts(fileName);       
     end
     switch FileExtension
         case '.xml'
+            fileType = 'SBML';
+        case '.sbml'
             fileType = 'SBML';
         case '.sto'
             %Determine which SimPheny Fiels are present...  
@@ -165,7 +166,14 @@ end
 
 switch fileType
     case 'SBML',
-         model = readSBML(fileName,defaultBound,compSymbolList,compNameList);        
+        %If the file is missing the .xml ending, we attach it, can happen
+        %with .sbml saved files.
+        if ~exist(fileName,'file')
+            if exist([fileName '.xml'],'file')
+                fileName = [fileName '.xml'];
+            end
+        end
+        model = readSBML(fileName,defaultBound,compSymbolList,compNameList);
     case 'SimPheny',
         model = readSimPhenyCbModel(fileName,defaultBound,compSymbolList,compNameList);
     case 'SimPhenyPlus',
@@ -202,6 +210,14 @@ checkCobraModelUnique(model);
 model.b = zeros(length(model.mets),1);
 
 model.description = modelDescription;
+
+%TEMPORARY, add required fields
+if ~isfield(model,'osense')
+    model.osense = -1;
+end
+if ~isfield(model, 'csense')
+    model.csense = repmat('E',numel(model.mets),1)
+end
 
 % End main function
 
@@ -484,4 +500,4 @@ model.rules = columnVector(rules);
 model.grRules = columnVector(grRules);
 model.genes = columnVector(allGenes);
 model.metFormulas = columnVector(metFormulas);
-model.subSystems = columnVector(subSystems);
+
