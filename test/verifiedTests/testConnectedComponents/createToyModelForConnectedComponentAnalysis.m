@@ -18,14 +18,19 @@ function model = createToyModelForConnectedComponentAnalysis()
 % which are ignored.
 
 model = createModel();
-model = addReaction(model,'R1',{'A','B'},[-1 1], 0,0,1000);
-model = addReaction(model,'R2',{'B','C'},[-1 1], 0,0,1000);
-model = addReaction(model,'R3',{'D','E'},[-1 1], 0,0,1000);
-model = addReaction(model,'R4',{'E','F'},[-1 1], 0,0,1000);
-model = addReaction(model,'R5',{'E','G'},[-1 1], 0,0,1000);
-model = addReaction(model,'R6',{'F','G','H'},[-1 -1 1], 0,0,1000);
-model = addExchangeRxn(model,{'A'});
-model = addExchangeRxn(model,{'C'});
-model = addExchangeRxn(model,{'D'});
-model = addExchangeRxn(model,{'H'});
-model = addExchangeRxn(model,{'E'});
+%Reactions in {Rxn Name, MetaboliteNames, Stoichiometric coefficient} format
+Reactions = {'R1',{'A','B'},[-1 1];...
+             'R2',{'B','C'},[-1 1];...
+             'R3',{'D','E'},[-1 1];...
+             'R4',{'E','F'},[-1 1];...
+             'R5',{'E','G'},[-1 1];...
+             'R6',{'F','G','H'},[-1 -1 1]};
+ExchangedMets = {'A','C','D','H','E'};
+%Add Reactions
+for i = 1:size(Reactions,1)
+    %All reactions are irreversible
+    model = addReaction(model,Reactions{i,1},Reactions{i,2},Reactions{i,3},0,0,1000);
+end
+
+%Add Exchangers
+model = addExchangeRxn(model,ExchangedMets,-1000*ones(numel(ExchangedMets),1),1000*ones(numel(ExchangedMets),1));
