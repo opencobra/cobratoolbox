@@ -221,4 +221,4 @@ cid	name	dG'0	pH	I	pMg	T	decompose	compound_ref	remark
 80053	Pentane	498.2	7	0.25	14	298.15	1	Dolfing (1994)	
 80054	1-Chloropentane	418.6	7	0.25	14	298.15	1	Dolfing (1994)	
 80055	CH3NHp	444	7	0.25	14	298.15	0	Wagman (1982)	
-11143	DMSO						0		Placeholder just to tell GERALD not to try to decompose this compound
+11143	DMSO						0		Placeholder just to tell ComponentContribution not to try to decompose this compound

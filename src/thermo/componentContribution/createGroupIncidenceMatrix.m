@@ -45,7 +45,7 @@ for i = 1:length(training_data.cids)
             training_data.G(i, 1:length(group_def)) = group_def;
             training_data.has_gv(i) = true;
         elseif isempty(group_def)
-            warning(['createGroupIncidenceMatrix: undecomposable inchi: ' inchi])
+            %warning(['createGroupIncidenceMatrix: undecomposable inchi: ' inchi])
             training_data.G(:, end+1) = 0; % add a unique 1 in a new column for this undecomposable compound
             training_data.G(i, end) = 1;
             training_data.has_gv(i) = false;

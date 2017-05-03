@@ -1,114 +1,73 @@
-function directions=directionalityStats(model,cumNormProbCutoff,thorStandard,printToFile)
+function model=directionalityStats(model,cumNormProbCutoff,printLevel)
 % Build Boolean vectors with reaction directionality statistics
 %
 %INPUT
-% model.directionalityThermo(n)
+% model.directions    a structue of boolean vectors with different directionality
+%                     assignments where some vectors contain subsets of others
+%
+% .model.directions.forwardProbability
+%
+% qualitatively assigned internal reaction direactions
+% .forwardRecon
+% .reverseRecon
+% .reversibleRecon
+% .equilibriumRecon
+%
+% quantitatively assigned internal reaction direactions
+% thermodynamic data is lacking
+% .forwardThermo
+% .reverseThermo
+% .reversibleThermo
+% .uncertainThermo
+% .equilibriumThermo
+%
 % cumNormProbCutoff     {0.2} cutoff for probablity that reaction is
 %                       reversible within this cutoff of 0.5
-% model.NaNdGf0MetBool      metabolites without Gibbs Energy
-% model.NaNdG0RxnBool       reactions with NaN Gibbs Energy
-% cumNormProbCutoff     {0.1} positive real number between 0 and 0.5 that
-%                       specifies to tolerance when there is uncertainty in group
-%                       contribution estimates.
 % thorStandard          {0,(1)} use new standard reactant concentration
 %                       at geometric mean between upper and lower concentration
 %                       bounds
-% printToFile           {(0),1}  print out reactions with changed
-%                       directions to files
+% printLevel            -1  print out to file
+%                       0   silent
+%                       1   print out to command window
 %
 %OUTPUT
-% directions    a structue of boolean vectors with different directionality 
+% model.directions    a structue of boolean vectors with different directionality
 %               assignments where some vectors contain subsets of others
 %
-% qualitatively assigned directions 
-%   directions.fwdReconBool
-%   directions.revReconBool
-%   directions.reversibleReconBool
+% qualtiative -> quantiative changed reaction directions
+%   .directions.forward2Forward
+%   .directions.forward2Reverse
+%   .directions.forward2Reversible
+%   .directions.forward2Uncertain
+%   .directions.reversible2Forward
+%   .directions.reversible2Reverse
+%   .directions.reversible2Reversible
+%   .directions.reversible2Uncertain
+%   .directions.reverse2Forward
+%   .directions.reverse2Reverse
+%   .directions.reverse2Reversible
+%   .directions.reverse2Uncertain
+%   .directions.tightened
 %
-% qualitatively assigned directions using thermo in preference to
-% qualitative assignments but using qualitative assignments where
-% thermodynamic data is lacking
-%   directions.fwdReconThermoBool
-%   directions.revReconThermoBool
-%   directions.reversibleReconThermoBool
-%
-% reactions that are qualitatively assigned by thermodynamics
-%   directions.fwdThermoOnlyBool
-%   directions.revThermoOnlyBool
-%   directions.reversibleThermoOnlyBool
-%
-% qualtiative -> quantiative changed reaction directions 
-%   directions.ChangeReversibleFwd
-%   directions.ChangeReversibleRev
-%   directions.ChangeForwardReverse
-%   directions.ChangeForwardReversible
-%
-% subsets of forward qualtiative -> reversible quantiative change
-%   directions.ChangeForwardReversible_dGfKeq
-%   directions.ChangeForwardReversibleBool_dGfGC
-%   directions.ChangeForwardReversibleBool_dGfGC_byConcLHS
-%   directions.ChangeForwardReversibleBool_dGfGC_byConcRHS
-%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0
-%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0LHS
-%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0Mid
-%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS
-%   directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorLHS
-%   directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS
-%
-%   directions.cumNormProbCutoff
-%   directions.ChangeForwardForwardBool_dGfGC
-%
-% Ronan M.T. Fleming
+% subsets of qualtiatively forward  -> quantiatively reversible 
+%   .directions.forward2Reversible_bydGt0
+%   .directions.forward2Reversible_bydGt0LHS
+%   .directions.forward2Reversible_bydGt0Mid
+%   .directions.forward2Reversible_bydGt0RHS
 % 
-% Lemmer El Assal, 2016/10/14
-% Adaptation to old COBRA model structure
+%   .directions.forward2Reversible_byConc_zero_fixed_DrG0
+%   .directions.forward2Reversible_byConc_negative_fixed_DrG0
+%   .directions.forward2Reversible_byConc_positive_fixed_DrG0
+%   .directions.forward2Reversible_byConc_negative_uncertain_DrG0
+%   .directions.forward2Reversible_byConc_positive_uncertain_DrG0
 
-%% Copied from 'convertToCobraV2.m' -Lemmer
-[~,nRxn]=size(model.S);
+% Ronan M.T. Fleming
 
-for n=1:nRxn
-%     model.rxn(n).abbreviation=model.rxns{n};
-%     model.rxn(n).officialName=model.rxnNames{n};
-%     %equation
-%     equation=printRxnFormula(model,model.rxns(n),0);
-%     model.rxn(n).equation=equation{1};
-    % assign qualitative directionality
-%     if model.lb(n) >= 0
-%         model.qualDir(n) = 1;
-%     end
-%     if model.ub(n) < 0
-%         model.qualDir(n) = -1;
-%     end
-%     if (model.lb(n) < 0) && (model.ub(n) > 0)
-%         model.qualDir(n) = 0;
-%     end
-
-    %directionality
-    if model.lb(n)<0 && model.ub(n)>0
-        model.directionality{n}='reversible';
-    end
-    if model.lb(n)<0 && model.ub(n)<=0
-        model.directionality{n}='reverse';
-    end
-    if model.lb(n)>=0 && model.ub(n)>0
-        model.directionality{n}='forward';
-    end
-    if model.lb(n)==0 && model.ub(n)==0
-        model.directionality{n}='off';
-    end
-        
-   
+if ~isfield(model,'directions')
+    error('No thermodynamic model directions')
+else
+    directions=model.directions;
 end
-
-bool = model.SIntRxnBool & model.ur < 1e3;
-model.lb_reconThermo(bool & model.quantDir == 1) = 0;
-model.ub_reconThermo(bool & model.quantDir == 1) = max(model.ub);
-model.ub_reconThermo(bool & model.quantDir == -1) = 0;
-model.lb_reconThermo(bool & model.quantDir == -1) = min(model.lb);
-model.ub_reconThermo(bool & model.quantDir == 0) = max(model.ub);
-model.lb_reconThermo(bool & model.quantDir == 0) = min(model.lb);
-%% ends here
-
 
 if ~exist('cumNormProbCutoff','var')
     directions.cumNormProbCutoff=0.2;
@@ -119,535 +78,183 @@ end
 cumNormProbFwdUpper=0.5+directions.cumNormProbCutoff;
 cumNormProbFwdLower=0.5-directions.cumNormProbCutoff;
 
-if ~exist('thorStandard','var')
-    thorStandard=1;
+if ~exist('printLevel','var')
+    printLevel=0;
+end
+if ~exist('fileName','var')
+    fileName='directionalityStats.txt';
 end
 
-[nMet,nRxn]=size(model.S);
-
-%%%%%%REACTION DIRECTIONS%%%%%%%%%%%
-%Reconstruction directions
-%only consider internal reactions
-fwdReconBool=model.lb>=0 & model.ub>0 & model.SIntRxnBool;
-revReconBool=model.lb<0 & model.ub<=0 & model.SIntRxnBool;
-reversibleReconBool=model.lb<0 & model.ub>0 & model.SIntRxnBool;
-if 0 %from Jan 30th 2011 ignore fixed reactios
-if any(model.lb==0 & model.ub==0)
-    error('This analysis assumes no reactions are fixed');
-end
-end
-%sanity check
-if nnz(model.SIntRxnBool)~=(nnz(fwdReconBool)+nnz(revReconBool)+nnz(reversibleReconBool))+nnz(model.lb==0 & model.ub==0)
-    % breaks here because 4 reactions have no direction set: 394, 1103,
-    % 2182, 2183
-    error('Some reactions not set directions??');
+DrGtMin=model.DrGtMin;
+DrGtMax=model.DrGtMax;
+if any(DrGtMin>DrGtMax)
+    error('DrGtMin greater than DrGtMax');
 end
 
-%Thermo and recon where thermo not available
-%only consider internal reactions
-fwdReconThermoBool=model.lb_reconThermo>=0 & model.ub_reconThermo>0 & model.SIntRxnBool;
-revReconThermoBool=model.lb_reconThermo<0 & model.ub_reconThermo<=0 & model.SIntRxnBool;
-reversibleReconThermoBool=model.lb_reconThermo<0 & model.ub_reconThermo>0 & model.SIntRxnBool;
-if 0 %from Jan 30th 2011 ignore fixed reactions
-if any(model.lb_reconThermo==0 & model.ub_reconThermo==0)
-    error('This analysis assumes no reactions are fixed');
-end
+DrGtNaNBool=(isnan(model.DrGtMax) | isnan(model.DrGtMin)) & model.SIntRxnBool;
+if any(DrGtNaNBool)
+    warning([int2str(nnz(DrGtNaNBool)) ' DrGt are NaN']);
 end
 
-%thermo only
-[nMet,nRxn]=size(model.S);
-fwdThermoOnlyBool=false(nRxn,1);
-revThermoOnlyBool=false(nRxn,1);
-reversibleThermoOnlyBool=false(nRxn,1);
-for n=1:nRxn
-    %only consider internal reactions
-    if model.SIntRxnBool(n)
-        %if strcmp(model.directionalityThermo{n},'forward')
-        if model.dGtMax(n)<0
-            fwdThermoOnlyBool(n)=1;
-        end
-        %if strcmp(model.directionalityThermo{n},'reverse')
-        if model.dGtMin(n)>0
-            revThermoOnlyBool(n)=1;
-        end
-        %if strcmp(model.directionalityThermo{n},'reversible')
-        if (model.dGtMin(n)<0) && (model.dGtMax(n)>0)
-            reversibleThermoOnlyBool(n)=1;
-        end
-    end
+nEqualDrGt=nnz(DrGtMin==DrGtMax & DrGtMin~=0);
+if any(nEqualDrGt)
+    fprintf('%s\n',[num2str(nEqualDrGt) '/' num2str(length(DrGtMin)) ' reactions with DrGtMin=DrGtMax~=0' ]);
 end
 
+nZeroDrGt=nnz(DrGtMin==0 & DrGtMax==0);
+if any(nZeroDrGt)
+    fprintf('%s\n',[num2str(nZeroDrGt) '/' num2str(length(DrGtMin)) ' reactions with DrGtMin=DrGtMax=0' ]);
+end
+
+[~,nRxn]=size(model.S);
+    
+% qualitatively assigned directions
+forwardRecon=model.directions.forwardRecon;
+reverseRecon=model.directions.reverseRecon;
+reversibleRecon=model.directions.reversibleRecon;
+% quantitatively assigned directions
+forwardThermo=model.directions.forwardThermo;
+reverseThermo=model.directions.reverseThermo;
+reversibleThermo=model.directions.reversibleThermo;
+uncertainThermo=model.directions.uncertainThermo;
 
 %%%%%%CHANGES IN REACTION DIRECTIONS%%%%%%%%%%%
-%thermodynamic constraints overly tightened
-tightened=false(nRxn,1);
-%reversible now forward
-reversibleFwd=false(nRxn,1);
-%reversible now reverse
-reversibleRev=false(nRxn,1);
-%forward now reverse
-forwardReverse=false(nRxn,1);
-%forward now reversible
-forwardReversible=false(nRxn,1);
-%forward now forward
-forwardForward=false(nRxn,1);
-for n=1:nRxn
-    %ignore exchange reactions
-    if model.SIntRxnBool(n)
-        %dont include reactions that cannot be assigned reaction directionality
-        %due to missing data for certain metabolites involved in that reaction
-        if ~isnan(model.directionalityThermo{n})
-            if ~strcmp(model.directionality{n},model.directionalityThermo{n})
-                if strcmp(model.directionality{n},'reversible')
-                    tightened(n)=1;
-                    if strcmp(model.directionalityThermo{n},'forward')
-                        reversibleFwd(n)=1;
-                    end
-                    if strcmp(model.directionalityThermo{n},'reverse')
-                        reversibleRev(n)=1;
-                    end
-                end
-                if strcmp(model.directionality{n},'forward')
-                    if strcmp(model.directionalityThermo{n},'reverse')
-                        forwardReverse(n)=1;
-                    end
-                    if strcmp(model.directionalityThermo{n},'reversible')
-                        forwardReversible(n)=1;
-                    end
-                end
-            end
-            if strcmp(model.directionality{n},'forward') && strcmp(model.directionalityThermo{n},'forward')
-                forwardForward(n)=1;
-            end
-        end
-    end
+%thermodynamic constraints tightened
+tightened=model.lb<model.lb_reconThermo & model.ub_reconThermo<model.ub;
+
+reversible2Forward=reversibleRecon & forwardThermo;
+reversible2Reverse=reversibleRecon & reverseThermo;
+reversible2Reversible=reversibleRecon & reversibleThermo;
+reversible2Uncertain=reversibleRecon & uncertainThermo;
+
+forward2Reverse=forwardRecon & reverseThermo;
+forward2Reversible=forwardRecon & reversibleThermo;
+forward2Forward=forwardRecon & forwardThermo;
+forward2Uncertain=forwardRecon & uncertainThermo;
+
+reverse2Reverse =  reverseRecon & reverseThermo;
+reverse2Forward   =  reverseRecon & forwardThermo;
+reverse2Reversible =  reverseRecon & reversibleThermo;
+reverse2Uncertain  =  reverseRecon & uncertainThermo;
+
+%%%%%%CAUSES TO CHANGES IN REACTION DIRECTIONS%%%%%%%%%%%
+% model.DrGtMax = model.DrGt0Max + gasConstant*T*(R'*log(model.concMax) - F'*log(model.concMin));
+% model.DrGtMin = model.DrGt0Min + gasConstant*T*(R'*log(model.concMin) - F'*log(model.concMax));
+% model.DrGtMaxMeanConc = model.DrGt0Max + gasConstant*T*(R-F)'*log((model.concMax+model.concMin)/2);
+% model.DrGtMinMeanConc = model.DrGt0Min + gasConstant*T*(R-F)'*log((model.concMax+model.concMin)/2);
+    
+forward2Reversible_bydGt0=forwardRecon & reversibleThermo & model.DrGtMin<0 & model.DrGtMax>0; % dGfGCforward2ReversibleBool_bydGt0
+
+forward2Reversible_byConc_negative_fixed_DrG0 = forwardRecon & reversibleThermo & model.DrGt0Min==model.DrGt0Max & model.DrGtMax<=0; %dGfGCforward2ReversibleBool_byConc_No_dGt0ErrorLHS
+forward2Reversible_byConc_positive_fixed_DrG0 = forwardRecon & reversibleThermo & model.DrGt0Min==model.DrGt0Max & model.DrGtMin>0; %dGfGCforward2ReversibleBool_byConc_No_dGt0ErrorRHS
+
+forward2Reversible_bydGt0LHS=forward2Reversible_bydGt0 & model.directions.forwardProbability>cumNormProbFwdUpper; %dGfGCforward2ReversibleBool_bydGt0LHS
+forward2Reversible_bydGt0Mid=forward2Reversible_bydGt0 & model.directions.forwardProbability>=cumNormProbFwdLower & model.directions.forwardProbability<=cumNormProbFwdUpper;%dGfGCforward2ReversibleBool_bydGt0Mid
+forward2Reversible_bydGt0RHS=forward2Reversible_bydGt0 & model.directions.forwardProbability<cumNormProbFwdLower; %dGfGCforward2ReversibleBool_bydGt0RHS
+
+forward2Reversible_byConc_negative_uncertain_DrG0 = forwardRecon & reversibleThermo & model.DrGt0Min~=model.DrGt0Max & model.DrGt0Max<0; %dGfGCforward2ReversibleBool_byConcLHS
+forward2Reversible_byConc_positive_uncertain_DrG0 = forwardRecon & reversibleThermo & model.DrGt0Min~=model.DrGt0Max & model.DrGt0Min>0; %dGfGCforward2ReversibleBool_byConcRHS
+
+forward2Reversible_byConc_zero_fixed_DrG0 = forwardRecon & reversibleThermo & model.DrGt0Min==0 & model.DrGt0Max==0;%new to v2
+
+if printLevel<0
+    fid=fopen(fileName,'w');
+else
+    fid=1;
 end
 
-if ~exist('printToFile','var')
-    printToFile=0;
-end
-
-if printToFile
-    fid=fopen('directionalityStats.txt','w');
+if printLevel~=0
     fprintf(fid,'%s\n','Qualitative internal reaction directionality:');
-    fprintf(fid,'%10s\t%s\n',int2str(nnz(fwdReconBool)+nnz(revReconBool)+nnz(reversibleReconBool)),' internal reconstruction reactions assigned direction.');
-    fprintf(fid,'%10s\t%s\n',int2str(nnz(fwdReconBool)), ' forward reconstruction assignment.');
-    fprintf(fid,'%10s\t%s\n',int2str(nnz(revReconBool)), ' reverse reconstruction assignment.');
-    fprintf(fid,'%10s\t%s\n',int2str(nnz(reversibleReconBool)), ' reversible reconstruction assignment.');
+    fprintf(fid,'%10s\t%s\n',int2str(nnz(model.SIntRxnBool)),' internal reconstruction reaction directions.');
+    fprintf(fid,'%10s\t%s\n',int2str(nnz(forwardRecon)), ' forward reconstruction assignment.');
+    fprintf(fid,'%10s\t%s\n',int2str(nnz(reverseRecon)), ' reverse reconstruction assignment.');
+    fprintf(fid,'%10s\t%s\n',int2str(nnz(reversibleRecon)), ' reversible reconstruction assignment.');
+    fprintf(fid,'\n');
+       
+    fprintf(fid,'%s\n','Quantitative internal reaction directionality:');
+    fprintf(fid,'%10s\t%s\n',int2str(nnz(model.SIntRxnBool)),' internal reconstruction reaction directions.');
+    fprintf(fid,'%10s\t%s\n',int2str(nnz(forwardThermo)+nnz(reverseThermo)+nnz(reversibleThermo)),  ' of which have a thermodynamic assignment.');
+    fprintf(fid,'%10s\t%s\n',int2str(nnz(uncertainThermo)),  ' of which have no thermodynamic assignment.');
+    fprintf(fid,'%10s\t%s\n',int2str(nnz(forwardThermo)), ' forward thermodynamic only assignment.');
+    fprintf(fid,'%10s\t%s\n',int2str(nnz(reverseThermo)), ' reverse thermodynamic only assignment.');
+    fprintf(fid,'%10s\t%s\n',int2str(nnz(reversibleThermo)), ' reversible thermodynamic only assignment.');
     fprintf(fid,'\n');
     
-    fprintf(fid,'%s\n','Quantitative in preference to qualitative, plus  remainder of qualitative, internal reaction directionality:');
-    fprintf(fid,'%10s\t%s\n',int2str(nnz(fwdReconThermoBool)+nnz(revReconThermoBool)+nnz(reversibleReconThermoBool)), ' internal reactions thermodynamic over reconstruction assignment.');
-    fprintf(fid,'%10s\t%s\n',int2str(nnz(fwdReconThermoBool)), ' forward thermodynamic over reconstruction assignment.');
-    fprintf(fid,'%10s\t%s\n',int2str(nnz(revReconThermoBool)), ' reverse thermodynamic over reconstruction assignment.');
-    fprintf(fid,'%10s\t%s\n',int2str(nnz(reversibleReconThermoBool)), ' reversible thermodynamic over reconstruction assignment.');
+    fprintf(fid,'%s\n','Qualitiative vs Quantitative:');
+    fprintf(fid,'%10i\t%s\n',nnz(reversible2Reversible),' Reversible -> Reversible');
+    fprintf(fid,'%10i\t%s\n',nnz(reversible2Forward),' Reversible -> Forward');
+    fprintf(fid,'%10i\t%s\n',nnz(reversible2Reverse),' Reversible -> Reverse');
+    fprintf(fid,'%10i\t%s\n',nnz(reversible2Uncertain),' Reversible -> Uncertain');
+    fprintf(fid,'%10i\t%s\n',nnz(forward2Forward),' Forward -> Forward');
+    fprintf(fid,'%10i\t%s\n',nnz(forward2Reverse),' Forward -> Reverse');
+    fprintf(fid,'%10i\t%s\n',nnz(forward2Reversible),' Forward -> Reversible');
+    fprintf(fid,'%10i\t%s\n',nnz(forward2Uncertain),' Forward -> Uncertain');
+    fprintf(fid,'%10i\t%s\n',nnz(reverse2Reversible),' Reverse -> Reverse');
+    fprintf(fid,'%10i\t%s\n',nnz(reverse2Forward),' Reverse -> Forward');
+    fprintf(fid,'%10i\t%s\n',nnz(reverse2Reversible),' Reverse -> Reversible');
+    fprintf(fid,'%10i\t%s\n',nnz(reverse2Uncertain),' Reversible -> Uncertain');
     fprintf(fid,'\n');
     
-    fprintf(fid,'%s\n','Quantitative in preference to qualitative internal reaction directionality:');
-    fprintf(fid,'%10s\t%s\n',int2str(nnz(fwdThermoOnlyBool)+nnz(revThermoOnlyBool)+nnz(reversibleThermoOnlyBool)),  ' internal thermodynamic assignment.');
-    fprintf(fid,'%10s\t%s\n',int2str(nnz(fwdThermoOnlyBool)), ' forward thermodynamic only assignment.');
-    fprintf(fid,'%10s\t%s\n',int2str(nnz(revThermoOnlyBool)), ' reverse thermodynamic only assignment.');
-    fprintf(fid,'%10s\t%s\n',int2str(nnz(reversibleThermoOnlyBool)), ' reversible thermodynamic only assignment.');
-    fprintf(fid,'\n');
-    
-    fprintf(fid,'%s\n','Changes in internal reaction directionality, Qualitiative vs Quantitative:');
-    fprintf(fid,'%10i\t%s\n',nnz(reversibleFwd),' Reversible -> Forward');
-    fprintf(fid,'%10i\t%s\n',nnz(reversibleRev),' Reversible -> Reverse');
-    fprintf(fid,'%10i\t%s\n',nnz(forwardReverse),' Forward -> Reverse');
-    fprintf(fid,'%10i\t%s\n',nnz(forwardReversible),' Forward -> Reversible');
-    fprintf(fid,'\n');
-else
-    fprintf('%s\n','Qualitative internal reaction directionality:');
-    fprintf('%10s\t%s\n',int2str(nnz(fwdReconBool)+nnz(revReconBool)+nnz(reversibleReconBool)),' internal reconstruction reactions assigned direction.');
-    fprintf('%10s\t%s\n',int2str(nnz(fwdReconBool)), ' forward reconstruction assignment.');
-    fprintf('%10s\t%s\n',int2str(nnz(revReconBool)), ' reverse reconstruction assignment.');
-    fprintf('%10s\t%s\n',int2str(nnz(reversibleReconBool)), ' reversible reconstruction assignment.');
-    fprintf('\n');
-    
-    fprintf('%s\n','Quantitative in preference to qualitative, plus  remainder of qualitative, internal reaction directionality:');
-    fprintf('%10s\t%s\n',int2str(nnz(fwdReconThermoBool)+nnz(revReconThermoBool)+nnz(reversibleReconThermoBool)), ' internal reactions thermodynamic over reconstruction assignment.');
-    fprintf('%10s\t%s\n',int2str(nnz(fwdReconThermoBool)), ' forward thermodynamic over reconstruction assignment.');
-    fprintf('%10s\t%s\n',int2str(nnz(revReconThermoBool)), ' reverse thermodynamic over reconstruction assignment.');
-    fprintf('%10s\t%s\n',int2str(nnz(reversibleReconThermoBool)), ' reversible thermodynamic over reconstruction assignment.');
-    fprintf('\n');
-    
-    fprintf('%s\n','Quantitative in preference to qualitative internal reaction directionality:');
-    fprintf('%10s\t%s\n',int2str(nnz(fwdThermoOnlyBool)+nnz(revThermoOnlyBool)+nnz(reversibleThermoOnlyBool)),  ' internal thermodynamic assignment.');
-    fprintf('%10s\t%s\n',int2str(nnz(fwdThermoOnlyBool)), ' forward thermodynamic only assignment.');
-    fprintf('%10s\t%s\n',int2str(nnz(revThermoOnlyBool)), ' reverse thermodynamic only assignment.');
-    fprintf('%10s\t%s\n',int2str(nnz(reversibleThermoOnlyBool)), ' reversible thermodynamic only assignment.');
-    fprintf('\n');
-    
-    fprintf('%s\n','Changes in internal reaction directionality, Qualitiative vs Quantitative:');
-    fprintf('%10i\t%s\n',nnz(reversibleFwd),' Reversible -> Forward');
-    fprintf('%10i\t%s\n',nnz(reversibleRev),' Reversible -> Reverse');
-    fprintf('%10i\t%s\n',nnz(forwardReverse),' Forward -> Reverse');
-    fprintf('%10i\t%s\n',nnz(forwardReversible),' Forward -> Reversible');
-    fprintf('\n');
-end
-
-if printToFile
-    fprintf(fid,'%s\n','Breakdown of relaxation of internal reaction directionality, Qualitiative vs Quantitative:');
-else
-    fprintf('%s\n','Breakdown of relaxation of internal reaction directionality, Qualitiative vs Quantitative:');
-end
-%finds the qualitatively forward reactions that are now reversible
-%where the reaction exclusively involves metabolites with
-%dGf0 back calculated from keq
-dGft0SourceKeqBool=false(nMet,1);
-dGft0SourceGCBool=false(nMet,1);
-for m=1:nMet
-    if strcmp(model.dfGt0Source(m),'Keq')
-        dGft0SourceKeqBool(m,1)=1;
-    end
-    %metabolites with prediction from group contribution data
-    if strcmp(model.dfGt0Source(m),'GC') 
-        dGft0SourceGCBool(m,1)=1;
-    end
-end
-%fwd reversible
-forwardReversibleKeq=false(nRxn,1);
-forwardReversibleKeqGC=false(nRxn,1);
-forwardReversibleGC=false(nRxn,1);
-%fwd fwd
-forwardForwardKeq=false(nRxn,1);
-forwardForwardKeqGC=false(nRxn,1);
-forwardForwardGC=false(nRxn,1);
-for n=1:nRxn
-    if forwardReversible(n)
-        ind=find(model.S(:,n));
-        %finds the reactions with changed direction, exclusively involving
-        %metabolites with dGf0 back calculated from keq
-        if sum(dGft0SourceKeqBool(ind))==length(ind)
-            forwardReversibleKeq(n)=1;
-        end
-        %finds the reactions with changed direction, involving bothe
-        %metabolites with dGf0 back calculated from keq and estimated using
-        %the group contribution method
-        if any(dGft0SourceKeqBool(ind)) && any(dGft0SourceGCBool(ind))
-            forwardReversibleKeqGC(n)=1;
-        end
-        %%qualitatively forward but GC quantitatively reversible & GC estimates for all reactants
-        if sum(dGft0SourceGCBool(ind))==length(ind)
-            forwardReversibleGC(n)=1;
-        end
-    end
-    
-    %todo - find the distribution of uncertainty associated with reactions that are
-    %correctly predicted by group contribution, versus not both forward
-    if forwardForward(n)
-        %change here - doublecheck 18th feb
-        ind=find(model.S(:,n));
-        %finds the reactions with changed direction, exclusively involving
-        %metabolites with dGf0 back calculated from keq
-        if sum(dGft0SourceKeqBool(ind))==length(ind)
-            forwardForwardKeq(n)=1;
-        end
-        %finds the qualitatively forward and quantitatively forward reactions, involving both
-        %metabolites with dGf0 back calculated from keq and estimated using
-        %the group contribution method
-        if any(dGft0SourceKeqBool(ind)) && any(dGft0SourceGCBool(ind))
-            forwardForwardKeqGC(n)=1;
-        end
-        %%qualitatively forward but GC quantitatively reversible & GC estimates for all reactants
-        if sum(dGft0SourceGCBool(ind))==length(ind)
-            forwardForwardGC(n)=1;
-        end
-    end
-end
-%Breakdown of Group Contribution relaxation of reaction directionality,
-%Qualitiative vs Quantitative:
-
-if printToFile
-    fprintf(fid,'%10i\t%s\n',nnz(forwardReversible),' Forward -> Reversible (Total)');
-    fprintf(fid,'%10i\t%s\n',nnz(forwardReversibleGC),' Forward -> Reversible (Based on dGft0 from Group Contribution)');
-    fprintf(fid,'%10i\t%s\n',nnz(forwardReversibleKeqGC),' Forward -> Reversible (Based on dGft0 from Group Contribution and Keq)');
-    fprintf(fid,'%10i\t%s\n',nnz(forwardReversibleKeq),' Forward -> Reversible (Based on dGft0 from Keq)');
-    fprintf(fid,'\n');
-else
-    fprintf('%10i\t%s\n',nnz(forwardReversible),' Forward -> Reversible (Total)');
-    fprintf('%10i\t%s\n',nnz(forwardReversibleGC),' Forward -> Reversible (Based on dGft0 from Group Contribution)');
-    fprintf('%10i\t%s\n',nnz(forwardReversibleKeqGC),' Forward -> Reversible (Based on dGft0 from Group Contribution and Keq)');
-    fprintf('%10i\t%s\n',nnz(forwardReversibleKeq),' Forward -> Reversible (Based on dGft0 from Keq)');
-    fprintf('\n');
-end
-
-%for comparison
-if printToFile
-    fprintf(fid,'%10i\t%s\n',nnz(forwardForward),' Forward -> Forward (Total)');
-    fprintf(fid,'%10i\t%s\n',nnz(forwardForwardGC),' Forward -> Forward (Based on dGft0 from Group Contribution)');
-    fprintf(fid,'%10i\t%s\n',nnz(forwardForwardKeqGC),' Forward -> Forward (Based on dGft0 from Group Contribution and Keq)');
-    fprintf(fid,'%10i\t%s\n',nnz(forwardForwardKeq),' Forward -> Forward (Based on dGft0 from Keq)');
-    fprintf(fid,'\n');
-else
-    fprintf('%10i\t%s\n',nnz(forwardForward),' Forward -> Forward (Total)');
-    fprintf('%10i\t%s\n',nnz(forwardForwardGC),' Forward -> Forward (Based on dGft0 from Group Contribution)');
-    fprintf('%10i\t%s\n',nnz(forwardForwardKeqGC),' Forward -> Forward (Based on dGft0 from Group Contribution and Keq)');
-    fprintf('%10i\t%s\n',nnz(forwardForwardKeq),' Forward -> Forward (Based on dGft0 from Keq)');
-    fprintf('\n');
-end
-
-%Boolean index of reactions with at least one metabolite with dGft0 from
-%group contribution data
-dGfGCforwardReversibleBool=forwardReversibleGC | forwardReversibleKeqGC;
-dGfGCforwardForwardBool=forwardForwardGC | forwardForwardKeqGC;
-
-dGfGCforwardReversibleBool_byConcLHS=false(nRxn,1);
-dGfGCforwardReversibleBool_byConcRHS=false(nRxn,1);
-dGfGCforwardReversibleBool_bydGt0=false(nRxn,1);
-dGfGCforwardReversibleBool_bydGt0LHS=false(nRxn,1);
-dGfGCforwardReversibleBool_bydGt0Mid=false(nRxn,1);
-dGfGCforwardReversibleBool_bydGt0RHS=false(nRxn,1);
-dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS=false(nRxn,1);
-dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS=false(nRxn,1);
-for n=1:nRxn
-    if dGfGCforwardReversibleBool(n)
-        %find the qualitatively forward reactions that are quantitatively
-        %reversible by concentration alone, and have always a negative
-        %dGr0t, with no error in dGr0t
-        t=0;
-        if thorStandard==0
-            if n==1
-                if printToFile
-                    fprintf(fid,'%s\n','Using 1 molar standard Gibbs energy of formation');
-                else
-                    fprintf('%s\n','Using 1 molar standard Gibbs energy of formation');
-                end
-            end
-            if model.dGt0Max(n)==model.dGt0Min(n)
-                if  model.dGt0Max(n)<=0
-                    dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS(n)=1;
-                    t=1;
-                end
-                if model.dGt0Min(n)>0
-                    dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS(n)=1;
-                    t=1;
-                end
-            else
-                %find the qualitatively forward reactions that are quantitatively
-                %reversible by the range of dGr0t
-                if model.dGt0Min(n)<0 && model.dGt0Max(n)>0
-                    dGfGCforwardReversibleBool_bydGt0(n)=1;
-                    t=1;
-                    %breakdown the reactions by probability of being forward
-                    %dGrt0
-                    Y0=(model.dGt0Min(n)+model.dGt0Max(n))/2;
-                    L0=Y0-model.dGt0Min(n);
-                    U0=model.dGt0Max(n)-Y0;
-                    %dGrt
-                    Y=(model.dGtMin(n)+model.dGtMax(n))/2;
-                    L=Y-model.dGtMin(n);
-                    U=model.dGtMax(n)-Y;
-                    %cumulative of dGt0<0 assuming normal distribution, with
-                    %mean dGt0, and stdev dGt0 from uncertainty
-                    P = normcdf(0,Y0,L0);
-                    if P<=cumNormProbFwdUpper && P>=cumNormProbFwdLower
-                        dGfGCforwardReversibleBool_bydGt0Mid(n)=1;
-                    end
-                    if P>cumNormProbFwdUpper
-                        dGfGCforwardReversibleBool_bydGt0LHS(n)=1;
-                    end
-                    if P<cumNormProbFwdLower
-                        dGfGCforwardReversibleBool_bydGt0RHS(n)=1;
-                    end
-                end
-                %find the qualitatively forward reactions that are quantitatively
-                %reversible by concentration alone, and have always a
-                %negative dGr0t
-                if  model.dGt0Max(n)<0
-                    dGfGCforwardReversibleBool_byConcLHS(n)=1;
-                    t=1;
-                end
-                %find the qualitatively forward reactions that are quantitatively
-                %reversible by concentration alone, and have always a positive
-                %dGr0t
-                if model.dGt0Min(n)>0
-                    dGfGCforwardReversibleBool_byConcRHS(n)=1;
-                    t=1;
-                end
-            end
-        else
-            %using milimolar standard
-            if n==1
-                if printToFile
-                    fprintf(fid,'%s\n','Using thor standard Gibbs energy of formation');
-                else
-                    fprintf('%s\n','Using thor standard Gibbs energy of formation');
-                end
-            end
-            if model.dGtmMMax(n)==model.dGtmMMin(n)
-                if  model.dGtmMMax(n)<=0
-                    dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS(n)=1;
-                    t=1;
-                end
-                if model.dGtmMMin(n)>0
-                    dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS(n)=1;
-                    t=1;
-                end
-            else
-                %find the qualitatively forward reactions that are quantitatively
-                %reversible by the range of dGrtmM
-                if model.dGtmMMin(n)<0 && model.dGtmMMax(n)>0
-                    dGfGCforwardReversibleBool_bydGt0(n)=1;
-                    t=1;
-                    
-                    %breakdown the reactions by probability of being forward
-                    %dGrt0
-                    Y0=(model.dGtmMMin(n)+model.dGtmMMax(n))/2;
-                    L0=Y0-model.dGtmMMin(n);
-                    U0=model.dGtmMMax(n)-Y0;
-                    %dGrt
-                    Y=(model.dGtMin(n)+model.dGtMax(n))/2;
-                    L=Y-model.dGtMin(n);
-                    U=model.dGtMax(n)-Y;
-                  
-                    %cumulative of dGt0<0 assuming normal distribution, with
-                    %mean dGt0, and stdev dGt0 from uncertainty
-                    P = normcdf(0,Y0,L0);
-
-                    if P<=cumNormProbFwdUpper && P>=cumNormProbFwdLower
-                        dGfGCforwardReversibleBool_bydGt0Mid(n)=1;
-                    end
-                    if P>cumNormProbFwdUpper
-                        dGfGCforwardReversibleBool_bydGt0LHS(n)=1;
-                    end
-                    if P<cumNormProbFwdLower
-                        dGfGCforwardReversibleBool_bydGt0RHS(n)=1;
-                    end
-                end
-                %find the qualitatively forward reactions that are quantitatively
-                %reversible by concentration alone, and have always a
-                %negative dGr0t
-                if  model.dGtmMMax(n)<=0
-                    dGfGCforwardReversibleBool_byConcLHS(n)=1;
-                    t=1;
-                end
-                %find the qualitatively forward reactions that are quantitatively
-                %reversible by concentration alone, and have always a positive
-                %dGr0t
-                if model.dGtmMMin(n)>0
-                    dGfGCforwardReversibleBool_byConcRHS(n)=1;
-                    t=1;
-                end
-            end
-        end
-        if t==0
-%             model.rxn(n)
-            error('directionalityStats.m : Extra category of reaction directionality not accounted for')
-        end
-    end
-end
-if printToFile
-    fprintf(fid,'%s\n','Breakdown of Group Contribution, and mixed GC-Keq, derived relaxation of reaction directionality, Qualitiative vs Quantitative:');
+    fprintf(fid,'%s\n','Breakdown of relaxation of reaction directionality, Qualitiative vs Quantitative:');
     %total number of qualitatively forward reactions that are
     %quantitatively reversible
-    fprintf(fid,'%10i\t%s\n',nnz(dGfGCforwardReversibleBool),' qualitatively forward reactions that are GC quantitatively reversible (total).');
-    %qualitatively forward reactions that are quantitatively
-    %reversible by concentration alone (no dGt0 error)
-    fprintf(fid,'%10i\t%s\n',nnz(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS),' qualitatively forward reactions that are GC quantitatively forward by dGr0t, but reversible by concentration alone (No error in GC dGr0t).');
-    %qualitatively forward reactions that are quantitatively
-    %reversible by concentration alone (with dGt0 error)
-    fprintf(fid,'%10i\t%s\n',nnz(dGfGCforwardReversibleBool_byConcLHS),' qualitatively forward reactions that are GC quantitatively forward by dGr0t, but reversible by concentration alone (With error in GC dGr0t).');
+    fprintf(fid,'%10i\t%s\n',nnz(forward2Reversible),' qualitatively forward reactions that are quantitatively reversible (total).');
     %qualitatively forward reactions that are quantitatively reversible by
     %the range of dGt0
-    fprintf(fid,'%10i\t%s%s\n',nnz(dGfGCforwardReversibleBool_bydGt0LHS),' qualitatively forward reactions that are GC quantitatively reversible by range of dGt0. ',['P(\Delta_{r}G^{\primeo}<0) > ' num2str(cumNormProbFwdUpper)]);
+    fprintf(fid,'%10i\t%s%s\n',nnz(forward2Reversible_bydGt0LHS),' of which are quantitatively reversible by range of dGt0. ',['P(\Delta_{r}G^{\primeo}<0) > ' num2str(cumNormProbFwdUpper)]);
     %qualitatively reverse reactions that are quantitatively
     %reversible by concentration alone (with dGt0 error)
-    fprintf(fid,'%10i\t%s%s\n',nnz(dGfGCforwardReversibleBool_bydGt0Mid),' qualitatively forward reactions that are GC quantitatively reversible by range of dGt0. ',[num2str(cumNormProbFwdLower) '< P(\Delta_{r}G^{\primeo}<0) < ' num2str(cumNormProbFwdUpper)]);
+    fprintf(fid,'%10i\t%s%s\n',nnz(forward2Reversible_bydGt0Mid),' of which are quantitatively reversible by range of dGt0. ',[num2str(cumNormProbFwdLower) '< P(\Delta_{r}G^{\primeo}<0) < ' num2str(cumNormProbFwdUpper)]);
     %qualitatively reverse reactions that are quantitatively
     %reversible by concentration alone (with dGt0 error)
-    fprintf(fid,'%10i\t%s%s\n',nnz(dGfGCforwardReversibleBool_bydGt0RHS),' qualitatively forward reactions that are GC quantitatively reversible by range of dGt0. ',['P(\Delta_{r}G^{\primeo}<0) < ' num2str(cumNormProbFwdLower)]);
-    %qualitatively reverse reactions that are quantitatively
-    %reversible by concentration alone (with dGt0 error)
-    fprintf(fid,'%10i\t%s\n',nnz(dGfGCforwardReversibleBool_byConcRHS),' qualitatively forward reactions that are GC quantitatively reverse by dGr0t, but reversible by concentration (With error in GC dGr0t).');
-    %qualitatively reverse reactions that are quantitatively
+    fprintf(fid,'%10i\t%s%s\n',nnz(forward2Reversible_bydGt0RHS),' of which are quantitatively reversible by range of dGt0. ',['P(\Delta_{r}G^{\primeo}<0) < ' num2str(cumNormProbFwdLower)]);
+    %qualitatively forward reactions that are quantitatively
     %reversible by concentration alone (no dGt0 error)
-    fprintf(fid,'%10i\t%s\n',nnz(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS),' qualitatively forward reactions that are GC quantitatively reverse by dGr0t, but reversible by concentration.(No error in GC dGr0t).');
+    fprintf(fid,'%10i\t%s\n',nnz(forward2Reversible_byConc_zero_fixed_DrG0),' of which are quantitatively forward by fixed dGr0t, but reversible by concentration alone (zero fixed DrGt0).');
+    %qualitatively reverse reactions that are quantitatively
+    %reversible by concentration alone (with dGt0 error)
+    fprintf(fid,'%10i\t%s\n',nnz(forward2Reversible_byConc_negative_fixed_DrG0),' of which are quantitatively reverse by dGr0t, but reversible by concentration (negative fixed DrGt0).');
+    %qualitatively reverse reactions that are quantitatively
+    %reversible by concentration alone (with dGt0 error)
+    fprintf(fid,'%10i\t%s\n',nnz(forward2Reversible_byConc_positive_fixed_DrG0),' of which are quantitatively forward by dGr0t, but reversible by concentration (positve fixed DrGt0).');
+    %qualitatively reverse reactions that are quantitatively
+    %reversible by concentration alone (with dGt0 error)
+    fprintf(fid,'%10i\t%s\n',nnz(forward2Reversible_byConc_negative_uncertain_DrG0),' of which are quantitatively reverse by dGr0t, but reversible by concentration (uncertain negative DrGt0).');
+    %qualitatively reverse reactions that are quantitatively
+    %reversible by concentration alone (with dGt0 error)
+    fprintf(fid,'%10i\t%s\n',nnz(forward2Reversible_byConc_positive_uncertain_DrG0),' of which are quantitatively forward by dGr0t, but reversible by concentration (uncertain positive DrGt0).');
+end
+if printLevel<0
     fclose(fid);
-else
-    fprintf('%s\n','Breakdown of Group Contribution relaxation of reaction directionality, Qualitiative vs Quantitative:');
-    %total number of qualitatively forward reactions that are
-    %quantitatively reversible
-    fprintf('%10i\t%s\n',nnz(dGfGCforwardReversibleBool),' qualitatively forward reactions that are GC quantitatively reversible (total).');
-    %qualitatively forward reactions that are quantitatively
-    %reversible by concentration alone (no dGt0 error)
-    fprintf('%10i\t%s\n',nnz(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS),' qualitatively forward reactions that are GC quantitatively forward by dGr0t, but reversible by concentration alone (No error in GC dGr0t).');
-    %qualitatively forward reactions that are quantitatively
-    %reversible by concentration alone (with dGt0 error)
-    fprintf('%10i\t%s\n',nnz(dGfGCforwardReversibleBool_byConcLHS),' qualitatively forward reactions that are GC quantitatively forward by dGr0t, but reversible by concentration alone (With error in GC dGr0t).');
-    %qualitatively forward reactions that are quantitatively reversible by
-    %the range of dGt0
-    fprintf('%10i\t%s%s\n',nnz(dGfGCforwardReversibleBool_bydGt0LHS),' qualitatively forward reactions that are GC quantitatively reversible by range of dGt0. ',['P(\Delta_{r}G^{\primeo}<0) > ' num2str(cumNormProbFwdUpper)]);
-    %qualitatively reverse reactions that are quantitatively
-    %reversible by concentration alone (with dGt0 error)
-    fprintf('%10i\t%s%s\n',nnz(dGfGCforwardReversibleBool_bydGt0Mid),' qualitatively forward reactions that are GC quantitatively reversible by range of dGt0. ',[num2str(cumNormProbFwdLower) '< P(\Delta_{r}G^{\primeo}<0) < ' num2str(cumNormProbFwdUpper)]);
-    %qualitatively reverse reactions that are quantitatively
-    %reversible by concentration alone (with dGt0 error)
-    fprintf('%10i\t%s%s\n',nnz(dGfGCforwardReversibleBool_bydGt0RHS),' qualitatively forward reactions that are GC quantitatively reversible by range of dGt0. ',['P(\Delta_{r}G^{\primeo}<0) < ' num2str(cumNormProbFwdLower)]);
-    %qualitatively reverse reactions that are quantitatively
-    %reversible by concentration alone (with dGt0 error)
-    fprintf('%10i\t%s\n',nnz(dGfGCforwardReversibleBool_byConcRHS),' qualitatively forward reactions that are GC quantitatively reverse by dGr0t, but reversible by concentration (With error in GC dGr0t).');
-    %qualitatively reverse reactions that are quantitatively
-    %reversible by concentration alone (no dGt0 error)
-    fprintf('%10i\t%s\n',nnz(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS),' qualitatively forward reactions that are GC quantitatively reverse by dGr0t, but reversible by concentration.(No error in GC dGr0t).');
 end
-%make structue out of directions
-directions.fwdReconBool=fwdReconBool;
-directions.revReconBool=revReconBool;
-directions.reversibleReconBool=reversibleReconBool;
-directions.fwdReconThermoBool=fwdReconThermoBool;
-directions.revReconThermoBool=revReconThermoBool;
-directions.reversibleReconThermoBool=reversibleReconThermoBool;
-directions.fwdThermoOnlyBool=fwdThermoOnlyBool;
-directions.revThermoOnlyBool=revThermoOnlyBool;
-directions.reversibleThermoOnlyBool=reversibleThermoOnlyBool;
-%add the changed directions 
-directions.ChangeForwardForwardBool_dGfGC=dGfGCforwardForwardBool;
+
+
 %changed directions
-directions.ChangeReversibleFwd=reversibleFwd;
-directions.ChangeReversibleRev=reversibleRev;
-directions.ChangeForwardReverse=forwardReverse;
+directions.forward2Forward=forward2Forward;
+directions.forward2Reverse=forward2Reverse;
+directions.forward2Reversible=forward2Reversible;
+directions.forward2Uncertain=forward2Uncertain;
+directions.reversible2Forward=reversible2Forward;
+directions.reversible2Reverse=reversible2Reverse;
+directions.reversible2Reversible=reversible2Reversible;
+directions.reversible2Uncertain=reversible2Uncertain;
+directions.reverse2Forward=reverse2Forward;
+directions.reverse2Reverse=reverse2Reverse;
+directions.reverse2Reversible=reverse2Reversible;
+directions.reverse2Uncertain=reverse2Uncertain;
+
+directions.tightened=tightened;
+
 %all forward reversible classes
-directions.ChangeForwardReversible=forwardReversible;
-directions.ChangeForwardReversible_dGfKeq=forwardReversibleKeq;
-directions.ChangeForwardReversibleBool_dGfGC=dGfGCforwardReversibleBool;
-directions.ChangeForwardReversibleBool_dGfGC_byConcLHS=dGfGCforwardReversibleBool_byConcLHS;
-directions.ChangeForwardReversibleBool_dGfGC_byConcRHS=dGfGCforwardReversibleBool_byConcRHS;
-directions.ChangeForwardReversibleBool_dGfGC_bydGt0=dGfGCforwardReversibleBool_bydGt0;
-directions.ChangeForwardReversibleBool_dGfGC_bydGt0LHS=dGfGCforwardReversibleBool_bydGt0LHS;
-directions.ChangeForwardReversibleBool_dGfGC_bydGt0Mid=dGfGCforwardReversibleBool_bydGt0Mid;
-directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS=dGfGCforwardReversibleBool_bydGt0RHS;
-directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorLHS=dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS;
-directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS=dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS;
+directions.forward2Reversible_bydGt0=forward2Reversible_bydGt0;
+directions.forward2Reversible_bydGt0LHS=forward2Reversible_bydGt0LHS;
+directions.forward2Reversible_bydGt0Mid=forward2Reversible_bydGt0Mid;
+directions.forward2Reversible_bydGt0RHS=forward2Reversible_bydGt0RHS;
 
+directions.forward2Reversible_byConc_zero_fixed_DrG0=forward2Reversible_byConc_zero_fixed_DrG0;
+directions.forward2Reversible_byConc_negative_fixed_DrG0=forward2Reversible_byConc_negative_fixed_DrG0;
+directions.forward2Reversible_byConc_positive_fixed_DrG0=forward2Reversible_byConc_positive_fixed_DrG0;
+directions.forward2Reversible_byConc_negative_uncertain_DrG0=forward2Reversible_byConc_negative_uncertain_DrG0;
+directions.forward2Reversible_byConc_positive_uncertain_DrG0=forward2Reversible_byConc_positive_uncertain_DrG0;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+model.directions=directions;

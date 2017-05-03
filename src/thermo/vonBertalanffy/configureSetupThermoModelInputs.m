@@ -1,4 +1,4 @@
-function model = configureSetupThermoModelInputs(model,T,compartments,ph,is,chi,xmin,xmax,confidenceLevel)
+function model = configureSetupThermoModelInputs(model,T,compartments,ph,is,chi,concMinDefault,concMaxDefault,confidenceLevel)
 % Configures inputs to setupThermoModel (sets defaults etc.).
 % INPUTS
 %
@@ -22,11 +22,11 @@ end
 if ~exist('chi','var')
     chi = [];
 end
-if ~exist('xmin','var')
-    xmin = [];
+if ~exist('concMin','var')
+    concMin = [];
 end
-if ~exist('xmax','var')
-    xmax = [];
+if ~exist('concMax','var')
+    concMax = [];
 end
 if ~exist('confidenceLevel','var')
     confidenceLevel = [];
@@ -145,31 +145,52 @@ model.is = is;
 model.chi = chi;
 
 % Configure concentration bounds
-if isempty(xmin)
-    defaultMin = 1e-5;
-    fprintf('\nSetting lower bound on metabolite concentrations to %.2e.\n',defaultMin)
-    xmin = defaultMin*ones(size(model.mets)); % Default lower bound on metabolite concentrations in mol/L
+if isfield(model,'concMin')
+    model.concMin = reshape(model.concMin,size(model.S,1),1);
+    if isempty(concMinDefault)
+        error('concMinDefault must not be set if concentrations are provided')
+    end
+else
+    concMinDefault = 1e-5;
+    if isfield(model,'concMin')
+        error('concMinDefault must not be set if model.concMin is already provided')
+    else
+        fprintf('Setting lower bound on metabolite concentrations to %.2e.\n',concMinDefault)
+        model.concMin = concMinDefault*ones(size(model.mets)); % Default lower bound on metabolite concentrations in mol/L
+    end
 end
-xmin = reshape(xmin,length(xmin),1);
-model.xmin = xmin;
-
-if isempty(xmax)
-    defaultMax = 1e-2;
-    fprintf('\nSetting upper bound on metabolite concentrations to %.2e.\n',defaultMax)
-    xmax = defaultMax*ones(size(model.mets)); % Default upper bound on metabolite concentrations in mol/L
+    
+if isfield(model,'concMax')
+    model.concMax = reshape(model.concMax,size(model.S,1),1);
+    if isempty(concMaxDefault)
+        error('concMaxDefault must not be set if concentrations are provided')
+    end
+else
+    concMaxDefault = 1e-2;
+    if isfield(model,'concMax')
+        error('concMaxDefault must not be set if model.concMax is already provided')
+    else
+        fprintf('Setting upper bound on metabolite concentrations to %.2e.\n',concMaxDefault)
+        model.concMax = concMaxDefault*ones(size(model.mets)); % Default lower bound on metabolite concentrations in mol/L
+    end
 end
-xmax = reshape(xmax,length(xmax),1);
-model.xmax = xmax;
 
 hi = find(strcmp(model.metFormulas,'H')); % Indices of protons
 for i = 1:length(hi)
-   model.xmin(hi(i)) = 10^(-model.ph(strcmp(model.compartments,model.metCompartments{hi(i)}))); % Set concentrations of protons according to pH
-   model.xmax(hi(i)) = 10^(-model.ph(strcmp(model.compartments,model.metCompartments{hi(i)})));
+   model.concMin(hi(i)) = 10^(-model.ph(strcmp(model.compartments,model.metCompartments{hi(i)}))); % Set concentrations of protons according to pH
+   model.concMax(hi(i)) = 10^(-model.ph(strcmp(model.compartments,model.metCompartments{hi(i)})));
 end
 
 h2oi = find(strcmp(model.metFormulas,'H2O')); % Indices of water
-model.xmin(h2oi) = 1; % Set concentration of water to 1 M
-model.xmax(h2oi) = 1;
+model.concMin(h2oi) = 1; % Set concentration of water to 1 M
+model.concMax(h2oi) = 1;
+
+if any(~isfinite(log(model.concMin)))
+        error('log(model.concMin) must be finite')
+end
+if any(~isfinite(log(model.concMax)))
+        error('log(model.concMax) must be finite')
+end
 
 % Configure confidence level
 if isempty(confidenceLevel)
@@ -177,4 +198,33 @@ if isempty(confidenceLevel)
     fprintf('\nSetting confidence level to %.2f.\n',confidenceLevel);
 end
 model.confidenceLevel = confidenceLevel;
+
+% %all possible compartments
+% p=1;
+% compartments{p,1}='c';
+% compartments{p,2}='cytoplasm';
+% p=p+1;
+% compartments{p,1}='p';
+% compartments{p,2}='periplasm';
+% p=p+1;
+% compartments{p,1}='e';
+% compartments{p,2}='extracellular';
+% p=p+1;
+% compartments{p,1}='m';
+% compartments{p,2}='mitochondria';
+% p=p+1;
+% compartments{p,1}='n';
+% compartments{p,2}='nucleus';
+% p=p+1;
+% compartments{p,1}='r';
+% compartments{p,2}='endoplasmic reticulum';
+% p=p+1;
+% compartments{p,1}='l';
+% compartments{p,2}='lysosome';
+% p=p+1;
+% compartments{p,1}='x';
+% compartments{p,2}='peroxisome';
+% p=p+1;
+% compartments{p,1}='i';
+% compartments{p,2}='intermembrane space in mitochondria';
 

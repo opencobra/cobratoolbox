@@ -110,16 +110,12 @@ for n=1:nRxn
     %or no coefficient at all - Ronan May 29th 2011
     if nnz(model.S(1:nRealMet,n))<=1
         SExRxnBoolOneCoefficient(n,1)=1;
-        if printLevel>1
+        if printLevel>2
             if nonzeros(model.S(1:nRealMet,n))>0
-                if printLevel>0
-                    fprintf('%s\t%s\n','Positive coefficient:',model.rxns{n});
-                end
+                fprintf('%s\t%s\n','Positive coefficient:',model.rxns{n});
             else
-                if printLevel>0
-                    fprintf('%s\t%s\n','Negative coefficient:',model.rxns{n});
-                    %                 fprintf('%s%s%s%s%s\n','''',model.rxns{n},''',0 ,0 ''',model.mets{find(model.S(1:nRealMet,n)~=0)},''',0 ,0 ;');
-                end
+                fprintf('%s\t%s\n','Negative coefficient:',model.rxns{n});
+                %                 fprintf('%s%s%s%s%s\n','''',model.rxns{n},''',0 ,0 ''',model.mets{find(model.S(1:nRealMet,n)~=0)},''',0 ,0 ;');
             end
         end
     end

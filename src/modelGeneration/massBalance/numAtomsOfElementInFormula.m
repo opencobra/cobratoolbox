@@ -42,8 +42,13 @@ if ~isempty(indZero)
 end
 
 %Count FULLR and FULLR2 groups as R groups (Human reconstruction)
-formula = strrep(formula, 'FULLR2', 'R');
+formula = strrep(formula, 'FULLR3', 'R3');
+formula = strrep(formula, 'FULLR2', 'R2');
 formula = strrep(formula, 'FULLR', 'R');
+
+element = strrep(element, 'FULLR3', 'R3');
+element = strrep(element, 'FULLR2', 'R2');
+element = strrep(element, 'FULLR', 'R');
 
 if ischar(element) && ischar(formula)
     elementStart = regexp(formula, '[A-Z]', 'start'); % Get indices of all capital letters in the string formula. Treated as starting indices of elements.

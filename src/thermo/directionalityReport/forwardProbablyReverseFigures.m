@@ -1,4 +1,4 @@
-function forwardProbablyReverseFigures(model,directions,miliMolarStandard)
+function forwardProbablyReverseFigures(model,miliMolarStandard)
 % figure of qualitatively forward reactions that are probably quantiatively reverse
 %
 %create a vertical errorbar figure of the qualitatively forward reactions
@@ -6,48 +6,49 @@ function forwardProbablyReverseFigures(model,directions,miliMolarStandard)
 %group contribution estimate
 %
 %INPUT
-% model
-%
-% subsets of forward qualtiative -> probably quantiative reverse by group
-% contribution
-%       directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS
-%       directions.ChangeForwardReversibleBool_dGfGC_byConcRHS
-%       directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS
-%
-% thorStandard          {(0),1} use new standard reactant concentration
-%                       half way between upper and lower concentration
-%                       bounds
+% model.directions 
+%  (subsets of forward qualtiative -> probably quantiative reverse)
+%  .forwardReversible_bydGt0RHS
+%  .forwardReversible_byConc_positive_fixed_DrG0
+%  .forwardReversible_byConc_positive_uncertain_DrG0
+
 % Ronan M.T. Fleming
 
 %%%%%%%%%vertical%%%%%%%%%%%%%
-[nMet,nRxn]=size(model.S);
-if miliMolarStandard
-    dGt0Min=model.dGt0Min;
-    dGt0Max=model.dGt0Max;
-    for n=1:nRxn
-        model.dGt0Min(n)=model.rxn(n).dGtmMMin;
-        model.dGt0Max(n)=model.rxn(n).dGtmMMax;
-    end
-end
+directions=model.directions;
+
+[~,nRxn]=size(model.S);
 
 %forward, probably reverse
-fwdProbReverse=directions.ChangeForwardReversibleBool_dGfGC_byConcRHS | ...
-    directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS | ...
-    directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS;
+fwdProbReverse=directions.forwardReversible_byConc_positive_uncertain_DrG0 | ...
+    directions.forwardReversible_bydGt0RHS | ...
+    directions.forwardReversible_byConc_positive_fixed_DrG0;
 
 %plot regions 5,6,7, with region 6 shaded
 X1=1:nRxn;
-%dGrt0
-Y0=(model.dGt0Min+model.dGt0Max)/2;
-L0=Y0-model.dGt0Min;
-U0=model.dGt0Max-Y0;
-%dGrt
-Y=(model.dGtMin+model.dGtMax)/2;
-L=Y-model.dGtMin;
-U=model.dGtMax-Y;
-%find the amount of reactions with normal cumulative distribution over
-%range of dGt0
-P = normcdf(0,Y0,L0);
+if 0
+    %dGrt0
+    Y0=(model.dGt0Min+model.dGt0Max)/2;
+    L0=Y0-model.dGt0Min;
+    U0=model.dGt0Max-Y0;
+    %dGrt
+    Y=(model.dGtMin+model.dGtMax)/2;
+    L=Y-model.dGtMin;
+    U=model.dGtMax-Y;
+    %find the amount of reactions with normal cumulative distribution over
+    %range of dGt0
+    P = normcdf(0,Y0,L0);
+else
+    Y0=model.DrGt0Mean;
+    L0=model.DrGt0Mean-model.DrGt0Min;
+    U0=model.DrGt0Max-model.DrGt0Mean;
+    
+    Y=model.DrGtMean;
+    L=model.DrGtMean-model.DrGtMin;
+    U=model.DrGtMax-model.DrGtMean;
+    P=directions.forwardProbability;
+end
+
 %sort by probability that a reaction is forward (puts any NaN first)
 [tmp,xip]=sort(P,'descend');
 %     only take the indices of the problematic reactions, but be sure to
@@ -64,7 +65,7 @@ xip=xip2;
 X1=1:length(xip);
 
 %replace the NaN due to zero st dev
-nNaNpRHS=nnz(directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS);
+nNaNpRHS=nnz(directions.forwardReversible_byConc_positive_fixed_DrG0);
 if nNaNpRHS~=nnz(isnan((P(fwdProbReverse))))
     warning('ExtraCategory');
 end
@@ -87,7 +88,7 @@ maxX=max(model.dGtMax(fwdProbReverse));
 %baselines
 PreversibleBar_byConcRHS=ones(1,nRxn)*minX;
 %bar for 6
-PreversibleBar_byConcRHS(directions.ChangeForwardReversibleBool_dGfGC_byConcRHS)=maxX;
+PreversibleBar_byConcRHS(directions.forwardReversible_byConc_positive_uncertain_DrG0)=maxX;
 bar_handle6=barh(X1,PreversibleBar_byConcRHS(xip),1,'BaseValue',minX,'FaceColor',[0.86 0.86 0.86],'EdgeColor','none');
 
 %dGrt errorbar
@@ -182,9 +183,9 @@ if horizontal
     %forward possibly reversible
     dGfGCforwardReversibleBool=directions.ChangeForwardReversibleBool_dGfGC;
     %forward, probably reverse
-    fwdProbReverse=directions.ChangeForwardReversibleBool_dGfGC_byConcRHS | ...
-        directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS | ...
-        directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS;
+    fwdProbReverse=directions.forwardReversible_byConc_positive_uncertain_DrG0 | ...
+        directions.forwardReversible_bydGt0RHS | ...
+        directions.forwardReversible_byConc_positive_fixed_DrG0;
     
     %plot regions 5,6,7, with region 6 shaded
     X1=1:nRxn;
@@ -215,7 +216,7 @@ if horizontal
     X1=1:length(xip);
     
     %replace the NaN due to zero st dev
-    nNaNpRHS=nnz(directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS);
+    nNaNpRHS=nnz(directions.forwardReversible_byConc_positive_fixed_DrG0);
     if nNaNpRHS~=nnz(isnan((P(fwdProbReverse))))
         warning('ExtraCategory');
     end
@@ -236,7 +237,7 @@ if horizontal
     %baselines
     PreversibleBar_byConcRHS=ones(1,nRxn)*minY;
     %bar for 6
-    PreversibleBar_byConcRHS(directions.ChangeForwardReversibleBool_dGfGC_byConcRHS & directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS)=maxY;
+    PreversibleBar_byConcRHS(directions.forwardReversible_byConc_positive_uncertain_DrG0 & directions.forwardReversible_bydGt0RHS)=maxY;
     bar_handle6=bar(X1,PreversibleBar_byConcRHS(xip),1,'BaseValue',minY,'FaceColor',[0.86 0.86 0.86],'EdgeColor','none');
     
     %dGrt errorbar

@@ -1,4 +1,4 @@
-function model = setupComponentContribution(model,molfileDir,cid,T,cellCompartments,ph,is,chi)
+function model = setupComponentContribution(model,molFileDir,cid)
 % Estimates standard transformed reaction Gibbs energy and directionality
 % at in vivo conditions in multicompartmental metabolic reconstructions.
 % Has external dependencies on the COBRA toolbox, the component
@@ -7,7 +7,7 @@ function model = setupComponentContribution(model,molfileDir,cid,T,cellCompartme
 % availability at the end of help text. 
 % 
 % modelT = setupThermoModel(model,molfileDir,cid,T,cellCompartments,ph,...
-%                           is,chi,xmin,xmax,confidenceLevel) 
+%                           is,chi,concMin,concMax,confidenceLevel) 
 % 
 % INPUTS
 % model             Model structure with following fields:
@@ -19,8 +19,8 @@ function model = setupComponentContribution(model,molfileDir,cid,T,cellCompartme
 %                   H2O.
 % .metCharges       m x 1 numerical array of metabolite charges.
 % 
-% CONDITIONALLY OPTIONAL INPUTS
-% molfiledir                Path to a directory containing molfiles for the
+% OPTIONAL INPUTS
+% molFileDir                Path to a directory containing molfiles for the
 %                           major tautomer of the major microspecies of
 %                           each metabolite at pH 7. Molfiles should be
 %                           named with the metabolite identifiers in
@@ -36,7 +36,7 @@ function model = setupComponentContribution(model,molfileDir,cid,T,cellCompartme
 % 
 % OPTIONAL INPUTS
 % T                 Temperature in Kelvin. 
-% cellCompartments  c x 1 array of compartment identifiers. Should match
+% compartments      c x 1 array of compartment identifiers. Should match
 %                   the compartment identifiers in model.metCompartments.
 % ph                c x 1 array of compartment specific pH values in the
 %                   range 4.7 to 9.3.
@@ -46,9 +46,9 @@ function model = setupComponentContribution(model,molfileDir,cid,T,cellCompartme
 %                   potential values in mV. Electrical potential in cytosol
 %                   is assumed to be 0 mV. Electrical potential in all
 %                   other compartments are relative to that in cytosol.
-% xmin              m x 1 array of lower bounds on metabolite
+% concMin              m x 1 array of lower bounds on metabolite
 %                   concentrations in mol/L.
-% xmax              m x 1 array of upper bounds on metabolite
+% concMax              m x 1 array of upper bounds on metabolite
 %                   concentrations in mol/L.
 % confidenceLevel   {0.50, 0.70, (0.95), 0.99}. Confidence level for
 %                   standard transformed reaction Gibbs energies used to
@@ -63,51 +63,18 @@ function model = setupComponentContribution(model,molfileDir,cid,T,cellCompartme
 %                       levels of structural detail.
 % .pKa                  m x 1 structure containing metabolite pKa values
 %                       estimated with ChemAxon's Calculator Plugins.
-% .DfG0                 m x 1 array of component contribution estimated
-%                       standard Gibbs energies of formation.
-% .covf                 m x m estimated covariance matrix for standard
-%                       Gibbs energies of formation.
-% .uf                   m x 1 array of uncertainty in estimated standard
-%                       Gibbs energies of formation. uf will be large for
-%                       metabolites that are not covered by component
-%                       contributions.
-% .DrG0                 n x 1 array of component contribution estimated
-%                       standard reaction Gibbs energies.
-% .ur                   n x 1 array of uncertainty in standard reaction
-%                       Gibbs energy estimates.  ur will be large for
-%                       reactions that are not covered by component
-%                       contributions.
-% .DfG0_pseudoisomers   p x 4 matrix with the following columns:
+% .pseudoisomers        p x 4 matrix with the following columns:
 %                       1. Metabolite index.
 %                       2. Estimated pseudoisomer standard Gibbs energy.
 %                       3. Number of hydrogen atoms in pseudoisomer
 %                       chemical formula.
 %                       4. Charge on pseudoisomer.
-% .DfGt0                m x 1 array of estimated standard transformed Gibbs
-%                       energies of formation.
-% .DrGt0                n x 1 array of estimated standard transformed
-%                       reaction Gibbs energies.
-% .DfGtMin              m x 1 array of estimated lower bounds on
-%                       transformed Gibbs energies of formation.
-% .DfGtMax              m x 1 array of estimated upper bounds on
-%                       transformed Gibbs energies of formation.
-% .DrGtMin              n x 1 array of estimated lower bounds on
-%                       transformed reaction Gibbs energies.
-% .DrGtMax              n x 1 array of estimated upper bounds on
-%                       transformed reaction Gibbs energies.
-% .quantDir             n x 1 array indicating quantitatively assigned
-%                       reaction directionality. 1 for reactions that are
-%                       irreversible in the forward direction, -1 for
-%                       reactions that are irreversible in the reverse
-%                       direction, and 0 for reversible reactions.
 % 
 % WRITTEN OUTPUTS
 % MetStructures.sdf     An SDF containing all structures input to the
 %                       component contribution method for estimation of
 %                       standard Gibbs energies. 
 % 
-% DEPENDENCIES
-% see initVonBertylanffy
 % 
 % Ronan M. T. Fleming, Sept. 2012   Version 1.0
 % Hulda S. H., Dec. 2012            Version 2.0
@@ -122,18 +89,18 @@ end
 
 %% Get metabolite structures
 if ~isempty(cid)
-    molfileDir = 'molfilesFromKegg';
+    molFileDir = 'molfilesFromKegg';
     fprintf('\nRetreiving molfiles from KEGG.\n');
     takeMajorMS = true; % Convert molfile from KEGG to major tautomer of major microspecies at pH 7
     pH = 7;
     takeMajorTaut = true;
-    kegg2mol(cid,molfileDir,model.mets,takeMajorMS,pH,takeMajorTaut); % Retreive mol files
+    kegg2mol(cid,molFileDir,model.mets,takeMajorMS,pH,takeMajorTaut); % Retreive mol files
 end
 
-fprintf('\nCreating MetStructures.sdf from molfiles.\n')
+fprintf('Creating MetStructures.sdf from molfiles.\n')
 sdfFileName = 'MetStructures.sdf';
 includeRs = 0; % Do not include structures with R groups in SDF
-[sdfMetList,noMolMetList] = mol2sdf(model.mets,molfileDir,sdfFileName,includeRs);
+[sdfMetList,noMolMetList] = mol2sdf(model.mets,molFileDir,sdfFileName,includeRs);
 
 fprintf('Converting SDF to InChI strings.\n')
 model.inchi = createInChIStruct(model.mets,sdfFileName);
@@ -143,9 +110,8 @@ model.inchi.standardWithStereo(compositeBool) = cell(sum(compositeBool),1);
 model.inchi.standardWithStereoAndCharge(compositeBool) = cell(sum(compositeBool),1);
 model.inchi.nonstandard(compositeBool) = cell(sum(compositeBool),1);
 
-
 %% Estimate metabolite pKa values with ChemAxon calculator plugins and determine all relevant pseudoisomers.
-fprintf('\nEstimating metabolite pKa values.\n');
+fprintf('Estimating metabolite pKa values.\n');
 npKas = 20; % Number of acidic and basic pKa values to estimate
 takeMajorTaut = false; % Estimate pKa for input tautomer. Input tautomer is assumed to be the major tautomer for the major microspecies at pH 7.
 model.pseudoisomers = estimate_pKa(model.mets,model.inchi.nonstandard,npKas,takeMajorTaut); % Estimate pKa and determine pseudoisomers
@@ -153,7 +119,7 @@ model.pseudoisomers = rmfield(model.pseudoisomers,'met');
 
 % Add number of hydrogens and charge for metabolites with no InChI
 if any(~[model.pseudoisomers.success])
-    fprintf('\nAssuming that metabolite species in model.metFormulas are representative for metabolites where pKa could not be estimated.\n');
+    fprintf('Assuming that metabolite species in model.metFormulas are representative for metabolites where pKa could not be estimated.\n');
 end
 nonphysicalMetSpecies = {};
 for i = 1:length(model.mets)
@@ -170,12 +136,8 @@ for i = 1:length(model.mets)
 end
 if ~isempty(nonphysicalMetSpecies)
     nonphysicalMetSpecies = unique(regexprep(nonphysicalMetSpecies,'\[\w\]',''));
-    fprintf(['\nWarning: Metabolite species given in model.metFormulas does not match any of the species calculated from the input structure for metabolites:\n' sprintf('%s\n',nonphysicalMetSpecies{:})]);
+    fprintf('%s\n','#H in model.metFormulas does not match any of the species calculated mol file for metabolites:')
+    for n=1:length(nonphysicalMetSpecies)
+        fprintf('%s\t%s\n',nonphysicalMetSpecies{n},model.metFormulas{m});
+    end
 end
-
-
-%% Call the component contribution method to estimate standard Gibbs energies with uncertainties
-fprintf('\nEstimating standard Gibbs energies with the component contribution method.\n');
-params.use_cached_kegg_inchis=1;
-params.use_model_pKas_by_default=1;
-model = addThermoToModel(model,params);

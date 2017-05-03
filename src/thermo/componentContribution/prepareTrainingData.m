@@ -1,4 +1,4 @@
-function model = addThermoToModel(model,params,printLevel)
+function training_data = prepareTrainingData(model,printLevel,params)
 % given a standard COBRA model, add thermodynamic data to it using
 % the Component Contribution method
 %
@@ -23,24 +23,25 @@ function model = addThermoToModel(model,params,printLevel)
 %                       metabolites that are not covered by component
 %                       contributions.
 
-if ~isfield(params,'use_cached_kegg_inchis')
-    use_cached_kegg_inchis = true;
-    % use_cached_kegg_inchis = false;
-else
-    use_cached_kegg_inchis=params.use_cached_kegg_inchis;
-end
-if ~isfield(params,'use_model_pKas_by_default')
-    use_model_pKas_by_default = true;
-else
-    use_model_pKas_by_default=params.use_model_pKas_by_default;
-end
-if ~isfield(params,'maxuf')
-    maxuf = 1e3;
-end
 if ~exist('printLevel','var')
     printLevel = 0;
 end
-
+if ~exist('param','var')
+    use_cached_kegg_inchis=true;
+    use_model_pKas_by_default=true;
+else
+    if ~isfield(params,'use_cached_kegg_inchis')
+        use_cached_kegg_inchis = true;
+        % use_cached_kegg_inchis = false;
+    else
+        use_cached_kegg_inchis=params.use_cached_kegg_inchis;
+    end
+    if ~isfield(params,'use_model_pKas_by_default')
+        use_model_pKas_by_default = true;
+    else
+        use_model_pKas_by_default=params.use_model_pKas_by_default;
+    end
+end
 % load the training data (from TECRDB, Alberty, etc.)
 training_data = loadTrainingData();
 
@@ -68,33 +69,4 @@ training_data = createGroupIncidenceMatrix(model, training_data);
 % apply the reverse Legendre transform for the relevant training observations (typically
 % apparent reaction Keq from TECRDB)
 training_data = reverseTransformTrainingData(model, training_data, use_model_pKas_by_default);
-
-%%
-fprintf('Running Component Contribution method\n');
-% Estimate standard Gibbs energies of formation
-[x, cov_x] = componentContribution(training_data.S, training_data.G, training_data.dG0, training_data.weights);
-
-%%
-% Map estimates back to model
-model.DfG0 = x(training_data.Model2TrainingMap);
-model.covf = cov_x(training_data.Model2TrainingMap, training_data.Model2TrainingMap);
-model.DfG0_Uncertainty = diag(sqrt(model.covf));
-
-if printLevel>0
-    fprintf('%g%s%g\n',nnz(model.DfGt0_Uncertainty>20)/length(model.DfGt0_Uncertainty), ' of metabolites with uncertainty in DfGt0 greater than ',maxuf)
-end
-
-DfG0NaNBool=isnan(model.DfG0);
-if any(DfG0NaNBool)
-    warning([int2str(nnz(DfG0NaNBool)) ' DfG0 are NaN']);
-end
-
-% model.DrGt0_Uncertainty = sqrt(diag(model.S'*model.covf*model.S));
-% model.DrGt0_Uncertainty(model.DrGt0_Uncertainty >= 1e3) = 1e10; % Set large uncertainty in reaction energies to inf
-% model.DrGt0_Uncertainty(sum(model.S~=0)==1) = 1e10; % set uncertainty of exchange, demand and sink reactions to inf
-
-% Debug
-% model.G = training_data.G(training_data.Model2TrainingMap,:);
-% model.groups = training_data.groups;
-% model.has_gv = training_data.has_gv(training_data.Model2TrainingMap);
 

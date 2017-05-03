@@ -13,18 +13,13 @@ function model = estimateDrGt0(model,confidenceLevel)
 % .T                Temperature in Kelvin.
 % .DfGt0            Standard transformed Gibbs energies of formation in
 %                   kJ/mol.
-% .covf             m x m estimated covariance matrix for standard
-%                   Gibbs energies of formation.
-% .uf               m x 1 array of uncertainty in estimated standard
-%                   Gibbs energies of formation. uf will be large for
-%                   metabolites that are not covered by component
-%                   contributions.
+% .DrGt0_Uncertainty Uncertainty in standard transformed reaction Gibbs energies kJ/mol.
 % .ph               c x 1 array of compartment specific pH values.
 % .chi              c x 1 array of compartment specific electrical
 %                   potential values in mV.
-% .xmin             m x 1 array of lower bounds on metabolite
+% .concMin             m x 1 array of lower bounds on metabolite
 %                   concentrations in mol/L.
-% .xmin             m x 1 array of upper bounds on metabolite
+% .concMax             m x 1 array of upper bounds on metabolite
 %                   concentrations in mol/L.
 % 
 % OPTIONAL INPUTS
@@ -37,10 +32,6 @@ function model = estimateDrGt0(model,confidenceLevel)
 % .DrGt0            n x 1 array of standard transformed reaction Gibbs
 %                   energies in kJ/mol.
 % .ur               n x 1 array of uncertainties in DrGt0.
-% .DfGtMin          Lower bounds on transformed Gibbs energies of formation
-%                   in kJ/mol.
-% .DfGtMax          Upper bounds on transformed Gibbs energies of formation
-%                   in kJ/mol.
 % .DrGtMin          Lower bounds on transformed reaction Gibbs energies
 %                   in kJ/mol.
 % .DrGtMax          Upper bounds on transformed reaction Gibbs energies
@@ -74,44 +65,21 @@ tValueMat = [0.50, 0;...
          
 tValue = tValueMat(tValueMat(:,1) == confidenceLevel,2);
 
-%boolean of proton indices
-hBool = strcmp(model.metFormulas,'H');                   
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METABOLITE PROPERTIES%%%%%%%%%%%%%%%%%%%%
-% Special adjustment for protons
-%TODO - transformed Gibbs energy for each proton should be zero without
-%this hack below
-%TODO - uf should be zero for protons when it comes from component contribution method
-model.uf(hBool)=0; 
-if all(model.xmin(hBool)==model.xmax(hBool))
-    RTlogxmin=gasConstant*T*log(model.xmin);
-    %RTlogxmax=gasConstant*T*log(model.xmax);
-    model.DfGt0(hBool)=-RTlogxmin(hBool);
-else
-    error('minimium and maximum proton concentrations must be identical for each compartment')
-end
-
-% Calculate bounds on standard transformed Gibbs energies of formation
-DfGt0Min = model.DfGt0 - tValue*model.uf;
-DfGt0Max = model.DfGt0 + tValue*model.uf;
-
-% Calculate bounds on transformed Gibbs energies of formation
-DfGtMin = DfGt0Min + gasConstant*T*log(model.xmin);
-DfGtMax = DfGt0Max + gasConstant*T*log(model.xmax);
-
-if ~(all(DfGtMin(hBool)==0) && all(DfGtMin(hBool)==0))
-    error('Transformed Gibbs energy for each proton should be zero')
-end
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%REACTION PROPERTIES%%%%%%%%%%%%%%%%%%%%
-%uncertainty associated with component contribution estimates
-model.ur = sqrt(diag(model.S'*model.covf*model.S));%todo, should only be internal reactions
-model.ur(model.ur >= 1e3) = 1e10; % Set large uncertainty in reaction energies to inf
-model.ur(sum(model.S~=0)==1) = 1e10; % set uncertainty of exchange, demand and sink reactions to inf
+%standard transformed reaction Gibbs energy - without multicompartmental effect
+model.DrG0=model.S'*model.DfG0;
+model.DrG0(~model.SIntRxnBool) = NaN;
 
-%
+%standard transformed reaction Gibbs energy - without multicompartmental
+%effect
 model.DrGt0=model.S'*model.DfGt0;
+model.DrGt0(~model.SIntRxnBool) = NaN;
 
+% Special adjustment for protons
+%boolean of proton indices
+hBool = strcmp(model.metFormulas,'H');  
+
+%add multicompartmental effect
 if 1
     [transportRxnBool]=transportReactionBool(model);
     model.transportRxnBool=transportRxnBool;
@@ -147,8 +115,11 @@ if 1
     %eq 8.5-1 p148 Alberty 2003
     delta_chi  = model.S'*spdiags(model.metCharges,0,nMet,nMet)*metCHI;
 
-    DrGt0Max = model.DrGt0 + tValue*model.ur + delta_pH + delta_chi;
-    DrGt0Min = model.DrGt0 - tValue*model.ur + delta_pH + delta_chi;
+    %Legendre transform for intercompartmental effects
+    model.DrGt0 = model.DrGt0 + delta_pH + delta_chi;
+    
+    model.DrGt0Max = model.DrGt0 + tValue*model.DrGt0_Uncertainty;
+    model.DrGt0Min = model.DrGt0 - tValue*model.DrGt0_Uncertainty;
     
     %matrices for computing min and max change in chemical potential
     F=-model.S;
@@ -159,9 +130,14 @@ if 1
         F(hBool,:)=0;
         R(hBool,:)=0;
     end
-    DrGtMax = DrGt0Max + gasConstant*T*(R'*log(model.xmax) - F'*log(model.xmin));
-    DrGtMin = DrGt0Min + gasConstant*T*(R'*log(model.xmin) - F'*log(model.xmax));
-    pause(1e-5)
+    model.DrGtMax = model.DrGt0Max + gasConstant*T*(R'*log(model.concMax) - F'*log(model.concMin));
+    model.DrGtMin = model.DrGt0Min + gasConstant*T*(R'*log(model.concMin) - F'*log(model.concMax));
+    
+    if 0
+        model.DrGtMean = model.DrGt0 + gasConstant*T*(R-F)'*log((model.concMax+model.concMin)/2);
+    else
+        model.DrGtMean = model.DrGt0 + gasConstant*T*(R-F)'*log(geomean([model.concMin,model.concMax],2));
+    end
 else
     % Estimate standard transformed reaction Gibbs energies
     St = model.S;
@@ -192,27 +168,27 @@ else
     St_pos = St;
     St_pos(St_pos < 0) = 0; % Only positive (product) coefficients: R
 
-    DrGtMax = model.DrGt0 + tValue*model.ur + gasConstant*T*(St_pos'*log(model.xmax) + St_neg'*log(model.xmin));
-    DrGtMin = model.DrGt0 - tValue*model.ur + gasConstant*T*(St_pos'*log(model.xmin) + St_neg'*log(model.xmax));
+    model.DrGtMax = model.DrGt0 + tValue*model.DrGt0_Uncertainty + gasConstant*T*(St_pos'*log(model.concMax) + St_neg'*log(model.concMin));
+    model.DrGtMin = model.DrGt0 - tValue*model.DrGt0_Uncertainty + gasConstant*T*(St_pos'*log(model.concMin) + St_neg'*log(model.concMax));
 end
 
-if any(DrGtMax<DrGtMin)
+try
+DrGt0NaNBool=isnan(model.DrGt0) & model.SIntRxnBool;
+if any(DrGt0NaNBool)
+    warning([int2str(nnz(DrGt0NaNBool)) ' internal reaction DrGt0 are NaN']);
+end
+DrGtNaNBool=(isnan(model.DrGtMax) | isnan(model.DrGtMin)) & model.SIntRxnBool;
+if any(DrGtNaNBool)
+    warning([int2str(nnz(DrGtNaNBool)) ' DrGt are NaN']);
+end
+if any(model.DfGtMin>model.DfGtMax)
+    error('DfGtMin greater than DfGtMax');
+end
+if any(model.DrGtMax<model.DrGtMin)
     error('DrGtMax<DrGtMin')
 end
-    
-% Add results to model structure
-model.DfGtMin = DfGtMin;
-model.DfGtMax = DfGtMax;
-model.DrGtMin = DrGtMin;
-model.DrGtMax = DrGtMax;
-
-%balance the protons in each reaction given the number of Hydrogens bound
-%to each reactant calculated thermodynamically using assignThermoToModel.m
-if 0 %TODO Jan 30th 2011 Balancing protons changes growth rate ~0.7 -> 1.1  Need to check
-    fprintf('\n%s\n','...pHbalanceProtons');
-    model=pHbalanceProtons(model,massImbalance); % Minor changes - Hulda
+catch
+    pause(0.1);
 end
-
-
 
 

@@ -1,4 +1,4 @@
-function model=pHbalanceProtons(model,massImbalance,printLevel)
+function model=pHbalanceProtons(model,massImbalance,printLevel,fileName)
 % Mass balance protons for each reaction by adjusting the hydrogen ion stoichiometric coefficient.
 %
 % For each non transport reaction the proton stoichiometric coefficient for each
@@ -30,11 +30,15 @@ function model=pHbalanceProtons(model,massImbalance,printLevel)
 %                   reaction i for element j. massImbalance(i,j)==0 if
 %                   balanced for that element. The first column is assumed
 %                   to correspond to H balancing.
+% printLevel        {(0),-2,-1,0,1,2,3) print more to file or more to the
+%                   command window
+% fileName          name of the file to print out to 
 %
 % OUTPUT
 % model.S                   Stoichiometric matrix balanced for protons where each row.
 %                           corresponds to a reactant at specific pH.
-%
+% model.Srecon              Stoichiometric matrix of the reconstruction
+
 % Ronan M. T. Fleming
 
 if ~exist('printLevel','var')
@@ -45,7 +49,13 @@ if ~exist('massImbalance','var')
 else
     massBalancedBool=~any(massImbalance(:,2:end),2);
 end
-
+if printLevel<0
+    if ~exist('fileName','var')
+        fileName='pHbalanceProtons.txt';
+    else
+        fileName=[fileName 'pHbalanceProtons.txt'];
+    end
+end
 if any(any(isnan(model.S)))
     error('NaN in S matrix before proton balancing.')
 end
@@ -64,7 +74,7 @@ end
 
 A=sparse(nMet,length(model.compartments));
 for m=1:nMet
-    A(m,strcmp(model.metCompartments{m},model.compartments))=1;
+    A(m,strcmp(model.metCompartments{m},model.compartments))=1; %TODO streamline
 end
 
 compartmentHindex=zeros(length(model.compartments),1);
@@ -101,12 +111,28 @@ end
 dH = (reconstructionH*model.S)';
 unbalancedInternalBool = dH~=0 & model.SIntRxnBool;
 
+if printLevel<0
+    fid=fopen(fileName,'w');
+end
+
 if any(unbalancedInternalBool)
     if 0
-        fprintf('%s\n','Unbalanced reconstruction reactions:')
+        if printLevel>0
+            fprintf('%s\n','Unbalanced reconstruction reactions:')
+        else
+            if printLevel<0
+                fprintf(fid,'%s\n','Unbalanced reconstruction reactions:')
+            end
+        end
         unbalancedInd=find(unbalancedInternalBool);
         for p=1:length(unbalancedInd)
-            fprintf('\n%20s\t%s\n',model.rxns{unbalancedInd(p)},model.rxn(unbalancedInd(p)).equation);
+            if printLevel>0
+                fprintf('\n%20s\t%s\n',model.rxns{unbalancedInd(p)},model.rxn(unbalancedInd(p)).equation);
+            else
+                if printLevel<0
+                    fprintf(fid,'\n%20s\t%s\n',model.rxns{unbalancedInd(p)},model.rxn(unbalancedInd(p)).equation);
+                end
+            end
         end
         error(['vonBertalanffy:pHbalanceProtons ' 'Hydrogen unbalanced reconstruction reactions exist.'])
     else
@@ -122,7 +148,13 @@ R(model.S<0)=0;
 %reactant into reconstruction metabolite species
 deltaHBound = aveHbound - reconstructionH;
 
-fprintf('%s\n%s\n','Proton balancing of reactants.' ,'Assuming that transport reactions are specific to the metabolite species given in the reconstruction.')
+if printLevel>0
+    fprintf('%s\n%s\n','Proton balancing of reactants.' ,'Assuming that transport reactions are specific to the metabolite species given in the reconstruction.')
+else
+    if printLevel<0
+        fprintf(fid,'%s\n%s\n','Proton balancing of reactants.' ,'Assuming that transport reactions are specific to the metabolite species given in the reconstruction.');
+    end
+end
 %assign new proton stoichiometric coefficients depending on compartment
 for n=1:nRxn
     if strcmp(model.rxns{n},'IDHPOXOX2b')
@@ -142,9 +174,26 @@ for n=1:nRxn
             if any(isnan(aveHbound(model.S(:,n)~=0)))
                 if printLevel>0
                     if length(rxnUniqueMetCompartments)==1
-                        fprintf('%15g\t%20s\t%s\t%s\t%s\n',NaN,model.rxns{n}, rxnUniqueMetCompartments{1},'','Not proton balanced - NaN aveHbound.')
+                        if printLevel>0
+                            fprintf('%15g\t%20s\t%s\t%s\t%s\n',NaN,model.rxns{n}, rxnUniqueMetCompartments{1},'','Not proton balanced - NaN aveHbound.')
+                            
+                        else
+                            if printLevel<0
+                                fprintf(fid,'%15g\t%20s\t%s\t%s\t%s\n',NaN,model.rxns{n}, rxnUniqueMetCompartments{1},'','Not proton balanced - NaN aveHbound.');
+                                
+                            end
+                        end
+                        
                     else
-                        fprintf('%15g\t%20s\t%s\t%s\t%s\n',NaN, rxnUniqueMetCompartments{1},rxnUniqueMetCompartments{2},'Not proton balanced - NaN aveHbound.')
+                        if printLevel>0
+                            fprintf('%15g\t%20s\t%s\t%s\t%s\n',NaN, rxnUniqueMetCompartments{1},rxnUniqueMetCompartments{2},'Not proton balanced - NaN aveHbound.')
+                            
+                        else
+                            if printLevel<0
+                                fprintf(fid,'%15g\t%20s\t%s\t%s\t%s\n',NaN, rxnUniqueMetCompartments{1},rxnUniqueMetCompartments{2},'Not proton balanced - NaN aveHbound.');
+                                
+                            end
+                        end
                     end
                 end
             else
@@ -303,6 +352,14 @@ for n=1:nRxn
                     else
                         fprintf('%u\t%15g\t%20s\t%s\t%s\t%s\n',unbalancedInternalBool(n),abs(aveHbound*model.S(:,n)),model.rxns{n}, rxnUniqueMetCompartments{1},rxnUniqueMetCompartments{2},'Not proton balanced.')
                     end
+                else
+                    if printLevel<0
+                        if length(rxnUniqueMetCompartments)==1
+                            fprintf(fid,'%u\t%15g\t%20s\t%s\t%s\t%s\n',unbalancedInternalBool(n),abs(aveHbound*model.S(:,n)),model.rxns{n}, rxnUniqueMetCompartments{1},'','Not proton balanced.');
+                        else
+                            fprintf(fid,'%u\t%15g\t%20s\t%s\t%s\t%s\n',unbalancedInternalBool(n),abs(aveHbound*model.S(:,n)),model.rxns{n}, rxnUniqueMetCompartments{1},rxnUniqueMetCompartments{2},'Not proton balanced.');
+                        end
+                    end
                 end
                 if printLevel>1 || ~unbalancedInternalBool(n)
                     rxnFormula=printRxnFormula(model,model.rxns{n},0);
@@ -312,12 +369,28 @@ for n=1:nRxn
                     disp(model.mets(model.S(:,n)~=0)')
                     disp(aveHbound(model.S(:,n)~=0))
                 end
+                if printLevel<-1
+                    rxnFormula=printRxnFormula(model,model.rxns{n},0);
+                    fprintf(fid,'%s\n',rxnFormula{1});
+                end
             end
         else
             if massImbalance(n,1)~=0
-                fprintf('%s\n',[ 'vonBertalanffy:pHbalanceProtons ' model.rxns{n} ' reconstruction reaction not balanced for H to begin with']);
+                if printLevel>0
+                    fprintf('%s\t\n',[ 'vonBertalanffy:pHbalanceProtons ' model.rxns{n} ' reconstruction reaction not balanced for H to begin with']);
+                else
+                    if printLevel<0
+                        fprintf(fid,'%s\t\n',[ 'vonBertalanffy:pHbalanceProtons ' model.rxns{n} ' reconstruction reaction not balanced for H to begin with']);
+                    end
+                end
             else
-                fprintf('%s\n',['vonBertalanffy:pHbalanceProtons ' model.rxns{n} ' reconstruction reaction not balanced to begin with']);
+                if printLevel>0
+                    fprintf('%s\n',['vonBertalanffy:pHbalanceProtons ' model.rxns{n} ' reconstruction reaction not balanced to begin with']);
+                else
+                    if printLevel<0
+                        fprintf(fid,'%s\n',['vonBertalanffy:pHbalanceProtons ' model.rxns{n} ' reconstruction reaction not balanced to begin with']);
+                    end
+                end
             end
         end
 

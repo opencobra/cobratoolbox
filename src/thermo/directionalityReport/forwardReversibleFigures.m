@@ -1,37 +1,36 @@
-function forwardReversibleFiguresGC(model,directions,thorStandard)
+function forwardReversibleFigures(model,directions)
 % Figures of different classes of reactions: qualitatively forward -> quantitatively reversible
 %
 %INPUT
-%model
-% 
-% directions must have the fields below:
-%   directions.ChangeForwardReversibleBool_dGfGC;
-%   directions.ChangeForwardReversibleBool_dGfGC_byConcLHS;
-%   directions.ChangeForwardReversibleBool_dGfGC_byConcRHS;
-%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0;
-%   directions.ChangeForwardReversibleBool_dGfGC_bydGt0Mid;
-%   directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorLHS;
-%   directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS;
-%
-% thorStandard          {(0),1} use new standard reactant concentration
-%                       half way between upper and lower concentration
-%                       bounds
-%
-% Ronan M.T. Fleming
+%model.DrGt0
 
-%all forward reversible classes
-% forwardReversible=directions.ChangeForwardReversible;
-dGfGCforwardReversibleBool=directions.ChangeForwardReversibleBool_dGfGC;
-dGfGCforwardReversibleBool_byConcLHS=directions.ChangeForwardReversibleBool_dGfGC_byConcLHS;
-dGfGCforwardReversibleBool_byConcRHS=directions.ChangeForwardReversibleBool_dGfGC_byConcRHS;
-dGfGCforwardReversibleBool_bydGt0=directions.ChangeForwardReversibleBool_dGfGC_bydGt0;
-% dGfGCforwardReversibleBool_bydGt0LHS=directions.ChangeForwardReversibleBool_dGfGC_bydGt0LHS;
-dGfGCforwardReversibleBool_bydGt0Mid=directions.ChangeForwardReversibleBool_dGfGC_bydGt0Mid;
-% dGfGCforwardReversibleBool_bydGt0RHS=directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS;
-dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS=directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorLHS;
-dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS=directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS;
+%model.S
+%
+% directions        subsets of qualtiatively forward  -> quantiatively reversible 
+%   .forwardReversible
+%   .forwardReversible_bydGt0
+%   .forwardReversible_bydGt0LHS
+%   .forwardReversible_bydGt0Mid
+%   .forwardReversible_bydGt0RHS
+%   .forwardReversible_byConc_zero_fixed_DrG0
+%   .forwardReversible_byConc_negative_fixed_DrG0
+%   .forwardReversible_byConc_positive_fixed_DrG0
+%   .forwardReversible_byConc_negative_uncertain_DrG0
+%   .forwardReversible_byConc_positive_uncertain_DrG0
 
 % thorStandard
+
+
+[nMet,nRxn]=size(model.S);
+
+% if ~isfield(model,'DrGt0Mean')
+%     model.DrGt0Mean=(model.DrGt0Min+model.DrGt0Max)/2;
+% end
+% if ~isfield(model,'DrGtMean')
+%     model.DrGtMean=(model.DrGtMin+model.DrGtMax)/2;
+% end
+
+directions=model.directions;
 
 % close all
 figureMaster=1;
@@ -41,40 +40,40 @@ figure345=1;
 figure6=1;
 figure7=1;
 
-[nMet,nRxn]=size(model.S);
-if thorStandard
-    dGt0Min=model.dGt0Min;
-    dGt0Max=model.dGt0Max;
-    for n=1:nRxn
-        model.dGt0Min(n)=model.rxn(n).dGtmMMin;
-        model.dGt0Max(n)=model.rxn(n).dGtmMMax;
-    end
-end
-
-
 if figureMaster
-    %make the master plot of all 7 regions, 2, 4,6 are shaded
-    X1=1:nRxn;%nnz(dGfGCforwardReversibleBool);
-    %dGrt0
-    Y0=(model.dGt0Min+model.dGt0Max)/2;
-    L0=Y0-model.dGt0Min;
-    U0=model.dGt0Max-Y0;
-    %dGrt
-    Y=(model.dGtMin+model.dGtMax)/2;
-    L=Y-model.dGtMin;
-    U=model.dGtMax-Y;
-    %find the amount of reactions with normal cumulative distribution over
-    %range of dGt0
-    P = normcdf(0,Y0,L0);
+%     %make the master plot of all 7 regions, 2, 4,6 are shaded
+%     X1=1:nRxn;%nnz(directions.forwardReversible);
+%     %dGrt0
+%     Y0=(model.dGt0Min+model.dGt0Max)/2;
+%     L0=Y0-model.dGt0Min;
+%     U0=model.dGt0Max-Y0;
+%     %dGrt
+%     Y=(model.dGtMin+model.dGtMax)/2;
+%     L=Y-model.dGtMin;
+%     U=model.dGtMax-Y;
+%     %find the amount of reactions with normal cumulative distribution over
+%     %range of dGt0
+%     P = normcdf(0,Y0,L0);
+
+    %Y0=model.DrGt0; %model.DrGt0 = model.DrGt0 + delta_pH + delta_chi;
+    Y0=(model.DrGt0Min+model.DrGt0Max)/2;%old vonB11
+    L0=Y0-model.DrGt0Min;
+    U0=model.DrGt0Max-Y0;
+
+    Y=model.DrGtMean; %model.DrGtMean=(model.DrGtMax+model.DrGtMin)/2;
+    L=Y-model.DrGtMin;
+    U=model.DrGtMax-Y;
+    
+    P=directions.forwardProbability;
     %sort by probability that a reaction is forward (puts any NaN first)
     [tmp,xip]=sort(P,'descend');
     
     %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending P
-    xip2=zeros(nnz(dGfGCforwardReversibleBool),1);
+    xip2=zeros(nnz(directions.forwardReversible),1);
     p=1;
     for n=1:nRxn
-        if dGfGCforwardReversibleBool(xip(n))
+         if directions.forwardReversible(xip(n))
             xip2(p)=xip(n);
             p=p+1;
         end
@@ -83,62 +82,68 @@ if figureMaster
     X1=1:length(xip);
     
     %replace the NaN due to zero st dev
-    nNaNpLHS=nnz(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS);
-    nNaNpRHS=nnz(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS);
-    if (nNaNpLHS+nNaNpRHS)~=nnz(isnan((P(dGfGCforwardReversibleBool))))
-        warning('A:B','Extra category of NaN P(\Delta_{r}G^{\primem}<0) not taken into account');
+    %NaNpLHS=nnz(directions.forwardReversible_byConc_negative_uncertain_DrG0);
+    %nNaNpRHS=nnz(directions.forwardReversible_byConc_positive_uncertain_DrG0);
+    nNaNpLHS=nnz(isnan(directions.forwardReversible_byConc_negative_uncertain_DrG0));
+    nNaNpRHS=nnz(isnan(directions.forwardReversible_byConc_positive_uncertain_DrG0));
+    if (nNaNpLHS+nNaNpRHS)~=nnz(isnan((P(directions.forwardReversible))))
+        warning('A:B','Extra category of NaN P(Delta_{r}G^{primem}<0) not taken into account');
+        %nans are first in the ordering of indexes
+        NaNPInd=xip(1:nNaNpLHS+nNaNpRHS);
+        %sorts indices of the zero std dev met by their mean dG0t
+        [tmp,xipNaNPInd]=sort(model.DrGt0Mean(NaNPInd));
+        %new ordering
+        xip=[NaNPInd(xipNaNPInd(1:nNaNpLHS)); xip(nNaNpLHS+nNaNpRHS+1:end); NaNPInd(xipNaNPInd(nNaNpLHS+1:nNaNpLHS+nNaNpRHS))];
     end
-    %nans are first in the ordering of indexes
-    NaNPInd=xip(1:nNaNpLHS+nNaNpRHS);
-    %sorts indices of the zero std dev met by their mean dG0t
-    [tmp,xipNaNPInd]=sort(Y0(NaNPInd));
-    %new ordering
-    xip=[NaNPInd(xipNaNPInd(1:nNaNpLHS)); xip(nNaNpLHS+nNaNpRHS+1:end); NaNPInd(xipNaNPInd(nNaNpLHS+1:nNaNpLHS+nNaNpRHS))];
        
     figure1 = figure('PaperSize',[11 8.5],'PaperOrientation','landscape');
     % Create axes
     axes1 = axes('Parent',figure1,'Color',[0.702 0.7804 1]);
     hold on;
     %upper and lower Y
-    minY=min(model.dGtMin(dGfGCforwardReversibleBool));
-    maxY=max(model.dGtMax(dGfGCforwardReversibleBool));
+    minY=min(model.DrGtMin(directions.forwardReversible));
+    maxY=max(model.DrGtMax(directions.forwardReversible));
     %baselines
     PreversibleBar_byConcLHS=ones(1,nRxn)*minY;
     PreversibleBar_byConcRHS=ones(1,nRxn)*minY;
     PreversibleBar_bydGt0=ones(1,nRxn)*minY;
     %bar for 2 & 6
-    PreversibleBar_byConcLHS(dGfGCforwardReversibleBool_byConcLHS)=maxY;
-    PreversibleBar_byConcRHS(dGfGCforwardReversibleBool_byConcRHS)=maxY;
+    PreversibleBar_byConcLHS(directions.forwardReversible_byConc_negative_uncertain_DrG0)=maxY;
+    PreversibleBar_byConcRHS(directions.forwardReversible_byConc_positive_uncertain_DrG0)=maxY;
     %bar for 4
-    PreversibleBar_bydGt0(dGfGCforwardReversibleBool_bydGt0Mid)=maxY;
-    bar_handle2=bar(X1,PreversibleBar_byConcLHS(xip),1,'BaseValue',minY,'FaceColor',[0.86 0.86 0.86],'EdgeColor','none');
+    PreversibleBar_bydGt0(directions.forwardReversible_bydGt0Mid)=maxY;
     bar_handle4=bar(X1,PreversibleBar_bydGt0(xip),1,'BaseValue',minY,'FaceColor',[0.86 0.86 0.86],'EdgeColor','none');
+    bar_handle2=bar(X1,PreversibleBar_byConcLHS(xip),1,'BaseValue',minY,'FaceColor',[0.86 0.86 0.86],'EdgeColor','none');
     bar_handle6=bar(X1,PreversibleBar_byConcRHS(xip),1,'BaseValue',minY,'FaceColor',[0.86 0.86 0.86],'EdgeColor','none');
     
     %dGrt errorbar
     hE=errorbar(X1,Y(xip),L(xip),U(xip),'LineStyle','none','LineWidth',2,'DisplayName','forwardReversible','Color','r');
-    % adjust error bar width
-    %hE_c=get(hE, 'Children'); % deprecated since 2014b
-    %errorbarXData= get(hE_c(2), 'XData');
-    errorbarXData=get(hE, 'XData');
-    errorbarXData(4:9:end) = errorbarXData(1:9:end) - 0;
-    errorbarXData(7:9:end) = errorbarXData(1:9:end) - 0;
-    errorbarXData(5:9:end) = errorbarXData(1:9:end) + 0;
-    errorbarXData(8:9:end) = errorbarXData(1:9:end) + 0;
-    %set(hE_c(2), 'XData', errorbarXData);
-    set(hE, 'XData', errorbarXData);
+    if 0
+        % adjust error bar width
+        %hE_c=get(hE, 'Children'); % deprecated since 2014b
+        %errorbarXData= get(hE_c(2), 'XData');
+        errorbarXData=get(hE, 'XData');
+        errorbarXData(4:9:end) = errorbarXData(1:9:end) - 0;
+        errorbarXData(7:9:end) = errorbarXData(1:9:end) - 0;
+        errorbarXData(5:9:end) = errorbarXData(1:9:end) + 0;
+        errorbarXData(8:9:end) = errorbarXData(1:9:end) + 0;
+        %set(hE_c(2), 'XData', errorbarXData);
+        set(hE, 'XData', errorbarXData);
+    end
     %dGrt0 errorbar on top and inside dGrt
     hE2=errorbar(X1,Y0(xip),L0(xip),U0(xip),'LineStyle','none','LineWidth',2,'DisplayName','forwardReversible','Color','b');
-    % adjust error bar width
-    %hE_c=get(hE2, 'Children');
-    %errorbarXData= get(hE_c(2), 'XData');
-    errorbarXData= get(hE2, 'XData');
-    errorbarXData(4:9:end) = errorbarXData(1:9:end) - 0;
-    errorbarXData(7:9:end) = errorbarXData(1:9:end) - 0;
-    errorbarXData(5:9:end) = errorbarXData(1:9:end) + 0;
-    errorbarXData(8:9:end) = errorbarXData(1:9:end) + 0;
-    %set(hE_c(2), 'XData', errorbarXData);
-    set(hE2, 'XData', errorbarXData);
+    if 0
+        % adjust error bar width
+        %hE_c=get(hE2, 'Children');
+        %errorbarXData= get(hE_c(2), 'XData');
+        errorbarXData= get(hE2, 'XData');
+        errorbarXData(4:9:end) = errorbarXData(1:9:end) - 0;
+        errorbarXData(7:9:end) = errorbarXData(1:9:end) - 0;
+        errorbarXData(5:9:end) = errorbarXData(1:9:end) + 0;
+        errorbarXData(8:9:end) = errorbarXData(1:9:end) + 0;
+        %set(hE_c(2), 'XData', errorbarXData);
+        set(hE2, 'XData', errorbarXData);
+    end
     
     %mean dGrt0
     plot(X1,Y0(xip),'.','LineStyle','none','Color',[0.3412 0.7961 0.1922]);
@@ -163,8 +168,7 @@ if figureMaster
     set(get(AX(1),'Ylabel'),'FontSize',16)
     set(get(AX(2),'Ylabel'),'FontSize',16)
     xlabel('Reactions, sorted by \Delta_{r}G^{\primem} or P(\Delta_{r}G^{\primem}<0)');
-    saveas(figure1 ,'fwdReversibleGC','fig');
-%     saveas(figure1 ,'GCfwdReversible','eps');
+    saveas(figure1 ,'fwdReversible','fig');
 end
 
 %qualitatively forward reactions that are quantitatively
@@ -174,7 +178,7 @@ end
 if ishandle(figure1) && any(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS)
 
     %make the master plot of all 7 regions, 2, 4,6 are shaded
-    X1=1:nRxn;%nnz(dGfGCforwardReversibleBool);
+    X1=1:nRxn;%nnz(directions.forwardReversible);
     %dGrt0
     Y0=(model.dGt0Min+model.dGt0Max)/2;
     L0=Y0-model.dGt0Min;
@@ -191,10 +195,10 @@ if ishandle(figure1) && any(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS)
     
     %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending P
-    xip2=zeros(nnz(dGfGCforwardReversibleBool),1);
+    xip2=zeros(nnz(directions.forwardReversible),1);
     p=1;
     for n=1:nRxn
-        if dGfGCforwardReversibleBool(xip(n))
+        if directions.forwardReversible(xip(n))
             xip2(p)=xip(n);
             p=p+1;
         end
@@ -205,7 +209,7 @@ if ishandle(figure1) && any(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS)
     %replace the NaN due to zero st dev
     nNaNpLHS=nnz(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS);
     nNaNpRHS=nnz(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS);
-    if (nNaNpLHS+nNaNpRHS)~=nnz(isnan((P(dGfGCforwardReversibleBool))))
+    if (nNaNpLHS+nNaNpRHS)~=nnz(isnan((P(directions.forwardReversible))))
         warning('ExtraCategory');
     end
     %nans are first in the ordering of indexes
@@ -218,7 +222,7 @@ if ishandle(figure1) && any(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS)
     
     %reactions that cannot be assigned directionality
     %cuttoff for probabilities: must be reflective about 0.5;
-%     dGfGCforwardReversibleBool_bydGt0Mid=P<0.6 & P>0.4 & dGfGCforwardReversibleBool;
+%     dGfGCforwardReversibleBool_bydGt0Mid=P<0.6 & P>0.4 & directions.forwardReversible;
     
     %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending P
@@ -316,10 +320,10 @@ if figure7 && any(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS)
     
     %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending P
-    xip2=zeros(nnz(dGfGCforwardReversibleBool),1);
+    xip2=zeros(nnz(directions.forwardReversible),1);
     p=1;
     for n=1:nRxn
-        if dGfGCforwardReversibleBool(xip(n))
+        if directions.forwardReversible(xip(n))
             xip2(p)=xip(n);
             p=p+1;
         end
@@ -330,7 +334,7 @@ if figure7 && any(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS)
     %replace the NaN due to zero st dev
     nNaNpLHS=nnz(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS);
     nNaNpRHS=nnz(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS);
-    if (nNaNpLHS+nNaNpRHS)~=nnz(isnan((P(dGfGCforwardReversibleBool))))
+    if (nNaNpLHS+nNaNpRHS)~=nnz(isnan((P(directions.forwardReversible))))
         warning('ExtraCategory');
     end
     %nans are first in the ordering of indexes
@@ -343,7 +347,7 @@ if figure7 && any(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS)
     
     %reactions that cannot be assigned directionality
     %cuttoff for probabilities: must be reflective about 0.5;
-%     dGfGCforwardReversibleBool_bydGt0Mid=P<0.6 & P>0.4 & dGfGCforwardReversibleBool;
+%     dGfGCforwardReversibleBool_bydGt0Mid=P<0.6 & P>0.4 & directions.forwardReversible;
     
     %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending P
@@ -425,7 +429,7 @@ end
 % fprintf('%i%s\n',nnz(dGfGCforwardReversibleBool_byConcLHS),' qualitatively forward reactions that are GC quantitatively reverse by dGr0t, but reversible by concentration.');
 if figure2 && any(dGfGCforwardReversibleBool_byConcLHS)
     %make the master plot of all 7 regions, 2, 4,6 are shaded
-    X1=1:nRxn;%nnz(dGfGCforwardReversibleBool);
+    X1=1:nRxn;%nnz(directions.forwardReversible);
     %dGrt0
     Y0=(model.dGt0Min+model.dGt0Max)/2;
     L0=Y0-model.dGt0Min;
@@ -442,10 +446,10 @@ if figure2 && any(dGfGCforwardReversibleBool_byConcLHS)
     
     %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending P
-    xip2=zeros(nnz(dGfGCforwardReversibleBool),1);
+    xip2=zeros(nnz(directions.forwardReversible),1);
     p=1;
     for n=1:nRxn
-        if dGfGCforwardReversibleBool(xip(n))
+        if directions.forwardReversible(xip(n))
             xip2(p)=xip(n);
             p=p+1;
         end
@@ -456,7 +460,7 @@ if figure2 && any(dGfGCforwardReversibleBool_byConcLHS)
     %replace the NaN due to zero st dev
     nNaNpLHS=nnz(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS);
     nNaNpRHS=nnz(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS);
-    if (nNaNpLHS+nNaNpRHS)~=nnz(isnan((P(dGfGCforwardReversibleBool))))
+    if (nNaNpLHS+nNaNpRHS)~=nnz(isnan((P(directions.forwardReversible))))
         warning('ExtraCategory');
     end
     %nans are first in the ordering of indexes
@@ -469,7 +473,7 @@ if figure2 && any(dGfGCforwardReversibleBool_byConcLHS)
     
     %reactions that cannot be assigned directionality
     %cuttoff for probabilities: must be reflective about 0.5;
-%     dGfGCforwardReversibleBool_bydGt0Mid=P<0.6 & P>0.4 & dGfGCforwardReversibleBool;
+%     dGfGCforwardReversibleBool_bydGt0Mid=P<0.6 & P>0.4 & directions.forwardReversible;
     
         %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending P
@@ -564,7 +568,7 @@ end
 % fprintf('%i%s\n',nnz(dGfGCforwardReversibleBool_byConcRHS),' qualitatively forward reactions that are GC quantitatively reverse by dGr0t, but reversible by concentration.');
 if figure6 && any(dGfGCforwardReversibleBool_byConcRHS)
     %make the master plot of all 7 regions, 2, 4,6 are shaded
-    X1=1:nRxn;%nnz(dGfGCforwardReversibleBool);
+    X1=1:nRxn;%nnz(directions.forwardReversible);
     %dGrt0
     Y0=(model.dGt0Min+model.dGt0Max)/2;
     L0=Y0-model.dGt0Min;
@@ -581,10 +585,10 @@ if figure6 && any(dGfGCforwardReversibleBool_byConcRHS)
     
     %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending P
-    xip2=zeros(nnz(dGfGCforwardReversibleBool),1);
+    xip2=zeros(nnz(directions.forwardReversible),1);
     p=1;
     for n=1:nRxn
-        if dGfGCforwardReversibleBool(xip(n))
+        if directions.forwardReversible(xip(n))
             xip2(p)=xip(n);
             p=p+1;
         end
@@ -595,7 +599,7 @@ if figure6 && any(dGfGCforwardReversibleBool_byConcRHS)
     %replace the NaN due to zero st dev
     nNaNpLHS=nnz(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS);
     nNaNpRHS=nnz(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS);
-    if (nNaNpLHS+nNaNpRHS)~=nnz(isnan((P(dGfGCforwardReversibleBool))))
+    if (nNaNpLHS+nNaNpRHS)~=nnz(isnan((P(directions.forwardReversible))))
         warning('ExtraCategory');
     end
     %nans are first in the ordering of indexes
@@ -608,7 +612,7 @@ if figure6 && any(dGfGCforwardReversibleBool_byConcRHS)
     
     %reactions that cannot be assigned directionality
     %cuttoff for probabilities: must be reflective about 0.5;
-%     dGfGCforwardReversibleBool_bydGt0Mid=P<0.6 & P>0.4 & dGfGCforwardReversibleBool;
+%     dGfGCforwardReversibleBool_bydGt0Mid=P<0.6 & P>0.4 & directions.forwardReversible;
     
         %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending P
@@ -696,7 +700,7 @@ end
 % fprintf('%i%s\n',nnz(dGfGCforwardReversibleBool_bydGt0),' qualitatively forward reactions that are GC quantitatively reversible by range of dGt0.');
 if figure345 && any(dGfGCforwardReversibleBool_bydGt0)
     %make the master plot of all 7 regions, 2, 4,6 are shaded
-    X1=1:nRxn;%nnz(dGfGCforwardReversibleBool);
+    X1=1:nRxn;%nnz(directions.forwardReversible);
     %dGrt0
     Y0=(model.dGt0Min+model.dGt0Max)/2;
     L0=Y0-model.dGt0Min;
@@ -713,10 +717,10 @@ if figure345 && any(dGfGCforwardReversibleBool_bydGt0)
     
     %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending P
-    xip2=zeros(nnz(dGfGCforwardReversibleBool),1);
+    xip2=zeros(nnz(directions.forwardReversible),1);
     p=1;
     for n=1:nRxn
-        if dGfGCforwardReversibleBool(xip(n))
+        if directions.forwardReversible(xip(n))
             xip2(p)=xip(n);
             p=p+1;
         end
@@ -727,7 +731,7 @@ if figure345 && any(dGfGCforwardReversibleBool_bydGt0)
     %replace the NaN due to zero st dev
     nNaNpLHS=nnz(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS);
     nNaNpRHS=nnz(dGfGCforwardReversibleBool_byConc_No_dGt0ErrorRHS);
-    if (nNaNpLHS+nNaNpRHS)~=nnz(isnan((P(dGfGCforwardReversibleBool))))
+    if (nNaNpLHS+nNaNpRHS)~=nnz(isnan((P(directions.forwardReversible))))
         warning('ExtraCategory');
     end
     %nans are first in the ordering of indexes
@@ -740,7 +744,7 @@ if figure345 && any(dGfGCforwardReversibleBool_bydGt0)
     
     %reactions that cannot be assigned directionality
     %cuttoff for probabilities: must be reflective about 0.5;
-%     dGfGCforwardReversibleBool_bydGt0Mid=P<0.6 & P>0.4 & dGfGCforwardReversibleBool;
+%     dGfGCforwardReversibleBool_bydGt0Mid=P<0.6 & P>0.4 & directions.forwardReversible;
     
             %     only take the indices of the problematic reactions, but be sure to
     %     take them in order of descending P
@@ -827,29 +831,6 @@ if figure345 && any(dGfGCforwardReversibleBool_bydGt0)
     xlabel('Reactions, sorted by P(\Delta_{r}G^{\primem}<0)');
 end
 
-if thorStandard
-    model.dGt0Min=dGt0Min;
-    model.dGt0Max=dGt0Max;
-end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 changedDirections = directions;
 % old code
 %         %reactions that are qualitatively forward but quantitatively reverse
@@ -905,10 +886,10 @@ changedDirections = directions;
 % 
 %     %GC reversible prediction of reactions qualitiatively forward by dGrt
 %     %dGr0t
-%     X1=1:nnz(dGfGCforwardReversibleBool);
-%     Y=(model.dGt0Min(dGfGCforwardReversibleBool)+model.dGt0Max(dGfGCforwardReversibleBool))/2;
-%     L=Y-model.dGt0Min(dGfGCforwardReversibleBool);
-%     U=model.dGt0Max(dGfGCforwardReversibleBool)-Y;
+%     X1=1:nnz(directions.forwardReversible);
+%     Y=(model.dGt0Min(directions.forwardReversible)+model.dGt0Max(directions.forwardReversible))/2;
+%     L=Y-model.dGt0Min(directions.forwardReversible);
+%     U=model.dGt0Max(directions.forwardReversible)-Y;
 % %     [tmp,xi]=sort(Y);
 % %     figure
 % %     errorbar(X1,Y(xi),L(xi),U(xi),'r.')
@@ -917,10 +898,10 @@ changedDirections = directions;
 % %     ylabel('dGt0 (kJ/mol)')
 % %     xlabel('Reactions, sorted by mean dGt0')
 %     %dGrt
-%     Y2=(model.dGtMin(dGfGCforwardReversibleBool)+model.dGtMax(dGfGCforwardReversibleBool))/2;
-%     L2=Y2-model.dGtMin(dGfGCforwardReversibleBool);
-%     U2=model.dGtMax(dGfGCforwardReversibleBool)-Y2;
-%     [tmp,xi]=sort(abs(model.dGt0Max(dGfGCforwardReversibleBool)-model.dGt0Min(dGfGCforwardReversibleBool)));
+%     Y2=(model.dGtMin(directions.forwardReversible)+model.dGtMax(directions.forwardReversible))/2;
+%     L2=Y2-model.dGtMin(directions.forwardReversible);
+%     U2=model.dGtMax(directions.forwardReversible)-Y2;
+%     [tmp,xi]=sort(abs(model.dGt0Max(directions.forwardReversible)-model.dGt0Min(directions.forwardReversible)));
 %     figure
 %     hold on;
 %     %dGrt errorbar

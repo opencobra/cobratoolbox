@@ -1,10 +1,14 @@
 function group_def = getGroupVectorFromInchi(inchi, silent)
-% poor programming not to explain what this function does
+%
 % INPUTS
-%
+% inchi             inchi key
+% 
 % OUTPUTS
-%
+% group_def     
+% 
 % DEPENDENCIES
+% inchi2gc.py
+ 
  
 if nargin < 2
     silent = true;

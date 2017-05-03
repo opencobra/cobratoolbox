@@ -1,4 +1,4 @@
-function model=readMetRxnBoundsFiles(model,setDefaultConc,setDefaultFlux,defaultMetBounds,metBoundsFile,rxnBoundsFile)
+function model=readMetRxnBoundsFiles(model,setDefaultConc,setDefaultFlux,concMinDefault,concMaxDefault,metBoundsFile,rxnBoundsFile,printLevel)
 %Set default concentration and flux bounds, and/or optionally read in upper and lower bounds from files.
 %
 %Upper and lower bounds on metabolite concentrations and reaction fluxes may be read in and
@@ -9,9 +9,9 @@ function model=readMetRxnBoundsFiles(model,setDefaultConc,setDefaultFlux,default
 % model.rxns
 % setDefaultConc            1 = sets default bounds on conc    
 % setDefaultFlux            1 = sets all reactions reversible [-1000,1000]
-% defaultMetBounds.ub       Default upper bound on metabolite
+% concMaxDefault            Default upper bound on metabolite
 %                           concentrations in M
-% defaultMetBounds.lb       Default lower bound on metabolite
+% concMinDefault            Default lower bound on metabolite
 %                           concentrations in M
 % 
 %OPTIONAL INPUT
@@ -39,14 +39,10 @@ end
 
 [nMet,nRxn]=size(model.S);
 if setDefaultConc
-%     Passed in user defined default bounds instead of min = 1e-5 M and max 0.02 M. -Hulda
     %default Molar concentrations
-    concMin = defaultMetBounds.lb; % M
-    concMax = defaultMetBounds.ub; % M
-        %set loose bounds on concentrations
     for m=1:nMet
-        model.concMin(m)=concMin;
-        model.concMax(m)=concMax;
+        model.concMin(m)=concMinDefault;
+        model.concMax(m)=concMaxDefault;
     end
 end
 if setDefaultFlux    
@@ -76,6 +72,9 @@ if ~isempty(metBoundsFile)
         if nnz(ind)==0
             warning('%s\n',['No metabolite abbreviation ' C1{m,1} ' in model'])
         else
+            if printLevel>0
+                fprintf('%20s\t%10g\t%10g\n',model.mets{ind},C2(m,1),C3(m,1))
+            end
             model.concMin(ind)=C2(m,1);
             model.concMax(ind)=C3(m,1);
         end

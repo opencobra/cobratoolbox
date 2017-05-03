@@ -1,4 +1,4 @@
-function forwardTransportQuantReverseFigures(model,directions,thorStandard)
+function forwardTransportQuantReverseFigures(model)
 % figure of the qualitatively forward transport reactions that are quantitatively reversible
 %
 %create a vertical errorbar figure of the qualitatively forward transport reactions
@@ -10,18 +10,21 @@ function forwardTransportQuantReverseFigures(model,directions,thorStandard)
 % model.transportRxnBool
 % model.dGt0Min
 % model.dGt0Max
-% directions.ChangeForwardReversible
+% model.directions.forwardReversible
 % thorStandard
 %
 % Ronan M.T. Fleming
 
 [nMet,nRxn]=size(model.S);
+
+directions=model.directions;
+
 %transport reactions
 forwardTransportQuantReverseBool=false(nRxn,1);
 for n=1:nRxn
     %if reaction directionality changed from forward to Reversible and als
     %a transport reaction
-    if directions.ChangeForwardReversible(n) && model.transportRxnBool(n)
+    if directions.forwardReversible(n) && model.transportRxnBool(n)
         %abc transporters or reactions involving protons
         if ~isempty(strfind(model.rxns{n},'abc')) ||  nnz(strcmp('h[c]',model.mets(model.S(:,n)~=0)))~=0 || nnz(strcmp('h[e]',model.mets(model.S(:,n)~=0)))~=0
             forwardTransportQuantReverseBool(n,1)=1;
@@ -29,30 +32,32 @@ for n=1:nRxn
     end
 end
 
-%%%%%%%%%vertical%%%%%%%%%%%%%
-if thorStandard
-    dGt0Min=model.dGt0Min;
-    dGt0Max=model.dGt0Max;
-    for n=1:nRxn
-        model.dGt0Min(n)=model.rxn(n).dGtmMMin;
-        model.dGt0Max(n)=model.rxn(n).dGtmMMax;
-    end
+if 0
+    X1=1:nRxn;
+    %dGrt0
+    Y0=(model.DrGt0Min+model.DrGt0Max)/2;
+    L0=Y0-model.DrGt0Min;
+    U0=model.DrGt0Max-Y0;
+    %dGrt
+    Y=(model.DrdGtMin+model.DrGtMax)/2;
+    L=Y-model.DrGtMin;
+    U=model.DrGtMax-Y;
+    %find the amount of reactions with normal cumulative distribution over
+    %range of dGt0
+    P = normcdf(0,Y0,L0);
+else
+    Y0=model.DrGt0Mean;
+    L0=model.DrGt0Mean-model.DrGt0Min;
+    U0=model.DrGt0Max-model.DrGt0Mean;
+    
+    Y=model.DrGtMean;
+    L=model.DrGtMean-model.DrGtMin;
+    U=model.DrGtMax-model.DrGtMean;
+    P=directions.forwardProbability;
 end
-
-X1=1:nRxn;
-%dGrt0
-Y0=(model.dGt0Min+model.dGt0Max)/2;
-L0=Y0-model.dGt0Min;
-U0=model.dGt0Max-Y0;
-%dGrt
-Y=(model.dGtMin+model.dGtMax)/2;
-L=Y-model.dGtMin;
-U=model.dGtMax-Y;
-%find the amount of reactions with normal cumulative distribution over
-%range of dGt0
-P = normcdf(0,Y0,L0);
 %sort by probability that a reaction is forward (puts any NaN first)
 [tmp,xip]=sort(P,'descend');
+
 %     only take the indices of the problematic reactions, but be sure to
 %     take them in order of descending P
 xip2=zeros(nnz(forwardTransportQuantReverseBool),1);
@@ -72,8 +77,8 @@ forwardReversible_dGf_dG0Rev=false(nRxn,1);
 for n=1:nRxn
     %only the transport reactions
     if forwardTransportQuantReverseBool(n)
-        if model.dGt0Min(n)==model.dGt0Max(n)
-            if model.dGt0Min(n)<0
+        if model.DrGt0Min(n)==model.DrGt0Max(n)
+            if model.DrGt0Min(n)<0
                 forwardReversible_dGf_dG0Fwd(n)=1;
             else
                 forwardReversible_dGf_dG0Rev(n)=1;
@@ -100,8 +105,8 @@ axes1 = axes('Parent',figure1,'Color',[0.702 0.7804 1]);
 hold on;
 
 %upper and lower X
-minX=min(model.dGtMin(forwardTransportQuantReverseBool));
-maxX=max(model.dGtMax(forwardTransportQuantReverseBool));
+minX=min(model.DrGtMin(forwardTransportQuantReverseBool));
+maxX=max(model.DrGtMax(forwardTransportQuantReverseBool));
 %baselines
 Y1(1:length(xip))=minX;
 P(P==1)=NaN;
@@ -119,12 +124,12 @@ bar_handle6=barh(X1,Y1,1,'BaseValue',minX,'FaceColor',[0.86 0.86 0.86],'EdgeColo
 %      H(3) = handle to errorbar x if error y specified
 % LineSpec=[''LineStyle','none','LineWidth',2,'DisplayName','forwardReversible','Color','r'']
 LineSpec='r.';
-hE = ploterr(Y(xip),X1,{model.dGtMin(xip) model.dGtMax(xip)},[],LineSpec,'hhxy',0);
+hE = ploterr(Y(xip),X1,{model.DrGtMin(xip) model.DrGtMax(xip)},[],LineSpec,'hhxy',0);
 set(hE(2),'LineWidth',5);
 % hE=errorbar(X1,Y(xip),L(xip),U(xip),'LineStyle','none','LineWidth',2,'DisplayName','forwardReversible','Color','r');
 %dGrt0 errorbar on top and inside dGrt
 LineSpec='b.';
-hE = ploterr(Y0(xip),X1,{model.dGt0Min(xip) model.dGt0Max(xip)},[],LineSpec,'hhxy',0);
+hE = ploterr(Y0(xip),X1,{model.DrGt0Min(xip) model.DrGt0Max(xip)},[],LineSpec,'hhxy',0);
 set(hE(2),'LineWidth',5);
 % hE2=errorbar(X1,Y0(xip),L0(xip),U0(xip),'LineStyle','none','LineWidth',2,'DisplayName','forwardReversible','Color','b');
 
@@ -164,22 +169,15 @@ title({'Qualitatively forward transport reactions, but quantitatively reversible
 for n=1:length(xip)
 %     textLen(n)=length(model.rxn(xip(n)).officialName)+length(model.rxn(xip(n)).equation);
 %     textLen(n)=length(model.rxn(xip(n)).equation);
-   textLen(n)=length(model.rxn(xip(n)).officialName);
+   textLen(n)=length(model.rxnNames{xip(n)});
 end
 textLenMax=max(textLen);
 for n=1:length(xip)
-    YTickLabel{n}=[model.rxn(xip(n)).officialName blanks(textLenMax-textLen(n)+5) model.rxn(xip(n)).equation];
+    equation=printRxnFormula(model,model.rxns{xip(n)},0);
+    YTickLabel{n}=[model.rxnNames{xip(n)} blanks(textLenMax-textLen(n)+5) equation{1}];
     %get rid of the cytoplasmic compartment abbreviations
     YTickLabel{n} = strrep(YTickLabel{n}, '[c]', '');
-    
-   % no idea why this does not work 
-   %     fprintf('%s\n',[model.rxn(xip(n)).officialName blanks(textLenMax-textLen(n)+5) model.rxn(xip(n)).equation]);
+    YTickLabel{n} = strrep(YTickLabel{n}, '_', '\_');
 end
 set(AX(2),'YTickLabel',YTickLabel,'FontSize',10);
 saveas(figure1 ,'forwardTransportQuantReverseBoolSetToForward','fig');
-
-%change back
-if thorStandard
-    model.dGt0Min=dGt0Min;
-    model.dGt0Max=dGt0Max;
-end

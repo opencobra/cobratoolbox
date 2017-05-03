@@ -1,4 +1,4 @@
-function model = setupThermoModel(model)%,molfileDir,cid,T,cellCompartments,ph,is,chi,xmin,xmax,confidenceLevel)
+function model = setupThermoModel(model)
 % Estimates standard transformed reaction Gibbs energy and directionality
 % at in vivo conditions in multicompartmental metabolic reconstructions.
 % Has external dependencies on the COBRA toolbox, the component
@@ -7,7 +7,7 @@ function model = setupThermoModel(model)%,molfileDir,cid,T,cellCompartments,ph,i
 % availability at the end of help text. 
 % 
 % modelT = setupThermoModel(model,molfileDir,cid,T,cellCompartments,ph,...
-%                           is,chi,xmin,xmax,confidenceLevel) 
+%                           is,chi,concMin,concMax,confidenceLevel) 
 % 
 % INPUTS
 % model             Model structure with following fields:
@@ -36,7 +36,7 @@ function model = setupThermoModel(model)%,molfileDir,cid,T,cellCompartments,ph,i
 % 
 % OPTIONAL INPUTS
 % T                 Temperature in Kelvin. 
-% cellCompartments  c x 1 array of compartment identifiers. Should match
+% compartments  c x 1 array of compartment identifiers. Should match
 %                   the compartment identifiers in model.metCompartments.
 % ph                c x 1 array of compartment specific pH values in the
 %                   range 4.7 to 9.3.
@@ -46,9 +46,9 @@ function model = setupThermoModel(model)%,molfileDir,cid,T,cellCompartments,ph,i
 %                   potential values in mV. Electrical potential in cytosol
 %                   is assumed to be 0 mV. Electrical potential in all
 %                   other compartments are relative to that in cytosol.
-% xmin              m x 1 array of lower bounds on metabolite
+% concMin              m x 1 array of lower bounds on metabolite
 %                   concentrations in mol/L.
-% xmax              m x 1 array of upper bounds on metabolite
+% concMax              m x 1 array of upper bounds on metabolite
 %                   concentrations in mol/L.
 % confidenceLevel   {0.50, 0.70, (0.95), 0.99}. Confidence level for
 %                   standard transformed reaction Gibbs energies used to
@@ -67,14 +67,14 @@ function model = setupThermoModel(model)%,molfileDir,cid,T,cellCompartments,ph,i
 %                       standard Gibbs energies of formation.
 % .covf                 m x m estimated covariance matrix for standard
 %                       Gibbs energies of formation.
-% .uf                   m x 1 array of uncertainty in estimated standard
-%                       Gibbs energies of formation. uf will be large for
+% .DfG0_Uncertainty     m x 1 array of uncertainty in estimated standard
+%                       Gibbs energies of formation. Will be large for
 %                       metabolites that are not covered by component
 %                       contributions.
 % .DrG0                 n x 1 array of component contribution estimated
 %                       standard reaction Gibbs energies.
-% .ur                   n x 1 array of uncertainty in standard reaction
-%                       Gibbs energy estimates.  ur will be large for
+% .DrG0_Uncertainty     n x 1 array of uncertainty in standard reaction
+%                       Gibbs energy estimates.  Will be large for
 %                       reactions that are not covered by component
 %                       contributions.
 % .DfG0_pseudoisomers   p x 4 matrix with the following columns:
@@ -112,20 +112,26 @@ function model = setupThermoModel(model)%,molfileDir,cid,T,cellCompartments,ph,i
 % Ronan M. T. Fleming, Sept. 2012   Version 1.0
 % Hulda S. H., Dec. 2012            Version 2.0
 
+%stupid to have R as gas constant when it could be used for a matrix
+if isfield(model,'R')
+    model.gasConstant=8.3144621e-3; % Gas constant in kJ/(K*mol)
+    model=rmfield(model,'R');
+end
+if isfield(model,'F')
+    %Faraday Constant (kJ/kmol)
+    model.faradayConstant=96.485/1000; %kJ/kmol
+    model=rmfield(model,'R');
+end
+
 
 %% Estimate standard transformed Gibbs energies of formation
 fprintf('\nEstimating standard transformed Gibbs energies of formation.\n');
-model = estimateDfGt0(model);
+model = estimateDfGt0(model,model.confidenceLevel);
 
 
 %% Estimate standard transformed reaction Gibbs energies
 fprintf('\nEstimating bounds on transformed Gibbs energies.\n');
-confidenceLevel = model.confidenceLevel;
-model = estimateDrGt0(model,confidenceLevel);
+model = estimateDrGt0(model,model.confidenceLevel);
 
-
-%% Determine quantitative directionality assignments
-fprintf('\nQuantitatively assigning reaction directionality.\n');
-model.quantDir = assignQuantDir(model.DrGtMin,model.DrGtMax);
 
 
