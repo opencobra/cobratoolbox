@@ -545,10 +545,10 @@ if printLevel>0
     if massBalanceCheck
         fprintf('%s\n','---')
         fprintf('%6u\t%6u\t%s\n',nnz((model.SInConsistentMetBool | model.unknownSConsistencyMetBool) & model.SIntMetBool),nnz((model.SInConsistentRxnBool | model.unknownSConsistencyRxnBool) & model.SIntRxnBool),' heuristically non-exchange and stoichiometrically inconsistent or unknown consistency.')
-        bool = getCorrespondingRows(model.S,true(nMet,1), (model.SInConsistentRxnBool | model.unknownSConsistencyRxnBool) & model.SIntRxnBool & imBalancedRxnBool,'inclusive');
-        fprintf('%6u\t%6u\t%s\n',nnz(bool),nnz((model.SInConsistentRxnBool | model.unknownSConsistencyRxnBool) & model.SIntRxnBool & imBalancedRxnBool),' ... of which are elementally imbalanced (inclusively involved metabolite).')
-        bool = getCorrespondingRows(model.S,true(nMet,1), (model.SInConsistentRxnBool | model.unknownSConsistencyRxnBool) & model.SIntRxnBool & imBalancedRxnBool,'exclusive');
-        fprintf('%6u\t%6u\t%s\n',nnz(bool),nnz((model.SInConsistentRxnBool | model.unknownSConsistencyRxnBool) & model.SIntRxnBool & imBalancedRxnBool),' ... of which are elementally imbalanced (exclusively involved metabolite).')
+        bool = getCorrespondingRows(model.S,true(nMet,1), (model.SInConsistentRxnBool | model.unknownSConsistencyRxnBool) & model.SIntRxnBool & ~model.balancedRxnBool,'inclusive');
+        fprintf('%6u\t%6u\t%s\n',nnz(bool),nnz((model.SInConsistentRxnBool | model.unknownSConsistencyRxnBool) & model.SIntRxnBool & ~model.balancedRxnBool),' ... of which are elementally imbalanced (inclusively involved metabolite).')
+        bool = getCorrespondingRows(model.S,true(nMet,1), (model.SInConsistentRxnBool | model.unknownSConsistencyRxnBool) & model.SIntRxnBool & ~model.balancedRxnBool,'exclusive');
+        fprintf('%6u\t%6u\t%s\n',nnz(bool),nnz((model.SInConsistentRxnBool | model.unknownSConsistencyRxnBool) & model.SIntRxnBool & ~model.balancedRxnBool),' ... of which are elementally imbalanced (exclusively involved metabolite).')
     end
 
     switch finalCheckMethod
