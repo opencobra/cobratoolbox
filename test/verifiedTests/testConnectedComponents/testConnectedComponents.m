@@ -22,7 +22,7 @@
 %           
 % And should yield 2 connected components, along with a bunch of exchangers
 % which are ignored.
-cwd = pwd;
+currentDir = pwd;
 testdir = fileparts(which('testConnectedComponents.m'));
 cd(testdir)
 
@@ -49,4 +49,4 @@ end
 if exist('reactionAdjacencyOtherThanCofactors.txt','file')
     delete reactionAdjacencyOtherThanCofactors.txt
 end
-cd(cwd)
+cd(currentDir)
