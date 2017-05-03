@@ -18,6 +18,9 @@ function results = checkModel(model,varargin)
 %                   2008)
 %                   'deadEndMetabolites' (metabolites which can either not
 %                   be produced, or consumed)
+%                   'simpleCheck' returns 0 if this is not a valid model
+%                   and 1 if it is a valid model, ignored if any other
+%                   option is selected.
 %
 % OUTPUT:
 %
@@ -108,7 +111,7 @@ if any(ismember(varargin,'deadEndMetabolites'))
 end
 
 if any(ismember(varargin,'stoichiometricConsistency'))
-    [SConsistentMetBool,SConsistentRxnBool,SInConsistentMetBool,SInConsistentRxnBool,unknownSConsistencyMetBool,unknownSConsistencyRxnBool]=...
+    [SConsistentMetBool,SConsistentRxnBool,SInConsistentMetBool,SInConsistentRxnBool,unknownSConsistencyMetBool,~]=...
         findStoichConsistentSubset(model,0,0);
     
     stoichiometricConsistency = struct();
@@ -122,8 +125,13 @@ if any(ismember(varargin,'stoichiometricConsistency'))
     results.stoichiometricConsistency = stoichiometricConsistency ;
 end
 
-
-
+if any(ismember(varargin,'simpleCheck')) && (numel(varargin) < 2)
+    if isempty(fieldnames(results))
+        results = true;
+    else
+        results = false;
+    end
+end
 end
 
 function valid = checkFields(results,FieldNames,model)
