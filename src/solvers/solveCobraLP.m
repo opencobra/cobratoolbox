@@ -273,7 +273,7 @@ switch solver
             error('OPTI is not compatible with UNIX systems (macOS or Linux).')
         end
 
-        if verLessThan('matlab', '8.4')
+        if ~verLessThan('matlab', '8.4')
             error('OPTI is not compatible with a version of MATLAB later than 2014b.');
         end
         % J. Currie and D. I. Wilson, "OPTI: Lowering the Barrier Between Open

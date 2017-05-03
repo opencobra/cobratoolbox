@@ -262,9 +262,7 @@ switch solverName
             if printLevel > 0
                 fprintf(' > ibm_cplex (IBM ILOG CPLEX) is incompatible with this version of MATLAB, please downgrade or change solver.\n');
             end
-            %rmpath(genpath(ILOG_CPLEX_PATH));
         else
-            %addpath(genpath(ILOG_CPLEX_PATH));
             try
                 ILOGcplex = Cplex('fba');  % Initialize the CPLEX object
                 solverOK = true;
@@ -275,14 +273,8 @@ switch solverName
         if verLessThan('matlab', '9') && ~verLessThan('matlab', '8.6')  % >2015b
             warning('off', 'MATLAB:lang:badlyScopedReturnValue');  % take out warning message
         end
-    case 'lp_solve'
-        solverOK = checkSolverInstallationFile(solverName, 'lp_solve', printLevel);
-    case 'qpng'
-        solverOK = checkSolverInstallationFile(solverName, 'qpng', printLevel);
-    case 'pdco'
-        solverOK = checkSolverInstallationFile(solverName, 'pdco', printLevel);
-    case 'gurobi_mex'
-        solverOK = checkSolverInstallationFile(solverName, 'gurobi_mex', printLevel);
+    case {'lp_solve', 'qpng', 'pdco', 'gurobi_mex'}
+        solverOK = checkSolverInstallationFile(solverName, solverName, printLevel);
     case 'gurobi'
         tmpGurobi = 'gurobi.sh';
         if ispc, tmpGurobi = 'gurobi.bat'; end

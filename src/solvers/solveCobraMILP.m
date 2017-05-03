@@ -95,12 +95,10 @@ if ~isempty(varargin)
         varargin = varargin(~isdone);
 
     elseif isstruct(varargin{1})  % solver-specific parameter structure
-        if isstruct(varargin{1})
-            solverParams = varargin{1};
+        solverParams = varargin{1};
 
-            isdone(1) = true;
-            varargin = varargin(~isdone);
-        end
+        isdone(1) = true;
+        varargin = varargin(~isdone);
     end
 end
 
