@@ -17,7 +17,3 @@ Modules
    design
    io
 
-Example
-
-.. autofunction:: docs.source.modules.templateFunction
-
