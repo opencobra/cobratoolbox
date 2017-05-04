@@ -60,7 +60,7 @@ Elements = {'H','C', 'O', 'P', 'S', 'N', 'Mg','X','Fe','Zn','Co','R','Ca','Y','I
 
 E=sparse(nMet, length(Elements));
 massImbalance=sparse(nRxn, length(Elements));
-missingFormulaeBool=false(nMet,1);
+missingFormulaeBool=cellfun(@isempty, model.metFormulas);
 for j = 1 : length(Elements)
     if j==1
         [dE, E_el, missingFormulaeBool]=checkBalance(model, Elements{j}, printLevel,[],missingFormulaeBool);

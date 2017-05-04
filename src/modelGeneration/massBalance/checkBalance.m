@@ -37,13 +37,13 @@ if ~exist('fileName','var')
 end
 [nMet,nRxn]=size(model.S);
 if ~exist('missingFormulaeBool','var')
-    missingFormulaeBool=false(nMet,1);
+    missingFormulaeBool=cellfun(@isempty, model.metFormulas);
 end
 
 for m=1:nMet
     %cannot handle metabolites with non-standard formulae like
     %(Gal)3(Glc)1(GlcNAc)2(LFuc)1(Cer)1
-    if ~missingFormulaeBool(m,1) || strcmp(model.metFormulas{m}(1),'(')
+    if missingFormulaeBool(m,1) || strcmp(model.metFormulas{m}(1),'(')
         missingFormulaeBool(m,1)=1;
     end
 end
