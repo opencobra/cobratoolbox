@@ -274,7 +274,6 @@ function initCobraToolbox()
     SOLVERS.tomlab_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
 
     % experimental solver interfaces
-    SOLVERS.opti.type = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
     SOLVERS.qpng.type = {'QP'};
     SOLVERS.tomlab_snopt.type = {'NLP'};
 
@@ -283,6 +282,7 @@ function initCobraToolbox()
     SOLVERS.lindo_old.type = {'LP'};
     SOLVERS.lindo_legacy.type = {'LP'};
     SOLVERS.lp_solve.type = {'LP'};
+    SOLVERS.opti.type = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
 
     % definition of category of solvers with full support
     SOLVERS.cplex_direct.categ = 'full';
@@ -301,11 +301,11 @@ function initCobraToolbox()
     SOLVERS.tomlab_snopt.categ = 'experimental';
 
     % definition of category of solvers with legacy support
-    SOLVERS.opti.categ = 'legacy';
     SOLVERS.gurobi_mex.categ = 'legacy';
     SOLVERS.lindo_old.categ = 'legacy';
     SOLVERS.lindo_legacy.categ = 'legacy';
     SOLVERS.lp_solve.categ = 'legacy';
+    SOLVERS.opti.categ = 'legacy';
 
     % definition of categories of solvers
     supportedSolversNames = fieldnames(SOLVERS);
@@ -339,13 +339,18 @@ function initCobraToolbox()
             savepath;
             if ENV_VARS.printLevel
                 fprintf(' Done.\n');
-                fprintf('   - The MATLAB path was saved in the default location.');
+                fprintf('   - The MATLAB path was saved in the default location.\n');
             end
         else
-            savepath(defaultSavePathLocation);
+            [status,values] = fileattrib(which('pathdef.m'));
+            if values.UserWrite
+                savepath
+            else
+                savepath(defaultSavePathLocation);
+            end
             if ENV_VARS.printLevel
                 fprintf(' Done.\n');
-                fprintf(['   - The MATLAB path was saved as ', defaultSavePathLocation, '.']);
+                fprintf(['   - The MATLAB path was saved as ', defaultSavePathLocation, '.\n']);
             end
         end
     catch
@@ -406,15 +411,20 @@ function initCobraToolbox()
                 statusTable{k}(p) = {'-'};
             end
         end
-        statusTable{k}(end-1) = {'----'};
     end
 
-    solverSummary = table(categorical(catList), categorical(statusTable{1}), categorical(statusTable{2}), categorical(statusTable{3}), categorical(statusTable{4}), categorical(statusTable{5}), 'RowNames', rowNames, 'VariableNames', ['Support', OPT_PROB_TYPES]);
-
     if ENV_VARS.printLevel
+        colFormat = '\t%-12s \t%-10s \t%5s \t%5s \t%5s \t%5s \t%5s\n';
+        sep = '\t----------------------------------------------------------------------\n';
         fprintf('\n > Summary of available solvers and solver interfaces\n\n');
-        disp(solverSummary);
-        fprintf(' + Legend: - = not applicable, 0 = solver not compatible or not installed, 1 = solver installed.\n\n')
+        fprintf('\t\t\tSupport \t%5s \t%5s \t%5s \t%5s \t%5s\n', OPT_PROB_TYPES{1}, OPT_PROB_TYPES{2}, OPT_PROB_TYPES{3}, OPT_PROB_TYPES{4}, OPT_PROB_TYPES{5})
+        fprintf(sep);
+        for i = 1:length(catList)-2
+            fprintf(colFormat, rowNames{i}, catList{i}, statusTable{1}{i}, statusTable{2}{i}, statusTable{3}{i}, statusTable{4}{i}, statusTable{5}{i})
+        end
+        fprintf(sep);
+        fprintf(colFormat, rowNames{end}, catList{end}, statusTable{1}{end}, statusTable{2}{end}, statusTable{3}{end}, statusTable{4}{end}, statusTable{5}{end})
+        fprintf('\n + Legend: - = not applicable, 0 = solver not compatible or not installed, 1 = solver installed.\n\n\n')
     end
 
     % provide clear instructions and summary
@@ -521,7 +531,7 @@ function status_curl = checkCurlAndRemote(throwError)
     else
         if throwError
             fprintf(result_curl);
-            error(' > curl is not installed. Please follow the guidelines on how to install curl.');
+            error(' > curl is not installed. Please follow the guidelines on how to install curl here: https://github.com/opencobra/cobratoolbox/blob/master/.github/REQUIREMENTS.md.');
         else
             if ENV_VARS.printLevel
                 fprintf(' (not installed).\n');

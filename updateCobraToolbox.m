@@ -13,12 +13,26 @@ function updateCobraToolbox(fetchAndCheckOnly)
         fetchAndCheckOnly = false;
     end
 
+    % print out the last commit
+    [status_gitLastCommit, result_gitLastCommit] = system('git rev-list --max-count=1 HEAD');
+
+    if status_gitLastCommit ~= 0
+        fprintf(result_gitLastCommit);
+        fprintf(' > The SHA1 of the last commit could not be retrieved.');
+    else
+        lastCommit = result_gitLastCommit(1:6);
+    end
+
+    % retrieve the name of the current branch
+    currentBranch = getCurrentBranchName();
+
     % check if origin is set to the opencobra URL
     [status_gitRetrieveURL, result_gitOriginURL] = system('git config --get remote.origin.url');
 
     [status_gitHEAD, result_gitHEAD] = system('git symbolic-ref --short -q HEAD');
 
     if status_gitRetrieveURL == 0 && ~isempty(strfind(result_gitOriginURL, 'opencobra/cobratoolbox')) && status_gitHEAD == 0 && length(result_gitHEAD) > 0
+
         % fetch all content from remote
         [status_gitFetch, result_gitFetch] = system('git fetch origin');
         if status_gitFetch ~= 0
@@ -34,7 +48,7 @@ function updateCobraToolbox(fetchAndCheckOnly)
             [status_gitCountMaster, result_gitCountMaster] = system('git rev-list --left-right --count master...origin/master');
             if status_gitCountMaster == 0
                 commitsAheadBehindMaster = str2num(char(strsplit(result_gitCountMaster)));
-                if commitsAheadBehindMaster(1) > 0
+                if length(commitsAheadBehindMaster) > 0 && commitsAheadBehindMaster(1) > 0
                     fprintf(' > Your branch <master> is ahead by %d commit(s).\n', commitsAheadBehindMaster(1));
                 end
             end
@@ -51,7 +65,7 @@ function updateCobraToolbox(fetchAndCheckOnly)
             [status_gitCountDevelop, result_gitCountDevelop] = system('git rev-list --left-right --count develop...origin/develop');
             if status_gitCountDevelop == 0
                 commitsAheadBehindDevelop = str2num(char(strsplit(result_gitCountDevelop)));
-                if commitsAheadBehindDevelop(1) > 0
+                if length(commitsAheadBehindDevelop) > 0 && commitsAheadBehindDevelop(1) > 0
                     fprintf(' > Your branch <develop> is ahead by %d commit(s).\n', commitsAheadBehindDevelop(1));
                 end
             end
@@ -61,15 +75,13 @@ function updateCobraToolbox(fetchAndCheckOnly)
         end
 
         if commitsAheadBehindMaster(1) > 0 || commitsAheadBehindDevelop(1) > 0
-            error(['The COBRA Toolbox could not be updated.']);
+            warning(['The COBRA Toolbox could not be updated.']);
         end
 
         if status_gitCountMaster == 0 && status_gitCountDevelop == 0
             if commitsAheadBehindMaster(2) > 0 || commitsAheadBehindDevelop(2) > 0
 
-                currentBranch = getCurrentBranchName();
-
-                fprintf(' > There are %d new commit(s) on <master> and %d new commit(s) on <develop>. Current branch: <%s>\n', commitsAheadBehindMaster(2), commitsAheadBehindDevelop(2), currentBranch);
+                fprintf(' > There are %d new commit(s) on <master> and %d new commit(s) on <develop> [%s @ %s]\n', commitsAheadBehindMaster(2), commitsAheadBehindDevelop(2), lastCommit, currentBranch);
 
                 % retrieve the status
                 [status_gitStatus, result_gitStatus] = system('git status -s');
@@ -88,7 +100,7 @@ function updateCobraToolbox(fetchAndCheckOnly)
                                 [status_gitCheckout, result_gitCheckout] = system(['git checkout -f ', branches{k}]);
                                 if status_gitCheckout ~= 0
                                     fprintf(result_gitCheckout);
-                                    error(['The ', branches{k},' branch of The COBRA Toolbox could not be checked out.']);
+                                    warning(['The ', branches{k},' branch of The COBRA Toolbox could not be checked out.']);
                                 end
 
                                 % pull the latest changes from the master branch
@@ -97,7 +109,7 @@ function updateCobraToolbox(fetchAndCheckOnly)
                                     fprintf([' > The COBRA Toolbox has been updated (<', branches{k}, '> branch).\n']);
                                 else
                                     fprintf(result_gitPull);
-                                    error(['The COBRA Toolbox could not be updated (<', branches{k}, '> branch).']);
+                                    warning(['The COBRA Toolbox could not be updated (<', branches{k}, '> branch).']);
                                 end
                             end
 
@@ -107,14 +119,14 @@ function updateCobraToolbox(fetchAndCheckOnly)
                                 fprintf(' > The submodules have been updated (reset).\n');
                             else
                                 fprintf(result_gitReset);
-                                error('The submodules could not be updated (reset).');
+                                warning('The submodules could not be updated (reset).');
                             end
 
                             % switch back to the original branch
                             [status_gitCheckoutCurrentBranch, result_gitCheckoutCurrentBranch] = system(['git checkout -f ', currentBranch]);
                             if status_gitCheckoutCurrentBranch ~= 0
                                 fprintf(result_gitCheckoutCurrentBranch);
-                                error(['The ', currentBranch, ' branch of The COBRA Toolbox could not be checked out.']);
+                                warning(['The ', currentBranch, ' branch of The COBRA Toolbox could not be checked out.']);
                             end
                         end
                     else
@@ -128,10 +140,10 @@ function updateCobraToolbox(fetchAndCheckOnly)
             end
         else
             fprintf(result_gitCountMaster);
-            error('Eventual changes of the <master> branch of The COBRA Toolbox could not be counted.');
+            warning('Eventual changes of the <master> branch of The COBRA Toolbox could not be counted.');
         end
     else
-        fprintf(['You cannot update your fork using updateCobraToolbox(). Please use the MATLAB.devTools (https://github.com/opencobra/MATLAB.devTools).\n']);
+        fprintf(['You cannot update your fork using updateCobraToolbox(). [', lastCommit, ' @ ', currentBranch, ']. Please use the MATLAB.devTools (https://github.com/opencobra/MATLAB.devTools).\n']);
     end
 end
 
@@ -148,6 +160,10 @@ function currentBranch = getCurrentBranchName()
         currentBranch = currentBranch(1:end-1);
     else
         fprintf(currentBranch);
-        error(['The name of the current feature (branch) could not be retrieved.']);
+        warning(['The name of the current feature (branch) could not be retrieved.']);
+    end
+
+    if strcmpi(currentBranch, 'HEAD')
+        currentBranch = 'detached HEAD'
     end
 end

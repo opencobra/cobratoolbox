@@ -12,20 +12,20 @@ function configEnvVars(printLevel)
 
     if ENV_VARS.STATUS == 0
         solverPaths = {};
-        solverPaths{1,1} = 'ILOG_CPLEX_PATH';
-        solverPaths{1,2} = {'/Applications/IBM/ILOG/CPLEX_Studio1262', '/Applications/IBM/ILOG/CPLEX_Studio1263', '/Applications/IBM/ILOG/CPLEX_Studio127', ...
+        solverPaths{1, 1} = 'ILOG_CPLEX_PATH';
+        solverPaths{1, 2} = {'/Applications/IBM/ILOG/CPLEX_Studio1262', '/Applications/IBM/ILOG/CPLEX_Studio1263', '/Applications/IBM/ILOG/CPLEX_Studio127', ...
                             '~/Applications/IBM/ILOG/CPLEX_Studio1262', '~/Applications/IBM/ILOG/CPLEX_Studio1263', '~/Applications/IBM/ILOG/CPLEX_Studio127', ...
                             '/opt/ibm/ILOG/CPLEX_Studio1262', '/opt/ibm/ILOG/CPLEX_Studio1263', '/opt/ibm/ILOG/CPLEX_Studio127', ...
                             'C:\Program Files\IBM\ILOG\CPLEX_Studio1262', 'C:\Program Files\IBM\ILOG\CPLEX_Studio1263', 'C:\Program Files\IBM\ILOG\CPLEX_Studio127'};
-        solverPaths{2,1} = 'GUROBI_PATH';
-        solverPaths{2,2} = {'/Library/gurobi600', '/Library/gurobi650', '/Library/gurobi70', '/Library/gurobi700', '/Library/gurobi701', '/Library/gurobi702', ...
+        solverPaths{2, 1} = 'GUROBI_PATH';
+        solverPaths{2, 2} = {'/Library/gurobi600', '/Library/gurobi650', '/Library/gurobi70', '/Library/gurobi700', '/Library/gurobi701', '/Library/gurobi702', ...
                             '~/Library/gurobi600', '~/Library/gurobi650', '~/Library/gurobi70', '~/Library/gurobi700', '~/Library/gurobi701', '~/Library/gurobi702', ...
                             '/opt/gurobi600', '/opt/gurobi650', '/opt/gurobi70', '/opt/gurobi700', '/opt/gurobi701', '/opt/gurobi702', ...
                             'C:\gurobi600', 'C:\gurobi650', 'C:\gurobi70', 'C:\gurobi700', 'C:\gurobi701', 'C:\gurobi702'};
-        solverPaths{3,1} = 'TOMLAB_PATH';
-        solverPaths{3,2} = {'/opt/tomlab', 'C:\tomlab', '/Applications/tomlab'};
-        solverPaths{4,1} = 'MOSEK_PATH';
-        solverPaths{4,2} = {'/opt/mosek/7/', '/opt/mosek/8/', '/Applications/mosek/7', '/Applications/mosek/8', 'C:\Program Files\Mosek\7', 'C:\Program Files\Mosek\8'};
+        solverPaths{3, 1} = 'TOMLAB_PATH';
+        solverPaths{3, 2} = {'/opt/tomlab', 'C:\tomlab', 'C:\Program Files\tomlab', 'C:\Program Files (x86)\tomlab', '/Applications/tomlab'};
+        solverPaths{4, 1} = 'MOSEK_PATH';
+        solverPaths{4, 2} = {'/opt/mosek/7/', '/opt/mosek/8/', '/Applications/mosek/7', '/Applications/mosek/8', 'C:\Program Files\Mosek\7', 'C:\Program Files\Mosek\8'};
 
         for k = 1:length(solverPaths)
             eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1} , ''');'])
@@ -40,9 +40,19 @@ function configEnvVars(printLevel)
                 if ~isempty(possibleDir)
                     setenv(solverPaths{k, 1}, strrep(possibleDir, '\', '\\'));
                     eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1}, ''');']);
-                else
-                    if printLevel > 0
-                        fprintf(['   - ', solverPaths{k, 1}, ':  --> set this path manually after installing the solver\n' ]);
+                end
+
+                % check if the solver is already on the MATLAB path
+                if isempty(possibleDir) || isempty(eval(solverPaths{k, 1}))
+                    isOnPath = ~isempty(strfind(lower(path), lower(possibleDir)));
+
+                    % set the global variable
+                    if isOnPath
+                        eval([solverPaths{k, 1}, ' = ''', possibleDir, ''';']);
+                    else
+                        if printLevel > 0
+                            fprintf(['   - ', solverPaths{k, 1}, ':  --> set this path manually after installing the solver\n' ]);
+                        end
                     end
                 end
             end

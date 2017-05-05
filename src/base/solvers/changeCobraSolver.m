@@ -142,6 +142,8 @@ global CBT_MIQP_SOLVER;
 global CBT_NLP_SOLVER;
 global ENV_VARS;
 global TOMLAB_PATH;
+global MOSEK_PATH;
+global GUROBI_PATH;
 global MINOS_PATH;
 global ILOG_CPLEX_PATH;
 
@@ -153,15 +155,6 @@ end
 
 % configure the environment variables
 configEnvVars();
-
-% set path to MINOS and DQQ
-MINOS_PATH = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'minos' filesep];
-
-% legacy support for MPS (will be removed in future release)
-if nargin > 0 && strcmpi(solverName, 'mps')
-    fprintf(' > The interface to ''mps'' from ''changeCobraSolver()'' is no longer supported.');
-    error(' -> Use >> writeCbModel(model, \''mps\''); instead.)');
-end
 
 % Print out all solvers defined in global variables CBT_*_SOLVER
 if nargin < 1
@@ -183,6 +176,31 @@ end
 % legacy support for other versions of gurobi
 if strcmpi(solverName, 'gurobi') || strcmpi(solverName, 'gurobi6') ||  strcmpi(solverName, 'gurobi7')
     solverName = 'gurobi';
+end
+
+% check if the global environment variable is properly set
+if ~ENV_VARS.printLevel
+    if strcmpi(solverName, 'gurobi') && isempty(GUROBI_PATH)
+        error('The global variable `GUROBI_PATH` is not set. Please follow the instructions on https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md#gurobi to set the environment variables properly.');
+    end
+    if strcmpi(solverName, 'ibm_cplex') && isempty(ILOG_CPLEX_PATH)
+        error('The global variable `ILOG_CPLEX_PATH` is not set. Please follow the instructions on https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md#ibm-ilog-cplex to set the environment variables properly.');
+    end
+    if (strcmpi(solverName, 'tomlab_cplex') || strcmpi(solverName, 'cplex_direct')) && isempty(TOMLAB_PATH)
+        error('The global variable `TOMLAB_PATH` is not set. Please follow the instructions on https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md#tomlab to set the environment variables properly.');
+    end
+    if strcmpi(solverName, 'mosek') && isempty(MOSEK_PATH)
+        error('The global variable `MOSEK_PATH` is not set. Please follow the instructions on https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md#mosek to set the environment variables properly.');
+    end
+end
+
+% set path to MINOS and DQQ
+MINOS_PATH = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'minos' filesep];
+
+% legacy support for MPS (will be removed in future release)
+if nargin > 0 && strcmpi(solverName, 'mps')
+    fprintf(' > The interface to ''mps'' from ''changeCobraSolver()'' is no longer supported.');
+    error(' -> Use >> writeCbModel(model, \''mps\''); instead.)');
 end
 
 if nargin < 2
@@ -228,10 +246,18 @@ solverOK = false;
 % if gurobi is selected, unload tomlab if tomlab is on the path
 tomlabOnPath = ~isempty(strfind(lower(path), 'tomlab'));
 if (~isempty(strfind(solverName, 'gurobi')) ||  ~isempty(strfind(solverName, 'ibm_cplex')) ||  ~isempty(strfind(solverName, 'matlab'))) && tomlabOnPath
-    rmpath(genpath(TOMLAB_PATH));
-    if printLevel > 0
-        fprintf('\n > Tomlab interface removed from MATLAB path.\n');
-    end
+    if strcmpi(solverName, 'gurobi')
+        addpath(genpath(GUROBI_PATH));
+    end;
+    if strcmpi(solverName, 'ibm_cplex')
+        addpath(genpath(ILOG_CPLEX_PATH));
+    end;
+    if strcmpi(solverName, 'matlab')
+        rmpath(genpath(TOMLAB_PATH));
+        if printLevel > 0
+            fprintf('\n > Tomlab interface removed from MATLAB path.\n');
+        end
+    end;
 end
 if ~tomlabOnPath && (~isempty(strfind(solverName, 'tomlab')) || ~isempty(strfind(solverName, 'cplex_direct')) ||  ~isempty(strfind(solverName, 'ibm_cplex')))
     addpath(genpath(TOMLAB_PATH));
