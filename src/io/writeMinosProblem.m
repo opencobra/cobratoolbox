@@ -1,61 +1,66 @@
 function [directory,fname]=writeMinosProblem(LPproblem,precision,modelName,directory,printLevel)
-% inputs a COBRA LPproblem Matlab structure and outputs
+% Inputs a COBRA LPproblem Matlab structure and outputs
 % a file that can be input to an F90 main program
 % for solution by SQOPT or MINOS.
 %
-% INPUT
-% LPproblem Structure containing the following fields describing the LP
-% problem to be solved
-%  A      LHS matrix
-%  b      RHS vector
-%  c      Objective coeff vector
-%  lb     Lower bound vector
-%  ub     Upper bound vector
-%  osense Objective sense (-1 max, +1 min)
-%  csense Constraint senses, a string containting the constraint sense for
-%         each row in A ('E', equality, 'G' greater than, 'L' less than).
+% USAGE:
 %
-% OPTIONAL INPUT
-% precision     ('double') or 'single' precision
-% modelName     name is the problem name (a character string)
-% directory     the directory where optimization problem file is saved
+%    [directory, fname]=writeMinosProblem(LPproblem, precision, modelName, directory, printLevel)
 %
-% OUTPUT
-% fname         filename of the optimization problem
-
-% derived from dumpLPfun by Ding Ma and Michael Saunders, Stanford
-% University.
-% 09 May 2012: First version of this script developed as dumpLP.m
-%              Ding Ma and Michael Saunders, Stanford University.
-%              c has only one nonzero, so we output that index.
-% 15 May 2012: Changed %15.6f to %20.10e for output of real values.
-% 16 May 2012: Settled on %8i for integers and %19.12e for reals.
-% 06 Aug 2012: Philip Gill mentioned that SQOPT treats an LP as a QP
-%              if the objective is kept in cObj (separate from A).
-%              We now insert cObj as a new *last* row of A before dumping.
+% INPUTS:
+%    LPproblem:     Structure containing the following fields describing the LP
+%                   problem to be solved
 %
-% 10 Jan 2013: dumpLP.m modified to handle other FBA data files
-%              such as those in ~/Dropbox/linearfba/data .
-% 15 Apr 2014: Grabbed a copy for use with quadMinos.
-% 19 Apr 2014: Problem name is output as first line of output file.
-%              Floating-point values are output using eformat.
-%              modelNo, eformat, name must be defined as described below.
+%                     * A - LHS matrix
+%                     * b - RHS vector
+%                     * c - Objective coeff vector
+%                     * lb - Lower bound vector
+%                     * ub - Upper bound vector
+%                     * osense - Objective sense (-1 max, +1 min)
+%                     * csense - Constraint senses, a string containting the constraint sense for
+%                     each row in `A` ('E', equality, 'G' greater than, 'L' less than).
 %
-% 28 Apr 2014: Assume dumpLP.m is in ~/../code/matlab/
-%              and FBA data    is in ~/../data/FBA/
-% 15 Ocr 2014: Turn script into function to be used with solveCobraLP
-
-%   BEFORE RUNNING writeMinosProblem, DO THIS:
+% OPTIONAL INPUTS:
+%    precision:     'double' or 'single' precision
+%    modelName:     name is the problem name (a character string)
+%    directory:     the directory where optimization problem file is saved
 %
-%   1. Set modelNo = one of the switch numbers
-%   2. Set format  = 1 or 2
-%   3. Set name for the chosen modelNo
-%      (AT MOST 7 CHARACTERS WITH NO TRAILING BLANKS)
+% OUTPUT:
+%    directory:     directory for the file
+%    fname:         filename of the optimization problem
+% ..
+%    derived from dumpLPfun by Ding Ma and Michael Saunders, Stanford University.
+%    09 May 2012: First version of this script developed as dumpLP.m
+%    Ding Ma and Michael Saunders, Stanford University.
+%    c has only one nonzero, so we output that index.
+%    15 May 2012: Changed %15.6f to %20.10e for output of real values.
+%    16 May 2012: Settled on %8i for integers and %19.12e for reals.
+%    06 Aug 2012: Philip Gill mentioned that SQOPT treats an LP as a QP
+%    if the objective is kept in cObj (separate from A).
+%    We now insert cObj as a new *last* row of A before dumping.
 %
-%   name is the problem name (a character string).
-%   An 's' is appended to name if format==2 (single precision),
-%   name.txt is the name of the output file.
-%   name     is the first line in the output file.
+%    10 Jan 2013: dumpLP.m modified to handle other FBA data files
+%    such as those in ~/Dropbox/linearfba/data .
+%    15 Apr 2014: Grabbed a copy for use with quadMinos.
+%    19 Apr 2014: Problem name is output as first line of output file.
+%    Floating-point values are output using eformat.
+%    modelNo, eformat, name must be defined as described below.
+%
+%    28 Apr 2014: Assume dumpLP.m is in ~/../code/matlab/
+%    and FBA data    is in ~/../data/FBA/
+%    15 Ocr 2014: Turn script into function to be used with solveCobraLP
+%
+% NOTE:
+%    BEFORE RUNNING `writeMinosProblem` DO THIS:
+%
+%     1. Set `modelNo` = one of the switch numbers
+%     2. Set format  = 1 or 2
+%     3. Set name for the chosen `modelNo` (AT MOST 7 CHARACTERS WITH NO TRAILING BLANKS)
+%
+%    `name` is the problem name (a character string).
+%    A `s` is appended to name if format==2 (single precision),
+%    `name.txt` is the name of the output file.
+%    `name` is the first line in the output file.
 
 format1 = '%19.12e\n';   % roughly double precision
 format2 = '%12.5e\n';    % roughly single precision

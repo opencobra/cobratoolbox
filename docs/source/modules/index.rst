@@ -15,6 +15,7 @@ Modules
    reconstruction
    sampling
    design
+   io
 
 Example
 
