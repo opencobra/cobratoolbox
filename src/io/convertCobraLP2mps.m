@@ -29,7 +29,7 @@ function OK = convertCobraLP2mps(LPProblem,name)
 %       - Bruno Luong 03 Sep 2009  Uses MPS format exporting tool
 %       http://www.mathworks.com/matlabcentral/fileexchange/19618
 %
-% NOTE:
+% ..
 %    The MPS (Mathematical Programming System) file format was introduced by
 %    IBM in 1970s, but has also been accepted by most subsequent linear
 %    programming codes. To learn about MPS format, please see:

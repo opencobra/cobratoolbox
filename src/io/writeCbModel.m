@@ -3,7 +3,7 @@ function outmodel = writeCbModel(model,format,fileName,compSymbolList,compNameLi
 %
 % USAGE:
 %
-%    writeCbModel(model, format, fileName, compSymbolList, compNameList, sbmlLevel, sbmlVersion)
+%    outmodel = writeCbModel(model, format, fileName, compSymbolList, compNameList, sbmlLevel, sbmlVersion)
 %
 % INPUTS:
 %    model:             Standard COBRA model structure

@@ -18,12 +18,13 @@ function [directory,fname]=writeMinosProblem(LPproblem,precision,modelName,direc
 %                     * ub - Upper bound vector
 %                     * osense - Objective sense (-1 max, +1 min)
 %                     * csense - Constraint senses, a string containting the constraint sense for
-%                     each row in `A` ('E', equality, 'G' greater than, 'L' less than).
+%                       each row in `A` ('E', equality, 'G' greater than, 'L' less than).
 %
 % OPTIONAL INPUTS:
 %    precision:     'double' or 'single' precision
 %    modelName:     name is the problem name (a character string)
 %    directory:     the directory where optimization problem file is saved
+%    printLevel:
 %
 % OUTPUT:
 %    directory:     directory for the file

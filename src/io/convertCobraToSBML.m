@@ -14,9 +14,6 @@ function sbmlModel = convertCobraToSBML(model,sbmlLevel,sbmlVersion,compSymbolLi
 %		 sbmlVersion :      SBML Version (default = 1)
 %		 compSymbolList:    List of compartment symbols
 %		 compNameList:      List of copmartment names correspoding to `compSymbolList`
-%		 fbc:               'true' - convert a COBRA model structure into a Matlab SBML FBCv2 format.
-%                       The default parameter is 'false',
-%                       which means FBCv2-supported format is not applied.
 %
 % OUTPUT:
 %		 sbmlModel:         SBML MATLAB structure
@@ -25,7 +22,7 @@ function sbmlModel = convertCobraToSBML(model,sbmlLevel,sbmlVersion,compSymbolLi
 % 			- Longfei Mao 24/09/15 FBCv2 support added
 % 			- Thomas Pfau 19/09/2016 reinstantiated for backward compatability
 %
-% NOTE:
+% ..
 %		 The name mangling of reaction and metabolite ids is necessary
 %		 for compliance with the SBML sID standard.
 %
