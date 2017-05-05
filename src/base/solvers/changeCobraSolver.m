@@ -336,7 +336,7 @@ if solverOK
             fprintf('\n > Tomlab interface added to MATLAB path.\n');
         end
     end
-    if ~isempty(strfind(solverName, 'matlab')) && gurobiOnPath
+    if ~isempty(strfind(solverName, 'matlab')) && gurobiOnPath && ispc
         rmpath(genpath(GUROBI_PATH));
         if printLevel > 0
             fprintf('\n > Gurobi interface removed from MATLAB path.\n');

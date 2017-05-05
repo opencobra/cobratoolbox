@@ -87,7 +87,7 @@ end
 
 % define solver packages
 solverPkgs={'cplex_direct', 'glpk', 'gurobi', 'ibm_cplex', 'matlab', 'mosek', ...
-            'pdco', 'quadMinos', 'tomlab_cplex', 'lp_solve', 'mosek_linprog', 'dqqMinos'}; %
+            'pdco', 'quadMinos', 'tomlab_cplex', 'mosek_linprog', 'dqqMinos'}; % 'lp_solve': legacy
 
 % load the ecoli_core_model
 load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
