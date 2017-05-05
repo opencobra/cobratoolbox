@@ -29,7 +29,7 @@ function varargout = load_reaction(varargin)
 % .. Author: - Stefan G. Thorleifsson 2011
 %
 % NOTE:
-%    *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%    See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
 %    instance to run (singleton)".
 %    See also: GUIDE, GUIDATA, GUIHANDLES
 % .. Edit the above text to modify the response to help load_reaction
