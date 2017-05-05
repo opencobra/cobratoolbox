@@ -191,7 +191,7 @@ for i = 1:length(modelNew.mets)
         MexG{cnt} = regexprep(MexG{cnt}, nameTag, '');
         [modelNew, rxnIDexists] = addReaction(modelNew, ...
                                               strcat(nameTag, 'IEX_', MexG{cnt}, 'tr'), {Mex MexG{cnt}}, [-1 1], 1, ...
-                                              -1000, 1000, 0, 'Transport, intercellular', '', '', false, false);
+                                              -1000, 1000, 0, 'Transport, intercellular', '', '', '', false);
         cnt = cnt + 1;
 
     elseif ~isempty(strfind(modelNew.mets{i}, 'biomass[c]'))
@@ -203,7 +203,7 @@ for i = 1:length(modelNew.mets)
         MexG{cnt} = regexprep(MexG{cnt}, nameTag, '');
         [modelNew, rxnIDexists] = addReaction(modelNew,...
                                               strcat(nameTag, 'IEX_', MexG{cnt}, 'tr'), {Mex MexG{cnt}}, [-1 1], 1, ...
-                                              -1000, 1000, 0, 'Transport, intercellular', '', '', false, false);
+                                              -1000, 1000, 0, 'Transport, intercellular', '', '', '', false);
 
         cnt = cnt + 1;
     else
