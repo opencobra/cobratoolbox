@@ -323,13 +323,15 @@ switch solverName
             end
         end
     case 'opti'
-        optiSolvers = {'CLP', 'CSDP', 'DSDP', 'OOQP', 'SCIP'};
-        if ~isempty(which('checkSolver'))
-            availableSolvers = cellfun(@(x)checkSolver(lower(x)), optiSolvers);
-            fprintf('OPTI solvers installed currently: ');
-            fprintf(char(allLPsolvers(logical(availableSolvers))));
-            if ~any(logical(availableSolvers))
-                return;
+        if ~verLessThan('matlab', '8.4')
+            optiSolvers = {'CLP', 'CSDP', 'DSDP', 'OOQP', 'SCIP'};
+            if ~isempty(which('checkSolver'))
+                availableSolvers = cellfun(@(x)checkSolver(lower(x)), optiSolvers);
+                fprintf('OPTI solvers installed currently: ');
+                fprintf(char(allLPsolvers(logical(availableSolvers))));
+                if ~any(logical(availableSolvers))
+                    return;
+                end
             end
         end
     case 'matlab'
