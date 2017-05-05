@@ -51,7 +51,11 @@ function configEnvVars(printLevel)
                         eval([solverPaths{k, 1}, ' = ''', possibleDir, ''';']);
                     else
                         if printLevel > 0
-                            fprintf(['   - ', solverPaths{k, 1}, ':  --> set this path manually after installing the solver\n' ]);
+                            solversLink = 'https://git.io/v92Vi'; % curl -i https://git.io -F "url=https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md"
+                            if usejava('desktop')
+                                solversLink = ['<a href=\"', solversLink, '\">instructions</a>'];
+                            end
+                            fprintf(['   - ', solverPaths{k, 1}, ':  --> set this path manually after installing the solver (see ', solversLink, ')\n' ]);
                         end
                     end
                 end
