@@ -34,19 +34,16 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel)
 %     quadMinos       quad LP solver
 %     tomlab_cplex    CPLEX accessed through Tomlab environment (default)
 %
-%     experimental support:
-%
-%     opti            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
-%                     solver installed and called with OPTI TB wrapper
-%                     Lower level calls with installed mex files are possible
-%                     but best avoided for all solvers
-%
 %     legacy solvers:
 %
 %     lindo_new       Lindo API >v2.0
 %     lindo_legacy    Lindo API <v2.0
 %     lp_solve        lp_solve with Matlab API
 %     gurobi_mex      Gurobi accessed through Matlab mex interface (Gurobi mex)
+%     opti            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
+%                     solver installed and called with OPTI TB wrapper
+%                     Lower level calls with installed mex files are possible
+%                     but best avoided for all solvers
 %
 % Currently allowed MILP solvers:
 %
@@ -63,16 +60,13 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel)
 %     pdco            PDCO solver
 %     tomlab_cplex    CPLEX MILP solver accessed through Tomlab environment
 %
-%     experimental support:
+%     legacy solvers:
 %
+%     gurobi_mex      Gurobi accessed through Matlab mex interface (Gurobi mex)
 %     opti            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
 %                     solver installed and called with OPTI TB wrapper
 %                     Lower level calls with installed mex files are possible
 %                     but best avoided for all solvers
-%
-%     legacy solvers:
-%
-%     gurobi_mex      Gurobi accessed through Matlab mex interface (Gurobi mex)
 %
 % Currently allowed QP solvers:
 %
@@ -90,16 +84,16 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel)
 %
 %     experimental support:
 %
-%     opti            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
-%                     solver installed and called with OPTI TB wrapper
-%                     Lower level calls with installed mex files are possible
-%                     but best avoided for all solvers
 %     qpng            qpng QP solver with Matlab mex interface (in glpkmex
 %                     package, only limited support for small problems)
 %
 %     legacy solvers:
 %
 %     gurobi_mex      Gurobi accessed through Matlab mex interface (Gurobi mex)
+%     opti            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
+%                     solver installed and called with OPTI TB wrapper
+%                     Lower level calls with installed mex files are possible
+%                     but best avoided for all solvers
 %
 % Currently allowed MIQP solvers:
 %
@@ -180,17 +174,25 @@ end
 
 % check if the global environment variable is properly set
 if ~ENV_VARS.printLevel
-    if strcmpi(solverName, 'gurobi') && isempty(GUROBI_PATH)
-        error('The global variable `GUROBI_PATH` is not set. Please follow the instructions on https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md#gurobi to set the environment variables properly.');
+    solversLink = 'https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md';
+    if usejava('desktop')
+        solversLink = ['<a href=\"', solversLink, '\">these instructions</a>'];
+    else
+        solversLink = ['the instruction on ', solversLink];
     end
-    if strcmpi(solverName, 'ibm_cplex') && isempty(ILOG_CPLEX_PATH)
-        error('The global variable `ILOG_CPLEX_PATH` is not set. Please follow the instructions on https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md#ibm-ilog-cplex to set the environment variables properly.');
-    end
-    if (strcmpi(solverName, 'tomlab_cplex') || strcmpi(solverName, 'cplex_direct')) && isempty(TOMLAB_PATH)
-        error('The global variable `TOMLAB_PATH` is not set. Please follow the instructions on https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md#tomlab to set the environment variables properly.');
-    end
-    if strcmpi(solverName, 'mosek') && isempty(MOSEK_PATH)
-        error('The global variable `MOSEK_PATH` is not set. Please follow the instructions on https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md#mosek to set the environment variables properly.');
+
+    if isempty(GUROBI_PATH) || isempty(ILOG_CPLEX_PATH) || isempty(TOMLAB_PATH) || isempty(MOSEK_PATH)
+        switch solverName
+            case 'gurobi'
+                tmpVar = 'GUROBI_PATH';
+            case 'ibm_cplex'
+                tmpVar = 'ILOG_CPLEX_PATH';
+            case {'tomlab_cplex', 'cplex_direct'}
+                tmpVar = 'TOMLAB_PATH';
+            case 'mosek'
+                tmpVar = 'MOSEK_PATH';
+        end
+        error(['The global variable `', tmpVar, '` is not set. Please follow ', solversLink, ' to set the environment variables properly.']);
     end
 end
 

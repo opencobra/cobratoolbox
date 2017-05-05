@@ -13,6 +13,8 @@ function updateCobraToolbox(fetchAndCheckOnly)
         fetchAndCheckOnly = false;
     end
 
+    fprintf(' > Checking for available updates ...\n');
+
     % print out the last commit
     [status_gitLastCommit, result_gitLastCommit] = system('git rev-list --max-count=1 HEAD');
 
@@ -75,7 +77,7 @@ function updateCobraToolbox(fetchAndCheckOnly)
         end
 
         if commitsAheadBehindMaster(1) > 0 || commitsAheadBehindDevelop(1) > 0
-            warning(['The COBRA Toolbox could not be updated.']);
+            warning([' > The COBRA Toolbox could not be updated.']);
         end
 
         if status_gitCountMaster == 0 && status_gitCountDevelop == 0
@@ -109,7 +111,7 @@ function updateCobraToolbox(fetchAndCheckOnly)
                                     fprintf([' > The COBRA Toolbox has been updated (<', branches{k}, '> branch).\n']);
                                 else
                                     fprintf(result_gitPull);
-                                    warning(['The COBRA Toolbox could not be updated (<', branches{k}, '> branch).']);
+                                    warning([' > The COBRA Toolbox could not be updated (<', branches{k}, '> branch).']);
                                 end
                             end
 
@@ -119,14 +121,14 @@ function updateCobraToolbox(fetchAndCheckOnly)
                                 fprintf(' > The submodules have been updated (reset).\n');
                             else
                                 fprintf(result_gitReset);
-                                warning('The submodules could not be updated (reset).');
+                                warning('> The submodules could not be updated (reset).');
                             end
 
                             % switch back to the original branch
                             [status_gitCheckoutCurrentBranch, result_gitCheckoutCurrentBranch] = system(['git checkout -f ', currentBranch]);
                             if status_gitCheckoutCurrentBranch ~= 0
                                 fprintf(result_gitCheckoutCurrentBranch);
-                                warning(['The ', currentBranch, ' branch of The COBRA Toolbox could not be checked out.']);
+                                warning([' > The ', currentBranch, ' branch of The COBRA Toolbox could not be checked out.']);
                             end
                         end
                     else
@@ -136,14 +138,19 @@ function updateCobraToolbox(fetchAndCheckOnly)
                     fprintf(' > You can update The COBRA Toolbox by running updateCobraToolbox() (from within MATLAB).\n');
                 end
             else
-                fprintf(['The COBRA Toolbox is up-to-date.\n']);
+                fprintf([' > The COBRA Toolbox is up-to-date.\n']);
             end
         else
             fprintf(result_gitCountMaster);
-            warning('Eventual changes of the <master> branch of The COBRA Toolbox could not be counted.');
+            warning(' > Eventual changes of the <master> branch of The COBRA Toolbox could not be counted.');
         end
     else
-        fprintf(['You cannot update your fork using updateCobraToolbox(). [', lastCommit, ' @ ', currentBranch, ']. Please use the MATLAB.devTools (https://github.com/opencobra/MATLAB.devTools).\n']);
+        devtoolsLink = 'https://github.com/opencobra/MATLAB.devTools';
+        if usejava('desktop')
+            devtoolsLink = ['<a href=\"', devtoolsLink, '\">', devtoolsLink, '</a>'];
+        end
+
+        fprintf([' --> You cannot update your fork using updateCobraToolbox(). [', lastCommit, ' @ ', currentBranch, ']. Please use the MATLAB.devTools (', devtoolsLink, ').\n']);
     end
 end
 

@@ -60,7 +60,18 @@ function initCobraToolbox()
 
     % print header
     if ~isfield(ENV_VARS, 'printLevel') || ENV_VARS.printLevel
-        fprintf('\n\n      _____   _____   _____   _____     _____     |\n     /  ___| /  _  \\ |  _  \\ |  _  \\   / ___ \\    |   COnstraint-Based Reconstruction and Analysis\n     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2017\n     | |     | | | | |  _  { |  _  /  |  ___  |   |\n     | |___  | |_| | | |_| | | | \\ \\  | |   | |   |   Documentation:\n     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |   http://opencobra.github.io/cobratoolbox\n                                                  | \n\n');
+        docLink = 'http://opencobra.github.io/cobratoolbox';
+        if usejava('desktop')
+            docLink = ['<a href=\"', docLink, '\">', docLink, '</a>'];
+        end
+
+        fprintf('\n\n      _____   _____   _____   _____     _____     |\n');
+        fprintf('     /  ___| /  _  \\ |  _  \\ |  _  \\   / ___ \\    |   COnstraint-Based Reconstruction and Analysis\n');
+        fprintf('     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2017\n');
+        fprintf('     | |     | | | | |  _  { |  _  /  |  ___  |   |\n');
+        fprintf('     | |___  | |_| | | |_| | | | \\ \\  | |   | |   |   Documentation:\n');
+        fprintf(['     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |   ', docLink, '\n']);
+        fprintf('                                                  | \n\n');
         ENV_VARS.printLevel = true;
     end
 
