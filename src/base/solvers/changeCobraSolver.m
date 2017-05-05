@@ -245,29 +245,6 @@ end
 
 solverOK = false;
 
-% if gurobi is selected, unload tomlab if tomlab is on the path
-tomlabOnPath = ~isempty(strfind(lower(path), 'tomlab'));
-if (~isempty(strfind(solverName, 'gurobi')) ||  ~isempty(strfind(solverName, 'ibm_cplex')) ||  ~isempty(strfind(solverName, 'matlab'))) && tomlabOnPath
-    if strcmpi(solverName, 'gurobi')
-        addpath(genpath(GUROBI_PATH));
-    end;
-    if strcmpi(solverName, 'ibm_cplex')
-        addpath(genpath(ILOG_CPLEX_PATH));
-    end;
-    if strcmpi(solverName, 'matlab')
-        rmpath(genpath(TOMLAB_PATH));
-        if printLevel > 0
-            fprintf('\n > Tomlab interface removed from MATLAB path.\n');
-        end
-    end;
-end
-if ~tomlabOnPath && (~isempty(strfind(solverName, 'tomlab')) || ~isempty(strfind(solverName, 'cplex_direct')) ||  ~isempty(strfind(solverName, 'ibm_cplex')))
-    addpath(genpath(TOMLAB_PATH));
-    if printLevel > 0
-        fprintf('\n > Tomlab interface added to MATLAB path.\n');
-    end
-end
-
 switch solverName
     case {'lindo_old', 'lindo_legacy'}
         solverOK = checkSolverInstallationFile(solverName, 'mxlindo', printLevel);
@@ -343,6 +320,21 @@ end
 % set solver related global variables
 if solverOK
     eval(['CBT_', solverType, '_SOLVER = solverName;']);
+
+    % if gurobi is selected, unload tomlab if tomlab is on the path
+    tomlabOnPath = ~isempty(strfind(lower(path), 'tomlab'));
+    if (~isempty(strfind(solverName, 'gurobi')) ||  ~isempty(strfind(solverName, 'ibm_cplex')) ||  ~isempty(strfind(solverName, 'matlab'))) && tomlabOnPath
+        rmpath(genpath(TOMLAB_PATH));
+        if printLevel > 0
+            fprintf('\n > Tomlab interface removed from MATLAB path.\n');
+        end
+    end
+    if ~tomlabOnPath && (~isempty(strfind(solverName, 'tomlab')) || ~isempty(strfind(solverName, 'cplex_direct')))
+        addpath(genpath(TOMLAB_PATH));
+        if printLevel > 0
+            fprintf('\n > Tomlab interface added to MATLAB path.\n');
+        end
+    end
 end
 
 end
