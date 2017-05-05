@@ -1,17 +1,23 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
-% Small script that links to kegg mapper.
-% In case of changes of the website  I keep this script.
-% Stefan G. Thorleifsson March 2011
 function webKeggMapper(id,str)
+% Small script that links to kegg mapper.
+%
+% USAGE:
+%
+%    webKeggMapper(id,str)
+%
+% INPUTS:
+%    id:    Either 'ec' or 'kegg'
+%    str:   ID of themetabolite / reaction
+%
+% .. Author: - Stefan G. Thorleifsson March 2011
+% .. In case of changes of the website  I keep this script.
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
 
-%No id
-if isempty(str)
+if isempty(str) %No id
     msgbox(['There is no ' id ' ID available for this metabolite/reaction.'],'Help','help');
     return;
 end

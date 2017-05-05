@@ -1,55 +1,59 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
-% -------------------- handles. ------------------ Very incomplete
-%
-% handles.searchOutcome:    search_search_rxn outcome from Search1 for rxn
-% handles.searchOutcome2:   search_search_rxn outcome from search_search_met for metabolites
-% handles.rxn:              reaction databse
-% handles.metab:            metabolite database
-% handles.dispdata_rxn:     dispdlayed data in metatable
-% handles.dispdata_met:     displayed data in rxntable
-% handles.meta_meta:        Added metabolites for new rxn, displayed data in meta_table
-% handles.newrxn:           new rxn created by generate rxn, saved in
-%                           database in rxn_save.
-% handles.similar:          Used to store similarity
-%
-% Stefan G. Thorleifsson July 2010
-
-
-
 function varargout = ReconstructionTool(varargin)
-% RECONSTRUCTIONTOOL M-file for ReconstructionTool.fig
-%      RECONSTRUCTIONTOOL, by itself, creates a new RECONSTRUCTIONTOOL or raises the existing
-%      singleton*.
+% ReconstructionTool M-file for ReconstructionTool.fig
+% ReconstructionTool by itself, creates a new ReconstructionTool or raises the existing singleton*.
 %
-%      H = RECONSTRUCTIONTOOL returns the handle to a new RECONSTRUCTIONTOOL or the handle to
+% USAGE:
+%
+%    varargout = ReconstructionTool(varargin)
+%
+% INPUTS:
+%    varargin:    various input arguments
+%
+% OUTPUTS:
+%    varargout:   various output arguments
+%
+% EXAMPLE:
+%
+%      H = ReconstructionTool() returns the handle to a new ReconstructionTool or the handle to
 %      the existing singleton*.
 %
-%      RECONSTRUCTIONTOOL('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in RECONSTRUCTIONTOOL.M with the given input arguments.
+%      ReconstructionTool('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in ReconstructionTool.M with the given input arguments.
 %
-%      RECONSTRUCTIONTOOL('Property','Value',...) creates a new RECONSTRUCTIONTOOL or raises the
+%      ReconstructionTool('Property','Value',...) creates a new ReconstructionTool or raises the
 %      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before ReconstructionTool_OpeningFcn gets called.  An
+%      applied to the GUI before `ReconstructionTool_OpeningFcn` gets called.  An
 %      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to ReconstructionTool_OpeningFcn via varargin.
+%      stop.  All inputs are passed to `ReconstructionTool_OpeningFcn` via `varargin`.
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
+% .. Author: - Stefan G. Thorleifsson July 2010
 %
-% See also: GUIDE, GUIDATA, GUIHANDLES
+% NOTE:
+%    See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%    instance to run (singleton)".
+%    See also: GUIDE, GUIDATA, GUIHANDLES
+% .. Edit the above text to modify the response to help ReconstructionTool
+% .. Last Modified by GUIDE v2.5 21-Sep-2011 14:21:07
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
+%
+% ..
+%    -------------------- handles. ------------------ Very incomplete
+%    handles.searchOutcome:    search_search_rxn outcome from Search1 for rxn
+%    handles.searchOutcome2:   search_search_rxn outcome from search_search_met for metabolites
+%    handles.rxn:              reaction databse
+%    handles.metab:            metabolite database
+%    handles.dispdata_rxn:     dispdlayed data in metatable
+%    handles.dispdata_met:     displayed data in rxntable
+%    handles.meta_meta:        Added metabolites for new rxn, displayed data in meta_table
+%    handles.newrxn:           new rxn created by generate rxn, saved in
+%                              database in rxn_save.
+%    handles.similar:          Used to store similarity
 
-% Edit the above text to modify the response to help ReconstructionTool
-
-% Last Modified by GUIDE v2.5 21-Sep-2011 14:21:07
-
-% Begin initialization code - DO NOT EDIT
-gui_Singleton = 1;
+gui_Singleton = 1; % Begin initialization code - DO NOT EDIT
 gui_State = struct('gui_Name',       mfilename, ...
     'gui_Singleton',  gui_Singleton, ...
     'gui_OpeningFcn', @ReconstructionTool_OpeningFcn, ...
@@ -173,7 +177,7 @@ if isempty(handles.metab)
     return;
 end
 handles.dispdata_met = handles.metab;
- 
+
 
 % ---------- Open and display  -------------- end
 
@@ -309,11 +313,11 @@ balance = balancecheck(handles.meta_meta); %Verify that reaction is balanced.
 if ~isempty(balance) || ~(charge_l == charge_r) %reaction is unbalanced
     charge = cell(3,1);
     charge(1:3,1) = {'Charge', charge_l, charge_r};
-    
+
     balance_charge = [charge, balance];% All data is here
-    
+
     con = unbalanced(balance_charge,get(handles.rxn_abbreviation,'String')); % Initiate unbalanced window
-    
+
     if con == 0
         set(handles.formula,'String','');
         guidata(hObject, handles);
@@ -371,7 +375,7 @@ guidata(hObject,handles)
 if ~isempty(handles.similar)
     eq = ReactionEq(col3,rxn(handles.similar,:));
     if ~isempty(eq)
-        
+
         msgbox(['The new reaction can be found in database under the'...
             ' abbreviation ' eq ' and will therefor not be saved.'],...
             'Reaction exist in database','warn');
@@ -389,18 +393,18 @@ elseif ~isempty(strmatch(newrxn{1},rxn(:,1),'exact'))
     msgbox(str,'Name already exists','help');
     return;
 else
-    
+
     for i = 1:length(newrxn)
         if isa(newrxn{i},'cell')
             a = newrxn{i};
             newrxn{i} = a{1};
         end
     end
-    
+
     save_rxn = questdlg('Are you sure you want to save?', ...
         'Save Data', ...
         'Yes', 'No', 'Yes');
-    
+
     %perform the following operation depending on the option chosen
     switch save_rxn,
         case 'Yes',
@@ -414,7 +418,7 @@ else
         case 'No',
             %Do nothing.
     end % switch
-    
+
 end
 
 %-------------------------- Save Reaction ------------------------ end
@@ -649,7 +653,7 @@ compartment = get(handles.meta_compartment,'string');
 rxnline = dispdata(handles.rxntable_selection(1),:); %All data on reaction.
 if S(1) == 1
     meta_meta = LoadReaction(rxnline,metab,compartment);
-    
+
     if isempty(meta_meta)
         return
     end
@@ -732,17 +736,17 @@ cmp_new = compartment(cmp); %Open add compartment window
 
 
 if ~isempty(cmp_new) %new_compartment will be empty if cancel is hit.
-    
+
     %new_compartment is only number when removing compartment
     if isa(cmp_new,'numeric')
         cmp(cmp_new) = '';
         compartments = sort(cmp);
-        
-        
+
+
     else %If not numeric then new compartmant has been added.
         cmp{end+1} = cmp_new;
         compartments = sort(cmp);
-        
+
     end
     set(handles.meta_compartment,'String',compartments);
     rBioNetSaveLoad('save','comp',compartments);
@@ -900,14 +904,14 @@ else
     a =  strmatch(newmet{4},handles.metab(:,4),'exact');
     if ~isempty(a)
         charge_formula = [handles.metab(a,:)];
-        
+
     end
 end
 
 
 if ~isempty(charge_formula)
    sim_general(charge_formula)
-    
+
     % msgbox([ charge_formula ' (has) have the same charged formula as your metabolite.']...
     %    , 'Similar charged formula.','help');
     uiwait;
@@ -930,7 +934,7 @@ if ~isempty(handles.newmet)
             t = [t '/' num2str(round(time(i)))];
         end
     end
-    
+
 end
 handles.newmet{end+1} = t;
 handles.newmet{5} = num2str(handles.newmet{5});
@@ -1209,7 +1213,7 @@ reactions = output{1};
 % 11.comments
 % 12.ecNumbers
 % 13.KeggID.
-%enable is set infront afterwards. 
+%enable is set infront afterwards.
 %---------
 
 reactions = [reactions(:,2:5) reactions(:,9) reactions(:,12) reactions(:,11),...
@@ -1227,7 +1231,7 @@ reactions = [reactions(:,2:5) reactions(:,9) reactions(:,12) reactions(:,11),...
 %----------
 metabolites = output{5};
 %metabolite neutral formula is column nr. 3 but that is normally not
-%included in reconstructions. 
+%included in reconstructions.
 
 %Metabolite lineup
 % Abbreviation
@@ -1245,7 +1249,7 @@ metabolites = output{5};
 
 
 %metabolite line-up from model2data
-% mets 
+% mets
 % metNames
 % metFormulas chargeFormula
 % metCharge

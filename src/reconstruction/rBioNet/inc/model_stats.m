@@ -1,38 +1,46 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
 function varargout = model_stats(varargin)
-% MODEL_STATS MATLAB code for model_stats.fig
-%      MODEL_STATS, by itself, creates a new MODEL_STATS or raises the existing
-%      singleton*.
+% model_stats MATLAB code for model_stats.fig
+% model_stats, by itself, creates a new model_stats or raises the existing singleton*.
 %
-%      H = MODEL_STATS returns the handle to a new MODEL_STATS or the handle to
-%      the existing singleton*.
+% USAGE:
 %
-%      MODEL_STATS('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in MODEL_STATS.M with the given input arguments.
+%    varargout = model_stats(varargin)
 %
-%      MODEL_STATS('Property','Value',...) creates a new MODEL_STATS or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before model_stats_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to model_stats_OpeningFcn via varargin.
+% INPUTS:
+%    varargin:    various input arguments
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
+% OUTPUTS:
+%    varargout:   various output arguments
 %
-% See also: GUIDE, GUIDATA, GUIHANDLES
+% EXAMPLE:
+%
+%    H = model_stats() returns the handle to a new model_stats or the handle to
+%    the existing singleton*.
+%
+%    model_stats('CALLBACK',hObject,eventData,handles,...) calls the local
+%    function named CALLBACK in model_stats.M with the given input arguments.
+%
+%    model_stats('Property','Value',...) creates a new model_stats or raises the
+%    existing singleton*.  Starting from the left, property value pairs are
+%    applied to the GUI before `model_stats_OpeningFcn` gets called.  An
+%    unrecognized property name or invalid value makes property application
+%    stop.  All inputs are passed to `model_stats_OpeningFcn` via `varargin`.
+%
+% .. Author: - Stefan G. Thorleifsson 2011
+%
+% NOTE:
+%    See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%    instance to run (singleton)".
+%    See also: GUIDE, GUIDATA, GUIHANDLES
+% .. Edit the above text to modify the response to help model_stats
+% .. Last Modified by GUIDE v2.5 12-May-2011 17:28:29
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
 
-% Edit the above text to modify the response to help model_stats
-
-% Last Modified by GUIDE v2.5 12-May-2011 17:28:29
-
-% Begin initialization code - DO NOT EDIT
-gui_Singleton = 1;
+gui_Singleton = 1; % Begin initialization code - DO NOT EDIT
 gui_State = struct('gui_Name',       mfilename, ...
     'gui_Singleton',  gui_Singleton, ...
     'gui_OpeningFcn', @model_stats_OpeningFcn, ...
@@ -113,7 +121,7 @@ if ~isempty(deadends)
         for k = 1:size(handles.rxn,1)
             split = regexpi(handles.rxn{k,3}, ']','split');
             if (length(split) == 2) && strcmp([split{1} ']'],handles.deadends{i,1})
-                
+
                 met = split{1};
                 if strcmp(met(end),'e') %add all extracellular deadends automaticly
                     handles.deadends(i,2:4) = {1,handles.rxn{k,2},k};
@@ -121,14 +129,14 @@ if ~isempty(deadends)
                 else
                     handles.deadends(i,2:4) = {0,handles.rxn{k,2},k};
                 end
-                
+
                 break;
             else
                 handles.deadends(i,2:4) = {0, '', 0};
             end
         end
     end
-    
+
     %print data to listboxes
     listbox1 = {};
     listbox2 = {};
@@ -139,7 +147,7 @@ if ~isempty(deadends)
             listbox2{end+1} = handles.deadends{i,3};
         end
     end
-    
+
     set(handles.listbox1,'string',listbox1);
     set(handles.listbox2,'string',listbox2);
 else
@@ -179,7 +187,7 @@ set(handles.listbox_rxns,'String',handles.model.rxns);
 set(handles.rxn_text,'String',printRxnFormula(handles.model,handles.model.rxns{1}));
 handles.rxn_selection = []; %selection of table
 
-%Spy plot 
+%Spy plot
 axes(handles.axes1);
 spy(handles.model.S);
 ylabel('Metabolites');
@@ -231,7 +239,7 @@ for i = 1:size(handles.newrxns,1)
     else
         newrxns{i,7} = -1000;
     end
-    
+
     newrxns{i,8} = -1000;%UB
     newrxns{i,9} = handles.newrxns{i,5};%CS
     % 10 subsystem
@@ -253,7 +261,7 @@ if ~(size(unique(rxns(:,2)),1) == size(rxns,1))
         end
     end
 end
-    
+
 model = data2model(rxns,description);
 
 if isempty(model)
@@ -342,7 +350,7 @@ end
 % guidata(hObject,handles);
 %listbox bug from matlab, this should fix it. (Highlighting out of bounce
 %item).
-val = get(handles.listbox1,'value'); 
+val = get(handles.listbox1,'value');
 if length(listbox1) < val && val ~= 1
     set(handles.listbox1,'value',val-1);
 end
@@ -398,7 +406,7 @@ function act_remove_Callback(hObject, eventdata, handles)
 
 %clear handles.newrxns
 rxn = strcmp(handles.newrxns(:,2),handles.listbox2_select);
-    
+
 handles.newrxns(rxn,:) = '';
 
 %set listbox
@@ -411,7 +419,7 @@ handles.deadends{value,2} = 0;
 listbox1 = {};
 listbox2 = {};
 for i = 1:size(handles.deadends,1)
-    if handles.deadends{i,2} == 0  
+    if handles.deadends{i,2} == 0
         listbox1{end+1} = handles.deadends{i,1};
     else
         listbox2{end+1} = handles.deadends{i,3};
@@ -422,7 +430,7 @@ end
 % guidata(hObject,handles);
 
 %if end is removed listbox selection is out of bounce, this is a quick fix.
-val = get(handles.listbox2,'value'); 
+val = get(handles.listbox2,'value');
 if length(listbox2) < val && val ~= 1
     set(handles.listbox2,'value',val-1);
 end

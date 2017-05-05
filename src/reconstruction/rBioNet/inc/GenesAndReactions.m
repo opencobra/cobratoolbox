@@ -1,39 +1,46 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
-
 function varargout = GenesAndReactions(varargin)
-% GENESANDREACTIONS M-file for GenesAndReactions.fig
-%      GENESANDREACTIONS, by itself, creates a new GENESANDREACTIONS or raises the existing
-%      singleton*.
+% GenesAndReactions M-file for GenesAndReactions.fig
+% GenesAndReactions, by itself, creates a new GenesAndReactions or raises the existing
+% singleton*.
 %
-%      H = GENESANDREACTIONS returns the handle to a new GENESANDREACTIONS or the handle to
-%      the existing singleton*.
+% USAGE:
 %
-%      GENESANDREACTIONS('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in GENESANDREACTIONS.M with the given input arguments.
+%    varargout = GenesAndReactions(varargin)
 %
-%      GENESANDREACTIONS('Property','Value',...) creates a new GENESANDREACTIONS or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before GenesAndReactions_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to GenesAndReactions_OpeningFcn via varargin.
+% INPUTS:
+%    varargin:    various input arguments
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
+% OUTPUTS:
+%    varargout:   various output arguments
 %
-% See also: GUIDE, GUIDATA, GUIHANDLES
+% EXAMPLE:
+%
+%    H = GenesAndReactions() %returns the handle to a new GenesAndReactions or the handle to the existing singleton*.
+%
+%    GenesAndReactions('CALLBACK',hObject,eventData,handles,...) %calls the local
+%    %function named `CALLBACK` in GenesAndReactions.M with the given input arguments.
+%
+%    GenesAndReactions('Property','Value',...) %creates a new GEN or raises the
+%    %existing singleton*.  Starting from the left, property value pairs are
+%    %applied to the GUI before `GenesAndReactions_OpeningFcn` gets called. An
+%    %unrecognized property name or invalid value makes property application
+%    %stop. All inputs are passed to `GenesAndReactions_OpeningFcn` via `varargin`.
+%
+% .. Author: - Stefan G. Thorleifsson 2011
+%
+% NOTE:
+%    See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%    instance to run (singleton)".
+%    See also: GUIDE, GUIDATA, GUIHANDLES
+% .. Edit the above text to modify the response to help GenesAndReactions
+% .. Last Modified by GUIDE v2.5 12-May-2011 15:15:44
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
 
-% Edit the above text to modify the response to help GenesAndReactions
-
-% Last Modified by GUIDE v2.5 12-May-2011 15:15:44
-
-% Begin initialization code - DO NOT EDIT
-gui_Singleton = 1;
+gui_Singleton = 1; % Begin initialization code - DO NOT EDIT
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
                    'gui_OpeningFcn', @GenesAndReactions_OpeningFcn, ...
@@ -71,7 +78,7 @@ guidata(hObject, handles);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = GenesAndReactions_OutputFcn(hObject, eventdata, handles) 
+function varargout = GenesAndReactions_OutputFcn(hObject, eventdata, handles)
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB

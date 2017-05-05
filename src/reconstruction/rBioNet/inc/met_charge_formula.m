@@ -1,38 +1,46 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
 function varargout = met_charge_formula(varargin)
-% MET_CHARGE_FORMULA MATLAB code for met_charge_formula.fig
-%      MET_CHARGE_FORMULA, by itself, creates a new MET_CHARGE_FORMULA or raises the existing
-%      singleton*.
+% met_charge_formula MATLAB code for met_charge_formula.fig
+% met_charge_formula, by itself, creates a new met_charge_formula or raises the existing singleton*.
 %
-%      H = MET_CHARGE_FORMULA returns the handle to a new MET_CHARGE_FORMULA or the handle to
-%      the existing singleton*.
+% USAGE:
 %
-%      MET_CHARGE_FORMULA('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in MET_CHARGE_FORMULA.M with the given input arguments.
+%    varargout = met_charge_formula(varargin)
 %
-%      MET_CHARGE_FORMULA('Property','Value',...) creates a new MET_CHARGE_FORMULA or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before met_charge_formula_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to met_charge_formula_OpeningFcn via varargin.
+% INPUTS:
+%    varargin:    various input arguments
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
+% OUTPUTS:
+%    varargout:   various output arguments
 %
-% See also: GUIDE, GUIDATA, GUIHANDLES
+% EXAMPLE:
+%
+%    H = met_charge_formula() returns the handle to a new met_charge_formula or the handle to
+%    the existing singleton*.
+%
+%    met_charge_formula('CALLBACK',hObject,eventData,handles,...) calls the local
+%    function named CALLBACK in met_charge_formula.M with the given input arguments.
+%
+%    met_charge_formula('Property','Value',...) creates a new met_charge_formula or raises the
+%    existing singleton*.  Starting from the left, property value pairs are
+%    applied to the GUI before `met_charge_formula_OpeningFcn` gets called.  An
+%    unrecognized property name or invalid value makes property application
+%    stop.  All inputs are passed to `met_charge_formula_OpeningFcn` via `varargin`.
+%
+% .. Author: - Stefan G. Thorleifsson 2011
+%
+% NOTE:
+%    See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%    instance to run (singleton)".
+%    See also: GUIDE, GUIDATA, GUIHANDLES
+% .. Edit the above text to modify the response to help met_charge_formula
+% .. Last Modified by GUIDE v2.5 04-Apr-2011 13:23:06
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
 
-% Edit the above text to modify the response to help met_charge_formula
-
-% Last Modified by GUIDE v2.5 04-Apr-2011 13:23:06
-
-% Begin initialization code - DO NOT EDIT
-gui_Singleton = 1;
+gui_Singleton = 1; % Begin initialization code - DO NOT EDIT
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
                    'gui_OpeningFcn', @met_charge_formula_OpeningFcn, ...
@@ -61,7 +69,7 @@ function met_charge_formula_OpeningFcn(hObject, eventdata, handles, varargin)
 
 % Choose default command line output for met_charge_formula
 %Stefan Thorleifsson April 2011
-%Shows Same charge formula in tables. 
+%Shows Same charge formula in tables.
 
 
 set(handles.uitable1,'data', varargin{1}); %metabolites that have similar charge formula as in database
@@ -76,7 +84,7 @@ guidata(hObject, handles);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = met_charge_formula_OutputFcn(hObject, eventdata, handles) 
+function varargout = met_charge_formula_OutputFcn(hObject, eventdata, handles)
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB

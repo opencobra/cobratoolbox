@@ -1,38 +1,46 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
 function varargout = addreactions(varargin)
-% ADDREACTIONS M-file for addreactions.fig
-%      ADDREACTIONS, by itself, creates a new ADDREACTIONS or raises the existing
-%      singleton*.
+% addreactions M-file for addreactions.fig
+% addreactions, by itself, creates a new addreactions or raises the existing singleton*.
 %
-%      H = ADDREACTIONS returns the handle to a new ADDREACTIONS or the handle to
-%      the existing singleton*.
+% USAGE:
 %
-%      ADDREACTIONS('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in ADDREACTIONS.M with the given input arguments.
+%    varargout = addreactions(varargin)
 %
-%      ADDREACTIONS('Property','Value',...) creates a new ADDREACTIONS or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before addreactions_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to addreactions_OpeningFcn via varargin.
+% INPUTS:
+%    varargin:    various input arguments
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
+% OUTPUTS:
+%    varargout:   various output arguments
 %
-% See also: GUIDE, GUIDATA, GUIHANDLES
+% EXAMPLE:
+%
+%    H = addreactions() %returns the handle to a new addreactions or the handle to
+%    %the existing singleton*.
+%
+%    addreactions('CALLBACK',hObject,eventData,handles,...) %calls the local
+%    %function named `CALLBACK` in addreactions.M with the given input arguments.
+%
+%    addreactions('Property','Value',...) %creates a new addreactions or raises the
+%    %existing singleton*.  Starting from the left, property value pairs are
+%    %applied to the GUI before `addreactions_OpeningFcn` gets called.  An
+%    %unrecognized property name or invalid value makes property application
+%    %stop.  All inputs are passed to `addreactions_OpeningFcn` via `varargin`.
+%
+% .. Author: - Stefan G. Thorleifsson 2011
+%
+% NOTE:
+%    See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%    instance to run (singleton)".
+%    See also: GUIDE, GUIDATA, GUIHANDLES
+% .. Edit the above text to modify the response to help addreactions
+% .. Last Modified by GUIDE v2.5 29-Mar-2011 13:23:24
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
 
-% Edit the above text to modify the response to help addreactions
-
-% Last Modified by GUIDE v2.5 29-Mar-2011 13:23:24
-
-% Begin initialization code - DO NOT EDIT
-gui_Singleton = 1;
+gui_Singleton = 1; % Begin initialization code - DO NOT EDIT
 gui_State = struct('gui_Name',       mfilename, ...
     'gui_Singleton',  gui_Singleton, ...
     'gui_OpeningFcn', @addreactions_OpeningFcn, ...
@@ -93,11 +101,11 @@ end
 handles.edit_check = [];
 handles.CellSelection =[];
 handles.data = {};
-handles.check = 0; % 0 if check has not been done, 1 if it has. 
+handles.check = 0; % 0 if check has not been done, 1 if it has.
 
 guidata(hObject, handles);
 
-%There was something similar in addmetabolites, 
+%There was something similar in addmetabolites,
 % if ~isempty(varargin{4})
 %     data = get(handles.uitable1,'data');
 %     S_d = size(data);
@@ -113,7 +121,7 @@ guidata(hObject, handles);
 %     end
 %     set(handles.uitable1,'data',data);
 %     guidata(hObject,handles)
-%     
+%
 % end
 
 % UIWAIT makes addreactions wait for user response (see UIRESUME)
@@ -178,22 +186,22 @@ for i = 1:length(time)-3 %Get time
 end
 quest_yes = 0;
 S = size(data);
-%MSC and rev are taken in as strings but changed later to numbers. 
-%add time and reversible and MSC (default 0) if it is missing. 
-for i = 1:S(1) 
+%MSC and rev are taken in as strings but changed later to numbers.
+%add time and reversible and MSC (default 0) if it is missing.
+for i = 1:S(1)
     if isempty(data{i,5}) %default MSC 0
         data{i,5} = '0';
     else
         if isa(data{i,5},'numeric') %Change to string
             data{i,5} = num2str(data{i,5});
         elseif isnan(str2double(data{i,5}))
-           msgbox(['Line ' num2str(i) ' Mechanical Confidece Score is not numeric'],'Error','error'); 
+           msgbox(['Line ' num2str(i) ' Mechanical Confidece Score is not numeric'],'Error','error');
            return
         end
     end
-    
+
     if isempty(data{i,4}) %Reversability
-        
+
         if isempty(data{i,3})
             msgbox(['No reaction formula. Error at line ' num2str(i) '.'],'Error','error')
             return
@@ -220,9 +228,9 @@ for i = 1:S(1)
             return
         end
     end
-    data{i,10} = colmn;    
-        
-end 
+    data{i,10} = colmn;
+
+end
 
 %-------------- Read text file ------------------------------ end
 
@@ -242,7 +250,7 @@ function act_remove_Callback(hObject, eventdata, handles)
 
 data = get(handles.uitable1,'data'); % uitable 1
 S_data = size(data);
-if S_data(1) == 1 % If only on reaction remains. 
+if S_data(1) == 1 % If only on reaction remains.
    set(handles.uitable1,'data','');
    set(handles.listbox1,'String','Empty');
    set(handles.uitable2,'data','');
@@ -287,12 +295,12 @@ function act_check_Callback(hObject, eventdata, handles)
 %   handles.metab
 %   handles.meta_compartment
 %   newrxns
-%   
+%
 %
 %What will be in the output?
 %If everything is okay
 %   newrxns (reactions can be removed) set table
-%   handles.data - all similarity info including dispdata.  
+%   handles.data - all similarity info including dispdata.
 %   handles.check
 %If we return,
 %   Empty is a good choise .
@@ -313,7 +321,7 @@ handles.check = output{3};
 if isempty(handles.data)
     set(handles.listbox1,'string','No similarities');
 else
-    set(handles.listbox1,'string',handles.data(:,1));  
+    set(handles.listbox1,'string',handles.data(:,1));
 end
 
 dispdata = []; % display data
@@ -353,7 +361,7 @@ function uitable1_CellSelectionCallback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.CellSelection = eventdata.Indices;
 guidata(hObject, handles)
-    
+
 
 
 % --- Executes on selection change in listbox1.
@@ -419,7 +427,7 @@ end
 %             end
 %         end
 %     end
-%     
+%
 % else
 %     msgbox(['Data has been changes since check, please perform the the'...
 %         ' the database check again before finishing.' ],...
@@ -458,7 +466,7 @@ msgbox(['Add text file with same order as table 1. It is recommended to'...
     ' Perform the database check and finish if similarities are acceptable.']...
     ,'Info','help');
 
-    
+
 
 
 % --- Executes when entered data in editable cell(s) in uitable1.
@@ -473,4 +481,3 @@ function uitable1_CellEditCallback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.check = 0;
 guidata(hObject,handles);
-

@@ -1,31 +1,34 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
-%This is an start to simplefying the balancing and similarity
-%checking of reactions process.
-%Stefan G. Thorleifsson
-
-%Move reactions checks to one file
-%What needs to be passed on to new file
-%   handles.rxn
-%   handles.metab
-%   handles.meta_compartment
-%   newrxns
-%
-%
-%What will be in the output?
-%If everything is okay
-%   newrxns (reactions can be removed) set table
-%   handles.data - all similarity info including dispdata.
-%   handles.check
-%If we return,
-%   Empty is a good choise .
-
 function data_output = ReactionChecks(rxn,metab,meta_compartment,newrxns,data)
+% This is an start to simplefying the balancing and similarity
+% checking of reactions process.
+%
+% USAGE:
+%
+%    data_output = ReactionChecks(rxn, metab, meta_compartment, newrxns, data)
+%
+% INPUTS:
+%    rxn:
+%    metab:
+%    meta_compartment:
+%    newrxns:
+%    data:
+%
+% OUTPUT:
+%    data_output:     if everything is okay
+%
+%                       * newrxns - (reactions can be removed) set table
+%                       * handles.data - all similarity info including dispdata.
+%                       * handles.check
+% .. If we return, empty is a good choice .
+%
+%
+% .. Author: - Stefan G. Thorleifsson 2011
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
+
 data_output = [];
 %rxn reaction database
 % newrxns = get(handles.uitable1,'data');

@@ -1,20 +1,21 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
-
-
-%This script takes in a reconstruction model and prints it out into a text
-%file. It can be used standalone from the rBioNet.
-%
-% >> model2text(data,model)
-%   data: model or .mat datafile table as in ReconstructionCreator (RC)
-%   model: true if data is a model, false if RC table.
-
 function model2text(data,model)
+% This script takes in a reconstruction model and prints it out into a text
+% file. It can be used standalone from the `rBioNet`.
+%
+% USAGE:
+%
+%    model2text(data, model)
+%
+% INPUTS:
+%    data:    model or .mat datafile table as in ReconstructionCreator (RC)
+%    model:   true if data is a model, false if RC table.
+%
+% .. Author: - Stefan G. Thorleifsson 2011
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
 if model
     data = model2data(data,1);
 end
@@ -67,7 +68,7 @@ fprintf(fid,['#Description\n'...
 
 rxn_fields = {'% Abbreviation',' Description ', 'Formula', 'Reversible', 'GPR' ,...
     'LB' , 'UB' , 'Mechanism Confidence Score', 'Subsystem', 'References',...
-    'Notes', 'EC number', 'KeggID'}; 
+    'Notes', 'EC number', 'KeggID'};
 
 fprintf(fid,'%%\n%%\n%%\n');
 
@@ -92,14 +93,14 @@ for i = 1:size(rxns,1)
     if ~isempty(rxns{i,12})
         rxns{i,12} = regexprep(rxns{i,12},'\t', '');
     end
-    
+
     if ~isempty(rxns{i,13})
         rxns{i,13} = regexprep(rxns{i,13},'\t', '');
     end
      if ~isempty(rxns{i,14})
         rxns{i,14} = regexprep(rxns{i,14},'\t', '');
      end
-    
+
     fprintf(fid, '%s\t %s\t %s\t %s\t %s\t %s\t %s\t %s\t %s\t %s\t %s\t %s\t %s\n',...
         rxns{i,2}, rxns{i,3}, rxns{i,4}, rxns{i,5}, rxns{i,6},...
         rxns{i,7}, rxns{i,8}, rxns{i,9}, rxns{i,10}, rxns{i,11}, rxns{i,12},...
@@ -122,13 +123,13 @@ end
 fprintf(fid,'\n#Metabolites\n');
 
 for i = 1:size(mets,1)
-    
+
     if isa(mets{i,4},'cell')
         a = mets{i,4};
         mets{i,4} = a{1};
     end
     mets{i,4} = num2str(mets{i,4});
-    
+
     fprintf(fid, '%s \t %s \t %s \t %s \t %s \t %s \t %s \t %s \t %s \t %s \t %s \t %s \t %s \n',...
         mets{i,1}, mets{i,2}, '',mets{i,3}, mets{i,4}, mets{i,5}, mets{i,6},...
         mets{i,7}, mets{i,8}, mets{i,9},mets{i,10}, mets{i,11}, mets{i,12});
@@ -137,4 +138,3 @@ end
 
 
 fclose(fid);
-

@@ -1,38 +1,47 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
 function varargout = model_description(varargin)
-% MODEL_DESCRIPTION M-file for model_description.fig
-%      MODEL_DESCRIPTION, by itself, creates a new MODEL_DESCRIPTION or raises the existing
-%      singleton*.
+% model_description M-file for model_description.fig
+% model_description, by itself, creates a new model_description or raises the existing
+% singleton*.
 %
-%      H = MODEL_DESCRIPTION returns the handle to a new MODEL_DESCRIPTION or the handle to
+% USAGE:
+%
+%    varargout = model_description(varargin)
+%
+% INPUTS:
+%    varargin:    various input arguments
+%
+% OUTPUTS:
+%    varargout:   various output arguments
+%
+% EXAMPLE:
+%
+%      H = model_description() returns the handle to a new model_description or the handle to
 %      the existing singleton*.
 %
-%      MODEL_DESCRIPTION('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in MODEL_DESCRIPTION.M with the given input arguments.
+%      model_description('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in model_description.M with the given input arguments.
 %
-%      MODEL_DESCRIPTION('Property','Value',...) creates a new MODEL_DESCRIPTION or raises the
+%      model_description('Property','Value',...) creates a new model_description or raises the
 %      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before model_description_OpeningFcn gets called.  An
+%      applied to the GUI before `model_description_OpeningFcn` gets called.  An
 %      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to model_description_OpeningFcn via varargin.
+%      stop.  All inputs are passed to `model_description_OpeningFcn` via `varargin`.
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
+% .. Author: - Stefan G. Thorleifsson 2011
 %
-% See also: GUIDE, GUIDATA, GUIHANDLES
+% NOTE:
+%    See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%    instance to run (singleton)".
+%    See also: GUIDE, GUIDATA, GUIHANDLES
+% .. Edit the above text to modify the response to help model_description
+% .. Last Modified by GUIDE v2.5 01-Sep-2010 15:45:35
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
 
-% Edit the above text to modify the response to help model_description
-
-% Last Modified by GUIDE v2.5 01-Sep-2010 15:45:35
-
-% Begin initialization code - DO NOT EDIT
-gui_Singleton = 1;
+gui_Singleton = 1; % Begin initialization code - DO NOT EDIT
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
                    'gui_OpeningFcn', @model_description_OpeningFcn, ...
@@ -85,7 +94,7 @@ guidata(hObject, handles);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = model_description_OutputFcn(hObject, eventdata, handles) 
+function varargout = model_description_OutputFcn(hObject, eventdata, handles)
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB

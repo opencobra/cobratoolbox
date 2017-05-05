@@ -1,29 +1,33 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011 November
-
-%Use: result = LegalRxnFormula(reactions)
-%Before:    formula - cell vector with reactions formulas
-%           abbreviation - cell vector with reaction abbreviation
-%           (optional)
-%After: result true if all reactions are legal, else false.
-%       msgbox lets user know which reaction is incorrect. 
-%Note:  This script is just a start and only contains a few checks.
-%       Add more test in near future. 
-
 function result = LegalRxnFormula(formula,abbreviation)
+%
+% USAGE:
+%
+%    result = LegalRxnFormula(formula, abbreviation)
+%
+% INPUTS:
+%    formula:        cell vector with reactions formulas
+%    abbreviation:   cell vector with reaction abbreviation (optional)
+%
+% OUTPUT:
+%    result:         true if all reactions are legal, else false. `msgbox` lets user know which reaction is incorrect
+%
+% .. Author: - Stefan G. Thorleifsson November 2011
+%
+% NOTE:
+%        This script is just a start and only contains a few checks.
+%        Add more tests in near future.
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
 
 if nargin == 1
     abbreviation = formula;
 end
-    
+
 % Bug fix...
 % ParseRxnFormula.m crashed if it is fed ' <=> '
-% Check if reaction formula are 
+% Check if reaction formula are
 %        ' <=> '
 %        ' -> '
 %        ''
@@ -59,7 +63,7 @@ if(results)
         else
             str = [str ', ' fields{results(i)}];
         end
-        
+
     end
     msgbox(['Reaction formula(s): '  str  ' is/are illeagal.']);
     result = false;

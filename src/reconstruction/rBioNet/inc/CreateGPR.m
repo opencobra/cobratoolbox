@@ -1,38 +1,46 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
 function varargout = CreateGPR(varargin)
-% CREATEGPR M-file for CreateGPR.fig
-%      CREATEGPR, by itself, creates a new CREATEGPR or raises the existing
-%      singleton*.
+% CreateGPR M-file for CreateGPR.fig
+% CreateGPR, by itself, creates a new CreateGPR or raises the existing
+% singleton*.
 %
-%      H = CREATEGPR returns the handle to a new CREATEGPR or the handle to
-%      the existing singleton*.
+% USAGE:
 %
-%      CREATEGPR('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in CREATEGPR.M with the given input arguments.
+%    varargout = addmetabolites(varargin)
 %
-%      CREATEGPR('Property','Value',...) creates a new CREATEGPR or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before CreateGPR_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to CreateGPR_OpeningFcn via varargin.
+% INPUTS:
+%    varargin:    various input arguments
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
+% OUTPUTS:
+%    varargout:   various output arguments
 %
-% See also: GUIDE, GUIDATA, GUIHANDLES
+% EXAMPLE:
+%
+%    H = CreateGPR() %returns the handle to a new CreateGPR or the handle to the existing singleton*.
+%
+%    CreateGPR('CALLBACK',hObject,eventData,handles,...) %calls the local
+%    %function named `CALLBACK` in CreateGPR.M with the given input arguments.
+%
+%    CreateGPR('Property','Value',...) %creates a new CreateGPR or raises the
+%    %existing singleton*.  Starting from the left, property value pairs are
+%    %applied to the GUI before `CreateGPR_OpeningFcn` gets called. An
+%    %unrecognized property name or invalid value makes property application
+%    %stop. All inputs are passed to `CreateGPR_OpeningFcn` via `varargin`.
+%
+% .. Author: - Stefan G. Thorleifsson 2011
+%
+% NOTE:
+%    See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%    instance to run (singleton)".
+%    See also: GUIDE, GUIDATA, GUIHANDLES
+% .. Edit the above text to modify the response to help CreateGPR
+% .. Last Modified by GUIDE v2.5 18-Aug-2010 13:19:08
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
 
-% Edit the above text to modify the response to help CreateGPR
-
-% Last Modified by GUIDE v2.5 18-Aug-2010 13:19:08
-
-% Begin initialization code - DO NOT EDIT
-gui_Singleton = 1;
+gui_Singleton = 1; % Begin initialization code - DO NOT EDIT
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
                    'gui_OpeningFcn', @CreateGPR_OpeningFcn, ...
@@ -80,7 +88,7 @@ guidata(hObject, handles);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = CreateGPR_OutputFcn(hObject, eventdata, handles) 
+function varargout = CreateGPR_OutputFcn(hObject, eventdata, handles)
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -109,23 +117,23 @@ if S(1) <= 1
 else
     lines = line(:,1);
     genes = data2(lines,1);
-        
+
     for i = 1:S(1)-1
         GPR = [ GPR genes{i} ' and '];
     end
     GPR = ['(' GPR genes{end} ')'];
-     
+
     cnt = 0;
     for k = 1:S(1)
-        
+
         data2(lines(k)-cnt,:) = '';
         cnt = cnt + 1;
-        
+
     end
     if isempty(data2)
         data2 = {GPR};
     else
-        
+
         data2(end+1,:) = {GPR};
     end
 end
@@ -155,23 +163,23 @@ if S(1) <= 1
 else
     lines = line(:,1);
     genes = data2(lines,1);
-        
+
     for i = 1:S(1)-1
         GPR = [ GPR genes{i} ' or '];
     end
     GPR = ['(' GPR genes{end} ')'];
-     
+
     cnt = 0;
     for k = 1:S(1)
-        
+
         data2(lines(k)-cnt,:) = '';
         cnt = cnt + 1;
-        
+
     end
     if isempty(data2)
         data2 = {GPR};
     else
-        
+
         data2(end+1,:) = {GPR};
     end
 end
@@ -194,7 +202,7 @@ if ~(S(1) == 1) || S(1) == 0
     return
 else
     GPR = data2(line(1),1);
-    genes = GPR2Genes(GPR); 
+    genes = GPR2Genes(GPR);
     data2(line(1),:) = '';
     data2 = [data2; genes'];
     handles.data2 = data2;
@@ -293,5 +301,3 @@ end
 handles.data2 = data2;
 set(handles.uitable2,'data',handles.data2);
 guidata(hObject,handles)
-
-   

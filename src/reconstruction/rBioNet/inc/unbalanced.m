@@ -1,38 +1,46 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
 function varargout = unbalanced(varargin)
-% UNBALANCED M-file for unbalanced.fig
-%      UNBALANCED, by itself, creates a new UNBALANCED or raises the existing
-%      singleton*.
+% unbalanced M-file for unbalanced.fig
+% unbalanced, by itself, creates a new unbalanced or raises the existing singleton*.
 %
-%      H = UNBALANCED returns the handle to a new UNBALANCED or the handle to
+% USAGE:
+%
+%    varargout = unbalanced(varargin)
+%
+% INPUTS:
+%    varargin:    various input arguments
+%
+% OUTPUTS:
+%    varargout:   various output arguments
+%
+% EXAMPLE:
+%
+%      H = unbalanced returns the handle to a new unbalanced or the handle to
 %      the existing singleton*.
 %
-%      UNBALANCED('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in UNBALANCED.M with the given input arguments.
+%      unbalanced('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in unbalanced.M with the given input arguments.
 %
-%      UNBALANCED('Property','Value',...) creates a new UNBALANCED or raises the
+%      unbalanced('Property','Value',...) creates a new unbalanced or raises the
 %      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before unbalanced_OpeningFcn gets called.  An
+%      applied to the GUI before `unbalanced_OpeningFcn` gets called.  An
 %      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to unbalanced_OpeningFcn via varargin.
+%      stop.  All inputs are passed to `unbalanced_OpeningFcn` via `varargin`.
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
+% .. Author: - Stefan G. Thorleifsson 2011
 %
-% See also: GUIDE, GUIDATA, GUIHANDLES
+% NOTE:
+%    See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%    instance to run (singleton)".
+%    See also: GUIDE, GUIDATA, GUIHANDLES
+% .. Edit the above text to modify the response to help unbalanced
+% .. Last Modified by GUIDE v2.5 23-Sep-2010 20:22:59
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
 
-% Edit the above text to modify the response to help unbalanced
-
-% Last Modified by GUIDE v2.5 23-Sep-2010 20:22:59
-
-% Begin initialization code - DO NOT EDIT
-gui_Singleton = 1;
+gui_Singleton = 1; % Begin initialization code - DO NOT EDIT
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
                    'gui_OpeningFcn', @unbalanced_OpeningFcn, ...
@@ -58,15 +66,15 @@ function unbalanced_OpeningFcn(hObject, eventdata, handles, varargin)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to unbalanced (see VARARGIN)
- 
+
 
 
 %data comes in: 1 reaction 3 lines! that is reacion 2 takes lines 4 to 6
-%and reaction 3 takes lines 7 to 9 and so on. 
+%and reaction 3 takes lines 7 to 9 and so on.
 
 handles.output = 0;% continue: if 0 no, if 1 yes.
 handles.data = varargin{1};
-names = varargin{2}; 
+names = varargin{2};
 set(handles.listbox1,'String',names);
 set(handles.uitable1,'data',handles.data(1:3,:));
 
@@ -79,7 +87,7 @@ uiwait
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = unbalanced_OutputFcn(hObject, eventdata, handles) 
+function varargout = unbalanced_OutputFcn(hObject, eventdata, handles)
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -90,7 +98,7 @@ varargout{1} = handles.output;
 delete(hObject)
 
 
- 
+
 % --- Executes on button press in unbal_close.
 function unbal_close_Callback(hObject, eventdata, handles)
 % hObject    handle to unbal_close (see GCBO)

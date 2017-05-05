@@ -1,38 +1,45 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
 function varargout = metabolites_in_database(varargin)
-% METABOLITES_IN_DATABASE M-file for metabolites_in_database.fig
-%      METABOLITES_IN_DATABASE, by itself, creates a new METABOLITES_IN_DATABASE or raises the existing
-%      singleton*.
+% metabolites_in_database M-file for metabolites_in_database.fig
+% metabolites_in_database, by itself, creates a new metabolites_in_database or raises the existing singleton*.
 %
-%      H = METABOLITES_IN_DATABASE returns the handle to a new METABOLITES_IN_DATABASE or the handle to
-%      the existing singleton*.
+% USAGE:
 %
-%      METABOLITES_IN_DATABASE('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in METABOLITES_IN_DATABASE.M with the given input arguments.
+%    varargout = metabolites_in_database(varargin)
 %
-%      METABOLITES_IN_DATABASE('Property','Value',...) creates a new METABOLITES_IN_DATABASE or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before metabolites_in_database_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to metabolites_in_database_OpeningFcn via varargin.
+% INPUTS:
+%    varargin:    various input arguments
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
+% OUTPUTS:
+%    varargout:   various output arguments
 %
-% See also: GUIDE, GUIDATA, GUIHANDLES
-
-% Edit the above text to modify the response to help metabolites_in_database
-
-% Last Modified by GUIDE v2.5 31-Aug-2010 18:09:02
-
-% Begin initialization code - DO NOT EDIT
-gui_Singleton = 1;
+% EXAMPLE:
+%
+%    H = metabolites_in_database() returns the handle to a new metabolites_in_database or the handle to
+%    the existing singleton*.
+%
+%    metabolites_in_database('CALLBACK',hObject,eventData,handles,...) calls the local
+%    function named CALLBACK in metabolites_in_database.M with the given input arguments.
+%
+%    metabolites_in_database('Property','Value',...) creates a new metabolites_in_database or raises the
+%    existing singleton*.  Starting from the left, property value pairs are
+%    applied to the GUI before `metabolites_in_database_OpeningFcn` gets called.  An
+%    unrecognized property name or invalid value makes property application
+%    stop.  All inputs are passed to `metabolites_in_database_OpeningFcn` via `varargin`.
+%
+% .. Author: - Stefan G. Thorleifsson 2011
+%
+% NOTE:
+%    See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%    instance to run (singleton)".
+%    See also: GUIDE, GUIDATA, GUIHANDLES
+% .. Edit the above text to modify the response to help metabolites_in_database
+% .. Last Modified by GUIDE v2.5 31-Aug-2010 18:09:02
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
+gui_Singleton = 1; % Begin initialization code - DO NOT EDIT
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
                    'gui_OpeningFcn', @metabolites_in_database_OpeningFcn, ...
@@ -71,7 +78,7 @@ guidata(hObject, handles);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = metabolites_in_database_OutputFcn(hObject, eventdata, handles) 
+function varargout = metabolites_in_database_OutputFcn(hObject, eventdata, handles)
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
