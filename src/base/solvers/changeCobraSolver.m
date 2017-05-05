@@ -323,7 +323,7 @@ switch solverName
             end
         end
     case 'opti'
-        if ~verLessThan('matlab', '8.4')
+        if verLessThan('matlab', '8.4')
             optiSolvers = {'CLP', 'CSDP', 'DSDP', 'OOQP', 'SCIP'};
             if ~isempty(which('checkSolver'))
                 availableSolvers = cellfun(@(x)checkSolver(lower(x)), optiSolvers);

@@ -116,7 +116,7 @@ function updateCobraToolbox(fetchAndCheckOnly)
                             end
 
                             % reset each submodule
-                            [status_gitReset result_gitReset] = system('git submodule foreach --recursive git reset --hard');
+                            [status_gitReset, result_gitReset] = system('git submodule foreach --recursive git reset --hard');
                             if status_gitReset == 0
                                 fprintf(' > The submodules have been updated (reset).\n');
                             else
@@ -150,7 +150,8 @@ function updateCobraToolbox(fetchAndCheckOnly)
             devtoolsLink = ['<a href=\"', devtoolsLink, '\">', devtoolsLink, '</a>'];
         end
 
-        fprintf([' --> You cannot update your fork using updateCobraToolbox(). [', lastCommit, ' @ ', currentBranch, ']. Please use the MATLAB.devTools (', devtoolsLink, ').\n']);
+        fprintf([' --> You cannot update your fork using updateCobraToolbox(). [', lastCommit, ' @ ', currentBranch, '].\n']);
+        fprintf(['     Please use the MATLAB.devTools (', devtoolsLink, ').\n']);
     end
 end
 

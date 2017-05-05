@@ -162,7 +162,7 @@ function initCobraToolbox()
         end
 
         % reset each submodule
-        [status_gitReset result_gitReset] = system('git submodule foreach --recursive git reset --hard');
+        [status_gitReset, result_gitReset] = system('git submodule foreach --recursive git reset --hard');
 
         if status_gitReset ~= 0
             fprintf(result_gitReset);
@@ -353,7 +353,7 @@ function initCobraToolbox()
                 fprintf('   - The MATLAB path was saved in the default location.\n');
             end
         else
-            [status,values] = fileattrib(which('pathdef.m'));
+            [~, values] = fileattrib(which('pathdef.m'));
             if values.UserWrite
                 savepath
             else
@@ -425,10 +425,15 @@ function initCobraToolbox()
     end
 
     if ENV_VARS.printLevel
-        colFormat = '\t%-12s \t%-10s \t%5s \t%5s \t%5s \t%5s \t%5s\n';
+        colFormat = '\t%-12s \t%-13s \t%5s \t%5s \t%5s \t%5s \t%5s\n';
         sep = '\t----------------------------------------------------------------------\n';
         fprintf('\n > Summary of available solvers and solver interfaces\n\n');
-        fprintf('\t\t\tSupport \t%5s \t%5s \t%5s \t%5s \t%5s\n', OPT_PROB_TYPES{1}, OPT_PROB_TYPES{2}, OPT_PROB_TYPES{3}, OPT_PROB_TYPES{4}, OPT_PROB_TYPES{5})
+        if ispc
+            topLineFormat = '\t\t\t\t\tSupport        %5s \t%5s \t%5s \t%5s \t%5s\n';
+        else
+            topLineFormat = '\t\t\tSupport \t%5s \t%5s \t%5s \t%5s \t%5s\n';
+        end
+        fprintf(topLineFormat, OPT_PROB_TYPES{1}, OPT_PROB_TYPES{2}, OPT_PROB_TYPES{3}, OPT_PROB_TYPES{4}, OPT_PROB_TYPES{5})
         fprintf(sep);
         for i = 1:length(catList)-2
             fprintf(colFormat, rowNames{i}, catList{i}, statusTable{1}{i}, statusTable{2}{i}, statusTable{3}{i}, statusTable{4}{i}, statusTable{5}{i})
