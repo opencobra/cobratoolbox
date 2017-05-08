@@ -240,6 +240,9 @@ function initCobraToolbox()
         fprintf('   Done.\n');
     end
 
+    % save the userpath
+    originalUserPath = path;
+
     % Set global LP solution accuracy tolerance
     changeCobraSolverParams('LP', 'optTol', 1e-6);
 
@@ -341,6 +344,10 @@ function initCobraToolbox()
         fprintf(' Done.\n');
     end
 
+    % restore the original path
+    restoredefaultpath;
+    addpath(originalUserPath);
+
     % saves the current path
     try
         if ENV_VARS.printLevel
@@ -385,7 +392,7 @@ function initCobraToolbox()
 
                 % set the default MIQP solver based on the solvers that are installed
                 if strcmpi(types{j}, 'MIQP')
-                    changeCobraSolver(supportedSolversNames{i}, types{j});
+                    changeCobraSolver(supportedSolversNames{i}, types{j}, 0);
                 end
             else
                 solverStatus(i, k + 1) = 0;

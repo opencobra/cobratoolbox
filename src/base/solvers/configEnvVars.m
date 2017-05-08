@@ -88,7 +88,7 @@ function configEnvVars(printLevel)
 
             % add the solver path
             if ~isempty(eval(solverPaths{k, 1})) && ~isOnPath
-                addpath(genpath(eval(solverPaths{k, 1})));
+                %addpath(genpath(eval(solverPaths{k, 1})));
                 if printLevel > 0
                     fprintf(['   - ', solverPaths{k, 1}, ': ', eval(['getenv(''', solverPaths{k, 1} , ''');']) , '\n']);
                 end

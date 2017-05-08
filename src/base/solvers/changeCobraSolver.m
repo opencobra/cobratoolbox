@@ -243,11 +243,34 @@ if isempty(strmatch(solverType, SOLVERS.(solverName).type))
     end
 end
 
+
 tomlabOnPath = ~isempty(strfind(lower(path), 'tomlab'));
 if ~tomlabOnPath && (~isempty(strfind(solverName, 'tomlab')) || ~isempty(strfind(solverName, 'cplex_direct')))
-    addpath(genpath(TOMLAB_PATH));
-    if printLevel > 0
-        fprintf('\n > Tomlab interface added to MATLAB path.\n');
+    if ~isempty(TOMLAB_PATH)
+        addpath(genpath(TOMLAB_PATH));
+        if printLevel > 0
+            fprintf('\n > Tomlab interface added to MATLAB path.\n');
+        end
+    end
+end
+
+gurobiOnPath = ~isempty(strfind(lower(path), 'gurobi'));
+if ~isempty(strfind(solverName, 'gurobi'))
+    if ~isempty(GUROBI_PATH)
+        addpath(genpath(GUROBI_PATH));
+        if printLevel > 0
+            fprintf('\n > Gurobi interface added to MATLAB path.\n');
+        end
+    end
+end
+
+cplexOnPath = ~isempty(strfind(lower(path), 'cplex_studio'));
+if ~isempty(strfind(solverName, 'ibm_cplex'))
+    if ~isempty(ILOG_CPLEX_PATH)
+        addpath(genpath(ILOG_CPLEX_PATH));
+        if printLevel > 0
+            fprintf('\n > IBM ILOG CPLEX interface added to MATLAB path.\n');
+        end
     end
 end
 
@@ -333,12 +356,12 @@ if solverOK
     % if gurobi or ibm_cplex are selected, add them to the top of the path
     tomlabOnPath = ~isempty(strfind(lower(path), '/tomlab'));
 
-    if ~isempty(strfind(solverName, 'gurobi')) && tomlabOnPath
-        addpath(genpath(GUROBI_PATH));
-    end
-    if ~isempty(strfind(solverName, 'ibm_cplex')) && tomlabOnPath
-        addpath(genpath(ILOG_CPLEX_PATH));
-    end
+    %if ~isempty(strfind(solverName, 'gurobi')) && tomlabOnPath
+    %    addpath(genpath(GUROBI_PATH));
+    %end
+    %if ~isempty(strfind(solverName, 'ibm_cplex')) && tomlabOnPath
+    %    addpath(genpath(ILOG_CPLEX_PATH));
+    %end
 
     if ~isempty(strfind(solverName, 'matlab'))
         if tomlabOnPath
@@ -346,9 +369,10 @@ if solverOK
             if printLevel > 0
                 fprintf(['\n > Tomlab interface removed from MATLAB path.\n']);
             end
-        else
-            cplexOnPath = ~isempty(strfind(lower(path), 'cplex'));
-            gurobiOnPath = ~isempty(strfind(lower(path), 'gurobi'));
+        end
+
+        cplexOnPath = ~isempty(strfind(lower(path), 'cplex'));
+        gurobiOnPath = ~isempty(strfind(lower(path), 'gurobi'));
 
             if gurobiOnPath
                 rmpath(genpath(GUROBI_PATH));
@@ -363,7 +387,7 @@ if solverOK
                     fprintf(['\n > ILOG CPLEX interface removed from MATLAB path.\n']);
                 end
             end
-        end
+
     end
 end
 end
