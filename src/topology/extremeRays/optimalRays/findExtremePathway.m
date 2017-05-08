@@ -25,21 +25,23 @@ if nargin < 2
 end
 
 % Set required model components
-model.A     = sparse([A; ones(1,n)]);
-model.obj   = obj;
-model.sense = '=';
-model.rhs   = [zeros(nmet,1); 1];
+LPProblem = struct();
+LPProblem.A = sparse([A; ones(1,n)]);
+LPProblem.c   = obj;
+LPProblem.csense = repmat('E',nmet+1,1);
+LPProblem.b   = [zeros(nmet,1); 1];
+% Set optional model components
+LPProblem.osense= -1;
+LPProblem.lb = 0* ones(n,1);
+LPProblem.ub = inf* ones(n,1);
 
 % Set optional model components
 model.modelsense = 'max';
   
-result = gurobi(model);  % Find extreme ray using Gurobi 5.0
+result = solveCobraLP(LPProblem);  % Find extreme ray (be aware, that this can easily be a loop of a reversible reaction. 
 
-x = result.x(1:nrxn);
-x(revRxns) = x(revRxns) - result.x(nrxn+1:end);
+x = result.full(1:nrxn);
+x(revRxns) = x(revRxns) - result.full(nrxn+1:end);
 
-% Create output structure
-output.objval = result.objval;
-output.vbasis = result.vbasis;
-output.cbasis = result.cbasis;
+output.objval = result.obj;
 
