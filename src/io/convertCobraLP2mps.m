@@ -1,33 +1,39 @@
-function OK=convertCobraLP2mps(LPProblem,name)
-% create an MPS (Mathematical Programming System) format ascii file
+function OK = convertCobraLP2mps(LPProblem,name)
+% Creates an MPS (Mathematical Programming System) format ascii file
 % representing the Linear Programming problem given by LPProblem.
 %
-% The MPS (Mathematical Programming System) file format was introduced by
-% IBM in 1970s, but has also been accepted by most subsequent linear
-% programming codes. To learn about MPS format, please see:
-%   http://lpsolve.sourceforge.net/5.5/mps-format.htm
+% USAGE:
 %
-% INPUT
-% LPproblem Structure containing the following fields describing the LP
-%           problem to be solved
-%           A      LHS matrix
-%           b      RHS vector
-%           c      Objective coeff vector
-%           lb     Lower bound vector
-%           ub     Upper bound vector
-%           osense Objective sense (-1 max, +1 min)
-%           csense Constraint senses, a string containting the constraint sense for
-%                  each row in A ('E', equality, 'G' greater than, 'L' less than).
+%    OK = convertCobraLP2mps(LPProblem, name)
 %
-% OPTIONAL INPUT
-% name      string giving name of LP problem
+% INPUT:
+%    LPproblem:    Structure containing the following fields describing the LP problem to be solved
 %
-% OUTPUT
-% OK      1 if saving is success, 0 otherwise
+%                 * A - LHS matrix
+%                 * b - RHS vector
+%                 * c - Objective coeff vector
+%                 * lb - Lower bound vector
+%                 * ub - Upper bound vector
+%                 * osense - Objective sense (max=-1, min=+1)
+%                 * csense - Constraint senses, a string containting the constraint sense for
+%                   each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
-% Ronan M.T. Fleming: 7 Sept 09
-% Uses MPS format exporting tool by Bruno Luong 03 Sep 2009
-% http://www.mathworks.com/matlabcentral/fileexchange/19618
+% OPTIONAL INPUT:
+%    name:      string giving name of LP problem
+%
+% OUTPUT:
+%    OK:        1 if saving is success, 0 otherwise
+%
+% .. Authors:
+%       - Ronan M.T. Fleming: 7 Sept 09
+%       - Bruno Luong 03 Sep 2009  Uses MPS format exporting tool
+%       http://www.mathworks.com/matlabcentral/fileexchange/19618
+%
+% ..
+%    The MPS (Mathematical Programming System) file format was introduced by
+%    IBM in 1970s, but has also been accepted by most subsequent linear
+%    programming codes. To learn about MPS format, please see:
+%    http://lpsolve.sourceforge.net/5.5/mps-format.htm
 
 if ~exist('name','var')
     name='CobraLPProblem';

@@ -1,35 +1,37 @@
-% The "writeCbModel" function relies on another function
-% "io/utilities/writeSBML.m" to convert a COBRA-Matlab structure into
-% a libSBML-Matlab structure and then call libSBML to export a
-% FBCv2 file. The current version of the "writeSBML.m" does not require the
-% SBML toolbox (http://sbml.org/Software/SBMLToolbox).
-
 function outmodel = writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLevel,sbmlVersion, solverParams)
-%writeCbModel Write out COBRA models in various formats
+% Writes out COBRA models in various formats
 %
-% writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLevel,sbmlVersion)
+% USAGE:
 %
-%INPUTS
-% model             Standard COBRA model structure
-% format            File format to be used ('text','xls', 'sbml', or 'mps')
+%    outmodel = writeCbModel(model, format, fileName, compSymbolList, compNameList, sbmlLevel, sbmlVersion)
 %
-% OPTIONAL OUTPUTS
-% outmodel          Only useable with sbml export. Will return the sbml structure, otherwise the input COBRA model structure is returned.
+% INPUTS:
+%    model:             Standard COBRA model structure
+%    format:            File format to be used ('text', 'xls', 'sbml', or 'mps')
 %
-%OPTIONAL INPUTS
-% fileName          File name for output file (optional, default opens
-%                   dialog box)
-% compSymbolList    List of compartment symbols
-% compNameList      List of compartment names corresponding to compSymbolList
-% sbmlLevel         SBML Level (default = 2)
-% sbmlVersion       SBML Version (default = 1)
+% OPTIONAL INPUTS:
+%    fileName:          File name for output file (optional, default opens
+%                       dialog box)
+%    compSymbolList:    List of compartment symbols
+%    compNameList:      List of compartment names corresponding to `compSymbolList`
+%    sbmlLevel:         SBML Level (default = 2)
+%    sbmlVersion:       SBML Version (default = 1)
 %
-% Markus Herrgard 2/5/07
-% Ines Thiele 01/10 - Added more options for field to write in xls format
-% Richard Que (3/17/10) Added ability to specify compartment names and
-%                       symbols
+% OPTIONAL OUTPUTS:
+%    outmodel:          Only useable with sbml export. Will return the sbml structure, otherwise the input COBRA model structure is returned.
 %
-% Longfei Mao 26/04/2016 Added support for the FBCv2 format
+% .. Authors:
+%       - Markus Herrgard 2/5/07
+%       - Ines Thiele 01/10 - Added more options for field to write in xls format
+%       - Richard Que 3/17/10 -  Added ability to specify compartment names and symbols
+%       - Longfei Mao 26/04/2016 -  Added support for the FBCv2 format
+%
+% NOTE:
+%    The `writeCbModel` function relies on another function
+%    `io/utilities/writeSBML.m` to convert a COBRA-Matlab structure into
+%    a libSBML-Matlab structure and then call `libSBML` to export a
+%    FBCv2 file. The current version of the `writeSBML.m` does not require the
+%    SBML toolbox (http://sbml.org/Software/SBMLToolbox).
 
 if ~exist('compSymbolList','var') || isempty(compSymbolList)
     compSymbolList = {'c','m','v','x','e','t','g','r','n','p','l','y'};

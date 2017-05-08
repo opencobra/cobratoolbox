@@ -1,92 +1,86 @@
-% The "readCbModel.m" function is dependent on another function
-% "io/utilities/readSBML.m" to use libSBML library
-% (http://sbml.org/Software/libSBML), to parse a SBML-FBCv2 file into a
-% COBRA-Matlab structure. The "readCbModel.m" function is backward
-% compatible with older SBML versions. A list of fields of a COBRA
-% structure is described in an Excel spreadsheet
-% "io/COBRA_structure_fields.xlsx". While some fields are necessary for a
-% COBRA model, others are not.
-
 function model = readCbModel(fileName,defaultBound,fileType,modelDescription,compSymbolList,compNameList)
-%readCbModel Read in a constraint-based model
-%
-% model = readCbModel(fileName,defaultBound,fileType,modelDescription)
-%
-% If no arguments are passed to the function, the user will be prompted for
+% Reads in a constraint-based model. If no arguments are passed to the function, the user will be prompted for
 % a file name.
 %
-%OPTIONAL INPUTS
-% fileName          File name for file to read in (optional)
-% defaultBound      Default value for maximum flux through a reaction if
-%                   not given in the SBML file (Default = 1000)
-% fileType          File type for input files: 'SBML', 'SimPheny', or
-%                   'SimPhenyPlus', 'SimPhenyText' (Default = 'SBML')
-%                   * SBML indicates a file in SBML format
-%                   * SimPheny is a set of three files in SimPheny
-%                     simulation output format
-%                   * SimPhenyPlus is the same as SimPheny except with
-%                     additionalfiles containing gene-protein-reaction
-%                     associations andcompound information
-%                   * SimPhenyText is the same as SimPheny except with
-%                     additionaltext file containing gene-protein-reaction
-%                     associations
-% modelDescription  Description of model contents
-% compSymbolList    Compartment Symbol List
-% compNameList      Name of compartments corresponding to compartment
-%                   symbol list
+% USAGE:
 %
-%OUTPUT
-% Returns a model in the COBRA format:
+%    model = readCbModel(fileName, defaultBound, fileType, modelDescription)
 %
-% model
-%  description      Description of model contents
-%  rxns             Reaction names
-%  mets             Metabolite names
-%  S                Stoichiometric matrix
-%  lb               Lower bounds
-%  ub               Upper bounds
-%  rev              Reversibility vector
-%  c                Objective coefficients
-%  subSystems       Subsystem name for each reaction (opt)
-%  grRules          Gene-reaction association rule for each reaction (opt)
-%  rules            Gene-reaction association rule in computable form (opt)
-%  rxnGeneMat       Reaction-to-gene mapping in sparse matrix form (opt)
-%  genes            List of all genes (opt)
-%  rxnNames         Reaction description (opt)
-%  metNames         Metabolite description (opt)
-%  metFormulas      Metabolite chemical formula (opt)
+% OPTIONAL INPUTS:
+%    fileName:          File name for file to read in (optional)
+%    defaultBound:      Default value for maximum flux through a reaction if
+%                       not given in the `SBML` file (Default = 1000)
+%    fileType:          File type for input files: 'SBML', 'SimPheny', or
+%                       'SimPhenyPlus', 'SimPhenyText' (Default = 'SBML')
 %
-%EXAMPLES OF USE:
+%                         * 'SBML' indicates a file in `SBML` format
+%                         * 'SimPheny' is a set of three files in `SimPheny` simulation output format
+%                         * 'SimPhenyPlus' is the same as 'SimPheny' except with
+%                           additional files containing gene-protein-reaction
+%                           associations andcompound information
+%                         * 'SimPhenyText' is the same as 'SimPheny' except with
+%                           additionaltext file containing gene-protein-reaction
+%                           associations
+%    modelDescription:  Description of model contents
+%    compSymbolList:    Compartment Symbol List
+%    compNameList:      Name of compartments corresponding to compartment
+%                       symbol list
 %
-% 1)    Load a file to be specified in a dialog box:
+% OUTPUT:
+%    model:             Returns a model in the COBRA format:
 %
+%                         * description - Description of model contents
+%                         * rxns - Reaction names
+%                         * mets - Metabolite names
+%                         * S - Stoichiometric matrix
+%                         * lb - Lower bounds
+%                         * ub - Upper bounds
+%                         * rev - Reversibility vector
+%                         * c - Objective coefficients
+%                         * subSystems - Subsystem name for each reaction (opt)
+%                         * grRules - Gene-reaction association rule for each reaction (opt)
+%                         * rules - Gene-reaction association rule in computable form (opt)
+%                         * rxnGeneMat - Reaction-to-gene mapping in sparse matrix form (opt)
+%                         * genes - List of all genes (opt)
+%                         * rxnNames - Reaction description (opt)
+%                         * metNames - Metabolite description (opt)
+%                         * metFormulas - Metabolite chemical formula (opt)
+%
+% EXAMPLES:
+%
+%    %1) Load a file to be specified in a dialog box:
 %           model = readCbModel;
 %
-% 2)    Load model named 'iJR904' in SBML format with maximum flux set
-%       at 1000 (requires file named 'iJR904.xml' to exist)
-%
+%    %2) Load model named 'iJR904' in SBML format with maximum flux set
+%    %at 1000 (requires file named 'iJR904.xml' to exist)
 %           model = readCbModel('iJR904',1000,'SBML');
 %
-% 3)    Load model named 'iJR904' in SimPheny format with maximum flux set
-%       at 500 (requires files named 'iJR904.rxn', 'iJR904.met', and 'iJR904.sto' to exist)
-%
+%    %3) Load model named 'iJR904' in SimPheny format with maximum flux set
+%    %at 500 (requires files named 'iJR904.rxn', 'iJR904.met', and 'iJR904.sto' to exist)
 %           model = readCbModel('iJR904',500,'SimPheny');
 %
-% 4)    Load model named 'iJR904' in SimPheny format with gpr and compound information
-%       (requires files named 'iJR904.rxn', 'iJR904.met','iJR904.sto',
-%        'iJR904_gpr.txt', and 'iJR904_cmpd.txt' to exist)
-%,
+%    %4) Load model named 'iJR904' in SimPheny format with gpr and compound information
+%    %(requires files named 'iJR904.rxn', 'iJR904.met','iJR904.sto',
+%    %'iJR904_gpr.txt', and 'iJR904_cmpd.txt' to exist)
 %           model = readCbModel('iJR904',500,'SimPhenyPlus');
 %
-% Markus Herrgard 7/11/06
+% .. Authors:
+%       - Markus Herrgard 7/11/06
+%       - Richard Que 02/08/10 - Added inptus for compartment names and symbols
+%       - Longfei Mao 26/04/2016 Added support for the FBCv2 format
 %
-% Richard Que 02/08/10 - Added inptus for compartment names and symbols
-%
-% Longfei Mao 26/04/2016 Added support for the FBCv2 format
+% NOTE:
+%    The `readCbModel.m` function is dependent on another function
+%    `io/utilities/readSBML.m` to use libSBML library
+%    (http://sbml.org/Software/libSBML), to parse a SBML-FBCv2 file into a
+%    COBRA-Matlab structure. The `readCbModel.m` function is backward
+%    compatible with older SBML versions. A list of fields of a COBRA
+%    structure is described in an Excel spreadsheet
+%    `io/COBRA_structure_fields.xlsx`. While some fields are necessary for a
+%    COBRA model, others are not.
 
-%% Process arguments
 
-if (nargin < 2)
+if (nargin < 2) % Process arguments
     defaultBound = 1000;
 else
     if (isempty(defaultBound))

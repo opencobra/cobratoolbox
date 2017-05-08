@@ -1,19 +1,22 @@
 function sbmlTestModelToMat(originFolder,destFolder)
-%function to translate a batch of sbml files in .xml format within an originFolder,
-%into COBRA toolbox compatible models, saving each as a .mat file in destFolder
-%containing one 'model' structure derived from the corresponding .xml file
+% Function to translate a batch of sbml files in .xml format within an `originFolder`,
+% into COBRA toolbox compatible models, saving each as a .mat file in `destFolder`
+% containing one 'model' structure derived from the corresponding .xml file
 %
-%INPUT
-% originFolder  full path to the folder with the input SBML XML files
-% destFolder    full path to the folder with the COBRA 2.0 toolbox compatible models,
-%               one each in a name.mat file where name is derived from the
-%               filename of the corresponding input name.xml file
+% USAGE:
+%
+%    sbmlTestModelToMat(originFolder, destFolder)
+%
+% INPUT:
+%    originFolder:  full path to the folder with the input SBML XML files
+%    destFolder:    full path to the folder with the COBRA 2.0 toolbox compatible models,
+%                   one each in a name.mat file where name is derived from the
+%                   filename of the corresponding input name.xml file
+%
+% .. Author:
+%       - Ronan Fleming, 25/11/14 first version, 06/11/14 origin and destination folders different
 
-%25/11/14 Ronan Fleming, first version.
-%06/11/14 Ronan Fleming, origin and destination folders different
-
-%choose the folder within the folder 'testModels' where the .xml files are located
-if ~exist('originFolder', 'var')
+if ~exist('originFolder', 'var') %choose the folder within the folder 'testModels' where the .xml files are located
     folder='m_model_collection';
 end
 if ~exist('destFolder', 'var')
@@ -72,14 +75,3 @@ for k=3:length(files)
         end
     end
 end
-
-
-
-
-
-
-
-
-
-
-
