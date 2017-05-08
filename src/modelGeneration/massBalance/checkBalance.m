@@ -1,4 +1,4 @@
-function [dE,E,missingFormulaeBool]=checkBalance(model,element,printLevel,fileName)
+function [dE,E,missingFormulaeBool]=checkBalance(model,element,printLevel,fileName,missingFormulaeBool)
 % [dE,E]=checkBalance(model,element,printLevel)
 % Checks whether a set of reactions is elementally balanced.
 %
@@ -35,15 +35,23 @@ end
 if ~exist('fileName','var')
     fileName='';
 end
-
 [nMet,nRxn]=size(model.S);
+if ~exist('missingFormulaeBool','var')
+    missingFormulaeBool=cellfun(@isempty, model.metFormulas);
+end
 
-missingFormulaeBool=false(nMet,1);
+for m=1:nMet
+    %cannot handle metabolites with non-standard formulae like
+    %(Gal)3(Glc)1(GlcNAc)2(LFuc)1(Cer)1
+    if missingFormulaeBool(m,1) || strcmp(model.metFormulas{m}(1),'(')
+        missingFormulaeBool(m,1)=1;
+    end
+end
 
 E=zeros(nMet,1);
 firstMissing=0;
 for m=1:nMet
-    if isempty(model.metFormulas{m})
+    if isempty(model.metFormulas{m}) | missingFormulaeBool(m,1)
         missingFormulaeBool(m,1)=1;
         if printLevel==1
             fprintf('%s\t%s\n',int2str(m),[model.mets{m} ' has no formula'])
@@ -64,9 +72,10 @@ for m=1:nMet
         end
     else
         try
-            E(m,1)=numAtomsOfElementInFormula(model.metFormulas{m},element);
+            E(m,1)=numAtomsOfElementInFormula(model.metFormulas{m},element,printLevel);
         catch ME
-            disp(model.mets{m})
+            missingFormulaeBool(m,1)=1;
+            %disp(model.mets{m})
             rethrow(ME)
         end
     end
