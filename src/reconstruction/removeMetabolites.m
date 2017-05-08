@@ -93,11 +93,13 @@ end
 
 if removeRxnFlag
     %if S is empty..
-    if(isempty(model.S))
+    if(isempty(modelOut.S))
         return
     end
-    rxnRemoveList = model.rxns(~any(model.S ~= 0));
+    rxnRemoveList = modelOut.rxns(~any(modelOut.S ~= 0));
     if (~isempty(rxnRemoveList))
-        model = removeRxns(model,rxnRemoveList,false,false);
+        modelOut = removeRxns(modelOut,rxnRemoveList,false,false);
     end
 end
+%return the modified model
+model = modelOut;
