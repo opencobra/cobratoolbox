@@ -111,7 +111,7 @@ function initCobraToolbox()
         end
 
         % check curl
-        status_curl = checkCurlAndRemote();
+        [status_curl, result_curl] = checkCurlAndRemote();
 
         if status_curl == 0
             % set the remote origin
@@ -135,7 +135,7 @@ function initCobraToolbox()
     end
 
     % check curl
-    status_curl = checkCurlAndRemote(false);
+    [status_curl, result_curl] = checkCurlAndRemote(false);
 
     % check if the URL exists
     if exist([CBTDIR filesep 'binary' filesep 'README.md'], 'file') && status_curl ~= 0
@@ -477,7 +477,7 @@ function initCobraToolbox()
     end
 
     % check if a new update exists
-    if ENV_VARS.printLevel && status_curl == 0
+    if ENV_VARS.printLevel && status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
         updateCobraToolbox(true); % only check
     end
 
@@ -517,7 +517,7 @@ function checkGit()
     end
 end
 
-function status_curl = checkCurlAndRemote(throwError)
+function [status_curl, result_curl] = checkCurlAndRemote(throwError)
 % Checks if curl is installed on the system, can connect to the opencobra URL, and throws an error if not
 %
 % USAGE:
