@@ -28,6 +28,7 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel)
 %     glpk            GLPK solver with Matlab mex interface (glpkmex)
 %     gurobi          Gurobi solver
 %     ibm_cplex       The IBM API for CPLEX using the CPLEX class
+%     matlab          MATLAB's linprog function
 %     mosek           Mosek LP solver with Matlab API (using linprog.m from Mosek)
 %     pdco            PDCO solver
 %     quadMinos       quad LP solver
@@ -132,6 +133,7 @@ function solverOK = changeCobraSolver(solverName, solverType, printLevel)
 % Original file: Markus Herrgard 1/19/07
 
 global SOLVERS;
+global CBTDIR;
 global OPT_PROB_TYPES;
 global CBT_LP_SOLVER;
 global CBT_MILP_SOLVER;
@@ -140,6 +142,8 @@ global CBT_MIQP_SOLVER;
 global CBT_NLP_SOLVER;
 global ENV_VARS;
 global TOMLAB_PATH;
+global MINOS_PATH;
+global ILOG_CPLEX_PATH;
 
 if isempty(SOLVERS) || isempty(OPT_PROB_TYPES)
     ENV_VARS.printLevel = false;
@@ -149,6 +153,15 @@ end
 
 % configure the environment variables
 configEnvVars();
+
+% set path to MINOS and DQQ
+MINOS_PATH = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'minos' filesep];
+
+% legacy support for MPS (will be removed in future release)
+if nargin > 0 && strcmpi(solverName, 'mps')
+    fprintf(' > The interface to ''mps'' from ''changeCobraSolver()'' is no longer supported.');
+    error(' -> Use >> writeCbModel(model, \''mps\''); instead.)');
+end
 
 % Print out all solvers defined in global variables CBT_*_SOLVER
 if nargin < 1
@@ -220,7 +233,7 @@ if (~isempty(strfind(solverName, 'gurobi')) ||  ~isempty(strfind(solverName, 'ib
         fprintf('\n > Tomlab interface removed from MATLAB path.\n');
     end
 end
-if ~tomlabOnPath && (~isempty(strfind(solverName, 'tomlab')) || ~isempty(strfind(solverName, 'cplex_direct')))
+if ~tomlabOnPath && (~isempty(strfind(solverName, 'tomlab')) || ~isempty(strfind(solverName, 'cplex_direct')) ||  ~isempty(strfind(solverName, 'ibm_cplex')))
     addpath(genpath(TOMLAB_PATH));
     if printLevel > 0
         fprintf('\n > Tomlab interface added to MATLAB path.\n');
@@ -260,24 +273,27 @@ switch solverName
         if verLessThan('matlab', '9') && ~verLessThan('matlab', '8.6')  % >2015b
             warning('off', 'MATLAB:lang:badlyScopedReturnValue');  % take out warning message
         end
-    case 'lp_solve'
-        solverOK = checkSolverInstallationFile(solverName, 'lp_solve', printLevel);
-    case 'qpng'
-        solverOK = checkSolverInstallationFile(solverName, 'qpng', printLevel);
-    case 'pdco'
-        solverOK = checkSolverInstallationFile(solverName, 'pdco', printLevel);
-    case 'gurobi_mex'
-        solverOK = checkSolverInstallationFile(solverName, 'gurobi_mex', printLevel);
+    case {'lp_solve', 'qpng', 'pdco', 'gurobi_mex'}
+        solverOK = checkSolverInstallationFile(solverName, solverName, printLevel);
     case 'gurobi'
         tmpGurobi = 'gurobi.sh';
         if ispc, tmpGurobi = 'gurobi.bat'; end
         solverOK = checkGurobiInstallation(solverName, tmpGurobi, printLevel);
     case 'mps'
         solverOK = checkSolverInstallationFile(solverName, 'BuildMPS', printLevel);
-    case 'quadMinos'
-        solverOK = checkSolverInstallationExecutable(solverName, 'minos', true, printLevel);
-    case 'dqqMinos'
-        solverOK = checkSolverInstallationExecutable(solverName, 'run1DQQ', true, printLevel);
+    case {'quadMinos', 'dqqMinos'}
+        if isunix
+            [stat, res] = system('which csh');
+            if ~isempty(res) && stat == 0
+                if strcmp(solverName, 'dqqMinos')
+                    solverOK = checkSolverInstallationFile(solverName, 'run1DQQ', printLevel);
+                elseif strcmp(solverName, 'quadMinos')
+                    solverOK = checkSolverInstallationFile(solverName, 'minos', printLevel);
+                end
+            else
+                error(['You must have `csh` installed. Solver ', solverName, ' cannot be used.']);
+            end
+        end
     case 'opti'
         optiSolvers = {'CLP', 'CSDP', 'DSDP', 'OOQP', 'SCIP'};
         if ~isempty(which('checkSolver'))
@@ -344,39 +360,9 @@ function solverOK = checkSolverInstallationFile(solverName, fileName, printLevel
 %     solverOK: true if filename exists, false otherwise.
 %
     solverOK = false;
-    if exist(fileName, 'file') == 2 || exist(fileName, 'file') == 3
+    if exist(fileName, 'file') >= 2
         solverOK = true;
     elseif printLevel > 0
         error('Solver %s is not installed!', solverName)
-    end
-end
-
-
-function solverOK = checkSolverInstallationExecutable(solverName, executableName, unix, printLevel)
-% Check Gurobi installation.
-%
-% Usage:
-%     solverOK = checkGurobiInstallation(solverName, fileName)
-%
-% Inputs:
-%     solverName: string with the name of the solver
-%     executableName:   string with the name of the executable to look for
-%     unix:
-%
-% Output:
-%     solverOK: true if executableName exists, false otherwise.
-%
-    solverOK = false;
-    if ~isunix && printLevel > 0
-        error('%s interface not implemented for non unix OS', solverName);
-    end
-
-    if isunix
-        [status, cmdout] = system(['which ' executableName]);
-        if isempty(cmdout) && printLevel > 0
-            error('Solver %s is not installed. %s could not be found in your path. Check your PATH environement variable.', solverName, executableName);
-        else
-            solverOk = true;
-        end
     end
 end

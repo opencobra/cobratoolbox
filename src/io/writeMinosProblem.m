@@ -21,7 +21,7 @@ function [directory,fname]=writeMinosProblem(LPproblem,precision,modelName,direc
 % directory     the directory where optimization problem file is saved
 %
 % OUTPUT
-% fname         filename of the optimization problem 
+% fname         filename of the optimization problem
 
 % derived from dumpLPfun by Ding Ma and Michael Saunders, Stanford
 % University.

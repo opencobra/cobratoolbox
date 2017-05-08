@@ -1,0 +1,4 @@
+7498.1	XDH	2p23.1	1	2	3	xanthine dehydrogenase	   
+9380.1	GRHPR	9q12-321	1	2	3	glyoxylate reductase/hydroxypyruvate reductase	   
+3156.1	HMGCR	5q1-q14	1	2	3	3-hydroxy-3-methylglutaryl-Coenzyme A reductase	      
+	 

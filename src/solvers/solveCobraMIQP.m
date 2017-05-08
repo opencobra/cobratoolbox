@@ -208,7 +208,6 @@ switch solver
         end
         solStat = stat;
     case 'gurobi'
-     %% gurobi5
      % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
         resultgurobi = struct('x',[],'objval',[],'pi',[]);
