@@ -1,4 +1,4 @@
-function model = readCbModel(fileName,defaultBound,fileType,modelDescription,compSymbolList,compNameList)
+function model = readCbModel(fileName,varargin)
 % Reads in a constraint-based model. If no arguments are passed to the function, the user will be prompted for
 % a file name.
 %
@@ -6,12 +6,12 @@ function model = readCbModel(fileName,defaultBound,fileType,modelDescription,com
 %
 %    model = readCbModel(fileName, defaultBound, fileType, modelDescription)
 %
-% OPTIONAL INPUTS:
-%    fileName:          File name for file to read in (optional)
-%    defaultBound:      Default value for maximum flux through a reaction if
+%OPTIONAL INPUTS as parameter Value pairs
+% Parameter         Value
+% fileName          File name for file to read in (char)
 %                       not given in the `SBML` file (Default = 1000)
 %    fileType:          File type for input files: 'SBML', 'SimPheny', or
-%                       'SimPhenyPlus', 'SimPhenyText' (Default = 'SBML')
+%                   'SimPhenyPlus', 'SimPhenyText', 'Matlab', Excel' (Default = 'Matlab')
 %
 %                         * 'SBML' indicates a file in `SBML` format
 %                         * 'SimPheny' is a set of three files in `SimPheny` simulation output format
@@ -21,21 +21,22 @@ function model = readCbModel(fileName,defaultBound,fileType,modelDescription,com
 %                         * 'SimPhenyText' is the same as 'SimPheny' except with
 %                           additionaltext file containing gene-protein-reaction
 %                           associations
-%    modelDescription:  Description of model contents
-%    compSymbolList:    Compartment Symbol List
-%    compNameList:      Name of compartments corresponding to compartment
-%                       symbol list
+%                   * Matlab will save the model as a matlab variable file.
+%                   * Excel will save the model as a two sheet Excel Model.
+% modelDescription  Description of model contents (char), default is the
+%                   choosen filename
+% compSymbolList    Compartment Symbol List( cell array)
+%                   symbol list (cell array)
 %
-% OUTPUT:
+%OUTPUT (TO BE ADJUSTED TO NEW MODEL STRUCTURE)
 %    model:             Returns a model in the COBRA format:
-%
+% 
 %                         * description - Description of model contents
 %                         * rxns - Reaction names
 %                         * mets - Metabolite names
 %                         * S - Stoichiometric matrix
 %                         * lb - Lower bounds
 %                         * ub - Upper bounds
-%                         * rev - Reversibility vector
 %                         * c - Objective coefficients
 %                         * subSystems - Subsystem name for each reaction (opt)
 %                         * grRules - Gene-reaction association rule for each reaction (opt)
@@ -68,7 +69,8 @@ function model = readCbModel(fileName,defaultBound,fileType,modelDescription,com
 %       - Markus Herrgard 7/11/06
 %       - Richard Que 02/08/10 - Added inptus for compartment names and symbols
 %       - Longfei Mao 26/04/2016 Added support for the FBCv2 format
-%
+% Thomas Pfau May 2017 Changed to parameter value pair, added excel IO and
+%                       matlab flatfile IO.%
 % NOTE:
 %    The `readCbModel.m` function is dependent on another function
 %    `io/utilities/readSBML.m` to use libSBML library
@@ -78,15 +80,42 @@ function model = readCbModel(fileName,defaultBound,fileType,modelDescription,com
 %    structure is described in an Excel spreadsheet
 %    `io/COBRA_structure_fields.xlsx`. While some fields are necessary for a
 %    COBRA model, others are not.
+optionalArgumentList = {'defaultBound','fileType','modelDescription','compSymbolList','compNameList'};
+processedFileTypes = {'SBML', 'SimPheny', 'SimPhenyPlus', 'SimPhenyText', 'Excel', 'Matlab'};
 
-
-if (nargin < 2) % Process arguments
-    defaultBound = 1000;
-else
-    if (isempty(defaultBound))
-        defaultBound = 1000;
+if numel(varargin) > 0 
+    %Check, whether we have an old style input. (i.e. varargins are not optional arguments
+    if ischar(varargin{1}) && ~any(ismember(varargin{1},optionalArgumentList))           
+    %We assume the old version to be used               
+        tempargin = cell(1,2*numel(varargin));
+        %just replace the input by the options and replace varargin
+        %accordingly
+        for i = 1:numel(varargin)            
+            tempargin{2*(i-1)+1} = optionalArgumentList{i};
+            tempargin{2*(i-1)+2} = varargin{i};
+        end        
+        varargin = tempargin;
     end
 end
+
+
+[defaultCompSymbols,defaultCompNames] = getDefaultCompartmentSymbols();
+parser = inputParser();
+parser.addRequired('fileName',@(x) isempty(x) || ischar(x)); 
+parser.addParameter('defaultBound',1000, @isnumeric); 
+parser.addParameter('fileType','',@(x) ischar(x) && any(strcmpi(processedFileTypes))); 
+parser.addParameter('modelDescription','',@ischar); 
+parser.addParameter('compSymbolList',defaultCompSymbols,@iscell); 
+parser.addParameter('compNameList',defaultCompNames,@iscell); 
+
+parser.parse(fileName,varargin{:})
+
+fileName = parser.Results.fileName;
+defaultBound = parser.Results.defaultBound;
+fileType = parser.Results.fileType;
+modelDescription = parser.Results.modelDescription;
+compSymbolList = parser.Results.compSymbolList;
+compNameList = parser.Results.compNameList;
 
 supportedFileExtensions = {'*.xml;*.sto;*.xls;*.xlsx;*.mat'};
 
@@ -151,17 +180,8 @@ end
 
 
 
-if (nargin < 4)
-    if (exist('filePath'))
-        modelDescription = noPathName;
-    else
-        modelDescription = fileName;
-    end
-end
-
-if (nargin < 5)
-    compSymbolList = {};
-    compNameList = {};
+if isempty(modelDescription)
+    modelDescription = fileName;    
 end
 
 switch fileType
