@@ -17,12 +17,12 @@ function [ helpText ] = writeGDXFromCOBRA( cobraStruct,fileName,small )
 %
 % EXAMPLES:
 %
-%    %Allowed Calls:
-%    writeGDXFromCOBRA(cobraStruct) %Generates a name for the gdx file using date and time info
-%    writeGDXFromCOBRA(cobraStruct,fileName)
-%    writeGDXFromCOBRA(cobraStruct,fileName,false) %uses provided filename, `gdx` has reactions and metabolites sets.
-%    writeGDXFromCOBRA(cobraStruct,fileName,true) %uses provided filename, gdx doesn't have reactions and
-%    %metabolites sets, intented to be read using a feature in GAMS v>24.2.1. (see output `helpText`)
+%    % Allowed Calls:
+%    writeGDXFromCOBRA(cobraStruct)  % Generates a name for the gdx file using date and time info
+%    writeGDXFromCOBRA(cobraStruct, fileName)
+%    writeGDXFromCOBRA(cobraStruct, fileName, false)  % uses provided filename, `gdx` has reactions and metabolites sets.
+%    writeGDXFromCOBRA(cobraStruct, fileName, true)   % uses provided filename, gdx doesn't have reactions and
+%    % metabolites sets, intented to be read using a feature in GAMS v>24.2.1. (see output `helpText`)
 %
 % .. Authors: Claudio Delpino & Romina Lasry @PLAPIQUI 02/17/15
 

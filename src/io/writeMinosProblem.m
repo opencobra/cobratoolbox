@@ -5,7 +5,7 @@ function [directory,fname]=writeMinosProblem(LPproblem,precision,modelName,direc
 %
 % USAGE:
 %
-%    [directory, fname]=writeMinosProblem(LPproblem, precision, modelName, directory, printLevel)
+%    [directory, fname] = writeMinosProblem(LPproblem, precision, modelName, directory, printLevel)
 %
 % INPUTS:
 %    LPproblem:     Structure containing the following fields describing the LP
@@ -29,6 +29,7 @@ function [directory,fname]=writeMinosProblem(LPproblem,precision,modelName,direc
 % OUTPUT:
 %    directory:     directory for the file
 %    fname:         filename of the optimization problem
+%
 % ..
 %    derived from dumpLPfun by Ding Ma and Michael Saunders, Stanford University.
 %    09 May 2012: First version of this script developed as dumpLP.m
