@@ -201,7 +201,7 @@ MINOS_PATH = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' fil
 
 % legacy support for MPS (will be removed in future release)
 if nargin > 0 && strcmpi(solverName, 'mps')
-    fprintf(' > The interface to ''mps'' from ''changeCobraSolver()'' is no longer supported.');
+    fprintf(' > The interface to ''mps'' from ''changeCobraSolver()'' is no longer supported.\n');
     error(' -> Use >> writeCbModel(model, \''mps\''); instead.)');
 end
 
@@ -284,8 +284,6 @@ switch solverName
         tmpGurobi = 'gurobi.sh';
         if ispc, tmpGurobi = 'gurobi.bat'; end
         solverOK = checkSolverInstallationFile(solverName, tmpGurobi, printLevel);
-    case 'mps'
-        solverOK = checkSolverInstallationFile(solverName, 'BuildMPS', printLevel);
     case {'quadMinos', 'dqqMinos'}
         if isunix
             [stat, res] = system('which csh');
