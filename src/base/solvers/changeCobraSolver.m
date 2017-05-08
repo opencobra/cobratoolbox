@@ -243,6 +243,14 @@ if isempty(strmatch(solverType, SOLVERS.(solverName).type))
     end
 end
 
+tomlabOnPath = ~isempty(strfind(lower(path), 'tomlab'));
+if ~tomlabOnPath && (~isempty(strfind(solverName, 'tomlab')) || ~isempty(strfind(solverName, 'cplex_direct')))
+    addpath(genpath(TOMLAB_PATH));
+    if printLevel > 0
+        fprintf('\n > Tomlab interface added to MATLAB path.\n');
+    end
+end
+
 solverOK = false;
 
 switch solverName
@@ -263,7 +271,7 @@ switch solverName
             solverOK = checkSolverInstallationFile(solverName, 'tomRun', printLevel);
         end
     case 'ibm_cplex'
-        if ~verLessThan('matlab', '9')  % 2016b
+        if ~verLessThan('matlab', '9') && isempty(strfind(ILOG_CPLEX_PATH, '1271'))  % 2016b
             if printLevel > 0
                 fprintf(' > ibm_cplex (IBM ILOG CPLEX) is incompatible with this version of MATLAB, please downgrade or change solver.\n');
             end
@@ -323,21 +331,41 @@ if solverOK
     eval(['CBT_', solverType, '_SOLVER = solverName;']);
 
     % if gurobi or ibm_cplex are selected, add them to the top of the path
-    tomlabOnPath = ~isempty(strfind(lower(path), 'tomlab'));
-    if (~isempty(strfind(solverName, 'gurobi')) ||  ~isempty(strfind(solverName, 'ibm_cplex')) ||  ~isempty(strfind(solverName, 'matlab'))) && tomlabOnPath
-        rmpath(genpath(TOMLAB_PATH));
-        if printLevel > 0
-            fprintf(['\n > Tomlab interface removed from MATLAB path.\n']);
-        end
+    tomlabOnPath = ~isempty(strfind(lower(path), '/tomlab'));
+
+    if ~isempty(strfind(solverName, 'gurobi')) && tomlabOnPath
+        addpath(genpath(GUROBI_PATH));
     end
-    if ~tomlabOnPath && (~isempty(strfind(solverName, 'tomlab')) || ~isempty(strfind(solverName, 'cplex_direct')))
-        addpath(genpath(TOMLAB_PATH));
-        if printLevel > 0
-            fprintf('\n > Tomlab interface added to MATLAB path.\n');
+    if ~isempty(strfind(solverName, 'ibm_cplex')) && tomlabOnPath
+        addpath(genpath(ILOG_CPLEX_PATH));
+    end
+
+    if ~isempty(strfind(solverName, 'matlab'))
+        if tomlabOnPath
+            rmpath(genpath(TOMLAB_PATH));
+            if printLevel > 0
+                fprintf(['\n > Tomlab interface removed from MATLAB path.\n']);
+            end
+        else
+            cplexOnPath = ~isempty(strfind(lower(path), '/cplex_'));
+            gurobiOnPath = ~isempty(strfind(lower(path), '/gurobi'));
+
+            if gurobiOnPath
+                rmpath(genpath(GUROBI_PATH));
+                if printLevel > 0
+                    fprintf(['\n > Gurobi interface removed from MATLAB path.\n']);
+                end
+            end
+
+            if cplexOnPath
+                rmpath(genpath(ILOG_CPLEX_PATH));
+                if printLevel > 0
+                    fprintf(['\n > ILOG CPLEX interface removed from MATLAB path.\n']);
+                end
+            end
         end
     end
 end
-
 end
 
 function solverOK = checkSolverInstallationFile(solverName, fileName, printLevel)
