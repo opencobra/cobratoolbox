@@ -283,7 +283,7 @@ switch solverName
     case 'gurobi'
         tmpGurobi = 'gurobi.sh';
         if ispc, tmpGurobi = 'gurobi.bat'; end
-        solverOK = checkGurobiInstallation(solverName, tmpGurobi, printLevel);
+        solverOK = checkSolverInstallationFile(solverName, tmpGurobi, printLevel);
     case 'mps'
         solverOK = checkSolverInstallationFile(solverName, 'BuildMPS', printLevel);
     case {'quadMinos', 'dqqMinos'}
@@ -296,7 +296,10 @@ switch solverName
                     solverOK = checkSolverInstallationFile(solverName, 'minos', printLevel);
                 end
             else
-                error(['You must have `csh` installed. Solver ', solverName, ' cannot be used.']);
+                solverOK = false;
+                if printLevel > 0
+                    error(['You must have `csh` installed in order to use `', solverName, '`.']);
+                end
             end
         end
     case 'opti'
@@ -314,20 +317,24 @@ switch solverName
     case 'matlab'
         solverOK = true;
     otherwise
-        error(['Solver ' solverName ' not supported by COBRA Toolbox']);
+        error(['Solver ' solverName ' not supported by The COBRA Toolbox.']);
 end
 
 % set solver related global variables
 if solverOK
     eval(['CBT_', solverType, '_SOLVER = solverName;']);
 
-    % if gurobi is selected, unload tomlab if tomlab is on the path
+    % if gurobi or ibm_cplex are selected, add them to the top of the path
     tomlabOnPath = ~isempty(strfind(lower(path), 'tomlab'));
-    gurobiOnPath = ~isempty(strfind(lower(path), 'gurobi'));
     if (~isempty(strfind(solverName, 'gurobi')) ||  ~isempty(strfind(solverName, 'ibm_cplex')) ||  ~isempty(strfind(solverName, 'matlab'))) && tomlabOnPath
-        rmpath(genpath(TOMLAB_PATH));
+        if ~isempty(strfind(solverName, 'gurobi'))
+            addpath(genpath(GUROBI_PATH));
+        end
+        if ~isempty(strfind(solverName, 'ibm_cplex'))
+            addpath(genpath(ILOG_CPLEX_PATH));
+        end
         if printLevel > 0
-            fprintf('\n > Tomlab interface removed from MATLAB path.\n');
+            fprintf(['\n > Tomlab interface shadowed by ', solverName, ' in MATLAB path.\n']);
         end
     end
     if ~tomlabOnPath && (~isempty(strfind(solverName, 'tomlab')) || ~isempty(strfind(solverName, 'cplex_direct')))
@@ -339,35 +346,6 @@ if solverOK
 end
 
 end
-
-
-function solverOK = checkGurobiInstallation(solverName, fileName, printLevel)
-% Check Gurobi installation.
-%
-% Usage:
-%     solverOK = checkGurobiInstallation(solverName, fileName)
-%
-% Inputs:
-%     solverName: string with the name of the solver
-%     fileName:   string with the name of the file to look for
-%
-% Output:
-%     solverOK: true if filename exists, false otherwise.
-%
-
-    global GUROBI_PATH
-    solverOK = false;
-    if ~isempty(findstr(GUROBI_PATH, solverName))
-        if exist(fileName) == 2
-            solverOK = true;
-        elseif printLevel > 0
-            error('Solver %s is not installed!', solverName)
-        end
-    elseif printLevel > 0
-        error('Solver %s is not installed!', solverName)
-    end
-end
-
 
 function solverOK = checkSolverInstallationFile(solverName, fileName, printLevel)
 % Check solver installation by existence of a file in the Matlab path.
