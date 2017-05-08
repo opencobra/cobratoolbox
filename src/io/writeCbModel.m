@@ -7,7 +7,7 @@
 function outmodel = writeCbModel(model,varargin)
 %writeCbModel Write out COBRA models in various formats
 %
-% writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLevel,sbmlVersion)
+% writeCbModel(model,format,fileName,varargin)
 %
 %INPUTS
 % model             Standard COBRA model structure
@@ -20,8 +20,12 @@ function outmodel = writeCbModel(model,varargin)
 % format            File format to be used ('text','xls', 'mat'(default) or 'sbml')
 %                   text will only output data from required fields (with GPR rules converted to string representation)
 %                   xls is restricted to the fields defined in the xls io documentation. 
-% compSymbolList    List of compartment symbols
-% compNameList      List of compartment names corresponding to compSymbolList
+
+% Optional INPUTS as Parameter/Value pairs:
+% Paramtere Name    Value
+% compSymbolList    List of compartment symbols (Cell array)
+% compNameList      List of compartment names corresponding to
+%                   compSymbolList (Cell array)
 %
 % Markus Herrgard 2/5/07
 % Ines Thiele 01/10 - Added more options for field to write in xls format
@@ -29,6 +33,7 @@ function outmodel = writeCbModel(model,varargin)
 %                       symbols
 %
 % Longfei Mao 26/04/2016 Added support for the FBCv2 format
+% Thomas Pfau May 2017  - Changed To Parameter/Value pairs
 
 %For backward compatability, we are checking whether the old signature is
 %used. 
@@ -153,6 +158,7 @@ switch format
         fclose(fid);
         %% Excel file
     case 'xls'
+        printRxnFormula(model,
         tmpData{1,1} = 'Abbreviation';
         tmpData{1,2} = 'Description';
         baseInd = 3;
