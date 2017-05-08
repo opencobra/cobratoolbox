@@ -130,6 +130,10 @@ if COVERAGE
 end
 
 try
+
+    % save the userpath
+    originalUserPath = path;
+
     % retrieve the models first
     retrieveModels;
 
@@ -174,6 +178,10 @@ try
 
     % print out a summary table
     table(result)
+
+    % restore the original path
+    restoredefaultpath;
+    addpath(originalUserPath);
 
     if sumFailed > 0 || sumIncomplete > 0
         exit_code = 1;
