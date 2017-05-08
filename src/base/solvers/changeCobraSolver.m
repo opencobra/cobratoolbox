@@ -347,8 +347,8 @@ if solverOK
                 fprintf(['\n > Tomlab interface removed from MATLAB path.\n']);
             end
         else
-            cplexOnPath = ~isempty(strfind(lower(path), '/cplex_'));
-            gurobiOnPath = ~isempty(strfind(lower(path), '/gurobi'));
+            cplexOnPath = ~isempty(strfind(lower(path), 'cplex'));
+            gurobiOnPath = ~isempty(strfind(lower(path), 'gurobi'));
 
             if gurobiOnPath
                 rmpath(genpath(GUROBI_PATH));
