@@ -325,14 +325,9 @@ if solverOK
     % if gurobi or ibm_cplex are selected, add them to the top of the path
     tomlabOnPath = ~isempty(strfind(lower(path), 'tomlab'));
     if (~isempty(strfind(solverName, 'gurobi')) ||  ~isempty(strfind(solverName, 'ibm_cplex')) ||  ~isempty(strfind(solverName, 'matlab'))) && tomlabOnPath
-        if ~isempty(strfind(solverName, 'gurobi'))
-            addpath(genpath(GUROBI_PATH));
-        end
-        if ~isempty(strfind(solverName, 'ibm_cplex'))
-            addpath(genpath(ILOG_CPLEX_PATH));
-        end
+        rmpath(genpath(TOMLAB_PATH));
         if printLevel > 0
-            fprintf(['\n > Tomlab interface shadowed by ', solverName, ' in MATLAB path.\n']);
+            fprintf(['\n > Tomlab interface removed from MATLAB path.\n']);
         end
     end
     if ~tomlabOnPath && (~isempty(strfind(solverName, 'tomlab')) || ~isempty(strfind(solverName, 'cplex_direct')))
