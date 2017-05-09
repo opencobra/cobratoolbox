@@ -67,7 +67,6 @@ function configEnvVars(printLevel)
 
                 % solver is on path but at a non-standard location and may not be compatible
                 elseif higherLevelIndex > 0 && higherLevelIndex < length(idCell)
-                    keyboard
                     eval([solverPaths{k, 1}, ' = ''', tmpS{higherLevelIndex}, ''';']);
                     method = 'Xii';
                 end
@@ -82,10 +81,8 @@ function configEnvVars(printLevel)
                     end;
                 end
                 if ~isempty(possibleDir)
-                   %setenv(solverPaths{k, 1}, strrep(possibleDir, '\', '\\'));
-                   setenv(solverPaths{k, 1}, possibleDir);
-                   eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1}, ''');']);
-                   method = 'Xiii';
+                    eval([solverPaths{k, 1}, ' = ''', possibleDir, ''';']);
+                    method = 'Xiii';
                 end
             end
 

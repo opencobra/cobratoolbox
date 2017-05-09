@@ -407,11 +407,8 @@ function initCobraToolbox()
     end
 
     % restore the original path
-    %if ispc
-        path(originalUserPath);
-    %else
-        addpath(originalUserPath);
-    %end
+    path(originalUserPath);
+    addpath(originalUserPath);
 
     % saves the current path
     try
