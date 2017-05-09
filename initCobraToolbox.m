@@ -53,10 +53,18 @@ function initCobraToolbox()
     ENV_VARS.STATUS = 0;
 
     % initialize the paths
-    GUROBI_PATH = '';
-    ILOG_CPLEX_PATH = '';
-    TOMLAB_PATH = '';
-    MOSEK_PATH = '';
+    if exist('GUROBI_PATH', 'var') ~= 1
+        GUROBI_PATH = '';
+    end
+    if exist('ILOG_CPLEX_PATH', 'var') ~= 1
+        ILOG_CPLEX_PATH = '';
+    end
+    if exist('TOMLAB_PATH', 'var') ~= 1
+        TOMLAB_PATH = '';
+    end
+    if exist('MOSEK_PATH', 'var') ~= 1
+        MOSEK_PATH = '';
+    end
 
     % print header
     if ~isfield(ENV_VARS, 'printLevel') || ENV_VARS.printLevel
@@ -234,7 +242,7 @@ function initCobraToolbox()
         fprintf(' > Retrieving models ...');
     end
     if ~exist(xmlTestFile, 'file')
-        retrieveModels(1);
+        retrieveModels(0);
     end
     if ENV_VARS.printLevel
         fprintf('   Done.\n');
@@ -344,9 +352,23 @@ function initCobraToolbox()
         fprintf(' Done.\n');
     end
 
+    % set the default solver and print out the default variables
+    if ENV_VARS.printLevel
+        fprintf(' > Setting default solvers ...');
+        changeCobraSolver('glpk', 'LP', 0);
+        changeCobraSolver('glpk', 'MILP', 0);
+        changeCobraSolver('qpng', 'QP', 0);
+        changeCobraSolver('matlab', 'NLP', 0);
+        for k = 1:length(OPT_PROB_TYPES)
+            varName = horzcat(['CBT_', OPT_PROB_TYPES{k}, '_SOLVER']);
+        end
+        fprintf(' Done.\n');
+    end
+
+
     % restore the original path
-    restoredefaultpath;
     addpath(originalUserPath);
+    path(originalUserPath);
 
     % saves the current path
     try
@@ -398,19 +420,6 @@ function initCobraToolbox()
                 solverStatus(i, k + 1) = 0;
             end
         end
-    end
-
-    % set the default solver and print out the default variables
-    if ENV_VARS.printLevel
-        fprintf(' > Setting default solvers ...');
-        changeCobraSolver('glpk', 'LP', 0);
-        changeCobraSolver('glpk', 'MILP', 0);
-        changeCobraSolver('qpng', 'QP', 0);
-        changeCobraSolver('matlab', 'NLP', 0);
-        for k = 1:length(OPT_PROB_TYPES)
-            varName = horzcat(['CBT_', OPT_PROB_TYPES{k}, '_SOLVER']);
-        end
-        fprintf(' Done.\n');
     end
 
     catList{end + 1} = '----------';
