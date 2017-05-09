@@ -10,7 +10,7 @@ function configEnvVars(printLevel)
         printLevel = 0;
     end
 
-    if ENV_VARS.STATUS == 0
+    if exist('ENV_VARS.STATUS', 'var') == 1 || ENV_VARS.STATUS == 0
         solverPaths = {};
         solverPaths{1, 1} = 'ILOG_CPLEX_PATH';
         solverPaths{1, 2} = {'/Applications/IBM/ILOG/CPLEX_Studio1262', '/Applications/IBM/ILOG/CPLEX_Studio1263', '/Applications/IBM/ILOG/CPLEX_Studio127', '/Applications/IBM/ILOG/CPLEX_Studio1271', ...
@@ -36,6 +36,44 @@ function configEnvVars(printLevel)
         for k = 1:length(solverPaths)
             eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1} , ''');'])
             possibleDir = '';
+
+            if isempty(eval(solverPaths{k, 1}))
+                % check if the solver is already on the MATLAB path
+                isOnPath = ~isempty(strfind(lower(path), lower(possibleDir)));
+
+                % find the index of the most recently added solver path
+                tmp = path;
+                if isunix
+                    tmpS = strsplit(tmp, ':');
+                else
+                    tmpS = strsplit(tmp, ';');
+                end
+                idCell = strfind(tmpS, solverPaths{k, 3});
+                higherLevelIndex = 0;
+                for i = 1:length(idCell)
+                    if ~isempty(idCell{i})
+                        higherLevelIndex = i;
+                        break;
+                    end
+                end
+
+                % set the global variable
+                % solver is on the path and at a standard location
+                if isOnPath
+                    eval([solverPaths{k, 1}, ' = ''', possibleDir, ''';']);
+                    fprintf('cond 1')
+
+                % solver is on path but at a non-standard location and may not be compatible
+                elseif higherLevelIndex > 0 && higherLevelIndex < length(idCell)
+                    %tmpS
+                   % higherLevelIndex
+                    %tmpS{higherLevelIndex}
+                    eval([solverPaths{k, 1}, ' = ''', tmpS{higherLevelIndex}, ''';']);
+                    fprintf('cond 2');
+                end
+            end
+
+            % solver is not already on the path, check if the environment variable is present and if the directory exists
             if isempty(eval(solverPaths{k, 1}))
                 tmpSolverPath = solverPaths{k, 2};
                 for i = 1:length(solverPaths{k, 2})
@@ -44,52 +82,33 @@ function configEnvVars(printLevel)
                     end;
                 end
                 if ~isempty(possibleDir)
-                    setenv(solverPaths{k, 1}, strrep(possibleDir, '\', '\\'));
-                    eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1}, ''');']);
+                   %setenv(solverPaths{k, 1}, strrep(possibleDir, '\', '\\'));
+                   setenv(solverPaths{k, 1}, possibleDir);
+                   eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1}, ''');']);
+                   fprintf('path is known and set - cond 3');
                 end
+            end
 
-                % check if the solver is already on the MATLAB path
-                if isempty(possibleDir) || isempty(eval(solverPaths{k, 1}))
-                    isOnPath = ~isempty(strfind(lower(path), lower(possibleDir)));
-
-                    % find the index of the most recently added solver path
-                    tmp = path;
-                    tmpS = strsplit(tmp, ':');
-                    idCell = strfind(tmpS, solverPaths{k, 3});
-                    higherLevelIndex = 0;
-                        for i = 1:length(idCell)
-                            if ~isempty(idCell{i})
-                                higherLevelIndex = i;
-                                break;
-                            end
-                        end
-
-                    % set the global variable
-                    % solver is on the path and at a standard location
-                    if isOnPath
-                        eval([solverPaths{k, 1}, ' = ''', possibleDir, ''';']);
-
-                    % solver is on path but at a non-standard location and may not be compatible
-                    elseif higherLevelIndex > 0 && higherLevelIndex < length(idCell)
-                        eval([solverPaths{k, 1}, ' = ''', tmpS{higherLevelIndex}, ''';']);
-
-                    % solver is not on the path
-                    else
-                        if printLevel > 0
-                            solversLink = 'https://git.io/v92Vi'; % curl -i https://git.io -F "url=https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md"
-                            if usejava('desktop')
-                                solversLink = ['<a href=\"', solversLink, '\">instructions</a>'];
-                            end
-                            fprintf(['   - ', solverPaths{k, 1}, ':  --> set this path manually after installing the solver (see ', solversLink, ')\n' ]);
-                        end
+            % if the solver variable is still empty, then give instructions on how to proceed
+            if isempty(eval(solverPaths{k, 1})) && isempty(getenv(solverPaths{k, 1}))
+                if printLevel > 0
+                    solversLink = 'https://git.io/v92Vi'; % curl -i https://git.io -F "url=https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md"
+                    if usejava('desktop')
+                        solversLink = ['<a href=\"', solversLink, '\">instructions</a>'];
                     end
+                    fprintf(['   - ', solverPaths{k, 1}, ':  --> set this path manually after installing the solver (see ', solversLink, ')\n' ]);
                 end
+            else
+                fprintf(['   - ', solverPaths{k, 1}, ': ', strrep(getenv(solverPaths{k, 1}), '\', '\'), '\n' ]);
+                ENV_VARS.STATUS = 1;
             end
 
             % add the solver path
-            if ~isempty(eval(solverPaths{k, 1}))
-                ENV_VARS.STATUS = 1;
-            end
+%             if ~isempty(eval(solverPaths{k, 1}))
+%                 %addpath(genpath(eval(solverPaths{k, 1})));
+%                 fprintf(['   - ', solverPaths{k, 1}, ': ', getenv(solverPaths{k, 1}), '\n' ]);
+%                 ENV_VARS.STATUS = 1;
+%             end
         end
     end
 end

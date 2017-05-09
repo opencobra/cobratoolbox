@@ -173,7 +173,7 @@ if strcmpi(solverName, 'gurobi') || strcmpi(solverName, 'gurobi6') ||  strcmpi(s
 end
 
 % check if the global environment variable is properly set
-if ~ENV_VARS.STATUS && ~ENV_VARS.printLevel
+if ~ENV_VARS.STATUS
     solversLink = 'https://git.io/v92Vi'; % curl -i https://git.io -F "url=https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md"
     if usejava('desktop')
         solversLink = ['<a href=\"', solversLink, '\">these instructions</a>'];
@@ -192,7 +192,9 @@ if ~ENV_VARS.STATUS && ~ENV_VARS.printLevel
             case 'mosek'
                 tmpVar = 'MOSEK_PATH';
         end
-        error(['The global variable `', tmpVar, '` is not set. Please follow ', solversLink, ' to set the environment variables properly.']);
+        if strcmpi(solvername, 'gurobi') || strcmpi(solvername, 'ibm_cplex') || strcmpi(solvername, 'tomlab_cplex') || strcmpi(solvername, 'cplex_direct') || strcmpi(solvername, 'mosek')
+            error(['The global variable `', tmpVar, '` is not set. Please follow ', solversLink, ' to set the environment variables properly.']);
+        end
     end
 end
 
@@ -245,7 +247,7 @@ end
 
 tomlabOnPath = ~isempty(strfind(lower(path), 'tomlab'));
 if ~tomlabOnPath && (~isempty(strfind(solverName, 'tomlab')) || ~isempty(strfind(solverName, 'cplex_direct'))) && ~isempty(TOMLAB_PATH)
-    addpath(genpath(TOMLAB_PATH));
+    addpath(genpath(strrep(TOMLAB_PATH, '\\', '\')));
     if printLevel > 0
         fprintf('\n > Tomlab interface added to MATLAB path.\n');
     end
@@ -253,7 +255,7 @@ end
 
 gurobiOnPath = ~isempty(strfind(lower(path), 'gurobi'));
 if ~gurobiOnPath && ~isempty(strfind(solverName, 'gurobi')) && ~isempty(GUROBI_PATH)
-    addpath(genpath(GUROBI_PATH));
+    addpath(genpath(strrep(GUROBI_PATH, '\\', '\')));
     if printLevel > 0
         fprintf('\n > Gurobi interface added to MATLAB path.\n');
     end
@@ -261,7 +263,7 @@ end
 
 cplexOnPath = ~isempty(strfind(lower(path), 'cplex_studio'));
 if ~cplexOnPath && ~isempty(strfind(solverName, 'ibm_cplex')) && ~isempty(ILOG_CPLEX_PATH)
-    addpath(genpath(ILOG_CPLEX_PATH));
+    addpath(genpath(strrep(ILOG_CPLEX_PATH, '\\', '\')));
     if printLevel > 0
         fprintf('\n > IBM ILOG CPLEX interface added to MATLAB path.\n');
     end
@@ -269,7 +271,7 @@ end
 
 mosekOnPath = ~isempty(strfind(lower(path), 'mosek'));
 if ~mosekOnPath && ~isempty(strfind(solverName, 'mosek')) && ~isempty(MOSEK_PATH)
-    addpath(genpath(MOSEK_PATH));
+    addpath(genpath(strrep(MOSEK_PATH, '\\', '\')));
     if printLevel > 0
         fprintf('\n > MOSEK interface added to MATLAB path.\n');
     end
@@ -361,7 +363,7 @@ if solverOK
         tomlabOnPath = ~isempty(strfind(lower(path), 'tomlab'));
 
         if tomlabOnPath
-            rmpath(genpath(TOMLAB_PATH));
+            rmpath(genpath(strrep(TOMLAB_PATH, '\\', '\')));
             if printLevel > 0
                 fprintf(['\n > Tomlab interface removed from MATLAB path.\n']);
             end
@@ -375,7 +377,7 @@ if solverOK
         % remove the GUROBI interface
         if gurobiOnPath
             if ~isempty(GUROBI_PATH)
-                rmpath(genpath(GUROBI_PATH));
+                rmpath(genpath(strrep(GUROBI_PATH, '\\', '\')));
                 if printLevel > 0
                     fprintf(['\n > GUROBI interface removed from MATLAB path.\n']);
                 end
@@ -385,7 +387,7 @@ if solverOK
         % remove the CPLEX interface
         if cplexOnPath
             if ~isempty(ILOG_CPLEX_PATH)
-                rmpath(genpath(ILOG_CPLEX_PATH));
+                rmpath(genpath(strrep(ILOG_CPLEX_PATH, '\\', '\')));
                 if printLevel > 0
                     fprintf(['\n > ILOG CPLEX interface removed from MATLAB path.\n']);
                 end
@@ -395,7 +397,7 @@ if solverOK
         % remove the MOSEK interface
         if mosekOnPath
             if ~isempty(MOSEK_PATH)
-                rmpath(genpath(MOSEK_PATH));
+                rmpath(genpath(strrep(MOSEK_PATH, '\\', '\')));
                 if printLevel > 0
                     fprintf(['\n > MOSEK interface removed from MATLAB path.\n']);
                 end

@@ -84,7 +84,9 @@ else
 end
 
 % print sucess message
-fprintf(['   Done downloading models.\n']);
+if printLevel > 0
+    fprintf(['   Done downloading models.\n']);
+end
 
 % change back to the root directory
 cd(currentDir)
