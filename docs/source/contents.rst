@@ -5,8 +5,11 @@ The COBRA Toolbox
    :maxdepth: 2
 
    index.html
+   installation
    modules/index
    tutorials/index
    contributing
+   contributors
    faq
+   funding
 
