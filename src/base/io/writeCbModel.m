@@ -1,4 +1,3 @@
-function outmodel = writeCbModel(model,format,fileName,compSymbolList,compNameList,sbmlLevel,sbmlVersion, solverParams)
 % Writes out COBRA models in various formats
 % The "writeCbModel" function relies on another function
 % "io/utilities/writeSBML.m" to convert a COBRA-Matlab structure into
@@ -14,17 +13,15 @@ function outmodel = writeCbModel(model,varargin)
 %    outmodel = writeCbModel(model, format, fileName, compSymbolList, compNameList, sbmlLevel, sbmlVersion)
 % INPUTS:
 %    model:             Standard COBRA model structure
-%    format:            File format to be used ('text', 'xls', 'sbml', or 'mps')
 %
 % OPTIONAL INPUTS:
+%   format              File format to be used ('text','xls', 'mat'(default) or 'sbml')
+%                       text will only output data from required fields (with GPR rules converted to string representation)
+%                       xls is restricted to the fields defined in the xls io documentation.
 %    fileName:          File name for output file (optional, default opens
 %                       dialog box)
-% format            File format to be used ('text','xls', 'mat'(default) or 'sbml')
-%                   text will only output data from required fields (with GPR rules converted to string representation)
-%                   xls is restricted to the fields defined in the xls io documentation.
-
-% Optional INPUTS as Parameter/Value pairs:
-% Parameter Name    Value
+% OPTIONAL INPUTS as Parameter/Value pairs:
+% Parameter         Value
 % compSymbolList    List of compartment symbols (Cell array)
 % compNameList      List of compartment names corresponding to
 %                   compSymbolList (Cell array)
@@ -79,7 +76,6 @@ if isfield(model,'compNames')
     compNames = model.compNames;
 end
 
-end
 
 parser = inputParser();
 
@@ -109,14 +105,9 @@ end
 [nMets,nRxns] = size(model.S);
 %formulas = printRxnFormula(model,model.rxns,false,false,false,1,false);
 
-if ~strcmp(format, 'mps')
-end
-
 %% Open a dialog to select file name
 if (isempty(fileName))
     switch format
-        case 'mps'
-            [fileNameFull,filePath] = uiputfile({'*.MPS'});
         case 'xls'
             [fileNameFull,filePath] = uiputfile({'*.xls;*.xlsx'});
         case {'text','txt'}
@@ -131,7 +122,7 @@ if (isempty(fileName))
             [fileNameFull,filePath] = uiputfile({'*'});
     end
     if (fileNameFull)
-        [folder,fileName,extension] = fileparts([filePath,fileNameFull]);
+        [folder,fileName,extension] = fileparts([filePath filesep fileNameFull]);
         fileName = [folder filesep fileName extension];
         switch extension
             case '.MPS'
@@ -143,9 +134,6 @@ if (isempty(fileName))
             case '.txt'
                 format = 'text';
             case '.xml'
-            case 'mps'
-                format = 'mps';
-                fileName = [fileName '.mps'];
                 format = 'sbml';
             case '.mat'
                 format = 'mat';
@@ -322,10 +310,11 @@ switch format
         %% Unknown
     case 'mat'
         save(fileName,'model')
- 
+        
     otherwise
         error('Unknown file format');
 end
+
 
 %% Chop strings for excel output
 function strOut = chopForExcel(str)
