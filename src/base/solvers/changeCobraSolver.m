@@ -173,7 +173,7 @@ if strcmpi(solverName, 'gurobi') || strcmpi(solverName, 'gurobi6') ||  strcmpi(s
 end
 
 % check if the global environment variable is properly set
-if ~ENV_VARS.printLevel
+if ~ENV_VARS.STATUS && ~ENV_VARS.printLevel
     solversLink = 'https://git.io/v92Vi'; % curl -i https://git.io -F "url=https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md"
     if usejava('desktop')
         solversLink = ['<a href=\"', solversLink, '\">these instructions</a>'];
