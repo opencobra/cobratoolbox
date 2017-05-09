@@ -1,4 +1,4 @@
-NAME          LPproble
+NAME          CobraLPP
 ROWS
  N  COST
  E  13dpg[c]

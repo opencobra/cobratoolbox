@@ -20,12 +20,12 @@ cd(fileDir);
 load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 % write the MPS using method 1 (creates a file CobraLPProblem.mps)
-out = convertCobraLP2mps(model);
+out = writeLPProblem(model);
 
 assert(out == 1);
 
 % write the MPS using a different name
-out = convertCobraLP2mps(model, 'LP1');
+out = writeLPProblem(model, 'LP1');
 assert(out == 1);
 
 % run using a legacy interface (creates a file LP.mps)
@@ -33,7 +33,8 @@ solution = solveCobraLP(model, 'solver', 'mps');
 assert(isempty(solution));
 
 % run using writeCbModel
-writeCbModel(model, 'mps', 'LP2.mps', [], [], [], [], []);
+writeLPProblem(model, 'problemName','mps','fileName','LP2.mps','writeMatrix',0);
+%writeCbModel(model, 'mps', 'LP2.mps', [], [], [], [], []);
 
 % read in all MPS files
 LP_str = readMixedData('LP.mps');

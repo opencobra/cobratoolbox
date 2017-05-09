@@ -1,4 +1,4 @@
-function OK = convertCobraLP2mps(LPProblem,name)
+function OK=writeLPProblem(LPProblem,varargin)
 % Creates an MPS (Mathematical Programming System) format ascii file
 % representing the Linear Programming problem given by LPProblem.
 %
@@ -18,8 +18,12 @@ function OK = convertCobraLP2mps(LPProblem,name)
 %                 * csense - Constraint senses, a string containting the constraint sense for
 %                   each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
-% OPTIONAL INPUT:
-%    name:      string giving name of LP problem
+% OPTIONAL INPUT (as parameter value pairs)
+% fileName          Name of the output file
+% solverParams      A struct containing the solver parameters if provided
+% outputFormat      Currently only 'mps' is supported (and default)
+% writeMatrix       Only write the Matrix, not the full problem (default
+%                   true), will be ignored if solver params are provided
 %
 % OUTPUT:
 %    OK:        1 if saving is success, 0 otherwise
@@ -35,9 +39,50 @@ function OK = convertCobraLP2mps(LPProblem,name)
 %    programming codes. To learn about MPS format, please see:
 %    http://lpsolve.sourceforge.net/5.5/mps-format.htm
 
-if ~exist('name','var')
-    name='CobraLPProblem';
+
+optionalArgumentList = {'problemName','fileName','solverParams','outputFormat'};
+acceptedTypes = {'mps'};
+
+if numel(varargin) > 0 
+    %This is only relevant, if we have more than 2 non Required input
+    %variables.
+    %if this is apparent, we need to check the following:
+    %1. is the 3rd vararginargument a cell array and is the second argument
+    %NOT compSymbols or compNames, if the second argument is NOT a char, 
+    if ischar(varargin{1}) && ~any(ismember(varargin{1},optionalArgumentList))           
+    %We assume the old version to be used               
+        tempargin = cell(1,2*numel(varargin));
+        %just replace the input by the options and replace varargin
+        %accordingly
+        for i = 1:numel(varargin)            
+            tempargin{2*(i-1)+1} = optionalArgumentList{i};
+            tempargin{2*(i-1)+2} = varargin{i};
+        end        
+        varargin = tempargin;
+    end
 end
+
+[defaultCompSymbols,defaultCompNames] = getDefaultCompartmentSymbols();
+parser = inputParser();
+parser.addRequired('LPProblem',@isstruct); 
+parser.addParameter('problemName','CobraLPProblem', @ischar); 
+parser.addParameter('fileName','', @ischar); 
+parser.addParameter('outputFormat','mps',@(x) ischar(x) && any(strcmpi(acceptedTypes))); 
+parser.addParameter('solverParams',struct(),@isstruct); 
+parser.addParameter('writeMatrix',true,@(x) islogical(x) || isnumeric(x) ); 
+
+parser.parse(LPProblem,varargin{:})
+solverParams = parser.Results.solverParams;
+outputFormat = parser.Results.outputFormat;
+name = parser.Results.problemName;
+writeMatrix = parser.Results.writeMatrix;
+if isempty(parser.Results.fileName)
+    fileName = [name '.mps'];
+else
+    fileName = parser.Results.fileName;
+end
+
+%Setup the problem structure and additional fields.
 
 if isfield(LPProblem, 'S') && ~isfield(LPProblem, 'A')
     LPProblem.A = LPProblem.S;
@@ -51,49 +96,148 @@ if size(LPProblem.csense,1)>size(LPProblem.csense,2)
     LPProblem.csense=LPProblem.csense';
 end
 
-E=false(mlt,1);
-G=false(mlt,1);
-L=false(mlt,1);
-Eind=findstr('E',LPProblem.csense);
-Gind=findstr('G',LPProblem.csense);
-Lind=findstr('L',LPProblem.csense);
-E(Eind)=1;
-G(Gind)=1;
-L(Lind)=1;
-
-Aeq=LPProblem.A(E,:);
-beq=LPProblem.b(E,1);
-
-%need to change sign of A*x >= b constraints
-A2=LPProblem.A;
-b2=LPProblem.b;
-A2(G)=-A2(G);
-b2(G)=-b2(G);
-A=A2(G | L,:);
-b=b2(G | L,:);
+% Assume constraint S*v = 0 if b not provided
+if ~isfield(LPProblem,'b')
+    warning('LP problem has no defined b in S*v=b. b should be defined, for now we assume b=0')
+    LPProblem.b=zeros(size(LPProblem.A,1),1);
+end
 
 % Assume max c'v s.t. S v = b if osense not provided
 if ~isfield(LPProblem,'osense')
     LPProblem.osense = -1;
 end
 
-cost=LPProblem.c*LPProblem.osense;
+if ~isfield(LPProblem,'vartype')
+    LPProblem.vartype = [];
+end
+if ~isfield(LPProblem,'x0')
+    LPProblem.x0 = [];
+end
 
-L=LPProblem.lb;
-U=LPProblem.ub;
+[A,b,c,lb,ub,csense,osense,vartype,x0] = deal(LPProblem.A,LPProblem.b,LPProblem.c,LPProblem.lb,LPProblem.ub,LPProblem.csense,LPProblem.osense,LPProblem.vartype,LPProblem.x0);
 
-% Build ascii fixed-width MPS matrix string that contains linear
-% programming (LP) problem:
-%
-% Minimizing (for x in R^n): f(x) = cost'*x, subject to
-%       A*x <= b        (LE)
-%       Aeq*x = beq     (EQ)
-%       L <= x <= U     (BD).
-
-[Contain]=BuildMPS(A, b, Aeq, beq, cost, L, U,upper(name));
+switch outputFormat
+    case 'mps'
+        param=solverParams;
+        if isfield(param,'EleNames')
+            EleNames=param.EleNames;
+        else
+            EleNames='';
+        end
+        if isfield(param,'EqtNames')
+            EqtNames=param.EqtNames;
+        else
+            EqtNames='';
+        end
+        if isfield(param,'VarNames')
+            VarNames=param.VarNames;
+        else
+            VarNames='';
+        end
+        if isfield(param,'EleNameFun')
+            EleNameFun=param.EleNameFun;
+        else
+            EleNameFun = @(m)(['LE' num2str(m)]);
+        end
+        if isfield(param,'EqtNameFun')
+            EqtNameFun=param.EqtNameFun;
+        else
+            EqtNameFun = @(m)(['EQ' num2str(m)]);
+        end
+        if isfield(param,'VarNameFun')
+            VarNameFun=param.VarNameFun;
+        else
+            VarNameFun = @(m)(['X' num2str(m)]);
+        end
+        if isfield(param,'PbName')
+            PbName=param.PbName;
+        else
+            PbName=name;
+        end
+        if isfield(param,'MPSfilename')
+            MPSfilename=[param.MPSfilename '.mps'];
+        else
+            MPSfilename=fileName;
+        end
+        %split A matrix for L and E csense
+        Ale = A((csense=='L') | (csense == 'G'),:);
+        ble = b((csense=='L') | (csense == 'G'));
+        Aeq = A(csense=='E',:);
+        beq = b(csense=='E');
+        
+        %create index of integer and binary variables
+        intIndex = find(vartype=='I');
+        binaryIndex = find(vartype=='B');
+        
+        %%%%Adapted from BuildMPS%%%%%
+        [neq nvar]=size(Aeq);
+        nle=size(Ale,1);
+        if isempty(EleNames)
+            EleNames=arrayfun(EleNameFun,(1:nle),'UniformOutput', false);
+        end
+        if isempty(EqtNames)
+            EqtNames=arrayfun(EqtNameFun,(1:neq),'UniformOutput', false);
+        end
+        if isempty(VarNames)
+            VarNames=arrayfun(VarNameFun,(1:nvar),'UniformOutput', false);
+        end
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        
+        %http://www.mathworks.com/matlabcentral/fileexchange/19618-mps-format-exporting-tool/content/BuildMPS/BuildMPS.m
+        %31st Jan 2016, changed c to osense*c as most solvers assume minimisation
+        if writeMatrix && any(ismember(parser.UsingDefaults,'solverParams'))
+            [Contain]=BuildMPS(Ale, ble, Aeq, beq, osense*c, lb, ub, PbName);
+            OK=SaveMPS(fileName, Contain);
+        else
+            [solution] = BuildMPS(Ale, ble, Aeq, beq, osense*c, lb, ub, PbName,'MPSfilename',MPSfilename,'EleNames',EleNames,'EqtNames',EqtNames,'VarNames',VarNames, 'Integer',intIndex,'Binary',binaryIndex);
+            OK = ~isempty(solution);
+        end
+        %display([' > The .MPS file <', MPSfilename, '> has been written to ', pwd]);
+end
+% 
+% E=false(mlt,1);
+% G=false(mlt,1);
+% L=false(mlt,1);
+% Eind=findstr('E',LPProblem.csense);
+% Gind=findstr('G',LPProblem.csense);
+% Lind=findstr('L',LPProblem.csense);
+% E(Eind)=1;
+% G(Gind)=1;
+% L(Lind)=1;
+% 
+% Aeq=LPProblem.A(E,:);
+% beq=LPProblem.b(E,1);
+% 
+% %need to change sign of A*x >= b constraints
+% A2=LPProblem.A;
+% b2=LPProblem.b;
+% A2(G)=-A2(G);
+% b2(G)=-b2(G);
+% A=A2(G | L,:);
+% b=b2(G | L,:);
+% 
+% % Assume max c'v s.t. S v = b if osense not provided
+% if ~isfield(LPProblem,'osense')
+%     LPProblem.osense = -1;
+% end
+% 
+% cost=LPProblem.c*LPProblem.osense;
+% 
+% L=LPProblem.lb;
+% U=LPProblem.ub;
+% 
+% % Build ascii fixed-width MPS matrix string that contains linear
+% % programming (LP) problem:
+% %
+% % Minimizing (for x in R^n): f(x) = cost'*x, subject to
+% %       A*x <= b        (LE)
+% %       Aeq*x = beq     (EQ)
+% %       L <= x <= U     (BD).
+% 
+% [Contain]=BuildMPS(A, b, Aeq, beq, cost, L, U,upper(name));
 
 % Save matrix sring Contain in file "filename"
 % Return OK == 1 if saving is success
 %        OK == 0 otherwise
-filename=[name '.mps'];
-OK=SaveMPS(filename, Contain);
+%filename=[name '.mps'];
+%OK=SaveMPS(filename, Contain);
