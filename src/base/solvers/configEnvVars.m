@@ -87,7 +87,7 @@ function configEnvVars(printLevel)
             end
 
             % if the solver variable is still empty, then give instructions on how to proceed
-            if isempty(eval(solverPaths{k, 1})) || isempty(getenv(solverPaths{k, 1}))
+            if isempty(eval(solverPaths{k, 1}))
                 if printLevel > 0
                     solversLink = 'https://git.io/v92Vi'; % curl -i https://git.io -F "url=https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md"
                     if usejava('desktop')
@@ -97,7 +97,7 @@ function configEnvVars(printLevel)
                 end
             else
                 % add the solver path
-                fprintf(['   - [', method, '] ', solverPaths{k, 1}, ': ', strrep(getenv(solverPaths{k, 1}), '\', '\\'), '\n' ]);
+                fprintf(['   - [', method, '] ', solverPaths{k, 1}, ': ', strrep(eval(solverPaths{k, 1}), '\', '\\'), '\n' ]);
                 ENV_VARS.STATUS = 1;
             end
         end

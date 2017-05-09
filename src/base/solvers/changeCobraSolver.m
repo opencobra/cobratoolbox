@@ -192,7 +192,7 @@ if ~ENV_VARS.STATUS
             case 'mosek'
                 tmpVar = 'MOSEK_PATH';
         end
-        if strcmpi(solvername, 'gurobi') || strcmpi(solvername, 'ibm_cplex') || strcmpi(solvername, 'tomlab_cplex') || strcmpi(solvername, 'cplex_direct') || strcmpi(solvername, 'mosek')
+        if printLevel > 0 && (strcmpi(solverName, 'gurobi') || strcmpi(solverName, 'ibm_cplex') || strcmpi(solverName, 'tomlab_cplex') || strcmpi(solverName, 'cplex_direct') || strcmpi(solverName, 'mosek'))
             error(['The global variable `', tmpVar, '` is not set. Please follow ', solversLink, ' to set the environment variables properly.']);
         end
     end
