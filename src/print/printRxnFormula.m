@@ -1,4 +1,4 @@
-function formulas = printRxnFormula(model, rxnAbbrList, printFlag, lineChangeFlag, metNameFlag, fid, directionFlag, gprFlag)
+function formulas = printRxnFormula(model, varargin)
 % Prints the reaction formulas for a list of reactions
 %
 % Reactions that have an upperbound <= 0 and lowerbound < 0 will have
@@ -11,14 +11,17 @@ function formulas = printRxnFormula(model, rxnAbbrList, printFlag, lineChangeFla
 % INPUTS:
 %    model:             COBRA model structure
 %
-% OPTIONAL INPUTS:
+% OPTIONAL INPUTS
 %    rxnAbbrList:       Abbrs of reactions whose formulas are to be printed
+%
+% OPTIONAL INPUTS as 'ParameterName',Value pairs:
 %    printFlag:         Print formulas or just return them (Default = true)
 %    lineChangeFlag:    Append a line change at the end of each line
 %                       (Default = true)
 %    metNameFlag:       print full met names instead of abbreviations
 %                       (Default = false)
 %    fid:               Optional file identifier for printing in files
+%                       (default 1, i.e. stdout)
 %    directionFlag:     Checks directionality of reaction. See Note.
 %                       (Default = false)
 %    gprFlag:           print gene protein reaction association
@@ -39,27 +42,55 @@ function formulas = printRxnFormula(model, rxnAbbrList, printFlag, lineChangeFla
 %       - Thomas Pfau 15/12/14 (corrected line end)
 %       - Ronan Fleming 16/07/16 (directionality not flipped by default
 %                                anymore)
+%       - Thomas Pfau May 2017 - Changed to Parameter value pair input
 
-if (nargin < 2)
-    rxnAbbrList = model.rxns;
+
+optionalParameters = {'rxnAbbrList','printFlag', 'lineChangeFlag', 'metNameFlag', 'fid', 'directionFlag', 'gprFlag'};
+if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))
+    %We have an old style thing....
+    %Now, we need to check, whether this is a formula, or a complex setup    
+        tempargin = cell(1,2*(numel(varargin)));
+
+        for i = 1:numel(varargin)
+            
+                tempargin{2*(i-1)+1} = optionalParameters{i};
+                tempargin{2*(i-1)+2} = varargin{i};
+        end        
+        varargin = tempargin;
+    
 end
-if (nargin < 3)
-    printFlag = true;
+
+parser = inputParser();
+parser.addRequired('model',@isstruct) % we only check, whether its a struct, no details for speed
+parser.addParameter('rxnAbbrList',model.rxns,@(x) iscell(x) || ischar(x))
+parser.addParameter('printFlag',true,@(x) isnumeric(x) || islogical(x))
+parser.addParameter('lineChangeFlag',true,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('metNameFlag',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('fid',1, @isnumeric);
+parser.addParameter('directionFlag',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('gprFlag',false,@(x) isnumeric(x) || islogical(x));
+
+parser.parse(model,varargin{:})
+
+model = parser.Results.model;
+rxnAbbrList = parser.Results.rxnAbbrList;
+printFlag = parser.Results.printFlag;
+lineChangeFlag = parser.Results.lineChangeFlag;
+metNameFlag = parser.Results.metNameFlag;
+fid = parser.Results.fid;
+directionFlag = parser.Results.directionFlag;
+gprFlag = parser.Results.gprFlag;
+
+if gprFlag && ~isfield(model,'grRules')
+    %if we want to print the grRules but we don't have the field, create
+    %it.
+    model = generateGrRules(model);
 end
-if (nargin < 4)
-    lineChangeFlag = true;
-end
-if (nargin < 5)
-    metNameFlag = false;
-end
-if (nargin < 6)
-    fid = 1;
-end
-if (nargin < 7)
-    directionFlag = false;
-end
-if (nargin < 8)
-    gprFlag = false;
+
+if metNameFlag && ~isfield(model,'metNames')
+    %if we want to print the metNames, but they don't exist, just use the mets instead. 
+    warning('metNames requested, but no metNames Field exists in the model, using mets instead');
+    model.metNames = model.mets;
 end
 
 formulas = {};
@@ -137,7 +168,7 @@ for i = 1:length(rxnAbbrList);
             end
         end
 
-        if (model.rev(rxnID))
+        if (model.lb(rxnID) < 0)
             if (printFlag)
                 fprintf(fid, '\t<=>\t');
             end
