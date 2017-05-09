@@ -19,10 +19,10 @@ function outmodel = writeCbModel(model,varargin)
 %                   dialog box)
 % format            File format to be used ('text','xls', 'mat'(default) or 'sbml')
 %                   text will only output data from required fields (with GPR rules converted to string representation)
-%                   xls is restricted to the fields defined in the xls io documentation. 
+%                   xls is restricted to the fields defined in the xls io documentation.
 
 % Optional INPUTS as Parameter/Value pairs:
-% Paramtere Name    Value
+% Parameter Name    Value
 % compSymbolList    List of compartment symbols (Cell array)
 % compNameList      List of compartment names corresponding to
 %                   compSymbolList (Cell array)
@@ -36,29 +36,27 @@ function outmodel = writeCbModel(model,varargin)
 % Thomas Pfau May 2017  - Changed To Parameter/Value pairs
 
 %For backward compatability, we are checking whether the old signature is
-%used. 
+%used.
 optionalInputs = {'compSymbols','compNames','sbmlLevel','sbmlVersion'};
 
 %We can assume, that the old syntax is only used if varargin does not start
 %with a optional argument.
-if numel(varargin) > 2 
+if numel(varargin) > 2
     %This is only relevant, if we have more than 2 non Required input
     %variables.
     %if this is apparent, we need to check the following:
     %1. is the 3rd vararginargument a cell array and is the second argument
-    %NOT compSymbols or compNames, if the second argument is NOT a char, 
-    if iscell(varargin{3}) && ischar(varargin{2}) && ~any(ismember(varargin{2},optionalInputs(1:2)))           
-    %We assume the old version to be used               
+    %NOT compSymbols or compNames, if the second argument is NOT a char,
+    if ~ischar(varargin{3}) || ~any(ismember(varargin{3},optionalInputs))
+        %We assume the old version to be used
         tempargin = varargin(1:2);
         %just replace the input by the options and replace varargin
         %accordingly
         for i = 3:numel(varargin)
-            if i < 5 && isempty(varargin{i})
-                %Skip empty compSymbols or compNames
-                continue
+            if ~isempty(varargin{i})
+                tempargin = [tempargin, optionalInputs{i-2}, varargin{i}];
             end
-            tempargin = [tempargin, optionalInputs{i-2}, varargin{i-2}];
-        end        
+        end
         varargin = tempargin;
     end
 end
@@ -77,11 +75,11 @@ parser = inputParser();
 parser.addRequired('model',@(x) checkModel(model,'simpleCheck'));
 parser.addOptional('format','toselect',@ischar);
 parser.addOptional('fileName',[],@ischar);
-parser.addParameter('compSymbols' ,compSymbols ,@iscell);
-parser.addParameter('compNames',compNames, @iscell);
+parser.addParameter('compSymbols' ,compSymbols ,@(x) isempty(x) || iscell(x));
+parser.addParameter('compNames',compNames, @(x) isempty(x) || iscell(x));
 %We currently only support output in SBML 3
-parser.addParameter('sbmlLevel',3, @(x) x == 3);
-parser.addParameter('sbmlVersion',1, @(x) x == 1);
+parser.addParameter('sbmlLevel',3, @(x) isnumeric(x));
+parser.addParameter('sbmlVersion',1, @(x) isnumeric(x));
 
 parser.parse(model,varargin{:});
 input = parser.Results;
@@ -91,11 +89,13 @@ fileName = input.fileName;
 outmodel = model;
 [nMets,nRxns] = size(model.S);
 %formulas = printRxnFormula(model,model.rxns,false,false,false,1,false);
-  
+
 
 %% Open a dialog to select file name
 if (isempty(fileName))
     switch format
+        case 'mps'
+            [fileNameFull,filePath] = uiputfile({'*.MPS'});
         case 'xls'
             [fileNameFull,filePath] = uiputfile({'*.xls;*.xlsx'});
         case {'text','txt'}
@@ -105,20 +105,22 @@ if (isempty(fileName))
         case 'mat'
             [fileNameFull,filePath] = uiputfile({'*.mat'});
         case 'toselect'
-            [fileNameFull,filePath] = uiputfile({'*.mat','Matlab File';'*.xml' 'SBML Model';'*.txt' 'Text Export';'*.xls;*.xlsx' 'Excel Export'});
+            [fileNameFull,filePath] = uiputfile({'*.mat','Matlab File';'*.xml' 'SBML Model';'*.txt' 'Text Export';'*.xls;*.xlsx' 'Excel Export'; '*.MPS' 'MPS Export'});
         otherwise
             [fileNameFull,filePath] = uiputfile({'*'});
     end
-    if (fileNameFull)        
-        [folder,fileName,extension] = fileparts([filePath,fileNameFull]);        
+    if (fileNameFull)
+        [folder,fileName,extension] = fileparts([filePath,fileNameFull]);
         fileName = [folder filesep fileName extension];
         switch extension
+            case '.MPS'
+                format = 'mps';
             case '.xls'
                 format = 'xls';
             case '.xlsx'
                 format = 'xls';
             case '.txt'
-                format = 'text';                
+                format = 'text';
             case '.xml'
                 format = 'sbml';
             case '.mat'
@@ -135,20 +137,20 @@ switch format
     case {'text','txt'}
         fid = fopen(fileName,'w');
         fprintf(fid,'Rxn name\t');
-%         if (isfield(model,'rxnNames'))
-%             fprintf(fid,'Rxn description\t');
-%         end
+        %         if (isfield(model,'rxnNames'))
+        %             fprintf(fid,'Rxn description\t');
+        %         end
         fprintf(fid,'Formula\t');
-         if (isfield(model,'rules'))
-             model = creategrRulesField(model);
-             fprintf(fid,'Gene-reaction association\t');
-         end
+        if (isfield(model,'rules'))
+            model = creategrRulesField(model);
+            fprintf(fid,'Gene-reaction association\t');
+        end
         fprintf(fid,'LB\tUB\tObjective\n');
         for i = 1:nRxns
             fprintf(fid,'%s\t',model.rxns{i});
-%             if (isfield(model,'rxnNames'))
-%                 fprintf(fid,'%s\t',model.rxnNames{i});
-%             end
+            %             if (isfield(model,'rxnNames'))
+            %                 fprintf(fid,'%s\t',model.rxnNames{i});
+            %             end
             fprintf(fid,'%s\t',formulas{i});
             if (isfield(model,'rules'))
                 fprintf(fid,'%s\t',model.grRules{i});
@@ -158,13 +160,13 @@ switch format
         fclose(fid);
         %% Excel file
     case 'xls'
-        printRxnFormula(model,
+        formulas = printRxnFormula(model,'printFlag',0);
         tmpData{1,1} = 'Abbreviation';
         tmpData{1,2} = 'Description';
         baseInd = 3;
         tmpData{1,baseInd} = 'Reaction';
-        tmpData{1,baseInd+1} = 'GPR';        
-        tmpData{1,baseInd+2} = 'Subsystem';        
+        tmpData{1,baseInd+1} = 'GPR';
+        tmpData{1,baseInd+2} = 'Subsystem';
         tmpData{1,baseInd+3} = 'Lower bound';
         tmpData{1,baseInd+4} = 'Upper bound';
         tmpData{1,baseInd+5} = 'Objective';
@@ -180,7 +182,7 @@ switch format
                 tmpData{i+1,2} = chopForExcel(model.rxnNames{i});
             else
                 tmpData{i+1,2} =  '';
-            end            
+            end
             tmpData{i+1,baseInd} = chopForExcel(formulas{i});
             if (isfield(model,'grRules'))
                 tmpData{i+1,baseInd+1} = chopForExcel(model.grRules{i});
@@ -191,12 +193,12 @@ switch format
                 tmpData{i+1,baseInd+2} = chopForExcel(char(model.subSystems{i}));
             else
                 tmpData{i+1,baseInd+2} = '';
-            end            
+            end
             tmpData{i+1,baseInd+3} = model.lb(i);
             tmpData{i+1,baseInd+4} = model.ub(i);
             tmpData{i+1,baseInd+5} = model.c(i);
-            if (isfield(model,'confidenceScores'))                
-                tmpData{i+1,baseInd+6} =  chopForExcel(num2str(model.confidenceScores{i}));           
+            if (isfield(model,'confidenceScores'))
+                tmpData{i+1,baseInd+6} =  chopForExcel(num2str(model.confidenceScores{i}));
             else
                 tmpData{i+1,baseInd+6} = '';
             end
@@ -283,19 +285,20 @@ switch format
                 tmpMetData{i+1,10} = '';
             end
         end
-        xlswrite(fileName,model.mets,'Metabolite List');       
+        xlswrite(fileName,model.mets,'Metabolite List');
         %% SBML
     case 'sbml'
-        % sbmlModel = convertCobraToSBML(model,sbmlLevel,sbmlVersion,compSymbolList,compNameList);        
+        % sbmlModel = convertCobraToSBML(model,sbmlLevel,sbmlVersion,compSymbolList,compNameList);
         outmodel = writeSBML(model,fileName,input.compSymbols,input.compNames);
-%         if exist('fileName','var')&&~isempty(fileName)
-%             OutputSBML(sbmlModel,fileName);
-%         else
-%             OutputSBML(sbmlModel);
-%         end
+        %         if exist('fileName','var')&&~isempty(fileName)
+        %             OutputSBML(sbmlModel,fileName);
+        %         else
+        %             OutputSBML(sbmlModel);
+        %         end
         %% Unknown
     case 'mat'
         save(fileName,'model')
+ 
     otherwise
         error('Unknown file format');
 end

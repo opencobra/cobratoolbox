@@ -392,7 +392,7 @@ switch solver
         MPSfilename = MPSfilename(1:min(8, length(MPSfilename)));
         if ~exist([tmpPath filesep 'MPS' filesep MPSfilename '.mps'], 'file')
             cd('MPS');
-            convertCobraLP2mps(LPproblem, MPSfilename);
+            writeLPProblem(LPproblem,'fileName',MPSfilename);
             cd('..');
         end
 
@@ -1394,7 +1394,7 @@ switch solver
     case 'mps'
         fprintf(' > The interface to ''mps'' from solveCobraLP will not be supported anymore.\n -> Use >> writeCbModel(model, ''mps'');\n');
         % temporary legacy support
-        writeCbModel(LPproblem, 'mps', 'LP.mps', [], [], [], [], solverParams);
+        writeLPProblem(LPproblem,'fileName','LP.mps','solverParams',solverParams);
     otherwise
         error(['Unknown solver: ' solver]);
 

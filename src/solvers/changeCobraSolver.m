@@ -291,7 +291,7 @@ switch solverName
                     solverOK = checkSolverInstallationFile(solverName, 'minos', printLevel);
                 end
             else
-                error(['You must have `csh` installed. Solver ', solverName, ' cannot be used.']);
+              %  error(['You must have `csh` installed. Solver ', solverName, ' cannot be used.']);
             end
         end
     case 'opti'
