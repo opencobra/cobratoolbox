@@ -80,6 +80,9 @@ if isempty(parser.Results.fileName)
     fileName = [name '.mps'];
 else
     fileName = parser.Results.fileName;
+    if isempty(regexp(fileName,'\.mps$'))
+        fileName = [fileName '.mps'];
+    end
 end
 
 %Setup the problem structure and additional fields.
@@ -184,7 +187,7 @@ switch outputFormat
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
         %http://www.mathworks.com/matlabcentral/fileexchange/19618-mps-format-exporting-tool/content/BuildMPS/BuildMPS.m
-        %31st Jan 2016, changed c to osense*c as most solvers assume minimisation
+        %31st Jan 2016, changed c to osense*c as most solvers assume minimisation        
         if writeMatrix && any(ismember(parser.UsingDefaults,'solverParams'))
             [Contain]=BuildMPS(Ale, ble, Aeq, beq, osense*c, lb, ub, PbName);
             OK=SaveMPS(fileName, Contain);
