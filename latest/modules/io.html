@@ -14,6 +14,9 @@
   
   
 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
@@ -25,7 +28,7 @@
 
   
   
-    <link rel="stylesheet" href="../_static/julia.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/cobra.css" type="text/css" />
   
 
   
@@ -35,7 +38,7 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
-        <link rel="up" title="Modules" href="index.html"/>
+        <link rel="up" title="Documentation" href="index.html"/>
         <link rel="next" title="Tutorials" href="../tutorials/index.html"/>
         <link rel="prev" title="Design" href="design.html"/> 
 
@@ -56,7 +59,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> The COBRA Toolbox
+            <a href="../index.html">
           
 
           
@@ -83,7 +86,11 @@
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
               <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Modules</a><ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="tools.html">Tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="print.html">Print</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metabotools.html">Metabotools</a></li>
@@ -96,6 +103,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
 </ul>
 
           
@@ -119,23 +130,40 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../index.html">Docs</a> &raquo;</li>
-      
-          <li><a href="index.html">Modules</a> &raquo;</li>
-      
-    <li>IO</li>
+    
+      <li><a href="../contents.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Documentation</a> &raquo;</li>
+        
+      <li>IO</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -145,7 +173,7 @@
 <span id="id1"></span><h1>IO<a class="headerlink" href="#io" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.io"></span><dl class="function">
 <dt id="src.io.convertCobraLP2mps">
-<code class="descname">convertCobraLP2mps</code><span class="sig-paren">(</span><em>LPProblem</em>, <em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#src.io.convertCobraLP2mps" title="Permalink to this definition">¶</a></dt>
+<code class="descname">convertCobraLP2mps</code><span class="sig-paren">(</span><em>LPProblem</em>, <em>name</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/io/convertCobraLP2mps.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.io.convertCobraLP2mps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates an MPS (Mathematical Programming System) format ascii file
 representing the Linear Programming problem given by LPProblem.</p>
 <p><strong>Usage</strong></p>
@@ -186,7 +214,7 @@ string giving name of LP problem</li>
 
 <dl class="function">
 <dt id="src.io.convertCobraToSBML">
-<code class="descname">convertCobraToSBML</code><span class="sig-paren">(</span><em>model</em>, <em>sbmlLevel</em>, <em>sbmlVersion</em>, <em>compSymbolList</em>, <em>compNameList</em><span class="sig-paren">)</span><a class="headerlink" href="#src.io.convertCobraToSBML" title="Permalink to this definition">¶</a></dt>
+<code class="descname">convertCobraToSBML</code><span class="sig-paren">(</span><em>model</em>, <em>sbmlLevel</em>, <em>sbmlVersion</em>, <em>compSymbolList</em>, <em>compNameList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/io/convertCobraToSBML.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.io.convertCobraToSBML" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts a cobra structure to an sbml
 structure using the structures provided in the SBML toolbox 3.1.0</p>
 <p><strong>Usage</strong></p>
@@ -223,7 +251,7 @@ SBML MATLAB structure</li>
 
 <dl class="function">
 <dt id="src.io.readCbModel">
-<code class="descname">readCbModel</code><span class="sig-paren">(</span><em>fileName</em>, <em>defaultBound</em>, <em>fileType</em>, <em>modelDescription</em>, <em>compSymbolList</em>, <em>compNameList</em><span class="sig-paren">)</span><a class="headerlink" href="#src.io.readCbModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">readCbModel</code><span class="sig-paren">(</span><em>fileName</em>, <em>defaultBound</em>, <em>fileType</em>, <em>modelDescription</em>, <em>compSymbolList</em>, <em>compNameList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/io/readCbModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.io.readCbModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads in a constraint-based model. If no arguments are passed to the function, the user will be prompted for
 a file name.</p>
 <p><strong>Usage</strong></p>
@@ -325,7 +353,7 @@ COBRA model, others are not.</p>
 
 <dl class="function">
 <dt id="src.io.readMinosSolution">
-<code class="descname">readMinosSolution</code><span class="sig-paren">(</span><em>fname</em><span class="sig-paren">)</span><a class="headerlink" href="#src.io.readMinosSolution" title="Permalink to this definition">¶</a></dt>
+<code class="descname">readMinosSolution</code><span class="sig-paren">(</span><em>fname</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/io/readMinosSolution.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.io.readMinosSolution" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads MINOS solution information from file fname.
 The file is created by MINOS with the run-time option
 Report file 81.
@@ -377,7 +405,7 @@ Structure<ul>
 
 <dl class="function">
 <dt id="src.io.sbmlTestModelToMat">
-<code class="descname">sbmlTestModelToMat</code><span class="sig-paren">(</span><em>originFolder</em>, <em>destFolder</em><span class="sig-paren">)</span><a class="headerlink" href="#src.io.sbmlTestModelToMat" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sbmlTestModelToMat</code><span class="sig-paren">(</span><em>originFolder</em>, <em>destFolder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/io/sbmlTestModelToMat.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.io.sbmlTestModelToMat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to translate a batch of sbml files in .xml format within an <cite>originFolder</cite>,
 into COBRA toolbox compatible models, saving each as a .mat file in <cite>destFolder</cite>
 containing one &#8216;model&#8217; structure derived from the corresponding .xml file</p>
@@ -399,7 +427,7 @@ filename of the corresponding input name.xml file</li>
 
 <dl class="function">
 <dt id="src.io.writeCbModel">
-<code class="descname">writeCbModel</code><span class="sig-paren">(</span><em>model</em>, <em>format</em>, <em>fileName</em>, <em>compSymbolList</em>, <em>compNameList</em>, <em>sbmlLevel</em>, <em>sbmlVersion</em>, <em>solverParams</em><span class="sig-paren">)</span><a class="headerlink" href="#src.io.writeCbModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">writeCbModel</code><span class="sig-paren">(</span><em>model</em>, <em>format</em>, <em>fileName</em>, <em>compSymbolList</em>, <em>compNameList</em>, <em>sbmlLevel</em>, <em>sbmlVersion</em>, <em>solverParams</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/io/writeCbModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.io.writeCbModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes out COBRA models in various formats</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -448,7 +476,7 @@ SBML toolbox (<a class="reference external" href="http://sbml.org/Software/SBMLT
 
 <dl class="function">
 <dt id="src.io.writeGDXFromCOBRA">
-<code class="descname">writeGDXFromCOBRA</code><span class="sig-paren">(</span><em>cobraStruct</em>, <em>fileName</em>, <em>small</em><span class="sig-paren">)</span><a class="headerlink" href="#src.io.writeGDXFromCOBRA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">writeGDXFromCOBRA</code><span class="sig-paren">(</span><em>cobraStruct</em>, <em>fileName</em>, <em>small</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/io/writeGDXFromCOBRA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.io.writeGDXFromCOBRA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes a GDX file with the stoichiometric matrix and
 the reversibility information. If small is set to true, it writes a
 smaller GDX . Requires <cite>wgdx</cite> to be on path, which is provided by a GAMS installation.</p>
@@ -485,7 +513,7 @@ writeGDXFromCOBRA(cobraStruct, fileName, true)   % uses provided filename, gdx d
 
 <dl class="function">
 <dt id="src.io.writeMinosProblem">
-<code class="descname">writeMinosProblem</code><span class="sig-paren">(</span><em>LPproblem</em>, <em>precision</em>, <em>modelName</em>, <em>directory</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#src.io.writeMinosProblem" title="Permalink to this definition">¶</a></dt>
+<code class="descname">writeMinosProblem</code><span class="sig-paren">(</span><em>LPproblem</em>, <em>precision</em>, <em>modelName</em>, <em>directory</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/io/writeMinosProblem.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.io.writeMinosProblem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Inputs a COBRA LPproblem Matlab structure and outputs
 a file that can be input to an F90 main program
 for solution by SQOPT or MINOS.</p>
@@ -563,10 +591,10 @@ A <cite>s</cite> is appended to name if format==2 (single precision),
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../tutorials/index.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../tutorials/index.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="design.html" class="btn btn-neutral" title="Design" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="design.html" class="btn btn-neutral" title="Design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -14,6 +14,9 @@
   
   
 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
@@ -25,7 +28,7 @@
 
   
   
-    <link rel="stylesheet" href="../_static/julia.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/cobra.css" type="text/css" />
   
 
   
@@ -35,7 +38,7 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
-        <link rel="up" title="Modules" href="index.html"/>
+        <link rel="up" title="Documentation" href="index.html"/>
         <link rel="next" title="Sampling" href="sampling.html"/>
         <link rel="prev" title="MultiSpeciesModelling" href="multiSpeciesModelling.html"/> 
 
@@ -56,7 +59,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> The COBRA Toolbox
+            <a href="../index.html">
           
 
           
@@ -83,7 +86,11 @@
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
               <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Modules</a><ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="tools.html">Tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="print.html">Print</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metabotools.html">Metabotools</a></li>
@@ -96,6 +103,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
 </ul>
 
           
@@ -119,23 +130,40 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../index.html">Docs</a> &raquo;</li>
-      
-          <li><a href="index.html">Modules</a> &raquo;</li>
-      
-    <li>Reconstruction</li>
+    
+      <li><a href="../contents.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Documentation</a> &raquo;</li>
+        
+      <li>Reconstruction</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -145,7 +173,7 @@
 <span id="id1"></span><h1>Reconstruction<a class="headerlink" href="#reconstruction" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.reconstruction"></span><dl class="function">
 <dt id="src.reconstruction.addDemandReaction">
-<code class="descname">addDemandReaction</code><span class="sig-paren">(</span><em>model</em>, <em>metaboliteNameList</em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.addDemandReaction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addDemandReaction</code><span class="sig-paren">(</span><em>model</em>, <em>metaboliteNameList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/addDemandReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.addDemandReaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds demand reactions for a set of metabolites
 The reaction names for the demand reactions will be <cite>DM_[metaboliteName]`</cite></p>
 <p><strong>Usage</strong></p>
@@ -173,7 +201,7 @@ List of added reactions</li>
 
 <dl class="function">
 <dt id="src.reconstruction.addExchangeRxn">
-<code class="descname">addExchangeRxn</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em>, <em>lb</em>, <em>ub</em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.addExchangeRxn" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addExchangeRxn</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em>, <em>lb</em>, <em>ub</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/addExchangeRxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.addExchangeRxn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds exchange reactions</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -207,7 +235,7 @@ COBRA model with added exchange reactions</li>
 
 <dl class="function">
 <dt id="src.reconstruction.addMetabolite">
-<code class="descname">addMetabolite</code><span class="sig-paren">(</span><em>model</em>, <em>metID</em>, <em>metName</em>, <em>formula</em>, <em>ChEBIID</em>, <em>KEGGId</em>, <em>PubChemID</em>, <em>InChi</em>, <em>Charge</em>, <em>b</em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.addMetabolite" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addMetabolite</code><span class="sig-paren">(</span><em>model</em>, <em>metID</em>, <em>metName</em>, <em>formula</em>, <em>ChEBIID</em>, <em>KEGGId</em>, <em>PubChemID</em>, <em>InChi</em>, <em>Charge</em>, <em>b</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/addMetabolite.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.addMetabolite" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a Metabolite to the Current Reconstruction</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -255,7 +283,7 @@ arrays. <cite>Charge</cite> and <cite>b</cite> have to be double arrays.</p>
 
 <dl class="function">
 <dt id="src.reconstruction.addRatioReaction">
-<code class="descname">addRatioReaction</code><span class="sig-paren">(</span><em>model</em>, <em>listOfRxns</em>, <em>ratioCoeff</em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.addRatioReaction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addRatioReaction</code><span class="sig-paren">(</span><em>model</em>, <em>listOfRxns</em>, <em>ratioCoeff</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/addRatioReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.addRatioReaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds ratio reaction.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -286,7 +314,7 @@ Array of ratio coefficient between the 2 reactions</li>
 
 <dl class="function">
 <dt id="src.reconstruction.addReaction">
-<code class="descname">addReaction</code><span class="sig-paren">(</span><em>model</em>, <em>rxnName</em>, <em>metaboliteList</em>, <em>stoichCoeffList</em>, <em>revFlag</em>, <em>lowerBound</em>, <em>upperBound</em>, <em>objCoeff</em>, <em>subSystem</em>, <em>grRule</em>, <em>geneNameList</em>, <em>systNameList</em>, <em>checkDuplicate</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.addReaction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addReaction</code><span class="sig-paren">(</span><em>model</em>, <em>rxnName</em>, <em>metaboliteList</em>, <em>stoichCoeffList</em>, <em>revFlag</em>, <em>lowerBound</em>, <em>upperBound</em>, <em>objCoeff</em>, <em>subSystem</em>, <em>grRule</em>, <em>geneNameList</em>, <em>systNameList</em>, <em>checkDuplicate</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/addReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.addReaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a reaction to the model or modify an existing reaction</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -357,7 +385,7 @@ of an identical reaction already present in the model.</li>
 
 <dl class="function">
 <dt id="src.reconstruction.addSinkReactions">
-<code class="descname">addSinkReactions</code><span class="sig-paren">(</span><em>model</em>, <em>metabolites</em>, <em>lb</em>, <em>ub</em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.addSinkReactions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addSinkReactions</code><span class="sig-paren">(</span><em>model</em>, <em>metabolites</em>, <em>lb</em>, <em>ub</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/addSinkReactions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.addSinkReactions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a sink reaction for the list of metabolites</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -395,7 +423,7 @@ an identical reaction already present in the model</li>
 
 <dl class="function">
 <dt id="src.reconstruction.assignGPRA">
-<code class="descname">assignGPRA</code><span class="sig-paren">(</span><em>model</em>, <em>gpraFile</em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.assignGPRA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">assignGPRA</code><span class="sig-paren">(</span><em>model</em>, <em>gpraFile</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/assignGPRA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.assignGPRA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assigns each reaction a Gene-protein-reaction association</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -420,7 +448,7 @@ COBRA model with gene-protein-reaction assoction</li>
 
 <dl class="function">
 <dt id="src.reconstruction.assignSubSystems">
-<code class="descname">assignSubSystems</code><span class="sig-paren">(</span><em>model</em>, <em>gpraFile</em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.assignSubSystems" title="Permalink to this definition">¶</a></dt>
+<code class="descname">assignSubSystems</code><span class="sig-paren">(</span><em>model</em>, <em>gpraFile</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/assignSubSystems.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.assignSubSystems" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assigns each reaction a subsystem in the model structure</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -445,7 +473,7 @@ COBRA model structure with subsystem assignment</li>
 
 <dl class="function">
 <dt id="src.reconstruction.biomassPrecursorCheck">
-<code class="descname">biomassPrecursorCheck</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.biomassPrecursorCheck" title="Permalink to this definition">¶</a></dt>
+<code class="descname">biomassPrecursorCheck</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/biomassPrecursorCheck.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.biomassPrecursorCheck" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if biomass precursors are able to be
 synthesized.</p>
 <p>[missingMets, presentMets] = checkBiomassPrecursors(model)</p>
@@ -471,7 +499,7 @@ network such as ATP, NAD, NADPH, ACCOA.</p>
 
 <dl class="function">
 <dt id="src.reconstruction.connectedComponents">
-<code class="descname">connectedComponents</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>figures</em>, <em>files</em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.connectedComponents" title="Permalink to this definition">¶</a></dt>
+<code class="descname">connectedComponents</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>figures</em>, <em>files</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/connectedComponents.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.connectedComponents" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assuming two reactions are connected if they share metabolites, calculate the connected components
 in the stoichiometric matrix, that is, the sets of reactions that share a set of metabolites</p>
 <p><strong>Usage</strong></p>
@@ -527,7 +555,7 @@ Speedup and addition of files indicator - Thomas Pfau May 2017</p>
 
 <dl class="function">
 <dt id="src.reconstruction.createModel">
-<code class="descname">createModel</code><span class="sig-paren">(</span><em>rxnAbrList</em>, <em>rxnNameList</em>, <em>rxnList</em>, <em>revFlagList</em>, <em>lowerBoundList</em>, <em>upperBoundList</em>, <em>subSystemList</em>, <em>grRuleList</em>, <em>geneNameList</em>, <em>systNameList</em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.createModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">createModel</code><span class="sig-paren">(</span><em>rxnAbrList</em>, <em>rxnNameList</em>, <em>rxnList</em>, <em>revFlagList</em>, <em>lowerBoundList</em>, <em>upperBoundList</em>, <em>subSystemList</em>, <em>grRuleList</em>, <em>geneNameList</em>, <em>systNameList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/createModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.createModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a COBRA model from inputs or an empty model
 structure if no inputs are provided.</p>
 <p><strong>Usage</strong></p>
@@ -578,7 +606,7 @@ COBRA model structure</li>
 
 <dl class="function">
 <dt id="src.reconstruction.createTissueSpecificModel">
-<code class="descname">createTissueSpecificModel</code><span class="sig-paren">(</span><em>model</em>, <em>expressionData</em>, <em>proceedExp</em>, <em>orphan</em>, <em>exRxnRemove</em>, <em>solver</em>, <em>options</em>, <em>funcModel</em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.createTissueSpecificModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">createTissueSpecificModel</code><span class="sig-paren">(</span><em>model</em>, <em>expressionData</em>, <em>proceedExp</em>, <em>orphan</em>, <em>exRxnRemove</em>, <em>solver</em>, <em>options</em>, <em>funcModel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/createTissueSpecificModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.createTissueSpecificModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates draft tissue specific model from mRNA expression data</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -663,7 +691,7 @@ based on maintaining pathway length comparable to expression data, not flux</p>
 
 <dl class="function">
 <dt id="src.reconstruction.removeMetabolites">
-<code class="descname">removeMetabolites</code><span class="sig-paren">(</span><em>model</em>, <em>metaboliteList</em>, <em>removeRxnFlag</em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.removeMetabolites" title="Permalink to this definition">¶</a></dt>
+<code class="descname">removeMetabolites</code><span class="sig-paren">(</span><em>model</em>, <em>metaboliteList</em>, <em>removeRxnFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/removeMetabolites.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.removeMetabolites" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes metabolites from a model</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -695,7 +723,7 @@ COBRA model with removed metabolites</li>
 
 <dl class="function">
 <dt id="src.reconstruction.removeRxns">
-<code class="descname">removeRxns</code><span class="sig-paren">(</span><em>model</em>, <em>rxnRemoveList</em>, <em>irrevFlag</em>, <em>metFlag</em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.removeRxns" title="Permalink to this definition">¶</a></dt>
+<code class="descname">removeRxns</code><span class="sig-paren">(</span><em>model</em>, <em>rxnRemoveList</em>, <em>irrevFlag</em>, <em>metFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/removeRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.removeRxns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes reactions from a model</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -729,7 +757,7 @@ Remove unused metabolites (Default = true)</li>
 
 <dl class="function">
 <dt id="src.reconstruction.removeTrivialStoichiometry">
-<code class="descname">removeTrivialStoichiometry</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.removeTrivialStoichiometry" title="Permalink to this definition">¶</a></dt>
+<code class="descname">removeTrivialStoichiometry</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/removeTrivialStoichiometry.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.removeTrivialStoichiometry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes metabolites and reactions corresponding to zero rows and columns</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -762,10 +790,10 @@ Obtained model with removed metabolites and reactions</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="sampling.html" class="btn btn-neutral float-right" title="Sampling" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="sampling.html" class="btn btn-neutral float-right" title="Sampling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="multiSpeciesModelling.html" class="btn btn-neutral" title="MultiSpeciesModelling" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="multiSpeciesModelling.html" class="btn btn-neutral" title="MultiSpeciesModelling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

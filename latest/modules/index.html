@@ -8,12 +8,15 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Modules &mdash; The COBRA Toolbox</title>
+  <title>Documentation &mdash; The COBRA Toolbox</title>
   
 
   
   
 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
@@ -25,7 +28,7 @@
 
   
   
-    <link rel="stylesheet" href="../_static/julia.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/cobra.css" type="text/css" />
   
 
   
@@ -36,7 +39,7 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
         <link rel="next" title="Tools" href="tools.html"/>
-        <link rel="prev" title="The COBRA Toolbox" href="../index.html"/> 
+        <link rel="prev" title="Installation" href="../installation.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -55,7 +58,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> The COBRA Toolbox
+            <a href="../index.html">
           
 
           
@@ -82,7 +85,11 @@
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
               <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Modules</a><ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tools.html">Tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="print.html">Print</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metabotools.html">Metabotools</a></li>
@@ -95,6 +102,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
 </ul>
 
           
@@ -118,28 +129,45 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../index.html">Docs</a> &raquo;</li>
-      
-    <li>Modules</li>
+    
+      <li><a href="../contents.html">Docs</a> &raquo;</li>
+        
+      <li>Documentation</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="modules">
-<span id="modules-functions"></span><h1>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="documentation">
+<span id="modules-functions"></span><h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tools.html">Tools</a></li>
@@ -153,52 +181,6 @@
 <li class="toctree-l1"><a class="reference internal" href="io.html">IO</a></li>
 </ul>
 </div>
-<p>Example</p>
-<dl class="function">
-<dt id="docs.source.modules.templateFunction">
-<code class="descname">templateFunction</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em>, <em>arg3</em><span class="sig-paren">)</span><a class="headerlink" href="#docs.source.modules.templateFunction" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function does this and that</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[out1, out2] = templateFunction(arg1, arg2, arg3)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>arg1</strong> &#8211;
-a short description for this argument</li>
-<li><strong>arg2</strong> &#8211;
-another argument</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional intput</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>arg3</strong> &#8211;
-optional argument</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>out1</strong> &#8211;
-the product of arg1 and arg2</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>out2</strong> &#8211;
-the product of arg1, arg2 and arg3</li>
-</ul>
-</div></blockquote>
-<p><strong>Example</strong></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">out1</span><span class="p">,</span> <span class="n">out2</span><span class="p">]</span> <span class="o">=</span> <span class="n">templateFunction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
-<span class="o">&gt;&gt;</span> <span class="n">out1</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="o">&gt;&gt;</span> <span class="n">out2</span> <span class="o">=</span> <span class="mi">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
 </div>
 
 
@@ -211,10 +193,10 @@ the product of arg1, arg2 and arg3</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="tools.html" class="btn btn-neutral float-right" title="Tools" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="tools.html" class="btn btn-neutral float-right" title="Tools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-neutral" title="The COBRA Toolbox" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../installation.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

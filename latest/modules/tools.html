@@ -14,6 +14,9 @@
   
   
 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
@@ -25,7 +28,7 @@
 
   
   
-    <link rel="stylesheet" href="../_static/julia.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/cobra.css" type="text/css" />
   
 
   
@@ -35,9 +38,9 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
-        <link rel="up" title="Modules" href="index.html"/>
+        <link rel="up" title="Documentation" href="index.html"/>
         <link rel="next" title="Print" href="print.html"/>
-        <link rel="prev" title="Modules" href="index.html"/> 
+        <link rel="prev" title="Documentation" href="index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -56,7 +59,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> The COBRA Toolbox
+            <a href="../index.html">
           
 
           
@@ -83,7 +86,11 @@
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
               <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Modules</a><ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Documentation</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="print.html">Print</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metabotools.html">Metabotools</a></li>
@@ -96,6 +103,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
 </ul>
 
           
@@ -119,23 +130,40 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../index.html">Docs</a> &raquo;</li>
-      
-          <li><a href="index.html">Modules</a> &raquo;</li>
-      
-    <li>Tools</li>
+    
+      <li><a href="../contents.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Documentation</a> &raquo;</li>
+        
+      <li>Tools</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -145,7 +173,7 @@
 <span id="id1"></span><h1>Tools<a class="headerlink" href="#tools" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.tools"></span><dl class="function">
 <dt id="src.tools.FEA">
-<code class="descname">FEA</code><span class="sig-paren">(</span><em>model</em>, <em>rxnSet</em>, <em>group</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.FEA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">FEA</code><span class="sig-paren">(</span><em>model</em>, <em>rxnSet</em>, <em>group</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/tools/FEA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.tools.FEA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Significane analysis - Flux enrichment analysis using hypergeometric
 1-sided test and FDR correction for multiple testing</p>
 <p><strong>Usage</strong></p>
@@ -174,7 +202,7 @@ cell structure of enriched groups</li>
 
 <dl class="function">
 <dt id="src.tools.calcGroupStats">
-<code class="descname">calcGroupStats</code><span class="sig-paren">(</span><em>data</em>, <em>groups</em>, <em>statName</em>, <em>groupList</em>, <em>randStat</em>, <em>nRand</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.calcGroupStats" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calcGroupStats</code><span class="sig-paren">(</span><em>data</em>, <em>groups</em>, <em>statName</em>, <em>groupList</em>, <em>randStat</em>, <em>nRand</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/tools/calcGroupStats.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.tools.calcGroupStats" title="Permalink to this definition">¶</a></dt>
 <dd><p>calcGroupStats Calculate statistics such as mean or standard deviation for
 subgroups of a population</p>
 <p><strong>Usage</strong></p>
@@ -218,7 +246,7 @@ Number of individuals in a group</li>
 
 <dl class="function">
 <dt id="src.tools.columnVector">
-<code class="descname">columnVector</code><span class="sig-paren">(</span><em>vec</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.columnVector" title="Permalink to this definition">¶</a></dt>
+<code class="descname">columnVector</code><span class="sig-paren">(</span><em>vec</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/tools/columnVector.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.tools.columnVector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts a vector to a column vector</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -241,7 +269,7 @@ a column vector</li>
 
 <dl class="function">
 <dt id="src.tools.countUnique">
-<code class="descname">countUnique</code><span class="sig-paren">(</span><em>list</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.countUnique" title="Permalink to this definition">¶</a></dt>
+<code class="descname">countUnique</code><span class="sig-paren">(</span><em>list</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/tools/countUnique.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.tools.countUnique" title="Permalink to this definition">¶</a></dt>
 <dd><p>Count unique elements in a vector (cell array or numerical)
 Also sorts the unique elements in descending order</p>
 <p><strong>Usage</strong></p>
@@ -251,7 +279,7 @@ Also sorts the unique elements in descending order</p>
 
 <dl class="function">
 <dt id="src.tools.createDeltaMatchMatrix">
-<code class="descname">createDeltaMatchMatrix</code><span class="sig-paren">(</span><em>set1</em>, <em>set2</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.createDeltaMatchMatrix" title="Permalink to this definition">¶</a></dt>
+<code class="descname">createDeltaMatchMatrix</code><span class="sig-paren">(</span><em>set1</em>, <em>set2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/tools/createDeltaMatchMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.tools.createDeltaMatchMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a flux difference constraint matrix for MOMA
 type calculations</p>
 <p><strong>Usage</strong></p>
@@ -261,7 +289,7 @@ type calculations</p>
 
 <dl class="function">
 <dt id="src.tools.fvaJaccardIndex">
-<code class="descname">fvaJaccardIndex</code><span class="sig-paren">(</span><em>minFlux</em>, <em>maxFlux</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.fvaJaccardIndex" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fvaJaccardIndex</code><span class="sig-paren">(</span><em>minFlux</em>, <em>maxFlux</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/tools/fvaJaccardIndex.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.tools.fvaJaccardIndex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compare flux ranges by computing the Jaccard index</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -289,7 +317,7 @@ intersection divided by the union of all k flux ranges</li>
 
 <dl class="function">
 <dt id="src.tools.parseBoolean">
-<code class="descname">parseBoolean</code><span class="sig-paren">(</span><em>str</em>, <em>tokens</em>, <em>allowedElementChars</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.parseBoolean" title="Permalink to this definition">¶</a></dt>
+<code class="descname">parseBoolean</code><span class="sig-paren">(</span><em>str</em>, <em>tokens</em>, <em>allowedElementChars</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/tools/parseBoolean.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.tools.parseBoolean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parses a Boolean logic statement</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -323,7 +351,7 @@ to reactions, and columns corresponding to genes).</li>
 
 <dl class="function">
 <dt id="src.tools.printLabeledData">
-<code class="descname">printLabeledData</code><span class="sig-paren">(</span><em>labels</em>, <em>data</em>, <em>nonzeroFlag</em>, <em>sortCol</em>, <em>fileName</em>, <em>headerRow</em>, <em>sortMode</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.printLabeledData" title="Permalink to this definition">¶</a></dt>
+<code class="descname">printLabeledData</code><span class="sig-paren">(</span><em>labels</em>, <em>data</em>, <em>nonzeroFlag</em>, <em>sortCol</em>, <em>fileName</em>, <em>headerRow</em>, <em>sortMode</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/tools/printLabeledData.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.tools.printLabeledData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print a matrix of data with labels</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -351,7 +379,7 @@ Sort mode, &#8216;ascend&#8217; or &#8216;descend&#8217; (opt, default &#8216;as
 
 <dl class="function">
 <dt id="src.tools.printMatrix">
-<code class="descname">printMatrix</code><span class="sig-paren">(</span><em>A</em>, <em>format</em>, <em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.printMatrix" title="Permalink to this definition">¶</a></dt>
+<code class="descname">printMatrix</code><span class="sig-paren">(</span><em>A</em>, <em>format</em>, <em>file</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/tools/printMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.tools.printMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>printMatrix Prints matrix into a file or screen</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -371,7 +399,7 @@ File name (opt)</li>
 
 <dl class="function">
 <dt id="src.tools.readMixedData">
-<code class="descname">readMixedData</code><span class="sig-paren">(</span><em>file</em>, <em>n_header</em>, <em>n_labels</em>, <em>delimiter</em>, <em>verbose</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.readMixedData" title="Permalink to this definition">¶</a></dt>
+<code class="descname">readMixedData</code><span class="sig-paren">(</span><em>file</em>, <em>n_header</em>, <em>n_labels</em>, <em>delimiter</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/tools/readMixedData.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.tools.readMixedData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read floating point data with row identifiers (text) in the first n columns
 and m headerlines (text)</p>
 <p><strong>Usage</strong></p>
@@ -396,7 +424,7 @@ Print out the string to be evaluated for debugging (default 0)</li>
 
 <dl class="function">
 <dt id="src.tools.reporterMets">
-<code class="descname">reporterMets</code><span class="sig-paren">(</span><em>model</em>, <em>data</em>, <em>nRand</em>, <em>pValFlag</em>, <em>nLayers</em>, <em>metric</em>, <em>dataRxns</em>, <em>inclExchFlag</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.reporterMets" title="Permalink to this definition">¶</a></dt>
+<code class="descname">reporterMets</code><span class="sig-paren">(</span><em>model</em>, <em>data</em>, <em>nRand</em>, <em>pValFlag</em>, <em>nLayers</em>, <em>metric</em>, <em>dataRxns</em>, <em>inclExchFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/tools/reporterMets.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.tools.reporterMets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implements the reporter metabolites algorithm by Patil &amp;
 Nielsen</p>
 <p><strong>Usage</strong></p>
@@ -441,7 +469,7 @@ Raw unnormalized scores</li>
 
 <dl class="function">
 <dt id="src.tools.selMatrix">
-<code class="descname">selMatrix</code><span class="sig-paren">(</span><em>selVec</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.selMatrix" title="Permalink to this definition">¶</a></dt>
+<code class="descname">selMatrix</code><span class="sig-paren">(</span><em>selVec</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/tools/selMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.tools.selMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create selection matrix from a selection vector</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -463,7 +491,7 @@ Raw unnormalized scores</li>
 
 <dl class="function">
 <dt id="src.tools.showprogress">
-<code class="descname">showprogress</code><span class="sig-paren">(</span><em>x</em>, <em>whichbar</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.showprogress" title="Permalink to this definition">¶</a></dt>
+<code class="descname">showprogress</code><span class="sig-paren">(</span><em>x</em>, <em>whichbar</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/tools/showprogress.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.tools.showprogress" title="Permalink to this definition">¶</a></dt>
 <dd><p>showprogress shows waitbars</p>
 <p><strong>Inputs</strong></p>
 <blockquote>
@@ -487,7 +515,7 @@ handle output from waitbar() (WAITBAR_TYPE = 1)</li>
 
 <dl class="function">
 <dt id="src.tools.splitString">
-<code class="descname">splitString</code><span class="sig-paren">(</span><em>string</em>, <em>delimiter</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.splitString" title="Permalink to this definition">¶</a></dt>
+<code class="descname">splitString</code><span class="sig-paren">(</span><em>string</em>, <em>delimiter</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/tools/splitString.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.tools.splitString" title="Permalink to this definition">¶</a></dt>
 <dd><p>Splits a string Perl style</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -517,7 +545,7 @@ Results are returned in the cell array fields</p>
 
 <dl class="function">
 <dt id="src.tools.translateList">
-<code class="descname">translateList</code><span class="sig-paren">(</span><em>list</em>, <em>trList1</em>, <em>trList2</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.translateList" title="Permalink to this definition">¶</a></dt>
+<code class="descname">translateList</code><span class="sig-paren">(</span><em>list</em>, <em>trList1</em>, <em>trList2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/tools/translateList.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.tools.translateList" title="Permalink to this definition">¶</a></dt>
 <dd><p>Translate a list of identifiers (either numerical or cell array) using a dictionary</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -554,7 +582,7 @@ Results are returned in the cell array fields</p>
 
 <dl class="function">
 <dt id="src.tools.unioncell">
-<code class="descname">unioncell</code><span class="sig-paren">(</span><em>A</em>, <em>colA</em>, <em>B</em>, <em>colB</em><span class="sig-paren">)</span><a class="headerlink" href="#src.tools.unioncell" title="Permalink to this definition">¶</a></dt>
+<code class="descname">unioncell</code><span class="sig-paren">(</span><em>A</em>, <em>colA</em>, <em>B</em>, <em>colB</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/tools/unioncell.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.tools.unioncell" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a cell which is the union of cell B to cell A given by a comparing</p>
 <p><strong>Inputs</strong></p>
 <blockquote>
@@ -590,10 +618,10 @@ cell which is the union of cell B to cell A</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="print.html" class="btn btn-neutral float-right" title="Print" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="print.html" class="btn btn-neutral float-right" title="Print" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="Modules" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral" title="Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

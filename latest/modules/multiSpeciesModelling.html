@@ -14,6 +14,9 @@
   
   
 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
@@ -25,7 +28,7 @@
 
   
   
-    <link rel="stylesheet" href="../_static/julia.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/cobra.css" type="text/css" />
   
 
   
@@ -35,7 +38,7 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
-        <link rel="up" title="Modules" href="index.html"/>
+        <link rel="up" title="Documentation" href="index.html"/>
         <link rel="next" title="Reconstruction" href="reconstruction.html"/>
         <link rel="prev" title="rFBA" href="rFBA.html"/> 
 
@@ -56,7 +59,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> The COBRA Toolbox
+            <a href="../index.html">
           
 
           
@@ -83,7 +86,11 @@
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
               <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Modules</a><ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="tools.html">Tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="print.html">Print</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metabotools.html">Metabotools</a></li>
@@ -96,6 +103,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
 </ul>
 
           
@@ -119,23 +130,40 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../index.html">Docs</a> &raquo;</li>
-      
-          <li><a href="index.html">Modules</a> &raquo;</li>
-      
-    <li>MultiSpeciesModelling</li>
+    
+      <li><a href="../contents.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Documentation</a> &raquo;</li>
+        
+      <li>MultiSpeciesModelling</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -145,7 +173,7 @@
 <span id="id1"></span><h1>MultiSpeciesModelling<a class="headerlink" href="#multispeciesmodelling" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.multiSpeciesModelling"></span><dl class="function">
 <dt id="src.multiSpeciesModelling.analyzePairwiseInteractions">
-<code class="descname">analyzePairwiseInteractions</code><span class="sig-paren">(</span><em>pairedGrowthOrg1</em>, <em>pairedGrowthOrg2</em>, <em>singleGrowthOrg1</em>, <em>singleGrowthOrg2</em>, <em>sigD</em><span class="sig-paren">)</span><a class="headerlink" href="#src.multiSpeciesModelling.analyzePairwiseInteractions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">analyzePairwiseInteractions</code><span class="sig-paren">(</span><em>pairedGrowthOrg1</em>, <em>pairedGrowthOrg2</em>, <em>singleGrowthOrg1</em>, <em>singleGrowthOrg2</em>, <em>sigD</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/multiSpeciesModelling/analyzePairwiseInteractions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.multiSpeciesModelling.analyzePairwiseInteractions" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function evaluates the outcome of pairwise growth of two organisms
 compared with the two organisms separately. There are six possible
 outcomes of theinteraction, and nine possible outcomes from the
@@ -216,7 +244,7 @@ if you use this script for your own analysis.</p>
 
 <dl class="function">
 <dt id="src.multiSpeciesModelling.coupleRxnList2Rxn">
-<code class="descname">coupleRxnList2Rxn</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>rxnC</em>, <em>c</em>, <em>u</em><span class="sig-paren">)</span><a class="headerlink" href="#src.multiSpeciesModelling.coupleRxnList2Rxn" title="Permalink to this definition">¶</a></dt>
+<code class="descname">coupleRxnList2Rxn</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>rxnC</em>, <em>c</em>, <em>u</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/multiSpeciesModelling/coupleRxnList2Rxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.multiSpeciesModelling.coupleRxnList2Rxn" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function adds coupling constraints to the fluxes <cite>vi</cite> of a given list of reactions
 (<cite>RxnList</cite>).The constraints are proportional to the flux <cite>v</cite> of a specified
 reaction <cite>rxnC</cite>, so that for all reactions in <cite>RxnList</cite> <cite>vi ~ vrxnC</cite>.
@@ -259,7 +287,7 @@ coupled model</li>
 
 <dl class="function">
 <dt id="src.multiSpeciesModelling.createMultipleSpeciesModel">
-<code class="descname">createMultipleSpeciesModel</code><span class="sig-paren">(</span><em>models</em>, <em>nameTagsModels</em>, <em>modelHost</em>, <em>nameTagHost</em><span class="sig-paren">)</span><a class="headerlink" href="#src.multiSpeciesModelling.createMultipleSpeciesModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">createMultipleSpeciesModel</code><span class="sig-paren">(</span><em>models</em>, <em>nameTagsModels</em>, <em>modelHost</em>, <em>nameTagHost</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/multiSpeciesModelling/createMultipleSpeciesModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.multiSpeciesModelling.createMultipleSpeciesModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Based on the implementation from <em>Klitgord and Segre 2010, PMID 21124952</em>.
 The present implementation has been used in <em>PMID 23022739</em>, <em>PMID 25841013</em>,
 <em>PMID 25901891</em>, <em>PMID 27893703</em>.</p>
@@ -322,7 +350,7 @@ model structure for joint model</li>
 
 <dl class="function">
 <dt id="src.multiSpeciesModelling.useDiet_AGORA_pairedModels">
-<code class="descname">useDiet_AGORA_pairedModels</code><span class="sig-paren">(</span><em>modelIn</em>, <em>diet</em><span class="sig-paren">)</span><a class="headerlink" href="#src.multiSpeciesModelling.useDiet_AGORA_pairedModels" title="Permalink to this definition">¶</a></dt>
+<code class="descname">useDiet_AGORA_pairedModels</code><span class="sig-paren">(</span><em>modelIn</em>, <em>diet</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/multiSpeciesModelling/useDiet_AGORA_pairedModels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.multiSpeciesModelling.useDiet_AGORA_pairedModels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assigns a diet for the 773 AGORA microbes</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -360,10 +388,10 @@ if you use this script for your own analysis.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="reconstruction.html" class="btn btn-neutral float-right" title="Reconstruction" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="reconstruction.html" class="btn btn-neutral float-right" title="Reconstruction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="rFBA.html" class="btn btn-neutral" title="rFBA" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="rFBA.html" class="btn btn-neutral" title="rFBA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -14,6 +14,9 @@
   
   
 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
@@ -25,7 +28,7 @@
 
   
   
-    <link rel="stylesheet" href="../_static/julia.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/cobra.css" type="text/css" />
   
 
   
@@ -35,7 +38,7 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
-        <link rel="up" title="Modules" href="index.html"/>
+        <link rel="up" title="Documentation" href="index.html"/>
         <link rel="next" title="MultiSpeciesModelling" href="multiSpeciesModelling.html"/>
         <link rel="prev" title="Metabotools" href="metabotools.html"/> 
 
@@ -56,7 +59,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> The COBRA Toolbox
+            <a href="../index.html">
           
 
           
@@ -83,7 +86,11 @@
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
               <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Modules</a><ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="tools.html">Tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="print.html">Print</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metabotools.html">Metabotools</a></li>
@@ -96,6 +103,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
 </ul>
 
           
@@ -119,23 +130,40 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../index.html">Docs</a> &raquo;</li>
-      
-          <li><a href="index.html">Modules</a> &raquo;</li>
-      
-    <li>rFBA</li>
+    
+      <li><a href="../contents.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Documentation</a> &raquo;</li>
+        
+      <li>rFBA</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -145,7 +173,7 @@
 <span id="id1"></span><h1>rFBA<a class="headerlink" href="#rfba" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.rFBA"></span><dl class="function">
 <dt id="src.rFBA.dynamicRFBA">
-<code class="descname">dynamicRFBA</code><span class="sig-paren">(</span><em>model</em>, <em>substrateRxns</em>, <em>initConcentrations</em>, <em>initBiomass</em>, <em>timeStep</em>, <em>nSteps</em>, <em>plotRxns</em>, <em>exclUptakeRxns</em><span class="sig-paren">)</span><a class="headerlink" href="#src.rFBA.dynamicRFBA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">dynamicRFBA</code><span class="sig-paren">(</span><em>model</em>, <em>substrateRxns</em>, <em>initConcentrations</em>, <em>initBiomass</em>, <em>timeStep</em>, <em>nSteps</em>, <em>plotRxns</em>, <em>exclUptakeRxns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/rFBA/dynamicRFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.rFBA.dynamicRFBA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs dynamic rFBA simulation using the static optimization approach</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -210,7 +238,7 @@ described in <em>[Mahadevan, R. et al. Biophys J, 83:1331-1340 (2003)]</em>.</p>
 
 <dl class="function">
 <dt id="src.rFBA.optimizeRegModel">
-<code class="descname">optimizeRegModel</code><span class="sig-paren">(</span><em>model</em>, <em>initialRegState</em><span class="sig-paren">)</span><a class="headerlink" href="#src.rFBA.optimizeRegModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">optimizeRegModel</code><span class="sig-paren">(</span><em>model</em>, <em>initialRegState</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/rFBA/optimizeRegModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.rFBA.optimizeRegModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the steady state solution of a model with Boolean regulatory constraints</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -247,7 +275,7 @@ calculated</li>
 
 <dl class="function">
 <dt id="src.rFBA.solveBooleanRegModel">
-<code class="descname">solveBooleanRegModel</code><span class="sig-paren">(</span><em>model</em>, <em>initialState</em>, <em>inputs1States</em>, <em>inputs2States</em><span class="sig-paren">)</span><a class="headerlink" href="#src.rFBA.solveBooleanRegModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">solveBooleanRegModel</code><span class="sig-paren">(</span><em>model</em>, <em>initialState</em>, <em>inputs1States</em>, <em>inputs2States</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/rFBA/solveBooleanRegModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.rFBA.solveBooleanRegModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines the next state of the regulatory network based on the current state.
 Called by optimizeRegModel and dynamicRFBA</p>
 <p><strong>Usage</strong></p>
@@ -292,10 +320,10 @@ final state of type 2 inputs</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="multiSpeciesModelling.html" class="btn btn-neutral float-right" title="MultiSpeciesModelling" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="multiSpeciesModelling.html" class="btn btn-neutral float-right" title="MultiSpeciesModelling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metabotools.html" class="btn btn-neutral" title="Metabotools" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metabotools.html" class="btn btn-neutral" title="Metabotools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
