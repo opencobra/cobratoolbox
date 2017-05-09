@@ -8,7 +8,7 @@ Excel sheets accepted by the COBRA Toolbox contains exactly two sheets with the 
 The first line of those sheets defines the headers for each column. 
 The order of these headers is free, but they will be used to determine the respective column.
 There are required and optional headers for a model in excel format as detailed below, and 
-an example File with the full format is provided in [ExcelExample.xls](ExcelExample.xls)
+an example File with the full format is provided in [ExcelExample.xlsx](ExcelExample.xlsx)
 
 ### The `Reaction List` Sheet
 #### Required Headers:
