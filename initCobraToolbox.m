@@ -365,41 +365,7 @@ function initCobraToolbox()
         fprintf(' Done.\n');
     end
 
-
-    % restore the original path
-    addpath(originalUserPath);
-    path(originalUserPath);
-
-    % saves the current path
-    try
-        if ENV_VARS.printLevel
-            fprintf(' > Saving the MATLAB path ...');
-        end
-        if ispc || ismac
-            savepath;
-            if ENV_VARS.printLevel
-                fprintf(' Done.\n');
-                fprintf('   - The MATLAB path was saved in the default location.\n');
-            end
-        else
-            [~, values] = fileattrib(which('pathdef.m'));
-            if values.UserWrite
-                savepath
-            else
-                savepath(defaultSavePathLocation);
-            end
-            if ENV_VARS.printLevel
-                fprintf(' Done.\n');
-                fprintf(['   - The MATLAB path was saved as ', defaultSavePathLocation, '.\n']);
-            end
-        end
-    catch
-        if ENV_VARS.printLevel
-            fprintf(' > The MATLAB path could not be saved.');
-        end
-    end
-
-    % print out a summary table
+    % fill the summary table
     solverTypeInstalled = zeros(length(OPT_PROB_TYPES), 1);
     solverStatus = -1 * ones(length(supportedSolversNames), length(OPT_PROB_TYPES) + 1);
     catList = cell(length(supportedSolversNames), 1);
@@ -440,6 +406,43 @@ function initCobraToolbox()
         end
     end
 
+    % restore the original path
+    %if ispc
+        path(originalUserPath);
+    %else
+        addpath(originalUserPath);
+    %end
+
+    % saves the current path
+    try
+        if ENV_VARS.printLevel
+            fprintf(' > Saving the MATLAB path ...');
+        end
+        if ispc || ismac
+            savepath;
+            if ENV_VARS.printLevel
+                fprintf(' Done.\n');
+                fprintf('   - The MATLAB path was saved in the default location.\n');
+            end
+        else
+            [~, values] = fileattrib(which('pathdef.m'));
+            if values.UserWrite
+                savepath
+            else
+                savepath(defaultSavePathLocation);
+            end
+            if ENV_VARS.printLevel
+                fprintf(' Done.\n');
+                fprintf(['   - The MATLAB path was saved as ', defaultSavePathLocation, '.\n']);
+            end
+        end
+    catch
+        if ENV_VARS.printLevel
+            fprintf(' > The MATLAB path could not be saved.');
+        end
+    end
+
+    % print out a summary table
     if ENV_VARS.printLevel
         colFormat = '\t%-12s \t%-13s \t%5s \t%5s \t%5s \t%5s \t%5s\n';
         sep = '\t----------------------------------------------------------------------\n';
