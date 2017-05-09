@@ -355,16 +355,11 @@ if solverOK
     eval(['CBT_', solverType, '_SOLVER = solverName;']);
 
     % if gurobi or ibm_cplex are selected, add them to the top of the path
-    tomlabOnPath = ~isempty(strfind(lower(path), '/tomlab'));
-
-    %if ~isempty(strfind(solverName, 'gurobi')) && tomlabOnPath
-    %    addpath(genpath(GUROBI_PATH));
-    %end
-    %if ~isempty(strfind(solverName, 'ibm_cplex')) && tomlabOnPath
-    %    addpath(genpath(ILOG_CPLEX_PATH));
-    %end
-
     if ~isempty(strfind(solverName, 'matlab'))
+
+        % check if TOMLAB is on the PATH
+        tomlabOnPath = ~isempty(strfind(lower(path), 'tomlab'));
+
         if tomlabOnPath
             rmpath(genpath(TOMLAB_PATH));
             if printLevel > 0
@@ -372,8 +367,8 @@ if solverOK
             end
         end
 
-        % check if gurobi, mosek and CPLEX
-        cplexOnPath = ~isempty(strfind(lower(path), 'cplex'));
+        % check if GUROBI, MOSEK pr CPLEX are on the PATH
+        cplexOnPath = ~isempty(strfind(lower(path), 'cplex_studio'));
         gurobiOnPath = ~isempty(strfind(lower(path), 'gurobi'));
         mosekOnPath = ~isempty(strfind(lower(path), 'mosek'));
 
