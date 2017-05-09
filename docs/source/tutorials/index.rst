@@ -4,7 +4,6 @@ Tutorials
 =========
 
 .. note::
-    To come soon!
+    All tutorials are included in the folder `tutorials <https://github.com/opencobra/cobratoolbox/tree/master/tutorials>`_. More tutorials are currently being prepared.
 
 
-`Identifying conserved metabolic moieties <identifyMoieties.html>`_

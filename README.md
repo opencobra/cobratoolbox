@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/opencobra/cobratoolbox/master/docs/source/_static/logo.png" height="160px"/>
+  <img class="readme_logo" src="https://raw.githubusercontent.com/opencobra/cobratoolbox/master/docs/source/_static/logo.png" style="height:160px;"/>
 </p>
 
 The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox

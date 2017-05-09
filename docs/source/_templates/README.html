@@ -1,89 +1,39 @@
-<p align="center">
-  <a href="https://raw.githubusercontent.com/opencobra/cobratoolbox/master/docs/source/_static/logo.png" target="_blank"><img src="https://raw.githubusercontent.com/opencobra/cobratoolbox/master/docs/source/_static/logo.png" height="160px" style="max-width:100%;"></a>
-</p>
-<h1>The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox</h1>
-<table border="1">
-  <tbody><tr>
-    <td><div align="center"><a href="https://opencobra.github.io/cobratoolbox/latest"><img src="https://camo.githubusercontent.com/2123c39afc60aec8e2aec1496b1d819d6cf22c8b/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f434f4252412d646f63732d626c75652e7376673f6d61784167653d30" data-canonical-src="https://img.shields.io/badge/COBRA-docs-blue.svg?maxAge=0" style="max-width:100%;"></a></div></td>
-    <td><div align="center"><a href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img src="https://camo.githubusercontent.com/fab9eb6900656fbb900ad4f303276d3345012c8c/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f434f4252412d666f72756d2d626c75652e7376673f6d61784167653d30" data-canonical-src="https://img.shields.io/badge/COBRA-forum-blue.svg?maxAge=0" style="max-width:100%;"></a></div></td>
-    <td><div align="center"><a href="https://github.com/opencobra/cobratoolbox/tree/master/tutorials"><img src="https://camo.githubusercontent.com/fd2e5748d45c56de27d9aa4b40bc0e069391f267/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f434f4252412d7475746f7269616c732d626c75652e7376673f6d61784167653d30" data-canonical-src="https://img.shields.io/badge/COBRA-tutorials-blue.svg?maxAge=0" style="max-width:100%;"></a></div></td>
-    <td><div align="center"><a href="https://codecov.io/gh/opencobra/cobratoolbox/branch/master"><img src="https://camo.githubusercontent.com/a0e2a9c6555bafb2e43190030b24e29157f5cdc3/68747470733a2f2f636f6465636f762e696f2f67682f6f70656e636f6272612f636f627261746f6f6c626f782f6272616e63682f6d61737465722f67726170682f62616467652e7376673f6d61784167653d30" data-canonical-src="https://codecov.io/gh/opencobra/cobratoolbox/branch/master/graph/badge.svg?maxAge=0" style="max-width:100%;"></a></div></td>
-    <td><div align="center"><a href="https://camo.githubusercontent.com/06194f15fc4973474d72723d18b5eb05f5479f4b/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f636f646567726164652e7376673f6d61784167653d30" target="_blank"><img src="https://camo.githubusercontent.com/06194f15fc4973474d72723d18b5eb05f5479f4b/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f636f646567726164652e7376673f6d61784167653d30" alt="Ratio of the number of inefficient code lines and the total number of lines of code (in percent). A: 0-3%, B: 3-6%, C: 6-9%, D: 9-12%, E: 12-15%, F: &gt; 15%." data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/codegrade.svg?maxAge=0" style="max-width:100%;"></a></div></td>
-  </tr>
-  <tr>
-    <th>MATLAB R2016b</th>
-    <th>MATLAB R2015b</th>
-    <th>MATLAB R2014b</th>
-    <th colspan="2">Code</th>
-  </tr>
-  <tr>
-    <td><div align="center"><a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2016b/"><img src="https://camo.githubusercontent.com/54e152a5073c9ca0052a9c987019e72f96aa5b25/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f6275696c645374617475732f69636f6e3f6a6f623d434f425241546f6f6c626f782d6272616e636865732d6175746f2f4d41544c41425f5645523d523230313662" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2016b" style="max-width:100%;"></a></div></td>
-    <td><div align="center"><a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2015b/"><img src="https://camo.githubusercontent.com/0f2264ac301a50e682c56957de8ac2105593aa62/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f6275696c645374617475732f69636f6e3f6a6f623d434f425241546f6f6c626f782d6272616e636865732d6175746f2f4d41544c41425f5645523d523230313562" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2015b" style="max-width:100%;"></a></div></td>
-    <td><div align="center"><a href="https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-branches-auto/MATLAB_VER=R2014b/"><img src="https://camo.githubusercontent.com/2f9be2dec04a0552836234a3ca21dc6141906fae/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f6275696c645374617475732f69636f6e3f6a6f623d434f425241546f6f6c626f782d6272616e636865732d6175746f2f4d41544c41425f5645523d523230313462" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/buildStatus/icon?job=COBRAToolbox-branches-auto/MATLAB_VER=R2014b" style="max-width:100%;"></a></div></td>
-    <td><div align="center"><a href="https://camo.githubusercontent.com/ea1d77c8d76058f4cc991ac43922b94a7fb5b1c5/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f57696e646f77732d70617373696e672d627269676874677265656e2e7376673f6d61784167653d30" target="_blank"><img src="https://camo.githubusercontent.com/ea1d77c8d76058f4cc991ac43922b94a7fb5b1c5/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f57696e646f77732d70617373696e672d627269676874677265656e2e7376673f6d61784167653d30" data-canonical-src="https://img.shields.io/badge/Windows-passing-brightgreen.svg?maxAge=0" style="max-width:100%;"></a></div></td>
-    <td><div align="center"><a href="https://camo.githubusercontent.com/c5932946cc8fdc382aa3683070a141dd9cc97c42/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6d61634f532d70617373696e672d627269676874677265656e2e7376673f6d61784167653d30" target="_blank"><img src="https://camo.githubusercontent.com/c5932946cc8fdc382aa3683070a141dd9cc97c42/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6d61634f532d70617373696e672d627269676874677265656e2e7376673f6d61784167653d30" data-canonical-src="https://img.shields.io/badge/macOS-passing-brightgreen.svg?maxAge=0" style="max-width:100%;"></a></div></td>
-  </tr>
-</tbody></table>
+<h1 align="center">The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox</h1>
 <br>
-<h2>System Requirements</h2>
-<p><a href="https://camo.githubusercontent.com/775fe6a01aa9214ec2081d47ffb7f82d4dbcf9b0/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f7761726e696e672e706e67" target="_blank"><img src="https://camo.githubusercontent.com/775fe6a01aa9214ec2081d47ffb7f82d4dbcf9b0/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f7761726e696e672e706e67" height="20px" alt="warning" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" style="max-width:100%;"></a> Please follow <a href="https://github.com/opencobra/cobratoolbox/blob/master/.github/REQUIREMENTS.md">this guide</a> in order to configure your system properly.</p>
-<h2>Solver Installation</h2>
-<p>The default solver is <code>glpk</code> (for <code>LP</code> and <code>MILP</code>). You can install <code>TOMLAB</code>, <code>IBM ILOG CPLEX</code>, <code>GUROBI</code>, or <code>MOSEK</code> by following these <strong><a href="https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md">detailed instructions</a></strong>.</p>
+<br>
+<div class="alert alert-info">
+  <strong>Source code!</strong> 
+  The COBRA Toolbox code is under `git`. Have a look at on  <a href="https://github.com/opencobra/cobratoolbox/"><img src="_static/github.png" height="40px"></a>.
+  
+</div>
+
+<div class="alert alert-danger">
+  <strong>System Requirements!</strong> 
+  Please follow <a href="https://github.com/opencobra/cobratoolbox/blob/master/.github/REQUIREMENTS.md">this guide</a> in order to configure your system properly.
+</div>
+
+<div class="alert alert-warning">
+    <strong>Solver Installation!</strong>
+    The default solver is <code>glpk</code> (for <code>LP</code> and <code>MILP</code>). You can install <code>TOMLAB</code>, <code>IBM ILOG CPLEX</code>, <code>GUROBI</code>, or <code>MOSEK</code> by following these <strong><a href="https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md">detailed instructions</a></strong>.
+</div>
 <h2>Installation</h2>
 <ol>
 <li>
 <p>Download this repository (the folder <code>./cobratoolbox/</code> will be created). You can clone the repository using:</p>
-<div class="highlight highlight-source-shell"><pre>$ git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox</pre></div>
+<code class="descname"><pre>$ git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox</pre></code>
 <p><a href="https://camo.githubusercontent.com/775fe6a01aa9214ec2081d47ffb7f82d4dbcf9b0/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f7761726e696e672e706e67" target="_blank"><img src="https://camo.githubusercontent.com/775fe6a01aa9214ec2081d47ffb7f82d4dbcf9b0/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f7761726e696e672e706e67" height="20px" alt="warning" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" style="max-width:100%;"></a> Run this command in <code>Terminal</code> (on <a href="https://camo.githubusercontent.com/e1c96fa2107f13c0f25763a0302c0a0c3b59dfea/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f6170706c652e706e67" target="_blank"><img src="https://camo.githubusercontent.com/e1c96fa2107f13c0f25763a0302c0a0c3b59dfea/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f6170706c652e706e67" height="20px" alt="macOS" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" style="max-width:100%;"></a> and <a href="https://camo.githubusercontent.com/0bd50b2b51b258e8420c3180783088dcc6ff150d/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f6c696e75782e706e67" target="_blank"><img src="https://camo.githubusercontent.com/0bd50b2b51b258e8420c3180783088dcc6ff150d/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f6c696e75782e706e67" height="20px" alt="Linux" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" style="max-width:100%;"></a>) or in <code>Git Bash</code> (on <a href="https://camo.githubusercontent.com/cea93e91cf579569bd40fbae0eaee6b2be007b66/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f77696e646f77732e706e67" target="_blank"><img src="https://camo.githubusercontent.com/cea93e91cf579569bd40fbae0eaee6b2be007b66/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f77696e646f77732e706e67" height="20px" alt="Windows" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" style="max-width:100%;"></a>) - <strong>not</strong> in <a href="https://camo.githubusercontent.com/1f365f530de7eb97293b654a6e6c9c71aaf50a4b/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f6d61746c61622e706e67" target="_blank"><img src="https://camo.githubusercontent.com/1f365f530de7eb97293b654a6e6c9c71aaf50a4b/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f6d61746c61622e706e67" height="20px" alt="Matlab" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" style="max-width:100%;"></a>. Although not recommended, you can download the repository as a <a href="https://github.com/opencobra/cobratoolbox/archive/master.zip">compressed archive</a>.</p>
 </li>
 <li>
 <p>Change to the folder <code>cobratoolbox/</code> and run from <a href="https://camo.githubusercontent.com/1f365f530de7eb97293b654a6e6c9c71aaf50a4b/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f6d61746c61622e706e67" target="_blank"><img src="https://camo.githubusercontent.com/1f365f530de7eb97293b654a6e6c9c71aaf50a4b/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f6d61746c61622e706e67" height="20px" alt="Matlab" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" style="max-width:100%;"></a></p>
-<div class="highlight highlight-source-matlab"><pre>&gt;&gt; initCobraToolbox</pre></div>
+<code class="descname"><pre>&gt;&gt; initCobraToolbox</pre></code>
 </li>
 <li>
 <p>You can test your installation by running from <a href="https://camo.githubusercontent.com/1f365f530de7eb97293b654a6e6c9c71aaf50a4b/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f6d61746c61622e706e67" target="_blank"><img src="https://camo.githubusercontent.com/1f365f530de7eb97293b654a6e6c9c71aaf50a4b/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f6d61746c61622e706e67" height="20px" alt="Matlab" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" style="max-width:100%;"></a></p>
-<div class="highlight highlight-source-matlab"><pre>&gt;&gt; testAll</pre></div>
+<code class="descname"><pre>&gt;&gt; testAll</pre></code>
 </li>
 </ol>
-<h2>Tutorials</h2>
-<p>All tutorials are included in the folder <a href="https://github.com/opencobra/cobratoolbox/tree/master/tutorials">tutorials</a>. More tutorials are currently being prepared.</p>
-<h2>Support and Documentation</h2>
-<ul>
-<li>
-<p>The documentation is available <a href="http://opencobra.github.io/cobratoolbox">here</a>. This version is in development, but the legacy version of the documentation is  <a href="http://opencobra.github.io/cobratoolbox/deprecated/docs/index.html">here</a>.</p>
-</li>
-<li>
-<p>Answers to Frequently Asked Questions (<strong>FAQ</strong>) are <a href="https://github.com/opencobra/cobratoolbox/blob/master/.github/FAQ.md">here</a>.</p>
-</li>
-<li>
-<p>If you need support, please feel free to post your question in our <a href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img src="https://camo.githubusercontent.com/c93781e5597ac50438f58b003ef2fe4443c2dd0c/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f434f4252412d666f72756d2d626c75652e737667" data-canonical-src="https://img.shields.io/badge/COBRA-forum-blue.svg" style="max-width:100%;"></a>.</p>
-</li>
-</ul>
-<h2>How to contribute</h2>
-<p><a href="https://camo.githubusercontent.com/08b39e601b19852235b9f6a5ae9ffd9bef64a578/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f7468756d627355502e706e67" target="_blank"><img src="https://camo.githubusercontent.com/08b39e601b19852235b9f6a5ae9ffd9bef64a578/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f7468756d627355502e706e67" height="20px" alt="+1" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/thumbsUP.png" style="max-width:100%;"></a>  <a href="https://camo.githubusercontent.com/c1257edf98a1e0d46c729496a874703aa2bf03cd/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f746164612e706e67" target="_blank"><img src="https://camo.githubusercontent.com/c1257edf98a1e0d46c729496a874703aa2bf03cd/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f746164612e706e67" height="20px" alt="tada" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/tada.png" style="max-width:100%;"></a> First off, thanks for taking the time to contribute to <a href="https://github.com/opencobra/cobratoolbox">The COBRA Toolbox</a>! <a href="https://camo.githubusercontent.com/c1257edf98a1e0d46c729496a874703aa2bf03cd/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f746164612e706e67" target="_blank"><img src="https://camo.githubusercontent.com/c1257edf98a1e0d46c729496a874703aa2bf03cd/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f746164612e706e67" height="20px" alt="tada" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/tada.png" style="max-width:100%;"></a> <a href="https://camo.githubusercontent.com/08b39e601b19852235b9f6a5ae9ffd9bef64a578/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f7468756d627355502e706e67" target="_blank"><img src="https://camo.githubusercontent.com/08b39e601b19852235b9f6a5ae9ffd9bef64a578/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f7468756d627355502e706e67" height="20px" alt="+1" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/thumbsUP.png" style="max-width:100%;"></a></p>
-<p align="center">
-<a href="https://raw.githubusercontent.com/opencobra/MATLAB.devTools/develop/assets/devTools_logo.png" target="_blank"><img src="https://raw.githubusercontent.com/opencobra/MATLAB.devTools/develop/assets/devTools_logo.png" height="120px" style="max-width:100%;"></a>
-</p>
-<p><a href="https://camo.githubusercontent.com/f1f4e83e3a6695a8167251cd8f0b2cb6d9f5b757/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f62756c622e706e67" target="_blank"><img src="https://camo.githubusercontent.com/f1f4e83e3a6695a8167251cd8f0b2cb6d9f5b757/68747470733a2f2f7072696e63652e6c6373622e756e692e6c752f6a656e6b696e732f75736572436f6e74656e742f62756c622e706e67" height="20px" alt="bulb" data-canonical-src="https://prince.lcsb.uni.lu/jenkins/userContent/bulb.png" style="max-width:100%;"></a> <strong>Check out the <a href="https://github.com/opencobra/MATLAB.devTools">MATLAB.devTools</a> - and contribute the smart way!</strong></p>
-<ul>
-<li>Please follow the <a href="https://github.com/opencobra/cobratoolbox/blob/master/.github/STYLEGUIDE.md">Style Guide</a>.</li>
-<li>More information on writing a <strong>test</strong> is <a href="https://github.com/opencobra/cobratoolbox/blob/master/.github/TESTGUIDE.md">here</a> and a template is <a href="https://github.com/opencobra/cobratoolbox/blob/master/.github/testTemplate.m">here</a>.</li>
-<li>A guide for reporting an <strong>issue</strong> or submitting a <strong>pull request (PR)</strong> is <a href="https://github.com/opencobra/cobratoolbox/blob/master/.github/ISSUEGUIDE.md">here</a>.</li>
-</ul>
-<p>If you want to use <code>git</code> via the command line interface and need help, these <a href="https://uni-lu.github.io/slides/">training slides</a> will get you started. This <a href="https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github">guide</a> or the official <a href="https://help.github.com/articles/creating-a-pull-request/">GitHub guide</a> also come in handy.</p>
-<h2>How to cite <code>The COBRA Toolbox</code></h2>
-<p>When citing <code>The COBRA Toolbox</code>, it is important to cite the original paper where an algorithm was first reported, as well as its implementation in <code>The COBRA Toolbox</code>. This is important, because the objective of <code>The COBRA Toolbox</code> is to amalgamate and integrate the functionality of a wide range of COBRA algorithms and this will be undermined if contributors of new algorithms do not get their fair share of citations. The following is one example how to approach this within the methods section of a paper (<strong>not</strong> the supplemental material please):</p>
-<p><em>To generate a context-specific model the FASTCORE algorithm [1], implemented in The COBRA Toolbox [2], was employed.</em></p>
-<blockquote>
-<p>[1] = Vlassis N, Pacheco MP, Sauter T (2014) Fast Reconstruction of Compact Context-Specific Metabolic Network Models. PLoS Comput Biol 10(1): e1003424.</p>
-</blockquote>
-<blockquote>
-<p>[2] = Schellenberger J, Que R, Fleming RMT, Thiele I, Orth JD, Feist AM, Zielinski DC, Bordbar A, Lewis NE, Rahmanian S, Kang J, Hyduke DR, Palsson BØ. 2011 Quantitative prediction of cellular metabolism with constraint-based models: The COBRA Toolbox v2.0. Nature Protocols 6:1290-1307.</p>
-</blockquote>
 <h2>Binaries and Compatibility</h2>
 <p>For convenience, we provide the <a href="http://sbml.org/Software/SBMLToolbox"><code>SBMLToolbox 4.1.0</code></a>, and <a href="https://github.com/blegat/glpkmex"><code>glpk_mex</code></a> in <code>external/toolboxes</code>, <a href="http://sbml.org/Software/libSBML"><code>libSBML-5.13.0-matlab</code></a> in <code>src/io/utilities</code>.</p>
 <p><a href="https://github.com/opencobra/COBRA.binary">Binaries</a> for these libraries are provided in a submodule for Mac OS X 10.6 or later (64-bit), GNU/Linux Ubuntu 10.0 (64-bit), and Microsoft Windows 7 (64-bit).<br>
 For unsupported OS, please refer to their respective building instructions (<a href="https://github.com/blegat/glpkmex#instructions-for-compiling-from-source"><code>glpk_mex</code></a>, <a href="http://sbml.org/Software/libSBML/5.13.0/docs//cpp-api/libsbml-installation.html"><code>libSBML</code></a>).</p>
 <p>Read more on the compatibility with SBML-FBCv2 <a href="https://github.com/opencobra/cobratoolbox/blob/master/.github/NOTES.md">here</a>.</p>
-<h2>Disclaimer</h2>
-<p><em>The software provided by the openCOBRA Project is distributed under the GNU GPLv3 or later.  However, this software is designed for scientific research and as such may contain algorithms that are associated with patents in the U.S. and abroad.  If the user so chooses to use the software provided by the openCOBRA project for commercial endeavors then it is solely the user’s responsibility to license any patents that may exist and respond in full to any legal actions taken by the patent holder.</em></p>
