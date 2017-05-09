@@ -66,7 +66,7 @@ rfields = {};
 if ~any([nMets nGenes] == nRxns)
     for i = 1:length(mfields)
         if any(size(model.(mfields{i})) == nRxns) && ~strcmp(mfields{i}, 'mets')
-            rfields = [rfields mfields(i)];
+            rfields = [rfields; mfields(i)];
         end
     end
 else

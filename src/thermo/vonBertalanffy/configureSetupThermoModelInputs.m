@@ -1,9 +1,36 @@
-function model = configureSetupThermoModelInputs(model,T,cellCompartments,ph,is,chi,xmin,xmax,confidenceLevel)
+function model = configureSetupThermoModelInputs(model,T,compartments,ph,is,chi,concMinDefault,concMaxDefault,confidenceLevel)
 % Configures inputs to setupThermoModel (sets defaults etc.).
 % INPUTS
 %
 % OUTPUTS
 %
+if ~isfield(model,'metCompartments')
+    model.metCompartments = [];
+end
+if ~exist('T','var')
+    T = [];
+end
+if ~exist('compartments','var')
+    compartments = [];
+end
+if ~exist('ph','var')
+    ph = [];
+end
+if ~exist('is','var')
+    is = [];
+end
+if ~exist('chi','var')
+    chi = [];
+end
+if ~exist('concMin','var')
+    concMin = [];
+end
+if ~exist('concMax','var')
+    concMax = [];
+end
+if ~exist('confidenceLevel','var')
+    confidenceLevel = [];
+end
 
 % Configure metabolite identifiers
 model.mets = reshape(model.mets,length(model.mets),1);
@@ -64,16 +91,16 @@ end
 model.T = T;
 
 % Configure compartment specific parameters
-if size(cellCompartments,2) > size(cellCompartments,1)
-    cellCompartments = cellCompartments';
+if size(compartments,2) > size(compartments,1)
+    compartments = compartments';
 end
-if ischar(cellCompartments)
-    cellCompartments = strtrim(cellstr(cellCompartments));
+if ischar(compartments)
+    compartments = strtrim(cellstr(compartments));
 end
-if isnumeric(cellCompartments)
-    cellCompartments = strtrim(cellstr(num2str(cellCompartments)));
+if isnumeric(compartments)
+    compartments = strtrim(cellstr(num2str(compartments)));
 end
-cellCompartments = cellCompartments(~cellfun('isempty',cellCompartments));
+compartments = compartments(~cellfun('isempty',compartments));
 
 if size(ph,2) > size(ph,1)
     ph = ph';
@@ -85,12 +112,12 @@ if size(chi,2) > size(chi,1)
     chi = chi';
 end
 
-nCompartments = length(cellCompartments);
+nCompartments = length(compartments);
 if length(ph) ~= nCompartments || length(is) ~= nCompartments || length(chi) ~= nCompartments
-   error('The variables cellCompartments, ph, is, and chi should have equal length.') 
+   error('The variables compartments, ph, is, and chi should have equal length.') 
 end
 
-missingCompartments = setdiff(unique(model.metCompartments),cellCompartments);
+missingCompartments = setdiff(unique(model.metCompartments),compartments);
 if ~isempty(missingCompartments)
     default_ph = 7; % Default pH
     default_is = 0; % Default ionic strength in mol/L
@@ -99,50 +126,71 @@ if ~isempty(missingCompartments)
     fprintf(['\nph, is and chi not specified for compartments: ' regexprep(sprintf('%s, ',missingCompartments{:}),'(,\s)$','.') '\n']);
     fprintf('Setting ph = %.2f, is = %.2f M and chi = %.2f mV in these compartments.\n',default_ph,default_is,default_chi);
     
-    cellCompartments = [cellCompartments; missingCompartments];
+    compartments = [compartments; missingCompartments];
     ph = [ph; default_ph*ones(length(missingCompartments),1)];
     is = [is; default_is*ones(length(missingCompartments),1)];
     chi = [chi; default_chi*ones(length(missingCompartments),1)];
 end
 
 if any(ph < 4.7 | ph > 9.3)
-   error(['pH in compartments: ' regexprep(sprintf('%s, ',cellCompartments{ph < 4.7 | ph > 9.3}),'(,\s)$','.') ' out of applicable range (4.7 - 9.3).']); 
+   error(['pH in compartments: ' regexprep(sprintf('%s, ',compartments{ph < 4.7 | ph > 9.3}),'(,\s)$','.') ' out of applicable range (4.7 - 9.3).']); 
 end
 if any(is < 0 | is > 0.35)
-   error(['Ionic strength in compartments: ' regexprep(sprintf('%s, ',cellCompartments{is < 0 | is > 0.35}),'(,\s)$','.') ' out of applicable range (0 - 0.35 M).']); 
+   error(['Ionic strength in compartments: ' regexprep(sprintf('%s, ',compartments{is < 0 | is > 0.35}),'(,\s)$','.') ' out of applicable range (0 - 0.35 M).']); 
 end
 
-model.cellCompartments = cellCompartments;
+model.compartments = compartments;
 model.ph = ph;
 model.is = is;
 model.chi = chi;
 
 % Configure concentration bounds
-if isempty(xmin)
-    defaultMin = 1e-5;
-    fprintf('\nSetting lower bound on metabolite concentrations to %.2e.\n',defaultMin)
-    xmin = defaultMin*ones(size(model.mets)); % Default lower bound on metabolite concentrations in mol/L
+if isfield(model,'concMin')
+    model.concMin = reshape(model.concMin,size(model.S,1),1);
+    if isempty(concMinDefault)
+        error('concMinDefault must not be set if concentrations are provided')
+    end
+else
+    concMinDefault = 1e-5;
+    if isfield(model,'concMin')
+        error('concMinDefault must not be set if model.concMin is already provided')
+    else
+        fprintf('Setting lower bound on metabolite concentrations to %.2e.\n',concMinDefault)
+        model.concMin = concMinDefault*ones(size(model.mets)); % Default lower bound on metabolite concentrations in mol/L
+    end
 end
-xmin = reshape(xmin,length(xmin),1);
-model.xmin = xmin;
-
-if isempty(xmax)
-    defaultMax = 1e-2;
-    fprintf('\nSetting upper bound on metabolite concentrations to %.2e.\n',defaultMax)
-    xmax = defaultMax*ones(size(model.mets)); % Default upper bound on metabolite concentrations in mol/L
+    
+if isfield(model,'concMax')
+    model.concMax = reshape(model.concMax,size(model.S,1),1);
+    if isempty(concMaxDefault)
+        error('concMaxDefault must not be set if concentrations are provided')
+    end
+else
+    concMaxDefault = 1e-2;
+    if isfield(model,'concMax')
+        error('concMaxDefault must not be set if model.concMax is already provided')
+    else
+        fprintf('Setting upper bound on metabolite concentrations to %.2e.\n',concMaxDefault)
+        model.concMax = concMaxDefault*ones(size(model.mets)); % Default lower bound on metabolite concentrations in mol/L
+    end
 end
-xmax = reshape(xmax,length(xmax),1);
-model.xmax = xmax;
 
 hi = find(strcmp(model.metFormulas,'H')); % Indices of protons
 for i = 1:length(hi)
-   model.xmin(hi(i)) = 10^(-model.ph(strcmp(model.cellCompartments,model.metCompartments{hi(i)}))); % Set concentrations of protons according to pH
-   model.xmax(hi(i)) = 10^(-model.ph(strcmp(model.cellCompartments,model.metCompartments{hi(i)})));
+   model.concMin(hi(i)) = 10^(-model.ph(strcmp(model.compartments,model.metCompartments{hi(i)}))); % Set concentrations of protons according to pH
+   model.concMax(hi(i)) = 10^(-model.ph(strcmp(model.compartments,model.metCompartments{hi(i)})));
 end
 
 h2oi = find(strcmp(model.metFormulas,'H2O')); % Indices of water
-model.xmin(h2oi) = 1; % Set concentration of water to 1 M
-model.xmax(h2oi) = 1;
+model.concMin(h2oi) = 1; % Set concentration of water to 1 M
+model.concMax(h2oi) = 1;
+
+if any(~isfinite(log(model.concMin)))
+        error('log(model.concMin) must be finite')
+end
+if any(~isfinite(log(model.concMax)))
+        error('log(model.concMax) must be finite')
+end
 
 % Configure confidence level
 if isempty(confidenceLevel)
@@ -150,4 +198,33 @@ if isempty(confidenceLevel)
     fprintf('\nSetting confidence level to %.2f.\n',confidenceLevel);
 end
 model.confidenceLevel = confidenceLevel;
+
+% %all possible compartments
+% p=1;
+% compartments{p,1}='c';
+% compartments{p,2}='cytoplasm';
+% p=p+1;
+% compartments{p,1}='p';
+% compartments{p,2}='periplasm';
+% p=p+1;
+% compartments{p,1}='e';
+% compartments{p,2}='extracellular';
+% p=p+1;
+% compartments{p,1}='m';
+% compartments{p,2}='mitochondria';
+% p=p+1;
+% compartments{p,1}='n';
+% compartments{p,2}='nucleus';
+% p=p+1;
+% compartments{p,1}='r';
+% compartments{p,2}='endoplasmic reticulum';
+% p=p+1;
+% compartments{p,1}='l';
+% compartments{p,2}='lysosome';
+% p=p+1;
+% compartments{p,1}='x';
+% compartments{p,2}='peroxisome';
+% p=p+1;
+% compartments{p,1}='i';
+% compartments{p,2}='intermembrane space in mitochondria';
 

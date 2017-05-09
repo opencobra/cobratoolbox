@@ -7,10 +7,13 @@ function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, El
 %
 %
 %INPUT
-% model                         COBRA model structure
+% model            COBRA model structure
+% .S               m x n stoichiometric matrix
+% .metForumlas     m x 1 cell array of metabolite formulas
+% .metCharges      m x 1 double array of charges
 %
 %OPTIONAL INPUT
-% printLevel    {-1, (0), 1}
+% printLevel    {-1,(0),1}
 %               -1 = print out diagnostics on problem reactions to a file
 %                0 = silent
 %                1 = print elements as they are checked (display progress)
@@ -18,7 +21,7 @@ function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, El
 % model.SIntRxnBool    Boolean of reactions heuristically though to be mass balanced.
 %
 %OUTPUTS
-% massImbalance                 nRxn x nElement matrix with mass imblance
+% massImbalance                 nRxn x nElement matrix with mass imbalance
 %                               for each element checked. 0 if balanced.
 % imBalancedMass                nRxn x 1 cell with charge imbalance
 %                               e.g. -3 H means three hydrogens disappear
@@ -79,8 +82,14 @@ for j = 1 : length(Elements)
     end
 end
 
-%Add everything that either has mass imbalances or where metabolites with
-%missing formulas are present.
+%ignore mass imbalance of exchange reactions if the internal reactions have
+%been identified at the input
+if any(~model.SIntRxnBool)
+    massImbalance(~model.SIntRxnBool,:)=0;
+end
+
+E=full(E);
+
 imBalancedRxnBool=any(massImbalance, 2) | any(model.S(missingFormulaeBool, :))';
 
 imBalancedMass=cell(nRxn, 1);
@@ -126,7 +135,7 @@ if printLevel==-1
                 fprintf(fid, '%s;%s;%s;%s\n', int2str(p), model.rxns{p}, imBalancedMass{p, 1}, equation{1});
                 for m=1:size(model.S, 1)
                     if model.S(m, p) ~= 0
-                        fprintf(fid, '%s\t%s\t%s\t%s\t%s\n', int2str(m), model.mets{m}, int2str(model.S(m, p)), int2str(E(m)), model.metFormulas{m});
+                        fprintf(fid,'%5u\t%15s\t%g\t%s\n',m,model.mets{m},full(model.S(m,p)),model.metFormulas{m});
                     end
                 end
             end
@@ -146,9 +155,10 @@ if printLevel==2
                 equation=printRxnFormula(model, model.rxns(p), 0);
                 fprintf('%6s\t%30s\t%10s\t%s\n', int2str(p), model.rxns{p}, imBalancedMass{p, 1}, equation{1});
                 if 0
-                    for m=1:size(model.S, 1)
-                        if model.S(m, p) ~= 0
-                            fprintf(fid, '%s\t%s\t%s\t%s\t%s\n', int2str(m), model.mets{m}, int2str(model.S(m, p)), int2str(E(m)), model.metFormulas{m});
+                    for m=1:size(model.S,1)
+                        if model.S(m,p)~=0
+                            fprintf('%5u\t%15s\t%g\t%s\n',m,model.mets{m},full(model.S(m,p)),model.metFormulas{m});
+                            %fprintf(fid,'%s\t%s\t%s\t%s\t%s\n',int2str(m),model.mets{m},int2str(model.S(m,p)),int2str(E(m)),model.metFormulas{m});
                         end
                     end
                 end
@@ -208,7 +218,8 @@ if printLevel==-1 && isfield(model,'SIntRxnBool')
                 if 0
                     for m=1:size(model.S, 1)
                         if model.S(m, q) ~= 0
-                            fprintf(fid, '%s\t%15s\t%3s\t%3s\t%s\n', int2str(m), model.mets{m}, int2str(model.S(m, q)), int2str(model.metCharges(m)), model.metFormulas{m});
+                            fprintf(fid,'%5u\t%15s\t%g\t%g\t%s\n',m,model.mets{m},full(model.S(m,q)),model.metCharges(m),model.metFormulas{m});
+                            %fprintf(fid,'%s\t%15s\t%3s\t%3s\t%s\n',int2str(m),model.mets{m},int2str(model.S(m,q)),int2str(model.metCharges(m)),model.metFormulas{m});
                         end
                     end
                 end
@@ -230,7 +241,8 @@ if printLevel==2 && isfield(model,'SIntRxnBool')
                 if 1
                     for m=1:size(model.S, 1)
                         if model.S(m, q) ~= 0
-                            fprintf('%s\t%15s\t%3s\t%3s\t%s\n', int2str(m), model.mets{m}, int2str(model.S(m, q)), int2str(model.metCharges(m)), model.metFormulas{m});
+                            fprintf('%5u\t%15s\t%g\t%g\t%s\n',m,model.mets{m},full(model.S(m,q)),model.metCharges(m),model.metFormulas{m});
+                            %fprintf('%s\t%15s\t%3s\t%3s\t%s\n',int2str(m),model.mets{m},int2str(model.S(m,q)),int2str(model.metCharges(m)),model.metFormulas{m});
                         end
                     end
                 end

@@ -1,4 +1,4 @@
-function modelT = setupThermoModel(model,molfileDir,cid,T,cellCompartments,ph,is,chi,xmin,xmax,confidenceLevel)
+function model = setupThermoModel(model)
 % Estimates standard transformed reaction Gibbs energy and directionality
 % at in vivo conditions in multicompartmental metabolic reconstructions.
 % Has external dependencies on the COBRA toolbox, the component
@@ -7,7 +7,7 @@ function modelT = setupThermoModel(model,molfileDir,cid,T,cellCompartments,ph,is
 % availability at the end of help text. 
 % 
 % modelT = setupThermoModel(model,molfileDir,cid,T,cellCompartments,ph,...
-%                           is,chi,xmin,xmax,confidenceLevel) 
+%                           is,chi,concMin,concMax,confidenceLevel) 
 % 
 % INPUTS
 % model             Model structure with following fields:
@@ -36,7 +36,7 @@ function modelT = setupThermoModel(model,molfileDir,cid,T,cellCompartments,ph,is
 % 
 % OPTIONAL INPUTS
 % T                 Temperature in Kelvin. 
-% cellCompartments  c x 1 array of compartment identifiers. Should match
+% compartments  c x 1 array of compartment identifiers. Should match
 %                   the compartment identifiers in model.metCompartments.
 % ph                c x 1 array of compartment specific pH values in the
 %                   range 4.7 to 9.3.
@@ -46,9 +46,9 @@ function modelT = setupThermoModel(model,molfileDir,cid,T,cellCompartments,ph,is
 %                   potential values in mV. Electrical potential in cytosol
 %                   is assumed to be 0 mV. Electrical potential in all
 %                   other compartments are relative to that in cytosol.
-% xmin              m x 1 array of lower bounds on metabolite
+% concMin              m x 1 array of lower bounds on metabolite
 %                   concentrations in mol/L.
-% xmax              m x 1 array of upper bounds on metabolite
+% concMax              m x 1 array of upper bounds on metabolite
 %                   concentrations in mol/L.
 % confidenceLevel   {0.50, 0.70, (0.95), 0.99}. Confidence level for
 %                   standard transformed reaction Gibbs energies used to
@@ -67,14 +67,14 @@ function modelT = setupThermoModel(model,molfileDir,cid,T,cellCompartments,ph,is
 %                       standard Gibbs energies of formation.
 % .covf                 m x m estimated covariance matrix for standard
 %                       Gibbs energies of formation.
-% .uf                   m x 1 array of uncertainty in estimated standard
-%                       Gibbs energies of formation. uf will be large for
+% .DfG0_Uncertainty     m x 1 array of uncertainty in estimated standard
+%                       Gibbs energies of formation. Will be large for
 %                       metabolites that are not covered by component
 %                       contributions.
 % .DrG0                 n x 1 array of component contribution estimated
 %                       standard reaction Gibbs energies.
-% .ur                   n x 1 array of uncertainty in standard reaction
-%                       Gibbs energy estimates.  ur will be large for
+% .DrG0_Uncertainty     n x 1 array of uncertainty in standard reaction
+%                       Gibbs energy estimates.  Will be large for
 %                       reactions that are not covered by component
 %                       contributions.
 % .DfG0_pseudoisomers   p x 4 matrix with the following columns:
@@ -112,147 +112,26 @@ function modelT = setupThermoModel(model,molfileDir,cid,T,cellCompartments,ph,is
 % Ronan M. T. Fleming, Sept. 2012   Version 1.0
 % Hulda S. H., Dec. 2012            Version 2.0
 
-
-%% Configure inputs
-if ~isfield(model,'metCompartments')
-    model.metCompartments = [];
+%stupid to have R as gas constant when it could be used for a matrix
+if isfield(model,'R')
+    model.gasConstant=8.3144621e-3; % Gas constant in kJ/(K*mol)
+    model=rmfield(model,'R');
 end
-if ~exist('T','var')
-    T = [];
-end
-if ~exist('cellCompartments','var')
-    cellCompartments = [];
-end
-if ~exist('ph','var')
-    ph = [];
-end
-if ~exist('is','var')
-    is = [];
-end
-if ~exist('chi','var')
-    chi = [];
-end
-if ~exist('xmin','var')
-    xmin = [];
-end
-if ~exist('xmax','var')
-    xmax = [];
-end
-if ~exist('confidenceLevel','var')
-    confidenceLevel = [];
-end
-
-% Store original identifiers
-omets = model.mets;
-orxns = model.rxns;
-ometCompartments = model.metCompartments;
-ocellCompartments = cellCompartments;
-
-model = configureSetupThermoModelInputs(model,T,cellCompartments,ph,is,chi,xmin,xmax,confidenceLevel);
-
-
-%% Get metabolite structures
-
-% Retreive molfiles from KEGG if KEGG ID are given. Otherwise use molfiles
-% in molfileDir.
-if ~exist('cid','var')
-    cid = [];
-end
-if ~isempty(cid)
-    molfileDir = 'molfilesFromKegg';
-    fprintf('\nRetreiving molfiles from KEGG.\n');
-    takeMajorMS = true; % Convert molfile from KEGG to major tautomer of major microspecies at pH 7
-    pH = 7;
-    takeMajorTaut = true;
-    kegg2mol(cid,molfileDir,model.mets,takeMajorMS,pH,takeMajorTaut); % Retreive mol files
-end
-
-fprintf('\nCreating MetStructures.sdf from molfiles.\n')
-sdfFileName = 'MetStructures.sdf';
-includeRs = 0; % Do not include structures with R groups in SDF
-sdfMetList = mol2sdf(model.mets,molfileDir,sdfFileName,includeRs);
-
-fprintf('Converting SDF to InChI strings.\n')
-model.inchi = createInChIStruct(model.mets,sdfFileName);
-compositeBool = ~cellfun('isempty',regexp(model.inchi.nonstandard,'\.')); % Remove InChI for composite compounds as they cause problems later.
-model.inchi.standard(compositeBool) = cell(sum(compositeBool),1);
-model.inchi.standardWithStereo(compositeBool) = cell(sum(compositeBool),1);
-model.inchi.standardWithStereoAndCharge(compositeBool) = cell(sum(compositeBool),1);
-model.inchi.nonstandard(compositeBool) = cell(sum(compositeBool),1);
-
-
-%% Estimate metabolite pKa values with ChemAxon calculator plugins and determine all relevant pseudoisomers.
-fprintf('\nEstimating metabolite pKa values.\n');
-npKas = 20; % Number of acidic and basic pKa values to estimate
-takeMajorTaut = false; % Estimate pKa for input tautomer. Input tautomer is assumed to be the major tautomer for the major microspecies at pH 7.
-model.pKa = estimate_pKa(model.mets,model.inchi.nonstandard,npKas,takeMajorTaut); % Estimate pKa and determine pseudoisomers
-model.pKa = rmfield(model.pKa,'met');
-
-% Add number of hydrogens and charge for metabolites with no InChI
-if any(~[model.pKa.success]);
-    fprintf('\nAssuming that metabolite species in model.metFormulas are representative for metabolites where pKa could not be estimated.\n');
-end
-nonphysicalMetSpecies = {};
-for i = 1:length(model.mets)
-    model_z = model.metCharges(i); % Get charge from model
-    model_nH = numAtomsOfElementInFormula(model.metFormulas{i},'H'); % Get number of hydrogens from metabolite formula in model
-    if ~model.pKa(i).success
-        model.pKa(i).zs = model_z;
-        model.pKa(i).nHs = model_nH;
-        model.pKa(i).majorMSpH7 = true; % Assume species in model is the major (and only) metabolite species
-    end
-    if ~any(model.pKa(i).nHs == model_nH)
-        nonphysicalMetSpecies = [nonphysicalMetSpecies; model.mets(i)];
-    end
-end
-if ~isempty(nonphysicalMetSpecies)
-    nonphysicalMetSpecies = unique(regexprep(nonphysicalMetSpecies,'\[\w\]',''));
-    fprintf(['\nWarning: Metabolite species given in model.metFormulas does not match any of the species calculated from the input structure for metabolites:\n' sprintf('%s\n',nonphysicalMetSpecies{:})]);
+if isfield(model,'F')
+    %Faraday Constant (kJ/kmol)
+    model.faradayConstant=96.485/1000; %kJ/kmol
+    model=rmfield(model,'R');
 end
 
 
-%% Call the component contribution method to estimate standard Gibbs energies with uncertainties
-fprintf('\nEstimating standard Gibbs energies with the component contribution method.\n');
-model = addThermoToModel(model);
-
-% Check for imbalanced reactions
-fprintf('\nChecking mass- and charge balance.\n');
-model_tmp=findSExRxnInd(model);
-[massImbalance,imBalancedMass,imBalancedCharge,imBalancedBool] = checkMassChargeBalance(model_tmp);
-if any(imBalancedBool)
-    fprintf(['\nWarning: Uncertainty in reaction Gibbs energy estimates will be set to %.2e for the following imbalanced reactions:\n' sprintf('%s\n',model.rxns{imBalancedBool})],max(model.ur));
-else
-    fprintf('\nAll reactions are mass- and charge balanced');
-end
+%% Estimate standard transformed Gibbs energies of formation
+fprintf('\nEstimating standard transformed Gibbs energies of formation.\n');
+model = estimateDfGt0(model,model.confidenceLevel);
 
 
-%% Estimate standard transformed Gibbs energies
-fprintf('\nEstimating standard transformed Gibbs energies.\n');
-model = estimateDGt0(model);
-
-
-%% Estimate transformed Gibbs energies
+%% Estimate standard transformed reaction Gibbs energies
 fprintf('\nEstimating bounds on transformed Gibbs energies.\n');
-confidenceLevel = model.confidenceLevel;
-model = estimateDGt(model,confidenceLevel);
+model = estimateDrGt0(model,model.confidenceLevel);
 
 
-%% Determine quantitative directionality assignments
-fprintf('\nQuantitatively assigning reaction directionality.\n');
-model.quantDir = assignQuantDir(model.DrGtMin,model.DrGtMax);
 
-
-%% Configure outputs
-
-% Output original identifiers
-model.mets = omets;
-model.rxns = orxns;
-if length(model.cellCompartments) == length(ocellCompartments)
-    model.cellCompartments = ocellCompartments;
-end
-if length(model.metCompartments) == length(ometCompartments)
-    model.metCompartments = ometCompartments;
-end
-
-% Rename output model
-modelT = model;
