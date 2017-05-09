@@ -214,7 +214,7 @@ switch fileType
             modeloptions = {S.(varname),varname};
         end
         if size(modeloptions,1) == 0
-            error(['There were no valid models in the mat file.\n Please load the model manually via '' load ' fileName ''' and check it with checkModel() to validate it']);
+            error(['There were no valid models in the mat file.\n Please load the model manually via '' load ' fileName ''' and check it with verifyModel() to validate it']);
         end
         model = modeloptions{1,1}; 
     otherwise
@@ -249,13 +249,13 @@ for i=1:numel(structFields)
     cfield = S.(structFields{i});
     if isstruct(cfield)
         try
-            res = checkModel(cfield);
+            res = verifyModel(cfield);
             if ~isfield(res,'Errors')
                 models{end+1,1} = cfield;
                 models{end,2} = structFields{i};
             end
         catch
-            %IF we are here, there was a problem in checkModel, so this is
+            %IF we are here, there was a problem in verifyModel, so this is
             %not a model.
         end
     end

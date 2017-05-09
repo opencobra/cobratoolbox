@@ -83,7 +83,7 @@ end
 
 parser = inputParser();
 
-parser.addRequired('model',@(x) checkModel(model,'simpleCheck'));
+parser.addRequired('model',@(x) verifyModel(model,'simpleCheck'));
 parser.addOptional('format','toselect',@ischar);
 parser.addOptional('fileName',[],@ischar);
 parser.addParameter('compSymbols' ,compSymbols ,@(x) isempty(x) || iscell(x));

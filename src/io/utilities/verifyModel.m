@@ -1,5 +1,5 @@
-function results = checkModel(model,varargin)
-%CHECKMODEL checks the model for consistency with the COBRA Toolbox
+function results = verifyModel(model,varargin)
+%VERIFYMODEL checks the model for consistency with the COBRA Toolbox
 %
 % INPUT :
 % model         a structure that represents the COBRA model.
@@ -26,7 +26,7 @@ function results = checkModel(model,varargin)
 %
 % results       a struct containing fields for each requested option and an
 %               additional field Errors indicating the problems with the
-%               model structure detected by the checkModel function.
+%               model structure detected by the verifyModel function.
 %
 
 [requiredFields,optionalFields] = getDefinedFieldProperties();
