@@ -112,9 +112,9 @@ function sbml_model = cobra_struct_to_sbml_struct( model, sbml_level,sbml_versio
     if isfield( model, 'metFormulas' )
       tmp_species.notes = ['<html xmlns="http://www.w3.org/1999/xhtml"><p>FORMULA: ' model.metFormulas{i} '</p></html>'];
     end
-    if isfield( model, 'charges' )
+    if isfield( model, 'metCharges' )
       %NOTE: charge is being removed in SBML level 3
-      tmp_species.charge = model.charges(i);
+      tmp_species.charge = model.metCharges(i);
     end
     sbml_model.species = [ sbml_model.species tmp_species ];
     %This is where the compartment symbols are aggregated.
