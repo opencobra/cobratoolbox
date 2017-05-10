@@ -122,7 +122,7 @@ model.rxnNames = data(:,3);
 model.comments = data(:,12);
 model.citations = data(:,11);
 model.confidenceScores = data(:,9);
-model.ecNumbers = data(:,13);
+model.rxnECNumbers = data(:,13);
 model.rxnKeggID = data(:,14);
 
 %----createModel.m is missing some things, fix...

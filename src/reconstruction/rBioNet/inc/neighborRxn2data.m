@@ -70,7 +70,7 @@ for i =1:size(data_rxn,1)%For all neighbor rxn
             if isempty(data_model{i,2})
                 data_model{i,2} = mets{k};
                 data_model{i,4} = true;
-                data_model{i,5} = model.ecNumbers{strcmp(data_rxn{i},model.rxns)};
+                data_model{i,5} = model.rxnECNumbers{strcmp(data_rxn{i},model.rxns)};
                 if isfield(model,'rxnKeggID')
                     data_model{i,6} = model.rxnKeggID{strcmp(data_rxn{i},model.rxns)};
                 else
