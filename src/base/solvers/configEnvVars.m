@@ -37,7 +37,7 @@ function configEnvVars(printLevel)
         for k = 1:length(solverPaths)
             eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1} , ''');'])
             possibleDir = '';
-            method = 'X';
+            method = '---';
 
             if isempty(eval(solverPaths{k, 1}))
                 % check if the solver is already on the MATLAB path
@@ -63,16 +63,16 @@ function configEnvVars(printLevel)
                 % solver is on the path and at a standard location
                 if isOnPath
                     eval([solverPaths{k, 1}, ' = ''', possibleDir, ''';']);
-                    method = 'Xi';
+                    method = '*--';
 
                 % solver is on path but at a non-standard location and may not be compatible
                 elseif higherLevelIndex > 0 && higherLevelIndex < length(idCell)
                     eval([solverPaths{k, 1}, ' = ''', tmpS{higherLevelIndex}, ''';']);
-                    method = 'Xii';
+                    method = '-*-';
                 end
             end
 
-            % solver is not already on the path, check if the environment variable is present and if the directory exists
+            % solver is not already on the path and the environment variable is not set, but the directory exists
             if isempty(eval(solverPaths{k, 1}))
                 tmpSolverPath = solverPaths{k, 2};
                 for i = 1:length(solverPaths{k, 2})
@@ -82,7 +82,7 @@ function configEnvVars(printLevel)
                 end
                 if ~isempty(possibleDir)
                     eval([solverPaths{k, 1}, ' = ''', possibleDir, ''';']);
-                    method = 'Xiii';
+                    method = '--*';
                 end
             end
 
@@ -93,11 +93,12 @@ function configEnvVars(printLevel)
                     if usejava('desktop')
                         solversLink = ['<a href=\"', solversLink, '\">instructions</a>'];
                     end
-                    fprintf(['   - [', method, '] ', solverPaths{k, 1}, ' :  --> set this path manually after installing the solver (see ', solversLink, ')\n' ]);
+                    fprintf(['   - [', method, '] ', solverPaths{k, 1}, ' :  --> set this path manually after installing the solver ( see ', solversLink, ' )\n' ]);
                 end
             else
-                % add the solver path
-                fprintf(['   - [', method, '] ', solverPaths{k, 1}, ': ', strrep(eval(solverPaths{k, 1}), '\', '\\'), '\n' ]);
+                if printLevel > 0
+                    fprintf(['   - [', method, '] ', solverPaths{k, 1}, ': ', strrep(eval(solverPaths{k, 1}), '\', '\\'), '\n' ]);
+                end
                 ENV_VARS.STATUS = 1;
             end
         end
