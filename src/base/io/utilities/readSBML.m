@@ -631,7 +631,7 @@ end
 if ~isfield(modelSBML,'fbc_version') % % in the case of an older SBML file.
     model.lb = lb;
     model.ub = ub;
-    model.metCharge = columnVector(chargeList);
+    model.metCharges = columnVector(chargeList);
 else    % in the case of fbc file
     model.lb = fbc_lb;
     model.ub = fbc_ub;
@@ -648,7 +648,7 @@ else    % in the case of fbc file
     end
 
     for num=1:length(fbcMet.fbc_chemicalFormula);
-        model.metCharge(num,1)=double(fbcMet.fbc_charge{num});
+        model.metCharges(num,1)=double(fbcMet.fbc_charge{num});
         %         model.isSetfbc_charge(num,1)=double(fbcMet.isSetfbc_charge{num});
     end
     % model.fbc_version=modelSBML.fbc_version;

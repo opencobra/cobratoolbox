@@ -298,8 +298,8 @@ for i = 1:length(metaboliteList)
         if isfield(model,'metInchiString')
             model.metInchiString{end+1,1} = ''; %changed to match Recon 2 nomenclature
         end
-        if isfield(model,'metCharge')
-            model.metCharge(end+1,1) = 0;
+        if isfield(model,'metCharges')
+            model.metCharges(end+1,1) = 0;
         end
         if isfield(model,'metHepatoNetID')
             model.metHepatoNetID{end+1,1} = ''; %added

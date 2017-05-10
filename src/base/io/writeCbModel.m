@@ -238,8 +238,8 @@ switch format
                 else
                     tmpMetData{i+1,4} = '';
                 end
-                if isfield(model,'metCharge')
-                    tmpMetData{i+1,5} = chopForExcel(model.metCharge(i));
+                if isfield(model,'metCharges')
+                    tmpMetData{i+1,5} = chopForExcel(model.metCharges(i));
                 else
                     tmpMetData{i+1,5} = '';
                 end

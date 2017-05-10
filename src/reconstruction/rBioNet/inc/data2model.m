@@ -127,7 +127,7 @@ model.rxnKeggID = data(:,14);
 
 %----createModel.m is missing some things, fix...
 
-model.metCharge = {};
+model.metCharges = {};
 
 
 %Getting Metabolite info
@@ -239,7 +239,7 @@ end
 %Missing metabolite information added to model
 model.metNames = met_k(:,1);
 model.metFormulas = met_k(:,2);
-model.metCharge = str2double(met_k(:,3));
+model.metCharges = str2double(met_k(:,3));
 model.metChEBIID = met_k(:,4);
 model.metKeggID = met_k(:,5);
 model.metPubChemID = met_k(:,6);

@@ -324,32 +324,19 @@ for i=1:size(model.mets, 1)
     else
         tmp_metFormulas=emptyChar; %cell(0,1)% {''};%0;%emptyChar;
     end
-    % % %     if isfield(model, 'metCharge')
-    % % %         %NOTE: charge is being removed in SBML level 3
-    % % % %         tmp_species.charge = model.metCharge(i);
-    % % % %         tmp_species.isSetCharge = 1;
-    % % %        if isempty(model.metCharge)||numel(model.metCharge)<i; % when the charges are not missing from the COBRA model structure.
-    % % %            fprintf('metCharge doesn''t exist for metaboli %d \n', i);
-    % % %            model.metCharge(i)=0;
-    % % %        end
-    % % %
-    % % %         tmp_notes = [tmp_notes '<p>CHARGE: ' num2str(model.metCharge(i)) '</p>'];
-    % % %     end
     
     %%
     % % %     if ~isfield(model,'metSboTerm') % if the sboTerms for the metabolites are not avaliable. %% NTOE: most of COBRA model structures don't have such fields
     % % %         model.sboTerm(i)=-1;
     % % %     end
     % % %     %%
-    if isfield(model, 'metCharge')
+    if isfield(model, 'metCharges')
         %NOTE: charge is being removed in SBML level 3
-        %         tmp_species.charge = model.metCharge(i);
-        %         tmp_species.isSetCharge = 1;
-        if isempty(model.metCharge)||numel(model.metCharge)<i; % when the charges are not missing from the COBRA model structure.
-            fprintf('metCharge doesn''t exist for metaboli %d \n', i);
-            model.metCharge(i)=0;
+        if isempty(model.metCharges)||numel(model.metCharges)<i; % when the charges are not missing from the COBRA model structure.
+            fprintf('metCharges doesn''t exist for metaboli %d \n', i);
+            model.metCharges(i)=0;
         end
-        tmp_metCharge=model.metCharge(i);
+        tmp_metCharge=model.metCharges(i);
         tmp_isSetfbc_charge=1;
         %         tmp_notes = [tmp_notes '<p>CHARGE: ' num2str(model.metCharge(i)) '</p>'];
     else

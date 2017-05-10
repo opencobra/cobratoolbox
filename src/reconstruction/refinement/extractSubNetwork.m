@@ -78,6 +78,6 @@ end
 if (isfield(model,'rules'))
     subModel.rules = model.rules(selRxns);
 end
-if (isfield(model,'metCharge'))
-    subModel.metCharge = model.metCharge(selMets);
+if (isfield(model,'metCharges'))
+    subModel.metCharges = model.metCharges(selMets);
 end
