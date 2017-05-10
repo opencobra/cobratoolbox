@@ -268,7 +268,8 @@ function initCobraToolbox()
             end
         catch
             if ENV_VARS.printLevel
-                warning('TranslateSBML did not work with Ec_iAF1260_flux1.xml')
+                warning(' > TranslateSBML is installed but is not working properly.');
+                fprintf([' > Try running\n   >> TranslateSBML(\''', strrep(xmlTestFile, '\', '\\'), '\'');\n   in order to debug.\n']);
             end
         end
     end
