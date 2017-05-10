@@ -35,12 +35,16 @@ function configEnvVars(printLevel)
 
         for k = 1:length(solverPaths)
 
+            method = '----';
+
             % try retrieving the solver path from the environment variables
             eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1} , ''');'])
-            method = '---';
-            possibleDir = '';
+            if ~isempty(eval(solverPaths{k, 1}))
+                method == '*---';
+            end
 
             % loop through the list of possible directories
+            possibleDir = '';
             tmpSolverPath = solverPaths{k, 2};
             for i = 1:length(solverPaths{k, 2})
                 if exist(tmpSolverPath{i}, 'dir') == 7
@@ -71,12 +75,12 @@ function configEnvVars(printLevel)
                 % solver is on the path and at a standard location
                 if isOnPath
                     eval([solverPaths{k, 1}, ' = ''', possibleDir, ''';']);
-                    method = '*--';
+                    method = '-*--';
 
                 % solver is on path but at a non-standard location and may not be compatible
                 elseif higherLevelIndex > 0 && higherLevelIndex < length(idCell)
                     eval([solverPaths{k, 1}, ' = ''', tmpS{higherLevelIndex}, ''';']);
-                    method = '-*-';
+                    method = '--*-';
                 end
             end
 
@@ -84,7 +88,7 @@ function configEnvVars(printLevel)
             if isempty(eval(solverPaths{k, 1}))
                 if ~isempty(possibleDir)
                     eval([solverPaths{k, 1}, ' = ''', possibleDir, ''';']);
-                    method = '--*';
+                    method = '---*';
                 end
             end
 
