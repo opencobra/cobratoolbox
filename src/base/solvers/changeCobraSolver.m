@@ -150,12 +150,6 @@ end
 % configure the environment variables
 configEnvVars();
 
-% print an error message if the solver is not supported
-supportedSolversNames = fieldnames(SOLVERS);
-if ~any(strcmp(supportedSolversNames, solverName))
-    error('The solver %s is not supported. Please run >> initCobraToolbox to obtain a table with available solvers.', solverName);
-end
-
 % Print out all solvers defined in global variables CBT_*_SOLVER
 if nargin < 1
     definedSolvers = [CBT_LP_SOLVER, CBT_MILP_SOLVER, CBT_QP_SOLVER, CBT_MIQP_SOLVER, CBT_NLP_SOLVER];
@@ -221,6 +215,12 @@ end
 
 if nargin < 3
     printLevel = 1;
+end
+
+% print an error message if the solver is not supported
+supportedSolversNames = fieldnames(SOLVERS);
+if ~any(strcmp(supportedSolversNames, solverName))
+    error('The solver %s is not supported. Please run >> initCobraToolbox to obtain a table with available solvers.', solverName);
 end
 
 % Attempt to set the user provided solver for all optimization problem types
