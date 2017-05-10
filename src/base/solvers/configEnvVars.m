@@ -17,7 +17,7 @@ function configEnvVars(printLevel)
                             '~/Applications/IBM/ILOG/CPLEX_Studio1262', '~/Applications/IBM/ILOG/CPLEX_Studio1263', '~/Applications/IBM/ILOG/CPLEX_Studio127', '~/Applications/IBM/ILOG/CPLEX_Studio1271', ...
                             '/opt/ibm/ILOG/CPLEX_Studio1262', '/opt/ibm/ILOG/CPLEX_Studio1263', '/opt/ibm/ILOG/CPLEX_Studio127', '/opt/ibm/ILOG/CPLEX_Studio1271' ...
                             'C:\Program Files\IBM\ILOG\CPLEX_Studio1262', 'C:\Program Files\IBM\ILOG\CPLEX_Studio1263', 'C:\Program Files\IBM\ILOG\CPLEX_Studio127', 'C:\Program Files\IBM\ILOG\CPLEX_Studio1271'};
-        solverPaths{1, 3} = 'CPLEX_'; % alias
+        solverPaths{1, 3} = 'CPLEX_Studio'; % alias
         solverPaths{2, 1} = 'GUROBI_PATH';
         solverPaths{2, 2} = {'/Library/gurobi600', '/Library/gurobi650', '/Library/gurobi70', '/Library/gurobi700', '/Library/gurobi701', '/Library/gurobi702', ...
                             '~/Library/gurobi600', '~/Library/gurobi650', '~/Library/gurobi70', '~/Library/gurobi700', '~/Library/gurobi701', '~/Library/gurobi702', ...
@@ -31,13 +31,22 @@ function configEnvVars(printLevel)
         solverPaths{4, 2} = {'/opt/mosek/7/', '/opt/mosek/8/', '/Applications/mosek/7', '/Applications/mosek/8', 'C:\Program Files\Mosek\7', 'C:\Program Files\Mosek\8'};
         solverPaths{4, 3} = 'mosek'; % alias
 
-
         isOnPath = false;
 
         for k = 1:length(solverPaths)
+
+            % try retrieving the solver path from the environment variables
             eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1} , ''');'])
-            possibleDir = '';
             method = '---';
+            possibleDir = '';
+
+            % loop through the list of possible directories
+            tmpSolverPath = solverPaths{k, 2};
+            for i = 1:length(solverPaths{k, 2})
+                if exist(tmpSolverPath{i}, 'dir') == 7
+                    possibleDir = tmpSolverPath{i};
+                end;
+            end
 
             if isempty(eval(solverPaths{k, 1}))
                 % check if the solver is already on the MATLAB path
@@ -50,7 +59,7 @@ function configEnvVars(printLevel)
                 else
                     tmpS = strsplit(tmp, ';');
                 end
-                idCell = strfind(tmpS, solverPaths{k, 3});
+                idCell = regexp(tmpS, ['/(', solverPaths{k, 3}, ')\w+']);
                 higherLevelIndex = 0;
                 for i = 1:length(idCell)
                     if ~isempty(idCell{i})
@@ -59,7 +68,6 @@ function configEnvVars(printLevel)
                     end
                 end
 
-                % set the global variable
                 % solver is on the path and at a standard location
                 if isOnPath
                     eval([solverPaths{k, 1}, ' = ''', possibleDir, ''';']);
@@ -74,12 +82,6 @@ function configEnvVars(printLevel)
 
             % solver is not already on the path and the environment variable is not set, but the directory exists
             if isempty(eval(solverPaths{k, 1}))
-                tmpSolverPath = solverPaths{k, 2};
-                for i = 1:length(solverPaths{k, 2})
-                    if exist(tmpSolverPath{i}, 'dir') == 7
-                        possibleDir = tmpSolverPath{i};
-                    end;
-                end
                 if ~isempty(possibleDir)
                     eval([solverPaths{k, 1}, ' = ''', possibleDir, ''';']);
                     method = '--*';
