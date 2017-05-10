@@ -1,24 +1,31 @@
-function [Flux FBAsolution model]= testPathway(model, MetIn,MetOut,AdditionalMetsInorOut,ObjectiveOption)
-% this gapfiling function allows the user to see if given one metabolite A,
+function [Flux, FBAsolution, model] = testPathway(model, MetIn, MetOut, AdditionalMetsInorOut, ObjectiveOption)
+% Allows the user to see if given one metabolite A,
 % downstream metabolite B can be made made. Additional sinks can be added
 % for co-factors if needed
 %           A -->-->-->-->--> B
-%INPUTS
-% model                 COBRA model structure
-% MetIn                 The input metabolite(s) (A)
-% MetOut                The output metabolite (B)
 %
-%OPTIONAL INPUTS
-% AdditionalMetsInorOut Additional metabolites for which sinks will be added
-% ObjectiveOption       1 = objective will be production of B (default)
-%                       0 = use objective in model
+% USAGE:
+%
+%     [Flux, FBAsolution, model] = testPathway(model, MetIn, MetOut, AdditionalMetsInorOut, ObjectiveOption)
+%
+% INPUTS:
+%    model:                 COBRA model structure
+%    MetIn:                 The input metabolite(s) (A)
+%    MetOut:                The output metabolite (B)
+%
+% OPTIONAL INPUTS:
+%    AdditionalMetsInorOut: Additional metabolites for which sinks will be added
+%    ObjectiveOption:       Boolean
+%
+%                           * 1 = objective will be production of B (default)
+%                           * 0 = use objective in model
 % 
-%OUTPUTS
-% Flux                  The rate of B production
-% FBAsolution           
-% model                 COBRA model with sinks in it
+% OUTPUTS:
+%    Flux:                  The rate of B production
+%    FBAsolution:           Solution to the FBA problem
+%    model:                 COBRA model with sinks in it
 % 
-% Nathan Lewis Feb 16 2009
+% .. Author: Nathan Lewis Feb 16 2009
 
 if ~iscell(MetIn)
     Met = MetIn; clear MetIn; MetIn{1} = Met;

@@ -3,7 +3,8 @@
 
 
 Sampling
------
-.. automodule:: src.sampling
+--------
+
+.. automodule:: src.modelAnalysis.sampling
    :members:
 

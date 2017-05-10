@@ -1,29 +1,30 @@
-function [allGaps,rootGaps,downstreamGaps] = gapFind(model,findNCgaps,verbFlag)
-%gapFind Identifies all blocked metabolites (anything downstream of a gap) 
-%in a model.  MILP algorithm that finds gaps that may be missed by simple 
-%inspection of the S matrix. To find every gap in a model, change the rxn
-%bounds on all exchange reactions to allow uptake of every metabolite.
+function [allGaps, rootGaps, downstreamGaps] = gapFind(model, findNCgaps, verbFlag)
+% Identifies all blocked metabolites (anything downstream of a gap) 
+% in a model.  MILP algorithm that finds gaps that may be missed by simple 
+% inspection of the S matrix. To find every gap in a model, change the rxn
+% bounds on all exchange reactions to allow uptake of every metabolite.
 %
-% [allGaps,rootGaps,downstreamGaps] = gapFind(model,findNCgaps,verbFlag)
+% USAGE:
 %
-%INPUT
-% model             a COBRA model
+%     [allGaps, rootGaps, downstreamGaps] = gapFind(model, findNCgaps, verbFlag)
 %
-%OPTIONAL INPUTS
-% findNCgaps        find no consupmption gaps as well as no production gaps
-%                   (default false)   
-% verbFlag          verbose flag (default false)
+% INPUT:
+%    model:             a COBRA model
 %
-%OUTPUTS
-% allGaps           all gaps found by GapFind
-% rootGaps          all root no production (and consumption) gaps
-% downstreamGaps    all downstream gaps
+% OPTIONAL INPUTS:
+%    findNCgaps:        find no consupmption gaps as well as no production gaps
+%                       (default false)   
+%    verbFlag:          verbose flag (default false)
 %
-% based on:
-% Kumar, V. et al. BMC Bioinformatics. 2007 Jun 20;8:212.
+% OUTPUTS:
+%    allGaps:           all gaps found by GapFind
+%    rootGaps:          all root no production (and consumption) gaps
+%    downstreamGaps:    all downstream gaps
 %
-% solve problem:
-%   max ||xnp||
+% based on Kumar, V. et al. BMC Bioinformatics. 2007 Jun 20;8:212.
+%
+% .. solve problem
+%    max ||xnp||
 %       s.t. S(i,j)*v(j) >= e*w(i,j)        S(i,j) > 0, j in IR
 %            S(i,j)*v(j) <= M*w(i,j)        S(i,j) > 0, j in IR
 %            S(i,j)*v(j) >= e - M(1-w(i,j)) S(i,j) ~= 0, j in R
@@ -34,8 +35,8 @@ function [allGaps,rootGaps,downstreamGaps] = gapFind(model,findNCgaps,verbFlag)
 %            xnp(i) = {0,1}
 %            w(i,j) = {0,1}
 %
-% reformulated for COBRA MILP as:
-%   max sum(xnp(:))
+% .. reformulated for COBRA MILP as
+%    max sum(xnp(:))
 %       s.t. S*v >= 0   (or = 0 if findNCgaps = true)               (1)
 %            S(i,j)*v(j) - e*w(i,j) >= 0     S(i,j) > 0, j in IR    (2)
 %            S(i,j)*v(j) - M*w(i,j) <= 0     S(i,j) > 0, j in IR    (3)
@@ -46,7 +47,7 @@ function [allGaps,rootGaps,downstreamGaps] = gapFind(model,findNCgaps,verbFlag)
 %            xnp and w are binary variables, v are continuous
 %
 %
-% Jeff Orth 7/6/09
+% .. Author: Jeff Orth 7/6/09
 
 if nargin < 2
     findNCgaps = false;
