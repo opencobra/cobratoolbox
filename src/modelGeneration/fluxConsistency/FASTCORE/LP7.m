@@ -56,35 +56,35 @@ basis=[];
 %     delete('clone2.log')
 % end
 
-% LPproblem.A=[Aeq;Aineq];
-% LPproblem.b=[beq;bineq];
-% LPproblem.lb=lb;
-% LPproblem.ub=ub;
-% LPproblem.c=f;
-% LPproblem.osense=1;%minimise
-% LPproblem.csense(1:size(LPproblem.A,1))='E';
-% LPproblem.csense(size(Aeq,1)+1:size(LPproblem.A,1))='L';
-% if ~exist('basis','var') && 0 %cant reuse basis without size change
-%     solution = solveCobraLP(LPproblem);
-% else
-%     if ~isempty(basis)
-%         LPproblem.basis=basis;
-%         solution = solveCobraLP(LPproblem);
-%     else
-%         solution = solveCobraLP(LPproblem);
-%     end
-% end
-% if isfield(solution,'basis')
-%     basis=solution.basis;
-% else
-%     basis=[];
-% end
-% if solution.stat~=1
-%     fprintf('%s%s\n',num2str(solution.stat),' = solution.stat')
-%     fprintf('%s%s\n',num2str(solution.origStat),' = solution.origStat')
-%     warning('LP solution may not be optimal')
-% end
-% x=solution.full;
+LPproblem.A=[Aeq;Aineq];
+LPproblem.b=[beq;bineq];
+LPproblem.lb=lb;
+LPproblem.ub=ub;
+LPproblem.c=f;
+LPproblem.osense=1;%minimise
+LPproblem.csense(1:size(LPproblem.A,1))='E';
+LPproblem.csense(size(Aeq,1)+1:size(LPproblem.A,1))='L';
+if ~exist('basis','var') && 0 %cant reuse basis without size change
+    solution = solveCobraLP(LPproblem);
+else
+    if ~isempty(basis)
+        LPproblem.basis=basis;
+        solution = solveCobraLP(LPproblem);
+    else
+        solution = solveCobraLP(LPproblem);
+    end
+end
+if isfield(solution,'basis')
+    basis=solution.basis;
+else
+    basis=[];
+end
+if solution.stat~=1
+    fprintf('%s%s\n',num2str(solution.stat),' = solution.stat')
+    fprintf('%s%s\n',num2str(solution.origStat),' = solution.origStat')
+    warning('LP solution may not be optimal')
+end
+x=solution.full;
 
 if ~isempty(x)
     V = x(1:n);
