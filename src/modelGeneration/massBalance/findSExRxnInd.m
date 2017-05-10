@@ -11,7 +11,7 @@ function model=findSExRxnInd(model,nRealMet,printLevel)
 %INPUT
 % model
 % model.biomassRxnAbbr      abbreviation of biomass reaction
-% printLevel                
+% printLevel
 %
 %OPTIONAL INPUT
 % nRealMet                  specified in case extra rows in S which dont
@@ -23,13 +23,13 @@ function model=findSExRxnInd(model,nRealMet,printLevel)
 % model.SExMetBool          Boolean of metabolites heuristically though to be involved in mass imbalanced reactions.
 % model.SOnlyExMetBool      Boolean of metabolites heuristically though only to be involved in mass imbalanced reactions.
 % model.biomassBool         Boolean of biomass reaction
-% 
+%
 % OPTIONAL OUTPUT
 % model.DMRxnBool           Boolean of demand reactions. Prefix 'DM_'
 % model.SinkRxnBool         Boolean of sink reactions. Prefix 'sink_'
 % model.ExchRxnBool         Boolean of exchange reactions. Prefix 'EX_' or 'Exch_' or Ex_
 
-% Ronan Fleming	            
+% Ronan Fleming
 
 
 [nMet,nRxn]=size(model.S);
@@ -57,27 +57,21 @@ if ~isfield(model,'c')
     model.c=zeros(nMet,1);
 end
 if ~isfield(model,'biomassRxnAbbr')
-    if 0
+    bool=model.c~=0;
+    if nnz(bool)==1
+        model.biomassRxnAbbr=model.rxns{model.c~=0};
         if printLevel>0
-            fprintf('%s\n','No model.biomassRxnAbbr ? Give abbreviation of biomass reaction if there is one.');
+
+            fprintf('%s%s\n','Assuming biomass reaction is: ', model.biomassRxnAbbr);
         end
+        biomassBool(bool)=1;
     else
-        bool=model.c~=0;
-        if nnz(bool)==1
-            model.biomassRxnAbbr=model.rxns{model.c~=0};
+        if nnz(bool)==0
             if printLevel>0
-                
-                fprintf('%s%s\n','Assuming biomass reaction is: ', model.biomassRxnAbbr);
+                fprintf('%s\n','No model.biomassRxnAbbr? Give abbreviation of biomass reaction if there is one.');
             end
-            biomassBool(bool)=1;
         else
-            if nnz(bool)==0
-                if printLevel>0
-                    fprintf('%s\n','No model.biomassRxnAbbr ? Give abbreviation of biomass reaction if there is one.');
-                end
-            else
-                warning('More than one biomass reaction?');
-            end
+            warning('More than one biomass reaction?');
         end
     end
 else
@@ -190,7 +184,7 @@ if any(diffBool)
         end
     end
 end
-    
+
 % %dont check if there are coupling constraints
 % %(E. coli E matrix specific)
 % if ~isfield(model,'A')
@@ -210,7 +204,7 @@ end
 %         end
 %     end
 % end
-    
+
 %amalagamate all exchanges
 SExRxnBool= SExRxnBoolHeuristic | SExRxnBoolOneCoefficient;
 model.SIntRxnBool=~SExRxnBool;
@@ -226,19 +220,3 @@ model.SExMetBool = getCorrespondingRows(model.S,boolMet,~model.SIntRxnBool,'incl
 if nnz(model.SIntMetBool)+nnz(model.SOnlyExMetBool) ~= nnz(model.SIntMetBool)+nnz(model.SOnlyExMetBool)
     error('Inconsistency in metabolite counts')
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

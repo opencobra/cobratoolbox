@@ -14,7 +14,7 @@ function [groups,orphans,R,C]=connectedComponents(model,type,figures,files)
 %    figures:   Will generate plots of the grouping algorithm as it creates block diagonal
 %               groups in from top left to bottom right in W.
 %    files:     Indicator, whether several files containing indicator
-%               matrices are generated. 
+%               matrices are generated.
 % OUTPUT:
 %    groups:                a structure array (the number of distinct groups is length(groups)) with fields:
 %
@@ -72,136 +72,134 @@ nReactionsSpeciesParticipatesIn=diag(C1,0);
 [nReactionsSpeciesParticipatesInSorted,IX] = sort(nReactionsSpeciesParticipatesIn,'descend');
 %model.mets(IX(1:80))
 
-% if 0
-%     %omit reactions connected by cofactors
-%     omitMet=false(m,1);
-%     for i=1:m
-%         metAbbr=model.mets{i};
-%         if strcmp(metAbbr(1:2),'h[')
-%             omitMet(i)=1;
-%             continue;
-%         end
-%         if strcmp(metAbbr(1:3),'k[')
-%             omitMet(i)=1;
-%             continue;
-%         end
-%         if length(metAbbr)>3
-%             if strcmp(metAbbr(1:3),'pi[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%             if strcmp(metAbbr(1:3),'cl[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%             if strcmp(metAbbr(1:3),'o2[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%         end
-% 
-%         if length(metAbbr)>4
-%             if strcmp(metAbbr(1:4),'na1[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%             if strcmp(metAbbr(1:4),'h2o[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%             if strcmp(metAbbr(1:4),'co2[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%             if strcmp(metAbbr(1:4),'atp[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%             if strcmp(metAbbr(1:4),'adp[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%             if strcmp(metAbbr(1:4),'utp[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%             if strcmp(metAbbr(1:4),'gtp[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%             if strcmp(metAbbr(1:4),'gdp[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%             if strcmp(metAbbr(1:4),'amp[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%             if strcmp(metAbbr(1:4),'nad[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%             if strcmp(metAbbr(1:4),'fad[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%             if strcmp(metAbbr(1:4),'coa[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%             if strcmp(metAbbr(1:4),'ppi[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%             if strcmp(metAbbr(1:4),'nh4[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%             if strcmp(metAbbr(1:4),'ACP[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%             if strcmp(metAbbr(1:4),'thf[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%             if strcmp(metAbbr(1:4),'crn[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%         end
-% 
-%         if length(metAbbr)>5
-%             if strcmp(metAbbr(1:5),'nadh[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%             if strcmp(metAbbr(1:5),'fadh[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%             if strcmp(metAbbr(1:5),'nadp[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%         end
-% 
-%         if length(metAbbr)>6
-%             if strcmp(metAbbr(1:6),'nadph[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%             if strcmp(metAbbr(1:6),'accoa[')
-%                 omitMet(i)=1;
-%                 continue;
-%             end
-%         end
-% 
+% %omit reactions connected by cofactors
+% omitMet=false(m,1);
+% for i=1:m
+%     metAbbr=model.mets{i};
+%     if strcmp(metAbbr(1:2),'h[')
+%         omitMet(i)=1;
+%         continue;
 %     end
-% 
-%     %omit these metabolites
-%     B(omitMet,:)=0;
+%     if strcmp(metAbbr(1:3),'k[')
+%         omitMet(i)=1;
+%         continue;
+%     end
+%     if length(metAbbr)>3
+%         if strcmp(metAbbr(1:3),'pi[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%         if strcmp(metAbbr(1:3),'cl[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%         if strcmp(metAbbr(1:3),'o2[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%     end
+%
+%     if length(metAbbr)>4
+%         if strcmp(metAbbr(1:4),'na1[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%         if strcmp(metAbbr(1:4),'h2o[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%         if strcmp(metAbbr(1:4),'co2[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%         if strcmp(metAbbr(1:4),'atp[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%         if strcmp(metAbbr(1:4),'adp[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%         if strcmp(metAbbr(1:4),'utp[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%         if strcmp(metAbbr(1:4),'gtp[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%         if strcmp(metAbbr(1:4),'gdp[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%         if strcmp(metAbbr(1:4),'amp[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%         if strcmp(metAbbr(1:4),'nad[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%         if strcmp(metAbbr(1:4),'fad[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%         if strcmp(metAbbr(1:4),'coa[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%         if strcmp(metAbbr(1:4),'ppi[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%         if strcmp(metAbbr(1:4),'nh4[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%         if strcmp(metAbbr(1:4),'ACP[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%         if strcmp(metAbbr(1:4),'thf[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%         if strcmp(metAbbr(1:4),'crn[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%     end
+%
+%     if length(metAbbr)>5
+%         if strcmp(metAbbr(1:5),'nadh[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%         if strcmp(metAbbr(1:5),'fadh[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%         if strcmp(metAbbr(1:5),'nadp[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%     end
+%
+%     if length(metAbbr)>6
+%         if strcmp(metAbbr(1:6),'nadph[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%         if strcmp(metAbbr(1:6),'accoa[')
+%             omitMet(i)=1;
+%             continue;
+%         end
+%     end
+%
 % end
+%
+% %omit these metabolites
+% B(omitMet,:)=0;
 
 %Reaction adjacency
 R1=B'*B;
@@ -214,7 +212,7 @@ R=R1;
 R(logical(eye(size(R1,1)))) = 0;
 
 if files
-    R2=triu(R);  
+    R2=triu(R);
     fid=fopen('reactionAdjacencyOtherThanCofactors.txt','w');
     for j=1:n
         fprintf(fid,'%s\t',model.rxns{j});

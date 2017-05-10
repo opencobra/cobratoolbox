@@ -36,7 +36,7 @@ if any(bool)
 end
 
 if ~isempty(which('lusol_obj'))
-    
+
     archstr = computer('arch');
     archstr = lower(archstr);
     switch archstr
@@ -70,25 +70,23 @@ if ~isempty(which('lusol_obj'))
             % | dens1  |      0.3 |                                                    |
             % | dens2  |      0.5 |                                                    |
             % |--------+----------+----------------------------------------------------|
+
+            % %modification of default options
+            % options.pivot  = 'TRP';
+            % options.Ltol1 = 1.5;
+            % options.nzinit = 1e7;
+            % %factorise
+            % mylu = lusol_obj(A,options);
             
-            if 0
-                %modification of default options
-                options.pivot  = 'TRP';
-                options.Ltol1 = 1.5;
-                options.nzinit = 1e7;
-                %factorise
-                mylu = lusol_obj(A,options);
-            else
-                %factorise
-                mylu = lusol_obj(A);
-            end
-            
+            %factorise
+            mylu = lusol_obj(A);
+
             %extract results
             stats = mylu.stats();
             options.Inform = stats.inform;
             options.Nsing  = stats.nsing;
             options.Growth = stats.growth;
-            
+
             %matrices
             L = mylu.L0();
             U = mylu.U();
@@ -98,7 +96,7 @@ if ~isempty(which('lusol_obj'))
             q = mylu.q();
             %return the rank of the matrix
             rankA=mylu.rank();
-            
+
             %    lu.factorize inform codes:
             switch stats.inform
                 case 0
@@ -123,7 +121,7 @@ if ~isempty(which('lusol_obj'))
                     fprintf('%s\n','getRankLUSOL: No diagonal pivot could be found with TSP or TDP.');
                     fprintf('%s\n','getRankLUSOL: The matrix must not be sufficiently definite or quasi-definite.');
             end
-            
+
             if stats.inform~=0 && stats.inform~=1
                 % solve Ax=b
                 b = ones(size(A,1),1);
@@ -133,7 +131,7 @@ if ~isempty(which('lusol_obj'))
                 % check the result
                 fprintf('%s\t%g\n','getRankLUSOL: Check norm(b-b2) : ', norm(b-b2))
             end
-            
+
     end
 else
     fprintf('%s\n','Cannot find lusol_obj.m from lusol interface, calling matlab LU implementation (slower)')

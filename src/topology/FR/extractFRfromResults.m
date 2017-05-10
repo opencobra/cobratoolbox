@@ -9,8 +9,7 @@ R1(R1<0)  =    0;
 %take the rows so the remainder [F R] is full row rank
 F = F1(model.FRrows,:);
 R = R1(model.FRrows,:);
-%test
-if 0
-    rank(full([F R]))
-    size(F,1)
-end
+
+% test
+% rank(full([F R]))
+% size(F,1)

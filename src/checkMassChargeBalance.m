@@ -124,11 +124,7 @@ if printLevel==-1
                 if ~firstMissing
                     fid=fopen([fileName 'mass_imbalanced_reactions.txt'],'w');
                     fprintf(fid, '%s;%s;%s;%s\n', '#Rxn', 'rxnAbbr', 'imbalance', 'equation');
-                    if 0
-                        warning(['There are mass imbalanced reactions, see ' fileName 'mass_imbalanced_reactions.txt'])
-                    else
-                        fprintf('%s\n',['There are mass imbalanced reactions, see ' fileName 'mass_imbalanced_reactions.txt'])
-                    end
+                    fprintf('%s\n',['There are mass imbalanced reactions, see ' fileName 'mass_imbalanced_reactions.txt'])
                     firstMissing=1;
                 end
                 equation=printRxnFormula(model, model.rxns(p), 0);
@@ -154,14 +150,12 @@ if printLevel==2
             if ~strcmp(imBalancedMass{p, 1}, 'NaN')
                 equation=printRxnFormula(model, model.rxns(p), 0);
                 fprintf('%6s\t%30s\t%10s\t%s\n', int2str(p), model.rxns{p}, imBalancedMass{p, 1}, equation{1});
-                if 0
-                    for m=1:size(model.S,1)
-                        if model.S(m,p)~=0
-                            fprintf('%5u\t%15s\t%g\t%s\n',m,model.mets{m},full(model.S(m,p)),model.metFormulas{m});
-                            %fprintf(fid,'%s\t%s\t%s\t%s\t%s\n',int2str(m),model.mets{m},int2str(model.S(m,p)),int2str(E(m)),model.metFormulas{m});
-                        end
-                    end
-                end
+                % for m=1:size(model.S, 1)
+                %     if model.S(m, p) ~= 0
+                %         fprintf('%5u\t%15s\t%g\t%s\n',m,model.mets{m},full(model.S(m,p)),model.metFormulas{m});
+                %     end
+                % end
+
             end
         end
     end
@@ -206,23 +200,16 @@ if printLevel==-1 && isfield(model,'SIntRxnBool')
             if model.SIntRxnBool(q) && strcmp(imBalancedMass{q, 1}, '') %&& dC(q) ~= 0
                 if ~firstMissing
                     fid=fopen([fileName 'charge_imbalanced_reactions.txt'],'w');
-                    if 0
-                        warning(['There are charge imbalanced reactions, see ' fileName 'charge_imbalanced_reactions.txt'])
-                    else
-                        fprintf('%s\n',['There are charge imbalanced reactions, see ' fileName 'charge_imbalanced_reactions.txt'])
-                    end
+                    fprintf('%s\n',['There are charge imbalanced reactions, see ' fileName 'charge_imbalanced_reactions.txt'])
                     firstMissing=1;
                 end
                 equation=printRxnFormula(model, model.rxns(q), 0);
                 fprintf(fid, '%s\t%s\t%s\n', int2str(q), model.rxns{q}, equation{1});
-                if 0
-                    for m=1:size(model.S, 1)
-                        if model.S(m, q) ~= 0
-                            fprintf(fid,'%5u\t%15s\t%g\t%g\t%s\n',m,model.mets{m},full(model.S(m,q)),model.metCharges(m),model.metFormulas{m});
-                            %fprintf(fid,'%s\t%15s\t%3s\t%3s\t%s\n',int2str(m),model.mets{m},int2str(model.S(m,q)),int2str(model.metCharges(m)),model.metFormulas{m});
-                        end
-                    end
-                end
+                % for m=1:size(model.S, 1)
+                %     if model.S(m, q) ~= 0
+                %         fprintf(fid,'%5u\t%15s\t%g\t%g\t%s\n',m,model.mets{m},full(model.S(m,q)),model.metCharges(m),model.metFormulas{m});
+                %     end
+                % end
             end
         end
         if firstMissing
@@ -238,12 +225,9 @@ if printLevel==2 && isfield(model,'SIntRxnBool')
             if model.SIntRxnBool(q) && strcmp(imBalancedMass{p, 1}, '') %&& dC(q) ~= 0
                 equation=printRxnFormula(model, model.rxns(q), 0);
                 fprintf('%s\t%s\t%s\n', int2str(q), model.rxns{q}, equation{1});
-                if 1
-                    for m=1:size(model.S, 1)
-                        if model.S(m, q) ~= 0
-                            fprintf('%5u\t%15s\t%g\t%g\t%s\n',m,model.mets{m},full(model.S(m,q)),model.metCharges(m),model.metFormulas{m});
-                            %fprintf('%s\t%15s\t%3s\t%3s\t%s\n',int2str(m),model.mets{m},int2str(model.S(m,q)),int2str(model.metCharges(m)),model.metFormulas{m});
-                        end
+                for m=1:size(model.S, 1)
+                    if model.S(m, q) ~= 0
+                        fprintf('%5u\t%15s\t%g\t%g\t%s\n',m,model.mets{m},full(model.S(m,q)),model.metCharges(m),model.metFormulas{m});
                     end
                 end
             end

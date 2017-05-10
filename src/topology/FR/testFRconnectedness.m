@@ -1,20 +1,17 @@
 %script to test the connectedness of an [F R]
 
-if 0
-FR=[1,0,0,0,0,0,0,0,0,1; %1
-    0,0,0,1,0,1,0,0,0,0; %2
-    0,0,0,0,1,0,1,0,0,0; %3
-    0,0,0,0,1,1,0,0,0,0; %4
-    0,0,0,1,0,0,1,0,0,0; %5
-    1,0,0,0,0,0,0,0,1,0];%6
-else
+% FR=[1,0,0,0,0,0,0,0,0,1; %1
+%     0,0,0,1,0,1,0,0,0,0; %2
+%     0,0,0,0,1,0,1,0,0,0; %3
+%     0,0,0,0,1,1,0,0,0,0; %4
+%     0,0,0,1,0,0,1,0,0,0; %5
+%     1,0,0,0,0,0,0,0,1,0];%6
 FR=[1,0,0,0,0,0,0,0,0,1; %1
     0,0,0,1,4,1,0,0,0,0; %2
     0,0,0,0,1,0,1,0,0,0; %3
     0,0,0,0,1,1,0,0,0,0; %4
     0,0,0,1,0,0,1,0,0,0; %5
     1,0,0,0,0,0,0,0,1,0];%6
-end
 
 [m,n]=size(FR);
 
@@ -36,7 +33,5 @@ R=FR(:,6:10);
 disp(connectedRowsFRBool)
 disp(largestConnectedRowsFRBool)
 
-if 0
-    disp(largestConnectedColsFRVBool)
-    disp(connectedColsFRVBool)
-end
+% disp(largestConnectedColsFRVBool)
+% disp(connectedColsFRVBool)

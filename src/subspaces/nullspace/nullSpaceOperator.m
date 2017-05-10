@@ -34,7 +34,7 @@ function nullS = nullSpaceOperator(S,scale,printLevel)
 % 02 May 2008: First version of nullspaceLUSOLform.m.
 %              load iCore_stoich_mu_Stanford.mat   % loads a matrix A;
 %              nullS = nullspaceLUSOLform(A);      % forms Z.
-%              Michael Saunders                       
+%              Michael Saunders
 % 20 Jan 2015: Updated to use Nick Henderson's 64 bit LUSOL interface
 %              Ronan Fleming and renamed nullSpaceOperator
 
@@ -74,17 +74,17 @@ if scale
     iprint  = 1;
     scltol  = 0.9;
     [cscale,rscale] = gmscale(S,sign(printLevel),scltol);
-    
+
     C = spdiags(cscale,0,n,n);   Cinv = spdiags(1./cscale,0,n,n);
     R = spdiags(rscale,0,m,m);   Rinv = spdiags(1./rscale,0,m,m);
     A = Rinv*S*Cinv;
-    
+
     if printLevel
         toc
     else
         t=toc;
     end
-    
+
     %%%%%%% Factorize A = the scaled S
 end
 tic
@@ -101,12 +101,12 @@ switch archstr
         options.Pivoting  = 'TRP';
         options.FactorTol = 1.5;
         options.nzinit = 1e7;
-        
+
         [L,U,p,q,options] = lusolFactor(A',options);   % Note A'
         rankS = options.Rank;
         L     = L(p,p);      % New L is strictly lower triangular (and square).
         % U     = U(p,q);      % New U would be upper trapezoidal the size of S'.
-        
+
     case {'glnxa64','maci64'}
         if ~isempty(which('lusol_obj'))
             % generate default options
@@ -138,25 +138,23 @@ switch archstr
             % | dens1  |      0.3 |                                                    |
             % | dens2  |      0.5 |                                                    |
             % |--------+----------+----------------------------------------------------|
-            
-            if 0
-                %modification of default options
-                options.pivot  = 'TRP';
-                options.Ltol1 = 1.5;
-                options.nzinit = 1e7;
-                %factorise
-                mylu = lusol_obj(A',options);
-            else
-                %factorise
-                mylu = lusol_obj(A');
-            end
-            
+
+            % %modification of default options
+            % options.pivot  = 'TRP';
+            % options.Ltol1 = 1.5;
+            % options.nzinit = 1e7;
+            % %factorise
+            % mylu = lusol_obj(A',options);
+
+            %factorise
+            mylu = lusol_obj(A');
+
             %extract results
             stats = mylu.stats();
             options.Inform = stats.inform;
             options.Nsing  = stats.nsing;
             options.Growth = stats.growth;
-            
+
             %matrices
             L = mylu.L0();
             U = mylu.U();
@@ -164,13 +162,13 @@ switch archstr
             p = mylu.p();
             % column permutation
             q = mylu.q();
-            
+
             L     = L(p,p);      % New L is strictly lower triangular (and square).
             % U     = U(p,q);      % New U would be upper trapezoidal the size of S'.
-        
+
             %return the rank of the matrix
             r=mylu.rank();
-            
+
             %    lu.factorize inform codes:
             switch stats.inform
                 case 0
@@ -195,7 +193,7 @@ switch archstr
                     fprintf('%s\n','No diagonal pivot could be found with TSP or TDP.');
                     fprintf('%s\n','The matrix must not be sufficiently definite or quasi-definite.');
             end
-            
+
             if stats.inform~=0 && stats.inform~=1
                 % solve Ax=b
                 b = ones(size(A',1),1);

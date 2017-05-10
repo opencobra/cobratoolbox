@@ -1,12 +1,12 @@
 function plotFRresults(FRresults,nRows,nCols,resultsDirectory,resultsFileName,schematicFlag,modelMetaData)
-%plots FR results in the same order as the FRresultsTable using FRresults 
+%plots FR results in the same order as the FRresultsTable using FRresults
 %structure or by loading the FRresults structure
 %
 %INPUT
 % FRresults             output of checkRankFRdriver
 % nRows                 number of rows in the subplot
 % nCols                 number of rows in the subplot (nRows*nCols >= length(FRresults)
-% 
+%
 %OPTIONAL INPUT
 % resultsDirectory      directory where output of checkRankFRdriver has been saved
 % resultsFileName       filename where output of checkRankFRdriver has been saved
@@ -39,7 +39,7 @@ FRresultsTable=makeFRresultsTable(FRresults,[],[],modelMetaData);
 
 % RGB Value  Short Name  Long Name
 % [1 1 0] y yellow
-% [1 0 1] m magenta 
+% [1 0 1] m magenta
 % [0 1 1] c cyan
 % [1 0 0] r red
 % [0 1 0] g green
@@ -91,11 +91,9 @@ end
 fprintf('%u%s\n',nnz(sufficientlyStochConsistent), ' models that are sufficiently stochiometrically consistent for plotting.')
 
 close all
-if 0
-    figure;
-    hist(stochConsistentFraction,100)
-    fprintf('\n')
-end
+% figure;
+% hist(stochConsistentFraction,100)
+% fprintf('\n')
 
 if schematicFlag %top left plot is a schematic
     h=figure('units','normalized','outerposition',[0 0 1 1]);
@@ -119,12 +117,12 @@ if schematicFlag %top left plot is a schematic
     X=[0,0,50,50];
     Y=[0,45,45,0];
     fill(X,Y,[153 153 255]/255,'EdgeColor','none')
-    
+
     %Stoichiometrically consistent & flux consistent (exchange reactions, unique & nonzero)
     X=[80,80,100,100];
     Y=[0,45,45,0];
     fill(X,Y,[192 192 192]/255,'EdgeColor','none')
-    
+
     k=k+1;
 else
     h=figure('units','normalized','outerposition',[0 0 1 1]);
@@ -140,27 +138,27 @@ for n=1:nReconstructions
         Species=strrep(Species,'_',' ');
         Version=FRresultsTable{2,n+1};
         modelID=FRresultsTable{3,n+1};
-        
+
         %subplots in order given by FRresultsTable
         %bool gives correct index in FRresults structure
         ind=find(strncmp(modelID,resultsModelID,length(modelID)));
-        
+
         %only plot the reconstructions that are sufficiently
         %stoichiometrically consisitent
         if ~sufficientlyStochConsistent(ind)
             warning('Not sufficiently stoichiometrically consistent. Exchange reactions correctly identified?')
             break
         end
-        
+
         %new subplot
         subplot(nRows,nCols,k);
-        
+
         if isempty(modelID)
             title(Species,'FontWeight','normal','FontSize',11)
         else
             title([Species ', ' Version],'FontWeight','normal','FontSize',11)
         end
-        
+
         %lable first column in each row
         if mod(k,nCols)==1
             ylabel('# Molec.','FontSize',13)
@@ -169,10 +167,10 @@ for n=1:nReconstructions
             xlabel('# Reactions','FontSize',13)
         end
         hold on;
-        
+
         %disp(ind)
         model=FRresults(ind).model;
-        
+
         %Reconstruction
         X=[0,0,size(model.S,2),size(model.S,2)];
         Y=[0,size(model.S,1),size(model.S,1),0];
@@ -181,53 +179,47 @@ for n=1:nReconstructions
         fill(X,Y,[55 55 55]/255,'EdgeColor','none')
         xlim([0 size(model.S,2)])
         ylim([0 size(model.S,1)-1])
-        
+
         %Stoichiometrically consistent
         X=[0,0,nnz(model.SConsistentRxnBool),nnz(model.SConsistentRxnBool)];
         Y=[0,nnz(model.SConsistentMetBool),nnz(model.SConsistentMetBool),0];
         fill(X,Y,[204 102 102]/255,'EdgeColor','none')
-        
+
         %Stoichiometrically consistent & flux consistent (non-exchange and exchange reactions, unique & nonzero
         %model.FRnonZeroRowBool & model.FRuniqueRowBool & (model.SConsistentMetBool | ~model.SIntMetBool) & model.fluxConsistentMetBool
         %Stoichiometrically consistent
-        if 0
-            X=[0,0,nnz(model.FRVcols),nnz(model.FRVcols)];
-            Y=[0,nnz(model.FRrows),nnz(model.FRrows),0];
-            fill(X,Y,[153 153 255]/255,'EdgeColor','none')
-        else
-            %distinguish flux consistent internal and exchange reactions
-            X=[0,0,nnz(model.FRVcols & model.SIntRxnBool),nnz(model.FRVcols & model.SIntRxnBool)];
-            Y=[0,nnz(model.FRrows),nnz(model.FRrows),0];
-            fill(X,Y,[153 153 255]/255,'EdgeColor','none')
-            %exchange reactions
-            X=[0,0,nnz(model.FRVcols & ~model.SIntRxnBool),nnz(model.FRVcols & ~model.SIntRxnBool)];
-            X=[size(model.S,2)-nnz(model.FRVcols & ~model.SIntRxnBool)-1,size(model.S,2)-nnz(model.FRVcols & ~model.SIntRxnBool)-1,size(model.S,2),size(model.S,2)];
-            Y=[0,nnz(model.FRrows),nnz(model.FRrows),0];
-            %fill(X,Y,[54 149 60]/255,'EdgeColor','none')
-            fill(X,Y,[192 192 192]/255,'EdgeColor','none')
-        end
-        
-        if 0
-            X=[0,0,nnz(model.fluxConsistentRxnBool),nnz(model.fluxConsistentRxnBool)];
-            Y=[0,nnz(model.fluxConsistentMetBool),nnz(model.fluxConsistentMetBool),0];
-            fill(X,Y,[102 153 255]/255,'EdgeColor','none')
-        end
-        
-        if 0
-            X=[0,0,nnz(model.fluxConsistentRxnBool),nnz(model.fluxConsistentRxnBool)];
-            Y=[0,nnz(model.FRnonZeroBool),nnz(model.FRnonZeroBool),0];
-            fill(X,Y,'k','EdgeColor','none')
-            
-            X=[0,0,nnz(model.fluxConsistentRxnBool),nnz(model.fluxConsistentRxnBool)];
-            Y=[0,nnz(model.FRuniqueBool),nnz(model.FRuniqueBool),0];
-            fill(X,Y,'w','EdgeColor','none')
-        end
-        
-        if 0
-            X=[0,0,nnz(model.fluxConsistentRxnBool),nnz(model.fluxConsistentRxnBool)];
-            Y=[0,nnz(model.FRrows),nnz(model.FRrows),0];
-            fill(X,Y,[153 153 255]/255,'EdgeColor','none')
-        end
+
+        % distinguish flux consistent internal and exchange reactions
+        X=[0,0,nnz(model.FRVcols & model.SIntRxnBool),nnz(model.FRVcols & model.SIntRxnBool)];
+        Y=[0,nnz(model.FRrows),nnz(model.FRrows),0];
+        fill(X,Y,[153 153 255]/255,'EdgeColor','none')
+        % exchange reactions
+        X=[0,0,nnz(model.FRVcols & ~model.SIntRxnBool),nnz(model.FRVcols & ~model.SIntRxnBool)];
+        X=[size(model.S,2)-nnz(model.FRVcols & ~model.SIntRxnBool)-1,size(model.S,2)-nnz(model.FRVcols & ~model.SIntRxnBool)-1,size(model.S,2),size(model.S,2)];
+        Y=[0,nnz(model.FRrows),nnz(model.FRrows),0];
+        %fill(X,Y,[54 149 60]/255,'EdgeColor','none')
+        fill(X,Y,[192 192 192]/255,'EdgeColor','none')
+
+        % X=[0,0,nnz(model.FRVcols),nnz(model.FRVcols)];
+        % Y=[0,nnz(model.FRrows),nnz(model.FRrows),0];
+        % fill(X,Y,[153 153 255]/255,'EdgeColor','none')
+        %
+        % X=[0,0,nnz(model.fluxConsistentRxnBool),nnz(model.fluxConsistentRxnBool)];
+        % Y=[0,nnz(model.fluxConsistentMetBool),nnz(model.fluxConsistentMetBool),0];
+        % fill(X,Y,[102 153 255]/255,'EdgeColor','none')
+        %
+        % X=[0,0,nnz(model.fluxConsistentRxnBool),nnz(model.fluxConsistentRxnBool)];
+        % Y=[0,nnz(model.FRnonZeroBool),nnz(model.FRnonZeroBool),0];
+        % fill(X,Y,'k','EdgeColor','none')
+        %
+        % X=[0,0,nnz(model.fluxConsistentRxnBool),nnz(model.fluxConsistentRxnBool)];
+        % Y=[0,nnz(model.FRuniqueBool),nnz(model.FRuniqueBool),0];
+        % fill(X,Y,'w','EdgeColor','none')
+        %
+        % X=[0,0,nnz(model.fluxConsistentRxnBool),nnz(model.fluxConsistentRxnBool)];
+        % Y=[0,nnz(model.FRrows),nnz(model.FRrows),0];
+        % fill(X,Y,[153 153 255]/255,'EdgeColor','none')
+
         %move to next subplot
          k=k+1;
     end

@@ -116,28 +116,25 @@ if printLevel<0
 end
 
 if any(unbalancedInternalBool)
-    if 0
-        if printLevel>0
-            fprintf('%s\n','Unbalanced reconstruction reactions:')
-        else
-            if printLevel<0
-                fprintf(fid,'%s\n','Unbalanced reconstruction reactions:')
-            end
-        end
-        unbalancedInd=find(unbalancedInternalBool);
-        for p=1:length(unbalancedInd)
-            if printLevel>0
-                fprintf('\n%20s\t%s\n',model.rxns{unbalancedInd(p)},model.rxn(unbalancedInd(p)).equation);
-            else
-                if printLevel<0
-                    fprintf(fid,'\n%20s\t%s\n',model.rxns{unbalancedInd(p)},model.rxn(unbalancedInd(p)).equation);
-                end
-            end
-        end
-        error(['vonBertalanffy:pHbalanceProtons ' 'Hydrogen unbalanced reconstruction reactions exist.'])
-    else
-        warning(['vonBertalanffy:pHbalanceProtons ''Hydrogen unbalanced reconstruction reactions exist!'])
-    end
+    % if printLevel>0
+    %     fprintf('%s\n','Unbalanced reconstruction reactions:')
+    % else
+    %     if printLevel<0
+    %         fprintf(fid,'%s\n','Unbalanced reconstruction reactions:')
+    %     end
+    % end
+    % unbalancedInd=find(unbalancedInternalBool);
+    % for p=1:length(unbalancedInd)
+    %     if printLevel>0
+    %         fprintf('\n%20s\t%s\n',model.rxns{unbalancedInd(p)},model.rxn(unbalancedInd(p)).equation);
+    %     else
+    %         if printLevel<0
+    %             fprintf(fid,'\n%20s\t%s\n',model.rxns{unbalancedInd(p)},model.rxn(unbalancedInd(p)).equation);
+    %         end
+    %     end
+    % end
+    % error(['vonBertalanffy:pHbalanceProtons ' 'Hydrogen unbalanced reconstruction reactions exist.'])
+    warning(['vonBertalanffy:pHbalanceProtons ''Hydrogen unbalanced reconstruction reactions exist!'])
 end
 
 %calculate the number of hydrogen atoms involved in each reaction
@@ -326,14 +323,12 @@ for n=1:nRxn
                             %                         %save index of hydrogen ion for second compartment
                             %                         substrateProductIndexH(n,spIndexCol)=indexHRxn2;
                             %
-                            %                         if 1
-                            %                             %net charge transported from second to first compartment
-                            %                             netTransportZiReverse=metCharge(compartBool2)*model.S(compartBool2,n);
-                            %                             if netTransportZiReverse~=netTransportZi(n,1)
-                            %                                 error('Reconstruction reaction not charge balanced?');
-                            %                             end
+                            %                         %net charge transported from second to first compartment
+                            %                         netTransportZiReverse=metCharge(compartBool2)*model.S(compartBool2,n);
+                            %                         if netTransportZiReverse~=netTransportZi(n,1)
+                            %                             error('Reconstruction reaction not charge balanced?');
                             %                         end
-                            
+    
                             %mass balance reactant reactions
                             model.S(indexHRxn1,n)=model.S(indexHRxn1,n) - deltaHBound(metCompartBool1)*model.S(metCompartBool1,n);
                             model.S(indexHRxn2,n)=model.S(indexHRxn2,n) - deltaHBound(metCompartBool2)*model.S(metCompartBool2,n);

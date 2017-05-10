@@ -31,7 +31,7 @@ Aeq = [model.S, sparse(m,nj)];
 beq = zeros(m,1);
 
 % inequalities
-Ij = sparse(nj,n); 
+Ij = sparse(nj,n);
 Ij(sub2ind(size(Ij),(1:nj)',J(:))) = -1;
 % Ij(sub2ind(size(Ij),(1:nj)',J(:))) = -1/epsilon;
 Aineq = sparse([Ij, speye(nj)]);
@@ -43,57 +43,51 @@ ub = [model.ub; ones(nj,1)*epsilon];
 % ub = [model.ub; ones(nj,1)];
 
 basis=[];
- 
-if 0
-    %quiet
-    options = cplexoptimset('cplex');
-    options = cplexoptimset(options,'diagnostics','off');
-    options.output.clonelog=0;
-    options.workdir='~/tmp';
-    x = cplexlp(f',Aineq,bineq,Aeq,beq,lb,ub,options);
-    if exist('clone1.log','file')
-        delete('clone1.log')
-    end
-    if exist('clone2.log','file')
-        delete('clone2.log')
-    end
 
-else
-    LPproblem.A=[Aeq;Aineq];
-    LPproblem.b=[beq;bineq];
-    LPproblem.lb=lb;
-    LPproblem.ub=ub;
-    LPproblem.c=f;
-    LPproblem.osense=1;%minimise
-    LPproblem.csense(1:size(LPproblem.A,1))='E';
-    LPproblem.csense(size(Aeq,1)+1:size(LPproblem.A,1))='L';
-    if ~exist('basis','var') && 0 %cant reuse basis without size change
-        solution = solveCobraLP(LPproblem);
-    else
-        if ~isempty(basis)
-            LPproblem.basis=basis;
-            solution = solveCobraLP(LPproblem);
-        else
-            solution = solveCobraLP(LPproblem);
-        end
-    end
-    if isfield(solution,'basis')
-        basis=solution.basis;
-    else
-        basis=[];
-    end
-    if solution.stat~=1
-        fprintf('%s%s\n',num2str(solution.stat),' = solution.stat')
-        fprintf('%s%s\n',num2str(solution.origStat),' = solution.origStat')
-        warning('LP solution may not be optimal')
-    end
-    x=solution.full;
-end
+% options = cplexoptimset('cplex');
+% options = cplexoptimset(options,'diagnostics','off');
+% options.output.clonelog=0;
+% options.workdir='~/tmp';
+% x = cplexlp(f',Aineq,bineq,Aeq,beq,lb,ub,options);
+% if exist('clone1.log','file')
+%     delete('clone1.log')
+% end
+% if exist('clone2.log','file')
+%     delete('clone2.log')
+% end
+
+% LPproblem.A=[Aeq;Aineq];
+% LPproblem.b=[beq;bineq];
+% LPproblem.lb=lb;
+% LPproblem.ub=ub;
+% LPproblem.c=f;
+% LPproblem.osense=1;%minimise
+% LPproblem.csense(1:size(LPproblem.A,1))='E';
+% LPproblem.csense(size(Aeq,1)+1:size(LPproblem.A,1))='L';
+% if ~exist('basis','var') && 0 %cant reuse basis without size change
+%     solution = solveCobraLP(LPproblem);
+% else
+%     if ~isempty(basis)
+%         LPproblem.basis=basis;
+%         solution = solveCobraLP(LPproblem);
+%     else
+%         solution = solveCobraLP(LPproblem);
+%     end
+% end
+% if isfield(solution,'basis')
+%     basis=solution.basis;
+% else
+%     basis=[];
+% end
+% if solution.stat~=1
+%     fprintf('%s%s\n',num2str(solution.stat),' = solution.stat')
+%     fprintf('%s%s\n',num2str(solution.origStat),' = solution.origStat')
+%     warning('LP solution may not be optimal')
+% end
+% x=solution.full;
 
 if ~isempty(x)
     V = x(1:n);
 else
     V=nan(n,1);
 end
-
-

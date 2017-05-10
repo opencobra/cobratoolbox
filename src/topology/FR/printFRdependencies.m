@@ -17,7 +17,7 @@ R(R<0)  =    0;
 %recover indices from boolean vectors
 dR=find(model.FRdrows);
 wR=find(model.FRwrows);
-    
+
 if exist('filePathName','var')
     %Open or create new file for writing. Append data to the end of the file
     fileID = fopen(filePathName,'a');
@@ -58,14 +58,14 @@ if exist('filePathName','var')
         end
         fprintf(fileID,'\n');
     end
-    
+
     %display the rows involved
     FRdisplay=[F(:,model.FRVcols), R(:,model.FRVcols)];
     FRdisplay=FRdisplay([wR;dR],:);
     FRdisplay=FRdisplay(:,sum(FRdisplay,1)~=0);
     FRdisplay=full(FRdisplay);
     %disp(FRdisplay)
-    
+
     fprintf(fileID,'%s%d%s%d%s%d%s\n','FR subset of dimension ',size(FRdisplay,1),' x ', size(FRdisplay,2), ', of rank ', rank(FRdisplay),'.');
     if max(size(FRdisplay))>15
         fprintf(fileID,'%s\n','More than 15 rows or columns in the dependency, so will not display.');
@@ -114,14 +114,14 @@ else
         end
         fprintf('\n')
     end
-    
+
     %display the rows involved
     FRdisplay=[F(:,model.FRVcols), R(:,model.FRVcols)];
     FRdisplay=FRdisplay([wR;dR],:);
     FRdisplay=FRdisplay(:,sum(FRdisplay,1)~=0);
     FRdisplay=full(FRdisplay);
     %disp(FRdisplay)
-    
+
     fprintf('%s%d%s%d%s%d%s\n','FR subset of dimension ',size(FRdisplay,1),' x ', size(FRdisplay,2), ', of rank ', rank(FRdisplay),'.')
     if max(size(FRdisplay))>15
         fprintf('%s\n','More than 15 rows or columns in the depencency, so will not display.')
@@ -149,69 +149,66 @@ end
 %         end
 %     end
 
-if 0
-    if printLevel>2 && model.FRcolRankDeficiency>0
-        if 0
-            for i=1:size(model.FRVW,2)
-                fprintf('%s%s',model.rxns{dC(i)},' is dependent on: ')
-                ind=find(model.FRVW(:,i)>0);
-                for j=1:length(ind)
-                    fprintf('%s',model.rxns{ind(j)})
-                    if j==length(ind)
-                        fprintf('%s\n','.');
-                    else
-                        fprintf('%s',' and ');
-                    end
-                end
-            end
-        else
-            %print out metabolites involved in dependent cols
-            for i=1:size(model.FRVW,2)
-                fprintf('%s%s',model.rxns{dC(i)},' is dependent on: ')
-                ind=find(model.FRVW(i,:)>0);
-                for j=1:length(ind)
-                    fprintf('%s',model.rxns{ind(j)})
-                    if j==length(ind)
-                        fprintf('%s\n','.');
-                    else
-                        fprintf('%s',' and ');
-                    end
-                end
-                fprintf('%s\n','The metabolites  are:')
-                F0=F;
-                F0(~model.FRrows,:)=0;
-                R0=R;
-                R0(~model.FRrows,:)=0;
-                indMet=[find(F0(:,dC(i))~=0)' find(R0(:,dC(i))~=0)'];
-                disp(indMet)
-                %             for k=1:length(indMet)
-                %                 printRxnFormula(model,model.mets{indMet(k)});
-                %             end
-                fprintf('\n\n')
-            end
-            
-            %display the cols involved
-            FRdisplay=[F(model.FRrows,:), R(model.FRrows,:)];
-            FRdisplay=FRdisplay(:,[wC;dC]);
-            FRdisplay=FRdisplay(sum(FRdisplay,2)~=0,:);
-            FRdisplay=full(FRdisplay);
-            %disp(FRdisplay)
-            
-            fprintf('%s%d%s%d%s%d%s\n','FRV subset of dimension ',size(FRdisplay,1),' x ', size(FRdisplay,2), ', of rank ', rank(FRdisplay),'.')
-            fprintf('%d%s\n', length(wC), ' independent cols:')
-            if length(wC)>10
-                fprintf('%s\n','Too many to print out.')
-            else
-                disp(FRdisplay(:,1:length(wC)))
-            end
-            fprintf('%d%s\n',length(dC),' dependent rows:')
-            
-            if length(dC)>10
-                fprintf('%s\n','Too many to print out.')
-            else
-                disp(FRdisplay(:,length(wC)+1:end))
-            end
-        end
-    end
-    
-end
+% if printLevel>2 && model.FRcolRankDeficiency>0
+%     if 0
+%         for i=1:size(model.FRVW,2)
+%             fprintf('%s%s',model.rxns{dC(i)},' is dependent on: ')
+%             ind=find(model.FRVW(:,i)>0);
+%             for j=1:length(ind)
+%                 fprintf('%s',model.rxns{ind(j)})
+%                 if j==length(ind)
+%                     fprintf('%s\n','.');
+%                 else
+%                     fprintf('%s',' and ');
+%                 end
+%             end
+%         end
+%     else
+%         %print out metabolites involved in dependent cols
+%         for i=1:size(model.FRVW,2)
+%             fprintf('%s%s',model.rxns{dC(i)},' is dependent on: ')
+%             ind=find(model.FRVW(i,:)>0);
+%             for j=1:length(ind)
+%                 fprintf('%s',model.rxns{ind(j)})
+%                 if j==length(ind)
+%                     fprintf('%s\n','.');
+%                 else
+%                     fprintf('%s',' and ');
+%                 end
+%             end
+%             fprintf('%s\n','The metabolites  are:')
+%             F0=F;
+%             F0(~model.FRrows,:)=0;
+%             R0=R;
+%             R0(~model.FRrows,:)=0;
+%             indMet=[find(F0(:,dC(i))~=0)' find(R0(:,dC(i))~=0)'];
+%             disp(indMet)
+%             %             for k=1:length(indMet)
+%             %                 printRxnFormula(model,model.mets{indMet(k)});
+%             %             end
+%             fprintf('\n\n')
+%         end
+%
+%         %display the cols involved
+%         FRdisplay=[F(model.FRrows,:), R(model.FRrows,:)];
+%         FRdisplay=FRdisplay(:,[wC;dC]);
+%         FRdisplay=FRdisplay(sum(FRdisplay,2)~=0,:);
+%         FRdisplay=full(FRdisplay);
+%         %disp(FRdisplay)
+%
+%         fprintf('%s%d%s%d%s%d%s\n','FRV subset of dimension ',size(FRdisplay,1),' x ', size(FRdisplay,2), ', of rank ', rank(FRdisplay),'.')
+%         fprintf('%d%s\n', length(wC), ' independent cols:')
+%         if length(wC)>10
+%             fprintf('%s\n','Too many to print out.')
+%         else
+%             disp(FRdisplay(:,1:length(wC)))
+%         end
+%         fprintf('%d%s\n',length(dC),' dependent rows:')
+%
+%         if length(dC)>10
+%             fprintf('%s\n','Too many to print out.')
+%         else
+%             disp(FRdisplay(:,length(wC)+1:end))
+%         end
+%     end
+% end

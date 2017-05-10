@@ -24,45 +24,42 @@ lb = model.lb;
 ub = model.ub;
 
 basis=[];
- 
-%quiet
-if 0
-    options = cplexoptimset('cplex');
-    options = cplexoptimset(options,'diagnostics','off');
-    options.output.clonelog=0;
-    options.workdir='~/tmp';
-    x = cplexlp(f',[],[],Aeq,beq,lb,ub,options);
-    if exist('clone1.log','file')
-        delete('clone1.log')
-    end
-    if exist('clone2.log','file')
-        delete('clone2.log')
-    end
 
+% options = cplexoptimset('cplex');
+% options = cplexoptimset(options,'diagnostics','off');
+% options.output.clonelog=0;
+% options.workdir='~/tmp';
+% x = cplexlp(f',[],[],Aeq,beq,lb,ub,options);
+% if exist('clone1.log','file')
+%     delete('clone1.log')
+% end
+% if exist('clone2.log','file')
+%     delete('clone2.log')
+% end
+
+
+LPproblem.A=Aeq;
+LPproblem.b=beq;
+LPproblem.lb=lb;
+LPproblem.ub=ub;
+LPproblem.c=f;
+LPproblem.osense=1;%minimise
+LPproblem.csense(1:size(LPproblem.A,1))='E';
+if ~exist('basis','var') && 0 %cant reuse basis without size change
+    solution = solveCobraLP(LPproblem);
 else
-    LPproblem.A=Aeq;
-    LPproblem.b=beq;
-    LPproblem.lb=lb;
-    LPproblem.ub=ub;
-    LPproblem.c=f;
-    LPproblem.osense=1;%minimise
-    LPproblem.csense(1:size(LPproblem.A,1))='E';
-    if ~exist('basis','var') && 0 %cant reuse basis without size change
+    if ~isempty(basis)
+        LPproblem.basis=basis;
         solution = solveCobraLP(LPproblem);
     else
-        if ~isempty(basis)
-            LPproblem.basis=basis;
-            solution = solveCobraLP(LPproblem);
-        else
-            solution = solveCobraLP(LPproblem);
-        end
+        solution = solveCobraLP(LPproblem);
     end
-    if isfield(solution,'basis')
-        basis=solution.basis;
-    else
-        basis=[];
-    end
-    x=solution.full;
 end
+if isfield(solution,'basis')
+    basis=solution.basis;
+else
+    basis=[];
+end
+x=solution.full;
 
 V = x;

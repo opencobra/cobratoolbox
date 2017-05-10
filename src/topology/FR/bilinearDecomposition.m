@@ -10,7 +10,7 @@ function [A,B,C]=bilinearDecomposition(S)
 %
 % INPUT
 % S         m x n stoichiometric matrix
-% 
+%
 % OUTPUT
 % A         m       x (m + k) matrix selecting rows such that S=A*B*C
 % B         (m + k) x (n + k) bilinear stoichiometric matrix
@@ -21,7 +21,7 @@ function [A,B,C]=bilinearDecomposition(S)
 
 Sbool=S~=0;
 
-%boolean of forward and reverse half stoichiometric matrices 
+%boolean of forward and reverse half stoichiometric matrices
 F       =  Sbool;
 F(S>0)  =      0;
 R       =  Sbool;
@@ -43,23 +43,18 @@ cumSumExtraReactants=cumsum(nExtraReactants);
 nExtra=cumSumExtraReactants(length(cumSumExtraReactants));
 
 A = [eye(nMet), sparse(nMet,nExtra)];
-    
+
 B = sparse(nMet+nExtra,nRxn+nExtra);
 
 C =  [eye(nRxn);sparse(nExtra,nRxn)];
 
-if 0
-    %use full matrices if debugging
-    A=full(A);
-    B=full(B);
-    C=full(C);
-end
+% usefull matrices if debugging
+% A=full(A);
+% B=full(B);
+% C=full(C);
 
 x=1;
 for n=1:nRxn
-%     if n==745%83%7384
-%         %pause(eps);
-%     end
     substrateInd=find(F(:,n)~=0);
     productInd  =find(R(:,n)~=0);
     if nExtraReactants(n)>0
@@ -182,12 +177,12 @@ for n=1:nRxn
                 end
             otherwise
                 %more than two substrates
-                
+
                 %first two substrates in current reaction
                 B(substrateInd(1:2),n)=S(substrateInd(1:2),n);
                 %fake product in current reaction
                 B(nMet+x,n)=1;
-                
+
                 %third substrate and onward
                 i=3;
                 while i<=length(substrateInd)
@@ -275,18 +270,16 @@ for n=1:nRxn
     else
         B(1:nMet,n)=S(:,n);
     end
-    
+
     if nnz(B(:,n))>3
         error('too many entries in B(:,n)')
     end
-    if 0
-        disp(n)
-        disp(size(S))
-        disp(size(A))
-        disp(size(B))
-        disp(size(C))
-    end
-    
+    % disp(n)
+    % disp(size(S))
+    % disp(size(A))
+    % disp(size(B))
+    % disp(size(C))
+
     %check decomposition of this reaction
     decompositionCheck=sum(abs(S(:,n)-sparse(A*B*C(:,n))),1);
     if any(decompositionCheck)
@@ -296,7 +289,7 @@ for n=1:nRxn
         disp(sparse(A*B*C(:,n)))
         error(['Decomposition incorrect for reaction ' int2str(n)])
     end
-    
+
     %check that we are in the right part to the matrix
     if cumSumExtraReactants(n)~=x-1
         disp(n)
@@ -304,7 +297,7 @@ for n=1:nRxn
         disp(x-1)
         error('Inconsistent number of fake metabolites/reactions')
     end
-end             
+end
 
 if nExtra~=(x-1)
     disp(nExtra)

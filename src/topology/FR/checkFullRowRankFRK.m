@@ -27,12 +27,10 @@ switch this
             0,0,0;
             0,0,1];
 end
-if 1
-    A = [ -F +  R;
-        -If + Ir];
-else
-    A = [-If + Ir];
-end
+
+A = [ -F +  R;
+    -If + Ir];
+% A = [-If + Ir];
 
 [nMet,nRxn]=size(A);
 
@@ -49,9 +47,7 @@ disp(B)
 
 fprintf('%s\n',['Row rank deficiency = ' int2str(size(B,1)-rank(B))])
 
-if 1
-    syms a b c c1 c2 c3 c4 real
-    x=[a,b,c,c1,c2,c3,c4]';
-    
-    pretty(A*A'*x(1:nMet,1))
-end
+syms a b c c1 c2 c3 c4 real
+x=[a,b,c,c1,c2,c3,c4]';
+
+pretty(A*A'*x(1:nMet,1))

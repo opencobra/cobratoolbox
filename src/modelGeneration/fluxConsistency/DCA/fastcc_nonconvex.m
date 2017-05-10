@@ -6,12 +6,12 @@ function [A,V] = fastcc_nonconvex(model,epsilon,printLevel,modeFlag)
 %
 % INPUT
 % model             cobra model structure containing the fields
-%   S               m x n stoichiometric matrix    
+%   S               m x n stoichiometric matrix
 %   lb              n x 1 flux lower bound
 %   ub              n x 1 flux uppper bound
 %   rxns            n x 1 cell array of reaction abbreviations
-% 
-% epsilon           flux threshold       
+%
+% epsilon           flux threshold
 % printLevel        0 = silent, 1 = summary, 2 = debug
 %
 % OPTIONAL INPUT
@@ -20,7 +20,7 @@ function [A,V] = fastcc_nonconvex(model,epsilon,printLevel,modeFlag)
 % OUTPUT
 % A                 n x 1 boolean vector indicating the flux consistent reactions
 % V                 n x k matrix such that S(:,A)*V(:,A)=0 and |V(:,A)|'*1>0
- 
+
 % Hoai Minh LE      07/01/2016
 
 if ~exist('printLevel','var')
@@ -52,10 +52,10 @@ end
 % V is the n x k matrix of maximum cardinality vectors
 V=[];
 
-% v is the flux vector that approximately maximizes the cardinality 
+% v is the flux vector that approximately maximizes the cardinality
 % of the set of irreversible reactions v(J)
 % solution_NC = fastcc_nonconvex_maximise_card_J(J,model,epsilon);
-% v = solution_NC.v;    
+% v = solution_NC.v;
 [v, basis] = LP7( J, model, epsilon);
 
 % A is the set of reactions in v with absoulte value greater than epsilon
@@ -93,7 +93,7 @@ while ~isempty( J )
     else
         Ji = J;
         solution_NC = fastcc_nonconvex_maximise_card_J(J,model,epsilon);
-        v = solution_NC.v;            
+        v = solution_NC.v;
     end
     %Supp is the set of reactions in v with absoulte value greater than epsilon
     Supp = find( abs(v) >= 0.99*epsilon );
@@ -101,16 +101,16 @@ while ~isempty( J )
     nA1=length(A);
     A = union( A, Supp);
     nA2=length(A);
-    
+
     %save v if new flux consistent reaction found
     if nA2>nA1 && modeFlag
             V=[V,v];
     end
-        
+
     if printLevel>1
         fprintf('|A|=%d\n', numel(A));
     end
-    
+
     if ~isempty( intersect( J, A ))
         %J is the set of reactions with absolute value less than epsilon in V
         J = setdiff( J, A );
@@ -140,11 +140,7 @@ if modeFlag
     if norm(model.S*V,inf)>epsilon/100
         fprintf('%g%s\n',epsilon/100, '= epsilon/100')
         fprintf('%g%s\n',norm(model.S*V,inf),' = ||S*V||.')
-        if 0
-            error('Flux consistency check failed')
-        else
-            warning('Flux consistency numerically challenged')
-        end
+        warning('Flux consistency numerically challenged')
     else
         fprintf('%s\n','Flux consistency check finished...')
         fprintf('%10u%s\n',sum(any(V,2)),' = Number of flux consistent columns.')
@@ -178,14 +174,14 @@ function [solution] = fastcc_nonconvex_maximise_card_J(J,model,epsilon)
 %                           1 =  Solution found
 %                           2 =  Unbounded
 %                           0 =  Infeasible
-    
+
 nj = numel(J);
 [m,n] = size(model.S);
-    
+
 % Initialisation
 nbMaxIteration = 10;
 nbIteration = 1;
-stop = false;   
+stop = false;
 solution.v = [];
 solution.stat = 1;
 
@@ -206,8 +202,8 @@ obj = [zeros(n,1);ones(nj,1)];
 % Sv = 0
 % t >= v/epsilon
 % t >= -v/epsilon
-    
-Ij = sparse(nj,n); 
+
+Ij = sparse(nj,n);
 Ij(sub2ind(size(Ij),(1:nj)',J(:))) = 1/epsilon;
 AA = [sparse(model.S)        sparse(m,nj);
       sparse(Ij)              -speye(nj);
@@ -224,27 +220,27 @@ ub2 = [model.ub;max(ones(nj,1),max(abs(model.lb(J))/epsilon,abs(model.ub(J))/eps
 
 LP_basis = [];
 
-%Define the linear sub-problem  
+%Define the linear sub-problem
 subLPproblem = struct('c',obj,'osense',1,'A',AA,'csense',csense,'b',bb,'lb',lb2,'ub',ub2,'basis',LP_basis);
 
 %DCA
-while nbIteration < nbMaxIteration && stop ~= true, 
-    
+while nbIteration < nbMaxIteration && stop ~= true,
+
     v_old = v;
-        
-    %Compute v_bar in subgradient of second DC component   
+
+    %Compute v_bar in subgradient of second DC component
     v_bar = (rho.*sign(v)) / epsilon;
-    
-    %Solve the linear sub-program to obtain new v    
+
+    %Solve the linear sub-program to obtain new v
     [v,LPsolution] = fastcc_nonconvex_maximise_card_J_solveSubProblem(subLPproblem,v_bar,nj);
-    
+
     % Reuse for the next iteration
     if isfield(LPsolution,'basis')
         subLPproblem.basis=LPsolution.basis;
     else
         subLPproblem.basis=[];
     end
-    
+
     switch LPsolution.stat
         case 0
 %             disp('Problem infeasible !!!!!');
@@ -257,21 +253,21 @@ while nbIteration < nbMaxIteration && stop ~= true,
             solution.stat = 2;
             stop = true;
         case 1
-            %Check stopping criterion 
+            %Check stopping criterion
             error_v = norm(v - v_old);
             obj_new = fastcc_nonconvex_maximise_card_J_compute_obj(v,rho,epsilon);
             error_obj = abs(obj_new - obj_old);
             if (error_v < epsilon) || (error_obj < epsilon)
                 stop = true;
             else
-                obj_old = obj_new;                
+                obj_old = obj_new;
             end
             nbIteration = nbIteration + 1;
             disp(strcat('DCA - Iteration: ',num2str(nbIteration)));
-            disp(strcat('Obj:',num2str(obj_new)));    
+            disp(strcat('Obj:',num2str(obj_new)));
             disp(strcat('Stopping criteria error: ',num2str(min(error_v,error_obj))));
             disp('=================================');
-    end   
+    end
 end
 if solution.stat == 1
     solution.v = v;
@@ -281,15 +277,15 @@ end
 
 % Solve the linear sub-program to obtain new x
 function [v,LPsolution] = fastcc_nonconvex_maximise_card_J_solveSubProblem(subLPproblem,v_bar,nj)
-    
+
 n = length(v_bar);
 
 % Change the objective - variable (x,t)
 subLPproblem.obj = [-v_bar;ones(nj,1)];
-    
-%Solve the linear problem  
+
+%Solve the linear problem
 LPsolution = solveCobraLP(subLPproblem);
-        
+
 if LPsolution.stat == 1
     v = LPsolution.full(1:n);
 else
@@ -297,14 +293,14 @@ else
 end
 
 end
-    
+
 % Compute the objective function
 function obj = fastcc_nonconvex_maximise_card_J_compute_obj(v,rho,epsilon)
 obj = rho'*min(abs(v)/epsilon,1);
 end
-    
-    
-% Check flux consistency for one reaction 
+
+
+% Check flux consistency for one reaction
 %INPUT
 % j                         indicie of reaction
 % model                     cobra model structure
@@ -343,15 +339,15 @@ LPproblem.c=obj;
 
 
 % If the reaction is forward irreversible reaction then max v_j
-if model.lb(j) >= 0  
-    LPproblem.c(j) = -1;    
+if model.lb(j) >= 0
+    LPproblem.c(j) = -1;
     LPsolution = solveCobraLP(LPproblem);
     if LPsolution.stat == 1
         v = LPsolution.full(1:n);
     else
         v = [];
     end
-% If the reaction is reverse irreversible reaction then min v_j    
+% If the reaction is reverse irreversible reaction then min v_j
 elseif model.ub(j) <= 0
     LPproblem.c(j) = 1;
     LPsolution = solveCobraLP(LPproblem);
@@ -360,7 +356,7 @@ elseif model.ub(j) <= 0
     else
         v = [];
     end
-% If the reaction is reversible then need to check both side    
+% If the reaction is reversible then need to check both side
 else
     % Check forward side
     LPproblem.c(j) = -1;
@@ -375,10 +371,10 @@ else
                 v = LPsolution.full(1:n);
             else
                 v = [];
-            end                        
+            end
         end
     else
         v = [];
-    end    
+    end
 end
 end

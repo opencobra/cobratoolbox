@@ -239,15 +239,13 @@ switch theNorm
             if length(minNorm)~=length(c)
                 error('Either minNorm is a scalar, or is an n x 1 vector')
             else
-                if 0
-                    %same weighting
-                    cardVector = (minNorm~=0)+0;
-                else
-                    %TODO
-                    %individual weighting of cardinality for all variables
-                    %perhaps it is not a simple as this.
-                    cardVector = minNorm;
-                end
+                % %same weighting
+                % cardVector = (minNorm~=0)+0;
+
+                % TODO
+                % individual weighting of cardinality for all variables
+                % perhaps it is not a simple as this.
+                cardVector = minNorm;
                 if sign(max(cardVector(cardVector~=0)))~=sign(min(cardVector(cardVector~=0)))
                     error('mixing maximization and minimization of cardinality not implemented')
                 end
@@ -315,20 +313,20 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
                 b_L = b;
                 b_U = b;
             end
-            
+
             % Initialize the CPLEX object
             try
                 ILOGcplex = Cplex('fba');
             catch ME
                 error('CPLEX not installed or licence server not up')
             end
-            
+
             if osense==1
                 ILOGcplex.Model.sense = 'minimize';
             else
                 ILOGcplex.Model.sense = 'maximize';
             end
-            
+
             % Now populate the problem with the data
             ILOGcplex.Model.obj   = -c;
             ILOGcplex.Model.lb    = x_L;
@@ -336,19 +334,19 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
             ILOGcplex.Model.A     = LPProblem.A;
             ILOGcplex.Model.lhs   = b_L;
             ILOGcplex.Model.rhs   = b_U;
-            
+
             if ~isempty(F)
                 %quadratic constraint matrix, size n x n
                 ILOGcplex.Model.Q=F;
             end
-            
+
             if ~isempty(cpxControl)
                 if isfield(cpxControl,'LPMETHOD')
                     %set the solver
                     ILOGcplex.Param.lpmethod.Cur=cpxControl.LPMETHOD;
                 end
             end
-            
+
             if printLevel==0
                 ILOGcplex.DisplayFunc=[];
             else
@@ -357,10 +355,10 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
                 ILOGcplex.Param.simplex.display.Cur = printLevel;
                 ILOGcplex.Param.sifting.display.Cur = printLevel;
             end
-            
+
             % Optimize the problem
             ILOGcplex.solve();
-            
+
             solution.obj        = osense*ILOGcplex.Solution.objval;
             solution.full       = ILOGcplex.Solution.x;
             solution.rcost      = ILOGcplex.Solution.reducedcost;
@@ -386,7 +384,7 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
                 b_L = b;
                 b_U = b;
             end
-            
+
             % Initialize the CPLEX object
             try
                 ILOGcplex = Cplex('fba');
@@ -399,7 +397,7 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
                 ILOGcplex.Model.sense = 'maximize';
             end
        %     ILOGcplex.Model.sense = 'minimize';
-            
+
             % Now populate the problem with the data
             ILOGcplex.Model.obj   = c;
             ILOGcplex.Model.lb    = x_L;
@@ -407,19 +405,19 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
             ILOGcplex.Model.A     = LPProblem.A;
             ILOGcplex.Model.lhs   = b_L;
             ILOGcplex.Model.rhs   = b_U;
-            
+
             if ~isempty(F)
                 %quadratic constraint matrix, size n x n
                 ILOGcplex.Model.Q=F;
             end
-            
+
             if ~isempty(cpxControl)
                 if isfield(cpxControl,'LPMETHOD')
                     %set the solver
                     ILOGcplex.Param.lpmethod.Cur=cpxControl.LPMETHOD;
                 end
             end
-            
+
             if printLevel==0
                 ILOGcplex.DisplayFunc=[];
             else
@@ -428,10 +426,10 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
                 ILOGcplex.Param.simplex.display.Cur = printLevel;
                 ILOGcplex.Param.sifting.display.Cur = printLevel;
             end
-            
+
             % Optimize the problem
             ILOGcplex.solve();
-            
+
             solution.obj        = osense*ILOGcplex.Solution.objval
             solution.full       = ILOGcplex.Solution.x;
             solution.rcost      = ILOGcplex.Solution.reducedcost;
@@ -442,28 +440,28 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
             solution.origStat   = ILOGcplex.Solution.status;
             solution.solver     = ILOGcplex.Solution.method;
             solution.time       = ILOGcplex.Solution.time;
-            
+
             %maximise cardinality
             if sum(cardVector)<0
                 %second solve, with optimal value of first objective
-                epsilon    = 1e-3; 
+                epsilon    = 1e-3;
                 zeroCutoff = 1e-6;
                 %largestV = 1e2;
                 beta=1-1e-8; % how close to previous optima is required
-                
+
                 A=LPProblem.A;
                 [mlt,nlt]=size(A);
-                
+
                 %pad out constraint matrix with the dummy vector
                 A2 = [         A,   sparse(mlt,nlt);
                     speye(nlt),      -speye(nlt)];
-                
+
                 %pad out the rhs
                 b_L2 = [b_L;zeros(nlt,1)];
                 b_U2 = [b_U;inf*ones(nlt,1)];
                 %b_L2 = [b_L;-inf*ones(nlt,1)];
                 %b_U2 = [b_U;    zeros(nlt,1)];
-                
+
                 %expecting v_i for all |v_i| to be non-negative
                 %e.g. exchanges supposed to be non-negative, when maximising
                 %cardinality over all exchange reactions
@@ -474,16 +472,16 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
                 originalObjectiveIndex=find(c~=0);
                 x_L2(originalObjectiveIndex)= solution.obj*beta;
                 c2   = [zeros(nlt,1);cardVector];
-                
+
                 % Initialize the CPLEX object
                 try
                     ILOGcplex2 = Cplex('fba');
                 catch ME
                     error('CPLEX not installed or licence server not up')
                 end
-                
+
                 ILOGcplex2.Model.sense = 'minimize';
-                
+
                 % Now populate the problem with the data
                 ILOGcplex2.Model.obj   = c2;
                 ILOGcplex2.Model.lb    = x_L2;
@@ -491,14 +489,14 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
                 ILOGcplex2.Model.A     = A2;
                 ILOGcplex2.Model.lhs   = b_L2;
                 ILOGcplex2.Model.rhs   = b_U2;
-                
+
                 if ~isempty(cpxControl)
                     if isfield(cpxControl,'LPMETHOD')
                         %set the solver
                         ILOGcplex2.Param.lpmethod.Cur=cpxControl.LPMETHOD;
                     end
                 end
-                
+
                 if printLevel==0
                     ILOGcplex2.DisplayFunc=[];
                 else
@@ -507,13 +505,13 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
                     ILOGcplex2.Param.simplex.display.Cur = printLevel;
                     ILOGcplex2.Param.sifting.display.Cur = printLevel;
                 end
-                
+
                 % Optimize the problem
                 ILOGcplex2.solve();
-                
+
                 %Relative difference between objectives
                 %disp((solution.obj-ILOGcplex2.Solution.x(originalObjectiveIndex))/solution.obj)
-                
+
                 solution.obj        = ILOGcplex.Solution.x'*c;
                 solution.cardObj    = ILOGcplex2.Solution.x'*c2;
                 solution.full       = ILOGcplex2.Solution.x(1:nlt,1);
@@ -531,7 +529,7 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
                 %second solve, with optimal value of first objective
                 zeroCutoff = 1e-6;
                 beta=1-1e-8; % how close to previous optima is required
-                
+
                 %replace the original objective with a lower bound created from FBA
                 originalObjectiveIndex=find(c~=0);
                 x_L2=x_L;
@@ -540,16 +538,16 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
                 c2=c;
                 c2(originalObjectiveIndex)=0;
                 c2(cardVector~=0)=1;
-                
+
                 % Initialize the CPLEX object
                 try
                     ILOGcplex2 = Cplex('fba');
                 catch ME
                     error('CPLEX not installed or licence server not up')
                 end
-                
+
                 ILOGcplex2.Model.sense = 'minimize';
-                
+
                 % Now populate the problem with the modified data
                 % If irreversible model
                 if isfield(LPProblem,'reversibleModel') && LPProblem.reversibleModel == 0
@@ -563,14 +561,14 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
                 ILOGcplex2.Model.A     = LPProblem.A;
                 ILOGcplex2.Model.lhs   = b_L;
                 ILOGcplex2.Model.rhs   = b_U;
-                
+
                 if ~isempty(cpxControl)
                     if isfield(cpxControl,'LPMETHOD')
                         %set the solver
                         ILOGcplex2.Param.lpmethod.Cur=cpxControl.LPMETHOD;
                     end
                 end
-                
+
                 if printLevel==0
                     ILOGcplex2.DisplayFunc=[];
                 else
@@ -579,13 +577,13 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
                     ILOGcplex2.Param.simplex.display.Cur = printLevel;
                     ILOGcplex2.Param.sifting.display.Cur = printLevel;
                 end
-                
+
                 % Optimize the problem
                 ILOGcplex2.solve();
-                
+
                 %Relative difference between objectives
                 %disp((solution.obj-ILOGcplex2.Solution.x(originalObjectiveIndex))/solution.obj)
-                
+
                 solution.obj        = -ILOGcplex.Solution.x'*c;
                 solution.cardObj    = ILOGcplex2.Solution.x'*c2;
                 solution.full       = ILOGcplex2.Solution.x;
@@ -618,7 +616,7 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
             case 1
                 options = cplexoptimset(options,'Display','off');
         end
-        
+
         if ~isempty(csense)
             if sum(minNorm)~=0
                 Aineq = [LPProblem.A(csense == 'L',:); - LPProblem.A(csense == 'G',:)];
@@ -667,7 +665,7 @@ if ~isempty(which('cplexlp')) && tomlab_cplex==0
     end
     %1 = (Simplex or Barrier) Optimal solution is available.
     Inform = solution.origStat;
-    
+
 else
     %tomlab cplex interface
     if ~isempty(csense)
@@ -682,7 +680,7 @@ else
         b_L = b;
         b_U = b;
     end
-    
+
     %tomlab cplex interface
     %   minimize   0.5 * x'*F*x + c'x     subject to:
     %      x             x_L <=    x   <= x_U
@@ -691,7 +689,7 @@ else
         cpxControl, callback, printLevel, Prob, IntVars, PI, SC, SI, ...
         sos1, sos2, F, logfile, savefile, savemode, qc, ...
         confgrps, conflictFile, saRequest, basis, xIP, logcon);
-    
+
     solution.full=x;
     %this is the dual to the equality constraints but it's not the chemical potential
     solution.dual=v*osense;%negative sign Jan 25th

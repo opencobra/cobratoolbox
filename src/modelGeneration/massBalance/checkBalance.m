@@ -12,10 +12,10 @@ function [dE,E,missingFormulaeBool]=checkBalance(model,element,printLevel,fileNa
 %
 %
 % OPTIONAL INPUT
-% printLevel                    {-1,(0),1} 
+% printLevel                    {-1,(0),1}
 %                               -1=print out missing formulae to a file
 %                               0=silent
-%                               1=print out  missing formulae to screen                             reactions to screen 
+%                               1=print out  missing formulae to screen                             reactions to screen
 %
 % OUTPUT
 % dE        n x 1 vector of net change in elements per reaction bal = E*S
@@ -23,7 +23,7 @@ function [dE,E,missingFormulaeBool]=checkBalance(model,element,printLevel,fileNa
 %           a formula.
 %
 % E         m x 1 vector with number of elements in each metabolite
-% 
+%
 % Ronan M.T. Fleming    July 2009
 
 if ~isfield(model,'metFormulas')
@@ -63,13 +63,11 @@ for m=1:nMet
             firstMissing=1;
             fprintf(fid,'%s\t%s\n',int2str(m),model.mets{m});
         end
-        if 1
-            %NaN will show up in dE for the corresponding reaction
-            %inidcating that the mass balance of the reaction is unknown.
-            E(m,1)=NaN;
-        else
-            error('model structure must contain model.metForumlas field for each metabolite');
-        end
+
+        % NaN will show up in dE for the corresponding reaction
+        % inidcating that the mass balance of the reaction is unknown.
+        E(m,1)=NaN;
+        % error('model structure must contain model.metForumlas field for each metabolite');
     else
         try
             E(m,1)=numAtomsOfElementInFormula(model.metFormulas{m},element,printLevel);
@@ -81,7 +79,7 @@ for m=1:nMet
     end
 end
 
-dE=model.S'*E; 
+dE=model.S'*E;
 dE(abs(dE) < 1e-12) = 0;
 
 if exist('fid','var')

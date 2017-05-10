@@ -3,11 +3,11 @@ function [L,N,Lzero,Nzero,Pl,Pn,iR,dR,iC,dC,rankS]=conservationAnalysis(model,ma
 % in echelon form.
 % i.e.  L*S = 0 where [-Lzero I]*Pl'*S = 0;
 %       and
-%       S*N = 0 where S*Pn*[-Nzero; I]=S*[-Nzero' I']*Pn' = 0; 
+%       S*N = 0 where S*Pn*[-Nzero; I]=S*[-Nzero' I']*Pn' = 0;
 %
 % See: Conservation analysis of large biochemical networks
 % Ravishankar Rao Vallabhajosyula , Vijay Chickarmane and Herbert M. Sauro
-% 
+%
 %INPUT
 % model.S                   m x n stoichiometric matrix
 %
@@ -21,19 +21,19 @@ function [L,N,Lzero,Nzero,Pl,Pn,iR,dR,iC,dC,rankS]=conservationAnalysis(model,ma
 %                           analysis of massBalanced reactions only as
 %                           otherwise findSExRxnInd will be used to find
 %                           the mass imbalanced reactions
-% 
+%
 % model.biomassRxnAbbr      String with abbreviation of biomass reaction
 % model.c                   n x 1 linear objective function
-% 
+%
 % printLevel    {(0),1}     0 = Silent
 %                           1 = Print out conservation relations using metabolite and reaction
 %                           abbreviations
 % model.mets    m x 1 cell array of metabolite abbreviations
 % model.rxns    n x 1 cell array of reaction abbreviations
-% 
+%
 % tol           upper bound on tolerance of linear independence,default
 %               no greater than 1e-12
-% 
+%
 %OUTPUT
 % L             Echelon form Left nullspace of S
 % N             Echelon form Right nullspace of S
@@ -61,26 +61,22 @@ switch massBalanced
         if printLevel>0
             model.rxns=model.rxns(model.SIntRxnBool);
         end
-        
+
     case -1
         %locate biomass reaction if there is one
         biomassBool=false(nRxn,1);
         if ~isfield(model,'biomassRxnAbbr')
-            if 0
-                fprintf('%s\n','No model.biomassRxnAbbr ? Give abbreviation of biomass reaction if there is one.');
+            %tries to identify biomass reaction from linear objective
+            bool=model.c~=0;
+            if nnz(bool)==1
+                model.biomassRxnAbbr=model.rxns{model.c~=0};
+                fprintf('%s%s\n','Assuming biomass reaction is: ', model.biomassRxnAbbr);
+                biomassBool(bool)=1;
             else
-                %tries to identify biomass reaction from linear objective
-                bool=model.c~=0;
-                if nnz(bool)==1
-                    model.biomassRxnAbbr=model.rxns{model.c~=0};
-                    fprintf('%s%s\n','Assuming biomass reaction is: ', model.biomassRxnAbbr);
-                    biomassBool(bool)=1;
+                if nnz(bool)==0
+                    fprintf('%s\n','No model.biomassRxnAbbr? Give abbreviation of biomass reaction if there is one.');
                 else
-                    if nnz(bool)==0
-                        fprintf('%s\n','No model.biomassRxnAbbr ? Give abbreviation of biomass reaction if there is one.');
-                    else
-                        error('More than one biomass reaction?');
-                    end
+                    error('More than one biomass reaction?');
                 end
             end
         else
@@ -105,7 +101,7 @@ S=model.S;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %qr factorisation
 %for full matrix S', produces a permutation matrix P, an upper triangular
-%matrix R with decreasing diagonal elements, and a unitary matrix Q 
+%matrix R with decreasing diagonal elements, and a unitary matrix Q
 %so that S'*P = Q*R, or S = P*R'*Q'
 %The column permutation P is chosen so that abs(diag(R)) is decreasing.
 [Q,R,Pl]=qr(full(S'));
@@ -124,7 +120,7 @@ rankS  = length(find(abs(diag(R)) > tol));
 fprintf('\n%s\n',['#met        ' int2str(nMet)])
 fprintf('%s\n',['#rxn        ' int2str(nRxn)])
 fprintf('%s\n',['Rank(S)     ' int2str(rankS)])
-        
+
 [nlt,mlt]=size(R);
 %all of the rows below the first rankS non-zero rows should contain only
 %zeros and reflect the dependencies in the network
@@ -166,14 +162,11 @@ newOrder=originalOrder*Pl;
 if printLevel
     [na,nb]=size(L);
     fprintf('%s\n','Conserved pools:')
-    if 0
-        names=cell(nMet,1);
-        for m=1:nMet
-            names{m}=['m' int2str(newOrder(m))];
-        end
-    else
-        names=model.mets(newOrder);
-    end
+    % names=cell(nMet,1);
+    % for m=1:nMet
+    %     names{m}=['m' int2str(newOrder(m))];
+    % end
+    names=model.mets(newOrder);
     for a=1:na
         for b=1:nb
             if abs(L(a,b))>tol
@@ -198,19 +191,17 @@ depRow(newOrder(rankS+1:mlt))=1;
 %return L corresponding to the order of the rows in the imput S matrix
 L=L*Pl';
 
-if 1
-    fprintf('%s\n',['Coefficients in left null space < ' num2str(tol) ' set to zero'])
-    L(abs(L)<tol)=0;
-    Lzero(abs(Lzero)<tol)=0;
-end
+fprintf('%s\n',['Coefficients in left null space < ' num2str(tol) ' set to zero'])
+L(abs(L)<tol)=0;
+Lzero(abs(Lzero)<tol)=0;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %fluxes
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %qr factorisation
 %for full matrix S, produces a permutation matrix P, an upper triangular
-%matrix R with decreasing diagonal elements, and a unitary matrix Q 
-%so that S*P = Q*R, S' = P*R'*Q', S = Q*R*P'  
+%matrix R with decreasing diagonal elements, and a unitary matrix Q
+%so that S*P = Q*R, S' = P*R'*Q', S = Q*R*P'
 %The column permutation P is chosen so that abs(diag(R)) is decreasing.
 [Q,R,Pn]=qr(full(S));
 
@@ -266,13 +257,10 @@ if printLevel
     [na,nb]=size(N);
     fprintf('%s\n','Correlated fluxes?:')
     names=cell(nRxn,1);
-    if 0
-        for n=1:nRxn
-            names{n}=['v' int2str(n)];
-        end
-    else
-        names=model.rxns;
-    end
+    % for n=1:nRxn
+    %     names{n}=['v' int2str(n)];
+    % end
+    names=model.rxns;
     for b=1:nb
         for a=1:na
             if abs(N(a,b))>tol
@@ -300,7 +288,7 @@ dC  = depCol;         %Boolean index of Dependent columns
 [Q,R,P]=qr(Pl'*S);
 % Q(1:rankS,1:rankS) from reordered S should be non-singular so should be
 % invertible
-Lzero2=mrdivide(Q(rankS+1:mlt,1:rankS),Q(1:rankS,1:rankS)); 
+Lzero2=mrdivide(Q(rankS+1:mlt,1:rankS),Q(1:rankS,1:rankS));
 if max(max(Lzero-Lzero2))>tol
     fprintf('%s\n','Lzero: QR check failed');
 end
@@ -308,7 +296,7 @@ end
 %checking correlated fluxes are correct
 [Q,R,P]=qr(Pn'*S');
 % Q(1:rankS,1:rankS) is singular to working precision so not invertible
-Nzero2=mrdivide(Q(rankS+1:nlt,1:rankS),Q(1:rankS,1:rankS)); 
+Nzero2=mrdivide(Q(rankS+1:nlt,1:rankS),Q(1:rankS,1:rankS));
 if max(max(Nzero-(Nzero2')))>tol
     fprintf('%s\n','Nzero: QR check failed');
 end

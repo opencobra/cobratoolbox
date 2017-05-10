@@ -14,7 +14,7 @@ function [FRresultsTable,FRresults]=makeFRresultsTable(FRresults,resultsDirector
 %                       to a csv file, with specified filename
 %
 %OUTPUT
-% FRresultsTable        table displaying the results of checkRankFRdriver 
+% FRresultsTable        table displaying the results of checkRankFRdriver
 % FRresults             output of checkRankFRdriver
 
 %'Conditions for duality between fluxes and concentrations in biochemical networks
@@ -31,14 +31,12 @@ if isempty(FRresults)
     end
     cd(resultsDirectory)
     load([resultsDirectory resultsFileName])
-    
+
     nResults=length(FRresults);
-    if 1
-        %filename order of results structure
-        for k=1:nResults
-            tmp=FRresults(k).modelFilename;
-            FRresults(k).modelID=tmp(1:end-4);%take off .mat
-        end
+    %filename order of results structure
+    for k=1:nResults
+        tmp=FRresults(k).modelFilename;
+        FRresults(k).modelID=tmp(1:end-4);%take off .mat
     end
 else
     nResults=length(FRresults);
@@ -76,7 +74,7 @@ while k<=nResults
             warning('no metadata found for for model')
         end
     end
-    
+
     if firstColumn
         FRresultsTable{i,1}='Species';
     else
@@ -267,7 +265,7 @@ while k<=nResults
     if firstColumn
         FRresultsTable{i,1}='# Unique and stoichiometrially consistent cols';
     else
-        FRresultsTable{i,n+1}=nnz(FRresults(k).model.SConsistentRxnBool & FRresults(k).model.FRuniqueColBool); 
+        FRresultsTable{i,n+1}=nnz(FRresults(k).model.SConsistentRxnBool & FRresults(k).model.FRuniqueColBool);
     end
     i=i+1;
     if firstColumn
@@ -275,7 +273,7 @@ while k<=nResults
     else
         FRresultsTable{i,n+1}=nnz(FRresults(k).model.SConsistentRxnBool & FRresults(k).model.FRuniqueColBool & FRresults(k).model.fluxConsistentRxnBool);
     end
-    i=i+1;    
+    i=i+1;
     if firstColumn
         FRresultsTable{i,1}='# Nontrivial stoich. and flux consistent cols of [F;R]';
     else
@@ -311,7 +309,7 @@ while k<=nResults
 %     else
 %         FRresultsTable{i,n+1}=FRresults(k).coherenceS;
 %     end
-    
+
     %now move to columns for results
     if firstColumn
         firstColumn=0;

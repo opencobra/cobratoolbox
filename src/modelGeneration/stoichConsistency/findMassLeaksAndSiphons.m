@@ -120,14 +120,11 @@ if modelBoundsFlag
         fprintf('%6u\t%6u\t%s%s%s\n',mlt,nlt,' subset tested for leakage (', method,' method, with model flux bounds)...');
     end
 else
-    if 1
-        %no bounds on fluxes
-        lb=-inf*ones(nlt,1);
-        ub= inf*ones(nlt,1);
-    else
-        lb=-(1/epsilon)*ones(nlt,1);
-        ub= (1/epsilon)*ones(nlt,1);
-    end
+    %no bounds on fluxes
+    lb=-inf*ones(nlt,1);
+    ub= inf*ones(nlt,1);
+    % lb=-(1/epsilon)*ones(nlt,1);
+    % ub= (1/epsilon)*ones(nlt,1);
     if printLevel>0
         fprintf('%6u\t%6u\t%s%s%s\n',mlt,nlt,' subset tested for leakage (', method,' method, with infinite flux bounds)...');
     end

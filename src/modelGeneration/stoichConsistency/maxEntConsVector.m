@@ -19,17 +19,15 @@ d2=1;
 
 %pdco parameters
 options = pdcoSet;
-if 0
-    options.FeaTol    = 1e-6; %6 March 2010 medium FeaTol
-    options.OptTol    = 1e-6; %6 March 2010 medium OptTol
-    options.MaxIter   = 200;
-    options.Method    = 1;    % 1=Chol  2=QR (more reliable)
-    options.mu0       = 0;  % 0 lets pdco decide.  1 or 10 assumes good scaling
-    options.StepTol   = 0.9;
-    options.StepSame  = 1;
-    options.Print     = printLevel-1;
-    options.wait      = 0;
-end
+% options.FeaTol    = 1e-6; %6 March 2010 medium FeaTol
+% options.OptTol    = 1e-6; %6 March 2010 medium OptTol
+% options.MaxIter   = 200;
+% options.Method    = 1;    % 1=Chol  2=QR (more reliable)
+% options.mu0       = 0;  % 0 lets pdco decide.  1 or 10 assumes good scaling
+% options.StepTol   = 0.9;
+% options.StepSame  = 1;
+% options.Print     = printLevel-1;
+% options.wait      = 0;
 
 x0=ones(mlt,1);
 y0=ones(nlt,1);
