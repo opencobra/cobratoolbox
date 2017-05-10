@@ -40,7 +40,7 @@ function configEnvVars(printLevel)
             % try retrieving the solver path from the environment variables
             eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1} , ''');'])
             if ~isempty(eval(solverPaths{k, 1}))
-                method == '*---';
+                method = '*---';
             end
 
             % loop through the list of possible directories
