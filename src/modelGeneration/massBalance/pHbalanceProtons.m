@@ -32,7 +32,7 @@ function model=pHbalanceProtons(model,massImbalance,printLevel,fileName)
 %                   to correspond to H balancing.
 % printLevel        {(0),-2,-1,0,1,2,3) print more to file or more to the
 %                   command window
-% fileName          name of the file to print out to 
+% fileName          name of the file to print out to
 %
 % OUTPUT
 % model.S                   Stoichiometric matrix balanced for protons where each row.
@@ -164,7 +164,7 @@ for n=1:nRxn
             %model.compartments of all metabolites involved in reactions
             metCompartments = model.metCompartments(model.S(:,n)~=0);
             rxnUniqueMetCompartments=unique(metCompartments);
-            
+
             %dont change reaction if any one of the metabolites has a NaN for
             %standard Gibbs energy of formation and therefore NaN for the
             %average number of H bound
@@ -173,22 +173,22 @@ for n=1:nRxn
                     if length(rxnUniqueMetCompartments)==1
                         if printLevel>0
                             fprintf('%15g\t%20s\t%s\t%s\t%s\n',NaN,model.rxns{n}, rxnUniqueMetCompartments{1},'','Not proton balanced - NaN aveHbound.')
-                            
+
                         else
                             if printLevel<0
                                 fprintf(fid,'%15g\t%20s\t%s\t%s\t%s\n',NaN,model.rxns{n}, rxnUniqueMetCompartments{1},'','Not proton balanced - NaN aveHbound.');
-                                
+
                             end
                         end
-                        
+
                     else
                         if printLevel>0
                             fprintf('%15g\t%20s\t%s\t%s\t%s\n',NaN, rxnUniqueMetCompartments{1},rxnUniqueMetCompartments{2},'Not proton balanced - NaN aveHbound.')
-                            
+
                         else
                             if printLevel<0
                                 fprintf(fid,'%15g\t%20s\t%s\t%s\t%s\n',NaN, rxnUniqueMetCompartments{1},rxnUniqueMetCompartments{2},'Not proton balanced - NaN aveHbound.');
-                                
+
                             end
                         end
                     end
@@ -196,11 +196,11 @@ for n=1:nRxn
             else
                 %no change if only protons involved in a reaction
                 if any(model.S(:,n)~=0 & ~boolH)
-                    
+
                     %model.compartments of non-proton metabolites involved in reactions
                     metCompartmentsNotH = model.metCompartments(model.S(:,n)~=0 & ~boolH);
                     uniqueCompartmentsNotH=unique(metCompartmentsNotH);
-                    
+
                     if length(rxnUniqueMetCompartments)>length(uniqueCompartmentsNotH)
                         %proton transport across a membrane driving a reaction
                         %make any necessary change to the proton stoichiometric
@@ -209,7 +209,7 @@ for n=1:nRxn
                         % e.g. abbreviation: 'ATPS4r'
                         %      officialName: 'ATP synthase (four protons for one ATP)'
                         %      equation: 'adp[c] + 4 h[e] + pi[c]  <=> atp[c] + h2o[c] + 3 h[c] '
-                        
+
                         %assumes the reconstruction transport reaction is elementally balanced for H
                         compartBool = strcmp(uniqueCompartmentsNotH{1},model.metCompartments);
                         metRxnCompartBool = model.S(:,n)~=0 & compartBool & ~boolH;
@@ -219,10 +219,10 @@ for n=1:nRxn
                         %                     end
                         %                     %index for H involved in compartment with reaction
                         %                     indexHRxn  = compartmentHindex(strcmp(uniqueCompartmentsNotH{1},model.compartments));
-                        
+
                         %find out if first index is substrate or product
                         %compartment
-                        
+
                         %                     if sum(model.S(compartBool,n))<0
                         %                         spIndexCol=1;
                         %                         %if the hydrogen ion is a substrate, then store the number of
@@ -234,10 +234,10 @@ for n=1:nRxn
                         %                     end
                         %                     %save index of hydrogen ions for first compartment
                         %                     substrateProductIndexH(n,spIndexCol)=indexHRxn;
-                        
+
                         %adjust the proton stoichiometric coefficient
                         model.S(indexHRxn,n) = model.S(indexHRxn,n)  - deltaHBound(metRxnCompartBool)*model.S(metRxnCompartBool,n);
-                        
+
                         %                     %index for H involved in compartment with reaction
                         %                     indexHRxn  = compartmentHindex(strcmp(uniqueCompartmentsNotH{1},model.compartments));
                         %
@@ -278,14 +278,14 @@ for n=1:nRxn
                             %this assumes that the transporter involved has
                             %affinity only for a particular species of
                             %metabolite defined by the reconstrution.
-                            
+
                             %first compartment
                             compartBool1 = strcmp(uniqueCompartmentsNotH{1},model.metCompartments);
                             %boolean for non-proton metabolites in first compartment
                             metCompartBool1 = model.S(:,n)~=0 & compartBool1 & ~boolH;
                             %index for stoichiometric coefficient of first compartment
                             indexHRxn1  = compartmentHindex(strcmp(uniqueCompartmentsNotH{1},model.compartments));
-                            
+
                             %                         %find out if first index is substrate or product
                             %                         %compartment
                             %                         if sum(model.S(compartBool1,n))<0
@@ -306,14 +306,14 @@ for n=1:nRxn
                             %                                 netTransportZi(n,1)=-netTransportZi(n,1);
                             %                             end
                             %                         end
-                            
+
                             %second compartment
                             compartBool2 = strcmp(uniqueCompartmentsNotH{2},model.metCompartments);
                             %boolean for non-proton metabolites in first compartment
                             metCompartBool2 = model.S(:,n)~=0 & compartBool2 & ~boolH;
                             %index for stoichiometric coefficient of first compartment
                             indexHRxn2  = compartmentHindex(strcmp(uniqueCompartmentsNotH{2},model.compartments));
-                            
+
                             %                         %second index must be for opposite column of first
                             %                         if spIndexCol==1
                             %                             spIndexCol=2;
@@ -328,7 +328,7 @@ for n=1:nRxn
                             %                         if netTransportZiReverse~=netTransportZi(n,1)
                             %                             error('Reconstruction reaction not charge balanced?');
                             %                         end
-    
+
                             %mass balance reactant reactions
                             model.S(indexHRxn1,n)=model.S(indexHRxn1,n) - deltaHBound(metCompartBool1)*model.S(metCompartBool1,n);
                             model.S(indexHRxn2,n)=model.S(indexHRxn2,n) - deltaHBound(metCompartBool2)*model.S(metCompartBool2,n);
@@ -336,11 +336,11 @@ for n=1:nRxn
                     end
                 end
             end
-            
+
             if abs(aveHbound*model.S(:,n))>1e-6
                 %if the initial reconstruction reaction unbalanced for protons
                 %then the pHbalanced reaction will not
-                
+
                 if printLevel>0
                     if length(rxnUniqueMetCompartments)==1
                         fprintf('%u\t%15g\t%20s\t%s\t%s\t%s\n',unbalancedInternalBool(n),abs(aveHbound*model.S(:,n)),model.rxns{n}, rxnUniqueMetCompartments{1},'','Not proton balanced.')
