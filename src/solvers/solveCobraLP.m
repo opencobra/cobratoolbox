@@ -485,15 +485,21 @@ switch solver
         sysCall = [MINOS_PATH filesep 'runfba solveLP ' fname ' lp1'];
         [status, cmdout] = system(sysCall);
 
-        if status ~= 0 && status ~= 1
+        if ~isempty(strfind(cmdout, 'error'))
            disp(sysCall);
            disp(cmdout);
-           error('Call to minos failed.');
+           error('Call to runfba failed.');
         end
 
         % call qminos
         sysCall = [MINOS_PATH filesep 'qrunfba qsolveLP ' fname ' lp2'];
         [status, cmdout] = system(sysCall);
+
+        if ~isempty(strfind(cmdout, 'error'))
+           disp(sysCall);
+           disp(cmdout);
+           error('Call to qrunfba failed.');
+        end
 
         % read the solution
         sol = readMinosSolution([MINOS_PATH filesep 'q' fname '.sol']);
@@ -542,8 +548,10 @@ switch solver
         addFileName = {'', 'q'};
 
         % remove temporary data directories
-        rmdir(dataDirectory, 's');
-        rmdir([MINOS_PATH filesep 'data'], 's');
+        tmpFileName = [MINOS_PATH filesep 'data'];
+        if exist(tmpFileName, 'dir') == 7
+            rmdir(tmpFileName, 's')
+        end
 
         % remove temporary solver files
         for k = 1:length(fileEnding)

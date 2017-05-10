@@ -93,7 +93,7 @@ if ~exist('directory','var')
 end
 
 %filename
-longfname = [directory '/' fname '.txt'];
+longfname = [directory filesep fname '.txt'];
 
 %csense addition code cut from optimizeCbModel.m
 if ~isfield(LPproblem,'csense')
