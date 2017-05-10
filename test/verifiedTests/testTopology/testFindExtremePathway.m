@@ -26,7 +26,7 @@ model.S = [1, 0, 0, 0,-1,-1,-1, 0, 0, 0
            0, 0,-1, 0, 0, 0, 0, 0, 1, 1];
 model.revRxns = [0 1 0 0 0 0 0 1 0 0];
 
-model.stoich = model.S;
+
 model.reversibilities = model.revRxns;
 
 % define list of solver packages
