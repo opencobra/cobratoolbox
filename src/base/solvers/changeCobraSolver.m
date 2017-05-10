@@ -147,6 +147,11 @@ if isempty(SOLVERS) || isempty(OPT_PROB_TYPES)
     ENV_VARS.printLevel = true;
 end
 
+% print an error message if the solver is not supported
+supportedSolversNames = fieldnames(SOLVERS);
+if isempty(strmatch(supportedSolversNames, solverName))
+    error('The solver %s is not supported. Please run >> initCobraToolbox to obtain a table with available solvers.', solverName);
+end
 % configure the environment variables
 configEnvVars();
 
