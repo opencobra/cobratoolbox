@@ -162,13 +162,13 @@ for k = 1:S(1) % Check all metabolites in model
     else
         met_k{k,1} = metabolites{line,2};   %metNames
         met_k{k,2} = metabolites{line,4};   %metFormulas
-        met_k{k,3} = metabolites{line,5};   %metCharge
+        met_k{k,3} = metabolites{line,5};   %metCharges
         met_k{k,4} = metabolites{line,8};   %metChEBIID
         met_k{k,5} = metabolites{line,6};   %metKEGGID
         met_k{k,6} = metabolites{line,7};   %metPubChemID
         met_k{k,7} = metabolites{line,9};   %metInChIString
         met_k{k,8} = metabolites{line,11};  %metHMDB
-        met_k{k,9} = metabolites{line,12};  %metSmile
+        met_k{k,9} = metabolites{line,12};  %metSmiles
     end
 end
 
@@ -245,7 +245,7 @@ model.metKEGGID = met_k(:,5);
 model.metPubChemID = met_k(:,6);
 model.metInChIString = met_k(:,7);
 model.metHMDB = met_k(:,8);
-model.metSmile = met_k(:,9);
+model.metSmiles = met_k(:,9);
 
 
 

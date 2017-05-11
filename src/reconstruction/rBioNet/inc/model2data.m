@@ -202,8 +202,8 @@ if fordb == 0
 elseif fordb == 1
     % From the metabolite database the only thing missing is the Neutral
     % formula.
-     met_fields = {'mets','metNames','metFormulas','metCharge','metKEGGID',...
-         'metPubChemID','metChEBIID','metInChIString','metSmile','metHMDB',...
+     met_fields = {'mets','metNames','metFormulas','metCharges','metKEGGID',...
+         'metPubChemID','metChEBIID','metInChIString','metSmiles','metHMDB',...
          'metHepatoNetID','metEHMNID'};
 
      names = fieldnames(model);
@@ -224,7 +224,7 @@ elseif fordb == 1
          if isfield(model,met_fields{i})
              if isempty(model.(met_fields{i})) %fields can exist but be empty.
                  metabolites(:,i) = cell(size(model.mets,1),1);
-             elseif strcmp(met_fields{i}, 'metCharge') %numeric fix
+             elseif strcmp(met_fields{i}, 'metCharges') %numeric fix
                  metabolites(:,i) = num2cell(model.(met_fields{i}));
              else
                  metabolites(:,i) = model.(met_fields{i});

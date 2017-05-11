@@ -642,8 +642,7 @@ else    % in the case of fbc file
         model.osense = - sign(fbc_obj_value);
     end
 
-    if all(cellfun('isempty',fbcMet.fbc_chemicalFormula))~=1  % if all formulas are empty
-        % model.objFunction=fbc_obj;
+    if all(cellfun('isempty',fbcMet.fbc_chemicalFormula))~=1  % if all formulas are empty        
         model.metFormulas=fbcMet.fbc_chemicalFormula;
     end
 

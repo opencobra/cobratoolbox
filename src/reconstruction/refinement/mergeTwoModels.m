@@ -68,8 +68,8 @@ for i = 1:size(model2.mets,1)
             modelNew.metFormulas(sizemets,1) = model2.metFormulas(i,1);
         end
         % causes errors when joining with enterocyte model
-         if isfield(model1,'metCharge')&& isfield(model2,'metCharge')&& length(model2.metCharge)>0
-             modelNew.metCharge(sizemets,1) = model2.metCharge(i,1);
+         if isfield(model1,'metCharges')&& isfield(model2,'metCharges')&& length(model2.metCharges)>0
+             modelNew.metCharges(sizemets,1) = model2.metCharges(i,1);
          end
         sizemets = sizemets+1;
     end
