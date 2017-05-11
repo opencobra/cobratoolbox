@@ -228,11 +228,8 @@ for i=1:length(list)
     elseif strfind(list{i},'fbc_activeObjective')
         sbmlModel.(list{i})='obj'; % a default fbc_activeObjective field is assigned.
     elseif strfind(list{i},'id')
-        if isfield(model,'id')
-            sbmlModel.(list{i})=model.id;
-        else
-            sbmlModel.(list{i})='emptyModelID';
-        end
+
+        sbmlModel.(list{i})='COBRAModel';
     elseif strfind(list{i},'metaid')
         if isfield(model,'description')
             sbmlModel.(list{i})=model.description;
