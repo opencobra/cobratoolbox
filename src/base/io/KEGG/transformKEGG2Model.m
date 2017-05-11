@@ -14,6 +14,7 @@ for i = 1: length(model.mets)
         model.mets(i)=model.metKEGGID(i);
     end
 end
-
+%removing temporary field
+model = rmfield(model,model.metsAbr)
 end
 
