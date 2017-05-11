@@ -4,19 +4,17 @@ function [x, output] = findExtremePathway(fbaModel, obj)
 %   $Revision: 0.1 $  $Date: 2011/05/01 $
 %   
   
+
 A    = fbaModel.S;
 [nmet,nrxn] = size(A);
 
 % Convert model to conic form
-if ~isfield(fbaModel, 'revRxns')
-    if isfield(fbaModel, 'ub') && isfield(fbaModel, 'lb')
-        revRxns = fbaModel.lb < 0 & fbaModel.ub > 0;
-    else
-        error('missing fields: revRxns or ub and lb\n');
-    end
+if isfield(fbaModel, 'ub') && isfield(fbaModel, 'lb')
+    revRxns = fbaModel.lb < 0 & fbaModel.ub > 0;
 else
-    revRxns = logical(fbaModel.revRxns);
+    error('missing fields: revRxns or ub and lb\n');
 end
+
 A = [A, -A(:,revRxns)];
 [~, n] = size(A);
 

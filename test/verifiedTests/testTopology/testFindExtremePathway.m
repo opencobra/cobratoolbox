@@ -24,10 +24,6 @@ model.S = [1, 0, 0, 0,-1,-1,-1, 0, 0, 0
            0, 0, 0, 0, 0, 0, 1, 0, 0,-1
            0, 0, 0,-1, 0, 0, 0, 0, 0, 1
            0, 0,-1, 0, 0, 0, 0, 0, 1, 1];
-model.revRxns = [0 1 0 0 0 0 0 1 0 0];
-
-
-model.reversibilities = model.revRxns;
 
 % define list of solver packages
 solverPkgs = {'gurobi', 'glpk'};
@@ -46,14 +42,14 @@ for k = 1:length(solverPkgs)
     solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
     if solverOK == 1
-        v = findExtremePathway(model);
-        assert(all(abs(model.S * v) < tol))
-
-        % testing findExtremePathway with different arguments
-        if isfield(model, 'revRxns')
-            model = rmfield(model, 'revRxns');
-        end
-
+%         v = findExtremePathway(model);
+%         assert(all(abs(model.S * v) < tol))
+% 
+%         % testing findExtremePathway with different arguments
+%         if isfield(model, 'revRxns')
+%             model = rmfield(model, 'revRxns');
+%         end
+        %testing missing lb/ub
         try
             v = findExtremePathway(model, obj);
         catch ME
