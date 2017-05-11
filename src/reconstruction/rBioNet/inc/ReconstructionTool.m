@@ -1254,7 +1254,7 @@ metabolites = output{5};
 % metFormulas chargeFormula
 % metCharge
 % metChebiID
-% metKeggID
+% metKEGGID
 % metPubCHem
 % metInchiString
 % metSmile

@@ -283,9 +283,6 @@ for i = 1:length(metaboliteList)
         if isfield(model,'metKEGGID')
             model.metKEGGID{end+1,1} = '';
         end
-        if isfield(model,'metKeggID')
-            model.metKeggID{end+1,1} = ''; %changed to match Recon 2 nomenclature
-        end
         if isfield(model,'metPubChemID')
             model.metPubChemID{end+1,1} = '';
         end

@@ -129,16 +129,6 @@ if isfield(model1,'rxnNotes') && isfield(model2,'rxnNotes')
     modelNew.rxnNotes(size(model1.rxnNotes,1)+1:size(model1.rxnNotes,1)+size(model2.rxnNotes)) = model2.rxnNotes;
 end
 
-
-% modelNew.metChEBIID = model1.metChEBIID;
-% modelNew.metChEBIID(size(model1.metChEBIID,1)+1:size(model1.metChEBIID,1)+size(model2.metChEBIID)) = model2.metChEBIID;
-% modelNew.metKeggID = model1.metKeggID;
-% modelNew.metKeggID(size(model1.metKeggID,1)+1:size(model1.metKeggID,1)+size(model2.metKeggID)) = model2.metKeggID;
-% modelNew.metPubChemID = model1.metPubChemID;
-% modelNew.metPubChemID(size(model1.metPubChemID,1)+1:size(model1.metPubChemID,1)+size(model2.metPubChemID)) = model2.metPubChemID;
-% modelNew.metInchiString = model1.metInchiString;
-% modelNew.metInchiString(size(model1.metInchiString,1)+1:size(model1.metInchiString,1)+size(model2.metInchiString)) = model2.metInchiString;
-
 fprintf('Finished\n');
 
 % Combining S Matrices (using sparse allocation)

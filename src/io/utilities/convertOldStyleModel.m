@@ -29,7 +29,8 @@ if (isfield(model,'metCharge'))
     end
     model = rmfield(model,'metCharge');
 end
-    
+   
+%ecNumbers -> rxnECNumbers
 if (isfield(model,'ecNumbers'))
     if ~isfield(model,'rxnECNumbers')
         model.rxnECNumbers = model.ecNumbers;
@@ -38,4 +39,14 @@ if (isfield(model,'ecNumbers'))
         model.rxnECNumbers(cellfun(@isempty, model.rxnECNumbers)) = model.ecNumbers(cellfun(@isempty, model.rxnECNumbers));
     end
     model = rmfield(model,'ecNumbers');
-else
+end
+%KEGGID -> metKEGGID
+if (isfield(model,'KEGGID'))
+    if ~isfield(model,'metKEGGID')
+        model.metKEGGID = model.KEGGID;
+    else
+        %use the old field for those not defined in the new one.
+        model.metKEGGID(cellfun(@isempty, model.metKEGGID)) = model.KEGGID(cellfun(@isempty, model.metKEGGID));
+    end
+    model = rmfield(model,'KEGGID');
+end
