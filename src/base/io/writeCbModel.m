@@ -160,9 +160,7 @@ switch format
             end
 
             tmpData{i+1,baseInd} = chopForExcel(formulas{i});
-            if (isfield(model,'geneNameRules'))
-                tmpData{i+1,baseInd+1} = chopForExcel(model.geneNameRules{i});
-            elseif (isfield(model,'grRules'))
+            if (isfield(model,'grRules'))
                 tmpData{i+1,baseInd+1} = chopForExcel(model.grRules{i});
             else
                 tmpData{i+1,baseInd+1} = '';

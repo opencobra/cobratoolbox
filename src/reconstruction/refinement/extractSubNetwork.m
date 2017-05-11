@@ -65,8 +65,7 @@ if (isfield(model,'genes') && isfield(model,'rxnGeneMat'))
    subModel.genes = model.genes(selGenes);
    subModel.grRules = model.grRules(selRxns);
 end
-if (isfield(model,'geneNames'))
-    subModel.geneNameRules = model.geneNameRules(selRxns);
+if (isfield(model,'geneNames'))    
     subModel.geneNames = model.geneNames(selGenes);
 end
 if (isfield(model,'subSystems'))

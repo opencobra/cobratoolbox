@@ -743,11 +743,7 @@ for i=1:size(model.rxns, 1)
     else
         tmp_rxnRev=0;
     end
-    
-    if isfield(model, 'rxnsboTerm')
-        tmp_Rxn.sboTerm= model.rxnsboTerm(i);
-    end
-    
+            
     tmp_Rxn.id=tmp_rxnID;
     tmp_Rxn.name=tmp_rxnName;
     tmp_Rxn.reversible=tmp_rxnRev;

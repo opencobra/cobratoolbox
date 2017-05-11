@@ -226,9 +226,6 @@ end
 if isfield(model,'rxnConfidenceEcoIDA')
     model.rxnConfidenceEcoIDA{rxnID,1} = '';
 end
-if isfield(model,'rxnsboTerm')
-    model.rxnsboTerm{rxnID,1} = '';
-end
 
 %Give warning and combine the coeffeicient if a metabolite appears more than once
 [metaboliteListUnique,~,IC] = unique(metaboliteList);
