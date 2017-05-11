@@ -95,3 +95,15 @@ if (isfield(model,'metSmile'))
     end
     model = rmfield(model,'metSmile');
 end
+
+%metHMDB -> metHMDBID
+
+if (isfield(model,'metHMDB'))
+    if ~isfield(model,'metHMDBID')
+        model.metHMDBID = model.metHMDB;
+    else
+        %use the old field for those not defined in the new one.
+        model.metHMDBID(cellfun(@isempty, model.metHMDBID)) = model.metHMDB(cellfun(@isempty, model.metHMDBID));
+    end
+    model = rmfield(model,'metHMDB');
+end

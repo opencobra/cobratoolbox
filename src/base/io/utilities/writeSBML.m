@@ -373,8 +373,8 @@ for i=1:size(model.mets, 1)
         tmp_note = [ tmp_note ' <rdf:li rdf:resource="http://identifiers.org/kegg.compound/' model.metKEGGID{i} '"/>'];
     end
     
-    if isfield(model, 'metHMDB')&&~isempty(model.metHMDB{i})
-        tmp_note = [ tmp_note ' <rdf:li rdf:resource="http://identifiers.org/hmdb/' model.metHMDB{i} '"/>'];
+    if isfield(model, 'metHMDBID')&&~isempty(model.metHMDBID{i})
+        tmp_note = [ tmp_note ' <rdf:li rdf:resource="http://identifiers.org/hmdb/' model.metHMDBID{i} '"/>'];
     end
     
     if isfield(model, 'metInChIString')&&~isempty(model.metInChIString{i})

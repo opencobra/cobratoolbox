@@ -710,7 +710,7 @@ end
 
 if (hasAnnotationField)
     model.metChEBIID = columnVector(metChEBIID);
-    model.metHMDB = columnVector(metHMDB);
+    model.metHMDBID = columnVector(metHMDB);
     model.metKEGGID = columnVector(metKEGGID);
     model.metPubChemID = columnVector(metPubChemID);
     model.metInChIString = columnVector(metInChIString);

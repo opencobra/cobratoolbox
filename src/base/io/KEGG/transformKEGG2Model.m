@@ -15,6 +15,6 @@ for i = 1: length(model.mets)
     end
 end
 %removing temporary field
-model = rmfield(model,model.metsAbr)
+model = rmfield(model,'metsAbr');
 end
 

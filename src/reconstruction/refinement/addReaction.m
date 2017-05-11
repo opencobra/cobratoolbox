@@ -295,8 +295,8 @@ for i = 1:length(metaboliteList)
         if isfield(model,'metEHMNID')
             model.metEHMNID{end+1,1} = ''; %added
         end
-        if isfield(model,'metHMDB')
-            model.metHMDB{end+1,1} = ''; %added
+        if isfield(model,'metHMDBID')
+            model.metHMDBID{end+1,1} = ''; %added
         end
     end
 end

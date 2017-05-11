@@ -244,7 +244,7 @@ model.metChEBIID = met_k(:,4);
 model.metKEGGID = met_k(:,5);
 model.metPubChemID = met_k(:,6);
 model.metInChIString = met_k(:,7);
-model.metHMDB = met_k(:,8);
+model.metHMDBID = met_k(:,8);
 model.metSmiles = met_k(:,9);
 
 
