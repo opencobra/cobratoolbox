@@ -268,8 +268,8 @@ switch format
                 else
                     tmpMetData{i+1,9} = '';
                 end
-                if isfield(model,'metInchiString')
-                    tmpMetData{i+1,10} = chopForExcel(model.metInchiString{i});
+                if isfield(model,'metInChIString')
+                    tmpMetData{i+1,10} = chopForExcel(model.metInChIString{i});
                 else
                     tmpMetData{i+1,10} = '';
                 end

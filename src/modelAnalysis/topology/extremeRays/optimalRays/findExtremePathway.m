@@ -34,10 +34,7 @@ LPProblem.b   = [zeros(nmet,1); 1];
 LPProblem.osense= -1;
 LPProblem.lb = 0* ones(n,1);
 LPProblem.ub = inf* ones(n,1);
-
-% Set optional model components
-model.modelsense = 'max';
-  
+ 
 result = solveCobraLP(LPProblem);  % Find extreme ray (be aware, that this can easily be a loop of a reversible reaction. 
 
 x = result.full(1:nrxn);

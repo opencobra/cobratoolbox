@@ -123,7 +123,7 @@ model.comments = data(:,12);
 model.citations = data(:,11);
 model.rxnConfidenceScores = data(:,9);
 model.rxnECNumbers = data(:,13);
-model.rxnKeggID = data(:,14);
+model.rxnKEGGID = data(:,14);
 
 %----createModel.m is missing some things, fix...
 
@@ -166,7 +166,7 @@ for k = 1:S(1) % Check all metabolites in model
         met_k{k,4} = metabolites{line,8};   %metChEBIID
         met_k{k,5} = metabolites{line,6};   %metKEGGID
         met_k{k,6} = metabolites{line,7};   %metPubChemID
-        met_k{k,7} = metabolites{line,9};   %metInchiString
+        met_k{k,7} = metabolites{line,9};   %metInChIString
         met_k{k,8} = metabolites{line,11};  %metHMDB
         met_k{k,9} = metabolites{line,12};  %metSmile
     end
@@ -243,7 +243,7 @@ model.metCharges = str2double(met_k(:,3));
 model.metChEBIID = met_k(:,4);
 model.metKEGGID = met_k(:,5);
 model.metPubChemID = met_k(:,6);
-model.metInchiString = met_k(:,7);
+model.metInChIString = met_k(:,7);
 model.metHMDB = met_k(:,8);
 model.metSmile = met_k(:,9);
 

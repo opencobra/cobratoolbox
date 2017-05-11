@@ -61,3 +61,25 @@ if (isfield(model,'metKeggID'))
     end
     model = rmfield(model,'metKeggID');
 end
+%rxnKeggID -> rxnKEGGID
+if (isfield(model,'rxnKeggID'))
+    if ~isfield(model,'rxnKEGGID')
+        model.rxnKEGGID = model.rxnKeggID;
+    else
+        %use the old field for those not defined in the new one.
+        model.rxnKEGGID(cellfun(@isempty, model.rxnKEGGID)) = model.rxnKeggID(cellfun(@isempty, model.rxnKEGGID));
+    end
+    model = rmfield(model,'rxnKeggID');
+end
+
+%metInchiString -> metInChIString
+
+if (isfield(model,'metInchiString'))
+    if ~isfield(model,'metInChIString')
+        model.metInChIString = model.metInchiString;
+    else
+        %use the old field for those not defined in the new one.
+        model.metInChIString(cellfun(@isempty, model.metInChIString)) = model.metInchiString(cellfun(@isempty, model.metInChIString));
+    end
+    model = rmfield(model,'metInchiString');
+end

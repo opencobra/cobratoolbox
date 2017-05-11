@@ -100,9 +100,9 @@ modelNew.subSystems = model1.subSystems;
 modelNew.subSystems(size(model1.subSystems,1)+1:size(model1.subSystems,1)+size(model2.subSystems)) = model2.subSystems;
 modelNew.rxnNames = model1.rxnNames;
 modelNew.rxnNames(size(model1.rxnNames,1)+1:size(model1.rxnNames,1)+size(model2.rxnNames)) = model2.rxnNames;
-if isfield(model1,'rxnKeggID') && isfield(model2,'rxnKeggID')
-    modelNew.rxnKeggID = model1.rxnKeggID;
-    modelNew.rxnKeggID(size(model1.rxnKeggID,1)+1:size(model1.rxnKeggID,1)+size(model2.rxnKeggID)) = model2.rxnKeggID;
+if isfield(model1,'rxnKEGGID') && isfield(model2,'rxnKEGGID')
+    modelNew.rxnKEGGID = model1.rxnKEGGID;
+    modelNew.rxnKEGGID(size(model1.rxnKEGGID,1)+1:size(model1.rxnKEGGID,1)+size(model2.rxnKEGGID)) = model2.rxnKEGGID;
 end
 if isfield(model1,'rxnConfidenceEcoIDA') && isfield(model2,'rxnConfidenceEcoIDA')
     modelNew.rxnConfidenceEcoIDA = model1.rxnConfidenceEcoIDA;

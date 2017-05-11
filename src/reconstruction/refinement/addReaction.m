@@ -220,8 +220,8 @@ if isfield(model,'rxnECNumbers')
     model.rxnECNumbers{rxnID,1} = '';
 end
 % 17/02/2016 Update 4 additional fields that are present in Recon 2
-if isfield(model,'rxnKeggID')
-    model.rxnKeggID{rxnID,1} = '';
+if isfield(model,'rxnKEGGID')
+    model.rxnKEGGID{rxnID,1} = '';
 end
 if isfield(model,'rxnConfidenceEcoIDA')
     model.rxnConfidenceEcoIDA{rxnID,1} = '';
@@ -288,10 +288,7 @@ for i = 1:length(metaboliteList)
         end
         if isfield(model,'metInChIString')
             model.metInChIString{end+1,1} = '';
-        end
-        if isfield(model,'metInchiString')
-            model.metInchiString{end+1,1} = ''; %changed to match Recon 2 nomenclature
-        end
+        end        
         if isfield(model,'metCharges')
             model.metCharges(end+1,1) = 0;
         end

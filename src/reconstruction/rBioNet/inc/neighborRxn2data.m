@@ -54,7 +54,7 @@ data_rxn = unique(data_rxn);
 % 3. formula
 % 4. true/false in model
 % 5. ec number
-% 6. keggid
+% 6. KEGGID
 data_model = cell(size(data_rxn,1),6);
 data_model(:,1) = data_rxn;
 %This loop is just silly, performance should be improved drasticly. For every reaction it goes through the reaction lists by
@@ -71,8 +71,8 @@ for i =1:size(data_rxn,1)%For all neighbor rxn
                 data_model{i,2} = mets{k};
                 data_model{i,4} = true;
                 data_model{i,5} = model.rxnECNumbers{strcmp(data_rxn{i},model.rxns)};
-                if isfield(model,'rxnKeggID')
-                    data_model{i,6} = model.rxnKeggID{strcmp(data_rxn{i},model.rxns)};
+                if isfield(model,'rxnKEGGID')
+                    data_model{i,6} = model.rxnKEGGID{strcmp(data_rxn{i},model.rxns)};
                 else
                     data_model{i,6} = '';
                 end
@@ -100,7 +100,7 @@ data_db = cell(size(rxn,1),6);
 %3.formula
 %4.in model true/false
 %5.ec number
-%6.keggID
+%6.KEGGID
 %data_db = cell(1,6);
 %db_rxn = {};
 %db_met = {};
