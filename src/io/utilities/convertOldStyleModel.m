@@ -83,3 +83,15 @@ if (isfield(model,'metInchiString'))
     end
     model = rmfield(model,'metInchiString');
 end
+
+%metSmile -> metSmiles
+
+if (isfield(model,'metSmile'))
+    if ~isfield(model,'metSmiles')
+        model.metSmiles = model.metSmile;
+    else
+        %use the old field for those not defined in the new one.
+        model.metSmiles(cellfun(@isempty, model.metSmiles)) = model.metSmile(cellfun(@isempty, model.metSmiles));
+    end
+    model = rmfield(model,'metSmile');
+end
