@@ -1,14 +1,9 @@
 INFOS
-recon1.mat 		recon1 model structure
-recon2.mat		recon2 model structure
-expressionData		RNAseq data that could be used to test the different script provided
-preprocessing.m		preprocessing of the model structure and the expression data before use by extraction method
-			preprocessing.m	 calls the 4 following functions:
-				formatGenes.m
-				findUsedGenesLevels.m
-				extractGPRs.m
-				mapGeneToRxn.m
-call_XXX		function that call the related XXX extraction method
+  -	recon1.mat:recon1 model structure
+  -	recon2.mat:recon2 model structure
+  -	expressionData:RNAseq data that could be used to test the different script provided
+  -	preprocessing.m:preprocessing of the model structure and the expression data before use by extraction method> preprocessing.mcalls the 4 following functions: formatGenes.m,findUsedGenesLevels.m, extractGPRs.m, mapGeneToRxn.m
+  -	call_XXX:function that call the related XXX extraction method
 
 
 
