@@ -63,7 +63,13 @@ function configEnvVars(printLevel)
                 else
                     tmpS = strsplit(tmp, ';');
                 end
-                idCell = regexp(tmpS, ['/(', solverPaths{k, 3}, ')\w+']);
+
+                % build reqular expression to check for the solver
+                extraRE = '';
+                if k == 2  % gurobi
+                    extraRE = '\w'; % any word, alphanumeric and underscore
+                end
+                idCell = regexp(tmpS, ['/(', solverPaths{k, 3}, ')', extraRE, '+']);
                 higherLevelIndex = 0;
                 for i = 1:length(idCell)
                     if ~isempty(idCell{i})
