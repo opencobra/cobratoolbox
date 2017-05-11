@@ -154,11 +154,11 @@ end
 fclose(fid);
 fclose(fidEdgeType);
 if (isfield(model,'subSystems'))
-    if (isfield(model,'subSystemsMet'))
-        for i = 1:length(model.mets)
-            fprintf(fidSubSys,'%s = %s\n',model.mets{i},model.subSystemsMet{i});
-        end
-    end
+%     if (isfield(model,'subSystemsMet'))
+%         for i = 1:length(model.mets)
+%             fprintf(fidSubSys,'%s = %s\n',model.mets{i},model.subSystemsMet{i});
+%         end
+%     end
     fclose(fidSubSys);
 end
 
