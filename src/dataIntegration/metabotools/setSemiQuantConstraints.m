@@ -1,4 +1,4 @@
-function [modelA_QUANT,modelB_QUANT] = setSemiQuantConstraints(modelA, modelB, cond1_upt_higher, cond2_upt_higher, cond2_secr_higher,cond1_secr_higher)
+function [modelA_QUANT, modelB_QUANT] = setSemiQuantConstraints(modelA, modelB, cond1_upt_higher, cond2_upt_higher, cond2_secr_higher, cond1_secr_higher)
 % This function establishes constraints for two models (`modelA` and `modelB`) based on the relative
 % difference of signal intensities obtained from two samples. The prerequisite for the adjustment is that constraints have been applied on which the relative differences can be applied:
 % 

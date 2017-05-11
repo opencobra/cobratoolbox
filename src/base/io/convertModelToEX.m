@@ -1,23 +1,27 @@
-function convertModelToEX(model,filename,rxnzero,EXrxns)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% convert Matlab Model to XPA format
-% Inputs:
-%     model       Model Structure
-%     filename    Filename of Output File (make sure to include '.txt' or
-%     '.xpa')
-%     rxnzero     Matrix containing all no flux var rxns (to skip, set=0)
+function convertModelToEX(model, filename, rxnzero, EXrxns)
+% Converts a Matlab Model to XPA format
 %
-% Limitations:
-%     -Works properly with only integer value reaction coeff. (except for .5
-%     or -.5)
-%     Other non-integer value coeff. have to be edited manually
-%     -Exchange reactions have to be clumped together in model
-%     -If using rxnzero, make sure that EX reactions contain no compounds
-%     that are not used in the uncommented reactions
+% USAGE:
 %
-% Aarash Bordbar, 07/06/07
-% Updated Aarash Bordbar 02/22/10
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    convertModelToEX(model, filename, rxnzero, EXrxns)
+%
+% INPUTS:
+%     model:       Model Structure
+%     filename:    Filename of Output File (make sure to include '.txt' or '.xpa')
+%     rxnzero:     Matrix containing all no flux var rxns (to skip, set=0)
+%
+% Limitations
+%
+%     * Works properly with only integer value reaction coeff. (except for .5
+%       or -.5). Other non-integer value coeff. have to be edited manually
+%     * Exchange reactions have to be clumped together in model
+%     * If using rxnzero, make sure that EX reactions contain no compounds
+%       that are not used in the uncommented reactions
+%
+% .. Authors:
+%        - Aarash Bordbar, 07/06/07
+%        - Updated Aarash Bordbar 02/22/10
+
 fid = fopen(filename,'w');
 fprintf(fid,'(Internal Fluxes)\n');
 
