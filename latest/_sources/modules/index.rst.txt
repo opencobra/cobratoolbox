@@ -11,7 +11,5 @@ Documentation
    dataIntegration
    design
    modelAnalysis
-   modelGeneration
    reconstruction
    visualization
-
