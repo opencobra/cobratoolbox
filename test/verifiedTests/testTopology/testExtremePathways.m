@@ -52,7 +52,8 @@ if isunix
         model.description = 'PapinPrincePalsson';
         [nMet, nRxn] = size(model.S);
         model.b = zeros(nMet, 1);
-        model.directionality = zeros(nRxn, 1);
+        model.lb = -1000*ones(nRxn, 1);
+        model.ub = 1000*ones(nRxn, 1);
         positivity = 0;
         inequality = 1;
 
