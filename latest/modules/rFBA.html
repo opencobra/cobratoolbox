@@ -38,9 +38,9 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
-        <link rel="up" title="Documentation" href="index.html"/>
-        <link rel="next" title="MultiSpeciesModelling" href="multiSpeciesModelling.html"/>
-        <link rel="prev" title="Metabotools" href="metabotools.html"/> 
+        <link rel="up" title="Model analysis" href="modelAnalysis.html"/>
+        <link rel="next" title="Sampling" href="sampling.html"/>
+        <link rel="prev" title="Model analysis" href="modelAnalysis.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -91,15 +91,15 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Documentation</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="tools.html">Tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="print.html">Print</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metabotools.html">Metabotools</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">rFBA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multiSpeciesModelling.html">MultiSpeciesModelling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sampling.html">Sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design.html">Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="io.html">IO</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="modelAnalysis.html">Model analysis</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">rFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sampling.html">Sampling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
@@ -152,6 +152,8 @@
         
           <li><a href="index.html">Documentation</a> &raquo;</li>
         
+          <li><a href="modelAnalysis.html">Model analysis</a> &raquo;</li>
+        
       <li>rFBA</li>
     
     
@@ -171,9 +173,9 @@
             
   <div class="section" id="rfba">
 <span id="id1"></span><h1>rFBA<a class="headerlink" href="#rfba" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-src.rFBA"></span><dl class="function">
-<dt id="src.rFBA.dynamicRFBA">
-<code class="descname">dynamicRFBA</code><span class="sig-paren">(</span><em>model</em>, <em>substrateRxns</em>, <em>initConcentrations</em>, <em>initBiomass</em>, <em>timeStep</em>, <em>nSteps</em>, <em>plotRxns</em>, <em>exclUptakeRxns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/rFBA/dynamicRFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.rFBA.dynamicRFBA" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="module-src.modelAnalysis.rFBA"></span><dl class="function">
+<dt id="src.modelAnalysis.rFBA.dynamicRFBA">
+<code class="descname">dynamicRFBA</code><span class="sig-paren">(</span><em>model</em>, <em>substrateRxns</em>, <em>initConcentrations</em>, <em>initBiomass</em>, <em>timeStep</em>, <em>nSteps</em>, <em>plotRxns</em>, <em>exclUptakeRxns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/rFBA/dynamicRFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.rFBA.dynamicRFBA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs dynamic rFBA simulation using the static optimization approach</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -237,8 +239,8 @@ described in <em>[Mahadevan, R. et al. Biophys J, 83:1331-1340 (2003)]</em>.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.rFBA.optimizeRegModel">
-<code class="descname">optimizeRegModel</code><span class="sig-paren">(</span><em>model</em>, <em>initialRegState</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/rFBA/optimizeRegModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.rFBA.optimizeRegModel" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.rFBA.optimizeRegModel">
+<code class="descname">optimizeRegModel</code><span class="sig-paren">(</span><em>model</em>, <em>initialRegState</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/rFBA/optimizeRegModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.rFBA.optimizeRegModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the steady state solution of a model with Boolean regulatory constraints</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -274,8 +276,8 @@ calculated</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.rFBA.solveBooleanRegModel">
-<code class="descname">solveBooleanRegModel</code><span class="sig-paren">(</span><em>model</em>, <em>initialState</em>, <em>inputs1States</em>, <em>inputs2States</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/rFBA/solveBooleanRegModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.rFBA.solveBooleanRegModel" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.rFBA.solveBooleanRegModel">
+<code class="descname">solveBooleanRegModel</code><span class="sig-paren">(</span><em>model</em>, <em>initialState</em>, <em>inputs1States</em>, <em>inputs2States</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/rFBA/solveBooleanRegModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.rFBA.solveBooleanRegModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines the next state of the regulatory network based on the current state.
 Called by optimizeRegModel and dynamicRFBA</p>
 <p><strong>Usage</strong></p>
@@ -320,10 +322,10 @@ final state of type 2 inputs</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="multiSpeciesModelling.html" class="btn btn-neutral float-right" title="MultiSpeciesModelling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="sampling.html" class="btn btn-neutral float-right" title="Sampling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metabotools.html" class="btn btn-neutral" title="Metabotools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="modelAnalysis.html" class="btn btn-neutral" title="Model analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

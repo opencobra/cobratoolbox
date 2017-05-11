@@ -4,6 +4,6 @@
 
 IO
 -----
-.. automodule:: src.io
+.. automodule:: src.base.io
    :members:
 

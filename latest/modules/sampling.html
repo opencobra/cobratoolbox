@@ -38,9 +38,9 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
-        <link rel="up" title="Documentation" href="index.html"/>
-        <link rel="next" title="Design" href="design.html"/>
-        <link rel="prev" title="Reconstruction" href="reconstruction.html"/> 
+        <link rel="up" title="Model analysis" href="modelAnalysis.html"/>
+        <link rel="next" title="Reconstruction" href="reconstruction.html"/>
+        <link rel="prev" title="rFBA" href="rFBA.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -91,15 +91,15 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Documentation</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="tools.html">Tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="print.html">Print</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metabotools.html">Metabotools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rFBA.html">rFBA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multiSpeciesModelling.html">MultiSpeciesModelling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design.html">Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="io.html">IO</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="modelAnalysis.html">Model analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rFBA.html">rFBA</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Sampling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
@@ -152,6 +152,8 @@
         
           <li><a href="index.html">Documentation</a> &raquo;</li>
         
+          <li><a href="modelAnalysis.html">Model analysis</a> &raquo;</li>
+        
       <li>Sampling</li>
     
     
@@ -171,9 +173,9 @@
             
   <div class="section" id="sampling">
 <span id="id1"></span><h1>Sampling<a class="headerlink" href="#sampling" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-src.sampling"></span><dl class="function">
-<dt id="src.sampling.ACBSampler">
-<code class="descname">ACBSampler</code><span class="sig-paren">(</span><em>model</em>, <em>warmupPoints</em>, <em>fileName</em>, <em>nFiles</em>, <em>pointsPerFile</em>, <em>nMixPts</em>, <em>nWarmupNeeded</em>, <em>saveMatFlag</em>, <em>biasOpt</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/sampling/ACBSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.sampling.ACBSampler" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="module-src.modelAnalysis.sampling"></span><dl class="function">
+<dt id="src.modelAnalysis.sampling.ACBSampler">
+<code class="descname">ACBSampler</code><span class="sig-paren">(</span><em>model</em>, <em>warmupPoints</em>, <em>fileName</em>, <em>nFiles</em>, <em>pointsPerFile</em>, <em>nMixPts</em>, <em>nWarmupNeeded</em>, <em>saveMatFlag</em>, <em>biasOpt</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/ACBSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.ACBSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Artificial centering boundary sampler</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -209,8 +211,8 @@ Options for biasing sampler (Default = no bias)</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.sampling.ACHRSampler">
-<code class="descname">ACHRSampler</code><span class="sig-paren">(</span><em>model</em>, <em>warmupPoints</em>, <em>fileName</em>, <em>nFiles</em>, <em>pointsPerFile</em>, <em>stepsPerPoint</em>, <em>initPoint</em>, <em>fileBaseNo</em>, <em>maxTime</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/sampling/ACHRSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.sampling.ACHRSampler" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.sampling.ACHRSampler">
+<code class="descname">ACHRSampler</code><span class="sig-paren">(</span><em>model</em>, <em>warmupPoints</em>, <em>fileName</em>, <em>nFiles</em>, <em>pointsPerFile</em>, <em>stepsPerPoint</em>, <em>initPoint</em>, <em>fileBaseNo</em>, <em>maxTime</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/ACHRSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.ACHRSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Artificial Centering Hit-and-Run sampler</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -247,8 +249,8 @@ Maximum time limit (Default = 36000 s)</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.sampling.ACHRSamplerParallelGeneral">
-<code class="descname">ACHRSamplerParallelGeneral</code><span class="sig-paren">(</span><em>sampleStruct</em>, <em>nLoops</em>, <em>stepsPerPoint</em>, <em>maxtime</em>, <em>proc</em>, <em>fdirectory</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/sampling/ACHRSamplerParallelGeneral.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.sampling.ACHRSamplerParallelGeneral" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.sampling.ACHRSamplerParallelGeneral">
+<code class="descname">ACHRSamplerParallelGeneral</code><span class="sig-paren">(</span><em>sampleStruct</em>, <em>nLoops</em>, <em>stepsPerPoint</em>, <em>maxtime</em>, <em>proc</em>, <em>fdirectory</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/ACHRSamplerParallelGeneral.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.ACHRSamplerParallelGeneral" title="Permalink to this definition">¶</a></dt>
 <dd><p>Artificial Centering Hit-and-Run sampler with in place (memory) point
 management</p>
 <p><strong>Usage</strong></p>
@@ -286,8 +288,8 @@ Sampling structure with sample points</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.sampling.calcSampleDifference">
-<code class="descname">calcSampleDifference</code><span class="sig-paren">(</span><em>sample1</em>, <em>sample2</em>, <em>nPts</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/sampling/calcSampleDifference.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.sampling.calcSampleDifference" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.sampling.calcSampleDifference">
+<code class="descname">calcSampleDifference</code><span class="sig-paren">(</span><em>sample1</em>, <em>sample2</em>, <em>nPts</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/calcSampleDifference.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.calcSampleDifference" title="Permalink to this definition">¶</a></dt>
 <dd><p>Selects randomly nPts flux vectors from <cite>sample1</cite> and <cite>sample2</cite> and calcutes
 the difference between the flux vectors</p>
 <p><strong>Usage</strong></p>
@@ -316,8 +318,8 @@ Ratio of the flux vectors</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.sampling.calcSampleStats">
-<code class="descname">calcSampleStats</code><span class="sig-paren">(</span><em>samples</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/sampling/calcSampleStats.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.sampling.calcSampleStats" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.sampling.calcSampleStats">
+<code class="descname">calcSampleStats</code><span class="sig-paren">(</span><em>samples</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/calcSampleStats.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.calcSampleStats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate sample modes, means, standard devs, and medians of the sample</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -347,8 +349,8 @@ Structure with the following fields:<ul>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.sampling.chrrParseModel">
-<code class="descname">chrrParseModel</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/sampling/chrrParseModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.sampling.chrrParseModel" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.sampling.chrrParseModel">
+<code class="descname">chrrParseModel</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/chrrParseModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.chrrParseModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parses a COBRA model into the right format for the CHRR sampler</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -390,8 +392,8 @@ A structure with fields:<ul>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.sampling.chrrSampler">
-<code class="descname">chrrSampler</code><span class="sig-paren">(</span><em>model</em>, <em>numSkip</em>, <em>numSamples</em>, <em>toRound</em>, <em>roundedPolytope</em>, <em>minFlux</em>, <em>maxFlux</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/sampling/chrrSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.sampling.chrrSampler" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.sampling.chrrSampler">
+<code class="descname">chrrSampler</code><span class="sig-paren">(</span><em>model</em>, <em>numSkip</em>, <em>numSamples</em>, <em>toRound</em>, <em>roundedPolytope</em>, <em>minFlux</em>, <em>maxFlux</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/chrrSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.chrrSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate uniform random flux samples with CHRR
 Coordinate Hit-and-Run with Rounding</p>
 <p><strong>Usage</strong></p>
@@ -446,8 +448,8 @@ input it for subsequent rounds.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.sampling.compareSampleTraj">
-<code class="descname">compareSampleTraj</code><span class="sig-paren">(</span><em>rxnNames</em>, <em>samples</em>, <em>models</em>, <em>nBins</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/sampling/compareSampleTraj.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.sampling.compareSampleTraj" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.sampling.compareSampleTraj">
+<code class="descname">compareSampleTraj</code><span class="sig-paren">(</span><em>rxnNames</em>, <em>samples</em>, <em>models</em>, <em>nBins</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/compareSampleTraj.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.compareSampleTraj" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares flux histograms for two or more samples
 for one or more reactions</p>
 <p><strong>Usage</strong></p>
@@ -474,8 +476,8 @@ Number of bins (Default = <cite>nSamples</cite> / 25)</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.sampling.compareTwoSamplesStat">
-<code class="descname">compareTwoSamplesStat</code><span class="sig-paren">(</span><em>sample1</em>, <em>sample2</em>, <em>tests</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/sampling/compareTwoSamplesStat.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.sampling.compareTwoSamplesStat" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.sampling.compareTwoSamplesStat">
+<code class="descname">compareTwoSamplesStat</code><span class="sig-paren">(</span><em>sample1</em>, <em>sample2</em>, <em>tests</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/compareTwoSamplesStat.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.compareTwoSamplesStat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares statistically the difference between two
 samples. Does the Kolmogorov-Smirnov, rank-sum, chi-square, and T-tests.</p>
 <p><strong>Usage</strong></p>
@@ -509,8 +511,8 @@ p values</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.sampling.convRevSamples">
-<code class="descname">convRevSamples</code><span class="sig-paren">(</span><em>model</em>, <em>samples</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/sampling/convRevSamples.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.sampling.convRevSamples" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.sampling.convRevSamples">
+<code class="descname">convRevSamples</code><span class="sig-paren">(</span><em>model</em>, <em>samples</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/convRevSamples.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.convRevSamples" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts signs for reactions that are only running in
 reverse direction</p>
 <p><strong>Usage</strong></p>
@@ -542,8 +544,8 @@ Sample set with negative-direction fluxes reversed</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.sampling.createHRWarmup">
-<code class="descname">createHRWarmup</code><span class="sig-paren">(</span><em>model</em>, <em>nPoints</em>, <em>verbFlag</em>, <em>bias</em>, <em>nPointsCheck</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/sampling/createHRWarmup.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.sampling.createHRWarmup" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.sampling.createHRWarmup">
+<code class="descname">createHRWarmup</code><span class="sig-paren">(</span><em>model</em>, <em>nPoints</em>, <em>verbFlag</em>, <em>bias</em>, <em>nPointsCheck</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/createHRWarmup.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.createHRWarmup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a warmup point set for hit-and-run sampling by
 combining orthogonal and random points</p>
 <p><strong>Usage</strong></p>
@@ -582,8 +584,8 @@ Set of warmup points</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.sampling.gpSampler">
-<code class="descname">gpSampler</code><span class="sig-paren">(</span><em>sampleStruct</em>, <em>nPoints</em>, <em>bias</em>, <em>maxTime</em>, <em>maxSteps</em>, <em>threads</em>, <em>nPointsCheck</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/sampling/gpSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.sampling.gpSampler" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.sampling.gpSampler">
+<code class="descname">gpSampler</code><span class="sig-paren">(</span><em>sampleStruct</em>, <em>nPoints</em>, <em>bias</em>, <em>maxTime</em>, <em>maxSteps</em>, <em>threads</em>, <em>nPointsCheck</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/gpSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.gpSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Samples an arbitrary linearly constrained space using a fixed
 number of points that are moved in parallel
 The space is defined by
@@ -659,8 +661,44 @@ means not mixed at all.  A value of .5 means completely mixed.</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.sampling.loadSamples">
-<code class="descname">loadSamples</code><span class="sig-paren">(</span><em>filename</em>, <em>numFiles</em>, <em>pointsPerFile</em>, <em>numSkipped</em>, <em>randPts</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/sampling/loadSamples.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.sampling.loadSamples" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.sampling.identifyCorrelSets">
+<code class="descname">identifyCorrelSets</code><span class="sig-paren">(</span><em>model</em>, <em>samples</em>, <em>corrThr</em>, <em>R</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/identifyCorrelSets.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.identifyCorrelSets" title="Permalink to this definition">¶</a></dt>
+<dd><p>identifyCorrelSets Identify correlated reaction sets from sampling data</p>
+<blockquote>
+<div>[sets,setNumber,setSize] =  identifyCorrelSets(model,samples,corrThr,R)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model         COBRA model structure</strong></li>
+<li><strong>samples       Samples to be used to identify correlated sets</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>corrThr       Minimum correlation (R^2) threshold (Default = 1-1e-8)</strong></li>
+<li><strong>R             Correlation coefficient</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>sets          Sorted cell array of sets (largest first)</strong></p>
+</li>
+<li><p class="first"><strong>setNumber     List of set numbers for each reaction in model (0 indicates</strong> &#8211;</p>
+<p>that there is no set)</p>
+</li>
+<li><p class="first"><strong>setSize       List of set sizes</strong></p>
+</li>
+<li><p class="first"><strong>Markus Herrgard 9/15/06</strong></p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.modelAnalysis.sampling.loadSamples">
+<code class="descname">loadSamples</code><span class="sig-paren">(</span><em>filename</em>, <em>numFiles</em>, <em>pointsPerFile</em>, <em>numSkipped</em>, <em>randPts</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/loadSamples.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.loadSamples" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads a set of sampled data points</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -695,8 +733,8 @@ Sample flux distributions</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.sampling.mixFraction">
-<code class="descname">mixFraction</code><span class="sig-paren">(</span><em>sample1</em>, <em>sample2</em>, <em>fixed</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/sampling/mixFraction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.sampling.mixFraction" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.sampling.mixFraction">
+<code class="descname">mixFraction</code><span class="sig-paren">(</span><em>sample1</em>, <em>sample2</em>, <em>fixed</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/mixFraction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.mixFraction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares two sets of sampled points and determines how mixed
 they are.</p>
 <p><strong>Usage</strong></p>
@@ -730,8 +768,8 @@ perfectly mixed.</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.sampling.plotHistConv">
-<code class="descname">plotHistConv</code><span class="sig-paren">(</span><em>model</em>, <em>samples</em>, <em>rxnNames</em>, <em>nSubSamples</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/sampling/plotHistConv.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.sampling.plotHistConv" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.sampling.plotHistConv">
+<code class="descname">plotHistConv</code><span class="sig-paren">(</span><em>model</em>, <em>samples</em>, <em>rxnNames</em>, <em>nSubSamples</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/plotHistConv.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.plotHistConv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plots convergence of sample histograms</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -752,8 +790,8 @@ Number of sub samples</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.sampling.plotSampleHist">
-<code class="descname">plotSampleHist</code><span class="sig-paren">(</span><em>rxnNames</em>, <em>samples</em>, <em>models</em>, <em>nBins</em>, <em>perScreen</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/sampling/plotSampleHist.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.sampling.plotSampleHist" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.sampling.plotSampleHist">
+<code class="descname">plotSampleHist</code><span class="sig-paren">(</span><em>rxnNames</em>, <em>samples</em>, <em>models</em>, <em>nBins</em>, <em>perScreen</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/plotSampleHist.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.plotSampleHist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares flux histograms for one or more samples
 for one or more reactions</p>
 <p><strong>Usage</strong></p>
@@ -799,8 +837,8 @@ To quit script type &#8216;q&#8217; and hit &#8216;enter/return&#8217;</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.sampling.printSampleStats">
-<code class="descname">printSampleStats</code><span class="sig-paren">(</span><em>samples</em>, <em>commonModel</em>, <em>sampleNames</em>, <em>fileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/sampling/printSampleStats.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.sampling.printSampleStats" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.sampling.printSampleStats">
+<code class="descname">printSampleStats</code><span class="sig-paren">(</span><em>samples</em>, <em>commonModel</em>, <em>sampleNames</em>, <em>fileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/printSampleStats.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.printSampleStats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints out sample statistics for multiple samples</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -827,8 +865,8 @@ window)</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.sampling.removeCorrelRxns">
-<code class="descname">removeCorrelRxns</code><span class="sig-paren">(</span><em>model</em>, <em>R</em>, <em>correlCutoff</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/sampling/removeCorrelRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.sampling.removeCorrelRxns" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.sampling.removeCorrelRxns">
+<code class="descname">removeCorrelRxns</code><span class="sig-paren">(</span><em>model</em>, <em>R</em>, <em>correlCutoff</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/removeCorrelRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.removeCorrelRxns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes fully or almost fully correlated reactions</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -865,8 +903,8 @@ Filtered <cite>R</cite></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.sampling.sampleCbModel">
-<code class="descname">sampleCbModel</code><span class="sig-paren">(</span><em>model</em>, <em>sampleFile</em>, <em>samplerName</em>, <em>options</em>, <em>modelSampling</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/sampling/sampleCbModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.sampling.sampleCbModel" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.sampling.sampleCbModel">
+<code class="descname">sampleCbModel</code><span class="sig-paren">(</span><em>model</em>, <em>sampleFile</em>, <em>samplerName</em>, <em>options</em>, <em>modelSampling</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/sampleCbModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.sampleCbModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Samples the solution-space of a constraint-based model</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -936,8 +974,8 @@ Uniform random samples of the solution space</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.sampling.sampleScatterMatrix">
-<code class="descname">sampleScatterMatrix</code><span class="sig-paren">(</span><em>rxnNames</em>, <em>model</em>, <em>sample</em>, <em>nPoints</em>, <em>fontSize</em>, <em>dispRFlag</em>, <em>rxnNames2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/sampling/sampleScatterMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.sampling.sampleScatterMatrix" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.sampling.sampleScatterMatrix">
+<code class="descname">sampleScatterMatrix</code><span class="sig-paren">(</span><em>rxnNames</em>, <em>model</em>, <em>sample</em>, <em>nPoints</em>, <em>fontSize</em>, <em>dispRFlag</em>, <em>rxnNames2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/sampleScatterMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.sampleScatterMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws a scatterplot matrix with pairwise scatterplots
 for multiple reactions</p>
 <p><strong>Usage</strong></p>
@@ -980,8 +1018,8 @@ Optional second set of reaction names</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.sampling.verifyPoints">
-<code class="descname">verifyPoints</code><span class="sig-paren">(</span><em>sampleStruct</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/sampling/verifyPoints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.sampling.verifyPoints" title="Permalink to this definition">¶</a></dt>
+<dt id="src.modelAnalysis.sampling.verifyPoints">
+<code class="descname">verifyPoints</code><span class="sig-paren">(</span><em>sampleStruct</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/modelAnalysis/sampling/verifyPoints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.verifyPoints" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify that a set of points are in the solutoin space of <cite>sampleStruct</cite>.
 Typically, this method would be called to check a set of warmup points or
 points generated via <cite>gpSampler</cite>. Also verifies if points moved from
@@ -1022,10 +1060,10 @@ Index of points which did not move.</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="design.html" class="btn btn-neutral float-right" title="Design" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="reconstruction.html" class="btn btn-neutral float-right" title="Reconstruction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="reconstruction.html" class="btn btn-neutral" title="Reconstruction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="rFBA.html" class="btn btn-neutral" title="rFBA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

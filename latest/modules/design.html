@@ -39,8 +39,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
         <link rel="up" title="Documentation" href="index.html"/>
-        <link rel="next" title="IO" href="io.html"/>
-        <link rel="prev" title="Sampling" href="sampling.html"/> 
+        <link rel="next" title="Model analysis" href="modelAnalysis.html"/>
+        <link rel="prev" title="Metabotools" href="metabotools.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -91,15 +91,11 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Documentation</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="tools.html">Tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="print.html">Print</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metabotools.html">Metabotools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rFBA.html">rFBA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multiSpeciesModelling.html">MultiSpeciesModelling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sampling.html">Sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="io.html">IO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modelAnalysis.html">Model analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
@@ -332,32 +328,6 @@ irreversible reactions. If you wish to constrain a reaction, use
 </dd></dl>
 
 <dl class="function">
-<dt id="src.design.alphabetizeModel">
-<code class="descname">alphabetizeModel</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/design/alphabetizeModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.alphabetizeModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sorts the rxns, metabolites, and genes in a model into alphabetical
-order, useful after adding new reactions to a model. This function needs
-to be modified to work on models with different fields than these
-(currently set for <cite>iAF1260c</cite>)</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>abcModel = alphabetizeModel(model)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>abcModel</strong> &#8211;
-the alphabetized model</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
 <dt id="src.design.analyzeGCdesign">
 <code class="descname">analyzeGCdesign</code><span class="sig-paren">(</span><em>modelRed</em>, <em>selectedRxns</em>, <em>target</em>, <em>deletions</em>, <em>maxKOs</em>, <em>objFunction</em>, <em>delPenalty</em>, <em>intermediateSlns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/design/analyzeGCdesign.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.analyzeGCdesign" title="Permalink to this definition">¶</a></dt>
 <dd><p>Analyzes results with replacement knockouts
@@ -455,6 +425,37 @@ maximum growth rate</li>
 <li><strong>minProd</strong> &#8211;
 the minimum production rate of the target compound at the
 maximum growth rate</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.design.analyzeRxns">
+<code class="descname">analyzeRxns</code><span class="sig-paren">(</span><em>product</em>, <em>listProducts</em>, <em>listRxns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/design/analyzeRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.analyzeRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines which knockout reactions occur most often
+when a specified product is produced</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[allRxns, rxnCount] = analyzeRxns(product, listProducts, listRxns)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>product</strong> &#8211;
+the product to investigate</li>
+<li><strong>listProducts</strong> &#8211;
+the list of all products produced in a RandKnock</li>
+<li><strong>listRxns</strong> &#8211;
+the list of all rxns knocked out in a RandKnock</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>allRxns</strong> &#8211;
+all of the rxns knocked out in strains producing the
+product</li>
+<li><strong>rxnCount</strong> &#8211;
+the number of times each rxn was knocked out</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -614,71 +615,6 @@ The range of rates plotted for <cite>prod1</cite></li>
 The range of rates plotted for <cite>prod2</cite></li>
 <li><strong>y</strong> &#8211;
 The plotted growth rates at each (<cite>x1</cite>, <cite>x2</cite>)</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.design.findCarbonRxns">
-<code class="descname">findCarbonRxns</code><span class="sig-paren">(</span><em>model</em>, <em>nCarbonThr</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/design/findCarbonRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.findCarbonRxns" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the list of reactions that act of compounds which
-contain cabons greater than the thershhold set.</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[hiCarbonRxns, zeroCarbonRxns, nCarbon] = findCarbonRxns(model, nCarbonThr)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-Structure containing all necessary variables to described a
-stoichiometric model</li>
-<li><strong>nCarbonThr</strong> &#8211;
-defines the min # of carbons that a metabolite, that is
-acted on in a reaction, can have in the final list of reactions</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>hiCarbonRxns</strong> &#8211;
-The list of reactions that act on metabolites with
-greater than the threshold number of carbons</li>
-<li><strong>zeroCarbonRxns</strong> &#8211;
-Reactions with no carbon</li>
-<li><strong>nCarbon</strong> &#8211;
-The number of carbons in each metabolite in the model</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.design.findHiCarbonRxns">
-<code class="descname">findHiCarbonRxns</code><span class="sig-paren">(</span><em>model</em>, <em>nCarbonThr</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/design/findHiCarbonRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.findHiCarbonRxns" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the list of reactions that act on compounds which
-contain cabons greater than the threshold set.</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[hiCarbonRxns, nCarbon] = findHiCarbonRxns(model, nCarbonThr)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-Structure containing all necessary variables to describe a
-stoichiometric model</li>
-<li><strong>nCarbonThr</strong> &#8211;
-defines the min # of carbons that a metabolite, that is
-acted on in a reaction, can have in the final list of reactions</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>hiCarbonRxns</strong> &#8211;
-The list of reactions that act on metabolites with
-greater than the threshold number of carbons</li>
-<li><strong>zeroCarbonRxns    Reactions with no carbon</strong></li>
-<li><strong>nCarbon</strong> &#8211;
-The number of carbons in each metabolite in the model</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -903,50 +839,6 @@ knockout strain</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.design.setConstraintsIrrevModel">
-<code class="descname">setConstraintsIrrevModel</code><span class="sig-paren">(</span><em>constrOpt</em>, <em>model</em>, <em>modelIrrev</em>, <em>rev2irrev</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/design/setConstraintsIrrevModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.setConstraintsIrrevModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets constraints for a subset of <cite>rxns</cite> while
-converting reversible to irreversible reaction names and handling the
-constraint directions correctly</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>constrOptIrrev = setConstraintsIrrevModel(rxnNameList, constrValue, constrSense, model, modelIrrev)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>constrOpt</strong> &#8211;
-Constraint options<ul>
-<li>rxnList - Reaction selection cell array (for reversible
-representation)</li>
-<li>values - Constraint values</li>
-<li>sense - Constraint senses ordered as <cite>rxnNameList</cite></li>
-</ul>
-</li>
-<li><strong>model</strong> &#8211;
-Model in reversible format</li>
-<li><strong>modelIrrev</strong> &#8211;
-Model in irreversible format</li>
-<li><strong>rev2irrev</strong> &#8211;
-Reversible to irreversible reaction index conversion
-obtained from <cite>convertToIrreversible</cite></li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>constrOpt</strong> &#8211;
-Constraint options in irrev model<ul>
-<li>rxnList - Reaction selection cell array</li>
-<li>rxnInd - Selection index for constraints in irreversible model (e.g. [2 4 5 9 10])</li>
-<li>values - Correctly ordered constraint values</li>
-<li>sense - Correctly ordered constraint senses</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
 <dt id="src.design.simpleOptKnock">
 <code class="descname">simpleOptKnock</code><span class="sig-paren">(</span><em>model</em>, <em>targetRxn</em>, <em>deletions</em>, <em>geneDelFlag</em>, <em>minGrowth</em>, <em>doubleDelFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/design/simpleOptKnock.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.simpleOptKnock" title="Permalink to this definition">¶</a></dt>
 <dd><p>Simple <cite>OptKnock</cite> is used to check all one gene or reaction deletions for
@@ -1090,10 +982,10 @@ The max theoretical output for each exchange reaction</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="io.html" class="btn btn-neutral float-right" title="IO" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="modelAnalysis.html" class="btn btn-neutral float-right" title="Model analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="sampling.html" class="btn btn-neutral" title="Sampling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metabotools.html" class="btn btn-neutral" title="Metabotools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

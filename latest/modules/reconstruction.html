@@ -39,8 +39,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
         <link rel="up" title="Documentation" href="index.html"/>
-        <link rel="next" title="Sampling" href="sampling.html"/>
-        <link rel="prev" title="MultiSpeciesModelling" href="multiSpeciesModelling.html"/> 
+        <link rel="next" title="Tutorials" href="../tutorials/index.html"/>
+        <link rel="prev" title="Sampling" href="sampling.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -91,15 +91,11 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Documentation</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="tools.html">Tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="print.html">Print</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metabotools.html">Metabotools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rFBA.html">rFBA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multiSpeciesModelling.html">MultiSpeciesModelling</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Reconstruction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sampling.html">Sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design.html">Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="io.html">IO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modelAnalysis.html">Model analysis</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Reconstruction</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
@@ -172,608 +168,90 @@
   <div class="section" id="reconstruction">
 <span id="id1"></span><h1>Reconstruction<a class="headerlink" href="#reconstruction" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.reconstruction"></span><dl class="function">
-<dt id="src.reconstruction.addDemandReaction">
-<code class="descname">addDemandReaction</code><span class="sig-paren">(</span><em>model</em>, <em>metaboliteNameList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/addDemandReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.addDemandReaction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds demand reactions for a set of metabolites
-The reaction names for the demand reactions will be <cite>DM_[metaboliteName]`</cite></p>
+<dt id="src.reconstruction.gapFind">
+<code class="descname">gapFind</code><span class="sig-paren">(</span><em>model</em>, <em>findNCgaps</em>, <em>verbFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/gapFind.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.gapFind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identifies all blocked metabolites (anything downstream of a gap)
+in a model.  MILP algorithm that finds gaps that may be missed by simple
+inspection of the S matrix. To find every gap in a model, change the rxn
+bounds on all exchange reactions to allow uptake of every metabolite.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>model = addDemandReaction(model, metaboliteNameList)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>metaboliteNameList</strong> &#8211;
-List of metabolite names (cell array)</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure with added demand reactions</li>
-<li><strong>rxnNames</strong> &#8211;
-List of added reactions</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.reconstruction.addExchangeRxn">
-<code class="descname">addExchangeRxn</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em>, <em>lb</em>, <em>ub</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/addExchangeRxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.addExchangeRxn" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds exchange reactions</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>newModel = addExchangeRxn(model, metList, lb, ub)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-Cobra model structure</li>
-<li><strong>metList</strong> &#8211;
-List of metabolites</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>lb</strong> &#8211;
-Array of lower bounds</li>
-<li><strong>ub</strong> &#8211;
-Array of upper bounds</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>newModel</strong> &#8211;
-COBRA model with added exchange reactions</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.reconstruction.addMetabolite">
-<code class="descname">addMetabolite</code><span class="sig-paren">(</span><em>model</em>, <em>metID</em>, <em>metName</em>, <em>formula</em>, <em>ChEBIID</em>, <em>KEGGId</em>, <em>PubChemID</em>, <em>InChi</em>, <em>Charge</em>, <em>b</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/addMetabolite.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.addMetabolite" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds a Metabolite to the Current Reconstruction</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>newModel = addMetabolite(model, metID, metName, formula, ChEBIID, KEGGId, PubChemID, InChi, Charge, b )</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-Cobra model structure</li>
-<li><strong>metID</strong> &#8211;
-The ID(s) of the metabolite(s) (will be the identifier in model.mets)</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>metName</strong> &#8211;
-Human readable name(s) (String)</li>
-<li><strong>formula</strong> &#8211;
-The chemical formula(s) (String)</li>
-<li><strong>ChEBIID</strong> &#8211;
-The CHEBI Id(s) (String)</li>
-<li><strong>KEGGId</strong> &#8211;
-The KEGG Compound ID(s) (String)</li>
-<li><strong>PubChemID</strong> &#8211;
-The PubChemID(s) (String)</li>
-<li><strong>InChi</strong> &#8211;
-The InChi description(s) (String)</li>
-<li><strong>Charge</strong> &#8211;
-The Charge(s) (int)</li>
-<li><strong>b</strong> &#8211;
-The accumulation(s) or release(s) (double)</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>newModel</strong> &#8211;
-COBRA model with added metabolite(s)</li>
-</ul>
-</div></blockquote>
-<p><cite>metID</cite> and all optional string arguments either have to be a single value or cell
-arrays. <cite>Charge</cite> and <cite>b</cite> have to be double arrays.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.reconstruction.addRatioReaction">
-<code class="descname">addRatioReaction</code><span class="sig-paren">(</span><em>model</em>, <em>listOfRxns</em>, <em>ratioCoeff</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/addRatioReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.addRatioReaction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds ratio reaction.</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>modelNew = addRatioReaction(model, listOfRxns, ratioCoeff)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>listOfRxns</strong> &#8211;
-List of 2 Reactions</li>
-<li><strong>ratioCoeff</strong> &#8211;
-Array of ratio coefficient between the 2 reactions</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>modelNew      COBRA model structure containing the ratio</strong></li>
-</ul>
-</div></blockquote>
-<p><strong>Example</strong></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span><span class="mi">1</span> <span class="n">v_EX_ac</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">=</span> <span class="mi">2</span> <span class="n">v_EX_for</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
-<span class="n">modelNew</span> <span class="o">=</span> <span class="n">addRatioReaction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;EX_ac(e)&#39;</span> <span class="s1">&#39;EX_for(e)&#39;</span><span class="p">},</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span><span class="p">])</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.reconstruction.addReaction">
-<code class="descname">addReaction</code><span class="sig-paren">(</span><em>model</em>, <em>rxnName</em>, <em>metaboliteList</em>, <em>stoichCoeffList</em>, <em>revFlag</em>, <em>lowerBound</em>, <em>upperBound</em>, <em>objCoeff</em>, <em>subSystem</em>, <em>grRule</em>, <em>geneNameList</em>, <em>systNameList</em>, <em>checkDuplicate</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/addReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.addReaction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds a reaction to the model or modify an existing reaction</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[model, rxnIDexists] = addReaction(model, rxnName, metaboliteList, stoichCoeffList, revFlag, lowerBound, upperBound, objCoeff, subSystem, grRule, geneNameList, systNameList, checkDuplicate, printLevel)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>rxnName</strong> &#8211;
-Reaction name abbreviation (i.e. &#8216;ACALD&#8217;)
-(Note: can also be a cell array {&#8216;abbr&#8217;,&#8217;name&#8217;}</li>
-<li><strong>metaboliteList</strong> &#8211;
-Cell array of metabolite names or alternatively the
-reaction formula for the reaction</li>
-<li><strong>stoichCoeffList</strong> &#8211;
-List of stoichiometric coefficients (reactants -ve,
-products +ve), empty if reaction formula is provided</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>revFlag</strong> &#8211;
-Reversibility flag (Default = true)</li>
-<li><strong>lowerBound</strong> &#8211;
-Lower bound (Default = 0 or -vMax`)</li>
-<li><strong>upperBound</strong> &#8211;
-Upper bound (Default = <cite>vMax</cite>)</li>
-<li><strong>objCoeff</strong> &#8211;
-Objective coefficient (Default = 0)</li>
-<li><strong>subSystem</strong> &#8211;
-Subsystem (Default = &#8216;&#8217;)</li>
-<li><strong>grRule</strong> &#8211;
-Gene-reaction rule in boolean format (and/or allowed)
-(Default = &#8216;&#8217;);</li>
-<li><strong>geneNameList</strong> &#8211;
-List of gene names (used only for translation from
-common gene names to systematic gene names)</li>
-<li><strong>systNameList</strong> &#8211;
-List of systematic names</li>
-<li><strong>checkDuplicate</strong> &#8211;
-Check <cite>S</cite> matrix too see if a duplicate reaction is
-already in the model (Deafult false)</li>
-<li><strong>printLevel</strong> &#8211;
-default = 1</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure with new reaction</li>
-<li><strong>rxnIDexists</strong> &#8211;
-Empty if the reaction did not exist previously, or if
-checkDuplicate is false. Otherwise it contains the ID
-of an identical reaction already present in the model.</li>
-</ul>
-</div></blockquote>
-<p><strong>Example</strong></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span><span class="mi">1</span><span class="p">)</span> <span class="n">Add</span> <span class="n">a</span> <span class="n">new</span> <span class="n">irreversible</span> <span class="n">reaction</span> <span class="n">using</span> <span class="n">the</span> <span class="n">formula</span> <span class="n">approach</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">addReaction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="s1">&#39;newRxn1&#39;</span><span class="p">,</span><span class="s1">&#39;A -&gt; B + 2 C&#39;</span><span class="p">)</span>
-<span class="o">%</span><span class="mi">2</span><span class="p">)</span> <span class="n">Add</span> <span class="n">a</span> <span class="n">the</span> <span class="n">same</span> <span class="n">reaction</span> <span class="n">using</span> <span class="n">the</span> <span class="nb">list</span> <span class="n">approach</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">addReaction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="s1">&#39;newRxn1&#39;</span><span class="p">,{</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">,</span><span class="s1">&#39;C&#39;</span><span class="p">},[</span><span class="o">-</span><span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span><span class="p">],</span><span class="n">false</span><span class="p">);</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.reconstruction.addSinkReactions">
-<code class="descname">addSinkReactions</code><span class="sig-paren">(</span><em>model</em>, <em>metabolites</em>, <em>lb</em>, <em>ub</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/addSinkReactions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.addSinkReactions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds a sink reaction for the list of metabolites</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[model] = addSinkReactions(model, metabolites, lb, ub)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>metabolites</strong> &#8211;
-Cell array of metabolite abreviations as they appear in <cite>model.mets</cite></li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>lb</strong> &#8211;
-Lower bounds of reactions</li>
-<li><strong>ub</strong> &#8211;
-Upper bounds of reactions</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure containing sink reactions</li>
-<li><strong>rxnsInModel</strong> &#8211;
-Vector, contains -1 if the reaction did not exist
-previously, otherwise it contains the reaction ID of
-an identical reaction already present in the model</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.reconstruction.assignGPRA">
-<code class="descname">assignGPRA</code><span class="sig-paren">(</span><em>model</em>, <em>gpraFile</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/assignGPRA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.assignGPRA" title="Permalink to this definition">¶</a></dt>
-<dd><p>Assigns each reaction a Gene-protein-reaction association</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>model = assignGPRA(model, gpraFile)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>gpraFile</strong> &#8211;
-SimPheny GPRA file</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model with gene-protein-reaction assoction</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.reconstruction.assignSubSystems">
-<code class="descname">assignSubSystems</code><span class="sig-paren">(</span><em>model</em>, <em>gpraFile</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/assignSubSystems.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.assignSubSystems" title="Permalink to this definition">¶</a></dt>
-<dd><p>Assigns each reaction a subsystem in the model structure</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>model = assignSubSystems(model, gpraFile)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>gpraFile</strong> &#8211;
-SimPheny GPRA file</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure with subsystem assignment</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.reconstruction.biomassPrecursorCheck">
-<code class="descname">biomassPrecursorCheck</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/biomassPrecursorCheck.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.biomassPrecursorCheck" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks if biomass precursors are able to be
-synthesized.</p>
-<p>[missingMets, presentMets] = checkBiomassPrecursors(model)</p>
+<div>[allGaps, rootGaps, downstreamGaps] = gapFind(model, findNCgaps, verbFlag)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
-COBRA model structure</li>
+a COBRA model</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>findNCgaps</strong> &#8211;
+find no consupmption gaps as well as no production gaps
+(default false)</li>
+<li><strong>verbFlag</strong> &#8211;
+verbose flag (default false)</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>missingMets</strong> &#8211;
-List of biomass precursors that are not able to be synthesized</li>
-<li><strong>presentMets</strong> &#8211;
-List of biomass precursors that are able to be synthesized</li>
+<li><strong>allGaps</strong> &#8211;
+all gaps found by GapFind</li>
+<li><strong>rootGaps</strong> &#8211;
+all root no production (and consumption) gaps</li>
+<li><strong>downstreamGaps</strong> &#8211;
+all downstream gaps</li>
 </ul>
 </div></blockquote>
-<p>May identify metabolites that are typically recycled within the
-network such as ATP, NAD, NADPH, ACCOA.</p>
+<p>based on Kumar, V. et al. BMC Bioinformatics. 2007 Jun 20;8:212.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.reconstruction.connectedComponents">
-<code class="descname">connectedComponents</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>figures</em>, <em>files</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/connectedComponents.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.connectedComponents" title="Permalink to this definition">¶</a></dt>
-<dd><p>Assuming two reactions are connected if they share metabolites, calculate the connected components
-in the stoichiometric matrix, that is, the sets of reactions that share a set of metabolites</p>
+<dt id="src.reconstruction.testPathway">
+<code class="descname">testPathway</code><span class="sig-paren">(</span><em>model</em>, <em>MetIn</em>, <em>MetOut</em>, <em>AdditionalMetsInorOut</em>, <em>ObjectiveOption</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/testPathway.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.testPathway" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows the user to see if given one metabolite A,
+downstream metabolite B can be made made. Additional sinks can be added
+for co-factors if needed</p>
+<blockquote>
+<div>A &#8211;&gt;&#8211;&gt;&#8211;&gt;&#8211;&gt;&#8211;&gt; B</div></blockquote>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[groups, orphans, R, C]=connectedComponents(model, type, figures)</div></blockquote>
-<p><strong>Input</strong></p>
+<div>[Flux, FBAsolution, model] = testPathway(model, MetIn, MetOut, AdditionalMetsInorOut, ObjectiveOption)</div></blockquote>
+<p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong></li>
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>MetIn</strong> &#8211;
+The input metabolite(s) (A)</li>
+<li><strong>MetOut</strong> &#8211;
+The output metabolite (B)</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>type</strong> &#8211;
-{(&#8216;allComponents&#8217;),&#8217;largestComponent&#8217;}</li>
-<li><strong>figures</strong> &#8211;
-Will generate plots of the grouping algorithm as it creates block diagonal
-groups in from top left to bottom right in W.</li>
-<li><strong>files</strong> &#8211;
-Indicator, whether several files containing indicator
-matrices are generated.</li>
+<li><strong>AdditionalMetsInorOut</strong> &#8211;
+Additional metabolites for which sinks will be added</li>
+<li><strong>ObjectiveOption</strong> &#8211;
+Boolean<ul>
+<li>1 = objective will be production of B (default)</li>
+<li>0 = use objective in model</li>
+</ul>
+</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>groups</strong> &#8211;
-a structure array (the number of distinct groups is length(groups)) with fields:<ul>
-<li><cite>groups(i).num_els</cite> - number of reactions in group <cite>i</cite>.</li>
-<li><cite>groups(i).block</cite> - sub-block identity of group <cite>i</cite>.</li>
-<li><cite>groups(i).elements</cite> - reactions of W that are in group <cite>i</cite>.</li>
-<li><cite>groups(i).degrees</cite> - degrees of connection for each reaction in group <cite>i</cite>.</li>
-</ul>
-</li>
-<li><strong>orphans</strong> &#8211;
-elements of W that were not in any group, becasue they did not
-meet the constraints.</li>
-<li><strong>R</strong> &#8211;
-reaction adjacency</li>
-<li><strong>C</strong> &#8211;
-compound adjacency</li>
-</ul>
-</div></blockquote>
-<p>All components require:
-Connected Component Analysis on an Undirected Graph by Tristan Ursell
-<a class="reference external" href="http://www.mathworks.com/matlabcentral/fileexchange/35442-connected-component-analysis-on-an-undirected-graph">http://www.mathworks.com/matlabcentral/fileexchange/35442-connected-component-analysis-on-an-undirected-graph</a>.</p>
-<p>Largest component requires:
-gaimc : Graph Algorithms In Matlab Code by David Gleich
-<a class="reference external" href="http://www.mathworks.com/matlabcentral/fileexchange/24134-gaimc-graph-algorithms-in-matlab-code">http://www.mathworks.com/matlabcentral/fileexchange/24134-gaimc-graph-algorithms-in-matlab-code</a>.
-Speedup and addition of files indicator - Thomas Pfau May 2017</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.reconstruction.createModel">
-<code class="descname">createModel</code><span class="sig-paren">(</span><em>rxnAbrList</em>, <em>rxnNameList</em>, <em>rxnList</em>, <em>revFlagList</em>, <em>lowerBoundList</em>, <em>upperBoundList</em>, <em>subSystemList</em>, <em>grRuleList</em>, <em>geneNameList</em>, <em>systNameList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/createModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.createModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a COBRA model from inputs or an empty model
-structure if no inputs are provided.</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>model = createModel(rxnAbrList, rxnNameList, rxnList, revFlagList, lowerBoundList, upperBoundList, subSystemList, grRuleList, geneNameList, systNameList)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>rxnAbrList</strong> &#8211;
-List of names of the new reactions</li>
-<li><strong>rxnNameList</strong> &#8211;
-List of names of the new reactions</li>
-<li><strong>rxnList</strong> &#8211;
-List of reactions: format: {<cite>A -&gt; B + 2 C</cite>}
-If the compartment of a metabolite is not
-specified, it is assumed to be cytoplasmic, i.e. [<cite>c</cite>]</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>revFlagList</strong> &#8211;
-List of reversibility flag (opt, default = 1)</li>
-<li><strong>lowerBoundList</strong> &#8211;
-List of lower bound (Default = 0 or <a href="#id2"><span class="problematic" id="id3">``</span></a>-vMax`)</li>
-<li><strong>upperBoundList</strong> &#8211;
-List of upper bound (Default = <cite>vMax</cite>)</li>
-<li><strong>subSystemList</strong> &#8211;
-List of subsystem (Default = &#8216;&#8217;)</li>
-<li><strong>grRuleList</strong> &#8211;
-List of gene-reaction rule in boolean format (and/or allowed)
-(Default = &#8216;&#8217;);</li>
-<li><strong>geneNameList</strong> &#8211;
-List of gene names (used only for translation
-from common gene names to systematic gene names)</li>
-<li><strong>systNameList</strong> &#8211;
-List of systematic names</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
+<li><strong>Flux</strong> &#8211;
+The rate of B production</li>
+<li><strong>FBAsolution</strong> &#8211;
+Solution to the FBA problem</li>
 <li><strong>model</strong> &#8211;
-COBRA model structure</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.reconstruction.createTissueSpecificModel">
-<code class="descname">createTissueSpecificModel</code><span class="sig-paren">(</span><em>model</em>, <em>expressionData</em>, <em>proceedExp</em>, <em>orphan</em>, <em>exRxnRemove</em>, <em>solver</em>, <em>options</em>, <em>funcModel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/createTissueSpecificModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.createTissueSpecificModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates draft tissue specific model from mRNA expression data</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[tissueModel, Rxns] = createTissueSpecificModel(model, expressionData, proceedExp, orphan, exRxnRemove, solver, options, funcModel)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>model</strong> &#8211;
-global recon1 model</p>
-</li>
-<li><p class="first"><strong>expressionData</strong> &#8211;
-mRNA expression data structure:</p>
-<ul>
-<li><p class="first">Locus - Vector containing <cite>GeneIDs</cite></p>
-</li>
-<li><p class="first">Data - Presence/Absence Calls</p>
-<blockquote>
-<div><ul class="simple">
-<li>Use: (1 - Present, 0 - Absent) when proceedExp = 1</li>
-<li>Use: (2 - Present, 1 - Marginal, 0 - Absent) when proceedExp = 0</li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first">Transcript - RefSeq Accession (only required if proceedExp = 0)</p>
-</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>proceedExp</strong> &#8211;
-1 - data are processed ; 0 - data need to be
-processed (Default = 1)</li>
-<li><strong>orphan</strong> &#8211;
-1 - leave orphan reactions in model for Shlomi Method
-0 - remove orphan reactions
-(Default = 1)</li>
-<li><strong>exRxnRemove</strong> &#8211;
-Names of exchange reactions to remove
-(Default = [])</li>
-<li><strong>solver</strong> &#8211;
-Use either &#8216;GIMME&#8217;, &#8216;iMAT&#8217;, or &#8216;Shlomi&#8217; to create tissue
-specific model. &#8216;Shlomi&#8217; is the same as &#8216;iMAT&#8217; the names
-are just maintained for historical purposes.
-(Default = &#8216;GIMME&#8217;)</li>
-<li><strong>options</strong> &#8211;
-If using GIMME, enter <cite>objectiveCol</cite> here
-Default: objective function with 90% flux cutoff,
-written as: <cite>[find(model.c) 0.9]</cite></li>
-<li><strong>funcModel</strong> &#8211;
-1 - Build a functional model having only reactions
-that can carry a flux (using <cite>FVA</cite>), 0 - skip this
-step (Default = 0)</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>tissueModel</strong> &#8211;
-Model produced by GIMME or iMAT, containing only
-reactions carrying flux</li>
-<li><strong>Rxns</strong> &#8211;
-Statistics of test:<ul>
-<li>ExpressedRxns - predicted by mRNA data</li>
-<li>UnExpressedRxns - predicted by mRNA data</li>
-<li>unknown - unable to be predicted by mRNA data</li>
-<li>Upregulated - added back into model</li>
-<li>Downregulated - removed from model</li>
-<li>UnknownIncluded - orphans added</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p>If there are multiple transcripts to one probe that have different
-expression patterns the script will ask what the locus is of the
-expressed and unexpressed transcripts</p>
-<p>GIMME script matches objective functions flux, Shlomi algorithm is
-based on maintaining pathway length comparable to expression data, not flux</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.reconstruction.removeMetabolites">
-<code class="descname">removeMetabolites</code><span class="sig-paren">(</span><em>model</em>, <em>metaboliteList</em>, <em>removeRxnFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/removeMetabolites.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.removeMetabolites" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes metabolites from a model</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>model = removeMetabolites(model, metaboliteList, removeRxnFlag)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>metaboliteList</strong> &#8211;
-List of metabolites to be removed</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional intput</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>removeRxnFlag</strong> &#8211;
-Remove reactions with no metabolites (Default = true)</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model with removed metabolites</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.reconstruction.removeRxns">
-<code class="descname">removeRxns</code><span class="sig-paren">(</span><em>model</em>, <em>rxnRemoveList</em>, <em>irrevFlag</em>, <em>metFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/removeRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.removeRxns" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes reactions from a model</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>model = removeRxns(model, rxnRemoveList, irrevFlag, metFlag)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>rxnRemoveList</strong> &#8211;
-Cell array of reaction names to be removed</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>irrevFlag</strong> &#8211;
-Irreverseble (true) or reversible (false) reaction
-format (Default = false)</li>
-<li><strong>metFlag</strong> &#8211;
-Remove unused metabolites (Default = true)</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model             COBRA model w/o selected reactions</strong></li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.reconstruction.removeTrivialStoichiometry">
-<code class="descname">removeTrivialStoichiometry</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/d3e9127bccdad0d5bfd79726b54a59d865fa4442/src/reconstruction/removeTrivialStoichiometry.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.removeTrivialStoichiometry" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes metabolites and reactions corresponding to zero rows and columns</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>modelOut=removeTrivialStoichiometry(model)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-Model with metabolites and reactions to remove</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>modelOut</strong> &#8211;
-Obtained model with removed metabolites and reactions</li>
+COBRA model with sinks in it</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -790,10 +268,10 @@ Obtained model with removed metabolites and reactions</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="sampling.html" class="btn btn-neutral float-right" title="Sampling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../tutorials/index.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="multiSpeciesModelling.html" class="btn btn-neutral" title="MultiSpeciesModelling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="sampling.html" class="btn btn-neutral" title="Sampling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
