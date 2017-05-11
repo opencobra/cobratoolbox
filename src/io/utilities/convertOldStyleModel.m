@@ -15,8 +15,8 @@ if (isfield(model,'confidenceScores'))
         %if we have contradicting data, take the larger
         model.rxnConfidenceScores = max(model.rxnConfidenceScores,model.confidenceScores);
     end    
-    rmfield(model,'confidenceScores');
-else
+    model = rmfield(model,'confidenceScores');
+end
     
 %Move metChare to metCharges
 
@@ -27,5 +27,15 @@ if (isfield(model,'metCharge'))
         %use the old field for those not defined in the new one.
         model.metCharges(isnan(model.metCharges)) = model.metCharge(isnan(model.metCharges));
     end
-    rmfield(model,'metCharge');
+    model = rmfield(model,'metCharge');
+end
+    
+if (isfield(model,'ecNumbers'))
+    if ~isfield(model,'rxnECNumbers')
+        model.rxnECNumbers = model.ecNumbers;
+    else
+        %use the old field for those not defined in the new one.
+        model.rxnECNumbers(cellfun(@isempty, model.rxnECNumbers)) = model.ecNumbers(cellfun(@isempty, model.rxnECNumbers));
+    end
+    model = rmfield(model,'ecNumbers');
 else
