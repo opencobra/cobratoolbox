@@ -1,11 +1,11 @@
-function [BMall,ResultsAllCellLines,metRsall, maximum_contributing_rxn,maximum_contributing_flux,ATPyield] = predictFluxSplits(model, obj, met2test,samples,ResultsAllCellLines, dir,transportRxns,ATPprod,carbon_source, eucNorm)
+function [BMall, ResultsAllCellLines, metRsall, maximum_contributing_rxn, maximum_contributing_flux, ATPyield] = predictFluxSplits(model, obj, met2test, samples, ResultsAllCellLines, dir, transportRxns, ATPprod, carbon_source, eucNorm)
 % This function performs the flux splits analysis for the metabolites of
 % interest, meaning it predicts the fraction of metabolite produced (or
 % consumed) based all reactions producing (or consuming) the metabolite
 %
 % USAGE:
 %
-%    [BMall,ResultsAllCellLines,metRsall, maximum_contributing_rxn,maximum_contributing_flux,ATPyield] = predictFluxSplits(model, obj, met2test,samples,ResultsAllCellLines, dir,transportRxns,ATPprod,carbon_source, eucNorm)
+%    [BMall, ResultsAllCellLines, metRsall, maximum_contributing_rxn, maximum_contributing_flux, ATPyield] = predictFluxSplits(model, obj, met2test, samples, ResultsAllCellLines, dir, transportRxns, ATPprod, carbon_source, eucNorm)
 %
 % INPUTS:
 %    model:                       Generic model, e.g., `modelMedium`

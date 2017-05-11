@@ -4,6 +4,6 @@
 
 Print
 -----
-.. automodule:: src.print
+.. automodule:: src.base.print
    :members:
 

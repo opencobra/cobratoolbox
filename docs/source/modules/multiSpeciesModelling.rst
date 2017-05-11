@@ -3,7 +3,8 @@
 
 
 MultiSpeciesModelling
------
-.. automodule:: src.multiSpeciesModelling
+---------------------
+
+.. automodule:: src.modelAnalysis.multiSpecies
    :members:
 

@@ -7,13 +7,11 @@ Documentation
 .. toctree::
    :maxdepth: 2
 
-   tools
-   print
-   metabotools
-   rFBA
-   multiSpeciesModelling
-   reconstruction
-   sampling
+   base
+   dataIntegration
    design
-   io
+   modelAnalysis
+   modelGeneration
+   reconstruction
+   visualization
 

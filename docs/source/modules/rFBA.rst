@@ -4,6 +4,6 @@
 
 rFBA
 -----
-.. automodule:: src.rFBA
+.. automodule:: src.modelAnalysis.rFBA
    :members:
 

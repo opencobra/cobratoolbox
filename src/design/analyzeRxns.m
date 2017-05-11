@@ -1,23 +1,26 @@
-function [allRxns,rxnCount] = analyzeRxns(product,listProducts,listRxns)
-%analyzeRxns       determines which knockout reactions occur most often
-%                  when a specified product is produced
+function [allRxns, rxnCount] = analyzeRxns(product, listProducts, listRxns)
+% Determines which knockout reactions occur most often
+% when a specified product is produced
 %
-% [allRxns, rxnCount] = analyzeRxns(product,listProducts,listRxns)
+% USAGE:
 %
-%INPUTS
-% product          the product to investigate
-% listProducts     the list of all products produced in a RandKnock
-% listRxns         the list of all rxns knocked out in a RandKnock
+%    [allRxns, rxnCount] = analyzeRxns(product, listProducts, listRxns)
 %
-%OUTPUTS
-% allRxns          all of the rxns knocked out in strains producing the
-%                  product
-% rxnCount         the number of times each rxn was knocked out
+% INPUTS:
+%    product:          the product to investigate
+%    listProducts:     the list of all products produced in a RandKnock
+%    listRxns:         the list of all rxns knocked out in a RandKnock
 %
-% Jeff Orth (6/20/07)
+% OUTPUTS:
+%    allRxns:          all of the rxns knocked out in strains producing the
+%                      product
+%    rxnCount:         the number of times each rxn was knocked out
+%
+% .. Author: Jeff Orth (6/20/07)
 
-%find all product producers
 makesProd = [];
+
+% find all product producers
 showprogress(0,['finding ',product,' producing strains']);
 for i = 1:length(listProducts)
     showprogress(i/length(listProducts));
