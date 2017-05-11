@@ -50,3 +50,14 @@ if (isfield(model,'KEGGID'))
     end
     model = rmfield(model,'KEGGID');
 end
+
+%metKeggID -> metKEGGID
+if (isfield(model,'metKeggID'))
+    if ~isfield(model,'metKEGGID')
+        model.metKEGGID = model.metKeggID;
+    else
+        %use the old field for those not defined in the new one.
+        model.metKEGGID(cellfun(@isempty, model.metKEGGID)) = model.metKeggID(cellfun(@isempty, model.metKEGGID));
+    end
+    model = rmfield(model,'metKeggID');
+end
