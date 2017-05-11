@@ -210,8 +210,8 @@ end
 if isfield(model,'rxnNotes')
     model.rxnNotes{rxnID,1} = '';
 end
-if isfield(model,'confidenceScores')
-    model.confidenceScores{rxnID,1} = '';
+if isfield(model,'rxnConfidenceScores')
+    model.rxnConfidenceScores{rxnID,1} = '';
 end
 if isfield(model,'rxnReferences')
     model.rxnReferences{rxnID,1} = '';
@@ -225,9 +225,6 @@ if isfield(model,'rxnKeggID')
 end
 if isfield(model,'rxnConfidenceEcoIDA')
     model.rxnConfidenceEcoIDA{rxnID,1} = '';
-end
-if isfield(model,'rxnConfidenceScores')
-    model.rxnConfidenceScores{rxnID,1} = '';
 end
 if isfield(model,'rxnsboTerm')
     model.rxnsboTerm{rxnID,1} = '';

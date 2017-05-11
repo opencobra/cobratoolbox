@@ -190,8 +190,8 @@ switch format
             tmpData{i+1,baseInd+6} = model.lb(i);
             tmpData{i+1,baseInd+7} = model.ub(i);
             tmpData{i+1,baseInd+8} = model.c(i);
-            if (isfield(model,'confidenceScores'))
-                tmpData{i+1,baseInd+9} =  chopForExcel(num2str(model.confidenceScores{i}));
+            if (isfield(model,'rxnConfidenceScores'))
+                tmpData{i+1,baseInd+9} =  chopForExcel(num2str(model.rxnConfidenceScores{i}));
             else
                 tmpData{i+1,baseInd+9} = '';
             end

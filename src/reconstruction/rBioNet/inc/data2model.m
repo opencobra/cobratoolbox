@@ -121,7 +121,7 @@ model.subSystems = columnVector(model.subSystems);
 model.rxnNames = data(:,3);
 model.comments = data(:,12);
 model.citations = data(:,11);
-model.confidenceScores = data(:,9);
+model.rxnConfidenceScores = data(:,9);
 model.rxnECNumbers = data(:,13);
 model.rxnKeggID = data(:,14);
 

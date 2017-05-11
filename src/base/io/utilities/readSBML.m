@@ -683,7 +683,7 @@ if (hasNotesField)
     model.rxnGeneMat = rxnGeneMat;
     model.grRules = columnVector(grRules);
     model.subSystems = columnVector(subSystems);
-    model.confidenceScores = columnVector(confidenceScores);
+    model.rxnConfidenceScores = columnVector(confidenceScores);
     model.rxnReferences = columnVector(citations);
     model.rxnECNumbers = columnVector(ecNumbers);
     model.rxnNotes = columnVector(comments);
