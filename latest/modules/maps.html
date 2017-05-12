@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Reconstruction &mdash; The COBRA Toolbox</title>
+  <title>Maps &mdash; The COBRA Toolbox</title>
   
 
   
@@ -38,9 +38,9 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
-        <link rel="up" title="Documentation" href="index.html"/>
-        <link rel="next" title="Visualization" href="visualization.html"/>
-        <link rel="prev" title="Sampling" href="sampling.html"/> 
+        <link rel="up" title="Visualization" href="visualization.html"/>
+        <link rel="next" title="ReconMaps" href="ReconMap.html"/>
+        <link rel="prev" title="cellDesigner" href="cellDesigner.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -95,8 +95,15 @@
 <li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modelAnalysis.html">Model analysis</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Reconstruction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="visualization.html">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="visualization.html">Visualization</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cellDesigner.html">cellDesigner</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Maps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ReconMap.html">ReconMaps</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
@@ -149,7 +156,9 @@
         
           <li><a href="index.html">Documentation</a> &raquo;</li>
         
-      <li>Reconstruction</li>
+          <li><a href="visualization.html">Visualization</a> &raquo;</li>
+        
+      <li>Maps</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -166,98 +175,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="reconstruction">
-<span id="id1"></span><h1>Reconstruction<a class="headerlink" href="#reconstruction" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-src.reconstruction"></span><dl class="function">
-<dt id="src.reconstruction.gapFind">
-<code class="descname">gapFind</code><span class="sig-paren">(</span><em>model</em>, <em>findNCgaps</em>, <em>verbFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b47464a0285da254073aa4fd9f675dc785eb0953/src/reconstruction/gapFind.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.gapFind" title="Permalink to this definition">¶</a></dt>
-<dd><p>Identifies all blocked metabolites (anything downstream of a gap)
-in a model.  MILP algorithm that finds gaps that may be missed by simple
-inspection of the S matrix. To find every gap in a model, change the rxn
-bounds on all exchange reactions to allow uptake of every metabolite.</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[allGaps, rootGaps, downstreamGaps] = gapFind(model, findNCgaps, verbFlag)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-a COBRA model</li>
+  <div class="section" id="maps">
+<span id="id1"></span><h1>Maps<a class="headerlink" href="#maps" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ReconMap.html">ReconMaps</a></li>
 </ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>findNCgaps</strong> &#8211;
-find no consupmption gaps as well as no production gaps
-(default false)</li>
-<li><strong>verbFlag</strong> &#8211;
-verbose flag (default false)</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>allGaps</strong> &#8211;
-all gaps found by GapFind</li>
-<li><strong>rootGaps</strong> &#8211;
-all root no production (and consumption) gaps</li>
-<li><strong>downstreamGaps</strong> &#8211;
-all downstream gaps</li>
-</ul>
-</div></blockquote>
-<p>based on Kumar, V. et al. BMC Bioinformatics. 2007 Jun 20;8:212.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.reconstruction.testPathway">
-<code class="descname">testPathway</code><span class="sig-paren">(</span><em>model</em>, <em>MetIn</em>, <em>MetOut</em>, <em>AdditionalMetsInorOut</em>, <em>ObjectiveOption</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b47464a0285da254073aa4fd9f675dc785eb0953/src/reconstruction/testPathway.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.testPathway" title="Permalink to this definition">¶</a></dt>
-<dd><p>Allows the user to see if given one metabolite A,
-downstream metabolite B can be made made. Additional sinks can be added
-for co-factors if needed</p>
-<blockquote>
-<div>A &#8211;&gt;&#8211;&gt;&#8211;&gt;&#8211;&gt;&#8211;&gt; B</div></blockquote>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[Flux, FBAsolution, model] = testPathway(model, MetIn, MetOut, AdditionalMetsInorOut, ObjectiveOption)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>MetIn</strong> &#8211;
-The input metabolite(s) (A)</li>
-<li><strong>MetOut</strong> &#8211;
-The output metabolite (B)</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>AdditionalMetsInorOut</strong> &#8211;
-Additional metabolites for which sinks will be added</li>
-<li><strong>ObjectiveOption</strong> &#8211;
-Boolean<ul>
-<li>1 = objective will be production of B (default)</li>
-<li>0 = use objective in model</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>Flux</strong> &#8211;
-The rate of B production</li>
-<li><strong>FBAsolution</strong> &#8211;
-Solution to the FBA problem</li>
-<li><strong>model</strong> &#8211;
-COBRA model with sinks in it</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
 </div>
+<span class="target" id="module-src.visualization.maps"></span></div>
 
 
            </div>
@@ -269,10 +194,10 @@ COBRA model with sinks in it</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="visualization.html" class="btn btn-neutral float-right" title="Visualization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="ReconMap.html" class="btn btn-neutral float-right" title="ReconMaps" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="sampling.html" class="btn btn-neutral" title="Sampling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="cellDesigner.html" class="btn btn-neutral" title="cellDesigner" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
