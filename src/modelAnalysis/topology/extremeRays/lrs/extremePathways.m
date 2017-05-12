@@ -100,7 +100,7 @@ if isunix
             error(['lsr failed on file ', pwd filesep filename '_' suffix '.ine']);
         end
     else
-        error('lrs not installed or not in path')
+        error('lrs is not installed on your machine or not in the path. Refer to http://cgm.cs.mcgill.ca/~avis/C/lrs.html to install lrs.');
     end
 else
     error('non unix machines not yet supported')
