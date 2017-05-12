@@ -42,6 +42,10 @@ else
     WAITBAR_TYPE = 1;
 end
 
+if verLessThan('matlab', '8.2')
+    error('The testsuite of The COBRA Toolbox can only be run with MATLAB R2014b+.')
+end
+
 % define a success exit code
 exit_code = 0;
 
@@ -81,7 +85,7 @@ if COVERAGE
         end
 
         while ~feof(fid) && countFlag
-            lineOfFile = strtrim(fgetl(fid));
+            lineOfFile = strtrim(char(fgetl(fid)));
             if length(lineOfFile) > 0 && length(strfind(lineOfFile(1), '%')) ~= 1  ...
                && length(strfind(lineOfFile, 'end')) ~= 1 && length(strfind(lineOfFile, 'otherwise')) ~= 1 ...
                && length(strfind(lineOfFile, 'switch')) ~= 1 && length(strfind(lineOfFile, 'else')) ~= 1  ...
@@ -126,6 +130,10 @@ if COVERAGE
 end
 
 try
+
+    % save the userpath
+    originalUserPath = path;
+
     % retrieve the models first
     retrieveModels;
 
@@ -170,6 +178,10 @@ try
 
     % print out a summary table
     table(result)
+
+    % restore the original path
+    restoredefaultpath;
+    addpath(originalUserPath);
 
     if sumFailed > 0 || sumIncomplete > 0
         exit_code = 1;

@@ -53,14 +53,33 @@ function initCobraToolbox()
     ENV_VARS.STATUS = 0;
 
     % initialize the paths
-    GUROBI_PATH = '';
-    ILOG_CPLEX_PATH = '';
-    TOMLAB_PATH = '';
-    MOSEK_PATH = '';
+    if exist('GUROBI_PATH', 'var') ~= 1
+        GUROBI_PATH = '';
+    end
+    if exist('ILOG_CPLEX_PATH', 'var') ~= 1
+        ILOG_CPLEX_PATH = '';
+    end
+    if exist('TOMLAB_PATH', 'var') ~= 1
+        TOMLAB_PATH = '';
+    end
+    if exist('MOSEK_PATH', 'var') ~= 1
+        MOSEK_PATH = '';
+    end
 
     % print header
     if ~isfield(ENV_VARS, 'printLevel') || ENV_VARS.printLevel
-        fprintf('\n\n      _____   _____   _____   _____     _____     |\n     /  ___| /  _  \\ |  _  \\ |  _  \\   / ___ \\    |   COnstraint-Based Reconstruction and Analysis\n     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2017\n     | |     | | | | |  _  { |  _  /  |  ___  |   |\n     | |___  | |_| | | |_| | | | \\ \\  | |   | |   |   Documentation:\n     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |   http://opencobra.github.io/cobratoolbox\n                                                  | \n\n');
+        docLink = 'http://opencobra.github.io/cobratoolbox';
+        if usejava('desktop')
+            docLink = ['<a href=\"', docLink, '\">', docLink, '</a>'];
+        end
+
+        fprintf('\n\n      _____   _____   _____   _____     _____     |\n');
+        fprintf('     /  ___| /  _  \\ |  _  \\ |  _  \\   / ___ \\    |   COnstraint-Based Reconstruction and Analysis\n');
+        fprintf('     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2017\n');
+        fprintf('     | |     | | | | |  _  { |  _  /  |  ___  |   |\n');
+        fprintf('     | |___  | |_| | | |_| | | | \\ \\  | |   | |   |   Documentation:\n');
+        fprintf(['     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |   ', docLink, '\n']);
+        fprintf('                                                  | \n\n');
         ENV_VARS.printLevel = true;
     end
 
@@ -100,7 +119,7 @@ function initCobraToolbox()
         end
 
         % check curl
-        status_curl = checkCurlAndRemote();
+        [status_curl, result_curl] = checkCurlAndRemote();
 
         if status_curl == 0
             % set the remote origin
@@ -124,7 +143,7 @@ function initCobraToolbox()
     end
 
     % check curl
-    status_curl = checkCurlAndRemote(false);
+    [status_curl, result_curl] = checkCurlAndRemote(false);
 
     % check if the URL exists
     if exist([CBTDIR filesep 'binary' filesep 'README.md'], 'file') && status_curl ~= 0
@@ -151,7 +170,7 @@ function initCobraToolbox()
         end
 
         % reset each submodule
-        [status_gitReset result_gitReset] = system('git submodule foreach --recursive git reset --hard');
+        [status_gitReset, result_gitReset] = system('git submodule foreach --recursive git reset --hard');
 
         if status_gitReset ~= 0
             fprintf(result_gitReset);
@@ -223,11 +242,14 @@ function initCobraToolbox()
         fprintf(' > Retrieving models ...');
     end
     if ~exist(xmlTestFile, 'file')
-        retrieveModels(1);
+        retrieveModels(0);
     end
     if ENV_VARS.printLevel
         fprintf('   Done.\n');
     end
+
+    % save the userpath
+    originalUserPath = path;
 
     % Set global LP solution accuracy tolerance
     changeCobraSolverParams('LP', 'optTol', 1e-6);
@@ -246,7 +268,8 @@ function initCobraToolbox()
             end
         catch
             if ENV_VARS.printLevel
-                warning('TranslateSBML did not work with Ec_iAF1260_flux1.xml')
+                warning(' > TranslateSBML is installed but is not working properly.');
+                fprintf([' > Try running\n   >> TranslateSBML(\''', strrep(xmlTestFile, '\', '\\'), '\'');\n   in order to debug.\n']);
             end
         end
     end
@@ -274,7 +297,6 @@ function initCobraToolbox()
     SOLVERS.tomlab_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
 
     % experimental solver interfaces
-    SOLVERS.opti.type = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
     SOLVERS.qpng.type = {'QP'};
     SOLVERS.tomlab_snopt.type = {'NLP'};
 
@@ -283,6 +305,7 @@ function initCobraToolbox()
     SOLVERS.lindo_old.type = {'LP'};
     SOLVERS.lindo_legacy.type = {'LP'};
     SOLVERS.lp_solve.type = {'LP'};
+    SOLVERS.opti.type = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
 
     % definition of category of solvers with full support
     SOLVERS.cplex_direct.categ = 'full';
@@ -301,11 +324,11 @@ function initCobraToolbox()
     SOLVERS.tomlab_snopt.categ = 'experimental';
 
     % definition of category of solvers with legacy support
-    SOLVERS.opti.categ = 'legacy';
     SOLVERS.gurobi_mex.categ = 'legacy';
     SOLVERS.lindo_old.categ = 'legacy';
     SOLVERS.lindo_legacy.categ = 'legacy';
     SOLVERS.lp_solve.categ = 'legacy';
+    SOLVERS.opti.categ = 'legacy';
 
     % definition of categories of solvers
     supportedSolversNames = fieldnames(SOLVERS);
@@ -330,31 +353,20 @@ function initCobraToolbox()
         fprintf(' Done.\n');
     end
 
-    % saves the current path
-    try
-        if ENV_VARS.printLevel
-            fprintf(' > Saving the MATLAB path ...');
+    % set the default solver and print out the default variables
+    if ENV_VARS.printLevel
+        fprintf(' > Setting default solvers ...');
+        changeCobraSolver('glpk', 'LP', 0);
+        changeCobraSolver('glpk', 'MILP', 0);
+        changeCobraSolver('qpng', 'QP', 0);
+        changeCobraSolver('matlab', 'NLP', 0);
+        for k = 1:length(OPT_PROB_TYPES)
+            varName = horzcat(['CBT_', OPT_PROB_TYPES{k}, '_SOLVER']);
         end
-        if ispc || ismac
-            savepath;
-            if ENV_VARS.printLevel
-                fprintf(' Done.\n');
-                fprintf('   - The MATLAB path was saved in the default location.');
-            end
-        else
-            savepath(defaultSavePathLocation);
-            if ENV_VARS.printLevel
-                fprintf(' Done.\n');
-                fprintf(['   - The MATLAB path was saved as ', defaultSavePathLocation, '.']);
-            end
-        end
-    catch
-        if ENV_VARS.printLevel
-            fprintf(' > The MATLAB path could not be saved.');
-        end
+        fprintf(' Done.\n');
     end
 
-    % print out a summary table
+    % fill the summary table
     solverTypeInstalled = zeros(length(OPT_PROB_TYPES), 1);
     solverStatus = -1 * ones(length(supportedSolversNames), length(OPT_PROB_TYPES) + 1);
     catList = cell(length(supportedSolversNames), 1);
@@ -369,25 +381,12 @@ function initCobraToolbox()
 
                 % set the default MIQP solver based on the solvers that are installed
                 if strcmpi(types{j}, 'MIQP')
-                    changeCobraSolver(supportedSolversNames{i}, types{j});
+                    changeCobraSolver(supportedSolversNames{i}, types{j}, 0);
                 end
             else
                 solverStatus(i, k + 1) = 0;
             end
         end
-    end
-
-    % set the default solver and print out the default variables
-    if ENV_VARS.printLevel
-        fprintf(' > Setting default solvers ...');
-        changeCobraSolver('glpk', 'LP', 0);
-        changeCobraSolver('glpk', 'MILP', 0);
-        changeCobraSolver('qpng', 'QP', 0);
-        changeCobraSolver('matlab', 'NLP', 0);
-        for k = 1:length(OPT_PROB_TYPES)
-            varName = horzcat(['CBT_', OPT_PROB_TYPES{k}, '_SOLVER']);
-        end
-        fprintf(' Done.\n');
     end
 
     catList{end + 1} = '----------';
@@ -406,15 +405,59 @@ function initCobraToolbox()
                 statusTable{k}(p) = {'-'};
             end
         end
-        statusTable{k}(end-1) = {'----'};
     end
 
-    solverSummary = table(categorical(catList), categorical(statusTable{1}), categorical(statusTable{2}), categorical(statusTable{3}), categorical(statusTable{4}), categorical(statusTable{5}), 'RowNames', rowNames, 'VariableNames', ['Support', OPT_PROB_TYPES]);
+    % restore the original path
+    path(originalUserPath);
+    addpath(originalUserPath);
 
+    % saves the current path
+    try
+        if ENV_VARS.printLevel
+            fprintf(' > Saving the MATLAB path ...');
+        end
+        if ispc || ismac
+            savepath;
+            if ENV_VARS.printLevel
+                fprintf(' Done.\n');
+                fprintf('   - The MATLAB path was saved in the default location.\n');
+            end
+        else
+            [~, values] = fileattrib(which('pathdef.m'));
+            if values.UserWrite
+                savepath
+            else
+                savepath(defaultSavePathLocation);
+            end
+            if ENV_VARS.printLevel
+                fprintf(' Done.\n');
+                fprintf(['   - The MATLAB path was saved as ', defaultSavePathLocation, '.\n']);
+            end
+        end
+    catch
+        if ENV_VARS.printLevel
+            fprintf(' > The MATLAB path could not be saved.');
+        end
+    end
+
+    % print out a summary table
     if ENV_VARS.printLevel
+        colFormat = '\t%-12s \t%-13s \t%5s \t%5s \t%5s \t%5s \t%5s\n';
+        sep = '\t----------------------------------------------------------------------\n';
         fprintf('\n > Summary of available solvers and solver interfaces\n\n');
-        disp(solverSummary);
-        fprintf(' + Legend: - = not applicable, 0 = solver not compatible or not installed, 1 = solver installed.\n\n')
+        if ispc
+            topLineFormat = '\t\t\t\t\tSupport        %5s \t%5s \t%5s \t%5s \t%5s\n';
+        else
+            topLineFormat = '\t\t\tSupport \t%5s \t%5s \t%5s \t%5s \t%5s\n';
+        end
+        fprintf(topLineFormat, OPT_PROB_TYPES{1}, OPT_PROB_TYPES{2}, OPT_PROB_TYPES{3}, OPT_PROB_TYPES{4}, OPT_PROB_TYPES{5})
+        fprintf(sep);
+        for i = 1:length(catList)-2
+            fprintf(colFormat, rowNames{i}, catList{i}, statusTable{1}{i}, statusTable{2}{i}, statusTable{3}{i}, statusTable{4}{i}, statusTable{5}{i})
+        end
+        fprintf(sep);
+        fprintf(colFormat, rowNames{end}, catList{end}, statusTable{1}{end}, statusTable{2}{end}, statusTable{3}{end}, statusTable{4}{end}, statusTable{5}{end})
+        fprintf('\n + Legend: - = not applicable, 0 = solver not compatible or not installed, 1 = solver installed.\n\n\n')
     end
 
     % provide clear instructions and summary
@@ -451,7 +494,7 @@ function initCobraToolbox()
     end
 
     % check if a new update exists
-    if ENV_VARS.printLevel && status_curl == 0
+    if ENV_VARS.printLevel && status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
         updateCobraToolbox(true); % only check
     end
 
@@ -491,7 +534,7 @@ function checkGit()
     end
 end
 
-function status_curl = checkCurlAndRemote(throwError)
+function [status_curl, result_curl] = checkCurlAndRemote(throwError)
 % Checks if curl is installed on the system, can connect to the opencobra URL, and throws an error if not
 %
 % USAGE:
@@ -521,7 +564,7 @@ function status_curl = checkCurlAndRemote(throwError)
     else
         if throwError
             fprintf(result_curl);
-            error(' > curl is not installed. Please follow the guidelines on how to install curl.');
+            error(' > curl is not installed. Please follow the guidelines on how to install curl here: https://github.com/opencobra/cobratoolbox/blob/master/.github/REQUIREMENTS.md.');
         else
             if ENV_VARS.printLevel
                 fprintf(' (not installed).\n');

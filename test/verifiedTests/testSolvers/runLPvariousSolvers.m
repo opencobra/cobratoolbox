@@ -107,21 +107,23 @@ for k = 1:length(solverPkgs)
     end
 
     if strcmp(solver, 'dqqMinos') || strcmp(solver, 'quadMinos')
-        [stat, res] = system('which csh');
-        if ~isempty(res) && stat == 0
-            solverOK = changeCobraSolver(solver, 'LP', 0);
-            if solverOK
-                if strcmp(solver, 'dqqMinos')
-                    param.Method = 1;
-                    solution{i} = solveCobraLP(model, param);
-                    clear param
-                elseif strcmp(solver, 'quadMinos')
-                    solution{i} = solveCobraLP(model);
+        if isunix
+            [stat, res] = system('which csh');
+            if ~isempty(res) && stat == 0
+                solverOK = changeCobraSolver(solver, 'LP', 0);
+                if solverOK
+                    if strcmp(solver, 'dqqMinos')
+                        param.Method = 1;
+                        solution{i} = solveCobraLP(model, param);
+                        clear param
+                    elseif strcmp(solver, 'quadMinos')
+                        solution{i} = solveCobraLP(model);
+                    end
+                    i = i + 1;
                 end
-                i = i + 1;
+            else
+                warning(['You must have `csh` installed. Solver ', solver, ' cannot be tested.']);
             end
-        else
-            warning(['You must have `csh` installed. Solver ', solver, ' cannot be tested.']);
         end
     end
 

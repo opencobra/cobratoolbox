@@ -55,7 +55,7 @@ end
 % download Ec_iAF1260_flux1.xml
 if exist('Ec_iAF1260_flux1.xml', 'file') ~= 2
     urlwrite('http://systemsbiology.ucsd.edu/sites/default/files/Attachments/Images/InSilicoOrganisms/Ecoli/Ecoli_SBML/msb4100155-s6.zip', 'msb4100155-s6.zip');
-    system('unzip -qq msb4100155-s6.zip');
+    unzip('msb4100155-s6.zip');
     delete('Ec_iAF1260_flux2.txt');
     delete('read_me.txt');
     delete('msb4100155-s6.zip');
@@ -72,7 +72,7 @@ end
 % download STM_v1.0.xml
 if exist('STM_v1.0.xml', 'file') ~= 2
     urlwrite('https://static-content.springer.com/esm/art%3A10.1186%2F1752-0509-5-8/MediaObjects/12918_2010_598_MOESM2_ESM.ZIP', '12918_2010_598_MOESM2_ESM.zip');
-    system('unzip -qq 12918_2010_598_MOESM2_ESM.zip');
+    unzip('12918_2010_598_MOESM2_ESM.zip');
     delete('12918_2010_598_MOESM2_ESM.zip');
     if printLevel > 0
         fprintf(' + Downloaded:      %s\n', 'STM_v1.0.xml');
@@ -84,7 +84,9 @@ else
 end
 
 % print sucess message
-fprintf(['   Done downloading models.\n']);
+if printLevel > 0
+    fprintf(['   Done downloading models.\n']);
+end
 
 % change back to the root directory
 cd(currentDir)
