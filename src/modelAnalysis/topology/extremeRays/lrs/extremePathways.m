@@ -95,7 +95,7 @@ if isunix
     if ~isempty(result)
         % call lrs and wait until extreme pathways have been calculated
         systemCallText = ['lrs ' pwd filesep filename '_' suffix '.ine > ' pwd filesep filename '_' suffix '.ext'];
-        [status, result] = system(systemCallText)
+        [status, result] = system(systemCallText);
         if status == 1
             error(['lsr failed on file ', pwd filesep filename '_' suffix '.ine']);
         end
