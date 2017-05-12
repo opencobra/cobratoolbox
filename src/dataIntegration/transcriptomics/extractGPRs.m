@@ -23,13 +23,13 @@ function [parsedGPR,corrRxn] = extractGPRs(model)
     corrRxn = [];
     cnt = 1;
 
-    for i = 1:length(model.rxns)
-                       
-        if length(model.grRules{i}) > 1
+    for i = 1:length(model.rxns)           
+        if length(model.rules{i}) > 1
             % Parsing each reactions GPR containing "OR" rule
-            [parsing{1,1},parsing{2,1}] = strtok(model.grRules{i},'or');           
+
+            [parsing{1,1},parsing{2,1}] = strtok(model.rules{i},'|');           
             for j = 2:1000
-                [parsing{j,1},parsing{j+1,1}] = strtok(parsing{j,1},'or');
+                [parsing{j,1},parsing{j+1,1}] = strtok(parsing{j,1},'|');
                 if isempty(parsing{j+1,1})==1
                     break
                 end
@@ -38,13 +38,12 @@ function [parsedGPR,corrRxn] = extractGPRs(model)
             % Parsing each reactions GPR containing "AND" rule
             for j = 1:length(parsing)
                 for k = 1:1000
-                    [parsing{j,k},parsing{j,k+1}] = strtok(parsing{j,k},'and');
+                    [parsing{j,k},parsing{j,k+1}] = strtok(parsing{j,k},'&');
                     if isempty(parsing{j,k+1})==1
                         break
                     end
                 end
             end
-            
             
             %Get rid of bracket and spacing
             for j = 1:size(parsing,1)-1
@@ -55,6 +54,7 @@ function [parsedGPR,corrRxn] = extractGPRs(model)
                         parsing{j,k} = strrep(parsing{j,k},'(','');
                         parsing{j,k} = strrep(parsing{j,k},')','');
                         parsing{j,k} = strrep(parsing{j,k},' ','');
+                        parsing{j,k} = strrep(parsing{j,k},'x','');
                     end
                 end
             end
@@ -76,7 +76,7 @@ function [parsedGPR,corrRxn] = extractGPRs(model)
                 end
 
                 for l = 1:sizeP          
-                parsedGPR{cnt,l} = parsing(j,l);
+                parsedGPR{cnt,l} = model.genes(parsing(j,l));
                 end           
                 cnt = cnt+1;
                 corrRxn = [corrRxn;model.rxns(i)];
