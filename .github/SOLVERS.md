@@ -176,7 +176,8 @@ Platform-specific instructions are marked with
     ````
     On <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS">
     ````
-    export PATH=/Applications/mosek/<ver>/:$PATH
+    export MOSEK_PATH=/Applications/mosek/<ver>
+    export PATH=$MOSEK_PATH:$PATH
     export MOSEKLM_LICENSE_FILE=/Applications/mosek/
     ````
     Reload your `~/.bashrc`:
