@@ -5,5 +5,5 @@
 Metabotools
 -----
 
-.. automodule:: src.metabotools
+.. automodule:: src.dataIntegration.metabotools
    :members:

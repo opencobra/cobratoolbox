@@ -31,33 +31,45 @@ function updateCobraToolbox(fetchAndCheckOnly)
 
         % determine the number of commits that the local master branch is behind
         if status_gitCheckMaster == 0
-            [status_gitCountMaster, result_gitCountMaster] = system('git rev-list --no-merges --count HEAD ^origin/master');
-            result_gitCountMaster = char(result_gitCountMaster);
-            result_gitCountMaster = result_gitCountMaster(1:end-1);
+            [status_gitCountMaster, result_gitCountMaster] = system('git rev-list --left-right --count master...origin/master');
+            if status_gitCountMaster == 0
+                commitsAheadBehindMaster = str2num(char(strsplit(result_gitCountMaster)));
+                if commitsAheadBehindMaster(1) > 0
+                    fprintf(' > Your branch <master> is ahead by %d commit(s).\n', commitsAheadBehindMaster(1));
+                end
+            end
         else
-            status_gitCountMaster == 0;
-            result_gitCountMaster == '';
+            status_gitCountMaster = 0;
+            commitsAheadBehindMaster = [0, 0];
         end
 
         % check if develop branch exists
         [status_gitCheckDevelop, result_gitCheckDevelop] = system('git show-ref --verify --quiet refs/heads/develop');
 
-        % determine the number of commits that the develop master branch is behind
+        % determine the number of commits that the local develop branch is behind
         if status_gitCheckDevelop == 0
-            [status_gitCountDevelop, result_gitCountDevelop] = system('git rev-list --no-merges --count HEAD ^origin/develop');
-            result_gitCountDevelop = char(result_gitCountDevelop);
-            result_gitCountDevelop = result_gitCountDevelop(1:end-1);
+            [status_gitCountDevelop, result_gitCountDevelop] = system('git rev-list --left-right --count develop...origin/develop');
+            if status_gitCountDevelop == 0
+                commitsAheadBehindDevelop = str2num(char(strsplit(result_gitCountDevelop)));
+                if commitsAheadBehindDevelop(1) > 0
+                    fprintf(' > Your branch <develop> is ahead by %d commit(s).\n', commitsAheadBehindDevelop(1));
+                end
+            end
         else
-            status_gitCountDevelop == 0;
-            result_gitCountDevelop == '';
+            status_gitCountDevelop = 0;
+            commitsAheadBehindDevelop = [0, 0];
+        end
+
+        if commitsAheadBehindMaster(1) > 0 || commitsAheadBehindDevelop(1) > 0
+            error(['The COBRA Toolbox could not be updated.']);
         end
 
         if status_gitCountMaster == 0 && status_gitCountDevelop == 0
-            if str2num(result_gitCountMaster) > 0 || str2num(result_gitCountDevelop) > 0
+            if commitsAheadBehindMaster(2) > 0 || commitsAheadBehindDevelop(2) > 0
 
                 currentBranch = getCurrentBranchName();
 
-                fprintf([' > There are ', result_gitCountMaster, ' new commit(s) on <master> and ', result_gitCountDevelop, ' new commit(s) on <develop>. Current branch: <', currentBranch, '>\n']);
+                fprintf(' > There are %d new commit(s) on <master> and %d new commit(s) on <develop>. Current branch: <%s>\n', commitsAheadBehindMaster(2), commitsAheadBehindDevelop(2), currentBranch);
 
                 % retrieve the status
                 [status_gitStatus, result_gitStatus] = system('git status -s');
@@ -73,9 +85,9 @@ function updateCobraToolbox(fetchAndCheckOnly)
                             % loop over develop and master
                             for k = 1:length(branches)
                                 % checkout the master branch of the devTools
-                                [status_gitCheckoutMaster, result_gitCheckoutMaster] = system(['git checkout -f ', branches{k}]);
-                                if status_gitCheckoutMaster ~= 0
-                                    fprintf(result_gitCheckoutMaster);
+                                [status_gitCheckout, result_gitCheckout] = system(['git checkout -f ', branches{k}]);
+                                if status_gitCheckout ~= 0
+                                    fprintf(result_gitCheckout);
                                     error(['The ', branches{k},' branch of The COBRA Toolbox could not be checked out.']);
                                 end
 

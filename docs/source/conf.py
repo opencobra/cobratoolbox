@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# MWE documentation build configuration file, created by
+# Documentation build configuration file, created by
 # sphinx-quickstart on Fri Nov 18 11:12:41 2016.
 #
 # This file is execfile()d with the current directory set to its
@@ -18,6 +18,11 @@
 
 import os
 import sys
+
+sys.path.append('sphinxext')
+from github_linkcode import github_linkcode_resolve
+
+
 
 sys.path.insert(0, os.path.abspath(os.path.join('..', '..', '..')))
 # sys.path.insert(0, os.path.abspath('.'))
@@ -38,7 +43,19 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinxcontrib.napoleon',
     'sphinxcontrib.matlab',
+    'github',
+    'sphinx.ext.linkcode',
     'sphinxcontrib.fulltoc']
+
+def linkcode_resolve(domain, info):
+    return github_linkcode_resolve(
+            domain=domain,
+            info=info,
+            allowed_module_names=['src'],
+            github_org_id='opencobra',
+            github_repo_id='cobratoolbox',
+            branch='master',
+            source_prefix='')
 
 
 # autodoc_member_order='groupwise'
@@ -49,23 +66,18 @@ add_module_names = False
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
-from recommonmark.parser import CommonMarkParser
-
-source_parsers = {
-    '.md': CommonMarkParser,
-}
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
-source_suffix = ['.rst', '.md']
+source_suffix = ['.rst']
 
 # The encoding of source files.
 #
-# source_encoding = 'utf-8-sig'
+source_encoding = 'utf-8'
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = 'contents'
 
 # General information about the project.
 project = u'The COBRA Toolbox'
@@ -136,14 +148,14 @@ todo_include_todos = True
 
 # -- Options for HTML output ----------------------------------------------
 
-html_theme = "sphinx_julia_theme"
+html_theme = "sphinx_cobra_theme"
 
-import sphinx_julia_theme
+import sphinx_cobra_theme
 import sphinx_rtd_theme
+import sphinx_julia_theme
 
-# extensions += ['juliadoc.julia', 'juliadoc.jlhelp']
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path(),
-                   sphinx_julia_theme.get_theme_dir()]
+                   sphinx_cobra_theme.get_theme_dir()]
 print html_theme_path
 html_sidebars = sphinx_julia_theme.default_sidebars()
 
@@ -159,6 +171,7 @@ html_context = {'conf_py_path': os.path.join(os.sep, 'docs', 'source', ''),
                 'github_user': 'opencobra',
                 'github_repo': 'cobratoolbox',
                 'github_version': 'master',
+                'theme_logo_only': True,
                 'show_source': False}
 #                'display_github': True}
 # Add any paths that contain custom themes here, relative to this directory.
@@ -208,12 +221,13 @@ html_static_path = ['_static']
 
 # Custom sidebar templates, maps document names to template names.
 #
-# html_sidebars = {}
+html_sidebars = {'index': 'indexsidebar.html'}
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.
 #
-# html_additional_pages = {}
+html_index = 'index.html'
+html_additional_pages = {'index': 'index.html'}
 
 # If false, no module index is generated.
 #
@@ -221,7 +235,7 @@ html_static_path = ['_static']
 
 # If false, no index is generated.
 #
-# html_use_index = True
+# html_use_index = False
 
 # If true, the index is split into individual pages for each letter.
 #

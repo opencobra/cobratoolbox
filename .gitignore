@@ -30,12 +30,12 @@ coverage.json
 coverage_html
 
 # specific folders
-src/fluxomics/c13solver/IsotopomerModel.txt
-src/fluxomics/c13solver/convertCarbonInput.m
-src/fluxomics/c13solver/slvrCumomer.m
-src/fluxomics/c13solver/slvrCumomer_fast.m
-src/fluxomics/c13solver/slvrEMU.m
-src/fluxomics/c13solver/slvrEMU_fast.m
+src/dataIntegration/fluxomics/c13solver/IsotopomerModel.txt
+src/dataIntegration/fluxomics/c13solver/convertCarbonInput.m
+src/dataIntegration/fluxomics/c13solver/slvrCumomer.m
+src/dataIntegration/fluxomics/c13solver/slvrCumomer_fast.m
+src/dataIntegration/fluxomics/c13solver/slvrEMU.m
+src/dataIntegration/fluxomics/c13solver/slvrEMU_fast.m
 
 # model files for testing
 test/models/*.xml

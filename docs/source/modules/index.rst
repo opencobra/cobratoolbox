@@ -1,22 +1,15 @@
 .. _modules_functions:
 
 
-Modules
--------
+Documentation
+-------------
 
 .. toctree::
    :maxdepth: 2
 
-   tools
-   print
-   metabotools
-   rFBA
-   multiSpeciesModelling
-   reconstruction
-   sampling
+   base
+   dataIntegration
    design
-
-Example
-
-.. autofunction:: docs.source.modules.templateFunction
-
+   modelAnalysis
+   reconstruction
+   visualization

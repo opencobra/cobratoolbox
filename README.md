@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/opencobra/cobratoolbox/master/docs/source/_static/logo.png" height="160px"/>
+  <img class="readme_logo" src="https://raw.githubusercontent.com/opencobra/cobratoolbox/master/docs/source/_static/logo.png" height="160px"/>
 </p>
 
 The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox
@@ -27,13 +27,17 @@ The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox
     <td><div align="center"><img src="https://img.shields.io/badge/macOS-passing-brightgreen.svg?maxAge=0"></div></td>
   </tr>
 </table>
+<br>
 
-System Requirements and Solver Installation
--------------------------------------------
+System Requirements
+-------------------
 
-:warning: Please follow [this guide](https://github.com/opencobra/cobratoolbox/blob/master/.github/REQUIREMENTS.md) in order to configure your system properly.
+<img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" alt="warning"> Please follow [this guide](https://github.com/opencobra/cobratoolbox/blob/master/.github/REQUIREMENTS.md) in order to configure your system properly.
 
-The default solver is `glpk` (for `LP` and `MILP`). You can install `TOMLAB`, `IBM ILOG CPLEX`, `GUROBI`, or `MOSEK` by following these [detailed instructions](https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md).
+Solver Installation
+-------------------
+
+The default solver is `glpk` (for `LP` and `MILP`). You can install `TOMLAB`, `IBM ILOG CPLEX`, `GUROBI`, or `MOSEK` by following these **[detailed instructions](https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md)**.
 
 Installation
 ------------
@@ -42,7 +46,7 @@ Installation
     ````bash
     $ git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
     ````
-    :warning: Run this command in `Terminal` (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS"> and <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux">) or in `Git Bash` (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" alt="Windows">) - **not** in <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" alt="Matlab">. Although not recommended, you can download the repository as a [compressed archive](https://github.com/opencobra/cobratoolbox/archive/master.zip).
+    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" alt="warning"> Run this command in `Terminal` (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS"> and <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux">) or in `Git Bash` (on <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" alt="Windows">) - **not** in <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" alt="Matlab">. Although not recommended, you can download the repository as a [compressed archive](https://github.com/opencobra/cobratoolbox/archive/master.zip).
 
 2. Change to the folder `cobratoolbox/` and run from <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" alt="Matlab">
     ````Matlab
@@ -71,13 +75,13 @@ Support and Documentation
 How to contribute
 -----------------
 
-:+1::tada: First off, thanks for taking the time to contribute to [The COBRA Toolbox](https://github.com/opencobra/cobratoolbox)! :tada::+1:
+<img src="https://prince.lcsb.uni.lu/jenkins/userContent/thumbsUP.png" height="20px" alt="+1">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/tada.png" height="20px" alt="tada"> First off, thanks for taking the time to contribute to [The COBRA Toolbox](https://github.com/opencobra/cobratoolbox)! <img src="https://prince.lcsb.uni.lu/jenkins/userContent/tada.png" height="20px" alt="tada"> <img src="https://prince.lcsb.uni.lu/jenkins/userContent/thumbsUP.png" height="20px" alt="+1">
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/opencobra/MATLAB.devTools/develop/assets/devTools_logo.png" height="120px"/>
 </p>
 
-:bulb: **Check out the [MATLAB.devTools](https://github.com/opencobra/MATLAB.devTools) - and contribute the smart way!**
+<img src="https://prince.lcsb.uni.lu/jenkins/userContent/bulb.png" height="20px" alt="bulb"> **Check out the [MATLAB.devTools](https://github.com/opencobra/MATLAB.devTools) - and contribute the smart way!**
 
 - Please follow the [Style Guide](https://github.com/opencobra/cobratoolbox/blob/master/.github/guides/STYLEGUIDE.md).
 - More information on writing a **test** is [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/guides/TESTGUIDE.md) and a template is [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/guides/testTemplate.m).
