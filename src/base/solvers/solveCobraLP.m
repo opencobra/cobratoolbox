@@ -1361,23 +1361,23 @@ switch solver
         % especially xsize and zsize (see pdco.m) to get the real optimal
         % objective value
 
-        if ~isempty(pdco_xsize)
+        if exist('pdco_xsize', 'var') == 1
             xsize = pdco_xsize;
         else
             xsize = 100;
         end
-        if ~isempty(pdco_zsize)
+        if exist('pdco_zsize', 'var') == 1
             zsize = pdco_zsize;
         else
             zsize = 100;
         end
 
-        if ~isempty(pdco_method)
+        if exist('pdco_method', 'var') == 1
             options.Method = pdco_method;
         else
             options.Method = 1; %Cholesky
         end
-        if ~isempty(pdco_maxiter)
+        if exist('pdco_maxiter', 'var') == 1
             options.MaxIter = pdco_maxiter;
         else
             options.MaxIter = 200;
