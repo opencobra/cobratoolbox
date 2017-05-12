@@ -11,8 +11,8 @@
 %     Jason A. Papin, Nathan D. Price and Bernhard Ø. Palsson
 
 if isunix
-    [status, result] = system('bash which lrs');
-    if ~isempty(result)
+    [status, result] = system('which lrs');
+    if ~isempty(strfind(result, '/lrs'))
 
         % save the current path
         currentDir = pwd;

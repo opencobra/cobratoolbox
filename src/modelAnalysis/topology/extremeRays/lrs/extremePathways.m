@@ -91,8 +91,8 @@ lrsInputHalfspace(A, D, filename, positivity, inequality, a, d, f, sh);
 
 % pause(eps)
 if isunix
-    [status, result] = system('bash which lrs');
-    if ~isempty(result)
+    [status, result] = system('which lrs');
+    if ~isempty(strfind(result, '/lrs'))
         % call lrs and wait until extreme pathways have been calculated
         systemCallText = ['lrs ' pwd filesep filename '_' suffix '.ine > ' pwd filesep filename '_' suffix '.ext'];
         [status, result] = system(systemCallText);
