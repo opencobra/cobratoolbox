@@ -1,15 +1,17 @@
 function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel,modeFlag,method)
-% [A,V] = fastcc(model,epsilon,printLevel)
-%
 % The FASTCC algorithm for testing the consistency of a stoichiometric model
-% Output A is the consistent part of the model
+% Output A is the consistent part of the model [A,V] = fastcc(model,epsilon,printLevel)
 %
-% INPUT
-% model         cobra model structure containing the fields
-%   S           m x n stoichiometric matrix
-%   lb          n x 1 flux lower bound
-%   ub          n x 1 flux uppper bound
-%   rxns        n x 1 cell array of reaction abbreviations
+% USAGE:
+%
+%    [A, modelFlipped, V] = fastcc(model, epsilon, printLevel, modeFlag, method)
+%
+% INPUTS:
+%    model:         cobra model structure containing the fields
+%    S:             `m` x `n` stoichiometric matrix
+%    lb:            `n` x 1 flux lower bound
+%    ub:            `n` x 1 flux uppper bound
+%    rxns:          `n` x 1 cell array of reaction abbreviations
 %
 % epsilon
 % printLevel    0 = silent, 1 = summary, 2 = debug
