@@ -1,6 +1,6 @@
 function varargout = model_description(varargin)
-% model_description M-file for model_description.fig
-% model_description, by itself, creates a new model_description or raises the existing
+% m-file for model_description.fig
+% model_description, by itself, creates a new object or raises the existing
 % singleton*.
 %
 % USAGE:

@@ -1,6 +1,6 @@
 function varargout = addreactions(varargin)
-% addreactions M-file for addreactions.fig
-% addreactions, by itself, creates a new addreactions or raises the existing singleton*.
+% m-file for addreactions.fig
+% addreactions, by itself, creates a new object or raises the existing singleton*.
 %
 % USAGE:
 %

@@ -7,7 +7,7 @@ function model_out = data2model(data,description)
 %
 % INPUTS:
 %    data:          data from `rbionet`
-%    description:
+%    description:   model description
 %
 % OUTPUT:
 %    model_out:     creates a complete reconstruction

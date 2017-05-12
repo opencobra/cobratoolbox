@@ -1,6 +1,6 @@
 function varargout = model_stats(varargin)
-% model_stats MATLAB code for model_stats.fig
-% model_stats, by itself, creates a new model_stats or raises the existing singleton*.
+% MATLAB code for model_stats.fig
+% model_stats, by itself, creates a new object or raises the existing singleton*.
 %
 % USAGE:
 %

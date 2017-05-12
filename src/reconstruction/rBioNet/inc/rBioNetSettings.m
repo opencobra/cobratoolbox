@@ -1,6 +1,6 @@
 function varargout = rBioNetSettings(varargin)
-% rBioNetSettings MATLAB code for rBioNetSettings.fig
-% rBioNetSettings, by itself, creates a new rBioNetSettings or raises the existing
+% MATLAB code for rBioNetSettings.fig
+% rBioNetSettings, by itself, creates a new object or raises the existing
 % singleton*.
 %
 % USAGE:

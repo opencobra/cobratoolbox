@@ -1,6 +1,6 @@
 function varargout = CreateGPR(varargin)
-% CreateGPR M-file for CreateGPR.fig
-% CreateGPR, by itself, creates a new CreateGPR or raises the existing
+% m-file for CreateGPR.fig
+% CreateGPR, by itself, creates a new object or raises the existing
 % singleton*.
 %
 % USAGE:

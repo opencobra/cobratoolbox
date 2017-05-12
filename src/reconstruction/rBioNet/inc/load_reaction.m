@@ -1,6 +1,6 @@
 function varargout = load_reaction(varargin)
-% load_reaction M-file for load_reaction.fig
-% load_reaction, by itself, creates a new load_reaction or raises the existing singleton*.
+% m-file for load_reaction.fig
+% load_reaction, by itself, creates a new object or raises the existing singleton*.
 %
 % USAGE:
 %

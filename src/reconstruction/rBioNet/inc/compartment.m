@@ -1,6 +1,6 @@
 function varargout = compartment(varargin)
-% compartment M-file for compartment.fig
-% compartment, by itself, creates a new compartment or raises the existing
+% m-file for compartment.fig
+% compartment, by itself, creates a new object or raises the existing
 % singleton*.
 %
 % USAGE:

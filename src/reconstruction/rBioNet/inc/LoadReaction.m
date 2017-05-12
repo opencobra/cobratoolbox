@@ -1,4 +1,5 @@
 function output = LoadReaction(rxnline,metab,meta_compartment,rxn_line)
+% Provides input argument for `ReconstructionTool` and `ReactionChecks` and other functions
 %
 % USAGE:
 %
@@ -8,10 +9,10 @@ function output = LoadReaction(rxnline,metab,meta_compartment,rxn_line)
 %    rxnline:           data of the reaction
 %    metab:             from ReconstructionTool
 %    meta_compartment:  from ReconstructionTool
-%    rxn_line:
+%    rxn_line:          not used
 %
 % OUTPUTS:
-%    output:
+%    output:            input argument for `ReconstructionTool` and `ReactionChecks` and other functions
 %
 % .. Author: - Stefan G. Thorleifsson 2010
 %

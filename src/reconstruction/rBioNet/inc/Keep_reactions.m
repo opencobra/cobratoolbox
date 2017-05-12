@@ -1,6 +1,6 @@
 function varargout = Keep_reactions(varargin)
-% Keep_reactions M-file for Keep_reactions.fig
-% Keep_reactions, by itself, creates a new Keep_reactions or raises the existing singleton*.
+% m-file for Keep_reactions.fig
+% Keep_reactions, by itself, creates a new object or raises the existing singleton*.
 %
 % USAGE:
 %

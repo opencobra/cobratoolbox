@@ -1,6 +1,6 @@
 function varargout = GenesAndReactions(varargin)
-% GenesAndReactions M-file for GenesAndReactions.fig
-% GenesAndReactions, by itself, creates a new GenesAndReactions or raises the existing
+% m-file for GenesAndReactions.fig
+% GenesAndReactions, by itself, creates a new object or raises the existing
 % singleton*.
 %
 % USAGE:

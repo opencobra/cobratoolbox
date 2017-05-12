@@ -7,11 +7,11 @@ function data_output = ReactionChecks(rxn,metab,meta_compartment,newrxns,data)
 %    data_output = ReactionChecks(rxn, metab, meta_compartment, newrxns, data)
 %
 % INPUTS:
-%    rxn:
-%    metab:
-%    meta_compartment:
-%    newrxns:
-%    data:
+%    rxn:                 reactions
+%    metab:               from ReconstructionTool
+%    meta_compartment:    from ReconstructionTool
+%    newrxns:             reactions to be added to model
+%    data:                data of reactions process
 %
 % OUTPUT:
 %    data_output:     if everything is okay

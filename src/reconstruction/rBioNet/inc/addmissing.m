@@ -1,6 +1,6 @@
 function varargout = addmissing(varargin)
-% addmissing MATLAB code for addmissing.fig
-% addmissing, by itself, creates a new addmissing or raises the existing
+% MATLAB code for addmissing.fig
+% addmissing, by itself, creates a new object or raises the existing
 % singleton*.
 %
 % USAGE:

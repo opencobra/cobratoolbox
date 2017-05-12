@@ -1,4 +1,6 @@
 function output = BalancePrep(meta_meta)
+% Balances the reactions, used in `ReactionChecks`
+%
 % USAGE:
 %
 %    output = BalancePrep(meta_meta)

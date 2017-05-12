@@ -1,4 +1,5 @@
 function result = LegalRxnFormula(formula,abbreviation)
+% Checks if all reactions are legal
 %
 % USAGE:
 %

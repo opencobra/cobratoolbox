@@ -1,6 +1,6 @@
 function varargout = similarities(varargin)
-% similarities M-file for similarities.fig
-% similarities, by itself, creates a new similarities or raises the existing singleton*.
+% m-file for similarities.fig
+% similarities, by itself, creates a new object or raises the existing singleton*.
 %
 % USAGE:
 %

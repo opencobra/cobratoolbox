@@ -1,6 +1,6 @@
 function varargout = ReconstructionCreator(varargin)
-% ReconstructionCreator M-file for ReconstructionCreator.fig
-% ReconstructionCreator, by itself, creates a new ReconstructionCreator or raises the existing singleton*.
+% m-file for ReconstructionCreator.fig
+% ReconstructionCreator, by itself, creates a new object or raises the existing singleton*.
 %
 % USAGE:
 %

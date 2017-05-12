@@ -7,8 +7,8 @@ function data = neighborRxn2data(model,rxn_numb)
 %    data = neighborRxn2data(model, rxn_numb)
 %
 % INPUTS:
-%    model:
-%    rxn_numb:
+%    model:         model
+%    rxn_numb:      number of reactions
 %
 % OUTPUT:
 %    data:

@@ -1,6 +1,6 @@
 function varargout = rBioNetAbout(varargin)
-% rBioNetAbout MATLAB code for rBioNetAbout.fig
-% rBioNetAbout, by itself, creates a new rBioNetAbout or raises the existing singleton*.
+% MATLAB code for rBioNetAbout.fig
+% rBioNetAbout, by itself, creates a new object or raises the existing singleton*.
 %
 % USAGE:
 %

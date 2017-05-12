@@ -1,6 +1,6 @@
 function varargout = addmetabolites(varargin)
-% addmetabolites M-file for addmetabolites.fig
-% addmetabolites, by itself, creates a new addmetabolites or raises the existing singleton*.
+% m-file for addmetabolites.fig
+% addmetabolites, by itself, creates a new object or raises the existing singleton*.
 %
 % USAGE:
 %

@@ -1,6 +1,6 @@
 function varargout = unbalanced(varargin)
-% unbalanced M-file for unbalanced.fig
-% unbalanced, by itself, creates a new unbalanced or raises the existing singleton*.
+% m-file for unbalanced.fig
+% unbalanced, by itself, creates a new object or raises the existing singleton*.
 %
 % USAGE:
 %

@@ -1,6 +1,6 @@
 function varargout = met_charge_formula(varargin)
-% met_charge_formula MATLAB code for met_charge_formula.fig
-% met_charge_formula, by itself, creates a new met_charge_formula or raises the existing singleton*.
+% MATLAB code for met_charge_formula.fig
+% met_charge_formula, by itself, creates a new object or raises the existing singleton*.
 %
 % USAGE:
 %

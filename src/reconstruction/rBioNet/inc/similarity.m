@@ -1,4 +1,5 @@
 function reactions = similarity(formula,data,bar)
+% Returns the reaction lines with similarities
 %
 % USAGE:
 %

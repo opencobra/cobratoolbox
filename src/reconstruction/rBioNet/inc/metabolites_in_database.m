@@ -1,6 +1,6 @@
 function varargout = metabolites_in_database(varargin)
-% metabolites_in_database M-file for metabolites_in_database.fig
-% metabolites_in_database, by itself, creates a new metabolites_in_database or raises the existing singleton*.
+% m-file for metabolites_in_database.fig
+% metabolites_in_database, by itself, creates a new object or raises the existing singleton*.
 %
 % USAGE:
 %

@@ -1,6 +1,6 @@
 function varargout = ReconstructionTool(varargin)
-% ReconstructionTool M-file for ReconstructionTool.fig
-% ReconstructionTool by itself, creates a new ReconstructionTool or raises the existing singleton*.
+% m-file for ReconstructionTool.fig
+% ReconstructionTool by itself, creates a new object or raises the existing singleton*.
 %
 % USAGE:
 %

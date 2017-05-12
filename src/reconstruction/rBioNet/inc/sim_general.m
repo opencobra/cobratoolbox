@@ -1,6 +1,6 @@
 function varargout = sim_general(varargin)
-% sim_general MATLAB code for sim_general.fig
-% sim_general, by itself, creates a new sim_general or raises the existing singleton*.
+% MATLAB code for sim_general.fig
+% sim_general, by itself, creates a new object or raises the existing singleton*.
 %
 % USAGE:
 %
