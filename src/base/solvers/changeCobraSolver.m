@@ -251,8 +251,7 @@ if isempty(strmatch(solverType, SOLVERS.(solverName).type))
     end
 end
 
-% check if GUROBI, MOSEK pr CPLEX are on the PATH
-tomlabOnPath = ~isempty(regexp(lower(path), ['/(tomlab)+']));
+% add the solver path for GUROBI, MOSEK or CPLEX
 if (~isempty(strfind(solverName, 'tomlab')) || ~isempty(strfind(solverName, 'cplex_direct'))) && ~isempty(TOMLAB_PATH)
     addpath(genpath(strrep(TOMLAB_PATH, '\\', '\')));
     if printLevel > 0
@@ -364,47 +363,45 @@ if solverOK
     if ~isempty(strfind(solverName, 'matlab'))
 
         % check if TOMLAB is on the PATH
-        tomlabOnPath = ~isempty(regexp(lower(path), ['/(tomlab)+']));
+        tomlabOnPath = ~isempty(regexp(lower(path), ['(tomlab)'], 'once'));
 
-        if tomlabOnPath
+        if tomlabOnPath && ~isempty(TOMLAB_PATH)
             rmpath(genpath(strrep(TOMLAB_PATH, '\\', '\')));
             if printLevel > 0
                 fprintf(['\n > Tomlab interface removed from MATLAB path.\n']);
             end
         end
 
-        % check if GUROBI, MOSEK pr CPLEX are on the PATH
-        cplexOnPath = ~isempty(regexp(lower(path), ['/(cplex_studio)+']));
-        gurobiOnPath = ~isempty(regexp(lower(path), ['/(gurobi)\w+']));
-        mosekOnPath = ~isempty(regexp(lower(path), ['/(mosek)+']));
+        % check if GUROBI is on the PATH
+        gurobiOnPath = ~isempty(regexp(lower(path), ['(gurobi)\w+'], 'once'));
 
         % remove the GUROBI interface
-        if gurobiOnPath
-            if ~isempty(GUROBI_PATH)
-                rmpath(genpath(strrep(GUROBI_PATH, '\\', '\')));
-                if printLevel > 0
-                    fprintf(['\n > GUROBI interface removed from MATLAB path.\n']);
-                end
+        if gurobiOnPath && ~isempty(GUROBI_PATH)
+            rmpath(genpath(strrep(GUROBI_PATH, '\\', '\')));
+            if printLevel > 0
+                fprintf(['\n > GUROBI interface removed from MATLAB path.\n']);
             end
         end
+
+        % check if CPLEX is on the PATH
+        cplexOnPath = ~isempty(regexp(lower(path), ['(cplex_studio)'], 'once'));
 
         % remove the CPLEX interface
-        if cplexOnPath
-            if ~isempty(ILOG_CPLEX_PATH)
-                rmpath(genpath(strrep(ILOG_CPLEX_PATH, '\\', '\')));
-                if printLevel > 0
-                    fprintf(['\n > ILOG CPLEX interface removed from MATLAB path.\n']);
-                end
+        if cplexOnPath && ~isempty(ILOG_CPLEX_PATH)
+            rmpath(genpath(strrep(ILOG_CPLEX_PATH, '\\', '\')));
+            if printLevel > 0
+                fprintf(['\n > ILOG CPLEX interface removed from MATLAB path.\n']);
             end
         end
 
+        % check if MOSEK is on the PATH
+        mosekOnPath = ~isempty(regexp(lower(path), ['(mosek)'], 'once'));
+
         % remove the MOSEK interface
-        if mosekOnPath
-            if ~isempty(MOSEK_PATH)
-                rmpath(genpath(strrep(MOSEK_PATH, '\\', '\')));
-                if printLevel > 0
-                    fprintf(['\n > MOSEK interface removed from MATLAB path.\n']);
-                end
+        if mosekOnPath && ~isempty(MOSEK_PATH)
+            rmpath(genpath(strrep(MOSEK_PATH, '\\', '\')));
+            if printLevel > 0
+                fprintf(['\n > MOSEK interface removed from MATLAB path.\n']);
             end
         end
 
