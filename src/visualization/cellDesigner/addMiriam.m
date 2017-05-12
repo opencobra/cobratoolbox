@@ -1,54 +1,46 @@
 function [fname_out,var] = addMiriam(fname,fname_out,infix,model,infix_type,list,miriam_path)
-
-% Add Miriam information to CellDesigner XML file; the Miriam information
-% is retrieved from a COBRA model structure using Metbolite/Reaction IDs as
+% Adds Miriam information to `CellDesigner` XML file. The Miriam information
+% is retrieved from a COBRA model structure using Metabolite/Reaction IDs as
 % the name of entry. The omics data will be shown as texts hyperlinking to
-% external databases in CellDesigner or ReconMap online.
+% external databases in `CellDesigner` or `ReconMap` online.
 %
+% USAGE:
 %
-%INPUTS
+%    [fname_out, var] = addMiriam(fname, fname_out, infix, model, infix_type, list, miriam_path)
 %
-% fname       An XML file to be modified to include annotations.
-% fanme_out   The name of an output XML file.
-% infix       A list of metabolite/reaction IDs to be used to retrieve omics data
-%             in the COBRA model structure.
-% model       a COBRA model structure contains the annotations that can be
-%             retrieved by using the infix as the index value.
-% list        Column 1 stores a list of the fieldnames of the COBRA model
-%             strucutres that contains MIRIAM information; Column 2 stores
-%             a list of MIRIAM types corresponding to each field; column 3
-%             stores a list of relations
+% INPUTS:
+%    fname:       An XML file to be modified to include annotations.
+%    fname_out:   The name of an output XML file.
+%    infix:       A list of metabolite/reaction IDs to be used to retrieve omics data
+%                 in the COBRA model structure.
+%    model:       a COBRA model structure contains the annotations that can be
+%                 retrieved by using the infix as the index value.
+%    list:        Column 1 stores a list of the fieldnames of the COBRA model
+%                 strucutres that contains MIRIAM information; Column 2 stores
+%                 a list of MIRIAM types corresponding to each field; column 3
+%                 stores a list of relations
 %
+% OPTIONAL INPUT:
+%    infix_type:      'name' or 'id';
 %
+%                       1. 'name'indicates that 'infix' contains
+%                          a list of reaction names, which are normally used in a
+%                          COBRA model structure.
+%                       2. 'id' indicates that 'infix'
+%                          contains a list of IDs used in `CellDesigner` such as 're32'.
+%    miriam_path:     the file path of the miriam registry's dataset (*.mat).
 %
+% OPTIONAL OUTPUT:
+%    fname_out:       the name of an output XML file.
+%    var:             the content of the modified XML file with annotations
 %
-%OPTIONAL INPUT
-% infix_type      'name' or 'id'; 1) 'name'indicates that 'infix' contains
-%                 a list of reaction names, which are normally used in a
-%                 COBRA model structure. 2)'id' indicates that 'infix'
-%                 contains a list of IDs used in CellDesigner such as
-%                 're32'.
-% miriam_path     the file path of the miriam registry's dataset (*.mat).
+% EXAMPLE:
 %
+%    %the following example command is intended to add all MIRIAM information
+%    %for the metabolites in the ReconMap
+%    [var]=addMiriam('ReconMap.xml', 'ReconMap_annotated.xml', recon2.mets(:), recon2)
 %
-%
-%OPTIONAL OUTPUT
-%
-% var         the content of the modified XML file with annotations
-%
-%
-%EXAMPLE:
-%
-% the following example command is intended to add all MIRIAM information
-% for the metabolites in the ReconMap
-%
-% [var]=addMiriam('ReconMap.xml','ReconMap_annotated.xml',recon2.mets(:),recon2)
-%
-%
-%
-% Longfei Mao May/2015
-%
-%
+% .. Author: - Longfei Mao May 2015
 
 if nargin<7;
     if exist('MIRIAM','var')==1
