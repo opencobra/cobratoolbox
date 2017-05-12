@@ -25,7 +25,7 @@ function [parsed_updated,mainText_new, final_list] = colourNode(parsed,fname_out
 %
 % EXAMPLE:
 %
-%    [var]=colourNode('fatty_acid_synthesis_Miriam__rxns_test.xml', 'fatty_acid_synthesis_Miriam__rxns_test_colour.xml', parsed_fatty_acid, list_nodes)
+%    [var] = colourNode('fatty_acid_synthesis_Miriam__rxns_test.xml', 'fatty_acid_synthesis_Miriam__rxns_test_colour.xml', parsed_fatty_acid, list_nodes)
 
         defRxnColour='FFCDE2BD'; % remove the prefix "#"
         defMetColour='ffe7a45d';

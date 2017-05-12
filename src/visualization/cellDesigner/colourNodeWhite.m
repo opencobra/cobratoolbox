@@ -17,7 +17,7 @@ function [parsed_update, mainText_new, final_list] = colourNodeWhite(parsed,fnam
 % OPTIONAL INPUTS:
 %    list_Met:         The list of metabolite IDs to be highlighed
 %
-% OPTIONAL OUTPUTS
+% OPTIONAL OUTPUTS:
 %    parsed_updated:   An updated parsed model structure.
 %    mainText_new:     The lines of the new XML file.
 %    final_list:       A list of the metabolite nodes whose colour attributes
@@ -25,7 +25,7 @@ function [parsed_update, mainText_new, final_list] = colourNodeWhite(parsed,fnam
 %
 % EXAMPLE:
 %
-%    [var, final_list]=colourNodeWhite('fatty_acid_synthesis_Miriam__rxns_test_white.xml', 'fatty_acid_synthesis_Miriam__rxns_test_white_colour.xml', parsed_fatty_acid_new, list_nodes)
+%    [var, final_list] = colourNodeWhite('fatty_acid_synthesis_Miriam__rxns_test_white.xml', 'fatty_acid_synthesis_Miriam__rxns_test_white_colour.xml', parsed_fatty_acid_new, list_nodes)
 
 list_nodes_white(:,1)=parsed.r_info.ID(:,3);
 

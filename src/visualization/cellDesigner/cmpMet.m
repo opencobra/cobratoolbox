@@ -22,7 +22,7 @@ function [ results ] = cmpMet(parsed,model)
 %
 % EXAMPLE:
 %
-%    results_M=cmpM(parseRecon2_species, recon2)
+%    results_M = cmpM(parseRecon2_species, recon2)
 %
 % .. there are three fields "meid, id and name"; we would like to compare the
 % .. reaction IDs in Recon 2 to thoese three independent columns.

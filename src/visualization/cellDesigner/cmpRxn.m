@@ -28,7 +28,7 @@ function [ results ] = cmpRxn(parsed,model)
 %
 % EXAMPLE:
 %
-%    cmp_PD_recon2_result=cmpRxn(parsePD,recon2)
+%    cmp_PD_recon2_result = cmpRxn(parsePD, recon2)
 %
 % .. there are three fields "meid, id and name"; we would like to compare the
 % .. reaction IDs in Recon 2 to thoese three independent columns.
@@ -74,18 +74,13 @@ for r_p=1:length(rxnList_p(:,1)); % the number of the iteration is equal to the 
 
         end
 
-
         if ~isempty(find(~cellfun('isempty',strfind(rxnList_m(:,1),rxn{1})))) % rxnList_m a COBRA model;
             results.main{r_p,c_original+2}='found';
             results.listOfFound(nF,1:c_original)=rxnList_p(r_p,1:c_original);  % rxnList_p parsed model; r_p is the reaction number in the matrix.
             results.listOfFound{nF,c_original+2}='Present in the Reference model';
             nF=nF+1;
 
-
-
             % if model.S.(:,r_p)(!=0)
-
-
 
             ind=find(~cellfun('isempty',strfind(rxnList_m(:,1),rxn{1}))); % ind contains the index for the reactions in the COBRA model.
             fprintf('ind_in_COBRA_model is %d and the r_p is %d \n',ind,r_p);
@@ -124,10 +119,7 @@ for r_p=1:length(rxnList_p(:,1)); % the number of the iteration is equal to the 
                 %
                 %                 end
 
-                rxn_p_n=rxnList_p{r_p,1};%%
-
-
-
+                rxn_p_n=rxnList_p{r_p,1};%
 
                 for rxnNUM=1:length(ind) % the reaction ID in the identified reaction list
 
@@ -167,7 +159,6 @@ for r_p=1:length(rxnList_p(:,1)); % the number of the iteration is equal to the 
                 end
                 %   r_p,1:c_original
 
-
                 %
                 %(find(full(model.S(:,ind))<0));
 
@@ -186,15 +177,11 @@ for r_p=1:length(rxnList_p(:,1)); % the number of the iteration is equal to the 
                 % rea_M.rxn.(b).rxn(a)=
                 rea_M.c=c_index;
 
-
-
                 for mm=1:length(ind_M);
                     disp(length(ind_M));
                     %model.mets(ind_M(1,mm));
                     % rea_M.rxn.(b).rxn(mm)=
                 end
-
-
 
                 % find(full(model.S(:,ind_in_COBRA_model))>0);
                 % b.(r_p)(:,1)=model.mets(find(full(model.S(:,ind_in_COBRA_model))<0));
@@ -224,16 +211,12 @@ end
 %results.rea_P=rea_P;
 results.found_rxns_and_mets=rea_M; % reactions found and their matches in the COBRA model and list of substrates and products for the reaction.
 
-
 %
 % results.listOfFound(nF,1:c_original)
 %
 
 nL=1;rxnList_p_2=parsed.r_info.ID(:,:);
 nn=1;
-
-
-
 
 for col=1:c_original
     for row=1:r_original;
@@ -243,12 +226,8 @@ for col=1:c_original
     end
 end
 
-
-
 disp('start searching reactions present in the reference model but not in the CD model')
 for r_m=1:length(rxnList_m(:,1));
-
-
 
     rxn=strtrim(rxnList_m(r_m,1)); % removing the leading and the trailing white space from the string.
     %         try

@@ -9,16 +9,16 @@ function [fname_out,var] = addMiriam(fname,fname_out,infix,model,infix_type,list
 %    [fname_out, var] = addMiriam(fname, fname_out, infix, model, infix_type, list, miriam_path)
 %
 % INPUTS:
-%    fname:       An XML file to be modified to include annotations.
-%    fname_out:   The name of an output XML file.
-%    infix:       A list of metabolite/reaction IDs to be used to retrieve omics data
-%                 in the COBRA model structure.
-%    model:       a COBRA model structure contains the annotations that can be
-%                 retrieved by using the infix as the index value.
-%    list:        Column 1 stores a list of the fieldnames of the COBRA model
-%                 strucutres that contains MIRIAM information; Column 2 stores
-%                 a list of MIRIAM types corresponding to each field; column 3
-%                 stores a list of relations
+%    fname:           An XML file to be modified to include annotations.
+%    fname_out:       The name of an output XML file.
+%    infix:           A list of metabolite/reaction IDs to be used to retrieve omics data
+%                     in the COBRA model structure.
+%    model:           a COBRA model structure contains the annotations that can be
+%                     retrieved by using the infix as the index value.
+%    list:            Column 1 stores a list of the fieldnames of the COBRA model
+%                     strucutres that contains MIRIAM information; Column 2 stores
+%                     a list of MIRIAM types corresponding to each field; column 3
+%                     stores a list of relations
 %
 % OPTIONAL INPUT:
 %    infix_type:      'name' or 'id';
@@ -38,7 +38,7 @@ function [fname_out,var] = addMiriam(fname,fname_out,infix,model,infix_type,list
 %
 %    %the following example command is intended to add all MIRIAM information
 %    %for the metabolites in the ReconMap
-%    [var]=addMiriam('ReconMap.xml', 'ReconMap_annotated.xml', recon2.mets(:), recon2)
+%    [var] = addMiriam('ReconMap.xml', 'ReconMap_annotated.xml', recon2.mets(:), recon2)
 %
 % .. Author: - Longfei Mao May 2015
 

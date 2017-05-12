@@ -11,11 +11,11 @@ function [annotedText] = writeXML(fname,parsed,fname_out)
 %    fanme_out:      The name of the output XML file.
 %
 % OUTPUTS:
-%    annotedText:     A matlab variable storing the all the XML lines
+%    annotedText:    A matlab variable storing the all the XML lines
 %
 % EXAMPLE:
 %
-%    aaa=writeXML('PD_140620_1.xml', parsePD, 'text.html')
+%    aaa = writeXML('PD_140620_1.xml', parsePD, 'text.html')
 %
 % .. Author: - Longfei Mao Oct/2014
 

@@ -5,10 +5,10 @@ function [ ~ ] = intergrate(fname,fname_out,model,FBAsolution,listRxn)
 %    intergrate(fname, fname_out, model, FBAsolution, listRxn)
 %
 % INPUTS:
+%    fname:               The name fo the file
+%    fname_out:           The name of the output XML file name.
 %    model:               A COBRA model structure
-%    fanme_out:           The name of the output XML file name.
-%    model:               A COBRA model structure
-%    FBAresult:           FBA results of a COBRA simulation by the
+%    FBAsolution:         FBA results of a COBRA simulation by the
 %                         `optimizeCbModel` function
 %    listRxn:             A list of reaction IDs, after which the flux values are modified
 %                         or added. P.s., the reaction IDs must be present in both the

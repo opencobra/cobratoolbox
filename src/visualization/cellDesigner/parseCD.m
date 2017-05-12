@@ -14,12 +14,11 @@ function [annotation] = parseCD(fname)
 %
 %    annotation:          The first type of the parsed model structure
 %
-%                       * annotation.r_info - The second type of the parsed model structure
+%                           * annotation.r_info - The second type of the parsed model structure
 %
 % EXAMPLES:
 %
-%    example: parsePD=parseCD('PD_140620_1.xml')
-%    parsePD_1=parseCD('PD_140620_1.xml')
+%    parsePD_1 = parseCD('PD_140620_1.xml')
 %
 % .. Author: - Longfei Mao Oct/2014
 

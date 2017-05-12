@@ -5,16 +5,16 @@ function [string,p_st,p_ed]=position(str_long,str_ID)
 %
 % USAGE:
 %
-%    [string, p_st, p_ed]=position(str_long, str_ID)
+%    [string, p_st, p_ed] = position(str_long, str_ID)
 %
 % INPUTS:
 %    str_long:       A string of the line of the XML file
 %    str_ID:         The name of the attribute
 %
 % OUTPUTS:
-%    string:        The value of the attribute
-%    p_st:          The starting index of the value
-%    p_ed:          The ending index of the value
+%    string:         The value of the attribute
+%    p_st:           The starting index of the value
+%    p_ed:           The ending index of the value
 %
 % .. Author: - Longfei Mao Oct/2014
 

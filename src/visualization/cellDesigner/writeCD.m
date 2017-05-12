@@ -12,11 +12,11 @@ function [parsed_update,annotedText] = writeCD(parsed,fname_out)
 %
 % OUTPUTS:
 %    parsed_update:    An updated version of the parsed
-%    annotedText:     A matlab variable storing the all the XML lines
+%    annotedText:      A matlab variable storing the all the XML lines
 %
 % EXAMPLE:
 %
-%    aaa=writeXML('PD_140620_1.xml',parsePD,'text.html')
+%    aaa = writeXML('PD_140620_1.xml', parsePD,'text.html')
 %
 % .. Author: - Longfei Mao Oct/2014
 
