@@ -11,7 +11,7 @@
 %     Jason A. Papin, Nathan D. Price and Bernhard Ø. Palsson
 
 if isunix
-    [status, result] = system('which lrs');
+    [status, result] = system('bash which lrs');
     if ~isempty(result)
 
         % save the current path
