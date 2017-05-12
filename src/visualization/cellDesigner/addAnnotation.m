@@ -1,34 +1,34 @@
 function [var] = addAnnotation(fname,fname_out,infix,model,infix_type)
-
-% Retrieve omics data from a COBRA model structure and add them to a
-% CellDesginer XML file; The omics data will be shown as texts in
-% CellDesigner or ReconMap online.
+% Retrieves omics data from a COBRA model structure and add them to a
+% `CellDesginer` XML file; The omics data will be shown as texts in
+% `CellDesigner` or `ReconMap` online.
 %
+% USAGE:
 %
-%INPUTS
+%    [var] = addAnnotation(fname, fname_out, infix, model, infix_type)
 %
-% fname      An XML file to be modified to include annotations
-% fanme_out  the name of the output XML file
-% infix      The metabolite/reaction IDs to be used to retrieve omics data
-%            in the COBRA model structure.
-% model      a COBRA model structure that contains the annotations which
-%            can be retrieved by using the infix as the index value.
-
-%OPTIONAL INPUT
+% INPUTS:
+%    fname:         an XML file to be modified to include annotations
+%    fanme_out:     the name of the output XML file
+%    infix:         The metabolite/reaction IDs to be used to retrieve omics data
+%                   in the COBRA model structure.
+%    model:         a COBRA model structure that contains the annotations which
+%                   can be retrieved by using the infix as the index value.
 %
-% infix_type      'name' or 'id'; 1) 'name'indicates that 'infix' contains
-%                 a list of reaction names, which are normally used in a
-%                 COBRA model structure. 2)'id' indicates that 'infix'
-%                 contains a list of IDs used in CellDesigner such as
-%                 're32'.
+% OPTIONAL INPUT:
 %
-%OPTIONAL OUTPUT
+%    infix_type:    'name' or 'id'
 %
-% var        the content of the moidfied XML file with annotations
+%                       1. 'name' indicates that 'infix' contains
+%                          a list of reaction names, which are normally used in a
+%                          COBRA model structure.
+%                       2. 'id' indicates that 'infix'
+%                          contains a list of IDs used in `CellDesigner` such as 're32'.
 %
+% OPTIONAL OUTPUT:
+%    var:           the content of the moidfied XML file with annotations
 %
-% Longfei Mao Jan/2015
-
+% .. Author: - Longfei Mao January 2015
 
 if nargin<6;
     list=fieldnames(model);  % Extract all fields of the model structure.

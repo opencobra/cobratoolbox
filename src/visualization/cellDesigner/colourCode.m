@@ -1,7 +1,4 @@
-
-
 % Convert 7 digits to 9 digits for CellDesigner to recongnise.
-
 %a='a'
 
 
@@ -21,7 +18,3 @@ for i=1:size(colourScheme,1);
 end
 
 %hexcode{i}{m}
-
-
-
-
