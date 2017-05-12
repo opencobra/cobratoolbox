@@ -391,9 +391,9 @@ switch solver
         % write out an .MPS file
         MPSfilename = MPSfilename(1:min(8, length(MPSfilename)));
         if ~exist([tmpPath filesep 'MPS' filesep MPSfilename '.mps'], 'file')
-            cd('MPS');
+            cd([tmpPath filesep 'MPS']);
             convertCobraLP2mps(LPproblem, MPSfilename);
-            cd('..');
+            cd(tmpPath);
         end
 
         % run the DQQ procedure
