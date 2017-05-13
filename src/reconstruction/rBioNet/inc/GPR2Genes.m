@@ -1,15 +1,22 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
-%Input is a list of GPRs and output is a unique list of genes.
-%
-% Stefan G. Thorleifsson August 2010
-
 function Genes = GPR2Genes(GPR)
+% Input is a list of GPRs and output is a unique list of genes.
+%
+% USAGE:
+%
+%    Genes = GPR2Genes(GPR)
+%
+% INPUT:
+%    GPR:    list of GPRs
+%
+% OUTPUT:
+%    Genes:  unique list of genes
+%
+% .. Author: - Stefan G. Thorleifsson ugust 2010
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
 Gen = {};
 S = size(GPR);
 for i = 1:S(1)

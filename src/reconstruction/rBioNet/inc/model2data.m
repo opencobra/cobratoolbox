@@ -1,27 +1,31 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
-
-%Load complete reconstructions and output format for rBioNets
-%ReconstructionCreator.
-%Stefan G. Thorleifsson March 2011
-
-
 function data_out = model2data(model,fordb)
-%data_out
-%fordb is when metabolite table is wanted ass well, value should be 1,
-%otherwise default is 0.
+% Load complete reconstructions and output format for rBioNets ReconstructionCreator.
+%
+% USAGE:
+%
+%    data_out = model2data(model, fordb)
+%
+% INPUTS:
+%    model:    model
+%    fordb:    1 if metabolite table is wanted, default 0 if not
+%
+% OUTPUT:
+%    data_out:
+%
+% .. Author: - Stefan G. Thorleifsson 2011
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
+
 if nargin < 2
     fordb = 0;
 end
 %   rxn table ->data
 %   description
 %   genes
-%   model with setup change. 
+%   model with setup change.
 
 handles.model = model;
 
@@ -59,7 +63,7 @@ Mandatory = {'rxns','rxnNames', 'rev','grRules', 'lb', 'ub','S','genes'};
 % 12.ecNumbers
 % 13.KeggID.
 
-%enable is set infront afterwards. 
+%enable is set infront afterwards.
 
 %Check Mandatory
 
@@ -90,32 +94,32 @@ Optional = {'confidenceScores', 'subSystems','citations', 'comments', 'ecNumbers
 %Check Optional
 opt = [];
 for i = 1:length(Optional)
-    
-    % Recon had different names of fields, this is a quick fix. 
+
+    % Recon had different names of fields, this is a quick fix.
     if strcmp(Optional{i},'ecNumbers')
         if ismember('rxnECNumbers',names);
             Optional{i} = 'rxnECNumbers';
             continue;
         end
-    
+
     elseif strcmp(Optional{i},'subSystems')
         if ismember('rxnSubSystems',names);
             Optional{i} = 'rxnSubSystems';
             continue;
         end
-    
+
     elseif strcmp(Optional{i},'confidenceScores')
         if ismember('rxnConfidenceScores',names);
             Optional{i} = 'rxnConfidenceScores';
             continue;
         end
-    
+
     elseif strcmp(Optional{i},'citations')
         if ismember('rxnReferences',names);
             Optional{i} = 'rxnReferences';
             continue;
         end
-        
+
     elseif strcmp(Optional{i},'comments')
         if ismember('rxnNotes',names);
             Optional{i} = 'rxnNotes';
@@ -141,7 +145,7 @@ end
 %description
 if ~any(ismember(opt,7)) %data exist
     if isa(handles.model.description,'char');
-       
+
         s_b = [NaN NaN];
         description{1} = handles.model.description;
         description{2} = '';
@@ -158,7 +162,7 @@ if ~any(ismember(opt,7)) %data exist
         s_b = [NaN NaN];
     end
 
-    
+
     if s_b(1) == 7 %Date is not loaded into description.
         description{1} = handles.model.description.name;
         description{2} = handles.model.description.organism;
@@ -169,7 +173,7 @@ if ~any(ismember(opt,7)) %data exist
         description{7} = handles.model.description.notes;
         handles.description = description;
     end
-    
+
 end
 
 
@@ -182,7 +186,7 @@ for k=1:size(data,1)
     data{k,1} = true;
 end
 disabled = {};
-if isfield(handles.model,'disabled') 
+if isfield(handles.model,'disabled')
     for i = 1:size(handles.model.disabled,1)
         disabled(i,:) = handles.model.disabled(i,:);
     end
@@ -191,17 +195,17 @@ else
 end
 
 
-% Note disabled data does not carry metabolite data. 
+% Note disabled data does not carry metabolite data.
 
 if fordb == 0
     data_out = {[data; disabled], description, handles.model.genes, handles.model};
 elseif fordb == 1
     % From the metabolite database the only thing missing is the Neutral
-    % formula. 
+    % formula.
      met_fields = {'mets','metNames','metFormulas','metCharge','metKeggID',...
          'metPubChemID','metChEBIID','metInchiString','metSmile','metHMDB',...
          'metHepatoNetID','metEHMNID'};
-     
+
      names = fieldnames(model);
      %Fix incorrect cases compared to structure
      for i=1:length(met_fields)
@@ -214,11 +218,11 @@ elseif fordb == 1
              end
          end
      end
-     
+
      metabolites={};
      for i = 1:length(met_fields)
          if isfield(model,met_fields{i})
-             if isempty(model.(met_fields{i})) %fields can exist but be empty. 
+             if isempty(model.(met_fields{i})) %fields can exist but be empty.
                  metabolites(:,i) = cell(size(model.mets,1),1);
              elseif strcmp(met_fields{i}, 'metCharge') %numeric fix
                  metabolites(:,i) = num2cell(model.(met_fields{i}));
@@ -230,9 +234,7 @@ elseif fordb == 1
          end
      end
      data_out = {[data; disabled], description, handles.model.genes, handles.model, metabolites};
-     
+
 else %input incorrect
     error('fordb is supposed to be 0 or 1.');
 end
-
-

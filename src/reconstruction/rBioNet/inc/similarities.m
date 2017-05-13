@@ -1,38 +1,46 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
 function varargout = similarities(varargin)
-% SIMILARITIES M-file for similarities.fig
-%      SIMILARITIES, by itself, creates a new SIMILARITIES or raises the existing
-%      singleton*.
+% m-file for similarities.fig
+% similarities, by itself, creates a new object or raises the existing singleton*.
 %
-%      H = SIMILARITIES returns the handle to a new SIMILARITIES or the handle to
+% USAGE:
+%
+%    varargout = similarities(varargin)
+%
+% INPUTS:
+%    varargin:    various input arguments
+%
+% OUTPUTS:
+%    varargout:   various output arguments
+%
+% EXAMPLE:
+%
+%      H = similarities() returns the handle to a new similarities or the handle to
 %      the existing singleton*.
 %
-%      SIMILARITIES('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in SIMILARITIES.M with the given input arguments.
+%      similarities('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in similarities.M with the given input arguments.
 %
-%      SIMILARITIES('Property','Value',...) creates a new SIMILARITIES or raises the
+%      similarities('Property','Value',...) creates a new similarities or raises the
 %      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before similarities_OpeningFcn gets called.  An
+%      applied to the GUI before `similarities_OpeningFcn` gets called.  An
 %      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to similarities_OpeningFcn via varargin.
+%      stop.  All inputs are passed to `similarities_OpeningFcn` via `varargin`.
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
+% .. Author: - Stefan G. Thorleifsson 2011
 %
-% See also: GUIDE, GUIDATA, GUIHANDLES
+% NOTE:
+%    See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%    instance to run (singleton)".
+%    See also: GUIDE, GUIDATA, GUIHANDLES
+% .. Edit the above text to modify the response to help similarities
+% .. Last Modified by GUIDE v2.5 26-Jul-2010 18:39:06
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
 
-% Edit the above text to modify the response to help similarities
-
-% Last Modified by GUIDE v2.5 26-Jul-2010 18:39:06
-
-% Begin initialization code - DO NOT EDIT
-gui_Singleton = 1;
+gui_Singleton = 1; % Begin initialization code - DO NOT EDIT
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
                    'gui_OpeningFcn', @similarities_OpeningFcn, ...
@@ -81,7 +89,7 @@ guidata(hObject, handles);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = similarities_OutputFcn(hObject, eventdata, handles) 
+function varargout = similarities_OutputFcn(hObject, eventdata, handles)
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB

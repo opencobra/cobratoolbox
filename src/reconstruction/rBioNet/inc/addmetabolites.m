@@ -1,38 +1,45 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
 function varargout = addmetabolites(varargin)
-% ADDMETABOLITES M-file for addmetabolites.fig
-%      ADDMETABOLITES, by itself, creates a new ADDMETABOLITES or raises the existing
-%      singleton*.
+% m-file for addmetabolites.fig
+% addmetabolites, by itself, creates a new object or raises the existing singleton*.
 %
-%      H = ADDMETABOLITES returns the handle to a new ADDMETABOLITES or the handle to
-%      the existing singleton*.
+% USAGE:
 %
-%      ADDMETABOLITES('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in ADDMETABOLITES.M with the given input arguments.
+%    varargout = addmetabolites(varargin)
 %
-%      ADDMETABOLITES('Property','Value',...) creates a new ADDMETABOLITES or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before addmetabolites_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to addmetabolites_OpeningFcn via varargin.
+% INPUTS:
+%    varargin:    various input arguments
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
+% OUTPUTS:
+%    varargout:   various output arguments
 %
-% See also: GUIDE, GUIDATA, GUIHANDLES
+% EXAMPLE:
+%
+%    H = addmetabolites() %returns the handle to a new addmetabolites or the handle to the existing singleton*.
+%
+%    addmetabolites('CALLBACK',hObject,eventData,handles,...) %calls the local
+%    %function named `CALLBACK` in addmetabolites.M with the given input arguments.
+%
+%    addmetabolites('Property','Value',...) %creates a new addmetabolites or raises the
+%    %existing singleton*.  Starting from the left, property value pairs are
+%    %applied to the GUI before `addmetabolites_OpeningFcn` gets called. An
+%    %unrecognized property name or invalid value makes property application
+%    %stop. All inputs are passed to `addmetabolites_OpeningFcn` via `varargin`.
+%
+% .. Author: - Stefan G. Thorleifsson 2011
+%
+% NOTE:
+%    See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%    instance to run (singleton)".
+%    See also: GUIDE, GUIDATA, GUIHANDLES
+% .. Edit the above text to modify the response to help addmetabolites
+% .. Last Modified by GUIDE v2.5 25-Nov-2010 15:42:00
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
 
-% Edit the above text to modify the response to help addmetabolites
-
-% Last Modified by GUIDE v2.5 25-Nov-2010 15:42:00
-
-% Begin initialization code - DO NOT EDIT
-gui_Singleton = 1;
+gui_Singleton = 1; % Begin initialization code - DO NOT EDIT
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
                    'gui_OpeningFcn', @addmetabolites_OpeningFcn, ...
