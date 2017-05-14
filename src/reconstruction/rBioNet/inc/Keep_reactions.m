@@ -1,38 +1,46 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
 function varargout = Keep_reactions(varargin)
-% KEEP_REACTIONS M-file for Keep_reactions.fig
-%      KEEP_REACTIONS, by itself, creates a new KEEP_REACTIONS or raises the existing
-%      singleton*.
+% m-file for Keep_reactions.fig
+% Keep_reactions, by itself, creates a new object or raises the existing singleton*.
 %
-%      H = KEEP_REACTIONS returns the handle to a new KEEP_REACTIONS or the handle to
-%      the existing singleton*.
+% USAGE:
 %
-%      KEEP_REACTIONS('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in KEEP_REACTIONS.M with the given input arguments.
+%    varargout = Keep_reactions(varargin)
 %
-%      KEEP_REACTIONS('Property','Value',...) creates a new KEEP_REACTIONS or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before Keep_reactions_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to Keep_reactions_OpeningFcn via varargin.
+% INPUTS:
+%    varargin:    various input arguments
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
+% OUTPUTS:
+%    varargout:   various output arguments
 %
-% See also: GUIDE, GUIDATA, GUIHANDLES
+% EXAMPLE:
+%
+%    H = Keep_reactions() returns the handle to a new Keep_reactions or the handle to
+%    the existing singleton*.%
+%
+%    Keep_reactions('CALLBACK',hObject,eventData,handles,...) calls the local
+%    function named CALLBACK in Keep_reactions.M with the given input arguments.
+%
+%    Keep_reactions('Property','Value',...) creates a new Keep_reactions or raises the
+%    existing singleton*.  Starting from the left, property value pairs are
+%    applied to the GUI before `Keep_reactions_OpeningFcn` gets called.  An
+%    unrecognized property name or invalid value makes property application
+%    stop.  All inputs are passed to `Keep_reactions_OpeningFcn` via `varargin`.
+%
+% .. Author: - Stefan G. Thorleifsson 2011
+%
+% NOTE:
+%    See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%    instance to run (singleton)".
+%    See also: GUIDE, GUIDATA, GUIHANDLES
+% .. Edit the above text to modify the response to help Keep_reactions
+% .. Last Modified by GUIDE v2.5 08-Sep-2010 22:49:09
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
 
-% Edit the above text to modify the response to help Keep_reactions
-
-% Last Modified by GUIDE v2.5 08-Sep-2010 22:49:09
-
-% Begin initialization code - DO NOT EDIT
-gui_Singleton = 1;
+gui_Singleton = 1; % Begin initialization code - DO NOT EDIT
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
                    'gui_OpeningFcn', @Keep_reactions_OpeningFcn, ...
@@ -71,7 +79,7 @@ guidata(hObject, handles);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = Keep_reactions_OutputFcn(hObject, eventdata, handles) 
+function varargout = Keep_reactions_OutputFcn(hObject, eventdata, handles)
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB

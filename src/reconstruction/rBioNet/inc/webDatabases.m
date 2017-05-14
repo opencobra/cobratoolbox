@@ -1,19 +1,24 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
-% Small script that links to major databases.
-% In case of changes of these websites I keep this script.
-% Stefan G. Thorleifsson March 2011
-
 function webDatabases(db,str,type)
-%db - wich database, see options at switch db
-%str - ID of metabolite/reaction
-%type(optional) - 1 if reaction, 0 for metabolite (only used for the KEGG database. 
-
+% Small script that links to major databases.
+%
+% USAGE:
+%
+%    webDatabases(db, str, type)
+%
+% INPUTS:
+%    db:      database = {'kegg', 'ec', 'pubchem', 'chebi', 'hmdb'}
+%    str:     ID of metabolite / reaction
+%
+% OPTIONAL INPUT:
+%    type:    1 if reaction, 0 for metabolite (only used for the KEGG database.
+%
+% .. Author: - Stefan G. Thorleifsson March 2011
+% .. In case of changes of these websites I keep this script.
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
 if nargin < 3
     type = 0; %metabolite, 1 if reaction
 end
@@ -37,7 +42,7 @@ switch db
     case 'pubchem'
         web(['http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?sid=' str],'-browser');
     case 'chebi'
-        
+
         if isa(str,'numeric')
             str = num2str(str);
         end
@@ -45,5 +50,5 @@ switch db
     case 'hmdb'
         web(['http://www.hmdb.ca/metabolites/HMDB' str],'-browser');
     otherwise
-     msgbox('unknown source');   
+     msgbox('unknown source');
 end

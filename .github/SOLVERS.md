@@ -12,7 +12,7 @@ Platform-specific instructions are marked with
 - **macOS** - <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS">
 - **linux** - <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux">
 
-:warning: Most steps require superuser or administrator rights (`sudo`).
+<img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" alt="warning"> Most steps require superuser or administrator rights (`sudo`).
 
 :pencil: Make sure that you replace `<ver>` with the respective `version` of the installed solver when setting the environment variables.
 
@@ -53,6 +53,7 @@ Platform-specific instructions are marked with
     ````bash
     $ source ~/.bashrc
     ````
+    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" alt="Windows"> In order to set the environment variables on Windows, please follow the instructions [here](https://www.computerhope.com/issues/ch000549.htm).
 
 ## IBM ILOG CPLEX
 
@@ -120,6 +121,7 @@ Platform-specific instructions are marked with
     ````bash
     $ source ~/.bashrc
     ````
+    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" alt="Windows"> In order to set the environment variables on Windows, please follow the instructions [here](https://www.computerhope.com/issues/ch000549.htm).
 
 6)  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS">  <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux"> Activate your license by running:
     ````
@@ -174,13 +176,15 @@ Platform-specific instructions are marked with
     ````
     On <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" alt="macOS">
     ````
-    export PATH=/Applications/mosek/<ver>/:$PATH
+    export MOSEK_PATH=/Applications/mosek/<ver>
+    export PATH=$MOSEK_PATH:$PATH
     export MOSEKLM_LICENSE_FILE=/Applications/mosek/
     ````
     Reload your `~/.bashrc`:
     ````bash
     $ source ~/.bashrc
     ````
+    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" alt="Windows"> In order to set the environment variables on Windows, please follow the instructions [here](https://www.computerhope.com/issues/ch000549.htm).
 
 6) <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" alt="Linux"> Copy the license file `mosek.lic` to `/opt/mosek/`.
    <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" alt="Windows"> Copy the license file `mosek.lic` to `C:\Users\<yourUsername>\mosek\`.

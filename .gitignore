@@ -80,7 +80,7 @@ test/verifiedTests/testOutputNetworkCytoscape/data*
 docs/build
 
 # examples folder in gapFilling
-src/gapFilling/fastGapFill/examples
+src/reconstruction/fastGapFill/examples/
 
 # generated .mat files in tutorials
 tutorials/fastGapFill/results_*.mat

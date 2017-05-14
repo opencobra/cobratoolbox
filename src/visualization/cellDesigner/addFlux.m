@@ -1,40 +1,37 @@
 function [ref,normalizedFlux,newListRxn] = addFlux(model,FBA_result,parsed,listRxn)
-
-% Change the thickness attributes of the reaction links in a CellDesigner
+% Changes the thickness attributes of the reaction links in a `CellDesigner`
 % model structure and make them propotional to the flux values obtained
 % from COBRA functions
 %
+% USAGE:
 %
-%INPUTS
+%    [ref, normalizedFlux, newListRxn] = addFlux(model, FBA_result, parsed, listRxn)
 %
-% model               A COBRA model structure
-% FBAresult           FBA results of a COBRA simulation by the
-%                     'optimizeCbModel' fucntion
-% parsed              The CD model structure outputed by the 'parseCD'
-%                     function
-% listRxn             A list of reaction IDs, after which the flux values
-%                     are modified or added. P.s., the reaction IDs must be
-%                     present in both the parsed CD model and the COBRA
-%                     model structures. the reactions can be examined by
-%                     'cmpR' funciton.
+% INPUTS:
 %
+%    model:               A COBRA model structure
+%    FBAresult:           FBA results of a COBRA simulation by the
+%                         `optimizeCbModel` function
+%    parsed:              The CD model structure outputed by the `parseCD`
+%                         function
+%    listRxn:             A list of reaction IDs, after which the flux values
+%                         are modified or added. P.s., the reaction IDs must be
+%                         present in both the parsed CD model and the COBRA
+%                         model structures. the reactions can be examined by
+%                         `cmpR` function.
 %
-%OUTPUTS
+% OUTPUTS:
+%    ref:                 An updated parsed `CellDesigner` model that include
+%                         information about the width of reaction links
+%    normalizedFlux:      A list of normalised flux values generated based on
+%                         `FBAresult`.
+%    newListRxn:          New list of reaction IDs
 %
-% ref                 An updated parsed CellDesigner model that include
-%                     information about the width of reaciton links
+% EXAMPLE:
 %
-% normalizedFlux      A list of normalised flux values generated based on
-%                     'FBA_result'.
+%    [parsed_1] = addFlux(recon2, fba_results, parsePD, listRxn);
 %
-%
-%EXAMPLE
-%
-% [ parsed_1 ] = addFlux(recon2,fba_results,parsePD,listRxn);
-%
-% Longfei Mao Oct/2014
-
-
+% .. Author: - Longfei Mao Oct/2014
 
 ref=parsed;
 FBAsolution=FBA_result;
@@ -56,7 +53,7 @@ FBAsolution=FBA_result;
 %%%%%%%%%%%%      obtain the reaction indecies in the model
 if (iscell(listRxn))
     [tmp,rxnID] = ismember(listRxn,model.rxns);
-    
+
     %%%% check if the reaction names of the listRxn appear in the list of
     %%%% the rection name list of the model.
     if rxnID==0;
@@ -69,16 +66,16 @@ else
     end
     if (length(rxnID) > 1)
         rxnID = rxnID(1);
-    end    
+    end
     %%%% check if the reaction names of the listRxn appear in the list of
     %%%% the rection name list of the model.
     if rxnID==0
         rxnID = find(strcmp(model.rxnNames,listRxn));
-    end    
+    end
 end
 if rxnID==0
     disp(rxnID)
-    error('cannot find the reaction IDs in the model');    
+    error('cannot find the reaction IDs in the model');
 end
 flux(:,1)=FBAsolution.x(rxnID)
 %%%%%% normalise the flux values.
@@ -103,8 +100,8 @@ normalizedFlux(:,2)=rxnWidth(:,1);
 for m=1:ID_row;
     for n=1:ID_Column;
         r=iscellstr(ref.r_info.ID(m,n));
-        if ~r; 
-            %results(or,1)=m; 
+        if ~r;
+            %results(or,1)=m;
             %results(or,2)=n;
             ref.r_info.ID{m,n}=' '
         end;
@@ -123,9 +120,9 @@ for r=1: length(flux)
         [rw,cw]=size(ref.(newRxnName).width)
         catch
             return
-            
+
         end
-        
+
         for  ddr=1:rw
             for  ddc=1:cw
                 ref.(newRxnName).width{ddr,ddc}=rxnList_width(r)
@@ -154,7 +151,7 @@ for r=1: length(flux)
                         fprintf('set %s ''s width to %d \n',newRxnName,rxnList_width(r));
                     end
                 end
-                
+
             end
         end
     end

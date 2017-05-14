@@ -1,16 +1,26 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
-
-%Input is reaction formula, reaction list (data) and if there is a waitbar.
-%output are numbers of rxn lines that share similarity.
-%Stefan G. Thorleifsson 2010
-
 function reactions = similarity(formula,data,bar)
+% Returns the reaction lines with similarities
+%
+% USAGE:
+%
+%    reactions = similarity(formula,data,bar)
+%
+% INPUTS:
+%    formula:    reaction formula
+%    data:       reaction list
+%    bar:        `waitbar` exists then 1, else 0, default 1
+%
+% OUTPUT:
+%    reactions:   numbers of rxn lines that share similarity
+%
+%
+% .. Author: - Stefan G. Thorleifsson 2010
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
+
 if nargin < 3
     bar = 1;
 end

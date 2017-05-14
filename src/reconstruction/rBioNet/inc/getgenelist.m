@@ -1,16 +1,24 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
 function out = getgenelist(input_dir)
-%Read gene-list text file and return data.
-%Default SIZE for GENELIST.txt is 7 columns! Each column is separated with
-%a tab.
-% Thorleifsson
-
+% Reads gene-list text file and returns data.
+% Default SIZE for GENELIST.txt is 7 columns! Each column is separated with
+% a tab.
+%
+% USAGE:
+%
+%    out = getgenelist(input_dir)
+%
+% INPUT:
+%    input_dir:    gene-list text file
+%
+% OUTPUT:
+%    out:          data
+%
+% .. Author: - Stefan G. Thorleifsson 2011
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
 fid = fopen(input_dir);
 line = fgetl(fid);
 cnt = 0;
@@ -33,7 +41,7 @@ while line ~= -1
         end
         data(cnt,1:Column) = data_line(1:Column);
     end
-    
+
     line = fgetl(fid);
 end
 

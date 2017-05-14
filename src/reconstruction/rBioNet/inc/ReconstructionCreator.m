@@ -1,39 +1,45 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
-
 function varargout = ReconstructionCreator(varargin)
-% RECONSTRUCTIONCREATOR M-file for ReconstructionCreator.fig
-%      RECONSTRUCTIONCREATOR, by itself, creates a new RECONSTRUCTIONCREATOR or raises the existing
-%      singleton*.
+% m-file for ReconstructionCreator.fig
+% ReconstructionCreator, by itself, creates a new object or raises the existing singleton*.
 %
-%      H = RECONSTRUCTIONCREATOR returns the handle to a new RECONSTRUCTIONCREATOR or the handle to
-%      the existing singleton*.
+% USAGE:
 %
-%      RECONSTRUCTIONCREATOR('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in RECONSTRUCTIONCREATOR.M with the given input arguments.
+%    varargout = ReconstructionCreator(varargin)
 %
-%      RECONSTRUCTIONCREATOR('Property','Value',...) creates a new RECONSTRUCTIONCREATOR or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before ReconstructionCreator_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to ReconstructionCreator_OpeningFcn via varargin.
+% INPUTS:
+%    varargin:    various input arguments
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
+% OUTPUTS:
+%    varargout:   various output arguments
 %
-% See also: GUIDE, GUIDATA, GUIHANDLES
-
-% Edit the above text to modify the response to help ReconstructionCreator
-
-% Last Modified by GUIDE v2.5 05-Oct-2011 10:40:50
-
-% Begin initialization code - DO NOT EDIT
-gui_Singleton = 1;
+% EXAMPLE:
+%
+%    H = ReconstructionCreator returns the handle to a new ReconstructionCreator or the handle to
+%    the existing singleton*.
+%
+%    ReconstructionCreator('CALLBACK',hObject,eventData,handles,...) calls the local
+%    function named CALLBACK in ReconstructionCreator.M with the given input arguments.
+%
+%    ReconstructionCreator('Property','Value',...) creates a new ReconstructionCreator or raises the
+%    existing singleton*.  Starting from the left, property value pairs are
+%    applied to the GUI before `ReconstructionCreator_OpeningFcn` gets called.  An
+%    unrecognized property name or invalid value makes property application
+%    stop.  All inputs are passed to `ReconstructionCreator_OpeningFcn` via `varargin`.
+%
+% .. Author: - Stefan G. Thorleifsson 2011
+%
+% NOTE:
+%    See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%    instance to run (singleton)".
+%    See also: GUIDE, GUIDATA, GUIHANDLES
+% .. Edit the above text to modify the response to help ReconstructionCreator
+% .. Last Modified by GUIDE v2.5 05-Oct-2011 10:40:50
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
+gui_Singleton = 1; % Begin initialization code - DO NOT EDIT
 gui_State = struct('gui_Name',       mfilename, ...
     'gui_Singleton',  gui_Singleton, ...
     'gui_OpeningFcn', @ReconstructionCreator_OpeningFcn, ...
@@ -458,11 +464,11 @@ if ~(s_newrxn == 0)
     match=strcmp(newrxn{2},handles.newrxns(:,2));
 
     if any(match ~= 0)
-        
+
         rxn_replace = questdlg('Your reaction already exist in model. Do you want to replace it?', ...
             'Reaction in model', ...
             'Yes','No','No');
-        
+
         switch rxn_replace
             case 'Yes'
                 handles.newrxns(match,:) = newrxn';
@@ -471,7 +477,7 @@ if ~(s_newrxn == 0)
             otherwise
                 return
         end
-        
+
     else
         handles.newrxns = [handles.newrxns; newrxn'];
         handles.newrxns = sortrows(handles.newrxns,2);
@@ -490,7 +496,7 @@ GPR = get(handles.addrxn_gpr,'String');
 if ~isempty(GPR)
     genes = GPR2Genes({GPR});
     gene_list = handles.genes;
-    
+
     if isempty(gene_list)
         handles.genes = genes';
     else
@@ -773,7 +779,7 @@ save_model = questdlg(['Do you want to save your reconstruction? ']...
 %perform the following operation depending on the option chosen
 switch save_model,
     case 'Yes',
-        
+
         if ~isempty(handles.last_path)
             [filename,pathname] = uiputfile( ...
                 {'*.mat', 'Model Files (*.mat)';...
@@ -857,7 +863,7 @@ if ~isempty(handles.last_path)
         'Select file',...
         'MultiSelect','off',handles.last_path);
 else
-    
+
     [input_file,pathname] = uigetfile( ...
         {'*.mat', 'Model Files (*.mat)';...
         '*.*','All Files (*.*)'},...
@@ -951,15 +957,15 @@ switch GeneIndex
         if pathname == 0
             return
         end
-        
-        
+
+
         data = getgenelist([pathname input_file]);
-        
+
         set(handles.gene_index,'String',['Gene Index: ' input_file]);
         handles.genes_info = data;
     case 'No'
-        
-        
+
+
     case 'What is Gene Index?'
         msgbox({[ 'The Gene index is used to create GPRs. It is a .txt'...
             ' file with one gen per line with information devided into'...
@@ -971,7 +977,7 @@ switch GeneIndex
             ' ExampleGeneIndex.txt text file located in the example folder']}...
             , 'Gene Index','help');
         uiwait;
-        
+
         GeneIndex2 = questdlg(str1,...
             'Load Gene Index','Yes','No','No');
         switch GeneIndex2
@@ -984,13 +990,13 @@ switch GeneIndex
                 if pathname == 0
                     return
                 end
-                
+
                 data = getgenelist([pathname input_file]);
                 set(handles.gene_index,'String',['Gene Index: ' input_file]);
                 handles.genes_info = data;
             case 'No'
                 %Do nothing
-                
+
         end
 end
 
@@ -1034,7 +1040,7 @@ names = {'genes','data','description'};
 match = zeros(size(name));
 for i = 1:size(names,2)
     match(i) = strcmp(names{i},a{i});
-end 
+end
 
 if ~(sum(match) == size(names,2))
     msgbox(['This file is not propper format. If you are trying to',...
@@ -1052,11 +1058,11 @@ if isempty(pre)
     handles.newrxns = A.data;
     handles.genes = A.genes;
     set(handles.new_rxns,'data',A.data)
-    
+
     handles.description = A.description;
     set(handles.model_text,'String',['Reconstruction: ' A.description{1}]);
 else
-    
+
     %-----Check for dublicity in reactions begin
     S = size(A.data);
     matches = [];
@@ -1082,19 +1088,19 @@ else
         %----Add new genes
         handles.genes = unique([handles.genes; A.genes]);
     end
-    
+
     answer = questdlg('Do you want to overwrite the reconstruction description?',...
         'Replace model description','Yes','No','Yes');
     switch answer
         case 'Yes'
-            
+
             handles.description = A.description;
             set(handles.model_text,'String',['Reconstruction: ' A.description{1}]);
         otherwise
             %do nothing
     end
-    
-    
+
+
 end
 
 handles.model = '';
@@ -1158,7 +1164,7 @@ data = getgenelist([pathname input_file]);
 
 
 set(handles.gene_index,'String',['Gene Index: ' input_file]);
-handles.genes_info = data; 
+handles.genes_info = data;
 guidata(hObject,handles)
 
 

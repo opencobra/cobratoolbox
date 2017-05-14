@@ -1,38 +1,46 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
 function varargout = load_reaction(varargin)
-% LOAD_REACTION M-file for load_reaction.fig
-%      LOAD_REACTION, by itself, creates a new LOAD_REACTION or raises the existing
-%      singleton*.
+% m-file for load_reaction.fig
+% load_reaction, by itself, creates a new object or raises the existing singleton*.
 %
-%      H = LOAD_REACTION returns the handle to a new LOAD_REACTION or the handle to
-%      the existing singleton*.
+% USAGE:
 %
-%      LOAD_REACTION('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in LOAD_REACTION.M with the given input arguments.
+%    varargout = load_reaction(varargin)
 %
-%      LOAD_REACTION('Property','Value',...) creates a new LOAD_REACTION or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before load_reaction_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to load_reaction_OpeningFcn via varargin.
+% INPUTS:
+%    varargin:    various input arguments
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
+% OUTPUTS:
+%    varargout:   various output arguments
 %
-% See also: GUIDE, GUIDATA, GUIHANDLES
+% EXAMPLE:
+%
+%    H = load_reaction returns the handle to a new load_reaction or the handle to
+%    the existing singleton*.
+%
+%    load_reaction('CALLBACK',hObject,eventData,handles,...) calls the local
+%    function named CALLBACK in load_reaction.M with the given input arguments.
+%
+%    load_reaction('Property','Value',...) creates a new load_reaction or raises the
+%    existing singleton*.  Starting from the left, property value pairs are
+%    applied to the GUI before `load_reaction_OpeningFcn` gets called.  An
+%    unrecognized property name or invalid value makes property application
+%    stop.  All inputs are passed to `load_reaction_OpeningFcn` via `varargin`.
+%
+% .. Author: - Stefan G. Thorleifsson 2011
+%
+% NOTE:
+%    See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%    instance to run (singleton)".
+%    See also: GUIDE, GUIDATA, GUIHANDLES
+% .. Edit the above text to modify the response to help load_reaction
+% .. Last Modified by GUIDE v2.5 04-Oct-2011 17:49:41
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
 
-% Edit the above text to modify the response to help load_reaction
-
-% Last Modified by GUIDE v2.5 04-Oct-2011 17:49:41
-
-% Begin initialization code - DO NOT EDIT
-gui_Singleton = 1;
+gui_Singleton = 1; % Begin initialization code - DO NOT EDIT
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
                    'gui_OpeningFcn', @load_reaction_OpeningFcn, ...
@@ -83,7 +91,7 @@ uiwait(handles.figure1);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = load_reaction_OutputFcn(hObject, eventdata, handles) 
+function varargout = load_reaction_OutputFcn(hObject, eventdata, handles)
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -141,16 +149,16 @@ handles.output = hObject;
 guidata(hObject, handles);
 
 % rxn = handles.rxn;
-% 
+%
 % %----Get data from search_exact_rxn match checkbox
 % matchtype = get(handles.search_exact,'Value');
-% 
-% 
+%
+%
 % if matchtype == 1 %Exact match
 %     A = strmatch(name,rxn(:,colmn),'exact');
-%     
+%
 % else %Partial match
-%     
+%
 %     A = [];
 %     for i = 1:size(rxn,1)
 %         if isempty(rxn{i,colmn})
@@ -162,21 +170,21 @@ guidata(hObject, handles);
 %             end
 %         end
 %     end
-%         
+%
 % %     k = regexpi(rxn(:,colmn),name);
 % %     A = [];
 % %     for i = 1:length(k);
 % %         if ~isempty(k{i})
 % %             A = [A i];
 % %         end;
-% %     end    
+% %     end
 % end
-% 
+%
 % handles.dispdata = handles.rxn(A,:);
-% 
+%
 % set(handles.rxn_view_table,'Data',handles.dispdata);
 % handles.searchOutcome = A;
-% 
+%
 % handles.output = hObject;
 % guidata(hObject, handles);
 %--------------------- search_search_rxn Engine --------------------------- End
@@ -211,7 +219,7 @@ function act_load_Callback(hObject, eventdata, handles)
 S = size(handles.rxn_selection);
 if S(1) == 1
     rxnline = handles.dispdata(handles.rxn_selection(1),:);
-    
+
     handles.output = rxnline;
     guidata(hObject,handles)
     uiresume;

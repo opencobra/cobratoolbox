@@ -1,38 +1,47 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
 function varargout = compartment(varargin)
-% COMPARTMENT M-file for compartment.fig
-%      COMPARTMENT, by itself, creates a new COMPARTMENT or raises the existing
-%      singleton*.
+% m-file for compartment.fig
+% compartment, by itself, creates a new object or raises the existing
+% singleton*.
 %
-%      H = COMPARTMENT returns the handle to a new COMPARTMENT or the handle to
-%      the existing singleton*.
+% USAGE:
 %
-%      COMPARTMENT('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in COMPARTMENT.M with the given input arguments.
+%    varargout = compartment(varargin)
 %
-%      COMPARTMENT('Property','Value',...) creates a new COMPARTMENT or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before compartment_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to compartment_OpeningFcn via varargin.
+% INPUTS:
+%    varargin:    various input arguments
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
+% OUTPUTS:
+%    varargout:   various output arguments
 %
-% See also: GUIDE, GUIDATA, GUIHANDLES
+% EXAMPLE:
+%
+%    H = compartment() %returns the handle to a new compartment or the handle to
+%    %the existing singleton*.
+%
+%    compartment('CALLBACK',hObject,eventData,handles,...) %calls the local
+%    %function named CALLBACK in compartment.M with the given input arguments.
+%
+%    compartment('Property','Value',...) %creates a new compartment or raises the
+%    %existing singleton*.  Starting from the left, property value pairs are
+%    %applied to the GUI before `compartment_OpeningFcn` gets called.  An
+%    %unrecognized property name or invalid value makes property application
+%    %stop.  All inputs are passed to `compartment_OpeningFcn` via `varargin`.
+%
+% .. Author: - Stefan G. Thorleifsson 2011
+%
+% NOTE:
+%    See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%    instance to run (singleton)".
+%    See also: GUIDE, GUIDATA, GUIHANDLES
+% .. Edit the above text to modify the response to help compartment
+% .. Last Modified by GUIDE v2.5 26-Jul-2010 11:02:48
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
 
-% Edit the above text to modify the response to help compartment
-
-% Last Modified by GUIDE v2.5 26-Jul-2010 11:02:48
-
-% Begin initialization code - DO NOT EDIT
-gui_Singleton = 1;
+gui_Singleton = 1; % Begin initialization code - DO NOT EDIT
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
                    'gui_OpeningFcn', @compartment_OpeningFcn, ...
@@ -64,7 +73,7 @@ function compartment_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.data = varargin{1};
 set(handles.cmp_compartments,'String',handles.data);
 
- 
+
 handles.output = [];
 
 % Update handles structure
@@ -75,7 +84,7 @@ uiwait
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = compartment_OutputFcn(hObject, eventdata, handles) 
+function varargout = compartment_OutputFcn(hObject, eventdata, handles)
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -100,7 +109,7 @@ function cmp_save_Callback(hObject, eventdata, handles)
 
 name = get(handles.cmp_name,'String');
 abb = get(handles.cmp_abbreviation,'String');
-if isempty(name) || isempty(abb) || length(abb) > 2 
+if isempty(name) || isempty(abb) || length(abb) > 2
     msgbox('Instructions (above) were not followed correctly.',...
         'Follow requirements.','warn');
     return
@@ -110,7 +119,7 @@ elseif isa(abb,'numeric')
     return
 end
 
-name = [upper(name(1)) lower(name(2:end))]; %Set upper and lower case. 
+name = [upper(name(1)) lower(name(2:end))]; %Set upper and lower case.
 abb = lower(abb); %Set lower case.
 
 
@@ -122,17 +131,17 @@ abb_find = strfind(cmps,abbs);
 for i = 1:length(cmps)
     cmp_name = cmps{i};
     cmp_name = cmp_name(1:(regexpi(cmp_name,'\(')-2));
-    
+
     if strcmp(cmp_name,name) % Compartment exist
         msgbox(['Compartment: ' name ' already exist.'],'Non unique.','warn');
         return
     elseif ~isempty(abb_find{i}) % Abbreviation exist
         text = ['The abbrevation ' abb ' already exists.'];
-        
+
         msgbox(text,'Non unique.','warn');
         return
     end
-    
+
 end
 
 handles.output= [name ' ' abbs];

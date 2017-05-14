@@ -273,7 +273,7 @@ switch solver
             error('OPTI is not compatible with UNIX systems (macOS or Linux).')
         end
 
-        if ~verLessThan('matlab', '8.4')
+        if verLessThan('matlab', '8.4')
             error('OPTI is not compatible with a version of MATLAB later than 2014b.');
         end
         % J. Currie and D. I. Wilson, "OPTI: Lowering the Barrier Between Open
@@ -391,9 +391,9 @@ switch solver
         % write out an .MPS file
         MPSfilename = MPSfilename(1:min(8, length(MPSfilename)));
         if ~exist([tmpPath filesep 'MPS' filesep MPSfilename '.mps'], 'file')
-            cd('MPS');
+            cd([tmpPath filesep 'MPS']);
             convertCobraLP2mps(LPproblem, MPSfilename);
-            cd('..');
+            cd(tmpPath);
         end
 
         % run the DQQ procedure
@@ -1361,23 +1361,23 @@ switch solver
         % especially xsize and zsize (see pdco.m) to get the real optimal
         % objective value
 
-        if ~isempty(pdco_xsize)
+        if exist('pdco_xsize', 'var') == 1
             xsize = pdco_xsize;
         else
             xsize = 100;
         end
-        if ~isempty(pdco_zsize)
+        if exist('pdco_zsize', 'var') == 1
             zsize = pdco_zsize;
         else
             zsize = 100;
         end
 
-        if ~isempty(pdco_method)
+        if exist('pdco_method', 'var') == 1
             options.Method = pdco_method;
         else
             options.Method = 1; %Cholesky
         end
-        if ~isempty(pdco_maxiter)
+        if exist('pdco_maxiter', 'var') == 1
             options.MaxIter = pdco_maxiter;
         else
             options.MaxIter = 200;

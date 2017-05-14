@@ -1,38 +1,46 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
 function varargout = rBioNetSettings(varargin)
-% RBIONETSETTINGS MATLAB code for rBioNetSettings.fig
-%      RBIONETSETTINGS, by itself, creates a new RBIONETSETTINGS or raises the existing
-%      singleton*.
+% MATLAB code for rBioNetSettings.fig
+% rBioNetSettings, by itself, creates a new object or raises the existing
+% singleton*.
 %
-%      H = RBIONETSETTINGS returns the handle to a new RBIONETSETTINGS or the handle to
+% USAGE:
+%
+%    varargout = rBioNetSettings(varargin)
+%
+% INPUTS:
+%    varargin:    various input arguments
+%
+% OUTPUTS:
+%    varargout:   various output arguments
+%
+% EXAMPLE:
+%
+%      H = rBioNetSettings() returns the handle to a new rBioNetSettings or the handle to
 %      the existing singleton*.
 %
-%      RBIONETSETTINGS('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in RBIONETSETTINGS.M with the given input arguments.
+%      rBioNetSettings('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in rBioNetSettings.M with the given input arguments.
 %
-%      RBIONETSETTINGS('Property','Value',...) creates a new RBIONETSETTINGS or raises the
+%      rBioNetSettings('Property','Value',...) creates a new rBioNetSettings or raises the
 %      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before rBioNetSettings_OpeningFcn gets called.  An
+%      applied to the GUI before `rBioNetSettings_OpeningFcn` gets called.  An
 %      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to rBioNetSettings_OpeningFcn via varargin.
+%      stop.  All inputs are passed to `rBioNetSettings_OpeningFcn` via `varargin`.
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
+% .. Author: - Stefan G. Thorleifsson 2011
 %
-% See also: GUIDE, GUIDATA, GUIHANDLES
-
-% Edit the above text to modify the response to help rBioNetSettings
-
-% Last Modified by GUIDE v2.5 24-Mar-2011 15:15:46
-
-% Begin initialization code - DO NOT EDIT
-gui_Singleton = 1;
+% NOTE:
+%    See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%    instance to run (singleton)".
+%    See also: GUIDE, GUIDATA, GUIHANDLES
+% .. Edit the above text to modify the response to help rBioNetSettings
+% .. Last Modified by GUIDE v2.5 24-Mar-2011 15:15:46
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
+gui_Singleton = 1; % Begin initialization code - DO NOT EDIT
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
                    'gui_OpeningFcn', @rBioNetSettings_OpeningFcn, ...
@@ -122,7 +130,7 @@ guidata(hObject, handles);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = rBioNetSettings_OutputFcn(hObject, eventdata, handles) 
+function varargout = rBioNetSettings_OutputFcn(hObject, eventdata, handles)
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB

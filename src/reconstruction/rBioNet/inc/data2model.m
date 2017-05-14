@@ -1,7 +1,18 @@
-%Takes in data from rbionet to create a complete reconstruction
-%Stefan G. Thorleifsson 2011
-
 function model_out = data2model(data,description)
+% Takes in data from `rbionet` to create a complete reconstruction
+%
+% USAGE:
+%
+%    model_out = data2model(data, description)
+%
+% INPUTS:
+%    data:          data from `rbionet`
+%    description:   model description
+%
+% OUTPUT:
+%    model_out:     creates a complete reconstruction
+%
+% .. Author: - Stefan G. Thorleifsson 2011
 model_out = [];
 S = size(data);
 data_in = {};

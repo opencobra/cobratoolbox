@@ -12,7 +12,8 @@
 
 if isunix
     [status, result] = system('which lrs');
-    if isempty(strfind(result, 'not found'))
+    if ~isempty(strfind(result, '/lrs'))
+
         % save the current path
         currentDir = pwd;
 
@@ -28,6 +29,7 @@ if isunix
               0,  1,  1,  0,  0,  0, 0,  0, -1;
               0,  0, -1,  1, -1,  0, 0,  0,  0];
 
+        clear model;
         model.S = S;
 
         % calculates the matrix of extreme pathways, P

@@ -1,23 +1,31 @@
-% rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
-% Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
-% reconstructing high-quality biochemical networks, Bioinformatics, Accepted. 
-%
-% rbionet@systemsbiology.is
-% Stefan G. Thorleifsson
-% 2011
-%Through here the metabolite and reaction databases are loaded and saved.
-%This script makes it possible to store datbases in any path set in matlab.
-%missing for compartments, thats for later
-%Stefan G. Thorleifsson
 function output = rBioNetSaveLoad(mode,type,data)
-%mode is save or load
-%type is met or rxn or comp
-%data to save
+% Through here the metabolite and reaction databases are loaded and saved.
+% This script makes it possible to store databases in any path set in matlab.
+% Missing for compartments, thats for later.
+%
+% USAGE:
+%
+%    output = rBioNetSaveLoad(mode,type,data)
+%
+% INPUTS:
+%    mode:      'save' or 'load'
+%    type:      'met', 'rxn' or 'comp'
+%    data:      data to save
+%
+% OUTPUT:
+%    output:    if 'load' then data else 1 if succes by save, 0 if empty or failed
+%
+% .. Author: - Stefan G. Thorleifsson 2011
+%
+% .. rBioNet is published under GNU GENERAL PUBLIC LICENSE 3.0+
+% .. Thorleifsson, S. G., Thiele, I., rBioNet: A COBRA toolbox extension for
+% .. reconstructing high-quality biochemical networks, Bioinformatics, Accepted.
+% .. rbionet@systemsbiology.is
+
 if nargin < 3
     data = [];
 end
-%output 
-%   0 - empty if failed. 
+%   0 - empty if failed.
 %   data if load was successfull
 %   1 if successfull
 output = 0;
@@ -58,7 +66,7 @@ switch mode
             msgbox('No data to save specified.');
             return;
         end
-        
+
         if strcmp(type,'met')
             if ~isempty(regexpi(met_path,'/')) %Unix path
                 split = regexpi(met_path,'/','split');%split path to get name
@@ -93,9 +101,9 @@ switch mode
             %incorrect input
             return;
         end
-        
-            
-        
+
+
+
     case 'load'
         if strcmp(type,'met')
             dbase = load(met_path);
