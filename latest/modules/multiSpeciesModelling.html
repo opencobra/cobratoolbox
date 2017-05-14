@@ -158,7 +158,7 @@
 <span id="id1"></span><h1>MultiSpeciesModelling<a class="headerlink" href="#multispeciesmodelling" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.modelAnalysis.multiSpecies"></span><dl class="function">
 <dt id="src.modelAnalysis.multiSpecies.analyzePairwiseInteractions">
-<code class="descname">analyzePairwiseInteractions</code><span class="sig-paren">(</span><em>pairedGrowthOrg1</em>, <em>pairedGrowthOrg2</em>, <em>singleGrowthOrg1</em>, <em>singleGrowthOrg2</em>, <em>sigD</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b47464a0285da254073aa4fd9f675dc785eb0953/src/modelAnalysis/multiSpecies/analyzePairwiseInteractions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.multiSpecies.analyzePairwiseInteractions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">analyzePairwiseInteractions</code><span class="sig-paren">(</span><em>pairedGrowthOrg1</em>, <em>pairedGrowthOrg2</em>, <em>singleGrowthOrg1</em>, <em>singleGrowthOrg2</em>, <em>sigD</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/multiSpecies/analyzePairwiseInteractions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.multiSpecies.analyzePairwiseInteractions" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function evaluates the outcome of pairwise growth of two organisms
 compared with the two organisms separately. There are six possible
 outcomes of theinteraction, and nine possible outcomes from the
@@ -229,7 +229,7 @@ if you use this script for your own analysis.</p>
 
 <dl class="function">
 <dt id="src.modelAnalysis.multiSpecies.coupleRxnList2Rxn">
-<code class="descname">coupleRxnList2Rxn</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>rxnC</em>, <em>c</em>, <em>u</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b47464a0285da254073aa4fd9f675dc785eb0953/src/modelAnalysis/multiSpecies/coupleRxnList2Rxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.multiSpecies.coupleRxnList2Rxn" title="Permalink to this definition">¶</a></dt>
+<code class="descname">coupleRxnList2Rxn</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>rxnC</em>, <em>c</em>, <em>u</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/multiSpecies/coupleRxnList2Rxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.multiSpecies.coupleRxnList2Rxn" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function adds coupling constraints to the fluxes <cite>vi</cite> of a given list of reactions
 (<cite>RxnList</cite>).The constraints are proportional to the flux <cite>v</cite> of a specified
 reaction <cite>rxnC</cite>, so that for all reactions in <cite>RxnList</cite> <cite>vi ~ vrxnC</cite>.
@@ -272,7 +272,7 @@ coupled model</li>
 
 <dl class="function">
 <dt id="src.modelAnalysis.multiSpecies.createMultipleSpeciesModel">
-<code class="descname">createMultipleSpeciesModel</code><span class="sig-paren">(</span><em>models</em>, <em>nameTagsModels</em>, <em>modelHost</em>, <em>nameTagHost</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b47464a0285da254073aa4fd9f675dc785eb0953/src/modelAnalysis/multiSpecies/createMultipleSpeciesModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.multiSpecies.createMultipleSpeciesModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">createMultipleSpeciesModel</code><span class="sig-paren">(</span><em>models</em>, <em>nameTagsModels</em>, <em>modelHost</em>, <em>nameTagHost</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/multiSpecies/createMultipleSpeciesModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.multiSpecies.createMultipleSpeciesModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Based on the implementation from <em>Klitgord and Segre 2010, PMID 21124952</em>.
 The present implementation has been used in <em>PMID 23022739</em>, <em>PMID 25841013</em>,
 <em>PMID 25901891</em>, <em>PMID 27893703</em>.</p>
@@ -335,7 +335,7 @@ model structure for joint model</li>
 
 <dl class="function">
 <dt id="src.modelAnalysis.multiSpecies.useDiet_AGORA_pairedModels">
-<code class="descname">useDiet_AGORA_pairedModels</code><span class="sig-paren">(</span><em>modelIn</em>, <em>diet</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b47464a0285da254073aa4fd9f675dc785eb0953/src/modelAnalysis/multiSpecies/useDiet_AGORA_pairedModels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.multiSpecies.useDiet_AGORA_pairedModels" title="Permalink to this definition">¶</a></dt>
+<code class="descname">useDiet_AGORA_pairedModels</code><span class="sig-paren">(</span><em>modelIn</em>, <em>diet</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/multiSpecies/useDiet_AGORA_pairedModels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.multiSpecies.useDiet_AGORA_pairedModels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assigns a diet for the 773 AGORA microbes</p>
 <p><strong>Usage</strong></p>
 <blockquote>
