@@ -152,12 +152,11 @@ html_theme = "sphinx_cobra_theme"
 
 import sphinx_cobra_theme
 import sphinx_rtd_theme
-import sphinx_julia_theme
 
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path(),
                    sphinx_cobra_theme.get_theme_dir()]
 print html_theme_path
-html_sidebars = sphinx_julia_theme.default_sidebars()
+html_sidebars = sphinx_cobra_theme.default_sidebars()
 
 # shutil.copy()
 
