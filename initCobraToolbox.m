@@ -530,7 +530,8 @@ function checkGit()
         end
     else
         fprintf(result_gitVersion);
-        error(' > git is not installed. Please follow the guidelines to learn more on how to install git.');
+        fprintf([' > Please follow the guidelines on how to install git ', hyperlink('https://github.com/opencobra/cobratoolbox/blob/master/.github/REQUIREMENTS.md.', 'here', 'here: '), '.\n']);
+        error(' > git is not installed.');
     end
 end
 
@@ -564,7 +565,8 @@ function [status_curl, result_curl] = checkCurlAndRemote(throwError)
     else
         if throwError
             fprintf(result_curl);
-            error(' > curl is not installed. Please follow the guidelines on how to install curl here: https://github.com/opencobra/cobratoolbox/blob/master/.github/REQUIREMENTS.md.');
+            fprintf([' > Please follow the guidelines on how to install curl ', hyperlink('https://github.com/opencobra/cobratoolbox/blob/master/.github/REQUIREMENTS.md.', 'here', 'here: '), '.\n']);
+            error(' > curl is not installed.');
         else
             if ENV_VARS.printLevel
                 fprintf(' (not installed).\n');

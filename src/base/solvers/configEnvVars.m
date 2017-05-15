@@ -174,7 +174,7 @@ function subDir = generateSolverSubDirectory(solverName)
 
     subDir = '';
 
-    % gurobi path
+    % GUROBI path
     if ~isempty(strfind(solverName, 'gurobi'))
         if ispc
             osPath = 'win64';

@@ -174,12 +174,6 @@ end
 
 % check if the global environment variable is properly set
 if ~ENV_VARS.STATUS
-    solversLink = 'https://git.io/v92Vi'; % curl -i https://git.io -F "url=https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md"
-    if usejava('desktop')
-        solversLink = ['<a href=\"', solversLink, '\">these instructions</a>'];
-    else
-        solversLink = ['the instruction on ', solversLink];
-    end
 
     if isempty(GUROBI_PATH) || isempty(ILOG_CPLEX_PATH) || isempty(TOMLAB_PATH) || isempty(MOSEK_PATH)
         switch solverName
@@ -193,7 +187,7 @@ if ~ENV_VARS.STATUS
                 tmpVar = 'MOSEK_PATH';
         end
         if printLevel > 0 && (strcmpi(solverName, 'gurobi') || strcmpi(solverName, 'ibm_cplex') || strcmpi(solverName, 'tomlab_cplex') || strcmpi(solverName, 'cplex_direct') || strcmpi(solverName, 'mosek'))
-            error(['The global variable `', tmpVar, '` is not set. Please follow ', solversLink, ' to set the environment variables properly.']);
+            error(['The global variable `', tmpVar, '` is not set. Please follow ', hyperlink('https://git.io/v92Vi', 'these instructions', 'the instructions on '), ' to set the environment variables properly.']);
         end
     end
 end
@@ -320,8 +314,7 @@ switch solverName
     case {'lp_solve', 'qpng', 'pdco', 'gurobi_mex'}
         solverOK = checkSolverInstallationFile(solverName, solverName, printLevel);
     case 'gurobi'
-        tmpGurobi = 'gurobi.m';
-        solverOK = checkSolverInstallationFile(solverName, tmpGurobi, printLevel);
+        solverOK = checkSolverInstallationFile(solverName, 'gurobi.m', printLevel);
     case {'quadMinos', 'dqqMinos'}
         if isunix
             [stat, res] = system('which csh');
@@ -428,6 +421,6 @@ function solverOK = checkSolverInstallationFile(solverName, fileName, printLevel
     if exist(fileName, 'file') >= 2
         solverOK = true;
     elseif printLevel > 0
-        error('Solver %s is not installed!', solverName)
+        error(['Solver ', solverName, ' is not installed. Please follow ', hyperlink('https://git.io/v92Vi', 'these instructions', 'the instructions on '), ' in order to install the solver properly.'])
     end
 end
