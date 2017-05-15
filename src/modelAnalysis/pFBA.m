@@ -98,7 +98,10 @@ else
     % find MLE reactions
     FBAsoln = optimizeCbModel(model);
     model.lb(model.c==1) = FBAsoln.f;
-    [minFlux,maxFlux] = fastFVA(model,100);
+    
+    %Can be performed faster using fastFVA instead of fluxVariability
+    %[minFlux,maxFlux] = fastFVA(model,100);
+    [minFlux,maxFlux] = fluxVariability(model,100);
     for i = 1:length(minFlux)
         tmp(i,1) = max([abs(minFlux(i)) abs(maxFlux(i))])<tol;
     end
