@@ -81,10 +81,8 @@ function configEnvVars(printLevel)
             for i = 1:length(solverPaths{k, 2})
                 if exist(tmpSolverPath{i}, 'dir') == 7
                     subDir = filesep;
-                    if k == 1
-                        subDir = generateSolverSubDirectory('ibm_cplex');
-                    elseif k == 2
-                        subDir = generateSolverSubDirectory('gurobi');
+                    if k == 1 || k == 2
+                        subDir = generateSolverSubDirectory(solverPaths{k, 3});
                     end
                     possibleDir = [tmpSolverPath{i}, subDir];
                     break;
@@ -163,7 +161,7 @@ function subDir = generateSolverSubDirectory(solverName)
 %     subDir = generateSolverSubDirectory(solverName)
 %
 % Inputs:
-%     solverName: string with the name of the solver
+%     solverName: string with the name of the solver (or alias)
 %
 % Output:
 %     subDir: path to the subdirectory of the solver
@@ -188,7 +186,7 @@ function subDir = generateSolverSubDirectory(solverName)
     end
 
     % ILOG CPLEX path
-    if ~isempty(strfind(solverName, 'ibm_cplex'))
+    if ~isempty(strfind(solverName, 'ibm_cplex')) || ~isempty(strfind(solverName, 'CPLEX_Studio'))
         if ispc
             osPath = 'x64_win64';
         elseif ismac
