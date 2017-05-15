@@ -73,6 +73,11 @@ function configEnvVars(printLevel)
             eval([solverPaths{k, 1}, ' = getenv(''', solverPaths{k, 1} , ''');'])
             if ~isempty(eval(solverPaths{k, 1}))
                 method = '*---';
+                subDir = filesep;
+                if k == 1 || k == 2
+                    subDir = generateSolverSubDirectory(solverPaths{k, 3});
+                end
+                eval([solverPaths{k, 1}, ' = [', solverPaths{k, 1}, ', ''', subDir, '''];']);
             end
 
             % loop through the list of possible directories

@@ -320,8 +320,7 @@ switch solverName
     case {'lp_solve', 'qpng', 'pdco', 'gurobi_mex'}
         solverOK = checkSolverInstallationFile(solverName, solverName, printLevel);
     case 'gurobi'
-        tmpGurobi = 'gurobi.sh';
-        if ispc, tmpGurobi = 'gurobi.bat'; end
+        tmpGurobi = 'gurobi.m';
         solverOK = checkSolverInstallationFile(solverName, tmpGurobi, printLevel);
     case {'quadMinos', 'dqqMinos'}
         if isunix
