@@ -43,7 +43,7 @@ for k = 1: length(solverPkgs)
 
         % check solution
         assert(length(gdlsSolution.KOs) == 5)
-        assert(all(ismember(gdlsSolution.KOs, {'ACALD'; 'ALCD2x'; 'GLUDy'; 'LDH_D'; 'PFL'; 'THD2'})))
+        assert(all(ismember(gdlsSolution.KOs, {'ACALD'; 'ALCD2x'; 'GLUDy'; 'LDH_D'; 'PFL'; 'THD2'; 'CYTBD'})))
 
         % print a success message
         fprintf('Done.\n');
