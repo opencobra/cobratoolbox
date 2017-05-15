@@ -178,7 +178,7 @@ for k = 1:length(solverPkgs)
 
         if solverOK
             % test solveCobraLPCPLEX
-            solution{i} = solveCobraLPCPLEX(model);
+            solution{i} = solveCobraLPCPLEX(model, 0, [], [], [], [], 'ILOGsimple');
             solution{i}.solver = solver;
             solution{i}.algorithm = 'default';
             i = i + 1;
