@@ -172,6 +172,6 @@ function currentBranch = getCurrentBranchName()
     end
 
     if strcmpi(currentBranch, 'HEAD')
-        currentBranch = 'detached HEAD'
+        currentBranch = 'detached HEAD';
     end
 end

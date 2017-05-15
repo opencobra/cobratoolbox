@@ -260,14 +260,16 @@ if (~isempty(strfind(solverName, 'tomlab')) || ~isempty(strfind(solverName, 'cpl
 end
 
 if  ~isempty(strfind(solverName, 'gurobi')) && ~isempty(GUROBI_PATH)
-    addpath(genpath(strrep(GUROBI_PATH, '\\', '\')));
+    % add the solver path
+    addpath(strrep(GUROBI_PATH, '\\', '\'));
     if printLevel > 0
         fprintf('\n > Gurobi interface added to MATLAB path.\n');
     end
 end
 
 if  ~isempty(strfind(solverName, 'ibm_cplex')) && ~isempty(ILOG_CPLEX_PATH)
-    addpath(genpath(strrep(ILOG_CPLEX_PATH, '\\', '\')));
+    % add the solver path
+    addpath(strrep(ILOG_CPLEX_PATH, '\\', '\'));
     if printLevel > 0
         fprintf('\n > IBM ILOG CPLEX interface added to MATLAB path.\n');
     end
@@ -377,7 +379,7 @@ if solverOK
 
         % remove the GUROBI interface
         if gurobiOnPath && ~isempty(GUROBI_PATH)
-            rmpath(genpath(strrep(GUROBI_PATH, '\\', '\')));
+            rmpath(strrep(GUROBI_PATH, '\\', '\'));
             if printLevel > 0
                 fprintf(['\n > GUROBI interface removed from MATLAB path.\n']);
             end
@@ -388,7 +390,7 @@ if solverOK
 
         % remove the CPLEX interface
         if cplexOnPath && ~isempty(ILOG_CPLEX_PATH)
-            rmpath(genpath(strrep(ILOG_CPLEX_PATH, '\\', '\')));
+            rmpath(strrep(ILOG_CPLEX_PATH, '\\', '\'));
             if printLevel > 0
                 fprintf(['\n > ILOG CPLEX interface removed from MATLAB path.\n']);
             end
@@ -422,6 +424,7 @@ function solverOK = checkSolverInstallationFile(solverName, fileName, printLevel
 % Output:
 %     solverOK: true if filename exists, false otherwise.
 %
+
     solverOK = false;
     if exist(fileName, 'file') >= 2
         solverOK = true;
