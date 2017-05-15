@@ -6,7 +6,6 @@ function generateSystemConfigReport()
 %
 
     global CBTDIR;
-    global SOLVERS;
     global CBT_LP_SOLVER;
     global CBT_MILP_SOLVER;
     global CBT_QP_SOLVER;
@@ -16,8 +15,6 @@ function generateSystemConfigReport()
     global ILOG_CPLEX_PATH;
     global TOMLAB_PATH;
     global MOSEK_PATH;
-    global WAITBAR_TYPE;
-    global ENV_VARS;
 
     reportFile = 'COBRAconfigReport.log';
 
@@ -51,15 +48,6 @@ function generateSystemConfigReport()
 
     fprintf('\n > ---------------------------------- SYSTEM CONFIGURATION REPORT ----------------------------------\n');
 
-    % retrieve the version of bash
-    try
-        shell = getenv('SHELL');
-        fprintf(' > %-20s:        %s\n', 'Default shell', shell);
-        [~, tmp_result_shellVersion] = system([shell ' --version']);
-        result_shellVersion = strtrim(tmp_result_shellVersion);
-        fprintf(' > %-20s:        %s\n', 'Version of shell', result_shellVersion);
-    end
-
     % retrieve the version of git
     try
         [~, result_gitVersion] = system('git --version');
@@ -89,17 +77,21 @@ function generateSystemConfigReport()
     ver
     fprintf('\n');
 
+    % retrieve the version of bash
+    try
+        shell = getenv('SHELL');
+        fprintf(' > %-20s:        %s\n', 'Default shell', shell);
+        [~, tmp_result_shellVersion] = system([shell ' --version']);
+        result_shellVersion = strtrim(tmp_result_shellVersion);
+        fprintf(' > %-20s:        %s\n', 'Version of shell', result_shellVersion);
+    end
+
     % output the architecture information
     fprintf(' > %-20s:        %s\n', 'Architecture', computer);
     fprintf(' > %-20s:        %s\n', 'MATLAB folder', matlabroot);
     fprintf(' > %-20s:        %s\n', 'COBRA Toolbox root', tmpRootDir);
     fprintf(' > %-20s:        %s\n', 'git version', result_gitVersion);
     fprintf(' > %-20s:        %s\n', 'curl version', result_curlVersion);
-
-    % print the home folder
-    try
-        fprintf(' > %-20s:        %s\n', 'Home directory', getenv('HOME'));
-    end
 
     % solver paths
     globalVars = {'CBT_LP_SOLVER', 'CBT_MILP_SOLVER', 'CBT_QP_SOLVER', 'CBT_MIQP_SOLVER', ...
@@ -120,7 +112,7 @@ function generateSystemConfigReport()
     end
 
     % print out the MATLAB path
-    fprintf(' > MATLAB path:\n%s\n', lower(path));
+    fprintf(' > MATLAB path:\n%s\n', path);
 
     fprintf('\n > ----------------------------------- END OF CONFIGURATION REPORT -----------------------------------\n');
 
