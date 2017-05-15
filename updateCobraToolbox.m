@@ -77,7 +77,7 @@ function updateCobraToolbox(fetchAndCheckOnly)
         end
 
         if commitsAheadBehindMaster(1) > 0 || commitsAheadBehindDevelop(1) > 0
-            warning([' > The COBRA Toolbox could not be updated.']);
+            fprintf(' > The COBRA Toolbox cannot be updated (already up-to-date).\n');
         end
 
         if status_gitCountMaster == 0 && status_gitCountDevelop == 0
