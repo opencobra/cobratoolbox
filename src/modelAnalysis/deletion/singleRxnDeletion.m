@@ -1,27 +1,27 @@
 function [grRatio,grRateKO,grRateWT,hasEffect,delRxn,fluxSolution] = singleRxnDeletion(model,method,rxnList,verbFlag)
-%singleRxnDeletion Performs single reaction deletion analysis using FBA,
-%MOMA or linearMOMA
+% Performs single reaction deletion analysis using FBA, MOMA or linearMOMA
 %
-% [grRatio,grRateKO,grRateWT,hasEffect,delRxns,hasEffect] = singleRxnDeletion(model,method,rxnList,verbFlag)
+% USAGE:
 %
-%INPUT
-% model         COBRA model structure including reaction names
+%    [grRatio, grRateKO, grRateWT, hasEffect, delRxns, hasEffect] = singleRxnDeletion(model, method, rxnList, verbFlag)
 %
-%OPTIONAL INPUTS
-% method        Either 'FBA', 'MOMA', or 'lMOMA' (Default = 'FBA')
-% rxnList       List of reactions to be deleted (Default = all reactions)
-% verbFlag      Verbose output (Default = false)
+% INPUT:
+%    model:         COBRA model structure including reaction names
 %
-%OUTPUTS
-% grRatio       Computed growth rate ratio between deletion strain and wild type
-% grRateKO      Deletion strain growth rates (1/h)
-% grRateWT      Wild type growth rate (1/h)
-% hasEffect     Does a reaction deletion affect anything
-% delRxn        Deleted reacction
-% fluxSolution  FBA/MOMA/lMOMA fluxes for KO strains
+% OPTIONAL INPUTS:
+%    method:        Either 'FBA', 'MOMA', or 'lMOMA' (Default = 'FBA')
+%    rxnList:       List of reactions to be deleted (Default = all reactions)
+%    verbFlag:      Verbose output (Default = false)
 %
-% Richard Que 12/04/2009
-% Based on singleGeneDeletion.m written by Markus Herrgard
+% OUTPUTS:
+%    grRatio:       Computed growth rate ratio between deletion strain and wild type
+%    grRateKO:      Deletion strain growth rates (1/h)
+%    grRateWT:      Wild type growth rate (1/h)
+%    hasEffect:     Does a reaction deletion affect anything
+%    delRxn:        Deleted reaction
+%    fluxSolution:  FBA/MOMA/lMOMA fluxes for `KO` strains
+%
+% .. Author: - Richard Que 12/04/2009 Based on singleGeneDeletion.m written by Markus Herrgard
 
 if (nargin < 2)
     method = 'FBA';

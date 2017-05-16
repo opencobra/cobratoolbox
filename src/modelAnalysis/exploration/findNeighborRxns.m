@@ -1,34 +1,33 @@
 function [neighborRxns,neighborGenes,mets] = findNeighborRxns(model,rxns, asSingleArray, order, commonMets, withComp)
-
-%findNeighborRxns Identifies the reactions and the corresponding genes 
-%that are adjacent (having a common metabolite) to a reaction of interest.
-%Useful for characterizing the network around an orphan reaction.
+% Identifies the reactions and the corresponding genes
+% that are adjacent (having a common metabolite) to a reaction of interest.
+% Useful for characterizing the network around an orphan reaction.
 %
-% [neighborRxns,neighborGenes,mets] = findNeighborRxns(model,rxns, asSingleArray, order, commonMets, withComp)
+% USAGE:
 %
-%INPUTS
-% model         COBRA model structure
-% rxns          the target reaction as a string or multiple reactions as cell array
-% asSingleArray If false, then return cell array of cell arrays with neighbor reactions
-%               for one particular connecting metabolite and input reaction combination.
-%               Else just return all neighbors in one cell array. (Default = false)
-% order         maximal order of neighbors to be returned (default = 1)
-%               order >=2 only works with asSingleArray = true
-%               Neighborhoods of order >=2 will usually also return the input reactions.
-% commonMets    Cell array of common metabolites, that should not count as edges between reactions.
-%               Use {''} if no such metabolite should be included.
-%               (default = {'atp', 'adp', 'h', 'h2o', 'pi', 'ppi'})
-% withComp      if commonMets already have a compartment identifier, e.g. 'atp[m]', then true (default=false)
-%OUTPUTS
-% neighborRxns  the neighboring rxns in the network, (having common
-%               metabolites)
-% neighborGenes the gprs associated with the neighbor rxns
-% mets          the metabolites in the target reaction
+%    [neighborRxns, neighborGenes, mets] = findNeighborRxns(model, rxns, asSingleArray, order, commonMets, withComp)
 %
-% Jeff Orth
-% 10/11/09
+% INPUTS:
+%    model:         COBRA model structure
+%    rxns:          the target reaction as a string or multiple reactions as cell array
+%    asSingleArray: If false, then return cell array of cell arrays with neighbor reactions
+%                   for one particular connecting metabolite and input reaction combination.
+%                   Else just return all neighbors in one cell array. (Default = false)
+%    order:         maximal order of neighbors to be returned (default = 1)
+%                   `order >= 2` only works with `asSingleArray = true`
+%                   Neighborhoods of `order >= 2` will usually also return the input reactions.
+%    commonMets:    Cell array of common metabolites, that should not count as edges between reactions.
+%                   Use {''} if no such metabolite should be included
+%                   (default = {'atp', 'adp', 'h', 'h2o', 'pi', 'ppi'}).
+%    withComp:      if `commonMets` already have a compartment identifier, e.g. 'atp[m]', then true (default=false)
+% OUTPUTS:
+%    neighborRxns:  the neighboring rxns in the network, (having common metabolites)
+%    neighborGenes: the `gprs` associated with the neighbor `rxns`
+%    mets:          the metabolites in the target reaction
 %
-% Nikos Ignatiadis 10/7/2013 now provides more options, e.g. common metabolites and order of neighbors
+% .. Authors:
+%       - Jeff Orth 10/11/09
+%       - Nikos Ignatiadis 10/7/2013 now provides more options, e.g. common metabolites and order of neighbors
 
 % set defaults
 if ~exist('order','var') || isempty(order) || order < 1
@@ -86,7 +85,7 @@ for i = 1:numel(rxns)
 	nRxnIndexs = {};
 	for i = 1:length(metIndex)
     	nRxnIndexs{i} = find(model.S(metIndex(i),:));
-	end 
+	end
 
 	% remove target rxn from list
 	for i = 1:length(metIndex);
@@ -109,7 +108,7 @@ end
 if asSingleArray
 	neighborRxnsTmp  = neighborRxns;
 	neighborGenesTmp = neighborGenes;
-	neighborRxns  = {}; 
+	neighborRxns  = {};
 	neighborGenes = {};
 	for i=1:numel(neighborRxnsTmp)
 		neighborRxns  = [neighborRxns; neighborRxnsTmp{i}];
@@ -131,5 +130,3 @@ if order >=2 & asSingleArray
 end
 
 end
-
-

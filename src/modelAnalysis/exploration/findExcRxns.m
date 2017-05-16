@@ -1,28 +1,31 @@
 function [selExc,selUpt] = findExcRxns(model,inclObjFlag,irrevFlag)
-%findExcRxns Find exchange and uptake rxns
+% Finds exchange and uptake `rxns`
 %
-% [selExc,selUpt] = findExcRxns(model,inclObjFlag,irrevFlag)
+% USAGE:
 %
-%INPUT
-% model             COBRA model structure
+%    [selExc, selUpt] = findExcRxns(model, inclObjFlag, irrevFlag)
 %
-%OPTIONAL INPUTS
-% inclObjFlag       Include objective rxns in the exchange rxn set (1) or not (0)
-%                   (Default = false)
-% irrevFlag         Model is in irreversible format (1) or not
-%                   (Default = false)
+% INPUT:
+%    model:            COBRA model structure
 %
-%OUTPUTS
-% selExc            Boolean vector indicating whether each reaction in
-%                   model is exchange or not 
-% selUpt            Boolean vector indicating whether each reaction in
-%                   model is nutrient uptake or not
+% OPTIONAL INPUTS:
+%    inclObjFlag:       Include objective `rxns` in the exchange rxn set (1) or not (0)
+%                      (Default = false)
+%    irrevFlag:        Model is in irreversible format (1) or not
+%                      (Default = false)
 %
-% Exchange reactions only have one non-zero (+1/-1) element in the 
-% corresponding column of the stoichiometric matrix. Uptake reactions are 
-% exchange reactions are exchange reactions with negative lower bounds.
+% OUTPUTS:
+%    selExc:           Boolean vector indicating whether each reaction in
+%                      model is exchange or not
+%    selUpt:           Boolean vector indicating whether each reaction in
+%                      model is nutrient uptake or not
 %
-% 10/14/05 Markus Herrgard
+% NOTE:
+%    Exchange reactions only have one non-zero (+1 / -1) element in the
+%    corresponding column of the stoichiometric matrix. Uptake reactions are
+%    exchange reactions are exchange reactions with negative lower bounds.
+%
+% .. Author: - Markus Herrgard 10/14/05
 
 if (nargin < 2)
     inclObjFlag = false;
@@ -50,9 +53,9 @@ if (~irrevFlag)
     else
         selUpt = [];
     end
-    
+
 else
-    
+
     % Find exchange rxns
     selExc = full((sum(abs(model.S)==1,1) ==1) & (sum(model.S~=0) == 1))';
 
@@ -69,4 +72,3 @@ else
     selUpt = full((sum(model.S==1,1) ==1) & (sum(model.S~=0) == 1))';
 
 end
-    
