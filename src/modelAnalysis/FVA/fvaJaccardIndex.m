@@ -1,21 +1,21 @@
 function J = fvaJaccardIndex(minFlux, maxFlux)
-% Compare flux ranges by computing the Jaccard index
+% Compares flux ranges by computing the Jaccard index
 %
 % USAGE:
 %
 %     J = fvaJaccardIndex(minFlux, maxFlux);
 %
 % INPUTS:
-%     minFlux:    An n x k matrix of minimum fluxes through n reactions in k
-%                 different constraint-based models (k > 1).
-%     maxFlux:    An n x k matrix of maximum fluxes through n reactions in k
-%                 different constraint-based models (k > 1).
+%     minFlux:    An `n` x `k` matrix of minimum fluxes through `n` reactions in `k`
+%                 different constraint-based models (`k > 1`).
+%     maxFlux:    An `n` x `k` matrix of maximum fluxes through n reactions in `k`
+%                 different constraint-based models (`k > 1`).
 %
 % OUTPUT:
-%    J:           An n x 1 vector of Jaccard indices, defined as the
-%                 intersection divided by the union of all k flux ranges
+%    J:           An `n` x 1 vector of Jaccard indices, defined as the
+%                 intersection divided by the union of all `k` flux ranges
 %
-% .. Authors: 
+% .. Authors:
 %       - Hulda S. Haraldsdottir, 2016/08/22
 %       - Laurent Heirendt, 2017/02/01
 

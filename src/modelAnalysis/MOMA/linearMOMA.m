@@ -1,48 +1,46 @@
 function [solutionDel,solutionWT,totalFluxDiff,solStatus] = ...
     linearMOMA(modelWT,modelDel,osenseStr,minFluxFlag,verbFlag)
-%linearMOMA Performs a linear version of the MOMA (minimization of
-%metabolic adjustment) approach 
+% Performs a linear version of the MOMA (minimization of
+% metabolic adjustment) approach
 %
-% [solutionDel,solutionWT,totalFluxDiff,solStatus] = 
-%       linearMOMA(modelWT,modelDel,osenseStr,minFluxFlag,verbFlab)
+% USAGE:
 %
-%INPUTS
-% modelWT           Wild type model
-% modelDel          Deletion strain model
+%    [solutionDel, solutionWT, totalFluxDiff, solStatus] = linearMOMA(modelWT, modelDel, osenseStr, minFluxFlag, verbFlab)
 %
-%OPTIONAL INPUTS
-% osenseStr         Maximize ('max')/minimize ('min') (Default = 'max')
-% minFluxFlag       Minimize the absolute value of fluxes in the optimal MOMA
-%                   solution (Default = false)
-% verbFlag          Verbose output (Default = false)
-% 
-%OUTPUTS
-% solutionDel       Deletion solution structure
-% solutionWT        Wild-type solution structure
-% totalFluxDiff     Value of the linear MOMA objective, i.e. sum|v_wt-v_del|
-% solStatus         Solution status
+% INPUTS:
+%    modelWT:           Wild type model
+%    modelDel:          Deletion strain model
 %
-% Solves the problem
+% OPTIONAL INPUTS:
+%    osenseStr:         Maximize ('max')/minimize ('min') (Default = 'max')
+%    minFluxFlag:       Minimize the absolute value of fluxes in the optimal MOMA
+%                       solution (Default = false)
+%    verbFlag:          Verbose output (Default = false)
 %
-% min sum|v_wt - v_del|
+% OUTPUTS:
+%    solutionDel:       Deletion solution structure
+%    solutionWT:        Wild-type solution structure
+%    totalFluxDiff:     Value of the linear MOMA objective, i.e. `sum|v_wt-v_del|`
+%    solStatus:         Solution status - solves the problem: (`f_wt` is the optimal wild type objective value found by FBA)
+%
+% .. math::
+%     min sum|v_{wt} - v_{del}|
 %     S_wt*v_wt = 0
 %     lb_wt <= v_wt <= ub_wt
 %     c_wt'*v_wt = f_wt
 %     S_del*v_del = 0
 %     lb_del <= v_del <= ub_del
 %
-% Here f_wt is the optimal wild type objective value found by FBA
+% NOTE:
 %
-% Notes:
+%    1) This formulation allows for selecting the most appropriate
+%    optimal wild type FBA solution as the starting point as opposed to
+%    picking an arbitrary starting point (original MOMA implementation).
 %
-% 1) This formulation allows for selecting the most appropriate
-% optimal wild type FBA solution as the starting point as opposed to
-% picking an arbitrary starting point (original MOMA implementation).
+%    2) The reaction sets in the two models do not have to be equal as long as
+%    there is at least one reaction in common
 %
-% 2) The reaction sets in the two models do not have to be equal as long as
-% there is at least one reaction in common
-%
-% Markus Herrgard 11/7/06
+% .. Author: - Markus Herrgard 11/7/06
 
 if (nargin <3 || isempty(osenseStr))
     osenseStr = 'max';
@@ -118,13 +116,13 @@ if (solutionWT.stat > 0)
          sparse(nMets2,nRxns1) modelDel.S sparse(nMets2,2*nCommon);
          createDeltaMatchMatrix(modelWT.rxns,modelDel.rxns);
          modelWT.c' sparse(1,nRxns2+2*nCommon)];
-     
+
     % Construct the RHS vector
     b = [zeros(nMets1+nMets2+2*nCommon,1);objValWT];
-    
+
     % Construct the objective (sum of all delta+ and delta-)
     c = [zeros(nRxns1+nRxns2,1);ones(2*nCommon,1)];
-    
+
     % Construct the ub/lb
     % delta+ and delta- are in [0 10000]
     lb = [modelWT.lb;modelDel.lb;zeros(2*nCommon,1)];
@@ -134,16 +132,16 @@ if (solutionWT.stat > 0)
     % everything else)
     csense(1:(nMets1+nMets2)) = 'E';
     csense((nMets1+nMets2)+1:(nMets1+nMets2+2*nCommon)) = 'G';
-    if (strcmp(osenseStr,'max'))    
+    if (strcmp(osenseStr,'max'))
         csense(end+1) = 'G';
     else
         csense(end+1) = 'L';
     end
-    
+
     if (verbFlag)
         fprintf('Solving linear MOMA: %d constraints %d variables ',size(A,1),size(A,2));
     end
-    
+
     % Solve the linearMOMA problem
     [LPproblem.A,LPproblem.b,LPproblem.c,LPproblem.lb,LPproblem.ub,LPproblem.csense,LPproblem.osense] = deal(A,b,c,lb,ub,csense,1);
     LPsolution = solveCobraLP(LPproblem);
@@ -151,10 +149,10 @@ if (solutionWT.stat > 0)
     if (verbFlag)
         fprintf('%f seconds\n',LPsolution.time);
     end
-    
+
     if (LPsolution.stat > 0)
         solutionDel.x = LPsolution.full((nRxns1+1):(nRxns1+nRxns2));
-        solutionDel.f = sum(modelDel.c.*solutionDel.x);   
+        solutionDel.f = sum(modelDel.c.*solutionDel.x);
         solutionWT.x = LPsolution.full(1:nRxns1);
         totalFluxDiff = LPsolution.obj;
     end
@@ -191,7 +189,7 @@ if (solutionWT.stat > 0)
         if (verbFlag)
             fprintf('Minimizing MOMA flux distribution norms: %d constraints %d variables ',size(A,1),size(A,2));
         end
-        
+
         [LPproblem.A,LPproblem.b,LPproblem.c,LPproblem.lb,LPproblem.ub,LPproblem.csense,LPproblem.osense] = deal(A,b,c,lb,ub,csense,1);
         LPsolution = solveCobraLP(LPproblem);
         if (verbFlag)
@@ -199,11 +197,11 @@ if (solutionWT.stat > 0)
         end
         if (LPsolution.stat > 0)
             solutionDel.x = LPsolution.full((nRxns1+1):(nRxns1+nRxns2));
-            solutionDel.f = sum(modelDel.c.*solutionDel.x);   
+            solutionDel.f = sum(modelDel.c.*solutionDel.x);
             solutionWT.x = LPsolution.full(1:nRxns1);
         end
     end
-    
+
 else
     warning('Wild type FBA problem is infeasible or unconstrained');
 end

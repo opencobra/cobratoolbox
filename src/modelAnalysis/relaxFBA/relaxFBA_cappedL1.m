@@ -1,46 +1,55 @@
-function [solution] = relaxFBA_cappedL1(model,relaxOption)
-% Find the mimimal set of relaxations on bounds and steady state constraint
+function [solution] = relaxFBA_cappedL1(model, relaxOption)
+% Finds the mimimal set of relaxations on bounds and steady state constraint
 % to make the FBA problem feasible.
 % The zero-norm is appproximated by capped-L1 norm
 %
-% min   c'v - gamma1*||v||_1 - gamma0*||v||_0
-%       + lambda1*||r||_1 + lambda0*||r||_0
-%       + alpha1*(||p||_1 + ||q||_1) + alpha0*(||p||_0 + ||q||_0)
-% s.t   S*v + r = b
-%       l - p <= v <= u + q
-%       r \in R^m
-%       p,q \in R_+^n
-% m                                     number of metabolites
-% n                                     number of reactions
-% INPUT
-% model                                 COBRA model structure
-% relaxOption                           Structure containing the relaxation options
-%       excludedReactions               bool vector of size n indicating the reactions to be excluded from relaxation
-%                                       excludedReactions(i) = false : allow to relax bounds on reaction i
-%                                       excludedReactions(i) = true : do not allow to relax bounds on reaction i
-%       excludedMetabolites             bool vector of size m indicating the metabolites to be excluded from relaxation
-%                                       excludedMetabolites(i) = false : allow to relax steady state constraint on metabolite i
-
-%                                       excludedMetabolites(i) = true : do not allow to relax steady state constraint on metabolite i
-%       gamma                           trade-off parameter of relaxation on fluxes rate
-%       lamda                           trade-off parameter of relaxation on steady state constraint
-%       alpha                           strade-off parameter of relaxation on bounds
+% USAGE:
 %
-% OUTPUT
-% solution                              Structure containing the following fields
-%       stat                            status
-%                                       1  = Solution found
-%                                       0  = Infeasible
-%                                       -1 = Invalid input
-%       r                               relaxation on steady state constraints S*v = b
-%       p                               relaxation on lower bound of reactions
-%       q                               relaxation on upper bound of reactions
-%       v                               reaction rate
-% Hoai Minh Le	20/11/2015
+%    [solution] = relaxFBA_cappedL1(model, relaxOption)
+%
+% INPUTS:
+%    model:                                 COBRA model structure
+%    relaxOption:                           Structure containing the relaxation options:
+%
+%                                             * excludedReactions - bool vector of size n indicating the reactions to be excluded from relaxation
+%
+%                                               * excludedReactions(i) = false : allow to relax bounds on reaction i
+%                                               * excludedReactions(i) = true : do not allow to relax bounds on reaction i
+%                                             * excludedMetabolites - bool vector of size m indicating the metabolites to be excluded from relaxation
+%
+%                                               * excludedMetabolites(i) = false : allow to relax steady state constraint on metabolite i
+%                                               * excludedMetabolites(i) = true : do not allow to relax steady state constraint on metabolite i
+%                                             * gamma - trade-off parameter of relaxation on fluxes rate
+%                                             * lamda - trade-off parameter of relaxation on steady state constraint
+%                                             * alpha - strade-off parameter of relaxation on bounds
+%
+% OUTPUT:
+%    solution:                              Structure containing the following fields:
+%
+%                                             * stat - status
+%
+%                                               * 1  = Solution found
+%                                               * 0  = Infeasible
+%                                               * -1 = Invalid input
+%                                               * r - relaxation on steady state constraints `S*v = b`
+%                                               * p - relaxation on lower bound of reactions
+%                                               * q - relaxation on upper bound of reactions
+%                                               * v - reaction rate
+%
+% .. Author: - Hoai Minh Le	20/11/2015
+%
+% .. math::
+%      min   c'v - gamma1*||v||_1 - gamma0*||v||_0
+%            + lambda1*||r||_1 + lambda0*||r||_0
+%            + alpha1*(||p||_1 + ||q||_1) + alpha0*(||p||_0 + ||q||_0)
+%      s.t   S*v + r = b
+%            l - p <= v <= u + q
+%            r \in R^m
+%            p,q \in R_+^n
+%      m - number of metabolites
+%      n - number of reactions
 
-%Check inputs
-
-[m,n] = size(model.S);
+[m,n] = size(model.S); %Check inputs
 
 
 if isfield(model,'SIntRxnBool')

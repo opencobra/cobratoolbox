@@ -1,38 +1,40 @@
 function [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,optPercentage,osenseStr,rxnNameList,verbFlag, allowLoops)
-%fluxVariability Performs flux variablity analysis
+% Performs flux variablity analysis
 %
-% [minFlux,maxFlux] = fluxVariability(model,optPercentage,osenseStr,rxnNameList,verbFlag, allowLoops)
+% USAGE:
 %
-%INPUT
-% model             COBRA model structure
+%    [minFlux, maxFlux] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, verbFlag, allowLoops)
 %
-%OPTIONAL INPUTS
-% optPercentage     Only consider solutions that give you at least a certain
-%                   percentage of the optimal solution (Default = 100
-%                   or optimal solutions only)
-% osenseStr         Objective sense ('min' or 'max') (Default = 'max')
-% rxnNameList       List of reactions for which FVA is performed
-%                   (Default = all reactions in the model)
-% verbFlag          Verbose output (opt, default false)
-% allowLoops        Whether loops are allowed in solution. (Default = true)
-%                   See optimizeCbModel for description
+% INPUT:
+%    model:             COBRA model structure
 %
-%OUTPUT
-% minFlux           Minimum flux for each reaction
-% maxFlux           Maximum flux for each reaction
+% OPTIONAL INPUTS:
+%    optPercentage:     Only consider solutions that give you at least a certain
+%                       percentage of the optimal solution (Default = 100
+%                       or optimal solutions only)
+%    osenseStr:         Objective sense ('min' or 'max') (Default = 'max')
+%    rxnNameList:       List of reactions for which FVA is performed
+%                       (Default = all reactions in the model)
+%    verbFlag:          Verbose output (opt, default false)
+%    allowLoops:        Whether loops are allowed in solution. (Default = true)
+%                       See `optimizeCbModel` for description
 %
-%OPTIONAL OUTPUT
-% Vmin          Matrix of column flux vectors, where each column is a
-%               separate minimization.
-% Vmax          Matrix of column flux vectors, where each column is a
-%               separate maximization.
+% OUTPUTS:
+%    minFlux:           Minimum flux for each reaction
+%    maxFlux:           Maximum flux for each reaction
 %
-
-% Markus Herrgard  8/21/06 Original code.
-% Ronan Fleming   01/20/10 Take the extremal flux from the flux vector,
-%                          not from the objective since this is invariant
-%                          to the value and sign of the coefficient
-% Ronan Fleming   27/09/10 Vmin,Vmax
+% OPTIONAL OUTPUT:
+%    Vmin:          Matrix of column flux vectors, where each column is a
+%                   separate minimization.
+%    Vmax:          Matrix of column flux vectors, where each column is a
+%                   separate maximization.
+%
+% .. Authors:
+%       - Markus Herrgard  8/21/06 Original code.
+%       - Ronan Fleming   01/20/10 Take the extremal flux from the flux vector,
+%                         not from the objective since this is invariant
+%                         to the value and sign of the coefficient
+%       - Ronan Fleming   27/09/10 Vmin, Vmax
 
 if (nargin < 2)
     optPercentage = 100;
@@ -258,7 +260,7 @@ else % parallel job.  pretty much does the same thing.
 
     global CBT_LP_SOLVER
     solver = CBT_LP_SOLVER;
-    
+
     parfor i = 1:length(rxnNameList)
         %if mod(i,10) == 0, clear mex, end
         %if (verbFlag == 1),fprintf('iteration %d.  skipped %d\n', i, round(m));end
