@@ -1,32 +1,33 @@
 function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel,modeFlag,method)
-% [A,V] = fastcc(model,epsilon,printLevel)
+% The FASTCC algorithm for testing the consistency of a stoichiometric model.
+% Output A is the consistent part of the model [A,V] = fastcc(model, epsilon, printLevel)
 %
-% The FASTCC algorithm for testing the consistency of a stoichiometric model
-% Output A is the consistent part of the model
+% USAGE:
 %
-% INPUT
-% model         cobra model structure containing the fields
-%   S           m x n stoichiometric matrix
-%   lb          n x 1 flux lower bound
-%   ub          n x 1 flux uppper bound
-%   rxns        n x 1 cell array of reaction abbreviations
+%    [A, modelFlipped, V] = fastcc(model, epsilon, printLevel, modeFlag, method)
 %
-% epsilon
-% printLevel    0 = silent, 1 = summary, 2 = debug
+% INPUTS:
+%    model:         cobra model structure containing the fields:
 %
-% OPTIONAL INPUT
-% modeFlag      {(0),1}; 1=return matrix of modes V
+%                     * S - `m` x `n` stoichiometric matrix
+%                     * lb - `n` x 1 flux lower bound
+%                     * ub - `n` x 1 flux uppper bound
+%                     * rxns - `n` x 1 cell array of reaction abbreviations
+%    epsilon:       smallest flux that is considered nonzero
+%    printLevel:    0 = silent, 1 = summary, 2 = debug
 %
-% OUTPUT
-% A             n x 1 boolean vector indicating the flux consistent
-%               reactions
-% V             n x k matrix such that S(:,A)*V(:,A)=0 and |V(:,A)|'*1>0
-
-% (c) Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013
-%     LCSB / LSRU, University of Luxembourg
+% OPTIONAL INPUTS:
+%    modeFlag:      {(0),1}; 1=return matrix of modes V
+%    method:        'original' - default or 'nonconvex'
 %
-% Ronan Fleming      2014 Commenting of inputs/outputs/code
-% Ronan Fleming      2017 Added non-convex cardinality optimisation
+% OUTPUTS:
+%    A:             `n` x 1 boolean vector indicating the flux consistent reactions
+%    V:             `n` x `k` matrix such that `S(:,A) * V(:,A) = 0 and |V(:,A)|' * 1 > 0`
+%
+% .. Authors:
+%       - Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013 LCSB / LSRU, University of Luxembourg
+%       - Ronan Fleming      2014 Commenting of inputs/outputs/code
+%       - Ronan Fleming      2017 Added non-convex cardinality optimisation
 
 if ~exist('printLevel','var')
     printLevel = 2;

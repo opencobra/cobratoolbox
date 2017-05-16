@@ -1,22 +1,24 @@
 function [V, basis] = LP7( J, model, epsilon, basis)
-% CPLEX implementation of LP-7 for input set J (see FASTCORE paper)
-% Maximises the number of feasible fluxes in J whose value is at least
-% epsion
+% CPLEX implementation of LP-7 for input set J (see FASTCORE paper).
+% Maximises the number of feasible fluxes in J whose value is at least epsilon
 %
-%INPUT
-% J         indicies of irreversible reactions
-% model
-% epsilon   tolerance
+% USAGE:
 %
-%OUTPUT
-% V         optimal steady state flux vector
-
-
-% (c) Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013
-%     LCSB / LSRU, University of Luxembourg
+%    [V, basis] = LP7( J, model, epsilon, basis)
 %
-% Ronan Fleming      17/10/14 Commenting of inputs/outputs/code
-% Ronan Fleming      02/12/14 solveCobraLP compatible
+% INPUTS:
+%    J:         indicies of irreversible reactions
+%    model:     model
+%    epsilon:   tolerance
+%
+% OUTPUTS:
+%    V:         optimal steady state flux vector
+%    basis:     basis
+%
+% .. Authors:
+%       - Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013 LCSB / LSRU, University of Luxembourg
+%       - Ronan Fleming 17/10/14 Commenting of inputs/outputs/code
+%       - Ronan Fleming 02/12/14 solveCobraLP compatible
 
 nj = numel(J);
 [m,n] = size(model.S);
