@@ -1,19 +1,21 @@
 function geneID = findGeneIDs(model,geneList)
-%findGeneIDs Find gene numbers in a model
+% Finds gene numbers in a model
 %
-% geneID = findGeneIDs(model,geneList)
+% USAGE:
 %
-%INPUTS
-% model     COBRA model structure
-% geneList  List of genes
+%    geneID = findGeneIDs(model, geneList)
 %
-%OUTPUT
-% geneID    List of gene IDs corresponding to geneList
+% INPUTS:
+%    model:     COBRA model structure
+%    geneList:  List of genes
 %
-% Jeff Orth 7/16/09
+% OUTPUT:
+%    geneID:    List of gene IDs corresponding to `geneList`
+%
+% .. Author: - Jeff Orth 7/16/09
 
 if (iscell(geneList))
-    [tmp,geneID] = ismember(geneList,model.genes);    
+    [tmp,geneID] = ismember(geneList,model.genes);
 else
     geneID = find(strcmp(model.genes,geneList));
     if (isempty(geneID))

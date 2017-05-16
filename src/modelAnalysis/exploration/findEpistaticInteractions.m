@@ -1,43 +1,46 @@
 function [interactions,epistaticEffect] = findEpistaticInteractions(model,doubleDeletionFitness,lethalFlag,minEffect)
-%findEpistaticInteractions Finds synthetic lethal and/or synthetic sick
-%interactions based on double deletion analysis data
+% Finds synthetic lethal and/or synthetic sick
+% interactions based on double deletion analysis data
 %
-% [interactions,epistaticEffect] = findEpistaticInteractions(model,doubleDeletionFitness,lethalFlag,minEffect)
+% USAGE:
 %
-%INPUTS
-% model                 COBRA model structure
-% doubleDeletionFitness A matrix of fitness (or growth rate) values for
-%                       each of the double deletion strains. The diagonal
-%                       of this matrix contains the single deletion fitness
-%                       values.
+%    [interactions, epistaticEffect] = findEpistaticInteractions(model, doubleDeletionFitness, lethalFlag, minEffect)
 %
-%OPTIONAL INPUTS
-% lethalFlag            Only consider SL interactions (Default = false)
-% minEffect             Minimum fitness effect considered to be significant
-%                       (Default = 1e-2)
-% 
-%OUTPUTS
-% interactions          A sparse binary matrix indicating a SL or SS
-%                       interaction between two genes in the model
-% epistaticEffect       Magnitude of the epistatic interaction defined as
-%                       min(f1-f12,f2-f12) where f1 and f2 are the fitness
-%                       values for the deletion strain of gene 1 and gene 2
-%                       respectively and f12 is the fitness value for the
-%                       double deletion strain of genes 1 and 2
-% 
-% The criteria for establishing a synthetic sick interaction are that the
-% double deletion strain fitness must be at least minEffect lower than the
-% fitness of either of the single deletion strains, i.e. 
-%       f12 < f1-minEffect and f12 < f2-minEffect
+% INPUTS:
+%    model:                 COBRA model structure
+%    doubleDeletionFitness: A matrix of fitness (or growth rate) values for
+%                           each of the double deletion strains. The diagonal
+%                           of this matrix contains the single deletion fitness values.
 %
-% The additional criterion for establishing a synthetic lethal interaction
-% is that the double deletion fitness value is smaller than minEffect (i.e.
-% essentially zero)
-%       f12 < minEffect
-% 
-% Note that the interactions matrix double counts all interactions
+% OPTIONAL INPUTS:
+%    lethalFlag:            Only consider SL interactions (Default = false)
+%    minEffect:             Minimum fitness effect considered to be significant
+%                           (Default = 1e-2)
 %
-% Markus Herrgard 1/17/07
+% OUTPUTS:
+%    interactions:          A sparse binary matrix indicating a SL or SS
+%                           interaction between two genes in the model
+%    epistaticEffect:       Magnitude of the epistatic interaction defined as
+%                           min(f1-f12, f2-f12) where f1 and f2 are the fitness
+%                           values for the deletion strain of gene 1 and gene 2
+%                           respectively and f12 is the fitness value for the
+%                           double deletion strain of genes 1 and 2
+%
+% NOTE:
+%
+%    The criteria for establishing a synthetic sick interaction are that the
+%    double deletion strain fitness must be at least `minEffect` lower than the
+%    fitness of either of the single deletion strains, i.e.
+%    `f12 < f1 - minEffect` and `f12 < f2 - minEffect`
+%
+%    The additional criterion for establishing a synthetic lethal interaction
+%    is that the double deletion fitness value is smaller than `minEffect` (i.e.
+%    essentially zero)
+%    `f12 < minEffect`
+%
+%    Note that the interactions matrix double counts all interactions
+%
+% .. Author: - Markus Herrgard 1/17/07
 
 if (nargin < 3)
     lethalFlag = false;
@@ -55,7 +58,7 @@ epistaticEffect = zeros(nGenes,nGenes);
 
 for i = 1:nGenes
     fitness1 = singleDeletionFitness(i);
-    for j = i+1:nGenes        
+    for j = i+1:nGenes
         fitness2 = singleDeletionFitness(j);
         fitness12 = doubleDeletionFitness(i,j);
         isInteraction = fitness12 < fitness1-minEffect &  fitness12 < fitness2-minEffect;

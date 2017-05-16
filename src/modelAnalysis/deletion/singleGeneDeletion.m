@@ -1,31 +1,32 @@
 function [grRatio,grRateKO,grRateWT,hasEffect,delRxns,fluxSolution] = singleGeneDeletion(model,method,geneList,verbFlag,uniqueGene)
-%singleGeneDeletion Performs single gene deletion analysis using FBA, MOMA or
-%linearMOMA
+% Performs single gene deletion analysis using FBA, MOMA or linearMOMA
 %
-% [grRatio,grRateKO,grRateWT,delRxns,hasEffect] = singleGeneDeletion(model,method,geneList,verbFlag)
+% USAGE:
 %
-%INPUT
-% model         COBRA model structure including gene-reaction associations
+%    [grRatio, grRateKO, grRateWT, delRxns, hasEffect] = singleGeneDeletion(model, method, geneList, verbFlag)
 %
-%OPTIONAL INPUT
-% method        Either 'FBA', 'MOMA', or 'lMOMA' (Default = 'FBA')
-% geneList      List of genes to be deleted (default = all genes)
-% verbFlag      Verbose output (Default false)
-% uniqueGene    Run unique gene deletion (default = 0).
+% INPUT:
+%    model:         COBRA model structure including gene-reaction associations
+%
+% OPTIONAL INPUTS:
+%    method:        Either 'FBA', 'MOMA' or 'lMOMA' (Default = 'FBA')
+%    geneList:      List of genes to be deleted (default = all genes)
+%    verbFlag:      Verbose output (Default false)
+%    uniqueGene:    Run unique gene deletion (default = 0).
 %
 %
-%OUTPUTS
-% grRatio       Computed growth rate ratio between deletion strain and wild type
-% grRateKO      Deletion strain growth rates (1/h)
-% grRateWT      Wild type growth rate (1/h)
-% hasEffect     Does a gene deletion affect anything (i.e. are any reactions
-%               removed from the model)
-% delRxns       List of deleted reactions for each gene KO
-% fluxSolution  FBA/MOMA/lMOMA fluxes for KO strains
+% OUTPUTS:
+%    grRatio:       Computed growth rate ratio between deletion strain and wild type
+%    grRateKO:      Deletion strain growth rates (1/h)
+%    grRateWT:      Wild type growth rate (1/h)
+%    hasEffect:     Does a gene deletion affect anything (i.e. are any reactions
+%                   removed from the model)
+%    delRxns:       List of deleted reactions for each gene `KO`
+%    fluxSolution:  FBA/MOMA/lMOMA fluxes for `KO` strains
 %
-% Markus Herrgard 8/7/06
-% Aurich/Thiele 11/2015 unique gene deletion option (delete all alternate transcripts and if solKO.stat not 1 or 5, grRateKO(i) = NaN;)
-
+% .. Author:
+%       - Markus Herrgard 8/7/06
+%       - Aurich/Thiele 11/2015 unique gene deletion option (delete all alternate transcripts and if solKO.stat not 1 or 5, grRateKO(i) = NaN;)
 
 if (nargin < 2)
     method = 'FBA';

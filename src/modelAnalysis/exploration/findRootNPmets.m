@@ -1,20 +1,21 @@
 function gaps = findRootNPmets(model,findNCmets)
-%findRootNPmets Find the root no production (and no consumption) 
-%metabolites in a model, used by gapFind
+% Finds the root no production (and no consumption)
+% metabolites in a model, used by `gapFind`
 %
-% gaps = findRootNPmets(model,findNCmets)
+% USAGE:
 %
-%INPUT
-% model         a COBRA model
+%    gaps = findRootNPmets(model, findNCmets)
 %
-%OPTIONAL INPUT
-% findNCmets    find no consumption mets as well as no production (default
-%               false)
+% INPUT:
+%    model         a COBRA model
 %
-%OUTPUT
-% gaps          all root no production metabolites
+% OPTIONAL INPUT:
+%    findNCmets:    find no consumption mets as well as no production (default = false)
 %
-% Jeff Orth 7/15/09
+% OUTPUT:
+%    gaps:          all root no production metabolites
+%
+% .. Author: - Jeff Orth 7/15/09
 
 if nargin < 2
     findNCmets = false;
@@ -35,9 +36,9 @@ for i = 1:length(model.mets)
 end
 
 if findNCmets
-    
+
     isRootNCmet = zeros(length(model.mets),1);
-    
+
     for i = 1:length(model.mets)
         row = find(model.S(i,:)); %which rxns this met participates in
         rowR = ismember(row,find(model.rev)); %reversible rxns
@@ -56,7 +57,3 @@ if findNCmets
 else
     gaps = model.mets(isRootNPmet==1);
 end
-
-
-
-

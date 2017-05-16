@@ -1,17 +1,18 @@
 function validJunctionMets = findMetabolicJunctions(model,nRxnsJnc)
-%findMetabolicJunctions Find metabolic branchpoints with different numbers
-%of branches
+% Finds metabolic branchpoints with different numbers of branches
 %
-% validJunctionMets = findMetabolicJunctions(model,nRxnsJnc)
+% USAGE:
 %
-%INPUTS
-% model                 COBRA model structure
-% nRxnJnc               Number of reactions to be considered a junction
+%    validJunctionMets = findMetabolicJunctions(model, nRxnsJnc)
 %
-%OUTPUT
-% validJunctionMets     List of junction metabolites
+% INPUTS:
+%    model:                 COBRA model structure
+%    nRxnJnc:               Number of reactions to be considered a junction
 %
-% Markus Herrgard 12/14/06
+% OUTPUT:
+%    validJunctionMets:     List of junction metabolites
+%
+% .. Author: - Markus Herrgard 12/14/06
 
 if (isfield(model,'c'))
     selRxnsC = (model.c == 0);

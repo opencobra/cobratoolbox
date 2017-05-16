@@ -1,17 +1,19 @@
 function [GenSubSystem]  = findSubSysGen(model)
-%findSubSysGen lists the subsystem that a reaction occurs in encoded by a
-%gene. Returns list of subsystems. If multiple reactions are associated 
-%with gene, subsystem of first occurance will be listed.
+% Lists the subsystem that a reaction occurs in encoded by a
+% gene. Returns list of subsystems. If multiple reactions are associated
+% with gene, subsystem of first occurance will be listed.
 %
-% [GenSubSystem]  = findSubSysGen(model)
-%  
-%INPUT
-% model             COBRA model structure
+% USAGE:
 %
-%OUTPUT
-% GenSubSystem      array listing genes and subsystmes
+%    [GenSubSystem]  = findSubSysGen(model)
 %
-% Imes Thiele 10/09
+% INPUT:
+%    model:             COBRA model structure
+%
+% OUTPUT:
+%    GenSubSystem:      array listing genes and subsystmes
+%
+% .. Author: - Ines Thiele 10/09
 
 GenSubSystem(:,1) = model.genes;
 for i = 1 : length(model.genes)
