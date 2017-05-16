@@ -1,4 +1,4 @@
-function [selExc,selUpt] = findExcRxns(model,inclObjFlag,irrevFlag)
+function [selExc, selUpt] = findExcRxns(model, inclObjFlag, irrevFlag)
 % Finds exchange and uptake `rxns`
 %
 % USAGE:
@@ -9,7 +9,7 @@ function [selExc,selUpt] = findExcRxns(model,inclObjFlag,irrevFlag)
 %    model:            COBRA model structure
 %
 % OPTIONAL INPUTS:
-%    inclObjFlag:       Include objective `rxns` in the exchange rxn set (1) or not (0)
+%    inclObjFlag:      Include objective `rxns` in the exchange rxn set (1) or not (0)
 %                      (Default = false)
 %    irrevFlag:        Model is in irreversible format (1) or not
 %                      (Default = false)

@@ -1,10 +1,10 @@
-function [geneList]=findGenesFromRxns(model,reactions)
+function [geneList] = findGenesFromRxns(model, reactions)
 % Make a gene list of the genes that correspond to the
 % selected reactions
 %
 % USAGE:
 %
-%    [geneList]=findGenesFromRxns(model, reactions)
+%    [geneList] = findGenesFromRxns(model, reactions)
 %
 % INPUTS:
 %    model:         COBRA model structure
