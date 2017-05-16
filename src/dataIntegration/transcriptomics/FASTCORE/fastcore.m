@@ -1,5 +1,5 @@
 function A = fastcore(C, model, epsilon, printlevel)
-% The FASTCORE algorithm for context-specific metabolic network reconstruction
+% The FASTCORE algorithm for context-specific metabolic network reconstruction.
 % Input C is the core set, and output A is the reconstruction
 %
 % USAGE:

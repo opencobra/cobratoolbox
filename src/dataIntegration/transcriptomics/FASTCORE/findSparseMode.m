@@ -1,5 +1,5 @@
 function [Supp, basis] = findSparseMode( J, P, singleton, model, epsilon, basis)
-% Finds a mode that contains as many reactions from J and as few from P
+% Finds a mode that contains as many reactions from J and as few from P.
 % Returns its support, or [] if no reaction from J can get flux above epsilon
 %
 % USAGE:
@@ -7,15 +7,15 @@ function [Supp, basis] = findSparseMode( J, P, singleton, model, epsilon, basis)
 %    Supp = findSparseMode(J, P, singleton, model, epsilon)
 %
 % INPUTS:
-%    J:
-%    P:
-%    singleton:
+%    J:           Indicies of irreversible reactions
+%    P:           Reactions
+%    singleton:   Takes only first instance from J, else takes whole J
 %    model:       Model structure
 %    epsilon:     Parameter (default: 1e-4; see Vlassis et al for more details)
-%    basis:
+%    basis:       Basis
 %
 % OUTPUT:
-%    Supp:
+%    Supp:        Support or [] if no reaction from J can get flux above epsilon
 %    basis:
 %
 % .. Authors: - Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013 LCSB / LSRU, University of Luxembourg

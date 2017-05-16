@@ -1,6 +1,6 @@
 function A = fastCoreWeighted( C, model, epsilon )
-% Based on: "The FASTCORE algorithm for context-specific metabolic network reconstruction", Vlassis et
-% al., 2013, PLoS Comp Biol.
+% Based on: `The FASTCORE algorithm for context-specific metabolic network reconstruction, Vlassis et
+% al., 2013, PLoS Comp Biol.`
 %
 % USAGE:
 %

@@ -1,5 +1,5 @@
 function V = LP7cvx2(J, model, epsilon)
-%
+
 n = size(model.S,2);
 nj = numel(J);
 

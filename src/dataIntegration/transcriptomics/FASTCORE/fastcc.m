@@ -1,6 +1,6 @@
 function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel,modeFlag,method)
-% The FASTCC algorithm for testing the consistency of a stoichiometric model
-% Output A is the consistent part of the model [A,V] = fastcc(model,epsilon,printLevel)
+% The FASTCC algorithm for testing the consistency of a stoichiometric model.
+% Output A is the consistent part of the model [A,V] = fastcc(model, epsilon, printLevel)
 %
 % USAGE:
 %

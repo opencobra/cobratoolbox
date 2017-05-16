@@ -1,5 +1,5 @@
 function V = tmplp7cvx(J, model, epsilon)
-%
+
 nJ = numel(J);
 
 cvx_begin quiet

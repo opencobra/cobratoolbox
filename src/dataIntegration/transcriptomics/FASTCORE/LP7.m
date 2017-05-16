@@ -1,5 +1,5 @@
 function [V, basis] = LP7( J, model, epsilon, basis)
-% CPLEX implementation of LP-7 for input set J (see FASTCORE paper)
+% CPLEX implementation of LP-7 for input set J (see FASTCORE paper).
 % Maximises the number of feasible fluxes in J whose value is at least epsilon
 %
 % USAGE:
@@ -13,7 +13,7 @@ function [V, basis] = LP7( J, model, epsilon, basis)
 %
 % OUTPUTS:
 %    V:         optimal steady state flux vector
-%    basis:
+%    basis:     basis
 %
 % .. Authors:
 %       - Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013 LCSB / LSRU, University of Luxembourg
