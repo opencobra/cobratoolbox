@@ -1,4 +1,4 @@
-function [GeneClasses RxnClasses modelIrrevFM] = pFBA_new(model, varargin)
+function [GeneClasses RxnClasses modelIrrevFM] = pFBA(model, varargin)
 % Parsimoneous enzyme usage Flux Balance Analysis - method that optimizes
 % the user's objective function and then minimizes the flux through the
 % model and subsequently classifies each gene by how it contributes to the
@@ -83,7 +83,8 @@ else
     [selExc,selUpt] = findExcRxns(model,0,0); % find and open up all exchanges
     tempmodel = changeRxnBounds(model,model.rxns(selExc),-1000,'l');
     tempmodel = changeRxnBounds(tempmodel,model.rxns(selExc),1000,'u');
-            
+    
+    %Note can be performed faster using fastFVA instead of fluxVariability
     [maxF minF] = fluxVariability(tempmodel,.001);
     Blocked_Rxns = model.rxns(and(abs(maxF)<tol,abs(minF)<tol));
     model = removeRxns(model,Blocked_Rxns); % remove blocked reactions
@@ -103,7 +104,8 @@ else
         pFBAEssentialRxns = model.rxns(RxnRatio<tol);
     end
 
-    % remove zero flux rxns
+    % remove zero flux rxns  - Note can be performed faster using fastFVA
+    % instead of fluxVariability
     [maxF,minF] = fluxVariability(model,.001);
     ZeroFluxRxns = model.rxns(and(abs(maxF)<tol,abs(minF)<tol));
     model = removeRxns(model,ZeroFluxRxns);
@@ -112,8 +114,7 @@ else
     FBAsoln = optimizeCbModel(model);
     model.lb(model.c==1) = FBAsoln.f;
     
-    %Can be performed faster using fastFVA instead of fluxVariability
-    %[minFlux,maxFlux] = fastFVA(model,100);
+    %Note can be performed faster using fastFVA instead of fluxVariability
     [minFlux,maxFlux] = fluxVariability(model,100);
     for i = 1:length(minFlux)
         tmp(i,1) = max([abs(minFlux(i)) abs(maxFlux(i))])<tol;
