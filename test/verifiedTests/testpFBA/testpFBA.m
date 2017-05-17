@@ -47,6 +47,12 @@ for k = 1:length(solverPkgs)
 
         % run pFBA
         fprintf('\n*** Test basic pFBA calculations ***\n\n');
+        fprintf('\n** Optimal solution - minimize flux not associated with gene: glucose\n');
+        [t_objGenes.GeneClasses_glc1 t_objRxns.RxnClasses_glc1 t_objModel.modelIrrev_glc1] = pFBA(model_glc, 'geneoption', 2);
+
+        fprintf('\n** Optimal solution - minimize flux not associated with gene: lactate\n');
+        [t_objGenes.GeneClasses_lac1 t_objRxns.RxnClasses_lac1 t_objModel.modelIrrev_lac1] = pFBA(model_lac, 'geneoption', 2);
+        
         fprintf('\n** Optimal solution - minimize gene-associated flux: glucose\n');
         [t_objGenes.GeneClasses_glc1 t_objRxns.RxnClasses_glc1 t_objModel.modelIrrev_glc1] = pFBA(model_glc, 'geneoption', 1);
 
