@@ -82,8 +82,9 @@ for k = 1:length(solverPkgs)
 
             %Vmin and Vmax test
             %Since the solution are dependant on solvers and cpus, the test
-            %will check the existence of nargout (weak test) over the 10
+            %will check the existence of nargout (weak test) over the 4
             %first reactions
+            rxnNames = {'PGI', 'PFK', 'FBP', 'FBA'};
             %default (2-norm)
             [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
                 rxnNames,1, 1);
@@ -119,7 +120,6 @@ for k = 1:length(solverPkgs)
                 rxnNames,1, 1, 'minOrigSol');
             assert(~isequal(Vmin,[]));
             assert(~isequal(Vmax,[]));
-
         end
         % output a success message
         fprintf('Done.\n');
