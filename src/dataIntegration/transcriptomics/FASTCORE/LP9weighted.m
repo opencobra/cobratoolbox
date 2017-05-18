@@ -1,8 +1,7 @@
-function V = LP9weighted( W, K, P, model, epsilon )
-
-% W are n x 1 nonnegative weights (NOTE: it penalizes high weights)
+function V = LP9weighted(W, K, P, model, epsilon)
 
 scalingfactor = 1e5;
+% W are n x 1 nonnegative weights (NOTE: it penalizes high weights)
 
 V = [];
 if isempty(P) || isempty(K)

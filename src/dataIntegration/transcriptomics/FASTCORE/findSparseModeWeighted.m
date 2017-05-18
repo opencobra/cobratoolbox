@@ -1,27 +1,28 @@
 function Supp = findSparseModeWeighted( J, P, singleton, model, epsilon )
+% Finds a mode that contains as many reactions from J and as few from P.
+% Returns its support, or [] if no reaction from J can get flux above epsilon.
+% Based on: `The FASTCORE algorithm for context-specific metabolic network reconstruction.
+% Input C is the core set, and output A is the reconstruction, Vlassis et
+% al., 2013, PLoS Comp Biol.`
 %
-% Supp = findSparseMode( J, P, singleton, model, epsilon )
+% USAGE:
 %
-% Finds a mode that contains as many reactions from J and as few from P
-% Returns its support, or [] if no reaction from J can get flux above epsilon
-% Based on: "The FASTCORE algorithm for context-specific metabolic network reconstruction
-% Input C is the core set, and output A is the reconstruction", Vlassis et
-% al., 2013, PLoS Comp Biol.
+%    Supp = findSparseMode( J, P, singleton, model, epsilon )
 %
-% INPUT
-% J
-% P
-% singleton
-% model
-% epsilon
+% INPUTS:
+%    J:           Indicies of irreversible reactions
+%    P:           Reactions
+%    singleton:   Takes only first instance from J, else takes whole J
+%    model:       Model structure
+%    epsilon:     Parameter (default: 1e-4; see Vlassis et al for more details)
 %
-% OUTPUT
-% Supp
+% OUTPUT:
+%    Supp:        Support or [] if no reaction from J can get flux above epsilon
 %
-% Ines Thiele, Dec 2013
+% .. Author: - Ines Thiele, Dec 2013
 
 Supp = [];
-if isempty( J ) 
+if isempty( J )
   return;
 end
 
@@ -31,9 +32,9 @@ else
   V = LP7( J, model, epsilon );
 end
 
-K = intersect( J, find(V >= 0.99*epsilon) );   
+K = intersect( J, find(V >= 0.99*epsilon) );
 
-if isempty( K ) 
+if isempty( K )
   return;
 end
 

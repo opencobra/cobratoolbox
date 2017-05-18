@@ -1,37 +1,31 @@
 function [model,hasEffect,constrRxnNames,deletedGenes] = deleteModelGenes(model,geneList,downRegFraction)
-%deleteModelGenes Delete one or more genes and constrain the reactions
-%affected to zero and appends '_deleted' to the gene(s)
+% Deletes one or more genes and constrain the reactions
+% affected to zero and appends '_deleted' to the gene(s)
 %
-% [model,hasEffect,constrRxnNames,deletedGenes] =
-% deleteModelGenes(model,geneList,downRegFraction)
+% USAGE:
 %
-%INPUT
-% model             COBRA model with the appropriate constrains for a 
-%                   particular condition
+%    [model, hasEffect, constrRxnNames, deletedGenes] = deleteModelGenes(model, geneList, downRegFraction)
 %
-%OPTIONA INPUTS
-% geneList          List of genes to be deleted (Default =  all genes in
-%                   model)
-% downRegFraction   Fraction of the original bounds that the reactions
-%                   corresponding to downregulated genes will be assigned
-%                   (Default = 0 corresponding to a full deletion)
+% INPUT:
+%    model:             COBRA model with the appropriate constrains for a
+%                       particular condition
 %
-%OUTPUTS
-% model             COBRA model with the selected genes deleted
-% hasEffect         True if the gene deletion has an effect on the model
-% constrRxnNames    Reactions that are associated to the genes in geneList
-% deletedGenes      The list of genes removed from the model.  
+% OPTIONAL INPUTS:
+%    geneList:          List of genes to be deleted (Default =  all genes in model)
+%    downRegFraction:   Fraction of the original bounds that the reactions
+%                       corresponding to downregulated genes will be assigned
+%                       (Default = 0 corresponding to a full deletion)
 %
-%%%%% FIXED
-% Note that deleting a set of genes one after another has a different effect than deleting them all at once.
-% This is because of the case where a reaction has boolean string (geneA or geneB).  
-% Deleting geneA will not turn off the reaction and subsequently deleting geneB will also not delete the reaction.
-% It is therefore better to delete a list of genes at once.  -Jan Schellenberger (4/07/08)
-%%%%%
+% OUTPUTS:
+%    model:             COBRA model with the selected genes deleted
+%    hasEffect:         True if the gene deletion has an effect on the model
+%    constrRxnNames:    Reactions that are associated to the genes in `geneList`
+%    deletedGenes:      The list of genes removed from the model.
 %
-% Markus Herrgard 8/28/06
-% Josh Lerman and Richard Que 04/21/10 - Added an error if non-existent gene.
-% Richard Que (04/22/2010) - '_deleted' is appended to deleted gene names
+% .. Authors:
+%       - Markus Herrgard 8/28/06
+%       - Josh Lerman and Richard Que 04/21/10 - Added an error if non-existent gene.
+%       - Richard Que (04/22/2010) - '_deleted' is appended to deleted gene names
 
 if (nargin < 2)
     geneList = model.genes;
@@ -64,15 +58,15 @@ deletedGenes = {};
 
 if (all(isInModel))
 
-  %If there are any zero elements in geneInd remove them from the 
-  %geneList and the geneInd because they correspond to genes that 
+  %If there are any zero elements in geneInd remove them from the
+  %geneList and the geneInd because they correspond to genes that
   %are not in the model.
   deletedGenes = geneList( find( geneInd ) );
   geneInd = geneInd( find( geneInd ) );
-  
+
   %mark genes for deletion
   model.genes(geneInd) = strcat(model.genes(geneInd),'_deleted');
-  
+
     % Find rxns associated with this gene
     rxnInd = find(any(model.rxnGeneMat(:,geneInd),2));
     if (~isempty(rxnInd))
@@ -82,7 +76,7 @@ if (all(isInModel))
         constrainRxn = false(length(rxnInd),1);
         % Figure out if any of the reaction states is changed
         for j = 1:length(rxnInd)
-            if (~isempty(model.rules{rxnInd(j)})) %To avoid errors if the rule is empty                
+            if (~isempty(model.rules{rxnInd(j)})) %To avoid errors if the rule is empty
                 if (~eval(model.rules{rxnInd(j)}))
                     constrainRxn(j) = true;
                 end
@@ -104,4 +98,3 @@ if (all(isInModel))
 else
     error(['Gene',' ',geneList{~isInModel}, ' not in model!']);
 end
-

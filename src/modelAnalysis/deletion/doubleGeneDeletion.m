@@ -1,26 +1,26 @@
 function [grRatioDble,grRateKO,grRateWT] = doubleGeneDeletion(model,method,geneList1,geneList2,verbFlag)
-%doubleGeneDeletion Performs double gene deletion analysis using FBA, MOMA,
-%or linear MOMA
+% Performs double gene deletion analysis using FBA, MOMA or linear MOMA
 %
-% [grRatioDble,grRateKO,grRateWT] =
-%     doubleGeneDeletion(model,method,geneList1,geneList2,verbFlag)
+% USAGE:
 %
-%INPUT
-% model         COBRA model structure
+%    [grRatioDble, grRateKO, grRateWT] = doubleGeneDeletion(model, method, geneList1, geneList2, verbFlag)
 %
-%OPTIONAL INPUTS
-% method        Either 'FBA' (default) 'MOMA', or 'lMOMA'
-% geneList1     List of query genes to be deleted (default = all genes)
-% geneList2     List of target genes to be deleted (default = geneList1)
-% verbFlag      Verbose output (default = false)
+% INPUT:
+%    model:         COBRA model structure
 %
-%OUTPUTS
-% grRatioDble   Computed growth rate ratio between double deletion strain
-%               and wild type
-% grRateKO      Double deletion strain growth rates (1/h)
-% grRateWT      Wild type growth rate (1/h)
+% OPTIONAL INPUTS:
+%    method:        Either 'FBA' (default), 'MOMA' or 'lMOMA'
+%    geneList1:     List of query genes to be deleted (default = all genes)
+%    geneList2:     List of target genes to be deleted (default = geneList1)
+%    verbFlag:      Verbose output (default = false)
 %
-% Markus Herrgard 8/8/06
+% OUTPUTS:
+%    grRatioDble:   Computed growth rate ratio between double deletion strain
+%                   and wild type
+%    grRateKO:      Double deletion strain growth rates (1/h)
+%    grRateWT:      Wild type growth rate (1/h)
+%
+% .. Author: -  Markus Herrgard 8/8/06
 
 if (nargin < 2)
     method = 'FBA';

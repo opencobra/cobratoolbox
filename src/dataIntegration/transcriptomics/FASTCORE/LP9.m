@@ -1,11 +1,11 @@
-function V = LP9( K, P, model, epsilon )
-%
-% V = LP9( K, P, model, epsilon )
-%
+function V = LP9(K, P, model, epsilon)
 % CPLEX implementation of LP-9 for input sets K, P (see FASTCORE paper)
-
-% (c) Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013
-%     LCSB / LSRU, University of Luxembourg
+%
+% USAGE:
+%
+%    V = LP9(K, P, model, epsilon)
+%
+% .. Authors: -  Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013 LCSB / LSRU, University of Luxembourg
 
 
 scalingfactor = 1e5;

@@ -1,85 +1,80 @@
-function [solutionDel,solutionWT,totalFluxDiff,solStatus] = ...
-    MOMA(modelWT,modelDel,osenseStr,verbFlag,minNormFlag)
-%MOMA Performs a quadratic version of the MOMA (minimization of
-%metabolic adjustment) approach 
+function [solutionDel,solutionWT,totalFluxDiff,solStatus] = MOMA(modelWT,modelDel,osenseStr,verbFlag,minNormFlag)
+% Performs a quadratic version of the MOMA (minimization of
+% metabolic adjustment) approach
 %
-% [solutionDel,solutionWT,totalFluxDiff,solStatus] = MOMA(modelWT,modelDel,osenseStr,verbFlag,minNormFlag)
+% USAGE:
 %
-%INPUTS
-% modelWT           Wild type model
-% modelDel          Deletion strain model
+%    [solutionDel, solutionWT, totalFluxDiff, solStatus] = MOMA(modelWT, modelDel, osenseStr, verbFlag, minNormFlag)
 %
-%OPTIONAL INPUTS
-% osenseStr         Maximize ('max')/minimize ('min') (Default = 'max')
-% verbFlag          Verbose output (Default = false)
-% minNormFlag       Work with minimum 1-norm flux distribution for the FBA
-%                   problem (Default = false)
-% 
-%OUTPUTS
-% solutionDel       Deletion solution structure
-% solutionWT        Wild-type solution structure
-% totalFluxDiff     Value of the linear MOMA objective, i.e.
-%                   sum(v_wt-v_del)^2
-% solStatus         Solution status
+% INPUTS:
+%    modelWT:           Wild type model
+%    modelDel:          Deletion strain model
 %
-% Solves two different types of MOMA problems:
+% OPTIONAL INPUTS:
+%    osenseStr:         Maximize ('max') / minimize ('min') (Default = 'max')
+%    verbFlag:          Verbose output (Default = false)
+%    minNormFlag:       Work with minimum 1-norm flux distribution for the FBA
+%                       problem (Default = false)
 %
-% 1) MOMA that avoids problems with alternative optima (this is the
-% default)
+% OUTPUTS:
+%    solutionDel:       Deletion solution structure
+%    solutionWT:        Wild-type solution structure
+%    totalFluxDiff:     Value of the linear MOMA objective, i.e.
+%                       `sum(v_wt-v_del)^2`
+%    solStatus:         Solution status - solves two different types of MOMA problems:
 %
-%    First solve:
-%    
-%    max c_wt'*v_wt0
-%     lb_wt <= v_wt0 <= ub_wt
-%     S_wt*v_wt0 = 0
-%    
-%    Then solve: 
+%                         1.  MOMA that avoids problems with alternative optima (this is the
+%                             default)
+%                         2.  MOMA that uses a minimum 1-norm wild type FBA solution (this approach
+%                             is used if minNormFlag = true)
+% .. math::
+%      First solve:
+%      max c_wt'*v_wt0
+%      lb_wt <= v_wt0 <= ub_wt
+%      S_wt*v_wt0 = 0
 %
-%    min sum(v_wt - v_del)^2
-%     S_wt*v_wt = 0
-%     S_del*v_del = 0
-%     lb_wt <= v_wt <= ub_wt
-%     lb_del <= v_del <= ub_del
-%     c_wt'*v_wt = f_wt
+%      Then solve:
+%      min sum(v_wt - v_del)^2
+%      S_wt*v_wt = 0
+%      S_del*v_del = 0
+%      lb_wt <= v_wt <= ub_wt
+%      lb_del <= v_del <= ub_del
+%      c_wt'*v_wt = f_wt
 %
-%   Here f_wt is the optimal wild type objective value found by FBA in the
-%   first problem. Note that the FBA solution v_wt0 is not used in the second
-%   problem. This formulation avoids any problems with alternative optima
+%      Here f_wt is the optimal wild type objective value found by FBA in the
+%      first problem. Note that the FBA solution v_wt0 is not used in the second
+%      problem. This formulation avoids any problems with alternative optima
 %
-% 2) MOMA that uses a minimum 1-norm wild type FBA solution (this approach
-% is used if minNormFlag = true)
 %
-%    First solve
+% .. math::
+%      First solve
+%      max c_wt'*v_wt0
+%      lb_wt <= v_wt0 <= ub_wt
+%      S_wt*v_wt0 = 0
 %
-%    max c_wt'*v_wt0
-%     lb_wt <= v_wt0 <= ub_wt
-%     S_wt*v_wt0 = 0
+%      Then solve
+%      min |v_wt|
+%      S_wt*v_wt = b_wt
+%      c_wt'*v_wt = f_wt
+%      lb_wt <= v_wt <= ub_wt
 %
-%    Then solve
+%      Here f_wt is the objective value obtained in the 1st optimization.
 %
-%    min |v_wt|
-%     S_wt*v_wt = b_wt
-%     c_wt'*v_wt = f_wt
-%     lb_wt <= v_wt <= ub_wt
-%    
-%    Here f_wt is the objective value obtained in the 1st optimization.
+%      Finally solve:
+%      min sum(v_wt - v_del)^2
+%      S_del*v_del = 0
+%      lb_del <= v_del <= ub_del
 %
-%    Finally solve:
+% NOTE::
 %
-%    min sum(v_wt - v_del)^2
-%     S_del*v_del = 0
-%     lb_del <= v_del <= ub_del
+%    1) These formulation allows for selecting for more appropriate
+%    optimal wild type FBA solutions as the starting point as opposed to
+%    picking an arbitrary starting point (original MOMA implementation).
 %
-% Notes:
+%    2) The reaction sets in the two models do not have to be equal as long as
+%    there is at least one reaction in common
 %
-% 1) These formulation allows for selecting for more appropriate
-% optimal wild type FBA solutions as the starting point as opposed to
-% picking an arbitrary starting point (original MOMA implementation).
-%
-% 2) The reaction sets in the two models do not have to be equal as long as
-% there is at least one reaction in common
-%
-% Markus Herrgard 11/7/06
+% .. Author: - Markus Herrgard 11/7/06
 
 if (nargin <3 || isempty(osenseStr))
     osenseStr = 'max';
@@ -151,7 +146,7 @@ end
 %       delta = v1 - v2
 
 if (solutionWT.stat > 0)
-    
+
     if minNormFlag
 
         b = zeros(nMets2,1);
@@ -201,11 +196,11 @@ if (solutionWT.stat > 0)
             sparse(nCommon,nRxns1+nRxns2) 2*eye(nCommon)];
 
     end
-    
+
     if (verbFlag)
         fprintf('Solving MOMA: %d constraints %d variables ',size(A,1),size(A,2));
     end
-    
+
     % Solve the linearMOMA problem
     [QPproblem.A,QPproblem.b,QPproblem.F,QPproblem.c,QPproblem.lb,QPproblem.ub,QPproblem.csense,QPproblem.osense] = deal(A,b,F,c,lb,ub,csense,1);
     %QPsolution = solveCobraQP(QPproblem,[],verbFlag-1);
@@ -230,9 +225,7 @@ if (solutionWT.stat > 0)
     solStatus = QPsolution.stat;
     solutionDel.solver = QPsolution.solver;
     solutionDel.time = QPsolution.time;
-    
+
 else
     warning('Wild type FBA problem is infeasible or unconstrained');
 end
-
-

@@ -1,19 +1,21 @@
 function metID = findMetIDs(model,metList)
-%findMetIDs Find metabolite numbers in a model
+% Find metabolite numbers in a model
 %
-% metID = findMetIds(model,metList)
+% USAGE:
 %
-%INPUTS
-% model         COBRA model structure
-% metList       List of metabolites
+%    metID = findMetIds(model, metList)
 %
-%OUTPUT
-% metID         List of metabolite IDs corresponding to metList
+% INPUTS:
+%    model:         COBRA model structure
+%    metList:       List of metabolites
 %
-% Jan Schellenberger 8/15/08
+% OUTPUT:
+%    metID:         List of metabolite IDs corresponding to `metList`
+%
+% .. Author: - Jan Schellenberger 8/15/08
 
 if (iscell(metList))
-    [tmp,metID] = ismember(metList,model.mets);    
+    [tmp,metID] = ismember(metList,model.mets);
 else
     metID = find(strcmp(model.mets,metList));
     if (isempty(metID))

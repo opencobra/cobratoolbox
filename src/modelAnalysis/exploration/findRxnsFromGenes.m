@@ -1,27 +1,30 @@
-function [results ListResults] = findRxnsFromGenes(model, genes, numericFlag, ListResultsFlag)
-%findRxnsFromGenes print every reaction associated with a gene of interest
+function [results, ListResults] = findRxnsFromGenes(model, genes, numericFlag, ListResultsFlag)
+% Print every reaction associated with a gene of interest
 %
-% [results ListResults] = findRxnsFromGenes(model, genes, numericFlag,ListResultsFlag)
+% USAGE:
 %
-%INPUTS
-% model                 COBRA model structure
-% genes                 string of single gene or cell array of multiple
-%                       genes for which rxns are desired.
+%    [results, ListResults] = findRxnsFromGenes(model, genes, numericFlag, ListResultsFlag)
 %
-%OPTIONAL INPUTS
-% numericFlag             1 if using Human Recon  (Default = 0)
-% ListResultsFlag       1 if you want to output ListResults (Default = 0)
+% INPUTS:
+%    model:                 COBRA model structure
+%    genes:                 string of single gene or cell array of multiple
+%                           genes for which `rxns` are desired.
 %
-%OPUTPUTS
-% results               structure containing cell arrays for each gene.
-%                       Each cell array has one column of rxn abbreviations
-%                       and one column containing the reaction formulae
-% ListResults           same as above, but in a cell array
-% 
-% by Nathan Lewis 02/16/08
-% edited 04/05/09 (MUCH faster now -- NL)
-% edited 06/11/10 (yet even faster now -- NL)
-% edited interface for backward compatibility (Ronan, Ines)
+% OPTIONAL INPUTS:
+%    numericFlag:           1 if using Human Recon  (Default = 0)
+%    ListResultsFlag:       1 if you want to output `ListResults` (Default = 0)
+%
+% OUTPUTS:
+%    results:               structure containing cell arrays for each gene.
+%                           Each cell array has one column of rxn abbreviations
+%                           and one column containing the reaction formula
+%    ListResults:           same as above, but in a cell array
+%
+% .. Author:
+%       - Nathan Lewis 02/16/08
+%       - edited 04/05/09 (MUCH faster now -- NL)
+%       - edited 06/11/10 (yet even faster now -- NL)
+%       - Ronan, Ines - edited interface for backward compatibility
 
 if nargin==4
    warning('3rd argument is numericFlag, currently redundant, will be depreciated')
@@ -55,7 +58,7 @@ genes = regexprep(genes,'\.','_POINT_');
 GeneID(1) = 0;
 for j = 1:length(genes)
     Ind = find(~cellfun('isempty', regexp(model.genes,cat(2,'^',genes{j},'$'))));
-    
+
             if ~isempty(Ind)
                 GeneID(j) = Ind;
             end
@@ -73,7 +76,7 @@ if min(GeneID) == 0
 end
 results = struct([]);
 for i = 1:length(GeneID)
-    
+
     k=1;
     Ind_rxns = find(model.rxnGeneMat(:,GeneID(i))==1);
     for j=1:length(Ind_rxns)
@@ -86,12 +89,12 @@ for i = 1:length(GeneID)
 				tempGene = regexprep(genes{i},'[^a-zA-Z0-9_]','_');
             else tempGene = genes{i};
             end
-			
+
 			%If gene starts with a digit it cannot be a field name, prepend gene_ to correct
 			if regexp(tempGene,'^\d')
 				tempGene = cat(2,'gene_',tempGene);
 			end
-			
+
             results.(tempGene){k,1} = model.rxns(Ind_rxns(j));
             results.(tempGene)(k,2) = printRxnFormula(model,model.rxns(Ind_rxns(j)),0);
             if isfield(model,'subSystems')
@@ -111,18 +114,18 @@ if isempty(results)
 else
     if ListResultsFlag ==1
     tmp = fieldnames(results);
-    
-    for i = 1:length(tmp) 
+
+    for i = 1:length(tmp)
         tmp2 = results.(tmp{i});
         ListResults(end+1:end+length(tmp2(:,1)),1:4) = tmp2;
         ListResults(end-length(tmp2(:,1))+1:end,5) = tmp(i);
     end
-    
-   
+
+
     for j = 1:length(ListResults(:,1))
         ListResults(j,1) = ListResults{j,1};
     end
-    
+
     end
-    
+
 end

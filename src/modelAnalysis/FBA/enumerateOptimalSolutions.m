@@ -1,21 +1,22 @@
 function [solution] = enumerateOptimalSolutions(model)
-%enumerateOptimalSolution returns a set of optimal flux distributions
-%spanning the optimal set
+% Returns a set of optimal flux distributions
+% spanning the optimal set
 %
-%[solution] enumerateOptimalSolution(model) 
+% USAGE:
 %
-%INPUT
-% model         COBRA model structure
+%    [solution] = enumerateOptimalSolution(model)
 %
-%OUTPUT
-% solution      solution strcture
-%   fluxes      Flux distribution for each iteration
-%   nonzero     Boolean matrix denoting which fluxes are nonzero for each
-%               iteration
+% INPUT:
+%    model:         COBRA model structure
 %
-% Author:  Jan Schellenberger, August 2008
-% Based on code by Jennie Reed 
-% Reed, J.L. and Palsson, B.O., "Genome-scale in silico models of ''E. coli'' have multiple equivalent phenotypic states: assessment of correlated reaction subsets that comprise network states" , Genome Research, 14:1797-1805(2004). 
+% OUTPUT:
+%    solution:      solution structure
+%
+%      * fluxes - Flux distribution for each iteration
+%      * nonzero - Boolean matrix denoting which fluxes are nonzero for each iteration
+%
+% .. Author: - Jan Schellenberger, August 2008 - Based on code by Jennie Reed
+% .. Reed, J.L. and Palsson, B.O., "Genome-scale in silico models of ''E. coli'' have multiple equivalent phenotypic states: assessment of correlated reaction subsets that comprise network states" , Genome Research, 14:1797-1805(2004).
 
 
 [m,n] = size(model.S);
@@ -35,7 +36,7 @@ solution.nonzero = prevNZ;
 while 1
     % variables:
     %    v's (n), y's (n) w's (n)  3n total variables
-    
+
     % constriants:
     %    m mass balance constraints
     A = [model.S, zeros(m,2*n)];
@@ -45,34 +46,34 @@ while 1
         csense(end+1) = 'E';
     end
     % constrain UB fluxes w/ integer constraints
-    A = [A; 
+    A = [A;
         [eye(n,2*n), -diag(model.ub)] ];
     b = [b;
         zeros(n,1)];
     for i = 1:n
         csense(end+1) = 'L';
-    end    
+    end
     % constrain LB fluxes w/ integer constraints
-    A = [A; 
+    A = [A;
         eye(n,2*n), -diag(model.lb) ];
     b = [b;
         zeros(n,1)];
     for i = 1:n
         csense(end+1) = 'G';
-    end    
-    
+    end
 
-    % constrain w+y <=1 
-    A = [A; 
+
+    % constrain w+y <=1
+    A = [A;
         zeros(n,n), eye(n,n), eye(n,n) ];
     b = [b;
         ones(n,1)];
     for i = 1:n
         csense(end+1) = 'L';
-    end    
+    end
 
     % constrain with previous zero results
-    A = [A; 
+    A = [A;
         zeros(1,n), prevNZ', zeros(1,n) ];
     b = [b;
         1];
@@ -85,7 +86,7 @@ while 1
         b(end+1) = sum(NZ(:,i))-1;
         csense(end+1) = 'L';
     end
-    
+
     % vartype
     vartype = [];
     for i = 1:n
@@ -97,11 +98,11 @@ while 1
 
     % lb,ub
     lb = [model.lb; zeros(2*n,1)];
-    ub = [model.ub; ones(2*n,1)];    
+    ub = [model.ub; ones(2*n,1)];
     % c
     c = [model.c; zeros(2*n,1)];
 
-    
+
     % create structure
     MILPproblem.A = A;
     MILPproblem.b = b;
@@ -114,7 +115,7 @@ while 1
     MILPproblem.x0 = [];%zeros(2*n,1);
     %MILPproblem.intSolInd = [];
     %MILPproblem.contSolInd = [];
-    
+
 %    pause;
     MILPsol = solveCobraMILP(MILPproblem)
 %    MILPsol.full

@@ -1,20 +1,19 @@
 function orphans = findOrphanRxns(model)
-%findOrphanRxns find all orphan reactions in model (reactions with no 
-%associated genes), not including exchange rxns
+% Finds all orphan reactions in model (reactions with no
+% associated genes), not including exchange `rxns`
 %
-% orphans = findOrphanRxns(model)
+% USAGE:
 %
-%INPUT
-% model         a COBRA model with GPRs
+%    orphans = findOrphanRxns(model)
 %
-%OUTPUT
-% orphans       all orphan reactions in the model
+% INPUT:
+%    model:         a COBRA model with GPRs
 %
-% Jeff Orth 4/15/09
+% OUTPUT:
+%    orphans:       all orphan reactions in the model
+%
+% .. Author: - Jeff Orth 4/15/09
 
 rxns = find(strcmp('',model.grRules));
 [selExc,selUpt] = findExcRxns(model,true,false);
 orphans = model.rxns(setdiff(rxns,find(selExc)));
-
-
-

@@ -1,10 +1,13 @@
 function [V, basis] = LP3(J, model, basis)
 % CPLEX implementation of LP-3 for input set J (see FASTCORE paper)
-
-% (c) Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013
-%     LCSB / LSRU, University of Luxembourg
 %
-% Ronan Fleming      02/12/14 solveCobraLP compatible
+% USAGE:
+%
+%    [V, basis] = LP3(J, model, basis)
+%
+% .. Authors:
+%       - Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013 LCSB / LSRU, University of Luxembourg
+%       - Ronan Fleming      02/12/14 solveCobraLP compatible
 
 [m,n] = size(model.S);
 

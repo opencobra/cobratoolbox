@@ -1,21 +1,24 @@
 function blockedReactions = findBlockedReaction(model, method)
-%findBlockedReaction determines those reactions which cannot carry any 
-%flux in the given simulation conditions.
+% Determines those reactions which cannot carry any
+% flux in the given simulation conditions.
 %
-% BlockedReaction = findBlockedReaction(model)
+% USAGE:
 %
-%INPUT
-% model              COBRA model structure
-% method(optional)   'FVA' for flux variability analysis (default)
-%                    'L2'  for 2-norm minimization
-%OUTPUT
-% blockedReactions   List of blocked reactions
+%    BlockedReaction = findBlockedReaction(model)
 %
+% INPUTS:
+%    model:              COBRA model structure
 %
-% Ines Thiele 02/09
-% Srikiran C 07/14 - fixed error - assigning cells to blockedReactions
-% which is a double
-% Marouen BEN GUEBILA - used 2-norm min as a heuristic for non-sparsity
+% OPTIONAL INPUT:
+%    method:             'FVA' for flux variability analysis (default)
+%                        'L2'  for 2-norm minimization
+% OUTPUT:
+%    blockedReactions:   List of blocked reactions
+%
+% .. Authors:
+%       - Ines Thiele 02/09
+%       - Srikiran C 07/14 - fixed error - assigning cells to blockedReactions which is a double
+%       - Marouen BEN GUEBILA - used 2-norm min as a heuristic for non-sparsity
 
 blockedReactions = cellstr('');
 if (nargin < 2 || isequal(method, 'FVA'))

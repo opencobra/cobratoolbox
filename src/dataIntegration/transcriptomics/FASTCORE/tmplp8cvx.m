@@ -1,8 +1,7 @@
-
 cvx_begin quiet
   variable v(n);
   variable w(n);
-  
+
   minimize( sum(w(Penal)))
 
   v(Penal)>=-w(Penal); v(Penal)<=w(Penal);

@@ -174,12 +174,6 @@ end
 
 % check if the global environment variable is properly set
 if ~ENV_VARS.STATUS
-    solversLink = 'https://git.io/v92Vi'; % curl -i https://git.io -F "url=https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md"
-    if usejava('desktop')
-        solversLink = ['<a href=\"', solversLink, '\">these instructions</a>'];
-    else
-        solversLink = ['the instruction on ', solversLink];
-    end
 
     if isempty(GUROBI_PATH) || isempty(ILOG_CPLEX_PATH) || isempty(TOMLAB_PATH) || isempty(MOSEK_PATH)
         switch solverName
@@ -193,7 +187,7 @@ if ~ENV_VARS.STATUS
                 tmpVar = 'MOSEK_PATH';
         end
         if printLevel > 0 && (strcmpi(solverName, 'gurobi') || strcmpi(solverName, 'ibm_cplex') || strcmpi(solverName, 'tomlab_cplex') || strcmpi(solverName, 'cplex_direct') || strcmpi(solverName, 'mosek'))
-            error(['The global variable `', tmpVar, '` is not set. Please follow ', solversLink, ' to set the environment variables properly.']);
+            error(['The global variable `', tmpVar, '` is not set. Please follow ', hyperlink('https://git.io/v92Vi', 'these instructions', 'the instructions on '), ' to set the environment variables properly.']);
         end
     end
 end
@@ -260,14 +254,16 @@ if (~isempty(strfind(solverName, 'tomlab')) || ~isempty(strfind(solverName, 'cpl
 end
 
 if  ~isempty(strfind(solverName, 'gurobi')) && ~isempty(GUROBI_PATH)
-    addpath(genpath(strrep(GUROBI_PATH, '\\', '\')));
+    % add the solver path
+    addpath(strrep(GUROBI_PATH, '\\', '\'));
     if printLevel > 0
         fprintf('\n > Gurobi interface added to MATLAB path.\n');
     end
 end
 
 if  ~isempty(strfind(solverName, 'ibm_cplex')) && ~isempty(ILOG_CPLEX_PATH)
-    addpath(genpath(strrep(ILOG_CPLEX_PATH, '\\', '\')));
+    % add the solver path
+    addpath(strrep(ILOG_CPLEX_PATH, '\\', '\'));
     if printLevel > 0
         fprintf('\n > IBM ILOG CPLEX interface added to MATLAB path.\n');
     end
@@ -318,9 +314,7 @@ switch solverName
     case {'lp_solve', 'qpng', 'pdco', 'gurobi_mex'}
         solverOK = checkSolverInstallationFile(solverName, solverName, printLevel);
     case 'gurobi'
-        tmpGurobi = 'gurobi.sh';
-        if ispc, tmpGurobi = 'gurobi.bat'; end
-        solverOK = checkSolverInstallationFile(solverName, tmpGurobi, printLevel);
+        solverOK = checkSolverInstallationFile(solverName, 'gurobi.m', printLevel);
     case {'quadMinos', 'dqqMinos'}
         if isunix
             [stat, res] = system('which csh');
@@ -377,7 +371,7 @@ if solverOK
 
         % remove the GUROBI interface
         if gurobiOnPath && ~isempty(GUROBI_PATH)
-            rmpath(genpath(strrep(GUROBI_PATH, '\\', '\')));
+            rmpath(strrep(GUROBI_PATH, '\\', '\'));
             if printLevel > 0
                 fprintf(['\n > GUROBI interface removed from MATLAB path.\n']);
             end
@@ -388,7 +382,7 @@ if solverOK
 
         % remove the CPLEX interface
         if cplexOnPath && ~isempty(ILOG_CPLEX_PATH)
-            rmpath(genpath(strrep(ILOG_CPLEX_PATH, '\\', '\')));
+            rmpath(strrep(ILOG_CPLEX_PATH, '\\', '\'));
             if printLevel > 0
                 fprintf(['\n > ILOG CPLEX interface removed from MATLAB path.\n']);
             end
@@ -422,10 +416,11 @@ function solverOK = checkSolverInstallationFile(solverName, fileName, printLevel
 % Output:
 %     solverOK: true if filename exists, false otherwise.
 %
+
     solverOK = false;
     if exist(fileName, 'file') >= 2
         solverOK = true;
     elseif printLevel > 0
-        error('Solver %s is not installed!', solverName)
+        error(['Solver ', solverName, ' is not installed. Please follow ', hyperlink('https://git.io/v92Vi', 'these instructions', 'the instructions on '), ' in order to install the solver properly.'])
     end
 end
