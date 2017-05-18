@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Model analysis &mdash; The COBRA Toolbox</title>
+  <title>Transport &mdash; The COBRA Toolbox</title>
   
 
   
@@ -39,9 +39,9 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
-        <link rel="up" title="Documentation" href="index.html"/>
-        <link rel="next" title="FBA" href="FBA.html"/>
-        <link rel="prev" title="Design" href="design.html"/> 
+        <link rel="up" title="Model analysis" href="modelAnalysis.html"/>
+        <link rel="next" title="Reconstruction" href="reconstruction.html"/>
+        <link rel="prev" title="sparseFBA" href="sparseFBA.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -95,7 +95,7 @@
 <li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design.html">Design</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Model analysis</a><ul>
+<li class="toctree-l2 current"><a class="reference internal" href="modelAnalysis.html">Model analysis</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="FBA.html">FBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="FVA.html">FVA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="MOMA.html">MOMA</a></li>
@@ -106,7 +106,7 @@
 <li class="toctree-l3"><a class="reference internal" href="relaxFBA.html">relaxFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sampling.html">Sampling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sparseFBA.html">sparseFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="transport.html">Transport</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Transport</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
@@ -163,7 +163,9 @@
         
           <li><a href="index.html">Documentation</a> &raquo;</li>
         
-      <li>Model analysis</li>
+          <li><a href="modelAnalysis.html">Model analysis</a> &raquo;</li>
+        
+      <li>Transport</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -180,23 +182,53 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="model-analysis">
-<span id="modelanalysis"></span><h1>Model analysis<a class="headerlink" href="#model-analysis" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="FBA.html">FBA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="FVA.html">FVA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="MOMA.html">MOMA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="deletion.html">Deletion</a></li>
-<li class="toctree-l1"><a class="reference internal" href="exploration.html">Exploration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="multiSpecies.html">MultiSpecies</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rFBA.html">rFBA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="relaxFBA.html">relaxFBA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sampling.html">Sampling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sparseFBA.html">sparseFBA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="transport.html">Transport</a></li>
+  <div class="section" id="transport">
+<span id="id1"></span><h1>Transport<a class="headerlink" href="#transport" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.modelAnalysis.transport"></span><dl class="function">
+<dt id="src.modelAnalysis.transport.findTransRxns">
+<code class="descname">findTransRxns</code><span class="sig-paren">(</span><em>model</em>, <em>inclExc</em>, <em>rxnInds</em>, <em>inclObjAsExc</em>, <em>irrevFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/transport/findTransRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.transport.findTransRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identifes all transport reactions in a model, which are defined as reactions
+involved with metabolites in more than 1 compartment</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[transRxns, nonTransRxns, transRxnsBool] = findTransRxns(model, inclExc, rxnInds, inclObjAsExc, irrevFlag)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
 </ul>
-</div>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>inclExc</strong> &#8211;
+includes exchange reactions as transport = true
+(Default = false)</li>
+<li><strong>rxnInds</strong> &#8211;
+indices of reactions to test for transport activity.
+(default = test all columns of <cite>model.S</cite>)</li>
+<li><strong>inclObjAsExc</strong> &#8211;
+includes objective as an exchange reaction = true - this is
+passed to <cite>findExcRxns</cite>. (default = false)</li>
+<li><strong>irrevFlag</strong> &#8211;
+model is irreversible = true - this is passed to <cite>findExcRxns</cite>.
+(default=false)</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>transRxns</strong> &#8211;
+transport reactions in <cite>rxnInds</cite></li>
+<li><strong>nonTransRxns</strong> &#8211;
+non-transport reactions in <cite>rxnInds</cite></li>
+<li><strong>transRxnsBool</strong> &#8211;
+checks if <cite>inclExc</cite> or <cite>isNonexchangeTransport</cite> rxns vector is equal to 1</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
 </div>
 
 
@@ -209,10 +241,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="FBA.html" class="btn btn-neutral float-right" title="FBA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="reconstruction.html" class="btn btn-neutral float-right" title="Reconstruction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="design.html" class="btn btn-neutral" title="Design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="sparseFBA.html" class="btn btn-neutral" title="sparseFBA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
