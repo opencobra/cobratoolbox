@@ -26,7 +26,7 @@ function [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,optPercentage,osens
 %                   'minOrigSol' : minimizes the euclidean distance of each
 %                   vector to the original solution vector
 %                   (Default = 2-norm)
-% 
+%
 % OUTPUTS:
 %    minFlux:           Minimum flux for each reaction
 %    maxFlux:           Maximum flux for each reaction
@@ -98,7 +98,7 @@ if (exist('CBT_LP_PARAMS', 'var'))
         minNorm = 0;
     else
         minNorm = 1;
-    end    
+    end
 end
 
 % Determine constraints for the correct space (0-100% of the full space)
@@ -172,7 +172,7 @@ solutionPool = zeros(length(model.lb), 0);
 
 v=ver;
 PCT = 'Parallel Computing Toolbox';
-if  any(strcmp(PCT,{v.Name}))&&license('test','Distrib_Computing_Toolbox')    
+if  any(strcmp(PCT,{v.Name}))&&license('test','Distrib_Computing_Toolbox')
     p = gcp('nocreate');
     if isempty(p)
         poolsize = 0;
@@ -185,22 +185,22 @@ else
 end
 
 if ~PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
-    
+
     for i = 1:length(rxnNameList)
         if minNorm
             [minFlux(i),maxFlux(i),Vmin(:,i),Vmax(:,i)] = calcSolForEntry(model,rxnNameList,i,LPproblem,0, method, allowLoops,verbFlag,minNorm);
         else
             [minFlux(i),maxFlux(i)] = calcSolForEntry(model,rxnNameList,i,LPproblem,0, method, allowLoops,verbFlag,minNorm);
         end
-    end                    
+    end
 else % parallel job.  pretty much does the same thing.
-    
+
     global CBT_LP_SOLVER;
-    solver = CBT_LP_SOLVER;    
-    for i = 1:length(rxnNameList)
+    solver = CBT_LP_SOLVER;
+    parfor i = 1:length(rxnNameList)
         changeCobraSolver(solver,'QP',0);
-        changeCobraSolver(solver,'LP',0);        
-        parLPproblem = LPproblem;        
+        changeCobraSolver(solver,'LP',0);
+        parLPproblem = LPproblem;
         if minNorm
             [minFlux(i),maxFlux(i),Vmin(:,i),Vmax(:,i)] = calcSolForEntry(model,rxnNameList,i,parLPproblem,1, method, allowLoops,verbFlag,minNorm);
         else
@@ -213,7 +213,7 @@ maxFlux = columnVector(maxFlux);
 minFlux = columnVector(minFlux);
 
 function [minFlux,maxFlux,Vmin,Vmax] = calcSolForEntry(model,rxnNameList,i,LPproblem,parallel, method, allowLoops, verbFlag, minNorm)
-        
+
     if (verbFlag == 1 && ~parallel)
             fprintf('iteration %d.\n', i)
         end
@@ -228,7 +228,7 @@ function [minFlux,maxFlux,Vmin,Vmax] = calcSolForEntry(model,rxnNameList,i,LPpro
         end
         %take the maximum flux from the flux vector, not from the obj -Ronan
         maxFlux = getObjectiveFlux(LPsolution,LPproblem);
-        
+
         %minimise the Euclidean norm of the optimal flux vector to remove
         %loops -Ronan
         if minNorm == 1
@@ -242,22 +242,22 @@ function [minFlux,maxFlux,Vmin,Vmax] = calcSolForEntry(model,rxnNameList,i,LPpro
         end
         %take the maximum flux from the flux vector, not from the obj -Ronan
         minFlux = getObjectiveFlux(LPsolution,LPproblem);
-        
+
 
         %minimise the Euclidean norm of the optimal flux vector to remove
         %loops
         if minNorm == 1
             Vmin = getMinNorm(LPproblem,LPsolution,nRxns,maxFlux,model, method);
         end
-        
+
         if (verbFlag == 1 && ~parallel)
             showprogress(i/length(rxnNameList));
         end
         if (verbFlag > 1 && ~parallel )
             fprintf('%4d\t%4.0f\t%10s\t%9.3f\t%9.3f\n',i,100*i/length(rxnNameList),rxnNameList{i},minFlux(i),maxFlux(i));
         end
-        
-        
+
+
 function V = getMinNorm(LPproblem,LPsolution,nRxns,cFlux, model, method)
 %Get the Flux distribution for the specified min norm.
 if isequal(method,'2-norm')
@@ -284,7 +284,7 @@ elseif isequal(method,'minOrigSol')
     LPproblemMOMA=rmfield(LPproblemMOMA,'csense');
     LPproblemMOMA.A = model.S;
     LPproblemMOMA.S = LPproblemMOMA.A;
-    LPproblemMOMA.b = model.b;    
+    LPproblemMOMA.b = model.b;
     LPproblemMOMA.lb(LPproblem.c~=0) = cFlux - 1e-12;
     LPproblemMOMA.ub(LPproblem.c~=0) = cFlux + 1e-12;
     LPproblemMOMA.rxns = model.rxns;
@@ -305,6 +305,3 @@ elseif LPsolution.full(LPproblem.c~=0)>LPproblem.ub(LPproblem.c~=0)
 else
     flux = LPsolution.full(LPproblem.c~=0);
 end
-
-
-        
