@@ -25,6 +25,8 @@ if ~isempty(RxnNotInModel)
 end
 rxnInd(RxnNotInModel) = [];
 reactions(RxnNotInModel) = [];
+%Initialize geneList, as non associated reactions otherwise throw an error.
+geneList = {};
 for i = 1:length(rxnInd)
     geneList{i} = model.genes(find(model.rxnGeneMat(rxnInd(i),:)));
 end
