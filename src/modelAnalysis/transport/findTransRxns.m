@@ -1,35 +1,33 @@
-function [transRxns,nonTransRxns,transRxnsBool] = findTransRxns(model,inclExc, ... 
-    rxnInds,inclObjAsExc,irrevFlag)
-%findTransRxns identify all transport reactions in a model, which are
-%defined as reactions involved with metabolites in more than 1 compartment
+function [transRxns,nonTransRxns,transRxnsBool] = findTransRxns(model,inclExc, rxnInds,inclObjAsExc,irrevFlag)
+% Identifes all transport reactions in a model, which are defined as reactions
+% involved with metabolites in more than 1 compartment
 %
-% [transRxns,nonTransRxns] = findTransRxns(model,inclExc,rxnInds)
+% USAGE:
 %
-%INPUT
-% model             COBRA model structure
+%    [transRxns, nonTransRxns, transRxnsBool] = findTransRxns(model, inclExc, rxnInds, inclObjAsExc, irrevFlag)
 %
-%OPTIONAL INPUT
-% inclExc           include exchange reactions as transport?
-%                   (Default = false)
-% rxnInds           indices of reactions to test for transport activity.
-%                   (default = test all columns of model.S)
-% inclObjAsExc      include objective as an exchange reaction? this is
-%                   passed to findExcRxns. (default = false)
-% irrevFlag         is model irreversible? this is passed to findExcRxns.
-%                   (default=false)
+% INPUT:
+%    model:             COBRA model structure
 %
-%OUTPUT
-% transRxns         transport reactions in rxnInds
-% nonTransRxns      non-transport reactions in rxnInds
+% OPTIONAL INPUT:
+%    inclExc:           includes exchange reactions as transport = true
+%                       (Default = false)
+%    rxnInds:           indices of reactions to test for transport activity.
+%                       (default = test all columns of `model.S`)
+%    inclObjAsExc:      includes objective as an exchange reaction = true - this is
+%                       passed to `findExcRxns`. (default = false)
+%    irrevFlag:         model is irreversible = true - this is passed to `findExcRxns`.
+%                       (default=false)
 %
-% right now, this function only works with models the compartments [c],
-% [p], and [e]. Jeff Orth, 8/31/07
-% 
-% modified the function to work with arbitrary compartments, to accept 
-% rxnInds, & to use findExcRxns. Jonathan Dreyfuss, 10/9/12
+% OUTPUTS:
+%    transRxns:         transport reactions in `rxnInds`
+%    nonTransRxns:      non-transport reactions in `rxnInds`
+%    transRxnsBool:     checks if `inclExc` or `isNonexchangeTransport` rxns vector is equal to 1
 %
-% modified to also output a boolean vector version of transRxns. Thierry
-% Mondeel, 07/15/15
+% .. Authors:
+%       - Jeff Orth, 8/31/07 right now, this function only works with models the compartments [c], [p], and [e].
+%       - Jonathan Dreyfuss, 10/9/12modified the function to work with arbitrary compartments, to accept  rxnInds, & to use findExcRxns.
+%       - Thierry Mondeel, 07/15/15 modified to also output a boolean vector version of transRxns.
 
 if nargin < 2
     inclExc = false;
