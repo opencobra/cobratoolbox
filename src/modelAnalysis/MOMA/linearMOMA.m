@@ -1,7 +1,5 @@
-function [solutionDel,solutionWT,totalFluxDiff,solStatus] = ...
-    linearMOMA(modelWT,modelDel,osenseStr,minFluxFlag,verbFlag)
-% Performs a linear version of the MOMA (minimization of
-% metabolic adjustment) approach
+function [solutionDel,solutionWT,totalFluxDiff,solStatus] = linearMOMA(modelWT,modelDel,osenseStr,minFluxFlag,verbFlag)
+% Performs a linear version of the MOMA (minimization of metabolic adjustment) approach
 %
 % USAGE:
 %

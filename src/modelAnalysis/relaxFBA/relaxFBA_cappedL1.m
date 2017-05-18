@@ -1,6 +1,5 @@
 function [solution] = relaxFBA_cappedL1(model, relaxOption)
-% Finds the mimimal set of relaxations on bounds and steady state constraint
-% to make the FBA problem feasible.
+% Finds the mimimal set of relaxations on bounds and steady state constraint to make the FBA problem feasible.
 % The zero-norm is appproximated by capped-L1 norm
 %
 % USAGE:
@@ -8,33 +7,33 @@ function [solution] = relaxFBA_cappedL1(model, relaxOption)
 %    [solution] = relaxFBA_cappedL1(model, relaxOption)
 %
 % INPUTS:
-%    model:                                 COBRA model structure
-%    relaxOption:                           Structure containing the relaxation options:
+%    model:          COBRA model structure
+%    relaxOption:    Structure containing the relaxation options:
 %
-%                                             * excludedReactions - bool vector of size n indicating the reactions to be excluded from relaxation
+%                      * excludedReactions - bool vector of size n indicating the reactions to be excluded from relaxation
 %
-%                                               * excludedReactions(i) = false : allow to relax bounds on reaction i
-%                                               * excludedReactions(i) = true : do not allow to relax bounds on reaction i
-%                                             * excludedMetabolites - bool vector of size m indicating the metabolites to be excluded from relaxation
+%                        * excludedReactions(i) = false : allow to relax bounds on reaction i
+%                        * excludedReactions(i) = true : do not allow to relax bounds on reaction i
+%                      * excludedMetabolites - bool vector of size m indicating the metabolites to be excluded from relaxation
 %
-%                                               * excludedMetabolites(i) = false : allow to relax steady state constraint on metabolite i
-%                                               * excludedMetabolites(i) = true : do not allow to relax steady state constraint on metabolite i
-%                                             * gamma - trade-off parameter of relaxation on fluxes rate
-%                                             * lamda - trade-off parameter of relaxation on steady state constraint
-%                                             * alpha - strade-off parameter of relaxation on bounds
+%                        * excludedMetabolites(i) = false : allow to relax steady state constraint on metabolite i
+%                        * excludedMetabolites(i) = true : do not allow to relax steady state constraint on metabolite i
+%                      * gamma - trade-off parameter of relaxation on fluxes rate
+%                      * lamda - trade-off parameter of relaxation on steady state constraint
+%                      * alpha - strade-off parameter of relaxation on bounds
 %
 % OUTPUT:
-%    solution:                              Structure containing the following fields:
+%    solution:       Structure containing the following fields:
 %
-%                                             * stat - status
+%                      * stat - status
 %
-%                                               * 1  = Solution found
-%                                               * 0  = Infeasible
-%                                               * -1 = Invalid input
-%                                               * r - relaxation on steady state constraints `S*v = b`
-%                                               * p - relaxation on lower bound of reactions
-%                                               * q - relaxation on upper bound of reactions
-%                                               * v - reaction rate
+%                        * 1  = Solution found
+%                        * 0  = Infeasible
+%                        * -1 = Invalid input
+%                      * r - relaxation on steady state constraints `S*v = b`
+%                      * p - relaxation on lower bound of reactions
+%                      * q - relaxation on upper bound of reactions
+%                      * v - reaction rate
 %
 % .. Author: - Hoai Minh Le	20/11/2015
 %

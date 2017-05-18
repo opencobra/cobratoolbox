@@ -1,7 +1,6 @@
-function [transRxns,nonTransRxns,transRxnsBool] = findTransRxns(model,inclExc, ...
-    rxnInds,inclObjAsExc,irrevFlag)
-% Identifes all transport reactions in a model, which are
-% defined as reactions involved with metabolites in more than 1 compartment
+function [transRxns,nonTransRxns,transRxnsBool] = findTransRxns(model,inclExc, rxnInds,inclObjAsExc,irrevFlag)
+% Identifes all transport reactions in a model, which are defined as reactions
+% involved with metabolites in more than 1 compartment
 %
 % USAGE:
 %

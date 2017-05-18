@@ -1,5 +1,4 @@
-function [solutionDel,solutionWT,totalFluxDiff,solStatus] = ...
-    MOMA(modelWT,modelDel,osenseStr,verbFlag,minNormFlag)
+function [solutionDel,solutionWT,totalFluxDiff,solStatus] = MOMA(modelWT,modelDel,osenseStr,verbFlag,minNormFlag)
 % Performs a quadratic version of the MOMA (minimization of
 % metabolic adjustment) approach
 %
