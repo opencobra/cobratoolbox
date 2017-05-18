@@ -186,7 +186,7 @@
 <span id="id1"></span><h1>Exploration<a class="headerlink" href="#exploration" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.modelAnalysis.exploration"></span><dl class="function">
 <dt id="src.modelAnalysis.exploration.findBlockedReaction">
-<code class="descname">findBlockedReaction</code><span class="sig-paren">(</span><em>model</em>, <em>method</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/exploration/findBlockedReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findBlockedReaction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findBlockedReaction</code><span class="sig-paren">(</span><em>model</em>, <em>method</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/exploration/findBlockedReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findBlockedReaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines those reactions which cannot carry any
 flux in the given simulation conditions.</p>
 <p><strong>Usage</strong></p>
@@ -218,7 +218,7 @@ List of blocked reactions</li>
 
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.findCarbonRxns">
-<code class="descname">findCarbonRxns</code><span class="sig-paren">(</span><em>model</em>, <em>nCarbonThr</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/exploration/findCarbonRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findCarbonRxns" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findCarbonRxns</code><span class="sig-paren">(</span><em>model</em>, <em>nCarbonThr</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/exploration/findCarbonRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findCarbonRxns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the list of reactions that act of compounds which
 contain cabons greater than the thershhold set.</p>
 <p><strong>Usage</strong></p>
@@ -251,7 +251,7 @@ The number of carbons in each metabolite in the model</li>
 
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.findEpistaticInteractions">
-<code class="descname">findEpistaticInteractions</code><span class="sig-paren">(</span><em>model</em>, <em>doubleDeletionFitness</em>, <em>lethalFlag</em>, <em>minEffect</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/exploration/findEpistaticInteractions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findEpistaticInteractions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findEpistaticInteractions</code><span class="sig-paren">(</span><em>model</em>, <em>doubleDeletionFitness</em>, <em>lethalFlag</em>, <em>minEffect</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/exploration/findEpistaticInteractions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findEpistaticInteractions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds synthetic lethal and/or synthetic sick
 interactions based on double deletion analysis data</p>
 <p><strong>Usage</strong></p>
@@ -308,7 +308,7 @@ essentially zero)
 
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.findExcRxns">
-<code class="descname">findExcRxns</code><span class="sig-paren">(</span><em>model</em>, <em>inclObjFlag</em>, <em>irrevFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/exploration/findExcRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findExcRxns" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findExcRxns</code><span class="sig-paren">(</span><em>model</em>, <em>inclObjFlag</em>, <em>irrevFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/exploration/findExcRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findExcRxns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds exchange and uptake <cite>rxns</cite></p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -352,7 +352,7 @@ exchange reactions are exchange reactions with negative lower bounds.</p>
 
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.findGeneIDs">
-<code class="descname">findGeneIDs</code><span class="sig-paren">(</span><em>model</em>, <em>geneList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/exploration/findGeneIDs.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findGeneIDs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findGeneIDs</code><span class="sig-paren">(</span><em>model</em>, <em>geneList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/exploration/findGeneIDs.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findGeneIDs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds gene numbers in a model</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -377,7 +377,7 @@ List of gene IDs corresponding to <cite>geneList</cite></li>
 
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.findGenesFromRxns">
-<code class="descname">findGenesFromRxns</code><span class="sig-paren">(</span><em>model</em>, <em>reactions</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/exploration/findGenesFromRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findGenesFromRxns" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findGenesFromRxns</code><span class="sig-paren">(</span><em>model</em>, <em>reactions</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/exploration/findGenesFromRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findGenesFromRxns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a gene list of the genes that correspond to the
 selected reactions</p>
 <p><strong>Usage</strong></p>
@@ -403,7 +403,7 @@ List of genes corresponding to reactions</li>
 
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.findHiCarbonRxns">
-<code class="descname">findHiCarbonRxns</code><span class="sig-paren">(</span><em>model</em>, <em>nCarbonThr</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/exploration/findHiCarbonRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findHiCarbonRxns" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findHiCarbonRxns</code><span class="sig-paren">(</span><em>model</em>, <em>nCarbonThr</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/exploration/findHiCarbonRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findHiCarbonRxns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the list of reactions that act on compounds which
 contain cabons greater than the threshold set.</p>
 <p><strong>Usage</strong></p>
@@ -435,7 +435,7 @@ The number of carbons in each metabolite in the model</li>
 
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.findMetIDs">
-<code class="descname">findMetIDs</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/exploration/findMetIDs.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findMetIDs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findMetIDs</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/exploration/findMetIDs.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findMetIDs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find metabolite numbers in a model</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -460,7 +460,7 @@ List of metabolite IDs corresponding to <cite>metList</cite></li>
 
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.findMetabolicJunctions">
-<code class="descname">findMetabolicJunctions</code><span class="sig-paren">(</span><em>model</em>, <em>nRxnsJnc</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/exploration/findMetabolicJunctions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findMetabolicJunctions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findMetabolicJunctions</code><span class="sig-paren">(</span><em>model</em>, <em>nRxnsJnc</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/exploration/findMetabolicJunctions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findMetabolicJunctions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds metabolic branchpoints with different numbers of branches</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -485,7 +485,7 @@ List of junction metabolites</li>
 
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.findNeighborRxns">
-<code class="descname">findNeighborRxns</code><span class="sig-paren">(</span><em>model</em>, <em>rxns</em>, <em>asSingleArray</em>, <em>order</em>, <em>commonMets</em>, <em>withComp</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/exploration/findNeighborRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findNeighborRxns" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findNeighborRxns</code><span class="sig-paren">(</span><em>model</em>, <em>rxns</em>, <em>asSingleArray</em>, <em>order</em>, <em>commonMets</em>, <em>withComp</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/exploration/findNeighborRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findNeighborRxns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Identifies the reactions and the corresponding genes
 that are adjacent (having a common metabolite) to a reaction of interest.
 Useful for characterizing the network around an orphan reaction.</p>
@@ -531,7 +531,7 @@ the metabolites in the target reaction</li>
 
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.findOrphanRxns">
-<code class="descname">findOrphanRxns</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/exploration/findOrphanRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findOrphanRxns" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findOrphanRxns</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/exploration/findOrphanRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findOrphanRxns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds all orphan reactions in model (reactions with no
 associated genes), not including exchange <cite>rxns</cite></p>
 <p><strong>Usage</strong></p>
@@ -555,7 +555,7 @@ all orphan reactions in the model</li>
 
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.findRootNPmets">
-<code class="descname">findRootNPmets</code><span class="sig-paren">(</span><em>model</em>, <em>findNCmets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/exploration/findRootNPmets.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findRootNPmets" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findRootNPmets</code><span class="sig-paren">(</span><em>model</em>, <em>findNCmets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/exploration/findRootNPmets.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findRootNPmets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the root no production (and no consumption)
 metabolites in a model, used by <cite>gapFind</cite></p>
 <p><strong>Usage</strong></p>
@@ -585,7 +585,7 @@ all root no production metabolites</li>
 
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.findRxnIDs">
-<code class="descname">findRxnIDs</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/exploration/findRxnIDs.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findRxnIDs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findRxnIDs</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/exploration/findRxnIDs.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findRxnIDs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds reaction numbers in a model</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -610,7 +610,7 @@ IDs for reactions corresponding to rxnList</li>
 
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.findRxnsActiveWithGenes">
-<code class="descname">findRxnsActiveWithGenes</code><span class="sig-paren">(</span><em>model</em>, <em>genes</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/exploration/findRxnsActiveWithGenes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findRxnsActiveWithGenes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findRxnsActiveWithGenes</code><span class="sig-paren">(</span><em>model</em>, <em>genes</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/exploration/findRxnsActiveWithGenes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findRxnsActiveWithGenes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds all reactions for which the provided genes
 show sufficient evidence (i.e. are usfficient according to the GPRs)</p>
 <p><strong>Usage</strong></p>
@@ -642,7 +642,7 @@ Reactions without GPRs are ignored, as we don&#8217;t have evidence.</p>
 
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.findRxnsFromGenes">
-<code class="descname">findRxnsFromGenes</code><span class="sig-paren">(</span><em>model</em>, <em>genes</em>, <em>numericFlag</em>, <em>ListResultsFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/exploration/findRxnsFromGenes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findRxnsFromGenes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findRxnsFromGenes</code><span class="sig-paren">(</span><em>model</em>, <em>genes</em>, <em>numericFlag</em>, <em>ListResultsFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/exploration/findRxnsFromGenes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findRxnsFromGenes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print every reaction associated with a gene of interest</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -681,7 +681,7 @@ same as above, but in a cell array</li>
 
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.findRxnsFromMets">
-<code class="descname">findRxnsFromMets</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/exploration/findRxnsFromMets.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findRxnsFromMets" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findRxnsFromMets</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/exploration/findRxnsFromMets.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findRxnsFromMets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of reactions in which at least one
 metabolite listed in metList participates.</p>
 <p><strong>Usage</strong></p>
@@ -722,7 +722,7 @@ Reaction formulas coresponding to <cite>rxnList</cite></li>
 
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.findRxnsInActiveWithGenes">
-<code class="descname">findRxnsInActiveWithGenes</code><span class="sig-paren">(</span><em>model</em>, <em>genes</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/exploration/findRxnsInActiveWithGenes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findRxnsInActiveWithGenes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findRxnsInActiveWithGenes</code><span class="sig-paren">(</span><em>model</em>, <em>genes</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/exploration/findRxnsInActiveWithGenes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findRxnsInActiveWithGenes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds all reactions for which the provided genes
 show sufficient evidence of their absence. (i.e. make the corresponding GPRs always be zero)</p>
 <p><strong>Usage</strong></p>
@@ -754,7 +754,7 @@ Reactions without GPRs are ignored, as we don&#8217;t have evidence.</p>
 
 <dl class="function">
 <dt id="src.modelAnalysis.exploration.findSubSysGen">
-<code class="descname">findSubSysGen</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5928b365d33cfb642302f64237a6d480aaf703f8/src/modelAnalysis/exploration/findSubSysGen.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findSubSysGen" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findSubSysGen</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/exploration/findSubSysGen.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findSubSysGen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lists the subsystem that a reaction occurs in encoded by a
 gene. Returns list of subsystems. If multiple reactions are associated
 with gene, subsystem of first occurance will be listed.</p>
