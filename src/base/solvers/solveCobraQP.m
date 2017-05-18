@@ -153,6 +153,58 @@ switch solver
             stat = 3; % Solution exists, but either scaling problems or not proven to be optimal
         end
         %%
+     case 'ibm_cplex'
+        if (~isempty(csense))
+            b_L(csense == 'E') = b(csense == 'E');
+            b_U(csense == 'E') = b(csense == 'E');
+            b_L(csense == 'G') = b(csense == 'G');
+            b_U(csense == 'G') = inf;
+            b_L(csense == 'L') = -inf;
+            b_U(csense == 'L') = b(csense == 'L');
+        else
+            b_L = b;
+            b_U = b;
+        end
+        
+        %Set up the linear part
+        CplexQPProblem = Cplex();
+        CplexQPProblem.Model.A = A;
+        CplexQPProblem.Model.lb = lb;
+        CplexQPProblem.Model.ub = ub;
+        CplexQPProblem.Model.rhs = b_U;
+        CplexQPProblem.Model.lhs = b_L;
+        CplexQPProblem.Model.obj = osense*c;
+        CplexQPProblem.Model.Q = F;
+               
+        %optional parameters
+        CplexQPProblem.Param.output.writelevel.Cur = printLevel;
+        CplexQPProblem.Param.qpmethod.Cur = 1;
+        
+
+        %Save Input if selected
+        if ~isempty(saveInput)
+            fileName = saveInput;
+            if ~find(regexp(fileName,'.mat'))
+                fileName = [fileName '.mat'];
+            end
+            display(['Saving QPproblem in ' fileName]);
+            save(fileName,'QPproblem')
+        end
+
+        Result = CplexQPProblem.solve();
+        x = Result.x;
+        f = osense*Result.objval;
+        origStat = Result.status;
+        if (origStat == 1 || origstat == 101)
+            stat = 1; % Optimal
+        elseif (origStat == 3 || origStat == 4 || oriStat == 103)
+            stat = 1; % Infeasible
+        elseif (origStat == 2)
+            stat = 2; % Unbounded
+        else
+            stat = -1; % No optimal solution found (time or other limits reached, other infeasibility problems)        
+        end
+        %%
     case 'cplex_direct'
         %% Tomlab cplex.m direct
         %Used with the current script, only some of the control affoarded with
