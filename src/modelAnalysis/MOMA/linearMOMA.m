@@ -12,7 +12,7 @@ function [solutionDel,solutionWT,totalFluxDiff,solStatus] = ...
 %    modelDel:          Deletion strain model
 %
 % OPTIONAL INPUTS:
-%    osenseStr:         Maximize ('max')/minimize ('min') (Default = 'max')
+%    osenseStr:         Maximize ('max') / minimize ('min') (Default = 'max')
 %    minFluxFlag:       Minimize the absolute value of fluxes in the optimal MOMA
 %                       solution (Default = false)
 %    verbFlag:          Verbose output (Default = false)

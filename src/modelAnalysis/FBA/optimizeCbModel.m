@@ -1,6 +1,8 @@
 function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroNormApprox)
 % Solves a flux balance analysis problem
-% Solves LP problems of the form: `max/min c'*v`
+%
+% .. math::
+%      Solves LP problems of the form: `max/min c'*v`
 %                                 subject to `S*v = b`         : y
 %                                            `lb <= v <= ub`   : w
 %
@@ -19,7 +21,7 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %
 % OPTIONAL INPUTS:
 %    osenseStr:         Maximize ('max')/minimize ('min') (opt, default = 'max')
-%    minNorm:           {(0), 'one', 'zero', > 0 , n x 1 vector}, where [m,n]=size(S);
+%    minNorm:           {(0), 'one', 'zero', > 0 , n x 1 vector}, where `[m,n]=size(S)`;
 %                       0 - Default, normal LP
 %                       'one'  Minimise the Taxicab Norm using LP.
 %                            .. math::
@@ -40,13 +42,13 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %                       Note : capped-L1, exponential and logarithmic function often give
 %                       the best result in term of sparsity.
 %
-%                       See "Le Thi et al., DC approximation approaches for sparse optimization,
-%                       European Journal of Operational Research, 2014"
-%                       http://dx.doi.org/10.1016/j.ejor.2014.11.031
-%                       A LP solver is required.
-%                       -----
+%                        .. See "Le Thi et al., DC approximation approaches for sparse optimization,
+%                           European Journal of Operational Research, 2014"
+%                           http://dx.doi.org/10.1016/j.ejor.2014.11.031
+%                           A LP solver is required.
+%
 %                       The remaining options work only with a valid QP solver:
-%                       -----
+%
 %                       > 0    Minimises the Euclidean Norm of internal fluxes.
 %                       Typically 1e-6 works well.
 %                            .. math::
@@ -54,8 +56,8 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %                                 s.t. S*v = b
 %                                 c'v = f
 %                                 lb <= v <= ub
-%                       n x 1   Forms the diagonal of positive definiate
-%                       matrix F in the quadratic program
+%                       `n` x 1   Forms the diagonal of positive definiate
+%                       matrix `F` in the quadratic program
 %                            .. math::
 %                                 min 0.5*v'*F*v
 %                                 st. S*v = b
@@ -88,10 +90,10 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %                          * s - Slacks
 %                          * stat - Solver status in standardized form:
 %
-%                            * 1   Optimal solution
-%                            * 2   Unbounded solution
-%                            * 0   Infeasible
-%                            * -1  No solution reported (timelimit, numerical problem etc)
+%                            * `-1` - No solution reported (timelimit, numerical problem etc)
+%                            * `1` - Optimal solution
+%                            * `2` - Unbounded solution
+%                            * `0` - Infeasible
 %                          * origStat  Original status returned by the specific solver
 %
 % .. Author:
@@ -118,7 +120,7 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %
 % NOTE:
 %
-%    `FBAsolution.stat` is either 1,2,0 or -1, and is a translation from `FBAsolution.origStat`,
+%    `FBAsolution.stat` is either 1, 2, 0 or -1, and is a translation from `FBAsolution.origStat`,
 %    which is returned by each solver in a solver specific way. That is, not all solvers return
 %    the same type of `FBAsolution.origStat` and because the cobra toolbox can use many solvers,
 %    we need to return to the user of `optimizeCbModel.m` a standard representation, which is what

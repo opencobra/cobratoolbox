@@ -1,57 +1,62 @@
 function [vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseStr, checkMinimalSet, checkEssentialSet, zeroNormApprox, printLevel)
 % Finds the minimal set of reactions subject to a LP objective
-% function [v]  = sparseFBA(model,osenseStr,checkMinimalSet,printLevel)
-% min ||v||_0
-% s.t   Sv <=> b
-%       c'v = f* (optimal value of objective, default is max c'v)
-%       l <= v <= u
 %
 % USAGE:
 %
-%    [vSparse,sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseStr, checkMinimalSet, checkEssentialSet, zeroNormApprox, printLevel)
+%    [vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseStr, checkMinimalSet, checkEssentialSet, zeroNormApprox, printLevel)
 %
 % INPUT:
 %    model:               (the following fields are required - others can be supplied):
-%    S:                   Stoichiometric matrix
-%    b:                   Right hand side = dx/dt
-%    c:                   Objective coefficients
-%    lb:                  Lower bounds
-%    ub:                  Upper bounds
 %
-%OPTIONAL INPUTS:
+%                           * S - Stoichiometric matrix
+%                           * b - Right hand side = dx/dt
+%                           * c - Objective coefficients
+%                           * lb - Lower bounds
+%                           * ub - Upper bounds
+%
+% OPTIONAL INPUTS:
 %    osenseStr:           (default = 'max')
 %
-%                           * max: f* = argmax {max c'v: Sv <=> b, l <= v <= u}
-%                           * min: f* = argmin {min c'v: Sv <=> b, l <= v <= u}
-%                           * none: ignore the constraint c'v = f*
+%                           * max: `f* = argmax {max c'v: Sv <=> b, l <= v <= u}`
+%                           * min: `f* = argmin {min c'v: Sv <=> b, l <= v <= u}`
+%                           * none: ignore the constraint `c'v = f*``
 %
 %    checkMinimalSet:     Heuristically check if the selected set of reactions is minimal
 %                         by removing one by one the predicted active reaction
-%                         true = check (default value)
-%                         false = do not check
 %
-%    zeroNormApprox:      appoximation type of zero-norm (only available when minNorm='zero') (default = 'cappedL1')
-%                           'cappedL1' : Capped-L1 norm
-%                           'exp'      : Exponential function
-%                           'log'      : Logarithmic function
-%                           'SCAD'     : SCAD function
-%                           'lp-'      : L_p norm with p<0
-%                           'lp+'      : L_p norm with 0<p<1
-%                           'l1'       : L1 norm
-%                           'all'      : try all approximations and return the best result
-%    printLevel:            Printing level
-%                       0    Silent (Default)
-%                       1    Summary information
+%                           * true = check (default value)
+%                           * false = do not check
+%    checkEssentialSet:   Heuristically check if the selected set of reactions is essential
+%    zeroNormApprox:      appoximation type of zero-norm (only available when minNorm = 'zero') (default = 'cappedL1')
+%
+%                           * 'cappedL1' : Capped-L1 norm
+%                           * 'exp'      : Exponential function
+%                           * 'log'      : Logarithmic function
+%                           * 'SCAD'     : SCAD function
+%                           * 'lp-'      : L_p norm with p<0
+%                           * 'lp+'      : L_p norm with 0<p<1
+%                           * 'l1'       : L1 norm
+%                           * 'all'      : try all approximations and return the best result
+%    printLevel:          Printing level
+%
+%                           * 0 - Silent (Default)
+%                           * 1 - Summary information
 %
 % OUTPUT:
-%    v:                    reaction rate vector
+%    vSparse:             Depends on the set of reactions
+%    sparseRxnBool:       Returns a vector with 1 and 0's, where 1 means sparse
+%    essentialRxnBool:    Returns a vector with 1 and 0's, where 1 means essential
 %
 % .. Authors:
 %       - Hoai Minh Le	23/10/2015
 %       - Ronan Fleming 12/07/2016 nonzero flux is set according to current feasibility tol. Default is 1e-9.
-
-
-%% Check inputs
+%
+% .. math::
+%      min ||v||_0
+%      s.t   Sv <=> b
+%        c'v = f* (optimal value of objective, default is max c'v)
+%        l <= v <= u
+%
 
 if exist('osenseStr', 'var')
     if isempty(osenseStr)

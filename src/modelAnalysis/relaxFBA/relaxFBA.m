@@ -1,4 +1,5 @@
 function [solution] = relaxFBA(model, relaxOption)
+%
 % Finds the mimimal set of relaxations on bounds and steady state constraint
 % to make the FBA problem feasible
 %
@@ -9,7 +10,7 @@ function [solution] = relaxFBA(model, relaxOption)
 % INPUTS:
 %    model:                                 COBRA model structure
 %    relaxOption:                           Structure containing the relaxation options:
-
+%
 %                                             * internalRelax:
 %
 %                                               * 0 = do not allow to relax bounds on internal reactions
@@ -64,9 +65,7 @@ function [solution] = relaxFBA(model, relaxOption)
 %      m - number of metabolites
 %      n - number of reactions
 
-
-%Check inputs
-[m,n] = size(model.S);
+[m,n] = size(model.S); %Check inputs
 
 
 if isfield(model,'SIntRxnBool')

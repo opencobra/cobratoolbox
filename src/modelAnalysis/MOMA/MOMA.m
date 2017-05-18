@@ -12,7 +12,7 @@ function [solutionDel,solutionWT,totalFluxDiff,solStatus] = ...
 %    modelDel:          Deletion strain model
 %
 % OPTIONAL INPUTS:
-%    osenseStr:         Maximize ('max')/minimize ('min') (Default = 'max')
+%    osenseStr:         Maximize ('max') / minimize ('min') (Default = 'max')
 %    verbFlag:          Verbose output (Default = false)
 %    minNormFlag:       Work with minimum 1-norm flux distribution for the FBA
 %                       problem (Default = false)
@@ -26,6 +26,8 @@ function [solutionDel,solutionWT,totalFluxDiff,solStatus] = ...
 %
 %                         1.  MOMA that avoids problems with alternative optima (this is the
 %                             default)
+%                         2.  MOMA that uses a minimum 1-norm wild type FBA solution (this approach
+%                             is used if minNormFlag = true)
 % .. math::
 %      First solve:
 %      max c_wt'*v_wt0
@@ -44,8 +46,7 @@ function [solutionDel,solutionWT,totalFluxDiff,solStatus] = ...
 %      first problem. Note that the FBA solution v_wt0 is not used in the second
 %      problem. This formulation avoids any problems with alternative optima
 %
-%                         2.  MOMA that uses a minimum 1-norm wild type FBA solution (this approach
-%                             is used if minNormFlag = true)
+%
 % .. math::
 %      First solve
 %      max c_wt'*v_wt0
