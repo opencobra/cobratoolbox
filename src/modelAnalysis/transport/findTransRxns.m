@@ -23,6 +23,7 @@ function [transRxns,nonTransRxns,transRxnsBool] = findTransRxns(model,inclExc, .
 % OUTPUTS:
 %    transRxns:         transport reactions in `rxnInds`
 %    nonTransRxns:      non-transport reactions in `rxnInds`
+%    transRxnsBool:     checks if `inclExc` or `isNonexchangeTransport` rxns vector is equal to 1
 %
 % .. Authors:
 %       - Jeff Orth, 8/31/07 right now, this function only works with models the compartments [c], [p], and [e].
