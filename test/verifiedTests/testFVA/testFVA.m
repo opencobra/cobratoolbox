@@ -18,10 +18,10 @@ fileDir = fileparts(which('testFVA'));
 cd(fileDir);
 
 % set the tolerance
-tol = 1e-8;
+tol = 1e-4;
 
 % define the solver packages to be used to run this test
-solverPkgs = {'tomlab_cplex'};
+solverPkgs = {'tomlab_cplex','gurobi'};
 
 % load the model
 load('Ec_iJR904.mat', 'model');
@@ -47,11 +47,13 @@ for k = 1:length(solverPkgs)
             parpool(2);
         end
 
-            
-        % launch the flux variability analysis
-        [minFluxT, maxFluxT] = fluxVariability(model, 90);
-
         rxnNames = {'PGI', 'PFK', 'FBP', 'FBA', 'TPI', 'GAPD', 'PGK', 'PGM', 'ENO', 'PYK', 'PPS', 'G6PDH2r', 'PGL', 'GND', 'RPI', 'RPE', 'TKT1', 'TKT2', 'TALA'};
+
+        % launch the flux variability analysis
+        fprintf('    Testing flux variability for the following reactions:\n');
+        disp(rxnNames);
+        [minFluxT, maxFluxT] = fluxVariability(model, 90,'max',rxnNames);
+
 
         % retrieve the IDs of each reaction
         rxnID = findRxnIDs(model, rxnNames);
