@@ -81,7 +81,7 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %                          * 'all'      : try all approximations and return the best result
 %
 % OUTPUT:
-%    FBAsolution:
+%    FBAsolution:       solution object
 %
 %                          * f - Objective value
 %                          * x - Primal

@@ -24,10 +24,10 @@ function [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,optPercentage,osens
 %    maxFlux:           Maximum flux for each reaction
 %
 % OPTIONAL OUTPUT:
-%    Vmin:          Matrix of column flux vectors, where each column is a
-%                   separate minimization.
-%    Vmax:          Matrix of column flux vectors, where each column is a
-%                   separate maximization.
+%    Vmin:              Matrix of column flux vectors, where each column is a
+%                       separate minimization.
+%    Vmax:              Matrix of column flux vectors, where each column is a
+%                       separate maximization.
 %
 % .. Authors:
 %       - Markus Herrgard  8/21/06 Original code.
