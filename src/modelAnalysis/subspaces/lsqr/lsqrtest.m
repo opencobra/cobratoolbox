@@ -1,15 +1,12 @@
 function x = lsqrtest( m, n, damp )
-%        x = lsqrtest( m, n, damp );
-%
-% If m = n and damp = 0, this sets up a system Ax = b
-% and calls lsqr.m to solve it.  Otherwise, the usual
+% If `m = n` and `damp = 0`, this sets up a system `Ax = b`
+% and calls `lsqr.m` to solve it.  Otherwise, the usual
 % least-squares or damped least-squares problem is solved.
+% `lsqraprod.m` defines the `m` x `n` matrix `A`.
 %
-% lsqraprod.m defines the m x n matrix A.
-
-%  11 Apr 1996: First version for distribution with lsqr.m.
-%               Michael Saunders, Dept of EESOR, Stanford University.
-%  22 Mar 2003: LSQR now outputs r1norm and r2norm.
+% .. Authors:
+%       - 11 Apr 1996: First version for distribution with lsqr.m. Michael Saunders, Dept of EESOR, Stanford University.
+%       - 22 Mar 2003: LSQR now outputs r1norm and r2norm.
 
 xtrue  = (n : -1: 1)';
 iw     = 0;

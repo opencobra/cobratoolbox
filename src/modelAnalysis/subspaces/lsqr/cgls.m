@@ -4,36 +4,40 @@ function [x,resNE,k,info] = cgls( Aname ,shift,b,m,n,kmax,tol,prnt)
 % `(A'A + shift I)x = A'b` or `N x = A'b`,
 %
 % where `A` is a general `m` by `n` matrix and shift may be positive or negative.
-% The method should be stable if `N = (A'A + shift I)`` is positive definite.
+% The method should be stable if `N = (A'A + shift I)` is positive definite.
 % It MAY be unstable otherwise.
 %
-% 'gemat' specifies an M-file gemat.m (say), such that
+% 'gemat' specifies an M-file gemat.m (say), such that:
 %
-%           * `y = gemat(0,x,m,n)` identifies gemat (if you wish),
-%           * `y = gemat(1,x,m,n)` gives `y = A x`,
-%           * `y = gemat(2,x,m,n)` gives `y = A'x`.
+%    * `y = gemat(0,x,m,n)` identifies gemat (if you wish),
+%    * `y = gemat(1,x,m,n)` gives `y = A x`,
+%    * `y = gemat(2,x,m,n)` gives `y = A'x`.
+%
+% The M-file must not be called Aname.m!
+%
+% INPUTS:
+%    kmax:    maximum number of iterations.
+%    tol:     desired relative residual size, `norm(rNE)/norm(A'b)`,
+%             where `rNE = A'b - N x`.
+%    prnt:    1 gives an iteration log, 0 suppresses it.
+%
+% OUTPUTS:
+%    resNE:   relative residual for normal equations: `norm(A'b - Nx)/norm(A'b)`.
+%    k:       final number of iterations performed.
+%    info:    gives information on the result:
+%
+%               * 1 if required accuracy was achieved,
+%               * 2 if the limit kmax was reached,
+%               * 3 if N seems to be singular or indefinite.
+%               * 4 if instability seems likely.  (`N` indefinite and `normx` decreased.)
+%
 % NOTE:
-%    The M-file must not be called Aname.m!
 %
-% Input:
-% kmax  = maximum number of iterations.
-% tol   = desired relative residual size, norm(rNE)/norm(A'b),
-%         where rNE = A'b - N x.
-% prnt  = 1 gives an iteration log, 0 suppresses it.
+%    When shift = 0, cgls is Hestenes and Stiefel's specialized form of the
+%    conjugate-gradient method for least-squares problems. The general shift
+%    is a simple modification.
 %
-% Output:
-% resNE = relative residual for normal equations: norm(A'b - Nx)/norm(A'b).
-% k     = final number of iterations performed.
-% info  = 1 if required accuracy was achieved,
-%       = 2 if the limit kmax was reached,
-%       = 3 if N seems to be singular or indefinite.
-%       = 4 if instability seems likely.  (N indefinite and normx decreased.)
-
-% When shift = 0, cgls is Hestenes and Stiefel's specialized form of the
-% conjugate-gradient method for least-squares problems.  The general shift
-% is a simple modification.
-%
-% 01 Sep 1999: First version Per Christian Hansen (DTU) and Michael Saunders (visiting DTU).
+% .. Author: - 01 Sep 1999: First version Per Christian Hansen (DTU) and Michael Saunders (visiting DTU).
 
 x = zeros(n,1);
 q = feval(Aname,0,x,m,n);

@@ -1,93 +1,90 @@
-function [ x, istop, itn, r1norm, r2norm, anorm, acond, arnorm, xnorm, var, cov, userout]...
-    = lsqr( m, n, aprodname, b, damp, atol, btol, conlim, itnlim, ...
-            show, covindex, userstop)
+function [x, istop, itn, r1norm, r2norm, anorm, acond, arnorm, xnorm, var, cov, userout] = lsqr( m, n, aprodname, b, damp, atol, btol, conlim, itnlim, show, covindex, userstop)
 %
-%        [ x, istop, itn, r1norm, r2norm, anorm, acond, arnorm,
-%        xnorm, var, cov, userout ]...
-% = lsqr( m, n, aprod, b, damp, atol, btol, conlim, itnlim, show, covindex);
+% LSQR solves  `Ax = b`  or  `min ||b - Ax||_2`  if `damp = 0`,
+% or `min ||(b) - (A)x||` otherwise.
+% ||(0) (damp I)||2
+% `A` is an `m` by `n` matrix defined by  `y = aprod(mode, m, n)`,
+% where `aprod` is a function handle that performs the matrix-vector operations.
+% If `mode = 1`,   `aprod`  must return  `y = Ax`   without altering `x`.
+% If `mode = 2`,   `aprod`  must return  `y = A'x`  without altering `x`.
 %
-% LSQR solves  Ax = b  or  min ||b - Ax||_2  if damp = 0,
-% or   min || (b)  -  (  A   )x ||   otherwise.
-%          || (0)     (damp I)  ||2
-% A  is an m by n matrix defined by  y = aprod(mode,m,n),
-% where aprod is a function handle that performs the matrix-vector
-% operations. 
-% If mode = 1,   aprod  must return  y = Ax   without altering x.
-% If mode = 2,   aprod  must return  y = A'x  without altering x.
-
-
-%-----------------------------------------------------------------------
+% USAGE:
+%
+%    [x, istop, itn, r1norm, r2norm, anorm, acond, arnorm, xnorm, var, cov, userout] = lsqr( m, n, aprodname, b, damp, atol, btol, conlim, itnlim, show, covindex, userstop)
+%
+% INPUTS:
+%    m,n:           dimensions of the matrix
+%    aprodname:     function handle
+%    b:             from `Ax = b`
+%    atol, btol:    are stopping tolerances. If both are 1.0e-9 (say),
+%                   the final residual norm should be accurate to about 9 digits.
+%                   (The final `x` will usually have fewer correct digits,
+%                   depending on `cond(A)` and the size of damp.)
+%    conlim:        is also a stopping tolerance.  `lsqr` terminates if an estimate
+%                   of `cond(A)`` exceeds `conlim`.  For compatible systems `Ax = b`,
+%                   conlim could be as large as 1.0e+12 (say). For least-squares
+%                   problems, `conlim` should be less than 1.0e+8.
+%                   Maximum precision can be obtained by setting
+%                   `atol = btol = conlim = zero`, but the number of iterations
+%                   may then be excessive.
+%    itnlim:        is an explicit limit on iterations (for safety).
+%    show:          1 - gives an iteration log, 0 - suppresses output,
+%    covindex:      specified index set of the columns and rows of the
+%                   covariance matrix
+%    userstop:      a function handle that checks a user-defined stopping
+%                   criteria. The function handle should be in the form
+%                   `[istop,atol,userout] = userstop(istop,atol,arnorm,itn)`;
+%
+%                   if userstop returns istop > 0 lsqr will stop
+%                   if userstop returns istop = 0 lsqr will continue
+%                   the userstop function can alter the tolerance atol.
+%
+%
+% OUTPUTS:
+%    x:             is the final solution.
+%    istop:         gives the reason for termination.
+%
+%                     * 1 means `x` is an approximate solution to `Ax = b`.
+%                     * 2 means `x` approximately solves the least-squares problem.
+%    itn:           changed to 0 in the code
+%    r1norm:        = `norm(r)`, where `r = b - Ax`.
+%    r2norm:        = `sqrt(norm(r)^2  +  damp^2 * norm(x)^2)`
+%                   = r1norm if damp = 0.
+%    anorm:         = estimate of Frobenius norm of Abar = [`A`]. [`damp*I`]
+%    acond:         = estimate of `cond(Abar)`.
+%    arnorm:        = estimate of `norm(A'*r - damp^2*x)`.
+%    xnorm:         = `norm(x)`.
+%    var:           (if present) estimates all diagonals of `(A'A)^{-1}` (if damp=0)
+%                   or more generally `(A'A + damp^2*I)^{-1}`.
+%                   This is well defined if `A` has full column rank or `damp > 0`.
+%                   (Not sure what var means if `rank(A) < n` and `damp = 0`.)
+%    cov:           (if present) esitmates the rows and columns of the
+%                   covariance matrix specified by the covindex set.
+%    userout:       output data from the `userstop` function
+%
+% .. Authors:
+%           1990: Derived from Fortran 77 version of LSQR.
+%    22 May 1992: bbnorm was used incorrectly.  Replaced by anorm.
+%    26 Oct 1992: More input and output parameters added.
+%    01 Sep 1994: Matrix-vector routine is now a parameter 'aprodname'.
+%                 Print log reformatted.
+%    14 Jun 1997: show added to allow printing or not.
+%    30 Jun 1997: var added as an optional output parameter.
+%    07 Aug 2002: Output parameter rnorm replaced by r1norm and r2norm.
+%                 Michael Saunders, Systems Optimization Laboratory,
+%                 Dept of MS&E, Stanford University.
+%
 % LSQR uses an iterative (conjugate-gradient-like) method.
-% For further information, see 
-% 1. C. C. Paige and M. A. Saunders (1982a).
-%    LSQR: An algorithm for sparse linear equations and sparse least squares,
-%    ACM TOMS 8(1), 43-71.
-% 2. C. C. Paige and M. A. Saunders (1982b).
-%    Algorithm 583.  LSQR: Sparse linear equations and least squares problems,
-%    ACM TOMS 8(2), 195-209.
-% 3. M. A. Saunders (1995).  Solution of sparse rectangular systems using
-%    LSQR and CRAIG, BIT 35, 588-604.
+% For further information, see:
 %
-% Input parameters:
-% atol, btol  are stopping tolerances.  If both are 1.0e-9 (say),
-%             the final residual norm should be accurate to about 9 digits.
-%             (The final x will usually have fewer correct digits,
-%             depending on cond(A) and the size of damp.)
-% conlim      is also a stopping tolerance.  lsqr terminates if an estimate
-%             of cond(A) exceeds conlim.  For compatible systems Ax = b,
-%             conlim could be as large as 1.0e+12 (say).  For least-squares
-%             problems, conlim should be less than 1.0e+8.
-%             Maximum precision can be obtained by setting
-%             atol = btol = conlim = zero, but the number of iterations
-%             may then be excessive.
-% itnlim      is an explicit limit on iterations (for safety).
-% show = 1    gives an iteration log,
-% show = 0    suppresses output.
-% covindex    specified index set of the columns and rows of the
-%             covariance matrix
-% userstop    a function handle that checks a user-defined stopping
-%             criteria. The function handle should be in the form
-%             [istop,atol,userout] = userstop(istop,atol,arnorm,itn); 
-%             
-%             if userstop returns istop > 0 lsqr will stop 
-%             if userstop returns istop = 0 lsqr will continue
-%             the userstop function can alter the tolerance atol.
-%             
-%
-% Output parameters:
-% x           is the final solution.
-% istop       gives the reason for termination.
-% istop       = 1 means x is an approximate solution to Ax = b.
-%             = 2 means x approximately solves the least-squares problem.
-% r1norm      = norm(r), where r = b - Ax.
-% r2norm      = sqrt( norm(r)^2  +  damp^2 * norm(x)^2 )
-%             = r1norm if damp = 0.
-% anorm       = estimate of Frobenius norm of Abar = [  A   ].
-%                                                    [damp*I]
-% acond       = estimate of cond(Abar).
-% arnorm      = estimate of norm(A'*r - damp^2*x).
-% xnorm       = norm(x).
-% var         (if present) estimates all diagonals of (A'A)^{-1} (if damp=0)
-%             or more generally (A'A + damp^2*I)^{-1}.
-%             This is well defined if A has full column rank or damp > 0.
-%             (Not sure what var means if rank(A) < n and damp = 0.)
-% cov         (if present) esitmates the rows and columns of the
-%             covariance matrix specified by the covindex set.
-% userout     output data from the userstop function 
-
-%        1990: Derived from Fortran 77 version of LSQR.
-% 22 May 1992: bbnorm was used incorrectly.  Replaced by anorm.
-% 26 Oct 1992: More input and output parameters added.
-% 01 Sep 1994: Matrix-vector routine is now a parameter 'aprodname'.
-%              Print log reformatted.
-% 14 Jun 1997: show  added to allow printing or not.
-% 30 Jun 1997: var   added as an optional output parameter.
-% 07 Aug 2002: Output parameter rnorm replaced by r1norm and r2norm.
-%              Michael Saunders, Systems Optimization Laboratory,
-%              Dept of MS&E, Stanford University.
-%-----------------------------------------------------------------------
-
-%     Initialize.
+%    1. C. C. Paige and M. A. Saunders (1982a).
+%       LSQR: An algorithm for sparse linear equations and sparse least squares,
+%       ACM TOMS 8(1), 43-71.
+%    2. C. C. Paige and M. A. Saunders (1982b).
+%       Algorithm 583.  LSQR: Sparse linear equations and least squares problems,
+%       ACM TOMS 8(2), 195-209.
+%    3. M. A. Saunders (1995).  Solution of sparse rectangular systems using
+%       LSQR and CRAIG, BIT 35, 588-604.
 
 msg=['The exact solution is  x = 0                              '
      'Ax - b is small enough, given atol, btol                  '
@@ -102,13 +99,13 @@ wantvar= nargout >= 6;
 if wantvar, var = zeros(n,1); end
 cov = [];
 wantcov = exist('covindex','var') && ~isempty(covindex);
-if wantcov, p = length(covindex); cov = zeros(p,p); end 
+if wantcov, p = length(covindex); cov = zeros(p,p); end
 wantstop = exist('userstop','var');
 
-%Ensure that aprodname is a function handle 
+%Ensure that aprodname is a function handle
 if ~isa(aprodname,'function_handle')
     error('Input argument aprod must be a function handle')
-end 
+end
 
 
 if show
@@ -211,7 +208,7 @@ while itn < itnlim
       w       = v      +  t2*w;
       ddnorm  = ddnorm +  norm(dk)^2;
       if wantvar, var = var  +  dk.*dk; end
-      if wantcov, cov = cov  +  dk(covindex) * dk(covindex)'; end 
+      if wantcov, cov = cov  +  dk(covindex) * dk(covindex)'; end
 
 %     Use a plane rotation on the right to eliminate the
 %     super-diagonal element (theta) of the upper-bidiagonal matrix.
@@ -276,10 +273,10 @@ while itn < itnlim
       if  test3 <= ctol,  istop = 3; end
       if  test2 <= atol,  istop = 2; end
       if  test1 <= rtol,  istop = 1; end
-      
+
       if wantstop
           [istop,atol,userout] = userstop(istop,atol,arnorm,itn);
-      end 
+      end
 
 %     See if it is time to print something.
 

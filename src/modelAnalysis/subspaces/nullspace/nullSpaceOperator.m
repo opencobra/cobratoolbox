@@ -1,46 +1,47 @@
-function nullS = nullSpaceOperator(S,scale,printLevel)
-% Uses LUSOL to compute a nullspace operator nullS
-% nullS = nullSpaceOperator(S,gmscale,printLevel);
-% We assume S is m x n with m < n with rank r.
+function nullS = nullSpaceOperator(S, scale, printLevel)
+% Uses LUSOL to compute a nullspace operator `nullS`
+% We assume `S` is `m` x `n` with `m < n` with rank `r`.
+% First `nullS = nullSpaceOperator(S)`
+% computes a structure `nullS` from an `m` x `n` sparse matrix `S` (`m < n`).
+% Second, if `V` is an (`n-r`) x `k` sparse matrix (`k >= 1`),
+% `W = nullSpaceOperatorApply(nullS,V)`;
+% computes an `n` x `k` sparse matrix `W` from `V` such that `S*W = 0`.
 %
-% First,
-%        nullS = nullSpaceOperator(S);
-% computes a structure nullS from an m x n sparse matrix S (m < n).
-% Second, if V is an (n-r) x k sparse matrix (k >= 1),
-%        W = nullSpaceOperatorApply(nullS,V);
-% computes an n x k sparse matrix W from V such that S*W = 0.
+% This is an operator form of finding an `n` x `(n-r)` matrix `Z`
+% such that `S*Z = 0` and then computing `W = Z*V`.
+% The aim is to obtain `W` without forming `Z` explicitly.
 %
-% This is an operator form of finding an n x (n-r) matrix Z
-% such that S*Z = 0 and then computing W = Z*V.
-% The aim is to obtain W without forming Z explicitly.
+% `nullS.rank` returns the rank of `S` (`r <= m`).
+% It doesn't matter if `rank < m`.
 %
-% nullS.rank returns the rank of S (r <= m).
-% It doesn't matter if rank < m.
+% USAGE:
 %
-% INPUT
-% S             m x n matrix
-% scale       {(1),0} geometric mean scaling of S
-% printLevel    {(1),0}
+%    nullS = nullSpaceOperator(S, scale, printLevel)
 %
-% OUTPUT
-% nullS         nullspace operator to be used with nullSpaceOperatorApply.m
-% nullS.rank    rank of S
+% INPUTS:
+%    S:             `m` x `n` matrix
+%    scale:         {(1),0} geometric mean scaling of `S`
+%    printLevel:    {(1),0}
 %
-% REQUIRES
-% Requires Nick Henderson's 64 bit LUSOL interface to be intalled and added
-% to the matlab path. See https://github.com/nwh/lusol
-% see also http://www.stanford.edu/group/SOL/software/lusol.html
+% OUTPUT:
+%    nullS:         nullspace operator to be used with `nullSpaceOperatorApply.m`
+%
+%                     * nullS.rank - rank of `S`
+%
+% NOTE:
+%
+%    Requires Nick Henderson's 64 bit LUSOL interface to be intalled and added
+%    to the matlab path. See https://github.com/nwh/lusol
+%    see also http://www.stanford.edu/group/SOL/software/lusol.html
+%
+% .. Authors:
+%       - Michael Saunders 02 May 2008: First version of nullspaceLUSOLform.m.
+%       load iCore_stoich_mu_Stanford.mat   % loads a matrix A;
+%       nullS = nullspaceLUSOLform(A);      % forms Z.
+%       - Ronan Fleming 20 Jan 2015: Updated to use Nick Henderson's 64 bit LUSOL interface
+%       and renamed nullSpaceOperator
 
-% 02 May 2008: First version of nullspaceLUSOLform.m.
-%              load iCore_stoich_mu_Stanford.mat   % loads a matrix A;
-%              nullS = nullspaceLUSOLform(A);      % forms Z.
-%              Michael Saunders
-% 20 Jan 2015: Updated to use Nick Henderson's 64 bit LUSOL interface
-%              Ronan Fleming and renamed nullSpaceOperator
-
-
-%by default turn on scaling
-if ~exist('scale','var')
+if ~exist('scale','var') %by default turn on scaling
     scale=1;
 end
 if ~exist('printLevel','var')
