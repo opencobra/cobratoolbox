@@ -1,20 +1,21 @@
-function [moietyFormulas,M] = estimateMoietyFormulas(L,E,elements)
-% Estimates the chemical formulas of conserved moieties in a metabolic
-% network
-% 
-% moietyFormulas = estimateMoietyFormulas(L,E)
-% 
-% INPUTS
-% L        ... The m x r moiety matrix for a metabolic network. Each column is a
-%              moiety vector.
-% E        ... The m x p elemental matrix for metabolites in the metabolic network.
-% elements ... A 1 x p cell array of element symbols.
-% 
-% OUTPUT
-% M              ... An r x p estimated elemental matrix for moieties.
-% moietyFormulas ... An r x 1 cell array of estimated moiety formulas.
-% 
-% Nov. 2015, Hulda S. Haraldsd??ttir
+function [moietyFormulas,M] = estimateMoietyFormulas(L, E, elements)
+% Estimates the chemical formulas of conserved moieties in a metabolic network
+%
+% USAGE:
+%
+%    moietyFormulas = estimateMoietyFormulas(L, E, elements)
+%
+% INPUTS:
+%    L:                 The `m` x `r` moiety matrix for a metabolic network. Each column is a
+%                       moiety vector.
+%    E:                 The `m` x `p` elemental matrix for metabolites in the metabolic network.
+%    elements:          A 1 x `p` cell array of element symbols.
+%
+% OUTPUT:
+%    M:                 An `r` x `p` estimated elemental matrix for moieties.
+%    moietyFormulas:    An `r` x 1 cell array of estimated moiety formulas.
+%
+% .. Author: - Hulda S. Haraldsdóttir, Nov. 2015
 
 M = round(L\E); % Estimated elemental matrix for moieties
 
@@ -36,6 +37,6 @@ for k = 1:r
     m = regexp(num2str(M(k,idx)),'\s+','split');
     m(ismember(m,'1')) = {''};
     F = [c; m];
-    
+
     moietyFormulas{k} = sprintf('%s%s',F{:});
 end

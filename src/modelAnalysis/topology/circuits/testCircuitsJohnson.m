@@ -1,5 +1,5 @@
-%test the computation of circuits with Johnsons algorithm with CellNetAnalyzer
 makeLoopToyModel
+%test the computation of circuits with Johnsons algorithm with CellNetAnalyzer
 
 S1=model.S(:,1:3);
 
