@@ -1,4 +1,4 @@
-ffunction [tissueModel, coreRxn, nonCoreRxn,	zeroExpRxns, pruneTime, cRes] = mCADRE(model, ubiquityScore, confidenceScores, protectedRxns, checkFunctionality, eta, tol)
+function [tissueModel, coreRxn, nonCoreRxn,	zeroExpRxns, pruneTime, cRes] = mCADRE(model, ubiquityScore, confidenceScores, protectedRxns, checkFunctionality, eta, tol)
 %Use the mCADRE algorithm (Wang et al., 2012*) to extract a context
 %specific model using data. mCADRE algorithm defines a set of core
 %reactions and prunes all other reactions based on their expression,
