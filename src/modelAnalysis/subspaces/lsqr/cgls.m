@@ -1,4 +1,4 @@
-function [x,resNE,k,info] = cgls( Aname ,shift,b,m,n,kmax,tol,prnt)
+function [x, resNE, k, info] = cgls( Aname ,shift, b, m, n, kmax, tol, prnt)
 % Solves a symmetric system
 %
 % `(A'A + shift I)x = A'b` or `N x = A'b`,
@@ -15,13 +15,22 @@ function [x,resNE,k,info] = cgls( Aname ,shift,b,m,n,kmax,tol,prnt)
 %
 % The M-file must not be called Aname.m!
 %
+% USAGE:
+%
+%    [x, resNE, k, info] = cgls( Aname ,shift, b, m, n, kmax, tol, prnt)
+%
 % INPUTS:
+%    Aname:   name of file
+%    shift:   if 0 then `cgls` is Hestenes and Stiefel's specialized form
+%    b:       used in the formulas in description
+%    m, n:    dimensions of the matrix
 %    kmax:    maximum number of iterations.
 %    tol:     desired relative residual size, `norm(rNE)/norm(A'b)`,
 %             where `rNE = A'b - N x`.
 %    prnt:    1 gives an iteration log, 0 suppresses it.
 %
 % OUTPUTS:
+%    x:       from the formulas in description
 %    resNE:   relative residual for normal equations: `norm(A'b - Nx)/norm(A'b)`.
 %    k:       final number of iterations performed.
 %    info:    gives information on the result:
