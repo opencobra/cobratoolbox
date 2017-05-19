@@ -3,7 +3,7 @@ function [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,optPercentage,osens
 %
 % USAGE:
 %
-% [minFlux,maxFlux] = fluxVariability(model,optPercentage,osenseStr,rxnNameList,verbFlag, allowLoops, method)
+%    [minFlux, maxFlux] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, verbFlag, allowLoops, method)
 %
 % INPUT:
 %    model:             COBRA model structure
@@ -18,14 +18,13 @@ function [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,optPercentage,osens
 %    verbFlag:          Verbose output (opt, default false)
 %    allowLoops:        Whether loops are allowed in solution. (Default = true)
 %                       See `optimizeCbModel` for description
-% method            when Vmin and Vmax are in the output, the flux vector can be
-%                   'FBA'    : standards FBA solution
-%                   '0-norm' : minimzes the vector  0-norm
-%                   '1-norm' : minimizes the vector 1-norm
-%                   '2-norm' : minimizes the vector 2-norm
-%                   'minOrigSol' : minimizes the euclidean distance of each
-%                   vector to the original solution vector
-%                   (Default = 2-norm)
+%    method:            when Vmin and Vmax are in the output, the flux vector can be (Default = 2-norm):
+%
+%                         * 'FBA'    : standards FBA solution
+%                         * '0-norm' : minimzes the vector  0-norm
+%                         * '1-norm' : minimizes the vector 1-norm
+%                         * '2-norm' : minimizes the vector 2-norm
+%                         * 'minOrigSol' : minimizes the euclidean distance of each vector to the original solution vector
 %
 % OUTPUTS:
 %    minFlux:           Minimum flux for each reaction
@@ -43,7 +42,7 @@ function [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,optPercentage,osens
 %                         not from the objective since this is invariant
 %                         to the value and sign of the coefficient
 %       - Ronan Fleming   27/09/10 Vmin, Vmax
-% Marouen Ben Guebila 22/02/2017 Vmin,Vmax method
+%       - Marouen Ben Guebila 22/02/2017 Vmin,Vmax method
 
 if (nargin < 2)
     optPercentage = 100;
@@ -197,8 +196,8 @@ else % parallel job.  pretty much does the same thing.
 
     global CBT_LP_SOLVER;
     global CBT_QP_SOLVER;
-    lpsolver = CBT_LP_SOLVER;    
-    qpsolver = CBT_QP_SOLVER;    
+    lpsolver = CBT_LP_SOLVER;
+    qpsolver = CBT_QP_SOLVER;
     parfor i = 1:length(rxnNameList)
         changeCobraSolver(qpsolver,'QP',0,1);
         changeCobraSolver(lpsolver,'LP',0,1);
