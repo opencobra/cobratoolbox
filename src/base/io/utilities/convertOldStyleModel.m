@@ -1,12 +1,24 @@
-function model = convertOldStyleModel(model)
+function model = convertOldStyleModel(model, printLevel)
 %CONVERTOLDSTYLEMODEL converts several old fields to their replacement.
 %INPUT 
 % model     a COBRA Model (potentially with old field names)
+%
+%OPTIONAL INPUT
+% printLevel    indicates whether warnings and messages are given (default, 1).
+%
 %OUPUT
 % model     a COBRA model with old field names replaced by new ones and
 %           duplicated fields merged.
 warnstate = warning;
-warning('on');
+if ~exist('printLevel','var')
+    printLevel = 1;
+end
+
+if(printLevel > 0)
+    warning('on');
+else
+    warning('off');
+end
 
 cellmerge = 'model.$NEW$(cellfun(@isempty, model.$NEW$)) = model.$OLD$(cellfun(@isempty, model.$NEW$));';
 maxmerge = 'model.$NEW$ = max(model.$NEW$,model.$OLD$);';
@@ -50,4 +62,23 @@ for i = 1:numel(oldFields)
     end
 end
 
+if ~isfield(model,'osense')
+    if isfield(model,'osenseStr')
+        if strcmp(model.osenseStr,'max')
+            model.osense = -1;
+        else
+            model.osense = 1;
+        end
+    else
+        model.osense = 1;
+    end
+end
+
+if ~isfield(model,'csense')
+    model.csense = repmat('E',numel(model.mets),1);
+end
+
+if isfield(model,'rev')
+    model = rmfield(model,'rev');
+end
 warning(warnstate.state)

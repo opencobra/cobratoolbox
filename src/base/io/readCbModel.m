@@ -101,14 +101,17 @@ end
 
 [defaultCompSymbols,defaultCompNames] = getDefaultCompartmentSymbols();
 parser = inputParser();
-parser.addRequired('fileName',@(x) isempty(x) || ischar(x)); 
+parser.addOptional('fileName','',@(x) isempty(x) || ischar(x)); 
 parser.addParameter('defaultBound',1000, @isnumeric); 
 parser.addParameter('fileType','',@(x) ischar(x) && any(strcmpi(processedFileTypes))); 
 parser.addParameter('modelDescription','',@ischar); 
 parser.addParameter('compSymbolList',defaultCompSymbols,@iscell); 
 parser.addParameter('compNameList',defaultCompNames,@iscell); 
-
-parser.parse(fileName,varargin{:})
+if exist('fileName','var')
+    parser.parse(fileName,varargin{:})
+else
+    parser.parse();
+end
 
 fileName = parser.Results.fileName;
 defaultBound = parser.Results.defaultBound;
@@ -122,7 +125,7 @@ supportedFileExtensions = {'*.xml;*.sto;*.xls;*.xlsx;*.mat'};
 % Open a dialog to select file
 if ~exist('fileType','var') || isempty(fileType)
     %if no filename was provided, we open a UI window.
-    if ~exist('fileName','var')
+    if ~exist('fileName','var') || isempty(fileName)
         [fileName] = uigetfile([supportedFileExtensions,{'Model Files'}],'Please select the model file');
     end    
     [~,~,FileExtension] = fileparts(fileName);
@@ -161,7 +164,7 @@ if ~exist('fileType','var') || isempty(fileType)
                 fileType = 'SimPhenyText';
             else
                 if exist([folder filesep fileBase '_gpr.txt'],'file')
-                    fileType = 'SimPhenyPlus'
+                    fileType = 'SimPhenyPlus';
                 else
                     fileType = 'SimPheny';
                 end
@@ -217,45 +220,71 @@ switch fileType
             error(['There were no valid models in the mat file.\n Please load the model manually via '' load ' fileName ''' and check it with verifyModel() to validate it']);
         end
         model = modeloptions{1,1}; 
+        if modeloptions{1,3}
+            model = convertOldStyleModel(model);
+        end
     otherwise
         error('Unknown file type');
 end
 
-% Check reversibility
-model = checkReversibility(model);
-
 % Check uniqueness of metabolite and reaction names
 checkCobraModelUnique(model);
 
-model.b = zeros(length(model.mets),1);
-
+if ~isfield(model,'b')
+    model.b = zeros(length(model.mets),1);
+end
 model.description = modelDescription;
 
-%TEMPORARY, add required fields
-if ~isfield(model,'osense')
-    model.osense = -1;
-end
-if ~isfield(model, 'csense')
-    model.csense = repmat('E',numel(model.mets),1)
-end
+model = orderModelFields(model);
+
 
 % End main function
 
 %% Extract potential models from the given loaded mat file (i.e. a struct of matlab elements)
 function models = getModelOptions(S)
 structFields = fieldnames(S);
-models = cell(0,2);
+models = cell(0,3);
 for i=1:numel(structFields)
     cfield = S.(structFields{i});
     if isstruct(cfield)
-        try
-            res = verifyModel(cfield);
+        try 
+            %lets see, if we have a valid model
+            res = verifyModel(cfield);               
             if ~isfield(res,'Errors')
-                models{end+1,1} = cfield;
-                models{end,2} = structFields{i};
+                %Convert an old Style model to the new Fields.
+                cfieldConverted = convertOldStyleModel(cfield,0);
+                res = verifyModel(cfieldConverted);               
+                if isfield(res,'Errors')
+                    fprintf('There were some old style fields in the model which could not be converted. Loading the old model')
+                    models{end+1,1} = cfield;
+                    models{end,2} = structFields{i};    
+                    models{end,3} = false;
+                else
+                    models{end+1,1} = cfieldConverted;
+                    models{end,2} = structFields{i};    
+                    models{end,3} = true;
+                end 
+            else
+                %We have errors. lets see if osense/csense are missing and
+                %if, add them
+                if isfield(res.Errors,'missingFields')
+                    %first, see if it contains an S matrix, only then will
+                    %we add the fields.
+                    if ~any(ismember(res.Errors.missingFields,'S'))
+                        cfield = convertOldStyleModel(cfield,0);
+                    end            
+                    %if we reach this place, the conversion worked,
+                    %so lets try the test again.
+                    res = verifyModel(cfield);
+                    if ~isfield(res,'Errors')                        
+                        models{end+1,1} = cfield;
+                        models{end,2} = structFields{i};
+                        models{end,3} = true;
+                    end
+                end                                            
             end
         catch
-            %IF we are here, there was a problem in verifyModel, so this is
+            %IF we are here, there was a problem in verifyModel or convertOldStyleModel, so this is
             %not a model.
         end
     end
@@ -267,27 +296,6 @@ function model = checkReversibility(model)
 selRev = (model.lb < 0 & model.ub > 0);
 model.rev(selRev) = 1;
 
-%% the following chunk of code is depreciated (Longfei Mao 27/04/2016)
-
-% readSBMLCbModel Read SBML format constraint-based model
-% function model =  readSBMLCbModel(fileName,defaultBound,compSymbolList,compNameList)
-%
-% if ~(exist(fileName,'file'))
-%     error(['Input file ' fileName ' not found']);
-% end
-%
-% if isempty(compSymbolList)
-%     compSymbolList = {'c','m','v','x','e','t','g','r','n','p'};
-%     compNameList = {'Cytosol','Mitochondria','Vacuole','Peroxisome','Extra-organism','Pool','Golgi Apparatus','Endoplasmic Reticulum','Nucleus','Periplasm'};
-% end
-%
-% % Read SBML
-% validate=0;
-% verbose=0;% Ronan Nov 24th 2014
-% modelSBML = TranslateSBML(fileName,validate,verbose);
-%
-% % Convert
-% model = convertSBMLToCobra(modelSBML,defaultBound,compSymbolList,compNameList);
 
 %%
 function model = readSimPhenyCbModel(baseName,defaultBound,compSymbolList,compNameList)
