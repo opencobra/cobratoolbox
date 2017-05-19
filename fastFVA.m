@@ -72,6 +72,11 @@ function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax,statussolmin,statussol
 % Contributor: Laurent Heirendt, LCSB
 % Last updated: October 2016
 
+%set a random log filename to avoid overwriting ongoing runs
+rng('shuffle');
+global filenameParfor;
+filenameParfor = ['parfor_progress_', datestr(now, 30), '_', num2str(randi(9)), '.txt'];
+
 % Turn on the load balancing for large problems
 loadBalancing = 0; %0: off; 1: on
 
