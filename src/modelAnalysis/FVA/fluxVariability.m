@@ -196,10 +196,12 @@ if ~PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
 else % parallel job.  pretty much does the same thing.
 
     global CBT_LP_SOLVER;
-    solver = CBT_LP_SOLVER;
+    global CBT_QP_SOLVER;
+    lpsolver = CBT_LP_SOLVER;    
+    qpsolver = CBT_QP_SOLVER;    
     parfor i = 1:length(rxnNameList)
-        changeCobraSolver(solver,'QP',0);
-        changeCobraSolver(solver,'LP',0);
+        changeCobraSolver(qpsolver,'QP',0,1);
+        changeCobraSolver(lpsolver,'LP',0,1);
         parLPproblem = LPproblem;
         if minNorm
             [minFlux(i),maxFlux(i),Vmin(:,i),Vmax(:,i)] = calcSolForEntry(model,rxnNameList,i,parLPproblem,1, method, allowLoops,verbFlag,minNorm);
@@ -298,10 +300,11 @@ function flux = getObjectiveFlux(LPsolution,LPproblem)
 %The LPproblem is used to retrieve the current objective position.
 %min indicates, whether the minimum or maximum is requested, the
 %upper/lower bounds are used, if the value is exceeding them
-if LPsolution.full(LPproblem.c~=0)<LPproblem.lb(LPproblem.c~=0) %takes out tolerance issues
-    flux = LPproblem.lb(LPproblem.c~=0);
-elseif LPsolution.full(LPproblem.c~=0)>LPproblem.ub(LPproblem.c~=0)
-    flux = LPproblem.ub(LPproblem.c~=0);
+Index = LPproblem.c~=0;
+if LPsolution.full(Index)<LPproblem.lb(Index) %takes out tolerance issues
+    flux = LPproblem.lb(Index);
+elseif LPsolution.full(Index)>LPproblem.ub(Index)
+    flux = LPproblem.ub(Index);
 else
-    flux = LPsolution.full(LPproblem.c~=0);
+    flux = LPsolution.full(Index);
 end
