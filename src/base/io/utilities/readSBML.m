@@ -716,6 +716,12 @@ if (hasAnnotationField)
     model.metInChIString = columnVector(metInChIString);
 end
 
+%temporary before remake of readSBML
+if numel(model.osense) > 1
+    model.osense = model.osense(1);
+end
+model = convertOldStyleModel(model);
+
 end
 
 

@@ -29,7 +29,7 @@ end
 
 % define a success exit code
 exit_code = 0;
-
+currentDir = pwd;
 try
     % retrieve the models first
     retrieveModels;
@@ -38,7 +38,9 @@ try
     changeCobraSolver('glpk')
     sparseLP_example;
     uniformSampling;
-
+    tutorial_IO;
+    %reset the path.
+    cd(currentDir)
     % ensure that we ALWAYS call exit
     exit(exit_code);
 catch
