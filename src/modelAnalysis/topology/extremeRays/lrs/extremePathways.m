@@ -16,6 +16,10 @@ function [R, V] = extremePathways(model, positivity, inequality)
 %    positivity:           {0,(1)} if positivity == 1, then positive orthant base
 %    inequality:           {(0),1} if inequality == 1, then use two inequalities rather than a single equality
 %
+% OUTPUTS:
+%    R:                    `nDim` by `nRay` matrix of extreme rays
+%    V:                    `nDim` by `nVertex` matrix of vertices
+%
 % .. Author: - lrs by David Avis, McGill University
 
 [nMet, nRxn] = size(model.S);
