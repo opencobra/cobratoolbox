@@ -9,14 +9,16 @@ function [Supp, basis] = findSparseMode(J, P, singleton, model, epsilon, basis)
 % INPUTS:
 %    J:           Indicies of irreversible reactions
 %    P:           Reactions
-%    singleton:   Takes only first instance from J, else takes whole J
+%    singleton:   Takes only first instance from `J`, else takes whole `J`
 %    model:       Model structure
-%    epsilon:     Parameter (default: 1e-4; see Vlassis et al for more details)
+%    epsilon:     Parameter (default: 1e-4; see `Vlassis et al` for more details)
+%
+% OPTIONAL INPUT:
 %    basis:       Basis
 %
-% OUTPUT:
-%    Supp:        Support or [] if no reaction from J can get flux above epsilon
-%    basis:
+% OUTPUTS:
+%    Supp:        Support or [] if no reaction from `J` can get flux above epsilon
+%    basis:       Basis
 %
 % .. Authors: - Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013 LCSB / LSRU, University of Luxembourg
 

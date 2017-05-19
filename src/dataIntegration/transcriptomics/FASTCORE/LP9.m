@@ -6,7 +6,7 @@ function V = LP9(K, P, model, epsilon)
 %    V = LP9(K, P, model, epsilon)
 %
 % .. Authors: -  Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013
-% LCSB / LSRU, University of Luxembourg
+%             LCSB / LSRU, University of Luxembourg
 
     scalingfactor = 1e5;
 
@@ -47,15 +47,15 @@ function V = LP9(K, P, model, epsilon)
     LPproblem.osense=1;%minimise
     LPproblem.csense(1:size(LPproblem.A,1))='E';
     LPproblem.csense(size(Aeq,1)+1:size(LPproblem.A,1))='L';
-    
+
     solution = solveCobraLP(LPproblem);
-    
+
     if solution.stat~=1
         fprintf('\n%s%s\n',num2str(solution.stat),' = sol.stat')
         fprintf('%s%s\n',num2str(solution.origStat),' = sol.origStat')
         warning('LP solution may not be optimal')
     end
-    
+
     x=solution.full;
 
     if ~isempty(x)
@@ -63,4 +63,3 @@ function V = LP9(K, P, model, epsilon)
     else
         V=ones(n,1)*NaN;
     end
-
