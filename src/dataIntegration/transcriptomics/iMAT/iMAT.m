@@ -1,39 +1,34 @@
 function tissueModel = iMAT(model, expressionRxns, threshold_lb, threshold_ub, tol, core, logfile, runtime)
-%Use the iMAT algorithm (Zur et al., 2010*) to extract a context
-%specific model using data. iMAT algorithm find the optimal trade-off
-%between inluding high-expression reactions and removing low-expression
-%reactions.
+% Uses the iMAT algorithm (`Zur et al., 2010`) to extract a context
+% specific model using data. iMAT algorithm find the optimal trade-off
+% between inluding high-expression reactions and removing low-expression reactions.
 %
-%INPUTS
+% USAGE:
 %
-%   model               input model (COBRA model structure)
-%   expressionRxns      expression data, corresponding to model.rxns (see
-%                       mapGeneToRxn.m)
+%    tissueModel = iMAT(model, expressionRxns, threshold_lb, threshold_ub, tol, core, logfile, runtime)
 %
-%OPTIONAL INPUTS
-%   threshold_lb        lower bound of expression threshold, reactions with
+% INPUTS:
+%
+% OPTIONAL INPUTS:
+%                       `mapGeneToRxn.m`)
+%    threshold_lb:      lower bound of expression threshold, reactions with
 %                       expression below this value are "non-expressed"
 %                       (default - 25 percentile of expression)
-%   threshold_ub        upper bound of expression threshold, reactions with
 %                       expression above this value are "expressed"
 %                       (default - 75 percentile of expression)
-%   tol                 minimum flux threshold for "expressed" reactions
 %                       (default 1e-8)
-%   core                cell with reaction names (strings) that are manually put in
+%    core:              cell with reaction names (strings) that are manually put in
 %                       the high confidence set (default - no core
 %                       reactions)
-%   logfile             name of the file to save the MILP log (string)
-%   runtime             maximum solve time for the MILP (default value -
-%                       7200s)
+%    runtime:            maximum solve time for the MILP (default value - 7200s)
 %
-%OUTPUTS
+% OUTPUT:
+%    tissueModel:       extracted model
 %
-%   tissueModel         extracted model
+% `Zur et al. (2010). iMAT: an integrative metabolic analysis tool.
+% Bioinformatics 26, 3140-3142.`
 %
-%* Zur et al. (2010). iMAT: an integrative metabolic analysis tool.
-%Bioinformatics 26, 3140-3142.
-%
-% Implementation adapted from the cobra toolbox (createTissueSpecificModel.m) by S. Opdam and A. Richelle, May 2017
+% .. Author: - Implementation adapted from the cobra toolbox (createTissueSpecificModel.m) by S. Opdam and A. Richelle, May 2017
 
 if nargin < 8 || isempty(runtime)
     runtime = 7200;
@@ -59,7 +54,7 @@ end
 
     RHindex = find(expressionRxns >= threshold_ub);
     RLindex = find(expressionRxns >= 0 & expressionRxns < threshold_lb);
-    
+
     %Manually add defined core reactions to the core
     if ~isempty(core)
         for i = 1:length(core)
@@ -142,9 +137,9 @@ end
     MILPproblem.x0 = [];
 
     solution = solveCobraMILP(MILPproblem, 'timeLimit', runtime, 'logFile', logfile, 'printLevel', 3);
-    
+
     x = solution.cont;
     rxnRemList = model.rxns(abs(x) < tol);
-    tissueModel = removeRxns(model,rxnRemList); 
-    
+    tissueModel = removeRxns(model,rxnRemList);
+
 end
