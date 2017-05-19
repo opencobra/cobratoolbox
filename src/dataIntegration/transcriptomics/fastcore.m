@@ -1,4 +1,4 @@
-function tissueModel = fastcore(core, model, epsilon, expressionRxns, threshold, printlevel)
+function tissueModel = fastcore(model, core, epsilon, printlevel)
 %%Use the FASTCORE algorithm (Vlassis et al, 2014*) to extract a context
 %specific model using data. FASTCORE algorithm defines one set of core
 %reactions that is guaranteed to be active in the extracted model and find
@@ -6,21 +6,18 @@ function tissueModel = fastcore(core, model, epsilon, expressionRxns, threshold,
 %
 % USAGE:
 %
-%    tissueModel = fastcore(core, model)
+%    tissueModel = fastcore(model,core)
 %
 %INPUTS
 %
+%   model               input model (COBRA model structure)   
 %   core                indices of reactions in cobra model that are part of the
 %                       core set of reactions (called C in Vlassis et al,
 %                       2014*)
-%   model               input model (COBRA model structure)
+%
+%OPTIONAL INPUTS
 %   epsilon             smallest flux value that is considered nonzero
-%                       (default 1e-8)    
-%   expressionRxns      expression data, corresponding to model.rxns (see
-%                       mapGeneToRxn.m)
-%   threshold           expression threshold (reactions with expression
-%                       above this threshold are put in the set of core
-%                       reactions                
+%                       (default 1e-8)               
 %   printLevel          0 = silent, 1 = summary, 2 = debug
 %
 %OUTPUTS
@@ -37,25 +34,15 @@ function tissueModel = fastcore(core, model, epsilon, expressionRxns, threshold,
 %       - Anne Richelle, code adaptation to fit with createTissueSpecificModel
 
 
-    if ~exist('printLevel','var')
+    if nargin < 4 || ~exist('printLevel','var')
         %For Compatability with the original fastcore syntax
         printlevel = 1;
     end
-    
-    %Define the set of core reactions
-    if ~isempty(expressionRxns) && ~isempty(threshold)
-        %additional option to extend the core set of reaction depending on
-        %a threshold on the gene expression data
-        coreSetRxn = find(expressionRxns >= threshold);
-        coreSetRxn= union(coreSetRxn, find(ismember(model.rxns, core)));
-    else
-        coreSetRxn = core;
-    end
-    
-    if ~isempty(epsilon)
+    if nargin < 3 || isempty(epsilon)
         epsilon=1e-8;
     end
-    
+
+    coreSetRxn = core;    
     model_orig = model;
 
     %Find irreversible reactions
