@@ -1,4 +1,4 @@
-function solverOK = changeCobraSolver(solverName, solverType, printLevel)
+function solverOK = changeCobraSolver(solverName, solverType, printLevel, unchecked)
 % changeCobraSolver Changes the Cobra Toolbox optimization solver(s)
 %
 % USAGE:
@@ -140,6 +140,26 @@ global MOSEK_PATH;
 global GUROBI_PATH;
 global MINOS_PATH;
 global ILOG_CPLEX_PATH;
+
+if ~exist('unchecked' , 'var')
+    unchecked = 0;
+end
+if unchecked
+    switch solverType
+        case 'LP'
+            CBT_LP_SOLVER = solverName;
+        case 'QP'
+            CBT_QP_SOLVER = solverName;
+        case 'MILP'
+            CBT_MILP_SOLVER = solverName;
+        case 'NLP'
+            CBT_NLP_SOLVER = solverName;
+        case 'MIQP'
+            CBT_MIQP_SOLVER = solverName;
+    end
+    return
+end
+            
 
 if isempty(SOLVERS) || isempty(OPT_PROB_TYPES)
     ENV_VARS.printLevel = false;
