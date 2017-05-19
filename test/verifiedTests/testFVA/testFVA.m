@@ -36,9 +36,10 @@ end
 for k = 1:length(solverPkgs)
 
     % change the COBRA solver (LP)
-    solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
+    solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
+    solverQPOK = changeCobraSolver(solverPkgs{k}, 'QP', 0);
 
-    if solverOK == 1
+    if solverLPOK && solverQPOK
         fprintf('   Testing flux variability analysis using %s ... ', solverPkgs{k});
 
         poolobj = gcp('nocreate'); % If no pool, do not create new one.
