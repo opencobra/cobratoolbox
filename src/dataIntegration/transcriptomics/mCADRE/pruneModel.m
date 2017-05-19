@@ -1,53 +1,55 @@
 function [tissueModel, cRes] = pruneModel(model, rankNonCore, coreRxn, zeroExpRxns, precursorMets, eta, tol)
-%Sequentially prune non-core reactions from the model in a
-%determined order by rankNonCore, provided that removal does 
-%not affect fluxes through the core reaction set (coreRxn)
+% Sequentially prune non-core reactions from the model in a
+% determined order by rankNonCore, provided that removal does
+% not affect fluxes through the core reaction set (`coreRxn`)
 %
-%INPUTS
-%   model               input model (COBRA model structure)
-%   rankNonCore         order for reaction removal
-%	coreRxn             core reactions in model
-%	zeroExpRxns         reactions with zero expression (i.e., measured zero, not just
-%                       missing from expression data)
-%   precursorMets       list of metabolites involved in the
-%                       reactions defined in protected reactions
-%   eta                 tradeoff between removing core and zero-expression
-%                       reactions (default value: 1/3)
-%   tol                 minimum flux threshold for "expressed" reactions
-%                       (default 1e-8)
+% USAGE:
 %
-%OUTPUTS
-%	tissueModel         pruned, context-specific model
-%	cRes                result of model checks (consistency/function)
-%                       - vs. +: reaction r removed from generic model or
-%                       not
-%                       1 vs. 2: reaction r had zero or non-zero expression evidence
-%                       -x.y: removal of reaction r corresponded with removal of y (num.) total
-%                       core reactions
-%                       +x.1 vs. x.0: precursor production possible after removal of 
-%                       reaction r or not
-%                       3: removal of reaction r by itself prevented production of required
-%                       metabolites (therefore was not removed)
+%    [tissueModel, cRes] = pruneModel(model, rankNonCore, coreRxn, zeroExpRxns, precursorMets, eta, tol)
 %
-%This script is an adapted version of the implementation from
-%https://github.com/jaeddy/mcadre. Adapted and commented by A. Richelle,
-%May 2017.
+% INPUTS:
+%    model:            input model (COBRA model structure)
+%    rankNonCore:      order for reaction removal
+%    coreRxn:          core reactions in model
+%    zeroExpRxns:      reactions with zero expression (i.e., measured zero, not just
+%                      missing from expression data)
+%    precursorMets:    list of metabolites involved in the
+%                      reactions defined in protected reactions
+%    eta:              tradeoff between removing core and zero-expression
+%                      reactions (default value: 1/3)
+%    tol:              minimum flux threshold for "expressed" reactions (default 1e-8)
+%
+% OUTPUTS:
+%    tissueModel:      pruned, context-specific model
+%    cRes:             result of model checks (consistency/function)
+%                      - vs. +: reaction `r` removed from generic model or not
+%                      1 vs. 2: reaction `r` had zero or non-zero expression evidence
+%                      `-x.y`: removal of reaction `r` corresponded with removal of `y` (num.) total
+%                      core reactions
+%                      `+x.1` vs. `x.0`: precursor production possible after removal of
+%                      reaction `r` or not
+%                      3: removal of reaction `r` by itself prevented production of required
+%                      metabolites (therefore was not removed)
+%
+% This script is an adapted version of the implementation from
+% https://github.com/jaeddy/mcadre.
+%
+% .. Author: - Adapted and commented by A. Richelle, May 2017.
 
-    % Initialize variables
-    tissueModel = model;
+    tissueModel = model; % Initialize variables
     R_P = model.rxns;
-    nonCoreRemoved = 0; 
+    nonCoreRemoved = 0;
     coreRemoved = 0;
     cRes = zeros(3000, 1);
     count = 1;
     cutoff = Inf;
-    
+
     param.epsilon=tol;
     param.modeFlag=0;
     param.method='fastcc';
-    
+
     while numel(rankNonCore) && count < cutoff % for testing
-        
+
         display(['Reaction no. ', num2str(count)])
         r = rankNonCore(1);
         display(['Attempting to remove reaction ', r{:}, '...'])
@@ -67,7 +69,7 @@ function [tissueModel, cRes] = pruneModel(model, rankNonCore, coreRxn, zeroExpRx
             % Check for inactive reactions after removal of r
             [fluxConsistentMetBool,fluxConsistentRxnBool] = findFluxConsistentSubset(tissueModel,param);
             inactive_G=PM.rxns(fluxConsistentRxnBool==0);
-            
+
             inactiveCore = intersect(inactive_G, coreRxn);
             inactiveNonCore = setdiff(inactive_G, inactiveCore);
 
@@ -76,7 +78,7 @@ function [tissueModel, cRes] = pruneModel(model, rankNonCore, coreRxn, zeroExpRx
             % rank_reactions) and corresponding inactive core reactions, only if
             % sufficiently more non-core reactions are removed
             if ismember(r, zeroExpRxns)
-                
+
                 display('Zero-expression evidence for reaction...')
 
                 % Check model function with all inactive reactions removed
@@ -84,7 +86,7 @@ function [tissueModel, cRes] = pruneModel(model, rankNonCore, coreRxn, zeroExpRx
                 tmpStatus = checkModelFunction(modelTmp, precursorMets);
 
                 if (numel(inactiveCore) / numel(inactiveNonCore) <= eta) && tmpStatus
-                    
+
                     R_P = setdiff(R_P, inactive_G);
                     tissueModel = removeRxns(tissueModel, inactive_G);
                     rankNonCore(ismember(rankNonCore, inactive_G)) = [];
@@ -103,7 +105,7 @@ function [tissueModel, cRes] = pruneModel(model, rankNonCore, coreRxn, zeroExpRx
                         removed_C_indicator = numel(inactiveCore) / 10;
                     end
                     result = -1 - removed_C_indicator;
-                    
+
                 else
                     % Note: no reactions (core or otherwise) are actually
                     % removed in this step, but it is necessary to update the
@@ -146,7 +148,7 @@ function [tissueModel, cRes] = pruneModel(model, rankNonCore, coreRxn, zeroExpRx
                         removed_C_indicator = numel(inactiveCore) / 10;
                     end
                     result = -2 - removed_C_indicator;
-                    
+
                 else
                     num_removed = nonCoreRemoved + coreRemoved;
                     rankNonCore(1) = [];

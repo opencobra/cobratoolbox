@@ -1,20 +1,25 @@
 function E_C = connectivityEvidence(model, E_X)
-%Compute the connectivity based evidence for non-core reactions using
-%network topology
+% Computes the connectivity based evidence for non-core reactions using
+% network topology
 %
-% INPUTS
-%   model       model structure
-%   E_X         expression-based evidence score
+% USAGE:
 %
-% OUTPUTS
-%   E_C         connectivity-based evidence score
+%    E_C = connectivityEvidence(model, E_X)
 %
-%This script is an adapted version of the implementation from
-%https://github.com/jaeddy/mcadre. Commented by A. Richelle,
-%May 2017.
+% INPUTS:
+%    model:    model structure
+%    E_X:      expression-based evidence score
+%
+% OUTPUTS:
+%    E_C:      connectivity-based evidence score
+%
+% This script is an adapted version of the implementation from
+% https://github.com/jaeddy/mcadre.
+%
+% .. Author: - Commented by A. Richelle, May 2017.
 
-    % S matrix is binarized to indicate metabolite participation in each reaction
     Sbin = double(model.S ~= 0);
+    % S matrix is binarized to indicate metabolite participation in each reaction
 
     % Adjacency matrix (i.e., binary reaction connectivity); the connection between
     % a reaction and itself is ignored by subtracting the identity matrix

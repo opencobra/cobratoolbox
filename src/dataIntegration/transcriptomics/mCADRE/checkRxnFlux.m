@@ -1,7 +1,8 @@
 function inactiveRequired = checkRxnFlux(model, requiredRxns)
-% Check that requiredRxns can carry fluxes
+% Checks that `requiredRxns` can carry fluxes
 % This function uses the heuristic speed-up proposed by Jerby et al. in the MBA
 % paper for performing a pseudo-FVA calculation.
+%
 % This script is the original version of the implementation from
 % https://github.com/jaeddy/mcadre.
 
