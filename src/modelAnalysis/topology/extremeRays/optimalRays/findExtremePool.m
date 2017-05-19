@@ -1,5 +1,5 @@
 function [x, output] = findExtremePool(fbaModel, obj, printLevel)
-% find an extreme ray in the left nullspace of the stoichiometric matrix
+% Finds an extreme ray in the left nullspace of the stoichiometric matrix
 
 A    = fbaModel.S';
 [n, m] = size(A);
@@ -20,4 +20,4 @@ LPProblem.ub= 100*ones(size(LPProblem.A,2),1);
 LPProblem.osense=-1;
 LPProblem.csense(1:size(LPProblem.A,1),1)='E';
 output = solveCobraLP(LPProblem);
-x=output.full; 
+x=output.full;

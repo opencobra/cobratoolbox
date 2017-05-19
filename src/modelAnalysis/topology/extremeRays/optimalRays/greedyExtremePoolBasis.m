@@ -1,12 +1,12 @@
 function [B,L] = greedyExtremePoolBasis(model)
-% compute a non-negative basis for the left nullspace of the stoichiometric
+% Computes a non-negative basis for the left nullspace of the stoichiometric
 % matrix using optimization to pick random extreme rays, then test a
 % posteriori if each is linearly independent from the existing stored
 % extreme rays.
 
+[inform,molecularVector]=checkStoichiometricConsistency(model,0);
 %check stoichiometric consistency
 %check if positive vector in left nullspace
-[inform,molecularVector]=checkStoichiometricConsistency(model,0);
 if inform~=1
     B=[];
     return;

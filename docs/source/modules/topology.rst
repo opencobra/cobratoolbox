@@ -11,7 +11,7 @@ Topology
    conservedMoieties
    extremeRays
    FR
-   graphHypergraphConversion
+   graphHypergraphConversion   
 
 .. automodule:: src.modelAnalysis.topology
    :members:

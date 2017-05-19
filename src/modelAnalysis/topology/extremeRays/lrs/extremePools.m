@@ -1,17 +1,20 @@
 function [P, V, A] = extremePools(model, positivity, inequality)
-% calculate the extreme pools of a stoichiometric model using the vertex/facet enumeration package
-% lrs by David Avis, McGill University
+% Calculates the extreme pools of a stoichiometric model using the vertex / facet enumeration package
 %
 % INPUT:
-%     model.S   m x n Stoichiometric matrix with integer coefficients. If no
-%               other inputs are specified it is assumed that all reactions are
-%               reversible and S.v = 0
+%    model:                structure with:
+%
+%                            * model.S:   `m` x `n` Stoichiometric matrix with integer coefficients. If no
+%                              other inputs are specified it is assumed that all reactions are
+%                              reversible and `S.v = 0`
 %
 % OPTIONAL INPUT:
-%     model.SIntRxnBool  n x 1 boolean vector with 1 for internal reactions
-%     model.description
-%     positivity {0,(1)} if positivity==1, then positive orthant base
-%     inequality {(0),1} if inequality==1, then use two inequalities rather than a single equaltiy
+%    model.SIntRxnBool:    `n` x 1 boolean vector with 1 for internal reactions
+%    model.description:    description
+%    positivity:           {0,(1)} if positivity == 1, then positive orthant base
+%    inequality:           {(0),1} if inequality == 1, then use two inequalities rather than a single equaltiy
+%
+% .. Author: - lrs by David Avis, McGill University
 
 [nMet, nRxn] = size(model.S);
 

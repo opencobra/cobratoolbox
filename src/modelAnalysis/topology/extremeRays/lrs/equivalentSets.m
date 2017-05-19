@@ -1,12 +1,24 @@
 function [loops, eqSets, P, P2, cyclicBool] = equivalentSets(model)
-% find the stoichiometrically balanced loops and the equivalent sets
+% Finds the stoichiometrically balanced loops and the equivalent sets
 %
-% INPUT
-%     model.S
-%     model.lb
-%     model.ub
-%     model.biomassAbbr
-
+% USAGE:
+%
+%    [loops, eqSets, P, P2, cyclicBool] = equivalentSets(model)
+%
+% INPUT:
+%    model:    structure with:
+%
+%               * model.S
+%               * model.lb
+%               * model.ub
+%               * model.biomassAbbr
+%
+% OUTPUTS:
+%    loops: stoichiometrically balanced loops
+%    eqSets: equivalent sets
+%    P:
+%    P2:
+%    cyclicBool:
 
 [nMet, nRxns] = size(model.S);
 % nullspace of internal stoichiometric matrix
