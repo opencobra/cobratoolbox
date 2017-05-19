@@ -48,22 +48,22 @@ for k = 1:length(solverPkgs)
             parpool(2);
         end
 
-        rxnNames = {'PGI', 'PFK', 'FBP', 'FBA', 'TPI', 'GAPD', 'PGK', 'PGM', 'ENO', 'PYK', 'PPS', 'G6PDH2r', 'PGL', 'GND', 'RPI', 'RPE', 'TKT1', 'TKT2', 'TALA'};
+        rxnNames = {'PGI', 'PFK', 'FBP', 'FBA', 'TPI', 'GAPD', 'PGK', 'PGM', 'ENO', 'PYK', 'PPS', ...
+                    'G6PDH2r', 'PGL', 'GND', 'RPI', 'RPE', 'TKT1', 'TKT2', 'TALA'};
 
         % launch the flux variability analysis
         fprintf('    Testing flux variability for the following reactions:\n');
         disp(rxnNames);
-        [minFluxT, maxFluxT] = fluxVariability(model, 90,'max',rxnNames);
-
+        [minFluxT, maxFluxT] = fluxVariability(model, 90, 'max', rxnNames);
 
         % retrieve the IDs of each reaction
         rxnID = findRxnIDs(model, rxnNames);
 
         % check if each flux value corresponds to a pre-calculated value
         for i = 1:size(rxnID)
-           % test the components of the minFlux and maxFlux vectors
-           assert(minFlux(i) - tol <= minFluxT(i))
-           assert(minFluxT(i) <= minFlux(i) + tol)
+            % test the components of the minFlux and maxFlux vectors
+            assert(minFlux(i) - tol <= minFluxT(i))
+            assert(minFluxT(i) <= minFlux(i) + tol)
 
             assert(maxFlux(i) - tol <= maxFluxT(i))
             assert(maxFluxT(i) <= maxFlux(i) + tol)
@@ -77,51 +77,32 @@ for k = 1:length(solverPkgs)
             printLabeledData(model.rxns(i), [minFlux(i) maxFlux(i) maxFlux(i)-minFlux(i)], true, 3);
         end
 
-        %Vmin and Vmax test
-        %Since the solution are dependant on solvers and cpus, the test
-        %will check the existence of nargout (weak test) over the 4
-        %first reactions
+        % Vmin and Vmax test
+        %Since the solution are dependant on solvers and cpus, the test will check the existence of nargout (weak test) over the 4 first reactions
         rxnNames = {'PGI', 'PFK', 'FBP', 'FBA'};
-        %default (2-norm)
-        [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
-            rxnNames,1, 1);
-        assert(~isequal(Vmin,[]));
-        assert(~isequal(Vmax,[]));
-        %default (2-norm) in silent mode
-        [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
-            rxnNames,0, 1);
-        assert(~isequal(Vmin,[]));
-        assert(~isequal(Vmax,[]));
-        %FBA
-        [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
-           rxnNames,1, 1, 'FBA');
-        assert(~isequal(Vmin,[]));
-        assert(~isequal(Vmax,[]));
-        %0-norm
-        [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
-            rxnNames,1, 1, '0-norm');
-        assert(~isequal(Vmin,[]));
-        assert(~isequal(Vmax,[]));
-        %1-norm
-        [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
-            rxnNames,1, 1, '1-norm');
-        assert(~isequal(Vmin,[]));
-        assert(~isequal(Vmax,[]));
-        %2-norm
-        [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
-           rxnNames,1, 1, '2-norm');
-        assert(~isequal(Vmin,[]));
-        assert(~isequal(Vmax,[]));
-        %minOrigSol
-        [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max',...
-           rxnNames,1, 1, 'minOrigSol');
-        assert(~isequal(Vmin,[]));
-        assert(~isequal(Vmax,[]));
-    % output a success message
-    fprintf('Done.\n');
+
+        %testing default FVA with 2 printLevels
+        for j = 0:1
+            fprintf('    Testing flux variability with printLevel %s:\n', num2str(j));
+            [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model, 90, 'max', rxnNames, j, 1);
+            assert(~isequal(Vmin,[]));
+            assert(~isequal(Vmax,[]));
+        end
+
+        % testing various methods
+        testMethods = {'FBA', '0-norm', '1-norm', '2-norm', 'minOrigSol'};
+
+        for j = 1:length(testMethods)
+            fprintf('    Testing flux variability with test method %s:\n', testMethods{j});
+            [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max', rxnNames, 1, 1, testMethods{j});
+            assert(~isequal(Vmin,[]));
+            assert(~isequal(Vmax,[]));
+        end
+
+        % output a success message
+        fprintf('Done.\n');
     end
 end
 
 % change the directory
 cd(currentDir)
-
