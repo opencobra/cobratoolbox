@@ -42,6 +42,7 @@ showprogress(0,'KEGG reaction list ...');
 HTABLE = java.util.Hashtable; % hashes Kegg.mets
 
 %Create reversibility vector, default=1 (reversible)
+%we need rev here for the reversibility flags in addReaction
 KEGG.rev = [];
 
 for i = 1:length(KEGGReactionList)

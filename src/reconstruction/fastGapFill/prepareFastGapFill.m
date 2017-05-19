@@ -153,7 +153,6 @@ while m == 0
     %consistMatricesSUXextendedprime.subSystems(NullRxns==1)=[];
     MatricesSUX.lb(NullRxns==1)=[];
     MatricesSUX.ub(NullRxns==1)=[];
-    MatricesSUX.rev(NullRxns==1)=[];
     MatricesSUX.rules(NullRxns==1)=[];
     MatricesSUX.grRules(NullRxns==1)=[];
     MatricesSUX.c(NullRxns==1)=[];
