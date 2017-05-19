@@ -777,6 +777,35 @@ array listing genes and subsystmes</li>
 </div></blockquote>
 </dd></dl>
 
+<dl class="function">
+<dt id="src.modelAnalysis.exploration.findTrspRxnFromMet">
+<code class="descname">findTrspRxnFromMet</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em>, <em>compFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/exploration/findTrspRxnFromMet.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.findTrspRxnFromMet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find transport reactions for defined metabolites. Option available to
+define the compartment of the transport</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[TrspRxns] = findTrspRxnFromMet(model, met)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model            COBRA model structure</strong></li>
+<li><strong>metList          metabolites list</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional intput</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>compFlag         compartment of the transport (e.g. &#8216;c&#8217;,cytosol)</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>TrspRxns         List of transporters reactions</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
 </div>
 
 
