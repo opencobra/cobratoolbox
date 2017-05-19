@@ -127,11 +127,17 @@ if ~exist('fileType','var') || isempty(fileType)
     %if no filename was provided, we open a UI window.
     if ~exist('fileName','var') || isempty(fileName)
         [fileName] = uigetfile([supportedFileExtensions,{'Model Files'}],'Please select the model file');
-    end    
-    [~,~,FileExtension] = fileparts(fileName);
-    if isempty(FileExtension)
+    end 
+    
+    [~,~,FileExtension] = fileparts(fileName);    
+    if ~isempty(FileExtension)
+        %if we have a file Extension, get the full path.
+        if exist(fileName,'file')
+            fileName = which(fileName);
+        end
+    else
         %if we don't have a file extension, we try to see, which files
-        %could match.
+        %could match (only on the current directory, not on all the path).
         cfiles = dir(pwd);
         filenames = extractfield(cfiles,'name');
         matchingFiles = filenames(~cellfun(@isempty, strfind(filenames,fileName)));

@@ -136,10 +136,13 @@ if (isempty(fileName))
         return;
     end
 end
+%Use lower case
+format = lower(format);
 switch format
     %% Text file
     case {'text', 'txt'}
         fid = fopen(fileName,'w');
+        formulas = printRxnFormula(model, 'printFlag',0);
         fprintf(fid,'Rxn name\t');
         fprintf(fid,'Formula\t');
         if (isfield(model,'rules'))
