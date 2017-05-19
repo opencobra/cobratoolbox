@@ -1,10 +1,3 @@
-% Writes out COBRA models in various formats
-% The "writeCbModel" function relies on another function
-% "io/utilities/writeSBML.m" to convert a COBRA-Matlab structure into
-% a libSBML-Matlab structure and then call libSBML to export a
-% FBCv2 file. The current version of the "writeSBML.m" does not require the
-% SBML toolbox (http://sbml.org/Software/SBMLToolbox).
-
 function outmodel = writeCbModel(model,varargin)
 %writeCbModel Write out COBRA models in various formats
 %
@@ -41,9 +34,8 @@ function outmodel = writeCbModel(model,varargin)
 %    FBCv2 file. The current version of the `writeSBML.m` does not require the
 %    SBML toolbox (http://sbml.org/Software/SBMLToolbox).
 
-%For backward compatability, we are checking whether the old signature is
-%used.
-optionalInputs = {'compSymbols','compNames','sbmlLevel','sbmlVersion'};
+
+optionalInputs = {'compSymbols','compNames','sbmlLevel','sbmlVersion'}; %For backward compatability, we are checking whether the old signature is used.
 
 %We can assume, that the old syntax is only used if varargin does not start
 %with a optional argument.
@@ -149,9 +141,6 @@ switch format
     case {'text', 'txt'}
         fid = fopen(fileName,'w');
         fprintf(fid,'Rxn name\t');
-        %         if (isfield(model,'rxnNames'))
-        %             fprintf(fid,'Rxn description\t');
-        %         end
         fprintf(fid,'Formula\t');
         if (isfield(model,'rules'))
             model = creategrRulesField(model);
@@ -159,10 +148,7 @@ switch format
         end
         fprintf(fid,'LB\tUB\tObjective\n');
         for i = 1:nRxns
-            fprintf(fid,'%s\t',model.rxns{i});
-            %             if (isfield(model,'rxnNames'))
-            %                 fprintf(fid,'%s\t',model.rxnNames{i});
-            %             end
+            fprintf(fid,'%s\t',model.rxns{i});            
             fprintf(fid,'%s\t',formulas{i});
             if (isfield(model,'rules'))
                 fprintf(fid,'%s\t',model.grRules{i});
@@ -300,17 +286,11 @@ switch format
         xlswrite(fileName,model.mets,'Metabolite List');
         %% SBML
     case 'sbml'
-        % sbmlModel = convertCobraToSBML(model,sbmlLevel,sbmlVersion,compSymbolList,compNameList);
         outmodel = writeSBML(model,fileName,input.compSymbols,input.compNames);
-        %         if exist('fileName','var')&&~isempty(fileName)
-        %             OutputSBML(sbmlModel,fileName);
-        %         else
-        %             OutputSBML(sbmlModel);
-        %         end
-        %% Unknown
+        %% Mat
     case 'mat'
         save(fileName,'model')
-        
+        %% Uknown
     otherwise
         error('Unknown file format');
 end

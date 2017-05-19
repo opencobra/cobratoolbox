@@ -34,7 +34,6 @@ assert(isempty(solution));
 
 % run using writeCbModel
 writeLPProblem(model, 'problemName','mps','fileName','LP2.mps','writeMatrix',0);
-%writeCbModel(model, 'mps', 'LP2.mps', [], [], [], [], []);
 
 % read in all MPS files
 LP_str = readMixedData('LP.mps');
