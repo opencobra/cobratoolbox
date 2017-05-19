@@ -186,11 +186,11 @@
 <span id="id1"></span><h1>FVA<a class="headerlink" href="#fva" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.modelAnalysis.FVA"></span><dl class="function">
 <dt id="src.modelAnalysis.FVA.fluxVariability">
-<code class="descname">fluxVariability</code><span class="sig-paren">(</span><em>model</em>, <em>optPercentage</em>, <em>osenseStr</em>, <em>rxnNameList</em>, <em>verbFlag</em>, <em>allowLoops</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/FVA/fluxVariability.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.FVA.fluxVariability" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fluxVariability</code><span class="sig-paren">(</span><em>model</em>, <em>optPercentage</em>, <em>osenseStr</em>, <em>rxnNameList</em>, <em>verbFlag</em>, <em>allowLoops</em>, <em>method</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/FVA/fluxVariability.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.FVA.fluxVariability" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs flux variablity analysis</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[minFlux, maxFlux] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, verbFlag, allowLoops)</div></blockquote>
+<div>[minFlux, maxFlux] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, verbFlag, allowLoops, method)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -215,6 +215,15 @@ Verbose output (opt, default false)</li>
 <li><strong>allowLoops</strong> &#8211;
 Whether loops are allowed in solution. (Default = true)
 See <cite>optimizeCbModel</cite> for description</li>
+<li><strong>method</strong> &#8211;
+when Vmin and Vmax are in the output, the flux vector can be (Default = 2-norm):<ul>
+<li>&#8216;FBA&#8217;    : standards FBA solution</li>
+<li>&#8216;0-norm&#8217; : minimzes the vector  0-norm</li>
+<li>&#8216;1-norm&#8217; : minimizes the vector 1-norm</li>
+<li>&#8216;2-norm&#8217; : minimizes the vector 2-norm</li>
+<li>&#8216;minOrigSol&#8217; : minimizes the euclidean distance of each vector to the original solution vector</li>
+</ul>
+</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
