@@ -1,48 +1,52 @@
-function [L,N,Lzero,Nzero,Pl,Pn,iR,dR,iC,dC,rankS]=conservationAnalysis(model,massBalanced,printLevel,tol)
-% Returns the left and right nullspaces of a given stoichiometric matrix
-% in echelon form.
-% i.e.  L*S = 0 where [-Lzero I]*Pl'*S = 0;
-%       and
-%       S*N = 0 where S*Pn*[-Nzero; I]=S*[-Nzero' I']*Pn' = 0;
+function [L, N, Lzero, Nzero, Pl, Pn,iR, dR, iC, dC, rankS] = conservationAnalysis(model, massBalanced, printLevel, tol)
+% Returns the left and right nullspaces of a given stoichiometric matrix in echelon form.
 %
-% See: Conservation analysis of large biochemical networks
-% Ravishankar Rao Vallabhajosyula , Vijay Chickarmane and Herbert M. Sauro
+% i.e. `L*S = 0` where ``[-Lzero I]*Pl'*S = 0`;
+% and `S*N = 0` where `S*Pn*[-Nzero; I] = S*[-Nzero' I']*Pn' = 0`;
 %
-%INPUT
-% model.S                   m x n stoichiometric matrix
+% USAGE:
 %
-%OPTIONAL INPUT
-% massBalanced      {(0),1,-1}  0 = conservation analysis of entire model.S
-%                               1 = conservation analysis of mass balanced reactions only
-%                              -1 = conservation analysis of all except biomass reaction
+%    [L, N, Lzero, Nzero, Pl, Pn,iR, dR, iC, dC, rankS] = conservationAnalysis(model, massBalanced, printLevel, tol)
 %
-% model.SIntRxnBool         boolean vector indicating mass balanced
-%                           reactions only. Optional if conservation
-%                           analysis of massBalanced reactions only as
-%                           otherwise findSExRxnInd will be used to find
-%                           the mass imbalanced reactions
+% INPUT:
+%    model:                 structure
 %
-% model.biomassRxnAbbr      String with abbreviation of biomass reaction
-% model.c                   n x 1 linear objective function
+%     * model.S - `m` x `n` stoichiometric matrix
 %
-% printLevel    {(0),1}     0 = Silent
-%                           1 = Print out conservation relations using metabolite and reaction
-%                           abbreviations
-% model.mets    m x 1 cell array of metabolite abbreviations
-% model.rxns    n x 1 cell array of reaction abbreviations
+% OPTIONAL INPUTS:
+%    massBalanced:            {(0),1,-1}
 %
-% tol           upper bound on tolerance of linear independence,default
-%               no greater than 1e-12
+%                               * 0 = conservation analysis of entire `model.S`
+%                               * 1 = conservation analysis of mass balanced reactions only
+%                               * -1 = conservation analysis of all except biomass reaction
+%    model.SIntRxnBool:       boolean vector indicating mass balanced
+%                             reactions only. Optional if conservation
+%                             analysis of `massBalanced` reactions only as
+%                             otherwise `findSExRxnInd` will be used to find
+%                             the mass imbalanced reactions
 %
-%OUTPUT
-% L             Echelon form Left nullspace of S
-% N             Echelon form Right nullspace of S
-% iR            Boolean index of Independent rows
-% dR            Boolean index of Dependent rows
-% iC            Boolean index of Independent columns
-% dC            Boolean index of Dependent columns
+%    model.biomassRxnAbbr:    String with abbreviation of biomass reaction
+%    model.c:                 `n` x 1 linear objective function
+%    printLevel:              {(0),1}
 %
-% Ronan M.T. Fleming
+%                               * 0 = Silent
+%                               * 1 = Print out conservation relations using metabolite and reaction abbreviations
+%    model.mets:              `m` x 1 cell array of metabolite abbreviations
+%    model.rxns:              `n` x 1 cell array of reaction abbreviations
+%    tol:                     upper bound on tolerance of linear independence,default no greater than 1e-12
+%
+% OUTPUTS:
+%    L:                       Echelon form Left nullspace of `S`
+%    N:                       Echelon form Right nullspace of `S`
+%    iR:                      Boolean index of Independent rows
+%    dR:                      Boolean index of Dependent rows
+%    iC:                      Boolean index of Independent columns
+%    dC:                      Boolean index of Dependent columns
+%
+% See: `Conservation analysis of large biochemical networks
+% Ravishankar Rao Vallabhajosyula , Vijay Chickarmane and Herbert M. Sauro`
+%
+% .. Author: - Ronan M.T. Fleming
 
 if ~exist('massBalanced','var')
     massBalanced=0;

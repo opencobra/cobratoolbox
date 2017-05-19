@@ -1,22 +1,23 @@
 function [Ematrix] = computeElementalMatrix(model, metList, warnings)
-%computeElementalMatrix Compute elemental matrix
+% Computes elemental matrix
 %
-% [Ematrix] = computeElementalMatrix(model, metList, warnings)
+% USAGE:
 %
-% INPUT
-% model             COBRA model structure 
-%                   (must define .mets and .metFormulas)
+%    [Ematrix] = computeElementalMatrix(model, metList, warnings)
 %
-% OPTIONAL INPUTS
-% metList           Cell array of which metabolites to search for
-%                   (Default = all metabolites in model)
-% warnings          Display warnings if there are errors with the
-%                   formula.  (Default = true)
+% INPUT:
+%    model:       COBRA model structure (must define .mets and .metFormulas)
 %
-% OUTPUT
-% Ematrix           m x 6 matrix of order [C N O H P other]
-
-% Extracted from computeMW. Richard Que (1/22/10)
+% OPTIONAL INPUTS:
+%    metList:     Cell array of which metabolites to search for
+%                 (Default = all metabolites in model)
+%    warnings:    Display warnings if there are errors with the
+%                 formula.  (Default = true)
+%
+% OUTPUT:
+%    Ematrix:     `m` x 6 matrix of order [C N O H P other]
+%
+% .. Author: - Richard Que (1/22/10) Extracted from computeMW.
 
 if nargin < 3
     warnings = true;
@@ -71,7 +72,7 @@ for n = 1:length(metIDs)
             case 'Fe'
                 Ematrix(n,6) = Ematrix(n,6) + q;
             case 'Ni'
-                Ematrix(n,6) = Ematrix(n,6) + q;                
+                Ematrix(n,6) = Ematrix(n,6) + q;
             case 'Co'
                 Ematrix(n,6) = Ematrix(n,6) + q;
             case 'Cu'
@@ -100,4 +101,3 @@ for n = 1:length(metIDs)
     end
 
 end
-    
