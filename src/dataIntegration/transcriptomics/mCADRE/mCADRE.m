@@ -1,4 +1,4 @@
-function [tissueModel, coreRxn, nonCoreRxn,	zeroExpRxns, pruneTime, cRes] = mCADRE(model, gene_id, gene_expr, parsedGPR, corrRxn, threshold_high, protectedRxns, checkFunctionality, eta, tol, ubiquityScore,confidenceScores)
+function [tissueModel, coreRxn, nonCoreRxn,	zeroExpRxns, pruneTime, cRes] = mCADRE(model, expressionRxns, threshold_high, protectedRxns, checkFunctionality, eta, tol, ubiquityScore,confidenceScores)
 %Use the mCADRE algorithm (Wang et al., 2012*) to extract a context
 %specific model using data. mCADRE algorithm defines a set of core
 %reactions and prunes all other reactions based on their expression,
@@ -9,11 +9,8 @@ function [tissueModel, coreRxn, nonCoreRxn,	zeroExpRxns, pruneTime, cRes] = mCAD
 %
 %INPUTS
 %   model               input model (COBRA model structure)
-%   gene_id             gene identifiers (as returned by "findUsedGeneLevels.m")
-%   gene_expr           gene expression corresponding to gene_id
-%                       (as returned by "findUsedGeneLevels.m")
-%   parsedGPR           GPR matrix as returned by "extractGPRS.m"
-%   corrRxn             reaction cell as returned by "extractGPRS.m"
+%   expressionRxns      expression data, corresponding to model.rxns (see
+%                       mapGeneToRxn.m)
 %   threshold_high      reactions with expression higher than this threshold will be in 
 %                       the core reaction set (expression threshold)
 %   protectedRxns       cell with reactions names that are manually added to
@@ -71,9 +68,7 @@ function [tissueModel, coreRxn, nonCoreRxn,	zeroExpRxns, pruneTime, cRes] = mCAD
     end
     
     % Determine expression-based evidence for ranking reactions 
-    if nargin < 11
-        %Map gene expression data to reactions in the model
-        expressionRxns = mapGeneToRxn(model, gene_id, gene_expr, parsedGPR, corrRxn);    
+    if nargin < 11 
         %Gene expression data [0,1], scaled w.r.t. upper threshold (threshold_high)
         ubiquityScore = expressionRxns/threshold_high;
         ubiquityScore(ubiquityScore >= 1) = 1; 
