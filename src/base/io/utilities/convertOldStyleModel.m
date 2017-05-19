@@ -64,13 +64,13 @@ end
 
 if ~isfield(model,'osense')
     if isfield(model,'osenseStr')
-        if strcmp(model.osenseStr,'max')
-            model.osense = -1;
-        else
+        if strcmp(model.osenseStr,'min')
             model.osense = 1;
+        else
+            model.osense = -1;
         end
     else
-        model.osense = 1;
+        model.osense = -1;
     end
 end
 

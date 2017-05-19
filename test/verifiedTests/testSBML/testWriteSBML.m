@@ -38,9 +38,9 @@ else
 end
 
 load('Ec_iJR904.mat')
-
+model = convertOldStyleModel(model);
 % use a different deck to convert a COBRA model to an SBML file
-modelSBML = convertCobraToSBML(model)
+modelSBML = convertCobraToSBML(model);
 [isSame numDiff fieldNames] = isSameCobraModel(modelSBML, testModelSBML);
 
 % assess any potential differences
