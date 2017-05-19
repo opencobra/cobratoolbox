@@ -9,14 +9,19 @@ function tissueModel = iMAT(model, expressionRxns, threshold_lb, threshold_ub, t
 %   model               input model (COBRA model structure)
 %   expressionRxns      expression data, corresponding to model.rxns (see
 %                       mapGeneToRxn.m)
+%
+%OPTIONAL INPUTS
 %   threshold_lb        lower bound of expression threshold, reactions with
 %                       expression below this value are "non-expressed"
+%                       (default - 25 percentile of expression)
 %   threshold_ub        upper bound of expression threshold, reactions with
 %                       expression above this value are "expressed"
+%                       (default - 75 percentile of expression)
 %   tol                 minimum flux threshold for "expressed" reactions
 %                       (default 1e-8)
 %   core                cell with reaction names (strings) that are manually put in
-%                       the high confidence set
+%                       the high confidence set (default - no core
+%                       reactions)
 %   logfile             name of the file to save the MILP log (string)
 %   runtime             maximum solve time for the MILP (default value -
 %                       7200s)
@@ -30,24 +35,41 @@ function tissueModel = iMAT(model, expressionRxns, threshold_lb, threshold_ub, t
 %
 % Implementation adapted from the cobra toolbox (createTissueSpecificModel.m) by S. Opdam and A. Richelle, May 2017
 
-if nargin < 7
+if nargin < 8 || isempty(runtime)
     runtime = 7200;
 end
-if nargin < 5
+if nargin < 7 || isempty(logfile)
+    logfile = 'MILPlog';
+end
+if nargin < 6 || isempty(tol)
     tol = 1e-8;
 end
+if nargin < 5 || isempty(core)
+    core={};
+end
+if nargin < 4 || isempty(threshold_ub)
+    data=expressionRxns(expressionRxns>=0);
+    threshold_ub =prctile(data,75);
+end
+if nargin < 3 || isempty(threshold_lb)
+    data=expressionRxns(expressionRxns>=0);
+    threshold_lb =prctile(data,25);
+end
+
 
     RHindex = find(expressionRxns >= threshold_ub);
     RLindex = find(expressionRxns >= 0 & expressionRxns < threshold_lb);
     
     %Manually add defined core reactions to the core
-    for i = 1:length(core)
-        rloc = find(ismember(model.rxns, core{i}));
-        if ~isempty(rloc) && isempty(intersect(RHindex,rloc))
-            RHindex(end+1) = rloc;
-        end
-        if isempty(rloc)
-            disp(['Manual added core reaction: ', core{i}, ' not found'])
+    if ~isempty(core)
+        for i = 1:length(core)
+            rloc = find(ismember(model.rxns, core{i}));
+            if ~isempty(rloc) && isempty(intersect(RHindex,rloc))
+                RHindex(end+1) = rloc;
+            end
+            if isempty(rloc)
+                disp(['Manual added core reaction: ', core{i}, ' not found'])
+            end
         end
     end
 
@@ -126,4 +148,3 @@ end
     tissueModel = removeRxns(model,rxnRemList); 
     
 end
-
