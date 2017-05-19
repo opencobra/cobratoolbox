@@ -239,24 +239,23 @@ basis</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.transcriptomics.FASTCORE.fastCoreWeighted">
-<code class="descname">fastCoreWeighted</code><span class="sig-paren">(</span><em>C</em>, <em>model</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/dataIntegration/transcriptomics/FASTCORE/fastCoreWeighted.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.fastCoreWeighted" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fastCoreWeighted</code><span class="sig-paren">(</span><em>C</em>, <em>model</em>, <em>weights</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/dataIntegration/transcriptomics/FASTCORE/fastCoreWeighted.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.fastCoreWeighted" title="Permalink to this definition">¶</a></dt>
 <dd><p>Based on: <cite>The FASTCORE algorithm for context-specific metabolic network reconstruction, Vlassis et
 al., 2013, PLoS Comp Biol.</cite></p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>A = fastCoreWeighted( C, model, epsilon )</div></blockquote>
-<p><strong>Inputs</strong></p>
+<p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>C</strong> &#8211;
 List of reaction numbers corresponding to the core set</li>
-<li><strong>model</strong> &#8211;
-Model structure, including a weight vector (model.weight) for
-each reaction</li>
-<li><strong>epsilon</strong> &#8211;
-Parameter (default: 1e-4; see Vlassis et al for more details)</li>
 </ul>
 </div></blockquote>
+<p>model    Model structure,
+weights  Weight vector for each reaction in the model</p>
+<blockquote>
+<div>epsilon:  Parameter (default: 1e-4; see Vlassis et al for more details)</div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -386,7 +385,7 @@ Support or [] if no reaction from J can get flux above epsilon</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.transcriptomics.FASTCORE.findSparseModeWeighted">
-<code class="descname">findSparseModeWeighted</code><span class="sig-paren">(</span><em>J</em>, <em>P</em>, <em>singleton</em>, <em>model</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/dataIntegration/transcriptomics/FASTCORE/findSparseModeWeighted.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.findSparseModeWeighted" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findSparseModeWeighted</code><span class="sig-paren">(</span><em>J</em>, <em>P</em>, <em>singleton</em>, <em>model</em>, <em>weights</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/dataIntegration/transcriptomics/FASTCORE/findSparseModeWeighted.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.findSparseModeWeighted" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds a mode that contains as many reactions from J and as few from P.
 Returns its support, or [] if no reaction from J can get flux above epsilon.
 Based on: <cite>The FASTCORE algorithm for context-specific metabolic network reconstruction.
