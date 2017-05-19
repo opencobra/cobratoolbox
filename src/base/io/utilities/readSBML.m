@@ -631,7 +631,7 @@ end
 if ~isfield(modelSBML,'fbc_version') % % in the case of an older SBML file.
     model.lb = lb;
     model.ub = ub;
-    model.metCharge = columnVector(chargeList);
+    model.metCharges = columnVector(chargeList);
 else    % in the case of fbc file
     model.lb = fbc_lb;
     model.ub = fbc_ub;
@@ -642,13 +642,12 @@ else    % in the case of fbc file
         model.osense = - sign(fbc_obj_value);
     end
 
-    if all(cellfun('isempty',fbcMet.fbc_chemicalFormula))~=1  % if all formulas are empty
-        % model.objFunction=fbc_obj;
+    if all(cellfun('isempty',fbcMet.fbc_chemicalFormula))~=1  % if all formulas are empty        
         model.metFormulas=fbcMet.fbc_chemicalFormula;
     end
 
     for num=1:length(fbcMet.fbc_chemicalFormula);
-        model.metCharge(num,1)=double(fbcMet.fbc_charge{num});
+        model.metCharges(num,1)=double(fbcMet.fbc_charge{num});
         %         model.isSetfbc_charge(num,1)=double(fbcMet.isSetfbc_charge{num});
     end
     % model.fbc_version=modelSBML.fbc_version;
@@ -683,7 +682,7 @@ if (hasNotesField)
     model.rxnGeneMat = rxnGeneMat;
     model.grRules = columnVector(grRules);
     model.subSystems = columnVector(subSystems);
-    model.confidenceScores = columnVector(confidenceScores);
+    model.rxnConfidenceScores = columnVector(confidenceScores);
     model.rxnReferences = columnVector(citations);
     model.rxnECNumbers = columnVector(ecNumbers);
     model.rxnNotes = columnVector(comments);
@@ -711,7 +710,7 @@ end
 
 if (hasAnnotationField)
     model.metChEBIID = columnVector(metChEBIID);
-    model.metHMDB = columnVector(metHMDB);
+    model.metHMDBID = columnVector(metHMDB);
     model.metKEGGID = columnVector(metKEGGID);
     model.metPubChemID = columnVector(metPubChemID);
     model.metInChIString = columnVector(metInChIString);

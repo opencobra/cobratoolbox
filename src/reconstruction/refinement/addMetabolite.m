@@ -222,8 +222,8 @@ for i = 1:numel(metID)
         if isfield(model,'metInChIString')
             model.metInChIString{end+1,1} = InChi{i};
         end
-        if isfield(model,'metCharge')
-            model.metCharge(end+1,1) = Charge(i);
+        if isfield(model,'metCharges')
+            model.metCharges(end+1,1) = Charge(i);
         end
     end
 end

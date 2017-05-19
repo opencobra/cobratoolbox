@@ -121,13 +121,13 @@ model.subSystems = columnVector(model.subSystems);
 model.rxnNames = data(:,3);
 model.comments = data(:,12);
 model.citations = data(:,11);
-model.confidenceScores = data(:,9);
-model.ecNumbers = data(:,13);
-model.rxnKeggID = data(:,14);
+model.rxnConfidenceScores = data(:,9);
+model.rxnECNumbers = data(:,13);
+model.rxnKEGGID = data(:,14);
 
 %----createModel.m is missing some things, fix...
 
-model.metCharge = {};
+model.metCharges = {};
 
 
 %Getting Metabolite info
@@ -162,13 +162,13 @@ for k = 1:S(1) % Check all metabolites in model
     else
         met_k{k,1} = metabolites{line,2};   %metNames
         met_k{k,2} = metabolites{line,4};   %metFormulas
-        met_k{k,3} = metabolites{line,5};   %metCharge
+        met_k{k,3} = metabolites{line,5};   %metCharges
         met_k{k,4} = metabolites{line,8};   %metChEBIID
-        met_k{k,5} = metabolites{line,6};   %metKeggID
+        met_k{k,5} = metabolites{line,6};   %metKEGGID
         met_k{k,6} = metabolites{line,7};   %metPubChemID
-        met_k{k,7} = metabolites{line,9};   %metInchiString
+        met_k{k,7} = metabolites{line,9};   %metInChIString
         met_k{k,8} = metabolites{line,11};  %metHMDB
-        met_k{k,9} = metabolites{line,12};  %metSmile
+        met_k{k,9} = metabolites{line,12};  %metSmiles
     end
 end
 
@@ -239,13 +239,13 @@ end
 %Missing metabolite information added to model
 model.metNames = met_k(:,1);
 model.metFormulas = met_k(:,2);
-model.metCharge = str2double(met_k(:,3));
+model.metCharges = str2double(met_k(:,3));
 model.metChEBIID = met_k(:,4);
-model.metKeggID = met_k(:,5);
+model.metKEGGID = met_k(:,5);
 model.metPubChemID = met_k(:,6);
-model.metInchiString = met_k(:,7);
-model.metHMDB = met_k(:,8);
-model.metSmile = met_k(:,9);
+model.metInChIString = met_k(:,7);
+model.metHMDBID = met_k(:,8);
+model.metSmiles = met_k(:,9);
 
 
 

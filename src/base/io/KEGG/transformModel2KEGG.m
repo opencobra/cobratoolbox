@@ -1,5 +1,5 @@
 function modelKEGG = transformModel2KEGG(model,Dictionary)
-%transformModel2KEGG replaces model.mets with model.KEGGID; if no KEGGID
+%transformModel2KEGG replaces model.mets with model.metKEGGID; if no KEGGID
 % defined, the empty cell will be replaced with metabolite abreviation
 %
 %   modelKEGG = transformModel2KEGG(model,CompAbr, KEGGID)
@@ -19,7 +19,7 @@ elseif(nargin ==1)
 end
 
 modelKEGG.metsAbr = modelKEGG.mets;
-modelKEGG.mets = modelKEGG.KEGGID;
+modelKEGG.mets = modelKEGG.metKEGGID;
 
 for i = 1: length(modelKEGG.metsAbr)
     if (isempty(modelKEGG.mets{i}))

@@ -17,7 +17,7 @@ function  [rankFR,rankFRV,rankFRvanilla,rankFRVvanilla,model] = checkRankFR(mode
 % model.FRVcols             n x 1 boolean of cols of [F;R] that are nonzero,
 %                           unique upto positive scaling and part of the
 %                           maximal conservation vector
-% model.FRirows             m x 1 boolean of rows of [F R] that are dependent
+% model.FRirows             m x 1 boolean of rows of [F R] that are independent
 % model.FRdrows             m x 1 boolean of rows of [F R] that are dependent
 % model.FRwrows             m x 1 boolean of independent rows of [F R] that
 %                           have dependent rows amongst model.FRdrows
