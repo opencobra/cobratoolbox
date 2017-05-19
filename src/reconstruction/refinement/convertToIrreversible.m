@@ -94,7 +94,12 @@ for i = 1:nRxns
         modelIrrev.rxns{cnt} = [model.rxns{i} '_b'];
         modelIrrev.rev(cnt) = true;
         modelIrrev.lb(cnt) = 0;
-        modelIrrev.ub(cnt) = - model.lb(i);
+        %if original reaction has a positive lb, backwards reaction should have nonnegative upper bound.
+        if model.lb(i)<0
+            modelIrrev.ub(cnt) = - model.lb(i);
+        else
+            modelIrrev.ub(cnt) =  model.lb(i);
+        end
         modelIrrev.c(cnt) = 0;
         rev2irrev{i} = [cnt-1 cnt];
         irrev2rev(cnt) = i;
