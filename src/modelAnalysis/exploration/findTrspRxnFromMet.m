@@ -4,17 +4,17 @@ function [TrspRxns] = findTrspRxnFromMet(model, metList, compFlag)
 %
 % USAGE:
 %
-%    [TrspRxns] = findTrspRxnFromMet(model, met)
+%    [TrspRxns] = findTrspRxnFromMet(model, metList, compFlag)
 %
-% INPUT:
-%    model            COBRA model structure
-%    metList          metabolites list
-% OPTIONAL INPUTS:
-%    compFlag         compartment of the transport (e.g. 'c',cytosol)
+% INPUTS:
+%    model:       COBRA model structure
+%    metList:     metabolites list
 %
-% OUTPUTS:
-%    TrspRxns         List of transporters reactions
-
+% OPTIONAL INPUT:
+%    compFlag:    compartment of the transport (e.g. 'c', cytosol)
+%
+% OUTPUT:
+%    TrspRxns:    List of transporters reactions
 %
 % .. Author: - Anne Richelle May 2017
 
@@ -22,21 +22,21 @@ function [TrspRxns] = findTrspRxnFromMet(model, metList, compFlag)
 if nargin < 3
     compFlag={};
 end
-    
+
 TrspRxns={};
 for i=1:numel(metList)
-    
+
     formulas={};
     Name_met=metList{i};
-    
+
     % Find the reactions involving the metabolite
     rxnsMets=findRxnsFromMets(model,Name_met);
     formulas = printRxnFormula(model,rxnsMets,false);
-    
-    for j=1:numel(formulas) 
+
+    for j=1:numel(formulas)
         metaboliteList = parseRxnFormula(formulas{j});
         [baseMetNames,compSymbols,uniqueMetNames,uniqueCompSymbols] = parseMetNames(metaboliteList);
-        
+
         if sum(strcmp(baseMetNames,[Name_met(1:end-3)]))== 2 && sum(strcmp(uniqueMetNames,[Name_met(1:end-3)]))== 1
             if ~isempty(compFlag)
                 if sum(strcmp(uniqueCompSymbols,compFlag))== 1
@@ -48,7 +48,3 @@ for i=1:numel(metList)
         end
     end
 end
-
-
-
-
