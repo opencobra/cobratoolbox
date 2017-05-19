@@ -1,32 +1,32 @@
 function tissueModel = INIT(model, weights, tol, runtime, logfile)
-%Use the INIT algorithm (Agren et al., 2012*) to extract a context
-%specific model using data. INIT algorithm find the optimal trade-off
-%between inluding and removing reactions based on their given weights. If
-%desired, accumulation of certain metabolites can be allowed or even
-%forced.
+% Uses the INIT algorithm (`Agren et al., 2012`) to extract a context
+% specific model using data. INIT algorithm find the optimal trade-off
+% between inluding and removing reactions based on their given weights. If
+% desired, accumulation of certain metabolites can be allowed or even forced.
 %
-%INPUTS
+% USAGE:
 %
-%   model               input model (COBRA model structure)
-%   weights             column with positive and negative weights for each reaction
-%                       positive weights are reactions with high expression, negative
-%                       weigths for reaction with low expression (must be same length 
-%                       as model.rxns)
-%   tol                 minimum flux threshold for "expressed" reactions
-%                       (default 1e-8)
-%   logfile             name of the file to save the MILP log (string)
-%   runtime             maximum solve time for the MILP (default value -
-%                       7200s)
+%    tissueModel = INIT(model, weights, tol, runtime, logfile)
 %
-%OUTPUTS
+% INPUTS:
+%    model:          input model (COBRA model structure)
+%    weights:        column with positive and negative weights for each reaction
+%                    positive weights are reactions with high expression, negative
+%                    weigths for reaction with low expression (must be same length
+%                    as `model.rxns`)
+%    tol:            minimum flux threshold for "expressed" reactions
+%                    (default 1e-8)
+%    logfile:        name of the file to save the MILP log (string)
+%    runtime:        maximum solve time for the MILP (default value - 7200s)
 %
-%   tissueModel         extracted model
+% OUTPUTS:
+%    tissueModel:    extracted model
 %
-%* Agren et al. (2012). Reconstruction of genome-scale active metabolic
-%networks for 69 human cell types and 16 cancer types using INIT. PLoS
-%Comput. Biol. 8, e1002518.
+% `Agren et al. (2012). Reconstruction of genome-scale active metabolic
+% networks for 69 human cell types and 16 cancer types using INIT. PLoS
+% Comput. Biol. 8, e1002518.`
 %
-% Implementation adapted from the cobra toolbox (createTissueSpecificModel.m) by S. Opdam and A. Richelle, May 2017
+% .. Author: - Implementation adapted from the cobra toolbox (createTissueSpecificModel.m) by S. Opdam and A. Richelle, May 2017
 
     if nargin < 4
         runtime = 7200;
@@ -37,7 +37,7 @@ function tissueModel = INIT(model, weights, tol, runtime, logfile)
 
     RHindex = find(weights > 0);
     RLindex = find(weights < 0);
-    
+
     %Weights of 0 will be handled the same as in iMAT
 
     S = model.S;
@@ -110,8 +110,8 @@ function tissueModel = INIT(model, weights, tol, runtime, logfile)
     MILPproblem.x0 = [];
 
     solution = solveCobraMILP(MILPproblem, 'timeLimit', runtime, 'logFile', logfile, 'printLevel', 3);
-    
+
     x = solution.cont;
     rxnRemList = model.rxns(abs(x) < tol);
-    tissueModel = removeRxns(model,rxnRemList); 
+    tissueModel = removeRxns(model,rxnRemList);
 end
