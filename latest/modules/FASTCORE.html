@@ -226,6 +226,7 @@ basis</li>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>V = LP9(K, P, model, epsilon)</div></blockquote>
+<p>LCSB / LSRU, University of Luxembourg</p>
 </dd></dl>
 
 <dl class="function">
@@ -313,39 +314,51 @@ smallest flux that is considered nonzero</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.transcriptomics.FASTCORE.fastcore">
-<code class="descname">fastcore</code><span class="sig-paren">(</span><em>C</em>, <em>model</em>, <em>epsilon</em>, <em>printlevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/dataIntegration/transcriptomics/FASTCORE/fastcore.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.fastcore" title="Permalink to this definition">¶</a></dt>
-<dd><p>The FASTCORE algorithm for context-specific metabolic network reconstruction.
-Input C is the core set, and output A is the reconstruction</p>
-<p><strong>Usage</strong></p>
+<code class="descname">fastcore</code><span class="sig-paren">(</span><em>core</em>, <em>model</em>, <em>epsilon</em>, <em>expressionRxns</em>, <em>threshold</em>, <em>printlevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/dataIntegration/transcriptomics/FASTCORE/fastcore.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.fastcore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use the FASTCORE algorithm (Vlassis et al, 2014*) to extract a context
+specific model using data. FASTCORE algorithm defines one set of core
+reactions that is guaranteed to be active in the extracted model and find
+the minimum of reactions possible to support the core.</p>
 <blockquote>
-<div>A = fastcore( C, model, epsilon )</div></blockquote>
+<div><p>USAGE:</p>
+<blockquote>
+<div>tissueModel = fastcore(core, model)</div></blockquote>
+</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>C</strong> &#8211;
-indices of reactions in cobra model that are part of the
-core set of reactions</li>
-<li><strong>model</strong> &#8211;
-cobra model structure containing the fields<ul>
-<li>S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</li>
-<li>lb - <cite>n</cite> x 1 flux lower bound</li>
-<li>ub - <cite>n</cite> x 1 flux uppper bound</li>
-<li>rxns - <cite>n</cite> x 1 cell array of reaction abbreviations</li>
-</ul>
+<div><ul>
+<li><p class="first"><strong>core                indices of reactions in cobra model that are part of the</strong> &#8211;</p>
+<p>core set of reactions (called C in Vlassis et al,
+2014*)</p>
 </li>
-<li><strong>epsilon</strong> &#8211;
-{1e-4} smallest flux that is considered nonzero</li>
-<li><strong>printLevel</strong> &#8211;
-0 = silent, 1 = summary, 2 = debug</li>
+<li><p class="first"><strong>model               input model (COBRA model structure)</strong></p>
+</li>
+<li><p class="first"><strong>epsilon             smallest flux value that is considered nonzero</strong> &#8211;</p>
+<p>(default 1e-8)</p>
+</li>
+<li><p class="first"><strong>expressionRxns      expression data, corresponding to model.rxns (see</strong> &#8211;</p>
+<p>mapGeneToRxn.m)</p>
+</li>
+<li><p class="first"><strong>threshold           expression threshold (reactions with expression</strong> &#8211;</p>
+<p>above this threshold are put in the set of core
+reactions</p>
+</li>
+<li><p class="first"><strong>printLevel          0 = silent, 1 = summary, 2 = debug</strong></p>
+</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>A</strong> &#8211;
-indices of reactions in the new model</li>
+<li><strong>tissueModel         extracted model</strong></li>
 </ul>
 </div></blockquote>
+<ul class="simple">
+<li>Vlassis, Pacheco, Sauter (2014). Fast reconstruction of compact</li>
+</ul>
+<p>context-specific metbolic network models. PLoS Comput. Biol. 10, e1003424.</p>
+<blockquote>
+<div></div></blockquote>
 </dd></dl>
 
 <dl class="function">
