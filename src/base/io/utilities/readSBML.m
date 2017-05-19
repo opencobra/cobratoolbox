@@ -717,8 +717,10 @@ if (hasAnnotationField)
 end
 
 %temporary before remake of readSBML
-if numel(model.osense) > 1
-    model.osense = model.osense(1);
+if isfield(model,'osense')
+    if numel(model.osense) > 1
+        model.osense = model.osense(1);
+    end
 end
 model = convertOldStyleModel(model);
 
