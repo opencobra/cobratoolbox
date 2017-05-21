@@ -1,16 +1,14 @@
-function [U1,D1,V1,r] = subspaceSVD(S)
-
-%        [U1,D1,V1,r] = subspaceSVD(S);
-% returns quantities satisfying S = U1*D1*V1',
-% where U1 and V1 have r orthonormal columns,
-% and D1 is r x r diagonal and has numerical rank r.
+function [U1, D1, V1, r] = subspaceSVD(S)
+% Returns quantities satisfying `S = U1*D1*V1'`,
+% where `U1` and `V1` have `r` orthonormal columns,
+% and `D1` is `r` x `r` diagonal and has numerical rank `r`.
 %
-% The matrix S may be diagonal.
-% Matrices U1 and V1 may be used by projectSVD.m
+% The matrix `S` may be diagonal.
+% Matrices `U1` and `V1` may be used by `projectSVD.m`
 % to project given vectors onto certain subspaces.
 %
-% 29 Jul 2009: (Michael Saunders) First version of subspaceSVD.m
-%              written as alternative to Ronan's subspaceProjector.m.
+% .. Author: - Michael Saunders, 29 Jul 2009 First version of subspaceSVD.m
+%            written as alternative to Ronan's subspaceProjector.m.
 
 [U1,D1,V1] = svd(full(S),'econ');
 d          = diag(D1);
