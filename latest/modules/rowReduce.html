@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>relaxFBA &mdash; The COBRA Toolbox</title>
+  <title>rowReduce &mdash; The COBRA Toolbox</title>
   
 
   
@@ -39,9 +39,9 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
-        <link rel="up" title="Model analysis" href="modelAnalysis.html"/>
-        <link rel="next" title="Sampling" href="sampling.html"/>
-        <link rel="prev" title="rFBA" href="rFBA.html"/> 
+        <link rel="up" title="Subspaces" href="subspaces.html"/>
+        <link rel="next" title="subspaceProjection" href="subspaceProjection.html"/>
+        <link rel="prev" title="Rank" href="rank.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -103,10 +103,17 @@
 <li class="toctree-l3"><a class="reference internal" href="exploration.html">Exploration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="multiSpecies.html">MultiSpecies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rFBA.html">rFBA</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">relaxFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="relaxFBA.html">relaxFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sampling.html">Sampling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sparseFBA.html">sparseFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="subspaces.html">Subspaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="subspaces.html">Subspaces</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="lsqr.html">Lsqr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nullspace.html">Nullspace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rank.html">Rank</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">rowReduce</a></li>
+<li class="toctree-l4"><a class="reference internal" href="subspaceProjection.html">subspaceProjection</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="transport.html">Transport</a></li>
 </ul>
 </li>
@@ -166,7 +173,9 @@
         
           <li><a href="modelAnalysis.html">Model analysis</a> &raquo;</li>
         
-      <li>relaxFBA</li>
+          <li><a href="subspaces.html">Subspaces</a> &raquo;</li>
+        
+      <li>rowReduce</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -183,132 +192,43 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="relaxfba">
-<span id="id1"></span><h1>relaxFBA<a class="headerlink" href="#relaxfba" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-src.modelAnalysis.relaxFBA"></span><dl class="function">
-<dt id="src.modelAnalysis.relaxFBA.relaxFBA">
-<code class="descname">relaxFBA</code><span class="sig-paren">(</span><em>model</em>, <em>relaxOption</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/relaxFBA/relaxFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.relaxFBA.relaxFBA" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds the mimimal set of relaxations on bounds and steady state constraint
-to make the FBA problem feasible</p>
+  <div class="section" id="rowreduce">
+<span id="id1"></span><h1>rowReduce<a class="headerlink" href="#rowreduce" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.modelAnalysis.subspaces.rowReduce"></span><dl class="function">
+<dt id="src.modelAnalysis.subspaces.rowReduce.rowReduce">
+<code class="descname">rowReduce</code><span class="sig-paren">(</span><em>A</em>, <em>a</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/subspaces/rowReduce/rowReduce.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.subspaces.rowReduce.rowReduce" title="Permalink to this definition">¶</a></dt>
+<dd><p>Eliminates dependent rows from <cite>A</cite> &amp; <cite>a</cite> where <cite>A*x = a</cite></p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[solution] = relaxFBA(model, relaxOption)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<div>[AA, aa, pp, rankA, p] = rowReduce(A, a)</div></blockquote>
+<p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>relaxOption</strong> &#8211;
-Structure containing the relaxation options:<ul>
-<li>internalRelax:<ul>
-<li>0 = do not allow to relax bounds on internal reactions</li>
-<li>1 = do not allow to relax bounds on internal reactions with finite bounds</li>
-<li>2 = allow to relax bounds on all internal reactions</li>
-</ul>
-</li>
-<li>exchangeRelax:<ul>
-<li>0 = do not allow to relax bounds on exchange reactions</li>
-<li>1 = do not allow to relax bounds on exchange reactions of the type [0,0]</li>
-<li>2 = allow to relax bounds on all exchange reactions</li>
-</ul>
-</li>
-<li>steadyStateRelax:<ul>
-<li>0 = do not allow to relax the steady state constraint S*v = b</li>
-<li>1 = allow to relax the steady state constraint S*v = b</li>
-</ul>
-</li>
-<li>toBeUnblockedReactions - n x 1 vector indicating the reactions to be unblocked (optional)<ul>
-<li>toBeUnblockedReactions(i) = 1 : impose v(i) to be positive</li>
-<li>toBeUnblockedReactions(i) = -1 : impose v(i) to be negative</li>
-<li>toBeUnblockedReactions(i) = 0 : do not add any constraint</li>
-</ul>
-</li>
-<li>excludedReactions - n x 1 bool vector indicating the reactions to be excluded from relaxation (optional)<ul>
-<li>excludedReactions(i) = false : allow to relax bounds on reaction i</li>
-<li>excludedReactions(i) = true : do not allow to relax bounds on reaction i</li>
-</ul>
-</li>
-<li>excludedMetabolites - m x 1 bool vector indicating the metabolites to be excluded from relaxation (optional)<ul>
-<li>excludedMetabolites(i) = false : allow to relax steady state constraint on metabolite i</li>
-<li>excludedMetabolites(i) = true : do not allow to relax steady state constraint on metabolite i</li>
-</ul>
-</li>
-<li>lamda - trade-off parameter of relaxation on steady state constraint</li>
-<li>gamma - trade-off parameter of relaxation on bounds</li>
-</ul>
-</li>
+<li><strong>A</strong> &#8211;
+from <cite>A*x = a</cite></li>
 </ul>
 </div></blockquote>
-<p><strong>Output</strong></p>
+<p><strong>Optional intput</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>solution</strong> &#8211;
-Structure containing the following fields:<ul>
-<li>stat - status<ul>
-<li>1  = Solution found</li>
-<li>0  = Infeasible</li>
-<li>-1 = Invalid input</li>
-</ul>
-</li>
-<li>r - relaxation on steady state constraints S*v = b</li>
-<li>p - relaxation on lower bound of reactions</li>
-<li>q - relaxation on upper bound of reactions</li>
-<li>v - reaction rate</li>
-</ul>
-</li>
+<li><strong>a</strong> &#8211;
+from <cite>A*x = a</cite></li>
 </ul>
 </div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.modelAnalysis.relaxFBA.relaxFBA_cappedL1">
-<code class="descname">relaxFBA_cappedL1</code><span class="sig-paren">(</span><em>model</em>, <em>relaxOption</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/modelAnalysis/relaxFBA/relaxFBA_cappedL1.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.relaxFBA.relaxFBA_cappedL1" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds the mimimal set of relaxations on bounds and steady state constraint to make the FBA problem feasible.
-The zero-norm is appproximated by capped-L1 norm</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[solution] = relaxFBA_cappedL1(model, relaxOption)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<p><strong>Outputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>relaxOption</strong> &#8211;
-Structure containing the relaxation options:<ul>
-<li>excludedReactions - bool vector of size n indicating the reactions to be excluded from relaxation<ul>
-<li>excludedReactions(i) = false : allow to relax bounds on reaction i</li>
-<li>excludedReactions(i) = true : do not allow to relax bounds on reaction i</li>
-</ul>
-</li>
-<li>excludedMetabolites - bool vector of size m indicating the metabolites to be excluded from relaxation<ul>
-<li>excludedMetabolites(i) = false : allow to relax steady state constraint on metabolite i</li>
-<li>excludedMetabolites(i) = true : do not allow to relax steady state constraint on metabolite i</li>
-</ul>
-</li>
-<li>gamma - trade-off parameter of relaxation on fluxes rate</li>
-<li>lamda - trade-off parameter of relaxation on steady state constraint</li>
-<li>alpha - strade-off parameter of relaxation on bounds</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>solution</strong> &#8211;
-Structure containing the following fields:<ul>
-<li>stat - status<ul>
-<li>1  = Solution found</li>
-<li>0  = Infeasible</li>
-<li>-1 = Invalid input</li>
-</ul>
-</li>
-<li>r - relaxation on steady state constraints <cite>S*v = b</cite></li>
-<li>p - relaxation on lower bound of reactions</li>
-<li>q - relaxation on upper bound of reactions</li>
-<li>v - reaction rate</li>
-</ul>
-</li>
+<li><strong>AA</strong> &#8211;
+row reduced <cite>A</cite></li>
+<li><strong>aa</strong> &#8211;
+row reduced <cite>a</cite> i.e. <cite>aa = a(pp)</cite></li>
+<li><strong>pp</strong> &#8211;
+1:rankA indices of independent rows</li>
+<li><strong>rankA</strong> &#8211;
+rank of <cite>A</cite></li>
+<li><strong>p</strong> &#8211;
+row permutation which leaves first 1:rankA rows independent and
+last rows dependent</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -325,10 +245,10 @@ Structure containing the following fields:<ul>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="sampling.html" class="btn btn-neutral float-right" title="Sampling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="subspaceProjection.html" class="btn btn-neutral float-right" title="subspaceProjection" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="rFBA.html" class="btn btn-neutral" title="rFBA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="rank.html" class="btn btn-neutral" title="Rank" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
