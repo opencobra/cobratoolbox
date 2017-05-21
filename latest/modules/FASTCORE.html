@@ -226,7 +226,6 @@ basis</li>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>V = LP9(K, P, model, epsilon)</div></blockquote>
-<p>LCSB / LSRU, University of Luxembourg</p>
 </dd></dl>
 
 <dl class="function">
@@ -315,50 +314,50 @@ smallest flux that is considered nonzero</li>
 <dl class="function">
 <dt id="src.dataIntegration.transcriptomics.FASTCORE.fastcore">
 <code class="descname">fastcore</code><span class="sig-paren">(</span><em>core</em>, <em>model</em>, <em>epsilon</em>, <em>expressionRxns</em>, <em>threshold</em>, <em>printlevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/dataIntegration/transcriptomics/FASTCORE/fastcore.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.fastcore" title="Permalink to this definition">¶</a></dt>
-<dd><p>Use the FASTCORE algorithm (Vlassis et al, 2014*) to extract a context
+<dd><p>Use the FASTCORE algorithm (<cite>Vlassis et al, 2014</cite>) to extract a context
 specific model using data. FASTCORE algorithm defines one set of core
 reactions that is guaranteed to be active in the extracted model and find
 the minimum of reactions possible to support the core.</p>
+<p><strong>Usage</strong></p>
 <blockquote>
-<div><p>USAGE:</p>
-<blockquote>
-<div>tissueModel = fastcore(core, model)</div></blockquote>
-</div></blockquote>
+<div>tissueModel = fastcore(core, model, epsilon, expressionRxns, threshold, printlevel)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>core                indices of reactions in cobra model that are part of the</strong> &#8211;</p>
-<p>core set of reactions (called C in Vlassis et al,
-2014*)</p>
-</li>
-<li><p class="first"><strong>model               input model (COBRA model structure)</strong></p>
-</li>
-<li><p class="first"><strong>epsilon             smallest flux value that is considered nonzero</strong> &#8211;</p>
-<p>(default 1e-8)</p>
-</li>
-<li><p class="first"><strong>expressionRxns      expression data, corresponding to model.rxns (see</strong> &#8211;</p>
-<p>mapGeneToRxn.m)</p>
-</li>
-<li><p class="first"><strong>threshold           expression threshold (reactions with expression</strong> &#8211;</p>
-<p>above this threshold are put in the set of core
-reactions</p>
-</li>
-<li><p class="first"><strong>printLevel          0 = silent, 1 = summary, 2 = debug</strong></p>
-</li>
+<div><ul class="simple">
+<li><strong>core</strong> &#8211;
+indices of reactions in cobra model that are part of the
+core set of reactions (called <cite>C</cite> in <cite>Vlassis et al,
+2014</cite>)</li>
+<li><strong>model</strong> &#8211;
+input model (COBRA model structure)</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>epsilon</strong> &#8211;
+smallest flux value that is considered nonzero
+(default 1e-8)</li>
+<li><strong>expressionRxns</strong> &#8211;
+expression data, corresponding to model.rxns (see
+mapGeneToRxn.m)</li>
+<li><strong>threshold</strong> &#8211;
+expression threshold (reactions with expression
+above this threshold are put in the set of core
+reactions</li>
+<li><strong>printLevel</strong> &#8211;
+0 = silent, 1 = summary, 2 = debug</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>tissueModel         extracted model</strong></li>
+<li><strong>tissueModel</strong> &#8211;
+extracted model</li>
 </ul>
 </div></blockquote>
-<ul class="simple">
-<li>Vlassis, Pacheco, Sauter (2014). Fast reconstruction of compact</li>
-</ul>
-<p>context-specific metbolic network models. PLoS Comput. Biol. 10, e1003424.</p>
-<blockquote>
-<div></div></blockquote>
+<p><cite>Vlassis, Pacheco, Sauter (2014). Fast reconstruction of compact
+context-specific metbolic network models. PLoS Comput. Biol. 10, e1003424.</cite></p>
 </dd></dl>
 
 <dl class="function">
@@ -377,11 +376,16 @@ Indicies of irreversible reactions</li>
 <li><strong>P</strong> &#8211;
 Reactions</li>
 <li><strong>singleton</strong> &#8211;
-Takes only first instance from J, else takes whole J</li>
+Takes only first instance from <cite>J</cite>, else takes whole <cite>J</cite></li>
 <li><strong>model</strong> &#8211;
 Model structure</li>
 <li><strong>epsilon</strong> &#8211;
-Parameter (default: 1e-4; see Vlassis et al for more details)</li>
+Parameter (default: 1e-4; see <cite>Vlassis et al</cite> for more details)</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional intput</strong></p>
+<blockquote>
+<div><ul class="simple">
 <li><strong>basis</strong> &#8211;
 Basis</li>
 </ul>
@@ -390,8 +394,9 @@ Basis</li>
 <blockquote>
 <div><ul class="simple">
 <li><strong>Supp</strong> &#8211;
-Support or [] if no reaction from J can get flux above epsilon</li>
-<li><strong>basis</strong></li>
+Support or [] if no reaction from <cite>J</cite> can get flux above epsilon</li>
+<li><strong>basis</strong> &#8211;
+Basis</li>
 </ul>
 </div></blockquote>
 </dd></dl>
