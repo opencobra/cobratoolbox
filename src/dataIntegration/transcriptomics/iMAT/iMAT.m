@@ -8,25 +8,27 @@ function tissueModel = iMAT(model, expressionRxns, threshold_lb, threshold_ub, t
 %    tissueModel = iMAT(model, expressionRxns, threshold_lb, threshold_ub, tol, core, logfile, runtime)
 %
 % INPUTS:
+%    model:             input model (COBRA model structure)
+%    expressionRxns:    expression data, corresponding to `model.rxns` (see `mapGeneToRxn.m`)
 %
 % OPTIONAL INPUTS:
-%                       `mapGeneToRxn.m`)
 %    threshold_lb:      lower bound of expression threshold, reactions with
 %                       expression below this value are "non-expressed"
 %                       (default - 25 percentile of expression)
+%    threshold_ub:      upper bound of expression threshold, reactions with
 %                       expression above this value are "expressed"
 %                       (default - 75 percentile of expression)
+%    tol:               minimum flux threshold for "expressed" reactions
 %                       (default 1e-8)
 %    core:              cell with reaction names (strings) that are manually put in
-%                       the high confidence set (default - no core
-%                       reactions)
-%    runtime:            maximum solve time for the MILP (default value - 7200s)
+%                       the high confidence set (default - no core reactions)
+%    logfile:           name of the file to save the MILP log (string)
+%    runtime:           maximum solve time for the MILP (default value - 7200s)
 %
 % OUTPUT:
 %    tissueModel:       extracted model
 %
-% `Zur et al. (2010). iMAT: an integrative metabolic analysis tool.
-% Bioinformatics 26, 3140-3142.`
+% `Zur et al. (2010). iMAT: an integrative metabolic analysis tool. Bioinformatics 26, 3140-3142.`
 %
 % .. Author: - Implementation adapted from the cobra toolbox (createTissueSpecificModel.m) by S. Opdam and A. Richelle, May 2017
 
