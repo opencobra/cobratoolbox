@@ -300,16 +300,20 @@ for i = 1:nRxns
                     %For now, we only import the first objective!
 
                     if ~isempty(modelSBML.(fbc_list{f})) && ~isempty({modelSBML.(fbc_list{f})(1).fbc_fluxObjective.fbc_reaction})
-                        fbc_obj=modelSBML.(fbc_list{f})(1).fbc_fluxObjective.fbc_reaction; % the variable stores the objective reaction ID
+                        fbc_obj={modelSBML.(fbc_list{f}).fbc_fluxObjective.fbc_reaction}; % the variable stores the objective reaction ID
                         fbc_obj=regexprep(fbc_obj,'^R_','');
                         if isfield(modelSBML.(fbc_list{f})(1).fbc_fluxObjective,'fbc_coefficient')
-                            fbc_obj_value=modelSBML.(fbc_list{f})(1).fbc_fluxObjective.fbc_coefficient;
+                            fbc_obj_value = [modelSBML.(fbc_list{f}).fbc_fluxObjective.fbc_coefficient];
                             %By FBC definition the fbc_type of an objective
                             %has to be either "minimize" or maximize"
                             %As such, we use the first 3 lettters of the
                             %objective type to define the osenseStr of the
                             %model.
-                            fbc_obj_value = modelSBML.(fbc_list{f})(1).fbc_type(1:3);
+                            if strcmp(modelSBML.(fbc_list{f})(1).fbc_type(1:3),'max')
+                                fbc_obj_sense = -1;
+                            else
+                                fbc_obj_sense = 1;
+                            end
                         end
                     else % if the objective function is not specified according to the FBCv2 rules.
                         noObjective=1; % no objective function is defined for the COBRA model.
@@ -636,10 +640,10 @@ else    % in the case of fbc file
     model.lb = fbc_lb;
     model.ub = fbc_ub;
     if noObjective==0; % when there is an objective function
-        indexObj=findRxnIDs(model,fbc_obj);
+        indexObj=findRxnIDs(model,cleanUpFormatting(fbc_obj));
         % indexObj=find(strcmp(fbc_obj,model.rxns))
-        model.c(indexObj)=1;
-        model.osense = - sign(fbc_obj_value);
+        model.c(indexObj) = fbc_obj_value(:);
+        model.osense = fbc_obj_sense;
     end
 
     if all(cellfun('isempty',fbcMet.fbc_chemicalFormula))~=1  % if all formulas are empty        
