@@ -97,7 +97,6 @@ function generateSystemConfigReport()
     globalVars = {'CBT_LP_SOLVER', 'CBT_MILP_SOLVER', 'CBT_QP_SOLVER', 'CBT_MIQP_SOLVER', ...
                   'CBT_NLP_SOLVER', 'GUROBI_PATH', 'ILOG_CPLEX_PATH', 'TOMLAB_PATH', 'MOSEK_PATH'};
 
-
     for i = 1:length(globalVars)
         try
             fprintf(' > %-20s:        %s\n', globalVars{i}, eval(globalVars{i}));
@@ -106,13 +105,18 @@ function generateSystemConfigReport()
         end
     end
 
+    % open the file with a handle to append text
+    fileID = fopen(fullPathReportFile, 'a+');
+
     % retrieve the system PATH
     try
-        fprintf('\n > System PATH:\n%s\n\n', getenv('PATH'));
+        fprintf(fileID, '\n > System PATH:\n%s\n\n', getenv('PATH'));
     end
 
-    % print out the MATLAB path
-    fprintf(' > MATLAB path:\n%s\n', path);
+    % print out the MATLAB path to the log file
+    fprintf(fileID, ' > MATLAB path:\n%s\n', path);
+
+    fclose(fileID);
 
     fprintf('\n > ----------------------------------- END OF CONFIGURATION REPORT -----------------------------------\n');
 
