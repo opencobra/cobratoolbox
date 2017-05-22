@@ -1,20 +1,23 @@
 function [taskReport essentialRxns taskStructure]=checkMetabolicTasks(model,inputFile,printOutput,printOnlyFailed,getEssential,taskStructure)
 % checkMetabolicTasks performs a set of simulations as defined in a task file
 % to check if the model is able to pass a list of metabolic tasks.
-%  A metabolic task is defined as the capacity of producing a list of
-% "outputs" products when ONLY a defined list of "inputs" substrates are
+% A metabolic task is defined as the capacity of producing a list of
+% output products when ONLY a defined list of inputs substrates are
 % available. In other words, a model successfuly pass a metabolic task if it is
 % still a solvable LP problem when ONLY exchange reactions related to 
 % the inputs substrates and outputs products are allowed to carry fluxes 
 %
-% INPUTS
+% USAGE : [taskReport essentialReactions taskStructure]=checkMetabolicTasks(model,inputFile,...
+%           printOutput,printOnlyFailed,getEssential,taskStructure)
+%
+% INPUTS :
 %
 %   model           a model structure
 %   inputFile       a task list in Excel format. See the function
 %                   parseTaskList for details (opt if taskStructure is
 %                   supplied)
 %
-%OPTIONAL INPUTS
+% OPTIONAL INPUTS :
 %   printOutput     true if the results of the test should be displayed
 %                   (default - true)
 %   printOnlyFailed true if only tasks that failed should be displayed
@@ -25,7 +28,7 @@ function [taskReport essentialRxns taskStructure]=checkMetabolicTasks(model,inpu
 %   taskStructure   structure with the tasks, as from parseTaskList. If
 %                   this is supplied then inputFile is ignored
 %
-% OUTPUTS
+% OUTPUTS :
 %
 %   taskReport          structure with the results
 %       firstcolumn     id              cell array with the id of the task
@@ -38,20 +41,9 @@ function [taskReport essentialRxns taskStructure]=checkMetabolicTasks(model,inpu
 %
 %   taskStructure   structure with the tasks, as from parseTaskList.
 %
-%   This function is used for defining a set of tasks for a model to
-%   perform. The tasks are defined by defining constraints on the model,
-%   and if the problem is feasible, then the task is considered successful.
-%   In general, each row can contain one constraint on uptakes and one 
-%   constraint on outputs. 
-%
-%   Usage: [taskReport essentialReactions taskStructure]=checkMetabolicTasks(model,inputFile,...
-%           printOutput,printOnlyFailed,getEssential,taskStructure)
-%
-%   Originally written for RAVEN toolbox by
-%   Rasmus Agren, 2013-11-17
-%   Adapted for cobratoolbox and modified to rely only on flux constraints by
-%   Richelle Anne, 2017-05-18
-%
+% .. Author : Originally written for RAVEN toolbox by Rasmus Agren, 2013-11-17
+% Adapted for cobratoolbox and modified to rely only on flux constraints by
+% Richelle Anne, 2017-05-18
 
 if nargin < 3 || isempty(printOutput)
     printOutput=true;
