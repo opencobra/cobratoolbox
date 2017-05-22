@@ -74,7 +74,6 @@ function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax,statussolmin,statussol
 
 %set a random log filename to avoid overwriting ongoing runs
 rng('shuffle');
-global filenameParfor;
 filenameParfor = ['parfor_progress_', datestr(now, 30), '_', num2str(randi(9)), '.txt'];
 
 % Turn on the load balancing for large problems
@@ -386,10 +385,10 @@ else
    fprintf('\n -- Starting to loop through the %d workers. -- \n', nworkers);
    fprintf('\n -- The splitting strategy is %d. -- \n', strategy);
 
-   out = parfor_progress(nworkers);
+   out = parfor_progress(nworkers,filenameParfor);
 
    parfor i = 1:nworkers
-
+     
      rxnsKey = 0; %silence warning
 
      %preparation of reactionKey
@@ -455,7 +454,7 @@ else
       fprintf('\n----------------------------------------------------------------------------------\n');
 
       % print out the percentage of the progress
-      percout =   parfor_progress;
+      percout =   parfor_progress(-1,filenameParfor);
 
       if(percout < 100)
           fprintf(' ==> %1.1f%% done. Please wait ...\n', percout);
@@ -468,7 +467,7 @@ else
    % Aggregate results
    optsol = iopt(1);
    ret    = max(iret);
-   out    = parfor_progress(0);
+   out    = parfor_progress(0,filenameParfor);
 
 end
 
