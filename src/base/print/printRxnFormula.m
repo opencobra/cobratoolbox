@@ -6,15 +6,13 @@ function formulas = printRxnFormula(model, varargin)
 %
 % USAGE:
 %
-%    formulas = printRxnFormula(model, rxnAbbrList, printFlag, lineChangeFlag, metNameFlag, fid, directionFlag)
+%    formulas = printRxnFormula(model, varargin)
 %
 % INPUTS:
 %    model:             COBRA model structure
 %
 % OPTIONAL INPUTS
 %    rxnAbbrList:       Abbrs of reactions whose formulas are to be printed
-%
-% OPTIONAL INPUTS as 'ParameterName',Value pairs:
 %    printFlag:         Print formulas or just return them (Default = true)
 %    lineChangeFlag:    Append a line change at the end of each line
 %                       (Default = true)

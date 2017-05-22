@@ -1,9 +1,9 @@
 function outmodel = writeCbModel(model,varargin)
 %writeCbModel Write out COBRA models in various formats
 %
-% writeCbModel(model,format,fileName,varargin)
+% USAGE:
 %
-%    outmodel = writeCbModel(model, format, fileName, compSymbolList, compNameList, sbmlLevel, sbmlVersion)
+%    outmodel = writeCbModel(model,format,fileName, varargin)
 % INPUTS:
 %    model:             Standard COBRA model structure
 %
@@ -13,11 +13,9 @@ function outmodel = writeCbModel(model,varargin)
 %                       xls is restricted to the fields defined in the xls io documentation.
 %    fileName:          File name for output file (optional, default opens
 %                       dialog box)
-% OPTIONAL INPUTS as Parameter/Value pairs:
-% Parameter         Value
-% compSymbolList    List of compartment symbols (Cell array)
-% compNameList      List of compartment names corresponding to
-%                   compSymbolList (Cell array)
+%    compSymbolList     List of compartment symbols (Cell array)
+%    compNameList       List of compartment names corresponding to
+%                       compSymbolList (Cell array)
 %
 % OPTIONAL OUTPUTS:
 %    outmodel:          Only useable with sbml export. Will return the sbml structure, otherwise the input COBRA model structure is returned.

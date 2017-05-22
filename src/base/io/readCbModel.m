@@ -4,14 +4,15 @@ function model = readCbModel(fileName,varargin)
 %
 % USAGE:
 %
-%    model = readCbModel(fileName, defaultBound, fileType, modelDescription)
+%    model = readCbModel()
+%    model = readCbModel(fileName)
+%    model = readCbModel(fileName, varargin)
 %
-%OPTIONAL INPUTS as parameter Value pairs
-% Parameter         Value
-% fileName          File name for file to read in (char)
+%OPTIONAL INPUTS
+%     fileName:         File name for file to read in (char)
 %                       not given in the `SBML` file (Default = 1000)
-%    fileType:          File type for input files: 'SBML', 'SimPheny', or
-%                   'SimPhenyPlus', 'SimPhenyText', 'Matlab', Excel' (Default = 'Matlab')
+%     fileType:         File type for input files: 'SBML', 'SimPheny', or
+%                      'SimPhenyPlus', 'SimPhenyText', 'Matlab', Excel' (Default = 'Matlab')
 %
 %                         * 'SBML' indicates a file in `SBML` format
 %                         * 'SimPheny' is a set of three files in `SimPheny` simulation output format
@@ -21,14 +22,14 @@ function model = readCbModel(fileName,varargin)
 %                         * 'SimPhenyText' is the same as 'SimPheny' except with
 %                           additionaltext file containing gene-protein-reaction
 %                           associations
-%                   * Matlab will save the model as a matlab variable file.
-%                   * Excel will save the model as a two sheet Excel Model.
+%                         * Matlab will save the model as a matlab variable file.
+%                         * Excel will save the model as a two sheet Excel Model.
 % modelDescription  Description of model contents (char), default is the
 %                   choosen filename
 % compSymbolList    Compartment Symbol List( cell array)
 %                   symbol list (cell array)
 %
-%OUTPUT (TO BE ADJUSTED TO NEW MODEL STRUCTURE)
+%OUTPUT
 %    model:             Returns a model in the COBRA format:
 % 
 %                         * description - Description of model contents
@@ -69,8 +70,7 @@ function model = readCbModel(fileName,varargin)
 %       - Markus Herrgard 7/11/06
 %       - Richard Que 02/08/10 - Added inptus for compartment names and symbols
 %       - Longfei Mao 26/04/2016 Added support for the FBCv2 format
-% Thomas Pfau May 2017 Changed to parameter value pair, added excel IO and
-%                       matlab flatfile IO.%
+%       - Thomas Pfau May 2017 Changed to parameter value pair, added excel IO and matlab flatfile IO.%
 % NOTE:
 %    The `readCbModel.m` function is dependent on another function
 %    `io/utilities/readSBML.m` to use libSBML library
@@ -80,6 +80,7 @@ function model = readCbModel(fileName,varargin)
 %    structure is described in an Excel spreadsheet
 %    `io/COBRA_structure_fields.xlsx`. While some fields are necessary for a
 %    COBRA model, others are not.
+
 optionalArgumentList = {'defaultBound','fileType','modelDescription','compSymbolList','compNameList'};
 processedFileTypes = {'SBML', 'SimPheny', 'SimPhenyPlus', 'SimPhenyText', 'Excel', 'Matlab'};
 
