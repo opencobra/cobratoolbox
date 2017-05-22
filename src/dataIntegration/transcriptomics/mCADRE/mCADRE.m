@@ -7,7 +7,7 @@ function [tissueModel, coreRxn, nonCoreRxn,	zeroExpRxns, pruneTime, cRes] = mCAD
 % reactions are only removed if supported by a certain number of
 % zero-expression reactions.
 %
-%I NPUTS
+% INPUTS
 %   model               input model (COBRA model structure)
 %	ubiquityScore       ubiquity scores corresponding to genes
 %                       in gene_id quantify how often a gene is expressed accross samples.                       
