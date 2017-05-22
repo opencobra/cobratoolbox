@@ -18,13 +18,13 @@ for jTest = 1:2
     %add the fields outputted by readSBML
     [model.modelVersion.SBML_level,model.modelVersion.SBML_version,...
         model.modelVersion.fbc_version] = deal(3,1,2);
-    metField = {;'metChEBIID';'metHMDB';'metInChIString';'metKEGGID';'metPubChemID'};
+    metField = {;'metChEBIID';'metHMDBID';'metInChIString';'metKEGGID';'metPubChemID'};
     for j = 1:numel(metField)
         model.(metField{j}) = repmat({''},numel(model.mets),1);
     end
-    model.metCharge = zeros(numel(model.mets),1);
+    model.metCharges = zeros(numel(model.mets),1);
     model.metFormulas = {'C';'C'};
-    rxnField = {'confidenceScores';'rxnECNumbers';'rxnNotes';'rxnReferences'};
+    rxnField = {'rxnConfidenceScores';'rxnECNumbers';'rxnNotes';'rxnReferences'};
     for j = 1:numel(rxnField)
         model.(rxnField{j}) = repmat({''},numel(model.rxns),1);
     end
