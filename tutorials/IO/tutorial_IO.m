@@ -11,7 +11,15 @@
 % *First, initialize the Cobra Toolbox and switch to the tutorial folder*
 
 initCobraToolbox
-cd(fileparts(which('tutorial_ReadModel.mlx')));
+cd(fileparts(which('tutorial_IO.mlx')));
+
+%Copy two files that can be loaded (if they are nto yet present).
+try
+    delete 'Acidaminococcus_intestini_RyC_MR95.mat';
+    delete 'Abiotrophia_defectiva_ATCC_49176.xml'
+    copyfile(which('Acidaminococcus_intestini_RyC_MR95.mat'),'.');
+    copyfile(which('Abiotrophia_defectiva_ATCC_49176.xml'),'.');
+end
 %% 1. Reading a model 
 %% 1.1 Available input formats
 % The COBRA Toolbox supports the use of models in multiple formats. Internally, 
@@ -77,9 +85,12 @@ model = readCbModel(fileName);
 % readCbModel assumes, that .mat files are a matlab save file, .xml files 
 % are models in SBML format, .sto are SimPheny models, and .xls or .xlsx are models 
 % in Excel format.
-% 
+
+%This code is to avoid execution in non gui-environments
+if usejava('desktop')
+%% 
 % You can also call the function without a fileName to get a file selection 
-% dialog
+% dialog   
 
 model = readCbModel();
 %% 
@@ -87,6 +98,9 @@ model = readCbModel();
 % You can view the data stored in the model by e.g. using
 
 open model
+
+%This code is to avoid execution in non gui-environments
+end
 %% 
 % 
 %% 2. Writing a model
@@ -115,22 +129,24 @@ open model
 % 
 % 
 %% 2.2 Example
+
+%This code is to avoid execution in non gui-environments
+if usejava('desktop')
+%% 
 % To write files, use the writeCbModel function. The function can be called 
 % directly with a model.
 
-load('Acidaminococcus_intestini_RyC_MR95.mat')
 writeCbModel(model)
 %% 
 % This will call a file selection dialog, which allows the selection of 
 % a filename and, depending on the selected format from the dropdown, the output 
 % will be generated. 
-% 
-% It is also possible to specify the format and filename explicitly:
 
-writeCbModel(model,'SBML','Acidaminococcus.xml')
+%This code is to avoid execution in non gui-environments
+end
+%This code is to avoid execution in non gui-environments
+if usejava('desktop')
 %% 
-% which will write the model to the file Acidaminococcus.xml.
-% 
 % If no fileName is provided, a popup will ask you to provide a fileName 
 % with the specified format. 
 
@@ -142,5 +158,12 @@ writeCbModel(model,'text')
 % * 'sbml' - for a SBML model
 % * 'xls' - for a model in Excel format
 % * 'text' - for a textual export.
-% 
-%
+
+%This code is to avoid execution in non gui-environments
+end
+%% 
+% It is also possible to specify the format and filename explicitly:
+
+writeCbModel(model,'SBML','Acidaminococcus.xml')
+%% 
+% which will write the model to the file Acidaminococcus.xml.
