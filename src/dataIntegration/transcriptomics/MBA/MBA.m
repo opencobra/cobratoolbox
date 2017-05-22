@@ -1,30 +1,32 @@
 function tissueModel = MBA(model, medium_set, high_set, tol, core)
-%Use the MBA algorithm (Jerby et al., 2010*) to extract a context
-%specific model using data. MBA algorithm defines high-confidence reactions
-%to ensure activity in the extracted model. Medium confidence reactions
-%are only kept when a certain parsimony trade-off is met. In random order,
-%the algorithm prunes other reactions and removes them if not required to
-%support high- or medium- confidence reactions.
+% Use the MBA algorithm ('Jerby et al., 2010') to extract a context
+% specific model using data. MBA algorithm defines high-confidence reactions
+% to ensure activity in the extracted model. Medium confidence reactions
+% are only kept when a certain parsimony trade-off is met. In random order,
+% the algorithm prunes other reactions and removes them if not required to
+% support high- or medium- confidence reactions.
 %
-%INPUTS
+% INPUTS
 %
 %   model               input model (COBRA model structure)
 %   medium_set          list of reactions with medium confidence
 %   high_set            list of reactions with high confidence
 %
-%OPTIONAL INPUTS
+% OPTIONAL INPUTS
 %   tol                 minimum flux threshold for "expressed" reactions
 %                       (default 1e-8)
 %   core                cell with reaction names (strings) that are manually put in
 %                       the high confidence core
 %
-%OUTPUTS
+% OUTPUTS
 %
 %   tissueModel         extracted model
 %
-%* Jerby et al. (201)). Computational reconstruction of tissue-specific
-%metabolic models: application to human liver metabolism. Mol. Syst. Biol.
-%6, 401.
+% 'Jerby et al. (201)). Computational reconstruction of tissue-specific
+% metabolic models: application to human liver metabolism. Mol. Syst. Biol.
+% 6, 401.'
+%
+% .. Author: - Commented by A. Richelle, May 2017.
 %
 if nargin < 4 || isempty(tol)
     tol = 1e-8;
