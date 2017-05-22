@@ -1,31 +1,32 @@
 function tissueModel = GIMME(model, expressionRxns, threshold, obj_frac)
-%Use the GIMME algorithm (Becker and Palsson, 2008*) to extract a context
-%specific model using data. GIMME minimizes usage of low-expression
-%reactions while keeping the objective (e.g., biomass) above a certain
-%value. Note that this algorithm does not favor the inclusion of reactions
-%not related to the objective.
+% Use the GIMME algorithm ('Becker and Palsson, 2008') to extract a context
+% specific model using data. GIMME minimizes usage of low-expression
+% reactions while keeping the objective (e.g., biomass) above a certain
+% value. Note that this algorithm does not favor the inclusion of reactions
+% not related to the objective.
 %
-%INPUTS
+% USAGE : tissueModel = GIMME(model, expressionRxns, threshold, obj_frac)
+%
+% INPUTS :
 %
 %   model               input model (COBRA model structure)
 %   expressionRxns      expression data, corresponding to model.rxns (see
 %                       mapGeneToRxn.m)
 %
-%OPTIONAL INPUTS
+% OPTIONAL INPUTS :
 %   threshold           expression threshold, reactions below this are
 %                       minimized (default - ExpressionRxns > 75 percentile)
 %   obj_frac            minimum fraction of the objective(s) of model
 %                       (default value - 0.9)
 %
-%OUTPUTS
+% OUTPUTS :
 %
 %   tissueModel         extracted model
 %
-%* Becker and Palsson (2008). Context-specific metabolic networks are
-%consistent with experiments. PLoS Comput. Biol. 4, e1000082.
+% 'Becker and Palsson (2008). Context-specific metabolic networks are
+% consistent with experiments. PLoS Comput. Biol. 4, e1000082.'
 %
-%Originally written by Becker and Palsson, adapted by S. Opdam and A. Richelle -
-%May 2017
+% .. Author: - Originally written by Becker and Palsson, adapted by S. Opdam and A. Richelle - May 2017
     
     if nargin < 4 || isempty(obj_frac)
         obj_frac =0.9;
