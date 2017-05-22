@@ -81,4 +81,8 @@ end
 if isfield(model,'rev')
     model = rmfield(model,'rev');
 end
-warning(warnstate.state)
+
+%reset warnings
+for i = 1:numel(warnstate)
+    warning(warnstate(i).state,warnstate(i).identifier)
+end
