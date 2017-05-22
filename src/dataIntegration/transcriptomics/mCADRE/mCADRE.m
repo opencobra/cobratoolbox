@@ -1,13 +1,13 @@
 function [tissueModel, coreRxn, nonCoreRxn,	zeroExpRxns, pruneTime, cRes] = mCADRE(model, ubiquityScore, confidenceScores, protectedRxns, checkFunctionality, eta, tol)
-%Use the mCADRE algorithm (Wang et al., 2012*) to extract a context
-%specific model using data. mCADRE algorithm defines a set of core
-%reactions and prunes all other reactions based on their expression,
-%connectivity to core and confidence score. The removal of reactions is not
-%necessary performed to support the core of defined functionalities. Core
-%reactions are only removed if supported by a certain number of
-%zero-expression reactions.
+% Use the mCADRE algorithm (Wang et al., 2012*) to extract a context
+% specific model using expression data. mCADRE algorithm defines a set of core
+% reactions and prunes all other reactions based on their expression,
+% connectivity to core and confidence score. The removal of reactions is not
+% necessary performed to support the core of defined functionalities. Core
+% reactions are only removed if supported by a certain number of
+% zero-expression reactions.
 %
-%INPUTS
+%I NPUTS
 %   model               input model (COBRA model structure)
 %	ubiquityScore       ubiquity scores corresponding to genes
 %                       in gene_id quantify how often a gene is expressed accross samples.                       
@@ -15,7 +15,7 @@ function [tissueModel, coreRxn, nonCoreRxn,	zeroExpRxns, pruneTime, cRes] = mCAD
 %	confidenceScores    literature-based evidence for generic model,
 %                       (default value = 0)
 %
-%OPTIONAL INPUTS
+% OPTIONAL INPUTS
 %   protectedRxns       cell with reactions names that are manually added to
 %                       the core reaction set (i.e. {'Biomass_reaction'})
 %   checkFunctionality  Boolean variable that determine if the model should be able 
@@ -27,7 +27,7 @@ function [tissueModel, coreRxn, nonCoreRxn,	zeroExpRxns, pruneTime, cRes] = mCAD
 %   tol                 minimum flux threshold for "expressed" reactions
 %                       (default 1e-8)
 %
-%OUTPUTS
+% OUTPUTS
 %	tissueModel         pruned, context-specific model
 %	coreRxn             core reactions in model
 %	nonCoreRxn          non-core reactions in model
@@ -45,12 +45,14 @@ function [tissueModel, coreRxn, nonCoreRxn,	zeroExpRxns, pruneTime, cRes] = mCAD
 %                       metabolites (therefore was not removed)
 %
 %
-%*Wang et al. (2012). Reconstruction of genome-scale metabolic models for
-%126 human tissues using mCADRE. BMC Syst. Biol. 6, 153.
+% 'Wang et al. (2012). Reconstruction of genome-scale metabolic models for
+% 126 human tissues using mCADRE. BMC Syst. Biol. 6, 153.'
 %
-%This script is an adapted version of the implementation from
-%https://github.com/jaeddy/mcadre. Modified and commented by S. Opdam and A. Richelle,
-%May 2017.
+% This script is an adapted version of the implementation from
+% https://github.com/jaeddy/mcadre. 
+% 
+% .. Authors: Modified and commented by S. Opdam and A. Richelle,May 2017
+%
 
     if nargin < 4 || isempty(protectedRxns)
         protectedRxns = [];
