@@ -11,11 +11,10 @@ function orderedModel = orderModelFields(model)
 %                   definitions.
 %
 
-[requiredFields,optionalFields] = getDefinedFieldProperties();
+[fields] = getDefinedFieldProperties();
 
 modelfields = fieldnames(model);
-requiredOrder = requiredFields(ismember(requiredFields(:,1),modelfields));
-optionalOrder = sort(intersect(optionalFields(:,1),modelfields));
-remainingOrder = sort(setdiff(setdiff(modelfields,requiredOrder),optionalOrder));
-overallOrder = [columnVector(requiredOrder);columnVector(optionalOrder);columnVector(remainingOrder)];
+order = fields(ismember(fields(:,1),modelfields));
+remainingOrder = sort(setdiff(modelfields,order));
+overallOrder = [columnVector(order);columnVector(remainingOrder)];
 orderedModel = orderfields(model,overallOrder);

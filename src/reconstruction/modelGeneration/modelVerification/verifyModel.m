@@ -21,6 +21,10 @@ function results = verifyModel(model,varargin)
 %                   'simpleCheck' returns 0 if this is not a valid model
 %                   and 1 if it is a valid model, ignored if any other
 %                   option is selected.
+%                   'requiredFields' sets the fields which are required,
+%                   the argument must be firectly followed by the list of
+%                   required fields.
+%                   default({'S','b','csense','lb','ub','c','osense','rxns','mets','genes','rules'})
 %
 % OUTPUT:
 %
@@ -29,14 +33,21 @@ function results = verifyModel(model,varargin)
 %               model structure detected by the verifyModel function.
 %
 
-[requiredFields,optionalFields] = getDefinedFieldProperties();
+requiredFields = {'S','b','csense','lb','ub','c','osense','rxns','mets','genes','rules'};
+     
+if any(ismember(varargin,'requiredFields'))
+    requiredFields = varargin{find(ismember(varargin,'requiredFields'))+1};
+end
+[optionalFields] = getDefinedFieldProperties();
+requiredFields = optionalFields(ismember(optionalFields(:,1), requiredFields),:);
+optionalFields = optionalFields(~ismember(optionalFields(:,1), requiredFields(:,1)),:);
 
 results = struct();
 results.Errors = struct();
 %First, check for missing required Fields
 missingFields = setdiff(requiredFields(:,1),fieldnames(model));
 if ~isempty(missingFields)
-    results.Errors.missingFields = missingFields;
+    results.Errors.missingFields = missingFields;    
 end
 
 results = checkPresentFields(requiredFields,model,results);

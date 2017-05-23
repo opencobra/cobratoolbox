@@ -1,61 +1,62 @@
 # Fields in the model structure
 
 Contents:
-1. [Required Fields](#required-fields)
-2. [Optional Fields](#optional-fields)3. [Field Support](#field-support)
-4. [Model Specific Fields](#model-specific-fields)
-5. [Annotation Definitions](#annotation-definitions)
+1. [Model Fields](#model-fields)
+2. [Field Support](#field-support)
+3. [Model Specific Fields](#model-specific-fields)
+4. [Annotation Definitions](#annotation-definitions)
 
-### Required Fields: 
-Required fields are necessary to make a model be compliant with the COBRA Toolbox. Missing a required field can lead to errors when using COBRA Toolbox Functions. Verification is an evaluateable statement that the field must conform to.
+### Model Fields: 
+The following fields are defined in the COBRA toolbox. IF the field is present in a model, it should have the properties defined here and should be of the mentioned dimensions.
+ The dimensions refer to m (the number of metabolites), n (the number of reactions), g (the number of genes) and c (the number of compartments).
 
-| Field Name | Field Type | Field Description | Verification | 
+| Field Name | Dimension | Field Type | Field Description | 
 |---|---|---|---|
-|`S`| Sparse or Full Matrix of Double | The stoichiometric matrix containing the model structure (for large models a sparse format is suggested) | `isnumeric(x) || issparse(x)` | 
-|`b`| Column Vector of Doubles | The coefficients of the constraints of the metabolites. | `isnumeric(x)` | 
-|`csense`| Column Vector of Chars | The sense of the constraints represented by b, each row is either E (equality), L(less than) or G(greater than) | `ischar(x)` | 
-|`lb`| Column Vector of Doubles | The lower bounds for fluxes through the reactions. | `isnumeric(x)` | 
-|`ub`| Column Vector of Doubles | The upper bounds for fluxes through the reactions. | `isnumeric(x)` | 
-|`c`| Column Vector of Doubles  | The objective coefficient of the reactions. | `isnumeric(x)` | 
-|`osense`| Double  | The objective sense either -1 for maximisation or 1 for minimisation | `isnumeric(x)` | 
-|`rxns`| Column Cell Array of Strings  | Identifiers for the reactions. | `iscell(x) && ~any(cellfun(@isempty, x)) && all(cellfun(@(y) ischar(y) , x))` | 
-|`mets`| Column Cell Array of Strings  | Identifiers of the metabolites | `iscell(x) && ~any(cellfun(@isempty, x)) && all(cellfun(@(y) ischar(y) , x))` | 
-|`genes`|  Column Cell Array of Strings | Identifiers of the genes in the model | `iscell(x) && ~any(cellfun(@isempty, x)) && all(cellfun(@(y) ischar(y) , x))` | 
-|`rules`| Column Cell Array of Strings | GPR rules in evaluateable format for each reaction ( e.g. "x(1) &#124; x(2) & x(3)", would indicate the first gene or the second and third gene from genes) | `iscell(x) && all(cellfun(@(y) ischar(y) , x))` | 
-### Optional Fields
-Optional Fields are fields which are required by some functions (if not present, the function will report a corresponding message).
-
-| `Field Name` | Field Type | Field Description | Verification | 
-|---|---|---|---|
-|`metCharges`| Column Vector of Double | The charge of the respective metabolite (NaN if unknown) | `isnumeric(x)` | 
-|`metFormulas`| Column Cell Array of Strings | Elemental formula for each metabolite | `iscell(x) && all(cellfun(@(y) ischar(y) , x))` | 
-|`metSmiles`| Column Cell Array of Strings | Formula for each metabolite in SMILES Format | `iscell(x) && all(cellfun(@(y) ischar(y) , x))` | 
-|`metNames`| Column Cell Array of Strings | Full name of each corresponding metabolite | `iscell(x) && all(cellfun(@(y) ischar(y) , x))` | 
-|`metNotes`| Column Cell Array of Strings | Description of each corresponding metabolite | `iscell(x) && all(cellfun(@(y) ischar(y) , x))` | 
-|`metHMDBID`| Column Cell Array of Strings | HMDBID of each corresponding metabolite | `iscell(x) && all(cellfun(@(y) ischar(y) , x))` | 
-|`metInChIString`| Column Cell Array of Strings | InChI string of each corresponding metabolite | `iscell(x) && all(cellfun(@(y) ischar(y) , x))` | 
-|`metKEGGID`| Column Cell Array of Strings | KEGG id of each corresponding metabolite | `iscell(x) && all(cellfun(@(y) ischar(y) , x))` | 
-|`description`| String or Struct | Name of a file the model is loaded from | `ischar(x) || isstruct(x)` | 
-|`modelVersion`|  Struct | Model Version/History | `isstruct(x)` | 
-|`geneNames`| Column Cell Array of Strings | Full name of each corresponding gene | `iscell(x) && all(cellfun(@(y) ischar(y) , x))` | 
-|`grRules`| Column Cell Array of Strings | A string representation of the GPR rules defined in rules | `iscell(x) && all(cellfun(@(y) ischar(y) , x))` | 
-|`rxnGeneMat`| Sparse or Full Matrix of Double or Boolean | A matrix that is 1 at position i,j if reaction i is associated with gene j | `issparse(x) || isnumeric(x) || islogical(x)` | 
-|`rxnConfidenceScores`| Column Vector of double | Confidence scores for reaction presence (0-4, with 4 being the highest confidence) | `isnumeric(x)` | 
-|`rxnNames`| Column Cell Array of Strings | Full name of each corresponding reaction | `iscell(x) && all(cellfun(@(y) ischar(y) , x))` | 
-|`rxnNotes`| Column Cell Array of Strings | Description of each corresponding reaction | `iscell(x) && all(cellfun(@(y) ischar(y) , x))` | 
-|`rxnECNumbers`| Column Cell Array of Strings | EC Number of each corresponding reaction | `iscell(x) && all(cellfun(@(y) ischar(y) , x))` | 
-|`rxnKEGGID`| Column Cell Array of Strings | KEGG ID of each corresponding reaction | `iscell(x) && all(cellfun(@(y) ischar(y) , x))` | 
-|`subSystems`| Column Cell Array of Strings | subSystem assignment for each reaction | `iscell(x) && all(cellfun(@(y) ischar(y) , x))` | 
-|`compNames`|  Column Cell Array of Strings | Full names of the compartments | `iscell(x) && all(cellfun(@(y) ischar(y) , x))` | 
-|`comps`| Column Cell Array of Strings | Identifiers of the compartments used in the metabolite names | `iscell(x) && all(cellfun(@(y) ischar(y) , x))` | 
-|`proteinNames`| Column Cell Array of Strings | Full name of each corresponding protein | `iscell(x) && all(cellfun(@(y) ischar(y) , x))` | 
-|`proteins`| Column Cell Array of Strings | ID for each protein | `iscell(x) && all(cellfun(@(y) ischar(y) , x))` | 
+|`model.S`| `m x n` | Sparse or Full Matrix of Double | The stoichiometric matrix containing the model structure (for large models a sparse format is suggested) | 
+|`model.mets`| `m x 1` | Column Cell Array of Strings | Identifiers of the metabolites | 
+|`model.b`| `m x 1` | Column Vector of Doubles | The coefficients of the constraints of the metabolites. | 
+|`model.csense`| `m x 1` | Column Vector of Chars | The sense of the constraints represented by b, each row is either E (equality), L(less than) or G(greater than) | 
+|`model.rxns`| `n x 1` | Column Cell Array of Strings | Identifiers for the reactions. | 
+|`model.lb`| `n x 1` | Column Vector of Doubles | The lower bounds for fluxes through the reactions. | 
+|`model.ub`| `n x 1` | Column Vector of Doubles | The upper bounds for fluxes through the reactions. | 
+|`model.c`| `n x 1` | Column Vector of Doubles | The objective coefficient of the reactions. | 
+|`model.osense`| `n x 1` | Double | The objective sense either -1 for maximisation or 1 for minimisation | 
+|`model.genes`| `g x 1` | Column Cell Array of Strings | Identifiers of the genes in the model | 
+|`model.rules`| `g x 1` | Column Cell Array of Strings | GPR rules in evaluateable format for each reaction ( e.g. "x(1) &#124; x(2) & x(3)", would indicate the first gene or the second... <Preview truncated at 128 characters> | 
+|`model.compNames`| `c x 1` | Column Cell Array of Strings | Descriptions of the Compartments (compNames(m) is associated with comps(m)) | 
+|`model.comps`| `c x 1` | Column Cell Array of Strings | Symbols for compartments, can include Tissue information | 
+|`model.description`| `?` | String or Struct | Name of a file the model is loaded from. | 
+|`model.geneNames`| `g x 1` | Column Cell Array of Strings | Full names of each corresponding genes. | 
+|`model.geneEntrezID`| `g x 1` | Column Cell Array of Strings | Entrez IDs of genes | 
+|`model.grRules`| `n x 1` | Column Cell Array of Strings | A string representation of the GPR rules defined in a readable format. | 
+|`model.metCharges`| `m x 1` | Column Vector of Double | The charge of the respective metabolite (NaN if unknown) | 
+|`model.metChEBIID`| `m x 1` | Column Cell Array of Strings | Formula for each metabolite in the ChEBI format. | 
+|`model.metFormulas`| `m x 1` | Column Cell Array of Strings | Elemental formula for each metabolite. | 
+|`model.metHMDBID`| `m x 1` | Column Cell Array of Strings | Formula for each metabolite in the HMDB format. | 
+|`model.metInChIString`| `m x 1` | Column Cell Array of Strings | Formula for each metabolite in the InCHI strings format. | 
+|`model.metKEGGID`| `m x 1` | Column Cell Array of Strings | Formula for each metabolite in the KEGG format. | 
+|`model.metPubChemID`| `m x 1` | Column Cell Array of Strings | PubChem ID of each metabolite | 
+|`model.metMetaNetXID`| `m x 1` | Column Cell Array of Strings | MetaNetX identifier of the metabolite | 
+|`model.metNames`| `m x 1` | Column Cell Array of Strings | Full name of each corresponding metabolite. | 
+|`model.metNotes`| `m x 1` | Column Cell Array of Strings | Formula for each metabolite in the PubChem format. | 
+|`model.metSmiles`| `m x 1` | Column Cell Array of Strings | Formula for each metabolite in SMILES Format | 
+|`model.modelVersion`| `?` | Struct | The version of the model, Store FBC versions in the COBRA structure | 
+|`model.proteinNames`| `g x 1` | Column Cell Array of Strings | Full Name for each Protein | 
+|`model.proteins`| `g x 1` | Column Cell Array of Strings | Proteins associated with each reaction. | 
+|`model.rxnConfidenceScores`| `n x 1` | Column Vector of double | Confidence scores for reaction presence (0-5, with 5 being the highest confidence) | 
+|`model.rxnECNumbers`| `n x 1` | Column Cell Array of Strings | E.C. number for each reaction. | 
+|`model.rxnGeneMat`| `g x n` | Sparse or Full Matrix of Double or Boolean | Matrix with rows corresponding to reactions and columns corresponding to genes. | 
+|`model.rxnKEGGID`| `n x 1` | Column Cell Array of Strings | Formula for each reaction in the KEGG format. | 
+|`model.rxnNames`| `n x 1` | Column Cell Array of Strings | Full name of each corresponding reaction. | 
+|`model.rxnNotes`| `n x 1` | Column Cell Array of Strings | Description of each corresponding reaction. | 
+|`model.rxnReferences`| `n x 1` | Column Cell Array of Strings | Description of references for each corresponding reaction. | 
+|`model.subSystems`| `n x 1` | Column Cell Array of Strings | subSystem assignment for each reaction | 
 ### Model Specific Fields
 Some models might contain additional model specific fields that are not defined COBRA model fields. These fields will commonly not be considered by COBRA toolbox methods, and using toolbox methods can render these fields inconsistent (e.g. if the number of reactions changes, a model specific field linked to reactions might have the wrong number of entries or the values might no longer correspond to the correct indices). 
 
 ### Field Support
-All optional and all required fields are supported by all COBRA Toolbox functions. Using COBRA Toolbox Functions will not make a model inconsistent, but manual modifications of fields might lead to an inconsistent model.
+All fields mentioned above are supported by COBRA Toolbox functions.Using COBRA Toolbox Functions will not make a model inconsistent, but manual modifications of fields might lead to an inconsistent model.
 Use verifyModel(model) to determine, if the model is a valid COBRA Toolbox model.
 
-### Additional fields (future development)
-Fields starting with met, rxn, comp or gene that are not defined above, will be assumed to be annotation fields, and IO methods will try to map them to identifiers.org registered databases.
+### Additional fields
+Fields starting with met, rxn, comp, protein or gene that are not defined above, will be assumed to be annotation fields, and IO methods will try to map them to identifiers.org registered databases.
