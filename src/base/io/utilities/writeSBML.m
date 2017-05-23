@@ -697,7 +697,9 @@ for i=1:size(model.rxns, 1)
         tmp_note = [ tmp_note ' <p>EC Number: ' model.rxnECNumbers{i} '</p>'];
     end
     if isfield(model, 'rxnConfidenceScores')&&i<=length(model.rxnConfidenceScores)%&&~isempty(model.confidenceScores{i})
-        tmp_note = [ tmp_note ' <p>Confidence Level: ' model.rxnConfidenceScores{i} '</p>'];
+        
+        tmp_note = [ tmp_note ' <p>Confidence Level: ' num2str(model.rxnConfidenceScores(i)) '</p>'];
+        
     end
     if isfield(model, 'rxnReferences')&&i<=length(model.rxnReferences)%&&~isempty(model.rxnReferences{i})
         tmp_note = [ tmp_note ' <p>AUTHORS: ' model.rxnReferences{i} '</p>'];
