@@ -65,7 +65,7 @@ if db
         fileName = which('COBRA_structure_fields.xlsx');
         [~,~,raw] = xlsread(fileName,'Programatic Specification');
         %Get the indices for database, qualifier and reference.
-        dbpos = find(cellfun(@(x) ischar(x) && strcmp(x,'database'),raw(1,:)));
+        dbpos = find(cellfun(@(x) ischar(x) && strcmp(x,'databaseid'),raw(1,:)));
         qualpos = find(cellfun(@(x) ischar(x) && strcmp(x,'qualifier'),raw(1,:)));
         reffieldPos = find(cellfun(@(x) ischar(x) && strcmp(x,'referenced Field'),raw(1,:)));
         fieldNamePos = find(cellfun(@(x) ischar(x) && strcmp(x,'Model Field'),raw(1,:)));
@@ -75,12 +75,12 @@ if db
         relarray = raw(relrows,[dbpos,qualpos,fieldNamePos,reffieldPos]);
         dbInfo = cell(0,4);
         for i = 1:size(relarray)
-            fieldRef = relarray{4}(1:end-1);
+            fieldRef = relarray{i,4}(1:end-1);
             dbs = strsplit(relarray{i,1},';');
             for db = 1:length(dbs)
                 quals = strsplit(relarray{i,2},';');
                 for qual = 1:length(quals)
-                    dbInfo(end+1,:) = {dbs{db},quals{qual},relarray{3},fieldRef};
+                    dbInfo(end+1,:) = {dbs{db},quals{qual},relarray{i,3},fieldRef};
                 end
             end
         end
@@ -149,6 +149,7 @@ fields = CBT_PROG_FIELD_PROPS;
 if ~isempty(spec)
     fields = fields(ismember(fields(:,1),spec),:);
 end
+
 % if
 %     requiredFields = ...
 %         {'S','mets','rxns','isnumeric(x) || issparse(x)','Sparse or Full Matrix of Double','The stoichiometric matrix containing the model structure (for large models a sparse format is suggested)';...
