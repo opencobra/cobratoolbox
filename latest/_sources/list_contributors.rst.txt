@@ -15,11 +15,11 @@
 
         <tr>
             <td><img src="https://avatars3.githubusercontent.com/u/22169392?v=3" width=46 height=46 alt=""></td><td><a href="https://github.com/lemmerelassal">lemmerelassal</a></td>
-            <td><img src="https://avatars1.githubusercontent.com/u/9161887?v=3" width=46 height=46 alt=""></td><td><a href="https://github.com/longfeimao">longfeimao</a></td>
+            <td><img src="https://avatars3.githubusercontent.com/u/26724015?v=3" width=46 height=46 alt=""></td><td><a href="https://github.com/jacekwachowiak">jacekwachowiak</a></td>
         </tr>
 
         <tr>
-            <td><img src="https://avatars3.githubusercontent.com/u/26724015?v=3" width=46 height=46 alt=""></td><td><a href="https://github.com/jacekwachowiak">jacekwachowiak</a></td>
+            <td><img src="https://avatars1.githubusercontent.com/u/9161887?v=3" width=46 height=46 alt=""></td><td><a href="https://github.com/longfeimao">longfeimao</a></td>
             <td><img src="https://avatars3.githubusercontent.com/u/8303141?v=3" width=46 height=46 alt=""></td><td><a href="https://github.com/wbryant">wbryant</a></td>
         </tr>
 
