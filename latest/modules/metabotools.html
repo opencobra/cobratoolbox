@@ -1184,11 +1184,10 @@ Model that is constrained qualitatively to the condition-specific uptake and sec
 
 <dl class="function">
 <dt id="src.dataIntegration.metabotools.setQuantConstraints">
-<code class="descname">setQuantConstraints</code><span class="sig-paren">(</span><em>model</em>, <em>samples</em>, <em>tol</em>, <em>minGrowth</em>, <em>obj</em>, <em>no_secretion</em>, <em>no_uptake</em>, <em>medium</em>, <em>addExtraExch</em>, <em>addExtraExch_value</em>, <em>path</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/dataIntegration/metabotools/setQuantConstraints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.metabotools.setQuantConstraints" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function takes a model and quantitative extracellular metabolomic
-data and returns a model in which the data is integrated as constraints.
-It requires as input the output of the script ... and the output can be
-the input for the analysis functions in this toolbox.</p>
+<code class="descname">setQuantConstraints</code><span class="sig-paren">(</span><em>model</em>, <em>samples</em>, <em>tol</em>, <em>minGrowth</em>, <em>obj</em>, <em>no_secretion</em>, <em>no_uptake</em>, <em>medium</em>, <em>addExtraExch</em>, <em>addExtraExch_value</em>, <em>path</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/886e910300e6c4aeba6e8705d5c9791fdd29e6f5/src/dataIntegration/metabotools/setQuantConstraints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.metabotools.setQuantConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes a model and quantitative extracellular metabolomic data and returns a model in which the data is integrated as constraints described
+in &#8220;MetaboTools: A Comprehensive Toolbox for Analysis of Genome-Scale Metabolic Models&#8221;, 2016, Front. Physiol., and the supplemental data &#8220;Tutorial II: Workflow for the integration
+of quantitative extracellular metabolomic data into the network context.&#8221; (Data Sheet 3.pdf)</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[ResultsAllCellLines, OverViewResults] = setQuantConstraints(model, samples, tol, minGrowth, obj, no_secretion, no_uptake, medium, addExtraExch, addExtraExch_value, path, epsilon)</div></blockquote>
@@ -1217,8 +1216,6 @@ After adding secretions, models are still not growing, this variable allows one 
 e.g. 1 as arbitrary small flux value / the resulting ub = 1, lb = -1.</li>
 <li><strong>path</strong> &#8211;
 Location of the .mat files for samples.</li>
-<li><strong>epsilon</strong> &#8211;
-(not used)</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
