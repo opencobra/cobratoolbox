@@ -185,11 +185,11 @@ for i = 1:numel(presentFields)
     end
     %Test the field content properties
     %x is necessary here, since it is used for the eval below!
-    x = model.(testedField);
+    x = model.(testedField);    
     try
         propertiesMatched = eval(fieldProperties{presentFields(i),4});    
     catch
-        disp('blubb')
+        propertiesMatched = false;
     end
     if ~propertiesMatched
         if ~isfield(results.Errors,'inconsistentFields')

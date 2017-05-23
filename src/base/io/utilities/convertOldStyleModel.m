@@ -82,6 +82,19 @@ if isfield(model,'rev')
     model = rmfield(model,'rev');
 end
 
+%Handle wrong rxnConfidenceScores.
+if isfield(model,'rxnConfidenceScores')
+    if iscell(model.rxnConfidenceScores) 
+            tempScores = cell2mat(model.rxnConfidenceScores);
+            if ~isnumeric(tempScores)
+                emptyConf = cellfun(@isempty, model.rxnConfidenceScores);
+                tempScores = zeros(numel(model.rxnConfidenceScores),1);                
+                tempScores(~emptyConf) = cellfun(@str2num , model.rxnConfidenceScores(~emptyConf));
+            end
+            model.rxnConfidenceScores = tempScores;
+    end
+end
+
 %reset warnings
 for i = 1:numel(warnstate)
     warning(warnstate(i).state,warnstate(i).identifier)
