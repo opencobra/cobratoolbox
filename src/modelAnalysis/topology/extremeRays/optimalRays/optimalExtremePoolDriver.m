@@ -1,5 +1,5 @@
 clear
-%script to test extremePathways.m
+% Script to test extremePathways.m
 
 %model.description='loop3a';
 %model.description='loop3b';

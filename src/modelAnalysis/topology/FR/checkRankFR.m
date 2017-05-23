@@ -1,44 +1,49 @@
-function  [rankFR,rankFRV,rankFRvanilla,rankFRVvanilla,model] = checkRankFR(model,printLevel)
-% calculates the rank of [F R] and [F;R], when restricted to certain
+function  [rankFR, rankFRV, rankFRvanilla, rankFRVvanilla, model] = checkRankFR(model, printLevel)
+% Calculates the rank of [F R] and [F; R], when restricted to certain
 % rows and columns
 %
-%INPUT
-% model.S
-% printLevel
+% USAGE:
 %
-%OUTPUT
-% rankFR                    rank of [F R], when using only FRrows
-% rankFRV                   rank of [F;R], when using only FRVcols
-% rankFRvanilla             rank of [F R], when using all rows
-% rankFRVvanilla            rank of [F;R], when using all cols
-% model.FRrows              m x 1 boolean of rows of [F R] that are nonzero,
+%    [rankFR, rankFRV, rankFRvanilla, rankFRVvanilla, model] = checkRankFR(model, printLevel)
+%
+% INPUTS:
+%    model:             model structure
+%    printLevel:        verbose level
+%
+% OUTPUTS:
+%    rankFR:            rank of [`F R`], when using only `FRrows`
+%    rankFRV:           rank of [`F; R`], when using only `FRVcols`
+%    rankFRvanilla:     rank of [`F R`], when using all rows
+%    rankFRVvanilla:    rank of [`F; R`], when using all cols
+%    model:             structure with fields:
+%
+%                         * model.FRrows - `m` x 1 boolean of rows of [`F R`] that are nonzero,
 %                           unique upto positive scaling and part of the
 %                           maximal conservation vector
-% model.FRVcols             n x 1 boolean of cols of [F;R] that are nonzero,
+%                         * model.FRVcols - `n` x 1 boolean of cols of [`F; R`] that are nonzero,
 %                           unique upto positive scaling and part of the
 %                           maximal conservation vector
-% model.FRirows             m x 1 boolean of rows of [F R] that are independent
-% model.FRdrows             m x 1 boolean of rows of [F R] that are dependent
-% model.FRwrows             m x 1 boolean of independent rows of [F R] that
-%                           have dependent rows amongst model.FRdrows
-% model.FRVdcols            n x 1 boolean of cols of [F;R]that are dependent
-% model.SConsistentMetBool  m x 1 boolean vector indicating metabolites involved
+%                         * model.FRirows - `m` x 1 boolean of rows of [`F R`] that are independent
+%                         * model.FRdrows - `m` x 1 boolean of rows of [`F R`] that are dependent
+%                         * model.FRwrows - `m` x 1 boolean of independent rows of [`F R`] that
+%                           have dependent rows amongst `model.FRdrows`
+%                         * model.FRVdcols - `n` x 1 boolean of cols of [`F; R`] that are dependent
+%                         * model.SConsistentMetBool - `m` x 1 boolean vector indicating metabolites involved
 %                           in the maximal consistent vector
-% model.SConsistentRxnBool  n x 1 boolean vector indicating metabolites involved
+%                         * model.SConsistentRxnBool - `n` x 1 boolean vector indicating metabolites involved
 %                           in the maximal consistent vector
-% model.FRnonZeroBool       m x 1 boolean vector indicating metabolites involved
+%                         * model.FRnonZeroBool - `m` x 1 boolean vector indicating metabolites involved
 %                           in at least one internal reaction
-% model.FRuniqueBool        m x 1 boolean vector indicating metabolites with
+%                         * model.FRuniqueBool - `m` x 1 boolean vector indicating metabolites with
 %                           reaction stoichiometry unique upto scalar multiplication
-% model.SIntRxnBool         n x 1 boolean vector indicating the non exchange
-%                           reactions
-% model.FRVnonZeroBool      n x 1 boolean vector indicating non exchange reactions
+%                         * model.SIntRxnBool - `n` x 1 boolean vector indicating the non exchange reactions
+%                         * model.FRVnonZeroBool - `n` x 1 boolean vector indicating non exchange reactions
 %                           with at least one metabolite involved
-% model.FRVuniqueBool       n x 1 boolean vector indicating non exchange reactions
+%                         * model.FRVuniqueBool - `n` x 1 boolean vector indicating non exchange reactions
 %                           with stoichiometry unique upto scalar multiplication
-% model.connectedRowsFRBool     m x 1 boolean vector indicating metabolites in connected rows of [F,R]
-% model.connectedRowsFRVBool    n x 1 boolean vector indicating complexes in connected columns of [F;R]
-% model.V                   S*V=0, 1'*|V|>1 for all flux consistent reactions
+%                         * model.connectedRowsFRBool - `m` x 1 boolean vector indicating metabolites in connected rows of [`F R`]
+%                         * model.connectedRowsFRVBool - `n` x 1 boolean vector indicating complexes in connected columns of [`F; R`]
+%                         * model.V - `S*V = 0`; `1'*|V|>1` for all flux consistent reactions
 
 if ~exist('printLevel','var')
     printLevel=1;

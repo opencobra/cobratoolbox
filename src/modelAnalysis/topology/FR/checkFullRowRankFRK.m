@@ -1,7 +1,6 @@
+makeLoopToyModel;
 % check for positive left nullspace basis when kinetic parameters are
 % variables
-
-makeLoopToyModel;
 
 %If the sum of each column of  If equals that of the corresponding column of  Ir,
 %then there exists a vector of ones in the left nullspace.

@@ -1,5 +1,5 @@
 function [groups, orphans, R, C] = connectedComponents(model, type, figures, files)
-% Assuming two reactions are connected if they share metabolites, calculate the connected components
+% Assuming two reactions are connected if they share metabolites, calculates the connected components
 % in the stoichiometric matrix, that is, the sets of reactions that share a set of metabolites
 %
 % USAGE:
@@ -9,13 +9,13 @@ function [groups, orphans, R, C] = connectedComponents(model, type, figures, fil
 % INPUT:
 %    model:
 %
-% OPTIONAL INPUT:
+% OPTIONAL INPUTS:
 %    type:       {('allComponents'),'largestComponent'}
 %    figures:    Will generate plots of the grouping algorithm as it creates block diagonal
 %                groups in from top left to bottom right in W.
 %    files:      Indicator, whether several files containing indicator
 %                matrices are generated.
-% OUTPUT:
+% OUTPUTS:
 %    groups:     a structure array (the number of distinct groups is length(groups)) with fields:
 %
 %                  * `groups(i).num_els` - number of reactions in group `i`.

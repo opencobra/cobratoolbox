@@ -1,17 +1,19 @@
-function [connectedRowsFRBool,connectedColsFRVBool]=connectedFR(F,R)
-% compute the connected sets of rows of [F,R] and the largest
-% connected set of columns of [F;R] using gamic
+function [connectedRowsFRBool, connectedColsFRVBool] = connectedFR(F, R)
+% Computes the connected sets of rows of [`F, R`] and the largest
+% connected set of columns of [`F; R`] using gamic
 %
-% INPUT
-% F         m x n
-% R         m x n
+% USAGE:
 %
-% OUTPUT
-% connectedRowsFRBool   m x z boolean vector indicating z sets of 
-%                       connected rows
-% connectedColsFRVBool  n x z boolean vector indicating z sets of 
-%                       connected cols
+%    [connectedRowsFRBool, connectedColsFRVBool] = connectedFR(F, R)
 %
+% INPUTS:
+%    F:                       `m` x `n`
+%    R:                       `m` x `n`
+%
+% OUTPUTS:
+%    connectedRowsFRBool:     `m` x `z` boolean vector indicating z sets of connected rows
+%    connectedColsFRVBool:    `n` x `z` boolean vector indicating z sets of connected cols
+
 if ~exist('largest_component','file')
     error('Install gamic and add it to your path. (http://www.mathworks.com/matlabcentral/fileexchange/24134-gaimc-graph-algorithms-in-matlab-code)')
 else
@@ -24,9 +26,9 @@ else
     FR = [F2,R2];
     %cols
     FRV = [F2;R2];
-    
+
     A=convertHypergraphToBipartiteGraph(FR);
-    
+
     % SCOMPONENTS Compute the strongly connected components of a graph
     %[Acc,pA] = largest_component(A);
     [Asci,Asizes] = scomponents(A);
@@ -39,7 +41,7 @@ else
     sumComponent=sum(connectedRowsFRBool,1);
     %omit columns
     connectedRowsFRBool=connectedRowsFRBool(:,sumComponent~=0);
-            
+
     B=convertHypergraphToBipartiteGraph(FRV);
     [Bsci,Bsizes] = scomponents(B);
     connectedColsFRVBool=false(size(B,1),length(Bsizes));

@@ -10,8 +10,8 @@ function [A, B] = convertHypergraphToBipartiteGraph(S, printLevel)
 %    printLevel:    timer
 %
 % OUTPUTS:
-%    A:             `m+n` x `m+n` adjacency matrix for an undirected graph (symmetric)
-%    B:             `m+n` x `nnz(S)` incidence matrix for a directed graph
+%    A:             `(m+n)` x `(m+n)` adjacency matrix for an undirected graph (symmetric)
+%    B:             `(m+n)` x `nnz(S)` incidence matrix for a directed graph
 %
 % .. Author: - Ronan Fleming 2013
 

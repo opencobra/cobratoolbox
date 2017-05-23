@@ -6,19 +6,19 @@ function [loops, eqSets, P, P2, cyclicBool] = equivalentSets(model)
 %    [loops, eqSets, P, P2, cyclicBool] = equivalentSets(model)
 %
 % INPUT:
-%    model:    structure with:
+%    model:         structure with:
 %
-%               * model.S
-%               * model.lb
-%               * model.ub
-%               * model.biomassAbbr
+%                     * model.S
+%                     * model.lb
+%                     * model.ub
+%                     * model.biomassAbbr
 %
 % OUTPUTS:
-%    loops: stoichiometrically balanced loops
-%    eqSets: equivalent sets
-%    P:
-%    P2: output of `lrsOutputReadRay`
-%    cyclicBool:
+%    loops:         stoichiometrically balanced loops
+%    eqSets:        equivalent sets
+%    P:             as P2 but additinally dependent on `cyclicBool`
+%    P2:            output of `lrsOutputReadRay`
+%    cyclicBool:    boolean variable
 
 [nMet, nRxns] = size(model.S);
 % nullspace of internal stoichiometric matrix
