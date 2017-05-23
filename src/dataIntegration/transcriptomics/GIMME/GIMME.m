@@ -1,33 +1,34 @@
 function tissueModel = GIMME(model, expressionRxns, threshold, obj_frac)
-% Use the GIMME algorithm ('Becker and Palsson, 2008') to extract a context
+% Use the GIMME algorithm (`Becker and Palsson, 2008`) to extract a context
 % specific model using data. GIMME minimizes usage of low-expression
 % reactions while keeping the objective (e.g., biomass) above a certain
 % value. Note that this algorithm does not favor the inclusion of reactions
 % not related to the objective.
 %
-% USAGE : tissueModel = GIMME(model, expressionRxns, threshold, obj_frac)
+% USAGE:
 %
-% INPUTS :
+%    tissueModel = GIMME(model, expressionRxns, threshold, obj_frac)
 %
-%   model               input model (COBRA model structure)
-%   expressionRxns      expression data, corresponding to model.rxns (see
-%                       mapGeneToRxn.m)
+% INPUTS:
 %
-% OPTIONAL INPUTS :
-%   threshold           expression threshold, reactions below this are
-%                       minimized (default - ExpressionRxns > 75 percentile)
-%   obj_frac            minimum fraction of the objective(s) of model
-%                       (default value - 0.9)
+%    model:               input model (COBRA model structure)
+%    expressionRxns:      expression data, corresponding to model.rxns (see
+%                         mapGeneToRxn.m)
 %
-% OUTPUTS :
+% OPTIONAL INPUTS:
+%    threshold:           expression threshold, reactions below this are
+%                         minimized (default - ExpressionRxns > 75 percentile)
+%    obj_frac:            minimum fraction of the objective(s) of model
+%                         (default value - 0.9)
 %
-%   tissueModel         extracted model
+% OUTPUTS:
+%    tissueModel:         extracted model
 %
-% 'Becker and Palsson (2008). Context-specific metabolic networks are
-% consistent with experiments. PLoS Comput. Biol. 4, e1000082.'
+% `Becker and Palsson (2008). Context-specific metabolic networks are
+% consistent with experiments. PLoS Comput. Biol. 4, e1000082.`
 %
 % .. Author: - Originally written by Becker and Palsson, adapted by S. Opdam and A. Richelle - May 2017
-    
+
     if nargin < 4 || isempty(obj_frac)
         obj_frac =0.9;
     end
@@ -36,7 +37,7 @@ function tissueModel = GIMME(model, expressionRxns, threshold, obj_frac)
         threshold =prctile(data,75);
     end
 
-    objectiveCol = [find(model.c) obj_frac]; 
+    objectiveCol = [find(model.c) obj_frac];
 
     nRxns = size(model.S,2);
 
@@ -96,7 +97,7 @@ function tissueModel = GIMME(model, expressionRxns, threshold, obj_frac)
 
     if (gimmeSolution.stat ~= 1)
     %No solution for the problem
-        display('Failed to solve GIMME problem'); 
+        display('Failed to solve GIMME problem');
         gimmeSolution.x = zeros(nIrrevRxns,1);
     end
 
@@ -118,7 +119,7 @@ function tissueModel = GIMME(model, expressionRxns, threshold, obj_frac)
             end
         end
     end
-    
+
     remove = model.rxns(reactionActivity == 0);
-    tissueModel = removeRxns(model,remove); 
+    tissueModel = removeRxns(model,remove);
 end
