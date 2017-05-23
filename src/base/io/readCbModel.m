@@ -11,8 +11,8 @@ function model = readCbModel(fileName,varargin)
 %OPTIONAL INPUTS
 %     fileName:         File name for file to read in (char)
 %                       not given in the `SBML` file (Default = 1000)
-%     fileType:         File type for input files: 'SBML', 'SimPheny', or
-%                      'SimPhenyPlus', 'SimPhenyText', 'Matlab', Excel' (Default = 'Matlab')
+%     fileType:         File type for input files: 'SBML', 'SimPheny',
+%                       'SimPhenyPlus', 'SimPhenyText', 'Matlab' or Excel' (Default = 'Matlab')
 %
 %                         * 'SBML' indicates a file in `SBML` format
 %                         * 'SimPheny' is a set of three files in `SimPheny` simulation output format
@@ -24,15 +24,15 @@ function model = readCbModel(fileName,varargin)
 %                           associations
 %                         * Matlab will save the model as a matlab variable file.
 %                         * Excel will save the model as a two sheet Excel Model.
-% modelDescription  Description of model contents (char), default is the
-%                   choosen filename
-% compSymbolList    Compartment Symbol List( cell array)
-%                   symbol list (cell array)
+%   modelDescription:   Description of model contents (char), default is the
+%                       choosen filename
+%   compSymbolList:     Compartment Symbol List( cell array)
+%                       
 %
 %OUTPUT
 %    model:             Returns a model in the COBRA format:
 % 
-%                         * description - Description of model contents
+%                         * description - Description of model contents (opt)
 %                         * rxns - Reaction names
 %                         * mets - Metabolite names
 %                         * S - Stoichiometric matrix
@@ -41,9 +41,9 @@ function model = readCbModel(fileName,varargin)
 %                         * c - Objective coefficients
 %                         * subSystems - Subsystem name for each reaction (opt)
 %                         * grRules - Gene-reaction association rule for each reaction (opt)
-%                         * rules - Gene-reaction association rule in computable form (opt)
+%                         * rules - Gene-reaction association rule in computable form 
 %                         * rxnGeneMat - Reaction-to-gene mapping in sparse matrix form (opt)
-%                         * genes - List of all genes (opt)
+%                         * genes - List of all genes
 %                         * rxnNames - Reaction description (opt)
 %                         * metNames - Metabolite description (opt)
 %                         * metFormulas - Metabolite chemical formula (opt)

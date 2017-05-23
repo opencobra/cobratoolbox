@@ -4,6 +4,7 @@ function outmodel = writeCbModel(model,varargin)
 % USAGE:
 %
 %    outmodel = writeCbModel(model,format,fileName, varargin)
+%
 % INPUTS:
 %    model:             Standard COBRA model structure
 %
@@ -13,8 +14,8 @@ function outmodel = writeCbModel(model,varargin)
 %                       xls is restricted to the fields defined in the xls io documentation.
 %    fileName:          File name for output file (optional, default opens
 %                       dialog box)
-%    compSymbolList     List of compartment symbols (Cell array)
-%    compNameList       List of compartment names corresponding to
+%    compSymbolList:    List of compartment symbols (Cell array)
+%    compNameList:      List of compartment names corresponding to
 %                       compSymbolList (Cell array)
 %
 % OPTIONAL OUTPUTS:
