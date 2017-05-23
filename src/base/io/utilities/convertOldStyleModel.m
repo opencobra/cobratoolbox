@@ -64,7 +64,7 @@ end
 
 if ~isfield(model,'osense')
     if isfield(model,'osenseStr')
-        if strcmp(model.osenseStr,'min')
+        if strcmpi(model.osenseStr,'min')
             model.osense = 1;
         else
             model.osense = -1;
