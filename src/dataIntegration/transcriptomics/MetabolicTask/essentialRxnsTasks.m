@@ -1,27 +1,30 @@
-function [essentialRxns]=essentialRxnsTasks(model)
-%   Calculate the minimal number of reactions needed to be active for each
-%   task using Parsimoneous enzyme usage Flux Balance Analysis
+function [essentialRxns] = essentialRxnsTasks(model)
+% Calculates the minimal number of reactions needed to be active for each
+% task using Parsimoneous enzyme usage Flux Balance Analysis
 %
-%   model                   a model structure
+% USAGE:
 %
-%   essentialRxns           cell array with the names of the essential
-%                           reactions for the task
-%   
+%    [essentialRxns] = essentialRxnsTasks(model)
 %
-%   Essential reactions are those which, when constrained to 0, result in an
-%   infeasible problem.
+% INPUT:
+%    model:            a model structure
 %
-%   Usage: [essentialRxns]=essentialRxnsTasks(model)
+% OUTPUT:
+%    essentialRxns:    cell array with the names of the essential
+%                      reactions for the task
 %
-%   Originally written for RAVEN toolbox by
-%   Rasmus Agren, 2013-11-17
-%   Adapted for cobratoolbox and modified to rely on pFBA by
-%   Richelle Anne, 2017-05-18
+% NOTE:
+%
+%    Essential reactions are those which, when constrained to 0, result in an
+%    infeasible problem.
+%
+% .. Authors:
+%   		- Originally written for RAVEN toolbox by Rasmus Agren, 2013-11-17
+%   		- Adapted for cobratoolbox and modified to rely on pFBA by Richelle Anne, 2017-05-18
 
-    %Compute the minimal set of reactions
-	[solMin modelIrrevFM]= minimizeModelFlux_local(model);
+	[solMin modelIrrevFM]= minimizeModelFlux_local(model); %Compute the minimal set of reactions
 	modelIrrevFM = changeRxnBounds(modelIrrevFM,'netFlux',solMin.f,'b');
-    
+
     %Define the list of reactions to test
 	rxnsToCheck=modelIrrevFM.rxns(abs(solMin.x)>10^-6);
 
@@ -41,9 +44,9 @@ function [essentialRxns]=essentialRxnsTasks(model)
        end
     end
 
-    rxns_kept=unique(essentialRxns);        
+    rxns_kept=unique(essentialRxns);
     rxns_final={};
-    
+
     %% Analysis part
     for i=1: length(rxns_kept)
         string=rxns_kept{i};
@@ -70,14 +73,14 @@ function [ MinimizedFlux modelIrrev]= minimizeModelFlux_local(model)
     modelIrrev.S(end+1,:) = ones(size(modelIrrev.S(1,:)));
     modelIrrev.b(end+1) = 0;
     modelIrrev.mets{end+1} = 'fluxMeasure';
-    
+
     % Add a pseudo reaction that measures the flux through the network
     modelIrrev = addReaction(modelIrrev,'netFlux',{'fluxMeasure'},[-1],false,0,inf,0,'','');
-    
+
     % Set the flux measuring demand as the objective
     modelIrrev.c = zeros(length(modelIrrev.rxns),1);
     modelIrrev = changeObjective(modelIrrev, 'netFlux');
-    
+
     % Minimize the flux measuring demand (netFlux)
     MinimizedFlux = optimizeCbModel(modelIrrev,'min');
 

@@ -1,49 +1,48 @@
-function [taskReport essentialRxns taskStructure]=checkMetabolicTasks(model,inputFile,printOutput,printOnlyFailed,getEssential,taskStructure)
-% checkMetabolicTasks performs a set of simulations as defined in a task file
+function [taskReport essentialRxns taskStructure] = checkMetabolicTasks(model,inputFile,printOutput,printOnlyFailed,getEssential,taskStructure)
+% Performs a set of simulations as defined in a task file
 % to check if the model is able to pass a list of metabolic tasks.
 % A metabolic task is defined as the capacity of producing a list of
 % output products when ONLY a defined list of inputs substrates are
 % available. In other words, a model successfuly pass a metabolic task if it is
-% still a solvable LP problem when ONLY exchange reactions related to 
-% the inputs substrates and outputs products are allowed to carry fluxes 
+% still a solvable LP problem when ONLY exchange reactions related to
+% the inputs substrates and outputs products are allowed to carry fluxes
 %
-% USAGE : [taskReport essentialReactions taskStructure]=checkMetabolicTasks(model,inputFile,...
-%           printOutput,printOnlyFailed,getEssential,taskStructure)
+% USAGE:
 %
-% INPUTS :
+%    [taskReport essentialReactions taskStructure] = checkMetabolicTasks(model, inputFile, printOutput, printOnlyFailed, getEssential, taskStructure)
 %
-%   model           a model structure
-%   inputFile       a task list in Excel format. See the function
-%                   parseTaskList for details (opt if taskStructure is
-%                   supplied)
+% INPUTS:
+%    model:              a model structure
+%    inputFile:          a task list in Excel format. See the function
+%                        parseTaskList for details (opt if taskStructure is
+%                        supplied)
 %
-% OPTIONAL INPUTS :
-%   printOutput     true if the results of the test should be displayed
-%                   (default - true)
-%   printOnlyFailed true if only tasks that failed should be displayed
-%                   (default - false)
-%   getEssential    true if the minimal number of reactions that need to be
-%                   active to pass the task need to be computed
-%                   (default - false)
-%   taskStructure   structure with the tasks, as from parseTaskList. If
-%                   this is supplied then inputFile is ignored
+% OPTIONAL INPUTS:
+%    printOutput:        true if the results of the test should be displayed
+%                        (default - true)
+%    printOnlyFailed:    true if only tasks that failed should be displayed
+%                        (default - false)
+%    getEssential:       true if the minimal number of reactions that need to be
+%                        active to pass the task need to be computed
+%                        (default - false)
+%    taskStructure:      structure with the tasks, as from `parseTaskList`. If
+%                        this is supplied then inputFile is ignored
 %
-% OUTPUTS :
+% OUTPUTS:
+%    taskReport:         structure with the results:
 %
-%   taskReport          structure with the results
-%       firstcolumn     id              cell array with the id of the task
-%       secondcolumn    description     cell array with the description of the task
-%       thirdcolumn     ok              boolean array with true if the task
-%       was successful
+%                          * firstcolumn - id - cell array with the id of the task
+%                          * secondcolumn - description - cell array with the description of the task
+%                          * thirdcolumn - ok - boolean array with true if the task was successful
 %
-%   essentialRxns   cell array containing the essential reactions required
-%                   to pass a task
+%    essentialRxns:      cell array containing the essential reactions required
+%                        to pass a task
 %
-%   taskStructure   structure with the tasks, as from parseTaskList.
+%    taskStructure:      structure with the tasks, as from `parseTaskList`.
 %
-% .. Author : Originally written for RAVEN toolbox by Rasmus Agren, 2013-11-17
-% Adapted for cobratoolbox and modified to rely only on flux constraints by
-% Richelle Anne, 2017-05-18
+% .. Authors:
+%       - Originally written for RAVEN toolbox by Rasmus Agren, 2013-11-17
+%       - Adapted for cobratoolbox and modified to rely only on flux constraints by Richelle Anne, 2017-05-18
 
 if nargin < 3 || isempty(printOutput)
     printOutput=true;
@@ -56,7 +55,7 @@ if nargin < 5 || isempty(getEssential)
 end
 % Generate a task structure from a list of task in excell format
 if nargin < 6 || isempty(taskStructure)
-  taskStructure=generateTaskStructure(inputFile); 
+  taskStructure=generateTaskStructure(inputFile);
 end
 
 
@@ -77,7 +76,7 @@ end
 %Find all exchange/demand/sink reactions
 Exchange = {};
 for k=1:length(model.rxns)
-    if sum(abs(model.S(:,k))) == 1  
+    if sum(abs(model.S(:,k))) == 1
         Exchange(end+1) = model.rxns(k);
     end
 end
@@ -98,7 +97,7 @@ for i=1:numel(taskStructure)
     clear tModel
     tModel=model;
     modelMets=upper(tModel.mets);
-    
+
     %%SETUP of the input model
     %suppress objective function if any
     tModel.c(tModel.c==1)=0;
@@ -106,24 +105,24 @@ for i=1:numel(taskStructure)
 
     taskReport{i,1}=taskStructure(i).id;
     taskReport{i,2}=taskStructure(i).description;
-    
+
     %Set the inputs
     if ~isempty(taskStructure(i).inputs)
-        
+
         rxn_Subs={};
         for n=1:length(taskStructure(i).inputs)
             INPUT=taskStructure(i).inputs(n);
             INPUT=INPUT{1};
             match_INPUTS = strncmpi(INPUT,modelMets,length(INPUT(1:end-3)));
             match_INPUTS = modelMets(match_INPUTS==1);
-                        
+
             compSymbol={};
             for k=1:length(match_INPUTS)
                 [tokens] = regexp(match_INPUTS{k},'(.+)\[(.+)\]','tokens');
                 Symb = tokens{1}{2};
                 compSymbol{end+1} = Symb;
             end
-            
+
             % Set the exchange reactions for the inputs
             % If the metabolites already exist extracellularly
             AddExchange=0;
@@ -131,34 +130,34 @@ for i=1:numel(taskStructure)
                 Tsp_ID=findRxnIDs(tModel,findRxnsFromMets(tModel,INPUT));
                 Tsp_rxn = full(tModel.S(:,Tsp_ID));
                 Nb_React=sum(abs(Tsp_rxn),1);
-                
+
                 % If an exchange reaction already exist
                 if isempty(Nb_React==1)==0
                     ID_exc=find(Nb_React==1);
                     % Remove the existing exchange reaction
                     tModel=removeRxns(tModel,tModel.rxns(Tsp_ID(ID_exc)));
                     AddExchange=1;
-                else 
+                else
                     AddExchange=1;
                 end
             else
             	AddExchange=1;
             end
-            
+
             % Add a temporary exchange reaction that allows the import of
-            % the metabolite 
+            % the metabolite
             if AddExchange==1
                 % If the input is also member of the outputs, let the exchange reversible
                 warning off
                 if ismember(INPUT,taskStructure(i).outputs)==1
                 	[tModel]=addReaction(tModel,['temporary_exchange_',INPUT(1:end-3)],[' <=> ',INPUT],[],[],-1000,1000,[], [], [], [], [], [],0);
                 else
-                	[tModel]=addReaction(tModel,['temporary_exchange_',INPUT(1:end-3)],[' => ',INPUT],[],[],taskStructure(i).LBin(n),taskStructure(i).UBin(n),[], [], [], [], [], [],0);  
+                	[tModel]=addReaction(tModel,['temporary_exchange_',INPUT(1:end-3)],[' => ',INPUT],[],[],taskStructure(i).LBin(n),taskStructure(i).UBin(n),[], [], [], [], [], [],0);
                 end
                 warning on
                 rxn_Subs(end+1) = {['temporary_exchange_',INPUT(1:end-3)]};
             end
-            
+
             % Definition of the compartment for the transport reaction
             if ischar(taskStructure(i).COMP)==1
                 comp_used=taskStructure(i).COMP;
@@ -178,61 +177,61 @@ for i=1:numel(taskStructure)
             elseif ismember('R',compSymbol)==1
                 comp_used='[R]';
             end
-            
+
             % Set the transport reactions for the inputs
             % Find existing transporters associated with the input
             AddTransport=0;
             Tsp_ID=findRxnIDs(tModel,findRxnsFromMets(tModel,INPUT));
             Tsp_rxn = full(tModel.S(:,Tsp_ID));
             Nb_React=sum(abs(Tsp_rxn),1);
-            
+
             % If free diffusion exist
             if isempty(Nb_React==2)==0
                 Tsp_ID2=Tsp_ID(Nb_React==2);
-            
+
                 % Choose the transport reaction related to the defined
                 % compartment (comp_used)
                 Tsp_ID=Tsp_ID2(tModel.S((strcmpi(tModel.mets,([INPUT(1:end-3),comp_used]))==1),Tsp_ID2)~=0);
                 if isempty(Tsp_ID)==0
                     % Remove the existing transport reaction
-                    tModel=removeRxns(tModel,tModel.rxns(Tsp_ID)); 
+                    tModel=removeRxns(tModel,tModel.rxns(Tsp_ID));
                     AddTransport=1;
                 else
                     AddTransport=1;
                 end
-            else 
+            else
                 AddTransport=1;
             end
-            
+
             %Create a transport reaction
             if AddTransport==1
                 warning off
                 if ismember(INPUT,taskStructure(i).outputs)==1
                         %if the input is also output make the reaction
                         %reversible
-                        [tModel]=addReaction(tModel,['temporary_trsp_',INPUT(1:end-3)],[INPUT,' <=> ',INPUT(1:end-3),comp_used],[],[],-1000,1000,[], [], [], [], [], [],0);   
+                        [tModel]=addReaction(tModel,['temporary_trsp_',INPUT(1:end-3)],[INPUT,' <=> ',INPUT(1:end-3),comp_used],[],[],-1000,1000,[], [], [], [], [], [],0);
                 else
-                        [tModel]=addReaction(tModel,['temporary_trsp_',INPUT(1:end-3)],[INPUT,' => ',INPUT(1:end-3),comp_used],[],[],taskStructure(i).LBin(n),taskStructure(i).UBin(n),[], [], [], [], [], [],0);  
+                        [tModel]=addReaction(tModel,['temporary_trsp_',INPUT(1:end-3)],[INPUT,' => ',INPUT(1:end-3),comp_used],[],[],taskStructure(i).LBin(n),taskStructure(i).UBin(n),[], [], [], [], [], [],0);
 
                 end
                 warning on
                 rxn_Subs(end+1) = {['temporary_trsp_',INPUT(1:end-3)]};
             end
-            
+
         end
     end
 
     modelMets=upper(tModel.mets);
     [I J]=ismember(upper(taskStructure(i).inputs),modelMets);
     J=J(I);
-    %Check that all metabolites are either real metabolites 
+    %Check that all metabolites are either real metabolites
     if ~all(I)
         fprintf(['ERROR: Could not find all inputs in "[' taskStructure(i).id '] ' taskStructure(i).description '"\n']);
     	taskReport{i,3}='Could not find all inputs';
     	notPresent=notPresent+1;
     end
     if numel(J)~=numel(unique(J))
-    	dispEM(['The constraints on some input(s) in "[' taskStructure(i).id '] ' taskStructure(i).description '" are defined more than one time']);  
+    	dispEM(['The constraints on some input(s) in "[' taskStructure(i).id '] ' taskStructure(i).description '" are defined more than one time']);
     end
 
     %Set the outputs
@@ -279,10 +278,10 @@ for i=1:numel(taskStructure)
             end
 
             % Add a temporary exchange reaction that allows the export of
-            % the metabolite 
+            % the metabolite
             if AddExchange==1
                 warning off
-            	[tModel]=addReaction(tModel,['temporary_exchange_',OUTPUT(1:end-3)],[OUTPUT,' => '],[],[],taskStructure(i).LBout(n),taskStructure(i).UBout(n),[], [], [], [], [], [],0);  
+            	[tModel]=addReaction(tModel,['temporary_exchange_',OUTPUT(1:end-3)],[OUTPUT,' => '],[],[],taskStructure(i).LBout(n),taskStructure(i).UBout(n),[], [], [], [], [], [],0);
                 warning on
                 rxn_Prod(end+1) = {['temporary_exchange_',OUTPUT(1:end-3)]};
             end
@@ -325,10 +324,10 @@ for i=1:numel(taskStructure)
                     % Remove the existing transport reaction
                     tModel=removeRxns(tModel,tModel.rxns(Tsp_ID));
                     AddTransport=1;
-                else 
+                else
                     AddTransport=1;
                 end
-            else 
+            else
                 AddTransport=1;
             end
 
@@ -353,16 +352,16 @@ for i=1:numel(taskStructure)
         notPresent=notPresent+1;
     end
     if numel(J)~=numel(unique(J))
-        dispEM(['The constraints on some output(s) in "[' taskStructure(i).id '] ' taskStructure(i).description '" are defined more than one time']);  
+        dispEM(['The constraints on some output(s) in "[' taskStructure(i).id '] ' taskStructure(i).description '" are defined more than one time']);
     end
 
-    
+
 	%Solve the constrained problem
 	tModel.csense(1:length(tModel.mets),1) = 'E';
 	tModel.osense = -1;
 	tModel.A=tModel.S;
 	sol=solveCobraLP(tModel);
-       
+
     if ~isempty(sol.full)
         if sum(abs(sol.full))~=0
             if taskStructure(i).shouldFail==0
@@ -375,8 +374,8 @@ for i=1:numel(taskStructure)
                 if getEssential==true
                     [Rxns_taskEssential]=essentialRxnsTasks(tModel);
                     essentialRxns{i}= Rxns_taskEssential';
-                    
-                end  
+
+                end
             else
                 taskReport{i,3}='PASS (should fail)';
                 if printOutput==true
@@ -396,7 +395,7 @@ for i=1:numel(taskStructure)
                     score=score+1;
                 end
             end
-        end            
+        end
     else
         if taskStructure(i).shouldFail==0
             taskReport{i,3}='FAIL (should NOT fail)';
