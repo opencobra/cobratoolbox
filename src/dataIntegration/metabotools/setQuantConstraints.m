@@ -1,8 +1,7 @@
-function [ResultsAllCellLines,OverViewResults] = setQuantConstraints(model, samples, tol, minGrowth, obj, no_secretion, no_uptake, medium, addExtraExch, addExtraExch_value, path, epsilon)
-% This function takes a model and quantitative extracellular metabolomic
-% data and returns a model in which the data is integrated as constraints.
-% It requires as input the output of the script ... and the output can be
-% the input for the analysis functions in this toolbox.
+function [ResultsAllCellLines,OverViewResults] = setQuantConstraints(model, samples, tol, minGrowth, obj, no_secretion, no_uptake, medium, addExtraExch, addExtraExch_value, path)
+% This function takes a model and quantitative extracellular metabolomic data and returns a model in which the data is integrated as constraints described
+% in "MetaboTools: A Comprehensive Toolbox for Analysis of Genome-Scale Metabolic Models", 2016, Front. Physiol., and the supplemental data "Tutorial II: Workflow for the integration 
+% of quantitative extracellular metabolomic data into the network context." (Data Sheet 3.pdf)
 %
 % USAGE:
 %
@@ -20,7 +19,7 @@ function [ResultsAllCellLines,OverViewResults] = setQuantConstraints(model, samp
 %       addExtraExch:         After adding secretions, models are still not growing, this variable allows one to recover exchanges with a defined small value
 %       addExtraExch_value:   e.g. 1 as arbitrary small flux value / the resulting ub = 1, lb = -1.
 %       path:                 Location of the .mat files for samples.
-%       epsilon: (not used)
+%       
 %
 % OUTPUTS:
 %       ResultsAllCellLines:  Structure that contains pruned and unpruned model, Vector of the Exchange_reactions, the exchange reactions added by `minExCard`, `minFLux` and `maxFlux` of the added reactions, maximal objective value, and the results of the gene deletion
