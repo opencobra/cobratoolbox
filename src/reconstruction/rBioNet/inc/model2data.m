@@ -45,7 +45,7 @@ if sum(match) == length(name)
 end
 Mandatory = {'rxns','rxnNames', 'rev','grRules', 'lb', 'ub','S','genes'};
 %Opt numbers: CS = 1, subsystem = 2, citations = 3, comments = 4, ecNumbers = 5,
-% rxnKeggID = 6, description = 7
+% rxnKEGGID = 6, description = 7
 
 
 % reaction data lineup:
@@ -61,7 +61,7 @@ Mandatory = {'rxns','rxnNames', 'rev','grRules', 'lb', 'ub','S','genes'};
 % 10.citations
 % 11.comments
 % 12.ecNumbers
-% 13.KeggID.
+% 13.KEGGID.
 
 %enable is set infront afterwards.
 
@@ -90,7 +90,7 @@ data(:,6) = num2cell(handles.model.lb);
 data(:,7) = num2cell(handles.model.ub);
 
 Optional = {'confidenceScores', 'subSystems','citations', 'comments', 'ecNumbers',...
-    'rxnKeggID','description'};
+    'rxnKEGGID','description'};
 %Check Optional
 opt = [];
 for i = 1:length(Optional)
@@ -132,7 +132,7 @@ for i = 1:length(Optional)
     end
 end
 %Opt numbers: CS = 1, subsystem = 2, citations = 3, comments = 4,
-%ecNumbers = 5, rxnKeggID = 6, description = 7
+%ecNumbers = 5, rxnKEGGID = 6, description = 7
 for i = 1:length(Optional)-1
     if isfield(model,Optional{i})
         data(:,i+7) = model.(Optional{i});
@@ -202,8 +202,8 @@ if fordb == 0
 elseif fordb == 1
     % From the metabolite database the only thing missing is the Neutral
     % formula.
-     met_fields = {'mets','metNames','metFormulas','metCharge','metKeggID',...
-         'metPubChemID','metChEBIID','metInchiString','metSmile','metHMDB',...
+     met_fields = {'mets','metNames','metFormulas','metCharges','metKEGGID',...
+         'metPubChemID','metChEBIID','metInChIString','metSmiles','metHMDB',...
          'metHepatoNetID','metEHMNID'};
 
      names = fieldnames(model);
@@ -224,7 +224,7 @@ elseif fordb == 1
          if isfield(model,met_fields{i})
              if isempty(model.(met_fields{i})) %fields can exist but be empty.
                  metabolites(:,i) = cell(size(model.mets,1),1);
-             elseif strcmp(met_fields{i}, 'metCharge') %numeric fix
+             elseif strcmp(met_fields{i}, 'metCharges') %numeric fix
                  metabolites(:,i) = num2cell(model.(met_fields{i}));
              else
                  metabolites(:,i) = model.(met_fields{i});

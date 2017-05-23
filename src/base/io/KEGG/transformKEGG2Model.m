@@ -8,13 +8,13 @@ elseif(nargin ==1)
 end
 
 model.mets = model.metsAbr;
-%modelKEGG.mets = modelKEGG.KEGGID;
 
 for i = 1: length(model.mets)
     if (isempty(model.mets{i}))
-        model.mets(i)=model.KEGGID(i);
+        model.mets(i)=model.metKEGGID(i);
     end
 end
-
+%removing temporary field
+model = rmfield(model,'metsAbr');
 end
 

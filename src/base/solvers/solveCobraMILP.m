@@ -199,8 +199,6 @@ x = [];
 xInt = [];
 xCont = [];
 f = [];
-% stat = -99;
-% solStat = -99;
 
 [A, b, c, lb, ub, csense, osense, vartype, x0] = ...
     deal(MILPproblem.A, MILPproblem.b, MILPproblem.c, MILPproblem.lb, MILPproblem.ub, ...
@@ -328,7 +326,9 @@ switch solver
         end
 
         % minimum intTol for gurobi = 1e-9
-        if solverParams.intTol<1e-9, solverParams.intTol=1e-9; end
+        if solverParams.intTol<1e-9, 
+            solverParams.intTol=1e-9 
+        end
 
         opts.TimeLimit=solverParams.timeLimit;
         opts.MIPGap = solverParams.relMipGapTol;
@@ -346,7 +346,7 @@ switch solver
             csense = csense(:);
         end
         % gurobi_mex doesn't automatically cast logicals to doubles
-	c = double(c);
+        c = double(c);
         [x,f,stat,output] = gurobi_mex(c,osense,sparse(A),b, ...
                                              csense,lb,ub,vartype,opts);
         if stat == 2
@@ -451,6 +451,11 @@ switch solver
            params.DisplayInterval = 5;
         end
 
+        %return solution when time limit is reached and save the log file
+        if isfield(solverParams, 'logFile')
+                params.LogFile = solverParams.logFile;
+        end
+        
         params.TimeLimit = solverParams.timeLimit;
         params.MIPGap = solverParams.relMipGapTol;
 
@@ -502,6 +507,10 @@ switch solver
            solStat = 2; % Unbounded
         elseif strcmp(resultgurobi.status,'INF_OR_UNBD')
            solStat = 0; % Gurobi reports infeasible *or* unbounded
+        elseif strcmp(resultgurobi.status,'TIME_LIMIT')
+                solStat = 3; % Time limit reached
+                warning('Time limit reached, solution might not be optimal (gurobi)')
+               [x,f] = deal(resultgurobi.x,resultgurobi.objval);
         else
            solStat = -1; % Solution not optimal or solver problem
         end

@@ -32,13 +32,13 @@ for i = 1 : length(model.mets)
         % associates KEGGID with model metabolte - KEGGID is compartment
         % dependent!
         KEGGTmp=[char(KEGGID(Match)) char(KEGGComp)];
-        model.KEGGID{i,1}=KEGGTmp;
+        model.metKEGGID{i,1}=KEGGTmp;
     elseif (length(Match)>1 && length(KEGGID{Match})>0)
-        model.KEGGID{i,1}=[];
+        model.metKEGGID{i,1}=[];
         warning(['multiple matchings for' char(model.mets(i))]);
     else
    
-        model.KEGGID{i,1}=[];
+        model.metKEGGID{i,1}=[];
     end
     clear MetTmp KEGGTmp
 end

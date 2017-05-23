@@ -1,34 +1,34 @@
-function [cscale,rscale] = gmscale(A,iprint,scltol)
-
-%        [cscale,rscale] = gmscale(A,iprint,scltol);
-%------------------------------------------------------------------
-% gmscale (Geometric-Mean Scaling) finds the scale values for the
-% m x n sparse matrix A.
+function [cscale, rscale] = gmscale(A, iprint, scltol)
+% Geometric-Mean Scaling finds the scale values for the
+% `m` x `n` sparse matrix `A`.
 %
-% On entry:
-% A(i,j)    contains entries of A.
-% iprint    > 0 requests messages to the screen (0 means no output).
-% scltol    should be in the range (0.0, 1.0).
-%           Typically scltol = 0.9.  A bigger value like 0.99 asks
-%           gmscale to work a little harder (more passes).
+% USAGE:
 %
-% On exit:
-% cscale, rscale are column vectors of column and row scales such that
-%           R(inverse) A C(inverse) should have entries near 1.0,
-%           where R = diag(rscale), C = diag(cscale).
+%    [cscale, rscale] = gmscale(A, iprint, scltol)
 %
-% Method:
+% INPUTS:
+%    A(i, j):           contains entries of `A`.
+%    iprint:            > 0 requests messages to the screen (0 means no output).
+%    scltol:            should be in the range (0.0, 1.0).
+%                       Typically `scltol` = 0.9.  A bigger value like 0.99 asks
+%                       `gmscale` to work a little harder (more passes).
+%
+% OUTPUTS:
+%    cscale, rscale:    column vectors of column and row scales such that
+%                       `R` (inverse) `A` `C` (inverse) should have entries near 1.0,
+%                       where `R= diag(rscale)`, `C = diag(cscale)`.
+%
 % An iterative procedure based on geometric means is used,
 % following a routine written by Robert Fourer, 1979.
-% Several passes are made through the columns and rows of A.
+% Several passes are made through the columns and rows of `A`.
 % The main steps are:
 %
-%   1. Compute aratio = max_j (max_i Aij / min_i Aij).
-%   2. Divide each row    i by  sqrt( max_j Aij * min_j Aij ).
-%   3. Divide each column j by  sqrt( max_i Aij * min_i Aij ).
+%   1. Compute `aratio = max_j (max_i Aij / min_i Aij)`.
+%   2. Divide each row `i` by `sqrt( max_j Aij * min_j Aij)`.
+%   3. Divide each column `j` by `sqrt( max_i Aij * min_i Aij)`.
 %   4. Compute sratio as in Step 1.
-%   5. If  sratio < aratio * scltol,
-%      set aratio = sratio and repeat from Step 2.
+%   5. If `sratio < aratio * scltol`,
+%      set `aratio = sratio` and repeat from Step 2.
 %
 % To dampen the effect of very small elements, on each pass,
 % a new row or column scale will not be smaller than sqrt(damp)
@@ -36,26 +36,25 @@ function [cscale,rscale] = gmscale(A,iprint,scltol)
 %
 % Use of the scales:
 % To apply the scales to a linear program,
-%   min c'x  st  Ax = b,  l <= x <= u,
+% `min c'x` st `Ax = b`, `l <= x <= u`,
 % we need to define "barred" quantities by the following relations:
-%   A = R Abar C,  b = R bbar,  C cbar = c,
-%   C l = lbar,    C u = ubar,  C x = xbar.
+% `A = R Abar C`, `b = R bbar`, `C cbar = c`,
+% `C l = lbar`, `C u = ubar`, `C x = xbar`.
 % This gives the scaled problem
-%   min cbar'xbar  st  Abar xbar = bbar,  lbar <= xbar <= ubar.
-
-% Maintainer:  Michael Saunders, Systems Optimization Laboratory,
-%              Stanford University.
-% 07 Jun 1996: First f77 version, based on MINOS 5.5 routine m2scal.
-% 24 Apr 1998: Added final pass to make column norms = 1.
-% 18 Nov 1999: Fixed up documentation.
-% 26 Mar 2006: (Leo Tenenblat) First Matlab version based on Fortran version.
-% 21 Mar 2008: (MAS) Inner loops j = 1:n optimized.
-% 09 Apr 2008: (MAS) All loops replaced by sparse-matrix operations.
-%              We can't find the biggest and smallest Aij
-%              on each scaling pass, so no longer print them.
-% 24 Apr 2008: (MAS, Kaustuv) Allow for empty rows and columns.
-% 13 Nov 2009: gmscal.m renamed gmscale.m.
-%------------------------------------------------------------------
+% `min cbar'xbar` st `Abar xbar = bbar`, `lbar <= xbar <= ubar`.
+%
+% .. Author: - Michael Saunders, Systems Optimization Laboratory, Stanford University.
+% ..
+%    07 Jun 1996: First f77 version, based on MINOS 5.5 routine m2scal.
+%    24 Apr 1998: Added final pass to make column norms = 1.
+%    18 Nov 1999: Fixed up documentation.
+%    26 Mar 2006: (Leo Tenenblat) First Matlab version based on Fortran version.
+%    21 Mar 2008: (MAS) Inner loops j = 1:n optimized.
+%    09 Apr 2008: (MAS) All loops replaced by sparse-matrix operations.
+%                 We can't find the biggest and smallest Aij
+%                 on each scaling pass, so no longer print them.
+%    24 Apr 2008: (MAS, Kaustuv) Allow for empty rows and columns.
+%    13 Nov 2009: gmscal.m renamed gmscale.m.
 
   if iprint > 0
     fprintf('\ngmscale: Geometric-Mean scaling of matrix')

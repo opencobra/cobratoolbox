@@ -59,7 +59,7 @@ consistMatricesSUX = assignRxnWeights(consistMatricesSUX,weights,weightsPerReact
 % solve problem by finding the most compact subnetwork containing all core
 % reactions
 
-A2 = fastCoreWeighted(consistMatricesSUX.C1, consistMatricesSUX, epsilon);
+A2 = fastCoreWeighted(consistMatricesSUX.C1, consistMatricesSUX,consistMatricesSUX.weights, epsilon);
 
 % added reactions
 AddedRxns.rxns=setdiff(consistMatricesSUX.rxns(A2),consistMatricesSUX.rxns(consistMatricesSUX.C1));

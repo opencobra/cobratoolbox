@@ -1,22 +1,19 @@
-function W = nullSpaceOperatorApply(nullS,V)
-% Computes a sparse matrix W from V such that S*W = 0.
-% W = nullSpaceOperatorApply(nullS,V)
+function W = nullSpaceOperatorApply(nullS, V)
+% Computes a sparse matrix `W` from `V` such that `S*W = 0`.
+% First, `nullS = nullSpaceOperator(S)`
+% computes a structure `nullS` from an `m` x `n` sparse matrix `S` (`m < n`), with rank `r`.
 %
-% First, nullS = nullSpaceOperator(S);
-% computes a structure nullS from an m x n sparse matrix S (m < n), with rank r.
+% Second, if `V` is an (`n-r`) x `k` sparse matrix (`k >= 1`),
+% `W = nullSpaceOperatorApply(nullS,V)`;
+% computes an `n` x `k` sparse matrix `W` from `V` such that `S*W` = 0.
 %
-% Second, if V is an (n-r) x k sparse matrix (k >= 1),
-%        W = nullSpaceOperatorApply(nullS,V);
-% computes an n x k sparse matrix W from V such that S*W = 0.
+% This is an operator form of finding an `n` x `(n-r)` matrix `Z`
+% such that `S*Z = 0` and then computing `W = Z*V`.
+% The aim is to obtain `W` without forming `Z` explicitly.
 %
-% This is an operator form of finding an n x (n-r) matrix Z
-% such that S*Z = 0 and then computing W = Z*V.
-% The aim is to obtain W without forming Z explicitly.
-
-% 16 May 2008: (MAS) First version of nullspaceLUSOLapply.m.
-%              See nullspaceLUSOLtest.m for testing.
-% 20 Jan 2015: Updated to use Nick Henderson's 64 bit LUSOL interface
-%              Ronan Fleming
+% .. 16 May 2008: (MAS) First version of nullspaceLUSOLapply.m.
+%    See nullspaceLUSOLtest.m for testing.
+% .. 20 Jan 2015: Ronan Fleming - Updated to use Nick Henderson's 64 bit LUSOL interface
 
 Cinv    = nullS.Cinv; % Column scales
 L       = nullS.L;    % Strictly triangular L

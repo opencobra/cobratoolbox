@@ -25,9 +25,9 @@ tol = 1e-8;
 
 % load models and expected results
 load('testpFBAData.mat', 'model_glc', 'model_lac');
-objGenes = load('testpFBAData.mat', 'GeneClasses_glc1', 'GeneClasses_glc0', 'GeneClasses_lac1', 'GeneClasses_lac0');
-objRxns = load('testpFBAData.mat', 'RxnClasses_glc1', 'RxnClasses_glc0', 'RxnClasses_lac1', 'RxnClasses_lac0');
-objModel = load('testpFBAData.mat', 'modelIrrev_glc1', 'modelIrrev_glc0', 'modelIrrev_lac1', 'modelIrrev_lac0');
+objGenes = load('testpFBAData.mat', 'GeneClasses_glc2', 'GeneClasses_glc1', 'GeneClasses_glc0', 'GeneClasses_lac2', 'GeneClasses_lac1', 'GeneClasses_lac0');
+objRxns = load('testpFBAData.mat', 'RxnClasses_glc2', 'RxnClasses_glc1', 'RxnClasses_glc0', 'RxnClasses_lac2', 'RxnClasses_lac1', 'RxnClasses_lac0');
+objModel = load('testpFBAData.mat', 'modelIrrev_glc2', 'modelIrrev_glc1', 'modelIrrev_glc0', 'modelIrrev_lac2', 'modelIrrev_lac1', 'modelIrrev_lac0');
 
 % list of solver packages
 solverPkgs = {'tomlab_cplex', 'gurobi6', 'glpk'};
@@ -47,6 +47,12 @@ for k = 1:length(solverPkgs)
 
         % run pFBA
         fprintf('\n*** Test basic pFBA calculations ***\n\n');
+        fprintf('\n** Optimal solution - minimize flux not associated with gene: glucose\n');
+        [t_objGenes.GeneClasses_glc1 t_objRxns.RxnClasses_glc1 t_objModel.modelIrrev_glc1] = pFBA(model_glc, 'geneoption', 2);
+
+        fprintf('\n** Optimal solution - minimize flux not associated with gene: lactate\n');
+        [t_objGenes.GeneClasses_lac1 t_objRxns.RxnClasses_lac1 t_objModel.modelIrrev_lac1] = pFBA(model_lac, 'geneoption', 2);
+        
         fprintf('\n** Optimal solution - minimize gene-associated flux: glucose\n');
         [t_objGenes.GeneClasses_glc1 t_objRxns.RxnClasses_glc1 t_objModel.modelIrrev_glc1] = pFBA(model_glc, 'geneoption', 1);
 

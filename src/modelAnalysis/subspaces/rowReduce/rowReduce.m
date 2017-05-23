@@ -1,25 +1,28 @@
-function [AA,aa,pp,rankA,p] = rowReduce(A,a)
-%eliminate dependent rows from A & a where A*x=a
-%INPUT
-% A
+function [AA, aa, pp, rankA, p] = rowReduce(A, a)
+% Eliminates dependent rows from `A` & `a` where `A*x = a`
 %
-%OPTIONAL INPUT
-% a
+% USAGE:
 %
-%OUTPUT
-% AA        row reduced A
-% aa        row reduced a i.e. aa = a(pp)
-% pp        1:rankA indices of independent rows
-% rankA     rank of A    
-% p         row permutation which leaves first 1:rankA rows independent and
-%           last rows dependent
+%    [AA, aa, pp, rankA, p] = rowReduce(A, a)
 %
-% Ronan Fleming, with linear algebra advice from Michael Saunders
-% Dept of Management Science and Engineering (MS&E)
-% Stanford University
+% INPUT:
+%    A:        from `A*x = a`
+%
+% OPTIONAL INPUT:
+%    a:        from `A*x = a`
+%
+% OUTPUT:
+%    AA:       row reduced `A`
+%    aa:       row reduced `a` i.e. `aa = a(pp)`
+%    pp:       1:rankA indices of independent rows
+%    rankA:    rank of `A`
+%    p:        row permutation which leaves first 1:rankA rows independent and
+%              last rows dependent
+%
+% .. Author: - Ronan Fleming, with linear algebra advice from Michael Saunders
+%            Dept of Management Science and Engineering (MS&E) Stanford University
 
-%create a if not provided
-if ~exist('a')
+if ~exist('a') %create a if not provided
     a=sparse(size(A,1),1);
 else
     if size(A,1)~=length(a)

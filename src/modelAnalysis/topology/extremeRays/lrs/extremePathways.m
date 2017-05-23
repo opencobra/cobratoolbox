@@ -3,17 +3,12 @@ function [R, V] = extremePathways(model, positivity, inequality)
 % lrs by David Avis, McGill University
 %
 % INPUT
-% model.S   m x n Stoichiometric matrix with integer coefficients. If no
-%           other inputs are specified it is assumed that all reactions are
-%           reversible and S.v = 0
+% model      COBRA Toolbox model
 %
 % OPTIONAL INPUT
 % model.description     string used to name files
-% model.directionality  n x 1 vector:
-%   model.directionality(j)=0 reaction is reversible
-%   model.directionality(j)=1 reaction is irreversible in the forward direction
-%   model.directionality(j)=-1 reaction is irreversible in the reverse direction
-%
+% model.lb              lower bounds and
+% model.ub              upper bounds to derive directionality
 % model.b    dxdt
 % positivity {0,(1)} if positivity==1, then positive orthant base
 % inequality {(0),1} if inequality==1, then use two inequalities rather than a single equality
@@ -29,8 +24,13 @@ if nnz(A - round(A))
     error('Stoichiometric coefficients must be all integers')
 end
 
-if isfield(model, 'directionality')
-    D = diag(model.directionality);
+if isfield(model, 'lb') && isfield(model,'ub')
+    directionality = zeros(nRxn,1);
+    %forward irrev
+    directionality(model.ub > 0 & model.lb >= 0) = 1;
+    %backward irrev
+    directionality(model.ub <= 0 & model.lb < 0) = -1;
+    D = diag(directionality);
     d = zeros(nRxn, 1);
 else
     D = [];

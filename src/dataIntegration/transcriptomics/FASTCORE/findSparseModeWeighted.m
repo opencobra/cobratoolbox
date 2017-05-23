@@ -1,4 +1,4 @@
-function Supp = findSparseModeWeighted( J, P, singleton, model, epsilon )
+function Supp = findSparseModeWeighted( J, P, singleton, model, weights, epsilon )
 % Finds a mode that contains as many reactions from J and as few from P.
 % Returns its support, or [] if no reaction from J can get flux above epsilon.
 % Based on: `The FASTCORE algorithm for context-specific metabolic network reconstruction.
@@ -39,7 +39,7 @@ if isempty( K )
 end
 
 %V = LP9( K, P, model, epsilon );
-V = LP9weighted( model.weights, K, P, model, epsilon );
+V = LP9weighted( weights, K, P, model, epsilon );
 
 
 Supp = find( abs(V) >= 0.99*epsilon );

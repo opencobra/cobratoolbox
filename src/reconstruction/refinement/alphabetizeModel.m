@@ -30,8 +30,7 @@ abcModel.c = abcModel.c(iRxns);
 abcModel.b = abcModel.b(iMets);
 
 if isfield(model,'rev'), abcModel.rev = abcModel.rev(iRxns); end
-if isfield(model,'charges'), abcModel.charges = abcModel.charges(iMets); end
-if isfield(model,'metCharge'), abcModel.metCharge = abcModel.metCharge(iMets); end
+if isfield(model,'metCharges'), abcModel.metCharges = abcModel.metCharges(iMets); end
 if isfield(model,'subSystems'), abcModel.subSystems = abcModel.subSystems(iRxns); end
 if isfield(model,'rxnNames'), abcModel.rxnNames = abcModel.rxnNames(iRxns); end
 if isfield(model,'metNames'), abcModel.metNames = abcModel.metNames(iMets); end

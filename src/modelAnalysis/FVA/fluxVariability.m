@@ -1,9 +1,9 @@
-function [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,optPercentage,osenseStr,rxnNameList,verbFlag, allowLoops)
+function [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,optPercentage,osenseStr,rxnNameList,verbFlag, allowLoops, method)
 % Performs flux variablity analysis
 %
 % USAGE:
 %
-%    [minFlux, maxFlux] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, verbFlag, allowLoops)
+%    [minFlux, maxFlux] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, verbFlag, allowLoops, method)
 %
 % INPUT:
 %    model:             COBRA model structure
@@ -18,6 +18,13 @@ function [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,optPercentage,osens
 %    verbFlag:          Verbose output (opt, default false)
 %    allowLoops:        Whether loops are allowed in solution. (Default = true)
 %                       See `optimizeCbModel` for description
+%    method:            when Vmin and Vmax are in the output, the flux vector can be (Default = 2-norm):
+%
+%                         * 'FBA'    : standards FBA solution
+%                         * '0-norm' : minimzes the vector  0-norm
+%                         * '1-norm' : minimizes the vector 1-norm
+%                         * '2-norm' : minimizes the vector 2-norm
+%                         * 'minOrigSol' : minimizes the euclidean distance of each vector to the original solution vector
 %
 % OUTPUTS:
 %    minFlux:           Minimum flux for each reaction
@@ -35,6 +42,7 @@ function [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,optPercentage,osens
 %                         not from the objective since this is invariant
 %                         to the value and sign of the coefficient
 %       - Ronan Fleming   27/09/10 Vmin, Vmax
+%       - Marouen Ben Guebila 22/02/2017 Vmin,Vmax method
 
 if (nargin < 2)
     optPercentage = 100;
@@ -55,6 +63,9 @@ end
 if (nargin < 6)
     allowLoops = true;
 end
+if (nargin < 7)
+    method = '2-norm';
+end
 if (isempty(optPercentage))
     optPercentage = 100;
 end
@@ -63,6 +74,15 @@ if (isempty(osenseStr))
 end
 if (isempty(rxnNameList))
     rxnNameList = model.rxns;
+end
+% Set up the problem size
+[nMets,nRxns] = size(model.S);
+Vmin=[];
+Vmax=[];
+if nargout > 2
+    OutputMatrix = 1;
+else
+    OutputMatrix = 0;
 end
 
 % LP solution tolerance
@@ -73,14 +93,11 @@ if (exist('CBT_LP_PARAMS', 'var'))
     else
         tol = 1e-6;
     end
-    if isfield(CBT_LP_PARAMS, 'minNorm')
-        minNorm = CBT_LP_PARAMS.minNorm;
-    else
+    if nargout < 3
         minNorm = 0;
+    else
+        minNorm = 1;
     end
-else
-    tol = 1e-6;
-    minNorm = 0;
 end
 
 % Determine constraints for the correct space (0-100% of the full space)
@@ -112,7 +129,6 @@ if (~isfield(model,'b'))
     model.b = zeros(size(model.S,1),1);
 end
 % Set up the general problem
-[nMets,nRxns] = size(model.S);
 rxnListFull = model.rxns;
 LPproblem.c = model.c;
 LPproblem.lb = model.lb;
@@ -132,8 +148,9 @@ else
     LPproblem.b = model.b;
 end
 
+LPproblem.S = LPproblem.A;%needed for sparse optimisation
 
-% %solve to generate initial basis
+%solve to generate initial basis
 LPproblem.osense = -1;
 tempSolution = solveCobraLP(LPproblem);
 LPproblem.basis = tempSolution.basis;
@@ -142,181 +159,151 @@ LPproblem.basis = tempSolution.basis;
 maxFlux = zeros(length(rxnNameList), 1);
 minFlux = zeros(length(rxnNameList), 1);
 
-if length(minNorm)> 1 || minNorm > 0
-    Vmin=zeros(nRxns,nRxns);
-    Vmax=zeros(nRxns,nRxns);
-    %minimizing the Euclidean norm gets rid of the loops, so there
-    %is no need for a second slower MILP approach
-    allowLoops=1;
-else
-    Vmin=[];
-    Vmax=[];
-end
+%Thats not true. The eucleadean norm does not get rid of loops if the
+%objective reaction is part of the loop.
+% if length(minNorm)> 1 || minNorm > 0
+%     %minimizing the Euclidean norm gets rid of the loops, so there
+%     %is no need for a second slower MILP approach
+%     allowLoops=1;
+% end
 
 solutionPool = zeros(length(model.lb), 0);
 
 v=ver;
-PCT='Parallel Computing Toolbox';
-if  any(strcmp(PCT,{v.Name}))&&license('test',PCT)
+PCT = 'Parallel Computing Toolbox';
+if  any(strcmp(PCT,{v.Name}))&&license('test','Distrib_Computing_Toolbox')
     p = gcp('nocreate');
     if isempty(p)
         poolsize = 0;
     else
-        poolsize = p.NumWorkers
+        poolsize = p.NumWorkers;
     end
     PCT_status=1;
 else
      PCT_status=0;  % Parallel Computing Toolbox not found.
 end
 
+if ~PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
 
-
-if PCT_status &&(~exist('parpool') || poolsize == 0)  %aka nothing is active
-    m = 0;
     for i = 1:length(rxnNameList)
-        if mod(i,10) == 0, clear mex, end
-        if (verbFlag == 1),fprintf('iteration %d.  skipped %d\n', i, round(m));end
-        LPproblem.c = zeros(nRxns,1);
-        rxnBool=strcmp(rxnListFull,rxnNameList{i});
-        LPproblem.c(rxnBool) = 1; %no need to set this more than 1
-        % do LP always
-        LPproblem.osense = -1;
-        LPsolution = solveCobraLP(LPproblem);
-        %take the maximum flux from the flux vector, not from the obj -Ronan
-        maxFlux(i) = LPsolution.full(LPproblem.c~=0);
-
-        %minimise the Euclidean norm of the optimal flux vector to remove
-        %loops -Ronan
-        if length(minNorm)> 1 || minNorm > 0
-            QPproblem=LPproblem;
-            QPproblem.lb(LPproblem.c~=0)=maxFlux(i)-1e-12;
-            QPproblem.ub(LPproblem.c~=0)=maxFlux(i)+1e12;
-            QPproblem.c(:)=0;
-            %Minimise Euclidean norm using quadratic programming
-            if length(minNorm)==1
-                minNorm=ones(nRxns,1)*minNorm;
-            end
-            QPproblem.F = spdiags(minNorm,0,nRxns,nRxns);
-            %quadratic optimization
-            solution = solveCobraQP(QPproblem);
-            if isempty(solution.full)
-                %pause(eps)
-            end
-            Vmax(:,rxnBool)=solution.full(1:nRxns,1);
-        end
-
-        LPproblem.osense = 1;
-        LPsolution = solveCobraLP(LPproblem);
-        %take the maximum flux from the flux vector, not from the obj -Ronan
-        minFlux(i) = LPsolution.full(LPproblem.c~=0);
-
-        %minimise the Euclidean norm of the optimal flux vector to remove
-        %loops
-        %minimise the Euclidean norm of the optimal flux vector to remove
-        %loops
-        if length(minNorm)> 1 || minNorm > 0
-            QPproblem=LPproblem;
-            QPproblem.lb(LPproblem.c~=0)=maxFlux(i)-1e-12;
-            QPproblem.ub(LPproblem.c~=0)=maxFlux(i)+1e12;
-            QPproblem.c(:)=0;
-            QPproblem.F = spdiags(minNorm,0,nRxns,nRxns);
-            %Minimise Euclidean norm using quadratic programming
-            if length(minNorm)==1
-                minNorm=ones(nRxns,1)*minNorm;
-            end
-            QPproblem.F = spdiags(minNorm,0,nRxns,nRxns);
-            %quadratic optimization
-            solution = solveCobraQP(QPproblem);
-            Vmin(:,rxnBool)=solution.full(1:nRxns,1);
-        end
-
-
-        if ~allowLoops
-            if any( abs(LPproblem.c'*solutionPool - maxFlux(i)) < tol) % if any previous solutions are good enough.
-                % no need to do anything.
-                m = m+.5;
-            else
-                LPproblem.osense = -1;
-                LPsolution = solveCobraMILP(addLoopLawConstraints(LPproblem, model));
-                maxFlux(i) = LPsolution.obj/1000;
-              end
-            if any( abs(LPproblem.c'*solutionPool - minFlux(i)) < tol)
-                m = m+.5;
-                % no need to do anything.
-            else
-                LPproblem.osense = 1;
-                LPsolution = solveCobraMILP(addLoopLawConstraints(LPproblem, model));
-                minFlux(i) = LPsolution.obj/1000;
-            end
-        end
-        if (verbFlag == 1)
-            showprogress(i/length(rxnNameList));
-        end
-        if (verbFlag > 1)
-            fprintf('%4d\t%4.0f\t%10s\t%9.3f\t%9.3f\n',i,100*i/length(rxnNameList),rxnNameList{i},minFlux(i),maxFlux(i));
+        if minNorm
+            [minFlux(i),maxFlux(i),Vmin(:,i),Vmax(:,i)] = calcSolForEntry(model,rxnNameList,i,LPproblem,0, method, allowLoops,verbFlag,minNorm);
+        else
+            [minFlux(i),maxFlux(i)] = calcSolForEntry(model,rxnNameList,i,LPproblem,0, method, allowLoops,verbFlag,minNorm);
         end
     end
 else % parallel job.  pretty much does the same thing.
 
-    global CBT_LP_SOLVER
-    solver = CBT_LP_SOLVER;
-
+    global CBT_LP_SOLVER;
+    global CBT_QP_SOLVER;
+    lpsolver = CBT_LP_SOLVER;
+    qpsolver = CBT_QP_SOLVER;
     parfor i = 1:length(rxnNameList)
-        %if mod(i,10) == 0, clear mex, end
-        %if (verbFlag == 1),fprintf('iteration %d.  skipped %d\n', i, round(m));end
-        c = zeros(nRxns,1);
-        c(strcmp(rxnListFull,rxnNameList{i})) = 1000;
-        if allowLoops % do LP
-            LPsolution = solveCobraLP(struct(...
-                'A', LPproblem.A,...
-                'b', LPproblem.b,...
-                'lb', LPproblem.lb,...
-                'ub', LPproblem.ub,...
-                'csense', LPproblem.csense,...
-                'c',c,...
-                'osense',-1, ...
-                'basis', LPproblem.basis ...
-            ),'solver',solver);
-
-            %take the maximum flux from the flux vector, not from the obj -Ronan
-            maxFlux(i) = LPsolution.full(c~=0);
-            %LPproblemb.osense = 1;
-            LPsolution = solveCobraLP(struct(...
-                'A', LPproblem.A,...
-                'b', LPproblem.b,...
-                'lb', LPproblem.lb,...
-                'ub', LPproblem.ub,...
-                'csense', LPproblem.csense,...
-                'c',c,...
-                'osense',1, ... %only part that's different.
-                'basis', LPproblem.basis ...
-            ),'solver',solver);
-            minFlux(i) = LPsolution.full(c~=0);
+        changeCobraSolver(qpsolver,'QP',0,1);
+        changeCobraSolver(lpsolver,'LP',0,1);
+        parLPproblem = LPproblem;
+        if minNorm
+            [minFlux(i),maxFlux(i),Vmin(:,i),Vmax(:,i)] = calcSolForEntry(model,rxnNameList,i,parLPproblem,1, method, allowLoops,verbFlag,minNorm);
         else
-            LPsolution = solveCobraMILP(addLoopLawConstraints(struct(...
-                'A', LPproblem.A,...
-                'b', LPproblem.b,...
-                'lb', LPproblem.lb,...
-                'ub', LPproblem.ub,...
-                'csense', LPproblem.csense,...
-                'c',c,...
-                'osense',-1 ...
-            ), model));
-            maxFlux(i) = LPsolution.obj/1000;
-
-            LPsolution = solveCobraMILP(addLoopLawConstraints(struct(...
-                'A', LPproblem.A,...
-                'b', LPproblem.b,...
-                'lb', LPproblem.lb,...
-                'ub', LPproblem.ub,...
-                'csense', LPproblem.csense,...
-                'c',c,...
-                'osense',1 ...
-            ), model));%
-            minFlux(i) = LPsolution.obj/1000;
+            [minFlux(i),maxFlux(i)] = calcSolForEntry(model,rxnNameList,i,parLPproblem,1, method, allowLoops,verbFlag,minNorm);
         end
     end
 end
 
 maxFlux = columnVector(maxFlux);
 minFlux = columnVector(minFlux);
+
+function [minFlux,maxFlux,Vmin,Vmax] = calcSolForEntry(model,rxnNameList,i,LPproblem,parallel, method, allowLoops, verbFlag, minNorm)
+
+    if (verbFlag == 1 && ~parallel)
+            fprintf('iteration %d.\n', i)
+        end
+        LPproblem.c = double(ismember(model.rxns,rxnNameList{i}));
+        nRxns = numel(model.rxns);
+        % do LP always
+        LPproblem.osense = -1;
+        if allowLoops
+            LPsolution = solveCobraLP(LPproblem);
+        else
+            LPsolution = solveCobraMILP(addLoopLawConstraints(LPproblem, model));
+        end
+        %take the maximum flux from the flux vector, not from the obj -Ronan
+        maxFlux = getObjectiveFlux(LPsolution,LPproblem);
+
+        %minimise the Euclidean norm of the optimal flux vector to remove
+        %loops -Ronan
+        if minNorm == 1
+           Vmax = getMinNorm(LPproblem,LPsolution,nRxns,maxFlux,model, method);
+        end
+        LPproblem.osense = 1;
+        if allowLoops
+            LPsolution = solveCobraLP(LPproblem);
+        else
+            LPsolution = solveCobraMILP(addLoopLawConstraints(LPproblem, model));
+        end
+        %take the maximum flux from the flux vector, not from the obj -Ronan
+        minFlux = getObjectiveFlux(LPsolution,LPproblem);
+
+
+        %minimise the Euclidean norm of the optimal flux vector to remove
+        %loops
+        if minNorm == 1
+            Vmin = getMinNorm(LPproblem,LPsolution,nRxns,maxFlux,model, method);
+        end
+
+        if (verbFlag == 1 && ~parallel)
+            showprogress(i/length(rxnNameList));
+        end
+        if (verbFlag > 1 && ~parallel )
+            fprintf('%4d\t%4.0f\t%10s\t%9.3f\t%9.3f\n',i,100*i/length(rxnNameList),rxnNameList{i},minFlux(i),maxFlux(i));
+        end
+
+
+function V = getMinNorm(LPproblem,LPsolution,nRxns,cFlux, model, method)
+%Get the Flux distribution for the specified min norm.
+if isequal(method,'2-norm')
+    QPproblem=LPproblem;
+    QPproblem.lb(LPproblem.c~=0)=cFlux-1e-12;
+    QPproblem.ub(LPproblem.c~=0)=cFlux+1e12;
+    QPproblem.c(:)=0;
+    %Minimise Euclidean norm using quadratic programming
+    QPproblem.F = speye(nRxns,nRxns);
+    QPproblem.osense = 1;
+    %quadratic optimization
+    solution = solveCobraQP(QPproblem);
+    V=solution.full(1:nRxns,1);
+elseif isequal(method,'1-norm')
+    vSparse = sparseFBA(LPproblem,'min',0,0,'l1');
+    V = vSparse;
+elseif isequal(method,'0-norm')
+    vSparse = sparseFBA(LPproblem,'min',0,0);
+    V = vSparse;
+elseif isequal(method,'FBA')
+    V=LPsolution.full;
+elseif isequal(method,'minOrigSol')
+    LPproblemMOMA = LPproblem;
+    LPproblemMOMA=rmfield(LPproblemMOMA,'csense');
+    LPproblemMOMA.A = model.S;
+    LPproblemMOMA.S = LPproblemMOMA.A;
+    LPproblemMOMA.b = model.b;
+    LPproblemMOMA.lb(LPproblem.c~=0) = cFlux - 1e-12;
+    LPproblemMOMA.ub(LPproblem.c~=0) = cFlux + 1e-12;
+    LPproblemMOMA.rxns = model.rxns;
+    momaSolution = linearMOMA(model,LPproblemMOMA);
+    V=momaSolution.x;
+end
+
+
+function flux = getObjectiveFlux(LPsolution,LPproblem)
+%Determine the current flux based on an LPsolution, the original LPproblem
+%The LPproblem is used to retrieve the current objective position.
+%min indicates, whether the minimum or maximum is requested, the
+%upper/lower bounds are used, if the value is exceeding them
+Index = LPproblem.c~=0;
+if LPsolution.full(Index)<LPproblem.lb(Index) %takes out tolerance issues
+    flux = LPproblem.lb(Index);
+elseif LPsolution.full(Index)>LPproblem.ub(Index)
+    flux = LPproblem.ub(Index);
+else
+    flux = LPsolution.full(Index);
+end

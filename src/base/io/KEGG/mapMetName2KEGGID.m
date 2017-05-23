@@ -18,7 +18,7 @@ for i = 1:length(KEGGID);
     end
 end
 
-model.KEGGID = model.mets;
+model.metKEGGID = model.mets;
 for i = 1 : length(model.mets)
     % finds compartment of model metabolite
     MetTmp=regexprep(model.mets(i),'[','-');

@@ -1,4 +1,4 @@
-function A = fastCoreWeighted( C, model, epsilon )
+function A = fastCoreWeighted( C, model, weights, epsilon ) 
 % Based on: `The FASTCORE algorithm for context-specific metabolic network reconstruction, Vlassis et
 % al., 2013, PLoS Comp Biol.`
 %
@@ -8,8 +8,8 @@ function A = fastCoreWeighted( C, model, epsilon )
 %
 % INPUTS:
 %    C:        List of reaction numbers corresponding to the core set
-%    model:    Model structure, including a weight vector (model.weight) for
-%              each reaction
+% model    Model structure, 
+% weights  Weight vector for each reaction in the model 
 %    epsilon:  Parameter (default: 1e-4; see Vlassis et al for more details)
 %
 % OUTPUT:
@@ -17,6 +17,8 @@ function A = fastCoreWeighted( C, model, epsilon )
 %              containing the desired core set reactions (as given in `C`)
 %
 % .. Author: - Ines Thiele, Dec 2013 http://thielelab.eu
+% ..           Thomas Pfau, May 2017 - switched weights to an additional input argument
+%                                      instead of a model field
 
 if ~exist('epsilon','var')
     epsilon = 1e-4;
@@ -36,7 +38,7 @@ singleton = false;
 % start with I
 J = intersect( C, I ); fprintf('|J|=%d  ', length(J));
 P = setdiff( N, C);
-Supp = findSparseModeWeighted( J, P, singleton, model, epsilon );
+Supp = findSparseModeWeighted( J, P, singleton, model, weights, epsilon );
 if ~isempty( setdiff( J, Supp ) )
   fprintf ('Error: Inconsistent irreversible core reactions.\n');
   return;
@@ -47,7 +49,7 @@ J = setdiff( C, A ); fprintf('|J|=%d  ', length(J));
 % main loop
 while ~isempty( J )
     P = setdiff( P, A);
-    Supp = findSparseModeWeighted( J, P, singleton, model, epsilon );%findSparseMode
+    Supp = findSparseModeWeighted( J, P, singleton, model, weights, epsilon );%findSparseMode
     A = union( A, Supp );   fprintf('|A|=%d\n', length(A));
     if ~isempty( intersect( J, A ))
         J = setdiff( J, A );     fprintf('|J|=%d  ', length(J));

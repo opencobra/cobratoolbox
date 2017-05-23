@@ -228,11 +228,8 @@ for i=1:length(list)
     elseif strfind(list{i},'fbc_activeObjective')
         sbmlModel.(list{i})='obj'; % a default fbc_activeObjective field is assigned.
     elseif strfind(list{i},'id')
-        if isfield(model,'id')
-            sbmlModel.(list{i})=model.id;
-        else
-            sbmlModel.(list{i})='emptyModelID';
-        end
+
+        sbmlModel.(list{i})='COBRAModel';
     elseif strfind(list{i},'metaid')
         if isfield(model,'description')
             sbmlModel.(list{i})=model.description;
@@ -324,32 +321,19 @@ for i=1:size(model.mets, 1)
     else
         tmp_metFormulas=emptyChar; %cell(0,1)% {''};%0;%emptyChar;
     end
-    % % %     if isfield(model, 'metCharge')
-    % % %         %NOTE: charge is being removed in SBML level 3
-    % % % %         tmp_species.charge = model.metCharge(i);
-    % % % %         tmp_species.isSetCharge = 1;
-    % % %        if isempty(model.metCharge)||numel(model.metCharge)<i; % when the charges are not missing from the COBRA model structure.
-    % % %            fprintf('metCharge doesn''t exist for metaboli %d \n', i);
-    % % %            model.metCharge(i)=0;
-    % % %        end
-    % % %
-    % % %         tmp_notes = [tmp_notes '<p>CHARGE: ' num2str(model.metCharge(i)) '</p>'];
-    % % %     end
     
     %%
     % % %     if ~isfield(model,'metSboTerm') % if the sboTerms for the metabolites are not avaliable. %% NTOE: most of COBRA model structures don't have such fields
     % % %         model.sboTerm(i)=-1;
     % % %     end
     % % %     %%
-    if isfield(model, 'metCharge')
+    if isfield(model, 'metCharges')
         %NOTE: charge is being removed in SBML level 3
-        %         tmp_species.charge = model.metCharge(i);
-        %         tmp_species.isSetCharge = 1;
-        if isempty(model.metCharge)||numel(model.metCharge)<i; % when the charges are not missing from the COBRA model structure.
-            fprintf('metCharge doesn''t exist for metaboli %d \n', i);
-            model.metCharge(i)=0;
+        if isempty(model.metCharges)||numel(model.metCharges)<i; % when the charges are not missing from the COBRA model structure.
+            fprintf('metCharges doesn''t exist for metaboli %d \n', i);
+            model.metCharges(i)=0;
         end
-        tmp_metCharge=model.metCharge(i);
+        tmp_metCharge=model.metCharges(i);
         tmp_isSetfbc_charge=1;
         %         tmp_notes = [tmp_notes '<p>CHARGE: ' num2str(model.metCharge(i)) '</p>'];
     else
@@ -389,8 +373,8 @@ for i=1:size(model.mets, 1)
         tmp_note = [ tmp_note ' <rdf:li rdf:resource="http://identifiers.org/kegg.compound/' model.metKEGGID{i} '"/>'];
     end
     
-    if isfield(model, 'metHMDB')&&~isempty(model.metHMDB{i})
-        tmp_note = [ tmp_note ' <rdf:li rdf:resource="http://identifiers.org/hmdb/' model.metHMDB{i} '"/>'];
+    if isfield(model, 'metHMDBID')&&~isempty(model.metHMDBID{i})
+        tmp_note = [ tmp_note ' <rdf:li rdf:resource="http://identifiers.org/hmdb/' model.metHMDBID{i} '"/>'];
     end
     
     if isfield(model, 'metInChIString')&&~isempty(model.metInChIString{i})
@@ -712,8 +696,8 @@ for i=1:size(model.rxns, 1)
     if isfield(model, 'rxnECNumbers')&&i<=length(model.rxnECNumbers)%&&~isempty(model.rxnECNumbers{i})
         tmp_note = [ tmp_note ' <p>EC Number: ' model.rxnECNumbers{i} '</p>'];
     end
-    if isfield(model, 'confidenceScores')&&i<=length(model.confidenceScores)%&&~isempty(model.confidenceScores{i})
-        tmp_note = [ tmp_note ' <p>Confidence Level: ' model.confidenceScores{i} '</p>'];
+    if isfield(model, 'rxnConfidenceScores')&&i<=length(model.rxnConfidenceScores)%&&~isempty(model.confidenceScores{i})
+        tmp_note = [ tmp_note ' <p>Confidence Level: ' model.rxnConfidenceScores{i} '</p>'];
     end
     if isfield(model, 'rxnReferences')&&i<=length(model.rxnReferences)%&&~isempty(model.rxnReferences{i})
         tmp_note = [ tmp_note ' <p>AUTHORS: ' model.rxnReferences{i} '</p>'];
@@ -759,11 +743,7 @@ for i=1:size(model.rxns, 1)
     else
         tmp_rxnRev=0;
     end
-    
-    if isfield(model, 'rxnsboTerm')
-        tmp_Rxn.sboTerm= model.rxnsboTerm(i);
-    end
-    
+            
     tmp_Rxn.id=tmp_rxnID;
     tmp_Rxn.name=tmp_rxnName;
     tmp_Rxn.reversible=tmp_rxnRev;

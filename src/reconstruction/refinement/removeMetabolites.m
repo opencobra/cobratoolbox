@@ -53,7 +53,7 @@ else
 %         'S'
 %     'mets'
 %     'metFormulas'
-%     'metCharge'
+%     'metCharges'
 %     'b'
 %     'SIntMetBool'
 %     'SOnlyExMetBool'

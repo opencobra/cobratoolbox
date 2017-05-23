@@ -132,9 +132,9 @@ end
 model = createModel(rxnAbrList,rxnNameList,rxnList,revFlagList,lowerBoundList,upperBoundList,subSystemList,grRuleList);
 
 if ~isempty(strmatch('Confidence Score',rxnHeaders,'exact'))
-    model.confidenceScores = rxnInfo(2:end,strmatch('Confidence Score',rxnHeaders,'exact'));
+    model.rxnConfidenceScores = rxnInfo(2:end,strmatch('Confidence Score',rxnHeaders,'exact'));
 else
-    model.confidenceScores = cell(length(model.rxns),1); %empty cell instead of NaN
+    model.rxnConfidenceScores = cell(length(model.rxns),1); %empty cell instead of NaN
 end
 if ~isempty(strmatch('EC Number',rxnHeaders,'exact'))
     model.rxnECNumbers = Strings(2:end,strmatch('EC Number',rxnHeaders,'exact'));
@@ -284,7 +284,7 @@ model.subSystems = columnVector(model.subSystems);
 model.rules = columnVector(model.rules);
 model.grRules = columnVector(model.grRules);
 model.genes = columnVector(model.genes);
-model.confidenceScores = columnVector(model.confidenceScores);
+model.rxnConfidenceScores = columnVector(model.rxnConfidenceScores);
 model.rxnECNumbers = columnVector(model.rxnECNumbers);
 model.rxnNotes = columnVector(model.rxnNotes);
 model.rxnReferences = columnVector(model.rxnReferences);

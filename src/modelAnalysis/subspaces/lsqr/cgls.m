@@ -1,47 +1,58 @@
-function [x,resNE,k,info] = cgls( Aname ,shift,b,m,n,kmax,tol,prnt)
+function [x, resNE, k, info] = cgls( Aname ,shift, b, m, n, kmax, tol, prnt)
+% Solves a symmetric system
 %
-%        [x,resNE,k,info] = cgls('gemat',shift,b,m,n,kmax,tol,prnt);
+% `(A'A + shift I)x = A'b` or `N x = A'b`,
 %
-% solves a symmetric system
-%
-%        (A'A + shift I)x = A'b      or      N x = A'b,
-%
-% where A is a general m by n matrix and shift may be positive or negative.
-% The method should be stable if N = (A'A + shift I) is positive definite.
+% where `A` is a general `m` by `n` matrix and shift may be positive or negative.
+% The method should be stable if `N = (A'A + shift I)` is positive definite.
 % It MAY be unstable otherwise.
 %
-% 'gemat' specifies an M-file gemat.m (say), such that
-%           y = gemat(0,x,m,n) identifies gemat (if you wish),
-%           y = gemat(1,x,m,n) gives y = A x,
-%           y = gemat(2,x,m,n) gives y = A'x.
-% NOTE: The M-file must not be called Aname.m!
+% 'gemat' specifies an M-file gemat.m (say), such that:
 %
-% Input:
-% kmax  = maximum number of iterations.
-% tol   = desired relative residual size, norm(rNE)/norm(A'b),
-%         where rNE = A'b - N x.
-% prnt  = 1 gives an iteration log, 0 suppresses it.
+%    * `y = gemat(0,x,m,n)` identifies gemat (if you wish),
+%    * `y = gemat(1,x,m,n)` gives `y = A x`,
+%    * `y = gemat(2,x,m,n)` gives `y = A'x`.
 %
-% Output:
-% resNE = relative residual for normal equations: norm(A'b - Nx)/norm(A'b).
-% k     = final number of iterations performed.
-% info  = 1 if required accuracy was achieved,
-%       = 2 if the limit kmax was reached,
-%       = 3 if N seems to be singular or indefinite.
-%       = 4 if instability seems likely.  (N indefinite and normx decreased.)
-
-% When shift = 0, cgls is Hestenes and Stiefel's specialized form of the
-% conjugate-gradient method for least-squares problems.  The general shift
-% is a simple modification.
+% The M-file must not be called Aname.m!
 %
-% 01 Sep 1999: First version.
-%              Per Christian Hansen (DTU) and Michael Saunders (visiting DTU).
-%-----------------------------------------------------------------------------
+% USAGE:
+%
+%    [x, resNE, k, info] = cgls( Aname ,shift, b, m, n, kmax, tol, prnt)
+%
+% INPUTS:
+%    Aname:   name of file
+%    shift:   if 0 then `cgls` is Hestenes and Stiefel's specialized form
+%    b:       used in the formulas in description
+%    m, n:    dimensions of the matrix
+%    kmax:    maximum number of iterations.
+%    tol:     desired relative residual size, `norm(rNE)/norm(A'b)`,
+%             where `rNE = A'b - N x`.
+%    prnt:    1 gives an iteration log, 0 suppresses it.
+%
+% OUTPUTS:
+%    x:       from the formulas in description
+%    resNE:   relative residual for normal equations: `norm(A'b - Nx)/norm(A'b)`.
+%    k:       final number of iterations performed.
+%    info:    gives information on the result:
+%
+%               * 1 if required accuracy was achieved,
+%               * 2 if the limit kmax was reached,
+%               * 3 if N seems to be singular or indefinite.
+%               * 4 if instability seems likely.  (`N` indefinite and `normx` decreased.)
+%
+% NOTE:
+%
+%    When shift = 0, cgls is Hestenes and Stiefel's specialized form of the
+%    conjugate-gradient method for least-squares problems. The general shift
+%    is a simple modification.
+%
+% .. Author: - 01 Sep 1999: First version Per Christian Hansen (DTU) and Michael Saunders (visiting DTU).
 
-%% Let Aname identify itself
-   x    = zeros(n,1);    q     = feval(Aname,0,x,m,n);
+x = zeros(n,1);
+q = feval(Aname,0,x,m,n);
+% Let Aname identify itself
 
-%% Initialize
+% Initialize
    r    = b;
    s    = feval(Aname,2,b,m,n);                     % s = A'b
    p    = s;
@@ -62,7 +73,7 @@ function [x,resNE,k,info] = cgls( Aname ,shift,b,m,n,kmax,tol,prnt)
 %---------------------------------------------------------------------------
 %% Main loop
 %---------------------------------------------------------------------------
-   while (k < kmax) & (info == 0) 
+   while (k < kmax) & (info == 0)
 
       k     = k+1;
       q     = feval(Aname,1,p,m,n);                % q = A p

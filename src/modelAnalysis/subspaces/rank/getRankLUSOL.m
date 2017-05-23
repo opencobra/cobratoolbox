@@ -1,28 +1,39 @@
-function [rankA,p,q] = getRankLUSOL(A,printLevel)
-%Get the rank of a matrix using treshold rook pivoting
-%
-% uses lusolFactor computes the sparse factorization A = L*U
-% for a square or rectangular matrix A.  The vectors p, q
+function [rankA, p, q] = getRankLUSOL(A, printLevel)
+% Get the rank of a matrix using treshold rook pivoting.
+% Uses `lusolFactor` computes the sparse factorization `A = L*U`
+% for a square or rectangular matrix `A`.  The vectors `p`, `q`
 % are row and column permutations giving the pivot order.
 %
-% Requires a 64 bit implementation of lusol, available from
-% https://github.com/nwh/lusol
+% USAGE:
 %
-%INPUT
-% A     m x n rectangular matrix
+%    [rankA, p, q] = getRankLUSOL(A, printLevel)
 %
-%OUTPUT
-% rankA     rank of A
-% p         row permutations giving the pivot order
-%           Note: p(1:rankA) gives indices of independent rows
-%                 p(rankA+1:size(A,1)) gives indices of dependent rows
-% q         column permutations giving the pivot order
-%           Note: q(1:rankA) gives indices of independent columns
-%                 q(rankA+1:size(A,2)) gives indices of dependent columns
-
-% Michael Saunders, LUSOL Fortran code, May 2015
-% Nick Henderson, LUSOL Matlab interface, May 2015
-% Ronan Fleming, COBRA Toolbox interface, May 2015
+% INPUT:
+%    A:             `m` x `n` rectangular matrix
+%
+% OPTIONAL INPUT:
+%    printLevel:    default = 0
+%
+% OUTPUTS:
+%    rankA:         rank of `A`
+%    p:             row permutations giving the pivot order
+%
+%                   Note: `p(1:rankA)`` gives indices of independent rows
+%                   `p(rankA+1:size(A,1))`` gives indices of dependent rows
+%    q:             column permutations giving the pivot order
+%
+%                   Note: `q(1:rankA)`` gives indices of independent columns
+%                   `q(rankA+1:size(A,2))`` gives indices of dependent columns
+%
+% .. Authors:
+%       - Michael Saunders, LUSOL Fortran code, May 2015
+%       - Nick Henderson, LUSOL Matlab interface, May 2015
+%       - Ronan Fleming, COBRA Toolbox interface, May 2015
+%
+% NOTE:
+%
+%    Requires a 64 bit implementation of lusol, available from
+%    https://github.com/nwh/lusol
 
 if ~exist('printLevel','var')
     printLevel=0;
@@ -77,7 +88,7 @@ if ~isempty(which('lusol_obj'))
             % options.nzinit = 1e7;
             % %factorise
             % mylu = lusol_obj(A,options);
-            
+
             %factorise
             mylu = lusol_obj(A);
 

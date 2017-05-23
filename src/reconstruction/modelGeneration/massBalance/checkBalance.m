@@ -27,7 +27,7 @@ function [dE,E,missingFormulaeBool]=checkBalance(model,element,printLevel,fileNa
 % Ronan M.T. Fleming    July 2009
 
 if ~isfield(model,'metFormulas')
-    error('model structure must contain model.metForumlas field')
+    error('model structure must contain model.metFormulas field')
 end
 if ~exist('printLevel','var')
     printLevel=1;

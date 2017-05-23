@@ -21,7 +21,7 @@ cd(fileDir);
 load([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 % equires EC number field
-model.ecNumbers = cell(size(model.rxns));%requires EC number field
+model.rxnECNumbers = cell(size(model.rxns));%requires EC number field
 data = neighborRxn2data(model, 1);
 
 % test that output is not empty

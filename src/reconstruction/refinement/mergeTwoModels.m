@@ -68,8 +68,8 @@ for i = 1:size(model2.mets,1)
             modelNew.metFormulas(sizemets,1) = model2.metFormulas(i,1);
         end
         % causes errors when joining with enterocyte model
-         if isfield(model1,'metCharge')&& isfield(model2,'metCharge')&& length(model2.metCharge)>0
-             modelNew.metCharge(sizemets,1) = model2.metCharge(i,1);
+         if isfield(model1,'metCharges')&& isfield(model2,'metCharges')&& length(model2.metCharges)>0
+             modelNew.metCharges(sizemets,1) = model2.metCharges(i,1);
          end
         sizemets = sizemets+1;
     end
@@ -100,9 +100,9 @@ modelNew.subSystems = model1.subSystems;
 modelNew.subSystems(size(model1.subSystems,1)+1:size(model1.subSystems,1)+size(model2.subSystems)) = model2.subSystems;
 modelNew.rxnNames = model1.rxnNames;
 modelNew.rxnNames(size(model1.rxnNames,1)+1:size(model1.rxnNames,1)+size(model2.rxnNames)) = model2.rxnNames;
-if isfield(model1,'rxnKeggID') && isfield(model2,'rxnKeggID')
-    modelNew.rxnKeggID = model1.rxnKeggID;
-    modelNew.rxnKeggID(size(model1.rxnKeggID,1)+1:size(model1.rxnKeggID,1)+size(model2.rxnKeggID)) = model2.rxnKeggID;
+if isfield(model1,'rxnKEGGID') && isfield(model2,'rxnKEGGID')
+    modelNew.rxnKEGGID = model1.rxnKEGGID;
+    modelNew.rxnKEGGID(size(model1.rxnKEGGID,1)+1:size(model1.rxnKEGGID,1)+size(model2.rxnKEGGID)) = model2.rxnKEGGID;
 end
 if isfield(model1,'rxnConfidenceEcoIDA') && isfield(model2,'rxnConfidenceEcoIDA')
     modelNew.rxnConfidenceEcoIDA = model1.rxnConfidenceEcoIDA;
@@ -128,16 +128,6 @@ if isfield(model1,'rxnNotes') && isfield(model2,'rxnNotes')
     modelNew.rxnNotes = model1.rxnNotes;
     modelNew.rxnNotes(size(model1.rxnNotes,1)+1:size(model1.rxnNotes,1)+size(model2.rxnNotes)) = model2.rxnNotes;
 end
-
-
-% modelNew.metChEBIID = model1.metChEBIID;
-% modelNew.metChEBIID(size(model1.metChEBIID,1)+1:size(model1.metChEBIID,1)+size(model2.metChEBIID)) = model2.metChEBIID;
-% modelNew.metKeggID = model1.metKeggID;
-% modelNew.metKeggID(size(model1.metKeggID,1)+1:size(model1.metKeggID,1)+size(model2.metKeggID)) = model2.metKeggID;
-% modelNew.metPubChemID = model1.metPubChemID;
-% modelNew.metPubChemID(size(model1.metPubChemID,1)+1:size(model1.metPubChemID,1)+size(model2.metPubChemID)) = model2.metPubChemID;
-% modelNew.metInchiString = model1.metInchiString;
-% modelNew.metInchiString(size(model1.metInchiString,1)+1:size(model1.metInchiString,1)+size(model2.metInchiString)) = model2.metInchiString;
 
 fprintf('Finished\n');
 

@@ -160,9 +160,7 @@ switch format
             end
 
             tmpData{i+1,baseInd} = chopForExcel(formulas{i});
-            if (isfield(model,'geneNameRules'))
-                tmpData{i+1,baseInd+1} = chopForExcel(model.geneNameRules{i});
-            elseif (isfield(model,'grRules'))
+            if (isfield(model,'grRules'))
                 tmpData{i+1,baseInd+1} = chopForExcel(model.grRules{i});
             else
                 tmpData{i+1,baseInd+1} = '';
@@ -190,8 +188,8 @@ switch format
             tmpData{i+1,baseInd+6} = model.lb(i);
             tmpData{i+1,baseInd+7} = model.ub(i);
             tmpData{i+1,baseInd+8} = model.c(i);
-            if (isfield(model,'confidenceScores'))
-                tmpData{i+1,baseInd+9} =  chopForExcel(num2str(model.confidenceScores{i}));
+            if (isfield(model,'rxnConfidenceScores'))
+                tmpData{i+1,baseInd+9} =  chopForExcel(num2str(model.rxnConfidenceScores{i}));
             else
                 tmpData{i+1,baseInd+9} = '';
             end
@@ -238,8 +236,8 @@ switch format
                 else
                     tmpMetData{i+1,4} = '';
                 end
-                if isfield(model,'metCharge')
-                    tmpMetData{i+1,5} = chopForExcel(model.metCharge(i));
+                if isfield(model,'metCharges')
+                    tmpMetData{i+1,5} = chopForExcel(model.metCharges(i));
                 else
                     tmpMetData{i+1,5} = '';
                 end
@@ -268,8 +266,8 @@ switch format
                 else
                     tmpMetData{i+1,9} = '';
                 end
-                if isfield(model,'metInchiString')
-                    tmpMetData{i+1,10} = chopForExcel(model.metInchiString{i});
+                if isfield(model,'metInChIString')
+                    tmpMetData{i+1,10} = chopForExcel(model.metInChIString{i});
                 else
                     tmpMetData{i+1,10} = '';
                 end
