@@ -83,15 +83,28 @@ if isfield(model,'rev')
 end
 
 %Handle wrong rxnConfidenceScores.
-if isfield(model,'rxnConfidenceScores')
-    if iscell(model.rxnConfidenceScores) 
-            tempScores = cell2mat(model.rxnConfidenceScores);
-            if ~isnumeric(tempScores)
-                emptyConf = cellfun(@isempty, model.rxnConfidenceScores);
-                tempScores = zeros(numel(model.rxnConfidenceScores),1);                
-                tempScores(~emptyConf) = cellfun(@str2num , model.rxnConfidenceScores(~emptyConf));
+if isfield(model,'rxnConfidenceScores')    
+    if iscell(model.rxnConfidenceScores)             
+        %We want a double array.
+        emptyCells = cellfun(@isempty, model.rxnConfidenceScores);
+        try
+            
+            setValues = cell2mat(model.rxnConfidenceScores(~emptyCells));
+            if ~isnumeric(setValues)
+                tmpValues = model.rxnConfidenceScores(~emptyCells);                                
+                setValues = cellfun(@str2num,tmpValues);
             end
-            model.rxnConfidenceScores = tempScores;
+            model.rxnConfidenceScores = zeros(size(model.rxnConfidenceScores));
+            model.rxnConfidenceScores(~emptyCells) = setValues;
+        catch
+            warning('Cannot Convert Reaction Confidence Scores, setting to 0')            
+            model.rxnConfidenceScores = zeros(size(model.rxns));
+%         if ~isnumeric(tempScores)
+%             emptyConf = cellfun(@isempty, model.rxnConfidenceScores);
+%             tempScores = zeros(numel(model.rxnConfidenceScores),1);
+%             tempScores(~emptyConf) = cellfun(@str2num , model.rxnConfidenceScores(~emptyConf));
+        end
+%        model.rxnConfidenceScores = tempScores;
     end
 end
 
