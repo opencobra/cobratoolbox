@@ -281,13 +281,13 @@ File name (opt)</li>
 
 <dl class="function">
 <dt id="src.base.print.printRxnFormula">
-<code class="descname">printRxnFormula</code><span class="sig-paren">(</span><em>model</em>, <em>rxnAbbrList</em>, <em>printFlag</em>, <em>lineChangeFlag</em>, <em>metNameFlag</em>, <em>fid</em>, <em>directionFlag</em>, <em>gprFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/base/print/printRxnFormula.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.print.printRxnFormula" title="Permalink to this definition">¶</a></dt>
+<code class="descname">printRxnFormula</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/base/print/printRxnFormula.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.print.printRxnFormula" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints the reaction formulas for a list of reactions</p>
 <p>Reactions that have an upperbound &lt;= 0 and lowerbound &lt; 0 will have
 its directionality reversed unless directionFlag = false.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>formulas = printRxnFormula(model, rxnAbbrList, printFlag, lineChangeFlag, metNameFlag, fid, directionFlag)</div></blockquote>
+<div>formulas = printRxnFormula(model, varargin)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -309,7 +309,8 @@ Append a line change at the end of each line
 print full met names instead of abbreviations
 (Default = false)</li>
 <li><strong>fid</strong> &#8211;
-Optional file identifier for printing in files</li>
+Optional file identifier for printing in files
+(default 1, i.e. stdout)</li>
 <li><strong>directionFlag</strong> &#8211;
 Checks directionality of reaction. See Note.
 (Default = false)</li>

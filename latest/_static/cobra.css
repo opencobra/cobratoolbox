@@ -6453,6 +6453,11 @@ body,
     padding: 0;
 }
 
+.wy-menu a:hover {
+    text-decoration: none;
+    color: #FCFDF6;
+}
+
 .wy-side-nav-search input[type="text"] {
     border-color: rgb(201, 201, 201);
     color: black;
@@ -6525,7 +6530,6 @@ body{
 h1,h2,h3,h4,h5,h6 {
     font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
 }
-
 input[type="text"], input[type="password"], input[type="email"],
 input[type="url"], input[type="date"], input[type="month"], input[type="time"],
 input[type="datetime"], input[type="datetime-local"], input[type="week"],
