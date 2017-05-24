@@ -7,7 +7,7 @@ function FileString = generateFieldDescriptionFile(FileName)
 %
 % OPTIONAL INPUT:
 %
-%    FileName:      The FileName to write to. (default [CBTDIR filesep 'docs' filesep 'source' filesep 'Fields' filesep 'COBRAModelFields.md'])
+%    FileName:      The FileName to write to. (default [CBTDIR filesep 'docs' filesep 'notes' filesep 'COBRAModelFields.md'])
 %
 % OUTPUT:
 %
@@ -16,7 +16,7 @@ function FileString = generateFieldDescriptionFile(FileName)
 %
 % Authors:
 %     - Thomas Pfau May 2017
-% 
+%
 global CBTDIR
 if ~exist('FileName','var')
     if isempty(CBTDIR)
@@ -30,7 +30,7 @@ fieldProperties = getDefinedFieldProperties('Descriptions', true);
 
 FileString = sprintf('# Fields in the model structure\n\n');
 FileString = strjoin({FileString, sprintf(['Contents:\n',...
-                                        '1. [Model Fields](#model-fields)\n',...                                        
+                                        '1. [Model Fields](#model-fields)\n',...
                     '2. [Field Support](#field-support)\n',...
 					'3. [Model Specific Fields](#model-specific-fields)\n',...
 					'4. [Annotation Definitions](#annotation-definitions)\n',...
@@ -43,9 +43,9 @@ FileString = strjoin({FileString, sprintf(['Contents:\n',...
 					'|---|---|---|---|\n'])},'');
 
 for i=1:size(fieldProperties,1)
-	string = sprintf('|`model.%s`| `%s` | %s | %s | \n',fieldProperties{i,1},fieldProperties{i,2},fieldProperties{i,3},fieldProperties{i,4});		
+	string = sprintf('|`model.%s`| `%s` | %s | %s | \n',fieldProperties{i,1},fieldProperties{i,2},fieldProperties{i,3},fieldProperties{i,4});
 	FileString = strjoin({FileString,string},'');
-end		
+end
 FileString = strjoin({FileString,sprintf(['### Model Specific Fields\n',...
 					'Some models might contain additional model specific fields that are not defined COBRA model fields. These fields will commonly not be considered by COBRA toolbox methods, and using toolbox methods can render these fields inconsistent (e.g. if the number of reactions changes, a model specific field linked to reactions might have the wrong number of entries or the values might no longer correspond to the correct indices). \n',...
 					'\n',...

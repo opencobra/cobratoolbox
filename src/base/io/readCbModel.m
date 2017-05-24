@@ -5,7 +5,7 @@ function model = readCbModel(fileName,varargin)
 %
 %    model = readCbModel(fileName, varargin)
 %
-%OPTIONAL INPUTS:
+% OPTIONAL INPUTS:
 %    fileName:          File name for file to read in (char)
 %                       not given in the `SBML` file (Default = 1000)
 %    fileType:          File type for input files: 'SBML', 'SimPheny',
@@ -24,11 +24,11 @@ function model = readCbModel(fileName,varargin)
 %    modelDescription:   Description of model contents (char), default is the
 %                        choosen filename
 %    compSymbolList:     Compartment Symbol List( cell array)
-%                       
 %
-%OUTPUT:
+%
+% OUTPUT:
 %    model:             Returns a model in the COBRA format:
-% 
+%
 %                         * description - Description of model contents (opt)
 %                         * rxns - Reaction names
 %                         * mets - Metabolite names
@@ -38,7 +38,7 @@ function model = readCbModel(fileName,varargin)
 %                         * c - Objective coefficients
 %                         * subSystems - Subsystem name for each reaction (opt)
 %                         * grRules - Gene-reaction association rule for each reaction (opt)
-%                         * rules - Gene-reaction association rule in computable form 
+%                         * rules - Gene-reaction association rule in computable form
 %                         * rxnGeneMat - Reaction-to-gene mapping in sparse matrix form (opt)
 %                         * genes - List of all genes
 %                         * rxnNames - Reaction description (opt)
@@ -81,17 +81,17 @@ function model = readCbModel(fileName,varargin)
 optionalArgumentList = {'defaultBound','fileType','modelDescription','compSymbolList','compNameList'};
 processedFileTypes = {'SBML', 'SimPheny', 'SimPhenyPlus', 'SimPhenyText', 'Excel', 'Matlab'};
 
-if numel(varargin) > 0 
+if numel(varargin) > 0
     %Check, whether we have an old style input. (i.e. varargins are not optional arguments
-    if ischar(varargin{1}) && ~any(ismember(varargin{1},optionalArgumentList))           
-    %We assume the old version to be used               
+    if ischar(varargin{1}) && ~any(ismember(varargin{1},optionalArgumentList))
+    %We assume the old version to be used
         tempargin = cell(1,2*numel(varargin));
         %just replace the input by the options and replace varargin
         %accordingly
-        for i = 1:numel(varargin)            
+        for i = 1:numel(varargin)
             tempargin{2*(i-1)+1} = optionalArgumentList{i};
             tempargin{2*(i-1)+2} = varargin{i};
-        end        
+        end
         varargin = tempargin;
     end
 end
@@ -99,12 +99,12 @@ end
 
 [defaultCompSymbols,defaultCompNames] = getDefaultCompartmentSymbols();
 parser = inputParser();
-parser.addOptional('fileName','',@(x) isempty(x) || ischar(x)); 
-parser.addParameter('defaultBound',1000, @isnumeric); 
-parser.addParameter('fileType','',@(x) ischar(x) && any(strcmpi(processedFileTypes))); 
-parser.addParameter('modelDescription','',@ischar); 
-parser.addParameter('compSymbolList',defaultCompSymbols,@iscell); 
-parser.addParameter('compNameList',defaultCompNames,@iscell); 
+parser.addOptional('fileName','',@(x) isempty(x) || ischar(x));
+parser.addParameter('defaultBound',1000, @isnumeric);
+parser.addParameter('fileType','',@(x) ischar(x) && any(strcmpi(processedFileTypes)));
+parser.addParameter('modelDescription','',@ischar);
+parser.addParameter('compSymbolList',defaultCompSymbols,@iscell);
+parser.addParameter('compNameList',defaultCompNames,@iscell);
 if exist('fileName','var')
     parser.parse(fileName,varargin{:})
 else
@@ -125,9 +125,9 @@ if ~exist('fileType','var') || isempty(fileType)
     %if no filename was provided, we open a UI window.
     if ~exist('fileName','var') || isempty(fileName)
         [fileName] = uigetfile([supportedFileExtensions,{'Model Files'}],'Please select the model file');
-    end 
-    
-    [~,~,FileExtension] = fileparts(fileName);    
+    end
+
+    [~,~,FileExtension] = fileparts(fileName);
     if ~isempty(FileExtension)
         %if we have a file Extension, get the full path.
         if exist(fileName,'file')
@@ -145,16 +145,16 @@ if ~exist('fileType','var') || isempty(fileType)
         %If we have more than one valid match, we will have to ask for a
         %selection via the gui.
         if numel(filesToSelect) > 1
-            [fileName] = uigetfile([strrep(supportedFileExtensions,'*',fileName),{'Matching Models'}],'Please select the model file');        
+            [fileName] = uigetfile([strrep(supportedFileExtensions,'*',fileName),{'Matching Models'}],'Please select the model file');
         end
         if numel(filesToSelect) == 0
-            
+
             [fileName] = uigetfile([strrep(supportedFileExtensions,'*',[fileName '*']),{'Matching Model Files'}],'Please select the model file');
         end
         if numel(filesToSelect) == 1
             fileName = filesToSelect{1};
-        end        
-        [~,~,FileExtension] = fileparts(fileName);       
+        end
+        [~,~,FileExtension] = fileparts(fileName);
     end
     switch FileExtension
         case '.xml'
@@ -162,7 +162,7 @@ if ~exist('fileType','var') || isempty(fileType)
         case '.sbml'
             fileType = 'SBML';
         case '.sto'
-            %Determine which SimPheny Fiels are present...  
+            %Determine which SimPheny Fiels are present...
             [folder,fileBase,~] = fileparts(fileName);
             if exist([folder filesep fileBase '_gpra.txt'],'file')
                 fileType = 'SimPhenyText';
@@ -182,13 +182,13 @@ if ~exist('fileType','var') || isempty(fileType)
         otherwise
             error(['Cannot process files of type ' FileExtension]);
     end
-        
+
 end
 
 
 
 if isempty(modelDescription)
-    modelDescription = fileName;    
+    modelDescription = fileName;
 end
 
 switch fileType
@@ -213,7 +213,7 @@ switch fileType
         model = xls2model(filename,[],defaultbound);
     case 'Matlab'
         S = load(fileName);
-        modeloptions = getModelOptions(S);        
+        modeloptions = getModelOptions(S);
         if size(modeloptions,1) > 1
             fprintf('There were multiple models in the mat file. Please select the model to load from the variables below\n')
             disp(modeloptions(:,2));
@@ -223,7 +223,7 @@ switch fileType
         if size(modeloptions,1) == 0
             error(['There were no valid models in the mat file.\n Please load the model manually via '' load ' fileName ''' and check it with verifyModel() to validate it']);
         end
-        model = modeloptions{1,1}; 
+        model = modeloptions{1,1};
         if modeloptions{1,3}
             model = convertOldStyleModel(model);
         end
@@ -251,23 +251,23 @@ models = cell(0,3);
 for i=1:numel(structFields)
     cfield = S.(structFields{i});
     if isstruct(cfield)
-        try 
+        try
             %lets see, if we have a valid model
-            res = verifyModel(cfield);               
+            res = verifyModel(cfield);
             if ~isfield(res,'Errors')
                 %Convert an old Style model to the new Fields.
                 cfieldConverted = convertOldStyleModel(cfield,0);
-                res = verifyModel(cfieldConverted);               
+                res = verifyModel(cfieldConverted);
                 if isfield(res,'Errors')
                     fprintf('There were some old style fields in the model which could not be converted. Loading the old model')
                     models{end+1,1} = cfield;
-                    models{end,2} = structFields{i};    
+                    models{end,2} = structFields{i};
                     models{end,3} = false;
                 else
                     models{end+1,1} = cfieldConverted;
-                    models{end,2} = structFields{i};    
+                    models{end,2} = structFields{i};
                     models{end,3} = true;
-                end 
+                end
             else
                 %We have errors. lets see if osense/csense are missing and
                 %if, add them
@@ -276,16 +276,16 @@ for i=1:numel(structFields)
                     %we add the fields.
                     if ~any(ismember(res.Errors.missingFields,'S'))
                         cfield = convertOldStyleModel(cfield,0);
-                    end            
+                    end
                     %if we reach this place, the conversion worked,
                     %so lets try the test again.
                     res = verifyModel(cfield);
-                    if ~isfield(res,'Errors')                        
+                    if ~isfield(res,'Errors')
                         models{end+1,1} = cfield;
                         models{end,2} = structFields{i};
                         models{end,3} = true;
                     end
-                end                                            
+                end
             end
         catch
             %IF we are here, there was a problem in verifyModel or convertOldStyleModel, so this is
@@ -532,4 +532,3 @@ model.rules = columnVector(rules);
 model.grRules = columnVector(grRules);
 model.genes = columnVector(allGenes);
 model.metFormulas = columnVector(metFormulas);
-

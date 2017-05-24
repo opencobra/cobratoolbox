@@ -22,20 +22,20 @@ function sol = readMinosSolution(fname)
 % OUTPUT:
 %    sol:   Structure
 %
-%             * sol.inform - MINOS exit condition
-%             * sol.m - Number of rows in `A`
-%             * sol.n - Number of columns in `A`
-%             * sol.osense - osense
-%             * sol.objrow - Row of `A` containing a linear objective
-%             * sol.obj - Value of MINOS objective (linear + nonlinear)
-%             * sol.numinf - Number of infeasibilities in `x` and `s`.
-%             * sol.suminf - Sum of infeasibilities in `x` and `s`.
-%             * sol.xstate - `n` vector: state of each variable in `x`.
-%             * sol.sstate - `m` vector: state of each slack in `s`.
-%             * sol.x - `n` vector: value of each variable in `x`.
-%             * sol.s - `m` vector: value of each slack in `s`.
-%             * sol.rc - `n` vector: reduced gradients for `x`.
-%             * sol.y - `m` vector: dual variables for `Ax - s = 0`.
+%             * .inform - MINOS exit condition
+%             * .m - Number of rows in `A`
+%             * .n - Number of columns in `A`
+%             * .osense - osense
+%             * .objrow - Row of `A` containing a linear objective
+%             * .obj - Value of MINOS objective (linear + nonlinear)
+%             * .numinf - Number of infeasibilities in `x` and `s`.
+%             * .suminf - Sum of infeasibilities in `x` and `s`.
+%             * .xstate - `n` vector: state of each variable in `x`.
+%             * .sstate - `m` vector: state of each slack in `s`.
+%             * .x - `n` vector: value of each variable in `x`.
+%             * .s - `m` vector: value of each slack in `s`.
+%             * .rc - `n` vector: reduced gradients for `x`.
+%             * .y - `m` vector: dual variables for `Ax - s = 0`.
 %
 % ..
 %    04 Nov 2014: First version of readMinosSolution.m added to quadLP/matlab

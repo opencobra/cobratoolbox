@@ -86,6 +86,8 @@ src/reconstruction/fastGapFill/examples/
 tutorials/fastGapFill/results_*.mat
 tutorials/fastGapFill/KEGGMatrix.mat
 tutorials/fastGapFill/prepareFGFResultsDefault.mat
+tutorials/IO/Abiotrophia_defectiva_ATCC_49176.xml
+tutorials/IO/ecoli_core_model.mat
 
 # hidden folders
 .vscode/
