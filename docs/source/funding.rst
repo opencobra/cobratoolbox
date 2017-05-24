@@ -4,7 +4,6 @@ Funding
 .. raw:: html
 
    <ul class="featureslogo">
-
        <li>
            <div style="align-center;"><a href="http://www.sysmedpd.eu"><img src="_static/images/logos/sysmedpd.png" alt="" width="100%"></a></div>
        </li>
