@@ -4,8 +4,6 @@ function model = readCbModel(fileName,varargin)
 %
 % USAGE:
 %
-%    model = readCbModel()
-%    model = readCbModel(fileName)
 %    model = readCbModel(fileName, varargin)
 %
 %OPTIONAL INPUTS:

@@ -16,7 +16,7 @@ function model = convertOldStyleModel(model, printLevel)
 %    model:      a COBRA model with old field names replaced by new ones and
 %                duplicated fields merged.
 % .. Authors:
-%       - Thomas Pfaz May 2017
+%       - Thomas Pfau May 2017
 warnstate = warning;
 if ~exist('printLevel','var')
     printLevel = 1;

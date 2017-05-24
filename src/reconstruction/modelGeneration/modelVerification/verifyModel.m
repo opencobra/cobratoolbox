@@ -3,7 +3,9 @@ function results = verifyModel(model,varargin)
 %
 % USAGE:
 %
-%    results = verifyModel(model)
+%    results = verifyModel(model, varargin)
+%
+% Example:
 %    results = verifyModel(model,'simpleCheck')
 %    results = verifyModel(model,'massBalance')
 %    results = verifyModel(model,'fluxConsistency','massBalance')

@@ -3,10 +3,7 @@ function outmodel = writeCbModel(model,varargin)
 %
 % USAGE:
 %
-%    outmodel = writeCbModel(model)
-%    outmodel = writeCbModel(model,format)
-%    outmodel = writeCbModel(model,format,fileName)
-%    outmodel = writeCbModel(model,format,fileName, varargin)
+%    outmodel = writeCbModel(model, varargin)
 %
 % INPUTS:
 %    model:             Standard COBRA model structure
@@ -30,6 +27,14 @@ function outmodel = writeCbModel(model,varargin)
 %       - Longfei Mao 26/04/2016 -  Added support for the FBCv2 format
 %       - Thomas Pfau May 2017  - Changed To Parameter/Value pairs and
 %                                 added flexibility
+%
+% EXAMPLES:
+%
+%    Write a model in the specified format (a popup will ask for the name)
+%    outmodel = writeCbModel(model,format)
+%    Write a model in the specified format with the given file name
+%    outmodel = writeCbModel(model,format,fileName)
+%
 % NOTE:
 %    The `writeCbModel` function relies on another function
 %    `io/utilities/writeSBML.m` to convert a COBRA-Matlab structure into
