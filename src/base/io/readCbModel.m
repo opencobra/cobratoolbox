@@ -140,7 +140,7 @@ if ~exist('fileType','var') || isempty(fileType)
         %if we don't have a file extension, we try to see, which files
         %could match (only on the current directory, not on all the path).
         cfiles = dir(pwd);
-        filenames = extractfield(cfiles,'name');
+        filenames = {cfiles.name};
         matchingFiles = filenames(~cellfun(@isempty, strfind(filenames,fileName)));
         %Check, whether one of those files matches any of the available
         %options
