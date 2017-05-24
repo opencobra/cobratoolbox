@@ -21,7 +21,7 @@ currentDir = pwd;
 % initialize the test
 fileDir = fileparts(which('testReadSBML'));
 cd(fileDir);
-
+%{
 % load the test models
 testModel = readCbModel('Ec_iJR904.xml');
 load('Ec_iJR904.mat', 'model');
@@ -60,51 +60,51 @@ for i = 1:length(modelArr)
     %all solvers.
     % output a line before launching the test for model i
     fprintf('   Testing %s ...\n', modelArr{i});
-    
+
     % load the model (actually supply the full filename of the path
     % where the model is found)
     model = readCbModel(which(modelArr{i}));
-    
+
     for k = 1:length(solverPkgs)
-        
+
         % set the solver
         solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
-        
+
         if solverOK == 1
             fprintf('   Testing with solver %s ... \n', solverPkgs{k});
-            
+
             % set the tolerance
             tol = 1e-6;
-            
-            
+
+
             % define the maximum objective values calculated from pre-converted .mat files
             modelFBAf_max = [0.149475406282249; 0.477833660760744; 0.692812693473487; 0.736700938865275];
-            
+
             % define the minimum objective values
             modelFBAf_min = [0.0; 0.0; 0.0; 0.0];
-            
+
             % solve the maximisation problem
             FBA = optimizeCbModel(model, 'max');
-            
+
             % test the maximisation solution
             assert(FBA.stat == 1);
             assert(abs(FBA.f - modelFBAf_max(i)) < tol);
             assert(norm(model.S * FBA.x) < tol);
-            
+
             % solve the minimisation problem
             FBA = optimizeCbModel(model, 'min');
-            
+
             % test the minimisation solution
             assert(FBA.stat == 1);
             assert(abs(FBA.f - modelFBAf_min(i)) < tol);
             assert(norm(model.S * FBA.x) < tol);
-            
+
             % print a line for success of loop i
             fprintf(' Done.\n');
         end
     end
 end
-
+%}
 % test reading COBRA models with symbols in objective reactions and multiple objective reactions
 for jTest = 1:2
     if jTest == 1
@@ -141,11 +141,51 @@ for jTest = 1:2
 
     model.osense = -1;
     model.description = 'test_sbml_obj.xml';
-    model.genes = cell(1, 0);
+    model.genes = {'gene1'; 'gene2'};
+    model.rules = {''; ''};
+    model.rxnGeneMat = zeros(2, 2);
 
-    % i/o
+    model = convertOldStyleModel(model);
+
+    % write the model
     writeCbModel(model, 'sbml', 'test_sbml_obj');
+
+
+    % read in the model
     model2 = readCbModel('test_sbml_obj.xml');
+
+    % explicit testing of each field (eases debugging)
+    assert(isequal(model.S, model2.S));
+    assert(isequal(model.b, model2.b));
+    assert(isequal(model.csense, model2.csense));
+    assert(isequal(model.lb, model2.lb));
+    assert(isequal(model.ub, model2.ub));
+    assert(isequal(model.c, model2.c));
+    assert(isequal(model.osense, model2.osense));
+    assert(isequal(model.rxns, model2.rxns));
+    assert(isequal(model.mets, model2.mets));
+    assert(isequal(model.genes, model2.genes));
+    assert(isequal(model.rules, model2.rules));
+    assert(isequal(model.metCharges, model2.metCharges));
+    assert(isequal(model.metFormulas, model2.metFormulas));
+    assert(isequal(model.metNames, model2.metNames));
+    assert(isequal(model.metHMDBID, model2.metHMDBID));
+    assert(isequal(model.metInChIString, model2.metInChIString));
+    assert(isequal(model.metKEGGID, model2.metKEGGID));
+    assert(isequal(model.metChEBIID, model2.metChEBIID));
+    assert(isequal(model.metPubChemID, model2.metPubChemID));
+    assert(isequal(model.description, model2.description));
+    assert(isequal(model.modelVersion, model2.modelVersion));
+    assert(isequal(model.grRules, model2.grRules));
+    assert(isequal(model.rxnGeneMat, model2.rxnGeneMat));
+    assert(isequal(model.rxnConfidenceScores, model2.rxnConfidenceScores));
+    assert(isequal(model.rxnNames, model2.rxnNames));
+    assert(isequal(model.rxnNotes, model2.rxnNotes));
+    assert(isequal(model.rxnECNumbers, model2.rxnECNumbers));
+    assert(isequal(model.rxnReferences, model2.rxnReferences));
+    assert(isequal(model.subSystems, model2.subSystems));
+
+    % check the model structures
     assert(isequal(model, model2));
     fprintf(' Done.\n\n');
 end

@@ -236,13 +236,13 @@ for i=1:length(list)
         else
             sbmlModel.(list{i})='emptyModelMetaid';
         end
-        
+
     elseif strfind(list{i},'sboTerm')
         sbmlModel.(list{i})=defaultSboTerm; % a default fbc_activeObjective field is assigned.
     else
         sbmlModel.(list{i})=emptyChar; %eval(initFunList{2});
     end
-    
+
 end
 
 %% Species
@@ -288,14 +288,14 @@ for i=1:size(model.mets, 1)
     else
         tmp_met = model.mets{i};
     end
-    
+
     if isempty(tmp_met_struct{1})
         %Change id to correspond to SBML id specifications
         tmp_met = strcat('M_', (tmp_met), '_', '[c]');
     else
         tmp_met = strcat('M_', (tmp_met), '_', tmp_met_struct{i}.comp);
     end
-    
+
     tmp_met= formatForSBMLID(tmp_met);
     %     model.mets{ i } = formatForSBMLID(tmp_met); % remove illegal symbols
     %     tmp_species.id = formatForSBMLID(tmp_met);  % remove illegal symbols
@@ -304,7 +304,7 @@ for i=1:size(model.mets, 1)
     else
         tmp_metName=emptyChar;
     end
-    
+
     % % %     if isfield(model, 'metFormulas')
     % % %
     % % %         if isempty(model.metFormulas)||numel(model.metFormulas)<i; % when the charges are not missing from the COBRA model structure.
@@ -321,7 +321,7 @@ for i=1:size(model.mets, 1)
     else
         tmp_metFormulas=emptyChar; %cell(0,1)% {''};%0;%emptyChar;
     end
-    
+
     %%
     % % %     if ~isfield(model,'metSboTerm') % if the sboTerms for the metabolites are not avaliable. %% NTOE: most of COBRA model structures don't have such fields
     % % %         model.sboTerm(i)=-1;
@@ -361,22 +361,22 @@ for i=1:size(model.mets, 1)
     tmp_species.metaid=tmp_species.id;  % set the metaid for each species
     tmp_note = '<annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">';
     tmp_note=[tmp_note,' <rdf:Description rdf:about="#',tmp_species.id,'">','<bqbiol:is>','<rdf:Bag>'];
-    
+
     if isfield(model, 'metChEBIID')&&~isempty(model.metChEBIID{i})
         tmp_note = [tmp_note ' <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:' model.metChEBIID{i} '"/>' ];
     end
     if isfield(model, 'metPubChemID')&&~isempty(model.metPubChemID{i})
         tmp_note = [ tmp_note ' <rdf:li rdf:resource="http://identifiers.org/pubchem.substance/' model.metPubChemID{i} '"/>'];
     end
-    
+
     if isfield(model, 'metKEGGID')&&~isempty(model.metKEGGID{i})
         tmp_note = [ tmp_note ' <rdf:li rdf:resource="http://identifiers.org/kegg.compound/' model.metKEGGID{i} '"/>'];
     end
-    
+
     if isfield(model, 'metHMDBID')&&~isempty(model.metHMDBID{i})
         tmp_note = [ tmp_note ' <rdf:li rdf:resource="http://identifiers.org/hmdb/' model.metHMDBID{i} '"/>'];
     end
-    
+
     if isfield(model, 'metInChIString')&&~isempty(model.metInChIString{i})
         tmp_note = [ tmp_note ' <rdf:li rdf:resource="http://identifiers.org/inchi/' model.metInChIString{i} '"/>'];
     end
@@ -391,16 +391,16 @@ for i=1:size(model.mets, 1)
     % %         tmp_note = ['<body xmlns="http://www.w3.org/1999/xhtml">' tmp_note '</body>'];
     % %     end
     tmp_species.annotation=tmp_note;
-    
+
     if i==1
         sbmlModel.species=tmp_species;
     else
         sbmlModel.species=[sbmlModel.species, tmp_species];
     end
-    
+
     % sbmlModel.species = [ sbmlModel.species, tmp_species ];
     %This is where the compartment symbols are aggregated.
-    
+
 end
 % % for i=1:size(model.mets, 1) % The following code block converts COBRA formats of the speicies structure into FBC formats.
 % %     if isfield(model,'fbc2str')||strcmp(fbc,'true');
@@ -465,13 +465,13 @@ for i=1:size(tmp_metCompartment,2)
             tmp_name=['unknownCompartment',num2str(i)];
         end
         tmp_id = formatForSBMLID(tmp_id);
-        
+
         %    sbmlModel = Model_addCompartment(sbmlModel, sbml_tmp_compartment);
-        
+
         tmp_compartment.id=tmp_id;
         tmp_compartment.name=tmp_name;
     end
-    
+
     if i==1
         sbmlModel.compartment=tmp_compartment;
     else
@@ -494,7 +494,7 @@ end
 
 
 if defaultFbcVersion==1
-    
+
     tmp_Rxn=struct('typecode','SBML_REACTION',...
         'metaid',emptyChar,...
         'notes',emptyChar,... %%
@@ -512,9 +512,9 @@ if defaultFbcVersion==1
         'isSetFast',emptyChar,...
         'level',defaultLevel,...
         'version',defaultVersion);
-    
-else defaultFbcVersion==2
-    
+
+elseif defaultFbcVersion==2
+
     tmp_Rxn=struct('typecode','SBML_REACTION',...
         'metaid',emptyChar,...
         'notes',emptyChar,... %%
@@ -536,6 +536,7 @@ else defaultFbcVersion==2
         'level',defaultLevel,...
         'version',defaultVersion,...
         'fbc_version',defaultFbcVersion);
+
 end
 
 sbml_tmp_species_ref=struct('typecode','SBML_SPECIES_REFERENCE',... %
@@ -619,7 +620,7 @@ end
 
 if ~isempty(listUniqueValues)
     for i=1:length(listUniqueNames)
-        
+
         tmp_parameter.id=listUniqueNames{i,1};
         tmp_parameter.value=listUniqueValues(i);
         if i==1
@@ -646,7 +647,6 @@ tmp_Rxn.fbc_geneProductAssociation=struct('typecode','SBML_FBC_GENE_PRODUCT_ASSO
     'level',defaultLevel,...
     'version',defaultVersion,...
     'fbc_version',defaultFbcVersion);
-
 
 tmp_Rxn.fbc_geneProductAssociation.fbc_association=struct('typecode','SBML_FBC_OR',...
     'metaid',emptyChar,... % 'ss'
@@ -679,11 +679,11 @@ for i=1:size(model.rxns, 1)
     % % %     sbml_tmp_law.parameter = [ sbml_tmp_law.parameter sbml_tmp_parameter ];
     % % %     sbml_tmp_reaction.kineticLaw = sbml_tmp_law;
     %     sbml_tmp_reaction.notes = '';
-    
+
     % Add in other notes
-    
+
     %% gene association support for the case of FBCv1
-    
+
     tmp_note = emptyChar;
     if defaultFbcVersion~=2 % only when fbc version is not 2;
         if isfield(model, 'grRules')
@@ -697,9 +697,9 @@ for i=1:size(model.rxns, 1)
         tmp_note = [ tmp_note ' <p>EC Number: ' model.rxnECNumbers{i} '</p>'];
     end
     if isfield(model, 'rxnConfidenceScores')&&i<=length(model.rxnConfidenceScores)%&&~isempty(model.confidenceScores{i})
-        
+
         tmp_note = [ tmp_note ' <p>Confidence Level: ' num2str(model.rxnConfidenceScores(i)) '</p>'];
-        
+
     end
     if isfield(model, 'rxnReferences')&&i<=length(model.rxnReferences)%&&~isempty(model.rxnReferences{i})
         tmp_note = [ tmp_note ' <p>AUTHORS: ' model.rxnReferences{i} '</p>'];
@@ -711,11 +711,11 @@ for i=1:size(model.rxns, 1)
         tmp_note = ['<body xmlns="http://www.w3.org/1999/xhtml">' tmp_note '</body>'];
     end
     tmp_Rxn.notes=tmp_note;
-    
+
     % % % %     tmp_noteArray{i,1}=tmp_note;
-    
+
     %Reset the fields that have been filled.
-    
+
     %     sbml_tmp_reaction.reactant = [];
     %     sbml_tmp_reaction.product = [];
     %     sbml_tmp_reaction.kineticLaw = [];
@@ -732,27 +732,27 @@ for i=1:size(model.rxns, 1)
     % % % %     else
     % % % %         tmp_rxnRev(i,1)=0;
     % % % %     end
-    
+
     tmp_rxnID =  strcat('R_', formatForSBMLID(model.rxns{i}));
-    
+
     tmp_rxnName=emptyChar;
     if isfield(model, 'rxnNames')
         tmp_rxnName = model.rxnNames{i};
     end
-    
+
     if isfield(model, 'rev')
         tmp_rxnRev= model.rev(i);
     else
         tmp_rxnRev=0;
     end
-            
+
     tmp_Rxn.id=tmp_rxnID;
     tmp_Rxn.name=tmp_rxnName;
     tmp_Rxn.reversible=tmp_rxnRev;
-    
+
     tmp_Rxn.fast=0;
     tmp_Rxn.isSetFast=1;
-    
+
     %Add in the reactants and products
     met_idx = find(model.S(:, i));
     tmp_Rxn.product=[];
@@ -771,11 +771,11 @@ for i=1:size(model.rxns, 1)
         end
     end
     %% grRules
-    
+
     if isfield(model, 'grRules')
         sbml_tmp_grRules= model.grRules(i);
         %% need to be improved since the fbc_id for the gene association is not provided.
-        
+
         tmp_fbc_id=['gene',num2str(i)]; % set a default gene name.
         %     tmp_Rxn.tmp_fbc_geneProductAssociation=[];
         %         if i==1;
@@ -785,12 +785,12 @@ for i=1:size(model.rxns, 1)
         %     sbmlModel.reaction=[sbmlModel.reaction,sbml_tmp_grRules];
         %         end
     end
-    
+
     if defaultFbcVersion==2 % in the cae of FBCv2
         tmp_Rxn.fbc_lowerFluxBound=totalNames{i}; % num2str(model.lb(i));
         tmp_Rxn.fbc_upperFluxBound=totalNames{length(model.lb)+i}; % num2str(model.ub(i));
     end
-    
+
     if i==1;
         sbmlModel.reaction=tmp_Rxn;
     else
@@ -799,26 +799,26 @@ for i=1:size(model.rxns, 1)
     %% bounds
     if defaultFbcVersion==1  % in the cae of FBCv1
         % generate the sbmlModel.reaction.
-        
+
         % %         if i==1;
         % %             sbmlModel.reaction=tmp_Rxn;
         % %         else
         % %             sbmlModel.reaction=[sbmlModel.reaction,tmp_Rxn];
         % %         end
-        
+
         tmp_fbc_fluxBoundLb.fbc_reaction=tmp_rxnID; % Reaction ID
         tmp_fbc_fluxBoundUb.fbc_reaction=tmp_rxnID;
-        
+
         tmp_fbc_fluxBoundLb.fbc_value=model.lb(i);
         tmp_fbc_fluxBoundUb.fbc_value=model.ub(i);
-        
+
         if i==1
             sbmlModel.fbc_fluxBound=[tmp_fbc_fluxBoundLb,tmp_fbc_fluxBoundUb];
         else
             sbmlModel.fbc_fluxBound=[sbmlModel.fbc_fluxBound,tmp_fbc_fluxBoundLb,tmp_fbc_fluxBoundUb];
         end
     end
-    
+
 end
 
 % % if debug_function

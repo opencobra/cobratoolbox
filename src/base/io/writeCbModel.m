@@ -159,7 +159,7 @@ switch format
         end
         fprintf(fid,'LB\tUB\tObjective\n');
         for i = 1:nRxns
-            fprintf(fid,'%s\t',model.rxns{i});            
+            fprintf(fid,'%s\t',model.rxns{i});
             fprintf(fid,'%s\t',formulas{i});
             if (isfield(model,'rules'))
                 fprintf(fid,'%s\t',model.grRules{i});
@@ -278,7 +278,6 @@ switch format
                 tmpMetData{i+1,7} = '';
             end
             if isfield(model,'metChEBIID')
-                
                 tmpMetData{i+1,8} = chopForExcel(model.metChEBIID(i));
             else
                 tmpMetData{i+1,8} = '';

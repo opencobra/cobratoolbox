@@ -47,9 +47,9 @@ function results = verifyModel(model,varargin)
 
 
 requiredFields = {'S','b','csense','lb','ub','c','osense','rxns','mets','genes','rules'};
-     
+
 if any(ismember(varargin,'requiredFields'))
-    requiredFields = varargin{find(ismember(varargin,'requiredFields'))+1};
+    requiredFields = varargin{find(ismember(varargin,'requiredFields')) + 1};
 end
 [optionalFields] = getDefinedFieldProperties();
 requiredFields = optionalFields(ismember(optionalFields(:,1), requiredFields),:);
@@ -60,7 +60,7 @@ results.Errors = struct();
 %First, check for missing required Fields
 missingFields = setdiff(requiredFields(:,1),fieldnames(model));
 if ~isempty(missingFields)
-    results.Errors.missingFields = missingFields;    
+    results.Errors.missingFields = missingFields;
 end
 
 results = checkPresentFields(requiredFields,model,results);
@@ -91,7 +91,6 @@ if any(ismember(varargin,'massBalance'))
     else
         results.massBalance.missingFields = 'The metFormulas field is missing. Cannot determine the mass Balance';
     end
-    
 end
 
 %Do charge Balance checks
@@ -125,7 +124,7 @@ if any(ismember(varargin,'fluxConsistency'))
         end
         results.fluxConsistency.consistentReactionBool = ( (abs(mins) > 1e-12)| (abs(maxs) > 1e-12));
     end
-    
+
 end
 
 if any(ismember(varargin,'deadEndMetabolites'))
@@ -137,7 +136,7 @@ end
 if any(ismember(varargin,'stoichiometricConsistency'))
     [SConsistentMetBool,SConsistentRxnBool,SInConsistentMetBool,SInConsistentRxnBool,unknownSConsistencyMetBool,~]=...
         findStoichConsistentSubset(model,0,0);
-    
+
     stoichiometricConsistency = struct();
     stoichiometricConsistency.SConsistentMetBool = SConsistentMetBool;
     stoichiometricConsistency.SConsistentRxnBool = SConsistentRxnBool;
@@ -145,7 +144,7 @@ if any(ismember(varargin,'stoichiometricConsistency'))
     stoichiometricConsistency.SInConsistentRxnBool = SInConsistentRxnBool;
     stoichiometricConsistency.unknownSConsistencyMetBool = unknownSConsistencyMetBool;
     stoichiometricConsistency.unknownSConsistencyRxnBool = ununknownSConsistencyRxnBool;
-    
+
     results.stoichiometricConsistency = stoichiometricConsistency ;
 end
 
@@ -178,7 +177,7 @@ for i = 1:numel(presentFields)
     [x_size,y_size] = size(model.(testedField));
     xFieldMatch = fieldProperties{presentFields(i),2};
     yFieldMatch = fieldProperties{presentFields(i),3};
-    
+
     checkX = ~isnan(xFieldMatch);
     checkY = ~isnan(yFieldMatch);
     if checkX
@@ -209,9 +208,9 @@ for i = 1:numel(presentFields)
     end
     %Test the field content properties
     %x is necessary here, since it is used for the eval below!
-    x = model.(testedField);    
+    x = model.(testedField);
     try
-        propertiesMatched = eval(fieldProperties{presentFields(i),4});    
+        propertiesMatched = eval(fieldProperties{presentFields(i),4});
     catch
         propertiesMatched = false;
     end
@@ -221,8 +220,6 @@ for i = 1:numel(presentFields)
         end
         results.Errors.propertiesNotMatched.(testedField) = 'Field does not match the required properties';
     end
-    
+
 end
 end
-
-

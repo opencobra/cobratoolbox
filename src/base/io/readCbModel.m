@@ -127,13 +127,8 @@ if ~exist('fileType','var') || isempty(fileType)
         [fileName] = uigetfile([supportedFileExtensions,{'Model Files'}],'Please select the model file');
     end
 
-    [~,~,FileExtension] = fileparts(fileName);
-    if ~isempty(FileExtension)
-        %if we have a file Extension, get the full path.
-        if exist(fileName,'file')
-            fileName = which(fileName);
-        end
-    else
+    [~, ~, FileExtension] = fileparts(fileName);
+    if isempty(FileExtension)
         %if we don't have a file extension, we try to see, which files
         %could match (only on the current directory, not on all the path).
         cfiles = dir(pwd);
@@ -184,8 +179,6 @@ if ~exist('fileType','var') || isempty(fileType)
     end
 
 end
-
-
 
 if isempty(modelDescription)
     modelDescription = fileName;
