@@ -1,6 +1,6 @@
 # Guide for writing a test
 
-Before starting to write a test on your own, it might be instructive to follow common test practices in `/test/verifiedTests`. A style guide on how to write tests is given [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/guides/STYLEGUIDE.md).
+Before starting to write a test on your own, it might be instructive to follow common test practices in `/test/verifiedTests`. A style guide on how to write tests is given [here](https://opencobra.github.io/cobratoolbox/docs/styleGuide.html).
 
 ## Test if an output is correct
 
@@ -55,7 +55,7 @@ Note that this allows the error message to be thrown without failing the test.
 
 ## Test template
 
-A test template is readily available [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/guides/testTemplate.m). The following sections shall be included in a test file:
+A test template is readily available [here](https://opencobra.github.io/cobratoolbox/docs/testTemplate.html). The following sections shall be included in a test file:
 
 #### 1. Header
 ````Matlab

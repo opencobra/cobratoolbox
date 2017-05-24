@@ -29,11 +29,4 @@ Funding
            <div style="align-center;"><a href="https://energy.gov"><img src="_static/images/logos/doe.png" alt="" width="100%"></a></div>
        </li>
    </ul>
-   <br>
-   <br>
-   <br>
-   <p align="center" style="font-size:20px"> <strong> Principal investigators </strong>
-   <br><br>
-   Ronan Fleming &#8213; Ines Thiele &#8213; Thomas Sauter
    </p>
-

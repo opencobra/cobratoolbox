@@ -143,7 +143,7 @@ function configEnvVars(printLevel)
             % if the solver variable is still empty, then give instructions on how to proceed
             if isempty(eval(solverPaths{k, 1}))
                 if printLevel > 0
-                    solversLink = 'https://git.io/v92Vi'; % curl -i https://git.io -F "url=https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md"
+                    solversLink = 'https://opencobra.github.io/cobratoolbox/docs/solvers.html';
                     if usejava('desktop')
                         solversLink = ['<a href=\"', solversLink, '\">instructions</a>'];
                     end

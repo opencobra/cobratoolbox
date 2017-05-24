@@ -1,5 +1,5 @@
 <p align="center">
-  <img class="readme_logo" src="https://raw.githubusercontent.com/opencobra/cobratoolbox/master/docs/source/_static/logo.png" height="160px"/>
+  <img class="readme_logo" src="https://raw.githubusercontent.com/opencobra/cobratoolbox/master/docs/source/_static/images/logos/logo.png" height="160px"/>
 </p>
 
 The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox
@@ -32,12 +32,12 @@ The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox
 System Requirements
 -------------------
 
-<img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" alt="warning"> Please follow [this guide](https://github.com/opencobra/cobratoolbox/blob/master/.github/REQUIREMENTS.md) in order to configure your system properly.
+<img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" alt="warning"> Please follow [this guide](https://opencobra.github.io/cobratoolbox/docs/requirements.html) in order to configure your system properly.
 
 Solver Installation
 -------------------
 
-The default solver is `glpk` (for `LP` and `MILP`). You can install `TOMLAB`, `IBM ILOG CPLEX`, `GUROBI`, or `MOSEK` by following these **[detailed instructions](https://github.com/opencobra/cobratoolbox/blob/master/.github/SOLVERS.md)**.
+The default solver is `glpk` (for `LP` and `MILP`). You can install `TOMLAB`, `IBM ILOG CPLEX`, `GUROBI`, or `MOSEK` by following these **[detailed instructions](https://opencobra.github.io/cobratoolbox/docs/solvers.html)**.
 
 Installation
 ------------
@@ -68,7 +68,7 @@ Support and Documentation
 
 - The documentation is available [here](http://opencobra.github.io/cobratoolbox). This version is in development, but the legacy version of the documentation is  [here](http://opencobra.github.io/cobratoolbox/deprecated/docs/index.html).
 
-- Answers to Frequently Asked Questions (**FAQ**) are [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/guides/FAQ.md).
+- Answers to Frequently Asked Questions (**FAQ**) are [here](https://opencobra.github.io/cobratoolbox/docs/FAQ.html).
 
 - If you need support, please feel free to post your question in our <a href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img src="https://img.shields.io/badge/COBRA-forum-blue.svg"></a>.
 
@@ -83,14 +83,14 @@ How to contribute
 
 <img src="https://prince.lcsb.uni.lu/jenkins/userContent/bulb.png" height="20px" alt="bulb"> **Check out the [MATLAB.devTools](https://github.com/opencobra/MATLAB.devTools) - and contribute the smart way!**
 
-- Please follow the [Style Guide](https://github.com/opencobra/cobratoolbox/blob/master/.github/guides/STYLEGUIDE.md).
-- More information on writing a **test** is [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/guides/TESTGUIDE.md) and a template is [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/guides/testTemplate.m).
-- A guide for reporting an **issue** or submitting a **pull request (PR)** is [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/guides/ISSUEGUIDE.md).
+- Please follow the [Style Guide](https://opencobra.github.io/cobratoolbox/docs/styleGuide.html).
+- More information on writing a **test** is [here](https://opencobra.github.io/cobratoolbox/docs/testGuide.html) and a template is [here](https://opencobra.github.io/cobratoolbox/docs/testTemplate.html).
+- A guide for reporting an **issue** or submitting a **pull request (PR)** is [here](https://opencobra.github.io/cobratoolbox/docs/issueGuide.html).
 
 If you want to use `git` via the command line interface and need help, these [training slides](https://uni-lu.github.io/slides/) will get you started. This [guide](https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github) or the official [GitHub guide](https://help.github.com/articles/creating-a-pull-request/) also come in handy.
 
 How to cite `The COBRA Toolbox`
----------------
+-------------------------------
 
 When citing `The COBRA Toolbox`, it is important to cite the original paper where an algorithm was first reported, as well as its implementation in `The COBRA Toolbox`. This is important, because the objective of `The COBRA Toolbox` is to amalgamate and integrate the functionality of a wide range of COBRA algorithms and this will be undermined if contributors of new algorithms do not get their fair share of citations. The following is one example how to approach this within the methods section of a paper (**not** the supplemental material please):
 
@@ -110,7 +110,7 @@ For convenience, we provide the [`SBMLToolbox 4.1.0`](http://sbml.org/Software/S
 [Binaries](https://github.com/opencobra/COBRA.binary) for these libraries are provided in a submodule for Mac OS X 10.6 or later (64-bit), GNU/Linux Ubuntu 10.0 (64-bit), and Microsoft Windows 7 (64-bit).
 For unsupported OS, please refer to their respective building instructions ([`glpk_mex`](https://github.com/blegat/glpkmex#instructions-for-compiling-from-source), [`libSBML`](http://sbml.org/Software/libSBML/5.13.0/docs//cpp-api/libsbml-installation.html)).
 
-Read more on the compatibility with SBML-FBCv2 [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/guides/NOTES.md).
+Read more on the compatibility with SBML-FBCv2 [here](https://opencobra.github.io/cobratoolbox/docs/notes.html).
 
 Disclaimer
 ----------

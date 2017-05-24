@@ -5,7 +5,7 @@ Frequently Asked Questions (FAQ)
 
 **What do all these labels mean?**
 
-A comprehensive list of labels and their description for the issues and pull requests is given [here](https://github.com/opencobra/cobratoolbox/blob/master/.github/guides/LABELS.md).
+A comprehensive list of labels and their description for the issues and pull requests is given [here](https://opencobra.github.io/cobratoolbox/docs/labels.html).
 
 ## Reconstruction
 
@@ -32,9 +32,9 @@ git rm --cached external/lusolMex64bit
 
 When running cobra code in a parfor loop, solvers (and other global variables) are not properly set.  
 
-**Answer**: This is an issue with global variables and the matlab parallel computing toolbox. 
+**Answer**: This is an issue with global variables and the matlab parallel computing toolbox.
 Global variables are not passed on to the workers of a parallel pool.  
-To change cobra global settings for a parfor loop, it is necessary to 
+To change cobra global settings for a parfor loop, it is necessary to
 reinitialize the global variables on each worker. The easiest way to do this is as follows:
 ```Matlab
 global CBT_SOLVER_LP
@@ -45,5 +45,5 @@ parfor 1:2
     optimizeCbModel(model);
 end
 ```
-By requesting the current global variable before the parfor loop and assigning it to a local variable, that variable is passed on to the workers, 
-which can then use it to set up the correct solver (or other variable). 
+By requesting the current global variable before the parfor loop and assigning it to a local variable, that variable is passed on to the workers,
+which can then use it to set up the correct solver (or other variable).
