@@ -33,7 +33,12 @@ for i = 1:numel(convertedFields)
 end
 %and that the new ones are containing the old data
 for i = 1:numel(convertedFields)
-    assert(all(cellfun(@(x,y) isequal(x,y), model.(convertedFields{i}), modelnew.(newFields{i}))));
+    if strcmp(convertedFields{i},'confidenceScores')
+       %This field is different
+       assert(isnumeric(modelnew.(newFields{i})));
+    else
+        assert(all(cellfun(@(x,y) isequal(x,y), model.(convertedFields{i}), modelnew.(newFields{i}))));
+    end
 end
 
 
@@ -44,7 +49,12 @@ convertedFields = {'metSmile','metInchiString','confidenceScores','ecNumbers','r
 newFields = {'metSmiles','metInChIString','rxnConfidenceScores','rxnECNumbers','rxnKEGGID','metKEGGID'};
 retainedFields = {'metHMDBID','metHMDB'};
 for i = 1:numel(convertedFields)
-    assert(all(cellfun(@(x,y) isequal(x,y), model.(convertedFields{i}), modelnew.(newFields{i}))));
+    if strcmp(convertedFields{i},'confidenceScores')
+       %This field is different
+       assert(isnumeric(modelnew.(newFields{i})));
+    else
+        assert(all(cellfun(@(x,y) isequal(x,y), model.(convertedFields{i}), modelnew.(newFields{i}))));
+    end
 end
 for i = 1:numel(retainedFields)
     assert(all(cellfun(@(x,y) isequal(x,y), model.(retainedFields{i}), modelnew.(retainedFields{i}))));
@@ -54,7 +64,12 @@ model.metHMDB = newHMDBIDs;
 
 modelnew = convertOldStyleModel(model);
 for i = 1:numel(convertedFields)
-    assert(all(cellfun(@(x,y) isequal(x,y), model.(convertedFields{i}), modelnew.(newFields{i}))));
+    if strcmp(convertedFields{i},'confidenceScores')
+       %This field is different
+       assert(isnumeric(modelnew.(newFields{i})));
+    else
+        assert(all(cellfun(@(x,y) isequal(x,y), model.(convertedFields{i}), modelnew.(newFields{i}))));
+    end
 end
 assert(all(cellfun(@(x,y) isequal(x,y), modelnew.metHMDBID,model.metHMDBID)));
 randpos = randi(numel(model.mets),20,1);
@@ -62,7 +77,12 @@ newHMDBIDs(randpos) = {''};
 model.metHMDBID = newHMDBIDs;
 modelnew = convertOldStyleModel(model);
 for i = 1:numel(convertedFields)
-    assert(all(cellfun(@(x,y) isequal(x,y), model.(convertedFields{i}), modelnew.(newFields{i}))));
+    if strcmp(convertedFields{i},'confidenceScores')
+       %This field is different
+       assert(isnumeric(modelnew.(newFields{i})));
+    else
+        assert(all(cellfun(@(x,y) isequal(x,y), model.(convertedFields{i}), modelnew.(newFields{i}))));
+    end
 end
 
 assert(all(cellfun(@(x,y) isequal(x,y), modelnew.metHMDBID(randpos),model.metHMDB(randpos))));

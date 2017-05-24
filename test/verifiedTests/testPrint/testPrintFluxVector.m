@@ -24,6 +24,9 @@ delete('printFluxVector.txt');
 
 % initialize the random number generator to make the results in this test repeatable.
 rng('default');
+%NOTE: This will create Infeasible fluxes for irreversible reactions, thus
+%showing very odd fluxes with an irrev reaction carrying negative flux. But
+%thats ok for the test.
 flux = randn(length(model.rxns), 1);
 
 diary('printFluxVector.txt');

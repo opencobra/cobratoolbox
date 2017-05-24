@@ -1,27 +1,24 @@
 function model = readSBML(fileName,defaultBound,compSymbolList,compNameList)
-
 % readSBML reads in a SBML format model as a COBRA matlab structure
 %
 %
-%INPUTS
-% fileName          File name for file to read in
+%INPUTS:
+%    fileName:          File name for file to read in
 %
-%OPTIONAL INPUTS
-% defaultBound      Maximum bound for model (Default = 1000)
-% compSymbolList    List of compartment symbols
-% compNameList      List of compartment names corresponding to compSymbolList
+%OPTIONAL INPUTS:
+%    defaultBound:      Maximum bound for model (Default = 1000)
+%    compSymbolList:    List of compartment symbols
+%    compNameList:      List of compartment names corresponding to compSymbolList
 %
-%OUTPUT
-% model             COBRA model structure
+%OUTPUT:
+%    model:             COBRA model structure
 %
+% Authors:
 % Markus Herrgard 1/25/08
-%
 % Ines Thiele 01/27/2010 - I added new field to be read-in from SBML file
-% if provided in file (e.g., references, comments, metabolite IDs, etc.)
-%
+%                          if provided in file (e.g., references, comments, metabolite IDs, etc.)
 % Richard Que 02/08/10 - Properly format reaction and metabolite fields
 %                        from SBML.
-%
 % Longfei Mao 23/09/15 - Added support for the FBCv2 format
 %
 
@@ -719,6 +716,14 @@ if (hasAnnotationField)
     model.metPubChemID = columnVector(metPubChemID);
     model.metInChIString = columnVector(metInChIString);
 end
+
+%temporary before remake of readSBML
+if isfield(model,'osense')
+    if numel(model.osense) > 1
+        model.osense = model.osense(1);
+    end
+end
+model = convertOldStyleModel(model);
 
 end
 

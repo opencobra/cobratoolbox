@@ -595,7 +595,7 @@ switch solver
     case 'mps'
         fprintf(' > The interface to ''mps'' from solveCobraMILP will not be supported anymore.\n -> Use >> writeCbModel(model, ''mps'');\n');
         % temporary legacy support
-        writeCbModel(MILPproblem, 'mps', 'MILP.mps', [], [], [], [], solverParams);
+        writeLPProblem(MILPproblem, 'problemName','COBRAMILPProblem','fileName','MILP.mps','solverParams',solverParams);        
         return
     otherwise
         error(['Unknown solver: ' solver]);
