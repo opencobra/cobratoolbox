@@ -38,9 +38,9 @@ end
 
 
 %% load and check tutorial input is loaded correctly
-if isequal(exist([pathToCOBRA '\cobratoolbox\metabotools\tutorial_I\starting_model.mat'],'file'),2)% 2 means it's a file.
+if isequal(exist([pathToCOBRA '\cobratoolbox\tutorials\metabotools\tutorial_II\starting_model.mat'],'file'),2)% 2 means it's a file.
     % We have a file!
-    load([pathToCOBRA '\cobratoolbox\metabotools\tutorial_II\starting_model.mat']);
+    load([pathToCOBRA '\cobratoolbox\tutorials\metabotools\tutorial_II\starting_model.mat']);
     display('The model is loaded.');
    
 else 
@@ -91,7 +91,7 @@ clearvars -EXCEPT modelMedium tol solver path solverQuant
 
 %% Section 2 - Generate an individual exchange profiles for each sample
 
-load([path 'tutorial_II_data']);
+load([pathToCOBRA '\cobratoolbox\tutorials\metabotools\tutorial_II\tutorial_II_data']);
 model = modelMedium;
 test_max = 500;
 test_min = 0.0001;
@@ -171,7 +171,7 @@ clearvars -EXCEPT modelMedium samples ResultsAllCellLines OverViewResults Ex_add
 mk_union = 1;
 mk_intersect = 1;
 mk_reactionDiff = 1;
-load([path 'starting_model']);
+load([pathToCOBRA '\cobratoolbox\tutorials\metabotools\tutorial_II\starting_model']);
 model = starting_model;
 
 [unionModel,intersectModel, diffRxns, diffExRxns] = makeSummaryModels(ResultsAllCellLines,samples, model, mk_union, mk_intersect, mk_reactionDiff);
