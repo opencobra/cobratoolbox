@@ -15,15 +15,15 @@ cd(fileparts(which('tutorial_IO.mlx')));
 
 %Copy two files that can be loaded (if they are nto yet present).
 try
-    delete 'Acidaminococcus_intestini_RyC_MR95.mat';
+    delete 'ecoli_core_model.mat';
     delete 'Abiotrophia_defectiva_ATCC_49176.xml'
-    copyfile(which('Acidaminococcus_intestini_RyC_MR95.mat'),'.');
+    copyfile(which('ecoli_core_model.mat'),'.');
     copyfile(which('Abiotrophia_defectiva_ATCC_49176.xml'),'.');
 end
 %% 1. Reading a model 
 %% 1.1 Available input formats
 % The COBRA Toolbox supports the use of models in multiple formats. Internally, 
-% it uses a simple MATLAB struct with fields defined in the <https://github.com/opencobra/cobratoolbox/blob/master/docs/source/Fields/ModelFields.md 
+% it uses a simple MATLAB struct with fields defined in the <https://opencobra.github.io/cobratoolbox/docs/COBRAModelFields.html 
 % Documentation>. These models are commonly provided in a .mat file.
 % 
 % There are additional model formats for which io functions exist in the 
@@ -35,7 +35,7 @@ end
 %% 1.1.1 Format Specifications
 %% Matlab save files:
 % The format of a model struct provided in a .mat file has to stick to the rules 
-% defined in the <https://github.com/opencobra/cobratoolbox/blob/master/docs/source/Fields/ModelFields.md 
+% defined in the <https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html 
 % Documentation>. 
 %% SBML Format
 % The COBRA Toolbox currently supports SBML models provided as Level 3 version 
@@ -71,21 +71,21 @@ end
 % 
 % 
 %% Excel Format
-% Excel files adhereing to the COBRA xls specifications listed in the <https://github.com/tpfau/cobratoolbox/blob/ModelFields/docs/source/IO/ExcelModelFileDefinition.md 
+% Excel files adhereing to the COBRA xls specifications listed in the <http://prince.lcsb.uni.lu/docs/ExcelModelFileDefinition.html 
 % Documentation>. Parseable excel models contain two sheets for reactions and 
 % metabolites respectively.
 %% 1.2. *Example*
 % The most straightforward way to import a model into the Toolbox is to use 
 % the readCbModel function. To e.g. load a model from a mat file, you can simply 
 % use the filename (with or without file extension). 
-
-fileName = 'Acidaminococcus_intestini_RyC_MR95'
+%%
+fileName = 'ecoli_core_model'
 model = readCbModel(fileName);
 %% 
 % readCbModel assumes, that .mat files are a matlab save file, .xml files 
 % are models in SBML format, .sto are SimPheny models, and .xls or .xlsx are models 
 % in Excel format.
-
+%%
 %This code is to avoid execution in non gui-environments
 if usejava('desktop')
 %% 
@@ -129,7 +129,7 @@ end
 % 
 % 
 %% 2.2 Example
-
+%%
 %This code is to avoid execution in non gui-environments
 if usejava('desktop')
 %% 
@@ -144,6 +144,7 @@ writeCbModel(model)
 
 %This code is to avoid execution in non gui-environments
 end
+%%
 %This code is to avoid execution in non gui-environments
 if usejava('desktop')
 %% 
@@ -163,7 +164,7 @@ writeCbModel(model,'text')
 end
 %% 
 % It is also possible to specify the format and filename explicitly:
-
+%%
 writeCbModel(model,'SBML','Acidaminococcus.xml')
 %% 
 % which will write the model to the file Acidaminococcus.xml.
