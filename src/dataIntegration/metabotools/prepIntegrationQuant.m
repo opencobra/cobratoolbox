@@ -73,8 +73,6 @@ FBA_all_secreted_names(i,1)={secretion};
      if ~isempty(G)
       Secretion_not_possible(l,1)= FBA_all_secreted_names{i};
       l=l+1;
-     else
-         Secretion_not_possible = {};
      end
  end
 
