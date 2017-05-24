@@ -3,7 +3,7 @@
 
 
 relaxFBA
------
+--------
 
 .. automodule:: src.modelAnalysis.relaxFBA
    :members:

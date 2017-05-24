@@ -3,7 +3,7 @@
 
 
 Deletion
------
+--------
 
 .. automodule:: src.modelAnalysis.deletion
    :members:

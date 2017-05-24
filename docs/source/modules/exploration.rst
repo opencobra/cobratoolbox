@@ -3,7 +3,7 @@
 
 
 Exploration
------
+-----------
 
 .. automodule:: src.modelAnalysis.exploration
    :members:
