@@ -1,10 +1,9 @@
 function OK=writeLPProblem(LPProblem,varargin)
-% Creates an MPS (Mathematical Programming System) format ascii file
-% representing the Linear Programming problem given by LPProblem.
+% Creates an MPS (Mathematical Programming System) format ascii file representing the Linear Programming problem given by LPProblem.
 %
 % USAGE:
 %
-%    OK = convertCobraLP2mps(LPProblem, name)
+%    OK = convertCobraLP2mps(LPProblem, varargin)
 %
 % INPUT:
 %    LPproblem:    Structure containing the following fields describing the LP problem to be solved
@@ -18,13 +17,19 @@ function OK=writeLPProblem(LPProblem,varargin)
 %                 * csense - Constraint senses, a string containting the constraint sense for
 %                   each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
-% OPTIONAL INPUT (as parameter value pairs)
-%    fileName:          Name of the output file
-%    solverParams:      A struct containing the solver parameters if provided
-%    outputFormat:      Currently only 'mps' is supported (and default)
-%    writeMatrix:       Only write the Matrix, not the full problem (default
-%                       true), will be ignored if solver params are provided
+% OPTIONAL INPUT 
+%    varargin:           a list of parameter/value pairs with the following
+%                       parameters:
+%                       
+%                       * 'fileName' - Name of the output file (e.g. 'Problem.mps')
+%                       * 'solverParams' - A struct containing the solver parameters if provided
+%                       * 'outputFormat' - Currently only 'mps' is supported (and default)
+%                       * 'writeMatrix' - Only write the Matrix, not the full problem (default
+%                        true), will be ignored if solver params are provided
 %
+% NOTE:
+%
+% 
 % OUTPUT:
 %    OK:        1 if saving is success, 0 otherwise
 %

@@ -1,6 +1,5 @@
 function model = readCbModel(fileName,varargin)
-% Reads in a constraint-based model. If no arguments are passed to the function, the user will be prompted for
-% a file name.
+% Reads in a constraint-based model. If no arguments are passed to the function, the user will be prompted for a file name.
 %
 % USAGE:
 %

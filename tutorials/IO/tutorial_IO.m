@@ -78,14 +78,14 @@ end
 % The most straightforward way to import a model into the Toolbox is to use 
 % the readCbModel function. To e.g. load a model from a mat file, you can simply 
 % use the filename (with or without file extension). 
-%%
+
 fileName = 'ecoli_core_model'
 model = readCbModel(fileName);
 %% 
 % readCbModel assumes, that .mat files are a matlab save file, .xml files 
 % are models in SBML format, .sto are SimPheny models, and .xls or .xlsx are models 
 % in Excel format.
-%%
+
 %This code is to avoid execution in non gui-environments
 if usejava('desktop')
 %% 
@@ -129,7 +129,7 @@ end
 % 
 % 
 %% 2.2 Example
-%%
+
 %This code is to avoid execution in non gui-environments
 if usejava('desktop')
 %% 
@@ -144,7 +144,6 @@ writeCbModel(model)
 
 %This code is to avoid execution in non gui-environments
 end
-%%
 %This code is to avoid execution in non gui-environments
 if usejava('desktop')
 %% 
@@ -164,7 +163,19 @@ writeCbModel(model,'text')
 end
 %% 
 % It is also possible to specify the format and filename explicitly:
-%%
+
 writeCbModel(model,'SBML','Acidaminococcus.xml')
 %% 
 % which will write the model to the file Acidaminococcus.xml.
+
+%Some Cleanup 
+currentDir = pwd;
+cd(fileparts(which('tutorial_IO.mlx')));
+
+%Copy two files that can be loaded (if they are nto yet present).
+try
+    delete 'ecoli_core_model.mat';
+    delete 'Abiotrophia_defectiva_ATCC_49176.xml'
+    delete 'Acidaminococcus.xml'
+end
+cd(currentDir)
