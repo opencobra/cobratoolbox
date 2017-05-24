@@ -1,4 +1,4 @@
-function modelWithField = creategrRulesField(modelWithField)
+function modelWithField = creategrRulesField(model)
 %CREATEGRRULESFIELD generates the grRules optional model field from the
 %required rules and gene fields.
 % USAGE:
