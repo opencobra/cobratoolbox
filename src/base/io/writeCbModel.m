@@ -3,13 +3,16 @@ function outmodel = writeCbModel(model,varargin)
 %
 % USAGE:
 %
+%    outmodel = writeCbModel(model)
+%    outmodel = writeCbModel(model,format)
+%    outmodel = writeCbModel(model,format,fileName)
 %    outmodel = writeCbModel(model,format,fileName, varargin)
 %
 % INPUTS:
 %    model:             Standard COBRA model structure
 %
 % OPTIONAL INPUTS:
-%   format              File format to be used ('text','xls', 'mat'(default) or 'sbml')
+%    format:            File format to be used ('text','xls', 'mat'(default) or 'sbml')
 %                       text will only output data from required fields (with GPR rules converted to string representation)
 %                       xls is restricted to the fields defined in the xls io documentation.
 %    fileName:          File name for output file (optional, default opens
@@ -25,7 +28,8 @@ function outmodel = writeCbModel(model,varargin)
 %       - Ines Thiele 01/10 - Added more options for field to write in xls format
 %       - Richard Que 3/17/10 -  Added ability to specify compartment names and symbols
 %       - Longfei Mao 26/04/2016 -  Added support for the FBCv2 format
-%       - Thomas Pfau May 2017  - Changed To Parameter/Value pairs%
+%       - Thomas Pfau May 2017  - Changed To Parameter/Value pairs and
+%                                 added flexibility
 % NOTE:
 %    The `writeCbModel` function relies on another function
 %    `io/utilities/writeSBML.m` to convert a COBRA-Matlab structure into

@@ -1,14 +1,22 @@
 function model = convertOldStyleModel(model, printLevel)
 %CONVERTOLDSTYLEMODEL converts several old fields to their replacement.
-%INPUT 
-% model     a COBRA Model (potentially with old field names)
 %
-%OPTIONAL INPUT
-% printLevel    indicates whether warnings and messages are given (default, 1).
+% USAGE:
 %
-%OUPUT
-% model     a COBRA model with old field names replaced by new ones and
-%           duplicated fields merged.
+%    model = convertOldStyleModel(model)
+%    model = convertOldStyleModel(model, printLevel)
+%
+% INPUT: 
+%    model:     a COBRA Model (potentially with old field names)
+%
+% OPTIONAL INPUT:
+%    printLevel:    indicates whether warnings and messages are given (default, 1).
+%
+% OUPUT:
+%    model:      a COBRA model with old field names replaced by new ones and
+%                duplicated fields merged.
+% .. Authors:
+%       - Thomas Pfaz May 2017
 warnstate = warning;
 if ~exist('printLevel','var')
     printLevel = 1;

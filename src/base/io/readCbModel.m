@@ -8,10 +8,10 @@ function model = readCbModel(fileName,varargin)
 %    model = readCbModel(fileName)
 %    model = readCbModel(fileName, varargin)
 %
-%OPTIONAL INPUTS
-%     fileName:         File name for file to read in (char)
+%OPTIONAL INPUTS:
+%    fileName:          File name for file to read in (char)
 %                       not given in the `SBML` file (Default = 1000)
-%     fileType:         File type for input files: 'SBML', 'SimPheny',
+%    fileType:          File type for input files: 'SBML', 'SimPheny',
 %                       'SimPhenyPlus', 'SimPhenyText', 'Matlab' or Excel' (Default = 'Matlab')
 %
 %                         * 'SBML' indicates a file in `SBML` format
@@ -24,12 +24,12 @@ function model = readCbModel(fileName,varargin)
 %                           associations
 %                         * Matlab will save the model as a matlab variable file.
 %                         * Excel will save the model as a two sheet Excel Model.
-%   modelDescription:   Description of model contents (char), default is the
-%                       choosen filename
-%   compSymbolList:     Compartment Symbol List( cell array)
+%    modelDescription:   Description of model contents (char), default is the
+%                        choosen filename
+%    compSymbolList:     Compartment Symbol List( cell array)
 %                       
 %
-%OUTPUT
+%OUTPUT:
 %    model:             Returns a model in the COBRA format:
 % 
 %                         * description - Description of model contents (opt)
@@ -55,16 +55,16 @@ function model = readCbModel(fileName,varargin)
 %
 %    %2) Load model named 'iJR904' in SBML format with maximum flux set
 %    %at 1000 (requires file named 'iJR904.xml' to exist)
-%           model = readCbModel('iJR904',1000,'SBML');
+%           model = readCbModel('iJR904','fileType','SBML','defaultBound', 1000);
 %
 %    %3) Load model named 'iJR904' in SimPheny format with maximum flux set
 %    %at 500 (requires files named 'iJR904.rxn', 'iJR904.met', and 'iJR904.sto' to exist)
-%           model = readCbModel('iJR904',500,'SimPheny');
+%           model = readCbModel('iJR904','fileType','SimPheny','defaultBound', 500);
 %
 %    %4) Load model named 'iJR904' in SimPheny format with gpr and compound information
 %    %(requires files named 'iJR904.rxn', 'iJR904.met','iJR904.sto',
 %    %'iJR904_gpr.txt', and 'iJR904_cmpd.txt' to exist)
-%           model = readCbModel('iJR904',500,'SimPhenyPlus');
+%           model = readCbModel('iJR904','fileType','SimPhenyPlus');
 %
 % .. Authors:
 %       - Markus Herrgard 7/11/06

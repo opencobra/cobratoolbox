@@ -1,14 +1,22 @@
 function results = verifyModel(model,varargin)
 %VERIFYMODEL checks the model for consistency with the COBRA Toolbox
 %
+% USAGE:
+%
+%    results = verifyModel(model)
+%    results = verifyModel(model,'simpleCheck')
+%    results = verifyModel(model,'massBalance')
+%    results = verifyModel(model,'fluxConsistency','massBalance')
+%    results = verifyModel(model,'simpleCheck','requiredFields',{'S,'lb','ub','c'})
+%
 % INPUT :
-% model         a structure that represents the COBRA model.
+%    model:         a structure that represents the COBRA model.
 %
 % OPTIONAL INPUT:
-% varargin contains additional Checks that shall be performed. provided as
-% Strings The results of the individual checks are returned as a structure
-% array containing the relevant values.
-% Options are:
+%    varargin       varargin contains additional Checks that shall be performed. provided as
+%                   Strings The results of the individual checks are returned as a structure
+%                   array containing the relevant values.
+%                   Options are:
 %                   'massBalance' (checks for Mass balance if the metFormula
 %                   Field is present)
 %                   'chargeBalance' (checks for charge Balance)
@@ -28,10 +36,13 @@ function results = verifyModel(model,varargin)
 %
 % OUTPUT:
 %
-% results       a struct containing fields for each requested option and an
-%               additional field Errors indicating the problems with the
-%               model structure detected by the verifyModel function.
+%    results:       a struct containing fields for each requested option and an
+%                   additional field Errors indicating the problems with the
+%                   model structure detected by the verifyModel function.
 %
+% Authors:
+%     - Thomas Pfau May 2017
+
 
 requiredFields = {'S','b','csense','lb','ub','c','osense','rxns','mets','genes','rules'};
      

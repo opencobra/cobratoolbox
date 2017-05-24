@@ -2,14 +2,21 @@ function orderedModel = orderModelFields(model)
 %ORDERMODELFIELDS orders the fields in a model according to the field
 %definitions. Required first, Optional following, Remaining fields in
 %alphabetical order.
-%INPUT
-% model             a model structure in COBRA format
+% USAGE:
+% 
+%    orderedModel = orderModelFields(model)   
 %
-%OUTPUT
+% INPUT:
+%    model             a model structure in COBRA format
 %
-% orderedModel      a model with fields ordered according to the field
-%                   definitions.
+% OUTPUT:
 %
+%    orderedModel      a model with fields ordered according to the field
+%                      definitions.
+%
+% Authors:
+%     - Thomas Pfau May 2017
+
 
 [fields] = getDefinedFieldProperties();
 

@@ -19,11 +19,11 @@ function OK=writeLPProblem(LPProblem,varargin)
 %                   each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
 % OPTIONAL INPUT (as parameter value pairs)
-% fileName          Name of the output file
-% solverParams      A struct containing the solver parameters if provided
-% outputFormat      Currently only 'mps' is supported (and default)
-% writeMatrix       Only write the Matrix, not the full problem (default
-%                   true), will be ignored if solver params are provided
+%    fileName:          Name of the output file
+%    solverParams:      A struct containing the solver parameters if provided
+%    outputFormat:      Currently only 'mps' is supported (and default)
+%    writeMatrix:       Only write the Matrix, not the full problem (default
+%                       true), will be ignored if solver params are provided
 %
 % OUTPUT:
 %    OK:        1 if saving is success, 0 otherwise
