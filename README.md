@@ -1,5 +1,5 @@
 <p align="center">
-  <img class="readme_logo" src="https://raw.githubusercontent.com/opencobra/cobratoolbox/master/docs/source/_static/images/logos/logo.png" height="160px"/>
+  <img class="readme_logo" src="docs/source/_static/images/logos/logo.png" height="160px"/>
 </p>
 
 The COBRA Toolbox <br> COnstraint-Based Reconstruction and Analysis Toolbox
@@ -61,7 +61,7 @@ Installation
 Tutorials
 ---------
 
-All tutorials are included in the folder [tutorials](https://github.com/opencobra/cobratoolbox/tree/master/tutorials). More tutorials are currently being prepared.
+All tutorials are included in the directory [/tutorials](https://github.com/opencobra/cobratoolbox/tree/master/tutorials). More tutorials are currently being prepared.
 
 Support and Documentation
 --------------
