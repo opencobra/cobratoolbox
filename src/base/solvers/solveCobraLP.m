@@ -1317,11 +1317,11 @@ switch solver
         end
         % 1 = (Simplex or Barrier) Optimal solution is available.
         stat=origStat;
-        if exist([pwd filesep 'clone1.log'],'file')
-            delete('clone1.log')
+        if exist([pwd filesep 'clone1_' labindex '.log'],'file')
+            delete([pwd filesep 'clone1_' labindex '.log'])
         end
-        if exist([pwd filesep 'clone2.log'],'file')
-            delete('clone2.log')
+        if exist([pwd filesep 'clone2_' labindex '.log'],'file')
+            delete([pwd filesep 'clone2_' labindex '.log'])
         end
     case 'lindo'
         %%
