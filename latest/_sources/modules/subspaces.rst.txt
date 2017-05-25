@@ -3,7 +3,7 @@
 
 
 Subspaces
-----
+---------
 
 .. toctree::
 
@@ -15,4 +15,3 @@ Subspaces
 
 .. automodule:: src.modelAnalysis.subspaces
    :members:
-

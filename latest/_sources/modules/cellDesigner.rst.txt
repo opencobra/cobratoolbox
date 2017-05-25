@@ -3,7 +3,7 @@
 
 
 cellDesigner
------
+------------
+
 .. automodule:: src.visualization.cellDesigner
    :members:
-

@@ -3,7 +3,7 @@
 
 
 Visualization
-----
+-------------
 
 .. toctree::
    :maxdepth: 2
@@ -13,4 +13,3 @@ Visualization
 
 .. automodule:: src.visualization
    :members:
-

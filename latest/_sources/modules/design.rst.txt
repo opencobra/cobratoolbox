@@ -3,7 +3,7 @@
 
 
 Design
------
+------
+
 .. automodule:: src.design
    :members:
-

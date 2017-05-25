@@ -12,4 +12,3 @@ Base
 
 .. automodule:: src.base
    :members:
-

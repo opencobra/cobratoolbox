@@ -1,7 +1,44 @@
+@import url("https://cdn.rawgit.com/vtimbuc/metro-mega-menu/master/menu/css/metro.css");
+
+ul.metro li.color_class1 a.tile { background-color: #C64127; border-radius: 50%; width: 120px; height: 120px;} /*#E07152*/
+ul.metro li.color_class2 a.tile { background-color: #2B5E89; border-radius: 50%; width: 120px; height: 120px;} /*#B5C172*/
+ul.metro li.color_class3 a.tile { background-color: #E28525; border-radius: 50%; width: 120px; height: 120px;} /*#78A6C1*/
+ul.metro li.color_class4 a.tile { background-color: #829E3C; border-radius: 50%; width: 120px; height: 120px;} /*#E5BD51*/
+
+.wrapper {
+    text-align: center;
+}
+.wrapper ul {
+    display: inline-block;
+    text-align: left;
+    /* For IE, the outcast */
+    *display: inline;
+}
+.wrapper li {
+    text-align: left;
+}
 * {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box
+}
+
+/* formatting of main round image */
+.avatar {
+    width: 280px;
+    margin: 10px;
+    border-offset: 15px;
+    border:1px solid #dddddd;
+    border-radius: 50%;
+    padding: 10px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+}
+
+/* redefine the bootstrap affix class for scrolling of side bar */
+.affix{
+    position: static;
+    overflow-y: scroll;
 }
 
 article,
