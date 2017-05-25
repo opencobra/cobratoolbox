@@ -165,7 +165,7 @@ switch solver
             b_L = b;
             b_U = b;
         end
-        
+
         %Set up the linear part
         CplexQPProblem = Cplex();
         CplexQPProblem.Model.A = A;
@@ -175,11 +175,11 @@ switch solver
         CplexQPProblem.Model.lhs = b_L;
         CplexQPProblem.Model.obj = osense*c;
         CplexQPProblem.Model.Q = F;
-               
+
         %optional parameters
         CplexQPProblem.Param.output.writelevel.Cur = printLevel;
         CplexQPProblem.Param.qpmethod.Cur = 1;
-        
+
 
         %Save Input if selected
         if ~isempty(saveInput)
@@ -195,14 +195,14 @@ switch solver
         x = Result.x;
         f = osense*Result.objval;
         origStat = Result.status;
-        if (origStat == 1 || origstat == 101)
+        if (origStat == 1 || origStat == 101)
             stat = 1; % Optimal
-        elseif (origStat == 3 || origStat == 4 || oriStat == 103)
+        elseif (origStat == 3 || origStat == 4 || origStat == 103)
             stat = 1; % Infeasible
         elseif (origStat == 2)
             stat = 2; % Unbounded
         else
-            stat = -1; % No optimal solution found (time or other limits reached, other infeasibility problems)        
+            stat = -1; % No optimal solution found (time or other limits reached, other infeasibility problems)
         end
         %%
     case 'cplex_direct'
