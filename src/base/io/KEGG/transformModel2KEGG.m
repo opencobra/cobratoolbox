@@ -7,7 +7,7 @@ function modelKEGG = transformModel2KEGG(model,Dictionary)
 %    modelKEGG = transformModel2KEGG(model, Dictionary)
 %
 % INPUTS:
-%    model:         model structure
+%    model:         COBRA model structure
 %    Dictionary:    consists of:
 %
 %                     * CompAbr = Dictionary(:, 1): List of compounds abreviation (non-compartelized)

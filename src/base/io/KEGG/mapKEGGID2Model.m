@@ -7,7 +7,7 @@ function model = mapKEGGID2Model(model, Dictionary)
 %     model = mapKEGGID2Model(model, Dictionary)
 %
 % INPUTS:
-%    model:         model structure
+%    model:         COBRA model structure
 %    Dictionary:    consists of:
 %
 %                     * CompAbr = Dictionary(:, 1): List of compounds abreviation (non-compartelized)

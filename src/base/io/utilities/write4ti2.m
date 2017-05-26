@@ -12,7 +12,7 @@ function write4ti2(SeFull, filename, uni)
 %    filename:    name of the file
 %
 % OPTIONAL INPUT:
-%    uni:m        {(0),1}, uni = 1 only outputs every second reaction
+%    uni:         {(0),1}, uni = 1 only outputs every second reaction
 
 SeFull=integerizeS(SeFull); %function integerizeS not defined in the COBRA toolbox
 

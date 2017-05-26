@@ -7,7 +7,7 @@ function outputNetworkOmix(model, rxnBool)
 %    outputNetworkOmix(model, rxnBool)
 %
 % INPUT:
-%    model:      model structure
+%    model:      COBRA model structure
 %
 % OPTIONAL INPUT:
 %    rxnBool:    boolean vector with 1 for each reaction to be exported

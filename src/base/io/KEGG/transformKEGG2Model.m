@@ -13,7 +13,7 @@ function model = transformKEGG2Model(modelKEGG, dictionary)
 %                     * KEGGID = Dictionary(:, 2): List of KEGGIDs for compounds in `CompAbr`
 %
 % OUTPUT:
-%    model:         cobra ctructure model
+%    model:         COBRA model structure
 
 if (nargin == 2)
     model = mapMetName2KEGGID(modelKEGG,dictionary);

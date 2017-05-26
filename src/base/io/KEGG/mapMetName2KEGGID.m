@@ -13,7 +13,7 @@ function model = mapMetName2KEGGID(model, Dictionary)
 %                     * KEGGID = Dictionary(:, 2): List of KEGGIDs for compounds in `CompAbr`
 %
 % OUTPUT:
-%    model:         cobra ctructure model
+%    model:         COBRA model structure
 
 HTABLE = java.util.Hashtable; %Hash all KEGG ID's
 CompAbr = Dictionary(:, 1);

@@ -12,7 +12,7 @@ function model = loadIdentifiedModel(filename, directory)
 %    directory:    directory where the .mat file resides.
 %
 % OUTPUT:
-%    model:        cobra toolbox model
+%    model:        COBRA model structure
 %
 % .. Author: - Ronan Fleming
 
