@@ -1,13 +1,12 @@
 function [genes,rule,subSystem,grRule,formula,confidenceScore,citation,comment,ecNumber,charge] = parseSBMLNotesField(notesField)
-%parseSBMLNotesField Parse the notes field of an SBML file to extract
-%gene-rxn associations
+% Parse the notes field of an SBML file to extract
+% `gene-rxn` associations
 %
-% [genes,rule] = parseSBMLNotesField(notesField)
-%
-% Markus Herrgard 8/7/06
-% Ines Thiele 1/27/10 Added new fields
-% Handle different notes fields
-% Thomas Pfau 1/10/17 Make distinction between Matlab versions
+% .. Authors:
+%       - Markus Herrgard 8/7/06
+%       - Ines Thiele 1/27/10 Added new fields
+%       - Handle different notes fields
+%       - Thomas Pfau 1/10/17 Make distinction between Matlab versions
 
 MatlabVer = version('-release');
 [A,B] = regexp(MatlabVer,'[\d]+');
@@ -53,7 +52,7 @@ for i = 1:length(fieldList)
         subSystem = strtrim(strjoin(strfields(2:end),':'));
         subSystem = strrep(subSystem,'S_','');
         subSystem = regexprep(subSystem,'_+',' ');
-        
+
     elseif strcmp(strfields{1},'EC Number') || strcmp(strfields{1},'EC_Number') || strcmp(strfields{1},'EC_NUMBER') || strcmp(strfields{1},'EC NUMBER')
         ecNumber = strtrim(strjoin(strfields(2:end),':'));
     elseif strcmp(strfields{1},'FORMULA') || strcmp(strfields{1},'Formula')

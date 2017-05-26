@@ -1,12 +1,18 @@
-function writeCytoscapeEdgeAttributeTable(model,C,B,N,replicateMetBool,filename)
-%write out a set of boolean edge attributes as one of a pair of colours,
-%Red for yes, Black for No
+function writeCytoscapeEdgeAttributeTable(model, C, B, N, replicateMetBool, filename)
+% Writes out a set of boolean edge attributes as one of a pair of colours,
+% Red for yes, Black for No
 %
-%INPUT
-% model.S       #met x #reaction
-% C             #reaction x #attribute cell array
-% B             #reaction x #attribute Boolean matrix
-% N             #reaction x #attribute numeric array
+% USAGE:
+%
+%    writeCytoscapeEdgeAttributeTable(model, C, B, N, replicateMetBool, filename)
+%
+% INPUTS:
+%    model:               structure with obligatory field .S - `met` x `reaction`
+%    C:                   `reaction` x `attribute` cell array
+%    B:                   `reaction` x `attribute` Boolean matrix
+%    N:                   `reaction` x `attribute` numeric array
+%    replicateMetBool:    boolean for replicated mets
+%    filename:            name of the file
 
 
 yesColor='Red';

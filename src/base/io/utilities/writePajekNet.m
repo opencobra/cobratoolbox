@@ -1,25 +1,26 @@
 function writePajekNet(model)
-% writePajekNet builds a metabolite centric directed graph from a COBRA model
+% Builds a metabolite centric directed graph from a COBRA model
 % and outputs a graph in a .net format ready
 % to use for most graph analysis software e.g. Pajek, it does one fba to
 % set the link width equal to reaction fluxes
 %
-% Ex: A + B -> C (hypergraph) with v = 0 => no output (empty line)
-%     if v>0 then it becomes A -> C; B -> C (graph)
-%     if v<0 then the order is reversed
+% Ex: `A + B -> C` (hypergraph) with `v = 0` => no output (empty line)
+%    if `v > 0` then it becomes `A -> C`; `B -> C` (graph),
+%    if `v < 0` then the order is reversed
 %
-% INPUT
-% model    a COBRA structured model
+% USAGE:
 %
-% OUTPUT
-% .net     file containing the graph
+%    writePajekNet(model)
 %
-% USAGE    cobra2net(model)
+% INPUT:
+%    model:    a COBRA structured model
 %
-% Marouen BEN GUEBILA 20/01/2016
+% OUTPUT:
+%    .net:     file containing the graph
+%
+% .. Author: - Marouen BEN GUEBILA 20/01/2016
 
-%reaction and metabolite number
-m = length(model.mets);
+m = length(model.mets); %reaction and metabolite number
 n = length(model.rxns);
 
 %performs one FBA

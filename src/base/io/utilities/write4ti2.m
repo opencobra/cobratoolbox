@@ -1,11 +1,20 @@
-function write4ti2(SeFull,filename,uni)
-%write an input file for 4ti2
-%OPTIONAL INPUT
-%uni        {(0),1}, uni=1 only outputs every second reaction
-%4ti2   a software package for algebraic, geometric and combinatorial
-%       problems on linear spaces. www.4ti2.de
+function write4ti2(SeFull, filename, uni)
+% Writes an input file for 4ti2
+% 'ti2' is a software package for algebraic, geometric and combinatorial
+% problems on linear spaces - www.4ti2.de
+%
+% USAGE:
+%
+%     write4ti2(SeFull, filename, uni)
+%
+% INPUTS:
+%    SeFull:      full stoichiometric matrix
+%    filename:    name of the file
+%
+% OPTIONAL INPUT:
+%    uni        {(0),1}, uni=1 only outputs every second reaction
 
-SeFull=integerizeS(SeFull);
+SeFull=integerizeS(SeFull); %function integerizeS not defined in the COBRA toolbox
 
 [nMet,nRxn]=size(SeFull);
 
@@ -35,4 +44,3 @@ else
     end
     fclose(fid);
 end
-

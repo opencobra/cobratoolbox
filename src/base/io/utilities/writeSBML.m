@@ -1,25 +1,24 @@
-function sbmlModel = writeSBML(model,fileName,compSymbolList,compNameList)
+function sbmlModel = writeSBML(model, fileName, compSymbolList, compNameList)
+% Exports a COBRA structure into an SBML FBCv2 file.
+% A SBMLFBCv2 file  a file is written to the current Matlab path.
+% USAGE:
+%
+%    sbmlModel = writeSBML(model, fileName, compSymbolList, compNameList)
+%
+% INPUTS:
+%    model:             COBRA model structure
+%    fileName:          File name for output file
+%
+% OPTIONAL INPUTS:
+%    compSymbolList:    List of compartment symbols
+%    compNameList:      List of copmartment names corresponding to compSymbolList
+%
+% OUTPUT:
+%    sbmlModel:         SBML MATLAB structure
+%
+% .. Author: - Longfei Mao 24/09/15
 
-% writeSBML exports a COBRA structure into an SBML FBCv2 file.
-%
-%
-%INPUTS
-% model             COBRA model structure
-% fileName          File name for output file
-%
-%OPTIONAL INPUTS
-% compSymbolList    List of compartment symbols
-% compNameList      List of copmartment names corresponding to compSymbolList
-%
-%OUTPUT
-% sbmlModel         SBML MATLAB structure
-% a SBMLFBCv2 file  a file is written to the current Matlab path
-%
-% Longfei Mao 24/09/15
-%
-
-%% Compartments
-if nargin<3 || ~exist('compSymbolList','var') || isempty(compSymbolList)
+if nargin<3 || ~exist('compSymbolList','var') || isempty(compSymbolList) % Compartments
     compSymbolList = {'c','m','v','x','e','t','g','r','n','p','l'};
     compNameList = {'Cytoplasm','Mitochondrion','Vacuole','Peroxisome','Extracellular','Pool','Golgi','Endoplasmic_reticulum','Nucleus','Periplasm','Lysosome'};
 end

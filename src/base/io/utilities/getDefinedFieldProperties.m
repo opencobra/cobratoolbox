@@ -1,11 +1,10 @@
 function [fields] = getDefinedFieldProperties(varargin)
-%GETDEFINEDFIELDPROPERTIES returns the Fields defined in the COBRA Toolbox
-%along with checks for their properties
-%
+% Returns the fields defined in the COBRA Toolbox
+% along with checks for their properties
 %
 % USAGE:
 %
-%    [requiredFields,optionalFields] = getDefinedFieldProperties(varargin)
+%    [requiredFields, optionalFields] = getDefinedFieldProperties(varargin)
 %
 % OPTIONAL INPUT:
 %    Descriptions:         Whether to obtain the field descriptions (default = false).
@@ -13,13 +12,13 @@ function [fields] = getDefinedFieldProperties(varargin)
 %                          specific set of fields (default all).
 %    DataBaseFields:       Get the fields with specified Database relations.
 %
-%OUTPUTS
-%    requiredFields        The fields a model must have in order to be a valid
+% OUTPUTS:
+%    requiredFields:       The fields a model must have in order to be a valid
 %                          COBRA Toolbox model
-%    optionalFields        The Fields which are supported by the COBRA
-%                          Toolbox.
+%    optionalFields:       The Fields which are supported by the COBRA Toolbox.
 %
 % NOTE:
+%
 %    The optional inputs are to be provided as parameter/value pairs.
 %    The returned Cell arrays are structured as follows:
 %    Default:
@@ -42,8 +41,7 @@ function [fields] = getDefinedFieldProperties(varargin)
 %    X{:,3} - model Field
 %    X{:,4} - model field reference (without s)
 %
-% Authors:
-%     - Thomas Pfau May 2017
+% .. Author: - Thomas Pfau May 2017
 
 persistent CBT_PROG_FIELD_PROPS
 persistent CBT_DESC_FIELD_PROPS
@@ -145,7 +143,7 @@ if isempty(CBT_PROG_FIELD_PROPS)
             if ~isempty(ynumval)
                 yval = ynumval;
             end
-        end     
+        end
          dbInfo(i,:) = { relarray{i,1},xval,yval,relarray{i,4}};
     end
     CBT_PROG_FIELD_PROPS = dbInfo;
@@ -155,4 +153,3 @@ fields = CBT_PROG_FIELD_PROPS;
 if ~isempty(spec)
     fields = fields(ismember(fields(:,1),spec),:);
 end
-

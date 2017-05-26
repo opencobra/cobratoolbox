@@ -1,13 +1,11 @@
 function [genes,rule,subSystem,grRule,formula,confidenceScore,citation,comment,ecNumber,charge] = parseSBMLNotesField2012(notesField)
-%parseSBMLNotesField Parse the notes field of an SBML file to extract
-%gene-rxn associations
+% Parses the notes field of an SBML file to extract
+% `gene-rxn` associations
 %
-% [genes,rule] = parseSBMLNotesField(notesField)
-%
-% Markus Herrgard 8/7/06
-% Ines Thiele 1/27/10 Added new fields
-% Handle different notes fields
-
+% .. Authors:
+%       - Markus Herrgard 8/7/06
+%       - Ines Thiele 1/27/10 Added new fields
+%       - Handle different notes fields
 
 if isempty(regexp(notesField,'html:p', 'once'))
     tag = 'p';
@@ -49,8 +47,8 @@ for i = 1:length(fieldList)
         subSystem = regexprep(strrep(fieldStr,'SUBSYSTEM:',''),'^(\s)+','');
         subSystem = strrep(subSystem,'S_','');
         subSystem = regexprep(subSystem,'_+',' ');
-        
-        
+
+
 %%%% The following commented three lines of codes assigns the SubSystem
 %%%% 'Exchange' to any reaction that has SUBSYSTEM showing up in its notes
 %%%% field but with no subsystem assigne
@@ -77,7 +75,7 @@ for i = 1:length(fieldList)
         end
     elseif (regexp(fieldStr,'^NOTES'))
 	comment = strcat(comment,';',regexprep(strrep(fieldStr,'AUTHORS:',''),'^(\s)+',''));
-    else 
+    else
 	%we are not in a known field, thus we will assume any remaining stuff is a simple Note and add it to the comment
         comment = strcat(comment,';',fieldStr);
     end

@@ -1,16 +1,18 @@
-function gpraModel = readSimPhenyGprText(file,model)
-%readSimPhenyGprText Parses SimPheny GPRA's in text format into a rxn x gene association
-%matrix
+function gpraModel = readSimPhenyGprText(file, model)
+% Parses SimPheny GPRA's in text format into a rxn x gene association matrix
 %
-% gpraModel = readSimPhenyGPRText(file,model)
+% USAGE:
 %
-%INPUTS
-% file      GPR text file
-% model     COBRA model structure
+%    gpraModel = readSimPhenyGPRText(file, model)
 %
-%OUTPUT
-% gpraModel COBRA model structure with reaction-gene association matrix
-% Markus Herrgard 2/23/06
+% INPUTS:
+%    file:         GPR text file
+%    model:        COBRA model structure
+%
+% OUTPUT:
+%    gpraModel:    COBRA model structure with reaction-gene association matrix
+%
+% .. Author: - Markus Herrgard 2/23/06
 
 % Read GPRA file
 [tmp,tmp,rxnNames,rxnDesrs,rxnEqns,Confs,subSystems,Regions,gpraStrings,proteinStrings,ECs] = ...

@@ -1,14 +1,14 @@
-function [metCHEBI,metHMDB,metKEGG,metPubChem,metInChI] = parseSBMLAnnotationField(annotationField)
-%parseSBMLAnnotationField Parse the annotation field of an SBML file to extract
-%metabolite information associations
+function [metCHEBI, metHMDB, metKEGG, metPubChem, metInChI] = parseSBMLAnnotationField(annotationField)
+% Parses the annotation field of an SBML file to extract
+% metabolite information associations
 %
-% [genes,rule] = parseSBMLAnnotationField(annotationField)
+% USAGE:
 %
-% Ines Thiele 1/27/10 Added new fields
-% Handle different notes fields
+%    [metCHEBI, metHMDB, metKEGG, metPubChem, metInChI] = parseSBMLAnnotationField(annotationField)
 %
-% Longfei Mao 29/02/16 added more fields
-%
+% .. Authors:
+%       - Ines Thiele 1/27/10 Added new fields - Handle different notes fields
+%       - Longfei Mao 29/02/16 added more fields
 
 metPubChem = '';
 metCHEBI = '';
@@ -58,39 +58,36 @@ if isempty(fieldList) % if the keywords do not exist anymore
     % %         metPubChem = strrep(fieldStr,'pubchem.substance:','');
     % %     end
     % % end
-    
+
     for i = 1:length(fieldList)
         fieldTmp = regexp(fieldList{i},['<rdf:li rdf:resource="http://identifiers.org/(.*)"/>'],'tokens');
         fieldStr = fieldTmp{1}{1};    % 'chebi/CHEBI:'
         if (regexp(fieldStr,'chebi/CHEBI:'))
             metCHEBI = strrep(fieldStr,'chebi/CHEBI:','');
        % elseif (regexp(fieldStr,'biocyc/'))
-            
+
         elseif (regexp(fieldStr,'chebi/'))
             metCHEBI = strrep(fieldStr,'chebi/','');
-            
+
 %         elseif (regexp(fieldStr,'3dmet/'))
-%             
+%
 %         elseif (regexp(fieldStr,'biocyc/'))
 
         elseif (regexp(fieldStr,'hmdb/'))
             metHMDB = strrep(fieldStr,'hmdb/','');
         elseif (regexp(fieldStr,'pubchem.substance/'))
             metPubChem = strrep(fieldStr,'pubchem.substance/','');
-            
+
         elseif (regexp(fieldStr,'pubchem.compound/'))
             metPubChem = strrep(fieldStr,'pubchem.compound/','');
-            
+
         elseif (regexp(fieldStr,'kegg.compound/'))
             metKEGG = strrep(fieldStr,'kegg.compound/','');
         elseif (regexp(fieldStr,'inchi/'))
             metInChI = strrep(fieldStr,'inchi/','');
         end
-        
+
 %         otherAnnotation.(tmp{1})=fieldStr
     end
-    
+
 end
-
-
-

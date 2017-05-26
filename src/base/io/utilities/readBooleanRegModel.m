@@ -1,42 +1,45 @@
-function regModel = readBooleanRegModel(metModel,fileName)
-%readBooleanRegModel Read Boolean regulatory network model
+function regModel = readBooleanRegModel(metModel, fileName)
+% Reads Boolean regulatory network model
 %
-% regModel = readBooleanRegModel(metModel,fileName)
+% USAGE:
 %
-%INPUT
-% metModel
+%    regModel = readBooleanRegModel(metModel, fileName)
 %
-%OPTIONAL INPUT
-% fileName
-% 
-%OUTPUT
-% regModel      model containing the following fields:
+% INPUT:
+%    metModel:    model
 %
-% regModel.mets   Metabolite rules
-%            name     Metabolite/pool name (internal to the reg network model)
-%            rule     Metabolite 'activation' rule
-%            type     Metabolite type (extra/intracellular/pool)
-%            excInd   Exchange flux indices corresponding to extracellular
-%                     metabolites
-%            icmRules Intracellular metabolite 'activation' rules (based on
-%                     a flux vector - fluxVector)
-%            pool     Pool components
-% regModel.regs    Regulator rules
-%            name     Regulator name
-%            rule     Regulator rule
-%            comp     Regulator rule components (i.e. metabolites or other
-%                     regulators that affect the state of this regulator)
-%            ruleParsed Rule in parsed format (based on metabolite state -
-%                      metState, regulator state - regState)
-% regModel.tars    Target rules
-%            name     Target name
-%            rule     Target rule
-%            comp     Target rule components (i.e. metabolites or other
-%                     regulators that affect the state of this regulator)
-%            ruleParsed Rule in parsed format (based on metabolite state -
-%                     metState, regulator state - regState)
+% OPTIONAL INPUT:
+%    fileName:    file name
 %
-% Markus Herrgard 12/5/07
+% OUTPUTS
+%    regModel:    model containing the following fields:
+%
+%                   * .mets - Metabolite rules:
+%
+%                     * name - Metabolite/pool name (internal to the reg network model)
+%                     * rule - Metabolite 'activation' rule
+%                     * type - Metabolite type (extra/intracellular/pool)
+%                     * excInd - Exchange flux indices corresponding to extracellular
+%                                metabolites
+%                     * icmRules - Intracellular metabolite 'activation' rules (based on
+%                                  a flux vector - `fluxVector`)
+%                     * pool - Pool components
+%                   * .regs - Regulator rules
+%                     * name - Regulator name
+%                     * rule - Regulator rule
+%                     * comp - Regulator rule components (i.e. metabolites or other
+%                              regulators that affect the state of this regulator)
+%                     * ruleParsed - Rule in parsed format (based on metabolite state -
+%                                    `metState`, regulator state - `regState`)
+%                   * .tars - Target rules
+%                     * name - Target name
+%                     * rule - Target rule
+%                     * comp - Target rule components (i.e. metabolites or other
+%                              regulators that affect the state of this regulator)
+%                     * ruleParsed - Rule in parsed format (based on metabolite state -
+%                     `metState`, regulator state - `regState`)
+%
+% .. Author: - Markus Herrgard 12/5/07
 
 if (nargin < 2)
     fileName = 'iMHruletest.xls';

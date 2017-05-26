@@ -1,11 +1,18 @@
 function [rxnEC, rxnReference] = parseSBMLAnnotationFieldRxn(annotationField)
-%parseSBMLAnnotationFieldRxn Parse the annotation field of an SBML file to extract
-%reaction information associations
+% Parses the annotation field of an SBML file to extract
+% reaction information associations
+%
+% USAGE:
 %
 % [rxnEC, rxnReference] = parseSBMLAnnotationFieldRxn(annotationField)
 %
-% Uri David Akavia 3-Nov-2016
-
+% INPUT:
+%    annotationField:       annotation filed of an SBML fileBase
+%
+% OUTPUTS:
+%    rxnEC,rxnReference:    only one of them is not empty depending on annotationField
+%
+% .. Author: - Uri David Akavia 3-Nov-2016
 
 rxnReference = '';
 rxnEC = '';
