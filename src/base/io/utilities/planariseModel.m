@@ -12,9 +12,9 @@ function [modelPlane, replicateMetBool, metData, rxnData] = planariseModel(model
 % OUTPUTS:
 %    modelPlane:          structure with fields:
 %
-%                           * .S
-%                           * .mets
-%                           * .origMets
+%                           * .S - matrix
+%                           * .mets - metabolites
+%                           * .origMets - original metabolites
 %    replicateMetBool:    as in input
 %    metData:             data of metabolites
 %    rxnData:             data of reactions

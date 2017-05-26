@@ -1,6 +1,5 @@
 function [rxnEC, rxnReference] = parseSBMLAnnotationFieldRxn(annotationField)
-% Parses the annotation field of an SBML file to extract
-% reaction information associations
+% Parses the annotation field of an SBML file to extract reaction information associations
 %
 % USAGE:
 %

@@ -4,12 +4,6 @@ function writePajekNet(model)
 % to use for most graph analysis software e.g. Pajek, it does one fba to
 % set the link width equal to reaction fluxes.
 %
-% Ex: `A + B -> C` (hypergraph) with `v = 0` => no output (empty line)
-%
-% if `v > 0` then it becomes `A -> C`; `B -> C` (graph),
-%
-% if `v < 0` then the order is reversed
-%
 % USAGE:
 %
 %    writePajekNet(model)
@@ -19,6 +13,12 @@ function writePajekNet(model)
 %
 % OUTPUT:
 %    .net:     file containing the graph
+%
+% Ex: `A + B -> C` (hypergraph) with `v = 0` => no output (empty line)
+%
+% if `v > 0` then it becomes `A -> C`; `B -> C` (graph),
+%
+% if `v < 0` then the order is reversed
 %
 % .. Author: - Marouen BEN GUEBILA 20/01/2016
 

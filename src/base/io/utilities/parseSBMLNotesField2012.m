@@ -1,25 +1,24 @@
 function [genes, rule, subSystem, grRule, formula, confidenceScore, citation, comment, ecNumber, charge] = parseSBMLNotesField2012(notesField)
-% Parses the notes field of an SBML file to extract
-% `gene-rxn` associations
+% Parses the notes field of an SBML file to extract `gene-rxn` associations
 %
 % USAGE:
 %
 %    [genes, rule, subSystem, grRule, formula, confidenceScore, citation, comment, ecNumber, charge] = parseSBMLNotesField(notesField)
 %
 % INPUT:
-%    notesField:         notes filed of SBML file
+%    notesField:         notes field of SBML file
 %
 % OUTPUT:
-%    genes:              taken from `parseBoolean`
-%    rule:               taken from `parseBoolean`
-%    subSystem:          result of `regexprep` function
-%    grRule:             result of `regexprep` function
-%    formula:            result of `regexprep` function
-%    confidenceScore:    confidence level
+%    genes:              Identifiers of the genes in the model
+%    rule:               GPR rule
+%    subSystem:          subSystem assignment for each reaction
+%    grRule:             a string representation of the GPR rules defined in a readable format
+%    formula:            elementa formula
+%    confidenceScore:    confidence scores for reaction presence
 %    citation:           joins strings with authors
-%    comment:            joins strings with authors
-%    ecNumber:           result of `regexprep` function
-%    charge:             result of `regexprep` function changed to double
+%    comment:            comments and notes
+%    ecNumber:           E.C. number for each reaction
+%    charge:             charge of the respective metabolite
 %
 % .. Authors:
 %       - Markus Herrgard 8/7/06

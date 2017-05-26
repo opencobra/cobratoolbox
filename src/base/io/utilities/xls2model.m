@@ -8,6 +8,17 @@ function model = xls2model(fileName, biomassRxnEquation, defaultbound)
 % INPUT:
 %    fileName:      xls spreadsheet, with one 'Reaction List' and one 'Metabolite List' tab
 %
+% OPTIONAL INPUTS:
+%    biomassRxnEquation:    .xls may have a 255 character limit on each cell,
+%                           so pass the biomass reaction separately if it hits this maximum.
+%
+%    defaultbound:          the deault bound for lower and upper bounds, if
+%                           no bounds are specified in the Excel sheet
+% OUTPUT:
+%    model:                 COBRA Toolbox model
+%
+% EXAMPLE:
+%
 %                   'Reaction List' tab headers (case sensitive):
 %
 %                     * Required:
@@ -49,15 +60,6 @@ function model = xls2model(fileName, biomassRxnEquation, defaultbound)
 %                       * 'InChI string':      InChI=1/C6H12O6/c7-1-2-3(8)4(9)5(10)6(11)12-2/h2-11H,1H2/t2-,3-,4+,5-,6?/m1/s1
 %                       * 'SMILES':            OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O
 %                       * 'HMDB ID':           HMDB00122
-%
-% OPTIONAL INPUTS:
-%    biomassRxnEquation:    .xls may have a 255 character limit on each cell,
-%                           so pass the biomass reaction separately if it hits this maximum.
-%
-%    defaultbound:          the deault bound for lower and upper bounds, if
-%                           no bounds are specified in the Excel sheet
-% OUTPUT:
-%    model:                 COBRA Toolbox model
 %
 % NOTE:
 %
