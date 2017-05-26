@@ -9,11 +9,11 @@ function [x, output] = findExtremePathway(fbaModel, obj)
 %    fbaModel:    FBA type model
 %
 % OPTIONAL INPUT:
-%    obj:        default = random vector with size depending on fbaModel.S
+%    obj:         default = random vector with size depending on fbaModel.S
 %
 % OUTPUTS:
-%    x:          vector from `result`, where `result` is an output of `solveCobraLP` function
-%    output:     `output.objval` contains `result.obj`
+%    x:           vector from `result`, where `result` is an output of `solveCobraLP` function
+%    output:      `output.objval` contains `result.obj`
 %
 % .. $Revision: 0.1 $  $Date: 2011/05/01 $
 

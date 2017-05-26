@@ -3,7 +3,7 @@
 
 
 Topology
-----
+--------
 
 .. toctree::
 

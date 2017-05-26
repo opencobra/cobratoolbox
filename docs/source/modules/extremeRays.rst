@@ -3,7 +3,7 @@
 
 
 extremeRays
-----
+-----------
 
 .. toctree::
 

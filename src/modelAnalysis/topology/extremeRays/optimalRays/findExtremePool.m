@@ -9,12 +9,12 @@ function [x, output] = findExtremePool(fbaModel, obj, printLevel)
 %    fbaModel:       FBA type model
 %
 % OPTIONAL INPUT:
-%    obj:           default = random vector with size depending on fbaModel.S
-%    printLevel:    argument for `solveCobraLP` function, default = 0
+%    obj:            default = random vector with size depending on fbaModel.S
+%    printLevel:     argument for `solveCobraLP` function, default = 0
 %
 % OUTPUTS:
-%    x:             `x = output.full`
-%    output:        `output = solveCobraLP(LPProblem)`
+%    x:              `x = output.full`
+%    output:         `output = solveCobraLP(LPProblem)`
 A    = fbaModel.S';
 [n, m] = size(A);
 
