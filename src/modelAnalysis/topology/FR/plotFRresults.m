@@ -1,18 +1,21 @@
-function plotFRresults(FRresults,nRows,nCols,resultsDirectory,resultsFileName,schematicFlag,modelMetaData)
-%plots FR results in the same order as the FRresultsTable using FRresults
-%structure or by loading the FRresults structure
+function plotFRresults(FRresults, nRows, nCols, resultsDirectory, resultsFileName, schematicFlag, modelMetaData)
+% Plots FR results in the same order as the `FRresultsTable` using `FRresults`
+% structure or by loading the `FRresults` structure
 %
-%INPUT
-% FRresults             output of checkRankFRdriver
-% nRows                 number of rows in the subplot
-% nCols                 number of rows in the subplot (nRows*nCols >= length(FRresults)
+% USAGE:
 %
-%OPTIONAL INPUT
-% resultsDirectory      directory where output of checkRankFRdriver has been saved
-% resultsFileName       filename where output of checkRankFRdriver has been saved
+%    plotFRresults(FRresults, nRows, nCols, resultsDirectory, resultsFileName, schematicFlag, modelMetaData)
+%
+% INPUTS:
+%    FRresults:           output of `checkRankFRdriver`
+%    nRows:               number of rows in the subplot
+%    nCols:               number of rows in the subplot (`nRows*nCols >= length(FRresults)`)
+%
+% OPTIONAL INPUTS:
+%    resultsDirectory:    directory where output of `checkRankFRdriver` has been saved
+%    resultsFileName:     filename where output of `checkRankFRdriver` has been saved
 
-%number of rows and columns of the figure
-if ~exist('nRows','var')
+if ~exist('nRows','var') %number of rows and columns of the figure
     nRows=6;
 end
 if ~exist('nCols','var')

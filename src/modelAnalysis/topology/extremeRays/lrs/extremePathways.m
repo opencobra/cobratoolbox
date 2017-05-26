@@ -1,17 +1,26 @@
 function [R, V] = extremePathways(model, positivity, inequality)
-% calculate the extreme pathways of a stoichiometric model using the vertex/facet enumeration package
-% lrs by David Avis, McGill University
+% Calculates the extreme pathways of a stoichiometric model using the vertex/facet enumeration package
 %
-% INPUT
-% model      COBRA Toolbox model
+% USAGE:
 %
-% OPTIONAL INPUT
-% model.description     string used to name files
-% model.lb              lower bounds and
-% model.ub              upper bounds to derive directionality
-% model.b    dxdt
-% positivity {0,(1)} if positivity==1, then positive orthant base
-% inequality {(0),1} if inequality==1, then use two inequalities rather than a single equality
+%    [R, V] = extremePathways(model, positivity, inequality)
+%
+% INPUTS:
+%    model:                COBRA Toolbox model with fields:
+%
+%                            * .description - string used to name files
+%                            * .lb - lower bounds and
+%                            * .ub - upper bounds to derive directionality
+%                            * .b - dxdt
+% OPTIONAL INPUT:
+%    positivity:           {0,(1)} if positivity == 1, then positive orthant base
+%    inequality:           {(0),1} if inequality == 1, then use two inequalities rather than a single equality
+%
+% OUTPUTS:
+%    R:                    `nDim` by `nRay` matrix of extreme rays
+%    V:                    `nDim` by `nVertex` matrix of vertices
+%
+% .. Author: - lrs by David Avis, McGill University
 
 [nMet, nRxn] = size(model.S);
 

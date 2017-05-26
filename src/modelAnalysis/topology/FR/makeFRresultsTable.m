@@ -1,24 +1,27 @@
-function [FRresultsTable,FRresults]=makeFRresultsTable(FRresults,resultsDirectory,resultsFileName,modelMetaData,tableFilename)
-%makes a table of FR results
+function [FRresultsTable, FRresults] = makeFRresultsTable(FRresults, resultsDirectory, resultsFileName, modelMetaData, tableFilename)
+% Makes a table of FR results
 %
-%INPUT
-% FRresults             output of checkRankFRdriver
+% USAGE:
 %
-%OPTIONAL INPUT
-% resultsDirectory      directory where output of checkRankFRdriver has been saved
-% filename              filename where output of checkRankFRdriver has been saved
-% modelMetaData         Cell array, where each row is metadata for one model
-%                       with five columns: species, version, fileName, PMID, doi.
-%                       See function modelMetaData=modelCitations()
-% tableFilename         If provided, a the table of results is written out
-%                       to a csv file, with specified filename
+%    [FRresultsTable, FRresults] = makeFRresultsTable(FRresults, resultsDirectory, resultsFileName, modelMetaData, tableFilename)
 %
-%OUTPUT
-% FRresultsTable        table displaying the results of checkRankFRdriver
-% FRresults             output of checkRankFRdriver
-
-%'Conditions for duality between fluxes and concentrations in biochemical networks
-%Ronan M.T. Fleming
+% INPUT:
+%    FRresults:           output of `checkRankFRdriver`
+%
+% OPTIONAL INPUTS:
+%    resultsDirectory:    directory where output of `checkRankFRdriver` has been saved
+%    resultsFileName:     filename where output of `checkRankFRdriver` has been saved
+%    modelMetaData:       Cell array, where each row is metadata for one model
+%                         with five columns: `species`, `version`, `fileName`, `PMID`, `doi`.
+%                         See function `modelMetaData = modelCitations()`
+%    tableFilename:       If provided, a the table of results is written out
+%                         to a csv file, with specified filename
+%
+% OUTPUTS:
+%    FRresultsTable:      table displaying the results of `checkRankFRdriver`
+%    FRresults:           output of `checkRankFRdriver`
+%
+% .. Author: - Ronan M.T. Fleming 'Conditions for duality between fluxes and concentrations in biochemical networks
 
 if isempty(FRresults)
     if ~exist('resultsFileName','var')

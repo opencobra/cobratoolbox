@@ -1,12 +1,24 @@
 function [loops, eqSets, P, P2, cyclicBool] = equivalentSets(model)
-% find the stoichiometrically balanced loops and the equivalent sets
+% Finds the stoichiometrically balanced loops and the equivalent sets
 %
-% INPUT
-%     model.S
-%     model.lb
-%     model.ub
-%     model.biomassAbbr
-
+% USAGE:
+%
+%    [loops, eqSets, P, P2, cyclicBool] = equivalentSets(model)
+%
+% INPUT:
+%    model:         COBRA Toolbox model with fields:
+%
+%                     * .S - matrix
+%                     * .lb - lower bounds
+%                     * .ub - upper bounds
+%                     * .biomassAbbr - biomass abbreviation
+%
+% OUTPUTS:
+%    loops:         stoichiometrically balanced loops
+%    eqSets:        equivalent sets
+%    P:             as P2 but additinally dependent on `cyclicBool`
+%    P2:            output of `lrsOutputReadRay`
+%    cyclicBool:    boolean variable
 
 [nMet, nRxns] = size(model.S);
 % nullspace of internal stoichiometric matrix
@@ -88,10 +100,10 @@ lrsInput(A, D, 'eqSet', 0, 0, a, d)
 
 if isunix
     % call lrs and wait until extreme pathways have been calculated
-    [status, result] = unix(['lrs ' pwd '/eqSet_neg_eq.ine > ' pwd '/eqSet_neg_eq.ext']);
+    [status, result] = unix(['lrs ' pwd filesep 'eqSet_neg_eq.ine > ' pwd filesep 'eqSet_neg_eq.ext']);
 end
 % reads in P0 which is an nDim by nRay matrix of extreme rays
-P1 = lrsOutputReadExt([pwd '/eqSet_neg_eq.ext']);
+P1 = lrsOutputReadRay([pwd '/eqSet_neg_eq.ext']);
 [nDim, nRay] = size(P1);
 
 % expand it out to size of stoichiometric matrix
@@ -132,7 +144,7 @@ if isunix
     [status, result] = unix(['lrs ' pwd '/eqSet2_neg_eq.ine > ' pwd '/eqSet2_neg_eq.ext']);
 end
 % reads in P0 which is an nDim by nRay matrix of extreme rays
-P2 = lrsOutputReadExt([pwd '/eqSet2_neg_eq.ext']);
+P2 = lrsOutputReadRay([pwd '/eqSet2_neg_eq.ext']);
 [nRay, nEqSet] = size(P2);
 
 % for each equivalent set, find the net set of reactions that comprise it

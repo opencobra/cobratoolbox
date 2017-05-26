@@ -1,21 +1,29 @@
-function [A,B,C]=bilinearDecomposition(S)
-% Convert a stoichiometric matrix into a bilinear form.
+function [A, B, C] = bilinearDecomposition(S)
+% Converts a stoichiometric matrix into a bilinear form.
+%
+% USAGE:
+%
+%    [A, B, C] = bilinearDecomposition(S)
+%
+% INPUT:
+%    S:    `m` x `n` stoichiometric matrix
+%
+% OUTPUTS:
+%    A:    `m` x `(m + k)` matrix selecting rows such that `S = A*B*C`
+%    B:    `(m + k)` x `(n + k)` bilinear stoichiometric matrix
+%    C:    `(n + k)` x n` matrix adding columns to form net reaction stoichiometry such that `S = A*B*C`
+%
 % An example "bilinearisation" of the reaction
-% A + B + C <-> D + E
+%
+% `A + B + C <-> D + E`
+%
 % is
-% A + B <-> P
-% P + C <-> Q
-% Q <-> D + E
-% where P and Q are faux molecular species.
 %
-% INPUT
-% S         m x n stoichiometric matrix
+% `A + B <-> P`,
+% `P + C <-> Q`,
+% `Q <-> D + E`
 %
-% OUTPUT
-% A         m       x (m + k) matrix selecting rows such that S=A*B*C
-% B         (m + k) x (n + k) bilinear stoichiometric matrix
-% C         (n + k) x      n  matrix adding columns to form net reaction
-%                             stoichiometry such that S=A*B*C
+% where `P` and `Q` are faux molecular species.
 
 [nMet,nRxn]=size(S);
 

@@ -1,15 +1,17 @@
-function testForTypeIIIPathways(model,ListExch,filename)
-%testForTypeIIIPathways Set up the model to run extreme pathway analysis 
-%(expa) for identifying loops in the model (Type III pathways) and runs expa.
+function testForTypeIIIPathways(model, ListExch, filename)
+% Sets up the model to run extreme pathway analysis
+% (expa) for identifying loops in the model (Type III pathways) and runs expa.
 %
-% TestForTypeIIIPathways(model,ListExch)
+% USAGE:
 %
-%INPUTS
-% model     COBRA model structure
-% ListExch  List of position of exchange reactions in S matrix
+%    testForTypeIIIPathways(model, ListExch, filename)
 %
+% INPUTS:
+%    model:       COBRA model structure
+%    ListExch:    List of position of exchange reactions in `S` matrix
+%    filename:    name of the file
 %
-% Ines Thiele   02/09
+% .. Author: - Ines Thiele 02/09
 
 warning off all
 if nargin < 3

@@ -1,31 +1,30 @@
-function [groups,orphans,R,C]=connectedComponents(model,type,figures,files)
-% Assuming two reactions are connected if they share metabolites, calculate the connected components
+function [groups, orphans, R, C] = connectedComponents(model, type, figures, files)
+% Assuming two reactions are connected if they share metabolites, calculates the connected components
 % in the stoichiometric matrix, that is, the sets of reactions that share a set of metabolites
 %
 % USAGE:
 %
-%    [groups, orphans, R, C]=connectedComponents(model, type, figures)
+%    [groups, orphans, R, C] = connectedComponents(model, type, figures)
 %
 % INPUT:
 %    model:
 %
-% OPTIONAL INPUT:
-%    type:      {('allComponents'),'largestComponent'}
-%    figures:   Will generate plots of the grouping algorithm as it creates block diagonal
-%               groups in from top left to bottom right in W.
-%    files:     Indicator, whether several files containing indicator
-%               matrices are generated.
-% OUTPUT:
-%    groups:                a structure array (the number of distinct groups is length(groups)) with fields:
+% OPTIONAL INPUTS:
+%    type:       {('allComponents'),'largestComponent'}
+%    figures:    Will generate plots of the grouping algorithm as it creates block diagonal
+%                groups in from top left to bottom right in W.
+%    files:      Indicator, whether several files containing indicator
+%                matrices are generated.
+% OUTPUTS:
+%    groups:     a structure array (the number of distinct groups is length(groups)) with fields:
 %
-%                             * `groups(i).num_els` - number of reactions in group `i`.
-%                             * `groups(i).block` - sub-block identity of group `i`.
-%                             * `groups(i).elements` - reactions of W that are in group `i`.
-%                             * `groups(i).degrees` - degrees of connection for each reaction in group `i`.
-%    orphans:               elements of W that were not in any group, becasue they did not
-%                           meet the constraints.
-%    R:                     reaction adjacency
-%    C:                     compound adjacency
+%                  * `groups(i).num_els` - number of reactions in group `i`.
+%                  * `groups(i).block` - sub-block identity of group `i`.
+%                  * `groups(i).elements` - reactions of W that are in group `i`.
+%                  * `groups(i).degrees` - degrees of connection for each reaction in group `i`.
+%    orphans:    elements of W that were not in any group, becasue they did not meet the constraints.
+%    R:          reaction adjacency
+%    C:          compound adjacency
 %
 % .. Author: - Ronan Fleming, 2012
 %
@@ -36,7 +35,8 @@ function [groups,orphans,R,C]=connectedComponents(model,type,figures,files)
 % Largest component requires:
 % gaimc : Graph Algorithms In Matlab Code by David Gleich
 % http://www.mathworks.com/matlabcentral/fileexchange/24134-gaimc-graph-algorithms-in-matlab-code.
-% Speedup and addition of files indicator - Thomas Pfau May 2017
+%
+% .. Author: - Thomas Pfau May 2017, Speedup and addition of files indicator
 
 if ~exist('type','var')
     type='allComponents';

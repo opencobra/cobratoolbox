@@ -1,16 +1,19 @@
-function [connectedRowsFRBool,connectedColsFRVBool]=largestConnectedFR(F,R,printLevel)
-% compute the largest connected set of rows of [F,R] and the largest
-% connected set of columns of [F;R] using gamic
+function [connectedRowsFRBool, connectedColsFRVBool] = largestConnectedFR(F, R, printLevel)
+% Computes the largest connected set of rows of [`F, R`] and the largest
+% connected set of columns of [`F; R`] using gamic
 %
-% INPUT
-% F         m x n
-% R         m x n
+% USAGE:
 %
-% OUTPUT
-% connectedRowsFRBool   m x 1 boolean vector indicating largests set of
-%                       connected rows
-% connectedColsFRVBool  n x 1 boolean vector indicating largests set of
-%                       connected cols
+%    [connectedRowsFRBool, connectedColsFRVBool] = largestConnectedFR(F, R, printLevel)
+%
+% INPUTS:
+%    F:                       `m` x `n`
+%    R:                       `m` x `n`
+%    printLevel:              verbose level
+%
+% OUTPUTS:
+%    connectedRowsFRBool:     `m` x 1 boolean vector indicating largests set of connected rows
+%    connectedColsFRVBool:    `n` x 1 boolean vector indicating largests set of connected cols
 %
 if ~exist('printLevel','var')
     printLevel=0;
