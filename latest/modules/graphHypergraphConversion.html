@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Documentation &mdash; The COBRA Toolbox</title>
+  <title>graphHypergraphConversion &mdash; The COBRA Toolbox</title>
   
 
   
@@ -39,8 +39,9 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
-        <link rel="next" title="Base" href="base.html"/>
-        <link rel="prev" title="Installation" href="../installation.html"/> 
+        <link rel="up" title="Topology" href="topology.html"/>
+        <link rel="next" title="Transport" href="transport.html"/>
+        <link rel="prev" title="FR" href="FR.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -90,11 +91,33 @@
               </ul>
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Documentation</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design.html">Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modelAnalysis.html">Model analysis</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="modelAnalysis.html">Model analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="FBA.html">FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FVA.html">FVA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MOMA.html">MOMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deletion.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multiSpecies.html">MultiSpecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rFBA.html">rFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="relaxFBA.html">relaxFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sampling.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sparseFBA.html">sparseFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="subspaces.html">Subspaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="topology.html">Topology</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="circuits.html">Circuits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conservedMoieties.html">conservedMoieties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="extremeRays.html">extremeRays</a></li>
+<li class="toctree-l4"><a class="reference internal" href="FR.html">FR</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">graphHypergraphConversion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="transport.html">Transport</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="visualization.html">Visualization</a></li>
 </ul>
@@ -147,7 +170,13 @@
     
       <li><a href="../contents.html">Docs</a> &raquo;</li>
         
-      <li>Documentation</li>
+          <li><a href="index.html">Documentation</a> &raquo;</li>
+        
+          <li><a href="modelAnalysis.html">Model analysis</a> &raquo;</li>
+        
+          <li><a href="topology.html">Topology</a> &raquo;</li>
+        
+      <li>graphHypergraphConversion</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -164,75 +193,35 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="documentation">
-<span id="modules-functions"></span><h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="base.html">Base</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="io.html">IO</a></li>
-<li class="toctree-l2"><a class="reference internal" href="print.html">Print</a></li>
+  <div class="section" id="graphhypergraphconversion">
+<span id="id1"></span><h1>graphHypergraphConversion<a class="headerlink" href="#graphhypergraphconversion" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.modelAnalysis.topology.graphHypergraphConversion"></span><dl class="function">
+<dt id="src.modelAnalysis.topology.graphHypergraphConversion.convertHypergraphToBipartiteGraph">
+<code class="descname">convertHypergraphToBipartiteGraph</code><span class="sig-paren">(</span><em>S</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/modelAnalysis/topology/graphHypergraphConversion/convertHypergraphToBipartiteGraph.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.topology.graphHypergraphConversion.convertHypergraphToBipartiteGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a hypergraph into an undirected bipartite graph</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[A, B] = convertHypergraphToBipartiteGraph(S, printLevel)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>S</strong> &#8211;
+<cite>m</cite> x <cite>n</cite> matrix with <cite>m</cite> nodes and <cite>n</cite> hyperedges</li>
+<li><strong>printLevel</strong> &#8211;
+timer</li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="dataIntegration.html">Data integration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="metabotools.html">Metabotools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transcriptomics.html">Transcriptomics</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="FASTCORE.html">FASTCORE</a></li>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>A</strong> &#8211;
+<cite>(m+n)</cite> x <cite>(m+n)</cite> adjacency matrix for an undirected graph (symmetric)</li>
+<li><strong>B</strong> &#8211;
+<cite>(m+n)</cite> x <cite>nnz(S)</cite> incidence matrix for a directed graph</li>
 </ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="design.html">Design</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modelAnalysis.html">Model analysis</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="FBA.html">FBA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="FVA.html">FVA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="MOMA.html">MOMA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="deletion.html">Deletion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="exploration.html">Exploration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multiSpecies.html">MultiSpecies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rFBA.html">rFBA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="relaxFBA.html">relaxFBA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sampling.html">Sampling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sparseFBA.html">sparseFBA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="subspaces.html">Subspaces</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="lsqr.html">Lsqr</a></li>
-<li class="toctree-l3"><a class="reference internal" href="nullspace.html">Nullspace</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rank.html">Rank</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rowReduce.html">rowReduce</a></li>
-<li class="toctree-l3"><a class="reference internal" href="subspaceProjection.html">subspaceProjection</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="topology.html">Topology</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="circuits.html">Circuits</a></li>
-<li class="toctree-l3"><a class="reference internal" href="conservedMoieties.html">conservedMoieties</a></li>
-<li class="toctree-l3"><a class="reference internal" href="extremeRays.html">extremeRays</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="lrs.html">lrs</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="lrsInterface.html">lrsInterface</a></li>
-</ul>
-</li>
-<li class="toctree-l4"><a class="reference internal" href="optimalRays.html">optimalRays</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="FR.html">FR</a></li>
-<li class="toctree-l3"><a class="reference internal" href="graphHypergraphConversion.html">graphHypergraphConversion</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="transport.html">Transport</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="reconstruction.html">Reconstruction</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="rBioNet.html">rBioNet</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="visualization.html">Visualization</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cellDesigner.html">cellDesigner</a></li>
-<li class="toctree-l2"><a class="reference internal" href="maps.html">Maps</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="ReconMap.html">ReconMaps</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
+</div></blockquote>
+</dd></dl>
+
 </div>
 
 
@@ -245,10 +234,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="base.html" class="btn btn-neutral float-right" title="Base" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="transport.html" class="btn btn-neutral float-right" title="Transport" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../installation.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="FR.html" class="btn btn-neutral" title="FR" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
