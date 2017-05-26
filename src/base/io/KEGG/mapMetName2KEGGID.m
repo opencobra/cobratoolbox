@@ -1,9 +1,7 @@
 function model = mapMetName2KEGGID(model, Dictionary)
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+% Translates the metabolites from KEGG to cobra model names, called by transformKEGG2Model.m
 
-%Hash all KEGG ID's
-HTABLE = java.util.Hashtable;
+HTABLE = java.util.Hashtable; %Hash all KEGG ID's
 CompAbr = Dictionary(:, 1);
 KEGGID = Dictionary(:, 2);
 for i = 1:length(KEGGID);
@@ -35,28 +33,27 @@ for i = 1 : length(model.mets)
     else
         MetTmp = model.mets(i); % assuming that no compartment is associated with compound
     end
-    
+
     %Match =strmatch(MetTmp, KEGGID,'exact')
     Match = HTABLE.get(MetTmp{1});
 
-    
+
     if (~isempty(Match) && Match > 0 && ~isempty(CompAbr{Match}))
         % associates KEGGID with model metabolte - KEGGID is compartment
         % dependent!
-        
+
         KEGGTmp=[char(CompAbr(Match)) char(KEGGComp)];
         model.metsAbr{i,1}=KEGGTmp;
     elseif (length(Match) < 0) %&& length(CompAbr{Match})>0)
         model.metsAbr{i,1}=[];
         disp(strcat('multiple matches ', MetTmp))
-        
+
         %warning(['multiple matchings for' MetTmp]);
             pause;
     else
-   
+
         model.metsAbr{i,1}=[];
     end
     clear MetTmp KEGGTmp
 end
 end
-

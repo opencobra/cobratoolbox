@@ -1,13 +1,23 @@
-function model = mapKEGGID2Model(model,Dictionary)
-
-% this function matches the compound abreviation in model and from CompAbr
+function model = mapKEGGID2Model(model, Dictionary)
+% This function matches the compound abreviation in model and from `CompAbr`
 % and connects with the model metabolite the corresponding KEGGID
 %
-% model      model structure
-% CompAbr    List of compounds abreviation (non-compartelized)
-% KEGGID     List of KEGGIDs for compounds in CompAbr
+% USAGE:
 %
-% 11-09-07 IT
+%     model = mapKEGGID2Model(model, Dictionary)
+%
+% INPUTS:
+%    model:         model structure
+%    Dictionary:    consists of:
+%
+%                     * CompAbr = Dictionary(:, 1) - List of compounds abreviation (non-compartelized)
+%                     * KEGGID = Dictionary(:, 2) - List of KEGGIDs for compounds in `CompAbr`
+%
+% OUTPUT:
+%    model:         model structure
+%
+% .. Author: - 11-09-07 IT
+
 CompAbr = Dictionary(:, 1);
 KEGGID = Dictionary(:, 2);
 for i = 1 : length(model.mets)
@@ -26,7 +36,7 @@ for i = 1 : length(model.mets)
     else
         MetTmp = model.mets(i); % assuming that no compartment is associated with compound
     end
-    
+
     Match=strmatch(MetTmp, CompAbr,'exact');
     if (length(Match)==1 && length(KEGGID{Match})>0)
         % associates KEGGID with model metabolte - KEGGID is compartment
@@ -37,7 +47,7 @@ for i = 1 : length(model.mets)
         model.metKEGGID{i,1}=[];
         warning(['multiple matchings for' char(model.mets(i))]);
     else
-   
+
         model.metKEGGID{i,1}=[];
     end
     clear MetTmp KEGGTmp

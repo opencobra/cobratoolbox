@@ -1,8 +1,8 @@
 function [ output_args ] = listBiGGModels( input_args )
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
-%http://bigg.ucsd.edu/web_api
-%# Get a list of models
+% .. UNTITLED Summary of this function goes here
+% .. Detailed explanation goes here
+% .. http://bigg.ucsd.edu/web_api
+% .. Get a list of models
 str = urlread('http://bigg.ucsd.edu/api/v2/models');
 
 str gives

@@ -1,20 +1,18 @@
 function KEGG = createUniversalReactionModel(KEGGFilename, KEGGBlackList)
-%createUMatrix creates the U matrix using the universal data from the KEGG
-% database
+% Creates the `U` matrix using the universal data from the KEGG database
 %
-% KEGG = createUMatrix(KEGGFilename, KEGGBlackList)
+% USAGE:
 %
-% Inputs
+%    KEGG = createUniversalReactionModel(KEGGFilename, KEGGBlackList)
 %
-% KEGGFilename      - downloaded from KEGG database (ie. 'reaction.lst')
-% KEGGBlackList     - KEGG reactions not to use
+% INPUTS:
+%    KEGGFilename:     downloaded from KEGG database (ie. 'reaction.lst')
+%    KEGGBlackList:    KEGG reactions not to use
 %
-% Output
+% OUTPUT:
+%    KEGG:             `U` Matrix
 %
-% KEGG              - U Matrix
-%
-% 11-10-07 IT
-%
+% .. Author: - 11-10-07 IT
 
 if ~exist('KEGGFilename','var') || isempty(KEGGFilename)
     KEGGFilename='11-20-08-KEGG-reaction.lst';
