@@ -1,4 +1,4 @@
-function[x] = solveLin(A,B)
+function [x] = solveLin(A,B)
 
 s = warning('off', 'MATLAB:singularMatrix');
 warning('off','MATLAB:nearlySingularMatrix');

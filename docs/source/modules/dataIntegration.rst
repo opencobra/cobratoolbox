@@ -5,6 +5,6 @@ Data integration
 
 .. toctree::
 
-   fluxomics
+   #fluxomics
    metabotools
    transcriptomics
