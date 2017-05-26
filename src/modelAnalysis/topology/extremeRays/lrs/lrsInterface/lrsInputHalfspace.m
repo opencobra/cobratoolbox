@@ -7,9 +7,9 @@ function lrsInputHalfspace(A, D, filename, positivity, inequality, a, d, f, sh)
 %    lrsInputHalfspace(A, D, filename, positivity, inequality, a, d, f, sh)
 %
 % INPUTS:
-%    A:          matrix of linear equalities `A*x=(a)`
-%    D:          matrix of linear inequalities `D*x>=(d)`
-%    filename:   base name of output file
+%    A:             matrix of linear equalities `A*x=(a)`
+%    D:             matrix of linear inequalities `D*x>=(d)`
+%    filename:      base name of output file
 %
 % OPTIONAL INPUTS:
 %    positivity:    {0,(1)} if positivity == 1, then positive orthant base

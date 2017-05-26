@@ -6,12 +6,12 @@ function [loops, eqSets, P, P2, cyclicBool] = equivalentSets(model)
 %    [loops, eqSets, P, P2, cyclicBool] = equivalentSets(model)
 %
 % INPUT:
-%    model:         structure with:
+%    model:         COBRA Toolbox model with fields:
 %
-%                     * .S
-%                     * .lb
-%                     * .ub
-%                     * .biomassAbbr
+%                     * .S - matrix
+%                     * .lb - lower bounds
+%                     * .ub - upper bounds
+%                     * .biomassAbbr - biomass abbreviation
 %
 % OUTPUTS:
 %    loops:         stoichiometrically balanced loops
