@@ -12,11 +12,10 @@ function printFRdependencies(model, filePathName)
 % OPTIONAL INPUT:
 %    filePathName:    full file name for printing dependencies to file
 
-F       = -model.S;
+F       = -model.S; %vanilla forward and reverse half stoichiometric matrices
 F(F<0)  =    0;
-R       =  model.S;
+R       =  model.S; 
 R(R<0)  =    0;
-%vanilla forward and reverse half stoichiometric matrices
 %recover indices from boolean vectors
 dR=find(model.FRdrows);
 wR=find(model.FRwrows);

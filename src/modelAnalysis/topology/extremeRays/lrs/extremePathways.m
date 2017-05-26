@@ -6,13 +6,13 @@ function [R, V] = extremePathways(model, positivity, inequality)
 %    [R, V] = extremePathways(model, positivity, inequality)
 %
 % INPUTS:
-%    model:                COBRA Toolbox model
+%    model:                COBRA Toolbox model (with optional fields noted as .x in optional inputs)
 %
 % OPTIONAL INPUT:
-%    model.description:    string used to name files
-%    model.lb:             lower bounds and
-%    model.ub:             upper bounds to derive directionality
-%    model.b:              dxdt
+%    .description:         string used to name files
+%    .lb:                  lower bounds and
+%    .ub:                  upper bounds to derive directionality
+%    .b:                   dxdt
 %    positivity:           {0,(1)} if positivity == 1, then positive orthant base
 %    inequality:           {(0),1} if inequality == 1, then use two inequalities rather than a single equality
 %

@@ -9,8 +9,8 @@ function [P, V, A] = extremePools(model, positivity, inequality)
 %                              reversible and `S.v = 0`
 %
 % OPTIONAL INPUT:
-%    model.SIntRxnBool:    `n` x 1 boolean vector with 1 for internal reactions
-%    model.description:    description
+%    .SIntRxnBool:         field of model - `n` x 1 boolean vector with 1 for internal reactions
+%    .description:         field of model - description
 %    positivity:           {0,(1)} if positivity == 1, then positive orthant base
 %    inequality:           {(0),1} if inequality == 1, then use two inequalities rather than a single equaltiy
 %

@@ -8,10 +8,10 @@ function [loops, eqSets, P, P2, cyclicBool] = equivalentSets(model)
 % INPUT:
 %    model:         structure with:
 %
-%                     * model.S
-%                     * model.lb
-%                     * model.ub
-%                     * model.biomassAbbr
+%                     * .S
+%                     * .lb
+%                     * .ub
+%                     * .biomassAbbr
 %
 % OUTPUTS:
 %    loops:         stoichiometrically balanced loops
@@ -100,7 +100,7 @@ lrsInput(A, D, 'eqSet', 0, 0, a, d)
 
 if isunix
     % call lrs and wait until extreme pathways have been calculated
-    [status, result] = unix(['lrs ' pwd '/eqSet_neg_eq.ine > ' pwd '/eqSet_neg_eq.ext']);
+    [status, result] = unix(['lrs ' pwd filesep 'eqSet_neg_eq.ine > ' pwd filesep 'eqSet_neg_eq.ext']);
 end
 % reads in P0 which is an nDim by nRay matrix of extreme rays
 P1 = lrsOutputReadRay([pwd '/eqSet_neg_eq.ext']);

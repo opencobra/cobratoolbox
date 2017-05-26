@@ -4,10 +4,8 @@ function [B,L] = greedyExtremePoolBasis(model)
 % posteriori if each is linearly independent from the existing stored
 % extreme rays.
 
-[inform,molecularVector]=checkStoichiometricConsistency(model,0);
-%check stoichiometric consistency
-%check if positive vector in left nullspace
-if inform~=1
+[inform,molecularVector]=checkStoichiometricConsistency(model,0); %check stoichiometric consistency
+if inform~=1 %check if positive vector in left nullspace
     B=[];
     return;
 end
