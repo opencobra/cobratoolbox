@@ -1,18 +1,18 @@
-function outputHypergraph(model,weights,fileName)
-%outputHypergraph Outputs a metabolic reaction network hypergraph with
-%weights in reactions
+function outputHypergraph(model, weights, fileName)
+% Outputs to a file a metabolic reaction network hypergraph with
+% weights in reactions
+% Output format: `Rxn` `metabolite_1` `metabolite_2` ... `metabolite_n` `rxnWeight`
 %
-% outputHypergraph(model,weights,fileName)
+% USAGE:
 %
-%INPUTS
-% model         Standard model structure
-% weights       Weights for each reaction
-% fileName      Output filename
+%    outputHypergraph(model, weights, fileName)
 %
-%OUTPUT
-% Output format: Rxn metabolite_1 metabolite_2 ... metabolite_n rxnWeight
+% INPUTS:
+%    model:       Standard model structure
+%    weights:     Weights for each reaction
+%    fileName:    Output filename
 %
-% Markus Herrgard
+% .. Author: - Markus Herrgard
 
 fid = fopen(fileName,'w');
 

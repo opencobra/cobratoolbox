@@ -1,20 +1,19 @@
 function modelWithField = creategrRulesField(model)
-%CREATEGRRULESFIELD generates the grRules optional model field from the
-%required rules and gene fields.
+% Generates the grRules optional model field from the
+% required rules and gene fields.
+%
 % USAGE:
 %
 %    modelWithField = creategrRulesField(model)
 %
 % INPUT:
-%    model:     The COBRA Model structure to generate the grRules Field for
-%               an existing grRules field will be overwritten
+%    model:             The COBRA Model structure to generate the grRules Field for
+%                       an existing grRules field will be overwritten
 %
-% OUPUT:
+% OUTPUT:
+%    modelWithField:    The Output model with a grRules field
 %
-%    modelWithField:      The Output model with a grRules field
-%
-% Authors:
-%     - Thomas Pfau May 2017
+% .. Authors: - Thomas Pfau May 2017
 
 
 
@@ -25,6 +24,3 @@ for i = 1:numel(model.genes)
     currentrules = strrep(currentrules,['x(' num2str(i) ')'],['(' model.genes{i} ')']);
 end
 modelWithField.grRules = currentrules;
-
-
-    

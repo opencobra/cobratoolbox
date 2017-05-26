@@ -1,33 +1,43 @@
-function sbml_model = cobra_struct_to_sbml_struct( model, sbml_level,sbml_version )
-%  cobra_struct_to_sbml_struct converts a cobra structure to an sbml
-%  structure using the structures provided in the SBML toolbox 3.0.0
+function sbml_model = cobra_struct_to_sbml_struct(model, sbml_level, sbml_version)
+% Converts a cobra structure to an sbml
+% structure using the structures provided in the SBML toolbox 3.0.0
 %
-% sbmlModel = convertCobraToSBML(cobraModel,noInitDigitFlag)
+% USAGE:
 %
-%NOTE: The name mangling of reaction and metabolite ids is necessary
-%for compliance with the SBML sID standard.
+%    sbml_model = cobra_struct_to_sbml_struct(model, sbml_level, sbml_version)
 %
-%NOTE: Sometimes the Model_create function doesn't listen to the
-%sbml_version parameter, so it is essential that the items that
-%are added to the sbml_model are defined with the sbml_model's level 
-%and version:  sbml_model.SBML_level,sbml_model.SBML_version
+% INPUTS:
+%    model:           model structure
+%    sbml_level:      default = 2
+%    sbml_version:    default = 1
 %
-%NOTE:  Some of the structures are recycled to reduce to overhead for
-%their creation.  There's a chance this can cause bugs in the future.
+% OUTPUT:
+%    sbml_model:      sbml structure
 %
-%NOTE: Currently, I don't add in the boundary metabolites.
+% The name mangling of reaction and metabolite ids is necessary
+% for compliance with the SBML sID standard.
 %
-%NOTE: Speed could probably be improved by directly adding structures to
-%lists in a struct instead of using the SBML _addItem function, but this
-%could break in future versions of the SBML toolbox. 
+% ..
+%    Sometimes the Model_create function doesn't listen to the
+%    sbml_version parameter, so it is essential that the items that
+%    are added to the sbml_model are defined with the sbml_model's level
+%    and version:  sbml_model.SBML_level,sbml_model.SBML_version
 %
-%POTENTIAL BUG: Assumes that the compartment abbreviation is 1 character.
+%    Some of the structures are recycled to reduce to overhead for
+%    their creation.  There's a chance this can cause bugs in the future.
 %
-%POTENTIAL FUTURE BUG: To speed things up, sbml structs have been
-%recycled and are directly appended into lists instead of using _addItem
- 
-  %A flag to know if the user is using the older version of the sbml toolbox.
-  sbml_toolbox_v3 = true;
+%    Currently, I don't add in the boundary metabolites.
+%
+%    Speed could probably be improved by directly adding structures to
+%    lists in a struct instead of using the SBML _addItem function, but this
+%    could break in future versions of the SBML toolbox.
+%
+%    Assumes that the compartment abbreviation is 1 character.
+%
+%    To speed things up, sbml structs have been
+%    recycled and are directly appended into lists instead of using _addItem
+
+  sbml_toolbox_v3 = true; %A flag to know if the user is using the older version of the sbml toolbox.
   if (size(strfind( help('Model_create'), 'sbmlVersion' ),1)==0)
     sbml_toolbox_v3 = false;
     sbml_level = 2;
@@ -41,7 +51,7 @@ function sbml_model = cobra_struct_to_sbml_struct( model, sbml_level,sbml_versio
     sbml_version = 1;
   end
   reaction_units = 'mmol_per_gDW_per_hr';
-  if sbml_toolbox_v3 
+  if sbml_toolbox_v3
     sbml_model = Model_create( sbml_level, sbml_version );
   else
     sbml_model = Model_create( sbml_level );
@@ -71,10 +81,10 @@ function sbml_model = cobra_struct_to_sbml_struct( model, sbml_level,sbml_versio
     sbml_tmp_law = KineticLaw_create( sbml_model.SBML_level);
     tmp_unit_definition = UnitDefinition_create( sbml_model.SBML_level);
   end
-  
+
   compartment_symbols = {'c','m','v','x','e','t','g','r','n','p','l','y'};
   compartment_names = {'Cytoplasm','Mitochondrion','Vacuole','Peroxisome','Extracellular','Pool','Golgi','Endoplasmic_reticulum','Nucleus','Periplasm','Lysosome','Glycosome'};
-  
+
   %Create and add the unit definition to the sbml model struct.
   tmp_unit_definition.id =  reaction_units;
   %The 4 following lists are in matched order for each unit.
@@ -91,8 +101,8 @@ function sbml_model = cobra_struct_to_sbml_struct( model, sbml_level,sbml_versio
     tmp_unit_definition = UnitDefinition_addUnit( tmp_unit_definition, tmp_unit );
   end
   sbml_model = Model_addUnitDefinition( sbml_model, tmp_unit_definition );
-  
- 
+
+
   %List to hold the compartment ids.
   the_compartments = {};
   for ( i=1:size( model.mets, 1 ) )
@@ -107,7 +117,7 @@ function sbml_model = cobra_struct_to_sbml_struct( model, sbml_level,sbml_versio
     tmp_species.id = tmp_met;
     tmp_species.compartment = tmp_met( size( tmp_met, 2 ) );
     if isfield( model, 'metNames' )
-      tmp_species.name = model.metNames{i}; 
+      tmp_species.name = model.metNames{i};
     end
     if isfield( model, 'metFormulas' )
       tmp_species.notes = ['<html xmlns="http://www.w3.org/1999/xhtml"><p>FORMULA: ' model.metFormulas{i} '</p></html>'];
@@ -130,7 +140,7 @@ function sbml_model = cobra_struct_to_sbml_struct( model, sbml_level,sbml_versio
     sbml_tmp_compartment.name = tmp_name;
     sbml_model = Model_addCompartment( sbml_model, sbml_tmp_compartment );
   end
-    
+
   %Add the reactions to the model struct.  Use the species references.
   sbml_tmp_parameter.units = reaction_units;
   sbml_tmp_parameter.isSetValue = 1;
@@ -171,7 +181,7 @@ function sbml_model = cobra_struct_to_sbml_struct( model, sbml_level,sbml_versio
       if isfield( model, 'grRules' )
         tmp_note = [tmp_note '<p>GENE_ASSOCIATION: ' model.grRules{i} '</p>' ];
       end
-      if isfield( model, 'subSystems' ) 
+      if isfield( model, 'subSystems' )
         tmp_note = [ tmp_note ' <p>SUBSYSTEM: ' model.subSystems{i} '</p>'];
       end
       tmp_note = [tmp_note '</html>'];
@@ -195,8 +205,3 @@ function sbml_model = cobra_struct_to_sbml_struct( model, sbml_level,sbml_versio
 
 %toc(a_tic)
 %  save -MAT 'sbml.mat' sbml_model; %just for development purposes.
-
-
-
-
-

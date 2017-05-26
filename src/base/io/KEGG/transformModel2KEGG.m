@@ -1,14 +1,22 @@
 function modelKEGG = transformModel2KEGG(model,Dictionary)
-%transformModel2KEGG replaces model.mets with model.metKEGGID; if no KEGGID
-% defined, the empty cell will be replaced with metabolite abreviation
+% Replaces `model.mets` with `model.metKEGGID`. If no KEGGID
+% defined, the empty cell will be replaced with metabolite abreviation.
 %
-%   modelKEGG = transformModel2KEGG(model,CompAbr, KEGGID)
+% USAGE:
 %
-% model      model structure
-% CompAbr    List of compounds abreviation (non-compartelized)
-% KEGGID     List of KEGGIDs for compounds in CompAbr
+%    modelKEGG = transformModel2KEGG(model, Dictionary)
 %
-% 11-09-07 IT
+% INPUTS:
+%    model:         COBRA model structure
+%    Dictionary:    consists of:
+%
+%                     * CompAbr = Dictionary(:, 1): List of compounds abreviation (non-compartelized)
+%                     * KEGGID = Dictionary(:, 2): List of KEGGIDs for compounds in `CompAbr`
+%
+% OUTPUT:
+%    modelKEGG:     KEGG model structure
+%
+% .. Author: - 11-09-07 IT
 
 if (nargin == 3)
     modelKEGG = mapKEGGID2Model(model, Dictionary);
@@ -26,4 +34,3 @@ for i = 1: length(modelKEGG.metsAbr)
         modelKEGG.mets(i)=modelKEGG.metsAbr(i);
     end
 end
-

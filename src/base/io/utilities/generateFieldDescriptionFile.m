@@ -1,22 +1,19 @@
 function FileString = generateFieldDescriptionFile(FileName)
-%generateFieldDescriptionFile generateGenerates the ModelFields.md file
-%describing the Required and Optional Fields of a COBRA model.
+% Generates the ModelFields.md file
+% describing the Required and Optional Fields of a COBRA model.
 %
 % USAGE:
-%    generateFieldDescriptionFile(FileName)
+%
+%    FileString = generateFieldDescriptionFile(FileName)
 %
 % OPTIONAL INPUT:
-%
 %    FileName:      The FileName to write to. (default [CBTDIR filesep 'docs' filesep 'notes' filesep 'COBRAModelFields.md'])
 %
 % OUTPUT:
+%    FileString:    The string written to the specified filename (or the default file)
 %
-%    FileString:    The string written to the specified filename (or the
-%                   default file)
-%
-% Authors:
-%     - Thomas Pfau May 2017
-%
+% .. Author: - Thomas Pfau May 2017
+
 global CBTDIR
 if ~exist('FileName','var')
     if isempty(CBTDIR)

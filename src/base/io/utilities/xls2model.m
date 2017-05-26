@@ -1,63 +1,79 @@
-function model = xls2model(fileName,biomassRxnEquation, defaultbound)
-% xls2model Writes a model from Excel spreadsheet.
+function model = xls2model(fileName, biomassRxnEquation, defaultbound)
+% Writes a model from Excel spreadsheet.
 %
-% model = xls2model(fileName,biomassRxnEquation)
+% USAGE:
 %
-% INPUT
-% fileName      xls spreadsheet, with one 'Reaction List' and one 'Metabolite List' tab
+%    model = xls2model(fileName, biomassRxnEquation, defaultbound)
 %
-% 'Reaction List' tab headers (case sensitive): 
-%   Required:
-%   'Abbreviation'      HEX1
-%   'Reaction'          1 atp[c] + 1 glc-D[c] --> 1 adp[c] + 1 g6p[c] + 1 h[c]
-%   'GPR'               (3098.3) or (80201.1) or (2645.3) or ...
-%   Optional:
-%   'Description'       Hexokinase
-%   'Genes'             2645.1,2645.2,2645.3,...  (optional)
-%   'Proteins'          Flj22761.1, Hk1.3, Gck.2,...  (optional)
-%   'Subsystem'         Glycolysis
-%   'Reversible'        0 (false) or 1 (true)
-%   'Lower bound'       0
-%   'Upper bound'       1000
-%   'Objective'         0   (optional)
-%   'Confidence Score'  0,1,2,3,4
-%   'EC Number'         2.7.1.1,2.7.1.2
-%   'Notes'             'Reaction also associated with EC 2.7.1.2' (optional)
-%   'References'        PMID:2043117,PMID:7150652,...   (optional)
+% INPUT:
+%    fileName:      xls spreadsheet, with one 'Reaction List' and one 'Metabolite List' tab
 %
-% 'Metabolite List' tab: Required headers (case sensitive): (needs to be complete list of metabolites, i.e., if a metabolite appears in multiple compartments it has to be represented in multiple rows. Abbreviations need to overlap with use in Reaction List
-%   Required
-%   'Abbreviation'      glc-D or glc-D[c]
-%   Optional:
-%   'Charged formula'   C6H12O6
-%   'Charge'            0
-%   'Compartment'       cytosol
-%   'Description'       D-glucose
-%   'KEGG ID'           C00031
-%   'PubChem ID'        5793
-%   'ChEBI ID'          4167
-%   'InChI string'      InChI=1/C6H12O6/c7-1-2-3(8)4(9)5(10)6(11)12-2/h2-11H,1H2/t2-,3-,4+,5-,6?/m1/s1
-%   'SMILES'            OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O
-%   'HMDB ID'           HMDB00122
-%
-% OPTIONAL INPUT (may be required for input on unix macines)
-% biomassRxnEquation        .xls may have a 255 character limit on each cell,
+% OPTIONAL INPUTS:
+%    biomassRxnEquation:    .xls may have a 255 character limit on each cell,
 %                           so pass the biomass reaction separately if it hits this maximum.
 %
-% defaultbound              the deault bound for lower and upper bounds, if
+%    defaultbound:          the deault bound for lower and upper bounds, if
 %                           no bounds are specified in the Excel sheet
-% OUTPUT
-% model         COBRA Toolbox model
+% OUTPUT:
+%    model:                 COBRA Toolbox model
 %
-% Ines Thiele   01/02/09
-% Richard Que   04/27/10    Modified reading of PubChemID and ChEBIID so that if met
-%                           has multiple IDs, all are passed to model. Confidence Scores
-%                           PubChemIDs, and ChEBIIDs, are properly passed as cell arrays.
-% Ronan Fleming 08/17/10    Support for unix
-% Hulda S.H.    10/11/10    Modified reading of xls document. Identifies
-%                           columns by their headers. Added reading of
-%                           HMDB ID.
+% EXAMPLE:
 %
+%                   'Reaction List' tab headers (case sensitive):
+%
+%                     * Required:
+%
+%                       * 'Abbreviation':      HEX1
+%                       * 'Reaction':          `1 atp[c] + 1 glc-D[c] --> 1 adp[c] + 1 g6p[c] + 1 h[c]`
+%                       * 'GPR':               (3098.3) or (80201.1) or (2645.3) or ...
+%                     * Optional:
+%
+%                       * 'Description':       Hexokinase
+%                       * 'Genes':             2645.1,2645.2,2645.3,...
+%                       * 'Proteins':          Flj22761.1, Hk1.3, Gck.2,...
+%                       * 'Subsystem':         Glycolysis
+%                       * 'Reversible':        0 (false) or 1 (true)
+%                       * 'Lower bound':       0
+%                       * 'Upper bound':       1000
+%                       * 'Objective':         0
+%                       * 'Confidence Score':  0,1,2,3,4
+%                       * 'EC Number':         2.7.1.1,2.7.1.2
+%                       * 'Notes':             'Reaction also associated with EC 2.7.1.2' (optional)
+%                       * 'References':        PMID:2043117,PMID:7150652,...
+%
+%                   'Metabolite List' tab: Required headers (case sensitive): (needs to be complete list of metabolites,
+%                   i.e., if a metabolite appears in multiple compartments it has to be represented in multiple rows.
+%                   Abbreviations need to overlap with use in Reaction List
+%
+%                     * Required
+%
+%                       * 'Abbreviation':      glc-D or glc-D[c]
+%                     * Optional:
+%
+%                       * 'Charged formula':   C6H12O6
+%                       * 'Charge':            0
+%                       * 'Compartment':       cytosol
+%                       * 'Description':       D-glucose
+%                       * 'KEGG ID':           C00031
+%                       * 'PubChem ID':        5793
+%                       * 'ChEBI ID':          4167
+%                       * 'InChI string':      InChI=1/C6H12O6/c7-1-2-3(8)4(9)5(10)6(11)12-2/h2-11H,1H2/t2-,3-,4+,5-,6?/m1/s1
+%                       * 'SMILES':            OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O
+%                       * 'HMDB ID':           HMDB00122
+%
+% NOTE:
+%
+%    Optional inputs may be required for input on unix machines.
+%
+% .. Authors:
+%       - Ines Thiele, 01/02/09
+%       - Richard Que, 04/27/10, Modified reading of PubChemID and ChEBIID so that if met
+%         has multiple IDs, all are passed to model. Confidence Scores
+%         PubChemIDs, and ChEBIIDs, are properly passed as cell arrays.
+%       - Ronan Fleming, 08/17/10, Support for unix
+%       - Hulda S.H., 10/11/10, Modified reading of xls document.
+%         Identifies columns by their headers. Added reading of HMDB ID.
+
 warning off
 
 if ~exist('defaultbound','var')
@@ -71,22 +87,22 @@ if isunix
     %trim empty row from Numbers and MetNumbers
     %     Numbers = Numbers(2:end,:);
     %     MetNumbers = MetNumbers(2:end,:);
-    
+
     rxnInfo = rxnInfo(1:size(Strings,1),:);
     metInfo = metInfo(1:size(MetStrings,1),:);
-    
+
     if isempty(MetStrings)
         error('Save .xls file as Windows 95 version using gnumeric not openoffice!');
     end
-    
+
 else
     %assumes that one has an xls file with two tabs
     [~, Strings, rxnInfo] = xlsread(fileName,'Reaction List');
     [~, MetStrings, metInfo] = xlsread(fileName,'Metabolite List');
-    
+
     rxnInfo = rxnInfo(1:size(Strings,1),:);
     metInfo = metInfo(1:size(MetStrings,1),:);
-    
+
 end
 
 rxnHeaders = rxnInfo(1,:);
@@ -150,7 +166,7 @@ revFlagList = lowerBoundList<0;
 
 if ~isempty(strmatch('Objective',rxnHeaders,'exact'))
     Objective = columnVector(cell2mat(rxnInfo(2:end,strmatch('Objective',rxnHeaders,'exact'))));
-    Objective(isnan(Objective)) = 0;    
+    Objective(isnan(Objective)) = 0;
 else
     Objective = zeros(length(rxnAbrList),1);
 end
@@ -196,7 +212,7 @@ Compartments = {};
 mets = MetStrings(:,metCol);
 %Now, we could have a problem, if the reactions are presented without
 %compartments. In this instance, we would have to first put a "[c]" id
-%behind all metabolites. 
+%behind all metabolites.
 metCompAbbrev = cellfun(@(x) regexp(x,'.*\[(.*)\]$','tokens'), mets, 'UniformOutput', 0);
 %get those which don't have a compartmentID
 noncomps = cellfun(@isempty, metCompAbbrev);
@@ -251,7 +267,7 @@ else
         CytoNames{end+1} = Cytosolname;
         CytoNames = unique(CytoNames);
     end
-    
+
     if any(noncomps)
         matchingmets(noncomps) = strcat(matchingmets(noncomps),'[c]');
         Compartments(noncomps) = {Cytosolname};
@@ -263,7 +279,7 @@ else
         end
     end
     metCompAbbrev = cellfun(@(x) x{1}, cellfun(@(x) regexp(x,['.*\[(.*)\]$'],'tokens'), matchingmets));
-    
+
     %now reorder them and assign names to the ids.
     [ucomps, origpos] = unique(Compartments);
     [model.comp,~,origin] = unique(metCompAbbrev(origpos));
@@ -288,7 +304,7 @@ if ~isempty(strmatch('Formula',metHeaders,'exact'))
     model.metFormulas = columnVector(MetStrings(B(A),strmatch('Formula',metHeaders,'exact')));
 end
 %%Set Charge
-if ~isempty(strmatch('Charge',metHeaders,'exact'))    
+if ~isempty(strmatch('Charge',metHeaders,'exact'))
     model.metCharges = cell2mat(columnVector(metInfo(B(A),strmatch('Charge',metHeaders,'exact'))));
 end
 
@@ -319,6 +335,3 @@ model.rxnConfidenceScores = columnVector(model.rxnConfidenceScores);
 
 warning on
 end
-
-
-

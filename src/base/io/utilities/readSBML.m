@@ -1,27 +1,27 @@
-function model = readSBML(fileName,defaultBound,compSymbolList,compNameList)
-% readSBML reads in a SBML format model as a COBRA matlab structure
+function model = readSBML(fileName, defaultBound, compSymbolList, compNameList)
+% Reads in a SBML format model as a COBRA matlab structure
 %
+% USAGE:
 %
-%INPUTS:
+%    model = readSBML(fileName, defaultBound, compSymbolList, compNameList)
+%
+% INPUTS:
 %    fileName:          File name for file to read in
 %
-%OPTIONAL INPUTS:
+% OPTIONAL INPUTS:
 %    defaultBound:      Maximum bound for model (Default = 1000)
 %    compSymbolList:    List of compartment symbols
 %    compNameList:      List of compartment names corresponding to compSymbolList
 %
-%OUTPUT:
+% OUTPUT:
 %    model:             COBRA model structure
 %
-% Authors:
-% Markus Herrgard 1/25/08
-% Ines Thiele 01/27/2010 - I added new field to be read-in from SBML file
-%                          if provided in file (e.g., references, comments, metabolite IDs, etc.)
-% Richard Que 02/08/10 - Properly format reaction and metabolite fields
-%                        from SBML.
-% Longfei Mao 23/09/15 - Added support for the FBCv2 format
-%
-
+% .. Authors:
+%       - Markus Herrgard 1/25/08
+%       - Ines Thiele 01/27/2010 - I added new field to be read-in from SBML file
+%       if provided in file (e.g., references, comments, metabolite IDs, etc.)
+%       - Richard Que 02/08/10 - Properly format reaction and metabolite fields from SBML.
+%       - Longfei Mao 23/09/15 - Added support for the FBCv2 format
 
 if (nargin < 2)
     defaultBound = 1000;
@@ -643,7 +643,7 @@ else    % in the case of fbc file
         model.osense = fbc_obj_sense;
     end
 
-    if all(cellfun('isempty',fbcMet.fbc_chemicalFormula))~=1  % if all formulas are empty        
+    if all(cellfun('isempty',fbcMet.fbc_chemicalFormula))~=1  % if all formulas are empty
         model.metFormulas=fbcMet.fbc_chemicalFormula;
     end
 
