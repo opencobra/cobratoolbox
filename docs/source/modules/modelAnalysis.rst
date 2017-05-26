@@ -19,3 +19,7 @@ Model analysis
    thermo
    topology
    transport
+
+.. automodule:: src.modelAnalysis
+   :members:
+
