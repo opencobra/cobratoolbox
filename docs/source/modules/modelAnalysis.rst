@@ -16,7 +16,7 @@ Model analysis
    sampling
    sparseFBA
    subspaces
-   thermo
+   #thermo
    topology
    transport
 
