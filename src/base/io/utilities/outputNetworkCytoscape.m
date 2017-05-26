@@ -30,15 +30,13 @@ function notShownMets = outputNetworkCytoscape(model, fileBase, rxnList, rxnData
 %
 %    Outputs three to five files:
 %
-%    * [baseName].sif               Basic network structure file containing
-%                                   reaction-metabolite and gene-reaction
-%                                   (if provided in model) associations
-%    * [baseName]_nodeType.noa      Describes the node types (gene, rxn, met) in the
-%                                   network
-%    * [baseName]_nodeComp.noa      Describes the compartments for metabolites
-%     * [baseName]_subSys.noa       Describes the subsystems for reactions (if
-%                                   provided)
-%    * [baseName]_rxnMetData.noa    Reaction and metabolite data (if provided)
+%      * [baseName].sif - Basic network structure file containing
+%        reaction-metabolite and gene-reaction
+%        (if provided in model) associations
+%      * [baseName]_nodeType.noa - Describes the node types (gene, rxn, met) in the network
+%      * [baseName]_nodeComp.noa - Describes the compartments for metabolites
+%      * [baseName]_subSys.noa - Describes the subsystems for reactions (if provided)
+%      * [baseName]_rxnMetData.noa - Reaction and metabolite data (if provided)
 %
 % .. Author: - Markus Herrgard 9/21/06
 

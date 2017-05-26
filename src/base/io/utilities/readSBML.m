@@ -5,15 +5,15 @@ function model = readSBML(fileName, defaultBound, compSymbolList, compNameList)
 %
 %    model = readSBML(fileName, defaultBound, compSymbolList, compNameList)
 %
-%INPUTS:
+% INPUTS:
 %    fileName:          File name for file to read in
 %
-%OPTIONAL INPUTS:
+% OPTIONAL INPUTS:
 %    defaultBound:      Maximum bound for model (Default = 1000)
 %    compSymbolList:    List of compartment symbols
 %    compNameList:      List of compartment names corresponding to compSymbolList
 %
-%OUTPUT:
+% OUTPUT:
 %    model:             COBRA model structure
 %
 % .. Authors:

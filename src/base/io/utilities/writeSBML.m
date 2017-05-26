@@ -1,6 +1,7 @@
 function sbmlModel = writeSBML(model, fileName, compSymbolList, compNameList)
 % Exports a COBRA structure into an SBML FBCv2 file.
 % A SBMLFBCv2 file  a file is written to the current Matlab path.
+%
 % USAGE:
 %
 %    sbmlModel = writeSBML(model, fileName, compSymbolList, compNameList)

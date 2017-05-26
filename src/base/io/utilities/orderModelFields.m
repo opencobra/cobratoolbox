@@ -13,7 +13,7 @@ function orderedModel = orderModelFields(model)
 % OUTPUT:
 %    orderedModel:    a model with fields ordered according to the field definitions.
 %
-% Author: - Thomas Pfau May 2017
+% .. Author: - Thomas Pfau May 2017
 
 
 [fields] = getDefinedFieldProperties();

@@ -1,5 +1,19 @@
 function model = mapMetName2KEGGID(model, Dictionary)
-% Translates the metabolites from KEGG to cobra model names, called by transformKEGG2Model.m
+% This function maps names of metabolites to KEGG IDs.
+%
+% USAGE:
+%
+%    model = mapMetName2KEGGID(model, Dictionary)
+%
+% INPUTS:
+%    model:         KEGG model structure
+%    Dictionary:    consists of:
+%
+%                     * CompAbr = Dictionary(:, 1): List of compounds abreviation (non-compartelized)
+%                     * KEGGID = Dictionary(:, 2): List of KEGGIDs for compounds in `CompAbr`
+%
+% OUTPUT:
+%    model:         cobra ctructure model
 
 HTABLE = java.util.Hashtable; %Hash all KEGG ID's
 CompAbr = Dictionary(:, 1);

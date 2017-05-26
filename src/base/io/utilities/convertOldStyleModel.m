@@ -12,7 +12,7 @@ function model = convertOldStyleModel(model, printLevel)
 % OPTIONAL INPUT:
 %    printLevel:    indicates whether warnings and messages are given (default, 1).
 %
-% OUPUT:
+% OUTPUT:
 %    model:         a COBRA model with old field names replaced by new ones and
 %                   duplicated fields merged.
 %

@@ -7,45 +7,48 @@ function model = xls2model(fileName, biomassRxnEquation, defaultbound)
 %
 % INPUT:
 %    fileName:      xls spreadsheet, with one 'Reaction List' and one 'Metabolite List' tab
+%
 %                   'Reaction List' tab headers (case sensitive):
 %
 %                     * Required:
 %
 %                       * 'Abbreviation':      HEX1
-%                       * 'Reaction':          1 atp[c] + 1 glc-D[c] --> 1 adp[c] + 1 g6p[c] + 1 h[c]
+%                       * 'Reaction':          `1 atp[c] + 1 glc-D[c] --> 1 adp[c] + 1 g6p[c] + 1 h[c]`
 %                       * 'GPR':               (3098.3) or (80201.1) or (2645.3) or ...
 %                     * Optional:
 %
 %                       * 'Description':       Hexokinase
-%                       * 'Genes':             2645.1,2645.2,2645.3,...  (optional)
-%                       * 'Proteins':          Flj22761.1, Hk1.3, Gck.2,...  (optional)
+%                       * 'Genes':             2645.1,2645.2,2645.3,...
+%                       * 'Proteins':          Flj22761.1, Hk1.3, Gck.2,...
 %                       * 'Subsystem':         Glycolysis
 %                       * 'Reversible':        0 (false) or 1 (true)
 %                       * 'Lower bound':       0
 %                       * 'Upper bound':       1000
-%                       * 'Objective':         0   (optional)
+%                       * 'Objective':         0
 %                       * 'Confidence Score':  0,1,2,3,4
 %                       * 'EC Number':         2.7.1.1,2.7.1.2
 %                       * 'Notes':             'Reaction also associated with EC 2.7.1.2' (optional)
-%                       * 'References':        PMID:2043117,PMID:7150652,...   (optional)
+%                       * 'References':        PMID:2043117,PMID:7150652,...
 %
-%                   'Metabolite List' tab: Required headers (case sensitive): (needs to be complete list of metabolites, i.e., if a metabolite appears in multiple compartments it has to be represented in multiple rows. Abbreviations need to overlap with use in Reaction List
+%                   'Metabolite List' tab: Required headers (case sensitive): (needs to be complete list of metabolites,
+%                   i.e., if a metabolite appears in multiple compartments it has to be represented in multiple rows.
+%                   Abbreviations need to overlap with use in Reaction List
 %
 %                     * Required
 %
-%                       * 'Abbreviation'      glc-D or glc-D[c]
+%                       * 'Abbreviation':      glc-D or glc-D[c]
 %                     * Optional:
 %
-%                       * 'Charged formula'   C6H12O6
-%                       * 'Charge'            0
-%                       * 'Compartment'       cytosol
-%                       * 'Description'       D-glucose
-%                       * 'KEGG ID'           C00031
-%                       * 'PubChem ID'        5793
-%                       * 'ChEBI ID'          4167
-%                       * 'InChI string'      InChI=1/C6H12O6/c7-1-2-3(8)4(9)5(10)6(11)12-2/h2-11H,1H2/t2-,3-,4+,5-,6?/m1/s1
-%                       * 'SMILES'            OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O
-%                       * 'HMDB ID'           HMDB00122
+%                       * 'Charged formula':   C6H12O6
+%                       * 'Charge':            0
+%                       * 'Compartment':       cytosol
+%                       * 'Description':       D-glucose
+%                       * 'KEGG ID':           C00031
+%                       * 'PubChem ID':        5793
+%                       * 'ChEBI ID':          4167
+%                       * 'InChI string':      InChI=1/C6H12O6/c7-1-2-3(8)4(9)5(10)6(11)12-2/h2-11H,1H2/t2-,3-,4+,5-,6?/m1/s1
+%                       * 'SMILES':            OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O
+%                       * 'HMDB ID':           HMDB00122
 %
 % OPTIONAL INPUTS:
 %    biomassRxnEquation:    .xls may have a 255 character limit on each cell,
@@ -58,7 +61,7 @@ function model = xls2model(fileName, biomassRxnEquation, defaultbound)
 %
 % NOTE:
 %
-%    Optional inputs may be required for input on unix macines.
+%    Optional inputs may be required for input on unix machines.
 %
 % .. Authors:
 %       - Ines Thiele, 01/02/09

@@ -1,7 +1,7 @@
 function outputHypergraph(model, weights, fileName)
 % Outputs to a file a metabolic reaction network hypergraph with
 % weights in reactions
-% Output format: Rxn metabolite_1 metabolite_2 ... metabolite_n rxnWeight
+% Output format: `Rxn` `metabolite_1` `metabolite_2` ... `metabolite_n` `rxnWeight`
 %
 % USAGE:
 %

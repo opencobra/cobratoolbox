@@ -11,7 +11,7 @@ function mergedData = mergeTextDataAndData(textdata, data, headings)
 %    data:          matrix with numeric data from .xls import
 %
 % OPTIONAL INPUT:
-%    headings:      {(1),0}, zero if no column headings
+%    headings:      {(1), 0}, zero if no column headings
 %
 % OUTPUT:
 %    mergedData:    merged cell array with all data from .xls import

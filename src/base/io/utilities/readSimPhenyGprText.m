@@ -14,9 +14,8 @@ function gpraModel = readSimPhenyGprText(file, model)
 %
 % .. Author: - Markus Herrgard 2/23/06
 
-% Read GPRA file
 [tmp,tmp,rxnNames,rxnDesrs,rxnEqns,Confs,subSystems,Regions,gpraStrings,proteinStrings,ECs] = ...
-    textread(file,'%s %s %s %s %s %s %s %s %s %s %s','delimiter','\t','headerlines',1,'bufsize',200000);
+    textread(file,'%s %s %s %s %s %s %s %s %s %s %s','delimiter','\t','headerlines',1,'bufsize',200000); % Read GPRA file
 
 sel = ~strcmp(rxnNames,'');
 gpraStrings = gpraStrings(sel);

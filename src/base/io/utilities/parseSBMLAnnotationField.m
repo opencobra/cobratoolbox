@@ -6,6 +6,16 @@ function [metCHEBI, metHMDB, metKEGG, metPubChem, metInChI] = parseSBMLAnnotatio
 %
 %    [metCHEBI, metHMDB, metKEGG, metPubChem, metInChI] = parseSBMLAnnotationField(annotationField)
 %
+% INPUTS:
+%    annotationField:       annotation filed of an SBML fileBase
+%
+% OUTPUTS:
+%    metCHEBI:              CHEBI ID
+%    metHMDB:               HMDB ID
+%    metKEGG:               KEGG ID
+%    metPubChem:            PubChem ID
+%    metInChI:              InChI ID
+%
 % .. Authors:
 %       - Ines Thiele 1/27/10 Added new fields - Handle different notes fields
 %       - Longfei Mao 29/02/16 added more fields

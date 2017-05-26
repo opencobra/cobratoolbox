@@ -1,5 +1,19 @@
 function model = transformKEGG2Model(modelKEGG, dictionary)
-% Translates the metabolites from KEGG to cobra model names, calls mapMetName2KEGGID.m
+% Translates the metabolites from KEGG to cobra model names.
+%
+% USAGE:
+%
+%    model = mapMetName2KEGGID(model, Dictionary)
+%
+% INPUTS:
+%    model:         KEGG model structure
+%    Dictionary:    consists of:
+%
+%                     * CompAbr = Dictionary(:, 1): List of compounds abreviation (non-compartelized)
+%                     * KEGGID = Dictionary(:, 2): List of KEGGIDs for compounds in `CompAbr`
+%
+% OUTPUT:
+%    model:         cobra ctructure model
 
 if (nargin == 2)
     model = mapMetName2KEGGID(modelKEGG,dictionary);

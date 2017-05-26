@@ -1,6 +1,25 @@
-function [genes,rule,subSystem,grRule,formula,confidenceScore,citation,comment,ecNumber,charge] = parseSBMLNotesField2012(notesField)
+function [genes, rule, subSystem, grRule, formula, confidenceScore, citation, comment, ecNumber, charge] = parseSBMLNotesField2012(notesField)
 % Parses the notes field of an SBML file to extract
 % `gene-rxn` associations
+%
+% USAGE:
+%
+%    [genes, rule, subSystem, grRule, formula, confidenceScore, citation, comment, ecNumber, charge] = parseSBMLNotesField(notesField)
+%
+% INPUT:
+%    notesField:         notes filed of SBML file
+%
+% OUTPUT:
+%    genes:              taken from `parseBoolean`
+%    rule:               taken from `parseBoolean`
+%    subSystem:          result of `regexprep` function
+%    grRule:             result of `regexprep` function
+%    formula:            result of `regexprep` function
+%    confidenceScore:    confidence level
+%    citation:           joins strings with authors
+%    comment:            joins strings with authors
+%    ecNumber:           result of `regexprep` function
+%    charge:             result of `regexprep` function changed to double
 %
 % .. Authors:
 %       - Markus Herrgard 8/7/06

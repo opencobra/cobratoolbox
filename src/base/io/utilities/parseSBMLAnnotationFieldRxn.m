@@ -4,13 +4,13 @@ function [rxnEC, rxnReference] = parseSBMLAnnotationFieldRxn(annotationField)
 %
 % USAGE:
 %
-% [rxnEC, rxnReference] = parseSBMLAnnotationFieldRxn(annotationField)
+%    [rxnEC, rxnReference] = parseSBMLAnnotationFieldRxn(annotationField)
 %
 % INPUT:
 %    annotationField:       annotation filed of an SBML fileBase
 %
 % OUTPUTS:
-%    rxnEC,rxnReference:    only one of them is not empty depending on annotationField
+%    rxnEC,rxnReference:    only one of them is not empty depending on `annotationField`
 %
 % .. Author: - Uri David Akavia 3-Nov-2016
 

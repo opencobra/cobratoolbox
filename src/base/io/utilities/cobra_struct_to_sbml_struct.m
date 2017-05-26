@@ -6,6 +6,14 @@ function sbml_model = cobra_struct_to_sbml_struct(model, sbml_level, sbml_versio
 %
 %    sbml_model = cobra_struct_to_sbml_struct(model, sbml_level, sbml_version)
 %
+% INPUTS:
+%    model:           model structure
+%    sbml_level:      default = 2
+%    sbml_version:    default = 1
+%
+% OUTPUT:
+%    sbml_model:      sbml structure
+%
 % The name mangling of reaction and metabolite ids is necessary
 % for compliance with the SBML sID standard.
 %

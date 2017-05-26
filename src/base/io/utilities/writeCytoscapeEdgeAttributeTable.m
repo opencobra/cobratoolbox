@@ -1,6 +1,6 @@
 function writeCytoscapeEdgeAttributeTable(model, C, B, N, replicateMetBool, filename)
 % Writes out a set of boolean edge attributes as one of a pair of colours,
-% Red for yes, Black for No
+% 'Red' for 'yes', 'Black' for 'no'
 %
 % USAGE:
 %

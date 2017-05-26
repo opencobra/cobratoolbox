@@ -10,7 +10,7 @@ function modelWithField = creategrRulesField(model)
 %    model:             The COBRA Model structure to generate the grRules Field for
 %                       an existing grRules field will be overwritten
 %
-% OUPUT:
+% OUTPUT:
 %    modelWithField:    The Output model with a grRules field
 %
 % .. Authors: - Thomas Pfau May 2017

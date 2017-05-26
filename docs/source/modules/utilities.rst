@@ -5,5 +5,5 @@
 Utilities
 ---------
 
-.. automodule:: src.base.io.utilites
+.. automodule:: src.base.io.utilities
    :members:

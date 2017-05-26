@@ -10,11 +10,11 @@ function model = mapKEGGID2Model(model, Dictionary)
 %    model:         model structure
 %    Dictionary:    consists of:
 %
-%                     * CompAbr = Dictionary(:, 1) - List of compounds abreviation (non-compartelized)
-%                     * KEGGID = Dictionary(:, 2) - List of KEGGIDs for compounds in `CompAbr`
+%                     * CompAbr = Dictionary(:, 1): List of compounds abreviation (non-compartelized)
+%                     * KEGGID = Dictionary(:, 2): List of KEGGIDs for compounds in `CompAbr`
 %
 % OUTPUT:
-%    model:         model structure
+%    model:         KEGG model structure
 %
 % .. Author: - 11-09-07 IT
 

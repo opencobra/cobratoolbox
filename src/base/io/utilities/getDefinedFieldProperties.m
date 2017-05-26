@@ -22,24 +22,28 @@ function [fields] = getDefinedFieldProperties(varargin)
 %    The optional inputs are to be provided as parameter/value pairs.
 %    The returned Cell arrays are structured as follows:
 %    Default:
-%    X{:,1} are the field names
-%    X{:,2} are the associated fields for the first dimension (i.e.
-%           size(model.(X{A,1}),1) == size(model.(X{A,2}),1) has to evaluate
-%           to true
-%    X{:,3} are the associated fields for the second dimension (i.e.
-%           size(model.(X{A,1}),2) == size(model.(X{A,2}),1) has to evaluate
-%           to true
-%    X{:,4} are evaluateable statements, which have to evaluate to true for
-%           the model to be valid, these mainly check the content types.
-%           E.g.
-%                  x = model.(X{A,1});
-%                  eval(X{A,4}) has to return 1
+%
+%      * X{:,1} are the field names
+%      * X{:,2} are the associated fields for the first dimension (i.e.
+%        size(model.(X{A,1}),1) == size(model.(X{A,2}),1) has to evaluate
+%        to true
+%      * X{:,3} are the associated fields for the second dimension (i.e.
+%        size(model.(X{A,1}),2) == size(model.(X{A,2}),1) has to evaluate
+%        to true
+%      * X{:,4} are evaluateable statements, which have to evaluate to true for
+%        the model to be valid, these mainly check the content types.
+%    E.g.
+%
+%      `x = model.(X{A, 1})`;
+%
+%      `eval(X{A, 4})` has to return 1
 %
 %    DataBaseFields:
-%    X{:,1} - database id
-%    X{:,2} - qualifier
-%    X{:,3} - model Field
-%    X{:,4} - model field reference (without s)
+%
+%      * X{:, 1} - database id
+%      * X{:, 2} - qualifier
+%      * X{:, 3} - model Field
+%      * X{:, 4} - model field reference (without s)
 %
 % .. Author: - Thomas Pfau May 2017
 

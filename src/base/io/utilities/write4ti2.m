@@ -1,5 +1,5 @@
 function write4ti2(SeFull, filename, uni)
-% Writes an input file for 4ti2
+% Writes an input file for 4ti2.
 % 'ti2' is a software package for algebraic, geometric and combinatorial
 % problems on linear spaces - www.4ti2.de
 %
@@ -12,7 +12,7 @@ function write4ti2(SeFull, filename, uni)
 %    filename:    name of the file
 %
 % OPTIONAL INPUT:
-%    uni        {(0),1}, uni=1 only outputs every second reaction
+%    uni:m        {(0),1}, uni = 1 only outputs every second reaction
 
 SeFull=integerizeS(SeFull); %function integerizeS not defined in the COBRA toolbox
 
