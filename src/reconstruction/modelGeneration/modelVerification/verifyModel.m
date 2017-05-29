@@ -85,6 +85,7 @@ stoichiometricConsistency = parser.Results.stoichiometricConsistency;
 checkDBs = parser.Results.checkDatabaseIDs;
 silentCheck = parser.Results.silentCheck;
 
+
 [optionalFields] = getDefinedFieldProperties();
 requiredFields = optionalFields(ismember(optionalFields(:,1), requiredFields),:);
 optionalFields = optionalFields(~ismember(optionalFields(:,1), requiredFields(:,1)),:);
@@ -232,10 +233,11 @@ end
 if simpleCheck
     if isempty(fieldnames(results))
         results = true;
-    else
+    else        
         results = false;
     end
 end
+
 end
 
 
@@ -402,7 +404,56 @@ for i = 1:numel(presentFields)
         if ~isfield(results.Errors,'inconsistentFields')
             results.Errors.propertiesNotMatched = struct();
         end
-        results.Errors.propertiesNotMatched.(testedField) = 'Field does not match the required properties';
+presentFields = find(ismember(fieldProperties(:,1),fieldnames(model)));
+
+%Check all Field Sizes
+for i = 1:numel(presentFields)
+    testedField = fieldProperties{presentFields(i),1};
+    [x_size,y_size] = size(model.(testedField));
+    xFieldMatch = fieldProperties{presentFields(i),2};
+    yFieldMatch = fieldProperties{presentFields(i),3};
+
+    checkX = ~isnan(xFieldMatch);
+    checkY = ~isnan(yFieldMatch);
+    if checkX
+        if ischar(xFieldMatch)
+            x_pres = numel(model.(xFieldMatch));
+        elseif isnumeric(xFieldMatch)
+            x_pres = xFieldMatch;
+        end
+        if x_pres ~= x_size
+            if ~isfield(results.Errors,'inconsistentFields')
+                results.Errors.inconsistentFields = struct();
+            end
+            results.Errors.inconsistentFields.(testedField) = sprintf('%s: Size of %s does not match elements in %s', xFieldMatch,testedField,xFieldMatch);
+        end
+    end
+    if checkY
+        if ischar(yFieldMatch)
+            y_pres = numel(model.(yFieldMatch));
+        elseif isnumeric(yFieldMatch)
+            y_pres = yFieldMatch;
+        end
+        if y_pres ~= y_size
+            if ~isfield(results.Errors,'inconsistentFields')
+                results.Errors.inconsistentFields = struct();
+            end
+            results.Errors.inconsistentFields.(testedField) = sprintf('%s: Size of %s does not match elements in %s', yFieldMatch,testedField,yFieldMatch);
+        end
+    end
+    %Test the field content properties
+    %x is necessary here, since it is used for the eval below!
+    x = model.(testedField);
+    try
+        propertiesMatched = eval(fieldProperties{presentFields(i),4});
+    catch
+        propertiesMatched = false;
+    end
+    if ~propertiesMatched
+        if ~isfield(results.Errors,'inconsistentFields')
+            results.Errors.propertiesNotMatched = struct();
+        end
+        results.Errors.propertiesNotMatched.(testedField) = ['Field does not match the required properties: ' fieldProperties{presentFields(i),4} ];
     end
 
 end
