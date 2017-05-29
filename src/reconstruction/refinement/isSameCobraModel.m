@@ -46,8 +46,7 @@ for i = 1:nFields
     end
 
     if isnumeric(value1)
-        nDiff(i) = sum(sum(value1 ~= value2));
-
+        nDiff(i) = sum(sum(~((value1 == value2) | (isnan(value1) & isnan(value2))) ));
     elseif iscellstr(value1)
         nDiff(i) = sum(~strcmp(value1, value2));
 
