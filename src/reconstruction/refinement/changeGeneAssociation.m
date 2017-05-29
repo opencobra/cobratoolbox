@@ -45,8 +45,8 @@ end
 nGenes = length(model.genes);
 model.rules{rxnID} = '';
 % IT 01/2010 - this line caused problems for xls2model.m
-if addRxnGeneMat ==1
-    model.rxnGeneMat(rxnID,:) = zeros(1,nGenes);
+if addRxnGeneMat ==1 
+    model.rxnGeneMat(rxnID,1:nGenes) = zeros(1,nGenes);
 end
 % Remove extra white space
 grRule = regexprep(grRule,'\s{2,}',' ');

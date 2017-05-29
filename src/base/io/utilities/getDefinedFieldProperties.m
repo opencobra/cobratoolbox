@@ -4,7 +4,7 @@ function [fields] = getDefinedFieldProperties(varargin)
 %
 % USAGE:
 %
-%    [requiredFields, optionalFields] = getDefinedFieldProperties(varargin)
+%    [fields] = getDefinedFieldProperties(varargin)
 %
 % OPTIONAL INPUT:
 %    Descriptions:         Whether to obtain the field descriptions (default = false).
@@ -13,9 +13,8 @@ function [fields] = getDefinedFieldProperties(varargin)
 %    DataBaseFields:       Get the fields with specified Database relations.
 %
 % OUTPUTS:
-%    requiredFields:       The fields a model must have in order to be a valid
-%                          COBRA Toolbox model
-%    optionalFields:       The Fields which are supported by the COBRA Toolbox.
+%    fields:               The fields and their respective properties as
+%                          defined by the given arguments.
 %
 % NOTE:
 %
@@ -44,6 +43,7 @@ function [fields] = getDefinedFieldProperties(varargin)
 %      * X{:, 2} - qualifier
 %      * X{:, 3} - model Field
 %      * X{:, 4} - model field reference (without s)
+%      * X{:, 5} - Patterns for ids from the respecive database.
 %
 % .. Author: - Thomas Pfau May 2017
 
@@ -77,18 +77,19 @@ if db
         qualpos = find(cellfun(@(x) ischar(x) && strcmp(x,'qualifier'),raw(1,:)));
         reffieldPos = find(cellfun(@(x) ischar(x) && strcmp(x,'referenced Field'),raw(1,:)));
         fieldNamePos = find(cellfun(@(x) ischar(x) && strcmp(x,'Model Field'),raw(1,:)));
+        patternPos = find(cellfun(@(x) ischar(x) && strcmp(x,'DBPatterns'),raw(1,:)));
         relrows = cellfun(@(x) ischar(x) && ~isempty(x),raw(:,dbpos));
         %Ignore the first row, headers.
         relrows(1) = false;
-        relarray = raw(relrows,[dbpos,qualpos,fieldNamePos,reffieldPos]);
-        dbInfo = cell(0,4);
+        relarray = raw(relrows,[dbpos,qualpos,fieldNamePos,reffieldPos,patternPos]);
+        dbInfo = cell(0,5);
         for i = 1:size(relarray)
             fieldRef = relarray{i,4}(1:end-1);
             dbs = strsplit(relarray{i,1},';');
             for db = 1:length(dbs)
                 quals = strsplit(relarray{i,2},';');
                 for qual = 1:length(quals)
-                    dbInfo(end+1,:) = {dbs{db},quals{qual},relarray{i,3},fieldRef};
+                    dbInfo(end+1,:) = {dbs{db},quals{qual},relarray{i,3},fieldRef,relarray{i,5}};
                 end
             end
         end
