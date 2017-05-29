@@ -1,0 +1,542 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Fluxomics &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" />
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../contents.html">Docs</a> &raquo;</li>
+        
+      <li>Fluxomics</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="fluxomics">
+<span id="id1"></span><h1>Fluxomics<a class="headerlink" href="#fluxomics" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="atomTransition.html">atomTransition</a></li>
+</ul>
+</div>
+<span class="target" id="module-src.dataIntegration.fluxomics"></span><dl class="function">
+<dt id="src.dataIntegration.fluxomics.C13ConfidenceInterval">
+<code class="descname">C13ConfidenceInterval</code><span class="sig-paren">(</span><em>v0</em>, <em>expdata</em>, <em>model</em>, <em>max_score</em>, <em>directions</em>, <em>majorIterationLimit</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/dataIntegration/fluxomics/C13ConfidenceInterval.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.C13ConfidenceInterval" title="Permalink to this definition">¶</a></dt>
+<dd><p>v0 - set of flux vectors to be used as initial guesses.  They may be
+valid or not.
+expdata - experimental data.
+model - The standard model.  Additional field .N (= null(S)) should also
+be provided.  This is a basis of the flux space.
+max score - maximum allowable data fit error.
+directions (optional) - ones and zeros of which reactions to compute (size = n
+x 1).</p>
+<blockquote>
+<div>OR</div></blockquote>
+<dl class="docutils">
+<dt>numbers of reactions to use  aka.  [1;5;7;8;200]</dt>
+<dd>OR</dd>
+</dl>
+<p>reaction strings  aka.  {&#8216;GPK&#8217;, &#8216;PGL&#8217;}.  Ratios are possible with this
+input only.  Default = [] meaning do FVA with no ratios.
+majorIterationLimit (optional) - default = 10000</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.dataIntegration.fluxomics.compareBinsOfFluxes">
+<code class="descname">compareBinsOfFluxes</code><span class="sig-paren">(</span><em>xglc</em>, <em>model</em>, <em>sammin</em>, <em>sammax</em>, <em>metabolites</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/dataIntegration/fluxomics/compareBinsOfFluxes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.compareBinsOfFluxes" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>takes the overall sammin and sammax samples, bins them into</dt>
+<dd>separate bin sizes and compares them, then compares the
+results to the largest bin size.</dd>
+</dl>
+<p>calls
+[totalz,zscore,mdv1,mdv2] =
+compareTwoSamp(xglc,model,samp1,samp2,measuredMetabolites)</p>
+<blockquote>
+<div>sammin and sammax each contain bins of fluxes in x.samps(r,1).points</div></blockquote>
+<p>Wing Choi 3/7/08</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.dataIntegration.fluxomics.compareMultSamp">
+<code class="descname">compareMultSamp</code><span class="sig-paren">(</span><em>xglc</em>, <em>model</em>, <em>samps</em>, <em>measuredMetabolites</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/dataIntegration/fluxomics/compareMultSamp.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.compareMultSamp" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Compare the multiple sets of samples</dt>
+<dd><p class="first">xglc is optional, a random sugar distribution is calculated if empty
+expects samp1 and samp2 to have a field named points containing</p>
+<blockquote>
+<div>an array of sampled points</div></blockquote>
+<p>expects model.rxns to contain a list of rxn names
+measuredMetabolites is an optional parameter fed to calcMDVfromSamp.m</p>
+<blockquote>
+<div>which only calculates the MDVs for the metabolites listed in this
+array.  e.g.</div></blockquote>
+<p>totalz is the sum of all zscores
+zscore is the calculated difference for each mdv element distributed</p>
+<blockquote>
+<div>across all the points</div></blockquote>
+<dl class="docutils">
+<dt>mdv1,mdv2 each containing fields:</dt>
+<dd><ul class="first simple">
+<li>mdv - the calculated mdv distribution converted from the idv</li>
+</ul>
+<p class="last">solved from each point contained in their respective samples sampX
+- names - the names of the metabolites
+- ave - the average of each mdv element across all of the points
+- stdev - the standard dev for each mdv element across all points</p>
+</dd>
+</dl>
+<p class="last">Wing Choi 2/11/08</p>
+</dd>
+</dl>
+<p>glc = zeros(62,1);
+glc = [.2 ;.8 ;glc];</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.dataIntegration.fluxomics.compareTwoMDVs">
+<code class="descname">compareTwoMDVs</code><span class="sig-paren">(</span><em>mdv1</em>, <em>mdv2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/dataIntegration/fluxomics/compareTwoMDVs.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.compareTwoMDVs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare the 2 sets of mdvs</p>
+<p>totalz is the sum of all zscores
+zscore is the calculated difference for each mdv element distributed</p>
+<blockquote>
+<div>across all the points</div></blockquote>
+<dl class="docutils">
+<dt>mdv1,mdv2 each containing fields:</dt>
+<dd><ul class="first simple">
+<li>mdv - the calculated mdv distribution converted from the idv</li>
+</ul>
+<p class="last">solved from each point contained in their respective samples sampX
+- names - the names of the metabolites
+- ave - the average of each mdv element across all of the points
+- stdev - the standard dev for each mdv element across all points</p>
+</dd>
+</dl>
+<p>Wing Choi 2/11/08</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.dataIntegration.fluxomics.compareTwoSamp">
+<code class="descname">compareTwoSamp</code><span class="sig-paren">(</span><em>xglc</em>, <em>model</em>, <em>samp1</em>, <em>samp2</em>, <em>measuredMetabolites</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/dataIntegration/fluxomics/compareTwoSamp.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.compareTwoSamp" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Compare the 2 sets of samples</dt>
+<dd><p class="first">xglc is optional, a random sugar distribution is calculated if empty
+expects samp1 and samp2 to have a field named points containing</p>
+<blockquote>
+<div>an array of sampled points</div></blockquote>
+<p>expects model.rxns to contain a list of rxn names
+measuredMetabolites is an optional parameter fed to calcMDVfromSamp.m</p>
+<blockquote>
+<div>which only calculates the MDVs for the metabolites listed in this
+array.  e.g.</div></blockquote>
+<p>totalz is the sum of all zscores
+zscore is the calculated difference for each mdv element distributed</p>
+<blockquote>
+<div>across all the points</div></blockquote>
+<dl class="docutils">
+<dt>mdv1,mdv2 each containing fields:</dt>
+<dd><ul class="first simple">
+<li>mdv - the calculated mdv distribution converted from the idv</li>
+</ul>
+<p class="last">solved from each point contained in their respective samples sampX
+- names - the names of the metabolites
+- ave - the average of each mdv element across all of the points
+- stdev - the standard dev for each mdv element across all points</p>
+</dd>
+</dl>
+<p class="last">Wing Choi 2/11/08</p>
+</dd>
+</dl>
+<p>glc = zeros(62,1);
+glc = [.2 ;.8 ;glc];</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.dataIntegration.fluxomics.fitC13Data">
+<code class="descname">fitC13Data</code><span class="sig-paren">(</span><em>v0</em>, <em>expdata</em>, <em>model</em>, <em>majorIterationLimit</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/dataIntegration/fluxomics/fitC13Data.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.fitC13Data" title="Permalink to this definition">¶</a></dt>
+<dd><p>v0 is input v.  It will automatically be converted to alpha by solving N*alpha = v;
+if v0 is a matrix then it is assumed to be a multiple start situation and
+vout will also have this size.</p>
+<p>expdata is either a data structure or a cell array of structures, in
+which case it is assumed that you wan to fit the sum of the scores.
+model - standard model structure
+majorIterationLimit (optional) - max number of iterations solver is allowed to take.</p>
+<blockquote>
+<div>Default = 1000;</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.dataIntegration.fluxomics.getBinsOfFluxes">
+<code class="descname">getBinsOfFluxes</code><span class="sig-paren">(</span><em>samp</em>, <em>numfluxes</em>, <em>numbins</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/dataIntegration/fluxomics/getBinsOfFluxes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.getBinsOfFluxes" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>take a samp.points fluxes and bin them by numfluxes (remainder not used)</dt>
+<dd><blockquote class="first">
+<div>or divide up in to bins of fluxes by numbins (remainder not used)</div></blockquote>
+<p class="last">sample each bin of fluxes and compare the differences between them.</p>
+</dd>
+</dl>
+<p>Wing Choi 3/7/08</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.dataIntegration.fluxomics.getCompareBinsOfFluxes">
+<code class="descname">getCompareBinsOfFluxes</code><span class="sig-paren">(</span><em>xglc</em>, <em>model</em>, <em>samplo</em>, <em>samphi</em>, <em>metabolites</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/dataIntegration/fluxomics/getCompareBinsOfFluxes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.getCompareBinsOfFluxes" title="Permalink to this definition">¶</a></dt>
+<dd><p>compares the bins of fluxes between samplo and samphi
+calls compareBinsOfFluxes(xglc,model,sammin,sammax,metabolites)</p>
+<blockquote>
+<div>samplo and samphi each contain samples in x.points</div></blockquote>
+<p>Wing Choi 3/7/08</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.dataIntegration.fluxomics.getRandGlc">
+<code class="descname">getRandGlc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/dataIntegration/fluxomics/getRandGlc.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.getRandGlc" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>Wing Choi 1/20/08
+generate random glucose in isotopomer format</div></blockquote>
+<dl class="docutils">
+<dt>if(length(glucose) ~= 8)</dt>
+<dd>warn(&#8216;bad input&#8217;);</dd>
+</dl>
+<p>end
+glucose(9) = 1-sum(glucose);
+if(any(glucose &lt; 0))</p>
+<blockquote>
+<div>warn(&#8216;bad input&#8217;);</div></blockquote>
+<p>end</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.dataIntegration.fluxomics.goodInitialPoint">
+<code class="descname">goodInitialPoint</code><span class="sig-paren">(</span><em>model</em>, <em>n</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/dataIntegration/fluxomics/goodInitialPoint.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.goodInitialPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>generates 4*length(model.lb) random points
+takes linear combinations of them so that all points are in the interior.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.dataIntegration.fluxomics.isotopomerViewer">
+<code class="descname">isotopomerViewer</code><span class="sig-paren">(</span><em>mdv1</em>, <em>mdv2</em>, <em>names</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/dataIntegration/fluxomics/isotopomerViewer.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.isotopomerViewer" title="Permalink to this definition">¶</a></dt>
+<dd><p>takes in an &#8220;experiment&#8221; and views the isotopomer as distributions
+between mdv1 and mdv2.  No output.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.dataIntegration.fluxomics.naturallabel">
+<code class="descname">naturallabel</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/dataIntegration/fluxomics/naturallabel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.naturallabel" title="Permalink to this definition">¶</a></dt>
+<dd><p>input n = size of label
+returns a natural label idv of n carbons.
+assumes 1.1% C13</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.dataIntegration.fluxomics.runHiLoExp">
+<code class="descname">runHiLoExp</code><span class="sig-paren">(</span><em>experiment</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/dataIntegration/fluxomics/runHiLoExp.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.runHiLoExp" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>takes an experiment with the following structure</dt>
+<dd><blockquote class="first">
+<div><blockquote>
+<div>and splits the sample space at the median of a target flux
+solves the two spaces with a given sugar and compares the
+resulting mdvs to provide a z-score.</div></blockquote>
+<p>experiment -
+model - S     = the stoichiometric matrix</p>
+<blockquote>
+<div><ul class="simple">
+<li>rxns  = array of reaction names, corresponding the S</li>
+<li>c     = optimization target 1, or -1</li>
+<li>ub,lb = upper and lower bounds of reactions</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>points = a #fluxes X #samples (~2000) array of the solution space</dt>
+<dd>if missing or empty, will generate a sample</dd>
+<dt>glcs = an array of sugars in isotopomer format, each column a separate sugar.</dt>
+<dd><blockquote class="first">
+<div>Should not be in MDV format.  Conversion is done automatically.</div></blockquote>
+<p class="last">will default to generate 1 random sugar if set to []</p>
+</dd>
+<dt>targets = an array of cells with string for the reaction to</dt>
+<dd>split on the solution space, defaults to &#8216;PGL&#8217;</dd>
+</dl>
+<p>thresholds = # targets X 1 array of thresholds
+metabolites = an optional parameter fed to calcMDVfromSamp.m</p>
+<blockquote>
+<div>which only calculates the MDVs for the metabolites listed in this
+array.  e.g.
+- optionally, metabolites can also be a structure of fragments</div></blockquote>
+<dl class="docutils">
+<dt>hilo = a #targets X #samples array of 0/1&#8217;s, 0 id&#8217;s the sample of</dt>
+<dd>fluxes as the lo side and 1 id&#8217;s the sample for the hi side.
+hilo will only be calculated/recalculated if it&#8217;s missing or
+if the targets have been replaced using the param list</dd>
+<dt>mdvs = structure of mdv results</dt>
+<dd><ul class="first">
+<li><dl class="first docutils">
+<dt>(name) = name of the run = t + glc#</dt>
+<dd><blockquote class="first">
+<div><p>e.g. t1, t2, glc# refers to the glc in the glcs array</p>
+</div></blockquote>
+<ul class="last simple">
+<li>mdv = array of mdv results</li>
+<li>zscore = array of zscores from comparison btw the two mdvs</li>
+<li>totalz</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="last docutils">
+<dt>Note that the split of mdvs are not stored,</dt>
+<dd>also since the only time mdvs should be regen&#8217;d is when glcs
+has changed, but we have no way of knowing when this happens,
+the user will have to manually empty out mdvs to have it
+regenerated.</dd>
+</dl>
+</dd>
+</dl>
+<p>zscores = array of zscores from each run, targets X glcs
+rscores = array of ridge scores from each run, targets X glcs</p>
+<dl class="docutils">
+<dt>target is an optional string for a specific rxn to target.</dt>
+<dd>if supplied, it will override and replace the targets field in the
+experiment structure.</dd>
+<dt>threshold is an optional number to apply on the solution space fluxes</dt>
+<dd>if supplied, it will be applied to the hilo field and replace the
+hilo splits.</dd>
+</dl>
+<p>outputs the experiment array.</p>
+</div></blockquote>
+<dl class="last docutils">
+<dt>basically, this code will loop thru one experiment</dt>
+<dd>per sugar, per target</dd>
+</dl>
+</dd>
+</dl>
+<p>Wing Choi 3/14/08</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.dataIntegration.fluxomics.score_KS">
+<code class="descname">score_KS</code><span class="sig-paren">(</span><em>mdv</em>, <em>hilo</em>, <em>lambda</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/dataIntegration/fluxomics/score_KS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.score_KS" title="Permalink to this definition">¶</a></dt>
+<dd><p>input:  mdv  structure as usual
+hilo  (0&#8217;s and 1&#8217;s)  Ideally there will be a similar # of each.
+lambda = weighting.  If the mean is less than lambda, the scores get weighted less.  (default = .02)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.dataIntegration.fluxomics.score_ridge">
+<code class="descname">score_ridge</code><span class="sig-paren">(</span><em>mdv</em>, <em>hilo</em>, <em>lambda</em>, <em>crossval</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/dataIntegration/fluxomics/score_ridge.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.score_ridge" title="Permalink to this definition">¶</a></dt>
+<dd><p>input:  mdv  structure as usual
+hilo  (0&#8217;s and 1&#8217;s)  Ideally there will be a similar # of each.
+lambda = ridge parameter (optional)
+crossval:  whether to do cross validation.  This severely slows
+down the computation  (optional - default is no).</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

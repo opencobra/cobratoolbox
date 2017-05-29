@@ -1,0 +1,306 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>basicPhysicochemicalData &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" />
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../contents.html">Docs</a> &raquo;</li>
+        
+      <li>basicPhysicochemicalData</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="basicphysicochemicaldata">
+<span id="id1"></span><h1>basicPhysicochemicalData<a class="headerlink" href="#basicphysicochemicaldata" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.reconstruction.modelGeneration.massBalance.basicPhysicochemicalData"></span><dl class="function">
+<dt id="src.reconstruction.modelGeneration.massBalance.basicPhysicochemicalData.getMolecularMass">
+<code class="descname">getMolecularMass</code><span class="sig-paren">(</span><em>formulae</em>, <em>isotopeAbundance</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/modelGeneration/massBalance/basicPhysicochemicalData/getMolecularMass.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.basicPhysicochemicalData.getMolecularMass" title="Permalink to this definition">¶</a></dt>
+<dd><p>get mono-isotopic exact molecular mass for a single formula or a cell array of
+formulae using the atomic weight for each element from NIST
+<a class="reference external" href="http://physics.nist.gov/PhysRefData/Compositions/">http://physics.nist.gov/PhysRefData/Compositions/</a></p>
+<p>An atomic weight of an element from a specified source is the ratio of
+the average mass per atom of the element to 1/12 of the mass of an
+atom of 12C.</p>
+<p>Note the term &#8220;relative atomic mass&#8221; is usually reserved for the mass of a
+specific nuclide (or isotope), while &#8220;atomic weight&#8221; is usually used for the
+weighted mean of the relative atomic mass over all the atoms in the
+sample (polyisotopic mass).
+If the ratio of the different isotopes are known exactly, this may be
+provided in the m x 2 cell array of m isotopes, i.e. isotopeAbundance.</p>
+<p>By default, this script gives the molecular mass assuming monoisotopic
+exact mass.</p>
+<p>INPUT
+formula           single formula or a cell array of formulae</p>
+<p>OPTIONAL INPUT
+isotopeAbundance  {(1),0}</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>1 = monoisotopic exact mass</dt>
+<dd>i.e. only uses naturally predominant isotope
+of each element.</dd>
+<dt>0 = polyisotopic inexact mass</dt>
+<dd>i.e. uses all isotopes of each element weighted
+by natural abundance</dd>
+</dl>
+<p>or</p>
+<p>m x 2 cell arrray with user defined isotope abundance
+isotopeAbundance{i,1}= &#8216;Atomic_Symbol&#8217;;
+isotopeAbundance{i,2}= Mass_Number;
+isotopeAbundance{i,3}= abundance;
+(where sum of abundances of all isotopes of an element
+must be one)</p>
+<p>e.g. Carbon, all as C13
+isotopeAbundance{i,1}= &#8216;C&#8217;
+isotopeAbundance{i,2}= 12;
+isotopeAbundance{i,3}= 0;
+isotopeAbundance{i+1,1}= &#8216;C&#8217;
+isotopeAbundance{i+1,2}= 13;
+isotopeAbundance{i+1,3}= 1;
+isotopeAbundance{i+2,1}= &#8216;C&#8217;
+isotopeAbundance{i+2,2}= 14;
+isotopeAbundance{i+2,3}= 0;</p>
+</div></blockquote>
+<p>OUTPUT
+M         molecular mass(es) in (gram/Mol)</p>
+<p>Exact mass check:
+If you want to double check that the mass given by this script is correct
+then compare it to either
+(1) OpenBabel: echo &#8220;InChIstring&#8221;<a href="#id2"><span class="problematic" id="id3">|</span></a>babel -iinchi -  -oreport
+or
+(2) <a class="reference external" href="http://www.sisweb.com/referenc/tools/exactmass.htm">http://www.sisweb.com/referenc/tools/exactmass.htm</a>
+Please report any errors as these are critical for use of this script
+with mass spec machines.</p>
+<dl class="docutils">
+<dt>Ronan Fleming 9 March 09  <a class="reference external" href="mailto:ronan&#46;mt&#46;fleming&#37;&#52;&#48;gmail&#46;com">ronan<span>&#46;</span>mt<span>&#46;</span>fleming<span>&#64;</span>gmail<span>&#46;</span>com</a></dt>
+<dd>15 Sept 09  Support for non-natural isotope distributions</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.modelGeneration.massBalance.basicPhysicochemicalData.parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements">
+<code class="descname">parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/modelGeneration/massBalance/basicPhysicochemicalData/parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.basicPhysicochemicalData.parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses NIST data on atomic weights</p>
+<p>The atomic weight    J. S. Coursey, D. J. Schwab, and R. A. Dragoset
+NIST, Physics Laboratory, Office of Electronic Commerce in Scientific and
+Engineering Data
+The atomic weights are available for elements 1 through 112, 114, &amp; 116 and
+isotopic compositions or abundances are given when appropriate. The atomic
+weights data were published by T.B. Coplen1 in Atomic Weights of the Elements
+1999, (and include changes reported from the 2001 review in Chem. Int., 23, 179 (2001))
+and the isotopic compositions data were published by K.J.R. Rosman2 and P.D.P. Taylor3
+in Isotopic Compositions of the Elements 1997. The relative atomic masses of the
+isotopes data were published by G. Audi4 and A. H. Wapstra5 in The 1995 Update To
+The Atomic Mass Evaluation.
+<a class="reference external" href="http://physics.nist.gov/PhysRefData/Compositions/">http://physics.nist.gov/PhysRefData/Compositions/</a></p>
+<p>Ronan Fleming 9 March 09</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

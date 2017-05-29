@@ -1,0 +1,1775 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Solvers &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" />
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../contents.html">Docs</a> &raquo;</li>
+        
+      <li>Solvers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="solvers">
+<span id="id1"></span><h1>Solvers<a class="headerlink" href="#solvers" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cardOpt.html">cardOpt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sparseLP.html">sparseLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tangiCode.html">tangiCode</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<span class="target" id="module-src.base.solvers"></span><dl class="function">
+<dt id="src.base.solvers.CPLEXParamSet">
+<code class="descname">CPLEXParamSet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/base/solvers/CPLEXParamSet.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.CPLEXParamSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>this is a function which returns user specified CPLEX control
+parameters. It is not necessary to use a file like this if you want to use
+CPLEX default control parameters. It is intended to be a template for
+individual users to save with their own problem specific settings for
+CPLEX.</p>
+<blockquote>
+<div><p>%e.g.
+(1) Paddy saves this file as CPLEXParamSetPaddyLPJob1
+(2) Paddy edits CPLEXParamSetPaddyLPJob1 in a problem specific way
+(3) Paddy then passes the name of this file to solveCobraLP_CPLEX using something like:</p>
+<blockquote>
+<div>[solution,LPProblem]=solveCobraLP_CPLEX(LPProblem,[],[],[],&#8217;CPLEXParamSetPaddyLPJob1&#8217;);</div></blockquote>
+<p>CPLEX consists of 4 different LP solvers which can be used to solve sysbio LP problems
+you can control which of the solvers, e.g. simplex or interior point solve using the
+CPLEX control parameter cpxControl.LPMETHOD</p>
+</div></blockquote>
+<p>Ronan Fleming 10th June 2008
+SELECT CPLEX CONTROL PARAMETERS (alphabetical order)</p>
+<blockquote>
+<div>Description: Preprocessing aggregator application limit. Invokes the aggregator to use substitution where
+possible to reduce the number of rows and columns before the problem is solved. If set to a positive value, the
+aggregator is applied the specified number of times or until no more reductions are possible.
+-1 Automatic
+0  Do not use any aggregator
+1  Use aggregator
+Default: -1</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.NLPobjPerFlux">
+<code class="descname">NLPobjPerFlux</code><span class="sig-paren">(</span><em>fluxVector</em>, <em>Prob</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/base/solvers/NLPobjPerFlux.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.NLPobjPerFlux" title="Permalink to this definition">¶</a></dt>
+<dd><p>NLPobjPerFlux Calculates the value of the objective -(Prob.osense * Prob.user.model.c)/sum(v.^2) based on
+a flux distribution</p>
+<blockquote>
+<div><blockquote>
+<div>value = NLPobjPerFlux(fluxVector,Prob)</div></blockquote>
+<p>This function is meant to be used with NLP solvers</p>
+</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>fluxVector    Flux vector</strong></li>
+<li><strong>Prob          NLP problem structure</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>value         -Objective flux / sum(v.^2)</strong></li>
+<li><strong>Markus Herrgard 12/7/07</strong></li>
+<li><strong>c wasn&#8217;t defined as written so added Prob as input to define c from the</strong></li>
+<li><strong>model by Daniel Zielinski 3/19/10</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.changeCobraSolver">
+<code class="descname">changeCobraSolver</code><span class="sig-paren">(</span><em>solverName</em>, <em>solverType</em>, <em>printLevel</em>, <em>unchecked</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/base/solvers/changeCobraSolver.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.changeCobraSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>changeCobraSolver Changes the Cobra Toolbox optimization solver(s)</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>solverOK = changeCobraSolver(solverName,solverType)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>solverName    Solver name</strong></p>
+</li>
+<li><p class="first"><strong>solverType    Solver type, &#8216;LP&#8217;, &#8216;MILP&#8217;, &#8216;QP&#8217;, &#8216;MIQP&#8217; (opt, default</strong> &#8211;</p>
+<p>&#8216;LP&#8217;, &#8216;all&#8217;).  &#8216;all&#8217; attempts to change all applicable
+solvers to solverName.  This is purely a shorthand
+convenience.</p>
+</li>
+<li><p class="first"><strong>printLevel    if 0, warnings and errors are silenced and if &gt; 0, they are</strong> &#8211;</p>
+<p>thrown. (default: 1)</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>solverOK      true if solver can be accessed, false if not</strong></li>
+</ul>
+</div></blockquote>
+<p>Currently allowed LP solvers:</p>
+<blockquote>
+<div><p>fully supported solvers:</p>
+<dl class="docutils">
+<dt>cplex_direct    CPLEX accessed directly through Tomlab cplex.m. This gives</dt>
+<dd>the user more control of solver parameters. e.g.
+minimising the Euclidean norm of the internal flux to
+get rid of net flux around loops</dd>
+</dl>
+<p>dqqMinos        DQQ solver
+glpk            GLPK solver with Matlab mex interface (glpkmex)
+gurobi          Gurobi solver
+ibm_cplex       The IBM API for CPLEX using the CPLEX class
+matlab          MATLAB&#8217;s linprog function
+mosek           Mosek LP solver with Matlab API (using linprog.m from Mosek)
+pdco            PDCO solver
+quadMinos       quad LP solver
+tomlab_cplex    CPLEX accessed through Tomlab environment (default)</p>
+<p>legacy solvers:</p>
+<p>lindo_new       Lindo API &gt;v2.0
+lindo_legacy    Lindo API &lt;v2.0
+lp_solve        lp_solve with Matlab API
+gurobi_mex      Gurobi accessed through Matlab mex interface (Gurobi mex)
+opti            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)</p>
+<blockquote>
+<div>solver installed and called with OPTI TB wrapper
+Lower level calls with installed mex files are possible
+but best avoided for all solvers</div></blockquote>
+</div></blockquote>
+<p>Currently allowed MILP solvers:</p>
+<blockquote>
+<div><p>fully supported solvers:</p>
+<dl class="docutils">
+<dt>cplex_direct    CPLEX accessed directly through Tomlab cplex.m. This gives</dt>
+<dd>the user more control of solver parameters. e.g.
+minimising the Euclidean norm of the internal flux to
+get rid of net flux around loops</dd>
+</dl>
+<p>glpk            glpk MILP solver with Matlab mex interface (glpkmex)
+gurobi          Gurobi solver
+ibm_cplex       The IBM API for CPLEX using the CPLEX class
+mosek           Mosek LP solver with Matlab API (using linprog.m from Mosek)
+pdco            PDCO solver
+tomlab_cplex    CPLEX MILP solver accessed through Tomlab environment</p>
+<p>legacy solvers:</p>
+<p>gurobi_mex      Gurobi accessed through Matlab mex interface (Gurobi mex)
+opti            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)</p>
+<blockquote>
+<div>solver installed and called with OPTI TB wrapper
+Lower level calls with installed mex files are possible
+but best avoided for all solvers</div></blockquote>
+</div></blockquote>
+<p>Currently allowed QP solvers:</p>
+<blockquote>
+<div><p>fully supported solvers:</p>
+<dl class="docutils">
+<dt>cplex_direct    CPLEX accessed directly through Tomlab cplex.m. This gives</dt>
+<dd>the user more control of solver parameters. e.g.
+minimising the Euclidean norm of the internal flux to
+get rid of net flux around loops</dd>
+</dl>
+<p>gurobi          Gurobi solver
+ibm_cplex       The IBM API for CPLEX using the CPLEX class
+mosek           Mosek LP solver with Matlab API (using linprog.m from Mosek)
+pdco            PDCO solver
+tomlab_cplex    CPLEX QP solver accessed through Tomlab environment</p>
+<p>experimental support:</p>
+<dl class="docutils">
+<dt>qpng            qpng QP solver with Matlab mex interface (in glpkmex</dt>
+<dd>package, only limited support for small problems)</dd>
+</dl>
+<p>legacy solvers:</p>
+<p>gurobi_mex      Gurobi accessed through Matlab mex interface (Gurobi mex)
+opti            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)</p>
+<blockquote>
+<div>solver installed and called with OPTI TB wrapper
+Lower level calls with installed mex files are possible
+but best avoided for all solvers</div></blockquote>
+</div></blockquote>
+<p>Currently allowed MIQP solvers:</p>
+<blockquote>
+<div><p>fully supported solvers:</p>
+<dl class="docutils">
+<dt>cplex_direct    CPLEX accessed directly through Tomlab cplex.m. This gives</dt>
+<dd>the user more control of solver parameters. e.g.
+minimising the Euclidean norm of the internal flux to
+get rid of net flux around loops</dd>
+</dl>
+<p>gurobi          Gurobi solver
+ibm_cplex       The IBM API for CPLEX using the CPLEX class
+tomlab_cplex    CPLEX MIQP solver accessed through Tomlab environment</p>
+<p>legacy solvers:</p>
+<p>gurobi_mex      Gurobi accessed through Matlab mex interface (Gurobi mex)</p>
+</div></blockquote>
+<p>Currently allowed NLP solvers:</p>
+<blockquote>
+<div><p>fully supported solvers:</p>
+<p>matlab          MATLAB&#8217;s fmincon.m</p>
+<p>experimental support:</p>
+<p>tomlab_snopt    SNOPT solver accessed through Tomlab environment</p>
+</div></blockquote>
+<p>It is a good idea to put this function call into your startup.m file
+(usually matlabinstall/toolboxes/local/startup.m)</p>
+<p>Original file: Markus Herrgard 1/19/07</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.changeCobraSolverParams">
+<code class="descname">changeCobraSolverParams</code><span class="sig-paren">(</span><em>solverType</em>, <em>paramName</em>, <em>paramValue</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/base/solvers/changeCobraSolverParams.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.changeCobraSolverParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>changeCobraSolverParams Changes parameters for the Cobra Toolbox optimization solver(s)</p>
+<p>changeOK = changeCobraSolverParams(solverType,paramName,paramValue)</p>
+<p>INPUT
+solverType    Solver type, &#8216;LP&#8217; or &#8216;MILP&#8217; (opt, default</p>
+<blockquote>
+<div>&#8216;LP&#8217;)</div></blockquote>
+<p>paramName     Parameter name
+paramValue    Parameter value</p>
+<p>Allowed LP parameter names:
+optTol        Optimal objective accuracy tolerance
+teasTol       Constraint feasibilty tolerance</p>
+<dl class="docutils">
+<dt>minNorm       {(0), scalar , n x 1 vector}, where [m,n]=size(S);</dt>
+<dd>If not zero then, minimise the Euclidean length
+of the solution to the LP problem. minNorm ~1e-6 should be
+high enough for regularisation yet maintain the same value for
+the linear part of the objective. However, this should be
+checked on a case by case basis, by optimization with and
+without regularisation.</dd>
+<dt>printLevel    Printing level</dt>
+<dd>= 0    Silent
+= 1    Warnings and Errors
+= 2    Summary information (Default)
+= 3    More detailed information
+&gt; 10   Pause statements, and maximal printing (debug mode)</dd>
+</dl>
+<p>primalOnly    {(0),1} 1=only return the primal vector (lindo solvers)</p>
+<dl class="docutils">
+<dt>Allowed MILP parameter names:</dt>
+<dd>timeLimit     Global time limit
+intTol        Integer tolerance
+relMipGapTol  Relative MIP gap tolerance
+logFile       Internal log file for solver
+printLevel    Print level for solver</dd>
+</dl>
+<p>OUTPUT
+changeOK      Logical inicator that supplied parameter is allowed (=1)</p>
+<p>Markus Herrgard       5/3/07
+Jan Schellenberger    09/28/09
+Ronan Fleming         12/07/09 commenting of input/output</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.getCobraSolverParams">
+<code class="descname">getCobraSolverParams</code><span class="sig-paren">(</span><em>solverType</em>, <em>paramNames</em>, <em>parameters</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/base/solvers/getCobraSolverParams.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getCobraSolverParams" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>This function gets the specified parameters in paramNames from</dt>
+<dd><p class="first">parameters, the global cobra paramters variable or default values set within
+this script. It will use values with the following priority</p>
+<blockquote>
+<div>parameters &gt; global parameters &gt; default</div></blockquote>
+<p class="last">The specified parameters will be delt to the specified output arguements.
+See examples below.</p>
+</dd>
+</dl>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>solverType    Type of solver used</strong> &#8211;
+&#8216;LP&#8217;, &#8216;MILP&#8217;, &#8216;QP&#8217;, &#8216;MIQP&#8217;</p>
+</li>
+<li><p class="first"><strong>paramNames    Cell array of strings containing parameter names OR one</strong> &#8211;</p>
+<p>parameter name as string</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional intput</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>parameters    Structure with fields pertaining to parameter values that</strong> &#8211;</p>
+<p>should be used in place of global or default parameters.
+parameters can be set to &#8216;default&#8217; to use the default
+values set within this script.</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>varargout     Variables which each value corresponding to paramNames</strong> &#8211;</p>
+<p>is outputted to.</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">parameters</span><span class="o">.</span><span class="n">saveInput</span> <span class="o">=</span> <span class="s1">&#39;LPproblem.mat&#39;</span><span class="p">;</span>
+<span class="n">parameters</span><span class="o">.</span><span class="n">printLevel</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">[</span><span class="n">printLevel</span><span class="p">,</span> <span class="n">saveInput</span><span class="p">]</span> <span class="o">=</span> <span class="n">getCobraSolverParams</span><span class="p">(</span><span class="s1">&#39;LP&#39;</span><span class="p">,{</span><span class="s1">&#39;printLevel&#39;</span><span class="p">,</span> <span class="s1">&#39;saveInput&#39;</span><span class="p">},</span><span class="n">parameters</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Example using default values</dt>
+<dd><p class="first">[printLevel, saveInput] = getCobraSolverParams(&#8216;LP&#8217;,{&#8216;printLevel&#8217;,&#8217;saveInput&#8217;},&#8217;default&#8217;);</p>
+<p class="last">Richard Que (12/01/2009)
+Ronan (16/07/2013) default MPS parameters are no longer global variables</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.liftModel">
+<code class="descname">liftModel</code><span class="sig-paren">(</span><em>model</em>, <em>BIG</em>, <em>printLevel</em>, <em>fileName</em>, <em>directory</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/base/solvers/liftModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.liftModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lifts a COBRA model with badly-scaled stoichiometric and
+coupling constraints of the form:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>max c*v  subject to: Sv  = 0</dt>
+<dd>x                   Cv &lt;= 0</dd>
+</dl>
+</div></blockquote>
+<p>REFORMULATE eliminates the need for scaling and hence prevents infeasibilities
+after unscaling. After using PREFBA to transform a badly-scaled FBA program,
+please turn off scaling and reduce the aggressiveness of presolve.</p>
+<p>[model] = REFORMULATE(model,BIG) transforms a badly-scaled model
+contained in the struct FBA and returns the transformed program in the
+structure FBA. REFORMULATE assumes S and C do not contain very small entries
+and transforms constraints containing very large entries (entries larger than
+BIG). BIG should be set between 1000 and 10,000 on double precision machines.
+PRINTLEVEL = 1 or 0 enables/disables printing respectively.</p>
+<p>Reformulation techniques are described in detail in:
+Y. Sun, R. M.T. Fleming, M. A. Saunders, I. Thiele, An Algorithm for Flux
+Balance Analysis of Multi-scale Biochemical Networks, submitted.</p>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>model       COBRA Structure contain the original LP to be solved. The format of</strong> &#8211;</p>
+<p>this struct is described in the documentation for solveCobraLP.m</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>BIG         A parameter the controls the largest entries that appear in the</strong> &#8211;</p>
+<p>reformulated problem.</p>
+</li>
+<li><p class="first"><strong>printLevel  printLevel = 1 enables printing of problem statistics</strong> &#8211;</p>
+<p>printlevel = 0 silent</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model       COBRA Structure contain the reformulated LP to be solved.</strong></li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>AUTHORS:</dt>
+<dd>Michael Saunders    <a class="reference external" href="mailto:saunders&#37;&#52;&#48;stanford&#46;edu">saunders<span>&#64;</span>stanford<span>&#46;</span>edu</a>
+Yuekai Sun          <a class="reference external" href="mailto:yuekai&#37;&#52;&#48;stanford&#46;edu">yuekai<span>&#64;</span>stanford<span>&#46;</span>edu</a>
+Systems Optimization Lab (SOL), Stanford University
+Ronan Fleming   (updated interface to take COBRA model structure)</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.optimizeCbModelNLP">
+<code class="descname">optimizeCbModelNLP</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/base/solvers/optimizeCbModelNLP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.optimizeCbModelNLP" title="Permalink to this definition">¶</a></dt>
+<dd><p>optimizeCbModelNLP Optimize constraint-based model using a non-linear objective</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>[currentSol,allObjValues,allSolutions] =</dt>
+<dd>optimizeCbModelNLP(model,osenseStr,objFunction,initFunction,nOpt,objArgs,
+initArgs)</dd>
+</dl>
+</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model         COBRA model structure</strong></li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>OPTIONAL INPUT (all as parameter/value pairs)</dt>
+<dd><p class="first">Parameter Name
+objFunction     Name of the non-linear matlab function to be optimized (the</p>
+<blockquote>
+<div>corresponding m-file must be in the current matlab path)
+The function receives two arguments, the current flux
+vector, and the NLPProblem structure.</div></blockquote>
+<dl class="docutils">
+<dt>initFunction    Name of the matlab function used to generate random initial</dt>
+<dd>starting points. The function will be supplied with two
+arguments: the model and a cell array of input arguments
+(specified in the initArgs parameter)</dd>
+<dt>osenseStr       Optimization direction (&#8216;max&#8217; or &#8216;min&#8217;), this will</dt>
+<dd>override any mention in the model.</dd>
+</dl>
+<p>nOpt            Number of independent optimization runs performed
+objArgs         Cell array of arguments that are supplied to the</p>
+<blockquote>
+<div>objective function as objArguments in the NLPProblem
+structure (i.e. the second element, will have a field
+objArguments.)</div></blockquote>
+<dl class="last docutils">
+<dt>initArgs        Cell array of arguments to the &#8216;initFunction&#8217;, will be</dt>
+<dd>provided as second input Argument to the initFunction</dd>
+<dt>solveroptions   A Struct with options for the solver used. This is</dt>
+<dd>specific to the solver in question, but the fields should
+relate to options accepted by the solver.</dd>
+</dl>
+</dd>
+</dl>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>currentSol    Solution structure</strong></li>
+<li><strong>allObjValues  Array of objective value of each iteration</strong></li>
+<li><strong>allSolutions  Array of flux distribution of each iteration</strong></li>
+<li><strong>Markus Herrgard 8/24/07</strong></li>
+<li><strong>Modified for new options in solveCobraNLP by Daniel Zielinski 3/19/10</strong></li>
+<li><strong>Changed the function to use parameter/value pairs, Thomas Pfau 07/22/17</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.optimizeTwoCbModels">
+<code class="descname">optimizeTwoCbModels</code><span class="sig-paren">(</span><em>model1</em>, <em>model2</em>, <em>osenseStr</em>, <em>minFluxFlag</em>, <em>verbFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/base/solvers/optimizeTwoCbModels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.optimizeTwoCbModels" title="Permalink to this definition">¶</a></dt>
+<dd><p>optimizeTwoCbModels Simultaneously solve two flux balance problems and
+minimize the difference between the two solutions</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>[solution1,solution2,totalFluxDiff] =</dt>
+<dd>optimizeTwoCbModels(model1,model2,osenseStr,minFluxFlag,verbFlag)</dd>
+</dl>
+</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>model1        The first COBRA model</strong></p>
+</li>
+<li><p class="first"><strong>model2        The second COBRA model</strong></p>
+</li>
+<li><p class="first"><strong>model</strong> (<em>the following fields are requires - others can be supplied</em>) &#8211;</p>
+<p>S             Stoichiometric matrix
+b             Right hand side = 0
+c             Objective coefficients
+lb            Lower bounds
+ub            Upper bounds</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>osenseStr     Maximize (&#8216;max&#8217;)/minimize (&#8216;min&#8217;) (Default = &#8216;max&#8217;)</strong></p>
+</li>
+<li><p class="first"><strong>minFluxFlag   Minimize the absolute value of fluxes in the optimal MOMA</strong> &#8211;</p>
+<p>solution (Default = false)</p>
+</li>
+<li><p class="first"><strong>verbFlag      Verbose output (Default = false)</strong></p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>solution1     Solution for the 1st model</strong></p>
+</li>
+<li><p class="first"><strong>solution2     Solution for the 2nd model</strong></p>
+</li>
+<li><p class="first"><strong>totalFluxDiff 1-norm of the difference between the flux vectors sum|v1-v2|</strong></p>
+</li>
+<li><p class="first"><strong>solution</strong> &#8211;</p>
+<p>f         Objective value
+x         Primal (flux vector)</p>
+</li>
+<li><p class="first"><strong>First solves two separate FBA problems</strong> &#8211;</p>
+<p>f1 = max/min c1&#8217;v1
+subject to S1*v1 = b1</p>
+<blockquote>
+<div><p>lb1 &lt;= v1 &lt;= ub1</p>
+</div></blockquote>
+<p>f2 = max/min c2&#8217;v2
+subject to S2*v2 = b2</p>
+<blockquote>
+<div><p>lb2 &lt;= v2 &lt;= ub2</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Then solves the following LP to obtain the two flux vectors with the</strong></p>
+</li>
+<li><p class="first"><strong>smallest possible 1-norm difference between them</strong> &#8211;</p>
+<dl class="docutils">
+<dt>min <a href="#id4"><span class="problematic" id="id5">|v1-v2|</span></a></dt>
+<dd><dl class="first last docutils">
+<dt>s.t. S1*v1 = b1</dt>
+<dd><p class="first last">c1&#8217;v1 = f1
+lb1 &lt;= v1 &lt;= ub1
+S2*v2 = b2
+c2&#8217;v2 = f2
+lb2 &lt;= v2 &lt;= ub2</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><p class="first"><strong>Finally optionally minimizes the 1-norm of the flux vectors</strong></p>
+</li>
+<li><p class="first"><strong>Markus Herrgard 1/4/07</strong></p>
+</li>
+<li><p class="first"><strong>LP solution tolerance</strong></p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.reformulate">
+<code class="descname">reformulate</code><span class="sig-paren">(</span><em>LPproblem</em>, <em>BIG</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/base/solvers/reformulate.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.reformulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>REFORMULATE reformulates badly-scaled FBA program
+REFORMULATE transforms LPproblems with badly-scaled stoichiometric and
+coupling constraints of the form:</p>
+<blockquote>
+<div>max c*x  subject to: Ax &lt;= b</div></blockquote>
+<p>REFORMULATE eliminates the need for scaling and hence prevents infeasibilities
+after unscaling. After using PREFBA to transform a badly-scaled FBA program,
+please turn off scaling and reduce the aggressiveness of presolve.</p>
+<p>[LPproblem] = REFORMULATE(LPproblem,BIG) transforms a badly-scaled LPproblem
+contained in the struct FBA and returns the transformed program in the
+structure FBA. REFORMULATE assumes S and C do not contain very small entries
+and transforms constraints containing very large entries (entries larger than
+BIG). BIG should be set between 1000 and 10,000 on double precision machines.
+PRINTLEVEL = 1 or 0 enables/diables printing respectively.</p>
+<p>Reformulation techniques are described in detail in:
+Y. Sun, R. M.T. Fleming, M. A. Saunders, I. Thiele, An Algorithm for Flux
+Balance Analysis of Multi-scale Biochemical Networks, submitted.</p>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>LPproblem</strong> &#8211;
+Structure contain the original LP to be solved. The format of
+this struct is described in the documentation for solveCobraLP.m</li>
+<li><strong>BIG</strong> &#8211;
+A parameter the controls the largest entries that appear in the
+reformulated problem.</li>
+<li><strong>printLevel</strong> &#8211;
+printLevel = 1 enables printing of problem statistics
+printlevel = 0 silent</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>LPproblem</strong> &#8211;
+Structure contain the reformulated LP to be solved.</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>AUTHORS:</dt>
+<dd>Michael Saunders    <a class="reference external" href="mailto:saunders&#37;&#52;&#48;stanford&#46;edu">saunders<span>&#64;</span>stanford<span>&#46;</span>edu</a>
+Yuekai Sun          <a class="reference external" href="mailto:yuekai&#37;&#52;&#48;stanford&#46;edu">yuekai<span>&#64;</span>stanford<span>&#46;</span>edu</a>
+Systems Optimization Lab (SOL), Stanford University</dd>
+<dt>VERSION HISTORY:</dt>
+<dd><p class="first">0.1.0
+0.1.1  Optimized code for large sparse S and C matrices.
+0.1.2  Committed Prof. Saunders&#8217; suggestions and optimizations.
+0.2.0  Implemented new method that for transforming badly-scaled S matrices</p>
+<blockquote>
+<div>that yields smaller programs.</div></blockquote>
+<p class="last">0.2.1  c = maxval(k1) was overwriting vector c. Changed to qty = maxval(k1).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.solveCobraCPLEX">
+<code class="descname">solveCobraCPLEX</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em>, <em>basisReuse</em>, <em>conflictResolve</em>, <em>contFunctName</em>, <em>minNorm</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/base/solvers/solveCobraCPLEX.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraCPLEX" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>[solution,LPProblem]=solveCobraCPLEX(model,printLevel,basisReuse,conflictResolve,contFunctName,minNorm)</dt>
+<dd>call CPLEX to solve an LP or QP problem using the matlab API to cplex written by ILOG</dd>
+</dl>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>Model Structure containing the following fields describing the LP</strong></p>
+</li>
+<li><p class="first"><strong>problem to be solved</strong> &#8211;</p>
+<p>A or S       m x n LHS matrix
+b            m x 1 RHS vector
+c            n x 1 Objective coeff vector
+lb           n x 1 Lower bound vector
+ub           n x 1 Upper bound vector
+osense       scalar Objective sense (-1 max, +1 min)</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>model.rxns    cell array of reaction abbreviations (necessary for</strong> &#8211;</p>
+<p>making a readable confilict resolution file).</p>
+</li>
+<li><p class="first"><strong>model.csense  Constraint senses, a string containting the constraint sense for</strong> &#8211;</p>
+<p>each row in A (&#8216;E&#8217;, equality, &#8216;G&#8217; greater than, &#8216;L&#8217; less than).</p>
+</li>
+<li><p class="first"><strong>model.LPBasis Basis from previous solution of similar LP problem.</strong> &#8211;</p>
+<p>See basisReuse</p>
+</li>
+<li><p class="first"><strong>PrintLevel    Printing level in the CPLEX m-file and CPLEX C-interface.</strong> &#8211;</p>
+<p>= 0    Silent
+= 1    Warnings and Errors
+= 2    Summary information (Default)
+= 3    More detailed information
+&gt; 10   Pause statements, and maximal printing (debug mode)</p>
+</li>
+<li><p class="first"><strong>basisReuse = 0   Use this for one of soluion of an LP (Default)</strong> &#8211;</p>
+<dl class="docutils">
+<dt>= 1   Returns a basis for reuse in the next LP</dt>
+<dd><p class="first last">i.e. outputs model.LPBasis</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><strong>conflictResolve  = 0   (Default)</strong> &#8211;</p>
+<dl class="docutils">
+<dt>= 1   If LP problem is proven to be infeasible by CPLEX,</dt>
+<dd><p class="first last">it will print out a &#8216;conflict resolution file&#8217;,
+which indicates the irreducible infeasible set of
+equaltiy &amp; inequality constraints that together,
+combine to make the problem infeasible. This is
+useful for debugging an LP problem if you want to
+try to resolve a constraint conflict</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><strong>contFunctName        = [] Use all default CLPEX control parameters, (Default)</strong> &#8211;</p>
+<dl class="docutils">
+<dt>= someString e.g. &#8216;someFunctionName&#8217;</dt>
+<dd><blockquote class="first">
+<div><p>uses the user specified control parameters defined
+in someFunctionName.m</p>
+</div></blockquote>
+<p class="last">(see template function CPLEXParamSet for details).</p>
+</dd>
+</dl>
+<p>= cpxControl structure (output from a file like CPLEXParamSet.m)</p>
+</li>
+<li><p class="first"><strong>minNorm       {(0), 1 , n x 1 vector} If not zero then, minimise the Euclidean length</strong> &#8211;</p>
+<p>of the solution to the LP problem. Gives the same objective,
+but minimises the square of flux. minNorm ~1e-6 should be
+high enough for regularisation yet keep the same objective</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>solution Structure containing the following fields describing a LP</strong></p>
+</li>
+<li><p class="first"><strong>solution</strong> &#8211;</p>
+<p>full         Full LP solution vector
+obj          Objective value
+rcost        Lagrangian multipliers to the simple inequalties (Reduced costs)
+dual         Lagrangian multipliers to the equalities
+nInfeas      Number of infeasible constraints
+sumInfeas    Sum of constraint violation
+stat         COBRA Standardized solver status code:</p>
+<blockquote>
+<div><p>1   Optimal solution
+2   Unbounded solution
+0   Infeasible
+-1  No solution reported (timelimit, numerical problem etc)</p>
+</div></blockquote>
+<dl class="docutils">
+<dt>origStat     CPLEX status code. Use cplexStatus(solution.origStat) for</dt>
+<dd><p class="first last">more information from the CPLEX solver</p>
+</dd>
+</dl>
+<p>solver       solver used by cplex
+time         time taken to solve the optimization problem</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>model.LPBasis When input basisReuse=1, we return a basis for reuse in</strong> &#8211;</p>
+<p>the next LP</p>
+</li>
+<li><p class="first"><strong>CPLEX consists of 4 different LP solvers which can be used to solve sysbio optimization problems</strong></p>
+</li>
+<li><p class="first"><strong>you can control which of the solvers, e.g. simplex vs interior point solver using the</strong></p>
+</li>
+<li><p class="first"><strong>CPLEX control parameter cpxControl.LPMETHOD. At the moment, the solver is</strong></p>
+</li>
+<li><p class="first"><strong>automatically chosen for you</strong></p>
+</li>
+<li><p class="first"><strong>Ronan Fleming 23 Oct  09  ILOG-CPLEX 12.1 via  matlab API</strong></p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.solveCobraLP">
+<code class="descname">solveCobraLP</code><span class="sig-paren">(</span><em>LPproblem</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/base/solvers/solveCobraLP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraLP" title="Permalink to this definition">¶</a></dt>
+<dd><p>solveCobraLP Solve constraint-based LP problems</p>
+<p>solution = solveCobraLP(LPproblem, parameters)</p>
+<p>INPUT
+LPproblem Structure containing the following fields describing the LP
+problem to be solved</p>
+<blockquote>
+<div><p>A      LHS matrix
+b      RHS vector
+c      Objective coeff vector
+lb     Lower bound vector
+ub     Upper bound vector
+osense Objective sense (-1 max, +1 min)
+csense Constraint senses, a string containting the constraint sense for</p>
+<blockquote>
+<div>each row in A (&#8216;E&#8217;, equality, &#8216;G&#8217; greater than, &#8216;L&#8217; less than).</div></blockquote>
+</div></blockquote>
+<p>OPTIONAL INPUTS
+Optional parameters can be entered in three different ways {A,B,C}
+A) as a generic solver parameter followed by parameter value:
+e.g.[solution]=solveCobraLP(LPCoupled,&#8217;printLevel&#8217;,1,);
+e.g.[solution]=solveCobraLP(LPCoupled,&#8217;printLevel&#8217;,1,&#8217;feasTol&#8217;,1e-8);</p>
+<p>B) parameters structure with field names specific to a particular solvers
+internal parameter fields
+e.g.[solution]=solveCobraLP(LPCoupled,parameters);</p>
+<p>C) as parameter followed by parameter value, with a parameter structure
+with field names specific to a particular solvers internal parameter,
+fields as the LAST argument
+e.g [solution]=solveCobraLP(LPCoupled,&#8217;printLevel&#8217;,1,&#8217;feasTol&#8217;,1e-6,parameters);</p>
+<dl class="docutils">
+<dt>printLevel    Printing level</dt>
+<dd>= 0    Silent (Default)
+= 1    Warnings and Errors
+= 2    Summary information
+= 3    More detailed information
+&gt; 10   Pause statements, and maximal printing (debug mode)</dd>
+<dt>saveInput     Saves LPproblem to filename specified in field.</dt>
+<dd>i.e. parameters.saveInput = &#8216;LPproblem.mat&#8217;;</dd>
+<dt>minNorm       {(0), scalar , n x 1 vector}, where [m,n]=size(S);</dt>
+<dd>If not zero then, minimise the Euclidean length
+of the solution to the LP problem. minNorm ~1e-6 should be
+high enough for regularisation yet maintain the same value for
+the linear part of the objective. However, this should be
+checked on a case by case basis, by optimization with and
+without regularisation.</dd>
+</dl>
+<p>primalOnly    {(0),1} 1=only return the primal vector (lindo solvers)</p>
+<p>optional parameters can also be set through the
+solver can be set through changeCobraSolver(&#8216;LP&#8217;, value);
+changeCobraSolverParams(&#8216;LP&#8217;, &#8216;parameter&#8217;, value) function.  This
+includes the minNorm and the printLevel flags</p>
+<p>OUTPUT
+solution Structure containing the following fields describing a LP
+solution</p>
+<blockquote>
+<div><p>full         Full LP solution vector
+obj          Objective value
+rcost        Reduced costs, dual solution to lb &lt;= v &lt;= ub
+dual         dual solution to A*v (&#8216;E&#8217; | &#8216;G&#8217; | &#8216;L&#8217;) b
+solver       Solver used to solve LP problem
+algorithm    Algorithm used by solver to solve LP problem
+stat         Solver status in standardized form</p>
+<blockquote>
+<div><p>1   Optimal solution
+2   Unbounded solution
+3   Partial success (OPTI-csdp) - will not give desired</p>
+<blockquote>
+<div>result from OptimizeCbModel</div></blockquote>
+<p>0   Infeasible
+-1   No solution reported (timelimit, numerical problem etc)</p>
+</div></blockquote>
+<p>origStat     Original status returned by the specific solver
+time         Solve time in seconds</p>
+</div></blockquote>
+<p>OPTIONAL OUTPUT
+solution.basis    LP basis corresponding to solution
+Markus Herrgard    08/29/06
+Ronan Fleming      11/12/08 &#8216;cplex_direct&#8217; allows for more refined control</p>
+<blockquote>
+<div>of cplex than tomlab tomrun</div></blockquote>
+<dl class="docutils">
+<dt>Ronan Fleming      04/25/09 Option to minimise the Euclidean Norm of internal</dt>
+<dd>fluxes using either &#8216;cplex_direct&#8217; solver or &#8216;pdco&#8217;</dd>
+<dt>Jan Schellenberger 09/28/09 Changed header to be much simpler.  All parameters</dt>
+<dd>now accessed through
+changeCobraSolverParams(LP, parameter,value)</dd>
+<dt>Richard Que        11/30/09 Changed handling of optional parameters to use</dt>
+<dd>getCobraSolverParams().</dd>
+</dl>
+<p>Ronan Fleming      12/07/09 Commenting of input/output
+Ronan Fleming      21/01/10 Not having second input, means use the parameters as specified in the</p>
+<blockquote>
+<div>global paramerer variable, rather than &#8216;default&#8217; parameters</div></blockquote>
+<p>Steinn Gudmundsson 03/03/10 Added support for the Gurobi solver
+Ronan Fleming      01/24/01 Now accepts an optional parameter structure with nonstandard</p>
+<blockquote>
+<div>solver specific parameter options</div></blockquote>
+<p>Tim Harrington     05/18/12 Added support for the Gurobi 5.0 solver
+Ronan Fleming      07/04/13 Reinstalled support for optional parameter structure
+Process arguments etc</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.solveCobraLPCPLEX">
+<code class="descname">solveCobraLPCPLEX</code><span class="sig-paren">(</span><em>LPProblem</em>, <em>printLevel</em>, <em>basisReuse</em>, <em>conflictResolve</em>, <em>contFunctName</em>, <em>minNorm</em>, <em>interface</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/base/solvers/solveCobraLPCPLEX.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraLPCPLEX" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>[solution,LPProblem]=solveCobraLPCPLEX(LPProblem,printLevel,basisReuse,conflictResolve,contFunctName,minNorm)</dt>
+<dd>call CPLEX to solve an LP problem
+By default, use the matlab interface to cplex written by TOMLAB, in
+preference to the one written by ILOG.</dd>
+</dl>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>LPproblem Structure containing the following fields describing the LP</strong></p>
+</li>
+<li><p class="first"><strong>problem to be solved</strong> &#8211;</p>
+<p>A or S       m x n LHS matrix
+b            m x 1 RHS vector
+c            n x 1 Objective coeff vector
+lb           n x 1 Lower bound vector
+ub           n x 1 Upper bound vector
+osense       scalar Objective sense (-1 max, +1 min)</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>LPProblem.rxns    cell array of reaction abbreviations (necessary for</strong> &#8211;</p>
+<p>making a readable confilict resolution file).</p>
+</li>
+<li><p class="first"><strong>LPProblem.csense  Constraint senses, a string containting the constraint sense for</strong> &#8211;</p>
+<p>each row in A (&#8216;E&#8217;, equality, &#8216;G&#8217; greater than, &#8216;L&#8217; less than).</p>
+</li>
+<li><p class="first"><strong>LPProblem.LPBasis Basis from previous solution of similar LP problem.</strong> &#8211;</p>
+<p>See basisReuse</p>
+</li>
+<li><p class="first"><strong>PrintLevel    Printing level in the CPLEX m-file and CPLEX C-interface.</strong> &#8211;</p>
+<p>= 0    Silent
+= 1    Warnings and Errors
+= 2    Summary information (Default)
+= 3    More detailed information
+&gt; 10   Pause statements, and maximal printing (debug mode)</p>
+</li>
+<li><p class="first"><strong>basisReuse = 0   Use this for one of soluion of an LP (Default)</strong> &#8211;</p>
+<dl class="docutils">
+<dt>= 1   Returns a basis for reuse in the next LP</dt>
+<dd><p class="first last">i.e. outputs LPProblem.LPBasis</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><strong>conflictResolve  = 0   (Default)</strong> &#8211;</p>
+<dl class="docutils">
+<dt>= 1   If LP problem is proven to be infeasible by CPLEX,</dt>
+<dd><p class="first last">it will print out a &#8216;conflict resolution file&#8217;,
+which indicates the irreducible infeasible set of
+equaltiy &amp; inequality constraints that together,
+combine to make the problem infeasible. This is
+useful for debugging an LP problem if you want to
+try to resolve a constraint conflict</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><strong>contFunctName        = [] Use all default CLPEX control parameters, (Default)</strong> &#8211;</p>
+<dl class="docutils">
+<dt>= someString e.g. &#8216;someFunctionName&#8217;</dt>
+<dd><blockquote class="first">
+<div><p>uses the user specified control parameters defined
+in someFunctionName.m</p>
+</div></blockquote>
+<p class="last">(see template function CPLEXParamSet for details).</p>
+</dd>
+</dl>
+<p>= cpxControl structure (output from a file like CPLEXParamSet.m)</p>
+</li>
+<li><p class="first"><strong>minNorm       {(0), 1 , n x 1 vector} If not zero then, minimise the Euclidean length</strong> &#8211;</p>
+<p>of the solution to the LP problem. Gives the same objective,
+but minimises the square of flux. minNorm ~1e-6 should be
+high enough for regularisation yet keep the same objective</p>
+</li>
+<li><p class="first"><strong>interface     {&#8216;ILOGcomplex&#8217;,&#8217;ILOGsimple&#8217;,&#8217;tomlab_cplex&#8217;}</strong> &#8211;</p>
+<p>Default is the tomlab_cplex interface</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>solution Structure containing the following fields describing a LP</strong></p>
+</li>
+<li><p class="first"><strong>solution</strong> &#8211;</p>
+<p>full         Full LP solution vector
+obj          Objective value
+rcost        Lagrangian multipliers to the simple inequalties (Reduced costs)
+dual         Lagrangian multipliers to the equalities
+nInfeas      Number of infeasible constraints
+sumInfeas    Sum of constraint violation
+stat         COBRA Standardized solver status code:</p>
+<blockquote>
+<div><p>1   Optimal solution
+2   Unbounded solution
+0   Infeasible
+-1  No solution reported (timelimit, numerical problem etc)</p>
+</div></blockquote>
+<dl class="docutils">
+<dt>origStat     CPLEX status code. Use cplexStatus(solution.origStat) for</dt>
+<dd><p class="first last">more information from the CPLEX solver</p>
+</dd>
+</dl>
+<p>solver       solver used by cplex
+time         time taken to solve the optimization problem</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>LPProblem.LPBasis When input basisReuse=1, we return a basis for reuse in</strong> &#8211;</p>
+<p>the next LP</p>
+</li>
+<li><p class="first"><strong>CPLEX consists of 4 different LP solvers which can be used to solve sysbio optimization problems</strong></p>
+</li>
+<li><p class="first"><strong>you can control which of the solvers, e.g. simplex vs interior point solver using the</strong></p>
+</li>
+<li><p class="first"><strong>CPLEX control parameter cpxControl.LPMETHOD. At the moment, the solver is</strong></p>
+</li>
+<li><p class="first"><strong>automatically chosen for you</strong></p>
+</li>
+<li><p class="first"><strong>Ronan Fleming</strong></p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.solveCobraLPCPLEXcard">
+<code class="descname">solveCobraLPCPLEXcard</code><span class="sig-paren">(</span><em>LPProblem</em>, <em>printLevel</em>, <em>basisReuse</em>, <em>conflictResolve</em>, <em>contFunctName</em>, <em>minNorm</em>, <em>theNorm</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/base/solvers/solveCobraLPCPLEXcard.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraLPCPLEXcard" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>[solution,LPProblem]=solveCobraLPCPLEX(LPProblem,printLevel,basisReuse,conflictResolve,contFunctName,minNorm)</dt>
+<dd>call CPLEX to solve an LP problem
+By default, use the matlab interface to cplex written by TOMLAB, in
+preference to the one written by ILOG.</dd>
+</dl>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>LPproblem Structure containing the following fields describing the LP</strong></p>
+</li>
+<li><p class="first"><strong>problem to be solved</strong> &#8211;</p>
+<p>A or S       m x n LHS matrix
+b            m x 1 RHS vector
+c            n x 1 Objective coeff vector
+lb           n x 1 Lower bound vector
+ub           n x 1 Upper bound vector
+osense       scalar Objective sense (-1 max, +1 min)</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>LPProblem.rxns    cell array of reaction abbreviations (necessary for</strong> &#8211;</p>
+<p>making a readable confilict resolution file).</p>
+</li>
+<li><p class="first"><strong>LPProblem.csense  Constraint senses, a string containting the constraint sense for</strong> &#8211;</p>
+<p>each row in A (&#8216;E&#8217;, equality, &#8216;G&#8217; greater than, &#8216;L&#8217; less than).</p>
+</li>
+<li><p class="first"><strong>LPProblem.LPBasis Basis from previous solution of similar LP problem.</strong> &#8211;</p>
+<p>See basisReuse</p>
+</li>
+<li><p class="first"><strong>PrintLevel    Printing level in the CPLEX m-file and CPLEX C-interface.</strong> &#8211;</p>
+<p>= 0    Silent
+= 1    Warnings and Errors
+= 2    Summary information (Default)
+= 3    More detailed information
+&gt; 10   Pause statements, and maximal printing (debug mode)</p>
+</li>
+<li><p class="first"><strong>basisReuse = 0   Use this for one of soluion of an LP (Default)</strong> &#8211;</p>
+<dl class="docutils">
+<dt>= 1   Returns a basis for reuse in the next LP</dt>
+<dd><p class="first last">i.e. outputs LPProblem.LPBasis</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><strong>conflictResolve  = 0   (Default)</strong> &#8211;</p>
+<dl class="docutils">
+<dt>= 1   If LP problem is proven to be infeasible by CPLEX,</dt>
+<dd><p class="first last">it will print out a &#8216;conflict resolution file&#8217;,
+which indicates the irreducible infeasible set of
+equaltiy &amp; inequality constraints that together,
+combine to make the problem infeasible. This is
+useful for debugging an LP problem if you want to
+try to resolve a constraint conflict</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><strong>contFunctName        = [] Use all default CLPEX control parameters, (Default)</strong> &#8211;</p>
+<dl class="docutils">
+<dt>= someString e.g. &#8216;someFunctionName&#8217;</dt>
+<dd><blockquote class="first">
+<div><p>uses the user specified control parameters defined
+in someFunctionName.m</p>
+</div></blockquote>
+<p class="last">(see template function CPLEXParamSet for details).</p>
+</dd>
+</dl>
+<p>= cpxControl structure (output from a file like CPLEXParamSet.m)</p>
+</li>
+<li><p class="first"><strong>minNorm       {(0), 1 , n x 1 vector} If not zero then, minimise the Euclidean length</strong> &#8211;</p>
+<p>of the solution to the LP problem. Gives the same objective,
+but minimises the square of flux. minNorm ~1e-6 should be
+high enough for regularisation yet keep the same objective</p>
+</li>
+<li><p class="first"><strong>theNorm       {&#8216;zero&#8217;,&#8217;one&#8217;,(&#8216;two&#8217;)} Controls which norm is minimized.</strong> &#8211;</p>
+<p>&#8216;zero&#8217; minimizes cardinality for nonzero entries in minNorm
+&#8216;one&#8217;  minimizes taxicab norm for nonzero entries in
+minNorm (not implemented)
+&#8216;two&#8217;  minimizes Euclidean norm for nonzero entries in minNorm (default)</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>solution Structure containing the following fields describing a LP</strong></p>
+</li>
+<li><p class="first"><strong>solution</strong> &#8211;</p>
+<p>full         Full LP solution vector
+obj          Objective value
+rcost        Lagrangian multipliers to the simple inequalties (Reduced costs)
+dual         Lagrangian multipliers to the equalities
+nInfeas      Number of infeasible constraints
+sumInfeas    Sum of constraint violation
+stat         COBRA Standardized solver status code:</p>
+<blockquote>
+<div><p>1   Optimal solution
+2   Unbounded solution
+0   Infeasible
+-1  No solution reported (timelimit, numerical problem etc)</p>
+</div></blockquote>
+<dl class="docutils">
+<dt>origStat     CPLEX status code. Use cplexStatus(solution.origStat) for</dt>
+<dd><p class="first last">more information from the CPLEX solver</p>
+</dd>
+</dl>
+<p>solver       solver used by cplex
+time         time taken to solve the optimization problem</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>LPProblem.LPBasis When input basisReuse=1, we return a basis for reuse in</strong> &#8211;</p>
+<p>the next LP</p>
+</li>
+<li><p class="first"><strong>CPLEX consists of 4 different LP solvers which can be used to solve sysbio optimization problems</strong></p>
+</li>
+<li><p class="first"><strong>you can control which of the solvers, e.g. simplex vs interior point solver using the</strong></p>
+</li>
+<li><p class="first"><strong>CPLEX control parameter cpxControl.LPMETHOD. At the moment, the solver is</strong></p>
+</li>
+<li><p class="first"><strong>automatically chosen for you</strong></p>
+</li>
+<li><p class="first"><strong>Ronan Fleming 10 June 08</strong> &#8211;</p>
+<p>20 Mar  09  min norm can be specific to each variable
+12 Jul  09  more description of basis reuse
+23 Oct  09  ILOG-CPLEX matlab simple interface by default</p>
+<blockquote>
+<div><p>See solveCobraCPLEX for full control of CPLEX
+12.1 via API</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Ronan Fleming 31 Oct  13  Added minimization of cardinality</strong></p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.solveCobraLPLindo">
+<code class="descname">solveCobraLPLindo</code><span class="sig-paren">(</span><em>A</em>, <em>b</em>, <em>c</em>, <em>csense</em>, <em>lb</em>, <em>ub</em>, <em>osense</em>, <em>primalOnlyFlag</em>, <em>oldAPIFlag</em>, <em>verbLevel</em>, <em>method</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/base/solvers/solveCobraLPLindo.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraLPLindo" title="Permalink to this definition">¶</a></dt>
+<dd><p>solveCobraLPLindo Solve a LP problem using Lindo</p>
+<p>[obj,x,y,w,s,solStatus] =
+solveCobraLPLindo(A,b,c,csense,lb,ub,osense,primalOnlyFlag,oldAPIFlag,verbLevel,method)</p>
+<p>oldAPIFLag should be true if Lindo API &lt;2.0 is used and false for newer
+versions of the API</p>
+<p>Markus Herrgard 11/8/06
+Handle missing arguments</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.solveCobraMILP">
+<code class="descname">solveCobraMILP</code><span class="sig-paren">(</span><em>MILPproblem</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/base/solvers/solveCobraMILP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraMILP" title="Permalink to this definition">¶</a></dt>
+<dd><p>solveCobraMILP Solve constraint-based MILP problems</p>
+<p>solution = solveCobraMILP(MILPproblem,parameters)</p>
+<p>INPUT
+MILPproblem</p>
+<blockquote>
+<div><p>A      LHS matrix
+b      RHS vector
+c      Objective coeff vector
+lb     Lower bound vector
+ub     Upper bound vector
+osense Objective sense (-1 max, +1 min)
+csense Constraint senses, a string containting the constraint sense for</p>
+<blockquote>
+<div>each row in A (&#8216;E&#8217;, equality, &#8216;G&#8217; greater than, &#8216;L&#8217; less than).</div></blockquote>
+<p>vartype Variable types (&#8216;C&#8217; continuous, &#8216;I&#8217; integer, &#8216;B&#8217; binary)
+x0      Initial solution</p>
+</div></blockquote>
+<p>OPTIONAL INPUTS
+Optional parameters can be entered using parameters structure or as
+parameter followed by parameter value: i.e. ,&#8217;printLevel&#8217;,3)</p>
+<dl class="docutils">
+<dt>parameters    Structure containing optional parameters.</dt>
+<dd><p class="first">timeLimit    Global solver time limit
+intTol       Integrality tolerance
+relMipGapTol Relative MIP gap tolerance
+logFile      Log file (for CPLEX)
+printLevel    Printing level</p>
+<blockquote>
+<div>= 0    Silent (Default)
+= 1    Warnings and Errors
+= 2    Summary information
+= 3    More detailed information</div></blockquote>
+<dl class="last docutils">
+<dt>saveInput    Saves LPproblem to filename specified in field.</dt>
+<dd>i.e. parameters.saveInput = &#8216;LPproblem.mat&#8217;;
+Setting parameters = &#8216;default&#8217; uses default setting set in
+getCobraSolverParameters.</dd>
+</dl>
+</dd>
+</dl>
+<p>The solver is defined in the CBT_MILP_SOLVER global variable
+(set using changeCobraSolver). Solvers currently available are
+&#8216;tomlab_cplex&#8217; and &#8216;glpk&#8217;</p>
+<p>OUTPUT
+solution Structure containing the following fields describing a MILP</p>
+<blockquote>
+<div><blockquote>
+<div>solution</div></blockquote>
+<p>cont     Continuous solution
+int      Integer solution
+full     Full MILP solution vector
+obj      Objective value
+solver   Solver used to solve MILP problem
+stat     Solver status in standardized form (see below)</p>
+<blockquote>
+<div><blockquote>
+<div>1  Optimal solution found
+2  Unbounded solution
+0  Infeasible MILP</div></blockquote>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-1</span></kbd></td>
+<td>No integer solution exists
+3  Other problem (time limit etc, but integer solution exists)</td></tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>origStat Original status returned by the specific solver
+time     Solve time in seconds</p>
+</div></blockquote>
+<p>Markus Herrgard 1/23/07
+Tim Harrington  05/18/12 Added support for the Gurobi 5.0 solver
+Ronan (16/07/2013) default MPS parameters are no longer global variables
+Meiyappan Lakshmanan  11/14/14 Added support for the cplex_direct solver
+cplex_direct solver accesible through CPLEX m-file and CPLEX C-interface
+Thomas Pfau (12/11/2015) Added support for ibm_cplex (the IBM Matlab
+interface) to the solvers.
+Process options</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.solveCobraMIQP">
+<code class="descname">solveCobraMIQP</code><span class="sig-paren">(</span><em>MIQPproblem</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/base/solvers/solveCobraMIQP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraMIQP" title="Permalink to this definition">¶</a></dt>
+<dd><p>solveCobraQP Solve constraint-based QP problems</p>
+<blockquote>
+<div><p>solution = solveCobraQP(MIQPproblem,solver,verbFlag,solverParams)</p>
+<p>% Solves problems of the type</p>
+<blockquote>
+<div><p>min   osense * 0.5 x&#8217; * F * x + osense * c&#8217; * x
+s/t   lb &lt;= x &lt;= ub</p>
+<blockquote>
+<div>A * x  &lt;=/=/&gt;= b
+xi = integer</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<p>INPUT
+MIQPproblem    Structure containing the following fields describing the QP</p>
+<blockquote>
+<div><blockquote>
+<div>problem to be solved</div></blockquote>
+<p>A                LHS matrix
+b                RHS vector
+F                F matrix for quadratic objective (see above)
+c                Objective coeff vector
+lb               Lower bound vector
+ub               Upper bound vector
+osense           Objective sense (-1 max, +1 min)
+csense           Constraint senses, a string containting the constraint</p>
+<blockquote>
+<div>sense for each row in A (&#8216;E&#8217;, equality, &#8216;G&#8217; greater
+than, &#8216;L&#8217; less than).</div></blockquote>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>Optional parameters can be entered using parameters structure or as</strong></p>
+</li>
+<li><p class="first"><strong>parameter followed by parameter value</strong> &#8211;
+i.e. ,&#8217;printLevel&#8217;,3)</p>
+</li>
+<li><p class="first"><strong>parameters    Structure containing optional parameters as fields.</strong> &#8211;</p>
+<p>printLevel   Print level for solver
+saveInput    Saves LPproblem to filename specified in field.</p>
+<blockquote>
+<div><p>Setting parameters = &#8216;default&#8217; uses default setting set in
+getCobraSolverParameters.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>the solver defined in the CBT_MIQP_SOLVER global variable (set using</strong></p>
+</li>
+<li><p class="first"><strong>changeCobraSolver). Solvers currently available are &#8216;tomlab_cplex&#8217;</strong></p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>solution      Structure containing the following fields describing a QP</strong> &#8211;</p>
+<blockquote>
+<div><p>solution</p>
+</div></blockquote>
+<p>full             Full QP solution vector
+obj              Objective value
+solver           Solver used to solve QP problem
+stat             Solver status in standardized form (see below)</p>
+<blockquote>
+<div><blockquote>
+<div><p>1   Optimal solution found
+2   Unbounded solution
+0   Infeasible QP</p>
+</div></blockquote>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-1</span></kbd></td>
+<td><p class="first last">No optimal solution found (time limit etc)
+3   Solution exists but with problems</p>
+</td></tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>origStat         Original status returned by the specific solver
+time             Solve time in seconds</p>
+</li>
+<li><p class="first"><strong>Markus Herrgard 6/8/07</strong></p>
+</li>
+<li><p class="first"><strong>Tim Harrington  05/18/12 Added support for the Gurobi 5.0 solver</strong></p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.solveCobraNLP">
+<code class="descname">solveCobraNLP</code><span class="sig-paren">(</span><em>NLPproblem</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/base/solvers/solveCobraNLP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraNLP" title="Permalink to this definition">¶</a></dt>
+<dd><p>solveCobraNLP Solves a COBRA non-linear (objective and/or constraints)
+problem.</p>
+<blockquote>
+<div><p>solution = solveCobraNLP(NLPproblem,varargin)
+Solves a problem of the following form:</p>
+<blockquote>
+<div><p>optimize objFunction(x) or c&#8217;<a href="#id2"><span class="problematic" id="id3">*</span></a>x
+st.       A*x  &lt;=&gt; b   or b_L &lt; A*x &lt; b_U</p>
+<blockquote>
+<div>and    d_L &lt; d(x) &lt; d_U</div></blockquote>
+<p>where A is a matrix, d(x) is an optional function and the objective
+is either a general function or a linear function.</p>
+</div></blockquote>
+</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>NLPproblem  Non-linear optimization problem</strong> &#8211;</p>
+<dl class="docutils">
+<dt>Required Fields</dt>
+<dd><p class="first">A               LHS matrix
+b               RHS vector
+lb              Lower bounds
+ub              Upper bounds
+csense          Constraint senses (&#8216;L&#8217;,&#8217;E&#8217;,&#8217;G&#8217;)
+osense          Objective sense (-1 for maximisation, 1 for minimisation)
+objFunction     Function to evaluate as the objective (The function</p>
+<blockquote>
+<div><blockquote>
+<div><p>will receive two inputs, First the flux vector to
+evaluate and second the NLPproblem struct. The function
+should be provided as a string</p>
+</div></blockquote>
+<p>or</p>
+</div></blockquote>
+<p class="last">c               linear objective such that c*x is optimized.</p>
+</dd>
+</dl>
+<p>Note: &#8216;b_L&#8217; and &#8216;b_U&#8217; can be used in place of &#8216;b&#8217; and &#8216;csense&#8217;</p>
+<dl class="docutils">
+<dt>Optional Fields</dt>
+<dd><p class="first">x0              Initial solution
+gradFunction    Name of the function that computes the n x 1 gradient</p>
+<blockquote>
+<div><p>vector (ignored if &#8216;d&#8217; is set).</p>
+</div></blockquote>
+<dl class="docutils">
+<dt>H               Name of the function that computes the n x n Hessian</dt>
+<dd><p class="first last">matrix</p>
+</dd>
+</dl>
+<p>fLowBnd         A lower bound on the function value at optimum.
+d               Name of function that computes the mN nonlinear</p>
+<blockquote>
+<div><p>constraints</p>
+</div></blockquote>
+<dl class="docutils">
+<dt>dd              Name of function that computes the constraint Jacobian</dt>
+<dd><p class="first last">mN x n</p>
+</dd>
+<dt>d2d             Name of function that computes the second part of the</dt>
+<dd><p class="first last">Lagrangian function (only needed for some solvers)</p>
+</dd>
+</dl>
+<p class="last">d_L             Lower bound vector in nonlinear constraints
+d_U             Upper bound vector in nonlinear constraints
+user            Solver specific user parameters structure</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>Optional parameters for the solver can be entered using parameters structure or as</strong></p>
+</li>
+<li><p class="first"><strong>parameter followed by parameter value</strong> &#8211;
+e.g. ,&#8217;printLevel&#8217;,3)</p>
+</li>
+<li><p class="first"><strong>parameters    Structure containing optional parameters as fields.</strong> &#8211;</p>
+<p>Setting parameters = &#8216;default&#8217; uses default setting set in
+getCobraSolverParameters.</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>solution Structure containing the following fields describing an NLP</strong></p>
+</li>
+<li><p class="first"><strong>solution</strong> &#8211;</p>
+<p>full             Full LP solution vector
+obj              Objective value
+rcost            Reduced costs
+dual             Dual solution
+solver           Solver used to solve LP problem</p>
+<dl class="docutils">
+<dt>stat             Solver status in standardized form</dt>
+<dd><p class="first">1   Optimal solution
+2   Unbounded solution
+0   Infeasible
+-1  No solution reported (timelimit, numerical</p>
+<blockquote class="last">
+<div><p>problem etc)</p>
+</div></blockquote>
+</dd>
+</dl>
+<p>origStat         Original status returned by the specific solver
+time             Solve time in seconds
+origSolStruct    Original solution structure</p>
+</li>
+<li><p class="first"><strong>Markus Herrgard 12/7/07</strong></p>
+</li>
+<li><p class="first"><strong>Richard Que (02/10/10) Added tomlab_snopt support.</strong></p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.solveCobraQP">
+<code class="descname">solveCobraQP</code><span class="sig-paren">(</span><em>QPproblem</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/base/solvers/solveCobraQP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.solveCobraQP" title="Permalink to this definition">¶</a></dt>
+<dd><p>solveCobraQP Solve constraint-based QP problems</p>
+<blockquote>
+<div><p>solution = solveCobraQP(QPproblem,parameters)</p>
+<p>% Solves problems of the type</p>
+<blockquote>
+<div><p>min   0.5 x&#8217; * F * x + osense * c&#8217; * x
+s/t   lb &lt;= x &lt;= ub</p>
+<blockquote>
+<div>A * x  &lt;=/=/&gt;= b</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>QPproblem Structure containing the following fields describing the QP</strong></p>
+</li>
+<li><p class="first"><strong>problem to be solved</strong> &#8211;</p>
+<p>A      LHS matrix
+b      RHS vector
+F      F matrix for quadratic objective (must be positive definite)
+c      Objective coeff vector
+lb     Lower bound vector
+ub     Upper bound vector
+osense Objective sense (-1 max, +1 min)
+csense Constraint senses, a string containting the constraint sense for</p>
+<blockquote>
+<div><p>each row in A (&#8216;E&#8217;, equality, &#8216;G&#8217; greater than, &#8216;L&#8217; less than).</p>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>Optional parameters can be entered using parameters structure or as</strong></p>
+</li>
+<li><p class="first"><strong>parameter followed by parameter value</strong> &#8211;
+i.e. ,&#8217;printLevel&#8217;,3)</p>
+</li>
+<li><p class="first"><strong>parameters    Structure containing optional parameters as fields.</strong> &#8211;</p>
+<p>printLevel   Print level for solver
+saveInput    Saves LPproblem to filename specified in field.</p>
+<blockquote>
+<div><p>Setting parameters = &#8216;default&#8217; uses default setting set in
+getCobraSolverParameters.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>The solver is defined in the CBT_MILP_SOLVER global variable</strong></p>
+</li>
+<li><p class="first"><strong>(set using changeCobraSolver). Solvers currently available are</strong></p>
+</li>
+<li><p class="first"><strong>&#8216;tomlab_cplex&#8217;, &#8216;mosek&#8217; and &#8216;qpng&#8217; (limited support for small problems)</strong></p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>solution  Structure containing the following fields describing a QP</strong> &#8211;</p>
+<blockquote>
+<div><p>solution</p>
+</div></blockquote>
+<p>full     Full QP solution vector
+obj      Objective value
+solver   Solver used to solve QP problem
+stat     Solver status in standardized form (see below)
+origStat Original status returned by the specific solver
+time     Solve time in seconds</p>
+<dl class="docutils">
+<dt>stat     Solver status in standardized form</dt>
+<dd><p class="first last">1   Optimal solution
+2   Unbounded solution
+0   Infeasible
+-1  No solution reported (timelimit, numerical problem etc)</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><strong>Markus Herrgard        6/8/07</strong></p>
+</li>
+<li><p class="first"><strong>Ronan Fleming         12/07/09  Added support for mosek</strong></p>
+</li>
+<li><p class="first"><strong>Ronan Fleming         18 Jan 10 Added support for pdco</strong></p>
+</li>
+<li><p class="first"><strong>Josh Lerman           04/17/10 changed def. parameters, THREADS, QPMETHOD</strong></p>
+</li>
+<li><p class="first"><strong>Tim Harrington        05/18/12 Added support for the Gurobi 5.0 solver</strong></p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.verifyCobraProblem">
+<code class="descname">verifyCobraProblem</code><span class="sig-paren">(</span><em>XPproblem</em>, <em>x</em>, <em>tol</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/base/solvers/verifyCobraProblem.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.verifyCobraProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>[statusOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(XPproblem, x, tol)</p>
+<blockquote>
+<div>Verifies dimensions of fields in XPproblem and determines if they are
+valid LP, QP, MILP, MIQP problems. Also checks inputs for NaN.
+If x is provided, it will see if x is a valid solution to tolerance
+(tol).</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>XPproblem - struct containing</strong> &#8211;</p>
+<p>.A - Constraints matrix
+.b - rhs
+.csense - vector of &#8216;E&#8217;, &#8216;L&#8217;, &#8216;G&#8217; for equality, Less than and Greater than</p>
+<blockquote>
+<div><p>constriant</p>
+</div></blockquote>
+<p>.lb, .ub - lower and upper bound on variables
+.c - objective coefficients
+.F - quadratic objective (optional, only used for QP, MIQP problems)
+.vartype - vector of &#8216;C&#8217;, &#8216;I&#8217;, &#8216;B&#8217; for &#8216;continuous&#8217;, &#8216;integer&#8217;, &#8216;binary&#8217;</p>
+<blockquote>
+<div><p>variables (optional, only used for MILP, MIQP problems).</p>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>x         a vector.  Function will determine if x satisfies XPproblem</strong></p>
+</li>
+<li><p class="first"><strong>tol       numerical tolerance to which all constraints should be verified to.</strong> &#8211;</p>
+<p>(default = 1e-8)</p>
+</li>
+<li><p class="first"><strong>verbose   Controls whether results are printed to screen.(Default = true)</strong></p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>statusOK  Returns -1 if any field in XPproblem has an error</strong> &#8211;</p>
+<p>returns 0 if the x vector is not valid for XPproblem and
+returns 1 if at least one problem type is satisfied</p>
+</li>
+<li><p class="first"><strong>invalidConstraints    Vector which lists a 1 for any constaint that is</strong> &#8211;</p>
+<p>invalid</p>
+</li>
+<li><p class="first"><strong>invalidVars           Vector which lists a 1 for any variable that is</strong> &#8211;</p>
+<p>invalid</p>
+</li>
+<li><p class="first"><strong>objective             Objective of XPproblem</strong></p>
+</li>
+<li><p class="first"><strong>Jan Shellenberger (11/23/09) Richard Que (11/24/09)</strong></p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

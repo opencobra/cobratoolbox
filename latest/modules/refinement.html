@@ -1,0 +1,1371 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Refinement &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" />
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../contents.html">Docs</a> &raquo;</li>
+        
+      <li>Refinement</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="refinement">
+<span id="id1"></span><h1>Refinement<a class="headerlink" href="#refinement" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.reconstruction.refinement"></span><dl class="function">
+<dt id="src.reconstruction.refinement.addDemandReaction">
+<code class="descname">addDemandReaction</code><span class="sig-paren">(</span><em>model</em>, <em>metaboliteNameList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/addDemandReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.addDemandReaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds demand reactions for a set of metabolites
+The reaction names for the demand reactions will be <cite>DM_[metaboliteName]`</cite></p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = addDemandReaction(model, metaboliteNameList)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>metaboliteNameList</strong> &#8211;
+List of metabolite names (cell array)</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure with added demand reactions</li>
+<li><strong>rxnNames</strong> &#8211;
+List of added reactions</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.addExchangeRxn">
+<code class="descname">addExchangeRxn</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em>, <em>lb</em>, <em>ub</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/addExchangeRxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.addExchangeRxn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds exchange reactions</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>newModel = addExchangeRxn(model, metList, lb, ub)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+Cobra model structure</li>
+<li><strong>metList</strong> &#8211;
+List of metabolites</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>lb</strong> &#8211;
+Array of lower bounds</li>
+<li><strong>ub</strong> &#8211;
+Array of upper bounds</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>newModel</strong> &#8211;
+COBRA model with added exchange reactions</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.addMetabolite">
+<code class="descname">addMetabolite</code><span class="sig-paren">(</span><em>model</em>, <em>metID</em>, <em>metName</em>, <em>formula</em>, <em>ChEBIID</em>, <em>KEGGId</em>, <em>PubChemID</em>, <em>InChi</em>, <em>Charge</em>, <em>b</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/addMetabolite.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.addMetabolite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a Metabolite to the Current Reconstruction</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>newModel = addMetabolite(model, metID, metName, formula, ChEBIID, KEGGId, PubChemID, InChi, Charge, b )</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+Cobra model structure</li>
+<li><strong>metID</strong> &#8211;
+The ID(s) of the metabolite(s) (will be the identifier in model.mets)</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>metName</strong> &#8211;
+Human readable name(s) (String)</li>
+<li><strong>formula</strong> &#8211;
+The chemical formula(s) (String)</li>
+<li><strong>ChEBIID</strong> &#8211;
+The CHEBI Id(s) (String)</li>
+<li><strong>KEGGId</strong> &#8211;
+The KEGG Compound ID(s) (String)</li>
+<li><strong>PubChemID</strong> &#8211;
+The PubChemID(s) (String)</li>
+<li><strong>InChi</strong> &#8211;
+The InChi description(s) (String)</li>
+<li><strong>Charge</strong> &#8211;
+The Charge(s) (int)</li>
+<li><strong>b</strong> &#8211;
+The accumulation(s) or release(s) (double)</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>newModel</strong> &#8211;
+COBRA model with added metabolite(s)</li>
+</ul>
+</div></blockquote>
+<p><cite>metID</cite> and all optional string arguments either have to be a single value or cell
+arrays. <cite>Charge</cite> and <cite>b</cite> have to be double arrays.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.addRatioReaction">
+<code class="descname">addRatioReaction</code><span class="sig-paren">(</span><em>model</em>, <em>listOfRxns</em>, <em>ratioCoeff</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/addRatioReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.addRatioReaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds ratio reaction.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>modelNew = addRatioReaction(model, listOfRxns, ratioCoeff)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>listOfRxns</strong> &#8211;
+List of 2 Reactions</li>
+<li><strong>ratioCoeff</strong> &#8211;
+Array of ratio coefficient between the 2 reactions</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelNew      COBRA model structure containing the ratio</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span><span class="mi">1</span> <span class="n">v_EX_ac</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">=</span> <span class="mi">2</span> <span class="n">v_EX_for</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+<span class="n">modelNew</span> <span class="o">=</span> <span class="n">addRatioReaction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;EX_ac(e)&#39;</span> <span class="s1">&#39;EX_for(e)&#39;</span><span class="p">},</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.addReaction">
+<code class="descname">addReaction</code><span class="sig-paren">(</span><em>model</em>, <em>rxnName</em>, <em>metaboliteList</em>, <em>stoichCoeffList</em>, <em>revFlag</em>, <em>lowerBound</em>, <em>upperBound</em>, <em>objCoeff</em>, <em>subSystem</em>, <em>grRule</em>, <em>geneNameList</em>, <em>systNameList</em>, <em>checkDuplicate</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/addReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.addReaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a reaction to the model or modify an existing reaction</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[model, rxnIDexists] = addReaction(model, rxnName, metaboliteList, stoichCoeffList, revFlag, lowerBound, upperBound, objCoeff, subSystem, grRule, geneNameList, systNameList, checkDuplicate, printLevel)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>rxnName</strong> &#8211;
+Reaction name abbreviation (i.e. &#8216;ACALD&#8217;)
+(Note: can also be a cell array {&#8216;abbr&#8217;,&#8217;name&#8217;}</li>
+<li><strong>metaboliteList</strong> &#8211;
+Cell array of metabolite names or alternatively the
+reaction formula for the reaction</li>
+<li><strong>stoichCoeffList</strong> &#8211;
+List of stoichiometric coefficients (reactants -ve,
+products +ve), empty if reaction formula is provided</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>revFlag</strong> &#8211;
+Reversibility flag (Default = true)</li>
+<li><strong>lowerBound</strong> &#8211;
+Lower bound (Default = 0 or -vMax`)</li>
+<li><strong>upperBound</strong> &#8211;
+Upper bound (Default = <cite>vMax</cite>)</li>
+<li><strong>objCoeff</strong> &#8211;
+Objective coefficient (Default = 0)</li>
+<li><strong>subSystem</strong> &#8211;
+Subsystem (Default = &#8216;&#8217;)</li>
+<li><strong>grRule</strong> &#8211;
+Gene-reaction rule in boolean format (and/or allowed)
+(Default = &#8216;&#8217;);</li>
+<li><strong>geneNameList</strong> &#8211;
+List of gene names (used only for translation from
+common gene names to systematic gene names)</li>
+<li><strong>systNameList</strong> &#8211;
+List of systematic names</li>
+<li><strong>checkDuplicate</strong> &#8211;
+Check <cite>S</cite> matrix too see if a duplicate reaction is
+already in the model (Deafult false)</li>
+<li><strong>printLevel</strong> &#8211;
+default = 1</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure with new reaction</li>
+<li><strong>rxnIDexists</strong> &#8211;
+Empty if the reaction did not exist previously, or if
+checkDuplicate is false. Otherwise it contains the ID
+of an identical reaction already present in the model.</li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span><span class="mi">1</span><span class="p">)</span> <span class="n">Add</span> <span class="n">a</span> <span class="n">new</span> <span class="n">irreversible</span> <span class="n">reaction</span> <span class="n">using</span> <span class="n">the</span> <span class="n">formula</span> <span class="n">approach</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">addReaction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="s1">&#39;newRxn1&#39;</span><span class="p">,</span><span class="s1">&#39;A -&gt; B + 2 C&#39;</span><span class="p">)</span>
+<span class="o">%</span><span class="mi">2</span><span class="p">)</span> <span class="n">Add</span> <span class="n">a</span> <span class="n">the</span> <span class="n">same</span> <span class="n">reaction</span> <span class="n">using</span> <span class="n">the</span> <span class="nb">list</span> <span class="n">approach</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">addReaction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="s1">&#39;newRxn1&#39;</span><span class="p">,{</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">,</span><span class="s1">&#39;C&#39;</span><span class="p">},[</span><span class="o">-</span><span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span><span class="p">],</span><span class="n">false</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.addReactionGEM">
+<code class="descname">addReactionGEM</code><span class="sig-paren">(</span><em>model</em>, <em>rxns</em>, <em>rxnNames</em>, <em>rxnFormulas</em>, <em>rev</em>, <em>lb</em>, <em>ub</em>, <em>nRxn</em>, <em>subSystems</em>, <em>grRules</em>, <em>rules</em>, <em>genes</em>, <em>HTABLE</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/addReactionGEM.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.addReactionGEM" title="Permalink to this definition">¶</a></dt>
+<dd><p>addReactionGEM manually adds reactions to a specified model, may add one or more reactions at a time</p>
+<blockquote>
+<div>[newmodel] = addReactionSmiley(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,subSystems,grRules,rules,genes,HTABLE)</div></blockquote>
+<ul class="simple">
+<li>Manually add reactions to a specified model, can either add one or
+multiple reactions at a time</li>
+<li>All syntax standards must comply with the specified model</li>
+<li>For reaction formulas, use: &#8216;&#8211;&gt;&#8217; for irreversible or &#8216;&lt;==&gt;&#8217; for
+reversible</li>
+</ul>
+<p>e.g. [modelLB_NH3] = addReactionSmiley(modelLB,&#8217;NH3r&#8217;,&#8217;NH3 protonization&#8217;,cellstr(&#8216;1 NH3[c] + 1 H[c] &lt;==&gt; 1 NH4[c]&#8217;),1,-1000,1000,&#8217;Others&#8217;);
+<strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong></li>
+<li><strong>rxns</strong></li>
+<li><strong>rxnNames</strong></li>
+<li><strong>rxnFormulas     see note above</strong></li>
+<li><strong>rev             0 = irrev, 1 = rev</strong></li>
+<li><strong>lb</strong></li>
+<li><strong>ub</strong></li>
+<li><strong>subSystems      default = &#8216;&#8217;</strong></li>
+<li><strong>grRules         default = &#8216;&#8217;</strong></li>
+<li><strong>rules           default = &#8216;&#8217;</strong></li>
+<li><strong>genes           default = &#8216;&#8217;</strong></li>
+<li><strong>HTABLE</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>newmodel</strong></li>
+</ul>
+</div></blockquote>
+<p>based on AddRxn: Aarash Bordbar 11/2/07
+IT 11-19-08</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.addSinkReactions">
+<code class="descname">addSinkReactions</code><span class="sig-paren">(</span><em>model</em>, <em>metabolites</em>, <em>lb</em>, <em>ub</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/addSinkReactions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.addSinkReactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a sink reaction for the list of metabolites</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[model] = addSinkReactions(model, metabolites, lb, ub)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>metabolites</strong> &#8211;
+Cell array of metabolite abreviations as they appear in <cite>model.mets</cite></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>lb</strong> &#8211;
+Lower bounds of reactions</li>
+<li><strong>ub</strong> &#8211;
+Upper bounds of reactions</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure containing sink reactions</li>
+<li><strong>rxnsInModel</strong> &#8211;
+Vector, contains -1 if the reaction did not exist
+previously, otherwise it contains the reaction ID of
+an identical reaction already present in the model</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.alphabetizeModel">
+<code class="descname">alphabetizeModel</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/alphabetizeModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.alphabetizeModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sorts the rxns, metabolites, and genes in a model into alphabetical
+order, useful after adding new reactions to a model. This function needs
+to be modified to work on models with different fields than these
+(currently set for <cite>iAF1260c</cite>)</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>abcModel = alphabetizeModel(model)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>abcModel</strong> &#8211;
+the alphabetized model</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.assignGPRA">
+<code class="descname">assignGPRA</code><span class="sig-paren">(</span><em>model</em>, <em>gpraFile</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/assignGPRA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.assignGPRA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assigns each reaction a Gene-protein-reaction association</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = assignGPRA(model, gpraFile)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>gpraFile</strong> &#8211;
+SimPheny GPRA file</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model with gene-protein-reaction assoction</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.assignSubSystems">
+<code class="descname">assignSubSystems</code><span class="sig-paren">(</span><em>model</em>, <em>gpraFile</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/assignSubSystems.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.assignSubSystems" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assigns each reaction a subsystem in the model structure</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = assignSubSystems(model, gpraFile)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>gpraFile</strong> &#8211;
+SimPheny GPRA file</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure with subsystem assignment</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.changeGeneAssociation">
+<code class="descname">changeGeneAssociation</code><span class="sig-paren">(</span><em>model</em>, <em>rxnName</em>, <em>grRule</em>, <em>geneNameList</em>, <em>systNameList</em>, <em>addRxnGeneMat</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/changeGeneAssociation.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.changeGeneAssociation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change gene associations in a model</p>
+<blockquote>
+<div>model = changeGeneAssociation(model,rxnName,grRule,geneName,systName)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model             COBRA Toolbox model structure</strong></li>
+<li><strong>rxnName           Name of the new reaction</strong></li>
+<li><strong>grRule            Gene-reaction rule in boolean format (and/or allowed)</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>geneNameList      List of gene names (used only for translation from</strong> &#8211;</p>
+<p>common gene names to systematic gene names)</p>
+</li>
+<li><p class="first"><strong>systNameList      List of systematic names</strong></p>
+</li>
+<li><p class="first"><strong>addRxnGeneMat     adds rxnGeneMat to model structure (default = true)</strong></p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>model             COBRA Toolbox model structure with new gene reaction</strong> &#8211;</p>
+<p>associations</p>
+</li>
+<li><p class="first"><strong>Markus Herrgard 1/12/07</strong></p>
+</li>
+<li><p class="first"><strong>Ines Thiele 08/03/2015, made rxnGeneMat optional</strong></p>
+</li>
+<li><p class="first"><strong>IT</strong> &#8211;
+updated the nargin statement to accommodate the additional option</p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.changeObjective">
+<code class="descname">changeObjective</code><span class="sig-paren">(</span><em>model</em>, <em>rxnNameList</em>, <em>objectiveCoeff</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/changeObjective.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.changeObjective" title="Permalink to this definition">¶</a></dt>
+<dd><p>changeObjective Changes the objective function of a constraint-based model</p>
+<blockquote>
+<div>model = changeObjective(model,rxnNameList,objectiveCoeff)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model             COBRA structure</strong></li>
+<li><strong>rxnNameList       List of reactions (cell array or string)</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional intput</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>objectiveCoeff    Value of objective coefficient for each reaction</strong> &#8211;</p>
+<p>(Default = 1)</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model             COBRA model structure with new objective</strong></li>
+<li><strong>Monica Mo &amp; Markus Herrgard - 8/21/06</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.changeRxnBounds">
+<code class="descname">changeRxnBounds</code><span class="sig-paren">(</span><em>model</em>, <em>rxnNameList</em>, <em>value</em>, <em>boundType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/changeRxnBounds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.changeRxnBounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>changeRxnBounds Change upper or lower bounds of a reaction or a set of
+reactions</p>
+<blockquote>
+<div>model = changeRxnBounds(model,rxnNameList,value,boundType)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>model         COBRA model structure</strong></p>
+</li>
+<li><p class="first"><strong>rxnNameList   List of reactions (cell array or string)</strong></p>
+</li>
+<li><p class="first"><strong>value         Bound values</strong> &#8211;</p>
+<p>Can either be a vector or a single scalar value if the same
+bound value is to be assinged to all reactions</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional intput</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>boundType     &#8216;u&#8217; - upper, &#8216;l&#8217; - lower, &#8216;b&#8217; - both (Default = &#8216;b&#8217;)</strong> &#8211;</p>
+<p>Bound type can either be a cell array of strings or a
+string with as many letters as there are reactions in
+rxnNameList</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model         COBRA model structure with modified reaction bounds</strong></li>
+<li><strong>Markus Herrgard 4/21/06</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.changeRxnMets">
+<code class="descname">changeRxnMets</code><span class="sig-paren">(</span><em>model</em>, <em>Mets2change</em>, <em>NewMets</em>, <em>Rxn</em>, <em>NewStoich</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/changeRxnMets.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.changeRxnMets" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>changeRxnMets Change metabolites in a specified reaction, or</dt>
+<dd><p class="first">randomly chosen reactions.</p>
+<p class="last">[model ModifiedRxns] = changeRxnMets(model,Mets2change,NewMets,Rxn,NewStoich)</p>
+</dd>
+</dl>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>model               COBRA model structure</strong></p>
+</li>
+<li><p class="first"><strong>Mets2change         Cell array of metabolites to change</strong></p>
+</li>
+<li><p class="first"><strong>NewMets             Cell array of replacement metabolites (must be in</strong> &#8211;</p>
+<p>order of those that will be replaced</p>
+</li>
+<li><p class="first"><strong>Rxn                 reaction to change (string) or cell array, or if a number is put</strong> &#8211;</p>
+<p>here, that number of reactions (with Mets2change) will
+be randomly chosen and the metabolites will be swapped</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional intput</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>NewStoich           Stoichiometry of new metabs (conserved from old mets by default).</strong> &#8211;</p>
+<p>If multiple reactions are being changed, this must be
+a mets x rxns matrix,</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>e.g. for 2 new reactions: Rxn = {&#8216;r1&#8217;,&#8217;r2&#8217;}</dt>
+<dd><blockquote class="first">
+<div><p>r1: 2 A + 3 B -&gt; 1 C
+r2: 4 A + 3 B -&gt; 3 C</p>
+</div></blockquote>
+<p class="last">where A and C are the new metabolites,
+NewMets = {&#8216;A&#8217;, &#8216;C&#8217;}
+NewStoich = [ 2 4; 1 3]</p>
+</dd>
+</dl>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>model              COBRA model structure with changed reaction</strong></p>
+</li>
+<li><p class="first"><strong>ModifiedRxns       Rxns which were modified</strong> &#8211;</p>
+<p>Nathan Lewis (Apr 24, 2009)</p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.convertToIrreversible">
+<code class="descname">convertToIrreversible</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/convertToIrreversible.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.convertToIrreversible" title="Permalink to this definition">¶</a></dt>
+<dd><p>convertToIrreversible Convert model to irreversible format</p>
+<blockquote>
+<div>[modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model         COBRA model structure</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>modelIrrev    Model in irreversible format</strong></p>
+</li>
+<li><p class="first"><strong>matchRev      Matching of forward and backward reactions of a reversible</strong> &#8211;</p>
+<p>reaction</p>
+</li>
+<li><p class="first"><strong>rev2irrev     Matching from reversible to irreversible reactions</strong></p>
+</li>
+<li><p class="first"><strong>irrev2rev     Matching from irreversible to reversible reactions</strong></p>
+</li>
+<li><p class="first"><strong>Uses the reversible list to construct a new model with reversible</strong></p>
+</li>
+<li><p class="first"><strong>reactions separated into forward and backward reactions.  Separated</strong></p>
+</li>
+<li><p class="first"><strong>reactions are appended with &#8216;_f&#8217; and &#8216;_b&#8217; and the reversible list tracks</strong></p>
+</li>
+<li><p class="first"><strong>these changes with a &#8216;1&#8217; corresponding to separated forward reactions.</strong></p>
+</li>
+<li><p class="first"><strong>Reactions entirely in the negative direction will be reversed and</strong></p>
+</li>
+<li><p class="first"><strong>appended with &#8216;_r&#8217;.</strong></p>
+</li>
+<li><p class="first"><strong>written by Gregory Hannum 7/9/05</strong></p>
+</li>
+<li><p class="first"><strong>Modified by Markus Herrgard 7/25/05</strong></p>
+</li>
+<li><p class="first"><strong>Modified by Jan Schellenberger 9/9/09 for speed.</strong></p>
+</li>
+</ul>
+</div></blockquote>
+<p>declare variables</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.convertToReversible">
+<code class="descname">convertToReversible</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/convertToReversible.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.convertToReversible" title="Permalink to this definition">¶</a></dt>
+<dd><p>convertToReversible convert a model structure from irreversible format to
+reversible format</p>
+<blockquote>
+<div>modelRev = convertToReversible(model)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>model     COBRA model in irreversible format (forward/backward reactions</strong> &#8211;</p>
+<p>separated)</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelRev  Model in reversible format</strong></li>
+<li><strong>Greg Hannum 7/22/05</strong></li>
+<li><strong>Initialize</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.createModel">
+<code class="descname">createModel</code><span class="sig-paren">(</span><em>rxnAbrList</em>, <em>rxnNameList</em>, <em>rxnList</em>, <em>revFlagList</em>, <em>lowerBoundList</em>, <em>upperBoundList</em>, <em>subSystemList</em>, <em>grRuleList</em>, <em>geneNameList</em>, <em>systNameList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/createModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.createModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a COBRA model from inputs or an empty model
+structure if no inputs are provided.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = createModel(rxnAbrList, rxnNameList, rxnList, revFlagList, lowerBoundList, upperBoundList, subSystemList, grRuleList, geneNameList, systNameList)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>rxnAbrList</strong> &#8211;
+List of names of the new reactions</li>
+<li><strong>rxnNameList</strong> &#8211;
+List of names of the new reactions</li>
+<li><strong>rxnList</strong> &#8211;
+List of reactions: format: {<cite>A -&gt; B + 2 C</cite>}
+If the compartment of a metabolite is not
+specified, it is assumed to be cytoplasmic, i.e. [<cite>c</cite>]</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>revFlagList</strong> &#8211;
+List of reversibility flag (opt, default = 1)</li>
+<li><strong>lowerBoundList</strong> &#8211;
+List of lower bound (Default = 0 or <a href="#id2"><span class="problematic" id="id3">``</span></a>-vMax`)</li>
+<li><strong>upperBoundList</strong> &#8211;
+List of upper bound (Default = <cite>vMax</cite>)</li>
+<li><strong>subSystemList</strong> &#8211;
+List of subsystem (Default = &#8216;&#8217;)</li>
+<li><strong>grRuleList</strong> &#8211;
+List of gene-reaction rule in boolean format (and/or allowed)
+(Default = &#8216;&#8217;);</li>
+<li><strong>geneNameList</strong> &#8211;
+List of gene names (used only for translation
+from common gene names to systematic gene names)</li>
+<li><strong>systNameList</strong> &#8211;
+List of systematic names</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.createXMatrix">
+<code class="descname">createXMatrix</code><span class="sig-paren">(</span><em>compoundsIn</em>, <em>transport</em>, <em>compartment</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/createXMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.createXMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>createXMatrix creates a matrix full of exchange reactions based
+on the input list (creates an exchange reaction for each of the
+metabolites present in the model)</p>
+<p>ExchangeRxnMatrix = createXMatrix(compoundsIn,transport,compartment)</p>
+<p>INPUTS</p>
+<p>compoundsIn   - SU matrix
+transport     - if 1, transport reactions will be defined as well for</p>
+<blockquote>
+<div>every compound (default: 0, which corresponds to only
+exchange reactions)</div></blockquote>
+<dl class="docutils">
+<dt>compartment   - (default = [c]) &#8211;&gt; transport from cytoplasm [c] to</dt>
+<dd>extracellulat space [e], [p] creates transport from [c] to
+[p] and from [p] to [c]</dd>
+</dl>
+<p>OUTPUT</p>
+<dl class="docutils">
+<dt>ExchangeRxnMatrix - model containing all exchange reactions for all</dt>
+<dd>compounds in compoundsIn</dd>
+</dl>
+<p>11-10-07 IT</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.extractCompModel">
+<code class="descname">extractCompModel</code><span class="sig-paren">(</span><em>model</em>, <em>compSymbol</em>, <em>intOnlyFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/extractCompModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.extractCompModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>extractCompModel Create model for a cellular compartment</p>
+<blockquote>
+<div>compModel = extractCompModel(model,compSymbol,intOnlyFlag)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model         COBRA model structure</strong></li>
+<li><strong>compSymbol    Compartment symbol</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional intput</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>intOnlyFlag   Include only non-transport reactions (Default = true)</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>compModel     COBRA model for a cellular compartment</strong></li>
+<li><strong>Markus Herrgard 3/1/06</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.extractMetModel">
+<code class="descname">extractMetModel</code><span class="sig-paren">(</span><em>model</em>, <em>metabNames</em>, <em>nLayers</em>, <em>allCompFlag</em>, <em>nRxnsMetThr</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/extractMetModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.extractMetModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>extractMetModel Create a subnetwork model around one or more metabolites</p>
+<blockquote>
+<div>metabModel =  extractMetModel(model,metabNames,nLayers,allCompFlag,nRxnsMetThr)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model             COBRA model structure</strong></li>
+<li><strong>metabNames        Metabolites to build subnetwork model around</strong></li>
+<li><strong>nLayers</strong></li>
+<li><strong>allCompFlag       Use all metabolites regardless of compartment</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional intput</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>nRxnsMetThr       Ignore metabolites which appear in more than nRxnMetThr</strong> &#8211;</p>
+<p>(Default = 100)</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>metabModel        COBRA model around one or more metabolites</strong></li>
+<li><strong>Markus Herrgard 3/1/06</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.extractSubNetwork">
+<code class="descname">extractSubNetwork</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>metList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/extractSubNetwork.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.extractSubNetwork" title="Permalink to this definition">¶</a></dt>
+<dd><p>extractSubNetwork Extract subnetwork model</p>
+<blockquote>
+<div>subModel = extractSubNetwork(model,rxnList,metList)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model     COBRA model structure</strong></li>
+<li><strong>rxnList  Reaction list for the subnetwork to be extracted</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional intput</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>metNames  Metabolite list for the subnetwork to be extracted</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>subModel  COBRA model of subnetwork</strong></li>
+<li><strong>Markus Herrgard 12/11/06</strong></li>
+<li><strong>Srikiran C 7/15/14</strong></li>
+<li><strong>- Replaced rxnNames with rxnList as model.rxnNames is different from</strong></li>
+<li><strong>model.rxns, and model.rxns is used to select the subnetwork.</strong></li>
+<li><strong>- Replaced metNames with metList, to avoid similar confusion.</strong></li>
+<li><strong>- Added the fields - rxnNames, rules and metCharge to subModel.</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.extractSubSysModel">
+<code class="descname">extractSubSysModel</code><span class="sig-paren">(</span><em>model</em>, <em>subSysNames</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/extractSubSysModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.extractSubSysModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>extractSubSysModel Create model for one of more model subsystems</p>
+<blockquote>
+<div>subSysModel = extractSubSysModel(model,subSysNames)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model         COBRA model structure</strong></li>
+<li><strong>subSysNames   List of subsystems to extract</strong></li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>OPUTPUT</dt>
+<dd><p class="first">subSysModel   COBRA model of selected subsystems</p>
+<p class="last">Markus Herrgard 3/1/06</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.generateRules">
+<code class="descname">generateRules</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/generateRules.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.generateRules" title="Permalink to this definition">¶</a></dt>
+<dd><p>If a model does not have a model.rules field but has a model.grRules
+field, can be regenerated using this script
+<strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model               with model.grRules***</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model2              same model but with model.rules added</strong></li>
+</ul>
+</div></blockquote>
+<p>Aarash Bordar 11/17/2010</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.isSameCobraModel">
+<code class="descname">isSameCobraModel</code><span class="sig-paren">(</span><em>model1</em>, <em>model2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/isSameCobraModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.isSameCobraModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>isSameCobraModel Checks if two COBRA models are the same</p>
+<blockquote>
+<div>[isSame,nDiff,commonFields] = isSameCobraModel(model1,model2)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model1        COBRA model structure 1</strong></li>
+<li><strong>model2        COBRA model structure 2</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>isSame        True if all common fields are identical, else false</strong></li>
+<li><strong>nDiff         Number of differences between the two models for each field</strong></li>
+<li><strong>commonFields  List of common fields</strong></li>
+<li><strong>Authors</strong> &#8211;<ul>
+<li>Markus Herrgard 9/14/07</li>
+<li>CI integration: Laurent Heirendt</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.keepCompartment">
+<code class="descname">keepCompartment</code><span class="sig-paren">(</span><em>model</em>, <em>compartments</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/keepCompartment.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.keepCompartment" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>This function removes reactions in all compartments except those</dt>
+<dd>specified by the cell array &#8220;compartments&#8221;</dd>
+</dl>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>model                     COBRA model structure</strong></p>
+</li>
+<li><p class="first"><strong>compartments              cell array of strings (e.g., to discard all</strong> &#8211;</p>
+<p>reactions except those in the mitochondria and
+cytosol, compartments = {&#8216;[m]&#8217;,&#8217;[c]&#8217;};</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>model                     COBRA model with reactions in the specified</strong> &#8211;</p>
+<p>compartmetns</p>
+</li>
+<li><p class="first"><strong>Nathan Lewis</strong></p>
+</li>
+<li><p class="first"><strong>June 8, 2008</strong></p>
+</li>
+<li><p class="first"><strong>compartments is a cell array list of compartments to keep (e.g. {&#8216;[e]&#8217;,&#8217;[c]&#8217;,&#8217;[m]&#8217;})</strong></p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.mergeTwoModels">
+<code class="descname">mergeTwoModels</code><span class="sig-paren">(</span><em>model1</em>, <em>model2</em>, <em>objrxnmodel</em>, <em>mergeRxnGeneMat</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/mergeTwoModels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.mergeTwoModels" title="Permalink to this definition">¶</a></dt>
+<dd><p>function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel,mergeRxnGeneMat)</p>
+<p>Inputs</p>
+<p>model1          - model 1
+model2          - model 2
+objrxnmodel     - Set as 1 or 2 to set objective reaction from</p>
+<blockquote>
+<div>desired model</div></blockquote>
+<p>mergeRxnGeneMat - if false, do not merge rxnGeneMat</p>
+<p>Outputs</p>
+<p>modelNew        - merged model</p>
+<p>based on[model_metE] = CreateMetE(model_E,model_M)) (Aarash Bordbar,
+07/06/07);
+11/10/2007 IT</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.moveRxn">
+<code class="descname">moveRxn</code><span class="sig-paren">(</span><em>model</em>, <em>startspot</em>, <em>endspot</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/moveRxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.moveRxn" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>The function moves a reaction from one spot in the network to another,</dt>
+<dd><p class="first">useful for placing important reactions at the beginning of the network to
+easier follow certain reactions.</p>
+<p class="last">[model] = moveRxn(model,startspot,endspot)</p>
+</dd>
+</dl>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model         COBRA model structure</strong></li>
+<li><strong>startspot     The reaction number to move</strong></li>
+<li><strong>endspot       The spot where the reaction is moving to%</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model         COBRA toolbox model structure with moved reaction</strong></li>
+<li><strong>Aarash Bordbar 09/21/09</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.reassignFwBwMatch">
+<code class="descname">reassignFwBwMatch</code><span class="sig-paren">(</span><em>match</em>, <em>selVec</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/reassignFwBwMatch.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.reassignFwBwMatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>reassingFwBwMatch Reassing forward-backward matches when modifying an
+irreversible model</p>
+<blockquote>
+<div>matchNew = reassignFwBwMatch(match,selVec)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>match     Forward-backwards mapping vector</strong></li>
+<li><strong>selVec    Selection vector marking reactions to remap</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>matchNew  Modified forward-backwards mapping vector</strong></li>
+<li><strong>Markus Herrgard 11/3/05</strong></li>
+<li><strong>Create an index map from the old indices to new ones</strong></li>
+<li><strong>If selVec = [1 0 0 1 1]</strong></li>
+<li><strong>indexMap = [1 0 0 2 3];</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.reduceModel">
+<code class="descname">reduceModel</code><span class="sig-paren">(</span><em>model</em>, <em>tol</em>, <em>irrevFlag</em>, <em>verbFlag</em>, <em>negFluxAllowedFlag</em>, <em>checkConsistencyFlag</em>, <em>changeBoundsFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/reduceModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.reduceModel" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>reduceModel Removes from the model all of the reactions that are never used (max and</dt>
+<dd><p class="first">min are &lt; tol). Finds the minimal bounds for the flux through each reaction.
+Also returns the results for flux variability analysis (maxes, mins).</p>
+<p class="last">[modelRed,hasFlux,maxes,mins] = reduceModel(model,tol,irrevFlag,verbFlag,negFluxAllowedFlag,checkConsistencyFlag,changeBoundsFlag)</p>
+</dd>
+</dl>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model                 COBRA model structure</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>tol                   Tolerance for non-zero bounds - bounds smaller in absolute</strong> &#8211;</p>
+<p>value than this value will be set to zero (Default = 1e-6)</p>
+</li>
+<li><p class="first"><strong>irrevFlag             Determines if the models should be treated using</strong> &#8211;</p>
+<p>the irreversible form. (Default = false)</p>
+</li>
+<li><p class="first"><strong>verbFlag              Verbose output (Default = false)</strong></p>
+</li>
+<li><p class="first"><strong>negFluxAllowedFlag    Allow negative fluxes through irrev reactions</strong> &#8211;</p>
+<p>(Default = false)</p>
+</li>
+<li><p class="first"><strong>checkConsistencyFlag  Do a consistency check of the optimal solution</strong> &#8211;</p>
+<p>(Default = true)</p>
+</li>
+<li><p class="first"><strong>changeBoundsFlag      Change upper/lower bounds to the minimal bounds</strong> &#8211;</p>
+<p>(Default = true)</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>modelRed              Reduced model</strong></p>
+</li>
+<li><p class="first"><strong>hasFlux               The indexes of the reactions that are not blocked</strong> &#8211;</p>
+<p>in the model</p>
+</li>
+<li><p class="first"><strong>maxes                 Maximum fluxes</strong></p>
+</li>
+<li><p class="first"><strong>mins                  Minimum fluxes</strong></p>
+</li>
+<li><p class="first"><strong>Gregory Hannum and Markus Herrgard 7/20/05</strong></p>
+</li>
+<li><p class="first"><strong>Sets the tolerance for zero flux determination</strong></p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.removeMetabolites">
+<code class="descname">removeMetabolites</code><span class="sig-paren">(</span><em>model</em>, <em>metaboliteList</em>, <em>removeRxnFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/removeMetabolites.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.removeMetabolites" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes metabolites from a model</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = removeMetabolites(model, metaboliteList, removeRxnFlag)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>metaboliteList</strong> &#8211;
+List of metabolites to be removed</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional intput</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>removeRxnFlag</strong> &#8211;
+Remove reactions with no metabolites (Default = true)</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model with removed metabolites</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.removeRxns">
+<code class="descname">removeRxns</code><span class="sig-paren">(</span><em>model</em>, <em>rxnRemoveList</em>, <em>irrevFlag</em>, <em>metFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/removeRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.removeRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes reactions from a model</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = removeRxns(model, rxnRemoveList, irrevFlag, metFlag)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>rxnRemoveList</strong> &#8211;
+Cell array of reaction names to be removed</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>irrevFlag</strong> &#8211;
+Irreverseble (true) or reversible (false) reaction
+format (Default = false)</li>
+<li><strong>metFlag</strong> &#8211;
+Remove unused metabolites (Default = true)</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model             COBRA model w/o selected reactions</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.removeTrivialStoichiometry">
+<code class="descname">removeTrivialStoichiometry</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/removeTrivialStoichiometry.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.removeTrivialStoichiometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes metabolites and reactions corresponding to zero rows and columns</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>modelOut=removeTrivialStoichiometry(model)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+Model with metabolites and reactions to remove</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelOut</strong> &#8211;
+Obtained model with removed metabolites and reactions</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.removeUnusedGenes">
+<code class="descname">removeUnusedGenes</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/removeUnusedGenes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.removeUnusedGenes" title="Permalink to this definition">¶</a></dt>
+<dd><p>removeUnusedGenes updates the rules, genes, and rxnGeneMat fields based on the grRules field for
+reactions in the model.</p>
+<blockquote>
+<div>modelNew = removeUnusedGenes(model)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model             COBRA structure</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>model             COBRA model structure with updated gene field reflecting only</strong> &#8211;</p>
+<p>content present in the model</p>
+</li>
+<li><p class="first"><strong>Sjoerd Opdam - 6/24/2014</strong></p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.scaleSMatrix">
+<code class="descname">scaleSMatrix</code><span class="sig-paren">(</span><em>S</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/refinement/scaleSMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.scaleSMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>scaleSMatrix Scale stoichimetric matrix to integers</p>
+<blockquote>
+<div>Sscaled = scaleSMatrix(S)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>S         S matrix</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>S         Scaled S matrix</strong></li>
+<li><strong>Markus Herrgard 6/2/06</strong></li>
+<li><strong>Round-off tolerance</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
