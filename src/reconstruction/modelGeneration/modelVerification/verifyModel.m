@@ -19,22 +19,29 @@ function results = verifyModel(model,varargin)
 %                   Strings The results of the individual checks are returned as a structure
 %                   array containing the relevant values.
 %                   Options are:
-%                   'massBalance' (checks for Mass balance if the metFormula
-%                   Field is present)
-%                   'chargeBalance' (checks for charge Balance)
-%                   'fluxConsistency' (checks for reaction flux consistency)
-%                   'stoichiometricConsistency' (checks for Stoichiometric
-%                   Consisteny, according to Gevorgyan, Bioinformatics,
-%                   2008)
-%                   'deadEndMetabolites' (metabolites which can either not
-%                   be produced, or consumed)
-%                   'simpleCheck' returns 0 if this is not a valid model
-%                   and 1 if it is a valid model, ignored if any other
-%                   option is selected.
-%                   'requiredFields' sets the fields which are required,
-%                   the argument must be firectly followed by the list of
-%                   required fields.
-%                   default({'S','b','csense','lb','ub','c','osense','rxns','mets','genes','rules'})
+%                   * 'massBalance' (checks for Mass balance if the metFormula
+%                     Field is present)
+%                   * 'chargeBalance' (checks for charge Balance)
+%                   * 'fluxConsistency' (checks for reaction flux consistency)
+%                   * 'stoichiometricConsistency' (checks for Stoichiometric
+%                     Consisteny, according to Gevorgyan, Bioinformatics,
+%                     2008)
+%                   * 'deadEndMetabolites' (metabolites which can either not
+%                     be produced, or consumed)
+%                   * 'simpleCheck' returns 0 if this is not a valid model
+%                     and 1 if it is a valid model, ignored if any other
+%                     option is selected.
+%                   * 'requiredFields' sets the fields which are required,
+%                     the argument must be firectly followed by the list of
+%                     required fields.
+%                     default({'S','b','csense','lb','ub','c','osense','rxns','mets','genes','rules'})
+%                   * 'checkDatabaseIDs', check whether the database
+%                     identifiers in specified fields (please have a look
+%                     at the documentation), match to the expected patterns
+%                     for those databases.
+%                   * 'silentCheck', do not print any information. Only
+%                     applies to the model structure check. (default is to
+%                     print info)
 %
 % OUTPUT:
 %
@@ -51,6 +58,7 @@ requiredFields = {'S','b','csense','lb','ub','c','osense','rxns','mets','genes',
 if any(ismember(varargin,'requiredFields'))
     requiredFields = varargin{find(ismember(varargin,'requiredFields')) + 1};
 end
+
 [optionalFields] = getDefinedFieldProperties();
 requiredFields = optionalFields(ismember(optionalFields(:,1), requiredFields),:);
 optionalFields = optionalFields(~ismember(optionalFields(:,1), requiredFields(:,1)),:);
@@ -148,13 +156,32 @@ if any(ismember(varargin,'stoichiometricConsistency'))
     results.stoichiometricConsistency = stoichiometricConsistency ;
 end
 
-if any(ismember(varargin,'simpleCheck')) && (numel(varargin) < 2)
+if ~isempty(results) && ~any(ismember(varargin,'silentCheck'))
+    if isfield(results, 'Errors')
+        problems = fieldnames(results.Errors);
+        disp('The following problems have been encountered in the model structure')
+        for i = 1:numel(problems)
+            fprintf('%s:\n',problems{i})
+            problematic_fields = fieldnames(results.Errors.(problems{i}));
+            for field = 1: numel(problematic_fields)
+                fprintf('%s: %s\n',problematic_fields{field}, results.Errors.(problems{i}).(problematic_fields{field}));
+            end
+        end
+    end
+end                   
+
+if any(ismember(varargin,'checkDatabaseIDs'))
+    results = checkDatabaseIDs(model,results);
+end
+
+if any(ismember(varargin,'simpleCheck'))
     if isempty(fieldnames(results))
         results = true;
-    else
+    else        
         results = false;
     end
 end
+
 end
 
 function valid = checkFields(results,FieldNames,model)
@@ -167,6 +194,32 @@ valid = cellfun(@(x) isfield(model,x) && ...
     ~isfield(results.Errors.inconsistentFields,x)),FieldNames);  % is inconsistent, if it exists.
 end
 
+
+function results = checkDatabaseIDs(model,results)
+dbMappings = getDefinedFieldProperties('Database',true);
+
+for i= 1:size(dbMappings,1)
+    if isfield(model,dbMappings{i,3})
+        fits = cellfun(@(x) isempty(x) || checkID(x,dbMappings{i,5}),model.(dbMappings{i,3}));
+        if any(~fits)
+            if ~isfield(results,'checkDatabaseIDs')
+                results.checkDatabaseIDs = struct();
+            end
+            if ~isfield(results.checkDatabaseIDs,'invalidIDs')
+                results.checkDatabaseIDs.invalidIDs = struct();
+            end
+            results.checkDatabaseIDs.invalidIDs.(dbMappings{i,3}) = cell(size(model.(dbMappings{i,3})));
+            results.checkDatabaseIDs.invalidIDs.(dbMappings{i,3})(~fits) = model.(dbMappings{i,3})(~fits);
+        end
+    end
+end
+end
+
+function accepted = checkID(id,pattern)
+    ids = strsplit(id,';');
+    matches = regexp(ids,pattern);
+    accepted = all(~cellfun(@isempty,matches));    
+end
 
 function results = checkPresentFields(fieldProperties,model, results)
 presentFields = find(ismember(fieldProperties(:,1),fieldnames(model)));
@@ -218,7 +271,7 @@ for i = 1:numel(presentFields)
         if ~isfield(results.Errors,'inconsistentFields')
             results.Errors.propertiesNotMatched = struct();
         end
-        results.Errors.propertiesNotMatched.(testedField) = 'Field does not match the required properties';
+        results.Errors.propertiesNotMatched.(testedField) = ['Field does not match the required properties: ' fieldProperties{presentFields(i),4} ];
     end
 
 end
