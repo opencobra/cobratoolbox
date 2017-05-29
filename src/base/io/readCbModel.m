@@ -196,7 +196,7 @@ if isempty(modelDescription)
 end
 
 switch fileType
-    case 'SBML',
+    case 'SBML'
         % If the file is missing the .xml ending, we attach it, can happen
         % with .sbml saved files.
         if ~exist(fileName, 'file')
@@ -204,13 +204,13 @@ switch fileType
                 fileName = [fileName '.xml'];
             end
         end
-        model = readSBML(fileName, defaultBound, compSymbolList, compNameList);
-    case 'SimPheny',
+        model = readSBML(fileName,defaultBound);
+    case 'SimPheny'
         model = readSimPhenyCbModel(fileName, defaultBound, compSymbolList, compNameList);
-    case 'SimPhenyPlus',
+    case 'SimPhenyPlus'
         model = readSimPhenyCbModel(fileName, defaultBound, compSymbolList, compNameList);
         model = readSimPhenyGprCmpd(fileName, model);
-    case 'SimPhenyText',
+    case 'SimPhenyText'
         model = readSimPhenyCbModel(fileName, defaultBound, compSymbolList, compNameList);
         model = readSimPhenyGprText([fileName '_gpra.txt'], model);
     case 'Excel'

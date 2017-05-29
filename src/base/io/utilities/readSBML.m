@@ -166,6 +166,8 @@ if(isfield(modelSBML,'fbc_geneProduct') && ~isempty(modelSBML.fbc_geneProduct))
     end
     model.genes = columnVector({modelSBML.fbc_geneProduct.fbc_id});
     model.geneNames = columnVector({modelSBML.fbc_geneProduct.fbc_label});
+else
+    model.genes = {};
 end
 
 %% So lets start the reactions.
@@ -347,6 +349,7 @@ model = polishCompartments(model,metComps);
 
 %% And clean up empty fields
 modelFields = fieldnames(model);
+%We will keep a set of default fields. 
 for i = 1:numel(modelFields)
     if iscell(model.(modelFields{i})) && all(cellfun(@isempty , model.(modelFields{i})))
         model = rmfield(model,modelFields{i});
