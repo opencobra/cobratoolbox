@@ -1,14 +1,22 @@
-function [subSystem, grRule, formula, confidenceScore, citation, comment, ecNumber, charge] = parseSBMLNotesField2012(notesField)
+<<<<<<< 5933086c821a593ef371fa8475e061683c3d7764:src/base/io/utilities/parseSBMLNotesField2012.m
+function [genes, rule, subSystem, grRule, formula, confidenceScore, citation, comment, ecNumber, charge] = parseSBMLNotesField2012(notesField)
 % Parses the notes field of an SBML file to extract `gene-rxn` associations
+=======
+function [subSystem,grRule,formula,confidenceScore,citation,comment,ecNumber,charge] = parseSBMLNotesField2012(notesField)
+%parseSBMLNotesField Parse the notes field of an SBML file to extract
+%gene-rxn associations
+>>>>>>> Updated readSBML and associated functions.:src/base/io/utilities/SBML/parseSBMLNotesField2012.m
 %
 % USAGE:
 %
-%    [subSystem, grRule, formula, confidenceScore, citation, comment, ecNumber, charge] = parseSBMLNotesField(notesField)
+%    [genes, rule, subSystem, grRule, formula, confidenceScore, citation, comment, ecNumber, charge] = parseSBMLNotesField(notesField)
 %
 % INPUT:
 %    notesField:         notes field of SBML file
 %
 % OUTPUT:
+%    genes:              Identifiers of the genes in the model
+%    rule:               GPR rule
 %    subSystem:          subSystem assignment for each reaction
 %    grRule:             a string representation of the GPR rules defined in a readable format
 %    formula:            elementa formula
@@ -52,11 +60,9 @@ for i = 1:length(fieldList)
     if (regexp(fieldStr,'^GENE_ASSOCIATION'))
         gprStr = regexprep(strrep(fieldStr,'GENE_ASSOCIATION:',''),'^(\s)+','');
         grRule = gprStr;
-        [genes,rule] = parseBoolean(gprStr);
     elseif (regexp(fieldStr,'^GENE ASSOCIATION'))
         gprStr = regexprep(strrep(fieldStr,'GENE ASSOCIATION:',''),'^(\s)+','');
         grRule = gprStr;
-        [genes,rule] = parseBoolean(gprStr);
     elseif (regexp(fieldStr,'^SUBSYSTEM'))
         subSystem = regexprep(strrep(fieldStr,'SUBSYSTEM:',''),'^(\s)+','');
         subSystem = strrep(subSystem,'S_','');
@@ -85,10 +91,7 @@ for i = 1:length(fieldList)
     elseif (regexp(fieldStr,'^Confidence Level'))
         [matches, tmpTokens] = regexpi(fieldStr, 'Confidence[ _]Level: (\w+)', 'match', 'tokens');
         if (~isempty(matches))
-            confidenceScore = str2num(tmpTokens{1}{1});
-            if isempty(confidenceScore)
-                confidenceScore = NaN;
-            end
+            confidenceScore = tmpTokens{1}{1};
         end
     elseif (regexp(fieldStr,'^NOTES'))
 	comment = strcat(comment,';',regexprep(strrep(fieldStr,'AUTHORS:',''),'^(\s)+',''));
