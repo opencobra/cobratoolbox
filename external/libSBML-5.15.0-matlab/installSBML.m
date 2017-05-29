@@ -14,13 +14,13 @@ function installSBML(varargin)
 
 % Filename    : installSBML.m
 % Description : install matlab binding
-% Author(s)   : SBML Team <sbml-team@caltech.edu>
+% Author(s)   : SBML Team <sbml-team@googlegroups.com>
 % Organization: EMBL-EBI
 % 
 % This file is part of libSBML.  Please visit http://sbml.org for more
 % information about SBML, and the latest version of libSBML.
 %
-% Copyright (C) 2013-2016 jointly by the following organizations:
+% Copyright (C) 2013-2017 jointly by the following organizations:
 %     1. California Institute of Technology, Pasadena, CA, USA
 %     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
 %     3. University of Heidelberg, Heidelberg, Germany
@@ -76,7 +76,7 @@ function installSBML(varargin)
      % we found executables but they did not work
      error('%s%s%s\n%s%s', ...
        'Executables were located at ', directory, ' but failed to execute', ...
-       'Please contact the libSBML team libsbml-team@caltech.edu ', ...
+       'Please contact the libSBML team libsbml-team@googlegroups.com ', ...
        'for further assistance');
    end;
  end;
@@ -181,7 +181,7 @@ function y = isWindows()
   if ~ispc()
     error('\n%s\n%s\n', ...
       'Unable to determine the type of operating system in use.', ...
-      'Please contact libsbml-team@caltech.edu to help resolve this problem.');
+      'Please contact libsbml-team@googlegroups.com to help resolve this problem.');
   end;
 end   
 

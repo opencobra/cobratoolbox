@@ -1,16 +1,28 @@
 function Formula = CheckAndConvert(Input)
-% converts from MathML in-fix to MATLAB functions
+%  Formula = CheckAndConvert(Input)
+% 
+% - a script used internally by TranslateSBML to change some mathematical function names
+%   to those used by MATLAB
+%
+% Takes
+%
+% 1. Input - a string representation of the math from an SBML document
+%
+% Returns
+%
+% 1. Formula - the original string adjusted to be MATLAB compatible
+%
 
 % Filename    : CheckAndConvert.m
 % Description : converts from MathML in-fix to MATLAB functions
-% Author(s)   : SBML Team <sbml-team@caltech.edu>
+% Author(s)   : SBML Team <sbml-team@googlegroups.com>
 % Organization: University of Hertfordshire STRC
 % Created     : 2004-12-13
 %
 % This file is part of libSBML.  Please visit http://sbml.org for more
 % information about SBML, and the latest version of libSBML.
 %
-% Copyright (C) 2013-2016 jointly by the following organizations:
+% Copyright (C) 2013-2017 jointly by the following organizations:
 %     1. California Institute of Technology, Pasadena, CA, USA
 %     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
 %     3. University of Heidelberg, Heidelberg, Germany
@@ -41,7 +53,7 @@ function Formula = CheckAndConvert(Input)
 %      United Kingdom
 %
 %      http://www.sbml.org
-%      mailto:sbml-team@caltech.edu
+%      mailto:sbml-team@googlegroups.com
 %
 % Contributor(s):
 
@@ -177,6 +189,7 @@ LogIndex = strfind(Formula, 'log(');
 if (isempty(LogIndex))
     return;
 else
+     y = zeros(1, length(LogIndex));
     OpenBracket = strfind(Formula, '(');
     Comma = strfind(Formula, ',');
     CloseBracket = strfind(Formula, ')');
@@ -188,7 +201,7 @@ else
         else
 
             % find the opening bracket
-            Open = find(ismember(OpenBracket, LogIndex(i)+3) == 1);
+            Open = ismember(OpenBracket, LogIndex(i)+3) == 1;
 
             % find closing bracket
             Close = find(CloseBracket > LogIndex(i)+3, 1);
@@ -200,7 +213,7 @@ else
             if (isempty(Greater) || isempty(Less))
                 y(i) = 0;
             else
-                Equal = find(Greater == Less);
+                Equal = find(Greater == Less, 1);
                 if (isempty(Equal))
                     y(i) = 0;
                 else
@@ -274,6 +287,7 @@ end;
 
 j = OpeningBracketIndex(1);
 ElementNumber = 1;
+Elements = cell(1, length(NonZeros)+1);
 
 for i = 1:length(NonZeros)
     element = '';
@@ -344,6 +358,7 @@ if (isempty(Start))
 end;
 
 
+Arguments = cell(1, length(Start));
 for j = 1:length(Start) % each occurence of the logical expression
 
     Stop = 0;
@@ -355,14 +370,19 @@ for j = 1:length(Start) % each occurence of the logical expression
         output = strcat(output, Formula(i));
     end;
     i = i + 1;
+    % catch case with zero args
+    if (strcmp(Formula(i-1), ')') && (length(output) == (length(LogicalExpression) + 1)))
+        Stop = 1;
+    end;
 
     while ((Stop == 0) && (i <= length(Formula)))
         c = Formula(i);
+        prev = Formula(i-1);
 
-        if (strcmp(c, '('))
+         if (strcmp(c, '('))
             flag = flag + 1;
             output = strcat(output, c);
-        elseif (strcmp(c, ')'))
+         elseif (strcmp(c, ')'))
             if (flag > 0)
                 output = strcat(output, c);
                 flag = flag - 1;
@@ -374,11 +394,8 @@ for j = 1:length(Start) % each occurence of the logical expression
         else
             output = strcat(output, c);
         end;
-
         i = i + 1;
-
     end;
-
 
     Arguments{j} = output;
 
@@ -457,11 +474,10 @@ NoSpaces = sum(WSpace);
 % rewrite the array to leaving out any spaces
 % remove any numbers from the array of symbols
 if (NoSpaces > 0)
-    NewArrayCount = 1;
+     y = '';
     for i = 1:NoChars
         if (~isspace(charArray(i)))
-            y(NewArrayCount) = charArray(i);
-            NewArrayCount = NewArrayCount + 1;
+            y = strcat(y, charArray(i));
         end;
     end;    
 else
