@@ -1,0 +1,727 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Model analysis &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
+        <link rel="up" title="Documentation" href="index.html"/>
+        <link rel="next" title="FBA" href="FBA.html"/>
+        <link rel="prev" title="Design" href="design.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" />
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design.html">Design</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Model analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="FBA.html">FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FVA.html">FVA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MOMA.html">MOMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deletion.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multiSpecies.html">MultiSpecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rFBA.html">rFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="relaxFBA.html">relaxFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sampling.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sparseFBA.html">sparseFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="subspaces.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topology.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="transport.html">Transport</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualization.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../contents.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Documentation</a> &raquo;</li>
+        
+      <li>Model analysis</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="model-analysis">
+<span id="modelanalysis"></span><h1>Model analysis<a class="headerlink" href="#model-analysis" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="FBA.html">FBA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FVA.html">FVA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MOMA.html">MOMA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deletion.html">Deletion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exploration.html">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiSpecies.html">MultiSpecies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rFBA.html">rFBA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="relaxFBA.html">relaxFBA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sampling.html">Sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sparseFBA.html">sparseFBA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subspaces.html">Subspaces</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lsqr.html">Lsqr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nullspace.html">Nullspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rank.html">Rank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rowReduce.html">rowReduce</a></li>
+<li class="toctree-l2"><a class="reference internal" href="subspaceProjection.html">subspaceProjection</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="topology.html">Topology</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="circuits.html">Circuits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conservedMoieties.html">conservedMoieties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extremeRays.html">extremeRays</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lrs.html">lrs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="lrsInterface.html">lrsInterface</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="optimalRays.html">optimalRays</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="FR.html">FR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graphHypergraphConversion.html">graphHypergraphConversion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="transport.html">Transport</a></li>
+</ul>
+</div>
+<span class="target" id="module-src.modelAnalysis"></span><dl class="function">
+<dt id="src.modelAnalysis.FEA">
+<code class="descname">FEA</code><span class="sig-paren">(</span><em>model</em>, <em>rxnSet</em>, <em>group</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/modelAnalysis/FEA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.FEA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Significane analysis - Flux enrichment analysis using hypergeometric
+1-sided test and FDR correction for multiple testing</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>resultCellF = FEA(modelEcore, 1:10, &#8216;subSystems&#8217;)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA structure model</li>
+<li><strong>rxnSet</strong> &#8211;
+reaction set to be enriched (vector of reaction indices)</li>
+<li><strong>group</strong> &#8211;
+model.(group) structure e.g.
+&#8216;subSystems&#8217; look for significantly enriched subsystem in rxnSet</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>resultCellF</strong> &#8211;
+cell structure of enriched groups</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.modelAnalysis.biomassPrecursorCheck">
+<code class="descname">biomassPrecursorCheck</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/modelAnalysis/biomassPrecursorCheck.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.biomassPrecursorCheck" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if biomass precursors are able to be
+synthesized.</p>
+<p>[missingMets, presentMets] = checkBiomassPrecursors(model)</p>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>missingMets</strong> &#8211;
+List of biomass precursors that are not able to be synthesized</li>
+<li><strong>presentMets</strong> &#8211;
+List of biomass precursors that are able to be synthesized</li>
+</ul>
+</div></blockquote>
+<p>May identify metabolites that are typically recycled within the
+network such as ATP, NAD, NADPH, ACCOA.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.modelAnalysis.convertIrrevFluxDistribution">
+<code class="descname">convertIrrevFluxDistribution</code><span class="sig-paren">(</span><em>vIrrev</em>, <em>matchRev</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/modelAnalysis/convertIrrevFluxDistribution.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.convertIrrevFluxDistribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>convertInrrevFluxDistribution  Convert irreversible flux distribution to
+reversible</p>
+<blockquote>
+<div>vRev = covertIrrevFluxDistribution(vIrrev,matchRev)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>vIrrev        Irreversible flux distribution</strong></p>
+</li>
+<li><p class="first"><strong>matchRev      Vector mapping irreversible fluxes to reversible fluxes</strong> &#8211;</p>
+<p>(Generated by convertToIrreversible)</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>vRev          Reversible flux distribution</strong></li>
+<li><strong>Markus Herrgard 1/30/07</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.modelAnalysis.doubleRobustnessAnalysis">
+<code class="descname">doubleRobustnessAnalysis</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn1</em>, <em>controlRxn2</em>, <em>nPoints</em>, <em>plotResFlag</em>, <em>objRxn</em>, <em>objType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/modelAnalysis/doubleRobustnessAnalysis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.doubleRobustnessAnalysis" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>doubleRobustnessAnalysis Performs robustness analysis for a pair of reactions of</dt>
+<dd><p class="first">interest and an objective of interest</p>
+<p class="last">[controlFlux1, controlFlux2, objFlux] = doubleRobustnessAnalysis(model, controlRxn1, controlRxn2, nPoints, plotResFlag, objRxn, objType)</p>
+</dd>
+</dl>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model         COBRA model structure</strong></li>
+<li><strong>controlRxn1   Reaction of interest whose value is to be controlled</strong></li>
+<li><strong>controlRxn2   Reaction of interest whose value is to be controlled</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>nPoints       Number of flux values per dimension (Default = 20)</strong></p>
+</li>
+<li><p class="first"><strong>plotResFlag   Plot results (Default = true)</strong></p>
+</li>
+<li><p class="first"><strong>objRxn        Objective reaction to be maximized (Default = whatever</strong> &#8211;</p>
+<p>is defined in model)</p>
+</li>
+<li><p class="first"><strong>objType       Maximize (&#8216;max&#8217;) or minimize (&#8216;min&#8217;) objective</strong> &#8211;</p>
+<p>(Default = &#8216;max&#8217;)</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>controlFlux   Flux values within the range of the maximum and minimum for</strong> &#8211;</p>
+<p>reaction of interest</p>
+</li>
+<li><p class="first"><strong>objFlux       Optimal values of objective reaction at each control</strong> &#8211;</p>
+<p>reaction flux value</p>
+</li>
+<li><p class="first"><strong>Monica Mo and Markus Herrgard 8/20/07</strong></p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.modelAnalysis.dynamicFBA">
+<code class="descname">dynamicFBA</code><span class="sig-paren">(</span><em>model</em>, <em>substrateRxns</em>, <em>initConcentrations</em>, <em>initBiomass</em>, <em>timeStep</em>, <em>nSteps</em>, <em>plotRxns</em>, <em>exclUptakeRxns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/modelAnalysis/dynamicFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.dynamicFBA" title="Permalink to this definition">¶</a></dt>
+<dd><p>dynamicFBA Perform dynamic FBA simulation using the static optimization
+approach</p>
+<blockquote>
+<div>[concentrationMatrix,excRxnNames,timeVec,biomassVec]
+dynamicFBA(model,substrateRxns,initConcentrations,initBiomass,timeStep,nSteps,plotRxns,exclUptakeRxns)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>model                 COBRA model structure</strong></p>
+</li>
+<li><p class="first"><strong>substrateRxns         List of exchange reaction names for substrates</strong> &#8211;</p>
+<p>initially in the media that may change (e.g. not
+h2o or co2)</p>
+</li>
+<li><p class="first"><strong>initConcentrations    Initial concentrations of substrates (in the same</strong> &#8211;</p>
+<p>structure as substrateRxns)</p>
+</li>
+<li><p class="first"><strong>initBiomass           Initial biomass (must be non zero)</strong></p>
+</li>
+<li><p class="first"><strong>timeStep              Time step size</strong></p>
+</li>
+<li><p class="first"><strong>nSteps                Maximum number of time steps</strong></p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>plotRxns              Reactions to be plotted (Default =</strong> &#8211;</p>
+<p>{&#8216;EX_glc(e)&#8217;,&#8217;EX_ac(e)&#8217;,&#8217;EX_for(e)&#8217;})</p>
+</li>
+<li><p class="first"><strong>exclUptakeRxns        List of uptake reactions whose substrate</strong> &#8211;</p>
+<p>concentrations do not change (Default =
+{&#8216;EX_co2(e)&#8217;,&#8217;EX_o2(e)&#8217;,&#8217;EX_h2o(e)&#8217;,&#8217;EX_h(e)&#8217;})</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>concentrationMatrix   Matrix of extracellular metabolite concentrations</strong></li>
+<li><strong>excRxnNames           Names of exchange reactions for the EC metabolites</strong></li>
+<li><strong>timeVec               Vector of time points</strong></li>
+<li><strong>biomassVec            Vector of biomass values</strong></li>
+<li><strong>If no initial concentration is given for a substrate that has an open</strong></li>
+<li><strong>uptake in the model (i.e. model.lb &lt; 0) the concentration is assumed to</strong></li>
+<li><strong>be high enough to not be limiting. If the uptake rate for a nutrient is</strong></li>
+<li><strong>calculated to exceed the maximum uptake rate for that nutrient specified</strong></li>
+<li><strong>in the model and the max uptake rate specified is &gt; 0, the maximum uptake</strong></li>
+<li><strong>rate specified in the model is used instead of the calculated uptake</strong></li>
+<li><strong>rate.</strong></li>
+<li><strong>NOTE</strong> &#8211;
+The dynamic FBA method implemented in this function is essentially</li>
+<li><strong>the same as the method described in</strong></li>
+<li><strong>[Varma, A., and B. O. Palsson. Appl. Environ. Microbiol. 60</strong> &#8211;
+3724 (1994)].</li>
+<li><strong>This function does not implement the dynamic FBA using dynamic optimization approach</strong></li>
+<li><strong>described in [Mahadevan, R. et al. Biophys J, 83</strong> &#8211;
+1331-1340 (2003)].</li>
+<li><strong>Markus Herrgard 8/22/06</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.modelAnalysis.geometricFBA">
+<code class="descname">geometricFBA</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/modelAnalysis/geometricFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.geometricFBA" title="Permalink to this definition">¶</a></dt>
+<dd><p>geometricFBA finds a unique optimal FBA solution that is (in some sense)
+central to the range of possible fluxes; as described in</p>
+<blockquote>
+<div><blockquote>
+<div>K Smallbone, E Simeonidis (2009). Flux balance analysis:
+A geometric perspective. J Theor Biol 258: 311-315
+<a class="reference external" href="http://dx.doi.org/10.1016/j.jtbi.2009.01.027">http://dx.doi.org/10.1016/j.jtbi.2009.01.027</a></div></blockquote>
+<p>flux = geometricFBA(model)</p>
+</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model         COBRA model structure</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Optional parameters can be entered as parameter name followed by</strong></li>
+<li><strong>parameter value</strong> &#8211;
+i.e. ...,&#8217;epsilon&#8217;,1e-9)</li>
+<li><strong>printLevel    [default</strong> &#8211;
+1]  printing level
+= 0     silent
+= 1     show algorithm progress and times</li>
+<li><strong>epsilon       [default</strong> &#8211;
+1e-6]  convergence tolerance of algorithm,
+defined in more detail in paper above</li>
+<li><strong>flexRel       [default</strong> &#8211;
+0] flexibility to flux bounds
+try e.g. 1e-3 if the algorithm has convergence problems</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>flux          unique centered flux</strong></li>
+</ul>
+</div></blockquote>
+<p>kieran smallbone, 5 May 2010</p>
+<blockquote>
+<div>This script is made available under the Creative Commons
+Attribution-Share Alike 3.0 Unported Licence (see
+www.creativecommons.org).</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.modelAnalysis.pFBA">
+<code class="descname">pFBA</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/modelAnalysis/pFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.pFBA" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Parsimoneous enzyme usage Flux Balance Analysis - method that optimizes</dt>
+<dd>the user&#8217;s objective function and then minimizes the flux through the
+model and subsequently classifies each gene by how it contributes to the
+optimal solution. See Lewis, et al. Mol Syst Bio doi:10.1038/msb.2010.47</dd>
+</dl>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>model                     COBRA model</strong></p>
+</li>
+<li><p class="first"><strong>varargin</strong> &#8211;</p>
+<dl class="docutils">
+<dt>&#8216;geneoption&#8217;          0 = minimize the sum of all fluxes in the network,</dt>
+<dd><p class="first last">1 = only minimize the sum of the flux through
+gene-associated fluxes (default),
+2 = only minimize the sum of the flux through
+non-gene-associated fluxes</p>
+</dd>
+</dl>
+<p>&#8216;map&#8217;                 map structure from readCbMap.m (no map
+written if empty
+&#8216;mapoutname&#8217;          File Name for map
+&#8216;skipclass&#8217;           1 = Don&#8217;t classify genes and reactions. Only return</p>
+<blockquote>
+<div><p>model with the minimium flux set as upper bound.
+0 = classify genes and reactions (default).</p>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><blockquote>
+<div><ul>
+<li><p class="first"><strong>GeneClasses          Structure with fields for each gene class</strong></p>
+</li>
+<li><p class="first"><strong>RxnsClasses          Structure with fields for each reaction class</strong></p>
+</li>
+<li><p class="first"><strong>modelIrrevFM         Irreversible model used for minimizing flux with</strong> &#8211;</p>
+<p>the minimum flux set as a flux upper bound</p>
+</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>** note on maps: Red (6) = Essential reactions, Orange (5) = pFBA optima</dt>
+<dd>reaction, Yellow (4) = ELE reactions, Green (3) = MLE reactions,
+blue (2) = zero flux reactions, purple (1) = blocked reactions,
+black (0) = not classified</dd>
+</dl>
+<p>Example:
+[GeneClasses RxnClasses modelIrrevFM] = pFBA(model, &#8216;geneoption&#8217;,0, &#8216;tol&#8217;,1e-7)</p>
+<p>by Nathan Lewis Aug 25, 2010
+updated by Anne Richelle April, 2017</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.modelAnalysis.phenotypePhasePlane">
+<code class="descname">phenotypePhasePlane</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn1</em>, <em>controlRxn2</em>, <em>nPts</em>, <em>range1</em>, <em>range2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/modelAnalysis/phenotypePhasePlane.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.phenotypePhasePlane" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>phenotypePhasePlane Plots three phenotype phase planes for two reactions.  The first plot is</dt>
+<dd><p class="first">a double robustness analysis, a kind of 3D surface plot.  The second
+two plots show the shadow prices of the metabolites from the two control
+reactions, which define the phases.  Use the COLORMAP and SHADING
+functions to change the looks of the plots.</p>
+<p class="last">[growthRates,shadowPrices1,shadowPrices2] = phenotypePhasePlane(model,controlRxn1,controlRxn2,nPts,range1,range2)</p>
+</dd>
+</dl>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model             COBRA model structure</strong></li>
+<li><strong>controlRxn1       the first reaction to be plotted</strong></li>
+<li><strong>controlRxn2       the second reaction to be plotted</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>nPts              the number of points to plot in each dimension</strong> &#8211;</p>
+<p>(Default = 50)</p>
+</li>
+<li><p class="first"><strong>range1            the range of reaction 1 to plot</strong> &#8211;</p>
+<p>(Default = 20)</p>
+</li>
+<li><p class="first"><strong>range2            the range of reaction 2 to plot</strong> &#8211;</p>
+<p>(Default = 20)</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>growthRates1      a matrix of maximum growth rates</strong></li>
+<li><strong>shadowPrices1     a matrix of rxn 1 shadow prices</strong></li>
+<li><strong>shadowPrices2     a matrix of rxn 2 shadow prices</strong></li>
+<li><strong>Jeff Orth 6/26/08</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.modelAnalysis.productionEnvelope">
+<code class="descname">productionEnvelope</code><span class="sig-paren">(</span><em>model</em>, <em>deletions</em>, <em>lineColor</em>, <em>targetRxn</em>, <em>biomassRxn</em>, <em>geneDelFlag</em>, <em>nPts</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/modelAnalysis/productionEnvelope.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.productionEnvelope" title="Permalink to this definition">¶</a></dt>
+<dd><p>productionEnvelope Calculates the byproduct secretion envelope</p>
+<blockquote>
+<div>[biomassValues,targetValues] = productionEnvelope(model,deletions,lineColor,targetRxn,biomassRxn,geneDelFlag,nPts)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model         COBRA model structure</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>deletions     List of reaction or gene deletions (empty if wild type)</strong></li>
+<li><strong>lineColor     Line color for plotting (see help plot for color codes)</strong></li>
+<li><strong>targetRxn     Target metabolite production reaction name</strong></li>
+<li><strong>biomassRxn    Biomass rxn name</strong></li>
+<li><strong>geneDelFlag   Perform gene and not reaction deletions</strong></li>
+<li><strong>nPts          Number of points in the plot</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>biomassValues Biomass values for plotting</strong></li>
+<li><strong>targetValues  Target upper and lower bounds for plotting</strong></li>
+<li><strong>lineHandle    Handle to lineseries object</strong></li>
+<li><strong>Markus Herrgard 8/28/06</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.modelAnalysis.robustnessAnalysis">
+<code class="descname">robustnessAnalysis</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn</em>, <em>nPoints</em>, <em>plotResFlag</em>, <em>objRxn</em>, <em>objType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/modelAnalysis/robustnessAnalysis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.robustnessAnalysis" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>robustnessAnalysis Performs robustness analysis for a reaction of</dt>
+<dd><p class="first">interest and an objective of interest</p>
+<p class="last">[controlFlux, objFlux] = robustnessAnalysis(model, controlRxn, nPoints, plotResFlag, objRxn, objType)</p>
+</dd>
+</dl>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model         COBRA model structure</strong></li>
+<li><strong>controlRxn    Reaction of interest whose value is to be controlled</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>nPoints       Number of points to show on plot (Default = 20)</strong></p>
+</li>
+<li><p class="first"><strong>plotResFlag   Plot results (Default true)</strong></p>
+</li>
+<li><p class="first"><strong>objRxn        Objective reaction to be maximized</strong> &#8211;</p>
+<p>(Default = whatever is defined in model)</p>
+</li>
+<li><p class="first"><strong>objType       Maximize (&#8216;max&#8217;) or minimize (&#8216;min&#8217;) objective</strong> &#8211;</p>
+<p>(Default = &#8216;max&#8217;)</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>controlFlux   Flux values within the range of the maximum and minimum for</strong> &#8211;</p>
+<p>reaction of interest</p>
+</li>
+<li><p class="first"><strong>objFlux       Optimal values of objective reaction at each control</strong> &#8211;</p>
+<p>reaction flux value</p>
+</li>
+<li><p class="first"><strong>Monica Mo and Markus Herrgard 8/17/06</strong></p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="FBA.html" class="btn btn-neutral float-right" title="FBA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="design.html" class="btn btn-neutral" title="Design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

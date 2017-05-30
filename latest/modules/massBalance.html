@@ -1,0 +1,544 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>massBalance &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" />
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../contents.html">Docs</a> &raquo;</li>
+        
+      <li>massBalance</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="massbalance">
+<span id="id1"></span><h1>massBalance<a class="headerlink" href="#massbalance" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="basicPhysicochemicalData.html">basicPhysicochemicalData</a></li>
+</ul>
+</div>
+<span class="target" id="module-src.reconstruction.modelGeneration.massBalance"></span><dl class="function">
+<dt id="src.reconstruction.modelGeneration.massBalance.checkBalance">
+<code class="descname">checkBalance</code><span class="sig-paren">(</span><em>model</em>, <em>element</em>, <em>printLevel</em>, <em>fileName</em>, <em>missingFormulaeBool</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/modelGeneration/massBalance/checkBalance.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.checkBalance" title="Permalink to this definition">¶</a></dt>
+<dd><p>[dE,E]=checkBalance(model,element,printLevel)
+Checks whether a set of reactions is elementally balanced.</p>
+<p>note that exchange reactions are not elementally balanced</p>
+<p>INPUT
+model                 COBRA model structure</p>
+<blockquote>
+<div>.S               Stoichiometric matrix
+.metForumlas     Metabolite formulas</div></blockquote>
+<p>element               Abbreviation of element e.g. C or Mg
+OPTIONAL INPUT
+printLevel                    {-1,(0),1}</p>
+<blockquote>
+<div>-1=print out missing formulae to a file
+0=silent
+1=print out  missing formulae to screen                             reactions to screen</div></blockquote>
+<p>OUTPUT
+dE        n x 1 vector of net change in elements per reaction bal = E*S</p>
+<blockquote>
+<div>If isnan(dE(n)) then the reaction involves a metabolite without
+a formula.</div></blockquote>
+<p>E         m x 1 vector with number of elements in each metabolite</p>
+<p>Ronan M.T. Fleming    July 2009</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.modelGeneration.massBalance.checkFormulaValidty">
+<code class="descname">checkFormulaValidty</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/modelGeneration/massBalance/checkFormulaValidty.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.checkFormulaValidty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assesses whether metabolites in model are likely to be documented in
+databases.</p>
+<p>INPUT
+Model structure array</p>
+<p>OUTPUTS
+dbBool    A boolian vector where the number of rows is equal to the number of</p>
+<blockquote>
+<div>metabolites in model. Contains a logical 1 in rows for metabolites that
+are likely to be documented in databases and a logical 0
+elsewhere.</div></blockquote>
+<dl class="docutils">
+<dt>noDocMets A cell array containing a list of all metabolites in model that</dt>
+<dd>are not likely to be documented in any database.</dd>
+</dl>
+<p>Ronan Fleming</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.modelGeneration.massBalance.checkMassChargeBalance">
+<code class="descname">checkMassChargeBalance</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em>, <em>fileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.checkMassChargeBalance" title="Permalink to this definition">¶</a></dt>
+<dd><p>[massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, Elements] = checkMassChargeBalance(model, rxnBool, printLevel)
+checkMassChargeBalance tests for a list of reactions if these reactions are
+mass-balanced by adding all elements on left hand side and comparing them
+with the sums of elements on the right hand side of the reaction.</p>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model            COBRA model structure</strong></li>
+<li><strong>.S               m x n stoichiometric matrix</strong></li>
+<li><strong>.metForumlas     m x 1 cell array of metabolite formulas</strong></li>
+<li><strong>.metCharges      m x 1 double array of charges</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>printLevel    {-1,(0),1}</strong> &#8211;</p>
+<dl class="docutils">
+<dt>-1 = print out diagnostics on problem reactions to a file</dt>
+<dd><p class="first last">0 = silent
+1 = print elements as they are checked (display progress)
+2 = also print out diagnostics on problem reactions to screen</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><strong>model.SIntRxnBool    Boolean of reactions heuristically though to be mass balanced.</strong></p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>massImbalance                 nRxn x nElement matrix with mass imbalance</strong> &#8211;</p>
+<p>for each element checked. 0 if balanced.</p>
+</li>
+<li><p class="first"><strong>imBalancedMass                nRxn x 1 cell with charge imbalance</strong> &#8211;</p>
+<p>e.g. -3 H means three hydrogens disappear
+in the reaction.</p>
+</li>
+<li><p class="first"><strong>imBalancedCharge              nRxn x 1 vector with charge imbalance,</strong> &#8211;</p>
+<p>empty if no imbalanced reactions</p>
+</li>
+<li><p class="first"><strong>imBalancedRxnBool             boolean vector indicating imbalanced</strong> &#8211;</p>
+<p>reactions (including exchange reactions!)</p>
+</li>
+<li><p class="first"><strong>Elements                      nElement x 1 cell array of element</strong> &#8211;</p>
+<p>abbreviations checked</p>
+</li>
+<li><p class="first"><strong>missingFormulaeBool           nMet x 1 boolean vector indicating</strong> &#8211;</p>
+<p>metabolites without formulae</p>
+</li>
+<li><p class="first"><strong>balancedMetBool               boolean vector indicating metabolites involved in balanced reactions</strong></p>
+</li>
+<li><p class="first"><strong>Ines Thiele 12/09</strong></p>
+</li>
+<li><p class="first"><strong>IT, 06/10, Corrected some bugs and improved speed.</strong></p>
+</li>
+<li><p class="first"><strong>RF, 09/09/10, Support for very large models and printing to file.</strong></p>
+</li>
+<li><p class="first"><strong>RF, 18/12/14, Default is now to check balancing of all reactions.</strong></p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.modelGeneration.massBalance.computeMW">
+<code class="descname">computeMW</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em>, <em>warnings</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/modelGeneration/massBalance/computeMW.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.computeMW" title="Permalink to this definition">¶</a></dt>
+<dd><p>computeMW Compute molecular weight and elemental matrix of compounds</p>
+<blockquote>
+<div>[MW, Ematrix] = computeMW(model, metList, warnings)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>model             COBRA model structure</strong> &#8211;</p>
+<p>(must define .mets and .metFormulas)</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>metList           Cell array of which metabolites to search for.</strong> &#8211;</p>
+<p>(Default = all metabolites in model)</p>
+</li>
+<li><p class="first"><strong>warnings          Display warnings if there are errors with the</strong> &#8211;</p>
+<p>formula.  (Default = true)</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>MW                Vector of molecular weights</strong></li>
+<li><strong>Ematrix           m x 6 matrix of order [C N O H P other]</strong></li>
+<li><strong>Jan Schellenberger (Nov. 5, 2008)</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.modelGeneration.massBalance.findSExRxnInd">
+<code class="descname">findSExRxnInd</code><span class="sig-paren">(</span><em>model</em>, <em>nRealMet</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.findSExRxnInd" title="Permalink to this definition">¶</a></dt>
+<dd><p>model=findSExRxnInd(model,nRealMet,printLevel)
+Returns a model with boolean vectors indicating internal vs external (exchange/demand/sink) reactions.</p>
+<p>finds the reactions in the model which export/import from the model
+boundary
+e.g. Exchange reactions</p>
+<blockquote>
+<div>Demand reactions
+Sink reactions</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong></li>
+<li><strong>model.biomassRxnAbbr      abbreviation of biomass reaction</strong></li>
+<li><strong>printLevel</strong></li>
+</ul>
+</div></blockquote>
+<p><strong>Optional intput</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>nRealMet                  specified in case extra rows in S which dont</strong> &#8211;</p>
+<p>correspond to metabolties</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model.SIntRxnBool         Boolean of reactions heuristically though to be mass balanced.</strong></li>
+<li><strong>model.SIntMetBool         Boolean of metabolites heuristically though to be involved in mass balanced reactions.</strong></li>
+<li><strong>model.SOnlyIntMetBool     Boolean of metabolites heuristically though only to be involved in mass balanced reactions.</strong></li>
+<li><strong>model.SExMetBool          Boolean of metabolites heuristically though to be involved in mass imbalanced reactions.</strong></li>
+<li><strong>model.SOnlyExMetBool      Boolean of metabolites heuristically though only to be involved in mass imbalanced reactions.</strong></li>
+<li><strong>model.biomassBool         Boolean of biomass reaction</strong></li>
+<li><strong>OPTIONAL OUTPUT</strong></li>
+<li><strong>model.DMRxnBool           Boolean of demand reactions. Prefix &#8216;DM_&#8217;</strong></li>
+<li><strong>model.SinkRxnBool         Boolean of sink reactions. Prefix &#8216;sink_&#8217;</strong></li>
+<li><strong>model.ExchRxnBool         Boolean of exchange reactions. Prefix &#8216;EX_&#8217; or &#8216;Exch_&#8217; or Ex_</strong></li>
+<li><strong>Ronan Fleming</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.modelGeneration.massBalance.getChargeFromInChI">
+<code class="descname">getChargeFromInChI</code><span class="sig-paren">(</span><em>InChI</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/modelGeneration/massBalance/getChargeFromInChI.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.getChargeFromInChI" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the charge from a given InChI string</p>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>InChI string - The Inchi Identifier</strong></p>
+</li>
+<li><p class="first"><strong>OUTPUT</strong></p>
+</li>
+<li><p class="first"><strong>charge                 The charge encoded in the inchi string (including protonation)</strong></p>
+</li>
+<li><p class="first"><strong>chargeWithoutProtons   The charge encoded in the InChi ignoring the</strong> &#8211;</p>
+<p>protonation state</p>
+</li>
+<li><p class="first"><strong>Ronan Fleming 23 Sept 09</strong></p>
+</li>
+<li><p class="first"><strong>Updated May 2017 Thomas Pfau</strong></p>
+</li>
+</ul>
+</div></blockquote>
+<p>InChI Charge is defined in the charge layer and can be modified in the
+proton layer. If nothing is defined, the compound is uncharged
+First: Discard any &#8220;Reconnected&#8221; parts, as those don&#8217;t influence the
+charges</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.modelGeneration.massBalance.getFormulaFromInChI">
+<code class="descname">getFormulaFromInChI</code><span class="sig-paren">(</span><em>InChI</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/modelGeneration/massBalance/getFormulaFromInChI.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.getFormulaFromInChI" title="Permalink to this definition">¶</a></dt>
+<dd><p>GETFORMULAFROMINCHI extracts the chemical formula of a given compound from
+the InChI string provided</p>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>InChI       The Inchi String of the chemical formula (e.g. InChI=</strong> &#8211;</p>
+<p>extract formula from &#8216;InChI=1S/C3H4O3/c1-2(4)3(5)6/h1H3,(H,5,6)/p-1&#8217; for
+pyruvate</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>formula      The chemical formula (including the protonation state</strong></li>
+<li><strong>protons      The total number of protons</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.modelGeneration.massBalance.ispolymer">
+<code class="descname">ispolymer</code><span class="sig-paren">(</span><em>formula</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/modelGeneration/massBalance/ispolymer.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.ispolymer" title="Permalink to this definition">¶</a></dt>
+<dd><p>checks to see if a formula corresponds to a polymer</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.modelGeneration.massBalance.numAtomsOfElementInFormula">
+<code class="descname">numAtomsOfElementInFormula</code><span class="sig-paren">(</span><em>formula</em>, <em>element</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.numAtomsOfElementInFormula" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the number of atoms of a single element in a formula</p>
+<p>INPUT
+formula       formula in format Element then NumberOfAtoms with no spaces
+element       Abbreviation of element e.g. C or Mg</p>
+<p>OUTPUT
+N             number of atoms of this element in the formula provided</p>
+<p>Ronan Fleming 9 March 09
+Ronan Fleming 21 July 09 handles formulae with same first letter for</p>
+<blockquote>
+<div>element e.g.C &amp; Co in &#8216;C55H80CoN15O11&#8217;</div></blockquote>
+<p>Ronan Fleming 18 Sept 09 handles composite formulae like C62H90N13O14P.C10H11N5O3.Co
+Hulda SH 7 July 2011 Simplified and generalized code. Now handles most or</p>
+<blockquote>
+<div>all exceptional formulas.</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.modelGeneration.massBalance.pHbalanceProtons">
+<code class="descname">pHbalanceProtons</code><span class="sig-paren">(</span><em>model</em>, <em>massImbalance</em>, <em>printLevel</em>, <em>fileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.pHbalanceProtons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mass balance protons for each reaction by adjusting the hydrogen ion stoichiometric coefficient.</p>
+<p>For each non transport reaction the proton stoichiometric coefficient for each
+reaction is given by the difference between the sum of the average number
+of protons bound by substrate reactants and the average number of protons
+bound by product reactants</p>
+<dl class="docutils">
+<dt>i.e. proton S_ij = sum(substrates(S_ij*aveHbound)) -</dt>
+<dd>sum(products(S_ij*aveHbound))</dd>
+</dl>
+<p>For each transport reaction, model  transport across the membrane as three
+reactions, one where non-proton reactants convert into non-proton metabolites
+involved in one compartment,then in the other compartment, non-proton
+metabolites convert into non-proton reactants. In between is a reconstruction
+transport reaction which must be elementally balanced for H to begin
+with. We assume that the transporter involved has affinity only for a particular
+species of metabolite defined by the reconstrution.</p>
+<p>INPUT
+model.S
+model.mets
+model.SIntRxnBool          Boolean of internal reactions
+model.aveHbound            average number of bound hydrogen ions
+model.metFormulas          average number of bound hydrogen ions
+model.metCharges           charge of metabolite species from reconstruction</p>
+<p>OPTIONAL INPUT
+massImbalance     nRxn x nElement matrix where massImbalance(i,j) is imbalance of</p>
+<blockquote>
+<div>reaction i for element j. massImbalance(i,j)==0 if
+balanced for that element. The first column is assumed
+to correspond to H balancing.</div></blockquote>
+<dl class="docutils">
+<dt>printLevel        {(0),-2,-1,0,1,2,3) print more to file or more to the</dt>
+<dd>command window</dd>
+</dl>
+<p>fileName          name of the file to print out to</p>
+<p>OUTPUT
+model.S                   Stoichiometric matrix balanced for protons where each row.</p>
+<blockquote>
+<div>corresponds to a reactant at specific pH.</div></blockquote>
+<p>model.Srecon              Stoichiometric matrix of the reconstruction
+Ronan M. T. Fleming</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

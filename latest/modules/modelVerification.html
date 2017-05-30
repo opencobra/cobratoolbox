@@ -1,0 +1,285 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>modelVerification &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/cobra.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" />
+          
+          </a>
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../index.html">The COBRA Toolbox</a></li>
+              </ul>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../contents.html">Docs</a> &raquo;</li>
+        
+      <li>modelVerification</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="modelverification">
+<span id="id1"></span><h1>modelVerification<a class="headerlink" href="#modelverification" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.reconstruction.modelGeneration.modelVerification"></span><dl class="function">
+<dt id="src.reconstruction.modelGeneration.modelVerification.verifyModel">
+<code class="descname">verifyModel</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/76b657022a91a95b71968b6bd5a2941d769e946d/src/reconstruction/modelGeneration/modelVerification/verifyModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.modelVerification.verifyModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>VERIFYMODEL checks the model for consistency with the COBRA Toolbox</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>results = verifyModel(model, varargin)</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">verifyModel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="s1">&#39;simpleCheck&#39;</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">verifyModel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="s1">&#39;massBalance&#39;</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">verifyModel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="s1">&#39;fluxConsistency&#39;</span><span class="p">,</span><span class="s1">&#39;massBalance&#39;</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">verifyModel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="s1">&#39;simpleCheck&#39;</span><span class="p">,</span><span class="s1">&#39;requiredFields&#39;</span><span class="p">,{</span><span class="s1">&#39;S,&#39;</span><span class="n">lb</span><span class="s1">&#39;,&#39;</span><span class="n">ub</span><span class="s1">&#39;,&#39;</span><span class="n">c</span><span class="s1">&#39;})</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>INPUT :</dt>
+<dd>model:         a structure that represents the COBRA model.</dd>
+</dl>
+<p><strong>Optional intput</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>varargin       varargin contains additional Checks that shall be performed. provided as</strong> &#8211;</p>
+<p>Strings The results of the individual checks are returned as a structure
+array containing the relevant values.
+Options are:
+&#8216;massBalance&#8217; (checks for Mass balance if the metFormula
+Field is present)
+&#8216;chargeBalance&#8217; (checks for charge Balance)
+&#8216;fluxConsistency&#8217; (checks for reaction flux consistency)
+&#8216;stoichiometricConsistency&#8217; (checks for Stoichiometric
+Consisteny, according to Gevorgyan, Bioinformatics,
+2008)
+&#8216;deadEndMetabolites&#8217; (metabolites which can either not
+be produced, or consumed)
+&#8216;simpleCheck&#8217; returns 0 if this is not a valid model
+and 1 if it is a valid model, ignored if any other
+option is selected.
+&#8216;requiredFields&#8217; sets the fields which are required,
+the argument must be firectly followed by the list of
+required fields.
+default({&#8216;S&#8217;,&#8217;b&#8217;,&#8217;csense&#8217;,&#8217;lb&#8217;,&#8217;ub&#8217;,&#8217;c&#8217;,&#8217;osense&#8217;,&#8217;rxns&#8217;,&#8217;mets&#8217;,&#8217;genes&#8217;,&#8217;rules&#8217;})</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>results</strong> &#8211;
+a struct containing fields for each requested option and an
+additional field Errors indicating the problems with the
+model structure detected by the verifyModel function.</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>Authors:</dt>
+<dd><ul class="first last simple">
+<li>Thomas Pfau May 2017</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
