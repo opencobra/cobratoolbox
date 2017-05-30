@@ -13,7 +13,7 @@ function [out] = idv2mdv(n, fragment)
 %    fragment:    a vector of carbons to be included.  [ 0, 0, 1, 1, 1]' = last 3 carbons.
 %
 % OUTPUT:
-%    out:         transforamtion matrix
+%    out:         transformation matrix
 
 global pseudohash1 pseudohash2
 
