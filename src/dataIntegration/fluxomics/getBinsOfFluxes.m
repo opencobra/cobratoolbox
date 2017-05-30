@@ -118,7 +118,7 @@ glc(0+1,8) = 1;
 glc(63+1,9) = 1;
 
 
-xGlc = zeros(64,1vout);
+xGlc = zeros(64,1);
 for i = 1:8
     xGlc = xGlc + glucose(i)*glc(:,i);
 end

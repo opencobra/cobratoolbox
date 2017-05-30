@@ -1,4 +1,6 @@
 function [out] = score_KS(mdv, hilo, lambda)
+% Calculates KS score
+%
 % USAGE:
 %
 %    [out] = score_ridge(mdv, hilo, lambda, crossval)

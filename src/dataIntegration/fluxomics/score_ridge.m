@@ -1,4 +1,6 @@
 function [out] = score_ridge(mdv, hilo, lambda, crossval)
+% Calculates ridge score
+%
 % USAGE:
 %
 %    [out] = score_ridge(mdv, hilo, lambda, crossval)

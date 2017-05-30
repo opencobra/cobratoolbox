@@ -11,7 +11,7 @@ function generateIsotopomerSolver(model, inputMet, experiment, FVAflag)
 % INPUTS:
 %    model:         model structure with .isotopomer filed
 %    inputMet:      input metabolites
-%    experiment:
+%    experiment:    structure
 %    FVAflag:       default = false, if true then additinoal operations involving fluxVariability involved
 %
 % Prints a file to /isotopomer/solver/ directory
