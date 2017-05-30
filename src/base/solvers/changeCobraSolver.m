@@ -159,7 +159,7 @@ if unchecked
     end
     return
 end
-            
+
 
 if isempty(SOLVERS) || isempty(OPT_PROB_TYPES)
     ENV_VARS.printLevel = false;
@@ -207,7 +207,7 @@ if ~ENV_VARS.STATUS
                 tmpVar = 'MOSEK_PATH';
         end
         if printLevel > 0 && (strcmpi(solverName, 'gurobi') || strcmpi(solverName, 'ibm_cplex') || strcmpi(solverName, 'tomlab_cplex') || strcmpi(solverName, 'cplex_direct') || strcmpi(solverName, 'mosek'))
-            error(['The global variable `', tmpVar, '` is not set. Please follow ', hyperlink('https://git.io/v92Vi', 'these instructions', 'the instructions on '), ' to set the environment variables properly.']);
+            error(['The global variable `', tmpVar, '` is not set. Please follow ', hyperlink('https://opencobra.github.io/cobratoolbox/docs/solvers.html', 'these instructions', 'the instructions on '), ' to set the environment variables properly.']);
         end
     end
 end
@@ -441,6 +441,6 @@ function solverOK = checkSolverInstallationFile(solverName, fileName, printLevel
     if exist(fileName, 'file') >= 2
         solverOK = true;
     elseif printLevel > 0
-        error(['Solver ', solverName, ' is not installed. Please follow ', hyperlink('https://git.io/v92Vi', 'these instructions', 'the instructions on '), ' in order to install the solver properly.'])
+        error(['Solver ', solverName, ' is not installed. Please follow ', hyperlink('https://opencobra.github.io/cobratoolbox/docs/solvers.html', 'these instructions', 'the instructions on '), ' in order to install the solver properly.'])
     end
 end

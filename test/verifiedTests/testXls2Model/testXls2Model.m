@@ -28,8 +28,11 @@ assert(length(model.rxns) == 8)
 % test the number of metabolites
 assert(length(model.mets) == 5)
 
-% test the number of fields in the model structure
-assert(length(fields(model)) == 27)
+%Compare with a second equivalent model, that does not have the cytosol
+%localisation. 
+model2 = xls2model('cobra_import_toy_model_2.xlsx');
+
+assert(isequal(printRxnFormula(model2,model2.rxns),printRxnFormula(model,model2.rxns)));
 
 % change the directory
 cd(currentDir)

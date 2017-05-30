@@ -3,7 +3,7 @@
 
 
 rFBA
------
+----
+
 .. automodule:: src.modelAnalysis.rFBA
    :members:
-

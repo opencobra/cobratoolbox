@@ -1,20 +1,21 @@
-function ETN = extractElementalTransitionNetwork(ATN,elements)
+function ETN = extractElementalTransitionNetwork(ATN, elements)
 % Extracts specific chemical elements from an atom transition network.
-% 
-% ETN = extractElementalTransitionNetwork(ATN,elements)
-% 
-% INPUTS
-% ATN      ... An atom transition network
-% elements ... A cell array of element symbols, e.g., 'C' for carbon
-%             or {'C' 'O'} for carbon and oxygen
-% 
-% OUTPUT
-% ETN      ... An elemental transition network for the specified elements
-% 
-% June 2015 Hulda S. Haraldsdóttir
+%
+% USAGE:
+%
+%    ETN = extractElementalTransitionNetwork(ATN, elements)
+%
+% INPUTS:
+%    ATN:         An atom transition network
+%    elements:    A cell array of element symbols, e.g., 'C' for carbon
+%                 or {'C' 'O'} for carbon and oxygen
+%
+% OUTPUT:
+%    ETN:         An elemental transition network for the specified elements
+%
+% .. Author: - Hulda S. Haraldsdóttir, June 2015
 
-% Find rows and columns involving element
-abool = ismember(ATN.elements,elements);
+abool = ismember(ATN.elements,elements); % Find rows and columns involving element
 tbool = any(ATN.A(abool,:));
 
 % Generate output structure

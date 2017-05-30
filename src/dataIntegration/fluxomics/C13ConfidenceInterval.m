@@ -1,19 +1,27 @@
 function [vs, output, v0] = C13ConfidenceInterval(v0, expdata, model, max_score, directions, majorIterationLimit)
+%
+%
+% USAGE:
+%
+%    [vs, output, v0] = C13ConfidenceInterval(v0, expdata, model, max_score, directions, majorIterationLimit)
+%
+% INPUTS:
+%    v0:                     set of flux vectors to be used as initial guesses.  They may be valid or not.
+%    expdata:                experimental data
+%    model:                  the standard model. Additional field .N (= null(S)) should also
+%                            be provided. This is a basis of the flux space.
+%    max_score:              maximum allowable data fit error
+%
+% OPTIONAL INPUTS:
+%    directions:             ones and zeros of which reactions to compute (size = `n` x 1) or numbers of reactions to use  aka. [1; 5; 7; 8; 200] or
+%                            reaction strings  aka.  {'GPK', 'PGL'}.  Ratios are possible with this input only.  Default = [] meaning  - do FVA with no ratios.
+%    majorIterationLimit:    default = 10000
+%
+% OUTPUT:
+%    vs:                     matrix
+%    output:                 structure
+%    v0:                     as in input
 
-% v0 - set of flux vectors to be used as initial guesses.  They may be
-% valid or not.
-% expdata - experimental data.
-% model - The standard model.  Additional field .N (= null(S)) should also
-% be provided.  This is a basis of the flux space.
-% max score - maximum allowable data fit error.  
-% directions (optional) - ones and zeros of which reactions to compute (size = n
-% x 1).  
-%   OR
-% numbers of reactions to use  aka.  [1;5;7;8;200]
-%   OR
-% reaction strings  aka.  {'GPK', 'PGL'}.  Ratios are possible with this
-% input only.  Default = [] meaning do FVA with no ratios.
-% majorIterationLimit (optional) - default = 10000
 if nargin < 5
     directions = ones(size(v0,1),1);
 end
@@ -21,7 +29,7 @@ if isempty(directions)
     directions = ones(size(v0,1),1);
 end
 t_start = clock;
-printLevel = 3; 
+printLevel = 3;
 if nargin < 6
     majorIterationLimit = 1000;  %max number of iterations
 end
@@ -93,7 +101,7 @@ end
 v0(:,scores> max_score) = fitC13Data(v0(:,scores > max_score),expdata,model, majorIterationLimit);
 
 if ~isfield(model, 'N')
-   model.N = null(model.S); 
+   model.N = null(model.S);
 end
 
 x0 = model.N\v0; % back substitute
@@ -128,10 +136,10 @@ x0_invalid = x0;
 scores_valid = scores(valid_index);
 
 
-% pre-compute unnecesary directions.  
+% pre-compute unnecesary directions.
 % if checkedbefore(i) ~= 0 then direction i is redundant
 % if checkedbefore(i) = j then direction i and j are identical and do not
-% need to be recomputed.  
+% need to be recomputed.
 % checkedbefore(i) = j < 0 means that direction j is the same as i except
 % for a sign switch.
 
@@ -172,7 +180,7 @@ for rxn = 1:length(isratio)
         if isratio(rxn) < 0
             ration = objective_coefficient(-isratio(rxn),model);
             ratiod = objective_coefficient(denom(rxn),model);
-            
+
             % in case RXN is a ratio
             Result = solveCobraNLP(...
                 struct('lb', x_L, 'ub', x_U,...
@@ -219,12 +227,12 @@ parfor itnum = 1:numiterations
     [rxn, direction, point] = getValues(itnum, numpoints); % translate itnum to rxn, direction and point
     % direction == 1 means minimize.  direction == -1 means maximize
     % (opposite of what you might think.
-    
+
     if checkedbefore(rxn) ~= 0 %if this reaction maps to a previous reaction, we can skip
         continue;
     end
-    
-    
+
+
     fLowBnd = fLowBnds(rxn, (direction+3)/2); %get the absolute bound in the space w/o regards to C13 constraints.
     fprintf('reaction %d of %d, direction %d, lowerbound %f point %d of %d\n', rxn ,length(isratio), direction, fLowBnd, point, numpoints);
      % short circuit if x0 already close to a bound.
@@ -283,7 +291,7 @@ parfor itnum = 1:numiterations
                 'iterationLimit', majorIterationLimit, ...
                 'logFile', strcat(logdirectory, 'ci_', num2str(rxn),'x',num2str(direction),'x', point, '.txt'));
         end
-       
+
         tscore = errorComputation2(NLPsolution.full, tProb);
         tbest = NLPsolution.obj;
 
@@ -346,7 +354,7 @@ for i = 1:length(isratio)
         vs(i,2) = max(output.maxv(i,validindex));
     else
         vs(i,2) = -222;
-    end   
+    end
 end
 
 elapsed_time = etime(clock, t_start)
@@ -359,15 +367,15 @@ return;
 % % rxn goes from 1 .. NUMRXNS
 % % direction is -1 or 1
 % % index goes from 1 to NUMPOINTS*NUMRXNS*2
-% 
+%
 % rxn = rxn - 1;
 % point = point -1;
-% direction = (direction + 1)/2; 
-% 
-% 
+% direction = (direction + 1)/2;
+%
+%
 % index = rxn*numpoints*2 + direction*numpoints + point;
 % index = index+1;
-% 
+%
 % return;
 
 function [rxn, direction, point] = getValues(index, numpoints)

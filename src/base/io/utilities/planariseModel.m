@@ -1,17 +1,23 @@
-function [modelPlane,replicateMetBool,metData,rxnData]=planariseModel(model,replicateMetBool)
-%convert model into a form that is suitable for display as a planar hypergraph
+function [modelPlane, replicateMetBool, metData, rxnData] = planariseModel(model, replicateMetBool)
+% Converts model into a form that is suitable for display as a planar hypergraph
 %
-%INPUT
-% model
-% replicateMetBool      #met x 1 boolean vector of metabolites to be replicated for each reaction
+% USAGE:
 %
-%OUTPUT
-% modelPlane.S
-% modelPlane.mets
-% modelPlane.origMets
-% replicateMetBool
-% metData
-% rxnData
+%    [modelPlane, replicateMetBool, metData, rxnData] = planariseModel(model, replicateMetBool)
+%
+% INPUTS:
+%    model:               model structure
+%    replicateMetBool:    `met` x 1 boolean vector of metabolites to be replicated for each reaction
+%
+% OUTPUTS:
+%    modelPlane:          structure with fields:
+%
+%                           * .S - matrix
+%                           * .mets - metabolites
+%                           * .origMets - original metabolites
+%    replicateMetBool:    as in input
+%    metData:             data of metabolites
+%    rxnData:             data of reactions
 
 metColor='Salmon';
 rxnColor='PaleBlue';

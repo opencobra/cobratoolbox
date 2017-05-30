@@ -1,13 +1,23 @@
-function [vout, rout] = fitC13Data(v0,expdata,model, majorIterationLimit)
-% v0 is input v.  It will automatically be converted to alpha by solving N*alpha = v;
-% if v0 is a matrix then it is assumed to be a multiple start situation and
-% vout will also have this size.
+function [vout, rout] = fitC13Data(v0, expdata, model, majorIterationLimit)
 %
-% expdata is either a data structure or a cell array of structures, in
-% which case it is assumed that you wan to fit the sum of the scores.
-% model - standard model structure
-% majorIterationLimit (optional) - max number of iterations solver is allowed to take.
-%  Default = 1000;
+% USAGE:
+%
+%    [vout, rout] = fitC13Data(v0, expdata, model, majorIterationLimit)
+%
+% INPUTS:
+%    v0:                     It will automatically be converted to alpha by solving `N*alpha = v`;
+%                            if `v0` is a matrix then it is assumed to be a multiple start situation and
+%                            `vout` will also have this size.
+%    expdata:                either a data structure or a cell array of structures, in
+%                            which case it is assumed that you wan to fit the sum of the scores
+%    model:                  model structure
+%
+% OPTIONAL INPUT:
+%    majorIterationLimit:    max number of iterations solver is allowed to take. Default = 1000
+%
+% OUTPUTS:
+%    vout:                   reflects size of `v0`, result of NLPsolution
+%    rout:                   cell, result of NLPsolution
 
 if nargin < 4
     majorIterationLimit = 1000;
@@ -70,7 +80,7 @@ for k = 1:numpoints
     NLPproblem.user.useparfor = true;
     NLPproblem.user.diff_interval = diffInterval;
     NLPproblem.osense = 1;
-    
+
     NLPproblem.PriLevOpt = 1;
     cnan = ( method == 2);
 

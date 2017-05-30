@@ -1,9 +1,25 @@
-function [output] = getCompareBinsOfFluxes(xglc,model,samplo,samphi,metabolites)
-
-% compares the bins of fluxes between samplo and samphi
-% calls compareBinsOfFluxes(xglc,model,sammin,sammax,metabolites)
-%  samplo and samphi each contain samples in x.points
-% Wing Choi 3/7/08
+function [output] = getCompareBinsOfFluxes(xglc, model, samplo, samphi, metabolites)
+% Compares the bins of fluxes between `samplo` and `samphi`,
+% calls `compareBinsOfFluxes(xglc, model, sammin, sammax, metabolites).
+% `samplo` and `samphi` each contain samples in `x.points`
+%
+% USAGE:
+%
+%    [output] = getCompareBinsOfFluxes(xglc, model, samplo, samphi, metabolites)
+%
+% INPUTS:
+%    xglc:           sugar distribution
+%    model:          model structure
+%    samplo:         samples containing bins of fluxes
+%    samphi:         samples containing bins of fluxes
+%
+% OPTIONAL INPUT:
+%    metabolites:    list of metabolites
+%
+% OUTPUT:
+%    output:         result of comparison
+%
+% .. Author: - Wing Choi 3/7/08
 
 output = 0;
 
@@ -21,7 +37,7 @@ if (isempty(xglc))
     %xglc = rand(64,1);
     %xglc = xglc/sum(xglc);
     %xglc = idv2cdv(6)*xglc;
-    
+
     glucose = rand(8,1);
     glucose = glucose/sum(glucose);
     %glc = idv2cdv(6)*glc;

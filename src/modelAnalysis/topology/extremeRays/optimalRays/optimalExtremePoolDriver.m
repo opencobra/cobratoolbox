@@ -1,5 +1,5 @@
-%script to test extremePathways.m
 clear
+% Script to test extremePathways.m
 
 %model.description='loop3a';
 %model.description='loop3b';
@@ -38,7 +38,7 @@ switch model.description
             0,0,-1,1;
             0,0,1,-1];
         model.S=S;
-        
+
     case '3by6_2ex'
         S=  [-1     0       1 ;
             1      -1      0 ;
@@ -95,7 +95,7 @@ switch model.description
 
         model.description='iTryp';
         %model.S(:,23)=model.S(:,23)*-1;
-        
+
     case 'iCore'
         load iCore
         %finds the reactions in the model which export/import from the model
@@ -115,5 +115,5 @@ switch model.description
         model=iAF1;
 end
 [p, output] = findExtremePool(model);
- 
+
 [B,L] = greedyExtremePoolBasis(model);

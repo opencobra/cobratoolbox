@@ -72,9 +72,6 @@ solverPkgs = {'tomlab_cplex', 'ibm_cplex'};
 
 for k = 1:length(solverPkgs)
 
-    if ~verLessThan('matlab','8') && ( strcmp(solverPkgs{k}, 'ibm_cplex')) %2016b %strcmp(solverPkgs{k}, 'ILOGsimple') ||
-        fprintf(['\n IBM ILOG CPLEX - ', solverPkgs{k}, ' - is incompatible with this version of MATLAB, please downgrade or change solver\n'])
-    else
         fprintf('   Running testFastGapFill using %s ... ', solverPkgs{k});
 
         solverOK  = changeCobraSolver(solverPkgs{k}, 'LP', 0);
@@ -101,7 +98,7 @@ for k = 1:length(solverPkgs)
 
         % print a success message
         fprintf('Done.\n')
-    end
+    
 end
 
 % change the directory

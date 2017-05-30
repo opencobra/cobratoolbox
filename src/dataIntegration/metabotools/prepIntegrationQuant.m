@@ -47,64 +47,54 @@ function prepIntegrationQuant(model,metData,exchanges,samples,test_max,test_min,
 %       - Ines Thiele
 %       - Maike K. Aurich 18/02/15
 
+%% secretion
+for i=1:length(exchanges)
+    %% check which mets cannot be produced or consumed
+    model1= changeRxnBounds(model,exchanges(i,1), test_max, 'u');
+    model1= changeRxnBounds(model1,exchanges(i,1), test_min, 'l');
 
- for i=1:length(exchanges)
- %% check which mets cannot be produced or consumed
-
-
- %% secretion
-     model1= changeRxnBounds(model,exchanges(i,1), test_max, 'u');
-     model1= changeRxnBounds(model1,exchanges(i,1), test_min, 'l');
-     FBA = optimizeCbModel(model1);
-
+    FBA = optimizeCbModel(model1);
 
     FBA_all_secreted(i,1)=FBA.f;
     FBA_all_secreted(i,2)=FBA.stat;
 
+    secretion = exchanges(i);
+    FBA_all_secreted_names(i,1)={secretion};
+end
 
+Secretion_not_possible = {};
+l=1;
+for i=1:length(FBA_all_secreted)
+    G = FBA_all_secreted_names(find(FBA_all_secreted(i,1)==0));
+    if ~isempty(G)
+        Secretion_not_possible(l,1)= FBA_all_secreted_names{i};
+        l=l+1;
+    end
+end
 
-secretion = exchanges(i);
-FBA_all_secreted_names(i,1)={secretion};
- end
+%% uptake
+for i=1:length(exchanges)
+    model1= changeRxnBounds(model,exchanges(i), -1*test_max, 'l');
+    model1= changeRxnBounds(model1,exchanges(i), -1*test_min, 'u');
 
- l=1;
- for i=1:length(FBA_all_secreted)
-     G = FBA_all_secreted_names(find(FBA_all_secreted(i,1)==0));
-     if ~isempty(G)
-      Secretion_not_possible(l,1)= FBA_all_secreted_names{i};
-      l=l+1;
-     else
-         Secretion_not_possible = {};
-     end
- end
+    FBA = optimizeCbModel(model1);
 
+    FBA_all_uptake(i,1)=FBA.f;
+    FBA_all_uptake(i,2)=FBA.stat;
 
- %% uptake
- for i=1:length(exchanges)
+    secretion = exchanges(i); % here it does not matter how its called
+    FBA_all_uptake_names(i,1)={secretion};
+end
 
-     model1= changeRxnBounds(model,exchanges(i), -1*test_max, 'l');
-     model1= changeRxnBounds(model1,exchanges(i), -1*test_min, 'u');
-
-     FBA = optimizeCbModel(model1);
-
-
-
-   FBA_all_uptake(i,1)=FBA.f;
-     FBA_all_uptake(i,2)=FBA.stat;
-
- secretion = exchanges(i); % here it does not matter how its called
-     FBA_all_uptake_names(i,1)={secretion};
-
- end
- l=1;
- for i=1:length(FBA_all_uptake)
-     G = FBA_all_uptake_names(find(FBA_all_uptake(i,1)==0));
-     if ~isempty(G)
-      Uptake_not_possible(l,1)= FBA_all_uptake_names{i};
-      l=l+1;
-     end
- end
-
+Uptake_not_possible = {};
+l=1;
+for i=1:length(FBA_all_uptake)
+    G = FBA_all_uptake_names(find(FBA_all_uptake(i,1)==0));
+    if ~isempty(G)
+        Uptake_not_possible(l,1)= FBA_all_uptake_names{i};
+        l=l+1;
+    end
+end
 
 %% make vectors of uptke/secretion, whereby exchanges that are not possible
 %% with the current generic model (i.e. Uptake_not_possible and Secretion_not_possible) are excluded.
@@ -139,7 +129,6 @@ for i = 1:length(samples)
         if abs(cell_line_data(j))<= tol
             No_upt_secr(n,1)= exchanges(j,1);
             n=n+1;
-
         end
     end
 

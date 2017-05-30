@@ -1,16 +1,19 @@
-function [rxnInfo,rxns,allGenes] = readSimPhenyGPR(fileName)
-%readSimPhenyGPR Read SimPheny gene-protein-reaction association file obtained from admin console
+function [rxnInfo, rxns, allGenes] = readSimPhenyGPR(fileName)
+% Reads SimPheny gene-protein-reaction association file obtained from admin console
 %
-% [rxnInfo,rxns] = readSimPhenyGPR(fileName)
+% USAGE:
 %
-%INPUT
-% fileName      SimPheny GPR file
+%    [rxnInfo, rxns, allGenes] = readSimPhenyGPR(fileName)
 %
-%OUTPUTS
-% rxnInfo       Structure containing data for each reaction
-% rxns          List of reactions
-% allGenes      List of all genes
-% Markus Herrgard 6/4/07
+% INPUT:
+%    fileName:    SimPheny GPR file
+%
+% OUTPUTS:
+%    rxnInfo:     Structure containing data for each reaction
+%    rxns:        List of reactions
+%    allGenes:    List of all genes
+%
+% .. Author: - Markus Herrgard 6/4/07
 
 fid = fopen(fileName,'r');
 

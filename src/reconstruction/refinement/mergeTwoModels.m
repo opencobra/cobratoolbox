@@ -184,11 +184,6 @@ switch objrxnmodel
 end
 fprintf('Finished\n');
 
-% Creating rev
-fprintf('Combining rev lists: ');
-modelNew.rev = model1.rev;
-modelNew.rev(size(model1.rev,1)+1:size(model1.rev,1)+size(model2.rev,1),1) = model2.rev;
-fprintf('Finished\n');
 
 % % Creating GPR Rules
 fprintf('Combining Genes: ');

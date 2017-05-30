@@ -1,8 +1,20 @@
 function [out] = idv2mdv(n, fragment)
-% returns transofmation matrix from idv's (either Jennie's or Jan's order).
-% MDV = idv2mdv(log2(length(idv)))*idv;
-% 
-% fragment (optional):  a vector of carbons to be included.  [ 0, 0, 1,1,1]' = last 3 carbons.
+% Returns transofmation matrix from idv's (either Jennie's or Jan's order).
+% `MDV = idv2mdv(log2(length(idv)))*idv`;
+%
+% USAGE:
+%
+%    [out] = idv2mdv(n, fragment)
+%
+% INPUT:
+%    n:           matrix
+%
+% OPTIONAL INPUT:
+%    fragment:    a vector of carbons to be included.  [ 0, 0, 1, 1, 1]' = last 3 carbons.
+%
+% OUTPUT:
+%    out:         transformation matrix
+
 global pseudohash1 pseudohash2
 
 if isempty(pseudohash1)
@@ -48,7 +60,7 @@ function [matrix] = memoize(n, fragment, matrix)
         fragmentindex = fragmentindex*2;
         fragmentindex = fragment(i) + fragmentindex;
     end
-    
+
     tindex = pseudohash1(n, fragmentindex);
     if tindex == 0
         if nargin < 3
@@ -64,4 +76,3 @@ function [matrix] = memoize(n, fragment, matrix)
         return;
     end
 return
-    

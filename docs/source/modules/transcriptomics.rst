@@ -1,7 +1,7 @@
 .. _transcriptomics:
 
 Transcriptomics
-----------------
+---------------
 
 .. toctree::
 
@@ -9,4 +9,3 @@ Transcriptomics
 
 .. automodule:: src.dataIntegration.transcriptomics
    :members:
-

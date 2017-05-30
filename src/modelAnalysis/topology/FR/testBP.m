@@ -1,5 +1,4 @@
-% decompose B into F and R
-[row,col] = find(B<0);
+[row,col] = find(B<0); % decompose B into F and R
 F = sparse(row,col,1);
 
 [row,col] = find(B>0);
@@ -26,7 +25,7 @@ for i = 1:length(K)
 
     % find nodes in the i-th component
     I = find(ci==K(i));
-    
+
     % NOTE: adj2adjL is slow for large components
     % test only relatively small components
     if numel(I)<100
@@ -34,6 +33,5 @@ for i = 1:length(K)
         disp('bipartite component:'); disp(I')
       end
     end
-    
-end
 
+end

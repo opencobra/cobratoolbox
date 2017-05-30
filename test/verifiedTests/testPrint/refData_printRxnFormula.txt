@@ -17,26 +17,26 @@ CYTBD	2 h[c] + 0.5 o2[c] + q8h2[c] 	->	h2o[c] + 2 h[e] + q8[c]
 D_LACt2	h[e] + lac-D[e] 	<=>	h[c] + lac-D[c] 
 ENO	2pg[c] 	<=>	h2o[c] + pep[c] 
 ETOHt2r	etoh[e] + h[e] 	<=>	etoh[c] + h[c] 
-EX_ac(e)	ac[e] 	<=>	
-EX_acald(e)	acald[e] 	<=>	
-EX_akg(e)	akg[e] 	<=>	
+EX_ac(e)	ac[e] 	->	
+EX_acald(e)	acald[e] 	->	
+EX_akg(e)	akg[e] 	->	
 EX_co2(e)	co2[e] 	<=>	
-EX_etoh(e)	etoh[e] 	<=>	
-EX_for(e)	for[e] 	<=>	
-EX_fru(e)	fru[e] 	<=>	
-EX_fum(e)	fum[e] 	<=>	
+EX_etoh(e)	etoh[e] 	->	
+EX_for(e)	for[e] 	->	
+EX_fru(e)	fru[e] 	->	
+EX_fum(e)	fum[e] 	->	
 EX_glc(e)	glc-D[e] 	<=>	
-EX_gln_L(e)	gln-L[e] 	<=>	
-EX_glu_L(e)	glu-L[e] 	<=>	
+EX_gln_L(e)	gln-L[e] 	->	
+EX_glu_L(e)	glu-L[e] 	->	
 EX_h(e)	h[e] 	<=>	
 EX_h2o(e)	h2o[e] 	<=>	
-EX_lac_D(e)	lac-D[e] 	<=>	
-EX_mal_L(e)	mal-L[e] 	<=>	
+EX_lac_D(e)	lac-D[e] 	->	
+EX_mal_L(e)	mal-L[e] 	->	
 EX_nh4(e)	nh4[e] 	<=>	
 EX_o2(e)	o2[e] 	<=>	
 EX_pi(e)	pi[e] 	<=>	
-EX_pyr(e)	pyr[e] 	<=>	
-EX_succ(e)	succ[e] 	<=>	
+EX_pyr(e)	pyr[e] 	->	
+EX_succ(e)	succ[e] 	->	
 FBA	fdp[c] 	<=>	dhap[c] + g3p[c] 
 FBP	fdp[c] + h2o[c] 	->	f6p[c] + pi[c] 
 FORt2	for[e] + h[e] 	->	for[c] + h[c] 

@@ -1,20 +1,31 @@
-function [out] = Combination(n,k)
-% produces the array of combinations possible picking k from n
+function [out] = Combination(n, k)
+% Produces the array of combinations possible picking k from n
 % adapted from Combinadics
 % http://msdn.microsoft.com/en-us/library/aa289166(VS.71).aspx
+%
+% USAGE:
+%
+%    [out] = Combination(n, k)
+%
+% INPUTS:
+%    n:      number of elements in the pool
+%    k:      number of elements to pick from `n`
+%
+% OUTPUT:
+%    out:    array of combinations
 
     if (n < 0 || k < 0) % normally n >= k
       disp('Negative parameter in constructor');
       return
     end
-    
+
     data(k) = 0;
     for i = 1:k;
       data(i) = i;
     end
    % Combination(n,k)
     out.choose = getNumberCombinations(n,k);
-   
+
    % determine the combinations
    for i = 1:out.choose
        out.all(:,i) = getCombination(n,k,i-1);
@@ -22,17 +33,17 @@ function [out] = Combination(n,k)
 return;
 
 function [m] = getNumberCombinations(n,k)
-   % find number of combinations by choose k items from n 
+   % find number of combinations by choose k items from n
     if (n < k)
       m = 0;  % special case
     else
         if (n == k)
             m = 1;
         else
-            m = factorial(n) / (factorial(k) * factorial(n-k)); 
+            m = factorial(n) / (factorial(k) * factorial(n-k));
         end
     end
-    
+
 return;
 
 function [c] = getCombination(n,k,index)
@@ -42,7 +53,7 @@ function [c] = getCombination(n,k,index)
         if (k == 0)
             return;
         end
-    
+
         threshold = getNumberCombinations(n-i,k-1);
         %disp(sprintf('index = %d, threshold = %d',index,threshold));
         if (index < threshold)
@@ -56,4 +67,3 @@ function [c] = getCombination(n,k,index)
         end
     end
 return;
-

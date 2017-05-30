@@ -77,9 +77,10 @@ MatricesSUX = convertToIrreversible(MatricesSUX);
 % MatrixPart indicates in which area of MatricesSUX the model reactions,
 % kegg reactions, and exchange/transport reactions are located (ie. 1 -
 % model, 2 - kegg, 3 - X)
-tmp=find(model.rev);
+
+tmp=find(model.lb < 0);
 MatricesSUX.MatrixPart(1:length(model.rxns)+length(tmp),1)=1; % model reactions
-MatricesSUX.MatrixPart(length(MatricesSUX.MatrixPart)+1:length(MatricesSUX.MatrixPart)+length(KEGG.rxns)+length(find(KEGG.rev)),1)=2;%KEGG DB reactions
+MatricesSUX.MatrixPart(length(MatricesSUX.MatrixPart)+1:length(MatricesSUX.MatrixPart)+length(KEGG.rxns)+length(find(model.lb < 0)),1)=2;%KEGG DB reactions
 MatricesSUX.MatrixPart(length(MatricesSUX.MatrixPart)+1:length(MatricesSUX.rxns),1)=3; %exchange and transport reactions
 
 function model = CheckMetName(model)

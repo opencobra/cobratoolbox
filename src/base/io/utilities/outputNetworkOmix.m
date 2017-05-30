@@ -1,12 +1,16 @@
-function outputNetworkOmix(model,rxnBool)
-%outputs a text file for import into omix
-%http://www.13cflux.net/omix/
+function outputNetworkOmix(model, rxnBool)
+% Outputs a text file for import into omix
+% http://www.13cflux.net/omix/
 %
-%INPUT
-%model
+% USAGE:
 %
-%OPTIONAL INPUT
-%rxnBool    boolean vector with 1 for each reaction to be exported
+%    outputNetworkOmix(model, rxnBool)
+%
+% INPUT:
+%    model:      COBRA model structure
+%
+% OPTIONAL INPUT:
+%    rxnBool:    boolean vector with 1 for each reaction to be exported
 
 if ~exist(rxnBool)
     rxnBool=true(size(model.S,2),1);
@@ -21,7 +25,7 @@ if isfield(model,'description')
         end
     else
         filename = strrep( strrep( strrep(model.description,'.','_'), filesep, '_' ), ':','_' );
-        
+
     end
 else
     filename='networkForOmix';

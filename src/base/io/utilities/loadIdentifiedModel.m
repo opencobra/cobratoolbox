@@ -1,17 +1,20 @@
-function model = loadIdentifiedModel(filename,directory)
-%load a single cobra toolbox model saved as a filename.mat file, then
-%rename the model structure 'model' while retaining the original name of
-%the model structure in model.modelID
+function model = loadIdentifiedModel(filename, directory)
+% Load a single cobra toolbox model saved as a filename.mat file, then
+% rename the model structure 'model' while retaining the original name of
+% the model structure in model.modelID
 %
-%INPUT
-% filename          name of the .mat file containing cobra toolbox model
-%                   structure
-% directory         directory where the .mat file resides.
+% USAGE:
 %
-%OUTPUT
-% model cobra toolbox model
-
-%Ronan Fleming
+%    model = loadIdentifiedModel(filename, directory)
+%
+% INPUTS:
+%    filename:     name of the .mat file containing cobra toolbox model structure
+%    directory:    directory where the .mat file resides.
+%
+% OUTPUT:
+%    model:        COBRA model structure
+%
+% .. Author: - Ronan Fleming
 
 if ~exist('directory','var')
     directory=pwd;
@@ -37,9 +40,8 @@ end
 model.modelID=modelName;
 
 if strmatch(modelName,filename)~=1
-    warning('fileName.mat and modelStructureName.mat did not match') 
-            
-end
+    warning('fileName.mat and modelStructureName.mat did not match')
 
 end
 
+end

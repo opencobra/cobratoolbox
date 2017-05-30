@@ -1,31 +1,29 @@
-function writeRxnfile(s,mets,molfileNames,molfileDirectory,rxnfileName,rxnfileDirectory)
+function writeRxnfile(s, mets, molfileNames, molfileDirectory, rxnfileName, rxnfileDirectory)
 % Writes a rxnfile (Accelrys, San Diego, CA) for a metabolic reaction.
-% 
-% writeRxnfile(s,mets,molfileNames,molfileDirectory,rxnfileName,rxnfileDirectory)
-% 
-% INPUTS
-% s                 ... An m x 1 vector of stoichiometric coefficients.
-% mets              ... An m x 1 cell array of metabolite identifiers.
-% 
-% OPTIONAL INPUTS
-% molfileNames      ... An m x 1 cell array of molfile names for
-%                       metabolites in mets. Defaults to mets.
-% molfileDirectory  ... Path to directory containing input molfiles. 
-%                       Defaults to current directory.
-% rxnfileName       ... A name for the output rxnfile. Defaults to
-%                       'rxn.rxn'.
-% rxnfileDirectory  ... Path to directory where the output rxnfile should
-%                       be saved. Defaults to current directory.
-% 
-% OUTPUT
-% The file 'rxnfileDirectory/rxnfileName.rxn'
-% 
-% June 2015, Hulda S. Haraldsdóttir and Ronan M. T. Fleming
+%
+% USAGE:
+%
+%     writeRxnfile(s, mets, molfileNames, molfileDirectory, rxnfileName, rxnfileDirectory)
+%
+% INPUTS:
+%    s:                   An `m` x 1 vector of stoichiometric coefficients.
+%    mets:                An `m` x 1 cell array of metabolite identifiers.
+%
+% OPTIONAL INPUTS:
+%    molfileNames:        An `m` x 1 cell array of molfile names for
+%                         metabolites in mets. Defaults to mets.
+%    molfileDirectory:    Path to directory containing input molfiles.
+%                         Defaults to current directory.
+%    rxnfileName:         A name for the output rxnfile. Defaults to
+%                        'rxn.rxn'.
+%    rxnfileDirectory:    Path to directory where the output rxnfile should
+%                         be saved. Defaults to current directory.
+%
+% Produces the file 'rxnfileDirectory/rxnfileName.rxn'
+%
+% .. Author: - Hulda S. Haraldsdóttir and Ronan M. T. Fleming, June 2015
 
-%% format inputs
-
-% set defaults for optional inputs
-if nargin < 3
+if nargin < 3 % format inputs, set defaults for optional inputs
     molfileNames = mets;
 end
 if nargin < 4

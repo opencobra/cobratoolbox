@@ -1,10 +1,18 @@
 function [] = isotopomerViewer(mdv1, mdv2, names)
-% takes in an "experiment" and views the isotopomer as distributions
-% between mdv1 and mdv2.  No output.
+% Takes in an "experiment" and views the isotopomer as distributions
+% between `mdv1` and `mdv2`. No output.
+%
+% USAGE:
+%
+%    isotopomerViewer(mdv1, mdv2, names)
+%
+% INPUTS:
+%    mdv1, mdv2:    structures
+%    names:         names in the plot
 
 bins = round(sqrt(size(mdv1,2)));
 
-for i = 1:size(mdv1,1)    
+for i = 1:size(mdv1,1)
     subplot(4,4,mod(i-1,16)+1);
     [x1,x2]=hist(mdv1(i,:), bins);
     plot(x2,x1);
@@ -23,8 +31,3 @@ for i = 1:size(mdv1,1)
         pause;
     end
 end
-
-
-
-
-

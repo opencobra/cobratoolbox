@@ -392,7 +392,7 @@ switch solver
         MPSfilename = MPSfilename(1:min(8, length(MPSfilename)));
         if ~exist([tmpPath filesep 'MPS' filesep MPSfilename '.mps'], 'file')
             cd([tmpPath filesep 'MPS']);
-            convertCobraLP2mps(LPproblem, MPSfilename);
+            writeLPProblem(LPproblem,'fileName',MPSfilename);
             cd(tmpPath);
         end
 
@@ -1317,11 +1317,11 @@ switch solver
         end
         % 1 = (Simplex or Barrier) Optimal solution is available.
         stat=origStat;
-        if exist([pwd filesep 'clone1.log'],'file')
-            delete('clone1.log')
+        if exist([pwd filesep 'clone1_' labindex '.log'],'file')
+            delete([pwd filesep 'clone1_' labindex '.log'])
         end
-        if exist([pwd filesep 'clone2.log'],'file')
-            delete('clone2.log')
+        if exist([pwd filesep 'clone2_' labindex '.log'],'file')
+            delete([pwd filesep 'clone2_' labindex '.log'])
         end
     case 'lindo'
         %%
@@ -1402,7 +1402,7 @@ switch solver
     case 'mps'
         fprintf(' > The interface to ''mps'' from solveCobraLP will not be supported anymore.\n -> Use >> writeCbModel(model, ''mps'');\n');
         % temporary legacy support
-        writeCbModel(LPproblem, 'mps', 'LP.mps', [], [], [], [], solverParams);
+        writeLPProblem(LPproblem,'fileName','LP.mps','solverParams',solverParams);
     otherwise
         error(['Unknown solver: ' solver]);
 

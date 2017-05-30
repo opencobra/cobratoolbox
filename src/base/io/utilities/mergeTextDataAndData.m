@@ -1,23 +1,24 @@
-function mergedData=mergeTextDataAndData(textdata,data,headings)
-%merge textdata and data imported from .xls file assuming that the first
-%row of textdata is column headings
+function mergedData = mergeTextDataAndData(textdata, data, headings)
+% Merges textdata and data imported from .xls file assuming that the first
+% row of textdata is column headings
 %
-% mergedData=mergeTextDataAndData(textdata,data)
+% USAGE:
 %
-%INPUT
-% textdata      cell array from .xls import
-% data          matrix with numeric data from .xls import
+%    mergedData = mergeTextDataAndData(textdata, data, headings)
 %
-%OPTIONAL INPUT
-% headings      {(1),0}, zero if no column headings
+% INPUTS:
+%    textdata:      cell array from .xls import
+%    data:          matrix with numeric data from .xls import
 %
-%OUTPUT
-% mergedData    merged cell array with all data from .xls import
+% OPTIONAL INPUT:
+%    headings:      {(1), 0}, zero if no column headings
 %
-% Ronan Fleming 29/10/2008
+% OUTPUT:
+%    mergedData:    merged cell array with all data from .xls import
+%
+% .. Author: - Ronan Fleming 29/10/2008
 
-%check for headings
-if ~exist('headings','var');
+if ~exist('headings','var'); %check for headings
     headings=1;
     fprintf('%s\n','Assuming there were headings in the original xls file');
 end
@@ -72,9 +73,9 @@ for y=1:ylt
 end
 %preallocate
 mergedData=textdata;
-dataCol=1; 
+dataCol=1;
 beginData=0;
-for x=1:xlt 
+for x=1:xlt
     %check for blank column
     if min(strcmp(textdata(start:ylt,x),''))==1
         beginData=1;
@@ -85,7 +86,7 @@ for x=1:xlt
                 %be too short
                 mergedData{y,x}=NaN;
             else
-                mergedData{y,x}=data(y-start+1,dataCol); 
+                mergedData{y,x}=data(y-start+1,dataCol);
             end
         end
         dataCol=dataCol+1;
@@ -97,7 +98,7 @@ for x=1:xlt
         if beginData==1
             dataCol=dataCol+1;
         end
-    end 
+    end
 end
 %data column might be the last column of original xls file
 if dataCol<size(data,2)+1
@@ -110,7 +111,7 @@ if dataCol<size(data,2)+1
         dataCol=dataCol+1;
     end
 end
-    
-    
+
+
 % for x=1:137 gMW{x,1}=iCore.genes{x}; for y=1:5300 if
 % strncmp(iCore.genes{x},mergedData{y,1},length(iCore.genes{x})) gMW{x,2}=d(y); end; end; end;

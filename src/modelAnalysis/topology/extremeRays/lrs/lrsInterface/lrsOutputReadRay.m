@@ -1,12 +1,16 @@
-function [R, V] = lrsOutputReadExt(filename)
-% reads into matlab a vertex representation output from lrs
+function [R, V] = lrsOutputReadRay(filename)
+% Reads into matlab a vertex representation output from lrs
 %
-% INPUT
-% filename  name of .ext file from lrs
+% USAGE:
 %
-% OUTPUT
-% R       nDim by nRay matrix of extreme rays
-% V       nDim by nVertex matrix of vertices
+%    [R, V] = lrsOutputReadRay(filename)
+%
+% INPUT:
+%    filename:    name of .ext file from lrs
+%
+% OUTPUT:
+%    R:           `nDim` by `nRay` matrix of extreme rays
+%    V:           `nDim` by `nVertex` matrix of vertices
 
 fid = fopen(filename);
 

@@ -9,7 +9,7 @@ Base
 
    io
    print
+   #solvers
 
 .. automodule:: src.base
    :members:
-

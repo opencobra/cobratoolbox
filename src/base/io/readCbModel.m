@@ -1,17 +1,15 @@
-function model = readCbModel(fileName,defaultBound,fileType,modelDescription,compSymbolList,compNameList)
-% Reads in a constraint-based model. If no arguments are passed to the function, the user will be prompted for
-% a file name.
+function model = readCbModel(fileName,varargin)
+% Reads in a constraint-based model. If no arguments are passed to the function, the user will be prompted for a file name.
 %
 % USAGE:
 %
-%    model = readCbModel(fileName, defaultBound, fileType, modelDescription)
+%    model = readCbModel(fileName, varargin)
 %
 % OPTIONAL INPUTS:
-%    fileName:          File name for file to read in (optional)
-%    defaultBound:      Default value for maximum flux through a reaction if
+%    fileName:          File name for file to read in (char)
 %                       not given in the `SBML` file (Default = 1000)
-%    fileType:          File type for input files: 'SBML', 'SimPheny', or
-%                       'SimPhenyPlus', 'SimPhenyText' (Default = 'SBML')
+%    fileType:          File type for input files: 'SBML', 'SimPheny',
+%                       'SimPhenyPlus', 'SimPhenyText', 'Matlab' or Excel' (Default = 'Matlab')
 %
 %                         * 'SBML' indicates a file in `SBML` format
 %                         * 'SimPheny' is a set of three files in `SimPheny` simulation output format
@@ -21,27 +19,28 @@ function model = readCbModel(fileName,defaultBound,fileType,modelDescription,com
 %                         * 'SimPhenyText' is the same as 'SimPheny' except with
 %                           additionaltext file containing gene-protein-reaction
 %                           associations
-%    modelDescription:  Description of model contents
-%    compSymbolList:    Compartment Symbol List
-%    compNameList:      Name of compartments corresponding to compartment
-%                       symbol list
+%                         * Matlab will save the model as a matlab variable file.
+%                         * Excel will save the model as a two sheet Excel Model.
+%    modelDescription:   Description of model contents (char), default is the
+%                        choosen filename
+%    compSymbolList:     Compartment Symbol List( cell array)
+%
 %
 % OUTPUT:
 %    model:             Returns a model in the COBRA format:
 %
-%                         * description - Description of model contents
+%                         * description - Description of model contents (opt)
 %                         * rxns - Reaction names
 %                         * mets - Metabolite names
 %                         * S - Stoichiometric matrix
 %                         * lb - Lower bounds
 %                         * ub - Upper bounds
-%                         * rev - Reversibility vector
 %                         * c - Objective coefficients
 %                         * subSystems - Subsystem name for each reaction (opt)
 %                         * grRules - Gene-reaction association rule for each reaction (opt)
-%                         * rules - Gene-reaction association rule in computable form (opt)
+%                         * rules - Gene-reaction association rule in computable form
 %                         * rxnGeneMat - Reaction-to-gene mapping in sparse matrix form (opt)
-%                         * genes - List of all genes (opt)
+%                         * genes - List of all genes
 %                         * rxnNames - Reaction description (opt)
 %                         * metNames - Metabolite description (opt)
 %                         * metFormulas - Metabolite chemical formula (opt)
@@ -53,22 +52,22 @@ function model = readCbModel(fileName,defaultBound,fileType,modelDescription,com
 %
 %    %2) Load model named 'iJR904' in SBML format with maximum flux set
 %    %at 1000 (requires file named 'iJR904.xml' to exist)
-%           model = readCbModel('iJR904',1000,'SBML');
+%           model = readCbModel('iJR904','fileType','SBML','defaultBound', 1000);
 %
 %    %3) Load model named 'iJR904' in SimPheny format with maximum flux set
 %    %at 500 (requires files named 'iJR904.rxn', 'iJR904.met', and 'iJR904.sto' to exist)
-%           model = readCbModel('iJR904',500,'SimPheny');
+%           model = readCbModel('iJR904','fileType','SimPheny','defaultBound', 500);
 %
 %    %4) Load model named 'iJR904' in SimPheny format with gpr and compound information
 %    %(requires files named 'iJR904.rxn', 'iJR904.met','iJR904.sto',
 %    %'iJR904_gpr.txt', and 'iJR904_cmpd.txt' to exist)
-%           model = readCbModel('iJR904',500,'SimPhenyPlus');
+%           model = readCbModel('iJR904','fileType','SimPhenyPlus');
 %
 % .. Authors:
 %       - Markus Herrgard 7/11/06
 %       - Richard Que 02/08/10 - Added inptus for compartment names and symbols
 %       - Longfei Mao 26/04/2016 Added support for the FBCv2 format
-%
+%       - Thomas Pfau May 2017 Changed to parameter value pair, added excel IO and matlab flatfile IO.%
 % NOTE:
 %    The `readCbModel.m` function is dependent on another function
 %    `io/utilities/readSBML.m` to use libSBML library
@@ -79,65 +78,122 @@ function model = readCbModel(fileName,defaultBound,fileType,modelDescription,com
 %    `io/COBRA_structure_fields.xlsx`. While some fields are necessary for a
 %    COBRA model, others are not.
 
+optionalArgumentList = {'defaultBound','fileType','modelDescription','compSymbolList','compNameList'};
+processedFileTypes = {'SBML', 'SimPheny', 'SimPhenyPlus', 'SimPhenyText', 'Excel', 'Matlab'};
 
-if (nargin < 2) % Process arguments
-    defaultBound = 1000;
+if numel(varargin) > 0
+    %Check, whether we have an old style input. (i.e. varargins are not optional arguments
+    if ischar(varargin{1}) && ~any(ismember(varargin{1},optionalArgumentList))
+    %We assume the old version to be used
+        tempargin = cell(1,2*numel(varargin));
+        %just replace the input by the options and replace varargin
+        %accordingly
+        for i = 1:numel(varargin)
+            tempargin{2*(i-1)+1} = optionalArgumentList{i};
+            tempargin{2*(i-1)+2} = varargin{i};
+        end
+        varargin = tempargin;
+    end
+end
+
+
+[defaultCompSymbols,defaultCompNames] = getDefaultCompartmentSymbols();
+parser = inputParser();
+parser.addOptional('fileName','',@(x) isempty(x) || ischar(x));
+parser.addParameter('defaultBound',1000, @isnumeric);
+parser.addParameter('fileType','',@(x) ischar(x) && any(strcmpi(processedFileTypes)));
+parser.addParameter('modelDescription','',@ischar);
+parser.addParameter('compSymbolList',defaultCompSymbols,@iscell);
+parser.addParameter('compNameList',defaultCompNames,@iscell);
+if exist('fileName','var')
+    parser.parse(fileName,varargin{:})
 else
-    if (isempty(defaultBound))
-        defaultBound = 1000;
-    end
-end
-if (nargin < 3)
-    fileType = 'SBML';
-    if (isempty(fileType))
-       fileType = 'SBML';
-    end
+    parser.parse();
 end
 
+fileName = parser.Results.fileName;
+defaultBound = parser.Results.defaultBound;
+fileType = parser.Results.fileType;
+modelDescription = parser.Results.modelDescription;
+compSymbolList = parser.Results.compSymbolList;
+compNameList = parser.Results.compNameList;
 
+supportedFileExtensions = {'*.xml;*.sto;*.xls;*.xlsx;*.mat'};
 
 % Open a dialog to select file
-if (nargin < 1)
-    [fileNameFull,filePath] = uigetfile({'*.xml';'*.sto'});
-    if (fileNameFull)
-        [t1,t2,t3,t4,tokens] = regexp(fileNameFull,'(.*)\.(\w*)');
-        noPathName = tokens{1}{1};
-        fileTypeTmp = tokens{1}{2};
-        fileName = [filePath noPathName];
-    else
-        model = 0;
-        return;
+if ~exist('fileType','var') || isempty(fileType)
+    %if no filename was provided, we open a UI window.
+    if ~exist('fileName','var') || isempty(fileName)
+        [fileName] = uigetfile([supportedFileExtensions,{'Model Files'}],'Please select the model file');
     end
-    switch fileTypeTmp
-        case 'xml'
+
+    [~, ~, FileExtension] = fileparts(fileName);
+    if isempty(FileExtension)
+        %if we don't have a file extension, we try to see, which files
+        %could match (only on the current directory, not on all the path).
+        cfiles = dir(pwd);
+        filenames = {cfiles.name};
+        matchingFiles = filenames(~cellfun(@isempty, strfind(filenames,fileName)));
+        %Check, whether one of those files matches any of the available
+        %options
+        filesToSelect = matchingFiles(~cellfun(@isempty, regexp(matchingFiles,[fileName,'\.[(?:' strjoin(strrep(supportedFileExtensions,'*.',''), ')|(?:') ')]'])));
+        %If we have more than one valid match, we will have to ask for a
+        %selection via the gui.
+        if numel(filesToSelect) > 1
+            [fileName] = uigetfile([strrep(supportedFileExtensions,'*',fileName),{'Matching Models'}],'Please select the model file');
+        end
+        if numel(filesToSelect) == 0
+
+            [fileName] = uigetfile([strrep(supportedFileExtensions,'*',[fileName '*']),{'Matching Model Files'}],'Please select the model file');
+        end
+        if numel(filesToSelect) == 1
+            fileName = filesToSelect{1};
+        end
+        [~,~,FileExtension] = fileparts(fileName);
+    end
+    switch FileExtension
+        case '.xml'
             fileType = 'SBML';
-        case 'sto'
-            fileType = 'SimPheny';
+        case '.sbml'
+            fileType = 'SBML';
+        case '.sto'
+            %Determine which SimPheny Fiels are present...
+            [folder,fileBase,~] = fileparts(fileName);
+            if exist([folder filesep fileBase '_gpra.txt'],'file')
+                fileType = 'SimPhenyText';
+            else
+                if exist([folder filesep fileBase '_gpr.txt'],'file')
+                    fileType = 'SimPhenyPlus';
+                else
+                    fileType = 'SimPheny';
+                end
+            end
+        case '.xls'
+            fileType = 'Excel';
+        case '.xlsx'
+            fileType = 'Excel';
+        case '.mat'
+            fileType = 'Matlab';
         otherwise
-            error('Cannot process this file type');
+            error(['Cannot process files of type ' FileExtension]);
     end
+
 end
 
-if (nargin < 4)
-    if (exist('filePath'))
-        modelDescription = noPathName;
-    else
-        modelDescription = fileName;
-    end
-end
-
-if (nargin < 5)
-    compSymbolList = {};
-    compNameList = {};
+if isempty(modelDescription)
+    modelDescription = fileName;
 end
 
 switch fileType
     case 'SBML',
-        if isempty(regexp(fileName,'\.xml$', 'once'))
-            model = readSBML([fileName '.xml'],defaultBound,compSymbolList,compNameList);
-        else
-            model = readSBML(fileName,defaultBound,compSymbolList,compNameList);
+        %If the file is missing the .xml ending, we attach it, can happen
+        %with .sbml saved files.
+        if ~exist(fileName,'file')
+            if exist([fileName '.xml'],'file')
+                fileName = [fileName '.xml'];
+            end
         end
+        model = readSBML(fileName,defaultBound,compSymbolList,compNameList);
     case 'SimPheny',
         model = readSimPhenyCbModel(fileName,defaultBound,compSymbolList,compNameList);
     case 'SimPhenyPlus',
@@ -146,21 +202,90 @@ switch fileType
     case 'SimPhenyText',
         model = readSimPhenyCbModel(fileName,defaultBound,compSymbolList,compNameList);
         model = readSimPhenyGprText([fileName '_gpra.txt'],model);
-    otherwise,
+    case 'Excel'
+        model = xls2model(filename,[],defaultbound);
+    case 'Matlab'
+        S = load(fileName);
+        modeloptions = getModelOptions(S);
+        if size(modeloptions,1) > 1
+            fprintf('There were multiple models in the mat file. Please select the model to load from the variables below\n')
+            disp(modeloptions(:,2));
+            varname = input('Type a variable name to select the model:','s');
+            modeloptions = {S.(varname),varname};
+        end
+        if size(modeloptions,1) == 0
+            error(['There were no valid models in the mat file.\n Please load the model manually via '' load ' fileName ''' and check it with verifyModel() to validate it']);
+        end
+        model = modeloptions{1,1};
+        if modeloptions{1,3}
+            model = convertOldStyleModel(model);
+        end
+    otherwise
         error('Unknown file type');
 end
-
-% Check reversibility
-model = checkReversibility(model);
 
 % Check uniqueness of metabolite and reaction names
 checkCobraModelUnique(model);
 
-model.b = zeros(length(model.mets),1);
-
+if ~isfield(model,'b')
+    model.b = zeros(length(model.mets),1);
+end
 model.description = modelDescription;
 
+model = orderModelFields(model);
+
+
 % End main function
+
+%% Extract potential models from the given loaded mat file (i.e. a struct of matlab elements)
+function models = getModelOptions(S)
+structFields = fieldnames(S);
+models = cell(0,3);
+for i=1:numel(structFields)
+    cfield = S.(structFields{i});
+    if isstruct(cfield)
+        try
+            %lets see, if we have a valid model
+            res = verifyModel(cfield);
+            if ~isfield(res,'Errors')
+                %Convert an old Style model to the new Fields.
+                cfieldConverted = convertOldStyleModel(cfield,0);
+                res = verifyModel(cfieldConverted);
+                if isfield(res,'Errors')
+                    fprintf('There were some old style fields in the model which could not be converted. Loading the old model')
+                    models{end+1,1} = cfield;
+                    models{end,2} = structFields{i};
+                    models{end,3} = false;
+                else
+                    models{end+1,1} = cfieldConverted;
+                    models{end,2} = structFields{i};
+                    models{end,3} = true;
+                end
+            else
+                %We have errors. lets see if osense/csense are missing and
+                %if, add them
+                if isfield(res.Errors,'missingFields')
+                    %first, see if it contains an S matrix, only then will
+                    %we add the fields.
+                    if ~any(ismember(res.Errors.missingFields,'S'))
+                        cfield = convertOldStyleModel(cfield,0);
+                    end
+                    %if we reach this place, the conversion worked,
+                    %so lets try the test again.
+                    res = verifyModel(cfield);
+                    if ~isfield(res,'Errors')
+                        models{end+1,1} = cfield;
+                        models{end,2} = structFields{i};
+                        models{end,3} = true;
+                    end
+                end
+            end
+        catch
+            %IF we are here, there was a problem in verifyModel or convertOldStyleModel, so this is
+            %not a model.
+        end
+    end
+end
 
 %% Make sure reversibilities are correctly indicated in the model
 function model = checkReversibility(model)
@@ -168,27 +293,6 @@ function model = checkReversibility(model)
 selRev = (model.lb < 0 & model.ub > 0);
 model.rev(selRev) = 1;
 
-%% the following chunk of code is depreciated (Longfei Mao 27/04/2016)
-
-% readSBMLCbModel Read SBML format constraint-based model
-% function model =  readSBMLCbModel(fileName,defaultBound,compSymbolList,compNameList)
-%
-% if ~(exist(fileName,'file'))
-%     error(['Input file ' fileName ' not found']);
-% end
-%
-% if isempty(compSymbolList)
-%     compSymbolList = {'c','m','v','x','e','t','g','r','n','p'};
-%     compNameList = {'Cytosol','Mitochondria','Vacuole','Peroxisome','Extra-organism','Pool','Golgi Apparatus','Endoplasmic Reticulum','Nucleus','Periplasm'};
-% end
-%
-% % Read SBML
-% validate=0;
-% verbose=0;% Ronan Nov 24th 2014
-% modelSBML = TranslateSBML(fileName,validate,verbose);
-%
-% % Convert
-% model = convertSBMLToCobra(modelSBML,defaultBound,compSymbolList,compNameList);
 
 %%
 function model = readSimPhenyCbModel(baseName,defaultBound,compSymbolList,compNameList)
@@ -421,4 +525,3 @@ model.rules = columnVector(rules);
 model.grRules = columnVector(grRules);
 model.genes = columnVector(allGenes);
 model.metFormulas = columnVector(metFormulas);
-model.subSystems = columnVector(subSystems);

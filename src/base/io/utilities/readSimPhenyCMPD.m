@@ -1,16 +1,18 @@
 function [metInfo,mets] = readSimPhenyCMPD(fileName)
-%readSimPhenyCMPD Read SimPheny compound file obtained from admin console
+% Reads SimPheny compound file obtained from admin console
 %
-% [metInfo,mets] = readSimPhenyCMPD(fileName)
+% USAGE:
 %
-%INPUT
-% fileName      SimPheny compound file name
+%    [metInfo, mets] = readSimPhenyCMPD(fileName)
 %
-%OUTPUTS
-% metInfo       Structure contaning data on metabolites
-% mets          List of metabolites
+% INPUT:
+%    fileName:    SimPheny compound file name
 %
-% Markus Herrgard 6/4/07
+% OUTPUTS:
+%    metInfo:     Structure contaning data on metabolites
+%    mets:        List of metabolites
+%
+% .. Author: - Markus Herrgard 6/4/07
 
 fid = fopen(fileName,'r');
 

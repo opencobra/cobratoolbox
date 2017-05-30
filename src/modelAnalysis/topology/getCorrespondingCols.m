@@ -1,49 +1,55 @@
-function restrictedColBool = getCorrespondingCols(S,rowBool,colBool,mode)
-%returns a boolean vector that is true for a subset of the true cols in
-%colBool according to whether the cols 'exclusively' or 'inclusively'
-%correspond to true entries in rowBool
+function restrictedColBool = getCorrespondingCols(S, rowBool, colBool, mode)
+% Returns a boolean vector that is true for a subset of the true cols in
+% `colBool` according to whether the cols 'exclusively' or 'inclusively'
+% correspond to true entries in `rowBool`
 %
-% Example
-% S =
-%     -1     0     0     0     0
-%      2    -3     0     0     0
-%      0     4    -5     0     0
-%      0     0     6    -7     0
-%      0     0     0     0     0
 %
-% rowBool = [1;1;1;0;0];
-% colBool = [1;1;1;1;1];
+% USAGE:
 %
-% Therefore, the subset of rows and columns considered for inclusion are
-%     -1     0     0     0     0
-%      2    -3     0     0     0
-%      0     4    -5     0     0
+%    restrictedColBool = getCorrespondingCols(S, rowBool, colBool, mode)
 %
-% If mode = 'exclusive' then restrictedColBool corresponds to this subset
-%     -1     0
-%      2    -3
-%      0     4
-% i.e. subset of colBool reactions exclusively involving rowBool metabolites
+% INPUTS:
+%    S:                    `m` x `n` stoichiometric matrix
+%    rowBool:              `m` x 1 boolean vector
+%    colBool:              `n` x 1 boolean vector
+%    mode:                 'exclusive' or 'inclusive' or 'partial'
 %
-% If mode = 'inclusive' then restrictedColBool corresponds to this subset
-%     -1     0     0
-%      2    -3     0
-%      0     4    -5
-% i.e. subset of colBool reactions involving at least one rowBool metabolite
+% OUTPUT:
+%    restrictedColBool:    `n` x 1 boolean vector
 %
-% If mode ='partial' then restrictedColBool corresponds to the extra cols
-% with inclusive that are not present with exclusive.
+% EXAMPLE:
 %
-%INPUT
-% S         m x n stoichiometric matrix
-% rowBool   m x 1 boolean vector
-% colBool   n x 1 boolean vector
-% mode      'exclusive' or 'inclusive' or 'partial'
+%    S =
+%        -1     0     0     0     0
+%         2    -3     0     0     0
+%         0     4    -5     0     0
+%         0     0     6    -7     0
+%         0     0     0     0     0
 %
-%OUTPUT
-% restrictedColBool     n x 1 boolean vector
-
-%Ronan Fleming July 2016
+%    rowBool = [1;1;1;0;0];
+%    colBool = [1;1;1;1;1];
+%
+%    %Therefore, the subset of rows and columns considered for inclusion are
+%    %    -1     0     0     0     0
+%    %     2    -3     0     0     0
+%    %     0     4    -5     0     0
+%
+%    %If mode = 'exclusive' then restrictedColBool corresponds to this subset
+%    %    -1     0
+%    %     2    -3
+%    %     0     4
+%    %i.e. subset of colBool reactions exclusively involving rowBool metabolites
+%
+%    %If mode = 'inclusive' then restrictedColBool corresponds to this subset
+%    %    -1     0     0
+%    %     2    -3     0
+%    %     0     4    -5
+%    %i.e. subset of colBool reactions involving at least one rowBool metabolite
+%
+%    %If mode ='partial' then restrictedColBool corresponds to the extra cols
+%    %with inclusive that are not present with exclusive.
+%
+% .. Author: - Ronan Fleming, July 2016
 
 if ~islogical(rowBool)
     error('rowBool must be a logical vector')

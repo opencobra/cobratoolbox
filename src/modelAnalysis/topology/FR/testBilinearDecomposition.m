@@ -1,4 +1,3 @@
-%
 testS=10;
 switch testS
     case 3
