@@ -7,12 +7,12 @@ function [precisionRequirementEstimate, scalingProperties] = checkScaling(model,
 %
 % INPUTS:
 %
-%    S:                             stoichiometric matrix `S [m x n]`
+%    model:                         COBRA model structure
 %
 % OPTIONAL INPUTS:
 %
 %    estLevel:                      level of estimation: `crude`, `medium`, `fine` (default)
-%    printLevel:                    level of verbose (default: 1)
+%    printLevel:                    verbose level (default: 1). Level 0 is quiet.
 %
 % OUTPUTS:
 %
