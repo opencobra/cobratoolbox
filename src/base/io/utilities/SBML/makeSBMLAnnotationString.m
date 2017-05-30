@@ -58,10 +58,10 @@ for pos = 1:size(fieldentries,1)
     [~,upos,~] = unique(fieldMappings(:,3));
     fieldMappings = fieldMappings(upos,:);
     
-    relfields = modelFields(cellfun(@(x) startsWith(x,field),modelFields));
+    relfields = modelFields(cellfun(@(x) strncmp(x,field,length(field)),modelFields));
     
     for i = 1:numel(allowedQualifiers)
-        annotationsFields = relfields(cellfun(@(x) startsWith(x,['met' allowedQualifiers{i}]),relfields));
+        annotationsFields = relfields(cellfun(@(x) strncmp(x,[field allowedQualifiers{i}],length([field allowedQualifiers{i}])),relfields));
         knownFields = fieldMappings(cellfun(@(x) strcmp(x,allowedQualifiers{i}),fieldMappings(:,2)),:);
         dbnote = '';
         for fieldid = 1:numel(annotationsFields)
@@ -119,4 +119,5 @@ if ~isempty(tmp_note)
     annotationString = [ annotationString '<rdf:Description rdf:about="#',id,'">'];
     annotationString = [annotationString sprintf('\n')];
     annotationString = [annotationString, tmp_note, sprintf('    %s\n  %s\n%s','</rdf:Description>', '</rdf:RDF>', '</annotation>')];
+end
 end
