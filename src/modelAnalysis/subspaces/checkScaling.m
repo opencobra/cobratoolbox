@@ -1,22 +1,25 @@
 function [precisionRequirementEstimate, scalingProperties] = checkScaling(model, estLevel, printLevel)
-% checks the scaling of the stoichiometric matrix and provids a recommendation on the precision of the solver
+% checks the scaling of the stoichiometric matrix and provides a recommendation on the precision of the solver
 %
 % USAGE:
 %
-%     [precisionRequirementEstimate] = checkScaling(model, printLevel)
+%     [precisionRequirementEstimate, scalingProperties] = checkScaling(model, estLevel, printLevel)
 %
 % INPUTS:
 %
-%    S:                             stoichiometric matrix S [m x n]
-%    estLevel:                      level of estimation: 'crude', 'medium', 'fine' (default)
-%    printLevel:                    level of verbose
+%    S:                             stoichiometric matrix `S [m x n]`
 %
-% OUTPUT:
+% OPTIONAL INPUTS:
+%
+%    estLevel:                      level of estimation: `crude`, `medium`, `fine` (default)
+%    printLevel:                    level of verbose (default: 1)
+%
+% OUTPUTS:
 %
 %    precisionRequirementEstimate:  estimation of precision (string, `double` or `quad`, default: `double`)
 %    scalingProperties:             structure with properties of scaling
 %
-%                                   * .estLevel: 'crude', 'medium', 'fine' (default)
+%                                   * .estLevel: `crude`, `medium`, `fine` (default)
 %                                   * .scltol: value between 0 and 1 (column or row ratio as large as possible)
 %                                   * .matrixAS: name of matrix
 %                                   * .nMets: number of metabolites
@@ -59,7 +62,7 @@ function [precisionRequirementEstimate, scalingProperties] = checkScaling(model,
         printLevel = 1;
     end
 
-    % set the
+    % set the scltol parameter based of the estimation level
     if strcmp(estLevel, 'crude')
         scltol = 0.0;
     elseif strcmp(estLevel, 'medium')
@@ -302,19 +305,19 @@ function [precisionRequirementEstimate, scalingProperties] = checkScaling(model,
 end
 
 function sNum = engn(value)
-    exp= floor(log10(abs(value)));
-    if ( (exp < 3) && (exp >= 0) )
-        exp = 0; % Display without exponent
+    exp = floor(log10(abs(value)));
+    if exp < 3 && exp >= 0
+        exp = 0;  % Display without exponent
     else
         while (mod(exp, 3))
-            exp= exp - 1;
+            exp = exp - 1;
         end
     end
 
     % Adjust fraction to exponent
-    frac = value / (10^exp);
+    frac = value / (10 ^ exp);
 
-    if (exp == 0)
+    if exp == 0
         sNum = sprintf('%2.4G', frac);
     else
         sNum = sprintf('%2.4GE%+.2d', frac, exp);
