@@ -1,7 +1,17 @@
 function [out] = cdv2idv(n)
-% transformation matrix to transform cumomers to idv's.
-% idv = cdv2idv(log2(length(cdv)))*cdv;
-% employs memoization.
+% Transformation matrix to transform cumomers to idv's.
+% `idv = cdv2idv(log2(length(cdv)))*cdv`;
+% Employs memoization.
+%
+% USAGE:
+%
+%    [out] = cdv2idv(n)
+%
+% INPUT:
+%    n:      cdv
+%
+% OUTPUT:
+%    out:    idv
 
 global CDV2IDVSAV
 
@@ -13,7 +23,7 @@ if ~isempty(CDV2IDVSAV)
         end
     end
 end
-    
+
 out = speye(1,1);
 
 for i = 1:n
