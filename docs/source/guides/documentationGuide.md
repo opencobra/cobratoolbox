@@ -59,7 +59,7 @@ It is also possible to replace `*` with a numbered list. To do that use numbers 
 %                       2. 'id' indicates that 'infix'
 %                          contains a list of IDs used in `CellDesigner` such as 're32'.
 ````
-To provide a real example of usage the `EXAMPLE` block is given. It requires the same treating as `USAGE`. Leave one empty line before the keyword `EXAMPLE`, after it and after the properly indented (4 spaces) code snippet. Please leave a space after every coma and before and after `=`. Do not leave inside braces `{}, [], ()`.
+To provide a real example of usage the `EXAMPLE` block is given. It requires the same treating as `USAGE`. Leave one empty line before the keyword `EXAMPLE`, after it and after the properly indented (4 spaces) code snippet. Please leave a space after every coma and before and after `=`. Do not leave it inside braces `{}, [], ()`.
 ````Matlab
 % here another block can end
 %
