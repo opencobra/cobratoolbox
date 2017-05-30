@@ -13,19 +13,18 @@ function [AddedRxnsExtended] = postProcessGapFillSolutions(AddedRxns, model, Blo
 %    [AddedRxnsExtended] = postProcessGapFillSolutions(AddedRxns, model, BlockedRxns, IdentifyPW)
 %
 % INPUTS:
-%    AddedRxns:            Output from fastGapFill.m
+%    AddedRxns:            Output from `fastGapFill.m`
 %    model:                Model structure. Original model given as input into `prepareFastGapFill`
 %    IdentifyPW:           Optional: identifies reactions that are need from
-%                       consistent model and added reactions to have flux through previously
-%                       blocked reaction. default: false
+%                          consistent model and added reactions to have flux through previously
+%                          blocked reaction, default: false
 %
 % OUTPUT:
 %    AddedRxnsExtended:    Structure containing the information present in
 %                          `AddedRxns` along with the statistics and if desired pathways containing
 %                          the flux vectors.
 %
-% June 2013
-% Ines Thiele, http://thielelab.eu
+% .. Author: - Ines Thiele, June 2013, http://thielelab.eu
 
 
 if ~exist('IdentifyPW','var')

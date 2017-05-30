@@ -9,7 +9,7 @@ function [consistModel, BlockedRxns] = identifyBlockedRxns(model, epsilon)
 %
 % INPUTS:
 %    model:           Model structure
-%    epsilon:         Parameter(default: 1e-4; see Vlassis et al for more details)
+%    epsilon:         Parameter (default: 1e-4; see Vlassis et al for more details)
 %
 % OUTPUT:
 %    consistModel:    Flux consistent model that does not contain any blocked
