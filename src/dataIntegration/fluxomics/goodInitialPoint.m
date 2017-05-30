@@ -1,6 +1,18 @@
 function [out] = goodInitialPoint(model, n)
-% generates 4*length(model.lb) random points
+% Generates `4*length(model.lb)` random points,
 % takes linear combinations of them so that all points are in the interior.
+%
+% USAGE:
+%
+%    [out] = goodInitialPoint(model, n)
+%
+% INPUTS:
+%    model:    model structure
+%    n:        number, default = 1
+%
+% OUTPUT:
+%    out:      random points with linear combinations
+
 if nargin < 2
     n = 1;
 end

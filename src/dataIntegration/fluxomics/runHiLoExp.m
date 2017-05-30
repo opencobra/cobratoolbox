@@ -1,59 +1,61 @@
 function [experiment] = runHiLoExp(experiment)
-% runHiLoExp
-%   takes an experiment with the following structure 
-%       and splits the sample space at the median of a target flux
-%       solves the two spaces with a given sugar and compares the
-%       resulting mdvs to provide a z-score.
+% Takes an experiment with the following structure
+% and splits the sample space at the median of a target flux
+% solves the two spaces with a given sugar and compares the
+% resulting `mdvs` to provide a z-score.
 %
-%   experiment -      
-%   model - S     = the stoichiometric matrix
-%         - rxns  = array of reaction names, corresponding the S
-%         - c     = optimization target 1, or -1
-%         - ub,lb = upper and lower bounds of reactions
-%   points = a #fluxes X #samples (~2000) array of the solution space
-%         if missing or empty, will generate a sample
-%   glcs = an array of sugars in isotopomer format, each column a separate sugar.
-%           Should not be in MDV format.  Conversion is done automatically.
-%         will default to generate 1 random sugar if set to []
-%   targets = an array of cells with string for the reaction to 
-%         split on the solution space, defaults to 'PGL'
-%   thresholds = # targets X 1 array of thresholds
-%   metabolites = an optional parameter fed to calcMDVfromSamp.m
-%      which only calculates the MDVs for the metabolites listed in this
-%      array.  e.g.
-%      - optionally, metabolites can also be a structure of fragments
-%   hilo = a #targets X #samples array of 0/1's, 0 id's the sample of
-%      fluxes as the lo side and 1 id's the sample for the hi side.
-%      hilo will only be calculated/recalculated if it's missing or 
-%      if the targets have been replaced using the param list
-%   mdvs = structure of mdv results
-%        - (name) = name of the run = t + glc#
-%                  e.g. t1, t2, glc# refers to the glc in the glcs array
-%                 - mdv = array of mdv results
-%                 - zscore = array of zscores from comparison btw the two mdvs
-%                 - totalz
-%        Note that the split of mdvs are not stored,
-%           also since the only time mdvs should be regen'd is when glcs
-%           has changed, but we have no way of knowing when this happens,
-%           the user will have to manually empty out mdvs to have it
-%           regenerated.
-%   zscores = array of zscores from each run, targets X glcs
-%   rscores = array of ridge scores from each run, targets X glcs
+% USAGE:
 %
-%   target is an optional string for a specific rxn to target.
-%       if supplied, it will override and replace the targets field in the
-%       experiment structure.
-%   threshold is an optional number to apply on the solution space fluxes
-%       if supplied, it will be applied to the hilo field and replace the
-%       hilo splits.
+%    [experiment] = runHiLoExp(experiment)
 %
+% INPUTS:
+%    experiment:    contains:
 %
-%   outputs the experiment array.
+%                     * model with fields:
 %
-%  basically, this code will loop thru one experiment
-%   per sugar, per target
+%                       * S = the stoichiometric matrix
+%                       * rxns = array of reaction names, corresponding the `S`
+%                       * c = optimization target 1, or -1
+%                       * ub,lb = upper and lower bounds of reactions
+%                     * points = a `#fluxes` X `#samples` (~2000) array of the solution space
+%                       if missing or empty, will generate a sample
+%                     * glcs = an array of sugars in isotopomer format, each column a separate sugar.
+%                       Should not be in MDV format.  Conversion is done automatically.
+%                       will default to generate 1 random sugar if set to []
+%                     * targets = an array of cells with string for the reaction to
+%                       split on the solution space, defaults to 'PGL'
+%                     * thresholds = `#targets` X 1 array of thresholds
+%                     * metabolites = an optional parameter fed to `calcMDVfromSamp.m`
+%                       which only calculates the MDVs for the metabolites listed in this
+%                       array.  e.g - optionally, metabolites can also be a structure of fragments
+%                     * hilo = a `#targets` X `#samples` array of 0/1's, 0 id's the sample of
+%                       fluxes as the lo side and 1 id's the sample for the hi side.
+%                       `hilo` will only be calculated/recalculated if it's missing or
+%                       if the targets have been replaced using the param list
+%                     * mdvs = structure of `mdv` results:
 %
-% Wing Choi 3/14/08
+%                       * (name) = name of the run = `t + glc#` e.g. t1, t2, glc# refers to the glc in the glcs array.
+
+%                       Note that the split of mdvs are not stored,
+%                       also since the only time mdvs should be regen'd is when glcs
+%                       has changed, but we have no way of knowing when this happens,
+%                       the user will have to manually empty out mdvs to have it
+%                       regenerated.
+%                     * zscores = array of zscores from each run, `targets` X `glcs`
+%                     * rscores = array of ridge scores from each run, `targets` X `glcs`
+%
+%    target:        an optional string for a specific `rxn` to target.
+%                   if supplied, it will override and replace the targets field in the
+%                   experiment structure.
+%    threshold:     an optional number to apply on the solution space fluxes
+%                   if supplied, it will be applied to the hilo field and replace the hilo splits.
+%
+% OUTPUT:
+%    experiment:    the experiment array.
+%
+% This code will loop through one experiment per sugar, per target
+%
+% .. Author: - Wing Choi 3/14/08
 
 if (nargin < 1)
     disp '[experiment] = runHiLoExp(experiment,target,threshold)';
@@ -86,8 +88,8 @@ if (isempty(points))
     disp ' generating a sample and empty out mdvs';
     pointSample = generateRandomSample(model,2000);
 
-    points = pointSample.point; 
-    experiment.mfrac = pointSample.mf; 
+    points = pointSample.point;
+    experiment.mfrac = pointSample.mf;
     %points = m.points;
     experiment.points = points;
     %experiment.mfrac = mf;
@@ -109,7 +111,7 @@ if (isfield(experiment,'metabolites'))
 else
     metabolites = [];
 end
-    
+
 %% if no sugar, generate a random one and warn the user.
 %    existing mdvs are wiped
 glcs = [];
@@ -152,7 +154,7 @@ end
 experiment.glcsnames = glcsnames;
 
 
-%% if hilo is defined in experiment 
+%% if hilo is defined in experiment
 %    then inform user and error out
 if (not(isfield(experiment,'hilo')))
     disp 'ERROR: hilo field not found in input structure experiment';
@@ -184,8 +186,8 @@ if (isempty(mdvs))
             pause;
         end
 
-        mdv = calcMDVfromSamp(glc,experiment.points,metabolites);
-        
+        mdv = calcMDVfromSamp(glc,experiment.points,metabolites); %- mdv = array of mdv results
+
         name = sprintf('t%d',iglc);
         mdvs.(name) = mdv;
     end
@@ -200,7 +202,7 @@ end
 zscores = experiment.zscores;
 if (isempty(zscores) && runzscore)
     disp('calculating zscores');
-    for iglc = 1:nglc     
+    for iglc = 1:nglc
         fprintf('z-scores on glucose %d of %d\n',iglc, nglc);
         for itgt = 1:ntarget
 %             target = char(targets(itgt));
@@ -219,7 +221,7 @@ if (isempty(zscores) && runzscore)
             mdv2.ave = mean(hiset,2);
             mdv2.stdev = std(hiset,0,2);
 
-            [totalz,zscore] = compareTwoMDVs(mdv1,mdv2);
+            [totalz,zscore] = compareTwoMDVs(mdv1,mdv2); %- zscore = array of zscores from comparison btw the two mdvs
             zscores(itgt,iglc) = totalz;
         end
     end
@@ -235,7 +237,7 @@ end
 rscores = experiment.rscores;
 if (isempty(rscores) && runrscore)
     disp('calculating ridge scores');
-    for iglc = 1:nglc        
+    for iglc = 1:nglc
         fprintf('r-scores on glucose %d of %d\n',iglc, nglc);
         for itgt = 1:ntarget
             hl = hilo(itgt,:)';
@@ -255,7 +257,7 @@ end
 kscores = experiment.kscores;
 if (isempty(kscores) && runkscore)
     disp('calculating KS scores');
-    for iglc = 1:nglc        
+    for iglc = 1:nglc
         fprintf('KS-scores on glucose %d of %d\n',iglc, nglc);
         for itgt = 1:ntarget
             hl = hilo(itgt,:)';
@@ -276,9 +278,9 @@ end
 %% findIndexToTarget
 %
 % function [targetind] = findIndexToTarget(model,target)
-% 
+%
 % % Given a model, find the index to the target in the model.rxns
-% 
+%
 % d = size(model.c);
 % %find index to target flux
 % found = false;
@@ -295,7 +297,7 @@ end
 % end
 % targetind = r;
 % disp(sprintf('found target flux for %s at: %d',target,targetind));
-% 
+%
 % return
 % end
 
@@ -303,13 +305,13 @@ end
 %
 function [hiset,loset] = splitMDVbyTarget(mdv,hilo)
 
-% Given an mdv set and a hilo discriminator, split the 
+% Given an mdv set and a hilo discriminator, split the
 %   mdvset into 2 sets: a lo and hi set each with numinset cols.
 hiset = mdv.mdv(:,hilo==1);
 loset = mdv.mdv(:,~hilo);
 return;
 % nmdv = size(mdv.mdv,2);
-% 
+%
 % hisetcount = 0;
 % losetcount = 0;
 % hiset = [];
@@ -317,13 +319,13 @@ return;
 % mdva = mdv.mdv;
 % mdvnan = mdv.mdvnan;
 % cnan = size(mdvnan,2);
-% 
+%
 % % if ((2*numinset) > nmdv)
 % %     disp('WARN: insufficient number of points to cover split into hi and lo set');
 % % end
-% 
-% 
-% 
+%
+%
+%
 % for i = 1:nmdv
 %     if (cnan >= i)
 %         % do nan check only if nan array is larger than i index
@@ -346,7 +348,7 @@ return;
 %         break;
 %     end
 % end
-%     
+%
 % % might have read thru the entire set but lots of nan for mdv's
 % if ((hisetcount < numinset) || (losetcount < numinset))
 %     disp(sprintf('WARN: hisetcount = %d, losetcount = %d',hisetcount,losetcount));

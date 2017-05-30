@@ -1,20 +1,18 @@
-function renameDREAMOutputFiles(zipfile,indir,outdir)
-% Replace DREAM file names with original file names.
-% 
-% renameDREAMOutputFiles(zipfile,indir,outdir);
-% 
-% INPUTS
-% zipfile...    name of zipfile submitted to the DREAM server
-% indir...      name of directory containing the DREAM output files
-% outdir...     name of directory where renamed files should be placed
-% 
-% OUTPUTS
-% Renamed files.
-% 
-% June 2015, Hulda S. Haraldsdóttir
+function renameDREAMOutputFiles(zipfile, indir, outdir)
+% Replaces DREAM file names with original file names.
+%
+% USAGE:
+%
+%    renameDREAMOutputFiles(zipfile, indir, outdir)
+%
+% INPUTS:
+%    zipfile:    name of zipfile submitted to the DREAM server
+%    indir:      name of directory containing the DREAM output files
+%    outdir:     name of directory where renamed files should be placed
+%
+% .. Author: - Hulda S. Haraldsdóttir, June 2015
 
-% Format inputs
-zipfile = regexprep(zipfile,'(\.zip)$',''); % remove file ending
+zipfile = regexprep(zipfile,'(\.zip)$',''); % Format inputs, remove file ending
 indir = [regexprep(indir,'(/|\\)$',''), filesep]; % Make sure input path ends with directory separator
 outdir = [regexprep(outdir,'(/|\\)$',''), filesep]; % Make sure output path ends with directory separator
 

@@ -1,12 +1,24 @@
 function [out] = idv2idv(n)
-% input n = size of matrix (2^n x 2^n)
-% outputs a transformation matrix for changing from forward to reverse
-% order.
+% Outputs a transformation matrix for changing from forward to reverse order.
+%
 % order 1 (Jennie's)
+%
 % 000, 001, 010, 011, 100, 101, 110, 111
+%
 % order 2 (mine)
+%
 % 000, 100, 010, 110, 001, 101, 011, 111
-% 
+%
+% USAGE:
+%
+%    [out] = idv2idv(n)
+%
+% INPUT:
+%    n:      matrix, size of matrix `(2^n x 2^n)`
+%
+% OUTPUT:
+%    out:    transforamtion matrix
+
 warning('are you sure you want to call this function?');
 
 if n <= 0

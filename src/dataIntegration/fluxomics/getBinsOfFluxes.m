@@ -1,10 +1,22 @@
-function [output] = getBinsOfFluxes(samp,numfluxes,numbins)
-
-% take a samp.points fluxes and bin them by numfluxes (remainder not used)
-%     or divide up in to bins of fluxes by numbins (remainder not used)
-%  sample each bin of fluxes and compare the differences between them.
+function [output] = getBinsOfFluxes(samp, numfluxes, numbins)
+% Takes a `samp.points` fluxes and bin them by numfluxes (remainder not used)
+% or divide up in to bins of fluxes by numbins (remainder not used)
+% sample each bin of fluxes and compare the differences between them.
 %
-% Wing Choi 3/7/08
+% USAGE:
+%
+%    [output] = getBinsOfFluxes(samp, numfluxes, numbins)
+%
+% INPUTS:
+%    samp:         fluxes
+%    numfluxes:    default = 100
+%    numbins:      default = []
+%
+%
+% OUTPUT:
+%    output:       structure with ``.samps` field
+%
+% .. Author: Wing Choi 3/7/08
 
 output = 0;
 
@@ -36,9 +48,9 @@ if (isempty(numfluxes))
     numfluxes = 0;
     if (isempty(numbins))
         disp 'neither numfluxes and numbins params defined, setting numbins to 2';
-        numbins = 2;        
+        numbins = 2;
     end
-    if (numbins < 2) 
+    if (numbins < 2)
         disp 'numbins param invalid, setting numbins to 2';
         numbins = 2;
     end
@@ -53,14 +65,14 @@ else
             disp 'both numfluxes and numbins params defined, using numfluxes param by default';
             numbins = 0;
         end
-    end    
+    end
 end
 
 
 if (numbins < 2)
     numbins = 2;
 end
-  
+
 if (numfluxes > 0)
     % divide by numfluxes
     if (numfluxes*numbins > npoints)

@@ -1,18 +1,14 @@
-function [xGlc] = ...
-    getRandGlc()
-
+function [xGlc] = getRandGlc()
+% Generates random glucose in isotopomer format
 %
-% Wing Choi 1/20/08
-
-% generate random glucose in isotopomer format
-
-%if(length(glucose) ~= 8)
-%    warn('bad input');
-%end
-%glucose(9) = 1-sum(glucose);
-%if(any(glucose < 0))
-%    warn('bad input');
-%end
+% USAGE:
+%
+%    [xGlc] = getRandGlc()
+%
+% OUTPUT:
+%    xGlc:    random glucose
+%
+% .. Author: - Wing Choi 1/20/08
 
 glucose = rand(8,1);
 glucose = glucose/sum(glucose);
