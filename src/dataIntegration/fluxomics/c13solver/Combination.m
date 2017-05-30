@@ -7,7 +7,7 @@ function [out] = Combination(n, k)
 %
 %    [out] = Combination(n, k)
 %
-% INPUT:
+% INPUTS:
 %    n:      number of elements in the pool
 %    k:      number of elements to pick from `n`
 %

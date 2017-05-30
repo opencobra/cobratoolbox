@@ -14,7 +14,7 @@ function [totalz, zscore] = compareTwoMDVs(mdv1, mdv2)
 %                     * ave - the average of each mdv element across all of the points
 %                     * stdev - the standard dev for each mdv element across all points
 %
-% OUTPUT:
+% OUTPUTS:
 %    totalz:        sum of all zscores
 %    zscore:        calculated difference for each mdv element distributed across all the points
 %

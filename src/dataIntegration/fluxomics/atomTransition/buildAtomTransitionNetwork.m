@@ -20,7 +20,7 @@ function ATN = buildAtomTransitionNetwork(model, rxnfileDir)
 %                   for internal reactions in `S`. File names should
 %                   correspond to reaction identifiers in input `rxns`.
 %
-% OUTPUTS:
+% OUTPUT:
 %    ATN:           Structure with following fields:
 %
 %                     * .A - A `p` x `q` sparse incidence matrix for the atom transition

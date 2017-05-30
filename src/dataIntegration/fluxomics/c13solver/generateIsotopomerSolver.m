@@ -8,7 +8,7 @@ function generateIsotopomerSolver(model, inputMet, experiment, FVAflag)
 %
 %    generateIsotopomerSolver(model, inputMet, experiment, FVAflag)
 %
-% INPUT:
+% INPUTS:
 %    model:         model structure with .isotopomer filed
 %    inputMet:      input metabolites
 %    experiment:

@@ -5,7 +5,7 @@ function [vs, output, v0] = C13ConfidenceInterval(v0, expdata, model, max_score,
 %
 %    [vs, output, v0] = C13ConfidenceInterval(v0, expdata, model, max_score, directions, majorIterationLimit)
 %
-% INPUT:
+% INPUTS:
 %    v0:                     set of flux vectors to be used as initial guesses.  They may be valid or not.
 %    expdata:                experimental data
 %    model:                  the standard model. Additional field .N (= null(S)) should also

@@ -8,7 +8,7 @@ function [experiment] = runHiLoExp(experiment)
 %
 %    [experiment] = runHiLoExp(experiment)
 %
-% INPUT:
+% INPUTS:
 %    experiment:    contains:
 %
 %                     * model with fields:

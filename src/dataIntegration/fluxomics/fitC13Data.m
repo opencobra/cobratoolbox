@@ -15,9 +15,9 @@ function [vout, rout] = fitC13Data(v0, expdata, model, majorIterationLimit)
 % OPTIONAL INPUT:
 %    majorIterationLimit:    max number of iterations solver is allowed to take. Default = 1000
 %
-% OUTPUT:
-%    vout:         reflects size of `v0`, result of NLPsolution
-%    rout:         cell, result of NLPsolution
+% OUTPUTS:
+%    vout:                   reflects size of `v0`, result of NLPsolution
+%    rout:                   cell, result of NLPsolution
 
 if nargin < 4
     majorIterationLimit = 1000;

@@ -5,7 +5,7 @@ function [totalz, zscore, mdvs] = compareMultSamp(xglc, model, samps, measuredMe
 %
 %    [totalz, zscore, mdvs] = compareMultSamp(xglc, model, samps, measuredMetabolites)
 %
-% INPUT:
+% INPUTS:
 %    xglc:                   sugar distribution, a random sugar distribution is calculated if empty
 %    model:                  model structure, expects `model.rxns` to contain a list of rxn names
 %    samps:                  samples, expects to have a field named points containing an array of sampled points
@@ -13,7 +13,7 @@ function [totalz, zscore, mdvs] = compareMultSamp(xglc, model, samps, measuredMe
 % OPTIONAL INPUT:
 %    measuredMetabolites:    parameter fed to `calcMDVfromSamp.m` which only calculates the MDVs for the metabolites listed in this array
 %
-% OUTPUT:
+% OUTPUTS:
 %    totalz:                 sum of all zscores
 %    zscore:                 calculated difference for each mdv element distributed across all the points
 %    mdvs:                   contains fields:

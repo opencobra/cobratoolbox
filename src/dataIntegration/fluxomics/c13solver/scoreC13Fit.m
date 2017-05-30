@@ -8,7 +8,7 @@ function [output] = scoreC13Fit(flux, expdata, model, namesset, method)
 %
 %    [output] = scoreC13Fit(flux, expdata, model, namesset, method)
 %
-% INPUT:
+% INPUTS:
 %    flux:        flux
 %    expdata:     experimental data structure
 %    model:       model structure

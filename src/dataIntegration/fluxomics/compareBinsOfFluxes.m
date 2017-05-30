@@ -9,7 +9,7 @@ function [output] = compareBinsOfFluxes(xglc, model, sammin, sammax, metabolites
 %
 %    [output] = compareBinsOfFluxes(xglc, model, sammin, sammax, metabolites)
 %
-% INPUT:
+% INPUTS:
 %    xglc:           sugar distribution
 %    model:          model structure
 %    sammin:         samples containing bins of fluxes
