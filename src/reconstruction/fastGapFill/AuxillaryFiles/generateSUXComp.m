@@ -1,37 +1,31 @@
-function MatricesSUX =generateSUXComp(model,dictionary, KEGGFilename, KEGGBlackList, listCompartments)
-%% function MatricesSUX =generateSUXComp(model,dictionary, KEGGFilename, KEGGBlackList, listCompartments)
-%
-% generateSUXMatrixComp creates the matrices for gap filling for compartmentalized metabolic models (S) such 
-% that the universal database (U, e.g., KEGG) is placed in each compartment
-% specified and reversible transport reactions (X) are added for each compound present in
-% U and S, between the compartment and the cytosol. Additionally, exchange
+function MatricesSUX =generateSUXComp(model, dictionary, KEGGFilename, KEGGBlackList, listCompartments)
+% Creates the matrices for gap filling for compartmentalized metabolic models (`S`) such
+% that the universal database (`U`, e.g., KEGG) is placed in each compartment
+% specified and reversible transport reactions (`X`) are added for each compound present in
+% `U` and `S`, between the compartment and the cytosol. Additionally, exchange
 % reactions are added for each metabolite in the extracellular space.
 %
-% % Requires the openCOBRA toolbox
-% http://opencobra.sourceforge.net/openCOBRA/Welcome.html
-% 
-% Getting the Latest Code From the Subversion Repository:
-% Linux:
-% svn co https://opencobra.svn.sourceforge.net/svnroot/opencobra/cobra-devel
+% USAGE:
 %
-% INPUT
-% model             Model structure
-% dictionary        List of universal database IDs and their counterpart in the model (e.g.,
-%                   KEGG_dictionary.xls)
-% KEGGFilename      File name containing the universal database (e.g., KEGG - reaction.lst)
-% KEGGBlackList     List of excluded reactions from the universal database
-%                   (e.g., KEGG)
-% listCompartments  List of intracellular compartments in the model
-%                   (optional input, default compartments to be considered: '[c]','[m]','[l]','[g]','[r]','[x]','[n]')
+%    MatricesSUX =generateSUXComp(model, dictionary, KEGGFilename, KEGGBlackList, listCompartments)
 %
-% OUTPUT
-% MatricesSUX       SUX matrix
+% INPUTS:
+%    model:               Model structure
+%    dictionary:          List of universal database IDs and their counterpart in the model (e.g.,
+%                         `KEGG_dictionary.xls`)
+%    KEGGFilename:        File name containing the universal database (e.g., KEGG - `reaction.lst`)
+%    KEGGBlackList:       List of excluded reactions from the universal database
+%                         (e.g., `KEGG`)
+%    listCompartments:    List of intracellular compartments in the model
+%                         (optional input, default compartments to be considered: '[c]','[m]','[l]','[g]','[r]','[x]','[n]')
 %
-% Based on generateSUX.m but updated and expanded for compartmentalized
+% OUTPUT:
+%    MatricesSUX:         SUX matrix
+%
+% Based on `generateSUX.m` but updated and expanded for compartmentalized
 % gap filling efforts.
 %
-% June 2013
-% Ines Thiele, http://thielelab.eu
+% .. Author: - Ines Thiele, June 2013, http://thielelab.eu
 
 if ~exist('KEGGBlackList', 'var')
     KEGGBlackList = {};
@@ -63,14 +57,14 @@ modelExpanded = model;
 for i = 1 : length(listCompartments)
     KEGGComp = KEGG;
     KEGGComp.mets = regexprep(KEGGComp.mets,'\[c\]',listCompartments{i});
-    
+
     % Try changing the reaction IDs so that there is no ambiguity between
     % different compartments for each reaction
     compartmentID = regexprep(listCompartments{i},'[\[\]]','');
     if ~strcmp(compartmentID,'c')
         KEGGComp.rxns = strcat(KEGGComp.rxns,'_',compartmentID);
     end
-    
+
     [modelExpanded] = mergeTwoModels(modelExpanded,KEGGComp,1);
 end
 clear  KEGGComp KEGG;
