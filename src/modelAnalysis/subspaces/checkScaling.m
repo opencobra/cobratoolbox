@@ -1,4 +1,4 @@
-function precisionRequirementEstimate = checkScaling(model, estLevel, printLevel)
+function [precisionRequirementEstimate, scalingProperties] = checkScaling(model, estLevel, printLevel)
 % checks the scaling of the stoichiometric matrix and provids a recommendation on the precision of the solver
 %
 % USAGE:
@@ -40,6 +40,9 @@ function precisionRequirementEstimate = checkScaling(model, estLevel, printLevel
         S = model.A;
         matrixAS = 'A';
     end
+
+    % determine the number of metabolites and reactions
+    [nMets, nRxns] = size(S);
 
     % determine the row and column scaling factors
     [cscale, rscale] = gmscale(S, 0, scltol);
@@ -100,6 +103,18 @@ function precisionRequirementEstimate = checkScaling(model, estLevel, printLevel
             ratioU = maxUB;
         end
     end
+
+    % save all calculated scaling quantities as a structure
+    scalingProperties = [];
+
+    vars = {'estLevel', 'scltol', 'matrixAS', 'nMets', 'nRxns', 'minS', 'maxS', ...
+            'rmin', 'imin', 'rmax', 'imax', 'cmin', 'jmin', 'cmax', 'jmax'};
+
+    % fill the structure with the properties
+    for i = 1:length(vars)
+        scalingProperties.(vars{i}) = eval(vars{i});
+    end
+
     % print out a summary report
     if printLevel > 0
         fprintf('\n ------------------------ Scaling summary report ------------------------\n\n');
@@ -109,21 +124,36 @@ function precisionRequirementEstimate = checkScaling(model, estLevel, printLevel
         fprintf(' Estimation level:                             %s (scltol = %s)\n', estLevel, num2str(scltol));
         fprintf(' Name of matrix:                               %s\n', matrixAS);
         fprintf(' Size of matrix:\n');
-        fprintf('        * metabolites:                         %s\n', num2str(size(S, 1)));
-        fprintf('        * reactions:                           %s\n', num2str(size(S, 2)));
+        fprintf('        * metabolites:                         %s\n', num2str(nMets));
+        fprintf('        * reactions:                           %s\n', num2str(nRxns));
         fprintf(' Stoichiometric coefficients:\n');
         fprintf('        * Minimum:                             %s\n', num2str(minS));
         fprintf('        * Maximum:                             %s\n', num2str(maxS));
-        if isfield(model, 'lb')
+    end
+
+    if isfield(model, 'lb')
+        scalingProperties.minLB = minLB;
+        scalingProperties.maxLB = maxLB;
+
+        if printLevel > 0
             fprintf(' Lower bound coefficients:\n');
             fprintf('        * Minimum:                             %s\n', num2str(minLB));
             fprintf('        * Maximum:                             %s\n', num2str(maxLB));
         end
-        if isfield(model, 'ub')
+    end
+
+    if isfield(model, 'ub')
+        scalingProperties.minUB = minUB;
+        scalingProperties.maxUB = maxUB;
+
+        if printLevel > 0
             fprintf(' Upper bound coefficients:\n');
             fprintf('        * Minimum:                             %s\n', num2str(minUB));
             fprintf('        * Maximum:                             %s\n', num2str(maxUB));
         end
+    end
+
+    if printLevel > 0
         fprintf(' Row scaling coefficients:\n');
         fprintf('        * Minimum:                             %s (row #: %s)\n', num2str(rmin), num2str(imin));
         fprintf('        * Maximum:                             %s (row #: %s)\n', num2str(rmax), num2str(imax));
@@ -131,48 +161,83 @@ function precisionRequirementEstimate = checkScaling(model, estLevel, printLevel
         fprintf('        * Minimum:                             %s (column #: %s)\n', num2str(cmin), num2str(jmin));
         fprintf('        * Maximum:                             %s (column #: %s)\n\n', num2str(cmax), num2str(jmax));
         fprintf(' ---------------------------------- Ratios --------------------------------\n\n');
-        if abs(minS) > 0 && abs(ratioS) > 0
+    end
+
+    if abs(minS) > 0 && abs(ratioS) > 0
+        scalingProperties.ratioS = ratioS;
+        if printLevel > 0
             fprintf(' Ratio of stoichiometric coefficients:         %s\n', num2str(ratioS));
         end
-        if abs(ratioS) > 0
-            fprintf(' Order of magnitude diff. (stoich. coeff.):    %s\n\n', num2str(abs(floor(log10(abs(ratioS))))));
+    end
+    if abs(ratioS) > 0
+        scalingProperties.ratioS_orderOfMag = abs(floor(log10(abs(ratioS))));
+        if printLevel > 0
+            fprintf(' Order of magnitude diff. (stoich. coeff.):    %s\n\n', num2str(scalingProperties.ratioS_orderOfMag));
         end
+    end
 
-        % lower bounds
-        if isfield(model, 'lb')
-            if abs(minLB) > 0 && abs(ratioL) > 0
+    % lower bounds
+    if isfield(model, 'lb')
+        if abs(minLB) > 0 && abs(ratioL) > 0
+            scalingProperties.ratioL = ratioL;
+            if printLevel > 0
                 fprintf(' Ratio of lower bounds:                        %s\n', num2str(ratioL));
             end
-            if abs(ratioL) > 0
-                fprintf(' Order of magnitude diff. (lower bounds):      %s\n\n', num2str(abs(floor(log10(abs(ratioL))))));
+        end
+        if abs(ratioL) > 0
+            scalingProperties.ratioS_orderOfMag = abs(floor(log10(abs(ratioL))));
+            if printLevel > 0
+                fprintf(' Order of magnitude diff. (lower bounds):      %s\n\n', num2str(scalingProperties.ratioS_orderOfMag));
             end
         end
+    end
 
-        % upper bounds
-        if isfield(model, 'ub')
-            if abs(minUB) > 0 && abs(ratioU) > 0
+    % upper bounds
+    if isfield(model, 'ub')
+        if abs(minUB) > 0 && abs(ratioU) > 0
+            scalingProperties.ratioU = ratioU;
+            if printLevel > 0
                 fprintf(' Ratio of upper bounds:                        %s\n', engn(ratioU));
             end
-            if abs(ratioU) > 0
-                fprintf(' Order of magnitude diff. (upper bounds):      %s\n\n', num2str(abs(floor(log10(abs(ratioU))))));
+        end
+        if abs(ratioU) > 0
+            scalingProperties.ratioU_orderOfMag = abs(floor(log10(abs(ratioU))));
+            if printLevel > 0
+                fprintf(' Order of magnitude diff. (upper bounds):      %s\n\n', num2str(scalingProperties.ratioU_orderOfMag));
             end
         end
+    end
 
-        % row scaling
-        if abs(rmin) > 0 && abs(ratioR) > 0
+    % row scaling
+    if abs(rmin) > 0 && abs(ratioR) > 0
+        scalingProperties.ratioR = ratioR;
+        if printLevel > 0
             fprintf(' Ratio of row scaling coefficients:            %s\n', engn(ratioR));
         end
-        if abs(ratioR) > 0
-            fprintf(' Order of magnitude diff. (row scaling):       %s\n\n', num2str(abs(floor(log10(abs(ratioR))))));
+    end
+    if abs(ratioR) > 0
+        scalingProperties.ratioR_orderOfMag = abs(floor(log10(abs(ratioR))));
+        if printLevel > 0
+            fprintf(' Order of magnitude diff. (row scaling):       %s\n\n', num2str(scalingProperties.ratioR_orderOfMag));
         end
+    end
 
-        % column scaling
-        if abs(cmin) > 0 && abs(ratioC) > 0
+    % column scaling
+    if abs(cmin) > 0 && abs(ratioC) > 0
+        scalingProperties.ratioC = ratioC;
+        if printLevel > 0
             fprintf(' Ratio of column scaling coefficients:         %s\n', engn(ratioC));
         end
-        if abs(ratioC) > 0
-            fprintf(' Order of magnitude diff. (column scaling):    %s\n', num2str(abs(floor(log10(abs(ratioC))))));
+    end
+    if abs(ratioC) > 0
+        scalingProperties.ratioR_orderOfMag = abs(floor(log10(abs(ratioC))));
+        if printLevel > 0
+            fprintf(' Order of magnitude diff. (column scaling):    %s\n', num2str(scalingProperties.ratioR_orderOfMag));
         end
+    end
+
+    % print out a line to close the summary report
+    if printLevel > 0
         fprintf('\n --------------------------------------------------------------------------\n');
     end
 
@@ -201,18 +266,21 @@ function precisionRequirementEstimate = checkScaling(model, estLevel, printLevel
 end
 
 function sNum = engn(value)
-exp= floor(log10(abs(value)));
-if ( (exp < 3) && (exp >=0) )
-    exp = 0; % Display without exponent
-else
-    while (mod(exp, 3))
-        exp= exp - 1;
+    exp= floor(log10(abs(value)));
+    if ( (exp < 3) && (exp >= 0) )
+        exp = 0; % Display without exponent
+    else
+        while (mod(exp, 3))
+            exp= exp - 1;
+        end
     end
-end
-frac=value/(10^exp); % Adjust fraction to exponent
-if (exp == 0)
-    sNum = sprintf('%2.4G', frac);
-else
-    sNum = sprintf('%2.4GE%+.2d', frac, exp);
-end
+
+    % Adjust fraction to exponent
+    frac = value / (10^exp);
+
+    if (exp == 0)
+        sNum = sprintf('%2.4G', frac);
+    else
+        sNum = sprintf('%2.4GE%+.2d', frac, exp);
+    end
 end
