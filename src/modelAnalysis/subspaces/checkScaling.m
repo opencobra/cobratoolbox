@@ -1,9 +1,9 @@
-function [precisionRequirementEstimate, scalingProperties] = checkScaling(model, estLevel, printLevel)
+function [solverRecommendation, scalingProperties] = checkScaling(model, estLevel, printLevel)
 % checks the scaling of the stoichiometric matrix and provides a recommendation on the precision of the solver
 %
 % USAGE:
 %
-%     [precisionRequirementEstimate, scalingProperties] = checkScaling(model, estLevel, printLevel)
+%     [solverRecommendation, scalingProperties] = checkScaling(model, estLevel, printLevel)
 %
 % INPUTS:
 %
@@ -16,7 +16,7 @@ function [precisionRequirementEstimate, scalingProperties] = checkScaling(model,
 %
 % OUTPUTS:
 %
-%    precisionRequirementEstimate:  estimation of precision (string, `double` or `quad`, default: `double`)
+%    solverRecommendation:          estimation of precision (string, `double` or `quad`, default: `double`)
 %    scalingProperties:             structure with properties of scaling
 %
 %                                   * .estLevel: `crude`, `medium`, `fine` (default)
@@ -113,8 +113,8 @@ function [precisionRequirementEstimate, scalingProperties] = checkScaling(model,
     end
 
     % determine the extrema of stoichiometric coefficients
-    minS = min(min(S));
-    maxS = max(max(S));
+    minS = full(min(min(S)));
+    maxS = full(max(max(S)));
     if abs(minS) > 0
         ratioS = maxS / minS;
     else
@@ -160,14 +160,14 @@ function [precisionRequirementEstimate, scalingProperties] = checkScaling(model,
         if isfield(model, 'description')
             fprintf(' Name of model:                                %s\n', model.description);
         end
-        fprintf(' Estimation level:                             %s (scltol = %s)\n', estLevel, num2str(scltol));
+        fprintf(' Estimation level:                             %s (scltol = %1.2f)\n', estLevel, scltol);
         fprintf(' Name of matrix:                               %s\n', matrixAS);
         fprintf(' Size of matrix:\n');
-        fprintf('        * metabolites:                         %s\n', num2str(nMets));
-        fprintf('        * reactions:                           %s\n', num2str(nRxns));
+        fprintf('        * metabolites:                         %d\n', nMets);
+        fprintf('        * reactions:                           %d\n', nRxns);
         fprintf(' Stoichiometric coefficients:\n');
-        fprintf('        * Minimum:                             %s\n', num2str(minS));
-        fprintf('        * Maximum:                             %s\n', num2str(maxS));
+        fprintf('        * Minimum:                             %1.2f\n', minS);
+        fprintf('        * Maximum:                             %1.2f\n', maxS);
     end
 
     if isfield(model, 'lb')
@@ -176,8 +176,8 @@ function [precisionRequirementEstimate, scalingProperties] = checkScaling(model,
 
         if printLevel > 0
             fprintf(' Lower bound coefficients:\n');
-            fprintf('        * Minimum:                             %s\n', num2str(minLB));
-            fprintf('        * Maximum:                             %s\n', num2str(maxLB));
+            fprintf('        * Minimum:                             %1.2f\n', minLB);
+            fprintf('        * Maximum:                             %1.2f\n', maxLB);
         end
     end
 
@@ -187,31 +187,31 @@ function [precisionRequirementEstimate, scalingProperties] = checkScaling(model,
 
         if printLevel > 0
             fprintf(' Upper bound coefficients:\n');
-            fprintf('        * Minimum:                             %s\n', num2str(minUB));
-            fprintf('        * Maximum:                             %s\n', num2str(maxUB));
+            fprintf('        * Minimum:                             %1.2f\n', minUB);
+            fprintf('        * Maximum:                             %1.2f\n', maxUB);
         end
     end
 
     if printLevel > 0
         fprintf(' Row scaling coefficients:\n');
-        fprintf('        * Minimum:                             %s (row #: %s)\n', num2str(rmin), num2str(imin));
-        fprintf('        * Maximum:                             %s (row #: %s)\n', num2str(rmax), num2str(imax));
+        fprintf('        * Minimum:                             %1.2e (row #: %d)\n', rmin, imin);
+        fprintf('        * Maximum:                             %1.2e (row #: %d)\n', rmax, imax);
         fprintf(' Column scaling coefficients:\n');
-        fprintf('        * Minimum:                             %s (column #: %s)\n', num2str(cmin), num2str(jmin));
-        fprintf('        * Maximum:                             %s (column #: %s)\n\n', num2str(cmax), num2str(jmax));
+        fprintf('        * Minimum:                             %1.2e (column #: %d)\n', cmin, jmin);
+        fprintf('        * Maximum:                             %1.2e (column #: %d)\n\n', cmax, jmax);
         fprintf(' ---------------------------------- Ratios --------------------------------\n\n');
     end
 
     if abs(minS) > 0 && abs(ratioS) > 0
         scalingProperties.ratioS = ratioS;
         if printLevel > 0
-            fprintf(' Ratio of stoichiometric coefficients:         %s\n', num2str(ratioS));
+            fprintf(' Ratio of stoichiometric coefficients:         %1.2e\n', ratioS);
         end
     end
     if abs(ratioS) > 0
         scalingProperties.ratioS_orderOfMag = abs(floor(log10(abs(ratioS))));
         if printLevel > 0
-            fprintf(' Order of magnitude diff. (stoich. coeff.):    %s\n\n', num2str(scalingProperties.ratioS_orderOfMag));
+            fprintf(' Order of magnitude diff. (stoich. coeff.):    %d\n\n', scalingProperties.ratioS_orderOfMag);
         end
     end
 
@@ -220,13 +220,13 @@ function [precisionRequirementEstimate, scalingProperties] = checkScaling(model,
         if abs(minLB) > 0 && abs(ratioL) > 0
             scalingProperties.ratioL = ratioL;
             if printLevel > 0
-                fprintf(' Ratio of lower bounds:                        %s\n', num2str(ratioL));
+                fprintf(' Ratio of lower bounds:                        %1.2e\n', ratioL);
             end
         end
         if abs(ratioL) > 0
             scalingProperties.ratioL_orderOfMag = abs(floor(log10(abs(ratioL))));
             if printLevel > 0
-                fprintf(' Order of magnitude diff. (lower bounds):      %s\n\n', num2str(scalingProperties.ratioS_orderOfMag));
+                fprintf(' Order of magnitude diff. (lower bounds):      %d\n\n', scalingProperties.ratioS_orderOfMag);
             end
         end
     end
@@ -236,13 +236,13 @@ function [precisionRequirementEstimate, scalingProperties] = checkScaling(model,
         if abs(minUB) > 0 && abs(ratioU) > 0
             scalingProperties.ratioU = ratioU;
             if printLevel > 0
-                fprintf(' Ratio of upper bounds:                        %s\n', engn(ratioU));
+                fprintf(' Ratio of upper bounds:                        %1.2e\n', ratioU);
             end
         end
         if abs(ratioU) > 0
             scalingProperties.ratioU_orderOfMag = abs(floor(log10(abs(ratioU))));
             if printLevel > 0
-                fprintf(' Order of magnitude diff. (upper bounds):      %s\n\n', num2str(scalingProperties.ratioU_orderOfMag));
+                fprintf(' Order of magnitude diff. (upper bounds):      %d\n\n', scalingProperties.ratioU_orderOfMag);
             end
         end
     end
@@ -251,13 +251,13 @@ function [precisionRequirementEstimate, scalingProperties] = checkScaling(model,
     if abs(rmin) > 0 && abs(ratioR) > 0
         scalingProperties.ratioR = ratioR;
         if printLevel > 0
-            fprintf(' Ratio of row scaling coefficients:            %s\n', engn(ratioR));
+            fprintf(' Ratio of row scaling coefficients:            %1.2e\n', ratioR);
         end
     end
     if abs(ratioR) > 0
         scalingProperties.ratioR_orderOfMag = abs(floor(log10(abs(ratioR))));
         if printLevel > 0
-            fprintf(' Order of magnitude diff. (row scaling):       %s\n\n', num2str(scalingProperties.ratioR_orderOfMag));
+            fprintf(' Order of magnitude diff. (row scaling):       %d\n\n', scalingProperties.ratioR_orderOfMag);
         end
     end
 
@@ -265,13 +265,13 @@ function [precisionRequirementEstimate, scalingProperties] = checkScaling(model,
     if abs(cmin) > 0 && abs(ratioC) > 0
         scalingProperties.ratioC = ratioC;
         if printLevel > 0
-            fprintf(' Ratio of column scaling coefficients:         %s\n', engn(ratioC));
+            fprintf(' Ratio of column scaling coefficients:         %1.2e\n', ratioC);
         end
     end
     if abs(ratioC) > 0
         scalingProperties.ratioR_orderOfMag = abs(floor(log10(abs(ratioC))));
         if printLevel > 0
-            fprintf(' Order of magnitude diff. (column scaling):    %s\n', num2str(scalingProperties.ratioR_orderOfMag));
+            fprintf(' Order of magnitude diff. (column scaling):    %d\n', scalingProperties.ratioR_orderOfMag);
         end
     end
 
@@ -280,46 +280,29 @@ function [precisionRequirementEstimate, scalingProperties] = checkScaling(model,
         fprintf('\n --------------------------------------------------------------------------\n');
     end
 
-    % print out a recommendation and set the precisionRequirementEstimate variable
-    precisionRequirementEstimate = 'quad';
+    % print out a recommendation and set the solverRecommendation variable
+    solverRecommendation = 'quad';
 
     % provide a precision requirement estimate
     if ratioR > 1e6 && ratioC > 1e6
         if printLevel > 0
-            fprintf('\n -> The model has badly scaled rows and columns. Quad precision is strongly recommended.\n\n');
+            fprintf('\n -> The model has badly scaled rows and columns. Quad precision is strongly recommended.\n');
+            fprintf('\n    Set the Quad MINOS solver with: >> changeCobraSolver(\''quadMinos\'', \''LP\'')\n\n');
         end
     elseif ratioR > 1e6
         if printLevel > 0
             fprintf('\n -> The model has badly-scaled rows, but the column scaling ratio is not that high. Quad-precision is recommended, but you may try first with <double precision>.\n\n');
+            fprintf('\n    You may set the Quad MINOS solver with: >> changeCobraSolver(\''quadMinos\'', \''LP\'')\n\n');
         end
     elseif ratioC > 1e6
         if printLevel > 0
             fprintf('\n -> The model has badly-scaled columns, but the row scaling ratio is not that high. Quad-precision is recommended, but you may try first with <double precision>.\n\n');
+            fprintf('\n    You may set the Quad MINOS solver with: >> changeCobraSolver(\''quadMinos\'', \''LP\'')\n\n');
         end
     else
         if printLevel > 0
             fprintf('\n -> The model is well scaled. Double precision is recommended.\n\n');
         end
-        precisionRequirementEstimate = 'double';
-    end
-end
-
-function sNum = engn(value)
-    exp = floor(log10(abs(value)));
-    if exp < 3 && exp >= 0
-        exp = 0;  % Display without exponent
-    else
-        while (mod(exp, 3))
-            exp = exp - 1;
-        end
-    end
-
-    % Adjust fraction to exponent
-    frac = value / (10 ^ exp);
-
-    if exp == 0
-        sNum = sprintf('%2.4G', frac);
-    else
-        sNum = sprintf('%2.4GE%+.2d', frac, exp);
+        solverRecommendation = 'double';
     end
 end
