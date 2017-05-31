@@ -1,10 +1,10 @@
 function [ convertedstr ] = convertSBMLID( str, toSBML )
 %CONVERTSBMLID converts the given str to a valid SBML ID 
-%   USAGE:
+% USAGE:
 %
 %       convertedstr = convertSBMLID(str,toSBML)
 %
-%   INPUT:
+% INPUT:
 %
 %       str:        The String to convert
 %
@@ -12,11 +12,12 @@ function [ convertedstr ] = convertSBMLID( str, toSBML )
 %       toSBML:     Whether to convert to SBML format (or undo a
 %                   conversion) (default true, ie convert to SBML)
 %
-%   OUTPUT:
+% OUTPUT:
 %
 %       convertedstr:   The converted String.
 %    
-%
+% .. Authors:
+%       - Thomas Pfau May 2017 
 
 if ~exist('toSBML','var')
     toSBML = true;
