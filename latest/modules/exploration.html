@@ -812,6 +812,232 @@ List of transporters reactions</li>
 </div></blockquote>
 </dd></dl>
 
+<dl class="function">
+<dt id="src.modelAnalysis.exploration.printConstraints">
+<code class="descname">printConstraints</code><span class="sig-paren">(</span><em>model</em>, <em>minInf</em>, <em>maxInf</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/34d8a67d6efa42df6bd6cabb20b001dbd6ff4f2a/src/modelAnalysis/exploration/printConstraints.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.printConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print all network constraints that are not -Inf (minInf)or +Inf (maxInf)</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>printConstraints(model, minInf, maxInf)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>minInf</strong> &#8211;
+value that is considered as -Inf (or desired minimum cutoff value)</li>
+<li><strong>maxInf</strong> &#8211;
+value that is considered as +Inf (or desired maximum cutoff value)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.modelAnalysis.exploration.printFluxVector">
+<code class="descname">printFluxVector</code><span class="sig-paren">(</span><em>model</em>, <em>fluxData</em>, <em>nonZeroFlag</em>, <em>excFlag</em>, <em>sortCol</em>, <em>fileName</em>, <em>headerRow</em>, <em>formulaFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/34d8a67d6efa42df6bd6cabb20b001dbd6ff4f2a/src/modelAnalysis/exploration/printFluxVector.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.printFluxVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints a flux vector with reaction labels</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>printFluxVector(model, fluxData, nonZeroFlag, excFlag, sortCol, fileName, headerRow, formulaFlag)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>fluxData</strong> &#8211;
+Data matrix/vector (for example, solution.x)</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>nonZeroFlag</strong> &#8211;
+Only print nonzero rows (Default = false)</li>
+<li><strong>excFlag</strong> &#8211;
+Only print exchange fluxes (Default = false)</li>
+<li><strong>sortCol</strong> &#8211;
+Column used for sorting (-1, none; 0, labels; &gt;0, data
+columns;) (Default = -1)</li>
+<li><strong>fileName</strong> &#8211;
+Name of output file (Default = [])</li>
+<li><strong>headerRow</strong> &#8211;
+Header (Default = [])</li>
+<li><strong>formulaFlag</strong> &#8211;
+Print reaction formulas (Default = false)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.modelAnalysis.exploration.printLabeledData">
+<code class="descname">printLabeledData</code><span class="sig-paren">(</span><em>labels</em>, <em>data</em>, <em>nonzeroFlag</em>, <em>sortCol</em>, <em>fileName</em>, <em>headerRow</em>, <em>sortMode</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/34d8a67d6efa42df6bd6cabb20b001dbd6ff4f2a/src/modelAnalysis/exploration/printLabeledData.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.printLabeledData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print a matrix of data with labels</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>printLabeledData(labels, data, nonzeroFlag, sortCol, fileName, headerRow, sortMode)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>labels</strong> &#8211;
+Row labels</li>
+<li><strong>data</strong> &#8211;
+Data matrix/vector</li>
+<li><strong>nonzeroFlag</strong> &#8211;
+Only print nonzero rows (opt)</li>
+<li><strong>sortCol</strong> &#8211;
+Column used for sorting (-1, none; 0, labels; &gt;0, data columns; opt)</li>
+<li><strong>fileName</strong> &#8211;
+Name of output file (opt)</li>
+<li><strong>headerRow</strong> &#8211;
+Header (opt)</li>
+<li><strong>sortMode</strong> &#8211;
+Sort mode, &#8216;ascend&#8217; or &#8216;descend&#8217; (opt, default &#8216;ascend&#8217;)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.modelAnalysis.exploration.printMatrix">
+<code class="descname">printMatrix</code><span class="sig-paren">(</span><em>A</em>, <em>format</em>, <em>file</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/34d8a67d6efa42df6bd6cabb20b001dbd6ff4f2a/src/modelAnalysis/exploration/printMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.printMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>printMatrix Prints matrix into a file or screen</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>printMatrix(A, format, file)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>A</strong> &#8211;
+Matrix</li>
+<li><strong>format</strong> &#8211;
+Format string (opt, default &#8216;%6.4ft&#8217;)</li>
+<li><strong>file</strong> &#8211;
+File name (opt)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.modelAnalysis.exploration.printRxnFormula">
+<code class="descname">printRxnFormula</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/34d8a67d6efa42df6bd6cabb20b001dbd6ff4f2a/src/modelAnalysis/exploration/printRxnFormula.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.printRxnFormula" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the reaction formulas for a list of reactions</p>
+<p>Reactions that have an upperbound &lt;= 0 and lowerbound &lt; 0 will have
+its directionality reversed unless directionFlag = false.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>formulas = printRxnFormula(model, varargin)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>rxnAbbrList</strong> &#8211;
+Abbrs of reactions whose formulas are to be printed</li>
+<li><strong>printFlag</strong> &#8211;
+Print formulas or just return them (Default = true)</li>
+<li><strong>lineChangeFlag</strong> &#8211;
+Append a line change at the end of each line
+(Default = true)</li>
+<li><strong>metNameFlag</strong> &#8211;
+print full met names instead of abbreviations
+(Default = false)</li>
+<li><strong>fid</strong> &#8211;
+Optional file identifier for printing in files
+(default 1, i.e. stdout)</li>
+<li><strong>directionFlag</strong> &#8211;
+Checks directionality of reaction. See Note.
+(Default = false)</li>
+<li><strong>gprFlag</strong> &#8211;
+print gene protein reaction association
+(Default = false)</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>formulas</strong> &#8211;
+Cell array containing formulas of specified reactions</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.modelAnalysis.exploration.printUptakeBound">
+<code class="descname">printUptakeBound</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/34d8a67d6efa42df6bd6cabb20b001dbd6ff4f2a/src/modelAnalysis/exploration/printUptakeBound.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.printUptakeBound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the indices to the substrate uptake reactions and prints substrate uptake bounds</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>uptakeInd = printUptakeBound(model)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+CORBRA model structure</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>upInd</strong> &#8211;
+Vector containing indecies of uptake reactions</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.modelAnalysis.exploration.surfNet">
+<code class="descname">surfNet</code><span class="sig-paren">(</span><em>model</em>, <em>metrxn</em>, <em>metNameFlag</em>, <em>flux</em>, <em>NonzeroFluxFlag</em>, <em>showMets</em>, <em>nCharBreak</em>, <em>iterOptions</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/34d8a67d6efa42df6bd6cabb20b001dbd6ff4f2a/src/modelAnalysis/exploration/surfNet.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.exploration.surfNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple and convenient tool to navigate through the metabolic network
+interactively, possibly with a given flux vector, in the Matlab command
+window using mouse once the starting point is called by command.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>surfNet(model, metrxn, metNameFlag, flux, NonzeroFluxFlag, nCharBreak)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model</li>
+<li><strong>metrxn</strong> &#8211;
+mets or rxns names, can be a cell array of multiple
+rxns and mets, or simply a string</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>metNameFlag</strong> &#8211;
+print model.metNames in reaction formulas. (false)</li>
+<li><strong>flux</strong> &#8211;
+flux vector for the model. Show fluxes if given.([])
+If given, the producing and consuming reactions displayed
+are in accordance with the flux direction.</li>
+<li><strong>NonzeroFluxFlag</strong> &#8211;
+show only reactions with nonzero flux if flux is given (true)</li>
+<li><strong>showMets</strong> &#8211;
+show metabolites in a list when printing reactions (true)</li>
+<li><strong>nCharBreak</strong> &#8211;
+max. no. of characters per line for reaction formulas (65)</li>
+<li><strong>iterOptions</strong> &#8211;
+Not used for calling, for interactive calling only.
+Display the path of the previous navigation. (false)</li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">surfNet</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;glc-D[c]&#39;</span><span class="p">)</span>  <span class="o">%</span> <span class="k">for</span> <span class="n">starting</span> <span class="n">the</span> <span class="n">navigation</span> <span class="n">at</span> <span class="n">D</span><span class="o">-</span><span class="n">glucose</span>
+<span class="n">surfNet</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;EX_glc-D(e)&#39;</span><span class="p">)</span>  <span class="o">%</span> <span class="k">for</span> <span class="n">starting</span> <span class="n">the</span> <span class="n">navigation</span> <span class="n">at</span> <span class="n">the</span> <span class="n">glucose</span> <span class="n">exchange</span> <span class="n">reaction</span>
+<span class="n">surfNet</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;glc-D[c]&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="o">%</span> <span class="k">for</span> <span class="n">printing</span> <span class="n">model</span><span class="o">.</span><span class="n">metNames</span> <span class="ow">in</span> <span class="n">reaction</span> <span class="n">formulas</span>
+<span class="n">surfNet</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;glc-D[c]&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">flux</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="o">%</span> <span class="k">for</span> <span class="n">starting</span> <span class="n">at</span> <span class="n">glucose</span> <span class="ow">and</span> <span class="n">show</span> <span class="n">reactions</span> <span class="k">with</span> <span class="n">non</span><span class="o">-</span><span class="n">zero</span> <span class="n">flux</span> <span class="ow">in</span> <span class="s1">&#39;flux&#39;</span> <span class="n">only</span>
+<span class="n">surfNet</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;EX_glc-D(e)&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[],</span> <span class="mi">0</span><span class="p">)</span>  <span class="o">%</span> <span class="n">to</span> <span class="n">show</span> <span class="n">the</span> <span class="n">reaction</span> <span class="n">formulas</span> <span class="n">only</span> <span class="n">but</span> <span class="ow">not</span> <span class="n">the</span> <span class="n">details</span> <span class="n">of</span> <span class="n">metabolites</span> <span class="n">during</span> <span class="n">navigation</span>
+<span class="n">surfNet</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;glc-D[c]&#39;</span><span class="p">;</span> <span class="s1">&#39;fru[c]&#39;</span><span class="p">})</span>  <span class="o">%</span> <span class="n">to</span> <span class="n">view</span> <span class="n">several</span> <span class="n">mets</span> <span class="ow">and</span> <span class="n">rxns</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 
 
