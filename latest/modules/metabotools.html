@@ -956,7 +956,7 @@ No extra constraints are applied, thus not only production  flux from the specif
 
 <dl class="function">
 <dt id="src.dataIntegration.metabotools.prepIntegrationQuant">
-<code class="descname">prepIntegrationQuant</code><span class="sig-paren">(</span><em>model</em>, <em>metData</em>, <em>exchanges</em>, <em>samples</em>, <em>test_max</em>, <em>test_min</em>, <em>path</em>, <em>tol</em>, <em>variation</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/34d8a67d6efa42df6bd6cabb20b001dbd6ff4f2a/src/dataIntegration/metabotools/prepIntegrationQuant.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.metabotools.prepIntegrationQuant" title="Permalink to this definition">¶</a></dt>
+<code class="descname">prepIntegrationQuant</code><span class="sig-paren">(</span><em>model</em>, <em>metData</em>, <em>exchanges</em>, <em>samples</em>, <em>test_max</em>, <em>test_min</em>, <em>outputPath</em>, <em>tol</em>, <em>variation</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/34d8a67d6efa42df6bd6cabb20b001dbd6ff4f2a/src/dataIntegration/metabotools/prepIntegrationQuant.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.metabotools.prepIntegrationQuant" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function generates individual uptake and secretion profiles from a
 data matrix (fluxes) with samples as columns and metabolites as rows.
 Negative values are interpreted as uptake and positive values are
@@ -968,10 +968,10 @@ pathways, or blocked reactions. If only secretion is not possible, only
 secretion is eliminated from the sample profile whereas uptake will still
 be mapped.
 The individual uptake and secretion profile for each sample is saved to
-the location specified in path using the unique sample name.</p>
+the location specified in outputPath using the unique sample name.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>prepIntegrationQuant(model, metData, exchanges, samples, test_max, test_min, path, tol, variation)</div></blockquote>
+<div>prepIntegrationQuant(model, metData, exchanges, samples, test_max, test_min, outputPath, tol, variation)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -987,7 +987,7 @@ Vector of sample names (no dublicate names)</li>
 Minimal uptake/secretion set while testing if model can perform uptake and secretion of a metabolite (e.g., 500)</li>
 <li><strong>test_min</strong> &#8211;
 Maximal uptake/secretion set while testing if model can perform uptake and secretion of a metabolite (e.g., 0.00001)</li>
-<li><strong>path</strong> &#8211;
+<li><strong>outputPath</strong> &#8211;
 Path where output files should be saved (e.g. &#8216;Y:StudiesData_integrationCOREusingRecon1models&#8217;)</li>
 <li><strong>tol</strong> &#8211;
 All fluxes below this value are considered to be zero, (e.g., 1e-6)</li>
@@ -1010,7 +1010,6 @@ Lower and upper bound are established with this value as error range in % (e.g.,
 <li>secr_value:              Matrix of flux values, constitute the lower (column 2) and upper (column 3) limits for the model secretion</li>
 </ul>
 </div></blockquote>
-<p>secretion</p>
 </dd></dl>
 
 <dl class="function">
