@@ -131,7 +131,7 @@ epsilon = 1e-4;
 addExtraExch = {'EX_tdchola(e)', 'Ex_5hoxindoa[e]'};
 addExtraExch_value = 1;
 [ResultsAllCellLines, OverViewResults] = setQuantConstraints(model, samples, tol, minGrowth, obj, no_secretion, ...
-                                                             no_uptake, medium, addExtraExch, addExtraExch_value, outputPath, epsilon);
+                                                             no_uptake, medium, addExtraExch, addExtraExch_value, outputPath);
 clearvars -EXCEPT modelMedium samples ResultsAllCellLines OverViewResults tol solver mapped_exchanges outputPath tutorialPath
 
 %% Section 4 - Analyze added exchanges
