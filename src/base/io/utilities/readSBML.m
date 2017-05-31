@@ -1,27 +1,25 @@
 function [model,modelSBML] = readSBML(fileName,defaultBound)
-% readSBML reads in a SBML format model as a COBRA matlab structure
+% Reads in a SBML format model as a COBRA matlab structure
 %
+% USAGE:
 %
-%INPUTS:
+%    model = readSBML(fileName, defaultBound)
+%
+% INPUTS:
 %    fileName:          File name for file to read in
 %
-%OPTIONAL INPUTS:
+% OPTIONAL INPUTS:
 %    defaultBound:      Maximum bound for model (Default = 1000)
 %
-%OUTPUT:
+% OUTPUT:
 %    model:             COBRA model structure
 %
-% Authors:
-% Markus Herrgard 1/25/08
-% Ines Thiele 01/27/2010 - I added new field to be read-in from SBML file
-%                          if provided in file (e.g., references, comments, metabolite IDs, etc.)
-% Richard Que 02/08/10 - Properly format reaction and metabolite fields
-%                        from SBML.
-% Longfei Mao 23/09/15 - Added support for the FBCv2 format
-%
-%the libSBML interfaces do not allow placeholders (e.g. ~ or environment
-%variables in the fileName. so we will have to make sure, this works
-%nicely.
+% .. Authors:
+%       - Markus Herrgard 1/25/08
+%       - Ines Thiele 01/27/2010 - I added new field to be read-in from SBML file
+%       - Longfei Mao 23/09/15 - Added support for the FBCv2 format 
+%       - Thomas Pfau May 2017 - Updated to libsbml 5.15
+
 currentDir = pwd;
 [folder,name,extension] = fileparts(fileName);
 if ~isempty(folder)
@@ -265,9 +263,7 @@ if isfield(modelSBML,'fbc_objective')
     %We only support the first one we find
     if ~isempty(modelSBML.fbc_objective)
         osenseStr = modelSBML.fbc_objective(1).fbc_type;
-        if strcmp(osenseStr , 'maximize')
-            model.osense = -1;
-        else
+        if ~strcmp(osenseStr , 'maximize')
             model.osense = 1;
         end
         %since only one reaction can be a fluxobjective in a model, we will
@@ -474,11 +470,7 @@ if isempty(fbc_gprAssoc) || isempty(fbc_gprAssoc.fbc_association)
     rule = '';
     return
 end
-try
-    rule = fbc_gprAssoc.fbc_association.fbc_association;
-catch
-    disp('blubb')
-end
+rule = fbc_gprAssoc.fbc_association.fbc_association;
 end
 
 function field = extractfield(startstruct,fieldname)
@@ -487,7 +479,4 @@ if ~isfield(startstruct,fieldname)
     error('Field %s does not exist',fieldname)
 end
 field = {startstruct.(fieldname)};
-%if all(cellfun(@isnumeric , field))
-%    field = [startstruct.(fieldname)];
-%end
 end
