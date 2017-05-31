@@ -1,22 +1,23 @@
 function sbmlModel = writeSBML(model,fileName,compSymbolList,compNameList)
-
-% writeSBML exports a COBRA structure into an SBML FBCv2 file.
+% Exports a COBRA structure into an SBML FBCv2 file. A SBMLFBCv2 file  a file is written to the current Matlab path.
 %
+% USAGE:
 %
-%INPUTS
-% model             COBRA model structure
-% fileName          File name for output file
+%    sbmlModel = writeSBML(model, fileName, compSymbolList, compNameList)
 %
-%OPTIONAL INPUTS
-% compSymbolList    List of compartment symbols
-% compNameList      List of copmartment names corresponding to compSymbolList
+% INPUTS:
+%    model:             COBRA model structure
+%    fileName:          File name for output file
 %
-%OUTPUT
-% sbmlModel         SBML MATLAB structure
-% a SBMLFBCv2 file  a file is written to the current Matlab path
+% OPTIONAL INPUTS:
+%    compSymbolList:    List of compartment symbols
+%    compNameList:      List of copmartment names corresponding to compSymbolList
 %
-% Longfei Mao 24/09/15
+% OUTPUT:
+%    sbmlModel:         SBML MATLAB structure
 %
+% .. Author: - Longfei Mao 24/09/15 
+%            - Thomas Pfau May 2017 Updates to libsbml 5.15
 
 %% Compartments
 if nargin<3 || ~exist('compSymbolList','var') || isempty(compSymbolList) || ~isfield(model, 'compNames')
@@ -835,12 +836,3 @@ if defaultFbcVersion==2
 end
 OutputSBML(sbmlModel,fileName,1,0,[1,0]);
 end
-
-% %% Format For SBML
-% function str = convertSBMLID(str)
-% %IDs are always (letter | _ ) idChar* 
-% % with letter = a-zA-Z and idChar = letter | [0-9] | _
-% 
-% str = regexprep(str,'([^a-zA-Z0-9_])','__${num2str($0+0)}__');
-% 
-% end
