@@ -1,8 +1,9 @@
 function [annotationString,notes] = makeSBMLAnnotationString(model,id,fieldentries,position)
-% makeSBMLAnnotationString gives the annotationString for an SBML based on
-% the fields in the model
+% makeSBMLAnnotationString gives the annotationString for an SBML based on the fields in the model
 %
-% USAGE: [annotationString, notes] = makeSBMLAnnotationString(model,id,fieldentries,position)
+% USAGE:
+%
+%       [annotationString, notes] = makeSBMLAnnotationString(model,id,fieldentries,position)
 %
 % INPUT:
 %    model:            the model to extract the data
@@ -19,6 +20,8 @@ function [annotationString,notes] = makeSBMLAnnotationString(model,id,fieldentri
 %   notes:            A 2*x cell array of fields which did not contain
 %                     valid identifiers (according to the pattern check.
 %
+% .. Authors:
+%       - Thomas Pfau May 2017 
 
 
 

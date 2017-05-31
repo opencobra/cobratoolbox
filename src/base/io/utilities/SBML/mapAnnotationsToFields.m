@@ -1,27 +1,39 @@
 function mappedFields = mapAnnotationsToFields(model,databases,identifiers,relations,field,relationSelection, inverseRelationSelection)
-%MAPANNOTATIONSTOFIELDS maps annotations in bioql/MIRIAM annotation from
-%SBML to model fields.
+%MAPANNOTATIONSTOFIELDS maps annotations in bioql/MIRIAM annotation from SBML to model fields.
 %
-% USAGE mappedFields = mapAnnotationsToFields(model,databases,identifiers,relations,field,relationSelection, exclusiveSelection)
+% USAGE:
 %
-% INPUT
+%    mappedFields = mapAnnotationsToFields(model,databases,identifiers,relations,field,relationSelection, exclusiveSelection)
 %
-% model:        the COBRA model to annotate
-% databases:    a cell array of cell arrays containing databases
-% identifiers:  a cell array of cell arrays containing the identifiers
-%               associated with the databases above
-% relations:    a cell array of cell arrays containing the bioql relations
-%               associated with the databases above
-% field:        the model field (met/gene/rxn/protein/comp etc) to
-%               annotate. Note that there is an s missing here.
-% OPTIONAL INPUT
+% INPUT:
 %
-% relationSelection:            whether only a specific relation is choosen
-%                               and all others are ignored (default {})
-% inverseRelationSelection:     whether the relation specified by
-%                               relationSelection is inverted (i.e. all
-%                               other fields are used (default true))
+%    model:        the COBRA model to annotate
+%    databases:    a cell array of cell arrays containing databases
+%    identifiers:  a cell array of cell arrays containing the identifiers
+%                  associated with the databases above
+%    relations:    a cell array of cell arrays containing the bioql relations
+%                  associated with the databases above
+%    field:        the model field (met/gene/rxn/protein/comp etc) to
+%                  annotate. Note that there is an s missing here.
+% OPTIONAL INPUT:
 %
+%    relationSelection:            whether only a specific relation is choosen
+%                                  and all others are ignored (default {})
+%    inverseRelationSelection:     whether the relation specified by
+%                                  relationSelection is inverted (i.e. all
+%                                  other fields are used (default true))
+%
+% OUTPUT:
+%
+%    mappedFields:         a struct with fields for each encountered
+%                          annotation database (Known databases like e.g.
+%                          HMDB will be mapped to their corresponding field
+%                          metHMDBID, while unknown fields will be mapped
+%                          to: [field relation convertSBMLID(database)]
+%
+% .. Authors:
+%       - Thomas Pfau May 2017 
+
 if~exist('relationSelection','var')
     relationSelection = {};
 end
