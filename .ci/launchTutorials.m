@@ -29,8 +29,8 @@ try
     tutorial_IO;
     tutorial_modelManipulation;
     tutorial_modelCreation;
-    tutorial_modelCharact;
-        %reset the path.
+    tutorial_numCharact;
+    %reset the path.
     cd(currentDir)
     % ensure that we ALWAYS call exit
     exit(exit_code);

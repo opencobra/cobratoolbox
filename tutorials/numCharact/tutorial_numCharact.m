@@ -106,7 +106,7 @@ colDensityRel = colDensityAv / nMets * 1e6  % [ppm]
 % (stoichiometric coefficients) is shown as proportional to the size of the dot.
 
 % print a colorful spy map of the S matrix
-spyc(S, colormap(advancedColormap('proposal')));
+spyc(S, colormap(advancedColormap('cobratoolbox')));
     
 % set the font size of the current figure axes
 set(gca, 'fontsize', 14);
