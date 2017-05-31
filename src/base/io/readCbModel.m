@@ -193,7 +193,7 @@ end
 
 if isempty(modelDescription)
     [~,mfile,mextension] = fileparts(fileName);
-    modelDescription = [mfile '.' mextension];
+    modelDescription = [mfile mextension];
 end
 
 switch fileType
