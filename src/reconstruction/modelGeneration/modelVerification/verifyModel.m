@@ -162,9 +162,16 @@ if ~isempty(results) && ~any(ismember(varargin,'silentCheck'))
         disp('The following problems have been encountered in the model structure')
         for i = 1:numel(problems)
             fprintf('%s:\n',problems{i})
-            problematic_fields = fieldnames(results.Errors.(problems{i}));
-            for field = 1: numel(problematic_fields)
-                fprintf('%s: %s\n',problematic_fields{field}, results.Errors.(problems{i}).(problematic_fields{field}));
+            problem_data = results.Errors.(problems{i});            
+            if isstruct(problem_data)             
+                problematic_fields = fieldnames(problem_data);
+                for field = 1: numel(problematic_fields)
+                    fprintf('%s: %s\n',problematic_fields{field}, results.Errors.(problems{i}).(problematic_fields{field}));                
+                end
+            else
+                for field = 1:numel(problem_data)
+                    fprintf('%s\n',problem_data{field});                
+                end
             end
         end
     end
