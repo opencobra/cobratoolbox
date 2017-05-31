@@ -96,8 +96,10 @@ fprintf('Finished\n');
 
 % Combining subsystem List
 fprintf('Combining Subsystem List: ');
-modelNew.subSystems = model1.subSystems;
-modelNew.subSystems(size(model1.subSystems,1)+1:size(model1.subSystems,1)+size(model2.subSystems)) = model2.subSystems;
+if isfield(model1,'subSystems')  &&  isfield(model2,'subSystems') 
+    modelNew.subSystems = model1.subSystems;
+    modelNew.subSystems(size(model1.subSystems,1)+1:size(model1.subSystems,1)+size(model2.subSystems)) = model2.subSystems;
+end
 if isfield(model1,'rxnNames') && isfield(model2,'rxnNames')
     modelNew.rxnNames = model1.rxnNames;    
     modelNew.rxnNames(size(model1.rxnNames,1)+1:size(model1.rxnNames,1)+size(model2.rxnNames)) = model2.rxnNames;
