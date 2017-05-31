@@ -32,7 +32,7 @@ solverPkgs = {'gurobi6', 'tomlab_cplex', 'glpk'};
 
 
 % load the models
-modelArr = { 'STM_v1.0.xml', 'iIT341.xml'};
+modelArr = { 'Abiotrophia_defectiva_ATCC_49176.xml', 'STM_v1.0.xml', 'iIT341.xml'};
 
 % loop through the models
 for i = 1:length(modelArr)
@@ -58,10 +58,10 @@ for i = 1:length(modelArr)
 
 
             % define the maximum objective values calculated from pre-converted .mat files
-            modelFBAf_max = [0.477833660760744; 0.692812693473487];
+            modelFBAf_max = [0.149475406282249; 0.477833660760744; 0.692812693473487];
 
             % define the minimum objective values
-            modelFBAf_min = [0.0; 0.0];
+            modelFBAf_min = [0.0; 0.0; 0.0];
 
             % solve the maximisation problem
             FBA = optimizeCbModel(model, 'max');
