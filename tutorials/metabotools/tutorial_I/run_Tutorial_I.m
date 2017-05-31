@@ -1,6 +1,6 @@
 %% Metabotools tutorial I
 % *Maike Aurich*
-% 
+%
 % In this tutorial we ...
 
 %%
@@ -9,7 +9,7 @@ clear
 initCobraToolbox
 global CBTDIR
 
-%% Step *0* 
+%% Step *0*
 % Define variables
 
 % ouputPath = 'ADD YOUR PATH TO YOUR OUTPUT FOLDER'; %
@@ -35,13 +35,13 @@ if isequal(exist([tutorialPath filesep 'starting_model.mat'], 'file'), 2)  % 2 m
     load([tutorialPath filesep 'starting_model.mat']);
     fprintf('The model is loaded.\n');
 else
-    error('The model ''starting_model'' could not be loaded. Does pathToCOBRA contain typos?');
+    error('The model ''starting_model'' could not be loaded.');
 end
 
 %%
 % Check output path and writing permission
-if ~exist(outputPath, 'dir')
-    error(['The provided path: ', outputPath, 'cannot be accessed!']);
+if ~exist(outputPath, 'dir') == 7
+    error('Output directory in ''outputPath'' does not exist. Verify that you type it correctly or create the directory.');
 end
 
 % make and save dummy file to test writing to output directory
@@ -49,7 +49,7 @@ A = rand(1);
 try
     save([outputPath filesep 'A']);
 catch ME
-    error('Files cannot be saved to the provided location: %s\nObtain rights to write into %s directory or set outputPath to a different directory.\n', outputPath, outputPath);
+    error('Files cannot be saved to the provided location: %s\nObtain rights to write into %s directory or set ''outputPath'' to a different directory.', outputPath, outputPath);
 end
 
 %% Step 1: Shaping the model's environment using setMediumConstraints
