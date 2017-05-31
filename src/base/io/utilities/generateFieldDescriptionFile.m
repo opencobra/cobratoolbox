@@ -1,6 +1,5 @@
 function FileString = generateFieldDescriptionFile(FileName)
-% Generates the ModelFields.md file
-% describing the Required and Optional Fields of a COBRA model.
+% Generates the ModelFields.md file describing the Required and Optional Fields of a COBRA model.
 %
 % USAGE:
 %
