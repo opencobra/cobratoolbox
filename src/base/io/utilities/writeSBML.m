@@ -315,8 +315,13 @@ for i=1:size(model.mets, 1)
     end
     
     if isfield(model, 'metCharges') 
-        tmp_metCharge=model.metCharges(i);
-        tmp_isSetfbc_charge=1;
+        if ~isnan(model.metCharges(i))
+            tmp_metCharge=model.metCharges(i);
+            tmp_isSetfbc_charge=1;
+        else
+            tmp_metCharge=0;
+            tmp_isSetfbc_charge=0;
+        end
     else
         tmp_metCharge=0;
         tmp_isSetfbc_charge=0;
@@ -347,9 +352,26 @@ for i=1:size(model.mets, 1)
             tmp_note = [ tmp_note ' <p>' regexprep(met_notes{noteid,1},'^rxn','') ':' met_notes{noteid,2} '</p>'];
         end
     end
+    if isfield(model,'metNotes')
+        %Lets test whether the field is correctly formatted
+        COBRA_STYLE_NOTE_FIELDS = strsplit(model.metNotes{i},'\n');
+        for pos = 1:length(COBRA_STYLE_NOTE_FIELDS)
+            current = COBRA_STYLE_NOTE_FIELDS{pos};
+            if isempty(current)
+                continue;
+            end
+            if any(strfind(current,':'))
+                %If it has a title, we use that one, otherwise its just a
+                %note.
+                tmp_note = [ tmp_note ' <p>' current '</p>'];
+            else
+                tmp_note = [ tmp_note ' <p>NOTES: ' current '</p>'];
+            end
+        end
+    end
     if ~isempty(tmp_note)
         tmp_note = ['<body xmlns="http://www.w3.org/1999/xhtml">' tmp_note '</body>'];
-    end
+    end    
     tmp_species.notes = tmp_note;
     tmp_species.annotation=tmp_annot;
     
@@ -601,8 +623,22 @@ for i=1:size(model.rxns, 1)
             tmp_note = [ tmp_note ' <p>Confidence Level: ' num2str(model.rxnConfidenceScores(i)) '</p>'];        
         end
     end    
-    if isfield(model, 'rxnNotes')
-        tmp_note = [ tmp_note ' <p>NOTES: ' model.rxnNotes{i} '</p>'];
+    if isfield(model, 'rxnNotes')      
+        %Lets test whether the field is correctly formatted
+        COBRA_STYLE_NOTE_FIELDS = strsplit(model.rxnNotes{i},'\n');
+        for pos = 1:length(COBRA_STYLE_NOTE_FIELDS)
+            current = COBRA_STYLE_NOTE_FIELDS{pos};
+            if isempty(current)
+                continue;
+            end
+            if any(strfind(current,':'))
+                %If it has a title, we use that one, otherwise its just a
+                %note.
+                tmp_note = [ tmp_note ' <p>' current '</p>'];
+            else
+                tmp_note = [ tmp_note ' <p>NOTES: ' current '</p>'];
+            end
+        end               
     end
     if ~isempty(tmp_note)
         tmp_note = ['<body xmlns="http://www.w3.org/1999/xhtml">' tmp_note '</body>'];
@@ -797,7 +833,7 @@ sbmlModel.namespaces=struct('prefix',{'','fbc'},...
 if defaultFbcVersion==2
     sbmlModel.fbc_strict=1; % the new FBCv2 field
 end
-OutputSBML(sbmlModel,fileName);
+OutputSBML(sbmlModel,fileName,1,0,[1,0]);
 end
 
 % %% Format For SBML
