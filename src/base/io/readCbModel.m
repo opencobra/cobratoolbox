@@ -181,7 +181,8 @@ if ~exist('fileType','var') || isempty(fileType)
 end
 
 if isempty(modelDescription)
-    modelDescription = fileName;
+    [~,mfile,mextension] = fileparts(fileName);
+    modelDescription = [mfile '.' mextension];
 end
 
 switch fileType
