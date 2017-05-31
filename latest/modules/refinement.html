@@ -979,28 +979,36 @@ field, can be regenerated using this script
 
 <dl class="function">
 <dt id="src.reconstruction.refinement.isSameCobraModel">
-<code class="descname">isSameCobraModel</code><span class="sig-paren">(</span><em>model1</em>, <em>model2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/34d8a67d6efa42df6bd6cabb20b001dbd6ff4f2a/src/reconstruction/refinement/isSameCobraModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.isSameCobraModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">isSameCobraModel</code><span class="sig-paren">(</span><em>model1</em>, <em>model2</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/34d8a67d6efa42df6bd6cabb20b001dbd6ff4f2a/src/reconstruction/refinement/isSameCobraModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.isSameCobraModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>isSameCobraModel Checks if two COBRA models are the same</p>
+<p><strong>Usage</strong></p>
 <blockquote>
 <div>[isSame,nDiff,commonFields] = isSameCobraModel(model1,model2)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model1        COBRA model structure 1</strong></li>
-<li><strong>model2        COBRA model structure 2</strong></li>
+<li><strong>model1</strong> &#8211;
+COBRA model structure 1</li>
+<li><strong>model2</strong> &#8211;
+COBRA model structure 2</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional intput</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>printLevel</strong> &#8211;
+Whether to provide additional output (0 - no output (default), 1 - output).</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>isSame        True if all common fields are identical, else false</strong></li>
-<li><strong>nDiff         Number of differences between the two models for each field</strong></li>
-<li><strong>commonFields  List of common fields</strong></li>
-<li><strong>Authors</strong> &#8211;<ul>
-<li>Markus Herrgard 9/14/07</li>
-<li>CI integration: Laurent Heirendt</li>
-</ul>
-</li>
+<li><strong>isSame</strong> &#8211;
+True if all common fields are identical, else false</li>
+<li><strong>nDiff</strong> &#8211;
+Number of differences between the two models for each field</li>
+<li><strong>commonFields</strong> &#8211;
+List of common fields</li>
 </ul>
 </div></blockquote>
 </dd></dl>
