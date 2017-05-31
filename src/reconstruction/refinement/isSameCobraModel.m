@@ -34,13 +34,13 @@ if printLevel > 0
     if ~isempty(onlyIn1)
         fprintf('The following fields are only present in the first input model:\n');
         for i = 1:numel(onlyIn1)
-            fprintf('%s',onlyIn1{i});
+            fprintf('%s\n',onlyIn1{i});
         end
     end
     if ~isempty(onlyIn2)
         fprintf('The following fields are only present in the second input model:\n');
         for i = 1:numel(onlyIn2)
-            fprintf('%s',onlyIn2{i});
+            fprintf('%s\n',onlyIn2{i});
         end
     end
 end
