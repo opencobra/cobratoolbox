@@ -1,32 +1,72 @@
 # Documentation guide
 
-To enable automatic documentation generation the function has to be formatted properly.
-Automatic documentation works on any comments that are placed between the function header and the first line of code. Anything starting with the comment sign `%` will be taken into consideration. There should be one free space between `%` and the text.
+In order to enable the automatic documentation generation, the header of a `MATLAB` function has to be formatted properly. The automatic documentation extracts the commented header of the function (commented lines between the function's signature and the first line of code) based on keywords and blocks.
+
+**Rule**:  There should be 1 free space between the percentage sign `%` and the text. For instance, a correctly formatted line in the header reads:
 ````Matlab
 % this is correct
-
-%this is not correct
 ````
-Please leave a space after every coma and before and after `=`. Do not leave it inside braces `{}, [], ()`.
+A line in the header that is formatted as follows is **ignored**:
+````Matlab
+%this is not correct (note the space)
+````
+
+**Rule 2**: After the last line of the header, leave one empty line before the body of the function.
+````Matlab
+% This is the end of the header of the function
+
+x = 5;  % the body of the function begins after one empty line
+````
+Importantly, **do not** put a comment above the first line of code, but include the comment inline:
+````Matlab
+% This is the end of the header of the function
+
+% the body of the function begins after one empty line
+x = 5;
+````
+
+**Rule 3**: A line in the header that includes `..` after the percentage sign will be **ignored** in the documentation:
+````Matlab
+% .. this line will be ignored
+````
+
+### Function signature
+
+The function signature must be correctly formatted. Leave a space after every comma and before and after the equal sign `=`. A correctly formatted function signature reads:
 ````Matlab
 function [output1, output2, output3] = someFunction(input1, input2, input3) % good practice
-
+````
+A function signature that is not formatted properly throws an **error** during the automatic documentation generation:
+````Matlab
 function [ output1,output2,output3 ]=someFunction( input1,input2,input3 ) % bad practice
 ````
-The description begins with a short explanation of what the function does.
-After the last line of comment leave one empty line before the body of the function.
+
+## Function description
+
+The description of the function is a brief explanation of the purpose of the function. The description of the function may extend over several lines. However, try to keep the explanations as brief as possible.
 ````Matlab
 function [output1, output2, output3] = someFunction(input1, input2, input3)
-% This is a description of the function that helps understand how the function works
+% This is a description of the function that helps to understand how the function works
 % Here the description continues, then we leave an empty comment line
 %
-% Here additional comment blocks are used
-
-x = 5; % the body of the function begins after one empty line
 ````
-## Comments blocks
-Recognized fields that will be extracted as separate blocks are: `USAGE:`, `INPUT:` or `INPUTS:` (in case there is more than one input arguement), `OUTPUT:`, `OUTPUTS:` (as mentioned before), `EXAMPLE:` and `NOTE:`.
-Each of them should have  some elements inside and should be separated from another block by an empty line. Any element of the block must be indented by 4 spaces from the comment sign `%`.
+
+## Keywords
+
+The automatic documentation software relies on keywords to properly format the documented function. A keyword also defines the start of a block with the header of a function. Main keywords include:
+  - `USAGE:`: block for defining how to use the function
+  - `INPUT:` or `INPUTS:`: block with input argument(s)
+  - `OUTPUT:` or `OUTPUTS:`: block with output argument(s)
+  - `EXAMPLE:`: block with example code (formatted `MATLAB` syntax)
+  - `NOTE:`: highlighted box with text
+  - `Author:`: list with author(s)
+
+Each of them must be followed by non-empty lines and should be separated from the next block by an empty line.
+
+All keywords are optional. For instance, if a function does not have any input arguments, the keyword `INPUTS:` can be omitted.
+
+Any line of the block must be indented by 4 spaces after the comment sign `%`:
+
 ````Matlab
 % INPUTS:
 %    input1:     Description of input1
@@ -36,9 +76,13 @@ Each of them should have  some elements inside and should be separated from anot
 % OUTPUTS:
 %    output1:    Description of output1
 ````
-If the indentation differ between the line, the line with less indentation will break those with more.
-### `USAGE:`
-Block `USAGE:` shows how the function should be used. It is important to leave one empty line before using `USAGE:`, after using the keyword and after the example.
+
+If the indentation differs, there will be an error.
+
+### Keyword `USAGE:`
+
+In the block starting with the keyword `USAGE:`, the function's signature must be given in order to show how the function should be used. It is important to leave one empty line before the keyword `USAGE:`, after the keyword, and after the function's signature.
+
 ````Matlab
 % the end of the description
 %
@@ -48,8 +92,13 @@ Block `USAGE:` shows how the function should be used. It is important to leave o
 %
 % here the other section can begin
 ````
-### `INPUT: / OUTPUT:`
-The elements of blocks: `INPUT:`, `INPUTS:`, `OUTPUT:` and `OUTPUTS:` must finish with a colon `:`, after that a description is provided. The indentation between the argument with colon and the description should be minimally 4 spaces. Ideally descriptions begin at the same place, so arguments with shorter names have a longer free space before the description begins.
+
+### Keyword `INPUT:` and `OUTPUT:`
+
+The arguments declared in the blocks: `INPUT:`, `INPUTS:`, `OUTPUT:` and `OUTPUTS:` must be followed by a colon `:` before the argument description is provided.
+
+The indentation between the argument (with colon) and the description should be at least 4 spaces, so that all argument descriptions are aligned.
+
 ````Matlab
 % INPUTS:
 %    input1:     Description of input1 <-- good practice
@@ -61,10 +110,14 @@ The elements of blocks: `INPUT:`, `INPUTS:`, `OUTPUT:` and `OUTPUTS:` must finis
 %    output1:             Description begins at the same place as the longest argument <-- good practice
 %    output2:    Description begins too soon <-- bad practice
 ````
-In case arguments are structures and it is needed to present the fields of the structure it is possible to list them. To do that an empty line is added and then in the next line after a small indent - 2 spaces, we list the sub-arguments beginning with a `*` and a space. It is not necessary to leave an empty line after listing sub-arguments and writing the next normal argument.
+
+For a `structure` argument, it is possible to list its fields. An empty line is added after the `structure` argument. Then, in the next line, the field is written aligned with the description of the `structure` **plus 2 extra spaces**.
+
+The field is listed beginning as `* .field - description` (note the space between `*` and `.`). It is not necessary to leave an empty line after listing fields and writing the next argument. The following illustrates how to list a structure with its fields:
+
 ````Matlab
 % OUTPUT:
-%    output:    contains three fields:
+%    output:    output argument with fields:
 %
 %                 * .field1 - first field of the structure.
 %               * .field2 - no indent <-- bad practice
@@ -74,63 +127,78 @@ In case arguments are structures and it is needed to present the fields of the s
 %                 the text in line 2 begins too soon <-- bad practice
 %    next:      next argument can be added without empty line
 ````
-It is also possible to replace `*` with a numbered list. To do that use numbers with a dot `1.` instead of `*`.
+
+It is also possible to replace `*` with a numbered list. You can use numbers followed by a dot (e.g., `1.`) instead of `* .`.
+
 ````Matlab
 % OPTIONAL INPUT:
-%    input:    contains fields:
+%    input:    optional input argument with fields:
 %
 %                1. first element of a numbered list
 %                2. second element of a numbered list
 ````
-### `EXAMPLE:`
-To provide a real example of usage the `EXAMPLE` block is given. It requires the same treating as `USAGE`. Leave one empty line before the keyword `EXAMPLE`, after it and after the properly indented (4 spaces) code snippet.
+
+### Keyword `EXAMPLE:`
+
+A common usage example can be included in the `EXAMPLE:` block. Code included in this block will be formatted as `MATLAB` formatted code. Leave one empty line before the keyword `EXAMPLE:`, after the keyword, and after the properly indented (4 spaces) code snippet.
+
 ````Matlab
-% here another block can end
+% the previous block ends here
 %
 % EXAMPLE:
 %
 %    result = someFunction(input1, input2)
 %    %additional comment if necessary
 %
-% here another block can begin
+% another block begins here
 ````
-### `NOTE:`
-In case there is a very important information that could not be left in the description of the function, you can use the `NOTE:` block. Apply the same rules as with `USAGE` and `EXAMPLE` - empty lines and indentation. Remember that you can always include a normal text in the end as long as you leave one space free after the comment sign.
-This is example of a `NOTE:` and normal text after all blocks.
+
+### Keyword `NOTE:`
+
+Important information, such as common errors, can be included in the block that starts with the keyword `NOTE:`. A `NOTE:` block is formatted in a dedicated and highlighted box in the documentation.
+
+Leave one empty line before the keyword `NOTE:`, after the keyword, and after the properly indented text (indent of 4 spaces).
+
+Normally formatted text can be left at the with one space after the comment sign.
+An example of a `NOTE:` block reads:
+
 ````Matlab
 %
 % NOTE:
 %
-%    This is a note that contains a very important information.
+%    This is a note that contains a important information.
 %    It will be clearly visible in the documentation online.
 %
-% This is an additional final comment that is not important enough to be a note
-% but cannot be a description
+% This is an additional final comment that can be added and that is
+% only relevant to the code itself
 ````
-### `Author(s):`
-To add the author follow one of two templates.
-In case of only one author you can use the shorter version. Remember about the structure - one space , two dots `..`, one space, keyword `Author`, colon `:`.
+
+### Keyword `Author:` or `Author(s):`
+
+In the `Author(s)` block, the author(s) that have written or contributed to the function are listed. Authors are not shown in the documentation itself, so the keyword is preceded by `..`. List 1 author as follows:
+
 ````Matlab
 %
 % .. Author: - Name, date, additional information if needed
 
-x = 5; % here the body of the function begins
+x = 5;  % here the body of the function begins
 ````
-In case there are more than one authors or the file was overhauled, improved, updated by multiple people use this version. Remember about equal indentation.
+
+If there are 2 or more authors, format as follows:
+
 ````Matlab
 %
 % .. Authors:
 %       - Name1, date, additional information if needed
-%       - Name2, date, additional information if needed <-- good practice of adding authors
-% - Name3, date, no indent <-- bad practice
-%
-% Authors - no colon, no indent, no " .. " format <-- very bad practice
-%       - Name1, date, additional information if needed
+%       - Name2, date, additional information if needed
 
-x = 5; % here the body of the function begins
+x = 5;  % here the body of the function begins
 ````
-## FULL EXAMPLE:
-A complete example of a function is provided here. In case of doubts follow the formatting of the example. Remember about colons, indentations and keywords!
+
+## Complete example of formatted documentation
+
+A complete example of a function is provided here. Please remember that colons, indentations, and keywords are important to guarantee pretty formatting.
+
 ````Matlab
 function [output1, output2] = someFunction(input1, input2, input3, input4)
 % This is a description of the function that helps understand how the function works
@@ -170,4 +238,6 @@ function [output1, output2] = someFunction(input1, input2, input3, input4)
 % This is a final comment that cannot be in the description but can be useful
 %
 % .. Author: - Name, date, some information
+
+x = 5;  % here the body of the function begins
 ````
