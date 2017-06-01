@@ -1,35 +1,38 @@
-function model=findSExRxnInd(model,nRealMet,printLevel)
-%  model=findSExRxnInd(model,nRealMet,printLevel)
-%Returns a model with boolean vectors indicating internal vs external (exchange/demand/sink) reactions.
+function model = findSExRxnInd(model, nRealMet, printLevel)
+% Returns a model with boolean vectors indicating internal vs external (exchange/demand/sink) reactions.
+% Finds the reactions in the model which export/import from the model boundary
 %
-%finds the reactions in the model which export/import from the model
-%boundary
-%e.g. Exchange reactions
-%     Demand reactions
-%     Sink reactions
+% e.g. Exchange reactions,
+% Demand reactions,
+% Sink reactions
 %
-%INPUT
-% model
-% model.biomassRxnAbbr      abbreviation of biomass reaction
-% printLevel
+% USAGE:
 %
-%OPTIONAL INPUT
-% nRealMet                  specified in case extra rows in S which dont
-%                           correspond to metabolties
-%OUTPUT
-% model.SIntRxnBool         Boolean of reactions heuristically though to be mass balanced.
-% model.SIntMetBool         Boolean of metabolites heuristically though to be involved in mass balanced reactions.
-% model.SOnlyIntMetBool     Boolean of metabolites heuristically though only to be involved in mass balanced reactions.
-% model.SExMetBool          Boolean of metabolites heuristically though to be involved in mass imbalanced reactions.
-% model.SOnlyExMetBool      Boolean of metabolites heuristically though only to be involved in mass imbalanced reactions.
-% model.biomassBool         Boolean of biomass reaction
+%    model = findSExRxnInd(model, nRealMet, printLevel)
 %
-% OPTIONAL OUTPUT
-% model.DMRxnBool           Boolean of demand reactions. Prefix 'DM_'
-% model.SinkRxnBool         Boolean of sink reactions. Prefix 'sink_'
-% model.ExchRxnBool         Boolean of exchange reactions. Prefix 'EX_' or 'Exch_' or Ex_
-
-% Ronan Fleming
+% INPUT:
+%    model:         structure with:
+%
+%                     * model.biomassRxnAbbr - abbreviation of biomass reaction
+%
+% OPTIONAL INPUT:
+%    nRealMet:      specified in case extra rows in `S` which dont correspond to metabolties
+%    printLevel:    verbose level
+%
+% OUTPUT:
+%    model:         structure with:
+%
+%                     * .SIntRxnBool - Boolean of reactions heuristically though to be mass balanced.
+%                     * .SIntMetBool - Boolean of metabolites heuristically though to be involved in mass balanced reactions.
+%                     * .SOnlyIntMetBool - Boolean of metabolites heuristically though only to be involved in mass balanced reactions.
+%                     * .SExMetBool - Boolean of metabolites heuristically though to be involved in mass imbalanced reactions.
+%                     * .SOnlyExMetBool - Boolean of metabolites heuristically though only to be involved in mass imbalanced reactions.
+%                     * .biomassBool - Boolean of biomass reaction
+%                     * .DMRxnBool - Boolean of demand reactions. Prefix `DM_` (optional field)
+%                     * .SinkRxnBool - Boolean of sink reactions. Prefix `sink_` (optional field)
+%                     * .ExchRxnBool - Boolean of exchange reactions. Prefix `EX_` or `Exch_` or `Ex_` (optional field)
+%
+% .. Author: -  Ronan Fleming
 
 
 [nMet,nRxn]=size(model.S);

@@ -1,23 +1,22 @@
 function [MW, Ematrix] = computeMW(model, metList, warnings)
-%computeMW Compute molecular weight and elemental matrix of compounds
+% Computes molecular weight and elemental matrix of compounds
 %
-% [MW, Ematrix] = computeMW(model, metList, warnings)
+% USAGE:
 %
-%INPUT
-% model             COBRA model structure 
-%                   (must define .mets and .metFormulas)
+%    [MW, Ematrix] = computeMW(model, metList, warnings)
 %
-%OPTIONAL INPUTS
-% metList           Cell array of which metabolites to search for.
-%                   (Default = all metabolites in model)
-% warnings          Display warnings if there are errors with the
-%                   formula.  (Default = true)
+% INPUT:
+%    model:       COBRA model structure (must define .mets and .metFormulas)
 %
-%OUTPUT
-% MW                Vector of molecular weights
-% Ematrix           m x 6 matrix of order [C N O H P other]
-
-% Jan Schellenberger (Nov. 5, 2008)
+% OPTIONAL INPUTS:
+%    metList:     Cell array of which metabolites to search for. (Default = all metabolites in model)
+%    warnings:    Display warnings if there are errors with the formula. (Default = true)
+%
+% OUTPUTS:
+%    MW:          Vector of molecular weights
+%    Ematrix:     `m` x 6 matrix of order [C N O H P other]
+%
+% .. Author: - Jan Schellenberger (Nov. 5, 2008)
 
 if nargin < 3
     warnings = true;
@@ -52,47 +51,47 @@ for n = 1:length(metIDs)
             case 'C'
                 mwt = 12;
             case 'N'
-                mwt = 14;  
+                mwt = 14;
             case 'O'
                 mwt = 16;
             case 'Na'
                 mwt = 23;
             case 'Mg'
-                mwt = 24;   
+                mwt = 24;
             case 'P'
                 mwt = 31;
             case 'S'
-                mwt = 32;     
+                mwt = 32;
             case 'Cl'
-                mwt = 35;                  
+                mwt = 35;
             case 'K'
-                mwt = 39;                     
+                mwt = 39;
             case 'Ca'
-                mwt = 40;                 
+                mwt = 40;
             case 'Mn'
-                mwt = 55;                
+                mwt = 55;
             case 'Fe'
                 mwt = 56;
             case 'Ni'
                 mwt = 58;
             case 'Co'
-                mwt = 59;                
+                mwt = 59;
             case 'Cu'
-                mwt = 63;                  
+                mwt = 63;
             case 'Zn'
-                mwt = 65;          
+                mwt = 65;
             case 'As'
-                mwt = 75;                  
+                mwt = 75;
             case 'Se'
-                mwt = 80;     
+                mwt = 80;
             case 'Ag'
-                mwt = 107;         
+                mwt = 107;
             case 'Cd'
-                mwt = 114;              
+                mwt = 114;
             case 'W'
-                mwt = 184;                    
+                mwt = 184;
             case 'Hg'
-                mwt = 202;       
+                mwt = 202;
             otherwise
                 if warnings
                     display('Warning');
@@ -104,4 +103,3 @@ for n = 1:length(metIDs)
     end
 end
 Ematrix = computeElementalMatrix(model,metList,false);
-    

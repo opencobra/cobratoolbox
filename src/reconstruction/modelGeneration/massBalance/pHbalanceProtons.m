@@ -1,4 +1,4 @@
-function model=pHbalanceProtons(model,massImbalance,printLevel,fileName)
+function model = pHbalanceProtons(model, massImbalance, printLevel, fileName)
 % Mass balance protons for each reaction by adjusting the hydrogen ion stoichiometric coefficient.
 %
 % For each non transport reaction the proton stoichiometric coefficient for each
@@ -6,40 +6,46 @@ function model=pHbalanceProtons(model,massImbalance,printLevel,fileName)
 % of protons bound by substrate reactants and the average number of protons
 % bound by product reactants
 %
-% i.e. proton S_ij = sum(substrates(S_ij*aveHbound)) -
-%                           sum(products(S_ij*aveHbound))
+% i.e. proton `S_ij = sum(substrates(S_ij*aveHbound)) - sum(products(S_ij*aveHbound))`
 %
 % For each transport reaction, model  transport across the membrane as three
 % reactions, one where non-proton reactants convert into non-proton metabolites
 % involved in one compartment,then in the other compartment, non-proton
 % metabolites convert into non-proton reactants. In between is a reconstruction
-% transport reaction which must be elementally balanced for H to begin
+% transport reaction which must be elementally balanced for `H` to begin
 % with. We assume that the transporter involved has affinity only for a particular
 % species of metabolite defined by the reconstrution.
 %
-% INPUT
-% model.S
-% model.mets
-% model.SIntRxnBool          Boolean of internal reactions
-% model.aveHbound            average number of bound hydrogen ions
-% model.metFormulas          average number of bound hydrogen ions
-% model.metCharges           charge of metabolite species from reconstruction
+% USAGE:
 %
-% OPTIONAL INPUT
-% massImbalance     nRxn x nElement matrix where massImbalance(i,j) is imbalance of
-%                   reaction i for element j. massImbalance(i,j)==0 if
-%                   balanced for that element. The first column is assumed
-%                   to correspond to H balancing.
-% printLevel        {(0),-2,-1,0,1,2,3) print more to file or more to the
-%                   command window
-% fileName          name of the file to print out to
+%    model = pHbalanceProtons(model, massImbalance, printLevel, fileName)
 %
-% OUTPUT
-% model.S                   Stoichiometric matrix balanced for protons where each row.
-%                           corresponds to a reactant at specific pH.
-% model.Srecon              Stoichiometric matrix of the reconstruction
-
-% Ronan M. T. Fleming
+% INPUT:
+%    model:            structure with fields:
+%
+%                        * model.S - stoichiometric matrix
+%                        * model.mets - metabolites
+%                        * model.SIntRxnBool - Boolean of internal reactions
+%                        * model.aveHbound - average number of bound hydrogen ions
+%                        * model.metFormulas - average number of bound hydrogen ions
+%                        * model.metCharges - charge of metabolite species from reconstruction
+%
+% OPTIONAL INPUTS:
+%    massImbalance:    `nRxn` x `nElement` matrix where `massImbalance(i,j)` is imbalance of
+%                      reaction `i` for element `j`. `massImbalance(i,j) == 0` if
+%                      balanced for that element. The first column is assumed
+%                      to correspond to `H` balancing.
+%    printLevel:       {(0), -2, -1, 0, 1, 2, 3) print more to file or more to the command window
+%    fileName:         name of the file to print out to
+%
+% OUTPUT:
+%    model:            structure containing:
+%
+%                        * .S - Stoichiometric matrix balanced for protons where each row.
+%                          corresponds to a reactant at specific pH.
+%                        * .Srecon - Stoichiometric matrix of the reconstruction
+%
+% .. Author: - Ronan M. T. Fleming
 
 if ~exist('printLevel','var')
     printLevel=0;

@@ -1,29 +1,37 @@
-function [fluxConsistentMetBool,fluxConsistentRxnBool,fluxInConsistentMetBool,fluxInConsistentRxnBool,model] = findFluxConsistentSubset(model,param,printLevel)
-%finds the subset of S that is flux consistent using various algorithms,
-%but fastcc from fastcore by default
+function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool, fluxInConsistentRxnBool, model] = findFluxConsistentSubset(model, param, printLevel)
+% Finds the subset of `S` that is flux consistent using various algorithms,
+% but `fastcc` from `fastcore` by default
 %
-%INPUT
-% model
-%    .S             m x n stoichiometric matrix
+% USAGE:
 %
-%OPTIONAL INPUT
-% param.epsilon     (1e-4) minimum nonzero mass 
-% param.modeFlag    {(0),1} 1 = return flux modes
-% param.method      {'fastcc','dc'}          
-% printLevel
+%    [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool, fluxInConsistentRxnBool, model] = findFluxConsistentSubset(model, param, printLevel)
 %
-%OUTPUT
-% fluxConsistentMetBool            m x 1 boolean vector indicating flux consistent mets
-% fluxConsistentRxnBool            n x 1 boolean vector indicating flux consistent rxns
-% fluxInConsistentMetBool          m x 1 boolean vector indicating flux inconsistent mets  
-% fluxInConsistentRxnBool          n x 1 boolean vector indicating flux inconsistent rxns
-% model
-% .fluxConsistentMetBool
-% .fluxConsistentRxnBool
-% .fluxInConsistentMetBool
-% .fluxInConsistentRxnBool
-
-% Ronan Fleming 2017
+% INPUTS:
+%    model:                      structure with field:
+%
+%                                  * .S - `m` x `n` stoichiometric matrix
+%
+% OPTIONAL INPUTS:
+%    param:                      contains:
+%
+%                                  * param.epsilon - (1e-4) minimum nonzero mass
+%                                  * param.modeFlag - {(0),1} 1 = return flux modes
+%                                  * param.method - {'fastcc', 'dc'}
+%    printLevel:                 verbose level
+%
+% OUTPUTS:
+%    fluxConsistentMetBool:      `m` x 1 boolean vector indicating flux consistent `mets`
+%    fluxConsistentRxnBool:      `n` x 1 boolean vector indicating flux consistent `rxns`
+%    fluxInConsistentMetBool:    `m` x 1 boolean vector indicating flux inconsistent `mets`
+%    fluxInConsistentRxnBool:    `n` x 1 boolean vector indicating flux inconsistent `rxns`
+%    model:                      structure with fields duplicating the single output arguments:
+%
+%                                  * .fluxConsistentMetBool
+%                                  * .fluxConsistentRxnBool
+%                                  * .fluxInConsistentMetBool
+%                                  * .fluxInConsistentRxnBool
+%
+% .. Author: - Ronan Fleming, 2017
 
 if ~exist('param','var')
     param.epsilon=1e-4;
@@ -60,7 +68,7 @@ if strcmp(param.method,'null_fastcc')
     %reactions without support in the nullspace basis
     [Z,rankS]=getNullSpace(model.S,0);
     nullFluxInConsistentRxnBool=~any(Z,2);
-    
+
     if any(nullFluxInConsistentRxnBool)
         modelOrig=model;
         nullFluxInConsistentMetBool = getCorrespondingRows(model.S,true(nMet,1),nullFluxInConsistentRxnBool,'exclusive');
@@ -72,7 +80,7 @@ if strcmp(param.method,'null_fastcc')
 end
 
 fluxConsistentRxnBoolTemp=false(size(model.S,2),1);
-    
+
 switch method
     case {'fastcc','null_fastcc'}
         %fast consistency check code from Nikos Vlassis et al
@@ -130,7 +138,7 @@ switch method
         %                           2 =  Unbounded
         %                           0 =  Infeasible
         %                           -1=  Invalid input
-        
+
         %bound the fluxes finitely
         if ~isfinite(min(model.lb))
             model.lb(model.lb<-1/epsilon)=-1/epsilon;
@@ -150,7 +158,7 @@ switch method
         cardPrb.csense  = repmat('E',size(model.S,1), 1);
         cardPrb.lb      = model.lb;
         cardPrb.ub      = model.ub;
-        
+
         %Call the cardinality optimisation solver
         solutionCard = optimizeCardinality(cardPrb);
         if solutionCard.stat == 1
@@ -183,4 +191,3 @@ model.fluxConsistentRxnBool=fluxConsistentRxnBool;
 model.fluxInConsistentMetBool=fluxInConsistentMetBool;
 model.fluxInConsistentRxnBool=fluxInConsistentRxnBool;
 end
-

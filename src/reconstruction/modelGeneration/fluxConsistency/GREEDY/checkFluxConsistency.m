@@ -1,24 +1,22 @@
-function [fluxConsistent,sol]=checkFluxConsistency(model,epsilon)
-%tries to test for flux consistent reactions in one solve
+function [fluxConsistent, sol]=checkFluxConsistency(model, epsilon)
+% Tries to test for flux consistent reactions in one solve
+%
+% USAGE:
+%
+%    [fluxConsistent, sol]=checkFluxConsistency(model, epsilon)
+%
+% INPUTS:
+%    model:             cobra model structure
+%    epsilon:           flux threshold
+%
+% OUTPUTS:
+%
+%    fluxConsistent:    empty 
+%    sol:               result of `solveCobraLP` function
+%
+% .. Author: - Ronan
 
-%[modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model);
-
-%INPUT
-% LPproblem Structure containing the following fields describing the LP
-% problem to be solved
-%  A      LHS matrix
-%  b      RHS vector
-%  c      Objective coeff vector
-%  lb     Lower bound vector
-%  ub     Upper bound vector
-%  osense Objective sense (-1 max, +1 min)
-%  csense Constraint senses, a string containting the constraint sense for
-%         each row in A ('E', equality, 'G' greater than, 'L' less than).
-
-% Ronan
-
-%assumes all reactions are reversible
-S=[model.S - model.S];
+S=[model.S - model.S]; % assumes all reactions are reversible
 
 [m,n]=size(S);
 Om=sparse(zeros(m,m));
@@ -31,11 +29,11 @@ In=sparse(eye(n));
 A1 =[S  -S  Om Omn  Omn Omn Omn;
      On In  S' -In  On  On  On;
      In On -S'  On -In  On  On];
- 
+
  %inequality constraints
 A2 =[-In  On Onm On On In On;
       On -In Onm On On On In];
-  
+
 A=[A1;
    A2];
 
@@ -65,5 +63,3 @@ sol = solveCobraLP(LPproblem);
 fluxConsistent=[];
 
 %pause(eps)
- 
-

@@ -17,11 +17,11 @@ function [A, V] = fastcc_nonconvex(model, epsilon, printLevel, modeFlag)
 %    printLevel:    0 = silent, 1 = summary, 2 = debug
 %
 % OPTIONAL INPUT:
-%    modeFlag:      {(0),1}; 1 = return matrix of modes `V`
+%    modeFlag:      {(0), 1}; 1 = return matrix of modes `V`
 %
 % OUTPUT:
 %    A:             `n` x 1 boolean vector indicating the flux consistent reactions
-%    V:             `n` x `k` matrix such that `S(:,A)*V(:,A) = 0` and ``|V(:,A)|'*1 > 0`
+%    V:             `n` x `k` matrix such that `S(:,A)*V(:,A) = 0` and `|V(:,A)|'*1 > 0`
 %
 % .. Author: -  Hoai Minh LE, 07/01/2016
 
