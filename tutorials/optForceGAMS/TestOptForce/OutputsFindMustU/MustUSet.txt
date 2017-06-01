@@ -1,0 +1,13 @@
+R21
+R22
+R23
+R24
+R33
+R34
+R35
+R36
+R69
+EX_pdo
+EX_nh3
+EX_so4
+SUCt

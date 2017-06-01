@@ -308,7 +308,7 @@ if printReport
     %print model.
     fprintf(freport, '\nModel:\n');
     for i = 1:length(model.rxns)
-        rxn = printRxnFormula(model, model.rxns{i});
+        rxn = printRxnFormula(model, model.rxns{i}, false);
         fprintf(freport, [model.rxns{i} ': ' rxn{1} '\n']);
     end
     %print lower and upper bounds, minimum and maximum values for each of

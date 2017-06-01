@@ -1,0 +1,2 @@
+Reactions	Min Flux in Wild-type strain	Max Flux in Wild-type strain	Min Flux in Mutant strain	Max Flux in Mutant strain
+1	1	{SUCt}	{upregulation}	{155.55}	{155.55}	{155.5556}	155.5556	155.5556	155.5556	-0.0000

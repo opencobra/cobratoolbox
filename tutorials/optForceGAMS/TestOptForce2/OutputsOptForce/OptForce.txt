@@ -1,0 +1,6 @@
+Reactions	Min Flux in Wild-type strain	Max Flux in Wild-type strain	Min Flux in Mutant strain	Max Flux in Mutant strain
+2	1	{R23, R25}	{upregulation, knockout}	{155.55, -8.0779e-28}	{155.5563, 0.00625}	{155.5556, 0}	155.5556	155.5556	155.5556	0.0000
+2	2	{R24, R26}	{upregulation, downregulation}	{155.55, -8.0779e-28}	{155.5563, 0.00625}	{155.5556, 0}	155.5556	155.5556	155.5556	-0.0000
+2	3	{R24, R26}	{upregulation, knockout}	{155.55, -8.0779e-28}	{155.5563, 0.00625}	{155.5556, 0}	155.5556	155.5556	155.5556	-0.0000
+2	4	{R24, R63}	{upregulation, knockout}	{155.55, 0}	{155.5563, 0.00625}	{155.5556, 0}	155.5556	155.5556	155.5556	-0.0000
+2	5	{R23, R63}	{upregulation, knockout}	{155.55, 0}	{155.5563, 0.00625}	{155.5556, 0}	155.5556	155.5556	155.5556	0.0000

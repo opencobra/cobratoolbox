@@ -1,0 +1,228 @@
+findMustLWithGAMS.m executed on 01-Jun-2017 at 19:23
+
+MATLAB: Release R2016a
+GAMS: C:\GAMS\win64\24.8\gams.mexw64
+GAMS solver: cplex
+
+The following inputs were used to run OptForce: 
+
+------INPUTS------
+
+Model:
+R1: g6p  <=> f6p 
+R2: f6p + atp  -> fbp 
+R3: fbp  <=> dhap + gap 
+R4: dhap  <=> gap 
+R5: gap  <=> atp + 3pg + nadh 
+R6: 3pg  <=> pep 
+R7: pep  -> atp + pyr 
+R8: g6p  -> 6pg + nadph 
+R9: 6pg  -> nadph + ru5p + co2 
+R10: ru5p  <=> x5p 
+R11: ru5p  <=> r5p 
+R12: x5p  <=> gap + tkc2 
+R13: f6p  <=> tkc2 + e4p 
+R14: s7p  <=> r5p + tkc2 
+R15: f6p  <=> gap + tac3 
+R16: s7p  <=> e4p + tac3 
+R17: 6pg  -> kdpg 
+R18: kdpg  -> gap + pyr 
+R19: pyr  -> nadh + co2 + accoa 
+R20: accoa + oac  -> cit 
+R21: cit  <=> icit 
+R22: icit  <=> nadph + co2 + akg 
+R23: akg  -> nadh + co2 + succoa 
+R24: succoa  <=> atp + suc 
+R25: suc  <=> fum + fadh2 
+R26: fum  <=> mal 
+R27: mal  <=> nadh + oac 
+R28: mal  -> pyr + nadph + co2 
+R29: mal  -> nadh + pyr + co2 
+R30: pep + co2  -> oac 
+R31: atp + oac  -> pep + co2 
+R32: accoa  <=> atp + ac 
+R33: dhap + nadh  <=> glyc3p 
+R34: glyc3p  -> glyc 
+R35: glyc  -> hpa 
+R36: nadph + hpa  -> pdo 
+R37: nadph + akg + nh3  -> glu 
+R38: atp + nh3 + glu  -> gln 
+R39: atp + 2 nadph + glu  -> pro 
+R40: 5 atp + nadph + co2 + accoa + glu + gln + asp  -> akg + fum + ac + arg 
+R41: oac + glu  -> akg + asp 
+R42: 2 atp + nh3 + asp  -> asn 
+R43: pyr + glu  -> akg + ala 
+R44: 3pg + glu  -> nadh + akg + ser 
+R45: ser  <=> gly + meethf 
+R46: gly  <=> nadh + co2 + nh3 + meethf 
+R47: thr  -> nadh + accoa + gly 
+R48: 3 atp + 4 nadph + accoa + ser + so4  -> ac + cys 
+R49: atp + pyr + 2 nadph + succoa + glu + asp  -> akg + suc + ll-dap 
+R50: ll-dap  -> co2 + lys 
+R51: 2 atp + 2 nadph + asp  -> thr 
+R52: atp + 2 nadph + succoa + asp + cys + methf  -> pyr + suc + nh3 + met 
+R53: pyr + nadph + glu + pyr_1  -> co2 + akg + val 
+R54: pyr + nadph + accoa + glu + pyr_1  -> nadh + co2 + akg + leu + co2_1 
+R55: pyr + nadph + glu + thr  -> co2 + akg + nh3 + ile 
+R56: atp + pep + nadph + e4p + glu + pep_1  -> co2 + akg + phe 
+R57: atp + pep + nadph + e4p + glu + pep_1  -> nadh + co2 + akg + tyr 
+R58: 3 atp + pep + nadph + r5p + e4p + gln + ser + pep_1  -> gap + pyr + co2 + glu + trp 
+R59: 5 atp + r5p + gln + asp + fthf  -> 2 nadh + akg + fum + his 
+R60: nadh + meethf  -> methf 
+R61: meethf  -> nadph + fthf 
+R62: nadh + 0.5 o2  -> 3 atp 
+R63: fadh2 + 0.5 o2  -> 2 atp 
+R64: nadh  <=> nadph 
+R65: atp  -> atp(ext) 
+R66: atp + gluc(ext)  -> g6p 
+R67: cit(ext)  -> cit 
+R68: glyc  <=> glyc(ext) 
+R69: pdo  -> pdo(ext) 
+R70: ac  -> ac(ext) 
+R71: co2  -> co2(ext) 
+R72: o2(ext)  -> o2 
+R73: nh3(ext)  -> nh3 
+R74: so4(ext)  -> so4 
+R75: 0.205 g6p + 0.071 f6p + 33.247 atp + 0.129 gap + 0.619 3pg + 0.051 pep + 0.083 pyr + 5.363 nadph + 0.754 r5p + 2.51 accoa + 0.34 oac + 0.087 akg + 0.25 glu + 0.25 gln + 0.21 pro + 0.229 asp + 0.281 arg + 0.229 asn + 0.488 ala + 0.205 ser + 0.582 gly + 0.443 meethf + 0.241 thr + 0.087 cys + 0.326 lys + 0.146 met + 0.402 val + 0.428 leu + 0.276 ile + 0.176 phe + 0.131 tyr + 0.054 trp + 0.09 his  -> 1.455 nadh 
+EX_pdo: pdo(ext)  -> 
+EX_co2: co2(ext)  -> 
+EX_ac: ac(ext)  -> 
+EX_atp: atp(ext)  -> 
+EX_gluc: gluc(ext)  <=> 
+EX_cit: cit(ext)  <=> 
+EX_glyc: glyc(ext)  <=> 
+EX_nh3: nh3(ext)  <=> 
+EX_o2: o2(ext)  <=> 
+EX_so4: so4(ext)  <=> 
+SUCt: suc  -> suc(ext) 
+EX_suc: suc(ext)  -> 
+PSEUDOpyr_1: pyr  -> pyr_1 
+PSEUDOpep_1: pep  -> pep_1 
+PSEUDOco2_1: co2_1  -> co2 
+
+LB	UB	Min_WT	Max_WT
+-1000.0000	1000.0000	-90.1251	97.1300
+0.0000	1000.0000	0.0000	86.0700
+-1000.0000	1000.0000	0.0000	86.0700
+-1000.0000	1000.0000	-56.1567	86.0700
+-1000.0000	1000.0000	21.3033	163.5300
+-1000.0000	1000.0000	-3.0777	154.8640
+0.0000	1000.0000	0.0000	151.5086
+0.0000	1000.0000	0.0000	187.2551
+0.0000	1000.0000	0.0000	169.5163
+-1000.0000	1000.0000	-10.0660	102.9449
+-1000.0000	1000.0000	10.0660	66.5714
+-1000.0000	1000.0000	-10.0660	102.9449
+-1000.0000	1000.0000	-48.9454	7.5600
+-1000.0000	1000.0000	-53.9994	2.5060
+-1000.0000	1000.0000	-53.9994	2.5060
+-1000.0000	1000.0000	-2.5060	53.9994
+0.0000	1000.0000	0.0000	86.0700
+0.0000	1000.0000	-0.0000	86.0700
+0.0000	1000.0000	9.7020	114.6466
+0.0000	1000.0000	0.0000	56.5564
+-1000.0000	1000.0000	16.0264	145.2048
+-1000.0000	1000.0000	16.0264	145.2048
+0.0000	1000.0000	0.9344	130.1128
+-1000.0000	1000.0000	-5.6736	123.5048
+-1000.0000	1000.0000	0.0000	118.0576
+-1000.0000	1000.0000	5.1940	123.2516
+-1000.0000	1000.0000	-98.1150	123.2516
+0.0000	1000.0000	0.0000	151.5086
+0.0000	1000.0000	0.0000	151.5086
+0.0000	1000.0000	0.0000	254.5400
+0.0000	1000.0000	0.0000	253.2493
+-1000.0000	1000.0000	-7.1960	94.6056
+-1000.0000	1000.0000	-0.0000	84.8467
+0.0000	1000.0000	0.0000	84.8467
+0.0000	1000.0000	0.0000	175.1064
+0.0000	1000.0000	0.0000	175.1064
+0.0000	1000.0000	91.4130	107.1280
+0.0000	1000.0000	9.4500	9.4500
+0.0000	1000.0000	2.9400	2.9400
+0.0000	1000.0000	3.9340	3.9340
+0.0000	1000.0000	25.4520	56.8820
+0.0000	1000.0000	3.2060	3.2060
+0.0000	1000.0000	6.8320	6.8320
+0.0000	1000.0000	0.0000	15.7150
+-1000.0000	1000.0000	-6.8880	8.8270
+-1000.0000	1000.0000	0.6790	16.3940
+0.0000	1000.0000	0.0000	31.4300
+0.0000	1000.0000	3.2620	3.2620
+0.0000	1000.0000	4.5640	4.5640
+0.0000	1000.0000	4.5640	4.5640
+0.0000	1000.0000	7.2380	38.6680
+0.0000	1000.0000	2.0440	2.0440
+0.0000	1000.0000	5.6280	5.6280
+0.0000	1000.0000	5.9920	5.9920
+0.0000	1000.0000	3.8640	3.8640
+0.0000	1000.0000	2.4640	2.4640
+0.0000	1000.0000	1.8340	1.8340
+0.0000	1000.0000	0.7560	0.7560
+0.0000	1000.0000	1.2600	1.2600
+0.0000	1000.0000	2.0440	2.0440
+0.0000	1000.0000	1.2600	1.2600
+0.0000	1000.0000	79.7324	200.0000
+0.0000	1000.0000	0.0000	118.0576
+-1000.0000	1000.0000	-39.5563	353.9124
+0.0000	1000.0000	0.0000	253.2493
+0.0000	1000.0000	40.6267	100.0000
+0.0000	1000.0000	15.0890	100.0000
+-1000.0000	1000.0000	-100.0000	84.8467
+0.0000	1000.0000	0.0000	175.1064
+0.0000	1000.0000	0.0000	101.8016
+0.0000	1000.0000	134.9718	407.3274
+0.0000	1000.0000	62.1267	100.0000
+0.0000	1000.0000	97.4820	97.4820
+0.0000	1000.0000	3.2620	3.2620
+0.0000	1000.0000	14.0000	14.0000
+0.0000	1000.0000	0.0000	175.1064
+0.0000	1000.0000	134.9718	407.3274
+0.0000	1000.0000	0.0000	101.8016
+0.0000	1000.0000	0.0000	253.2493
+-100.0000	1000.0000	-100.0000	-40.6267
+-100.0000	1000.0000	-100.0000	-15.0890
+-100.0000	1000.0000	-100.0000	84.8467
+-100.0000	1000.0000	-97.4820	-97.4820
+-100.0000	1000.0000	-100.0000	-62.1267
+-100.0000	1000.0000	-3.2620	-3.2620
+0.0000	1000.0000	0.0000	105.4230
+0.0000	1000.0000	0.0000	105.4230
+0.0000	1000.0000	11.6200	11.6200
+0.0000	1000.0000	5.0540	5.0540
+0.0000	1000.0000	5.9920	5.9920
+
+Constrained reactions:
+EX_gluc: fixed in -100.0000
+R75: fixed in 0.0000
+EX_suc: fixed in 155.5000
+
+runID(Main Folder): TestOptForce 
+
+outputFolder: OutputsFindMustL 
+
+outputFileName: MustLSet 
+
+printExcel: 1 
+
+printText: 1 
+
+printReport: 1 
+
+keepInputs: 1  
+
+keepGamsOutputs: 1 
+
+verbose: 0 
+
+------RESULTS------
+
+GAMS was executed correctly
+
+GAMS variables were read by MATLAB correctly
+
+a MustL set was found
+
+MustL set was printed in MustLSet.xls  
+
+MustL set was printed in MustLSet.txt  
