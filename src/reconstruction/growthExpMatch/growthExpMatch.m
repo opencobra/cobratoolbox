@@ -1,59 +1,63 @@
-function [solution]=growthExpMatch(model, KEGGFilename, compartment, iterations, dictionary, logFile, threshold,KEGGBlackList)
-%growExpMatch run the growthExpMatch algorithm
+function [solution] = growthExpMatch(model, KEGGFilename, compartment, iterations, dictionary, logFile, threshold, KEGGBlackList)
+% Runs the `growthExpMatch` algorithm
 %
-%   [solution]=growthExpMatch(model, KEGGFilename, compartment, iterations, dictionary, logFile, threshold, KEGGBlackList)
+% USAGE:
 %
-%INPUTS
-% model         COBRA model structure
-% KEGGFilename  File name containing Kegg database (.lst file with list of
-%               reactions: each listing is reaction name followed by colon
-%               followed by the reaction formula)
-% compartment   [c] --> transport from cytoplasm [c] to extracellulat space
-%               [e] (default), [p] creates transport from [c] to [p] 
-%               and from [p] to [c]
-% iterations    Number of iterations to run
-% dictionary    n x 2 cell array of metabolites names for conversion from 
-%               Kegg ID's to the compound abbreviations from BiGG database 
-%               (1st column is compound abb. (non-compartmenalized) and 
-%               2nd column is Kegg ID) Both columns are the same length.
+%    [solution] = growthExpMatch(model, KEGGFilename, compartment, iterations, dictionary, logFile, threshold, KEGGBlackList)
 %
-%OPTINAL INPUTS
-% logFile       solution is printed in this file (name of reaction added and
-%               flux of that particular reaction) (Default = GEMLog.txt)
+% INPUTS:
+%    model:           COBRA model structure
+%    KEGGFilename:    File name containing Kegg database (.lst file with list of
+%                     reactions: each listing is reaction name followed by colon
+%                     followed by the reaction formula)
+%    compartment:     [c] --> transport from cytoplasm [c] to extracellulat space
+%                     [e] (default), [p] creates transport from [c] to [p]
+%                     and from [p] to [c]
+%    iterations:      Number of iterations to run
+%    dictionary:      `n` x 2 cell array of metabolites names for conversion from
+%                     Kegg ID's to the compound abbreviations from BiGG database
+%                     (1st column is compound abb. (non-compartmenalized) and
+%                     2nd column is Kegg ID) Both columns are the same length.
 %
-% threshold     threshold number for biomass reaction; model is considered 
-%               to be growing when the flux of the biomass reaction is 
-%               above threshold. (Default = 0.05)
+% OPTIONAL INPUTS:
+%    logFile:         solution is printed in this file (name of reaction added and
+%                     flux of that particular reaction) (Default = GEMLog.txt)
 %
-%OUTPUT
-% solution  MILP solution that consists of the continuous solution, integer
-%               solution, objective value, stat, full solution, and
-%               imported reactions
+%    threshold:       threshold number for biomass reaction; model is considered
+%                     to be growing when the flux of the biomass reaction is
+%                     above threshold. (Default = 0.05)
 %
+% OUTPUT:
+%    solution:        MILP solution that consists of the continuous solution, integer
+%                     solution, objective value, stat, full solution, and
+%                     imported reactions
 %
-%%Procedure to run SMILEY:
-%(1) obtain all input files (ie. model, CompAbr, and KeggID are from BiGG, KeggList is from Kegg website)
-%(2) remove desired reaction from model with removeRxns, or set the model
+% Procedure to run SMILEY:
+%
+%    1. Obtain all input files (ie. `model`, `CompAbr`, and `KeggID` are from `BiGG`, `KeggList` is from Kegg website)
+%    2. Remove desired reaction from `model` with `removeRxns`, or set the model
 %       on a particular Carbon or Nitrogen source
-%(3) create an SUX Matrix by using the function MatricesSUX =
-%       generateSUXMatrix(model,dictionary, KEGGFilename,compartment)
-%(4) run it through SMILEY using [solution,b,solInt]=Smiley(MatricesSUX)
-%(5) solution.importedRxns contains the solutions to all iterations
+%    3. Create an SUX Matrix by using the function `MatricesSUX =
+%       generateSUXMatrix(model, dictionary, KEGGFilename, compartment)`
+%    4. Run it through SMILEY using `[solution, b, solInt] = Smiley(MatricesSUX)`
+%    5. `solution.importedRxns` contains the solutions to all iterations
 %
-% MILPproblem
-%  A      LHS matrix
-%  b      RHS vector
-%  c      Objective coeff vector
-%  lb     Lower bound vector
-%  ub     Upper bound vector
-%  osense Objective sense (-1 max, +1 min)
-%  csense Constraint senses, a string containting the constraint sense for
-%         each row in A ('E', equality, 'G' greater than, 'L' less than).
-%  vartype Variable types
-%  x0      Initial solution
-
-% Based on IT 11/2008
-% Edited by JDO on 4/19/11
+% ..
+%    MILPproblem
+%     A      LHS matrix
+%     b      RHS vector
+%     c      Objective coeff vector
+%     lb     Lower bound vector
+%     ub     Upper bound vector
+%     osense Objective sense (-1 max, +1 min)
+%     csense Constraint senses, a string containting the constraint sense for
+%            each row in A ('E', equality, 'G' greater than, 'L' less than).
+%     vartype Variable types
+%     x0      Initial solution
+%
+% .. Author:
+%       - Based on IT 11/2008
+%       - Edited by JDO on 4/19/11
 
 if nargin <8
     KEGGBlackList = {};
@@ -165,7 +169,7 @@ MILPproblem.x0 = x0;
 
 for i = 1: iterations
     solution = solveCobraMILP(MILPproblem);
-    
+
     if(solution.obj~=0)
         solInt(:,i+1)=solution.int;
         printSolutionGEM(MatricesSUX, solution,logFile,i);
@@ -174,8 +178,8 @@ for i = 1: iterations
         MILPproblem.csense(rows+i+1) = 'L';
 %         save([logFile '_solution_' num2str(i)]);
     end
-    
-    
+
+
     solution.importedRxns = findImportedReactions(solInt, MatricesSUX);
     tmp=find(solution.cont);
     for j=1:length(tmp)
@@ -199,5 +203,3 @@ for i = 1: size(solInt,2)-1
         MatricesSUX.rxns(stopModel + x(j));
     end
 end
-
-

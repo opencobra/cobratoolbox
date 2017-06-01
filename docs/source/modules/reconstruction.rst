@@ -9,7 +9,7 @@ Reconstruction
 
    rBioNet
    fastGapFill
-   #growthExpMatch
+   growthExpMatch
    modelGeneration
    #refinement
 
