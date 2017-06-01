@@ -181,10 +181,8 @@ end
 if ~isempty(strmatch('Notes',rxnHeaders,'exact'))
     model.rxnNotes = Strings(2:end,strmatch('Notes',rxnHeaders,'exact'));
 end
-if ~isempty(strmatch('References',rxnHeaders,'exact'))
-    %This needs to be changed to the new annotation scheme and putting the
-    %PubMed id using isDescribedBy there.
-    model.rxnReferences = Strings(2:end,strmatch('References',rxnHeaders,'exact'));
+if ~isempty(strmatch('References',rxnHeaders,'exact'))        
+    model.rxnReferences = cellfun(@(x) regexprep(x,'PMID:',''), Strings(2:end,strmatch('References',rxnHeaders,'exact')),'UniformOutput',0);
 end
 
 %fill in opt info for metabolites
