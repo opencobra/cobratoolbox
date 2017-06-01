@@ -22,8 +22,6 @@ function [tissueModel,Rxns] = createTissueSpecificModel(model, expressionData,ex
 %	funcModel               1 - Build a functional model having only reactions
 %                           that can carry a flux (using a consistency check), 0 - skip this
 %                           step (Default = 0)
-%	options                 1- user defines the parameters for running the extraction
-%                           methods 0- extraction methods use default settings
 %   param                   structure containing the specific parameters reauired for each
 %                           extraction method need only to be provided is options = 1 (see
 %                           PARAMETER section below)
@@ -144,9 +142,6 @@ if ~exist('funcModel','var') || isempty(funcModel)
     funcModel = 0;
 end
 
-if ~exist('options','var') || isempty(options)
-    options = 0;
-end
 if ~exist('param','var') || isempty(param)
     param = {};
 end
@@ -175,7 +170,7 @@ end
 
 switch solver
     case 'iMAT'
-        if options==1
+        if ~isempty(param)
             tissueModel = iMAT(model, expressionRxns, param.threshold_lb, param.threshold_ub, param.tol, param.core, param.logfile, param.runtime); 
         else
             % if options are not defined use default settings
@@ -183,7 +178,7 @@ switch solver
         end
         
     case 'GIMME'
-        if options==1
+        if ~isempty(param)
             tissueModel = GIMME(model, expressionRxns, param.threshold, param.obj_frac); 
         else
             % if options are not defined use default settings
@@ -191,7 +186,7 @@ switch solver
         end
         
     case 'INIT'
-        if options==1
+        if ~isempty(param)
             tissueModel = INIT(model, param.weights, param.tol, param.runtime, param.logfile); 
         else
             % if options are not defined use default settings
@@ -206,7 +201,7 @@ switch solver
         end
         
     case 'MBA'
-        if options==1
+        if ~isempty(param)
             tissueModel = MBA(model, param.medium_set, param.high_set, param.tol, param.core);       
         else
             % if options are not defined use default settings
@@ -222,7 +217,7 @@ switch solver
         end
 
     case 'mCADRE'
-        if options==1
+        if ~isempty(param)
             tissueModel = mCADRE(model, param.ubiquityScore, param.confidenceScores, param.protectedRxns, param.checkFunctionality, param.eta, param.tol);
         else
             % if options are not defined use default settings
@@ -243,7 +238,7 @@ switch solver
         end
     
     case 'fastCore'
-        if options==1
+        if ~isempty(param)
             tissueModel = fastcore(model, param.core, param.epsilon, param.printlevel);
         else
             % if options are not defined use default settings
