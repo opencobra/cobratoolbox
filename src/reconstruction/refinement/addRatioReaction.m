@@ -14,6 +14,7 @@ function modelNew = addRatioReaction(model, listOfRxns, ratioCoeff)
 %    modelNew:      COBRA model structure containing the ratio
 %
 % EXAMPLE:
+%
 %    %1 v_EX_ac(e) = 2 v_EX_for(e):
 %    modelNew = addRatioReaction(model, {'EX_ac(e)' 'EX_for(e)'}, [1 2])
 %

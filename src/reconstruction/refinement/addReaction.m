@@ -43,6 +43,7 @@ function [model, rxnIDexists] = addReaction(model, rxnID, varargin)
 %                        of an identical reaction already present in the model.
 %
 % EXAMPLES:
+%
 %    %1) Add a new irreversible reaction using the formula approach
 %    model = addReaction(model,'newRxn1','A -> B + 2 C')
 %    %2) Add a the same reaction using the list approach
