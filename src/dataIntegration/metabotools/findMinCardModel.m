@@ -67,13 +67,13 @@ for i = 1 :length(UsedRxnID)
         cntR = cntR+1;
     elseif strcmp(modelIrrev.rxns{UsedRxnID(i)}(end-1:end),'_b') %  uptake
         AddedExchange{cntR,1}= strcat(modelIrrev.rxns{UsedRxnID(i)}(1:end-2));
-        
+
         cntR = cntR+1;
     elseif strcmp(modelIrrev.rxns{UsedRxnID(i)}(end-1:end),'_f') %  uptake
         AddedExchange{cntR,1}= strcat(modelIrrev.rxns{UsedRxnID(i)}(1:end-2));
-        
+
         cntR = cntR+1;
-        
+
     else
         AddedExchange{cntR,1} = strcat(modelIrrev.rxns{UsedRxnID(i)});
         cntR = cntR+1;
