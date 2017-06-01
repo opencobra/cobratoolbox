@@ -1,43 +1,40 @@
-function [gene_id, gene_expr] = findUsedGenesLevels(model,expressionData)
-%Returns vectors of gene identifiers and corresponding gene expression
-%levels for each gene present in the model (model.gene).
+function [gene_id, gene_expr] = findUsedGenesLevels(model, exprData)
+% Returns vectors of gene identifiers and corresponding gene expression
+% levels for each gene present in the model (model.genes).
 %
-%INPUTS
+% INPUTS:
 %
-%   model               input model (COBRA model structure)
+%   model:               input model (COBRA model structure)
 %
-%   expressionData      mRNA expression data structure
-%       gene                cell array containing GeneIDs
-%       value               Vector containing corresponding expression value (FPKM)
+%   exprData:            mRNA expression data structure
+%       .gene                cell array containing GeneIDs in the same
+%                            format as model.genes
+%       .value               Vector containing corresponding expression value (FPKM)
 %
-%OUTPUTS
+% OUTPUTS:
 %
-%   gene_id             vector of gene identifiers present in the model
-%                       that are associated with expression data
+%   gene_id:             vector of gene identifiers present in the model
+%                        that are associated with expression data
 %
-%   gene_expr           vector of expression values associated to each
-%                       gened_id
+%   gene_expr:           vector of expression values associated to each
+%                        gened_id
 %
-% S. Opdam & A. Richelle May 2017
+% Authors: - S. Opdam & A. Richelle May 2017
 
-
-gene_id = {};
 gene_expr=[];
-for i = 1:numel(model.genes)
-	gene_id{i} = model.genes{i};
-end
+gene_id = model.genes;
 
 for i = 1:numel(gene_id)
         
     cur_ID = gene_id{i};
-	dataID=find(ismember(expressionData.gene,cur_ID )==1);
+	dataID=find(ismember(exprData.gene,cur_ID)==1);
 	if isempty (dataID)
     	gene_expr(i)=-1;
     elseif length(dataID)==1
-    	gene_expr(i)=expressionData.value(dataID);
+    	gene_expr(i)=exprData.value(dataID);
     elseif length(dataID)>1
     	disp(['Double for ',num2str(cur_ID)])
-    	gene_expr(i)=mean(expressionData.value(dataID));
+    	gene_expr(i)=mean(exprData.value(dataID));
     end
 end
            
