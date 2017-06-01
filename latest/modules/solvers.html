@@ -425,6 +425,44 @@ problem of type &#8220;problemType&#8221;</div></blockquote>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.base.solvers.getAvailableGAMSSolvers">
+<code class="descname">getAvailableGAMSSolvers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/34d8a67d6efa42df6bd6cabb20b001dbd6ff4f2a/src/base/solvers/getAvailableGAMSSolvers.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getAvailableGAMSSolvers" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>DESCRIPTION</dt>
+<dd><p class="first">This function return the GAMS solvers which are available in your system
+according to the license.</p>
+<p>Created by Sebastián Mendoza. 30/05/2017. <a class="reference external" href="mailto:snmendoz&#37;&#52;&#48;uc&#46;cl">snmendoz<span>&#64;</span>uc<span>&#46;</span>cl</a>
+INPUTS
+None
+OUTPUTS
+table             Type: cell array</p>
+<blockquote>
+<div>Description: matrix summarizing which problem can be
+solved by which solver. A &#8220;yes&#8221; in position (i,j) means
+that the GAMS solver &#8220;j&#8221; is available in your system to
+solve a problem of type &#8220;i&#8221;. Please note that headers
+are included in this table, so the first column and
+the first row have labels for solvers and problem
+types, respectively.</div></blockquote>
+<dl class="docutils">
+<dt>numTable          Type: double matrix</dt>
+<dd>Description: matrix summarizing which problem can be
+solved by which solver. A &#8220;1&#8221; in position (i,j) means
+that the GAMS solver &#8220;j&#8221; is available in your system to
+solve a problem of type &#8220;i&#8221;</dd>
+<dt>problemType       Type: cell array of strings</dt>
+<dd>Description: list of problem types that can be solved
+in GAMS. Example: LP, MIP, etc</dd>
+<dt>solvers           Type: cell array of strings</dt>
+<dd>Description: list of solvers available in GAMS</dd>
+</dl>
+<p class="last">CODE</p>
+</dd>
+</dl>
+<p>verify that gams is installed</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.base.solvers.getCobraSolverParams">
 <code class="descname">getCobraSolverParams</code><span class="sig-paren">(</span><em>solverType</em>, <em>paramNames</em>, <em>parameters</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/34d8a67d6efa42df6bd6cabb20b001dbd6ff4f2a/src/base/solvers/getCobraSolverParams.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getCobraSolverParams" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
