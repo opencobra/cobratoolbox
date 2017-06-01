@@ -6,11 +6,12 @@ This section lists the labels we use to help us track and manage issues and pull
 | -----------| --- |
 | `beginner` | Less complex issues that would be good first issues to work on for users who want to contribute to Atom. |
 | `bug` | Confirmed bugs or reports that are very likely to be bugs. |
-| `do not merge` | Indicates that the PR should not be merged |
-| `documentation` | Related to any type of documentation |
+| `do not merge` | Indicates that the PR should not be merged. |
+| `documentation` | Added documentation or documentation formatting. |
 | `enhancement` | Feature requests. |
 | `help wanted` | The Atom core team would appreciate help from the community in resolving these issues. |
 | `in progress` | Pull requests/issues that are still being worked on, more changes will follow. |
+| `needs documentation` | The files included in the pull request need documentation or documentation formatting. |
 | `needs more information` | More information needs to be collected about these problems or feature requests (e.g. steps to reproduce). |
 | `needs reproduction` | Likely bugs, but haven't been reliably reproduced. |
 | `needs response` | A response is needed from the author of the PR. Issue will likely be closed unless a response is provided. |
