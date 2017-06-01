@@ -1,17 +1,20 @@
-function modelNew=removeUnusedGenes(model)
-%removeUnusedGenes updates the rules, genes, and rxnGeneMat fields based on the grRules field for
-%reactions in the model.
+function modelNew = removeUnusedGenes(model)
+% Updates the rules, genes, and rxnGeneMat fields based on the grRules field for
+% reactions in the model.
 %
-% modelNew = removeUnusedGenes(model)
+% USAGE:
 %
-%INPUTS
-% model             COBRA structure
+%    modelNew = removeUnusedGenes(model)
 %
-%OUTPUT
-% model             COBRA model structure with updated gene field reflecting only
-%					content present in the model
+% INPUTS:
+%		 model:    COBRA structure
 %
-% Sjoerd Opdam - 6/24/2014    
+% OUTPUT:
+%		 model:    COBRA model structure with updated gene field reflecting only
+%							 content present in the model
+%
+% .. Author: - Sjoerd Opdam - 6/24/2014
+
 	genes=unique(model.genes);
     if length(model.genes) ~= length(genes)
         disp('Some genes have identical IDs')

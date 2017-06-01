@@ -7,28 +7,31 @@ function [model ModifiedRxns] = changeRxnMets(model, Mets2change, NewMets, Rxn, 
 %    [model ModifiedRxns] = changeRxnMets(model, Mets2change, NewMets, Rxn, NewStoich)
 %
 % INPUTS:
-%    model:               COBRA model structure
-%    Mets2change:         Cell array of metabolites to change
-%    NewMets:             Cell array of replacement metabolites (must be in
-%                         order of those that will be replaced
-%    Rxn:                 reaction to change (string) or cell array, or if a number is put
-%                         here, that number of reactions (with `Mets2change`) will
-%                         be randomly chosen and the metabolites will be swapped
+%    model:           COBRA model structure
+%    Mets2change:     Cell array of metabolites to change
+%    NewMets:         Cell array of replacement metabolites (must be in
+%                     order of those that will be replaced
+%    Rxn:             reaction to change (string) or cell array, or if a number is put
+%                     here, that number of reactions (with `Mets2change`) will
+%                     be randomly chosen and the metabolites will be swapped
 %
 % OPTIONAL INPUT:
-%    NewStoich:           Stoichiometry of new metabs (conserved from old mets by default).
+%    NewStoich:       Stoichiometry of new metabs (conserved from old mets by default).
 %                     If multiple reactions are being changed, this must be
-%                     a mets x rxns matrix,
-%                           e.g. for 2 new reactions: Rxn = {'r1','r2'}
-%                                r1: 2 A + 3 B -> 1 C
-%                                r2: 4 A + 3 B -> 3 C
-%                               where A and C are the new metabolites,
-%                               NewMets = {'A', 'C'}
-%                               NewStoich = [ 2 4; 1 3]
+%                     a `mets` x `rxns` matrix,
+%
+%                     e.g. for 2 new reactions: Rxn = {'r1', 'r2'},
+%
+%                       * r1: 2 A + 3 B -> 1 C
+%                       * r2: 4 A + 3 B -> 3 C
+%
+%                     where A and C are the new metabolites,
+%                     NewMets = {'A', 'C'}
+%                     NewStoich = [ 2 4; 1 3]
 %
 % OUTPUTS:
-% model              COBRA model structure with changed reaction
-% ModifiedRxns       Rxns which were modified
+%    model:           COBRA model structure with changed reaction
+%    ModifiedRxns:    `Rxns` which were modified
 %
 %  Nathan Lewis (Apr 24, 2009)
 

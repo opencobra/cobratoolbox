@@ -1,37 +1,38 @@
-function [modelRed,hasFlux,maxes,mins] = reduceModel(model,tol,irrevFlag,verbFlag,negFluxAllowedFlag,checkConsistencyFlag,changeBoundsFlag)
-%reduceModel Removes from the model all of the reactions that are never used (max and
+function [modelRed, hasFlux, maxes, mins] = reduceModel(model, tol, irrevFlag, verbFlag, negFluxAllowedFlag, checkConsistencyFlag, changeBoundsFlag)
+% Removes from the model all of the reactions that are never used (max and
 % min are < tol). Finds the minimal bounds for the flux through each reaction.
 % Also returns the results for flux variability analysis (maxes, mins).
 %
-% [modelRed,hasFlux,maxes,mins] = reduceModel(model,tol,irrevFlag,verbFlag,negFluxAllowedFlag,checkConsistencyFlag,changeBoundsFlag)
+% USAGE
 %
-%INPUT
-% model                 COBRA model structure
+%    [modelRed, hasFlux, maxes, mins] = reduceModel(model, tol, irrevFlag, verbFlag, negFluxAllowedFlag, checkConsistencyFlag, changeBoundsFlag)
 %
-%OPTIONAL INPUTS
-% tol                   Tolerance for non-zero bounds - bounds smaller in absolute
-%                       value than this value will be set to zero (Default = 1e-6)
-% irrevFlag             Determines if the models should be treated using
-%                       the irreversible form. (Default = false)
-% verbFlag              Verbose output (Default = false)
-% negFluxAllowedFlag    Allow negative fluxes through irrev reactions
-%                       (Default = false)
-% checkConsistencyFlag  Do a consistency check of the optimal solution
-%                       (Default = true)
-% changeBoundsFlag      Change upper/lower bounds to the minimal bounds
-%                       (Default = true)
+% INPUT:
+%    model:                   COBRA model structure
 %
-%OUTPUTS
-% modelRed              Reduced model
-% hasFlux               The indexes of the reactions that are not blocked
-%                       in the model
-% maxes                 Maximum fluxes
-% mins                  Minimum fluxes
+% OPTIONAL INPUTS:
+%    tol:                     Tolerance for non-zero bounds - bounds smaller in absolute
+%                             value than this value will be set to zero (Default = 1e-6)
+%    irrevFlag:               Determines if the models should be treated using
+%                             the irreversible form. (Default = false)
+%    verbFlag:                Verbose output (Default = false)
+%    negFluxAllowedFlag:      Allow negative fluxes through irrev reactions
+%                             (Default = false)
+%    checkConsistencyFlag:    Do a consistency check of the optimal solution
+%                             (Default = true)
+%    changeBoundsFlag:        Change upper/lower bounds to the minimal bounds
+%                             (Default = true)
 %
-% Gregory Hannum and Markus Herrgard 7/20/05
+% OUTPUTS:
+%    modelRed:                Reduced model
+%    hasFlux:                 The indexes of the reactions that are not blocked
+%                             in the model
+%    maxes:                   Maximum fluxes
+%    mins:                    Minimum fluxes
+%
+% .. Author: - Gregory Hannum and Markus Herrgard 7/20/05
 
-% Sets the tolerance for zero flux determination
-if nargin < 2
+if nargin < 2 % Sets the tolerance for zero flux determination
     global CBT_LP_PARAMS
     if (exist('CBT_LP_PARAMS', 'var'))
         if isfield(CBT_LP_PARAMS, 'objTol')

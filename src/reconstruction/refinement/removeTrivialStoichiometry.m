@@ -1,4 +1,4 @@
-function modelOut=removeTrivialStoichiometry(model)
+function modelOut = removeTrivialStoichiometry(model)
 % Removes metabolites and reactions corresponding to zero rows and columns
 %
 % USAGE:
@@ -6,10 +6,10 @@ function modelOut=removeTrivialStoichiometry(model)
 %    modelOut=removeTrivialStoichiometry(model)
 %
 % INPUT:
-%    model: Model with metabolites and reactions to remove
+%    model:       Model with metabolites and reactions to remove
 %
 % OUTPUT:
-%    modelOut: Obtained model with removed metabolites and reactions
+%    modelOut:    Obtained model with removed metabolites and reactions
 
 zeroColBool = ~any(model.S,1)'; %find cols that are all zero
 model = removeRxns(model,model.rxns(zeroColBool));

@@ -7,25 +7,25 @@ function model = createModel(varargin)
 %    model = createModel(rxnAbrList, rxnNameList, rxnList, revFlagList, lowerBoundList, upperBoundList, subSystemList, grRuleList, geneNameList, systNameList)
 %
 % INPUTS:
-%    rxnAbrList:            List of names of the new reactions
-%    rxnNameList:           List of names of the new reactions
-%    rxnList:               List of reactions: format: {`A -> B + 2 C`}
-%                           If the compartment of a metabolite is not
-%                           specified, it is assumed to be cytoplasmic, i.e. [`c`]
+%    rxnAbrList:        List of names of the new reactions
+%    rxnNameList:       List of names of the new reactions
+%    rxnList:           List of reactions: format: {`A -> B + 2 C`}
+%                       If the compartment of a metabolite is not
+%                       specified, it is assumed to be cytoplasmic, i.e. [`c`]
 %
 % OPTIONAL INPUTS:
-%    revFlagList:           List of reversibility flag (opt, default = 1)
-%    lowerBoundList:        List of lower bound (Default = 0 or ``-vMax`)
-%    upperBoundList:        List of upper bound (Default = `vMax`)
-%    subSystemList:         List of subsystem (Default = '')
-%    grRuleList:            List of gene-reaction rule in boolean format (and/or allowed)
-%                           (Default = '');
-%    geneNameList:          List of gene names (used only for translation
-%                           from common gene names to systematic gene names)
-%    systNameList:          List of systematic names
+%    revFlagList:       List of reversibility flag (opt, default = 1)
+%    lowerBoundList:    List of lower bound (Default = 0 or `-vMax`)
+%    upperBoundList:    List of upper bound (Default = `vMax`)
+%    subSystemList:     List of subsystem (Default = '')
+%    grRuleList:        List of gene-reaction rule in boolean format (and/or allowed)
+%                       (Default = '');
+%    geneNameList:      List of gene names (used only for translation
+%                       from common gene names to systematic gene names)
+%    systNameList:      List of systematic names
 %
 % OUTPUT:
-%    model:                 COBRA model structure
+%    model:             COBRA model structure
 %
 % .. Author: - Ines Thiele 01/09
 %            - Adjusted to Name/Value Pairs - Thomas Pfau May 2017

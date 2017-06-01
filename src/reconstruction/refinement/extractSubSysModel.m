@@ -1,16 +1,18 @@
-function subSysModel = extractSubSysModel(model,subSysNames)
-%extractSubSysModel Create model for one of more model subsystems
+function subSysModel = extractSubSysModel(model, subSysNames)
+% Creates model for one of more model subsystems
 %
-% subSysModel = extractSubSysModel(model,subSysNames)
+% USAGE:
 %
-%INPUTS
-% model         COBRA model structure
-% subSysNames   List of subsystems to extract
+%    subSysModel = extractSubSysModel(model, subSysNames)
 %
-%OPUTPUT
-% subSysModel   COBRA model of selected subsystems
+% INPUTS:
+%    model:          COBRA model structure
+%    subSysNames:    List of subsystems to extract
 %
-% Markus Herrgard 3/1/06
+% OUTPUT:
+%    subSysModel:    COBRA model of selected subsystems
+%
+% .. Author: - Markus Herrgard 3/1/06
 
 rxnList = model.rxns(ismember(model.subSystems,subSysNames));
 

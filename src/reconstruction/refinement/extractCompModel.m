@@ -1,19 +1,21 @@
-function compModel = extractCompModel(model,compSymbol,intOnlyFlag)
-%extractCompModel Create model for a cellular compartment
+function compModel = extractCompModel(model, compSymbol, intOnlyFlag)
+% Creates model for a cellular compartment
 %
-% compModel = extractCompModel(model,compSymbol,intOnlyFlag)
+% USAGE:
 %
-%INPUTS
-% model         COBRA model structure
-% compSymbol    Compartment symbol
+%    compModel = extractCompModel(model, compSymbol, intOnlyFlag)
 %
-%OPTIONAL INPUT
-% intOnlyFlag   Include only non-transport reactions (Default = true)
+% INPUTS:
+%    model:          COBRA model structure
+%    compSymbol:     Compartment symbol
 %
-%OUTPUT
-% compModel     COBRA model for a cellular compartment
+% OPTIONAL INPUT:
+%    intOnlyFlag:    Include only non-transport reactions (Default = true)
 %
-% Markus Herrgard 3/1/06
+% OUTPUT:
+%    compModel:      COBRA model for a cellular compartment
+%
+% .. Author: - Markus Herrgard 3/1/06
 
 if (nargin < 3)
     intOnlyFlag = true;

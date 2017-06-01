@@ -15,13 +15,12 @@ function modelOut = removeRxns(model,rxnRemoveList,varargin)
 %    metFlag:           Remove unused metabolites (Default = true)
 %
 % OUTPUT:
-%    model             COBRA model w/o selected reactions
+%    model:             COBRA model w/o selected reactions
 %
 % .. Authors:
 %       - Markus Herrgard 7/22/05
 %       - Fatima Liliana Monteiro and Hulda Haraldsdóttir, November 2016
 %       - Thomas Pfau - changed to Parameter Value pairs
-
 optionalParameters = {'irrevFlag','metFlag'};
 if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))
     if ischar(varargin{1})
