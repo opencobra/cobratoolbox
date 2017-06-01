@@ -1,5 +1,17 @@
-function printMinimalLeakageMode(model,minMetBool,minRxnBool,y,printLevel,fileName) 
-%prints out the data on each leakage mode
+function printMinimalLeakageMode(model, minMetBool, minRxnBool, y, printLevel, fileName)
+% Prints out the data on each leakage mode
+%
+% USAGE:
+%
+%    printMinimalLeakageMode(model, minMetBool, minRxnBool, y, printLevel, fileName)
+%
+% INPUTS:
+%    model:         model structure
+%    minMetBool:    x
+%    minRxnBool:    x
+%    y:             y
+%    printLevel:    verbose level
+%    fileName:      name of the file
 
 
 if ~exist('fileName','var')

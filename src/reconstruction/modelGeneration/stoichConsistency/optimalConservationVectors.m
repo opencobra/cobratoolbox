@@ -1,8 +1,24 @@
-function solution = optimalConservationVectors(S,lambda,delta)
+function solution = optimalConservationVectors(S, lambda, delta)
 % DC programming for solving the cardinality optimization problem
-% min    lambda*||x||_0  - delta*||y||_0
-% s.t.   x + S'*y = 0
-%        0 <= y <= 1e4
+% min `lambda*||x||_0  - delta*||y||_0`
+%
+% s.t. `x + S'*y = 0`
+%
+% `0 <= y <= 1e4`
+%
+% USAGE:
+%
+%    solution = optimalConservationVectors(S, lambda, delta)
+%
+% INPUT:
+%    S:           m x n stoichiometric matrix
+%
+% OPTIONAL INPUTS:
+%    lambda:      default = 1
+%    delta:       default = 1
+%
+% OUTPUT:
+%    solution:    result of the solved cardinality optimization problem
 
 if ~exist('lambda','var')
     lambda=1;
@@ -30,7 +46,7 @@ solution = optimizeCardinality(prob,params);
 % s.t.      A*(x,y,z) <= b
 %           l <= (x,y,z) <=u
 %           x in R^p, y in R^q, z in R^r
-% 
+%
 % solution = optimizeCardinality(problem,params)
 %
 %  problem                  Structure containing the following fields describing the problem
@@ -52,7 +68,7 @@ solution = optimizeCardinality(prob,params);
 %       nbMaxIteration      stopping criteria - number maximal of iteration (Defaut value = 1000)
 %       epsilon             stopping criteria - (Defaut value = 10e-6)
 %       theta               parameter of the approximation (Defaut value = 2)
-% 
+%
 % OUTPUT
 % solution                  Structure containing the following fields
 %       x                   p x 1 solution vector

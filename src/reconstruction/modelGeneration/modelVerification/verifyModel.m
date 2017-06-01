@@ -1,50 +1,49 @@
-function results = verifyModel(model,varargin)
-%VERIFYMODEL checks the model for consistency with the COBRA Toolbox
+function results = verifyModel(model, varargin)
+% Checks the model for consistency with the COBRA Toolbox
 %
 % USAGE:
 %
 %    results = verifyModel(model, varargin)
 %
-% Example:
+% INPUT:
+%    model:       a structure that represents the COBRA model.
+%
+% OPTIONAL INPUT:
+%    varargin:    varargin contains additional checks that shall be performed. Provided as
+%                 strings, the results of the individual checks are returned as a structure
+%                 array containing the relevant values.
+%                 Options are:
+%
+%                   * 'massBalance' (checks for Mass balance if the `metFormula` Field is present)
+%                   * 'chargeBalance' (checks for charge Balance)
+%                   * 'fluxConsistency' (checks for reaction flux consistency)
+%                   * 'stoichiometricConsistency' (checks for Stoichiometric
+%                     Consisteny, according to `Gevorgyan, Bioinformatics, 2008`)
+%                   * 'deadEndMetabolites' (metabolites which can either not
+%                     be produced, or consumed)
+%                   * 'simpleCheck' returns 0 if this is not a valid model
+%                     and 1 if it is a valid model, ignored if any other
+%                     option is selected.
+%                   * 'requiredFields' sets the fields which are required,
+%                     the argument must be firectly followed by the list of
+%                     required fields.
+%                   * default({'S', 'b', 'csense', 'lb', 'ub', 'c', 'osense', 'rxns', 'mets', 'genes', 'rules'})
+%
+% OUTPUT:
+%
+%    results:     a struct containing fields for each requested option and an
+%                 additional field Errors indicating the problems with the
+%                 model structure detected by the `verifyModel` function.
+%
+% EXAMPLE:
+%
 %    results = verifyModel(model,'simpleCheck')
 %    results = verifyModel(model,'massBalance')
 %    results = verifyModel(model,'fluxConsistency','massBalance')
 %    results = verifyModel(model,'simpleCheck','requiredFields',{'S,'lb','ub','c'})
 %
-% INPUT :
-%    model:         a structure that represents the COBRA model.
-%
-% OPTIONAL INPUT:
-%    varargin       varargin contains additional Checks that shall be performed. provided as
-%                   Strings The results of the individual checks are returned as a structure
-%                   array containing the relevant values.
-%                   Options are:
-%                   'massBalance' (checks for Mass balance if the metFormula
-%                   Field is present)
-%                   'chargeBalance' (checks for charge Balance)
-%                   'fluxConsistency' (checks for reaction flux consistency)
-%                   'stoichiometricConsistency' (checks for Stoichiometric
-%                   Consisteny, according to Gevorgyan, Bioinformatics,
-%                   2008)
-%                   'deadEndMetabolites' (metabolites which can either not
-%                   be produced, or consumed)
-%                   'simpleCheck' returns 0 if this is not a valid model
-%                   and 1 if it is a valid model, ignored if any other
-%                   option is selected.
-%                   'requiredFields' sets the fields which are required,
-%                   the argument must be firectly followed by the list of
-%                   required fields.
-%                   default({'S','b','csense','lb','ub','c','osense','rxns','mets','genes','rules'})
-%
-% OUTPUT:
-%
-%    results:       a struct containing fields for each requested option and an
-%                   additional field Errors indicating the problems with the
-%                   model structure detected by the verifyModel function.
-%
 % Authors:
-%     - Thomas Pfau May 2017
-
+%    - Thomas Pfau, May 2017
 
 requiredFields = {'S','b','csense','lb','ub','c','osense','rxns','mets','genes','rules'};
 

@@ -1,16 +1,15 @@
-function  [m,bool]=maxEntConsVector(SInt,printLevel)
-
-%-----------------------------------------------------------------------
-% pdco.m: Primal-Dual Barrier Method for Convex Objectives (28 Apr 2012)
-%-----------------------------------------------------------------------
-%        [x,y,z,inform,PDitns,CGitns,time] = ...
-%   pdco(pdObj,pdMat,b,bl,bu,d1,d2,options,x0,y0,z0,xsize,zsize);
+function  [m, bool] = maxEntConsVector(SInt, printLevel)
+% .. -----------------------------------------------------------------------
+% .. pdco.m: Primal-Dual Barrier Method for Convex Objectives (28 Apr 2012)
+% .. -----------------------------------------------------------------------
+% ..         [x,y,z,inform,PDitns,CGitns,time] = ...
+% ..    pdco(pdObj,pdMat,b,bl,bu,d1,d2,options,x0,y0,z0,xsize,zsize);
 %
-% solves optimization problems of the form
+% ..  solves optimization problems of the form
 %
-%    minimize    phi(x) + 1/2 norm(D1*x)^2 + 1/2 norm(r)^2
-%      x,r
-%    subject to  A*x + D2*r = b,   bl <= x <= bu,   r unconstrained,
+% ..     minimize    phi(x) + 1/2 norm(D1*x)^2 + 1/2 norm(r)^2
+% ..       x,r
+% ..     subject to  A*x + D2*r = b,   bl <= x <= bu,   r unconstrained,
 
 [mlt,nlt]=size(SInt);
 
