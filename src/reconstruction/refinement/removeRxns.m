@@ -1,4 +1,4 @@
-function modelOut = removeRxns(model,rxnRemoveList,irrevFlag,metFlag)
+function modelOut = removeRxns(model,rxnRemoveList,varargin)
 % Removes reactions from a model
 %
 % USAGE:
@@ -9,7 +9,7 @@ function modelOut = removeRxns(model,rxnRemoveList,irrevFlag,metFlag)
 %    model:             COBRA model structure
 %    rxnRemoveList:     Cell array of reaction names to be removed
 %
-% OPTIONAL INPUTS:
+% OPTIONAL INPUTS as parameter value pairs:
 %    irrevFlag:         Irreverseble (true) or reversible (false) reaction
 %                       format (Default = false)
 %    metFlag:           Remove unused metabolites (Default = true)
@@ -20,14 +20,35 @@ function modelOut = removeRxns(model,rxnRemoveList,irrevFlag,metFlag)
 % .. Authors:
 %       - Markus Herrgard 7/22/05
 %       - Fatima Liliana Monteiro and Hulda Haraldsdóttir, November 2016
+%       - Thomas Pfau - changed to Parameter Value pairs
 
+optionalParameters = {'irrevFlag','metFlag'};
+if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))
+    if ischar(varargin{1})
+        error('Invalid parameter provided. %s is not an accepted parameter',varargin{1});
+    end
+    %We have an old style thing....
+    %Now, we need to check, whether this is a formula, or a complex setup    
+        tempargin = cell(1,2*(numel(varargin)));
+        for i = 1:numel(varargin)
+                tempargin{2*(i-1)+1} = optionalParameters{i};
+                tempargin{2*(i-1)+2} = varargin{i};
+        end        
+        varargin = tempargin;    
+end
 
-if nargin < 3
-    irrevFlag = false;
-end
-if nargin < 4
-    metFlag = true;
-end
+parser = inputParser();
+parser.addRequired('model',@isstruct) % we only check, whether its a struct, no details for speed
+parser.addRequired('rxnRemoveList',@(x) iscell(x) || ischar(x))
+parser.addParameter('irrevFlag',false,@(x) isnumeric(x) || islogical(x))
+parser.addParameter('metFlag',true,@(x) isnumeric(x) || islogical(x));
+
+parser.parse(model,rxnRemoveList,varargin{:})
+
+model = parser.Results.model;
+rxnRemoveList = parser.Results.rxnRemoveList;
+irrevFlag = parser.Results.irrevFlag;
+metFlag = parser.Results.metFlag;
 
 [nMets, nRxns] = size(model.S);
 if isfield(model, 'genes')

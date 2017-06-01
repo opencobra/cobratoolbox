@@ -25,6 +25,9 @@ load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 
 % set the tolerance
 tol = 1e-6;
 
+%Convert to new Style model
+model = convertOldStyleModel(model);
+
 % also as "host"
 host = model;
 
