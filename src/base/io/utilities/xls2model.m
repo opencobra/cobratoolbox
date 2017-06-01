@@ -25,9 +25,10 @@ function model = xls2model(fileName, biomassRxnEquation, defaultbound)
 %
 %                       * 'Abbreviation':      HEX1
 %                       * 'Reaction':          `1 atp[c] + 1 glc-D[c] --> 1 adp[c] + 1 g6p[c] + 1 h[c]`
-%                       * 'GPR':               (3098.3) or (80201.1) or (2645.3) or ...
+%
 %                     * Optional:
 %
+%                       * 'GPR':               (3098.3) or (80201.1) or (2645.3) or ...
 %                       * 'Description':       Hexokinase
 %                       * 'Subsystem':         Glycolysis
 %                       * 'Reversible':        0 (false) or 1 (true)
@@ -75,6 +76,19 @@ function model = xls2model(fileName, biomassRxnEquation, defaultbound)
 
 warning off
 
+if exist(fileName,'file')
+    [~,sheets,~] = xlsfinfo(fileName);
+    if ~all(ismember({'Reaction List','Metabolite List'},sheets))
+        error(['The provided Excel Sheet must contain a "Reaction List" and a "Metabolite List sheet as specified here:' sprintf('\n'),...
+               '<a href ="https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html">https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html</a>']);
+    end
+else
+    error('File %s not found',fileName);
+end
+
+if ~exist('defaultbound','var')
+    defaultbound = 1000;
+end
 
 if isunix
     %assumes that one has an xls file with two tabs
@@ -101,6 +115,24 @@ else
     
 end
 
+
+requiredRxnHeaders = {'Abbreviation','Reaction'};
+requiredMetHeaders = {'Abbreviation'};
+
+if ~all(ismember(requiredRxnHeaders,Strings(1,:))) 
+    error(['Required Headers not present in the "Reaction List" sheet of the provided xls file.', sprintf('\n'),...
+           'Note, that headers are case sesnitive!', sprintf('\n'),...
+           'Another likely source for this issue is a change in the xls format specification.', sprintf('\n'),...
+           'Please have a look at the specification at <a href ="https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html">https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html</a> for the current specifications.']);
+end
+
+if ~all(ismember(requiredMetHeaders,MetStrings(1,:)))
+    error(['Required Headers not present in the "Metabolite List" sheet of the provided xls file.', sprintf('\n'), ...
+           'Note, that headers are case sesnitive!', sprintf('\n'),...
+           'Another likely source for this issue is a change in the xls format specification.', sprintf('\n'),...
+           'Please have a look at the specification at <a href ="https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html">https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html</a> for the current specifications.']);
+end
+
 rxnHeaders = rxnInfo(1,:);
 
 for n = 1:length(rxnHeaders)
@@ -118,7 +150,13 @@ else
     rxnNameList = Strings(2:end,strmatch('Abbreviation',rxnHeaders,'exact'));
 end
 rxnList = Strings(2:end,strmatch('Reaction',rxnHeaders,'exact'));
-grRuleList = Strings(2:end,strmatch('GPR',rxnHeaders,'exact'));
+if ~isempty(strmatch('GPR',rxnHeaders,'exact'))
+    grRuleList = Strings(2:end,strmatch('GPR',rxnHeaders,'exact'));
+else
+    grRuleList = cell(size(rxnList,1),1);
+    grRuleList(:) = {''};
+end
+
 if ~isempty(strmatch('Proteins',rxnHeaders,'exact'))
     Protein = Strings(2:end,strmatch('Proteins',rxnHeaders,'exact'));
 end
@@ -324,7 +362,9 @@ if ~isempty(strmatch('ChEBI ID',metHeaders,'exact'))
     model.metChEBIID  = columnVector(MetStrings(B(A),strmatch('ChEBI ID',metHeaders,'exact')));
 end
 
-model.description = fileName;
+[~,fileName,extension] = fileparts(fileName);
+
+model.description = [fileName, extension];
 
 warning on
 end

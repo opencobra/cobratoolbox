@@ -17,11 +17,11 @@ an example File with the full format is provided in [ExcelExample.xlsx](../examp
 | --- | --- | --- | 
 | `Abbreviation` | An abbreviation of the reaction (will be used as ID) | HEX1 | 
 | `Reaction` | The written out reaction | 1 atp[c] + 1 glc-D[c] -> 1 adp[c] + 1 g6p[c] + 1 h[c] |
-| `GPR` | The Gene Protein Reaction association in String format with Gene Names, parenthesis will be stripped | (3098.3) or (80201.1) and (2645.3) |
 
 #### Optional Headers:
 | Header Name | Description | Example | 
 | --- | --- | --- | 
+| `GPR` | The Gene Protein Reaction association in String format with Gene Names, parenthesis will be stripped | (3098.3) or (80201.1) and (2645.3) |
 | `Lower bound` | The lower bound of a reaction, will be used to determine reversibility. If not present a default of -1000 is assumed | `0` |
 | `Upper bound` | The upper bound of a reaction. If not present a default of 1000 is assumed | `1000` |
 | `Objective` | The objective coefficient, if not at least providing one non zero entry, a call to `changeObjective()` will be required before the model can be optimized. assumed default value: 0 | `1`|
