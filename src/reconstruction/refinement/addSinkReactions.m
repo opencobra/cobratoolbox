@@ -1,4 +1,4 @@
-function [model,rxnsInModel] = addSinkReactions(model,metabolites,lb,ub)
+function [model, rxnsInModel] = addSinkReactions(model, metabolites, lb, ub)
 % Adds a sink reaction for the list of metabolites
 %
 % USAGE:
@@ -6,18 +6,18 @@ function [model,rxnsInModel] = addSinkReactions(model,metabolites,lb,ub)
 %    [model] = addSinkReactions(model, metabolites, lb, ub)
 %
 % INPUTS:
-%    model:         COBRA model structure
-%    metabolites:   Cell array of metabolite abreviations as they appear in `model.mets`
+%    model:          COBRA model structure
+%    metabolites:    Cell array of metabolite abreviations as they appear in `model.mets`
 %
 % OPTIONAL INPUTS:
-%    lb:            Lower bounds of reactions
-%    ub:            Upper bounds of reactions
+%    lb:             Lower bounds of reactions
+%    ub:             Upper bounds of reactions
 %
 % OUTPUTS:
-%    model:         COBRA model structure containing sink reactions
-%    rxnsInModel:   Vector, contains -1 if the reaction did not exist
-%                   previously, otherwise it contains the reaction ID of
-%                   an identical reaction already present in the model
+%    model:          COBRA model structure containing sink reactions
+%    rxnsInModel:    Vector, contains -1 if the reaction did not exist
+%                    previously, otherwise it contains the reaction ID of
+%                    an identical reaction already present in the model
 %
 % .. Author: - Ines Thiele 05/06/08
 

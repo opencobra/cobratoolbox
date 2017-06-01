@@ -9,10 +9,10 @@ function abcModel = alphabetizeModel(model)
 %    abcModel = alphabetizeModel(model)
 %
 % INPUT:
-%     model:         COBRA model structure
+%     model:      COBRA model structure
 %
 % OUTPUT:
-%    abcModel:       the alphabetized model
+%    abcModel:    the alphabetized model
 %
 % .. Authors:
 %       - Jeff Orth  11/21/07

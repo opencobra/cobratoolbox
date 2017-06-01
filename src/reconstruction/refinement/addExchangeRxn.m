@@ -1,4 +1,4 @@
-function [newModel,AddedExchRxn] = addExchangeRxn(model,metList,lb,ub)
+function [newModel, AddedExchRxn] = addExchangeRxn(model, metList, lb, ub)
 % Adds exchange reactions
 %
 % USAGE:
@@ -6,15 +6,15 @@ function [newModel,AddedExchRxn] = addExchangeRxn(model,metList,lb,ub)
 %    newModel = addExchangeRxn(model, metList, lb, ub)
 %
 % INPUTS:
-%    model:         Cobra model structure
-%    metList:       List of metabolites
+%    model:       Cobra model structure
+%    metList:     List of metabolites
 %
 % OPTIONAL INPUTS:
-%    lb:            Array of lower bounds
-%    ub:            Array of upper bounds
+%    lb:          Array of lower bounds
+%    ub:          Array of upper bounds
 %
 % OUTPUT:
-%    newModel:      COBRA model with added exchange reactions
+%    newModel:    COBRA model with added exchange reactions
 %
 % .. Author: - Ines Thiele 02/2009
 

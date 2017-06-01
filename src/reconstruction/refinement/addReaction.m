@@ -37,10 +37,10 @@ function [model, rxnIDexists] = addReaction(model, rxnID, varargin)
 %                       * printLevel - default = 1
 %
 % OUTPUTS:
-%    model:             COBRA model structure with new reaction
-%    rxnIDexists:       Empty if the reaction did not exist previously, or if
-%                       checkDuplicate is false. Otherwise it contains the ID
-%                       of an identical reaction already present in the model.
+%    model:              COBRA model structure with new reaction
+%    rxnIDexists:        Empty if the reaction did not exist previously, or if
+%                        checkDuplicate is false. Otherwise it contains the ID
+%                        of an identical reaction already present in the model.
 %
 % EXAMPLES:
 %    %1) Add a new irreversible reaction using the formula approach

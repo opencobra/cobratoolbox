@@ -1,20 +1,21 @@
-function model = changeObjective(model,rxnNameList,objectiveCoeff)
-%changeObjective Changes the objective function of a constraint-based model
+function model = changeObjective(model, rxnNameList, objectiveCoeff)
+% Changes the objective function of a constraint-based model
 %
-% model = changeObjective(model,rxnNameList,objectiveCoeff)
+% USAGE:
 %
-%INPUTS
-% model             COBRA structure
-% rxnNameList       List of reactions (cell array or string)
+%    model = changeObjective(model, rxnNameList, objectiveCoeff)
 %
-%OPTIONAL INPUT
-% objectiveCoeff    Value of objective coefficient for each reaction
-%                   (Default = 1)
+% INPUTS:
+%    model:             COBRA structure
+%    rxnNameList:       List of reactions (cell array or string)
 %
-%OUTPUT
-% model             COBRA model structure with new objective
+% OPTIONAL INPUT:
+%    objectiveCoeff:    Value of objective coefficient for each reaction (Default = 1)
 %
-% Monica Mo & Markus Herrgard - 8/21/06
+% OUTPUT:
+%    model:             COBRA model structure with new objective
+%
+% .. Author: - Monica Mo & Markus Herrgard - 8/21/06
 
 if (nargin < 3)
     objectiveCoeff = 1;
