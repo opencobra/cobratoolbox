@@ -38,7 +38,7 @@ try
     changeCobraSolver('glpk')
     sparseLP_example;
     uniformSampling;
-    tutorial_IO;
+    tutorial_IO;    
     %reset the path.
     cd(currentDir)
     % ensure that we ALWAYS call exit

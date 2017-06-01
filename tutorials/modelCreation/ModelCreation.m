@@ -16,7 +16,7 @@ emptymodel = createModel()
 % 
 % 
 % The reactions are:
-%%
+
 R1 = '1 Met1 + Met2 -> Met3'
 R2 = 'Met3 <=> 2 Met4'
 %% 
@@ -36,7 +36,7 @@ reactionNames = {'Reaction 1','Reaction 2'}
 reactionFormulas = {R1,R2}
 %% 
 % now we can call
-%%
+
 model1 = createModel(reactionIdentifiers,reactionNames,reactionFormulas);
 %% 
 % to create the model including the two reactions. 
@@ -68,7 +68,7 @@ model1 = createModel(reactionIdentifiers,reactionNames,reactionFormulas);
 % 
 % i.e. A Complex of G1 and G2 catalyses R2 and either G3 or G4 catalyse R1. 
 % We further assume, that the flux maximum through R1 is 10 and 30 through R2
-%%
+
 upperBounds = [10, 30];
 grRuleR1 = 'G3 or G4';
 grRuleR2 = 'G1 and G2';
@@ -79,7 +79,7 @@ grRuleList = {grRuleR1, grRuleR2};
 model2 = createModel(reactionIdentifiers,reactionNames,reactionFormulas,'upperBoundList',upperBounds,'grRuleList',grRuleList);
 %% 
 % If we now compare the reactions, printing the GPR rules in both models
-%%
+
 printRxnFormula(model1,'gprFlag',1);
 printRxnFormula(model2,'gprFlag',1);
 %% 
@@ -94,7 +94,7 @@ printRxnFormula(model2,'gprFlag',1);
 % 
 % 
 % To create this model, we have to define the reactions:
-%%
+
 ReactionFormulas = {'glc-D[e]  -> glc-D',...
     'glc-D + atp  -> H + adp + g6p',...
     'g6p  <=> f6p',...

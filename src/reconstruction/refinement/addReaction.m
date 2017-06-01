@@ -1,9 +1,9 @@
-function [model, rxnIDexists] = addReaction(model, rxnID, varargin) %function [model, rxnIDexists] = addReaction(model, rxnName, metaboliteList, stoichCoeffList, revFlag, lowerBound, upperBound, objCoeff, subSystem, grRule, geneNameList, systNameList, checkDuplicate, printLevel)
+function [model, rxnIDexists] = addReaction(model, rxnID, varargin) 
 % Adds a reaction to the model or modify an existing reaction
 %
 % USAGE:
 %
-%    [model, rxnIDexists] = addReaction(model, rxnName, metaboliteList, stoichCoeffList, revFlag, lowerBound, upperBound, objCoeff, subSystem, grRule, geneNameList, systNameList, checkDuplicate, printLevel)
+%    [model, rxnIDexists] = addReaction(model, rxnID, varargin)
 %
 % INPUTS:
 %    model:             COBRA model structure
@@ -294,10 +294,8 @@ end
 % Figure out if the new reaction already exists
 rxnInModel=false;
 duplicatePos = [];
-if (nNewMets > 0) && isempty(find(newMetsCoefs == 0, 1))
-    Stmp = model.S;
-else
-    Stmp = model.S;
+Stmp = model.S;
+if ~((nNewMets > 0) && isempty(find(newMetsCoefs == 0, 1)))
     if (checkDuplicate)
         duplicatePos = find(ismember(Stmp',Scolumn','rows'));        
         rxnIDexists = duplicatePos(~ismember(duplicatePos,rxnPos));

@@ -1,9 +1,10 @@
 function printFluxBounds(model)
-%PRINTFLUXBOUNDS prints the reactionID and upper/lower flux bounds.
-%INPUT
-% model      The model to print 
+%prints the reactionID and upper/lower flux bounds.
 %
-% Author - Thomas Pfau May 2017
+%INPUT:
+%    model      The model to print 
+%
+% .. Author - Thomas Pfau May 2017
 
 rxnlength = cellfun(@length,model.rxns);
 maxlength = max([rxnlength;11]);
