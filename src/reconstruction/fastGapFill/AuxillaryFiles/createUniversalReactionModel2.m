@@ -12,13 +12,12 @@ function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList)
 % OUTPUT:
 %    KEGG:             Contains universal database (`U` matrix) in matrix format
 %
-%
 % NOTE:
 %
 %    This file is KEGG-specific: if non-KEGG-type metabolite IDs are used
 %    it will not parse the reactions correctly and will throw an error.
 %
-% ,, Author: - Ines Thiele, 11-10-07, Expanded June 2013, , http://thielelab.eu.
+% .. Author: - Ines Thiele, 11-10-07, Expanded June 2013, , http://thielelab.eu.
 
 if ~exist('KEGGFilename','var') || isempty(KEGGFilename)
     KEGGFilename='reaction.lst';

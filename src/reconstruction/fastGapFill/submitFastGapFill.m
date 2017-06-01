@@ -18,47 +18,41 @@ function [AddedRxns] = submitFastGapFill(modelFile, dbFile, dictionaryFile, prep
 % in running `fastGapFill` so should be specified as empty if running without
 % a weight file.
 %
-%All inputs are optional, defaults to E. coli model iAF1260 and example files)
+% All inputs are optional, defaults to E. coli model iAF1260 and example files)
 %
 % USAGE:
 %
 %    [AddedRxns] = submitFastGapFill(modelFile, dbFile, dictionaryFile, prepareFGFResults, weightsPerRxnFile, forceRerun, epsilon, blackList, listCompartments)
 %
-%  OPTIONAL INPUTS (ALL optional, defaults to E. coli model iAF1260 and example files)
-% modelFileIn         File containing model, either .mat or .xml
-%                        (default: 'examples/iAF1260.mat')
-% dbFileIn            File containing universal database
-%                        (default: 'AuxillaryFiles/reaction.lst')
-% dictionaryFileIn    File containing db metabolite IDs and model
-%                        counterparts, either .xls or .tsv
-%                        (default: 'AuxillaryFiles/KEGG_dictionary.xls')
-% workspaceFileIn     File for storing prepareFastGapFill results
-%                        (default: 'examples/defaultWorkspace.mat')
-% weightsPerRxnFile   File containing individual weights for reactions
-%                        (default: 'examples/sampleWeights.tsv')
-% forceRerun          Boolean specifying whether to rerun
-%                     prepareFastGapFill even if it has already been
-%                     run. N.B. If this is set to 'true' it will overwrite
-%                     the precalculated default results files, unless
-%                     prepareFGFResults is specified outside the examples
-%                     directory
-%                        (default: false)
-% epsilon             Float, a fastCore parameter
-%                        (default: 1e-4)
-% blackList           List of excluded universal DB reactions
-%                        (default: none)
-% listCompartments    List of compartments in the model to be gapFilled N.B.
-%                     the default is set within prepareGapFill
-%                        (default: all compartments specified in the model)
+% OPTIONAL INPUTS:
+%    modelFileIn:          File containing model, either .mat or .xml
+%                          (default: 'examples/iAF1260.mat')
+%    dbFileIn:             File containing universal database
+%                          (default: 'AuxillaryFiles/reaction.lst')
+%    dictionaryFileIn:     File containing db metabolite IDs and model
+%                          counterparts, either .xls or .tsv
+%                          (default: 'AuxillaryFiles/KEGG_dictionary.xls')
+%    workspaceFileIn:      File for storing `prepareFastGapFill` results
+%                          (default: 'examples/defaultWorkspace.mat')
+%    weightsPerRxnFile:    File containing individual weights for reactions
+%                          (default: 'examples/sampleWeights.tsv')
+%    forceRerun:           Boolean specifying whether to rerun
+%                          `prepareFastGapFill` even if it has already been
+%                          run. N.B. If this is set to 'true' it will overwrite
+%                          the precalculated default results files, unless
+%                          `prepareFGFResults` is specified outside the examples
+%                          directory (default: false)
+%    epsilon:              Float, a fastCore parameter (default: 1e-4)
+%    blackList:            List of excluded universal DB reactions
+%                          (default: none)
+%    listCompartments:     List of compartments in the model to be gapFilled N.B.
+%                          the default is set within `prepareGapFill`
+%                          (default: all compartments specified in the model)
 %
-% OUTPUT
-% AddedRxns           Reactions that have been added from UX matrix to S
+% OUTPUT:
+%    AddedRxns:            Reactions that have been added from UX matrix to `S`
 %
-% Jan 2016
-% Will Bryant
-
-
-
+% .. Author: -  Will Bryant, Jan 2016
 
 warning('off','MATLAB:load:variableNotFound') % Preparation - load data. Suppress load warnings and deal with in the function
 

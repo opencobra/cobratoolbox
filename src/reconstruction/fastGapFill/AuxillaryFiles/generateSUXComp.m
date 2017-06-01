@@ -17,7 +17,7 @@ function MatricesSUX =generateSUXComp(model, dictionary, KEGGFilename, KEGGBlack
 %    KEGGBlackList:       List of excluded reactions from the universal database
 %                         (e.g., `KEGG`)
 %    listCompartments:    List of intracellular compartments in the model
-%                         (optional input, default compartments to be considered: '[c]','[m]','[l]','[g]','[r]','[x]','[n]')
+%                         (optional input, default compartments to be considered: '[c]' ,'[m]', '[l]', '[g]', '[r]', '[x]', '[n]')
 %
 % OUTPUT:
 %    MatricesSUX:         SUX matrix

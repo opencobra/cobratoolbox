@@ -8,8 +8,8 @@ function [consistModel, consistMatricesSUX, BlockedRxns] = prepareFastGapFill(mo
 %    [consistModel, consistMatricesSUX, BlockedRxns] = prepareFastGapFill(model, listCompartments, epsilon, filename, dictionary_file, blackList)
 %
 % INPUTS:
-%     model:                 Model structure
-%     listCompartments:      List of intracellular compartments in the model
+%    model:                 Model structure
+%    listCompartments:      List of intracellular compartments in the model
 %                            (optional input, default compartments to be considered: '[c]','[m]','[l]','[g]','[r]','[x]','[n]')
 %    epsilon:                Parameter for fastCore (optional input, default:
 %                            `1e-4`). Please refer to Vlassis et al. to get more
@@ -21,12 +21,12 @@ function [consistModel, consistMatricesSUX, BlockedRxns] = prepareFastGapFill(mo
 %                            (e.g., KEGG) (optional input, default: no blacklist)
 %
 % OUTPUT:
-%    consistModel:          Flux consistent subnetwork of the input model
-%    consistMatricesSUX:    Flux consistent `SUX` matrix, which contains the flux
-%                           consistent `S` matrix (model), the universal database placed in all
-%                           cellular compartments along with transport reactions for each metabolite
-%                           from cytosol to compartment and exchange reactions for all extracellular metabolites.
-%    BlockedRxns:           Blocked reactions in mode%
+%    consistModel:           Flux consistent subnetwork of the input model
+%    consistMatricesSUX:     Flux consistent `SUX` matrix, which contains the flux
+%                            consistent `S` matrix (model), the universal database placed in all
+%                            cellular compartments along with transport reactions for each metabolite
+%                            from cytosol to compartment and exchange reactions for all extracellular metabolites.
+%    BlockedRxns:            Blocked reactions in mode%
 %
 % .. Author: - Ines Thiele, June 2013, http://thielelab.eu
 

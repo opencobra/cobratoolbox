@@ -24,7 +24,7 @@ function [AddedRxns] = fastGapFill(consistMatricesSUX, epsilon, weights, weights
 % OUTPUT:
 %    AddedRxns:             Reactions that have been added from `UX` matrix to `S`
 %
-% Ines Thiele, June 2013, http://thielelab.eu.
+% .. Author: - Ines Thiele, June 2013, http://thielelab.eu.
 
 if ~exist('epsilon','var') || isempty(epsilon)
     epsilon = 1e-4;

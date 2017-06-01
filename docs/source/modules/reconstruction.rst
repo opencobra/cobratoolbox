@@ -8,7 +8,7 @@ Reconstruction
 .. toctree::
 
    rBioNet
-   #fastGapFill
+   fastGapFill
    #growthExpMatch
    modelGeneration
    #refinement
