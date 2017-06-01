@@ -404,6 +404,27 @@ Ronan Fleming         12/07/09 commenting of input/output</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.base.solvers.checkGAMSSolvers">
+<code class="descname">checkGAMSSolvers</code><span class="sig-paren">(</span><em>problemType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/34d8a67d6efa42df6bd6cabb20b001dbd6ff4f2a/src/base/solvers/checkGAMSSolvers.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.checkGAMSSolvers" title="Permalink to this definition">¶</a></dt>
+<dd><p>DESCRIPTION
+This function return the solvers that can be used in GAMS to solve the
+type of problem especified by the user
+INPUTS
+problemType(obligatory)   Type: string</p>
+<blockquote>
+<div>Description: string containing the problem type
+for which this function will search solvers.
+Example: problem type = &#8216;LP&#8217;
+(Linear Programming)</div></blockquote>
+<p>OUTPUTS
+solvers                   Type: cell array of solvers that are available</p>
+<blockquote>
+<div>for GAMS in your systems which allow solve
+problem of type &#8220;problemType&#8221;</div></blockquote>
+<p>CODE</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.base.solvers.getCobraSolverParams">
 <code class="descname">getCobraSolverParams</code><span class="sig-paren">(</span><em>solverType</em>, <em>paramNames</em>, <em>parameters</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/34d8a67d6efa42df6bd6cabb20b001dbd6ff4f2a/src/base/solvers/getCobraSolverParams.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.getCobraSolverParams" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
