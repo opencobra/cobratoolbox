@@ -32,7 +32,7 @@ function results = verifyModel(model, varargin)
 % OUTPUT:
 %
 %    results:     a struct containing fields for each requested option and an
-%                 additional field Errors indicating the problems with the
+%                 additional field `Errors` indicating the problems with the
 %                 model structure detected by the `verifyModel` function.
 %
 % EXAMPLE:
@@ -42,8 +42,8 @@ function results = verifyModel(model, varargin)
 %    results = verifyModel(model,'fluxConsistency','massBalance')
 %    results = verifyModel(model,'simpleCheck','requiredFields',{'S,'lb','ub','c'})
 %
-% Authors:
-%    - Thomas Pfau, May 2017
+% .. Authors:
+%       - Thomas Pfau, May 2017
 
 requiredFields = {'S','b','csense','lb','ub','c','osense','rxns','mets','genes','rules'};
 

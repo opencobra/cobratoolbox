@@ -1,7 +1,7 @@
 function [inform, m, model] = checkStoichiometricConsistency(model, printLevel, method)
 % Verification of stoichiometric consistency by checking for at least one
 % strictly positive basis in the left nullspace of `S`.
-% If S is not stoichiometrically consistent detect conserved and unconserved
+% If `S` is not stoichiometrically consistent detect conserved and unconserved
 % metabolites, by returning a maximal conservation vector, which is
 % a non-negative basis with as many strictly positive entries as possible.
 % This omits rows of `S` that are entirely zero, when any exchange reactions
@@ -24,7 +24,7 @@ function [inform, m, model] = checkStoichiometricConsistency(model, printLevel, 
 % INPUT:
 %    model:         structure with fields:
 %
-%                     * model.S - `m` x `n` Stoichiometric matrix
+%                     * model.S - `m` x `n` stoichiometric matrix
 %                     * model.mets - if exists, but `SIntRxnBool does not exist, then
 %                       `findSExRxnBool` will attempt to identify exchange
 %                       reactions. (optional)
@@ -48,10 +48,10 @@ function [inform, m, model] = checkStoichiometricConsistency(model, printLevel, 
 % OUTPUTS:
 %    inform:        Solver status in standardized form:
 %
-%                     * 1 Optimal solution (Stoichiometrically consistent)
-%                     * 2 Unbounded solution (Should never happen)
-%                     * 0 Infeasible (Stoichiometrically INconsistent)
-%                     * -1 No solution reported (timelimit, numerical problem etc)
+%                     * 1 - Optimal solution (Stoichiometrically consistent)
+%                     * 2 - Unbounded solution (Should never happen)
+%                     * 0 - Infeasible (Stoichiometrically INconsistent)
+%                     * -1 - No solution reported (timelimit, numerical problem etc)
 %
 %    m:             `m` x 1 strictly positive vector in left nullspace
 %                   (empty if it does not exist)

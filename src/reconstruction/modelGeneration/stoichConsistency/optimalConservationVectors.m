@@ -11,7 +11,7 @@ function solution = optimalConservationVectors(S, lambda, delta)
 %    solution = optimalConservationVectors(S, lambda, delta)
 %
 % INPUT:
-%    S:           m x n stoichiometric matrix
+%    S:           `m` x `n` stoichiometric matrix
 %
 % OPTIONAL INPUTS:
 %    lambda:      default = 1

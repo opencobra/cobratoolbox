@@ -25,25 +25,25 @@ function [leakMetBool, leakRxnBool, siphonMetBool, siphonRxnBool, leakY, siphonY
 %    [leakMetBool, leakRxnBool, siphonMetBool, siphonRxnBool, leakY, siphonY, statp, statn] = findMassLeaksAndSiphons(model, metBool, rxnBool, modelBoundsFlag, params, printLevel)
 %
 % INPUT:
-%    model:              strcture with fields (only `.S` is mandatory)
+%    model:              structure with fields (only `.S` is mandatory)
 %
 %                          * .S - `m` x `n` stoichiometric matrix
 %                          * .lb - Lower bounds
 %                          * .ub - Upper bounds
-%                          * .SConsistentMetBool - m x 1 boolean vector indicating consistent mets
-%                          * .SConsistentRxnBool - m x 1 boolean vector indicating consistent rxns
+%                          * .SConsistentMetBool - `m` x 1 boolean vector indicating consistent mets
+%                          * .SConsistentRxnBool - `m` x 1 boolean vector indicating consistent rxns
 %
 % OPTIONAL INPUTS:
-%    metBool:               `m` x 1 boolean vector of metabolites to test for leakage
-%    rxnBool:               `n` x 1 boolean vector of reactions to test for leakage
-%    modelBoundsFlag:    {0,(1)}
+%    metBool:            `m` x 1 boolean vector of metabolites to test for leakage
+%    rxnBool:            `n` x 1 boolean vector of reactions to test for leakage
+%    modelBoundsFlag:    {0, (1)}
 %
 %                          * 0 = set all reaction bounds to -inf, inf
 %                          * 1 = use reaction bounds provided by model.lb and .ub
 %    params:             structure with fields:
 %
 %                          * params.epsilon - (1e-4)
-%                          * params.eta - (feasTol*100), smallest nonzero mass leak/siphon
+%                          * params.eta - (`feasTol*100`), smallest nonzero mass leak/siphon
 %                          * params.theta - (0.5) parameter of capped l1 approximation
 %                          * params.method - {('quasiConcave'), 'dc'} method of approximation
 %    printLevel:         {(0), 1, 2 = debug}
@@ -62,6 +62,7 @@ function [leakMetBool, leakRxnBool, siphonMetBool, siphonRxnBool, leakY, siphonY
 %                          * 0 =  Infeasible
 %                          * -1 =  Invalid input
 %    statn:              status (negative leakage modes)
+%
 %                          * 1 =  Solution found
 %                          * 2 =  Unbounded
 %                          * 0 =  Infeasible

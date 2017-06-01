@@ -1,4 +1,16 @@
 function  [m, bool] = maxEntConsVector(SInt, printLevel)
+% USAGE:
+%
+%    [m, bool] = maxEntConsVector(SInt, printLevel)
+%
+% INPUTS:
+%    SInt:          `m` x `n` matrix
+%    printLevel:    verbose level
+%
+% OUTPUTS:
+%    m:             primal solution
+%    bool:          is 1 if `m > 0`
+%
 % .. -----------------------------------------------------------------------
 % .. pdco.m: Primal-Dual Barrier Method for Convex Objectives (28 Apr 2012)
 % .. -----------------------------------------------------------------------

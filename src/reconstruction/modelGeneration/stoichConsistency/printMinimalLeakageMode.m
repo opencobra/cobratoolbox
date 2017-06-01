@@ -7,9 +7,9 @@ function printMinimalLeakageMode(model, minMetBool, minRxnBool, y, printLevel, f
 %
 % INPUTS:
 %    model:         model structure
-%    minMetBool:    x
-%    minRxnBool:    x
-%    y:             y
+%    minMetBool:    boolean of metabolites in a positive leakage mode
+%    minRxnBool:    boolean of reactions exclusively involved in a positive leakage mode
+%    y:             contains `minMetBool`
 %    printLevel:    verbose level
 %    fileName:      name of the file
 
