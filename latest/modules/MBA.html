@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Transcriptomics &mdash; The COBRA Toolbox</title>
+  <title>MBA &mdash; The COBRA Toolbox</title>
   
 
   
@@ -39,9 +39,9 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
-        <link rel="up" title="Data integration" href="dataIntegration.html"/>
-        <link rel="next" title="FASTCORE" href="FASTCORE.html"/>
-        <link rel="prev" title="Metabotools" href="metabotools.html"/> 
+        <link rel="up" title="Transcriptomics" href="transcriptomics.html"/>
+        <link rel="next" title="Design" href="design.html"/>
+        <link rel="prev" title="mCADRE" href="mCADRE.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -96,10 +96,10 @@
 <li class="toctree-l2 current"><a class="reference internal" href="dataIntegration.html">Data integration</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="fluxomics.html">Fluxomics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metabotools.html">Metabotools</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Transcriptomics</a><ul>
+<li class="toctree-l3 current"><a class="reference internal" href="transcriptomics.html">Transcriptomics</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="FASTCORE.html">FASTCORE</a></li>
 <li class="toctree-l4"><a class="reference internal" href="mCADRE.html">mCADRE</a></li>
-<li class="toctree-l4"><a class="reference internal" href="MBA.html">MBA</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">MBA</a></li>
 </ul>
 </li>
 </ul>
@@ -162,7 +162,9 @@
         
           <li><a href="dataIntegration.html">Data integration</a> &raquo;</li>
         
-      <li>Transcriptomics</li>
+          <li><a href="transcriptomics.html">Transcriptomics</a> &raquo;</li>
+        
+      <li>MBA</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -179,145 +181,52 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="transcriptomics">
-<span id="id1"></span><h1>Transcriptomics<a class="headerlink" href="#transcriptomics" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="FASTCORE.html">FASTCORE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mCADRE.html">mCADRE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="MBA.html">MBA</a></li>
-</ul>
-</div>
-<span class="target" id="module-src.dataIntegration.transcriptomics"></span><dl class="function">
-<dt id="src.dataIntegration.transcriptomics.createTissueSpecificModel">
-<code class="descname">createTissueSpecificModel</code><span class="sig-paren">(</span><em>model</em>, <em>expressionData</em>, <em>proceedExp</em>, <em>orphan</em>, <em>exRxnRemove</em>, <em>solver</em>, <em>options</em>, <em>funcModel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/34d8a67d6efa42df6bd6cabb20b001dbd6ff4f2a/src/dataIntegration/transcriptomics/createTissueSpecificModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.createTissueSpecificModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates draft tissue specific model from mRNA expression data</p>
+  <div class="section" id="mba">
+<span id="id1"></span><h1>MBA<a class="headerlink" href="#mba" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.dataIntegration.transcriptomics.MBA"></span><dl class="function">
+<dt id="src.dataIntegration.transcriptomics.MBA.MBA">
+<code class="descname">MBA</code><span class="sig-paren">(</span><em>model</em>, <em>medium_set</em>, <em>high_set</em>, <em>tol</em>, <em>core</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/34d8a67d6efa42df6bd6cabb20b001dbd6ff4f2a/src/dataIntegration/transcriptomics/MBA/MBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.MBA.MBA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses the MBA algorithm (<cite>Jerby et al., 2010</cite>) to extract a context
+specific model using data. MBA algorithm defines high-confidence reactions
+to ensure activity in the extracted model. Medium confidence reactions
+are only kept when a certain parsimony trade-off is met. In random order,
+the algorithm prunes other reactions and removes them if not required to
+support high- or medium- confidence reactions.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[tissueModel, Rxns] = createTissueSpecificModel(model, expressionData, proceedExp, orphan, exRxnRemove, solver, options, funcModel)</div></blockquote>
+<div>tissueModel = MBA(model, medium_set, high_set, tol, core)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>model</strong> &#8211;
-global recon1 model</p>
-</li>
-<li><p class="first"><strong>expressionData</strong> &#8211;
-mRNA expression data structure:</p>
-<ul>
-<li><p class="first">Locus - Vector containing <cite>GeneIDs</cite></p>
-</li>
-<li><p class="first">Data - Presence/Absence Calls</p>
-<blockquote>
 <div><ul class="simple">
-<li>Use: (1 - Present, 0 - Absent) when proceedExp = 1</li>
-<li>Use: (2 - Present, 1 - Marginal, 0 - Absent) when proceedExp = 0</li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first">Transcript - RefSeq Accession (only required if proceedExp = 0)</p>
-</li>
-</ul>
-</li>
+<li><strong>model</strong> &#8211;
+input model (COBRA model structure)</li>
+<li><strong>medium_set</strong> &#8211;
+list of reactions with medium confidence</li>
+<li><strong>high_set</strong> &#8211;
+list of reactions with high confidence</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>proceedExp</strong> &#8211;
-1 - data are processed ; 0 - data need to be
-processed (Default = 1)</li>
-<li><strong>orphan</strong> &#8211;
-1 - leave orphan reactions in model for Shlomi Method
-0 - remove orphan reactions
-(Default = 1)</li>
-<li><strong>exRxnRemove</strong> &#8211;
-Names of exchange reactions to remove
-(Default = [])</li>
-<li><strong>solver</strong> &#8211;
-Use either &#8216;GIMME&#8217;, &#8216;iMAT&#8217;, or &#8216;Shlomi&#8217; to create tissue
-specific model. &#8216;Shlomi&#8217; is the same as &#8216;iMAT&#8217; the names
-are just maintained for historical purposes.
-(Default = &#8216;GIMME&#8217;)</li>
-<li><strong>options</strong> &#8211;
-If using GIMME, enter <cite>objectiveCol</cite> here
-Default: objective function with 90% flux cutoff,
-written as: <cite>[find(model.c) 0.9]</cite></li>
-<li><strong>funcModel</strong> &#8211;
-1 - Build a functional model having only reactions
-that can carry a flux (using <cite>FVA</cite>), 0 - skip this
-step (Default = 0)</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>tissueModel</strong> &#8211;
-Model produced by GIMME or iMAT, containing only
-reactions carrying flux</li>
-<li><strong>Rxns</strong> &#8211;
-Statistics of test:<ul>
-<li>ExpressedRxns - predicted by mRNA data</li>
-<li>UnExpressedRxns - predicted by mRNA data</li>
-<li>unknown - unable to be predicted by mRNA data</li>
-<li>Upregulated - added back into model</li>
-<li>Downregulated - removed from model</li>
-<li>UnknownIncluded - orphans added</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p>If there are multiple transcripts to one probe that have different
-expression patterns the script will ask what the locus is of the
-expressed and unexpressed transcripts</p>
-<p>GIMME script matches objective functions flux, Shlomi algorithm is
-based on maintaining pathway length comparable to expression data, not flux</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.dataIntegration.transcriptomics.fastcore">
-<code class="descname">fastcore</code><span class="sig-paren">(</span><em>model</em>, <em>core</em>, <em>epsilon</em>, <em>printlevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/34d8a67d6efa42df6bd6cabb20b001dbd6ff4f2a/src/dataIntegration/transcriptomics/fastcore.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.fastcore" title="Permalink to this definition">¶</a></dt>
-<dd><p>Use the FASTCORE algorithm (Vlassis et al, 2014*) to extract a context
-specific model using data. FASTCORE algorithm defines one set of core
-reactions that is guaranteed to be active in the extracted model and find
-the minimum of reactions possible to support the core.</p>
-<blockquote>
-<div><p>USAGE:</p>
-<blockquote>
-<div>tissueModel = fastcore(model,core)</div></blockquote>
-</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>model               input model (COBRA model structure)</strong></p>
-</li>
-<li><p class="first"><strong>core                indices of reactions in cobra model that are part of the</strong> &#8211;</p>
-<p>core set of reactions (called C in Vlassis et al,
-2014*)</p>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>epsilon             smallest flux value that is considered nonzero</strong> &#8211;</p>
-<p>(default 1e-8)</p>
-</li>
-<li><p class="first"><strong>printLevel          0 = silent, 1 = summary, 2 = debug</strong></p>
-</li>
+<li><strong>tol</strong> &#8211;
+minimum flux threshold for &#8220;expressed&#8221; reactions
+(default 1e-8)</li>
+<li><strong>core</strong> &#8211;
+cell with reaction names (strings) that are manually put in
+the high confidence core</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>tissueModel         extracted model</strong></li>
+<li><strong>tissueModel</strong> &#8211;
+extracted model</li>
 </ul>
 </div></blockquote>
-<ul class="simple">
-<li>Vlassis, Pacheco, Sauter (2014). Fast reconstruction of compact</li>
-</ul>
-<p>context-specific metbolic network models. PLoS Comput. Biol. 10, e1003424.</p>
-<blockquote>
-<div></div></blockquote>
+<p><cite>Jerby et al. (201)). Computational reconstruction of tissue-specific
+metabolic models: application to human liver metabolism. Mol. Syst. Biol.
+6, 401.</cite></p>
 </dd></dl>
 
 </div>
@@ -332,10 +241,10 @@ the minimum of reactions possible to support the core.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="FASTCORE.html" class="btn btn-neutral float-right" title="FASTCORE" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="design.html" class="btn btn-neutral float-right" title="Design" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metabotools.html" class="btn btn-neutral" title="Metabotools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="mCADRE.html" class="btn btn-neutral" title="mCADRE" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
