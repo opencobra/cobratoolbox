@@ -37,7 +37,7 @@ for i = 1:numel(gene_id)
     	gene_expr(i)=expressionData.value(dataID);
     elseif length(dataID)>1
     	disp(['Double for ',num2str(cur_ID)])
-    	gene_expr(i)=sum(expressionData.value(dataID));
+    	gene_expr(i)=mean(expressionData.value(dataID));
     end
 end
            
