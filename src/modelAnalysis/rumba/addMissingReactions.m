@@ -1,21 +1,22 @@
 function model = addMissingReactions(SampledModel, completeModel)
-% Verify the consistency between the sampled model and the 
-% complete reference model by checking that all reactions from complete 
+% Verify the consistency between the sampled model and the
+% complete reference model by checking that all reactions from complete
 % model are in the sampled model
 %
 % USAGE:
-%   model = addMissingReactions(SampledModel,completeModel)
+%
+%    model = addMissingReactions(SampledModel, completeModel)
 %
 % INPUTS:
-%   SampledModel:               Sampled model
-%   completeModel:              The complete reference model
+%    SampledModel:     Sampled model
+%    completeModel:    The complete reference model
 %
 % OUTPUTS:
-%   model:                      Consistent sampled model wrt the complete
-%                               model
+%    model:            Consistent sampled model wrt the complete model
 %
-% Authors: - Nathan E. Lewis, May 2010-May 2011
-%          - Anne Richelle, May 2017
+% .. Authors:
+%       - Nathan E. Lewis, May 2010-May 2011
+%       - Anne Richelle, May 2017
 
 model = completeModel;
 

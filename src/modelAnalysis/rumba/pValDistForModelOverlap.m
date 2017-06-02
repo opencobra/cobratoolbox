@@ -1,22 +1,23 @@
 function [rxnsInCommon, MedianChange] = pValDistForModelOverlap(model1, model2)
-% Compute for each reaction in common in both sampled modelw 
+% Compute for each reaction in common in both sampled modelw
 % the magnitude of median flux value change
 %
 % USAGE:
-%   [rxnsInCommon,MedianChange] = pValDistForModelOverlap(model1,model2)
+%
+%    [rxnsInCommon, MedianChange] = pValDistForModelOverlap(model1, model2)
 %
 % INPUTS:
-%   model1:                     Model sampled under first condition
-%   model2:                     Model sampled under second condition
+%    model1:          Model sampled under first condition
+%    model2:          Model sampled under second condition
 %
 % OUTPUTS:
-%   rxnsInCommon:               Reactions shared by both sampled models
-%   MedianChange:               Magnitude of median flux value change for
-%                               each reaction listed in 'rxnsInCommon'
-%   
+%    rxnsInCommon:    Reactions shared by both sampled models
+%    MedianChange:    Magnitude of median flux value change for
+%                     each reaction listed in 'rxnsInCommon'
 %
-% Authors: - Nathan E. Lewis, May 2010-May 2011
-%          - Anne Richelle, May 2017
+% .. Authors:
+%       - Nathan E. Lewis, May 2010-May 2011
+%       - Anne Richelle, May 2017
 
 ZeroRxns1 = setdiff(model1.rxns, model2.rxns);
 ZeroRxns2 = setdiff(model2.rxns, model1.rxns);

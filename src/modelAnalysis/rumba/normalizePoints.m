@@ -1,27 +1,28 @@
 function [model1, model2] = normalizePoints(model1, model2, NormalizePointsParam, LoopRxnsToIgnore)
 % Normalize the sampled points by the net network flux
-% ('NormalizePointsParam' = 1) or by growth rate ('NormalizePointsParam' = 2)
+% (`NormalizePointsParam` = 1) or by growth rate (`NormalizePointsParam` = 2)
 %
 % USAGE:
-%   [model1, model2] = normalizePoints(model1, model2, NormalizePointsParam, LoopRxnsToIgnore)
+%
+%    [model1, model2] = normalizePoints(model1, model2, NormalizePointsParam, LoopRxnsToIgnore)
 %
 % INPUTS:
-%   model1:                     Model sampled under first condition
-%   model2:                     Model sampled under second condition
-%   NormalizePointsOption:      Option to normalize sample points to (1) the
-%                               same median of magnitude of flux through all
-%                               non-loop gene-associated reactions, or (2) the
-%                               optimal growth rate. (default = 1)
-%   LoopRxnsToIgnore:           list of rxns associated with loop within the model,
-%                               default- reaction loops defined usinf FVA
+%    model1:                   Model sampled under first condition
+%    model2:                   Model sampled under second condition
+%    NormalizePointsOption:    Option to normalize sample points to (1) the
+%                              same median of magnitude of flux through all
+%                              non-loop gene-associated reactions, or (2) the
+%                              optimal growth rate. (default = 1)
+%    LoopRxnsToIgnore:         list of rxns associated with loop within the model,
+%                              default- reaction loops defined usinf FVA
 %
 % OUTPUTS:
-%   model1:                     Normalized sampled model under first condition
-%   model2:                     Normalized sampled model under second condition
-%   
+%    model1:                   Normalized sampled model under first condition
+%    model2:                   Normalized sampled model under second condition
 %
-% Authors: - Nathan E. Lewis, May 2010-May 2011
-%          - Anne Richelle, May 2017
+% .. Authors:
+%       - Nathan E. Lewis, May 2010-May 2011
+%       - Anne Richelle, May 2017
 
 SharedRxns = intersect(model1.rxns,model2.rxns);
 
@@ -44,13 +45,13 @@ if all(and(Ind1,Ind2))
     % sum up all fluxes through network in each point
     tmp1 = sum(abs(model1.points(Ind1,:)),1);
     tmp2 = sum(abs(model2.points(Ind2,:)),1);
-    
+
     % normalize by net flux
-    if NormalizePointsParam ==1 
+    if NormalizePointsParam ==1
         BOF1= median(tmp1);
         BOF2= median(tmp2);
     % normalize by Growth rate
-    elseif NormalizePointsParam ==2 
+    elseif NormalizePointsParam ==2
         FBAsoln = optimizeCbModel(model1);
         BOF1= FBAsoln.f;
         FBAsoln = optimizeCbModel(model2);
@@ -62,9 +63,9 @@ if all(and(Ind1,Ind2))
     % the two growth conditions
     Ratio = BOF1/BOF2;
     % scale point in model 2 by ratio
-    model2.points = model2.points*Ratio; 
+    model2.points = model2.points*Ratio;
     % scale bounds in model 2 by ratio
-    model2.ub = model2.ub*Ratio; 
+    model2.ub = model2.ub*Ratio;
     model2.lb = model2.lb*Ratio;
 
 else

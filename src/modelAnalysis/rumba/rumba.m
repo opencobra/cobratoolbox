@@ -3,100 +3,100 @@ function [RUMBA_outputs, UpRegulated, DownRegulated, MetConnectivity1, MetConnec
 % flux at metabolic branch points under two conditions
 %
 % USAGE:
-%   [RUMBA_outputs,UpRegulated,DownRegulated,MetConnectivity1,MetConnectivity2] = rumba(model1,model2,completeModel)
+%
+%    [RUMBA_outputs, UpRegulated, DownRegulated, MetConnectivity1, MetConnectivity2] = rumba(model1, model2, completeModel, sampling, maxMetConn, RxnsOfInterest, GenesOfInterest, NormalizePointsOption, PValCuttoff, MaxNumPoints, LoopRxnsToIgnore, verboseTag)
 %
 % INPUTS:
-%   model1:                     Model under first condition, exchange reactions 
-%                               are constrained with the data related to the first 
-%                               condition. If model already sampled
-%                               ('sampling'=0). The sampling points is in an
-%                               mxn matrix with m reactions and n points included
-%                               as a field in the model(i.e., model1.points).
-%                               Set 'sampling'=1 to set the model constrained
-%                               under the first conditions
-%   model2:                     Model under second condition. Same
-%                               format as model1.
-%   completeModel:              The complete reference model. This is used
-%                               to verify consistency between the sampled
-%                               models.
-%   sampling:                   0, if no sampling needed (default) 
-%                               1, if sampling of the models under both
-%                               conditions
-%   maxMetConn:                 The maximum connectivity of a metabolite to
-%                               consider. All branch points with a higher
-%                               connectivity will be ignored. (default = 30)
-%   RxnsOfInterest:             Reactions for which predictions are desired.
-%                               Specifying only desired reactions speeds up
-%                               algorithm.
-%   GenesOfInterest:            Genes associated with the reactions of
-%                               interest.
-%   NormalizePointsOption:      Option to normalize sample points to (1) the
-%                               same median of magnitude of flux through all
-%                               non-loop gene-associated reactions, or (2) the
-%                               optimal growth rate. (default = 1)
-%   PValCuttoff:                P-value cutoff used to decide which changes in
-%                               branch point flux to call significant (two-
-%                               tailed p-value, so .05 will mean 0.25 on both
-%                               tails). (default = 0.05)
-%   MaxNumPoints:               Maximum number of points to use form the
-%                               sampled models. Extra points will be removed
-%                               to improve memory usage and speed up
-%                               calculations. (default = minimum number of
-%                               points in the model or 500 points, whichever
-%                               is smaller)
-%   verboseTag:                 1 = print out progress and use waitbars. 0 =
-%                               print only minimal progress to screen.
-%   LoopRxnsToIgnore:           list of rxns associated with loop within the model,
-%                               default- reaction loops defined usinf FVA
+%    model1:                     Model under first condition, exchange reactions
+%                                are constrained with the data related to the first
+%                                condition. If model already sampled
+%                                ('sampling' = 0). The sampling points is in an
+%                                mxn matrix with m reactions and n points included
+%                                as a field in the model(i.e., `model1.points`).
+%                                Set 'sampling' = 1 to set the model constrained
+%                                under the first conditions
+%    model2:                     Model under second condition. Same
+%                                format as `model1`.
+%    completeModel:              The complete reference model. This is used
+%                                to verify consistency between the sampled models.
+%    sampling:                   0, if no sampling needed (default)
+%                                1, if sampling of the models under both
+%                                conditions
+%    maxMetConn:                 The maximum connectivity of a metabolite to
+%                                consider. All branch points with a higher
+%                                connectivity will be ignored. (default = 30)
+%    RxnsOfInterest:             Reactions for which predictions are desired.
+%                                Specifying only desired reactions speeds up
+%                                algorithm.
+%    GenesOfInterest:            Genes associated with the reactions of interest.
+%    NormalizePointsOption:      Option to normalize sample points to (1) the
+%                                same median of magnitude of flux through all
+%                                non-loop gene-associated reactions, or (2) the
+%                                optimal growth rate. (default = 1)
+%    PValCuttoff:                P-value cutoff used to decide which changes in
+%                                branch point flux to call significant (two-
+%                                tailed p-value, so .05 will mean 0.25 on both
+%                                tails). (default = 0.05)
+%    MaxNumPoints:               Maximum number of points to use form the
+%                                sampled models. Extra points will be removed
+%                                to improve memory usage and speed up
+%                                calculations. (default = minimum number of
+%                                points in the model or 500 points, whichever
+%                                is smaller)
+%    verboseTag:                 1 = print out progress and use waitbars. 0 =
+%                                print only minimal progress to screen.
+%    LoopRxnsToIgnore:           list of rxns associated with loop within the model,
+%                                default- reaction loops defined usinf FVA
 %
 % OUTPUTS:
-%   RUMBA_outputs:              Structure containing all information about
-%                               each gene-reaction pair. For gene-reaction pair 
-%                               for which the differential branch-point
-%                               information is possible to calculate: the list of 
-%                               connected metabolites ('ConnectedMets'), the associated 
-%                               up-regulation p-value ('pValue_up'), the associated
-%                               down-regulation p-value ('pValue_down')and
-%                               the reaction directionality for both model
-%                               ('direction').The structure also contains the list of gene-reaction
-%                               pairs for which no differential branch-point
-%                               information can be determined (because of
-%                               loops, unused pathways, etc.).
-%   UpRegulated:                first column : Gene-reaction pairs towards which flux is
-%                               significantly upregulated during the shift 
-%                               second column : list of metabolites
-%                               connected to the gene-reaction pair
-%                               third column : Magnitude of absolutes flux
-%                               change
-%   DownRegulated:              same structure as UpRegulated but for gene-reaction pairs 
-%                               from which flux is significantly
-%                               downregulated during the shift
-%   MetConnectivity1:           A structure that present for each metabolite present in model1
-%                               the following sets of fields:
-%                                   ConnRxns - the reactions that are connected
-%                                   to the metabolite
-%                                   Sij - The stoichiometric coefficient for the
-%                                   metabolite in each reaction in ConnRxns
-%                                   RxnScore - Score for each reaction in ConnRxns
-%                                   Direction - The direction of reaction flux
-%                                   for each sample point
-%                                   MetNotUsed - Whether or not the metabolite is
-%                                   used in the condition
-%   MetConnectivity2:           Same as MetConnectivity1 but for model2
-%   
+%    RUMBA_outputs:              Structure containing all information about
+%                                each gene-reaction pair. For gene-reaction pair
+%                                for which the differential branch-point
+%                                information is possible to calculate: the list of
+%                                connected metabolites ('ConnectedMets'), the associated
+%                                up-regulation p-value ('pValue_up'), the associated
+%                                down-regulation p-value ('pValue_down')and
+%                                the reaction directionality for both model
+%                                ('direction').The structure also contains the list of gene-reaction
+%                                pairs for which no differential branch-point
+%                                information can be determined (because of
+%                                loops, unused pathways, etc.).
+%    UpRegulated:                first column : Gene-reaction pairs towards which flux is
+%                                significantly upregulated during the shift;
+%                                second column : list of metabolites
+%                                connected to the gene-reaction pair;
+%                                third column : Magnitude of absolutes flux change
+%    DownRegulated:              same structure as `UpRegulated` but for gene-reaction pairs
+%                                from which flux is significantly
+%                                downregulated during the shift
+%    MetConnectivity1:           A structure that present for each metabolite present in model1
+%                                the following sets of fields:
 %
-% Authors: - Nathan E. Lewis, May 2010-May 2011
-%          - Anne Richelle, May 2017
+%                                  * ConnRxns - the reactions that are connected
+%                                    to the metabolite
+%                                  * Sij - The stoichiometric coefficient for the
+%                                    metabolite in each reaction in ConnRxns
+%                                  * RxnScore - Score for each reaction in ConnRxns
+%                                  * Direction - The direction of reaction flux
+%                                    for each sample point
+%                                  * MetNotUsed - Whether or not the metabolite is
+%                                    used in the condition
+%    MetConnectivity2:           Same as `MetConnectivity1` but for `model2`
+%
+%
+% .. Authors:
+%       - Nathan E. Lewis, May 2010-May 2011
+%       - Anne Richelle, May 2017
 
 if nargin < 11  || isempty(LoopRxnsToIgnore)
-    tmp = completeModel; 
-    tmpExc = findExcRxns(tmp); 
+    tmp = completeModel;
+    tmpExc = findExcRxns(tmp);
     tmp.lb(tmpExc) = 0;
     tmp.lb(tmp.lb >0) = 0;
-    tmp.ub(tmpExc) = 0; 
+    tmp.ub(tmpExc) = 0;
     [MinFVA MaxFVA] = fluxVariability(tmp,0,'max',tmp.rxns);
-    LoopRxnsToIgnore = tmp.rxns(or(MinFVA<-1e-10, MaxFVA>1e-10)); 
-    LoopRxnsToIgnore = {}; 
+    LoopRxnsToIgnore = tmp.rxns(or(MinFVA<-1e-10, MaxFVA>1e-10));
+    LoopRxnsToIgnore = {};
     tmpRxnForm = printRxnFormula(tmp,LoopRxnsToIgnore);
 end
 
@@ -123,7 +123,7 @@ end
 % If no set of genes is provided, look at all genes
 if nargin <6
     [tmp_r,tmp_r2] = findRxnsFromGenes(completeModel,completeModel.genes,0,1);
-    RxnsOfInterest = tmp_r2(:,1);  
+    RxnsOfInterest = tmp_r2(:,1);
     GenesOfInterest = tmp_r2(:,5);
 end
 
@@ -136,11 +136,11 @@ end
 % if no sampling option, models are already sampled
 if nargin < 4 || isempty(sampling)
     sampling = 0;
-    if ~isfield(model1,'points'), 
+    if ~isfield(model1,'points'),
         warning 'Model1 is not sampled, sampling will be performed using sampleCbModel'
         sampling = 1;
     end
-    if ~isfield(model2,'points'), 
+    if ~isfield(model2,'points'),
         warning 'Model2 is not sampled, sampling will be performed using sampleCbModel'
         sampling = 1;
     end
@@ -160,7 +160,7 @@ end
 % since the statistics should be two-tailed, divide the p-value by 2
 PValCuttoff = PValCuttoff/2;
 
-% preprocessing step: Make sure all reactions from complete model are 
+% preprocessing step: Make sure all reactions from complete model are
 % are in the sampled models
 model1 = addMissingReactions(model1,completeModel);
 model2 = addMissingReactions(model2,completeModel);
@@ -213,9 +213,9 @@ for i=1:length(RxnsOfInterest)
         Pred.pValue_up = pVal_up(Ind); % p-value that flux is diverted to this reaction in each node in which it participates
         Pred.pValue_down = pVal_down(Ind); % p-value that flux is diverted away from this reaction in each node in which it participates
         Pred.Direction = [Dir_model1(Ind) Dir_model2(Ind)]'; % reaction directionality for both model (1 producing metabolite, -1 consuming the metabolite)
-        
-        RUMBA_outputs.(cat(2,GenesOfInterest{i},'_',RxnsOfInterest{i}))=Pred;       
-      
+
+        RUMBA_outputs.(cat(2,GenesOfInterest{i},'_',RxnsOfInterest{i}))=Pred;
+
         % if the rxn/gene pair goes up for at least one metabolite, but not
         % down, and is above the p-value cutoff, then put it in the list of
         % gene-reaction pairs that significantly go up
@@ -223,9 +223,9 @@ for i=1:length(RxnsOfInterest)
             UpRegulated{end+1} = cat(2,GenesOfInterest{i},'_',RxnsOfInterest{i});
             UpRegulated_mets{end+1} = regexprep(MetsAndRxns(Ind(pVal_up(Ind)<PValCuttoff),1),'Metab_','');
         end
-        
+
         % if the rxn/gene pair goes down for at least one metabolite, but
-        % not up  and is above the p-value cutoff, then put it in the list 
+        % not up  and is above the p-value cutoff, then put it in the list
         % of gene-reaction pairs that significantly go down
         if min(pVal_down(Ind))<PValCuttoff && max(pVal_down(Ind))<=(1-PValCuttoff)
             DownRegulated{end+1} = cat(2,GenesOfInterest{i},'_',RxnsOfInterest{i});
@@ -243,7 +243,7 @@ UpRegulated_mets = UpRegulated_mets(Ind)';
 [DownRegulated,Ind] = sort(DownRegulated');
 DownRegulated_mets = DownRegulated_mets(Ind)';
 
-%filter out genes that go up and down 
+%filter out genes that go up and down
 tmpUp = regexprep(UpRegulated,'_[0-9A-Za-z\-_\.\,\''\"\(\)\[\]]+$','');    % get all up gene IDs
 tmpDwn = regexprep(DownRegulated,'_[0-9A-Za-z\-_\.\,\''\"\(\)\[\]]+$',''); % get all down gene IDs
 ToDelU = ismember(tmpUp,tmpDwn);                                           % find Up genes also in the Down category
@@ -261,7 +261,7 @@ DownRegulated = ([DownRegulated DownRegulated_mets]);
 [rxnsInCommon,MedRxnChange] = pValDistForModelOverlap(model1,model2);
 tmpUp = regexprep(UpRegulated(:,1),'^[0-9A-Za-z\-\.\,\''\"\(\)\[\]]+_','');
 tmpDwn = regexprep(DownRegulated(:,1),'^[0-9A-Za-z\-\.\,\''\"\(\)\[\]]+_','');
-    
+
 MagnitudeUp = zeros(length(tmpUp),1);
 for i = 1:length(tmpUp)
 	Ind = find(ismember(rxnsInCommon,tmpUp{i}));
@@ -287,6 +287,6 @@ for i = 1:length(tmpDwn)
 end
 
 UpRegulated = ([UpRegulated num2cell(MagnitudeUp)]);
-DownRegulated = ([DownRegulated num2cell(MagnitudeDown)]);   
+DownRegulated = ([DownRegulated num2cell(MagnitudeDown)]);
 
 end

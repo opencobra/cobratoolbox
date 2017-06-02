@@ -1,46 +1,49 @@
 function [MetsAndRxns, pVal_up, pVal_down, Dir_1, Dir_2] = compareConditions(MetConnectivity1, ConnectedMet1, MetConnectivity2, ConnectedMet2)
-% This function compare reaction score of both sampling condition 
+% This function compare reaction score of both sampling condition
 % and identify metabolites that change significantly
 %
 % USAGE:
-%   [MetsAndRxns, pVal_up, pVal_down, Dir_1, Dir_2] = compareConditions(MetConnectivity1, ConnectedMet1, MetConnectivity2, ConnectedMet2)
+%
+%    [MetsAndRxns, pVal_up, pVal_down, Dir_1, Dir_2] = compareConditions(MetConnectivity1, ConnectedMet1, MetConnectivity2, ConnectedMet2)
 %
 % INPUTS:
-%   MetConnectivity1:           A structure that present, for each
-%                               metabolite present in the model sampled under first
-%                               condition the following sets of fields:
-%                                   ConnRxns - the reactions that are connected
-%                                   to the metabolite
-%                                   Sij - The stoichiometric coefficient for the
-%                                   metabolite in each reaction in ConnRxns
-%                                   RxnScore - Score for each reaction in ConnRxns
-%                                   Direction - The direction of reaction flux
-%                                   for each sample point
-%                                   MetNotUsed - Whether or not the metabolite is
-%                                   used in the condition
-%   ConnectedMet1:              List of metabolites described in 'MetConnectivity1'
-%   MetConnectivity2:           Same as MetConnectivity1 but for model
-%                               sampled under the second condition
-%   ConnectedMet2:              List of metabolites described in 'MetConnectivity2'
+%    MetConnectivity1:    A structure that present, for each
+%                         metabolite present in the model sampled under first
+%                         condition the following sets of fields:
+%
+%                           * ConnRxns - the reactions that are connected
+%                             to the metabolite
+%                           * Sij - The stoichiometric coefficient for the
+%                             metabolite in each reaction in `ConnRxns`
+%                           * RxnScore - Score for each reaction in `ConnRxns`
+%                           * Direction - The direction of reaction flux
+%                             for each sample point
+%                           * MetNotUsed - Whether or not the metabolite is
+%                             used in the condition
+%    ConnectedMet1:       List of metabolites described in `MetConnectivity1`
+%    MetConnectivity2:    Same as `MetConnectivity1` but for `model`
+%                         sampled under the second condition
+%    ConnectedMet2:       List of metabolites described in `MetConnectivity2`
 %
 % OUTPUTS:
-%   MetsAndRxns:                Cell arrays containing in the first column
-%                               the list of metabolites that significantly change 
-%                               under both sampling conditions and in the second 
-%                               column the reactions that are connected to
-%                               these metabolites
-%   pVal_up:                    p-value associated to upregulated
-%                               'MetsAndRxns'
-%   pVal_down:                  p-value associated to downregulated
-%                               'MetsAndRxns'
-%   Dir_1:                      reaction directionality for model sampled under first
-%                               condition (1 producing metabolite, -1
-%                               consuming the metabolite)
-%   Dir_2:                      Same as Dir_1 but for model
-%                               sampled under the second condition
+%    MetsAndRxns:         Cell arrays containing in the first column
+%                         the list of metabolites that significantly change
+%                         under both sampling conditions and in the second
+%                         column the reactions that are connected to
+%                         these metabolites
+%    pVal_up:             p-value associated to upregulated
+%                         `MetsAndRxns`
+%    pVal_down:           p-value associated to downregulated
+%                         `MetsAndRxns`
+%    Dir_1:               reaction directionality for model sampled under first
+%                         condition (1 producing metabolite, -1
+%                         consuming the metabolite)
+%    Dir_2:               Same as `Dir_1` but for model
+%                         sampled under the second condition
 %
-% Authors: - Nathan E. Lewis, May 2010-May 2011
-%          - Anne Richelle, May 2017
+% .. Authors:
+%       - Nathan E. Lewis, May 2010-May 2011
+%       - Anne Richelle, May 2017
 
 Met1=MetConnectivity1.(ConnectedMet1{1});
 Met2=MetConnectivity2.(ConnectedMet2{1});
@@ -60,17 +63,17 @@ for i = 1:length(ConnectedMet)
 
     Met1=MetConnectivity1.(ConnectedMet{i});
     Met2=MetConnectivity2.(ConnectedMet{i});
-    
+
     FracNotUsed1 = sum(Met1.MetNotUsed(1:MinNumPts))/(MinNumPts); % fraction of the sample points not using this node in model1
     FracNotUsed2 = sum(Met2.MetNotUsed(1:MinNumPts))/(MinNumPts); % fraction of the sample points not using this node in model2
-    
+
     % ignore nodes that are used in less than 10% of the sample points in one
     % condition
-    if and(FracNotUsed1<.9,FracNotUsed2<.9) 
-        
+    if and(FracNotUsed1<.9,FracNotUsed2<.9)
+
         % subtract scores of 2nd condition from the 1st condition
         tmp = Met1.RxnScore(:,1:MinNumPts) - Met2.RxnScore(:,1:MinNumPts);
-        
+
         % p of increasing flux is obtained by subtracting 2nd from 1st and
         % finding how many are > or < 0 for the pvalue for up and down,
         % respectively. (many >= 0 means 2nd condition was lower, so high
@@ -78,7 +81,7 @@ for i = 1:length(ConnectedMet)
         % in the 2nd condition
         p_up = sum(tmp>=0,2)/length(tmp(1,:));
         p_down = sum(tmp<=0,2)/length(tmp(1,:));
-        
+
         % This computes the median direction, just to give an idea which
         % direction the reaction tends to go in the conditions
         tmp_Dir1 = median(Met1.Direction(:,1:MinNumPts),2);

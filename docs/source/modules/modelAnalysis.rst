@@ -19,7 +19,7 @@ Model analysis
    #thermo
    topology
    transport
+   rumba
 
 .. automodule:: src.modelAnalysis
    :members:
-
