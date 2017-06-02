@@ -281,6 +281,7 @@ for i = 1:length(metaboliteList)
 end
 
 
+
 % if ~oldRxnFlag, model.rxnGeneMat(rxnID,:)=0; end
 
 if (isfield(model,'genes')) 

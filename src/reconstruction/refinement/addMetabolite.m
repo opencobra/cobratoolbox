@@ -122,11 +122,13 @@ for i = 1:numel(metID)
     cmetID = metID{i};
     if ~any(ismember(model.mets,cmetID))
         %this needs an explicit 1:end as otherwise a zero size gets set to
-        %1...
+        %1...                
+        model.S(end+1,1:end) = 0;
+        model.mets{end+1,1} = cmetID;
         if ~isfield(model,'csense')
             model.csense = repmat('E',size(model.mets));
         else
-            model.csense{end+1} = 'E';
+            model.csense(end+1) = 'E';
         end
         
         
