@@ -178,21 +178,21 @@ end
 
 % set the reaction lower bound
 if isfield(model, 'lb')
-    model.lb(rxnID) = lowerBound;
+    model.lb(rxnID,1) = lowerBound;
 else
     model.lb = zeros(length(model.rxns), 1);
 end
 
 % set the reaction upper bound
 if isfield(model, 'ub')
-    model.ub(rxnID) = upperBound;
+    model.ub(rxnID,1) = upperBound;
 else
     model.ub = zeros(length(model.rxns), 1);
 end
 
 % set the objective coefficient of the reaction
 if isfield(model, 'c')
-    model.c(rxnID) = objCoeff;
+    model.c(rxnID,1) = objCoeff;
 else
     model.c = zeros(length(model.rxns), 1);
 end

@@ -193,6 +193,12 @@ for i = 1:numel(metID)
     if isempty(find(ismember(model.mets,cmetID)))
         model.S(end+1,:) = 0;
         model.mets{end+1} = cmetID;
+        if ~isfield(model,'csense')
+            model.csense = repmat('E',size(model.mets));
+        else
+            model.csense{end+1} = 'E';
+        end
+        
         if (isfield(model,'metNames'))      %Prompts to add missing info if desired
             cmetName = metName{i};
             if strcmp(cmetName,'')
