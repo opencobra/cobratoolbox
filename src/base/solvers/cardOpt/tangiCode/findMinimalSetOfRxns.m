@@ -1,29 +1,27 @@
-%the function finds the minimal set of reactions subject to a LP objective
-%function
-
-
-% min   ||x||_0
-% min   c'x
-% s.t.  Sx=b
-%       lb <= x <= ub
-
-
-%INPUT
-%model
-
-%OUTPUT
-%resutl_tab - number of reactions obtained for each condition
-%sol - x
-%lprxns - rxns indices for LP solution
-%l1rxns - rxns indices for L1 solution
-%l0rxns - rxns indices for L0 solution
-
-%Tangi Migot
-%01/10/2015
-
 function [result_tab, sol, lprxns, l1rxns, l0rxns]  = findMinimalSetOfRxns(model)
-% Precision to zero :
-zeps=eps;
+% This function finds the minimal set of reactions subject to a LP objective function
+% :math:`min ||x||_0`
+% :math:`min c'x`
+% s.t. :math:`Sx = b`
+% :math:`lb <= x <= ub`
+%
+% USAGE:
+%
+%    [result_tab, sol, lprxns, l1rxns, l0rxns]  = findMinimalSetOfRxns(model)
+%
+% INPUT:
+%    model:         COBRA model structure
+%
+% OUTPUTS:
+%    resutl_tab:    number of reactions obtained for each condition
+%    sol:           `x`
+%    lprxns:        rxns indices for LP solution
+%    l1rxns:        rxns indices for L1 solution
+%    l0rxns:        rxns indices for L0 solution
+%
+% .. Author: - Tangi Migot, 01/10/2015
+
+zeps=eps; % Precision to zero :
 % Maximum number of warm start :
 max_nb_warm_start=10;
 
