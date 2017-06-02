@@ -220,7 +220,7 @@ COBRA model with added exchange reactions</li>
 
 <dl class="function">
 <dt id="src.reconstruction.refinement.addMetabolite">
-<code class="descname">addMetabolite</code><span class="sig-paren">(</span><em>model</em>, <em>metID</em>, <em>metName</em>, <em>formula</em>, <em>ChEBIID</em>, <em>KEGGId</em>, <em>PubChemID</em>, <em>InChi</em>, <em>Charge</em>, <em>b</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/refinement/addMetabolite.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.addMetabolite" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addMetabolite</code><span class="sig-paren">(</span><em>model</em>, <em>metID</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/refinement/addMetabolite.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.addMetabolite" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a Metabolite to the Current Reconstruction</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -238,21 +238,23 @@ The ID(s) of the metabolite(s) (will be the identifier in model.mets)</li>
 <blockquote>
 <div><ul class="simple">
 <li><strong>metName</strong> &#8211;
-Human readable name(s) (String)</li>
-<li><strong>formula</strong> &#8211;
-The chemical formula(s) (String)</li>
+Human readable name(s) (default metID, String)</li>
+<li><strong>metFormula</strong> &#8211;
+The chemical formula(s) (default &#8216;&#8217;, String)</li>
 <li><strong>ChEBIID</strong> &#8211;
-The CHEBI Id(s) (String)</li>
+The CHEBI Id(s) (default &#8216;&#8217;, String)</li>
 <li><strong>KEGGId</strong> &#8211;
-The KEGG Compound ID(s) (String)</li>
+The KEGG Compound ID(s) (default &#8216;&#8217;, String)</li>
 <li><strong>PubChemID</strong> &#8211;
-The PubChemID(s) (String)</li>
+The PubChemID(s) (default &#8216;&#8217;, String)</li>
 <li><strong>InChi</strong> &#8211;
-The InChi description(s) (String)</li>
+The InChi description(s) (default &#8216;&#8217;, String)</li>
 <li><strong>Charge</strong> &#8211;
-The Charge(s) (int)</li>
+The Charge(s) (default NaN, int)</li>
 <li><strong>b</strong> &#8211;
-The accumulation(s) or release(s) (double)</li>
+The accumulation(s) or release(s) (default 0, double)</li>
+<li><strong>csense</strong> &#8211;
+The sense of this metabolite (default &#8216;E&#8217;, char)</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
@@ -262,7 +264,7 @@ The accumulation(s) or release(s) (double)</li>
 COBRA model with added metabolite(s)</li>
 </ul>
 </div></blockquote>
-<p><cite>metID</cite> and all optional string arguments either have to be a single value or cell
+<p><cite>metID</cite> and all optional arguments either have to be a single value or cell
 arrays. <cite>Charge</cite> and <cite>b</cite> have to be double arrays.</p>
 </dd></dl>
 
@@ -299,73 +301,64 @@ Array of ratio coefficient between the 2 reactions</li>
 
 <dl class="function">
 <dt id="src.reconstruction.refinement.addReaction">
-<code class="descname">addReaction</code><span class="sig-paren">(</span><em>model</em>, <em>rxnName</em>, <em>metaboliteList</em>, <em>stoichCoeffList</em>, <em>revFlag</em>, <em>lowerBound</em>, <em>upperBound</em>, <em>objCoeff</em>, <em>subSystem</em>, <em>grRule</em>, <em>geneNameList</em>, <em>systNameList</em>, <em>checkDuplicate</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/refinement/addReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.addReaction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addReaction</code><span class="sig-paren">(</span><em>model</em>, <em>rxnID</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/refinement/addReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.addReaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a reaction to the model or modify an existing reaction</p>
-<p><strong>Usage</strong></p>
 <blockquote>
-<div>[model, rxnIDexists] = addReaction(model, rxnName, metaboliteList, stoichCoeffList, revFlag, lowerBound, upperBound, objCoeff, subSystem, grRule, geneNameList, systNameList, checkDuplicate, printLevel)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<div><p>USAGE:</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>rxnName</strong> &#8211;
-Reaction name abbreviation (i.e. &#8216;ACALD&#8217;)
-(Note: can also be a cell array {&#8216;abbr&#8217;,&#8217;name&#8217;}</li>
-<li><strong>metaboliteList</strong> &#8211;
-Cell array of metabolite names or alternatively the
-reaction formula for the reaction</li>
-<li><strong>stoichCoeffList</strong> &#8211;
-List of stoichiometric coefficients (reactants -ve,
-products +ve), empty if reaction formula is provided</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
+<div>[model, rxnIDexists] = addReaction(model, rxnID, varargin)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:             COBRA model structure
+rxnID:             Reaction name abbreviation (i.e. &#8216;ACALD&#8217;)</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>varargin:          Input of additional information as parameter/Value</dt>
+<dd><p class="first">pairs
+* reactonName - a Descriptive name of the reaction</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>revFlag</strong> &#8211;
-Reversibility flag (Default = true)</li>
-<li><strong>lowerBound</strong> &#8211;
-Lower bound (Default = 0 or -vMax`)</li>
-<li><strong>upperBound</strong> &#8211;
-Upper bound (Default = <cite>vMax</cite>)</li>
-<li><strong>objCoeff</strong> &#8211;
-Objective coefficient (Default = 0)</li>
-<li><strong>subSystem</strong> &#8211;
-Subsystem (Default = &#8216;&#8217;)</li>
-<li><strong>grRule</strong> &#8211;
-Gene-reaction rule in boolean format (and/or allowed)
+<div>(default ID)</div></blockquote>
+<ul class="last simple">
+<li>metaboliteList - Cell array of metabolite names. Either this
+parameter or reactionFormula are required.</li>
+<li>stoichCoeffList - List of stoichiometric coefficients (reactants -ve,
+products +ve), if not provided, all stoichiometries
+are assumed to be -1 (Exchange, or consumption).</li>
+<li>reactionFormula - A Reaction formula in string format (&#8216;A + B -&gt; C&#8217;).
+If this parameter is provided metaboliteList MUST
+be empty, and vice versa.</li>
+<li>reversible - Reversibility flag (Default = true)</li>
+<li>lowerBound - Lower bound (Default = 0 or -vMax`)</li>
+<li>upperBound - Upper bound (Default = <cite>vMax</cite>)</li>
+<li>objCoeff - Objective coefficient (Default = 0)</li>
+<li>subSystem - Subsystem (Default = &#8216;&#8217;)</li>
+<li>geneRule - Gene-reaction rule in boolean format (and/or allowed)
 (Default = &#8216;&#8217;);</li>
-<li><strong>geneNameList</strong> &#8211;
-List of gene names (used only for translation from
-common gene names to systematic gene names)</li>
-<li><strong>systNameList</strong> &#8211;
-List of systematic names</li>
-<li><strong>checkDuplicate</strong> &#8211;
-Check <cite>S</cite> matrix too see if a duplicate reaction is
+<li>geneNameList - List of gene names (used only for translation from
+common gene names to systematic gene names) (Default empty)</li>
+<li>systNameList - List of systematic names (Default empty)</li>
+<li>checkDuplicate - Check <cite>S</cite> matrix too see if a duplicate reaction is
 already in the model (Deafult false)</li>
-<li><strong>printLevel</strong> &#8211;
-default = 1</li>
+<li>printLevel - default = 1</li>
 </ul>
+</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><p class="first">model:             COBRA model structure with new reaction
+rxnIDexists:       Empty if the reaction did not exist previously, or if</p>
+<blockquote class="last">
+<div>checkDuplicate is false. Otherwise it contains the ID
+of an identical reaction already present in the model.</div></blockquote>
+</dd>
+<dt>EXAMPLES:</dt>
+<dd>%1) Add a new irreversible reaction using the formula approach
+model = addReaction(model,&#8217;newRxn1&#8217;,&#8217;A -&gt; B + 2 C&#8217;)
+%2) Add a the same reaction using the list approach
+model = addReaction(model,&#8217;newRxn1&#8217;,{&#8216;A&#8217;,&#8217;B&#8217;,&#8217;C&#8217;},[-1 1 2],false);</dd>
+</dl>
 </div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure with new reaction</li>
-<li><strong>rxnIDexists</strong> &#8211;
-Empty if the reaction did not exist previously, or if
-checkDuplicate is false. Otherwise it contains the ID
-of an identical reaction already present in the model.</li>
-</ul>
-</div></blockquote>
-<p><strong>Example</strong></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span><span class="mi">1</span><span class="p">)</span> <span class="n">Add</span> <span class="n">a</span> <span class="n">new</span> <span class="n">irreversible</span> <span class="n">reaction</span> <span class="n">using</span> <span class="n">the</span> <span class="n">formula</span> <span class="n">approach</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">addReaction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="s1">&#39;newRxn1&#39;</span><span class="p">,</span><span class="s1">&#39;A -&gt; B + 2 C&#39;</span><span class="p">)</span>
-<span class="o">%</span><span class="mi">2</span><span class="p">)</span> <span class="n">Add</span> <span class="n">a</span> <span class="n">the</span> <span class="n">same</span> <span class="n">reaction</span> <span class="n">using</span> <span class="n">the</span> <span class="nb">list</span> <span class="n">approach</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">addReaction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="s1">&#39;newRxn1&#39;</span><span class="p">,{</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">,</span><span class="s1">&#39;C&#39;</span><span class="p">},[</span><span class="o">-</span><span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span><span class="p">],</span><span class="n">false</span><span class="p">);</span>
-</pre></div>
-</div>
+<p>check for backward compatability</p>
 </dd></dl>
 
 <dl class="function">
@@ -768,7 +761,7 @@ reversible format</p>
 
 <dl class="function">
 <dt id="src.reconstruction.refinement.createModel">
-<code class="descname">createModel</code><span class="sig-paren">(</span><em>rxnAbrList</em>, <em>rxnNameList</em>, <em>rxnList</em>, <em>revFlagList</em>, <em>lowerBoundList</em>, <em>upperBoundList</em>, <em>subSystemList</em>, <em>grRuleList</em>, <em>geneNameList</em>, <em>systNameList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/refinement/createModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.createModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">createModel</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/refinement/createModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.createModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a COBRA model from inputs or an empty model
 structure if no inputs are provided.</p>
 <p><strong>Usage</strong></p>
@@ -1210,7 +1203,7 @@ COBRA model with removed metabolites</li>
 
 <dl class="function">
 <dt id="src.reconstruction.refinement.removeRxns">
-<code class="descname">removeRxns</code><span class="sig-paren">(</span><em>model</em>, <em>rxnRemoveList</em>, <em>irrevFlag</em>, <em>metFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/refinement/removeRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.removeRxns" title="Permalink to this definition">¶</a></dt>
+<code class="descname">removeRxns</code><span class="sig-paren">(</span><em>model</em>, <em>rxnRemoveList</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/refinement/removeRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.removeRxns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes reactions from a model</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -1224,16 +1217,15 @@ COBRA model structure</li>
 Cell array of reaction names to be removed</li>
 </ul>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>irrevFlag</strong> &#8211;
-Irreverseble (true) or reversible (false) reaction
-format (Default = false)</li>
-<li><strong>metFlag</strong> &#8211;
-Remove unused metabolites (Default = true)</li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>OPTIONAL INPUTS as parameter value pairs:</dt>
+<dd><dl class="first docutils">
+<dt>irrevFlag:         Irreverseble (true) or reversible (false) reaction</dt>
+<dd>format (Default = false)</dd>
+</dl>
+<p class="last">metFlag:           Remove unused metabolites (Default = true)</p>
+</dd>
+</dl>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
