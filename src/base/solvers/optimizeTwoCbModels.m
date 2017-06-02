@@ -8,8 +8,7 @@ function [solution1, solution2, totalFluxDiff] = optimizeTwoCbModels(model1, mod
 %
 % INPUTS:
 %    model1:           The first COBRA model
-%    model2:           The second COBRA model
-%    model:            with mandatory fields:
+%    model2:           The second COBRA model, where both models have mandatory fields:
 %
 %                        * S - Stoichiometric matrix
 %                        * b - Right hand side = 0

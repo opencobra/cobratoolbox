@@ -6,36 +6,36 @@ function [currentSol, allObjValues, allSolutions] = optimizeCbModelNLP(model, va
 %    [currentSol, allObjValues, allSolutions] = optimizeCbModelNLP(model, varargin)
 %
 % INPUT:
-%    model:           COBRA model structure
+%    model:            COBRA model structure
 %
 % Optional inputs are parameter/value pairs
 %
 % OPTIONAL INPUT:
-%    objFunction:     Name of the non-linear matlab function to be optimized (the
-%                     corresponding m-file must be in the current matlab path)
-%                     The function receives two arguments, the current flux
-%                     vector, and the `NLPProblem` structure.
-%    initFunction:    Name of the matlab function used to generate random initial
-%                     starting points. The function will be supplied with two
-%                     arguments: the model and a cell array of input arguments
-%                     (specified in the initArgs parameter)
-%    osenseStr:       Optimization direction ('max' or 'min'), this will
-%                     override any mention in the model.
-%    nOpt:            Number of independent optimization runs performed
-%    objArgs:         Cell array of arguments that are supplied to the
-%                     objective function as `objArguments` in the NLPProblem
-%                     structure (i.e. the second element, will have a field
-%                     `objArguments`.)
-%    initArgs:        Cell array of arguments to the 'initFunction', will be
-%                     provided as second input Argument to the `initFunction`
-%    solveroptions:   A Struct with options for the solver used. This is
-%                     specific to the solver in question, but the fields should
-%                     relate to options accepted by the solver.
+%    objFunction:      Name of the non-linear matlab function to be optimized (the
+%                      corresponding m-file must be in the current matlab path)
+%                      The function receives two arguments, the current flux
+%                      vector, and the `NLPProblem` structure.
+%    initFunction:     Name of the matlab function used to generate random initial
+%                      starting points. The function will be supplied with two
+%                      arguments: the model and a cell array of input arguments
+%                      (specified in the initArgs parameter)
+%    osenseStr:        Optimization direction ('max' or 'min'), this will
+%                      override any mention in the model.
+%    nOpt:             Number of independent optimization runs performed
+%    objArgs:          Cell array of arguments that are supplied to the
+%                      objective function as `objArguments` in the NLPProblem
+%                      structure (i.e. the second element, will have a field
+%                      `objArguments`.)
+%    initArgs:         Cell array of arguments to the 'initFunction', will be
+%                      provided as second input Argument to the `initFunction`
+%    solveroptions:    A Struct with options for the solver used. This is
+%                      specific to the solver in question, but the fields should
+%                      relate to options accepted by the solver.
 %
 % OUTPUTS:
-%    currentSol:      Solution structure
-%    allObjValues:    Array of objective value of each iteration
-%    allSolutions:    Array of flux distribution of each iteration
+%    currentSol:       Solution structure
+%    allObjValues:     Array of objective value of each iteration
+%    allSolutions:     Array of flux distribution of each iteration
 %
 % .. Authors:
 %       - Markus Herrgard 8/24/07
