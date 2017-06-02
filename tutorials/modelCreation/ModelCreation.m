@@ -1,4 +1,8 @@
 %% Creating a Model 
+% *by Thomas Pfau*
+
+initCobraToolbox
+%% 
 % To create a new model, there is a simple function ( createModel ):
 
 emptymodel = createModel()
@@ -76,7 +80,8 @@ grRuleList = {grRuleR1, grRuleR2};
 %% 
 % The model creation call would then be:
 
-model2 = createModel(reactionIdentifiers,reactionNames,reactionFormulas,'upperBoundList',upperBounds,'grRuleList',grRuleList);
+model2 = createModel(reactionIdentifiers,reactionNames,reactionFormulas,...
+                     'upperBoundList',upperBounds,'grRuleList',grRuleList);
 %% 
 % If we now compare the reactions, printing the GPR rules in both models
 
@@ -105,6 +110,7 @@ ReactionFormulas = {'glc-D[e]  -> glc-D',...
 ReactionNames = {'GLCt1','HEX1','PGI','PFK','FBP','FBA','TPI'};
 lowerbounds = [-20, 0, -20, 0, 0,-20,-20];
 upperbounds = [20, 20, 20, 20, 20, 20, 20];
-glycolysisModel = createModel(ReactionNames,ReactionNames,ReactionFormulas, 'lowerBoundList',lowerbounds,'upperBoundList',upperbounds);
+glycolysisModel = createModel(ReactionNames,ReactionNames,ReactionFormulas,...
+                             'lowerBoundList',lowerbounds,'upperBoundList',upperbounds);
 %% 
 %
