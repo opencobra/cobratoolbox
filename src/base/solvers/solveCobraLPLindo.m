@@ -5,8 +5,28 @@ function [obj, x, y, w, s, solStatus] = solveCobraLPLindo(A, b, c, csense, lb, u
 %
 %    [obj, x, y, w, s, solStatus] = solveCobraLPLindo(A, b, c, csense, lb, ub, osense, primalOnlyFlag, oldAPIFlag, verbLevel, method)
 %
-% `oldAPIFLag` should be true if Lindo API <2.0 is used and false for newer
-% versions of the API
+% INPUTS:
+%    A:                 LHS matrix
+%    b:                 RHS vector
+%    c:                 Objective coeff vector
+%
+% OPTIONAL INPUTS:
+%    csense:            Constraint senses
+%    lb:                Lower bound vector
+%    ub:                Upper bound vector
+%    osense:            Objective sense
+%    primalOnlyFlag:    Get the primal soln only
+%    oldAPIFLag:        should be true if Lindo API <2.0 is used and false for newer versions of the API
+%    verbLevel:         verbose level
+%    method:            default = 0, chooses the algorithm
+%
+% OUTPUTS:
+%    obj:               Objective value
+%    x:                 `n` vector: value of each variable in x
+%    y:                 `m` vector: dual variables
+%    w:                 vector of reduced costs
+%    s:                 `m` vector: value of each slack in s
+%    solStatus:         Original status returned by the specific solver
 %
 % .. Author: - Markus Herrgard 11/8/06
 

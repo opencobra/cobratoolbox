@@ -1,6 +1,10 @@
 function solution = solveCobraLP(LPproblem, varargin)
 % Solves constraint-based LP problems
 %
+% USAGE:
+%
+%    solveCobraLP(LPproblem, varargin)
+%
 % INPUT:
 %    LPproblem:     Structure containing the following fields describing the LP problem to be solved
 %
@@ -82,7 +86,7 @@ function solution = solveCobraLP(LPproblem, varargin)
 %       fluxes using either 'cplex_direct' solver or 'pdco'
 %       - Jan Schellenberger, 09/28/09 Changed header to be much simpler.  All parameters
 %       now accessed through changeCobraSolverParams(LP, parameter,value)
-%-      - Richard Que, 11/30/09 Changed handling of optional parameters to use
+%       - Richard Que, 11/30/09 Changed handling of optional parameters to use
 %       getCobraSolverParams().
 %       - Ronan Fleming, 12/07/09 Commenting of input/output
 %       - Ronan Fleming, 21/01/10 Not having second input, means use the parameters as specified in the
