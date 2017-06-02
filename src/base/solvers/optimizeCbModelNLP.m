@@ -1,46 +1,46 @@
-function [currentSol,allObjValues,allSolutions] = ...
-    optimizeCbModelNLP(model,varargin)
-%optimizeCbModelNLP Optimize constraint-based model using a non-linear objective
+function [currentSol, allObjValues, allSolutions] = optimizeCbModelNLP(model, varargin)
+% Optimizes constraint-based model using a non-linear objective
 %
-% [currentSol,allObjValues,allSolutions] =
-%   optimizeCbModelNLP(model,osenseStr,objFunction,initFunction,nOpt,objArgs,
-%   initArgs)
+% USAGE:
 %
-%INPUT
-% model         COBRA model structure
+%    [currentSol, allObjValues, allSolutions] = optimizeCbModelNLP(model, varargin)
 %
-%OPTIONAL INPUT (all as parameter/value pairs)
-% Parameter Name
-% objFunction     Name of the non-linear matlab function to be optimized (the
-%                 corresponding m-file must be in the current matlab path)
-%                 The function receives two arguments, the current flux
-%                 vector, and the NLPProblem structure. 
-% initFunction    Name of the matlab function used to generate random initial
-%                 starting points. The function will be supplied with two
-%                 arguments: the model and a cell array of input arguments
-%                 (specified in the initArgs parameter)
-% osenseStr       Optimization direction ('max' or 'min'), this will
-%                 override any mention in the model.
-% nOpt            Number of independent optimization runs performed
-% objArgs         Cell array of arguments that are supplied to the
-%                 objective function as objArguments in the NLPProblem
-%                 structure (i.e. the second element, will have a field
-%                 objArguments.)
-% initArgs        Cell array of arguments to the 'initFunction', will be
-%                 provided as second input Argument to the initFunction
-% solveroptions   A Struct with options for the solver used. This is
-%                 specific to the solver in question, but the fields should
-%                 relate to options accepted by the solver.
+% INPUT:
+%    model:           COBRA model structure
 %
-%OUTPUT
-% currentSol    Solution structure
-% allObjValues  Array of objective value of each iteration
-% allSolutions  Array of flux distribution of each iteration
+% Optional inputs are parameter/value pairs
 %
-% Markus Herrgard 8/24/07
+% OPTIONAL INPUT:
+%    objFunction:     Name of the non-linear matlab function to be optimized (the
+%                     corresponding m-file must be in the current matlab path)
+%                     The function receives two arguments, the current flux
+%                     vector, and the `NLPProblem` structure.
+%    initFunction:    Name of the matlab function used to generate random initial
+%                     starting points. The function will be supplied with two
+%                     arguments: the model and a cell array of input arguments
+%                     (specified in the initArgs parameter)
+%    osenseStr:       Optimization direction ('max' or 'min'), this will
+%                     override any mention in the model.
+%    nOpt:            Number of independent optimization runs performed
+%    objArgs:         Cell array of arguments that are supplied to the
+%                     objective function as `objArguments` in the NLPProblem
+%                     structure (i.e. the second element, will have a field
+%                     `objArguments`.)
+%    initArgs:        Cell array of arguments to the 'initFunction', will be
+%                     provided as second input Argument to the `initFunction`
+%    solveroptions:   A Struct with options for the solver used. This is
+%                     specific to the solver in question, but the fields should
+%                     relate to options accepted by the solver.
 %
-% Modified for new options in solveCobraNLP by Daniel Zielinski 3/19/10
-% Changed the function to use parameter/value pairs, Thomas Pfau 07/22/17
+% OUTPUTS:
+%    currentSol:      Solution structure
+%    allObjValues:    Array of objective value of each iteration
+%    allSolutions:    Array of flux distribution of each iteration
+%
+% .. Authors:
+%       - Markus Herrgard 8/24/07
+%       - Modified for new options in solveCobraNLP by Daniel Zielinski 3/19/10
+%       - Changed the function to use parameter/value pairs, Thomas Pfau 07/22/17
 
 
 global CBT_NLP_SOLVER
@@ -61,7 +61,7 @@ addParameter(p,'objArgs',{},@iscell)
 addParameter(p,'initArgs',[],@iscell)
 addParameter(p,'solverOptions',[],@isstruct)
 
-parse(p,model,varargin{:}); 
+parse(p,model,varargin{:});
 
 [osenseStr,objFunction,initFunction,nOpt,objArgs,initArgs,solverOptions] = ...
     deal( p.Results.osenseStr,p.Results.objFunction,p.Results.initFunction, ...
@@ -82,12 +82,12 @@ if isnumeric(solverOptions)
         if verLessThan('matlab','9')
                 solverOptions = struct('TolFun',1e-20);
            else
-        solverOptions = struct('FunctionTolerance', 1e-20,'OptimalityTolerance',1e-20);        
+        solverOptions = struct('FunctionTolerance', 1e-20,'OptimalityTolerance',1e-20);
         end
     else
         solverOptions = struct();
     end
-    
+
 end
 %Set default values, if they are not set.
 if ~isfield(solverOptions,'iterationLimit')
@@ -99,11 +99,11 @@ if ~isfield(solverOptions,'printLevel')
 end
 
 %The same as above for the objective Function
-if strcmp(initFunction,defaultInitFunction) && isnumeric(initArgs)        
+if strcmp(initFunction,defaultInitFunction) && isnumeric(initArgs)
     solOpt = optimizeCbModel(model,osenseStr);
     %Minimum fraction of the objective function to select start points from
-    %is 50% of the maximal objective    
-    initArgs = {osenseStr,0.5, 0.5 * solOpt.f}; 
+    %is 50% of the maximal objective
+    initArgs = {osenseStr,0.5, 0.5 * solOpt.f};
 else
     if isnumeric(initArgs)
         initArgs = {};
@@ -143,5 +143,3 @@ for i = 1:nOpt
        currentSol.stat = solNLP.stat;
     end
 end
-
-

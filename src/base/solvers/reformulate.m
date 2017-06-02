@@ -1,49 +1,52 @@
 function [LPproblem] = reformulate(LPproblem, BIG, printLevel)
-% REFORMULATE reformulates badly-scaled FBA program
-% REFORMULATE transforms LPproblems with badly-scaled stoichiometric and 
+% Reformulates badly-scaled FBA program
+% Transforms LPproblems with badly-scaled stoichiometric and
 % coupling constraints of the form:
-% 
-%   max c*x  subject to: Ax <= b
-% 
-% REFORMULATE eliminates the need for scaling and hence prevents infeasibilities
+% :math:`max c*x` subject to: math:`Ax <= b`
+%
+% Eliminates the need for scaling and hence prevents infeasibilities
 % after unscaling. After using PREFBA to transform a badly-scaled FBA program,
 % please turn off scaling and reduce the aggressiveness of presolve.
-% 
-% [LPproblem] = REFORMULATE(LPproblem,BIG) transforms a badly-scaled LPproblem 
-% contained in the struct FBA and returns the transformed program in the 
-% structure FBA. REFORMULATE assumes S and C do not contain very small entries 
-% and transforms constraints containing very large entries (entries larger than 
+%
+% Rransforms a badly-scaled LPproblem
+% contained in the struct FBA and returns the transformed program in the
+% structure FBA. `reformulate` assumes `S` and `C` do not contain very small entries
+% and transforms constraints containing very large entries (entries larger than
 % BIG). BIG should be set between 1000 and 10,000 on double precision machines.
-% PRINTLEVEL = 1 or 0 enables/diables printing respectively.
-% 
+% printlevel = 1 or 0 enables/diables printing respectively.
+%
 % Reformulation techniques are described in detail in:
-% Y. Sun, R. M.T. Fleming, M. A. Saunders, I. Thiele, An Algorithm for Flux
-% Balance Analysis of Multi-scale Biochemical Networks, submitted.
-% 
+% `Y. Sun, R. M.T. Fleming, M. A. Saunders, I. Thiele, An Algorithm for Flux
+% Balance Analysis of Multi-scale Biochemical Networks, submitted`.
+%
+% USAGE:
+%
+%    [LPproblem] = reformulate(LPproblem, BIG, printLevel)
+%
 % INPUTS:
-%   LPproblem  : Structure contain the original LP to be solved. The format of
-%                this struct is described in the documentation for solveCobraLP.m
-%   BIG        : A parameter the controls the largest entries that appear in the
-%                reformulated problem.
-%   printLevel : printLevel = 1 enables printing of problem statistics
-%                printlevel = 0 silent
-% 
+%    LPproblem:     Structure contain the original LP to be solved. The format of
+%                   this struct is described in the documentation for `solveCobraLP.m`
+%    BIG:           A parameter the controls the largest entries that appear in the
+%                   reformulated problem.
+%    printLevel:    printLevel = 1 enables printing of problem statistics;
+%                   printlevel = 0 silent
+%
 % OUTPUTS:
-%   LPproblem  : Structure contain the reformulated LP to be solved. 
-% 
-% AUTHORS:
-%   Michael Saunders    saunders@stanford.edu
-%   Yuekai Sun          yuekai@stanford.edu
-%   Systems Optimization Lab (SOL), Stanford University
-% 
-% VERSION HISTORY:
-%   0.1.0
-%   0.1.1  Optimized code for large sparse S and C matrices.
-%   0.1.2  Committed Prof. Saunders' suggestions and optimizations.
-%   0.2.0  Implemented new method that for transforming badly-scaled S matrices
-%          that yields smaller programs.
-%   0.2.1  c = maxval(k1) was overwriting vector c. Changed to qty = maxval(k1).
-% 
+%    LPproblem:     Structure contain the reformulated LP to be solved.
+%
+% .. Authors:
+%       - Michael Saunders, saunders@stanford.edu
+%       - Yuekai Sun, yuekai@stanford.edu, Systems Optimization Lab (SOL), Stanford University
+%
+% ..
+%    VERSION HISTORY:
+%      0.1.0
+%      0.1.1  Optimized code for large sparse S and C matrices.
+%      0.1.2  Committed Prof. Saunders' suggestions and optimizations.
+%      0.2.0  Implemented new method that for transforming badly-scaled S matrices
+%             that yields smaller programs.
+%      0.2.1  c = maxval(k1) was overwriting vector c. Changed to qty = maxval(k1).
+
   A      = LPproblem.A;
   b      = LPproblem.b;
   c      = LPproblem.c*LPproblem.osense;
@@ -73,7 +76,7 @@ function [LPproblem] = reformulate(LPproblem, BIG, printLevel)
   nlrgrow = length(lrgrow);
   Slrg    = S(lrgrow,lrgcol);
   Sabs    = Sabs(lrgrow,lrgcol);
-  
+
   if printLevel == 1
     fprintf([...
     'Transforming %i reactions with large coefficients with sequences of\n'...
@@ -106,7 +109,7 @@ function [LPproblem] = reformulate(LPproblem, BIG, printLevel)
       [m,n] = size(Slrg);
       ndum  = ndum+maxdum;
   end
-  
+
   i1 = 1:nlrgrow;
   i2 = nlrgrow+1:nlrgrow+ndum;
   j1 = 1:nlrgcol;
@@ -117,7 +120,7 @@ function [LPproblem] = reformulate(LPproblem, BIG, printLevel)
   S3 = sparse(nnz(storow),ndum);
   S3(lrgrow,:) = Slrg(i1,j2);
   S4 = Slrg(i2,j2);
-  
+
   A      = [[S1 S3
              S2 S4];
             [A(~storow,:) sparse(nnz(~storow),ndum)]];
@@ -152,14 +155,14 @@ function [LPproblem] = reformulate(LPproblem, BIG, printLevel)
   nbadrow = length(badrow);
 
   cupcon  = csense(cuprow);
-  
+
   if printLevel == 1
     fprintf([...
     'Transforming %i badly-scaled coupling constraints with sequences of\n'...
     'well-scaled coupling constraints. This may take a few minutes.\n'...
     ],nbadrow)
   end
-  
+
 % replace badly-scaled coupling constraints with sequences of well-scaled
 % coupling constraints
 
@@ -227,4 +230,3 @@ function A = delnan(A)
   a(nanind) = [];
   A         = sparse(I,J,a);
 end
-
