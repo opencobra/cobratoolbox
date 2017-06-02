@@ -35,7 +35,7 @@ end
 rxnsInModel=-ones(length(metabolites),1);
 for i = 1 : nMets
     rxnName = strcat('sink_',metabolites{i});
-    [model,rxnIDs] = addReaction(model,rxnName,metabolites(i),-1,1,lb(i),ub(i),0,'Sink', [], [], [], 0); % ignore duplicates
+    [model,rxnIDs] = addReaction(model,rxnName,metabolites(i),-1,1,lb(i),ub(i),0,'Sink', '', [], [], 0); % ignore duplicates
     if ~isempty(rxnIDs)
        rxnsInModel(i)=rxnIDs;
     end

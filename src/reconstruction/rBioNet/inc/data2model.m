@@ -114,7 +114,6 @@ model.rxns = columnVector(model.rxns);
 model.rules = columnVector(model.rules);
 model.lb = columnVector(model.lb);
 model.ub = columnVector(model.ub);
-model.rev = columnVector(model.rev);
 model.c = columnVector(model.c);
 model.grRules = columnVector(model.grRules);
 model.subSystems = columnVector(model.subSystems);
