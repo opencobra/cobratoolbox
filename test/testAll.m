@@ -68,8 +68,7 @@ if COVERAGE
         % only retain the lines that end with .txt and .m and are not comments and point to files in the /src folder
         if length(lineOfFile) > 4
             if ~strcmp(lineOfFile(1), '#') && strcmp(lineOfFile(1:4), 'src/') && (strcmp(lineOfFile(end-3:end), '.txt') || strcmp(lineOfFile(end-1:end), '.m'))
-                fprintf('%s\n', lineOfFile)
-                ignoreFiles{counter} = lineOfFile;
+                ignoreFiles{counter} = ['./', lineOfFile];
                 counter = counter + 1;
             end
         end
@@ -135,6 +134,8 @@ if COVERAGE
             grade = grades{i};
         end
     end
+
+    fprintf('\n\n -> The code grade is %s.\n\n', grade);
 
     if ~isempty(strfind(getenv('HOME'), 'jenkins'))
         % remove the old badge
