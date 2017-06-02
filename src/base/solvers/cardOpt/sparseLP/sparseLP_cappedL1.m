@@ -1,37 +1,44 @@
-function solution = sparseLP_cappedL1(constraint,params)
+function solution = sparseLP_cappedL1(constraint, params)
 % DC programming for solving the sparse LP
-% min   ||x||_0 subject to linear constraints
-% The l0 norm is approximated by capped-l1 function.
-% See "Le Thi et al., DC approximation approaches for sparse optimization,
-% European Journal of Operational Research, 2014"
+% :math:`min ||x||_0` subject to linear constraints
+% The `l0` norm is approximated by capped-`l1` function.
+% See `Le Thi et al., DC approximation approaches for sparse optimization,
+% European Journal of Operational Research, 2014`;
 % http://dx.doi.org/10.1016/j.ejor.2014.11.031
 %
-% solution = sparseLP_cappedL1(constraint,params)
+% USAGE:
 %
-% INPUT
-% constraint                Structure containing the following fields describing the linear constraints
-%       A                   m x n LHS matrix
-%       b                   m x 1 RHS vector
-%       lb                  n x 1 Lower bound vector
-%       ub                  n x 1 Upper bound vector
-%       csense              m x 1 Constraint senses, a string containting the constraint sense for
-%                           each row in A ('E', equality, 'G' greater than, 'L' less than).
+%    solution = sparseLP_cappedL1(constraint, params)
 %
-% OPTIONAL INPUTS
-% params                    parameters structure
-%       nbMaxIteration      stopping criteria - number maximal of iteration (Defaut value = 1000)
-%       epsilon             stopping criteria - (Defaut value = 10e-6)
-%       theta               parameter of the approximation (Defaut value = 0.5)
+% INPUT:
+%    constraint:    Structure containing the following fields describing the linear constraints:
 %
-% OUTPUT
-% solution                  Structure containing the following fields
-%       x                   n x 1 solution vector
-%       stat                status
-%                           1 =  Solution found
-%                           2 =  Unbounded
-%                           0 =  Infeasible
-%                           -1=  Invalid input
-% Hoai Minh Le	20/10/2015
+%                     * A - `m` x `n` LHS matrix
+%                     * b - `m` x 1 RHS vector
+%                     * lb - `n` x 1 Lower bound vector
+%                     * ub - `n` x 1 Upper bound vector
+%                     * csense - `m` x 1 Constraint senses, a string containting the constraint sense for
+%                       each row in `A` ('E', equality, 'G' greater than, 'L' less than).
+%
+% OPTIONAL INPUTS:
+%    params:        Parameters structure:
+%
+%                     * nbMaxIteration - stopping criteria - number maximal of iteration (Defaut value = 1000)
+%                     * epsilon - stopping criteria - (Defaut value = 10e-6)
+%                     * theta - parameter of the approximation (Defaut value = 0.5)
+%
+% OUTPUT:
+%    solution:      Structure containing the following fields:
+%
+%                     * x - `n` x 1 solution vector
+%                     * stat - status:
+%
+%                       * 1 =  Solution found
+%                       * 2 =  Unbounded
+%                       * 0 =  Infeasible
+%                       * -1=  Invalid input
+%
+% .. Author: - Hoai Minh Le,	20/10/2015
 
 stop = false;
 solution.x = [];
@@ -54,7 +61,7 @@ else
     if isfield(params,'theta') == 0
         params.theta   = 0.5;
     end
-    
+
         if isfield(params,'feasTol') == 0
         params.feasTol = 1e-9;
     end
