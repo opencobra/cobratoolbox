@@ -1,62 +1,63 @@
-function solution = solveCobraQP(QPproblem,varargin)
-%solveCobraQP Solve constraint-based QP problems
-%
-% solution = solveCobraQP(QPproblem,parameters)
-%
-% % Solves problems of the type
-%
-%      min   0.5 x' * F * x + osense * c' * x
-%      s/t   lb <= x <= ub
-%            A * x  <=/=/>= b
-%
-%INPUT
-% QPproblem Structure containing the following fields describing the QP
-% problem to be solved
-%  A      LHS matrix
-%  b      RHS vector
-%  F      F matrix for quadratic objective (must be positive definite)
-%  c      Objective coeff vector
-%  lb     Lower bound vector
-%  ub     Upper bound vector
-%  osense Objective sense (-1 max, +1 min)
-%  csense Constraint senses, a string containting the constraint sense for
-%         each row in A ('E', equality, 'G' greater than, 'L' less than).
-%
-%OPTIONAL INPUTS
-% Optional parameters can be entered using parameters structure or as
-% parameter followed by parameter value: i.e. ,'printLevel',3)
-%
-% parameters    Structure containing optional parameters as fields.
-%  printLevel   Print level for solver
-%  saveInput    Saves LPproblem to filename specified in field.
-%               Setting parameters = 'default' uses default setting set in
-%               getCobraSolverParameters.
+function solution = solveCobraQP(QPproblem, varargin)
+% Solves constraint-based QP problems
 %
 % The solver is defined in the CBT_MILP_SOLVER global variable
 % (set using changeCobraSolver). Solvers currently available are
 % 'tomlab_cplex', 'mosek' and 'qpng' (limited support for small problems)
 %
-%OUTPUT
-% solution  Structure containing the following fields describing a QP
-%           solution
-%  full     Full QP solution vector
-%  obj      Objective value
-%  solver   Solver used to solve QP problem
-%  stat     Solver status in standardized form (see below)
-%  origStat Original status returned by the specific solver
-%  time     Solve time in seconds
+% Solves problems of the type
+% :math:`min  0.5 x' * F * x + osense * c' * x`
+% s/t :math:`lb <= x <= ub`
+% :math:`A * x  <=/=/>= b`
+
+% USAGE:
 %
-%  stat     Solver status in standardized form
-%           1   Optimal solution
-%           2   Unbounded solution
-%           0   Infeasible
-%           -1  No solution reported (timelimit, numerical problem etc)
+%    solution = solveCobraQP(QPproblem, varargin)
 %
-% Markus Herrgard        6/8/07
-% Ronan Fleming         12/07/09  Added support for mosek
-% Ronan Fleming         18 Jan 10 Added support for pdco
-% Josh Lerman           04/17/10 changed def. parameters, THREADS, QPMETHOD
-% Tim Harrington        05/18/12 Added support for the Gurobi 5.0 solver
+% INPUT:
+%    QPproblem:       Structure containing the following fields describing the QP
+%
+%                       * A - LHS matrix
+%                       * b - RHS vector
+%                       * F - F matrix for quadratic objective (see above)
+%                       * c - Objective coeff vector
+%                       * lb - Lower bound vector
+%                       * ub - Upper bound vector
+%                       * osense - Objective sense (-1 max, +1 min)
+%                       * csense - Constraint senses, a string containting the constraint sense for
+%                        each row in A ('E', equality, 'G' greater than, 'L' less than).
+%
+% Optional parameters can be entered using parameters structure or as
+% parameter followed by parameter value: i.e. ,'printLevel', 3)
+% Setting `parameters` = 'default' uses default setting set in
+% `getCobraSolverParameters`.
+%
+% OPTIONAL INPUTS:
+%    parameters:      Structure containing optional parameters.
+%    printLevel:      Print level for solver
+%    saveInput:       Saves LPproblem to filename specified in field.
+%
+% OUTPUT:
+%    solution:        Structure containing the following fields describing a QP solution
+%
+%                       * full:        Full QP solution vector
+%                       * obj:         Objective value
+%                       * solver:      Solver used to solve QP problem
+%                       * origStat:    Original status returned by the specific solver
+%                       * time:        Solve time in seconds
+%                       * stat:        Solver status in standardized form (see below)
+%
+%                         * 1 - Optimal solution
+%                         * 2 - Unbounded solution
+%                         * 0 - Infeasible
+%                         * -1 - No solution reported (timelimit, numerical problem etc)
+%
+% .. Author:
+%       - Markus Herrgard        6/8/07
+%       - Ronan Fleming         12/07/09  Added support for mosek
+%       - Ronan Fleming         18 Jan 10 Added support for pdco
+%       - Josh Lerman           04/17/10 changed def. parameters, THREADS, QPMETHOD
+%       - Tim Harrington        05/18/12 Added support for the Gurobi 5.0 solver
 
 global CBT_QP_SOLVER;
 

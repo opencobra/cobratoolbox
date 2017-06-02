@@ -6,17 +6,16 @@ function solution = solveCobraLP(LPproblem, varargin)
 %    solution = solveCobraLP(LPproblem, varargin)
 %
 % INPUT:
-
-%    LPproblem:    Structure containing the following fields describing the LP problem to be solved
+%    LPproblem:     Structure containing the following fields describing the LP problem to be solved
 %
-%                    * A - LHS matrix
-%                    * b - RHS vector
-%                    * c - Objective coeff vector
-%                    * lb - Lower bound vector
-%                    * ub - Upper bound vector
-%                    * osense - Objective sense (-1 max, +1 min)
-%                    * csense - Constraint senses, a string containting the constraint sense for
-%                      each row in A ('E', equality, 'G' greater than, 'L' less than).
+%                     * A - LHS matrix
+%                     * b - RHS vector
+%                     * c - Objective coeff vector
+%                     * lb - Lower bound vector
+%                     * ub - Upper bound vector
+%                     * osense - Objective sense (-1 max, +1 min)
+%                     * csense - Constraint senses, a string containting the constraint sense for
+%                       each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
 % OPTIONAL INPUTS:
 %    printLevel:    Printing level
@@ -26,16 +25,16 @@ function solution = solveCobraLP(LPproblem, varargin)
 %                     * 2 - Summary information
 %                     * 3 - More detailed information
 %                     * > 10 - Pause statements, and maximal printing (debug mode)
-% saveInput     Saves LPproblem to filename specified in field.
-%               i.e. parameters.saveInput = 'LPproblem.mat';
-% minNorm       {(0), scalar , n x 1 vector}, where [m,n]=size(S);
-%               If not zero then, minimise the Euclidean length
-%               of the solution to the LP problem. minNorm ~1e-6 should be
-%               high enough for regularisation yet maintain the same value for
-%               the linear part of the objective. However, this should be
-%               checked on a case by case basis, by optimization with and
-%               without regularisation.
-% primalOnly    {(0),1} 1=only return the primal vector (lindo solvers)
+%    saveInput:     Saves LPproblem to filename specified in field.
+%                   i.e. parameters.saveInput = 'LPproblem.mat';
+%    minNorm:       {(0), scalar , `n` x 1 vector}, where `[m, n] = size(S)`;
+%                   If not zero then, minimise the Euclidean length
+%                   of the solution to the LP problem. minNorm ~1e-6 should be
+%                   high enough for regularisation yet maintain the same value for
+%                   the linear part of the objective. However, this should be
+%                   checked on a case by case basis, by optimization with and
+%                   without regularisation.
+%    primalOnly:    {(0), 1}; 1 = only return the primal vector (lindo solvers)
 %
 % Optional parameters can also be set through the
 % solver can be set through `changeCobraSolver('LP', value)`;

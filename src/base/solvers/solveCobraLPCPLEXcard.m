@@ -1,102 +1,98 @@
-function [solution,LPProblem]=solveCobraLPCPLEXcard(LPProblem,printLevel,basisReuse,conflictResolve,contFunctName,minNorm,theNorm)
-% [solution,LPProblem]=solveCobraLPCPLEX(LPProblem,printLevel,basisReuse,conflictResolve,contFunctName,minNorm)
-% call CPLEX to solve an LP problem
+function [solution, LPProblem] = solveCobraLPCPLEXcard(LPProblem, printLevel, basisReuse, conflictResolve, contFunctName, minNorm, theNorm)
+% Calls CPLEX to solve an LP problem
 % By default, use the matlab interface to cplex written by TOMLAB, in
 % preference to the one written by ILOG.
 %
-%INPUT
-% LPproblem Structure containing the following fields describing the LP
-% problem to be solved
-%  A or S       m x n LHS matrix
-%  b            m x 1 RHS vector
-%  c            n x 1 Objective coeff vector
-%  lb           n x 1 Lower bound vector
-%  ub           n x 1 Upper bound vector
-%  osense       scalar Objective sense (-1 max, +1 min)
+% USAGE:
 %
-%OPTIONAL INPUT
-% LPProblem.rxns    cell array of reaction abbreviations (necessary for
-%                   making a readable confilict resolution file).
-% LPProblem.csense  Constraint senses, a string containting the constraint sense for
-%                   each row in A ('E', equality, 'G' greater than, 'L' less than).
+%    solveCobraLPCPLEXcard(LPProblem, printLevel, basisReuse, conflictResolve, contFunctName, minNorm, theNorm)
 %
-% LPProblem.LPBasis Basis from previous solution of similar LP problem.
-%                   See basisReuse
+% INPUT:
+%    model:              structure with mandatory and optional fields:
 %
-% PrintLevel    Printing level in the CPLEX m-file and CPLEX C-interface.
-%               = 0    Silent
-%               = 1    Warnings and Errors
-%               = 2    Summary information (Default)
-%               = 3    More detailed information
-%               > 10   Pause statements, and maximal printing (debug mode)
+%                          * A or S: - `m` x `n` LHS matrix
+%                          * b - `m` x 1 RHS vector
+%                          * c - `n` x 1 Objective coeff vector
+%                          * lb - `n` x 1 Lower bound vector
+%                          * ub - `n` x 1 Upper bound vector
+%                          * osense - scalar Objective sense (-1 max, +1 min)
+%                          * .rxns - (optional) cell array of reaction abbreviations (necessary for
+%                            making a readable confilict resolution file).
+%                          * .csense - (optional) Constraint senses, a string containting the constraint sense for
+%                            each row in `A` ('E', equality, 'G' greater than, 'L' less than).
+%                          * .LPBasis - (optional) Basis from previous solution of similar LP problem.
+%                            See `basisReuse`
 %
-% basisReuse = 0   Use this for one of soluion of an LP (Default)
-%            = 1   Returns a basis for reuse in the next LP
-%                  i.e. outputs LPProblem.LPBasis
+% OPTIONAL INPUTS:
+%    printLevel:         Printing level in the CPLEX m-file and CPLEX C-interface.
 %
-% conflictResolve  = 0   (Default)
-%                  = 1   If LP problem is proven to be infeasible by CPLEX,
+%                          * 0 - Silent
+%                          * 1 - Warnings and Errors
+%                          * 2 - Summary information (Default)
+%                          * 3 - More detailed information
+%                          * > 10 - Pause statements, and maximal printing (debug mode)
+%    basisReuse:         0 - Use this for one of solution of an LP (Default);
+%                        1 - Returns a basis for reuse in the next LP i.e. outputs `model.LPBasis`
+%    conflictResolve:    0 (Default);
+%                        1 If LP problem is proven to be infeasible by CPLEX,
 %                        it will print out a 'conflict resolution file',
 %                        which indicates the irreducible infeasible set of
 %                        equaltiy & inequality constraints that together,
 %                        combine to make the problem infeasible. This is
 %                        useful for debugging an LP problem if you want to
 %                        try to resolve a constraint conflict
-%
-% contFunctName        = [] Use all default CLPEX control parameters, (Default)
-%                      = someString e.g. 'someFunctionName'
+%    contFunctName:      = [] Use all default CLPEX control parameters, (Default);
+%                        = someString e.g. 'someFunctionName'
 %                        uses the user specified control parameters defined
-%                        in someFunctionName.m
-%                       (see template function CPLEXParamSet for details).
-%                      = cpxControl structure (output from a file like CPLEXParamSet.m)
+%                        in `someFunctionName.m`
+%                        (see template function CPLEXParamSet for details).
+%                        = `cpxControl` structure (output from a file like `CPLEXParamSet.m`)
+%    minNorm:            {(0), 1 , `n` x 1 vector} If not zero then, minimise the Euclidean length
+%                        of the solution to the LP problem. Gives the same objective,
+%                        but minimises the square of flux. `minNorm` ~1e-6 should be
+%                        high enough for regularisation yet keep the same objective
+%    theNorm:            {'zero', 'one', ('two')} Controls which norm is minimized.
+%                        'zero' minimizes cardinality for nonzero entries in `minNorm`,
+%                        'one' minimizes taxicab norm for nonzero entries in `minNorm` (not implemented),
+%                        'two' minimizes Euclidean norm for nonzero entries in `minNorm` (default)
 %
-% minNorm       {(0), 1 , n x 1 vector} If not zero then, minimise the Euclidean length
-%               of the solution to the LP problem. Gives the same objective,
-%               but minimises the square of flux. minNorm ~1e-6 should be
-%               high enough for regularisation yet keep the same objective
+% OUTPUT:
+%    solution:           Structure containing the following fields describing a LP solution:
 %
-% theNorm       {'zero','one',('two')} Controls which norm is minimized.
-%                'zero' minimizes cardinality for nonzero entries in minNorm
-%                'one'  minimizes taxicab norm for nonzero entries in
-%                minNorm (not implemented)
-%                'two'  minimizes Euclidean norm for nonzero entries in minNorm (default)
+%                          * full:               Full LP solution vector
+%                          * obj:                Objective value
+%                          * rcost:              Lagrangian multipliers to the simple inequalties (Reduced costs)
+%                          * dual:               Lagrangian multipliers to the equalities
+%                          * nInfeas:            Number of infeasible constraints
+%                          * sumInfeas:          Sum of constraint violation
+%                          * stat:               COBRA Standardized solver status code:
 %
-%OUTPUT
-% solution Structure containing the following fields describing a LP
-% solution
-%  full         Full LP solution vector
-%  obj          Objective value
-%  rcost        Lagrangian multipliers to the simple inequalties (Reduced costs)
-%  dual         Lagrangian multipliers to the equalities
-%  nInfeas      Number of infeasible constraints
-%  sumInfeas    Sum of constraint violation
-%  stat         COBRA Standardized solver status code:
-%               1   Optimal solution
-%               2   Unbounded solution
-%               0   Infeasible
-%               -1  No solution reported (timelimit, numerical problem etc)
-%  origStat     CPLEX status code. Use cplexStatus(solution.origStat) for
-%               more information from the CPLEX solver
-%  solver       solver used by cplex
-%  time         time taken to solve the optimization problem
+%                            * 1 - Optimal solution
+%                            * 2 - Unbounded solution
+%                            * 0 - Infeasible
+%                            * -1 - No solution reported (timelimit, numerical problem etc)
+%                          * origStat:           CPLEX status code. Use `cplexStatus(solution.origStat)` for
+%                            more information from the CPLEX solver
+%                          * solver              solver used by `cplex`
+%                          * time                time taken to solve the optimization problem
 %
-%OPTIONAL OUTPUT
-% LPProblem.LPBasis When input basisReuse=1, we return a basis for reuse in
-%                   the next LP
+% OPTIONAL OUTPUT:
+%    LPProblem:          with field:
+%
+%                          * .LPBasis - When input basisReuse=1, we return a basis for reuse in the next LP
 %
 % CPLEX consists of 4 different LP solvers which can be used to solve sysbio optimization problems
 % you can control which of the solvers, e.g. simplex vs interior point solver using the
 % CPLEX control parameter cpxControl.LPMETHOD. At the moment, the solver is
-% automatically chosen for you
+% automatically chosen for you.
 %
-
-% Ronan Fleming 10 June 08
+% .. Author:
+%       - Ronan Fleming 10 June 08
 %               20 Mar  09  min norm can be specific to each variable
 %               12 Jul  09  more description of basis reuse
 %               23 Oct  09  ILOG-CPLEX matlab simple interface by default
-%                           See solveCobraCPLEX for full control of CPLEX
-%                           12.1 via API
-% Ronan Fleming 31 Oct  13  Added minimization of cardinality
+%                           See solveCobraCPLEX for full control of CPLEX 12.1 via API
+%               31 Oct  13  Added minimization of cardinality
 
 if ~exist('printLevel','var')
     printLevel=0;

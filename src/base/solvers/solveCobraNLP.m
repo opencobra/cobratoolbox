@@ -1,80 +1,74 @@
-function solution = solveCobraNLP(NLPproblem,varargin)
-%solveCobraNLP Solves a COBRA non-linear (objective and/or constraints)
-%problem.
-%
-% solution = solveCobraNLP(NLPproblem,varargin)
-
+function solution = solveCobraNLP(NLPproblem, varargin)
+% Solves a COBRA non-linear (objective and/or constraints) problem.
 % Solves a problem of the following form:
-%     optimize objFunction(x) or c'*x
-%     st.       A*x  <=> b   or b_L < A*x < b_U
-%        and    d_L < d(x) < d_U
-%     where A is a matrix, d(x) is an optional function and the objective
-%     is either a general function or a linear function.
+% optimize `objFunction(x)` or `c'*x`
+% st. :math:`A*x  <=> b   or b_L < A*x < b_U`
+% and  :math:`d_L < d(x) < d_U`
+% where `A` is a matrix, `d(x)` is an optional function and the objective
+% is either a general function or a linear function.
 %
-%INPUT
-% NLPproblem  Non-linear optimization problem
-%  Required Fields
-%   A               LHS matrix
-%   b               RHS vector
-%   lb              Lower bounds
-%   ub              Upper bounds
-%   csense          Constraint senses ('L','E','G')
-%   osense          Objective sense (-1 for maximisation, 1 for minimisation)
-%   objFunction     Function to evaluate as the objective (The function
-%                   will receive two inputs, First the flux vector to
-%                   evaluate and second the NLPproblem struct. The function
-%                   should be provided as a string
-%       or
-%   c               linear objective such that c*x is optimized.
-%  Note: 'b_L' and 'b_U' can be used in place of 'b' and 'csense'
+% USAGE:
 %
-%  Optional Fields
-%   x0              Initial solution
-%   gradFunction    Name of the function that computes the n x 1 gradient
-%                   vector (ignored if 'd' is set).
-%   H               Name of the function that computes the n x n Hessian
-%                   matrix
-%   fLowBnd         A lower bound on the function value at optimum.
-%   d               Name of function that computes the mN nonlinear
-%                   constraints
-%   dd              Name of function that computes the constraint Jacobian
-%                   mN x n
-%   d2d             Name of function that computes the second part of the
-%                   Lagrangian function (only needed for some solvers)
-%   d_L             Lower bound vector in nonlinear constraints
-%   d_U             Upper bound vector in nonlinear constraints
-%   user            Solver specific user parameters structure
+%    solution = solveCobraNLP(NLPproblem, varargin)
 %
-%OPTIONAL INPUTS
-% Optional parameters for the solver can be entered using parameters structure or as
-% parameter followed by parameter value: e.g. ,'printLevel',3)
+
+% INPUT:
+%    NLPproblem:    Non-linear optimization problem (fields up to 'c' are mandatory, below `c` are optional)
 %
-% parameters    Structure containing optional parameters as fields.
-%               Setting parameters = 'default' uses default setting set in
-%               getCobraSolverParameters.
+%                     * A - LHS matrix
+%                     * b - RHS vector
+%                     * lb - Lower bound vector
+%                     * ub - Upper bound vector
+%                     * osense - Objective sense (-1 for maximisation, 1 for minimisation)
+%                     * csense - Constraint senses ('L','E','G')
+%                     * objFunction - Function to evaluate as the objective (The function
+%                       will receive two inputs, First the flux vector to
+%                       evaluate and second the NLPproblem struct. The function
+%                       should be provided as a string (or `c`)
+%                     * c - linear objective such that `c*x` is optimized.
+%                     * x0 - Initial solution
+%                     * gradFunction - Name of the function that computes the `n` x 1 gradient
+%                       vector (ignored if 'd' is set).
+%                     * H - Name of the function that computes the `n` x `n` Hessian matrix
+%                     * fLowBnd - A lower bound on the function value at optimum.
+%                     * d - Name of function that computes the mN nonlinear constraints
+%                     * dd - Name of function that computes the constraint Jacobian `mN` x `n`
+%                     * d2d - Name of function that computes the second part of the
+%                       Lagrangian function (only needed for some solvers)
+%                     * d_L - Lower bound vector in nonlinear constraints
+%                     * d_U - Upper bound vector in nonlinear constraints
+%                     * user - Solver specific user parameters structure
 %
-%OUTPUT
-% solution Structure containing the following fields describing an NLP
-% solution
-%  full             Full LP solution vector
-%  obj              Objective value
-%  rcost            Reduced costs
-%  dual             Dual solution
-%  solver           Solver used to solve LP problem
+% Note that 'b_L' and 'b_U' can be used in place of 'b' and 'csense'
 %
-%  stat             Solver status in standardized form
-%                   1   Optimal solution
-%                   2   Unbounded solution
-%                   0   Infeasible
-%                   -1  No solution reported (timelimit, numerical
-%                       problem etc)
+% Optional parameters can be entered using parameters structure or as
+% parameter followed by parameter value: i.e. ,'printLevel', 3)
+% Setting `parameters` = 'default' uses default setting set in
+% `getCobraSolverParameters`.
 %
-%  origStat         Original status returned by the specific solver
-%  time             Solve time in seconds
-%  origSolStruct    Original solution structure
+% OPTIONAL INPUTS:
+%    parameters:      Structure containing optional parameters.
 %
-% Markus Herrgard 12/7/07
-% Richard Que (02/10/10) Added tomlab_snopt support.
+% OUTPUT:
+%    solution:      Structure containing the following fields describing a NLP solution:
+%                     * full:            Full NLP solution vector
+%                     * obj:             Objective value
+%                     * rcost:           Reduced costs
+%                     * dual:            Dual solution
+%                     * solver:          Solver used to solve NLP problem
+%                     * stat:            Solver status in standardized form
+%
+%                       * 1 - Optimal solution
+%                       * 2 - Unbounded solution
+%                       * 0 - Infeasible
+%                       * -1 - No solution reported (timelimit, numerical problem etc)
+%                     * origStat:        Original status returned by the specific solver
+%                     * time:            Solve time in seconds
+%                     * origSolStruct    Original solution structure%
+%
+% .. Author:
+%       - Markus Herrgard 12/7/07
+%       - Richard Que 02/10/10 Added tomlab_snopt support.
 
 global CBT_NLP_SOLVER
 

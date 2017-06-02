@@ -1,40 +1,39 @@
 function [statusOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(XPproblem, x, tol, verbose)
-%[statusOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(XPproblem, x, tol)
-%
 % Verifies dimensions of fields in XPproblem and determines if they are
 % valid LP, QP, MILP, MIQP problems. Also checks inputs for NaN.
-% If x is provided, it will see if x is a valid solution to tolerance
-% (tol).
+% If `x` is provided, it will see if `x` is a valid solution to tolerance (tol).
 %
-%INPUT
-% XPproblem - struct containing:
-%   .A - Constraints matrix
-%   .b - rhs
-%   .csense - vector of 'E', 'L', 'G' for equality, Less than and Greater than
-%       constriant
-%   .lb, .ub - lower and upper bound on variables
-%   .c - objective coefficients
-%   .F - quadratic objective (optional, only used for QP, MIQP problems)
-%   .vartype - vector of 'C', 'I', 'B' for 'continuous', 'integer', 'binary'
-%       variables (optional, only used for MILP, MIQP problems).
+% USAGE:
 %
-%OPTIONAL INPUT
-% x         a vector.  Function will determine if x satisfies XPproblem
-% tol       numerical tolerance to which all constraints should be verified to.
-%           (default = 1e-8)
-% verbose   Controls whether results are printed to screen.(Default = true)
+%    [statusOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(XPproblem, x, tol, verbose)
 %
-%OUTPUT
-% statusOK  Returns -1 if any field in XPproblem has an error
-%           returns 0 if the x vector is not valid for XPproblem and
-%           returns 1 if at least one problem type is satisfied
-% invalidConstraints    Vector which lists a 1 for any constaint that is
-%                       invalid
-% invalidVars           Vector which lists a 1 for any variable that is
-%                       invalid
-% objective             Objective of XPproblem
+% INPUT:
+%    XPproblem:             struct containing:
 %
-% Jan Shellenberger (11/23/09) Richard Que (11/24/09)
+%                             * .A - Constraints matrix
+%                             * .b - rhs
+%                             * .csense - vector of 'E', 'L', 'G' for equality, Less than and Greater than constraint
+%                             * .lb, .ub - lower and upper bound on variables
+%                             * .c - objective coefficients
+%                             * .F - quadratic objective (optional, only used for QP, MIQP problems)
+%                             * .vartype - vector of 'C', 'I', 'B' for 'continuous', 'integer', 'binary'
+%                             variables (optional, only used for MILP, MIQP problems).
+%
+% OPTIONAL INPUT:
+%    x:                     Vector. Function will determine if `x` satisfies `XPproblem`
+%    tol:                   numerical tolerance to which all constraints should be verified to. (default = 1e-8)
+%    verbose:               Controls whether results are printed to screen.(Default = true)
+%
+% OUTPUT:
+%    statusOK:              Returns -1 if any field in `XPproblem` has an error,
+%                           returns 0 if the x vector is not valid for `XPproblem` and
+%                           returns 1 if at least one problem type is satisfied
+%    invalidConstraints:    Vector which lists a 1 for any constaint that is invalid
+%    invalidVars:           Vector which lists a 1 for any variable that is invalid
+%    objective:             Objective of `XPproblem`
+%
+% .. Authors: - Jan Shellenberger (11/23/09), Richard Que (11/24/09)
+
 if nargin < 3
     tol = 1e-8;
 end
@@ -293,7 +292,7 @@ if nargin >= 2 && ~isempty(x)
         statusOK = 0;
     end
     product = XPproblem.A*x;
-    
+
     if any(abs(product(XPproblem.csense == 'E') - XPproblem.b(XPproblem.csense == 'E')) > tol)
         invalidConstraints(abs(product(XPproblem.csense == 'E') - XPproblem.b(XPproblem.csense == 'E')) > tol) = 1;
         display('Equality constraint off');
@@ -312,7 +311,7 @@ if nargin >= 2 && ~isempty(x)
         validX = false;
         statusOK = 0;
     end
-    
+
     % MI constraints
     if isfield(XPproblem, 'vartype')
         validXMI = true;
@@ -338,8 +337,3 @@ if nargin >= 2 && ~isempty(x)
     invalidConstraints = find(invalidConstraints);
     invalidVars = find(invalidVars);
 end
-
-
-
-
-

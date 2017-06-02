@@ -29,10 +29,8 @@ function [solution, model] = solveCobraCPLEX(model, printLevel, basisReuse, conf
 %                          * 2 - Summary information (Default)
 %                          * 3 - More detailed information
 %                          * > 10 - Pause statements, and maximal printing (debug mode)
-%
 %    basisReuse:         0 - Use this for one of solution of an LP (Default);
 %                        1 - Returns a basis for reuse in the next LP i.e. outputs `model.LPBasis`
-%
 %    conflictResolve:    0 (Default);
 %                        1 If LP problem is proven to be infeasible by CPLEX,
 %                        it will print out a 'conflict resolution file',
@@ -41,14 +39,12 @@ function [solution, model] = solveCobraCPLEX(model, printLevel, basisReuse, conf
 %                        combine to make the problem infeasible. This is
 %                        useful for debugging an LP problem if you want to
 %                        try to resolve a constraint conflict
-%
 %    contFunctName:      = [] Use all default CLPEX control parameters, (Default);
 %                        = someString e.g. 'someFunctionName'
 %                        uses the user specified control parameters defined
 %                        in `someFunctionName.m`
 %                        (see template function CPLEXParamSet for details).
 %                        = `cpxControl` structure (output from a file like `CPLEXParamSet.m`)
-%
 %    minNorm:            {(0), 1 , `n` x 1 vector} If not zero then, minimise the Euclidean length
 %                        of the solution to the LP problem. Gives the same objective,
 %                        but minimises the square of flux. `minNorm` ~1e-6 should be
@@ -77,7 +73,7 @@ function [solution, model] = solveCobraCPLEX(model, printLevel, basisReuse, conf
 % OPTIONAL OUTPUT:
 %    model:              with field:
 %
-%                          * .LPBasis When input basisReuse=1, we return a basis for reuse in the next LP
+%                          * .LPBasis - When input basisReuse=1, we return a basis for reuse in the next LP
 %
 % CPLEX consists of 4 different LP solvers which can be used to solve sysbio optimization problems
 % you can control which of the solvers, e.g. simplex vs interior point solver using the
