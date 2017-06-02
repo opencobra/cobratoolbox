@@ -3,15 +3,22 @@ function model = liftModel(model, BIG, printLevel,fileName,directory)
 % coupling constraints of the form:
 % :math:`max c*v`  subject to: :math:`Sv = 0, x, Cv <= 0`
 %
+% USAGE:
+%
+%    model = liftModel(model, BIG, printLevel,fileName,directory)
+%
 % INPUTS:
 %    model:         COBRA Structure contain the original LP to be solved. The format of
 %                   this struct is described in the documentation for `solveCobraLP.m`
 %
 % OPTIONAL INPUTS:
 %    BIG:           A parameter the controls the largest entries that appear in the
-%                   reformulated problem.
-%    printLevel:    printLevel = 1 enables printing of problem statistics;
+%                   reformulated problem (default = 1000).
+%    printLevel:    printLevel = 1 enables printing of problem statistics (default);
 %                   printlevel = 0 silent
+%    fileName:      name of th file to load
+%    directory:     file directory (if `model` is empty, you can load it using `fileName` and `directory`)
+%
 %
 % OUTPUTS:
 %    model:         COBRA Structure contain the reformulated LP to be solved.

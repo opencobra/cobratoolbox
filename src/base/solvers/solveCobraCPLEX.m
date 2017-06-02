@@ -40,10 +40,12 @@ function [solution, model] = solveCobraCPLEX(model, printLevel, basisReuse, conf
 %                        useful for debugging an LP problem if you want to
 %                        try to resolve a constraint conflict
 %    contFunctName:      = [] Use all default CLPEX control parameters, (Default);
+%
 %                        = someString e.g. 'someFunctionName'
 %                        uses the user specified control parameters defined
 %                        in `someFunctionName.m`
 %                        (see template function CPLEXParamSet for details).
+%
 %                        = `cpxControl` structure (output from a file like `CPLEXParamSet.m`)
 %    minNorm:            {(0), 1 , `n` x 1 vector} If not zero then, minimise the Euclidean length
 %                        of the solution to the LP problem. Gives the same objective,

@@ -22,7 +22,7 @@ function ret = cpxcb_INCUMBENT(x, f, Prob)
 %    Prob:    the Tomlab problem structure
 %
 % OUTPUT:
-% ret:        return value:
+%    ret:     return value:
 %
 %               * 0 - Continue optimization and accept new integer solution
 %               * 1 - Continue optimization but discard new integer solution

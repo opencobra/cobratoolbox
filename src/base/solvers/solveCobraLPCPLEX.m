@@ -77,7 +77,7 @@ function [solution, LPProblem] = solveCobraLPCPLEX(LPProblem, printLevel, basisR
 % OPTIONAL OUTPUT:
 %    LPProblem:          with field:
 %
-%                          * .LPBasis - When input basisReuse=1, we return a basis for reuse in the next LP
+%                          * .LPBasis - When input `basisReuse = 1`, we return a basis for reuse in the next LP
 %
 % CPLEX consists of 4 different LP solvers which can be used to solve sysbio optimization problems
 % you can control which of the solvers, e.g. simplex vs interior point solver using the

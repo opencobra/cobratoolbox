@@ -17,7 +17,7 @@ function changeOK = changeCobraSolverParams(solverType, paramName, paramValue)
 %
 %   * optTol:        Optimal objective accuracy tolerance
 %   * teasTol:       Constraint feasibilty tolerance
-%   * minNorm:       {(0), scalar , n x 1 vector}, where [m,n]=size(S);
+%   * minNorm:       {(0), scalar , `n` x 1 vector}, where `[m,n]=size(S)`;
 %     If not zero then, minimise the Euclidean length
 %     of the solution to the LP problem. `minNorm ~1e-6` should be
 %     high enough for regularisation yet maintain the same value for

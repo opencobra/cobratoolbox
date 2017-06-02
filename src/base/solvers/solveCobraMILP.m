@@ -18,7 +18,7 @@ function solution = solveCobraMILP(MILPproblem, varargin)
 %                       * ub - Upper bound vector
 %                       * osense - Objective sense (-1 max, +1 min)
 %                       * csense - Constraint senses, a string containting the constraint sense for
-%                        each row in A ('E', equality, 'G' greater than, 'L' less than).
+%                         each row in A ('E', equality, 'G' greater than, 'L' less than).
 %                       * vartype - Variable types ('C' continuous, 'I' integer, 'B' binary)
 %                       * x0 - Initial solution
 %

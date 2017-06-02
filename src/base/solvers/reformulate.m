@@ -12,8 +12,8 @@ function [LPproblem] = reformulate(LPproblem, BIG, printLevel)
 % contained in the struct FBA and returns the transformed program in the
 % structure FBA. `reformulate` assumes `S` and `C` do not contain very small entries
 % and transforms constraints containing very large entries (entries larger than
-% BIG). BIG should be set between 1000 and 10,000 on double precision machines.
-% printlevel = 1 or 0 enables/diables printing respectively.
+% BIG). BIG should be set between 1000 and 10000 on double precision machines.
+% `printlevel` = 1 or 0 enables/diables printing respectively.
 %
 % Reformulation techniques are described in detail in:
 % `Y. Sun, R. M.T. Fleming, M. A. Saunders, I. Thiele, An Algorithm for Flux
@@ -28,8 +28,8 @@ function [LPproblem] = reformulate(LPproblem, BIG, printLevel)
 %                   this struct is described in the documentation for `solveCobraLP.m`
 %    BIG:           A parameter the controls the largest entries that appear in the
 %                   reformulated problem.
-%    printLevel:    printLevel = 1 enables printing of problem statistics;
-%                   printlevel = 0 silent
+%    printLevel:    1 enables printing of problem statistics;
+%                   0 = silent
 %
 % OUTPUTS:
 %    LPproblem:     Structure contain the reformulated LP to be solved.

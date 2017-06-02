@@ -24,7 +24,7 @@ function solution = solveCobraMIQP(MIQPproblem, varargin)
 %                       * ub - Upper bound vector
 %                       * osense - Objective sense (-1 max, +1 min)
 %                       * csense - Constraint senses, a string containting the constraint sense for
-%                        each row in A ('E', equality, 'G' greater than, 'L' less than).
+%                         each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
 % Optional parameters can be entered using parameters structure or as
 % parameter followed by parameter value: i.e. ,'printLevel', 3)

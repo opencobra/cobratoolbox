@@ -29,9 +29,9 @@ function solution = optimizeCardinality(problem, params)
 % OPTIONAL INPUTS:
 %    params:      Parameters structure:
 %
-%                   * nbMaxIteration - stopping criteria - number maximal of iteration (Defaut value = 1000)
-%                   * epsilon - stopping criteria - (Defaut value = 10e-6)
-%                   * theta - parameter of the approximation (Defaut value = 2)
+%                   * nbMaxIteration - stopping criteria - number maximal of iteration (Default value = 1000)
+%                   * epsilon - stopping criteria - (Defautl value = 10e-6)
+%                   * theta - parameter of the approximation (Default value = 2)
 %
 % OUTPUT:
 %    solution:    Structure containing the following fields:

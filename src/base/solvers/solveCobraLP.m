@@ -1,10 +1,6 @@
 function solution = solveCobraLP(LPproblem, varargin)
 % Solves constraint-based LP problems
 %
-% USAGE:
-%
-%    solution = solveCobraLP(LPproblem, varargin)
-%
 % INPUT:
 %    LPproblem:     Structure containing the following fields describing the LP problem to be solved
 %

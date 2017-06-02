@@ -17,7 +17,7 @@ function [statusOK, invalidConstraints, invalidVars, objective] = verifyCobraPro
 %                             * .c - objective coefficients
 %                             * .F - quadratic objective (optional, only used for QP, MIQP problems)
 %                             * .vartype - vector of 'C', 'I', 'B' for 'continuous', 'integer', 'binary'
-%                             variables (optional, only used for MILP, MIQP problems).
+%                               variables (optional, only used for MILP, MIQP problems).
 %
 % OPTIONAL INPUT:
 %    x:                     Vector. Function will determine if `x` satisfies `XPproblem`

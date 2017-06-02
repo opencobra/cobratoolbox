@@ -51,6 +51,7 @@ function solution = solveCobraNLP(NLPproblem, varargin)
 %
 % OUTPUT:
 %    solution:      Structure containing the following fields describing a NLP solution:
+%
 %                     * full:            Full NLP solution vector
 %                     * obj:             Objective value
 %                     * rcost:           Reduced costs

@@ -8,7 +8,11 @@ function cpxControl = CPLEXParamSet
 %
 %    cpxControl = CPLEXParamSet
 %
+% OUTPUT:
+%    cpxControl:    user specified CPLEX control parameters
+%
 % EXAMPLE:
+%
 %    %(1) Paddy saves this file as CPLEXParamSetPaddyLPJob1
 %    %(2) Paddy edits CPLEXParamSetPaddyLPJob1 in a problem specific way
 %    %(3) Paddy then passes the name of this file to solveCobraLP_CPLEX using something like:
