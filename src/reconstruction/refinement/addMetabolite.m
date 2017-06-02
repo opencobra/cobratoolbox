@@ -128,7 +128,7 @@ for i = 1:numel(metID)
         if ~isfield(model,'csense')
             model.csense = repmat('E',size(model.mets));
         else
-            model.csense(end+1) = 'E';
+            model.csense(end+1,1) = 'E';
         end
         
         
