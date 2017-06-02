@@ -183,17 +183,17 @@ end
 if ~isempty(strmatch('Lower bound',rxnHeaders,'exact'))
     lowerBoundList = columnVector(cell2mat(rxnInfo(2:end,strmatch('Lower bound',rxnHeaders,'exact'))));
     %Default -1000
-    lowerBoundList(isnan(lowerBoundList)) = -1000;
+    lowerBoundList(isnan(lowerBoundList)) = -defaultbound;
 else
-    lowerBoundList = 1000*ones(length(rxnAbrList),1);
+    lowerBoundList = -defaultbound*ones(length(rxnAbrList),1);
 end
 
 if ~isempty(strmatch('Upper bound',rxnHeaders,'exact'))
     upperBoundList = columnVector(cell2mat(rxnInfo(2:end,strmatch('Upper bound',rxnHeaders,'exact'))));
     %Default 1000;
-    upperBoundList(isnan(upperBoundList)) = 1000;
+    upperBoundList(isnan(upperBoundList)) = defaultbound;
 else
-    upperBoundList = 1000*ones(length(rxnAbrList),1);
+    upperBoundList = defaultbound*ones(length(rxnAbrList),1);
 end
 
 revFlagList = lowerBoundList<0;
@@ -356,10 +356,16 @@ if ~isempty(strmatch('HMDB ID',metHeaders,'exact'))
 end
 
 if ~isempty(strmatch('PubChem ID',metHeaders,'exact'))
-    model.metPubChemID = columnVector(MetStrings(B(A),strmatch('PubChem ID',metHeaders,'exact')));
+    %This is a litte trickier, as PubChemIDs are numbers. So we have to
+    %load them differently    
+    model.metPubChemID = columnVector(metInfo(B(A),strmatch('PubChem ID',metHeaders,'exact')));    
+    numbers = cellfun(@isnumeric ,model.metPubChemID);   
+    model.metPubChemID(numbers) = cellfun(@convertNumberToID , model.metPubChemID(numbers),'UniformOutput',0);
 end
 if ~isempty(strmatch('ChEBI ID',metHeaders,'exact'))
-    model.metChEBIID  = columnVector(MetStrings(B(A),strmatch('ChEBI ID',metHeaders,'exact')));
+    model.metChEBIID  = columnVector(metInfo(B(A),strmatch('ChEBI ID',metHeaders,'exact')));    
+    numbers = cellfun(@isnumeric ,model.metChEBIID);   
+    model.metChEBIID(numbers) = cellfun(@convertNumberToID , model.metChEBIID(numbers),'UniformOutput',0);
 end
 
 [~,fileName,extension] = fileparts(fileName);
@@ -367,4 +373,12 @@ end
 model.description = [fileName, extension];
 
 warning on
+end
+
+function stringNumber = convertNumberToID(number)
+if isnan(number)
+    stringNumber = '';
+else
+    stringNumber = num2str(number);
+end
 end
