@@ -18,8 +18,9 @@ function subModel = extractSubNetwork(model, rxnList, metList)
 % .. Author:
 %       - Markus Herrgard 12/11/06
 %       - Srikiran C 7/15/14
-%       - Replaced rxnNames with rxnList as model.rxnNames is different from
-%       model.rxns, and model.rxns is used to select the subnetwork.
+%       - Replaced rxnNames with rxnList 
+%       as model.rxnNames is different from model.rxns,
+%       and model.rxns is used to select the subnetwork.
 %       - Replaced metNames with metList, to avoid similar confusion.
 %       - Added the fields - rxnNames, rules and metCharge to subModel.
 

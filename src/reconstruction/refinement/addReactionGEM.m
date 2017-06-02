@@ -6,17 +6,17 @@ function [newmodel, HTABLE] = addReactionGEM(model, rxns, rxnNames, rxnFormulas,
 %    [newmodel, HTABLE] = addReactionGEM(model, rxns, rxnNames, rxnFormulas, rev, lb, ub, nRxn, subSystems, grRules, rules, genes, HTABLE)
 %
 % INPUTS:
-%     model:          model structure
-%     rxns:           reactions
-%     rxnNames:       names of reactions
-%     rxnFormulas:    see note above
+%     model:          COBRA model structure
+%     rxns:           Identifiers for the reactions
+%     rxnNames:       List of reactions
+%     rxnFormulas:    reactions' formulas
 %     rev:            0 = irrev, 1 = rev
-%     lb:             lower bounds
-%     ub:             upper bounds
-%     subSystems:     default = ''
-%     grRules:        default = ''
-%     rules:          default = ''
-%     genes:          default = ''
+%     lb:             The lower bounds for fluxes
+%     ub:             The upper bounds for fluxes
+%     subSystems:     subSystem assignment for each reaction, default = ''
+%     grRules:        A string representation of the GPR rules defined in a readable format, default = ''
+%     rules:          GPR rules in evaluateable format for each reaction, default = ''
+%     genes:          Identifiers of the genes in the model, default = ''
 %     HTABLE:         hash table
 %
 % OUTPUTS:
