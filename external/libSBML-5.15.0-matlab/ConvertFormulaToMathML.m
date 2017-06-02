@@ -1,12 +1,25 @@
 function Formula = ConvertFormulaToMathML(Input)
-% converts from MATLAB to MathML in-fix functions
+%  Formula = ConvertFormulaToMathML(Input)
+% 
+% - a script used internally by OutputSBML to change some mathematical function names
+%   to those recognized by libSBML
+%
+% Takes
+%
+% 1. Input - a string representation of the math from MATLAB
+%
+% Returns
+%
+% 1. Formula - the original string adjusted to be libSBML compatible
+%
+%
 
 % Filename    : ConvertFormulaToMathML.m
 % 
 % This file is part of libSBML.  Please visit http://sbml.org for more
 % information about SBML, and the latest version of libSBML.
 %
-% Copyright (C) 2013-2016 jointly by the following organizations:
+% Copyright (C) 2013-2017 jointly by the following organizations:
 %     1. California Institute of Technology, Pasadena, CA, USA
 %     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
 %     3. University of Heidelberg, Heidelberg, Germany
@@ -37,7 +50,7 @@ function Formula = ConvertFormulaToMathML(Input)
 %      United Kingdom
 %
 %      http://www.sbml.org
-%      mailto:sbml-team@caltech.edu
+%      mailto:sbml-team@googlegroups.com
 %
 % Contributor(s):
 
@@ -81,12 +94,12 @@ Index = strfind(Formula, 'nthroot(');
 for i = 1:length(Index)
 
     % create a subformula nthroot(x,n)
-    SubFunction = '';
     j = 1;
     nFunctions=0;   %number of functions in expression
     closedFunctions=0; %number of closed functions
+    SubFormula = '';
     while(nFunctions==0 || nFunctions~=closedFunctions)
-        SubFormula(j) = Formula(Index(i)+j-1);
+        SubFormula = strcat(SubFormula, Formula(Index(i)+j-1));
         if(strcmp(SubFormula(j),')'))
             closedFunctions=closedFunctions+1;
         end;
@@ -106,7 +119,7 @@ for i = 1:length(Index)
     j = j+1;
     x = SubFormula(j:length(SubFormula)-1);
 
-    if (exist('OCTAVE_VERSION'))
+    if (exist('OCTAVE_VERSION', 'var'))
       ReplaceFormula = myRegexprep(SubFormula, n, x, 'once');
       ReplaceFormula = myRegexprep(ReplaceFormula,regexptranslate('escape',x),n,2);
       ReplaceFormula = myRegexprep(ReplaceFormula, 'nthroot', 'root', 'once');
@@ -133,9 +146,15 @@ LogTypes = IsItLogBase(Formula);
 num = sum(LogTypes);
 Index = strfind(Formula, '(log(');
 
+if length(Index) > num
+    error('Problem');
+end;
+
+subFormula = cell(1, num);
+newFormula = cell(1, num);
+
 subIndex = 1;
 for i = 1:length(Index)
-
     if (LogTypes(i) == 1)
       % get x and n from (log(x)/log(n))
       pairs = PairBrackets(Formula);
@@ -181,6 +200,7 @@ else
       return;
     else
       % check that the divide occurs between logs
+      y = zeros(1, length(LogIndex));
       for i=1:length(LogIndex)
         match = 0;
         for j=1:length(pairs)
@@ -239,11 +259,10 @@ NoSpaces = sum(WSpace);
 % rewrite the array to leaving out any spaces
 % remove any numbers from the array of symbols
 if (NoSpaces > 0)
-    NewArrayCount = 1;
+    y = '';
     for i = 1:NoChars
         if (~isspace(charArray(i)))
-            y(NewArrayCount) = charArray(i);
-            NewArrayCount = NewArrayCount + 1;
+            y = strcat(y, charArray(i));
         end;
     end;    
 else
@@ -259,7 +278,7 @@ function pairs = PairBrackets(formula)
 %
 
 if (~ischar(formula))
-    error(sprintf('%s\n%s', 'PairBrackets(formula)', 'first argument must be a string'));
+    error('%s\n%s', 'PairBrackets(formula)', 'first argument must be a string');
 end;
 
 OpeningBracketIndex = strfind(formula, '(');
@@ -275,8 +294,10 @@ if (isempty(OpeningBracketIndex))
     return;
 end;
 
-for i = 1:length(OpeningBracketIndex)
-    j = length(OpeningBracketIndex);
+num = length(OpeningBracketIndex);
+pairs = zeros(num, 2);
+for i = 1:num
+    j = num;
     while(j > 0)
         if (OpeningBracketIndex(j) < ClosingBracketIndex(i))
             pairs(i,1) = OpeningBracketIndex(j);
@@ -296,7 +317,7 @@ OriginalPairs = pairs;
 % function 'sort' changes in version 7.0.1
 
 v = version;
-v_num = str2num(v(1));
+v_num = str2double(v(1));
 
 if (v_num < 7)
     TempPairs = sort(pairs, 1);
@@ -304,9 +325,13 @@ else
     TempPairs = sort(pairs, 1, 'ascend');
 end;
 
-for i = 1:length(OpeningBracketIndex)
+for i = 1:num
     pairs(i, 1) = TempPairs(i, 1);
-    j = find(OriginalPairs == pairs(i, 1));
+    for j = 1:num
+        if (OriginalPairs(j, 1) == pairs(i, 1))
+            break;
+        end;
+    end;
     pairs(i, 2) = OriginalPairs(j, 2);
 end;
 
@@ -316,7 +341,6 @@ function string = myRegexprep(string, repre, repstr, number)
 
   %% Parse input arguements
 
-  n = -1;
   if isnumeric(number)
     n = number;
   elseif strcmpi(number, 'once')
@@ -334,7 +358,6 @@ function string = myRegexprep(string, repre, repstr, number)
 	  en = en(n);
     else
       error('Invalid number of matches in myRegexprep');
-	  st = [];
     end;
   end;
 

@@ -48,16 +48,16 @@ assert(sum(cellfun(@(s) ~isempty(strfind('A[c]', s)), translated_model.mets)) ==
 modelFull = readCbModel(modelFile);
 changeCobraSolver('glpk');
 if ~exist('modelFull.subSystems') || length(modelFull.subSystems) ~= length(modelFull.rxnNames)
-    modelFull.subSystems = repmat({''},length(modelFull.rxnNames));
+    modelFull.subSystems = repmat({''},length(modelFull.rxns));
 end
 if ~exist('modelFull.genes')
     modelFull.genes = repmat({'no_gene'},1);
 end
 if ~exist('modelFull.rxnGeneMat')
-    modelFull.rxnGeneMat = zeros(length(modelFull.rxnNames),1);
+    modelFull.rxnGeneMat = zeros(length(modelFull.rxns),1);
 end
 if ~exist('modelFull.grRules')
-    modelFull.grRules = repmat({''},length(modelFull.rxnNames));
+    modelFull.grRules = repmat({''},length(modelFull.rxns));
 end
 [modelConsistent, ~] = identifyBlockedRxns(modelFull, 1e-4);
 

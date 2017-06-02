@@ -23,8 +23,17 @@ writeCbModel(testModelXML, 'sbml', 'testModelSBML.sbml');
 % read the model from the newly written .sbml file
 testModelSBML = readCbModel('testModelSBML.sbml');
 
+%Due to the original model being SBML 2.1, no proteins/geneNames were
+%generated. 
+%These models are not the same, since the References given by the xml (in
+%the notes field), are not PubMed IDs, so they are transferred to the
+%rxnNotes field, 
+testModelSBML = rmfield(testModelSBML,'rxnNotes');
+testModelXML = rmfield(testModelXML,'rxnNotes');
+testModelXML = rmfield(testModelXML,'rxnReferences');
+
 % check whether both models are the same
-[isSame numDiff fieldNames] = isSameCobraModel(testModelXML, testModelSBML);
+ [isSame numDiff fieldNames] = isSameCobraModel(testModelXML, testModelSBML);
 
 % assess any potential differences
 assert(~any(numDiff))
@@ -36,15 +45,7 @@ if exist(fullFileNamePath, 'file') == 2
 else
     warning(['The file', fullFileNamePath, ' does not exist and could not be deleted.']);
 end
-
-load('Ec_iJR904.mat')
-model = convertOldStyleModel(model);
-% use a different deck to convert a COBRA model to an SBML file
-modelSBML = convertCobraToSBML(model);
-[isSame numDiff fieldNames] = isSameCobraModel(modelSBML, testModelSBML);
-
-% assess any potential differences
-assert(~any(numDiff))
-
+%read/writeSBML should be the only methods used for cobra sbml conversion.
 % change the directory
 cd(currentDir)
+

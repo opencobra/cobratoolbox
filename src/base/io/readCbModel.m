@@ -181,11 +181,12 @@ if ~exist('fileType','var') || isempty(fileType)
 end
 
 if isempty(modelDescription)
-    modelDescription = fileName;
+    [~,mfile,mextension] = fileparts(fileName);
+    modelDescription = [mfile mextension];
 end
 
 switch fileType
-    case 'SBML',
+    case 'SBML'
         %If the file is missing the .xml ending, we attach it, can happen
         %with .sbml saved files.
         if ~exist(fileName,'file')
@@ -193,13 +194,13 @@ switch fileType
                 fileName = [fileName '.xml'];
             end
         end
-        model = readSBML(fileName,defaultBound,compSymbolList,compNameList);
-    case 'SimPheny',
+        model = readSBML(fileName,defaultBound);
+    case 'SimPheny'
         model = readSimPhenyCbModel(fileName,defaultBound,compSymbolList,compNameList);
-    case 'SimPhenyPlus',
+    case 'SimPhenyPlus'
         model = readSimPhenyCbModel(fileName,defaultBound,compSymbolList,compNameList);
         model = readSimPhenyGprCmpd(fileName,model);
-    case 'SimPhenyText',
+    case 'SimPhenyText'
         model = readSimPhenyCbModel(fileName,defaultBound,compSymbolList,compNameList);
         model = readSimPhenyGprText([fileName '_gpra.txt'],model);
     case 'Excel'
@@ -246,11 +247,11 @@ for i=1:numel(structFields)
     if isstruct(cfield)
         try
             %lets see, if we have a valid model
-            res = verifyModel(cfield);
+            res = verifyModel(cfield,'silentCheck');
             if ~isfield(res,'Errors')
                 %Convert an old Style model to the new Fields.
                 cfieldConverted = convertOldStyleModel(cfield,0);
-                res = verifyModel(cfieldConverted);
+                res = verifyModel(cfieldConverted,'silentCheck');
                 if isfield(res,'Errors')
                     fprintf('There were some old style fields in the model which could not be converted. Loading the old model')
                     models{end+1,1} = cfield;
@@ -272,7 +273,7 @@ for i=1:numel(structFields)
                     end
                     %if we reach this place, the conversion worked,
                     %so lets try the test again.
-                    res = verifyModel(cfield);
+                    res = verifyModel(cfield,'silentCheck');
                     if ~isfield(res,'Errors')
                         models{end+1,1} = cfield;
                         models{end,2} = structFields{i};

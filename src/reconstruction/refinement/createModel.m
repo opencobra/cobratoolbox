@@ -31,7 +31,7 @@ function model = createModel(rxnAbrList,rxnNameList,rxnList,revFlagList,...
 %
 % .. Author: - Ines Thiele 01/09
 
-model = struct(); %create blank model
+model = struct(); %create blank model 
 model.mets=cell(0,1);model.metNames=cell(0,1);model.metFormulas=cell(0,1);
 model.rxns=cell(0,1);model.rxnNames=cell(0,1);model.subSystems=cell(0,1);
 model.lb=zeros(0,1);model.ub=zeros(0,1);model.rev=zeros(0,1);
