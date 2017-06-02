@@ -10,8 +10,7 @@ function [fluxConsistent, sol]=checkFluxConsistency(model, epsilon)
 %    epsilon:           flux threshold
 %
 % OUTPUTS:
-%
-%    fluxConsistent:    empty 
+%    fluxConsistent:    empty
 %    sol:               result of `solveCobraLP` function
 %
 % .. Author: - Ronan

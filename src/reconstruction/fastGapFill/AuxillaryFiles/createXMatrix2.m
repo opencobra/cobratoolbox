@@ -20,7 +20,7 @@ function ExchangeRxnMatrix = createXMatrix2(compoundsIn, transport, compartment,
 %    ExchangeRxnMatrix:    Model structure containing all exchange and
 %                          transport reactions
 %
-% .. Author:
+% .. Authors:
 %       - Ines Thiele, 11-10-07
 %       - Ines Thiele, 13-06-09, Added option to add transport reactions for intracellular compartments
 %       - Ines Thiele, June 2013,  Added option to add transport reactions for

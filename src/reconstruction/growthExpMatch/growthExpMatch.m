@@ -32,15 +32,17 @@ function [solution] = growthExpMatch(model, KEGGFilename, compartment, iteration
 %                     solution, objective value, stat, full solution, and
 %                     imported reactions
 %
-% Procedure to run SMILEY:
+% NOTE:
 %
-%    1. Obtain all input files (ie. `model`, `CompAbr`, and `KeggID` are from `BiGG`, `KeggList` is from Kegg website)
-%    2. Remove desired reaction from `model` with `removeRxns`, or set the model
-%       on a particular Carbon or Nitrogen source
-%    3. Create an SUX Matrix by using the function `MatricesSUX =
-%       generateSUXMatrix(model, dictionary, KEGGFilename, compartment)`
-%    4. Run it through SMILEY using `[solution, b, solInt] = Smiley(MatricesSUX)`
-%    5. `solution.importedRxns` contains the solutions to all iterations
+%    Procedure to run SMILEY:
+%
+%       1. Obtain all input files (ie. `model`, `CompAbr`, and `KeggID` are from `BiGG`, `KeggList` is from Kegg website)
+%       2. Remove desired reaction from `model` with `removeRxns`, or set the model
+%          on a particular Carbon or Nitrogen source
+%       3. Create an SUX Matrix by using the function `MatricesSUX =
+%          generateSUXMatrix(model, dictionary, KEGGFilename, compartment)`
+%       4. Run it through SMILEY using `[solution, b, solInt] = Smiley(MatricesSUX)`
+%       5. `solution.importedRxns` contains the solutions to all iterations
 %
 % ..
 %    MILPproblem
@@ -55,7 +57,7 @@ function [solution] = growthExpMatch(model, KEGGFilename, compartment, iteration
 %     vartype Variable types
 %     x0      Initial solution
 %
-% .. Author:
+% .. Authors:
 %       - Based on IT 11/2008
 %       - Edited by JDO on 4/19/11
 

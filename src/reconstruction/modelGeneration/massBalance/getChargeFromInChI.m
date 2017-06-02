@@ -1,9 +1,9 @@
-function [charge,chargeWithoutProtons]=getChargeFromInChI(InChI)
+function [charge, chargeWithoutProtons] = getChargeFromInChI(InChI)
 % Returns the charge from a given InChI string
 %
 % USAGE:
 %
-%    [charge,chargeWithoutProtons]=getChargeFromInChI(InChI)
+%    [charge, chargeWithoutProtons] = getChargeFromInChI(InChI)
 %
 % INPUT:
 %    InChI:                   The Inchi Identifier - string
