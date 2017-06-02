@@ -12,16 +12,16 @@ function [charge,chargeWithoutProtons]=getChargeFromInChI(InChI)
 %    charge:                  The charge encoded in the `InChi` string (including protonation)
 %    chargeWithoutProtons:    The charge encoded in the `InChi` ignoring the protonation state
 %
-% .. Author:
-%       - Ronan Fleming, 23 Sept 09
-%       - Thomas Pfau, May 2017, Updated
-%
 % NOTE:
 %
 %    InChI Charge is defined in the charge layer and can be modified in the
 %    proton layer. If nothing is defined, the compound is uncharged.
 %    First: Discard any "Reconnected" parts, as those don't influence the
-%    charges
+%    charge
+%
+% .. Author:
+%       - Ronan Fleming, 23 Sept 09
+%       - Thomas Pfau, May 2017, Updated
 
 InChI = regexprep(InChI,'/r.*','');
 

@@ -16,8 +16,8 @@ function [dE ,E, missingFormulaeBool] = checkBalance(model, element, printLevel,
 % OPTIONAL INPUTS:
 %    printLevel:             {-1, (0), 1} where:
 %
-%                            -1 = print out missing formulae to a file,
-%                            0 = silent,
+%                            -1 = print out missing formulae to a file;
+%                            0 = silent;
 %                            1 = print out  missing formulae to screen reactions to screen
 %    fileName:               name of the file
 %    missingFormulaeBool:    boolean variable for missing formulae

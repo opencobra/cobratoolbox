@@ -9,6 +9,7 @@ function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList)
 %    KEGGFilename:     File name containing universal database (e.g., KEGG; optional input, default: `reaction.lst`)
 %    KEGGblackList:    List of excluded reactions from the universal database
 %                      (e.g., KEGG) (optional input, default: no blacklist)
+%
 % OUTPUT:
 %    KEGG:             Contains universal database (`U` matrix) in matrix format
 %
