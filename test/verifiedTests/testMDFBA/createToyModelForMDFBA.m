@@ -19,7 +19,7 @@ Reactions = {'R1',{'A','B'},[-1 1];...
              'R2',{'B', 'D','C'},[-1 -1 1];...
              'R3',{'C','E','F'},[-1 1 1];...
              'R4',{'A','D'},[-1 1];...
-             'R5',{'F','D'},[-1 1];}
+             'R5',{'F','D'},[-1 1];};
 ExchangedMets = {'A','E'};
 %Add Reactions
 for i = 1:size(Reactions,1)
@@ -29,3 +29,4 @@ end
 
 %Add Exchangers
 model = addExchangeRxn(model,ExchangedMets,-1000*ones(numel(ExchangedMets),1),1000*ones(numel(ExchangedMets),1));
+model = changeObjective(model,'EX_E',1);
