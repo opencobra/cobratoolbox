@@ -220,7 +220,10 @@ if ~isempty(strmatch('Notes',rxnHeaders,'exact'))
     model.rxnNotes = Strings(2:end,strmatch('Notes',rxnHeaders,'exact'));
 end
 if ~isempty(strmatch('References',rxnHeaders,'exact'))        
-    model.rxnReferences = cellfun(@(x) regexprep(x,'PMID:',''), Strings(2:end,strmatch('References',rxnHeaders,'exact')),'UniformOutput',0);
+    model.rxnReferences = Strings(2:end,strmatch('References',rxnHeaders,'exact'));
+    numbers = cellfun(@isnumeric ,model.rxnReferences);       
+    model.rxnReferences(numbers) = cellfun(@convertNumberToID , model.rxnReferences(numbers),'UniformOutput',0);
+    model.rxnReferences = cellfun(@(x) regexprep(x,'PMID:',''), model.rxnReferences,'UniformOutput',0);
 end
 
 %fill in opt info for metabolites
