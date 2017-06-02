@@ -1,4 +1,4 @@
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 06/01/17 19:24:26 Page 1
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 06/02/17 16:01:02 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -56,7 +56,7 @@ C o m p i l a t i o n
   51  *       j               = set of all reactions
   52  *       constraint_flux = set of reactions (substrate uptake, biomass, product)
   53  *                         included in the inner (primal) problem
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 06/01/17 19:24:26 Page 2
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 06/02/17 16:01:02 Page 2
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -114,7 +114,7 @@ INCLUDE    C:\Users\Genoma-01\Documents\fork-cobratoolbox\tutorials\optForceGAMS
  104  'glu'
  105  'gln'
  106  'pro'
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 06/01/17 19:24:26 Page 3
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 06/02/17 16:01:02 Page 3
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -172,7 +172,7 @@ INCLUDE    C:\Users\Genoma-01\Documents\fork-cobratoolbox\tutorials\optForceGAMS
  157  'R9'
  158  'R10'
  159  'R11'
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 06/01/17 19:24:26 Page 4
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 06/02/17 16:01:02 Page 4
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -230,7 +230,7 @@ C o m p i l a t i o n
  210  'R62'
  211  'R63'
  212  'R64'
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 06/01/17 19:24:26 Page 5
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 06/02/17 16:01:02 Page 5
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -288,7 +288,7 @@ INCLUDE    C:\Users\Genoma-01\Documents\fork-cobratoolbox\tutorials\optForceGAMS
  264  'R24'
  265  'R26'
  266  'R33'
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 06/01/17 19:24:26 Page 6
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 06/02/17 16:01:02 Page 6
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -346,7 +346,7 @@ INCLUDE    C:\Users\Genoma-01\Documents\fork-cobratoolbox\tutorials\optForceGAMS
  317  'R22'
  318  'R23'
  319  'R24'
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 06/01/17 19:24:26 Page 7
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 06/02/17 16:01:02 Page 7
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -404,7 +404,7 @@ C o m p i l a t i o n
  370  parameter
  371   
  372  s(i,j)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 06/01/17 19:24:26 Page 8
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 06/02/17 16:01:02 Page 8
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -462,7 +462,7 @@ GDXIN   C:\Users\Genoma-01\Documents\fork-cobratoolbox\tutorials\optForceGAMS\Te
  420  variables
  421  v(j), w1(j), w2(j), mu(j), lambda(i)
  422  z, zprimal, zdual
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 06/01/17 19:24:26 Page 9
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 06/02/17 16:01:02 Page 9
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -520,7 +520,7 @@ C o m p i l a t i o n
  473          must_set2
  474          con1
  475          con2
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 10
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 10
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -578,7 +578,7 @@ C o m p i l a t i o n
  525          primal3(j)$(not constraint_flux(j) )..                  v(j) =g= LB(j);
  526          primal4(j)$(constraint_flux(j) )..                      v(j) =e= b(j);
  527  *********************************************************************************************************************************
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 11
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 11
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -634,7 +634,7 @@ C o m p i l a t i o n
  576          );
  577  );
  578   
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 12
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 12
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Include File Summary
 
@@ -650,8 +650,8 @@ Include File Summary
      7      388 GDXIN          1     116  C:\Users\Genoma-01\Documents\fork-cobratoolbox\tutorials\optForceGAMS\TestOptForce\InputsMustLL/MtoG.gdx
 
 
-COMPILATION TIME     =        0.016 SECONDS      3 MB  24.8.5 r61358 WEX-WEI
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 13
+COMPILATION TIME     =        0.031 SECONDS      3 MB  24.8.5 r61358 WEX-WEI
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 13
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -706,7 +706,7 @@ primal1(accoa)..  v(R19) - v(R20) - v(R32) - v(R40) + v(R47) - v(R48) - v(R54) -
      
 primal1(oac)..  - v(R20) + v(R27) + v(R30) - v(R31) - v(R41) - 0.34*v(R75) =E= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 14
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 14
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -761,7 +761,7 @@ primal1(gly)..  v(R45) - v(R46) + v(R47) - 0.582*v(R75) =E= 0 ; (LHS = 0)
      
 primal1(meethf)..  v(R45) + v(R46) - v(R60) - v(R61) - 0.443*v(R75) =E= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 15
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 15
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -816,7 +816,7 @@ primal1(glyc(ext))..  v(R68) - v(EX_glyc) =E= 0 ; (LHS = 0)
      
 primal1(pdo(ext))..  v(R69) - v(EX_pdo) =E= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 16
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 16
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -872,7 +872,7 @@ primal2(R16)..  - v(R16) =G= -1000 ; (LHS = 0)
      
 primal2(R17)..  - v(R17) =G= -1000 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 17
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 17
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -927,7 +927,7 @@ primal2(R40)..  - v(R40) =G= -1000 ; (LHS = 0)
      
 primal2(R41)..  - v(R41) =G= -1000 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 18
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 18
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -982,7 +982,7 @@ primal2(R64)..  - v(R64) =G= -1000 ; (LHS = 0)
      
 primal2(R65)..  - v(R65) =G= -1000 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 19
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 19
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -1038,7 +1038,7 @@ primal2(PSEUDOco2_1)..  - v(PSEUDOco2_1) =G= -1000 ; (LHS = 0)
 
 primal3(R1)..  v(R1) =G= -1000 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 20
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 20
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -1093,7 +1093,7 @@ primal3(R24)..  v(R24) =G= -1000 ; (LHS = 0)
      
 primal3(R25)..  v(R25) =G= -1000 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 21
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 21
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -1148,7 +1148,7 @@ primal3(R48)..  v(R48) =G= 0 ; (LHS = 0)
      
 primal3(R49)..  v(R49) =G= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 22
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 22
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -1203,7 +1203,7 @@ primal3(R72)..  v(R72) =G= 0 ; (LHS = 0)
      
 primal3(R73)..  v(R73) =G= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 23
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 23
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -1261,7 +1261,7 @@ primal_obj..  w1(R1) + w1(R2) + w1(R3) + w1(R4) + w1(R5) + w1(R6) + w1(R7) + w1(
       + w2(R8) + w2(R9) + w2(R10) + w2(R11) + w2(R12) + w2(R13) + w2(R14) + w2(R15) + w2(R16) + w2(R17) + w2(R18) + w2(R19) + w2(R20) + w2(R21) + w2(R22) + w2(R23) + w2(R24) + w2(R25) + w2(R26) + w2(R27) + w2(R28) + w2(R29) + w2(R30) + w2(R31) + w2(R32)
      
       + w2(R33) + w2(R34) + w2(R35) + w2(R36) + w2(R37) + w2(R38) + w2(R39) + w2(R40) + w2(R41) + w2(R42) + w2(R43) + w2(R44) + w2(R45) + w2(R46) + w2(R47) + w2(R48) + w2(R49) + w2(R50) + w2(R51) + w2(R52) + w2(R53) + w2(R54) + w2(R55) + w2(R56) + w2(R57)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 24
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 24
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -1316,7 +1316,7 @@ dual2(R13)..  - lambda(f6p) + lambda(tkc2) + lambda(e4p) + deltam(R13) - deltap(
      
 dual2(R14)..  lambda(r5p) + lambda(tkc2) - lambda(s7p) + deltam(R14) - deltap(R14) + y1(R14) + y2(R14) =E= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 25
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 25
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -1371,7 +1371,7 @@ dual2(R37)..  - lambda(nadph) - lambda(akg) - lambda(nh3) + lambda(glu) + deltam
      
 dual2(R38)..  - lambda(atp) - lambda(nh3) - lambda(glu) + lambda(gln) + deltam(R38) - deltap(R38) + y1(R38) + y2(R38) =E= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 26
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 26
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -1427,7 +1427,7 @@ dual2(R61)..  lambda(nadph) - lambda(meethf) + lambda(fthf) + deltam(R61) - delt
      
 dual2(R62)..  3*lambda(atp) - lambda(nadh) - 0.5*lambda(o2) + deltam(R62) - deltap(R62) + y1(R62) + y2(R62) =E= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 27
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 27
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -1482,7 +1482,7 @@ dual2(PSEUDOpyr_1)..  - lambda(pyr) + lambda(pyr_1) + deltam(PSEUDOpyr_1) - delt
      
 dual2(PSEUDOpep_1)..  - lambda(pep) + lambda(pep_1) + deltam(PSEUDOpep_1) - deltap(PSEUDOpep_1) + y1(PSEUDOpep_1) + y2(PSEUDOpep_1) =E= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 28
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 28
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -1540,7 +1540,7 @@ outer_obj..  w1(R1) + w1(R2) + w1(R3) + w1(R4) + w1(R5) + w1(R6) + w1(R7) + w1(R
      
       + 10.066*y1(R12) + 48.9454444444444*y1(R13) + 53.9994444444444*y1(R14) + 53.9994444444444*y1(R15) + 2.506*y1(R16) + 1.89326617253043E-29*y1(R18) - 9.702*y1(R19) - 16.0264444444444*y1(R21) - 16.0264444444444*y1(R22) - 0.934444444444444*y1(R23)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 29
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 29
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -1595,7 +1595,7 @@ outer2..  y2(R1) + y2(R2) + y2(R3) + y2(R4) + y2(R5) + y2(R6) + y2(R7) + y2(R8) 
 
 ---- outer4  =G=  
 
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 30
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 30
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -1651,7 +1651,7 @@ outer5(R21)..  - v(R21) + w1(R21) + 2000*y1(R21) =L= 2000 ; (LHS = 0)
      
 outer5(R22)..  - v(R22) + w1(R22) + 2000*y1(R22) =L= 2000 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 31
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 31
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -1706,7 +1706,7 @@ outer5(R45)..  - v(R45) + w1(R45) + 2000*y1(R45) =L= 2000 ; (LHS = 0)
      
 outer5(R46)..  - v(R46) + w1(R46) + 2000*y1(R46) =L= 2000 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 32
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 32
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -1761,7 +1761,7 @@ outer5(R69)..  - v(R69) + w1(R69) + 2000*y1(R69) =L= 2000 ; (LHS = 0)
      
 outer5(R70)..  - v(R70) + w1(R70) + 2000*y1(R70) =L= 2000 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 33
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 33
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -1817,7 +1817,7 @@ outer6(R2)..  - v(R2) + w1(R2) - 2000*y1(R2) =G= -2000 ; (LHS = 0)
      
 outer6(R3)..  - v(R3) + w1(R3) - 2000*y1(R3) =G= -2000 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 34
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 34
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -1872,7 +1872,7 @@ outer6(R26)..  - v(R26) + w1(R26) - 2000*y1(R26) =G= -2000 ; (LHS = 0)
      
 outer6(R27)..  - v(R27) + w1(R27) - 2000*y1(R27) =G= -2000 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 35
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 35
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -1927,7 +1927,7 @@ outer6(R50)..  - v(R50) + w1(R50) - 2000*y1(R50) =G= -2000 ; (LHS = 0)
      
 outer6(R51)..  - v(R51) + w1(R51) - 2000*y1(R51) =G= -2000 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 36
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 36
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -1982,7 +1982,7 @@ outer6(R74)..  - v(R74) + w1(R74) - 2000*y1(R74) =G= -2000 ; (LHS = 0)
      
 outer6(R75)..  - v(R75) + w1(R75) - 2000*y1(R75) =G= -2000 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 37
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 37
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -2038,7 +2038,7 @@ outer7(R7)..  w1(R7) - 2000*y1(R7) =L= 0 ; (LHS = 0)
      
 outer7(R8)..  w1(R8) - 2000*y1(R8) =L= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 38
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 38
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -2093,7 +2093,7 @@ outer7(R31)..  w1(R31) - 2000*y1(R31) =L= 0 ; (LHS = 0)
      
 outer7(R32)..  w1(R32) - 2000*y1(R32) =L= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 39
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 39
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -2148,7 +2148,7 @@ outer7(R55)..  w1(R55) - 2000*y1(R55) =L= 0 ; (LHS = 0)
      
 outer7(R56)..  w1(R56) - 2000*y1(R56) =L= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 40
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 40
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -2203,7 +2203,7 @@ outer7(EX_atp)..  w1(EX_atp) - 2000*y1(EX_atp) =L= 0 ; (LHS = 0)
      
 outer7(EX_gluc)..  w1(EX_gluc) - 2000*y1(EX_gluc) =L= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 41
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 41
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -2259,7 +2259,7 @@ outer8(R12)..  w1(R12) + 2000*y1(R12) =G= 0 ; (LHS = 0)
      
 outer8(R13)..  w1(R13) + 2000*y1(R13) =G= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 42
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 42
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -2314,7 +2314,7 @@ outer8(R36)..  w1(R36) + 2000*y1(R36) =G= 0 ; (LHS = 0)
      
 outer8(R37)..  w1(R37) + 2000*y1(R37) =G= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 43
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 43
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -2369,7 +2369,7 @@ outer8(R60)..  w1(R60) + 2000*y1(R60) =G= 0 ; (LHS = 0)
      
 outer8(R61)..  w1(R61) + 2000*y1(R61) =G= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 44
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 44
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -2424,7 +2424,7 @@ outer8(EX_o2)..  w1(EX_o2) + 2000*y1(EX_o2) =G= 0 ; (LHS = 0)
      
 outer8(EX_so4)..  w1(EX_so4) + 2000*y1(EX_so4) =G= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 45
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 45
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -2480,7 +2480,7 @@ outer9(R17)..  - v(R17) + w2(R17) + 2000*y2(R17) =L= 2000 ; (LHS = 0)
      
 outer9(R18)..  - v(R18) + w2(R18) + 2000*y2(R18) =L= 2000 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 46
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 46
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -2535,7 +2535,7 @@ outer9(R41)..  - v(R41) + w2(R41) + 2000*y2(R41) =L= 2000 ; (LHS = 0)
      
 outer9(R42)..  - v(R42) + w2(R42) + 2000*y2(R42) =L= 2000 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 47
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 47
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -2590,7 +2590,7 @@ outer9(R65)..  - v(R65) + w2(R65) + 2000*y2(R65) =L= 2000 ; (LHS = 0)
      
 outer9(R66)..  - v(R66) + w2(R66) + 2000*y2(R66) =L= 2000 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 48
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 48
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -2645,7 +2645,7 @@ outer9(PSEUDOpep_1)..  - v(PSEUDOpep_1) + w2(PSEUDOpep_1) + 2000*y2(PSEUDOpep_1)
      
 outer9(PSEUDOco2_1)..  - v(PSEUDOco2_1) + w2(PSEUDOco2_1) + 2000*y2(PSEUDOco2_1) =L= 2000 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 49
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 49
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -2700,7 +2700,7 @@ outer10(R23)..  - v(R23) + w2(R23) - 2000*y2(R23) =G= -2000 ; (LHS = 0)
      
 outer10(R24)..  - v(R24) + w2(R24) - 2000*y2(R24) =G= -2000 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 50
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 50
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -2755,7 +2755,7 @@ outer10(R47)..  - v(R47) + w2(R47) - 2000*y2(R47) =G= -2000 ; (LHS = 0)
      
 outer10(R48)..  - v(R48) + w2(R48) - 2000*y2(R48) =G= -2000 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 51
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 51
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -2810,7 +2810,7 @@ outer10(R71)..  - v(R71) + w2(R71) - 2000*y2(R71) =G= -2000 ; (LHS = 0)
      
 outer10(R72)..  - v(R72) + w2(R72) - 2000*y2(R72) =G= -2000 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 52
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 52
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -2866,7 +2866,7 @@ outer11(R4)..  w2(R4) - 2000*y2(R4) =L= 0 ; (LHS = 0)
      
 outer11(R5)..  w2(R5) - 2000*y2(R5) =L= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 53
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 53
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -2921,7 +2921,7 @@ outer11(R28)..  w2(R28) - 2000*y2(R28) =L= 0 ; (LHS = 0)
      
 outer11(R29)..  w2(R29) - 2000*y2(R29) =L= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 54
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 54
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -2976,7 +2976,7 @@ outer11(R52)..  w2(R52) - 2000*y2(R52) =L= 0 ; (LHS = 0)
      
 outer11(R53)..  w2(R53) - 2000*y2(R53) =L= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 55
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 55
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -3031,7 +3031,7 @@ outer11(EX_pdo)..  w2(EX_pdo) - 2000*y2(EX_pdo) =L= 0 ; (LHS = 0)
      
 outer11(EX_co2)..  w2(EX_co2) - 2000*y2(EX_co2) =L= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 56
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 56
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -3087,7 +3087,7 @@ outer12(R9)..  w2(R9) + 2000*y2(R9) =G= 0 ; (LHS = 0)
      
 outer12(R10)..  w2(R10) + 2000*y2(R10) =G= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 57
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 57
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -3142,7 +3142,7 @@ outer12(R33)..  w2(R33) + 2000*y2(R33) =G= 0 ; (LHS = 0)
      
 outer12(R34)..  w2(R34) + 2000*y2(R34) =G= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 58
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 58
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -3197,7 +3197,7 @@ outer12(R57)..  w2(R57) + 2000*y2(R57) =G= 0 ; (LHS = 0)
      
 outer12(R58)..  w2(R58) + 2000*y2(R58) =G= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 59
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 59
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -3252,7 +3252,7 @@ outer12(EX_cit)..  w2(EX_cit) + 2000*y2(EX_cit) =G= 0 ; (LHS = 0)
      
 outer12(EX_glyc)..  w2(EX_glyc) + 2000*y2(EX_glyc) =G= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 60
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 60
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -3308,7 +3308,7 @@ outer13(R14)..  y1(R14) + y2(R14) =L= 1 ; (LHS = 0)
      
 outer13(R15)..  y1(R15) + y2(R15) =L= 1 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 61
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 61
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -3363,7 +3363,7 @@ outer13(R38)..  y1(R38) + y2(R38) =L= 1 ; (LHS = 0)
      
 outer13(R39)..  y1(R39) + y2(R39) =L= 1 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 62
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 62
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -3418,7 +3418,7 @@ outer13(R62)..  y1(R62) + y2(R62) =L= 1 ; (LHS = 0)
      
 outer13(R63)..  y1(R63) + y2(R63) =L= 1 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 63
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 63
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -3473,7 +3473,7 @@ outer13(SUCt)..  y1(SUCt) + y2(SUCt) =L= 1 ; (LHS = 0)
      
 outer13(EX_suc)..  y1(EX_suc) + y2(EX_suc) =L= 1 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 64
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 64
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -3528,7 +3528,7 @@ outer15(R42)..  y1(R42) + y2(R42) =E= 0 ; (LHS = 0)
      
 outer15(R43)..  y1(R43) + y2(R43) =E= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 65
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 65
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -3583,7 +3583,7 @@ outer15(EX_gluc)..  y1(EX_gluc) + y2(EX_gluc) =E= 0 ; (LHS = 0)
      
 outer15(EX_cit)..  y1(EX_cit) + y2(EX_cit) =E= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 66
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 66
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -3641,7 +3641,7 @@ primal_dual..  - w1(R1) - w1(R2) - w1(R3) - w1(R4) - w1(R5) - w1(R6) - w1(R7) - 
      
       + 1000*deltap(R54) + 1000*deltap(R55) + 1000*deltap(R56) + 1000*deltap(R57) + 1000*deltap(R58) + 1000*deltap(R59) + 1000*deltap(R60) + 1000*deltap(R61) + 1000*deltap(R62) + 1000*deltap(R63) + 1000*deltap(R64) + 1000*deltap(R65) + 1000*deltap(R66)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 67
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 67
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE bilevel Using MIP From line 568
 
@@ -3678,7 +3678,7 @@ con1..  y1(R75) + y1(EX_gluc) + y1(EX_suc) =E= 0 ; (LHS = 0)
 
 con2..  y2(R75) + y2(EX_gluc) + y2(EX_suc) =E= 0 ; (LHS = 0)
      
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 68
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 68
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -3736,7 +3736,7 @@ v(R5)
         1       primal1(atp)
        -1       primal1(gap)
         1       primal1(3pg)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 69
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 69
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -3794,7 +3794,7 @@ v(R9)
         1       primal1(co2)
        -1       primal2(R9)
         1       primal3(R9)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 70
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 70
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -3852,7 +3852,7 @@ v(R13)
        -1       outer9(R13)
        -1       outer10(R13)
 
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 71
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 71
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -3910,7 +3910,7 @@ v(R18)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
         1       primal1(gap)
         1       primal1(pyr)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 72
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 72
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -3968,7 +3968,7 @@ v(R22)
        -1       primal1(icit)
         1       primal1(akg)
        -1       primal2(R22)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 73
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 73
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -4026,7 +4026,7 @@ v(R26)
         1       primal3(R26)
        -1       outer5(R26)
        -1       outer6(R26)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 74
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 74
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -4084,7 +4084,7 @@ v(R30)
        -1       outer5(R30)
        -1       outer6(R30)
        -1       outer9(R30)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 75
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 75
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -4142,7 +4142,7 @@ v(R34)
        -1       outer10(R34)
 
 v(R35)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 76
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 76
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -4200,7 +4200,7 @@ v(R38)
 v(R39)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
        -1       primal1(atp)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 77
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 77
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -4258,7 +4258,7 @@ v(R42)
         1       primal1(asn)
        -1       primal2(R42)
         1       primal3(R42)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 78
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 78
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -4316,7 +4316,7 @@ v(R46)
         1       primal1(nh3)
        -1       primal1(gly)
         1       primal1(meethf)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 79
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 79
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -4374,7 +4374,7 @@ v(R49)
         1       primal3(R49)
        -1       outer5(R49)
        -1       outer6(R49)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 80
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 80
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -4432,7 +4432,7 @@ v(R53)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
        -1       primal1(pyr)
        -1       primal1(nadph)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 81
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 81
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -4490,7 +4490,7 @@ v(R55)
 v(R56)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
        -1       primal1(atp)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 82
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 82
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -4548,7 +4548,7 @@ v(R58)
         1       primal1(trp)
        -1       primal2(R58)
         1       primal3(R58)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 83
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 83
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -4606,7 +4606,7 @@ v(R62)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
         3       primal1(atp)
        -1       primal1(nadh)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 84
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 84
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -4664,7 +4664,7 @@ v(R66)
         1       primal3(R66)
        -1       outer5(R66)
        -1       outer6(R66)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 85
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 85
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -4722,7 +4722,7 @@ v(R71)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
        -1       primal1(co2)
         1       primal1(co2(ext))
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 86
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 86
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -4780,7 +4780,7 @@ v(R75)
        -0.051   primal1(pep)
        -0.083   primal1(pyr)
        -5.363   primal1(nadph)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 87
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 87
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -4838,7 +4838,7 @@ v(EX_co2)
        -1       outer9(EX_co2)
        -1       outer10(EX_co2)
 
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 88
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 88
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -4896,7 +4896,7 @@ v(EX_glyc)
 
 v(EX_nh3)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 89
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 89
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -4954,7 +4954,7 @@ v(EX_suc)
 v(PSEUDOpyr_1)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
        -1       primal1(pyr)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 90
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 90
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -5012,7 +5012,7 @@ w1(R2)
         1       outer6(R2)
         1       outer7(R2)
         1       outer8(R2)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 91
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 91
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -5070,7 +5070,7 @@ w1(R7)
         1       outer7(R7)
         1       outer8(R7)
        -1       primal_dual
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 92
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 92
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -5128,7 +5128,7 @@ w1(R12)
         1       outer8(R12)
        -1       primal_dual
 
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 93
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 93
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -5186,7 +5186,7 @@ w1(R17)
        -1       primal_dual
 
 w1(R18)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 94
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 94
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -5244,7 +5244,7 @@ w1(R22)
 
 w1(R23)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 95
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 95
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -5302,7 +5302,7 @@ w1(R27)
 w1(R28)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
         1       primal_obj
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 96
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 96
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -5360,7 +5360,7 @@ w1(R33)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
         1       primal_obj
         1       outer_obj
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 97
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 97
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -5418,7 +5418,7 @@ w1(R38)
         1       primal_obj
         1       outer_obj
         1       outer5(R38)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 98
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 98
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -5476,7 +5476,7 @@ w1(R43)
         1       outer_obj
         1       outer5(R43)
         1       outer6(R43)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/01/17 19:24:26 Page 99
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                06/02/17 16:01:02 Page 99
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -5534,7 +5534,7 @@ w1(R48)
         1       outer5(R48)
         1       outer6(R48)
         1       outer7(R48)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 100
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 100
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -5592,7 +5592,7 @@ w1(R53)
         1       outer6(R53)
         1       outer7(R53)
         1       outer8(R53)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 101
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 101
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -5650,7 +5650,7 @@ w1(R58)
         1       outer7(R58)
         1       outer8(R58)
        -1       primal_dual
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 102
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 102
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -5708,7 +5708,7 @@ w1(R63)
         1       outer8(R63)
        -1       primal_dual
 
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 103
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 103
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -5766,7 +5766,7 @@ w1(R68)
        -1       primal_dual
 
 w1(R69)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 104
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 104
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -5824,7 +5824,7 @@ w1(R73)
 
 w1(R74)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 105
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 105
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -5882,7 +5882,7 @@ w1(EX_atp)
         1       outer_obj
         1       outer5(EX_atp)
         1       outer6(EX_atp)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 106
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 106
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -5940,7 +5940,7 @@ w1(EX_o2)
         1       outer8(EX_o2)
        -1       primal_dual
 
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 107
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 107
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -5998,7 +5998,7 @@ w1(PSEUDOco2_1)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
         1       primal_obj
         1       outer_obj
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 108
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 108
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -6056,7 +6056,7 @@ w2(R4)
 
 w2(R5)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 109
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 109
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -6114,7 +6114,7 @@ w2(R9)
 w2(R10)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
         1       primal_obj
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 110
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 110
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -6172,7 +6172,7 @@ w2(R15)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
         1       primal_obj
         1       outer_obj
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 111
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 111
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -6230,7 +6230,7 @@ w2(R20)
         1       primal_obj
         1       outer_obj
         1       outer9(R20)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 112
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 112
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -6288,7 +6288,7 @@ w2(R25)
         1       outer_obj
         1       outer9(R25)
         1       outer10(R25)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 113
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 113
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -6346,7 +6346,7 @@ w2(R30)
         1       outer9(R30)
         1       outer10(R30)
         1       outer11(R30)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 114
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 114
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -6404,7 +6404,7 @@ w2(R35)
         1       outer10(R35)
         1       outer11(R35)
         1       outer12(R35)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 115
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 115
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -6462,7 +6462,7 @@ w2(R40)
         1       outer11(R40)
         1       outer12(R40)
        -1       primal_dual
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 116
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 116
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -6520,7 +6520,7 @@ w2(R45)
         1       outer12(R45)
        -1       primal_dual
 
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 117
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 117
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -6578,7 +6578,7 @@ w2(R50)
        -1       primal_dual
 
 w2(R51)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 118
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 118
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -6636,7 +6636,7 @@ w2(R55)
 
 w2(R56)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 119
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 119
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -6694,7 +6694,7 @@ w2(R60)
 w2(R61)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
         1       primal_obj
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 120
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 120
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -6752,7 +6752,7 @@ w2(R66)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
         1       primal_obj
         1       outer_obj
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 121
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 121
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -6810,7 +6810,7 @@ w2(R71)
         1       primal_obj
         1       outer_obj
         1       outer9(R71)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 122
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 122
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -6868,7 +6868,7 @@ w2(EX_pdo)
         1       outer11(EX_pdo)
         1       outer12(EX_pdo)
        -1       primal_dual
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 123
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 123
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -6926,7 +6926,7 @@ w2(EX_cit)
 w2(EX_glyc)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
         1       primal_obj
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 124
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 124
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -6984,7 +6984,7 @@ w2(EX_suc)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
         1       outer9(EX_suc)
         1       outer10(EX_suc)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 125
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 125
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -7042,7 +7042,7 @@ mu(EX_suc)
         1       dual1(EX_suc)
      -155.5     dual_obj
      -155.5     primal_dual
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 126
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 126
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -7100,7 +7100,7 @@ lambda(fbp)
        -1       dual2(R3)
 
 lambda(dhap)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 127
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 127
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -7158,7 +7158,7 @@ lambda(pep)
         1       dual2(R31)
        -1       dual2(R56)
        -1       dual2(R57)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 128
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 128
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -7216,7 +7216,7 @@ lambda(nadph)
         1       dual2(R64)
 
 lambda(ru5p)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 129
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 129
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -7274,7 +7274,7 @@ lambda(e4p)
         1       dual2(R13)
         1       dual2(R16)
        -1       dual2(R56)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 130
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 130
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -7332,7 +7332,7 @@ lambda(icit)
 
 lambda(akg)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 131
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 131
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -7390,7 +7390,7 @@ lambda(mal)
        -1       dual2(R29)
 
 lambda(ac)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 132
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 132
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -7448,7 +7448,7 @@ lambda(glu)
        -1       dual2(R53)
        -1       dual2(R54)
        -1       dual2(R55)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 133
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 133
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -7506,7 +7506,7 @@ lambda(ser)
        -1       dual2(R48)
        -1       dual2(R58)
 
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 134
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 134
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -7564,7 +7564,7 @@ lambda(methf)
 lambda(met)
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
        -0.146   dual1(R75)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 135
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 135
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -7622,7 +7622,7 @@ lambda(trp)
         1       dual2(R58)
 
 lambda(fthf)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 136
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 136
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -7680,7 +7680,7 @@ lambda(co2(ext))
        -1       dual2(EX_co2)
 
 lambda(o2(ext))
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 137
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 137
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -7738,7 +7738,7 @@ deltam(R1)
      1000       primal_dual
 
 deltam(R2)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 138
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 138
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -7796,7 +7796,7 @@ deltam(R11)
      1000       dual_obj
      1000       primal_dual
 
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 139
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 139
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -7854,7 +7854,7 @@ deltam(R21)
         1       dual2(R21)
      1000       dual_obj
      1000       primal_dual
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 140
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 140
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -7912,7 +7912,7 @@ deltam(R31)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
         1       dual2(R31)
 
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 141
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 141
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -7970,7 +7970,7 @@ deltam(R42)
 deltam(R43)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
         1       dual2(R43)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 142
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 142
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -8028,7 +8028,7 @@ deltam(R54)
 
 deltam(R55)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 143
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 143
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -8086,7 +8086,7 @@ deltam(R66)
 deltam(R67)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
         1       dual2(R67)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 144
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 144
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -8144,7 +8144,7 @@ deltam(EX_gluc)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
       100       dual_obj
       100       primal_dual
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 145
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 145
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -8198,7 +8198,7 @@ deltam(PSEUDOco2_1)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
         1       dual2(PSEUDOco2_1)
 
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 146
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 146
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -8256,7 +8256,7 @@ deltap(R8)
 deltap(R9)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
        -1       dual2(R9)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 147
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 147
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -8314,7 +8314,7 @@ deltap(R17)
      1000       dual_obj
      1000       primal_dual
 
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 148
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 148
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -8372,7 +8372,7 @@ deltap(R25)
 deltap(R26)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
        -1       dual2(R26)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 149
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 149
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -8430,7 +8430,7 @@ deltap(R34)
      1000       dual_obj
      1000       primal_dual
 
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 150
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 150
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -8488,7 +8488,7 @@ deltap(R42)
 deltap(R43)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
        -1       dual2(R43)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 151
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 151
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -8546,7 +8546,7 @@ deltap(R51)
      1000       dual_obj
      1000       primal_dual
 
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 152
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 152
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -8604,7 +8604,7 @@ deltap(R59)
 deltap(R60)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
        -1       dual2(R60)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 153
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 153
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -8662,7 +8662,7 @@ deltap(R68)
      1000       dual_obj
      1000       primal_dual
 
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 154
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 154
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -8720,7 +8720,7 @@ deltap(EX_co2)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
        -1       dual2(EX_co2)
      1000       dual_obj
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 155
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 155
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -8778,7 +8778,7 @@ deltap(EX_so4)
 
 deltap(SUCt)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 156
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 156
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -8836,7 +8836,7 @@ y1(R2)
      2000       outer8(R2)
         1       outer13(R2)
 
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 157
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 157
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -8894,7 +8894,7 @@ y1(R7)
     -2000       outer6(R7)
     -2000       outer7(R7)
      2000       outer8(R7)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 158
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 158
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -8952,7 +8952,7 @@ y1(R12)
         1       dual2(R12)
        10.066   outer_obj
         1       outer1
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 159
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 159
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -9010,7 +9010,7 @@ y1(R16)
         1       outer13(R16)
 
 y1(R17)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 160
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 160
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -9068,7 +9068,7 @@ y1(R21)
     -2000       outer7(R21)
      2000       outer8(R21)
         1       outer13(R21)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 161
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 161
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -9126,7 +9126,7 @@ y1(R25)
     -2000       outer7(R25)
      2000       outer8(R25)
         1       outer13(R25)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 162
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 162
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -9184,7 +9184,7 @@ y1(R30)
         1       outer1
      2000       outer5(R30)
     -2000       outer6(R30)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 163
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 163
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -9242,7 +9242,7 @@ y1(R34)
         1       must_set1
 
 y1(R35)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 164
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 164
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -9300,7 +9300,7 @@ y1(R38)
 
 y1(R39)
                 (.LO, .L, .UP, .M = 0, 0, 1, 0)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 165
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 165
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -9358,7 +9358,7 @@ y1(R42)
         1       must_set1
 
 y1(R43)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 166
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 166
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -9416,7 +9416,7 @@ y1(R47)
         1       dual2(R47)
         1       outer1
      2000       outer5(R47)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 167
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 167
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -9474,7 +9474,7 @@ y1(R51)
         1       outer1
      2000       outer5(R51)
     -2000       outer6(R51)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 168
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 168
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -9532,7 +9532,7 @@ y1(R55)
        -3.864   outer_obj
         1       outer1
      2000       outer5(R55)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 169
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 169
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -9590,7 +9590,7 @@ y1(R59)
         1       dual2(R59)
        -1.26    outer_obj
         1       outer1
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 170
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 170
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -9648,7 +9648,7 @@ y1(R63)
         1       outer1
      2000       outer5(R63)
     -2000       outer6(R63)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 171
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 171
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -9706,7 +9706,7 @@ y1(R68)
                 (.LO, .L, .UP, .M = 0, 0, 1, 0)
         1       dual2(R68)
       100       outer_obj
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 172
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 172
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -9764,7 +9764,7 @@ y1(R72)
      2000       outer8(R72)
         1       outer13(R72)
 
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 173
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 173
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -9822,7 +9822,7 @@ y1(EX_co2)
                 (.LO, .L, .UP, .M = 0, 0, 1, 0)
         1       dual2(EX_co2)
      -134.9718  outer_obj
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 174
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 174
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -9880,7 +9880,7 @@ y1(EX_cit)
      2000       outer8(EX_cit)
         1       outer13(EX_cit)
         1       outer15(EX_cit)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 175
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 175
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -9938,7 +9938,7 @@ y1(EX_so4)
         1       outer15(EX_so4)
         1       must_set1
 
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 176
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 176
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -9996,7 +9996,7 @@ y1(PSEUDOpep_1)
 y1(PSEUDOco2_1)
                 (.LO, .L, .UP, .M = 0, 0, 1, 0)
         1       dual2(PSEUDOco2_1)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 177
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 177
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -10054,7 +10054,7 @@ y2(R4)
         1       outer2
      2000       outer9(R4)
     -2000       outer10(R4)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 178
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 178
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -10112,7 +10112,7 @@ y2(R9)
         1       dual2(R9)
         1       outer2
      2000       outer9(R9)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 179
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 179
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -10170,7 +10170,7 @@ y2(R13)
      2000       outer12(R13)
         1       outer13(R13)
 
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 180
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 180
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -10228,7 +10228,7 @@ y2(R18)
      2000       outer9(R18)
     -2000       outer10(R18)
     -2000       outer11(R18)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 181
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 181
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -10286,7 +10286,7 @@ y2(R22)
         1       must_set2
 
 y2(R23)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 182
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 182
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -10344,7 +10344,7 @@ y2(R26)
 y2(R27)
                 (.LO, .L, .UP, .M = 0, 0, 1, 0)
         1       dual2(R27)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 183
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 183
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -10402,7 +10402,7 @@ y2(R31)
 y2(R32)
                 (.LO, .L, .UP, .M = 0, 0, 1, 0)
         1       dual2(R32)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 184
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 184
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -10460,7 +10460,7 @@ y2(R36)
         1       outer2
      2000       outer9(R36)
     -2000       outer10(R36)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 185
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 185
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -10518,7 +10518,7 @@ y2(R40)
        -3.934   outer_obj
         1       outer2
      2000       outer9(R40)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 186
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 186
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -10576,7 +10576,7 @@ y2(R44)
         1       dual2(R44)
         1       outer2
      2000       outer9(R44)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 187
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 187
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -10634,7 +10634,7 @@ y2(R48)
         1       outer13(R48)
         1       outer15(R48)
         1       must_set2
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 188
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 188
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -10692,7 +10692,7 @@ y2(R52)
      2000       outer12(R52)
         1       outer13(R52)
         1       outer15(R52)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 189
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 189
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -10750,7 +10750,7 @@ y2(R56)
     -2000       outer11(R56)
      2000       outer12(R56)
         1       outer13(R56)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 190
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 190
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -10808,7 +10808,7 @@ y2(R60)
     -2000       outer10(R60)
     -2000       outer11(R60)
      2000       outer12(R60)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 191
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 191
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -10866,7 +10866,7 @@ y2(R64)
 
 y2(R65)
                 (.LO, .L, .UP, .M = 0, 0, 1, 0)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 192
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 192
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -10924,7 +10924,7 @@ y2(R69)
      2000       outer12(R69)
         1       outer13(R69)
         1       outer15(R69)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 193
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 193
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -10982,7 +10982,7 @@ y2(R74)
                 (.LO, .L, .UP, .M = 0, 0, 1, 0)
         1       dual2(R74)
        -3.262   outer_obj
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 194
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 194
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -11040,7 +11040,7 @@ y2(EX_ac)
     -2000       outer11(EX_ac)
      2000       outer12(EX_ac)
         1       outer13(EX_ac)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 195
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 195
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -11098,7 +11098,7 @@ y2(EX_nh3)
                 (.LO, .L, .UP, .M = 0, 0, 1, 0)
         1       dual2(EX_nh3)
        97.482   outer_obj
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 196
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 196
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -11156,7 +11156,7 @@ y2(EX_suc)
      2000       outer9(EX_suc)
     -2000       outer10(EX_suc)
     -2000       outer11(EX_suc)
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 197
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 197
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE bilevel Using MIP From line 568
 
@@ -11207,7 +11207,7 @@ y2(PSEUDOco2_1)
         1       outer15(PSEUDOco2_1)
         1       must_set2
 
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 198
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 198
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Model Statistics    SOLVE bilevel Using MIP From line 568
 
@@ -11222,13 +11222,13 @@ BLOCKS OF VARIABLES          12     SINGLE VARIABLES          711
 NON ZERO ELEMENTS         4,456     DISCRETE VARIABLES        180
 
 
-GENERATION TIME      =        0.047 SECONDS      4 MB  24.8.5 r61358 WEX-WEI
+GENERATION TIME      =        0.031 SECONDS      4 MB  24.8.5 r61358 WEX-WEI
 
 
-EXECUTION TIME       =        0.047 SECONDS      4 MB  24.8.5 r61358 WEX-WEI
+EXECUTION TIME       =        0.031 SECONDS      4 MB  24.8.5 r61358 WEX-WEI
                L O O P S          FOR/WHILE 1
 
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 199
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 199
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE bilevel Using MIP From line 568
 
@@ -11243,7 +11243,7 @@ Solution Report     SOLVE bilevel Using MIP From line 568
 **** MODEL STATUS      10 Integer Infeasible       
 **** OBJECTIVE VALUE               NA
 
- RESOURCE USAGE, LIMIT          0.046    100000.000
+ RESOURCE USAGE, LIMIT          0.063    100000.000
  ITERATION COUNT, LIMIT        48        100000
 
 IBM ILOG CPLEX   24.8.5 r61358 Released May 10, 2017 WEI x86 64bit/MS Windows 
@@ -11259,7 +11259,7 @@ Cplex Time: 0.03sec (det. 9.52 ticks)
 Problem is integer infeasible.
 
 No solution returned
-GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/01/17 19:24:26 Page 200
+GAMS 24.8.5  r61358 Released May 10, 2017 WEX-WEI x86 64bit/MS Windows                                                                                                                                                               06/02/17 16:01:02 Page 200
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 

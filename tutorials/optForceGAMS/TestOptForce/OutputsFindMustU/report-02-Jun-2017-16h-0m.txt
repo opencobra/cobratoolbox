@@ -1,4 +1,4 @@
-findMustULWithGAMS.m executed on 01-Jun-2017 at 19:24
+findMustUWithGAMS.m executed on 02-Jun-2017 at 16:0
 
 MATLAB: Release R2016a
 GAMS: C:\GAMS\win64\24.8\gams.mexw64
@@ -197,107 +197,11 @@ EX_gluc: fixed in -100.0000
 R75: fixed in 0.0000
 EX_suc: fixed in 155.5000
 
-Excluded Reactions:
-EX_ac: ac(ext)  -> 
-EX_atp: atp(ext)  -> 
-EX_cit: cit(ext)  <=> 
-EX_co2: co2(ext)  -> 
-EX_gluc: gluc(ext)  <=> 
-EX_glyc: glyc(ext)  <=> 
-EX_nh3: nh3(ext)  <=> 
-EX_o2: o2(ext)  <=> 
-EX_pdo: pdo(ext)  -> 
-EX_so4: so4(ext)  <=> 
-EX_suc: suc(ext)  -> 
-PSEUDOco2_1: co2_1  -> co2 
-PSEUDOpep_1: pep  -> pep_1 
-PSEUDOpyr_1: pyr  -> pyr_1 
-R11: ru5p  <=> r5p 
-R21: cit  <=> icit 
-R22: icit  <=> nadph + co2 + akg 
-R23: akg  -> nadh + co2 + succoa 
-R24: succoa  <=> atp + suc 
-R26: fum  <=> mal 
-R33: dhap + nadh  <=> glyc3p 
-R34: glyc3p  -> glyc 
-R35: glyc  -> hpa 
-R36: nadph + hpa  -> pdo 
-R37: nadph + akg + nh3  -> glu 
-R38: atp + nh3 + glu  -> gln 
-R39: atp + 2 nadph + glu  -> pro 
-R40: 5 atp + nadph + co2 + accoa + glu + gln + asp  -> akg + fum + ac + arg 
-R41: oac + glu  -> akg + asp 
-R42: 2 atp + nh3 + asp  -> asn 
-R43: pyr + glu  -> akg + ala 
-R46: gly  <=> nadh + co2 + nh3 + meethf 
-R48: 3 atp + 4 nadph + accoa + ser + so4  -> ac + cys 
-R49: atp + pyr + 2 nadph + succoa + glu + asp  -> akg + suc + ll-dap 
-R50: ll-dap  -> co2 + lys 
-R51: 2 atp + 2 nadph + asp  -> thr 
-R52: atp + 2 nadph + succoa + asp + cys + methf  -> pyr + suc + nh3 + met 
-R53: pyr + nadph + glu + pyr_1  -> co2 + akg + val 
-R54: pyr + nadph + accoa + glu + pyr_1  -> nadh + co2 + akg + leu + co2_1 
-R55: pyr + nadph + glu + thr  -> co2 + akg + nh3 + ile 
-R56: atp + pep + nadph + e4p + glu + pep_1  -> co2 + akg + phe 
-R57: atp + pep + nadph + e4p + glu + pep_1  -> nadh + co2 + akg + tyr 
-R58: 3 atp + pep + nadph + r5p + e4p + gln + ser + pep_1  -> gap + pyr + co2 + glu + trp 
-R59: 5 atp + r5p + gln + asp + fthf  -> 2 nadh + akg + fum + his 
-R60: nadh + meethf  -> methf 
-R61: meethf  -> nadph + fthf 
-R69: pdo  -> pdo(ext) 
-R73: nh3(ext)  -> nh3 
-R74: so4(ext)  -> so4 
-SUCt: suc  -> suc(ext) 
-
-Reactions from first order sets(MustU and MustL):
-EX_nh3: nh3(ext)  <=> 
-EX_pdo: pdo(ext)  -> 
-EX_so4: so4(ext)  <=> 
-PSEUDOco2_1: co2_1  -> co2 
-PSEUDOpep_1: pep  -> pep_1 
-PSEUDOpyr_1: pyr  -> pyr_1 
-R11: ru5p  <=> r5p 
-R21: cit  <=> icit 
-R22: icit  <=> nadph + co2 + akg 
-R23: akg  -> nadh + co2 + succoa 
-R24: succoa  <=> atp + suc 
-R26: fum  <=> mal 
-R33: dhap + nadh  <=> glyc3p 
-R34: glyc3p  -> glyc 
-R35: glyc  -> hpa 
-R36: nadph + hpa  -> pdo 
-R37: nadph + akg + nh3  -> glu 
-R38: atp + nh3 + glu  -> gln 
-R39: atp + 2 nadph + glu  -> pro 
-R40: 5 atp + nadph + co2 + accoa + glu + gln + asp  -> akg + fum + ac + arg 
-R41: oac + glu  -> akg + asp 
-R42: 2 atp + nh3 + asp  -> asn 
-R43: pyr + glu  -> akg + ala 
-R46: gly  <=> nadh + co2 + nh3 + meethf 
-R48: 3 atp + 4 nadph + accoa + ser + so4  -> ac + cys 
-R49: atp + pyr + 2 nadph + succoa + glu + asp  -> akg + suc + ll-dap 
-R50: ll-dap  -> co2 + lys 
-R51: 2 atp + 2 nadph + asp  -> thr 
-R52: atp + 2 nadph + succoa + asp + cys + methf  -> pyr + suc + nh3 + met 
-R53: pyr + nadph + glu + pyr_1  -> co2 + akg + val 
-R54: pyr + nadph + accoa + glu + pyr_1  -> nadh + co2 + akg + leu + co2_1 
-R55: pyr + nadph + glu + thr  -> co2 + akg + nh3 + ile 
-R56: atp + pep + nadph + e4p + glu + pep_1  -> co2 + akg + phe 
-R57: atp + pep + nadph + e4p + glu + pep_1  -> nadh + co2 + akg + tyr 
-R58: 3 atp + pep + nadph + r5p + e4p + gln + ser + pep_1  -> gap + pyr + co2 + glu + trp 
-R59: 5 atp + r5p + gln + asp + fthf  -> 2 nadh + akg + fum + his 
-R60: nadh + meethf  -> methf 
-R61: meethf  -> nadph + fthf 
-R69: pdo  -> pdo(ext) 
-R73: nh3(ext)  -> nh3 
-R74: so4(ext)  -> so4 
-SUCt: suc  -> suc(ext) 
-
 runID(Main Folder): TestOptForce 
 
-outputFolder: OutputsFindMustUL 
+outputFolder: OutputsFindMustU 
 
-outputFileName: MustULSet 
+outputFileName: MustUSet 
 
 printExcel: 1 
 
@@ -317,8 +221,8 @@ GAMS was executed correctly
 
 GAMS variables were read by MATLAB correctly
 
-a MustUL set was not found
+a MustU set was found
 
-No mustUL set was found. Therefore, no excel file was generated
+MustU set was printed in MustUSet.xls  
 
-No mustUL set was found. Therefore, no plain text file was generated
+MustU set was printed in MustUSet.txt  

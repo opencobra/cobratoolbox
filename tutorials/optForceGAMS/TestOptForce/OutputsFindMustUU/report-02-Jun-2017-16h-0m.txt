@@ -1,4 +1,4 @@
-findMustLLWithGAMS.m executed on 01-Jun-2017 at 19:24
+findMustUUWithGAMS.m executed on 02-Jun-2017 at 16:0
 
 MATLAB: Release R2016a
 GAMS: C:\GAMS\win64\24.8\gams.mexw64
@@ -295,9 +295,9 @@ SUCt: suc  -> suc(ext)
 
 runID(Main Folder): TestOptForce 
 
-outputFolder: OutputsFindMustLL 
+outputFolder: OutputsFindMustUU 
 
-outputFileName: MustLLSet 
+outputFileName: MustUUSet 
 
 printExcel: 1 
 
@@ -317,8 +317,12 @@ GAMS was executed correctly
 
 GAMS variables were read by MATLAB correctly
 
-a MustLL set was not found
+a MustUU set was found
 
-No mustLL set was found. Therefore, no excel file was generated
+MustUU set was printed in MustUUSet.xls  
 
-No mustLL set was found. Therefore, no plain text file was generated
+MustUU set was printed in MustUUSet_Info.xls  
+
+MustUU set was printed in MustUUSet.txt  
+
+MustUU set was printed in MustUUSet_Info.txt  

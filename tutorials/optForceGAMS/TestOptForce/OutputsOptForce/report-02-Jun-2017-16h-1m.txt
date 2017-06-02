@@ -1,4 +1,4 @@
-optForce_GAMS executed on 01-Jun-2017 at 19:24
+optForce_GAMS executed on 02-Jun-2017 at 16:1
 
 MATLAB: Release R2016a
 GAMS: C:\GAMS\win64\24.8\gams.mexw64
@@ -248,9 +248,8 @@ EX_gluc: fixed in -100.0000
 R75: fixed in 0.0000
 
 Excluded reactions:
-SUCt: Excluded from Upregulations
 
-runID(Main Folder): TestOptForce2 
+runID(Main Folder): TestOptForce 
 
 outputFolder: OutputsOptForce 
 
@@ -274,7 +273,7 @@ GAMS was executed correctly
 
 GAMS variables were read by MATLAB correctly
 
-optForce found 5 sets 
+optForce found 1 sets 
 
 Sets found by optForce were printed in OptForce.xls  
 

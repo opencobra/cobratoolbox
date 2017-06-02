@@ -33,9 +33,13 @@
 % where GAMS in located
 initCobraToolbox
 
-gamsPath = 'C:\GAMS\win64\24.8';
-added = addGAMSPath(gamsPath);
-% Now that we have added GAMS path we can start with the modelling
+% We check if gams was correctly installed and if GAMS folder was added
+% to MATLAB path
+fullGamsPath = which('gams');
+if isempty(fullGamsPath)
+   error('GAMS is not installed in your system or GAMS directory has not been added to MATLAB path') 
+end
+% Now, we can start with the modelling
 
 %% Modelling 
 % First we load the model. This model comprises only 90 reactions, which
