@@ -1,10 +1,10 @@
 function solution = optimalConservationVectors(S, lambda, delta)
 % DC programming for solving the cardinality optimization problem
-% min `lambda*||x||_0  - delta*||y||_0`
+% :math:`min lambda*||x||_0  - delta*||y||_0`
 %
-% s.t. `x + S'*y = 0`
+% s.t. :math:`x + S'*y = 0`
 %
-% `0 <= y <= 1e4`
+% :math:`0 <= y <= 1e4`
 %
 % USAGE:
 %

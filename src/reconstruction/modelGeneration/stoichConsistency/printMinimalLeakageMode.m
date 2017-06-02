@@ -13,7 +13,6 @@ function printMinimalLeakageMode(model, minMetBool, minRxnBool, y, printLevel, f
 %    printLevel:    verbose level
 %    fileName:      name of the file
 
-
 if ~exist('fileName','var')
     fprintf('%6u\t%6u\t%s\n',nnz(minMetBool),nnz(minRxnBool),'leakage mode');
     if printLevel>1 && nnz(minRxnBool)<=10

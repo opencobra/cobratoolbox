@@ -1,11 +1,11 @@
 function [relaxRxnBool, solutionRelax] = minCardinalityConservationRelaxationVector(S, params, printLevel)
 % DC programming for solving the cardinality optimization problem
-% min `lambda*||x||_0`
+% :math:`min lambda*||x||_0`
 %
-% s.t. `x + S'*z = 0`
+% s.t. :math:`x + S'*z = 0`
 %
-% `-inf <= x <= inf`,
-% `1 <= z <= 1 / epsilon`
+% :math:`-inf <= x <= inf`,
+% :math:`1 <= z <= 1 / epsilon`
 %
 % USAGE:
 %

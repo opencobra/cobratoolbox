@@ -1,63 +1,64 @@
 function [minLeakMetBool, minLeakRxnBool, minSiphonMetBool, minSiphonRxnBool, leakY, siphonY, statp, statn] = findMinimalLeakageModeRxn(model, rxnBool, metBool, modelBoundsFlag, params, printLevel)
 % Solves the problem
-% min `||v||_0 + ||y||_0`
-% s.t. `Sv - y = 0`,
-% `l <= v <= u`  (either `l(rxnBool) > 0` or `u(rxnBool) < 0`)
+% :math:`min ||v||_0 + ||y||_0`
+% s.t. :math:`Sv - y = 0`,
+% :math:`l <= v <= u`  (either `l(rxnBool) > 0` or `u(rxnBool) < 0`)
 %
 % with either
-% `0 <= y` (semipositive net stoichiometry)
+% :math:`0 <= y` (semipositive net stoichiometry)
 % or
-% `y <= 0` (seminegative net stoichiometry)
+% :math:`y <= 0` (seminegative net stoichiometry)
 %
 % and
-% `1 <= y(metBool)` (semipositive net stoichiometry)
+% :math:`1 <= y(metBool)` (semipositive net stoichiometry)
 % or
-% `y(metBool) <= 1` (seminegative net stoichiometry)
+% :math:`y(metBool) <= 1` (seminegative net stoichiometry)
 %
 % USAGE:
 %
 %    [minLeakMetBool, minLeakRxnBool, minSiphonMetBool, minSiphonRxnBool, leakY, siphonY, statp, statn] = findMinimalLeakageModeRxn(model, rxnBool, metBool, modelBoundsFlag, params, printLevel)
 %
 % INPUT:
-%    model:              structure with fields (bools are not mandatory)
+%    model:               structure with fields (bools are not mandatory)
 %
-%                          * .S - `m` x `n` stoichiometric matrix
-%                          * .lb - Lower bounds
-%                          * .ub - Upper bounds
-%                          * .SConsistentMetBool - `m` x 1 boolean vector indicating consistent mets
-%                          * .SConsistentRxnBool - `m` x 1 boolean vector indicating consistent rxns
-%    rxnBool:            `n` x 1 boolean vector of reactions to test for leakage
+%                           * .S - `m` x `n` stoichiometric matrix
+%                           * .lb - Lower bounds
+%                           * .ub - Upper bounds
+%                           * .SConsistentMetBool - `m` x 1 boolean vector indicating consistent mets
+%                           * .SConsistentRxnBool - `m` x 1 boolean vector indicating consistent rxns
+%    rxnBool:             `n` x 1 boolean vector of reactions to test for leakage
+%
 % OPTIONAL INPUTS:
-%    metBool:            `m` x 1 boolean vector of metabolites to test for leakage
-%    modelBoundsFlag:    {0,(1)}
+%    metBool:             `m` x 1 boolean vector of metabolites to test for leakage
+%    modelBoundsFlag:     {0, (1)}
 %
-%                          * 0 = set all reaction bounds to -inf, inf
-%                          * 1 = use reaction bounds provided by model.lb and .ub
-%    params:             structure with fields:
+%                           * 0 = set all reaction bounds to -inf, inf
+%                           * 1 = use reaction bounds provided by model.lb and .ub
+%    params:              structure with fields:
 %
-%                          * params.eta - (feasTol*100), smallest nonzero mass leak/siphon
-%                          * params.monoRxnMode - {(1), 0} adds one stoichiometrically inconsistent reaction at a time
-%    printLevel:         {(0), 1}
+%                           * params.eta - (feasTol*100), smallest nonzero mass leak/siphon
+%                           * params.monoRxnMode - {(1), 0} adds one stoichiometrically inconsistent reaction at a time
+%    printLevel:          {(0), 1}
 %
 % OUTPUTS:
-%    minleakMetBool:        `m` x 1 boolean of metabolites in a positive leakage mode
-%    minleakRxnBool:        `n` x 1 boolean of reactions exclusively involved in a positive leakage mode
-%    minsiphonMetBool:      `m` x 1 boolean of metabolites in a negative leakage mode
-%    minsiphonRxnBool:      `n` x 1 boolean of reactions exclusively involved in a negative leakage mode
-%    leakY:              `m` x 1 boolean of metabolites in a positive leakage mode
-%    siphonY:            `m` x 1 boolean of metabolites in a negative siphon mode
-%    statp:              status (positive leakage modes)
+%    minleakMetBool:      `m` x 1 boolean of metabolites in a positive leakage mode
+%    minleakRxnBool:      `n` x 1 boolean of reactions exclusively involved in a positive leakage mode
+%    minsiphonMetBool:    `m` x 1 boolean of metabolites in a negative leakage mode
+%    minsiphonRxnBool:    `n` x 1 boolean of reactions exclusively involved in a negative leakage mode
+%    leakY:               `m` x 1 boolean of metabolites in a positive leakage mode
+%    siphonY:             `m` x 1 boolean of metabolites in a negative siphon mode
+%    statp:               status (positive leakage modes)
 %
-%                          * 1 =  Solution found
-%                          * 2 =  Unbounded
-%                          * 0 =  Infeasible
-%                          * -1 =  Invalid input
-%    statn:              status (negative leakage modes)
+%                           * 1 =  Solution found
+%                           * 2 =  Unbounded
+%                           * 0 =  Infeasible
+%                           * -1 =  Invalid input
+%    statn:               status (negative leakage modes)
 %
-%                          * 1 =  Solution found
-%                          * 2 =  Unbounded
-%                          * 0 =  Infeasible
-%                          * -1 =  Invalid input
+%                           * 1 =  Solution found
+%                           * 2 =  Unbounded
+%                           * 0 =  Infeasible
+%                           * -1 =  Invalid input
 % .. Author: - Ines Thiele & Ronan Fleming, June 2016
 
 [S,lb,ub] = deal(model.S,model.lb,model.ub);

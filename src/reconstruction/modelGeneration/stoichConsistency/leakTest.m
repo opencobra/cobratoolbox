@@ -1,8 +1,8 @@
 function solution = leakTest(model, params, printLevel)
 % Solves the problem
-% min `lambda*||v||_0 - delta*||s||_0`
-% s.t. `Sv + s = 0`,
-% `l <= v <= u`
+% :math:`min lambda*||v||_0 - delta*||s||_0`
+% s.t. :math:`Sv + s = 0`,
+% :math:`l <= v <= u`
 %
 % USAGE:
 %

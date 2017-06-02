@@ -1,8 +1,8 @@
 function  [maxConservationMetBool, maxConservationRxnBool, solution] = maxCardinalityConservationVector(S, params)
 % Maximises the cardinality of the conservation vector:
-% max ``||l||_0`
-% st. `S'l = 0`
-% `0 <= l <= 1/epsilon`
+% :math:`max ||l||_0`
+% st. :math:`S'l = 0`
+% :math:`0 <= l <= 1/epsilon`
 %
 % The `l0` norm is approximated by capped `l1` norm. The resulting problem is a DC program
 %

@@ -45,7 +45,6 @@ function [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsi
 %
 % .. Author: - Ronan Fleming 2016
 
-
 if ~exist('printLevel','var')
     printLevel=1;
 end

@@ -1,18 +1,18 @@
 function [minLeakMetBool, minLeakRxnBool, minSiphonMetBool, minSiphonRxnBool, leakY, siphonY, statp, statn] = findMinimalLeakageModeMet(model, metBool, rxnBool, modelBoundsFlag, params, printLevel)
 % Solves the problem
-% min `||v||_0 + ||y||_0`
-% s.t. `Sv - y = 0`,
-% `l <= v <= u`  (either `l(rxnBool) > 0` or `u(rxnBool) < 0`)
+% :math:`min ||v||_0 + ||y||_0`
+% s.t. :math:`Sv - y = 0`,
+% :math:`l <= v <= u`  (either `l(rxnBool) > 0` or `u(rxnBool) < 0`)
 %
 % with either
-% `0 <= y` (semipositive net stoichiometry)
+% :math:`0 <= y` (semipositive net stoichiometry)
 % or
-% `y <= 0` (seminegative net stoichiometry)
+% :math:`y <= 0` (seminegative net stoichiometry)
 %
 % and
-% `1 <= y(metBool)` (semipositive net stoichiometry)
+% :math:`1 <= y(metBool)` (semipositive net stoichiometry)
 % or
-% `y(metBool) <= 1` (seminegative net stoichiometry)
+% :math:`y(metBool) <= 1` (seminegative net stoichiometry)
 %
 % USAGE:
 %

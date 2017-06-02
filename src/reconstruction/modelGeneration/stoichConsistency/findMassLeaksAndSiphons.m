@@ -2,20 +2,20 @@ function [leakMetBool, leakRxnBool, siphonMetBool, siphonRxnBool, leakY, siphonY
 % Finds the metabolites in a network that either leak mass or act as a
 % siphon for mass, with (default) or without the bounds on a model.
 % The approach is to solve the problem:
-% max   `||y||_0`
-% s.t.  `Sv - y = 0`
+% :math:`max ||y||_0`
+% s.t.  :math:`Sv - y = 0`
 % with either
 %
-% `l <= v <= u`
+% :math:`l <= v <= u`
 % or
 %
-% `-inf <= v <= inf`
+% :math:`-inf <= v <= inf`
 % and with either
 %
-% `0 <= y <= inf` (semipositive net stoichiometry = leak)
+% :math:`0 <= y <= inf` (semipositive net stoichiometry = leak)
 % or
 %
-% `-inf <= y <= 0` (seminegative net stoichiometry = siphon)
+% :math:`-inf <= y <= 0` (seminegative net stoichiometry = siphon)
 %
 % If there are any zero rows of `S`, then the corresponding entry in y is
 % then set to zero.
