@@ -50,7 +50,6 @@ nRxns = length(modelSBML.reaction);
 
 if ~isfield(modelSBML,'fbc_version')
     warning('The current version of the COBRA toolbox only supports SBML-FBCv2 files');
-
 end
 
 %% Construct initial metabolite list

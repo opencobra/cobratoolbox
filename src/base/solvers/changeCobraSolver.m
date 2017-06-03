@@ -379,7 +379,7 @@ if solverOK
         % check if TOMLAB is on the PATH
         tomlabOnPath = ~isempty(regexp(lower(path), ['(tomlab)'], 'once'));
 
-        if tomlabOnPath && ~isempty(TOMLAB_PATH)
+        if tomlabOnPath && ~isempty(TOMLAB_PATH) && 0 %removing from path does not work and seems not like a good idea anyway - Ronan
             rmpath(genpath(strrep(TOMLAB_PATH, '\\', '\')));
             if printLevel > 0
                 fprintf(['\n > Tomlab interface removed from MATLAB path.\n']);
@@ -390,7 +390,7 @@ if solverOK
         gurobiOnPath = ~isempty(regexp(lower(path), ['(gurobi)\w+'], 'once'));
 
         % remove the GUROBI interface
-        if gurobiOnPath && ~isempty(GUROBI_PATH)
+        if gurobiOnPath && ~isempty(GUROBI_PATH) && 0 %removing from path does not work and seems not like a good idea anyway - Ronan
             rmpath(strrep(GUROBI_PATH, '\\', '\'));
             if printLevel > 0
                 fprintf(['\n > GUROBI interface removed from MATLAB path.\n']);
@@ -401,7 +401,7 @@ if solverOK
         cplexOnPath = ~isempty(regexp(lower(path), ['(cplex_studio)'], 'once'));
 
         % remove the CPLEX interface
-        if cplexOnPath && ~isempty(ILOG_CPLEX_PATH)
+        if cplexOnPath && ~isempty(ILOG_CPLEX_PATH) && 0 %removing from path does not work and seems not like a good idea anyway - Ronan
             rmpath(strrep(ILOG_CPLEX_PATH, '\\', '\'));
             if printLevel > 0
                 fprintf(['\n > ILOG CPLEX interface removed from MATLAB path.\n']);
@@ -412,7 +412,7 @@ if solverOK
         mosekOnPath = ~isempty(regexp(lower(path), ['(mosek)'], 'once'));
 
         % remove the MOSEK interface
-        if mosekOnPath && ~isempty(MOSEK_PATH)
+        if mosekOnPath && ~isempty(MOSEK_PATH) && 0 %removing from path does not work and seems not like a good idea anyway - Ronan
             rmpath(genpath(strrep(MOSEK_PATH, '\\', '\')));
             if printLevel > 0
                 fprintf(['\n > MOSEK interface removed from MATLAB path.\n']);
