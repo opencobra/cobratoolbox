@@ -194,7 +194,8 @@ function subDir = generateSolverSubDirectory(solverName)
 
         % check for 32-bit
         if ~isempty(strfind(computer('arch'), '64'))
-            subDir = [filesep, osPath, filesep, 'matlab'];
+            subDir = [filesep, 'matlab'];
+            %subDir = [filesep, osPath, filesep, 'matlab'];
         end
     end
 

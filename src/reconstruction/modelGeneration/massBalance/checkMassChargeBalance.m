@@ -33,7 +33,7 @@ function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, El
 %    imBalancedRxnBool:      boolean vector indicating imbalanced reactions (including exchange reactions!)
 %    Elements:               `nElement` x 1 cell array of element abbreviations checked
 %    missingFormulaeBool:    `nMet` x 1 boolean vector indicating metabolites without formulae
-%    balancedMetBool:        boolean vector indicating metabolites involved in balanced reactions
+%    balancedMetBool:        boolean vector indicating metabolites exclusively involved in balanced reactions
 %
 % .. Authors:
 %       - Ines Thiele 12/09
@@ -81,7 +81,7 @@ end
 %ignore mass imbalance of exchange reactions if the internal reactions have
 %been identified at the input
 if any(~model.SIntRxnBool)
-    massImbalance(~model.SIntRxnBool,:)=0;
+    massImbalance(~model.SIntRxnBool,:)=1;
 end
 
 E=full(E);
@@ -236,6 +236,9 @@ if isfield(model, 'metCharges')
     imBalancedRxnBool = imBalancedRxnBool | imBalancedCharge ~= 0;
 end
 
+if isfield(model,'SIntRxnBool')
+    imBalancedRxnBool = imBalancedRxnBool | ~model.SIntRxnBool;
+end
+
 %nonzero rows corresponding to completely mass balanced reactions
-%balancedMetBool = (sum(abs(model.S(:,~imBalancedRxnBool)),2)~=0)
-balancedMetBool = getCorrespondingCols(model.S,true(nMet,1),~imBalancedRxnBool,'exclusive');
+balancedMetBool = getCorrespondingRows(model.S,true(nMet,1),~imBalancedRxnBool,'exclusive');

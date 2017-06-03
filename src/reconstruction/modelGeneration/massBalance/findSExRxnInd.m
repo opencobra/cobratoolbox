@@ -118,8 +118,18 @@ for n=1:nRxn
     end
 end
 
-% models with typical COBRA abbreviations - heuristic
-model.ExchRxnBool=strncmp('EX_', model.rxns, 3)==1 | strncmp('Exch_', model.rxns, 5)==1 | strncmp('Ex_', model.rxns, 5)==1 | biomassBool;
+% models with typical HMR subsystems - heuristic
+if isfield(model,'subSystems')
+    model.ExchRxnBool=strcmp('Exchange reactions',model.subSystems) | strcmp('Artificial reactions',model.subSystems) | strcmp('Pool reactions',model.subSystems);
+    if isfield(model,'rxnComps')
+        model.ExchRxnBool=model.ExchRxnBool | strcmp('x',model.rxnComps);
+    end
+    % models with typical COBRA abbreviations - heuristic
+    model.ExchRxnBool=strncmp('EX_', model.rxns, 3)==1 | strncmp('Exch_', model.rxns, 5)==1 | strncmp('Ex_', model.rxns, 5)==1 | biomassBool | model.ExchRxnBool;
+else
+    % models with typical COBRA abbreviations - heuristic
+    model.ExchRxnBool=strncmp('EX_', model.rxns, 3)==1 | strncmp('Exch_', model.rxns, 5)==1 | strncmp('Ex_', model.rxns, 5)==1 | biomassBool;
+end
 %demand reactions going out of model
 model.DMRxnBool=strncmp('DM_', model.rxns, 3)==1;
 %sink reactions going into or out of model

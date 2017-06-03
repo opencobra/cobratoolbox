@@ -26,23 +26,23 @@ function [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsi
 %    epsilon:                       (`feasTol*100`) min nonzero mass, 1/epsilon = max mass
 %
 % OUTPUT:
-%    SConsistentMetBool:            `m` x 1 boolean vector indicating consistent `mets`
-%    SConsistentRxnBool:            `n` x 1 boolean vector indicating consistent `rxns`
-%    SInConsistentMetBool:          `m` x 1 boolean vector indicating inconsistent `mets`
-%    SInConsistentRxnBool:          `n` x 1 boolean vector indicating inconsistent `rxns`
-%    unknownSConsistencyMetBool:    `m` x 1 boolean vector indicating unknown consistent `mets` (all zeros when algorithm converged perfectly!)
-%    unknownSConsistencyRxnBool:    `n` x 1 boolean vector indicating unknown consistent `rxns` (all zeros when algorithm converged perfectly!)
-%     model:                        structure with fields
-%
-%                                     * .SConsistentMetBool - `m` x 1 boolean vector indicating consistent `mets`
-%                                     * .SConsistentRxnBool - `n` x 1 boolean vector indicating consistent `rxns`
-%                                     * .SInConsistentMetBool - `m` x 1 boolean vector indicating inconsistent `mets`
-%                                     * .SInConsistentRxnBool - `n` x 1 boolean vector indicating inconsistent `rxns`
-%                                     * .unknownSConsistencyMetBool - `m` x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)
-%                                     * .unknownSConsistencyRxnBool - `n` x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
-%                                     * .SIntMetBool - `m` x 1 boolean of metabolites heuristically though to be involved in mass balanced reactions
-%                                     * .SIntRxnBool - `n` x 1 boolean of reactions heuristically though to be mass balanced
-%
+% SConsistentMetBool            m x 1 boolean vector indicating consistent mets
+% SConsistentRxnBool            n x 1 boolean vector indicating consistent rxns
+% SInConsistentMetBool          m x 1 boolean vector indicating inconsistent mets
+% SInConsistentRxnBool          n x 1 boolean vector indicating inconsistent rxns
+% unknownSConsistencyMetBool    m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)
+% unknownSConsistencyRxnBool    n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
+% model
+%   .SConsistentMetBool                 m x 1 boolean vector indicating consistent mets
+%   .SConsistentRxnBool                 n x 1 boolean vector indicating consistent rxns
+%   .SInConsistentMetBool               m x 1 boolean vector indicating inconsistent mets
+%   .SInConsistentRxnBool               n x 1 boolean vector indicating inconsistent rxns
+%   .metUnknownInconsistentRemoveBool   m x 1 boolean vector indicating removed mets
+%   .rxnUnknownInconsistentRemoveBool   n x 1 boolean vector indicating removed rxns
+%   .unknownSConsistencyMetBool         m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)
+%   .unknownSConsistencyRxnBool         n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
+%   .SIntMetBool                        m x 1 boolean of metabolites heuristically though to be involved in mass balanced reactions
+%   .SIntRxnBool                        n x 1 boolean of reactions heuristically though to be mass balanced
 % .. Author: - Ronan Fleming 2016
 
 if ~exist('printLevel','var')
@@ -66,7 +66,7 @@ finalCheckMethod='findMassLeaksAndSiphons'; %works with smaller leakParams.epsil
 
 removalStrategy='imBalanced';
 %removalStrategy='isolatedInconsistent';
-removalStrategy='highCardinalityReactions';
+%removalStrategy='highCardinalityReactions';
 
 minCardRelaxParams.epsilon=epsilon;
 minCardRelaxParams.eta=feasTol*100;
@@ -113,6 +113,10 @@ if ~isfield(model,'SIntRxnBool')  || ~isfield(model,'SIntMetBool')
     %     Demand reactions
     %     Sink reactions
     model = findSExRxnInd(model,[],printLevel-1);
+else
+    if length(model.SIntMetBool)~=size(model.S,1) || length(model.SIntRxnBool)~=size(model.S,2)
+        model = findSExRxnInd(model,[],printLevel-1);
+    end
 end
 
 if printLevel>1
@@ -132,7 +136,7 @@ end
 if massBalanceCheck
     if ~isfield(model,'balancedMetBool') || ~isfield(model,'balancedRxnBool')
         printLevelcheckMassChargeBalance=0;  % -1; % print problem reactions to a file
-
+        
         if exist('fileName','var')
             fileNameBase=[fileName datestr(now,30) '_'];
             %mass and charge balance can be checked by looking at formulas
@@ -148,6 +152,20 @@ if massBalanceCheck
             end
         else
             if isfield(model,'metFormulas')
+                [massImbalance,imBalancedMass,imBalancedCharge,imBalancedRxnBool,Elements,missingFormulaeBool,balancedMetBool]...
+                    = checkMassChargeBalance(model,printLevelcheckMassChargeBalance);
+                model.balancedRxnBool=~imBalancedRxnBool;
+                model.balancedMetBool=balancedMetBool;
+                model.Elements=Elements;
+                model.missingFormulaeBool=missingFormulaeBool;
+            else
+                error('No model.metFormulas');
+            end
+        end
+    else
+        if length(model.balancedMetBool)~=size(model.S,1) || length(model.balancedRxnBool)~=size(model.S,2)
+            if isfield(model,'metFormulas')
+                printLevelcheckMassChargeBalance=0;
                 [massImbalance,imBalancedMass,imBalancedCharge,imBalancedRxnBool,Elements,missingFormulaeBool,balancedMetBool]...
                     = checkMassChargeBalance(model,printLevelcheckMassChargeBalance);
                 model.balancedRxnBool=~imBalancedRxnBool;
@@ -230,6 +248,10 @@ model.SConsistentRxnBool=false(nRxn,1);
 model.unknownSConsistencyMetBool=~model.SConsistentMetBool & ~model.SInConsistentMetBool;
 model.unknownSConsistencyRxnBool=~model.SConsistentRxnBool & ~model.SInConsistentRxnBool;
 
+%initialise vectors for removal
+model.rxnUnknownInconsistentRemoveBool=  false(nRxn,1);
+model.metUnknownInconsistentRemoveBool=  false(nMet,1);
+    
 %number of metabolites involved in each reaction, used to kick out
 %inconsistent reactions
 nMetsPerRxn=sum(model.S~=0,1)';
@@ -382,13 +404,6 @@ while iterateCardinalityOpt>0
                     %deemed inconsistent also
                     metRemoveBool = getCorrespondingRows(model.S,true(nMet,1),rxnRemoveBool,'exclusive');
 
-                    %extend inconsistent reaction boolean vector
-                    model.SInConsistentRxnBool = model.SInConsistentRxnBool | rxnRemoveBool;
-                    model.SInConsistentMetBool = model.SInConsistentMetBool | metRemoveBool;
-
-                    %reduce unknown part
-                    model.unknownSConsistencyMetBool=~model.SConsistentMetBool & ~model.SInConsistentMetBool;
-                    model.unknownSConsistencyRxnBool=~model.SConsistentRxnBool & ~model.SInConsistentRxnBool;
                     if printLevel>1
                         fprintf('%6u\t%6u\t%s%u%s\n',nnz(metRemoveBool), nnz(rxnRemoveBool), ' removed heuristically non-exchange reactions, each involving ',maxMetsPerRxn, ' metabolites.')
                         if printLevel >1
@@ -447,27 +462,38 @@ while iterateCardinalityOpt>0
             %deemed inconsistent also
             metRemoveBool = getCorrespondingRows(model.S,true(nMet,1),rxnRemoveBool,'exclusive');
 
-            %extend inconsistent reaction boolean vector
-            model.SInConsistentRxnBool = model.SInConsistentRxnBool | rxnRemoveBool;
-            model.SInConsistentMetBool = model.SInConsistentMetBool | metRemoveBool;
-
-            %reduce unknown part
-            model.unknownSConsistencyMetBool=~model.SConsistentMetBool & ~model.SInConsistentMetBool;
-            model.unknownSConsistencyRxnBool=~model.SConsistentRxnBool & ~model.SInConsistentRxnBool;
+%             %extend inconsistent reaction boolean vector
+%             model.SInConsistentRxnBool = model.SInConsistentRxnBool | rxnRemoveBool;
+%             model.SInConsistentMetBool = model.SInConsistentMetBool | metRemoveBool;
+% 
+%             %reduce unknown part
+%             model.unknownSConsistencyMetBool=~model.SConsistentMetBool & ~model.SInConsistentMetBool;
+%             model.unknownSConsistencyRxnBool=~model.SConsistentRxnBool & ~model.SInConsistentRxnBool;
         case 'imBalanced'
             rxnRemoveBool=model.unknownSConsistencyRxnBool & model.SIntRxnBool & imBalancedRxnBool;
             %metabolites exclusively involved in imbalanced reactions
             metRemoveBool = getCorrespondingRows(model.S,true(nMet,1),rxnRemoveBool,'exclusive');
 
-            %extend inconsistent reaction boolean vector
-            model.SInConsistentRxnBool = model.SInConsistentRxnBool | rxnRemoveBool;
-            model.SInConsistentMetBool = model.SInConsistentMetBool | metRemoveBool;
-
-            %reduce unknown part
-            model.unknownSConsistencyMetBool=~model.SConsistentMetBool & ~model.SInConsistentMetBool;
-            model.unknownSConsistencyRxnBool=~model.SConsistentRxnBool & ~model.SInConsistentRxnBool;
+%             %extend inconsistent reaction boolean vector
+%             model.SInConsistentRxnBool = model.SInConsistentRxnBool | rxnRemoveBool;
+%             model.SInConsistentMetBool = model.SInConsistentMetBool | metRemoveBool;
+% 
+%             %reduce unknown part
+%             model.unknownSConsistencyMetBool=~model.SConsistentMetBool & ~model.SInConsistentMetBool;
+%             model.unknownSConsistencyRxnBool=~model.SConsistentRxnBool & ~model.SInConsistentRxnBool;
     end
-
+    
+    model.rxnUnknownInconsistentRemoveBool=  model.rxnUnknownInconsistentRemoveBool | rxnRemoveBool;
+    model.metUnknownInconsistentRemoveBool=  model.metUnknownInconsistentRemoveBool | metRemoveBool;
+    
+    %extend inconsistent reaction boolean vector
+    model.SInConsistentRxnBool = model.SInConsistentRxnBool | rxnRemoveBool;
+    model.SInConsistentMetBool = model.SInConsistentMetBool | metRemoveBool;
+    
+    %reduce unknown part
+    model.unknownSConsistencyMetBool=~model.SConsistentMetBool & ~model.SInConsistentMetBool;
+    model.unknownSConsistencyRxnBool=~model.SConsistentRxnBool & ~model.SInConsistentRxnBool;
+                    
     if any(metRemoveBool) | any(rxnRemoveBool)
         %print out reactions and metabolites being removed
         if printLevel>1
@@ -497,6 +523,9 @@ while iterateCardinalityOpt>0
 
     %check if there has been any progress
     if lastUnkownConsistencyMetBool==nnz(model.unknownSConsistencyMetBool) && lastUnkownConsistencyRxnBool==nnz(model.unknownSConsistencyRxnBool)
+        %any remaining unknowns are considered inconsistent
+        model.SInConsistentRxnBool = model.SInConsistentRxnBool | model.unknownSConsistencyRxnBool;
+        model.SInConsistentMetBool = model.SInConsistentMetBool | model.unknownSConsistencyMetBool;
         break
     else
         lastUnkownConsistencyMetBool=nnz(model.unknownSConsistencyMetBool);

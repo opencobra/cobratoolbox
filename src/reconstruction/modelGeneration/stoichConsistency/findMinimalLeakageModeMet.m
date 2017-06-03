@@ -1,7 +1,8 @@
 function [minLeakMetBool, minLeakRxnBool, minSiphonMetBool, minSiphonRxnBool, leakY, siphonY, statp, statn] = findMinimalLeakageModeMet(model, metBool, rxnBool, modelBoundsFlag, params, printLevel)
-% Solves the problem
+% Finds a minimal set of leak (or siphon) metabolites and the corresponding
+% minimal set of reactions involved. Test metabolites in metBool.
 %
-% .. math::
+% Solve the problem
 %
 %    min  ~& ||v||_0 + ||y||_0 \\
 %    s.t. ~& Sv - y = 0, \\
@@ -215,7 +216,7 @@ for m=1:mlt
                 end
             case 1
                 Vp(:,z)          = solution.x(1:nlt,1);
-                minLeakRxnBool(:,z) = Vp(:,z)>=params.epsilon;
+                minLeakRxnBool(:,z) = abs(Vp(:,z))>=params.epsilon;
                 if findSparseRxnSet
                     siphonY(:,z)          = solution.z(1:mlt,1);
                 else
@@ -300,7 +301,7 @@ for m=1:mlt
                     end
                 case 1
                     Vn(:,z)            = solution.x(1:nlt,1);
-                    minSiphonRxnBool(:,z) = Vn(:,z)>=params.epsilon;
+                    minSiphonRxnBool(:,z) = abs(Vn(:,z))>=params.epsilon;
                     if findSparseRxnSet
                         leakY(:,z)          = solution.z(1:mlt,1);
                     else
