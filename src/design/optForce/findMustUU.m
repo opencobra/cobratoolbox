@@ -357,7 +357,7 @@ end
 
 % print info into an excel file if required by the user
 if printExcel
-    if cont>0
+    if cont > 0
         currentFolder = pwd;
         cd(outputFolder);
         must = cell(size(mustUU, 1), 1);
@@ -434,7 +434,7 @@ if  isempty(constrOpt)
     sel_ic_b = zeros(length(model.rxns), 1);
 else
     %get indices of rxns
-    [~, ind_a, ind_b]=intersect(model.rxns, constrOpt.rxnList);
+    [~, ind_a, ind_b] = intersect(model.rxns, constrOpt.rxnList);
     aux=constrOpt.values(ind_b);
     aux2=constrOpt.sense(ind_b);
     %sort for rxn index
@@ -452,7 +452,7 @@ if isempty(excludedRxns)
     sel_excludedRxns = zeros(length(model.rxns), 1);
 else
     %get indices of rxns
-    [~, ind_a, ~]=intersect(model.rxns, excludedRxns);
+    [~, ind_a, ~] = intersect(model.rxns, excludedRxns);
     %sort for rxn index
     sorted=sort(ind_a);
     ind_excludedRxns = sorted;

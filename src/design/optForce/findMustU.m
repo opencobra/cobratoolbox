@@ -290,24 +290,24 @@ if ~exist(outputFolder, 'dir')
 end
 
 %number of reactions
-n_rxns=length(model.rxns);
+n_rxns = length(model.rxns);
 
 % initilize sets can, must and empty arrays to store values.
-can=zeros(n_rxns,1);
-can(minFluxesW~=0)=1;
-can(maxFluxesW~=0)=1;
-must=zeros(n_rxns,1);
-mustU=zeros(n_rxns,1);
-vmin=zeros(n_rxns,1);
-vmax=zeros(n_rxns,1);
+can = zeros(n_rxns, 1);
+can(minFluxesW ~= 0) = 1;
+can(maxFluxesW ~= 0) = 1;
+must = zeros(n_rxns, 1);
+mustU = zeros(n_rxns, 1);
+vmin = zeros(n_rxns, 1);
+vmax = zeros(n_rxns, 1);
  
 found = 0; 
 %while a solution is still found
 while 1
     % create bilevel problem
-    bilevelMILPproblem=buildBilevelMILPproblemForFindMustU(model,can,must,maxFluxesW,constrOpt);
+    bilevelMILPproblem = buildBilevelMILPproblemForFindMustU(model, can, must, maxFluxesW, constrOpt);
     % solve problem
-    MustUSol = solveCobraMILP(bilevelMILPproblem,'printLevel',1);
+    MustUSol = solveCobraMILP(bilevelMILPproblem, 'printLevel', 1);
     
     if MustUSol.stat~=1
         break;
@@ -315,16 +315,16 @@ while 1
         % if there is a solution
         found = 1; 
         %find which reaction was found
-        pos_actives=find(MustUSol.int);
+        pos_actives = find(MustUSol.int);
         %update must sets
-        must(pos_actives)=1;
-        mustU(pos_actives)=1;
+        must(pos_actives) = 1;
+        mustU(pos_actives) = 1;
         %find minimum value for the reaction found
-        vmin(pos_actives)=MustUSol.cont(pos_actives);
+        vmin(pos_actives) = MustUSol.cont(pos_actives);
         %find maximum value for the reaction found
-        model2=changeObjective(model,model.rxns(pos_actives));
-        fba=optimizeCbModel(model2);
-        vmax(pos_actives)=fba.f;
+        model2 = changeObjective(model, model.rxns(pos_actives));
+        fba = optimizeCbModel(model2);
+        vmax(pos_actives) = fba.f;
     end
 end
 
@@ -339,8 +339,8 @@ if found
     if printReport; fprintf(freport, '\na MustU set was found\n'); end;
     if verbose; fprintf('a MustU set was found\n'); end;
     %find mustU sets
-    posMustU=find(mustU);
-    mustUSet=model.rxns(posMustU); 
+    posMustU = find(mustU);
+    mustUSet = model.rxns(posMustU); 
 else
     %if no solution is found
     if printReport; fprintf(freport, '\na MustU set was not found\n'); end;
@@ -355,8 +355,8 @@ if printExcel
     if found
         currentFolder = pwd;
         cd(outputFolder);
-        Info=[{'Reactions'},{'Min Flux in Wild-type strain'},{'Max Flux in Wild-type strain'},{'Min Flux in Mutant strain'},{'Max Flux in Mutant strain'}];
-        Info=[Info;[model.rxns(posMustU),num2cell(minFluxesW(posMustU)),num2cell(maxFluxesW(posMustU)), num2cell(vmin(posMustU)) ,num2cell(vmax(posMustU))]];
+        Info = [{'Reactions'},{'Min Flux in Wild-type strain'},{'Max Flux in Wild-type strain'},{'Min Flux in Mutant strain'},{'Max Flux in Mutant strain'}];
+        Info = [Info; [model.rxns(posMustU), num2cell(minFluxesW(posMustU)), num2cell(maxFluxesW(posMustU)), num2cell(vmin(posMustU)), num2cell(vmax(posMustU))]];
         xlswrite([outputFileName '_Info'],Info);
         xlswrite(outputFileName, mustUSet);
         cd(currentFolder);
@@ -374,9 +374,9 @@ if printText
         currentFolder = pwd;
         cd(outputFolder);
         f = fopen([outputFileName '_Info.txt'], 'w');
-        fprintf(f,'Reactions\tMin Flux in Wild-type strain\tMax Flux in Wild-type strain\tMin Flux in Mutant strain\tMax Flux in Mutant strain\n');
+        fprintf(f, 'Reactions\tMin Flux in Wild-type strain\tMax Flux in Wild-type strain\tMin Flux in Mutant strain\tMax Flux in Mutant strain\n');
         for i=1:length(posMustU)
-            fprintf(f,'%s\t%4.4f\t%4.4f\t%4.4f\t%4.4f\n',model.rxns{posMustU(i)},minFluxesW(posMustU(i)),maxFluxesW(posMustU(i)),vmin(posMustU(i)),vmax(posMustU(i)));
+            fprintf(f, '%s\t%4.4f\t%4.4f\t%4.4f\t%4.4f\n', model.rxns{posMustU(i)}, minFluxesW(posMustU(i)), maxFluxesW(posMustU(i)), vmin(posMustU(i)), vmax(posMustU(i)));
         end
         fclose(f);
         
@@ -404,49 +404,49 @@ cd(workingPath);
 
 end
 
-function bilevelMILPproblem=buildBilevelMILPproblemForFindMustU(model,can,must,maxFluxesW,constrOpt)
+function bilevelMILPproblem = buildBilevelMILPproblemForFindMustU(model, can, must, maxFluxesW, constrOpt)
 
-if nargin<5 || isempty(constrOpt)
+if nargin < 5 || isempty(constrOpt)
     ind_ic = [];
     b_ic = [];
     csense_ic = [];
-    sel_ic=zeros(length(model.rxns),1);
-    sel_ic_b=zeros(length(model.rxns),1);
+    sel_ic = zeros(length(model.rxns), 1);
+    sel_ic_b = zeros(length(model.rxns), 1);
 else
     %get indices of rxns
-    [~,ind_a,ind_b]=intersect(model.rxns,constrOpt.rxnList);
-    aux=constrOpt.values(ind_b);
-    aux2=constrOpt.sense(ind_b);
+    [~, ind_a, ind_b] = intersect(model.rxns, constrOpt.rxnList);
+    aux = constrOpt.values(ind_b);
+    aux2 = constrOpt.sense(ind_b);
     %sort for rxn index
-    [sorted,ind_sorted]=sort(ind_a);
-    ind_ic=sorted;
-    b_ic=aux(ind_sorted);
-    csense_ic=aux2(ind_sorted);
-    sel_ic=zeros(length(model.rxns),1);
-    sel_ic(ind_ic)=1;
-    sel_ic_b=zeros(length(model.rxns),1);
-    sel_ic_b(ind_ic)=b_ic;
+    [sorted, ind_sorted] = sort(ind_a);
+    ind_ic = sorted;
+    b_ic = aux(ind_sorted);
+    csense_ic = aux2(ind_sorted);
+    sel_ic = zeros(length(model.rxns), 1);
+    sel_ic(ind_ic) = 1;
+    sel_ic_b = zeros(length(model.rxns), 1);
+    sel_ic_b(ind_ic) = b_ic;
 end
 
 %convert inputs
-S=model.S;
-ub=model.ub;
-lb=model.lb;
+S = model.S;
+ub = model.ub;
+lb = model.lb;
 % Dimensions
-[n_mets,n_rxns]=size(S);
+[n_mets, n_rxns] = size(S);
 
 % indices of not contrained variables
-ind_nic=setdiff(1:n_rxns,ind_ic);
+ind_nic = setdiff(1:n_rxns, ind_ic);
 
 % boolean vector for not constrained variables
-sel_nic=zeros(n_rxns,1);
-sel_nic(ind_nic)=1;
+sel_nic = zeros(n_rxns, 1);
+sel_nic(ind_nic) = 1;
 % boolean vector for integer variables
-selRxns=ones(size(model.rxns));
+selRxns = ones(size(model.rxns));
 sel_int = selRxns;
 % bolean vector for reactions in can set and not in must set and not in
 % constrained set of reactions
-sel_c_nm_nc=can & ~must & sel_nic;
+sel_c_nm_nc = can & ~must & sel_nic;
 
 % Number of integer variables
 n_int = sum(sel_int);
@@ -461,137 +461,137 @@ Iic=selMatrix(sel_ic);
 Inic=selMatrix(sel_nic);
 
 % Set variable types
-vartype_bl(1:7*n_rxns+n_int+n_mets+1) = 'C';
-vartype_bl(n_rxns+1:n_rxns+n_int) = 'B';
+vartype_bl(1: 7 * n_rxns + n_int + n_mets + 1) = 'C';
+vartype_bl(n_rxns + 1:n_rxns + n_int) = 'B';
 
-H=1000;
-bigM=1000;
+H = 1000;
+bigM = 1000;
 
 %   v(j)      y(j)      mu(j)     w(j)    deltam(j) deltap(j)  theta(j) thetap(j) labmda(i)    z
 %|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
 %   n         n_int      n         n         n         n          n         n         m        1
 
 % Set upper/lower bounds
-lb_bl = [lb; zeros(6*n_rxns+n_int+n_mets+1,1)]; %v(j)
-ub_bl = [ub; H*ones(6*n_rxns+n_int+n_mets+1,1)]; %v(j)
-lb_bl(n_rxns+n_int+1:n_rxns+n_int+n_rxns)=-1000; %mu(j)
-lb_bl(2*n_rxns+n_int+1:2*n_rxns+n_int+n_rxns)=-1000; %w(j)
-lb_bl(7*n_rxns+n_int+1:7*n_rxns+n_int+n_mets)=-1000; %lambda(i)
-lb_bl(7*n_rxns+n_int+n_mets+1)=-1000; %z
+lb_bl = [lb; zeros(6 * n_rxns + n_int + n_mets + 1, 1)]; %v(j)
+ub_bl = [ub; H * ones(6 * n_rxns + n_int + n_mets + 1, 1)]; %v(j)
+lb_bl(n_rxns + n_int + 1:n_rxns + n_int + n_rxns) = -1000; %mu(j)
+lb_bl(2 * n_rxns + n_int + 1:2 * n_rxns + n_int + n_rxns) = -1000; %w(j)
+lb_bl(7 * n_rxns + n_int + 1:7 * n_rxns + n_int + n_mets) = -1000; %lambda(i)
+lb_bl(7 * n_rxns + n_int + n_mets + 1) = -1000; %z
 
 %PRIMAL PROBLEM
 %1) primal1 (n_mets equations)
 %   S*v=0
-A_p=[S zeros(n_mets,n_rxns*6+n_int+n_mets+1)];
+A_p = [S zeros(n_mets, n_rxns * 6 + n_int + n_mets + 1)];
 b_p = zeros(n_mets,1);
 csense_p(1:n_mets) = 'E';
 
 %2) primal 2, 3 and 7 (n_ic equations)
 %   v_ic = b_ic
-if n_ic>0
-    A_p=[A_p; Iic zeros(n_ic,n_rxns*6+n_int+n_mets+1)];
-    b_p =[b_p; b_ic'];
-    csense_p(end+1:end+n_ic) = csense_ic;
+if n_ic > 0
+    A_p = [A_p; Iic zeros(n_ic, n_rxns * 6 + n_int + n_mets + 1)];
+    b_p = [b_p; b_ic'];
+    csense_p(end + 1:end + n_ic) = csense_ic;
 end
 
 %3) primal 5 (n_ic equations)
 %   -v(j) >= -ub(j)
-A_p=[A_p; -Inic zeros(n_nic,n_rxns*6+n_int+n_mets+1)];
-b_p =[b_p; -ub(ind_nic)];
-csense_p(end+1:end+n_nic) = 'G';
+A_p = [A_p; -Inic zeros(n_nic, n_rxns * 6 + n_int + n_mets + 1)];
+b_p = [b_p; -ub(ind_nic)];
+csense_p(end + 1:end + n_nic) = 'G';
 %
 %4) primal 6 (n_ic equations)
 %   v(j) >= lb(j)
-A_p=[A_p; Inic zeros(n_nic,n_rxns*6+n_int+n_mets+1)];
-b_p =[b_p; lb(ind_nic)];
-csense_p(end+1:end+n_nic) = 'G';
+A_p = [A_p; Inic zeros(n_nic, n_rxns * 6 + n_int + n_mets + 1)];
+b_p = [b_p; lb(ind_nic)];
+csense_p(end + 1:end + n_nic) = 'G';
 
 %DUAL PROBLEM
 %1) dualcon1 (n_nic equations)
-%   sum_i(lambda(i)*S(i,j)) + deltam(j) -deltap(j) - y(j) =0
-A_d=[];
-b_d =[];
-A_d=[A_d; zeros(n_nic,n_rxns) -Inic zeros(n_nic,n_rxns) zeros(n_nic,n_rxns) Inic -Inic zeros(n_nic,n_rxns) zeros(n_nic,n_rxns) S(:,ind_nic)' zeros(n_nic,1)];
-b_d =[b_d; zeros(n_nic,1)];
+%   sum_i(lambda(i) * S(i,j))  +  deltam(j) -deltap(j) - y(j) =0
+A_d = [];
+b_d = [];
+A_d = [A_d; zeros(n_nic, n_rxns) -Inic zeros(n_nic, n_rxns) zeros(n_nic, n_rxns) Inic -Inic zeros(n_nic, n_rxns) zeros(n_nic, n_rxns) S(:, ind_nic)' zeros(n_nic, 1)];
+b_d = [b_d; zeros(n_nic, 1)];
 csense_d(1:n_nic) = 'E';
 
 %2) dualcon2 (n_ic equations)
-%   sum_i(lambda(i)*S(i,j)) + mu(j) - y(j) =0
-A_d=[A_d; zeros(n_ic,n_rxns) -Iic Iic zeros(n_ic,n_rxns) zeros(n_ic,n_rxns) zeros(n_ic,n_rxns) zeros(n_ic,n_rxns) zeros(n_ic,n_rxns) S(:,ind_ic)' zeros(n_ic,1)];
-b_d =[b_d; zeros(n_ic,1)];
-csense_d(end+1:end+n_ic) = 'E';
+%   sum_i(lambda(i) * S(i,j))  +  mu(j) - y(j) =0
+A_d = [A_d; zeros(n_ic, n_rxns) -Iic Iic zeros(n_ic, n_rxns) zeros(n_ic, n_rxns) zeros(n_ic, n_rxns) zeros(n_ic, n_rxns) zeros(n_ic, n_rxns) S(:, ind_ic)' zeros(n_ic, 1)];
+b_d = [b_d; zeros(n_ic, 1)];
+csense_d(end + 1:end + n_ic) = 'E';
 
 %OUTER PROBLEM
 % bilevel_obj_up (1 equation)
-%z=sum(w(j)-basemax(j)*y(j)) -> z -sum(w(j)) + sum(basemax(j)*y(j)) = 0 for all j in can y not in must and not in
+%z=sum(w(j)-basemax(j) * y(j)) -> z -sum(w(j)) + sum(basemax(j) * y(j)) = 0 for all j in can y not in must and not in
 %contraint_flux
-A_bl=[zeros(1,n_rxns) (maxFluxesW.*sel_c_nm_nc)' zeros(1,n_rxns) -sel_c_nm_nc' zeros(1,4*n_rxns+n_mets) 1];
-b_bl=0;
-csense_bl='E';
+A_bl = [zeros(1, n_rxns) (maxFluxesW.*sel_c_nm_nc)' zeros(1, n_rxns) -sel_c_nm_nc' zeros(1, 4 * n_rxns + n_mets) 1];
+b_bl = 0;
+csense_bl = 'E';
 
 %primal_dual_up (1 equation)
-% sum(w(j)) + sum(b(j)*mu(j))  sum(deltap(j)*UB(j) - deltam(j)*LB(j)) = 0
-A_bl=[A_bl; zeros(1,n_rxns+n_int) -sel_ic_b'  ones(1,n_rxns) -lb'.*sel_nic' ub'.*sel_nic' zeros(1,2*n_rxns+n_mets+1)];
-b_bl=[b_bl; 0];
-csense_bl=[csense_bl, 'E'];
+% sum(w(j))  +  sum(b(j) * mu(j))  sum(deltap(j) * UB(j) - deltam(j) * LB(j)) = 0
+A_bl = [A_bl; zeros(1, n_rxns + n_int) -sel_ic_b'  ones(1, n_rxns) -lb'.* sel_nic' ub'.*sel_nic' zeros(1, 2 * n_rxns + n_mets + 1)];
+b_bl = [b_bl; 0];
+csense_bl = [csense_bl, 'E'];
 
 % bilevelcon0_up (1 equation)
-%sum(w(j)-basemax(j)*y(j))>=0
-A_bl=[A_bl; zeros(1,n_rxns) (-maxFluxesW.*sel_c_nm_nc)' zeros(1,n_rxns) sel_c_nm_nc' zeros(1,4*n_rxns+n_mets+1)];
-b_bl=[b_bl; 0];
-csense_bl=[csense_bl, 'G'];
+%sum(w(j)-basemax(j) * y(j))> = 0
+A_bl = [A_bl; zeros(1, n_rxns) (-maxFluxesW.*sel_c_nm_nc)' zeros(1, n_rxns) sel_c_nm_nc' zeros(1, 4 * n_rxns + n_mets + 1)];
+b_bl = [b_bl; 0];
+csense_bl = [csense_bl, 'G'];
 
 % bilevelcon1 (j equations)
 %w(j) - bigM*y(j) <= 0
-A_bl=[A_bl; zeros(n_rxns,n_rxns) -bigM*speye(n_int) zeros(n_rxns,n_rxns) speye(n_rxns) zeros(n_rxns,4*n_rxns+n_mets+1) ];
-b_bl=[b_bl;zeros(n_rxns,1)];
-csense_bl(end+1:end+n_rxns)='L';
+A_bl = [A_bl; zeros(n_rxns, n_rxns) -bigM * speye(n_int) zeros(n_rxns, n_rxns) speye(n_rxns) zeros(n_rxns, 4 * n_rxns + n_mets + 1) ];
+b_bl = [b_bl;zeros(n_rxns, 1)];
+csense_bl(end + 1:end + n_rxns) = 'L';
 
 % bilevelcon2 (j equations)
-%w(j) + bigM*y(j) >= 0
-A_bl=[A_bl; zeros(n_rxns,n_rxns) bigM*speye(n_rxns) zeros(n_rxns,n_rxns) speye(n_rxns) zeros(n_rxns,4*n_rxns+n_mets+1) ];
-b_bl=[b_bl;zeros(n_rxns,1)];
-csense_bl(end+1:end+n_rxns)='G';
+%w(j) + bigM * y(j) >= 0 
+A_bl = [A_bl; zeros(n_rxns, n_rxns) bigM * speye(n_rxns) zeros(n_rxns, n_rxns) speye(n_rxns) zeros(n_rxns, 4 * n_rxns + n_mets + 1) ];
+b_bl = [b_bl;zeros(n_rxns, 1)];
+csense_bl(end + 1:end + n_rxns) = 'G';
 
 % bilevelcon3 (j equations)
-%w(j) <= v(j) + bigM*(1-y(j))   ->    w(j) - v(j) + bigM*y(j)) <= bigM
-A_bl=[A_bl; -speye(n_rxns) bigM*speye(n_rxns) zeros(n_rxns,n_rxns) speye(n_rxns) zeros(n_rxns,4*n_rxns+n_mets+1) ];
-b_bl=[b_bl;bigM*ones(n_rxns,1)];
-csense_bl(end+1:end+n_rxns)='L';
+%w(j) <= v(j)  +  bigM * (1-y(j))   ->    w(j) - v(j)  +  bigM * y(j)) <= bigM
+A_bl = [A_bl; -speye(n_rxns) bigM * speye(n_rxns) zeros(n_rxns, n_rxns) speye(n_rxns) zeros(n_rxns, 4 * n_rxns + n_mets + 1) ];
+b_bl = [b_bl;bigM * ones(n_rxns, 1)];
+csense_bl(end + 1:end + n_rxns)  =  'L';
 
 % bilevelcon4 (j equations)
-%w(j) >= v(j) - bigM*(1-y(j))   ->    w(j) - v(j) - bigM*y(j)) >= -bigM
-A_bl=[A_bl; -speye(n_rxns) -bigM*speye(n_rxns) zeros(n_rxns,n_rxns) speye(n_rxns) zeros(n_rxns,4*n_rxns+n_mets+1) ];
-b_bl=[b_bl;-bigM*ones(n_rxns,1)];
-csense_bl(end+1:end+n_rxns)='G';
+%w(j) >= v(j) - bigM * (1-y(j))   ->    w(j) - v(j) - bigM * y(j)) >= -bigM
+A_bl = [A_bl; -speye(n_rxns) -bigM * speye(n_rxns) zeros(n_rxns, n_rxns) speye(n_rxns) zeros(n_rxns, 4 * n_rxns + n_mets + 1) ];
+b_bl = [b_bl; -bigM * ones(n_rxns, 1)];
+csense_bl(end + 1:end + n_rxns)  =  'G';
 
 % bilevelcon5 (1 equation)
 %z >= 0.5
-A_bl=[A_bl; zeros(1,7*n_rxns+n_int+n_mets) 1];
-b_bl=[b_bl;0.5];
-csense_bl(end+1)='G';
+A_bl = [A_bl; zeros(1, 7 * n_rxns + n_int + n_mets) 1];
+b_bl = [b_bl; 0.5];
+csense_bl(end + 1)  =  'G';
 
 %must_bin (1 equation)
 % sum(y(j))=1
-A_bl=[A_bl; zeros(1,n_rxns) sel_c_nm_nc' zeros(1,6*n_rxns+n_mets+1) ];
-b_bl=[b_bl; 1];
-csense_bl=[csense_bl, 'E'];
+A_bl = [A_bl; zeros(1, n_rxns) sel_c_nm_nc' zeros(1, 6 * n_rxns + n_mets + 1) ];
+b_bl = [b_bl; 1];
+csense_bl = [csense_bl, 'E'];
 
 %blocked_bin (1 equation)
 % sum(y(j))=1
-A_bl=[A_bl; zeros(1,n_rxns) ones(1,n_int) zeros(1,6*n_rxns+n_mets+1)];
-b_bl=[b_bl; 1];
-csense_bl=[csense_bl, 'E'];
+A_bl = [A_bl; zeros(1, n_rxns) ones(1, n_int) zeros(1, 6 * n_rxns + n_mets + 1)];
+b_bl = [b_bl; 1];
+csense_bl = [csense_bl, 'E'];
 
 %Build bilevel matrices and vectors
-A_bl_up=[A_bl;A_d;A_p];
-b_bl_up=[b_bl;b_d;b_p];
-csense_bl_up=[csense_bl,csense_d,csense_p];
-c_bl_up=zeros(7*n_rxns+n_int+n_mets+1,1); c_bl_up(end)=1;
+A_bl_up = [A_bl; A_d; A_p];
+b_bl_up = [b_bl; b_d; b_p];
+csense_bl_up = [csense_bl, csense_d, csense_p];
+c_bl_up = zeros(7 * n_rxns + n_int + n_mets + 1, 1); c_bl_up(end) = 1;
 
 % Helper arrays for extracting solutions
 sel_cont_sol = 1:n_rxns;
-sel_int_sol = n_rxns+1:n_rxns+n_int;
+sel_int_sol = n_rxns + 1:n_rxns + n_int;
 
 % Construct problem structure
 bilevelMILPproblem.A = A_bl_up;
