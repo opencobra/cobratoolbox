@@ -65,9 +65,20 @@ function saveInputsMustSetsSecondOrder(model, minFluxesW, maxFluxesW, constrOpt,
 
 %% CODE
 %input handling
-if nargin < 6 || isempty(model) || isempty(minFluxesW) || isempty(maxFluxesW)...
-         || isempty(inputFolder)
-    error('OptForce: model, minFluxesW, maxFluxesW and input Folder must be specified when running saveInputsMustSecondOrder')
+if nargin < 6 
+    error('OptForce: All inputs must be specified when running saveInputsMustSecondOrder')
+end
+if isempty(model)
+    error('OptForce: model must be specified when running saveInputsMustFirstOrder')
+end
+if isempty(minFluxesW)
+    error('OptForce: minFluxesW must be specified when running saveInputsMustFirstOrder')
+end
+if isempty(maxFluxesW)
+    error('OptForce: maxFluxesW must be specified when running saveInputsMustFirstOrder')
+end
+if isempty(inputFolder)
+    error('OptForce: inputFolder must be specified when running saveInputsMustFirstOrder')
 end
 
 %Create a temporaty folder for inputs
