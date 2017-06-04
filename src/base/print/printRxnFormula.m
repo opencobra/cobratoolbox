@@ -84,7 +84,7 @@ if ~isfield(model, 'rev')
     end
 end
 
-for i = 1:length(rxnAbbrList);
+for i = 1:length(rxnAbbrList)
 
     rxnAbbr = rxnAbbrList{i};
 
@@ -190,3 +190,8 @@ for i = 1:length(rxnAbbrList);
     formulas{i} = formulaStr;
 end
 formulas = formulas';
+
+% %pass out a character string if only one reaction in the abbreviation list
+% if length(rxnAbbrList)==1
+%     formulas=formulas{1};
+% end
