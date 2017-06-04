@@ -1,0 +1,743 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="MATLAB R2016a"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><title>Sparse Flux Balance Analysis </title><style type="text/css">
+* {margin: 0; padding: 0;}
+body {text-align: start; line-height: 17.234001159668px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Consolas, Inconsolata, Menlo, monospace; font-style: normal; font-size: 14px; font-weight: normal; text-decoration: none; white-space: normal; }
+h1, h2 {font-weight: normal;}
+.content { padding: 30px; }
+
+.S0 { margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S1 { line-height: 26.3999996185303px; min-height: 24px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-size: 22px; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 15px; margin-right: 10px;  }
+.S2 { min-height: 0px; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S3 { line-height: 20.576000213623px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 15px; margin-bottom: 9px; margin-right: 10px;  }
+.S4 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 2px; margin-bottom: 9px; margin-right: 10px;  }
+.S5 { text-align: center; line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 2px; margin-bottom: 9px; margin-right: 10px;  }
+.S6 { min-height: 0px; color: rgb(0, 95, 206); margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S7 { text-decoration: underline; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S8 { min-height: 0px; font-style: italic; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S9 { margin-left: 3px; margin-top: 10px; margin-bottom: 10px; margin-right: 3px;  }
+.S10 { line-height: 15.5926675796509px; min-height: 18px; white-space: nowrap; font-size: 12.6666669845581px; white-space: nowrap; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S11 { line-height: 15.5926685333252px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S12 { line-height: 15.5926685333252px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S13 { line-height: 15.5926685333252px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S14 { line-height: 15.5926685333252px; min-height: 0px; white-space: pre; color: rgb(160, 32, 240); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S15 { line-height: 15.5926685333252px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S16 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 10px; margin-bottom: 9px; margin-right: 10px;  }
+.S17 { line-height: 15.5926685333252px; min-height: 0px; white-space: pre; color: rgb(160, 32, 240); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S18 { margin-left: 3px; margin-top: 10px; margin-bottom: 4px; margin-right: 3px;  }
+.S19 { color: rgb(64, 64, 64); margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S20 { min-height: 0px; font-weight: bold; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S21 { line-height: 20.576000213623px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 9px; margin-right: 10px;  }
+.S22 { line-height: 15.5926685333252px; min-height: 0px; white-space: pre; color: rgb(34, 139, 34); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+
+.LineNodeBlock {margin: 10px 0 10px 0;}
+.LineNodeBlock+.paragraphNode {margin-top: 10px;}
+.lineNode {padding-left: 10px; background-color: #F7F7F7; border-left: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
+.inlineWrapper:first-child .lineNode,.inlineWrapper.outputs+.inlineWrapper .lineNode {padding-top: 5px; border-top: 1px solid #E9E9E9;}
+.inlineWrapper:last-child .lineNode,.inlineWrapper.outputs .lineNode {padding-bottom: 5px; border-bottom: 1px solid #E9E9E9;}
+.lineNode .textBox {white-space: pre;}
+.outputGroup {margin: 2px 0 2px 0; padding: 2px 2px 2px 4px;}
+.outputRegion {}
+.outputParagraph {color: rgba(64, 64, 64, 1); padding: 10px 0 6px 17px; background: white; overflow-x: hidden;}
+.inlineWrapper:last-child .outputParagraph {border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;}
+.outputParagraph:empty {margin: 0;}
+.inlineElement .symbolicElement {margin-top: 1px; margin-bottom: 1px;}
+.embeddedOutputsSymbolicElement .MathEquation {margin-top: 4px; margin-bottom: 4px;}
+.embeddedOutputsSymbolicElement .MathEquation.displaySymbolicElement {margin-left: 15px;}
+.embeddedOutputsSymbolicElement .MathEquation.inlineSymbolicElement {margin-left: 5px;}
+.embeddedOutputsSymbolicElement {overflow-x: auto; overflow-y: hidden;}
+.embeddedOutputsSymbolicElement { overflow: initial !important;}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px; white-space: pre; word-wrap: initial; min-height: 18px; max-height: 250px; overflow: auto;}
+.textElement {padding-top: 3px;}
+.embeddedOutputsTextElement.inlineElement,.embeddedOutputsVariableStringElement.inlineElement {}
+.inlineElement .textElement {}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement { max-height: none !important; overflow: initial !important;}
+.veSpecifier {}
+.veContainer {}
+.veSpecifierBox {height: 400px; width: 500px;}
+.veSpecifier .veTable {padding-top: 3px; padding-bottom: 4px;}
+.veSpecifierBox .veSpecifier .veContainer {position: relative; width: 100%; height: 370px;}
+.veSpecifierBox .dijitDialogPaneContent {width: 97% !important; height: 88% !important;}
+.veSpecifier .veTable .rowHeadersWrapper {padding-bottom: 0;}
+.veSpecifier .veTable .scroller .variableEditorRenderers {padding-right: 3px; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;}
+.veVariableValueSummary {display: inline-block;}
+.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper {visibility: hidden; z-index: 0;}
+.veMetaSummary {font-style: italic;}
+.veSpecifier .veTable .scroller {overflow: hidden;}
+.veSpecifier .veTable:hover .scroller {overflow: auto;}
+.veSpecifier .veVariableName,.veSpecifier .veDimensionFont {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.veSpecifier .veVariableName {padding-top: 2px;}
+.veSpecifier .veDimensionFont {font-style: italic; color: #9A9A9A;}
+.veSpecifier .scroller::-webkit-scrollbar-track {background-color: white;}
+.veSpecifier .scroller::-webkit-scrollbar-corner {background-color: white;}
+.veSpecifier .veTable .topRowHeaderWrapper {border: none; background-color: #F8F9FA;}
+.veSpecifier .mw_type_ListBase.showCellBorders,.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper,.veSpecifier .veTable .verticalScrollSpacer,.veSpecifier .veTable .horizontalScrollSpacer {border: none;}
+.veSpecifier .veTable .dataScrollerNode {border: 1px solid #BFBFBF;}
+.veSpecifier .veTable .columnHeaderNode,.veSpecifier .veTable .rowHeaderNode,.veSpecifier .veTable .dataBody {font-family: Arial; font-size: 13px;}
+.veSpecifier .veTable .columnHeaderNode,.veSpecifier .veTable .rowHeaderNode {color: #7F7F7F;}
+.veSpecifier .veTable .dataBody {color: #000000;}
+.veSpecifier .veTable .columnHeaderNode .cell .drag,.veSpecifier .veTable .columnHeaderNode .cell .header,.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper {background-color: #F8F9FA;}
+.veSpecifier .veTable .columnHeaderNode .cell .dragBorder {border-right: 1px solid #F8F9FA;}
+.veSpecifier .veTable .rowHeaderNode .cell {padding-top: 3px; text-align: center; border-bottom: 1px solid #F8F9FA;}
+.veSpecifier .veTable .dataBody .cell .plainText {text-align: right;}
+.veSpecifier .veTable .dataBody .row .cell {border-bottom: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
+.embeddedOutputsVariableElement {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px; white-space: pre-wrap; word-wrap: break-word; min-height: 18px; max-height: 250px; overflow: auto;}
+.variableElement {}
+.embeddedOutputsVariableElement.inlineElement {}
+.inlineElement .variableElement {}
+.variableValue { width: 100% !important; }
+.embeddedOutputsMatrixElement {min-height: 18px; box-sizing: border-box; font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.embeddedOutputsMatrixElement .matrixElement{position: relative;}
+.matrixElement .variableValue {white-space: pre; display: inline-block; vertical-align: top; overflow: hidden;}
+.embeddedOutputsMatrixElement.inlineElement {}
+.embeddedOutputsMatrixElement.inlineElement .topHeaderWrapper {display: none;}
+.embeddedOutputsMatrixElement.inlineElement .veTable .body {padding-top: 0 !important; max-height: 100px;}
+.embeddedOutputsMatrixElement.inlineElement .veVariableName {padding-top: 0;}
+.inlineElement .matrixElement {max-height: 300px;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer {white-space: nowrap; padding-top: 10px; margin-bottom: 3px;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis.hide,.embeddedOutputsMatrixElement .matrixElement .verticalEllipsis.hide {display: none;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis {margin-bottom: -3px;}
+.matrixElement { max-height: none !important; }
+.dijitTooltipDialog .dijitTooltipContainer .dijitTooltipContents .alertPlugin-alertMessage {min-width: 12px; max-width: 400px; max-height: 300px; overflow: auto;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar {width: 11px; height: 11px;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-track {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-corner {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb {border-radius: 7px; background-color: rgba(0, 0, 0, 0.1); border: 2px solid rgba(0, 0, 0, 0); background-clip: padding-box;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb:hover {background-color: rgba(0, 0, 0, 0.2);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage:hover::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 0.1);}
+.dijitTooltipDialog .alertPlugin-alertMessage:hover::-webkit-scrollbar-thumb:hover {background-color: rgba(0, 0, 0, 0.2);}
+.alertPlugin-alertLine {position: absolute; display: initial; width: 40px; text-align: right; cursor: text;}
+.alertPlugin-onTextLine {visibility: hidden;}
+.alertPlugin-hasTooltip .alertPlugin-warningImg,.alertPlugin-hasTooltip .alertPlugin-errorImg {cursor: pointer;}
+.alertPlugin-alertLine .alertPlugin-warningElement,.alertPlugin-alertLine .alertPlugin-errorElement {display: inline-block; margin-right: 4px;}
+.alertPlugin-isStale {-webkit-filter: opacity(0.4) grayscale(80%); filter: opacity(0.4) grayscale(80%);}
+.diagnosticMessage-wrapper {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType {color: rgb(255,100,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType a {color: rgb(255,100,0); text-decoration: underline;}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType {color: rgb(230,0,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType a {color: rgb(230,0,0); text-decoration: underline;}
+.diagnosticMessage-wrapper .diagnosticMessage-messagePart {white-space: pre-wrap;}
+.diagnosticMessage-wrapper .diagnosticMessage-stackPart {white-space: pre;}
+.embeddedOutputsWarningElement{min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsWarningElement.inlineElement {}
+.embeddedOutputsErrorElement {min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsErrorElement.inlineElement {}
+</style></head><body><div class = "content"><div class = 'SectionBlock containment'><h1 class = "S1"><span class = "S2">Sparse Flux Balance Analysis </span></h1><h2 class = "S3"><span class = "S2">Author: Ronan Fleming, Hoai Minh Le, Systems Biochemistry Group, University of Luxembourg.</span></h2><h2 class = "S3"><span class = "S2">Reviewer:</span></h2><h2 class = "S3"><span class = "S2">INTRODUCTION</span></h2><p class = "S4"><span class = "S2">We consider a biochemical network of </span><span class = "S2"> </span><span class = "S2">m</span><span class = "S2"> </span><span class = "S2"> molecular species and </span><span class = "S2"> </span><span class = "S2">n</span><span class = "S2"> </span><span class = "S2"> biochemical reactions. The biochemical network is mathematically represented by a stoichiometric matrix </span><span style="vertical-align:-3"><img src="data:image/png;base64,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" width="68.5" height="27" /></span><span class = "S2">. In standard notation, flux balance analysis (FBA) is the linear optimisation problem</span></p><p class = "S5"><span style="vertical-align:-30"><img src="data:image/png;base64,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" width="115" height="73" /></span></p><p class = "S4"><span class = "S2">where </span><span style="vertical-align:-3"><img src="data:image/png;base64,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" width="50.5" height="20" /></span><span class = "S2"> is a parameter vector that linearly combines one or more reaction fluxes to form what is termed the objective function,  and where a </span><span style="vertical-align:-5"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFcAAAAqCAYAAADGdMdzAAAFj0lEQVRoQ+2adahlVRTGf2MrdndiK2J3NyZioQhii92Bon+InSOKMYyoiCCiomKgYoOBiYpdGNiJYssP1pHzLvfEvu9ueL53FgzzZnacvb+99re+tfabRGfZEJiUbeZuYjpwMzpBB24HbkYEMk7deW4HbkYEMk5d5bnTAj8BM/d8eyfg3ozrGWtT7wgcCKwFzAd8DbwC3Ajc1rTYKnDnAc6MwdsCK8TPCwBfNk06DtpnAm4C9gB+DyDfBpYC9g6neyB+/qFqv2049xlgXeDDmHwcYFe7BTHRK3cHvgG2Al4ujVgOeAxYCHgY2B74s9+MTeBOF/TgSfrBvcY7ssA+wC2xz/2DAnq3vStwZ/zn0cCVg4C7WunUTgQuGefg6mzvAksDXwCLAH9V7Pm96CcPLwr81tuvyXMl8ykxaGPgqXEO7gbA07HHqRHMqrZ8KXBcNO4M3JMK7tXA4cEpcwCzAEcAXoslgRnipL1GlwF/jBHw14u1PZG4nvOAU2PMYcC1NeMNbLdG+/XAIangPgesHfLj+NJkrwLy8ToBuPM+DmwT0TVxT0Pp7i3cOsDZPLzq8sSZ74sA5TAD2SM145Vnz0e7OBn0R1gdLUwfwWxG4KXgH09Vjfd3zDJ36N7149/Kt3MSNzTa7mry3YDTgNVjbQbfMwB5McXeLymiFYE3awarFj6LdnOC2VPAdaEvxgBJfbuQHr1zrAroydrnwGI1QSBlo019PfT9gJOBZYOSPPgLgqqaxvdr/x6Q/jSD1Kc1k8wG/Fhq9yaPCH51nnsQIJdoco8cVGWCumA0LgPoAbnMTclv0tTCwC+xPpVMHRht1qNe9SZo84bOrRrnzTbBKGwuwMP5z+rAvQY4NHouD5ihVNlrwMrRuFnwb5vNpPQx/Twq/swZG1FfTo60NGWuqr563jQtwfUQysmDFPldW3Ala0n7dWCVhpV/HHRgt41KcmYYG14ivPTgSDvVn8ogD798LYfxLVPZgjubaGHWiEnFd/XkEZlalecqsVy4vOYmlGNVZnHn59KJy7mfRGe18R3A+QMmIGZL8qh89hFwIXAD8OswkOwzxwchMW1KCWjuX7oaYVXgrgG8ED3lt4J7++1JT30yGoyeZjWFGVwMOCeEt6ViojpRe2pXBLhFhE6dq03/+yNw2zdFinnLlaWtwBXQQkBvATxas7KzgbOiXa86oNTXq7MSoA4cxORWb82xwPwRQMycLsoUNAdNIsxipa1W4ApskXFYBXqnAhk9/62QQnbJlSJLPRZRTgodauAxO/JmGEyHZRuWUvyU9HcX4O624EoJUoNm8abQsb3jrXcWRWNTzU2jgxx7SvxsQUMP7luWS0RF7vWbzu26tLuCOga9HeUlZC/cGMzMOPxbOybkTi8O6lqTDDMVtaZp8hvRSTCNugYhD2bNRBCbuguCSY2cvEl0trZ6btRa/2maoKY9a8mxnDNbIVLjWjMwBS5M8r4ZkDL0SL1JDypbUa7s5eFR7LvvUFNvQbYypT0bIPscVaTpKd/sLZZvGbWVYg73bAwygbH24CG3LpabOCi/NK+5tQIVgV6qxrQaZpDSvorisl7Ta6amPpVYlkstoKSAUfR1TSqTfUO6HQlcNchEgI8DOo+vEcUzj7HFOm/xzPNgPB4kPfNcV4p8Zh1ypoFkT0BBrzeYrVmJN0OqEvIXhwRrUhsD7r9y2OKRdJj81EnINt/1Qbb8QOmzj08+xQNlLf00FcvbLKCqz0OhFX3s/HY0E/1fx+YEVwqxeG4aOSEtF7gqCStlFp93mJDIQrbfcvR3HXzXN+M5vQN3uAgYtc2erAnfDlRG1OF+dmzNlosWfLBUjGumzmrDCWe5wJ1wQPbbcAduRjfowO3AzYhAxqk7z+3AzYhAxqk7z80I7r/fThM6JovtcgAAAABJRU5ErkJggg==" width="43.5" height="21" /></span><span class = "S2">, or  </span><span style="vertical-align:-5"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFcAAAAqCAYAAADGdMdzAAAFiElEQVRoQ+2aZ6gsRRBGzzMr5hwxYVbMignFLEYwIopiDmDOIPpDUTGiIiYUFRVEzBgwJxCzomJOGDBnwSznUaNzx53Zmd1pld2pP+/e2901XV9XV31V/SbRSTIEJiXT3CmmAzehE3TgduAmRCCh6s5zO3ATIpBQdZnnTgl8B0xf+PbWwB0J9/N/U70VsDewGjAX8DnwAnAVcEO/zZaBOwdwYizeDFg6fp4H+LSf0hEYnw64GtgR+DmAfB1YFNglnO7u+PmbMnvrxNwngDWBd0P5CGBXaYKY6JU7AF8AGwPP51YsCTwEzAfcB2wB/NpLYz9wp4rw4En6wZ1HHVlgV+DasHPPCAFFs7cDbo4/HgJcMAi4K+ZO7Sjg7BEHV2d7E1gM+ARYAPitxOa3Yp5xeEHgp+K8fp5rML88Fq0HPDbi4K4NPB42XhHJrMzkc4DDY3Ab4Pam4F4EHBgxZRZgBuBgwGuxCDBNnLTX6Fzgl5bB3xD4Fni6Zb1l6k4DjovBA4BLKr5rYrs+xi8D9msK7pPA6kE/jsgpexEwHq8RgKv3YWDTyK5tYaGhGnwvcDrwIPBHW8p76LkzEpRDJrL7K74lPXsqxsXJpD9BqsLC1JHMpgWei/ijsXK830PL7MF714rfpW+ntGi8mflUYHuY3GTSGMG+NbeHFj/H2zlGtAzwaoVy2cJHMW5NMHMTcFcGno0FBvXNg3oUdawA6MnKx8BCFUlgUCDk2ccCu8WN0egzgOtavilfA4Y/xST1YcWGZ4qQlU3xJk9IflWeuw9gLFGMPcagMhHUeWNwcZjsASlkYUDW4t6khx8AZ0XS/aGFD8pXrU6VOYPnlqn1ZltgZDIb4OH8JVXgXgzsHzOXAqxQyuQlYLkY3CDibwu2lqqYGzgskqvXUbJ/PnAh8OUQH9bzpqgJroeQLx4MkV/VBdf4ZtB+GVi+z4bfj3DgtHVzdGYIO2stnRU4KCiRnqb3esukSVVXuky5pWwWO/uFhRkjJ2W69OQJlVqZ50qxpEAmMz1YOlYmNne+z524MdfrqsiNb4pMn7IAkSIaKo6OWCkltNK6sdYR/T3pnaCY/qVJQtN+Y/AEKQN3FeCZmCl/y2Jvr73qqY/GgNnTqiYTk84xwJHhTQ1tbTRdTzs+PNmFEvzzGmmAuyJxu6wJFfOWS0trgSugGYGWyMsvy+Rk4KQYvBLYKzfRq7MsIA9MJUvEAe4BeDVNrhY07t/b10QGLSKsYvetC64byyoOueYbJTvU818DNFD5N0vklaKasi1oEnKPZ0ar8B91fk2E18mV+E3K322B2+qCa0gwNCg2bzIeW1yvYVnT+BFg/ZhgNSUvVTRUD+7ZlqtpdH6aAHj9t4w/ule/Z5eqrMlS9zPJGzcmMysO/1UODZpT3KC81iLDSuXHKJNfiUmCadZ9Lw5m1brWVdyQTYATcgf4QFRrlqhtlsRJW475mtkOkRzXnoElcCYG72sAQ4YeqQffUgAma1cW43ATnL3uNokE1QMSRNmHiTKr65voqzO32CzfKHor2VptNgfNH70HK9fazXILB+mX4jW3VyAj0EvtcdoNM0kpnwXlsSNflN0j/g2StTNdsgwrMKmVzy7GVGN8arH603l8jcieefyufd7smeeeeDxo9MxzaS7zWXUYM+WPOwGWnzZtrNaMcXbgyzKyoAhOP7ZRBZTtTd+tzP6DFAXDHoIPsvkHSitBn3yyB8rKcNSvWT7M5mwTyhV97BymJB1mD//p2pTgGkK8zpL7sZRU4MokJPM2nzPKNHYApwLX/+vgu74Vj5l+LCUVuPYTpEs2U2yelGbUUUY9Fbg+WErGFctSueHYSSpwxw7IXgZ34CZ0gw7cDtyECCRU3XluB25CBBKq7jw3Ibh/ApRZFzovdq9GAAAAAElFTkSuQmCC" width="43.5" height="21" /></span><span class = "S2">, represents some fixed output, or input, of the ith molecular species. A typical application of flux balance analysis is to predict an optimal non-equilibrium steady-state flux vector that optimises a linear objective function, such biomass production rate, subject to bounds on certain reaction rates. Herein we use sparse flux balance analysis to predict a minimal number of active reactions [</span><a href = 'https://localhost:61415/toolbox/matlab/codetools/liveeditor/index.html?id=967501116&file=%2Fhome%2Frfleming%2Fwork%2FsbgCloud%2Fcode%2Ffork-cobratoolbox%2Ftutorials%2FsparseFBA%2Ftutorial_sparseFBA.mlx&showLineNumbers=true&clipboardtempdirpath=/tmp/ConnectorClipboard8461570144481489503&snc=33D4F8#LyXCite-melendez_hevia_game_1985'><span class = "S7">melendez-hevia_game_1985</span></a><span class = "S2">], consistent with an optimal objective derived from the result of a standard flux balance analysis problem. In this context </span><span class = "S8">sparse flux balance analysis </span><span class = "S2">requires a solution to the following problem</span></p><p class = "S5"><span style="vertical-align:-40"><img src="data:image/png;base64,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" width="103" height="94" /></span></p><p class = "S4"><span class = "S2">where the last constraint is represents the requirement to satisfy an optimal objective value </span><span style="vertical-align:-3"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAoCAYAAAB0HkOaAAACjElEQVRYR+3YW6iNaRzH8c82IWVERCmaRjmmTI5TinJBUZRDFHKDSFOKixmZEdNQTklcjBKKHC+kcSElKeQYORTlcCFxgXJKGvSvZ9Xb6n23vdbea+19sZ+b1Xqfd/1/3/f5H9/VoA2thjbEoh2myBvtJ9N+MpVmar1ipiM+fw+uXjAr8S/eNwZUL5gb2IhjrQUzFz+hM9bhMk7iK47gSTlYLU+mO/ZgVkb0NRbjRN4J1RKmpHcPQ9KX+TjYWnWmHx5hCybjDha2NMxgDMcPuI/bKRbKdWbgJS6iE37HP0VpXqmbRmMbxpepRrYsQLik6tVUmCham1Pw7cUzTMGEjPIL/ILn1dI0BeZHnMKoJH49I7YW6zPft2JVrWAC9jDmYElK1axWB1zByHQx3DSsVjCzcRTv0AcfcoSioP2Vrke571ormHDPNPyXPvN0JuFs2niDHrWACaMRlBG8f2JDgchEnEt74bKxtYCZiePJcBSsMwUi83Ao7W1KtaQqnsayaSdWJKs98apAYQ3+TnsjcKsqEhp9VYnSHZnxEAMLBOJh7qbecxpTqwWJ3xWdTO8UL3FPzCCR2nkrKvGFNDRFdY7WUPUqgom2XxqEwl2/5ShECl/DoDQm5I4FlZAVwezC8mToJuKp/88Y7oYDmJ4muD8qES26twgm4mAo3iLaQWRVBOkX/IoQ749oB9GFY3pr9sqDycbLvjQeRpXNrvNYjavNJsgYyIOJYI0ZNdYi7McAjMEnhNsetyREyVYezG4sSzfEQP20FsJ5NvNgSjNrPP3P9QIJnXKYvmlwir146VramjBRT3YkgFK3rhtP+clcwrg0t/TCx7qRlLmpC7Yn8Qdp8K4nS/t/eoWn/Q0gA24pXAxudAAAAABJRU5ErkJggg==" width="17.5" height="20" /></span><span class = "S2"> </span><span class = "S2"> </span><span class = "S2">derived from any solution to a flux balance analysis (FBA) problem.</span></p><h2 class = "S3"><span class = "S2">EQUIPMENT SETUP</span></h2><p class = "S4"><span class = "S2">If necessary, initialise the cobra toolbox</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">global </span><span class = "S12">TUTORIAL_INIT_CB;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">if </span><span class = "S12">~isempty(TUTORIAL_INIT_CB) &amp;&amp; TUTORIAL_INIT_CB==1</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">    initCobraToolbox</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">    changeCobraSolver(</span><span class = "S14">'gurobi'</span><span class = "S13">,</span><span class = "S14">'all'</span><span class = "S12">);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S15">end</span></p></div></div><h2 class = "S3"><span class = "S2"></span></h2><h2 class = "S3"><span class = "S2">PROCEDURE</span></h2><p class = "S4"><span class = "S2">Set the tolerance to distinguish between zero and non-zero flux, based on the numerical tolerance of the currently installed optimisation solver.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">feasTol = getCobraSolverParams(</span><span class = "S14">'LP'</span><span class = "S13">, </span><span class = "S14">'feasTol'</span><span class = "S12">);</span></p></div></div><p class = "S16"><span class = "S2">Load Recon3.0model, unless it is already loaded into the workspace.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">clear </span><span class = "S17">model</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">if </span><span class = "S13">~exist(</span><span class = "S14">'modelOrig'</span><span class = "S13">,</span><span class = "S14">'var'</span><span class = "S12">)</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">    filename=</span><span class = "S14">'Recon3.0model'</span><span class = "S12">;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">    directory=</span><span class = "S14">'~/work/sbgCloud/programReconstruction/projects/recon2models/data/reconXComparisonModels'</span><span class = "S12">;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">    model = loadIdentifiedModel(filename,directory);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">    model.csense(1:size(model.S,1),1)=</span><span class = "S14">'E'</span><span class = "S12">;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">    modelOrig = model;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S15">else</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">    model=modelOrig;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S15">end</span></p></div></div><p class = "S16"><span class = "S2"></span></p><p class = "S4"><span class = "S2">Display the constraints</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">minInf=-1000;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">maxInf=1000;</span></p></div><div class = 'inlineWrapper outputs'><p class = "S10 lineNode"><span class = "S12">printConstraints(model, minInf, maxInf);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="0FCDC51B" data-testid="output_0" data-width="1458" style="width: 1488px;"><div class="textElement">MinConstraints:<br>maxConstraints:</div></div></div></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment active'><p class = "S4"><span class = "S2">Select the biomass reaction to optimise</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">model.biomassBool=strcmp(model.rxns,</span><span class = "S14">'biomass_reaction'</span><span class = "S12">);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">model.c(model.biomassBool)=1;</span></p></div></div><p class = "S16"><span class = "S2">Display the biomass reaction</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">rxnAbbrList={</span><span class = "S14">'biomass_reaction'</span><span class = "S12">};</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">printFlag = 1;</span></p></div><div class = 'inlineWrapper outputs'><p class = "S10 lineNode"><span class = "S12">formulas = printRxnFormula(model, rxnAbbrList, printFlag);        </span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement scrollableOutput" uid="E9CDD0E0" data-testid="output_1" data-width="1458" style="width: 1488px;"><div class="textElement">biomass_reaction	20.6508 h2o[c] + 20.7045 atp[c] + 0.385872 glu_L[c] + 0.352607 asp_L[c] + 0.036117 gtp[c] + 0.505626 ala_L[c] + 0.279425 asn_L[c] + 0.046571 cys_L[c] + 0.325996 gln_L[c] + 0.538891 gly[c] + 0.392525 ser_L[c] + 0.31269 thr_L[c] + 0.592114 lys_L[c] + 0.35926 arg_L[c] + 0.153018 met_L[c] + 0.023315 pail_hs[c] + 0.039036 ctp[c] + 0.154463 pchol_hs[c] + 0.055374 pe_hs[c] + 0.020401 chsterol[c] + 0.002914 pglyc_hs[c] + 0.011658 clpn_hs[c] + 0.009898 dgtp[n] + 0.009442 dctp[n] + 0.013183 datp[n] + 0.053446 utp[c] + 0.013091 dttp[n] + 0.275194 g6p[c] + 0.126406 his_L[c] + 0.159671 tyr_L[c] + 0.286078 ile_L[c] + 0.545544 leu_L[c] + 0.013306 trp_L[c] + 0.259466 phe_L[c] + 0.412484 pro_L[c] + 0.005829 ps_hs[c] + 0.017486 sphmyln_hs[c] + 0.352607 val_L[c] 	-&gt;	20.6508 h[c] + 20.6508 adp[c] + 20.6508 pi[c] </div></div></div></div></div><h2 class = "S3"><span class = "S2"> Sparse flux balance analysis</span></h2><p class = "S4"><span class = "S2">We provide two options to run sparse flux balance analysis. A: directly in one step, no quality control, and B: two steps, all approximations, with a heuristic sparsity test</span><span class = "S20">.</span></p><h2 class = "S3"><span class = "S2">TIMING</span></h2><p class = "S4"><span class = "S2">The time to compute a sparse flux balance analysis solution depends on the size of the genome-scale model and the option chosen to run sparse flux balance analysis.  Option A: directly in one step, no quality control, can take anything from &lt;0.1 seconds for a 1,000 reaction model, to 1,000 seconds for a model with 20,000 reactions. Option B: two steps, all approximations, with a sparsity test could take hours for a model with &gt;10,000 reactions because the length of time for the heuristic sparsity test is proportional to the number of active reactions in an approximate sparse solution.</span></p><h2 class = "S3"><span class = "S2">A. Sparse flux balance analysis (directly in one step, no quality control)</span></h2><p class = "S4"><span class = "S2">This approach computes a sparse flux balance analysis solution, satisfing the FBA objection, with the default approach to approximate the solution to the cardinality minimisation problem underling sparse FBA. This approach does not check the quality of the solution, i.e., whether indeed it is the sparsest flux vector satisfing the optimality criterion </span><span style="vertical-align:-3"><img src="data:image/png;base64,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" width="60.5" height="20" /></span><span class = "S2">.</span></p><p class = "S4"><span class = "S2">First choose whether to maximize ('max') or minimize ('min') the FBA objective. Here we choose maximise</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">osenseStr=</span><span class = "S14">'max'</span><span class = "S12">;</span></p></div></div><p class = "S16"><span class = "S2">Choose to minimize the zero norm of the optimal flux vector</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">minNorm=</span><span class = "S14">'zero'</span><span class = "S12">;</span></p></div></div><p class = "S16"><span class = "S2">Run sparse flux balance analysis</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">sparseFBAsolution = optimizeCbModel(model, osenseStr, minNorm);</span></p></div></div><p class = "S16"><span class = "S2">Obtain the vector of reaction rates from the solution structure</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">v = sparseFBAsolution.v;</span></p></div></div><p class = "S16"><span class = "S2">Display the sparse flux solution, but only the non-zero fluxes</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">nonZeroFlag = 1;</span></p></div><div class = 'inlineWrapper outputs'><p class = "S10 lineNode"><span class = "S12">printFluxVector(model, v, nonZeroFlag);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement scrollableOutput" uid="8B81C420" data-testid="output_2" data-width="1458" style="width: 1488px;"><div class="textElement">4MOPt2im	774.74	<br>5AOPtm	1000	<br>ACETONEt2	436.469	<br>ACONTm	-166.447	<br>ACt2m	-884.726	<br>ACTLMO	957.68	<br>ACTNMO	436.469	<br>ADEt	-610.027	<br>ADK3	-637.07	<br>ADNt	-27.0433	<br>AKGMALtm	173.401	<br>AKGt4_3	296.958	<br>ALATA_L	-386.265	<br>ALCD21_D	237.152	<br>ALR2	521.211	<br>AMPDA	1000	<br>AMY1e	1.93991	<br>ARTFR208	111.111	<br>ASAH1	978.661	<br>ASCBOX	200.883	<br>ASPCTr	-265.632	<br>ATPtm	1000	<br>CATm	111.111	<br>CBPPer	1000	<br>CBPter	1000	<br>CDIPTr	-8.7824	<br>CITtbm	1000	<br>CLS_hs	8.7824	<br>CO2ter	-1000	<br>CO2tm	166.447	<br>CYTK10	349.71	<br>CYTK11	1000	<br>CYTK14	69.835	<br>CYTK2n	-992.887	<br>CYTK4	609.862	<br>CYTK9	-1000	<br>DADNt4	-312.599	<br>DAGt	-766.729	<br>DASCBR	200.883	<br>DATPtn	9.93123	<br>DCK1m	329.987	<br>DCK1n	-14.226	<br>DCK2n	-978.661	<br>DCTPtn	1000	<br>DCYTDn	492.887	<br>DCYTt	-170.013	<br>DGTPtn	7.45652	<br>DIDPtn	1000	<br>DITPtn	-1000	<br>D_LACt2	-673.621	<br>D_LACtm	-673.621	<br>DNDPt14m	9.86193	<br>DNDPt19m	339.848	<br>DOPAt4_2_r	918.523	<br>DRPA	1000	<br>DTDPtn	1000	<br>DTTPtn	-990.138	<br>DUDPtn	-1000	<br>DURIt	-492.887	<br>DURItn	-492.887	<br>EX_acetone[e]	-436.469	<br>EX_atp[e]	-1000	<br>EX_chsterol[e]	-154.258	<br>EX_cmp[e]	-9.69955	<br>EX_dag_hs[e]	766.729	<br>EX_dopa[e]	-918.523	<br>EX_gsn[e]	1000	<br>EX_h2o2[e]	-1000	<br>EX_hco3[e]	522.582	<br>EX_imp[e]	965.335	<br>EX_inost[e]	-771.121	<br>EX_lac_D[e]	673.621	<br>EX_o2s[e]	-1000	<br>EX_ocdca[e]	-138.889	<br>EX_pe_hs[e]	-41.7153	<br>EX_pglyc_hs[e]	-10.9776	<br>EX_ps_hs[e]	-913.83	<br>EX_Rtotal[e]	978.661	<br>EX_strch1[e]	-1.93991	<br>EX_thmtp[e]	1000	<br>EX_urate[e]	1000	<br>EX_utp[e]	-1000	<br>EX_xolest_hs[e]	138.889	<br>FALDtly	478.661	<br>FATP3t	-138.889	<br>FOLt2	-1000	<br>FUMm	941.873	<br>FUMtm	-58.1272	<br>G6Pter	-1000	<br>GALSIDEtl	978.661	<br>GGNG	1.93991	<br>GLBRAN	1.93991	<br>GLCter	1000	<br>GLCtly	978.661	<br>GLGNS1	1.93991	<br>GLPASE1	835.562	<br>GLUDxm	-108.512	<br>GLUt2m	666.228	<br>GLYOXm	673.621	<br>GLYtm	-1000	<br>GSNt	-864.049	<br>H2O2t	1000	<br>H2O2tly	478.661	<br>H2Otly	1000	<br>H2Otm	-1000	<br>H2Otn	1000	<br>HPYRRy	613.735	<br>Htr	1000	<br>ICDHyrm	-166.447	<br>IDPtn	1000	<br>ITPtn	-1000	<br>LALDO	237.152	<br>LEUt5m	-774.74	<br>LEUTAm	-774.74	<br>MALTe	1.93991	<br>MALtm	-1000	<br>MDHm	115.274	<br>MELATNOX	387.839	<br>MEOHtly	478.661	<br>MI14Ptn	-507.113	<br>MI1PS	1000	<br>MMMm	1000	<br>MMTSADm	1000	<br>NAt5	-1000	<br>NDPK10	-1000	<br>NDPK10n	1000	<br>NDPK1m	1000	<br>NDPK4n	1000	<br>NDPK6n	-1000	<br>NDPK7n	-992.887	<br>NDPK9n	1000	<br>NH4tn	-492.887	<br>NMNATr	-1000	<br>O16G2e	1.93991	<br>O2St	-1000	<br>O2Stm	444.444	<br>PAIL_HStn	753.557	<br>PAIL45P_HStn	-246.443	<br>PEPCKm	1000	<br>PEt	41.7153	<br>PGLYCt	10.9776	<br>PI45PLC	246.443	<br>PI4PLCn	507.113	<br>PIter	1000	<br>PItn	-1000	<br>PPItr	-1000	<br>PRDXl	478.661	<br>PSSA1_hs	-129.535	<br>PSt3	913.83	<br>PYNP2r	389.973	<br>RTOTALt	-978.661	<br>Rtotaltl	-978.661	<br>SMS	13.1728	<br>SOAT12	138.889	<br>SPHINGStl	-978.661	<br>SPODMm	222.222	<br>SUCCt2m	-1000	<br>SUCCt4_2	-1000	<br>SUCD1m	333.333	<br>SUCOAS1m	-1000	<br>SUCOASm	-1000	<br>THMTPt	1000	<br>THYMDtm	9.86193	<br>TMDK1m	9.86193	<br>TRDR	1000	<br>UMPK5	69.6701	<br>UMPK6	-679.697	<br>URAt	-1000	<br>URATEt	1000	<br>URIDK2m	-349.71	<br>UTPtn	21.339	<br>XOLESTte	-138.889	<br>EX_ahdt[e]	1000	<br>EX_ctp[e]	9.69955	<br>EX_dtmp[e]	-1000	<br>EX_dttp[e]	1000	<br>EX_HC00250[e]	-1000	<br>EX_HC01361[e]	-1000	<br>r0139	-9.69955	<br>r0149	-9.69955	<br>r0160	613.735	<br>r0193	-1000	<br>r0196	-1000	<br>r0276	34.6648	<br>r0280	1000	<br>r0391	389.973	<br>r0407	-103.657	<br>r0408	-103.657	<br>r0413	1000	<br>r0474	679.697	<br>r0475	650.29	<br>r0494	-1000	<br>r0497	-1000	<br>r0509	666.667	<br>r0517	-1000	<br>r0527	1000	<br>r0531	-650.29	<br>r0617	-1000	<br>r0642	-381.907	<br>r0643	-618.093	<br>r0707	-1000	<br>r0752	-388.669	<br>r0753	388.669	<br>r0801	-1000	<br>r0818	349.71	<br>r0838	108.512	<br>r0853	339.848	<br>r0885	-1000	<br>r0892	-1000	<br>r0940	-1000	<br>r1050	154.258	<br>r1109	884.726	<br>r1116	-1000	<br>r1156	-1000	<br>r1384	-1000	<br>r1423	1000	<br>r2093	-703.042	<br>r2374	281.721	<br>r2420	-281.721	<br>r2520	326.379	<br>RE0124C	-1000	<br>RE0344C	-138.889	<br>RE0456N	1000	<br>RE1233C	111.306	<br>RE1447N	-246.443	<br>RE1448N	-246.443	<br>RE1530C	-1000	<br>RE1918C	918.523	<br>RE2112C	843.982	<br>RE2426C	-387.839	<br>RE2640C	-884.726	<br>RE2677N	978.661	<br>RE3272N	-507.113	<br>RE3273C	-779.903	<br>RE3301C	779.903	<br>RE3352C	-1000	<br>EX_crm_hs[e]	-991.834	<br>CITt4_4	718.279	<br>INSTt4_2	771.121	<br>PIt8	-1000	<br>PIt9	-1000	<br>biomass_reaction	753.336	<br>3HCO3_NAt	159.139	<br>DTMPKm	9.86193	<br>G6PDH2c	896.343	<br>GNDc	563.01	<br>PGLc	896.343	<br>RPEc	896.343	<br>THMDt5le	9.86193	<br>CBASPte	265.632	<br>EX_cbasp[e]	-265.632	<br>GLYALDtr	-613.735	<br>PEPtr	-1000	<br>LKYNRtr	111.306	<br>DCMPtr	1000	<br>FUMtr	-884.726	<br>XTSNtr	1000	<br>UDPGLCURtr	1000	<br>IMPtr	-965.335	<br>NICRNtr	-610.027	<br>EX_dcmp[e]	-1000	<br>EX_glyald[e]	613.735	<br>EX_Lkynr[e]	-111.306	<br>EX_pep[e]	-1000	<br>EX_xtsn[e]	-1000	<br>EX_udpglcur[e]	-1000	<br>EX_nicrnt[e]	610.027	<br>FOLOAT1tc	1000	<br>GSNt2r	-135.951	<br>NACSMCTte	-389.973	<br>HMCRNc	-734.368	<br>ALLTNt	-1000	<br>EX_HC00900[e]	-1000	<br>EX_hmcr[e]	-734.368	<br>EX_mi1p_D[e]	1000	<br>HC00900t4	-1000	<br>HMCRNt	-734.368	<br>MI1Pt	-1000	<br>EX_5aop[e]	-1000	<br>EX_alltn[e]	-1000	<br>EX_alahisala[e]	309.547	<br>EX_glylyscys[e]	288.307	<br>EX_hiscyscys[e]	185.441	<br>EX_tyrcysgly[e]	305.727	<br>ALAHISALAt	-309.547	<br>GLYLYSCYSt	-288.307	<br>HISCYSCYSt	-185.441	<br>TYRCYSGLYt	-305.727	<br>ALAHISALAr	-309.547	<br>GLYLYSCYSr	-288.307	<br>HISCYSCYSr	-185.441	<br>TYRCYSGLYr	-305.727	<br>2MOPtm	381.907	<br>MMALtm	-618.093	<br>5AOPt2	1000	<br>DM_mi145p[c]	246.443	<br>DM_mi14p[c]	507.113	<br>DM_C02712[c]	884.726	<br>sink_Tyr_ggn[c]	-1.93991	<br>sink_chol[c]	-129.535	<br>sink_cholate[c]	-843.982	<br>sink_glygn2[c]	-833.622	<br>sink_nad[c]	-1000	<br>sink_odecoa[c]	138.889	<br>sink_thmtp[c]	-1000	<br>sink_tmndnccoa[c]	-111.111	<br>DXTRNt	835.562	<br>EX_dxtrn[e]	835.562	<br>sink_dchac[c]	-156.018	<br>EX_glcn[e]	1000	<br>ADK1	-1000	<br>CO2t	-1000	<br>CYTDt2r	-650.29	<br>DURIPP	1000	<br>ENO	1000	<br>EX_adn[e]	27.0433	<br>EX_co2[e]	1000	<br>EX_cytd[e]	650.29	<br>EX_dad_2[e]	312.599	<br>EX_dcyt[e]	170.013	<br>EX_duri[e]	492.887	<br>EX_fum[e]	884.726	<br>EX_o2[e]	-1000	<br>EX_pi[e]	980.601	<br>EX_succ[e]	1000	<br>EX_thymd[e]	-9.86193	<br>EX_uri[e]	610.027	<br>FBA	-344.515	<br>FUM	-826.599	<br>GALU	1000	<br>GAPD	1000	<br>GK1	34.6648	<br>H2CO3D	522.582	<br>H2Ot	1000	<br>LEUTA	774.74	<br>NDPK1	-1000	<br>NDPK2	-518.853	<br>NDPK3	-650.29	<br>NDPK4	-990.138	<br>NDPK5	-642.833	<br>NDPK6	-1000	<br>NDPK8	-920.399	<br>NDPK9	-1000	<br>O2t	1000	<br>PGI	-1000	<br>PGK	-493.314	<br>PGM	-1000	<br>PGMT	1000	<br>PIt6b	-1000	<br>PPM	1000	<br>PUNP1	610.027	<br>RNDR1	322.53	<br>RNDR2	7.45652	<br>RNDR4	1000	<br>RPI	103.657	<br>SPODM	76.8946	<br>TALA	1000	<br>TKT1	896.343	<br>TKT2	896.343	<br>TPI	-448.172	<br>UDPG4E	978.661	<br>URIDK3	-1000	<br>URIt2r	-610.027	<br>r0345	-312.599	<br>r0570	1000	<br>NTD6	312.599	<br>NTD7	637.07	<br>EX_nac[e]	389.973	<br>EX_nh4[e]	1000	<br>ALCD1	-478.661	<br>EX_cit[e]	-718.279	<br>EX_ura[e]	1000	<br>LGTHL	436.469	<br>PIt7	-1000	<br>PYK	1000	<br>r0392	-613.735	<br>EX_pyr[e]	1000	<br>PYRt2r	-296.958	<br>DCMPDA	-349.71	<br>EX_ade[e]	610.027	<br>EX_acald[e]	81.4766	<br>ACALDt	-81.4766	<br>C09642te	918.523	<br>EX_C09642[e]	918.523	<br>12PPDRte	-237.152	<br>EX_12ppd_R[e]	-237.152	<br>GLCNte	1000	<br>SPHGNSte	978.661	<br>EX_sphings[e]	978.661	<br>FDPte	344.515	<br>EX_fdp[e]	344.515	<br>CRMte	991.834	<br>NH4tr	-1000	<br>UDPGALt2n	978.661	<br>GALSIDEtn	-978.661	<br>CERT1tn	978.661	<br>HMR_0793	978.661	<br>HMR_2294	138.889	<br>HMR_4343	389.973	<br>HMR_4782	1000	<br>HMR_6611	-1000	<br>HMR_6617	1000	<br>HMR_6619	-1000	<br>HMR_7748	896.343	<br>HMR_7749	-896.343	<br>HMR_8475	329.987	<br>HMR_8476	-500	<br>HMR_8510	673.621	<br>HMR_8585	506.686	<br>HMR_8884	21.339	<br>HMR_9187	506.686	<br>HMR_9674	507.113	<br>DCA3GSc	1000	<br>DM_dca3g[c]	1000	<br>EX_M01966[e]	506.686	<br>sink_his_L[c]	-590.214	<br>sink_ile_L[c]	-215.513	<br>sink_leu_L[c]	-410.978	<br>sink_met_L[c]	-1000	<br>sink_phe_L[c]	-195.465	<br>sink_thr_L[c]	-235.561	<br>sink_trp_L[c]	-10.0239	<br>sink_val_L[c]	-265.632	<br>sink_arg_L[c]	-270.644	<br>sink_asn_L[c]	-210.501	<br>sink_gln_L[c]	-245.585	<br>sink_glu_L[c]	-457.139	<br>sink_pro_L[c]	-310.739	<br>sink_tyr_L[c]	-426.013	<br>DM_kynate[c]	111.306	<br>DCMPtm	329.987	<br>ATPS4mi	1000	<br>CYOR_u10mi	666.667	<br>CYOOm2i	333.333	</div></div></div></div></div><p class = "S16"><span class = "S2">Display the number of active reactions</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><p class = "S10 lineNode"><span class = "S13">fprintf(</span><span class = "S14">'%u%s\n'</span><span class = "S13">,nnz(v),</span><span class = "S14">' active reactions in the sparse flux balance analysis solution.'</span><span class = "S12">);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="ABE28FA0" data-testid="output_3" data-width="1458" style="width: 1488px;"><div class="textElement">435 active reactions in the sparse flux balance analysis solution.</div></div></div></div></div><h2 class = "S3"><span class = "S2">ANTICIPATED RESULTS</span></h2><p class = "S4"><span class = "S2">Typically, a sparse flux balance analysis solution will have a small fraction of the number of the number of reactions active than in a flux balance analysis solution, e.g., Recon3.0model has 10,600 reactions. When maximising biomass production, a typical flux balance analysis solution might have approximately 3,000 active reactions (this is LP solver dependent) whereas for the same problem there are 435 active reactions in the sparse flux balance analysis solution from optimizeCbModel (using the default capped L1 norm approximate step function, see below).</span></p><h2 class = "S3"><span class = "S2">B. Sparse flux balance analysis (two steps, all approximations,</span><span class = "S2"> </span><span class = "S2">with a sparsity test)</span></h2><p class = "S4"><span class = "S2">This approach computes a sparse flux balance analysis solution, satisfing the FBA objection, with the default approach to approximate the solution to the cardinality minimisation problem underling sparse FBA. This approach does not check the quality of the solution, i.e., whether indeed it is the sparsest flux vector satisfing the optimality criterion </span><span style="vertical-align:-3"><img src="data:image/png;base64,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" width="60.5" height="20" /></span><span class = "S2">.</span></p><h2 class = "S3"><span class = "S2">Solve a flux balance analysis problem</span></h2><p class = "S4"><span class = "S2">Build a linear programming problem structure (LPproblem) that is compatible with the interfacefunction (solveCobraLP) to any installed linear optimisation solver.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">[c,S,b,lb,ub,csense] = deal(model.c,model.S,model.b,model.lb,model.ub,model.csense);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">[m,n] = size(S);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12"></span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">LPproblem = struct(</span><span class = "S14">'c'</span><span class = "S13">,c,</span><span class = "S14">'osense'</span><span class = "S13">,-1,</span><span class = "S14">'A'</span><span class = "S13">,S,</span><span class = "S14">'csense'</span><span class = "S13">,csense,</span><span class = "S14">'b'</span><span class = "S13">,b,</span><span class = "S14">'lb'</span><span class = "S13">,lb,</span><span class = "S14">'ub'</span><span class = "S12">,ub);</span></p></div></div><p class = "S16"><span class = "S2">Now solve the flux balance analysis problem</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">LPsolution = solveCobraLP(LPproblem);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">if </span><span class = "S12">LPsolution.stat == 1</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">    vFBA = LPsolution.full(1:n);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S15">else</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">    </span><span class = "S13">vFBA</span><span class = "S12"> = [];</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">    error(</span><span class = "S14">'FBA problem error!'</span><span class = "S12">)</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S15">end</span></p></div></div><p class = "S16"><span class = "S2">Display the number of active reactions</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><p class = "S10 lineNode"><span class = "S13">fprintf(</span><span class = "S14">'%u%s\n'</span><span class = "S13">,nnz(vFBA),</span><span class = "S14">' active reactions in the flux balance analysis solution.'</span><span class = "S12">);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="8DC959BB" data-testid="output_4" data-width="1458" style="width: 1488px;"><div class="textElement">2997 active reactions in the flux balance analysis solution.</div></div></div></div></div><h2 class = "S3"><span class = "S2">Approimations underlying sparse flux balance analysis</span></h2><p class = "S4"><span class = "S2">Due to its combinatorial nature, minimising the zero norm explicitly is an NP-hard problem. Therefore we approximately solve the problem. The approach is to replace the zero norm with a separable sum of step functions, which are each approximated by anther function. Consider the step function</span><span class = "S2"> ς</span><span class = "S2">(</span><span class = "S2">t</span><span class = "S2">)</span><span class = "S2">:</span><span class = "S2"> </span><span class = "S2">R</span><span class = "S2"> </span><span class = "S2"> → </span><span class = "S2"> </span><span class = "S2">R</span><span class = "S2"> </span><span class = "S2">where </span><span class = "S2">ς </span><span class = "S2">(</span><span class = "S2">t</span><span class = "S2">)</span><span class = "S2">=</span><span class = "S2">1</span><span class = "S2"> </span><span class = "S2">i</span><span class = "S2">f </span><span class = "S2">t</span><span class = "S2"> ≠ </span><span class = "S2">0</span><span class = "S2"> and </span><span class = "S2"> </span><span class = "S2">  </span><span class = "S2"> ς </span><span class = "S2">(</span><span class = "S2">t</span><span class = "S2">)</span><span class = "S2">=</span><span class = "S2">0 </span><span class = "S2">otherwise, illustrated in the Figure below:</span></p><p class = "S5"><img class="imageNode" style="vertical-align: baseline" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcAAAAD/CAYAAABmfga/AAAKGElEQVR42u3dbWxV5QHA8VssQ5lQ
+VicDCS8rIIMNDAiMVReULTGgH5AhA+YXQ0Z42b74jQy3L4KJE8b7nDCXaOKERRYw4rIvQiBkKZ8g
+kEB4LQFCxlJCgNIXyrOeo21a1na3tEjvc36/5AmlPSbynPv0n3vvOc/NBQDIoJwpAEAAAUAAAUAA
+AUAAAUAAAUAAAUAAobAXR87yAAEEAQQEELIRv6YBCCAIICCAEHP82voTEEAQQEAAIcb4dfQ1IIAg
+gIAAQkzxy+fvgACCAAICCDHErzPfAwQQBBAQQCjk+IkdCCAIIyCAIICAAIIAAgIIAggIIAggIIAg
+gIAAggACAggCCAggCCAggCCAgACCAAICCAIICCAIICCAIICAAIIAAgIIAggIIAggIIAggCCAgACC
+AAICCAIIAggIIAggIIAggIAAggACAggCCAggCCAggCCAgACCAAICCAIICCAIICCAcE+qqqrC2bNn
+Q0NDgwACAkh2zJz5YsgVFYcrV64IICCAZENFRUUoaoyfAAICSPRu3boVKisrw+rVb4XS0sfT+Akg
+IIBEr1+/Ac3RazkEEBBAorZo0S/DwoWvpmP27DkCCAgg2ZO8FCqAgAAigAII3fZYj2VtWOEIoABC
+JteHFY4ACiAilsk1YoUjgAKIAN6XnwsgCCAU5LO/7jpGAEEAocfErzsDWKhrxQpHAAWQSAPXcuTz
+2G7rv8sncAIIAgg9In5f9zM7AQQBhIKI3/0IYCGuFyscARRAMhK/fGPV2aAJIPQg1dXVYefOv6ej
+trZWABFAARRAEEAEUAAFEASQyB6zXY1bZ64aFUAQQOhRAcwncvnGLOab4a1wEEAiDmFXAxjzWrHC
+QQDJWATzfRnUTjAggBDdY7i7Ht/2AgUBhB7/zK+7H+M+DQIEEDL5GBdA8MsBrA8BBAscrA8BBAsc
+EEAQQEAAQQABAQQBBAQQBBAQQBBAQABBAAEBBAEEekgAv/hibxg79gcFP8Z87/th+IgxYeDAstDv
+0aHhkYeHtDtK+n4nPDGoLIwaPS6Kf3vWR74BNFcRrPHhY8K3BwwJ33x4cIdrfEDJ8DB48KhQNnJs
+FP/2F16YqXr3I4C7d38ackXFhlGwI98AmiujUEdZ2WjVE0DDEEBDAAWwm9TW1obLly9HOwpBzPP/
+IM5xewHMwmMJBBBcBAMIIAggIIAggIAAggACAggCCAggCCAggCCAgACCAAICCAIICCAIICCAIICA
+AIIAAgIIAggIIAggIIAggIAAggACAggCCAggCCAIICCAIICAAIIAggACAggCCAggCCAggCCAgACC
+AAICCAIICCAIICCAIICAAIIAAgIIAggIIAggIIAggIAAggACAggCCAggCCAggCCAgACCAAICCAII
+AggIIAggIIAggCCAgACCAAICCAIICCAIICCAIICAAIIAAgIIAggIIAggIIAggIAAggACAggCCAgg
+CCAggCCAgACCAAICCAIICCAIICCAIICAAIIAggACAggCCAggCCAIICCAIICAAIIAAgIIAggIIAgg
+IIAggIAAggACAggCCAggCCAggCCAgACCAAICCAIICCAIICCAIICAAIIAAgIIAggIIAggIIAggCCA
+gACCAIIAWh4ggCCAgACCAAICCAIICCAIICCAIICAAIIAAgIIAggIIAggIIAggIAAggACAggCCAgg
+CCAggCCAgACCAAICCAIICCAIICCAIIBgjZsCsq6u7rYAggACAggCCAIICCAIICCAIICAAIIAAgII
+AggIIAggIIAggIAAggACAggCCAggCCAggCCAgACCAAICCAII1o0AQndpuPafsOL1PeHJ4UvThTzi
+iQVhwuiV4dC/LpgciCyCAggtrHpmRCgpGRhyRcXpIk7/bBxTx483OdDJCPb0EAogmVdz6J/h0qyS
+8HpZ7+bg3R3AZPTvXWyyInL79u0wdOgIE5HhZ4MCCI12rX+rdfzaCGAyBj36SKip+rcJi0B9fX14
+6KFvmIgMR1AA79HGjZvC8uW/NhGRmDXrpbwCmIwdO/5mwgSQe4hgTwthl/5vGhoaMjvWr98Qli5d
+nuk5iGVcv369zdC1F8B58+abtwhGbW1t6NUYQHPx9Y5kXbX8e8EGsKjxl0FWR9MvwyIjmnOZbwCd
+d2vY6OLcN66tpq9Pnz7tJVB4UKqrq9OXwnIdxbDFWLjwVZMGEbwfKIDQaM6cuXkHcPfuT00YFHj8
+BBC+snfv3rziN3Lkk+nl80Bhx08AoYUNGzZ2GL9Bg4aE48ePmyiIIH4CCHf56KO/hnHjxrcKX69e
+vcPLL/8snDhxwgRBJPETQGjDnTt3wv79+8MHH3wYPv54e6isrDQpEFn8BBCATMZPALvos8/2pDvC
+EJfkIpd9+/aFLVv+GN5//y/h1KlTJiVS586dS9/7PXbsmMnIWPwEsAuSXSSGDBmW3shJPA4fPhxG
+jRrzPxfALFjwi3Djxg0TFJkVK36Tnt9t2/5sMrIYalPQecl7RG+88bvmXSSIw9GjR0Pfvv3S8zpx
+4uTwzjtr0vPcv/+30u9Nm/ZMeu6JQ/Ksr+l8C6AA0oFkz7rt23eke4A+9dSkVtsoEYf58xem5zS5
+Kb6urq75+8lFMI899uVnBO7atdtEFbBDhw6lsXvttUWhuLhP8zoWQAGkAzdv3mx3T0gK38mTJ9Pb
+HZIt0ZKv77Zq1eovPxh36o9MVgFLtrFrax0LoADSgeTCiOQesabx5purBDAiyQUvyfksL/9xmz8/
+f/588y/Lq1evmrACdfDgwVbreNiw7wqgANJZFRUVAhiR5LMdk/O5ePGSdo9pei/wwIEDJiwSEyZM
+FEABRACzbcaMn6bnc82ate0eM2XKtPSYrVu3mTABRAAFUADjMHnyD9Pz+e67f2r3mOnTZ/zfSCKA
+fGXP4pDLlYd1JwVQACn4AD7//E/SY5LbIxBABLCgXLx4MTz33Iy8x8qVvxXAjGiK29q1f2j3mOQK
+0OSY997basIEkA6sK8+lu8G0Gov3COCDdObMmdCnT9+8xyuv/FwAM2LZsl+l53PJkmXtHlNSUpoe
+k2yUjQDiGWBmCWBcNm/ekp7PZ5+d3ubPL1y40HwbRFVVlQkTQARQAAUwDskH3SY3wie7gySvFNzt
+7bd/n57vp5+earIEEAEUQAGMy9y589JzmmyJlmx80OTSpUth4MDB6c8++WSniRJABFAABTAuySdB
+JO/9Nm18nbwsmmyBVlr6ePq9SZOm2AxbABFABDBOyWbJTdtjtRyzZ88J165dM0ECiACSPBNIPjGg
+vr7eZESmpqYmfP75P9Ib3jdt2hyOHDliUiKVrN9kHXtmfx+cXBfKc7lQ3oMLKIAA3KcGlrsPEAAE
+EAAEEAAEEAAEEAAEEAAEEAAEEAAEEAAEEAAEEAAEEAAEEAABBAABBAABBAABBAABBAABBIBC8V9f
+wsIJiofZJgAAAABJRU5ErkJggg=="></p><p class = "S4"><span class = "S2">There are then many different approximate step functions that can be minimised. The figure below illustrates the many different approximate step functions that can be chosen to be minimised instead of an explicit step function.</span></p><p class = "S5"><img class="imageNode" style="vertical-align: baseline" src="data:image/png;base64,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"></p><p class = "S4"><span class = "S2">Depending on the application, and the biochemical network, one or other approximation may outperform the rest, therefore a pragmatic strategy is to try each and select the most sparse flux vector. The step set of function approximations available are</span></p><p class = "S4"><span class = "S2"> * 'cappedL1' : Capped-L1 norm</span></p><p class = "S4"><span class = "S2"> * 'exp'      : Exponential function</span></p><p class = "S4"><span class = "S2"> * 'log'      : Logarithmic function</span></p><p class = "S4"><span class = "S2"> * 'SCAD'     : SCAD function</span></p><p class = "S4"><span class = "S2"> * 'lp-'      : L_p norm with p&lt;0</span></p><p class = "S4"><span class = "S2"> * 'lp+'      : L_p norm with 0&lt;p&lt;1</span></p><p class = "S4"><span class = "S2">Here we prepare a cell array of strings which indicate the set of step function approximations we wish to compare.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">approximations = {</span><span class = "S14">'cappedL1'</span><span class = "S13">,</span><span class = "S14">'exp'</span><span class = "S13">,</span><span class = "S14">'log'</span><span class = "S13">,</span><span class = "S14">'SCAD'</span><span class = "S13">,</span><span class = "S14">'lp-'</span><span class = "S13">,</span><span class = "S14">'lp+'</span><span class = "S12">};</span></p></div></div><h2 class = "S3"><span class = "S2">Run the sparse linear optimisation solver</span></h2><p class = "S4"><span class = "S2">First we must build a problem structure to pass to the sparse solver, by adding an additional constraint requiring that the sparse flux solution also statisfy the optimal objective value from flux balance analysis</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">constraint.A = [S ; c'];</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">constraint.b = [b ; c'*vFBA];</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">constraint.csense = [csense;</span><span class = "S14">'E'</span><span class = "S12">];</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">constraint.lb = lb;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">constraint.ub = ub;</span></p></div></div><p class = "S16"><span class = "S2">Now we call the sparse linear step function approximations  </span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">bestResult = n;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">bestAprox = </span><span class = "S14">''</span><span class = "S12">;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">for </span><span class = "S12">i=1:length(approximations)</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">    solution = sparseLP(char(approximations(i)),constraint);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">    </span><span class = "S11">if </span><span class = "S12">solution.stat == 1</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">        nnzSol=nnz(abs(solution.x)&gt;feasTol);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">        fprintf(</span><span class = "S14">'%u%s%s'</span><span class = "S13">,nnzSol,</span><span class = "S14">' active reactions in the sparseFBA solution with '</span><span class = "S12">, char(approximations(i)));</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">        </span><span class = "S11">if </span><span class = "S12">bestResult &gt; nnzSol</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">            bestResult=nnzSol;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">            bestAprox = char(approximations(i));</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">            solutionL0 = solution;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">        </span><span class = "S15">end</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">    </span><span class = "S15">end</span></p></div><div class = 'inlineWrapper outputs'><p class = "S10 lineNode"><span class = "S15">end</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="8A37A3AE" data-testid="output_5" data-width="1458" style="width: 1488px;"><div class="textElement">434 active reactions in the sparseFBA solution with cappedL1</div></div><div class="inlineElement embeddedOutputsTextElement" uid="08D461FB" data-testid="output_6" data-width="1458" style="width: 1488px;"><div class="textElement">433 active reactions in the sparseFBA solution with exp</div></div><div class="inlineElement embeddedOutputsTextElement" uid="DE149A39" data-testid="output_7" data-width="1458" style="width: 1488px;"><div class="textElement">433 active reactions in the sparseFBA solution with log</div></div><div class="inlineElement embeddedOutputsTextElement" uid="9E73D420" data-testid="output_8" data-width="1458" style="width: 1488px;"><div class="textElement">433 active reactions in the sparseFBA solution with SCAD</div></div><div class="inlineElement embeddedOutputsTextElement" uid="54DD4BBF" data-testid="output_9" data-width="1458" style="width: 1488px;"><div class="textElement">433 active reactions in the sparseFBA solution with lp-</div></div><div class="inlineElement embeddedOutputsTextElement" uid="DE6B13A6" data-testid="output_10" data-width="1458" style="width: 1488px;"><div class="textElement">433 active reactions in the sparseFBA solution with lp+</div></div></div></div></div><p class = "S16"><span class = "S2">Select the most sparse flux vector, unless there is a numerical problem.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">if </span><span class = "S13">~isequal(bestAprox,</span><span class = "S14">''</span><span class = "S12">)</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">    vBest = solutionL0.x;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S15">else</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">    </span><span class = "S13">vBest</span><span class = "S12"> = [];</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">    error(</span><span class = "S14">'Min L0 problem error !!!!'</span><span class = "S12">)</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S15">end</span></p></div></div><p class = "S16"><span class = "S2">Report the best approximation</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><p class = "S10 lineNode"><span class = "S13">display(strcat(</span><span class = "S14">'Best step function approximation: '</span><span class = "S12">,bestAprox));</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="C3CA505D" data-testid="output_11" data-width="1458" style="width: 1488px;"><div class="textElement">Best step function approximation:exp</div></div></div></div></div><p class = "S16"><span class = "S2">Report the number of active reactions in the most sparse flux vector</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><p class = "S10 lineNode"><span class = "S13">fprintf(</span><span class = "S14">'%u%s'</span><span class = "S13">,nnz(abs(vBest)&gt;feasTol),</span><span class = "S14">' active reactions in the best sparse flux balance analysis solution.'</span><span class = "S12">);</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="926624CE" data-testid="output_12" data-width="1458" style="width: 1488px;"><div class="textElement">433 active reactions in the best sparse flux balance analysis solution.</div></div></div></div></div><p class = "S16"><span class = "S2">Warn if there might be a numerical issue with the solution</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">feasError=norm(constraint.A * solutionL0.x - constraint.b,2);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">if </span><span class = "S12">feasError&gt;feasTol</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">    fprintf(</span><span class = "S14">'%g\t%s\n'</span><span class = "S13">,feasError, </span><span class = "S14">' feasibily error.'</span><span class = "S12">)</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">    warning(</span><span class = "S14">'Numerical issue with the sparseLP solution'</span><span class = "S12">)</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S15">end</span></p></div></div></div><p class = "S0"></p><div class = 'SectionBlock containment'><h2 class = "S21"><span class = "S2">Heuristically check i</span><span class = "S2">f the selected set of reactions is minimal</span></h2><p class = "S4"><span class = "S2">Each step function approximation minimises a different problem than minimising the zero norm explicitly. Therefore it is wise to test, at least heuristically, if the most sparse approximate solution to minimising the zero norm is at least locally optimal, in the sense that the set of preicted reactions cannot be reduced by omitting, one by one, an active reaction. If it is locally optimal in this sense, one can be more confident that the  most sparse approximate solution is the most sparse solution, but still there is no global guaruntee, as it is a combinatorial issue.</span></p><p class = "S4"><span class = "S2">Identify the set of predicted active reactions</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">activeRxnBool = abs(vBest)&gt;feasTol;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">nActiveRnxs = nnz(activeRxnBool);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">activeRxns = false(n,1);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">activeRxns(activeRxnBool) = true;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">minimalActiveRxns=activeRxns;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12"></span></p></div></div><p class = "S16"><span class = "S2">Close all predicted non-active reactions by setting their lb = ub = 0</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">lbSub = model.lb;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">ubSub = model.ub;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">lbSub(~activeRxns) = 0;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">lbSub(~activeRxns) = 0;</span></p></div></div><p class = "S16"><span class = "S2">Generate an LP problem  to be reduced</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S22">% Check if one still can achieve the same objective</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">LPproblem = struct(</span><span class = "S14">'c'</span><span class = "S13">,-c,</span><span class = "S14">'osense'</span><span class = "S13">,-1,</span><span class = "S14">'A'</span><span class = "S13">,S,</span><span class = "S14">'csense'</span><span class = "S13">,csense,</span><span class = "S14">'b'</span><span class = "S13">,b,</span><span class = "S14">'lb'</span><span class = "S13">,lbSub,</span><span class = "S14">'ub'</span><span class = "S12">,ubSub);</span></p></div></div><p class = "S16"><span class = "S2">For each active reaction in the most sparse approximate flux vector, one by one, set the reaction bounds to zero, then test if the optimal flux balance analysis objective value is still attained. If it is, then that reaction is not part of the minimal set. If it is not, then it is probably part of the minimal set.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">for </span><span class = "S12">i=1:n</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">    </span><span class = "S11">if </span><span class = "S12">activeRxnBool(i)</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">        LPproblem.lb = model.lb;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">        LPproblem.ub = model.ub;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">        </span><span class = "S22">%close bounds on this reaction</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">        LPproblem.lb(i) = 0;</span><span class = "S22">% Close the reaction</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">        LPproblem.ub(i) = 0;</span><span class = "S22">% Close the reaction</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">        </span><span class = "S22">%solve the LP problem</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">        LPsolution = solveCobraLP(LPproblem);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">        </span><span class = "S22">%check if the optimal FBA objective is attained</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">        </span><span class = "S11">if </span><span class = "S12">LPsolution.stat == 1 &amp;&amp; abs(LPsolution.obj + c'*vFBA)&lt;1e-8</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">            minimalActiveRxns(i) = 0;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">            vBestTested = LPsolution.full(1:n);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">        </span><span class = "S15">else</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">            </span><span class = "S22">%relax those bounds if reaction appears to be part of the minimal set</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">            LPproblem.lb(i) = model.lb(i);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">            LPproblem.ub(i) = model.ub(i);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">        </span><span class = "S15">end</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">    </span><span class = "S15">end</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S15">end</span></p></div></div><p class = "S16"><span class = "S2">Report the number of active reactions in the approximately most sparse flux vector, or the reduced approximately most sparse flux vector, if it is more sparse.</span></p><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S11">if </span><span class = "S12">nnz(minimalActiveRxns)&lt;nnz(activeRxns)</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">    fprintf(</span><span class = "S14">'%u%s'</span><span class = "S13">,nnz(abs(vBestTested)&gt;feasTol),</span><span class = "S14">' active reactions in the best sparseFBA solution (tested).'</span><span class = "S12">);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">    nonZeroFlag = 1;</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S12">    printFluxVector(model, vBestTested, nonZeroFlag);</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S15">else</span></p></div><div class = 'inlineWrapper'><p class = "S10 lineNode"><span class = "S13">    fprintf(</span><span class = "S14">'%u%s'</span><span class = "S13">,nnz(abs(vBest)&gt;feasTol),</span><span class = "S14">' active reactions in the best sparseFBA solution (tested).'</span><span class = "S12">);</span></p></div><div class = 'inlineWrapper outputs'><p class = "S10 lineNode"><span class = "S15">end</span></p><div class="outputParagraph"><div class="inlineElement embeddedOutputsTextElement" uid="DD6182E0" data-testid="output_13" data-width="1458" style="width: 1488px;"><div class="textElement">433 active reactions in the best sparseFBA solution (tested).</div></div></div></div></div></div></div>
+<!-- 
+##### SOURCE BEGIN #####
+%% Sparse Flux Balance Analysis 
+%% Author: Ronan Fleming, Hoai Minh Le, Systems Biochemistry Group, University of Luxembourg.
+%% Reviewer:
+%% INTRODUCTION
+% We consider a biochemical network of  m  molecular species and  n  biochemical 
+% reactions. The biochemical network is mathematically represented by a stoichiometric 
+% matrix $S\in\mathcal{Z}^{m\times n}$. In standard notation, flux balance analysis 
+% (FBA) is the linear optimisation problem
+% 
+% $$\begin{array}{ll}\min\limits _{v} & \rho(v)\equiv c^{T}v\\\text{s.t.} 
+% & Sv=b,\\ & l\leq v\leq u,\end{array}$$
+% 
+% where $$c\in\Re^{n}$$ is a parameter vector that linearly combines one 
+% or more reaction fluxes to form what is termed the objective function,  and 
+% where a $$b_{i}<0$$, or  $$b_{i}>0$$, represents some fixed output, or input, 
+% of the ith molecular species. A typical application of flux balance analysis 
+% is to predict an optimal non-equilibrium steady-state flux vector that optimises 
+% a linear objective function, such biomass production rate, subject to bounds 
+% on certain reaction rates. Herein we use sparse flux balance analysis to predict 
+% a minimal number of active reactions [<#LyXCite-melendez_hevia_game_1985 melendez-hevia_game_1985>], 
+% consistent with an optimal objective derived from the result of a standard flux 
+% balance analysis problem. In this context _sparse flux balance analysis _requires 
+% a solution to the following problem
+% 
+% $$\begin{array}{ll}\min\limits _{v} & \Vert v\Vert_{0}\\\text{s.t.} & Sv=b\\ 
+% & l\leq v\leq u\\ & c^{T}v=\rho^{\star}\end{array}$$
+% 
+% where the last constraint is represents the requirement to satisfy an optimal 
+% objective value $\rho^{\star}$  derived from any solution to a flux balance 
+% analysis (FBA) problem.
+%% EQUIPMENT SETUP
+% If necessary, initialise the cobra toolbox
+
+global TUTORIAL_INIT_CB;
+if ~isempty(TUTORIAL_INIT_CB) && TUTORIAL_INIT_CB==1
+    initCobraToolbox
+    changeCobraSolver('gurobi','all');
+end
+%% 
+%% PROCEDURE
+% Set the tolerance to distinguish between zero and non-zero flux, based on 
+% the numerical tolerance of the currently installed optimisation solver.
+
+feasTol = getCobraSolverParams('LP', 'feasTol');
+%% 
+% Load Recon3.0model, unless it is already loaded into the workspace.
+
+clear model
+if ~exist('modelOrig','var')
+    filename='Recon3.0model';
+    directory='~/work/sbgCloud/programReconstruction/projects/recon2models/data/reconXComparisonModels';
+    model = loadIdentifiedModel(filename,directory);
+    model.csense(1:size(model.S,1),1)='E';
+    modelOrig = model;
+else
+    model=modelOrig;
+end
+%% 
+% 
+% 
+% Display the constraints
+
+minInf=-1000;
+maxInf=1000;
+printConstraints(model, minInf, maxInf);
+%% 
+% Select the biomass reaction to optimise
+
+model.biomassBool=strcmp(model.rxns,'biomass_reaction');
+model.c(model.biomassBool)=1;
+%% 
+% Display the biomass reaction
+
+rxnAbbrList={'biomass_reaction'};
+printFlag = 1;
+formulas = printRxnFormula(model, rxnAbbrList, printFlag);        
+%%  Sparse flux balance analysis
+% We provide two options to run sparse flux balance analysis. A: directly in 
+% one step, no quality control, and B: two steps, all approximations, with a heuristic 
+% sparsity test*.*
+%% TIMING
+% The time to compute a sparse flux balance analysis solution depends on the 
+% size of the genome-scale model and the option chosen to run sparse flux balance 
+% analysis.  Option A: directly in one step, no quality control, can take anything 
+% from <0.1 seconds for a 1,000 reaction model, to 1,000 seconds for a model with 
+% 20,000 reactions. Option B: two steps, all approximations, with a sparsity test 
+% could take hours for a model with >10,000 reactions because the length of time 
+% for the heuristic sparsity test is proportional to the number of active reactions 
+% in an approximate sparse solution.
+%% *A. Sparse flux balance analysis (directly in one step, no quality control)*
+% This approach computes a sparse flux balance analysis solution, satisfing 
+% the FBA objection, with the default approach to approximate the solution to 
+% the cardinality minimisation problem underling sparse FBA. This approach does 
+% not check the quality of the solution, i.e., whether indeed it is the sparsest 
+% flux vector satisfing the optimality criterion $c^{T}v=\rho^{\star}$.
+% 
+% First choose whether to maximize ('max') or minimize ('min') the FBA objective. 
+% Here we choose maximise
+
+osenseStr='max';
+%% 
+% Choose to minimize the zero norm of the optimal flux vector
+
+minNorm='zero';
+%% 
+% Run sparse flux balance analysis
+
+sparseFBAsolution = optimizeCbModel(model, osenseStr, minNorm);
+%% 
+% Obtain the vector of reaction rates from the solution structure
+
+v = sparseFBAsolution.v;
+%% 
+% Display the sparse flux solution, but only the non-zero fluxes
+
+nonZeroFlag = 1;
+printFluxVector(model, v, nonZeroFlag);
+%% 
+% Display the number of active reactions
+
+fprintf('%u%s\n',nnz(v),' active reactions in the sparse flux balance analysis solution.');
+%% ANTICIPATED RESULTS
+% Typically, a sparse flux balance analysis solution will have a small fraction 
+% of the number of the number of reactions active than in a flux balance analysis 
+% solution, e.g., Recon3.0model has 10,600 reactions. When maximising biomass 
+% production, a typical flux balance analysis solution might have approximately 
+% 3,000 active reactions (this is LP solver dependent) whereas for the same problem 
+% there are 435 active reactions in the sparse flux balance analysis solution 
+% from optimizeCbModel (using the default capped L1 norm approximate step function, 
+% see below).
+%% *B. Sparse flux balance analysis (two steps, all approximations,* *with a sparsity test)*
+% This approach computes a sparse flux balance analysis solution, satisfing 
+% the FBA objection, with the default approach to approximate the solution to 
+% the cardinality minimisation problem underling sparse FBA. This approach does 
+% not check the quality of the solution, i.e., whether indeed it is the sparsest 
+% flux vector satisfing the optimality criterion $c^{T}v=\rho^{\star}$.
+%% Solve a flux balance analysis problem
+% Build a linear programming problem structure (LPproblem) that is compatible 
+% with the interfacefunction (solveCobraLP) to any installed linear optimisation 
+% solver.
+
+[c,S,b,lb,ub,csense] = deal(model.c,model.S,model.b,model.lb,model.ub,model.csense);
+[m,n] = size(S);
+
+LPproblem = struct('c',c,'osense',-1,'A',S,'csense',csense,'b',b,'lb',lb,'ub',ub);
+%% 
+% Now solve the flux balance analysis problem
+
+LPsolution = solveCobraLP(LPproblem);
+if LPsolution.stat == 1
+    vFBA = LPsolution.full(1:n);
+else
+    vFBA = [];
+    error('FBA problem error!')
+end
+%% 
+% Display the number of active reactions
+
+fprintf('%u%s\n',nnz(vFBA),' active reactions in the flux balance analysis solution.');
+%% Approimations underlying sparse flux balance analysis
+% Due to its combinatorial nature, minimising the zero norm explicitly is an 
+% NP-hard problem. Therefore we approximately solve the problem. The approach 
+% is to replace the zero norm with a separable sum of step functions, which are 
+% each approximated by anther function. Consider the step function ς(t): R  →  
+% R where ς (t)=1 if t ≠ 0 and     ς (t)=0 otherwise, illustrated in the Figure 
+% below:
+% 
+% 
+% 
+% There are then many different approximate step functions that can be minimised. 
+% The figure below illustrates the many different approximate step functions that 
+% can be chosen to be minimised instead of an explicit step function.
+% 
+% 
+% 
+% Depending on the application, and the biochemical network, one or other 
+% approximation may outperform the rest, therefore a pragmatic strategy is to 
+% try each and select the most sparse flux vector. The step set of function approximations 
+% available are
+% 
+%  * 'cappedL1' : Capped-L1 norm
+% 
+%  * 'exp'      : Exponential function
+% 
+%  * 'log'      : Logarithmic function
+% 
+%  * 'SCAD'     : SCAD function
+% 
+%  * 'lp-'      : L_p norm with p<0
+% 
+%  * 'lp+'      : L_p norm with 0<p<1
+% 
+% Here we prepare a cell array of strings which indicate the set of step 
+% function approximations we wish to compare.
+
+approximations = {'cappedL1','exp','log','SCAD','lp-','lp+'};
+%% Run the sparse linear optimisation solver
+% First we must build a problem structure to pass to the sparse solver, by adding 
+% an additional constraint requiring that the sparse flux solution also statisfy 
+% the optimal objective value from flux balance analysis
+
+constraint.A = [S ; c'];
+constraint.b = [b ; c'*vFBA];
+constraint.csense = [csense;'E'];
+constraint.lb = lb;
+constraint.ub = ub;
+%% 
+% Now we call the sparse linear step function approximations  
+
+bestResult = n;
+bestAprox = '';
+for i=1:length(approximations)
+    solution = sparseLP(char(approximations(i)),constraint);
+    if solution.stat == 1
+        nnzSol=nnz(abs(solution.x)>feasTol);
+        fprintf('%u%s%s',nnzSol,' active reactions in the sparseFBA solution with ', char(approximations(i)));
+        if bestResult > nnzSol
+            bestResult=nnzSol;
+            bestAprox = char(approximations(i));
+            solutionL0 = solution;
+        end
+    end
+end
+%% 
+% Select the most sparse flux vector, unless there is a numerical problem.
+
+if ~isequal(bestAprox,'')
+    vBest = solutionL0.x;
+else
+    vBest = [];
+    error('Min L0 problem error !!!!')
+end
+%% 
+% Report the best approximation
+
+display(strcat('Best step function approximation: ',bestAprox));
+%% 
+% Report the number of active reactions in the most sparse flux vector
+
+fprintf('%u%s',nnz(abs(vBest)>feasTol),' active reactions in the best sparse flux balance analysis solution.');
+%% 
+% Warn if there might be a numerical issue with the solution
+
+feasError=norm(constraint.A * solutionL0.x - constraint.b,2);
+if feasError>feasTol
+    fprintf('%g\t%s\n',feasError, ' feasibily error.')
+    warning('Numerical issue with the sparseLP solution')
+end
+%% Heuristically check if the selected set of reactions is minimal
+% Each step function approximation minimises a different problem than minimising 
+% the zero norm explicitly. Therefore it is wise to test, at least heuristically, 
+% if the most sparse approximate solution to minimising the zero norm is at least 
+% locally optimal, in the sense that the set of preicted reactions cannot be reduced 
+% by omitting, one by one, an active reaction. If it is locally optimal in this 
+% sense, one can be more confident that the  most sparse approximate solution 
+% is the most sparse solution, but still there is no global guaruntee, as it is 
+% a combinatorial issue.
+% 
+% Identify the set of predicted active reactions
+
+activeRxnBool = abs(vBest)>feasTol;
+nActiveRnxs = nnz(activeRxnBool);
+activeRxns = false(n,1);
+activeRxns(activeRxnBool) = true;
+minimalActiveRxns=activeRxns;
+
+%% 
+% Close all predicted non-active reactions by setting their lb = ub = 0
+
+lbSub = model.lb;
+ubSub = model.ub;
+lbSub(~activeRxns) = 0;
+lbSub(~activeRxns) = 0;
+%% 
+% Generate an LP problem  to be reduced
+
+% Check if one still can achieve the same objective
+LPproblem = struct('c',-c,'osense',-1,'A',S,'csense',csense,'b',b,'lb',lbSub,'ub',ubSub);
+%% 
+% For each active reaction in the most sparse approximate flux vector, one 
+% by one, set the reaction bounds to zero, then test if the optimal flux balance 
+% analysis objective value is still attained. If it is, then that reaction is 
+% not part of the minimal set. If it is not, then it is probably part of the minimal 
+% set.
+
+for i=1:n
+    if activeRxnBool(i)
+        LPproblem.lb = model.lb;
+        LPproblem.ub = model.ub;
+        %close bounds on this reaction
+        LPproblem.lb(i) = 0;% Close the reaction
+        LPproblem.ub(i) = 0;% Close the reaction
+        %solve the LP problem
+        LPsolution = solveCobraLP(LPproblem);
+        %check if the optimal FBA objective is attained
+        if LPsolution.stat == 1 && abs(LPsolution.obj + c'*vFBA)<1e-8
+            minimalActiveRxns(i) = 0;
+            vBestTested = LPsolution.full(1:n);
+        else
+            %relax those bounds if reaction appears to be part of the minimal set
+            LPproblem.lb(i) = model.lb(i);
+            LPproblem.ub(i) = model.ub(i);
+        end
+    end
+end
+%% 
+% Report the number of active reactions in the approximately most sparse 
+% flux vector, or the reduced approximately most sparse flux vector, if it is 
+% more sparse.
+
+if nnz(minimalActiveRxns)<nnz(activeRxns)
+    fprintf('%u%s',nnz(abs(vBestTested)>feasTol),' active reactions in the best sparseFBA solution (tested).');
+    nonZeroFlag = 1;
+    printFluxVector(model, vBestTested, nonZeroFlag);
+else
+    fprintf('%u%s',nnz(abs(vBest)>feasTol),' active reactions in the best sparseFBA solution (tested).');
+end
+##### SOURCE END #####
+--></body></html>
