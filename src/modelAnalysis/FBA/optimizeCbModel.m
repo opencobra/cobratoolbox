@@ -98,7 +98,7 @@ function FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, ze
 %    FBAsolution:       solution object
 %
 %                          * f - Objective value
-%                          * x - Reaction rates (Optimal primal variable)
+%                          * v - Reaction rates (Optimal primal variable, legacy FBAsoltion.x)
 %                          * y - Dual
 %                          * w - Reduced costs
 %                          * s - Slacks
@@ -420,3 +420,4 @@ FBAsolution.stat = solution.stat;
 FBAsolution.origStat = solution.origStat;
 FBAsolution.solver = solution.solver;
 FBAsolution.time = etime(clock, t1);
+FBAsolution.v = FBAsolution.x;%eventually we should depreciate FBAsolution.x
