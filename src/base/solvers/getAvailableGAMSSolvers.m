@@ -28,7 +28,7 @@ function [summaryTable, booleanTable, problemTypes, solvers] = getAvailableGAMSS
 %
 % .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
-gamsPath = which('gams'); %verify that gams is installed
+gamsPath = which('gams');  % verify that gams is installed
 if isempty(gamsPath)
     error('GAMS is not installed or GAMS path has not been added to MATLAB path.');
 end

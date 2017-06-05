@@ -19,14 +19,14 @@ function solvers = checkGAMSSolvers(problemType)
 %                              in your systems which allows the user to
 %                              solve problems of type "problemType"
 % 
-% EXAMPLE:    
+% EXAMPLE:
 %
 %    solvers = checkGAMSSolvers('MIP') 
-%    returns the GAMS solvers available to solve Mixed Integer Programming
-%    problems. You can see the entire list of problem types with the
-%    function getAvailableGAMSSolvers.m
+%    % returns the GAMS solvers available to solve Mixed Integer Programming
+%    % problems. You can see the entire list of problem types with the
+%    % function getAvailableGAMSSolvers.m
 %
-% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
+% .. Author: - SebastiÂ·n Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
 if nargin < 1
     error('The type of problem must be specified')
