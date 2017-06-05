@@ -100,6 +100,19 @@ if nargin < 11  || isempty(LoopRxnsToIgnore)
     tmpRxnForm = printRxnFormula(tmp,LoopRxnsToIgnore);
 end
 
+
+if sampling == 1
+    %Sampling of the model 1
+    [model1Sampling,samples1] = sampleCbModel(model1,'model1Sampling');
+    model1=model1Sampling;
+    model1.points=samples1;
+    %Sampling of the model 2
+    [model2Sampling,samples2] = sampleCbModel(model2,'model2Sampling');
+    model2=model2Sampling;
+    model2.points=samples2;
+end
+
+
 % Set the function to not use waitbars and lots of status text.
 if nargin < 12  || isempty(verboseTag)
     verboseTag = 0;
@@ -144,17 +157,6 @@ if nargin < 4 || isempty(sampling)
         warning 'Model2 is not sampled, sampling will be performed using sampleCbModel'
         sampling = 1;
     end
-end
-
-if sampling == 1
-    %Sampling of the model 1
-    [model1Sampling,samples1] = sampleCbModel(model1,'model1Sampling');
-    model1=model1Sampling;
-    model1.points=samples1;
-    %Sampling of the model 2
-    [model2Sampling,samples2] = sampleCbModel(model2,'model2Sampling');
-    model2=model2Sampling;
-    model2.points=samples2;
 end
 
 % since the statistics should be two-tailed, divide the p-value by 2
