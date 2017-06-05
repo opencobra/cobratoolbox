@@ -1,10 +1,10 @@
-function [mustUU, pos_mustUU, mustUU_linear, pos_mustUU_linear] = findMustUU(model, ...
+function [mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustUL(model, ...
     minFluxesW, maxFluxesW, constrOpt, excludedRxns, runID, outputFolder,...
     outputFileName, printExcel, printText, printReport, keepInputs, verbose)
-%% DESCRIPTION
+% DESCRIPTION
 % This function runs the second step of optForce, that is to solve a
 % bilevel mixed integer linear programming  problem to find a second order
-% MustUU set. This script is based in the GAMS files written by Sridhar
+% MustUL set. This script is based in the GAMS files written by Sridhar
 % Ranganathan which were provided by the research group of Costas D.
 % Maranas.
 %
@@ -12,136 +12,162 @@ function [mustUU, pos_mustUU, mustUU_linear, pos_mustUU_linear] = findMustUU(mod
 % Procedure for Identifying All Genetic Manipulations Leading to Targeted
 % Overproductions. PLOS Computational Biology 6(4): e1000744.
 % https://doi.org/10.1371/journal.pcbi.1000744
-
-% Usage1: findMustUU(model, minFluxesW, maxFluxesW)
-%         basic configuration for running the optimization problem in GAMS
-%         to find the MustU set.
-
-% Usage2: findMustUU(model, minFluxesW, maxFluxesW, option 1, ..., option N)
-%         specify additional options such as fixed reactions, solver or if
-%         results shoulds be saved in files or not.
-
+%
+% USAGE1: 
+%
+%       [mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustUL(model, minFluxesW, maxFluxesW) 
+%       basic configuration for running the optimization problem to find
+%       the MustUL set.
+%
+% USAGE2:
+%
+%       [mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustUL(model, minFluxesW, maxFluxesW, option 1, ..., option N)
+%       specify additional options such as fixed reactions or if results
+%       shoulds be saved in files or not.
+%
 % Created by Sebastián Mendoza. 30/05/2017. snmendoz@uc.cl
+%
+% INPUTS:
+%
+%       model (obligatory):       Type: struct (COBRA model)
+%                                 Description: a metabolic model with at least
+%                                 the following fields:
+%                                 rxns            Reaction IDs in the model
+%                                 mets            Metabolite IDs in the model
+%                                 S               Stoichiometric matrix (sparse)
+%                                 b               RHS of Sv = b (usually zeros)
+%                                 c               Objective coefficients
+%                                 lb              Lower bounds for fluxes
+%                                 ub              Upper bounds for fluxes
+%                                 rev             Reversibility flag
+%
+%       minFluxesW (obligatory)   Type: double array of size n_rxns x1
+%                                 Description: Minimum fluxes for each reaction
+%                                 in the model for wild-type strain. This can be
+%                                 obtained by running the function FVA_optForce
+%                                 Example: minFluxesW=[-90; -56];
+%
+%       maxFluxesW (obligatory)   Type: double array of size n_rxns x1
+%                                 Description: Maximum fluxes for each reaction
+%                                 in the model for wild-type strain. This can be
+%                                 obtained by running the function FVA_optForce
+%                                 Example: maxFluxesW=[-90; -56];
+%
+% OPTIONAL INPUTS
+%
+%       constrOpt (optional):     Type: Structure
+%                                 Description: structure containing additional
+%                                 contraints. The structure has the following
+%                                 fields:
+%                                 rxnList: (Type: cell array)      Reaction list
+%                                 values:  (Type: double array)    Values for constrained reactions
+%                                 sense:   (Type: char array)      Constraint senses for constrained reactions (G/E/L)
+%                                                                  (G: Greater than; E: Equal to; L: Lower than)
+%                                 Example: struct('rxnList',{{'EX_gluc','R75','EX_suc'}},'values',[-100,0,155.5]','sense','EEE');
+%
+%       excludedRxns(optional):   Type: cell array
+%                                 Description: Reactions to be excluded to the
+%                                 MustUL set. This could be used to avoid finding
+%                                 transporters or exchange reactions in the set
+%                                 Default: empty.
+%
+%       runID (optional):         Type: string
+%                                 Description: ID for identifying this run
+%
+%       outputFolder (optional):  Type: string
+%                                 Description: name for folder in which results
+%                                 will be stored
+% 
+%       outputFileName (optional):Type: string
+%                                 Description: name for files in which results
+%                                 will be stored
+%
+%       printExcel (optional) :   Type: double
+%                                 Description: boolean to describe wheter data
+%                                 must be printed in an excel file or not
+%
+%       printText (optional):     Type: double
+%                                 Description: boolean to describe wheter data
+%                                 must be printed in an plaint text file or not
+% 
+%       printReport (optional):   Type: double
+%                                 Description: 1 to generate a report in a plain
+%                                 text file. 0 otherwise.
+%
+%       keepInputs (optional):    Type: double
+%                                 Description: 1 to save inputs to run
+%                                 findMustUL.m 0 otherwise.
+%
+%       verbose (optional):       Type: double
+%                                 Description: 1 to print results in console.
+%                                 0 otherwise.
+%
+% OUTPUTS
+%       mustUL:                   Type: cell array
+%                                 Size: number of sets found X 2
+%                                 Description: Cell array containing the
+%                                 reactions IDs which belong to the MustUL
+%                                 set. Each row contain a couple of
+%                                 reactions.
+%
+%       pos_mustUL:               Type: double array
+%                                 Size: number of sets found X 2
+%                                 Description: double array containing the
+%                                 positions of each reaction in mustUL with
+%                                 regard to model.rxns
+%
+%       mustUL_linear:            Type: cell array
+%                                 Size: number of unique reactions found X 1
+%                                 Description: Cell array containing the
+%                                 unique reactions ID which belong to the
+%                                 MustUL Set
+%
+%       pos_mustUL_linear:        Type: double array
+%                                 Size: number of unique reactions found X 1
+%                                 Description: double array containing
+%                                 positions for reactions in mustUL_linear.
+%                                 with regard to model.rxns
+%
+% OUTPUT FILES
+%
+%       outputFileName.xls        Type: file.
+%                                 Description: File containing one column array
+%                                 with identifiers for reactions in MustUL. This
+%                                 file will only be generated if the user entered
+%                                 printExcel = 1. Note that the user can choose
+%                                 the name of this file entering the input
+%                                 outputFileName = 'PutYourOwnFileNameHere';
+%
+%       outputFileName.txt        Type: file.
+%                                 Description: File containing one column array
+%                                 with identifiers for reactions in MustUL. This
+%                                 file will only be generated if the user entered
+%                                 printText = 1. Note that the user can choose
+%                                 the name of this file entering the input
+%                                 outputFileName = 'PutYourOwnFileNameHere';
+%
+%       outputFileName_Info.xls   Type: file.
+%                                 Description: File containing one column array.
+%                                 In each row the user will find a couple of
+%                                 reactions. Each couple of reaction was found in
+%                                 one iteration of FindMustUL.gms. This file will
+%                                 only be generated if the user entered
+%                                 printExcel = 1. Note that the user can choose
+%                                 the name of this file entering the input
+%                                 outputFileName = 'PutYourOwnFileNameHere';
+%
+%       outputFileName_Info.txt   Type: file.
+%                                 Description: File containing one column array.
+%                                 In each row the user will find a couple of
+%                                 reactions. Each couple of reaction was found in
+%                                 one iteration of FindMustUL.gms. This file will
+%                                 only be generated if the user entered
+%                                 printText = 1. Note that the user can choose
+%                                 the name of this file entering the input
+%                                 outputFileName = 'PutYourOwnFileNameHere';
+%
+%
 
-%% INPUTS
-% model (obligatory):       Type: struct (COBRA model)
-%                           Description: a metabolic model with at least
-%                           the following fields:
-%                           rxns            Reaction IDs in the model
-%                           mets            Metabolite IDs in the model
-%                           S               Stoichiometric matrix (sparse)
-%                           b               RHS of Sv = b (usually zeros)
-%                           c               Objective coefficients
-%                           lb              Lower bounds for fluxes
-%                           ub              Upper bounds for fluxes
-%                           rev             Reversibility flag
-%
-% minFluxesW (obligatory) Type: double array of size n_rxns x1
-%                           Description: Minimum fluxes for each reaction
-%                           in the model for wild-type strain. This can be
-%                           obtained by running the function FVA_optForce
-%                           Example: minFluxesW=[-90; -56];
-%
-% maxFluxesW (obligatory) Type: double array of size n_rxns x1
-%                           Description: Maximum fluxes for each reaction
-%                           in the model for wild-type strain. This can be
-%                           obtained by running the function FVA_optForce
-%                           Example: maxFluxesW=[-90; -56];
-%% OPTIONAL INPUTS
-%
-% constrOpt (optional):     Type: Structure
-%                           Description: structure containing additional
-%                           contraints. The structure has the following
-%                           fields:
-%                           rxnList: (Type: cell array)      Reaction list
-%                           values:  (Type: double array)    Values for constrained reactions
-%                           sense:   (Type: char array)      Constraint senses for constrained reactions (G/E/L)
-%                                                            (G: Greater than; E: Equal to; L: Lower than)
-%                           Example: struct('rxnList',{{'EX_gluc','R75','EX_suc'}},'values',[-100,0,155.5]','sense','EEE');
-%
-% excludedRxns(optional):   Type: cell array
-%                           Description: Reactions to be excluded to the
-%                           MustUU set. This could be used to avoid finding
-%                           transporters or exchange reactions in the set
-%                           Default: empty.
-%
-% runID (optional):         Type: string
-%                           Description: ID for identifying this run
-%
-% outputFolder (optional):  Type: string
-%                           Description: name for folder in which results
-%                           will be stored
-%
-% outputFileName (optional):Type: string
-%                           Description: name for files in which results
-%                           will be stored
-%
-% printExcel (optional) :   Type: double
-%                           Description: boolean to describe wheter data
-%                           must be printed in an excel file or not
-%
-% printText (optional):    Type: double
-%                           Description: boolean to describe wheter data
-%                           must be printed in an plaint text file or not
-%
-% printReport (optional):   Type: double
-%                           Description: 1 to generate a report in a plain
-%                           text file. 0 otherwise.
-%
-% keepInputs (optional):    Type: double
-%                           Description: 1 to mantain folder with inputs to
-%                           run findMustUU.gms. 0 otherwise.
-
-% verbose (optional):       Type: double
-%                           Description: 1 to print results in console.
-%                           0 otherwise.
-
-%% OUTPUTS
-% mustUSet:                 Type: cell array
-%                           Size: number of reactions found X 1
-%                           Description: Cell array containing the
-%                           reactions ID which belong to the Must_U Set
-% pos_MustU:                Type: double array
-%                           Size: number of reactions found X 1
-%                           Description: double array containing the
-%                           positions of reactions in the model.
-%% OUTPUT FILES
-% outputFileName.xls        Type: file.
-%                           Description: File containing one column array
-%                           with identifiers for reactions in MustUU. This
-%                           file will only be generated if the user entered
-%                           printExcel = 1. Note that the user can choose
-%                           the name of this file entering the input
-%                           outputFileName = 'PutYourOwnFileNameHere';
-%
-% outputFileName.txt        Type: file.
-%                           Description: File containing one column array
-%                           with identifiers for reactions in MustUU. This
-%                           file will only be generated if the user entered
-%                           printText = 1. Note that the user can choose
-%                           the name of this file entering the input
-%                           outputFileName = 'PutYourOwnFileNameHere';
-%
-% outputFileName_Info.xls   Type: file.
-%                           Description: File containing one column array.
-%                           In each row the user will find a couple of
-%                           reactions. Each couple of reaction was found in
-%                           one iteration of FindMustUU.gms. This file will
-%                           only be generated if the user entered
-%                           printExcel = 1. Note that the user can choose
-%                           the name of this file entering the input
-%                           outputFileName = 'PutYourOwnFileNameHere';
-%
-% outputFileName_Info.txt   Type: file.
-%                           Description: File containing one column array.
-%                           In each row the user will find a couple of
-%                           reactions. Each couple of reaction was found in
-%                           one iteration of FindMustUU.gms. This file will
-%                           only be generated if the user entered
-%                           printText = 1. Note that the user can choose
-%                           the name of this file entering the input
-%                           outputFileName = 'PutYourOwnFileNameHere';
-%
 %% CODE
 % inputs handling
 if nargin < 1 || isempty(model)
@@ -194,12 +220,12 @@ else
     if ~ischar(runID); error('OptForce: runID must be an string');  end
 end
 if nargin < 7 || isempty(outputFolder)
-    outputFolder = 'OutputsFindMustUU';
+    outputFolder = 'OutputsFindMustUL';
 else
     if ~ischar(outputFolder); error('OptForce: outputFolder must be an string');  end
 end
 if nargin < 8 || isempty(outputFileName)
-    outputFileName = 'MustUUSet';
+    outputFileName = 'MustULSet';
 else
     if ~ischar(outputFileName); error('OptForce: outputFileName must be an string');  end
 end
@@ -246,7 +272,7 @@ if printReport
     reportFileName = ['report-' date '-' num2str(hour(4)) 'h' '-' num2str(hour(5)) 'm.txt'];
     freport = fopen(reportFileName, 'w');
     % print date of running.
-    fprintf(freport, ['findMustUU.m executed on ' date ' at ' num2str(hour(4)) ':' num2str(hour(5)) '\n\n']);
+    fprintf(freport, ['findMustUL.m executed on ' date ' at ' num2str(hour(4)) ':' num2str(hour(5)) '\n\n']);
     % print matlab version.
     fprintf(freport, ['MATLAB: Release R' version('-release') '\n']);
     
@@ -288,9 +314,9 @@ if printReport
 end
 
 % export inputs for running the optimization problem in GAMS to find the
-% MustUU Set
+% MustUL Set
 if keepInputs
-    inputFolder = 'InputsMustUU';
+    inputFolder = 'InputsMustUL';
     saveInputsMustSetsSecondOrder(model, minFluxesW, maxFluxesW, constrOpt, excludedRxns, inputFolder)
 end
 
@@ -304,26 +330,26 @@ n_rxns = length(model.rxns);
 can = zeros(n_rxns,1);
 can(minFluxesW ~= 0) = 1;
 can(maxFluxesW ~= 0) = 1;
-mustUU = cell(n_rxns^2, 2);
-pos_mustUU = zeros(n_rxns^2, 2);
+mustUL = cell(n_rxns^2, 2);
+pos_mustUL = zeros(n_rxns^2, 2);
 solutions = cell(n_rxns^2, 1);
 
 cont=0;
 while 1
-    bilevelMILPproblem = buildBilevelMILPproblemForFindMustUU(model, can, maxFluxesW, constrOpt, excludedRxns, solutions);
+    bilevelMILPproblem = buildBilevelMILPproblemForFindMustUL(model, can, minFluxesW, maxFluxesW, constrOpt, excludedRxns, solutions);
     % Solve problem
-    MustUUSol = solveCobraMILP(bilevelMILPproblem, 'printLevel', 1);
-    if MustUUSol.stat ~= 1
+    MustULSol = solveCobraMILP(bilevelMILPproblem, 'printLevel', 1);
+    if MustULSol.stat ~= 1
         break;
     else
         cont = cont + 1;
-        pos_actives = find(MustUUSol.int > 0.99);
+        pos_actives = find(MustULSol.int > 0.99);
         pos_y1 = pos_actives(1);
         pos_y2 = pos_actives(2) - n_rxns;
-        mustUU{cont, 1} = model.rxns{pos_y1};
-        mustUU{cont, 2} = model.rxns{pos_y2};
-        pos_mustUU(cont, 1) = pos_y1;
-        pos_mustUU(cont, 1) = pos_y1;
+        mustUL{cont, 1} = model.rxns{pos_y1};
+        mustUL{cont, 2} = model.rxns{pos_y2};
+        pos_mustUL(cont, 1) = pos_y1;
+        pos_mustUL(cont, 1) = pos_y1;
         solution.reactions = [model.rxns(pos_y1); model.rxns(pos_y2)];
         solution.posbl = [pos_actives(1); pos_actives(2)];
         solution.pos = [pos_y1; pos_y2];
@@ -335,24 +361,24 @@ if printReport; fprintf(freport, '\n------RESULTS------\n'); end;
 
 if cont>0
     
-    if printReport; fprintf(freport, '\na MustUU set was found\n'); end;
-    if verbose; fprintf('a MustUU set was found\n'); end;
-    mustUU = mustUU(1:cont, :);
-    pos_mustUU = pos_mustUU(1:cont, :);
+    if printReport; fprintf(freport, '\na MustUL set was found\n'); end;
+    if verbose; fprintf('a MustUL set was found\n'); end;
+    mustUL = mustUL(1:cont, :);
+    pos_mustUL = pos_mustUL(1:cont, :);
     
-    mustUU_linear = {};
-    for i = 1:size(mustUU,1)
-        mustUU_linear = union(mustUU_linear, mustUU(i,:));
+    mustUL_linear = {};
+    for i = 1:size(mustUL,1)
+        mustUL_linear = union(mustUL_linear, mustUL(i,:));
     end
-    [~, pos_mustUU_linear] = intersect(model.rxns, mustUU_linear);
+    [~, pos_mustUL_linear] = intersect(model.rxns, mustUL_linear);
 else
-    if printReport; fprintf(freport, '\na MustUU set was not found\n'); end;
-    if verbose; fprintf('a MustUU set was not found\n'); end;
+    if printReport; fprintf(freport, '\na MustUL set was not found\n'); end;
+    if verbose; fprintf('a MustUL set was not found\n'); end;
     
-    mustUU = {};
-    pos_mustUU = [];
-    mustUU_linear = {};
-    pos_mustUU_linear = [];
+    mustUL = {};
+    pos_mustUL = [];
+    mustUL_linear = {};
+    pos_mustUL_linear = [];
 end
 
 % print info into an excel file if required by the user
@@ -360,24 +386,24 @@ if printExcel
     if cont > 0
         currentFolder = pwd;
         cd(outputFolder);
-        must = cell(size(mustUU, 1), 1);
-        for i = 1:size(mustUU, 1)
-            must{i} = strjoin(mustUU(i, :), ' or ');
+        must = cell(size(mustUL, 1), 1);
+        for i = 1:size(mustUL, 1)
+            must{i} = strjoin(mustUL(i, :), ' or ');
         end
         xlswrite([outputFileName '_Info'], [{'Reactions'}; must]);
-        xlswrite(outputFileName, mustUU_linear);
+        xlswrite(outputFileName, mustUL_linear);
         cd(currentFolder);
         if verbose
-            fprintf(['MustUU set was printed in ' outputFileName '.xls  \n']);
-            fprintf(['MustUU set was also printed in ' outputFileName '_Info.xls  \n']);
+            fprintf(['MustUL set was printed in ' outputFileName '.xls  \n']);
+            fprintf(['MustUL set was also printed in ' outputFileName '_Info.xls  \n']);
         end
         if printReport
-            fprintf(freport, ['\nMustUU set was printed in ' outputFileName '.xls  \n']);
-            fprintf(freport, ['\nMustUU set was printed in ' outputFileName '_Info.xls  \n']);
+            fprintf(freport, ['\nMustUL set was printed in ' outputFileName '.xls  \n']);
+            fprintf(freport, ['\nMustUL set was printed in ' outputFileName '_Info.xls  \n']);
         end       
     else
-        if verbose; fprintf('No mustUU set was found. Therefore, no excel file was generated\n'); end;
-        if printReport; fprintf(freport, '\nNo mustUU set was found. Therefore, no excel file was generated\n'); end;
+        if verbose; fprintf('No mustUL set was not found. Therefore, no excel file was generated\n'); end;
+        if printReport; fprintf(freport, '\nNo mustUL set was not found. Therefore, no excel file was generated\n'); end;
     end
 end
 
@@ -388,30 +414,30 @@ if printText
         cd(outputFolder);
         f = fopen([outputFileName '_Info.txt'], 'w');
         fprintf(f, 'Reactions\n');
-        for i = 1:size(mustUU, 1)
-            fprintf(f, '%s or %s\n', mustUU{i,1}, mustUU{i,2});
+        for i = 1:size(mustUL, 1)
+            fprintf(f, '%s or %s\n', mustUL{i,1}, mustUL{i,2});
         end
         fclose(f);
         
         f = fopen([outputFileName '.txt'], 'w');
-        for i = 1:length(mustUU_linear)
-            fprintf(f, '%s\n', mustUU_linear{i});
+        for i = 1:length(mustUL_linear)
+            fprintf(f, '%s\n', mustUL_linear{i});
         end
         fclose(f);
         cd(currentFolder);
         
         if verbose
-            fprintf(['MustUU set was printed in ' outputFileName '.txt  \n']);
-            fprintf(['MustUU set was also printed in ' outputFileName '_Info.txt  \n']);
+            fprintf(['MustUL set was printed in ' outputFileName '.txt  \n']);
+            fprintf(['MustUL set was also printed in ' outputFileName '_Info.txt  \n']);
         end
         if printReport
-            fprintf(freport, ['\nMustUU set was printed in ' outputFileName '.txt  \n']);
-            fprintf(freport, ['\nMustUU set was printed in ' outputFileName '_Info.txt  \n']);
+            fprintf(freport, ['\nMustUL set was printed in ' outputFileName '.txt  \n']);
+            fprintf(freport, ['\nMustUL set was printed in ' outputFileName '_Info.txt  \n']);
         end
         
     else
-        if verbose; fprintf('No mustUU set was found. Therefore, no plain text file was generated\n'); end;
-        if printReport; fprintf(freport, '\nNo mustUU set was found. Therefore, no plain text file was generated\n'); end;
+        if verbose; fprintf('No mustUL set was not found. Therefore, no plain text file was generated\n'); end;
+        if printReport; fprintf(freport, '\nNo mustUL set was not found. Therefore, no plain text file was generated\n'); end;
     end
 end
 
@@ -424,7 +450,7 @@ cd(workingPath);
 
 end
 
-function bilevelMILPproblem = buildBilevelMILPproblemForFindMustUU(model, can, maxFluxesW, constrOpt, excludedRxns, solutions)
+function bilevelMILPproblem = buildBilevelMILPproblemForFindMustUL(model, can,minFluxesW, maxFluxesW, constrOpt, excludedRxns, solutions)
 
 if  isempty(constrOpt)
     ind_ic = [];
@@ -526,7 +552,7 @@ lb_bl(8 * n_rxns + 2 * n_int + n_mets + 1:8 * n_rxns + 2 * n_int + n_mets + 3) =
 % 0) primal_obj (1 equation)
 % zprimal = sum(w1(j) + w2(j)) - > zprimal - sum(w1(j) + w2(j)) = 0
 % A_p=[];
-A_p = [zeros(1,2 * n_rxns + 2 * n_int) -sel_c_nic' -sel_c_nic' zeros(1, 4 * n_rxns + n_mets) 1 0 0];
+A_p = [zeros(1, 2 * n_rxns + 2 * n_int) -sel_c_nic' sel_c_nic' zeros(1, 4 * n_rxns + n_mets) 1 0 0];
 b_p = 0;
 csense_p = 'E';
 
@@ -572,7 +598,7 @@ csense_d(end + 1:end + n_ic) = 'E';
 
 % %2) dual2 (n_nic equations)
 % %   sum_i(lambda(i)*S(i,j)) + deltam(j) -deltap(j)- y1(j) - y2(j)=0
-A_d = [A_d; zeros(n_c_nic, n_rxns) -Icnic -Icnic zeros(n_c_nic, 3 * n_rxns) Icnic -Icnic zeros(n_c_nic, 2 * n_rxns) S(:, ind_cnic)' zeros(n_c_nic, 3)];
+A_d = [A_d; zeros(n_c_nic, n_rxns) -Icnic Icnic zeros(n_c_nic, 3 * n_rxns) Icnic -Icnic zeros(n_c_nic, 2 * n_rxns) S(:, ind_cnic)' zeros(n_c_nic, 3)];
 b_d = [b_d; zeros(n_c_nic, 1)];
 csense_d(end + 1:end + n_c_nic) = 'E';
 %
@@ -586,7 +612,7 @@ csense_d(end + 1:end + n_nc) = 'E';
 % outer obj (1 equation)
 %z=sum(w1(j)+w2(j)-(basemax(j) * y1(j) + basemax(j) * y2(j)) ) -> z -sum(w1(j)) - sum(w2(j)) + sum(basemax(j) * y2(j)) + sum(basemax(j) * y2(j)) = 0 for all j in can y not in must and not in
 %contraint_flux
-A_bl = [zeros(1, n_rxns) (maxFluxesW .* sel_c_nic)'  (maxFluxesW .* sel_c_nic)' zeros(1, n_rxns) -sel_c_nic' -sel_c_nic' zeros(1, 4 * n_rxns + n_mets) 0 0 1];
+A_bl = [zeros(1, n_rxns) (maxFluxesW.*sel_c_nic)'  -(minFluxesW.*sel_c_nic)' zeros(1, n_rxns) -sel_c_nic' sel_c_nic' zeros(1, 4 * n_rxns + n_mets) 0 0 1];
 b_bl = 0;
 csense_bl = 'E';
 

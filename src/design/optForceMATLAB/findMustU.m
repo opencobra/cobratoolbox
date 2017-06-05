@@ -12,140 +12,151 @@ function [mustUSet, posMustU] = findMustU(model, minFluxesW, maxFluxesW,...
 % Procedure for Identifying All Genetic Manipulations Leading to Targeted
 % Overproductions. PLOS Computational Biology 6(4): e1000744.
 % https://doi.org/10.1371/journal.pcbi.1000744
-
-% Usage1: findMustU(model, minFluxesW, maxFluxesW)
+%
+% Created by Sebastián Mendoza. 30/05/2017. snmendoz@uc.cl
+%
+% USAGE1: 
+%        
+%         [mustUSet, posMustU] = findMustU(model, minFluxesW, maxFluxesW)
 %         basic configuration for running the optimization problem to find
 %         the MustU set.
-
-% Usage2: findMustU(model, minFluxesW, maxFluxesW, option 1, ..., option N)
+%
+% USAGE2: 
+%
+%         [mustUSet, posMustU] = findMustU(model, minFluxesW, maxFluxesW, option 1, ..., option N)
 %         specify additional options such as fixed reactions or if results
 %         shoulds be saved in files or not.
-
-% Created by Sebastián Mendoza. 30/05/2017. snmendoz@uc.cl
-%% INPUTS
-% model (obligatory):       Type: struct (COBRA model)
-%                           Description: a metabolic model with at least
-%                           the following fields:
-%                           rxns            Reaction IDs in the model
-%                           mets            Metabolite IDs in the model
-%                           S               Stoichiometric matrix (sparse)
-%                           b               RHS of Sv = b (usually zeros)
-%                           c               Objective coefficients
-%                           lb              Lower bounds for fluxes
-%                           ub              Upper bounds for fluxes
-%                           rev             Reversibility flag
 %
-% minFluxesW (obligatory)   Type: double array of size n_rxns x1
-%                           Description: Minimum fluxes for each reaction
-%                           in the model for wild-type strain. This can be
-%                           obtained by running the function FVA_optForce
-%                           Example: minFluxesW=[-90; -56];
+% INPUTS:
 %
-% maxFluxesW (obligatory)   Type: double array of size n_rxns x1
-%                           Description: Maximum fluxes for each reaction
-%                           in the model for wild-type strain. This can be
-%                           obtained by running the function FVA_optForce
-%                           Example: maxFluxesW=[-90; -56];
+%       model (obligatory):       Type: struct (COBRA model)
+%                                 Description: a metabolic model with at least
+%                                 the following fields:
+%                                 rxns            Reaction IDs in the model
+%                                 mets            Metabolite IDs in the model
+%                                 S               Stoichiometric matrix (sparse)
+%                                 b               RHS of Sv = b (usually zeros)
+%                                 c               Objective coefficients
+%                                 lb              Lower bounds for fluxes
+%                                 ub              Upper bounds for fluxes
+%                                 rev             Reversibility flag
 %
-% constrOpt (optional):     Type: Structure
-%                           Description: structure containing additional
-%                           contraints. The structure has the following
-%                           fields:
-%                           rxnList: (Type: cell array)      Reaction list
-%                           values:  (Type: double array)    Values for constrained reactions
-%                           sense:   (Type: char array)      Constraint senses for constrained reactions (G/E/L)
-%                                                            (G: Greater than; E: Equal to; L: Lower than)
-%                           Example: struct('rxnList',{{'EX_gluc','R75','EX_suc'}},'values',[-100,0,155.5]','sense','EEE');
+%       minFluxesW (obligatory)   Type: double array of size n_rxns x1
+%                                 Description: Minimum fluxes for each reaction
+%                                 in the model for wild-type strain. This can be
+%                                 obtained by running the function FVA_optForce
+%                                 Example: minFluxesW=[-90; -56];
 %
-% runID (optional):         Type: string
-%                           Description: ID for identifying this run
+%       maxFluxesW (obligatory)   Type: double array of size n_rxns x1
+%                                 Description: Maximum fluxes for each reaction
+%                                 in the model for wild-type strain. This can be
+%                                 obtained by running the function FVA_optForce
+%                                 Example: maxFluxesW=[-90; -56];
 %
-% outputFolder (optional):  Type: string
-%                           Description: name for folder in which results
-%                           will be stored
+% OPTIONAL INPUTS:
+%
+%       constrOpt (optional):     Type: Structure
+%                                 Description: structure containing additional
+%                                 contraints. The structure has the following
+%                                 fields:
+%                                 rxnList: (Type: cell array)      Reaction list
+%                                 values:  (Type: double array)    Values for constrained reactions
+%                                 sense:   (Type: char array)      Constraint senses for constrained reactions (G/E/L)
+%                                                                  (G: Greater than; E: Equal to; L: Lower than)
+%                                 Example: struct('rxnList',{{'EX_gluc','R75','EX_suc'}},'values',[-100,0,155.5]','sense','EEE');
+%
+%       runID (optional):         Type: string
+%                                 Description: ID for identifying this run
+%
+%       outputFolder (optional):  Type: string
+%                                 Description: name for folder in which results
+%                                 will be stored
 % 
-% outputFileName (optional):Type: string
-%                           Description: name for files in which results
-%                           will be stored
+%       outputFileName (optional):Type: string
+%                                 Description: name for files in which results
+%                                 will be stored
 %
-% printExcel (optional) :   Type: double
-%                           Description: boolean to describe wheter data
-%                           must be printed in an excel file or not
+%       printExcel (optional) :   Type: double
+%                                 Description: boolean to describe wheter data
+%                                 must be printed in an excel file or not
 %
-% printText (optional):    Type: double
-%                           Description: boolean to describe wheter data
-%                           must be printed in an plaint text file or not
+%       printText (optional):     Type: double
+%                                 Description: boolean to describe wheter data
+%                                 must be printed in an plaint text file or not
 % 
-% printReport (optional):   Type: double
-%                           Description: 1 to generate a report in a plain
-%                           text file. 0 otherwise.
+%       printReport (optional):   Type: double
+%                                 Description: 1 to generate a report in a plain
+%                                 text file. 0 otherwise.
 %
-% keepInputs (optional):    Type: double
-%                           Description: 1 to save inputs to run
-%                           findMustU.m 0 otherwise.
+%       keepInputs (optional):    Type: double
+%                                 Description: 1 to save inputs to run
+%                                 findMustU.m 0 otherwise.
 %
-% verbose (optional):       Type: double
-%                           Description: 1 to print results in console.
-%                           0 otherwise.
+%       verbose (optional):       Type: double
+%                                 Description: 1 to print results in console.
+%                                 0 otherwise.
+%
+% OUTPUTS:
+%
+%       mustUSet:                 Type: cell array
+%                                 Size: number of reactions found X 1
+%                                 Description: Cell array containing the
+%                                 reactions ID which belong to the Must_U Set
+%
+%       posMustU:                 Type: double array
+%                                 Size: number of reactions found X 1
+%                                 Description: double array containing the
+%                                 positions of reactions in the model.
+%
+% OUTPUT FILES:
+%
+%       outputFileName.xls        Type: file.
+%                                 Description: File containing one column array
+%                                 with identifiers for reactions in MustU. This
+%                                 file will only be generated if the user entered
+%                                 printExcel = 1. Note that the user can choose
+%                                 the name of this file entering the input
+%                                 outputFileName = 'PutYourOwnFileNameHere';
+%
+%       outputFileName.txt        Type: file.
+%                                 Description: File containing one column array
+%                                 with identifiers for reactions in MustU. This
+%                                 file will only be generated if the user entered
+%                                 printText = 1. Note that the user can choose
+%                                 the name of this file entering the input
+%                                 outputFileName = 'PutYourOwnFileNameHere';
+%
+%       outputFileName_Info.xls   Type: file.
+%                                 Description: File containing five column
+%                                 arrays. 
+%                                 C1: identifiers for reactions in MustU
+%                                 C2: min fluxes for reactions according to FVA
+%                                 C3: max fluxes for reactions according to FVA
+%                                 C4: min fluxes achieved for reactions, 
+%                                     according to findMustU
+%                                 C5: max fluxes achieved for reactions, 
+%                                     according to findMustU
+%                                 This file will only be generated if the user
+%                                 entered printExcel = 1. Note that the user can
+%                                 choose the name of this file entering the input
+%                                 outputFileName = 'PutYourOwnFileNameHere';
+%
+%       outputFileName_Info.txt   Type: file.
+%                                 Description: File containing five column
+%                                 arrays. 
+%                                 C1: identifiers for reactions in MustU
+%                                 C2: min fluxes for reactions according to FVA
+%                                 C3: max fluxes for reactions according to FVA
+%                                 C4: min fluxes achieved for reactions, 
+%                                     according to findMustU
+%                                 C5: max fluxes achieved for reactions, 
+%                                     according to findMustU
+%                                 This file will only be generated if the user
+%                                 entered printText = 1. Note that the user can
+%                                 choose the name of this file entering the input
+%                                 outputFileName = 'PutYourOwnFileNameHere';
 
-%% OUTPUT
-% mustUSet:                 Type: cell array
-%                           Size: number of reactions found X 1
-%                           Description: Cell array containing the
-%                           reactions ID which belong to the Must_U Set
-%
-% posMustU:                 Type: double array
-%                           Size: number of reactions found X 1
-%                           Description: double array containing the
-%                           positions of reactions in the model.
-%
-% outputFileName.xls        Type: file.
-%                           Description: File containing one column array
-%                           with identifiers for reactions in MustU. This
-%                           file will only be generated if the user entered
-%                           printExcel = 1. Note that the user can choose
-%                           the name of this file entering the input
-%                           outputFileName = 'PutYourOwnFileNameHere';
-%
-% outputFileName.txt        Type: file.
-%                           Description: File containing one column array
-%                           with identifiers for reactions in MustU. This
-%                           file will only be generated if the user entered
-%                           printText = 1. Note that the user can choose
-%                           the name of this file entering the input
-%                           outputFileName = 'PutYourOwnFileNameHere';
-%
-% outputFileName_Info.xls   Type: file.
-%                           Description: File containing five column
-%                           arrays. 
-%                           C1: identifiers for reactions in MustU
-%                           C2: min fluxes for reactions according to FVA
-%                           C3: max fluxes for reactions according to FVA
-%                           C4: min fluxes achieved for reactions, 
-%                               according to findMustU
-%                           C5: max fluxes achieved for reactions, 
-%                               according to findMustU
-%                           This file will only be generated if the user
-%                           entered printExcel = 1. Note that the user can
-%                           choose the name of this file entering the input
-%                           outputFileName = 'PutYourOwnFileNameHere';
-%
-% outputFileName_Info.txt   Type: file.
-%                           Description: File containing five column
-%                           arrays. 
-%                           C1: identifiers for reactions in MustU
-%                           C2: min fluxes for reactions according to FVA
-%                           C3: max fluxes for reactions according to FVA
-%                           C4: min fluxes achieved for reactions, 
-%                               according to findMustU
-%                           C5: max fluxes achieved for reactions, 
-%                               according to findMustU
-%                           This file will only be generated if the user
-%                           entered printText = 1. Note that the user can
-%                           choose the name of this file entering the input
-%                           outputFileName = 'PutYourOwnFileNameHere';
-
-%% CODE
+% CODE
 % inputs handling
 if nargin < 1 || isempty(model)
     error('OptForce: No model specified');
@@ -363,8 +374,8 @@ if printExcel
         if verbose; fprintf(['MustU set was printed in ' outputFileName '.xls  \n']); end;
         if printReport; fprintf(freport, ['\nMustU set was printed in ' outputFileName '.xls  \n']); end;
     else
-        if verbose; fprintf('No mustU set was found. Therefore, no excel file was generated\n'); end;
-        if printReport; fprintf(freport, '\nNo mustU set was found. Therefore, no excel file was generated\n'); end;
+        if verbose; fprintf('No mustU set was not found. Therefore, no excel file was generated\n'); end;
+        if printReport; fprintf(freport, '\nNo mustU set was not found. Therefore, no excel file was generated\n'); end;
     end
 end
 
