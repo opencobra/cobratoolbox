@@ -169,131 +169,7 @@ switch format
         fclose(fid);
         %% Excel file
     case 'xls'
-        formulas = printRxnFormula(model,'printFlag',0);
-        tmpData{1,1} = 'Abbreviation';
-        tmpData{1,2} = 'Description';
-        baseInd = 3;
-        tmpData{1,baseInd} = 'Reaction';
-        tmpData{1,baseInd+1} = 'GPR';
-        tmpData{1,baseInd+2} = 'Subsystem';
-        tmpData{1,baseInd+3} = 'Lower bound';
-        tmpData{1,baseInd+4} = 'Upper bound';
-        tmpData{1,baseInd+5} = 'Objective';
-        tmpData{1,baseInd+6} = 'Confidence Score';
-        tmpData{1,baseInd+7} = 'EC Number';
-        tmpData{1,baseInd+8} = 'Notes';
-        tmpData{1,baseInd+9} = 'References';
-        tmpData{1,baseInd+10} = 'KEGG ID';
-        model = creategrRulesField(model);
-        for i = 1:nRxns
-            tmpData{i+1,1} = chopForExcel(model.rxns{i});
-            if (isfield(model,'rxnNames'))
-                tmpData{i+1,2} = chopForExcel(model.rxnNames{i});
-            else
-                tmpData{i+1,2} =  '';
-            end
-            tmpData{i+1,baseInd} = chopForExcel(formulas{i});
-            if (isfield(model,'grRules'))
-                tmpData{i+1,baseInd+1} = chopForExcel(model.grRules{i});
-            else
-                tmpData{i+1,baseInd+1} = '';
-            end
-            if (isfield(model,'subSystems'))
-                tmpData{i+1,baseInd+2} = chopForExcel(char(model.subSystems{i}));
-            else
-                tmpData{i+1,baseInd+2} = '';
-            end
-            tmpData{i+1,baseInd+3} = model.lb(i);
-            tmpData{i+1,baseInd+4} = model.ub(i);
-            tmpData{i+1,baseInd+5} = model.c(i);
-            if (isfield(model,'rxnConfidenceScores'))
-                tmpData{i+1,baseInd+6} =  chopForExcel(num2str(model.confidenceScores{i}));
-            else
-                tmpData{i+1,baseInd+6} = '';
-            end
-            %Needs to be reworked with new annotations.
-            if (isfield(model,'rxnECNumbers'))
-                tmpData{i+1,baseInd+7} = chopForExcel(model.rxnECNumbers{i});
-            else
-                tmpData{i+1,baseInd+7} = '';
-            end
-            if (isfield(model,'rxnNotes'))
-                tmpData{i+1,baseInd+8} = chopForExcel(char(model.rxnNotes{i}));
-            else
-                tmpData{i+1,baseInd+8} = '';
-            end
-            if (isfield(model,'rxnReferences'))
-                tmpData{i+1,baseInd+9} = chopForExcel(char(model.rxnReferences{i}));
-            else
-                tmpData{i+1,baseInd+9} = '';
-            end
-            %TODO: Add KEGG Id once new annotations are set up.
-        end
-        %keyboard
-        xlswrite(fileName,tmpData,'Reaction List');
-        tmpMetData{1,1} = 'Abbreviation';
-        tmpMetData{1,2} = 'Description';
-        tmpMetData{1,3} = 'Charged formula';
-        tmpMetData{1,4} = 'Charge';
-        tmpMetData{1,5} = 'Compartment';
-        tmpMetData{1,6} = 'KEGG ID';
-        tmpMetData{1,7} = 'PubChem ID';
-        tmpMetData{1,8} = 'ChEBI ID';
-        tmpMetData{1,9} = 'InChI String';
-        tmpMetData{1,10} = 'SMILES';
-        tmpMetData{1,11} = 'HMDB ID';
-        for i = 1:nMets
-            tmpMetData{i+1,1} = chopForExcel(model.mets{i});
-            tmpMetData{i+1,2} = chopForExcel(model.metNames{i});
-            if isfield(model,'metFormulas')
-                tmpMetData{i+1,3} = chopForExcel(model.metFormulas{i});
-            else
-                tmpMetData{i+1,3} = '';
-            end
-            if isfield(model,'metCharge')
-                tmpMetData{i+1,4} = chopForExcel(model.metCharge(i));
-            else
-                tmpMetData{i+1,4} = '';
-            end
-            metComp = regexp(model.mets{i},['.*\[(' strjoin(input.compSymbols,'|') ')\]$'],'tokens');
-            if ~isempty(metComp)
-                compartment = input.compNames(ismember(input.compSymbols,metComp{1}));
-                tmpMetData{i+1,5} = chopForExcel(compartment);
-            else
-                tmpMetData{i+1,5} = '';
-            end
-            %This all needs to be reworked for the new annotations.
-            if isfield(model,'metKEGGID')
-                tmpMetData{i+1,6} = chopForExcel(model.metKEGGID{i});
-            else
-                tmpMetData{i+1,6} = '';
-            end
-            if isfield(model,'metPubChemID')
-                if iscell(model.metPubChemID(i))
-                    tmpMetData{i+1,7} = chopForExcel(model.metPubChemID{i});
-                else
-                    tmpMetData{i+1,7} = chopForExcel(model.metPubChemID(i));
-                end
-            else
-                tmpMetData{i+1,7} = '';
-            end
-            if isfield(model,'metChEBIID')
-                tmpMetData{i+1,8} = chopForExcel(model.metChEBIID(i));
-            else
-                tmpMetData{i+1,8} = '';
-            end
-                if isfield(model,'metInChIString')
-                    tmpMetData{i+1,10} = chopForExcel(model.metInChIString{i});
-            else
-                tmpMetData{i+1,9} = '';
-            end
-            if isfield(model,'metSmiles')
-                tmpMetData{i+1,10} = chopForExcel(model.metSmiles{i});
-            else
-                tmpMetData{i+1,10} = '';
-            end
-        end
-        xlswrite(fileName,model.mets,'Metabolite List');
+        outmodel = model2xls(model,fileName,input.compSymbols,input.compNames);
         %% SBML
     case 'sbml'
         outmodel = writeSBML(model,fileName,input.compSymbols,input.compNames);
@@ -306,15 +182,7 @@ switch format
 end
 
 
-%% Chop strings for excel output
-function strOut = chopForExcel(str)
 
-if (length(str) > 5000)
-    strOut = str(1:5000);
-    fprintf('String longer than 5000 characters - truncated for Excel output\n%s\n',str);
-else
-    strOut = str;
-end
 
 %% Construct gene name string
 function geneStr = constructGeneStr(geneNames)

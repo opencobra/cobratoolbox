@@ -1,5 +1,5 @@
 function model = xls2model(fileName, biomassRxnEquation, defaultbound)
-% Writes a model from Excel spreadsheet.
+% Reads a model from Excel spreadsheet.
 %
 % USAGE:
 %
@@ -25,20 +25,20 @@ function model = xls2model(fileName, biomassRxnEquation, defaultbound)
 %
 %                       * 'Abbreviation':      HEX1
 %                       * 'Reaction':          `1 atp[c] + 1 glc-D[c] --> 1 adp[c] + 1 g6p[c] + 1 h[c]`
-%                       * 'GPR':               (3098.3) or (80201.1) or (2645.3) or ...
+%
 %                     * Optional:
 %
+%                       * 'GPR':               (3098.3) or (80201.1) or (2645.3) or ...
 %                       * 'Description':       Hexokinase
-%                       * 'Genes':             2645.1,2645.2,2645.3,...
-%                       * 'Proteins':          Flj22761.1, Hk1.3, Gck.2,...
 %                       * 'Subsystem':         Glycolysis
 %                       * 'Reversible':        0 (false) or 1 (true)
 %                       * 'Lower bound':       0
 %                       * 'Upper bound':       1000
-%                       * 'Objective':         0
+%                       * 'Objective':         0/1
 %                       * 'Confidence Score':  0,1,2,3,4
 %                       * 'EC Number':         2.7.1.1,2.7.1.2
-%                       * 'Notes':             'Reaction also associated with EC 2.7.1.2' (optional)
+%                       * 'KEGG ID':           R000001
+%                       * 'Notes':             Reaction also associated with EC 2.7.1.2
 %                       * 'References':        PMID:2043117,PMID:7150652,...
 %
 %                   'Metabolite List' tab: Required headers (case sensitive): (needs to be complete list of metabolites,
@@ -50,16 +50,16 @@ function model = xls2model(fileName, biomassRxnEquation, defaultbound)
 %                       * 'Abbreviation':      glc-D or glc-D[c]
 %                     * Optional:
 %
-%                       * 'Charged formula':   C6H12O6
-%                       * 'Charge':            0
-%                       * 'Compartment':       cytosol
-%                       * 'Description':       D-glucose
-%                       * 'KEGG ID':           C00031
-%                       * 'PubChem ID':        5793
-%                       * 'ChEBI ID':          4167
-%                       * 'InChI string':      InChI=1/C6H12O6/c7-1-2-3(8)4(9)5(10)6(11)12-2/h2-11H,1H2/t2-,3-,4+,5-,6?/m1/s1
-%                       * 'SMILES':            OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O
-%                       * 'HMDB ID':           HMDB00122
+%                       * 'Charged formula' or formula:   C6H12O6
+%                       * 'Charge':                       0
+%                       * 'Compartment':                  cytosol
+%                       * 'Description':                  D-glucose
+%                       * 'KEGG ID':                      C00031
+%                       * 'PubChem ID':                   5793
+%                       * 'ChEBI ID':                     4167
+%                       * 'InChI string':                 InChI=1/C6H12O6/c7-1-2-3(8)4(9)5(10)6(11)12-2/h2-11H,1H2/t2-,3-,4+,5-,6?/m1/s1
+%                       * 'SMILES':                       OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O
+%                       * 'HMDB ID':                      HMDB00122
 %
 % NOTE:
 %
@@ -76,6 +76,16 @@ function model = xls2model(fileName, biomassRxnEquation, defaultbound)
 
 warning off
 
+if exist(fileName,'file')
+    [~,sheets,~] = xlsfinfo(fileName);
+    if ~all(ismember({'Reaction List','Metabolite List'},sheets))
+        error(['The provided Excel Sheet must contain a "Reaction List" and a "Metabolite List sheet as specified here:' sprintf('\n'),...
+               '<a href ="https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html">https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html</a>']);
+    end
+else
+    error('File %s not found',fileName);
+end
+
 if ~exist('defaultbound','var')
     defaultbound = 1000;
 end
@@ -87,22 +97,40 @@ if isunix
     %trim empty row from Numbers and MetNumbers
     %     Numbers = Numbers(2:end,:);
     %     MetNumbers = MetNumbers(2:end,:);
-
+    
     rxnInfo = rxnInfo(1:size(Strings,1),:);
     metInfo = metInfo(1:size(MetStrings,1),:);
-
+    
     if isempty(MetStrings)
         error('Save .xls file as Windows 95 version using gnumeric not openoffice!');
     end
-
+    
 else
     %assumes that one has an xls file with two tabs
     [~, Strings, rxnInfo] = xlsread(fileName,'Reaction List');
     [~, MetStrings, metInfo] = xlsread(fileName,'Metabolite List');
-
+    
     rxnInfo = rxnInfo(1:size(Strings,1),:);
     metInfo = metInfo(1:size(MetStrings,1),:);
+    
+end
 
+
+requiredRxnHeaders = {'Abbreviation','Reaction'};
+requiredMetHeaders = {'Abbreviation'};
+
+if ~all(ismember(requiredRxnHeaders,Strings(1,:))) 
+    error(['Required Headers not present in the "Reaction List" sheet of the provided xls file.', sprintf('\n'),...
+           'Note, that headers are case sesnitive!', sprintf('\n'),...
+           'Another likely source for this issue is a change in the xls format specification.', sprintf('\n'),...
+           'Please have a look at the specification at <a href ="https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html">https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html</a> for the current specifications.']);
+end
+
+if ~all(ismember(requiredMetHeaders,MetStrings(1,:)))
+    error(['Required Headers not present in the "Metabolite List" sheet of the provided xls file.', sprintf('\n'), ...
+           'Note, that headers are case sesnitive!', sprintf('\n'),...
+           'Another likely source for this issue is a change in the xls format specification.', sprintf('\n'),...
+           'Please have a look at the specification at <a href ="https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html">https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html</a> for the current specifications.']);
 end
 
 rxnHeaders = rxnInfo(1,:);
@@ -122,7 +150,13 @@ else
     rxnNameList = Strings(2:end,strmatch('Abbreviation',rxnHeaders,'exact'));
 end
 rxnList = Strings(2:end,strmatch('Reaction',rxnHeaders,'exact'));
-grRuleList = Strings(2:end,strmatch('GPR',rxnHeaders,'exact'));
+if ~isempty(strmatch('GPR',rxnHeaders,'exact'))
+    grRuleList = Strings(2:end,strmatch('GPR',rxnHeaders,'exact'));
+else
+    grRuleList = cell(size(rxnList,1),1);
+    grRuleList(:) = {''};
+end
+
 if ~isempty(strmatch('Proteins',rxnHeaders,'exact'))
     Protein = Strings(2:end,strmatch('Proteins',rxnHeaders,'exact'));
 end
@@ -149,7 +183,7 @@ end
 if ~isempty(strmatch('Lower bound',rxnHeaders,'exact'))
     lowerBoundList = columnVector(cell2mat(rxnInfo(2:end,strmatch('Lower bound',rxnHeaders,'exact'))));
     %Default -1000
-    lowerBoundList(isnan(lowerBoundList)) = -1000;
+    lowerBoundList(isnan(lowerBoundList)) = -defaultbound;
 else
     lowerBoundList = -defaultbound*ones(length(rxnAbrList),1);
 end
@@ -157,7 +191,7 @@ end
 if ~isempty(strmatch('Upper bound',rxnHeaders,'exact'))
     upperBoundList = columnVector(cell2mat(rxnInfo(2:end,strmatch('Upper bound',rxnHeaders,'exact'))));
     %Default 1000;
-    upperBoundList(isnan(upperBoundList)) = 1000;
+    upperBoundList(isnan(upperBoundList)) = defaultbound;
 else
     upperBoundList = defaultbound*ones(length(rxnAbrList),1);
 end
@@ -166,7 +200,7 @@ revFlagList = lowerBoundList<0;
 
 if ~isempty(strmatch('Objective',rxnHeaders,'exact'))
     Objective = columnVector(cell2mat(rxnInfo(2:end,strmatch('Objective',rxnHeaders,'exact'))));
-    Objective(isnan(Objective)) = 0;
+    Objective(isnan(Objective)) = 0;    
 else
     Objective = zeros(length(rxnAbrList),1);
 end
@@ -174,9 +208,8 @@ end
 model = createModel(rxnAbrList,rxnNameList,rxnList,revFlagList,lowerBoundList,upperBoundList,subSystemList,grRuleList);
 
 if ~isempty(strmatch('Confidence Score',rxnHeaders,'exact'))
-    model.rxnConfidenceScores = rxnInfo(2:end,strmatch('Confidence Score',rxnHeaders,'exact'));
-else
-    model.rxnConfidenceScores = cell(length(model.rxns),1); %empty cell instead of NaN
+    model.confidenceScores = cell2mat(rxnInfo(2:end,strmatch('Confidence Score',rxnHeaders,'exact')));
+    model.confidenceScores(isnan(model.confidenceScores)) = 0;
 end
 if ~isempty(strmatch('EC Number',rxnHeaders,'exact'))
     %This needs to be changed to the new annotation scheme and putting the
@@ -186,10 +219,11 @@ end
 if ~isempty(strmatch('Notes',rxnHeaders,'exact'))
     model.rxnNotes = Strings(2:end,strmatch('Notes',rxnHeaders,'exact'));
 end
-if ~isempty(strmatch('References',rxnHeaders,'exact'))
-    %This needs to be changed to the new annotation scheme and putting the
-    %PubMed id using isDescribedBy there.
+if ~isempty(strmatch('References',rxnHeaders,'exact'))        
     model.rxnReferences = Strings(2:end,strmatch('References',rxnHeaders,'exact'));
+    numbers = cellfun(@isnumeric ,model.rxnReferences);       
+    model.rxnReferences(numbers) = cellfun(@convertNumberToID , model.rxnReferences(numbers),'UniformOutput',0);
+    model.rxnReferences = cellfun(@(x) regexprep(x,'PMID:',''), model.rxnReferences,'UniformOutput',0);
 end
 
 %fill in opt info for metabolites
@@ -212,7 +246,7 @@ Compartments = {};
 mets = MetStrings(:,metCol);
 %Now, we could have a problem, if the reactions are presented without
 %compartments. In this instance, we would have to first put a "[c]" id
-%behind all metabolites.
+%behind all metabolites. 
 metCompAbbrev = cellfun(@(x) regexp(x,'.*\[(.*)\]$','tokens'), mets, 'UniformOutput', 0);
 %get those which don't have a compartmentID
 noncomps = cellfun(@isempty, metCompAbbrev);
@@ -229,10 +263,9 @@ end
 
 if isempty(strmatch('Compartment',metHeaders,'exact'))
     %we use default compartments
-    compartmentAbbr = {'c', 'e', 'm', 'n', 'r', 'x', 'l', 'g'};
-    compartments = {'cytosol', 'extracellular', 'mitochondria', 'nucleus', 'endoplasmatic reticulum', 'peroxisome', 'lysosome', 'golgi aparatus'};
+    [compartmentAbbr,compartments] = getDefaultCompartmentSymbols();
     %lets check if all metabolites do have a standard compartment
-    metCompAbbrev = cellfun(@(x) regexp(x,['.*\[([' strjoin(compartmentAbbr,'') '])\]$'],'tokens'), matchingmets, 'UniformOutput', 0);
+    metCompAbbrev = cellfun(@(x) regexp(x,['.*\[(' strjoin(compartmentAbbr,'|') '\]$'],'tokens'), matchingmets, 'UniformOutput', 0);
     noncomps = cellfun(@isempty, metCompAbbrev);
     if any(noncomps)
         %So, there are missing compartment ids.
@@ -243,7 +276,8 @@ if isempty(strmatch('Compartment',metHeaders,'exact'))
             [~,ia] = unique(matchingmets);
             non_unique = matchingmets(setdiff(1:numel(matchinmets),ia));
             disp(unique(non_unique))
-            error('The above metabolites are present both without compartment identifier and with id in the cytosol.Metabolites without compartment id are assumed to be located in the cytosol, and these metabolites would lead to duplicate metabolite ids!');
+            error(['The above metabolites are present both without compartment identifier and with id in the cytosol.\n', ...
+                  'Metabolites without compartment id are assumed to be located in the cytosol, and these metabolites would lead to duplicate metabolite ids!']);
         end
     end
     %Now, there should be no metabolites without compartment.
@@ -267,7 +301,7 @@ else
         CytoNames{end+1} = Cytosolname;
         CytoNames = unique(CytoNames);
     end
-
+    
     if any(noncomps)
         matchingmets(noncomps) = strcat(matchingmets(noncomps),'[c]');
         Compartments(noncomps) = {Cytosolname};
@@ -275,17 +309,18 @@ else
             [~,ia] = unique(matchingmets);
             non_unique = matchingmets(setdiff(1:numel(matchinmets),ia));
             disp(unique(non_unique))
-            error('The above metabolites are present both without compartment identifier and with id in the cytosol.Metabolites without compartment id are assumed to be located in the cytosol, and these metabolites would lead to duplicate metabolite ids!');
+            error(['The above metabolites are present both without compartment identifier and with id in the cytosol.\n',...
+                  'Metabolites without compartment id are assumed to be located in the cytosol, and these metabolites would lead to duplicate metabolite ids!']);
         end
     end
     metCompAbbrev = cellfun(@(x) x{1}, cellfun(@(x) regexp(x,['.*\[(.*)\]$'],'tokens'), matchingmets));
-
+    
     %now reorder them and assign names to the ids.
     [ucomps, origpos] = unique(Compartments);
-    [model.comp,~,origin] = unique(metCompAbbrev(origpos));
+    [model.comps,~,origin] = unique(metCompAbbrev(origpos));
     %Column Vector
-    model.comp = columnVector(model.comp);
-    for i = 1:numel(model.comp)
+    model.comps = columnVector(model.comps);
+    for i = 1:numel(model.comps)
         %combine all, ignoring empty entries.
         CompNames{i} = strjoin(setdiff(ucomps(origin==i),''),' or ');
     end
@@ -304,7 +339,7 @@ if ~isempty(strmatch('Formula',metHeaders,'exact'))
     model.metFormulas = columnVector(MetStrings(B(A),strmatch('Formula',metHeaders,'exact')));
 end
 %%Set Charge
-if ~isempty(strmatch('Charge',metHeaders,'exact'))
+if ~isempty(strmatch('Charge',metHeaders,'exact'))    
     model.metCharges = cell2mat(columnVector(metInfo(B(A),strmatch('Charge',metHeaders,'exact'))));
 end
 
@@ -313,7 +348,7 @@ if ~isempty(strmatch('SMILES',metHeaders,'exact'))
 end
 
 %% Set annotations. (Has to be updated, once annotation structure is defined)
-if ~isempty(strmatch('InChI string',metHeaders,'exact'))
+if ~isempty(strmatch('KEGG ID',metHeaders,'exact'))
     model.metKEGGID = columnVector(MetStrings(B(A),strmatch('KEGG ID',metHeaders,'exact')));
 end
 if ~isempty(strmatch('InChI string',metHeaders,'exact'))
@@ -324,14 +359,29 @@ if ~isempty(strmatch('HMDB ID',metHeaders,'exact'))
 end
 
 if ~isempty(strmatch('PubChem ID',metHeaders,'exact'))
-    model.metPubChemID = columnVector(MetStrings(B(A),strmatch('PubChem ID',metHeaders,'exact')));
+    %This is a litte trickier, as PubChemIDs are numbers. So we have to
+    %load them differently    
+    model.metPubChemID = columnVector(metInfo(B(A),strmatch('PubChem ID',metHeaders,'exact')));    
+    numbers = cellfun(@isnumeric ,model.metPubChemID);   
+    model.metPubChemID(numbers) = cellfun(@convertNumberToID , model.metPubChemID(numbers),'UniformOutput',0);
 end
 if ~isempty(strmatch('ChEBI ID',metHeaders,'exact'))
-    model.metChEBIID  = columnVector(MetStrings(B(A),strmatch('ChEBI ID',metHeaders,'exact')));
+    model.metChEBIID  = columnVector(metInfo(B(A),strmatch('ChEBI ID',metHeaders,'exact')));    
+    numbers = cellfun(@isnumeric ,model.metChEBIID);   
+    model.metChEBIID(numbers) = cellfun(@convertNumberToID , model.metChEBIID(numbers),'UniformOutput',0);
 end
 
-model.description = fileName;
-model.rxnConfidenceScores = columnVector(model.rxnConfidenceScores);
+[~,fileName,extension] = fileparts(fileName);
+
+model.description = [fileName, extension];
 
 warning on
+end
+
+function stringNumber = convertNumberToID(number)
+if isnan(number)
+    stringNumber = '';
+else
+    stringNumber = num2str(number);
+end
 end

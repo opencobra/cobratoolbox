@@ -27,9 +27,10 @@ modelNew = model;
 
 modelNew.S(rows+1,:) = 0;
 modelNew.S(rows+1,Loc) = [-ratioCoeff(1) ratioCoeff(2)];
-modelNew.b(rows+1) = 0;
+modelNew.b(rows+1,1) = 0;
+modelNew.csense(rows+1,1) = 'e';
 modelNew.mets{rows+1} = strcat('Ratio_',listOfRxns{1},'_',listOfRxns{2});
-modelNew.metName{rows+1} = strcat('Ratio_',listOfRxns{1},'_',listOfRxns{2});
+modelNew.metNames{rows+1,1} = strcat('Ratio_',listOfRxns{1},'_',listOfRxns{2});
 if isfield(modelNew,'note')
     modelNew.note = strcat(modelNew.note,listOfRxns{1},' and ',listOfRxns{2}, 'are set to have a ratio of',ratioCoeff(1),' to ' ,ratioCoeff(2),'.');
 else

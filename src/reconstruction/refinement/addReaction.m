@@ -1,33 +1,40 @@
-function [model, rxnIDexists] = addReaction(model, rxnName, metaboliteList, stoichCoeffList, revFlag, lowerBound, upperBound, objCoeff, subSystem, grRule, geneNameList, systNameList, checkDuplicate, printLevel)
+function [model, rxnIDexists] = addReaction(model, rxnID, varargin) 
 % Adds a reaction to the model or modify an existing reaction
 %
 % USAGE:
 %
-%    [model, rxnIDexists] = addReaction(model, rxnName, metaboliteList, stoichCoeffList, revFlag, lowerBound, upperBound, objCoeff, subSystem, grRule, geneNameList, systNameList, checkDuplicate, printLevel)
+%    [model, rxnIDexists] = addReaction(model, rxnID, varargin)
 %
 % INPUTS:
 %    model:             COBRA model structure
-%    rxnName:           Reaction name abbreviation (i.e. 'ACALD')
-%                       (Note: can also be a cell array {'abbr','name'}
-%    metaboliteList:    Cell array of metabolite names or alternatively the
-%                       reaction formula for the reaction
-%    stoichCoeffList:   List of stoichiometric coefficients (reactants -ve,
-%                       products +ve), empty if reaction formula is provided
+%    rxnID:             Reaction name abbreviation (i.e. 'ACALD')                      
 %
 % OPTIONAL INPUTS:
-%    revFlag:           Reversibility flag (Default = true)
-%    lowerBound:        Lower bound (Default = 0 or -vMax`)
-%    upperBound:        Upper bound (Default = `vMax`)
-%    objCoeff:          Objective coefficient (Default = 0)
-%    subSystem:         Subsystem (Default = '')
-%    grRule:            Gene-reaction rule in boolean format (and/or allowed)
-%                       (Default = '');
-%    geneNameList:      List of gene names (used only for translation from
-%                       common gene names to systematic gene names)
-%    systNameList:      List of systematic names
-%    checkDuplicate:    Check `S` matrix too see if a duplicate reaction is
-%                       already in the model (Deafult false)
-%    printLevel:        default = 1
+%    varargin:          Input of additional information as parameter/Value
+%                       pairs
+%                       * reactonName - a Descriptive name of the reaction
+%                         (default ID)
+%                       * metaboliteList - Cell array of metabolite names. Either this
+%                         parameter or reactionFormula are required.
+%                       * stoichCoeffList - List of stoichiometric coefficients (reactants -ve,
+%                         products +ve), if not provided, all stoichiometries
+%                         are assumed to be -1 (Exchange, or consumption).
+%                       * reactionFormula - A Reaction formula in string format ('A + B -> C').
+%                         If this parameter is provided metaboliteList MUST
+%                         be empty, and vice versa. 
+%                       * reversible - Reversibility flag (Default = true)
+%                       * lowerBound - Lower bound (Default = 0 or -vMax`)
+%                       * upperBound - Upper bound (Default = `vMax`)
+%                       * objCoeff - Objective coefficient (Default = 0)
+%                       * subSystem - Subsystem (Default = '')
+%                       * geneRule - Gene-reaction rule in boolean format (and/or allowed)
+%                         (Default = '');
+%                       * geneNameList - List of gene names (used only for translation from
+%                         common gene names to systematic gene names) (Default empty)
+%                       * systNameList - List of systematic names (Default empty)
+%                       * checkDuplicate - Check `S` matrix too see if a duplicate reaction is
+%                         already in the model (Deafult false)
+%                       * printLevel - default = 1
 %
 % OUTPUTS:
 %    model:             COBRA model structure with new reaction
@@ -45,123 +52,162 @@ function [model, rxnIDexists] = addReaction(model, rxnName, metaboliteList, stoi
 %       - Markus Herrgard 1/12/07
 %       - Richard Que 11/13/2008 Modified the check to see if duplicate reaction already is in model by using S matrix coefficients to be able to handle larger matricies
 %       - Ines Thiele 08/03/2015, made rxnGeneMat optional
+%       - Thomas Pfau May 2017  Change To parameter Value pairs
 
-if ~exist('printLevel','var')
-    printLevel = 1;
-end
 
-parseFormulaFlag = false;
-rxnIDexists = [];
-
-if iscell(rxnName)&&length(rxnName)>1
-    rxnNameFull = rxnName{2};
-    rxnName = rxnName{1};
+%check for backward compatability
+optionalParameters = {'reactionFormula','metaboliteList','stoichCoeffList',...
+    'reversible','lowerBound','upperBound',...
+    'objectiveCoef','subSystem','geneRule','checkDuplicate','printLevel','notes'};
+oldOptionalOrder = {'metaboliteList','stoichCoeffList',...
+    'reversible','lowerBound','upperBound',...
+    'objectiveCoef','subSystem','geneRule','geneNameList','systNameList','checkDuplicate','printLevel'};
+oldStyle = false;
+if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters)))) || iscell(rxnID)
+    %We have an old style thing....
+    %Now, we need to check, whether this is a formula, or a complex setup
+    oldStyle = true;
+    tempargin = cell(0);
+    if iscell(rxnID)                        
+            %we just add it to the end.
+            tempargin(end+1:end+2) = {'reactionName', rxnID{2}};
+            rxnID = rxnID{1};            
+    end
+    if (nargin < 4)
+        if (~iscell(varargin{1}))
+            tempargin(end+1:end+2) = {'reactionFormula',varargin{1}};            
+        else
+            error('Missing stoichiometry information');
+        end
+    else
+        start = 1;
+        if isempty(varargin{2})
+            tempargin(end+1:end+2) = {'reactionFormula',varargin{1}};
+            start = 2;
+        end
+        %convert the input into the new format.               
+        for i = start:numel(varargin)
+            if~isempty(oldOptionalOrder(i))
+                %Since we look for non empty, we should not have empty
+                %elements.
+                tempargin{end+1} = oldOptionalOrder{i};
+                tempargin{end+1} = varargin{i};
+            end
+        end        
+    end
+    varargin = tempargin;
 end
 
 % Figure out if reaction already exists
 nRxns = length(model.rxns);
-if (sum(strcmp(rxnName,model.rxns)) > 0)
-    warning('Reaction with the same name already exists in the model');
-    [tmp,rxnID] = ismember(rxnName,model.rxns);
+[reactionpresence,rxnPos] = ismember(rxnID,model.rxns);
+if any(reactionpresence)
+    warning('Reaction with the same name already exists in the model, updating the reaction');
     oldRxnFlag = true;
 else
-    rxnID = nRxns+1;
+    rxnPos = nRxns+1;
     oldRxnFlag = false;
 end
-
-% Figure out what input format is used
-if (nargin < 4)
-    if (~iscell(metaboliteList))
-        parseFormulaFlag = true;
-    else
-        error('Missing stoichiometry information');
+%Set default values
+maxavailableBound = max([1000,max(abs(model.lb)), max(abs(model.ub))]);
+defaultLowerBound = -maxavailableBound;
+defaultUpperBound = maxavailableBound;
+defaultObjective = 0;
+defaultSubSystem = '';
+defaultgeneRule = '';
+defaultMetaboliteList = {};
+defaultStoichCoefList = [];
+defaultReactionName = rxnID;
+defaultReversibility = 1;
+defaultGeneNameList = {};
+defaultSystNameList = {};
+if oldRxnFlag
+    %Overwrite them if modifing a reaction
+    defaultLowerBound = model.lb(rxnPos);
+    defaultUpperBound = model.ub(rxnPos);
+    defaultObjective = model.c(rxnPos);
+    if isfield(model,'subSystem')
+        defaultSubSystem = model.subSystem{rxnPos};
     end
-else
-    if isempty(stoichCoeffList)
-        parseFormulaFlag = true;
-    else
-        if (length(metaboliteList) ~= length(stoichCoeffList))
-            error('Incorrect number of stoichiometric coefficients provided');
-        end
+    if isfield(model,'grRules')
+        defaultgeneRule = model.grRules{rxnPos};
     end
+    
+    defaultMetaboliteList = model.mets(model.S(:,rxnPos)~=0);
+    defaultStoichCoefList = model.S(model.S(:,rxnPos)~=0,rxnPos);
+    if isfield(model,'rxnNames')
+        defaultReactionName = model.rxnNames{rxnPos};
+    end
+    defaultReversibility = model.lb(rxnPos) < 0;
 end
 
-% Reversibility
-if (nargin < 5 | isempty(revFlag))
-    if (oldRxnFlag)
-        revFlag = model.rev(rxnID);
-    else
-        revFlag = true;
-    end
+parser = inputParser();
+parser.addRequired('model',@isstruct) % we only check, whether its a struct, no details for speed
+parser.addRequired('rxnID',@ischar)
+parser.addParameter('reactionName',defaultReactionName,@ischar)
+parser.addParameter('metaboliteList',defaultMetaboliteList, @iscell);
+parser.addParameter('stoichCoeffList',defaultStoichCoefList, @isnumeric);
+parser.addParameter('reactionFormula','', @ischar);
+parser.addParameter('reversible',defaultReversibility, @(x) islogical(x) || isnumeric(x) );
+parser.addParameter('lowerBound',defaultLowerBound, @(x) isempty(x) || isnumeric(x));
+parser.addParameter('upperBound',defaultUpperBound, @(x) isempty(x) || isnumeric(x));
+parser.addParameter('objectiveCoef',defaultObjective,@(x) isempty(x) || isnumeric(x));
+parser.addParameter('subSystem',defaultSubSystem, @(x) isempty(x) || ischar(x));
+parser.addParameter('geneRule',defaultgeneRule, @(x) isempty(x) || ischar(x));
+parser.addParameter('checkDuplicate',1, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('printLevel',1, @(x) isnumeric(x) );
+parser.addParameter('notes','', @ischar );
+parser.addParameter('systNameList',defaultGeneNameList, @(x) isempty(x) || iscell(x));
+parser.addParameter('geneNameList',defaultSystNameList, @(x) isempty(x) || iscell(x));
+
+parser.parse(model,rxnID,varargin{:});
+
+printLevel = parser.Results.printLevel;
+metaboliteList = parser.Results.metaboliteList;
+reactionFormula = parser.Results.reactionFormula;
+stoichCoeffList = parser.Results.stoichCoeffList;
+revFlag = parser.Results.reversible;
+geneNameList = parser.Results.geneNameList;
+systNameList = parser.Results.systNameList;
+%Check variant, if both, return error
+if isempty(metaboliteList) && isempty(reactionFormula)
+    error('No stoichiometry found! Set stoichiometry either by ''reactionFormula'' or by ''metaboliteList'' parameters.\nModel was not modified.')
+    rxnIDexists = -1;
+    return
 end
+%if this is not an old reaction and we have two definitions
+if ~oldRxnFlag && ~isempty(metaboliteList) && ~isempty(reactionFormula) 
+    error('Two stoichiometry definitions found! Please set stoichiometry either by ''reactionFormula'' or by ''metaboliteList'' parameters but do not use both.\nModel was not modified.')
+    rxnIDexists = -1;
+    return
+end
+
+parseFormulaFlag = 0;
+if ~isempty(reactionFormula)
+    parseFormulaFlag = 1;
+end
+rxnIDexists = [];
+
+
+
 
 % Parse formula
 if (parseFormulaFlag)
-    rxnFormula = metaboliteList;
-    [metaboliteList,stoichCoeffList,revFlag] = parseRxnFormula(rxnFormula);
+    [metaboliteList,stoichCoeffList,revFlag] = parseRxnFormula(reactionFormula);
 end
 
-% Missing arguments
-if (nargin < 6 | isempty(lowerBound))
-    if (oldRxnFlag)
-        lowerBound = model.lb(rxnID);
-    else
-        if (revFlag)
-            lowerBound = min(model.lb);
-            if isempty(lowerBound)
-                lowerBound=-1000;
-            end
-        else
-            lowerBound = 0;
-        end
-    end
+if any(ismember(parser.UsingDefaults,'lowerBound')) && ~revFlag
+    %adjust lower bounds to a requested default irreversible reaction
+    lowerBound = 0;
+else
+    lowerBound = parser.Results.lowerBound;
 end
-if (nargin < 7 | isempty(upperBound))
-    if (oldRxnFlag)
-        upperBound = model.ub(rxnID);
-    else
-        upperBound = max(model.ub);
-        if isempty(upperBound)
-            upperBound=1000;
-        end
-    end
-end
-if (nargin < 8 | isempty(objCoeff))
-    if (oldRxnFlag)
-        objCoeff = model.c(rxnID);
-    else
-        objCoeff = 0;
-    end
-end
-if (nargin < 9 | isempty(subSystem))
-    if (oldRxnFlag) && (isfield(model,'subSystems'))
-        subSystem = model.subSystems{rxnID};
-    else
-        subSystem = '';
-    end
-end
-if  isempty(subSystem)
-    if (oldRxnFlag) && (isfield(model,'subSystems'))
-        subSystem = model.subSystems{rxnID};
-    else
-        subSystem = '';
-    end
-end
-if (nargin < 10) && (isfield(model,'grRules'))
-    if (oldRxnFlag)
-        grRule = model.grRules{rxnID};
-    else
-        grRule = '';
-    end
-end
+upperBound = parser.Results.upperBound;
+objCoeff = parser.Results.objectiveCoef;
+subSystem = parser.Results.subSystem;
+grRule = parser.Results.geneRule;
+checkDuplicate=parser.Results.checkDuplicate;
 
-if (nargin < 10 | isempty(grRule))
-    grRule = '';
-end
-
-if (~exist('checkDuplicate','var'))
-    checkDuplicate=true;
-end
 
 nMets = length(model.mets);
 Scolumn = sparse(nMets,1);
@@ -169,68 +215,39 @@ Scolumn = sparse(nMets,1);
 modelOrig = model;
 
 % Update model fields
-model.rxns{rxnID,1} = rxnName;
-if (revFlag)
-    model.rev(rxnID,1) = 1;
-else
-    model.rev(rxnID,1) = 0;
-end
-
+model.rxns{rxnPos,1} = rxnID;
 % set the reaction lower bound
-if isfield(model, 'lb')
-    model.lb(rxnID) = lowerBound;
-else
-    model.lb = zeros(length(model.rxns), 1);
+%a Valid model has to have the lb and ub as well as c fields.
+model.lb(rxnPos,1) = lowerBound;
+model.ub(rxnPos,1) = upperBound;
+model.c(rxnPos,1) = objCoeff;
+
+%if a reactionname is requested, create the respective field if necessary
+if isfield(model,'rxnNames') || ~any(ismember(parser.UsingDefaults,'reactionName'))
+    if ~isfield(model,'rxnNames')
+       model.rxnNames = cell(size(model.rxns));
+       model.rxnNames(:) = {''};
+   end
+    model.rxnNames{rxnPos,1} = parser.Results.reactionName;
 end
 
-% set the reaction upper bound
-if isfield(model, 'ub')
-    model.ub(rxnID) = upperBound;
-else
-    model.ub = zeros(length(model.rxns), 1);
-end
-
-% set the objective coefficient of the reaction
-if isfield(model, 'c')
-    model.c(rxnID) = objCoeff;
-else
-    model.c = zeros(length(model.rxns), 1);
-end
-
-if isfield(model,'rxnNames')
-    if exist('rxnNameFull','var')
-        model.rxnNames{rxnID,1} = rxnNameFull;
-    else
-        model.rxnNames{rxnID,1} = model.rxns{rxnID};
+if ~any(ismember(parser.UsingDefaults,'subSystem'))
+    if ~isfield(model,'subSystems')
+        model.subSystems = cell(numel(model.rxns),1);
+        model.subSystems(:) = {''};
     end
 end
 if (isfield(model,'subSystems'))
-    model.subSystems{rxnID,1} = subSystem;
+    model.subSystems{rxnPos,1} = subSystem;
 end
-if isfield(model,'rxnNotes')
-    model.rxnNotes{rxnID,1} = '';
-end
-if isfield(model,'rxnConfidenceScores')
-    model.rxnConfidenceScores{rxnID,1} = '';
-end
-if isfield(model,'rxnReferences')
-    model.rxnReferences{rxnID,1} = '';
-end
-if isfield(model,'rxnECNumbers')
-    model.rxnECNumbers{rxnID,1} = '';
-end
-% 17/02/2016 Update 4 additional fields that are present in Recon 2
-if isfield(model,'rxnKEGGID')
-    model.rxnKEGGID{rxnID,1} = '';
-end
-if isfield(model,'rxnConfidenceEcoIDA')
-    model.rxnConfidenceEcoIDA{rxnID,1} = '';
-end
+
+%This will have to be modified once the model structure is set.
+
 
 %Give warning and combine the coeffeicient if a metabolite appears more than once
 [metaboliteListUnique,~,IC] = unique(metaboliteList);
 if numel(metaboliteListUnique) ~= numel(metaboliteList)
-    warning('Repeated mets in the formula for rxn ''%s''. Combine the stoichiometry.', rxnName)
+    warning('Repeated mets in the formula for rxn ''%s''. Combine the stoichiometry.', rxnID)
     stoichCoeffListUnique = zeros(size(metaboliteListUnique));
     for nMetsUnique = 1:numel(metaboliteListUnique)
         stoichCoeffListUnique(nMetsUnique) = sum(stoichCoeffList(IC == nMetsUnique));
@@ -258,108 +275,141 @@ for i = 1:length(metaboliteList)
         Scolumn(metID(i),1) = stoichCoeffList(i);
     else
         warning(['Metabolite ' metaboliteList{i} ' not in model - added to the model']);
+        model = addMetabolite(model,metaboliteList{i},metaboliteList{i});
         Scolumn(end+1,1) = stoichCoeffList(i);
-        model.mets{end+1,1} = metaboliteList{i};
-        newMetsCoefs(end+1) = stoichCoeffList(i);
-        if (isfield(model,'metNames'))      %Prompts to add missing info if desired
-            model.metNames{end+1,1} = regexprep(metaboliteList{i},'(\[.+\]) | (\(.+\))','') ;
-            warning(['Metabolite name for ' metaboliteList{i} ' set to ' model.metNames{end}]);
-            %             model.metNames(end) = cellstr(input('Enter complete metabolite name, if available:', 's'));
-        end
-        if (isfield(model,'metFormulas'))
-            model.metFormulas{end+1,1} = '';
-            warning(['Metabolite formula for ' metaboliteList{i} ' set to ''''']);
-            %             model.metFormulas(end) = cellstr(input('Enter metabolite chemical formula, if available:', 's'));
-        end
-        if isfield(model,'metChEBIID')
-            model.metChEBIID{end+1,1} = '';
-        end
-        if isfield(model,'metChEBIID')
-            model.metChEBIID{end+1,1} = ''; %changed to match Recon 2 nomenclature
-        end
-        if isfield(model,'metKEGGID')
-            model.metKEGGID{end+1,1} = '';
-        end
-        if isfield(model,'metPubChemID')
-            model.metPubChemID{end+1,1} = '';
-        end
-        if isfield(model,'metInChIString')
-            model.metInChIString{end+1,1} = '';
-        end        
-        if isfield(model,'metCharges')
-            model.metCharges(end+1,1) = 0;
-        end
-        if isfield(model,'metHepatoNetID')
-            model.metHepatoNetID{end+1,1} = ''; %added
-        end
-        if isfield(model,'metEHMNID')
-            model.metEHMNID{end+1,1} = ''; %added
-        end
-        if isfield(model,'metHMDBID')
-            model.metHMDBID{end+1,1} = ''; %added
-        end
     end
 end
 
-%printLabeledData(model.mets,Scolumn,1);
-
-if isfield(model,'b')
-    model.b = [model.b;zeros(length(model.mets)-length(model.b),1)];
-end
 
 % if ~oldRxnFlag, model.rxnGeneMat(rxnID,:)=0; end
 
-if (isfield(model,'genes'))
-    if (nargin < 11)
-        model = changeGeneAssociation(model,rxnName,grRule);
+if (isfield(model,'genes')) 
+    if isempty(parser.Results.systNameList)        
+        model = changeGeneAssociation(model,rxnID,grRule);
     else
-        %fprintf('In addReaction, the class of systNameList is %s',
-        %class(systNameList)); % commented out by Thierry Mondeel
-        if ~isempty(geneNameList) && ~isempty(systNameList)
-        model = changeGeneAssociation(model,rxnName,grRule,geneNameList,systNameList);
-        else
-            model = changeGeneAssociation(model,rxnName,grRule);
-        end
+        model = changeGeneAssociation(model,rxnID,grRule,geneNameList,systNameList);
     end
 end
 
 % Figure out if the new reaction already exists
 rxnInModel=false;
-if (nNewMets > 0) && isempty(find(newMetsCoefs == 0, 1))
-    Stmp = [model.S;sparse(nNewMets,nRxns)];
-else
-    Stmp = model.S;
+duplicatePos = [];
+Stmp = model.S;
+if ~((nNewMets > 0) && isempty(find(newMetsCoefs == 0, 1)))
     if (checkDuplicate)
-        if size(Stmp,2)<6000
-            tmpSel = all(repmat((Scolumn),1,size(Stmp,2)) == (Stmp));
-            rxnIDexists = full(find(tmpSel));
-            if (~isempty(rxnIDexists))
-                rxnIDexists=rxnIDexists(1);
-                rxnInModel = true;
-            end
-        else
-            for i=1:size(Stmp,2)
-                if(Scolumn==Stmp(:,i))
-                    rxnInModel=true;
-                    rxnIDexists=i;
-                    break
-                end
-            end
+        duplicatePos = find(ismember(Stmp',Scolumn','rows'));        
+        rxnIDexists = duplicatePos(~ismember(duplicatePos,rxnPos));
+        if numel(rxnIDexists) > 1
+            rxnIDexists = rxnIDexists(1);
         end
     end
 end
 
-if (rxnInModel)
+%If the reaction is already present, and the updated reaction is not one of
+%the reactions, which actually is matching.
+if any(~(duplicatePos == rxnPos))
     warning(['Model already has the same reaction you tried to add: ' modelOrig.rxns{rxnIDexists}]);
     model = modelOrig;
 else
     if (oldRxnFlag)
         model.S = Stmp;
-        model.S(:,rxnID) = Scolumn;
+        model.S(:,rxnPos) = Scolumn;
     else
+        try
         model.S = [Stmp Scolumn];
+        model = updateReactionFields(model);
+        catch
+            disp('test')
+        end
+        
     end
     if printLevel>0
-        printRxnFormula(model,rxnName);
+        printRxnFormula(model,rxnID);
     end
 end
+
+end 
+
+function modelOut = updateReactionFields(model)
+
+modelOut = model;
+nRxns = size(model.rxns,1)-1; %Fields not yet updated.
+nMets = numel(model.mets);
+if isfield(model, 'genes')
+    nGenes = numel(model.genes);
+else
+    nGenes = 0;
+end
+
+if isfield(model, 'comps')
+    nComps = numel(model.comps);
+else
+    nComps = 0;
+end
+
+if isfield(model, 'proteins')
+    nProts = numel(model.proteins);
+else
+    nProts = 0;
+end
+
+mfields = fieldnames(model);
+rfields = {};
+%Try to use the size as indicator of association.
+if ~any([nMets nGenes nComps, nProts] == nRxns) && nRxns > 2
+    for i = 1:length(mfields)
+        if any(size(model.(mfields{i})) == nRxns)
+            rfields = [rfields; mfields(i)];
+        end
+    end
+else    
+    rfields = [rfields; mfields(strncmp('rxn', mfields, 3))];
+    rfields = intersect(rfields, mfields);
+end
+
+rfields = setdiff(rfields,{'S', 'c', 'lb', 'ub', 'rxns', 'rules', 'grRules', 'subSystems'});
+
+%Current assumption:
+%Cell arrays in the struct contain identifiers (i.e. they contain strings)
+%default numeric value is 0 if no NaNs are present. if NaNs are present
+%the default numeric value is 0
+%logic values have a default of 0 -> and should give a warning, as they
+%might be computed fields.
+
+for i = 1:length(rfields)    
+    
+   if size(model.(rfields{i}), 1) == nRxns                                
+       if iscell(model.(rfields{i}))
+           modelOut.(rfields{i})(end+1,:) = {''};
+       end
+       if isnumeric(model.(rfields{i}))
+           if any(isnan(model.(rfields{i})))
+               modelOut.(rfields{i})(end+1,:) = NaN;
+           else
+               modelOut.(rfields{i})(end+1,:) = 0;
+           end
+       end
+       if islogical(modelOut.(rfields{i}))
+           warning('Modifying logical field %s, this could possibly make the field invalid if it is a computed field!', rfields{i});
+           modelOut.(rfields{i})(end+1,:) = 0;
+       end   
+   elseif size(model.(rfields{i}), 2) == nRxns && nRxns ~= 1
+       if iscell(model.(rfields{i}))
+           modelOut.(rfields{i})(:,end+1) = {''};
+       end
+       if isnumeric(model.(rfields{i}))
+           if any(isnan(model.(rfields{i})))
+               modelOut.(rfields{i})(:,end+1) = NaN;
+           else
+               modelOut.(rfields{i})(:,end+1) = 0;
+           end
+       end
+       if islogical(modelOut.(rfields{i}))
+           warning('Modifying logical field %s, this could possibly make the field invalid if it is a computed field!', rfields{i});
+           modelOut.(rfields{i})(:,end+1) = 0;
+       end
+   end
+end
+end
+
+
