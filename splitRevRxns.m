@@ -69,23 +69,19 @@ for i = 1:nRxns
     % Reaction entirely in the negative direction
     if model.ub(i) <= 0 && model.lb(i) < 0
         % Retain original bounds but reversed
-        modelIrrev.ub(cnt) = -model.lb(i);
-        modelIrrev.lb(cnt) = -model.ub(i);
+        modelIrrev.ub(cnt) = model.lb(i);
+        modelIrrev.lb(cnt) = model.ub(i);
         % Reverse sign
-        modelIrrev.S(:, cnt) = -model.S(:, i);
-        modelIrrev.c(cnt) = -model.c(i);
-        modelIrrev.rxns{cnt} = [model.rxns{i} '_r'];
+        modelIrrev.S(:, cnt) = model.S(:, i);
+        modelIrrev.c(cnt) = model.c(i);
+        modelIrrev.rxns{cnt} = model.rxns{i};
         model.rev(i) = false;
         modelIrrev.rev(cnt) = false;
     else
         % Keep positive upper bound
         modelIrrev.ub(cnt) = model.ub(i);
         %if the lb is less than zero, set the forward rxn lb to zero
-        if model.lb(i) < 0
-            modelIrrev.lb(cnt) = 0;
-        else
-            modelIrrev.lb(cnt) = model.lb(i);
-        end
+        modelIrrev.lb(cnt) = model.lb(i);
         modelIrrev.S(:, cnt) = model.S(:, i);
         modelIrrev.c(cnt) = model.c(i);
         modelIrrev.rxns{cnt} = model.rxns{i};
@@ -101,10 +97,13 @@ for i = 1:nRxns
         matchRev(cnt-1) = cnt;
         modelIrrev.rxns{cnt-1} = [model.rxns{i} '_f'];
         modelIrrev.S(:, cnt) = - model.S(:, i);
+        modelIrrev.S(:, cnt-1) = model.S(:, i);
         modelIrrev.rxns{cnt} = [model.rxns{i} '_b'];
-        modelIrrev.rev(cnt) = true;
+        modelIrrev.rev(cnt) = false;
         modelIrrev.lb(cnt) = 0;
-        modelIrrev.ub(cnt) = - model.lb(i);
+        modelIrrev.lb(cnt-1) = 0;
+        modelIrrev.ub(cnt) =  - model.lb(i);
+        modelIrrev.ub(cnt - 1) = - model.lb(i);
         modelIrrev.c(cnt) = 0;
         rev2irrev{i} = [cnt-1 cnt];
         irrev2rev(cnt) = i;
@@ -149,4 +148,6 @@ if isfield(model,'genes')
     modelIrrev.rules = model.rules(irrev2rev);
     modelIrrev.grRules = model.grRules(irrev2rev); %added to allow model reduction 18/02/2016 Agnieszka
 end
+modelIrrev.rev = zeros(length(modelIrrev.rxns),1); 
+modelIrrev.rev(find(modelIrrev.lb<0))=1;
 modelIrrev.reversibleModel = false;
