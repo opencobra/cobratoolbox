@@ -11,16 +11,16 @@ function solution = solveCobraMILP(MILPproblem, varargin)
 % INPUT:
 %    MILPproblem:     Structure containing the following fields describing the LP problem to be solved
 %
-%                       * A - LHS matrix
-%                       * b - RHS vector
-%                       * c - Objective coeff vector
-%                       * lb - Lower bound vector
-%                       * ub - Upper bound vector
-%                       * osense - Objective sense (-1 max, +1 min)
-%                       * csense - Constraint senses, a string containting the constraint sense for
+%                       * .A - LHS matrix
+%                       * .b - RHS vector
+%                       * .c - Objective coeff vector
+%                       * .lb - Lower bound vector
+%                       * .ub - Upper bound vector
+%                       * .osense - Objective sense (-1 max, +1 min)
+%                       * .csense - Constraint senses, a string containting the constraint sense for
 %                         each row in A ('E', equality, 'G' greater than, 'L' less than).
-%                       * vartype - Variable types ('C' continuous, 'I' integer, 'B' binary)
-%                       * x0 - Initial solution
+%                       * .vartype - Variable types ('C' continuous, 'I' integer, 'B' binary)
+%                       * .x0 - Initial solution
 %
 % Optional parameters can be entered using parameters structure or as
 % parameter followed by parameter value: i.e. ,'printLevel', 3)
@@ -45,22 +45,22 @@ function solution = solveCobraMILP(MILPproblem, varargin)
 %
 %
 % OUTPUT:
-%    solution:        vStructure containing the following fields describing a MILP solution
+%    solution:        Structure containing the following fields describing a MILP solution
 %
-%                       * cont:        Continuous solution
-%                       * int:         Integer solution
-%                       * full:        Full MILP solution vector
-%                       * obj:         Objective value
-%                       * solver:      Solver used to solve MILP problem
-%                       * stat:        Solver status in standardized form (see below)
+%                       * .cont:        Continuous solution
+%                       * .int:         Integer solution
+%                       * .full:        Full MILP solution vector
+%                       * .obj:         Objective value
+%                       * .solver:      Solver used to solve MILP problem
+%                       * .stat:        Solver status in standardized form (see below)
 %
 %                         * 1 - Optimal solution found
 %                         * 2 - Unbounded solution
 %                         * 0 - Infeasible MILP
 %                         * -1 - No integer solution exists
 %                         * 3 - Other problem (time limit etc, but integer solution exists)
-%                       * origStat:    Original status returned by the specific solver
-%                       * time:        Solve time in seconds
+%                       * .origStat:    Original status returned by the specific solver
+%                       * .time:        Solve time in seconds
 %
 % .. Authors:
 %       - Markus Herrgard 1/23/07

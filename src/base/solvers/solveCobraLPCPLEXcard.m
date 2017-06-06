@@ -10,12 +10,12 @@ function [solution, LPProblem] = solveCobraLPCPLEXcard(LPProblem, printLevel, ba
 % INPUT:
 %    model:              structure with mandatory and optional fields:
 %
-%                          * A or S: - `m` x `n` LHS matrix
-%                          * b - `m` x 1 RHS vector
-%                          * c - `n` x 1 Objective coeff vector
-%                          * lb - `n` x 1 Lower bound vector
-%                          * ub - `n` x 1 Upper bound vector
-%                          * osense - scalar Objective sense (-1 max, +1 min)
+%                          * .A or .S: - `m x n` LHS matrix
+%                          * .b - `m x 1` RHS vector
+%                          * .c - `n x 1` Objective coeff vector
+%                          * .lb - `n x 1` Lower bound vector
+%                          * .ub - `n x 1` Upper bound vector
+%                          * .osense - scalar Objective sense (-1 max, +1 min)
 %                          * .rxns - (optional) cell array of reaction abbreviations (necessary for
 %                            making a readable confilict resolution file).
 %                          * .csense - (optional) Constraint senses, a string containting the constraint sense for
@@ -47,7 +47,7 @@ function [solution, LPProblem] = solveCobraLPCPLEXcard(LPProblem, printLevel, ba
 %                        in `someFunctionName.m`
 %                        (see template function CPLEXParamSet for details).
 %                        = `cpxControl` structure (output from a file like `CPLEXParamSet.m`)
-%    minNorm:            {(0), 1 , `n` x 1 vector} If not zero then, minimise the Euclidean length
+%    minNorm:            {(0), 1 , `n x 1` vector} If not zero then, minimise the Euclidean length
 %                        of the solution to the LP problem. Gives the same objective,
 %                        but minimises the square of flux. `minNorm` ~1e-6 should be
 %                        high enough for regularisation yet keep the same objective
@@ -59,27 +59,26 @@ function [solution, LPProblem] = solveCobraLPCPLEXcard(LPProblem, printLevel, ba
 % OUTPUT:
 %    solution:           Structure containing the following fields describing a LP solution:
 %
-%                          * full:               Full LP solution vector
-%                          * obj:                Objective value
-%                          * rcost:              Lagrangian multipliers to the simple inequalties (Reduced costs)
-%                          * dual:               Lagrangian multipliers to the equalities
-%                          * nInfeas:            Number of infeasible constraints
-%                          * sumInfeas:          Sum of constraint violation
-%                          * stat:               COBRA Standardized solver status code:
+%                          * .full:               Full LP solution vector
+%                          * .obj:                Objective value
+%                          * .rcost:              Lagrangian multipliers to the simple inequalties (Reduced costs)
+%                          * .dual:               Lagrangian multipliers to the equalities
+%                          * .nInfeas:            Number of infeasible constraints
+%                          * .sumInfeas:          Sum of constraint violation
+%                          * .stat:               COBRA Standardized solver status code:
 %
 %                            * 1 - Optimal solution
 %                            * 2 - Unbounded solution
 %                            * 0 - Infeasible
 %                            * -1 - No solution reported (timelimit, numerical problem etc)
-%                          * origStat:           CPLEX status code. Use `cplexStatus(solution.origStat)` for
-%                            more information from the CPLEX solver
-%                          * solver              solver used by `cplex`
-%                          * time                time taken to solve the optimization problem
+%                          * .origStat:           CPLEX status code. Use `cplexStatus(solution.origStat)` for more information from the CPLEX solver
+%                          * .solver              solver used by `cplex`
+%                          * .time                time taken to solve the optimization problem
 %
 % OPTIONAL OUTPUT:
 %    LPProblem:          with field:
 %
-%                          * .LPBasis - When input `basisReuse = 1`, we return a basis for reuse in the next LP
+%                          * .LPBasis:            When input `basisReuse = 1`, we return a basis for reuse in the next LP
 %
 % CPLEX consists of 4 different LP solvers which can be used to solve sysbio optimization problems
 % you can control which of the solvers, e.g. simplex vs interior point solver using the

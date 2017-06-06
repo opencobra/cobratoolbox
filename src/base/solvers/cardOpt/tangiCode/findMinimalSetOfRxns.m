@@ -14,7 +14,7 @@ function [result_tab, sol, lprxns, l1rxns, l0rxns]  = findMinimalSetOfRxns(model
 %
 % OUTPUTS:
 %    resutl_tab:    number of reactions obtained for each condition
-%    sol:           `x`
+%    sol:           `x` - solution vector
 %    lprxns:        rxns indices for LP solution
 %    l1rxns:        rxns indices for L1 solution
 %    l0rxns:        rxns indices for L0 solution

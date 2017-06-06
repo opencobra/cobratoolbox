@@ -13,33 +13,33 @@ function solution = optimizeCardinality(problem, params)
 % INPUT:
 %    problem:     Structure containing the following fields describing the problem:
 %
-%                   * p - size of vector `x`
-%                   * q - size of vector `y`
-%                   * r - size of vector `z`
-%                   * c - (`p+q+r`) x 1 linear objective function vector
-%                   * lambda - trade-off parameter of ||`x`||_0
-%                   * delta - trade-off parameter of ||`y`||_0
-%                   * A - `s` x (`p+q+r`) LHS matrix
-%                   * b - `s `x 1 RHS vector
-%                   * csense - `s` x 1 Constraint senses, a string containting the constraint sense for
+%                   * .p - size of vector `x`
+%                   * .q - size of vector `y`
+%                   * .r - size of vector `z`
+%                   * .c - `(p+q+r) x 1` linear objective function vector
+%                   * .lambda - trade-off parameter of `||x||_0`
+%                   * .delta - trade-off parameter of `||y||_0`
+%                   * .A - `s x (p+q+r)` LHS matrix
+%                   * .b - `s x 1` RHS vector
+%                   * .csense - `s x 1` Constraint senses, a string containting the constraint sense for
 %                     each row in `A` ('E', equality, 'G' greater than, 'L' less than).
-%                   * lb - (`p+q+r`) x 1 Lower bound vector
-%                   * ub - (`p+q+r`) x 1 Upper bound vector
+%                   * .lb - `(p+q+r) x 1` Lower bound vector
+%                   * .ub - ``(p+q+r) x 1` Upper bound vector
 %
 % OPTIONAL INPUTS:
 %    params:      Parameters structure:
 %
-%                   * nbMaxIteration - stopping criteria - number maximal of iteration (Default value = 1000)
-%                   * epsilon - stopping criteria - (Defautl value = 10e-6)
-%                   * theta - parameter of the approximation (Default value = 2)
+%                   * .nbMaxIteration - stopping criteria - number maximal of iteration (Default value = 1000)
+%                   * .epsilon - stopping criteria - (Defautl value = 10e-6)
+%                   * .theta - parameter of the approximation (Default value = 2)
 %
 % OUTPUT:
 %    solution:    Structure containing the following fields:
 %
-%                   * x - `p` x 1 solution vector
-%                   * y - `q` x 1 solution vector
-%                   * z - `r` x 1 solution vector
-%                   * stat - status
+%                   * .x - `p x 1` solution vector
+%                   * .y - `q x 1` solution vector
+%                   * .z - `r x 1` solution vector
+%                   * .stat - status
 %
 %                     * 1 =  Solution found
 %                     * 2 =  Unbounded

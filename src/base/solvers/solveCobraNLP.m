@@ -15,29 +15,29 @@ function solution = solveCobraNLP(NLPproblem, varargin)
 % INPUT:
 %    NLPproblem:    Non-linear optimization problem (fields up to 'c' are mandatory, below `c` are optional)
 %
-%                     * A - LHS matrix
-%                     * b - RHS vector
-%                     * lb - Lower bound vector
-%                     * ub - Upper bound vector
-%                     * osense - Objective sense (-1 for maximisation, 1 for minimisation)
-%                     * csense - Constraint senses ('L','E','G')
-%                     * objFunction - Function to evaluate as the objective (The function
+%                     * .A - LHS matrix
+%                     * .b - RHS vector
+%                     * .lb - Lower bound vector
+%                     * .ub - Upper bound vector
+%                     * .osense - Objective sense (-1 for maximisation, 1 for minimisation)
+%                     * .csense - Constraint senses ('L','E','G')
+%                     * .objFunction - Function to evaluate as the objective (The function
 %                       will receive two inputs, First the flux vector to
 %                       evaluate and second the NLPproblem struct. The function
 %                       should be provided as a string (or `c`)
-%                     * c - linear objective such that `c*x` is optimized.
-%                     * x0 - Initial solution
-%                     * gradFunction - Name of the function that computes the `n` x 1 gradient
+%                     * .c - linear objective such that `c*x` is optimized.
+%                     * .x0 - Initial solution
+%                     * .gradFunction - Name of the function that computes the `n x 1` gradient
 %                       vector (ignored if 'd' is set).
-%                     * H - Name of the function that computes the `n` x `n` Hessian matrix
-%                     * fLowBnd - A lower bound on the function value at optimum.
-%                     * d - Name of function that computes the mN nonlinear constraints
-%                     * dd - Name of function that computes the constraint Jacobian `mN` x `n`
-%                     * d2d - Name of function that computes the second part of the
+%                     * .H - Name of the function that computes the `n` x `n` Hessian matrix
+%                     * .fLowBnd - A lower bound on the function value at optimum.
+%                     * .d - Name of function that computes the mN nonlinear constraints
+%                     * .dd - Name of function that computes the constraint Jacobian `mN x n`
+%                     * .d2d - Name of function that computes the second part of the
 %                       Lagrangian function (only needed for some solvers)
-%                     * d_L - Lower bound vector in nonlinear constraints
-%                     * d_U - Upper bound vector in nonlinear constraints
-%                     * user - Solver specific user parameters structure
+%                     * .d_L - Lower bound vector in nonlinear constraints
+%                     * .d_U - Upper bound vector in nonlinear constraints
+%                     * .user - Solver specific user parameters structure
 %
 % Note that 'b_L' and 'b_U' can be used in place of 'b' and 'csense'
 %
@@ -52,20 +52,20 @@ function solution = solveCobraNLP(NLPproblem, varargin)
 % OUTPUT:
 %    solution:      Structure containing the following fields describing a NLP solution:
 %
-%                     * full:            Full NLP solution vector
-%                     * obj:             Objective value
-%                     * rcost:           Reduced costs
-%                     * dual:            Dual solution
-%                     * solver:          Solver used to solve NLP problem
-%                     * stat:            Solver status in standardized form
+%                     * .full:            Full NLP solution vector
+%                     * .obj:             Objective value
+%                     * .rcost:           Reduced costs
+%                     * .dual:            Dual solution
+%                     * .solver:          Solver used to solve NLP problem
+%                     * .stat:            Solver status in standardized form
 %
 %                       * 1 - Optimal solution
 %                       * 2 - Unbounded solution
 %                       * 0 - Infeasible
 %                       * -1 - No solution reported (timelimit, numerical problem etc)
-%                     * origStat:        Original status returned by the specific solver
-%                     * time:            Solve time in seconds
-%                     * origSolStruct    Original solution structure%
+%                     * .origStat:        Original status returned by the specific solver
+%                     * .time:            Solve time in seconds
+%                     * .origSolStruct    Original solution structure%
 %
 % .. Author:
 %       - Markus Herrgard 12/7/07

@@ -1,3 +1,4 @@
+function [obj, x, duals, stat] = lp_solve(f, a, b, e, vlb, vub, xint, scalemode, keep)
 % Solves mixed integer linear programming problems.
 % Solves the MILP problem
 % :math:`max v = f'*x`
@@ -15,9 +16,9 @@
 %    b:            `m` vector of right sides for the inequality constraints.
 %    e:            `m` vector that determines the sense of the inequalities:
 %
-%                    * e(i) = -1  ==> Less Than
-%                    * e(i) =  0  ==> Equals
-%                    * e(i) =  1  ==> Greater Than
+%                    * `e(i)` = -1  ==> Less Than
+%                    * `e(i)` =  0  ==> Equals
+%                    * `e(i)` =  1  ==> Greater Than
 % OPTIONAL INPUTS:
 %    vlb:          `n` vector of lower bounds. If empty or omitted,
 %                  then the lower bounds are set to zero.
@@ -33,8 +34,6 @@
 %    x:            Optimal value of the decision variables.
 %    duals:        solution of the dual problem.
 %    stat:         result of `mxlpsolve` function
-
-function [obj, x, duals, stat] = lp_solve(f, a, b, e, vlb, vub, xint, scalemode, keep)
 
 if nargin == 0
         help lp_solve;

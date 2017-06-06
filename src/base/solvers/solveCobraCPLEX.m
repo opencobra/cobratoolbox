@@ -8,12 +8,12 @@ function [solution, model] = solveCobraCPLEX(model, printLevel, basisReuse, conf
 % INPUT:
 %    model:              structure with mandatory and optional fields:
 %
-%                          * A or S: - `m` x `n` LHS matrix
-%                          * b - `m` x 1 RHS vector
-%                          * c - `n` x 1 Objective coeff vector
-%                          * lb - `n` x 1 Lower bound vector
-%                          * ub - `n` x 1 Upper bound vector
-%                          * osense - scalar Objective sense (-1 max, +1 min)
+%                          * .A or .S: - `m` x `n` LHS matrix
+%                          * .b - `m x 1` RHS vector
+%                          * .c - `n x 1` Objective coeff vector
+%                          * .lb - `n x 1` Lower bound vector
+%                          * .ub - `n x 1` Upper bound vector
+%                          * .osense - scalar Objective sense (-1 max, +1 min)
 %                          * .rxns - (optional) cell array of reaction abbreviations (necessary for
 %                            making a readable confilict resolution file).
 %                          * .csense - (optional) Constraint senses, a string containting the constraint sense for
@@ -39,15 +39,15 @@ function [solution, model] = solveCobraCPLEX(model, printLevel, basisReuse, conf
 %                        combine to make the problem infeasible. This is
 %                        useful for debugging an LP problem if you want to
 %                        try to resolve a constraint conflict
-%    contFunctName:      = [] Use all default CLPEX control parameters, (Default);
+%    contFunctName:
 %
-%                        = someString e.g. 'someFunctionName'
+%                        1. contFunctName = [] Use all default CLPEX control parameters, (Default);
+%                        2.  contFunctName = someString e.g. 'someFunctionName'
 %                        uses the user specified control parameters defined
-%                        in `someFunctionName.m`
+%                        in `someFunctionName.m`;
 %                        (see template function CPLEXParamSet for details).
-%
-%                        = `cpxControl` structure (output from a file like `CPLEXParamSet.m`)
-%    minNorm:            {(0), 1 , `n` x 1 vector} If not zero then, minimise the Euclidean length
+%                        3. contFunctName = `cpxControl` structure (output from a file like `CPLEXParamSet.m`)
+%    minNorm:            {(0), 1 , `n x 1` vector} If not zero then, minimise the Euclidean length
 %                        of the solution to the LP problem. Gives the same objective,
 %                        but minimises the square of flux. `minNorm` ~1e-6 should be
 %                        high enough for regularisation yet keep the same objective
@@ -55,22 +55,22 @@ function [solution, model] = solveCobraCPLEX(model, printLevel, basisReuse, conf
 % OUTPUT:
 %    solution:           Structure containing the following fields describing a LP solution:
 %
-%                          * full:               Full LP solution vector
-%                          * obj:                Objective value
-%                          * rcost:              Lagrangian multipliers to the simple inequalties (Reduced costs)
-%                          * dual:               Lagrangian multipliers to the equalities
-%                          * nInfeas:            Number of infeasible constraints
-%                          * sumInfeas:          Sum of constraint violation
-%                          * stat:               COBRA Standardized solver status code:
+%                          * .full:               Full LP solution vector
+%                          * .obj:                Objective value
+%                          * .rcost:              Lagrangian multipliers to the simple inequalties (Reduced costs)
+%                          * .dual:               Lagrangian multipliers to the equalities
+%                          * .nInfeas:            Number of infeasible constraints
+%                          * .sumInfeas:          Sum of constraint violation
+%                          * .stat:               COBRA Standardized solver status code:
 %
 %                            * 1 - Optimal solution
 %                            * 2 - Unbounded solution
 %                            * 0 - Infeasible
 %                            * -1 - No solution reported (timelimit, numerical problem etc)
-%                          * origStat:           CPLEX status code. Use `cplexStatus(solution.origStat)` for
+%                          * .origStat:           CPLEX status code. Use `cplexStatus(solution.origStat)` for
 %                            more information from the CPLEX solver
-%                          * solver              solver used by `cplex`
-%                          * time                time taken to solve the optimization problem
+%                          * .solver              solver used by `cplex`
+%                          * .time                time taken to solve the optimization problem
 %
 % OPTIONAL OUTPUT:
 %    model:              with field:

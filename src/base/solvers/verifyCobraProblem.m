@@ -1,5 +1,5 @@
 function [statusOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(XPproblem, x, tol, verbose)
-% Verifies dimensions of fields in XPproblem and determines if they are
+% Verifies dimensions of fields in `XPproblem` and determines if they are
 % valid LP, QP, MILP, MIQP problems. Also checks inputs for NaN.
 % If `x` is provided, it will see if `x` is a valid solution to tolerance (tol).
 %

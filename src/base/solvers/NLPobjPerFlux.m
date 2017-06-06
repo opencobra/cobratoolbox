@@ -15,8 +15,7 @@ function value = NLPobjPerFlux(fluxVector, Prob)
 %    value:         -Objective `flux / sum(v.^2)`
 %
 % .. Author:
-%       - Markus Herrgard 12/7/07
-%       c wasn't defined as written so added Prob as input to define c from the
+%       - Markus Herrgard 12/7/07, c wasn't defined as written so added Prob as input to define c from the model
 %       - model by Daniel Zielinski 3/19/10
 
 c = Prob.user.model.c;

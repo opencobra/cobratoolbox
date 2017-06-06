@@ -8,13 +8,13 @@ function solution = solveCobraLP(LPproblem, varargin)
 % INPUT:
 %    LPproblem:     Structure containing the following fields describing the LP problem to be solved
 %
-%                     * A - LHS matrix
-%                     * b - RHS vector
-%                     * c - Objective coeff vector
-%                     * lb - Lower bound vector
-%                     * ub - Upper bound vector
-%                     * osense - Objective sense (-1 max, +1 min)
-%                     * csense - Constraint senses, a string containting the constraint sense for
+%                     * .A - LHS matrix
+%                     * .b - RHS vector
+%                     * .c - Objective coeff vector
+%                     * .lb - Lower bound vector
+%                     * .ub - Upper bound vector
+%                     * .osense - Objective sense (-1 max, +1 min)
+%                     * .csense - Constraint senses, a string containting the constraint sense for
 %                       each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
 % OPTIONAL INPUTS:
@@ -27,7 +27,7 @@ function solution = solveCobraLP(LPproblem, varargin)
 %                     * > 10 - Pause statements, and maximal printing (debug mode)
 %    saveInput:     Saves LPproblem to filename specified in field.
 %                   i.e. parameters.saveInput = 'LPproblem.mat';
-%    minNorm:       {(0), scalar , `n` x 1 vector}, where `[m, n] = size(S)`;
+%    minNorm:       {(0), scalar , `n x 1` vector}, where `[m, n] = size(S)`;
 %                   If not zero then, minimise the Euclidean length
 %                   of the solution to the LP problem. minNorm ~1e-6 should be
 %                   high enough for regularisation yet maintain the same value for
@@ -43,13 +43,13 @@ function solution = solveCobraLP(LPproblem, varargin)
 %
 % OUTPUT:
 %    solution:      Structure containing the following fields describing a LP solution:
-%                     * full:         Full LP solution vector
-%                     * obj:          Objective value
-%                     * rcost:        Reduced costs, dual solution to :math:`lb <= v <= ub`
-%                     * dual:         dual solution to `A*v ('E' | 'G' | 'L') b`
-%                     * solver:       Solver used to solve LP problem
-%                     * algorithm:    Algorithm used by solver to solve LP problem
-%                     * stat:         Solver status in standardized form
+%                     * .full:         Full LP solution vector
+%                     * .obj:          Objective value
+%                     * .rcost:        Reduced costs, dual solution to :math:`lb <= v <= ub`
+%                     * .dual:         dual solution to `A*v ('E' | 'G' | 'L') b`
+%                     * .solver:       Solver used to solve LP problem
+%                     * .algorithm:    Algorithm used by solver to solve LP problem
+%                     * .stat:         Solver status in standardized form
 %
 %                       * 1 - Optimal solution
 %                       * 2 - Unbounded solution
@@ -57,9 +57,9 @@ function solution = solveCobraLP(LPproblem, varargin)
 %                         result from OptimizeCbModel
 %                       * 0 - Infeasible
 %                       * -1 - No solution reported (timelimit, numerical problem etc)
-%                     * origStat:     Original status returned by the specific solver
-%                     * time:         Solve time in seconds
-%                     * basis:        (optional) LP basis corresponding to solution
+%                     * .origStat:     Original status returned by the specific solver
+%                     * .time:         Solve time in seconds
+%                     * .basis:        (optional) LP basis corresponding to solution
 %
 % EXAMPLE:
 %

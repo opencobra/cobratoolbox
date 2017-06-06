@@ -1,4 +1,6 @@
 function configEnvVars(printLevel)
+% Configures the global variables based on the system's configuration
+%
 % USAGE:
 %
 %    configEnvVars(printLevel)

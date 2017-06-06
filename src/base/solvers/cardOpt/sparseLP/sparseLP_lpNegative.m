@@ -13,25 +13,25 @@ function solution = sparseLP_lpNegative(constraint, params)
 % INPUT:
 %    constraint:    Structure containing the following fields describing the linear constraints:
 %
-%                     * A - `m` x `n` LHS matrix
-%                     * b - `m` x 1 RHS vector
-%                     * lb - `n` x 1 Lower bound vector
-%                     * ub - `n` x 1 Upper bound vector
-%                     * csense - `m` x 1 Constraint senses, a string containting the constraint sense for
+%                     * .A - `m x n` LHS matrix
+%                     * .b - `m x 1` RHS vector
+%                     * .lb - `n x 1` Lower bound vector
+%                     * .ub - `n x 1` Upper bound vector
+%                     * .csense - `m x 1` Constraint senses, a string containting the constraint sense for
 %                       each row in `A` ('E', equality, 'G' greater than, 'L' less than).
 %
 % OPTIONAL INPUTS:
 %    params:        Parameters structure:
 %
-%                     * nbMaxIteration - stopping criteria - number maximal of iteration (Defaut value = 1000)
-%                     * epsilon - stopping criteria - (Defaut value = 10e-6)
-%                     * theta - parameter of the approximation (Defaut value = 0.5)
+%                     * .nbMaxIteration - stopping criteria - number maximal of iteration (Defaut value = 1000)
+%                     * .epsilon - stopping criteria - (Defaut value = 10e-6)
+%                     * .theta - parameter of the approximation (Defaut value = 0.5)
 %
 % OUTPUT:
 %    solution:      Structure containing the following fields:
 %
-%                     * x - `n` x 1 solution vector
-%                     * stat - status:
+%                     * .x - `n x 1` solution vector
+%                     * .stat - status:
 %
 %                       * 1 =  Solution found
 %                       * 2 =  Unbounded

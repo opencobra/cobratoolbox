@@ -16,14 +16,14 @@ function solution = solveCobraMIQP(MIQPproblem, varargin)
 % INPUT:
 %    MIQPproblem:     Structure containing the following fields describing the MIQP problem to be solved
 %
-%                       * A - LHS matrix
-%                       * b - RHS vector
-%                       * F - F matrix for quadratic objective (see above)
-%                       * c - Objective coeff vector
-%                       * lb - Lower bound vector
-%                       * ub - Upper bound vector
-%                       * osense - Objective sense (-1 max, +1 min)
-%                       * csense - Constraint senses, a string containting the constraint sense for
+%                       * .A - LHS matrix
+%                       * .b - RHS vector
+%                       * .F - F matrix for quadratic objective (see above)
+%                       * .c - Objective coeff vector
+%                       * .lb - Lower bound vector
+%                       * .ub - Upper bound vector
+%                       * .osense - Objective sense (-1 max, +1 min)
+%                       * .csense - Constraint senses, a string containting the constraint sense for
 %                         each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
 % Optional parameters can be entered using parameters structure or as
@@ -39,18 +39,18 @@ function solution = solveCobraMIQP(MIQPproblem, varargin)
 % OUTPUT:
 %    solution:        Structure containing the following fields describing a MIQP solution
 %
-%                       * full:        Full MIQP solution vector
-%                       * obj:         Objective value
-%                       * solver:      Solver used to solve MIQP problem
-%                       * stat:        Solver status in standardized form (see below)
+%                       * .full:        Full MIQP solution vector
+%                       * .obj:         Objective value
+%                       * .solver:      Solver used to solve MIQP problem
+%                       * .stat:        Solver status in standardized form (see below)
 %
 %                         * 1 - Optimal solution found
 %                         * 2 - Unbounded solution
 %                         * 0 - Infeasible MIQP
 %                         * -1 - No optimal solution found (time limit etc)
 %                         * 3 - Solution exists but with problems
-%                       * origStat:    Original status returned by the specific solver
-%                       * time:        Solve time in seconds
+%                       * .origStat:    Original status returned by the specific solver
+%                       * .time:        Solve time in seconds
 %
 % .. Author:
 %       - Markus Herrgard 6/8/07

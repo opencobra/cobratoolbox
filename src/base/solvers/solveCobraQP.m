@@ -17,14 +17,14 @@ function solution = solveCobraQP(QPproblem, varargin)
 % INPUT:
 %    QPproblem:       Structure containing the following fields describing the QP
 %
-%                       * A - LHS matrix
-%                       * b - RHS vector
-%                       * F - F matrix for quadratic objective (see above)
-%                       * c - Objective coeff vector
-%                       * lb - Lower bound vector
-%                       * ub - Upper bound vector
-%                       * osense - Objective sense (-1 max, +1 min)
-%                       * csense - Constraint senses, a string containting the constraint sense for
+%                       * .A - LHS matrix
+%                       * .b - RHS vector
+%                       * .F - F matrix for quadratic objective (see above)
+%                       * .c - Objective coeff vector
+%                       * .lb - Lower bound vector
+%                       * .ub - Upper bound vector
+%                       * .osense - Objective sense (-1 max, +1 min)
+%                       * .csense - Constraint senses, a string containting the constraint sense for
 %                         each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
 % Optional parameters can be entered using parameters structure or as
@@ -40,12 +40,12 @@ function solution = solveCobraQP(QPproblem, varargin)
 % OUTPUT:
 %    solution:        Structure containing the following fields describing a QP solution
 %
-%                       * full:        Full QP solution vector
-%                       * obj:         Objective value
-%                       * solver:      Solver used to solve QP problem
-%                       * origStat:    Original status returned by the specific solver
-%                       * time:        Solve time in seconds
-%                       * stat:        Solver status in standardized form (see below)
+%                       * .full:        Full QP solution vector
+%                       * .obj:         Objective value
+%                       * .solver:      Solver used to solve QP problem
+%                       * .origStat:    Original status returned by the specific solver
+%                       * .time:        Solve time in seconds
+%                       * .stat:        Solver status in standardized form (see below)
 %
 %                         * 1 - Optimal solution
 %                         * 2 - Unbounded solution

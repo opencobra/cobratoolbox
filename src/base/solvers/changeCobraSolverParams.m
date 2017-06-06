@@ -7,23 +7,17 @@ function changeOK = changeCobraSolverParams(solverType, paramName, paramValue)
 %
 % INPUTS:
 %    solverType:    Solver type, 'LP' or 'MILP' (opt, default, 'LP')
-%    paramName:     Parameter name
+%    paramName:     Parameter name. Allowed LP parameter names:
+%
+%                     * optTol:        Optimal objective accuracy tolerance
+%                     * teasTol:       Constraint feasibilty tolerance
+%                     * minNorm:       {(0), scalar , `n` x 1 vector}, where `[m,n]=size(S)`;
+
 %    paramValue:    Parameter value
 %
 % OUTPUT:
 %    changeOK:      Logical inicator that supplied parameter is allowed (= 1)
 %
-% Allowed LP parameter names:
-%
-%   * optTol:        Optimal objective accuracy tolerance
-%   * teasTol:       Constraint feasibilty tolerance
-%   * minNorm:       {(0), scalar , `n` x 1 vector}, where `[m,n]=size(S)`;
-%     If not zero then, minimise the Euclidean length
-%     of the solution to the LP problem. `minNorm ~1e-6` should be
-%     high enough for regularisation yet maintain the same value for
-%     the linear part of the objective. However, this should be
-%     checked on a case by case basis, by optimization with and
-%     without regularisation.
 %
 %   * printLevel:    Printing level
 %
@@ -42,6 +36,15 @@ function changeOK = changeCobraSolverParams(solverType, paramName, paramValue)
 %   * relMipGapTol:    Relative MIP gap tolerance
 %   * logFile:         Internal log file for solver
 %   * printLevel:      Print level for solver
+%
+% NOTE:
+%
+%    If input argument `minNorm` is not zero, then minimise the Euclidean length
+%    of the solution to the LP problem. `minNorm ~1e-6` should be
+%    high enough for regularisation yet maintain the same value for
+%    the linear part of the objective. However, this should be
+%    checked on a case by case basis, by optimization with and
+%    without regularisation.
 %
 % .. Authors:
 %       - Markus Herrgard, 5/3/07
