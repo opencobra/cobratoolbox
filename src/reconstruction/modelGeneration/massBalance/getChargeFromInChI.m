@@ -1,22 +1,28 @@
-function [charge,chargeWithoutProtons]=getChargeFromInChI(InChI)
-%return the charge from a given InChI string
+function [charge, chargeWithoutProtons] = getChargeFromInChI(InChI)
+% Returns the charge from a given InChI string
 %
-%INPUT
-% InChI string - The Inchi Identifier
+% USAGE:
 %
-% OUTPUT
-% charge                 The charge encoded in the inchi string (including protonation)
-% chargeWithoutProtons   The charge encoded in the InChi ignoring the
-%                        protonation state
+%    [charge, chargeWithoutProtons] = getChargeFromInChI(InChI)
 %
-% Ronan Fleming 23 Sept 09
-% Updated May 2017 Thomas Pfau
+% INPUT:
+%    InChI:                   The Inchi Identifier - string
+%
+% OUTPUTS:
+%    charge:                  The charge encoded in the `InChi` string (including protonation)
+%    chargeWithoutProtons:    The charge encoded in the `InChi` ignoring the protonation state
+%
+% NOTE:
+%
+%    InChI Charge is defined in the charge layer and can be modified in the
+%    proton layer. If nothing is defined, the compound is uncharged.
+%    First: Discard any "Reconnected" parts, as those don't influence the
+%    charge
+%
+% .. Author:
+%       - Ronan Fleming, 23 Sept 09
+%       - Thomas Pfau, May 2017, Updated
 
-%InChI Charge is defined in the charge layer and can be modified in the
-%proton layer. If nothing is defined, the compound is uncharged
-
-%First: Discard any "Reconnected" parts, as those don't influence the
-%charges
 InChI = regexprep(InChI,'/r.*','');
 
 %Charge Layer: (either at the end or at the start)
@@ -27,10 +33,10 @@ p_layer = regexp(InChI,'/p(.*?)/|/p(.*?)$','tokens');
 chargeWithoutProtons = 0;
 
 if ~isempty(q_layer)
-    %Get individual charges from splitted reactions. 
+    %Get individual charges from splitted reactions.
     individualCharges = cellfun(@(x) {strsplit(x{1},';')},q_layer);
     %And calculate the charge by evaluating the individual components.
-    chargeWithoutProtons = cellfun(@(x) sum(cellfun(@(y) eval(y) , x)), individualCharges);    
+    chargeWithoutProtons = cellfun(@(x) sum(cellfun(@(y) eval(y) , x)), individualCharges);
 end
 
 proton_charges = 0;

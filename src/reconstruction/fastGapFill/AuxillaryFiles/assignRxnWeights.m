@@ -1,29 +1,29 @@
-function MatricesSUX = assignRxnWeights(MatricesSUX,weights,WeightsPerRxn, NoWeight)
-% function MatricesSUX = assignRxnWeights(MatricesSUX,weights)
+function MatricesSUX = assignRxnWeights(MatricesSUX, weights, WeightsPerRxn, NoWeight)
+% Assigns reaction weights
 %
-% INPUT
-% MatricesSUX       Input model structure
-% weights           Weight structure that permits to add weights to
-%                   non-core reactions (it is recommended to use values other than 0 and 1, with lower weight
-%                   corresponding to higher priority.
-%                   Format:
-%                         weights.MetabolicRxns = 10; % Universal database metabolic reactions
-%                         weights.ExchangeRxns = 10; % Exchange reactions
-%                         weights.TransportRxns = 10; % Transport reactions
-%                   Optional input. Default: weigth of 10 for all non-core
-%                   reactions.
-% WeightsPerRxn     Structure containing a list of reactions that should be assined with
-%                   individual weights (WeightsPerRxn.rxns) AND a list of Reaction weights (WeightsPerRxn.weights) in the same order.
-% NoWeight          Weight that should be assigned to those reactions NOT
-%                   in core reaction set and NOT in WeightsPerRxn
-%                   (default:1000)
+% USAGE:
 %
-% OUTPUT
-% MatricesSUX   Output model structure
+%    MatricesSUX = assignRxnWeights(MatricesSUX, weights, WeightsPerRxn, NoWeight)
 %
+% INPUTS:
+%    MatricesSUX:       Input model structure
+%    weights:           Weight structure that permits to add weights to
+%                       non-core reactions (it is recommended to use values other than 0 and 1, with lower weight
+%                       corresponding to higher priority. Format:
 %
-% Dec 2013
-% Ines Thiele, http://thielelab.eu
+%                         * weights.MetabolicRxns = 10; % Universal database metabolic reactions
+%                         * weights.ExchangeRxns = 10; % Exchange reactions
+%                         * weights.TransportRxns = 10; % Transport reactions
+%                       Default: weigth of 10 for all non-core reactions.
+%    WeightsPerRxn:     Structure containing a list of reactions that should be assined with
+%                       individual weights (WeightsPerRxn.rxns) AND a list of Reaction weights (WeightsPerRxn.weights) in the same order.
+%    NoWeight:          Weight that should be assigned to those reactions NOT
+%                       in core reaction set and NOT in WeightsPerRxn (default:1000)
+%
+% OUTPUT:
+%    MatricesSUX:       Output model structure
+%
+% .. Author: - Ines Thiele, Dec 2013, http://thielelab.eu
 
 if ~exist('weights','var') || isempty(weights)
     % define weights for reactions to be added - the lower the weight the

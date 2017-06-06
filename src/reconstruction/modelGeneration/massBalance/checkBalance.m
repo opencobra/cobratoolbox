@@ -1,30 +1,34 @@
-function [dE,E,missingFormulaeBool]=checkBalance(model,element,printLevel,fileName,missingFormulaeBool)
-% [dE,E]=checkBalance(model,element,printLevel)
+function [dE ,E, missingFormulaeBool] = checkBalance(model, element, printLevel, fileName, missingFormulaeBool)
 % Checks whether a set of reactions is elementally balanced.
+% Note that exchange reactions are not elementally balanced.
 %
-% note that exchange reactions are not elementally balanced
+% USAGE:
 %
-% INPUT
-% model                 COBRA model structure
-%      .S               Stoichiometric matrix
-%      .metForumlas     Metabolite formulas
-% element               Abbreviation of element e.g. C or Mg
+%    [dE ,E, missingFormulaeBool] = checkBalance(model, element, printLevel, fileName, missingFormulaeBool)
 %
+% INPUTS:
+%    model:                  COBRA model structure:
 %
-% OPTIONAL INPUT
-% printLevel                    {-1,(0),1}
-%                               -1=print out missing formulae to a file
-%                               0=silent
-%                               1=print out  missing formulae to screen                             reactions to screen
+%                              * .S - Stoichiometric matrix
+%                              * .metForumlas - Metabolite formulas
+%    element:                Abbreviation of element e.g. C or Mg
 %
-% OUTPUT
-% dE        n x 1 vector of net change in elements per reaction bal = E*S
-%           If isnan(dE(n)) then the reaction involves a metabolite without
-%           a formula.
+% OPTIONAL INPUTS:
+%    printLevel:             {-1, (0), 1} where:
 %
-% E         m x 1 vector with number of elements in each metabolite
+%                            -1 = print out missing formulae to a file;
+%                            0 = silent;
+%                            1 = print out  missing formulae to screen reactions to screen
+%    fileName:               name of the file
+%    missingFormulaeBool:    boolean variable for missing formulae
 %
-% Ronan M.T. Fleming    July 2009
+% OUTPUTS:
+%    dE:                     `n` x 1 vector of net change in elements per reaction `bal = E*S`
+%                            If `isnan(dE(n))` then the reaction involves a metabolite without a formula.
+%    E:                      `m` x 1 vector with number of elements in each metabolite
+%    missingFormulaeBool:    boolean variable for missing formulae
+%
+% .. Author: - Ronan M.T. Fleming, July 2009
 
 if ~isfield(model,'metFormulas')
     error('model structure must contain model.metFormulas field')

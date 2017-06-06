@@ -1,49 +1,45 @@
-function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, Elements, missingFormulaeBool, balancedMetBool]...
-    = checkMassChargeBalance(model,printLevel,fileName)
-%[massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, Elements] = checkMassChargeBalance(model, rxnBool, printLevel)
-%checkMassChargeBalance tests for a list of reactions if these reactions are
-%mass-balanced by adding all elements on left hand side and comparing them
-%with the sums of elements on the right hand side of the reaction.
+function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, Elements, missingFormulaeBool, balancedMetBool] = checkMassChargeBalance(model, printLevel, fileName)
+% Tests for a list of reactions if these reactions are
+% mass-balanced by adding all elements on left hand side and comparing them
+% with the sums of elements on the right hand side of the reaction.
 %
+% USAGE:
 %
-%INPUT
-% model            COBRA model structure
-% .S               m x n stoichiometric matrix
-% .metForumlas     m x 1 cell array of metabolite formulas
-% .metCharges      m x 1 double array of charges
+%    [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, Elements, missingFormulaeBool, balancedMetBool] = checkMassChargeBalance(model, printLevel, fileName)
 %
-%OPTIONAL INPUT
-% printLevel    {-1,(0),1}
-%               -1 = print out diagnostics on problem reactions to a file
-%                0 = silent
-%                1 = print elements as they are checked (display progress)
-%                2 = also print out diagnostics on problem reactions to screen
-% model.SIntRxnBool    Boolean of reactions heuristically though to be mass balanced.
+% INPUT:
+%    model:                  COBRA model structure:
 %
-%OUTPUTS
-% massImbalance                 nRxn x nElement matrix with mass imbalance
-%                               for each element checked. 0 if balanced.
-% imBalancedMass                nRxn x 1 cell with charge imbalance
-%                               e.g. -3 H means three hydrogens disappear
-%                               in the reaction.
-% imBalancedCharge              nRxn x 1 vector with charge imbalance,
-%                               empty if no imbalanced reactions
+%                              * .S - `m` x `n` stoichiometric matrix
+%                              * .metForumlas - `m` x 1 cell array of metabolite formulas
+%                              * .metCharges - `m` x 1 double array of charges
+%                              * model.SIntRxnBool - Boolean of reactions heuristically though to be mass balanced. (optional)
 %
-% imBalancedRxnBool             boolean vector indicating imbalanced
-%                               reactions (including exchange reactions!)
+% OPTIONAL INPUTS:
+%    printLevel:             {-1, (0), 1} where:
 %
-% Elements                      nElement x 1 cell array of element
-%                               abbreviations checked
+%                            -1 = print out diagnostics on problem reactions to a file,
+%                            0 = silent,
+%                            1 = print elements as they are checked (display progress),
+%                            2 = also print out diagnostics on problem reactions to screen
+%    fileName:               name of the file
 %
-% missingFormulaeBool           nMet x 1 boolean vector indicating
-%                               metabolites without formulae
+% OUTPUTS:
+%    massImbalance:          `nRxn` x `nElement` matrix with mass imbalance
+%                            for each element checked. 0 if balanced.
+%    imBalancedMass:         `nRxn` x 1 cell with charge imbalance
+%                            e.g. -3 H means three hydrogens disappear in the reaction.
+%    imBalancedCharge:       `nRxn` x 1 vector with charge imbalance, empty if no imbalanced reactions
+%    imBalancedRxnBool:      boolean vector indicating imbalanced reactions (including exchange reactions!)
+%    Elements:               `nElement` x 1 cell array of element abbreviations checked
+%    missingFormulaeBool:    `nMet` x 1 boolean vector indicating metabolites without formulae
+%    balancedMetBool:        boolean vector indicating metabolites involved in balanced reactions
 %
-% balancedMetBool               boolean vector indicating metabolites involved in balanced reactions
-%
-% Ines Thiele 12/09
-% IT, 06/10, Corrected some bugs and improved speed.
-% RF, 09/09/10, Support for very large models and printing to file.
-% RF, 18/12/14, Default is now to check balancing of all reactions.
+% .. Authors:
+%       - Ines Thiele 12/09
+%       - IT, 06/10, Corrected some bugs and improved speed.
+%       - RF, 09/09/10, Support for very large models and printing to file.
+%       - RF, 18/12/14, Default is now to check balancing of all reactions.
 
 [nMet, nRxn]=size(model.S);
 

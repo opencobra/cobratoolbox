@@ -1,27 +1,29 @@
-function [A,V] = fastcc_nonconvex(model,epsilon,printLevel,modeFlag)
-% [A,V] = fastcc_nonconvex(model,epsilon,printLevel)
-%
+function [A, V] = fastcc_nonconvex(model, epsilon, printLevel, modeFlag)
 % The FASTCC algorithm for testing the consistency of a stoichiometric model
-% Output A is the consistent part of the model
+% Output `A` is the consistent part of the model
 %
-% INPUT
-% model             cobra model structure containing the fields
-%   S               m x n stoichiometric matrix
-%   lb              n x 1 flux lower bound
-%   ub              n x 1 flux uppper bound
-%   rxns            n x 1 cell array of reaction abbreviations
+% USAGE:
 %
-% epsilon           flux threshold
-% printLevel        0 = silent, 1 = summary, 2 = debug
+%    [A, V] = fastcc_nonconvex(model, epsilon, printLevel, modeFlag)
 %
-% OPTIONAL INPUT
-% modeFlag          {(0),1}; 1=return matrix of modes V
+% INPUTS:
+%    model:         cobra model structure containing the fields:
 %
-% OUTPUT
-% A                 n x 1 boolean vector indicating the flux consistent reactions
-% V                 n x k matrix such that S(:,A)*V(:,A)=0 and |V(:,A)|'*1>0
-
-% Hoai Minh LE      07/01/2016
+%                     * S - `m` x `n` stoichiometric matrix
+%                     * lb - `n` x 1 flux lower bound
+%                     * ub - `n` x 1 flux uppper bound
+%                     * rxns - `n` x 1 cell array of reaction abbreviations
+%    epsilon:       flux threshold
+%    printLevel:    0 = silent, 1 = summary, 2 = debug
+%
+% OPTIONAL INPUT:
+%    modeFlag:      {(0), 1}; 1 = return matrix of modes `V`
+%
+% OUTPUT:
+%    A:             `n` x 1 boolean vector indicating the flux consistent reactions
+%    V:             `n` x `k` matrix such that `S(:,A)*V(:,A) = 0` and `|V(:,A)|'*1 > 0`
+%
+% .. Author: -  Hoai Minh LE, 07/01/2016
 
 if ~exist('printLevel','var')
     printLevel = 2;
