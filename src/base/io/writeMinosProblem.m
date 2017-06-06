@@ -1,4 +1,4 @@
-function [directory,fname]=writeMinosProblem(LPproblem,precision,modelName,directory,printLevel)
+function [directory, fname] = writeMinosProblem(LPproblem, precision, modelName, directory, printLevel)
 % Inputs a COBRA LPproblem Matlab structure and outputs
 % a file that can be input to an F90 main program
 % for solution by SQOPT or MINOS.
@@ -24,7 +24,7 @@ function [directory,fname]=writeMinosProblem(LPproblem,precision,modelName,direc
 %    precision:     'double' or 'single' precision
 %    modelName:     name is the problem name (a character string)
 %    directory:     the directory where optimization problem file is saved
-%    printLevel:
+%    printLevel:    verbose level
 %
 % OUTPUT:
 %    directory:     directory for the file

@@ -9,20 +9,20 @@ function OK = convertCobraLP2mps(LPProblem,name)
 % INPUT:
 %    LPproblem:    Structure containing the following fields describing the LP problem to be solved
 %
-%                 * A - LHS matrix
-%                 * b - RHS vector
-%                 * c - Objective coeff vector
-%                 * lb - Lower bound vector
-%                 * ub - Upper bound vector
-%                 * osense - Objective sense (max=-1, min=+1)
-%                 * csense - Constraint senses, a string containting the constraint sense for
-%                   each row in A ('E', equality, 'G' greater than, 'L' less than).
+%                    * .A - LHS matrix
+%                    * .b - RHS vector
+%                    * .c - Objective coeff vector
+%                    * .lb - Lower bound vector
+%                    * .ub - Upper bound vector
+%                    * .osense - Objective sense (max=-1, min=+1)
+%                    * .csense - Constraint senses, a string containting the constraint sense for
+%                      each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
 % OPTIONAL INPUT:
-%    name:      string giving name of LP problem
+%    name:         string giving name of LP problem
 %
 % OUTPUT:
-%    OK:        1 if saving is success, 0 otherwise
+%    OK:           1 if saving is success, 0 otherwise
 %
 % .. Authors:
 %       - Ronan M.T. Fleming: 7 Sept 09
