@@ -1,33 +1,43 @@
-function [newmodel, HTABLE] = addReactionGEM(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,nRxn,subSystems,grRules,rules,genes, HTABLE)
-%addReactionGEM manually adds reactions to a specified model, may add one or more reactions at a time
+function [newmodel, HTABLE] = addReactionGEM(model, rxns, rxnNames, rxnFormulas, rev, lb, ub, nRxn, subSystems, grRules, rules, genes, HTABLE)
+% Manually adds reactions to a specified model, may add one or more reactions at a time
 %
-%   [newmodel] = addReactionSmiley(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,subSystems,grRules,rules,genes,HTABLE)
+% USAGE:
+%
+%    [newmodel, HTABLE] = addReactionGEM(model, rxns, rxnNames, rxnFormulas, rev, lb, ub, nRxn, subSystems, grRules, rules, genes, HTABLE)
+%
+% INPUTS:
+%     model:          COBRA model structure
+%     rxns:           Identifiers for the reactions
+%     rxnNames:       List of reactions
+%     rxnFormulas:    reactions' formulas
+%     rev:            0 = irrev, 1 = rev
+%     lb:             The lower bounds for fluxes
+%     ub:             The upper bounds for fluxes
+%     subSystems:     subSystem assignment for each reaction, default = ''
+%     grRules:        A string representation of the GPR rules defined in a readable format, default = ''
+%     rules:          GPR rules in evaluateable format for each reaction, default = ''
+%     genes:          Identifiers of the genes in the model, default = ''
+%     HTABLE:         hash table
+%
+% OUTPUTS:
+%     newmodel:       changed model
+%     HTABLE:         hash table
+%
+% EXAMPLE:
+%
+%    [modelLB_NH3] = addReactionSmiley(modelLB, 'NH3r', 'NH3 protonization', cellstr('1 NH3[c] + 1 H[c] <==> 1 NH4[c]'), 1, -1000, 1000, 'Others');
 %
 % - Manually add reactions to a specified model, can either add one or
 %   multiple reactions at a time
+%
 % - All syntax standards must comply with the specified model
+%
 % - For reaction formulas, use: '-->' for irreversible or '<==>' for
 %   reversible
-% e.g. [modelLB_NH3] = addReactionSmiley(modelLB,'NH3r','NH3 protonization',cellstr('1 NH3[c] + 1 H[c] <==> 1 NH4[c]'),1,-1000,1000,'Others');
-% Inputs
-%     model
-%     rxns
-%     rxnNames
-%     rxnFormulas     see note above
-%     rev             0 = irrev, 1 = rev
-%     lb
-%     ub
-%     subSystems      default = ''
-%     grRules         default = ''
-%     rules           default = ''
-%     genes           default = ''
-%     HTABLE
 %
-% Output
-%     newmodel
-%
-% based on AddRxn: Aarash Bordbar 11/2/07
-% IT 11-19-08
+% .. Author:
+%       - Aarash Bordbar 11/2/07 based on AddRxn
+%       - IT 11-19-08
 
 if ~exist('subSystems', 'var') || isempty(subSystems)
     clear subSystems;

@@ -1,4 +1,4 @@
-function [model, rxnIDexists] = addReaction(model, rxnID, varargin) 
+function [model, rxnIDexists] = addReaction(model, rxnID, varargin)
 % Adds a reaction to the model or modify an existing reaction
 %
 % USAGE:
@@ -7,34 +7,34 @@ function [model, rxnIDexists] = addReaction(model, rxnID, varargin)
 %
 % INPUTS:
 %    model:             COBRA model structure
-%    rxnID:             Reaction name abbreviation (i.e. 'ACALD')                      
+%    rxnID:             Reaction name abbreviation (i.e. 'ACALD')
 %
 % OPTIONAL INPUTS:
-%    varargin:          Input of additional information as parameter/Value
-%                       pairs
-%                       * reactonName - a Descriptive name of the reaction
-%                         (default ID)
-%                       * metaboliteList - Cell array of metabolite names. Either this
-%                         parameter or reactionFormula are required.
-%                       * stoichCoeffList - List of stoichiometric coefficients (reactants -ve,
-%                         products +ve), if not provided, all stoichiometries
-%                         are assumed to be -1 (Exchange, or consumption).
-%                       * reactionFormula - A Reaction formula in string format ('A + B -> C').
-%                         If this parameter is provided metaboliteList MUST
-%                         be empty, and vice versa. 
-%                       * reversible - Reversibility flag (Default = true)
-%                       * lowerBound - Lower bound (Default = 0 or -vMax`)
-%                       * upperBound - Upper bound (Default = `vMax`)
-%                       * objCoeff - Objective coefficient (Default = 0)
-%                       * subSystem - Subsystem (Default = '')
-%                       * geneRule - Gene-reaction rule in boolean format (and/or allowed)
-%                         (Default = '');
-%                       * geneNameList - List of gene names (used only for translation from
-%                         common gene names to systematic gene names) (Default empty)
-%                       * systNameList - List of systematic names (Default empty)
-%                       * checkDuplicate - Check `S` matrix too see if a duplicate reaction is
-%                         already in the model (Deafult false)
-%                       * printLevel - default = 1
+%    varargin:          Input of additional information as parameter/Value pairs
+%
+%                         * reactonName - a Descriptive name of the reaction
+%                           (default ID)
+%                         * metaboliteList - Cell array of metabolite names. Either this
+%                           parameter or reactionFormula are required.
+%                         * stoichCoeffList - List of stoichiometric coefficients (reactants -ve,
+%                           products +ve), if not provided, all stoichiometries
+%                           are assumed to be -1 (Exchange, or consumption).
+%                         * reactionFormula - A Reaction formula in string format ('A + B -> C').
+%                           If this parameter is provided metaboliteList MUST
+%                           be empty, and vice versa.
+%                         * reversible - Reversibility flag (Default = true)
+%                         * lowerBound - Lower bound (Default = 0 or -vMax`)
+%                         * upperBound - Upper bound (Default = `vMax`)
+%                         * objCoeff - Objective coefficient (Default = 0)
+%                         * subSystem - Subsystem (Default = '')
+%                         * geneRule - Gene-reaction rule in boolean format (and/or allowed)
+%                           (Default = '');
+%                         * geneNameList - List of gene names (used only for translation from
+%                           common gene names to systematic gene names) (Default empty)
+%                         * systNameList - List of systematic names (Default empty)
+%                         * checkDuplicate - Check `S` matrix too see if a duplicate reaction is
+%                           already in the model (Deafult false)
+%                         * printLevel - default = 1
 %
 % OUTPUTS:
 %    model:             COBRA model structure with new reaction
@@ -43,6 +43,7 @@ function [model, rxnIDexists] = addReaction(model, rxnID, varargin)
 %                       of an identical reaction already present in the model.
 %
 % EXAMPLES:
+%
 %    %1) Add a new irreversible reaction using the formula approach
 %    model = addReaction(model,'newRxn1','A -> B + 2 C')
 %    %2) Add a the same reaction using the list approach
@@ -54,11 +55,9 @@ function [model, rxnIDexists] = addReaction(model, rxnID, varargin)
 %       - Ines Thiele 08/03/2015, made rxnGeneMat optional
 %       - Thomas Pfau May 2017  Change To parameter Value pairs
 
-
-%check for backward compatability
 optionalParameters = {'reactionFormula','metaboliteList','stoichCoeffList',...
     'reversible','lowerBound','upperBound',...
-    'objectiveCoef','subSystem','geneRule','checkDuplicate','printLevel','notes'};
+    'objectiveCoef','subSystem','geneRule','checkDuplicate','printLevel','notes'}; % check for backward compatability
 oldOptionalOrder = {'metaboliteList','stoichCoeffList',...
     'reversible','lowerBound','upperBound',...
     'objectiveCoef','subSystem','geneRule','geneNameList','systNameList','checkDuplicate','printLevel'};
@@ -68,14 +67,14 @@ if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},op
     %Now, we need to check, whether this is a formula, or a complex setup
     oldStyle = true;
     tempargin = cell(0);
-    if iscell(rxnID)                        
+    if iscell(rxnID)
             %we just add it to the end.
             tempargin(end+1:end+2) = {'reactionName', rxnID{2}};
-            rxnID = rxnID{1};            
+            rxnID = rxnID{1};
     end
     if (nargin < 4)
         if (~iscell(varargin{1}))
-            tempargin(end+1:end+2) = {'reactionFormula',varargin{1}};            
+            tempargin(end+1:end+2) = {'reactionFormula',varargin{1}};
         else
             error('Missing stoichiometry information');
         end
@@ -85,7 +84,7 @@ if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},op
             tempargin(end+1:end+2) = {'reactionFormula',varargin{1}};
             start = 2;
         end
-        %convert the input into the new format.               
+        %convert the input into the new format.
         for i = start:numel(varargin)
             if~isempty(oldOptionalOrder(i))
                 %Since we look for non empty, we should not have empty
@@ -93,7 +92,7 @@ if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},op
                 tempargin{end+1} = oldOptionalOrder{i};
                 tempargin{end+1} = varargin{i};
             end
-        end        
+        end
     end
     varargin = tempargin;
 end
@@ -132,7 +131,7 @@ if oldRxnFlag
     if isfield(model,'grRules')
         defaultgeneRule = model.grRules{rxnPos};
     end
-    
+
     defaultMetaboliteList = model.mets(model.S(:,rxnPos)~=0);
     defaultStoichCoefList = model.S(model.S(:,rxnPos)~=0,rxnPos);
     if isfield(model,'rxnNames')
@@ -176,7 +175,7 @@ if isempty(metaboliteList) && isempty(reactionFormula)
     return
 end
 %if this is not an old reaction and we have two definitions
-if ~oldRxnFlag && ~isempty(metaboliteList) && ~isempty(reactionFormula) 
+if ~oldRxnFlag && ~isempty(metaboliteList) && ~isempty(reactionFormula)
     error('Two stoichiometry definitions found! Please set stoichiometry either by ''reactionFormula'' or by ''metaboliteList'' parameters but do not use both.\nModel was not modified.')
     rxnIDexists = -1;
     return
@@ -284,8 +283,8 @@ end
 
 % if ~oldRxnFlag, model.rxnGeneMat(rxnID,:)=0; end
 
-if (isfield(model,'genes')) 
-    if isempty(parser.Results.systNameList)        
+if (isfield(model,'genes'))
+    if isempty(parser.Results.systNameList)
         model = changeGeneAssociation(model,rxnID,grRule);
     else
         model = changeGeneAssociation(model,rxnID,grRule,geneNameList,systNameList);
@@ -298,7 +297,7 @@ duplicatePos = [];
 Stmp = model.S;
 if ~((nNewMets > 0) && isempty(find(newMetsCoefs == 0, 1)))
     if (checkDuplicate)
-        duplicatePos = find(ismember(Stmp',Scolumn','rows'));        
+        duplicatePos = find(ismember(Stmp',Scolumn','rows'));
         rxnIDexists = duplicatePos(~ismember(duplicatePos,rxnPos));
         if numel(rxnIDexists) > 1
             rxnIDexists = rxnIDexists(1);
@@ -322,14 +321,14 @@ else
         catch
             disp('test')
         end
-        
+
     end
     if printLevel>0
         printRxnFormula(model,rxnID);
     end
 end
 
-end 
+end
 
 function modelOut = updateReactionFields(model)
 
@@ -363,7 +362,7 @@ if ~any([nMets nGenes nComps, nProts] == nRxns) && nRxns > 2
             rfields = [rfields; mfields(i)];
         end
     end
-else    
+else
     rfields = [rfields; mfields(strncmp('rxn', mfields, 3))];
     rfields = intersect(rfields, mfields);
 end
@@ -377,9 +376,9 @@ rfields = setdiff(rfields,{'S', 'c', 'lb', 'ub', 'rxns', 'rules', 'grRules', 'su
 %logic values have a default of 0 -> and should give a warning, as they
 %might be computed fields.
 
-for i = 1:length(rfields)    
-    
-   if size(model.(rfields{i}), 1) == nRxns                                
+for i = 1:length(rfields)
+
+   if size(model.(rfields{i}), 1) == nRxns
        if iscell(model.(rfields{i}))
            modelOut.(rfields{i})(end+1,:) = {''};
        end
@@ -393,7 +392,7 @@ for i = 1:length(rfields)
        if islogical(modelOut.(rfields{i}))
            warning('Modifying logical field %s, this could possibly make the field invalid if it is a computed field!', rfields{i});
            modelOut.(rfields{i})(end+1,:) = 0;
-       end   
+       end
    elseif size(model.(rfields{i}), 2) == nRxns && nRxns ~= 1
        if iscell(model.(rfields{i}))
            modelOut.(rfields{i})(:,end+1) = {''};
@@ -412,5 +411,3 @@ for i = 1:length(rfields)
    end
 end
 end
-
-

@@ -6,11 +6,11 @@ function model = assignGPRA(model,gpraFile)
 %    model = assignGPRA(model, gpraFile)
 %
 % INPUTS:
-%    model:         COBRA model structure
-%    gpraFile:      SimPheny GPRA file
+%    model:       COBRA model structure
+%    gpraFile:    SimPheny GPRA file
 %
 % OUTPUT:
-%    model:         COBRA model with gene-protein-reaction assoction
+%    model:       COBRA model with gene-protein-reaction assoction
 %
 % .. Author: -  Markus Herrgard 10/4/06
 

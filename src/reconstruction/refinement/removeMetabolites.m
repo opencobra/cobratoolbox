@@ -1,4 +1,4 @@
-function model = removeMetabolites(model,metaboliteList,removeRxnFlag)
+function model = removeMetabolites(model, metaboliteList, removeRxnFlag)
 % Removes metabolites from a model
 %
 % USAGE:
@@ -77,7 +77,7 @@ end
 
 %model.S = model.S(selMets,:);
 % clear foo;
-% 
+%
 % for i = 1:length(metfields)
 %     if length(model.(metfields{i})) == length(selMets)
 %         model.(metfields{i}) = model.(metfields{i})(selMets);

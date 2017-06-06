@@ -1,19 +1,21 @@
-function [model] = moveRxn(model,startspot,endspot)
+function [model] = moveRxn(model, startspot, endspot)
 % The function moves a reaction from one spot in the network to another,
 % useful for placing important reactions at the beginning of the network to
 % easier follow certain reactions.
 %
-% [model] = moveRxn(model,startspot,endspot)
+% USAGE:
 %
-%INPUTS
-% model         COBRA model structure
-% startspot     The reaction number to move
-% endspot       The spot where the reaction is moving to%
+%    [model] = moveRxn(model, startspot, endspot)
 %
-%OUTPUTS
-% model         COBRA toolbox model structure with moved reaction
+% INPUTS:
+%    model:        COBRA model structure
+%    startspot:    The reaction number to move
+%    endspot:      The spot where the reaction is moving to
 %
-% Aarash Bordbar 09/21/09
+% OUTPUTS:
+%    model:        COBRA toolbox model structure with moved reaction
+%
+% .. Author: - Aarash Bordbar 09/21/09
 
 if startspot > endspot
     option = 1;

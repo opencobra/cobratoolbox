@@ -1,22 +1,23 @@
 function model = keepCompartment(model, compartments)
 % This function removes reactions in all compartments except those
 % specified by the cell array "compartments"
-% 
-%INPUTS
-% model                     COBRA model structure
-% compartments              cell array of strings (e.g., to discard all
-%                           reactions except those in the mitochondria and 
-%                           cytosol, compartments = {'[m]','[c]'};
 %
-%OUTPUT
-% model                     COBRA model with reactions in the specified
-%                           compartmetns
-% 
-% Nathan Lewis
-% June 8, 2008
+% USAGE:
+%
+%    model = keepCompartment(model, compartments)
+%
+% INPUTS:
+%    model:           COBRA model structure
+%    compartments:    cell array of strings (e.g., to discard all
+%                     reactions except those in the mitochondria and
+%                     cytosol, compartments = {'[m]', '[c]'};
+%
+% OUTPUT:
+%    model:           COBRA model with reactions in the specified compartmetns
+%
+% .. Author: - Nathan Lewis, June 8, 2008
 
-% compartments is a cell array list of compartments to keep (e.g. {'[e]','[c]','[m]'}) 
-compartments = regexprep(compartments, '\[','\\\[');
+compartments = regexprep(compartments, '\[','\\\['); % compartments is a cell array list of compartments to keep (e.g. {'[e]','[c]','[m]'})
 compartments = regexprep(compartments, '\]','\\\]');
 % make a list of metabolites which are in the desired compartment
 mets2keep = zeros(size(model.mets));

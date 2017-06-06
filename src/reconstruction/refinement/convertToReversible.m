@@ -1,20 +1,20 @@
 function modelRev = convertToReversible(model)
-%convertToReversible convert a model structure from irreversible format to
-%reversible format
+% Converts a model structure from irreversible format to
+% reversible format
 %
-% modelRev = convertToReversible(model)
+% USAGE:
 %
-%INPUT
-% model     COBRA model in irreversible format (forward/backward reactions
-%           separated)
+%    modelRev = convertToReversible(model)
 %
-%OUTPUT
-% modelRev  Model in reversible format
+% INPUT:
+%    model:       COBRA model in irreversible format (forward/backward reactions separated)
 %
-% Greg Hannum 7/22/05
+% OUTPUT:
+%    modelRev:    Model in reversible format
+%
+% .. Author: - Greg Hannum 7/22/05
 
-% Initialize
-modelRev.rxns = {};
+modelRev.rxns = {}; % Initialize
 modelRev.S = [];
 modelRev.lb = [];
 modelRev.ub = [];

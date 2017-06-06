@@ -1,21 +1,23 @@
-function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel,mergeRxnGeneMat)
-%% function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel,mergeRxnGeneMat)
+function [modelNew] = mergeTwoModels(model1, model2, objrxnmodel, mergeRxnGeneMat)
+% Merges two models
 %
-% Inputs
+% USAGE:
 %
-% model1          - model 1
-% model2          - model 2
-% objrxnmodel     - Set as 1 or 2 to set objective reaction from
-%                 desired model
-% mergeRxnGeneMat - if false, do not merge rxnGeneMat
+%    [modelNew] = mergeTwoModels(model1, model2, objrxnmodel, mergeRxnGeneMat)
 %
-% Outputs
+% INPUTS:
+%    model1:             model 1
+%    model2:             model 2
+%    objrxnmodel:        Set as 1 or 2 to set objective reaction from
+%                        desired model
+%    mergeRxnGeneMat:    if false, do not merge `rxnGeneMat`
 %
-% modelNew        - merged model
+% OUTPUT:
+%    modelNew:           merged model
 %
-% based on[model_metE] = CreateMetE(model_E,model_M)) (Aarash Bordbar,
-% 07/06/07);
-% 11/10/2007 IT
+% .. Author:
+%       - based on[model_metE] = CreateMetE(model_E,model_M)) (Aarash Bordbar, 07/06/07);
+%       - IT 11/10/2007 
 
 if ~exist('objrxnmodel','var') || isempty(objrxnmodel)
     objrxnmodel = 1;

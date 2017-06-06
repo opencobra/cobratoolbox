@@ -7,25 +7,25 @@ function model = createModel(varargin)
 %    model = createModel(rxnAbrList, rxnNameList, rxnList, revFlagList, lowerBoundList, upperBoundList, subSystemList, grRuleList, geneNameList, systNameList)
 %
 % INPUTS:
-%    rxnAbrList:            List of names of the new reactions
-%    rxnNameList:           List of names of the new reactions
-%    rxnList:               List of reactions: format: {`A -> B + 2 C`}
-%                           If the compartment of a metabolite is not
-%                           specified, it is assumed to be cytoplasmic, i.e. [`c`]
+%    rxnAbrList:        List of names of the new reactions
+%    rxnNameList:       List of names of the new reactions
+%    rxnList:           List of reactions: format: {`A -> B + 2 C`}
+%                       If the compartment of a metabolite is not
+%                       specified, it is assumed to be cytoplasmic, i.e. [`c`]
 %
 % OPTIONAL INPUTS:
-%    revFlagList:           List of reversibility flag (opt, default = 1)
-%    lowerBoundList:        List of lower bound (Default = 0 or ``-vMax`)
-%    upperBoundList:        List of upper bound (Default = `vMax`)
-%    subSystemList:         List of subsystem (Default = '')
-%    grRuleList:            List of gene-reaction rule in boolean format (and/or allowed)
-%                           (Default = '');
-%    geneNameList:          List of gene names (used only for translation
-%                           from common gene names to systematic gene names)
-%    systNameList:          List of systematic names
+%    revFlagList:       List of reversibility flag (opt, default = 1)
+%    lowerBoundList:    List of lower bound (Default = 0 or `-vMax`)
+%    upperBoundList:    List of upper bound (Default = `vMax`)
+%    subSystemList:     List of subsystem (Default = '')
+%    grRuleList:        List of gene-reaction rule in boolean format (and/or allowed)
+%                       (Default = '');
+%    geneNameList:      List of gene names (used only for translation
+%                       from common gene names to systematic gene names)
+%    systNameList:      List of systematic names
 %
 % OUTPUT:
-%    model:                 COBRA model structure
+%    model:             COBRA model structure
 %
 % .. Author: - Ines Thiele 01/09
 %            - Adjusted to Name/Value Pairs - Thomas Pfau May 2017
@@ -55,16 +55,16 @@ oldOptionalOrder = {'revFlagList',...
     'systNameList'};
 if (numel(varargin) > 3 && (~ischar(varargin{4}) || ~any(ismember(varargin{4},optionalParameters))))
     %We have an old style thing....
-    %Now, we need to check, whether this is a formula, or a complex setup    
-        
+    %Now, we need to check, whether this is a formula, or a complex setup
+
         tempargin = cell(1,3+2*(numel(varargin)-3));
         tempargin(1:3) = varargin(1:3);
         for i = 4:(numel(varargin))
                 tempargin{2*(i-4)+4} = oldOptionalOrder{i-3};
                 tempargin{2*(i-4)+5} = varargin{i};
-        end        
+        end
         varargin = tempargin;
-    
+
 end
 %set up defaults
 nRxns = length(varargin{1});
@@ -80,7 +80,7 @@ grRuleDefault(1:nRxns) = {''};
 geneNameDefault = {};
 systNameDefault = {};
 
-    
+
 parser = inputParser();
 parser.addRequired('rxnAbrList',@iscell);
 parser.addRequired('rxnNameList',@iscell);

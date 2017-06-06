@@ -1,28 +1,29 @@
-function model = changeGeneAssociation(model,rxnName,grRule,geneNameList,systNameList,addRxnGeneMat)
+function model = changeGeneAssociation(model, rxnName, grRule, geneNameList, systNameList, addRxnGeneMat)
 % Change gene associations in a model
 %
-% model = changeGeneAssociation(model,rxnName,grRule,geneName,systName)
+% USAGE:
 %
-%INPUTS
-% model             COBRA Toolbox model structure
-% rxnName           Name of the new reaction
-% grRule            Gene-reaction rule in boolean format (and/or allowed)
+%    model = changeGeneAssociation(model, rxnName, grRule, geneNameList, systNameList, addRxnGeneMat)
 %
-%OPTIONAL INPUTS
-% geneNameList      List of gene names (used only for translation from
-%                   common gene names to systematic gene names)
-% systNameList      List of systematic names
-% addRxnGeneMat     adds rxnGeneMat to model structure (default = true)
+% INPUTS:
+%    model:            COBRA Toolbox model structure
+%    rxnName:          Name of the new reaction
+%    grRule:           Gene-reaction rule in boolean format (and/or allowed)
 %
-%OUTPUT
-% model             COBRA Toolbox model structure with new gene reaction
-%                   associations
+% OPTIONAL INPUTS:
+%    geneNameList:     List of gene names (used only for translation from
+%                      common gene names to systematic gene names)
+%    systNameList:     List of systematic names
+%    addRxnGeneMat:    adds rxnGeneMat to model structure (default = true)
 %
+% OUTPUT:
+%    model:            COBRA Toolbox model structure with new gene reaction associations
+%
+% .. Authors:
+%       - Markus Herrgard 1/12/07
+%       - Ines Thiele 08/03/2015, made rxnGeneMat optional
+%       - IT: updated the nargin statement to accommodate the additional option
 
-% Markus Herrgard 1/12/07
-% Ines Thiele 08/03/2015, made rxnGeneMat optional
-
-% IT: updated the nargin statement to accommodate the additional option
 if exist('geneNameList','var') && exist('systNameList','var')
     translateNamesFlag = true;
 else
@@ -65,11 +66,11 @@ if (~isempty(grRule))
     grRule = regexprep(grRule,'( ','(');
     grRule = regexprep(grRule,' )',')');
     [genes,rule] = parseBoolean(grRule);
-    
+
     for i = 1:length(genes)
         if (translateNamesFlag)
             % Translate gene names to systematic names
-            [isInList,translID] = ismember(genes{i},geneNameList);         
+            [isInList,translID] = ismember(genes{i},geneNameList);
             if isInList
                 newGene = systNameList{translID};
                 grRule = regexprep(grRule,[genes{i} '$'],newGene);
