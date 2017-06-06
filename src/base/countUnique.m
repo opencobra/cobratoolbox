@@ -6,6 +6,13 @@ function [sortedList, sortedCount] = countUnique(list)
 %
 %     [sortedList, sortedCount] = countUnique(list)
 %
+% INPUT:
+%    list:           input vector
+%
+% OUTPUTS:
+%    sortedList:     list with sorted elements
+%    sortedCount:    number of elements
+%
 % .. Authors: Markus Herrgard 3/17/07
 
 [uniqList, tmp, index] = unique(list);
