@@ -1,32 +1,35 @@
-function solution = leakTest(model,params,printLevel)
-% Solve the problem
-% min   lambda*||v||_0 - delta*||s||_0
-% s.t.  Sv + s = 0
-%       l <= v <= u
+function solution = leakTest(model, params, printLevel)
+% Solves the problem
+% :math:`min lambda*||v||_0 - delta*||s||_0`
+% s.t. :math:`Sv + s = 0`,
+% :math:`l <= v <= u`
 %
-% INPUT
-
-% model                 (the following fields are required - others can be supplied)
-%   S                   Stoichiometric matrix
-%   lb                  Lower bounds
-%   ub                  Upper bounds
+% USAGE:
 %
-% OUPUT
-% solution          Structure containing the following fields
-%       v                   n x 1 vector 
-%       s                   m x 1 vector
-%       stat                status
-%                           1 =  Solution found
-%                           2 =  Unbounded
-%                           0 =  Infeasible
-%                           -1=  Invalid input
-% Hoai Minh Le	08/03/2016
+%    solution = leakTest(model, params, printLevel)
 %
-
-% if ~exist('epsilon','var')
-%     epsilon = 1e-6;
-% end
-
+% INPUTS:
+%    model:         structure with fields (bools are not mandatory)
+%
+%                     * .S - `m` x `n` stoichiometric matrix
+%                     * .lb - Lower bounds
+%                     * .ub - Upper bounds
+%    params:        structure with fields:
+%    printLevel:    verbose level
+%
+% OUTPUT:
+%    solution:      Structure containing the following fields:
+%
+%                     * v - `n` x 1 vector
+%                     * s - `m` x 1 vector
+%                     * stat - status:
+%
+%                       * 1 =  Solution found
+%                       * 2 =  Unbounded
+%                       * 0 =  Infeasible
+%                       * -1=  Invalid input
+%
+% .. Author: - Hoai Minh Le,	08/03/2016
 
 [S,lb,ub] = deal(model.S,model.lb,model.ub);
 [m,n]=size(S);
@@ -53,7 +56,7 @@ if solutionCard.stat == 1
     solution.s      = solutionCard.y;
     disp(strcat('||v||_0 = ',num2str(sum(abs(solution.v)>eps))));
     disp(strcat('||s||_0 = ',num2str(sum(abs(solution.s)>eps))));
-    
+
     SConsistentRxnBool =~(abs(solution.v)>params.epsilon);
     SConsistentMetBool =(sum(model.S(:,SConsistentRxnBool)~=0,2)~=0);
     if printLevel>0
@@ -65,7 +68,7 @@ if solutionCard.stat == 1
         fprintf('%u\t%s\n',nnz(SConsistentMetBool),' stoich consistent mets, after leak test.')
         fprintf('%u\t%s\n',nnz(SConsistentRxnBool),' stoich consistent rxns, after leak test.')
     end
-    
+
 else
     solution.stat   = solutionCard.stat;
     solution.v      = [];

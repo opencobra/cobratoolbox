@@ -1,34 +1,40 @@
-function  [maxConservationMetBool,maxConservationRxnBool,solution]=maxCardinalityConservationVector(S, params)
-% Maximise the cardinality of the conservation vector:
-% max   ||l||_0
-% st.   S'l = 0
-%       0 <= l <= 1/epsilon
-% [solution]=maxCardinalityConservationVector(S, params)
+function  [maxConservationMetBool, maxConservationRxnBool, solution] = maxCardinalityConservationVector(S, params)
+% Maximises the cardinality of the conservation vector:
+% :math:`max ||l||_0`
+% st. :math:`S'l = 0`
+% :math:`0 <= l <= 1/epsilon`
 %
-% The l0 norm is approximated by capped l1 norm. The resulting problem is a DC program
+% The `l0` norm is approximated by capped `l1` norm. The resulting problem is a DC program
 %
-%INPUT
-% S                         m x n stoichiometric matrix
+% USAGE:
 %
-%OPTIONAL INPUTS
-% params.nbMaxIteration     Stopping criteria - maximal number of iteration (Default value 1000)
-% params.epsilon            1/epsilon is the largest molecular mass considered (Default value 1e-4)
-% params.zeta               Stopping criteria - threshold (Default value 1e-6)
-% params.theta              Parameter of capped l1 approximation (Default value 0.5)
+%    [maxConservationMetBool, maxConservationRxnBool, solution] = maxCardinalityConservationVector(S, params)
 %
-% OUTPUT
-% maxConservationMetBool    m x 1 boolean for consistent metabolites
-% maxConservationRxnBool    n x 1 boolean for reactions exclusively
-%                                 involving consistent metabolites
-% solution                  Structure containing the following fields
-%       l                   m x 1 molecular mass vector
-%       stat                status
-%                           1 =  Solution found
-%                           2 =  Unbounded
-%                           0 =  Infeasible
-%                           -1=  Invalid input
-
-% Ronan Fleming Feb 14th 2017
+% INPUT:
+%    S:                         `m` x `n` stoichiometric matrix
+%
+% OPTIONAL INPUTS:
+%    params:                    structure with:
+%
+%                                 * params.nbMaxIteration - Stopping criteria - maximal number of iteration (Default value 1000)
+%                                 *  params.epsilon - `1/epsilon` is the largest molecular mass considered (Default value 1e-4)
+%                                 * params.zeta - Stopping criteria - threshold (Default value 1e-6)
+%                                 * params.theta - Parameter of capped `l1` approximation (Default value 0.5)
+%
+% OUTPUTS:
+%    maxConservationMetBool:    `m` x 1 boolean for consistent metabolites
+%    maxConservationRxnBool:    `n` x 1 boolean for reactions exclusively involving consistent metabolites
+%    solution:                  Structure containing the following fields:
+%
+%                                 * l - `m` x 1 molecular mass vector
+%                                 * stat - status:
+%
+%                                   * 1 =  Solution found
+%                                   * 2 =  Unbounded
+%                                   * 0 =  Infeasible
+%                                   * -1=  Invalid input
+%
+% .. Author: - Ronan Fleming Feb, 14th 2017
 
 
 feasTol = getCobraSolverParams('LP', 'feasTol');
@@ -44,19 +50,19 @@ else
     if isfield(params,'nbMaxIteration') == 0
         params.nbMaxIteration = 1000;
     end
-    
+
     if isfield(params,'eta') == 0
         params.eta = feasTol*100;
     end
-    
+
     if isfield(params,'epsilon') == 0
         params.epsilon = 1e-4;
     end
-    
+
     if isfield(params,'zeta') == 0
         params.zeta = 1e-6;
     end
-    
+
     if isfield(params,'theta') == 0
         params.theta   = 0.5;    %parameter of capped l1 approximation
     end
@@ -84,7 +90,7 @@ switch method
         %           0 <= z <= epsilon
         LPproblem.A=[S'      , sparse(nlt,mlt);
                      theta*speye(mlt),-speye(mlt)];
-        
+
         LPproblem.b=zeros(nlt+mlt,1);
         %LPproblem.lb=[           zeros(mlt,1)-eps;-ones(mlt,1)*epsilon];%small relaxation of lower bound can be necessary for numerical feasibility
         LPproblem.lb=[zeros(mlt,1);        zeros(mlt,1)];
@@ -94,10 +100,10 @@ switch method
         LPproblem.osense=-1;
         LPproblem.csense(1:nlt,1)='E';
         LPproblem.csense(nlt+1:nlt+mlt,1)='G';
-        
+
         printLevel=0;
         sol = solveCobraLP(LPproblem,'printLevel',printLevel);
-        
+
         if sol.stat==1
             solution.l=sol.full(1:mlt,1);
             %z=solution.full(mlt+1:end,1);
@@ -162,19 +168,19 @@ switch method
         stop = false;
         solution.l = [];
         solution.stat = 1;
-        
+
         m=mlt;
         n=nlt;
         % Variable
         l   = zeros(m,1);
         z   = zeros(m,1);
-        
+
         %Create the linear sub-programme that one needs to solve at each iteration, only its
         %objective function changes, the constraints set remains.
-        
+
         % Define objective - variable (l,z)
         obj = [-theta*ones(m,1);ones(m,1)];
-        
+
         % Constraints
         % S'*l = 0
         % z >= theta*l
@@ -182,26 +188,26 @@ switch method
             theta*speye(m)    -speye(m)];
         b2 = [zeros(n+m,1)];
         csense2 = [repmat('E',n, 1);repmat('L',m, 1)];
-        
+
         % Bound;
         % 0 <= l <= 1/epsilon
         % 0 <= z <=   epsilon
         lb2 = [zeros(m,1);zeros(m,1)];
         ub2 = [(1/epsilon)*ones(m,1);epsilon*ones(m,1)];
-        
+
         %Basis
         basis = [];
-        
+
         %Define the linear sub-problem
         subLPproblem = struct('c',obj,'osense',1,'A',A2,'csense',csense2,'b',b2,'lb',lb2,'ub',ub2,'basis',basis);
-        
+
         obj_old = maximiseConservationVector_obj(l,theta);
-        
+
         %DCA
         while nbIteration < nbMaxIteration && stop ~= true,
-            
+
             l_old = l;
-            
+
             %Solve the sub-linear program to obtain new l
             [l,LPsolution] = maximiseConservationVector_solveSubProblem(subLPproblem,S,theta);
             switch LPsolution.stat
@@ -237,26 +243,26 @@ switch method
                     %             disp(strcat('Obj:',num2str(obj_new)));
                     %             disp(strcat('Stopping criteria error: ',num2str(min(error_l,error_obj))));
                     %             disp('=================================');
-                    
+
             end
-            
+
             nbIteration = nbIteration + 1;
-            
+
         end
-        
+
         %find rows that are not all zero when a subset of reactions omitted
         zeroRowBool = ~any(S,2);
         if any(zeroRowBool)
             %any zero row of S is automatically inconsistent
             l(zeroRowBool)=0;
         end
-        
+
         if solution.stat == 1
             solution.l = l;
         end
     otherwise
         error('incorrect method selected')
-        
+
 end
 
 if solution.stat==1

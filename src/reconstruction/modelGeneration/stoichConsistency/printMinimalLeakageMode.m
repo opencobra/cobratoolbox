@@ -1,6 +1,17 @@
-function printMinimalLeakageMode(model,minMetBool,minRxnBool,y,printLevel,fileName) 
-%prints out the data on each leakage mode
-
+function printMinimalLeakageMode(model, minMetBool, minRxnBool, y, printLevel, fileName)
+% Prints out the data on each leakage mode
+%
+% USAGE:
+%
+%    printMinimalLeakageMode(model, minMetBool, minRxnBool, y, printLevel, fileName)
+%
+% INPUTS:
+%    model:         model structure
+%    minMetBool:    boolean of metabolites in a positive leakage mode
+%    minRxnBool:    boolean of reactions exclusively involved in a positive leakage mode
+%    y:             contains `minMetBool`
+%    printLevel:    verbose level
+%    fileName:      name of the file
 
 if ~exist('fileName','var')
     fprintf('%6u\t%6u\t%s\n',nnz(minMetBool),nnz(minRxnBool),'leakage mode');

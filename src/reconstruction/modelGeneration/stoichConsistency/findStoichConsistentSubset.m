@@ -1,44 +1,49 @@
-function [SConsistentMetBool,SConsistentRxnBool,SInConsistentMetBool,SInConsistentRxnBool,unknownSConsistencyMetBool,unknownSConsistencyRxnBool,model]=...
-    findStoichConsistentSubset(model,massBalanceCheck,printLevel,fileName,epsilon)
-%finds the subset of S that is stoichiometrically consistent using
-%an iterative cardinality optimisation approach
+function [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsistentRxnBool, unknownSConsistencyMetBool, unknownSConsistencyRxnBool, model] = findStoichConsistentSubset(model, massBalanceCheck, printLevel, fileName, epsilon)
+% Finds the subset of `S` that is stoichiometrically consistent using
+% an iterative cardinality optimisation approach
 %
-%INPUT
-% model
-%    .S             m x n stoichiometric matrix
+% USAGE:
 %
-%OPTIONAL INPUT
-% massBalanceCheck  {(0),1}
-%                   0 = heuristic detection of exchange reactions (using
-%                   findSExRxnInd) will be use to warm start algorithmic
-%                   part
-%                   1 = reactions that seem mass imbalanced will be used to
-%                   warm start the algorithmic steps to find the
-%                   stoichiometrically consistent part.
-%                   model.metFormulas must exist for mass balance check
-% printLevel
-% fileName          char, used when writing inconsistent metabolites and
-%                   reactions to a file
-% epsilon           (feasTol*100) min nonzero mass, 1/epsilon = max mass
+%    [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsistentRxnBool, unknownSConsistencyMetBool, unknownSConsistencyRxnBool, model] = findStoichConsistentSubset(model, massBalanceCheck, printLevel, fileName, epsilon)
 %
-%OUTPUT
-% SConsistentMetBool            m x 1 boolean vector indicating consistent mets
-% SConsistentRxnBool            n x 1 boolean vector indicating consistent rxns
-% SInConsistentMetBool          m x 1 boolean vector indicating inconsistent mets
-% SInConsistentRxnBool          n x 1 boolean vector indicating inconsistent rxns
-% unknownSConsistencyMetBool    m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)
-% unknownSConsistencyRxnBool    n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
-% model
-%   .SConsistentMetBool            m x 1 boolean vector indicating consistent mets
-%   .SConsistentRxnBool            n x 1 boolean vector indicating consistent rxns
-%   .SInConsistentMetBool          m x 1 boolean vector indicating inconsistent mets
-%   .SInConsistentRxnBool          n x 1 boolean vector indicating inconsistent rxns
-%   .unknownSConsistencyMetBool    m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)
-%   .unknownSConsistencyRxnBool    n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
-%   .SIntMetBool                   m x 1 boolean of metabolites heuristically though to be involved in mass balanced reactions
-%   .SIntRxnBool                   n x 1 boolean of reactions heuristically though to be mass balanced
-% Ronan Fleming 2016
-
+% INPUT:
+%    model:                         structure with:
+%
+%                                     * .S - `m` x `n` stoichiometric matrix
+%
+% OPTIONAL INPUT:
+%    massBalanceCheck:              {(0), 1} where:
+%
+%                                     * 0 = heuristic detection of exchange reactions (using
+%                                     `findSExRxnInd`) will be use to warm start algorithmic part
+%                                     * 1 = reactions that seem mass imbalanced will be used to
+%                                     warm start the algorithmic steps to find the
+%                                     stoichiometrically consistent part.
+%                                     `model.metFormulas` must exist for mass balance check
+%    printLevel:                    verbose level
+%    fileName:                      char, used when writing inconsistent metabolites and
+%                                   reactions to a file
+%    epsilon:                       (`feasTol*100`) min nonzero mass, 1/epsilon = max mass
+%
+% OUTPUT:
+%    SConsistentMetBool:            `m` x 1 boolean vector indicating consistent `mets`
+%    SConsistentRxnBool:            `n` x 1 boolean vector indicating consistent `rxns`
+%    SInConsistentMetBool:          `m` x 1 boolean vector indicating inconsistent `mets`
+%    SInConsistentRxnBool:          `n` x 1 boolean vector indicating inconsistent `rxns`
+%    unknownSConsistencyMetBool:    `m` x 1 boolean vector indicating unknown consistent `mets` (all zeros when algorithm converged perfectly!)
+%    unknownSConsistencyRxnBool:    `n` x 1 boolean vector indicating unknown consistent `rxns` (all zeros when algorithm converged perfectly!)
+%     model:                        structure with fields
+%
+%                                     * .SConsistentMetBool - `m` x 1 boolean vector indicating consistent `mets`
+%                                     * .SConsistentRxnBool - `n` x 1 boolean vector indicating consistent `rxns`
+%                                     * .SInConsistentMetBool - `m` x 1 boolean vector indicating inconsistent `mets`
+%                                     * .SInConsistentRxnBool - `n` x 1 boolean vector indicating inconsistent `rxns`
+%                                     * .unknownSConsistencyMetBool - `m` x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)
+%                                     * .unknownSConsistencyRxnBool - `n` x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
+%                                     * .SIntMetBool - `m` x 1 boolean of metabolites heuristically though to be involved in mass balanced reactions
+%                                     * .SIntRxnBool - `n` x 1 boolean of reactions heuristically though to be mass balanced
+%
+% .. Author: - Ronan Fleming 2016
 
 if ~exist('printLevel','var')
     printLevel=1;
