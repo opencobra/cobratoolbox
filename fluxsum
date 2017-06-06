@@ -1,0 +1,39 @@
+function fs = fluxsum(model)
+%Compute flux-sum
+%
+% fs = fluxsum(model)
+%
+%INPUTS
+% model (the following fields are required - others can be supplied)
+%    S            Stoichiometric matrix
+%    b            Right hand side = dx/dt
+%    c            Objective coefficients
+%    lb           Lower bounds
+%    ub           Upper bounds
+%
+%OUTPUT
+% fs      flux sum vector
+
+% Author: Meiyappan Lakshmanan, Date: 20-06-2014
+
+% Compute internal fluxes using FBA
+sol = optimizeCbModel(model);
+
+% Check if FBA solved
+if sol.stat ~= 1
+        error('FBA problem not solved. FBA must be solved and a optimal solution must be found to compute flux-sum');
+end
+
+% Compute flux-sum
+for i=1:1:length(model.mets)
+    for j=1:1:length(model.rxns)
+        fs_temp(i,j)=sum(0.5*(abs(model.S(i,j)*sol.x(j))));
+    end
+end
+
+
+fs_temp = full(fs_temp);
+fs = sum(fs_temp');
+fs=fs';
+end
+
