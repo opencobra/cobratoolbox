@@ -10,7 +10,7 @@ function [model2] = generateRules(model)
 %    model:     with model.grRules
 %
 % OUTPUT:
-%    model2:     same model but with model.rules added
+%    model2:    same model but with model.rules added
 %
 % .. Author: -  Aarash Bordar 11/17/2010
 

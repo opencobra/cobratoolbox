@@ -1,21 +1,23 @@
-function modelOut = removeRxns(model,rxnRemoveList,varargin)
+function modelOut = removeRxns(model, rxnRemoveList, varargin)
 % Removes reactions from a model
 %
 % USAGE:
 %
-%    model = removeRxns(model, rxnRemoveList, irrevFlag, metFlag)
+%    model = removeRxns(model, rxnRemoveList, varargin)
 %
 % INPUTS:
 %    model:             COBRA model structure
 %    rxnRemoveList:     Cell array of reaction names to be removed
 %
-% OPTIONAL INPUTS as parameter value pairs:
+% OPTIONAL INPUTS:
 %    irrevFlag:         Irreverseble (true) or reversible (false) reaction
 %                       format (Default = false)
 %    metFlag:           Remove unused metabolites (Default = true)
 %
 % OUTPUT:
 %    model:             COBRA model w/o selected reactions
+%
+% Optional inputs are used as parameter value pairs
 %
 % .. Authors:
 %       - Markus Herrgard 7/22/05
@@ -27,13 +29,13 @@ if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},op
         error('Invalid parameter provided. %s is not an accepted parameter',varargin{1});
     end
     %We have an old style thing....
-    %Now, we need to check, whether this is a formula, or a complex setup    
+    %Now, we need to check, whether this is a formula, or a complex setup
         tempargin = cell(1,2*(numel(varargin)));
         for i = 1:numel(varargin)
                 tempargin{2*(i-1)+1} = optionalParameters{i};
                 tempargin{2*(i-1)+2} = varargin{i};
-        end        
-        varargin = tempargin;    
+        end
+        varargin = tempargin;
 end
 
 parser = inputParser();

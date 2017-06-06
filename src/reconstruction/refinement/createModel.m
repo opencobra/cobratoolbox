@@ -55,16 +55,16 @@ oldOptionalOrder = {'revFlagList',...
     'systNameList'};
 if (numel(varargin) > 3 && (~ischar(varargin{4}) || ~any(ismember(varargin{4},optionalParameters))))
     %We have an old style thing....
-    %Now, we need to check, whether this is a formula, or a complex setup    
-        
+    %Now, we need to check, whether this is a formula, or a complex setup
+
         tempargin = cell(1,3+2*(numel(varargin)-3));
         tempargin(1:3) = varargin(1:3);
         for i = 4:(numel(varargin))
                 tempargin{2*(i-4)+4} = oldOptionalOrder{i-3};
                 tempargin{2*(i-4)+5} = varargin{i};
-        end        
+        end
         varargin = tempargin;
-    
+
 end
 %set up defaults
 nRxns = length(varargin{1});
@@ -80,7 +80,7 @@ grRuleDefault(1:nRxns) = {''};
 geneNameDefault = {};
 systNameDefault = {};
 
-    
+
 parser = inputParser();
 parser.addRequired('rxnAbrList',@iscell);
 parser.addRequired('rxnNameList',@iscell);

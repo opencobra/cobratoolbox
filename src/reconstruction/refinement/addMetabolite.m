@@ -3,7 +3,7 @@ function [ newmodel ] = addMetabolite(model,metID,varargin)
 %
 % USAGE:
 %
-%    newModel = addMetabolite(model, metID, metName, formula, ChEBIID, KEGGId, PubChemID, InChi, Charge, b )
+%    newModel = addMetabolite(model, metID, metName, formula, ChEBIID, KEGGId, PubChemID, InChi, Charge, b)
 %
 % INPUTS:
 %    model:         Cobra model structure
@@ -122,7 +122,7 @@ for i = 1:numel(metID)
     cmetID = metID{i};
     if ~any(ismember(model.mets,cmetID))
         %this needs an explicit 1:end as otherwise a zero size gets set to
-        %1...                
+        %1...
         model.S(end+1,1:end) = 0;
         model.mets{end+1,1} = cmetID;
         if ~isfield(model,'csense')
@@ -130,17 +130,17 @@ for i = 1:numel(metID)
         else
             model.csense(end+1,1) = 'E';
         end
-        
-        
+
+
         if (isfield(model,'metNames'))      %Prompts to add missing info if desired
             cmetName = metName{i};
             if strcmp(cmetName,'')
                 model.metNames{end+1,1} = regexprep(cmetID,'(\[.+\]) | (\(.+\))','') ;
                 warning(['Metabolite name for ' metID{i} ' set to ' model.metNames{end}]);
             else
-                model.metNames{end+1,1} = metName{i} ;                
+                model.metNames{end+1,1} = metName{i} ;
             end
-        else            
+        else
             if ~isempty(metName{i}) && ~any(ismember(parser.UsingDefaults,'metName')) && ~all(cellfun(@isempty, metName))
                 model.metNames = cell(numel(model.mets),1);
                 model.metNames(:) = {''};
@@ -158,7 +158,7 @@ for i = 1:numel(metID)
                 model.metFormulas(:) = {''};
                 model.metFormulas{end} = formula{i};
             end
-        end        
+        end
         if isfield(model,'metChEBIID')
             model.metChEBIID{end+1,1} = ChEBIID{i};
         else
