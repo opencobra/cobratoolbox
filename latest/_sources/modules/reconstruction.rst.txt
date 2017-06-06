@@ -10,7 +10,7 @@ Reconstruction
    rBioNet
    #fastGapFill
    #growthExpMatch
-   #modelGeneration
+   modelGeneration
    #refinement
 
 .. automodule:: src.reconstruction
