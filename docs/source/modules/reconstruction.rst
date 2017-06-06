@@ -11,7 +11,7 @@ Reconstruction
    fastGapFill
    growthExpMatch
    modelGeneration
-   #refinement
+   refinement
 
 .. automodule:: src.reconstruction
    :members:
