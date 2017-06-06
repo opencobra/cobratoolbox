@@ -60,7 +60,7 @@ M = length(model.rxns); %this was set to 100 in GAMS GapFind implementation
 N = length(model.mets);
 R = model.lb < 0 ; %reversible reactions
 R_index = find(R);
-IR = model.lb == 0; %irreversible reactions
+IR = model.lb >= 0; %irreversible reactions
 IR_index = find(IR);
 e = 0.0001;
 S = model.S;

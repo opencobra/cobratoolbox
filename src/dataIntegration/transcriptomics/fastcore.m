@@ -46,7 +46,7 @@ function tissueModel = fastcore(model, core, epsilon, printlevel)
     model_orig = model;
 
     %Find irreversible reactions
-    irrevRxns = find(model.lb==0); %% could be called irrevRxns
+    irrevRxns = find(model.lb>=0); %% could be called irrevRxns
 
     A = [];
     flipped = false;
