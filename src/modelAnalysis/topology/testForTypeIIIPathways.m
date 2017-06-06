@@ -36,10 +36,11 @@ for i = 1:size(model.lb,1)
         rxnzero(cnt,1)=i;
         cnt=cnt+1;
     end
-    if (SolMin.f<0)
-        model.rev(i)=1;
-    else
-        model.rev(i)=0;
+    if ~(SolMin.f<0)
+        %if it can't carry negative flux, we set it to be irreversible
+        %Since the model is never returned, this is not modifying anything
+        %in the model.
+        model.lb(i)= max(model.lb(i),0);
     end
 end
 

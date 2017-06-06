@@ -105,8 +105,6 @@ MatricesSUX = removeRxns(MatricesSUX,inconsistRxnsSUX);
 % now we need to add the reactions that we are currently blocked
 inconsistRxns = BlockedRxns.allRxns;
 rxnFormulas = printRxnFormula(model,inconsistRxns,false);
-%consistMatricesSUXextended = addReactionGEM(consistMatricesSUX,model.rxns(inconsistRxns),model.rxnNames(inconsistRxns),rxnFormulas,model.rev(inconsistRxns),model.lb(inconsistRxns),model.ub(inconsistRxns),[],model.subSystems(inconsistRxns),model.grRules(inconsistRxns),model.rules(inconsistRxns));
-%consistMatricesSUXextended = consistMatricesSUX;
 [a,b] = size(MatricesSUX.S);
 
 for i = 1 : length(rxnFormulas)

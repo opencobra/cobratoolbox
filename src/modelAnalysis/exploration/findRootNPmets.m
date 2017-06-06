@@ -25,7 +25,7 @@ isRootNPmet = zeros(length(model.mets),1);
 
 for i = 1:length(model.mets)
     row = find(model.S(i,:)); %which rxns this met participates in
-    rowR = ismember(row,find(model.rev)); %reversible rxns
+    rowR = ismember(row,find(model.lb < 0)); %reversible rxns
     if any(model.S(i,row) > 0) %if met is produced by any reaction
         %don't do anything
     elseif any(rowR) %if met is in any reverible rxns
@@ -41,7 +41,7 @@ if findNCmets
 
     for i = 1:length(model.mets)
         row = find(model.S(i,:)); %which rxns this met participates in
-        rowR = ismember(row,find(model.rev)); %reversible rxns
+        rowR = ismember(row,find(model.lb < 0)); %reversible rxns
         if any(model.S(i,row) < 0) %if met is consumed by any reaction
             %don't do anything
         elseif any(rowR) %if met is in any reverible rxns

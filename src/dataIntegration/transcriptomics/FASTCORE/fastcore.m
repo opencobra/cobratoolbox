@@ -59,7 +59,7 @@ function tissueModel = fastcore(core, model, epsilon, expressionRxns, threshold,
     model_orig = model;
 
     %Find irreversible reactions
-    irrevRxns = find(model.rev==0); %% could be called irrevRxns
+    irrevRxns = find(model.lb==0); %% could be called irrevRxns
 
     A = [];
     flipped = false;

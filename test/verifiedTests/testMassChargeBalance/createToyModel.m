@@ -31,7 +31,6 @@ model.S = sparse([-1 -1 -1 0 0; 0 1 0 -1 0; 0 0 1 -1 0; 0 0 0 1 -1]);
 
 model.mets = {'A[c]', 'B[c]', 'C[c]', 'D[c]'}';
 model.rxns = {'Ex_A', 'R2', 'R3', 'R4', 'Ex_D'}';
-model.rev = [1, 0, 0, 0, 1]';
 model.rxnNames = model.rxns;
 model.metFormulas = {'CHO', 'CHO', 'CHO', 'C2H2O2'}';
 model.metCharges = [-1, -1, -1, -2]';

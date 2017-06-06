@@ -112,7 +112,6 @@ model2.metFormulas=model.metFormulas(metBool);
 model2.metCharges=model.metCharge(metBool);
 model2.rxns=model.rxns(rxnBool);
 model2.rxnNames=model.rxnNames(rxnBool);
-%model2.rev=model.rev(rxnBool);
 model2.lb=model.lb(rxnBool);
 model2.ub=model.ub(rxnBool);
 model2.S=model.S(metBool,rxnBool);
