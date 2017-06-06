@@ -6,14 +6,14 @@ function [metCHEBI, metHMDB, metKEGG, metPubChem, metInChI] = parseSBMLAnnotatio
 %    [metCHEBI, metHMDB, metKEGG, metPubChem, metInChI] = parseSBMLAnnotationField(annotationField)
 %
 % INPUTS:
-%    annotationField:       annotation filed of an SBML fileBase
+%    annotationField:    annotation filed of an SBML fileBase
 %
 % OUTPUTS:
-%    metCHEBI:              Formula for each metabolite in the ChEBI format
-%    metHMDB:               Formula for each metabolite in the HMDB format
-%    metKEGG:               Formula for each metabolite in the KEGG format
-%    metPubChem:            PubChem ID of each metabolite
-%    metInChI:              Formula for each metabolite in the InCHI strings format
+%    metCHEBI:           Formula for each metabolite in the ChEBI format
+%    metHMDB:            Formula for each metabolite in the HMDB format
+%    metKEGG:            Formula for each metabolite in the KEGG format
+%    metPubChem:         PubChem ID of each metabolite
+%    metInChI:           Formula for each metabolite in the InCHI strings format
 %
 % .. Authors:
 %       - Ines Thiele 1/27/10 Added new fields - Handle different notes fields

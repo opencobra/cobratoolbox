@@ -6,12 +6,12 @@ function fields = splitString(string, delimiter)
 %     fields = splitString(string, delimiter)
 %
 % INPUTS:
-%    string:      Either a single string or a cell array of strings
-%    delimiter:   Splitting delimiter
+%    string:       Either a single string or a cell array of strings
+%    delimiter:    Splitting delimiter
 %
 % OUTPUT:
-%    fields:      Either a single cell array of fields or a cell array of cell
-%                 arrays of fields
+%    fields:       Either a single cell array of fields or a cell array of cell
+%                  arrays of fields
 %
 % Default delimiter is '\s' (whitespace)
 % Delimiters are perl regular expression style, e.g. '|' has to be expressed

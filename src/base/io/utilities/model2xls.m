@@ -3,16 +3,16 @@ function model2xls(model, fileName, compSymbols, compNames)
 %
 % USAGE:
 %
-%    model2xls(model, fileName)
+%    model2xls(model, fileName, compSymbols, compNames)
 %
 % INPUT:
-%    model:         A COBRA model struct
-%    fileName:      filename with an xsl extension.
+%    model:          A COBRA model struct
+%    fileName:       filename with an xsl extension.
 %
 % OPTIONAL INPUT:
 %
-%    compSymbols:   Symbols of compartments used in metabolite ids
-%    compNames:     Names of the compartments identified by the symbols
+%    compSymbols:    Symbols of compartments used in metabolite ids
+%    compNames:      Names of the compartments identified by the symbols
 %
 % EXAMPLE:
 %
