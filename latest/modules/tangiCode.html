@@ -38,7 +38,10 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="The COBRA Toolbox" href="../index.html"/> 
+    <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
+        <link rel="up" title="cardOpt" href="cardOpt.html"/>
+        <link rel="next" title="Data integration" href="dataIntegration.html"/>
+        <link rel="prev" title="sparseLP" href="sparseLP.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -86,9 +89,29 @@
               <ul class="current">
                   <li class="toctree-l1"><a class="reference internal" href="../index.html">The COBRA Toolbox</a></li>
               </ul>
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html">Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="base.html">Base</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="io.html">IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="print.html">Print</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="solvers.html">Solvers</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="cardOpt.html">cardOpt</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="sparseLP.html">sparseLP</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">tangiCode</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modelAnalysis.html">Model analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reconstruction.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualization.html">Visualization</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
@@ -137,6 +160,14 @@
     
       <li><a href="../contents.html">Docs</a> &raquo;</li>
         
+          <li><a href="index.html">Documentation</a> &raquo;</li>
+        
+          <li><a href="base.html">Base</a> &raquo;</li>
+        
+          <li><a href="solvers.html">Solvers</a> &raquo;</li>
+        
+          <li><a href="cardOpt.html">cardOpt</a> &raquo;</li>
+        
       <li>tangiCode</li>
     
     
@@ -156,7 +187,42 @@
             
   <div class="section" id="tangicode">
 <span id="id1"></span><h1>tangiCode<a class="headerlink" href="#tangicode" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-src.base.solvers.cardOpt.tangiCode"></span></div>
+<span class="target" id="module-src.base.solvers.cardOpt.tangiCode"></span><dl class="function">
+<dt id="src.base.solvers.cardOpt.tangiCode.findMinimalSetOfRxns">
+<code class="descname">findMinimalSetOfRxns</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/base/solvers/cardOpt/tangiCode/findMinimalSetOfRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.tangiCode.findMinimalSetOfRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function finds the minimal set of reactions subject to a LP objective function
+
+
+s.t. 
+</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[result_tab, sol, lprxns, l1rxns, l0rxns]  = findMinimalSetOfRxns(model)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>resutl_tab</strong> &#8211;
+number of reactions obtained for each condition</li>
+<li><strong>sol</strong> &#8211;
+<cite>x</cite> - solution vector</li>
+<li><strong>lprxns</strong> &#8211;
+rxns indices for LP solution</li>
+<li><strong>l1rxns</strong> &#8211;
+rxns indices for L1 solution</li>
+<li><strong>l0rxns</strong> &#8211;
+rxns indices for L0 solution</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</div>
 
 
            </div>
@@ -165,6 +231,15 @@
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dataIntegration.html" class="btn btn-neutral float-right" title="Data integration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="sparseLP.html" class="btn btn-neutral" title="sparseLP" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
