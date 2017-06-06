@@ -44,8 +44,24 @@ function initCobraToolbox()
     WAITBAR_TYPE = 1;
 
     % Linux only - default save path location
-    defaultSavePathLocation = '~/pathdef.m';
-
+    %Check if we can write in the root folder
+    rootpathdef = [matlabroot filesep 'toolbox' filesep 'local' filesep 'pathdef.m' ];
+    %Try to read/write the file, if both works, we can write to the
+    %directory, else we need to use the home folder.
+    [status,~] = copyfile(rootpathdef, 'pathdef_cobra.m');    
+    if status == 1
+        [status,~] = copyfile('pathdef_cobra.m',rootpathdef);
+        if status == 1
+            defaultSavePathLocation = rootpathdef;            
+        else
+            defaultSavePathLocation = '~/pathdef.m';
+        end
+        %if we copied it, we also need to clean it again
+        delete('pathdef_cobra.m')
+    else
+        defaultSavePathLocation = '~/pathdef.m';
+    end
+    
     % initialize the cell of solvers
     SOLVERS = {};
 
