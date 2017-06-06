@@ -29,21 +29,21 @@ function model = readCbModel(fileName,varargin)
 % OUTPUT:
 %    model:               Returns a model in the COBRA format:
 %
-%                           * description - Description of model contents (opt)
-%                           * rxns - Reaction names
-%                           * mets - Metabolite names
-%                           * S - Stoichiometric matrix
-%                           * lb - Lower bounds
-%                           * ub - Upper bounds
-%                           * c - Objective coefficients
-%                           * subSystems - Subsystem name for each reaction (opt)
-%                           * grRules - Gene-reaction association rule for each reaction (opt)
-%                           * rules - Gene-reaction association rule in computable form
-%                           * rxnGeneMat - Reaction-to-gene mapping in sparse matrix form (opt)
-%                           * genes - List of all genes
-%                           * rxnNames - Reaction description (opt)
-%                           * metNames - Metabolite description (opt)
-%                           * metFormulas - Metabolite chemical formula (opt)
+%                           * .description - Description of model contents (opt)
+%                           * .rxns - Reaction names
+%                           * .mets - Metabolite names
+%                           * .S - Stoichiometric matrix
+%                           * .lb - Lower bounds
+%                           * .ub - Upper bounds
+%                           * .c - Objective coefficients
+%                           * .subSystems - Subsystem name for each reaction (opt)
+%                           * .grRules - Gene-reaction association rule for each reaction (opt)
+%                           * .rules - Gene-reaction association rule in computable form
+%                           * .rxnGeneMat - Reaction-to-gene mapping in sparse matrix form (opt)
+%                           * .genes - List of all genes
+%                           * .rxnNames - Reaction description (opt)
+%                           * .metNames - Metabolite description (opt)
+%                           * .metFormulas - Metabolite chemical formula (opt)
 %
 % EXAMPLES:
 %

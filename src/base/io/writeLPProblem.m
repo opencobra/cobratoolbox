@@ -8,13 +8,13 @@ function OK = writeLPProblem(LPProblem, varargin)
 % INPUT:
 %    LPproblem:    Structure containing the following fields describing the LP problem to be solved
 %
-%                    * A - LHS matrix
-%                    * b - RHS vector
-%                    * c - Objective coeff vector
-%                    * lb - Lower bound vector
-%                    * ub - Upper bound vector
-%                    * osense - Objective sense (max=-1, min=+1)
-%                    * csense - Constraint senses, a string containting the constraint sense for
+%                    * .A - LHS matrix
+%                    * .b - RHS vector
+%                    * .c - Objective coeff vector
+%                    * .lb - Lower bound vector
+%                    * .ub - Upper bound vector
+%                    * .osense - Objective sense (max=-1, min=+1)
+%                    * .csense - Constraint senses, a string containting the constraint sense for
 %                      each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
 % OPTIONAL INPUT

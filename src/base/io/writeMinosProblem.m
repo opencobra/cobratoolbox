@@ -11,13 +11,13 @@ function [directory, fname] = writeMinosProblem(LPproblem, precision, modelName,
 %    LPproblem:     Structure containing the following fields describing the LP
 %                   problem to be solved
 %
-%                     * A - LHS matrix
-%                     * b - RHS vector
-%                     * c - Objective coeff vector
-%                     * lb - Lower bound vector
-%                     * ub - Upper bound vector
-%                     * osense - Objective sense (-1 max, +1 min)
-%                     * csense - Constraint senses, a string containting the constraint sense for
+%                     * .A - LHS matrix
+%                     * .b - RHS vector
+%                     * .c - Objective coeff vector
+%                     * .lb - Lower bound vector
+%                     * .ub - Upper bound vector
+%                     * .osense - Objective sense (-1 max, +1 min)
+%                     * .csense - Constraint senses, a string containting the constraint sense for
 %                       each row in `A` ('E', equality, 'G' greater than, 'L' less than).
 %
 % OPTIONAL INPUTS:
