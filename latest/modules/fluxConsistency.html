@@ -98,6 +98,8 @@
 <li class="toctree-l2"><a class="reference internal" href="modelAnalysis.html">Model analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="reconstruction.html">Reconstruction</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="rBioNet.html">rBioNet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fastGapFill.html">fastGapFill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="growthExpMatch.html">growthExpMatch</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="modelGeneration.html">modelGeneration</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">fluxConsistency</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="DCA.html">DCA</a></li>
@@ -109,6 +111,7 @@
 <li class="toctree-l4"><a class="reference internal" href="stoichConsistency.html">stoichConsistency</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="refinement.html">Refinement</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="visualization.html">Visualization</a></li>
@@ -196,38 +199,54 @@
 <span class="target" id="module-src.reconstruction.modelGeneration.fluxConsistency"></span><dl class="function">
 <dt id="src.reconstruction.modelGeneration.fluxConsistency.findFluxConsistentSubset">
 <code class="descname">findFluxConsistentSubset</code><span class="sig-paren">(</span><em>model</em>, <em>param</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/modelGeneration/fluxConsistency/findFluxConsistentSubset.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.fluxConsistency.findFluxConsistentSubset" title="Permalink to this definition">¶</a></dt>
-<dd><p>finds the subset of S that is flux consistent using various algorithms,
-but fastcc from fastcore by default</p>
+<dd><p>Finds the subset of <cite>S</cite> that is flux consistent using various algorithms,
+but <cite>fastcc</cite> from <cite>fastcore</cite> by default</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool, fluxInConsistentRxnBool, model] = findFluxConsistentSubset(model, param, printLevel)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>model</strong> &#8211;</p>
-<p>.S             m x n stoichiometric matrix</p>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+structure with field:<ul>
+<li>.S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</li>
+</ul>
 </li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>param.epsilon     (1e-4) minimum nonzero mass</strong></li>
-<li><strong>param.modeFlag    {(0),1} 1 = return flux modes</strong></li>
-<li><strong>param.method      {&#8216;fastcc&#8217;,&#8217;dc&#8217;}</strong></li>
-<li><strong>printLevel</strong></li>
+<li><strong>param</strong> &#8211;
+contains:<ul>
+<li>param.epsilon - (1e-4) minimum nonzero mass</li>
+<li>param.modeFlag - {(0),1} 1 = return flux modes</li>
+<li>param.method - {&#8216;fastcc&#8217;, &#8216;dc&#8217;}</li>
+</ul>
+</li>
+<li><strong>printLevel</strong> &#8211;
+verbose level</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>fluxConsistentMetBool            m x 1 boolean vector indicating flux consistent mets</strong></li>
-<li><strong>fluxConsistentRxnBool            n x 1 boolean vector indicating flux consistent rxns</strong></li>
-<li><strong>fluxInConsistentMetBool          m x 1 boolean vector indicating flux inconsistent mets</strong></li>
-<li><strong>fluxInConsistentRxnBool          n x 1 boolean vector indicating flux inconsistent rxns</strong></li>
-<li><strong>model</strong></li>
-<li><strong>.fluxConsistentMetBool</strong></li>
-<li><strong>.fluxConsistentRxnBool</strong></li>
-<li><strong>.fluxInConsistentMetBool</strong></li>
-<li><strong>.fluxInConsistentRxnBool</strong></li>
-<li><strong>Ronan Fleming 2017</strong></li>
+<li><strong>fluxConsistentMetBool</strong> &#8211;
+<cite>m</cite> x 1 boolean vector indicating flux consistent <cite>mets</cite></li>
+<li><strong>fluxConsistentRxnBool</strong> &#8211;
+<cite>n</cite> x 1 boolean vector indicating flux consistent <cite>rxns</cite></li>
+<li><strong>fluxInConsistentMetBool</strong> &#8211;
+<cite>m</cite> x 1 boolean vector indicating flux inconsistent <cite>mets</cite></li>
+<li><strong>fluxInConsistentRxnBool</strong> &#8211;
+<cite>n</cite> x 1 boolean vector indicating flux inconsistent <cite>rxns</cite></li>
+<li><strong>model</strong> &#8211;
+structure with fields duplicating the single output arguments:<ul>
+<li>.fluxConsistentMetBool</li>
+<li>.fluxConsistentRxnBool</li>
+<li>.fluxInConsistentMetBool</li>
+<li>.fluxInConsistentRxnBool</li>
+</ul>
+</li>
 </ul>
 </div></blockquote>
 </dd></dl>

@@ -8,10 +8,10 @@ Reconstruction
 .. toctree::
 
    rBioNet
-   #fastGapFill
-   #growthExpMatch
+   fastGapFill
+   growthExpMatch
    modelGeneration
-   #refinement
+   refinement
 
 .. automodule:: src.reconstruction
    :members:

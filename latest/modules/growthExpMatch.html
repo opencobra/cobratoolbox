@@ -38,7 +38,10 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="The COBRA Toolbox" href="../index.html"/> 
+    <link rel="top" title="The COBRA Toolbox" href="../index.html"/>
+        <link rel="up" title="Reconstruction" href="reconstruction.html"/>
+        <link rel="next" title="modelGeneration" href="modelGeneration.html"/>
+        <link rel="prev" title="AuxillaryFiles" href="AuxillaryFiles.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -86,9 +89,24 @@
               <ul class="current">
                   <li class="toctree-l1"><a class="reference internal" href="../index.html">The COBRA Toolbox</a></li>
               </ul>
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html">Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataIntegration.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modelAnalysis.html">Model analysis</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="reconstruction.html">Reconstruction</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rBioNet.html">rBioNet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fastGapFill.html">fastGapFill</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">growthExpMatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modelGeneration.html">modelGeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="refinement.html">Refinement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="visualization.html">Visualization</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
@@ -137,6 +155,10 @@
     
       <li><a href="../contents.html">Docs</a> &raquo;</li>
         
+          <li><a href="index.html">Documentation</a> &raquo;</li>
+        
+          <li><a href="reconstruction.html">Reconstruction</a> &raquo;</li>
+        
       <li>growthExpMatch</li>
     
     
@@ -159,92 +181,93 @@
 <span class="target" id="module-src.reconstruction.growthExpMatch"></span><dl class="function">
 <dt id="src.reconstruction.growthExpMatch.growthExpMatch">
 <code class="descname">growthExpMatch</code><span class="sig-paren">(</span><em>model</em>, <em>KEGGFilename</em>, <em>compartment</em>, <em>iterations</em>, <em>dictionary</em>, <em>logFile</em>, <em>threshold</em>, <em>KEGGBlackList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/growthExpMatch/growthExpMatch.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.growthExpMatch.growthExpMatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>growExpMatch run the growthExpMatch algorithm</p>
+<dd><p>Runs the <cite>growthExpMatch</cite> algorithm</p>
+<p><strong>Usage</strong></p>
 <blockquote>
-<div>[solution]=growthExpMatch(model, KEGGFilename, compartment, iterations, dictionary, logFile, threshold, KEGGBlackList)</div></blockquote>
+<div>[solution] = growthExpMatch(model, KEGGFilename, compartment, iterations, dictionary, logFile, threshold, KEGGBlackList)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>model         COBRA model structure</strong></p>
-</li>
-<li><p class="first"><strong>KEGGFilename  File name containing Kegg database (.lst file with list of</strong> &#8211;</p>
-<p>reactions: each listing is reaction name followed by colon
-followed by the reaction formula)</p>
-</li>
-<li><p class="first"><strong>compartment   [c] &#8211;&gt; transport from cytoplasm [c] to extracellulat space</strong> &#8211;</p>
-<p>[e] (default), [p] creates transport from [c] to [p]
-and from [p] to [c]</p>
-</li>
-<li><p class="first"><strong>iterations    Number of iterations to run</strong></p>
-</li>
-<li><p class="first"><strong>dictionary    n x 2 cell array of metabolites names for conversion from</strong> &#8211;</p>
-<p>Kegg ID&#8217;s to the compound abbreviations from BiGG database
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+COBRA model structure</li>
+<li><strong>KEGGFilename</strong> &#8211;
+File name containing Kegg database (.lst file with list of
+reactions: each listing is reaction name followed by colon
+followed by the reaction formula)</li>
+<li><strong>compartment</strong> &#8211;
+[c] &#8211;&gt; transport from cytoplasm [c] to extracellulat space
+[e] (default), [p] creates transport from [c] to [p]
+and from [p] to [c]</li>
+<li><strong>iterations</strong> &#8211;
+Number of iterations to run</li>
+<li><strong>dictionary</strong> &#8211;
+<cite>n</cite> x 2 cell array of metabolites names for conversion from
+Kegg ID&#8217;s to the compound abbreviations from BiGG database
 (1st column is compound abb. (non-compartmenalized) and
-2nd column is Kegg ID) Both columns are the same length.</p>
-</li>
+2nd column is Kegg ID) Both columns are the same length.</li>
 </ul>
 </div></blockquote>
-<dl class="docutils">
-<dt>OPTINAL INPUTS</dt>
-<dd><dl class="first last docutils">
-<dt>logFile       solution is printed in this file (name of reaction added and</dt>
-<dd>flux of that particular reaction) (Default = GEMLog.txt)</dd>
-<dt>threshold     threshold number for biomass reaction; model is considered</dt>
-<dd>to be growing when the flux of the biomass reaction is
-above threshold. (Default = 0.05)</dd>
-</dl>
-</dd>
-</dl>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>logFile</strong> &#8211;
+solution is printed in this file (name of reaction added and
+flux of that particular reaction) (Default = GEMLog.txt)</li>
+<li><strong>threshold</strong> &#8211;
+threshold number for biomass reaction; model is considered
+to be growing when the flux of the biomass reaction is
+above threshold. (Default = 0.05)</li>
+</ul>
+</div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>solution  MILP solution that consists of the continuous solution, integer</strong> &#8211;</p>
-<p>solution, objective value, stat, full solution, and
-imported reactions</p>
-</li>
+<div><ul class="simple">
+<li><strong>solution</strong> &#8211;
+MILP solution that consists of the continuous solution, integer
+solution, objective value, stat, full solution, and
+imported reactions</li>
 </ul>
 </div></blockquote>
-<p>Procedure to run SMILEY:
-(1) obtain all input files (ie. model, CompAbr, and KeggID are from BiGG, KeggList is from Kegg website)
-(2) remove desired reaction from model with removeRxns, or set the model</p>
-<blockquote>
-<div>on a particular Carbon or Nitrogen source</div></blockquote>
-<ol class="arabic simple" start="3">
-<li><dl class="first docutils">
-<dt>create an SUX Matrix by using the function MatricesSUX =</dt>
-<dd>generateSUXMatrix(model,dictionary, KEGGFilename,compartment)</dd>
-</dl>
-</li>
-<li>run it through SMILEY using [solution,b,solInt]=Smiley(MatricesSUX)</li>
-<li>solution.importedRxns contains the solutions to all iterations</li>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Procedure to run SMILEY:</p>
+<blockquote class="last">
+<div><ol class="arabic simple">
+<li>Obtain all input files (ie. <cite>model</cite>, <cite>CompAbr</cite>, and <cite>KeggID</cite> are from <cite>BiGG</cite>, <cite>KeggList</cite> is from Kegg website)</li>
+<li>Remove desired reaction from <cite>model</cite> with <cite>removeRxns</cite>, or set the model
+on a particular Carbon or Nitrogen source</li>
+<li>Create an SUX Matrix by using the function <cite>MatricesSUX =
+generateSUXMatrix(model, dictionary, KEGGFilename, compartment)</cite></li>
+<li>Run it through SMILEY using <cite>[solution, b, solInt] = Smiley(MatricesSUX)</cite></li>
+<li><cite>solution.importedRxns</cite> contains the solutions to all iterations</li>
 </ol>
-<blockquote>
-<div><dl class="docutils">
-<dt>MILPproblem</dt>
-<dd><p class="first">A      LHS matrix
-b      RHS vector
-c      Objective coeff vector
-lb     Lower bound vector
-ub     Upper bound vector
-osense Objective sense (-1 max, +1 min)
-csense Constraint senses, a string containting the constraint sense for</p>
-<blockquote>
-<div>each row in A (&#8216;E&#8217;, equality, &#8216;G&#8217; greater than, &#8216;L&#8217; less than).</div></blockquote>
-<p class="last">vartype Variable types
-x0      Initial solution</p>
-</dd>
-</dl>
-<p>Based on IT 11/2008
-Edited by JDO on 4/19/11</p>
 </div></blockquote>
+</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.reconstruction.growthExpMatch.printSolutionGEM">
 <code class="descname">printSolutionGEM</code><span class="sig-paren">(</span><em>MatricesSUX</em>, <em>solution</em>, <em>logFile</em>, <em>itNum</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/growthExpMatch/printSolutionGEM.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.growthExpMatch.printSolutionGEM" title="Permalink to this definition">¶</a></dt>
-<dd><p>printSolution displays the solution for growthExpMatch iterations</p>
-<p>11-10-07 IT</p>
-<p>Modified 11/18/09: Joseph Kang</p>
+<dd><p>Displays the solution for <cite>growthExpMatch</cite> iterations</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>printSolutionGEM(MatricesSUX, solution, logFile, itNum)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>MatricesSUX</strong> &#8211;
+SUX Matrix</li>
+<li><strong>solution</strong> &#8211;
+MILP solution that consists of the continuous solution, integer
+solution, objective value, stat, full solution, and
+imported reactions</li>
+<li><strong>logFile</strong> &#8211;
+solution is printed in this file (name of reaction added and
+flux of that particular reaction) (Default = GEMLog.txt)</li>
+<li><strong>itNum</strong> &#8211;
+number of iterations</li>
+</ul>
+</div></blockquote>
 </dd></dl>
 
 </div>
@@ -256,6 +279,15 @@ Edited by JDO on 4/19/11</p>
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="modelGeneration.html" class="btn btn-neutral float-right" title="modelGeneration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="AuxillaryFiles.html" class="btn btn-neutral" title="AuxillaryFiles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

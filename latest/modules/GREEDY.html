@@ -98,6 +98,8 @@
 <li class="toctree-l2"><a class="reference internal" href="modelAnalysis.html">Model analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="reconstruction.html">Reconstruction</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="rBioNet.html">rBioNet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fastGapFill.html">fastGapFill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="growthExpMatch.html">growthExpMatch</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="modelGeneration.html">modelGeneration</a><ul class="current">
 <li class="toctree-l4 current"><a class="reference internal" href="fluxConsistency.html">fluxConsistency</a><ul class="current">
 <li class="toctree-l5"><a class="reference internal" href="DCA.html">DCA</a></li>
@@ -109,6 +111,7 @@
 <li class="toctree-l4"><a class="reference internal" href="stoichConsistency.html">stoichConsistency</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="refinement.html">Refinement</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="visualization.html">Visualization</a></li>
@@ -192,30 +195,28 @@
 <span class="target" id="module-src.reconstruction.modelGeneration.fluxConsistency.GREEDY"></span><dl class="function">
 <dt id="src.reconstruction.modelGeneration.fluxConsistency.GREEDY.checkFluxConsistency">
 <code class="descname">checkFluxConsistency</code><span class="sig-paren">(</span><em>model</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/modelGeneration/fluxConsistency/GREEDY/checkFluxConsistency.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.fluxConsistency.GREEDY.checkFluxConsistency" title="Permalink to this definition">¶</a></dt>
-<dd><p>tries to test for flux consistent reactions in one solve
-[modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model);
-<strong>Inputs</strong></p>
+<dd><p>Tries to test for flux consistent reactions in one solve</p>
+<p><strong>Usage</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>LPproblem Structure containing the following fields describing the LP</strong></p>
-</li>
-<li><p class="first"><strong>problem to be solved</strong> &#8211;</p>
-<p>A      LHS matrix
-b      RHS vector
-c      Objective coeff vector
-lb     Lower bound vector
-ub     Upper bound vector
-osense Objective sense (-1 max, +1 min)
-csense Constraint senses, a string containting the constraint sense for</p>
+<div>[fluxConsistent, sol]=checkFluxConsistency(model, epsilon)</div></blockquote>
+<p><strong>Inputs</strong></p>
 <blockquote>
-<div><p>each row in A (&#8216;E&#8217;, equality, &#8216;G&#8217; greater than, &#8216;L&#8217; less than).</p>
-</div></blockquote>
-</li>
-<li><p class="first"><strong>Ronan</strong></p>
-</li>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+cobra model structure</li>
+<li><strong>epsilon</strong> &#8211;
+flux threshold</li>
 </ul>
 </div></blockquote>
-<p>assumes all reactions are reversible</p>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>fluxConsistent</strong> &#8211;
+empty</li>
+<li><strong>sol</strong> &#8211;
+result of <cite>solveCobraLP</cite> function</li>
+</ul>
+</div></blockquote>
 </dd></dl>
 
 </div>

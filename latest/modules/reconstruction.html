@@ -98,7 +98,10 @@
 <li class="toctree-l2"><a class="reference internal" href="modelAnalysis.html">Model analysis</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Reconstruction</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="rBioNet.html">rBioNet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fastGapFill.html">fastGapFill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="growthExpMatch.html">growthExpMatch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="modelGeneration.html">modelGeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="refinement.html">Refinement</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="visualization.html">Visualization</a></li>
@@ -176,6 +179,11 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="rBioNet.html">rBioNet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fastGapFill.html">fastGapFill</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AuxillaryFiles.html">AuxillaryFiles</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="growthExpMatch.html">growthExpMatch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modelGeneration.html">modelGeneration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="fluxConsistency.html">fluxConsistency</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="DCA.html">DCA</a></li>
@@ -190,6 +198,7 @@
 <li class="toctree-l2"><a class="reference internal" href="stoichConsistency.html">stoichConsistency</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="refinement.html">Refinement</a></li>
 </ul>
 </div>
 <span class="target" id="module-src.reconstruction"></span><dl class="function">
@@ -230,17 +239,16 @@ all root no production (and consumption) gaps</li>
 all downstream gaps</li>
 </ul>
 </div></blockquote>
-<p>based on Kumar, V. et al. BMC Bioinformatics. 2007 Jun 20;8:212.</p>
+<p>Based on <cite>Kumar, V. et al. BMC Bioinformatics. 2007 Jun 20;8:212</cite>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.reconstruction.testPathway">
 <code class="descname">testPathway</code><span class="sig-paren">(</span><em>model</em>, <em>MetIn</em>, <em>MetOut</em>, <em>AdditionalMetsInorOut</em>, <em>ObjectiveOption</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/testPathway.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.testPathway" title="Permalink to this definition">¶</a></dt>
-<dd><p>Allows the user to see if given one metabolite A,
-downstream metabolite B can be made made. Additional sinks can be added
-for co-factors if needed</p>
-<blockquote>
-<div>A &#8211;&gt;&#8211;&gt;&#8211;&gt;&#8211;&gt;&#8211;&gt; B</div></blockquote>
+<dd><p>Allows the user to see if given one metabolite <cite>A</cite>,
+downstream metabolite <cite>B</cite> can be made made. Additional sinks can be added
+for co-factors if needed
+<cite>A &#8211;&gt;&#8211;&gt;&#8211;&gt;&#8211;&gt;&#8211;&gt; B</cite></p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[Flux, FBAsolution, model] = testPathway(model, MetIn, MetOut, AdditionalMetsInorOut, ObjectiveOption)</div></blockquote>
@@ -250,9 +258,9 @@ for co-factors if needed</p>
 <li><strong>model</strong> &#8211;
 COBRA model structure</li>
 <li><strong>MetIn</strong> &#8211;
-The input metabolite(s) (A)</li>
+The input metabolite(s) (<cite>A</cite>)</li>
 <li><strong>MetOut</strong> &#8211;
-The output metabolite (B)</li>
+The output metabolite (<cite>B</cite>)</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
@@ -261,8 +269,8 @@ The output metabolite (B)</li>
 <li><strong>AdditionalMetsInorOut</strong> &#8211;
 Additional metabolites for which sinks will be added</li>
 <li><strong>ObjectiveOption</strong> &#8211;
-Boolean<ul>
-<li>1 = objective will be production of B (default)</li>
+Boolean:<ul>
+<li>1 = objective will be production of <cite>B</cite> (default)</li>
 <li>0 = use objective in model</li>
 </ul>
 </li>
@@ -272,7 +280,7 @@ Boolean<ul>
 <blockquote>
 <div><ul class="simple">
 <li><strong>Flux</strong> &#8211;
-The rate of B production</li>
+The rate of <cite>B</cite> production</li>
 <li><strong>FBAsolution</strong> &#8211;
 Solution to the FBA problem</li>
 <li><strong>model</strong> &#8211;
