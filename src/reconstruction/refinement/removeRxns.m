@@ -68,7 +68,6 @@ if irrevFlag
         remRxnID = removeInd(i);
         if model.match(remRxnID) > 0
             revRxnID = model.match(remRxnID);
-            model.rev(revRxnID) = 0;
             model.rxns{revRxnID} = model.rxns{revRxnID}(1:end-2);
         end
     end
@@ -107,7 +106,6 @@ end
 % Reconstruct the match list
 if irrevFlag
     modelOut.match = reassignFwBwMatch(model.match,selectRxns);
-    modelOut.rev(modelOut.match == 0) = false;
 end
 
 % Remove metabolites that are not used anymore

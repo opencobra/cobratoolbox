@@ -105,17 +105,6 @@ if isfield(model,'grRules')
     end
 end
 
-if isfield(model,'rev')
-    rev = oldModel.rev(startspot);
-    if option == 1
-        model.rev(endspot+1:startspot) = oldModel.rev(endspot:startspot-1);
-        model.rev(endspot) = rev;
-    else
-        model.rev(startspot:endspot-1) = oldModel.rev(startspot+1:endspot);
-        model.rev(endspot) = rev;
-    end
-end
-
 if isfield(model,'S')
   rxnS = oldModel.S(:,startspot);
   if option == 1

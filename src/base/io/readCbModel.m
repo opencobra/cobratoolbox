@@ -287,13 +287,6 @@ for i=1:numel(structFields)
     end
 end
 
-%% Make sure reversibilities are correctly indicated in the model
-function model = checkReversibility(model)
-
-selRev = (model.lb < 0 & model.ub > 0);
-model.rev(selRev) = 1;
-
-
 %%
 function model = readSimPhenyCbModel(baseName,defaultBound,compSymbolList,compNameList)
 %readSimPhenyCbModel Read a SimPheny metabolic model
@@ -305,7 +298,6 @@ function model = readSimPhenyCbModel(baseName,defaultBound,compSymbolList,compNa
 %
 % model.mets    Metabolite names
 % model.rxns    Reaction names
-% model.rev     Reversible (1)/Irreversible (0)
 % model.lb      Lower bound
 % model.ub      Upper bound
 % model.c       Objective coefficients
@@ -442,7 +434,6 @@ model.metComps = comp;
 model.metNames = metNames;
 model.rxns = removeDeletedTags(rxns);
 model.rxnNames = rxnNames;
-model.rev = rev;
 model.lb = lb;
 model.ub = ub;
 model.c = c;

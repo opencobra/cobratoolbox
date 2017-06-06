@@ -103,15 +103,6 @@ if (~iscell(rxnAbbrList))
     end
 end
 
-% not all models have rev field
-if ~isfield(model, 'rev')
-    model.rev = ones(size(model.S, 2), 1);
-    for n = 1:size(model.S, 2)
-        if model.lb(n) >= 0
-            model.rev(n) = 0;
-        end
-    end
-end
 
 for i = 1:length(rxnAbbrList);
 

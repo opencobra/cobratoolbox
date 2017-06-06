@@ -88,7 +88,6 @@ for i = 1:length(rev)
     %newmodel.rxns{nRxn} = char(rxns(i));
     newmodel.lb(nRxn,1) = lb(i,1);
     newmodel.ub(nRxn,1) = ub(i,1);
-    newmodel.rev(nRxn,1) = rev(i,1);
     newmodel.subSystems{nRxn,1} = subSystems(i,1);
     newmodel.grRules(nRxn,1) = grRules(i,1);
     newmodel.rules(nRxn,1) = rules(i,1);
