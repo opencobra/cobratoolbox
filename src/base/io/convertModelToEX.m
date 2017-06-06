@@ -41,7 +41,7 @@ for i = 1:length(model.rxns)
             end
         end
         fprintf(fid,'%s\t',model.rxns{i});
-        if model.rev(i) == 0
+        if model.lb(i) == 0
             fprintf(fid,'I\t');
         else
             fprintf(fid,'R\t');

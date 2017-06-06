@@ -91,7 +91,7 @@ while rxnID <= nRxns
     % Set the objective function to the current reactiom
     tempModel = changeObjective(model,rxnName);
 
-    if (irrevFlag && model.rev(rxnID))
+    if (irrevFlag && model.lb(rxnID) < 0)
         % Make the forward reaction reversible temporarily
         tempModel.lb(rxnID) = -tempModel.ub(rxnID+1);
         % Disable the reverse reaction
@@ -118,12 +118,12 @@ while rxnID <= nRxns
     end
 
     % Ignore negative lower bounds for irrev reactions
-    if abs(minBound) < tol || (~negFluxAllowedFlag && minBound < 0 && ~model.rev(rxnID))
+    if abs(minBound) < tol || (~negFluxAllowedFlag && minBound < 0 && ~(model.lb(rxnID) < 0))
         minBound = 0;
     end
 
     %set the new appropriate bounds
-    if (irrevFlag && model.rev(rxnID))
+    if (irrevFlag && model.lb(rxnID) < 0)
         if minBound < 0 && maxBound < 0 % Negative flux
             mins(rxnID) = 0;
             mins(rxnID+1) = -maxBound;
@@ -182,12 +182,10 @@ if (changeBoundsFlag)
         if (~irrevFlag)
             if (modelRed.lb(rxnID) >= 0)
                 % Only runs in positive direction
-                modelRed.rev(rxnID) = false;
             end
             if (modelRed.ub(rxnID) <= 0)
 
-                % Only runs in negative direction -> reverse the reaction
-                modelRed.rev(rxnID) = false;
+                % Only runs in negative direction -> reverse the reaction                
                 if (~negFluxAllowedFlag)
                     ubTmp = modelRed.ub(rxnID);
                     lbTmp = modelRed.lb(rxnID);
@@ -228,7 +226,7 @@ tempModel = modelRed;
 while (~modelOK)
     narrowInd = find(modelRed.ub-modelRed.lb < cushion & modelRed.ub ~= modelRed.lb);
     tempModel.lb(narrowInd) = tempModel.lb(narrowInd) - cushion;
-    narrowIrrevInd =intersect(narrowInd,find(~tempModel.rev));
+    narrowIrrevInd =intersect(narrowInd,find(~tempModel.lb < 0));
     tempModel.lb(narrowIrrevInd) = max(tempModel.lb(narrowIrrevInd),0);
     tempModel.ub(narrowInd) = tempModel.ub(narrowInd) + cushion;
     modelRed.lb(narrowInd) = tempModel.lb(narrowInd);

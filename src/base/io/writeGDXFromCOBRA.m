@@ -38,7 +38,7 @@ matStruct.form='full';
 matStruct.type='parameter';
 
 revStruct.name='isRev';
-revStruct.val=cobraStruct.rev;
+revStruct.val=cobraStruct.lb < 0;
 revStruct.uels=transpose(cobraStruct.rxns);
 revStruct.form='full';
 revStruct.type='parameter';

@@ -46,9 +46,6 @@ end
 if (isfield(model,'description'))
     subModel.description = model.description;
 end
-if (isfield(model,'rev'))
-    subModel.rev = model.rev(selRxns);
-end
 if (isfield(model,'lb'))
     subModel.lb = model.lb(selRxns);
 end

@@ -48,7 +48,7 @@ end
 commonFields = intersect(fields1, fields2);
 commonFields = commonFields(~strcmpi('description', commonFields));
 
-if (~isempty(onlyIn1) && ~isempty(onlyIn2))
+if (~isempty(onlyIn1) || ~isempty(onlyIn2))
     isSame = false;
 end
 

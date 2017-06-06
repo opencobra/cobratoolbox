@@ -148,7 +148,7 @@ end
 
 KEGG.S=spalloc(length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets) );
 
-[KEGG] = addReactionGEM(KEGG,KEGG.rxns,KEGG.rxns,KEGG.rxnFormulas,KEGG.rev,-10000*ones(length(KEGG.rxns),1),10000*ones(length(KEGG.rxns),1),1);
+[KEGG] = addReactionGEM(KEGG,KEGG.rxns,KEGG.rxns,KEGG.rxnFormulas,KEGG.rev,-10000*ones(length(KEGG.rxns),1).*KEGG.rev,10000*ones(length(KEGG.rxns),1),1);
 a=length(KEGG.mets);
 KEGG.S(a+1:end,:)=[];
 a=length(KEGG.rxns);
