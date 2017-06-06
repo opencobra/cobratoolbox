@@ -1,4 +1,12 @@
 function configEnvVars(printLevel)
+% Configures the global variables based on the system's configuration
+%
+% USAGE:
+%
+%    configEnvVars(printLevel)
+%
+% INPUT:
+%    printLevel:    default = 0, verbose level
 
     global GUROBI_PATH;
     global ILOG_CPLEX_PATH;

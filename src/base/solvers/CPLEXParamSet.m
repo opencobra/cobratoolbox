@@ -1,22 +1,31 @@
-function cpxControl=CPLEXParamSet
-%this is a function which returns user specified CPLEX control
-%parameters. It is not necessary to use a file like this if you want to use
-%CPLEX default control parameters. It is intended to be a template for
-%individual users to save with their own problem specific settings for 
-%CPLEX.
-
-% %e.g. 
-% (1) Paddy saves this file as CPLEXParamSetPaddyLPJob1
-% (2) Paddy edits CPLEXParamSetPaddyLPJob1 in a problem specific way
-% (3) Paddy then passes the name of this file to solveCobraLP_CPLEX using something like:
-%     [solution,LPProblem]=solveCobraLP_CPLEX(LPProblem,[],[],[],'CPLEXParamSetPaddyLPJob1');
-
+function cpxControl = CPLEXParamSet
+% This is a function which returns user specified CPLEX control
+% parameters. It is not necessary to use a file like this if you want to use
+% CPLEX default control parameters. It is intended to be a template for
+% individual users to save with their own problem specific settings for CPLEX.
+%
+% USAGE:
+%
+%    cpxControl = CPLEXParamSet
+%
+% OUTPUT:
+%    cpxControl:    user specified CPLEX control parameters
+%
+% EXAMPLE:
+%
+%    %(1) Paddy saves this file as CPLEXParamSetPaddyLPJob1
+%    %(2) Paddy edits CPLEXParamSetPaddyLPJob1 in a problem specific way
+%    %(3) Paddy then passes the name of this file to solveCobraLP_CPLEX using something like:
+%    [solution, LPProblem] = solveCobraLP_CPLEX(LPProblem, [], [], [], 'CPLEXParamSetPaddyLPJob1');
+%
 % CPLEX consists of 4 different LP solvers which can be used to solve sysbio LP problems
-% you can control which of the solvers, e.g. simplex or interior point solve using the 
-% CPLEX control parameter cpxControl.LPMETHOD
+% you can control which of the solvers, e.g. simplex or interior point solve using the
+% CPLEX control parameter `cpxControl.LPMETHOD`
+%
+% .. Author: - Ronan Fleming 10th June 2008
 
-%Ronan Fleming 10th June 2008
-    
+cpxControl = [];
+
 %SELECT CPLEX CONTROL PARAMETERS (alphabetical order)
 % Description: Preprocessing aggregator application limit. Invokes the aggregator to use substitution where
 % possible to reduce the number of rows and columns before the problem is solved. If set to a positive value, the
@@ -223,4 +232,3 @@ cpxControl.CLOCKTYPE=1; %Changed
 % primal simplex, barrier optimization followed by crossover), the
 % cumulative time applies.
 cpxControl.TILIM=600;%sec
-

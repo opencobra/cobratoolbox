@@ -1,73 +1,77 @@
 function solution = solveCobraMILP(MILPproblem, varargin)
-% solveCobraMILP Solve constraint-based MILP problems
-%
-% solution = solveCobraMILP(MILPproblem,parameters)
-%
-% INPUT
-% MILPproblem
-%  A      LHS matrix
-%  b      RHS vector
-%  c      Objective coeff vector
-%  lb     Lower bound vector
-%  ub     Upper bound vector
-%  osense Objective sense (-1 max, +1 min)
-%  csense Constraint senses, a string containting the constraint sense for
-%         each row in A ('E', equality, 'G' greater than, 'L' less than).
-%  vartype Variable types ('C' continuous, 'I' integer, 'B' binary)
-%  x0      Initial solution
-%
-% OPTIONAL INPUTS
-% Optional parameters can be entered using parameters structure or as
-% parameter followed by parameter value: i.e. ,'printLevel',3)
-%
-% parameters    Structure containing optional parameters.
-%  timeLimit    Global solver time limit
-%  intTol       Integrality tolerance
-%  relMipGapTol Relative MIP gap tolerance
-%  logFile      Log file (for CPLEX)
-%  printLevel    Printing level
-%               = 0    Silent (Default)
-%               = 1    Warnings and Errors
-%               = 2    Summary information
-%               = 3    More detailed information
-%  saveInput    Saves LPproblem to filename specified in field.
-%               i.e. parameters.saveInput = 'LPproblem.mat';
-%               Setting parameters = 'default' uses default setting set in
-%               getCobraSolverParameters.
-%
+% Solves constraint-based MILP problems
 % The solver is defined in the CBT_MILP_SOLVER global variable
-% (set using changeCobraSolver). Solvers currently available are
+% (set using `changeCobraSolver`). Solvers currently available are
 % 'tomlab_cplex' and 'glpk'
 %
-% OUTPUT
-% solution Structure containing the following fields describing a MILP
-%          solution
-%  cont     Continuous solution
-%  int      Integer solution
-%  full     Full MILP solution vector
-%  obj      Objective value
-%  solver   Solver used to solve MILP problem
-%  stat     Solver status in standardized form (see below)
-%            1  Optimal solution found
-%            2  Unbounded solution
-%            0  Infeasible MILP
-%           -1  No integer solution exists
-%            3  Other problem (time limit etc, but integer solution exists)
-%  origStat Original status returned by the specific solver
-%  time     Solve time in seconds
+% USAGE:
 %
+%    solution = solveCobraMILP(MILPproblem, parameters)
+%
+% INPUT:
+%    MILPproblem:     Structure containing the following fields describing the LP problem to be solved
+%
+%                       * .A - LHS matrix
+%                       * .b - RHS vector
+%                       * .c - Objective coeff vector
+%                       * .lb - Lower bound vector
+%                       * .ub - Upper bound vector
+%                       * .osense - Objective sense (-1 max, +1 min)
+%                       * .csense - Constraint senses, a string containting the constraint sense for
+%                         each row in A ('E', equality, 'G' greater than, 'L' less than).
+%                       * .vartype - Variable types ('C' continuous, 'I' integer, 'B' binary)
+%                       * .x0 - Initial solution
+%
+% Optional parameters can be entered using parameters structure or as
+% parameter followed by parameter value: i.e. ,'printLevel', 3)
+% Setting `parameters` = 'default' uses default setting set in
+% `getCobraSolverParameters`.
+%
+% OPTIONAL INPUTS:
+%    parameters:      Structure containing optional parameters.
+%    timeLimit:       Global solver time limit
+%    intTol:          Integrality tolerance
+%    relMipGapTol:    Relative MIP gap tolerance
+%    logFile:         Log file (for CPLEX)
+%    printLevel:      Printing level
+%
+%                       * 0 - Silent (Default)
+%                       * 1 - Warnings and Errors
+%                       * 2 - Summary information
+%                       * 3 - More detailed information
+%                       * > 10 - Pause statements, and maximal printing (debug mode)
+%    saveInput:       Saves LPproblem to filename specified in field.
+%                     i.e. parameters.saveInput = 'LPproblem.mat';
+%
+%
+% OUTPUT:
+%    solution:        Structure containing the following fields describing a MILP solution
+%
+%                       * .cont:        Continuous solution
+%                       * .int:         Integer solution
+%                       * .full:        Full MILP solution vector
+%                       * .obj:         Objective value
+%                       * .solver:      Solver used to solve MILP problem
+%                       * .stat:        Solver status in standardized form (see below)
+%
+%                         * 1 - Optimal solution found
+%                         * 2 - Unbounded solution
+%                         * 0 - Infeasible MILP
+%                         * -1 - No integer solution exists
+%                         * 3 - Other problem (time limit etc, but integer solution exists)
+%                       * .origStat:    Original status returned by the specific solver
+%                       * .time:        Solve time in seconds
+%
+% .. Authors:
+%       - Markus Herrgard 1/23/07
+%       - Tim Harrington  05/18/12 Added support for the Gurobi 5.0 solver
+%       - Ronan (16/07/2013) default MPS parameters are no longer global variables
+%       - Meiyappan Lakshmanan  11/14/14 Added support for the cplex_direct solver
+%       - cplex_direct solver accesible through CPLEX m-file and CPLEX C-interface
+%       - Thomas Pfau (12/11/2015) Added support for ibm_cplex (the IBM Matlab
+%       interface) to the solvers.
 
-% Markus Herrgard 1/23/07
-% Tim Harrington  05/18/12 Added support for the Gurobi 5.0 solver
-% Ronan (16/07/2013) default MPS parameters are no longer global variables
-% Meiyappan Lakshmanan  11/14/14 Added support for the cplex_direct solver
-% cplex_direct solver accesible through CPLEX m-file and CPLEX C-interface
-% Thomas Pfau (12/11/2015) Added support for ibm_cplex (the IBM Matlab
-% interface) to the solvers.
-
-%% Process options
-
-global CBT_MILP_SOLVER
+global CBT_MILP_SOLVER % Process options
 
 if ~isempty(CBT_MILP_SOLVER)
     solver = CBT_MILP_SOLVER;
@@ -326,8 +330,8 @@ switch solver
         end
 
         % minimum intTol for gurobi = 1e-9
-        if solverParams.intTol<1e-9, 
-            solverParams.intTol=1e-9 
+        if solverParams.intTol<1e-9,
+            solverParams.intTol=1e-9
         end
 
         opts.TimeLimit=solverParams.timeLimit;
@@ -455,7 +459,7 @@ switch solver
         if isfield(solverParams, 'logFile')
                 params.LogFile = solverParams.logFile;
         end
-        
+
         params.TimeLimit = solverParams.timeLimit;
         params.MIPGap = solverParams.relMipGapTol;
 
@@ -595,7 +599,7 @@ switch solver
     case 'mps'
         fprintf(' > The interface to ''mps'' from solveCobraMILP will not be supported anymore.\n -> Use >> writeCbModel(model, ''mps'');\n');
         % temporary legacy support
-        writeLPProblem(MILPproblem, 'problemName','COBRAMILPProblem','fileName','MILP.mps','solverParams',solverParams);        
+        writeLPProblem(MILPproblem, 'problemName','COBRAMILPProblem','fileName','MILP.mps','solverParams',solverParams);
         return
     otherwise
         error(['Unknown solver: ' solver]);

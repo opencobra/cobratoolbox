@@ -1,38 +1,39 @@
-%LP_SOLVE  Solves mixed integer linear programming problems.
-%
-%  SYNOPSIS: [obj,x,duals,stat] = lp_solve(f,a,b,e,vlb,vub,xint,scalemode,keep)
-%
-%     solves the MILP problem
-%
-%             max v = f'*x
-%               a*x <> b
-%                 vlb <= x <= vub
-%                 x(int) are integer
-%
-%  ARGUMENTS: The first four arguments are required:
-%
-%           f: n vector of coefficients for a linear objective function.
-%           a: m by n matrix representing linear constraints.
-%           b: m vector of right sides for the inequality constraints.
-%           e: m vector that determines the sense of the inequalities:
-%                     e(i) = -1  ==> Less Than
-%                     e(i) =  0  ==> Equals
-%                     e(i) =  1  ==> Greater Than
-%         vlb: n vector of lower bounds. If empty or omitted,
-%              then the lower bounds are set to zero.
-%         vub: n vector of upper bounds. May be omitted or empty.
-%        xint: vector of integer variables. May be omitted or empty.
-%   scalemode: scale flag. Off when 0 or omitted.
-%        keep: Flag for keeping the lp problem after it's been solved.
-%              If omitted, the lp will be deleted when solved.
-%
-%  OUTPUT: A nonempty output is returned if a solution is found:
-%
-%         obj: Optimal value of the objective function.
-%           x: Optimal value of the decision variables.
-%       duals: solution of the dual problem.
-
 function [obj, x, duals, stat] = lp_solve(f, a, b, e, vlb, vub, xint, scalemode, keep)
+% Solves mixed integer linear programming problems.
+% Solves the MILP problem
+% :math:`max v = f'*x`
+% :math:`a*x <> b`
+% :math:`vlb <= x <= vub`
+% `x(int)`` are integer
+%
+% USAGE:
+%
+%    [obj, x, duals, stat] = lp_solve(f, a, b, e, vlb, vub, xint, scalemode, keep)
+%
+% INPUTS:
+%    f:            `n` vector of coefficients for a linear objective function.
+%    a:            `m` by n matrix representing linear constraints.
+%    b:            `m` vector of right sides for the inequality constraints.
+%    e:            `m` vector that determines the sense of the inequalities:
+%
+%                    * `e(i)` = -1  ==> Less Than
+%                    * `e(i)` =  0  ==> Equals
+%                    * `e(i)` =  1  ==> Greater Than
+% OPTIONAL INPUTS:
+%    vlb:          `n` vector of lower bounds. If empty or omitted,
+%                  then the lower bounds are set to zero.
+%    vub:          `n` vector of upper bounds. May be omitted or empty.
+%    xint:         vector of integer variables. May be omitted or empty.
+%    scalemode:    scale flag. Off when 0 or omitted.
+%    keep:         Flag for keeping the lp problem after it's been solved.
+%                  If omitted, the lp will be deleted when solved.
+%
+% OUTPUT:
+%
+%    obj:          Optimal value of the objective function.
+%    x:            Optimal value of the decision variables.
+%    duals:        solution of the dual problem.
+%    stat:         result of `mxlpsolve` function
 
 if nargin == 0
         help lp_solve;

@@ -1,37 +1,43 @@
 function varargout = getCobraSolverParams(solverType, paramNames, parameters)
-% This function gets the specified parameters in paramNames from
+% This function gets the specified parameters in `paramNames` from
 % parameters, the global cobra paramters variable or default values set within
 % this script. It will use values with the following priority
-%                parameters > global parameters > default
+%
+% parameters > global parameters > default
+%
 % The specified parameters will be delt to the specified output arguements.
 % See examples below.
 %
-%INPUT
-% solverType    Type of solver used: 'LP', 'MILP', 'QP', 'MIQP'
-% paramNames    Cell array of strings containing parameter names OR one
-%               parameter name as string
+% USAGE:
 %
-%OPTIONAL INPUTS
-% parameters    Structure with fields pertaining to parameter values that
-%               should be used in place of global or default parameters.
-%               parameters can be set to 'default' to use the default
-%               values set within this script.
+%    varargout = getCobraSolverParams(solverType, paramNames, parameters)
 %
-%OUTPUTS
-% varargout     Variables which each value corresponding to paramNames
-%               is outputted to.
+% INPUTS:
+%    solverType:    Type of solver used: 'LP', 'MILP', 'QP', 'MIQP'
+%    paramNames:    Cell array of strings containing parameter names OR one
+%                   parameter name as string
 %
-%Examples
-% parameters.saveInput = 'LPproblem.mat';
-% parameters.printLevel = 1;
-% [printLevel, saveInput] = getCobraSolverParams('LP',{'printLevel', 'saveInput'},parameters);
+% OPTIONAL INPUTS:
+%    parameters:    Structure with fields pertaining to parameter values that
+%                   should be used in place of global or default parameters.
+%                   parameters can be set to 'default' to use the default
+%                   values set within this script.
 %
-%Example using default values
-% [printLevel, saveInput] = getCobraSolverParams('LP',{'printLevel','saveInput'},'default');
+% OUTPUTS:
+%    varargout:     Variables which each value corresponding to paramNames
+%                   is outputted to.
 %
-
-% Richard Que (12/01/2009)
-% Ronan (16/07/2013) default MPS parameters are no longer global variables
+% EXAMPLE:
+%    parameters.saveInput = 'LPproblem.mat';
+%    parameters.printLevel = 1;
+%    [printLevel, saveInput] = getCobraSolverParams('LP', {'printLevel', 'saveInput'}, parameters);
+%
+%    %Example using default values
+%    [printLevel, saveInput] = getCobraSolverParams('LP', {'printLevel','saveInput'}, 'default');
+%
+% .. Authors:
+%       - Richard Que (12/01/2009)
+%       - Ronan (16/07/2013) default MPS parameters are no longer global variables
 
 if nargin < 2
     error('getCobraSolverParams: No parameters specified')
@@ -109,5 +115,3 @@ for i=1:length(paramNames)
     end
 end
 %pause(eps)
-
-
