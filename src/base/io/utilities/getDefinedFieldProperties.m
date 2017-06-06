@@ -7,15 +7,16 @@ function [fields] = getDefinedFieldProperties(varargin)
 %    [requiredFields, optionalFields] = getDefinedFieldProperties(varargin)
 %
 % OPTIONAL INPUT:
-%    Descriptions:      Whether to obtain the field descriptions (default = false).
-%    SpecificFields:    Indication whether to only obtain definitions for a
-%                       specific set of fields (default all).
-%    DataBaseFields:    Get the fields with specified Database relations.
+%    varargin:             The following parameter/value pairs can be used:
+%                          * Descriptions:         Whether to obtain the field descriptions (default = false).
+%                          * SpecificFields:       Indication whether to only obtain definitions for a
+%                            specific set of fields (default all).
+%                          * DataBaseFields:       Get the fields with specified Database relations (true, if requested).
 %
 % OUTPUTS:
-%    requiredFields:    The fields a model must have in order to be a valid
-%                       COBRA Toolbox model
-%    optionalFields:    The Fields which are supported by the COBRA Toolbox.
+%    fields:               All fields and their properties as requested, if
+%                          fields without definitions are requested, they
+%                          will not be contained in the result.
 %
 % NOTE:
 %
@@ -30,6 +31,8 @@ function [fields] = getDefinedFieldProperties(varargin)
 %      * X{:,3} are the associated fields for the second dimension (i.e.
 %        size(model.(X{A,1}),2) == size(model.(X{A,2}),1) has to evaluate
 %        to true
+%      * X{:,4} are evaluateable statements, which have to evaluate to true for
+%        the model to be valid, these mainly check the content types.
 %      * X{:,4} are evaluateable statements, which have to evaluate to true for
 %        the model to be valid, these mainly check the content types.
 %    E.g.
@@ -50,6 +53,7 @@ function [fields] = getDefinedFieldProperties(varargin)
 persistent CBT_PROG_FIELD_PROPS
 persistent CBT_DESC_FIELD_PROPS
 persistent CBT_DB_FIELD_PROPS
+
 
 parser = inputParser();
 parser.addParameter('Descriptions',false,@(x) isnumeric(x) | islogical(x))
@@ -128,11 +132,12 @@ if isempty(CBT_PROG_FIELD_PROPS)
     yPos = find(cellfun(@(x) ischar(x) && strcmp(x,'Ydim'),raw(1,:)));
     evalPos = find(cellfun(@(x) ischar(x) && strcmp(x,'Evaluator'),raw(1,:)));
     fieldNamePos = find(cellfun(@(x) ischar(x) && strcmp(x,'Model Field'),raw(1,:)));
+    defaultPos = find(cellfun(@(x) ischar(x) && strcmp(x,'Default Value'),raw(1,:)));
     relrows = cellfun(@(x) ischar(x) && ~isempty(x),raw(:,fieldNamePos));
     %Ignore the first row, headers.
     relrows(1) = false;
-    relarray = raw(relrows,[fieldNamePos,xPos,yPos,evalPos]);
-    dbInfo = cell(0,4);
+    relarray = raw(relrows,[fieldNamePos,xPos,yPos,evalPos,defaultPos]);
+    dbInfo = cell(0,5);
     for i = 1:size(relarray)
         xval = relarray{i,2};
         if ~isnumeric(xval)
@@ -148,7 +153,7 @@ if isempty(CBT_PROG_FIELD_PROPS)
                 yval = ynumval;
             end
         end
-         dbInfo(i,:) = { relarray{i,1},xval,yval,relarray{i,4}};
+         dbInfo(i,:) = { relarray{i,1},xval,yval,relarray{i,4}, relarray{i,5}};
     end
     CBT_PROG_FIELD_PROPS = dbInfo;
 end

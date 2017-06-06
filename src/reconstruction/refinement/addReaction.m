@@ -317,7 +317,8 @@ else
     else
         try
         model.S = [Stmp Scolumn];
-        model = updateReactionFields(model);
+        model = updateRelevantModelFields(model,'rxns');
+        %model = updateReactionFields(model);
         catch
             disp('test')
         end
