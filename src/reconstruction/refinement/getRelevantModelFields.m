@@ -1,5 +1,32 @@
 function matchingFields = getRelevantModelFields(model, type, varargin)
+% get fields which are associated with the given type.
+% USAGE:
+%     matchingFields = getRelevantModelFields(model, type, varargin)
 %
+% INPUTS:
+%
+%    model:              the model to update
+%    type:               the Type of field to update one of 
+%                        ('rxns','mets','comps','genes')
+%
+% OPTIONAL INPUTS:
+%    varargin:        Additional Options as 'ParameterName', Value pairs. Options are:
+%                     - 'fieldSize', the original size of the field (if
+%                       mets was already adjusted, this size will be used
+%                       to determine matching fields.
+%
+% OUTPUT:
+%
+%    matchingfields:   A cell array of fields associated with the
+%                      given type. The initial check is for the size of the field, if
+%                      multiple base fields have the same size, it is
+%                      assumed, that fields named e.g. rxnXYZ are
+%                      associated with rxns, and only those fields are
+%                      adapted along with fields which are specified in the
+%                      Model FieldDefinitions.
+%
+% .. Authors: 
+%                   - Thomas Pfau June 2017, adapted to merge all fields.
 
 
 

@@ -1,4 +1,41 @@
 function model = updateRelevantModelFields(model, type, varargin)
+% update all relevant fields to have the correct size.
+% USAGE:
+%     model = updateRelevantModelFields(model, type, varargin)
+%
+% INPUTS:
+%
+%    model:              the model to update
+%    type:               the Type of field to update one of 
+%                        ('rxns','mets','comps','genes')
+%
+% OPTIONAL INPUTS:
+%    varargin:        Additional Options as 'ParameterName', Value pairs. Options are:
+%                     - 'originalSize', the original size of the field,
+%                       this is used to determine fields which have to be
+%                       adjusted.
+%                     - 'targetSize', the target size to which the field
+%                       should be extended. Default values will be used as
+%                       defined in the ModelFieldDefinitions to fill empty
+%                       entries.
+%                     - 'excludeFields', fields that should eb ignored
+%                       during update.
+% OUTPUT:
+%
+%    model:            A model with the requested fields associated to the
+%                      given type updated. Associated fields are determined
+%                      by size, and if multiple base fields have the same
+%                      size, the Model Field definition along with checks
+%                      for field Names (e.g. rxnXYZ is associated with
+%                      rxns) is used. Added values are either default
+%                      values (if defined in the ModelFieldDefinitions), or
+%                      {''} for cell arrays, NaN for numeric arrays and
+%                      false for logical arrays. Char Arrays will be
+%                      ignored.
+%
+% .. Authors: 
+%                   - Thomas Pfau June 2017, adapted to merge all fields.
+
 
 PossibleTypes = {'rxns','mets','comps','genes'}';
 

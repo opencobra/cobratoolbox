@@ -1,4 +1,36 @@
 function model = removeRelevantModelFields(model, indicesToRemove, type, varargin)
+% 
+% USAGE:
+%    model = removeRelevantModelFields(model, indicesToRemove, type, varargin)
+%
+% INPUTS:
+%
+%    model:              the model to update
+%    indicesToRemove:    indices which should eb removed (either a logical array or double indices)
+%    type:               the Type of field to update one of 
+%                        ('rxns','mets','comps','genes')
+%
+% OPTIONAL INPUTS:
+%    varargin:        Additional Options as 'ParameterName', Value pairs. Options are:
+%                     - 'fieldSize', the original size of the field (if
+%                       mets was already adjusted, this size will be used
+%                       to determine matching fields.
+%                     - 'excludeFields', fields which should not be
+%                       adjusted but kkept how they are.
+%
+% OUTPUT:
+%
+%    modelNew:         the model in which all fields associated with the
+%                      given type have the entries indicated removed. The
+%                      initial check is for the size of the field, if
+%                      multiple base fields have the same size, it is
+%                      assumed, that fields named e.g. rxnXYZ are
+%                      associated with rxns, and only those fields are
+%                      adapted along with fields which are specified in the
+%                      Model FieldDefinitions.
+%
+% .. Authors: 
+%                   - Thomas Pfau June 2017, adapted to merge all fields.
 
 PossibleTypes = {'rxns','mets','comps','genes'};
 
