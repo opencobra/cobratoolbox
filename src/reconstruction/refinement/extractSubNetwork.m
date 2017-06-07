@@ -1,14 +1,13 @@
 function subModel = extractSubNetwork(model, rxnList, metList)
 % Extract subnetwork model
 % USAGE:
-% USAGE:
 %
 %    subModel = extractSubNetwork(model, rxnList, metList)
 %
 % INPUTS:
 %    model:       COBRA model structure
 %    rxnList:     Reaction list for the subnetwork to be extracted
-%                reactions)
+%
 % OPTIONAL INPUTS:
 %    metNames:    Metabolite list for the subnetwork to be extracted
 %
@@ -19,12 +18,12 @@ function subModel = extractSubNetwork(model, rxnList, metList)
 %       - Markus Herrgard 12/11/06
 %       - Srikiran C 7/15/14
 %       - Replaced rxnNames with rxnList 
-%       as model.rxnNames is different from model.rxns,
-%       and model.rxns is used to select the subnetwork.
-%             Replaced metNames with metList, to avoid similar confusion.
-%             Added the fields - rxnNames, rules and metCharge to subModel.
-%           - Thomas Pfau June 2017 - switched to use of
-%             removeRxns/removeMetabolites
+%         as model.rxnNames is different from model.rxns,
+%         and model.rxns is used to select the subnetwork.
+%         Replaced metNames with metList, to avoid similar confusion.
+%         Added the fields - rxnNames, rules and metCharge to subModel.
+%       - Thomas Pfau June 2017 - switched to use of
+%         removeRxns/removeMetabolites
 
 selRxns = ismember(model.rxns,rxnList);
 subS = model.S(:,selRxns);
