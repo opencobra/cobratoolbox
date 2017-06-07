@@ -1,7 +1,7 @@
-% The COBRAToolbox: <testTutorialI>.m
+% The COBRAToolbox: <testNameOfSrcFile>.m
 %
 % Purpose:
-%     - <test functionality of workflowprovide a short description of the purpose of the test
+%     - <provide a short description of the purpose of the test
 %
 % Authors:
 %     - <major change>: <your name> <date>
@@ -27,7 +27,6 @@ load('testData_functionToBeTested.mat');
 
 %{
 % This is only necessary for tests that test a function that runs in parallel.
-
 % create a parallel pool
 poolobj = gcp('nocreate'); % if no pool, do not create new one.
 if isempty(poolobj)
