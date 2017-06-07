@@ -277,53 +277,6 @@ expressed and unexpressed transcripts</p>
 based on maintaining pathway length comparable to expression data, not flux</p>
 </dd></dl>
 
-<dl class="function">
-<dt id="src.dataIntegration.transcriptomics.fastcore">
-<code class="descname">fastcore</code><span class="sig-paren">(</span><em>model</em>, <em>core</em>, <em>epsilon</em>, <em>printlevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/dataIntegration/transcriptomics/fastcore.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.fastcore" title="Permalink to this definition">¶</a></dt>
-<dd><p>Use the FASTCORE algorithm (Vlassis et al, 2014*) to extract a context
-specific model using data. FASTCORE algorithm defines one set of core
-reactions that is guaranteed to be active in the extracted model and find
-the minimum of reactions possible to support the core.</p>
-<blockquote>
-<div><p>USAGE:</p>
-<blockquote>
-<div>tissueModel = fastcore(model,core)</div></blockquote>
-</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>model               input model (COBRA model structure)</strong></p>
-</li>
-<li><p class="first"><strong>core                indices of reactions in cobra model that are part of the</strong> &#8211;</p>
-<p>core set of reactions (called C in Vlassis et al,
-2014*)</p>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>epsilon             smallest flux value that is considered nonzero</strong> &#8211;</p>
-<p>(default 1e-8)</p>
-</li>
-<li><p class="first"><strong>printLevel          0 = silent, 1 = summary, 2 = debug</strong></p>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>tissueModel         extracted model</strong></li>
-</ul>
-</div></blockquote>
-<ul class="simple">
-<li>Vlassis, Pacheco, Sauter (2014). Fast reconstruction of compact</li>
-</ul>
-<p>context-specific metbolic network models. PLoS Comput. Biol. 10, e1003424.</p>
-<blockquote>
-<div></div></blockquote>
-</dd></dl>
-
 </div>
 
 

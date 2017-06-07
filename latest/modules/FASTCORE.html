@@ -318,23 +318,23 @@ smallest flux that is considered nonzero</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.transcriptomics.FASTCORE.fastcore">
-<code class="descname">fastcore</code><span class="sig-paren">(</span><em>core</em>, <em>model</em>, <em>epsilon</em>, <em>expressionRxns</em>, <em>threshold</em>, <em>printlevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/dataIntegration/transcriptomics/FASTCORE/fastcore.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.fastcore" title="Permalink to this definition">¶</a></dt>
-<dd><p>Use the FASTCORE algorithm (<cite>Vlassis et al, 2014</cite>) to extract a context
-specific model using data. FASTCORE algorithm defines one set of core
+<code class="descname">fastcore</code><span class="sig-paren">(</span><em>model</em>, <em>core</em>, <em>epsilon</em>, <em>printlevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/dataIntegration/transcriptomics/FASTCORE/fastcore.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.fastcore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use the FASTCORE algorithm (&#8216;Vlassis et al, 2014&#8217;) to extract a context
+specific model. FASTCORE algorithm defines one set of core
 reactions that is guaranteed to be active in the extracted model and find
 the minimum of reactions possible to support the core.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>tissueModel = fastcore(core, model, epsilon, expressionRxns, threshold, printlevel)</div></blockquote>
+<div>tissueModel = fastcore(model,core)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>core</strong> &#8211;
-indices of reactions in cobra model that are part of the
-core set of reactions (called <cite>C</cite> in <cite>Vlassis et al,
-2014</cite>)</li>
 <li><strong>model</strong> &#8211;
 input model (COBRA model structure)</li>
+<li><strong>core</strong> &#8211;
+indices of reactions in cobra model that are part of the
+core set of reactions (called &#8216;C&#8217; in &#8216;Vlassis et al,
+2014&#8217;)</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
@@ -343,13 +343,6 @@ input model (COBRA model structure)</li>
 <li><strong>epsilon</strong> &#8211;
 smallest flux value that is considered nonzero
 (default 1e-8)</li>
-<li><strong>expressionRxns</strong> &#8211;
-expression data, corresponding to model.rxns (see
-mapGeneToRxn.m)</li>
-<li><strong>threshold</strong> &#8211;
-expression threshold (reactions with expression
-above this threshold are put in the set of core
-reactions</li>
 <li><strong>printLevel</strong> &#8211;
 0 = silent, 1 = summary, 2 = debug</li>
 </ul>
@@ -361,8 +354,8 @@ reactions</li>
 extracted model</li>
 </ul>
 </div></blockquote>
-<p><cite>Vlassis, Pacheco, Sauter (2014). Fast reconstruction of compact
-context-specific metbolic network models. PLoS Comput. Biol. 10, e1003424.</cite></p>
+<p>&#8216;Vlassis, Pacheco, Sauter (2014). Fast reconstruction of compact
+context-specific metbolic network models. PLoS Comput. Biol. 10, e1003424.&#8217;</p>
 </dd></dl>
 
 <dl class="function">
