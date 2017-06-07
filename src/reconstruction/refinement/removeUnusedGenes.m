@@ -11,9 +11,9 @@ function modelNew = removeUnusedGenes(model)
 %
 % OUTPUT:
 %		 model:    COBRA model structure with updated gene field reflecting only
-%							 content present in the model
+%                  content present in the model
 %
-% .. Authors
+% .. Authors:
 %           - Sjoerd Opdam - 6/24/2014    
 %           - Thomas Pfau - June 2016 - updated to catch all fields.
 	genes=unique(model.genes);
@@ -21,7 +21,7 @@ function modelNew = removeUnusedGenes(model)
         disp('Some genes have identical IDs')
     end
     %update the rxnGeneMatField;    
-    model = createrxnGeneMatField(model);
+    model = buildRxnGeneMat(model);
     genesToRemove = sum(model.rxnGeneMat) == 0;
     model = removeRelevantModelFields(model,genesToRemove,'genes',numel(model.genes));
     modelNew=model;    
