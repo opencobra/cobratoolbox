@@ -4,7 +4,7 @@ function [fields] = getDefinedFieldProperties(varargin)
 %
 % USAGE:
 %
-%    [requiredFields, optionalFields] = getDefinedFieldProperties(varargin)
+%    [fields] = getDefinedFieldProperties(varargin)
 %
 % OPTIONAL INPUT:
 %    varargin:             The following parameter/value pairs can be used:
