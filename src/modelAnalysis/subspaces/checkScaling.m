@@ -113,8 +113,8 @@ function [solverRecommendation, scalingProperties] = checkScaling(model, estLeve
     end
 
     % determine the extrema of stoichiometric coefficients
-    minS = full(min(min(S)));
-    maxS = full(max(max(S)));
+    minS = full(min(min(abs(S))));
+    maxS = full(max(max(abs(S))));
     if abs(minS) > 0
         ratioS = maxS / minS;
     else
@@ -123,8 +123,8 @@ function [solverRecommendation, scalingProperties] = checkScaling(model, estLeve
 
     % determine extrema of bounds
     if isfield(model, 'lb')
-        minLB = min(model.lb);
-        maxLB = max(model.lb);
+        minLB = min(abs(model.lb));
+        maxLB = max(abs(model.lb));
 
         if abs(minLB) > 0
             ratioL = maxLB / minLB;
@@ -133,8 +133,8 @@ function [solverRecommendation, scalingProperties] = checkScaling(model, estLeve
         end
     end
     if isfield(model, 'ub')
-        minUB = min(model.ub);
-        maxUB = max(model.ub);
+        minUB = min(abs(model.ub));
+        maxUB = max(abs(model.ub));
 
         if abs(minUB) > 0
             ratioU = maxUB / minUB;
@@ -166,8 +166,8 @@ function [solverRecommendation, scalingProperties] = checkScaling(model, estLeve
         fprintf('        * metabolites:                         %d\n', nMets);
         fprintf('        * reactions:                           %d\n', nRxns);
         fprintf(' Stoichiometric coefficients:\n');
-        fprintf('        * Minimum:                             %1.2f\n', minS);
-        fprintf('        * Maximum:                             %1.2f\n', maxS);
+        fprintf('        * Minimum (absolute value):            %1.2e\n', minS);
+        fprintf('        * Maximum (absolute value):            %1.2e\n', maxS);
     end
 
     if isfield(model, 'lb')
@@ -176,8 +176,8 @@ function [solverRecommendation, scalingProperties] = checkScaling(model, estLeve
 
         if printLevel > 0
             fprintf(' Lower bound coefficients:\n');
-            fprintf('        * Minimum:                             %1.2f\n', minLB);
-            fprintf('        * Maximum:                             %1.2f\n', maxLB);
+            fprintf('        * Minimum (absolute value):            %1.2e\n', minLB);
+            fprintf('        * Maximum (absolute value):            %1.2e\n', maxLB);
         end
     end
 
@@ -187,8 +187,8 @@ function [solverRecommendation, scalingProperties] = checkScaling(model, estLeve
 
         if printLevel > 0
             fprintf(' Upper bound coefficients:\n');
-            fprintf('        * Minimum:                             %1.2f\n', minUB);
-            fprintf('        * Maximum:                             %1.2f\n', maxUB);
+            fprintf('        * Minimum (absolute value):            %1.2e\n', minUB);
+            fprintf('        * Maximum (absolute value):            %1.2e\n', maxUB);
         end
     end
 
@@ -269,9 +269,9 @@ function [solverRecommendation, scalingProperties] = checkScaling(model, estLeve
         end
     end
     if abs(ratioC) > 0
-        scalingProperties.ratioR_orderOfMag = abs(floor(log10(abs(ratioC))));
+        scalingProperties.ratioC_orderOfMag = abs(floor(log10(abs(ratioC))));
         if printLevel > 0
-            fprintf(' Order of magnitude diff. (column scaling):    %d\n', scalingProperties.ratioR_orderOfMag);
+            fprintf(' Order of magnitude diff. (column scaling):    %d\n', scalingProperties.ratioC_orderOfMag);
         end
     end
 
