@@ -1,7 +1,7 @@
-% The COBRAToolbox: <testNameOfSrcFile>.m
+% The COBRAToolbox: <testTutorialI>.m
 %
 % Purpose:
-%     - <provide a short description of the purpose of the test
+%     - <test functionality of workflowprovide a short description of the purpose of the test
 %
 % Authors:
 %     - <major change>: <your name> <date>
