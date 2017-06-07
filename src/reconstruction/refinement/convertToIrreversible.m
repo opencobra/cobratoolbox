@@ -31,12 +31,10 @@ function [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(mo
 %       - Modified by Jan Schellenberger 9/9/09 for speed.
 %       - Modified by Diana El Assal & Fatima Monteiro 6/2/17 allow to
 %       optionally only split a specific list of reversible reactions to
-%       irreversible, without appending '_r'. In this case, model.rev =
-%       false (forward) and model.rev = true (reversible).
+%       irreversible, without appending '_r'.
 
 modelIrrev.S = spalloc(size(model.S,1),0,2*nnz(model.S)); %declare variables
 modelIrrev.rxns = [];
-modelIrrev.rev = zeros(2*length(model.rxns),1);
 modelIrrev.lb = zeros(2*length(model.rxns),1);
 modelIrrev.ub = zeros(2*length(model.rxns),1);
 modelIrrev.c = zeros(2*length(model.rxns),1);
@@ -62,17 +60,7 @@ if ~isempty(sRxns)
         cnt = cnt + 1;
         
         %expand the new model (same for both irrev & rev rxns)
-        modelIrrev.rev(cnt) = modelIrrev.rev(i);
         irrev2rev(cnt) = i;
-        
-        % Check if reaction is declared as irreversible, but bounds suggest
-        % reversible (i.e., having both positive and negative bounds
-        if model.ub(i) > 0 && model.lb(i) < 0 && model.rev(i) == false
-            model.rev(i) = true;
-            warning(cat(2, 'Reaction: ', model.rxns{i}, ' is classified as irreversible, but bounds are positive and negative!'))
-        elseif (sign(model.ub(i)) == sign(model.lb(i)) || sign(model.ub(i)) * sign(model.lb(i)) == 0) && model.rev(i) == true
-            model.rev(i) = false;
-        end
         
         % Retain original bounds
         modelIrrev.ub(cnt) = model.ub(i);
@@ -80,7 +68,6 @@ if ~isempty(sRxns)
         modelIrrev.S(:, cnt) = model.S(:, i);
         modelIrrev.c(cnt) = model.c(i);
         modelIrrev.rxns{cnt} = model.rxns{i};
-        modelIrrev.rev(cnt) = model.rev(i);
         
         %if the reaction is reversible, add a new rxn to the irrev model and
         %update the names of the reactions with '_f' and '_b'
@@ -92,7 +79,6 @@ if ~isempty(sRxns)
             modelIrrev.S(:, cnt) = - model.S(:, i);
             modelIrrev.S(:, cnt-1) = model.S(:, i);
             modelIrrev.rxns{cnt} = [model.rxns{i} '_b'];
-            modelIrrev.rev(cnt) = false;
             modelIrrev.lb(cnt) = 0;
             modelIrrev.lb(cnt-1) = 0;
             modelIrrev.ub(cnt) =  - model.lb(i);
@@ -106,40 +92,13 @@ if ~isempty(sRxns)
         end
     end
     
-    rev2irrev = columnVector(rev2irrev);
-    irrev2rev = irrev2rev(1:cnt);
-    irrev2rev = columnVector(irrev2rev);
-    
-    % Build final structure
-    modelIrrev.S = modelIrrev.S(:,1:cnt);
-    modelIrrev.ub = columnVector(modelIrrev.ub(1:cnt));
-    modelIrrev.lb = columnVector(modelIrrev.lb(1:cnt));
-    modelIrrev.c = columnVector(modelIrrev.c(1:cnt));
-    modelIrrev.rev = modelIrrev.rev(1:cnt);
-    modelIrrev.rev = columnVector(modelIrrev.rev == 1);
-    modelIrrev.rxns = columnVector(modelIrrev.rxns);
-    modelIrrev.mets = model.mets;
-    matchRev = columnVector(matchRev(1:cnt));
-    modelIrrev.match = matchRev;
-    modelIrrev.rev = zeros(length(modelIrrev.rxns),1);
-    modelIrrev.rev(find(modelIrrev.lb<0))=1;
-    
     %By default, convert the entire model:
 else
     for i = 1:nRxns;
         cnt = cnt + 1;
         
         %expand the new model (same for both irrev & rev rxns
-        modelIrrev.rev(cnt) = model.rev(i);
         irrev2rev(cnt) = i;
-        
-        % Check if reaction is declared as irreversible, but bounds suggest
-        % reversible (i.e., having both positive and negative bounds
-        if (model.ub(i) > 0 && model.lb(i) < 0) && model.rev(i) == false
-            model.rev(i) = true;
-            warning(cat(2,'Reaction: ',model.rxns{i},' is classified as irreversible, but bounds are positive and negative!'))
-            
-        end
         
         % Reaction entirely in the negative direction
         if (model.ub(i) <= 0 && model.lb(i) < 0)
@@ -150,8 +109,6 @@ else
             modelIrrev.S(:,cnt) = -model.S(:,i);
             modelIrrev.c(cnt) = -model.c(i);
             modelIrrev.rxns{cnt} = [model.rxns{i} '_r'];
-            model.rev(i) = false;
-            modelIrrev.rev(cnt) = false;
         else
             % Keep positive upper bound
             modelIrrev.ub(cnt) = model.ub(i);
@@ -169,14 +126,13 @@ else
         
         %if the reaction is reversible, add a new rxn to the irrev model and
         %update the names of the reactions with '_f' and '_b'
-        if model.rev(i) == true
+        if model.lb(i) < 0
             cnt = cnt + 1;
             matchRev(cnt) = cnt - 1;
             matchRev(cnt-1) = cnt;
             modelIrrev.rxns{cnt-1} = [model.rxns{i} '_f'];
             modelIrrev.S(:,cnt) = -model.S(:,i);
             modelIrrev.rxns{cnt} = [model.rxns{i} '_b'];
-            modelIrrev.rev(cnt) = true;
             modelIrrev.lb(cnt) = 0;
             modelIrrev.ub(cnt) = -model.lb(i);
             modelIrrev.c(cnt) = 0;
@@ -187,23 +143,22 @@ else
             rev2irrev{i} = cnt;
         end
     end
-    
-    rev2irrev = columnVector(rev2irrev);
-    irrev2rev = irrev2rev(1:cnt);
-    irrev2rev = columnVector(irrev2rev);
-    
-    % Build final structure
-    modelIrrev.S = modelIrrev.S(:,1:cnt);
-    modelIrrev.ub = columnVector(modelIrrev.ub(1:cnt));
-    modelIrrev.lb = columnVector(modelIrrev.lb(1:cnt));
-    modelIrrev.c = columnVector(modelIrrev.c(1:cnt));
-    modelIrrev.rev = modelIrrev.rev(1:cnt);
-    modelIrrev.rev = columnVector(modelIrrev.rev == 1);
-    modelIrrev.rxns = columnVector(modelIrrev.rxns);
-    modelIrrev.mets = model.mets;
-    matchRev = columnVector(matchRev(1:cnt));
-    modelIrrev.match = matchRev;
 end
+
+rev2irrev = columnVector(rev2irrev);
+irrev2rev = irrev2rev(1:cnt);
+irrev2rev = columnVector(irrev2rev);
+
+% Build final structure
+modelIrrev.S = modelIrrev.S(:,1:cnt);
+modelIrrev.ub = columnVector(modelIrrev.ub(1:cnt));
+modelIrrev.lb = columnVector(modelIrrev.lb(1:cnt));
+modelIrrev.c = columnVector(modelIrrev.c(1:cnt));
+modelIrrev.rxns = columnVector(modelIrrev.rxns);
+modelIrrev.mets = model.mets;
+matchRev = columnVector(matchRev(1:cnt));
+modelIrrev.match = matchRev;
+
 if (isfield(model,'b'))
     modelIrrev.b = model.b;
 end
