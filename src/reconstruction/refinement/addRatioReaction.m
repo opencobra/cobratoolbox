@@ -26,7 +26,7 @@ modelNew = model;
 
 [A, Loc] = ismember(listOfRxns,model.rxns);
 
-modelNew = addMetabolite(strcat('Ratio_',listOfRxns{1},'_',listOfRxns{2}));
+modelNew = addMetabolite(model,strcat('Ratio_',listOfRxns{1},'_',listOfRxns{2}),strcat('Ratio_',listOfRxns{1},'_',listOfRxns{2}));
 modelNew.S(end,Loc) = [-ratioCoeff(1) ratioCoeff(2)];
 
 if isfield(modelNew,'note')
