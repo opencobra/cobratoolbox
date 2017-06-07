@@ -1,5 +1,5 @@
 function outmodel = writeCbModel(model, varargin)
-%writeCbModel Write out COBRA models in various formats
+% Writes out COBRA models in various formats
 %
 % USAGE:
 %
@@ -29,10 +29,10 @@ function outmodel = writeCbModel(model, varargin)
 %
 % EXAMPLES:
 %
-%    %Write a model in the specified format (a popup will ask for the name)
-%    outmodel = writeCbModel(model,format)
-%    %Write a model in the specified format with the given file name
-%    outmodel = writeCbModel(model,format,fileName)
+%    % Write a model in the specified format (a popup will ask for the name)
+%    outmodel = writeCbModel(model, format)
+%    % Write a model in the specified format with the given file name
+%    outmodel = writeCbModel(model, format, fileName)
 %
 % NOTE:
 %    The `writeCbModel` function relies on another function
@@ -181,9 +181,7 @@ switch format
 end
 
 
-
-
-%% Construct gene name string
+% Construct gene name string
 function geneStr = constructGeneStr(geneNames)
 
 geneStr = '';
