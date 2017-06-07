@@ -268,6 +268,22 @@ Also sorts the unique elements in descending order</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[sortedList, sortedCount] = countUnique(list)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>list</strong> &#8211;
+input vector</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>sortedList</strong> &#8211;
+list with sorted elements</li>
+<li><strong>sortedCount</strong> &#8211;
+number of elements</li>
+</ul>
+</div></blockquote>
 </dd></dl>
 
 <dl class="function">
@@ -278,6 +294,20 @@ type calculations</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>A = createDeltaMatchMatrix(set1, set2)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>set1, set2</strong> &#8211;
+input sets</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>A</strong> &#8211;
+flux difference matrix</li>
+</ul>
+</div></blockquote>
 </dd></dl>
 
 <dl class="function">
@@ -292,11 +322,31 @@ type calculations</p>
 <dl class="function">
 <dt id="src.base.hyperlink">
 <code class="descname">hyperlink</code><span class="sig-paren">(</span><em>url</em>, <em>urlText</em>, <em>altText1</em>, <em>altText2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/base/hyperlink.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.hyperlink" title="Permalink to this definition">¶</a></dt>
-<dd><p>converts a url to a clickable link in order to improve usability
+<dd><p>Converts a url to a clickable link in order to improve usability
 when using the MATLAB desktop environment</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>outLink = hyperlink(url, urlText, altText1, altText2)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>url</strong> &#8211;
+url address</li>
+<li><strong>urlText</strong> &#8211;
+url for java</li>
+<li><strong>altText1</strong> &#8211;
+alternative text before link</li>
+<li><strong>altText2</strong> &#8211;
+alternative text after link</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>outLink</strong> &#8211;
+clickable link</li>
+</ul>
+</div></blockquote>
 </dd></dl>
 
 <dl class="function">
@@ -336,93 +386,83 @@ to reactions, and columns corresponding to genes).</li>
 <dl class="function">
 <dt id="src.base.parseMetNames">
 <code class="descname">parseMetNames</code><span class="sig-paren">(</span><em>metNames</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/base/parseMetNames.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.parseMetNames" title="Permalink to this definition">¶</a></dt>
-<dd><p>parseMetNames Figure out the base metabolite names and compartments for each metabolite</p>
+<dd><p>Figures out the base metabolite names and compartments for each metabolite</p>
+<p><strong>Usage</strong></p>
 <blockquote>
-<div>[baseMetNames,compSymbols,uniqueMetNames,uniqueCompSymbols] = parseMetNames(metNames)</div></blockquote>
+<div>[baseMetNames, compSymbols, uniqueMetNames, uniqueCompSymbols] = parseMetNames(metNames)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>metNames              List of metabolite names</strong></li>
+<li><strong>metNames</strong> &#8211;
+List of metabolite names</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>baseMetNames          List of met names without compartment symbol</strong></li>
-<li><strong>compSymbols           Compartment symbols for each metabolite</strong></li>
-<li><strong>uniqueMetNames        Unique metabolite names (w/o comp symbol)</strong></li>
-<li><strong>uniqueCompSymbols     Unique compartment symbols</strong></li>
-<li><strong>Metabolite names should describe the compartment assignment in either the</strong></li>
-<li><strong>form &#8220;metName[compName]&#8221; or &#8220;metName(compName)&#8221;</strong></li>
-<li><strong>Markus Herrgard 10/4/06</strong></li>
+<li><strong>baseMetNames</strong> &#8211;
+List of met names without compartment symbol</li>
+<li><strong>compSymbols</strong> &#8211;
+Compartment symbols for each metabolite</li>
+<li><strong>uniqueMetNames</strong> &#8211;
+Unique metabolite names (w/o comp symbol)</li>
+<li><strong>uniqueCompSymbols</strong> &#8211;
+Unique compartment symbols</li>
 </ul>
 </div></blockquote>
+<p>Metabolite names should describe the compartment assignment in either the
+form &#8220;metName[compName]&#8221; or &#8220;metName(compName)&#8221;</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.base.parseRxnFormula">
 <code class="descname">parseRxnFormula</code><span class="sig-paren">(</span><em>formula</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/base/parseRxnFormula.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.parseRxnFormula" title="Permalink to this definition">¶</a></dt>
-<dd><p>parseRxnFormula Parse reaction formula into a list of metabolites and a
-list of S coefficients</p>
+<dd><p>Parses reaction formula into a list of metabolites and a
+list of <cite>S</cite> coefficients</p>
+<p><strong>Usage</strong></p>
 <blockquote>
-<div>[metaboliteList,stoichCoeffList,revFlag] = parseRxnFormula(formula)</div></blockquote>
+<div>[metaboliteList, stoichCoeffList, revFlag] = parseRxnFormula(formula)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>formula           Reaction formula, may contain symbols &#8216;+&#8217;, &#8216;-&gt;&#8217;, &#8216;&lt;=&gt;&#8217; in</strong> &#8211;</p>
-<p>addition to stoichiometric coefficients and metabolite names
+<div><ul class="simple">
+<li><strong>formula</strong> &#8211;
+Reaction formula, may contain symbols &#8216;+&#8217;, &#8216;-&gt;&#8217;, &#8216;&lt;=&gt;&#8217; in
+addition to stoichiometric coefficients and metabolite names
 examples:
 &#8216;0.01 cdpdag-SC[m] + 0.01 pg-SC[m]  -&gt; 0.01 clpn-SC[m] + cmp[m] + h[m]&#8217; (irreversible reaction)
 &#8216;cit[c] + icit[x]  &lt;=&gt; cit[x] + icit[c] &#8216; (reversible reaction)
 If no stoichiometric coefficient is provided, it is assumed
-to be = 1
-Reaction formula should be a string, not a cell array</p>
-</li>
+to be = 1.
+Reaction formula should be a string, not a cell array</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>metaboliteList    Cell array with metabolite names</strong></p>
-</li>
-<li><p class="first"><strong>stoichCoeffList   List of S coefficients</strong></p>
-</li>
-<li><p class="first"><strong>revFlag           Indicates whether the reaction is reversible (true) or</strong> &#8211;</p>
-<p>not (false)</p>
-</li>
-<li><p class="first"><strong>Example</strong> &#8211;</p>
-<p>formula = &#8216;0.01 cdpdag-SC[m] + 0.01 pg-SC[m]  -&gt; 0.01 clpn-SC[m] + cmp[m] + h[m]&#8217;</p>
-<p>[metaboliteList,stoichCoeffList,revFlag] = parseRxnFormula(formula)</p>
-<dl class="docutils">
-<dt>metaboliteList =</dt>
-<dd><p class="first last">&#8216;cdpdag-SC[m]&#8217;    &#8216;pg-SC[m]&#8217;    &#8216;clpn-SC[m]&#8217;    &#8216;cmp[m]&#8217;    &#8216;h[m]&#8217;</p>
-</dd>
-<dt>stoichCoeffList =</dt>
-<dd><p class="first last">-0.01 -0.01 0.01 1 1</p>
-</dd>
-<dt>revFlag =</dt>
-<dd><p class="first last">false</p>
-</dd>
-</dl>
-</li>
-<li><p class="first"><strong>Markus Herrgard 6/1/07</strong></p>
-</li>
-<li><p class="first"><strong>Richard Que 1/25/10 Modified to handle &#8216;&#8211;&gt;&#8217; and &#8216;&lt;==&gt;&#8217; as arrows</strong></p>
-</li>
-<li><p class="first"><strong>as well as reactionsformatted as &#8216;[compartment]</strong> &#8211;
-A &#8211;&gt; C&#8217;.</p>
-</li>
-<li><p class="first"><strong>IT May 2012 Modified to handle &#8216;=&gt;&#8217;</strong></p>
-</li>
+<div><ul class="simple">
+<li><strong>metaboliteList</strong> &#8211;
+Cell array with metabolite names</li>
+<li><strong>stoichCoeffList</strong> &#8211;
+List of <cite>S</cite> coefficients</li>
+<li><strong>revFlag</strong> &#8211;
+Indicates whether the reaction is reversible (true) or not (false)</li>
 </ul>
 </div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">formula</span> <span class="o">=</span> <span class="s1">&#39;0.01 cdpdag-SC[m] + 0.01 pg-SC[m]  -&gt; 0.01 clpn-SC[m] + cmp[m] + h[m]&#39;</span>
+
+<span class="p">[</span><span class="n">metaboliteList</span><span class="p">,</span> <span class="n">stoichCoeffList</span><span class="p">,</span> <span class="n">revFlag</span><span class="p">]</span> <span class="o">=</span> <span class="n">parseRxnFormula</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+
+<span class="o">%</span><span class="n">metaboliteList</span> <span class="o">=</span> <span class="s1">&#39;cdpdag-SC[m]&#39;</span>    <span class="s1">&#39;pg-SC[m]&#39;</span>    <span class="s1">&#39;clpn-SC[m]&#39;</span>    <span class="s1">&#39;cmp[m]&#39;</span>    <span class="s1">&#39;h[m]&#39;</span>
+<span class="o">%</span><span class="n">stoichCoeffList</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.01</span> <span class="o">-</span><span class="mf">0.01</span> <span class="mf">0.01</span> <span class="mi">1</span> <span class="mi">1</span>
+<span class="o">%</span><span class="n">revFlag</span> <span class="o">=</span> <span class="n">false</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.base.reporterMets">
 <code class="descname">reporterMets</code><span class="sig-paren">(</span><em>model</em>, <em>data</em>, <em>nRand</em>, <em>pValFlag</em>, <em>nLayers</em>, <em>metric</em>, <em>dataRxns</em>, <em>inclExchFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/base/reporterMets.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.reporterMets" title="Permalink to this definition">¶</a></dt>
-<dd><p>Implements the reporter metabolites algorithm by Patil &amp;
-Nielsen</p>
+<dd><p>Implements the reporter metabolites algorithm by Patil &amp; Nielsen</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[normScore, nRxnsMet, nRxnsMetUni, rawScore] = reporterMets(model, data, nRand, pValFlag, nLayers, metric, dataRxns)</div></blockquote>
@@ -470,6 +510,20 @@ Raw unnormalized scores</li>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>selMat = selMatrix(selVec)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>selVec</strong> &#8211;
+selection vector</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>selMat</strong> &#8211;
+selection matrix</li>
+</ul>
+</div></blockquote>
 <p><strong>Example</strong></p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">selVec</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
 <span class="o">%</span> <span class="n">returns</span>
@@ -549,15 +603,19 @@ Results are returned in the cell array fields</p>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>list</strong></li>
-<li><strong>trList1</strong></li>
-<li><strong>trList2</strong></li>
+<li><strong>list</strong> &#8211;
+original list</li>
+<li><strong>trList1</strong> &#8211;
+list of elemets to be changed</li>
+<li><strong>trList2</strong> &#8211;
+list of elements to be changed into</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>list</strong></li>
+<li><strong>list</strong> &#8211;
+list after changes</li>
 </ul>
 </div></blockquote>
 <p><strong>Example</strong></p>
@@ -579,25 +637,28 @@ Results are returned in the cell array fields</p>
 <dl class="function">
 <dt id="src.base.unioncell">
 <code class="descname">unioncell</code><span class="sig-paren">(</span><em>A</em>, <em>colA</em>, <em>B</em>, <em>colB</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/base/unioncell.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.unioncell" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a cell which is the union of cell B to cell A given by a comparing</p>
+<dd><p>Return a cell which is the union of cell <cite>B</cite> to cell <cite>A</cite> given by a comparing</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>AB = unioncell(A, colA, B, colB)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>A</strong> &#8211;
-cell array A</li>
+cell array <cite>A</cite></li>
 <li><strong>colA</strong> &#8211;
-column of A for comparison</li>
+column of <cite>A</cite> for comparison</li>
 <li><strong>B</strong> &#8211;
-cell array B</li>
+cell array <cite>B</cite></li>
 <li><strong>colB</strong> &#8211;
-column of B for comparison</li>
+column of <cite>B</cite> for comparison</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>AB</strong> &#8211;
-cell which is the union of cell B to cell A</li>
+cell which is the union of cell <cite>B</cite> to cell <cite>A</cite></li>
 </ul>
 </div></blockquote>
 </dd></dl>

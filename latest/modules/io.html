@@ -201,13 +201,13 @@ representing the Linear Programming problem given by LPProblem.</p>
 <div><ul class="simple">
 <li><strong>LPproblem</strong> &#8211;
 Structure containing the following fields describing the LP problem to be solved<ul>
-<li>A - LHS matrix</li>
-<li>b - RHS vector</li>
-<li>c - Objective coeff vector</li>
-<li>lb - Lower bound vector</li>
-<li>ub - Upper bound vector</li>
-<li>osense - Objective sense (max=-1, min=+1)</li>
-<li>csense - Constraint senses, a string containting the constraint sense for
+<li>.A - LHS matrix</li>
+<li>.b - RHS vector</li>
+<li>.c - Objective coeff vector</li>
+<li>.lb - Lower bound vector</li>
+<li>.ub - Upper bound vector</li>
+<li>.osense - Objective sense (max=-1, min=+1)</li>
+<li>.csense - Constraint senses, a string containting the constraint sense for
 each row in A (&#8216;E&#8217;, equality, &#8216;G&#8217; greater than, &#8216;L&#8217; less than).</li>
 </ul>
 </li>
@@ -284,6 +284,13 @@ Filename of Output File (make sure to include &#8216;.txt&#8217; or &#8216;.xpa&
 Matrix containing all no flux var rxns (to skip, set=0)</li>
 </ul>
 </div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>EXrxns</strong> &#8211;
+Exchange reactions</li>
+</ul>
+</div></blockquote>
 <p>Limitations</p>
 <blockquote>
 <div><ul class="simple">
@@ -342,21 +349,21 @@ Compartment Symbol List( cell array)</p>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
 Returns a model in the COBRA format:<ul>
-<li>description - Description of model contents (opt)</li>
-<li>rxns - Reaction names</li>
-<li>mets - Metabolite names</li>
-<li>S - Stoichiometric matrix</li>
-<li>lb - Lower bounds</li>
-<li>ub - Upper bounds</li>
-<li>c - Objective coefficients</li>
-<li>subSystems - Subsystem name for each reaction (opt)</li>
-<li>grRules - Gene-reaction association rule for each reaction (opt)</li>
-<li>rules - Gene-reaction association rule in computable form</li>
-<li>rxnGeneMat - Reaction-to-gene mapping in sparse matrix form (opt)</li>
-<li>genes - List of all genes</li>
-<li>rxnNames - Reaction description (opt)</li>
-<li>metNames - Metabolite description (opt)</li>
-<li>metFormulas - Metabolite chemical formula (opt)</li>
+<li>.description - Description of model contents (opt)</li>
+<li>.rxns - Reaction names</li>
+<li>.mets - Metabolite names</li>
+<li>.S - Stoichiometric matrix</li>
+<li>.lb - Lower bounds</li>
+<li>.ub - Upper bounds</li>
+<li>.c - Objective coefficients</li>
+<li>.subSystems - Subsystem name for each reaction (opt)</li>
+<li>.grRules - Gene-reaction association rule for each reaction (opt)</li>
+<li>.rules - Gene-reaction association rule in computable form</li>
+<li>.rxnGeneMat - Reaction-to-gene mapping in sparse matrix form (opt)</li>
+<li>.genes - List of all genes</li>
+<li>.rxnNames - Reaction description (opt)</li>
+<li>.metNames - Metabolite description (opt)</li>
+<li>.metFormulas - Metabolite chemical formula (opt)</li>
 </ul>
 </li>
 </ul>
@@ -447,8 +454,8 @@ Structure<ul>
 <dl class="function">
 <dt id="src.base.io.readMixedData">
 <code class="descname">readMixedData</code><span class="sig-paren">(</span><em>file</em>, <em>n_header</em>, <em>n_labels</em>, <em>delimiter</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/base/io/readMixedData.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.readMixedData" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read floating point data with row identifiers (text) in the first n columns
-and m headerlines (text)</p>
+<dd><p>Read floating point data with row identifiers (text) in the first <cite>n</cite> columns
+and <cite>m</cite> headerlines (text)</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[id, data, header] = readMixedData(file, n_header, n_labels, delimiter, verbose)</div></blockquote>
@@ -465,6 +472,17 @@ Number of label columns (default 1)</li>
 Delimiter character (default tab)</li>
 <li><strong>verbose</strong> &#8211;
 Print out the string to be evaluated for debugging (default 0)</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>id</strong> &#8211;
+Identifiers</li>
+<li><strong>data</strong> &#8211;
+Read data</li>
+<li><strong>header</strong> &#8211;
+Headers</li>
 </ul>
 </div></blockquote>
 </dd></dl>
@@ -494,7 +512,7 @@ filename of the corresponding input name.xml file</li>
 <dl class="function">
 <dt id="src.base.io.writeCbModel">
 <code class="descname">writeCbModel</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/base/io/writeCbModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.writeCbModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>writeCbModel Write out COBRA models in various formats</p>
+<dd><p>Writes out COBRA models in various formats</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>outmodel = writeCbModel(model, varargin)</div></blockquote>
@@ -519,7 +537,7 @@ dialog box)</li>
 List of compartment symbols (Cell array)</li>
 <li><strong>compNameList</strong> &#8211;
 List of compartment names corresponding to
-compSymbolList (Cell array)</li>
+<cite>compSymbolList</cite> (Cell array)</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional output</strong></p>
@@ -530,10 +548,10 @@ Only useable with sbml export. Will return the sbml structure, otherwise the inp
 </ul>
 </div></blockquote>
 <p><strong>Example</strong></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Write</span> <span class="n">a</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">specified</span> <span class="nb">format</span> <span class="p">(</span><span class="n">a</span> <span class="n">popup</span> <span class="n">will</span> <span class="n">ask</span> <span class="k">for</span> <span class="n">the</span> <span class="n">name</span><span class="p">)</span>
-<span class="n">outmodel</span> <span class="o">=</span> <span class="n">writeCbModel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="nb">format</span><span class="p">)</span>
-<span class="n">Write</span> <span class="n">a</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">specified</span> <span class="nb">format</span> <span class="k">with</span> <span class="n">the</span> <span class="n">given</span> <span class="n">file</span> <span class="n">name</span>
-<span class="n">outmodel</span> <span class="o">=</span> <span class="n">writeCbModel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="nb">format</span><span class="p">,</span><span class="n">fileName</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">Write</span> <span class="n">a</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">specified</span> <span class="nb">format</span> <span class="p">(</span><span class="n">a</span> <span class="n">popup</span> <span class="n">will</span> <span class="n">ask</span> <span class="k">for</span> <span class="n">the</span> <span class="n">name</span><span class="p">)</span>
+<span class="n">outmodel</span> <span class="o">=</span> <span class="n">writeCbModel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="nb">format</span><span class="p">)</span>
+<span class="o">%</span> <span class="n">Write</span> <span class="n">a</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">specified</span> <span class="nb">format</span> <span class="k">with</span> <span class="n">the</span> <span class="n">given</span> <span class="n">file</span> <span class="n">name</span>
+<span class="n">outmodel</span> <span class="o">=</span> <span class="n">writeCbModel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">fileName</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -569,7 +587,8 @@ triggers smaller GDX</li>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>helpText</strong></li>
+<li><strong>helpText</strong> &#8211;
+String with example load</li>
 </ul>
 </div></blockquote>
 <p><strong>Example</strong></p>
@@ -595,13 +614,13 @@ writeGDXFromCOBRA(cobraStruct, fileName, true)   % uses provided filename, gdx d
 <div><ul class="simple">
 <li><strong>LPproblem</strong> &#8211;
 Structure containing the following fields describing the LP problem to be solved<ul>
-<li>A - LHS matrix</li>
-<li>b - RHS vector</li>
-<li>c - Objective coeff vector</li>
-<li>lb - Lower bound vector</li>
-<li>ub - Upper bound vector</li>
-<li>osense - Objective sense (max=-1, min=+1)</li>
-<li>csense - Constraint senses, a string containting the constraint sense for
+<li>.A - LHS matrix</li>
+<li>.b - RHS vector</li>
+<li>.c - Objective coeff vector</li>
+<li>.lb - Lower bound vector</li>
+<li>.ub - Upper bound vector</li>
+<li>.osense - Objective sense (max=-1, min=+1)</li>
+<li>.csense - Constraint senses, a string containting the constraint sense for
 each row in A (&#8216;E&#8217;, equality, &#8216;G&#8217; greater than, &#8216;L&#8217; less than).</li>
 </ul>
 </li>
@@ -609,24 +628,19 @@ each row in A (&#8216;E&#8217;, equality, &#8216;G&#8217; greater than, &#8216;L
 </div></blockquote>
 <p><strong>Optional input</strong></p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>varargin</strong> &#8211;
-a list of parameter/value pairs with the following
-parameters:</p>
-<ul class="simple">
+<div><ul class="simple">
+<li><strong>varargin</strong> &#8211;
+a list of parameter/value pairs with the following parameters:<ul>
 <li>&#8216;fileName&#8217; - Name of the output file (e.g. &#8216;Problem.mps&#8217;)</li>
 <li>&#8216;solverParams&#8217; - A struct containing the solver parameters if provided</li>
 <li>&#8216;outputFormat&#8217; - Currently only &#8216;mps&#8217; is supported (and default)</li>
-<li>&#8216;writeMatrix&#8217; - Only write the Matrix, not the full problem (default</li>
+<li>&#8216;writeMatrix&#8217; - Only write the Matrix, not the full problem (default
+true), will be ignored if solver params are provided</li>
 </ul>
-<blockquote>
-<div><p>true), will be ignored if solver params are provided</p>
-</div></blockquote>
 </li>
 </ul>
 </div></blockquote>
-<p>NOTE:
-<strong>Output</strong></p>
+<p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>OK</strong> &#8211;
@@ -652,13 +666,13 @@ Structure containing the following fields describing the LP
 problem to be solved</p>
 <blockquote>
 <div><ul class="simple">
-<li>A - LHS matrix</li>
-<li>b - RHS vector</li>
-<li>c - Objective coeff vector</li>
-<li>lb - Lower bound vector</li>
-<li>ub - Upper bound vector</li>
-<li>osense - Objective sense (-1 max, +1 min)</li>
-<li>csense - Constraint senses, a string containting the constraint sense for
+<li>.A - LHS matrix</li>
+<li>.b - RHS vector</li>
+<li>.c - Objective coeff vector</li>
+<li>.lb - Lower bound vector</li>
+<li>.ub - Upper bound vector</li>
+<li>.osense - Objective sense (-1 max, +1 min)</li>
+<li>.csense - Constraint senses, a string containting the constraint sense for
 each row in <cite>A</cite> (&#8216;E&#8217;, equality, &#8216;G&#8217; greater than, &#8216;L&#8217; less than).</li>
 </ul>
 </div></blockquote>
@@ -674,7 +688,8 @@ each row in <cite>A</cite> (&#8216;E&#8217;, equality, &#8216;G&#8217; greater t
 name is the problem name (a character string)</li>
 <li><strong>directory</strong> &#8211;
 the directory where optimization problem file is saved</li>
-<li><strong>printLevel</strong></li>
+<li><strong>printLevel</strong> &#8211;
+verbose level</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>

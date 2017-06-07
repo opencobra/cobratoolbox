@@ -443,34 +443,16 @@ get rid of net flux around loops</dd>
 <li><strong>solverType</strong> &#8211;
 Solver type, &#8216;LP&#8217; or &#8216;MILP&#8217; (opt, default, &#8216;LP&#8217;)</li>
 <li><strong>paramName</strong> &#8211;
-Parameter name. Allowed LP parameter names:<ul>
-<li>optTol:        Optimal objective accuracy tolerance</li>
-<li>teasTol:       Constraint feasibilty tolerance</li>
-<li>minNorm:       {(0), scalar , <cite>n</cite> x 1 vector}, where <cite>[m,n]=size(S)</cite>;</li>
-</ul>
-</li>
+Parameter name</li>
 <li><strong>paramValue</strong> &#8211;
 Parameter value</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
-<div><blockquote>
 <div><ul class="simple">
 <li><strong>changeOK</strong> &#8211;
 Logical inicator that supplied parameter is allowed (= 1)</li>
-</ul>
-</div></blockquote>
-<ul class="simple">
-<li>printLevel:    Printing level<ul>
-<li>0 - Silent</li>
-<li>1 - Warnings and Errors</li>
-<li>2 - Summary information (Default)</li>
-<li>3 - More detailed information</li>
-<li>&gt; 10 - Pause statements, and maximal printing (debug mode)</li>
-</ul>
-</li>
-<li>primalOnly:    {(0), 1}; 1 = only return the primal vector (lindo solvers)</li>
 </ul>
 </div></blockquote>
 <p>Allowed MILP parameter names:</p>
@@ -481,6 +463,28 @@ Logical inicator that supplied parameter is allowed (= 1)</li>
 <li>relMipGapTol:    Relative MIP gap tolerance</li>
 <li>logFile:         Internal log file for solver</li>
 <li>printLevel:      Print level for solver</li>
+</ul>
+</div></blockquote>
+<p>Allowed LP parameter names:</p>
+<blockquote>
+<div><ul class="simple">
+<li>optTol:          Optimal objective accuracy tolerance</li>
+<li>teasTol:         Constraint feasibilty tolerance</li>
+<li>minNorm:         {(0), scalar , <cite>n</cite> x 1 vector}, where <cite>[m,n]=size(S)</cite>;</li>
+</ul>
+</div></blockquote>
+<p>Explanation on parameters:</p>
+<blockquote>
+<div><ul class="simple">
+<li>printLevel:        Printing level<ul>
+<li>0 - Silent</li>
+<li>1 - Warnings and Errors</li>
+<li>2 - Summary information (Default)</li>
+<li>3 - More detailed information</li>
+<li>&gt; 10 - Pause statements, and maximal printing (debug mode)</li>
+</ul>
+</li>
+<li>primalOnly:    {(0), 1}; 1 = only return the primal vector (lindo solvers)</li>
 </ul>
 </div></blockquote>
 <div class="admonition note">
