@@ -13,7 +13,6 @@ else
 end
 
 % include the root folder and all subfolders
-addpath(genpath(pwd))
 
 % if the location of initCobraToolbox is not yet known
 if length(which('initCobraToolbox.m')) == 0
@@ -22,12 +21,13 @@ if length(which('initCobraToolbox.m')) == 0
     CBTDIR = pth(1:end-(length('testAll.m') + 1));
 
     % change the directory to the root
-    cd([CBTDIR, filesep, '..', filesep]);
-
-    % include the root folder and all subfolders
-    addpath(genpath(pwd));
+    cd([CBTDIR, filesep, '..', filesep]);    
+else
+    CBTDIR = fileparts(which('initCobraToolbox.m'));
+    cd(CBTDIR);
 end
-
+%include the root folder and all subfolders.
+addpath(genpath(pwd));
 CBTDIR = fileparts(which('initCobraToolbox.m'));
 
 % change to the root folder of The COBRA TOolbox

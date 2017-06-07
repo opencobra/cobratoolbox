@@ -366,8 +366,12 @@ fields2 = setdiff(fields2,{'S','rxnGeneMat'}); % we have to handle these sepaera
 commonfields = intersect(fields1,fields2);
 nType1 = numel(model1.(type));
 nType2 = numel(model2.(type));
-for i = 1:numel(commonfields)    
-    modelNew.(commonfields{i}) = [model1.(commonfields{i}); model2.(commonfields{i})];
+for i = 1:numel(commonfields)  
+    try
+        modelNew.(commonfields{i}) = [model1.(commonfields{i}); model2.(commonfields{i})];
+    catch
+        disp('test')
+    end
 end
 fields1 = setdiff(fields1,commonfields);
 for i = 1:numel(fields1)
