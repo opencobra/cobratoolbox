@@ -10,9 +10,11 @@ function modelOut = removeRxns(model, rxnRemoveList, varargin)
 %    rxnRemoveList:     Cell array of reaction names to be removed
 %
 % OPTIONAL INPUTS:
-%    irrevFlag:         Irreverseble (true) or reversible (false) reaction
-%                       format (Default = false)
-%    metFlag:           Remove unused metabolites (Default = true)
+%    varargin:          Parameters in ParameterName, Value pair representation. 
+%                       Available parameters are:
+%                       * irrevFlag:   Irreverseble (true) or reversible (false) reaction
+%                         format (Default = false)
+%                       * metFlag:   Remove unused metabolites (Default = true)
 %
 % OUTPUT:
 %    model:             COBRA model w/o selected reactions

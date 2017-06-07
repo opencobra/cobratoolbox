@@ -44,9 +44,7 @@ end
 % remove rxns
 hi = 1;
 if ~isempty(rxns2remove)
-    for i=1:max(size(rxns2remove))
-        model = removeRxns(model,rxns2remove{i});
-    end
+    model = removeRxns(model,rxns2remove);    
 else display('No Compartments Removed')
 end
 end

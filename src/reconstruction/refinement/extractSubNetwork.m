@@ -1,6 +1,6 @@
 function subModel = extractSubNetwork(model, rxnList, metList)
 % Extract subnetwork model
-%
+% USAGE:
 % USAGE:
 %
 %    subModel = extractSubNetwork(model, rxnList, metList)
@@ -8,7 +8,7 @@ function subModel = extractSubNetwork(model, rxnList, metList)
 % INPUTS:
 %    model:       COBRA model structure
 %    rxnList:     Reaction list for the subnetwork to be extracted
-%
+%                reactions)
 % OPTIONAL INPUTS:
 %    metNames:    Metabolite list for the subnetwork to be extracted
 %
@@ -21,8 +21,10 @@ function subModel = extractSubNetwork(model, rxnList, metList)
 %       - Replaced rxnNames with rxnList 
 %       as model.rxnNames is different from model.rxns,
 %       and model.rxns is used to select the subnetwork.
-%       - Replaced metNames with metList, to avoid similar confusion.
-%       - Added the fields - rxnNames, rules and metCharge to subModel.
+%             Replaced metNames with metList, to avoid similar confusion.
+%             Added the fields - rxnNames, rules and metCharge to subModel.
+%           - Thomas Pfau June 2017 - switched to use of
+%             removeRxns/removeMetabolites
 
 selRxns = ismember(model.rxns,rxnList);
 subS = model.S(:,selRxns);
@@ -33,50 +35,7 @@ else
 end
 
 subS = subS(selMets,:);
-
-subModel.S = subS;
-subModel.rxns = model.rxns(selRxns);
-subModel.mets = model.mets(selMets);
-if (isfield(model,'b'))
-    subModel.b = model.b(selMets);
-end
-if (isfield(model,'metNames'))
-    subModel.metNames = model.metNames(selMets);
-end
-if (isfield(model,'metFormulas'))
-    subModel.metFormulas = model.metFormulas(selMets);
-end
-if (isfield(model,'description'))
-    subModel.description = model.description;
-end
-if (isfield(model,'lb'))
-    subModel.lb = model.lb(selRxns);
-end
-if (isfield(model,'ub'))
-    subModel.ub = model.ub(selRxns);
-end
-if (isfield(model,'c'))
-    subModel.c = model.c(selRxns);
-end
-if (isfield(model,'genes') && isfield(model,'rxnGeneMat'))
-   newRxnGeneMat = model.rxnGeneMat(selRxns,:);
-   selGenes = sum(newRxnGeneMat)' > 0;
-   subModel.rxnGeneMat = newRxnGeneMat(:,selGenes);
-   subModel.genes = model.genes(selGenes);
-   subModel.grRules = model.grRules(selRxns);
-end
-if (isfield(model,'geneNames'))
-    subModel.geneNames = model.geneNames(selGenes);
-end
-if (isfield(model,'subSystems'))
-    subModel.subSystems = model.subSystems(selRxns);
-end
-if (isfield(model,'rxnNames'))
-    subModel.rxnNames = model.rxnNames(selRxns);
-end
-if (isfield(model,'rules'))
-    subModel.rules = model.rules(selRxns);
-end
-if (isfield(model,'metCharges'))
-    subModel.metCharges = model.metCharges(selMets);
-end
+%Remove all Metabolites not selected
+subModel = removeMetabolites(model,model.mets(~selMets),0);
+%Remove all Rxns not selected (not the mets). 
+subModel = removeRxns(subModel,model.rxns(~selRxns),'metFlag', false);

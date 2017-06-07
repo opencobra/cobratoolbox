@@ -214,25 +214,25 @@ end
 
 
 %Set/Reset Gene Names etc.
-% newmodel.genes = genes;
-% if isfield(newmodel,'proteins')
-%     if ~all(size(newmodel.proteins) == size(newmodel.genes))
-%         newmodel = rmfield(model,'proteins');
-%         if isfield(model,'proteinNames')
-%             newmodel = rmfield(model,'proteinNames');
-%         end
-%     end
-% end
-% modelFields = fieldnames(newmodel);
-% %Remove all gene Associated fields which do not fit the new gene vector
-% %size, these are now invalid.
-% for i = 1:numel(modelFields)
-%     if strncmp(modelFields{i},'genes',4)
-%         if ~all(size(newmodel.(modelFields{i})) == size(newmodel.genes))
-%             newmodel = rmfield(newmodel,modelFields{i});
-%         end
-%     end
-% end
-% 
-% newmodel = updateRelevantModelFields(newmodel,'rxns','originalSize',orignRxns,'targetSize',numel(newmodel.rxns));
-% newmodel = updateRelevantModelFields(newmodel,'mets','originalSize',orignMets,'targetSize',numel(newmodel.mets));
+newmodel.genes = genes;
+if isfield(newmodel,'proteins')
+    if ~all(size(newmodel.proteins) == size(newmodel.genes))
+        newmodel = rmfield(model,'proteins');
+        if isfield(model,'proteinNames')
+            newmodel = rmfield(model,'proteinNames');
+        end
+    end
+end
+modelFields = fieldnames(newmodel);
+%Remove all gene Associated fields which do not fit the new gene vector
+%size, these are now invalid.
+for i = 1:numel(modelFields)
+    if strncmp(modelFields{i},'genes',4)
+        if ~all(size(newmodel.(modelFields{i})) == size(newmodel.genes))
+            newmodel = rmfield(newmodel,modelFields{i});
+        end
+    end
+end
+
+newmodel = updateRelevantModelFields(newmodel,'rxns','originalSize',orignRxns,'targetSize',numel(newmodel.rxns));
+newmodel = updateRelevantModelFields(newmodel,'mets','originalSize',orignMets,'targetSize',numel(newmodel.mets));

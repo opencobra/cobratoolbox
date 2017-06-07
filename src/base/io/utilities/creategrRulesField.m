@@ -16,7 +16,7 @@ function modelWithField = creategrRulesField(model)
 % .. Authors: - Thomas Pfau May 2017
 
 
-
+modelWithField = model;
 currentrules = model.rules;
 currentrules = strrep(currentrules,'&','and');
 currentrules = strrep(currentrules,'|','or');

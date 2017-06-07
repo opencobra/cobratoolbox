@@ -47,7 +47,9 @@ end
 if ~isfield(model,'genes')
     model.genes = {};
 end
+
 nGenes = length(model.genes);
+nGenesInit = nGenes;
 model.rules{rxnID} = '';
 % IT 01/2010 - this line caused problems for xls2model.m
 if addRxnGeneMat ==1 
@@ -78,12 +80,12 @@ if (~isempty(grRule))
                 grRule = regexprep(grRule,[genes{i} ')'],[newGene ')']);
                 genes{i} = newGene;
             else
-                warning(['Gene name ' genes{i} ' not in translation list']);
+                fprintf(['Gene name ' genes{i} ' not in translation list']);
             end
         end
         geneID = find(strcmp(model.genes,genes{i}));
         if (isempty(geneID))
-            warning(['New gene ' genes{i} ' added to model']);
+            fprintf(['New gene ' genes{i} ' added to model']);
             % Append gene
             model.genes = [model.genes; genes(i)];
             nGenes = length(model.genes);
@@ -106,3 +108,6 @@ model.grRules{rxnID} = grRule;
 %make sure variables are column vectors
 model.rules = columnVector(model.rules);
 model.grRules = columnVector(model.grRules);
+if nGenes > nGenesInit
+    model = updateRelevantModelFields(model,'genes','originalSize', nGenesInit, 'targetSize',nGenes);
+end

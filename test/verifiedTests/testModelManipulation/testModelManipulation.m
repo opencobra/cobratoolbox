@@ -169,5 +169,20 @@ model=modelSave;
 % test if both models are the same
 assert(isSameCobraModel(modelIrrev, testModelIrrev));
 
+%Test moveRxn
+model2 = moveRxn(model,10,20);
+fields = getRelevantModelFields(model,'rxns');
+rxnSize = numel(model.rxns);
+for i = 1:numel(fields)
+    if size(model.(fields{i}),1) == rxnSize
+        val1 = model.(fields{i})(10,:);    
+        val2 = model2.(fields{i})(20,:);    
+    elseif size(model.(fields{i}),2) == rxnSize
+        val1 = model.(fields{i})(:,10);    
+        val2 = model2.(fields{i})(:,20);    
+    end
+    assert(isequal(val1,val2));
+end
+
 % change the directory
 cd(currentDir)

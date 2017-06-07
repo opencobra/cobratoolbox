@@ -153,7 +153,13 @@ if isempty(CBT_PROG_FIELD_PROPS)
                 yval = ynumval;
             end
         end
-         dbInfo(i,:) = { relarray{i,1},xval,yval,relarray{i,4}, relarray{i,5}};
+        default = relarray{i,5};
+        if ischar(default)           
+            if ~isempty(str2num(default))
+                default = str2num(default);
+            end
+        end
+         dbInfo(i,:) = { relarray{i,1},xval,yval,relarray{i,4}, default};
     end
     CBT_PROG_FIELD_PROPS = dbInfo;
 end

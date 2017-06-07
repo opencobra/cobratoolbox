@@ -15,7 +15,14 @@ function [model] = moveRxn(model, startspot, endspot)
 % OUTPUTS:
 %    model:        COBRA toolbox model structure with moved reaction
 %
-% .. Author: - Aarash Bordbar 09/21/09
+% .. Authors:
+%            - Aarash Bordbar 09/21/09
+%            - Thomas Pfau June 2017 (Made function capture all associated
+%              fields)
+
+if startspot == endspot
+    return
+end
 
 if startspot > endspot
     option = 1;
@@ -25,106 +32,30 @@ end
 
 oldModel = model;
 
-lb = oldModel.lb(startspot);
-if option == 1
-    model.lb(endspot+1:startspot) = oldModel.lb(endspot:startspot-1);
-    model.lb(endspot) = lb;
-else
-    model.lb(startspot:endspot-1) = oldModel.lb(startspot+1:endspot);
-    model.lb(endspot) = lb;
-end
-
-ub = oldModel.ub(startspot);
-if option == 1
-    model.ub(endspot+1:startspot) = oldModel.ub(endspot:startspot-1);
-    model.ub(endspot) = ub;
-else
-    model.ub(startspot:endspot-1) = oldModel.lb(startspot+1:endspot);
-    model.ub(endspot) = ub;
-end
-
-c = oldModel.c(startspot);
-if option == 1
-    model.c(endspot+1:startspot) = oldModel.c(endspot:startspot-1);
-    model.c(endspot) = c;
-else
-    model.c(startspot:endspot-1) = oldModel.c(startspot+1:endspot);
-    model.c(endspot) = c;
-end
-
-if isfield(model,'rxns')
-    rxn = oldModel.rxns(startspot);
-    if option == 1
-        model.rxns(endspot+1:startspot) = oldModel.rxns(endspot:startspot-1);
-        model.rxns(endspot) = rxn;
-    else
-        model.rxns(startspot:endspot-1) = oldModel.rxns(startspot+1:endspot);
-        model.rxns(endspot) = rxn;
+fields = getRelevantModelFields(model,'rxns');
+rxnSize = numel(model.rxns);
+for i = 1:numel(fields)
+    
+    if size(model.(fields{i}),1) == rxnSize
+        oldval = oldModel.(fields{i})(startspot,:);    
+        if option == 1
+            model.(fields{i})(endspot+1:startspot,:) = oldModel.(fields{i})(endspot:startspot-1,:);
+            model.(fields{i})(endspot,:) = oldval;
+        else
+            model.(fields{i})(startspot:endspot-1,:) = oldModel.(fields{i})(startspot+1:endspot,:);
+            model.(fields{i})(endspot,:) = oldval;
+        end
+    elseif size(model.(fields{i}),2) == rxnSize
+        oldval = oldModel.(fields{i})(:,startspot);    
+        if option == 1
+            model.(fields{i})(:,endspot+1:startspot) = oldModel.(fields{i})(:,endspot:startspot-1);
+            model.(fields{i})(:,endspot) = oldval;
+        else
+            model.(fields{i})(:,startspot:endspot-1) = oldModel.(fields{i})(:,startspot+1:endspot);
+            model.(fields{i})(:,endspot) = oldval;
+        end
+        
     end
 end
 
-if isfield(model,'rxnNames')
-    rxnName = oldModel.rxnNames(startspot);
-    if option == 1
-        model.rxnNames(endspot+1:startspot) = oldModel.rxnNames(endspot:startspot-1);
-        model.rxnNames(endspot) = rxnName;
-    else
-        model.rxnNames(startspot:endspot-1) = oldModel.rxnNames(startspot+1:endspot);
-        model.rxnNames(endspot) = rxnName;
-    end
-end
-
-if isfield(model,'subSystems')
-    subSystem = oldModel.subSystems(startspot);
-    if option == 1
-        model.subSystems(endspot+1:startspot) = oldModel.subSystems(endspot:startspot-1);
-        model.subSystems(endspot) = subSystem;
-    else
-        model.subSystems(startspot:endspot-1) = oldModel.subSystems(startspot+1:endspot);
-        model.subSystems(endspot) = subSystem;
-    end
-end
-
-if isfield(model,'rules')
-    rule = oldModel.rules(startspot);
-    if option == 1
-        model.rules(endspot+1:startspot) = oldModel.rules(endspot:startspot-1);
-        model.rules(endspot) = rule;
-    else
-        model.rules(startspot:endspot-1) = oldModel.rules(startspot+1:endspot);
-        model.rules(endspot) = rule;
-    end
-end
-
-if isfield(model,'grRules')
-    grRule = oldModel.rules(startspot);
-    if option == 1
-        model.grRules(endspot+1:startspot) = oldModel.grRules(endspot:startspot-1);
-        model.grRules(endspot) = grRule;
-    else
-        model.grRules(startspot:endspot-1) = oldModel.grRules(startspot+1:endspot);
-        model.grRules(endspot) = grRule;
-    end
-end
-
-if isfield(model,'S')
-  rxnS = oldModel.S(:,startspot);
-  if option == 1
-      model.S(:,endspot+1:startspot) = oldModel.S(:,endspot:startspot-1);
-      model.S(:,endspot) = rxnS;
-  else
-      model.S(:,startspot:endspot-1) = oldModel.S(:,startspot+1:endspot);
-      model.S(:,endspot) = rxnS;
-  end
-end
-
-if isfield(model,'rxnGeneMat')
-  rxnGene = oldModel.rxnGeneMat(startspot,:);
-  if option == 1
-      model.rxnGeneMat(endspot+1:startspot,:) = oldModel.rxnGeneMat(endspot:startspot-1,:);
-      model.rxnGeneMat(endspot,:) = rxnGene;
-  else
-      model.rxnGeneMat(startspot:endspot-1,:) = oldModel.rxnGeneMat(startspot+1:endspot,:);
-      model.rxnGeneMat(endspot,:) = rxnGene;
-  end
 end
