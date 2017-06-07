@@ -5,8 +5,14 @@ function selMat = selMatrix(selVec)
 %
 %    selMat = selMatrix(selVec)
 %
+% INPUT:
+%    selVec:    selection vector
+%
+% OUTPUT:
+%    selMat:    selection matrix
+%
 % EXAMPLE:
-%  
+%
 %   selVec = [1 0 0 1 0 0]
 %   % returns
 %   selMat = [1 0 0 0 0 0

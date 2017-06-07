@@ -7,15 +7,15 @@ function [fields] = getDefinedFieldProperties(varargin)
 %    [requiredFields, optionalFields] = getDefinedFieldProperties(varargin)
 %
 % OPTIONAL INPUT:
-%    Descriptions:         Whether to obtain the field descriptions (default = false).
-%    SpecificFields:       Indication whether to only obtain definitions for a
-%                          specific set of fields (default all).
-%    DataBaseFields:       Get the fields with specified Database relations.
+%    Descriptions:      Whether to obtain the field descriptions (default = false).
+%    SpecificFields:    Indication whether to only obtain definitions for a
+%                       specific set of fields (default all).
+%    DataBaseFields:    Get the fields with specified Database relations.
 %
 % OUTPUTS:
-%    requiredFields:       The fields a model must have in order to be a valid
-%                          COBRA Toolbox model
-%    optionalFields:       The Fields which are supported by the COBRA Toolbox.
+%    requiredFields:    The fields a model must have in order to be a valid
+%                       COBRA Toolbox model
+%    optionalFields:    The Fields which are supported by the COBRA Toolbox.
 %
 % NOTE:
 %

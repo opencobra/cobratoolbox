@@ -1,4 +1,4 @@
-function OK=writeLPProblem(LPProblem,varargin)
+function OK = writeLPProblem(LPProblem, varargin)
 % Creates an MPS (Mathematical Programming System) format ascii file representing the Linear Programming problem given by LPProblem.
 %
 % USAGE:
@@ -8,30 +8,26 @@ function OK=writeLPProblem(LPProblem,varargin)
 % INPUT:
 %    LPproblem:    Structure containing the following fields describing the LP problem to be solved
 %
-%                 * A - LHS matrix
-%                 * b - RHS vector
-%                 * c - Objective coeff vector
-%                 * lb - Lower bound vector
-%                 * ub - Upper bound vector
-%                 * osense - Objective sense (max=-1, min=+1)
-%                 * csense - Constraint senses, a string containting the constraint sense for
-%                   each row in A ('E', equality, 'G' greater than, 'L' less than).
+%                    * .A - LHS matrix
+%                    * .b - RHS vector
+%                    * .c - Objective coeff vector
+%                    * .lb - Lower bound vector
+%                    * .ub - Upper bound vector
+%                    * .osense - Objective sense (max=-1, min=+1)
+%                    * .csense - Constraint senses, a string containting the constraint sense for
+%                      each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
-% OPTIONAL INPUT 
-%    varargin:           a list of parameter/value pairs with the following
-%                       parameters:
-%                       
-%                       * 'fileName' - Name of the output file (e.g. 'Problem.mps')
-%                       * 'solverParams' - A struct containing the solver parameters if provided
-%                       * 'outputFormat' - Currently only 'mps' is supported (and default)
-%                       * 'writeMatrix' - Only write the Matrix, not the full problem (default
-%                        true), will be ignored if solver params are provided
+% OPTIONAL INPUT
+%    varargin:     a list of parameter/value pairs with the following parameters:
 %
-% NOTE:
+%                    * 'fileName' - Name of the output file (e.g. 'Problem.mps')
+%                    * 'solverParams' - A struct containing the solver parameters if provided
+%                    * 'outputFormat' - Currently only 'mps' is supported (and default)
+%                    * 'writeMatrix' - Only write the Matrix, not the full problem (default
+%                      true), will be ignored if solver params are provided
 %
-% 
 % OUTPUT:
-%    OK:        1 if saving is success, 0 otherwise
+%    OK:           1 if saving is success, 0 otherwise
 %
 % .. Authors:
 %       - Ronan M.T. Fleming: 7 Sept 09
@@ -48,33 +44,33 @@ function OK=writeLPProblem(LPProblem,varargin)
 optionalArgumentList = {'problemName','fileName','solverParams','outputFormat'};
 acceptedTypes = {'mps'};
 
-if numel(varargin) > 0 
+if numel(varargin) > 0
     %This is only relevant, if we have more than 2 non Required input
     %variables.
     %if this is apparent, we need to check the following:
     %1. is the 3rd vararginargument a cell array and is the second argument
-    %NOT compSymbols or compNames, if the second argument is NOT a char, 
-    if ischar(varargin{1}) && ~any(ismember(varargin{1},optionalArgumentList))           
-    %We assume the old version to be used               
+    %NOT compSymbols or compNames, if the second argument is NOT a char,
+    if ischar(varargin{1}) && ~any(ismember(varargin{1},optionalArgumentList))
+    %We assume the old version to be used
         tempargin = cell(1,2*numel(varargin));
         %just replace the input by the options and replace varargin
         %accordingly
-        for i = 1:numel(varargin)            
+        for i = 1:numel(varargin)
             tempargin{2*(i-1)+1} = optionalArgumentList{i};
             tempargin{2*(i-1)+2} = varargin{i};
-        end        
+        end
         varargin = tempargin;
     end
 end
 
 [defaultCompSymbols,defaultCompNames] = getDefaultCompartmentSymbols();
 parser = inputParser();
-parser.addRequired('LPProblem',@isstruct); 
-parser.addParameter('problemName','CobraLPProblem', @ischar); 
-parser.addParameter('fileName','', @ischar); 
-parser.addParameter('outputFormat','mps',@(x) ischar(x) && any(strcmpi(acceptedTypes))); 
-parser.addParameter('solverParams',struct(),@isstruct); 
-parser.addParameter('writeMatrix',true,@(x) islogical(x) || isnumeric(x) ); 
+parser.addRequired('LPProblem',@isstruct);
+parser.addParameter('problemName','CobraLPProblem', @ischar);
+parser.addParameter('fileName','', @ischar);
+parser.addParameter('outputFormat','mps',@(x) ischar(x) && any(strcmpi(acceptedTypes)));
+parser.addParameter('solverParams',struct(),@isstruct);
+parser.addParameter('writeMatrix',true,@(x) islogical(x) || isnumeric(x) );
 
 parser.parse(LPProblem,varargin{:})
 solverParams = parser.Results.solverParams;
@@ -172,11 +168,11 @@ switch outputFormat
         ble = b((csense=='L') | (csense == 'G'));
         Aeq = A(csense=='E',:);
         beq = b(csense=='E');
-        
+
         %create index of integer and binary variables
         intIndex = find(vartype=='I');
         binaryIndex = find(vartype=='B');
-        
+
         %%%%Adapted from BuildMPS%%%%%
         [neq nvar]=size(Aeq);
         nle=size(Ale,1);
@@ -190,9 +186,9 @@ switch outputFormat
             VarNames=arrayfun(VarNameFun,(1:nvar),'UniformOutput', false);
         end
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        
+
         %http://www.mathworks.com/matlabcentral/fileexchange/19618-mps-format-exporting-tool/content/BuildMPS/BuildMPS.m
-        %31st Jan 2016, changed c to osense*c as most solvers assume minimisation        
+        %31st Jan 2016, changed c to osense*c as most solvers assume minimisation
         if writeMatrix && any(ismember(parser.UsingDefaults,'solverParams'))
             [Contain]=BuildMPS(Ale, ble, Aeq, beq, osense*c, lb, ub, PbName);
             OK=SaveMPS(fileName, Contain);
@@ -202,4 +198,3 @@ switch outputFormat
         end
         %display([' > The .MPS file <', MPSfilename, '> has been written to ', pwd]);
 end
-

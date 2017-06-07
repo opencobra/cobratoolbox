@@ -1,5 +1,5 @@
-function outmodel = writeCbModel(model,varargin)
-%writeCbModel Write out COBRA models in various formats
+function outmodel = writeCbModel(model, varargin)
+% Writes out COBRA models in various formats
 %
 % USAGE:
 %
@@ -16,7 +16,7 @@ function outmodel = writeCbModel(model,varargin)
 %                       dialog box)
 %    compSymbolList:    List of compartment symbols (Cell array)
 %    compNameList:      List of compartment names corresponding to
-%                       compSymbolList (Cell array)
+%                       `compSymbolList` (Cell array)
 %
 % OPTIONAL OUTPUTS:
 %    outmodel:          Only useable with sbml export. Will return the sbml structure, otherwise the input COBRA model structure is returned.
@@ -25,15 +25,14 @@ function outmodel = writeCbModel(model,varargin)
 %       - Ines Thiele 01/10 - Added more options for field to write in xls format
 %       - Richard Que 3/17/10 -  Added ability to specify compartment names and symbols
 %       - Longfei Mao 26/04/2016 -  Added support for the FBCv2 format
-%       - Thomas Pfau May 2017  - Changed To Parameter/Value pairs and
-%                                 added flexibility
+%       - Thomas Pfau May 2017  - Changed To Parameter/Value pairs and added flexibility
 %
 % EXAMPLES:
 %
-%    Write a model in the specified format (a popup will ask for the name)
-%    outmodel = writeCbModel(model,format)
-%    Write a model in the specified format with the given file name
-%    outmodel = writeCbModel(model,format,fileName)
+%    % Write a model in the specified format (a popup will ask for the name)
+%    outmodel = writeCbModel(model, format)
+%    % Write a model in the specified format with the given file name
+%    outmodel = writeCbModel(model, format, fileName)
 %
 % NOTE:
 %    The `writeCbModel` function relies on another function
@@ -182,9 +181,7 @@ switch format
 end
 
 
-
-
-%% Construct gene name string
+% Construct gene name string
 function geneStr = constructGeneStr(geneNames)
 
 geneStr = '';

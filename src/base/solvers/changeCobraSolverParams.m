@@ -6,36 +6,38 @@ function changeOK = changeCobraSolverParams(solverType, paramName, paramValue)
 %    changeOK = changeCobraSolverParams(solverType, paramName, paramValue)
 %
 % INPUTS:
-%    solverType:    Solver type, 'LP' or 'MILP' (opt, default, 'LP')
-%    paramName:     Parameter name. Allowed LP parameter names:
-%
-%                     * optTol:        Optimal objective accuracy tolerance
-%                     * teasTol:       Constraint feasibilty tolerance
-%                     * minNorm:       {(0), scalar , `n` x 1 vector}, where `[m,n]=size(S)`;
-
-%    paramValue:    Parameter value
+%    solverType:        Solver type, 'LP' or 'MILP' (opt, default, 'LP')
+%    paramName:         Parameter name
+%    paramValue:        Parameter value
 %
 % OUTPUT:
-%    changeOK:      Logical inicator that supplied parameter is allowed (= 1)
-%
-%
-%   * printLevel:    Printing level
-%
-%     * 0 - Silent
-%     * 1 - Warnings and Errors
-%     * 2 - Summary information (Default)
-%     * 3 - More detailed information
-%     * > 10 - Pause statements, and maximal printing (debug mode)
-%
-%   * primalOnly:    {(0), 1}; 1 = only return the primal vector (lindo solvers)
+%    changeOK:          Logical inicator that supplied parameter is allowed (= 1)
 %
 % Allowed MILP parameter names:
 %
-%   * timeLimit:       Global time limit
-%   * intTol:          Integer tolerance
-%   * relMipGapTol:    Relative MIP gap tolerance
-%   * logFile:         Internal log file for solver
-%   * printLevel:      Print level for solver
+%    * timeLimit:       Global time limit
+%    * intTol:          Integer tolerance
+%    * relMipGapTol:    Relative MIP gap tolerance
+%    * logFile:         Internal log file for solver
+%    * printLevel:      Print level for solver
+%
+% Allowed LP parameter names:
+%
+%    * optTol:          Optimal objective accuracy tolerance
+%    * teasTol:         Constraint feasibilty tolerance
+%    * minNorm:         {(0), scalar , `n` x 1 vector}, where `[m,n]=size(S)`;
+%
+% Explanation on parameters:
+%
+%  * printLevel:        Printing level
+%
+%    * 0 - Silent
+%    * 1 - Warnings and Errors
+%    * 2 - Summary information (Default)
+%    * 3 - More detailed information
+%    * > 10 - Pause statements, and maximal printing (debug mode)
+%
+%  * primalOnly:    {(0), 1}; 1 = only return the primal vector (lindo solvers)
 %
 % NOTE:
 %

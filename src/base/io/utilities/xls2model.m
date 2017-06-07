@@ -6,7 +6,7 @@ function model = xls2model(fileName, biomassRxnEquation, defaultbound)
 %    model = xls2model(fileName, biomassRxnEquation, defaultbound)
 %
 % INPUT:
-%    fileName:      xls spreadsheet, with one 'Reaction List' and one 'Metabolite List' tab
+%    fileName:              xls spreadsheet, with one 'Reaction List' and one 'Metabolite List' tab
 %
 % OPTIONAL INPUTS:
 %    biomassRxnEquation:    .xls may have a 255 character limit on each cell,
@@ -97,29 +97,29 @@ if isunix
     %trim empty row from Numbers and MetNumbers
     %     Numbers = Numbers(2:end,:);
     %     MetNumbers = MetNumbers(2:end,:);
-    
+
     rxnInfo = rxnInfo(1:size(Strings,1),:);
     metInfo = metInfo(1:size(MetStrings,1),:);
-    
+
     if isempty(MetStrings)
         error('Save .xls file as Windows 95 version using gnumeric not openoffice!');
     end
-    
+
 else
     %assumes that one has an xls file with two tabs
     [~, Strings, rxnInfo] = xlsread(fileName,'Reaction List');
     [~, MetStrings, metInfo] = xlsread(fileName,'Metabolite List');
-    
+
     rxnInfo = rxnInfo(1:size(Strings,1),:);
     metInfo = metInfo(1:size(MetStrings,1),:);
-    
+
 end
 
 
 requiredRxnHeaders = {'Abbreviation','Reaction'};
 requiredMetHeaders = {'Abbreviation'};
 
-if ~all(ismember(requiredRxnHeaders,Strings(1,:))) 
+if ~all(ismember(requiredRxnHeaders,Strings(1,:)))
     error(['Required Headers not present in the "Reaction List" sheet of the provided xls file.', sprintf('\n'),...
            'Note, that headers are case sesnitive!', sprintf('\n'),...
            'Another likely source for this issue is a change in the xls format specification.', sprintf('\n'),...
@@ -200,7 +200,7 @@ revFlagList = lowerBoundList<0;
 
 if ~isempty(strmatch('Objective',rxnHeaders,'exact'))
     Objective = columnVector(cell2mat(rxnInfo(2:end,strmatch('Objective',rxnHeaders,'exact'))));
-    Objective(isnan(Objective)) = 0;    
+    Objective(isnan(Objective)) = 0;
 else
     Objective = zeros(length(rxnAbrList),1);
 end
@@ -219,9 +219,9 @@ end
 if ~isempty(strmatch('Notes',rxnHeaders,'exact'))
     model.rxnNotes = Strings(2:end,strmatch('Notes',rxnHeaders,'exact'));
 end
-if ~isempty(strmatch('References',rxnHeaders,'exact'))        
+if ~isempty(strmatch('References',rxnHeaders,'exact'))
     model.rxnReferences = Strings(2:end,strmatch('References',rxnHeaders,'exact'));
-    numbers = cellfun(@isnumeric ,model.rxnReferences);       
+    numbers = cellfun(@isnumeric ,model.rxnReferences);
     model.rxnReferences(numbers) = cellfun(@convertNumberToID , model.rxnReferences(numbers),'UniformOutput',0);
     model.rxnReferences = cellfun(@(x) regexprep(x,'PMID:',''), model.rxnReferences,'UniformOutput',0);
 end
@@ -246,7 +246,7 @@ Compartments = {};
 mets = MetStrings(:,metCol);
 %Now, we could have a problem, if the reactions are presented without
 %compartments. In this instance, we would have to first put a "[c]" id
-%behind all metabolites. 
+%behind all metabolites.
 metCompAbbrev = cellfun(@(x) regexp(x,'.*\[(.*)\]$','tokens'), mets, 'UniformOutput', 0);
 %get those which don't have a compartmentID
 noncomps = cellfun(@isempty, metCompAbbrev);
@@ -301,7 +301,7 @@ else
         CytoNames{end+1} = Cytosolname;
         CytoNames = unique(CytoNames);
     end
-    
+
     if any(noncomps)
         matchingmets(noncomps) = strcat(matchingmets(noncomps),'[c]');
         Compartments(noncomps) = {Cytosolname};
@@ -314,7 +314,7 @@ else
         end
     end
     metCompAbbrev = cellfun(@(x) x{1}, cellfun(@(x) regexp(x,['.*\[(.*)\]$'],'tokens'), matchingmets));
-    
+
     %now reorder them and assign names to the ids.
     [ucomps, origpos] = unique(Compartments);
     [model.comps,~,origin] = unique(metCompAbbrev(origpos));
@@ -339,7 +339,7 @@ if ~isempty(strmatch('Formula',metHeaders,'exact'))
     model.metFormulas = columnVector(MetStrings(B(A),strmatch('Formula',metHeaders,'exact')));
 end
 %%Set Charge
-if ~isempty(strmatch('Charge',metHeaders,'exact'))    
+if ~isempty(strmatch('Charge',metHeaders,'exact'))
     model.metCharges = cell2mat(columnVector(metInfo(B(A),strmatch('Charge',metHeaders,'exact'))));
 end
 
@@ -360,14 +360,14 @@ end
 
 if ~isempty(strmatch('PubChem ID',metHeaders,'exact'))
     %This is a litte trickier, as PubChemIDs are numbers. So we have to
-    %load them differently    
-    model.metPubChemID = columnVector(metInfo(B(A),strmatch('PubChem ID',metHeaders,'exact')));    
-    numbers = cellfun(@isnumeric ,model.metPubChemID);   
+    %load them differently
+    model.metPubChemID = columnVector(metInfo(B(A),strmatch('PubChem ID',metHeaders,'exact')));
+    numbers = cellfun(@isnumeric ,model.metPubChemID);
     model.metPubChemID(numbers) = cellfun(@convertNumberToID , model.metPubChemID(numbers),'UniformOutput',0);
 end
 if ~isempty(strmatch('ChEBI ID',metHeaders,'exact'))
-    model.metChEBIID  = columnVector(metInfo(B(A),strmatch('ChEBI ID',metHeaders,'exact')));    
-    numbers = cellfun(@isnumeric ,model.metChEBIID);   
+    model.metChEBIID  = columnVector(metInfo(B(A),strmatch('ChEBI ID',metHeaders,'exact')));
+    numbers = cellfun(@isnumeric ,model.metChEBIID);
     model.metChEBIID(numbers) = cellfun(@convertNumberToID , model.metChEBIID(numbers),'UniformOutput',0);
 end
 
