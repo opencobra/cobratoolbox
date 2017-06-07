@@ -33,8 +33,8 @@ function [fields] = getDefinedFieldProperties(varargin)
 %        to true
 %      * X{:,4} are evaluateable statements, which have to evaluate to true for
 %        the model to be valid, these mainly check the content types.
-%      * X{:,4} are evaluateable statements, which have to evaluate to true for
-%        the model to be valid, these mainly check the content types.
+%      * X{:,5} are default values (or evaluateable strings for cell
+%        arrays)
 %    E.g.
 %
 %      `x = model.(X{A, 1})`;
