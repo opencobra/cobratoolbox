@@ -2,238 +2,249 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets] = optForceWithGAMS
     targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k,...
     nSets, constrOpt, excludedRxns, runID, outputFolder, outputFileName, solverName,...
     printExcel, printText, printReport, keepInputs, keepGamsOutputs, verbose)
-%% DESCRIPTION
-% This function runs the third step of optForce, a procedure published in
-% the article: Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
-% Optimization Procedure for Identifying All Genetic Manipulations Leading
-% to Targeted Overproductions. PLOS Computational Biology 6(4): e1000744.
-% https://doi.org/10.1371/journal.pcbi.1000744. This script is based in the
-% GAMS files written by Sridhar Ranganathan which were provided by the
-% research group of Costas D. Maranas.
+% This function runs the third step of optForce that is to solve a
+% bilevel mixed integer linear programming problem to find sets of
+% interventions that lead to an increased production of a particular target
 %
-% Created by Sebastian Mendoza on 29/May/2017. snmendoz@uc.cl
+% USAGE: 
 %
-%% INPUTS
-% model (obligatory):       Type: struct (COBRA model)
-%                           Description: a metabolic model with at least
-%                           the following fields:
-%                           rxns            Reaction IDs in the model
-%                           mets            Metabolite IDs in the model
-%                           S               Stoichiometric matrix (sparse)
-%                           b               RHS of Sv = b (usually zeros)
-%                           c               Objective coefficients
-%                           lb              Lower bounds for fluxes
-%                           ub              Upper bounds for fluxes
-%                           rev             Reversibility flag
+%    [optForceSets, posOptForceSets, typeRegOptForceSets] = optForceWithGAMS(model,...
+%    targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k,...
+%    nSets, constrOpt, excludedRxns, runID, outputFolder, outputFileName, solverName,... 
+%    printExcel, printText, printReport, keepInputs, keepGamsOutputs, verbose)
 %
-% targetRxn (obligatory):   Type: string
-%                           Description: string containing the ID for the
-%                           reaction whose flux is intented to be increased.
-%                           For example, if the production of succionate is
-%                           desired to be increased, 'EX_suc' should be
-%                           chosen as the target reaction
-%                           Example: targetRxn='EX_suc';
+% INPUTS:
+%    model:                  Type: structure (COBRA model)
+%                            Description: a metabolic model with at least
+%                            the following fields:
 %
-% mustU (obligatory):       Type: cell array.
-%                           Description: List of reactions in the MustU set
-%                           This input can be obtained by running the
-%                           script findMustU.m
-%                           Alternatively, there is a second usage of this
-%                           input:
-%                           Type: string.
-%                           Description: name of the .xls file containing
-%                           the list of the reactions in the MustU set
-%                           Example first usage: mustU={'R21_f';'R22_f'};
-%                           Example second usage: mustU='MustU';
+%                              * .rxns - Reaction IDs in the model
+%                              * .mets - Metabolite IDs in the model
+%                              * .S -    Stoichiometric matrix (sparse)
+%                              * .b -    RHS of Sv = b (usually zeros)
+%                              * .c -    Objective coefficients
+%                              * .lb -   Lower bounds for fluxes
+%                              * .ub -   Upper bounds for fluxes
+%    targetRxn:              Type: string
+%                            Description: string containing the ID for the
+%                            reaction whose flux is intented to be increased.
+%                            For E.g., if the production of succionate is
+%                            desired to be increased, 'EX_suc' should be
+%                            chosen as the target reaction
+%                            E.g.: targetRxn='EX_suc';
+%    mustU:                  Type: cell array.
+%                            Description: List of reactions in the MustU set
+%                            This input can be obtained by running the
+%                            script findMustU.m
+%                            Alternatively, there is a second usage of this
+%                            input:
+%                            Type: string.
+%                            Description: name of the .xls file containing
+%                            the list of the reactions in the MustU set
+%                            E.g. first usage: mustU={'R21_f';'R22_f'};
+%                            E.g. second usage: mustU='MustU';
+%    mustL:                  Type: cell array.
+%                            Description: List of reactions in the MustL set
+%                            This input can be obtained by running the
+%                            script findMustL.m
+%                            Alternatively, there is a second usage of this
+%                            input:
+%                            Type: string.
+%                            Description: name of the .xls file containing
+%                            the list of the reactions in the MustU set
+%                            E.g. first usage: mustL={'R11_f';'R26_f'};
+%                            E.g. second usage: mustL='MustL';
+%    minFluxesW:             Type: double array of size n_rxns x1
+%                            Description: Minimum fluxes for each
+%                            reaction in the model for wild-type strain.
+%                            This can be obtained by running the
+%                            function FVAOptForce.
+%                            E.g.: minFluxesW = [-90; -56];
+%    maxFluxesW:             Type: double array of size n_rxns x1
+%                            Description: Maximum fluxes for each
+%                            reaction in the model for wild-type strain.
+%                            This can be obtained by running the
+%                            function FVA_optForce.
+%                            E.g.: maxFluxesW = [90; 56];
+%    minFluxesM:             Type: double array of size n_rxns x1
+%                            Description: Minimum fluxes for each
+%                            reaction in the model for mutant strain.
+%                            This can be obtained by running the
+%                            function FVAOptForce.
+%                            E.g.: minFluxesM = [-90; -56];
+%    maxFluxesM:             Type: double array of size n_rxns x1
+%                            Description: Maximum fluxes for each
+%                            reaction in the model for mutant strain.
+%                            This can be obtained by running the
+%                            function FVA_optForce.
+%                            E.g.: maxFluxesM = [90; 56];
 %
-% mustL (obligatory):       Type: cell array.
-%                           Description: List of reactions in the MustL set
-%                           This input can be obtained by running the
-%                           script findMustL.m
-%                           Alternatively, there is a second usage of this
-%                           input:
-%                           Type: string.
-%                           Description: name of the .xls file containing
-%                           the list of the reactions in the MustU set
-%                           Example first usage: mustL={'R11_f';'R26_f'};
-%                           Example second usage: mustL='MustL';
+% OPTIONAL INPUTS:
+%    k:                      Type: double
+%                            Description: number of intervations to be
+%                            found
+%                            Default k=1;
+% 
+%    nSets:                  Type: double
+%                            Description: maximum number of force sets
+%                            returned by optForce.
+%                            Default nSets=1;
+% 
+%    constrOpt:              Type: Structure
+%                            Description: structure containing
+%                            additional contraints. Include here only
+%                            reactions whose flux is fixed, i.e.,
+%                            reactions whose lower and upper bounds have
+%                            the same value. Do not include here
+%                            reactions whose lower and upper bounds have
+%                            different values. Such contraints should be
+%                            defined in the lower and upper bounds of
+%                            the model. The structure has the following
+%                            fields:
 %
-% minFluxesW (obligatory):   Type: double array of size n_rxns x1
-%                            Description: Minimum fluxes for each reaction
-%                            in the model for wild-type strain
-%                            Example: minFluxesW=[-90; -56];
-%
-% maxFluxesW (obligatory):   Type: double array of size n_rxnsx1
-%                            Description: Maximum fluxes for each reaction
-%                            in the model for wild-type strain
-%                            Example: maxFluxesW=[92; -86];
-%
-% minFluxesM (obligatory):   Type: double array of size n_rxnsx1
-%                            Description: Minimum fluxes for each reaction
-%                            in the model for mutant strain
-%                            Example: minFluxesW=[-90; -56];
-%
-% maxFluxesM (obligatory):   Type: double array of size n_rxnsx1
-%                            Description: Maxmum fluxes for each reaction
-%                            in the model for mutant strain
-%                            Example: maxFluxesW=[92; -86];
-%
-% k(optional):              Type: double
-%                           Description: number of intervations to be
-%                           found
-%                           Default k=1;
-%
-% nSets(optional):          Type: double
-%                           Description: maximum number of force sets
-%                           returned by optForce.
-%                           Default nSets=1;
-%
-% constrOpt (optional):     Type: structure
-%                           Description: structure containing constrained
-%                           reactions with fixed values. The structure has
-%                           the following fields:
-%                           rxnList: (Type: cell array)      Reaction list
-%                           values:  (Type: double array)    Values for constrained reactions
-%                           Example: constrOpt=struct('rxnList',{{'EX_for_e','EX_etoh_e'}},'values',[1,5]);
-%                           Default: empty.
-%
-% excludedRxns(optional):   Type: structure
-%                           Description: Reactions to be excluded. This
-%                           structure has the following fields
-%                           rxnList: (Type: cell array)      Reaction list
-%                           typeReg: (Type: char array)      set from which reaction is excluded
-%                                                            (U: Set of upregulared reactions;
-%                                                            D: set of downregulared reations;
-%                                                            K: set of knockout reactions)
-%                           Example: excludedRxns=struct('rxnList',{{'SUCt','R68_b'}},'typeReg','UD')
-%                           In this example SUCt is prevented to appear in
-%                           the set of upregulated reactions and R68_b is
-%                           prevented to appear in the downregulated set of
-%                           reactions.
-%                           Default: empty.
-%
-% runID (optional):         Type: string
-%                           Description: ID for identifying this run
-%
-% outputFolder (optional):  Type: string
-%                           Description: name for folder in which results
-%                           will be stored
-%
-% outputFileName (optional):Type: string
-%                           Description: name for files in which results
-%                           will be stored
-%
-% solverName(optional):     Type: string
-%                           Description: Name of the solver used in GAMS
-%                           Default: 'cplex'
-%
-% printExcel(optional):     Type: double
-%                           Description: Boolean for printing results into
-%                           an excel file. 1 for printing. 0 otherwise.
-%                           Default: 1
-%
-% printText(optional):      Type: double
-%                           Description: Boolean for printing results into
-%                           a plaint text file. 1 for printing. 0 otherwise.
-%                           Default: 1
-%
-% printReport(optional):    Type: double
-%                           Description: Boolean for creating a file with a
-%                           report of the running, including inputs for
-%                           running optForce and results.
-%                           Default: 1
-%
-% keepInputs(optional):     Type: double
-%                           Description: Boolean for showing files used as
-%                           input for running OptForce in GAMS. 1 for
-%                           showing. 0 otherwise
-%                           Default: 0
-%
-% keepGamsOutputs (optional):Type: double
+%                              * .rxnList - Reaction list (cell array)
+%                              * .values -  Values for constrained 
+%                                reactions (double array)
+%                                E.g.: struct('rxnList', ...
+%                                {{'EX_gluc', 'R75', 'EX_suc'}}, ...
+%                                'values', [-100, 0, 155.5]'); 
+%    excludedRxns:           Type: structure
+%                            Description: Reactions to be excluded. This
+%                            structure has the following fields_
+%                              * .rxnList - Reaction list (cell array)
+%                              * .typeReg - set from which reaction is 
+%                                excluded (char array) (U: Set of
+%                                upregulared reactions, D: set of
+%                                downregulared reations, K: set of knockout
+%                                reactions)
+%                            E.g.: excludedRxns = struct('rxnList',...
+%                            {{'SUCt', 'R68_b'}}, 'typeReg', 'UD')
+%                            In this E.g. SUCt is prevented to appear in
+%                            the set of upregulated reactions and R68_b is
+%                            prevented to appear in the downregulated set of
+%                            reactions.
+%                            Default: empty. 
+%    solverName:             Type: string
+%                            Description: Name of the solver used in
+%                            GAMS. 
+%                            Default: 'cplex'.
+%    runID:                  Type: string
+%                            Description: ID for identifying this run.
+%                            Default: ['run' date hour].
+%    outputFolder:           Type: string
+%                            Description: name for folder in which
+%                            results will be stored.
+%                            Default: 'OutputsFindMustLL'.
+%    outputFileName:         Type: string
+%                            Description: name for files in which
+%                            results. will be stored
+%                            Default: 'MustLLSet'.
+%    printExcel:             Type: double
+%                            Description: boolean to describe wheter
+%                            data must be printed in an excel file or
+%                            not.
+%                            Default: 1
+%    printText:              Type: double
+%                            Description: boolean to describe wheter
+%                            data must be printed in an plaint text file
+%                            or not.
+%                            Default: 1
+%    printReport:            Type: double
+%                            Description: 1 to generate a report in a
+%                            plain text file. 0 otherwise.
+%                            Default: 1
+%    keepInputs:             Type: double
+%                            Description: 1 to mantain folder with
+%                            inputs to run findMustLL.gms. 0 otherwise.
+%                            Default: 1
+%    keepGamsOutputs:        Type: double
 %                            Description: 1 to mantain files returned by
-%                            findMustL.gms. 0 otherwise.
-%
-% verbose (optional):       Type: double
-%                           Description: 1 to print results in console.
-%
-%
-%% OUTPUTS
-% optForceSets:             Type: cell array
-%                           Description: cell array of size  n x m, where
-%                           n = number of sets found and m = size of sets
-%                           found (k). Element in position i,j is reaction
-%                           j in set i.
-%                           Example:
+%                            findMustLL.gms. 0 otherwise.
+%                            Default: 1
+%    verbose:                Type: double.
+%                            Description: 1 to print results in console.
+%                            0 otherwise.
+%                            Default: 0
+%   
+% OUTPUTS:
+%    optForceSets:           Type: cell array
+%                            Description: cell array of size  n x m, where
+%                            n = number of sets found and m = size of sets
+%                            found (k). Element in position i,j is reaction
+%                            j in set i.
+%                            E.g.:
 %                                    rxn1  rxn2
-%                                     __    __
-%                           set 1   | R4    R2
-%                           set 2   | R3    R1
-%
-% posOptForceSets           Type: double array
-%                           Description: double array of size  n x m, where
-%                           n = number of sets found and m = size of sets
-%                           found (k). Element in position i,j is the
-%                           position of reaction in optForceSets(i,j) in
-%                           model.rxns
-%                           Example:
+%                                      __    __
+%                            set 1   | R4    R2
+%                            set 2   | R3    R1
+% 
+%    posOptForceSets:        Type: double array
+%                            Description: double array of size  n x m, where
+%                            n = number of sets found and m = size of sets
+%                            found (k). Element in position i,j is the
+%                            position of reaction in optForceSets(i,j) in
+%                            model.rxns
+%                            E.g.:
 %                                    rxn1  rxn2
 %                                     __   __
-%                           set 1   | 4    2
-%                           set 2   | 3    1
+%                            set 1   | 4    2
+%                            set 2   | 3    1
+% 
+%    typeRegOptForceSets:    Type: cell array
+%                            Description: cell array of size  n x m, where
+%                            n = number of sets found and m = size of sets
+%                            found (k). Element in position i,j is the kind
+%                            of intervention for reaction in
+%                            optForceSets(i,j)
+%                            E.g.: 
+%                                         rxn1            rxn2
+%                                      ____________    ______________
+%                            set 1   | upregulation    downregulation
+%                            set 2   | upregulation    knockout
+%    outputFileName.xls:     Type: file
+%                            Description: file containing 11 columns.
+%                            C1: Number of invervetions (k)
+%                            C2: Set Number
+%                            C3: Identifiers for reactions in the force set
+%                            C4: Type of regulations for each reaction in
+%                            the force set
+%                            C5: min flux of each reaction in force set,
+%                            according to FVA
+%                            C6: max flux of each reaction in force set,
+%                            according to FVA
+%                            C7: achieved flux of each of the reactions in
+%                            the force set after applying the inverventions
+%                            C8: objetive function achieved by OptForce.gms
+%                            C9: Minimum flux fot target when applying the
+%                            interventions
+%                            C10: Maximum flux fot target when applying the
+%                            interventions
+%                            C11: Maximum growth rate when applying the
+%                            interventions.
+%                            In the rows, the user can see each of the
+%                            optForce sets found.
+%    outputFileName.txt:     Same as outputFileName.xls but in a .txt file,
+%                            separated by tabs.
+%    optForce.lst:           Type: file
+%                            Description: file generated automatically by
+%                            GAMS when running optForce. Contains
+%                            information about the running.
+%    GtoM.gdx:               Type: file
+%                            Description: file generated by GAMS containing
+%                            variables, parameters and equations of the
+%                            optForce problem. 
+% NOTE: 
+%    This function is based in the GAMS files written by Sridhar
+%    Ranganathan which were provided by the research group of Costas D.
+%    Maranas. For a detailed description of the optForce procedure, please
+%    see: Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
+%    Optimization Procedure for Identifying All Genetic Manipulations
+%    Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
+%    e1000744. https://doi.org/10.1371/journal.pcbi.1000744
 %
-% typeRegOptForceSets       Type: cell array
-%                           Description: cell array of size  n x m, where
-%                           n = number of sets found and m = size of sets
-%                           found (k). Element in position i,j is the kind
-%                           of intervention for reaction in
-%                           optForceSets(i,j)
-%                           Example:
-%                                        rxn1            rxn2
-%                                     ____________    ______________
-%                           set 1   | upregulation    downregulation
-%                           set 2   | upregulation    knockout
-%
-% outputFileName.xls        Type: file
-%                           Description: file containing 11 columns.
-%                           C1: Number of invervetions (k)
-%                           C2: Set Number
-%                           C3: Identifiers for reactions in the force set
-%                           C4: Type of regulations for each reaction in
-%                           the force set
-%                           C5: min flux of each reaction in force set,
-%                           according to FVA
-%                           C6: max flux of each reaction in force set,
-%                           according to FVA
-%                           C7: achieved flux of each of the reactions in
-%                           the force set after applying the inverventions
-%                           C8: objetive function achieved by OptForce.gms
-%                           C9: Minimum flux fot target when applying the
-%                           interventions
-%                           C10: Maximum flux fot target when applying the
-%                           interventions
-%                           C11: Maximum growth rate when applying the
-%                           interventions.
-%                           In the rows, the user can see each of the
-%                           optForce sets found.
-%
-% outputFileName.txt        Same as outputFileName.xls but in a .txt file,
-%                           separated by tabs.
-%
-%
-% optForce.lst              Type: file
-%                           Description: file generated automatically by
-%                           GAMS when running optForce. Contains
-%                           information about the running.
-%
-% GtoM.gdx                  Type: file
-%                           Description: file generated by GAMS containing
-%                           variables, parameters and equations of the
-%                           optForce problem.
+% .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
-%% CODE
-
-% inputs handling
-if nargin < 1 || isempty(model)
+if nargin < 1 || isempty(model)  % inputs handling
     error('OptForce: No model specified');
 else
     if ~isfield(model,'S'), error('OptForce: Missing field S in model');  end
@@ -329,18 +340,16 @@ else
     %check correct fields and correct size.
     if ~isfield(constrOpt,'rxnList'), error('OptForce: Missing field rxnList in constrOpt');  end
     if ~isfield(constrOpt,'values'), error('OptForce: Missing field values in constrOpt');  end
-    if ~isfield(constrOpt,'sense'), error('OptForce: Missing field sense in constrOpt');  end
-
-    if length(constrOpt.rxnList) == length(constrOpt.values) && length(constrOpt.rxnList) == length(constrOpt.sense)
+    
+    if length(constrOpt.rxnList) == length(constrOpt.values)
         if size(constrOpt.rxnList,1) > size(constrOpt.rxnList,2); constrOpt.rxnList = constrOpt.rxnList'; end;
         if size(constrOpt.values,1) > size(constrOpt.values,2); constrOpt.values = constrOpt.values'; end;
-        if size(constrOpt.sense,1) > size(constrOpt.sense,2); constrOpt.sense = constrOpt.sense'; end;
     else
         error('OptForce: Incorrect size of fields in constrOpt');
     end
 end
 
-if nargin < 12
+if nargin < 12 || isempty(excludedRxns) 
     excludedRxns = {};
 else
     if ~isstruct(excludedRxns); error('OptForce: Incorrect format for input excludedRxns'); end;
@@ -454,7 +463,7 @@ if printReport
     %print model.
     fprintf(freport, 'Model:\n');
     for i = 1:length(model.rxns)
-        rxn = printRxnFormula(model, model.rxns{i});
+        rxn = printRxnFormula(model, model.rxns{i}, false);
         fprintf(freport, [model.rxns{i} ': ' rxn{1} '\n']);
     end
     %print lower and upper bounds, minimum and maximum values for each of
@@ -483,9 +492,11 @@ if printReport
     end
     %print excludad reactions
     fprintf(freport, '\nExcluded reactions:\n');
-    for i = 1:length(excludedRxns.rxnList)
-        fprintf(freport, '%s: Excluded from %s\n', excludedRxns.rxnList{i}, ...
-            regexprep(excludedRxns.typeReg(i), {'U','L','K'}, {'Upregulations','Downregulations','Knockouts'}));
+    if ~isempty(excludedRxns)
+        for i = 1:length(excludedRxns.rxnList)
+            fprintf(freport, '%s: Excluded from %s\n', excludedRxns.rxnList{i}, ...
+                regexprep(excludedRxns.typeReg(i), {'U','L','K'}, {'Upregulations','Downregulations','Knockouts'}));
+        end
     end
     fprintf(freport, '\nrunID(Main Folder): %s \n\noutputFolder: %s \n\noutputFileName: %s \n',...
         runID, outputFolder, outputFileName);
@@ -499,13 +510,15 @@ end
 excludedURxns = {};
 excludedLRxns = {};
 excludedKRxns = {};
-for i = 1:length(excludedRxns.rxnList)
-    if strcmp(excludedRxns.typeReg(i), 'U')
-        excludedURxns = union(excludedURxns, excludedRxns.rxnList(i));
-    elseif strcmp(excludedRxns.typeReg(i), 'L')
-        excludedLRxns = union(excludedLRxns, excludedRxns.rxnList(i));
-    elseif strcmp(excludedRxns.typeReg(i), 'K')
-        excludedKRxns = union(excludedKRxns, excludedRxns.rxnList(i));
+if ~isempty(excludedRxns)
+    for i = 1:length(excludedRxns.rxnList)
+        if strcmp(excludedRxns.typeReg(i), 'U')
+            excludedURxns = union(excludedURxns, excludedRxns.rxnList(i));
+        elseif strcmp(excludedRxns.typeReg(i), 'L')
+            excludedLRxns = union(excludedLRxns, excludedRxns.rxnList(i));
+        elseif strcmp(excludedRxns.typeReg(i), 'K')
+            excludedKRxns = union(excludedKRxns, excludedRxns.rxnList(i));
+        end
     end
 end
 
@@ -521,7 +534,11 @@ exportInputsOptForceToGAMS(model, {targetRxn}, mustU, mustL, minFluxesW, maxFlux
 if printReport; fprintf(freport, '\n------RESULTS------:\n'); end;
 
 %run optForce in GAMS.
-run = system(['gams ' optForceFunction ' lo=3 --myroot=InputsOptForce/ --solverName=' solverName ' gdx=GtoM --gdxin=MtoG']);
+if verbose; 
+    run = system(['gams ' optForceFunction ' lo=3 --myroot=InputsOptForce/ --solverName=' solverName ' gdx=GtoM --gdxin=MtoG']);
+else
+    run = system(['gams ' optForceFunction ' --myroot=InputsOptForce/ --solverName=' solverName ' gdx=GtoM --gdxin=MtoG']);
+end
 
 %if user decide not to show inputs files for optForce
 if ~keepInputs;    rmdir('InputsOptForce','s'); end;
@@ -712,7 +729,7 @@ if run == 0
                 solution.pos = pos_optForceSet_i;
                 solution.flux = flux_optForceSet_i;
                 solution.obj = objective_value;
-                [maxGrowthRate,minTarget,maxTarget]  =  testOptForceSol(model, targetRxn, solution, 1);
+                [maxGrowthRate,minTarget,maxTarget]  =  analizeOptForceSol(model, targetRxn, solution, 1);
                 solution.growth = maxGrowthRate;
                 solution.minTarget = minTarget;
                 solution.maxTarget = maxTarget;
