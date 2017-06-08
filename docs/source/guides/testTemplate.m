@@ -27,8 +27,8 @@ load('testData_functionToBeTested.mat');
 
 %{
 % This is only necessary for tests that test a function that runs in parallel.
-
 % create a parallel pool
+
 poolobj = gcp('nocreate'); % if no pool, do not create new one.
 if isempty(poolobj)
     parpool(2); % launch 2 workers
