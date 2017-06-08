@@ -95,7 +95,7 @@ else
 end
 
 % Convert to irreversible rxns
-[modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model);
+[modelIrrev,matchRev,rev2irrev,irrev2rev] = convertToIrreversible(model,'OrderReactions',true);
 
 % Create the index of the previous KO's suggested by OptKnock to avoid obtaining the same
 % solution again
