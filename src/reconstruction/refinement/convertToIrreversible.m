@@ -52,17 +52,25 @@ irrevRxnIDs = nRxns + (1:nRevRxns);
 
 %teat special fields: S, lb, ub, rxns
 model.S(:,end+1:end+nRevRxns) = -model.S(:,relReacs);
+
+%update the lower and upper bounds
 model.lb(relReacs) = max(0,model.lb(relReacs));
 model.ub(relReacs) = max(0,model.ub(relReacs));
 model.lb(end+1,end+nRevRxns) = max(0,-model.lb(relReacs));
 model.ub(end+1,end+nRevRxns) = max(0,-model.ub(relReacs));
+
+%Extend the c vector
 model.c(end+1,end+nRevRxns) = model.c(relReacs);
+
+%Alter the reaction ids (as defined)
 RelReacNames = model.rxns(relReacs);
 model.rxns(relReacs) = strcat(RelReacNames,'_f');
 model.rxns(end+1,end+nRevRxns) = strcat(RelReacNames,'_b');
-model.rxns(end+1,end+nRevRxns) = strcat(RelReacNames,'_b');
-model.S(
 
+%Extend the S Matrix
+model.S(:, end+1:end+nRevRxns) = -model.S(:,relReacs);
+
+%And update all other relevant fields
 
 
 modelIrrev.S = spalloc(size(model.S,1),0,2*nnz(model.S)); %declare variables
