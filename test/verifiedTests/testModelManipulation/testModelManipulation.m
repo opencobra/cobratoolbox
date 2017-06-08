@@ -133,10 +133,10 @@ assert(isSameCobraModel(modelIrrev, testModelIrrev));
 % Convert to reversible
 fprintf('>> Testing convertToReversible\n');
 testModelRev = convertToReversible(testModelIrrev);
-load('testModelManipulation.mat','modelRev');
+testModelRev = rmfield(testModelRev,'reversibleModel'); % this should now be the original model!
 
 % test if both models are the same
-assert(isSameCobraModel(modelRev,testModelRev));
+assert(isSameCobraModel(model,testModelRev));
 
 % test irreversibility of model
 fprintf('>> Testing convertToIrreversible (2)\n');
