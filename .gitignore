@@ -93,3 +93,6 @@ PPP120.mat
 
 # hidden folders
 .vscode/
+
+# temporary folder
+.tmp/
