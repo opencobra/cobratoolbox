@@ -226,4 +226,4 @@ for i=1:length(compounds)
 end
 %Currently we are likely to have a largely blown up S matrix.
 ExchangeRxnMatrix.S = ExchangeRxnMatrix.S(1:numel(ExchangeRxnMatrix.mets),1:numel(ExchangeRxnMatrix.rxns));
-%ExchangeRxnMatrix.mets = ExchangeRxnMatrix.mets';
+

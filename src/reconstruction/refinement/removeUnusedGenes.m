@@ -10,7 +10,7 @@ function modelNew = removeUnusedGenes(model)
 %		 model:    COBRA structure
 %
 % OUTPUT:
-%		 model:    COBRA model structure with updated gene field reflecting only
+%		 modelNew:    COBRA model structure with updated gene field reflecting only
 %                  content present in the model
 %
 % .. Authors:

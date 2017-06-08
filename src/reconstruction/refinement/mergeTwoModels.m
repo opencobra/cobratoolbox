@@ -189,6 +189,28 @@ end
 
 
 function modelNew = mergeFields(modelNew,model1,model2,type)
+% USAGE:
+%    [modelNew] = mergeTwoModels(modelNew,model1,model2,type)
+%
+% INPUTS:
+%    modelNew:        The new Structure with all fields created till now
+%    model1:          model 1 to merge
+%    model2:          model 2 to merge
+%    type:            the field type to merge ( rxns, mets, comps or genes)
+%
+%
+% OUTPUT:
+%
+%    modelNew:         merged model with all fields of the given type
+%                      merged (i.e. added. the resulting fields will have
+%                      elements of model1 if any followed by elements of
+%                      model2 if any (missing values replaced by defaults).
+%                      Char arrays are currenty not merged, default
+%                      unclear.
+%
+% .. Authors: 
+%                   - Thomas Pfau June 2017
+
 fields1 = getRelevantModelFields(model1,type);
 fields1 = setdiff(fields1,{'S','rxnGeneMat'}); % we have to handle these sepaerately
 fields2 = getRelevantModelFields(model2,type);

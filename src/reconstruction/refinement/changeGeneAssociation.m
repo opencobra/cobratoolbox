@@ -80,12 +80,12 @@ if (~isempty(grRule))
                 grRule = regexprep(grRule,[genes{i} ')'],[newGene ')']);
                 genes{i} = newGene;
             else
-                fprintf(['Gene name ' genes{i} ' not in translation list']);
+                fprintf(['Gene name ' genes{i} ' not in translation list\n']);
             end
         end
         geneID = find(strcmp(model.genes,genes{i}));
         if (isempty(geneID))
-            fprintf(['New gene ' genes{i} ' added to model']);
+            fprintf(['New gene ' genes{i} ' added to model\n']);
             % Append gene
             model.genes = [model.genes; genes(i)];
             nGenes = length(model.genes);
