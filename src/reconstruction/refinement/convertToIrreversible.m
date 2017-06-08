@@ -33,6 +33,35 @@ function [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(mo
 %       optionally only split a specific list of reversible reactions to
 %       irreversible, without appending '_r'.
 
+if ~exist('sRxns','var')
+    sRxns = model.rxns;
+end
+
+% %first, get the reversible reactions, which should be converted
+% % Note: reactions which can only carry negative flux, will have an inactive
+% % forward reaction.
+% relReacs = ismember(model.rxns,sRxns) & model.lb < 0;
+% nRevRxns = sum(relReacs);
+% nRxns = numel(model.rxns);
+% rxnIDs = 1:nRxns;
+% irrevRxnIDs = nRxns + (1:nRevRxns);
+% 
+% 
+% %teat special fields: S, lb, ub, rxns
+% model.S(:,end+1:end+nRevRxns) = -model.S(:,relReacs);
+% model.lb(relReacs) = max(0,model.lb(relReacs));
+% model.ub(relReacs) = max(0,model.ub(relReacs));
+% model.lb(end+1,end+nRevRxns) = max(0,-model.lb(relReacs));
+% model.ub(end+1,end+nRevRxns) = max(0,-model.ub(relReacs));
+% model.c(end+1,end+nRevRxns) = model.c(relReacs);
+% RelReacNames = model.rxns(relReacs);
+% model.rxns(relReacs) = strcat(RelReacNames,'_f');
+% model.rxns(end+1,end+nRevRxns) = strcat(RelReacNames,'_b');
+% model.rxns(end+1,end+nRevRxns) = strcat(RelReacNames,'_b');
+
+
+
+
 modelIrrev.S = spalloc(size(model.S,1),0,2*nnz(model.S)); %declare variables
 modelIrrev.rxns = [];
 modelIrrev.lb = zeros(2*length(model.rxns),1);
