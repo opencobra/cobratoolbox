@@ -21,7 +21,7 @@ fileDir = fileparts(which('testMetaboTools_tutorialI'));
 cd(fileDir);
 %%
  % define the solver packages to be used to run this test
-solverPkgs = {'glpk', 'ibm_cplex', 'tomlab_cplex'};
+solverPkgs = {'glpk'};%, 'ibm_cplex', 'tomlab_cplex'};
 
 for k = 1:length(solverPkgs)
     fprintf(' -- Running testMetaboTools_tutorialI using the solver interface: %s ... ', solverPkgs{k});
@@ -331,11 +331,11 @@ for k = 1:length(solverPkgs)
         %% Step *9* perform sampling analysis
         load('testdata_performSampling.mat');
         fileName = 'modelA';
-        performSampling(model_Molt, warmupn, fileName, nFiles, pointsPerFile, stepsPerPoint, fileBaseNo, maxTime, outputPath);
+        performSampling(model_Molt, warmupn, fileName, nFiles, pointsPerFile, stepsPerPoint, fileBaseNo, maxTime, outputPath, false);
         
         
         fileName = 'modelB';
-        performSampling(model_CEM, warmupn, fileName, nFiles, pointsPerFile, stepsPerPoint, fileBaseNo, maxTime, outputPath);
+        performSampling(model_CEM, warmupn, fileName, nFiles, pointsPerFile, stepsPerPoint, fileBaseNo, maxTime, outputPath, false);
         
         % summarize sampling results
         starting_Model = modelMedium;
