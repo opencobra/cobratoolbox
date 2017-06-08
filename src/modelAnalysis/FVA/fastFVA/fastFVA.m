@@ -68,7 +68,7 @@ function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax,statussolmin,statussol
 % Reference: S. Gudmundsson and I. Thiele, Computationally efficient
 %            Flux Variability Analysis. BMC Bioinformatics, 2010, 11:489
 
-% Oirignal author: Steinn Gudmundsson.
+% Original author: Steinn Gudmundsson.
 % Contributor: Laurent Heirendt, LCSB
 % Last updated: October 2016
 
@@ -152,8 +152,7 @@ if strmatch('glpk',solver)
    %FVAc=@glpkFVAcc;
    fprintf('ERROR : GLPK is not (yet) supported as the binaries are not yet available.')
 elseif strmatch('cplex',solver)
-    cplexVersion = detectCPLEXversion(rootPathCPLEX, printLevel);
-    eval('FVAc = @cplexFVA' cplexVersion]);
+    eval(['FVAc=@cplexFVA' getCPLEXversion() ';']);
 else
    error(sprintf('Solver %s not supported', solver))
 end;

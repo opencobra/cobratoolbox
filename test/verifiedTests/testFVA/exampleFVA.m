@@ -21,9 +21,9 @@
 %===========================================================================================
 
 % MATLAB commands for setting a fresh environment
-clear all; clc; format long;
+%clear all; clc; format long;
 
-w = warning('off', 'all');
+%w = warning('off', 'all');
 
 %% Setting parameters
 
@@ -31,23 +31,23 @@ w = warning('off', 'all');
 rootdirect = '../../';
 
 % Adding the paths
-addpath(genpath(rootdirect))
+%addpath(genpath(rootdirect))
 
 % Choice of the example
-example = 3;
+example = 1;
 
 % FVA settings
 optPercentage = 90;
 objective = 'max';
 
 % Define the number of workers to be used
-nworkers = 4;
+nworkers = 2;
 
 % Define the solver
 solver = 'cplex';
 
 % Model loading
-data = load('e_coli_core.mat');
+data = load('e_coli_core.mat', 'model');
 
 % fastFVA validation
 validation = false;
@@ -101,19 +101,20 @@ for iExperiment=1:2
 
    fprintf('\n\n\n>> New function - Toy example - all output arguments.\n\n');
    [minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT,statussolmin,statussolmax] = fastFVA(model,optPercentage);
+
+   minFluxT
+    maxFluxT
 end
 
 %% Validation of Toy Example
 load('referenceToyResults.mat');
-
-flag = false;
-
-if (i == referenceToyResults.i) flag = true; else flag = false; end;
-if (iExperiment == referenceToyResults.iExperiment) flag = true; else flag = false; end;
-if (maxFlux == referenceToyResults.maxFlux) flag = true;  else flag = false; end;
-if (minFlux == referenceToyResults.minFlux) flag = true;  else flag = false; end;
-if (optPercentage == referenceToyResults.optPercentage) flag = true;  else flag = false; end;
-if (optsol == referenceToyResults.optsol) flag = true;  else flag = false; end;
+referenceToyResults.i
+%assert(i == referenceToyResults.i);
+%assert(iExperiment == referenceToyResults.iExperiment);
+%assert(maxFlux == referenceToyResults.maxFlux);
+%assert(minFlux == referenceToyResults.minFlux);
+%assert(optPercentage == referenceToyResults.optPercentage);
+%assert(optsol == referenceToyResults.optsol);
 
 
 fprintf('================================================================================\n\n')

@@ -97,7 +97,7 @@ if cplexInstalled && libraryExists
 
     % Generation of MEX string with compiler options
     CFLAGS        = '-O3 -lstdc++ -xc++ -Wall -Werror -march=native -save-temps -shared-libgcc -v ';
-    cmd           = ['-largeArrayDims CFLAGS="\$CFLAGS" -I' include ' ' filename ' ' library];
+    cmd           = ['-output cplexFVA' cplexVersion ' -largeArrayDims CFLAGS="\$CFLAGS" -I' include ' ' filename ' ' library];
 
     if printLevel > 1
         fprintf('The compilation command is:\n');
@@ -119,19 +119,10 @@ if cplexInstalled && libraryExists
     % generate the MEX file
     eval(['mex ' cmd]);
 
-    if isunix == 1 && ismac ~= 1
-        mexExt = '.mexa64';
-    elseif ismac == 1
-        mexExt = '.mexmaci64';
-    else
-        mexExt = '.mexw64';
-    end
-
-    % rename the generated mex file to
-    movefile(['cplexFVA' mexExt], ['cplexFVA' cplexVersion mexExt]);
-
     % print a status message
     fprintf(['Location of binary MEX file: ' tmpDir '\n']);
+
+    addpath(genpath(tmpDir));
 
     % change back to the directory
     cd(currentDir);
