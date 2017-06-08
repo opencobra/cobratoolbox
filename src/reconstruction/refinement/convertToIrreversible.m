@@ -3,8 +3,7 @@ function [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(mo
 % a defined list of reversible reactions.
 %
 % USAGE:
-%
-%    [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model, sRxns)
+%    [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model, varargin)
 %
 % INPUT:
 %    model:         COBRA model structure
@@ -32,6 +31,17 @@ function [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(mo
 %   these changes with a '1' corresponding to separated forward reactions.
 %   Reactions entirely in the negative direction will be reversed and
 %   appended with '_r'.
+% EXAMPLE:
+%
+%    To convert a whole model to an irreversible model:
+%    [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model)
+%
+%    To Convert only Reactions R1, R2 and R15:
+%    reactionsToRevert = {'R1', 'R2', 'R15'};
+%    [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model, 'sRxns', reactionsToRevert )
+%
+%    To order the reactions such that backward follows forward reaction:
+%    [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model, 'orderReactions', true)
 %
 % .. Authors:
 %       - written by Gregory Hannum 7/9/05
