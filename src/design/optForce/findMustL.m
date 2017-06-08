@@ -1,13 +1,11 @@
-function [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW,...
-    constrOpt, runID, outputFolder, outputFileName, printExcel, ...
-    printText, printReport, keepInputs, verbose)
+function [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargin)
 % This function runs the second step of optForce, that is to solve a
 % bilevel mixed integer linear programming  problem to find a first order
 % MustL set. 
 %
 % USAGE: 
 %        
-%         [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW)
+%    [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW, varargin)
 %
 % INPUTS:
 %    model:                     Type: structure (COBRA model)
@@ -146,88 +144,57 @@ function [mustLSet, posMustL] = findMustL(model, minFluxesW, maxFluxesW,...
 %
 % .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
-if nargin < 1 || isempty(model) %inputs handling
-    error('OptForce: No model specified');
-else
-    if ~isfield(model, 'S'), error('OptForce: Missing field S in model');  end
-    if ~isfield(model, 'rxns'), error('OptForce: Missing field rxns in model');  end
-    if ~isfield(model, 'mets'), error('OptForce: Missing field mets in model');  end
-    if ~isfield(model, 'lb'), error('OptForce: Missing field lb in model');  end
-    if ~isfield(model, 'ub'), error('OptForce: Missing field ub in model');  end
-    if ~isfield(model, 'c'), error('OptForce: Missing field c in model'); end
-    if ~isfield(model, 'b'), error('OptForce: Missing field b in model'); end
-end
-if nargin < 2 || isempty(maxFluxesW)
-    error('OptForce: Minimum values for reactions in wild-type strain not specified');
-else
-    if ~isa(minFluxesW, 'double'); error('OptForce: Minimum values must be a double array');end;
-end
-if nargin < 3 || isempty(maxFluxesW)
-    error('OptForce: Maximum values for reactions in wild-type strain not specified');
-else
-    if ~isa(maxFluxesW, 'double'); error('OptForce: Maximum values must be a double array');end;
-end
-if nargin < 4
-    constrOpt = {};
-else
-    %check correct fields and correct size.
-    if ~isfield(constrOpt, 'rxnList'), error('OptForce: Missing field rxnList in constrOpt');  end
-    if ~isfield(constrOpt, 'values'), error('OptForce: Missing field values in constrOpt');  end
+optionalParameters = {'constrOpt', 'runID', 'outputFolder', 'outputFileName',  ...
+    'printExcel', 'printText', 'printReport', 'keepInputs', 'verbose'};
+
+if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))   
+      
+    tempargin = cell(1,2*(numel(varargin)));
+    for i = 1:numel(varargin)
+        
+        tempargin{2*(i-1)+1} = optionalParameters{i};
+        tempargin{2*(i-1)+2} = varargin{i};
+    end
+    varargin = tempargin;
     
-    if length(constrOpt.rxnList) == length(constrOpt.values)
-        if size(constrOpt.rxnList, 1) > size(constrOpt.rxnList,2); constrOpt.rxnList = constrOpt.rxnList'; end;
-        if size(constrOpt.values, 1) > size(constrOpt.values,2); constrOpt.values = constrOpt.values'; end;
-    else
-        error('OptForce: Incorrect size of fields in constrOpt');
-    end
-    if length(intersect(constrOpt.rxnList, model.rxns)) ~= length(constrOpt.rxnList);
-        error('OptForce: identifiers for reactions in constrOpt.rxnList must be in model.rxns');
-    end
 end
-if nargin < 5 || isempty(runID)
-    hour = clock; runID = ['run-' date '-' num2str(hour(4)) 'h' '-' num2str(hour(5)) 'm'];
-else
-    if ~ischar(runID); error('OptForce: runID must be an string');  end
-end
-if nargin < 6 || isempty(outputFolder)
-    outputFolder = 'OutputsFindMustL';
-else
-    if ~ischar(outputFolder); error('OptForce: outputFolder must be an string');  end
-end
-if nargin < 7 || isempty(outputFileName)
-    outputFileName = 'MustLSet';
-else
-    if ~ischar(outputFileName); error('OptForce: outputFileName must be an string');  end
-end
-if nargin < 8
-    printExcel = 1;
-else
-    if ~isnumeric(printExcel); error('OptForce: printExcel must be a number');  end
-    if printExcel ~= 0 && printExcel ~= 1; error('OptForce: printExcel must be 0 or 1');  end
-end
-if nargin < 9
-    printText = 1;
-else
-    if ~isnumeric(printText); error('OptForce: printText must be a number');  end
-    if printText ~= 0 && printText ~= 1; error('OptForce: printText must be 0 or 1');  end
-end
-if nargin < 10
-    printReport = 1;
-else
-    if ~isnumeric(printReport); error('OptForce: printReport must be a number');  end
-    if printReport ~= 0 && printReport ~= 1; error('OptForce: printReportl must be 0 or 1');  end
-end
-if nargin < 11
-    keepInputs = 1;
-else
-    if ~isnumeric(keepInputs); error('OptForce: keepInputs must be a number');  end
-    if keepInputs ~= 0 && keepInputs ~= 1; error('OptForce: keepInputs must be 0 or 1');  end
-end
-if nargin < 12
-    verbose = 0;
-else
-    if ~isnumeric(verbose); error('OptForce: verbose must be a number');  end
-    if verbose ~= 0 && verbose ~= 1; error('OptForce: verbose must be 0 or 1');  end
+
+parser = inputParser();
+parser.addRequired('model',@(x) isstruct(x) && isfield(x, 'S') && isfield(model, 'rxns')...
+    && isfield(model, 'mets') && isfield(model, 'lb') && isfield(model, 'ub') && isfield(model, 'b')...
+    && isfield(model, 'c'))
+parser.addRequired('minFluxesW',@isnumeric)
+parser.addRequired('maxFluxesW',@isnumeric)
+parser.addParameter('constrOpt', struct('rxnList', {{}}, 'values', []), @(x) isstruct(x) && isfield(x, 'rxnList') && isfield(x, 'values') ...
+    && length(x.rxnList) == length(x.values) && length(intersect(x.rxnList, model.rxns)) == length(x.rxnList))
+hour = clock; defaultRunID = ['run-' date '-' num2str(hour(4)) 'h' '-' num2str(hour(5)) 'm'];
+parser.addParameter('runID', defaultRunID, @(x) ischar(x))
+parser.addParameter('outputFolder', 'OutputsFindMustL', @(x) ischar(x))
+parser.addParameter('outputFileName', 'MustLSet', @(x) ischar(x))
+parser.addParameter('printExcel', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('printText', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('printReport', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('keepInputs', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('verbose', 1, @(x) isnumeric(x) || islogical(x));
+
+parser.parse(model, minFluxesW, maxFluxesW, varargin{:})
+model = parser.Results.model;
+minFluxesW = parser.Results.minFluxesW;
+maxFluxesW = parser.Results.maxFluxesW;
+constrOpt= parser.Results.constrOpt;
+runID = parser.Results.runID;
+outputFolder = parser.Results.outputFolder;
+outputFileName = parser.Results.outputFileName;
+printExcel = parser.Results.printExcel;
+printText = parser.Results.printText;
+printReport = parser.Results.printReport;
+keepInputs = parser.Results.keepInputs;
+verbose = parser.Results.verbose;
+
+% correct size of constrOpt
+if ~isempty(constrOpt.rxnList)
+    if size(constrOpt.rxnList, 1) > size(constrOpt.rxnList,2); constrOpt.rxnList = constrOpt.rxnList'; end;
+    if size(constrOpt.values, 1) > size(constrOpt.values,2); constrOpt.values = constrOpt.values'; end;
 end
 
 %current path
@@ -404,7 +371,7 @@ end
 
 function bilevelMILPproblem = buildBilevelMILPproblemForFindMustL(model, can, must, minFluxesW, constrOpt)
 
-if nargin<5 || isempty(constrOpt)
+if nargin<5 || isempty(constrOpt.rxnList)
     ind_ic = [];
     b_ic = [];
     sel_ic = zeros(length(model.rxns),1);
@@ -416,7 +383,7 @@ else
     %sort for rxn index
     [sorted, ind_sorted] = sort(ind_a);
     ind_ic = sorted;
-    b_ic = aux(ind_sorted);
+    b_ic = aux(ind_sorted); if size(b_ic, 1) > size(b_ic, 2); b_ic = b_ic'; end; 
     sel_ic = zeros(length(model.rxns), 1);
     sel_ic(ind_ic) = 1;
     sel_ic_b = zeros(length(model.rxns), 1);

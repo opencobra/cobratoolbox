@@ -118,12 +118,16 @@ constrOpt = struct('rxnList', {{'EX_gluc', 'R75', 'EX_suc'}}, 'values',[ -100, 0
 % runID = 'TestOptForce' // outputFolder = '' // outputFileName = '' //
 % printExcel = 1 // printText = 1 // printReport = 1 // keepInputs = 1 //
 % verbose = 0
-[mustLSet, pos_mustL] = findMustL(model, minFluxesW, maxFluxesW, constrOpt, runID, '', '', 1, 1, 1, 1, 1);
 
+[mustLSet, pos_mustL] = findMustL(model, minFluxesW, maxFluxesW, 'constrOpt', constrOpt, ...
+    'runID', runID, 'outputFolder', 'OutputsFindMustL', 'outputFileName', 'MustL' , 'printExcel', 1, 'printText', 1, ...
+    'printReport', 1, 'keepInputs', 1, 'verbose', 1);
 % We display the reactions that belongs to the mustL set
 disp(mustLSet)
 
-[mustUSet, pos_mustU] = findMustU(model, minFluxesW, maxFluxesW, constrOpt, runID, '', '', 1, 1, 1, 1, 1);
+[mustUSet, pos_mustU] = findMustU(model, minFluxesW, maxFluxesW, 'constrOpt', constrOpt, ...
+    'runID', runID, 'outputFolder', 'OutputsFindMustU', 'outputFileName', 'MustU' , 'printExcel', 1, 'printText', 1, ...
+    'printReport', 1, 'keepInputs', 1, 'verbose', 1);
 % We display the reactions that belongs to the mustU set
 disp(mustUSet)
 
@@ -137,24 +141,25 @@ exchangeRxns = model.rxns(cellfun(@isempty, strfind(model.rxns, 'EX_')) == 0);
 excludedRxns = unique([mustUSet; mustLSet; exchangeRxns]);
 
 % Now, we run the functions for finding second order must sets
-[mustUU, pos_mustUU, mustUU_linear, pos_mustUU_linear] = findMustUU(model, minFluxesW, ...
-    maxFluxesW, constrOpt, excludedRxns, runID, '',...
-    '', 1, 1, 1, 1, 1);
+[mustUU, pos_mustUU, mustUU_linear, pos_mustUU_linear] = findMustUU(model, minFluxesW, maxFluxesW, 'constrOpt', constrOpt, ...
+    'excludedRxns', excludedRxns,'runID', runID, 'outputFolder', 'OutputsFindMustUU', 'outputFileName', 'MustUU' , 'printExcel', 1, 'printText', 1, ...
+    'printReport', 1, 'keepInputs', 1, 'verbose', 1);
+
 % We display the reactions that belongs to the mustUU set
 disp(mustUU)
 
-[mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLL(model, minFluxesW, ...
-    maxFluxesW, constrOpt, excludedRxns, runID, '',...
-    '', 1, 1, 1, 1, 1);
+[mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLL(model, minFluxesW, maxFluxesW, 'constrOpt', constrOpt, ...
+    'excludedRxns', excludedRxns,'runID', runID, 'outputFolder', 'OutputsFindMustLL', 'outputFileName', 'MustLL' , 'printExcel', 1, 'printText', 1, ...
+    'printReport', 1, 'keepInputs', 1, 'verbose', 1);
 
 % We display the reactions that belongs to the mustLL set. In this case,
 % MustLL is an empty array because no reaction was found in the mustLL set.
 disp(mustLL)
 
 
-[mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustUL(model, minFluxesW, ...
-    maxFluxesW, constrOpt, excludedRxns, runID, '',...
-    '', 1, 1, 1, 1, 1);
+[mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustUL(model, minFluxesW, maxFluxesW, 'constrOpt', constrOpt, ...
+    'excludedRxns', excludedRxns,'runID', runID, 'outputFolder', 'OutputsFindMustUL', 'outputFileName', 'MustUL' , 'printExcel', 1, 'printText', 1, ...
+    'printReport', 1, 'keepInputs', 1, 'verbose', 1);
 %We display the reactions that belongs to the mustUL set. In this case,
 %MustUL is an empty array because no reaction was found in the mustUL set.
 disp(mustUL)
@@ -169,7 +174,6 @@ disp(mustUL)
 % mustL set as the union of the reactions that must be downregulated in
 % both first order and second order must sets
 constrOpt = struct('rxnList', {{'EX_gluc','R75'}}, 'values', [-100,0]);
-excludedRxns={};
 k = 1;
 nSets = 1;
 targetRxn = 'EX_suc';
@@ -177,7 +181,10 @@ mustU = unique(union(mustUSet, mustUU));
 mustL = unique(union(mustLSet, mustLL));
 
 % we run optForce
-[optForceSets, posOptForceSets, typeRegOptForceSets, flux_optForceSets] = optForce(model,targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, nSets, constrOpt, excludedRxns, runID, '', '', 1, 1, 1, 1, 1);
+[optForceSets, posOptForceSets, typeRegOptForceSets, flux_optForceSets] = optForce(model,targetRxn, mustU, mustL, ...
+    minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, 'k', k, 'nSets', nSets, 'constrOpt', constrOpt, ...
+    'runID', runID, 'outputFolder', 'OutputsOptForce', 'outputFileName', 'OptForce', 'printExcel', 1, 'printText', 1, ...
+    'printReport', 1, 'keepInputs', 1, 'verbose', 1);
 % We display the reactions found by optForce
 disp(optForceSets)
 % The reaction found was "SUCt", i.e. a transporter for succinate (a very
@@ -191,8 +198,10 @@ k = 2;
 nSets = 20;
 runID = 'TestOptForceM2';
 excludedRxns = struct('rxnList', {{'SUCt'}}, 'typeReg','U');
-[optForceSets, posOptForceSets, typeRegOptForceSets, flux_optForceSets] = optForce(model,targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, nSets, constrOpt, excludedRxns, runID, '', '', 1, 1, 1, 1, 1);
-
+[optForceSets, posOptForceSets, typeRegOptForceSets, flux_optForceSets] = optForce(model,targetRxn, mustU, mustL, ...
+    minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, 'k', k, 'nSets', nSets, 'constrOpt', constrOpt, 'excludedRxns', excludedRxns, ...
+    'runID', runID, 'outputFolder', 'OutputsOptForce', 'outputFileName', 'OptForce', 'printExcel', 1, 'printText', 1, ...
+    'printReport', 1, 'keepInputs', 1, 'verbose', 1);
 %We display the reactions found by optForce
 disp(optForceSets)
 

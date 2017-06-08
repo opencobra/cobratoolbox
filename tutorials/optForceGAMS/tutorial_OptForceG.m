@@ -120,10 +120,14 @@ disp(solvers)
 % outputFileName = '' // printExcel = 1 // printText = 1 // printReport = 1
 % // keepInputs = 1 // keepGamsOutputs = 1 // verbose = 0
 
-[mustLSet, pos_mustL] = findMustLWithGAMS(model, minFluxes_WT, maxFluxes_WT, constrOpt, 'cplex', runID, '', '', 1, 1, 1, 1, 1, 1);
-% We display the reactions that belongs to the mustL set
+[mustLSet, pos_mustL] = findMustLWithGAMS(model, minFluxes_WT, maxFluxes_WT, 'constrOpt', constrOpt, ...
+'solverName', 'cplex', 'runID', runID, 'outputFolder', 'OutputsFindMustL', 'outputFileName', 'MustL', ...
+'printExcel', 1, 'printText', 1, 'printReport', 1, 'keepInputs', 1, 'keepGamsOutputs', 1, 'verbose', 1);
 disp(mustLSet)
-[mustUSet, pos_mustU] = findMustUWithGAMS(model, minFluxes_WT, maxFluxes_WT, constrOpt, 'cplex', runID, '', '', 1, 1, 1, 1, 1, 1);
+
+[mustUSet, pos_mustU] = findMustUWithGAMS(model, minFluxes_WT, maxFluxes_WT, 'constrOpt', constrOpt, ...
+'solverName', 'cplex', 'runID', runID, 'outputFolder', 'OutputsFindMustU', 'outputFileName', 'MustU', ...
+'printExcel', 1, 'printText', 1, 'printReport', 1, 'keepInputs', 1, 'keepGamsOutputs', 1, 'verbose', 1);
 % We display the reactions that belongs to the mustU set
 disp(mustUSet)
 
@@ -138,22 +142,25 @@ mustSetFirstOrder = unique([mustUSet; mustLSet]);
 
 % Now, we run the functions for finding second order must sets
 
-[mustUU, pos_mustUU, mustUU_linear, pos_mustUU_linear] = findMustUUWithGAMS(model,...
-    minFluxes_WT, maxFluxes_WT, constrOpt, excludedRxns, mustSetFirstOrder, 'cplex',...
-    runID, '', '', 1, 1, 1, 1, 1, 1);
+[mustUU, pos_mustUU, mustUU_linear, pos_mustUU_linear] = findMustUUWithGAMS(model, minFluxes_WT, maxFluxes_WT, ...
+     'constrOpt', constrOpt, 'excludedRxns', excludedRxns, 'mustSetFirstOrder', mustSetFirstOrder, 'solverName', 'cplex',...
+    'runID', runID, 'outputFolder', 'OutputsFindMustUU', 'outputFileName', 'MustUU' , 'printExcel', 1, 'printText', 1, ...
+    'printReport', 1, 'keepInputs', 1, 'keepGamsOutputs', 1, 'verbose', 1);
 % We display the reactions that belongs to the mustUU set
 disp(mustUU)
 
-[mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWithGAMS(model,...
-    minFluxes_WT, maxFluxes_WT, constrOpt, excludedRxns, mustSetFirstOrder, 'cplex',...
-    runID, '', '', 1, 1, 1, 1, 1, 1);
+[mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWithGAMS(model, minFluxes_WT, maxFluxes_WT, ...
+     'constrOpt', constrOpt, 'excludedRxns', excludedRxns, 'mustSetFirstOrder', mustSetFirstOrder, 'solverName', 'cplex',...
+    'runID', runID, 'outputFolder', 'OutputsFindMustLL', 'outputFileName', 'MustLL' , 'printExcel', 1, 'printText', 1, ...
+    'printReport', 1, 'keepInputs', 1, 'keepGamsOutputs', 1, 'verbose', 1);
 % We display the reactions that belongs to the mustLL set. In this case,
 % MustLL is an empty array because no reaction was found in the mustLL set.
 disp(mustLL)
 
-[mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustULWithGAMS(model,...
-    minFluxes_WT, maxFluxes_WT, constrOpt, excludedRxns, mustSetFirstOrder, 'cplex',...
-    runID, '', '', 1, 1, 1, 1, 1, 1);
+[mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = findMustULWithGAMS(model, minFluxes_WT, maxFluxes_WT, ...
+     'constrOpt', constrOpt, 'excludedRxns', excludedRxns, 'mustSetFirstOrder', mustSetFirstOrder, 'solverName', 'cplex',...
+    'runID', runID, 'outputFolder', 'OutputsFindMustUL', 'outputFileName', 'MustUL' , 'printExcel', 1, 'printText', 1, ...
+    'printReport', 1, 'keepInputs', 1, 'keepGamsOutputs', 1, 'verbose', 1);
 
 %We display the reactions that belongs to the mustUL set. In this case,
 %MustUL is an empty array because no reaction was found in the mustUL set.
@@ -170,13 +177,16 @@ disp(mustUL)
 
 % run optForce
 constrOpt = struct('rxnList', {{'EX_gluc','R75'}}, 'values', [-100,0]);
-excludedRxns={};
 k = 1;
-n_sets = 1;
+nSets = 1;
 targetRxn = 'EX_suc';
 mustU = unique(union(mustUSet, mustUU));
 mustL = unique(union(mustLSet, mustLL));
-[optForceSets, posOptForceSets, typeRegOptForceSets] = optForceWithGAMS(model, targetRxn, mustU, mustL, minFluxes_WT, maxFluxes_WT, minFluxes_MT, maxFluxes_MT,k,n_sets,constrOpt,excludedRxns,runID,'','','cplex',1,1,1,1,1,1);
+[optForceSets, posOptForceSets, typeRegOptForceSets] = optForceWithGAMS(model, targetRxn, mustU, mustL, minFluxes_WT, ...
+    maxFluxes_WT, minFluxes_MT, maxFluxes_MT, 'k', k, 'nSets', nSets, 'constrOpt', constrOpt, ...
+    'runID', runID, 'outputFolder', 'OutputsOptForce', 'outputFileName', 'OptForce', 'solverName', 'cplex', 'printExcel', 1, 'printText', 1, ...
+    'printReport', 1, 'keepInputs', 1, 'keepGamsOutputs', 1,'verbose', 1);
+
 % We display the reactions found by optForce
 disp(optForceSets)
 
@@ -188,10 +198,13 @@ disp(optForceSets)
 % folders
 
 k = 2;
-n_sets = 20;
+nSets = 20;
 runID = 'TestOptForce2';
 excludedRxns = struct('rxnList', {{'SUCt'}}, 'typeReg','U');
-[optForceSets, posOptForceSets, typeRegOptForceSets] = optForceWithGAMS(model, targetRxn, mustU, mustL, minFluxes_WT, maxFluxes_WT, minFluxes_MT, maxFluxes_MT,k,n_sets,constrOpt,excludedRxns,runID,'','','cplex',1,1,1,1,1,1);
+[optForceSets, posOptForceSets, typeRegOptForceSets] = optForceWithGAMS(model, targetRxn, mustU, mustL, minFluxes_WT, ...
+    maxFluxes_WT, minFluxes_MT, maxFluxes_MT, 'k', k, 'nSets', nSets, 'constrOpt', constrOpt, 'excludedRxns', excludedRxns, ...
+    'runID', runID, 'outputFolder', 'OutputsOptForce', 'outputFileName', 'OptForce', 'solverName', 'cplex', 'printExcel', 1, 'printText', 1, ...
+    'printReport', 1, 'keepInputs', 1, 'keepGamsOutputs', 1,'verbose', 1);
 %We display the reactions found by optForce
 disp(optForceSets)
 

@@ -1,7 +1,4 @@
-function [optForceSets, posOptForceSets, typeRegOptForceSets, flux_optForceSets] = optForce(model,...
-    targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k,...
-    nSets, constrOpt, excludedRxns, runID, outputFolder, outputFileName,... 
-    printExcel, printText, printReport, keepInputs, verbose)
+function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] = optForce(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, varargin)
 % This function runs the third step of optForce that is to solve a
 % bilevel mixed integer linear programming problem to find sets of
 % interventions that lead to an increased production of a particular target
@@ -9,10 +6,7 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, flux_optForceSets]
 %
 % USAGE: 
 %
-%    [optForceSets, posOptForceSets, typeRegOptForceSets, flux_optForceSets] = optForce(model,...
-%    targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k,...
-%    nSets, constrOpt, excludedRxns, runID, outputFolder, outputFileName,... 
-%    printExcel, printText, printReport, keepInputs, verbose)
+%    [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] = optForce(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, varargin)
 %
 % INPUTS:
 %    model:                  Type: structure (COBRA model)
@@ -37,24 +31,12 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, flux_optForceSets]
 %                            Description: List of reactions in the MustU set
 %                            This input can be obtained by running the
 %                            script findMustU.m
-%                            Alternatively, there is a second usage of this
-%                            input:
-%                            Type: string.
-%                            Description: name of the .xls file containing
-%                            the list of the reactions in the MustU set
-%                            E.g. first usage: mustU={'R21_f';'R22_f'};
-%                            E.g. second usage: mustU='MustU';
+%                            E.g. mustU={'R21_f';'R22_f'};
 %    mustL:                  Type: cell array.
 %                            Description: List of reactions in the MustL set
 %                            This input can be obtained by running the
 %                            script findMustL.m
-%                            Alternatively, there is a second usage of this
-%                            input:
-%                            Type: string.
-%                            Description: name of the .xls file containing
-%                            the list of the reactions in the MustU set
 %                            E.g. first usage: mustL={'R11_f';'R26_f'};
-%                            E.g. second usage: mustL='MustL';
 %    minFluxesW:             Type: double array of size n_rxns x1
 %                            Description: Minimum fluxes for each
 %                            reaction in the model for wild-type strain.
@@ -195,6 +177,11 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, flux_optForceSets]
 %                                      ____________    ______________
 %                            set 1   | upregulation    downregulation
 %                            set 2   | upregulation    knockout
+%    fluxOptForceSets:       Type: double matrix
+%                            Description: Matrix of size n +m, where
+%                            n = number of sets found and m = size of sets
+%                            found (k). The number in (i,j) is the flux
+%                            achieved for the reaction in optForceSets(i,j)
 %    outputFileName.xls:     Type: file
 %                            Description: file containing 11 columns.
 %                            C1: Number of invervetions (k)
@@ -231,171 +218,78 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, flux_optForceSets]
 %
 % .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
-if nargin < 1 || isempty(model) % inputs handling
-    error('OptForce: No model specified');
-else
-    if ~isfield(model,'S'), error('OptForce: Missing field S in model');  end
-    if ~isfield(model,'rxns'), error('OptForce: Missing field rxns in model');  end
-    if ~isfield(model,'mets'), error('OptForce: Missing field mets in model');  end
-    if ~isfield(model,'lb'), error('OptForce: Missing field lb in model');  end
-    if ~isfield(model,'ub'), error('OptForce: Missing field ub in model');  end
-    if ~isfield(model,'c'), error('OptForce: Missing field c in model'); end
-    if ~isfield(model,'b'), error('OptForce: Missing field b in model'); end
-end
+optionalParameters = {'k', 'nSets', 'constrOpt', 'excludedRxns', 'runID', 'outputFolder', 'outputFileName',  ...
+    'printExcel', 'printText', 'printReport', 'keepInputs', 'verbose'};
 
-if nargin < 2 || isempty(targetRxn)
-    error('OptForce: No target specified');
-else
-    if ~ischar(targetRxn)
+if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))   
+      
+    tempargin = cell(1,2*(numel(varargin)));
+    for i = 1:numel(varargin)
+        
+        tempargin{2*(i-1)+1} = optionalParameters{i};
+        tempargin{2*(i-1)+2} = varargin{i};
     end
-end
-
-if nargin < 3 || isempty(mustU);
-    error('OptForce: No MustU set specified');
-else
-    if iscell(mustU)
-    elseif ischar(mustU)
-        [~,mustU] = xlsread(mustU);
-    else
-        error('OptForce: Incorrect format for input MustU') ;
-    end
-end
-
-if nargin < 4 || isempty(mustL);
-    error('OptForce: No MustU set specified')
-else
-    if iscell(mustL)
-    elseif ischar(mustL)
-        [~,mustL] = xlsread(mustL);
-    else
-        error('OptForce: Incorrect format for input MustU');
-    end
-end
-
-if nargin < 5 || isempty(minFluxesW);
-    error('OptForce: input minFluxesW not specified');
-else
-    if length(minFluxesW) ~= length(model.rxns)
-        error('OptForce: wrong length of minFluxesW');
-    end
-end
-
-if nargin < 6 || isempty(maxFluxesW);
-    error('OptForce: input maxFluxesW not specified');
-else
-    if length(maxFluxesW) ~= length(model.rxns)
-        error('OptForce: wrong length of maxFluxesW');
-    end
-end
-
-if nargin < 7 || isempty(minFluxesM);
-    error('OptForce: input minFluxesM not specified');
-else
-    if length(minFluxesM) ~= length(model.rxns)
-        error('OptForce: wrong length of minFluxesM');
-    end
-end
-
-if nargin < 8 || isempty(maxFluxesM);
-    error('OptForce: input maxFluxesM not specified');
-else
-    if length(maxFluxesM)~=length(model.rxns)
-        error('OptForce: wrong length of maxFluxesM');
-    end
-end
-
-if nargin < 9 || isempty(k)
-    k = 1;
-else
-    if ~isnumeric(k)
-        error('OptForce: wrong class for k');
-    end
-end
-
-if nargin < 10 || isempty(nSets)
-    nSets = 1;
-else
-    if ~isnumeric(nSets)
-        error('OptForce: wrong class for nSets');
-    end
-end
-
-if nargin < 11
-    constrOpt={};
-else
-    if ~isstruct(constrOpt); error('OptForce: Incorrect format for input constrOpt'); end;
-    %check correct fields and correct size.
-    if ~isfield(constrOpt,'rxnList'), error('OptForce: Missing field rxnList in constrOpt');  end
-    if ~isfield(constrOpt,'values'), error('OptForce: Missing field values in constrOpt');  end
+    varargin = tempargin;
     
-    if length(constrOpt.rxnList) == length(constrOpt.values)
-        if size(constrOpt.rxnList,1) > size(constrOpt.rxnList,2); constrOpt.rxnList = constrOpt.rxnList'; end;
-        if size(constrOpt.values,1) > size(constrOpt.values,2); constrOpt.values = constrOpt.values'; end;
-    else
-        error('OptForce: Incorrect size of fields in constrOpt');
-    end
 end
 
-if nargin < 12 || isempty(excludedRxns)
-    excludedRxns = struct('rxnList', {{}}, 'values', []);
-else
-    if ~isstruct(excludedRxns); error('OptForce: Incorrect format for input excludedRxns'); end;
-    %check correct fields and correct size.
-    if ~isfield(excludedRxns,'rxnList'), error('OptForce: Missing field rxnList in excludedRxns');  end
-    if ~isfield(excludedRxns,'typeReg'), error('OptForce: Missing field typeReg in excludedRxns');  end
-    
-    if length(excludedRxns.rxnList) == length(excludedRxns.typeReg)
-        if size(excludedRxns.rxnList,1) > size(excludedRxns.rxnList,2); excludedRxns.rxnList = excludedRxns.rxnList'; end;
-        if size(excludedRxns.typeReg,1) > size(excludedRxns.typeReg,2); excludedRxns.typeReg = excludedRxns.typeReg'; end;
-    else
-        error('OptForce: Incorrect size of fields in excludedRxns');
-    end
-end
+parser = inputParser();
+parser.addRequired('model', @(x) isstruct(x) && isfield(x, 'S') && isfield(model, 'rxns')...
+    && isfield(model, 'mets') && isfield(model, 'lb') && isfield(model, 'ub') && isfield(model, 'b')...
+    && isfield(model, 'c'))
+parser.addRequired('targetRxn', @ischar)
+parser.addRequired('mustU', @iscell)
+parser.addRequired('mustL', @iscell)
+parser.addRequired('minFluxesW', @isnumeric)
+parser.addRequired('maxFluxesW', @isnumeric)
+parser.addRequired('minFluxesM', @isnumeric)
+parser.addRequired('maxFluxesM', @isnumeric)
+parser.addParameter('k', 1, @isnumeric)
+parser.addParameter('nSets', 1, @isnumeric)
+parser.addParameter('constrOpt', struct('rxnList', {{}}, 'values', []) ,@(x) isstruct(x) && isfield(x, 'rxnList') && isfield(x, 'values') ...
+    && length(x.rxnList) == length(x.values) && length(intersect(x.rxnList, model.rxns)) == length(x.rxnList))
+parser.addParameter('excludedRxns', struct('rxnList', {{}}, 'typeReg', ''),@(x) isstruct(x) && isfield(x, 'rxnList') && isfield(x, 'typeReg') ...
+    && length(x.rxnList) == length(x.typeReg) && length(intersect(x.rxnList, model.rxns)) == length(x.rxnList))
+hour = clock; defaultRunID = ['run-' date '-' num2str(hour(4)) 'h' '-' num2str(hour(5)) 'm'];
+parser.addParameter('runID', defaultRunID, @(x) ischar(x))
+parser.addParameter('outputFolder', 'OutputsOptForce', @(x) ischar(x))
+parser.addParameter('outputFileName', 'OptForce', @(x) ischar(x))
+parser.addParameter('printExcel', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('printText', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('printReport', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('keepInputs', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('verbose', 1, @(x) isnumeric(x) || islogical(x));
 
-if nargin < 13 || isempty(runID)
-    hour=clock; runID = ['run-' date '-' num2str(hour(4)) 'h' '-' num2str(hour(5)) 'm'];
-else
-    if ~ischar(runID); error('OptForce: runID must be an string');  end
+parser.parse(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, varargin{:})
+model = parser.Results.model;
+targetRxn = parser.Results.targetRxn;
+mustU = parser.Results.mustU; 
+mustL = parser.Results.mustL;
+minFluxesW = parser.Results.minFluxesW;
+maxFluxesW = parser.Results.maxFluxesW;
+minFluxesM = parser.Results.minFluxesM;
+maxFluxesM = parser.Results.maxFluxesM;
+k = parser.Results.k;
+nSets = parser.Results.nSets;
+constrOpt= parser.Results.constrOpt;
+excludedRxns= parser.Results.excludedRxns;
+runID = parser.Results.runID;
+outputFolder = parser.Results.outputFolder;
+outputFileName = parser.Results.outputFileName;
+printExcel = parser.Results.printExcel;
+printText = parser.Results.printText;
+printReport = parser.Results.printReport;
+keepInputs = parser.Results.keepInputs;
+verbose = parser.Results.verbose;
+
+% correct size of constrOpt
+if ~isempty(constrOpt.rxnList)
+    if size(constrOpt.rxnList, 1) > size(constrOpt.rxnList,2); constrOpt.rxnList = constrOpt.rxnList'; end;
+    if size(constrOpt.values, 1) > size(constrOpt.values,2); constrOpt.values = constrOpt.values'; end;
 end
-if nargin < 14 || isempty(outputFolder)
-    outputFolder='OutputsOptForce';
-else
-    if ~ischar(outputFolder); error('OptForce: outputFolder must be an string');  end
-end
-if nargin < 15 || isempty(outputFileName)
-    outputFileName = 'OptForce';
-else
-    if ~ischar(outputFileName); error('OptForce: outputFileName must be an string');  end
-end
-if nargin < 16
-    printExcel=1;
-else
-    if ~isnumeric(printExcel); error('OptForce: printExcel must be a number');  end
-    if printExcel ~= 0 && printExcel ~= 1; error('OptForce: printExcel must be 0 or 1');  end
-end
-if nargin < 17
-    printText=1;
-else
-    if ~isnumeric(printText); error('OptForce: printText must be a number');  end
-    if printText ~= 0 && printText ~= 1; error('OptForce: printText must be 0 or 1');  end
-end
-if nargin < 18
-    printReport=1;
-else
-    if ~isnumeric(printReport); error('OptForce: printReport must be a number');  end
-    if printReport ~= 0 && printReport ~= 1; error('OptForce: printReportl must be 0 or 1');  end
-end
-if nargin < 19
-    keepInputs=1;
-else
-    if ~isnumeric(keepInputs); error('OptForce: keepInputs must be a number');  end
-    if keepInputs ~= 0 && keepInputs ~= 1; error('OptForce: keepInputs must be 0 or 1');  end
-end
-if nargin < 20
-    verbose=0;
-else
-    if ~isnumeric(verbose); error('OptForce: verbose must be a number');  end
-    if verbose ~= 0 && verbose ~= 1; error('OptForce: verbose must be 0 or 1');  end
+if ~isempty(excludedRxns.rxnList)
+    if size(excludedRxns.rxnList,1) > size(excludedRxns.rxnList,2); excludedRxns.rxnList = excludedRxns.rxnList'; end;
+    if size(excludedRxns.typeReg,1) > size(excludedRxns.typeReg,2); excludedRxns.typeReg = excludedRxns.typeReg'; end;
 end
 
 %current path
@@ -449,10 +343,10 @@ if printReport
     end
     %print excludad reactions
     fprintf(freport, '\nExcluded reactions:\n');
-    for i = 1:length(excludedRxns.rxnList)
-        fprintf(freport, '%s: Excluded from %s\n', excludedRxns.rxnList{i}, ...
-            regexprep(excludedRxns.typeReg(i), {'U','L','K'}, {'Upregulations','Downregulations','Knockouts'}));
-    end
+        for i = 1:length(excludedRxns.rxnList)
+            fprintf(freport, '%s: Excluded from %s\n', excludedRxns.rxnList{i}, ...
+                regexprep(excludedRxns.typeReg(i), {'U','L','K'}, {'Upregulations','Downregulations','Knockouts'}));
+        end
     fprintf(freport, '\nrunID(Main Folder): %s \n\noutputFolder: %s \n\noutputFileName: %s \n',...
         runID, outputFolder, outputFileName);
     
@@ -494,7 +388,7 @@ solutions=cell(nSets,1);
 %sets
 optForceSets = cell(nSolsFound, k);
 posOptForceSets = zeros(size(optForceSets));
-flux_optForceSets = zeros(size(optForceSets));
+fluxOptForceSets = zeros(size(optForceSets));
 typeRegOptForceSets = cell(nSolsFound, k);
 
 
@@ -557,7 +451,7 @@ if nSolsFound > 0
         optForceSets(i,:) = solutions{i}.reactions;
         posOptForceSets(i,:) = solutions{i}.pos;
         typeRegOptForceSets(i,:) = solutions{i}.type;
-        flux_optForceSets(i,:) = solutions{i}.flux;
+        fluxOptForceSets(i,:) = solutions{i}.flux;
     end
 else
     %in case that none set was found, initialize empty arrays
@@ -566,7 +460,7 @@ else
     optForceSets = {};
     posOptForceSets = [];
     typeRegOptForceSets = {};
-    flux_optForceSets=[];
+    fluxOptForceSets=[];
     
 end
 
@@ -644,7 +538,7 @@ end
 
 function bilevelMILPproblem = buildBilevelMILPproblemForOptForce(model, constrOpt, target, excludedRxns, k, minFluxesM, maxFluxesM, mustU, mustL, solutions)
 
-if isempty(constrOpt)
+if isempty(constrOpt.rxnList)
     ind_ic = [];
     b_ic = [];
     sel_ic = zeros(length(model.rxns), 1);

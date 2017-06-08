@@ -1,13 +1,11 @@
-function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWithGAMS(model, minFluxesW, ...
-    maxFluxesW, constrOpt, excludedRxns, mustSetFirstOrder, solverName, runID, outputFolder,...
-    outputFileName, printExcel, printText, printReport, keepInputs, keepGamsOutputs, verbose)
+function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWithGAMS(model, minFluxesW, maxFluxesW, varargin)
 % This function runs the second step of optForce, that is to solve a
 % bilevel mixed integer linear programming problem to find a second order
 % MustLL set.
 %
 % USAGE:
 %
-%    [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWithGAMS(model, minFluxesW, maxFluxesW, constrOpt, excludedRxns, mustSetFirstOrder, solverName, runID, outputFolder, outputFileName, printExcel, printText, printReport, keepInputs, keepGamsOutputs, verbose)
+%    [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWithGAMS(model, minFluxesW, maxFluxesW, varargin)
 %
 % INPUTS:
 %    model:                     Type: structure (COBRA model)
@@ -189,117 +187,76 @@ function [mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = findMustLLWith
 %
 % .. Author: - Sebastián Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 
-if nargin < 1 || isempty(model)  % input handling
-    error('OptForce: No model specified');
-else
-    if ~isfield(model,'S'), error('OptForce: Missing field S in model');  end
-    if ~isfield(model,'rxns'), error('OptForce: Missing field rxns in model');  end
-    if ~isfield(model,'mets'), error('OptForce: Missing field mets in model');  end
-    if ~isfield(model,'lb'), error('OptForce: Missing field lb in model');  end
-    if ~isfield(model,'ub'), error('OptForce: Missing field ub in model');  end
-    if ~isfield(model,'c'), error('OptForce: Missing field c in model'); end
-    if ~isfield(model,'b'), error('OptForce: Missing field b in model'); end
+optionalParameters = {'constrOpt', 'excludedRxns', 'mustSetFirstOrder', 'solverName', 'runID', 'outputFolder', 'outputFileName',  ...
+    'printExcel', 'printText', 'printReport', 'keepInputs', 'keepGamsOutputs', 'verbose'};
+
+if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))   
+      
+    tempargin = cell(1,2*(numel(varargin)));
+    for i = 1:numel(varargin)
+        
+        tempargin{2*(i-1)+1} = optionalParameters{i};
+        tempargin{2*(i-1)+2} = varargin{i};
+    end
+    varargin = tempargin;
+    
 end
 
-if nargin < 2 || isempty(maxFluxesW)
-    error('OptForce: Minimum values for reactions in wild-type strain not specified');
-end
-if nargin < 3 || isempty(maxFluxesW)
-    error('OptForce: Maximum values for reactions in wild-type strain not specified');
-end
-if nargin <4
-    constrOpt = {};
-else
-    %check correct fields and correct size.
-    if ~isfield(constrOpt,'rxnList'), error('OptForce: Missing field rxnList in constrOpt');  end
-    if ~isfield(constrOpt,'values'), error('OptForce: Missing field values in constrOpt');  end
-    
-    if length(constrOpt.rxnList) == length(constrOpt.values)
-        if size(constrOpt.rxnList,1) > size(constrOpt.rxnList, 2); constrOpt.rxnList = constrOpt.rxnList'; end;
-        if size(constrOpt.values,1) > size(constrOpt.values, 2); constrOpt.values = constrOpt.values'; end;
-    else
-        error('OptForce: Incorrect size of fields in constrOpt');
-    end
-    if length(intersect(constrOpt.rxnList, model.rxns)) ~= length(constrOpt.rxnList);
-        error('OptForce: identifiers for reactions in constrOpt.rxnList must be in model.rxns');
-    end
-end
-if nargin <5
-    excludedRxns = {};
-else
-    if length(intersect(excludedRxns, model.rxns)) ~= length(excludedRxns);
-        error('OptForce: identifiers for excluded reactions must be in model.rxns');
-    end
-end
-if nargin <6
-    mustSetFirstOrder = {};
-    warning('OptForce: If you do not specify mustSetFirstOrder, the algorithm could be very time-consuming.')
-else
-    if length(intersect(mustSetFirstOrder, model.rxns)) ~= length(mustSetFirstOrder);
-        error('OptForce: identifiers for reactions in mustSetFirstOrder must be in model.rxns');
-    end
-end
+parser = inputParser();
+parser.addRequired('model', @(x) isstruct(x) && isfield(x, 'S') && isfield(model, 'rxns')...
+    && isfield(model, 'mets') && isfield(model, 'lb') && isfield(model, 'ub') && isfield(model, 'b')...
+    && isfield(model, 'c'))
+parser.addRequired('minFluxesW', @isnumeric)
+parser.addRequired('maxFluxesW', @isnumeric)
+parser.addParameter('constrOpt', struct('rxnList', {{}}, 'values', []),@ (x) isstruct(x) && isfield(x, 'rxnList') && isfield(x, 'values') ...
+    && length(x.rxnList) == length(x.values) && length(intersect(x.rxnList, model.rxns)) == length(x.rxnList))
+parser.addParameter('excludedRxns', {}, @(x) iscell(x) && length(intersect(x, model.rxns)) == length(x))
+parser.addParameter('mustSetFirstOrder', {}, @(x) iscell(x) && length(intersect(x, model.rxns)) == length(x))
 solvers = checkGAMSSolvers('MIP');
-if nargin < 5 || isempty(solverName)
+if isempty(solvers)
+    error('there is no GAMS solvers available to solve Mixed Integer Programming problems') ; 
+else
     if ismember('cplex', lower(solvers))
-        solverName = 'cplex';
+        defaultSolverName = 'cplex';
     else
-        solverName = lower(solvers(1));
+        defaultSolverName = lower(solvers(1));
     end
-else
-    if ~ischar(solverName); error('OptForce: solverName must be an string');  end
-    if ~ismember(solverName, lower(solvers)); error(['OptForce: ' solverName ' is not available for GAMS']);  end
 end
-if nargin < 8 || isempty(runID)
-    hour = clock; runID = ['run-' date '-' num2str(hour(4)) 'h' '-' num2str(hour(5)) 'm'];
-else
-    if ~ischar(runID); error('OptForce: runID must be an string');  end
-end
-if nargin < 9 || isempty(outputFolder)
-    outputFolder = 'OutputsFindMustLL';
-else
-    if ~ischar(outputFolder); error('OptForce: outputFolder must be an string');  end
-end
-if nargin < 10 || isempty(outputFileName)
-    outputFileName = 'MustLLSet';
-else
-    if ~ischar(outputFileName); error('OptForce: outputFileName must be an string');  end
-end
-if nargin < 11
-    printExcel = 1;
-else
-    if ~isnumeric(printExcel); error('OptForce: printExcel must be a number');  end
-    if printExcel ~= 0 && printExcel ~= 1; error('OptForce: printExcel must be 0 or 1');  end
-end
-if nargin < 12
-    printText = 1;
-else
-    if ~isnumeric(printText); error('OptForce: printText must be a number');  end
-    if printText ~= 0 && printText ~= 1; error('OptForce: printText must be 0 or 1');  end
-end
-if nargin < 13
-    printReport = 1;
-else
-    if ~isnumeric(printReport); error('OptForce: printReport must be a number');  end
-    if printReport ~= 0 && printReport ~= 1; error('OptForce: printReportl must be 0 or 1');  end
-end
-if nargin < 14
-    keepInputs = 1;
-else
-    if ~isnumeric(keepInputs); error('OptForce: keepInputs must be a number');  end
-    if keepInputs ~= 0 && keepInputs ~= 1; error('OptForce: keepInputs must be 0 or 1');  end
-end
-if nargin < 15
-    keepGamsOutputs = 1;
-else
-    if ~isnumeric(keepGamsOutputs); error('OptForce: keepGamsOutputs must be a number');  end
-    if keepGamsOutputs ~= 0 && keepGamsOutputs ~= 1; error('OptForce: keepGamsOutputs must be 0 or 1');  end
-end
-if nargin < 16
-    verbose = 0;
-else
-    if ~isnumeric(verbose); error('OptForce: verbose must be a number');  end
-    if verbose ~= 0 && verbose  ~=  1; error('OptForce: verbose must be 0 or 1');  end
+
+parser.addParameter('solverName', defaultSolverName, @(x) ischar(x))
+hour = clock; defaultRunID = ['run-' date '-' num2str(hour(4)) 'h' '-' num2str(hour(5)) 'm'];
+parser.addParameter('runID', defaultRunID, @(x) ischar(x))
+parser.addParameter('outputFolder', 'OutputsFindMustLL', @(x) ischar(x))
+parser.addParameter('outputFileName', 'MustLLSet', @(x) ischar(x))
+parser.addParameter('printExcel', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('printText', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('printReport', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('keepInputs', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('keepGamsOutputs', 1, @(x) isnumeric(x) || islogical(x));
+parser.addParameter('verbose', 1, @(x) isnumeric(x) || islogical(x));
+
+parser.parse(model, minFluxesW, maxFluxesW, varargin{:})
+model = parser.Results.model;
+minFluxesW = parser.Results.minFluxesW;
+maxFluxesW = parser.Results.maxFluxesW;
+constrOpt= parser.Results.constrOpt;
+excludedRxns= parser.Results.excludedRxns;
+mustSetFirstOrder = parser.Results.mustSetFirstOrder; 
+solverName = parser.Results.solverName; 
+runID = parser.Results.runID;
+outputFolder = parser.Results.outputFolder;
+outputFileName = parser.Results.outputFileName;
+printExcel = parser.Results.printExcel;
+printText = parser.Results.printText;
+printReport = parser.Results.printReport;
+keepInputs = parser.Results.keepInputs;
+keepGamsOutputs = parser.Results.keepGamsOutputs;
+verbose = parser.Results.verbose;
+
+% correct size of constrOpt
+if ~isempty(constrOpt.rxnList)
+    if size(constrOpt.rxnList, 1) > size(constrOpt.rxnList,2); constrOpt.rxnList = constrOpt.rxnList'; end;
+    if size(constrOpt.values, 1) > size(constrOpt.values,2); constrOpt.values = constrOpt.values'; end;
 end
 
 % first, verify that GAMS is installed in your system
