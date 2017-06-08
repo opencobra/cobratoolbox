@@ -317,7 +317,7 @@ else
     else
         try
         model.S = [Stmp Scolumn];
-        model = updateReactionFields(model);
+        model = updateRelevantModelFields(model,'rxns');
         catch
             disp('test')
         end
@@ -328,86 +328,4 @@ else
     end
 end
 
-end
-
-function modelOut = updateReactionFields(model)
-
-modelOut = model;
-nRxns = size(model.rxns,1)-1; %Fields not yet updated.
-nMets = numel(model.mets);
-if isfield(model, 'genes')
-    nGenes = numel(model.genes);
-else
-    nGenes = 0;
-end
-
-if isfield(model, 'comps')
-    nComps = numel(model.comps);
-else
-    nComps = 0;
-end
-
-if isfield(model, 'proteins')
-    nProts = numel(model.proteins);
-else
-    nProts = 0;
-end
-
-mfields = fieldnames(model);
-rfields = {};
-%Try to use the size as indicator of association.
-if ~any([nMets nGenes nComps, nProts] == nRxns) && nRxns > 2
-    for i = 1:length(mfields)
-        if any(size(model.(mfields{i})) == nRxns)
-            rfields = [rfields; mfields(i)];
-        end
-    end
-else
-    rfields = [rfields; mfields(strncmp('rxn', mfields, 3))];
-    rfields = intersect(rfields, mfields);
-end
-
-rfields = setdiff(rfields,{'S', 'c', 'lb', 'ub', 'rxns', 'rules', 'grRules', 'subSystems'});
-
-%Current assumption:
-%Cell arrays in the struct contain identifiers (i.e. they contain strings)
-%default numeric value is 0 if no NaNs are present. if NaNs are present
-%the default numeric value is 0
-%logic values have a default of 0 -> and should give a warning, as they
-%might be computed fields.
-
-for i = 1:length(rfields)
-
-   if size(model.(rfields{i}), 1) == nRxns
-       if iscell(model.(rfields{i}))
-           modelOut.(rfields{i})(end+1,:) = {''};
-       end
-       if isnumeric(model.(rfields{i}))
-           if any(isnan(model.(rfields{i})))
-               modelOut.(rfields{i})(end+1,:) = NaN;
-           else
-               modelOut.(rfields{i})(end+1,:) = 0;
-           end
-       end
-       if islogical(modelOut.(rfields{i}))
-           warning('Modifying logical field %s, this could possibly make the field invalid if it is a computed field!', rfields{i});
-           modelOut.(rfields{i})(end+1,:) = 0;
-       end
-   elseif size(model.(rfields{i}), 2) == nRxns && nRxns ~= 1
-       if iscell(model.(rfields{i}))
-           modelOut.(rfields{i})(:,end+1) = {''};
-       end
-       if isnumeric(model.(rfields{i}))
-           if any(isnan(model.(rfields{i})))
-               modelOut.(rfields{i})(:,end+1) = NaN;
-           else
-               modelOut.(rfields{i})(:,end+1) = 0;
-           end
-       end
-       if islogical(modelOut.(rfields{i}))
-           warning('Modifying logical field %s, this could possibly make the field invalid if it is a computed field!', rfields{i});
-           modelOut.(rfields{i})(:,end+1) = 0;
-       end
-   end
-end
 end

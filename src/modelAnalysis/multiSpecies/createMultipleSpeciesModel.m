@@ -133,10 +133,10 @@ if nargin >= 3
     if modelNumber > 1
         for i = 2:modelNumber
             model = modelStorage(i, 1);
-            [modelJoint] = mergeTwoModels(modelJoint, model, 1, 0);
+            [modelJoint] = mergeTwoModels(modelJoint, model, 1);
         end
     end
-    [modelJoint] = mergeTwoModels(modelJoint,modelHost, 1, 0);
+    [modelJoint] = mergeTwoModels(modelJoint,modelHost, 1);
 
     modelJoint = addExchangeRxn(modelJoint, unique(MexGJoint));
 

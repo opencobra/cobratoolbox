@@ -67,8 +67,9 @@ end
 if ~exist('nRxn', 'var') || isempty(nRxn)
     nRxn = length(model.lb)+1;
 end
-
-nMet = length(model.mets)+1;
+orignMets = length(model.mets);
+nMet = orignMets+1;
+orignRxns = numel(model.rxns);
 
 if (isfield(model,'genes'))
     nGenes = length(model.genes)+1;
@@ -155,9 +156,9 @@ for i = 1:length(rev)
             %if met doesn't exist then metLoc is set at nMet (the end of list)
             else
                 metLoc = nMet;
-                newmodel.mets{metLoc} = parsing{j};
+                newmodel.mets{metLoc,1} = parsing{j};
                 newmodel.S(metLoc,:) = 0;
-                newmodel.b(metLoc) = 0;
+                newmodel.b(metLoc,1) = 0;
                 if putNecessary
                     HTABLE.put(parsing{j}, metLoc);
                 end
@@ -199,11 +200,38 @@ for i = 1:length(rev)
 
     clear parsing
 
+    
     showprogress(i/length(rev));
 end
+
 
 for i = 1:length(genes)
     if ~isempty(genes{i}) %length(genes{i}) ~= 0
         newmodel.genes(nGenes,1) = genes(i,1);
     end
 end
+
+
+%Set/Reset Gene Names etc.
+newmodel.genes = genes;
+if isfield(newmodel,'proteins')
+    if ~all(size(newmodel.proteins) == size(newmodel.genes))
+        newmodel = rmfield(model,'proteins');
+        if isfield(model,'proteinNames')
+            newmodel = rmfield(model,'proteinNames');
+        end
+    end
+end
+modelFields = fieldnames(newmodel);
+%Remove all gene Associated fields which do not fit the new gene vector
+%size, these are now invalid.
+for i = 1:numel(modelFields)
+    if strncmp(modelFields{i},'genes',4)
+        if ~all(size(newmodel.(modelFields{i})) == size(newmodel.genes))
+            newmodel = rmfield(newmodel,modelFields{i});
+        end
+    end
+end
+
+newmodel = updateRelevantModelFields(newmodel,'rxns','originalSize',orignRxns,'targetSize',numel(newmodel.rxns));
+newmodel = updateRelevantModelFields(newmodel,'mets','originalSize',orignMets,'targetSize',numel(newmodel.mets));

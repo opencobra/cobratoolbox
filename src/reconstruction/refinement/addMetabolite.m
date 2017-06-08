@@ -208,6 +208,6 @@ for i = 1:numel(metID)
     end
 end
 
-newmodel = model;
+newmodel = updateRelevantModelFields(model,'mets');
 
 end

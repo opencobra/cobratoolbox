@@ -12,23 +12,25 @@ else
     COVERAGE = false;
 end
 
-% include the root folder and all subfolders
-addpath(genpath(pwd))
+% Save the folder we were in.
+origDir = pwd;
 
 % if the location of initCobraToolbox is not yet known
 if length(which('initCobraToolbox.m')) == 0
     % define the path to The COBRA Toolbox
-    pth = which('testAll.m');
-    CBTDIR = pth(1:end-(length('testAll.m') + 1));
-
-    % change the directory to the root
-    cd([CBTDIR, filesep, '..', filesep]);
-
-    % include the root folder and all subfolders
-    addpath(genpath(pwd));
+    pth = fileparts(which('testAll.m'));
+    %Now, we are in the test folder
+    cd(pth)
+    %Switch to the base folder
+    cd ..     
+    %And assign the CBTDIR variable
+    CBTDIR = pwd;
+else
+    CBTDIR = fileparts(which('initCobraToolbox.m'));
+    cd(CBTDIR);
 end
-
-CBTDIR = fileparts(which('initCobraToolbox.m'));
+%include the root folder and all subfolders.
+addpath(genpath(pwd));
 
 % change to the root folder of The COBRA TOolbox
 cd(CBTDIR);
@@ -208,6 +210,15 @@ try
     if ~isempty(strfind(getenv('HOME'), 'jenkins'))
         exit(exit_code);
     end
-catch
-    exit(1);
+catch M
+    if ~isempty(strfind(getenv('HOME'), 'jenkins'))
+        %Only exit on jenkins.
+        exit(1);
+    else
+        %Switch back to the folder we were in and rethrow the error
+        cd(origDir);
+        error(M);
+    end
 end
+%Switch back to the folder we were in.
+cd(origDir)

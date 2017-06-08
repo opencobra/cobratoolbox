@@ -10,9 +10,11 @@ function modelOut = removeRxns(model, rxnRemoveList, varargin)
 %    rxnRemoveList:     Cell array of reaction names to be removed
 %
 % OPTIONAL INPUTS:
-%    irrevFlag:         Irreverseble (true) or reversible (false) reaction
-%                       format (Default = false)
-%    metFlag:           Remove unused metabolites (Default = true)
+%    varargin:          Parameters in ParameterName, Value pair representation. 
+%                       Available parameters are:
+%                       * irrevFlag:   Irreverseble (true) or reversible (false) reaction
+%                         format (Default = false)
+%                       * metFlag:   Remove unused metabolites (Default = true)
 %
 % OUTPUT:
 %    model:             COBRA model w/o selected reactions
@@ -79,30 +81,7 @@ selectRxns = true(nRxns, 1);
 selectRxns(removeInd) = false;
 
 % Construct new model
-modelOut = model;
-
-mfields = fieldnames(model);
-rfields = {};
-
-if ~any([nMets nGenes] == nRxns)
-    for i = 1:length(mfields)
-        if any(size(model.(mfields{i})) == nRxns) && ~strcmp(mfields{i}, 'mets')
-            rfields = [rfields; mfields(i)];
-        end
-    end
-else
-    rfields = {'S', 'c', 'lb', 'ub', 'rxns', 'rules', 'grRules', 'rev', 'subSystems'}';
-    rfields = [rfields; mfields(strncmp('rxn', mfields, 3))];
-    rfields = intersect(rfields, mfields);
-end
-
-for i = 1:length(rfields)
-   if size(model.(rfields{i}), 1) == nRxns
-       modelOut.(rfields{i}) = model.(rfields{i})(selectRxns, :);
-   elseif size(model.(rfields{i}), 2) == nRxns
-       modelOut.(rfields{i}) = model.(rfields{i})(:, selectRxns);
-   end
-end
+modelOut = removeRelevantModelFields(model,~selectRxns,'rxns',numel(model.rxns));
 
 % Reconstruct the match list
 if irrevFlag
@@ -110,9 +89,7 @@ if irrevFlag
 end
 
 % Remove metabolites that are not used anymore
-if metFlag
-    %restricedRowBool = getCorrespondingRows(modelOut.S,true(size(modelOut.S,1),1),true(size(modelOut.S,2),1),'inclusive');
-    %selMets=find(restricedRowBool);
+if metFlag    
     selMets = modelOut.mets(any(sum(abs(modelOut.S), 2) == 0, 2));
     if ~isempty(selMets)
         modelOut = removeMetabolites(modelOut, selMets, false);
