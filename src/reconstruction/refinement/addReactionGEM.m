@@ -67,9 +67,8 @@ end
 if ~exist('nRxn', 'var') || isempty(nRxn)
     nRxn = length(model.lb)+1;
 end
-
-nMet = length(model.mets)+1;
-orignMets = numel(model.mets);
+orignMets = length(model.mets);
+nMet = orignMets+1;
 orignRxns = numel(model.rxns);
 
 if (isfield(model,'genes'))
