@@ -41,7 +41,7 @@ function [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(mo
 %         optionally only split a specific list of reversible reactions to
 %         irreversible, without appending '_r'.
 %       - Modified by Thomas Pfau June 2017 - Also include all fields
-%         associated to reactions.
+%         associated to reactions and add additional options.
 
 
 parser = inputParser();
@@ -117,19 +117,30 @@ matchRev(irrevRxnIDs) = rxnIDs(revReacs);
 
 reacPosSet = false(numel(model.rxns),1);
 reacorder = zeros(length(model.rxns),1);
+%If a specific order is required (e.g. OptKnock assumes this ordering).
 if orderReactions
     pos = 1;
+    newMatchRev = zeros(size(model.rxns));
     for i = 1:size(reacPosSet,1)
         if reacPosSet(i)
             continue;
         end
         reacPosSet(i) = true;
         reacorder(pos) = i;
+        irrev2rev(pos) = i;
+        rev2irrev{i} = pos;                
         pos = pos + 1;
         if matchRev(i) ~= 0
+            %Update the position vector, and the indicator vector.
+            newMatchRev(pos-1) = pos;
+            newMatchRev(pos) = pos -1;
+            irrev2rev(pos) = i;
+            rev2irrev{i} = [rev2irrev{i}, pos];
             reacorder(pos) = matchRev(i);
-            pos = pos + 1;
+            pos = pos + 1;            
             reacPosSet(matchRev(i)) = true;
+        else
+            
         end
     end
     %Now, get the relevant fields for this models rxns again and reorder
@@ -144,6 +155,7 @@ if orderReactions
             model.(cfield)(:,:) = model.(cfield)(:,reacorder);
         end
     end
+    matchRev = newMatchRev;
 end
 
 %Mark the model type.
