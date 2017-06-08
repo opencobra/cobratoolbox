@@ -34,8 +34,10 @@ function [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(mo
 %       - Modified by Markus Herrgard 7/25/05
 %       - Modified by Jan Schellenberger 9/9/09 for speed.
 %       - Modified by Diana El Assal & Fatima Monteiro 6/2/17 allow to
-%       optionally only split a specific list of reversible reactions to
-%       irreversible, without appending '_r'.
+%         optionally only split a specific list of reversible reactions to
+%         irreversible, without appending '_r'.
+%       - Modified by Thomas Pfau June 2017 - Also include all fields
+%         associated to reactions.
 
 if ~exist('sRxns','var')
     sRxns = model.rxns;
@@ -72,8 +74,8 @@ model.S(:,end+1:end+nRevRxns) = -model.S(:,revReacs);
 
 %update the lower and upper bounds (first for the reversed reactions, as
 %otherwise the information is lost
-model.lb(end+1:end+nRevRxns) = max(0,-model.lb(revReacs));
-model.ub(end+1:end+nRevRxns) = max(0,-model.ub(revReacs));
+model.ub(end+1:end+nRevRxns) = max(0,-model.lb(revReacs));
+model.lb(end+1:end+nRevRxns) = max(0,-model.ub(revReacs));
 model.lb(revReacs) = max(0,model.lb(revReacs));
 model.ub(revReacs) = max(0,model.ub(revReacs));
 
@@ -85,12 +87,16 @@ RelReacNames = model.rxns(revReacs);
 model.rxns(revReacs) = strcat(RelReacNames,'_f');
 model.rxns(end+1:end+nRevRxns) = strcat(RelReacNames,'_b');
 
-%Extend the S Matrix
-model.S(:, end+1:end+nRevRxns) = -model.S(:,revReacs);
-
-
-
-%And update all other relevant fields
+%And update all other relevant fields (which have not yet been altered)
+fields = getRelevantModelFields(model,'rxns','fieldSize',nRxns);
+for i = 1:length(fields)    
+    cfield = fields{i};
+    if size(model.(cfield),1) == nRxns
+        model.(cfield)(end+1:end+nRevRxns,:) = model.(cfield)(revReacs,:);
+    elseif size(model.(cfield),2) == nRxns
+        model.(cfield)(:,end+1:end+nRevRxns) = model.(cfield)(:,revReacs);
+    end
+end
 
 
 %Now, map the reactions
