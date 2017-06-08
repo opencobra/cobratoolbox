@@ -1,4 +1,4 @@
-function [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model, sRxns, leaveInverse)
+function [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model, varargin)
 % Converts model to irreversible format, either for the entire model or for
 % a defined list of reversible reactions.
 %
@@ -10,11 +10,15 @@ function [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(mo
 %    model:         COBRA model structure
 %
 % OPTIONAL INPUTS:
-%    sRxns:         List of specific reversible reactions to convert to
-%                   irreversible (Default = model.rxns)
-%    leaveInverse:  Do not alter reactions that can only carry negative
-%                   flux, normally, those are flipped and marked with '_r'
-%                   (Default = false)
+%    varargin:      Additional Options as ParameterName/Value pairs.
+%                   Allowed Parameters are:
+%                   * sRxns: List of specific reversible reactions to convert to
+%                     irreversible (Default = model.rxns)
+%                   * leaveInverse:  Do not alter reactions that can only carry negative
+%                     flux, normally, those are flipped and marked with '_r'
+%                     (Default = false)
+%                   * orderReactions: Order Reactions such that reverse
+%                     reactions directly follow their forward reaction.
 % OUTPUTS:
 %    modelIrrev:    Model in irreversible format
 %    matchRev:      Matching of forward and backward reactions of a reversible reaction
@@ -39,13 +43,17 @@ function [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(mo
 %       - Modified by Thomas Pfau June 2017 - Also include all fields
 %         associated to reactions.
 
-if ~exist('sRxns','var')
-    sRxns = model.rxns;
-end
 
-if ~exist('leaveInverse','var')
-    leaveInverse = 0;
-end
+parser = inputParser();
+parser.addRequired('model',@isstruct);
+parser.addParameter('sRxns',model.rxns,@iscell);
+parser.addParameter('leaveInverse',false,@(x) islogical(x) || isnumeric(x));
+parser.addParameter('orderReactions',false,@(x) islogical(x) || isnumeric(x));
+
+parser.parse(model,varargin{:});
+sRxns = parser.Results.sRxns;
+leaveInverse = parser.Results.leaveInverse;
+orderReactions = parser.Results.orderReactions;
 
 %Flip all pure backward reactions and append a _r
 backReacs = ismember(model.rxns,sRxns) & model.lb < 0 & model.ub <= 0;
@@ -106,6 +114,37 @@ rev2irrev(revReacs) = num2cell([rxnIDs(revReacs)',irrevRxnIDs'],2);
 matchRev = zeros(size(model.rxns));
 matchRev(revReacs) = irrevRxnIDs;
 matchRev(irrevRxnIDs) = rxnIDs(revReacs);
+
+reacPosSet = false(numel(model.rxns),1);
+reacorder = zeros(length(model.rxns),1);
+if orderReactions
+    pos = 1;
+    for i = 1:size(reacPosSet,1)
+        if reacPosSet(i)
+            continue;
+        end
+        reacPosSet(i) = true;
+        reacorder(pos) = i;
+        pos = pos + 1;
+        if matchRev(i) ~= 0
+            reacorder(pos) = matchRev(i);
+            pos = pos + 1;
+            reacPosSet(matchRev(i)) = true;
+        end
+    end
+    %Now, get the relevant fields for this models rxns again and reorder
+    %them....
+    fields = getRelevantModelFields(model,'rxns');
+    nIrrevRxns = length(model.rxns);
+    for i = 1:length(fields)
+        cfield = fields{i};
+        if size(model.(cfield),1) == nIrrevRxns
+            model.(cfield)(:,:) = model.(cfield)(reacorder,:);
+        elseif size(model.(cfield),2) == nIrrevRxns
+            model.(cfield)(:,:) = model.(cfield)(:,reacorder);
+        end
+    end
+end
 
 %Mark the model type.
 modelIrrev = model;
