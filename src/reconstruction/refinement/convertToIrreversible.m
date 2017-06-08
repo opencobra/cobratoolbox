@@ -14,6 +14,7 @@ function [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(mo
 %                   irreversible (Default = model.rxns)
 %    leaveInverse:  Do not alter reactions that can only carry negative
 %                   flux, normally, those are flipped and marked with '_r'
+%                   (Default = false)
 % OUTPUTS:
 %    modelIrrev:    Model in irreversible format
 %    matchRev:      Matching of forward and backward reactions of a reversible reaction
@@ -40,179 +41,67 @@ if ~exist('sRxns','var')
     sRxns = model.rxns;
 end
 
-% %first, get the reversible reactions, which should be converted
-% % Note: reactions which can only carry negative flux, will have an inactive
-% % forward reaction.
-relReacs = ismember(model.rxns,sRxns) & model.lb < 0 & model.ub > 0;
-nRevRxns = sum(relReacs);
+if ~exist('leaveInverse','var')
+    leaveInverse = 0;
+end
+
+%Flip all pure backward reactions and append a _r
+backReacs = ismember(model.rxns,sRxns) & model.lb < 0 & model.ub <= 0;
+
+if ~leaveInverse
+    model.S(:,backReacs) = -model.S(:,backReacs);
+    templbs = -model.ub(backReacs);
+    model.ub(backReacs) = -model.lb(backReacs);
+    model.lb(backReacs) = templbs;
+    model.c(backReacs) = - model.c(backReacs); %Also flip the objective coefficient, as otherwise the target changes.
+    model.rxns(backReacs) = strcat(model.rxns(backReacs),'_r');
+end
+
+%
+% Note: reactions which can only carry negative flux, will have an inactive
+% forward reaction.
+revReacs = ismember(model.rxns,sRxns) & model.lb < 0 & model.ub > 0;
+nRevRxns = sum(revReacs);
 nRxns = numel(model.rxns);
 rxnIDs = 1:nRxns;
 irrevRxnIDs = nRxns + (1:nRevRxns);
 
 
 %teat special fields: S, lb, ub, rxns
-model.S(:,end+1:end+nRevRxns) = -model.S(:,relReacs);
+model.S(:,end+1:end+nRevRxns) = -model.S(:,revReacs);
 
-%update the lower and upper bounds
-model.lb(relReacs) = max(0,model.lb(relReacs));
-model.ub(relReacs) = max(0,model.ub(relReacs));
-model.lb(end+1,end+nRevRxns) = max(0,-model.lb(relReacs));
-model.ub(end+1,end+nRevRxns) = max(0,-model.ub(relReacs));
+%update the lower and upper bounds (first for the reversed reactions, as
+%otherwise the information is lost
+model.lb(end+1:end+nRevRxns) = max(0,-model.lb(revReacs));
+model.ub(end+1:end+nRevRxns) = max(0,-model.ub(revReacs));
+model.lb(revReacs) = max(0,model.lb(revReacs));
+model.ub(revReacs) = max(0,model.ub(revReacs));
 
-%Extend the c vector
-model.c(end+1,end+nRevRxns) = model.c(relReacs);
+%Extend the c vector by the negative (otherwise the objective changes)
+model.c(end+1:end+nRevRxns) = -model.c(revReacs);
 
 %Alter the reaction ids (as defined)
-RelReacNames = model.rxns(relReacs);
-model.rxns(relReacs) = strcat(RelReacNames,'_f');
-model.rxns(end+1,end+nRevRxns) = strcat(RelReacNames,'_b');
+RelReacNames = model.rxns(revReacs);
+model.rxns(revReacs) = strcat(RelReacNames,'_f');
+model.rxns(end+1:end+nRevRxns) = strcat(RelReacNames,'_b');
 
 %Extend the S Matrix
-model.S(:, end+1:end+nRevRxns) = -model.S(:,relReacs);
+model.S(:, end+1:end+nRevRxns) = -model.S(:,revReacs);
+
+
 
 %And update all other relevant fields
 
 
-modelIrrev.S = spalloc(size(model.S,1),0,2*nnz(model.S)); %declare variables
-modelIrrev.rxns = [];
-modelIrrev.lb = zeros(2*length(model.rxns),1);
-modelIrrev.ub = zeros(2*length(model.rxns),1);
-modelIrrev.c = zeros(2*length(model.rxns),1);
-matchRev = zeros(2*length(model.rxns),1);
+%Now, map the reactions
+irrev2rev = [rxnIDs';rxnIDs(revReacs)'];
+rev2irrev = num2cell(rxnIDs');
+rev2irrev(revReacs) = num2cell([rxnIDs(revReacs)',irrevRxnIDs'],2);
+matchRev = zeros(size(model.rxns));
+matchRev(revReacs) = irrevRxnIDs;
+matchRev(irrevRxnIDs) = rxnIDs(revReacs);
 
-nRxns = size(model.S, 2);
-irrev2rev = zeros(2 * length(model.rxns), 1);
-
-%loop through each column/rxn in the S matrix building the irreversible
-%model
-cnt = 0;
-
-if nargin< 2
-    sRxns = [];
-end
-
-%Convert only a specific list of reactions to irreversible
-if ~isempty(sRxns)
-    model.revSpecific = zeros(length(model.rxns), 1);
-    ind = findRxnIDs(model, sRxns);
-    model.revSpecific(ind) = 1;
-    for i = 1:nRxns
-        cnt = cnt + 1;
-        
-        %expand the new model (same for both irrev & rev rxns)
-        irrev2rev(cnt) = i;
-        
-        % Retain original bounds
-        modelIrrev.ub(cnt) = model.ub(i);
-        modelIrrev.lb(cnt) = model.lb(i);
-        modelIrrev.S(:, cnt) = model.S(:, i);
-        modelIrrev.c(cnt) = model.c(i);
-        modelIrrev.rxns{cnt} = model.rxns{i};
-        
-        %if the reaction is reversible, add a new rxn to the irrev model and
-        %update the names of the reactions with '_f' and '_b'
-        if model.revSpecific(i) == true
-            cnt = cnt + 1;
-            matchRev(cnt) = cnt - 1;
-            matchRev(cnt-1) = cnt;
-            modelIrrev.rxns{cnt-1} = [model.rxns{i} '_f'];
-            modelIrrev.S(:, cnt) = - model.S(:, i);
-            modelIrrev.S(:, cnt-1) = model.S(:, i);
-            modelIrrev.rxns{cnt} = [model.rxns{i} '_b'];
-            modelIrrev.lb(cnt) = 0;
-            modelIrrev.lb(cnt-1) = 0;
-            modelIrrev.ub(cnt) =  - model.lb(i);
-            modelIrrev.ub(cnt - 1) = - model.lb(i);
-            modelIrrev.c(cnt) = 0;
-            rev2irrev{i} = [cnt-1 cnt];
-            irrev2rev(cnt) = i;
-        else
-            matchRev(cnt) = 0;
-            rev2irrev{i} = cnt;
-        end
-    end
-    
-    %By default, convert the entire model:
-else
-    for i = 1:nRxns;
-        cnt = cnt + 1;
-        
-        %expand the new model (same for both irrev & rev rxns
-        irrev2rev(cnt) = i;
-        
-        % Reaction entirely in the negative direction
-        if (model.ub(i) <= 0 && model.lb(i) < 0)
-            % Retain original bounds but reversed
-            modelIrrev.ub(cnt) = -model.lb(i);
-            modelIrrev.lb(cnt) = -model.ub(i);
-            % Reverse sign
-            modelIrrev.S(:,cnt) = -model.S(:,i);
-            modelIrrev.c(cnt) = -model.c(i);
-            modelIrrev.rxns{cnt} = [model.rxns{i} '_r'];
-        else
-            % Keep positive upper bound
-            modelIrrev.ub(cnt) = model.ub(i);
-            %if the lb is less than zero, set the forward rxn lb to zero
-            if model.lb(i) < 0
-                modelIrrev.lb(cnt) = 0;
-            else
-                modelIrrev.lb(cnt) = model.lb(i);
-            end
-            modelIrrev.S(:,cnt) = model.S(:,i);
-            modelIrrev.c(cnt) = model.c(i);
-            modelIrrev.rxns{cnt} = model.rxns{i};
-            
-        end
-        
-        %if the reaction is reversible, add a new rxn to the irrev model and
-        %update the names of the reactions with '_f' and '_b'
-        if model.lb(i) < 0
-            cnt = cnt + 1;
-            matchRev(cnt) = cnt - 1;
-            matchRev(cnt-1) = cnt;
-            modelIrrev.rxns{cnt-1} = [model.rxns{i} '_f'];
-            modelIrrev.S(:,cnt) = -model.S(:,i);
-            modelIrrev.rxns{cnt} = [model.rxns{i} '_b'];
-            modelIrrev.lb(cnt) = 0;
-            modelIrrev.ub(cnt) = -model.lb(i);
-            modelIrrev.c(cnt) = 0;
-            rev2irrev{i} = [cnt-1 cnt];
-            irrev2rev(cnt) = i;
-        else
-            matchRev(cnt) = 0;
-            rev2irrev{i} = cnt;
-        end
-    end
-end
-
-rev2irrev = columnVector(rev2irrev);
-irrev2rev = irrev2rev(1:cnt);
-irrev2rev = columnVector(irrev2rev);
-
-% Build final structure
-modelIrrev.S = modelIrrev.S(:,1:cnt);
-modelIrrev.ub = columnVector(modelIrrev.ub(1:cnt));
-modelIrrev.lb = columnVector(modelIrrev.lb(1:cnt));
-modelIrrev.c = columnVector(modelIrrev.c(1:cnt));
-modelIrrev.rxns = columnVector(modelIrrev.rxns);
-modelIrrev.mets = model.mets;
-matchRev = columnVector(matchRev(1:cnt));
+%Mark the model type.
+modelIrrev = model;
 modelIrrev.match = matchRev;
-
-if (isfield(model,'b'))
-    modelIrrev.b = model.b;
-end
-if isfield(model,'description')
-    modelIrrev.description = [model.description ' irreversible'];
-end
-if isfield(model,'subSystems')
-    modelIrrev.subSystems = model.subSystems(irrev2rev);
-end
-if isfield(model,'genes')
-    modelIrrev.genes = model.genes;
-    genemtxtranspose = model.rxnGeneMat';
-    modelIrrev.rxnGeneMat = genemtxtranspose(:,irrev2rev)';
-    modelIrrev.rules = model.rules(irrev2rev);
-    modelIrrev.grRules = model.grRules(irrev2rev); %added to allow model reduction 18/02/2016 Agnieszka
-end
 modelIrrev.reversibleModel = false;
