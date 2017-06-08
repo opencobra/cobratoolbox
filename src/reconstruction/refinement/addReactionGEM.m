@@ -1,33 +1,43 @@
-function [newmodel, HTABLE] = addReactionGEM(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,nRxn,subSystems,grRules,rules,genes, HTABLE)
-%addReactionGEM manually adds reactions to a specified model, may add one or more reactions at a time
+function [newmodel, HTABLE] = addReactionGEM(model, rxns, rxnNames, rxnFormulas, rev, lb, ub, nRxn, subSystems, grRules, rules, genes, HTABLE)
+% Manually adds reactions to a specified model, may add one or more reactions at a time
 %
-%   [newmodel] = addReactionSmiley(model,rxns,rxnNames,rxnFormulas,rev,lb,ub,subSystems,grRules,rules,genes,HTABLE)
+% USAGE:
+%
+%    [newmodel, HTABLE] = addReactionGEM(model, rxns, rxnNames, rxnFormulas, rev, lb, ub, nRxn, subSystems, grRules, rules, genes, HTABLE)
+%
+% INPUTS:
+%     model:          COBRA model structure
+%     rxns:           Identifiers for the reactions
+%     rxnNames:       List of reactions
+%     rxnFormulas:    reactions' formulas
+%     rev:            0 = irrev, 1 = rev
+%     lb:             The lower bounds for fluxes
+%     ub:             The upper bounds for fluxes
+%     subSystems:     subSystem assignment for each reaction, default = ''
+%     grRules:        A string representation of the GPR rules defined in a readable format, default = ''
+%     rules:          GPR rules in evaluateable format for each reaction, default = ''
+%     genes:          Identifiers of the genes in the model, default = ''
+%     HTABLE:         hash table
+%
+% OUTPUTS:
+%     newmodel:       changed model
+%     HTABLE:         hash table
+%
+% EXAMPLE:
+%
+%    [modelLB_NH3] = addReactionSmiley(modelLB, 'NH3r', 'NH3 protonization', cellstr('1 NH3[c] + 1 H[c] <==> 1 NH4[c]'), 1, -1000, 1000, 'Others');
 %
 % - Manually add reactions to a specified model, can either add one or
 %   multiple reactions at a time
+%
 % - All syntax standards must comply with the specified model
+%
 % - For reaction formulas, use: '-->' for irreversible or '<==>' for
 %   reversible
-% e.g. [modelLB_NH3] = addReactionSmiley(modelLB,'NH3r','NH3 protonization',cellstr('1 NH3[c] + 1 H[c] <==> 1 NH4[c]'),1,-1000,1000,'Others');
-% Inputs
-%     model
-%     rxns
-%     rxnNames
-%     rxnFormulas     see note above
-%     rev             0 = irrev, 1 = rev
-%     lb
-%     ub
-%     subSystems      default = ''
-%     grRules         default = ''
-%     rules           default = ''
-%     genes           default = ''
-%     HTABLE
 %
-% Output
-%     newmodel
-%
-% based on AddRxn: Aarash Bordbar 11/2/07
-% IT 11-19-08
+% .. Author:
+%       - Aarash Bordbar 11/2/07 based on AddRxn
+%       - IT 11-19-08
 
 if ~exist('subSystems', 'var') || isempty(subSystems)
     clear subSystems;
@@ -57,8 +67,9 @@ end
 if ~exist('nRxn', 'var') || isempty(nRxn)
     nRxn = length(model.lb)+1;
 end
-
-nMet = length(model.mets)+1;
+orignMets = length(model.mets);
+nMet = orignMets+1;
+orignRxns = numel(model.rxns);
 
 if (isfield(model,'genes'))
     nGenes = length(model.genes)+1;
@@ -88,7 +99,6 @@ for i = 1:length(rev)
     %newmodel.rxns{nRxn} = char(rxns(i));
     newmodel.lb(nRxn,1) = lb(i,1);
     newmodel.ub(nRxn,1) = ub(i,1);
-    newmodel.rev(nRxn,1) = rev(i,1);
     newmodel.subSystems{nRxn,1} = subSystems(i,1);
     newmodel.grRules(nRxn,1) = grRules(i,1);
     newmodel.rules(nRxn,1) = rules(i,1);
@@ -146,9 +156,9 @@ for i = 1:length(rev)
             %if met doesn't exist then metLoc is set at nMet (the end of list)
             else
                 metLoc = nMet;
-                newmodel.mets{metLoc} = parsing{j};
+                newmodel.mets{metLoc,1} = parsing{j};
                 newmodel.S(metLoc,:) = 0;
-                newmodel.b(metLoc) = 0;
+                newmodel.b(metLoc,1) = 0;
                 if putNecessary
                     HTABLE.put(parsing{j}, metLoc);
                 end
@@ -190,11 +200,38 @@ for i = 1:length(rev)
 
     clear parsing
 
+    
     showprogress(i/length(rev));
 end
+
 
 for i = 1:length(genes)
     if ~isempty(genes{i}) %length(genes{i}) ~= 0
         newmodel.genes(nGenes,1) = genes(i,1);
     end
 end
+
+
+%Set/Reset Gene Names etc.
+newmodel.genes = genes;
+if isfield(newmodel,'proteins')
+    if ~all(size(newmodel.proteins) == size(newmodel.genes))
+        newmodel = rmfield(model,'proteins');
+        if isfield(model,'proteinNames')
+            newmodel = rmfield(model,'proteinNames');
+        end
+    end
+end
+modelFields = fieldnames(newmodel);
+%Remove all gene Associated fields which do not fit the new gene vector
+%size, these are now invalid.
+for i = 1:numel(modelFields)
+    if strncmp(modelFields{i},'genes',4)
+        if ~all(size(newmodel.(modelFields{i})) == size(newmodel.genes))
+            newmodel = rmfield(newmodel,modelFields{i});
+        end
+    end
+end
+
+newmodel = updateRelevantModelFields(newmodel,'rxns','originalSize',orignRxns,'targetSize',numel(newmodel.rxns));
+newmodel = updateRelevantModelFields(newmodel,'mets','originalSize',orignMets,'targetSize',numel(newmodel.mets));

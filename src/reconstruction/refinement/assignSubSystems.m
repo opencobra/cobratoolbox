@@ -6,11 +6,11 @@ function model = assignSubSystems(model,gpraFile)
 %    model = assignSubSystems(model, gpraFile)
 %
 % INPUTS:
-%    model:         COBRA model structure
-%    gpraFile:      SimPheny GPRA file
+%    model:       COBRA model structure
+%    gpraFile:    SimPheny GPRA file
 %
 % OUTPUT:
-%    model:         COBRA model structure with subsystem assignment
+%    model:       COBRA model structure with subsystem assignment
 %
 % .. Author: - Markus Herrgard
 

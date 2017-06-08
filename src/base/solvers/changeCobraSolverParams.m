@@ -1,49 +1,57 @@
-function changeOK = changeCobraSolverParams(solverType,paramName,paramValue)
-%changeCobraSolverParams Changes parameters for the Cobra Toolbox optimization solver(s)
+function changeOK = changeCobraSolverParams(solverType, paramName, paramValue)
+% Changes parameters for the Cobra Toolbox optimization solver(s)
 %
-% changeOK = changeCobraSolverParams(solverType,paramName,paramValue)
+% USAGE:
 %
-% INPUT
-% solverType    Solver type, 'LP' or 'MILP' (opt, default
-%               'LP')
-% paramName     Parameter name
-% paramValue    Parameter value
+%    changeOK = changeCobraSolverParams(solverType, paramName, paramValue)
 %
-% Allowed LP parameter names:
-% optTol        Optimal objective accuracy tolerance
-% teasTol       Constraint feasibilty tolerance
+% INPUTS:
+%    solverType:        Solver type, 'LP' or 'MILP' (opt, default, 'LP')
+%    paramName:         Parameter name
+%    paramValue:        Parameter value
 %
-% minNorm       {(0), scalar , n x 1 vector}, where [m,n]=size(S);
-%               If not zero then, minimise the Euclidean length
-%               of the solution to the LP problem. minNorm ~1e-6 should be
-%               high enough for regularisation yet maintain the same value for
-%               the linear part of the objective. However, this should be
-%               checked on a case by case basis, by optimization with and
-%               without regularisation.
-%
-% printLevel    Printing level
-%               = 0    Silent
-%               = 1    Warnings and Errors
-%               = 2    Summary information (Default)
-%               = 3    More detailed information
-%               > 10   Pause statements, and maximal printing (debug mode)
-%
-% primalOnly    {(0),1} 1=only return the primal vector (lindo solvers)
+% OUTPUT:
+%    changeOK:          Logical inicator that supplied parameter is allowed (= 1)
 %
 % Allowed MILP parameter names:
-%  timeLimit     Global time limit
-%  intTol        Integer tolerance
-%  relMipGapTol  Relative MIP gap tolerance
-%  logFile       Internal log file for solver
-%  printLevel    Print level for solver
 %
-% OUTPUT
-% changeOK      Logical inicator that supplied parameter is allowed (=1)
+%    * timeLimit:       Global time limit
+%    * intTol:          Integer tolerance
+%    * relMipGapTol:    Relative MIP gap tolerance
+%    * logFile:         Internal log file for solver
+%    * printLevel:      Print level for solver
 %
-
-% Markus Herrgard       5/3/07
-% Jan Schellenberger    09/28/09
-% Ronan Fleming         12/07/09 commenting of input/output
+% Allowed LP parameter names:
+%
+%    * optTol:          Optimal objective accuracy tolerance
+%    * teasTol:         Constraint feasibilty tolerance
+%    * minNorm:         {(0), scalar , `n` x 1 vector}, where `[m,n]=size(S)`;
+%
+% Explanation on parameters:
+%
+%  * printLevel:        Printing level
+%
+%    * 0 - Silent
+%    * 1 - Warnings and Errors
+%    * 2 - Summary information (Default)
+%    * 3 - More detailed information
+%    * > 10 - Pause statements, and maximal printing (debug mode)
+%
+%  * primalOnly:    {(0), 1}; 1 = only return the primal vector (lindo solvers)
+%
+% NOTE:
+%
+%    If input argument `minNorm` is not zero, then minimise the Euclidean length
+%    of the solution to the LP problem. `minNorm ~1e-6` should be
+%    high enough for regularisation yet maintain the same value for
+%    the linear part of the objective. However, this should be
+%    checked on a case by case basis, by optimization with and
+%    without regularisation.
+%
+% .. Authors:
+%       - Markus Herrgard, 5/3/07
+%       - Jan Schellenberger, 09/28/09
+%       - Ronan Fleming, 12/07/09 commenting of input/output
 
 changeOK = false;
 

@@ -1,24 +1,26 @@
-function MatricesSUX =generateSUXMatrix(model,dictionary, KEGGFilename, KEGGBlackList, compartment, addModel)
-% generateSUXMatrix creates the matrices for matlab smiley -- > combines S, U
-%  (KEGG), X (transport)
+function MatricesSUX = generateSUXMatrix(model, dictionary, KEGGFilename, KEGGBlackList, compartment, addModel)
+% Creates the matrices for matlab smiley -- > combines `S`, `U`, (`KEGG`), `X` (transport)
 %
-%    MatricesSUX =generateSUXMatrix(model,CompAbr, KEGGID,
-%    KEGGFilename, compartment)
+% USAGE:
 %
-% model          model structure
-% CompAbr        List of compounds abreviation (non-compartelized)
-% KEGGID         List of KEGGIDs for compounds in CompAbr
-% KEGGFilename   File name containing KEGG database
-% KEGGBlackList
-% compartment   [c] --> transport from cytoplasm [c] to extracellulat space
-%               [e] (default), [p] creates transport from [c] to [p] and from [p] to [c],
-%               if '' - no exchange reactions/transport will be added to the matrix.
-% addModel      model structure, containing an additional matrix or model
-%               that should be combined with SUX matrix.% Note that the naming of metabolites in this matrix has to be identical to
-%               model naming. Also, the list should be unique.
+%    MatricesSUX = generateSUXMatrix(model, dictionary, KEGGFilename, KEGGBlackList, compartment, addModel)
 %
-% 11-10-07 IT
+% INPUTS:
+%    model:          model structure
+%    dictionary:     disctionary used to transform KEGG model
 %
+% OPTIONAL INPUTS:
+%    KEGGID:         List of KEGGIDs for compounds
+%    KEGGFilename:   File name containing KEGG database
+%    KEGGBlackList:  Contains black list, default = {}
+%    compartment:    [c] --> transport from cytoplasm [c] to extracellulat space
+%                    [e] (default), [p] creates transport from [c] to [p] and from [p] to [c],
+%                    if '' - no exchange reactions/transport will be added to the matrix.
+%    addModel:       model structure, containing an additional matrix or model
+%                    that should be combined with SUX matrix.% Note that the naming of metabolites in this matrix has to be identical to
+%                    model naming. Also, the list should be unique.
+%
+%  .. Author: - IT, 11-10-07
 
 if nargin < 6
     addModel = '';

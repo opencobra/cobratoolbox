@@ -28,10 +28,6 @@ end
 
 [nMet,nRxn]=size(model.S);
 
-if ~isfield(model,'rev')
-    model.rev=true(nRxn,1);
-end
-
 if ~isfield(model,'SIntRxnBool')
     model.SIntRxnBool=true(nRxn,1);
 end
@@ -45,7 +41,7 @@ fid=fopen(filename,'w');
 for n=1:nRxn
     if model.SIntRxnBool(n)
         % Reaction IDs
-        if (model.rev(n))
+        if (model.lb(n) < 0)
             metInd = find(model.S(:,n) ~= 0 & allowedMet & selMet);
             for j = 1:length(metInd)
                 m = metInd(j);

@@ -1,17 +1,22 @@
 function [id, data, header] = readMixedData(file, n_header, n_labels, delimiter, verbose)
-% Read floating point data with row identifiers (text) in the first n columns
-% and m headerlines (text)
+% Read floating point data with row identifiers (text) in the first `n` columns
+% and `m` headerlines (text)
 %
 % USAGE:
 %
 %    [id, data, header] = readMixedData(file, n_header, n_labels, delimiter, verbose)
 %
 % INPUTS:
-%    file:      Filename
-%    n_header:  Number of header lines (default 0)
-%    n_labels:  Number of label columns (default 1)
-%    delimiter: Delimiter character (default tab)
-%    verbose:   Print out the string to be evaluated for debugging (default 0)
+%    file:         Filename
+%    n_header:     Number of header lines (default 0)
+%    n_labels:     Number of label columns (default 1)
+%    delimiter:    Delimiter character (default tab)
+%    verbose:      Print out the string to be evaluated for debugging (default 0)
+%
+% OUTPUTS:
+%    id:           Identifiers
+%    data:         Read data
+%    header:       Headers
 %
 % .. Authors: Markus Herrgard 2/9/05
 

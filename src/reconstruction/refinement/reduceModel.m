@@ -1,37 +1,38 @@
-function [modelRed,hasFlux,maxes,mins] = reduceModel(model,tol,irrevFlag,verbFlag,negFluxAllowedFlag,checkConsistencyFlag,changeBoundsFlag)
-%reduceModel Removes from the model all of the reactions that are never used (max and
+function [modelRed, hasFlux, maxes, mins] = reduceModel(model, tol, irrevFlag, verbFlag, negFluxAllowedFlag, checkConsistencyFlag, changeBoundsFlag)
+% Removes from the model all of the reactions that are never used (max and
 % min are < tol). Finds the minimal bounds for the flux through each reaction.
 % Also returns the results for flux variability analysis (maxes, mins).
 %
-% [modelRed,hasFlux,maxes,mins] = reduceModel(model,tol,irrevFlag,verbFlag,negFluxAllowedFlag,checkConsistencyFlag,changeBoundsFlag)
+% USAGE
 %
-%INPUT
-% model                 COBRA model structure
+%    [modelRed, hasFlux, maxes, mins] = reduceModel(model, tol, irrevFlag, verbFlag, negFluxAllowedFlag, checkConsistencyFlag, changeBoundsFlag)
 %
-%OPTIONAL INPUTS
-% tol                   Tolerance for non-zero bounds - bounds smaller in absolute
-%                       value than this value will be set to zero (Default = 1e-6)
-% irrevFlag             Determines if the models should be treated using
-%                       the irreversible form. (Default = false)
-% verbFlag              Verbose output (Default = false)
-% negFluxAllowedFlag    Allow negative fluxes through irrev reactions
-%                       (Default = false)
-% checkConsistencyFlag  Do a consistency check of the optimal solution
-%                       (Default = true)
-% changeBoundsFlag      Change upper/lower bounds to the minimal bounds
-%                       (Default = true)
+% INPUT:
+%    model:                   COBRA model structure
 %
-%OUTPUTS
-% modelRed              Reduced model
-% hasFlux               The indexes of the reactions that are not blocked
-%                       in the model
-% maxes                 Maximum fluxes
-% mins                  Minimum fluxes
+% OPTIONAL INPUTS:
+%    tol:                     Tolerance for non-zero bounds - bounds smaller in absolute
+%                             value than this value will be set to zero (Default = 1e-6)
+%    irrevFlag:               Determines if the models should be treated using
+%                             the irreversible form. (Default = false)
+%    verbFlag:                Verbose output (Default = false)
+%    negFluxAllowedFlag:      Allow negative fluxes through irrev reactions
+%                             (Default = false)
+%    checkConsistencyFlag:    Do a consistency check of the optimal solution
+%                             (Default = true)
+%    changeBoundsFlag:        Change upper/lower bounds to the minimal bounds
+%                             (Default = true)
 %
-% Gregory Hannum and Markus Herrgard 7/20/05
+% OUTPUTS:
+%    modelRed:                Reduced model
+%    hasFlux:                 The indexes of the reactions that are not blocked
+%                             in the model
+%    maxes:                   Maximum fluxes
+%    mins:                    Minimum fluxes
+%
+% .. Author: - Gregory Hannum and Markus Herrgard 7/20/05
 
-% Sets the tolerance for zero flux determination
-if nargin < 2
+if nargin < 2 % Sets the tolerance for zero flux determination
     global CBT_LP_PARAMS
     if (exist('CBT_LP_PARAMS', 'var'))
         if isfield(CBT_LP_PARAMS, 'objTol')
@@ -91,7 +92,7 @@ while rxnID <= nRxns
     % Set the objective function to the current reactiom
     tempModel = changeObjective(model,rxnName);
 
-    if (irrevFlag && model.rev(rxnID))
+    if (irrevFlag && model.lb(rxnID) < 0)
         % Make the forward reaction reversible temporarily
         tempModel.lb(rxnID) = -tempModel.ub(rxnID+1);
         % Disable the reverse reaction
@@ -118,12 +119,12 @@ while rxnID <= nRxns
     end
 
     % Ignore negative lower bounds for irrev reactions
-    if abs(minBound) < tol || (~negFluxAllowedFlag && minBound < 0 && ~model.rev(rxnID))
+    if abs(minBound) < tol || (~negFluxAllowedFlag && minBound < 0 && ~(model.lb(rxnID) < 0))
         minBound = 0;
     end
 
     %set the new appropriate bounds
-    if (irrevFlag && model.rev(rxnID))
+    if (irrevFlag && model.lb(rxnID) < 0)
         if minBound < 0 && maxBound < 0 % Negative flux
             mins(rxnID) = 0;
             mins(rxnID+1) = -maxBound;
@@ -182,12 +183,10 @@ if (changeBoundsFlag)
         if (~irrevFlag)
             if (modelRed.lb(rxnID) >= 0)
                 % Only runs in positive direction
-                modelRed.rev(rxnID) = false;
             end
             if (modelRed.ub(rxnID) <= 0)
 
-                % Only runs in negative direction -> reverse the reaction
-                modelRed.rev(rxnID) = false;
+                % Only runs in negative direction -> reverse the reaction                
                 if (~negFluxAllowedFlag)
                     ubTmp = modelRed.ub(rxnID);
                     lbTmp = modelRed.lb(rxnID);
@@ -228,7 +227,7 @@ tempModel = modelRed;
 while (~modelOK)
     narrowInd = find(modelRed.ub-modelRed.lb < cushion & modelRed.ub ~= modelRed.lb);
     tempModel.lb(narrowInd) = tempModel.lb(narrowInd) - cushion;
-    narrowIrrevInd =intersect(narrowInd,find(~tempModel.rev));
+    narrowIrrevInd =intersect(narrowInd,find(~tempModel.lb < 0));
     tempModel.lb(narrowIrrevInd) = max(tempModel.lb(narrowIrrevInd),0);
     tempModel.ub(narrowInd) = tempModel.ub(narrowInd) + cushion;
     modelRed.lb(narrowInd) = tempModel.lb(narrowInd);

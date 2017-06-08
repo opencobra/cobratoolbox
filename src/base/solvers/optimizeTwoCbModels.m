@@ -1,37 +1,39 @@
-function [solution1,solution2,totalFluxDiff] = optimizeTwoCbModels(model1,model2,osenseStr,minFluxFlag,verbFlag)
-%optimizeTwoCbModels Simultaneously solve two flux balance problems and
-%minimize the difference between the two solutions
+function [solution1, solution2, totalFluxDiff] = optimizeTwoCbModels(model1, model2, osenseStr, minFluxFlag, verbFlag)
+% Simultaneously solve two flux balance problems and
+% minimize the difference between the two solutions
 %
-% [solution1,solution2,totalFluxDiff] =
-%   optimizeTwoCbModels(model1,model2,osenseStr,minFluxFlag,verbFlag)
+% USAGE:
 %
-%INPUTS
-% model1        The first COBRA model
-% model2        The second COBRA model
-% model (the following fields are requires - others can be supplied)
-%   S             Stoichiometric matrix
-%   b             Right hand side = 0
-%   c             Objective coefficients
-%   lb            Lower bounds
-%   ub            Upper bounds
+%    [solution1, solution2, totalFluxDiff] = optimizeTwoCbModels(model1, model2, osenseStr, minFluxFlag, verbFlag)
 %
-%OPTIONAL INPUTS
-% osenseStr     Maximize ('max')/minimize ('min') (Default = 'max')
-% minFluxFlag   Minimize the absolute value of fluxes in the optimal MOMA
-%               solution (Default = false)
-% verbFlag      Verbose output (Default = false)
+% INPUTS:
+%    model1:           The first COBRA model
+%    model2:           The second COBRA model, where both models have mandatory fields:
 %
-%OUTPUTS
-% solution1     Solution for the 1st model
-% solution2     Solution for the 2nd model
-% totalFluxDiff 1-norm of the difference between the flux vectors sum|v1-v2| 
+%                        * S - Stoichiometric matrix
+%                        * b - Right hand side = 0
+%                        * c - Objective coefficients
+%                        * lb - Lower bounds
+%                        * ub - Upper bounds
 %
-% solution
-%   f         Objective value
-%   x         Primal (flux vector)
+% OPTIONAL INPUTS:
+%    osenseStr:        Maximize ('max')/minimize ('min') (Default = 'max')
+%    minFluxFlag:      Minimize the absolute value of fluxes in the optimal MOMA
+%                      solution (Default = false)
+%    verbFlag:         Verbose output (Default = false)
+%
+% OUTPUTS:
+%    solution1:        Solution for the 1st model
+%    solution2:        Solution for the 2nd model
+%    totalFluxDiff:    1-norm of the difference between the flux vectors sum|v1-v2|
+%
+% EXAMPLE:
+%    solution
+%      f         Objective value
+%      x         Primal (flux vector)
 %
 %
-% First solves two separate FBA problems:
+%    First solves two separate FBA problems:
 %                                 f1 = max/min c1'v1
 %                                 subject to S1*v1 = b1
 %                                            lb1 <= v1 <= ub1
@@ -39,8 +41,8 @@ function [solution1,solution2,totalFluxDiff] = optimizeTwoCbModels(model1,model2
 %                                 subject to S2*v2 = b2
 %                                            lb2 <= v2 <= ub2
 %
-% Then solves the following LP to obtain the two flux vectors with the
-% smallest possible 1-norm difference between them
+%    Then solves the following LP to obtain the two flux vectors with the
+%    smallest possible 1-norm difference between them
 %
 %                                 min |v1-v2|
 %                                   s.t. S1*v1 = b1
@@ -49,13 +51,12 @@ function [solution1,solution2,totalFluxDiff] = optimizeTwoCbModels(model1,model2
 %                                        S2*v2 = b2
 %                                        c2'v2 = f2
 %                                        lb2 <= v2 <= ub2
-% 
-% Finally optionally minimizes the 1-norm of the flux vectors
 %
-% Markus Herrgard 1/4/07
+%    Finally optionally minimizes the 1-norm of the flux vectors
+%
+% .. Author: - Markus Herrgard 1/4/07
 
-% LP solution tolerance
-global CBT_LP_PARAMS
+global CBT_LP_PARAMS % LP solution tolerance
 if (exist('CBT_LP_PARAMS', 'var'))
     if isfield(CBT_LP_PARAMS, 'objTol')
         tol = CBT_LP_PARAMS.objTol;
@@ -148,24 +149,24 @@ if (FBAsol1.stat > 0 && FBAsol1.stat > 0)
     clear csense;
     csense(1:(nMets1+nMets2)) = 'E';
     csense(end+1:end+2*nCommon) = 'G';
-    if (strcmp(osenseStr,'max'))    
+    if (strcmp(osenseStr,'max'))
         csense(end+1:end+2) = 'G';
     else
         csense(end+1:end+2) = 'L';
     end
-    
+
     % Re-solve the problem
     if (verbFlag)
         fprintf('Minimize difference between solutions: %d constraints %d variables ',size(A,1),size(A,2));
     end
-    
+
     [LPproblem.A,LPproblem.b,LPproblem.c,LPproblem.lb,LPproblem.ub,LPproblem.csense,LPproblem.osense] = deal(A,b,c,lb,ub,csense,1);
     LPsol = solveCobraLP(LPproblem);
 
     if (verbFlag)
         fprintf('%f seconds\n',LPsol.time);
-    end    
-    
+    end
+
     if (LPsol.stat > 0)
         totalFluxDiff = LPsol.obj;
         solution1.f = f1;
@@ -179,7 +180,7 @@ if (FBAsol1.stat > 0 && FBAsol1.stat > 0)
         solution1.x = [];
         solution2.x = [];
     end
-    
+
     if (LPsol.stat > 0 & minFluxFlag)
         A = [model1.S sparse(nMets1,nRxns2+2*nCommon+2*nRxns1+2*nRxns2);
             sparse(nMets2,nRxns1) model2.S sparse(nMets2,2*nCommon+2*nRxns1+2*nRxns2);];
@@ -219,11 +220,11 @@ if (FBAsol1.stat > 0 && FBAsol1.stat > 0)
 
         [LPproblem.A,LPproblem.b,LPproblem.c,LPproblem.lb,LPproblem.ub,LPproblem.csense,LPproblem.osense] = deal(A,b,c,lb,ub,csense,1);
         LPsol = solveCobraLP(LPproblem);
-        
+
         if (verbFlag)
             fprintf('%f seconds\n',LPsol.time);
         end
-        
+
         if (LPsol.stat > 0)
             solution1.x = LPsol.full(1:nRxns1);
             solution2.x = LPsol.full(nRxns1+1:nRxns1+nRxns2);
@@ -234,4 +235,3 @@ end
 
 solution1.stat = LPsol.stat;
 solution2.stat = LPsol.stat;
-

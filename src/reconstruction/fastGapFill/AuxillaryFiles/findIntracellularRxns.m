@@ -1,19 +1,17 @@
 function [intracellRxnList] = findIntracellularRxns(model)
-%% function [intracellRxnList] = findIntracellularRxns(model)
+% This function finds all reactions that do not contain metabolites in [e] comparment.
 %
-% This function finds all reactions that do not contain metabolites in [e]
-% comparment.
+% USAGE:
 %
-% INPUT
-% model             Model structure
+%    [intracellRxnList] = findIntracellularRxns(model)
 %
-% OUTPUT
-% intracellRxnList  List of intracellular reactions in model
+% INPUT:
+%    model:               Model structure
 %
-% July 2013
-% Ines Thiele, http://thielelab.eu.
-
-%%
+% OUTPUT:
+%    intracellRxnList:    List of intracellular reactions in model
+%
+% .. Author: - Ines Thiele, July 2013, http://thielelab.eu.
 
 intracellRxnList = zeros(length(model.rxns),1);
 

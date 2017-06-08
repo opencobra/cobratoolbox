@@ -1,43 +1,41 @@
-function [metaboliteList,stoichCoeffList,revFlag] = parseRxnFormula(formula)
-%parseRxnFormula Parse reaction formula into a list of metabolites and a
-%list of S coefficients
+function [metaboliteList, stoichCoeffList, revFlag] = parseRxnFormula(formula)
+% Parses reaction formula into a list of metabolites and a
+% list of `S` coefficients
 %
-% [metaboliteList,stoichCoeffList,revFlag] = parseRxnFormula(formula)
+% USAGE:
 %
-%INPUT
-% formula           Reaction formula, may contain symbols '+', '->', '<=>' in
-%                   addition to stoichiometric coefficients and metabolite names
-%                   examples: 
-%                   '0.01 cdpdag-SC[m] + 0.01 pg-SC[m]  -> 0.01 clpn-SC[m] + cmp[m] + h[m]' (irreversible reaction)
-%                   'cit[c] + icit[x]  <=> cit[x] + icit[c] ' (reversible reaction)
-%                   If no stoichiometric coefficient is provided, it is assumed
-%                   to be = 1
-%                   Reaction formula should be a string, not a cell array
+%    [metaboliteList, stoichCoeffList, revFlag] = parseRxnFormula(formula)
 %
-%OUTPUTS
-% metaboliteList    Cell array with metabolite names
-% stoichCoeffList   List of S coefficients
-% revFlag           Indicates whether the reaction is reversible (true) or
-%                   not (false)
+% INPUT:
+%    formula:           Reaction formula, may contain symbols '+', '->', '<=>' in
+%                       addition to stoichiometric coefficients and metabolite names
+%                       examples:
+%                       '0.01 cdpdag-SC[m] + 0.01 pg-SC[m]  -> 0.01 clpn-SC[m] + cmp[m] + h[m]' (irreversible reaction)
+%                       'cit[c] + icit[x]  <=> cit[x] + icit[c] ' (reversible reaction)
+%                       If no stoichiometric coefficient is provided, it is assumed
+%                       to be = 1.
+%                       Reaction formula should be a string, not a cell array
 %
-% Example:
+% OUTPUTS:
+%    metaboliteList:     Cell array with metabolite names
+%    stoichCoeffList:    List of `S` coefficients
+%    revFlag:            Indicates whether the reaction is reversible (true) or not (false)
 %
-%  formula = '0.01 cdpdag-SC[m] + 0.01 pg-SC[m]  -> 0.01 clpn-SC[m] + cmp[m] + h[m]'
+% EXAMPLE:
 %
-%  [metaboliteList,stoichCoeffList,revFlag] = parseRxnFormula(formula)
+%    formula = '0.01 cdpdag-SC[m] + 0.01 pg-SC[m]  -> 0.01 clpn-SC[m] + cmp[m] + h[m]'
 %
-%  metaboliteList = 
-%   'cdpdag-SC[m]'    'pg-SC[m]'    'clpn-SC[m]'    'cmp[m]'    'h[m]'
-%  stoichCoeffList = 
-%   -0.01 -0.01 0.01 1 1
-%  revFlag =
-%   false
+%    [metaboliteList, stoichCoeffList, revFlag] = parseRxnFormula(formula)
 %
-% Markus Herrgard 6/1/07
+%    %metaboliteList = 'cdpdag-SC[m]'    'pg-SC[m]'    'clpn-SC[m]'    'cmp[m]'    'h[m]'
+%    %stoichCoeffList = -0.01 -0.01 0.01 1 1
+%    %revFlag = false
 %
-% Richard Que 1/25/10 Modified to handle '-->' and '<==>' as arrows 
-% as well as reactionsformatted as '[compartment] : A --> C'. 
-% IT May 2012 Modified to handle '=>'
+% .. Authors:
+%       - Markus Herrgard 6/1/07
+%       - Richard Que 1/25/10 Modified to handle '-->' and '<==>' as arrows
+%         as well as reactionsformatted as '[compartment] : A --> C'.
+%       - IT May 2012 Modified to handle '=>'
 
 tokens = splitString(formula);
 
@@ -93,4 +91,3 @@ for i = 1:length(tokens)
         end
     end
 end
-        

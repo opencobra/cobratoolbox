@@ -12,23 +12,25 @@ else
     COVERAGE = false;
 end
 
-% include the root folder and all subfolders
-addpath(genpath(pwd))
+% Save the folder we were in.
+origDir = pwd;
 
 % if the location of initCobraToolbox is not yet known
 if length(which('initCobraToolbox.m')) == 0
     % define the path to The COBRA Toolbox
-    pth = which('testAll.m');
-    CBTDIR = pth(1:end-(length('testAll.m') + 1));
-
-    % change the directory to the root
-    cd([CBTDIR, filesep, '..', filesep]);
-
-    % include the root folder and all subfolders
-    addpath(genpath(pwd));
+    pth = fileparts(which('testAll.m'));
+    %Now, we are in the test folder
+    cd(pth)
+    %Switch to the base folder
+    cd ..     
+    %And assign the CBTDIR variable
+    CBTDIR = pwd;
+else
+    CBTDIR = fileparts(which('initCobraToolbox.m'));
+    cd(CBTDIR);
 end
-
-CBTDIR = fileparts(which('initCobraToolbox.m'));
+%include the root folder and all subfolders.
+addpath(genpath(pwd));
 
 % change to the root folder of The COBRA TOolbox
 cd(CBTDIR);
@@ -54,13 +56,28 @@ profile on;
 
 if COVERAGE
 
-    % ignore list of files
-    ignoreFiles = {'./src/fluxomics/c13solver/IsotopomerModel.txt',
-                   './src/fluxomics/c13solver/convertCarbonInput.m',
-                   './src/fluxomics/c13solver/slvrCumomer.m',
-                   './src/fluxomics/c13solver/slvrCumomer_fast.m',
-                   './src/fluxomics/c13solver/slvrEMU.m',
-                   './src/fluxomics/c13solver/slvrEMU_fast.m'};
+    % open the .gitignore file
+    fid = fopen([CBTDIR filesep '.gitignore']);
+
+    % initialise
+    counter = 1;
+    ignoreFiles = {};
+
+    % loop through the file names of the .gitignore file
+    while ~feof(fid)
+        lineOfFile = strtrim(char(fgetl(fid)));
+
+        % only retain the lines that end with .txt and .m and are not comments and point to files in the /src folder
+        if length(lineOfFile) > 4
+            if ~strcmp(lineOfFile(1), '#') && strcmp(lineOfFile(1:4), 'src/') && (strcmp(lineOfFile(end-3:end), '.txt') || strcmp(lineOfFile(end-1:end), '.m'))
+                ignoreFiles{counter} = lineOfFile;
+                counter = counter + 1;
+            end
+        end
+    end
+
+    % close the .gitignore file
+    fclose(fid);
 
     % check the code quality
     listFiles = rdir(['./src', '/**/*.m']);
@@ -79,7 +96,7 @@ if COVERAGE
         % check if the file is on the ignored list
         countFlag = true;
         for k = 1:length(ignoreFiles)
-            if strcmp(listFiles(i).name, ignoreFiles{k})
+            if ~isempty(strfind(listFiles(i).name, ignoreFiles{k}))
                 countFlag = false;
             end
         end
@@ -119,6 +136,8 @@ if COVERAGE
             grade = grades{i};
         end
     end
+
+    fprintf('\n\n -> The code grade is %s (%1.2f%%).\n\n', grade, avMsgsPerc);
 
     if ~isempty(strfind(getenv('HOME'), 'jenkins'))
         % remove the old badge
@@ -191,6 +210,15 @@ try
     if ~isempty(strfind(getenv('HOME'), 'jenkins'))
         exit(exit_code);
     end
-catch
-    exit(1);
+catch M
+    if ~isempty(strfind(getenv('HOME'), 'jenkins'))
+        %Only exit on jenkins.
+        exit(1);
+    else
+        %Switch back to the folder we were in and rethrow the error
+        cd(origDir);
+        error(M);
+    end
 end
+%Switch back to the folder we were in.
+cd(origDir)

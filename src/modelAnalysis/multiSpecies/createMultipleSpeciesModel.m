@@ -97,7 +97,7 @@ if nargin >= 3
             ERxnForm = regexprep(ERxnForm, '\[e\]', '\[b\]');
             for j = 1:length(ERxnForm)
                 [modelHost,rxnIDexists] = addReaction(modelHost,...
-                                                      strcat(modelHost.rxns{ERxnind(j)}, 'b'), ERxnForm{j}, [], modelHost.rev(ERxnind(j)), ...
+                                                      strcat(modelHost.rxns{ERxnind(j)}, 'b'), ERxnForm{j}, [], modelHost.lb(ERxnind(j)) < 0, ...
                                                       modelHost.lb(ERxnind(j)), modelHost.ub(ERxnind(j)), modelHost.c(ERxnind(j)), 'Host exchange', '', '', '', false);
             end
         end
@@ -133,10 +133,10 @@ if nargin >= 3
     if modelNumber > 1
         for i = 2:modelNumber
             model = modelStorage(i, 1);
-            [modelJoint] = mergeTwoModels(modelJoint, model, 1, 0);
+            [modelJoint] = mergeTwoModels(modelJoint, model, 1);
         end
     end
-    [modelJoint] = mergeTwoModels(modelJoint,modelHost, 1, 0);
+    [modelJoint] = mergeTwoModels(modelJoint,modelHost, 1);
 
     modelJoint = addExchangeRxn(modelJoint, unique(MexGJoint));
 

@@ -1,60 +1,60 @@
-function solution = solveCobraMIQP(MIQPproblem,varargin)
-%solveCobraQP Solve constraint-based QP problems
+function solution = solveCobraMIQP(MIQPproblem, varargin)
+% Solves constraint-based QP problems
+% The solver defined in the `CBT_MIQP_SOLVER` global variable (set using
+% `changeCobraSolver`). Solvers currently available are 'tomlab_cplex'
 %
-% solution = solveCobraQP(MIQPproblem,solver,verbFlag,solverParams)
+% USAGE:
 %
-% % Solves problems of the type
+%    solution = solveCobraMIQP(MIQPproblem, varargin)
 %
-%      min   osense * 0.5 x' * F * x + osense * c' * x
-%      s/t   lb <= x <= ub
-%            A * x  <=/=/>= b
-%            xi = integer
+% Solves problems of the type
+% :math:`min osense * 0.5 x' * F * x + osense * c' * x`
+% s/t. :math:`lb <= x <= ub`
+% :math:`A * x  <=/=/>= b`
+% `xi` = integer
 %
-%INPUT
-%MIQPproblem    Structure containing the following fields describing the QP
-%               problem to be solved
-%  A                LHS matrix
-%  b                RHS vector
-%  F                F matrix for quadratic objective (see above)
-%  c                Objective coeff vector
-%  lb               Lower bound vector
-%  ub               Upper bound vector
-%  osense           Objective sense (-1 max, +1 min)
-%  csense           Constraint senses, a string containting the constraint
-%                   sense for each row in A ('E', equality, 'G' greater
-%                   than, 'L' less than).
+% INPUT:
+%    MIQPproblem:     Structure containing the following fields describing the MIQP problem to be solved
 %
-%OPTIONAL INPUTS
+%                       * .A - LHS matrix
+%                       * .b - RHS vector
+%                       * .F - F matrix for quadratic objective (see above)
+%                       * .c - Objective coeff vector
+%                       * .lb - Lower bound vector
+%                       * .ub - Upper bound vector
+%                       * .osense - Objective sense (-1 max, +1 min)
+%                       * .csense - Constraint senses, a string containting the constraint sense for
+%                         each row in A ('E', equality, 'G' greater than, 'L' less than).
+%
 % Optional parameters can be entered using parameters structure or as
-% parameter followed by parameter value: i.e. ,'printLevel',3)
+% parameter followed by parameter value: i.e. ,'printLevel', 3)
+% Setting `parameters` = 'default' uses default setting set in
+% `getCobraSolverParameters`.
 %
-% parameters    Structure containing optional parameters as fields.
-%  printLevel   Print level for solver
-%  saveInput    Saves LPproblem to filename specified in field.
-%               Setting parameters = 'default' uses default setting set in
-%               getCobraSolverParameters.
+% OPTIONAL INPUTS:
+%    parameters:      Structure containing optional parameters.
+%    printLevel:      Print level for solver
+%    saveInput:       Saves LPproblem to filename specified in field.
 %
-% the solver defined in the CBT_MIQP_SOLVER global variable (set using
-% changeCobraSolver). Solvers currently available are 'tomlab_cplex'
+% OUTPUT:
+%    solution:        Structure containing the following fields describing a MIQP solution
 %
-%OUTPUT
-% solution      Structure containing the following fields describing a QP
-%               solution
-%  full             Full QP solution vector
-%  obj              Objective value
-%  solver           Solver used to solve QP problem
-%  stat             Solver status in standardized form (see below)
-%                       1   Optimal solution found
-%                       2   Unbounded solution
-%                       0   Infeasible QP
-%                      -1   No optimal solution found (time limit etc)
-%                       3   Solution exists but with problems
-%  origStat         Original status returned by the specific solver
-%  time             Solve time in seconds
+%                       * .full:        Full MIQP solution vector
+%                       * .obj:         Objective value
+%                       * .solver:      Solver used to solve MIQP problem
+%                       * .stat:        Solver status in standardized form (see below)
 %
+%                         * 1 - Optimal solution found
+%                         * 2 - Unbounded solution
+%                         * 0 - Infeasible MIQP
+%                         * -1 - No optimal solution found (time limit etc)
+%                         * 3 - Solution exists but with problems
+%                       * .origStat:    Original status returned by the specific solver
+%                       * .time:        Solve time in seconds
 %
-% Markus Herrgard 6/8/07
-% Tim Harrington  05/18/12 Added support for the Gurobi 5.0 solver
+% .. Author:
+%       - Markus Herrgard 6/8/07
+%       - Tim Harrington 05/18/12 Added support for the Gurobi 5.0 solver
 
 global CBT_MIQP_SOLVER;
 solver = CBT_MIQP_SOLVER;

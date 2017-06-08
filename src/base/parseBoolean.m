@@ -6,17 +6,17 @@ function [elements, newRule, rxnGeneMat] = parseBoolean(str, tokens, allowedElem
 %     [elements, newRule] = parseBoolean(str, tokens, allowedElementChars)
 %
 % INPUTS:
-%    str:                   Input string or cell array of boolean statements
-%    tokens:                Allowed operators in boolean statements (optional,
-%                           default '()&|~')
-%    allowedElementChars:   Allowed characters in elements of the statement
+%    str:                    Input string or cell array of boolean statements
+%    tokens:                 Allowed operators in boolean statements (optional,
+%                            default '()&|~')
+%    allowedElementChars:    Allowed characters in elements of the statement
 %
 % OUTPUTS:
-%    elements:     Non-operator elements
-%    newRule:      New rule translated to element numbers
-%    rxnGeneMat:   If str is a cell array, rxnGeneMat is the normal
-%                  COBRA rxnGeneMat (a matrix with rows corresponding
-%                  to reactions, and columns corresponding to genes).
+%    elements:               Non-operator elements
+%    newRule:                New rule translated to element numbers
+%    rxnGeneMat:             If str is a cell array, rxnGeneMat is the normal
+%                            COBRA rxnGeneMat (a matrix with rows corresponding
+%                            to reactions, and columns corresponding to genes).
 %
 % .. Authors:
 %       - Markus Herrgard 5/11/04

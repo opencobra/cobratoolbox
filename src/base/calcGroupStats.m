@@ -7,17 +7,17 @@ function [groupStat, groupList, groupCnt, zScore] = calcGroupStats(data, groups,
 %    [groupStat, groupList, groupCnt, zScore] = calcGroupStats(data, groups, statName, groupList, randStat, nRand)
 %
 % INPUTS:
-%    data:       Matrix of data (individuals x variables)
-%    groups:     Group identifier for each individual
-%    statName:   Name of the statistic to be computed for each group:
-%                'mean': mean value for group (default)
-%                'std': standard deviation for group
-%                'median': median for group
-%                'count': sum total of variable values for group
-%    groupList:  List of group identifiers to be considered (optional, default
-%                all values occurring in groups)
-%    randStat:   Perform randomization analysis
-%    nRand:      # of randomizations
+%    data:          Matrix of data (individuals x variables)
+%    groups:        Group identifier for each individual
+%    statName:      Name of the statistic to be computed for each group:
+%                   'mean': mean value for group (default)
+%                   'std': standard deviation for group
+%                   'median': median for group
+%                   'count': sum total of variable values for group
+%    groupList:     List of group identifiers to be considered (optional, default
+%                   all values occurring in groups)
+%    randStat:      Perform randomization analysis
+%    nRand:         # of randomizations
 %
 % Group identifier can be either strings or numerical values
 %

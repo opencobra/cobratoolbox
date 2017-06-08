@@ -1,30 +1,24 @@
 function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList)
-%% function KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList)
+% Creates the U matrix using the universal data from the KEGG
 %
-% createUMatrix creates the U matrix using the universal data from the KEGG
-% database
-% % Requires the openCOBRA toolbox
-% http://opencobra.sourceforge.net/openCOBRA/Welcome.html
+% USAGE:
 %
-% Getting the Latest Code From the Subversion Repository:
-% Linux:
-% svn co https://opencobra.svn.sourceforge.net/svnroot/opencobra/cobra-devel
+%    KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList)
 %
-% INPUT
-% KEGGFilename          File name containing universal database (e.g., KEGG; optional input, default: reaction.lst)
-% KEGGblackList         List of excluded reactions from the universal database
-%                       (e.g., KEGG) (optional input, default: no
-%                       blacklist)
-% OUTPUT
-% KEGG              Contains universal database (U Matrix) in matrix format
+% INPUTS:
+%    KEGGFilename:     File name containing universal database (e.g., KEGG; optional input, default: `reaction.lst`)
+%    KEGGblackList:    List of excluded reactions from the universal database
+%                      (e.g., KEGG) (optional input, default: no blacklist)
 %
+% OUTPUT:
+%    KEGG:             Contains universal database (`U` matrix) in matrix format
 %
-% N.B. This file is KEGG-specific: if non-KEGG-type metabolite IDs are used
-% it will not parse the reactions correctly and will throw an error.
+% NOTE:
 %
-% 11-10-07 Ines Thiele
-% Expanded June 2013, , http://thielelab.eu.
+%    This file is KEGG-specific: if non-KEGG-type metabolite IDs are used
+%    it will not parse the reactions correctly and will throw an error.
 %
+% .. Author: - Ines Thiele, 11-10-07, Expanded June 2013, , http://thielelab.eu.
 
 if ~exist('KEGGFilename','var') || isempty(KEGGFilename)
     KEGGFilename='reaction.lst';
@@ -148,7 +142,7 @@ end
 
 KEGG.S=spalloc(length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets), length(KEGG.mets) + 2*length(KEGG.mets) );
 
-[KEGG] = addReactionGEM(KEGG,KEGG.rxns,KEGG.rxns,KEGG.rxnFormulas,KEGG.rev,-10000*ones(length(KEGG.rxns),1),10000*ones(length(KEGG.rxns),1),1);
+[KEGG] = addReactionGEM(KEGG,KEGG.rxns,KEGG.rxns,KEGG.rxnFormulas,KEGG.rev,-10000*ones(length(KEGG.rxns),1).*KEGG.rev,10000*ones(length(KEGG.rxns),1),1);
 a=length(KEGG.mets);
 KEGG.S(a+1:end,:)=[];
 a=length(KEGG.rxns);

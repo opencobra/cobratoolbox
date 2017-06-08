@@ -51,8 +51,6 @@ end
 % exclude all exchanges that have been set
 Ex_Rxns2Min = Ex_Rxns1All;
 
-model.rev = zeros(length(model.rxns),1);
-model.rev(find(model.lb<0))=1;
 model.lb(find(ismember(model.rxns,biomassRxn)))=minGrowth;% based on slowlest cell line in data
 
 

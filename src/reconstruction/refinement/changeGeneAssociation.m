@@ -1,28 +1,29 @@
-function model = changeGeneAssociation(model,rxnName,grRule,geneNameList,systNameList,addRxnGeneMat)
+function model = changeGeneAssociation(model, rxnName, grRule, geneNameList, systNameList, addRxnGeneMat)
 % Change gene associations in a model
 %
-% model = changeGeneAssociation(model,rxnName,grRule,geneName,systName)
+% USAGE:
 %
-%INPUTS
-% model             COBRA Toolbox model structure
-% rxnName           Name of the new reaction
-% grRule            Gene-reaction rule in boolean format (and/or allowed)
+%    model = changeGeneAssociation(model, rxnName, grRule, geneNameList, systNameList, addRxnGeneMat)
 %
-%OPTIONAL INPUTS
-% geneNameList      List of gene names (used only for translation from
-%                   common gene names to systematic gene names)
-% systNameList      List of systematic names
-% addRxnGeneMat     adds rxnGeneMat to model structure (default = true)
+% INPUTS:
+%    model:            COBRA Toolbox model structure
+%    rxnName:          Name of the new reaction
+%    grRule:           Gene-reaction rule in boolean format (and/or allowed)
 %
-%OUTPUT
-% model             COBRA Toolbox model structure with new gene reaction
-%                   associations
+% OPTIONAL INPUTS:
+%    geneNameList:     List of gene names (used only for translation from
+%                      common gene names to systematic gene names)
+%    systNameList:     List of systematic names
+%    addRxnGeneMat:    adds rxnGeneMat to model structure (default = true)
 %
+% OUTPUT:
+%    model:            COBRA Toolbox model structure with new gene reaction associations
+%
+% .. Authors:
+%       - Markus Herrgard 1/12/07
+%       - Ines Thiele 08/03/2015, made rxnGeneMat optional
+%       - IT: updated the nargin statement to accommodate the additional option
 
-% Markus Herrgard 1/12/07
-% Ines Thiele 08/03/2015, made rxnGeneMat optional
-
-% IT: updated the nargin statement to accommodate the additional option
 if exist('geneNameList','var') && exist('systNameList','var')
     translateNamesFlag = true;
 else
@@ -30,7 +31,11 @@ else
 end
 
 if ~exist('addRxnGeneMat','var')
-    addRxnGeneMat = 1;
+    if isfield(model,'rxnGeneMat')
+        addRxnGeneMat = 1;
+    else
+        addRxnGeneMat = 0;
+    end
 end
 
 [isInModel,rxnID] = ismember(rxnName,model.rxns);
@@ -42,11 +47,13 @@ end
 if ~isfield(model,'genes')
     model.genes = {};
 end
+
 nGenes = length(model.genes);
+nGenesInit = nGenes;
 model.rules{rxnID} = '';
 % IT 01/2010 - this line caused problems for xls2model.m
-if addRxnGeneMat ==1
-    model.rxnGeneMat(rxnID,:) = zeros(1,nGenes);
+if addRxnGeneMat ==1 
+    model.rxnGeneMat(rxnID,1:nGenes) = zeros(1,nGenes);
 end
 % Remove extra white space
 grRule = regexprep(grRule,'\s{2,}',' ');
@@ -61,11 +68,11 @@ if (~isempty(grRule))
     grRule = regexprep(grRule,'( ','(');
     grRule = regexprep(grRule,' )',')');
     [genes,rule] = parseBoolean(grRule);
-    
+
     for i = 1:length(genes)
         if (translateNamesFlag)
             % Translate gene names to systematic names
-            [isInList,translID] = ismember(genes{i},geneNameList);         
+            [isInList,translID] = ismember(genes{i},geneNameList);
             if isInList
                 newGene = systNameList{translID};
                 grRule = regexprep(grRule,[genes{i} '$'],newGene);
@@ -73,12 +80,12 @@ if (~isempty(grRule))
                 grRule = regexprep(grRule,[genes{i} ')'],[newGene ')']);
                 genes{i} = newGene;
             else
-                warning(['Gene name ' genes{i} ' not in translation list']);
+                fprintf(['Gene name ' genes{i} ' not in translation list\n']);
             end
         end
         geneID = find(strcmp(model.genes,genes{i}));
         if (isempty(geneID))
-            warning(['New gene ' genes{i} ' added to model']);
+            fprintf(['New gene ' genes{i} ' added to model\n']);
             % Append gene
             model.genes = [model.genes; genes(i)];
             nGenes = length(model.genes);
@@ -101,3 +108,6 @@ model.grRules{rxnID} = grRule;
 %make sure variables are column vectors
 model.rules = columnVector(model.rules);
 model.grRules = columnVector(model.grRules);
+if nGenes > nGenesInit
+    model = updateRelevantModelFields(model,'genes','originalSize', nGenesInit, 'targetSize',nGenes);
+end

@@ -2,8 +2,9 @@ function generateSystemConfigReport()
 % Generates a configuration report of the sytem and saves it as COBRAconfigReport.log
 %
 % USAGE:
-%     generateSystemConfigReport()
 %
+%     generateSystemConfigReport()
+
 
     global CBTDIR;
     global CBT_LP_SOLVER;

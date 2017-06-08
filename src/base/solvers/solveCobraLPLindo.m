@@ -1,16 +1,36 @@
-function [obj,x,y,w,s,solStatus] = solveCobraLPLindo(A,b,c,csense,lb,ub,osense,primalOnlyFlag,oldAPIFlag,verbLevel,method)
-%solveCobraLPLindo Solve a LP problem using Lindo
+function [obj, x, y, w, s, solStatus] = solveCobraLPLindo(A, b, c, csense, lb, ub, osense, primalOnlyFlag, oldAPIFlag, verbLevel, method)
+% Solves a LP problem using Lindo
 %
-% [obj,x,y,w,s,solStatus] =
-% solveCobraLPLindo(A,b,c,csense,lb,ub,osense,primalOnlyFlag,oldAPIFlag,verbLevel,method)
+% USAGE:
 %
-% oldAPIFLag should be true if Lindo API <2.0 is used and false for newer
-% versions of the API
+%    [obj, x, y, w, s, solStatus] = solveCobraLPLindo(A, b, c, csense, lb, ub, osense, primalOnlyFlag, oldAPIFlag, verbLevel, method)
 %
-% Markus Herrgard 11/8/06
+% INPUTS:
+%    A:                 LHS matrix
+%    b:                 RHS vector
+%    c:                 Objective coeff vector
+%
+% OPTIONAL INPUTS:
+%    csense:            Constraint senses
+%    lb:                Lower bound vector
+%    ub:                Upper bound vector
+%    osense:            Objective sense
+%    primalOnlyFlag:    Get the primal soln only
+%    oldAPIFLag:        should be true if Lindo API <2.0 is used and false for newer versions of the API
+%    verbLevel:         verbose level
+%    method:            default = 0, chooses the algorithm
+%
+% OUTPUTS:
+%    obj:               Objective value
+%    x:                 `n` vector: value of each variable in x
+%    y:                 `m` vector: dual variables
+%    w:                 vector of reduced costs
+%    s:                 `m` vector: value of each slack in s
+%    solStatus:         Original status returned by the specific solver
+%
+% .. Author: - Markus Herrgard 11/8/06
 
-% Handle missing arguments
-if nargin < 4
+if nargin < 4 % Handle missing arguments
     csense = [];
 end
 if nargin < 5
@@ -136,9 +156,9 @@ if (~oldAPIFlag)
         end
 
     elseif (solStatus == LS_STATUS_UNBOUNDED)
-        
+
         obj = inf;
-        
+
     end
 
     % Report some statistics
@@ -186,7 +206,7 @@ if (~oldAPIFlag)
 else % Old Lindo
 
     global LINDOAPIHOME;
-    
+
     iEnv = 0;
     iModel = 0;
 
@@ -246,15 +266,11 @@ else % Old Lindo
     elseif (solStatus == 6 | solStatus == 5)
 
         obj = Inf;
-        
+
     end
-    
+
     % Close the interface and terminate
     delStatus = mxlindo('LSdeleteModel',iModel);
     delStatus = mxlindo('LSdeleteEnv',iEnv);
-    
+
 end
-
-
-
-

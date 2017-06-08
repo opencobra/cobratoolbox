@@ -1,10 +1,19 @@
 function outLink = hyperlink(url, urlText, altText1, altText2)
-% converts a url to a clickable link in order to improve usability
+% Converts a url to a clickable link in order to improve usability
 % when using the MATLAB desktop environment
 %
 % USAGE:
 %   outLink = hyperlink(url, urlText, altText1, altText2)
 %
+% INPUTS:
+%    url:         url address
+%    urlText:     url for java
+%    altText1:    alternative text before link
+%    altText2:    alternative text after link
+%
+% OUTPUT:
+%    outLink:     clickable link
+
     if nargin < 2
         urlText = url;
     end

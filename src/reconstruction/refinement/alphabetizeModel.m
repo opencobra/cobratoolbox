@@ -9,10 +9,10 @@ function abcModel = alphabetizeModel(model)
 %    abcModel = alphabetizeModel(model)
 %
 % INPUT:
-%     model:         COBRA model structure
+%     model:      COBRA model structure
 %
 % OUTPUT:
-%    abcModel:       the alphabetized model
+%    abcModel:    the alphabetized model
 %
 % .. Authors:
 %       - Jeff Orth  11/21/07
@@ -29,7 +29,6 @@ abcModel.ub = abcModel.ub(iRxns);
 abcModel.c = abcModel.c(iRxns);
 abcModel.b = abcModel.b(iMets);
 
-if isfield(model,'rev'), abcModel.rev = abcModel.rev(iRxns); end
 if isfield(model,'metCharges'), abcModel.metCharges = abcModel.metCharges(iMets); end
 if isfield(model,'subSystems'), abcModel.subSystems = abcModel.subSystems(iRxns); end
 if isfield(model,'rxnNames'), abcModel.rxnNames = abcModel.rxnNames(iRxns); end

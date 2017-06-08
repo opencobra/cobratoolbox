@@ -1,23 +1,34 @@
-function [relaxRxnBool,solutionRelax] = minCardinalityConservationRelaxationVector(S,params,printLevel)
+function [relaxRxnBool, solutionRelax] = minCardinalityConservationRelaxationVector(S, params, printLevel)
 % DC programming for solving the cardinality optimization problem
-% min    lambda*||x||_0
-% s.t.   x + S'*z = 0
-%           -inf <= x <= inf
-%              1 <= z <= 1/epsilon
+% :math:`min lambda*||x||_0`
 %
-% INPUT
-% S                     m x n stoichiometric matrix
+% s.t. :math:`x + S'*z = 0`
 %
-% OPTIONAL INPUT
-% params.epsilon        (1e-4) 1/epsilon is the largest flux expected
-% params.eta            (feasTol*100), cutoff for mass leak/siphon  
-% params.nonRelaxBool   (false(n,1)), n x 1 boolean vector for reactions not to relax
-% 
-% OUTPUT
-% relaxRxnBool         n x 1 boolean vector where tru correspond to relaxation
-% solutionRelax.stat   solution status
-% solutionRelax.x      n x 1 vector where nonzeros>eta correspond to relaxations  
-% solutionRelax.z      m x 1 vector where positives correspond to molecular mass
+% :math:`-inf <= x <= inf`,
+% :math:`1 <= z <= 1 / epsilon`
+%
+% USAGE:
+%
+%    [relaxRxnBool, solutionRelax] = minCardinalityConservationRelaxationVector(S, params, printLevel)
+%
+% INPUT:
+%    S:                `m` x `n` stoichiometric matrix
+%
+% OPTIONAL INPUTS:
+%    params:           structure with:
+%
+%                        * params.epsilon - (1e-4) 1/epsilon is the largest flux expected
+%                        * params.eta - (`feasTol` * 100), cutoff for mass leak/siphon
+%                        * params.nonRelaxBool - (false(n, 1)), `n` x 1 boolean vector for reactions not to relax
+%    printLevel:       verbose level
+%
+% OUTPUTS:
+%    relaxRxnBool:     `n` x 1 boolean vector where tru correspond to relaxation
+%    solutionRelax:    structure with:
+%
+%                        * solutionRelax.stat - solution status
+%                        * solutionRelax.x - `n` x 1 vector where nonzeros>eta correspond to relaxations
+%                        * solutionRelax.z - `m` x 1 vector where positives correspond to molecular mass
 
 [mlt,nlt]=size(S');
 
@@ -77,7 +88,7 @@ solutionRelax = optimizeCardinality(cardProblem,params);
 %       nbMaxIteration      stopping criteria - number maximal of iteration (Defaut value = 1000)
 %       epsilon             stopping criteria - (Defaut value = 10e-6)
 %       theta               parameter of the approximation (Defaut value = 2)
-% 
+%
 % OUTPUT
 % solution                  Structure containing the following fields
 %       x                   p x 1 solution vector

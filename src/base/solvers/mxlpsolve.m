@@ -1,7 +1,7 @@
-% mxlpsolve  Mex file interface to the lp_solve 5.5 toolkit. Please see
+% Mex file interface to the lp_solve 5.5 toolkit. Please see
 % reference guide for more information.
 %
-% mxlpsolve is a low-level interface to the lp_solve toolkit. It may be called
+% mxlpsolve is a low-level interface to the `lp_solve toolkit`. It may be called
 % directly, or may be used to build higher level functions for solving
 % various kinds of linear and mixed-integer linear programs. It uses an
 % integer handle to point to a linear program.

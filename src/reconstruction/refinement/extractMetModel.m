@@ -1,22 +1,23 @@
-function metabModel = extractMetModel(model,metabNames,nLayers,allCompFlag,nRxnsMetThr)
-%extractMetModel Create a subnetwork model around one or more metabolites
+function metabModel = extractMetModel(model, metabNames, nLayers, allCompFlag, nRxnsMetThr)
+% Creates a subnetwork model around one or more metabolites
 %
-% metabModel =  extractMetModel(model,metabNames,nLayers,allCompFlag,nRxnsMetThr)
+% USAGE:
 %
-%INPUTS
-% model             COBRA model structure
-% metabNames        Metabolites to build subnetwork model around 
-% nLayers           
-% allCompFlag       Use all metabolites regardless of compartment
+%    metabModel = extractMetModel(model, metabNames, nLayers, allCompFlag, nRxnsMetThr)
 %
-%OPTIONAL INPUT
-% nRxnsMetThr       Ignore metabolites which appear in more than nRxnMetThr
-%                   (Default = 100)
+% INPUTS:
+%    model:          COBRA model structure
+%    metabNames:     Metabolites to build subnetwork model around
+%    nLayers:        Number of layers
+%    allCompFlag:    Use all metabolites regardless of compartment
 %
-%OUTPUT
-% metabModel        COBRA model around one or more metabolites
+% OPTIONAL INPUT:
+%    nRxnsMetThr:    Ignore metabolites which appear in more than `nRxnMetThr` (Default = 100)
 %
-% Markus Herrgard 3/1/06
+% OUTPUT:
+%    metabModel:     COBRA model around one or more metabolites
+%
+% .. Author: - Markus Herrgard 3/1/06
 
 if (nargin < 5)
     nRxnsMetThr = 100;

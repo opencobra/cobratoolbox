@@ -1,4 +1,4 @@
-function [ helpText ] = writeGDXFromCOBRA( cobraStruct,fileName,small )
+function [helpText] = writeGDXFromCOBRA(cobraStruct, fileName, small)
 % Writes a GDX file with the stoichiometric matrix and
 % the reversibility information. If small is set to true, it writes a
 % smaller GDX . Requires `wgdx` to be on path, which is provided by a GAMS installation.
@@ -8,12 +8,12 @@ function [ helpText ] = writeGDXFromCOBRA( cobraStruct,fileName,small )
 %    [helpText] = writeGDXFromCOBRA(cobraStruct, fileName, small)
 %
 % INPUTS:
-%    cobraStruct:   structure
-%    fileName:      name of the file
-%    small:         triggers smaller GDX
+%    cobraStruct:    structure
+%    fileName:       name of the file
+%    small:          triggers smaller GDX
 %
 % OUTPUT:
-%    helpText:
+%    helpText:       String with example load
 %
 % EXAMPLES:
 %
@@ -38,7 +38,7 @@ matStruct.form='full';
 matStruct.type='parameter';
 
 revStruct.name='isRev';
-revStruct.val=cobraStruct.rev;
+revStruct.val=cobraStruct.lb < 0;
 revStruct.uels=transpose(cobraStruct.rxns);
 revStruct.form='full';
 revStruct.type='parameter';

@@ -1,67 +1,72 @@
-function [inform,m,model]=checkStoichiometricConsistency(model,printLevel,method)
+function [inform, m, model] = checkStoichiometricConsistency(model, printLevel, method)
 % Verification of stoichiometric consistency by checking for at least one
-% strictly positive basis in the left nullspace of S. 
-% If S is not stoichiometrically consistent detect conserved and unconserved
-% metabolites, by returning a maximal conservation vector, which is 
+% strictly positive basis in the left nullspace of `S`.
+% If `S` is not stoichiometrically consistent detect conserved and unconserved
+% metabolites, by returning a maximal conservation vector, which is
 % a non-negative basis with as many strictly positive entries as possible.
-% This omits rows of S that are entirely zero, when any exchange reactions
+% This omits rows of `S` that are entirely zero, when any exchange reactions
 % are removed.
-% The strictly positive and zero entries in m correspond to the conserved 
+% The strictly positive and zero entries in `m` correspond to the conserved
 % and unconserved metabolites respectively.
 %
 % Verification of stoichiometric consistency is as initially described in:
-% A. Gevorgyan, M. G. Poolman, and D. A. Fell. 
+% `A. Gevorgyan, M. G. Poolman, and D. A. Fell
 % Detection of stoichiometric inconsistencies in biomolecular
-% models. Bioinformatics, 24(19):2245–2251, 2008.
+% models. Bioinformatics, 24(19):2245–2251, 2008`.
 %
 % Detection of conserved and unconserved metabolites based on a new
 % implementation by Nikos Vlassis & Ronan Fleming.
 %
-% Requires the COBRA toolbox: https://github.com/opencobra/cobratoolbox.git
+% USAGE:
 %
-% INPUT
-% model.S            m x n Stoichiometric matrix
+%    [inform, m, model] = checkStoichiometricConsistency(model, printLevel, method)
 %
-% OPTIONAL INPUT
-% model.mets         If exists, but SIntRxnBool does not exist, then 
-%                    findSExRxnBool will attempt to identify exchange
-%                    reactions.
-% model.SIntMetBool  m x 1 boolean vector indicating the metabolites that
-%                    are thought to be exclusively involved in non-exchange
-%                    reactions
-% model.SIntRxnBool  n x 1 boolean vector indicating the reactions that are
-%                    thought to be non-exchange reactions. If this is not present,
-%                    then we will attempt to identify such reactions,
-%                    model.rxns exists, otherwise, we will assume all
-%                    reactions are supposed to be non-exchange reactions.
+% INPUT:
+%    model:         structure with fields:
 %
-% printLevel         {(0),1}
-% method.interface   {('solveCobraLP'),'cvx','nonconvex'} interface called to do the consistency check
-% method.solver      {(default solver),'gurobi','mosek'} 
-% method.param       solver specific parameter structure
-%           
-% OUTPUT
-% inform                Solver status in standardized form
-%                       1   Optimal solution     (Stoichiometrically consistent)
-%                       2   Unbounded solution   (Should never happen)
-%                       0   Infeasible           (Stoichiometrically INconsistent)
-%                       -1   No solution reported (timelimit, numerical problem etc)  
+%                     * model.S - `m` x `n` stoichiometric matrix
+%                     * model.mets - if exists, but `SIntRxnBool does not exist, then
+%                       `findSExRxnBool` will attempt to identify exchange
+%                       reactions. (optional)
+%                     * model.SIntMetBool - `m` x 1 boolean vector indicating the metabolites that
+%                       are thought to be exclusively involved in non-exchange
+%                       reactions (optional)
+%                     * model.SIntRxnBool  `n` x 1 boolean vector indicating the reactions that are
+%                       thought to be non-exchange reactions. If this is not present,
+%                       then we will attempt to identify such reactions,
+%                       `model.rxns` exists, otherwise, we will assume all
+%                       reactions are supposed to be non-exchange reactions. (optional)
 %
-% m                     m x 1 strictly positive vector in left nullspace 
-%                       (empty if it does not exist)
-% 
-% model.SConsistentMetBool      m x 1 boolean vector indicating metabolites involved
-%                               in the maximal consistent vector
+% OPTIONAL INPUTS:
+%    printLevel:    {(0), 1}
+%    method:        structure with fields:
 %
-% model.SConsistentRxnBool      n x 1 boolean vector non-exchange reaction involving
-%                               a stoichiometrically consistent metabolite
+%                     * method.interface - {('solveCobraLP'), 'cvx', 'nonconvex'} interface called to do the consistency check
+%                     * method.solver - {(default solver),'gurobi','mosek'}
+%                     * method.param - solver specific parameter structure
 %
+% OUTPUTS:
+%    inform:        Solver status in standardized form:
 %
-% Ronan Fleming   2012 initial coding
-%                 2013 update with detection of conserved metabolites based
-%                 on algorithm by Nikos Vlassis.
-%                 2014 update to omit trivial rows corresponding to S row
-%                 that is all zero
+%                     * 1 - Optimal solution (Stoichiometrically consistent)
+%                     * 2 - Unbounded solution (Should never happen)
+%                     * 0 - Infeasible (Stoichiometrically INconsistent)
+%                     * -1 - No solution reported (timelimit, numerical problem etc)
+%
+%    m:             `m` x 1 strictly positive vector in left nullspace
+%                   (empty if it does not exist)
+%    model:         structure with fields:
+%
+%                     * .SConsistentMetBool - m x 1 boolean vector indicating metabolites involved
+%                       in the maximal consistent vector
+%                     * model.SConsistentRxnBool - `n` x 1 boolean vector non-exchange reaction involving
+%                       a stoichiometrically consistent metabolite
+%
+% .. Author: - Ronan Fleming   2012 initial coding
+%                              2013 update with detection of conserved metabolites based
+%                              on algorithm by Nikos Vlassis.
+%                              2014 update to omit trivial rows corresponding to S row
+%                              that is all zero
 
 if ~exist('printLevel','var')
     printLevel=0;
@@ -129,25 +134,25 @@ if inform~=1
         case 'none'
             warning(['Stoichiometrically INconsistent ' intR 'stoichiometry.']);
         case 'cvx'
-            cvx_solver(method.solver) 
-            
+            cvx_solver(method.solver)
+
             [nMet,~]=size(SInt);
             %maximal conservation vector
             %cvx code from Nikos Vlassis
             tic
             cvx_begin quiet
-            
+
             variable m(nMet);
             variable z(nMet);
-            
+
             maximize( ones(1,nMet) * z );
-            
+
             z>=0; z<=epsilon;
-            
+
             m>=z; m<=(1/epsilon);
-            
+
             SInt'*m==0;
-            
+
             cvx_end
             timetaken=toc;
             if any(isnan(m))
@@ -160,30 +165,30 @@ if inform~=1
             global CBT_LP_SOLVER
             oldSolver=CBT_LP_SOLVER;
             solverOK = changeCobraSolver(method.solver,'LP');
-            
+
             [nMet,~]=size(SInt);
-            
+
             % Solve the linear problem
             %   max sum(z_i)
             %       s.t S'*m = 0
             %           z <= m
-            %           0 <= m <= 1/epsilon            
+            %           0 <= m <= 1/epsilon
             %           0 <= z <= epsilon
             nInt=nnz(model.SIntRxnBool);
-            LPproblem.A=[SInt'      , sparse(nInt,nMet); 
+            LPproblem.A=[SInt'      , sparse(nInt,nMet);
                          speye(nMet),      -speye(nMet)];
-            
+
             LPproblem.b=zeros(nInt+nMet,1);
-            
+
             LPproblem.lb=[zeros(nMet,1);zeros(nMet,1)];
             LPproblem.ub=[ones(nMet,1)*(1/epsilon);ones(nMet,1)*epsilon];
-            
+
             LPproblem.c=zeros(nMet+nMet,1);
             LPproblem.c(nMet+1:2*nMet,1)=1;
             LPproblem.osense=-1;
             LPproblem.csense(1:nInt,1)='E';
             LPproblem.csense(nInt+1:nInt+nMet,1)='G';
-            
+
             %Requires the COBRA toolbox
             tic
             if isfield(method,'param')
@@ -192,7 +197,7 @@ if inform~=1
                 solution = solveCobraLP(LPproblem,'printLevel',printLevel-1);
             end
             timetaken=toc;
-            
+
             if solution.stat==1
                 m=solution.full(1:nMet,1);
                 z=solution.full(nMet+1:end,1);
@@ -208,7 +213,7 @@ if inform~=1
                 disp(solution)
                 error('solve for maximal conservation vector failed')
             end
-            
+
             %mosek
             algorithm=solution.algorithm;
             %change back the solver
@@ -236,24 +241,24 @@ if inform~=1
             else
                 disp(solution)
                 error('solve for maximal conservation vector failed')
-            end           
+            end
         case 'MILP'
             [nMet,~]=size(SInt);
-            
+
             % Solve the MILP problem
             %   max sum(z_i)
             %       s.t S'*m = 0
             %           z <= m
             %           z binary
             nInt=nnz(model.SIntRxnBool);
-            MILPproblem.A=[SInt'      , sparse(nInt,nMet); 
+            MILPproblem.A=[SInt'      , sparse(nInt,nMet);
                          speye(nMet),      -speye(nMet)];
-            
+
             MILPproblem.b=zeros(nInt+nMet,1);
-            
+
             MILPproblem.lb=[zeros(nMet,1);zeros(nMet,1)];
             MILPproblem.ub=[ones(nMet,1)*(1/epsilon);ones(nMet,1)];
-            
+
             MILPproblem.c=zeros(nMet+nMet,1);
             MILPproblem.c(nMet+1:2*nMet,1)=1;
             MILPproblem.osense=-1;
@@ -262,9 +267,9 @@ if inform~=1
             MILPproblem.vartype(1:nMet,1)='C';
             MILPproblem.vartype(nMet+1:nMet+nMet,1)='B';
             MILPproblem.x0 = zeros(nMet+nMet,1);
-            
+
 %             solverOK = changeCobraSolver('gurobi6','MILP');
-            %Requires the COBRA toolbox            
+            %Requires the COBRA toolbox
             tic
             if isfield(method,'param')
                 solution = solveCobraMILP(MILPproblem,'printLevel',printLevel-1,method.param);
@@ -272,7 +277,7 @@ if inform~=1
                 solution = solveCobraMILP(MILPproblem,'printLevel',printLevel-1);
             end
             timetaken=toc;
-            
+
             if solution.stat==1
                 m=solution.full(1:nMet,1);
                 z=solution.full(nMet+1:end,1);
@@ -334,6 +339,3 @@ end
 model.SConsistentRxnBool=false(nRxn,1);
 model.SConsistentRxnBool(~model.SIntRxnBool)= any(model.S( model.SConsistentMetBool,~model.SIntRxnBool),1)'...
                                            & ~any(model.S(~model.SConsistentMetBool,~model.SIntRxnBool),1)';
-
-
-

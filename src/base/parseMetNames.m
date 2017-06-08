@@ -1,21 +1,23 @@
-function [baseMetNames,compSymbols,uniqueMetNames,uniqueCompSymbols] = parseMetNames(metNames)
-%parseMetNames Figure out the base metabolite names and compartments for each metabolite
+function [baseMetNames, compSymbols, uniqueMetNames, uniqueCompSymbols] = parseMetNames(metNames)
+% Figures out the base metabolite names and compartments for each metabolite
 %
-% [baseMetNames,compSymbols,uniqueMetNames,uniqueCompSymbols] = parseMetNames(metNames)
+% USAGE:
 %
-%INPUT
-% metNames              List of metabolite names
+%    [baseMetNames, compSymbols, uniqueMetNames, uniqueCompSymbols] = parseMetNames(metNames)
 %
-%OUTPUTS
-% baseMetNames          List of met names without compartment symbol
-% compSymbols           Compartment symbols for each metabolite
-% uniqueMetNames        Unique metabolite names (w/o comp symbol)
-% uniqueCompSymbols     Unique compartment symbols
+% INPUT:
+%    metNames:             List of metabolite names
+%
+% OUTPUTS:
+%    baseMetNames:         List of met names without compartment symbol
+%    compSymbols:          Compartment symbols for each metabolite
+%    uniqueMetNames:       Unique metabolite names (w/o comp symbol)
+%    uniqueCompSymbols:    Unique compartment symbols
 %
 % Metabolite names should describe the compartment assignment in either the
 % form "metName[compName]" or "metName(compName)"
 %
-% Markus Herrgard 10/4/06
+% .. Author: - Markus Herrgard 10/4/06
 
 uniqueCompSymbols = {};
 uniqueMetNames = {};

@@ -10,6 +10,8 @@ function convertModelToEX(model, filename, rxnzero, EXrxns)
 %     filename:    Filename of Output File (make sure to include '.txt' or '.xpa')
 %     rxnzero:     Matrix containing all no flux var rxns (to skip, set=0)
 %
+% OPTIONAL INPUT:
+%    EXrxns:       Exchange reactions
 % Limitations
 %
 %     * Works properly with only integer value reaction coeff. (except for .5
@@ -34,14 +36,14 @@ checkEX = ismember(model.rxns,EXrxns);
 % Reactions prior to exchange reactions
 for i = 1:length(model.rxns)
     if checkEX(i) == 0
-        
+
         for t = 1:size(rxnzero,1)
             if i == rxnzero(t)
                 fprintf(fid,'// ');
             end
         end
         fprintf(fid,'%s\t',model.rxns{i});
-        if model.rev(i) == 0
+        if model.lb(i) == 0
             fprintf(fid,'I\t');
         else
             fprintf(fid,'R\t');

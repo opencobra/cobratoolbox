@@ -6,10 +6,10 @@ function vecT = columnVector(vec)
 %   vecT = columnVector(vec)
 %
 % INPUT:
-%   vec:  a vector
+%   vec:     a vector
 %
 % OUTPUT:
-%   vecT: a column vector
+%   vecT:    a column vector
 %
 % .. Authors:
 %     - Original file: Markus Herrgard

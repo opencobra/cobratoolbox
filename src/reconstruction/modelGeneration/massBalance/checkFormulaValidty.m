@@ -1,21 +1,21 @@
-function [dbBool, noDocMets]=checkFormulaValidty(model)
-% Assesses whether metabolites in model are likely to be documented in
-% databases.
-% 
-% INPUT
-% Model structure array
-% 
-% OUTPUTS
-% dbBool    A boolian vector where the number of rows is equal to the number of
-%           metabolites in model. Contains a logical 1 in rows for metabolites that
-%           are likely to be documented in databases and a logical 0
-%           elsewhere.
-% 
-% noDocMets A cell array containing a list of all metabolites in model that
-%           are not likely to be documented in any database.
+function [dbBool, noDocMets] = checkFormulaValidty(model)
+% Assesses whether metabolites in model are likely to be documented in databases.
 %
-% Ronan Fleming
+% USAGE:
 %
+%    [dbBool, noDocMets] = checkFormulaValidty(model)
+%
+% INPUT:
+%    model:        Model structure array
+%
+% OUTPUTS:
+%    dbBool:       A boolean vector where the number of rows is equal to the number of
+%                  metabolites in model. Contains a logical 1 in rows for metabolites that
+%                  are likely to be documented in databases and a logical 0 elsewhere.
+%    noDocMets:    A cell array containing a list of all metabolites in model that
+%                  are not likely to be documented in any database.
+%
+% .. Author: - Ronan Fleming
 
 [nMets, nRxns] = size(model.S);
 

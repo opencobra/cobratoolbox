@@ -37,7 +37,7 @@ nRowsForReplicateMets=sum(degree(replicateMetBool));
 
 %same reactions
 modelPlane.rxns=model.rxns;
-modelPlane.rev=model.rev;
+
 
 %same non-duplicate mets
 modelPlane.mets=model.mets(~replicateMetBool);

@@ -1,26 +1,25 @@
 function ExchangeRxnMatrix = createXMatrix(compoundsIn, transport, compartment)
-%createXMatrix creates a matrix full of exchange reactions based
+% Creates a matrix full of exchange reactions based
 % on the input list (creates an exchange reaction for each of the
 % metabolites present in the model)
 %
-% ExchangeRxnMatrix = createXMatrix(compoundsIn,transport,compartment)
+% USAGE:
 %
-% INPUTS
+%    ExchangeRxnMatrix = createXMatrix(compoundsIn, transport, compartment)
 %
-% compoundsIn   - SU matrix
-% transport     - if 1, transport reactions will be defined as well for
-%               every compound (default: 0, which corresponds to only
-%               exchange reactions)
-% compartment   - (default = [c]) --> transport from cytoplasm [c] to
-%               extracellulat space [e], [p] creates transport from [c] to
-%               [p] and from [p] to [c]
-% OUTPUT
+% INPUTS:
+%    compoundsIn:         SU matrix
+%    transport:           if 1, transport reactions will be defined as well for
+%                         every compound (default: 0, which corresponds to only
+%                         exchange reactions)
+%    compartment:         (default = [c]) --> transport from cytoplasm [c] to
+%                         extracellulat space [e], [p] creates transport from [c] to
+%                         [p] and from [p] to [c]
+% OUTPUT:
+%   ExchangeRxnMatrix:    model containing all exchange reactions for all
+%                         compounds in compoundsIn
 %
-% ExchangeRxnMatrix - model containing all exchange reactions for all
-%                   compounds in compoundsIn
-%
-% 11-10-07 IT
-%
+% .. Author: - IT 11-10-07
 
 if ~exist('transport','var') || isempty(transport)
     transport = 0;

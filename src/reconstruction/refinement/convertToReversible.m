@@ -1,24 +1,23 @@
 function modelRev = convertToReversible(model)
-%convertToReversible convert a model structure from irreversible format to
-%reversible format
+% Converts a model structure from irreversible format to
+% reversible format
 %
-% modelRev = convertToReversible(model)
+% USAGE:
 %
-%INPUT
-% model     COBRA model in irreversible format (forward/backward reactions
-%           separated)
+%    modelRev = convertToReversible(model)
 %
-%OUTPUT
-% modelRev  Model in reversible format
+% INPUT:
+%    model:       COBRA model in irreversible format (forward/backward reactions separated)
 %
-% Greg Hannum 7/22/05
+% OUTPUT:
+%    modelRev:    Model in reversible format
+%
+% .. Author: - Greg Hannum 7/22/05
 
-% Initialize
-modelRev.rxns = {};
+modelRev.rxns = {}; % Initialize
 modelRev.S = [];
 modelRev.lb = [];
 modelRev.ub = [];
-modelRev.rev = [];
 modelRev.c = [];
 
 % Has this rxn been processed
@@ -45,8 +44,7 @@ for i = 1:length(model.rxns)
       modelRev.lb(end+1) = model.lb(i);
       modelRev.ub(end+1) = model.ub(i);
       modelRev.c(end+1) = model.c(i);
-    end
-    modelRev.rev(end+1) = false;
+    end    
     map(cnt) = i;
   else
     % Reversible reaction
@@ -55,8 +53,7 @@ for i = 1:length(model.rxns)
       map(cnt) = i;
       modelRev.rxns{end+1} = model.rxns{i}(1:end-2);
       modelRev.S(:,end+1) = model.S(:,i);
-      modelRev.ub(end+1) = model.ub(i);
-      modelRev.rev(end+1) = true;
+      modelRev.ub(end+1) = model.ub(i);      
       revRxnID = model.match(i);
       rxnProcessed(revRxnID) = true;
       % Get the correct ub for the reverse reaction
@@ -77,7 +74,6 @@ modelRev.ub = columnVector(modelRev.ub);
 modelRev.lb = columnVector(modelRev.lb);
 modelRev.rxns = columnVector(modelRev.rxns);
 modelRev.c = columnVector(modelRev.c);
-modelRev.rev = columnVector(modelRev.rev);
 modelRev.mets = columnVector(model.mets);
 if (isfield(model,'b'))
     modelRev.b = model.b;

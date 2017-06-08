@@ -11,7 +11,7 @@ function sbmlModel = convertCobraToSBML(model,sbmlLevel,sbmlVersion,compSymbolLi
 %
 % OPTIONAL INPUTS:
 %    sbmlLevel:         SBML Level (default = 2)
-%    sbmlVersion:      SBML Version (default = 1)
+%    sbmlVersion:       SBML Version (default = 1)
 %    compSymbolList:    List of compartment symbols
 %    compNameList:      List of copmartment names correspoding to `compSymbolList`
 %

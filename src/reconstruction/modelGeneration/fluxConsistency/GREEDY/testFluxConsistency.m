@@ -1,5 +1,5 @@
-%test function to check Flux Consistency in one LP, does not work yet
-%Ronan
+% .. Test function to check Flux Consistency in one LP, does not work yet
+% .. Author: - Ronan
 
 epsilon = 1e-8;
 printLevel=2;
