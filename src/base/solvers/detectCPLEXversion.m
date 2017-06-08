@@ -1,8 +1,8 @@
-function cplexVersion = detectCPLEXversion(rootPathCPLEX, printLevel)
+function cplexVersion = getCPLEXversion(rootPathCPLEX, printLevel)
 % detects the CPLEX version
 %
 % USAGE:
-%    cplexVersion = detectCPLEXversion(rootPathCPLEX, printLevel)
+%    cplexVersion = getCPLEXversion(rootPathCPLEX, printLevel)
 %
 % INPUT:
 %    rootPathCPLEX:     Path to the CPLEX installation
