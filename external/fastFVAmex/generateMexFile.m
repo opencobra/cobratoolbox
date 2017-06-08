@@ -27,13 +27,13 @@ if isempty(SOLVERS)
     ENV_VARS.printLevel = true;
 end
 
-if nargin < 1
+if nargin < 1 || isempty(rootPathCPLEX)
     % Set the CPLEX file path
     index = strfind(ILOG_CPLEX_PATH, 'cplex') + 4;
     rootPathCPLEX = ILOG_CPLEX_PATH(1:index);
 end
 
-cplexVersion = detectCPLEXversion(rootPathCPLEX, printLevel);
+cplexVersion = getCPLEXversion(rootPathCPLEX, printLevel);
 
 % save the userpath
 originalUserPath = path;
@@ -48,7 +48,7 @@ else
 end
 
 % Determine the include path
-include       = [rootPathCPLEX filesep 'cplex' filesep 'include' filesep 'ilcplex'];
+include       = [rootPathCPLEX filesep 'include' filesep 'ilcplex'];
 
 libraryExists = false;
 
@@ -57,11 +57,11 @@ if exist(include, 'dir') ~= 7
 else
     % set the CPLEX library path
     if isunix == 1 && ismac ~= 1
-        lib           = [rootPathCPLEX filesep 'cplex' '/lib/x86-64_linux/static_pic'];
+        lib           = [rootPathCPLEX filesep '/lib/x86-64_linux/static_pic'];
     elseif ismac == 1
-        lib           = [rootPathCPLEX filesep 'cplex' '/lib/x86-64_osx/static_pic'];
+        lib           = [rootPathCPLEX filesep '/lib/x86-64_osx/static_pic'];
     else
-        lib           = [rootPathCPLEX filesep 'cplex' '\lib\x64_windows_vs2013\stat_mda'];
+        lib           = [rootPathCPLEX filesep '\lib\x64_windows_vs2013\stat_mda'];
     end
 
     % check if the library directory exist

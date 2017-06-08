@@ -21,7 +21,7 @@ function cplexVersion = getCPLEXversion(rootPathCPLEX, printLevel)
         restoredefaultpath;
     end
 
-    if nargin < 1
+    if nargin < 1 || isempty(rootPathCPLEX)
         global ILOG_CPLEX_PATH
         global ENV_VARS
         global SOLVERS
@@ -60,11 +60,11 @@ function cplexVersion = getCPLEXversion(rootPathCPLEX, printLevel)
         cplexVersion = 'undetermined';
         for i = 1:length(possibleVersions)
             if isunix == 1 && ismac ~= 1
-                versionLink = [rootPathCPLEX filesep 'cplex/matlab/x86-64_linux/cplexlink' possibleVersions{i} '.mexa64'];
+                versionLink = [rootPathCPLEX filesep 'matlab/x86-64_linux/cplexlink' possibleVersions{i} '.mexa64'];
             elseif ismac == 1
-                versionLink = [rootPathCPLEX filesep 'cplex/matlab/x86-64_osx/cplexlink' possibleVersions{i} '.mexmaci64'];
+                versionLink = [rootPathCPLEX filesep 'matlab/x86-64_osx/cplexlink' possibleVersions{i} '.mexmaci64'];
             else
-                versionLink = [rootPathCPLEX filesep 'cplex\matlab\x64_win64\cplexlink' possibleVersions{i} '.mexw64'];
+                versionLink = [rootPathCPLEX filesep 'matlab\x64_win64\cplexlink' possibleVersions{i} '.mexw64'];
             end
 
             % if the file exists, set the version
