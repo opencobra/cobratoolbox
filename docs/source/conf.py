@@ -23,7 +23,6 @@ sys.path.append('sphinxext')
 from github_linkcode import github_linkcode_resolve
 
 
-
 sys.path.insert(0, os.path.abspath(os.path.join('..', '..', '..')))
 # sys.path.insert(0, os.path.abspath('.'))
 
@@ -44,8 +43,11 @@ extensions = [
     'sphinxcontrib.napoleon',
     'sphinxcontrib.matlab',
     'github',
+    'sphinx.ext.mathjax',
     'sphinx.ext.linkcode',
     'sphinxcontrib.fulltoc']
+
+mathjax_path = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 
 def linkcode_resolve(domain, info):
     return github_linkcode_resolve(
