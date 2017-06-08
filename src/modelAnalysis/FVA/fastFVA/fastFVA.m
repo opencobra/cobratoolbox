@@ -150,9 +150,10 @@ end;
 % Define the solver
 if strmatch('glpk',solver)
    %FVAc=@glpkFVAcc;
-   fprintf('ERROR : GLPK is not supported.')
+   fprintf('ERROR : GLPK is not (yet) supported as the binaries are not yet available.')
 elseif strmatch('cplex',solver)
-   FVAc=@cplexFVAnew;
+    cplexVersion = detectCPLEXversion(rootPathCPLEX, printLevel);
+    eval('FVAc = @cplexFVA' cplexVersion]);
 else
    error(sprintf('Solver %s not supported', solver))
 end;
@@ -388,7 +389,7 @@ else
    out = parfor_progress(nworkers,filenameParfor);
 
    parfor i = 1:nworkers
-     
+
      rxnsKey = 0; %silence warning
 
      %preparation of reactionKey

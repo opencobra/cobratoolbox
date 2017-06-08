@@ -1,18 +1,25 @@
-function cplexVersion = detectCPLEXversion(CPLEXpath, printLevel)
+function cplexVersion = detectCPLEXversion(rootPathCPLEX, printLevel)
 % detects the CPLEX version
 %
 % USAGE:
-%    cplexVersion = detectCPLEXversion(printLevel)
+%    cplexVersion = detectCPLEXversion(rootPathCPLEX, printLevel)
 %
 % INPUT:
-%    CPLEXpath:     Path to the CPLEX installation
-%    printLevel:    verbose level (default: 0)
+%    rootPathCPLEX:     Path to the CPLEX installation
+%    printLevel:        verbose level (default: 0)
 %
 % OUTPUT:
-%    cplexVersion:  string that contains the CPLEX version number
+%    cplexVersion:      string that contains the CPLEX version number
 %
 % .. Author: - Laurent Heirendt, June 2017
 %
+
+    % save the userpath
+    originalUserPath = path;
+
+    if nargin > 1
+        restoredefaultpath;
+    end
 
     if nargin < 1
         global ILOG_CPLEX_PATH
@@ -28,7 +35,7 @@ function cplexVersion = detectCPLEXversion(CPLEXpath, printLevel)
 
         % Set the CPLEX file path
         index = strfind(ILOG_CPLEX_PATH, 'cplex') + 4;
-        CPLEXpath = ILOG_CPLEX_PATH(1:index);
+        rootPathCPLEX = ILOG_CPLEX_PATH(1:index);
     end
 
     if nargin < 2
@@ -36,7 +43,14 @@ function cplexVersion = detectCPLEXversion(CPLEXpath, printLevel)
     end
 
     % try to set the ILOG cplex solver
-    cplexInstalled = changeCobraSolver('ibm_cplex');
+    %cplexInstalled = changeCobraSolver('ibm_cplex', 'LP', printLevel);
+    addpath(genpath(rootPathCPLEX));
+
+    if exist(rootPathCPLEX, 'dir') == 7
+        cplexInstalled = true;
+    else
+        cplexInstalled = false;
+    end
 
     if cplexInstalled
         % detect the version of CPLEX
@@ -46,11 +60,11 @@ function cplexVersion = detectCPLEXversion(CPLEXpath, printLevel)
         cplexVersion = 'undetermined';
         for i = 1:length(possibleVersions)
             if isunix == 1 && ismac ~= 1
-                versionLink = [CPLEXpath '/matlab/x86-64_linux/cplexlink' possibleVersions{i} '.mexa64'];
+                versionLink = [rootPathCPLEX filesep 'cplex/matlab/x86-64_linux/cplexlink' possibleVersions{i} '.mexa64'];
             elseif ismac == 1
-                versionLink = [CPLEXpath '/matlab/x86-64_osx/cplexlink' possibleVersions{i} '.mexmaci64'];
+                versionLink = [rootPathCPLEX filesep 'cplex/matlab/x86-64_osx/cplexlink' possibleVersions{i} '.mexmaci64'];
             else
-                versionLink = [CPLEXpath '\matlab\x64_win64\cplexlink' possibleVersions{i} '.mexw64'];
+                versionLink = [rootPathCPLEX filesep 'cplex\matlab\x64_win64\cplexlink' possibleVersions{i} '.mexw64'];
             end
 
             % if the file exists, set the version
@@ -62,10 +76,15 @@ function cplexVersion = detectCPLEXversion(CPLEXpath, printLevel)
         if ~strcmpi(cplexVersion, 'undetermined')
             fprintf([' > The CPLEX version has been determined as ' cplexVersion '.\n']);
         else
-            fprintf([' > CPLEX installation path: ', ILOG_CPLEX_PATH, '\n']);
-            fprintf([' > The CPLEX version is ' cplexVersion '\n. Your currently installed version of CPLEX is unsupported.']);
+            fprintf([' > CPLEX installation path: ', rootPathCPLEX, '\n']);
+            fprintf([' > The CPLEX version is ' cplexVersion '\n. Your currently installed version of CPLEX is unsupported or you have multiple versions of CPLEX in the path.']);
         end
     else
         error('CPLEX is not installed. Please follow the installation instructions here:');
     end
+
+    % restore the original path
+    path(originalUserPath);
+    addpath(originalUserPath);
+
 end
