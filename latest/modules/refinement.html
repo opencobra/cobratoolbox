@@ -944,8 +944,8 @@ COBRA model around one or more metabolites</li>
 <dl class="function">
 <dt id="src.reconstruction.refinement.extractSubNetwork">
 <code class="descname">extractSubNetwork</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>metList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/refinement/extractSubNetwork.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.extractSubNetwork" title="Permalink to this definition">¶</a></dt>
-<dd><p>Extract subnetwork model</p>
-<p><strong>Usage</strong></p>
+<dd><p>Extract subnetwork model
+<strong>Usage</strong></p>
 <blockquote>
 <div>subModel = extractSubNetwork(model, rxnList, metList)</div></blockquote>
 <p><strong>Inputs</strong></p>
@@ -1023,6 +1023,51 @@ same model but with model.rules added</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.reconstruction.refinement.getRelevantModelFields">
+<code class="descname">getRelevantModelFields</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/refinement/getRelevantModelFields.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.getRelevantModelFields" title="Permalink to this definition">¶</a></dt>
+<dd><p>get fields which are associated with the given type.
+<strong>Usage</strong></p>
+<blockquote>
+<div>matchingFields = getRelevantModelFields(model, type, varargin)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+the model to update</li>
+<li><strong>type</strong> &#8211;
+the Type of field to update one of
+(&#8216;rxns&#8217;,&#8217;mets&#8217;,&#8217;comps&#8217;,&#8217;genes&#8217;)</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>varargin</strong> &#8211;
+Additional Options as &#8216;ParameterName&#8217;, Value pairs. Options are:
+- &#8216;fieldSize&#8217;, the original size of the field (if</p>
+<blockquote>
+<div><p>mets was already adjusted, this size will be used
+to determine matching fields.</p>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>matchingfields</strong> &#8211;
+A cell array of fields associated with the
+given type. The initial check is for the size of the field, if
+multiple base fields have the same size, it is
+assumed, that fields named e.g. rxnXYZ are
+associated with rxns, and only those fields are
+adapted along with fields which are specified in the
+Model FieldDefinitions.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.reconstruction.refinement.isSameCobraModel">
 <code class="descname">isSameCobraModel</code><span class="sig-paren">(</span><em>model1</em>, <em>model2</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/refinement/isSameCobraModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.isSameCobraModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if two COBRA models are the same</p>
@@ -1088,11 +1133,10 @@ COBRA model with reactions in the specified compartmetns</li>
 
 <dl class="function">
 <dt id="src.reconstruction.refinement.mergeTwoModels">
-<code class="descname">mergeTwoModels</code><span class="sig-paren">(</span><em>model1</em>, <em>model2</em>, <em>objrxnmodel</em>, <em>mergeRxnGeneMat</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/refinement/mergeTwoModels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.mergeTwoModels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Merges two models</p>
-<p><strong>Usage</strong></p>
+<code class="descname">mergeTwoModels</code><span class="sig-paren">(</span><em>model1</em>, <em>model2</em>, <em>objrxnmodel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/refinement/mergeTwoModels.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.mergeTwoModels" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Usage</strong></p>
 <blockquote>
-<div>[modelNew] = mergeTwoModels(model1, model2, objrxnmodel, mergeRxnGeneMat)</div></blockquote>
+<div>[modelNew] = mergeTwoModels(model1,model2,objrxnmodel)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -1100,11 +1144,14 @@ COBRA model with reactions in the specified compartmetns</li>
 model 1</li>
 <li><strong>model2</strong> &#8211;
 model 2</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
 <li><strong>objrxnmodel</strong> &#8211;
 Set as 1 or 2 to set objective reaction from
 desired model</li>
-<li><strong>mergeRxnGeneMat</strong> &#8211;
-if false, do not merge <cite>rxnGeneMat</cite></li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
@@ -1258,6 +1305,57 @@ COBRA model with removed metabolites</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.reconstruction.refinement.removeRelevantModelFields">
+<code class="descname">removeRelevantModelFields</code><span class="sig-paren">(</span><em>model</em>, <em>indicesToRemove</em>, <em>type</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/refinement/removeRelevantModelFields.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.removeRelevantModelFields" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Usage</strong></p>
+<blockquote>
+<div>model = removeRelevantModelFields(model, indicesToRemove, type, varargin)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+the model to update</li>
+<li><strong>indicesToRemove</strong> &#8211;
+indices which should eb removed (either a logical array or double indices)</li>
+<li><strong>type</strong> &#8211;
+the Type of field to update one of
+(&#8216;rxns&#8217;,&#8217;mets&#8217;,&#8217;comps&#8217;,&#8217;genes&#8217;)</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>varargin</strong> &#8211;
+Additional Options as &#8216;ParameterName&#8217;, Value pairs. Options are:
+- &#8216;fieldSize&#8217;, the original size of the field (if</p>
+<blockquote>
+<div><p>mets was already adjusted, this size will be used
+to determine matching fields.</p>
+</div></blockquote>
+<ul class="simple">
+<li>&#8216;excludeFields&#8217;, fields which should not be
+adjusted but kkept how they are.</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelNew</strong> &#8211;
+the model in which all fields associated with the
+given type have the entries indicated removed. The
+initial check is for the size of the field, if
+multiple base fields have the same size, it is
+assumed, that fields named e.g. rxnXYZ are
+associated with rxns, and only those fields are
+adapted along with fields which are specified in the
+Model FieldDefinitions.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.reconstruction.refinement.removeRxns">
 <code class="descname">removeRxns</code><span class="sig-paren">(</span><em>model</em>, <em>rxnRemoveList</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/refinement/removeRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.removeRxns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes reactions from a model</p>
@@ -1273,14 +1371,20 @@ COBRA model structure</li>
 Cell array of reaction names to be removed</li>
 </ul>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
+<p><strong>Optional input</strong></p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>irrevFlag</strong> &#8211;
-Irreverseble (true) or reversible (false) reaction
-format (Default = false)</li>
-<li><strong>metFlag</strong> &#8211;
-Remove unused metabolites (Default = true)</li>
+<div><ul>
+<li><p class="first"><strong>varargin</strong> &#8211;
+Parameters in ParameterName, Value pair representation.
+Available parameters are:
+* irrevFlag:   Irreverseble (true) or reversible (false) reaction</p>
+<blockquote>
+<div><p>format (Default = false)</p>
+</div></blockquote>
+<ul class="simple">
+<li>metFlag:   Remove unused metabolites (Default = true)</li>
+</ul>
+</li>
 </ul>
 </div></blockquote>
 <p><strong>Output</strong></p>
@@ -1334,7 +1438,7 @@ COBRA structure</li>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
+<li><strong>modelNew</strong> &#8211;
 COBRA model structure with updated gene field reflecting only
 content present in the model</li>
 </ul>
@@ -1360,6 +1464,62 @@ content present in the model</li>
 <div><ul class="simple">
 <li><strong>S</strong> &#8211;
 Scaled <cite>S</cite> matrix</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.reconstruction.refinement.updateRelevantModelFields">
+<code class="descname">updateRelevantModelFields</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/refinement/updateRelevantModelFields.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.updateRelevantModelFields" title="Permalink to this definition">¶</a></dt>
+<dd><p>update all relevant fields to have the correct size.
+<strong>Usage</strong></p>
+<blockquote>
+<div>model = updateRelevantModelFields(model, type, varargin)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+the model to update</li>
+<li><strong>type</strong> &#8211;
+the Type of field to update one of
+(&#8216;rxns&#8217;,&#8217;mets&#8217;,&#8217;comps&#8217;,&#8217;genes&#8217;)</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>varargin</strong> &#8211;
+Additional Options as &#8216;ParameterName&#8217;, Value pairs. Options are:
+- &#8216;originalSize&#8217;, the original size of the field,</p>
+<blockquote>
+<div><p>this is used to determine fields which have to be
+adjusted.</p>
+</div></blockquote>
+<ul class="simple">
+<li>&#8216;targetSize&#8217;, the target size to which the field
+should be extended. Default values will be used as
+defined in the ModelFieldDefinitions to fill empty
+entries.</li>
+<li>&#8216;excludeFields&#8217;, fields that should eb ignored
+during update.</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+A model with the requested fields associated to the
+given type updated. Associated fields are determined
+by size, and if multiple base fields have the same
+size, the Model Field definition along with checks
+for field Names (e.g. rxnXYZ is associated with
+rxns) is used. Added values are either default
+values (if defined in the ModelFieldDefinitions), or
+{&#8216;&#8217;} for cell arrays, NaN for numeric arrays and
+false for logical arrays. Char Arrays will be
+ignored.</li>
 </ul>
 </div></blockquote>
 </dd></dl>

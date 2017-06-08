@@ -184,6 +184,30 @@
   <div class="section" id="utilities">
 <span id="id1"></span><h1>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.base.io.utilities"></span><dl class="function">
+<dt id="src.base.io.utilities.buildRxnGeneMat">
+<code class="descname">buildRxnGeneMat</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/base/io/utilities/buildRxnGeneMat.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.buildRxnGeneMat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the rxnGeneMat based on the given models rules field</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = buildRxnGeneMat(model)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+Model to build the rxnGeneMat. Must have the rules field,
+otherwise the rxnGeneMat is empty</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+The Model including a rxnGeneMat field.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.base.io.utilities.cobra_struct_to_sbml_struct">
 <code class="descname">cobra_struct_to_sbml_struct</code><span class="sig-paren">(</span><em>model</em>, <em>sbml_level</em>, <em>sbml_version</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/base/io/utilities/cobra_struct_to_sbml_struct.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.cobra_struct_to_sbml_struct" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts a cobra structure to an sbml
@@ -264,7 +288,7 @@ an existing grRules field will be overwritten</li>
 <p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>modelWithField</strong> &#8211;
+<li><strong>model</strong> &#8211;
 The Output model with a grRules field</li>
 </ul>
 </div></blockquote>
@@ -321,27 +345,30 @@ to the <cite>i</cite>-th abbreviation in <cite>defaultCompartmentSymbolList</cit
 along with checks for their properties</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[requiredFields, optionalFields] = getDefinedFieldProperties(varargin)</div></blockquote>
-<p><strong>Optional inputs</strong></p>
+<div>[fields] = getDefinedFieldProperties(varargin)</div></blockquote>
+<p><strong>Optional input</strong></p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>Descriptions</strong> &#8211;
-Whether to obtain the field descriptions (default = false).</li>
-<li><strong>SpecificFields</strong> &#8211;
-Indication whether to only obtain definitions for a
-specific set of fields (default all).</li>
-<li><strong>DataBaseFields</strong> &#8211;
-Get the fields with specified Database relations.</li>
+<div><ul>
+<li><p class="first"><strong>varargin</strong> &#8211;
+The following parameter/value pairs can be used:
+* Descriptions:         Whether to obtain the field descriptions (default = false).
+* SpecificFields:       Indication whether to only obtain definitions for a</p>
+<blockquote>
+<div><p>specific set of fields (default all).</p>
+</div></blockquote>
+<ul class="simple">
+<li>DataBaseFields:       Get the fields with specified Database relations (true, if requested).</li>
+</ul>
+</li>
 </ul>
 </div></blockquote>
-<p><strong>Outputs</strong></p>
+<p><strong>Output</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>requiredFields</strong> &#8211;
-The fields a model must have in order to be a valid
-COBRA Toolbox model</li>
-<li><strong>optionalFields</strong> &#8211;
-The Fields which are supported by the COBRA Toolbox.</li>
+<li><strong>fields</strong> &#8211;
+All fields and their properties as requested, if
+fields without definitions are requested, they
+will not be contained in the result.</li>
 </ul>
 </div></blockquote>
 <div class="admonition note">
@@ -360,6 +387,8 @@ size(model.(X{A,1}),2) == size(model.(X{A,2}),1) has to evaluate
 to true</li>
 <li>X{:,4} are evaluateable statements, which have to evaluate to true for
 the model to be valid, these mainly check the content types.</li>
+<li>X{:,5} are default values (or evaluateable strings for cell
+arrays)</li>
 </ul>
 </div></blockquote>
 <p>E.g.</p>

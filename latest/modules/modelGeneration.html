@@ -236,22 +236,38 @@ even if more are found in model.</p>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.checkDuplicateRxn">
-<code class="descname">checkDuplicateRxn</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>removeFlag</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/modelGeneration/checkDuplicateRxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkDuplicateRxn" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkDuplicateRxn</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>removeFlag</em>, <em>printLevel</em>, <em>boundsFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/5a1c951fa98154dddbb97c6fc6c3e70bb24ea73f/src/reconstruction/modelGeneration/checkDuplicateRxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkDuplicateRxn" title="Permalink to this definition">¶</a></dt>
 <dd><p>checkDuplicateRxn Checks model for duplicate reactions and removes them</p>
-<p>INPUTS:
-model         Cobra model structure
-method        rxnAbbr &#8211;&gt; checks rxn abbreviations</p>
+<p><strong>Inputs</strong></p>
 <blockquote>
-<div>S &#8211;&gt; checks rxn S matrix
-FR &#8211;&gt; checks rxn S matrix ignoring reaction direction</div></blockquote>
-<p>OPTIONAL INPUTS:
-removeFlag    {(1),0} boolean to remove duplicates
-printLevel</p>
-<p>OUTPUTS:
-modelOut          COBRA model structure without (with) duplicate reactions
-removedRxnInd     Reaction numbers in model that were (should be) removed
-keptRxnInd        Reaction numbers in model that were (should be) kept
-Ronan Fleming rewritten 2017</p>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+Cobra model structure</li>
+<li><strong>method</strong> &#8211;
+rxnAbbr &#8211;&gt; checks rxn abbreviations
+S &#8211;&gt; checks rxn S matrix
+FR &#8211;&gt; checks rxn S matrix ignoring reaction direction</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>removeFlag</strong> &#8211;
+{(1),0} boolean to remove duplicates</li>
+<li><strong>printLevel</strong></li>
+<li><strong>boundsFlag</strong> &#8211;
+Indicator to test duplicates for different bounds and
+only indicate if the bounds are als identical (not applicable to rxnAbbr, default false).</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelOut          COBRA model structure without (with) duplicate reactions</strong></li>
+<li><strong>removedRxnInd     Reaction numbers in model that were (should be) removed</strong></li>
+<li><strong>keptRxnInd        Reaction numbers in model that were (should be) kept</strong></li>
+</ul>
+</div></blockquote>
 </dd></dl>
 
 <dl class="function">
