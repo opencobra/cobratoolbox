@@ -6,23 +6,23 @@ function tissueModel = fastcore(model, core, epsilon, printlevel)
 %
 % USAGE:
 %
-%    tissueModel = fastcore(model,core)
+%    tissueModel = fastcore(model, core)
 %
-% INPUTS
+% INPUTS:
 %
-%   model               input model (COBRA model structure)   
-%   core                indices of reactions in cobra model that are part of the
-%                       core set of reactions (called 'C' in 'Vlassis et al,
-%                       2014')
+%   model:               input model (COBRA model structure)   
+%   core:                indices of reactions in cobra model that are part of the
+%                        core set of reactions (called 'C' in 'Vlassis et al,
+%                        2014')
 %
-% OPTIONAL INPUTS
-%   epsilon             smallest flux value that is considered nonzero
-%                       (default 1e-4)               
-%   printLevel          0 = silent, 1 = summary, 2 = debug
+% OPTIONAL INPUTS:
+%   epsilon:             smallest flux value that is considered nonzero
+%                        (default 1e-4)               
+%   printLevel:          0 = silent, 1 = summary, 2 = debug (default - 0)
 %
-% OUTPUTS
+% OUTPUT:
 %
-%   tissueModel         extracted model
+%   tissueModel:         extracted model
 %
 %
 % 'Vlassis, Pacheco, Sauter (2014). Fast reconstruction of compact
