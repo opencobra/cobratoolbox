@@ -204,26 +204,37 @@ a structure that represents the COBRA model.</li>
 <blockquote>
 <div><ul>
 <li><p class="first"><strong>varargin</strong> &#8211;
-varargin contains additional checks that shall be performed. Provided as
-strings, the results of the individual checks are returned as a structure
-array containing the relevant values.
+varargin describes the additional checks (except the
+basic check whether a models fields adhere to the field
+definitions. They are to be provided as ParameterName,
+Value pairs (e.g. verifyModel(model, &#8216;massBalance&#8217;, true)
 Options are:</p>
 <blockquote>
 <div><ul class="simple">
-<li>&#8216;massBalance&#8217; (checks for Mass balance if the <cite>metFormula</cite> Field is present)</li>
-<li>&#8216;chargeBalance&#8217; (checks for charge Balance)</li>
-<li>&#8216;fluxConsistency&#8217; (checks for reaction flux consistency)</li>
+<li>&#8216;massBalance&#8217; (checks for Mass balance if the
+<cite>metFormula</cite> Field is present), (Default: false)</li>
+<li>&#8216;chargeBalance&#8217; (checks for charge Balance) (Default: false)</li>
+<li>&#8216;fluxConsistency&#8217; (checks for reaction flux
+consistency) (Default: false)</li>
 <li>&#8216;stoichiometricConsistency&#8217; (checks for Stoichiometric
-Consisteny, according to <cite>Gevorgyan, Bioinformatics, 2008</cite>)</li>
+Consisteny, according to <cite>Gevorgyan, Bioinformatics,
+2008</cite>) (Default: false)</li>
 <li>&#8216;deadEndMetabolites&#8217; (metabolites which can either not
-be produced, or consumed)</li>
+be produced, or consumed) (Default: false)</li>
 <li>&#8216;simpleCheck&#8217; returns 0 if this is not a valid model
 and 1 if it is a valid model, ignored if any other
-option is selected.</li>
+option is selected. (Default: false)</li>
 <li>&#8216;requiredFields&#8217; sets the fields which are required,
 the argument must be firectly followed by the list of
-required fields.</li>
-<li>default({&#8216;S&#8217;, &#8216;b&#8217;, &#8216;csense&#8217;, &#8216;lb&#8217;, &#8216;ub&#8217;, &#8216;c&#8217;, &#8216;osense&#8217;, &#8216;rxns&#8217;, &#8216;mets&#8217;, &#8216;genes&#8217;, &#8216;rules&#8217;})</li>
+required fields.
+(Default: {&#8216;S&#8217;, &#8216;b&#8217;, &#8216;csense&#8217;, &#8216;lb&#8217;, &#8216;ub&#8217;, &#8216;c&#8217;, &#8216;osense&#8217;, &#8216;rxns&#8217;, &#8216;mets&#8217;, &#8216;genes&#8217;, &#8216;rules&#8217;})</li>
+<li>&#8216;checkDatabaseIDs&#8217;, check whether the database
+identifiers in specified fields (please have a look
+at the documentation), match to the expected patterns
+for those databases.</li>
+<li>&#8216;silentCheck&#8217;, do not print any information. Only
+applies to the model structure check. (default is to
+print info)</li>
 </ul>
 </div></blockquote>
 </li>
@@ -235,7 +246,9 @@ required fields.</li>
 <li><strong>results</strong> &#8211;
 a struct containing fields for each requested option and an
 additional field <cite>Errors</cite> indicating the problems with the
-model structure detected by the <cite>verifyModel</cite> function.</li>
+model structure detected by the <cite>verifyModel</cite> function.
+Results of additional options are returned in fields with
+the respective names.</li>
 </ul>
 </div></blockquote>
 <p><strong>Example</strong></p>
