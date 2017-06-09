@@ -1,8 +1,11 @@
 function solution = leakTest(model, params, printLevel)
 % Solves the problem
-% :math:`min lambda*||v||_0 - delta*||s||_0`
-% s.t. :math:`Sv + s = 0`,
-% :math:`l <= v <= u`
+%
+% .. math::
+%
+%    min  ~& \lambda ||v||_0 - \delta ||s||_0 \\
+%    s.t. ~& Sv + s = 0, \\
+%         ~& l \leq v \leq u.
 %
 % USAGE:
 %
@@ -14,7 +17,7 @@ function solution = leakTest(model, params, printLevel)
 %                     * .S - `m` x `n` stoichiometric matrix
 %                     * .lb - Lower bounds
 %                     * .ub - Upper bounds
-%    params:        structure with fields:
+%    params:        structure with fields
 %    printLevel:    verbose level
 %
 % OUTPUT:

@@ -1,15 +1,14 @@
 function [Vp, Yp, statp, Vn, Yn, statn] = findMinimalLeakageMode(model, metBool, modelBoundsFlag, epsilon, printLevel)
 % Solve the problem
-% :math:`min ||v||_0 + ||y||_0`
 %
-% s.t. :math:`Sv - y = 0`,
-% :math:`l <= v <= u`
+% .. math::
 %
-% with either
-% :math:`0 <= y` (semipositive net stoichiometry)
+%    min  ~& ||v||_0 + ||y||_0 \\
+%    s.t. ~& Sv - y = 0, \\
+%         ~& l \leq v \leq u
 %
-% or
-% :math:`y <= 0` (seminegative net stoichiometry)
+% with either :math:`0 \leq y` (semipositive net stoichiometry)
+% or :math:`y \leq 0` (seminegative net stoichiometry)
 %
 % USAGE:
 %
