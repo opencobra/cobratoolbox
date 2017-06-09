@@ -1,8 +1,16 @@
 %% Creating a Model 
-% *by Thomas Pfau*
-
-initCobraToolbox
-%% 
+%% Author(s): Thomas Pfau, University of Luxembourg
+%% Reviewer(s):
+%% INTRODUCTION
+% This tutorial explains the most basic functions provided by the COBRA Toolbox 
+% to create a model from scratch (i.e. define all relevant reactions and build 
+% a model from them). 
+%% MATERIALS
+% In this tutorial, two models are created a small toy model and a simple model 
+% of glycolysis. The latter is also used in the model manipulation tutorial.
+%% PROCEDURE
+% *1. Create a simple toy model*
+% 
 % To create a new model, there is a simple function ( createModel ):
 
 emptymodel = createModel()
@@ -47,6 +55,8 @@ model1 = createModel(reactionIdentifiers,reactionNames,reactionFormulas);
 % 
 %  
 % 
+% *2. Explanation of options for the createModel function*
+% 
 % createModel offers a couple of additional optional parameters. Those include:
 % 
 % * revFlagList - a double array of indications whether the reaction is reversible 
@@ -65,6 +75,8 @@ model1 = createModel(reactionIdentifiers,reactionNames,reactionFormulas);
 % * geneNameList - a List of genes present in the grRuleList array
 % * systNameList - a List (of equal size as geneNameList), that is used to translate 
 % the genes from those used in the geneNameList to those used in this list. 
+% 
+% *3. Creating a model with Gene-Protein-Reaction Association (GPR) rules*
 % 
 % Lets assume, our network has the following GPR associations:
 % 
@@ -92,6 +104,8 @@ printRxnFormula(model2,'gprFlag',1);
 % those.
 % 
 % 
+% 
+% *4. Create a model of the upper part of glycolysis*
 % 
 % We will now create a slightly more complex model (essentially, the upper 
 % part of the glycolysis) which will be used in other tutorials (e.g. ModelManipulation)
