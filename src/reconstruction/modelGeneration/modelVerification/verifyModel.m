@@ -51,7 +51,7 @@ function results = verifyModel(model, varargin)
 % .. Authors:
 %       - Thomas Pfau, May 2017
 
-requiredFields = {'S','b','csense','lb','ub','c','osense','rxns','mets','genes','rules'};
+fluxConsistencyFields = {'S','b','csense','lb','ub','c','osense','rxns','mets','genes','rules'};
 
 parser = inputParser();
 parser.addRequired('model',@isstruct);
@@ -61,7 +61,7 @@ parser.addParameter('fluxConsistency',false,@(x) isnumeric(x) || islogical(x));
 parser.addParameter('deadEndMetabolites',false,@(x) isnumeric(x) || islogical(x));
 parser.addParameter('simpleCheck',false,@(x) isnumeric(x) || islogical(x));
 parser.addParameter('stoichiometricConsistency',false,@(x) isnumeric(x) || islogical(x));
-parser.addParameter('requiredFields',requiredFields,@(x) iscell(x) && all(cellfun(@ischar, x)));
+parser.addParameter('requiredFields',fluxConsistencyFields,@(x) iscell(x) && all(cellfun(@ischar, x)));
 
 parser.parse(model,varargin{:});
 
@@ -96,81 +96,101 @@ if isempty(fieldnames(results.Errors))
 end
 
 %Do mass Balance Checks
-if massBalance
-    results.massBalance = struct();
-    if checkFields(results,'metFormulas',model)
-        if ~checkFields(results,'metCharges',model)
-            %it contains a metFormulas field, and metCharges is invalid...
-            model.metCharges = zeros(size(model.metFormulas));
-        end
-        [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, Elements, missingFormulaeBool, balancedMetBool] = checkMassChargeBalance(model,0);
-        results.massBalance.massImbalance = massImbalance;
-        results.massBalance.imBalancedMass = imBalancedMass;
-        results.massBalance.imBalancedRxnBool = imBalancedRxnBool;
-        results.massBalance.Elements = Elements;
-        results.massBalance.missingFormulaeBool = missingFormulaeBool;
-        results.massBalance.balancedMetBool = balancedMetBool;
-    else
-        results.massBalance.missingFields = 'The metFormulas field is missing. Cannot determine the mass Balance';
+if massBalance || chargeBalance
+    doChargeBalance = false;
+    if chargeBalance
+         if checkFields(results,'metCharges',model)
+             doChargeBalance = true;
+         else
+             results.chargeBalance = struct();
+             results.chargeBalance.missingFields = 'The metCharges field is missing. Cannot determine the charge Balance';
+         end
     end
-end
-
-%Do charge Balance checks
-if chargeBalance
-    results.massBalance = struct();
-    if checkFields(results,'metCharges',model)
+    doMassBalance = false;
+    if massBalance
+         if checkFields(results,'metFormulas',model)
+             doMassBalance = true;
+         else
+             results.massBalance = struct();
+             results.massBalance.missingFields = 'The metFormulas field is missing. Cannot determine the mass Balance';
+         end
+    end
+    
+    if doMassBalance || doChargeBalance
+        %Add missing fields, because at least one of the fields is present
+        %and valid.
+        if ~checkFields(results,'metCharges',model)
+            model.metCharges = NaN(size(model.metFormulas));
+        end
         if ~checkFields(results,'metFormulas',model)
-            %it contains a metCharges
             model.metFormulas = cell(size(model.metCharges));
             model.metFormulas(:) = {''};
         end
-        if ~exists('imBalancedCharge','var')
-            [~, ~, imBalancedCharge, ~, ~, ~, ~] = checkMassChargeBalance(model,0);
+        [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, Elements, missingFormulaeBool, balancedMetBool] = checkMassChargeBalance(model,0);
+        %put the fields, if simpleCheck is active and there are imbalanced,
+        %or if simplecheck is not active.
+        if doMassBalance && (~simpleCheck || any(imBalancedRxnBool))            
+            results.massBalance = struct();
+            results.massBalance.massImbalance = massImbalance;
+            results.massBalance.imBalancedMass = imBalancedMass;
+            results.massBalance.imBalancedRxnBool = imBalancedRxnBool;
+            results.massBalance.Elements = Elements;
+            results.massBalance.missingFormulaeBool = missingFormulaeBool;
+            results.massBalance.balancedMetBool = balancedMetBool;            
         end
-        results.chargeBalance.imBalanceCharge = imBalancedCharge;
-    else
-        results.chargeBalance.missingFields = 'The metCharges field is missing. Cannot determine the charge Balance';
+        %Add the fields, if its either not a simple Check or if 
+        if doChargeBalance && (~simpleCheck || any(imBalancedCharge ~= 0))            
+            results.chargeBalance = struct();
+            results.chargeBalance.imBalanceCharge = imBalancedCharge;
+        end
     end
 end
 
 if fluxConsistency
-    ProblematicFields = checkFields(results,requiredFields(1:7,1),model);
+    ProblematicFields = checkFields(results,fluxConsistencyFields(1:7),model);
     if ~all(ProblematicFields) %this is odd... shouldn't refer to 1:7...
         warning('Fields Missing for consistency Testing')
-        results.consistency.problematicFields = requiredFields(ProblematicFields,1);
+        results.consistency = struct();
+        results.consistency.problematicFields = fluxConsistencyFields(ProblematicFields,1);
     else
         [mins,maxs] = fluxVariability(model);
-        results.fluxConsistency = struct();
-        if isfield(model,'rxns')
-            results.fluxConsistency.consistentReactions = model.rxns((abs(mins) > 1e-12) | (abs(maxs) > 1e-12));
+        %if this is not a simple check, or we have reactions which can't
+        %carry flux.
+        if ~simpleCheck || any( ~(abs(mins) > 1e-12)| (abs(maxs) > 1e-12)) 
+            results.fluxConsistency = struct();
+            if isfield(model,'rxns')
+                results.fluxConsistency.consistentReactions = model.rxns((abs(mins) > 1e-12) | (abs(maxs) > 1e-12));
+            end
+            results.fluxConsistency.consistentReactionBool = ( (abs(mins) > 1e-12)| (abs(maxs) > 1e-12));
         end
-        results.fluxConsistency.consistentReactionBool = ( (abs(mins) > 1e-12)| (abs(maxs) > 1e-12));
     end
 
 end
 
 if deadEndMetabolites
     mets = detectDeadEnds(model);
-    results.deadEndMetabolites = struct();
-    results.deadEndMetabolites.DeadEndMetabolites = model.mets(mets);
+    if ~simpleCheck || any(mets)
+        results.deadEndMetabolites = struct();
+        results.deadEndMetabolites.DeadEndMetabolites = model.mets(mets);
+    end
 end
 
 if stoichiometricConsistency
     [SConsistentMetBool,SConsistentRxnBool,SInConsistentMetBool,SInConsistentRxnBool,unknownSConsistencyMetBool,~]=...
         findStoichConsistentSubset(model,0,0);
-
-    stoichiometricConsistency = struct();
-    stoichiometricConsistency.SConsistentMetBool = SConsistentMetBool;
-    stoichiometricConsistency.SConsistentRxnBool = SConsistentRxnBool;
-    stoichiometricConsistency.SInConsistentMetBool = SInConsistentMetBool;
-    stoichiometricConsistency.SInConsistentRxnBool = SInConsistentRxnBool;
-    stoichiometricConsistency.unknownSConsistencyMetBool = unknownSConsistencyMetBool;
-    stoichiometricConsistency.unknownSConsistencyRxnBool = ununknownSConsistencyRxnBool;
-
-    results.stoichiometricConsistency = stoichiometricConsistency ;
+    if ~simpleCheck || any(SInConsistentMetBool) || any(SInConsistentRxnBool)
+        stoichiometricConsistency = struct();
+        stoichiometricConsistency.SConsistentMetBool = SConsistentMetBool;
+        stoichiometricConsistency.SConsistentRxnBool = SConsistentRxnBool;
+        stoichiometricConsistency.SInConsistentMetBool = SInConsistentMetBool;
+        stoichiometricConsistency.SInConsistentRxnBool = SInConsistentRxnBool;
+        stoichiometricConsistency.unknownSConsistencyMetBool = unknownSConsistencyMetBool;
+        stoichiometricConsistency.unknownSConsistencyRxnBool = ununknownSConsistencyRxnBool;
+        results.stoichiometricConsistency = stoichiometricConsistency ;
+    end
 end
 
-if simpleCheck && (numel(varargin) < 3)
+if simpleCheck
     if isempty(fieldnames(results))
         results = true;
     else
