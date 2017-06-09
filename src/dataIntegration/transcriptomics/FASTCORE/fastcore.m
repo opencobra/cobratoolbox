@@ -1,5 +1,5 @@
 function tissueModel = fastcore(model, core, epsilon, printlevel)
-% Use the FASTCORE algorithm ('Vlassis et al, 2014') to extract a context
+% Use the FASTCORE algorithm (Vlassis et al, 2014*) to extract a context
 % specific model. FASTCORE algorithm defines one set of core
 % reactions that is guaranteed to be active in the extracted model and find
 % the minimum of reactions possible to support the core.
@@ -8,25 +8,25 @@ function tissueModel = fastcore(model, core, epsilon, printlevel)
 %
 %    tissueModel = fastcore(model,core)
 %
-% INPUTS:
+% INPUTS
 %
-%   model:               input model (COBRA model structure)   
-%   core:                indices of reactions in cobra model that are part of the
-%                        core set of reactions (called 'C' in 'Vlassis et al,
-%                        2014')
+%   model               input model (COBRA model structure)   
+%   core                indices of reactions in cobra model that are part of the
+%                       core set of reactions (called C in Vlassis et al,
+%                       2014*)
 %
-% OPTIONAL INPUTS:
-%   epsilon:             smallest flux value that is considered nonzero
-%                        (default 1e-8)               
-%   printLevel:          0 = silent, 1 = summary, 2 = debug
+% OPTIONAL INPUTS
+%   epsilon             smallest flux value that is considered nonzero
+%                       (default 1e-4)               
+%   printLevel          0 = silent, 1 = summary, 2 = debug
 %
-% OUTPUTS:
+% OUTPUTS
 %
-%   tissueModel:         extracted model
+%   tissueModel         extracted model
 %
 %
-% 'Vlassis, Pacheco, Sauter (2014). Fast reconstruction of compact
-% context-specific metbolic network models. PLoS Comput. Biol. 10, e1003424.'
+%%* Vlassis, Pacheco, Sauter (2014). Fast reconstruction of compact
+%context-specific metbolic network models. PLoS Comput. Biol. 10, e1003424.
 %
 % .. Authors:
 %       - Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013 LCSB / LSRU, University of Luxembourg
@@ -45,7 +45,7 @@ function tissueModel = fastcore(model, core, epsilon, printlevel)
     model_orig = model;
 
     %Find irreversible reactions
-    irrevRxns = find(model.rev>=0);
+    irrevRxns = find(model.rev==0);
 
     A = [];
     flipped = false;
