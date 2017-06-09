@@ -1,5 +1,5 @@
 function tissueModel = fastcore(model, core, epsilon, printlevel)
-% Use the FASTCORE algorithm (Vlassis et al, 2014*) to extract a context
+% Use the FASTCORE algorithm ('Vlassis et al, 2014') to extract a context
 % specific model. FASTCORE algorithm defines one set of core
 % reactions that is guaranteed to be active in the extracted model and find
 % the minimum of reactions possible to support the core.
@@ -12,8 +12,8 @@ function tissueModel = fastcore(model, core, epsilon, printlevel)
 %
 %   model               input model (COBRA model structure)   
 %   core                indices of reactions in cobra model that are part of the
-%                       core set of reactions (called C in Vlassis et al,
-%                       2014*)
+%                       core set of reactions (called 'C' in 'Vlassis et al,
+%                       2014')
 %
 % OPTIONAL INPUTS
 %   epsilon             smallest flux value that is considered nonzero
@@ -25,8 +25,9 @@ function tissueModel = fastcore(model, core, epsilon, printlevel)
 %   tissueModel         extracted model
 %
 %
-%%* Vlassis, Pacheco, Sauter (2014). Fast reconstruction of compact
-%context-specific metbolic network models. PLoS Comput. Biol. 10, e1003424.
+% 'Vlassis, Pacheco, Sauter (2014). Fast reconstruction of compact
+% context-specific metbolic network models. PLoS Comput. Biol. 10,
+% e1003424.'
 %
 % .. Authors:
 %       - Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013 LCSB / LSRU, University of Luxembourg
@@ -140,4 +141,3 @@ function tissueModel = fastcore(model, core, epsilon, printlevel)
     toRemove = setdiff(model.rxns,model.rxns(A));
     tissueModel = removeRxns(model_orig, toRemove);
     tissueModel = removeNonUsedGenes(tissueModel);
-
