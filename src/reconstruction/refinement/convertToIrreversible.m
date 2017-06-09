@@ -25,6 +25,7 @@ function [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(mo
 %       - written by Gregory Hannum 7/9/05
 %       - Modified by Markus Herrgard 7/25/05
 %       - Modified by Jan Schellenberger 9/9/09 for speed.
+%       - Modified by Sebastián Mendoza 6/9/17 for handling inputs of model
 
 modelIrrev.S = spalloc(size(model.S, 1), 0, 2 * nnz(model.S)); % declare variables
 modelIrrev.rxns = [];
@@ -115,9 +116,15 @@ if isfield(model,'subSystems')
 end
 if isfield(model,'genes')
     modelIrrev.genes = model.genes;
+end
+if isfield(model,'rxnGeneMat')
     genemtxtranspose = model.rxnGeneMat';
     modelIrrev.rxnGeneMat = genemtxtranspose(:, irrev2rev)';
+end
+if isfield(model,'rules')
     modelIrrev.rules = model.rules(irrev2rev);
+end
+if isfield(model,'grRules')
     modelIrrev.grRules = model.grRules(irrev2rev); %added to allow model reduction 18/02/2016 Agnieszka
 end
 modelIrrev.reversibleModel = false;
