@@ -32,6 +32,13 @@ function results = verifyModel(model, varargin)
 %                     the argument must be firectly followed by the list of
 %                     required fields.
 %                     (Default: {'S', 'b', 'csense', 'lb', 'ub', 'c', 'osense', 'rxns', 'mets', 'genes', 'rules'})
+%                   * 'checkDatabaseIDs', check whether the database
+%                     identifiers in specified fields (please have a look
+%                     at the documentation), match to the expected patterns
+%                     for those databases.
+%                   * 'silentCheck', do not print any information. Only
+%                     applies to the model structure check. (default is to
+%                     print info)
 %
 % OUTPUT:
 %
@@ -62,6 +69,9 @@ parser.addParameter('deadEndMetabolites',false,@(x) isnumeric(x) || islogical(x)
 parser.addParameter('simpleCheck',false,@(x) isnumeric(x) || islogical(x));
 parser.addParameter('stoichiometricConsistency',false,@(x) isnumeric(x) || islogical(x));
 parser.addParameter('requiredFields',fluxConsistencyFields,@(x) iscell(x) && all(cellfun(@ischar, x)));
+parser.addParameter('checkDatabaseIDs',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('silentCheck',false,@(x) isnumeric(x) || islogical(x));
+
 
 parser.parse(model,varargin{:});
 
@@ -72,6 +82,8 @@ fluxConsistency = parser.Results.fluxConsistency;
 deadEndMetabolites = parser.Results.deadEndMetabolites;
 simpleCheck = parser.Results.simpleCheck;
 stoichiometricConsistency = parser.Results.stoichiometricConsistency;
+checkDBs = parser.Results.checkDatabaseIDs;
+silentCheck = parser.Results.silentCheck;
 
 [optionalFields] = getDefinedFieldProperties();
 requiredFields = optionalFields(ismember(optionalFields(:,1), requiredFields),:);
@@ -190,6 +202,33 @@ if stoichiometricConsistency
     end
 end
 
+if checkDBs
+    results = checkDatabaseIDs(model,results);
+end
+
+%Print some info about the encountered problems if requested
+if ~isempty(results) && ~silentCheck
+    if isfield(results, 'Errors')
+        problems = fieldnames(results.Errors);
+        disp('The following problems have been encountered in the model structure')
+        for i = 1:numel(problems)
+            fprintf('%s:\n',problems{i})
+            problem_data = results.Errors.(problems{i});            
+            if isstruct(problem_data)             
+                problematic_fields = fieldnames(problem_data);
+                for field = 1: numel(problematic_fields)
+                    fprintf('%s: %s\n',problematic_fields{field}, results.Errors.(problems{i}).(problematic_fields{field}));                
+                end
+            else
+                for field = 1:numel(problem_data)
+                    fprintf('%s\n',problem_data{field});                
+                end
+            end
+        end
+    end
+end
+
+
 if simpleCheck
     if isempty(fieldnames(results))
         results = true;
@@ -199,7 +238,67 @@ if simpleCheck
 end
 end
 
+
+function results = checkDatabaseIDs(model,results)
+% Checks the model for validity of database identifiers
+%
+% USAGE:
+%
+%    results = checkDatabaseIDs(model,results)
+%
+% INPUT:
+%    model:       a structure that represents the COBRA model.
+%    results:     the results structure for this test
+%
+% OUTPUT:
+%
+%    results:     a struct with problematic database ids added.
+%
+% .. Authors:
+%       - Thomas Pfau, May 2017
+
+dbMappings = getDefinedFieldProperties('Database',true);
+
+for i= 1:size(dbMappings,1)
+    if isfield(model,dbMappings{i,3})
+        fits = cellfun(@(x) isempty(x) || checkID(x,dbMappings{i,5}),model.(dbMappings{i,3}));
+        %Only add the something if we really have wrong IDs.
+        if any(~fits)
+            if ~isfield(results,'checkDatabaseIDs')
+                results.checkDatabaseIDs = struct();
+            end
+            if ~isfield(results.checkDatabaseIDs,'invalidIDs')
+                results.checkDatabaseIDs.invalidIDs = struct();
+            end
+            results.checkDatabaseIDs.invalidIDs.(dbMappings{i,3}) = cell(size(model.(dbMappings{i,3})));
+            results.checkDatabaseIDs.invalidIDs.(dbMappings{i,3})(~fits) = model.(dbMappings{i,3})(~fits);
+        end
+    end
+end
+end
+
+
 function valid = checkFields(results,FieldNames,model)
+% Checks the given fields of the model in the results struct for
+% consistency.
+%
+% USAGE:
+%
+%    valid = checkFields(results,FieldNames,model)
+%
+% INPUT:
+%    results:     the results structure for this test
+%    FieldNames:  The names of the fields to check. 
+%    model:       a structure that represents the COBRA model.
+%
+% OUTPUT:
+%
+%    valid:     whether the field is valid given the information in
+%               results.
+%
+% .. Authors:
+%       - Thomas Pfau, May 2017
+
 if ischar(FieldNames)
     FieldNames = {FieldNames};
 end
@@ -211,6 +310,26 @@ end
 
 
 function results = checkPresentFields(fieldProperties,model, results)
+% Check the model fields for consistency with the given fieldProperties and
+% update the results struct.
+%
+% USAGE:
+%
+%    results = checkPresentFields(fieldProperties,model, results)
+%
+% INPUT:
+%    fieldProperties:  field properties as obtained by
+%                      getDefinedFieldProperties
+%    model:            a structure that represents the COBRA model.
+%    results:          the results structure for this test
+%
+% OUTPUT:
+%
+%    results:          The updated results struct. 
+%
+% .. Authors:
+%       - Thomas Pfau, May 2017
+
 presentFields = find(ismember(fieldProperties(:,1),fieldnames(model)));
 
 %Check all Field Sizes
