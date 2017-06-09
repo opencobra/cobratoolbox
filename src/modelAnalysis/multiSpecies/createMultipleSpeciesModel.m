@@ -20,6 +20,7 @@ function [modelJoint] = createMultipleSpeciesModel(models,nameTagsModels,modelHo
 % INPUTS:
 %    models:     cell array of COBRA models(at least one).
 %                Format
+%
 %                   * models{1,1} = model 1
 %                   * models{2,1} = model 2...
 %
@@ -27,6 +28,7 @@ function [modelJoint] = createMultipleSpeciesModel(models,nameTagsModels,modelHo
 %    nameTagsModels:    cell array of tags for reaction/metabolite abbreviation
 %                       corresponding to each model.
 %                       Format
+%
 %                           * nameTagsModels{1,1} = 'name tag 1'
 %                           * nameTagsModels{2,1} = 'name tag 2'...
 %    modelHost:         COBRA model for host
