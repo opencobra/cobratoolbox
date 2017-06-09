@@ -78,17 +78,17 @@ assert(norm(u - u_C - u_L) < tol)
 % test for checkScaling
 load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
-solverRecommendation = checkScaling(model);
+precisionEstimate = checkScaling(model);
 
-[solverRecommendation, scalingProperties] = checkScaling(model);
+[precisionEstimate, solverRecommendation, scalingProperties] = checkScaling(model);
 
 estlevels = {'crude', 'medium', 'fine'};
 
 for i = 1:length(estlevels)
     for printLevel = 0:1
-        [solverRecommendation, scalingProperties] = checkScaling(model, estlevels{i}, printLevel);
+        [precisionEstimate, solverRecommendation, scalingProperties] = checkScaling(model, estlevels{i}, printLevel);
 
-        assert(strcmp(solverRecommendation, 'double'));
+        assert(strcmp(precisionEstimate, 'double'));
         assert(scalingProperties.nMets == size(model.S, 1))
         assert(scalingProperties.nRxns == size(model.S, 2))
     end
@@ -97,11 +97,11 @@ end
 % test a model for which a quad-precision solver is highly recommended
 load([CBTDIR, filesep, 'test' filesep 'models' filesep 'ME_matrix_GlcAer_WT.mat'], 'modelGlcOAer_WT');
 
-[solverRecommendation, scalingProperties] = checkScaling(modelGlcOAer_WT);
-assert(strcmp(solverRecommendation, 'quad'));
+[precisionEstimate, solverRecommendation, scalingProperties] = checkScaling(modelGlcOAer_WT);
+assert(strcmp(precisionEstimate, 'quad'));
 
 % test a model with an estimation level that has badly-scaled columns
-[solverRecommendation, scalingProperties] = checkScaling(modelGlcOAer_WT, 'medium');
+[precisionEstimate, solverRecommendation, scalingProperties] = checkScaling(modelGlcOAer_WT, 'medium');
 
 % change the directory
 cd(currentDir)
