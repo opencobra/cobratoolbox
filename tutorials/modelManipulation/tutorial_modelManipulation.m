@@ -1,5 +1,10 @@
 %% Model manipulation
-% *Vanja Vlasov, with additions by Thomas Pfau*
+% *Author(s): Vanja Vlasov, Thomas Pfau, Systems Biochemistry Group, University 
+% of Luxembourg*
+% 
+% *Reviewer(s):*
+% 
+% *INTRODUCTION*
 % 
 % In this tutorial, we will do a manipulation with the simple model of the 
 % first few reactions of the glycolisis metabolic pathway as created in the "Model 
@@ -31,11 +36,12 @@
 % * Search for duplicates and comparison of two models;
 % * Changing the model objective;
 % * Changing the direction of reaction(s);
-% 
+%% EQUIPMENT SETUP
 % Start CobraToolbox
 
 initCobraToolbox
 warning on
+%% PROCEDURE
 %% Generate a network
 % A constraint-based metabolic model contains the stoichiometric matrix with 
 % reactions and metabolites [1].
@@ -225,7 +231,6 @@ printRxnFormula(model,'rxnAbbrList',{'GAPDH'},'gprFlag',true);
 
 model = addReaction(model,'PGK','geneRule','G2 or G3', 'printLevel', 0);
 printRxnFormula(model,'gprFlag',true);
-%% 
 %% Remove reactions and metabolites
 % In order to detach reactions from the model, the following function has been 
 % used:
@@ -299,47 +304,34 @@ modelNew = changeObjective(model, 'GLCt1', 0.5);
 modelNew = changeObjective(model, {'PGI'; 'PFK'; 'FBP'});
 
 %% The direction of reactions 
-% For some purposes, it is important to only have irreversible reactions in 
-% a model, i.e. only allowing positive flux in all reactions. This can be important 
-% if e.g. absolute flux values are of interest and negative flux would reduce 
-% an objective while it should actually increase it. The COBRA toolbox offers 
-% functionality to change a model to an irreversible format, by splitting all 
-% reversible reactions and adjusting the respective lower and upper bounds, such 
-% that the model capacities stay the same. 
-% 
-% Lets see, how the glycolysis model currently looks:
+% When reaction is reversible and we want to remove it, it is necessary to first 
+% change the reverse sign and than remove reaction afterwards. 
 
-printRxnFormula(model);
+fprintf('>> Converting to Irreversible\n');
+load('testModelManipulation.mat', 'model', 'modelIrrev');
+[testModelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model);
 %% 
-% To convert a model to an irreversible model use the following command:
+% Following function is comparing the differences and similarities between 
+% two models:
 
-[modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model);
+assert(isSameCobraModel(modelIrrev, testModelIrrev));
 %% 
-% Lets compare the irreversible model with the original model:
+% Converting to reversible
 
-printRxnFormula(modelIrrev);
-%% 
-% You will notice, that there are more reactions in this model, and that 
-% all reactions which have a lower bound < 0 are split in two. 
-% 
-% There is also a function to convert an irreversible model to a reversible 
-% model:
+fprintf('>> Convert to Reversible\n');
+testModelRev = convertToReversible(testModelIrrev);
+load('testModelManipulation.mat','modelRev');
 
-modelRev = convertToReversible(modelIrrev);
-%% 
-% If we now compare the reactions of this model with those from the original 
-% model, they should look the same.
-
-printRxnFormula(modelRev);
-%% References 
-% [1] Orth, J. D., Thiele I., and Palsson, B. Ø. (2010). What is flux balance 
-% analysis? _Nat. Biotechnol., 28_(3), 245–248.
+assert(isSameCobraModel(modelRev, testModelRev)); 
+%% REFERENCES
+% 1.Orth, J. D. et al. What is flux balance analysis? _Nat. Biotechnol., 28_(3), 
+% 245–248 (2010).
 % 
-% [2] Feist, A. M., Palsson, B. (2008). The Growing Scope of  Applications 
-% of Genome-scale Metabolic Reconstructions: the case of _E. coli_. _Nature Biotechnology, 
-% 26_(6), 659–667.
+% 2. Feist, A. M., Palsson, B.  The Growing Scope of  Applications of Genome-scale 
+% Metabolic Reconstructions: the case of _E. coli_. _Nature Biotechnology, 26_(6), 
+% 659–667 (2008).
 % 
-% [3] Feist, A. M., Palsson, B. O. (2010). The Biomass Objective Function. 
-% _Current Opinion in Microbiology, 13_(3), 344–349.
+% 3. Feist, A. M., Palsson, B. O. The Biomass Objective Function. _Current 
+% Opinion in Microbiology, 13_(3), 344–349  (2010).
 % 
 %
