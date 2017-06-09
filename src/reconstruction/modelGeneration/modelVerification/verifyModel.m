@@ -9,31 +9,37 @@ function results = verifyModel(model, varargin)
 %    model:       a structure that represents the COBRA model.
 %
 % OPTIONAL INPUT:
-%    varargin:    varargin contains additional checks that shall be performed. Provided as
-%                 strings, the results of the individual checks are returned as a structure
-%                 array containing the relevant values.
+%    varargin:    varargin describes the additional checks (except the
+%                 basic check whether a models fields adhere to the field
+%                 definitions. They are to be provided as ParameterName,
+%                 Value pairs (e.g. verifyModel(model, 'massBalance', true)
 %                 Options are:
 %
-%                   * 'massBalance' (checks for Mass balance if the `metFormula` Field is present)
-%                   * 'chargeBalance' (checks for charge Balance)
-%                   * 'fluxConsistency' (checks for reaction flux consistency)
+%                   * 'massBalance' (checks for Mass balance if the
+%                     `metFormula` Field is present), (Default: false)
+%                   * 'chargeBalance' (checks for charge Balance) (Default: false)
+%                   * 'fluxConsistency' (checks for reaction flux
+%                     consistency) (Default: false)
 %                   * 'stoichiometricConsistency' (checks for Stoichiometric
-%                     Consisteny, according to `Gevorgyan, Bioinformatics, 2008`)
+%                     Consisteny, according to `Gevorgyan, Bioinformatics,
+%                     2008`) (Default: false)
 %                   * 'deadEndMetabolites' (metabolites which can either not
-%                     be produced, or consumed)
+%                     be produced, or consumed) (Default: false)
 %                   * 'simpleCheck' returns 0 if this is not a valid model
 %                     and 1 if it is a valid model, ignored if any other
-%                     option is selected.
+%                     option is selected. (Default: false)
 %                   * 'requiredFields' sets the fields which are required,
 %                     the argument must be firectly followed by the list of
 %                     required fields.
-%                   * default({'S', 'b', 'csense', 'lb', 'ub', 'c', 'osense', 'rxns', 'mets', 'genes', 'rules'})
+%                     (Default: {'S', 'b', 'csense', 'lb', 'ub', 'c', 'osense', 'rxns', 'mets', 'genes', 'rules'})
 %
 % OUTPUT:
 %
 %    results:     a struct containing fields for each requested option and an
 %                 additional field `Errors` indicating the problems with the
 %                 model structure detected by the `verifyModel` function.
+%                 Results of additional options are returned in fields with
+%                 the respective names. 
 %
 % EXAMPLE:
 %
@@ -47,9 +53,26 @@ function results = verifyModel(model, varargin)
 
 requiredFields = {'S','b','csense','lb','ub','c','osense','rxns','mets','genes','rules'};
 
-if any(ismember(varargin,'requiredFields'))
-    requiredFields = varargin{find(ismember(varargin,'requiredFields')) + 1};
-end
+parser = inputParser();
+parser.addRequired('model',@isstruct);
+parser.addParameter('massBalance',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('chargeBalance',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('fluxConsistency',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('deadEndMetabolites',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('simpleCheck',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('stoichiometricConsistency',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('requiredFields',requiredFields,@(x) iscell(x) && all(cellfun(@ischar, x)));
+
+parser.parse(model,varargin{:});
+
+requiredFields = parser.Results.requiredFields;
+massBalance = parser.Results.massBalance;
+chargeBalance = parser.Results.chargeBalance;
+fluxConsistency = parser.Results.fluxConsistency;
+deadEndMetabolites = parser.Results.deadEndMetabolites;
+simpleCheck = parser.Results.simpleCheck;
+stoichiometricConsistency = parser.Results.stoichiometricConsistency;
+
 [optionalFields] = getDefinedFieldProperties();
 requiredFields = optionalFields(ismember(optionalFields(:,1), requiredFields),:);
 optionalFields = optionalFields(~ismember(optionalFields(:,1), requiredFields(:,1)),:);
@@ -73,7 +96,7 @@ if isempty(fieldnames(results.Errors))
 end
 
 %Do mass Balance Checks
-if any(ismember(varargin,'massBalance'))
+if massBalance
     results.massBalance = struct();
     if checkFields(results,'metFormulas',model)
         if ~checkFields(results,'metCharges',model)
@@ -93,7 +116,7 @@ if any(ismember(varargin,'massBalance'))
 end
 
 %Do charge Balance checks
-if any(ismember(varargin,'chargeBalance'))
+if chargeBalance
     results.massBalance = struct();
     if checkFields(results,'metCharges',model)
         if ~checkFields(results,'metFormulas',model)
@@ -110,7 +133,7 @@ if any(ismember(varargin,'chargeBalance'))
     end
 end
 
-if any(ismember(varargin,'fluxConsistency'))
+if fluxConsistency
     ProblematicFields = checkFields(results,requiredFields(1:7,1),model);
     if ~all(ProblematicFields) %this is odd... shouldn't refer to 1:7...
         warning('Fields Missing for consistency Testing')
@@ -126,13 +149,13 @@ if any(ismember(varargin,'fluxConsistency'))
 
 end
 
-if any(ismember(varargin,'deadEndMetabolites'))
+if deadEndMetabolites
     mets = detectDeadEnds(model);
     results.deadEndMetabolites = struct();
     results.deadEndMetabolites.DeadEndMetabolites = model.mets(mets);
 end
 
-if any(ismember(varargin,'stoichiometricConsistency'))
+if stoichiometricConsistency
     [SConsistentMetBool,SConsistentRxnBool,SInConsistentMetBool,SInConsistentRxnBool,unknownSConsistencyMetBool,~]=...
         findStoichConsistentSubset(model,0,0);
 
@@ -147,7 +170,7 @@ if any(ismember(varargin,'stoichiometricConsistency'))
     results.stoichiometricConsistency = stoichiometricConsistency ;
 end
 
-if any(ismember(varargin,'simpleCheck')) && (numel(varargin) < 2)
+if simpleCheck && (numel(varargin) < 3)
     if isempty(fieldnames(results))
         results = true;
     else
