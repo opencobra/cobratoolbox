@@ -271,12 +271,35 @@ for i= 1:size(dbMappings,1)
                 results.checkDatabaseIDs.invalidIDs = struct();
             end
             results.checkDatabaseIDs.invalidIDs.(dbMappings{i,3}) = cell(size(model.(dbMappings{i,3})));
+            results.checkDatabaseIDs.invalidIDs.(dbMappings{i,3})(:) = {'valid'};
             results.checkDatabaseIDs.invalidIDs.(dbMappings{i,3})(~fits) = model.(dbMappings{i,3})(~fits);
         end
     end
 end
 end
 
+
+function accepted = checkID(id,pattern)
+% Checks the the given id(s), i.e. strings split by ; versus the pattern
+%
+% USAGE:
+%
+%    accepted = checkID(id,pattern)
+%
+% INPUT:
+%    id:          A String representing ids (potentially separated by ;)
+%    pattern:     The pattern to check the id(s) against.
+%
+% OUTPUT:
+%
+%    accepted:     Whether all ids are ok. 
+%
+% .. Authors:
+%       - Thomas Pfau, May 2017
+    ids = strsplit(id,';');
+    matches = regexp(ids,pattern);
+    accepted = all(~cellfun(@isempty,matches));    
+end
 
 function valid = checkFields(results,FieldNames,model)
 % Checks the given fields of the model in the results struct for
