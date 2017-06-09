@@ -9,6 +9,7 @@ Transcriptomics
    mCADRE
    MBA
    GIMME
+   INIT
    iMAT
 
 .. automodule:: src.dataIntegration.transcriptomics
