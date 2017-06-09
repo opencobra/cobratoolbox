@@ -152,7 +152,7 @@ if strmatch('glpk',solver)
    %FVAc=@glpkFVAcc;
    fprintf('ERROR : GLPK is not (yet) supported as the binaries are not yet available.')
 elseif strmatch('cplex',solver)
-    eval(['FVAc=@cplexFVA' getCPLEXversion() ';']);
+    FVAc = str2func(['cplexFVA' getCPLEXversion()]);
 else
    error(sprintf('Solver %s not supported', solver))
 end;
