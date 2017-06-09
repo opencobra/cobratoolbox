@@ -1,22 +1,23 @@
-function [solverRecommendation, scalingProperties] = checkScaling(model, estLevel, printLevel)
+function [precisionEstimate, solverRecommendation, scalingProperties] = checkScaling(model, estLevel, printLevel)
 % checks the scaling of the stoichiometric matrix and provides a recommendation on the precision of the solver
 %
 % USAGE:
 %
-%     [solverRecommendation, scalingProperties] = checkScaling(model, estLevel, printLevel)
+%     [precisionEstimate, scalingProperties] = checkScaling(model, estLevel, printLevel)
 %
 % INPUTS:
 %
-%    model:                         COBRA model structure
+%    model:                       COBRA model structure
 %
 % OPTIONAL INPUTS:
 %
-%    estLevel:                      level of estimation: `crude`, `medium`, `fine` (default)
-%    printLevel:                    verbose level (default: 1). Level 0 is quiet.
+%    estLevel:                    level of estimation: `crude`, `medium`, `fine` (default)
+%    printLevel:                  verbose level (default: 1). Level 0 is quiet.
 %
 % OUTPUTS:
 %
-%    solverRecommendation:          estimation of precision (string, `double` or `quad`, default: `double`)
+%    precisionEstimate:           estimation of precision (string, `double` or `quad`, default: `double`)
+%    solverRecommendation:        cell array with recommendation of solver(s) to be used (default: {'glpk'})
 %    scalingProperties:             structure with properties of scaling
 %
 %                                   * .estLevel: `crude`, `medium`, `fine` (default)
@@ -53,6 +54,8 @@ function [solverRecommendation, scalingProperties] = checkScaling(model, estLeve
 %                                   * .ratioC: ratio of the maximum and minimum column scaling coefficients
 %                                   * .ratioC_orderOfMag: order of magnitude of the ratio of the
 %                                     maximum and minimum column scaling coefficients
+
+    global SOLVERS
 
     if nargin < 2
         estLevel = 'fine';
@@ -113,34 +116,22 @@ function [solverRecommendation, scalingProperties] = checkScaling(model, estLeve
     end
 
     % determine the extrema of stoichiometric coefficients
-    minS = full(min(min(abs(S))));
+    minS = full(min(min(abs(S(S ~= 0)))));
     maxS = full(max(max(abs(S))));
-    if abs(minS) > 0
-        ratioS = maxS / minS;
-    else
-        ratioS = maxS;
-    end
+    ratioS = maxS / minS;
 
     % determine extrema of bounds
     if isfield(model, 'lb')
-        minLB = min(abs(model.lb));
+        minLB = min(abs(model.lb(model.lb ~= 0)));
         maxLB = max(abs(model.lb));
 
-        if abs(minLB) > 0
-            ratioL = maxLB / minLB;
-        else
-            ratioL = minLB;
-        end
+        ratioL = maxLB / minLB;
     end
     if isfield(model, 'ub')
-        minUB = min(abs(model.ub));
+        minUB = min(abs(model.ub(model.ub ~= 0)));
         maxUB = max(abs(model.ub));
 
-        if abs(minUB) > 0
-            ratioU = maxUB / minUB;
-        else
-            ratioU = maxUB;
-        end
+        ratioU = maxUB / minUB;
     end
 
     % save all calculated scaling quantities as a structure
@@ -166,8 +157,8 @@ function [solverRecommendation, scalingProperties] = checkScaling(model, estLeve
         fprintf('        * metabolites:                         %d\n', nMets);
         fprintf('        * reactions:                           %d\n', nRxns);
         fprintf(' Stoichiometric coefficients:\n');
-        fprintf('        * Minimum (absolute value):            %1.2e\n', minS);
-        fprintf('        * Maximum (absolute value):            %1.2e\n', maxS);
+        fprintf('        * Minimum (absolute non-zero value):   %1.2e\n', minS);
+        fprintf('        * Maximum (absolute non-zero value):   %1.2e\n', maxS);
     end
 
     if isfield(model, 'lb')
@@ -176,8 +167,8 @@ function [solverRecommendation, scalingProperties] = checkScaling(model, estLeve
 
         if printLevel > 0
             fprintf(' Lower bound coefficients:\n');
-            fprintf('        * Minimum (absolute value):            %1.2e\n', minLB);
-            fprintf('        * Maximum (absolute value):            %1.2e\n', maxLB);
+            fprintf('        * Minimum (absolute non-zero value):   %1.2e\n', minLB);
+            fprintf('        * Maximum (absolute non-zero value):   %1.2e\n', maxLB);
         end
     end
 
@@ -187,8 +178,8 @@ function [solverRecommendation, scalingProperties] = checkScaling(model, estLeve
 
         if printLevel > 0
             fprintf(' Upper bound coefficients:\n');
-            fprintf('        * Minimum (absolute value):            %1.2e\n', minUB);
-            fprintf('        * Maximum (absolute value):            %1.2e\n', maxUB);
+            fprintf('        * Minimum (absolute non-zero value):   %1.2e\n', minUB);
+            fprintf('        * Maximum (absolute non-zero value):   %1.2e\n', maxUB);
         end
     end
 
@@ -226,7 +217,7 @@ function [solverRecommendation, scalingProperties] = checkScaling(model, estLeve
         if abs(ratioL) > 0
             scalingProperties.ratioL_orderOfMag = abs(floor(log10(abs(ratioL))));
             if printLevel > 0
-                fprintf(' Order of magnitude diff. (lower bounds):      %d\n\n', scalingProperties.ratioS_orderOfMag);
+                fprintf(' Order of magnitude diff. (lower bounds):      %d\n\n', scalingProperties.ratioL_orderOfMag);
             end
         end
     end
@@ -280,8 +271,8 @@ function [solverRecommendation, scalingProperties] = checkScaling(model, estLeve
         fprintf('\n --------------------------------------------------------------------------\n');
     end
 
-    % print out a recommendation and set the solverRecommendation variable
-    solverRecommendation = 'quad';
+    % print out a recommendation and set the precisionEstimate variable
+    precisionEstimate = 'quad';
 
     % provide a precision requirement estimate
     if ratioR > 1e6 && ratioC > 1e6
@@ -303,6 +294,28 @@ function [solverRecommendation, scalingProperties] = checkScaling(model, estLeve
         if printLevel > 0
             fprintf('\n -> The model is well scaled. Double precision is recommended.\n\n');
         end
-        solverRecommendation = 'double';
+        precisionEstimate = 'double';
+    end
+
+    % return a solver recommendation
+    solverRecommendation = {};
+    supportedSolversNames = fieldnames(SOLVERS);
+    solverNamesLP = {};
+    for i = 1:length(supportedSolversNames)
+        types = SOLVERS.(supportedSolversNames{i}).type;
+        solverNamesLP{end + 1} = supportedSolversNames{i};
+    end
+
+    % fill the list with solvers that are installed already
+    for i = 1:length(solverNamesLP)
+        if SOLVERS.(solverNamesLP{i}).installed
+            if ~strcmp(solverNamesLP{i}, 'dqqMinos') && ~strcmp(solverNamesLP{i}, 'quadMinos')
+                solverRecommendation{end + 1} = solverNamesLP{i};
+            end
+        end
+    end
+
+    if strcmp(precisionEstimate, 'quad')
+        solverRecommendation = {'dqqMinos', 'quadMinos'};
     end
 end
