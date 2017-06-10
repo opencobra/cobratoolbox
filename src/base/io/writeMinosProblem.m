@@ -67,8 +67,8 @@ function [directory, fname] = writeMinosProblem(LPproblem, precision, modelName,
 format1 = '%19.12e\n';   % roughly double precision
 format2 = '%12.5e\n';    % roughly single precision
 
-if ~exist('precision','var')
-    precision='double';
+if ~exist('precision', 'var')
+    precision = 'double';
 end
 
 switch precision
@@ -82,87 +82,87 @@ end
 % Grab at most 7 characters.
 % Add 's' if format==2 (single precision).
 
-if ~exist('modelName','var')
-    modelName='FBA';
+if ~exist('modelName', 'var')
+    modelName = 'FBA';
 end
-fname=modelName(1:min(length(modelName),7));
-fname=strrep(fname,' ','_');
+fname = modelName(1:min(length(modelName), 7));
+fname = strrep(fname, ' ', '_');
 
-if ~exist('directory','var')
-    directory=pwd;
+if ~exist('directory', 'var')
+    directory = pwd;
 end
 
-%filename
+% filename
 longfname = [directory filesep fname '.txt'];
 
-%csense addition code cut from optimizeCbModel.m
-if ~isfield(LPproblem,'csense')
+% csense addition code cut from optimizeCbModel.m
+if ~isfield(LPproblem, 'csense')
     % If csense is not declared in the LPproblem, assume that all
     % constraints are equalities.
-    csense(1:size(LPproblem.S,1),1) = 'E';
+    csense(1:size(LPproblem.S, 1), 1) = 'E';
 else
     csense = LPproblem.csense;      % E or L or G
 end
-if ~isfield(LPproblem,'osense')
-    %assume maximisation
-    osense=-1;
+if ~isfield(LPproblem, 'osense')
+    % assume maximisation
+    osense = -1;
 else
     osense = LPproblem.osense;      % 1=min   (-1=max)
 end
 
 % Extract data from LPproblem
-A      = LPproblem.A;
-b      = LPproblem.b;
-c      = LPproblem.c;
-xl     = LPproblem.lb;
-xu     = LPproblem.ub;
+A = LPproblem.A;
+b = LPproblem.b;
+c = LPproblem.c;
+xl = LPproblem.lb;
+xu = LPproblem.ub;
 
 % 06 Aug 2012: Include c as an additional free *last* row of Ax = b
 %              so that SQOPT will treat the problem as an LP, not a QP.
 %              This is ok for MINOS also.
 
-A     = [      A            % Luckily we only have to do it once
-        osense*sparse(c)'];
-b     = [b; 0];
+A = [A            % Luckily we only have to do it once
+     osense * sparse(c)'];
+b = [b; 0];
 
-[m,n]   = size(A);
-nzS     = nnz(A);
-[I,J,V] = find(A);          % Sij indices and values
-P       = zeros(n+1,1);     % Pointers to start of each column
-p       = 1;
-for j=1:n
+[m, n] = size(A);
+nzS = nnz(A);
+[I, J, V] = find(A);          % Sij indices and values
+P = zeros(n + 1, 1);     % Pointers to start of each column
+p = 1;
+for j = 1:n
     P(j) = p;
-    p    = p + nnz(A(:,j));
+    p = p + nnz(A(:, j));
 end
-P(n+1)  = p;
+P(n + 1) = p;
 
 tic
-fid = fopen(longfname,'w');        % Open file longfname for writing
-fprintf(fid,'%c%c%c%c%c%c%c%c', fname); % First line, up to 8 chars
-fprintf(fid,'\n');             % Force a new line
-fprintf(fid,'%8i\n'    , m);   % No of rows in A (including obj row)
-fprintf(fid,'%8i\n'    , n);   % No of cols in A
-fprintf(fid,'%8i\n'    , nzS); % No of nonzeros
-fprintf(fid,'%8i\n'    , P);    % Pointers         n+1
-fprintf(fid,'%8i\n'    , I);    % Row indices      nzS
-fprintf(fid, eformat   , V);    % Values           nzS
+fid = fopen(longfname, 'w');        % Open file longfname for writing
+fprintf(fid, '%c%c%c%c%c%c%c%c', fname);  % First line, up to 8 chars
+fprintf(fid, '\n');             % Force a new line
+fprintf(fid, '%8i\n', m);   % No of rows in A (including obj row)
+fprintf(fid, '%8i\n', n);   % No of cols in A
+fprintf(fid, '%8i\n', nzS);  % No of nonzeros
+fprintf(fid, '%8i\n', P);    % Pointers         n+1
+fprintf(fid, '%8i\n', I);    % Row indices      nzS
+fprintf(fid, eformat, V);    % Values           nzS
 
 bigbnd = 1e+20;                % MINOS and SQOPT's "infinite" bound
-sl     = b;                    % Bounds on slacks s = A*x
-su     = b;                    % b handles E rows
-L      = find(csense=='L');    % Find the L rows (<=)
-sl(L)  = -bigbnd;
-G      = find(csense=='G');    % Find the G rows (>=)
-su(G)  =  bigbnd;
+sl = b;                    % Bounds on slacks s = A*x
+su = b;                    % b handles E rows
+L = find(csense == 'L');    % Find the L rows (<=)
+sl(L) = -bigbnd;
+G = find(csense == 'G');    % Find the G rows (>=)
+su(G) = bigbnd;
 
-sl(m)  = -bigbnd;              % Free bounds on the objective row
-su(m)  =  bigbnd;
-bl     = [xl; sl];
-bu     = [xu; su];
+sl(m) = -bigbnd;              % Free bounds on the objective row
+su(m) = bigbnd;
+bl = [xl; sl];
+bu = [xu; su];
 fprintf(fid, eformat, bl);
 fprintf(fid, eformat, bu);
 fclose(fid);
-if printLevel>0
+if printLevel > 0
     toc;
-    fprintf('%s\n',['In ' num2str(toc) ' sec, file written to ' longfname]);
+    fprintf('%s\n', ['In ' num2str(toc) ' sec, file written to ' longfname]);
 end
