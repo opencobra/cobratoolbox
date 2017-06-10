@@ -71,10 +71,11 @@ for i = 1:length(model.rxns)
         fprintf(fid, '%s\t', model.mets{metabolitePlace});
         if model.lb(i) >= 0 && model.ub(i) >= 0
             fprintf(fid, 'Output\n');
-        else if model.lb(i) <= 0 && model.ub(i) <= 0
+        else
+            if model.lb(i) <= 0 && model.ub(i) <= 0
                 fprintf(fid, 'Input\n');
             else
-                fprintf(fid,'Free\n');
+                fprintf(fid, 'Free\n');
             end
         end
     end

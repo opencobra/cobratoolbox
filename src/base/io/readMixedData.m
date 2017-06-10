@@ -58,7 +58,7 @@ end
 
 % Create strings to be evaluated
 tr_lh_str = '[';
-tr_rh_str = [' = textread(''' file ''','''];
+tr_rh_str = [' = textread(''' file ''', '''];
 data_str = ['data = ['];
 for i = 1:n_labels
     tr_lh_str = [tr_lh_str 'id' num2str(i)];
@@ -73,7 +73,7 @@ for i = 1:ncol - n_labels
     data_str = [data_str 'd' num2str(i) ' '];
 end
 tr_lh_str = [tr_lh_str ']'];
-tr_rh_str = [tr_rh_str ''',''delimiter'',''' delimiter ''''];
+tr_rh_str = [tr_rh_str ''', ''delimiter'', ''' delimiter ''''];
 if (n_header > 0)
     tr_rh_str = [tr_rh_str ',''headerlines'',' num2str(n_header) ');'];
 else
@@ -96,6 +96,6 @@ end
 
 if (n_labels == 1)
     id = id1;
-elseif (n_labels == 0)
+elseif(n_labels == 0)
     id = [];
 end
