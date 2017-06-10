@@ -1,4 +1,4 @@
-function model = readCbModel(fileName,varargin)
+function model = readCbModel(fileName, varargin)
 % Reads in a constraint-based model. If no arguments are passed to the function, the user will be prompted for a file name.
 %
 % USAGE:
@@ -78,35 +78,35 @@ function model = readCbModel(fileName,varargin)
 %    `io/COBRA_structure_fields.xlsx`. While some fields are necessary for a
 %    COBRA model, others are not.
 
-optionalArgumentList = {'defaultBound','fileType','modelDescription','compSymbolList','compNameList'};
+optionalArgumentList = {'defaultBound', 'fileType', 'modelDescription', 'compSymbolList', 'compNameList'};
 processedFileTypes = {'SBML', 'SimPheny', 'SimPhenyPlus', 'SimPhenyText', 'Excel', 'Matlab'};
 
 if numel(varargin) > 0
-    %Check, whether we have an old style input. (i.e. varargins are not optional arguments
-    if ischar(varargin{1}) && ~any(ismember(varargin{1},optionalArgumentList))
-    %We assume the old version to be used
-        tempargin = cell(1,2*numel(varargin));
-        %just replace the input by the options and replace varargin
-        %accordingly
+    % Check, whether we have an old style input. (i.e. varargins are not optional arguments
+    if ischar(varargin{1}) && ~any(ismember(varargin{1}, optionalArgumentList))
+        % We assume the old version to be used
+        tempargin = cell(1, 2 * numel(varargin));
+        % just replace the input by the options and replace varargin
+        % accordingly
         for i = 1:numel(varargin)
-            tempargin{2*(i-1)+1} = optionalArgumentList{i};
-            tempargin{2*(i-1)+2} = varargin{i};
+            tempargin{2 * (i - 1) + 1} = optionalArgumentList{i};
+            tempargin{2 * (i - 1) + 2} = varargin{i};
         end
         varargin = tempargin;
     end
 end
 
 
-[defaultCompSymbols,defaultCompNames] = getDefaultCompartmentSymbols();
+[defaultCompSymbols, defaultCompNames] = getDefaultCompartmentSymbols();
 parser = inputParser();
-parser.addOptional('fileName','',@(x) isempty(x) || ischar(x));
-parser.addParameter('defaultBound',1000, @isnumeric);
-parser.addParameter('fileType','',@(x) ischar(x) && any(strcmpi(processedFileTypes)));
-parser.addParameter('modelDescription','',@ischar);
-parser.addParameter('compSymbolList',defaultCompSymbols,@iscell);
-parser.addParameter('compNameList',defaultCompNames,@iscell);
-if exist('fileName','var')
-    parser.parse(fileName,varargin{:})
+parser.addOptional('fileName', '', @(x) isempty(x) || ischar(x));
+parser.addParameter('defaultBound', 1000, @isnumeric);
+parser.addParameter('fileType', '', @(x) ischar(x) && any(strcmpi(processedFileTypes)));
+parser.addParameter('modelDescription', '', @ischar);
+parser.addParameter('compSymbolList', defaultCompSymbols, @iscell);
+parser.addParameter('compNameList', defaultCompNames, @iscell);
+if exist('fileName', 'var')
+    parser.parse(fileName, varargin{:})
 else
     parser.parse();
 end
@@ -121,35 +121,35 @@ compNameList = parser.Results.compNameList;
 supportedFileExtensions = {'*.xml;*.sto;*.xls;*.xlsx;*.mat'};
 
 % Open a dialog to select file
-if ~exist('fileType','var') || isempty(fileType)
-    %if no filename was provided, we open a UI window.
-    if ~exist('fileName','var') || isempty(fileName)
-        [fileName] = uigetfile([supportedFileExtensions,{'Model Files'}],'Please select the model file');
+if ~exist('fileType', 'var') || isempty(fileType)
+    % if no filename was provided, we open a UI window.
+    if ~exist('fileName', 'var') || isempty(fileName)
+        [fileName] = uigetfile([supportedFileExtensions, {'Model Files'}], 'Please select the model file');
     end
 
     [~, ~, FileExtension] = fileparts(fileName);
     if isempty(FileExtension)
-        %if we don't have a file extension, we try to see, which files
-        %could match (only on the current directory, not on all the path).
+        % if we don't have a file extension, we try to see, which files
+        % could match (only on the current directory, not on all the path).
         cfiles = dir(pwd);
         filenames = {cfiles.name};
-        matchingFiles = filenames(~cellfun(@isempty, strfind(filenames,fileName)));
-        %Check, whether one of those files matches any of the available
-        %options
-        filesToSelect = matchingFiles(~cellfun(@isempty, regexp(matchingFiles,[fileName,'\.[(?:' strjoin(strrep(supportedFileExtensions,'*.',''), ')|(?:') ')]'])));
-        %If we have more than one valid match, we will have to ask for a
-        %selection via the gui.
+        matchingFiles = filenames(~cellfun(@isempty, strfind(filenames, fileName)));
+        % Check, whether one of those files matches any of the available
+        % options
+        filesToSelect = matchingFiles(~cellfun(@isempty, regexp(matchingFiles, [fileName, '\.[(?:' strjoin(strrep(supportedFileExtensions, '*.', ''), ')|(?:') ')]'])));
+        % If we have more than one valid match, we will have to ask for a
+        % selection via the gui.
         if numel(filesToSelect) > 1
-            [fileName] = uigetfile([strrep(supportedFileExtensions,'*',fileName),{'Matching Models'}],'Please select the model file');
+            [fileName] = uigetfile([strrep(supportedFileExtensions, '*', fileName), {'Matching Models'}], 'Please select the model file');
         end
         if numel(filesToSelect) == 0
 
-            [fileName] = uigetfile([strrep(supportedFileExtensions,'*',[fileName '*']),{'Matching Model Files'}],'Please select the model file');
+            [fileName] = uigetfile([strrep(supportedFileExtensions, '*', [fileName '*']), {'Matching Model Files'}], 'Please select the model file');
         end
         if numel(filesToSelect) == 1
             fileName = filesToSelect{1};
         end
-        [~,~,FileExtension] = fileparts(fileName);
+        [~, ~, FileExtension] = fileparts(fileName);
     end
     switch FileExtension
         case '.xml'
@@ -157,12 +157,12 @@ if ~exist('fileType','var') || isempty(fileType)
         case '.sbml'
             fileType = 'SBML';
         case '.sto'
-            %Determine which SimPheny Fiels are present...
-            [folder,fileBase,~] = fileparts(fileName);
-            if exist([folder filesep fileBase '_gpra.txt'],'file')
+            % Determine which SimPheny Fiels are present...
+            [folder, fileBase, ~] = fileparts(fileName);
+            if exist([folder filesep fileBase '_gpra.txt'], 'file')
                 fileType = 'SimPhenyText';
             else
-                if exist([folder filesep fileBase '_gpr.txt'],'file')
+                if exist([folder filesep fileBase '_gpr.txt'], 'file')
                     fileType = 'SimPhenyPlus';
                 else
                     fileType = 'SimPheny';
@@ -186,38 +186,38 @@ end
 
 switch fileType
     case 'SBML',
-        %If the file is missing the .xml ending, we attach it, can happen
-        %with .sbml saved files.
-        if ~exist(fileName,'file')
-            if exist([fileName '.xml'],'file')
+        % If the file is missing the .xml ending, we attach it, can happen
+        % with .sbml saved files.
+        if ~exist(fileName, 'file')
+            if exist([fileName '.xml'], 'file')
                 fileName = [fileName '.xml'];
             end
         end
-        model = readSBML(fileName,defaultBound,compSymbolList,compNameList);
+        model = readSBML(fileName, defaultBound, compSymbolList, compNameList);
     case 'SimPheny',
-        model = readSimPhenyCbModel(fileName,defaultBound,compSymbolList,compNameList);
+        model = readSimPhenyCbModel(fileName, defaultBound, compSymbolList, compNameList);
     case 'SimPhenyPlus',
-        model = readSimPhenyCbModel(fileName,defaultBound,compSymbolList,compNameList);
-        model = readSimPhenyGprCmpd(fileName,model);
+        model = readSimPhenyCbModel(fileName, defaultBound, compSymbolList, compNameList);
+        model = readSimPhenyGprCmpd(fileName, model);
     case 'SimPhenyText',
-        model = readSimPhenyCbModel(fileName,defaultBound,compSymbolList,compNameList);
-        model = readSimPhenyGprText([fileName '_gpra.txt'],model);
+        model = readSimPhenyCbModel(fileName, defaultBound, compSymbolList, compNameList);
+        model = readSimPhenyGprText([fileName '_gpra.txt'], model);
     case 'Excel'
-        model = xls2model(filename,[],defaultbound);
+        model = xls2model(filename, [], defaultbound);
     case 'Matlab'
         S = load(fileName);
         modeloptions = getModelOptions(S);
-        if size(modeloptions,1) > 1
+        if size(modeloptions, 1) > 1
             fprintf('There were multiple models in the mat file. Please select the model to load from the variables below\n')
-            disp(modeloptions(:,2));
-            varname = input('Type a variable name to select the model:','s');
-            modeloptions = {S.(varname),varname};
+            disp(modeloptions(:, 2));
+            varname = input('Type a variable name to select the model:', 's');
+            modeloptions = {S.(varname), varname};
         end
-        if size(modeloptions,1) == 0
+        if size(modeloptions, 1) == 0
             error(['There were no valid models in the mat file.\n Please load the model manually via '' load ' fileName ''' and check it with verifyModel() to validate it']);
         end
-        model = modeloptions{1,1};
-        if modeloptions{1,3}
+        model = modeloptions{1, 1};
+        if modeloptions{1, 3}
             model = convertOldStyleModel(model);
         end
     otherwise
@@ -227,8 +227,8 @@ end
 % Check uniqueness of metabolite and reaction names
 checkCobraModelUnique(model);
 
-if ~isfield(model,'b')
-    model.b = zeros(length(model.mets),1);
+if ~isfield(model, 'b')
+    model.b = zeros(length(model.mets), 1);
 end
 model.description = modelDescription;
 
@@ -240,56 +240,56 @@ model = orderModelFields(model);
 %% Extract potential models from the given loaded mat file (i.e. a struct of matlab elements)
 function models = getModelOptions(S)
 structFields = fieldnames(S);
-models = cell(0,3);
-for i=1:numel(structFields)
+models = cell(0, 3);
+for i = 1:numel(structFields)
     cfield = S.(structFields{i});
     if isstruct(cfield)
         try
-            %lets see, if we have a valid model
-            res = verifyModel(cfield,'silentCheck',true);
-            if ~isfield(res,'Errors')
-                %Convert an old Style model to the new Fields.
-                cfieldConverted = convertOldStyleModel(cfield,0);
-                res = verifyModel(cfieldConverted,'silentCheck',true);
-                if isfield(res,'Errors')
+            % lets see, if we have a valid model
+            res = verifyModel(cfield, 'silentCheck', true);
+            if ~isfield(res, 'Errors')
+                % Convert an old Style model to the new Fields.
+                cfieldConverted = convertOldStyleModel(cfield, 0);
+                res = verifyModel(cfieldConverted, 'silentCheck', true);
+                if isfield(res, 'Errors')
                     fprintf('There were some old style fields in the model which could not be converted. Loading the old model')
-                    models{end+1,1} = cfield;
-                    models{end,2} = structFields{i};
-                    models{end,3} = false;
+                    models{end + 1, 1} = cfield;
+                    models{end, 2} = structFields{i};
+                    models{end, 3} = false;
                 else
-                    models{end+1,1} = cfieldConverted;
-                    models{end,2} = structFields{i};
-                    models{end,3} = true;
+                    models{end + 1, 1} = cfieldConverted;
+                    models{end, 2} = structFields{i};
+                    models{end, 3} = true;
                 end
             else
-                %We have errors. lets see if osense/csense are missing and
-                %if, add them
-                if isfield(res.Errors,'missingFields')
-                    %first, see if it contains an S matrix, only then will
-                    %we add the fields.
-                    if ~any(ismember(res.Errors.missingFields,'S'))
-                        cfield = convertOldStyleModel(cfield,0);
+                % We have errors. lets see if osense/csense are missing and
+                % if, add them
+                if isfield(res.Errors, 'missingFields')
+                    % first, see if it contains an S matrix, only then will
+                    % we add the fields.
+                    if ~any(ismember(res.Errors.missingFields, 'S'))
+                        cfield = convertOldStyleModel(cfield, 0);
                     end
-                    %if we reach this place, the conversion worked,
-                    %so lets try the test again.
-                    res = verifyModel(cfield,'silentCheck',true);
-                    if ~isfield(res,'Errors')
-                        models{end+1,1} = cfield;
-                        models{end,2} = structFields{i};
-                        models{end,3} = true;
+                    % if we reach this place, the conversion worked,
+                    % so lets try the test again.
+                    res = verifyModel(cfield, 'silentCheck', true);
+                    if ~isfield(res, 'Errors')
+                        models{end + 1, 1} = cfield;
+                        models{end, 2} = structFields{i};
+                        models{end, 3} = true;
                     end
                 end
             end
         catch
-            %IF we are here, there was a problem in verifyModel or convertOldStyleModel, so this is
-            %not a model.
-        end
+            % IF we are here, there was a problem in verifyModel or convertOldStyleModel, so this is
+            % not a model.
+    end
     end
 end
 
-%%
-function model = readSimPhenyCbModel(baseName,defaultBound,compSymbolList,compNameList)
-%readSimPhenyCbModel Read a SimPheny metabolic model
+
+function model = readSimPhenyCbModel(baseName, defaultBound, compSymbolList, compNameList)
+% readSimPhenyCbModel Read a SimPheny metabolic model
 %
 % model = readSimPhenyCbModel(baseName,defaultBound)
 %
@@ -309,13 +309,13 @@ if (nargin < 2)
     defaultBound = 1000;
 end
 
-if ~(exist([baseName '.met'],'file') & exist([baseName '.rxn'],'file') & exist([baseName '.sto'],'file'))
+if ~(exist([baseName '.met'], 'file') & exist([baseName '.rxn'], 'file') & exist([baseName '.sto'], 'file'))
     error('One or more input files not found');
 end
 
 if isempty(compSymbolList)
-    compSymbolList = {'c','m','v','x','e','t','g','r','n','p'};
-    compNameList = {'Cytosol','Mitochondria','Vacuole','Peroxisome','Extra-organism','Pool','Golgi Apparatus','Endoplasmic Reticulum','Nucleus','Periplasm'};
+    compSymbolList = {'c', 'm', 'v', 'x', 'e', 't', 'g', 'r', 'n', 'p'};
+    compNameList = {'Cytosol', 'Mitochondria', 'Vacuole', 'Peroxisome', 'Extra-organism', 'Pool', 'Golgi Apparatus', 'Endoplasmic Reticulum', 'Nucleus', 'Periplasm'};
 end
 
 % Get the metabolite names
@@ -324,16 +324,15 @@ cnt = 0;
 while 1
     tline = fgetl(fid);
     if ~ischar(tline), break, end
-    if (~isempty(regexp(tline,'^\d', 'once')))
+    if (~isempty(regexp(tline, '^\d', 'once')))
         cnt = cnt + 1;
-        fields = splitString(tline,'\t');
+        fields = splitString(tline, '\t');
         mets{cnt} = fields{2};
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%        mets{cnt} = strrep(mets{cnt}, '(', '[');
-%        mets{cnt} = strrep(mets{cnt}, ')', ']');
-
-        comp{cnt,1} = fields{4};
-%        compSymb = compSymbolList{strcmp(compNameList,comp{cnt})};
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % mets{cnt} = strrep(mets{cnt}, '(', '[');
+        % mets{cnt} = strrep(mets{cnt}, ')', ']');
+        comp{cnt, 1} = fields{4};
+        % compSymb = compSymbolList{strcmp(compNameList,comp{cnt})};
         compSymb = 0;
         TF = strcmp('comp{cnt}', compNameList);
             for n = 1:length(compNameList)
@@ -344,9 +343,9 @@ while 1
         if (isempty(compSymb))
             compSymb = comp{cnt};
         end
-        if (~isempty(regexp(mets{cnt},'\(', 'once')))
-            mets{cnt} = strrep(mets{cnt},'(','[');
-            mets{cnt} = strrep(mets{cnt},')',']');
+        if (~isempty(regexp(mets{cnt}, '\(', 'once')))
+            mets{cnt} = strrep(mets{cnt}, '(', '[');
+            mets{cnt} = strrep(mets{cnt}, ')', ']');
         else
             mets{cnt} = [mets{cnt} '[' compSymb ']'];
         end
@@ -365,12 +364,12 @@ startRxns = false;
 while 1
     tline = fgetl(fid);
     if ~ischar(tline), break, end
-    if (regexp(tline,'^REACTION'))
+    if (regexp(tline, '^REACTION'))
         startRxns = true;
     end
-    if (startRxns & ~isempty(regexp(tline,'^\d', 'once')))
+    if (startRxns & ~isempty(regexp(tline, '^\d', 'once')))
         cnt = cnt + 1;
-        fields = splitString(tline,'\t');
+        fields = splitString(tline, '\t');
         rxns{cnt} = fields{2};
         rxnNames{cnt} = fields{3};
         revStr{cnt} = fields{4};
@@ -382,7 +381,7 @@ end
 fclose(fid);
 
 revStr = columnVector(revStr);
-rev = strcmp(revStr,'Reversible');
+rev = strcmp(revStr, 'Reversible');
 rxns = columnVector(rxns);
 rxnNames = columnVector(rxnNames);
 lb = columnVector(lb);
@@ -393,17 +392,19 @@ ub(ub > defaultBound) = defaultBound;
 
 % Get the stoichiometric matrix
 fid = fopen([baseName '.sto']);
-fid2 = fopen('load_simpheny.tmp','w');
+fid2 = fopen('load_simpheny.tmp', 'w');
 while 1
     tline = fgetl(fid);
-    if ~ischar(tline), break, end
+    if ~ischar(tline)
+        break
+    end
     % This here might give some problems, but it worked for the iJR904
     % model
-    if (~isempty(regexp(tline,'^[-0123456789.]', 'once')))
-        fprintf(fid2,[tline '\n']);
+    if (~isempty(regexp(tline, '^[-0123456789.]', 'once')))
+        fprintf(fid2, [tline '\n']);
     else
         % For debugging
-        %tline
+        % tline
     end
 end
 fclose(fid);
@@ -442,9 +443,9 @@ model.S = sparse(S);
 % Delete the temporary file
 delete('load_simpheny.tmp');
 
-%%
+
 function list = removeDeletedTags(list)
-%removeDeletedTags Get rid of the [deleted tags in the SimPheny files
+% removeDeletedTags Get rid of the [deleted tags in the SimPheny files
 %
 % list = removeDeletedTags(list)
 %
@@ -452,40 +453,40 @@ function list = removeDeletedTags(list)
 
 for i = 1:length(list)
     item = list{i};
-    ind = strfind(item,' [deleted');
+    ind = strfind(item, ' [deleted');
     if (~isempty(ind))
-        list{i} = item(1:(ind-1));
+        list{i} = item(1:(ind - 1));
     end
 end
 
-%% readSimPhenyGprCmpd Read SimPheny GPRA and compound data and integrate it
-% with the model
-function model = readSimPhenyGprCmpd(baseName,model)
 
-[rxnInfo,rxns,allGenes] = readSimPhenyGPR([baseName '_gpr.txt']);
+function model = readSimPhenyGprCmpd(baseName, model)
+% Reads SimPheny GPRA and compound data and integrate it
+% with the model
+[rxnInfo, rxns, allGenes] = readSimPhenyGPR([baseName '_gpr.txt']);
 
 nRxns = length(model.rxns);
 
 % Construct gene to rxn mapping
-rxnGeneMat = sparse(nRxns,length(allGenes));
-showprogress(0,'Constructing GPR mapping ...');
+rxnGeneMat = sparse(nRxns, length(allGenes));
+showprogress(0, 'Constructing GPR mapping ...');
 for i = 1:nRxns
-    rxnID = find(ismember(rxns,model.rxns{i}));
+    rxnID = find(ismember(rxns, model.rxns{i}));
     if (~isempty(rxnID))
-        showprogress(i/nRxns);
-        [tmp,geneInd] = ismember(rxnInfo(rxnID).genes,allGenes);
-        rxnGeneMat(i,geneInd) = 1;
+        showprogress(i / nRxns);
+        [tmp, geneInd] = ismember(rxnInfo(rxnID).genes, allGenes);
+        rxnGeneMat(i, geneInd) = 1;
         rules{i} = rxnInfo(rxnID).rule;
         grRules{i} = rxnInfo(rxnID).gra;
-        grRules{i} = regexprep(grRules{i},'\s{2,}',' ');
-        grRules{i} = regexprep(grRules{i},'( ','(');
-        grRules{i} = regexprep(grRules{i},' )',')');
+        grRules{i} = regexprep(grRules{i}, '\s{2,}', ' ');
+        grRules{i} = regexprep(grRules{i}, '( ', '(');
+        grRules{i} = regexprep(grRules{i}, ' )', ')');
         subSystems{i} = rxnInfo(rxnID).subSystem;
         for j = 1:length(geneInd)
-            %rules{i} = strrep(rules{i},['x(' num2str(j) ')'],['x(' num2str(geneInd(j)) ')']);
-            rules{i} = strrep(rules{i},['x(' num2str(j) ')'],['x(' num2str(geneInd(j)) '_TMP_)']);
+            % rules{i} = strrep(rules{i},['x(' num2str(j) ')'],['x(' num2str(geneInd(j)) ')']);
+            rules{i} = strrep(rules{i}, ['x(' num2str(j) ')'], ['x(' num2str(geneInd(j)) '_TMP_)']);
         end
-        rules{i} = strrep(rules{i},'_TMP_','');
+        rules{i} = strrep(rules{i}, '_TMP_', '');
     else
         rules{i} = '';
         grRules{i} = '';
@@ -493,21 +494,21 @@ for i = 1:nRxns
     end
 end
 
-%% Read SimPheny cmpd output file
-[metInfo,mets] = readSimPhenyCMPD([baseName '_cmpd.txt']);
+% Read SimPheny cmpd output file
+[metInfo, mets] = readSimPhenyCMPD([baseName '_cmpd.txt']);
 
 baseMets = parseMetNames(model.mets);
 nMets = length(model.mets);
-showprogress(0,'Constructing metabolite lists ...');
+showprogress(0, 'Constructing metabolite lists ...');
 for i = 1:nMets
-    if mod(i,10) == 0
-        showprogress(i/nMets);
+    if mod(i, 10) == 0
+        showprogress(i / nMets);
     end
-    metID = find(ismember(mets,baseMets{i}));
+    metID = find(ismember(mets, baseMets{i}));
     if (~isempty(metID))
-       metFormulas{i} = metInfo(metID).formula;
+        metFormulas{i} = metInfo(metID).formula;
     else
-       metFormulas{i} = '';
+        metFormulas{i} = '';
     end
 end
 
