@@ -210,14 +210,14 @@ try
     if ~isempty(strfind(getenv('HOME'), 'jenkins'))
         exit(exit_code);
     end
-catch M
+catch ME
     if ~isempty(strfind(getenv('HOME'), 'jenkins'))
         %Only exit on jenkins.
         exit(1);
     else
         %Switch back to the folder we were in and rethrow the error
         cd(origDir);
-        error(M);
+        rethrow(ME);
     end
 end
 %Switch back to the folder we were in.
