@@ -4,10 +4,14 @@ global GUROBI_PATH
 global ILOG_CPLEX_PATH
 global TOMLAB_PATH
 
+fprintf('The COBRAToolbox testing suite\n')
+fprintf('------------------------------\n')
+
 if ~isempty(getenv('MOCOV_PATH')) && ~isempty(getenv('JSONLAB_PATH'))
     addpath(genpath(getenv('MOCOV_PATH')))
     addpath(genpath(getenv('JSONLAB_PATH')))
     COVERAGE = true;
+    fprintf('MoCov and JsonLab are on path, coverage will be computed.\n')
 else
     COVERAGE = false;
 end
@@ -163,11 +167,13 @@ try
 
     if COVERAGE
         % write coverage based on profile('info')
+        fprintf('Running MoCov ... \n')
         mocov('-cover', 'src', ...
               '-profile_info', ...
               '-cover_json_file', 'coverage.json', ...
               '-cover_html_dir', 'coverage_html', ...
-              '-cover_method', 'profile');
+              '-cover_method', 'profile', ...
+              '-verbose');
 
         for i = 1:size(result, 2)
             sumFailed = sumFailed + result(i).Failed;

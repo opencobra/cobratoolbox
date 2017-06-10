@@ -127,8 +127,8 @@ b = [b; 0];
 
 [m, n] = size(A);
 nzS = nnz(A);
-[I, J, V] = find(A);          % Sij indices and values
-P = zeros(n + 1, 1);     % Pointers to start of each column
+[I, J, V] = find(A);  % Sij indices and values
+P = zeros(n + 1, 1);  % Pointers to start of each column
 p = 1;
 for j = 1:n
     P(j) = p;
@@ -137,25 +137,25 @@ end
 P(n + 1) = p;
 
 tic
-fid = fopen(longfname, 'w');        % Open file longfname for writing
+fid = fopen(longfname, 'w');              % Open file longfname for writing
 fprintf(fid, '%c%c%c%c%c%c%c%c', fname);  % First line, up to 8 chars
-fprintf(fid, '\n');             % Force a new line
-fprintf(fid, '%8i\n', m);   % No of rows in A (including obj row)
-fprintf(fid, '%8i\n', n);   % No of cols in A
-fprintf(fid, '%8i\n', nzS);  % No of nonzeros
-fprintf(fid, '%8i\n', P);    % Pointers         n+1
-fprintf(fid, '%8i\n', I);    % Row indices      nzS
-fprintf(fid, eformat, V);    % Values           nzS
+fprintf(fid, '\n');                       % Force a new line
+fprintf(fid, '%8i\n', m);                 % No of rows in A (including obj row)
+fprintf(fid, '%8i\n', n);                 % No of cols in A
+fprintf(fid, '%8i\n', nzS);               % No of nonzeros
+fprintf(fid, '%8i\n', P);                 % Pointers         n+1
+fprintf(fid, '%8i\n', I);                 % Row indices      nzS
+fprintf(fid, eformat, V);                 % Values           nzS
 
-bigbnd = 1e+20;                % MINOS and SQOPT's "infinite" bound
-sl = b;                    % Bounds on slacks s = A*x
-su = b;                    % b handles E rows
-L = find(csense == 'L');    % Find the L rows (<=)
+bigbnd = 1e+20;           % MINOS and SQOPT's "infinite" bound
+sl = b;                   % Bounds on slacks s = A*x
+su = b;                   % b handles E rows
+L = find(csense == 'L');  % Find the L rows (<=)
 sl(L) = -bigbnd;
-G = find(csense == 'G');    % Find the G rows (>=)
+G = find(csense == 'G');  % Find the G rows (>=)
 su(G) = bigbnd;
 
-sl(m) = -bigbnd;              % Free bounds on the objective row
+sl(m) = -bigbnd;          % Free bounds on the objective row
 su(m) = bigbnd;
 bl = [xl; sl];
 bu = [xu; su];
