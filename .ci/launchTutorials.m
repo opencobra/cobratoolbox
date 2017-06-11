@@ -6,18 +6,6 @@ global TOMLAB_PATH
 % include the root folder and all subfolders
 addpath(genpath(pwd))
 
-if length(which('initCobraToolbox.m')) == 0
-    % define the path to The COBRA Toolbox
-    pth = which('testAll.m');
-    CBTDIR = pth(1:end-(length('testAll.m') + 1));
-
-    % change the directory to the root
-    cd([CBTDIR, filesep, '..', filesep]);
-
-    % include the root folder and all subfolders
-    addpath(genpath(pwd));
-end
-
 % run the official initialisation script
 initCobraToolbox
 
@@ -41,7 +29,7 @@ try
     tutorial_IO;
     tutorial_modelManipulation;
     tutorial_modelCreation;
-    %reset the path.
+    % reset the path.
     cd(currentDir)
     % ensure that we ALWAYS call exit
     exit(exit_code);
