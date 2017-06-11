@@ -82,20 +82,9 @@ function configEnvVars(printLevel)
                 tmpEnvVar = solverPaths{k, 1}(j);
                 tmpEnvVar = tmpEnvVar{1};
 
-                % global variable
+                % global variable (1st name defined)
                 globEnvVar = solverPaths{k, 1}(1);
                 globEnvVar = globEnvVar{1};
-
-                % try retrieving the solver path from the environment variables
-                eval([globEnvVar, ' = getenv(''', tmpEnvVar, ''');'])
-                if ~isempty(eval(globEnvVar))
-                    method = '*---';
-                    subDir = filesep;
-                    if k == 1 || k == 2
-                        subDir = generateSolverSubDirectory(solverPaths{k, 3});
-                    end
-                    eval([globEnvVar, ' = [', globEnvVar, ', ''', subDir, '''];']);
-                end
 
                 % loop through the list of possible directories
                 possibleDir = '';
@@ -111,51 +100,60 @@ function configEnvVars(printLevel)
                     end;
                 end
 
-                if isempty(eval(globEnvVar))
-                    % check if the solver is already on the MATLAB path
-                    isOnPath = ~isempty(strfind(lower(path), lower(possibleDir)));
+                % check if the solver is already on the MATLAB path
+                isOnPath = ~isempty(strfind(lower(path), lower(possibleDir)));
 
-                    % find the index of the most recently added solver path
-                    tmp = path;
-                    if isunix
-                        tmpS = strsplit(tmp, ':');
-                    else
-                        tmpS = strsplit(tmp, ';');
-                    end
+                % find the index of the most recently added solver path
+                tmp = path;
+                if isunix
+                    tmpS = strsplit(tmp, ':');
+                else
+                    tmpS = strsplit(tmp, ';');
+                end
 
-                    % build reqular expression to check for the solver
-                    extraRE = '';
-                    if k == 2  % gurobi
-                        extraRE = '\w'; % any word, alphanumeric and underscore
-                    end
+                % build reqular expression to check for the solver
+                extraRE = '';
+                if k == 2  % gurobi
+                    extraRE = '\w'; % any word, alphanumeric and underscore
+                end
 
-                    idCell = regexp(tmpS, ['/(', solverPaths{k, 3}, ')', extraRE, '+']);
-                    higherLevelIndex = 0;
-                    for i = 1:length(idCell)
-                        if ~isempty(idCell{i})
-                            higherLevelIndex = i;
-                            break;
-                        end
-                    end
-
-                    % solver is on the path and at a standard location
-                    if isOnPath
-                        eval([globEnvVar, ' = ''', possibleDir, ''';']);
-                        method = '-*--';
-
-                    % solver is on path but at a non-standard location and may not be compatible
-                    elseif higherLevelIndex > 0 && higherLevelIndex < length(idCell)
-                        eval([globEnvVar, ' = ''', tmpS{higherLevelIndex}, ''';']);
-                        method = '--*-';
+                idCell = regexp(tmpS, ['/(', solverPaths{k, 3}, ')', extraRE, '+']);
+                higherLevelIndex = 0;
+                for i = 1:length(idCell)
+                    if ~isempty(idCell{i})
+                        higherLevelIndex = i;
+                        break;
                     end
                 end
 
-                % solver is not already on the path and the environment variable is not set, but the directory exists
+                % solver is on the path and at a standard location
+                if isOnPath
+                    eval([globEnvVar, ' = ''', possibleDir, ''';']);
+                    method = '*---';
+
+                % solver is on path but at a non-standard location and may not be compatible
+                elseif higherLevelIndex > 0 && higherLevelIndex < length(idCell)
+                    eval([globEnvVar, ' = ''', tmpS{higherLevelIndex}, ''';']);
+                    method = '-*--';
+                end
+
+                % solver path is defined through environment variables
                 if isempty(eval(globEnvVar))
-                    if ~isempty(possibleDir)
-                        eval([globEnvVar, ' = ''', possibleDir, ''';']);
-                        method = '---*';
+                    eval([globEnvVar, ' = getenv(''', tmpEnvVar, ''');'])
+                    if ~isempty(eval(globEnvVar))
+                        method = '---*-';
+                        subDir = filesep;
+                        if k == 1 || k == 2
+                            subDir = generateSolverSubDirectory(solverPaths{k, 3});
+                        end
+                        eval([globEnvVar, ' = [', globEnvVar, ', ''', subDir, '''];']);
                     end
+                end
+
+                % solver is not already on the path and the environment variable is not set, but the standard directory exists
+                if isempty(eval(globEnvVar)) && ~isempty(possibleDir)
+                    eval([globEnvVar, ' = ''', possibleDir, ''';']);
+                    method = '---*';
                 end
 
                 if j == 1 % only print out for global variable name
