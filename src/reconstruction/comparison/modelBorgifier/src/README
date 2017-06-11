@@ -1,0 +1,12 @@
+modelBorgifier
+Version 1.0
+
+modelBorgifier is compatible and tested with version 2.0.5 of the COBRA Toolbox for Matlab.
+modelBorgifier_manual.pdf contains documentation in the main directory.
+driveModelBorgifier is  test script, located in the main directory, and references files in the /test directory. See the manual.
+The contact for this package is:
+jrb@brain-biotech.de
+Please direct all compliments, bug reports, and comments to this e-mail.
+
+Please cite:
+  Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale metabolic reconstructions with modelBorgifier. Bioinformatics (Oxford, England), 1–3. doi:10.1093/bioinformatics/btt747
