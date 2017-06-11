@@ -394,7 +394,7 @@ for i = compCrxns
     
     % Count of metabolite.
     try
-        waitbar(i / nCrxns, h, ['Metabolites of reaction ' num2str(i) ...
+        waitbar(i / nCrxns, h, ['Comparing metabolites of reaction ' num2str(i) ...
                                 ' of ' num2str(nCrxns)])
     catch
         disp(i)
