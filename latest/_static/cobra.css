@@ -38,7 +38,7 @@ ul.metro li.color_class4 a.tile { background-color: #829E3C; border-radius: 50%;
 /* redefine the bootstrap affix class for scrolling of side bar */
 .affix{
     position: static;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 article,
@@ -6641,4 +6641,83 @@ blockquote {
     max-height: 100px;
     max-width:250px;
     width:auto;
+}
+
+/* Contributorss */
+
+.contributors {
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    -moz-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    -ms-justify-content: center;
+    justify-content: center;
+    width: calc(100% + 2em);
+    margin: 0 0 -4em -2em;
+    padding: 0;
+    list-style: none;
+}
+
+.contributors li {
+    width: calc(33.33333% - 2em);
+    margin-left: 2em;
+    margin-top: 3em;
+    margin-bottom: 1.25em;
+    padding: 0;
+}
+
+.contributorslogo {
+    width: calc(100% + 2em);
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    -moz-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    -ms-justify-content: center;
+    justify-content: center;
+    list-style: none;
+    margin-bottom: -6em;
+}
+
+.contributorslogo li {
+  margin-top: 0em;
+  margin-bottom: 1em;
+  margin-left: 0em;
+  margin-right: 1em;
+}
+
+
+.contributors li:nth-child(1),
+.contributors li:nth-child(2),
+.contributors li:nth-child(3) {
+    margin-top: 0;
+}
+
+.contributors li >:last-child {
+    margin-bottom: 0;
+}
+
+/* override table width restrictions */
+@media screen and (min-width: 767px) {
+
+   .wy-table-responsive table td {
+      /* !important prevents the common CSS stylesheets from overriding
+         this as on RTD they are loaded after this stylesheet */
+      white-space: normal !important;
+   }
+
+   .wy-table-responsive {
+      overflow: visible !important;
+   }
 }
