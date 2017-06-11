@@ -191,10 +191,10 @@
 <dt id="src.base.solvers.cardOpt.tangiCode.findMinimalSetOfRxns">
 <code class="descname">findMinimalSetOfRxns</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7d5222499490f50530ded398fa2417d8cb5c3b70/src/base/solvers/cardOpt/tangiCode/findMinimalSetOfRxns.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.tangiCode.findMinimalSetOfRxns" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function finds the minimal set of reactions subject to a LP objective function
-
-
-s.t. 
-</p>
+<span class="math">\(min ||x||_0\)</span>
+<span class="math">\(min c'x\)</span>
+s.t. <span class="math">\(Sx = b\)</span>
+<span class="math">\(lb &lt;= x &lt;= ub\)</span></p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[result_tab, sol, lprxns, l1rxns, l0rxns]  = findMinimalSetOfRxns(model)</div></blockquote>
@@ -277,6 +277,7 @@ rxns indices for L0 solution</li>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

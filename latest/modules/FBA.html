@@ -218,6 +218,11 @@ solution structure<ul>
 <dt id="src.modelAnalysis.FBA.optimizeCbModel">
 <code class="descname">optimizeCbModel</code><span class="sig-paren">(</span><em>model</em>, <em>osenseStr</em>, <em>minNorm</em>, <em>allowLoops</em>, <em>zeroNormApprox</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7d5222499490f50530ded398fa2417d8cb5c3b70/src/modelAnalysis/FBA/optimizeCbModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.FBA.optimizeCbModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a flux balance analysis problem</p>
+<p>Solves LP problems of the form</p>
+<div class="math">
+\[\begin{split}max/min  ~&amp; c^T v \\
+s.t.     ~&amp; S v = b~~~~~~~~~~~:y \\
+         ~&amp; lb \leq v \leq ub~~~~:w\end{split}\]</div>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroNormApprox)</div></blockquote>
@@ -245,28 +250,38 @@ Maximize (&#8216;max&#8217;)/minimize (&#8216;min&#8217;) (opt, default = &#8216
 {(0), &#8216;one&#8217;, &#8216;zero&#8217;, &gt; 0 , n x 1 vector}, where <cite>[m,n]=size(S)</cite>;
 0 - Default, normal LP
 &#8216;one&#8217;  Minimise the Taxicab Norm using LP.</p>
-<blockquote>
-<div></div></blockquote>
+<div class="math">
+\[\begin{split}min  ~&amp; |v| \\
+s.t. ~&amp; S v = b \\
+     ~&amp; c^T v = f \\
+     ~&amp; lb \leq v \leq ub\end{split}\]</div>
 <p>A LP solver is required.
 &#8216;zero&#8217; Minimize the cardinality (zero-norm) of v</p>
-<blockquote>
-<div></div></blockquote>
+<div class="math">
+\[\begin{split}min  ~&amp; ||v||_0 \\
+s.t. ~&amp; S v = b \\
+     ~&amp; c^T v = f \\
+     ~&amp; lb \leq v \leq ub\end{split}\]</div>
 <p>The zero-norm is approximated by a non-convex approximation
 Six approximations are available: capped-L1 norm, exponential function
 logarithmic function, SCAD function, L_p norm with p&lt;0, L_p norm with 0&lt;p&lt;1
 Note : capped-L1, exponential and logarithmic function often give
 the best result in term of sparsity.</p>
-<blockquote>
-<div></div></blockquote>
 <p>The remaining options work only with a valid QP solver:</p>
 <p>&gt; 0    Minimises the Euclidean Norm of internal fluxes.
 Typically 1e-6 works well.</p>
-<blockquote>
-<div></div></blockquote>
+<div class="math">
+\[\begin{split}min  ~&amp; ||v|| \\
+s.t. ~&amp; S v = b \\
+     ~&amp; c^T v = f \\
+     ~&amp; lb \leq v \leq ub\end{split}\]</div>
 <p><cite>n</cite> x 1   Forms the diagonal of positive definiate
 matrix <cite>F</cite> in the quadratic program</p>
-<blockquote>
-<div></div></blockquote>
+<div class="math">
+\[\begin{split}min  ~&amp; 0.5 v^T F v \\
+s.t. ~&amp; S v = b \\
+     ~&amp; c^T v = f \\
+     ~&amp; lb \leq v \leq ub\end{split}\]</div>
 </li>
 <li><p class="first"><strong>allowLoops</strong> &#8211;
 {0,(1)} If false, then instead of a conventional FBA,
@@ -403,6 +418,7 @@ Cell array containing the following data:<ol class="arabic">
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

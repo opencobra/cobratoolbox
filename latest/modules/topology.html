@@ -261,6 +261,8 @@ Connected Component Analysis on an Undirected Graph by Tristan Ursell
 <p>Largest component requires:
 gaimc : Graph Algorithms In Matlab Code by David Gleich
 <a class="reference external" href="http://www.mathworks.com/matlabcentral/fileexchange/24134-gaimc-graph-algorithms-in-matlab-code">http://www.mathworks.com/matlabcentral/fileexchange/24134-gaimc-graph-algorithms-in-matlab-code</a>.</p>
+<blockquote>
+<div></div></blockquote>
 </dd></dl>
 
 <dl class="function">
@@ -394,29 +396,29 @@ correspond to true entries in <cite>colBool</cite></p>
 <span class="n">rowBool</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span><span class="mi">1</span><span class="p">;</span><span class="mi">1</span><span class="p">;</span><span class="mi">1</span><span class="p">;</span><span class="mi">1</span><span class="p">];</span>
 <span class="n">colBool</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span><span class="mi">1</span><span class="p">;</span><span class="mi">1</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">];</span>
 
-<span class="o">%</span><span class="n">Therefore</span><span class="p">,</span> <span class="n">the</span> <span class="n">subset</span> <span class="n">of</span> <span class="n">rows</span> <span class="ow">and</span> <span class="n">columns</span> <span class="n">considered</span> <span class="k">for</span> <span class="n">inclusion</span> <span class="n">are</span>
+<span class="o">%</span> <span class="n">Therefore</span><span class="p">,</span> <span class="n">the</span> <span class="n">subset</span> <span class="n">of</span> <span class="n">rows</span> <span class="ow">and</span> <span class="n">columns</span> <span class="n">considered</span> <span class="k">for</span> <span class="n">inclusion</span> <span class="n">are</span>
 <span class="o">%</span>    <span class="o">-</span><span class="mi">1</span>     <span class="mi">0</span>     <span class="mi">0</span>
 <span class="o">%</span>     <span class="mi">2</span>    <span class="o">-</span><span class="mi">3</span>     <span class="mi">0</span>
 <span class="o">%</span>     <span class="mi">0</span>     <span class="mi">4</span>    <span class="o">-</span><span class="mi">5</span>
 <span class="o">%</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">6</span>
 <span class="o">%</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">0</span>
 
-<span class="o">%</span><span class="n">If</span> <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;exclusive&#39;</span> <span class="n">then</span> <span class="n">restrictedRowBool</span> <span class="n">corresponds</span> <span class="n">to</span> <span class="n">this</span> <span class="n">subset</span>
+<span class="o">%</span> <span class="n">If</span> <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;exclusive&#39;</span> <span class="n">then</span> <span class="n">restrictedRowBool</span> <span class="n">corresponds</span> <span class="n">to</span> <span class="n">this</span> <span class="n">subset</span>
 <span class="o">%</span>    <span class="o">-</span><span class="mi">1</span>     <span class="mi">0</span>     <span class="mi">0</span>
 <span class="o">%</span>     <span class="mi">2</span>    <span class="o">-</span><span class="mi">3</span>     <span class="mi">0</span>
 <span class="o">%</span>     <span class="mi">0</span>     <span class="mi">4</span>    <span class="o">-</span><span class="mi">5</span>
-<span class="o">%</span><span class="n">i</span><span class="o">.</span><span class="n">e</span> <span class="n">subset</span> <span class="n">of</span> <span class="n">rowBool</span> <span class="n">metabolites</span> <span class="n">exclusively</span> <span class="n">involved</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">colBool</span>
-<span class="o">%</span><span class="n">reactions</span>
+<span class="o">%</span> <span class="n">i</span><span class="o">.</span><span class="n">e</span> <span class="n">subset</span> <span class="n">of</span> <span class="n">rowBool</span> <span class="n">metabolites</span> <span class="n">exclusively</span> <span class="n">involved</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">colBool</span>
+<span class="o">%</span> <span class="n">reactions</span>
 
-<span class="o">%</span><span class="n">If</span> <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;inclusive&#39;</span> <span class="n">then</span> <span class="n">restrictedRowBool</span> <span class="n">corresponds</span> <span class="n">to</span> <span class="n">this</span> <span class="n">subset</span>
+<span class="o">%</span> <span class="n">If</span> <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;inclusive&#39;</span> <span class="n">then</span> <span class="n">restrictedRowBool</span> <span class="n">corresponds</span> <span class="n">to</span> <span class="n">this</span> <span class="n">subset</span>
 <span class="o">%</span>    <span class="o">-</span><span class="mi">1</span>     <span class="mi">0</span>     <span class="mi">0</span>
 <span class="o">%</span>     <span class="mi">2</span>    <span class="o">-</span><span class="mi">3</span>     <span class="mi">0</span>
 <span class="o">%</span>     <span class="mi">0</span>     <span class="mi">4</span>    <span class="o">-</span><span class="mi">5</span>
 <span class="o">%</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">6</span>
-<span class="o">%</span><span class="n">i</span><span class="o">.</span><span class="n">e</span> <span class="n">subset</span> <span class="n">of</span> <span class="n">rowBool</span> <span class="n">metabolites</span> <span class="n">involved</span> <span class="ow">in</span> <span class="n">colBool</span> <span class="n">reactions</span>
+<span class="o">%</span> <span class="n">i</span><span class="o">.</span><span class="n">e</span> <span class="n">subset</span> <span class="n">of</span> <span class="n">rowBool</span> <span class="n">metabolites</span> <span class="n">involved</span> <span class="ow">in</span> <span class="n">colBool</span> <span class="n">reactions</span>
 
-<span class="o">%</span><span class="n">If</span> <span class="n">mode</span> <span class="o">=</span><span class="s1">&#39;partial&#39;</span> <span class="n">then</span> <span class="n">restrictedRowBool</span> <span class="n">corresponds</span> <span class="n">to</span> <span class="n">the</span> <span class="n">extra</span> <span class="n">rows</span>
-<span class="o">%</span><span class="k">with</span> <span class="n">inclusive</span> <span class="n">that</span> <span class="n">are</span> <span class="ow">not</span> <span class="n">present</span> <span class="k">with</span> <span class="n">exclusive</span><span class="o">.</span>
+<span class="o">%</span> <span class="n">If</span> <span class="n">mode</span> <span class="o">=</span><span class="s1">&#39;partial&#39;</span> <span class="n">then</span> <span class="n">restrictedRowBool</span> <span class="n">corresponds</span> <span class="n">to</span> <span class="n">the</span> <span class="n">extra</span> <span class="n">rows</span>
+<span class="o">%</span> <span class="k">with</span> <span class="n">inclusive</span> <span class="n">that</span> <span class="n">are</span> <span class="ow">not</span> <span class="n">present</span> <span class="k">with</span> <span class="n">exclusive</span><span class="o">.</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -524,6 +526,7 @@ name of the file</li>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

@@ -273,17 +273,14 @@ a stoichiometrically consistent metabolite</li>
 <code class="descname">findMassLeaksAndSiphons</code><span class="sig-paren">(</span><em>model</em>, <em>metBool</em>, <em>rxnBool</em>, <em>modelBoundsFlag</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7d5222499490f50530ded398fa2417d8cb5c3b70/src/reconstruction/modelGeneration/stoichConsistency/findMassLeaksAndSiphons.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMassLeaksAndSiphons" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the metabolites in a network that either leak mass or act as a
 siphon for mass, with (default) or without the bounds on a model.
-The approach is to solve the problem:
-
-s.t.  
-with either</p>
-<p>
-or</p>
-<p>
-and with either</p>
-<p> (semipositive net stoichiometry = leak)
-or</p>
-<p> (seminegative net stoichiometry = siphon)</p>
+The approach is to solve the problem:</p>
+<div class="math">
+\[\begin{split}max  ~&amp; ||y||_0 \\
+s.t. ~&amp; Sv - y = 0\end{split}\]</div>
+<p>with either <span class="math">\(l \leq v \leq u\)</span>
+or <span class="math">\(-\infty \leq v \leq \infty\)</span></p>
+<p>and with either <span class="math">\(0 \leq y \leq \infty\)</span> (semipositive net stoichiometry = leak)
+or <span class="math">\(-\infty \leq y \leq 0\)</span> (seminegative net stoichiometry = siphon)</p>
 <p>If there are any zero rows of <cite>S</cite>, then the corresponding entry in y is
 then set to zero.</p>
 <p><strong>Usage</strong></p>
@@ -366,14 +363,13 @@ status (negative leakage modes)<ul>
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageMode">
 <code class="descname">findMinimalLeakageMode</code><span class="sig-paren">(</span><em>model</em>, <em>metBool</em>, <em>modelBoundsFlag</em>, <em>epsilon</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7d5222499490f50530ded398fa2417d8cb5c3b70/src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageMode.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageMode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Solve the problem
-</p>
-<p>s.t. ,
-</p>
-<p>with either
- (semipositive net stoichiometry)</p>
-<p>or
- (seminegative net stoichiometry)</p>
+<dd><p>Solve the problem</p>
+<div class="math">
+\[\begin{split}min  ~&amp; ||v||_0 + ||y||_0 \\
+s.t. ~&amp; Sv - y = 0, \\
+     ~&amp; l \leq v \leq u\end{split}\]</div>
+<p>with either <span class="math">\(0 \leq y\)</span> (semipositive net stoichiometry)
+or <span class="math">\(y \leq 0\)</span> (seminegative net stoichiometry)</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[Vp, Yp, statp, Vn, Yn, statn] = findMinimalLeakageMode(model, metBool, modelBoundsFlag, epsilon, printLevel)</div></blockquote>
@@ -442,18 +438,16 @@ status (negative leakage modes)<ul>
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageModeMet">
 <code class="descname">findMinimalLeakageModeMet</code><span class="sig-paren">(</span><em>model</em>, <em>metBool</em>, <em>rxnBool</em>, <em>modelBoundsFlag</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7d5222499490f50530ded398fa2417d8cb5c3b70/src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeMet.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageModeMet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Solves the problem
-
-s.t. ,
-  (either <cite>l(rxnBool) &gt; 0</cite> or <cite>u(rxnBool) &lt; 0</cite>)</p>
-<p>with either
- (semipositive net stoichiometry)
-or
- (seminegative net stoichiometry)</p>
-<p>and
- (semipositive net stoichiometry)
-or
- (seminegative net stoichiometry)</p>
+<dd><p>Solves the problem</p>
+<div class="math">
+\[\begin{split}min  ~&amp; ||v||_0 + ||y||_0 \\
+s.t. ~&amp; Sv - y = 0, \\
+      &amp; l \leq v \leq u\end{split}\]</div>
+<p>with either <span class="math">\(l(rxnBool) &gt; 0\)</span> or <span class="math">\(u(rxnBool) &lt; 0\)</span>
+and either <span class="math">\(0 \leq y\)</span> (semipositive net stoichiometry)
+or <span class="math">\(y \leq 0\)</span> (seminegative net stoichiometry)</p>
+<p>and <span class="math">\(1 \leq y(metBool)\)</span> (semipositive net stoichiometry)
+or <span class="math">\(y(metBool) \leq 1\)</span> (seminegative net stoichiometry)</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[minLeakMetBool, minLeakRxnBool, minSiphonMetBool, minSiphonRxnBool, leakY, siphonY, statp, statn] = findMinimalLeakageModeMet(model, metBool, rxnBool, modelBoundsFlag, params, printLevel)</div></blockquote>
@@ -532,18 +526,16 @@ status (negative leakage modes)<ul>
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageModeRxn">
 <code class="descname">findMinimalLeakageModeRxn</code><span class="sig-paren">(</span><em>model</em>, <em>rxnBool</em>, <em>metBool</em>, <em>modelBoundsFlag</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7d5222499490f50530ded398fa2417d8cb5c3b70/src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeRxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageModeRxn" title="Permalink to this definition">¶</a></dt>
-<dd><p>Solves the problem
-
-s.t. ,
-  (either <cite>l(rxnBool) &gt; 0</cite> or <cite>u(rxnBool) &lt; 0</cite>)</p>
-<p>with either
- (semipositive net stoichiometry)
-or
- (seminegative net stoichiometry)</p>
-<p>and
- (semipositive net stoichiometry)
-or
- (seminegative net stoichiometry)</p>
+<dd><p>Solves the problem</p>
+<div class="math">
+\[\begin{split}min  ~&amp; ||v||_0 + ||y||_0 \\
+s.t. ~&amp; Sv - y = 0, \\
+      &amp; l \leq v \leq u\end{split}\]</div>
+<p>where either <span class="math">\(l(rxnBool) &gt; 0\)</span> or <span class="math">\(u(rxnBool) &lt; 0\)</span>
+and either <span class="math">\(0 \leq y\)</span> (semipositive net stoichiometry)
+or <span class="math">\(y \leq 0\)</span> (seminegative net stoichiometry)</p>
+<p>and <span class="math">\(1 \leq y(metBool)\)</span> (semipositive net stoichiometry)
+or <span class="math">\(y(metBool) \leq 1\)</span> (seminegative net stoichiometry)</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[minLeakMetBool, minLeakRxnBool, minSiphonMetBool, minSiphonRxnBool, leakY, siphonY, statp, statn] = findMinimalLeakageModeRxn(model, rxnBool, metBool, modelBoundsFlag, params, printLevel)</div></blockquote>
@@ -704,10 +696,11 @@ model:                        structure with fields</p>
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.stoichConsistency.leakTest">
 <code class="descname">leakTest</code><span class="sig-paren">(</span><em>model</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7d5222499490f50530ded398fa2417d8cb5c3b70/src/reconstruction/modelGeneration/stoichConsistency/leakTest.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.leakTest" title="Permalink to this definition">¶</a></dt>
-<dd><p>Solves the problem
-
-s.t. ,
-</p>
+<dd><p>Solves the problem</p>
+<div class="math">
+\[\begin{split}min  ~&amp; \lambda ||v||_0 - \delta ||s||_0 \\
+s.t. ~&amp; Sv + s = 0, \\
+     ~&amp; l \leq v \leq u.\end{split}\]</div>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>solution = leakTest(model, params, printLevel)</div></blockquote>
@@ -722,7 +715,7 @@ structure with fields (bools are not mandatory)<ul>
 </ul>
 </li>
 <li><strong>params</strong> &#8211;
-structure with fields:</li>
+structure with fields</li>
 <li><strong>printLevel</strong> &#8211;
 verbose level</li>
 </ul>
@@ -750,10 +743,11 @@ Structure containing the following fields:<ul>
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.stoichConsistency.maxCardinalityConservationVector">
 <code class="descname">maxCardinalityConservationVector</code><span class="sig-paren">(</span><em>S</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7d5222499490f50530ded398fa2417d8cb5c3b70/src/reconstruction/modelGeneration/stoichConsistency/maxCardinalityConservationVector.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.maxCardinalityConservationVector" title="Permalink to this definition">¶</a></dt>
-<dd><p>Maximises the cardinality of the conservation vector:
-
-st. 
-</p>
+<dd><p>Maximises the cardinality of the conservation vector:</p>
+<div class="math">
+\[\begin{split}max  ~&amp; ||l||_0 \\
+st.  ~&amp; S^T l = 0 \\
+     ~&amp; 0 \leq l \leq 1 / \epsilon\end{split}\]</div>
 <p>The <cite>l0</cite> norm is approximated by capped <cite>l1</cite> norm. The resulting problem is a DC program</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -830,11 +824,12 @@ is 1 if <cite>m &gt; 0</cite></li>
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.stoichConsistency.minCardinalityConservationRelaxationVector">
 <code class="descname">minCardinalityConservationRelaxationVector</code><span class="sig-paren">(</span><em>S</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7d5222499490f50530ded398fa2417d8cb5c3b70/src/reconstruction/modelGeneration/stoichConsistency/minCardinalityConservationRelaxationVector.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.minCardinalityConservationRelaxationVector" title="Permalink to this definition">¶</a></dt>
-<dd><p>DC programming for solving the cardinality optimization problem
-</p>
-<p>s.t. </p>
-<p>,
-</p>
+<dd><p>DC programming for solving the cardinality optimization problem</p>
+<div class="math">
+\[\begin{split}min  ~&amp; \lambda ||x||_0 \\
+s.t. ~&amp; x + S^T z = 0 \\
+     ~&amp; -\infty \leq x \leq \infty, \\
+     ~&amp; 1 \leq z \leq 1 / \epsilon\end{split}\]</div>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[relaxRxnBool, solutionRelax] = minCardinalityConservationRelaxationVector(S, params, printLevel)</div></blockquote>
@@ -878,10 +873,11 @@ structure with:<ul>
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.stoichConsistency.optimalConservationVectors">
 <code class="descname">optimalConservationVectors</code><span class="sig-paren">(</span><em>S</em>, <em>lambda</em>, <em>delta</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7d5222499490f50530ded398fa2417d8cb5c3b70/src/reconstruction/modelGeneration/stoichConsistency/optimalConservationVectors.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.optimalConservationVectors" title="Permalink to this definition">¶</a></dt>
-<dd><p>DC programming for solving the cardinality optimization problem
-</p>
-<p>s.t. </p>
-<p></p>
+<dd><p>DC programming for solving the cardinality optimization problem</p>
+<div class="math">
+\[\begin{split}min  ~&amp; \lambda ||x||_0 - \delta ||y||_0 \\
+s.t. ~&amp; x + S^T y = 0 \\
+     ~&amp; 0 \leq y \leq 1e4\end{split}\]</div>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>solution = optimalConservationVectors(S, lambda, delta)</div></blockquote>
@@ -991,6 +987,7 @@ name of the file</li>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

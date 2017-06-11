@@ -282,144 +282,279 @@ true if solver can be accessed, false if not</li>
 </div></blockquote>
 <p>Currently allowed LP solvers:</p>
 <blockquote>
-<div><ul class="simple">
-<li>fully supported solvers:<ul>
-<li><dl class="first docutils">
-<dt>cplex_direct:    CPLEX accessed directly through Tomlab <cite>cplex.m</cite>. This gives</dt>
-<dd>the user more control of solver parameters. e.g.
+<div><ul>
+<li><p class="first">fully supported solvers</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="83%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>cplex_direct</td>
+<td>CPLEX accessed directly through Tomlab <cite>cplex.m</cite>. This gives
+the user more control of solver parameters. e.g.
 minimising the Euclidean norm of the internal flux to
-get rid of net flux around loops</dd>
-</dl>
+get rid of net flux around loops</td>
+</tr>
+<tr class="row-even"><td>dqqMinos</td>
+<td>DQQ solver</td>
+</tr>
+<tr class="row-odd"><td>glpk</td>
+<td>GLPK solver with Matlab mex interface (glpkmex)</td>
+</tr>
+<tr class="row-even"><td>gurobi</td>
+<td>Gurobi solver</td>
+</tr>
+<tr class="row-odd"><td>ibm_cplex</td>
+<td>The IBM API for CPLEX using the CPLEX class</td>
+</tr>
+<tr class="row-even"><td>matlab</td>
+<td>MATLAB&#8217;s linprog function</td>
+</tr>
+<tr class="row-odd"><td>mosek</td>
+<td>Mosek LP solver with Matlab API (using linprog.m from Mosek)</td>
+</tr>
+<tr class="row-even"><td>pdco</td>
+<td>PDCO solver</td>
+</tr>
+<tr class="row-odd"><td>quadMinos</td>
+<td>quad LP solver</td>
+</tr>
+<tr class="row-even"><td>tomlab_cplex</td>
+<td>CPLEX accessed through Tomlab environment (default)</td>
+</tr>
+</tbody>
+</table>
 </li>
-<li>dqqMinos:        DQQ solver</li>
-<li>glpk:            GLPK solver with Matlab mex interface (glpkmex)</li>
-<li>gurobi:          Gurobi solver</li>
-<li>ibm_cplex:       The IBM API for CPLEX using the CPLEX class</li>
-<li>matlab:          MATLAB&#8217;s linprog function</li>
-<li>mosek:           Mosek LP solver with Matlab API (using linprog.m from Mosek)</li>
-<li>pdco:            PDCO solver</li>
-<li>quadMinos:       quad LP solver</li>
-<li>tomlab_cplex:    CPLEX accessed through Tomlab environment (default)</li>
 </ul>
-</li>
-<li>legacy solvers:<ul>
-<li>lindo_new:       Lindo API &gt; v2.0</li>
-<li>lindo_legacy:    Lindo API &lt; v2.0</li>
-<li>lp_solve:        lp_solve with Matlab API</li>
-<li>gurobi_mex:      Gurobi accessed through Matlab mex interface (Gurobi mex)</li>
-<li><dl class="first docutils">
-<dt>opti:            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)</dt>
-<dd>solver installed and called with OPTI TB wrapper
+<ul>
+<li><p class="first">legacy solvers:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="83%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>lindo_new</td>
+<td>Lindo API &gt; v2.0</td>
+</tr>
+<tr class="row-even"><td>lindo_legacy</td>
+<td>Lindo API &lt; v2.0</td>
+</tr>
+<tr class="row-odd"><td>lp_solve</td>
+<td>lp_solve with Matlab API</td>
+</tr>
+<tr class="row-even"><td>gurobi_mex</td>
+<td>Gurobi accessed through Matlab mex interface (Gurobi mex)</td>
+</tr>
+<tr class="row-odd"><td>opti</td>
+<td>CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
+solver installed and called with OPTI TB wrapper
 Lower level calls with installed mex files are possible
-but best avoided for all solvers</dd>
-</dl>
-</li>
-</ul>
+but best avoided for all solvers</td>
+</tr>
+</tbody>
+</table>
 </li>
 </ul>
 </div></blockquote>
 <p>Currently allowed MILP solvers:</p>
 <blockquote>
-<div><ul class="simple">
-<li>fully supported solvers:<ul>
-<li><dl class="first docutils">
-<dt>cplex_direct:    CPLEX accessed directly through Tomlab cplex.m. This gives</dt>
-<dd>the user more control of solver parameters. e.g.
+<div><ul>
+<li><p class="first">fully supported solvers:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="83%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>cplex_direct</td>
+<td>CPLEX accessed directly through Tomlab cplex.m. This gives
+the user more control of solver parameters. e.g.
 minimising the Euclidean norm of the internal flux to
-get rid of net flux around loops</dd>
-</dl>
+get rid of net flux around loops</td>
+</tr>
+<tr class="row-even"><td>glpk</td>
+<td>glpk MILP solver with Matlab mex interface (glpkmex)</td>
+</tr>
+<tr class="row-odd"><td>gurobi</td>
+<td>Gurobi solver</td>
+</tr>
+<tr class="row-even"><td>ibm_cplex</td>
+<td>The IBM API for CPLEX using the CPLEX class</td>
+</tr>
+<tr class="row-odd"><td>mosek</td>
+<td>Mosek LP solver with Matlab API (using linprog.m from Mosek)</td>
+</tr>
+<tr class="row-even"><td>pdco</td>
+<td>PDCO solver</td>
+</tr>
+<tr class="row-odd"><td>tomlab_cplex</td>
+<td>CPLEX MILP solver accessed through Tomlab environment</td>
+</tr>
+</tbody>
+</table>
 </li>
-<li>glpk:            glpk MILP solver with Matlab mex interface (glpkmex)</li>
-<li>gurobi:          Gurobi solver</li>
-<li>ibm_cplex:       The IBM API for CPLEX using the CPLEX class</li>
-<li>mosek:           Mosek LP solver with Matlab API (using linprog.m from Mosek)</li>
-<li>pdco:            PDCO solver</li>
-<li>tomlab_cplex:    CPLEX MILP solver accessed through Tomlab environment</li>
-</ul>
-</li>
-<li>legacy solvers:<ul>
-<li>gurobi_mex:      Gurobi accessed through Matlab mex interface (Gurobi mex)</li>
-<li><dl class="first docutils">
-<dt>opti:            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)</dt>
-<dd>solver installed and called with OPTI TB wrapper
+<li><p class="first">legacy solvers:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="83%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>gurobi_mex</td>
+<td>Gurobi accessed through Matlab mex interface (Gurobi mex)</td>
+</tr>
+<tr class="row-even"><td>opti</td>
+<td>CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
+solver installed and called with OPTI TB wrapper
 Lower level calls with installed mex files are possible
-but best avoided for all solvers</dd>
-</dl>
-</li>
-</ul>
+but best avoided for all solvers</td>
+</tr>
+</tbody>
+</table>
 </li>
 </ul>
 </div></blockquote>
 <p>Currently allowed QP solvers:</p>
 <blockquote>
-<div><ul class="simple">
-<li>fully supported solvers:<ul>
-<li><dl class="first docutils">
-<dt>cplex_direct:    CPLEX accessed directly through Tomlab cplex.m. This gives</dt>
-<dd>the user more control of solver parameters. e.g.
+<div><ul>
+<li><p class="first">fully supported solvers:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="83%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>cplex_direct</td>
+<td>CPLEX accessed directly through Tomlab cplex.m. This gives
+the user more control of solver parameters. e.g.
 minimising the Euclidean norm of the internal flux to
-get rid of net flux around loops</dd>
-</dl>
+get rid of net flux around loops</td>
+</tr>
+<tr class="row-even"><td>gurobi</td>
+<td>Gurobi solver</td>
+</tr>
+<tr class="row-odd"><td>ibm_cplex</td>
+<td>The IBM API for CPLEX using the CPLEX class</td>
+</tr>
+<tr class="row-even"><td>mosek</td>
+<td>Mosek LP solver with Matlab API (using linprog.m from Mosek)</td>
+</tr>
+<tr class="row-odd"><td>pdco</td>
+<td>PDCO solver</td>
+</tr>
+<tr class="row-even"><td>tomlab_cplex</td>
+<td>CPLEX QP solver accessed through Tomlab environment</td>
+</tr>
+</tbody>
+</table>
 </li>
-<li>gurobi:          Gurobi solver</li>
-<li>ibm_cplex:       The IBM API for CPLEX using the CPLEX class</li>
-<li>mosek:           Mosek LP solver with Matlab API (using linprog.m from Mosek)</li>
-<li>pdco:            PDCO solver</li>
-<li>tomlab_cplex:    CPLEX QP solver accessed through Tomlab environment</li>
-</ul>
+<li><p class="first">experimental support:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="83%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>qpng</td>
+<td>qpng QP solver with Matlab mex interface (in glpkmex
+package, only limited support for small problems)</td>
+</tr>
+</tbody>
+</table>
 </li>
-<li>experimental support:<ul>
-<li><dl class="first docutils">
-<dt>qpng:            qpng QP solver with Matlab mex interface (in glpkmex</dt>
-<dd>package, only limited support for small problems)</dd>
-</dl>
-</li>
-</ul>
-</li>
-<li>legacy solvers:<ul>
-<li>gurobi_mex:      Gurobi accessed through Matlab mex interface (Gurobi mex)</li>
-<li><dl class="first docutils">
-<dt>opti:            CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)</dt>
-<dd>solver installed and called with OPTI TB wrapper.
-Lower level calls with installed mex files are possible</dd>
-</dl>
-</li>
-</ul>
+<li><p class="first">legacy solvers:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="83%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>gurobi_mex</td>
+<td>Gurobi accessed through Matlab mex interface (Gurobi mex)</td>
+</tr>
+<tr class="row-even"><td>opti</td>
+<td>CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
+solver installed and called with OPTI TB wrapper.
+Lower level calls with installed mex files are possible</td>
+</tr>
+</tbody>
+</table>
 </li>
 </ul>
 </div></blockquote>
 <p>Currently allowed MIQP solvers:</p>
 <blockquote>
-<div><ul class="simple">
-<li>fully supported solvers:<ul>
-<li><dl class="first docutils">
-<dt>cplex_direct:    CPLEX accessed directly through Tomlab cplex.m. This gives</dt>
-<dd>the user more control of solver parameters. e.g.
+<div><ul>
+<li><p class="first">fully supported solvers:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="83%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>cplex_direct</td>
+<td>CPLEX accessed directly through Tomlab cplex.m. This gives
+the user more control of solver parameters. e.g.
 minimising the Euclidean norm of the internal flux to
-get rid of net flux around loops</dd>
-</dl>
+get rid of net flux around loops</td>
+</tr>
+<tr class="row-even"><td>gurobi</td>
+<td>Gurobi solver</td>
+</tr>
+<tr class="row-odd"><td>ibm_cplex</td>
+<td>The IBM API for CPLEX using the CPLEX class</td>
+</tr>
+<tr class="row-even"><td>tomlab_cplex</td>
+<td>CPLEX MIQP solver accessed through Tomlab environment</td>
+</tr>
+</tbody>
+</table>
 </li>
-<li>gurobi:          Gurobi solver</li>
-<li>ibm_cplex:       The IBM API for CPLEX using the CPLEX class</li>
-<li>tomlab_cplex:    CPLEX MIQP solver accessed through Tomlab environment</li>
-</ul>
-</li>
-<li>legacy solvers:<ul>
-<li>gurobi_mex:      Gurobi accessed through Matlab mex interface (Gurobi mex)</li>
-</ul>
+<li><p class="first">legacy solvers:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="83%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>gurobi_mex</td>
+<td>Gurobi accessed through Matlab mex interface (Gurobi mex)</td>
+</tr>
+</tbody>
+</table>
 </li>
 </ul>
 </div></blockquote>
 <p>Currently allowed NLP solvers:</p>
 <blockquote>
-<div><ul class="simple">
-<li>fully supported solvers:<ul>
-<li>matlab:          MATLAB&#8217;s fmincon.m</li>
-</ul>
+<div><ul>
+<li><p class="first">fully supported solvers:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="83%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>matlab</td>
+<td>MATLAB&#8217;s fmincon.m</td>
+</tr>
+</tbody>
+</table>
 </li>
-<li>experimental support:<ul>
-<li>tomlab_snopt:    SNOPT solver accessed through Tomlab environment</li>
-</ul>
+<li><p class="first">experimental support:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="83%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>tomlab_snopt</td>
+<td>SNOPT solver accessed through Tomlab environment</td>
+</tr>
+</tbody>
+</table>
 </li>
 </ul>
 </div></blockquote>
@@ -681,7 +816,7 @@ is outputted to.</li>
 <code class="descname">liftModel</code><span class="sig-paren">(</span><em>model</em>, <em>BIG</em>, <em>printLevel</em>, <em>fileName</em>, <em>directory</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7d5222499490f50530ded398fa2417d8cb5c3b70/src/base/solvers/liftModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.liftModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lifts a COBRA model with badly-scaled stoichiometric and
 coupling constraints of the form:
-  subject to: </p>
+<span class="math">\(max c*v\)</span>  subject to: <span class="math">\(Sv = 0, x, Cv &lt;= 0\)</span></p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>model = liftModel(model, BIG, printLevel,fileName,directory)</div></blockquote>
@@ -722,9 +857,9 @@ COBRA Structure contain the reformulated LP to be solved.</li>
 <code class="descname">lp_solve</code><span class="sig-paren">(</span><em>f</em>, <em>a</em>, <em>b</em>, <em>e</em>, <em>vlb</em>, <em>vub</em>, <em>xint</em>, <em>scalemode</em>, <em>keep</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7d5222499490f50530ded398fa2417d8cb5c3b70/src/base/solvers/lp_solve.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.lp_solve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves mixed integer linear programming problems.
 Solves the MILP problem
-
-
-
+<span class="math">\(max v = f'*x\)</span>
+<span class="math">\(a*x &lt;&gt; b\)</span>
+<span class="math">\(vlb &lt;= x &lt;= vub\)</span>
 <cite>x(int)`</cite> are integer</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -920,7 +1055,7 @@ Solution for the 2nd model</li>
 <dd><p>Reformulates badly-scaled FBA program
 Transforms LPproblems with badly-scaled stoichiometric and
 coupling constraints of the form:
- subject to: math:<cite>Ax &lt;= b</cite></p>
+<span class="math">\(max c*x\)</span> subject to: math:<cite>Ax &lt;= b</cite></p>
 <p>Eliminates the need for scaling and hence prevents infeasibilities
 after unscaling. After using PREFBA to transform a badly-scaled FBA program,
 please turn off scaling and reduce the aggressiveness of presolve.</p>
@@ -1136,7 +1271,7 @@ includes the minNorm and the <cite>printLevel</cite> flags.</p>
 Structure containing the following fields describing a LP solution:
 * .full:         Full LP solution vector
 * .obj:          Objective value
-* .rcost:        Reduced costs, dual solution to 
+* .rcost:        Reduced costs, dual solution to <span class="math">\(lb &lt;= v &lt;= ub\)</span>
 * .dual:         dual solution to <cite>A*v (&#8216;E&#8217; | &#8216;G&#8217; | &#8216;L&#8217;) b</cite>
 * .solver:       Solver used to solve LP problem
 * .algorithm:    Algorithm used by solver to solve LP problem
@@ -1560,9 +1695,9 @@ The solver defined in the <cite>CBT_MIQP_SOLVER</cite> global variable (set usin
 <blockquote>
 <div>solution = solveCobraMIQP(MIQPproblem, varargin)</div></blockquote>
 <p>Solves problems of the type
-
-s/t. 
-
+<span class="math">\(min osense * 0.5 x' * F * x + osense * c' * x\)</span>
+s/t. <span class="math">\(lb &lt;= x &lt;= ub\)</span>
+<span class="math">\(A * x  &lt;=/=/&gt;= b\)</span>
 <cite>xi</cite> = integer</p>
 <p><strong>Input</strong></p>
 <blockquote>
@@ -1627,8 +1762,8 @@ Structure containing the following fields describing a MIQP solution<ul>
 <dd><p>Solves a COBRA non-linear (objective and/or constraints) problem.
 Solves a problem of the following form:
 optimize <cite>objFunction(x)</cite> or <cite>c&#8217;*x</cite>
-st. 
-and  
+st. <span class="math">\(A*x  &lt;=&gt; b   or b_L &lt; A*x &lt; b_U\)</span>
+and  <span class="math">\(d_L &lt; d(x) &lt; d_U\)</span>
 where <cite>A</cite> is a matrix, <cite>d(x)</cite> is an optional function and the objective
 is either a general function or a linear function.</p>
 <p><strong>Usage</strong></p>
@@ -1712,9 +1847,9 @@ Structure containing the following fields describing a NLP solution:<ul>
 (set using changeCobraSolver). Solvers currently available are
 &#8216;tomlab_cplex&#8217;, &#8216;mosek&#8217; and &#8216;qpng&#8217; (limited support for small problems)</p>
 <p>Solves problems of the type
-
-s/t 
-</p>
+<span class="math">\(min  0.5 x' * F * x + osense * c' * x\)</span>
+s/t <span class="math">\(lb &lt;= x &lt;= ub\)</span>
+<span class="math">\(A * x  &lt;=/=/&gt;= b\)</span></p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>solution = solveCobraQP(QPproblem, varargin)</div></blockquote>
@@ -1883,6 +2018,7 @@ Objective of <cite>XPproblem</cite></li>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 
