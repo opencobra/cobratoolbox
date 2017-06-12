@@ -34,6 +34,9 @@ function model = findSExRxnInd(model, nRealMet, printLevel)
 %
 % .. Author: -  Ronan Fleming
 
+if ~exist('printLevel','var')
+    printLevel=0;
+end
 
 [nMet,nRxn]=size(model.S);
 
@@ -48,10 +51,6 @@ else
     if isempty(nRealMet)
         nRealMet=length(model.mets);
     end
-end
-
-if ~exist('printLevel','var')
-    printLevel=0;
 end
 
 %locate biomass reaction if there is one
