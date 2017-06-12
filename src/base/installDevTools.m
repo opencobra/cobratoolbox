@@ -14,14 +14,15 @@ function installDevTools()
     currentDir = pwd;
 
     % change to the local directory
-    cd([CBTDIR filesep '..']);
+    localDir = [CBTDIR filesep '..'];
+    cd(localDir);
 
     installFlag = false;
-    localDir = '';
 
     if exist([CBTDIR filesep '..' filesep 'MATLAB.devTools'], 'dir') == 7
 
-        reply = input([' > There is already a copy of the MATLAB.devTools installe in the default location.\n   Do you want to enter another location to install the MATLAB.devTools? Y/N [Y]: '], 's');
+        reply = input([' > There is already a copy of the MATLAB.devTools installed in the default location.\n   Do you want to enter another location to install the MATLAB.devTools? Y/N [Y]: '], 's');
+        localDir = '';
 
         if isempty(reply) || strcmpi(reply, 'y') || strcmpi(reply, 'yes')
         % enter another location for the MATLAB.devTools
@@ -47,8 +48,10 @@ function installDevTools()
             installFlag = true;
         else
             installFlag = false;
-            error('You cannot install the MATLAB.devTools. Please delete the folder ');
+            fprintf(' > You cannot install the MATLAB.devTools. Please delete the folder %s\n', [CBTDIR filesep '..' filesep 'MATLAB.devTools']);
         end
+    else
+        installFlag = true;
     end
 
     if installFlag
