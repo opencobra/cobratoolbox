@@ -107,15 +107,13 @@ for iExperiment=1:2
 end
 
 %% Validation of Toy Example
-load('referenceToyResults.mat');
-referenceToyResults.i
-%assert(i == referenceToyResults.i);
-%assert(iExperiment == referenceToyResults.iExperiment);
-%assert(maxFlux == referenceToyResults.maxFlux);
-%assert(minFlux == referenceToyResults.minFlux);
-%assert(optPercentage == referenceToyResults.optPercentage);
-%assert(optsol == referenceToyResults.optsol);
-
+load('refData_fastFVA.mat');
+assert(i == referenceToyResults.i);
+assert(iExperiment == referenceToyResults.iExperiment);
+assert(maxFlux == referenceToyResults.maxFlux);
+assert(minFlux == referenceToyResults.minFlux);
+assert(optPercentage == referenceToyResults.optPercentage);
+assert(optsol == referenceToyResults.optsol);
 
 fprintf('================================================================================\n\n')
 fprintf('\n ---------------------------------           Example %d          ------------------------------- \n\n', example);
