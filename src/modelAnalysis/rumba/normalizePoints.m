@@ -57,7 +57,7 @@ if all(and(Ind1,Ind2))
         FBAsoln = optimizeCbModel(model2);
         BOF2= FBAsoln.f;
     else
-        warning('SAMPLE POINTS ARE NOT BEING NORMALIZED!!! ARE YOU CRAZY?? I HOPE YOU DON''T PUBLISH THIS!!')
+        warning('ERROR: the sample points are not normalized')
     end
     % determine the ratio of the median point levels/growth rate between
     % the two growth conditions
