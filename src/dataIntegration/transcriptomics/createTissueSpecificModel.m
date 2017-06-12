@@ -9,7 +9,7 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %	model:                   model strusture
 %   options:                 structure field containing method specific
 %                            informations
-%       .solver:                 Use either 'GIMME','iMAT','INIT','GIMME',
+%       .solver:                 Use either 'GIMME','iMAT','INIT','MBA',
 %                                'mCADRE','fastCore'
 %                           
 %       .additionalparam:        see NOTE section below
