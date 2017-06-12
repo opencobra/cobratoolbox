@@ -1,4 +1,4 @@
-function [compartmentReactions] = findRxnFromCompartment(model,compartment);
+function [compartmentReactions] = findRxnFromCompartment(model,compartment)
 % findRxnFromCompartment finds all the reactions and their identifiers in a
 % compartment of interest.
 %

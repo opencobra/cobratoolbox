@@ -9,6 +9,7 @@ Documentation
 
    base
    dataIntegration
+   design
    modelAnalysis
    reconstruction
    visualization

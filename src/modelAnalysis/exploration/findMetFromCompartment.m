@@ -1,6 +1,6 @@
-function [compartmentMetabolites] = findMetFromCompartment(model,compartment);
+function [compartmentMetabolites] = findMetFromCompartment(model, compartment)
 % findMetFromCompartment finds all the metabolites and their identifiers in
-% a compartment of interest. 
+% a compartment of interest.
 %
 % USAGE:
 %
@@ -31,4 +31,3 @@ for i=1:size(compartmentMets,1);
         compartmentMetabolites(i,:)=metabolites(num,:);
     end
 end
-
