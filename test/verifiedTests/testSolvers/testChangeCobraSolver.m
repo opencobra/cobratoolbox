@@ -20,7 +20,7 @@ ok = changeCobraSolver('pdco', 'MINLP', 0);
 assert(ok == false);
 
 ok = changeCobraSolver('pdco', 'NLP', 0);
-assert(ok == true);
+assert(ok == false);
 global CBT_NLP_SOLVER
 assert(strcmp(CBT_NLP_SOLVER, 'pdco'))
 
