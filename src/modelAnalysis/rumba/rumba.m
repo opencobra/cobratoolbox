@@ -4,8 +4,7 @@ function [RUMBA_outputs, UpRegulated, DownRegulated, MetConnectivity1, MetConnec
 %
 % USAGE:
 %
-%    [RUMBA_outputs, UpRegulated, DownRegulated, MetConnectivity1, MetConnectivity2] = rumba(model1, model2, completeModel, sampling, maxMetConn, RxnsOfInterest, GenesOfInterest, NormalizePointsOption, PValCuttoff, MaxNumPoints, LoopRxnsToIgnore, verboseTag)
-%
+%    [RUMBA_outputs, UpRegulated, DownRegulated, MetConnectivity1, MetConnectivity2] = rumba(model1, model2, completeModel)
 % INPUTS:
 %    model1:                     Model under first condition, exchange reactions
 %                                are constrained with the data related to the first
@@ -19,16 +18,18 @@ function [RUMBA_outputs, UpRegulated, DownRegulated, MetConnectivity1, MetConnec
 %                                format as `model1`.
 %    completeModel:              The complete reference model. This is used
 %                                to verify consistency between the sampled models.
+%
+% OPTIONAL INPUTS:
 %    sampling:                   0, if no sampling needed (default)
 %                                1, if sampling of the models under both
 %                                conditions
 %    maxMetConn:                 The maximum connectivity of a metabolite to
 %                                consider. All branch points with a higher
-%                                connectivity will be ignored. (default = 30)
+%                                connectivity will be ignored (default = 30)
 %    RxnsOfInterest:             Reactions for which predictions are desired.
 %                                Specifying only desired reactions speeds up
-%                                algorithm.
-%    GenesOfInterest:            Genes associated with the reactions of interest.
+%                                algorithm (default = all reactions)
+%    GenesOfInterest:            Genes associated with the reactions of interest (default = all genes)
 %    NormalizePointsOption:      Option to normalize sample points to (1) the
 %                                same median of magnitude of flux through all
 %                                non-loop gene-associated reactions, or (2) the
@@ -43,10 +44,10 @@ function [RUMBA_outputs, UpRegulated, DownRegulated, MetConnectivity1, MetConnec
 %                                calculations. (default = minimum number of
 %                                points in the model or 500 points, whichever
 %                                is smaller)
-%    verboseTag:                 1 = print out progress and use waitbars. 0 =
-%                                print only minimal progress to screen.
+%    verboseTag:                 1 = print out progress and use waitbars (default). 
+%			 	 0 = print only minimal progress to screen.
 %    LoopRxnsToIgnore:           list of rxns associated with loop within the model,
-%                                default- reaction loops defined usinf FVA
+%                                (default - reaction loops defined using FVA)
 %
 % OUTPUTS:
 %    RUMBA_outputs:              Structure containing all information about
@@ -88,6 +89,9 @@ function [RUMBA_outputs, UpRegulated, DownRegulated, MetConnectivity1, MetConnec
 %       - Nathan E. Lewis, May 2010-May 2011
 %       - Anne Richelle, May 2017
 
+if nargin < 12  || isempty(verboseTag) % Set the function to not use waitbars and lots of status text.
+    verboseTag = 0;
+end
 if nargin < 11  || isempty(LoopRxnsToIgnore)
     tmp = completeModel;
     tmpExc = findExcRxns(tmp);
@@ -98,29 +102,6 @@ if nargin < 11  || isempty(LoopRxnsToIgnore)
     LoopRxnsToIgnore = tmp.rxns(or(MinFVA<-1e-10, MaxFVA>1e-10));
     LoopRxnsToIgnore = {};
     tmpRxnForm = printRxnFormula(tmp,LoopRxnsToIgnore);
-end
-
-
-if sampling == 1
-    %Sampling of the model 1
-    [model1Sampling,samples1] = sampleCbModel(model1,'model1Sampling');
-    model1=model1Sampling;
-    model1.points=samples1;
-    %Sampling of the model 2
-    [model2Sampling,samples2] = sampleCbModel(model2,'model2Sampling');
-    model2=model2Sampling;
-    model2.points=samples2;
-end
-
-
-% Set the function to not use waitbars and lots of status text.
-if nargin < 12  || isempty(verboseTag)
-    verboseTag = 0;
-end
-
-% Set the maximum number of points to look at to 500 or the minimum number of points in the model
-if nargin < 10 || isempty(MaxNumPoints)
-    MaxNumPoints = min([500;length(model1.points(1,:)); length(model2.points(1,:))]);
 end
 
 % Set the minimum p-value cutoff to 0.05 for determining significant shifts at metabolites
@@ -135,7 +116,7 @@ end
 
 % If no set of genes is provided, look at all genes
 if nargin <6
-    [tmp_r,tmp_r2] = findRxnsFromGenes(completeModel,completeModel.genes,0,1);
+    [tmp_r,tmp_r2] = findRxnsFromGenes(completeModel, completeModel.genes, 0, 1);
     RxnsOfInterest = tmp_r2(:,1);
     GenesOfInterest = tmp_r2(:,5);
 end
@@ -159,17 +140,33 @@ if nargin < 4 || isempty(sampling)
     end
 end
 
+if sampling == 1
+    %Sampling of the model 1
+    [model1Sampling,samples1] = sampleCbModel(model1, 'model1Sampling');
+    model1=model1Sampling;
+    model1.points=samples1;
+    %Sampling of the model 2
+    [model2Sampling,samples2] = sampleCbModel(model2, 'model2Sampling');
+    model2=model2Sampling;
+    model2.points=samples2;
+end
+
+% Set the maximum number of points to look at to 500 or the minimum number of points in the model
+if nargin < 10 || isempty(MaxNumPoints)
+    MaxNumPoints = min([500;length(model1.points(1,:)); length(model2.points(1,:))]);
+end
+
 % since the statistics should be two-tailed, divide the p-value by 2
 PValCuttoff = PValCuttoff/2;
 
 % preprocessing step: Make sure all reactions from complete model are
 % are in the sampled models
-model1 = addMissingReactions(model1,completeModel);
-model2 = addMissingReactions(model2,completeModel);
+model1 = addMissingReactions(model1, completeModel);
+model2 = addMissingReactions(model2, completeModel);
 
 % Normalize the sampled points by scaling by the net network flux (1 = by
 % net flux, 2 = by growth rate
-    [model1,model2] = normalizePoints(model1,model2,NormalizePointsOption,LoopRxnsToIgnore);
+    [model1,model2] = normalizePoints(model1, model2, NormalizePointsOption, LoopRxnsToIgnore);
 
 % Rename genes to avoid incompatibilities
 model1.genes = regexprep(model1.genes,'[_\-]','');% remove underscores and hyphens
@@ -178,19 +175,19 @@ completeModel.genes = regexprep(completeModel.genes,'[_\-]','');
 GenesOfInterest = regexprep(GenesOfInterest,'[_\-]','');
 
 % check to make sure there is enough sample points
-if MaxNumPoints > min([length(model1.points(1,:));length(model2.points(1,:))])
-    MaxNumPoints = min([length(model1.points(1,:));length(model2.points(1,:))]);
+if MaxNumPoints > min([length(model1.points(1,:)); length(model2.points(1,:))])
+    MaxNumPoints = min([length(model1.points(1,:)); length(model2.points(1,:))]);
     warning('Number of sample points desired is more than available number in models!')
     display(cat(2,'you need to use ',num2str(MaxNumPoints),' points.'))
 end
 
 % for each metabolite get all incoming and outgoing reaction and score them
 display('Processing first condition.')
-[MetConnectivity1, ConnectedMet1] = classifyRxns(completeModel,model1,maxMetConn,MaxNumPoints,verboseTag,LoopRxnsToIgnore);
+[MetConnectivity1, ConnectedMet1] = classifyRxns(completeModel, model1, maxMetConn, MaxNumPoints, verboseTag, LoopRxnsToIgnore);
 display('Processing second condition.')
-[MetConnectivity2, ConnectedMet2] = classifyRxns(completeModel,model2,maxMetConn,MaxNumPoints,verboseTag,LoopRxnsToIgnore);
+[MetConnectivity2, ConnectedMet2] = classifyRxns(completeModel, model2, maxMetConn, MaxNumPoints, verboseTag, LoopRxnsToIgnore);
 display('Comparing conditions.')
-[MetsAndRxns,pVal_up,pVal_down,Dir_model1,Dir_model2] = compareConditions(MetConnectivity1, ConnectedMet1,MetConnectivity2, ConnectedMet2);
+[MetsAndRxns,pVal_up,pVal_down,Dir_model1,Dir_model2] = compareConditions(MetConnectivity1, ConnectedMet1, MetConnectivity2, ConnectedMet2);
 
 % process the 'compareCondtions' results
 RUMBA_Struc_Pred = struct;
