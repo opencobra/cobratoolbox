@@ -83,6 +83,20 @@ else
     end
 end
 
+% download GlcAer_WT.mat
+if exist('ME_matrix_GlcAer_WT.mat', 'file') ~= 2
+    urlwrite('https://wwwen.uni.lu/content/download/72953/917521/file/Metabolims%20&%20Expression%20matrix%20(ME-Matrix)%20for%20E.%20coli_ME_matrix_GlcAer_WT.mat.zip', 'ME_matrix_GlcAer_WT.zip');
+    unzip('ME_matrix_GlcAer_WT.zip');
+    delete('ME_matrix_GlcAer_WT.zip');
+    if printLevel > 0
+        fprintf(' + Downloaded:      %s\n', 'ME_matrix_GlcAer_WT.mat');
+    end
+else
+    if printLevel > 0
+        fprintf(' > Already exists:  %s\n', 'ME_matrix_GlcAer_WT.mat');
+    end
+end
+
 % print sucess message
 if printLevel > 0
     fprintf(['   Done downloading models.\n']);
