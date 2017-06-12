@@ -204,7 +204,7 @@
 </div>
 <span class="target" id="module-src.modelAnalysis.subspaces"></span><dl class="function">
 <dt id="src.modelAnalysis.subspaces.computeElementalMatrix">
-<code class="descname">computeElementalMatrix</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em>, <em>warnings</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7d5222499490f50530ded398fa2417d8cb5c3b70/src/modelAnalysis/subspaces/computeElementalMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.subspaces.computeElementalMatrix" title="Permalink to this definition">¶</a></dt>
+<code class="descname">computeElementalMatrix</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em>, <em>warnings</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/513efe696b694280f928df92d90d60c4988d8197/src/modelAnalysis/subspaces/computeElementalMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.subspaces.computeElementalMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes elemental matrix</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -238,7 +238,7 @@ formula.  (Default = true)</li>
 
 <dl class="function">
 <dt id="src.modelAnalysis.subspaces.conservationAnalysis">
-<code class="descname">conservationAnalysis</code><span class="sig-paren">(</span><em>model</em>, <em>massBalanced</em>, <em>printLevel</em>, <em>tol</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7d5222499490f50530ded398fa2417d8cb5c3b70/src/modelAnalysis/subspaces/conservationAnalysis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.subspaces.conservationAnalysis" title="Permalink to this definition">¶</a></dt>
+<code class="descname">conservationAnalysis</code><span class="sig-paren">(</span><em>model</em>, <em>massBalanced</em>, <em>printLevel</em>, <em>tol</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/513efe696b694280f928df92d90d60c4988d8197/src/modelAnalysis/subspaces/conservationAnalysis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.subspaces.conservationAnalysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the left and right nullspaces of a given stoichiometric matrix in echelon form.</p>
 <p>i.e. <cite>L*S = 0</cite> where <a href="#id2"><span class="problematic" id="id3">``</span></a>[-Lzero I]*Pl&#8217;<a href="#id4"><span class="problematic" id="id5">*</span></a>S = 0`;
 and <cite>S*N = 0</cite> where <cite>S*Pn*[-Nzero; I] = S*[-Nzero&#8217; I&#8217;]*Pn&#8217; = 0</cite>;</p>
@@ -312,7 +312,7 @@ Ravishankar Rao Vallabhajosyula , Vijay Chickarmane and Herbert M. Sauro</cite><
 
 <dl class="function">
 <dt id="src.modelAnalysis.subspaces.fourFundamentalSubpaces">
-<code class="descname">fourFundamentalSubpaces</code><span class="sig-paren">(</span><em>S</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7d5222499490f50530ded398fa2417d8cb5c3b70/src/modelAnalysis/subspaces/fourFundamentalSubpaces.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.subspaces.fourFundamentalSubpaces" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fourFundamentalSubpaces</code><span class="sig-paren">(</span><em>S</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/513efe696b694280f928df92d90d60c4988d8197/src/modelAnalysis/subspaces/fourFundamentalSubpaces.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.subspaces.fourFundamentalSubpaces" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate linearly independent bases the four fundamental subspaces of <cite>S</cite> using LUSOL or SVD</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -376,7 +376,7 @@ driving forces move the concentration state of the network.</p>
 
 <dl class="function">
 <dt id="src.modelAnalysis.subspaces.gmscale">
-<code class="descname">gmscale</code><span class="sig-paren">(</span><em>A</em>, <em>iprint</em>, <em>scltol</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/7d5222499490f50530ded398fa2417d8cb5c3b70/src/modelAnalysis/subspaces/gmscale.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.subspaces.gmscale" title="Permalink to this definition">¶</a></dt>
+<code class="descname">gmscale</code><span class="sig-paren">(</span><em>A</em>, <em>iprint</em>, <em>scltol</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/513efe696b694280f928df92d90d60c4988d8197/src/modelAnalysis/subspaces/gmscale.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.subspaces.gmscale" title="Permalink to this definition">¶</a></dt>
 <dd><p>Geometric-Mean Scaling finds the scale values for the
 <cite>m</cite> x <cite>n</cite> sparse matrix <cite>A</cite>.</p>
 <p><strong>Usage</strong></p>
