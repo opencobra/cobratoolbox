@@ -1,4 +1,4 @@
-function sbmlModel = convertCobraToSBML(model,sbmlLevel,sbmlVersion,compSymbolList,compNameList)
+function sbmlModel = convertCobraToSBML(model, sbmlLevel, sbmlVersion, compSymbolList, compNameList)
 % Converts a cobra structure to an sbml
 % structure using the structures provided in the SBML toolbox 3.1.0
 %
@@ -41,18 +41,18 @@ function sbmlModel = convertCobraToSBML(model,sbmlLevel,sbmlVersion,compSymbolLi
 %    To speed things up, sbml structs have been
 %    recycled and are directly appended into lists instead of using `_addItem`
 
-if ~exist('compSymbolList','var')
+if ~exist('compSymbolList', 'var')
     compSymbolList = [];
     compNameList = [];
 end
 
-if (~exist('sbmlLevel','var') || isempty(sbmlLevel))
+if (~exist('sbmlLevel', 'var') || isempty(sbmlLevel))
     sbmlLevel = 2;
 end
-if (~exist('sbmlVersion','var') || isempty(sbmlVersion))
+if (~exist('sbmlVersion', 'var') || isempty(sbmlVersion))
     sbmlVersion = 1;
 end
 
 TemporaryFileName = [tempname '.xml']
-sbmlModel = writeCbModel(model,'sbml',TemporaryFileName,[],[],sbmlLevel,sbmlVersion);
+sbmlModel = writeCbModel(model, 'sbml', TemporaryFileName, [], [], sbmlLevel, sbmlVersion);
 delete(TemporaryFileName)

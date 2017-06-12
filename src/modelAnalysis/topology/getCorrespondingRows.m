@@ -28,29 +28,29 @@ function restricedRowBool = getCorrespondingRows(S, rowBool, colBool, mode)
 %    rowBool = [1;1;1;1;1];
 %    colBool = [1;1;1;0;0];
 %
-%    %Therefore, the subset of rows and columns considered for inclusion are
+%    % Therefore, the subset of rows and columns considered for inclusion are
 %    %    -1     0     0
 %    %     2    -3     0
 %    %     0     4    -5
 %    %     0     0     6
 %    %     0     0     0
 %
-%    %If mode = 'exclusive' then restrictedRowBool corresponds to this subset
+%    % If mode = 'exclusive' then restrictedRowBool corresponds to this subset
 %    %    -1     0     0
 %    %     2    -3     0
 %    %     0     4    -5
-%    %i.e subset of rowBool metabolites exclusively involved in the colBool
-%    %reactions
+%    % i.e subset of rowBool metabolites exclusively involved in the colBool
+%    % reactions
 %
-%    %If mode = 'inclusive' then restrictedRowBool corresponds to this subset
+%    % If mode = 'inclusive' then restrictedRowBool corresponds to this subset
 %    %    -1     0     0
 %    %     2    -3     0
 %    %     0     4    -5
 %    %     0     0     6
-%    %i.e subset of rowBool metabolites involved in colBool reactions
+%    % i.e subset of rowBool metabolites involved in colBool reactions
 %
-%    %If mode ='partial' then restrictedRowBool corresponds to the extra rows
-%    %with inclusive that are not present with exclusive.
+%    % If mode ='partial' then restrictedRowBool corresponds to the extra rows
+%    % with inclusive that are not present with exclusive.
 %
 % .. Author: - Ronan Fleming, July 2016
 

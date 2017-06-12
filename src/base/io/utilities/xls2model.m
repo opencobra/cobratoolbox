@@ -65,14 +65,18 @@ function model = xls2model(fileName, biomassRxnEquation, defaultbound)
 %
 %    Optional inputs may be required for input on unix machines.
 %
+% NOTE:
+%
+%    Find an example Excel sheet at `docs/source/examples/ExcelExample.xlsx`
+%
 % .. Authors:
-%       - Ines Thiele, 01/02/09
-%       - Richard Que, 04/27/10, Modified reading of PubChemID and ChEBIID so that if met
-%         has multiple IDs, all are passed to model. Confidence Scores
-%         PubChemIDs, and ChEBIIDs, are properly passed as cell arrays.
-%       - Ronan Fleming, 08/17/10, Support for unix
-%       - Hulda S.H., 10/11/10, Modified reading of xls document.
-%         Identifies columns by their headers. Added reading of HMDB ID.
+%    - Ines Thiele, 01/02/09
+%    - Richard Que, 04/27/10, Modified reading of PubChemID and ChEBIID so that if met
+%      has multiple IDs, all are passed to model. Confidence Scores
+%      PubChemIDs, and ChEBIIDs, are properly passed as cell arrays.
+%    - Ronan Fleming, 08/17/10, Support for unix
+%    - Hulda S.H., 10/11/10, Modified reading of xls document.
+%      Identifies columns by their headers. Added reading of HMDB ID.
 
 warning off
 

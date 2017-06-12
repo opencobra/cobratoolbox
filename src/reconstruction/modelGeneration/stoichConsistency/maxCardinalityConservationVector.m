@@ -1,8 +1,11 @@
 function  [maxConservationMetBool, maxConservationRxnBool, solution] = maxCardinalityConservationVector(S, params)
 % Maximises the cardinality of the conservation vector:
-% :math:`max ||l||_0`
-% st. :math:`S'l = 0`
-% :math:`0 <= l <= 1/epsilon`
+%
+% .. math::
+%
+%    max  ~& ||l||_0 \\
+%    st.  ~& S^T l = 0 \\
+%         ~& 0 \leq l \leq 1 / \epsilon
 %
 % The `l0` norm is approximated by capped `l1` norm. The resulting problem is a DC program
 %
@@ -17,7 +20,7 @@ function  [maxConservationMetBool, maxConservationRxnBool, solution] = maxCardin
 %    params:                    structure with:
 %
 %                                 * params.nbMaxIteration - Stopping criteria - maximal number of iteration (Default value 1000)
-%                                 *  params.epsilon - `1/epsilon` is the largest molecular mass considered (Default value 1e-4)
+%                                 * params.epsilon - `1/epsilon` is the largest molecular mass considered (Default value 1e-4)
 %                                 * params.zeta - Stopping criteria - threshold (Default value 1e-6)
 %                                 * params.theta - Parameter of capped `l1` approximation (Default value 0.5)
 %

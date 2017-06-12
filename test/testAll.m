@@ -4,10 +4,14 @@ global GUROBI_PATH
 global ILOG_CPLEX_PATH
 global TOMLAB_PATH
 
+fprintf('The COBRAToolbox testing suite\n')
+fprintf('------------------------------\n')
+
 if ~isempty(getenv('MOCOV_PATH')) && ~isempty(getenv('JSONLAB_PATH'))
     addpath(genpath(getenv('MOCOV_PATH')))
     addpath(genpath(getenv('JSONLAB_PATH')))
     COVERAGE = true;
+    fprintf('MoCov and JsonLab are on path, coverage will be computed.\n')
 else
     COVERAGE = false;
 end
@@ -19,17 +23,17 @@ origDir = pwd;
 if length(which('initCobraToolbox.m')) == 0
     % define the path to The COBRA Toolbox
     pth = fileparts(which('testAll.m'));
-    %Now, we are in the test folder
+    % Now, we are in the test folder
     cd(pth)
-    %Switch to the base folder
-    cd ..     
-    %And assign the CBTDIR variable
+    % Switch to the base folder
+    cd ..
+    % And assign the CBTDIR variable
     CBTDIR = pwd;
 else
     CBTDIR = fileparts(which('initCobraToolbox.m'));
     cd(CBTDIR);
 end
-%include the root folder and all subfolders.
+% include the root folder and all subfolders.
 addpath(genpath(pwd));
 
 % change to the root folder of The COBRA TOolbox
@@ -55,7 +59,6 @@ exit_code = 0;
 profile on;
 
 if COVERAGE
-
     % open the .gitignore file
     fid = fopen([CBTDIR filesep '.gitignore']);
 
@@ -69,7 +72,7 @@ if COVERAGE
 
         % only retain the lines that end with .txt and .m and are not comments and point to files in the /src folder
         if length(lineOfFile) > 4
-            if ~strcmp(lineOfFile(1), '#') && strcmp(lineOfFile(1:4), 'src/') && (strcmp(lineOfFile(end-3:end), '.txt') || strcmp(lineOfFile(end-1:end), '.m'))
+            if ~strcmp(lineOfFile(1), '#') && strcmp(lineOfFile(1:4), 'src/') && (strcmp(lineOfFile(end - 3:end), '.txt') || strcmp(lineOfFile(end - 1:end), '.m'))
                 ignoreFiles{counter} = lineOfFile;
                 counter = counter + 1;
             end
@@ -104,10 +107,10 @@ if COVERAGE
         while ~feof(fid) && countFlag
             lineOfFile = strtrim(char(fgetl(fid)));
             if length(lineOfFile) > 0 && length(strfind(lineOfFile(1), '%')) ~= 1  ...
-               && length(strfind(lineOfFile, 'end')) ~= 1 && length(strfind(lineOfFile, 'otherwise')) ~= 1 ...
-               && length(strfind(lineOfFile, 'switch')) ~= 1 && length(strfind(lineOfFile, 'else')) ~= 1  ...
-               && length(strfind(lineOfFile, 'case')) ~= 1 && length(strfind(lineOfFile, 'function')) ~= 1
-                nCodeLines = nCodeLines + 1;
+                && length(strfind(lineOfFile, 'end')) ~= 1 && length(strfind(lineOfFile, 'otherwise')) ~= 1 ...
+                && length(strfind(lineOfFile, 'switch')) ~= 1 && length(strfind(lineOfFile, 'else')) ~= 1  ...
+                && length(strfind(lineOfFile, 'case')) ~= 1 && length(strfind(lineOfFile, 'function')) ~= 1
+                    nCodeLines = nCodeLines + 1;
 
             elseif length(lineOfFile) == 0
                 nEmptyLines = nEmptyLines + 1;
@@ -120,7 +123,7 @@ if COVERAGE
     end
 
     % average number of messages per codeLines
-    avMsgsPerc = floor(nMsgs / nCodeLines * 100 );
+    avMsgsPerc = floor(nMsgs / nCodeLines * 100);
 
     grades = {'A', 'B', 'C', 'D', 'E', 'F'};
     intervals = [0, 3;
@@ -164,13 +167,15 @@ try
 
     if COVERAGE
         % write coverage based on profile('info')
-        mocov('-cover','src',...
-              '-profile_info',...
-              '-cover_json_file','coverage.json',...
-              '-cover_html_dir','coverage_html',...
-              '-cover_method', 'profile');
+        fprintf('Running MoCov ... \n')
+        mocov('-cover', 'src', ...
+              '-profile_info', ...
+              '-cover_json_file', 'coverage.json', ...
+              '-cover_html_dir', 'coverage_html', ...
+              '-cover_method', 'profile', ...
+              '-verbose');
 
-        for i = 1:size(result,2)
+        for i = 1:size(result, 2)
             sumFailed = sumFailed + result(i).Failed;
             sumIncomplete = sumIncomplete + result(i).Incomplete;
         end
@@ -192,7 +197,7 @@ try
         tl = sum(tlFiles);
 
         % print out the coverage
-        fprintf('Covered Lines: %i, Total Lines: %i, Coverage: %f%%.\n', cl, tl, cl/tl * 100);
+        fprintf('Covered Lines: %i, Total Lines: %i, Coverage: %f%%.\n', cl, tl, cl / tl * 100);
     end
 
     % print out a summary table
@@ -210,15 +215,15 @@ try
     if ~isempty(strfind(getenv('HOME'), 'jenkins'))
         exit(exit_code);
     end
-catch M
+catch ME
     if ~isempty(strfind(getenv('HOME'), 'jenkins'))
-        %Only exit on jenkins.
+        % Only exit on jenkins.
         exit(1);
     else
-        %Switch back to the folder we were in and rethrow the error
+        % Switch back to the folder we were in and rethrow the error
         cd(origDir);
-        error(M);
+        rethrow(ME);
     end
 end
-%Switch back to the folder we were in.
+% Switch back to the folder we were in.
 cd(origDir)

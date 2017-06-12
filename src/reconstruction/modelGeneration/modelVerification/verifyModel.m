@@ -9,31 +9,44 @@ function results = verifyModel(model, varargin)
 %    model:       a structure that represents the COBRA model.
 %
 % OPTIONAL INPUT:
-%    varargin:    varargin contains additional checks that shall be performed. Provided as
-%                 strings, the results of the individual checks are returned as a structure
-%                 array containing the relevant values.
+%    varargin:    varargin describes the additional checks (except the
+%                 basic check whether a models fields adhere to the field
+%                 definitions. They are to be provided as ParameterName,
+%                 Value pairs (e.g. verifyModel(model, 'massBalance', true)
 %                 Options are:
 %
-%                   * 'massBalance' (checks for Mass balance if the `metFormula` Field is present)
-%                   * 'chargeBalance' (checks for charge Balance)
-%                   * 'fluxConsistency' (checks for reaction flux consistency)
+%                   * 'massBalance' (checks for Mass balance if the
+%                     `metFormula` Field is present), (Default: false)
+%                   * 'chargeBalance' (checks for charge Balance) (Default: false)
+%                   * 'fluxConsistency' (checks for reaction flux
+%                     consistency) (Default: false)
 %                   * 'stoichiometricConsistency' (checks for Stoichiometric
-%                     Consisteny, according to `Gevorgyan, Bioinformatics, 2008`)
+%                     Consisteny, according to `Gevorgyan, Bioinformatics,
+%                     2008`) (Default: false)
 %                   * 'deadEndMetabolites' (metabolites which can either not
-%                     be produced, or consumed)
+%                     be produced, or consumed) (Default: false)
 %                   * 'simpleCheck' returns 0 if this is not a valid model
 %                     and 1 if it is a valid model, ignored if any other
-%                     option is selected.
+%                     option is selected. (Default: false)
 %                   * 'requiredFields' sets the fields which are required,
 %                     the argument must be firectly followed by the list of
 %                     required fields.
-%                   * default({'S', 'b', 'csense', 'lb', 'ub', 'c', 'osense', 'rxns', 'mets', 'genes', 'rules'})
+%                     (Default: {'S', 'b', 'csense', 'lb', 'ub', 'c', 'osense', 'rxns', 'mets', 'genes', 'rules'})
+%                   * 'checkDatabaseIDs', check whether the database
+%                     identifiers in specified fields (please have a look
+%                     at the documentation), match to the expected patterns
+%                     for those databases.
+%                   * 'silentCheck', do not print any information. Only
+%                     applies to the model structure check. (default is to
+%                     print info)
 %
 % OUTPUT:
 %
 %    results:     a struct containing fields for each requested option and an
 %                 additional field `Errors` indicating the problems with the
 %                 model structure detected by the `verifyModel` function.
+%                 Results of additional options are returned in fields with
+%                 the respective names. 
 %
 % EXAMPLE:
 %
@@ -45,11 +58,33 @@ function results = verifyModel(model, varargin)
 % .. Authors:
 %       - Thomas Pfau, May 2017
 
-requiredFields = {'S','b','csense','lb','ub','c','osense','rxns','mets','genes','rules'};
+fluxConsistencyFields = {'S','b','csense','lb','ub','c','osense','rxns','mets','genes','rules'};
 
-if any(ismember(varargin,'requiredFields'))
-    requiredFields = varargin{find(ismember(varargin,'requiredFields')) + 1};
-end
+parser = inputParser();
+parser.addRequired('model',@isstruct);
+parser.addParameter('massBalance',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('chargeBalance',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('fluxConsistency',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('deadEndMetabolites',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('simpleCheck',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('stoichiometricConsistency',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('requiredFields',fluxConsistencyFields,@(x) iscell(x) && all(cellfun(@ischar, x)));
+parser.addParameter('checkDatabaseIDs',false,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('silentCheck',false,@(x) isnumeric(x) || islogical(x));
+
+
+parser.parse(model,varargin{:});
+
+requiredFields = parser.Results.requiredFields;
+massBalance = parser.Results.massBalance;
+chargeBalance = parser.Results.chargeBalance;
+fluxConsistency = parser.Results.fluxConsistency;
+deadEndMetabolites = parser.Results.deadEndMetabolites;
+simpleCheck = parser.Results.simpleCheck;
+stoichiometricConsistency = parser.Results.stoichiometricConsistency;
+checkDBs = parser.Results.checkDatabaseIDs;
+silentCheck = parser.Results.silentCheck;
+
 [optionalFields] = getDefinedFieldProperties();
 requiredFields = optionalFields(ismember(optionalFields(:,1), requiredFields),:);
 optionalFields = optionalFields(~ismember(optionalFields(:,1), requiredFields(:,1)),:);
@@ -73,81 +108,128 @@ if isempty(fieldnames(results.Errors))
 end
 
 %Do mass Balance Checks
-if any(ismember(varargin,'massBalance'))
-    results.massBalance = struct();
-    if checkFields(results,'metFormulas',model)
-        if ~checkFields(results,'metCharges',model)
-            %it contains a metFormulas field, and metCharges is invalid...
-            model.metCharges = zeros(size(model.metFormulas));
-        end
-        [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, Elements, missingFormulaeBool, balancedMetBool] = checkMassChargeBalance(model,0);
-        results.massBalance.massImbalance = massImbalance;
-        results.massBalance.imBalancedMass = imBalancedMass;
-        results.massBalance.imBalancedRxnBool = imBalancedRxnBool;
-        results.massBalance.Elements = Elements;
-        results.massBalance.missingFormulaeBool = missingFormulaeBool;
-        results.massBalance.balancedMetBool = balancedMetBool;
-    else
-        results.massBalance.missingFields = 'The metFormulas field is missing. Cannot determine the mass Balance';
+if massBalance || chargeBalance
+    doChargeBalance = false;
+    if chargeBalance
+         if checkFields(results,'metCharges',model)
+             doChargeBalance = true;
+         else
+             results.chargeBalance = struct();
+             results.chargeBalance.missingFields = 'The metCharges field is missing. Cannot determine the charge Balance';
+         end
     end
-end
-
-%Do charge Balance checks
-if any(ismember(varargin,'chargeBalance'))
-    results.massBalance = struct();
-    if checkFields(results,'metCharges',model)
+    doMassBalance = false;
+    if massBalance
+         if checkFields(results,'metFormulas',model)
+             doMassBalance = true;
+         else
+             results.massBalance = struct();
+             results.massBalance.missingFields = 'The metFormulas field is missing. Cannot determine the mass Balance';
+         end
+    end
+    
+    if doMassBalance || doChargeBalance
+        %Add missing fields, because at least one of the fields is present
+        %and valid.
+        if ~checkFields(results,'metCharges',model)
+            model.metCharges = NaN(size(model.metFormulas));
+        end
         if ~checkFields(results,'metFormulas',model)
-            %it contains a metCharges
             model.metFormulas = cell(size(model.metCharges));
             model.metFormulas(:) = {''};
         end
-        if ~exists('imBalancedCharge','var')
-            [~, ~, imBalancedCharge, ~, ~, ~, ~] = checkMassChargeBalance(model,0);
+        [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, Elements, missingFormulaeBool, balancedMetBool] = checkMassChargeBalance(model,0);
+        %put the fields, if simpleCheck is active and there are imbalanced,
+        %or if simplecheck is not active.
+        if doMassBalance && (~simpleCheck || any(imBalancedRxnBool))            
+            results.massBalance = struct();
+            results.massBalance.massImbalance = massImbalance;
+            results.massBalance.imBalancedMass = imBalancedMass;
+            results.massBalance.imBalancedRxnBool = imBalancedRxnBool;
+            results.massBalance.Elements = Elements;
+            results.massBalance.missingFormulaeBool = missingFormulaeBool;
+            results.massBalance.balancedMetBool = balancedMetBool;            
         end
-        results.chargeBalance.imBalanceCharge = imBalancedCharge;
-    else
-        results.chargeBalance.missingFields = 'The metCharges field is missing. Cannot determine the charge Balance';
+        %Add the fields, if its either not a simple Check or if 
+        if doChargeBalance && (~simpleCheck || any(imBalancedCharge ~= 0))            
+            results.chargeBalance = struct();
+            results.chargeBalance.imBalanceCharge = imBalancedCharge;
+        end
     end
 end
 
-if any(ismember(varargin,'fluxConsistency'))
-    ProblematicFields = checkFields(results,requiredFields(1:7,1),model);
+if fluxConsistency
+    ProblematicFields = checkFields(results,fluxConsistencyFields(1:7),model);
     if ~all(ProblematicFields) %this is odd... shouldn't refer to 1:7...
         warning('Fields Missing for consistency Testing')
-        results.consistency.problematicFields = requiredFields(ProblematicFields,1);
+        results.consistency = struct();
+        results.consistency.problematicFields = fluxConsistencyFields(ProblematicFields,1);
     else
         [mins,maxs] = fluxVariability(model);
-        results.fluxConsistency = struct();
-        if isfield(model,'rxns')
-            results.fluxConsistency.consistentReactions = model.rxns((abs(mins) > 1e-12) | (abs(maxs) > 1e-12));
+        %if this is not a simple check, or we have reactions which can't
+        %carry flux.
+        if ~simpleCheck || any( ~(abs(mins) > 1e-12)| (abs(maxs) > 1e-12)) 
+            results.fluxConsistency = struct();
+            if isfield(model,'rxns')
+                results.fluxConsistency.consistentReactions = model.rxns((abs(mins) > 1e-12) | (abs(maxs) > 1e-12));
+            end
+            results.fluxConsistency.consistentReactionBool = ( (abs(mins) > 1e-12)| (abs(maxs) > 1e-12));
         end
-        results.fluxConsistency.consistentReactionBool = ( (abs(mins) > 1e-12)| (abs(maxs) > 1e-12));
     end
 
 end
 
-if any(ismember(varargin,'deadEndMetabolites'))
+if deadEndMetabolites
     mets = detectDeadEnds(model);
-    results.deadEndMetabolites = struct();
-    results.deadEndMetabolites.DeadEndMetabolites = model.mets(mets);
+    if ~simpleCheck || any(mets)
+        results.deadEndMetabolites = struct();
+        results.deadEndMetabolites.DeadEndMetabolites = model.mets(mets);
+    end
 end
 
-if any(ismember(varargin,'stoichiometricConsistency'))
+if stoichiometricConsistency
     [SConsistentMetBool,SConsistentRxnBool,SInConsistentMetBool,SInConsistentRxnBool,unknownSConsistencyMetBool,~]=...
         findStoichConsistentSubset(model,0,0);
-
-    stoichiometricConsistency = struct();
-    stoichiometricConsistency.SConsistentMetBool = SConsistentMetBool;
-    stoichiometricConsistency.SConsistentRxnBool = SConsistentRxnBool;
-    stoichiometricConsistency.SInConsistentMetBool = SInConsistentMetBool;
-    stoichiometricConsistency.SInConsistentRxnBool = SInConsistentRxnBool;
-    stoichiometricConsistency.unknownSConsistencyMetBool = unknownSConsistencyMetBool;
-    stoichiometricConsistency.unknownSConsistencyRxnBool = ununknownSConsistencyRxnBool;
-
-    results.stoichiometricConsistency = stoichiometricConsistency ;
+    if ~simpleCheck || any(SInConsistentMetBool) || any(SInConsistentRxnBool)
+        stoichiometricConsistency = struct();
+        stoichiometricConsistency.SConsistentMetBool = SConsistentMetBool;
+        stoichiometricConsistency.SConsistentRxnBool = SConsistentRxnBool;
+        stoichiometricConsistency.SInConsistentMetBool = SInConsistentMetBool;
+        stoichiometricConsistency.SInConsistentRxnBool = SInConsistentRxnBool;
+        stoichiometricConsistency.unknownSConsistencyMetBool = unknownSConsistencyMetBool;
+        stoichiometricConsistency.unknownSConsistencyRxnBool = ununknownSConsistencyRxnBool;
+        results.stoichiometricConsistency = stoichiometricConsistency ;
+    end
 end
 
-if any(ismember(varargin,'simpleCheck')) && (numel(varargin) < 2)
+if checkDBs
+    results = checkDatabaseIDs(model,results);
+end
+
+%Print some info about the encountered problems if requested
+if ~isempty(results) && ~silentCheck
+    if isfield(results, 'Errors')
+        problems = fieldnames(results.Errors);
+        disp('The following problems have been encountered in the model structure')
+        for i = 1:numel(problems)
+            fprintf('%s:\n',problems{i})
+            problem_data = results.Errors.(problems{i});            
+            if isstruct(problem_data)             
+                problematic_fields = fieldnames(problem_data);
+                for field = 1: numel(problematic_fields)
+                    fprintf('%s: %s\n',problematic_fields{field}, results.Errors.(problems{i}).(problematic_fields{field}));                
+                end
+            else
+                for field = 1:numel(problem_data)
+                    fprintf('%s\n',problem_data{field});                
+                end
+            end
+        end
+    end
+end
+
+
+if simpleCheck
     if isempty(fieldnames(results))
         results = true;
     else
@@ -156,7 +238,90 @@ if any(ismember(varargin,'simpleCheck')) && (numel(varargin) < 2)
 end
 end
 
+
+function results = checkDatabaseIDs(model,results)
+% Checks the model for validity of database identifiers
+%
+% USAGE:
+%
+%    results = checkDatabaseIDs(model,results)
+%
+% INPUT:
+%    model:       a structure that represents the COBRA model.
+%    results:     the results structure for this test
+%
+% OUTPUT:
+%
+%    results:     a struct with problematic database ids added.
+%
+% .. Authors:
+%       - Thomas Pfau, May 2017
+
+dbMappings = getDefinedFieldProperties('Database',true);
+
+for i= 1:size(dbMappings,1)
+    if isfield(model,dbMappings{i,3})
+        fits = cellfun(@(x) isempty(x) || checkID(x,dbMappings{i,5}),model.(dbMappings{i,3}));
+        %Only add the something if we really have wrong IDs.
+        if any(~fits)
+            if ~isfield(results,'checkDatabaseIDs')
+                results.checkDatabaseIDs = struct();
+            end
+            if ~isfield(results.checkDatabaseIDs,'invalidIDs')
+                results.checkDatabaseIDs.invalidIDs = struct();
+            end
+            results.checkDatabaseIDs.invalidIDs.(dbMappings{i,3}) = cell(size(model.(dbMappings{i,3})));
+            results.checkDatabaseIDs.invalidIDs.(dbMappings{i,3})(:) = {'valid'};
+            results.checkDatabaseIDs.invalidIDs.(dbMappings{i,3})(~fits) = model.(dbMappings{i,3})(~fits);
+        end
+    end
+end
+end
+
+
+function accepted = checkID(id,pattern)
+% Checks the the given id(s), i.e. strings split by ; versus the pattern
+%
+% USAGE:
+%
+%    accepted = checkID(id,pattern)
+%
+% INPUT:
+%    id:          A String representing ids (potentially separated by ;)
+%    pattern:     The pattern to check the id(s) against.
+%
+% OUTPUT:
+%
+%    accepted:     Whether all ids are ok. 
+%
+% .. Authors:
+%       - Thomas Pfau, May 2017
+    ids = strsplit(id,';');
+    matches = regexp(ids,pattern);
+    accepted = all(~cellfun(@isempty,matches));    
+end
+
 function valid = checkFields(results,FieldNames,model)
+% Checks the given fields of the model in the results struct for
+% consistency.
+%
+% USAGE:
+%
+%    valid = checkFields(results,FieldNames,model)
+%
+% INPUT:
+%    results:     the results structure for this test
+%    FieldNames:  The names of the fields to check. 
+%    model:       a structure that represents the COBRA model.
+%
+% OUTPUT:
+%
+%    valid:     whether the field is valid given the information in
+%               results.
+%
+% .. Authors:
+%       - Thomas Pfau, May 2017
+
 if ischar(FieldNames)
     FieldNames = {FieldNames};
 end
@@ -168,6 +333,26 @@ end
 
 
 function results = checkPresentFields(fieldProperties,model, results)
+% Check the model fields for consistency with the given fieldProperties and
+% update the results struct.
+%
+% USAGE:
+%
+%    results = checkPresentFields(fieldProperties,model, results)
+%
+% INPUT:
+%    fieldProperties:  field properties as obtained by
+%                      getDefinedFieldProperties
+%    model:            a structure that represents the COBRA model.
+%    results:          the results structure for this test
+%
+% OUTPUT:
+%
+%    results:          The updated results struct. 
+%
+% .. Authors:
+%       - Thomas Pfau, May 2017
+
 presentFields = find(ismember(fieldProperties(:,1),fieldnames(model)));
 
 %Check all Field Sizes

@@ -1,18 +1,18 @@
 function [minLeakMetBool, minLeakRxnBool, minSiphonMetBool, minSiphonRxnBool, leakY, siphonY, statp, statn] = findMinimalLeakageModeRxn(model, rxnBool, metBool, modelBoundsFlag, params, printLevel)
 % Solves the problem
-% :math:`min ||v||_0 + ||y||_0`
-% s.t. :math:`Sv - y = 0`,
-% :math:`l <= v <= u`  (either `l(rxnBool) > 0` or `u(rxnBool) < 0`)
 %
-% with either
-% :math:`0 <= y` (semipositive net stoichiometry)
-% or
-% :math:`y <= 0` (seminegative net stoichiometry)
+% .. math::
 %
-% and
-% :math:`1 <= y(metBool)` (semipositive net stoichiometry)
-% or
-% :math:`y(metBool) <= 1` (seminegative net stoichiometry)
+%    min  ~& ||v||_0 + ||y||_0 \\
+%    s.t. ~& Sv - y = 0, \\
+%          & l \leq v \leq u
+%
+% where either :math:`l(rxnBool) > 0` or :math:`u(rxnBool) < 0`
+% and either :math:`0 \leq y` (semipositive net stoichiometry)
+% or :math:`y \leq 0` (seminegative net stoichiometry)
+%
+% and :math:`1 \leq y(metBool)` (semipositive net stoichiometry)
+% or :math:`y(metBool) \leq 1` (seminegative net stoichiometry)
 %
 % USAGE:
 %
@@ -59,6 +59,7 @@ function [minLeakMetBool, minLeakRxnBool, minSiphonMetBool, minSiphonRxnBool, le
 %                           * 2 =  Unbounded
 %                           * 0 =  Infeasible
 %                           * -1 =  Invalid input
+%
 % .. Author: - Ines Thiele & Ronan Fleming, June 2016
 
 [S,lb,ub] = deal(model.S,model.lb,model.ub);

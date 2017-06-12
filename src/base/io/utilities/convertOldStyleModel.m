@@ -84,6 +84,17 @@ end
 
 if ~isfield(model,'csense')
     model.csense = repmat('E',numel(model.mets),1);
+else
+    model.csense = columnVector(model.csense);
+end
+
+if ~isfield(model, 'rules') 
+    if isfield(model, 'grRules')
+        model = generateRules(model);
+    else
+       model.rules = cell(size(model.rxns));
+       model.rules(:) = {''};
+    end
 end
 
 if isfield(model,'rev')
