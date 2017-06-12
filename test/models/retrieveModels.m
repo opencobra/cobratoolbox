@@ -41,9 +41,17 @@ modelArr = {
 % download all models
 for i = 1:length(modelArr)
     if exist([MODELDIR, filesep, modelArr{i,1}], 'file') ~= 2
-        urlwrite(modelArr{i,2}, modelArr{i, 1});
-        if printLevel > 0
-            fprintf(' + Downloaded:      %s\n', modelArr{i, 1});
+        % check if the remote URL can be reached
+        [status_curl, result_curl] = system(['curl -s -k --head ', modelArr{i, 2}]);
+
+        % check if the URL exists
+        if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
+            urlwrite(modelArr{i, 2}, modelArr{i, 1});
+            if printLevel > 0
+                fprintf(' + Downloaded:      %s\n', modelArr{i, 2});
+            end
+        else
+            fprintf(' > The URL %s cannot be reached.\n', modelArr{i, 2});
         end
     else
         if printLevel > 0
@@ -54,14 +62,24 @@ end
 
 % download Ec_iAF1260_flux1.xml
 if exist('Ec_iAF1260_flux1.xml', 'file') ~= 2
-    urlwrite('http://systemsbiology.ucsd.edu/sites/default/files/Attachments/Images/InSilicoOrganisms/Ecoli/Ecoli_SBML/msb4100155-s6.zip', 'msb4100155-s6.zip');
-    unzip('msb4100155-s6.zip');
-    delete('Ec_iAF1260_flux2.txt');
-    delete('read_me.txt');
-    delete('msb4100155-s6.zip');
-    movefile 'Ec_iAF1260_flux1.txt' 'Ec_iAF1260_flux1.xml';
-    if printLevel > 0
-        fprintf(' + Downloaded:      %s\n', 'Ec_iAF1260_flux1.xml');
+    tmpURL = 'http://systemsbiology.ucsd.edu/sites/default/files/Attachments/Images/InSilicoOrganisms/Ecoli/Ecoli_SBML/msb4100155-s6.zip';
+
+    % check if the remote URL can be reached
+    [status_curl, result_curl] = system(['curl -s -k --head ', tmpURL]);
+
+    % check if the URL exists
+    if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
+        urlwrite(tmpURL, 'msb4100155-s6.zip');
+        unzip('msb4100155-s6.zip');
+        delete('Ec_iAF1260_flux2.txt');
+        delete('read_me.txt');
+        delete('msb4100155-s6.zip');
+        movefile 'Ec_iAF1260_flux1.txt' 'Ec_iAF1260_flux1.xml';
+        if printLevel > 0
+            fprintf(' + Downloaded:      %s\n', 'Ec_iAF1260_flux1.xml');
+        end
+    else
+        fprintf(' > The URL %s cannot be reached.\n', tmpURL);
     end
 else
     if printLevel > 0
@@ -71,11 +89,21 @@ end
 
 % download STM_v1.0.xml
 if exist('STM_v1.0.xml', 'file') ~= 2
-    urlwrite('https://static-content.springer.com/esm/art%3A10.1186%2F1752-0509-5-8/MediaObjects/12918_2010_598_MOESM2_ESM.ZIP', '12918_2010_598_MOESM2_ESM.zip');
-    unzip('12918_2010_598_MOESM2_ESM.zip');
-    delete('12918_2010_598_MOESM2_ESM.zip');
-    if printLevel > 0
-        fprintf(' + Downloaded:      %s\n', 'STM_v1.0.xml');
+    tmpURL = 'https://static-content.springer.com/esm/art%3A10.1186%2F1752-0509-5-8/MediaObjects/12918_2010_598_MOESM2_ESM.ZIP';
+
+    % check if the remote URL can be reached
+    [status_curl, result_curl] = system(['curl -s -k --head ', tmpURL]);
+
+    % check if the URL exists
+    if status_curl == 0 && ~isempty(strfind(result_curl, '200 OK'))
+        urlwrite(tmpURL, '12918_2010_598_MOESM2_ESM.zip');
+        unzip('12918_2010_598_MOESM2_ESM.zip');
+        delete('12918_2010_598_MOESM2_ESM.zip');
+        if printLevel > 0
+            fprintf(' + Downloaded:      %s\n', 'STM_v1.0.xml');
+        end
+    else
+        fprintf(' > The URL %s cannot be reached.\n', tmpURL);
     end
 else
     if printLevel > 0
