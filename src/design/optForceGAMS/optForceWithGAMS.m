@@ -1,6 +1,6 @@
 function [optForceSets, posOptForceSets, typeRegOptForceSets] = optForceWithGAMS(model,...
     targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k,...
-    nSets, constrOpt, excludedRxns, runID, outputFolder, outputFileName, solverName,... 
+    nSets, constrOpt, excludedRxns, runID, outputFolder, outputFileName, solverName,...
     printExcel, printText, printReport, keepInputs, keepGamsOutputs, verbose)
 %% DESCRIPTION
 % This function runs the third step of optForce, a procedure published in
@@ -102,8 +102,8 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets] = optForceWithGAMS
 %                           structure has the following fields
 %                           rxnList: (Type: cell array)      Reaction list
 %                           typeReg: (Type: char array)      set from which reaction is excluded
-%                                                            (U: Set of upregulared reactions; 
-%                                                            D: set of downregulared reations; 
+%                                                            (U: Set of upregulared reactions;
+%                                                            D: set of downregulared reations;
 %                                                            K: set of knockout reactions)
 %                           Example: excludedRxns=struct('rxnList',{{'SUCt','R68_b'}},'typeReg','UD')
 %                           In this example SUCt is prevented to appear in
@@ -118,7 +118,7 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets] = optForceWithGAMS
 % outputFolder (optional):  Type: string
 %                           Description: name for folder in which results
 %                           will be stored
-% 
+%
 % outputFileName (optional):Type: string
 %                           Description: name for files in which results
 %                           will be stored
@@ -150,12 +150,12 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets] = optForceWithGAMS
 %                           Default: 0
 %
 % keepGamsOutputs (optional):Type: double
-%                            Description: 1 to mantain files returned by 
+%                            Description: 1 to mantain files returned by
 %                            findMustL.gms. 0 otherwise.
 %
 % verbose (optional):       Type: double
 %                           Description: 1 to print results in console.
-%   
+%
 
 %% OUTPUTS
 % optForceSets:             Type: cell array
@@ -164,7 +164,7 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets] = optForceWithGAMS
 %                           found (k). Element in position i,j is reaction
 %                           j in set i.
 %                           Example:
-%                                    rxn1  rxn2    
+%                                    rxn1  rxn2
 %                                     __    __
 %                           set 1   | R4    R2
 %                           set 2   | R3    R1
@@ -172,11 +172,11 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets] = optForceWithGAMS
 % posOptForceSets           Type: double array
 %                           Description: double array of size  n x m, where
 %                           n = number of sets found and m = size of sets
-%                           found (k). Element in position i,j is the 
-%                           position of reaction in optForceSets(i,j) in 
+%                           found (k). Element in position i,j is the
+%                           position of reaction in optForceSets(i,j) in
 %                           model.rxns
 %                           Example:
-%                                    rxn1  rxn2    
+%                                    rxn1  rxn2
 %                                     __   __
 %                           set 1   | 4    2
 %                           set 2   | 3    1
@@ -185,10 +185,10 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets] = optForceWithGAMS
 %                           Description: cell array of size  n x m, where
 %                           n = number of sets found and m = size of sets
 %                           found (k). Element in position i,j is the kind
-%                           of intervention for reaction in 
+%                           of intervention for reaction in
 %                           optForceSets(i,j)
 %                           Example:
-%                                        rxn1            rxn2    
+%                                        rxn1            rxn2
 %                                     ____________    ______________
 %                           set 1   | upregulation    downregulation
 %                           set 2   | upregulation    knockout
@@ -218,17 +218,17 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets] = optForceWithGAMS
 %
 % outputFileName.txt        Same as outputFileName.xls but in a .txt file,
 %                           separated by tabs.
-% 
-% 
+%
+%
 % optForce.lst              Type: file
-%                           Description: file generated automatically by 
+%                           Description: file generated automatically by
 %                           GAMS when running optForce. Contains
 %                           information about the running.
 %
 % GtoM.gdx                  Type: file
 %                           Description: file generated by GAMS containing
 %                           variables, parameters and equations of the
-%                           optForce problem. 
+%                           optForce problem.
 
 %% CODE
 
@@ -322,7 +322,7 @@ else
     end
 end
 
-if nargin < 11
+if nargin < 11 || isempty(constrOpt)
     constrOpt={};
 else
     if ~isstruct(constrOpt); error('OptForce: Incorrect format for input constrOpt'); end;
@@ -340,7 +340,7 @@ else
     end
 end
 
-if nargin < 12
+if nargin < 12 || isempty(excludedRxns) 
     excludedRxns = {};
 else
     if ~isstruct(excludedRxns); error('OptForce: Incorrect format for input excludedRxns'); end;
@@ -425,22 +425,22 @@ if isempty(gamsPath); error('OptForce: GAMS is not installed in your system. Ple
 
 %name of the function to solve optForce in GAMS
 optForceFunction = 'optForce.gms';
-%path of that function 
+%path of that function
 pathOFG = which(optForceFunction);
 %current path
 workingPath = pwd;
 %go to the path associate to the ID for this run.
-if ~isdir(runID); mkdir(runID); end; cd(runID); 
+if ~isdir(runID); mkdir(runID); end; cd(runID);
 
-% if the user wants to generate a report. 
+% if the user wants to generate a report.
 if printReport
-    %create name for file. 
+    %create name for file.
     hour = clock;
     reportFileName = ['report-' date '-' num2str(hour(4)) 'h' '-' num2str(hour(5)) 'm.txt'];
     freport = fopen(reportFileName, 'w');
-    % print date of running. 
+    % print date of running.
     fprintf(freport, ['optForce_GAMS executed on ' date ' at ' num2str(hour(4)) ':' num2str(hour(5)) '\n\n']);
-    % print matlab version. 
+    % print matlab version.
     fprintf(freport, ['MATLAB: Release R' version('-release') '\n']);
     % print gams version.
     gams = which('gams');
@@ -454,7 +454,7 @@ if printReport
     %print model.
     fprintf(freport, 'Model:\n');
     for i = 1:length(model.rxns)
-        rxn = printRxnFormula(model, model.rxns{i});
+        rxn = printRxnFormula(model, model.rxns{i}, false);
         fprintf(freport, [model.rxns{i} ': ' rxn{1} '\n']);
     end
     %print lower and upper bounds, minimum and maximum values for each of
@@ -478,14 +478,18 @@ if printReport
     end
     %print constraints
     fprintf(freport, '\nConstrained reactions:\n');
-    for i = 1:length(constrOpt.rxnList)
-        fprintf(freport, '%s: fixed in %6.4f\n', constrOpt.rxnList{i}, constrOpt.values(i));
+    if ~isempty(constrOpt)
+        for i = 1:length(constrOpt.rxnList)
+            fprintf(freport, '%s: fixed in %6.4f\n', constrOpt.rxnList{i}, constrOpt.values(i));
+        end
     end
     %print excludad reactions
     fprintf(freport, '\nExcluded reactions:\n');
-    for i = 1:length(excludedRxns.rxnList)
-        fprintf(freport, '%s: Excluded from %s\n', excludedRxns.rxnList{i}, ...
-            regexprep(excludedRxns.typeReg(i), {'U','L','K'}, {'Upregulations','Downregulations','Knockouts'}));
+    if ~isempty(excludedRxns)
+        for i = 1:length(excludedRxns.rxnList)
+            fprintf(freport, '%s: Excluded from %s\n', excludedRxns.rxnList{i}, ...
+                regexprep(excludedRxns.typeReg(i), {'U','L','K'}, {'Upregulations','Downregulations','Knockouts'}));
+        end
     end
     fprintf(freport, '\nrunID(Main Folder): %s \n\noutputFolder: %s \n\noutputFileName: %s \n',...
         runID, outputFolder, outputFileName);
@@ -499,13 +503,15 @@ end
 excludedURxns = {};
 excludedLRxns = {};
 excludedKRxns = {};
-for i = 1:length(excludedRxns.rxnList)
-    if strcmp(excludedRxns.typeReg(i), 'U')
-        excludedURxns = union(excludedURxns, excludedRxns.rxnList(i));
-    elseif strcmp(excludedRxns.typeReg(i), 'L')
-        excludedLRxns = union(excludedLRxns, excludedRxns.rxnList(i));
-    elseif strcmp(excludedRxns.typeReg(i), 'K')
-        excludedKRxns = union(excludedKRxns, excludedRxns.rxnList(i));
+if ~isempty(excludedRxns)
+    for i = 1:length(excludedRxns.rxnList)
+        if strcmp(excludedRxns.typeReg(i), 'U')
+            excludedURxns = union(excludedURxns, excludedRxns.rxnList(i));
+        elseif strcmp(excludedRxns.typeReg(i), 'L')
+            excludedLRxns = union(excludedLRxns, excludedRxns.rxnList(i));
+        elseif strcmp(excludedRxns.typeReg(i), 'K')
+            excludedKRxns = union(excludedKRxns, excludedRxns.rxnList(i));
+        end
     end
 end
 
@@ -521,10 +527,14 @@ exportInputsOptForceToGAMS(model, {targetRxn}, mustU, mustL, minFluxesW, maxFlux
 if printReport; fprintf(freport, '\n------RESULTS------:\n'); end;
 
 %run optForce in GAMS.
-run = system(['gams ' optForceFunction ' lo=3 --myroot=InputsOptForce/ --solverName=' solverName ' gdx=GtoM --gdxin=MtoG']);
+if verbose
+    run = system(['gams ' optForceFunction ' lo=3 --myroot=InputsOptForce/ --solverName=' solverName ' gdx=GtoM --gdxin=MtoG']);
+else
+    run = system(['gams ' optForceFunction ' --myroot=InputsOptForce/ --solverName=' solverName ' gdx=GtoM --gdxin=MtoG']);
+end
 
 %if user decide not to show inputs files for optForce
-if ~keepInputs;    rmdir('InputsOptForce','s'); end; 
+if ~keepInputs;    rmdir('InputsOptForce','s'); end;
 
 %if the GAMS file for optForce was executed correctly "run" should be 0
 if run == 0
@@ -635,8 +645,8 @@ if run == 0
             
             %for each set found by optForce
             for i = 1:n_sols
-                %find objective value achieved in the optimization problem 
-                %solved by GAMS 
+                %find objective value achieved in the optimization problem
+                %solved by GAMS
                 if ~isempty(uels_obj) && ismember(num2str(i), uels_obj)
                     objective_value = val_obj(strcmp(num2str(i), uels_obj) == 1);
                 else
@@ -706,7 +716,7 @@ if run == 0
                 typeRegOptForceSets(i,:) = type';
                 flux_optForceSets(i,:) = flux_optForceSet_i';
                 
-                %export info to structures in order to print information later 
+                %export info to structures in order to print information later
                 solution.reactions = optForceSet_i;
                 solution.type = type;
                 solution.pos = pos_optForceSet_i;
@@ -739,14 +749,14 @@ if run == 0
         
         %initialize name for files in which information will be printed
         hour = clock;
-        if isempty(outputFileName); 
+        if isempty(outputFileName);
             outputFileName = ['optForceSolution-' date '-' num2str(hour(4)) 'h' '-' num2str(hour(5)) 'm'];
         end
         
         % print info into an excel file if required by the user
         if printExcel
             if n_sols > 0
-                if ~isdir(outputFolder); mkdir(outputFolder); end; 
+                if ~isdir(outputFolder); mkdir(outputFolder); end;
                 cd(outputFolder);
                 Info = cell(2 * n_sols + 1,11);
                 Info(1,:) = [{'Number of interventions'}, {'Set number'},{'Force Set'}, {'Type of regulation'}, ...
@@ -764,16 +774,16 @@ if run == 0
                 if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileName '.xls  \n']); end;
                 if verbose; fprintf(['Sets found by optForce were printed in ' outputFileName '.xls  \n']); end;
             else
-                if printReport; fprintf(freport, '\nNo solution to optForce was found. Therefore, no excel file was generated\n'); end; 
-                if verbose; fprintf('No solution to optForce was found. Therefore, no excel file was generated\n'); end; 
+                if printReport; fprintf(freport, '\nNo solution to optForce was found. Therefore, no excel file was generated\n'); end;
+                if verbose; fprintf('No solution to optForce was found. Therefore, no excel file was generated\n'); end;
             end
         end
         
         % print info into a plain text file if required by the user
         if printText
             if n_sols > 0
-                if ~isdir(outputFolder); mkdir(outputFolder); end; 
-                cd(outputFolder);                
+                if ~isdir(outputFolder); mkdir(outputFolder); end;
+                cd(outputFolder);
                 f = fopen([outputFileName '.txt'],'w');
                 fprintf(f,'Reactions\tMin Flux in Wild-type strain\tMax Flux in Wild-type strain\tMin Flux in Mutant strain\tMax Flux in Mutant strain\n');
                 for i = 1:n_sols
@@ -801,8 +811,8 @@ if run == 0
                 if printReport; fprintf(freport, ['\nSets found by optForce were printed in ' outputFileName '.txt  \n']); end;
                 if verbose; fprintf(['Sets found by optForce were printed in ' outputFileName '.txt  \n']); end;
             else
-                if printReport; fprintf(freport, '\nNo solution to optForce was found. Therefore, no plain text file was generated\n'); end; 
-                if verbose; fprintf('No solution to optForce was found. Therefore, no plain text file was generated\n'); end; 
+                if printReport; fprintf(freport, '\nNo solution to optForce was found. Therefore, no plain text file was generated\n'); end;
+                if verbose; fprintf('No solution to optForce was found. Therefore, no plain text file was generated\n'); end;
             end
         end
         
