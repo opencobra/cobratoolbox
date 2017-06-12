@@ -133,10 +133,10 @@ assert(isSameCobraModel(modelIrrev, testModelIrrev));
 % Convert to reversible
 fprintf('>> Testing convertToReversible\n');
 testModelRev = convertToReversible(testModelIrrev);
-load('testModelManipulation.mat','modelRev');
+testModelRev = rmfield(testModelRev,'reversibleModel'); % this should now be the original model!
 
 % test if both models are the same
-assert(isSameCobraModel(modelRev,testModelRev));
+assert(isSameCobraModel(model,testModelRev));
 
 % test irreversibility of model
 fprintf('>> Testing convertToIrreversible (2)\n');
@@ -149,25 +149,16 @@ modelRev.lb(1) = 10;
 % test if both models are the same
 assert(isSameCobraModel(modelIrrev, testModelIrrev));
 
-% test irreversibility of model
+
+%test Conversion with special ordering
 fprintf('>> Testing convertToIrreversible (3)\n');
-load('testModelManipulation.mat','model','modelIrrev');
-modelSave=model;
+load('testModelManipulation.mat','model','modelIrrevOrdered');
 
-% set a reaction as not reversible although the reaction is reversible as
-% suggested by the bounds (case1)
-[testModelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model);
+[testModelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model, 'orderReactions', true);
 
 % test if both models are the same
-assert(isSameCobraModel(modelIrrev, testModelIrrev));
+assert(isSameCobraModel(modelIrrevOrdered, testModelIrrev));
 
-% set a reaction as not reversible although the reaction is reversible as
-% suggested by the bounds (case2)
-model=modelSave;
-[testModelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model);
-
-% test if both models are the same
-assert(isSameCobraModel(modelIrrev, testModelIrrev));
 
 %Test moveRxn
 model2 = moveRxn(model,10,20);
