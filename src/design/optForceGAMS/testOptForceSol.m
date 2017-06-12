@@ -2,10 +2,10 @@ function [maxGrowthRate, minTarget, maxTarget] = testOptForceSol(model, targetRx
 %% DESCRIPTION
 % This function will calculate the minimum and maximum rates for target
 % production when applying a set of interventions (upregulations,
-% downregulations, knockouts) in the model. Flux for each intervened 
+% downregulations, knockouts) in the model. Flux for each intervened
 % reaction in the mutant must be specified in the structure solution (third
-% input). 
-
+% input).
+%
 %% INPUTS
 % model (obligatory):       Type: structure (COBRA model)
 %                           Description: a metabolic model with at least
@@ -19,18 +19,18 @@ function [maxGrowthRate, minTarget, maxTarget] = testOptForceSol(model, targetRx
 %                           ub              Upper bounds for fluxes
 %                           rev             Reversibility flag
 %
-% targetRxn(obligatory):    Type: string. 
+% targetRxn(obligatory):    Type: string.
 %                           Description: reaction identifier for target
 %                           reaction
-%                           Example: targetRxn='EX_suc' 
+%                           Example: targetRxn='EX_suc'
 %
-% solution (obligatory):    Type: structure. 
+% solution (obligatory):    Type: structure.
 %                           Description: structure containing information
 %                           Only two fields are needed:
 %                                   reactions: identifiers for reactions
 %                                   that will be intervened
 %                                   flux: flux achieved in the intervened
-%                                   reactions. 
+%                                   reactions.
 %                           Example;
 %                           solution=struct('reactions',{{'R21';'R24'}},'flux',[10;0])
 %                           In this example, the reaction R21 will be
@@ -52,8 +52,7 @@ function [maxGrowthRate, minTarget, maxTarget] = testOptForceSol(model, targetRx
 %                  Description: Maximum production rate of target at max
 %                  growth rate
 %
-%% CODE
-%input handling
+
 if nargin <1
     error('OptForce: model must be specified when running testOptForceSol');
 else
@@ -98,9 +97,9 @@ maxGrowthRate = solForce.f;
 if solForce.stat == 1
     % find minimum and maximum production rate for target at optimal growth rate
     if relax
-        grRounded = floor(solForce.f/tol)*tol; 
+        grRounded = floor(solForce.f/tol)*tol;
     else
-        grRounded = solForce.f; 
+        grRounded = solForce.f;
     end
     modelForce = changeRxnBounds(modelForce, modelForce.rxns(modelForce.c==1), grRounded,'l');
     modelForce = changeObjective(modelForce, targetRxn);

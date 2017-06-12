@@ -12,10 +12,10 @@ function [minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, boundsW, boundsM] = FV
 %
 % Usage3: FVAOptForce(model, constrWT, constrMT)
 %         specify constraints for both wild-type and mutant strain
-
+%
 %% ADDITIONAL INFORMATION
 % written by Sebastian Mendoza on 17/May/2017. snmendoz@uc.cl
-
+%
 %% INPUTS
 % model (obligatory):       Type: structure (COBRA model)
 %                           Description: a metabolic model with at least
@@ -50,7 +50,7 @@ function [minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, boundsW, boundsM] = FV
 %                               rxnBoundType:   (Type: char array)      Type of bound ('b'/'l'/'u')
 %                                                                       ('b': both bounds; 'l': lower bound; 'u': upper bound)
 %                           Example: constrW=struct('rxnList',{{'R75';'EX_suc'}},'rxnValues',[0;155.55],'rxnBoundType',['b';'b']);
-
+%
 %% OUTPUTS
 % minFluxesW:               Type: double array.
 %                           Description: minimum values for reactions in
@@ -104,21 +104,21 @@ else
 end
 
 if (nargin < 2 || isempty(constrW)) || (nargin < 3 || isempty(constrM))
-    error('OptForce: You should specify constraints for at least one strain'); 
+    error('OptForce: You should specify constraints for at least one strain');
 end
 
 if nargin < 2 || isempty(constrW)
     constrW.rxnList = {};
 else
-    
+
     % check class for constrW
     if ~isstruct(constrW); error('OptForce: Incorrect format for input constrW. It should be a struct'); end;
-    
+
     % check correct fields.
     if ~isfield(constrW,'rxnList'), error('OptForce: Missing field rxnList in constrW');  end
     if ~isfield(constrW,'rxnValues'), error('OptForce: Missing field rxnValues in constrW');  end
     if ~isfield(constrW,'rxnBoundType'), error('OptForce: Missing field rxnBoundType in constrW');  end
-    
+
     % check correct length for fields
     if length(constrW.rxnList) == length(constrW.rxnValues) && length(constrW.rxnList) == length(constrW.rxnBoundType)
         if size(constrW.rxnList,1) > size(constrW.rxnList,2); constrW.rxnList = constrW.rxnList'; end;
@@ -127,7 +127,7 @@ else
     else
         error('OptForce: Incorrect size of fields in constrW');
     end
-    
+
 end
 
 if nargin < 3 || isempty(constrM)
@@ -135,12 +135,12 @@ if nargin < 3 || isempty(constrM)
 else
     % check class for constrW
     if ~isstruct(constrM); error('OptForce: Incorrect format for input constrM. It should be a struct'); end;
-    
+
     % check correct fields.
     if ~isfield(constrM,'rxnList'), error('OptForce: Missing field rxnList in constrM');  end
     if ~isfield(constrM,'rxnValues'), error('OptForce: Missing field rxnValues in constrM');  end
     if ~isfield(constrM,'rxnBoundType'), error('OptForce: Missing field rxnBoundType in constrM');  end
-    
+
     % check correct length for fields
     if length(constrM.rxnList) == length(constrM.rxnValues) && length(constrM.rxnList) == length(constrM.rxnBoundType)
         if size(constrM.rxnList,1) > size(constrM.rxnList,2); constrM.rxnList = constrM.rxnList'; end;

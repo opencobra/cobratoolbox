@@ -6,7 +6,7 @@ function exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, inputF
 % others will be exported as simple .txt files.
 %
 %
-% Created by Sebastián Mendoza. 30/05/2017. snmendoz@uc.cl
+% Created by Sebastiï¿½n Mendoza. 30/05/2017. snmendoz@uc.cl
 %% INPUTS
 % model (obligatory):       Type: struct (COBRA model)
 %                           Description: a metabolic model with at least
@@ -42,14 +42,14 @@ function exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, inputF
 %                                                            (G: Greater than; E: Equal to; L: Lower than)
 %                           Example: struct('rxnList',{{'EX_gluc','R75','EX_suc'}},'values',[-100,0,155.5]','sense','EEE');
 %
-% inputFolder(obligatory):      Type: string. 
+% inputFolder(obligatory):      Type: string.
 %                               Description: Folder where inputs for GAMS
 %                               function will be stored
-
+%
 %% OUTPUTS
 % Reactions.txt                 Type: file
 %                               Description: File containing the
-%                               identifiers for reactions 
+%                               identifiers for reactions
 %
 % Metabolites.txt               Type: file
 %                               Description: File containing the
@@ -57,7 +57,7 @@ function exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, inputF
 %
 % Constrains.txt                Type: file
 %                               Description: File containing the
-%                               identifiers for constrained reactions 
+%                               identifiers for constrained reactions
 %
 % MtoG.gdx                      Type: file
 %                               Description: File containing the
@@ -75,7 +75,7 @@ end
 
 %Create a temporaty folder for inputs
 if ~exist(inputFolder, 'dir')
-   mkdir(inputFolder); 
+   mkdir(inputFolder);
 end
 current = pwd;
 cd(inputFolder);

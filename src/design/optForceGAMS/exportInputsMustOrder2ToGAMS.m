@@ -5,9 +5,8 @@ function exportInputsMustOrder2ToGAMS(model, minFluxesW, maxFluxesW, constrOpt, 
 % be stored in inputFolder. Some inputs will be exported using GDXMRW and
 % others will be exported as simple .txt files.
 %
-% Created by Sebastián Mendoza. 30/05/2017. snmendoz@uc.cl
-%% INPUTS
-
+% Created by Sebastiï¿½n Mendoza. 30/05/2017. snmendoz@uc.cl
+% INPUTS:
 % model (obligatory):       Type: struct (COBRA model)
 %                           Description: a metabolic model with at least
 %                           the following fields:
@@ -51,14 +50,14 @@ function exportInputsMustOrder2ToGAMS(model, minFluxesW, maxFluxesW, constrOpt, 
 %                               Description: Reactions that belong to MustU
 %                               and Must L (first order sets)
 %
-% inputFolder(obligatory):      Type: string. 
+% inputFolder(obligatory):      Type: string.
 %                               Description: Folder where inputs for GAMS
 %                               function will be stored
 
 %% OUTPUTS
 % Reactions.txt                 Type: file
 %                               Description: File containing the
-%                               identifiers for reactions 
+%                               identifiers for reactions
 %
 % Metabolites.txt               Type: file
 %                               Description: File containing the
@@ -66,11 +65,11 @@ function exportInputsMustOrder2ToGAMS(model, minFluxesW, maxFluxesW, constrOpt, 
 %
 % Constrains.txt                Type: file
 %                               Description: File containing the
-%                               identifiers for constrained reactions 
+%                               identifiers for constrained reactions
 %
 % Excluded.txt                  Type: file
 %                               Description: File containing the
-%                               identifiers for excluded reactions. These 
+%                               identifiers for excluded reactions. These
 %                               reactions will not be considered in when
 %                               running findMustXX.gms (XX=UU or LL or UL
 %                               depending on the case)
@@ -96,7 +95,7 @@ end
 
 %Create a temporaty folder for inputs
 if ~exist(inputFolder, 'dir')
-   mkdir(inputFolder); 
+   mkdir(inputFolder);
 end
 current = pwd;
 cd(inputFolder);

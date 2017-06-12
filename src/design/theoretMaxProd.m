@@ -1,4 +1,4 @@
-function [ExRxns,MaxTheoOut]= theoretMaxProd(model, criterion, inputrxn, normalize, rxns)
+function [ExRxns, MaxTheoOut] = theoretMaxProd(model, criterion, inputrxn, normalize, rxns)
 % Determines the max theoretical output for each exchange reaction
 %
 % USAGE:
