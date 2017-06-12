@@ -12,18 +12,21 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %       .solver:                 Use either 'GIMME','iMAT','INIT','GIMME',
 %                                'mCADRE','fastCore'
 %                           
-%       .additionalparam:        see ADDITIONAL PARAMETERS section below
+%       .additionalparam:        see NOTE section below
 %
 % OPTIONAL INPUTS:
 %	funcModel:               1 - Build a functional model having only reactions
 %                            that can carry a flux (using a consistency check), 0 - skip this
 %                            step (Default = 0)
 %	exRxnRemove:             Names of exchange reactions to remove
-%                           (Default = [])
+%                           (Default = [])                                       
 %
-% ADDITIONAL PARAMETERS:
+% OUTPUTS:
+%	tissueModel:                     extracted model
+%
+% NOTES:
 % This section describes the additional parameter fields that need to be set in
-% 'options' structure depending on the solver used. Note that some of these
+% 'options' structure depending on the solver used. Some of these
 % are optional (marked by an '*'), if not defined, they will be set at their
 % default values.
 %
@@ -89,10 +92,6 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %       options.epsilon*             smallest flux value that is considered
 %                                    nonzero (default 1e-4)                                      
 %       options.printLevel*          0 = silent, 1 = summary, 2 = debug (default 0)
-%                                       
-%
-% OUTPUTS:
-%	tissueModel:                     extracted model
 %
 %
 %
