@@ -1228,13 +1228,60 @@ switch solver
             ILOGcplex.solve();
 
             origStat   = ILOGcplex.Solution.status;
+            stat = origStat;
             if origStat==1
                 f = osense*ILOGcplex.Solution.objval;
                 x = ILOGcplex.Solution.x;
                 w = ILOGcplex.Solution.reducedcost;
-                y = ILOGcplex.Solution.dual;
+                y = ILOGcplex.Solution.dual;                                            
+            elseif origstat == 4
+                %This is likely unbounded, but could be infeasible 
+                %Lets check, by solving an additional LP with a bounded
+                %objective.
+                ILOGcplex.Model.obj   = osense*c;
+                ILOGcplex.Model.lb    = lb;
+                ILOGcplex.Model.ub    = ub;
+                ILOGcplex.Model.A     = [LPproblem.A;osense*c];                
+                ILOGcplex.Model.lhs   = [b_L;-100* max(abs([lb(abs(lb) < inf);ub(abs(ub)<inf)]))];
+                ILOGcplex.Model.rhs   = [b_U;100* max(abs([lb(abs(lb) < inf);ub(abs(ub)<inf)]))];
+                ILOGcplex.solve();
+                origStatNew   = ILOGcplex.Solution.status;
+                if origstatNew == 1
+                    stat = 2;
+                else
+                    stat = 0;
+                end
+            elseif origstat == 3
+                stat = 0;
+            elseif origstat == 5 || origstat == 6 
+                stat = 3                
+                f = osense*ILOGcplex.Solution.objval;
+                x = ILOGcplex.Solution.x;
+                w = ILOGcplex.Solution.reducedcost;
+                y = ILOGcplex.Solution.dual;    
+            elseif (origstat >= 10 && origstat <= 12) || origstat == 21 || origstat == 22
+                %Abort due to reached limit. check if there is a solution
+                %and return it.
+                stat = 3;
+                if isfield(ILOGcplex.Solution ,'x')
+                    x = ILOGcplex.Solution.x;
+                else
+                    % No solution returned
+                    stat = -1;
+                end
+                if isfield(ILOGcplex.Solution ,'reducedcost')
+                    w = ILOGcplex.Solution.reducedcost; 
+                end
+                if isfield(ILOGcplex.Solution ,'dual')            
+                    y = ILOGcplex.Solution.dual;    
+                end
+                
+            elseif origstat == 13
+                stat = -1;
+            elseif origstat == 20
+                stat = 2;
             end
-
+            
             switch ILOGcplex.Param.lpmethod.Cur
                 case 0
                     algorithm='Automatic';
@@ -1314,9 +1361,10 @@ switch solver
             w=lambda.lower-lambda.upper;
             origStat = output.cplexstatus;
             algorithm='Automatic';
+            stat=origStat;
         end
         % 1 = (Simplex or Barrier) Optimal solution is available.
-        stat=origStat;
+        
         if exist([pwd filesep 'clone1_' labindex '.log'],'file')
             delete([pwd filesep 'clone1_' labindex '.log'])
         end
