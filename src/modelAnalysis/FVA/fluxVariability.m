@@ -233,7 +233,7 @@ function [minFlux,maxFlux,Vmin,Vmax] = calcSolForEntry(model,rxnNameList,i,LPpro
         %take the maximum flux from the flux vector, not from the obj -Ronan
         %A solution is possible, so the only problem should be if its
         %unbounded and if it is unbounded, the max flux is infinity.
-        if LPsolution.stat ~= 1
+        if LPsolution.stat == 2
             maxFlux = inf;
         else
             maxFlux = getObjectiveFlux(LPsolution,LPproblem);
@@ -252,7 +252,7 @@ function [minFlux,maxFlux,Vmin,Vmax] = calcSolForEntry(model,rxnNameList,i,LPpro
         %take the maximum flux from the flux vector, not from the obj -Ronan        
         %A solution is possible, so the only problem should be if its
         %unbounded and if it is unbounded, the max flux is infinity.
-        if LPsolution.stat ~= 1
+        if LPsolution.stat == 2
             minFlux = -inf;
         else
             minFlux = getObjectiveFlux(LPsolution,LPproblem);
