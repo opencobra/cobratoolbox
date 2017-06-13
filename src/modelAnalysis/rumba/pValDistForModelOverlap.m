@@ -30,8 +30,9 @@ model1.points(end+1:end+length(ZeroRxns2),:)=0;
 model2.points(end+1:end+length(ZeroRxns1),:)=0;
 
 % make a list of reactions that are shared
-rxnsInCommon = intersect(model1.rxns,model2.rxns);
-if sum(ismember(rxnsInCommon,model1.rxns))~=length(rxnsInCommon)
+rxnsInCommon = model1.rxns;
+checkInCommon = intersect(model1.rxns,model2.rxns);
+if sum(ismember(rxnsInCommon,checkInCommon))~=length(rxnsInCommon)
     warning('Preprocessing has not been properly performed: some reactions from the reference model are not present in the sampled models')
 end
 
