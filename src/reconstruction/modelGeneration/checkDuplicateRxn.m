@@ -1,13 +1,17 @@
 function [modelOut, removedRxnInd, keptRxnInd] = checkDuplicateRxn(model, method, removeFlag, printLevel)
-%checkDuplicateRxn Checks model for duplicate reactions and removes them
+% Checks model for duplicate reactions and removes them
+% By default, it detects the columns of S that are identical upto scalar 
+% multiplication
 %
 % INPUTS:
 % model         Cobra model structure
-% method        rxnAbbr --> checks rxn abbreviations
-%               S --> checks rxn S matrix
-%               FR --> checks rxn S matrix ignoring reaction direction
 %
 % OPTIONAL INPUTS:
+% method        S       --> checks rxn S matrix (default)
+%               rxnAbbr --> checks rxn abbreviations
+%               FR      --> checks F + R matrix, where S:=-F+R, which ignores
+%                           reaction direction
+%
 % removeFlag    {(1),0} boolean to remove duplicates
 % printLevel
 %
@@ -17,6 +21,10 @@ function [modelOut, removedRxnInd, keptRxnInd] = checkDuplicateRxn(model, method
 % keptRxnInd        Reaction numbers in model that were (should be) kept
 
 % Ronan Fleming rewritten 2017
+
+if ~exist('method', 'var')
+    method = 'S';
+end
 
 if ~exist('printLevel', 'var')
     printLevel = 0;
@@ -72,7 +80,7 @@ switch method
                     removedOneRxnInd = ind(end);
 
                     if length(ind) > 2
-                        warning([model.rxns{ind(1)} ' has more than one replicate'])
+                        warning(['Reaction: ' model.rxns{ind(1)} ' has more than one replicate'])
                     end
 
                     removedRxnInd = [removedRxnInd; removedOneRxnInd];

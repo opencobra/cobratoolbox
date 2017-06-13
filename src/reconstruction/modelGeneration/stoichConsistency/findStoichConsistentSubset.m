@@ -483,7 +483,7 @@ while iterateCardinalityOpt>0
     model.rxnUnknownInconsistentRemoveBool=  model.rxnUnknownInconsistentRemoveBool | rxnRemoveBool;
     model.metUnknownInconsistentRemoveBool=  model.metUnknownInconsistentRemoveBool | metRemoveBool;
     
-    %extend inconsistent reaction boolean vector
+    %extend estimated inconsistent reaction boolean vector
     model.SInConsistentRxnBool = model.SInConsistentRxnBool | rxnRemoveBool;
     model.SInConsistentMetBool = model.SInConsistentMetBool | metRemoveBool;
     
@@ -520,9 +520,18 @@ while iterateCardinalityOpt>0
 
     %check if there has been any progress
     if lastUnkownConsistencyMetBool==nnz(model.unknownSConsistencyMetBool) && lastUnkownConsistencyRxnBool==nnz(model.unknownSConsistencyRxnBool)
-        %any remaining unknowns are considered inconsistent
-        model.SInConsistentRxnBool = model.SInConsistentRxnBool | model.unknownSConsistencyRxnBool;
-        model.SInConsistentMetBool = model.SInConsistentMetBool | model.unknownSConsistencyMetBool;
+        if 0
+            if 0
+                %any remaining unknowns are considered inconsistent
+                model.SInConsistentRxnBool = model.SInConsistentRxnBool | model.unknownSConsistencyRxnBool;
+                model.SInConsistentMetBool = model.SInConsistentMetBool | model.unknownSConsistencyMetBool;
+            else
+                %any remaining inconsistent are considered of unknown
+                %consistency
+                model.unknownSConsistencyRxnBool = model.SInConsistentRxnBool | model.unknownSConsistencyRxnBool;
+                model.unknownSConsistencyMetBool = model.SInConsistentMetBool | model.unknownSConsistencyMetBool;
+            end
+        end
         break
     else
         lastUnkownConsistencyMetBool=nnz(model.unknownSConsistencyMetBool);

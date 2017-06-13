@@ -17,8 +17,8 @@ function model=findSExRxnInd(model,nRealMet,printLevel)
 % nRealMet                  specified in case extra rows in S which dont
 %                           correspond to metabolties
 %OUTPUT
-% model.SIntRxnBool         Boolean of reactions heuristically though to be mass balanced.
 % model.SIntMetBool         Boolean of metabolites heuristically though to be involved in mass balanced reactions.
+% model.SIntRxnBool         Boolean of reactions heuristically though to be mass balanced.
 % model.SOnlyIntMetBool     Boolean of metabolites heuristically though only to be involved in mass balanced reactions.
 % model.SExMetBool          Boolean of metabolites heuristically though to be involved in mass imbalanced reactions.
 % model.SOnlyExMetBool      Boolean of metabolites heuristically though only to be involved in mass imbalanced reactions.

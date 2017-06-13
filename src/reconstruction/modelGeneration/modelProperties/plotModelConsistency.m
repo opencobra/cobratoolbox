@@ -1,4 +1,4 @@
-function plotModelConsistency(modelResults,modelMetaData,schematicFlag,nRows,nCols,resultsDirectory,resultsFileName)
+function plotModelConsistency(modelResults,modelMetaData,schematicFlag,nRows,nCols,resultsDirectory,figureFileName,resultsFileName)
 %plots stoichoiometric and flux consistency figures, given a modelResults
 %structure or by loading the modelResults structure from a specified
 %location
@@ -13,6 +13,8 @@ function plotModelConsistency(modelResults,modelMetaData,schematicFlag,nRows,nCo
 %
 %OPTIONAL INPUT
 % resultsDirectory      directory where output of checkModelProperties.m has been saved
+%                       same directory where the figure will be saved
+% figureFileName        filename of the figure (without the directory)
 % resultsFileName       filename where output of checkModelProperties.m has been saved
 
 %number of rows and columns of the figure
@@ -24,12 +26,16 @@ if ~exist('nCols','var')
 end
 if isempty(modelResults)
     if ~exist('resultsFileName','var')
-        resultsFileName='FRresults_20150130T011200';
+        resultsFileName='checkModelPropertiesResults';
+    end
+    if ~exist('figureFileName','var')
+        figureFileName='checkModelPropertiesResults';
     end
     %results directory
     if ~exist('resultsDirectory','var')
-        resultsDirectory='/home/rfleming/Dropbox/graphStoich/results/modelResults/';
+        resultsDirectory=pwd;
     end
+    
     cd(resultsDirectory)
     load([resultsDirectory resultsFileName])
 end
@@ -58,7 +64,7 @@ end
 tol=0.60;
 
 fprintf('%s\n',['Reconstructions with less than ' num2str(tol*100) '% stoichiometrically inconsistent rows...'])
-fprintf('%s%s%s\n','Model                 ','Reactants ', 'Stoic. consistent')
+fprintf('%s%s%s\n','Model                 ','Species ', 'Stoic. consistent')
 stochConsistentFraction=zeros(nReconstructions,1);
 sufficientlyStochConsistent=true(nReconstructions,1);
 for j=1:nReconstructions
@@ -77,7 +83,7 @@ close all
 % fprintf('\n')
 
 fontSizeTitle=14;
-fontSizeLabel=14;
+fontSizeLabel=16;
 if schematicFlag %top left plot is a schematic
     h=figure('units','normalized','outerposition',[0 0 1 1]);
     k=1;%first plot is for legend
@@ -239,3 +245,24 @@ end
 %legend('Original','Stoichiometrically consistent','+ Flux consistent','+ non-zero','+ unique','full rank([F R])');
 %legend('Reconstruction','Stoich. consistent','Nontrivial, stoich. & flux consistent','[F R] full row rank');
 %legend('Reconstruction','Stoich. consistent','Stoich. consistent, flux consistent, unique & nonzero.');
+
+if 0
+ax = gca;
+outerpos = ax.OuterPosition;
+ti = ax.TightInset; 
+left = outerpos(1) + ti(1);
+bottom = outerpos(2) + ti(2);
+ax_width = outerpos(3) - ti(1) - ti(3);
+ax_height = outerpos(4) - ti(2) - ti(4);
+ax.Position = [left bottom ax_width ax_height];
+end
+
+fig = gcf;
+fig.PaperPositionMode = 'auto';
+fig_pos = fig.PaperPosition;
+fig.PaperSize = [fig_pos(3) fig_pos(4)];
+
+if exist('figureFileName','var')
+    saveas(fig,[resultsDirectory filesep figureFileName]);
+    print(fig,[resultsDirectory filesep figureFileName],'-dpng');
+end
