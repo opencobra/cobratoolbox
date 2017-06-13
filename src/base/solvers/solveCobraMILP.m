@@ -130,21 +130,6 @@ if nargin ~= 1
             solver = parameters.solver;
             parameters = rmfield(parameters, 'solver');
         end
-
-        % expecting pairs of parameter names and parameter values
-        for i = 1:2:length(varargin) - 1
-            if ismember(varargin{i}, optParamNames)
-                if isstruct(varargin{i + 1})
-                    error('solveCobraMILP: Invalid number of parameters/values')
-                else
-                    parameters.(varargin{i}) = varargin{i + 1};
-                end
-            else
-                error([varargin{i} ' is not a valid optional parameter']);
-            end
-        end
-        parametersStructureFlag = 0;
-        parameters = '';
     elseif strcmp(varargin{1}, 'default')
         % default cobra parameters
         parameters = 'default';
@@ -246,7 +231,7 @@ switch solver
             solStat = 2;  % unbounded
         elseif(stat == 4)
             solStat = 0;  % infeasible
-
+        
         elseif(stat == 171)
             solStat = 1;  % Opt integer within tolerance
         elseif(stat == 173)
