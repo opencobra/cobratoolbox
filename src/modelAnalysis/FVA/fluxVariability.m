@@ -153,6 +153,9 @@ LPproblem.S = LPproblem.A;%needed for sparse optimisation
 %solve to generate initial basis
 LPproblem.osense = -1;
 tempSolution = solveCobraLP(LPproblem);
+if ~(tempSolution.stat == 1)
+    error('The fva could not be run because the model is infeasible or unbounded')
+end
 LPproblem.basis = tempSolution.basis;
 
 % Loop through reactions
@@ -228,8 +231,13 @@ function [minFlux,maxFlux,Vmin,Vmax] = calcSolForEntry(model,rxnNameList,i,LPpro
             LPsolution = solveCobraMILP(addLoopLawConstraints(LPproblem, model));
         end
         %take the maximum flux from the flux vector, not from the obj -Ronan
-        maxFlux = getObjectiveFlux(LPsolution,LPproblem);
-
+        %A solution is possible, so the only problem should be if its
+        %unbounded and if it is unbounded, the max flux is infinity.
+        if LPsolution.stat ~= 1
+            maxFlux = inf;
+        else
+            maxFlux = getObjectiveFlux(LPsolution,LPproblem);
+        end
         %minimise the Euclidean norm of the optimal flux vector to remove
         %loops -Ronan
         if minNorm == 1
@@ -241,8 +249,14 @@ function [minFlux,maxFlux,Vmin,Vmax] = calcSolForEntry(model,rxnNameList,i,LPpro
         else
             LPsolution = solveCobraMILP(addLoopLawConstraints(LPproblem, model));
         end
-        %take the maximum flux from the flux vector, not from the obj -Ronan
-        minFlux = getObjectiveFlux(LPsolution,LPproblem);
+        %take the maximum flux from the flux vector, not from the obj -Ronan        
+        %A solution is possible, so the only problem should be if its
+        %unbounded and if it is unbounded, the max flux is infinity.
+        if LPsolution.stat ~= 1
+            minFlux = -inf;
+        else
+            minFlux = getObjectiveFlux(LPsolution,LPproblem);
+        end
 
 
         %minimise the Euclidean norm of the optimal flux vector to remove
