@@ -20,19 +20,6 @@
 %                                                           solver, matrixAS, cpxControl, rxnsList);
 %===========================================================================================
 
-% MATLAB commands for setting a fresh environment
-%clear all; clc; format long;
-
-%w = warning('off', 'all');
-
-%% Setting parameters
-
-% Root directory
-rootdirect = '../../';
-
-% Adding the paths
-%addpath(genpath(rootdirect))
-
 % Choice of the example
 example = 1;
 
@@ -43,11 +30,14 @@ objective = 'max';
 % Define the number of workers to be used
 nworkers = 2;
 
+% Start a parpool environment in MATLAB
+SetWorkerCount(nworkers);
+
 % Define the solver
 solver = 'cplex';
 
 % Model loading
-data = load('e_coli_core.mat', 'model');
+data = load('ecoli_core_model.mat', 'model');
 
 % fastFVA validation
 validation = false;
@@ -108,13 +98,22 @@ end
 
 %% Validation of Toy Example
 load('refData_fastFVA.mat');
+
+if (i == referenceToyResults.i) flag = true; else flag = false; end;
+if (iExperiment == referenceToyResults.iExperiment) flag = true; else flag = false; end;
+if (maxFlux == referenceToyResults.maxFlux) flag = true;  else flag = false; end;
+if (minFlux == referenceToyResults.minFlux) flag = true;  else flag = false; end;
+if (optPercentage == referenceToyResults.optPercentage) flag = true;  else flag = false; end;
+if (optsol == referenceToyResults.optsol) flag = true;  else flag = false; end;
+
+%{
 assert(i == referenceToyResults.i);
 assert(iExperiment == referenceToyResults.iExperiment);
 assert(maxFlux == referenceToyResults.maxFlux);
 assert(minFlux == referenceToyResults.minFlux);
 assert(optPercentage == referenceToyResults.optPercentage);
 assert(optsol == referenceToyResults.optsol);
-
+%}
 fprintf('================================================================================\n\n')
 fprintf('\n ---------------------------------           Example %d          ------------------------------- \n\n', example);
 
@@ -124,9 +123,6 @@ idx   = strmatch('model',fname);
 if isempty(idx) fname = fname{1};
 else fname = fname{idx(1)}; end
 model = getfield(data,fname);
-
-% Start a parpool environment in MATLAB
-SetWorkerCount(nworkers);
 
 %% Running Experiments
 
