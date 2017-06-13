@@ -113,9 +113,9 @@ end
 if (nargin<4 || isempty(solver)), solver         = 'cplex';     end
 if (nargin<3 || isempty(objective)), objective      = 'max';      end
 if (nargin<2 || isempty(optPercentage)), optPercentage  = 100;        end
-if (nargin<10 || isempty(rxnsOptMode))
+if (nargin<9 || isempty(rxnsOptMode))
       rxnsOptMode = 2*ones(length(rxns),1)'; %status = 2 (min & max) for all reactions
-  end
+end
 
 % Define extra outputs if required
 if nargout>4 && nargout <= 7
@@ -145,17 +145,16 @@ elseif strcmpi(objective,'min')
    obj=1;
 else
    error('Unknown objective')
-end;
+end
 
 % Define the solver
 if strmatch('glpk',solver)
-   %FVAc=@glpkFVAcc;
    fprintf('ERROR : GLPK is not (yet) supported as the binaries are not yet available.')
 elseif strmatch('cplex',solver)
-    FVAc = str2func(['cplexFVA' getCPLEXversion()])
+    FVAc = str2func(['cplexFVA' getCPLEXversion()]);
 else
    error(sprintf('Solver %s not supported', solver))
-end;
+end
 
 % Define the CPLEX parameter set and the associated values - split the struct
 namesCPLEXparams    = fieldnames(cpxControl);
@@ -230,7 +229,7 @@ if isempty(poolobj)
     nworkers = 0;
 else
     nworkers = poolobj.NumWorkers;
-end;
+end
 
 % Launch fastFVA on 1 core
 if nworkers<=1
@@ -259,7 +258,7 @@ if nworkers<=1
 
    if ret ~= 0 && verbose
       fprintf('Unable to complete the FVA, return code=%d\n', ret);
-   end;
+   end
 else
    % Divide the reactions amongst workers
    %
@@ -272,6 +271,7 @@ else
       nworkers = 4*nworkers;
       fprintf(' >> The load is balanced and the number of virtual workers is %d.\n', nworkers);
    end
+
 
    nrxn=repmat(fix(n/nworkers),nworkers,1);
    i=1;
@@ -289,10 +289,10 @@ else
      end
 
    startMarker1 = istart;
-   endMarker1 = iend;
+   endMarker1 = iend
 
    startMarker2 = istart;
-   endMarker2 = iend;
+   endMarker2 = iend
 
 
 %% Calculate the column density and row density
@@ -305,13 +305,13 @@ else
      rowDensity = nnz(A(i,:));
      rowDensity = rowDensity / Nrxns * 100;
      rdVect(i) = rowDensity;
-   end;
+   end
 
    for i=1:Nrxns
      columnDensity = nnz(A(:,i));
      columnDensity = columnDensity / Nmets * 100;
      cdVect(i) = columnDensity;
-   end;
+   end
 
 
    [sortedcdVect,indexcdVect] = sort(cdVect,'descend');
@@ -335,32 +335,33 @@ else
          endMarker2(i) = endMarker1(i) + ceil(Nrxns/2);
 
            if endMarker1(i) > Nrxns
-             endMarker1(i) = Nrxns;
-           end;
+              endMarker1(i) = Nrxns;
+           end
 
            if endMarker2(i) > Nrxns
-             endMarker2(i) = Nrxns;
-           end;
-       end;
+              endMarker2(i) = Nrxns;
+           end
+       end
     elseif(strategy == 2)
+
       nbRxnsPerThread = ceil(Nrxns/(2*nworkers));
 
       for i = 1:nworkers
         startMarker1(i) = (i-1) * nbRxnsPerThread + 1;
         endMarker1(i) = i * nbRxnsPerThread;
 
-        endMarker2(i) = Nrxns - startMarker1(i) - 1;
-        startMarker2(i) = Nrxns - endMarker1(i);
+        startMarker2(i) = ceil(Nrxns / 2) + startMarker1(i);
+        endMarker2(i) = startMarker2(i) + nbRxnsPerThread + 1
 
           if endMarker1(i) > Nrxns
             endMarker1(i) = Nrxns;
-          end;
+          end
 
           if endMarker2(i) > Nrxns
             endMarker2(i) = Nrxns;
-          end;
-      end;
-   end;
+          end
+      end
+   end
 
    minFlux = zeros(length(model.rxns),1);
    maxFlux = zeros(length(model.rxns),1);
@@ -400,11 +401,15 @@ else
 
       t = getCurrentTask();
 
-      if(strategy == 0)
       fprintf('\n----------------------------------------------------------------------------------\n');
-      fprintf('--  Task Launched // TaskID: %d / %d (LoopID = %d) <> [%d, %d] / [%d, %d].\n', ...
-              t.ID, nworkers, i, istart(i), iend(i), m, n);
-      end;
+      if strategy == 0
+          fprintf('--  Task Launched // TaskID: %d / %d (LoopID = %d) <> [%d, %d] / [%d, %d].\n', ...
+                  t.ID, nworkers, i, istart(i), iend(i), m, n);
+      else
+          fprintf('--  Task Launched // TaskID: %d / %d (LoopID = %d) <> [%d:%d] & [%d:%d] / [%d, %d].\n', ...
+                  t.ID, nworkers, i, (startMarker1(i)), (endMarker1(i)), ...
+                  (startMarker2(i)), (endMarker2(i)), m, n);
+      end
 
       tstart = tic;
 
@@ -422,9 +427,9 @@ else
                                                          optPercentage,obj, rxnsKey', ...
                                                          t.ID, cpxControl, valuesCPLEXparams, rxnsOptMode(istart(i):iend(i)));
       else
-          if(strategy == 0)
+          if strategy == 0
               fprintf(' >> Number of reactions given to the worker: %d \n', length((istart(i):iend(i)) ) );
-          end;
+          end
 
           [minf,maxf,iopt(i),iret(i)]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
                                          optPercentage,obj, rxnsKey', ...
@@ -441,9 +446,9 @@ else
       maxFluxTmp{i} = maxf;
 
       if bExtraOutputs || bExtraOutputs1
-        fvaminRes{i}=fvamin_single;
-        fvamaxRes{i}=fvamax_single;
-        fbasolRes{i}=fbasol_single;
+          fvaminRes{i}=fvamin_single;
+          fvamaxRes{i}=fvamax_single;
+          fbasolRes{i}=fbasol_single;
       end
 
       if bExtraOutputs1
@@ -456,13 +461,13 @@ else
       % print out the percentage of the progress
       percout =   parfor_progress(-1,filenameParfor);
 
-      if(percout < 100)
+      if percout < 100
           fprintf(' ==> %1.1f%% done. Please wait ...\n', percout);
       else
           fprintf(' ==> 100%% done. Analysis completed.\n', percout);
       end
 
-   end;
+   end
 
    % Aggregate results
    optsol = iopt(1);
@@ -473,7 +478,13 @@ end
 
 % Aggregate the results for the maximum and minimum flux vectors
 for i=1:nworkers
-    indices = rxns(istart(i):iend(i));
+     %preparation of reactionKey
+      if strategy == 1 || strategy == 2
+        indices = [sortedrxnsVect(startMarker1(i):endMarker1(i)), sortedrxnsVect(startMarker2(i):endMarker2(i))];
+      else
+        indices = rxns(istart(i):iend(i));
+      end
+
     tmp = maxFluxTmp{i};
     %maxfluxcomplete = tmp;
     %maxfluxchunk = tmp(indices);
@@ -531,4 +542,4 @@ if(strategy == 0 && ~ isempty(rxnsList))
 
     minFlux(find(~ismember(model.rxns, rxnsList)))=[];
     maxFlux(find(~ismember(model.rxns, rxnsList)))=[];
-end;
+end
