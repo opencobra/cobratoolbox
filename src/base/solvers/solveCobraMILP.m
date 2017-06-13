@@ -122,6 +122,7 @@ if nargin ~= 1
     if mod(length(varargin), 2) == 0
         try
             parameters = struct(varargin{:});
+            parametersStructureFlag = 0;
         catch
             error('solveCobraLP: Invalid parameter name-value pairs.')
         end
