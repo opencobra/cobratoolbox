@@ -124,23 +124,49 @@ while k<=nResults
             modelResultsTable{i,n+1}='';
         end
     end
+    %rank
     i=i+1;
+    if firstColumn
+        modelResultsTable{i,1}='rank [N B]';
+    else
+        modelResultsTable{i,n+1}=modelResults(k).model.rankS;
+    end
     %separate rows from columns
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='# Reactions = # Cols of [N B]';
+        modelResultsTable{i,1}='Reactions = Cols of [N B]';
     else
         modelResultsTable{i,n+1}=size(modelResults(k).model.S,2);
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='# Internal reactions = # Cols of N';
+        modelResultsTable{i,1}='Internal reactions = Cols of N';
     else
         modelResultsTable{i,n+1}=nnz(modelResults(k).model.SIntRxnBool);
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='# Elementally balanced reactions';
+        modelResultsTable{i,1}='Stoichiometrically consistent reactions';
+    else
+        modelResultsTable{i,n+1}=nnz(modelResults(k).model.SConsistentRxnBool);
+    end
+    if 0
+        i=i+1;
+        if firstColumn
+            modelResultsTable{i,1}='Reactions minus stoich. consistent reactions';
+        else
+            modelResultsTable{i,n+1}=size(modelResults(k).model.S,2)-nnz(modelResults(k).model.SConsistentRxnBool);
+        end
+    end
+    i=i+1;
+    if firstColumn
+        modelResultsTable{i,1}='Internal, stoich. inconsistent reactions';
+    else
+        modelResultsTable{i,n+1}=nnz(modelResults(k).model.SInConsistentRxnBool & modelResults(k).model.SIntRxnBool);
+    end
+    i=i+1;
+    if firstColumn
+        modelResultsTable{i,1}='Elementally balanced reactions';
     else
         if isfield(modelResults(k).model,'balancedRxnBool')
             modelResultsTable{i,n+1}=nnz(modelResults(k).model.balancedRxnBool);
@@ -150,112 +176,92 @@ while k<=nResults
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='# Stoichiometrially consistent reactions';
-    else
-        modelResultsTable{i,n+1}=nnz(modelResults(k).model.SConsistentRxnBool);
-    end
-    if 0
-        i=i+1;
-        if firstColumn
-            modelResultsTable{i,1}='# Reactions minus stoich. consistent reactions';
-        else
-            modelResultsTable{i,n+1}=size(modelResults(k).model.S,2)-nnz(modelResults(k).model.SConsistentRxnBool);
-        end
-    end
-    i=i+1;
-    if firstColumn
-        modelResultsTable{i,1}='# Internal, stoich. inconsistent reactions';
-    else
-        modelResultsTable{i,n+1}=nnz(modelResults(k).model.SInConsistentRxnBool & modelResults(k).model.SIntRxnBool);
-    end
-    i=i+1;
-    if firstColumn
-        modelResultsTable{i,1}='# Internal, stoich. inconsistent, elementally balanced reactions';
+        modelResultsTable{i,1}='Internal, stoich. inconsistent, elementally balanced reactions';
     else
         modelResultsTable{i,n+1}=nnz(modelResults(k).model.SInConsistentRxnBool & modelResults(k).model.balancedRxnBool & modelResults(k).model.SIntRxnBool);
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='# Omitted reactions';
+        modelResultsTable{i,1}='Omitted reactions';
     else
         modelResultsTable{i,n+1}=nnz(modelResults(k).model.rxnUnknownInconsistentRemoveBool);
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='# Stoich. and flux consistent reactions';
+        modelResultsTable{i,1}='Stoich. and flux consistent reactions';
     else
         modelResultsTable{i,n+1}=nnz(modelResults(k).model.SConsistentRxnBool & modelResults(k).model.fluxConsistentRxnBool);
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='# Internal rxns minus stoich. and flux consistent reactions';
+        modelResultsTable{i,1}='Internal reactions minus stoich. and flux consistent reactions';
     else
         modelResultsTable{i,n+1}=nnz(modelResults(k).model.SIntRxnBool) - nnz(modelResults(k).model.SConsistentRxnBool & modelResults(k).model.fluxConsistentRxnBool);
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='# Reactions exclusively involved in leaks';
+        modelResultsTable{i,1}='Reactions exclusive to leaks';
     else
         modelResultsTable{i,n+1}=nnz(modelResults(k).model.leakRxnBool);
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='# Reactions exclusively involved in siphons';
+        modelResultsTable{i,1}='Reactions exclusive to siphons';
     else
         modelResultsTable{i,n+1}=nnz(modelResults(k).model.siphonRxnBool);
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='# External reactions = # Cols of B';
+        modelResultsTable{i,1}='External reactions = Cols of B';
     else
         modelResultsTable{i,n+1}=nnz(~modelResults(k).model.SIntRxnBool);
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='# External flux consistent reactions';
+        modelResultsTable{i,1}='External flux consistent reactions';
     else
         modelResultsTable{i,n+1}=nnz(~modelResults(k).model.SIntRxnBool & modelResults(k).model.fluxConsistentRxnBool);
     end
     if 0
         i=i+1;
         if firstColumn
-            modelResultsTable{i,1}='# Unique and stoichiometrially consistent cols';
+            modelResultsTable{i,1}='Unique and Stoichiometrically consistent cols';
         else
             modelResultsTable{i,n+1}=nnz(modelResults(k).model.SConsistentRxnBool & modelResults(k).model.FRuniqueColBool);
         end
         i=i+1;
         if firstColumn
-            modelResultsTable{i,1}='# Unique stoich. and flux consistent cols of [F;R]';
+            modelResultsTable{i,1}='Unique stoich. and flux consistent cols of [F;R]';
         else
             modelResultsTable{i,n+1}=nnz(modelResults(k).model.SConsistentRxnBool & modelResults(k).model.FRuniqueColBool & modelResults(k).model.fluxConsistentRxnBool);
         end
         i=i+1;
         if firstColumn
-            modelResultsTable{i,1}='# Nontrivial stoich. and flux consistent cols of [F;R]';
+            modelResultsTable{i,1}='Nontrivial stoich. and flux consistent cols of [F;R]';
         else
             modelResultsTable{i,n+1}=nnz(modelResults(k).model.SConsistentRxnBool & modelResults(k).model.FRuniqueColBool & modelResults(k).model.fluxConsistentRxnBool & modelResults(k).model.FRnonZeroColBool);
         end
         i=i+1;
         if firstColumn
-            modelResultsTable{i,1}='# Largest connected cols of [F;R]';
+            modelResultsTable{i,1}='Largest connected cols of [F;R]';
         else
             modelResultsTable{i,n+1}=nnz(modelResults(k).model.largestConnectedColsFRVBool);
         end
         i=i+1;
         if firstColumn
-            modelResultsTable{i,1}='# Cols of proper [F;R]';
+            modelResultsTable{i,1}='Cols of proper [F;R]';
         else
             modelResultsTable{i,n+1}=nnz(modelResults(k).model.FRVcols);
         end
         i=i+1;
         if firstColumn
-            modelResultsTable{i,1}='# Rank of proper [F;R]';
+            modelResultsTable{i,1}='Rank of proper [F;R]';
         else
             modelResultsTable{i,n+1}=modelResults(k).model.rankFRV;
         end
         i=i+1;
         if firstColumn
-            modelResultsTable{i,1}='# Rank of vanilla [F;R]';
+            modelResultsTable{i,1}='Rank of vanilla [F;R]';
         else
             modelResultsTable{i,n+1}=modelResults(k).model.rankFRVvanilla;
         end
@@ -269,14 +275,14 @@ while k<=nResults
     %% separate rows from columns
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='# Reactants = # Rows of [N B]';
+        modelResultsTable{i,1}='Species = Rows of [N B]';
     else
         modelResultsTable{i,n+1}=size(modelResults(k).model.S,1);
     end
     if 0
         i=i+1;
         if firstColumn
-            modelResultsTable{i,1}='# Rank of reconstruction [F,R]';
+            modelResultsTable{i,1}='Rank of reconstruction [F,R]';
         else
             modelResultsTable{i,n+1}=modelResults(k).model.rankFRvanilla;
         end
@@ -310,7 +316,19 @@ while k<=nResults
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='# Elementally balanced rows';
+        modelResultsTable{i,1}='Stoichiometrically consistent rows';
+    else
+        modelResultsTable{i,n+1}=nnz(modelResults(k).model.SConsistentMetBool);
+    end
+    i=i+1;
+    if firstColumn
+        modelResultsTable{i,1}='Stoichiometrically inconsistent rows';
+    else
+        modelResultsTable{i,n+1}=nnz(modelResults(k).model.SInConsistentMetBool);
+    end
+    i=i+1;
+    if firstColumn
+        modelResultsTable{i,1}='Elementally balanced rows';
     else
         if isfield(modelResults(k).model,'balancedMetBool')
             modelResultsTable{i,n+1}=nnz(modelResults(k).model.balancedMetBool);
@@ -320,94 +338,82 @@ while k<=nResults
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='# Stoich. consistent rows';
-    else
-        modelResultsTable{i,n+1}=nnz(modelResults(k).model.SConsistentMetBool);
-    end
-    i=i+1;
-    if firstColumn
-        modelResultsTable{i,1}='# Rections minus stoich. consistent rows';
+        modelResultsTable{i,1}='Species minus stoich. consistent rows';
     else
         modelResultsTable{i,n+1}=size(modelResults(k).model.S,1)-nnz(modelResults(k).model.SConsistentMetBool);
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='# Stoichiometrially inconsistent rows';
-    else
-        modelResultsTable{i,n+1}=nnz(modelResults(k).model.SInConsistentMetBool);
-    end
-    i=i+1;
-    if firstColumn
-        modelResultsTable{i,1}='# Omitted rows';
+        modelResultsTable{i,1}='Omitted rows';
     else
         modelResultsTable{i,n+1}=nnz(modelResults(k).model.rxnUnknownInconsistentRemoveBool);
     end
     if 0
         i=i+1;
         if firstColumn
-            modelResultsTable{i,1}='# Unknown stoichiometrially consistent rows';
+            modelResultsTable{i,1}='Unknown Stoichiometrically consistent rows';
         else
             modelResultsTable{i,n+1}=nnz(modelResults(k).model.unknownSConsistencyMetBool);
         end
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='# Stoich. and flux consistent rows';
+        modelResultsTable{i,1}='Stoich. and flux consistent rows';
     else
         modelResultsTable{i,n+1}=nnz(modelResults(k).model.SConsistentMetBool & modelResults(k).model.fluxConsistentMetBool);
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='# Internal reactions minus stoich. and flux consistent rows';
+        modelResultsTable{i,1}='Internal species minus stoich. and flux consistent rows';
     else
         modelResultsTable{i,n+1}=nnz(modelResults(k).model.SIntMetBool)- nnz(modelResults(k).model.SConsistentMetBool & modelResults(k).model.fluxConsistentMetBool);
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='# Leak rows';
+        modelResultsTable{i,1}='Leak species';
     else
         modelResultsTable{i,n+1}=nnz(modelResults(k).model.leakMetBool);
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='# Siphon rows';
+        modelResultsTable{i,1}='Siphon species';
     else
         modelResultsTable{i,n+1}=nnz(modelResults(k).model.siphonMetBool);
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='# External rows = # Rows exclusive to B';
+        modelResultsTable{i,1}='External species = Rows exclusive to B';
     else
         modelResultsTable{i,n+1}=nnz(~modelResults(k).model.SIntMetBool);
     end
-    i=i+1;
-    if firstColumn
-        modelResultsTable{i,1}='# External, flux consistent rows';
-    else
-        modelResultsTable{i,n+1}=nnz(~modelResults(k).model.SIntMetBool & modelResults(k).model.fluxConsistentMetBool);
-    end
-    if 0
+      if 0
+          i=i+1;
+          if firstColumn
+              modelResultsTable{i,1}='External flux consistent species';
+          else
+              modelResultsTable{i,n+1}=nnz(~modelResults(k).model.SIntMetBool & modelResults(k).model.fluxConsistentMetBool);
+          end
         i=i+1;
         if firstColumn
-            modelResultsTable{i,1}='# Nontrivial stoich. consistent rows';
+            modelResultsTable{i,1}='Nontrivial stoich. consistent rows';
         else
             modelResultsTable{i,n+1}=nnz(modelResults(k).model.SConsistentMetBool & modelResults(k).model.FRuniqueRowBool & modelResults(k).model.FRnonZeroRowBool1);
         end
         i=i+1;
         if firstColumn
-            modelResultsTable{i,1}='# Nontrivial stoich. and flux consistent rows of [F,R]';
+            modelResultsTable{i,1}='Nontrivial stoich. and flux consistent rows of [F,R]';
         else
             modelResultsTable{i,n+1}=nnz(modelResults(k).model.SConsistentMetBool & modelResults(k).model.FRuniqueRowBool & modelResults(k).model.FRnonZeroRowBool1 & modelResults(k).model.fluxConsistentMetBool);
         end
         i=i+1;
         if firstColumn
-            modelResultsTable{i,1}='# Unique stoich. and nontrivial flux consistent rows of [F,R]';
+            modelResultsTable{i,1}='Unique stoich. and nontrivial flux consistent rows of [F,R]';
         else
             modelResultsTable{i,n+1}=nnz(modelResults(k).model.SConsistentMetBool & modelResults(k).model.FRuniqueRowBool & modelResults(k).model.FRnonZeroRowBool1 & modelResults(k).model.fluxConsistentMetBool & modelResults(k).model.FRnonZeroRowBool);
         end
         i=i+1;
         if firstColumn
-            modelResultsTable{i,1}='# Rows of proper [F,R]';
+            modelResultsTable{i,1}='Rows of proper [F,R]';
         else
             modelResultsTable{i,n+1}=nnz(modelResults(k).model.FRrows);
         end
@@ -419,28 +425,22 @@ while k<=nResults
         end
         i=i+1;
         if firstColumn
-            modelResultsTable{i,1}='# Rows of bilinear [F,R]';
+            modelResultsTable{i,1}='Rows of bilinear [F,R]';
         else
             modelResultsTable{i,n+1}=size(modelResults(k).model.Frb,1);
         end
         i=i+1;
         if firstColumn
-            modelResultsTable{i,1}='# Rank of bilinear [F,R]';
+            modelResultsTable{i,1}='Rank of bilinear [F,R]';
         else
             modelResultsTable{i,n+1}=modelResults(k).model.rankBilinearFrRr;
         end
         i=i+1;
         if firstColumn
-            modelResultsTable{i,1}='# Largest connected rows of [F,R]';
+            modelResultsTable{i,1}='Largest connected rows of [F,R]';
         else
             modelResultsTable{i,n+1}=nnz(modelResults(k).model.largestConnectedRowsFRBool);
         end
-    end
-    i=i+1;
-    if firstColumn
-        modelResultsTable{i,1}='# Rank [N B]';
-    else
-        modelResultsTable{i,n+1}=modelResults(k).model.rankS;
     end
     %now move to columns for results
     if firstColumn

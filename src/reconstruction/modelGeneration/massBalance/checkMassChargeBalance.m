@@ -2,6 +2,8 @@ function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, El
 % Tests for a list of reactions if these reactions are
 % mass-balanced by adding all elements on left hand side and comparing them
 % with the sums of elements on the right hand side of the reaction.
+% A reaction is considered elementally imbalanced if any of the molecular 
+% species involved is missing a chemical formula.
 %
 % USAGE:
 %
@@ -86,6 +88,8 @@ end
 
 E=full(E);
 
+% A reaction is considered elementally imbalanced if any of the molecular 
+% species involved is missing a chemical formula.
 imBalancedRxnBool=any(massImbalance, 2) | any(model.S(missingFormulaeBool, :))';
 
 imBalancedMass=cell(nRxn, 1);

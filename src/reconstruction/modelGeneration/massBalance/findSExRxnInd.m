@@ -9,6 +9,7 @@ function model = findSExRxnInd(model, nRealMet, printLevel)
 % USAGE:
 %
 %    model = findSExRxnInd(model, nRealMet, printLevel)
+% model.SIntRxnBool         Boolean of reactions heuristically though to be mass balanced.
 %
 % INPUT:
 %    model:         structure with:
