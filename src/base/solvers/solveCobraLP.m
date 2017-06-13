@@ -1234,32 +1234,31 @@ switch solver
                 x = ILOGcplex.Solution.x;
                 w = ILOGcplex.Solution.reducedcost;
                 y = ILOGcplex.Solution.dual;                                            
-            elseif origstat == 4
+            elseif origStat == 4
                 %This is likely unbounded, but could be infeasible 
                 %Lets check, by solving an additional LP with a bounded
                 %objective.
-                ILOGcplex.Model.obj   = osense*c;
-                ILOGcplex.Model.lb    = lb;
-                ILOGcplex.Model.ub    = ub;
-                ILOGcplex.Model.A     = [LPproblem.A;osense*c];                
-                ILOGcplex.Model.lhs   = [b_L;-100* max(abs([lb(abs(lb) < inf);ub(abs(ub)<inf)]))];
-                ILOGcplex.Model.rhs   = [b_U;100* max(abs([lb(abs(lb) < inf);ub(abs(ub)<inf)]))];
+                %Store the original solution
+                Solution = ILOGcplex.Solution;
+                ILOGcplex.Param.preprocessing.presolve.Cur = 0;                
                 ILOGcplex.solve();
                 origStatNew   = ILOGcplex.Solution.status;
-                if origstatNew == 1
+                if origStatNew == 2
                     stat = 2;
                 else
                     stat = 0;
                 end
-            elseif origstat == 3
+                %Restore the original solution.
+                ILOGcplex.Solution = Solution;
+            elseif origStat == 3
                 stat = 0;
-            elseif origstat == 5 || origstat == 6 
-                stat = 3                
+            elseif origStat == 5 || origStat == 6 
+                stat = 3;                
                 f = osense*ILOGcplex.Solution.objval;
                 x = ILOGcplex.Solution.x;
                 w = ILOGcplex.Solution.reducedcost;
                 y = ILOGcplex.Solution.dual;    
-            elseif (origstat >= 10 && origstat <= 12) || origstat == 21 || origstat == 22
+            elseif (origStat >= 10 && origStat <= 12) || origStat == 21 || origStat == 22
                 %Abort due to reached limit. check if there is a solution
                 %and return it.
                 stat = 3;
@@ -1276,9 +1275,9 @@ switch solver
                     y = ILOGcplex.Solution.dual;    
                 end
                 
-            elseif origstat == 13
+            elseif origStat == 13
                 stat = -1;
-            elseif origstat == 20
+            elseif origStat == 20
                 stat = 2;
             end
             
