@@ -140,7 +140,7 @@ enum {MINFLUX_OUT_POS,
 #define OPT_PERCENTAGE        90 /* confidence threshold if not specified */
 
 #define PRINT_WARNING         "Warning:"
-#define LOGFILE_DIR            "../fastFVA/logFiles/cplexint_logfile_"
+#define LOGFILE_DIR            "src/modelAnalysis/FVA/fastFVA/logFiles/cplexint_logfile_"
 
 #if !defined(MAX)
 #define MAX(A, B)   ((A) > (B) ? (A) : (B))
@@ -810,7 +810,7 @@ void mexFunction(int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
     int             opt_lic_rel = 1;    /* user can specify after how many calls will
                                            CPLEX environment be closed and license released */
 
-    int             opt_logfile = 0;    /* use a CPLEX log file */
+    int             opt_logfile = 1;    /* use a CPLEX log file */
 
     char            *vartype = NULL;
     int             objsense = 1;

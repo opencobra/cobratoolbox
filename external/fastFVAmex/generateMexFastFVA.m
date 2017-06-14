@@ -4,7 +4,7 @@ function generateMexFastFVA(rootPathCPLEX, printLevel)
 % Author: Laurent Heirendt, LCSB
 % Date: April/July 2016
 %
-% Requirements: Installation of CPLEX 12.6.2 or 12.6.3
+% Requirements: Installation of CPLEX 12.6.2+
 %
 
 %printLevel: 0: mute

@@ -16,7 +16,7 @@ IBM has recently made CPLEX available through their Academic Initiative program 
 - Matlab R2015b throws compatibility errors with CPLEX 12.6.3 on DOS Systems
 - Matlab R2016b and the MinGW64 compiler are not compatible with the CPLEX 12.6.3 library
 
-The version of fastFVA only supports the CPLEX solver. The code has been tested for the CPLEX 12.6.2 and 12.6.3 versions. Download the appropriate version of CPLEX (32-bit or 64-bit) from IBM and make sure the license is valid. A particular interface, such as TOMLAB are not needed in order to run fastFVA. Please note that only 64-bit versions are supported. In order to run the code on 32-bit systems, the appropriate MEX files would need to be generated.
+The version of fastFVA only supports the CPLEX solver. The code has been tested for the CPLEX 12.6.2, 12.6.3, 12.7.0 and 12.7. versions. Download the appropriate version of CPLEX (32-bit or 64-bit) from IBM and make sure the license is valid. A particular interface, such as TOMLAB are not needed in order to run fastFVA. Please note that only 64-bit versions are supported. In order to run the code on 32-bit systems, the appropriate MEX files would need to be generated.
 
 ## Running fastFVA
 
@@ -37,7 +37,7 @@ The version of fastFVA only supports the CPLEX solver. The code has been tested 
 | model          | Model structure          |
 | optPercentage  | Only consider solutions that give you at least a certain percentage of the optimal solution (default = 100 or optimal solutions only)  |
 | objective      | Objective ('min' or 'max') (default 'max')  |
-|  solver        | 'cplex' (default)  |
+| solverName     | 'ibm_cplex' (default)  |
 
 *Required fields of the model argument*
 

@@ -21,7 +21,6 @@ rootDirFastFVA = [CBTDIR filesep 'src' filesep 'modelAnalysis' filesep 'FVA' fil
 
 % define the directory to the logFiles and results directories
 dirLogFiles = [rootDirFastFVA filesep 'logFiles'];
-dirResFiles = [rootDirFastFVA filesep 'results'];
 
 % save the current directory
 currentDir = pwd;
@@ -43,24 +42,6 @@ if nbFiles > 0
     end
 else
     fprintf('\n The directory logFiles/ is empty.\n');
-end
-
-% clear previous result files in results/
-D = dir([dirResFiles filesep '*.mat']);
-nbFiles = numel(D);
-if nbFiles > 0
-    fprintf('\n Number of files in results/: %d\n', nbFiles);
-
-    if userInteraction
-        m = input('\n Do you want to clean al results files in results/ ? - Y/N [Y]: ','s');
-    end
-    if strcmpi(m, 'y') || ~userInteraction
-        cd(dirResFiles);
-        delete *.mat
-        fprintf(' >> All result files in results/ removed.\n');
-    end
-else
-    fprintf('\n The directory results/ is empty.\n');
 end
 
 % change back to the current directory
