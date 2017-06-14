@@ -111,20 +111,21 @@ classdef (HandleCompatible) AndNode < Node
             delchilds = [];
             for child = 1:c
                 cchild = self.children(child);
-                %reduce this child
-                
-                %potentially add it to this node
+                %If its not a literal node but only contains one child,
+                %this can be merged (should normally not happen)
                 if not(strcmp(class(cchild),'LiteralNode'))
-                        if numel(cchild.children) <= 1
-                            for cc = 1:numel(cchild.children)
-                                cchildchild = cchild.children(cc);
-                                cchildchild.reduce();
-                                self.children(child) = cchildchild;
-                                cchildchild.parent = self;
-                                cchild = cchildchild;
-                            end                                                        
-                        end                                                        
+                    if numel(cchild.children) <= 1
+                        cchildchild = cchild.children(1);
+                        cchildchild.reduce();
+                        self.children(child) = cchildchild;
+                        cchildchild.parent = self;
+                        %we can't continue yet, as this child could now be
+                        %an AND node. 
+                        cchild = cchildchild;
+                    end
                 end
+                %Add "AndNodes" directly to this node as they are
+                %compatible
                 if strcmp(class(self.children(child)),class(self))
                     for cc = 1:numel(cchild.children)
                         cchildchild = cchild.children(cc);
@@ -136,8 +137,11 @@ classdef (HandleCompatible) AndNode < Node
                 end
                 
             end
+            %Remove Merged childs
             self.children(delchilds)  = [];
+            %and reduce all children again.
             for child = 1:numel(self.children)
+                
                 cchild = self.children(child);
                 cchild.reduce();
             end

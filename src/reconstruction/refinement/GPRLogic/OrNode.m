@@ -29,22 +29,18 @@ classdef (HandleCompatible) OrNode < Node
         
         function removeDNFduplicates(self)
             i = 1;
-            while i <= numel(self.children)
-                j = i+1;
+            literals = {};
+            for i = 1:numel(self.children)
                 child = self.children(i);
-                lits = child.getLiterals();
-                while j <= numel(self.children)
-                    child2 = self.children(j);
-                    lits2 = child2.getLiterals();
-                    %fprintf('Comparing: \n %s \n and \n %s',child.toString(), child2.toString()); 
-                    if isempty(setxor(lits2,lits))
-                        self.children(j) = [];
-                    else 
-                        j=j+1;
-                    end
-                end
-                i= i+1;
+                literals = [literals, child.getLiterals];
             end
+            literals = unique(literals);
+            comps = false(numel(self.children),numel(literals));
+            for i = 1:numel(self.children)
+                comps(i,:) = ismember(literals,self.children(i).getLiterals());
+            end
+            [~,select] = unique(comps,'rows');
+            self.children = self.children(select);            
         end
         
         function res = toString(self,PipeAnd)
