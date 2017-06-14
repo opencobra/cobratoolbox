@@ -8,9 +8,22 @@
 %     - Vmin, Vmax test: Marouen Ben Guebila 24/02/17
 %
 
+% save the userpath
+originalUserPath = path;
+
 % FVA settings
 optPercentage = 90;
 objective = 'max';
+
+tol = 1e-2;
+
+% Define the solverName
+solverName = 'ibm_cplex';
+
+% load the E.coli model
+load('ecoli_core_model.mat', 'model');
+
+[minFluxSerial, maxFluxSerial] = fastFVA(model, optPercentage, [], solverName, model.rxns(1:2));
 
 % Define the number of workers to be used
 nworkers = 2;
@@ -18,11 +31,10 @@ nworkers = 2;
 % Start a parpool environment in MATLAB
 setWorkerCount(nworkers);
 
-% Define the solverName
-solverName = 'ibm_cplex';
+[minFluxParallel, maxFluxParallel] = fastFVA(model, optPercentage, [], solverName, model.rxns(1:2));
 
-% save the userpath
-originalUserPath = path;
+assert(norm(minFluxSerial - minFluxParallel) < tol);
+assert(norm(maxFluxSerial - maxFluxParallel) < tol);
 
 % Print out the header of the script
 fprintf('\n Toy Example: Flux ranges for a mutant with reaction v6 knocked out\n');
@@ -72,11 +84,6 @@ assert(optsol == referenceToyResults.optsol);
 
 % load the E.coli model
 load('ecoli_core_model.mat', 'model');
-
-% define the tolerance and the optPercentage
-tol = 1e-2;
-optPercentage = 90.0;
-objective = 'max';
 
 % full fastFVA
 [minFluxT, maxFluxT, optsolT, retT, fbasolT, fvaminT, fvamaxT, statussolminT, statussolmaxT] = fastFVA(model, optPercentage, objective);
