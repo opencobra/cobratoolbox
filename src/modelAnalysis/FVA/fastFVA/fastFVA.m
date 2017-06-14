@@ -263,108 +263,108 @@ if nworkers<=1
       fprintf('Unable to complete the FVA, return code=%d\n', ret);
    end
 else
-   % Divide the reactions amongst workers
-   %
-   % The load balancing can be improved for certain problems, e.g. in case
-   % of problems involving E-type matrices, some workers will get mostly
-   % well-behaved LPs while others may get many badly scaled LPs.
+    % Divide the reactions amongst workers
+    %
+    % The load balancing can be improved for certain problems, e.g. in case
+    % of problems involving E-type matrices, some workers will get mostly
+    % well-behaved LPs while others may get many badly scaled LPs.
 
-   if n > 5000 & loadBalancing == 1
-      % A primitive load-balancing strategy for large problems
-      nworkers = 4*nworkers;
-      fprintf(' >> The load is balanced and the number of virtual workers is %d.\n', nworkers);
-   end
+    if n > 5000 & loadBalancing == 1
+        % A primitive load-balancing strategy for large problems
+        nworkers = 4*nworkers;
+        fprintf(' >> The load is balanced and the number of virtual workers is %d.\n', nworkers);
+    end
 
-
-   nrxn=repmat(fix(n/nworkers),nworkers,1);
-   i=1;
-   while sum(nrxn) < n
+    nrxn=repmat(fix(n/nworkers),nworkers,1);
+    i=1;
+    while sum(nrxn) < n
       nrxn(i)=nrxn(i)+1;
       i=i+1;
-   end
+    end
 
-     Nrxns = length(model.rxns);
-     assert(sum(nrxn)==n);
-     istart=1; iend=nrxn(1);
-     for i=2:nworkers
+    Nrxns = length(model.rxns);
+    assert(sum(nrxn)==n);
+    istart=1; iend=nrxn(1);
+    for i=2:nworkers
         istart(i)=iend(i-1)+1;
         iend(i)=istart(i)+nrxn(i)-1;
-     end
+    end
 
-   startMarker1 = istart;
-   endMarker1 = iend
+    startMarker1 = istart;
+    endMarker1 = iend
 
-   startMarker2 = istart;
-   endMarker2 = iend
+    startMarker2 = istart;
+    endMarker2 = iend
+
+    % Calculate the column density and row density
+
+        [Nmets,Nrxns] = size(A);
+        NrxnsList = length(rxnsList);
+
+        cdVect = zeros(NrxnsList,1);
+
+        for i=1:NrxnsList
+            tmpRxnID = findRxnIDs(model, rxnsList(i));
+
+            columnDensity = nnz(A(:, tmpRxnID));
+            columnDensity = columnDensity / Nmets * 100;
+            cdVect(i) = columnDensity;
+        end
+
+        [sortedcdVect,indexcdVect] = sort(cdVect,'descend');
+
+        rxnsVect = linspace(1,NrxnsList,NrxnsList);
+
+        sortedrxnsVect = rxnsVect(indexcdVect);
 
 
-%% Calculate the column density and row density
-   [Nmets,Nrxns] = size(A);
+    if strategy > 0
+              pRxnsHalfWorker = ceil(NrxnsList / (2 * nworkers));
 
-   cdVect = zeros(Nrxns,1);
-   rdVect = zeros(Nmets,1);
+for i = 1:nworkers
 
-   for i=1:Nmets
-     rowDensity = nnz(A(i,:));
-     rowDensity = rowDensity / Nrxns * 100;
-     rdVect(i) = rowDensity;
-   end
+            startMarker1(i) = (i-1) * pRxnsHalfWorker + 1;
+            endMarker1(i) = i * pRxnsHalfWorker;
 
-   for i=1:Nrxns
-     columnDensity = nnz(A(:,i));
-     columnDensity = columnDensity / Nmets * 100;
-     cdVect(i) = columnDensity;
-   end
+            if(strategy == 1)
+
+            startMarker2(i) = startMarker1(i) + ceil(NrxnsList/2);
+            endMarker2(i) = endMarker1(i) + ceil(NrxnsList/2);
+
+            elseif(strategy == 2)
+
+              startMarker2(i) = ceil(NrxnsList / 2) + startMarker1(i);
+              endMarker2(i) = startMarker2(i) + pRxnsHalfWorker + 1;
+
+            end
 
 
-   [sortedcdVect,indexcdVect] = sort(cdVect,'descend');
-   [sortedrdVect,indexrdVect] = sort(rdVect,'descend');
+                % avoid start indices beyond the total number of reactions
+                if startMarker1(i) > NrxnsList
+                    startMarker1(i) = NrxnsList
+                end
+                if startMarker2(i) > NrxnsList
+                    startMarker2(i) = NrxnsList
+                end
 
-   rxnsVect = linspace(1,Nrxns,Nrxns);
-   metsVect = linspace(1,Nmets,Nmets);
+                % avoid end indices beyond the total number of reactions
+                if endMarker1(i) > NrxnsList
+                    endMarker1(i) = NrxnsList
+                end
+                if endMarker2(i) > NrxnsList
+                    endMarker2(i) = NrxnsList
+                end
 
-   sortedrxnsVect = rxnsVect(indexcdVect);
-   sortedmetsVect = metsVect(indexrdVect);
+                % avoid flipped chunks
+                if startMarker1(i) > endMarker1(i)
+                    startMarker1(i) = endMarker1(i)
+                end
+                if startMarker2(i) > endMarker2(i)
+                  startMarker2(i) = endMarker2(i)
+              end
 
-   if(strategy == 1)
-
-       nbRxnsPerThread = ceil(Nrxns/(2*nworkers));
-
-       for i = 1:nworkers
-         startMarker1(i) = (i-1) * nbRxnsPerThread + 1;
-         endMarker1(i) = i * nbRxnsPerThread;
-
-         startMarker2(i) = startMarker1(i) + ceil(Nrxns/2);
-         endMarker2(i) = endMarker1(i) + ceil(Nrxns/2);
-
-           if endMarker1(i) > Nrxns
-              endMarker1(i) = Nrxns;
-           end
-
-           if endMarker2(i) > Nrxns
-              endMarker2(i) = Nrxns;
-           end
-       end
-    elseif(strategy == 2)
-
-      nbRxnsPerThread = ceil(Nrxns/(2*nworkers));
-
-      for i = 1:nworkers
-        startMarker1(i) = (i-1) * nbRxnsPerThread + 1;
-        endMarker1(i) = i * nbRxnsPerThread;
-
-        startMarker2(i) = ceil(Nrxns / 2) + startMarker1(i);
-        endMarker2(i) = startMarker2(i) + nbRxnsPerThread + 1
-
-          if endMarker1(i) > Nrxns
-            endMarker1(i) = Nrxns;
-          end
-
-          if endMarker2(i) > Nrxns
-            endMarker2(i) = Nrxns;
-          end
-      end
-   end
+ end
+ end
 
    minFlux = zeros(length(model.rxns),1);
    maxFlux = zeros(length(model.rxns),1);
@@ -491,6 +491,7 @@ for i=1:nworkers
     tmp = maxFluxTmp{i};
     %maxfluxcomplete = tmp;
     %maxfluxchunk = tmp(indices);
+    
     maxFlux(indices,1) = tmp(indices);
 
     tmp = minFluxTmp{i};
@@ -515,24 +516,23 @@ if bExtraOutputs || bExtraOutputs1
       end
   end
 
-  if(strategy == 0)
-    for i=1:nworkers
+    %if(strategy == 0)
+      for i=1:nworkers
 
-        fvamin(:,rxns(istart(i):iend(i))) = fvaminRes{i};
-        fvamax(:,rxns(istart(i):iend(i))) = fvamaxRes{i};
+          fvamin(:,indices) = fvaminRes{i};
+          fvamax(:,indices) = fvamaxRes{i};
 
-        if bExtraOutputs1
-            indices = rxns(istart(i):iend(i));
-            tmp = statussolminRes{i}';
-            statussolmin(rxns(istart(i):iend(i)),1) = tmp(indices);
-            tmp = statussolmaxRes{i}';
-            statussolmax(rxns(istart(i):iend(i)),1) = tmp(indices);
-        end
-    end
-  end
+          if bExtraOutputs1
+              tmp = statussolminRes{i}';
+              statussolmin(indices,1) = tmp(indices);
+              tmp = statussolmaxRes{i}';
+              statussolmax(indices,1) = tmp(indices);
+          end
+      end
+  %  end
 end
 
-if(strategy == 0 && ~ isempty(rxnsList))
+if(strategy == 0 && ~isempty(rxnsList))
     if bExtraOutputs || bExtraOutputs1
         fvamin = fvamin(:,rxns);%keep only nonzero columns
         fvamax = fvamax(:,rxns);
