@@ -72,9 +72,12 @@ function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax,statussolmin,statussol
 % Contributor: Laurent Heirendt, LCSB
 % Last updated: October 2016
 
+global CBTDIR
+
 %set a random log filename to avoid overwriting ongoing runs
 rng('shuffle');
 filenameParfor = ['parfor_progress_', datestr(now, 30), '_', num2str(randi(9)), '.txt'];
+filenameParfor = [CBTDIR filesep '.tmp' filesep filenameParfor];
 
 % Turn on the load balancing for large problems
 loadBalancing = 0; %0: off; 1: on
