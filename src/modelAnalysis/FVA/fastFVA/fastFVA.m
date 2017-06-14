@@ -121,7 +121,9 @@ else
     [~, indexRxns] = ismember(model.rxns, rxnsList);
     nonZeroIndices = [];
     for i = 1:length(indexRxns)
-        if(indexRxns(i) ~= 0) nonZeroIndices = [nonZeroIndices, indexRxns(i)]; end
+        if indexRxns(i) ~= 0
+            nonZeroIndices = [nonZeroIndices, indexRxns(i)];
+        end
     end
     if issorted(nonZeroIndices) == 0
         error('\n-- ERROR:: Your input reaction vector is not sorted. Please sort your reaction vector first.\n\n')
@@ -131,7 +133,7 @@ else
 
 end
 if (nargin < 9 || isempty(rxnsOptMode))
-      rxnsOptMode = 2 * ones(length(rxns), 1)';  % status = 2 (min & max) for all reactions
+    rxnsOptMode = 2 * ones(length(rxns), 1)';  % status = 2 (min & max) for all reactions
 end
 if (nargin < 4 || isempty(solverName))
     solverName = 'ibm_cplex';
@@ -268,17 +270,17 @@ if nworkers <= 1
     % Sequential version
     fprintf(' \n WARNING: The Sequential Version might take a long time.\n\n');
     if bExtraOutputs1
-      [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax,statussolmin,statussolmax]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
-                                                                                        optPercentage,obj,rxnsKey, ...
-                                                                                        1, cpxControl, valuesCPLEXparams, rxnsOptMode);
+        [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, statussolmax] = FVAc(model.c, A, b, csense, model.lb, model.ub, ...
+                                                                                                   optPercentage, obj, rxnsKey, ...
+                                                                                                   1, cpxControl, valuesCPLEXparams, rxnsOptMode);
     elseif bExtraOutputs
-        [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
-                                                              optPercentage,obj,rxnsKey, ...
-                                                              1, cpxControl, valuesCPLEXparams, rxnsOptMode);
+        [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax] = FVAc(model.c, A, b, csense, model.lb, model.ub, ...
+                                                                       optPercentage, obj, rxnsKey, ...
+                                                                       1, cpxControl, valuesCPLEXparams, rxnsOptMode);
     else
-        [minFlux,maxFlux,optsol,ret]=FVAc(model.c,A,b,csense,model.lb,model.ub, ...
-                                           optPercentage,obj,rxnsKey, ...
-                                           1, cpxControl, valuesCPLEXparams, rxnsOptMode);
+        [minFlux, maxFlux, optsol, ret] = FVAc(model.c, A, b, csense, model.lb, model.ub, ...
+                                               optPercentage, obj, rxnsKey, ...
+                                               1, cpxControl, valuesCPLEXparams, rxnsOptMode);
     end
 
     if ret ~= 0 && printLevel > 0
@@ -450,45 +452,44 @@ else
             [minf, maxf, iopt(i), iret(i)] = FVAc(model.c, A, b, csense, model.lb, model.ub, ...
                                                   optPercentage, obj, rxnsKey', ...
                                                   t.ID, cpxControl, valuesCPLEXparams, rxnsOptMode(istart(i):iend(i)));
-      end
+        end
 
-      fprintf(' >> Time spent in FVAc: %1.1f seconds.', toc(tstart));
+        fprintf(' >> Time spent in FVAc: %1.1f seconds.', toc(tstart));
 
-      if iret(i) ~= 0 && printLevel > 0
-          fprintf('Problems solving partition %d, return code=%d\n', i, iret(i))
-      end
+        if iret(i) ~= 0 && printLevel > 0
+            fprintf('Problems solving partition %d, return code=%d\n', i, iret(i))
+        end
 
-      minFluxTmp{i} = minf;
-      maxFluxTmp{i} = maxf;
+        minFluxTmp{i} = minf;
+        maxFluxTmp{i} = maxf;
 
-      if bExtraOutputs || bExtraOutputs1
-          fvaminRes{i} = fvamin_single;
-          fvamaxRes{i} = fvamax_single;
-          fbasolRes{i} = fbasol_single;
-      end
+        if bExtraOutputs || bExtraOutputs1
+            fvaminRes{i} = fvamin_single;
+            fvamaxRes{i} = fvamax_single;
+            fbasolRes{i} = fbasol_single;
+        end
 
-      if bExtraOutputs1
-          statussolminRes{i} = statussolmin_single;
-          statussolmaxRes{i} = statussolmax_single;
-      end
+        if bExtraOutputs1
+            statussolminRes{i} = statussolmin_single;
+            statussolmaxRes{i} = statussolmax_single;
+        end
 
-      fprintf('\n----------------------------------------------------------------------------------\n');
+        fprintf('\n----------------------------------------------------------------------------------\n');
 
-      % print out the percentage of the progress
-      percout =  parfor_progress(-1, filenameParfor);
+        % print out the percentage of the progress
+        percout =  parfor_progress(-1, filenameParfor);
 
-      if percout < 100
-          fprintf(' ==> %1.1f%% done. Please wait ...\n', percout);
-      else
-          fprintf(' ==> 100%% done. Analysis completed.\n', percout);
-      end
+        if percout < 100
+            fprintf(' ==> %1.1f%% done. Please wait ...\n', percout);
+        else
+            fprintf(' ==> 100%% done. Analysis completed.\n', percout);
+        end
+    end
 
-   end
-
-   % Aggregate results
-   optsol = iopt(1);
-   ret = max(iret);
-   out = parfor_progress(0, filenameParfor);
+    % Aggregate results
+    optsol = iopt(1);
+    ret = max(iret);
+    out = parfor_progress(0, filenameParfor);
 end
 
 % aggregate the results for the maximum and minimum flux vectors
@@ -525,7 +526,7 @@ if bExtraOutputs || bExtraOutputs1
         end
     end
 
-    for i=1:nworkers
+    for i = 1:nworkers
         % preparation of reactionKey
         if strategy == 1 || strategy == 2
             indices = [sortedrxnsVect(startMarker1(i):endMarker1(i)), sortedrxnsVect(startMarker2(i):endMarker2(i))];
