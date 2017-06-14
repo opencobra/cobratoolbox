@@ -1,6 +1,11 @@
 classdef FormulaParser < handle
-    %Class to handle Formulas in COBRA Style reconstructions
-    %   Detailed explanation goes here
+    % A FormulaParser is used to parse logic formulas in the format
+    % specified for the COBRA Toolbox tules field (i.e. logical formulas
+    % using | and & as OR and AND symbols and x\([0-9]+\)  as a regexp
+    % matching all literals.
+    % 
+    % .. Authors
+    %     - Thomas Pfau 2016
     
     properties
         literalpat = 'x\([0-9]+\)';
@@ -10,10 +15,28 @@ classdef FormulaParser < handle
     
     methods
         function obj = FormulaParser()
-            obj.subformulas = containers.Map();
+        % Default FormulaParser constructor.        
+        % USAGE:
+        %    obj = FormulaParser()                
+        %    
+        % OUTPUTS:
+        %    obj:    The FormulaParser Object
+        %
+        obj.subformulas = containers.Map();
         end
         
         function Head = parseFormula(self,formula)            
+        % Parse a Formula in the COBRA rules format (as detailed above).
+        % USAGE:
+        %    Head = FormulaParser.parseFormula(formula)                
+        %    
+        % INPUTS:
+        %    formula:   A String of a GPR formula in rules format ( &/| as
+        %               operators, x(1) as literal symbols
+        %
+        % OUTPUTS:
+        %    Head:       The Head of a Tree representing the formula
+        %  
             id = 1;
             %Lets replace our rules (x([0-9])) by the corresponding number
             formula = regexprep(formula,'x\(([0-9]+)\)','$1');
@@ -55,19 +78,9 @@ classdef FormulaParser < handle
             end
             Head = self.createNodeStructure(finalid);
         end
-        
-        
-        function reduceFormula(self,Formula)            
-            FormString = Formula.toString(0);
-            Formula.reduce();
-            while not(strcmp(FormString,Formula.toString(0)))
-                FormString = Formula.toString(0);
-                Formula.reduce();
-            end
-            
-        end
-        
+                        
         function HeadNode = createNodeStructure(self,finalid)
+        % Private Function
             if self.subformulas.isKey(finalid)
                 currentstring = self.subformulas(finalid);
                 currentstring = currentstring{1};

@@ -1,6 +1,8 @@
-classdef (HandleCompatible) LiteralNode < Node 
-    %UNTITLED6 Summary of this class goes here
-    %   Detailed explanation goes here
+classdef (HandleCompatible) LiteralNode < Node
+    % LiteralNode is a class that represents a literal in a logical formula
+    % For further documentation please have a look at the Node Class.
+    % .. Authors
+    %     - Thomas Pfau 2016
     
     properties
         id;
@@ -13,10 +15,10 @@ classdef (HandleCompatible) LiteralNode < Node
         end
         
         function dnfNode = convertToDNF(self)
-            dnfNode = LiteralNode(self.id);            
+            dnfNode = LiteralNode(self.id);
         end
-            
-        function res = evaluate(self,assignment) 
+        
+        function res = evaluate(self,assignment)
             res = assignment(self.id);
             fprintf('%s : %i\n',self.id,res);
         end
@@ -29,33 +31,26 @@ classdef (HandleCompatible) LiteralNode < Node
             if nargin < 2
                 PipeAnd = 0;
             end
-            res = [ 'x(' self.id ')'];            
+            res = [ 'x(' self.id ')'];
         end
         
         function reduce(self)
             
         end
         
-        function res = contains(self,literal)           
+        function res = contains(self,literal)
             if strcmp(self.id,literal)
                 res = 1;
             else
                 res = 0;
             end
         end
-%         function res = contains(self,literal)
-%             if literal == self.id
-%                 res = 1
-%             else
-%                 res = 0;
-%             end
-%         end
-       function literals = getLiterals(self)    
-           literals = {self.id};
+        function literals = getLiterals(self)
+            literals = {self.id};
         end
     end
     
-       
-        
+    
+    
 end
 

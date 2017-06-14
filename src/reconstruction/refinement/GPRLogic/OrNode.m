@@ -1,7 +1,9 @@
 classdef (HandleCompatible) OrNode < Node 
-    %UNTITLED6 Summary of this class goes here
-    %   Detailed explanation goes here
-    
+    % OrNode is a class that represents OR connections in a logical formula
+    % For further documentation please have a look at the Node Class.
+    % .. Authors
+    %     - Thomas Pfau 2016
+
     properties
     end
     
@@ -28,12 +30,17 @@ classdef (HandleCompatible) OrNode < Node
         end
         
         function removeDNFduplicates(self)
+            % Assuming this is a DNF head node, removeDNFDuplicates checks
+            % all present AND nodes for equality and removes replicates.
+            % 
+            % USAGE:
+            %    Node.removeDNFduplicates()
+            %            
+            % OUTPUTS:
+            %    Node:    A OrNode with all duplicate And nodes removed.
+            %
             i = 1;
-            literals = {};
-            for i = 1:numel(self.children)
-                child = self.children(i);
-                literals = [literals, child.getLiterals];
-            end
+            literals = self.getLiterals();
             literals = unique(literals);
             comps = false(numel(self.children),numel(literals));
             for i = 1:numel(self.children)
@@ -65,51 +72,50 @@ classdef (HandleCompatible) OrNode < Node
             end
             res = [res ')'];
         end
+        
         function reduce(self)
-            c = numel(self.children);
+           child = 1;            
             delchilds = [];
-            for child = 1:c
-                cchild = self.children(child);
-                %potentially add it to this node
-                if not(strcmp(class(cchild),'LiteralNode'))
-                    if numel(cchild.children) <= 1
-                        for cc = 1:numel(cchild.children)
-                            cchildchild = cchild.children(cc);
-                            cchildchild.reduce();
-                            self.children(child) = cchildchild;
-                            cchildchild.parent = self;
-                            cchild = cchildchild;
-                        end
-                    end
-                end
-                if strcmp(class(self.children(child)),class(self))
+            while child <= numel(self.children)
+                cchild = self.children(child);                
+                %Merge Nodes from the same class.
+                if strcmp(class(self.children(child)),class(self))                                        
+                    %reduce the child, merging and removing "singular
+                    %nodes"
+                    cchild.reduce();
                     for cc = 1:numel(cchild.children)
-                        cchildchild = cchild.children(cc);
-                        cchildchild.reduce();
+                        cchildchild = cchild.children(cc);                        
                         self.children(end+1) = cchildchild;
                         cchildchild.parent = self;
                     end
                     delchilds(end+1) = child;
+                %If a child is not a literal but has only one child, move
+                %that child up.
+                else
+                    while ( numel(cchild.children) <= 1 && ~(isa(cchild,'LiteralNode')) )
+                        cchildchild = cchild.children(1);                        
+                        self.children(child) = cchildchild;
+                        cchildchild.parent = self;
+                        %we can't continue yet, as this child could now be
+                        %an AND node. 
+                        cchild = cchildchild;
+                    end
+                end   
+                child = child + 1;
+            end
+            %Remove Merged childs
+            self.children(delchilds)  = [];
+            %And reduce all non literal and non same class children,
+            %everything else should already be reduced.
+            for child = 1:numel(self.children)
+                if ~(strcmp(class(self.children(child)),class(self)) && ~(isa(cchild,'LiteralNode')) ) 
+                    cchild = self.children(child);
+                    cchild.reduce();
                 end
             end
-            self.children(delchilds)  = [];
-            for child = 1:numel(self.children)
-                cchild = self.children(child);
-                cchild.reduce();
-            end   
         end
         
-%         function res = contains(self,literal)
-%             res = 0;
-%             for c=1:numel(self.children)
-%                 child = self.children(c);
-%                 if child.contains(literal)
-%                     res = 1;
-%                     break;
-%                 end
-%             end
-%         end
-%             
+
     end
     
 end
