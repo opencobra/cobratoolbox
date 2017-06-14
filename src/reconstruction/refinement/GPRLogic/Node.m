@@ -146,10 +146,18 @@ classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
         %                 Rules) of genes that would make this tree
         %                 evaluate to true.
         % 
-            dnfNode = self.convertToDNF();
-            geneSets = cell(numel(dnfNode.children),1);
-            genePos = cell(numel(dnfNode.children),1);
+            dnfNode = self.convertToDNF();                                        
+            if isa(dnfNode,'LiteralNode')
+                geneSets = cell(1,1);
+                genePos = cell(1,1);
+                literals = dnfNode.getLiterals();
+                pos = cellfun(@str2num, literals);
+                genePos{1} = pos;
+                geneSets{1} = geneNames(pos);
+            else
             for i = 1:numel(dnfNode.children)
+                geneSets = cell(numel(dnfNode.children),1);
+                genePos = cell(numel(dnfNode.children),1);
                 childliterals = dnfNode.children(i).getLiterals();
                 pos = cellfun(@str2num, childliterals);
                 genePos{i} = pos;
