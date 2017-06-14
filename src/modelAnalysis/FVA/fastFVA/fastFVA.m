@@ -1,7 +1,7 @@
-function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax,statussolmin,statussolmax] = fastFVA(model,optPercentage,objective,solver,rxnsList,matrixAS,cpxControl,strategy,rxnsOptMode)
+function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax,statussolmin,statussolmax] = fastFVA(model,optPercentage,objective,solverName,rxnsList,matrixAS,cpxControl,strategy,rxnsOptMode)
 %fastFVA Flux variablity analysis optimized for the GLPK and CPLEX solvers.
 %
-% [minFlux,maxFlux] = fastFVA(model,optPercentage,objective, solver)
+% [minFlux,maxFlux] = fastFVA(model,optPercentage,objective, solverName)
 %
 % Solves LPs of the form for all v_j: max/min v_j
 %                                     subject to S*v = b
@@ -27,7 +27,7 @@ function [minFlux,maxFlux,optsol,ret,fbasol,fvamin,fvamax,statussolmin,statussol
 %                    percentage of the optimal solution (default = 100
 %                    or optimal solutions only)
 %   objective        Objective ('min' or 'max') (default 'max')
-%   solver           'cplex'
+%   solverName           'ibm_cplex'
 %   matrixAS         'A' or 'S' - choice of the model matrix, coupled (A) or uncoupled (S)
 %   cpxControl       Parameter set of CPLEX loaded externally
 %   rxnsList         List of reactions to analyze (default all rxns, i.e. 1:length(model.rxns))
@@ -113,7 +113,7 @@ else
     rxns = find(ismember(model.rxns, rxnsList))';%transpose rxns
 
 end
-if (nargin<4 || isempty(solver)), solver         = 'cplex';     end
+if (nargin<4 || isempty(solverName)), solverName         = 'ibm_cplex';     end
 if (nargin<3 || isempty(objective)), objective      = 'max';      end
 if (nargin<2 || isempty(optPercentage)), optPercentage  = 100;        end
 if (nargin<9 || isempty(rxnsOptMode))
@@ -150,13 +150,13 @@ else
    error('Unknown objective')
 end
 
-% Define the solver
-if strmatch('glpk',solver)
+% Define the solverName
+if strmatch('glpk',solverName)
    fprintf('ERROR : GLPK is not (yet) supported as the binaries are not yet available.')
-elseif strmatch('cplex',solver)
+elseif strmatch('ibm_cplex',solverName)
     FVAc = str2func(['cplexFVA' getCPLEXversion()]);
 else
-   error(sprintf('Solver %s not supported', solver))
+   error(sprintf('Solver %s not supported', solverName))
 end
 
 % Define the CPLEX parameter set and the associated values - split the struct
@@ -291,10 +291,10 @@ else
     end
 
     startMarker1 = istart;
-    endMarker1 = iend
+    endMarker1 = iend;
 
     startMarker2 = istart;
-    endMarker2 = iend
+    endMarker2 = iend;
 
     % Calculate the column density and row density
 
@@ -341,26 +341,26 @@ for i = 1:nworkers
 
                 % avoid start indices beyond the total number of reactions
                 if startMarker1(i) > NrxnsList
-                    startMarker1(i) = NrxnsList
+                    startMarker1(i) = NrxnsList;
                 end
                 if startMarker2(i) > NrxnsList
-                    startMarker2(i) = NrxnsList
+                    startMarker2(i) = NrxnsList;
                 end
 
                 % avoid end indices beyond the total number of reactions
                 if endMarker1(i) > NrxnsList
-                    endMarker1(i) = NrxnsList
+                    endMarker1(i) = NrxnsList;
                 end
                 if endMarker2(i) > NrxnsList
-                    endMarker2(i) = NrxnsList
+                    endMarker2(i) = NrxnsList;
                 end
 
                 % avoid flipped chunks
                 if startMarker1(i) > endMarker1(i)
-                    startMarker1(i) = endMarker1(i)
+                    startMarker1(i) = endMarker1(i);
                 end
                 if startMarker2(i) > endMarker2(i)
-                  startMarker2(i) = endMarker2(i)
+                  startMarker2(i) = endMarker2(i);
               end
 
  end
@@ -491,7 +491,7 @@ for i=1:nworkers
     tmp = maxFluxTmp{i};
     %maxfluxcomplete = tmp;
     %maxfluxchunk = tmp(indices);
-    
+
     maxFlux(indices,1) = tmp(indices);
 
     tmp = minFluxTmp{i};
@@ -516,9 +516,14 @@ if bExtraOutputs || bExtraOutputs1
       end
   end
 
-    %if(strategy == 0)
+%  if strategy == 0
       for i=1:nworkers
-
+     %preparation of reactionKey
+      if strategy == 1 || strategy == 2
+        indices = [sortedrxnsVect(startMarker1(i):endMarker1(i)), sortedrxnsVect(startMarker2(i):endMarker2(i))];
+      else
+        indices = rxns(istart(i):iend(i));
+      end
           fvamin(:,indices) = fvaminRes{i};
           fvamax(:,indices) = fvamaxRes{i};
 
@@ -529,7 +534,7 @@ if bExtraOutputs || bExtraOutputs1
               statussolmax(indices,1) = tmp(indices);
           end
       end
-  %  end
+%  end
 end
 
 if(strategy == 0 && ~isempty(rxnsList))

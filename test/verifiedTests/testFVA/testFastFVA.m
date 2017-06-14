@@ -18,12 +18,14 @@ nworkers = 2;
 % Start a parpool environment in MATLAB
 SetWorkerCount(nworkers);
 
-% Define the solver
-solver = 'cplex';
+% Define the solverName
+solverName = 'ibm_cplex';
+
+    % save the userpath
+    originalUserPath = path;
 
 % Print out the header of the script
-    fprintf('================================================================================\n\n')
-    fprintf('\n -------------------------------------       Toy Example       --------------------------------- \n\n');
+fprintf('\n Toy Example: Flux ranges for a mutant with reaction v6 knocked out\n');
 
 % Stoichiometric matrix
 % (adapted from Papin et al. Genome Res. 2002 12: 1889-1900.)
@@ -51,14 +53,13 @@ model.rxns={'v1','v2','v3','v4','v5','v6','b1','b2','b3'};
 
 optPercentage=100; % FVA based on maximum growth
 
-fprintf('Flux ranges for a mutant with reaction v6 knocked out\n');
 model.lb(6)=0;
 model.ub(6)=0;
 
-fprintf('\n\n>> Toy example - minimal output.\n\n');
+fprintf('\n>> Toy example - minimal output.\n');
 [minFlux,maxFlux,optsol,ret]=fastFVA(model, optPercentage);
 
-fprintf('\n\n>> Toy example - all output arguments.\n\n');
+fprintf('\n>> Toy example - all output arguments.\n');
 [minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT,statussolmin,statussolmax] = fastFVA(model,optPercentage);
 
 %% Validation of Toy Example
@@ -81,7 +82,7 @@ objective= 'max';
 [minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT,statussolminT,statussolmaxT] = fastFVA(model, optPercentage, objective);
 
 % calculate the reference values using fluxVariability
-solverOK = changeCobraSolver('ibm_cplex');
+solverOK = changeCobraSolver(solverName);
 if solverOK
     [minFluxTref,maxFluxTref, Vminref, Vmaxref] = fluxVariability(model, optPercentage,objective, model.rxns, true, true, 'FBA');
 
@@ -129,42 +130,42 @@ matrixAS = 'S'; %'A'
 % Load CPLEX parameters
 cpxControl = CPLEXParamSet;
 
-fprintf('\n\n>> Example with 4 nargin, 2 nargout.\n');
-[minFluxT,maxFluxT] = fastFVA(model,optPercentage,objective,solver);
+fprintf('\n>> Example with 4 nargin, 2 nargout.\n');
+[minFluxT,maxFluxT] = fastFVA(model,optPercentage,objective,solverName);
 assert(norm(minFluxT - minFluxTref) < tol);
 assert(norm(maxFluxT - maxFluxTref) < tol);
 
-fprintf('\n\n>> Example with 5 nargin & 7 nargout.\n');
-[minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT] = fastFVA(model,optPercentage,objective,solver,rxnsList);
+fprintf('\n>> Example with 5 nargin & 7 nargout.\n');
+[minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT] = fastFVA(model,optPercentage,objective,solverName,rxnsList);
 assert(norm(minFluxT(rxnsIDlist) - minFluxTref(rxnsIDlist)) < tol);
 assert(norm(maxFluxT(rxnsIDlist) - maxFluxTref(rxnsIDlist)) < tol);
 
-fprintf('\n\n>> Example with 6 nargin & 7 nargout.\n');
-[minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT] = fastFVA(model,optPercentage,objective,solver,rxnsList,matrixAS);
+fprintf('\n>> Example with 6 nargin & 7 nargout.\n');
+[minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT] = fastFVA(model,optPercentage,objective,solverName,rxnsList,matrixAS);
 assert(norm(minFluxT(rxnsIDlist) - minFluxTref(rxnsIDlist)) < tol);
 assert(norm(maxFluxT(rxnsIDlist) - maxFluxTref(rxnsIDlist)) < tol);
 
-fprintf('\n\n>> Example with 7 nargin & 7 nargout.\n');
-[minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT] = fastFVA(model,optPercentage,objective,solver,rxnsList,matrixAS,cpxControl);
+fprintf('\n>> Example with 7 nargin & 7 nargout.\n');
+[minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT] = fastFVA(model,optPercentage,objective,solverName,rxnsList,matrixAS,cpxControl);
 assert(norm(minFluxT(rxnsIDlist) - minFluxTref(rxnsIDlist)) < tol);
 assert(norm(maxFluxT(rxnsIDlist) - maxFluxTref(rxnsIDlist)) < tol);
 
-fprintf('\n\n>> Example with 5 nargin & 9 nargout.\n');
-[minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT,statussolmin,statussolmax] = fastFVA(model,optPercentage,objective,solver,rxnsList);
-assert(norm(minFluxT(rxnsIDlist) - minFluxTref(rxnsIDlist)) < tol);
-assert(norm(maxFluxT(rxnsIDlist) - maxFluxTref(rxnsIDlist)) < tol);
-assert(norm(statussolminT(rxnsIDlist) - statussolmin(rxnsIDlist)) < tol);
-assert(norm(statussolmaxT(rxnsIDlist) - statussolmax(rxnsIDlist)) < tol);
-
-fprintf('\n\n>> Example with 6 nargin & 9 nargout.\n');
-[minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT,statussolmin,statussolmax] = fastFVA(model,optPercentage,objective,solver,rxnsList,matrixAS);
+fprintf('\n>> Example with 5 nargin & 9 nargout.\n');
+[minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT,statussolmin,statussolmax] = fastFVA(model,optPercentage,objective,solverName,rxnsList);
 assert(norm(minFluxT(rxnsIDlist) - minFluxTref(rxnsIDlist)) < tol);
 assert(norm(maxFluxT(rxnsIDlist) - maxFluxTref(rxnsIDlist)) < tol);
 assert(norm(statussolminT(rxnsIDlist) - statussolmin(rxnsIDlist)) < tol);
 assert(norm(statussolmaxT(rxnsIDlist) - statussolmax(rxnsIDlist)) < tol);
 
-fprintf('\n\n>> Example with 7 nargin & 9 nargout.\n');
-[minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT,statussolmin,statussolmax] = fastFVA(model,optPercentage,objective,solver,rxnsList,matrixAS,cpxControl);
+fprintf('\n>> Example with 6 nargin & 9 nargout.\n');
+[minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT,statussolmin,statussolmax] = fastFVA(model,optPercentage,objective,solverName,rxnsList,matrixAS);
+assert(norm(minFluxT(rxnsIDlist) - minFluxTref(rxnsIDlist)) < tol);
+assert(norm(maxFluxT(rxnsIDlist) - maxFluxTref(rxnsIDlist)) < tol);
+assert(norm(statussolminT(rxnsIDlist) - statussolmin(rxnsIDlist)) < tol);
+assert(norm(statussolmaxT(rxnsIDlist) - statussolmax(rxnsIDlist)) < tol);
+
+fprintf('\n>> Example with 7 nargin & 9 nargout.\n');
+[minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT,statussolmin,statussolmax] = fastFVA(model,optPercentage,objective,solverName,rxnsList,matrixAS,cpxControl);
 assert(norm(minFluxT(rxnsIDlist) - minFluxTref(rxnsIDlist)) < tol);
 assert(norm(maxFluxT(rxnsIDlist) - maxFluxTref(rxnsIDlist)) < tol);
 assert(norm(statussolminT(rxnsIDlist) - statussolmin(rxnsIDlist)) < tol);
@@ -176,9 +177,7 @@ for strategy = 0:2
 
     % determine the reaction IDs
     rxnsIDlist = findRxnIDs(model, rxnsList);
-    [minFluxT,maxFluxT] = fastFVA(model,optPercentage,objective,solver,rxnsList,matrixAS,[], strategy);
-    norm(minFluxT(rxnsIDlist) - minFluxTref(rxnsIDlist))
-    norm(maxFluxT(rxnsIDlist) - maxFluxTref(rxnsIDlist))
+    [minFluxT,maxFluxT] = fastFVA(model,optPercentage,objective,solverName,rxnsList,matrixAS,[], strategy);
     assert(norm(minFluxT(rxnsIDlist) - minFluxTref(rxnsIDlist)) < tol);
     assert(norm(maxFluxT(rxnsIDlist) - maxFluxTref(rxnsIDlist)) < tol);
 end
@@ -189,25 +188,26 @@ rxnsList = model.rxns([1,3,6,9]);
 % determine the reaction IDs
 rxnsIDlist = findRxnIDs(model, rxnsList);
 
-fprintf('\n\n>> Example with 5 nargin (sorted rxnsList).\n');
-[minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT,statussolmin,statussolmax] = fastFVA(model,optPercentage,objective,solver,rxnsList);
+fprintf('\n>> Example with 5 nargin (sorted rxnsList).\n');
+[minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT,statussolmin,statussolmax] = fastFVA(model,optPercentage,objective,solverName,rxnsList);
 assert(norm(minFluxT - minFluxTref(rxnsIDlist)) < tol);
 assert(norm(maxFluxT - maxFluxTref(rxnsIDlist)) < tol);
 assert(norm(statussolminT(rxnsIDlist) - statussolmin) < tol);
 assert(norm(statussolmaxT(rxnsIDlist) - statussolmax) < tol);
 
+% Reduce the tolerance
 tol = 1e-6;
 
 % test various cases of reaction lists with different optPercentage values
-testCases = {[4,5,7,8]; [7:10]; [1:3]; [1:12]; [13:16, 77, 78:80, 90, 92:95]}
+testCases = {[4,5,7,8]; [7:10]; [1:3]; [1:12]; [13:16, 77, 78:80, 90, 92:95]};
 
 for i = 1:length(testCases)
     optPercentage = 100 - i*15;
     testKey = testCases{i};
     rxnsList = model.rxns(testKey);
-    fprintf('\n\n>> Example with 10 nargin (rxnsOptMode) (%d).\n', i);
-    [minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT,statussolmin,statussolmax] = fastFVA(model,optPercentage,objective,solver,rxnsList);
-    [minFluxT1,maxFluxT1,optsolT1,retT1,fbasolT1,fvaminT1,fvamaxT1,statussolmin1,statussolmax1] = fastFVA(model,optPercentage,objective,solver,model.rxns);
+    fprintf('\n>> Example with 10 nargin (rxnsOptMode) (%d).\n', i);
+    [minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT,statussolmin,statussolmax] = fastFVA(model,optPercentage,objective,solverName,rxnsList);
+    [minFluxT1,maxFluxT1,optsolT1,retT1,fbasolT1,fvaminT1,fvamaxT1,statussolmin1,statussolmax1] = fastFVA(model,optPercentage,objective,solverName,model.rxns);
 
     assert(norm(minFluxT - minFluxT1(testKey)) < tol)
     assert(norm(maxFluxT - maxFluxT1(testKey)) < tol)
@@ -215,14 +215,14 @@ end
 
 optPercentage = 90.0;
 rxnsList = model.rxns([1,20,30,19,5,4,3]);
-fprintf('\n\n>> Example with 5 nargin (UNsorted rxnsList & optPercentage = 90).\n');
+fprintf('\n>> Example with 5 nargin (UNsorted rxnsList & optPercentage = 90).\n');
 try
-    [minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT,statussolmin,statussolmax] = fastFVA(model,optPercentage,objective,solver,rxnsList);
+    [minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT,statussolmin,statussolmax] = fastFVA(model,optPercentage,objective,solverName,rxnsList);
 catch ME
     assert(length(ME.message) > 0)
 end
 
-% for optimal solutions
+% Examples:
 % rxnsOptMode = [0,0,0,0,0,0] -> statussolmin = [1,1,1,1,1,1]; statussolmax = [0,0,0,0,0,0];
 % rxnsOptMode = [1,1,1,1,1,1] -> statussolmin = [0,0,0,0,0,0]; statussolmax = [1,1,1,1,1,1];
 % rxnsOptMode = [2,2,2,2,2,2] -> statussolmin = [1,1,1,1,1,1]; statussolmax = [1,1,1,1,1,1];
@@ -230,25 +230,29 @@ end
 
 % define the reaction list
 rxnsList = model.rxns([1,2,3,4,12,14]);
-fprintf('\n\n>> Example with 10 nargin (rxnsOptMode) (1).\n');
+fprintf('\n>> Example with 10 nargin (rxnsOptMode) (1).\n');
 
 % define the optimization mode for each reaction
 rxnsOptMode = [0,1,2,0,1,2];
 
-[minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT,statussolmin,statussolmax] = fastFVA(model,optPercentage,objective,solver,rxnsList,[],[],[],rxnsOptMode);
+[minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT,statussolmin,statussolmax] = fastFVA(model,optPercentage,objective,solverName,rxnsList,[],[],[],rxnsOptMode);
 
 assert(norm(statussolmin - [1,0,1,1,0,1]') < tol)
 assert(norm(statussolmax - [0,1,1,0,1,1]') < tol)
 
 % define the reaction list
 rxnsList = model.rxns([8,9,15,27,38]);
-fprintf('\n\n>> Example with 10 nargin (rxnsOptMode) (2).\n');
+fprintf('\n>> Example with 10 nargin (rxnsOptMode) (2).\n');
 rxnsOptMode = [2,1,2,0,0];
 
-[minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT,statussolmin,statussolmax] = fastFVA(model,optPercentage,objective,solver,rxnsList,[],[],[],rxnsOptMode);
+[minFluxT,maxFluxT,optsolT,retT,fbasolT,fvaminT,fvamaxT,statussolmin,statussolmax] = fastFVA(model,optPercentage,objective,solverName,rxnsList,[],[],[],rxnsOptMode);
 
 assert(norm(statussolmin - [1,0,1,1,1]') < tol)
 assert(norm(statussolmax - [1,1,1,0,0]') < tol)
 
 % print out an exit message
 fprintf('\n Testing fastFVA done. \n')
+
+    % restore the original path
+    path(originalUserPath);
+    addpath(originalUserPath);
