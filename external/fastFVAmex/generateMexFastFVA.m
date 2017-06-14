@@ -57,11 +57,11 @@ if exist(include, 'dir') ~= 7
 else
     % set the CPLEX library path
     if isunix == 1 && ismac ~= 1
-        lib           = [rootPathCPLEX filesep '/lib/x86-64_linux/static_pic'];
+        lib           = [rootPathCPLEX filesep 'lib/x86-64_linux/static_pic'];
     elseif ismac == 1
-        lib           = [rootPathCPLEX filesep '/lib/x86-64_osx/static_pic'];
+        lib           = [rootPathCPLEX filesep 'lib/x86-64_osx/static_pic'];
     else
-        lib           = [rootPathCPLEX filesep '\lib\x64_windows_vs2013\stat_mda'];
+        lib           = [rootPathCPLEX filesep 'lib\x64_windows_vs2013\stat_mda'];
     end
 
     % check if the library directory exist
@@ -71,11 +71,11 @@ else
         if isunix == 1 || ismac == 1
             library       = [lib filesep 'libcplex.a'];  % The library file is the same for *nix systems
         else
-            library       = [lib filesep 'cplex' cplexVersion '.lib ' lib filesep 'ilocplex.lib'];
+            library       = ['"' lib filesep 'cplex' cplexVersion '.lib" "' lib filesep 'ilocplex.lib"'];
         end
 
         % check if the library file exist
-        if exist(library, 'file') ~= 2
+        if exist(lib, 'dir') ~= 7
             error(['The required CPLEX library file ' library ' does not exist. Please install the CPLEX solver as explained here.']);
         else
             libraryExists = true;
@@ -97,7 +97,7 @@ if cplexInstalled && libraryExists
 
     % Generation of MEX string with compiler options
     CFLAGS        = '-O3 -lstdc++ -xc++ -Wall -Werror -march=native -save-temps -shared-libgcc -v ';
-    cmd           = ['-output cplexFVA' cplexVersion ' -largeArrayDims CFLAGS="\$CFLAGS" -I' include ' ' filename ' ' library];
+    cmd           = ['-output cplexFVA' cplexVersion ' -largeArrayDims CFLAGS="\$CFLAGS" -I"' include '" "' filename '" ' library];
 
     if printLevel > 1
         fprintf('The compilation command is:\n');
@@ -120,7 +120,7 @@ if cplexInstalled && libraryExists
     eval(['mex ' cmd]);
 
     % print a status message
-    fprintf(['Location of binary MEX file: ' tmpDir '\n']);
+    fprintf(['Location of binary MEX file: ' strrep(tmpDir, '\', '\\') '\n']);
 
     addpath(genpath(tmpDir));
 
