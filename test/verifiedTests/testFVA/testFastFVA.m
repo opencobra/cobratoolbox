@@ -31,13 +31,13 @@ fprintf('\n Toy Example: Flux ranges for a mutant with reaction v6 knocked out\n
 % (adapted from Papin et al. Genome Res. 2002 12: 1889-1900.)
 model.S = [
     %	 v1 v2 v3 v4 v5 v6 b1 b2 b3
-    -1  0  0  0  0  0  1  0  0  % A
-    1 -2 -2  0  0  0  0  0  0  % B
-    0  1  0  0 -1 -1  0  0  0  % C
-    0  0  1 -1  1  0  0  0  0  % D
-    0  0  0  1  0  1  0 -1  0  % E
-    0  1  1  0  0  0  0  0 -1  % byp
-    0  0 -1  1 -1  0  0  0  0  % cof
+    -1,  0,  0,  0,  0,  0,  1,  0,  0;  % A
+     1, -2, -2,  0,  0,  0,  0,  0,  0;  % B
+     0,  1,  0,  0, -1, -1,  0,  0,  0;  % C
+     0,  0,  1, -1,  1,  0,  0,  0,  0;  % D
+     0,  0,  0,  1,  0,  1,  0, -1,  0;  % E
+     0,  1,  1,  0,  0,  0,  0,  0, -1;  % byp
+     0,  0, -1,  1, -1,  0,  0,  0,  0;  % cof
 ];
 
 % Flux limits

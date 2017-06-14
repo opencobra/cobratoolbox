@@ -91,7 +91,7 @@ rng('shuffle');
 filenameParfor = ['parfor_progress_', datestr(now, 30), '_', num2str(randi(9)), '.txt'];
 filenameParfor = [CBTDIR filesep '.tmp' filesep filenameParfor];
 
-% Turn on the load balancing for large problems
+    % Turn on the load balancing for large problems
 loadBalancing = 0;  % 0: off; 1: on
 
 % Define if information about the work load distriibution will be shown or not
@@ -295,7 +295,7 @@ else
 
     if n > 5000 & loadBalancing == 1
         % A primitive load-balancing strategy for large problems
-        nworkers = 4*nworkers;
+        nworkers = 4 * nworkers;
         fprintf(' >> The load is balanced and the number of virtual workers is %d.\n', nworkers);
     end
 
@@ -306,7 +306,7 @@ else
         i = i + 1;
     end
 
-    [Nmets,Nrxns] = size(A);
+    [Nmets, Nrxns] = size(A);
     assert(sum(nrxn) == n);
     istart = 1; iend = nrxn(1);
     for i = 2:nworkers
@@ -345,17 +345,16 @@ else
 
         for i = 1:nworkers
 
-            startMarker1(i) = (i-1) * pRxnsHalfWorker + 1;
+            startMarker1(i) = (i - 1) * pRxnsHalfWorker + 1;
             endMarker1(i) = i * pRxnsHalfWorker;
 
             if strategy == 1
-                startMarker2(i) = startMarker1(i) + ceil(NrxnsList/2);
-                endMarker2(i) = endMarker1(i) + ceil(NrxnsList/2);
+                startMarker2(i) = startMarker1(i) + ceil(NrxnsList / 2);
+                endMarker2(i) = endMarker1(i) + ceil(NrxnsList / 2);
             elseif strategy == 2
                 startMarker2(i) = ceil(NrxnsList / 2) + startMarker1(i);
                 endMarker2(i) = startMarker2(i) + pRxnsHalfWorker + 1;
             end
-
 
             % avoid start indices beyond the total number of reactions
             if startMarker1(i) > NrxnsList
@@ -385,8 +384,8 @@ else
 
     minFlux = zeros(length(model.rxns), 1);
     maxFlux = zeros(length(model.rxns), 1);
-    iopt    = zeros(nworkers, 1);
-    iret    = zeros(nworkers, 1);
+    iopt = zeros(nworkers, 1);
+    iret = zeros(nworkers, 1);
 
     maxFluxTmp = {};
     minFluxTmp = {};
@@ -410,7 +409,7 @@ else
 
     parfor i = 1:nworkers
 
-        rxnsKey = 0; %silence warning
+        rxnsKey = 0;  % silence warning
 
         % preparation of reactionKey
         if strategy == 1 || strategy == 2
@@ -435,13 +434,13 @@ else
 
         minf = zeros(length(model.rxns), 1);
         maxf = zeros(length(model.rxns), 1);
-        fvamin_single = 0; fvamax_single = 0; fbasol_single = 0; statussolmin_single = 0; statussolmax_single = 0; % silence warnings
+        fvamin_single = 0; fvamax_single = 0; fbasol_single = 0; statussolmin_single = 0; statussolmax_single = 0;  % silence warnings
 
         if bExtraOutputs1
             [minf, maxf, iopt(i), iret(i), fbasol_single, fvamin_single, fvamax_single, ...
-            statussolmin_single, statussolmax_single] = FVAc(model.c, A, b, csense, model.lb, model.ub, ...
-                                                             optPercentage,obj, rxnsKey', ...
-                                                             t.ID, cpxControl, valuesCPLEXparams, rxnsOptMode(istart(i):iend(i)));
+             statussolmin_single, statussolmax_single] = FVAc(model.c, A, b, csense, model.lb, model.ub, ...
+                                                              optPercentage, obj, rxnsKey', ...
+                                                              t.ID, cpxControl, valuesCPLEXparams, rxnsOptMode(istart(i):iend(i)));
         elseif bExtraOutputs
             [minf, maxf, iopt(i), iret(i), fbasol_single, fvamin_single, fvamax_single] = FVAc(model.c, A, b, csense, model.lb, model.ub, ...
                                                                                                optPercentage, obj, rxnsKey', ...
@@ -477,7 +476,7 @@ else
         fprintf('\n----------------------------------------------------------------------------------\n');
 
         % print out the percentage of the progress
-        percout =  parfor_progress(-1, filenameParfor);
+        percout = parfor_progress(-1, filenameParfor);
 
         if percout < 100
             fprintf(' ==> %1.1f%% done. Please wait ...\n', percout);
@@ -503,17 +502,17 @@ for i = 1:nworkers
 
     % store the minFlux
     tmp = maxFluxTmp{i};
-    maxFlux(indices,1) = tmp(indices);
+    maxFlux(indices, 1) = tmp(indices);
 
     % store the maxFlux
     tmp = minFluxTmp{i};
-    minFlux(indices,1) = tmp(indices);
+    minFlux(indices, 1) = tmp(indices);
 end
 
 if bExtraOutputs || bExtraOutputs1
 
     if nworkers > 1
-        fbasol = fbasolRes{1}; % Initial FBA solutions are identical across workers
+        fbasol = fbasolRes{1};  % Initial FBA solutions are identical across workers
     end
 
     fvamin = zeros(length(model.rxns), length(model.rxns));
@@ -539,16 +538,16 @@ if bExtraOutputs || bExtraOutputs1
 
         if bExtraOutputs1
             tmp = statussolminRes{i}';
-            statussolmin(indices,1) = tmp(indices);
+            statussolmin(indices, 1) = tmp(indices);
             tmp = statussolmaxRes{i}';
-            statussolmax(indices,1) = tmp(indices);
+            statussolmax(indices, 1) = tmp(indices);
         end
     end
 end
 
 if strategy == 0 && ~isempty(rxnsList)
     if bExtraOutputs || bExtraOutputs1
-        fvamin = fvamin(:, rxns);%keep only nonzero columns
+        fvamin = fvamin(:, rxns);  % keep only nonzero columns
         fvamax = fvamax(:, rxns);
     end
 
