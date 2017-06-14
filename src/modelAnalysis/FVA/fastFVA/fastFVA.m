@@ -70,7 +70,7 @@ function [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, s
 % EXAMPLE:
 %
 %    load modelRecon1Biomass.mat % Human reconstruction network (Recon1)
-%    SetWorkerCount(4) % Only if you have the parallel toolbox installed
+%    setWorkerCount(4);
 %    [minFlux,maxFlux] = fastFVA(model, 90);
 %
 % NOTE:
@@ -250,7 +250,7 @@ else
     fprintf(' >> %d reactions out of %d are minimized and maximized (%1.2f%%).\n', totalOptMode, n, totalOptMode * 100 / n);
 end
 
-% Create a MATLAB parallel pool
+% count the number of workers
 poolobj = gcp('nocreate');  % If no pool, do not create new one.
 if isempty(poolobj)
     nworkers = 0;

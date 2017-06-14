@@ -16,7 +16,7 @@ objective = 'max';
 nworkers = 2;
 
 % Start a parpool environment in MATLAB
-SetWorkerCount(nworkers);
+setWorkerCount(nworkers);
 
 % Define the solverName
 solverName = 'ibm_cplex';

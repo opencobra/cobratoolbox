@@ -2,7 +2,7 @@
 
 ## Introduction
 
-fastFVA is an efficient implementation of flux variability analysis written in C++. CPLEX  is called cplexFVAnew.c. The routines are called via the Matlab function fastFVA. This function employs PARFOR for further speedup if the parallel toolbox has been installed. You can either use the MATLABPOOL command directly to specify the number of cores/CPUs or use the SetWorkerCount helper function.
+fastFVA is an efficient implementation of flux variability analysis written in C++. CPLEX  is called cplexFVAnew.c. The routines are called via the Matlab function fastFVA. This function employs PARFOR for further speedup if the parallel toolbox has been installed. You can either use the MATLABPOOL command directly to specify the number of cores/CPUs or use the `setWorkerCount` helper function.
 
 If you use fastFVA in your work, please cite
 
