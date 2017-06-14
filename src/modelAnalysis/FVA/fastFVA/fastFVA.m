@@ -86,6 +86,12 @@ function [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, s
 
 global CBTDIR
 
+% save the userpath
+originalUserPath = path;
+
+% the root path must be the root directory as the path to the logFiles is hard-coded
+cd(CBTDIR);
+
 % set a random log filename to avoid overwriting ongoing runs
 rng('shuffle');
 filenameParfor = ['parfor_progress_', datestr(now, 30), '_', num2str(randi(9)), '.txt'];
@@ -559,3 +565,7 @@ if strategy == 0 && ~isempty(rxnsList)
     minFlux(find(~ismember(model.rxns, rxnsList))) = [];
     maxFlux(find(~ismember(model.rxns, rxnsList))) = [];
 end
+
+% restore the original path
+path(originalUserPath);
+addpath(originalUserPath);

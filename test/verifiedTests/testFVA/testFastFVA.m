@@ -17,6 +17,9 @@ objective = 'max';
 
 tol = 1e-2;
 
+% Define the number of workers to be used
+nworkers = 2;
+
 % Define the solverName
 solverName = 'ibm_cplex';
 
@@ -25,8 +28,7 @@ load('ecoli_core_model.mat', 'model');
 
 [minFluxSerial, maxFluxSerial] = fastFVA(model, optPercentage, [], solverName, model.rxns(1:2));
 
-% Define the number of workers to be used
-nworkers = 2;
+
 
 % Start a parpool environment in MATLAB
 setWorkerCount(nworkers);
@@ -84,6 +86,8 @@ assert(optsol == referenceToyResults.optsol);
 
 % load the E.coli model
 load('ecoli_core_model.mat', 'model');
+
+optPercentage = 90;  % FVA based on maximum growth
 
 % full fastFVA
 [minFluxT, maxFluxT, optsolT, retT, fbasolT, fvaminT, fvamaxT, statussolminT, statussolmaxT] = fastFVA(model, optPercentage, objective);
