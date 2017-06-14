@@ -191,7 +191,7 @@ function initCobraToolbox()
     end
 
     % add the folders of The COBRA Toolbox
-    folders = {'tutorials', 'papers', 'binary', 'deprecated', 'src', 'test'};
+    folders = {'tutorials', 'papers', 'binary', 'deprecated', 'src', 'test', '.tmp'};
 
     if ENV_VARS.printLevel
         fprintf(' > Adding all the files of The COBRA Toolbox ... ')
@@ -208,7 +208,10 @@ function initCobraToolbox()
 
     % add specific subfolders
     for k = 1:length(folders)
-        addpath(genpath([CBTDIR, filesep, folders{k}]));
+        tmpDir = [CBTDIR, filesep, folders{k}];
+        if exist(tmpDir, 'dir') == 7
+            addpath(genpath(tmpDir));
+        end
     end
 
     % print a success message
