@@ -19,10 +19,10 @@ cd(fileDir);
 ok = changeCobraSolver('pdco', 'MINLP', 0);
 assert(ok == false);
 
-ok = changeCobraSolver('pdco', 'NLP', 0);
+ok = changeCobraSolver('pdco', 'LP', 0);
 assert(ok == true);
-global CBT_NLP_SOLVER
-assert(strcmp(CBT_NLP_SOLVER, 'pdco'))
+global CBT_LP_SOLVER
+assert(strcmp(CBT_LP_SOLVER, 'pdco'))
 
 global CBT_MINLP_SOLVER
 CBT_MINLP_SOLVER = [];
