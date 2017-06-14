@@ -21,16 +21,16 @@ cd(fileDir);
 tol = 1e-4;
 
 % define the solver packages to be used to run this test
-solverPkgs = {'tomlab_cplex','gurobi'};
+solverPkgs = {'tomlab_cplex', 'gurobi'};
 
 % load the model
 load('Ec_iJR904.mat', 'model');
 load('testFVAData.mat');
 
 % create a parallel pool
-poolobj = gcp('nocreate'); % if no pool, do not create new one.
+poolobj = gcp('nocreate');  % if no pool, do not create new one.
 if isempty(poolobj)
-    parpool(2); % launch 2 workers
+    parpool(2);  % launch 2 workers
 end
 
 for k = 1:length(solverPkgs)
@@ -42,7 +42,7 @@ for k = 1:length(solverPkgs)
     if solverLPOK && solverQPOK
         fprintf('   Testing flux variability analysis using %s ... ', solverPkgs{k});
 
-        poolobj = gcp('nocreate'); % If no pool, do not create new one.
+        poolobj = gcp('nocreate');  % If no pool, do not create new one.
         if isempty(poolobj)
             % launch 2 workers
             parpool(2);
@@ -74,19 +74,19 @@ for k = 1:length(solverPkgs)
             assert(maxTMinusMinT <= maxMinusMin + tol)
 
             % print the labels
-            printLabeledData(model.rxns(i), [minFlux(i) maxFlux(i) maxFlux(i)-minFlux(i)], true, 3);
+            printLabeledData(model.rxns(i), [minFlux(i) maxFlux(i) maxFlux(i) - minFlux(i)], true, 3);
         end
 
         % Vmin and Vmax test
-        %Since the solution are dependant on solvers and cpus, the test will check the existence of nargout (weak test) over the 4 first reactions
+        % Since the solution are dependant on solvers and cpus, the test will check the existence of nargout (weak test) over the 4 first reactions
         rxnNames = {'PGI', 'PFK', 'FBP', 'FBA'};
 
-        %testing default FVA with 2 printLevels
+        % testing default FVA with 2 printLevels
         for j = 0:1
             fprintf('    Testing flux variability with printLevel %s:\n', num2str(j));
-            [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model, 90, 'max', rxnNames, j, 1);
-            assert(~isequal(Vmin,[]));
-            assert(~isequal(Vmax,[]));
+            [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, 90, 'max', rxnNames, j, 1);
+            assert(~isequal(Vmin, []));
+            assert(~isequal(Vmax, []));
         end
 
         % testing various methods
@@ -94,9 +94,9 @@ for k = 1:length(solverPkgs)
 
         for j = 1:length(testMethods)
             fprintf('    Testing flux variability with test method %s:\n', testMethods{j});
-            [minFlux,maxFlux,Vmin,Vmax] = fluxVariability(model,90,'max', rxnNames, 1, 1, testMethods{j});
-            assert(~isequal(Vmin,[]));
-            assert(~isequal(Vmax,[]));
+            [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, 90, 'max', rxnNames, 1, 1, testMethods{j});
+            assert(~isequal(Vmin, []));
+            assert(~isequal(Vmax, []));
         end
 
         % output a success message
