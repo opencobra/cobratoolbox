@@ -1,20 +1,28 @@
 function [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, statussolmax] = fastFVA(model, optPercentage, objective, solverName, rxnsList, matrixAS, cpxControl, strategy, rxnsOptMode)
-% fastFVA Flux variablity analysis optimized for the CPLEX solver.
+% Flux variablity analysis optimized for the CPLEX solver.
 % Solves LPs of the form:
 %
-% ..math:
-%    \forall v_j: max/min v_j
-%    subject to S \cdot v = b
-%    lb \leq v \leq ub
+% .. math::
+%
+%    \forall ~ v_j: ~&~ max/min ~&~ v_j\\
+%                 ~&~ s.t.    ~&~ S v = b\\
+%                 ~&~         ~&~ l_b \leq v \leq u_b
+%
+% If the optional fields are supplied, following LPs are solved
+%
+% .. math::
+%
+%    \forall ~ v_j: ~&~ max/min ~&~ v_j\\
+%                 ~&~ s.t.    ~&~ Av {\leq | = | \geq} b\\
+%                 ~&~         ~&~ l_b \leq v \leq u_b
 %
 % fastFVA returns vectors for the initial FBA in FBASOL together with matrices FVAMIN and
 % FVAMAX containing the flux values for each individual min/max problem.
 % Note that for large models the memory requirements may become prohibitive.
-% To save large fvamin and fvamax matrices please toggle v7.3 in Preferences -> General -> MAT-Files
+% To save large `fvamin` and `fvamax` matrices, toggle v7.3 in Preferences -> General -> MAT-Files
 %
-% If a rxnsList vector is specified then only the corresponding entries in
+% If a `rxnsList` vector is specified then only the corresponding entries in
 % minFlux and maxFlux are defined (all remaining entries are zero).
-%
 %
 % USAGE:
 %
@@ -23,48 +31,40 @@ function [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, s
 % INPUTS:
 %   model:             COBRA Model structure
 %
-%                        *.S - Stoichiometric matrix
-%                        *.b - Right hand side vector
-%                        *.c - Objective coefficients
-%                        *.lb - Lower bounds
-%                        *.ub - Upper bounds
+%                        * .S - Stoichiometric matrix
+%                        * .b - Right hand side vector
+%                        * .c - Objective coefficients
+%                        * .lb - Lower bounds
+%                        * .ub - Upper bounds
+%                        * .A - (optional) Stoichiometric matrix (with constraints)
+%                        * .csense - Type of constraints, `csense` is a vector with elements `E` (equal), `L` (less than) or `G` (greater than).
+%   optPercentage:     Only consider solutions that give you at least a certain
+%                      percentage of the optimal solution (default = `100`, equivalent to optimal solutions only)
+%   objective:         Objective ('min' or 'max') (default 'max')
+%   solverName:        name of the solver, default: `ibm_cplex`
+%   matrixAS:          `A` or `S` - choice of the model matrix, coupled (A) or uncoupled (S)
+%   cpxControl:        Parameter set of CPLEX loaded externally
+%   rxnsList:          List of reactions to analyze (default all rxns, i.e. `1:length(model.rxns)``)
+%   strategy:          Paralell distribution strategy of reactions among workers
 %
-%                      Optional fields
-%                        *.A - Stoichiometric matrix (with constraints)
-%                        *.csense - Type of constraints, `csense` is a vector with elements
-%                       'E' (equal), 'L' (less than) or 'G' (greater than).
-%     If the optional fields are supplied, following LPs are solved
-%                    max/min v_j
-%                    subject to Av {'<=' | '=' | '>='} b
-%                                lb <= v <= ub
-%
-%   optPercentage:    Only consider solutions that give you at least a certain
-%                    percentage of the optimal solution (default = 100
-%                    or optimal solutions only)
-%   objective:        Objective ('min' or 'max') (default 'max')
-%   solverName:          'ibm_cplex'
-%   matrixAS:         'A' or 'S' - choice of the model matrix, coupled (A) or uncoupled (S)
-%   cpxControl:       Parameter set of CPLEX loaded externally
-%   rxnsList:         List of reactions to analyze (default all rxns, i.e. 1:length(model.rxns))
-%   strategy:         Paralell distribution strategy of reactions among workers
-%                    0 = Blind splitting: default random distribution
-%                    1 = Extremal dense-and-sparse splitting: every worker receives dense and sparse reactions, starting from both extremal indices of the sorted column density vector
-%                    2 = Central dense-and-sparse splitting: every worker receives dense and sparse reactions, starting from the beginning and center indices of the sorted column density vector
-%   rxnsOptMode:      List of min/max optimizations to perform:
-%                    0 = only minimization;
-%                    1 = only maximization;
-%                    2 = minimization & maximization;
+%                       * 0 = Blind splitting: default random distribution
+%                       * 1 = Extremal dense-and-sparse splitting: every worker receives dense and sparse reactions, starting from both extremal indices of the sorted column density vector
+%                       * 2 = Central dense-and-sparse splitting: every worker receives dense and sparse reactions, starting from the beginning and center indices of the sorted column density vector
+%   rxnsOptMode:       List of min/max optimizations to perform:
+%                       * 0 = only minimization;
+%                       * 1 = only maximization;
+%                       * 2 = minimization & maximization;
 %
 % OUTPUTS:
-%   minFlux:         Minimum flux for each reaction
-%   maxFlux:         Maximum flux for each reaction
-%   optsol:          Optimal solution (of the initial FBA)
-%   ret:             Zero if success (global return code from FVA)
-%   fbasol:          Initial FBA in FBASOL
-%   fvamin:          matrix with flux values for the minimization problem
-%   fvamax:          matrix with flux values for the maximization problem
-%   statussolmin:    vector of solution status for each reaction (minimization)
-%   statussolmax:    vector of solution status for each reaction (maximization)
+%   minFlux:           Minimum flux for each reaction
+%   maxFlux:           Maximum flux for each reaction
+%   optsol:            Optimal solution (of the initial FBA)
+%   ret:               Zero if success (global return code from FVA)
+%   fbasol:            Initial FBA in FBASOL
+%   fvamin:            matrix with flux values for the minimization problem
+%   fvamax:            matrix with flux values for the maximization problem
+%   statussolmin:      vector of solution status for each reaction (minimization)
+%   statussolmax:      vector of solution status for each reaction (maximization)
 %
 %
 % EXAMPLE:
@@ -73,12 +73,16 @@ function [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, s
 %    SetWorkerCount(4) % Only if you have the parallel toolbox installed
 %    [minFlux,maxFlux] = fastFVA(model, 90);
 %
-% Reference: S. Gudmundsson and I. Thiele, Computationally efficient
-%            Flux Variability Analysis. BMC Bioinformatics, 2010, 11:489
+% NOTE:
+%
+%     S. Gudmundsson and I. Thiele, Computationally efficient
+%     Flux Variability Analysis. BMC Bioinformatics, 2010, 11:489
 
-% Original author: Steinn Gudmundsson.
-% Contributor: Laurent Heirendt, LCSB
-% Last updated: October 2016
+% .. Authors:
+%       - Original author: Steinn Gudmundsson.
+%       - Contributor: Laurent Heirendt, LCSB
+%
+% .. Last updated: October 2016
 
 global CBTDIR
 
