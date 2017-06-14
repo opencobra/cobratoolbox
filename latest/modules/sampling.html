@@ -917,34 +917,38 @@ Filtered <cite>R</cite></li>
 
 <dl class="function">
 <dt id="src.modelAnalysis.sampling.sampleCbModel">
-<code class="descname">sampleCbModel</code><span class="sig-paren">(</span><em>model</em>, <em>sampleFile</em>, <em>samplerName</em>, <em>options</em>, <em>modelSampling</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/513efe696b694280f928df92d90d60c4988d8197/src/modelAnalysis/sampling/sampleCbModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.sampleCbModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sampleCbModel</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/513efe696b694280f928df92d90d60c4988d8197/src/modelAnalysis/sampling/sampleCbModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.modelAnalysis.sampling.sampleCbModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Samples the solution-space of a constraint-based model</p>
 <p><strong>Usage</strong></p>
 <blockquote>
 <div>[modelSampling, samples] = sampleCbModel(model, sampleFile, samplerName, options, modelSampling)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
 COBRA model structure</li>
-<li><strong>sampleFile</strong> &#8211;
-File names for sampling output files (only required for
-ACHR)</li>
 </ul>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
+<p><strong>Optional input</strong></p>
 <blockquote>
 <div><ul>
-<li><p class="first"><strong>samplerName</strong> &#8211;
-{(&#8216;ACHR&#8217;),&#8217;CHRR&#8217;} Name of the sampler to be used to sample the solution</p>
+<li><p class="first"><strong>varargin</strong> &#8211;
+Optional Inputs as Parameter/Value pairs with the
+following options:
+- sampleFile:    File names for sampling output files (only required for</p>
+<blockquote>
+<div><p>ACHR, Default &#8216;AHCRFile&#8217;)</p>
+</div></blockquote>
+<ul>
+<li><p class="first">samplerName:   {&#8216;ACHR&#8217;,(&#8216;CHRR&#8217;)} Name of the sampler to be used to sample the solution</p>
 </li>
-<li><p class="first"><strong>options</strong> &#8211;
-Options for sampling and pre/postprocessing (default values
+<li><p class="first">options:       Options for sampling and pre/postprocessing (default values
 in parenthesis)</p>
 <blockquote>
 <div><ul class="simple">
 <li>.nStepsPerPoint - Number of sampler steps per point saved (200)</li>
-<li>.nPointsReturned - Number of points loaded for analysis (2000)</li>
+<li>.nPointsReturned - Number of points loaded for
+analysis (2000)</li>
 <li>.nWarmupPoints - Number of warmup points (5000). ACHR only.</li>
 <li>.nFiles - Number of output files (10). ACHR only.</li>
 <li>.nPointsPerFile - Number of points per file (1000). ACHR only.</li>
@@ -954,9 +958,10 @@ in parenthesis)</p>
 </ul>
 </div></blockquote>
 </li>
-<li><p class="first"><strong>modelSampling</strong> &#8211;
-From a previous round of sampling the same
+<li><p class="first">modelSampling: From a previous round of sampling the same
 model. Input to avoid repeated preprocessing.</p>
+</li>
+</ul>
 </li>
 </ul>
 </div></blockquote>
