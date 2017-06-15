@@ -13,9 +13,9 @@ function [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(mo
 %                   Allowed Parameters are:
 %                   * sRxns: List of specific reversible reactions to convert to
 %                     irreversible (Default = model.rxns)
-%                   * leaveInverse:  Do not alter reactions that can only carry negative
-%                     flux, normally, those are flipped and marked with '_r'
-%                     (Default = false)
+%                   * flipOrientation:  Alter reactions that can only carry negative
+%                     flux by flipping and marking them with '_r'
+%                     (Default = true)
 %                   * orderReactions: Order Reactions such that reverse
 %                     reactions directly follow their forward reaction.
 % OUTPUTS:
@@ -58,18 +58,18 @@ function [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(mo
 parser = inputParser();
 parser.addRequired('model',@isstruct);
 parser.addParameter('sRxns',model.rxns,@iscell);
-parser.addParameter('leaveInverse',false,@(x) islogical(x) || isnumeric(x));
+parser.addParameter('flipOrientation',true,@(x) islogical(x) || isnumeric(x));
 parser.addParameter('orderReactions',false,@(x) islogical(x) || isnumeric(x));
 
 parser.parse(model,varargin{:});
 sRxns = parser.Results.sRxns;
-leaveInverse = parser.Results.leaveInverse;
+flipOrientation = parser.Results.flipOrientation;
 orderReactions = parser.Results.orderReactions;
 
 %Flip all pure backward reactions and append a _r
 backReacs = ismember(model.rxns,sRxns) & model.lb < 0 & model.ub <= 0;
 
-if ~leaveInverse
+if flipOrientation
     model.S(:,backReacs) = -model.S(:,backReacs);
     templbs = -model.ub(backReacs);
     model.ub(backReacs) = -model.lb(backReacs);
