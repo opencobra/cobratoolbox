@@ -35,7 +35,7 @@ toymodel.ub(1) = -1; % force uptake, otherwise the default Objective will try to
 sol = optimizeCbModelNLP(toymodel, 'nOpt', 10);
 
 % the optimal sol has the minimal uptake and a maximal flux distribution.
-optsol = [-1; 0.5; 0.5; 0.5; 0.5];
+optsol = [-1; 0.5; 0.5; 0.5; 0.5; 0.5];
 
 assert(abs(sum(sol.x - optsol)) < tol)
 
