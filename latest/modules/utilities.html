@@ -1021,6 +1021,33 @@ COBRA model structure with reaction-gene association matrix</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.base.io.utilities.restrictModelsToFields">
+<code class="descname">restrictModelsToFields</code><span class="sig-paren">(</span><em>models</em>, <em>fieldNames</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/0156269d45e3823f6fe1f129ac03638645b43ceb/src/base/io/utilities/restrictModelsToFields.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.restrictModelsToFields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes all fields not given as fieldnames from the models</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>restrictedModels = restrictModelsToFields(models, fieldNames)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>models</strong> &#8211;
+A Cell array of model structs (or single model
+struct that has all fieldNames provided.</li>
+<li><strong>fieldNames</strong> &#8211;
+Names of the fields the models will be restricted
+to.</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>restrictedModels</strong> &#8211;
+The models with the non names fields removed, or a single struct if its just one model.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.base.io.utilities.write4ti2">
 <code class="descname">write4ti2</code><span class="sig-paren">(</span><em>SeFull</em>, <em>filename</em>, <em>uni</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/0156269d45e3823f6fe1f129ac03638645b43ceb/src/base/io/utilities/write4ti2.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.write4ti2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes an input file for 4ti2.

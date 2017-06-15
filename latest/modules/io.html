@@ -314,14 +314,16 @@ that are not used in the uncommented reactions</li>
 <blockquote>
 <div><ul>
 <li><p class="first"><strong>fileName</strong> &#8211;
-File name for file to read in (char)
-not given in the <cite>SBML</cite> file (Default = 1000)</p>
+File name for file to read in (char)</p>
 </li>
-<li><p class="first"><strong>fileType</strong> &#8211;
-File type for input files: &#8216;SBML&#8217;, &#8216;SimPheny&#8217;,
-&#8216;SimPhenyPlus&#8217;, &#8216;SimPhenyText&#8217;, &#8216;Matlab&#8217; or Excel&#8217; (Default = &#8216;Matlab&#8217;)</p>
+<li><p class="first"><strong>varargin</strong> &#8211;
+Optional values as &#8216;ParameterName&#8217;,value pairs
+with the following available parameters:
+- fileType:  File type for input files: &#8216;SBML&#8217;, &#8216;SimPheny&#8217;,</p>
 <blockquote>
-<div><ul class="simple">
+<div><dl class="docutils">
+<dt>&#8216;SimPhenyPlus&#8217;, &#8216;SimPhenyText&#8217;, &#8216;Matlab&#8217; or Excel&#8217; (Default = &#8216;Matlab&#8217;)</dt>
+<dd><ul class="first last simple">
 <li>&#8216;SBML&#8217; indicates a file in <cite>SBML</cite> format</li>
 <li>&#8216;SimPheny&#8217; is a set of three files in <cite>SimPheny</cite> simulation output format</li>
 <li>&#8216;SimPhenyPlus&#8217; is the same as &#8216;SimPheny&#8217; except with
@@ -333,14 +335,22 @@ associations</li>
 <li>Matlab will save the model as a matlab variable file.</li>
 <li>Excel will save the model as a two sheet Excel Model.</li>
 </ul>
+</dd>
+</dl>
 </div></blockquote>
-</li>
-<li><p class="first"><strong>modelDescription</strong> &#8211;
-Description of model contents (char), default is the
-choosen filename</p>
-</li>
-<li><p class="first"><strong>compSymbolList</strong> &#8211;
-Compartment Symbol List( cell array)</p>
+<ul class="simple">
+<li>modelDescription:    Description of model contents (char), default is the
+choosen filename</li>
+<li>compSymbolList: Compartment Symbol List( cell array)</li>
+<li>defaultBound: The default bound value (default 1000)</li>
+<li>modelName: .mat file specific identifier, if
+provided, the specified model (if valid) will be
+loaded from the given mat file. If not given,
+the file will be scanned for models and all
+potential model structs will be provided as
+options to select from.
+(default: &#8216;all&#8217;)</li>
+</ul>
 </li>
 </ul>
 </div></blockquote>
