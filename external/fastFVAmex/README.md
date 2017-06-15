@@ -6,7 +6,7 @@
 
 ### Compiler and MEX setup
 
-Please make sure that you have installed a compiler as explained [here](www.github.io/cobratoolbox/docs/compilers.html). In order to generate the MEX file, you must have a compiler installed that is compatible with your MATLAB release. You need to install a `C++` compiler if you haven't done so already, e. g. The Microsoft Visual Studio Express 2008 compiler which is available free of charge. Depending on your Matlab version, you must check [this list](http://www.mathworks.com/support/compilers) to determine the supported compiler.
+Please make sure that you have installed a compiler as explained [here](https://opencobra.github.io/cobratoolbox/docs/compilers.html). In order to generate the MEX file, you must have a compiler installed that is compatible with your MATLAB release. You need to install a `C++` compiler if you haven't done so already, e. g. The Microsoft Visual Studio Express 2008 compiler which is available free of charge. Depending on your Matlab version, you must check [this list](http://www.mathworks.com/support/compilers) to determine the supported compiler.
 
 For R2015b, you should have the Microsoft Windows SDK for Windows 7 and .NET Framework 4 installed. Note: Please make sure that you have the correct C++ Redistributable package. The compiler and SDK can be downloaded from [here](https://www.microsoft.com/en-us/download/details.aspx?id=8279). Other compilers that are compatible with R2015b can be found [here](http://www.mathworks.com/support/sysreq/files/SystemRequirements-Release2015b_SupportedCompilers.pdf). In order to have the compiler set up properly, you must start MATLAB and run
 ```Matlab
